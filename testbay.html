@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Test Bay — Weekly Transformer Engineering Challenges | TransformerInsider</title>
+<meta name="description" content="Diagnose real transformer faults from dissolved gas analysis on a working Duval triangle. A new case file every week — earn XP, climb from Apprentice Winder to Duval Master.">
+<link rel="stylesheet" href="style.css">
+<style>
+.tb-hero { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 60%, #1b3a5c 100%); color:#fff; padding: 44px 0 36px; }
+.tb-hero .kicker { display:inline-block; background:rgba(245,166,35,.15); color:var(--amber); padding:5px 16px; border-radius:999px; font-size:.8rem; font-weight:600; margin-bottom:14px; letter-spacing:1px; }
+.tb-hero h1 { font-size:2.2rem; letter-spacing:-.5px; margin-bottom:8px; }
+.tb-hero p { color:#b8c4d4; max-width:620px; }
+.tb-chips { display:flex; gap:10px; margin-top:18px; flex-wrap:wrap; }
+.tb-chip { background:var(--navy-2); border:1px solid #2c4566; border-radius:999px; padding:6px 16px; font-size:.85rem; color:#cbd5e1; }
+.tb-chip b { color:var(--amber); font-weight:700; }
+.console { background:var(--navy); border-radius:14px; overflow:hidden; box-shadow:0 6px 24px rgba(13,27,46,.25); }
+.console-head { padding:18px 24px 6px; }
+.console-head .case-tag { color:var(--amber); font-size:.75rem; letter-spacing:2px; font-weight:600; }
+.console-head h2 { color:#fff; font-size:1.4rem; margin:2px 0 4px; }
+.console-head .brief { color:#9fb0c4; font-size:.92rem; max-width:600px; }
+.console-grid { display:grid; grid-template-columns:250px 1fr; gap:16px; padding:16px 24px; }
+.gas-panel { background:var(--navy-2); border-radius:10px; padding:14px 16px; align-self:start; }
+.gas-panel h4 { color:#9fb0c4; font-size:.7rem; letter-spacing:1.5px; margin-bottom:8px; font-weight:600; }
+.gas-panel table { width:100%; font-size:.88rem; font-family:ui-monospace, 'SF Mono', Consolas, monospace; border-collapse:collapse; }
+.gas-panel td { padding:3px 0; color:#cbd5e1; }
+.gas-panel td:first-child { color:#9fb0c4; }
+.gas-panel td:last-child { text-align:right; }
+.gas-panel tr.duval td { color:var(--amber); font-weight:600; }
+.gas-note { color:#5f6e84; font-size:.72rem; margin-top:8px; border-top:1px solid #2c4566; padding-top:6px; }
+.tri-panel { background:#fff; border-radius:10px; padding:10px 14px 4px; }
+.tri-meta { font-size:.78rem; color:var(--muted); display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px; }
+.tri-meta .coords { font-family:ui-monospace, Consolas, monospace; }
+.opts { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; padding:0 24px 6px; }
+.opt { border:1.5px solid #2c4566; background:var(--navy-2); color:#cbd5e1; border-radius:8px; padding:10px 12px; font-size:.85rem; cursor:pointer; text-align:left; transition:border-color .15s; font-family:inherit; }
+.opt:hover { border-color:var(--amber); }
+.opt b { font-weight:700; }
+.opt small { display:block; color:#7f93ab; font-size:.74rem; margin-top:2px; }
+.opt.correct { border-color:#5DCAA5; background:#0f3a2e; color:#9FE1CB; }
+.opt.correct small { color:#5DCAA5; }
+.opt.wrong { border-color:#E24B4A; background:#3a1414; color:#F7C1C1; }
+.opt.wrong small { color:#F09595; }
+.opt.faded { opacity:.4; }
+.opt:disabled { cursor:default; }
+.verdict { margin:10px 24px 18px; border-radius:10px; background:var(--navy-2); padding:14px 18px; color:#9fb0c4; font-size:.9rem; line-height:1.55; }
+.verdict .win { color:#5DCAA5; font-weight:700; }
+.verdict .lose { color:#F09595; font-weight:700; }
+.verdict .xp { color:var(--amber); font-weight:700; }
+.verdict .action { display:block; margin-top:8px; color:#cbd5e1; }
+.verdict .action b { color:var(--amber); }
+.share-row { display:flex; gap:10px; align-items:center; margin-top:10px; flex-wrap:wrap; }
+.share-btn { background:var(--amber); color:var(--navy); border:none; border-radius:8px; padding:8px 16px; font-weight:700; font-size:.85rem; cursor:pointer; }
+.share-btn.ghost { background:transparent; border:1.5px solid #2c4566; color:#cbd5e1; font-weight:500; }
+.practice-strip { display:flex; gap:8px; padding:0 24px 20px; flex-wrap:wrap; align-items:center; }
+.practice-strip span.lbl { color:#9fb0c4; font-size:.78rem; letter-spacing:1px; }
+.pcase { background:transparent; border:1px solid #2c4566; color:#cbd5e1; border-radius:999px; padding:5px 14px; font-size:.8rem; cursor:pointer; font-family:inherit; }
+.pcase:hover { border-color:var(--amber); color:var(--amber); }
+.pcase.active { background:var(--amber); color:var(--navy); border-color:var(--amber); font-weight:700; }
+.pcase.done { border-color:#5DCAA5; color:#5DCAA5; }
+.pcase.done.active { background:#5DCAA5; color:var(--navy); }
+.ranks { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; }
+.rank-card { background:#fff; border:1px solid var(--border); border-radius:10px; padding:14px; text-align:center; }
+.rank-card.current { border:2px solid var(--amber); }
+.rank-card .ico { font-size:1.5rem; }
+.rank-card b { display:block; color:var(--navy); font-size:.9rem; margin-top:4px; }
+.rank-card small { color:var(--muted); font-size:.75rem; }
+.rankbar { height:8px; background:var(--border); border-radius:4px; overflow:hidden; margin-top:10px; }
+.rankbar div { height:100%; background:var(--amber); }
+@media (max-width: 760px) {
+  .console-grid { grid-template-columns:1fr; }
+  .opts { grid-template-columns:repeat(2,1fr); }
+  .ranks { grid-template-columns:repeat(2,1fr); }
+  .tb-hero h1 { font-size:1.7rem; }
+}
+@keyframes blip { 0%,100%{opacity:.25} 50%{opacity:.8} }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo">Transformer<span>Insider</span></a>
+    <button class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <nav class="nav-links">
+      <a href="intel.html">Daily Intel</a>
+      <a href="events.html">Events</a>
+      <a href="jobs.html">Jobs</a>
+      <a href="learn.html">Learn</a>
+      <a href="design.html">Design</a>
+      <a href="testbay.html" class="active">Test Bay</a>
+      <a href="resources.html">Resources</a>
+      <a href="sponsor.html">Sponsor</a>
+      <a href="intel.html" class="btn btn-amber">Subscribe</a>
+    </nav>
+  </div>
+</header>
+
+<section class="tb-hero">
+  <div class="container">
+    <span class="kicker">⚡ THE TEST BAY · WEEKLY ENGINEERING CHALLENGE</span>
+    <h1>Can You Read the Gases?</h1>
+    <p>Every week, a real-world transformer fault scenario. Study the oil sample, watch the point land on the Duval triangle, and make the diagnosis. Earn XP. Climb from Apprentice Winder to Duval Master.</p>
+    <div class="tb-chips">
+      <span class="tb-chip">Rank: <b id="chip-rank">Apprentice Winder</b></span>
+      <span class="tb-chip"><b id="chip-xp">0</b> XP</span>
+      <span class="tb-chip">🔥 <b id="chip-streak">0</b>-week streak</span>
+      <span class="tb-chip">New case every Monday</span>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="container">
+    <div class="console">
+      <div class="console-head">
+        <div class="case-tag" id="case-tag">CASE FILE</div>
+        <h2 id="case-title"></h2>
+        <p class="brief" id="case-brief"></p>
+      </div>
+      <div class="console-grid">
+        <div class="gas-panel">
+          <h4>OIL SAMPLE · PPM</h4>
+          <table id="gas-table"></table>
+          <div class="gas-note">Duval Triangle 1 uses CH₄ / C₂H₄ / C₂H₂ — the amber rows.</div>
+        </div>
+        <div class="tri-panel">
+          <div class="tri-meta"><span>Duval Triangle 1 · mineral-oil-filled, IEC 60599</span><span class="coords" id="coords"></span></div>
+          <div id="tri"></div>
+        </div>
+      </div>
+      <div class="opts" id="opts"></div>
+      <div class="verdict" id="verdict">Plot is live — your sample point is blinking on the triangle. Make the call, engineer.</div>
+      <div class="practice-strip">
+        <span class="lbl">CASE ARCHIVE · PRACTICE FOR XP:</span>
+        <span id="practice-chips"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block alt">
+  <div class="container">
+    <div class="section-head">
+      <h2>The Ranks</h2>
+      <p>XP is saved on this device. Weekly cases pay 250 XP on a first-try diagnosis; archive practice pays 100. Global leaderboard coming soon.</p>
+    </div>
+    <div class="ranks" id="ranks"></div>
+    <div class="rankbar"><div id="rankbar-fill" style="width:0%"></div></div>
+    <p style="text-align:center; color:var(--muted); font-size:.85rem; margin-top:8px;" id="rank-progress"></p>
+  </div>
+</section>
+
+<section class="block">
+  <div class="container">
+    <div class="section-head">
+      <h2>Coming to the Test Bay</h2>
+      <p>The Duval cases are round one. The bench is getting bigger.</p>
+    </div>
+    <div class="grid grid-3">
+      <a class="card" href="design.html" style="display:block"><span class="emoji">🧮</span><h3>Design Duel <span style="background:var(--amber); color:var(--navy); font-size:.65rem; padding:2px 8px; border-radius:999px; vertical-align:middle; letter-spacing:1px;">LIVE</span></h3><p>100 MVA, IEC 60076, capitalized losses at real rates. Design it, price it, beat three sealed rival bids. A new utility tender every Monday.</p></a>
+      <div class="card"><span class="emoji">🔺</span><h3>Vector Group Puzzles</h3><p>Dyn11 or YNd1? Phase-shift and parallel-operation problems straight from the substation.</p></div>
+      <div class="card"><span class="emoji">📉</span><h3>Inrush & Impedance</h3><p>Sympathetic inrush, percent-impedance trade-offs, fault-level math — quick-fire weekly drills.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-strip">
+  <div class="container">
+    <h2>Sharpen Your Eye Between Cases</h2>
+    <p>The twice-daily intel briefing keeps you current on the market side, too.</p>
+    <a href="intel.html" class="btn btn-amber">Read Today's Intel →</a>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="index.html" class="logo" style="font-size:1.2rem">Transformer<span style="color:var(--amber)">Insider</span></a>
+        <p style="margin-top:12px">The global intelligence and networking platform for transformer manufacturers, suppliers, engineers and utilities.</p>
+      </div>
+      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a>
+      <a href="events.html">Events</a><a href="jobs.html">Jobs</a>
+      <a href="design.html">Design</a><a href="testbay.html">Test Bay</a><a href="resources.html">Resources</a>
+      <a href="sponsor.html">Sponsor</a></div>
+      <div><h4>COMPANY</h4><a href="#">About Us</a><a href="#">Contact</a><a href="#">Privacy</a><a href="#">Terms</a></div>
+      <div><h4>CONTACT</h4><a href="mailto:hello@transformerinsider.com">hello@transformerinsider.com</a><a href="#">Dubai, UAE</a></div>
+    </div>
+    <div class="copyright">© 2026 TransformerInsider. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+"use strict";
+
+var CASES = [
+  { id:'d2-hamriyah', title:'The Hamriyah Hum',
+    brief:'315 MVA GSU, 220/15.75 kV, ONAF. Buchholz gas alarm rising after a storm trip-reclose. The oil lab just sent this in. What is happening inside the tank?',
+    g:{H2:95, CH4:120, C2H6:28, C2H4:380, C2H2:240, CO:410, CO2:3100},
+    ans:'D2',
+    why:'C₂H₂ at ~32% of the triangle gases with C₂H₄ above 50% is the classic power-arc signature — consistent with the trip-reclose event. CO₂/CO ≈ 7.5 suggests paper is aging normally, so the arc is likely in oil rather than in winding insulation.',
+    act:'De-energize. Resample in 24 h to confirm the trend, then SFRA and winding-resistance tests before any re-energization.' },
+  { id:'t3-clamp', title:'The Midnight Hotspot',
+    brief:'200 MVA autotransformer. Combustible gases trending up for three months — no trips, no alarms, top-oil temperature normal. The night-shift operator swears she can hear it.',
+    g:{H2:110, CH4:200, C2H6:45, C2H4:600, C2H2:40, CO:320, CO2:2800},
+    ans:'T3',
+    why:'C₂H₄ dominating at ~71% with C₂H₂ under 15% points to a severe thermal fault above 700 °C — typically circulating currents in the core clamp structure or a deteriorating connection, cooking oil without touching the windings.',
+    act:'Check core ground current, run an infrared scan of tank and connections, and plan an internal inspection at the next outage window.' },
+  { id:'pd-reactor', title:'The Quiet Crackle',
+    brief:'New 80 MVAr shunt reactor, six months in service. Hydrogen creeping up week after week while everything else stays low. The OEM says "monitor". Do you agree?',
+    g:{H2:1200, CH4:985, C2H6:60, C2H4:12, C2H2:3, CO:150, CO2:900},
+    ans:'PD',
+    why:'CH₄ at ~98% of the triangle gases with high free hydrogen is textbook partial discharge — corona in gas-filled voids, usually a drying or impregnation defect in the barrier insulation of a young unit.',
+    act:'Do not just monitor. Request acoustic/UHF PD location measurement and put the OEM on notice while the unit is under warranty.' },
+  { id:'t1-feeder', title:'The Overworked Feeder',
+    brief:'50 MVA, 132/11 kV in a data-center district running at 96% load around the clock. Radiators visibly fouled with construction dust. CO is climbing.',
+    g:{H2:85, CH4:150, C2H6:70, C2H4:25, C2H2:2, CO:900, CO2:9500},
+    ans:'T1',
+    why:'CH₄-dominant with C₂H₄ under 20% and almost no acetylene means a thermal fault below 300 °C. The elevated CO with CO₂/CO ≈ 10 says cellulose is involved — paper slowly overheating from sustained overload and poor cooling.',
+    act:'Clean the radiators, review load management, and run a furan analysis to quantify paper aging before it becomes a life-of-asset problem.' },
+  { id:'d1-shield', title:'The Floating Shield',
+    brief:'132 kV unit back from refurbishment. Intermittent gas spikes after energization; acoustic sensors pick up occasional clicks. The refurb contractor insists everything was torqued.',
+    g:{H2:220, CH4:80, C2H6:18, C2H4:50, C2H2:270, CO:180, CO2:1500},
+    ans:'D1',
+    why:'C₂H₂ at ~68% with low C₂H₄ is a low-energy discharge — sparking, not a power arc. After a refurb, the prime suspect is a floating or unbonded electrostatic shield discharging to ground.',
+    act:'Internal inspection: verify shield and core bonding leads. The clicks and the chemistry are telling the same story.' },
+  { id:'t2-crimp', title:'The Bad Crimp',
+    brief:'31.5 MVA unit fresh from a factory LV-lead repair. Gassing began two weeks after return to service and tracks the load curve almost perfectly.',
+    g:{H2:90, CH4:240, C2H6:90, C2H4:230, C2H2:8, CO:250, CO2:2400},
+    ans:'T2',
+    why:'CH₄ and C₂H₄ roughly balanced with C₂H₂ below 4% lands in T2 — a thermal fault between 300 and 700 °C. Load-correlated gassing right after a lead repair screams resistive joint: a bad crimp heating under current.',
+    act:'Winding-resistance test per phase to find the high-resistance joint, plus thermography at load. Then have words with the factory.' }
+];
+
+var ZONES = [
+  { k:'D1', c:'#F5C4B3', tc:'#712B13', v:[[0,0,100],[0,23,77],[64,23,13],[87,0,13]], l:[18,12,70] },
+  { k:'D2', c:'#F09595', tc:'#791F1F', v:[[0,23,77],[0,71,29],[31,40,29],[47,40,13],[64,23,13]], l:[20,42,38] },
+  { k:'DT', c:'#F4C0D1', tc:'#72243E', v:[[0,71,29],[0,85,15],[35,50,15],[46,50,4],[96,0,4],[87,0,13],[47,40,13],[31,40,29]], l:[40,38,22] },
+  { k:'T1', c:'#FAEEDA', tc:'#633806', v:[[76,20,4],[80,20,0],[98,2,0],[98,0,2],[96,0,4]], l:[88,10,2] },
+  { k:'T2', c:'#FAC775', tc:'#633806', v:[[46,50,4],[50,50,0],[80,20,0],[76,20,4]], l:[63,35,2] },
+  { k:'T3', c:'#EF9F27', tc:'#412402', v:[[0,100,0],[0,85,15],[35,50,15],[50,50,0]], l:[18,75,7] },
+  { k:'PD', c:'#AFA9EC', tc:'#26215C', v:[[98,2,0],[100,0,0],[98,0,2]], l:null }
+];
+
+var OPTS = [
+  { k:'PD', d:'Partial discharge — corona in voids' },
+  { k:'D1', d:'Low-energy discharge — sparking' },
+  { k:'D2', d:'High-energy discharge — power arcing' },
+  { k:'T1', d:'Thermal fault < 300 °C' },
+  { k:'T2', d:'Thermal fault 300–700 °C' },
+  { k:'T3', d:'Thermal fault > 700 °C' }
+];
+
+var RANKS = [
+  { xp:0, n:'Apprentice Winder', i:'🧰' },
+  { xp:500, n:'Megger Operator', i:'🔌' },
+  { xp:1250, n:'Oil Whisperer', i:'🛢️' },
+  { xp:2500, n:'Buchholz Sage', i:'⚗️' },
+  { xp:5000, n:'Duval Master', i:'🔺' }
+];
+
+function store(k,v){ try{ if(v===undefined) return JSON.parse(localStorage.getItem('tb_'+k)); localStorage.setItem('tb_'+k, JSON.stringify(v)); }catch(e){ return null; } }
+function isoWeek(d){ d=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())); var day=d.getUTCDay()||7; d.setUTCDate(d.getUTCDate()+4-day); var y0=new Date(Date.UTC(d.getUTCFullYear(),0,1)); return Math.ceil((((d-y0)/864e5)+1)/7); }
+
+var WEEK = isoWeek(new Date());
+var WEEKLY = CASES[WEEK % CASES.length];
+var xp = store('xp')||0, streak = store('streak')||0, solved = store('solved')||{};
+var current = null, locked = false;
+
+function rankFor(x){ var r=RANKS[0]; for(var i=0;i<RANKS.length;i++){ if(x>=RANKS[i].xp) r=RANKS[i]; } return r; }
+function nextRank(x){ for(var i=0;i<RANKS.length;i++){ if(x<RANKS[i].xp) return RANKS[i]; } return null; }
+
+function refreshChips(){
+  document.getElementById('chip-xp').textContent = xp.toLocaleString();
+  document.getElementById('chip-rank').textContent = rankFor(xp).n;
+  document.getElementById('chip-streak').textContent = streak;
+  var rEl = document.getElementById('ranks'); rEl.innerHTML='';
+  var cur = rankFor(xp);
+  RANKS.forEach(function(r){
+    var d=document.createElement('div'); d.className='rank-card'+(r===cur?' current':'');
+    d.innerHTML='<span class="ico">'+r.i+'</span><b>'+r.n+'</b><small>'+r.xp.toLocaleString()+' XP'+(r===cur?' · you are here':'')+'</small>';
+    rEl.appendChild(d);
+  });
+  var nx = nextRank(xp);
+  if(nx){
+    var prev = cur.xp, pct = Math.min(100, Math.round(100*(xp-prev)/(nx.xp-prev)));
+    document.getElementById('rankbar-fill').style.width = pct+'%';
+    document.getElementById('rank-progress').textContent = xp.toLocaleString()+' XP — '+(nx.xp-xp).toLocaleString()+' XP to '+nx.n;
+  } else {
+    document.getElementById('rankbar-fill').style.width = '100%';
+    document.getElementById('rank-progress').textContent = 'Duval Master. The triangle holds no secrets for you.';
+  }
+}
+
+function tern(m,e,a,W,top,bl,br){ var f=100; return [ (m/f)*top[0]+(e/f)*br[0]+(a/f)*bl[0], (m/f)*top[1]+(e/f)*br[1]+(a/f)*bl[1] ]; }
+
+function drawTriangle(c){
+  var W=420,H=360,pad=30, top=[W/2,32], bl=[pad,32+(W-2*pad)*Math.sin(Math.PI/3)], br=[W-pad,32+(W-2*pad)*Math.sin(Math.PI/3)];
+  var t=c.g.CH4+c.g.C2H4+c.g.C2H2, m=100*c.g.CH4/t, e=100*c.g.C2H4/t, a=100*c.g.C2H2/t;
+  var s='<svg viewBox="0 0 '+W+' '+H+'" width="100%" role="img" aria-label="Duval triangle with sample point"><title>Duval triangle 1</title>';
+  ZONES.forEach(function(z){
+    s+='<polygon points="'+z.v.map(function(v){ return tern(v[0],v[1],v[2],W,top,bl,br).map(function(n){return n.toFixed(1);}).join(','); }).join(' ')+'" fill="'+z.c+'" stroke="#fff" stroke-width="1"/>';
+    if(z.l){ var p=tern(z.l[0],z.l[1],z.l[2],W,top,bl,br); s+='<text x="'+p[0]+'" y="'+p[1]+'" font-size="12" font-weight="600" fill="'+z.tc+'" text-anchor="middle" font-family="system-ui">'+z.k+'</text>'; }
+  });
+  var pdl=tern(99.3,3.5,0,W,top,bl,br);
+  s+='<text x="'+(pdl[0]+15)+'" y="'+(pdl[1]-7)+'" font-size="10" fill="#3C3489" font-family="system-ui">PD</text>';
+  s+='<text x="'+top[0]+'" y="'+(top[1]-13)+'" font-size="11" fill="#6b7280" text-anchor="middle" font-family="system-ui">100% CH₄</text>';
+  s+='<text x="'+(bl[0]-4)+'" y="'+(bl[1]+18)+'" font-size="11" fill="#6b7280" font-family="system-ui">100% C₂H₂</text>';
+  s+='<text x="'+(br[0]+4)+'" y="'+(br[1]+18)+'" font-size="11" fill="#6b7280" text-anchor="end" font-family="system-ui">100% C₂H₄</text>';
+  var P=tern(m,e,a,W,top,bl,br);
+  s+='<circle cx="'+P[0]+'" cy="'+P[1]+'" r="12" fill="#0d1b2e" opacity=".3" style="animation:blip 1.6s infinite"/>';
+  s+='<circle cx="'+P[0]+'" cy="'+P[1]+'" r="5" fill="#0d1b2e" stroke="#fff" stroke-width="1.5"/>';
+  s+='</svg>';
+  document.getElementById('tri').innerHTML=s;
+  document.getElementById('coords').textContent='CH₄ '+m.toFixed(0)+'% · C₂H₄ '+e.toFixed(0)+'% · C₂H₂ '+a.toFixed(0)+'%';
+}
+
+function sub(name){ return name.replace(/H2/,'H₂').replace(/CH4/,'CH₄').replace(/C2H6/,'C₂H₆').replace(/C2H4/,'C₂H₄').replace(/C2H2/,'C₂H₂').replace(/CO2/,'CO₂'); }
+
+function loadCase(c, isWeekly){
+  current=c; locked=!!solved[c.id];
+  document.getElementById('case-tag').textContent = (isWeekly ? 'CASE FILE #'+WEEK+' · THIS WEEK' : 'ARCHIVE CASE · PRACTICE') + ' · DISSOLVED GAS ANALYSIS';
+  document.getElementById('case-title').textContent = c.title;
+  document.getElementById('case-brief').textContent = c.brief;
+  var gt=document.getElementById('gas-table'); gt.innerHTML='';
+  Object.keys(c.g).forEach(function(k){
+    var tr=document.createElement('tr');
+    if(k==='CH4'||k==='C2H4'||k==='C2H2') tr.className='duval';
+    tr.innerHTML='<td>'+sub(k)+'</td><td>'+c.g[k].toLocaleString()+'</td>';
+    gt.appendChild(tr);
+  });
+  drawTriangle(c);
+  var op=document.getElementById('opts'); op.innerHTML='';
+  OPTS.forEach(function(o){
+    var b=document.createElement('button'); b.className='opt'; b.dataset.k=o.k;
+    b.innerHTML='<b>'+o.k+'</b><small>'+o.d+'</small>';
+    b.onclick=function(){ answer(o.k, b, isWeekly); };
+    op.appendChild(b);
+  });
+  var v=document.getElementById('verdict');
+  if(locked){
+    revealAnswer(null, isWeekly, true);
+  } else {
+    v.innerHTML='Plot is live — your sample point is blinking on the triangle. Make the call, engineer.';
+  }
+  renderPractice();
+}
+
+function revealAnswer(chosenBtn, isWeekly, alreadySolved){
+  var v=document.getElementById('verdict');
+  var btns=document.querySelectorAll('.opt');
+  btns.forEach(function(x){
+    x.disabled=true;
+    if(x.dataset.k===current.ans){ x.classList.add('correct'); }
+    else if(x===chosenBtn){ x.classList.add('wrong'); }
+    else { x.classList.add('faded'); }
+  });
+  var right = !chosenBtn || chosenBtn.dataset.k===current.ans;
+  var gain = 0;
+  if(!alreadySolved){
+    gain = right ? (isWeekly?250:100) : (isWeekly?50:25);
+    xp+=gain; store('xp',xp);
+    solved[current.id]={right:right, week:WEEK}; store('solved',solved);
+    if(isWeekly){
+      var lw=store('lastweek');
+      streak = (lw===WEEK-1)? streak+1 : 1;
+      store('streak',streak); store('lastweek',WEEK);
+    }
+  }
+  var head = alreadySolved
+    ? '<span class="win">Case closed — it was '+current.ans+'.</span> '
+    : right
+      ? '<span class="win">Correct — '+current.ans+'.</span> '
+      : '<span class="lose">Not quite — it\'s '+current.ans+'.</span> ';
+  v.innerHTML = head + current.why +
+    '<span class="action"><b>Recommended action:</b> '+current.act+'</span>' +
+    (gain? ' <span class="xp">+'+gain+' XP'+(isWeekly&&right?' · streak '+streak:'')+'</span>':'') +
+    '<span class="share-row">'+
+      '<button class="share-btn" id="share-btn">Share result</button>'+
+      '<span id="share-done" style="color:#5DCAA5;font-size:.8rem;"></span>'+
+    '</span>';
+  refreshChips();
+  document.getElementById('share-btn').onclick=function(){
+    var txt='TransformerInsider Test Bay — Case #'+WEEK+' "'+current.title+'": '+(right?'diagnosed ⚡':'a tough one!')+' Can you read the gases? https://transformerinsider.com/testbay.html';
+    try{ navigator.clipboard.writeText(txt); document.getElementById('share-done').textContent='Copied — paste it on LinkedIn.'; }catch(e){ document.getElementById('share-done').textContent=txt; }
+  };
+}
+
+function answer(k, btn, isWeekly){
+  if(locked) return; locked=true;
+  revealAnswer(btn, isWeekly, false);
+}
+
+function renderPractice(){
+  var pc=document.getElementById('practice-chips'); pc.innerHTML='';
+  CASES.forEach(function(c){
+    var b=document.createElement('button');
+    b.className='pcase'+(solved[c.id]?' done':'')+(current&&current.id===c.id?' active':'');
+    b.textContent=(c.id===WEEKLY.id?'★ ':'')+c.title+(solved[c.id]?' ✓':'');
+    b.onclick=function(){ loadCase(c, c.id===WEEKLY.id); window.scrollTo({top:document.querySelector('.console').offsetTop-80, behavior:'smooth'}); };
+    pc.appendChild(b);
+  });
+}
+
+refreshChips();
+loadCase(WEEKLY, true);
+})();
+</script>
+
+</body>
+</html>

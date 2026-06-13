@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design Duel — Win the Tender | TransformerInsider Test Bay</title>
+<meta name="description" content="Design a 100 MVA transformer against a real tender spec — flux density, current density, cooling, margin. The engine computes losses and evaluated cost. Lowest compliant bid wins.">
+<link rel="stylesheet" href="style.css">
+<style>
+.tb-hero { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 60%, #1b3a5c 100%); color:#fff; padding: 40px 0 32px; }
+.tb-hero .kicker { display:inline-block; background:rgba(245,166,35,.15); color:var(--amber); padding:5px 16px; border-radius:999px; font-size:.8rem; font-weight:600; margin-bottom:14px; letter-spacing:1px; }
+.tb-hero h1 { font-size:2.1rem; letter-spacing:-.5px; margin-bottom:8px; }
+.tb-hero p { color:#b8c4d4; max-width:640px; }
+.tb-chips { display:flex; gap:10px; margin-top:16px; flex-wrap:wrap; }
+.tb-chip { background:var(--navy-2); border:1px solid #2c4566; border-radius:999px; padding:6px 16px; font-size:.85rem; color:#cbd5e1; }
+.tb-chip b { color:var(--amber); font-weight:700; }
+.duel-grid { display:grid; grid-template-columns:320px 1fr; gap:18px; align-items:start; }
+.spec-card { background:var(--navy); border-radius:14px; padding:20px 22px; color:#cbd5e1; position:sticky; top:80px; }
+.spec-card .tag { color:var(--amber); font-size:.72rem; letter-spacing:2px; font-weight:600; }
+.spec-card h2 { color:#fff; font-size:1.25rem; margin:4px 0 6px; }
+.spec-card .brief { font-size:.85rem; color:#9fb0c4; margin-bottom:12px; }
+.spec-card table { width:100%; font-size:.84rem; border-collapse:collapse; }
+.spec-card td { padding:4px 0; border-bottom:1px solid #1d3146; }
+.spec-card td:first-child { color:#9fb0c4; }
+.spec-card td:last-child { text-align:right; color:#fff; font-family:ui-monospace, Consolas, monospace; }
+.spec-card .caprate td:last-child { color:var(--amber); font-weight:700; }
+.bench { background:#fff; border:1px solid var(--border); border-radius:14px; padding:20px 22px; }
+.bench h3 { color:var(--navy); font-size:1.05rem; margin-bottom:4px; }
+.bench .sub { color:var(--muted); font-size:.82rem; margin-bottom:12px; }
+.ctl-group { margin-bottom:16px; }
+.ctl-group label.title { display:block; font-weight:700; color:var(--navy); font-size:.88rem; margin-bottom:6px; }
+.seg { display:flex; gap:8px; flex-wrap:wrap; }
+.seg button { flex:1; min-width:130px; border:1.5px solid var(--border); background:#fff; border-radius:8px; padding:8px 10px; cursor:pointer; text-align:left; font-family:inherit; font-size:.82rem; color:var(--text); }
+.seg button small { display:block; color:var(--muted); font-size:.72rem; margin-top:2px; }
+.seg button.sel { border-color:var(--amber); background:#fff8ec; }
+.slider-row { display:flex; align-items:center; gap:12px; }
+.slider-row input[type=range] { flex:1; accent-color: var(--amber); }
+.slider-row .val { font-family:ui-monospace, Consolas, monospace; font-weight:700; color:var(--navy); min-width:74px; text-align:right; font-size:.9rem; }
+.readouts { display:grid; grid-template-columns:repeat(6,1fr); gap:8px; margin:14px 0 10px; }
+.ro { background:var(--bg); border-radius:8px; padding:8px 10px; text-align:center; }
+.ro small { display:block; color:var(--muted); font-size:.68rem; letter-spacing:.5px; }
+.ro b { font-size:.98rem; color:var(--navy); font-family:ui-monospace, Consolas, monospace; }
+.ro.bad b { color:var(--red); }
+.evalbar { display:flex; height:18px; border-radius:9px; overflow:hidden; margin:6px 0 4px; }
+.evalbar div { height:100%; }
+.evalbar-legend { display:flex; gap:14px; font-size:.72rem; color:var(--muted); margin-bottom:10px; flex-wrap:wrap; }
+.evalbar-legend i { display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:4px; vertical-align:-1px; }
+.eval-big { display:flex; justify-content:space-between; align-items:baseline; background:var(--navy); border-radius:10px; padding:10px 16px; margin-bottom:10px; }
+.eval-big span { color:#9fb0c4; font-size:.82rem; }
+.eval-big b { color:var(--amber); font-size:1.5rem; font-family:ui-monospace, Consolas, monospace; }
+.gates { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px; }
+.gate { font-size:.74rem; border-radius:999px; padding:4px 12px; font-weight:600; }
+.gate.ok { background:#e8f7ef; color:var(--green); }
+.gate.fail { background:#fdecec; color:var(--red); }
+.submit-row { display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+.submit-btn { background:var(--amber); color:var(--navy); border:none; border-radius:8px; padding:12px 26px; font-weight:800; font-size:1rem; cursor:pointer; font-family:inherit; }
+.submit-btn:disabled { background:#d8dce2; color:#8a919c; cursor:not-allowed; }
+.lab-note { font-size:.78rem; color:var(--muted); }
+.results { margin-top:18px; display:none; }
+.results table { width:100%; border-collapse:collapse; font-size:.86rem; background:#fff; border-radius:10px; overflow:hidden; }
+.results th { background:var(--navy); color:#cbd5e1; text-align:left; padding:8px 12px; font-size:.74rem; letter-spacing:1px; }
+.results td { padding:8px 12px; border-bottom:1px solid var(--border); font-family:ui-monospace, Consolas, monospace; font-size:.82rem; }
+.results td:first-child { font-family:inherit; font-weight:600; color:var(--navy); }
+.results tr.you td { background:#fff8ec; }
+.results tr.winner td:first-child::after { content:" 🏆"; }
+.results .dq { color:var(--red); font-weight:700; }
+.banner { border-radius:10px; padding:14px 18px; margin-top:12px; font-size:.92rem; line-height:1.5; }
+.banner.win { background:#e8f7ef; color:#14532d; }
+.banner.lose { background:#fdf3e7; color:#7c4a03; }
+.banner.dq { background:#fdecec; color:#7f1d1d; }
+.banner .xp { font-weight:800; }
+@media (max-width: 860px) {
+  .duel-grid { grid-template-columns:1fr; }
+  .spec-card { position:static; }
+  .readouts { grid-template-columns:repeat(3,1fr); }
+  .tb-hero h1 { font-size:1.6rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo">Transformer<span>Insider</span></a>
+    <button class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <nav class="nav-links">
+      <a href="intel.html">Daily Intel</a>
+      <a href="events.html">Events</a>
+      <a href="jobs.html">Jobs</a>
+      <a href="learn.html">Learn</a>
+      <a href="design.html" class="active">Design</a>
+      <a href="testbay.html">Test Bay</a>
+      <a href="resources.html">Resources</a>
+      <a href="sponsor.html">Sponsor</a>
+      <a href="intel.html" class="btn btn-amber">Subscribe</a>
+    </nav>
+  </div>
+</header>
+
+<section class="tb-hero">
+  <div class="container">
+    <span class="kicker">⚡ TEST BAY · DESIGN DUEL · SEALED-BID TENDER</span>
+    <h1>Design It. Price It. Win the Tender.</h1>
+    <p>A new utility tender every Monday. Set your core steel, flux density, current density, cooling and margin — the engine computes your losses and the utility evaluates your bid at real capitalization rates. Three rivals have already submitted sealed bids. Lowest compliant evaluated cost takes the contract.</p>
+    <div class="tb-chips">
+      <span class="tb-chip">Rank: <b id="chip-rank">Apprentice Winder</b></span>
+      <span class="tb-chip"><b id="chip-xp">0</b> XP</span>
+      <span class="tb-chip">Career profit: <b id="chip-profit">$0</b></span>
+      <span class="tb-chip"><a href="testbay.html" style="color:var(--amber)">← DGA cases</a></span>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="container">
+    <div class="duel-grid">
+
+      <div class="spec-card">
+        <div class="tag" id="spec-tag">TENDER · WEEK</div>
+        <h2 id="spec-utility"></h2>
+        <p class="brief" id="spec-brief"></p>
+        <table>
+          <tr><td>Rating</td><td>100 MVA · 220/33 kV</td></tr>
+          <tr><td>Frequency / phases</td><td>50 Hz · 3-ph</td></tr>
+          <tr><td>Impedance window</td><td id="sp-z"></td></tr>
+          <tr><td>Max NLL guarantee</td><td id="sp-nll"></td></tr>
+          <tr><td>Max LL guarantee</td><td id="sp-ll"></td></tr>
+          <tr><td>Max noise</td><td id="sp-noise"></td></tr>
+          <tr><td>Max transport mass</td><td id="sp-mass"></td></tr>
+          <tr class="caprate"><td>NLL capitalized at</td><td id="sp-nllrate"></td></tr>
+          <tr class="caprate"><td>LL capitalized at</td><td id="sp-llrate"></td></tr>
+          <tr><td>Copper this week</td><td id="sp-cu"></td></tr>
+        </table>
+        <p style="font-size:.74rem; color:#5f6e84; margin-top:10px;">Evaluated cost = bid price + NLL×rate + (LL+cooling aux)×rate. Non-compliant bids are disqualified at design review.</p>
+      </div>
+
+      <div class="bench">
+        <h3>Your Design Bench</h3>
+        <p class="sub">Every choice moves three numbers: what it costs to build, what it burns for 30 years, and whether it passes design review.</p>
+
+        <div class="ctl-group">
+          <label class="title">Core steel grade</label>
+          <div class="seg" id="seg-grade">
+            <button data-g="M4"><b>CGO M4</b><small>1.30 W/kg @1.7 T · $2.90/kg</small></button>
+            <button data-g="HIB" class="sel"><b>Hi-B</b><small>1.05 W/kg @1.7 T · $3.50/kg</small></button>
+            <button data-g="LS"><b>Laser-scribed Hi-B</b><small>0.92 W/kg @1.7 T · $3.90/kg</small></button>
+          </div>
+        </div>
+
+        <div class="ctl-group">
+          <label class="title">Core flux density — B</label>
+          <div class="slider-row">
+            <input type="range" id="sl-b" min="1.55" max="1.90" step="0.01" value="1.72">
+            <span class="val" id="v-b">1.72 T</span>
+          </div>
+        </div>
+
+        <div class="ctl-group">
+          <label class="title">Winding current density — J (copper)</label>
+          <div class="slider-row">
+            <input type="range" id="sl-j" min="2.0" max="4.0" step="0.05" value="3.0">
+            <span class="val" id="v-j">3.00 A/mm²</span>
+          </div>
+        </div>
+
+        <div class="ctl-group">
+          <label class="title">Cooling scheme</label>
+          <div class="seg" id="seg-cool">
+            <button data-c="ONAN"><b>ONAN only</b><small>aux 0 kW · J ≤ 2.9 · +$140k, +14 t</small></button>
+            <button data-c="ONAF" class="sel"><b>ONAN/ONAF</b><small>aux 12 kW · J ≤ 3.4</small></button>
+            <button data-c="OFAF"><b>+ OFAF</b><small>aux 28 kW · J ≤ 3.9 · −$60k, −10 t</small></button>
+          </div>
+        </div>
+
+        <div class="ctl-group">
+          <label class="title">Impedance — Z</label>
+          <div class="slider-row">
+            <input type="range" id="sl-z" min="10" max="16" step="0.25" value="13">
+            <span class="val" id="v-z">13.00 %</span>
+          </div>
+        </div>
+
+        <div class="ctl-group">
+          <label class="title">Your margin</label>
+          <div class="slider-row">
+            <input type="range" id="sl-m" min="4" max="20" step="0.5" value="10">
+            <span class="val" id="v-m">10.0 %</span>
+          </div>
+        </div>
+
+        <div class="readouts">
+          <div class="ro"><small>BID PRICE</small><b id="ro-price"></b></div>
+          <div class="ro" id="ro-nll-box"><small>NLL</small><b id="ro-nll"></b></div>
+          <div class="ro" id="ro-ll-box"><small>LL + AUX</small><b id="ro-ll"></b></div>
+          <div class="ro" id="ro-noise-box"><small>NOISE</small><b id="ro-noise"></b></div>
+          <div class="ro" id="ro-mass-box"><small>SHIP MASS</small><b id="ro-mass"></b></div>
+          <div class="ro"><small>PROFIT IF WON</small><b id="ro-profit"></b></div>
+        </div>
+
+        <div class="eval-big"><span>Evaluated cost (what the utility compares)</span><b id="ro-eval"></b></div>
+        <div class="evalbar" id="evalbar"></div>
+        <div class="evalbar-legend">
+          <span><i style="background:#14253d"></i>Bid price</span>
+          <span><i style="background:#d48806"></i>Capitalized NLL</span>
+          <span><i style="background:#f5a623"></i>Capitalized LL</span>
+        </div>
+
+        <div class="gates" id="gates"></div>
+
+        <div class="submit-row">
+          <button class="submit-btn" id="btn-submit">Submit Sealed Bid</button>
+          <span class="lab-note" id="lab-note">One scored submission per week — after that, the bench stays open in lab mode.</span>
+        </div>
+
+        <div class="results" id="results">
+          <h3 style="margin:6px 0 8px; color:var(--navy);">Bid Opening — <span id="res-utility"></span></h3>
+          <table>
+            <thead><tr><th>BIDDER</th><th>PRICE</th><th>NLL</th><th>LL+AUX</th><th>EVALUATED</th><th>STATUS</th></tr></thead>
+            <tbody id="res-body"></tbody>
+          </table>
+          <div class="banner" id="res-banner"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="block alt">
+  <div class="container">
+    <div class="section-head">
+      <h2>How the Engine Thinks</h2>
+      <p>The same physics every design office argues about, reduced to its commercial core.</p>
+    </div>
+    <div class="grid grid-3">
+      <div class="card"><span class="emoji">🧲</span><h3>Flux Density</h3><p>Push B higher and the core shrinks — cheaper steel bill, but specific losses climb steeply near saturation, and so does noise. Premium grades buy you headroom.</p></div>
+      <div class="card"><span class="emoji">🌡️</span><h3>Current Density</h3><p>Higher J means less copper to buy but more I²R to burn — and a hot-spot your cooling scheme has to survive. Designers price-walk J right up to the loss guarantee.</p></div>
+      <div class="card"><span class="emoji">💰</span><h3>Capitalized Losses</h3><p>Utilities don't buy the cheapest transformer; they buy the cheapest 30 years. $4,500/kW on no-load loss turns 10 kW of core loss into $45,000 of bid handicap.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-strip">
+  <div class="container">
+    <h2>Think You Can Read Gases Too?</h2>
+    <p>The weekly DGA case file is waiting in the Test Bay.</p>
+    <a href="testbay.html" class="btn btn-amber">Open This Week's Case →</a>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="index.html" class="logo" style="font-size:1.2rem">Transformer<span style="color:var(--amber)">Insider</span></a>
+        <p style="margin-top:12px">The global intelligence and networking platform for transformer manufacturers, suppliers, engineers and utilities.</p>
+      </div>
+      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a>
+      <a href="events.html">Events</a><a href="jobs.html">Jobs</a><a href="testbay.html">Test Bay</a><a href="resources.html">Resources</a>
+      <a href="sponsor.html">Sponsor</a></div>
+      <div><h4>COMPANY</h4><a href="#">About Us</a><a href="#">Contact</a><a href="#">Privacy</a><a href="#">Terms</a></div>
+      <div><h4>CONTACT</h4><a href="mailto:hello@transformerinsider.com">hello@transformerinsider.com</a><a href="#">Dubai, UAE</a></div>
+    </div>
+    <div class="copyright">© 2026 TransformerInsider. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+"use strict";
+
+var GRADES = { M4:{w:1.30, usd:2.90, n:'CGO M4'}, HIB:{w:1.05, usd:3.50, n:'Hi-B'}, LS:{w:0.92, usd:3.90, n:'Laser-scribed Hi-B'} };
+var COOL = { ONAN:{aux:0, maxJ:2.9, price:140000, mass:14, n:'ONAN'}, ONAF:{aux:12, maxJ:3.4, price:0, mass:0, n:'ONAN/ONAF'}, OFAF:{aux:28, maxJ:3.9, price:-60000, mass:-10, n:'ONAN/ONAF/OFAF'} };
+
+var TENDERS = [
+  { u:'Al Dhafra Grid Co.', cc:'UAE', brief:'Greenfield 220 kV substation feeding a logistics city. Balanced evaluation, tight but fair.',
+    nllRate:4500, llRate:1200, nllMax:75, llMax:360, zLo:12, zHi:14, noiseMax:78, massMax:220 },
+  { u:'Trans-Anatolia Power', cc:'Türkiye', brief:'Industrial corridor reinforcement. Energy is cheap here — first cost matters more than losses.',
+    nllRate:3500, llRate:1000, nllMax:80, llMax:380, zLo:11.5, zHi:13.5, noiseMax:80, massMax:230 },
+  { u:'Deccan Transco', cc:'India', brief:'Hill-route substation — the transport corridor caps shipping mass hard. Compact designs only.',
+    nllRate:5000, llRate:1100, nllMax:70, llMax:350, zLo:12.5, zHi:14.5, noiseMax:78, massMax:170 },
+  { u:'Nordsee Netz', cc:'Germany', brief:'Urban siting near housing, brutal loss capitalization and a strict noise limit. Bring your best steel.',
+    nllRate:5500, llRate:1300, nllMax:65, llMax:340, zLo:12, zHi:14, noiseMax:76, massMax:230 },
+  { u:'Pampas Grid', cc:'Argentina', brief:'Budget-constrained expansion. Lowest evaluated cost wins, and the rates favor lean capex.',
+    nllRate:4000, llRate:900, nllMax:80, llMax:380, zLo:11.5, zHi:14, noiseMax:80, massMax:230 },
+  { u:'Mekong Power', cc:'Vietnam', brief:'Fast-growing 220 kV ring. Standard evaluation with a watchful eye on guarantees.',
+    nllRate:4800, llRate:1150, nllMax:72, llMax:355, zLo:12, zHi:14, noiseMax:79, massMax:215 }
+];
+
+var RIVALS = [
+  { n:'Rheinland Trafowerke', g:'LS',  b:1.62, j:2.6, cool:'ONAF', m:0.14, zOff:0.5 },
+  { n:'Gulf Power Industries', g:'HIB', b:1.72, j:3.1, cool:'ONAF', m:0.10, zOff:0 },
+  { n:'Shenzhen Volt Works', g:'M4',  b:1.78, j:3.3, cool:'OFAF', m:0.06, zOff:-0.3 }
+];
+
+var RANKS = [
+  { xp:0, n:'Apprentice Winder' }, { xp:500, n:'Megger Operator' }, { xp:1250, n:'Oil Whisperer' },
+  { xp:2500, n:'Buchholz Sage' }, { xp:5000, n:'Duval Master' }
+];
+
+function store(k,v){ try{ if(v===undefined) return JSON.parse(localStorage.getItem('tb_'+k)); localStorage.setItem('tb_'+k, JSON.stringify(v)); }catch(e){ return null; } }
+function isoWeek(d){ d=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())); var day=d.getUTCDay()||7; d.setUTCDate(d.getUTCDate()+4-day); var y0=new Date(Date.UTC(d.getUTCFullYear(),0,1)); return Math.ceil((((d-y0)/864e5)+1)/7); }
+function mulberry32(a){ return function(){ a|=0; a=(a+0x6D2B79F5)|0; var t=Math.imul(a^(a>>>15),1|a); t=(t+Math.imul(t^(t>>>7),61|t))^t; return ((t^(t>>>14))>>>0)/4294967296; }; }
+function fmtM(x){ return '$'+(x/1e6).toFixed(3)+'M'; }
+function fmtK(x){ return '$'+Math.round(x/1000).toLocaleString()+'k'; }
+
+var WEEK = isoWeek(new Date());
+var SPEC = TENDERS[WEEK % TENDERS.length];
+var rng = mulberry32(WEEK*2654435761);
+var CU_USD = 21*(0.9+0.2*rng());
+
+function engine(d, spec){
+  var coreMass = 45*(1.7/d.b);
+  var w = GRADES[d.g].w * Math.pow(d.b/1.7, 2.6);
+  var nll = coreMass*w*1.15;
+  var cuMass = 24*(3/d.j);
+  var stray = 0.10 + Math.max(0, d.z-12)*0.012;
+  var ll = 290*(d.j/3)*(1+stray);
+  var aux = COOL[d.cool].aux;
+  var noise = 62 + 45*(d.b-1.5);
+  var ship = 1.9*(coreMass+cuMass) + 38 + COOL[d.cool].mass;
+  var coreCost = coreMass*1000*GRADES[d.g].usd*1.6;
+  var cuCost = cuMass*1000*CU_USD;
+  var materials = 1450000 + COOL[d.cool].price + coreCost + cuCost;
+  var price = materials*(1+d.m);
+  var evald = price + spec.nllRate*nll + spec.llRate*(ll+aux);
+  var gates = [
+    { n:'NLL ≤ '+spec.nllMax+' kW', ok: nll<=spec.nllMax },
+    { n:'LL ≤ '+spec.llMax+' kW', ok: ll<=spec.llMax },
+    { n:'Z in '+spec.zLo+'–'+spec.zHi+'%', ok: d.z>=spec.zLo && d.z<=spec.zHi },
+    { n:'Noise ≤ '+spec.noiseMax+' dB(A)', ok: noise<=spec.noiseMax },
+    { n:'Mass ≤ '+spec.massMax+' t', ok: ship<=spec.massMax },
+    { n:'Hot-spot (J ≤ '+COOL[d.cool].maxJ+' for '+COOL[d.cool].n+')', ok: d.j<=COOL[d.cool].maxJ }
+  ];
+  var pass = gates.every(function(g){ return g.ok; });
+  return { nll:nll, ll:ll, aux:aux, noise:noise, ship:ship, price:price, materials:materials,
+           profit:price-materials, evald:evald, gates:gates, pass:pass };
+}
+
+function rivalBids(spec){
+  var r2 = mulberry32(WEEK*97+13);
+  return RIVALS.map(function(rv){
+    var zMid = (spec.zLo+spec.zHi)/2;
+    var d = { g:rv.g,
+      b: rv.b + (r2()-0.5)*0.06,
+      j: rv.j + (r2()-0.5)*0.30,
+      cool: rv.cool,
+      z: Math.min(spec.zHi, Math.max(spec.zLo, zMid+rv.zOff)),
+      m: rv.m + (r2()-0.5)*0.04 };
+    d.j = Math.min(d.j, COOL[d.cool].maxJ);
+    var e = engine(d, spec);
+    return { name:rv.n, d:d, e:e };
+  });
+}
+
+var player = { g:'HIB', b:1.72, j:3.0, cool:'ONAF', z:13, m:0.10 };
+var xp = store('xp')||0;
+var profit = store('ddprofit')||0;
+var submitted = store('ddweek')===WEEK;
+
+function rankFor(x){ var r=RANKS[0]; for(var i=0;i<RANKS.length;i++){ if(x>=RANKS[i].xp) r=RANKS[i]; } return r; }
+function chips(){
+  document.getElementById('chip-xp').textContent = xp.toLocaleString();
+  document.getElementById('chip-rank').textContent = rankFor(xp).n;
+  document.getElementById('chip-profit').textContent = '$'+Math.round(profit).toLocaleString();
+}
+
+function renderSpec(){
+  document.getElementById('spec-tag').textContent = 'TENDER #'+WEEK+'-100 · CLOSES SUNDAY 23:59';
+  document.getElementById('spec-utility').textContent = SPEC.u+' · '+SPEC.cc;
+  document.getElementById('spec-brief').textContent = SPEC.brief;
+  document.getElementById('sp-z').textContent = SPEC.zLo+' – '+SPEC.zHi+' %';
+  document.getElementById('sp-nll').textContent = SPEC.nllMax+' kW';
+  document.getElementById('sp-ll').textContent = SPEC.llMax+' kW';
+  document.getElementById('sp-noise').textContent = SPEC.noiseMax+' dB(A)';
+  document.getElementById('sp-mass').textContent = SPEC.massMax+' t';
+  document.getElementById('sp-nllrate').textContent = '$'+SPEC.nllRate.toLocaleString()+'/kW';
+  document.getElementById('sp-llrate').textContent = '$'+SPEC.llRate.toLocaleString()+'/kW';
+  document.getElementById('sp-cu').textContent = '$'+(CU_USD/1.5).toFixed(2).replace('.',',')+'/kg LME-eq';
+}
+
+function refresh(){
+  var e = engine(player, SPEC);
+  document.getElementById('v-b').textContent = player.b.toFixed(2)+' T';
+  document.getElementById('v-j').textContent = player.j.toFixed(2)+' A/mm²';
+  document.getElementById('v-z').textContent = player.z.toFixed(2)+' %';
+  document.getElementById('v-m').textContent = (player.m*100).toFixed(1)+' %';
+  document.getElementById('ro-price').textContent = fmtM(e.price);
+  document.getElementById('ro-nll').textContent = e.nll.toFixed(1)+' kW';
+  document.getElementById('ro-ll').textContent = (e.ll+e.aux).toFixed(0)+' kW';
+  document.getElementById('ro-noise').textContent = e.noise.toFixed(1)+' dB';
+  document.getElementById('ro-mass').textContent = e.ship.toFixed(0)+' t';
+  document.getElementById('ro-profit').textContent = fmtK(e.profit);
+  document.getElementById('ro-eval').textContent = fmtM(e.evald);
+  document.getElementById('ro-nll-box').className = 'ro'+(e.gates[0].ok?'':' bad');
+  document.getElementById('ro-ll-box').className = 'ro'+(e.gates[1].ok?'':' bad');
+  document.getElementById('ro-noise-box').className = 'ro'+(e.gates[3].ok?'':' bad');
+  document.getElementById('ro-mass-box').className = 'ro'+(e.gates[4].ok?'':' bad');
+  var nllCap = SPEC.nllRate*e.nll, llCap = SPEC.llRate*(e.ll+e.aux);
+  var tot = e.price+nllCap+llCap;
+  document.getElementById('evalbar').innerHTML =
+    '<div style="width:'+(100*e.price/tot)+'%;background:#14253d"></div>'+
+    '<div style="width:'+(100*nllCap/tot)+'%;background:#d48806"></div>'+
+    '<div style="width:'+(100*llCap/tot)+'%;background:#f5a623"></div>';
+  var g=document.getElementById('gates'); g.innerHTML='';
+  e.gates.forEach(function(gt){
+    var s=document.createElement('span'); s.className='gate '+(gt.ok?'ok':'fail');
+    s.textContent=(gt.ok?'✓ ':'✗ ')+gt.n; g.appendChild(s);
+  });
+  document.getElementById('btn-submit').textContent = submitted ? 'Run Lab Bid (no XP)' : 'Submit Sealed Bid';
+  document.getElementById('lab-note').textContent = submitted
+    ? 'This week\'s scored bid is in — lab mode lets you keep experimenting against the same rivals.'
+    : 'One scored submission per week — after that, the bench stays open in lab mode.';
+}
+
+function openBids(scored){
+  var e = engine(player, SPEC);
+  var rivals = rivalBids(SPEC);
+  var all = rivals.map(function(r){ return { name:r.name, e:r.e, you:false }; });
+  all.push({ name:'You', e:e, you:true });
+  var compliant = all.filter(function(b){ return b.e.pass; });
+  compliant.sort(function(a,b){ return a.e.evald-b.e.evald; });
+  var winner = compliant.length? compliant[0] : null;
+  all.sort(function(a,b){
+    if(a.e.pass!==b.e.pass) return a.e.pass? -1:1;
+    return a.e.evald-b.e.evald;
+  });
+  var tb=document.getElementById('res-body'); tb.innerHTML='';
+  all.forEach(function(b){
+    var tr=document.createElement('tr');
+    if(b.you) tr.className='you';
+    if(winner && b===winner) tr.className+=' winner';
+    tr.innerHTML='<td>'+b.name+'</td><td>'+fmtM(b.e.price)+'</td><td>'+b.e.nll.toFixed(1)+' kW</td><td>'+(b.e.ll+b.e.aux).toFixed(0)+' kW</td><td><b>'+fmtM(b.e.evald)+'</b></td><td>'+(b.e.pass?'Compliant':'<span class="dq">DISQUALIFIED</span>')+'</td>';
+    tb.appendChild(tr);
+  });
+  document.getElementById('res-utility').textContent = SPEC.u;
+  document.getElementById('results').style.display='block';
+  var ban=document.getElementById('res-banner');
+  var youWin = winner && winner.you;
+  var gain=0, profitGain=0;
+  if(scored){
+    if(!e.pass){ gain=25; }
+    else if(youWin){ gain=300; profitGain=e.profit; }
+    else { gain=100; }
+    xp+=gain; store('xp',xp);
+    if(profitGain){ profit+=profitGain; store('ddprofit',profit); }
+    store('ddweek',WEEK); submitted=true;
+  }
+  if(!e.pass){
+    var fails=e.gates.filter(function(g){return !g.ok;}).map(function(g){return g.n;}).join(', ');
+    ban.className='banner dq';
+    ban.innerHTML='<b>Disqualified at design review.</b> Failed: '+fails+'. The utility never even opened your price envelope.'+(scored?' <span class="xp">+'+gain+' XP</span>':'');
+  } else if(youWin){
+    var margin = compliant.length>1 ? compliant[1].e.evald-e.evald : 0;
+    ban.className='banner win';
+    ban.innerHTML='<b>Contract awarded — you win the tender'+(margin?' by '+fmtK(margin):'')+'.</b> Booked profit: <b>'+fmtK(e.profit)+'</b>. '+(compliant.length>1? 'Runner-up: '+compliant[1].name+'.':'')+(scored?' <span class="xp">+'+gain+' XP</span>':' (lab mode — not scored)');
+  } else {
+    var gap = e.evald-winner.e.evald;
+    ban.className='banner lose';
+    ban.innerHTML='<b>'+winner.name+' takes it.</b> You were compliant but '+fmtK(gap)+' high on evaluated cost. '+(e.profit/e.materials>0.11?'Your margin did the damage — or their losses were just leaner.':'Look at where the amber sits in your cost bar.')+(scored?' <span class="xp">+'+gain+' XP</span>':' (lab mode — not scored)');
+  }
+  chips();
+  refresh();
+}
+
+document.getElementById('seg-grade').addEventListener('click', function(ev){
+  var b=ev.target.closest('button'); if(!b) return;
+  this.querySelectorAll('button').forEach(function(x){x.classList.remove('sel');});
+  b.classList.add('sel'); player.g=b.dataset.g; refresh();
+});
+document.getElementById('seg-cool').addEventListener('click', function(ev){
+  var b=ev.target.closest('button'); if(!b) return;
+  this.querySelectorAll('button').forEach(function(x){x.classList.remove('sel');});
+  b.classList.add('sel'); player.cool=b.dataset.c; refresh();
+});
+document.getElementById('sl-b').addEventListener('input', function(){ player.b=parseFloat(this.value); refresh(); });
+document.getElementById('sl-j').addEventListener('input', function(){ player.j=parseFloat(this.value); refresh(); });
+document.getElementById('sl-z').addEventListener('input', function(){ player.z=parseFloat(this.value); refresh(); });
+document.getElementById('sl-m').addEventListener('input', function(){ player.m=parseFloat(this.value)/100; refresh(); });
+document.getElementById('btn-submit').addEventListener('click', function(){ openBids(!submitted); });
+
+renderSpec(); chips(); refresh();
+})();
+</script>
+
+</body>
+</html>

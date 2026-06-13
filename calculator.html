@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transformer Design Calculator — Distribution | Power | Cast Resin</title>
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #f4f6f9; --card: #ffffff; --ink: #1a2332; --muted: #5b6b7f;
+    --accent: #0e5fa8; --accent2: #0a8f6c; --warn: #b4500a; --bad: #c0262d;
+    --line: #dde4ec; --chip: #eaf1f8; --mono: "SF Mono", Consolas, Menlo, monospace;
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink);
+         font:14px/1.5 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  header { background:linear-gradient(135deg,#0d2c4f 0%,#0e5fa8 100%); color:#fff; padding:18px 28px; }
+  header h1 { margin:0; font-size:21px; font-weight:650; }
+  header p { margin:4px 0 0; opacity:.85; font-size:13px; }
+  .wrap { max-width:1280px; margin:0 auto; padding:18px 22px 60px; }
+  .cols { display:grid; grid-template-columns:330px 1fr; gap:18px; align-items:start; }
+  @media (max-width:980px){ .cols{grid-template-columns:1fr;} }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px;
+          padding:16px 18px; margin-bottom:16px; box-shadow:0 1px 3px rgba(20,40,70,.06); }
+  .card h2 { margin:0 0 10px; font-size:15px; color:var(--accent);
+             border-bottom:2px solid var(--chip); padding-bottom:6px; }
+  .card h2 .tag { float:right; font-size:11px; color:var(--muted); font-weight:400; }
+  label { display:block; font-size:12px; color:var(--muted); margin:9px 0 2px; font-weight:600; }
+  input, select { width:100%; padding:7px 9px; border:1px solid var(--line); border-radius:6px;
+                  font-size:14px; background:#fff; color:var(--ink); }
+  input:focus, select:focus { outline:2px solid #9cc3e8; border-color:var(--accent); }
+  .row2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .row3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+  .typesel { display:flex; gap:6px; margin-bottom:6px; }
+  .typesel button { flex:1; padding:9px 4px; border:1.5px solid var(--line); background:#fff;
+                    border-radius:8px; cursor:pointer; font-size:12.5px; font-weight:600; color:var(--muted); }
+  .typesel button.on { background:var(--accent); border-color:var(--accent); color:#fff; }
+  details { margin-top:10px; }
+  summary { cursor:pointer; font-size:12.5px; color:var(--accent); font-weight:600; }
+  table.res { width:100%; border-collapse:collapse; font-size:13.5px; }
+  table.res td { padding:5px 8px; border-bottom:1px solid #eef2f7; }
+  table.res td:first-child { color:var(--muted); width:58%; }
+  table.res td:last-child { font-family:var(--mono); text-align:right; font-weight:600; }
+  table.res tr.hl td { background:#f2f8f3; }
+  table.res tr.warnrow td:last-child { color:var(--warn); }
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media (max-width:1180px){ .grid2{grid-template-columns:1fr;} }
+  .kpis { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px; margin-bottom:16px; }
+  .kpi { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:12px 14px; }
+  .kpi .v { font-size:20px; font-weight:700; font-family:var(--mono); color:var(--accent); }
+  .kpi .l { font-size:11px; color:var(--muted); margin-top:2px; }
+  .note { font-size:12px; color:var(--muted); background:var(--chip); border-radius:8px;
+          padding:10px 12px; margin-top:10px; }
+  .flag { font-size:12px; border-radius:8px; padding:8px 12px; margin-top:8px; }
+  .flag.ok { background:#e8f5ee; color:#0a6e44; }
+  .flag.warn { background:#fdf1e4; color:var(--warn); }
+  .flag.bad { background:#fbeaea; color:var(--bad); }
+  svg text { font:10.5px var(--mono); fill:#43526b; }
+  .btnrow { display:flex; gap:8px; margin-top:12px; }
+  .btnrow button { flex:1; padding:10px; border:0; border-radius:8px; cursor:pointer; font-weight:650; font-size:13px; }
+  .b1 { background:var(--accent); color:#fff; }
+  .b2 { background:var(--chip); color:var(--accent); }
+  footer { margin-top:26px; font-size:11.5px; color:var(--muted); line-height:1.6; }
+  @media print {
+    body{background:#fff;} header{-webkit-print-color-adjust:exact;}
+    .inputs-col{display:none;} .cols{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+<div style="background:#0d1b2e;color:#fff;padding:10px 18px;font-family:'Segoe UI',system-ui,sans-serif;display:flex;align-items:center;gap:16px;font-size:.9rem;flex-wrap:wrap">
+  <a href="index.html" style="color:#fff;font-weight:800;text-decoration:none;font-size:1.05rem;letter-spacing:-.3px">Transformer<span style="color:#f5a623">Insider</span></a>
+  <a href="learn.html" style="color:#cbd5e1;text-decoration:none;margin-left:auto">&#8592; Learn hub</a>
+</div>
+<header>
+  <h1>Transformer Design &amp; Calculation Workbench</h1>
+  <p id="subt">Distribution (oil) · Power (oil) · Cast Resin (dry) — first-cut electromagnetic, performance &amp; thermal design to IEC 60076</p>
+</header>
+<div class="wrap">
+  <div class="cols">
+    <!-- ============ INPUTS ============ -->
+    <div class="inputs-col">
+      <div class="card">
+        <h2>1 · Specification</h2>
+        <div class="typesel" id="typesel">
+          <button data-t="dist" class="on">Distribution<br>(oil)</button>
+          <button data-t="power">Power<br>(oil)</button>
+          <button data-t="cast">Cast Resin<br>(dry)</button>
+        </div>
+        <label>Design standard</label>
+        <select id="std">
+          <option value="iec">IEC 60076 (international)</option>
+          <option value="ieee">IEEE / ANSI C57.12 (60 Hz)</option>
+          <option value="doe">US DOE 10 CFR 431 / NEMA (60 Hz)</option>
+          <option value="gso">GSO / SASO — GCC, 50 °C ambient</option>
+          <option value="is">IS 2026 / IS 1180 (India)</option>
+          <option value="en">EN 50588-1 / EU 548 Eco-design</option>
+          <option value="gb">GB/T 1094 + GB 20052 (China)</option>
+          <option value="gost">GOST 11677 / R 52719 (CIS)</option>
+          <option value="jis">JIS C 4304 (Japan, Top Runner)</option>
+          <option value="as">AS/NZS 60076 + MEPS (AU/NZ)</option>
+        </select>
+        <div class="row2">
+          <div><label id="ratlbl">Rating (kVA)</label><input id="skva" type="number" value="1000"></div>
+          <div><label>Frequency (Hz)</label><select id="freq"><option>50</option><option>60</option></select></div>
+        </div>
+        <div class="row2">
+          <div><label>HV voltage (V, line)</label><input id="hv" type="number" value="11000"></div>
+          <div><label>LV voltage (V, line)</label><input id="lv" type="number" value="433"></div>
+        </div>
+        <div class="row2">
+          <div><label>Vector group</label>
+            <select id="vec">
+              <option>Dyn11</option><option>Dyn1</option><option>Yyn0</option>
+              <option>YNd11</option><option>YNd1</option><option>Dd0</option><option>YNyn0</option>
+            </select></div>
+          <div><label>Target %Z (optional)</label><input id="ztgt" type="number" step="0.05" value="5"></div>
+        </div>
+        <div class="row2">
+          <div><label>Guaranteed NLL (kW, optional)</label><input id="nlltgt" type="number" step="0.05" placeholder="e.g. 1.10"></div>
+          <div style="display:flex;align-items:flex-end;padding-bottom:6px">
+            <label style="display:flex;gap:7px;align-items:center;margin:0;cursor:pointer">
+              <input id="autogr" type="checkbox" checked style="width:auto">Auto-select core grade from NLL</label></div>
+        </div>
+        <div class="row2">
+          <div><label>Tap range HV (±%)</label><input id="tap" type="number" step="0.5" value="5"></div>
+          <div><label>Cooling</label><select id="cool">
+            <option value="ONAN">ONAN</option><option value="ONAF">ONAF</option>
+            <option value="AN">AN (dry)</option><option value="AF">AF (dry)</option></select></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>2 · Design choices <span class="tag">type defaults auto-fill</span></h2>
+        <div class="row2">
+          <div><label>Core constant K (Et=K√S)</label><input id="K" type="number" step="0.01" value="0.45"></div>
+          <div><label>Flux density Bm (T)</label><input id="bm" type="number" step="0.01" value="1.70"></div>
+        </div>
+        <div class="row2">
+          <div><label>δ LV (A/mm²)</label><input id="dlv" type="number" step="0.05" value="3.0"></div>
+          <div><label>δ HV (A/mm²)</label><input id="dhv" type="number" step="0.05" value="3.2"></div>
+        </div>
+        <div class="row2">
+          <div><label>Winding height ratio h/d</label><input id="hr" type="number" step="0.05" value="2.0"></div>
+          <div><label>Stray loss (%)</label><input id="stray" type="number" step="1" value="10"></div>
+        </div>
+        <details>
+          <summary>Advanced (clearances, materials)</summary>
+          <div class="row3">
+            <div><label>Core–LV gap (mm)</label><input id="gclv" type="number" step="1"></div>
+            <div><label>HV–LV gap (mm)</label><input id="glvhv" type="number" step="1"></div>
+            <div><label>Phase gap (mm)</label><input id="gph" type="number" step="1"></div>
+          </div>
+          <div class="row2">
+            <div><label>End clearance (mm)</label><input id="gend" type="number" step="5"></div>
+            <div><label>Core grade (see §5 comparison)</label><select id="grade">
+              <option>M150-35S</option><option selected>M140-30S</option><option>M130-27S</option>
+              <option>M120-23S</option><option>M105-30P</option><option>M103-27P</option>
+              <option>M090-23P</option><option>27ZDKH95</option><option>23ZDKH85</option>
+              <option>2605SA1</option></select></div>
+          </div>
+          <div class="note">Leave clearance fields blank to use IEC-class empirical values (power class includes tap-winding allowance in the HV–LV main gap).</div>
+        </details>
+        <div class="btnrow">
+          <button class="b1" onclick="calc()">Calculate</button>
+          <button class="b2" onclick="downloadPDF()">Download PDF</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 id="qrefh">IEC 60076 quick reference</h2>
+        <table class="res" id="qref"></table>
+      </div>
+    </div>
+
+    <!-- ============ RESULTS ============ -->
+    <div>
+      <div class="kpis" id="kpis"></div>
+      <div class="grid2">
+        <div class="card"><h2>3 · Core &amp; magnetic circuit</h2><table class="res" id="t_core"></table></div>
+        <div class="card"><h2>4 · Windings &amp; conductors</h2><table class="res" id="t_wind"></table></div>
+        <div class="card"><h2>5 · Losses &amp; no-load performance</h2><table class="res" id="t_loss"></table>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:12px;flex-wrap:wrap">
+            <span style="font-size:12px;font-weight:700;color:var(--accent)">Core grade comparison</span>
+            <label style="margin:0;font-size:11.5px;display:flex;align-items:center;gap:6px">NLL capitalisation (USD/kW)
+              <input id="caprate" type="number" value="8000" step="500" style="width:90px;padding:4px 6px"></label>
+          </div>
+          <div id="gradecmp" style="margin-top:6px"></div></div>
+        <div class="card"><h2>6 · Impedance, regulation &amp; efficiency</h2><table class="res" id="t_perf"></table></div>
+        <div class="card" id="thermcard"><h2>7 · Thermal, tank / enclosure</h2><table class="res" id="t_therm"></table><div id="thermflags"></div></div>
+        <div class="card"><h2>7b · Insulation stress — Weidmann method <span class="tag">cf. Transformerboard III</span></h2><table class="res" id="t_ins"></table><div id="insflags"></div></div>
+        <div class="card"><h2>8 · Weights &amp; materials</h2><table class="res" id="t_wt"></table></div>
+      </div>
+      <div class="card">
+        <h2>9 · Bill of Materials <span class="tag">quantities from design · prices editable</span></h2>
+        <div id="bombox"></div>
+        <div class="btnrow" style="max-width:420px">
+          <button class="b2" onclick="bomXLSX()">Download BOM (Excel .xlsx)</button>
+        </div>
+        <div class="note">Quantities are derived from the calculated design (incl. ~5 % core cutting allowance). Unit prices are <b>indicative supply-only USD values — edit them to your actual quotes</b>; edited prices are kept when the design recalculates. The Excel file contains live formulas (Amount = Qty × Price, auto-summing total) plus a second sheet with the full design data. The BOM is issued in Excel only — not in the PDF report.</div>
+      </div>
+      <div class="card">
+        <h2>10 · Diagrams — cross-section, efficiency, core steps, vector group</h2>
+        <div class="grid2">
+          <div id="sketch"></div>
+          <div id="effcurve"></div>
+          <div id="coresteps"></div>
+          <div id="phasor"></div>
+        </div>
+        <div class="note" id="checks"></div>
+      </div>
+      <div class="card">
+        <h2>11 · Animation — flux path &amp; winding current <span class="tag">schematic · slowed down</span></h2>
+        <div style="display:flex;gap:14px;align-items:center;margin-bottom:8px;flex-wrap:wrap">
+          <button class="b2" id="animbtn" style="padding:7px 16px;border:0;border-radius:8px;cursor:pointer;font-weight:650;font-size:13px">Pause</button>
+          <label style="margin:0;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);font-weight:600">Half-cycle
+            <input id="animspd" type="range" min="0.5" max="6" step="0.5" value="2" style="width:150px">
+            <span id="animspdv">2.0 s</span></label>
+          <span class="note" style="margin:0;padding:6px 10px" id="animcap"></span>
+        </div>
+        <div id="animbox"></div>
+      </div>
+      <footer id="foot">
+        <b>Method &amp; validity.</b> Classic core-type design chain: volts/turn E<sub>t</sub>=K√S → net core section A<sub>i</sub>=E<sub>t</sub>/4.44·f·B<sub>m</sub> →
+        turns from phase voltages → conductors from current density → leakage reactance by the ampere-turn / duct
+        formula with Rogowski correction → losses from material weights → thermal from dissipating surfaces.
+        Results are a <b>first-cut (tender/estimation grade) design</b>, typically within ±10–15 % of an optimised works design.
+        Final designs require manufacturer optimisation: conductor standardisation, tap winding detail, short-circuit force
+        withstand (IEC 60076-5), insulation coordination (60076-3), sound level (60076-10) and eco-design loss limits
+        (EU 548/2014 Tier 2 / GSO equivalents) where applicable.
+      </footer>
+    </div>
+  </div>
+</div>
+
+<script>
+"use strict";
+const MU0=4e-7*Math.PI, RHO75=0.0211, RHO120=0.0244, DCU=8890, DFE=7650, DOIL=890;
+const $=id=>document.getElementById(id);
+let TTYPE="dist", touched={}, LAST=null, CURSTD="iec", GOVR=null;
+
+/* Standards: reference temps for losses, rise limits, tolerances, cooling target */
+const STDS={
+ iec:{name:"IEC 60076", freq:50, oilRef:75, dryRef:120, meanOil:50,
+   oilRise:"60 K top-oil / 65 K wdg avg", dryRise:"100 K (class F, 60076-11)",
+   amb:"40 °C max / 30 °C avg", tolShort:"+15 % each loss / +10 % total",
+   tol:[["Tolerance — total losses","+10 %"],["Tolerance — each loss (NLL/LL)","+15 %"],
+        ["Tolerance — impedance (Z ≥ 10 %)","±7.5 %"],["Tolerance — impedance (Z < 10 %)","±10 %"],
+        ["Tolerance — no-load current","+30 %"],["Oil: top-oil / winding rise","60 K / 65 K"],
+        ["Cast resin class F rise","100 K"]]},
+ ieee:{name:"IEEE C57.12.00/.01", freq:60, oilRef:85, dryRef:135, meanOil:55,
+   oilRise:"65 K wdg avg / 80 K hot-spot", dryRise:"115 K rise (220 class)",
+   amb:"40 °C max / 30 °C avg", tolShort:"+10 % NLL / +6 % total",
+   tol:[["Tolerance — no-load loss","+10 %"],["Tolerance — total losses","+6 %"],
+        ["Tolerance — impedance (2-wdg)","±7.5 %"],["Tolerance — impedance (3-wdg)","±10 %"],
+        ["Loss reference temp (rise + 20 K)","85 °C oil / 135 °C dry"],
+        ["Oil winding rise / hot-spot","65 K / 80 K"]]},
+ gso:{name:"GSO / SASO (IEC-based)", freq:60, oilRef:75, dryRef:120, meanOil:40,
+   oilRise:"50 K top-oil / 55 K wdg (50 °C ambient)", dryRise:"90 K (50 °C ambient)",
+   amb:"50 °C max (GCC)", tolShort:"+15 % each loss / +10 % total",
+   tol:[["Tolerance — total losses","+10 %"],["Tolerance — each loss (NLL/LL)","+15 %"],
+        ["Tolerance — impedance","±7.5 / ±10 %"],["Ambient (GCC)","50 °C max"],
+        ["Oil: top-oil / winding rise","50 K / 55 K"],["Derated rises for 50 °C ambient","−10 K vs IEC"]]},
+ is:{name:"IS 2026 / IS 1180", freq:50, oilRef:75, dryRef:120, meanOil:35,
+   oilRise:"40 K top-oil / 45 K wdg (IS 1180 dist.)", dryRise:"100 K (class F)",
+   amb:"50 °C max (India)", tolShort:"+15 % each loss / +10 % total; IS 1180 losses capped",
+   tol:[["Tolerance — total losses","+10 %"],["Tolerance — each loss (NLL/LL)","+15 %"],
+        ["Tolerance — impedance","±7.5 / ±10 %"],["IS 1180 dist. rise (oil/wdg)","40 K / 45 K"],
+        ["IS 1180 star-rated max losses","BEE levels 1–5"],["Ambient","50 °C max"]]},
+ en:{name:"EN 50588-1 / EU 548", freq:50, oilRef:75, dryRef:120, meanOil:50,
+   oilRise:"60 K top-oil / 65 K wdg avg", dryRise:"100 K (class F)",
+   amb:"40 °C max / 30 °C avg", tolShort:"no plus tolerance on Tier-2 limits",
+   tol:[["Eco-design Tier 2 (since 7/2021)","mandatory max NLL & LL"],
+        ["e.g. 1000 kVA oil Tier 2","NLL ≤ 0.693 kW · LL ≤ 7.6 kW (Ck/Ak)"],
+        ["Losses above limits","unit may not be placed on EU market"],
+        ["PEI (power txf > 3.15 MVA)","minimum peak efficiency index"],
+        ["Tolerances","per IEC 60076-1"],["Oil rises","60 K / 65 K"]]},
+ doe:{name:"US DOE 10 CFR 431 / NEMA", freq:60, oilRef:85, dryRef:135, meanOil:55,
+   oilRise:"65 K wdg avg / 80 K hot-spot", dryRise:"115 K rise (220 class)",
+   amb:"40 °C max / 30 °C avg", tolShort:"+10 % NLL / +6 % total (IEEE); DOE efficiency floor",
+   tol:[["DOE 2016 efficiency floor","minimum η at 50 % load, upf"],
+        ["Applies to","distribution transformers sold in USA"],
+        ["Compliance check","compare η@50 % vs 10 CFR 431 table"],
+        ["Loss reference (rise + 20 K)","85 °C oil / 135 °C dry"],
+        ["Tolerances","per IEEE C57.12.00"]]},
+ gb:{name:"GB/T 1094 + GB 20052", freq:50, oilRef:75, dryRef:120, meanOil:50,
+   oilRise:"60 K top-oil / 65 K wdg avg", dryRise:"100 K (class F)",
+   amb:"40 °C max", tolShort:"+15 % each loss / +10 % total; GB 20052 grades",
+   tol:[["GB/T 1094 series","aligned with IEC 60076"],
+        ["GB 20052 efficiency grades","Grade 1 (best) – Grade 3 (minimum)"],
+        ["Grade 3","mandatory market minimum in China"],
+        ["Common types","S11/S13/S15 oil · SCB cast resin"],
+        ["Oil rises","60 K / 65 K"]]},
+ gost:{name:"GOST 11677 / R 52719", freq:50, oilRef:75, dryRef:120, meanOil:50,
+   oilRise:"60 K top-oil / 65 K wdg avg", dryRise:"100 K (class F)",
+   amb:"40 °C max", tolShort:"≈ IEC: +15 % each loss / +10 % total",
+   tol:[["CIS markets (RU, KZ, UZ…)","GOST series"],
+        ["GOST R 52719","largely IEC-harmonised"],
+        ["Climatic versions","U1 / UHL1 (down to −60 °C)"],
+        ["Typical types","TM / TMG oil · TSZ dry"],
+        ["Oil rises","60 K / 65 K"]]},
+ jis:{name:"JIS C 4304 (Japan)", freq:50, oilRef:75, dryRef:120, meanOil:50,
+   oilRise:"60 K top-oil / 65 K wdg avg", dryRise:"100 K (class F)",
+   amb:"40 °C max", tolShort:"per JIS; Top Runner efficiency targets",
+   tol:[["Top Runner programme","mandatory efficiency targets"],
+        ["Frequency","50 Hz (East) / 60 Hz (West Japan)"],
+        ["JIS C 4304/4306","oil distribution / Top Runner 2014"],
+        ["Oil rises","60 K / 65 K"],["Tolerances","≈ IEC"]]},
+ as:{name:"AS/NZS 60076 + MEPS", freq:50, oilRef:75, dryRef:120, meanOil:50,
+   oilRise:"60 K top-oil / 65 K wdg avg", dryRise:"100 K (class F)",
+   amb:"40 °C max", tolShort:"per IEC; MEPS minimum efficiency",
+   tol:[["AS/NZS 60076","IEC-adopted"],
+        ["MEPS (AS 2374.1.2)","minimum efficiency at 50 % load"],
+        ["High-efficiency level","optional HEPS tier"],
+        ["Oil rises","60 K / 65 K"],["Tolerances","per IEC 60076-1"]]}
+};
+function renderRef(){
+  const S=STDS[CURSTD];
+  $("qrefh").textContent=S.name+" quick reference";
+  $("qref").innerHTML=S.tol.map(([k,v])=>`<tr><td>${k}</td><td>${v}</td></tr>`).join("")+
+    `<tr><td>Typical %Z ≤ 630 kVA</td><td>4.0 %</td></tr>
+     <tr><td>Typical %Z 631–2500 kVA</td><td>5.0–6.25 %</td></tr>
+     <tr><td>Typical %Z 132 kV class power</td><td>10–12.5 %</td></tr>
+     <tr><td>Typical %Z 220–400 kV EHV</td><td>12–16 %</td></tr>`;
+  $("subt").textContent=`Distribution (oil) · Power (oil) · Cast Resin (dry) — first-cut electromagnetic, performance & thermal design to ${S.name}`;
+}
+
+const DEFAULTS={
+  dist : {K:0.45, bm:1.70, dlv:3.0, dhv:3.2, hr:2.0, stray:10, ztgt:5,    cool:"ONAN"},
+  power: {K:0.60, bm:1.70, dlv:3.2, dhv:3.4, hr:2.0, stray:15, ztgt:12.5, cool:"ONAN"},
+  cast : {K:0.45, bm:1.55, dlv:1.8, dhv:2.2, hr:2.6, stray:10, ztgt:6.25, cool:"AN"}
+};
+const PRESET={ dist:{skva:1000,hv:11000,lv:433,vec:"Dyn11",tap:5},
+               power:{skva:50,hv:132000,lv:33000,vec:"YNd11",tap:10},   // power rating in MVA
+               cast:{skva:1600,hv:11000,lv:433,vec:"Dyn11",tap:5} };
+
+/* ===== Core steel grade database (EN 10107 / JIS style, 50 Hz) =====
+   t = thickness mm · w17 = max specific loss W/kg @1.7 T · sf = stacking factor
+   bf = building factor · p = indicative $/kg · maxB = practical design ceiling */
+const GRADES={
+ "M150-35S":{t:0.35,w17:1.50,sf:0.975,bf:1.22,p:2.45,maxB:1.80,fam:"CRGO conventional (M6)"},
+ "M140-30S":{t:0.30,w17:1.40,sf:0.970,bf:1.20,p:2.55,maxB:1.80,fam:"CRGO conventional (M5)"},
+ "M130-27S":{t:0.27,w17:1.30,sf:0.965,bf:1.20,p:2.70,maxB:1.80,fam:"CRGO conventional (M4)"},
+ "M120-23S":{t:0.23,w17:1.20,sf:0.960,bf:1.18,p:2.85,maxB:1.80,fam:"CRGO conventional (M3)"},
+ "M105-30P":{t:0.30,w17:1.05,sf:0.970,bf:1.15,p:2.95,maxB:1.88,fam:"Hi-B"},
+ "M103-27P":{t:0.27,w17:1.03,sf:0.965,bf:1.15,p:3.05,maxB:1.88,fam:"Hi-B"},
+ "M090-23P":{t:0.23,w17:0.90,sf:0.960,bf:1.13,p:3.25,maxB:1.88,fam:"Hi-B"},
+ "27ZDKH95":{t:0.27,w17:0.95,sf:0.965,bf:1.12,p:3.20,maxB:1.88,fam:"laser domain-refined"},
+ "23ZDKH85":{t:0.23,w17:0.85,sf:0.960,bf:1.12,p:3.40,maxB:1.88,fam:"laser domain-refined"},
+ "2605SA1": {t:0.025,w17:0.74,sf:0.86,bf:1.40,p:3.60,maxB:1.35,fam:"amorphous metal"}
+};
+function gradeW(g,B){ // specific loss W/kg at flux density B
+  const G=GRADES[g]||GRADES["M140-30S"];
+  if(g==="2605SA1") return 0.27*Math.pow(B/1.35,1.9);          // amorphous, ~0.2 W/kg @1.3 T
+  const ex=G.fam.startsWith("CRGO")?2.2:2.0;                    // Hi-B/scribed have a flatter knee
+  return G.w17*Math.pow(B/1.7,ex);
+}
+function coreWpk(B){ // legacy CRGO M4/M5 W/kg @50Hz
+  const t=[[1.2,.52],[1.3,.62],[1.4,.74],[1.5,.88],[1.6,1.03],[1.65,1.16],[1.7,1.28],[1.75,1.45],[1.8,1.70]];
+  if(B<=t[0][0])return t[0][1];
+  for(let i=1;i<t.length;i++) if(B<=t[i][0]){const[a,w1]=t[i-1],[b,w2]=t[i];return w1+(w2-w1)*(B-a)/(b-a);}
+  return t[t.length-1][1];
+}
+function clearances(kv,dry,power){
+  if(dry){ if(kv<=12)return[20,25,30,60]; if(kv<=24)return[25,35,45,80]; return[30,50,60,100]; }
+  if(!power){ if(kv<=12)return[12,14,14,45]; if(kv<=24)return[14,18,18,60];
+              if(kv<=36)return[16,22,22,75]; return[20,34,34,120]; }
+  if(kv<=36)return[18,40,40,120]; if(kv<=72.5)return[25,70,60,180];
+  if(kv<=145)return[30,100,80,250]; if(kv<=245)return[40,140,110,350];
+  if(kv<=300)return[50,170,130,450]; if(kv<=420)return[60,220,170,600];
+  if(kv<=550)return[70,280,220,800]; return[90,380,300,1100];
+}
+function bilOf(kv){ // IEC 60076-3: rated LI (BIL) / AC withstand, kV
+  const t=[[3.6,40,10],[7.2,60,20],[12,75,28],[17.5,95,38],[24,125,50],[36,170,70],
+    [52,250,95],[72.5,325,140],[100,450,185],[123,550,230],[145,650,275],[170,750,325],
+    [245,1050,460],[300,1175,510],[362,1300,570],[420,1425,630],[550,1550,680],[800,2100,975]];
+  for(const[u,li,ac]of t) if(kv<=u) return li+" / "+ac;
+  return "2100 / 975";
+}
+function parseVec(v){const m=v.match(/^([A-Z]+)([a-z]+)/);return{hvDelta:m?m[1][0]==="D":true, lvStar:m?m[2][0]==="y":true};}
+
+function design(){
+  const dry=TTYPE==="cast", power=TTYPE==="power";
+  const Sin=+$("skva").value;
+  const S=power?Sin*1000:Sin;            // power transformers rated in MVA; engine works in kVA
+  const f=+$("freq").value, hv=+$("hv").value, lv=+$("lv").value;
+  const vec=$("vec").value, K=+$("K").value; let Bm=+$("bm").value;
+  const dlv=+$("dlv").value, dhv=+$("dhv").value, hr=+$("hr").value;
+  const stray=+$("stray").value/100, ztgt=+$("ztgt").value||0, tap=+$("tap").value||0;
+  const gkey=GOVR||String($("grade").value), G=GRADES[gkey]||GRADES["M140-30S"];
+  const kv=hv/1000;
+  const STDc=STDS[CURSTD], refT=dry?STDc.dryRef:STDc.oilRef;
+  const rho=0.0211*(235+refT)/310;  // Cu resistivity corrected to standard's reference temp
+  const cdef=clearances(kv,dry,power);
+  const gclv=(+$("gclv").value||cdef[0])/1000, glvhv=(+$("glvhv").value||cdef[1])/1000,
+        gph =(+$("gph").value ||cdef[2])/1000, gend=(+$("gend").value||cdef[3])/1000;
+
+  const BmIn=Bm; Bm=Math.min(Bm,G.maxB);   // amorphous & grade ceilings
+  let Et=K*Math.sqrt(S);
+  const {hvDelta,lvStar}=parseVec(vec);
+  const Vlvp=lvStar?lv/Math.sqrt(3):lv, Vhvp=hvDelta?hv:hv/Math.sqrt(3);
+  const Tlv=Math.max(1,Math.round(Vlvp/Et)); Et=Vlvp/Tlv;
+  const Ai=Et/(4.44*f*Bm), Ag=Ai/G.sf, d=Math.sqrt(Ag/0.66);
+  const Thv=Math.round(Tlv*Vhvp/Vlvp), ThvMax=Math.round(Thv*(1+tap/100));
+  const Phi=Bm*Ai;
+
+  const IlvL=S*1e3/(Math.sqrt(3)*lv), Ilv=lvStar?IlvL:IlvL/Math.sqrt(3);
+  const IhvL=S*1e3/(Math.sqrt(3)*hv), Ihv=hvDelta?IhvL/Math.sqrt(3):IhvL;
+  const alv=Ilv/dlv, ahv=Ihv/dhv;
+
+  const h=hr*d, kflv=dry?0.55:0.62, kfhv=dry?0.42:0.50;
+  const blv=Tlv*alv*1e-6/(h*kflv), bhv=Thv*ahv*1e-6/(h*kfhv);
+  const D1=d+2*gclv, D2=D1+2*blv, D3=D2+2*glvhv, D4=D3+2*bhv;
+  const LmtL=Math.PI*(D1+D2)/2, LmtH=Math.PI*(D3+D4)/2, Lmt=Math.PI*(D1+D4)/2;
+  const Hw=h+2*gend, Dcc=D4+gph, Ww=Dcc-d, Aw=Hw*Ww;
+  const Kw=2*(Tlv*alv+Thv*ahv)*1e-6/Aw;
+
+  const Vfe=3*Ai*Hw + Ai*2*(2*Dcc+d), Wfe=Vfe*(gkey==="2605SA1"?7180:DFE);
+  const wpk=gradeW(gkey,Bm);
+  const NLL=Wfe*wpk*G.bf;
+  const i0=Math.max(0.3, dry?1.4:(power?0.5:1.0))*(gkey==="2605SA1"?0.5:1); // % magnetising, empirical
+
+  const WcuL=3*LmtL*Tlv*alv*1e-6*DCU, WcuH=3*LmtH*Thv*ahv*1e-6*DCU, Wcu=WcuL+WcuH;
+  const Rlv=rho*LmtL*Tlv/alv, Rhv=rho*LmtH*Thv/ahv;
+  const Plv=3*Ilv*Ilv*Rlv, Phv=3*Ihv*Ihv*Rhv, LL=(Plv+Phv)*(1+stray);
+
+  const Kr=1-(glvhv+blv+bhv)/(Math.PI*h);
+  const Cx=2*Math.PI*f*MU0*(Ihv*Thv)*Lmt*Kr/(Et*h);
+  const ex=Cx*(glvhv+(blv+bhv)/3), er=LL/(S*1e3), ez=Math.hypot(er,ex);
+  let gReq=null;
+  if(ztgt>0){ const ext=Math.sqrt(Math.max((ztgt/100)**2-er*er,0)); gReq=(ext/Cx-(blv+bhv)/3)*1000; }
+  const Isc=100/(ez*100); // SC current multiple
+
+  const eff=(L,pf)=>{const o=S*1e3*L*pf; return o/(o+NLL+LL*L*L)*100;};
+  const reg=pf=>{const s=Math.sqrt(1-pf*pf);
+    return (er*pf+ex*s)*100+Math.pow((ex*pf-er*s)*100,2)/200;};
+  // kVA load at max efficiency
+  const Lmax=Math.sqrt(NLL/LL);
+
+  const Hfr=Hw+2*1.1*d, Wfr=2*Dcc+D4, Ptot=NLL+LL;
+  const r={S,f,hv,lv,vec,K,Bm,Et,Ai,Ag,d,Phi,Tlv,Thv,ThvMax,Ilv,Ihv,IlvL,IhvL,alv,ahv,dlv,dhv,
+           h,blv,bhv,D1,D2,D3,D4,LmtL,LmtH,Hw,Ww,Dcc,Kw,Wfe,NLL,i0,WcuL,WcuH,Wcu,Plv,Phv,LL,
+           er,ex,ez,gReq,ztgt,Isc,eff,reg,Lmax,Hfr,Wfr,Ptot,dry,power,refT,
+           Sin,isMVA:power,ratStr:fmt(Sin,0)+(power?" MVA":" kVA"),
+           gkey,G,wpk,BmIn,bmCapped:Bm<BmIn,
+           std:STDc,gclv,glvhv,gph,gend,stray,tap,cool:$("cool").value};
+  if(!dry){
+    const xp=power?0.2:0, Lt=Wfr+0.18+xp, Bt=D4+0.16+xp, Ht=Hfr+0.45+(power?0.4:0);
+    const St=2*(Lt+Bt)*Ht, dOil=Ptot/(12.5*St), Sreq=Ptot/(12.5*STDc.meanOil), Srad=Math.max(0,Sreq-St);
+    const Woil=(Lt*Bt*Ht-(Wfe/DFE+Wcu/DCU))*DOIL*0.75;
+    const Wtank=(2*(Lt+Bt)*Ht+Lt*Bt)*0.006*7850;
+    const Wtot=Wfe+Wcu+Woil+Wtank+0.12*(Wfe+Wcu);
+    Object.assign(r,{Lt,Bt,Ht,St,dOil,Sreq,Srad,Woil,Wtank,Wtot});
+  } else {
+    const AsL=Math.PI*(D1+D2)*h*3, AsH=Math.PI*(D3+D4)*h*3;
+    const qlv=Plv*(1+stray/2)/AsL, qhv=Phv*(1+stray/2)/AsH;
+    const Wtot=(Wfe+Wcu)*1.35;
+    Object.assign(r,{qlv,qhv,Wtot});
+  }
+  return r;
+}
+
+const fmt=(v,dp=1)=>Number(v).toLocaleString("en",{maximumFractionDigits:dp,minimumFractionDigits:dp});
+// REC mirrors everything shown on screen so the PDF report stays in sync
+const REC={secs:[],cur:null,checks:"",flag:""};
+const sec=t=>{REC.cur={title:t,rows:[]};REC.secs.push(REC.cur);};
+const strip=s=>String(s).replace(/<[^>]+>/g,"");
+const row=(k,v,cls="")=>{if(REC.cur)REC.cur.rows.push([strip(k),strip(v)]);
+  return `<tr class="${cls}"><td>${k}</td><td>${v}</td></tr>`;};
+
+function calc(){
+  // ---- auto grade selection: cheapest core grade meeting the guaranteed NLL
+  const nllTgt=+($("nlltgt").value||0);
+  let gradeAutoNote="", anyMeets=true;
+  if(nllTgt>0 && $("autogr").checked){
+    let pick=null,bestCost=Infinity;
+    for(const g of Object.keys(GRADES)){
+      GOVR=g; const d2=design(); GOVR=null;
+      const cost=d2.Wfe*1.05*GRADES[g].p;
+      if(d2.NLL/1e3<=nllTgt && cost<bestCost){bestCost=cost;pick=g;}
+    }
+    if(pick){ $("grade").value=pick; gradeAutoNote="auto-selected for NLL ≤ "+fmt(nllTgt,2)+" kW"; }
+    else { anyMeets=false; }
+  }
+  const r=design();
+  LAST=r;
+  REC.secs.length=0; REC.cur=null;
+  sec("Summary");
+  row("Transformer type",{dist:"Distribution (oil-immersed)",power:"Power (oil-immersed)",cast:"Cast resin (dry-type)"}[TTYPE]);
+  row("Design standard",r.std.name);
+  row("Rating / frequency",r.ratStr+" / "+r.f+" Hz");
+  row("Voltage ratio / vector group",fmt(r.hv,0)+" / "+fmt(r.lv,0)+" V - "+r.vec);
+  row("No-load loss",fmt(r.NLL/1e3,2)+" kW");
+  row("Load loss ("+r.refT+" degC)",fmt(r.LL/1e3,2)+" kW");
+  row("Impedance %Z",fmt(r.ez*100,2)+" %");
+  row("Efficiency @ 100% upf",fmt(r.eff(1,1),2)+" %");
+  row("Total weight (approx)",fmt(r.Wtot,0)+" kg");
+  $("kpis").innerHTML=`
+    <div class="kpi"><div class="v">${fmt(r.NLL/1e3,2)} kW</div><div class="l">No-load loss</div></div>
+    <div class="kpi"><div class="v">${fmt(r.LL/1e3,2)} kW</div><div class="l">Load loss (${r.refT} °C)</div></div>
+    <div class="kpi"><div class="v">${fmt(r.ez*100,2)} %</div><div class="l">Impedance %Z</div></div>
+    <div class="kpi"><div class="v">${fmt(r.eff(1,1),2)} %</div><div class="l">Efficiency @ 100 % upf</div></div>
+    <div class="kpi"><div class="v">${fmt(r.Wtot/1e3,2)} t</div><div class="l">Total weight (approx)</div></div>`;
+
+  sec("Core & magnetic circuit");
+  $("t_core").innerHTML=
+    row("Volts per turn E<sub>t</sub>",fmt(r.Et,3)+" V")+
+    row("Flux density B<sub>m</sub>",fmt(r.Bm,2)+" T")+
+    row("Flux per limb Φ<sub>m</sub>",fmt(r.Phi*1e3,1)+" mWb")+
+    row("Net core section A<sub>i</sub>",fmt(r.Ai*1e4,1)+" cm²")+
+    row("Gross section / stacking 0.97",fmt(r.Ag*1e4,1)+" cm²")+
+    row("Core circle diameter",fmt(r.d*1e3,0)+" mm","hl")+
+    row("Window height × width",fmt(r.Hw*1e3,0)+" × "+fmt(r.Ww*1e3,0)+" mm")+
+    row("Limb pitch (centre–centre)",fmt(r.Dcc*1e3,0)+" mm")+
+    row("Frame height × width",fmt(r.Hfr*1e3,0)+" × "+fmt(r.Wfr*1e3,0)+" mm")+
+    row("Window fill factor (actual)",fmt(r.Kw,3));
+
+  sec("Windings & conductors");
+  $("t_wind").innerHTML=
+    row("HV insulation level LI / AC (60076-3)",bilOf(r.hv/1000)+" kV")+
+    row("Turns LV / HV (principal)",r.Tlv+" / "+r.Thv,"hl")+
+    row("HV turns at +"+r.tap+" % tap",r.ThvMax)+
+    row("Line current LV / HV",fmt(r.IlvL,1)+" / "+fmt(r.IhvL,2)+" A")+
+    row("Phase (winding) current LV / HV",fmt(r.Ilv,1)+" / "+fmt(r.Ihv,2)+" A")+
+    row("Conductor section LV / HV",fmt(r.alv,1)+" / "+fmt(r.ahv,2)+" mm²")+
+    row("Current density LV / HV",fmt(r.dlv,2)+" / "+fmt(r.dhv,2)+" A/mm²")+
+    row("Winding height",fmt(r.h*1e3,0)+" mm")+
+    row("Radial build LV / HV",fmt(r.blv*1e3,1)+" / "+fmt(r.bhv*1e3,1)+" mm")+
+    row("Diameters D1–D4 (LV in/out, HV in/out)",[r.D1,r.D2,r.D3,r.D4].map(x=>fmt(x*1e3,0)).join(" / ")+" mm")+
+    row("Mean turn length LV / HV",fmt(r.LmtL,3)+" / "+fmt(r.LmtH,3)+" m")+
+    row("Gaps: core–LV / HV–LV / phase",fmt(r.gclv*1e3,0)+" / "+fmt(r.glvhv*1e3,0)+" / "+fmt(r.gph*1e3,0)+" mm");
+
+  sec("Losses & no-load performance");
+  $("t_loss").innerHTML=
+    row("Core grade selected",r.gkey+" — "+r.G.fam+", "+r.G.t+" mm"+(gradeAutoNote?" ("+gradeAutoNote+")":""),"hl")+
+    (r.bmCapped?row("Bm capped by grade ceiling",fmt(r.Bm,2)+" T (entered "+fmt(r.BmIn,2)+")","warnrow"):"")+
+    (nllTgt>0?row("NLL vs guarantee",fmt(r.NLL/1e3,2)+" / "+fmt(nllTgt,2)+" kW "+(r.NLL/1e3<=nllTgt?"— meets":"— EXCEEDS"),
+      r.NLL/1e3<=nllTgt?"hl":"warnrow"):"")+
+    row("Core weight",fmt(r.Wfe,0)+" kg")+
+    row("Specific loss @ Bm × build "+fmt(r.G.bf,2),fmt(r.wpk,2)+" W/kg")+
+    row("Stacking factor (grade)",fmt(r.G.sf,3))+
+    row("No-load loss (NLL)",fmt(r.NLL/1e3,2)+" kW","hl")+
+    row("Magnetising current (est.)",fmt(r.i0,1)+" %")+
+    row("I²R loss LV / HV",fmt(r.Plv/1e3,2)+" / "+fmt(r.Phv/1e3,2)+" kW")+
+    row("Stray / eddy allowance",fmt(r.stray*100,0)+" %")+
+    row("Load loss (LL) at "+r.refT+" °C",fmt(r.LL/1e3,2)+" kW","hl")+
+    row("Total loss at full load",fmt(r.Ptot/1e3,2)+" kW")+
+    row("Test tolerance — "+r.std.name,r.std.tolShort);
+
+  sec("Impedance, regulation & efficiency");
+  let perf=
+    row("%R (from load loss)",fmt(r.er*100,2)+" %")+
+    row("%X (leakage, Rogowski-corrected)",fmt(r.ex*100,2)+" %")+
+    row("%Z calculated",fmt(r.ez*100,2)+" %","hl");
+  if(r.gReq!==null&&r.ztgt>0)
+    perf+=row(`HV–LV gap to hit %Z = ${r.ztgt}`,fmt(r.gReq,0)+" mm (used "+fmt(r.glvhv*1e3,0)+")",
+              Math.abs(r.gReq-r.glvhv*1e3)>0.25*r.glvhv*1e3?"warnrow":"");
+  perf+=
+    row("SC current (multiple of rated)",fmt(r.Isc,1)+" ×")+
+    row("Regulation @ upf / 0.8 pf",fmt(r.reg(1),2)+" / "+fmt(r.reg(0.8),2)+" %")+
+    row("Efficiency 100/75/50 % upf",[1,.75,.5].map(L=>fmt(r.eff(L,1),2)).join(" / ")+" %")+
+    row("Efficiency 100/75/50 % @0.8 pf",[1,.75,.5].map(L=>fmt(r.eff(L,.8),2)).join(" / ")+" %")+
+    row("Max-efficiency load point",fmt(r.Lmax*100,0)+" % ("+fmt(r.eff(r.Lmax,1),2)+" %)");
+  $("t_perf").innerHTML=perf;
+
+  sec("Thermal, tank / enclosure");
+  let th="",fl="";
+  if(!r.dry){
+    th=row("Tank L × B × H",fmt(r.Lt,2)+" × "+fmt(r.Bt,2)+" × "+fmt(r.Ht,2)+" m")+
+       row("Plain-tank dissipating surface",fmt(r.St,1)+" m²")+
+       row("Mean oil rise — plain tank",fmt(r.dOil,0)+" K",r.dOil>r.std.meanOil?"warnrow":"")+
+       row("Surface for "+r.std.meanOil+" K mean oil rise",fmt(r.Sreq,1)+" m²")+
+       row("Radiator surface required",fmt(r.Srad,1)+" m²","hl")+
+       row("Rise limit — "+r.std.name,r.std.oilRise)+
+       row("Cooling selected",r.cool+(r.cool==="ONAF"?" (fans ≈ +25–33 % rating)":""));
+    fl=r.Srad>0?`<div class="flag warn">Plain tank insufficient — provide ≈ ${fmt(r.Srad,0)} m² of radiator surface (≈ ${Math.ceil(r.Srad/2.8)} radiator elements of 2.8 m²) to meet ${r.std.oilRise} (${r.std.amb} ambient).</div>`
+               :`<div class="flag ok">Plain tank dissipates losses within 50 K mean oil rise.</div>`;
+  } else {
+    th=row("Winding loss density LV",fmt(r.qlv,0)+" W/m²",r.qlv>1500?"warnrow":"")+
+       row("Winding loss density HV",fmt(r.qhv,0)+" W/m²",r.qhv>1500?"warnrow":"")+
+       row("Insulation system / rise limit",`Class F (155 °C) — ${r.std.dryRise}`)+
+       row("Cooling selected",r.cool+(r.cool==="AF"?" (forced air ≈ +40–50 % rating)":""))+
+       row("Recommended enclosure",`IP21 indoor / IP54 with derating`);
+    const q=Math.max(r.qlv,r.qhv);
+    fl=q>1500?`<div class="flag bad">Loss density ${fmt(q,0)} W/m² &gt; 1500 — add axial cooling ducts or reduce current density.</div>`
+      :q>1100?`<div class="flag warn">Loss density ${fmt(q,0)} W/m² is on the high side — verify hot-spot with AF margin.</div>`
+             :`<div class="flag ok">Surface loss densities OK for AN cooling (≤ ~1100 W/m²).</div>`;
+  }
+  $("t_therm").innerHTML=th; $("thermflags").innerHTML=fl;
+  REC.flag=strip(fl).replace(/\s+/g," ").trim();
+
+  // ---- insulation stress check (Weidmann method, cf. Transformerboard III)
+  sec("Insulation stress (Weidmann method)");
+  {
+    const kvC=r.hv/1000, bil=bilOf(kvC), acT=+bil.split("/")[1].trim();
+    const gmm=r.glvhv*1e3;
+    let insHtml="", insFlag="";
+    if(!r.dry){
+      const nb=Math.max(1,Math.round(gmm/30));            // pressboard barriers in main duct
+      const dsub=gmm*0.85/(nb+1);                          // widest oil sub-duct, mm
+      const Eapp=acT/(0.925*gmm);                          // mean oil stress at AC test (perm. division)
+      const Ew=21.5*Math.pow(dsub,-0.37);                  // Weidmann 1-min withstand, degassed oil
+      const Eperm=0.7*Ew, SF=Eperm/Eapp;
+      insHtml=
+        row("Test voltages LI / AC (60076-3)",bil+" kV")+
+        row("HV–LV main duct (total)",fmt(gmm,0)+" mm")+
+        row("Barriers assumed / widest oil duct",nb+" / "+fmt(dsub,1)+" mm")+
+        row("Mean oil stress at AC test",fmt(Eapp,2)+" kV/mm")+
+        row("Weidmann withstand 21.5·d^−0.37",fmt(Ew,2)+" kV/mm")+
+        row("Permissible (×0.7 design factor)",fmt(Eperm,2)+" kV/mm")+
+        row("Safety factor",fmt(SF,2),SF<1.2?"warnrow":"hl")+
+        row("Creep along spacers","keep ≤ 0.7 × oil withstand — fit angle rings at winding ends");
+      insFlag=SF>=1.5?`<div class="flag ok">Main duct comfortable (SF ${fmt(SF,2)}) — barrier subdivision effective.</div>`
+        :SF>=1.2?`<div class="flag warn">SF ${fmt(SF,2)} — workable but review barrier count / duct widths and end insulation detail.</div>`
+        :`<div class="flag bad">SF ${fmt(SF,2)} &lt; 1.2 — widen main duct or add barriers (smaller oil sub-ducts withstand more per Weidmann curve).</div>`;
+    } else {
+      const Eapp=acT/gmm;
+      insHtml=
+        row("Test voltages LI / AC (60076-3)",bil+" kV")+
+        row("HV–LV air duct (with resin barriers)",fmt(gmm,0)+" mm")+
+        row("Mean stress at AC test",fmt(Eapp,2)+" kV/mm")+
+        row("Guide limit, air duct + resin",`≈ 1.4 kV/mm`)+
+        row("Resin solid working stress",`≤ 3–4 kV/mm (vacuum-cast epoxy)`);
+      insFlag=Eapp<=1.4?`<div class="flag ok">Air-duct stress ${fmt(Eapp,2)} kV/mm within guide limit.</div>`
+        :`<div class="flag warn">Air-duct stress ${fmt(Eapp,2)} kV/mm high — increase clearance or add resin barriers.</div>`;
+    }
+    $("t_ins").innerHTML=insHtml; $("insflags").innerHTML=insFlag;
+  }
+
+  sec("Weights & materials");
+  let wt=row("Core (CRGO)",fmt(r.Wfe,0)+" kg")+
+         row("Copper LV / HV",fmt(r.WcuL,0)+" / "+fmt(r.WcuH,0)+" kg")+
+         row("Copper total",fmt(r.Wcu,0)+" kg","hl");
+  if(!r.dry) wt+=row("Oil (≈)",fmt(r.Woil,0)+" kg")+row("Tank & fittings (≈)",fmt(r.Wtank,0)+" kg");
+  else wt+=row("Resin, clamps, wheels (≈)",fmt(r.Wtot-r.Wfe-r.Wcu,0)+" kg");
+  wt+=row("Total weight (≈)",fmt(r.Wtot,0)+" kg","hl");
+  $("t_wt").innerHTML=wt;
+
+  // ---- core grade comparison: full redesign per grade, owning cost = core cost + cap × NLL
+  {
+    const cap=+$("caprate").value||0;
+    const res=[];
+    for(const g of Object.keys(GRADES)){
+      GOVR=g; const d2=design(); GOVR=null;
+      res.push({g,G:GRADES[g],Bm:d2.Bm,wpk:d2.wpk,Wfe:d2.Wfe,NLL:d2.NLL,
+                cc:d2.Wfe*1.05*GRADES[g].p,own:d2.Wfe*1.05*GRADES[g].p+cap*d2.NLL/1e3});
+    }
+    const best=Math.min(...res.map(x=>x.own));
+    let gh=`<table class="res" style="font-size:12.5px"><tr style="background:var(--chip)">
+      <td style="font-weight:700">Grade</td><td style="font-weight:700">t (mm)</td><td style="font-weight:700">Bm (T)</td>
+      <td style="font-weight:700">W/kg</td><td style="font-weight:700">Core (kg)</td><td style="font-weight:700">NLL (kW)</td>
+      ${nllTgt>0?'<td style="font-weight:700">≤ NLL tgt</td>':""}
+      <td style="font-weight:700">Core cost $</td><td style="font-weight:700">Owning cost $</td></tr>`;
+    sec("Core grade comparison");
+    for(const x of res){
+      const sel=x.g===r.gkey, bst=Math.abs(x.own-best)<0.5, ok=nllTgt>0&&x.NLL/1e3<=nllTgt;
+      gh+=`<tr onclick="selGrade('${x.g}')" style="cursor:pointer${sel?";background:#eaf3fb;font-weight:700":""}">
+        <td>${bst?"★ ":""}${x.g}<span style="color:var(--muted);font-size:11px"> ${x.G.fam}</span></td>
+        <td>${x.G.t}</td><td>${fmt(x.Bm,2)}</td><td>${fmt(x.wpk,2)}</td><td>${fmt(x.Wfe,0)}</td>
+        <td>${fmt(x.NLL/1e3,2)}</td>
+        ${nllTgt>0?`<td style="color:${ok?"#0a6e44":"#c0262d"};font-weight:700">${ok?"✓":"✗"}</td>`:""}
+        <td>${fmt(x.cc,0)}</td><td>${fmt(x.own,0)}</td></tr>`;
+      row(x.g+" ("+x.G.fam+", "+x.G.t+" mm)",
+          "NLL "+fmt(x.NLL/1e3,2)+" kW - core "+fmt(x.Wfe,0)+" kg - owning $"+fmt(x.own,0)+(bst?" (best)":"")+
+          (nllTgt>0?(x.NLL/1e3<=nllTgt?" - meets NLL target":" - exceeds NLL target"):""));
+    }
+    gh+=`</table><div class="note" style="margin-top:6px">Click a row to design with that grade. ★ = lowest owning cost
+      (core material + NLL × ${fmt(cap,0)} USD/kW capitalisation, IEC 60076-20 logic). Thinner laminations cut eddy loss but
+      cost more and take longer to stack; Hi-B/laser-scribed earn their premium at high Bm or high capitalisation rates;
+      laser-scribed benefit is lost if annealed after slitting; amorphous needs Bm ≤ 1.35 T and a larger core window.</div>`;
+    $("gradecmp").innerHTML=gh;
+  }
+  renderBOM(r);
+  drawSketch(r); drawEff(r); drawCore(r); drawVec(r);
+
+  const chk=[];
+  chk.push(r.Kw>0.45?"⚠ window fill > 0.45 — congested, increase h/d":"✓ window fill OK");
+  chk.push((r.h/r.d)<1.5?"⚠ winding squat (h/d < 1.5) — short-circuit forces rise":"✓ winding aspect OK");
+  chk.push(r.Bm>1.75?"⚠ Bm > 1.75 T — saturation/inrush risk at +10 % overvoltage":"✓ Bm within CRGO working range");
+  chk.push(Math.abs(r.Et-r.K*Math.sqrt(r.S))/(r.K*Math.sqrt(r.S))>0.05?"ℹ Et adjusted by turn rounding":"✓ Et close to target");
+  if(r.hv>245000) chk.push("ℹ EHV class: graded insulation assumed; consider autotransformer, part-winding transport & site assembly; K of 0.75–1.0 typical");
+  if(!anyMeets) chk.push("✗ NO grade meets the NLL guarantee — lower Bm, raise K (bigger core, fewer W/kg) or renegotiate the figure");
+  if(nllTgt>0&&r.NLL/1e3<=nllTgt&&r.NLL/1e3>0.97*nllTgt) chk.push("⚠ NLL margin < 3 % — GCC tenders are often zero-plus-tolerance; consider one grade up");
+  $("checks").innerHTML="<b>Design checks:</b> "+chk.join(" · ");
+  REC.checks=chk.join("  |  ");
+}
+
+function drawSketch(r){
+  const W=560,H=360, m=30;
+  const sx=(W-2*m)/(2*r.Dcc+r.D4), sy=(H-2*m)/(r.Hw+2.2*r.d), s=Math.min(sx,sy);
+  const cy=H/2, x0=m+r.D4/2*s;
+  let g=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="max-width:100%">`;
+  const yokeH=1.1*r.d*s, legH=r.Hw*s;
+  const xL=x0, xM=x0+r.Dcc*s, xR=x0+2*r.Dcc*s;
+  // yokes
+  g+=`<rect x="${xL-r.d/2*s}" y="${cy-legH/2-yokeH}" width="${(2*r.Dcc+r.d)*s}" height="${yokeH}" fill="#b9c6d6"/>`;
+  g+=`<rect x="${xL-r.d/2*s}" y="${cy+legH/2}" width="${(2*r.Dcc+r.d)*s}" height="${yokeH}" fill="#b9c6d6"/>`;
+  for(const x of [xL,xM,xR]){
+    g+=`<rect x="${x-r.d/2*s}" y="${cy-legH/2}" width="${r.d*s}" height="${legH}" fill="#cdd8e4"/>`;
+    const hw2=r.h*s/2;
+    g+=`<rect x="${x-r.D2/2*s}" y="${cy-hw2}" width="${(r.D2-r.D1)/2*s}" height="${r.h*s}" fill="#d98f4e"/>`;
+    g+=`<rect x="${x+r.D1/2*s}" y="${cy-hw2}" width="${(r.D2-r.D1)/2*s}" height="${r.h*s}" fill="#d98f4e"/>`;
+    g+=`<rect x="${x-r.D4/2*s}" y="${cy-hw2}" width="${(r.D4-r.D3)/2*s}" height="${r.h*s}" fill="#a8622a"/>`;
+    g+=`<rect x="${x+r.D3/2*s}" y="${cy-hw2}" width="${(r.D4-r.D3)/2*s}" height="${r.h*s}" fill="#a8622a"/>`;
+  }
+  g+=`<text x="${xL-r.d/2*s}" y="${cy-legH/2-yokeH-8}">core Ø ${fmt(r.d*1e3,0)} · limb pitch ${fmt(r.Dcc*1e3,0)} · window ${fmt(r.Hw*1e3,0)}×${fmt(r.Ww*1e3,0)} mm</text>`;
+  g+=`<text x="${xR+r.d/2*s-150}" y="${cy+legH/2+yokeH+16}">▮ LV winding  ▮ HV winding (to scale)</text>`;
+  g+="</svg>";
+  $("sketch").innerHTML=g;
+}
+function drawEff(r){
+  const W=560,H=360,mL=52,mB=40,mT=20,mR=14;
+  const pts=[],pts8=[]; let ymin=100,ymax=0;
+  for(let L=0.1;L<=1.25001;L+=0.05){
+    const e1=r.eff(L,1),e8=r.eff(L,0.8);
+    pts.push([L,e1]); pts8.push([L,e8]);
+    ymin=Math.min(ymin,e1,e8); ymax=Math.max(ymax,e1,e8);
+  }
+  ymin=Math.floor(ymin*2)/2; ymax=Math.ceil(ymax*10)/10;
+  const X=L=>mL+(L-0.1)/(1.15)*(W-mL-mR), Y=e=>H-mB-(e-ymin)/(ymax-ymin)*(H-mB-mT);
+  const path=a=>a.map((p,i)=>(i?"L":"M")+X(p[0]).toFixed(1)+","+Y(p[1]).toFixed(1)).join(" ");
+  let g=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="max-width:100%">`;
+  for(let i=0;i<=4;i++){const e=ymin+(ymax-ymin)*i/4,y=Y(e);
+    g+=`<line x1="${mL}" y1="${y}" x2="${W-mR}" y2="${y}" stroke="#e3e9f0"/><text x="6" y="${y+4}">${e.toFixed(2)}%</text>`;}
+  for(const L of [0.25,0.5,0.75,1.0,1.25]){const x=X(L);
+    g+=`<line x1="${x}" y1="${mT}" x2="${x}" y2="${H-mB}" stroke="#eef2f7"/><text x="${x-12}" y="${H-mB+16}">${(L*100).toFixed(0)}%</text>`;}
+  g+=`<path d="${path(pts)}" fill="none" stroke="#0e5fa8" stroke-width="2.4"/>`;
+  g+=`<path d="${path(pts8)}" fill="none" stroke="#0a8f6c" stroke-width="2.4" stroke-dasharray="6 4"/>`;
+  const xm=X(r.Lmax),ym=Y(r.eff(r.Lmax,1));
+  g+=`<circle cx="${xm}" cy="${ym}" r="4.5" fill="#c0262d"/>`;
+  g+=`<text x="${Math.min(xm+8,W-180)}" y="${ym-8}">η max @ ${(r.Lmax*100).toFixed(0)}% load</text>`;
+  g+=`<text x="${mL+8}" y="${mT+12}" fill="#0e5fa8">— upf   - - 0.8 pf</text>`;
+  g+=`<text x="${W/2-40}" y="${H-6}">load (% of rated)</text></svg>`;
+  $("effcurve").innerHTML=g;
+}
+
+function drawCore(r){
+  // stepped (cruciform) core circle with packet widths, to proportion
+  const W=560,H=360,cx=160,cy=H/2,R=115;
+  const steps=[0.965,0.92,0.85,0.755,0.64,0.50,0.32]; // packet width fractions of d
+  let g=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="max-width:100%">`;
+  g+=`<circle cx="${cx}" cy="${cy}" r="${R}" fill="#eef3f8" stroke="#0e5fa8" stroke-width="1.5"/>`;
+  let prevH=0;
+  for(let i=0;i<steps.length;i++){
+    const w=steps[i]*2*R/2, hh=Math.sqrt(R*R-w*w);
+    g+=`<rect x="${cx-w}" y="${cy-hh}" width="${2*w}" height="${hh-prevH}" fill="#b9c9da" stroke="#8aa3bd" stroke-width="0.6"/>`;
+    g+=`<rect x="${cx-w}" y="${cy+prevH}" width="${2*w}" height="${hh-prevH}" fill="#b9c9da" stroke="#8aa3bd" stroke-width="0.6"/>`;
+    prevH=hh;
+  }
+  g+=`<rect x="${cx-steps[0]*R}" y="${cy-8}" width="${2*steps[0]*R}" height="16" fill="#b9c9da" stroke="#8aa3bd" stroke-width="0.6"/>`;
+  g+=`<line x1="${cx-R}" y1="${cy+R+14}" x2="${cx+R}" y2="${cy+R+14}" stroke="#43526b" stroke-width="1"/>`;
+  g+=`<text x="${cx-42}" y="${cy+R+30}">core circle Ø ${fmt(r.d*1e3,0)} mm</text>`;
+  g+=`<text x="${cx+R+18}" y="${cy-66}">${steps.length}-step cruciform stack</text>`;
+  g+=`<text x="${cx+R+18}" y="${cy-48}">net section Ai = ${fmt(r.Ai*1e4,0)} cm²</text>`;
+  g+=`<text x="${cx+R+18}" y="${cy-30}">gross = ${fmt(r.Ag*1e4,0)} cm² (stacking 0.97)</text>`;
+  g+=`<text x="${cx+R+18}" y="${cy-12}">fill Agross/d² ≈ 0.66</text>`;
+  g+=`<text x="${cx+R+18}" y="${cy+8}">Bm = ${fmt(r.Bm,2)} T · Φm = ${fmt(r.Phi*1e3,1)} mWb</text>`;
+  g+=`<text x="${cx+R+18}" y="${cy+28}">${r.gkey} — ${r.G.t} mm laminations</text>`;
+  g+="</svg>"; $("coresteps").innerHTML=g;
+}
+function drawVec(r){
+  // vector-group phasor clock: HV reference at 12, LV displaced by -30° x group number
+  const W=560,H=360, rad=78;
+  const n=parseInt((r.vec.match(/\d+/)||["0"])[0],10);
+  const {hvDelta,lvStar}=parseVec(r.vec);
+  let g=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="max-width:100%">`;
+  const star=(cx,cy,rot,col,lbl,conn)=>{
+    let s=`<circle cx="${cx}" cy="${cy}" r="${rad+22}" fill="none" stroke="#dde4ec"/>`;
+    for(let h=0;h<12;h+=1){
+      const a=(h*30-90)*Math.PI/180;
+      s+=`<circle cx="${cx+(rad+22)*Math.cos(a)}" cy="${cy+(rad+22)*Math.sin(a)}" r="1.6" fill="#b9c6d6"/>`;
+      if(h%3===0) s+=`<text x="${cx+(rad+38)*Math.cos(a)-4}" y="${cy+(rad+38)*Math.sin(a)+4}">${h===0?12:h}</text>`;
+    }
+    const ph=["U","V","W"];
+    for(let i=0;i<3;i++){
+      const a=(rot+i*120-90)*Math.PI/180, x2=cx+rad*Math.cos(a), y2=cy+rad*Math.sin(a);
+      s+=`<line x1="${cx}" y1="${cy}" x2="${x2}" y2="${y2}" stroke="${col}" stroke-width="2.6"/>`;
+      const b=a+Math.PI*0.94, c=a-Math.PI*0.94;
+      s+=`<path d="M ${x2} ${y2} L ${x2+9*Math.cos(b)} ${y2+9*Math.sin(b)} L ${x2+9*Math.cos(c)} ${y2+9*Math.sin(c)} Z" fill="${col}"/>`;
+      s+=`<text x="${cx+(rad+12)*Math.cos(a)-4}" y="${cy+(rad+12)*Math.sin(a)+4}" fill="${col}">${ph[i]}</text>`;
+    }
+    if(conn==="D"){ // delta triangle hint
+      const p=[0,1,2].map(i=>{const a=(rot+i*120-90)*Math.PI/180;return[cx+0.55*rad*Math.cos(a),cy+0.55*rad*Math.sin(a)];});
+      s+=`<path d="M ${p[0]} L ${p[1]} L ${p[2]} Z" fill="none" stroke="${col}" stroke-width="1" stroke-dasharray="4 3" opacity="0.55"/>`;
+    } else {
+      [0,1,2].forEach(i=>{const a=(rot+i*120-90)*Math.PI/180;
+        s+=`<line x1="${cx}" y1="${cy}" x2="${cx+0.4*rad*Math.cos(a)}" y2="${cy+0.4*rad*Math.sin(a)}" stroke="${col}" stroke-width="5" opacity="0.25"/>`;});
+    }
+    s+=`<text x="${cx-70}" y="${cy+rad+52}" font-weight="bold" fill="${col}">${lbl}</text>`;
+    return s;
+  };
+  g+=star(150,H/2-10,0,"#0e5fa8",`HV — ${hvDelta?"Delta (D)":"Star (Y)"}`,hvDelta?"D":"Y");
+  g+=star(410,H/2-10,30*n,"#0a8f6c",`LV — ${lvStar?"star (y)":"delta (d)"} — clock ${n}`,lvStar?"Y":"D");
+  g+=`<text x="120" y="24">Vector group ${r.vec} — phase displacement −30° × ${n}</text>`;
+  g+="</svg>"; $("phasor").innerHTML=g;
+}
+
+/* ---------- Bill of Materials ---------- */
+let LASTBOM=[]; const PRICEOVR={};
+function selGrade(g){ $("grade").value=g; touched.grade=true; calc(); }
+function hvBushPrice(kv){ if(kv<=12)return 45; if(kv<=24)return 75; if(kv<=36)return 120;
+  if(kv<=72.5)return 1500; if(kv<=145)return 4500; if(kv<=245)return 9000;
+  if(kv<=300)return 14000; if(kv<=420)return 22000; if(kv<=550)return 40000; return 70000; }
+function oltcPrice(kv){ if(kv<=72.5)return 18000; if(kv<=145)return 28000;
+  if(kv<=245)return 45000; if(kv<=420)return 80000; return 120000; }
+function buildBOM(r){
+  const kv=r.hv/1000, dry=r.dry, power=r.power, ehv=kv>245, B=[];
+  const add=(cat,item,spec,unit,qty,price)=>{ if(qty>0)
+    B.push({cat,item,spec,unit,qty,price:PRICEOVR[item]!==undefined?PRICEOVR[item]:price}); };
+  /* ===== A. CORE & MAGNETIC CIRCUIT ===== */
+  add("Core & magnetic circuit","Core steel ("+r.gkey+")",r.G.fam+", "+r.G.t+" mm, incl. 5 % cutting waste","kg",Math.round(r.Wfe*1.05),r.G.p);
+  add("Core & magnetic circuit","Core banding","resin-impregnated glass tape / steel bands","kg",Math.max(2,Math.round(0.005*r.Wfe)),8);
+  add("Core & magnetic circuit","Clamps, tie rods & frame steel","fabricated channels, painted/HDG","kg",Math.round(0.10*r.Wfe),1.5);
+  add("Core & magnetic circuit","Clamp-to-core insulation","pressboard strips, caps, washers","kg",Math.max(2,Math.round(0.012*r.Wfe)),4.5);
+  add("Core & magnetic circuit","Core earthing","Cu braid straps + lugs, single-point","set",1,power?60:25);
+  /* ===== B. WINDINGS ===== */
+  add("Windings","Copper conductor — LV",
+      dry?"Cu foil, full-height sheet/turn":(power?"CTC / paper-covered strip":"paper-covered strip / foil"),
+      "kg",Math.round(r.WcuL),dry?11.0:(power?13.0:12.0));
+  add("Windings","Copper conductor — HV",
+      dry?"enamelled wire for vacuum casting":(power?"paper-covered, disc/interleaved":"DPC round / rect wire"),
+      "kg",Math.round(r.WcuH),power?13.0:12.5);
+  if(power) add("Windings","Tap winding copper","paper-covered, coarse–fine arrangement","kg",Math.round(0.10*r.WcuH*1.3),13.0);
+  add("Windings","Brazing & joints","P-Cu rods, ferrules, crimp lugs","lot",1,power?600:80);
+  if(power&&kv>=145) add("Windings","Static / stress rings","pressboard + Cu shield, top & bottom","pc",ehv?6:3,ehv?1800:(kv>=245?900:400));
+  if(power&&ehv) add("Windings","Corona shields & grading electrodes","polished Al, winding ends & leads","lot",1,5000);
+  if(!dry){
+    /* ===== C. MAJOR INSULATION (the designer's kit) ===== */
+    const mCyl=3*Math.PI*(r.D1+r.D3)*r.h*0.003*1250;          // main barrier cylinders
+    add("Insulation","Pressboard cylinders","core–LV & HV–LV barriers, 1.5–3 mm","kg",Math.round(mCyl),4.8);
+    add("Insulation","Angle rings & end rings","densified pressboard, machined","kg",Math.round(0.8*mCyl),7.5);
+    add("Insulation","Radial spacers & axial strips","dovetail pressboard, oil-duct sticks","kg",Math.round(1.2*mCyl),5.5);
+    if(power) add("Insulation","Laminated wood","clamping platforms, support beams, cleats","kg",Math.round(Math.max(40,0.015*r.Wfe)),6.0);
+    if(!power) add("Insulation","Diamond-dotted paper (DDP)","layer/foil winding interlayer","kg",Math.max(3,Math.round(0.04*r.Wcu)),5.2);
+    add("Insulation","Kraft / crepe paper","conductor wrap, lead lapping","kg",Math.max(3,Math.round(0.025*r.Wcu)),3.5);
+    add("Insulation","Leads & cleats","Cu flats/rods, SRBP tubes, cleat assemblies","lot",1,power?(ehv?6000:2500):250);
+    /* ===== D. FLUIDS ===== */
+    add("Fluids","Mineral oil","IEC 60296, inhibited — first fill + 5 % reserve","litre",Math.round(r.Woil*1.05/0.89/10)*10,1.7);
+    /* ===== E. TANK & COOLING ===== */
+    add("Tank & cooling","Tank with cover","fabricated MS, shot-blasted, vacuum-rated","kg",Math.round(r.Wtank),2.2);
+    const radEl=Math.ceil(r.Srad/2.8);
+    add("Tank & cooling",power?"Radiator banks":"Radiators / corrugated-fin equivalent",
+        radEl>120?"pressed steel — consider OFAF/ODAF compact coolers":"pressed steel, ≈ 2.8 m² each","pc",radEl,160);
+    if(power) add("Tank & cooling","Radiator valves & drain plugs","butterfly isolating, top & bottom","pc",Math.max(4,2*Math.ceil(radEl/8)),45);
+    if(r.cool==="ONAF") add("Tank & cooling","Cooling fans (ONAF)","axial, weatherproof, with control","pc",Math.max(2,Math.ceil(radEl/4)),350);
+    if(power) add("Tank & cooling","Conservator with air cell","incl. supports, piping & shut-off","set",1,ehv?6000:3500);
+    if(power&&kv>=145) add("Tank & cooling","Bushing turrets","with CT accommodation & lifting lugs","pc",3,ehv?2800:1200);
+    /* ===== F. BUSHINGS & TERMINALS ===== */
+    add("Bushings & terminals","HV bushings",
+        kv<=36?`${kv} kV porcelain, DIN 42531`:(kv<=145?`${kv} kV OIP condenser`:`${kv} kV RIP/OIP condenser, with test tap`),
+        "pc",3,hvBushPrice(kv));
+    if(power) add("Bushings & terminals","Neutral bushing","graded insulation, reduced class","pc",1,hvBushPrice(Math.max(12,kv/2.5)));
+    add("Bushings & terminals","LV bushings",
+        r.lv<=1100?"1 kV, DIN 42530 (3 ph + N)":`${(r.lv/1000)} kV class porcelain (3 ph + N)`,
+        "pc",power?3:4,r.lv<=1100?18:(r.lv<=36000?150:hvBushPrice(r.lv/1000)));
+    if(power) add("Bushings & terminals","Bushing CTs","metering + protection cores, HV/LV/N","pc",9,180);
+    if(power&&ehv) add("Bushings & terminals","Grading / arcing rings","for EHV bushing field control","set",1,1500);
+    add("Bushings & terminals","Terminal connectors","bimetallic clamps / palms","set",1,power?900:60);
+    /* ===== G. TAP CHANGER ===== */
+    if(power){
+      add("Tap changer","On-load tap changer (OLTC)",`±8 × 1.25 %, ${kv} kV class, in-tank`,"pc",1,oltcPrice(kv));
+      add("Tap changer","OLTC motor drive unit","with mechanical & electrical limit stops","pc",1,3500);
+      add("Tap changer","OLTC protective relay","oil-flow (RS-type) + shutter","pc",1,400);
+    } else {
+      add("Tap changer","Off-circuit tap switch","±2 × 2.5 %, externally operated, padlockable","pc",1,250);
+    }
+    /* ===== H. PROTECTION & MONITORING ===== */
+    if(power){
+      add("Protection & monitoring","Buchholz relay","double float, with test cock","pc",1,350);
+      add("Protection & monitoring","Pressure relief device","spring type, with alarm contacts","pc",2,400);
+      add("Protection & monitoring","WTI + OTI","winding & oil temperature indicators, CT-fed","set",1,900);
+      add("Protection & monitoring","Magnetic oil level gauges","main + OLTC conservator, with contacts","pc",2,90);
+      add("Protection & monitoring","Dehydrating breathers","silica gel, main + OLTC","pc",2,150);
+      add("Protection & monitoring","Marshalling / control cabinet","IP55, heater + lighting, terminal rails","pc",1,800);
+      add("Protection & monitoring","Online DGA monitor (optional)","single/multi-gas, comms output","pc",1,6500);
+    } else {
+      add("Protection & monitoring","Pressure relief valve","self-resealing","pc",1,150);
+      add("Protection & monitoring","Dial thermometer + pocket","with max pointer & alarm contacts","pc",1,80);
+      add("Protection & monitoring","Oil level gauge","magnetic / prismatic","pc",1,60);
+    }
+    /* ===== I. STRUCTURAL & FINISHING ===== */
+    add("Structural & finishing","Valves set",power?"drain, filter, sampling, jacking shut-offs":"drain + sampling","lot",1,power?1200:200);
+    add("Structural & finishing","Gaskets & O-rings","NBR / cork-nitrile, full set","lot",1,power?1500:150);
+    add("Structural & finishing","Paint system",power?"C5-M: Zn-rich primer + epoxy + PU top":"C3/C4 epoxy system","lot",1,power?(ehv?5000:2500):300);
+    add("Structural & finishing","HDG fasteners & hardware","bolts, washers, earthing bosses","lot",1,power?1200:180);
+    add("Structural & finishing",power?"Skid base / wheels & jacking pads":"Rollers / skid base",
+        power?"incl. haulage lugs":"bidirectional","set",1,power?1800:180);
+    if(power) add("Structural & finishing","Ladder & valve guards","anti-slip, padlockable","set",1,600);
+    add("Structural & finishing","Rating & diagram plates","SS, engraved, IEC format","set",1,power?120:40);
+  } else {
+    /* ===== CAST RESIN ===== */
+    const volHV=Math.PI/4*(r.D4*r.D4-r.D3*r.D3)*r.h*3 - r.WcuH/8890;
+    add("Insulation","Epoxy resin + silica filler","HV vacuum casting, incl. end caps","kg",Math.round(volHV*1600*1.15),6.5);
+    add("Insulation","Nomex / pre-preg","LV foil interlayer & end barriers","kg",Math.max(2,Math.round(0.04*r.WcuL)),28);
+    add("Insulation","GRP duct sticks & spacers","LV–HV & phase cooling ducts","kg",Math.max(3,Math.round(0.02*r.Wcu)),9);
+    add("Insulation","Resin support pads & blocks","cast resin, clamping interface","set",1,260);
+    add("Tap changer","Tap links","off-circuit bolted links, ±2 × 2.5 % on HV","set",1,150);
+    add("Protection & monitoring","Pt100 sensors","one per phase, in LV duct","pc",3,35);
+    add("Protection & monitoring","Thermal protection relay","2 trip levels + fan control","pc",1,145);
+    if(r.cool==="AF") add("Tank & cooling","Cross-flow fans (AF)","+40–50 % rating, with thermostat control","set",1,700);
+    add("Structural & finishing","Enclosure (optional)","IP21/IP31, ventilated, RAL 7035","pc",1,2400);
+    add("Structural & finishing","Wheels / rollers","bidirectional","set",1,180);
+    add("Structural & finishing","Vibration pads","anti-vibration mounts","pc",4,15);
+    add("Structural & finishing","Busbar supports & shrouds","LV flexibles, HV terminal covers","lot",1,320);
+    add("Structural & finishing","HDG fasteners & hardware","incl. earthing terminals, rating plate","lot",1,350);
+  }
+  return B;
+}
+function renderBOM(r){
+  LASTBOM=buildBOM(r);
+  let html=`<table class="res bom"><tr style="background:var(--chip)">
+    <td style="font-weight:700;color:var(--accent)">Item</td><td style="font-weight:700;color:var(--accent)">Specification</td>
+    <td style="font-weight:700;color:var(--accent)">Unit</td><td style="font-weight:700;color:var(--accent);text-align:right">Qty</td>
+    <td style="font-weight:700;color:var(--accent);text-align:right">Unit USD</td><td style="font-weight:700;color:var(--accent);text-align:right">Amount USD</td></tr>`;
+  let cat="";
+  LASTBOM.forEach((b,i)=>{
+    if(b.cat!==cat){cat=b.cat;
+      html+=`<tr><td colspan="6" style="font-weight:700;color:var(--muted);background:#f7fafc">${cat}</td></tr>`;}
+    html+=`<tr><td style="width:24%">${b.item}</td><td style="width:30%;color:var(--muted);font-size:12.5px">${b.spec}</td>
+      <td style="width:7%">${b.unit}</td><td style="text-align:right;font-family:var(--mono)">${fmt(b.qty,0)}</td>
+      <td style="text-align:right"><input type="number" step="any" value="${b.price}" data-i="${i}" class="bprice"
+        style="width:84px;text-align:right;padding:3px 6px"></td>
+      <td style="text-align:right;font-family:var(--mono);font-weight:600" id="bomamt${i}">${fmt(b.qty*b.price,0)}</td></tr>`;
+  });
+  const tot=LASTBOM.reduce((a,b)=>a+b.qty*b.price,0);
+  html+=`<tr class="hl"><td colspan="5" style="font-weight:700">Total — indicative material & component cost</td>
+    <td style="text-align:right;font-family:var(--mono);font-weight:700;color:var(--accent)" id="bomtotal">${fmt(tot,0)}</td></tr></table>`;
+  $("bombox").innerHTML=html;
+  document.querySelectorAll(".bprice").forEach(inp=>inp.addEventListener("input",()=>{
+    const i=+inp.dataset.i, v=parseFloat(inp.value)||0;
+    LASTBOM[i].price=v; PRICEOVR[LASTBOM[i].item]=v;
+    $("bomamt"+i).textContent=fmt(LASTBOM[i].qty*v,0);
+    $("bomtotal").textContent=fmt(LASTBOM.reduce((a,b)=>a+b.qty*b.price,0),0);
+  }));
+}
+/* ---- minimal pure-JS XLSX writer (ZIP, stored entries) ---- */
+function zipStore(files){
+  const te=new TextEncoder();
+  const tbl=new Uint32Array(256);
+  for(let i=0;i<256;i++){let c=i;for(let k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;tbl[i]=c>>>0;}
+  const crc=d=>{let c=0xFFFFFFFF;for(let i=0;i<d.length;i++)c=tbl[(c^d[i])&0xFF]^(c>>>8);return(c^0xFFFFFFFF)>>>0;};
+  const u16=v=>[v&255,(v>>>8)&255], u32=v=>[v&255,(v>>>8)&255,(v>>>16)&255,(v>>>24)&255];
+  const parts=[],cd=[];let off=0;
+  for(const f of files){
+    const name=te.encode(f.name), data=te.encode(f.data), c=crc(data);
+    const lh=new Uint8Array([80,75,3,4,...u16(20),...u16(0),...u16(0),...u16(0),...u16(0),
+      ...u32(c),...u32(data.length),...u32(data.length),...u16(name.length),...u16(0)]);
+    parts.push(lh,name,data); cd.push({name,c,size:data.length,off});
+    off+=lh.length+name.length+data.length;
+  }
+  const cdp=[];let cdl=0;
+  for(const e of cd){
+    const h=new Uint8Array([80,75,1,2,...u16(20),...u16(20),...u16(0),...u16(0),...u16(0),...u16(0),
+      ...u32(e.c),...u32(e.size),...u32(e.size),...u16(e.name.length),...u16(0),...u16(0),
+      ...u16(0),...u16(0),...u32(0),...u32(e.off)]);
+    cdp.push(h,e.name); cdl+=h.length+e.name.length;
+  }
+  const eocd=new Uint8Array([80,75,5,6,...u16(0),...u16(0),...u16(cd.length),...u16(cd.length),...u32(cdl),...u32(off),...u16(0)]);
+  const all=[...parts,...cdp,eocd];
+  let len=0;for(const p of all)len+=p.length;
+  const out=new Uint8Array(len);let o=0;
+  for(const p of all){out.set(p,o);o+=p.length;}
+  return out;
+}
+function bomXLSX(){
+  if(!LAST)calc();
+  const r=LAST;
+  const esx=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+  const COLS="ABCDEFG";
+  const cs=(col,row,v,s)=>`<c r="${col}${row}" t="inlineStr"${s?` s="${s}"`:""}><is><t xml:space="preserve">${esx(v)}</t></is></c>`;
+  const cn=(col,row,v,s)=>`<c r="${col}${row}"${s?` s="${s}"`:""}><v>${v}</v></c>`;
+  const cf=(col,row,f,s)=>`<c r="${col}${row}"${s?` s="${s}"`:""}><f>${f}</f></c>`;
+  // ---- sheet 1: BOM
+  const title=`Bill of Materials — ${r.ratStr}, ${fmt(r.hv,0)}/${fmt(r.lv,0)} V, ${r.vec} (${r.std.name})`;
+  let rows="";
+  rows+=`<row r="1">${cs("A",1,title,2)}</row>`;
+  rows+=`<row r="2">${cs("A",2,"Generated "+new Date().toISOString().slice(0,10)+" — quantities from first-cut design (±10–15 %); indicative supply-only prices, edit column F.",0)}</row>`;
+  const heads=["Category","Item","Specification","Unit","Qty","Unit price USD","Amount USD"];
+  rows+=`<row r="4">${heads.map((h,i)=>cs(COLS[i],4,h,3)).join("")}</row>`;
+  let rr=5;
+  for(const b of LASTBOM){
+    rows+=`<row r="${rr}">${cs("A",rr,b.cat)}${cs("B",rr,b.item,1)}${cs("C",rr,b.spec)}${cs("D",rr,b.unit)}`+
+      `${cn("E",rr,b.qty,5)}${cn("F",rr,b.price,6)}${cf("G",rr,`E${rr}*F${rr}`,5)}</row>`;
+    rr++;
+  }
+  const last=rr-1;
+  rows+=`<row r="${rr}">${cs("F",rr,"Total",7)}${cf("G",rr,`SUM(G5:G${last})`,7)}</row>`;
+  const sheet1=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
+<cols><col min="1" max="1" width="20" customWidth="1"/><col min="2" max="2" width="28" customWidth="1"/>
+<col min="3" max="3" width="42" customWidth="1"/><col min="4" max="4" width="7" customWidth="1"/>
+<col min="5" max="5" width="10" customWidth="1"/><col min="6" max="6" width="14" customWidth="1"/>
+<col min="7" max="7" width="14" customWidth="1"/></cols>
+<sheetData>${rows}</sheetData>
+<autoFilter ref="A4:G${last}"/></worksheet>`;
+  // ---- sheet 2: full design data
+  let rows2="",r2=1;
+  for(const s of REC.secs){
+    rows2+=`<row r="${r2}">${cs("A",r2,s.title,3)}${cs("B",r2,"",3)}</row>`;r2++;
+    for(const[k,v]of s.rows){rows2+=`<row r="${r2}">${cs("A",r2,k)}${cs("B",r2,v,1)}</row>`;r2++;}
+    rows2+=`<row r="${r2}"></row>`;r2++;
+  }
+  rows2+=`<row r="${r2}">${cs("A",r2,"Design checks: "+REC.checks)}</row>`;
+  const sheet2=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
+<cols><col min="1" max="1" width="42" customWidth="1"/><col min="2" max="2" width="34" customWidth="1"/></cols>
+<sheetData>${rows2}</sheetData></worksheet>`;
+  const styles=`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
+<fonts count="3"><font><sz val="11"/><name val="Calibri"/></font>
+<font><b/><sz val="11"/><name val="Calibri"/></font>
+<font><b/><sz val="14"/><color rgb="FF0D2C4F"/><name val="Calibri"/></font></fonts>
+<fills count="4"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill>
+<fill><patternFill patternType="solid"><fgColor rgb="FFD9E8F5"/><bgColor indexed="64"/></patternFill></fill>
+<fill><patternFill patternType="solid"><fgColor rgb="FFF2F6FA"/><bgColor indexed="64"/></patternFill></fill></fills>
+<borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders>
+<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>
+<cellXfs count="8">
+<xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>
+<xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0"/>
+<xf numFmtId="0" fontId="2" fillId="0" borderId="0" xfId="0"/>
+<xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFill="1"/>
+<xf numFmtId="0" fontId="0" fillId="3" borderId="0" xfId="0" applyFill="1"/>
+<xf numFmtId="3" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/>
+<xf numFmtId="4" fontId="0" fillId="0" borderId="0" xfId="0" applyNumberFormat="1"/>
+<xf numFmtId="3" fontId="1" fillId="2" borderId="0" xfId="0" applyNumberFormat="1" applyFill="1"/>
+</cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>`;
+  const files=[
+    {name:"[Content_Types].xml",data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+<Default Extension="xml" ContentType="application/xml"/>
+<Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>
+<Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>
+<Override PartName="/xl/worksheets/sheet2.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>
+<Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>
+</Types>`},
+    {name:"_rels/.rels",data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/>
+</Relationships>`},
+    {name:"xl/workbook.xml",data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+<sheets><sheet name="BOM" sheetId="1" r:id="rId1"/><sheet name="Design" sheetId="2" r:id="rId2"/></sheets></workbook>`},
+    {name:"xl/_rels/workbook.xml.rels",data:`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/>
+<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet2.xml"/>
+<Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>
+</Relationships>`},
+    {name:"xl/styles.xml",data:styles},
+    {name:"xl/worksheets/sheet1.xml",data:sheet1},
+    {name:"xl/worksheets/sheet2.xml",data:sheet2}
+  ];
+  const bytes=zipStore(files);
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob([bytes],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}));
+  a.download=`Transformer_BOM_${TTYPE}_${Math.round(r.Sin)}${r.isMVA?"MVA":"kVA"}.xlsx`;
+  document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},2000);
+}
+
+/* ---------- animated schematic: flux loops, current direction, waveforms ---------- */
+function drawAnim(){
+  const sym=(x,y,out,col)=>{
+    let s=`<circle cx="${x}" cy="${y}" r="8" fill="#fff" stroke="${col}" stroke-width="2"/>`;
+    if(out) s+=`<circle cx="${x}" cy="${y}" r="2.6" fill="${col}"/>`;
+    else s+=`<line x1="${x-4.6}" y1="${y-4.6}" x2="${x+4.6}" y2="${y+4.6}" stroke="${col}" stroke-width="2"/>`+
+            `<line x1="${x-4.6}" y1="${y+4.6}" x2="${x+4.6}" y2="${y-4.6}" stroke="${col}" stroke-width="2"/>`;
+    return s;
+  };
+  const LVC="#d98f4e",HVC="#a8622a";
+  // core: limbs at x = 95, 310, 525
+  let core="";
+  core+=`<rect x="63" y="40" width="494" height="34" fill="#cdd8e4"/>`;
+  core+=`<rect x="63" y="320" width="494" height="34" fill="#cdd8e4"/>`;
+  for(const x of [95,310,525]){
+    core+=`<rect x="${x-32}" y="74" width="64" height="246" fill="#cdd8e4"/>`;
+    core+=`<rect x="${x-52}" y="100" width="16" height="194" fill="${LVC}" opacity="0.85"/>`;
+    core+=`<rect x="${x+36}" y="100" width="16" height="194" fill="${LVC}" opacity="0.85"/>`;
+    core+=`<rect x="${x-72}" y="100" width="14" height="194" fill="${HVC}" opacity="0.85"/>`;
+    core+=`<rect x="${x+58}" y="100" width="14" height="194" fill="${HVC}" opacity="0.85"/>`;
+  }
+  // current symbols on centre limb (HV outer, LV inner) — set A and inverted set B
+  const ys=[140,197,254];let gA="",gB="";
+  for(const y of ys){
+    gA+=sym(266,y,true ,LVC)+sym(354,y,false,LVC)+sym(245,y,false,HVC)+sym(375,y,true ,HVC);
+    gB+=sym(266,y,false,LVC)+sym(354,y,true ,LVC)+sym(245,y,true ,HVC)+sym(375,y,false,HVC);
+  }
+  // waveforms (one full cycle over 300 px)
+  let vp="",fp="";
+  for(let i=0;i<=120;i++){
+    const x=700+i*2.5, th=i/120*2*Math.PI;
+    vp+=(i?"L ":"M ")+x.toFixed(1)+" "+(200-62*Math.sin(th)).toFixed(1)+" ";
+    fp+=(i?"L ":"M ")+x.toFixed(1)+" "+(200+46*Math.cos(th)).toFixed(1)+" ";
+  }
+  const svg=`<svg id="animsvg" viewBox="0 0 1140 420" xmlns="http://www.w3.org/2000/svg" style="--hc:2s;max-width:100%">
+  <style>
+    #animsvg .fl{stroke:#0e5fa8;stroke-width:3.4;fill:none;stroke-dasharray:11 9;stroke-linejoin:round}
+    #animsvg .f1{animation:txfxA var(--hc) linear infinite alternate}
+    #animsvg .f2{animation:txfxB var(--hc) linear infinite alternate}
+    @keyframes txfxA{from{stroke-dashoffset:0}to{stroke-dashoffset:-160}}
+    @keyframes txfxB{from{stroke-dashoffset:0}to{stroke-dashoffset:160}}
+    #animsvg .ca{animation:txswA calc(var(--hc)*2) linear infinite}
+    #animsvg .cb{animation:txswB calc(var(--hc)*2) linear infinite}
+    @keyframes txswA{0%{opacity:1}49.9%{opacity:1}50%{opacity:0}99.9%{opacity:0}100%{opacity:1}}
+    @keyframes txswB{0%{opacity:0}49.9%{opacity:0}50%{opacity:1}99.9%{opacity:1}100%{opacity:0}}
+    #animsvg .cur{animation:txswp calc(var(--hc)*2) linear infinite}
+    @keyframes txswp{from{transform:translateX(0)}to{transform:translateX(300px)}}
+    .animpaused #animsvg *{animation-play-state:paused!important}
+  </style>
+  ${core}
+  <path class="fl f1" d="M 95 57 L 310 57 L 310 337 L 95 337 Z"/>
+  <path class="fl f2" d="M 310 57 L 525 57 L 525 337 L 310 337 Z"/>
+  <g class="ca">${gA}</g><g class="cb">${gB}</g>
+  <text x="63" y="392">flux Φ circulates in two window loops — dash direction reverses every half-cycle</text>
+  <text x="63" y="408">⊙ current out of page · ⊗ into page — LV and HV ampere-turns oppose (N·I balance)</text>
+  <line x1="700" y1="200" x2="1000" y2="200" stroke="#dde4ec"/>
+  <line x1="700" y1="120" x2="700" y2="280" stroke="#dde4ec"/>
+  <path d="${vp}" fill="none" stroke="#0e5fa8" stroke-width="2.2"/>
+  <path d="${fp}" fill="none" stroke="#0a8f6c" stroke-width="2.2" stroke-dasharray="6 4"/>
+  <g class="cur"><line x1="700" y1="115" x2="700" y2="285" stroke="#c0262d" stroke-width="1.8"/></g>
+  <text x="1008" y="142" fill="#0e5fa8">v(t)</text>
+  <text x="1008" y="252" fill="#0a8f6c">Φ(t) −90°</text>
+  <text x="700" y="108">one full cycle</text>
+  <text x="700" y="306">e = −N·dΦ/dt — flux lags voltage by 90°</text>
+  <text x="700" y="322">peak flux at voltage zero-crossing (Et = 4.44·f·Bm·Ai)</text>
+  <rect x="63" y="20" width="0" height="0" fill="none"/>
+  </svg>`;
+  $("animbox").innerHTML=svg;
+}
+function animCaption(){
+  const f=+$("freq").value, hc=parseFloat($("animspd").value);
+  $("animspdv").textContent=hc.toFixed(1)+" s";
+  $("animcap").textContent=`${f} Hz → real cycle = ${(1000/f).toFixed(0)} ms · shown ≈ ${Math.round(2*hc*f).toLocaleString("en")}× slower`;
+  const s=document.getElementById("animsvg"); if(s&&s.style&&s.style.setProperty) s.style.setProperty("--hc",hc+"s");
+}
+$("animspd").addEventListener("input",animCaption);
+$("animbtn").addEventListener("click",()=>{
+  const b=$("animbox"); b.classList.toggle("animpaused");
+  $("animbtn").textContent=b.classList.contains("animpaused")?"Play":"Pause";
+});
+
+// standard switching
+$("std").addEventListener("change",()=>{
+  CURSTD=$("std").value;
+  if(!touched.freq) $("freq").value=STDS[CURSTD].freq;
+  renderRef(); calc();
+});
+$("freq").addEventListener("change",()=>{touched.freq=true;});
+
+// type switching
+document.querySelectorAll("#typesel button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll("#typesel button").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on"); TTYPE=b.dataset.t;
+  const D=DEFAULTS[TTYPE], P=PRESET[TTYPE];
+  // type change always resets type-coupled values (rating unit changes for power: MVA)
+  for(const k in D){ $(k).value=D[k]; delete touched[k]; }
+  for(const k in P){ $(k).value=P[k]; delete touched[k]; }
+  $("cool").value=D.cool;
+  $("ratlbl").textContent = TTYPE==="power" ? "Rating (MVA)" : "Rating (kVA)";
+  ["gclv","glvhv","gph","gend"].forEach(k=>$(k).value="");
+  calc();
+});
+["K","bm","dlv","dhv","hr","stray","ztgt","skva","hv","lv","vec"].forEach(k=>{
+  $(k).addEventListener("change",()=>{touched[k]=true; calc();});
+});
+["freq","tap","cool","grade","gclv","glvhv","gph","gend","caprate","nlltgt","autogr"].forEach(k=>$(k).addEventListener("change",calc));
+$("freq").addEventListener("change",animCaption);
+renderRef();
+drawAnim(); animCaption();
+
+/* ================= PDF report generator (pure JS, no libraries) ================= */
+function pdfSan(s){
+  const M={"²":"2","³":"3","·":"-","×":"x","Ø":"dia ","η":"eta","±":"+/-","≈":"~","–":"-","—":"-",
+    "√":"sqrt","μ":"u","Φ":"Phi","φ":"phi","ε":"e","≤":"<=","≥":">=","Δ":"d","°":" deg",
+    "’":"'","‘":"'","“":"\"","”":"\"","…":"...","→":"->","▮":"","|":"|"," ":" "," ":" "};
+  return String(s).split("").map(c=>{
+    if(c.charCodeAt(0)<128)return c;
+    return M[c]!==undefined?M[c]:"";
+  }).join("").replace(/\\/g,"\\\\").replace(/\(/g,"\\(").replace(/\)/g,"\\)");
+}
+function pdfWrap(s,n){
+  const out=[];let line="";
+  for(const w of String(s).split(/\s+/)){
+    if((line+" "+w).trim().length>n){out.push(line.trim());line=w;}else line+=" "+w;
+  }
+  if(line.trim())out.push(line.trim());return out;
+}
+function downloadPDF(){
+  if(!LAST)calc();
+  const r=LAST;
+  const NAVY="0.05 0.17 0.31",BLUE="0.05 0.37 0.66",GREY="0.36 0.42 0.50",BLACK="0 0 0";
+  const pages=[];let cur="",y=0;
+  const newPage=()=>{if(cur)pages.push(cur);cur="";y=792;};
+  const T=(x,yy,s,f,sz,col)=>{cur+=`BT /${f} ${sz} Tf ${col||BLACK} rg 1 0 0 1 ${x} ${yy} Tm (${pdfSan(s)}) Tj ET\n`;};
+  const L=(x1,y1,x2,y2,w,col)=>{cur+=`${col||"0.72 0.78 0.84"} RG ${w||0.7} w ${x1} ${y1} m ${x2} ${y2} l S\n`;};
+  const RECT=(x,yy,w,h,col)=>{cur+=`${col} rg ${x} ${yy} ${w} ${h} re f\n`;};
+  newPage();
+  // header
+  T(60,y,"TRANSFORMER DESIGN REPORT","F2",16,NAVY);y-=16;
+  T(60,y,"First-cut electromagnetic, performance & thermal design to "+r.std.name,"F1",9.5,GREY);y-=13;
+  T(60,y,"Generated "+new Date().toISOString().slice(0,10)+"  -  Transformer Design Calculator","F1",8.5,GREY);y-=8;
+  L(60,y,535,y,1.2,"0.05 0.37 0.66");y-=6;
+  // sections
+  for(const s of REC.secs){
+    if(y<110)newPage();
+    y-=16;T(60,y,s.title,"F2",11,BLUE);y-=4;L(60,y,535,y,0.7);y-=13;
+    for(const[k,v]of s.rows){
+      if(y<60){newPage();y-=10;}
+      T(66,y,k,"F1",9,GREY);T(330,y,v,"F2",9,BLACK);y-=12.5;
+    }
+    if(s.title.startsWith("Thermal")&&REC.flag){
+      for(const ln of pdfWrap(REC.flag,95)){
+        if(y<60){newPage();y-=10;}
+        T(66,y,ln,"F1",8.5,"0.55 0.31 0.06");y-=11;
+      }
+    }
+  }
+  // (BOM is issued as a separate Excel file only — not included in the PDF)
+  // scaled cross-section drawing
+  {
+    const boxH=190, needed=boxH+70;
+    if(y<needed+60)newPage();
+    y-=16;T(60,y,"Cross-section (to scale)","F2",11,BLUE);y-=4;L(60,y,535,y,0.7);y-=10;
+    const top=y, w=420, x0=88;
+    const totW=2*r.Dcc+r.D4, totH=r.Hw+2.2*r.d;
+    const s=Math.min(w/totW, boxH/totH);
+    const legH=r.Hw*s, yokeH=1.1*r.d*s;
+    const cyy=top-boxH/2;                          // centre (PDF y up)
+    const xL=x0+r.D4/2*s, xM=xL+r.Dcc*s, xR=xL+2*r.Dcc*s;
+    const CORE="0.78 0.84 0.90", CORE2="0.70 0.78 0.86", LVc="0.85 0.56 0.31", HVc="0.64 0.37 0.15";
+    RECT(xL-r.d/2*s, cyy+legH/2, (2*r.Dcc+r.d)*s, yokeH, CORE2);
+    RECT(xL-r.d/2*s, cyy-legH/2-yokeH, (2*r.Dcc+r.d)*s, yokeH, CORE2);
+    for(const x of [xL,xM,xR]){
+      RECT(x-r.d/2*s, cyy-legH/2, r.d*s, legH, CORE);
+      const hw2=r.h*s/2;
+      RECT(x-r.D2/2*s, cyy-hw2, (r.D2-r.D1)/2*s, r.h*s, LVc);
+      RECT(x+r.D1/2*s, cyy-hw2, (r.D2-r.D1)/2*s, r.h*s, LVc);
+      RECT(x-r.D4/2*s, cyy-hw2, (r.D4-r.D3)/2*s, r.h*s, HVc);
+      RECT(x+r.D3/2*s, cyy-hw2, (r.D4-r.D3)/2*s, r.h*s, HVc);
+    }
+    y=top-boxH-12;
+    T(88,y,`core dia ${fmt(r.d*1e3,0)} mm - limb pitch ${fmt(r.Dcc*1e3,0)} mm - window ${fmt(r.Hw*1e3,0)} x ${fmt(r.Ww*1e3,0)} mm - frame ${fmt(r.Hfr*1e3,0)} x ${fmt(r.Wfr*1e3,0)} mm`,"F1",8,GREY);y-=11;
+    T(88,y,"inner band = LV winding, outer band = HV winding","F1",8,GREY);y-=6;
+  }
+  // checks + disclaimer
+  if(y<120)newPage();
+  y-=16;T(60,y,"Design checks","F2",11,BLUE);y-=4;L(60,y,535,y,0.7);y-=13;
+  for(const ln of pdfWrap(REC.checks,100)){if(y<60){newPage();y-=10;}T(66,y,ln,"F1",8.5,BLACK);y-=11;}
+  y-=10;
+  for(const ln of pdfWrap("Validity: first-cut (tender/estimation grade) design, typically within +/-10-15% of an optimised works design. Final designs require manufacturer optimisation per IEC 60076-3/-5/-10 and applicable eco-design loss limits.",100)){
+    if(y<60){newPage();y-=10;}T(60,y,ln,"F1",8,GREY);y-=10;
+  }
+  if(cur)pages.push(cur); // flush last page
+  const pgs=pages.filter(Boolean);
+  // assemble PDF
+  const objs=[];
+  objs[1]="<< /Type /Catalog /Pages 2 0 R >>";
+  const kids=pgs.map((_,i)=>`${5+2*i} 0 R`).join(" ");
+  objs[2]=`<< /Type /Pages /Kids [${kids}] /Count ${pgs.length} >>`;
+  objs[3]="<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>";
+  objs[4]="<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>";
+  pgs.forEach((st,i)=>{
+    objs[5+2*i]=`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents ${6+2*i} 0 R >>`;
+    objs[6+2*i]=`<< /Length ${st.length} >>\nstream\n${st}\nendstream`;
+  });
+  let pdf="%PDF-1.4\n";const xref=[0];
+  for(let i=1;i<objs.length;i++){xref[i]=pdf.length;pdf+=`${i} 0 obj\n${objs[i]}\nendobj\n`;}
+  const xs=pdf.length;
+  pdf+=`xref\n0 ${objs.length}\n0000000000 65535 f \n`;
+  for(let i=1;i<objs.length;i++)pdf+=String(xref[i]).padStart(10,"0")+" 00000 n \n";
+  pdf+=`trailer\n<< /Size ${objs.length} /Root 1 0 R >>\nstartxref\n${xs}\n%%EOF`;
+  const blob=new Blob([pdf],{type:"application/pdf"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download=`Transformer_Design_${TTYPE}_${Math.round(r.Sin)}${r.isMVA?"MVA":"kVA"}_${Math.round(r.hv/1000)}kV.pdf`;
+  document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},2000);
+}
+calc();
+</script>
+</body>
+</html>

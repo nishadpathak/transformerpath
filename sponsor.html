@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sponsor & Advertise — TransformerInsider</title>
+<meta name="description" content="Reach transformer buyers worldwide — sponsor the daily intel briefing, get a verified vendor listing, or advertise on TransformerInsider.">
+<link rel="stylesheet" href="style.css">
+<style>
+.price-table { width:100%; border-collapse:collapse; background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 2px 12px rgba(13,27,46,.08); }
+.price-table th, .price-table td { padding:14px 18px; text-align:center; border-bottom:1px solid var(--border); font-size:.93rem; }
+.price-table th { background:var(--navy); color:#fff; font-size:1rem; }
+.price-table th .price { display:block; color:var(--amber); font-size:1.5rem; margin-top:4px; }
+.price-table td:first-child { text-align:left; font-weight:600; color:var(--navy); }
+.price-table .yes { color:var(--green); font-weight:700; }
+.price-table .no { color:#cbd5e1; }
+.founder-card { display:flex; gap:24px; align-items:center; }
+.founder-card img { width:160px; flex-shrink:0; }
+.founder-badge { display:inline-block; background:var(--amber); color:var(--navy); font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:1px; padding:4px 12px; border-radius:999px; margin-bottom:10px; }
+@media (max-width:700px){ .founder-card { flex-direction:column; text-align:center; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo">Transformer<span>Insider</span></a>
+    <button class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <nav class="nav-links">
+      <a href="intel.html">Daily Intel</a>
+      <a href="events.html">Events</a>
+      <a href="manufacturers.html">Manufacturers</a>
+      <a href="learn.html">Learn</a>
+      <a href="grids.html">Grids</a>
+      
+      <a href="resources.html">Resources</a>
+      <a href="sponsor.html" class="active">Sponsor</a>
+      <a href="intel.html" class="btn btn-amber">Subscribe</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" style="padding:50px 0 40px">
+  <div class="container">
+    <h1 style="font-size:2.2rem">Sponsor & <span>Advertise</span></h1>
+    <p>Put your brand in front of transformer buyers, utilities and EPCs worldwide — every morning.</p>
+  </div>
+</section>
+
+<section class="block">
+  <div class="container" style="max-width:900px">
+    <div class="section-head"><h2>Sponsorship Opportunities</h2><p>Limited slots — one sponsor per category per month keeps your brand exclusive.</p></div>
+    <div class="grid grid-3">
+      <div class="card"><span class="emoji">📬</span><h3>Daily Brief Sponsor</h3><p><b>$750/month</b><br>"Presented by" placement in the daily intel email and web briefing. One sponsor per month, category-exclusive.</p></div>
+      <div class="card"><span class="emoji">📰</span><h3>Featured Article</h3><p><b>$400/article</b><br>Sponsored technical article or case study, featured in the briefing and archived on the site.</p></div>
+      <div class="card"><span class="emoji">🎯</span><h3>Homepage Banner</h3><p><b>$500/month</b><br>Banner placement on the homepage and ticker mention across all pages.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block alt" id="contact">
+  <div class="container" style="max-width:640px">
+    <div class="section-head"><h2>Enquire About Sponsorship</h2></div>
+    <div class="card">
+      <form onsubmit="alert('Prototype — enquiries will be sent to your email at launch.'); return false;">
+        <div class="row">
+          <div><label>Name *</label><input type="text" required></div>
+          <div><label>Company *</label><input type="text" required></div>
+        </div>
+        <div class="row">
+          <div><label>Email *</label><input type="email" required></div>
+          <div><label>Interested In *</label>
+            <select required>
+              <option value="">Select...</option>
+              <option>Daily Brief Sponsorship</option><option>Featured Article</option>
+              <option>Homepage Banner</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-bottom:16px"><label>Message</label><textarea rows="4" placeholder="Tell us about your goals..."></textarea></div>
+        <button class="btn btn-amber" type="submit" style="width:100%">Send Enquiry →</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container"><div class="copyright">© 2026 TransformerInsider. An independent transformer-industry platform.</div></div>
+</footer>
+
+</body>
+</html>

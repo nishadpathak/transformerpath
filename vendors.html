@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vendor Directory — TransformerInsider</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo">Transformer<span>Insider</span></a>
+    <button class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <nav class="nav-links">
+      <a href="intel.html">Daily Intel</a>
+      <a href="events.html">Events</a>
+      <a href="jobs.html">Jobs</a>
+      <a href="learn.html">Learn</a>
+      <a href="grids.html">Grids</a>
+      
+      <a href="resources.html">Resources</a>
+      <a href="sponsor.html">Sponsor</a>
+      <a href="intel.html" class="btn btn-amber">Subscribe</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" style="padding:50px 0 40px">
+  <div class="container">
+    <h1 style="font-size:2.2rem">Verified <span>Vendor Directory</span></h1>
+    <p>Find qualified transformer manufacturers and accessories suppliers worldwide.</p>
+  </div>
+</section>
+
+<section class="block">
+  <div class="container">
+    <div class="filters">
+      <button class="on" data-f="all">All Categories</button>
+      <button data-f="oem">Transformer OEMs</button>
+      <button data-f="acc">Accessories</button>
+      <button data-f="ins">Insulation & Materials</button>
+      <button data-f="svc">Services & Testing</button>
+    </div>
+
+    <div class="grid grid-3">
+      <div class="card vendor-card" data-cat="acc"><div class="avatar">BU</div><h3>Bushings Supplier (Sample)</h3><p>Condenser & OIP bushings up to 420kV · DEWA/SEC approved</p><span class="badge-verified">✓ Verified Vendor</span></div>
+      <div class="card vendor-card" data-cat="acc"><div class="avatar">TC</div><h3>Tap-Changer Supplier (Sample)</h3><p>OLTC & DETC, spares and retrofit services across GCC</p><span class="badge-verified">✓ Verified Vendor</span></div>
+      <div class="card vendor-card" data-cat="ins"><div class="avatar">IN</div><h3>Insulation Materials (Sample)</h3><p>Pressboard, crepe paper, CTC insulation — IEC 60641 range</p><span class="badge-verified">✓ Verified Vendor</span></div>
+      <div class="card vendor-card" data-cat="oem"><div class="avatar">PT</div><h3>Power Transformer OEM (Sample)</h3><p>Power & distribution transformers up to 220kV class</p><span class="badge-verified">✓ Verified Vendor</span></div>
+      <div class="card vendor-card" data-cat="svc"><div class="avatar">TS</div><h3>Testing & Services (Sample)</h3><p>Site testing, oil filtration, condition monitoring, repairs</p><span class="badge-verified">✓ Verified Vendor</span></div>
+      <div class="card vendor-card" data-cat="acc"><div class="avatar">RD</div><h3>Radiators & Coolers (Sample)</h3><p>Panel radiators, fans, conservators, corrugated tanks</p><span class="badge-verified">✓ Verified Vendor</span></div>
+    </div>
+
+    <div class="card" style="margin-top:36px; text-align:center">
+      <h3>Are you a supplier to the transformer industry?</h3>
+      <p style="margin:8px 0 18px">Get listed, get verified, and receive RFQs directly from buyers worldwide.</p>
+      <a href="rfq.html" class="btn btn-amber">Apply for Listing →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container"><div class="copyright">© 2026 TransformerInsider. Sample listings shown — directory populated at launch.</div></div>
+</footer>
+
+<script>
+document.querySelectorAll('.filters button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filters button').forEach(b => b.classList.remove('on'));
+    btn.classList.add('on');
+    const f = btn.dataset.f;
+    document.querySelectorAll('.vendor-card').forEach(item => {
+      item.style.display = (f === 'all' || item.dataset.cat === f) ? '' : 'none';
+    });
+  });
+});
+</script>
+
+</body>
+</html>

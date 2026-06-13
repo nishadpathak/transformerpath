@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learn Transformer Design — Complete Course | TransformerInsider</title>
+<meta name="description" content="Learn transformer design step by step — a free 20-section engineering course from specification and core to windings, insulation, cooling, losses, testing and standards, plus an interactive 3D construction explorer. A fresh lesson is spotlighted each week.">
+<link rel="stylesheet" href="style.css">
+<style>
+.module { background:#fff; border:1px solid var(--border); border-radius:12px; padding:18px 22px; margin-bottom:12px; transition:box-shadow .2s; }
+.module.spotlight { border-color:var(--amber); box-shadow:0 4px 18px rgba(245,166,35,.18); }
+.module h3 { color:var(--navy); font-size:1.02rem; margin:0; display:flex; align-items:center; }
+.module .mod-no { display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:50%; background:var(--navy); color:var(--amber); font-weight:800; font-size:.88rem; margin-right:10px; flex-shrink:0; }
+.module.spotlight .mod-no { background:var(--amber); color:var(--navy); }
+.module p { color:var(--muted); font-size:.9rem; margin:8px 0 10px; }
+.module .links a { font-size:.83rem; font-weight:600; color:var(--amber-dark); margin-right:16px; }
+.wk-pill { display:inline-block; background:var(--amber); color:var(--navy); font-size:.66rem; font-weight:800; text-transform:uppercase; letter-spacing:.5px; padding:2px 9px; border-radius:999px; margin-left:auto; }
+.formula-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.formula { background:#fff; border:1px solid var(--border); border-left:4px solid var(--amber); border-radius:10px; padding:14px 18px; }
+.formula h4 { color:var(--navy); font-size:.92rem; margin:0 0 6px; }
+.formula code { display:block; background:#0d1b2e; color:#f5a623; padding:9px 12px; border-radius:6px; font-size:.86rem; overflow-x:auto; }
+.formula small { color:var(--muted); font-size:.78rem; display:block; margin-top:6px; }
+.featured { background:linear-gradient(135deg,var(--navy),#1b3a5c); color:#fff; border-radius:14px; padding:24px 26px; margin-bottom:24px; }
+.featured .kick { display:inline-block; background:var(--amber); color:var(--navy); font-size:.7rem; font-weight:800; text-transform:uppercase; letter-spacing:.6px; padding:3px 10px; border-radius:999px; margin-bottom:10px; }
+.featured h3 { margin:0 0 6px; font-size:1.2rem; }
+.featured p { color:#b8c4d4; font-size:.92rem; margin:0 0 14px; }
+.hero-cards { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:36px; }
+.hero-card { border-radius:14px; padding:26px; color:#fff; display:flex; flex-direction:column; }
+.hero-card.tut { background:linear-gradient(135deg,#0b3a63,#0b5fa5); }
+.hero-card.exp { background:linear-gradient(135deg,#13263a,#0e1c2c); border:1px solid #23415e; }
+.hero-card h3 { font-size:1.25rem; margin:0 0 8px; }
+.hero-card p { font-size:.92rem; opacity:.9; margin:0 0 18px; flex:1; }
+@media (max-width:640px){ .formula-grid, .hero-cards { grid-template-columns:1fr; } }
+.calc { display:grid; grid-template-columns:1fr 1fr; gap:18px; background:#fff; border:1px solid var(--border); border-radius:14px; padding:22px; }
+.calc-inputs { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.calc-inputs label { display:flex; flex-direction:column; font-size:.78rem; font-weight:700; color:var(--navy); gap:5px; }
+.calc-inputs input, .calc-inputs select { padding:9px 11px; border:1px solid var(--border); border-radius:8px; font-size:.92rem; font-family:inherit; font-weight:400; }
+.calc-out { background:#0d1b2e; border-radius:12px; padding:18px 20px; color:#fff; align-self:start; }
+.calc-out .or { display:flex; justify-content:space-between; align-items:baseline; padding:7px 0; border-bottom:1px solid rgba(255,255,255,.08); font-size:.9rem; }
+.calc-out .or:last-child { border-bottom:0; }
+.calc-out .or span { color:#9fb0c4; }
+.calc-out .or b { color:var(--amber); font-size:1.02rem; font-variant-numeric:tabular-nums; }
+.calc-out h4 { margin:0 0 8px; font-size:.74rem; text-transform:uppercase; letter-spacing:.6px; color:#9fb0c4; }
+@media (max-width:700px){ .calc { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo">Transformer<span>Insider</span></a>
+    <button class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <nav class="nav-links">
+      <a href="intel.html">Daily Intel</a>
+      <a href="events.html">Events</a>
+      <a href="manufacturers.html">Manufacturers</a>
+      <a href="learn.html" class="active">Learn</a>
+      <a href="grids.html">Grids</a>
+      <a href="resources.html">Resources</a>
+      <a href="sponsor.html">Sponsor</a>
+      <a href="intel.html" class="btn btn-amber">Subscribe</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" style="padding:50px 0 40px">
+  <div class="container">
+    <h1 style="font-size:2.2rem">Learn Transformer <span>Design</span></h1>
+    <p>A free, in-depth engineering course — 20 sections taking you from a customer specification to a complete power/distribution transformer design, with worked calculations, diagrams and an interactive 3D model. A fresh lesson is spotlighted every week.</p>
+  </div>
+</section>
+
+<section class="block">
+  <div class="container" style="max-width:860px">
+
+    <!-- Two entry points: full course + 3D explorer -->
+    <div class="hero-cards">
+      <div class="hero-card tut">
+        <h3>📘 The Complete Course</h3>
+        <p>Fundamentals, core &amp; CRGO, windings, insulation, cooling, tank &amp; accessories, a fully worked 1000 kVA design, losses, testing, standards, vector groups and more — 20 sections with diagrams and formulas.</p>
+        <a class="btn btn-amber" href="tutorial.html">Open the full course →</a>
+      </div>
+      <div class="hero-card exp">
+        <h3>🧩 Interactive 3D Explorer</h3>
+        <p>Rotate, zoom and explode a transformer in 3D — oil-immersed and cast-resin modes, toggle components, and click any part to learn what it does.</p>
+        <a class="btn btn-amber" href="explorer.html">Explore the 3D model →</a>
+      </div>
+    </div>
+
+    <!-- More courses & tools hub -->
+    <div class="section-head" style="margin-bottom:14px"><h2>More Courses & Tools</h2><p>Interactive learning and engineering tools — all free.</p></div>
+    <div class="grid grid-3" style="margin-bottom:36px">
+      <a class="card" href="academy.html"><span class="emoji">🎓</span><h3>Transformer Academy</h3><p>An interactive masterclass — learn transformers the way they're actually built.</p></a>
+      <a class="card" href="power3d.html"><span class="emoji">🔌</span><h3>Power Transformer 3D</h3><p>Explore a 100 MVA 132/33 kV power transformer in interactive 3D.</p></a>
+      <a class="card" href="coilassembly.html"><span class="emoji">🧵</span><h3>Core & Coil Assembly 3D</h3><p>See how the core is built and the coils are assembled, step by step.</p></a>
+      <a class="card" href="calculator.html"><span class="emoji">🧮</span><h3>Design Calculator</h3><p>Full distribution / power / cast-resin design calculator.</p></a>
+      <a class="card" href="construction-guide.html"><span class="emoji">📐</span><h3>Construction Guide</h3><p>From core to customer — a complete construction walkthrough.</p></a>
+      <a class="card" href="country-designer.html"><span class="emoji">🌍</span><h3>Country-Based Designer</h3><p>Design a transformer to a chosen country's grid and standards.</p></a>
+    </div>
+
+    <!-- Lesson of the week (auto-rotates by ISO week) -->
+    <div class="featured" id="featured"></div>
+
+    <!-- Curriculum -->
+    <div class="section-head" style="margin-bottom:18px"><h2>The Design Curriculum</h2><p>The course, in the order a real design is built. This week's spotlight is highlighted — jump straight to that section.</p></div>
+
+    <div id="curriculum"></div>
+
+    <!-- Key formulas -->
+    <div class="section-head" style="margin:44px auto 18px"><h2>Key Design Formulas</h2><p>The core calculations every transformer designer reaches for.</p></div>
+    <div class="formula-grid">
+      <div class="formula"><h4>EMF / Volts-per-Turn</h4><code>E = 4.44 · f · N · B&#8344; · A&#8343;</code><small>f = frequency (Hz), N = turns, B&#8344; = peak flux density (T), A&#8343; = net core area (m²)</small></div>
+      <div class="formula"><h4>Turns per Volt</h4><code>T&#8341; = 1 / (4.44 · f · B&#8344; · A&#8343;)</code><small>Multiply by winding voltage to get the number of turns</small></div>
+      <div class="formula"><h4>Core Area (single-phase est.)</h4><code>A&#8343; ≈ K · √(kVA)</code><small>K is an empirical constant for the core type / steel grade</small></div>
+      <div class="formula"><h4>Conductor Area</h4><code>a = I / δ</code><small>I = winding current (A), δ = current density (A/mm², typ. 2–3.5)</small></div>
+      <div class="formula"><h4>Window Area Check</h4><code>A&#8345; ≥ Σ(N · a) / K&#8345;</code><small>K&#8345; = window space factor (allows for insulation &amp; formers)</small></div>
+      <div class="formula"><h4>Efficiency</h4><code>η = P&#8631; / (P&#8631; + P&#8589; + P&#8580;&#8581;)</code><small>Core loss is constant; copper loss varies with load²</small></div>
+    </div>
+
+    <!-- Interactive sizing calculator -->
+    <div class="section-head" style="margin:44px auto 18px"><h2>⚡ Quick Sizing Calculator</h2><p>Enter a rating and watch a first-pass design fall out — volts-per-turn, core area, turns, currents and conductor sizes. Live, in your browser.</p></div>
+    <div class="calc">
+      <div class="calc-inputs">
+        <label>Phases<select id="cPh"><option value="3">Three-phase</option><option value="1">Single-phase</option></select></label>
+        <label>Rating (kVA)<input id="cKva" type="number" value="1000" min="1"></label>
+        <label>HV line voltage (V)<input id="cHv" type="number" value="11000" min="1"></label>
+        <label>LV line voltage (V)<input id="cLv" type="number" value="433" min="1"></label>
+        <label>Frequency (Hz)<input id="cF" type="number" value="50" min="1"></label>
+        <label>Flux density Bₘ (T)<input id="cB" type="number" value="1.6" step="0.05" min="0.5" max="1.9"></label>
+        <label>Current density δ (A/mm²)<input id="cD" type="number" value="3" step="0.1" min="1" max="5"></label>
+        <label>Core constant K<input id="cK" type="number" value="0.45" step="0.01" min="0.3" max="0.6"></label>
+      </div>
+      <div class="calc-out" id="calcOut"></div>
+    </div>
+
+    <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:22px">
+      Engineering course authored for TransformerInsider. The calculator gives a first-pass estimate using simplified formulas — always design to the applicable IEC 60076 / ANSI C57 standard.
+    </p>
+  </div>
+</section>
+
+<footer>
+  <div class="container"><div class="copyright">© 2026 TransformerInsider. Educational content for learning purposes.</div></div>
+</footer>
+
+<script>
+// 20-section curriculum — each deep-links into the full course (tutorial.html#anchor).
+const MODULES = [
+ { n:1,  t:"Fundamentals", a:"fundamentals", d:"How a transformer works — mutual induction, the EMF equation, ideal vs real behaviour, and the rating inputs (kVA, voltage ratio, frequency, phases) that drive everything downstream." },
+ { n:2,  t:"Classification & Specification", a:"classification", d:"Power vs distribution, core-type vs shell-type, cooling classes (ONAN/ONAF), vector group, impedance, tap range and the standards (IEC 60076 / ANSI C57) the customer specifies." },
+ { n:3,  t:"Core Design & CRGO", a:"core", d:"Choosing core area and flux density, CRGO grades and stacking factor, and how silicon steel cuts hysteresis and eddy losses — setting iron weight and no-load loss." },
+ { n:4,  t:"Windings & Current Density", a:"windings", d:"Conductor sizing from current density, LV-over-core then HV arrangement, layer/disc/helical windings, and the window-area check that confirms it all fits." },
+ { n:5,  t:"Insulation System", a:"insulation", d:"Turn, layer and major insulation; pressboard and paper (IEC 60641); clearances and creepage; oil as a dielectric — the discipline that decides reliability and life." },
+ { n:6,  t:"Thermal & Cooling Design", a:"cooling", d:"Temperature rise, radiators and fans, ONAN/ONAF/OFAF classes, oil flow and hot-spot control — turning loss watts into a safe operating temperature." },
+ { n:7,  t:"Tank & Accessories", a:"construction", d:"Tank, conservator, bushings, tap-changer (OLTC/DETC), Buchholz, breather, protection and monitoring — the hardware around the active part." },
+ { n:8,  t:"Dry-Type & Cast Resin", a:"drytype", d:"Cast-resin and VPI dry-type transformers — where they win, their thermal classes, and design differences from oil-immersed units." },
+ { n:9,  t:"Worked Design Example", a:"design", d:"A complete 1000 kVA design worked end-to-end — from spec through core, turns, windings and window check to losses, the way a real designer builds it." },
+ { n:10, t:"Losses, Impedance & Efficiency", a:"losses", d:"No-load and load loss, leakage reactance and percent impedance, efficiency and voltage regulation — the numbers the customer guarantees." },
+ { n:11, t:"Testing & Type Tests", a:"testing", d:"Routine, type and special tests — ratio, winding resistance, no-load and load loss, impedance, insulation, impulse and temperature-rise — verifying against IEC 60076." },
+ { n:12, t:"Standards", a:"standards", d:"The IEC 60076 family, ANSI/IEEE C57, and the component standards for bushings, tap-changers, oil and pressboard you design to." },
+ { n:13, t:"Vector Groups", a:"vectorgroups", d:"Dyn11, Ynd1 and the rest — phase displacement, why it matters for paralleling, and how the connection is built in the windings." },
+ { n:14, t:"Inrush", a:"inrush", d:"Magnetising inrush current — why it happens at switch-on, how large it gets, and how protection is set so it doesn't false-trip." },
+ { n:15, t:"Special Types", a:"special", d:"Autotransformers, converter and furnace transformers, earthing transformers and other specials — what changes in the design." },
+ { n:16, t:"Site & Life", a:"sitelife", d:"Installation, commissioning, oil management, condition monitoring and end-of-life — getting the full service life out of the unit." },
+ { n:17, t:"Protection", a:"protection", d:"Differential, REF, overcurrent, Buchholz and pressure-relief protection — the relays and devices that keep a transformer (and the grid) safe." },
+ { n:18, t:"Procurement & Tendering", a:"procurement", d:"Reading a tender spec, building a compliant offer, guarantees and penalties, FAT/SAT and how buyers actually evaluate transformer bids." },
+ { n:19, t:"Glossary & Self-Test", a:"glossary", d:"Key terms in one place plus a quick self-test to check your understanding of the whole course." },
+ { n:20, t:"After-Sales & Service", a:"aftersales", d:"Warranty, spares, retrofits, oil treatment and field service — the support a transformer needs across decades in operation." }
+];
+
+function isoWeek(d){
+  const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  const day = (t.getUTCDay() + 6) % 7;
+  t.setUTCDate(t.getUTCDate() - day + 3);
+  const first = new Date(Date.UTC(t.getUTCFullYear(),0,4));
+  return 1 + Math.round(((t - first)/86400000 - 3 + ((first.getUTCDay()+6)%7))/7);
+}
+const wk = isoWeek(new Date());
+const spotIdx = wk % MODULES.length;
+
+const fm = MODULES[spotIdx];
+document.getElementById('featured').innerHTML =
+  `<span class="kick">Lesson of the Week · Section ${fm.n}</span>
+   <h3>${fm.t}</h3>
+   <p>${fm.d}</p>
+   <a class="btn btn-amber" href="tutorial.html#${fm.a}">Open this week's lesson →</a>`;
+
+document.getElementById('curriculum').innerHTML = MODULES.map((m,i)=>
+  `<div class="module${i===spotIdx?' spotlight':''}">
+     <h3><span class="mod-no">${m.n}</span> ${m.t}${i===spotIdx?'<span class="wk-pill">This week</span>':''}</h3>
+     <p>${m.d}</p>
+     <div class="links">
+       <a href="tutorial.html#${m.a}">📖 Read this section</a>
+       <a href="explorer.html">🧩 3D model</a>
+     </div>
+   </div>`).join('');
+
+// ── Quick sizing calculator ──
+(function(){
+  const ids=['cPh','cKva','cHv','cLv','cF','cB','cD','cK'];
+  const el=Object.fromEntries(ids.map(i=>[i,document.getElementById(i)]));
+  const out=document.getElementById('calcOut');
+  if(!out) return;
+  const fmt=(n,d=0)=>isFinite(n)?n.toLocaleString(undefined,{maximumFractionDigits:d,minimumFractionDigits:d}):'—';
+  function calc(){
+    const ph=+el.cPh.value, S=+el.cKva.value*1000, HV=+el.cHv.value, LV=+el.cLv.value;
+    const f=+el.cF.value, B=+el.cB.value, dens=+el.cD.value, K=+el.cK.value;
+    // volts per turn (empirical): Et = K*sqrt(kVA per phase-ish). Use total kVA for K calibration.
+    const Et = K*Math.sqrt(+el.cKva.value);
+    // core area from Et = 4.44 f B Ac  -> Ac (m2) -> cm2
+    const Ac = Et/(4.44*f*B); // m^2
+    const AcCm = Ac*1e4;
+    // phase voltages
+    const Vp_hv = ph===3 ? HV/Math.sqrt(3) : HV;   // assume star HV for 3ph (typical)
+    const Vp_lv = ph===3 ? LV/Math.sqrt(3) : LV;
+    const Nhv = Vp_hv/Et, Nlv = Vp_lv/Et;
+    // currents (line)
+    const Ihv = ph===3 ? S/(Math.sqrt(3)*HV) : S/HV;
+    const Ilv = ph===3 ? S/(Math.sqrt(3)*LV) : S/LV;
+    const aHv = Ihv/dens, aLv = Ilv/dens; // mm^2 (line current ~ phase for star)
+    out.innerHTML =
+      `<h4>First-pass design</h4>
+       <div class="or"><span>Volts per turn (Eₜ)</span><b>${fmt(Et,2)} V</b></div>
+       <div class="or"><span>Net core area</span><b>${fmt(AcCm,0)} cm²</b></div>
+       <div class="or"><span>HV turns / phase</span><b>${fmt(Nhv,0)}</b></div>
+       <div class="or"><span>LV turns / phase</span><b>${fmt(Nlv,0)}</b></div>
+       <div class="or"><span>HV line current</span><b>${fmt(Ihv,1)} A</b></div>
+       <div class="or"><span>LV line current</span><b>${fmt(Ilv,0)} A</b></div>
+       <div class="or"><span>HV conductor area</span><b>${fmt(aHv,1)} mm²</b></div>
+       <div class="or"><span>LV conductor area</span><b>${fmt(aLv,0)} mm²</b></div>`;
+  }
+  ids.forEach(i=>{ el[i].addEventListener('input',calc); el[i].addEventListener('change',calc); });
+  calc();
+})();
+</script>
+
+</body>
+</html>

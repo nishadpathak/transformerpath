@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TransformerInsider — Global Transformer Industry Intelligence & Network</title>
+<meta name="description" content="The global platform for transformer professionals — daily market intel, industry events, jobs, a world grid census and an interactive 3D transformer explorer.">
+<link rel="stylesheet" href="style.css">
+<style>
+/* ── Cinematic hero ── */
+.hero-cine { position:relative; overflow:hidden; background:radial-gradient(1200px 600px at 70% -10%, #1b3a5c 0%, var(--navy) 55%, #0a1626 100%); color:#fff; padding:78px 0 88px; }
+.hero-cine .container { position:relative; z-index:3; }
+.hero-art { position:absolute; inset:0; z-index:1; opacity:.9; pointer-events:none; }
+.hero-cine::after { content:""; position:absolute; inset:0; z-index:2; background:linear-gradient(90deg, var(--navy) 0%, rgba(13,27,46,.72) 42%, rgba(13,27,46,.15) 100%); }
+.hero-cine .kicker { display:inline-block; background:rgba(245,166,35,.14); color:var(--amber); padding:6px 18px; border-radius:999px; font-size:.82rem; font-weight:700; letter-spacing:.3px; margin-bottom:22px; border:1px solid rgba(245,166,35,.3); }
+.hero-cine h1 { font-size:3.1rem; line-height:1.08; letter-spacing:-1.2px; margin-bottom:18px; max-width:680px; }
+.hero-cine h1 span { color:var(--amber); }
+.hero-cine .lead { color:#c4d2e4; max-width:560px; font-size:1.14rem; margin-bottom:30px; }
+.hero-cine .hero-ctas { display:flex; gap:14px; flex-wrap:wrap; }
+.hero-cine .trust { display:flex; gap:26px; margin-top:32px; color:#9fb0c4; font-size:.9rem; flex-wrap:wrap; }
+.hero-cine .trust span::before { content:"✓ "; color:var(--amber); font-weight:700; }
+@media (max-width:760px){ .hero-cine h1 { font-size:2.2rem; } .hero-cine::after { background:rgba(13,27,46,.55); } }
+
+/* ── Animated count-up stats ── */
+.kpi { background:var(--navy-2); color:#fff; padding:0; }
+.kpi .container { display:grid; grid-template-columns:repeat(4,1fr); gap:0; }
+.kpi .k { padding:30px 18px; text-align:center; border-right:1px solid rgba(255,255,255,.07); }
+.kpi .k:last-child { border-right:0; }
+.kpi .k b { display:block; font-size:2.4rem; color:var(--amber); font-weight:800; letter-spacing:-1px; line-height:1; }
+.kpi .k small { color:#9fb0c4; font-size:.84rem; display:block; margin-top:8px; }
+@media (max-width:680px){ .kpi .container { grid-template-columns:1fr 1fr; } .kpi .k:nth-child(2){border-right:0} }
+
+/* ── 3D feature ── */
+.feat3d { background:linear-gradient(135deg,#0a1626,#13263a); color:#fff; padding:64px 0; }
+.feat3d .wrap { display:grid; grid-template-columns:1fr 1.25fr; gap:36px; align-items:center; }
+.feat3d h2 { font-size:2rem; margin-bottom:12px; }
+.feat3d h2 span { color:var(--amber); }
+.feat3d p { color:#b8c4d4; margin-bottom:20px; }
+.feat3d .chips { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:24px; }
+.feat3d .chips span { background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); color:#cbd5e1; font-size:.8rem; padding:5px 12px; border-radius:999px; }
+.frame3d { position:relative; border-radius:16px; overflow:hidden; box-shadow:0 20px 60px rgba(0,0,0,.5); border:1px solid #23415e; background:#08121e; aspect-ratio:16/10; }
+.frame3d iframe { width:100%; height:100%; border:0; display:block; }
+.frame3d .hint { position:absolute; bottom:10px; left:12px; background:rgba(8,18,30,.8); color:#9fb0c4; font-size:.74rem; padding:4px 10px; border-radius:6px; pointer-events:none; }
+@media (max-width:820px){ .feat3d .wrap { grid-template-columns:1fr; } }
+
+/* ── Scroll reveal ── */
+.reveal { opacity:0; transform:translateY(22px); transition:opacity .7s ease, transform .7s ease; }
+.reveal.in { opacity:1; transform:none; }
+
+/* ── Card hover lift ── */
+.block .card { transition:transform .2s ease, box-shadow .2s ease; }
+.block .card:hover { transform:translateY(-4px); box-shadow:0 14px 34px rgba(13,27,46,.13); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo">Transformer<span>Insider</span></a>
+    <button class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
+    <nav class="nav-links">
+      <a href="intel.html">Daily Intel</a>
+      <a href="events.html">Events</a>
+      <a href="manufacturers.html">Manufacturers</a>
+      <a href="learn.html">Learn</a>
+      <a href="grids.html">Grids</a>
+      <a href="resources.html">Resources</a>
+      <a href="sponsor.html">Sponsor</a>
+      <a href="intel.html" class="btn btn-amber">Subscribe</a>
+    </nav>
+  </div>
+</header>
+
+<div class="ticker">
+  <div class="ticker-inner" id="ticker">
+    <b>Copper</b> ~$6.29/lb (≈$13,870/t, record $6.6 on 2 Jun) <b>Electrical Steel (US)</b> ~$5,550/MT <b>LPT Lead Times</b> up to 48 months <b>IEA</b> Mideast conflict shifts $2.2T into grids & energy security <b>SEC</b> $906M Afif 380kV + $376M SPTC deal <b>UAE DCs</b> Microsoft/Khazna $5.2B + Stargate 1GW <b>PGCIL</b> Hitachi Rs 6.47B 765kV order <b>Weidmann</b> $220M+ China transformerboard plant &nbsp;&nbsp;&nbsp;
+    <b>Copper</b> ~$6.29/lb (≈$13,870/t, record $6.6 on 2 Jun) <b>Electrical Steel (US)</b> ~$5,550/MT <b>LPT Lead Times</b> up to 48 months <b>IEA</b> Mideast conflict shifts $2.2T into grids & energy security <b>SEC</b> $906M Afif 380kV + $376M SPTC deal <b>UAE DCs</b> Microsoft/Khazna $5.2B + Stargate 1GW <b>PGCIL</b> Hitachi Rs 6.47B 765kV order <b>Weidmann</b> $220M+ China transformerboard plant &nbsp;&nbsp;&nbsp;
+  </div>
+</div>
+
+<!-- ══ Cinematic hero with animated power flow ══ -->
+<section class="hero-cine">
+  <svg class="hero-art" viewBox="0 0 1200 520" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="cu" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#f5a623"/><stop offset="1" stop-color="#c97a3d"/></linearGradient>
+      <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#f5a623" stop-opacity=".55"/><stop offset="1" stop-color="#f5a623" stop-opacity="0"/></radialGradient>
+      <filter id="soft"><feGaussianBlur stdDeviation="2.2"/></filter>
+    </defs>
+
+    <!-- incoming + outgoing transmission lines -->
+    <path id="lineIn" d="M-20,150 H470" stroke="#33526f" stroke-width="2" fill="none"/>
+    <path id="lineOut" d="M730,370 H1240" stroke="#33526f" stroke-width="2" fill="none"/>
+    <path d="M470,150 C560,150 560,260 600,260" stroke="#33526f" stroke-width="2" fill="none"/>
+    <path d="M600,260 C640,260 640,370 730,370" stroke="#33526f" stroke-width="2" fill="none"/>
+
+    <!-- pylons -->
+    <g stroke="#33526f" stroke-width="2" fill="none" opacity=".6">
+      <path d="M120,150 l-16,46 m16,-46 l16,46 m-22,16 h12"/>
+      <path d="M1080,370 l-16,46 m16,-46 l16,46 m-22,16 h12"/>
+    </g>
+
+    <!-- glow behind transformer -->
+    <circle cx="600" cy="260" r="170" fill="url(#glow)" filter="url(#soft)"/>
+
+    <!-- transformer core (laminated window) -->
+    <g transform="translate(600,260)">
+      <rect x="-78" y="-104" width="156" height="208" rx="10" fill="none" stroke="#8a9bb0" stroke-width="16"/>
+      <!-- primary coil (left limb) -->
+      <g>
+        <rect x="-66" y="-78" width="34" height="156" rx="9" fill="url(#cu)" opacity=".9"/>
+        <rect x="-66" y="-78" width="34" height="156" rx="9" fill="none" stroke="#ffd98a" stroke-width="1" opacity=".5"/>
+      </g>
+      <!-- secondary coil (right limb) -->
+      <g>
+        <rect x="32" y="-78" width="34" height="156" rx="9" fill="url(#cu)" opacity=".9"/>
+        <rect x="32" y="-78" width="34" height="156" rx="9" fill="none" stroke="#ffd98a" stroke-width="1" opacity=".5"/>
+      </g>
+      <!-- animated flux loops through the window -->
+      <g fill="none" stroke="#f5a623" stroke-width="2.4" opacity=".85">
+        <ellipse cx="0" cy="0" rx="22" ry="92" stroke-dasharray="10 14"><animate attributeName="stroke-dashoffset" from="0" to="-96" dur="2.2s" repeatCount="indefinite"/></ellipse>
+        <ellipse cx="0" cy="0" rx="40" ry="98" stroke-dasharray="8 18" opacity=".5"><animate attributeName="stroke-dashoffset" from="0" to="-104" dur="3s" repeatCount="indefinite"/></ellipse>
+      </g>
+    </g>
+
+    <!-- moving power particles along the lines -->
+    <g fill="#f5a623">
+      <circle r="4"><animateMotion dur="2.6s" repeatCount="indefinite" keyPoints="0;1" keyTimes="0;1"><mpath href="#lineIn"/></animateMotion></circle>
+      <circle r="4" opacity=".7"><animateMotion dur="2.6s" begin="1.3s" repeatCount="indefinite"><mpath href="#lineIn"/></animateMotion></circle>
+      <circle r="4"><animateMotion dur="2.6s" begin=".6s" repeatCount="indefinite"><mpath href="#lineOut"/></animateMotion></circle>
+      <circle r="4" opacity=".7"><animateMotion dur="2.6s" begin="1.9s" repeatCount="indefinite"><mpath href="#lineOut"/></animateMotion></circle>
+    </g>
+  </svg>
+
+  <div class="container">
+    <span class="kicker">The Inside Track on the Global Transformer Industry</span>
+    <h1>Where the world's<br><span>transformer industry</span><br>stays ahead.</h1>
+    <p class="lead">Daily market intelligence, industry events, jobs, a 124-country grid census and an interactive 3D transformer explorer — all in one place, all free.</p>
+    <div class="hero-ctas">
+      <a href="intel.html" class="btn btn-amber">Read Today's Intel</a>
+      <a href="#explore3d" class="btn btn-outline">See it in 3D ▶</a>
+    </div>
+    <div class="trust"><span>Free Forever</span><span>Updated Daily</span><span>Global Coverage</span></div>
+  </div>
+</section>
+
+<!-- ══ Count-up KPIs ══ -->
+<section class="kpi">
+  <div class="container" id="kpiRow">
+    <div class="k"><b data-count="124">0</b><small>Countries' grids mapped</small></div>
+    <div class="k"><b data-count="98" data-suffix="+">0</b><small>Upcoming industry events</small></div>
+    <div class="k"><b data-count="139" data-suffix="+">0</b><small>Grid operators tracked</small></div>
+    <div class="k"><b data-count="2" data-suffix="×">0</b><small>Daily intel updates</small></div>
+  </div>
+</section>
+
+<!-- ══ 3D explorer feature ══ -->
+<section class="feat3d" id="explore3d">
+  <div class="container wrap">
+    <div class="reveal">
+      <h2>Take a transformer <span>apart in 3D</span></h2>
+      <p>Most of the industry has never seen one explained like this. Rotate, zoom and explode a complete unit — switch between oil-immersed and cast-resin, toggle components, and click any part to learn what it does.</p>
+      <div class="chips"><span>Orbit · pan · zoom</span><span>Exploded view</span><span>Oil &amp; cast-resin</span><span>Click-to-identify</span></div>
+      <a href="explorer.html" class="btn btn-amber">Open the full 3D explorer →</a>
+    </div>
+    <div class="reveal">
+      <div class="frame3d">
+        <iframe src="explorer.html" title="Interactive 3D transformer" loading="lazy"></iframe>
+        <span class="hint">🖱️ Drag to rotate · scroll to zoom</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="container">
+    <div class="section-head reveal">
+      <h2>Built for Every Role in the Transformer Industry</h2>
+      <p>Whether you're a utility engineer, accessories supplier, OEM or consultant — TransformerInsider is your platform.</p>
+    </div>
+    <div class="grid grid-4">
+      <div class="card reveal"><span class="emoji">🏭</span><h3>Manufacturers & OEMs</h3><p>Track tenders, project awards and capacity moves across every major market.</p></div>
+      <div class="card reveal"><span class="emoji">🔧</span><h3>Accessories Suppliers</h3><p>Bushings, tap-changers, insulation, oil, radiators — follow demand signals and material prices.</p></div>
+      <div class="card reveal"><span class="emoji">⚡</span><h3>Utilities & EPCs</h3><p>Stay ahead of supplier capacity, lead times and grid investment worldwide.</p></div>
+      <div class="card reveal"><span class="emoji">🤝</span><h3>Consultants & Engineers</h3><p>Daily intel, industry events, a grid census and a global jobs board in one place.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block alt">
+  <div class="container">
+    <div class="section-head reveal">
+      <h2>Today's Transformer Intel — At a Glance</h2>
+      <p>A daily briefing covering tenders & projects, supplier news and material prices worldwide.</p>
+    </div>
+    <div class="grid grid-3">
+      <div class="card reveal"><span class="emoji">📋</span><h3>Tenders & Projects</h3><p>SEC awards SPTC a $376M transformer & reactor deal; Hitachi Energy India wins a Rs 6.47B 765kV PGCIL order; KAHRAMAA 2026 expansion packages out.</p></div>
+      <div class="card reveal"><span class="emoji">🌍</span><h3>Supplier & Capacity News</h3><p>Weidmann commits $220M+ to a new China transformerboard plant; Voltamp and Virginia Transformer add new capacity; US LPT lead times still stretch to 4 years.</p></div>
+      <div class="card reveal"><span class="emoji">📈</span><h3>Prices & Materials</h3><p>Copper near $6.29/lb (≈$13,870/t), easing from a record $6.6 on 2 June as Mideast supply risks bite; CRGO firm near $5,550/MT US and ~$1,075/MT China.</p></div>
+    </div>
+    <p style="text-align:center; margin-top:30px" class="reveal"><a href="intel.html" class="btn btn-amber">Read the Full Briefing →</a></p>
+  </div>
+</section>
+
+<section class="block">
+  <div class="container">
+    <div class="section-head reveal">
+      <h2>Everything in One Place</h2>
+      <p>Five tools the transformer industry didn't have until now.</p>
+    </div>
+    <div class="grid grid-3">
+      <a class="card reveal" href="intel.html"><span class="emoji">📰</span><h3>Daily Intel →</h3><p>Twice-daily global briefing — tenders, supplier moves, prices — ordered by your region.</p></a>
+      <a class="card reveal" href="grids.html"><span class="emoji">🌐</span><h3>World Grids →</h3><p>124 countries, 139 operators, 16 synchronous areas — voltages, frequencies and official links.</p></a>
+      <a class="card reveal" href="events.html"><span class="emoji">📅</span><h3>Events →</h3><p>Every major power & transformer exhibition through 2028, with one-click hotel and flight booking.</p></a>
+      <a class="card reveal" href="manufacturers.html"><span class="emoji">🏭</span><h3>Manufacturers →</h3><p>A worldwide census of 500+ transformer makers — power, distribution and dry-type — country by country.</p></a>
+      <a class="card reveal" href="learn.html"><span class="emoji">🎓</span><h3>Learn →</h3><p>A free 16-section design course plus the interactive 3D explorer.</p></a>
+      <a class="card reveal" href="resources.html"><span class="emoji">📚</span><h3>Resources →</h3><p>IEC / ANSI standards and reference material every designer reaches for.</p></a>
+    </div>
+  </div>
+</section>
+
+<section class="cta-strip">
+  <div class="container">
+    <h2>Ready to Power Up Your Transformer Business?</h2>
+    <p>Get the twice-daily intel briefing — free.</p>
+    <a href="intel.html" class="btn btn-amber">Subscribe Free →</a>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="index.html" class="logo" style="font-size:1.2rem">Transformer<span style="color:var(--amber)">Insider</span></a>
+        <p style="margin-top:12px">The global intelligence and networking platform for transformer manufacturers, suppliers, engineers and utilities.</p>
+      </div>
+      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a>
+      <a href="events.html">Events</a><a href="manufacturers.html">Manufacturers</a>
+      <a href="learn.html">Learn</a>
+      <a href="grids.html">Grids</a><a href="resources.html">Resources</a>
+      <a href="sponsor.html">Sponsor</a></div>
+      <div><h4>COMPANY</h4><a href="#">About Us</a><a href="#">Contact</a><a href="#">Privacy</a><a href="#">Terms</a></div>
+      <div><h4>CONTACT</h4><a href="mailto:hello@transformerinsider.com">hello@transformerinsider.com</a><a href="#">Dubai, UAE</a></div>
+    </div>
+    <div class="copyright">© 2026 TransformerInsider. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+// Count-up KPIs (fire when the row scrolls into view)
+function countUp(el){
+  const target = +el.dataset.count, suffix = el.dataset.suffix || '';
+  const dur = 1400, t0 = performance.now();
+  (function tick(now){
+    const p = Math.min((now - t0)/dur, 1);
+    const eased = 1 - Math.pow(1-p, 3);
+    el.textContent = Math.round(target*eased) + (p===1?suffix:'');
+    if(p<1) requestAnimationFrame(tick);
+  })(t0);
+}
+const kpiObs = new IntersectionObserver((es)=>{
+  es.forEach(e=>{ if(e.isIntersecting){ e.target.querySelectorAll('[data-count]').forEach(countUp); kpiObs.unobserve(e.target); } });
+},{threshold:.4});
+const kpiRow = document.getElementById('kpiRow'); if(kpiRow) kpiObs.observe(kpiRow);
+
+// Scroll reveal
+const revObs = new IntersectionObserver((es)=>{
+  es.forEach((e,i)=>{ if(e.isIntersecting){ e.target.style.transitionDelay=(Math.min(i,4)*60)+'ms'; e.target.classList.add('in'); revObs.unobserve(e.target); } });
+},{threshold:.15});
+document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
+</script>
+
+</body>
+</html>

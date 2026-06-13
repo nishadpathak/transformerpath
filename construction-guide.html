@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transformer Construction Guide — From Core to Customer</title>
+<style>
+  :root{ color-scheme:light;
+    --bg:#f4f6f9; --card:#fff; --ink:#1a2332; --muted:#5b6b7f; --accent:#0e5fa8;
+    --accent2:#0a8f6c; --warn:#b4500a; --line:#dde4ec; --chip:#eaf1f8;
+    --mono:"SF Mono",Consolas,Menlo,monospace; }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.55 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  header{background:linear-gradient(135deg,#0d2c4f,#0e5fa8);color:#fff;padding:20px 28px}
+  header h1{margin:0;font-size:21px;font-weight:650}
+  header p{margin:4px 0 0;opacity:.85;font-size:13px}
+  nav{position:sticky;top:0;z-index:9;background:#fff;border-bottom:1px solid var(--line);
+      padding:8px 18px;display:flex;gap:6px;flex-wrap:wrap}
+  nav a{font-size:11.5px;font-weight:650;color:var(--accent);background:var(--chip);
+        border-radius:14px;padding:4px 10px;text-decoration:none;white-space:nowrap}
+  nav a:hover{background:var(--accent);color:#fff}
+  .wrap{max-width:1180px;margin:0 auto;padding:18px 22px 70px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+        padding:18px 20px;margin-bottom:18px;box-shadow:0 1px 3px rgba(20,40,70,.06)}
+  .stage{display:grid;grid-template-columns:430px 1fr;gap:20px;align-items:start}
+  @media(max-width:940px){.stage{grid-template-columns:1fr}}
+  .stgnum{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;
+          border-radius:50%;background:var(--accent);color:#fff;font-weight:700;margin-right:10px;font-size:14px}
+  h2{font-size:16.5px;color:#0d2c4f;margin:0 0 10px;display:flex;align-items:center}
+  h3{font-size:13px;color:var(--accent);margin:14px 0 6px}
+  .chk{list-style:none;padding:0;margin:6px 0}
+  .chk li{padding:4px 0 4px 26px;position:relative;font-size:13px}
+  .chk li:before{content:"✓";position:absolute;left:2px;color:var(--accent2);font-weight:700}
+  .chk li.hold:before{content:"H";color:#fff;background:var(--warn);border-radius:4px;
+       width:16px;height:16px;font-size:11px;text-align:center;line-height:16px;top:6px}
+  .chk li.hold{font-weight:600}
+  table.par{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:4px}
+  table.par td,table.par th{padding:5px 8px;border-bottom:1px solid #eef2f7;text-align:left}
+  table.par th{background:var(--chip);color:var(--accent);font-size:12px}
+  .legend{font-size:11.5px;color:var(--muted);margin-top:8px}
+  .note{font-size:12px;color:var(--muted);background:var(--chip);border-radius:8px;padding:10px 12px;margin-top:10px}
+  .figbox{background:#fdfdfe;border:1px solid var(--line);border-radius:10px;padding:6px}
+  .calcrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin:10px 0}
+  label{display:block;font-size:11.5px;color:var(--muted);font-weight:600;margin-bottom:2px}
+  input{width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:6px;font-size:14px}
+  .btn{padding:8px 14px;border:0;border-radius:8px;cursor:pointer;font-weight:650;font-size:12.5px;
+       background:var(--chip);color:var(--accent);margin-right:6px}
+  .btn:hover{background:var(--accent);color:#fff}
+  .res{background:#f2f8f3;border-radius:8px;padding:12px 14px;margin-top:10px;font-size:13.5px}
+  .res b{color:#0a6e44}
+  footer{font-size:11.5px;color:var(--muted);margin-top:24px;line-height:1.6}
+  svg text{font:9.5px var(--mono);fill:#33445c}
+</style>
+</head>
+<body>
+<div style="background:#0d1b2e;color:#fff;padding:10px 18px;font-family:'Segoe UI',system-ui,sans-serif;display:flex;align-items:center;gap:16px;font-size:.9rem;flex-wrap:wrap">
+  <a href="index.html" style="color:#fff;font-weight:800;text-decoration:none;font-size:1.05rem;letter-spacing:-.3px">Transformer<span style="color:#f5a623">Insider</span></a>
+  <a href="learn.html" style="color:#cbd5e1;text-decoration:none;margin-left:auto">&#8592; Learn hub</a>
+</div>
+<header>
+  <h1>Transformer Construction Guide</h1>
+  <p>Manufacturing stages, quality hold points, process parameters, testing, packing, lifting &amp; transport — distribution · power · cast resin</p>
+</header>
+<nav id="nav"></nav>
+<div class="wrap">
+  <div class="card">
+    <h2>Cutaway general arrangement — what goes where</h2>
+    <div class="figbox" id="hero"></div>
+    <div class="legend">Sectional GA, schematic proportions. The build sequence below follows the same order: core → windings → insulation → assembly → drying → tanking → accessories → test → despatch.</div>
+  </div>
+  <div id="stages"></div>
+
+  <div class="card" id="liftcalc">
+    <h2><span class="stgnum">⚙</span>Lifting &amp; transport calculator</h2>
+    <div class="calcrow">
+      <div><label>Transport weight (t)</label><input id="wt" type="number" value="63"></div>
+      <div><label>Height on trailer (m)</label><input id="ht" type="number" step="0.1" value="3.4"></div>
+      <div><label>Width (m)</label><input id="wd" type="number" step="0.1" value="2.6"></div>
+      <div><label>Length (m)</label><input id="ln" type="number" step="0.1" value="4.6"></div>
+    </div>
+    <button class="btn" onclick="pre(2.8,1.6,1.3,1.6)">1000 kVA dist.</button>
+    <button class="btn" onclick="pre(63,3.4,2.6,4.6)">50 MVA</button>
+    <button class="btn" onclick="pre(245,4.4,3.9,7.1)">315 MVA (transport mass, oil-out)</button>
+    <div class="res" id="liftres"></div>
+    <h3>Crane selection bands (mobile crane at ≈ 8–10 m working radius)</h3>
+    <table class="par"><tr><th>Lift weight</th><th>Crane</th><th>Rigging</th></tr>
+      <tr><td>≤ 5 t</td><td>25–30 t mobile</td><td>4-leg chain sling, ≥ 60° angle</td></tr>
+      <tr><td>≤ 15 t</td><td>70 t mobile</td><td>wire-rope slings + shackles WLL ≥ W/2 × 1.25</td></tr>
+      <tr><td>≤ 30 t</td><td>130 t mobile</td><td>spreader beam mandatory (bushing clearance)</td></tr>
+      <tr><td>≤ 60 t</td><td>220 t mobile</td><td>spreader beam, tag lines</td></tr>
+      <tr><td>≤ 120 t</td><td>400–450 t mobile / crawler</td><td>engineered lift plan, CoG verified</td></tr>
+      <tr><td>≤ 250 t</td><td>500–750 t lattice / gantry</td><td>hydraulic gantry or strand jacks at site</td></tr>
+      <tr><td>&gt; 250 t</td><td>hydraulic gantry / jack-and-slide</td><td>specialist heavy-lift contractor</td></tr></table>
+    <h3>Road transport bands (GCC practice)</h3>
+    <table class="par"><tr><th>Transport weight</th><th>Vehicle</th><th>Notes</th></tr>
+      <tr><td>≤ 24 t</td><td>flatbed semi-trailer</td><td>normal permits</td></tr>
+      <tr><td>≤ 45 t</td><td>3-axle lowbed</td><td>abnormal-load permit</td></tr>
+      <tr><td>≤ 80 t</td><td>4–6 axle lowbed</td><td>route survey, escort if wide</td></tr>
+      <tr><td>≤ 150 t</td><td>8–12 line hydraulic modular trailer</td><td>police escort, night movement</td></tr>
+      <tr><td>&gt; 150 t</td><td>SPMT / multi-line modular</td><td>bridge assessments, utility lifting of cables/gantries</td></tr></table>
+    <div class="note">Rules of thumb used: axle-line limit ≈ 12 t (GCC), travel height limit ≈ 4.95 m (UAE major routes — survey lower routes!), width &gt; 3.5 m or height &gt; 4.95 m triggers escort + route survey. EHV units ship oil-out with bushings, conservator and radiators removed; dry-air or N₂ blanket with pressure gauge and a 3-axis impact recorder (alarm ≥ 3 g).</div>
+  </div>
+
+  <footer>
+    Engineering practice summarised from IEC 60076 series (-1 routine tests, -2 temperature rise, -3 insulation levels,
+    -5 short-circuit, -10 sound, -11 dry-type), CIGRE brochures on transformer transport &amp; commissioning, and published
+    insulation design methodology of Weidmann Electrical Technology (Transformerboard handbooks; see Transformerboard III,
+    2022, for the authoritative treatment of solid/liquid insulation, processing and lifetime). This guide is an
+    educational summary — works procedures and OEM instructions always govern.
+  </footer>
+</div>
+
+<script>
+"use strict";
+/* ================= technical-drawing toolkit ================= */
+const DEFS=`<defs>
+<linearGradient id="gSteel" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e3eaf1"/><stop offset=".45" stop-color="#bcc9d6"/><stop offset="1" stop-color="#8fa2b4"/></linearGradient>
+<linearGradient id="gSteelV" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dde5ed"/><stop offset="1" stop-color="#94a7b9"/></linearGradient>
+<linearGradient id="gTank" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#aebfce"/><stop offset=".5" stop-color="#90a5b8"/><stop offset="1" stop-color="#6f879c"/></linearGradient>
+<linearGradient id="gCu" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e8ab6c"/><stop offset=".5" stop-color="#bd7434"/><stop offset="1" stop-color="#8a4e1f"/></linearGradient>
+<linearGradient id="gCuV" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dfa063"/><stop offset="1" stop-color="#94561f"/></linearGradient>
+<linearGradient id="gOil" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0dcae"/><stop offset="1" stop-color="#cfa75e"/></linearGradient>
+<linearGradient id="gPorc" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#eef2f6"/><stop offset=".5" stop-color="#cfd9e2"/><stop offset="1" stop-color="#a8b8c6"/></linearGradient>
+<linearGradient id="gWood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9c49a"/><stop offset="1" stop-color="#b89a6a"/></linearGradient>
+<pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse"><path d="M0 6 L6 0" stroke="#76889b" stroke-width="0.7"/></pattern>
+<marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#42536a"/></marker>
+</defs>`;
+const R=(x,y,w,h,f,o={})=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${f}" stroke="${o.s||"#3a4a5e"}" stroke-width="${o.sw??0.7}"${o.rx?` rx="${o.rx}"`:""}${o.op?` opacity="${o.op}"`:""}/>`;
+const E=(cx,cy,rx,ry,f,o={})=>`<ellipse cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}" fill="${f}" stroke="${o.s||"#3a4a5e"}" stroke-width="${o.sw??0.6}"${o.op?` opacity="${o.op}"`:""}/>`;
+const C=(cx,cy,r,f,o={})=>`<circle cx="${cx}" cy="${cy}" r="${r}" fill="${f}" stroke="${o.s||"#3a4a5e"}" stroke-width="${o.sw??0.7}"/>`;
+const Ln=(a,b,c2,d,o={})=>`<line x1="${a}" y1="${b}" x2="${c2}" y2="${d}" stroke="${o.c||"#3a4a5e"}" stroke-width="${o.w||0.7}"${o.dash?` stroke-dasharray="${o.dash}"`:""}/>`;
+const P=(d,f,o={})=>`<path d="${d}" fill="${f||"none"}" stroke="${o.s||"#3a4a5e"}" stroke-width="${o.sw??0.8}"${o.dash?` stroke-dasharray="${o.dash}"`:""}/>`;
+const T=(x,y,s,o={})=>`<text x="${x}" y="${y}"${o.a?` text-anchor="${o.a}"`:""}${o.b?` font-weight="bold"`:""}${o.c?` fill="${o.c}"`:""}${o.fs?` font-size="${o.fs}"`:""}>${s}</text>`;
+const lead=(x,y,tx,ty,s,a)=>Ln(x,y,tx,ty,{w:0.6,c:"#6c7d90"})+C(x,y,1.5,"#6c7d90",{sw:0})+
+  T(tx+(a==="end"?-3:3),ty+3,s,{a:a||"start",fs:9.5});
+const dimH=(x1,x2,y,s)=>`<line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}" stroke="#42536a" stroke-width="0.7" marker-start="url(#arr)" marker-end="url(#arr)"/>`+
+  Ln(x1,y-5,x1,y+5,{w:0.6})+Ln(x2,y-5,x2,y+5,{w:0.6})+T((x1+x2)/2,y-4,s,{a:"middle",fs:9});
+const dimV=(x,y1,y2,s)=>`<line x1="${x}" y1="${y1}" x2="${x}" y2="${y2}" stroke="#42536a" stroke-width="0.7" marker-start="url(#arr)" marker-end="url(#arr)"/>`+
+  T(x+4,(y1+y2)/2+3,s,{fs:9});
+const hatchR=(x,y,w,h)=>R(x,y,w,h,"url(#gSteelV)")+R(x,y,w,h,"url(#hatch)",{sw:0.7});
+const man=(x,y,h=64)=>{const s=h/46;return `<g transform="translate(${x},${y}) scale(${s})"><circle cx="0" cy="-42" r="4" fill="#55657a"/><path d="M-4.4 -36.5 L4.4 -36.5 L6 -21 L3.4 -21 L2.6 -28 L2.6 0 L0.9 0 L0.9 -14 L-0.9 -14 L-0.9 0 L-2.6 0 L-2.6 -28 L-3.4 -21 L-6 -21 Z" fill="#55657a"/></g>`;};
+function bushing(x,yb,h,r){
+  let s=R(x-1.8,yb-h+5,3.6,h-9,"url(#gPorc)",{sw:0.45});
+  const n=Math.max(4,Math.floor((h-16)/6.4));
+  for(let i=0;i<n;i++){const yy=yb-9-i*(h-20)/n, rr=(i%2?r*0.72:r);
+    s+=E(x,yy,rr,2.5,"url(#gPorc)",{s:"#5d7186",sw:0.5});}
+  s+=R(x-r-2,yb-4,2*r+4,4.5,"#8fa3b5",{sw:0.5});
+  s+=R(x-2.6,yb-h-1,5.2,6,"#b9c6d3",{sw:0.5})+C(x,yb-h-3,2,"#7d92a6");
+  return s;}
+function gauge(x,y,r,ang,lbl){
+  let s=C(x,y,r,"#f6f8fa")+C(x,y,r-2.2,"#fff",{sw:0.4});
+  for(let a=-130;a<=130;a+=37) s+=Ln(x+(r-3.4)*Math.sin(a*Math.PI/180),y-(r-3.4)*Math.cos(a*Math.PI/180),
+      x+(r-5.6)*Math.sin(a*Math.PI/180),y-(r-5.6)*Math.cos(a*Math.PI/180),{w:0.5});
+  s+=Ln(x,y,x+(r-4.5)*Math.sin(ang*Math.PI/180),y-(r-4.5)*Math.cos(ang*Math.PI/180),{c:"#b4500a",w:1.1});
+  s+=C(x,y,1.3,"#42536a",{sw:0});
+  if(lbl)s+=T(x,y+r+9,lbl,{a:"middle",fs:8.5});
+  return s;}
+function radbank(x,y,w,h,n){
+  let s=R(x,y,w,4.5,"url(#gSteel)")+R(x,y+h-4.5,w,4.5,"url(#gSteel)");
+  const st=w/n;
+  for(let i=0;i<n;i++) s+=R(x+i*st+1,y+4.5,st-2,h-9,"url(#gSteel)",{sw:0.45});
+  return s;}
+function tankEl(x,y,w,h,nst){
+  let s=R(x,y,w,h,"url(#gTank)");
+  const st=w/((nst||5)+1);
+  for(let i=1;i<=(nst||5);i++) s+=R(x+i*st-2,y+5,4,h-10,"#65798e",{sw:0.35});
+  s+=R(x-4,y-4,w+8,5,"#7d92a6",{sw:0.5});                            // top flange
+  s+=P(`M ${x+6} ${y-4} l 5 -7 h 8 l 5 7 Z`,"#7d92a6")+P(`M ${x+w-24} ${y-4} l 5 -7 h 8 l 5 7 Z`,"#7d92a6"); // lugs
+  s+=R(x-5,y+h,w+10,6,"#5d6f81",{sw:0.5});                           // base channel
+  return s;}
+const valveS=(x,y)=>P(`M ${x-5} ${y-4} L ${x+5} ${y+4} M ${x-5} ${y+4} L ${x+5} ${y-4}`,null,{sw:1})+C(x,y,5.4,"none",{sw:0.8});
+const bolts=(cx,cy,r,n)=>{let s="";for(let i=0;i<n;i++){const a=i/n*2*Math.PI;s+=C(cx+r*Math.cos(a),cy+r*Math.sin(a),1.1,"#42536a",{sw:0});}return s;};
+const SVG=(inner,vb)=>`<svg viewBox="${vb||"0 0 470 320"}" xmlns="http://www.w3.org/2000/svg" style="width:100%">${DEFS}${inner}</svg>`;
+const GROUND=(y=292)=>Ln(8,y,462,y,{w:1.2})+Array.from({length:23},(_,i)=>Ln(12+i*20,y,6+i*20,y+6,{w:0.5})).join("");
+
+/* ================= stage drawings (technical elevations) ================= */
+function sCore(){let s=GROUND();
+  s+=R(70,276,330,9,"url(#gSteel)")+R(96,285,8,7,"#7d92a6",{sw:.4})+R(366,285,8,7,"#7d92a6",{sw:.4}); // platform
+  s+=hatchR(110,240,250,28);                                            // bottom yoke
+  for(const X of[118,232,346]) s+=hatchR(X-14,124,42,116);              // limbs (lower half drawn over)
+  s+=hatchR(110,96,250,28);                                             // top yoke
+  for(const X of[118,232,346]){ s+=R(X-16,160,46,3.5,"#7d92a6",{sw:.3}); s+=R(X-16,208,46,3.5,"#7d92a6",{sw:.3}); } // banding
+  s+=R(102,88,266,7,"url(#gSteel)")+R(102,268,266,7,"url(#gSteel)");    // clamp channels
+  s+=Ln(106,95,106,268,{w:1.6,c:"#5d6f81"})+Ln(364,95,364,268,{w:1.6,c:"#5d6f81"}); // tie rods
+  s+=C(106,91,2.6,"#42536a",{sw:0})+C(364,91,2.6,"#42536a",{sw:0})+C(106,272,2.6,"#42536a",{sw:0})+C(364,272,2.6,"#42536a",{sw:0});
+  // step-lap magnifier
+  s+=Ln(346,124,398,140,{w:0.6,c:"#6c7d90",dash:"3 3"})+C(420,158,34,"#fff",{sw:1});
+  for(let i=0;i<7;i++) s+=Ln(394+(i%2?8:0),140+i*5.4,440-(i%2?0:8),140+i*5.4,{w:1,c:"#76889b"});
+  s+=T(420,205,"step-lap joint",{a:"middle",fs:9});
+  s+=man(52,292,86);
+  s+=lead(235,110,275,52,"yoke — stacked flat, raised after lacing");
+  s+=lead(132,180,40,40,"CRGO limb (cruciform)","start")+lead(118,162,30,68,"glass banding","start");
+  s+=lead(104,250,30,250,"clamping frame + tie rods","start");
+  s+=dimH(110,360,312,"limb pitch x 2 + d");
+  return SVG(s);}
+function sWind(){let s=GROUND();
+  s+=R(40,264,400,13,"url(#gSteel)")+R(60,277,12,15,"#7d92a6",{sw:.4})+R(400,277,12,15,"#7d92a6",{sw:.4}); // lathe bed
+  s+=R(48,158,54,106,"url(#gSteelV)")+C(102,206,11,"#8fa3b5");          // headstock + chuck
+  s+=R(386,194,44,70,"url(#gSteelV)")+C(386,212,6,"#8fa3b5");           // tailstock
+  s+=R(102,196,286,22,"#cfd8e2",{sw:.6})+Ln(96,207,436,207,{w:0.5,dash:"8 4",c:"#76889b"}); // mandrel + axis
+  for(let i=0;i<14;i++) s+=R(108+i*13,176,9.6,62,"url(#gCuV)",{sw:.35});// disc stack
+  for(let i=0;i<13;i++) s+=R(118.6+i*13,196,2.4,22,"#e7dcc4",{sw:.25}); // radial spacers in gaps
+  s+=C(330,84,24,"#cfd8e2")+C(330,84,7,"#fff")+Ln(310,70,350,98,{w:.5})+Ln(310,98,350,70,{w:.5}); // spool
+  s+=C(282,128,5,"#8fa3b5")+C(302,114,5,"#8fa3b5");                     // tension rollers
+  s+=P("M 288 176 C 290 150, 296 138, 302 119 C 312 104, 320 96, 330 84",null,{s:"#a8622a",sw:1.6});
+  s+=man(452,292,84,)+lead(150,182,52,60,"interleaved discs","start");
+  s+=lead(122,206,40,118,"dovetail radial spacers","start");
+  s+=lead(330,60,352,40,"conductor spool + tensioner");
+  s+=lead(370,210,420,160,"winding mandrel");
+  return SVG(s);}
+function sIns(){let s=GROUND();
+  s+=R(46,254,380,11,"url(#gWood)")+R(64,265,10,27,"#9a805a",{sw:.4})+R(396,265,10,27,"#9a805a",{sw:.4}); // bench
+  s+=R(78,122,84,132,"#e7dcc4",{sw:.7})+E(120,122,42,10.5,"#efe5cf")+E(120,122,33,7.6,"#d9cdb2"); // cylinder w/ wall
+  s+=Ln(120,132,120,250,{dash:"5 4",w:.6,c:"#a8946e"});
+  s+=E(252,168,48,15,"#e7dcc4",{sw:.7})+E(252,168,29,8.4,"#fdfdfe");    // angle ring (donut)
+  s+=E(252,176,48,15,"none",{sw:.5})+Ln(204,168,204,176,{w:.5})+Ln(300,168,300,176,{w:.5});
+  for(let j=0;j<5;j++)for(let k=0;k<2;k++) s+=R(312+k*52,246-j*7.2,46,5.4,"#e2d6bc",{sw:.4}); // spacer piles
+  s+=R(318,196,86,16,"url(#gWood)",{sw:.6})+Ln(322,202,400,202,{w:.4,c:"#9a805a"})+Ln(322,207,400,207,{w:.4,c:"#9a805a"}); // lam. wood
+  s+=R(186,228,34,22,"#dfe5ec",{rx:2})+gauge(203,237,8,40)+Ln(186,240,162,200,{w:.7,c:"#5b6b7f"}); // moisture meter
+  s+=lead(120,118,60,50,"barrier cylinder 1.5–3 mm","start");
+  s+=lead(252,156,232,60,"angle / end ring (machined)");
+  s+=lead(335,242,300,100,"dovetail spacers &amp; strips");
+  s+=lead(360,198,400,120,"laminated wood beam");
+  s+=T(203,266,"≤ 0.5 % H₂O",{a:"middle",fs:8.5,c:"#0a6e44"});
+  return SVG(s);}
+function sAsm(){let s=GROUND();
+  s+=hatchR(96,242,278,26);                                             // bottom yoke
+  for(const X of[126,235,344]) s+=hatchR(X-14,128,40,114);              // limbs (top yoke off)
+  s+=R(88,270,294,7,"url(#gSteel)");
+  s+=hatchR(316,76,120,22)+T(376,68,"top yoke set aside",{a:"middle",fs:9}); // removed yoke
+  // winding assembly above centre limb
+  s+=R(196,108,78,92,"url(#gCu)",{sw:.7})+R(222,108,26,92,"#fdfdfe",{sw:.5}); // coil annulus + bore
+  s+=R(218,108,4,92,"#e7dcc4",{sw:.3})+R(248,108,4,92,"#e7dcc4",{sw:.3});     // board lining
+  s+=R(186,94,98,8,"#8fa3b5")+Ln(196,102,206,108,{w:.9})+Ln(274,102,264,108,{w:.9}); // spreader + slings
+  s+=Ln(235,94,235,30,{w:1.3})+P("M 231 30 q 4 -8 8 0","none",{sw:1.3});       // crane cable + hook
+  s+=Ln(235,202,235,124,{dash:"4 4",w:.8,c:"#b4500a"})+P("M 231 120 L 235 128 L 239 120","#b4500a",{sw:0});
+  s+=man(60,292,84);
+  s+=lead(232,98,150,40,"spreader beam","end");
+  s+=lead(204,150,60,120,"LV+HV coil assembly","start");
+  s+=lead(352,180,420,140,"limb awaiting coil");
+  s+=lead(120,255,40,225,"bottom clamp &amp; end blocks","start");
+  return SVG(s);}
+function sLead(){let s=GROUND();
+  s+=hatchR(82,238,268,24)+hatchR(82,98,268,24);
+  for(const X of[112,216,320]){ s+=hatchR(X-12,122,36,116);
+    s+=R(X-34,128,18,102,"url(#gCuV)",{sw:.5})+R(X+18,128,18,102,"url(#gCuV)",{sw:.5}); } // windings both sides
+  s+=R(74,92,284,6,"url(#gSteel)")+R(74,260,284,6,"url(#gSteel)");
+  s+=R(96,74,210,5,"url(#gCu)",{sw:.5});                                // HV lead run
+  for(const X of[120,180,240,292]) s+=R(X,79,12,9,"url(#gWood)",{sw:.4});// cleats
+  for(const X of[112,216,320]) s+=Ln(X+27,128,X+27,74,{w:2.2,c:"#a8622a"}); // risers
+  s+=R(392,108,42,158,"#cfd8e2",{rx:9,sw:.8})+R(388,96,50,14,"url(#gSteel)"); // OLTC
+  for(let i=0;i<6;i++) s+=C(413,130+i*22,2.5,"#8fa3b5");
+  s+=Ln(306,76,392,118,{w:1.6,c:"#a8622a"});
+  s+=P("M 340 250 C 360 250 368 230 392 226","none",{s:"#a8622a",sw:1,dash:"4 3"});
+  s+=lead(200,72,150,36,"HV lead on SRBP tube","end");
+  s+=lead(186,84,90,50,"laminated-wood cleats","start");
+  s+=lead(413,104,360,30,"OLTC (in-tank)","end");
+  s+=lead(370,242,300,290,"tap leads","end");
+  return SVG(s);}
+function sVPD(){let s=GROUND();
+  s+=R(56,118,266,128,"url(#gSteel)",{rx:42})+E(322,182,16,62,"url(#gSteel)",{sw:.8}); // vessel + door flange
+  s+=bolts(322,182,56,12);
+  s+=E(322,182,9,40,"#3d4f63");                                          // opening
+  s+=R(300,162,20,40,"#2c3a4b",{sw:0})+R(303,168,6,28,"url(#gCuV)",{sw:.3}); // active part inside
+  s+=Ln(330,246,452,246,{w:1.1})+Ln(330,252,452,252,{w:1.1});            // rails out
+  for(const X of[84,150,216,282]) s+=Ln(X,118,X,246,{w:.45,c:"#8fa3b5"});// shell welds
+  s+=gauge(120,100,12,-35,"125 °C")+gauge(170,100,12,70,"0.8 mbar");
+  s+=R(380,120,52,72,"url(#gSteelV)")+R(388,104,36,16,"url(#gSteel)");   // vapour plant
+  s+=P("M 380 140 H 348 V 152","none",{sw:1.2,s:"#b4500a"})+valveS(362,140);
+  s+=C(404,228,16,"#cfd8e2")+R(396,210,16,10,"#8fa3b5",{sw:.5});         // vacuum pump
+  s+=P("M 404 212 V 196 H 360","none",{sw:1.2,s:"#0e5fa8"})+valveS(382,196);
+  s+=R(54,254,70,34,"#fff",{sw:.7})+Ln(60,282,118,282,{w:.7})+Ln(60,282,60,258,{w:.7});
+  s+=P("M 60 264 C 75 266 90 274 116 280","none",{s:"#b4500a",sw:1.2})+T(88,252,"condensate rate",{a:"middle",fs:8});
+  s+=lead(188,124,180,40,"VPD autoclave 110–130 °C","end");
+  s+=lead(406,116,448,60,"kerosene vapour plant","end");
+  s+=lead(404,244,448,282,"vacuum set ≤ 1 mbar","end");
+  return SVG(s);}
+function sTank(){let s=GROUND();
+  s+=tankEl(150,152,176,132,4);
+  // active part being lowered — visible above rim, hidden (dashed) below
+  s+=hatchR(196,84,84,60);                                              // top yoke + limb stubs visible
+  s+=R(206,144,18,70,"none",{s:"#42536a",sw:.8})+R(252,144,18,70,"none",{s:"#42536a",sw:.8});
+  s+=Ln(206,144,206,214,{dash:"4 3",w:.8})+Ln(270,144,270,214,{dash:"4 3",w:.8});
+  s+=Ln(238,84,238,26,{w:1.3})+P("M 234 26 q 4 -8 8 0","none",{sw:1.3});
+  s+=Ln(204,84,238,60,{w:.9})+Ln(272,84,238,60,{w:.9});
+  s+=C(60,206,16,"#cfd8e2")+R(52,188,16,10,"#8fa3b5",{sw:.5});           // vacuum pump
+  s+=P("M 60 190 V 160 H 150","none",{sw:1.2,s:"#0e5fa8"})+valveS(106,160);
+  s+=R(360,170,28,76,"url(#gSteelV)")+R(396,170,28,76,"url(#gSteelV)")+R(372,250,42,18,"url(#gSteel)"); // oil plant
+  s+=P("M 374 268 H 340 V 276 H 326","none",{sw:1.2,s:"#b4500a"})+valveS(352,268);
+  s+=lead(238,72,160,30,"active part — slow descent","end");
+  s+=lead(60,186,40,120,"vacuum ≤ 1 mbar","start");
+  s+=lead(400,166,440,110,"oil treatment: degas + filter","end");
+  s+=T(238,308,"standing time before test: 24 h (36 kV) → 3–5 d (400 kV)",{a:"middle",fs:9,c:"#5b6b7f"});
+  return SVG(s);}
+function sAcc(){let s=GROUND();
+  s+=tankEl(148,152,178,130,4);
+  s+=R(144,144,186,8,"url(#gSteel)");                                    // cover
+  s+=radbank(46,158,86,112,6);
+  s+=P("M 132 166 H 148 M 132 262 H 148","none",{sw:1.4,s:"#5d6f81"})+valveS(140,166)+valveS(140,262);
+  s+=R(168,86,140,26,"url(#gSteel)",{rx:13})+E(168,99,7,13,"url(#gSteel)")+E(308,99,7,13,"url(#gSteel)"); // conservator
+  s+=gauge(330,99,9,20,"")+T(348,92,"OLI",{fs:9});
+  s+=R(252,124,16,12,"#dfe5ec",{sw:.7})+Ln(252,130,236,144,{w:1.6,c:"#5d6f81"})+Ln(268,130,276,112,{w:1.6,c:"#5d6f81"}); // buchholz + pipe
+  s+=bushing(176,144,62,8)+bushing(212,144,62,8)+bushing(248,144,62,8);  // HV
+  s+=bushing(288,144,34,5)+bushing(304,144,34,5);                        // LV
+  s+=R(334,206,13,32,"#dfe5ec",{sw:.6})+R(336,222,9,9,"#7fb0d8",{sw:.3})+Ln(340,206,340,196,{w:1});// breather
+  s+=R(320,170,22,28,"#cfd8e2",{sw:.7})+Ln(331,198,331,284,{w:.7,dash:"3 3"});// marshalling box
+  s+=C(196,290,9,"#5d6f81")+C(286,290,9,"#5d6f81");                      // wheels
+  s+=lead(238,90,120,36,"conservator + air cell","end");
+  s+=lead(260,128,366,44,"Buchholz relay");
+  s+=lead(212,86,170,20,"HV bushings","end");
+  s+=lead(296,108,386,86,"LV bushings");
+  s+=lead(88,162,60,60,"radiator bank + valves","start");
+  s+=lead(340,212,462,236,"silica-gel breather","end");
+  s+=lead(331,176,462,166,"marshalling box","end");
+  s+=lead(196,282,108,302,"bidirectional rollers","start");
+  return SVG(s);}
+function sTest(){let s=GROUND();
+  s+=tankEl(64,182,120,100,3)+R(60,176,128,7,"url(#gSteel)");
+  s+=bushing(88,176,44,6)+bushing(118,176,44,6)+bushing(148,176,44,6);
+  // impulse generator (Marx)
+  for(const X of[330,420]){for(let i=0;i<7;i++) s+=E(X,278-i*30,9,4,"url(#gPorc)",{sw:.5})+Ln(X,274-i*30,X,252-i*30,{w:1});}
+  for(let i=0;i<6;i++) s+=R(342,250-i*30,66,16,"url(#gSteelV)",{sw:.6})+P(`M 342 ${258-i*30} l -8 6 l 8 6`,"none",{sw:.8});
+  s+=C(348,66,13,"url(#gPorc)")+C(394,66,13,"url(#gPorc)");              // spheres
+  s+=P("M 348 56 C 300 30 200 60 118 130","none",{s:"#b4500a",sw:1.4});  // HV lead to DUT
+  // divider
+  for(let i=0;i<8;i++) s+=E(258,272-i*26,7,3.4,"url(#gPorc)",{sw:.5})+Ln(258,269-i*26,258,250-i*26,{w:.9});
+  s+=C(258,62,6,"#cfd8e2")+Ln(258,62,318,56,{w:.8,c:"#b4500a"});
+  s+=R(28,236,58,30,"#dfe5ec",{sw:.7})+R(34,222,18,13,"#42536a")+R(58,222,18,13,"#42536a"); // desk + monitors
+  s+=man(102,292,58);
+  for(let X=20;X<460;X+=40) s+=Ln(X,300,X+18,300,{w:.8,c:"#76889b"});
+  s+=lead(375,160,420,140,"Marx impulse generator 1.2/50 µs");
+  s+=lead(258,140,200,96,"damped capacitive divider","end");
+  s+=lead(57,232,30,180,"control &amp; PD measuring","start");
+  return SVG(s);}
+function sFat(){let s=GROUND();
+  s+=tankEl(56,176,130,106,3)+R(52,170,138,7,"url(#gSteel)");
+  s+=bushing(84,170,46,6)+bushing(116,170,46,6)+bushing(148,170,46,6);
+  s+=R(166,212,16,12,"#dfe5ec",{sw:.6});                                 // nameplate on tank
+  // nameplate zoom
+  s+=Ln(182,218,280,120,{w:.6,c:"#6c7d90",dash:"3 3"});
+  s+=R(280,78,150,92,"#e6ebf1",{rx:4,sw:1})+bolts(289,87,0,1)+bolts(421,87,0,1)+bolts(289,161,0,1)+bolts(421,161,0,1);
+  s+=T(355,96,"315 MVA · YNyn0",{a:"middle",fs:10,b:1})+T(355,112,"400 000 / 132 000 V",{a:"middle",fs:9.5});
+  s+=T(355,128,"Z = 13.5 %  ·  ONAN/ONAF",{a:"middle",fs:9.5})+T(355,144,"mass 314 t · oil 67 t",{a:"middle",fs:9.5});
+  s+=T(355,160,"IEC 60076 · 2026",{a:"middle",fs:9});
+  s+=R(300,250,96,9,"url(#gWood)")+R(312,259,8,33,"#9a805a",{sw:.4})+R(378,259,8,33,"#9a805a",{sw:.4}); // table
+  s+=R(312,236,30,14,"#fff",{sw:.6})+R(316,232,30,14,"#fff",{sw:.6})+R(350,234,26,16,"#42536a")+Ln(350,250,376,250,{w:2});
+  s+=man(238,292,72)+man(268,292,72);
+  s+=R(258,238,10,16,"#fff",{sw:.7});                                    // clipboard
+  s+=lead(174,218,210,290,"rating &amp; diagram plate","start");
+  s+=lead(330,242,430,210,"test certificates + O&amp;M");
+  return SVG(s);}
+function sPack(){let s=GROUND();
+  s+=tankEl(120,150,180,132,4)+R(116,144,188,7,"url(#gSteel)");
+  for(const X of[150,210,270]){ s+=C(X,144,11,"#9fb0c0",{sw:.8})+bolts(X,144,7.2,6); } // blanking plates
+  s+=gauge(294,170,11,55,"+0.25 bar");
+  s+=R(46,176,20,106,"#9fb0c0",{rx:9,sw:.8})+R(52,168,8,10,"#7d92a6")+C(56,164,3,"#5d6f81"); // N2 bottle
+  s+=gauge(76,160,8,30,"")+gauge(96,160,8,-20,"");
+  s+=P("M 66 170 C 86 178 102 186 120 196","none",{s:"#42536a",sw:1.1,dash:"5 3"});
+  s+=R(330,196,100,86,"url(#gWood)",{sw:.8});
+  for(let i=1;i<5;i++) s+=Ln(330,196+i*17,430,196+i*17,{w:.5,c:"#9a805a"});
+  s+=Ln(330,196,430,282,{w:1,c:"#9a805a"})+Ln(430,196,330,282,{w:1,c:"#9a805a"});
+  s+=T(380,190,"BUSHINGS — THIS WAY UP ↑↑",{a:"middle",fs:8});
+  s+=R(338,204,18,14,"#fff",{sw:.5})+T(347,214,"ISPM",{a:"middle",fs:6.5});
+  s+=R(196,176,18,12,"#fde9d6",{s:"#b4500a",sw:.8})+C(201,182,1.6,"#b4500a",{sw:0});
+  s+=lead(205,180,250,60,"3-axis impact recorder (3 g alarm)");
+  s+=lead(56,172,36,84,"N₂ / dry-air + regulator","start");
+  s+=lead(210,142,150,40,"blanking plates on all openings","end");
+  s+=lead(380,200,440,120,"seaworthy crates (ISPM-15)","end");
+  return SVG(s);}
+function sShip(){let s=GROUND(296);
+  // tractor
+  s+=P("M 36 296 V 246 q 0 -10 10 -10 h 30 q 8 0 8 8 v 16 h 18 v 36 Z","#8fa3b5",{sw:.8});
+  s+=R(44,242,22,18,"#d3e0ec",{sw:.6});
+  s+=C(58,296,12,"#33414f")+C(58,296,5,"#7d92a6")+C(92,296,12,"#33414f")+C(92,296,5,"#7d92a6");
+  // gooseneck + deck
+  s+=P("M 102 282 h 26 l 14 -18 h 24 v 18 h 250 v 12 H 102 Z","#5d6f81",{sw:.8});
+  for(const X of[196,224,252,346,374,402]) s+=C(X,296,11,"#33414f")+C(X,296,4.5,"#7d92a6");
+  // transformer + lashing
+  s+=tankEl(196,170,180,110,4)+R(192,164,188,7,"url(#gSteel)");
+  for(const X of[226,286,346]) s+=C(X,164,8,"#9fb0c0",{sw:.6})+bolts(X,164,5,6);
+  s+=Ln(200,176,170,278,{w:1.1,c:"#42536a"})+Ln(372,176,404,278,{w:1.1,c:"#42536a"});
+  s+=R(181,222,8,12,"#8fa3b5",{sw:.5})+R(384,222,8,12,"#8fa3b5",{sw:.5});  // turnbuckles
+  s+=C(286,222,8,"none",{sw:1})+P("M 278 222 h 16 M 286 214 v 16","none",{sw:1})+T(302,218,"CoG",{fs:8.5});
+  s+=Ln(8,60,462,60,{dash:"8 5",w:1,c:"#b4500a"});
+  s+=dimV(440,60,296,"4.95 m limit");
+  s+=T(300,318,"axle line ≤ 12 t",{a:"middle",fs:9});
+  s+=lead(238,168,150,108,"lashing 0.8 g fwd / 0.5 g lat","end");
+  s+=lead(388,228,420,130,"D-rings + turnbuckles","end");
+  return SVG(s,"0 0 470 330");}
+
+/* ================= hero cutaway GA ================= */
+function hero(){let s="";
+  const GY=388;
+  s+=Ln(14,GY,966,GY,{w:1.3})+Array.from({length:47},(_,i)=>Ln(20+i*20,GY,14+i*20,GY+6,{w:0.5})).join("");
+  // radiators
+  s+=radbank(36,160,120,200,8);
+  s+=P("M 156 176 H 196 M 156 344 H 196","none",{sw:2,s:"#5d6f81"})+valveS(176,176)+valveS(176,344);
+  // tank body (x196..830)
+  s+=R(196,150,634,230,"url(#gTank)");
+  for(const X of[256,330,404,700,770]) s+=R(X,156,5,218,"#65798e",{sw:.35});
+  s+=R(190,144,646,8,"url(#gSteel)");                                   // cover
+  s+=R(188,380,650,9,"#5d6f81",{sw:.6});                                // base
+  // cutaway window x=470..820: oil + core & windings
+  s+=R(470,158,352,214,"url(#gOil)",{sw:0});
+  s+=P("M 470 158 l -8 14 l 8 14 l -8 14 l 8 14 l -8 14 l 8 14 l -8 14 l 8 14 l -8 14 l 8 14 l -8 14 l 8 14 l -8 14 l 8 14 l -6 11","none",{sw:1.1});
+  s+=hatchR(492,330,316,26);                                            // bottom yoke
+  s+=hatchR(492,170,316,26);                                            // top yoke
+  for(const X of[540,650,760]){ s+=hatchR(X-16,196,44,134);
+    s+=R(X-42,202,20,122,"url(#gCuV)",{sw:.5})+R(X+34,202,20,122,"url(#gCuV)",{sw:.5});
+    s+=R(X-46,202,4,122,"#e7dcc4",{sw:.25})+R(X+54,202,4,122,"#e7dcc4",{sw:.25}); }
+  s+=R(484,164,332,5,"url(#gSteel)")+R(484,358,332,5,"url(#gSteel)");   // clamps
+  s+=Ln(540,196,540,152,{w:2,c:"#a8622a"})+Ln(650,196,650,152,{w:2,c:"#a8622a"});
+  // conservator + buchholz
+  s+=R(280,76,200,34,"url(#gSteel)",{rx:17})+E(280,93,9,17,"url(#gSteel)")+E(480,93,9,17,"url(#gSteel)");
+  s+=gauge(508,93,11,25,"")+T(530,88,"OLI",{fs:10});
+  s+=R(366,120,20,14,"#dfe5ec",{sw:.8})+Ln(366,127,330,144,{w:2,c:"#5d6f81"})+Ln(386,127,398,112,{w:2,c:"#5d6f81"});
+  // bushings
+  s+=bushing(250,144,92,12)+bushing(316,144,92,12)+bushing(382,144,92,12);
+  s+=bushing(560,144,46,7)+bushing(590,144,46,7)+bushing(620,144,46,7);
+  // breather, box, wheels
+  s+=R(842,250,16,40,"#dfe5ec",{sw:.7})+R(845,270,10,12,"#7fb0d8",{sw:.4})+Ln(850,250,850,236,{w:1.2})+Ln(850,236,830,236,{w:1.2});
+  s+=R(836,180,26,34,"#cfd8e2",{sw:.8});
+  s+=C(280,389,11,"#5d6f81")+C(740,389,11,"#5d6f81");
+  s+=man(930,GY,108);
+  // labels
+  s+=lead(316,56,200,30,"HV bushings (condenser ≥ 72.5 kV)","end");
+  s+=lead(590,102,690,40,"LV bushings");
+  s+=lead(380,80,520,24,"conservator + air cell");
+  s+=lead(376,122,470,68,"Buchholz relay");
+  s+=lead(96,164,60,120,"radiator bank (ONAN/ONAF)","start");
+  s+=lead(508,106,452,118,"oil level indicator","end");
+  s+=lead(540,176,440,206,"core — CRGO, step-lap","end");
+  s+=lead(572,260,448,268,"LV + HV windings","end");
+  s+=lead(786,214,896,124,"barrier insulation","end")+T(899,137,"(transformerboard)",{a:"end",fs:9.5});
+  s+=lead(820,300,890,330,"mineral oil 60296","end");
+  s+=lead(850,254,896,240,"breather","end");
+  s+=lead(849,190,900,170,"marshalling box","end");
+  s+=lead(650,162,700,120,"winding exits / leads");
+  s+=dimH(196,830,412,"tank length per GA drawing");
+  return SVG(s,"0 0 980 430");}
+
+/* ---------- stage content ---------- */
+const STAGES=[
+{t:"Core building",svg:sCore,body:`Cut-to-length CRGO laminations are stacked flat on a tilting table in a <b>step-lap</b> pattern (5–7 step), which cuts joint loss and noise versus butt-lap. The stack is clamped between frames, banded with resin-impregnated glass tape, and the leg is raised upright. The selected grade and lamination thickness (see the Design Calculator grade table) set the no-load loss; handle laminations carefully — bending or stress raises loss.`,
+ par:[["Burr height","≤ 20 µm (deburr/re-coat if more)"],["Step-lap offset","2–6 steps × lamination pitch"],["Core–clamp insulation test","2 kV AC / 1 min (or 1 kV megger)"],["Stacking factor check","per grade, 0.86 (amorphous) – 0.975"]],
+ chk:["Lamination grade & thickness vs design (material certificate)","Burr & coating inspection on receipt","Step-lap pattern & window dimensions to drawing",["hold","Core loss & magnetising VA pre-measurement (loose core, optional but best practice)"],"Earthing strap fitted at one point only"]},
+{t:"Winding manufacture",svg:sWind,body:`LV windings: foil (distribution/cast resin) or helical strip/CTC (power). HV windings: layer (distribution), disc or interleaved disc (power ≥ 72.5 kV) for better impulse-voltage distribution. Conductor is wound under controlled tension on a mandrel with pressboard cylinders and duct sticks placed as the winding grows. Brazed joints are made off the coil where possible and individually insulated.`,
+ par:[["Winding tension","constant, conductor-dependent (foil: edge control)"],["Duct stick alignment","±2 mm over full height"],["Inter-disc spacers","dovetail, locked, count per drawing"],["Joint resistance","≤ 1.1 × parent conductor"]],
+ chk:["Turn count per layer/disc recorded as wound",["hold","Dimensional check: ID/OD, height, radial build vs drawing (DCT)"],"Transpositions made & insulated per drawing","Conductor insulation undamaged (no kinks/scuffs)","Coil weighed — copper weight vs BOM"]},
+{t:"Insulation kit",svg:sIns,body:`The solid insulation kit — barrier cylinders, angle rings, end rings, radial spacers, strips and laminated-wood platforms — is cut and machined from transformerboard. Subdividing the HV–LV main duct with barriers is what gives oil ducts their withstand (smaller duct = higher kV/mm; see the Weidmann curve check in the Design Calculator §7b). All board is kiln-dried and kept dry until assembly.`,
+ par:[["Board moisture at fitting","≤ 0.5 % (power), ≤ 1 % (dist.)"],["Barrier pitch in main duct","every ≈ 25–40 mm of oil"],["Angle ring position","at winding ends, creep path ≥ 0.7 rule"],["Storage","≤ 55 % RH, wrapped, off-floor"]],
+ chk:["Material per drawing (board grade/thickness, wood class)","Machined edges smooth — no delamination",["hold","Kit completeness check against insulation BOM before assembly"],"Dryness verified (sample weighing or supplier certificate)"]},
+{t:"Core & coil assembly",svg:sAsm,body:`The top yoke is de-laminated, windings (with their insulation kit) are lowered over the limbs in order LV→(tap)→HV, end insulation and clamping platforms are placed, and the yoke is re-laced step by step. Clamping pressure is applied evenly; the active part must be rigid to survive short-circuit forces (IEC 60076-5).`,
+ par:[["Winding fit on limb","snug over cylinder, no free play"],["Clamping pressure","per design (typ. 2–4 N/mm² on windings)"],["Phase symmetry","limb pitch ±2 mm"]],
+ chk:[["hold","Ratio + vector group bench check after yoke re-lacing"],"Winding resistance all phases/taps recorded","Core insulation re-test after assembly (core–clamp–earth)","Coil blocking & end supports torqued and locked"]},
+{t:"Leads, cleating & tap connections",svg:sLead,body:`HV/LV leads, neutral and tap leads are run on laminated-wood cleats, brazed/crimped, insulated with crepe paper and SRBP tubes, and connected to the DETC switch or OLTC selector. Electrical clearances from leads to core/clamps/tank are checked against the insulation drawing — lead exits are a classic failure location.`,
+ par:[["Brazing","silver-bearing, polished, re-insulated"],["Lead clearances","per insulation drawing (kV class)"],["Cleat spacing","short-circuit force calculation governs"]],
+ chk:["All joints torque/braze checked & logged","Tap lead sequence vs OLTC connection diagram",["hold","Final ratio on every tap + winding resistance every tap"],"Clearance walk-down with insulation drawing"]},
+{t:"VPD — vapour-phase drying",svg:sVPD,body:`The active part is dried in a vapour-phase autoclave: kerosene vapour at 110–130 °C heats the insulation while deep vacuum extracts water. Cycles of heat/vacuum repeat until the condensate rate and insulation power-factor flatten. Large EHV units may need 3–7 days. After VPD the windings are re-clamped hot (insulation shrinks ~2–4 %) and the active part goes to oil within the permitted exposure time.`,
+ par:[["Vapour temperature","110–130 °C"],["Final vacuum","≤ 0.5–1 mbar"],["Target moisture","≤ 0.5 % (power) / ≤ 1 % (dist.)"],["Air exposure after VPD","≤ 8–12 h before oil (re-dry if exceeded)"],["Typical duration","24 h (dist.) → 3–7 days (EHV)"]],
+ chk:[["hold","Drying end-point: condensate < limit and tan δ flattened"],"Hot re-clamping done & pressures recorded","Exposure clock started & logged at door opening"]},
+{t:"Tanking & oil filling",svg:sTank,body:`The active part is dressed (final clearance checks), lowered into the tank, and connections to bushing turrets/OLTC made. The tank is evacuated — large/EHV units to ≤ 1 mbar held for hours — then degassed, filtered oil (dry, gas-free) is admitted from the bottom under vacuum. Hot-oil circulation follows. Standing time before voltage application lets residual bubbles dissolve.`,
+ par:[["Vacuum before filling","≤ 1 mbar (power/EHV); dist. per size"],["Oil on filling","≤ 10 ppm H₂O, BDV ≥ 60 kV/2.5 mm, gas-free"],["Standing time","24 h (≤ 36 kV) · 48 h (145 kV) · 3–5 days (400 kV)"]],
+ chk:["Tank leak/vacuum test passed (pressure drop method)",["hold","Oil test certificate before filling (BDV, ppm, tan δ)"],"Active-part earthing and core-earth link verified","Buchholz/pipework slopes per drawing (1–1.5° rise)"]},
+{t:"Accessories & fittings",svg:sAcc,body:`Bushings (test-tap checked), conservator with air cell and <b>oil level indicator (OLI)</b>, Buchholz relay, dehydrating breathers, pressure-relief devices, <b>WTI/OTI temperature indicators</b> (pockets oil-filled), radiators/fans, valves, marshalling cabinet and cabling are fitted per the outline drawing. Every gasketed joint is torqued to schedule; every device is function-tested (float switch, contacts, fan groups).`,
+ par:[["Gasket compression","per gasket schedule (typ. 30 %)"],["OLI","matches conservator dipstick at 3 points"],["WTI calibration","CT-fed gradient set to design value"],["Radiator valves","locked open & tagged after filling"]],
+ chk:["Bushing test-tap capacitance/tan δ vs nameplate","Buchholz float/alarm/trip injection test",["hold","Accessory function test report signed before testing"],"Valve position checklist (drain/filter/radiator/conservator)"]},
+{t:"Routine testing (IEC 60076-1)",svg:sTest,body:`Routine: winding resistance, ratio & vector group, impedance & load loss, no-load loss & current, separate-source AC withstand, induced AC (with partial-discharge measurement ≥ 72.5 kV class), oil tests, and functional/auxiliary checks. Type/special: temperature rise (60076-2), lightning impulse (60076-3 — routine for ≥ 170 kV), sound (60076-10), short-circuit (60076-5, by agreement). Results go against guaranteed values with IEC tolerances.`,
+ par:[["PD at 1.58×Ur / 1.2×Ur","≤ 100 pC / ≤ 300 pC (typ. spec, 60076-3)"],["LI waves","1.2/50 µs, full + chopped per programme"],["Loss tolerances","+15 % each / +10 % total"],["Oil after test","BDV ≥ 60 kV, H₂O ≤ 10 ppm (power)"]],
+ chk:[["hold","All routine tests passed & witnessed where required"],"DGA sample taken after dielectric tests (benchmark)","Tap-changer operation test through full range under no-load","Protection devices wiring loop-checked to marshalling box"]},
+{t:"Customer inspection (FAT)",svg:sFat,body:`The factory acceptance test is run against the approved inspection & test plan (ITP) with marked witness (W) and hold (H) points. The customer checks calibration certificates, watches the agreed tests, verifies the nameplate against order data, and inspects paintwork, dimensions and accessories. A punch list is closed before dispatch release.`,
+ par:[["Documents","test certs, drawings as-built, O&M manual, oil certs"],["Nameplate","ratings, vector, %Z measured, masses, oil volume"],["Witness tests","per ITP (typically losses, withstand, PD)"]],
+ chk:[["hold","FAT release / dispatch clearance signed"],"Punch list closed or concession agreed","Spares & accessories list verified against contract"]},
+{t:"Packing & preservation",svg:sPack,body:`Distribution units ship oil-filled and assembled. Large/EHV units ship with oil removed and a dry-air or N₂ blanket at slight positive pressure with a gauge visible; bushings, conservator, radiators and turrets travel in dedicated seaworthy crates (ISPM-15 timber). Openings are blanked with gasketed steel plates. Impact recorders (3-axis) are fitted on tank and major crates.`,
+ par:[["Blanket pressure","0.2–0.3 bar dry air / N₂, gauge fitted"],["Dew point of gas","≤ −40 °C"],["Impact recorder alarm","3 g (transport claim threshold)"],["Desiccant","in every crate, change date marked"]],
+ chk:["Pressure gauge reading logged at dispatch & arrival","Crate packing lists fixed inside + outside",["hold","Lashing/securing plan approved before loading"],"Photos of every crate & tank face before wrapping"]},
+{t:"Lifting & transport",svg:sShip,body:`Lift on the designated lugs only, with a spreader beam when bushings or cover fittings limit sling angles (keep ≥ 60° to horizontal). Verify the centre of gravity from the outline drawing — transformers are top-heavy with CoG off-centre toward the OLTC side. Use the calculator below for crane class and trailer selection; for EHV units plan route surveys, bridge load checks and police escorts well ahead.`,
+ par:[["Sling angle","≥ 60°; shackle WLL ≥ 1.25 × share"],["Test lift","200 mm, hold 10 min, re-check rigging"],["Tilt limit in transit","≤ 15° (check OEM)"],["Rail/sea","impact recorder + tilt indicator mandatory"]],
+ chk:["CoG marked & lift plan approved (engineered lift > 25 t)",["hold","Route survey & permits for abnormal loads"],"Lashing calculation: 0.8 g fwd / 0.5 g lateral (road)","Arrival inspection: recorder data + blanket pressure first"]}
+];
+
+/* ---------- render ---------- */
+document.getElementById("hero").innerHTML=hero();
+const nav=document.getElementById("nav");
+const host=document.getElementById("stages");
+STAGES.forEach((st,i)=>{
+  const id="s"+(i+1);
+  nav.innerHTML+=`<a href="#${id}">${i+1}. ${st.t}</a>`;
+  let par=st.par?`<h3>Key parameters</h3><table class="par">${st.par.map(p=>`<tr><td>${p[0]}</td><td><b>${p[1]}</b></td></tr>`).join("")}</table>`:"";
+  let chk=`<h3>Checklist <span style="color:var(--warn)">(H = hold point)</span></h3><ul class="chk">${st.chk.map(c=>Array.isArray(c)?`<li class="hold">${c[1]}</li>`:`<li>${c}</li>`).join("")}</ul>`;
+  host.innerHTML+=`<div class="card" id="${id}"><div class="stage">
+    <div class="figbox">${st.svg()}</div>
+    <div><h2><span class="stgnum">${i+1}</span>${st.t}</h2><p style="margin:4px 0">${st.body}</p>${par}${chk}</div>
+  </div></div>`;
+});
+nav.innerHTML+=`<a href="#liftcalc">⚙ Lift & transport calc</a>`;
+
+/* ---------- lifting & transport calculator ---------- */
+function pre(w,h,wd,l){ document.getElementById("wt").value=w; document.getElementById("ht").value=h;
+  document.getElementById("wd").value=wd; document.getElementById("ln").value=l; liftCalc(); }
+function liftCalc(){
+  const W=+document.getElementById("wt").value||0, H=+document.getElementById("ht").value||0,
+        Wd=+document.getElementById("wd").value||0, L=+document.getElementById("ln").value||0;
+  let crane = W<=5?"25–30 t mobile crane":W<=15?"70 t mobile crane":W<=30?"130 t mobile crane":
+              W<=60?"220 t mobile crane":W<=120?"400–450 t mobile/crawler":
+              W<=250?"500–750 t lattice or hydraulic gantry":"hydraulic gantry / strand jacks (heavy-lift specialist)";
+  let trailer = W<=24?"flatbed semi-trailer":W<=45?"3-axle lowbed":W<=80?"4–6 axle lowbed":
+                W<=150?Math.max(8,Math.ceil((W+20)/12))+"-line hydraulic modular trailer":
+                Math.ceil((W+30)/12)+"-line SPMT / multi-line modular";
+  const totH=(H+(W>80?0.9:1.0)).toFixed(1);
+  const escort=(Wd>3.5||+totH>4.95||W>45);
+  const rig = W>25 ? "Engineered lift plan + spreader beam; shackle WLL ≥ "+(W/2*1.25).toFixed(0)+" t per pair"
+                   : "4-leg sling ≥ 60°, shackles WLL ≥ "+(W/2*1.25).toFixed(1)+" t per pair";
+  document.getElementById("liftres").innerHTML=
+   `<b>Crane:</b> ${crane} (at ≈ 8–10 m radius) · <b>Rigging:</b> ${rig}<br>
+    <b>Road:</b> ${trailer} — laden height ≈ ${totH} m ${+totH>4.95?"⚠ exceeds 4.95 m travel limit — survey route / lower deck":"(within 4.95 m limit)"}<br>
+    <b>Permits:</b> ${escort?"abnormal-load permit + escort + route survey required":"standard permits"} ·
+    <b>Impact recorder:</b> ${W>10?"yes (3-axis, 3 g alarm)":"recommended"} ·
+    <b>Footprint:</b> ${L} × ${Wd} m`;
+}
+liftCalc();
+</script>
+</body>
+</html>

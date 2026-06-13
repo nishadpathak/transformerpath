@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transformer Construction — Interactive 3D Explorer</title>
+<style>
+:root{--panel:#0e1c2c;--panel2:#13263a;--ink:#e8eef5;--mut:#8fa6bc;--acc:#3da5f4;--acc2:#e8732a;--line:#23415e}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#08121e;color:var(--ink)}
+#c3d{position:absolute;inset:0;cursor:grab}
+#c3d.dragging{cursor:grabbing}
+/* top bar */
+#topbar{position:absolute;top:0;left:0;right:0;height:52px;background:linear-gradient(180deg,rgba(8,18,30,.95),rgba(8,18,30,.78) 70%,transparent);display:flex;align-items:center;gap:14px;padding:0 18px;z-index:10;pointer-events:none}
+#topbar h1{font-size:1.02rem;font-weight:600;letter-spacing:.3px}
+#topbar a{pointer-events:auto;color:var(--acc);text-decoration:none;font-size:.82rem;border:1px solid var(--line);padding:4px 10px;border-radius:6px;background:rgba(14,28,44,.7)}
+#topbar a:hover{background:var(--panel2)}
+#modeswitch{pointer-events:auto;margin-left:auto;display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+#modeswitch button{background:rgba(14,28,44,.8);color:var(--mut);border:0;padding:7px 14px;font-size:.82rem;font-weight:600;cursor:pointer}
+#modeswitch button.active{background:var(--acc);color:#04121f}
+/* side panel */
+#panel{position:absolute;top:60px;right:12px;width:295px;max-height:calc(100% - 80px);overflow-y:auto;background:rgba(14,28,44,.92);border:1px solid var(--line);border-radius:12px;padding:14px 16px;z-index:10;backdrop-filter:blur(6px)}
+#panel h2{font-size:.8rem;text-transform:uppercase;letter-spacing:1px;color:var(--mut);margin:12px 0 6px}
+#panel h2:first-child{margin-top:0}
+.sl{width:100%;margin:4px 0 2px;accent-color:var(--acc)}
+.slrow{display:flex;justify-content:space-between;font-size:.74rem;color:var(--mut)}
+.tgl{display:flex;align-items:center;gap:8px;font-size:.84rem;padding:2.5px 0;cursor:pointer;user-select:none}
+.tgl input{accent-color:var(--acc)}
+.sw{width:11px;height:11px;border-radius:3px;display:inline-block;flex:none}
+#info{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin-top:6px;font-size:.83rem;line-height:1.5;min-height:84px}
+#info b{color:var(--acc)}
+#info .hint{color:var(--mut);font-size:.78rem}
+.btnrow{display:flex;gap:8px;margin-top:8px}
+.btnrow button{flex:1;background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:7px;padding:6px 4px;font-size:.78rem;cursor:pointer}
+.btnrow button:hover{border-color:var(--acc)}
+.btnrow button.on{background:var(--acc);color:#04121f;font-weight:600}
+#collapse{position:absolute;top:60px;right:12px;z-index:11;background:var(--panel);border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:6px 10px;cursor:pointer;display:none;font-size:.85rem}
+/* hover/legend bottom */
+#help{position:absolute;left:14px;bottom:12px;z-index:10;font-size:.75rem;color:var(--mut);background:rgba(14,28,44,.75);border:1px solid var(--line);border-radius:8px;padding:7px 11px;line-height:1.6;pointer-events:none}
+/* 3D labels */
+.lbl{position:absolute;transform:translate(-50%,-130%);background:rgba(10,22,36,.88);border:1px solid var(--line);color:#dbe7f3;font-size:11px;padding:2px 7px;border-radius:5px;pointer-events:none;white-space:nowrap;z-index:5}
+.lbl::after{content:"";position:absolute;left:50%;top:100%;margin-left:-4px;border:4px solid transparent;border-top-color:var(--line)}
+@media(max-width:760px){#panel{width:240px;font-size:.9em}#topbar h1{font-size:.85rem}}
+</style>
+</head>
+<body>
+<div id="c3d"></div>
+
+<div id="topbar">
+  <h1>⚡ Transformer Construction — 3D Explorer</h1>
+  <a href="academy.html">🏠 Hub</a>
+  <a href="tutorial.html">← Tutorial</a>
+  <a href="power3d.html">Power transformer 3D →</a>
+  <div id="modeswitch">
+    <button id="mOil" class="active">Oil-immersed</button>
+    <button id="mCrt">Cast resin</button>
+    <button id="mVpi">Dry VPI</button>
+  </div>
+</div>
+
+<div id="panel">
+  <h2>Assembly / Exploded view</h2>
+  <input id="explode" class="sl" type="range" min="0" max="100" value="0">
+  <div class="slrow"><span>assembled</span><span>exploded</span></div>
+
+  <h2>Tank / enclosure opacity</h2>
+  <input id="tankop" class="sl" type="range" min="0" max="100" value="35">
+  <div class="slrow"><span>invisible</span><span>solid</span></div>
+
+  <h2>Components</h2>
+  <div id="toggles"></div>
+
+  <h2>View</h2>
+  <div class="btnrow">
+    <button id="bRotate">⟳ Auto-rotate</button>
+    <button id="bLabels" class="on">🏷 Labels</button>
+    <button id="bReset">⌂ Reset</button>
+    <button id="bQuiz">🎯 Quiz me</button>
+  </div>
+
+  <h2>Selected part</h2>
+  <div id="info"><span class="hint">Click any part of the transformer to identify it and read what it does. Drag to orbit · scroll to zoom · right-drag to pan.</span></div>
+</div>
+
+<div id="help">🖱 drag = orbit &nbsp;·&nbsp; wheel = zoom &nbsp;·&nbsp; right-drag / shift-drag = pan &nbsp;·&nbsp; click = identify part<br>📱 one finger = orbit &nbsp;·&nbsp; pinch = zoom</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ============ scene setup ============ */
+const container = document.getElementById('c3d');
+const renderer = new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setSize(innerWidth,innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.12;
+container.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+(function(){
+  const cv=document.createElement('canvas'); cv.width=16; cv.height=512;
+  const g=cv.getContext('2d'); const gr=g.createLinearGradient(0,0,0,512);
+  gr.addColorStop(0,'#27557f'); gr.addColorStop(.45,'#143049'); gr.addColorStop(.78,'#0c1c30'); gr.addColorStop(1,'#0a1624');
+  g.fillStyle=gr; g.fillRect(0,0,16,512);
+  scene.background=new THREE.CanvasTexture(cv);
+})();
+scene.fog = new THREE.Fog(0x0d1f33, 160, 360);
+
+const camera = new THREE.PerspectiveCamera(46, innerWidth/innerHeight, 0.5, 600);
+
+/* lights */
+scene.add(new THREE.HemisphereLight(0xbcd4ea, 0x16202c, 0.85));
+const sun = new THREE.DirectionalLight(0xffffff, 0.95);
+sun.position.set(60,90,40);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048,2048);
+sun.shadow.camera.left=-80; sun.shadow.camera.right=80;
+sun.shadow.camera.top=80; sun.shadow.camera.bottom=-80;
+scene.add(sun);
+const fill = new THREE.DirectionalLight(0x88aacc, 0.35);
+fill.position.set(-50,30,-60); scene.add(fill);
+
+/* ground */
+const ground = new THREE.Mesh(
+  new THREE.CircleGeometry(170, 64),
+  new THREE.MeshStandardMaterial({color:0x101e2e, roughness:.95, metalness:0})
+);
+ground.rotation.x = -Math.PI/2; ground.position.y = -4.2; ground.receiveShadow = true;
+scene.add(ground);
+const grid2 = new THREE.GridHelper(170, 34, 0x254562, 0x16293d);
+grid2.position.y = -4.15; scene.add(grid2);
+
+/* ============ materials ============ */
+const M = {
+  steel:   new THREE.MeshStandardMaterial({color:0x8fa3b8, roughness:.45, metalness:.65}),
+  steelDk: new THREE.MeshStandardMaterial({color:0x5d7186, roughness:.5,  metalness:.6}),
+  core:    new THREE.MeshStandardMaterial({color:0x6e7f93, roughness:.35, metalness:.8}),
+  copper:  new THREE.MeshStandardMaterial({color:0xc9772f, roughness:.35, metalness:.7}),
+  copperL: new THREE.MeshStandardMaterial({color:0xd98f4a, roughness:.4,  metalness:.6}),
+  hvWdg:   new THREE.MeshStandardMaterial({color:0xa8503c, roughness:.5,  metalness:.35}),
+  resin:   new THREE.MeshStandardMaterial({color:0xb14a38, roughness:.25, metalness:.1}),
+  resinIn: new THREE.MeshStandardMaterial({color:0xc96a52, roughness:.3,  metalness:.1}),
+  porcel:  new THREE.MeshStandardMaterial({color:0x5e3a28, roughness:.14, metalness:.05}),
+  orange:  new THREE.MeshStandardMaterial({color:0xe8732a, roughness:.5,  metalness:.3}),
+  red:     new THREE.MeshStandardMaterial({color:0xb33a3a, roughness:.5,  metalness:.3}),
+  rubber:  new THREE.MeshStandardMaterial({color:0x222d3a, roughness:.9,  metalness:.1}),
+  glass:   new THREE.MeshStandardMaterial({color:0xbfd9ee, roughness:.1,  metalness:0, transparent:true, opacity:.55}),
+};
+const tankMat = new THREE.MeshStandardMaterial({color:0x9db2c6, roughness:.4, metalness:.55, transparent:true, opacity:.35, side:THREE.DoubleSide, depthWrite:false});
+const oilMat  = new THREE.MeshStandardMaterial({color:0xe3b34d, roughness:.15, metalness:0, transparent:true, opacity:.22, depthWrite:false});
+/* procedural painted-steel micro-texture */
+(function(){
+  const c=document.createElement('canvas'); c.width=c.height=256;
+  const x=c.getContext('2d'); const img=x.createImageData(256,256);
+  for(let i=0;i<img.data.length;i+=4){ const v=205+Math.random()*50;
+    img.data[i]=img.data[i+1]=img.data[i+2]=v; img.data[i+3]=255; }
+  x.putImageData(img,0,0);
+  x.strokeStyle='rgba(120,120,120,.35)'; x.lineWidth=1;
+  for(let k=0;k<14;k++){ x.beginPath(); const a=Math.random()*256,b=Math.random()*256;
+    x.moveTo(a,b); x.lineTo(a+(Math.random()-0.5)*70,b+(Math.random()-0.5)*70); x.stroke(); }
+  const t=new THREE.CanvasTexture(c); t.wrapS=t.wrapT=THREE.RepeatWrapping; t.repeat.set(3,3);
+  [M.steel,M.steelDk,tankMat].forEach(m=>{ m.bumpMap=t; m.bumpScale=.025; m.needsUpdate=true; });
+  M.porcel.roughness=.14; M.copper.roughness=.28; M.resin.roughness=.2;
+})();
+
+/* ============ part registry ============ */
+const parts = [];           // {root, name, desc, explode:Vector3, base:Vector3, toggle}
+const meshIndex = new Map(); // mesh -> part
+function reg(root, name, desc, explode, toggle){
+  root.userData.partName = name;
+  const p = {root, name, desc, explode:new THREE.Vector3(...explode), base:root.position.clone(), toggle};
+  parts.push(p);
+  root.traverse(o=>{ if(o.isMesh){ meshIndex.set(o,p); o.castShadow=true; o.receiveShadow=true; }});
+  return p;
+}
+function box(w,h,d,m){ return new THREE.Mesh(new THREE.BoxGeometry(w,h,d), m); }
+function cyl(rt,rb,h,m,seg=36){ return new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,seg), m); }
+function torus(r,t,m){ return new THREE.Mesh(new THREE.TorusGeometry(r,t,14,40), m); }
+/* flanged bi-directional steel roller (train-wheel style) */
+function roller(r=1.8){
+  const g=new THREE.Group();
+  const tread=cyl(r*0.78,r*0.78,1.1,M.steel); tread.rotation.x=Math.PI/2; g.add(tread);
+  const f1=cyl(r,r,0.28,M.steelDk); f1.rotation.x=Math.PI/2; f1.position.z=0.7; g.add(f1);
+  const f2=cyl(r,r,0.28,M.steelDk); f2.rotation.x=Math.PI/2; f2.position.z=-0.7; g.add(f2);
+  const hub=cyl(0.35,0.35,1.9,M.steelDk); hub.rotation.x=Math.PI/2; g.add(hub);
+  return g;
+}
+
+/* ============ OIL-IMMERSED MODEL ============ */
+const oilRoot = new THREE.Group(); scene.add(oilRoot);
+const limbX = [-12,0,12];
+
+/* --- core --- */
+{
+  const g = new THREE.Group();
+  limbX.forEach(x=>{ const l = box(6,18,6,M.core); l.position.set(x,15,0); g.add(l); });
+  const yb = box(36,4,6,M.core); yb.position.set(0,4,0); g.add(yb);
+  g.position.set(0,0,0); oilRoot.add(g);
+  reg(g,'Core (limbs + bottom yoke)',
+   'Three-limb core stacked from 0.23 mm Hi-B grain-oriented silicon steel with mitred step-lap joints. Carries the mutual flux; its grade and joint quality fix no-load loss, magnetising current and hum for the life of the unit. Earthed at exactly one point.',
+   [0,0,0],'core');
+}
+/* top yoke separately so it can lift off in exploded view */
+{
+  const g = new THREE.Group();
+  const yt = box(36,4,6,M.core); yt.position.set(0,26,0); g.add(yt);
+  const c1 = box(38,1.6,1.4,M.steelDk); c1.position.set(0,27.5,4.4); g.add(c1);
+  const c2 = c1.clone(); c2.position.z = -4.4; g.add(c2);
+  oilRoot.add(g);
+  reg(g,'Top yoke + clamping frame',
+   'The top yoke is removed ("re-yoking") so finished windings can be lowered over the limbs, then re-laid lamination by lamination. Steel clamping frames press the yokes and carry the lifting and short-circuit end-thrust forces.',
+   [0,14,0],'core');
+}
+/* --- LV windings --- */
+{
+  const g = new THREE.Group();
+  limbX.forEach(x=>{ const w = cyl(5.2,5.2,16,M.copper); w.position.set(x,15,0); g.add(w);
+    const r1=torus(5.2,.35,M.copperL); r1.rotation.x=Math.PI/2; r1.position.set(x,23.1,0); g.add(r1);
+    const r2=r1.clone(); r2.position.y=6.9; g.add(r2); });
+  oilRoot.add(g);
+  reg(g,'LV windings (inner)',
+   'Low-voltage windings sit innermost — cheapest to insulate from the earthed core. Foil or helical copper, few turns, very high current (1333 A in the 1000 kVA example). End rings and axial oil ducts visible at top and bottom.',
+   [0,9,0],'lv');
+}
+/* --- HV windings --- */
+{
+  const g = new THREE.Group();
+  limbX.forEach(x=>{ const w = cyl(7.2,7.2,15,M.hvWdg); w.position.set(x,15,0); g.add(w); });
+  oilRoot.add(g);
+  reg(g,'HV windings (outer)',
+   'High-voltage windings: many turns of paper-covered strip (multilayer or continuous-disc). Separated from the LV by the main pressboard duct, whose width sets the impedance voltage uk%. Tapping leads connect to the tap-changer.',
+   [0,9,0],'hv');
+}
+/* --- tank --- */
+{
+  const g = new THREE.Group();
+  const t = box(44,30,24,tankMat); t.position.set(0,15,0); g.add(t);
+  /* stiffeners */
+  for(const x of [-14,0,14]){ const s=box(1.2,30,1.2,M.steelDk); s.position.set(x,15,12.6); g.add(s);
+    const s2=s.clone(); s2.position.z=-12.6; g.add(s2); }
+  /* wheels */
+  [[-16,-8],[16,-8],[-16,8],[16,8]].forEach(([x,z])=>{
+    const w = roller(2.1); w.position.set(x,-2.1,z); g.add(w); });
+  oilRoot.add(g);
+  reg(g,'Tank',
+   'Welded mild-steel tank with stiffeners, designed for full vacuum during oil filling. Shot-blasted and painted (C5-M marine systems common in the Gulf). On distribution units the walls are often corrugated fins that do the cooling themselves. Use the opacity slider to see inside.',
+   [0,-28,0],'tank');
+}
+/* --- oil --- */
+let oilMesh;
+{
+  const g = new THREE.Group();
+  oilMesh = box(42.6,27,22.6,oilMat); oilMesh.position.set(0,13.6,0);
+  oilMesh.castShadow = false; oilMesh.receiveShadow=false;
+  g.add(oilMesh); oilRoot.add(g);
+  reg(g,'Insulating oil',
+   'Mineral oil (IEC 60296) — or fire-safer ester liquid — is insulant, coolant and diagnostic window at once. Heated oil rises through the winding ducts, cools in the radiators and sinks back: the ONAN thermosiphon.',
+   [0,0,0],'oil');
+}
+/* --- cover --- */
+{
+  const g = new THREE.Group();
+  const cov = box(46,1.6,26,M.steel); cov.position.set(0,30.9,0); g.add(cov);
+  /* PRV */
+  const prv = cyl(1.6,1.9,1.6,M.red); prv.position.set(-6,32.6,4); g.add(prv);
+  /* thermometer pockets */
+  const ti = cyl(.9,.9,2.2,M.glass); ti.position.set(2,32.7,5.5); g.add(ti);
+  oilRoot.add(g);
+  reg(g,'Tank cover (+ PRV, OTI/WTI pockets)',
+   'Bolted, gasketed cover carrying the bushings, pressure-relief valve (red) and thermometer pockets for the oil- and winding-temperature indicators that stage the fans and trip on overheating.',
+   [0,18,0],'tank');
+}
+/* --- HV bushings --- */
+{
+  const g = new THREE.Group();
+  limbX.forEach(x=>{
+    const b = new THREE.Group();
+    const stem = cyl(.65,.85,9,M.porcel); stem.position.y=4.5; b.add(stem);
+    for(let i=0;i<4;i++){ const sh=torus(1.5,.5,M.porcel); sh.rotation.x=Math.PI/2; sh.position.y=1.6+i*2.1; b.add(sh); }
+    const tip=cyl(.45,.45,1.6,M.steelDk); tip.position.y=9.7; b.add(tip);
+    b.position.set(x,31.6,-6); g.add(b);
+  });
+  oilRoot.add(g);
+  reg(g,'HV bushings (3)',
+   'Porcelain (≤36 kV solid type; condenser-graded OIP/RIP above 52 kV) bushings bring the HV line through the earthed cover. Sheds lengthen the creepage path against pollution — a key spec in coastal/desert GCC sites. Bushing failure is a leading cause of transformer fires.',
+   [0,12,0],'bushings');
+}
+/* --- LV bushings --- */
+{
+  const g = new THREE.Group();
+  [-9,-3,3,9].forEach(x=>{
+    const b = new THREE.Group();
+    const stem = cyl(.8,1,4.4,M.porcel); stem.position.y=2.2; b.add(stem);
+    const sh=torus(1.6,.5,M.porcel); sh.rotation.x=Math.PI/2; sh.position.y=1.7; b.add(sh);
+    const sh2=torus(1.6,.5,M.porcel); sh2.rotation.x=Math.PI/2; sh2.position.y=3.2; b.add(sh2);
+    const pad=box(1.6,1.2,.5,M.copperL); pad.position.y=5; b.add(pad);
+    b.position.set(x,31.6,6.5); g.add(b);
+  });
+  oilRoot.add(g);
+  reg(g,'LV bushings (4: a-b-c-n)',
+   'Four low-voltage bushings — three phases plus neutral (Dyn11 brings the star point out for earthing and single-phase loads). High current, so they end in palm connectors for busbar or cable lugs.',
+   [0,10,0],'bushings');
+}
+/* --- conservator + pipe + Buchholz + breather --- */
+{
+  const g = new THREE.Group();
+  const cons = cyl(4,4,20,M.steel); cons.rotation.z=Math.PI/2; cons.position.set(-4,42,0); g.add(cons);
+  const e1 = cyl(4,4,.8,M.steelDk); e1.rotation.z=Math.PI/2; e1.position.set(6.4,42,0); g.add(e1);
+  const e2 = e1.clone(); e2.position.x=-14.4; g.add(e2);
+  /* level gauge */
+  const lg = cyl(.5,.5,3,M.glass); lg.rotation.z=Math.PI/2; lg.position.set(-4,42,4.1); g.add(lg);
+  /* pipe down to cover with buchholz */
+  const p1 = cyl(.7,.7,7,M.steelDk); p1.position.set(4,35.2,0); p1.rotation.z=0; g.add(p1);
+  const buch = box(2.6,2.4,2.4,M.orange); buch.position.set(4,34.6,0); g.add(buch);
+  /* breather hung from far end */
+  const bp = cyl(.45,.45,7,M.steelDk); bp.position.set(-15.5,38.2,0); g.add(bp);
+  const br = cyl(1.1,1.1,4.6,M.glass); br.position.set(-15.5,32.6,0); g.add(br);
+  const bc = cyl(1.2,1.2,.8,M.steelDk); bc.position.set(-15.5,30,0); g.add(bc);
+  oilRoot.add(g);
+  reg(g,'Conservator, Buchholz relay & breather',
+   'The conservator absorbs oil expansion (~7–8% over the temperature swing). In the connecting pipe sits the Buchholz relay (orange): slow gas → alarm; oil surge from an internal fault → instant trip. The silica-gel breather dries every breath the conservator takes; rubber-bag designs stop air contact entirely.',
+   [0,26,0],'conservator');
+}
+/* --- corrugated fin walls (the classic distribution-tank radiator) --- */
+{
+  const g = new THREE.Group();
+  for(const zs of [1,-1]){
+    const wall = new THREE.Group();
+    /* deep thin fins, edge-on to the wall, running full tank height */
+    for(let i=0;i<21;i++){
+      const fin = box(0.55,23,5,M.steel); fin.position.set(-19+i*1.9,16,zs*14.75); wall.add(fin);
+    }
+    /* top & bottom edge strips closing the fin pack */
+    const topStrip = box(38.9,0.8,5.2,M.steelDk); topStrip.position.set(0,27.8,zs*14.75); wall.add(topStrip);
+    const botStrip = topStrip.clone(); botStrip.position.y=4.2; wall.add(botStrip);
+    wall.userData.exDir = new THREE.Vector3(0,0,zs*16);
+    g.add(wall);
+  }
+  /* short fin packs on the tank ends */
+  for(const xs of [1,-1]){
+    const wall = new THREE.Group();
+    for(let i=0;i<9;i++){
+      const fin = box(5,23,0.55,M.steel); fin.position.set(xs*24.75,16,-7.6+i*1.9); wall.add(fin);
+    }
+    wall.userData.exDir = new THREE.Vector3(xs*14,0,0);
+    g.add(wall);
+  }
+  oilRoot.add(g);
+  reg(g,'Corrugated fin walls (ONAN cooling)',
+   'On distribution transformers the tank wall IS the radiator: thin steel sheet is pressed into deep vertical fins (the corrugations you see on every pad-mount and pole-mount unit). Hot oil rises inside, sheds heat through the fin faces, and sinks — pure ONAN thermosiphon, no fans, no valves, nothing to maintain. The fins also flex elastically to absorb oil expansion, which is what lets hermetically sealed designs delete the conservator entirely. Larger distribution units (≥1600 kVA) switch to detachable plate-type radiators like the power transformer’s.',
+   [0,0,0],'cooling');
+}
+/* --- OLTC --- */
+{
+  const g = new THREE.Group();
+  const body = cyl(3.4,3.4,15,M.steel); body.position.set(-25.4,16,0); g.add(body);
+  const cap = cyl(3.6,3.6,1,M.steelDk); cap.position.set(-25.4,24,0); g.add(cap);
+  const mot = box(3,4.5,3,M.steelDk); mot.position.set(-25.4,6,5); g.add(mot);
+  oilRoot.add(g);
+  reg(g,'On-load tap-changer (OLTC)',
+   'Adjusts HV turns under load (e.g. ±10% in 17 steps) to hold the LV voltage as network load swings. Diverter switch with transition resistors — modern units switch in vacuum interrupters, stretching maintenance to ~300 000 operations. Driven by the motor box below, commanded by an AVR relay.',
+   [-14,0,0],'oltc');
+}
+
+/* --- detail pass: cover bolting --- */
+{
+  const g = new THREE.Group();
+  const bolt = ()=>cyl(.45,.45,.8,M.steelDk,10);
+  for(const x of [-19,-13,-7,-1,5,11,17]){ for(const z of [11.8,-11.8]){ const b=bolt(); b.position.set(x+1,31.9,z); g.add(b);} }
+  for(const z of [-6,0,6]){ for(const x of [21.5,-21.5]){ const b=bolt(); b.position.set(x,31.9,z); g.add(b);} }
+  oilRoot.add(g);
+  reg(g,'Cover bolting & gasket joint',
+   'The cover is bolted onto a nitrile/cork gasket — the single longest leak path on the transformer. Bolt torque is sequenced like a cylinder head; re-torque after the first thermal cycles is part of the 12-month service visit. On hermetic units this joint is welded instead.',
+   [0,18,0],'tank');
+}
+/* --- detail pass: tank fittings --- */
+{
+  const g = new THREE.Group();
+  /* lifting lugs */
+  [[-18,9],[18,9],[-18,-9],[18,-9]].forEach(([x,z])=>{ const lug=box(2.4,3,1,M.steelDk); lug.position.set(x,28.4,z); g.add(lug); });
+  /* rating plate */
+  const rp=box(3.8,4.8,.25,M.steelDk); rp.position.set(-10,18,12.2); g.add(rp);
+  const rf=box(3.2,4.2,.12,M.glass); rf.position.set(-10,18,12.4); g.add(rf);
+  /* drain & filter valve with handwheel */
+  const dv=cyl(.9,.9,1.8,M.steelDk); dv.rotation.x=Math.PI/2; dv.position.set(14,3,12.6); g.add(dv);
+  const hw=torus(1.1,.18,M.red); hw.position.set(14,3,13.7); g.add(hw);
+  const sp=box(.2,2.0,.18,M.red); sp.position.set(14,3,13.7); g.add(sp);
+  /* earthing pad + strap */
+  const ep=box(.5,2.2,1.8,M.copperL); ep.position.set(-22.2,3,9); g.add(ep);
+  oilRoot.add(g);
+  reg(g,'Tank fittings — lugs, rating plate, drain valve, earth pad',
+   'Lifting lugs are rated for the complete oil-filled mass and define the slinging angles. The rating plate is the transformer\'s legal identity: every guaranteed figure of §10–§11 is stamped on it. The bottom drain/filter valve is where oil sampling (§16.6) and processing connect. Two earthing pads bond the tank to the substation grid — check them at every visit; a floating tank turns a winding fault into a touch-voltage hazard.',
+   [0,-28,0],'tank');
+}
+
+/* ============ CAST RESIN MODEL ============ */
+const crtRoot = new THREE.Group(); crtRoot.visible=false; scene.add(crtRoot);
+{
+  /* base + wheels */
+  const g = new THREE.Group();
+  const base1 = box(40,2.6,3,M.steelDk); base1.position.set(0,1.3,7); g.add(base1);
+  const base2 = base1.clone(); base2.position.z=-7; g.add(base2);
+  [[-15,7],[15,7],[-15,-7],[15,-7]].forEach(([x,z])=>{
+    const w=roller(1.9); w.position.set(x,-0.5,z); g.add(w);});
+  crtRoot.add(g);
+  reg(g,'Base channels + rollers',
+   'Rolled-steel base channels with bi-directional rollers. Anti-vibration pads go between base and floor to stop 100 Hz core hum travelling into the building structure.',
+   [0,-6,0],'frame');
+}
+{
+  /* core */
+  const g = new THREE.Group();
+  limbX.forEach(x=>{ const l=box(6,22,6,M.core); l.position.set(x,16,0); g.add(l); });
+  const yb=box(38,5,6,M.core); yb.position.set(0,4.5,0); g.add(yb);
+  crtRoot.add(g);
+  reg(g,'Core (CRGO, resin-coated)',
+   'Identical step-lap CRGO technology to oil units, sealed with an anti-corrosion resin coating since there is no oil to protect the steel. Flux density is kept slightly lower (≈1.4–1.6 T) to limit noise in occupied buildings.',
+   [0,0,0],'core');
+}
+{
+  const g = new THREE.Group();
+  const yt=box(38,5,6,M.core); yt.position.set(0,29.5,0); g.add(yt);
+  /* top clamps + lifting lugs */
+  const c1=box(40,2.4,1.6,M.steelDk); c1.position.set(0,30.5,4.6); g.add(c1);
+  const c2=c1.clone(); c2.position.z=-4.6; g.add(c2);
+  for(const x of [-17,17]){ const lug=box(2,3,.8,M.steelDk); lug.position.set(x,32.6,0); g.add(lug); }
+  crtRoot.add(g);
+  reg(g,'Top yoke + clamping frame',
+   'Removed for coil assembly exactly as in oil units. The frames also carry the HV delta connection supports and lifting lugs.',
+   [0,14,0],'core');
+}
+{
+  /* LV foil cylinders */
+  const g = new THREE.Group();
+  limbX.forEach(x=>{ const w=cyl(4.9,4.9,17,M.copperL); w.position.set(x,16,0); g.add(w); });
+  crtRoot.add(g);
+  reg(g,'LV foil windings',
+   'Aluminium or copper foil wound full-height with class-F prepreg between layers, oven-cured into a rigid tube. Each turn spans the whole winding height, so axial short-circuit forces are inherently balanced.',
+   [0,8,0],'lv');
+}
+{
+  /* HV cast coils */
+  const g = new THREE.Group();
+  limbX.forEach(x=>{
+    const w=cyl(7.4,7.4,18,M.resin); w.position.set(x,16,0); g.add(w);
+    const f1=cyl(7.9,7.9,1.4,M.resinIn); f1.position.set(x,25.3,0); g.add(f1);
+    const f2=f1.clone(); f2.position.y=6.7; g.add(f2);
+  });
+  /* delta links */
+  for(let i=0;i<2;i++){ const bar=box(12,1,.8,M.copperL); bar.position.set(-6+i*12,27.4,8.4); g.add(bar); }
+  crtRoot.add(g);
+  reg(g,'HV cast-resin coils + delta links',
+   'The complete HV winding is vacuum-cast inside a steel mould in silica-filled, glass-reinforced epoxy — void-free, verified by a <10 pC partial-discharge test on every single coil. Humidity-proof (E2/E3), flame-retardant (F1), touch-safe surface. Copper links on top close the delta.',
+   [0,16,0],'hv');
+}
+{
+  /* LV terminals + sensors */
+  const g = new THREE.Group();
+  [-12,0,12].forEach(x=>{ const b=box(1.6,7,.5,M.copperL); b.position.set(x,33,-3.4); g.add(b); });
+  const tb=box(4,2.6,1.4,M.steelDk); tb.position.set(19.5,9,7.8); g.add(tb);
+  crtRoot.add(g);
+  reg(g,'LV terminals + PT100 marshalling box',
+   'LV busbar stubs exit upward for busduct or cable connection. PT100 sensors embedded in the LV ducts (typically 3 + 1 spare) feed a temperature relay: alarm, trip and AF-fan control thresholds.',
+   [0,10,0],'bushings');
+}
+{
+  /* enclosure */
+  const encMat = tankMat.clone();
+  const g = new THREE.Group();
+  const e = box(48,38,26,encMat); e.position.set(0,17.5,0); g.add(e);
+  /* louvres */
+  for(let i=0;i<5;i++){ const l=box(10,.7,.4,M.steelDk); l.position.set(-17,5+i*2.4,13.2); g.add(l);
+    const l2=l.clone(); l2.position.x=17; g.add(l2); }
+  g.userData.encMat = encMat;
+  crtRoot.add(g);
+  reg(g,'Ventilated enclosure (IP21/23/31)',
+   'Optional sheet-steel enclosure with inlet/outlet louvres — rule of thumb ≥0.25 m² of free inlet + outlet area per 10 kW of loss, with ≥1 m height difference. IP54 or harsh-site enclosures require derating or forced air. Without enclosure the unit is IP00 inside a dedicated room.',
+   [0,-34,0],'tank');
+}
+{
+  /* AF fans */
+  const g = new THREE.Group();
+  limbX.forEach(x=>{ const f=cyl(2.4,2.4,1.2,M.steelDk); f.rotation.x=Math.PI/2; f.position.set(x,3.2,10.2);
+    const fr=torus(2.4,.22,M.steelDk); fr.rotation.x=0; fr.position.set(x,3.2,10.8);
+    g.add(f); g.add(fr); });
+  crtRoot.add(g);
+  reg(g,'Cross-flow fans (AN → AF)',
+   'Fan trays beneath the coils blow air up the LV–HV duct, adding 40–50% rating (AF) for peak or emergency duty — usually started automatically by the PT100 temperature relay.',
+   [0,0,14],'cooling');
+}
+
+/* --- detail pass: CRT coil pads --- */
+{
+  const g = new THREE.Group();
+  limbX.forEach(x=>{ for(const z of [5.6,-5.6]){ const pad=box(2.2,1.2,1.6,M.rubber); pad.position.set(x,7.1,z); g.add(pad); } });
+  crtRoot.add(g);
+  reg(g,'Resilient coil-support pads',
+   'The cast coils sit on resilient (often silicone-rubber) blocks, never rigidly bolted: epoxy and copper expand differently from the steel frame every load cycle, and the pads absorb that movement plus the 100 Hz core vibration. Missing or hardened pads show up years later as coil cracking — check them during the annual clean.',
+   [0,0,0],'core');
+}
+/* --- detail pass: CRT lifting eyes & rating plate --- */
+{
+  const g = new THREE.Group();
+  for(const x of [-15,15]){ const eye=torus(1.1,.3,M.steelDk); eye.position.set(x,34.6,0); g.add(eye); }
+  const rp=box(3.4,4.2,.22,M.steelDk); rp.position.set(16,16,9.2); g.add(rp);
+  const rf=box(2.9,3.7,.1,M.glass); rf.position.set(16,16,9.36); g.add(rf);
+  crtRoot.add(g);
+  reg(g,'Lifting eyes & rating plate (CRT)',
+   'Lift only by the top-frame eyes — slinging around the coils cracks resin. The rating plate carries the IEC 60076-11 class string (e.g. E2 C2 F1) alongside the electrical data; that three-class code is the unit\'s environmental passport.',
+   [0,14,0],'core');
+}
+
+/* ============ VPI DRY-TYPE MODEL ============ */
+const vpiRoot = new THREE.Group(); vpiRoot.visible=false; scene.add(vpiRoot);
+const vpiMat  = new THREE.MeshStandardMaterial({color:0xbf8c3a, roughness:.72, metalness:.08});
+const bandMat = new THREE.MeshStandardMaterial({color:0x6e4a22, roughness:.55, metalness:.15});
+{
+  const g = new THREE.Group();
+  const base1 = box(40,2.6,3,M.steelDk); base1.position.set(0,1.3,7); g.add(base1);
+  const base2 = base1.clone(); base2.position.z=-7; g.add(base2);
+  [[-15,7],[15,7],[-15,-7],[15,-7]].forEach(([x,z])=>{
+    const w=roller(1.9); w.position.set(x,-0.5,z); g.add(w);});
+  vpiRoot.add(g);
+  reg(g,'Base channels + rollers (VPI unit)',
+   'Steel base channels with rollers and anti-vibration pads — identical practice to the cast-resin unit. VPI dry types are common in marine and industrial plants, so seismic/vibration mounting details are often specified harder than for building units.',
+   [0,-6,0],'frame');
+}
+{
+  const g = new THREE.Group();
+  limbX.forEach(x=>{ const l=box(6,22,6,M.core); l.position.set(x,16,0); g.add(l); });
+  const yb=box(38,5,6,M.core); yb.position.set(0,4.5,0); g.add(yb);
+  vpiRoot.add(g);
+  reg(g,'Core (CRGO, VPI unit)',
+   'Same step-lap CRGO core as every other technology, varnish-sealed against corrosion. Flux density is kept moderate (≈1.4–1.6 T) because the open windings give the 100 Hz hum a clear path to the room.',
+   [0,0,0],'core');
+}
+{
+  const g = new THREE.Group();
+  const yt=box(38,5,6,M.core); yt.position.set(0,29.5,0); g.add(yt);
+  const c1=box(40,2.4,1.6,M.steelDk); c1.position.set(0,30.5,4.6); g.add(c1);
+  const c2=c1.clone(); c2.position.z=-4.6; g.add(c2);
+  for(const x of [-17,17]){ const lug=box(2,3,.8,M.steelDk); lug.position.set(x,32.6,0); g.add(lug); }
+  vpiRoot.add(g);
+  reg(g,'Top yoke + clamping frame (VPI unit)',
+   'Removed for coil assembly and re-laid, exactly as in oil and cast-resin practice. The clamps also carry the coil support blocks that let the open windings expand thermally without stressing the leads.',
+   [0,14,0],'core');
+}
+{
+  const g = new THREE.Group();
+  limbX.forEach(x=>{ const w=cyl(4.8,4.8,15,M.copper); w.position.set(x,16,0); g.add(w); });
+  vpiRoot.add(g);
+  reg(g,'LV winding (VPI)',
+   'Copper strip or foil with Nomex® aramid interlayers, vacuum-pressure impregnated together with the HV. Aramid is what buys the 180–220 thermal class — VPI units run hotter by design, trading insulation life margin for compactness.',
+   [0,6,0],'lv');
+}
+{
+  const g = new THREE.Group();
+  limbX.forEach(x=>{
+    const w=cyl(7.2,7.2,16,vpiMat); w.position.set(x,16,0); g.add(w);
+    for(const by of [10.5,16,21.5]){ const band=torus(7.25,.45,bandMat); band.rotation.x=Math.PI/2; band.position.set(x,by,0); g.add(band); }
+  });
+  vpiRoot.add(g);
+  reg(g,'HV winding (VPI open-wound)',
+   'The defining feature: the HV coil is wound with Nomex®-insulated conductor and air ducts, then repeatedly vacuum-pressure impregnated in polyester or silicone resin and baked — sealed but not encapsulated (the honey-coloured varnish surface stays visible, banded with cured glass tape). Strengths: class H/220 temperature capability, repairable coils, very large sizes. Limits: the surface remains exposed to humidity and dust (E1/E2 with heaters), and impulse strength is set by air clearances. Repeat the cycle until a thick void-free shell forms and you have VPE — the sealed variant for washdown and coastal sites.',
+   [0,15,0],'hv');
+}
+{
+  const g = new THREE.Group();
+  [-12,0,12].forEach(x=>{ const b=box(1.6,7,.5,M.copperL); b.position.set(x,33,-3.4); g.add(b); });
+  for(let i=0;i<2;i++){ const bar=box(12,1,.8,M.copperL); bar.position.set(-6+i*12,26.5,8.2); g.add(bar); }
+  const tb=box(4,2.6,1.4,M.steelDk); tb.position.set(19.5,9,7.8); g.add(tb);
+  vpiRoot.add(g);
+  reg(g,'Terminals, delta links + PT100 box (VPI)',
+   'HV delta links and LV riser bars mirror cast-resin practice; PT100 sensors in the winding ducts feed the temperature relay for alarm, trip and fan staging. Bolted connections onto varnished coils get re-torque checks at first service — thermal cycling loosens them.',
+   [0,10,0],'bushings');
+}
+{
+  const g = new THREE.Group();
+  limbX.forEach(x=>{ const f=cyl(2.4,2.4,1.2,M.steelDk); f.rotation.x=Math.PI/2; f.position.set(x,3.2,10.2);
+    const fr=torus(2.4,.22,M.steelDk); fr.position.set(x,3.2,10.8);
+    g.add(f); g.add(fr); });
+  vpiRoot.add(g);
+  reg(g,'Cross-flow fans (AN → AF, VPI)',
+   'Identical AF practice to cast resin: fan trays add 40–50% rating for peak duty, staged by the PT100 relay.',
+   [0,0,14],'cooling');
+}
+{
+  const g = new THREE.Group();
+  const e = box(48,38,26,tankMat); e.position.set(0,17.5,0); g.add(e);
+  for(let i=0;i<5;i++){ const l=box(10,.7,.4,M.steelDk); l.position.set(-17,5+i*2.4,13.2); g.add(l);
+    const l2=l.clone(); l2.position.x=17; g.add(l2); }
+  vpiRoot.add(g);
+  reg(g,'Ventilated enclosure (VPI unit)',
+   'Open coils make the enclosure matter even more than for cast resin: IP21/23 ventilated indoors, with anti-condensation heaters wired to run whenever the transformer is de-energised — moisture absorbed during a shutdown is the classic VPI failure route. Same louvre sizing rule: ≥0.25 m² inlet + outlet per 10 kW of loss.',
+   [0,-34,0],'tank');
+}
+
+/* ============ labels ============ */
+const labelDefs = [
+  /* [mode, partIndexName, offset] resolved after parts exist */
+];
+const labelEls = [];
+function makeLabel(part, text, dy=0, dx=0, dz=0){
+  const el = document.createElement('div');
+  el.className='lbl'; el.textContent=text; document.body.appendChild(el);
+  labelEls.push({el, part, off:new THREE.Vector3(dx,dy,dz)});
+}
+function buildLabels(){
+  labelEls.forEach(l=>l.el.remove()); labelEls.length=0;
+  const activeRoot = mode==='oil'?oilRoot:(mode==='crt'?crtRoot:vpiRoot);
+  const find = n => parts.find(p=>p.name.startsWith(n) && p.root.parent === activeRoot);
+  if(mode==='oil'){
+    makeLabel(find('Conservator'), 'Conservator', 49, -4, 0);
+    makeLabel(find('HV bushings'), 'HV bushings', 45, 0, -6);
+    makeLabel(find('LV bushings'), 'LV bushings', 40.5, 0, 6.5);
+    makeLabel(find('Corrugated'), 'Corrugated fin wall', 30, 0, 14.75);
+    makeLabel(find('On-load'), 'OLTC', 27, -25.4, 0);
+    makeLabel(find('Core ('), 'Core', 5, 0, 0);
+    makeLabel(find('HV windings'), 'HV winding', 24.5, 12, 0);
+    makeLabel(find('Tank'), 'Tank', 16, -22, 0);
+  }else if(mode==='crt'){
+    makeLabel(find('HV cast-resin'), 'Cast-resin HV coil', 27, 12);
+    makeLabel(find('LV foil'), 'LV foil winding', 26, -12);
+    makeLabel(find('Core ('), 'CRGO core', 6, 0);
+    makeLabel(find('LV terminals'), 'LV terminals', 37, 0);
+    makeLabel(find('Cross-flow'), 'AF fans', 4, 0, 11);
+    makeLabel(find('Ventilated'), 'Enclosure', 37, -23);
+  }else{
+    makeLabel(find('HV winding (VPI'), 'VPI HV coil (varnished)', 26, 12);
+    makeLabel(find('LV winding (VPI'), 'LV winding', 25, -12);
+    makeLabel(find('Core ('), 'CRGO core', 6, 0);
+    makeLabel(find('Terminals'), 'Terminals & links', 37, 0);
+    makeLabel(find('Cross-flow'), 'AF fans', 4, 0, 11);
+    makeLabel(find('Ventilated'), 'Enclosure', 37, -23);
+  }
+}
+
+/* ============ toggles UI ============ */
+const toggleDefs = [
+  ['tank','Tank / enclosure','#9db2c6'],
+  ['oil','Oil','#e3b34d'],
+  ['core','Core & clamps','#6e7f93'],
+  ['lv','LV windings','#c9772f'],
+  ['hv','HV windings / coils','#a8503c'],
+  ['conservator','Conservator system','#8fa3b8'],
+  ['bushings','Bushings / terminals','#c9b78a'],
+  ['cooling','Cooling (radiators/fans)','#7d93a8'],
+  ['oltc','Tap-changer','#8fa3b8'],
+  ['frame','Base / rollers','#5d7186'],
+];
+const togglesBox = document.getElementById('toggles');
+const toggleState = {};
+toggleDefs.forEach(([key,label,colr])=>{
+  toggleState[key]=true;
+  const l = document.createElement('label'); l.className='tgl';
+  l.innerHTML = `<input type="checkbox" checked data-k="${key}"><span class="sw" style="background:${colr}"></span>${label}`;
+  togglesBox.appendChild(l);
+});
+togglesBox.addEventListener('change',e=>{
+  const k = e.target.dataset.k; toggleState[k]=e.target.checked; applyToggles();
+});
+function applyToggles(){
+  parts.forEach(p=>{ if(p.toggle) p.root.visible = toggleState[p.toggle] !== false; });
+}
+
+/* ============ explode + opacity ============ */
+const explodeSl = document.getElementById('explode');
+const tankSl = document.getElementById('tankop');
+function applyExplode(){
+  const t = explodeSl.value/100;
+  parts.forEach(p=>{
+    p.root.position.copy(p.base).addScaledVector(p.explode, t);
+    /* per-child explode dirs (radiator banks) */
+    p.root.children.forEach(ch=>{
+      if(ch.userData.exDir){ ch.position.copy(ch.userData.baseP || (ch.userData.baseP=ch.position.clone())).addScaledVector(ch.userData.exDir, t); }
+    });
+  });
+  oilMat.opacity = 0.22*(1-t);
+}
+explodeSl.addEventListener('input',applyExplode);
+tankSl.addEventListener('input',()=>{ tankMat.opacity = tankSl.value/100; });
+/* enclosure box shares the tank material so the same slider controls it */
+crtRoot.traverse(o=>{ if(o.isMesh && o.material && o.material.transparent && o.material!==oilMat && o.geometry.type==='BoxGeometry' && o.geometry.parameters.width===48){ o.material = tankMat; }});
+
+/* ============ camera controls (custom orbit) ============ */
+let mode = 'oil';
+const target = new THREE.Vector3(0,16,0);
+let sph = {r:86, th:0.72, ph:1.18}; /* radius, azimuth, polar */
+let autoRotate = false;
+function applyCam(){
+  sph.ph = Math.max(0.12, Math.min(Math.PI-0.25, sph.ph));
+  sph.r  = Math.max(28, Math.min(220, sph.r));
+  camera.position.set(
+    target.x + sph.r*Math.sin(sph.ph)*Math.sin(sph.th),
+    target.y + sph.r*Math.cos(sph.ph),
+    target.z + sph.r*Math.sin(sph.ph)*Math.cos(sph.th));
+  camera.lookAt(target);
+}
+applyCam();
+
+let dragging=false, panning=false, lastX=0, lastY=0, moved=0;
+const el = renderer.domElement;
+el.addEventListener('contextmenu',e=>e.preventDefault());
+el.addEventListener('pointerdown',e=>{
+  dragging=true; moved=0; panning = (e.button===2 || e.shiftKey);
+  lastX=e.clientX; lastY=e.clientY; container.classList.add('dragging');
+  el.setPointerCapture(e.pointerId);
+});
+el.addEventListener('pointermove',e=>{
+  if(!dragging) return;
+  const dx=e.clientX-lastX, dy=e.clientY-lastY; lastX=e.clientX; lastY=e.clientY;
+  moved += Math.abs(dx)+Math.abs(dy);
+  if(panning){
+    const s = sph.r/700;
+    const right = new THREE.Vector3().subVectors(camera.position,target).cross(camera.up).normalize();
+    target.addScaledVector(right, dx*s);
+    target.y += dy*s;
+  }else{
+    sph.th -= dx*0.0055; sph.ph -= dy*0.0055;
+  }
+  applyCam();
+});
+el.addEventListener('pointerup',e=>{
+  dragging=false; container.classList.remove('dragging');
+  if(moved<6) pick(e);
+});
+el.addEventListener('wheel',e=>{ e.preventDefault(); sph.r *= (1 + Math.sign(e.deltaY)*0.09); applyCam(); },{passive:false});
+/* pinch zoom */
+let pinchD=0;
+el.addEventListener('touchstart',e=>{ if(e.touches.length===2){ pinchD=Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);} },{passive:true});
+el.addEventListener('touchmove',e=>{ if(e.touches.length===2){ const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY); sph.r *= pinchD/d; pinchD=d; applyCam(); } },{passive:true});
+
+/* ============ picking ============ */
+const ray = new THREE.Raycaster(); const mouse = new THREE.Vector2();
+let selected = null;
+function setEmissive(part, on, col=0x2b6ea8){
+  part.root.traverse(o=>{ if(o.isMesh && o.material.emissive){
+    if(on){ o.userData.em = o.material; o.material = o.material.clone(); o.material.emissive = new THREE.Color(col); o.material.emissiveIntensity=.8; }
+    else if(o.userData.em){ o.material.dispose(); o.material = o.userData.em; delete o.userData.em; }
+  }});
+}
+function pick(e){
+  const r = el.getBoundingClientRect();
+  mouse.x = ((e.clientX-r.left)/r.width)*2-1;
+  mouse.y = -((e.clientY-r.top)/r.height)*2+1;
+  ray.setFromCamera(mouse,camera);
+  const activeRoot = mode==='oil'?oilRoot:(mode==='crt'?crtRoot:vpiRoot);
+  const hits = ray.intersectObjects(activeRoot.children,true).filter(h=>h.object.visible && meshIndex.get(h.object) && meshIndex.get(h.object).root.visible);
+  const info = document.getElementById('info');
+  if(selected){ setEmissive(selected,false); selected=null; }
+  if(hits.length){
+    const p = meshIndex.get(hits[0].object);
+    if(quizOn){ quizAnswer(p); return; }
+    selected = p; setEmissive(p,true);
+    info.innerHTML = `<b>${p.name}</b><br>${p.desc}`;
+  }else{
+    info.innerHTML = quizOn
+      ? `<b>🎯 Find and click: ${qTarget?qTarget.name:''}</b><br><span class="hint">Score: ${qScore}/${qCount} — that click hit empty space.</span>`
+      : '<span class="hint">Click any part of the transformer to identify it and read what it does.</span>';
+  }
+}
+
+/* ============ quiz mode ============ */
+let quizOn=false, qTarget=null, qScore=0, qCount=0, qLock=false;
+const bQuiz=document.getElementById('bQuiz');
+function quizPool(){
+  const activeRoot = mode==='oil'?oilRoot:(mode==='crt'?crtRoot:vpiRoot);
+  return parts.filter(p=>p.root.parent===activeRoot && p.root.visible);
+}
+function nextQ(){
+  const pool=quizPool().filter(p=>p!==qTarget);
+  qTarget=pool[Math.floor(Math.random()*pool.length)];
+  document.getElementById('info').innerHTML=
+    `<b>🎯 Question ${qCount+1}/8</b><br>Find and click:<br><b>${qTarget.name}</b><br><span class="hint">Score so far: ${qScore}</span>`;
+}
+function endQuiz(){
+  quizOn=false; bQuiz.classList.remove('on');
+  const msg=qScore>=7?'🏆 Transformer engineer material!':qScore>=4?'👍 Solid — re-read the part notes and beat it.':'📖 Open the tutorial, then come back stronger.';
+  document.getElementById('info').innerHTML=`<b>🏁 Quiz over — ${qScore}/8</b><br>${msg}`;
+}
+function quizAnswer(p){
+  if(qLock) return;
+  const right=(p===qTarget);
+  setEmissive(p,true, right?0x2fae5a:0xc23232); qLock=true;
+  if(right) qScore++;
+  qCount++;
+  document.getElementById('info').innerHTML=
+    right?`<b>✅ Correct!</b><br><span class="hint">${p.name}</span>`
+         :`<b>❌ Not quite.</b><br>That was: <b>${p.name}</b><br><span class="hint">Looking for: ${qTarget.name}</span>`;
+  setTimeout(()=>{ setEmissive(p,false); qLock=false;
+    if(qCount>=8) endQuiz(); else nextQ(); }, 1300);
+}
+bQuiz.onclick=()=>{
+  if(quizOn){ endQuiz(); return; }
+  quizOn=true; qScore=0; qCount=0; bQuiz.classList.add('on');
+  if(selected){ setEmissive(selected,false); selected=null; }
+  nextQ();
+};
+
+/* ============ mode switch / buttons ============ */
+const bOil=document.getElementById('mOil'), bCrt=document.getElementById('mCrt'), bVpi=document.getElementById('mVpi');
+function setMode(m){
+  mode=m;
+  oilRoot.visible = m==='oil'; crtRoot.visible = m==='crt'; vpiRoot.visible = m==='vpi';
+  bOil.classList.toggle('active',m==='oil'); bCrt.classList.toggle('active',m==='crt'); bVpi.classList.toggle('active',m==='vpi');
+  if(selected){ setEmissive(selected,false); selected=null; }
+  document.getElementById('info').innerHTML='<span class="hint">Click any part to identify it.</span>';
+  /* hide irrelevant toggles: dry types have no oil system; oil unit has no base frame */
+  document.querySelectorAll('#toggles .tgl').forEach(l=>{
+    const k=l.querySelector('input').dataset.k;
+    const hidden = m==='oil' ? ['frame'] : ['oil','conservator','oltc'];
+    l.style.display = hidden.includes(k) ? 'none':'flex';
+  });
+  buildLabels(); applyToggles(); applyExplode();
+  if(typeof quizOn!=='undefined' && quizOn) nextQ();
+}
+bOil.onclick=()=>setMode('oil'); bCrt.onclick=()=>setMode('crt'); bVpi.onclick=()=>setMode('vpi');
+
+const bRot=document.getElementById('bRotate');
+bRot.onclick=()=>{ autoRotate=!autoRotate; bRot.classList.toggle('on',autoRotate); };
+const bLab=document.getElementById('bLabels');
+let labelsOn=true;
+bLab.onclick=()=>{ labelsOn=!labelsOn; bLab.classList.toggle('on',labelsOn); };
+document.getElementById('bReset').onclick=()=>{
+  sph={r:86,th:0.72,ph:1.18}; target.set(0,16,0); explodeSl.value=0; tankSl.value=35;
+  tankMat.opacity=.35; applyExplode(); applyCam();
+};
+
+/* ============ render loop ============ */
+const v3 = new THREE.Vector3();
+function tick(){
+  requestAnimationFrame(tick);
+  if(autoRotate && !dragging){ sph.th += 0.0035; applyCam(); }
+  renderer.render(scene,camera);
+  /* labels */
+  labelEls.forEach(L=>{
+    if(!labelsOn || !L.part || !L.part.root.visible || !L.part.root.parent.visible){ L.el.style.display='none'; return; }
+    v3.copy(L.part.root.getWorldPosition(new THREE.Vector3())).add(L.off);
+    const pr = v3.clone().project(camera);
+    if(pr.z>1){ L.el.style.display='none'; return; }
+    L.el.style.display='block';
+    L.el.style.left = ((pr.x+1)/2*innerWidth)+'px';
+    L.el.style.top  = ((-pr.y+1)/2*innerHeight)+'px';
+  });
+}
+setMode('oil');
+tick();
+
+addEventListener('resize',()=>{
+  camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth,innerHeight);
+});
+</script>
+</body>
+</html>

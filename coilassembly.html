@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Core &amp; Coil Assembly + Core Building — Interactive 3D</title>
+<style>
+:root{--panel:#0e1c2c;--panel2:#13263a;--ink:#e8eef5;--mut:#8fa6bc;--acc:#3da5f4;--acc2:#e8732a;--line:#23415e}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#08121e;color:var(--ink)}
+#c3d{position:absolute;inset:0;cursor:grab}
+#c3d.dragging{cursor:grabbing}
+#topbar{position:absolute;top:0;left:0;right:0;height:52px;background:linear-gradient(180deg,rgba(8,18,30,.95),rgba(8,18,30,.78) 70%,transparent);display:flex;align-items:center;gap:12px;padding:0 18px;z-index:10;pointer-events:none}
+#topbar h1{font-size:1rem;font-weight:600}
+#topbar a{pointer-events:auto;color:var(--acc);text-decoration:none;font-size:.8rem;border:1px solid var(--line);padding:4px 10px;border-radius:6px;background:rgba(14,28,44,.7);white-space:nowrap}
+#topbar a:hover{background:var(--panel2)}
+#modeswitch{pointer-events:auto;margin-left:auto;display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+#modeswitch button{background:rgba(14,28,44,.8);color:var(--mut);border:0;padding:7px 14px;font-size:.82rem;font-weight:600;cursor:pointer}
+#modeswitch button.active{background:var(--acc);color:#04121f}
+#panel{position:absolute;top:60px;right:12px;width:300px;max-height:calc(100% - 80px);overflow-y:auto;background:rgba(14,28,44,.92);border:1px solid var(--line);border-radius:12px;padding:14px 16px;z-index:10;backdrop-filter:blur(6px)}
+#panel h2{font-size:.78rem;text-transform:uppercase;letter-spacing:1px;color:var(--mut);margin:12px 0 6px}
+#panel h2:first-child{margin-top:0}
+.sl{width:100%;margin:4px 0 2px;accent-color:var(--acc)}
+.slrow{display:flex;justify-content:space-between;font-size:.72rem;color:var(--mut)}
+.tgl{display:flex;align-items:center;gap:8px;font-size:.84rem;padding:2.5px 0;cursor:pointer;user-select:none}
+.tgl input{accent-color:var(--acc)}
+.sw{width:11px;height:11px;border-radius:3px;display:inline-block;flex:none}
+#info{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin-top:6px;font-size:.83rem;line-height:1.5;min-height:84px}
+#info b{color:var(--acc)}
+#info .hint{color:var(--mut);font-size:.78rem}
+.btnrow{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.btnrow button{flex:1;background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:7px;padding:6px 4px;font-size:.78rem;cursor:pointer;white-space:nowrap}
+.btnrow button:hover{border-color:var(--acc)}
+.btnrow button.on{background:var(--acc);color:#04121f;font-weight:600}
+#help{position:absolute;left:14px;bottom:12px;z-index:10;font-size:.74rem;color:var(--mut);background:rgba(14,28,44,.75);border:1px solid var(--line);border-radius:8px;padding:7px 11px;line-height:1.6;pointer-events:none}
+.lbl{position:absolute;transform:translate(-50%,-130%);background:rgba(10,22,36,.88);border:1px solid var(--line);color:#dbe7f3;font-size:11px;padding:2px 7px;border-radius:5px;pointer-events:none;white-space:nowrap;z-index:5}
+.lbl::after{content:"";position:absolute;left:50%;top:100%;margin-left:-4px;border:4px solid transparent;border-top-color:var(--line)}
+@media(max-width:760px){#panel{width:244px}#topbar h1{font-size:.84rem}}
+</style>
+</head>
+<body>
+<div style="background:#0d1b2e;color:#fff;padding:10px 18px;font-family:'Segoe UI',system-ui,sans-serif;display:flex;align-items:center;gap:16px;font-size:.9rem;flex-wrap:wrap">
+  <a href="index.html" style="color:#fff;font-weight:800;text-decoration:none;font-size:1.05rem;letter-spacing:-.3px">Transformer<span style="color:#f5a623">Insider</span></a>
+  <a href="learn.html" style="color:#cbd5e1;text-decoration:none;margin-left:auto">&#8592; Learn hub</a>
+</div>
+<div id="c3d"></div>
+
+<div id="topbar">
+  <h1>🧱 Active Part — CCA &amp; Core Building</h1>
+  <a href="academy.html">🏠 Hub</a>
+  <a href="tutorial.html">← Tutorial</a>
+  <a href="power3d.html">Power tx 3D →</a>
+  <div id="modeswitch">
+    <button id="mCca" class="active">Core &amp; Coil Assembly</button>
+    <button id="mCore">Core building</button>
+  </div>
+</div>
+
+<div id="panel">
+  <h2>Assembly / Exploded view</h2>
+  <input id="explode" class="sl" type="range" min="0" max="100" value="0">
+  <div class="slrow"><span>assembled</span><span>exploded</span></div>
+
+  <div id="stackBox" style="display:none">
+    <h2>⬇ Stack the top yoke</h2>
+    <input id="stackSl" class="sl" type="range" min="0" max="100" value="100">
+    <div class="slrow"><span>open (re-yoking)</span><span>stacked + blocks fitted</span></div>
+  </div>
+
+  <h2>Components</h2>
+  <div id="toggles"></div>
+
+  <h2>View</h2>
+  <div class="btnrow">
+    <button id="bRotate">⟳ Rotate</button>
+    <button id="bLabels" class="on">🏷 Labels</button>
+    <button id="bReset">⌂ Reset</button>
+  </div>
+
+  <h2>Selected part</h2>
+  <div id="info"><span class="hint">Click any part to identify it. Drag = orbit · wheel = zoom · right-drag = pan.</span></div>
+</div>
+
+<div id="help">🖱 drag = orbit · wheel = zoom · right-drag = pan · click = identify<br>Core building mode: use the ⬇ stacking slider to lay the top yoke, layer by step-lap layer</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ============ scene ============ */
+const container=document.getElementById('c3d');
+const renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setSize(innerWidth,innerHeight);
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.outputEncoding=THREE.sRGBEncoding;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.12;
+container.appendChild(renderer.domElement);
+
+const scene=new THREE.Scene();
+(function(){
+  const cv=document.createElement('canvas'); cv.width=16; cv.height=512;
+  const g=cv.getContext('2d'); const gr=g.createLinearGradient(0,0,0,512);
+  gr.addColorStop(0,'#27557f'); gr.addColorStop(.45,'#143049'); gr.addColorStop(.78,'#0c1c30'); gr.addColorStop(1,'#0a1624');
+  g.fillStyle=gr; g.fillRect(0,0,16,512);
+  scene.background=new THREE.CanvasTexture(cv);
+})();
+scene.fog=new THREE.Fog(0x0d1f33,180,420);
+
+const camera=new THREE.PerspectiveCamera(46,innerWidth/innerHeight,0.5,700);
+scene.add(new THREE.HemisphereLight(0xbcd4ea,0x16202c,.85));
+const sun=new THREE.DirectionalLight(0xffffff,.95);
+sun.position.set(70,100,50); sun.castShadow=true;
+sun.shadow.mapSize.set(2048,2048);
+const sc=sun.shadow.camera; sc.left=-90;sc.right=90;sc.top=90;sc.bottom=-90;sc.far=350;
+scene.add(sun);
+const fill=new THREE.DirectionalLight(0x88aacc,.35); fill.position.set(-60,40,-70); scene.add(fill);
+
+const ground=new THREE.Mesh(new THREE.CircleGeometry(200,64),
+  new THREE.MeshStandardMaterial({color:0x101e2e,roughness:.95,metalness:0}));
+ground.rotation.x=-Math.PI/2; ground.position.y=-4.2; ground.receiveShadow=true; scene.add(ground);
+const grid2=new THREE.GridHelper(200,40,0x254562,0x16293d); grid2.position.y=-4.15; scene.add(grid2);
+
+/* ============ materials ============ */
+const M={
+  steel:  new THREE.MeshStandardMaterial({color:0x8fa3b8,roughness:.45,metalness:.65}),
+  steelDk:new THREE.MeshStandardMaterial({color:0x5d7186,roughness:.5, metalness:.6}),
+  core:   new THREE.MeshStandardMaterial({color:0x6e7f93,roughness:.32,metalness:.82}),
+  coreEdge:new THREE.MeshStandardMaterial({color:0x59697c,roughness:.38,metalness:.8}),
+  copper: new THREE.MeshStandardMaterial({color:0xc9772f,roughness:.3, metalness:.7}),
+  copperL:new THREE.MeshStandardMaterial({color:0xd98f4a,roughness:.38,metalness:.6}),
+  hvWdg:  new THREE.MeshStandardMaterial({color:0xa8503c,roughness:.5, metalness:.35}),
+  tapWdg: new THREE.MeshStandardMaterial({color:0x8c6a3f,roughness:.5, metalness:.4}),
+  board:  new THREE.MeshStandardMaterial({color:0xe6dcbf,roughness:.7, metalness:0,transparent:true,opacity:.55,side:THREE.DoubleSide,depthWrite:false}),
+  boardS: new THREE.MeshStandardMaterial({color:0xe8dfc4,roughness:.68,metalness:0}),
+  kraft:  new THREE.MeshStandardMaterial({color:0xc9a86a,roughness:.75,metalness:0}),
+  wood:   new THREE.MeshStandardMaterial({color:0x9a6b3f,roughness:.72,metalness:.02}),
+  woodDk: new THREE.MeshStandardMaterial({color:0x77502e,roughness:.75,metalness:.02}),
+  band:   new THREE.MeshStandardMaterial({color:0xd8d2b8,roughness:.6, metalness:.05}),
+  paper:  new THREE.MeshStandardMaterial({color:0xcfae72,roughness:.78,metalness:0}),
+  paperDk:new THREE.MeshStandardMaterial({color:0xb8945c,roughness:.78,metalness:0}),
+  stick:  new THREE.MeshStandardMaterial({color:0xe2cf9d,roughness:.72,metalness:0}),
+  bandW:  new THREE.MeshStandardMaterial({color:0xefece2,roughness:.55,metalness:0}),
+  clampP: new THREE.MeshStandardMaterial({color:0xe7e0a0,roughness:.5, metalness:.15}),
+  grp:    new THREE.MeshStandardMaterial({color:0xa9bd97,roughness:.45,metalness:.05}),
+  grpBar: new THREE.MeshStandardMaterial({color:0xb9cba6,roughness:.5, metalness:.05}),
+};
+/* painted-steel micro texture */
+(function(){
+  const c=document.createElement('canvas'); c.width=c.height=256;
+  const x=c.getContext('2d'); const img=x.createImageData(256,256);
+  for(let i=0;i<img.data.length;i+=4){const v=205+Math.random()*50;
+    img.data[i]=img.data[i+1]=img.data[i+2]=v; img.data[i+3]=255;}
+  x.putImageData(img,0,0);
+  const t=new THREE.CanvasTexture(c); t.wrapS=t.wrapT=THREE.RepeatWrapping; t.repeat.set(3,3);
+  [M.steel,M.steelDk,M.wood,M.woodDk].forEach(m=>{m.bumpMap=t;m.bumpScale=.02;m.needsUpdate=true;});
+})();
+
+/* ============ registry/helpers ============ */
+const parts=[]; const meshIndex=new Map();
+function reg(root,g,name,desc,explode,toggle){
+  g.userData.partName=name;
+  const p={root:g,name,desc,explode:new THREE.Vector3(...explode),base:g.position.clone(),toggle};
+  parts.push(p);
+  g.traverse(o=>{if(o.isMesh){meshIndex.set(o,p);o.castShadow=true;o.receiveShadow=true;}});
+  root.add(g); return p;
+}
+function box(w,h,d,m){return new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);}
+function cyl(rt,rb,h,m,seg=36){return new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,seg),m);}
+function torus(r,t,m){return new THREE.Mesh(new THREE.TorusGeometry(r,t,14,44),m);}
+
+const limbX=[-18,0,18];
+
+/* ---- cruciform profile shared by limbs and yokes (9 packets along the
+   lamination-stack direction z; heights/widths give the "rounded" stepped section) ---- */
+const H9=[3.0,3.9,4.5,4.9,5.1,4.9,4.5,3.9,3.0];   /* yoke packet heights  */
+const W9=[4.6,6.0,6.9,7.5,7.8,7.5,6.9,6.0,4.6];   /* limb packet widths   */
+const DZ=8/9, HMAX=5.1;
+function steppedLimb(g,x,h,yC,matA,matB){
+  W9.forEach((w,i)=>{const p=box(w,h,DZ*.94,(i%2&&matB)?matB:(matA||M.core));
+    p.position.set(x,yC,-4+DZ*(i+.5)); g.add(p);});
+}
+function steppedYokeSolid(g,yC,len=48){
+  H9.forEach((h,i)=>{const p=box(len,h,DZ*.94,M.core);
+    p.position.set(0,yC,-4+DZ*(i+.5)); g.add(p);});
+}
+
+/* ===================================================================
+   MODE A — CORE & COIL ASSEMBLY (power transformer active part)
+=================================================================== */
+const ccaRoot=new THREE.Group(); scene.add(ccaRoot);
+{
+  const g=new THREE.Group();
+  const b1=box(58,3,5,M.steelDk); b1.position.set(0,-1.5,6.5); g.add(b1);
+  const b2=b1.clone(); b2.position.z=-6.5; g.add(b2);
+  reg(ccaRoot,g,'Transport / support beams',
+  'Out of its tank, the active part rests on steel transport beams — this is exactly what you see in the factory between drying and tanking, or during an on-site untanking inspection. Exposure clock running: cellulose starts re-absorbing moisture immediately (§16.2 limits cumulative exposure to ~8–12 h).',
+  [0,-7,0],'frame');
+}
+{
+  const g=new THREE.Group();
+  limbX.forEach(x=>steppedLimb(g,x,24,19));
+  steppedYokeSolid(g,4.5);
+  reg(ccaRoot,g,'Core — limbs & bottom yoke',
+  'Three-limb CRGO core, step-lap mitred. In the CCA state the core is fully visible only at the yokes — the limbs disappear inside the windings, which is why core problems found at this stage (a megger failure, a shifted lamination) are found cheap, and after tanking are found expensive.',
+  [0,0,0],'core');
+}
+{
+  const g=new THREE.Group();
+  steppedYokeSolid(g,33.5);
+  reg(ccaRoot,g,'Top yoke (re-laid after coil mounting)',
+  'The top yoke was removed to slide the windings over the limbs, then re-stacked lamination by lamination ("re-yoking") with the original step-lap interleave. Switch to the Core building mode to perform this operation yourself with the stacking slider.',
+  [0,16,0],'core');
+}
+{
+  const g=new THREE.Group();
+  for(const z of [6.8,-6.8]){
+    const ct=box(52,3.2,2.2,M.clampP); ct.position.set(0,35.4,z); g.add(ct);
+    const cb=box(52,3.2,2.2,M.clampP); cb.position.set(0,2.6,z); g.add(cb);
+  }
+  /* foot gussets like the photo */
+  limbX.forEach(x=>{ for(const z of [6.8,-6.8]){
+    const gu=box(7,3.4,1.8,M.clampP); gu.position.set(x,0.6,z); g.add(gu);
+    const ft=box(9,1,3.4,M.clampP); ft.position.set(x,-0.9,z); g.add(ft);
+  }});
+  for(const x of [-25,-9,9,25]){
+    const r=cyl(.55,.55,33,M.steelDk); r.position.set(x,19,8.1); g.add(r);
+    const r2=r.clone(); r2.position.z=-8.1; g.add(r2);
+  }
+  for(const x of [-21,21]){const lug=box(2.6,4.2,1.4,M.clampP); lug.position.set(x,38.3,0); g.add(lug);}
+  reg(ccaRoot,g,'Clamping frames, feet, tie rods & lifting lugs (painted steel)',
+  'Top and bottom clamp frames press the yokes and carry the windings\' axial pre-compression — painted in the pale works-yellow you see on real CCAs. Foot gussets spread the ~70 t onto the transport beams; insulated tie rods link the frames; the lugs take the full lift. Frame steel sits in the leakage flux, so edges are radiused and shielded against stray-loss hot spots (§4.6).',
+  [0,0,12],'clamps');
+}
+{
+  const g=new THREE.Group();
+  limbX.forEach(x=>{const w=cyl(6.5,6.5,20,M.copper); w.position.set(x,19,0); g.add(w);});
+  reg(ccaRoot,g,'LV winding (33 kV) — helical CTC',
+  'Epoxy-bonded continuously transposed conductor on a thick pressboard cylinder. At the CCA stage its lower end ring, spacer columns and exit leads are all still visible and checkable — turn ratio and winding resistance are measured here ("untanked tests") before drying.',
+  [0,9,0],'lv');
+}
+{
+  const g=new THREE.Group();
+  limbX.forEach(x=>{const b=cyl(8,8,22,M.board,40); b.position.set(x,19,0); g.add(b);});
+  reg(ccaRoot,g,'Main HV–LV barrier system',
+  'Pressboard cylinders + axial sticks subdividing the main oil duct. Rendered translucent here; in reality this is a dense, precision-built cardboard fortress, and the single most labour-intensive insulation assembly in the unit (§5).',
+  [0,12,0],'barriers');
+}
+{
+  const g=new THREE.Group();
+  limbX.forEach(x=>{
+    const w=cyl(10,10,21,M.paperDk); w.position.set(x,19,0); g.add(w);
+    for(let k=0;k<16;k++){const a=k/16*Math.PI*2;
+      const s=box(.9,20.4,.55,M.stick); s.position.set(x+Math.cos(a)*10.15,19,Math.sin(a)*10.15);
+      s.rotation.y=-a; g.add(s);}
+    for(const by of [12,19,26]){const b=cyl(10.45,10.45,.5,M.bandW,36); b.position.set(x,by,0); g.add(b);}
+  });
+  reg(ccaRoot,g,'HV winding (132 kV) — paper-finished, sticks & banding',
+  'What you actually see on a finished coil: the kraft-paper outer wrap, the vertical pressboard sticks that form the cooling-duct cage all around the circumference, and the white shrink-tape banding holding the assembly. The 80–110 copper discs are entirely hidden inside — toggle this winding off to peek at the barrier system beneath.',
+  [0,15,0],'hv');
+}
+{
+  const g=new THREE.Group();
+  limbX.forEach(x=>{
+    const w=cyl(11.6,11.6,16,M.paper); w.position.set(x,19,0); g.add(w);
+    for(let k=0;k<18;k++){const a=k/18*Math.PI*2;
+      const s=box(.9,15.4,.55,M.stick); s.position.set(x+Math.cos(a)*11.75,19,Math.sin(a)*11.75);
+      s.rotation.y=-a; g.add(s);}
+    for(const by of [14,24]){const b=cyl(12.0,12.0,.5,M.bandW,36); b.position.set(x,by,0); g.add(b);}
+  });
+  reg(ccaRoot,g,'Tapping winding (outermost) — paper-finished',
+  'The regulating winding, paper-wrapped with its stick cage like the HV. Its 17 tap leads exit toward the selector assembly on the right — at CCA stage these crepe-paper-covered leads are the most fragile thing on the whole assembly.',
+  [0,20,0],'tap');
+}
+{
+  /* wooden support / spacer rings — top & bottom of every coil */
+  const g=new THREE.Group();
+  limbX.forEach(x=>{
+    for(const y of [30.4,31.9, 6.1,7.6]){
+      const ring=torus(12.2,.95,M.wood); ring.rotation.x=Math.PI/2; ring.scale.z=.55; ring.position.set(x,y,0); g.add(ring);
+      for(let k=0;k<12;k++){const a=k/12*Math.PI*2+(y%2)*.26;
+        const blk=box(2.6,1.0,1.7,M.woodDk); blk.position.set(x+Math.cos(a)*12.2,y,Math.sin(a)*12.2);
+        blk.rotation.y=-a; g.add(blk);}
+    }
+  });
+  reg(ccaRoot,g,'Wooden support & spacer rings (laminated wood)',
+  'The segmented rings of laminated densified wood stacked above and below every coil — they transmit the clamping force from the frames into the winding end insulation, set the end-duct oil gaps, and carry the coil weight. Machined from beech-laminate boards (the same material family as the cleats); strong, oil-loving and fully insulating. These are the rings clearly visible on any real CCA photo.',
+  [0,18,0],'wood');
+}
+{
+  /* pressboard corner caps / lead-exit snouts on coil tops */
+  const g=new THREE.Group();
+  limbX.forEach((x,i)=>{
+    for(const a0 of [0.5,2.5+i*.3]){
+      const geo=new THREE.CylinderGeometry(12.7,12.7,3.6,20,1,true,a0,0.85);
+      const m=M.kraft.clone(); m.side=THREE.DoubleSide;
+      const cap=new THREE.Mesh(geo,m); cap.position.set(x,31.6,0); g.add(cap);
+    }
+    const sn=cyl(1.6,2.2,4.5,M.kraft); sn.position.set(x,33.6,-3.2); g.add(sn);
+  });
+  reg(ccaRoot,g,'Pressboard corner caps & lead-exit snouts',
+  'Curved kraft/pressboard shells protect the winding crowns and dress every lead exit — the buff-coloured curls you see all over a real assembly. Each snout grades the field where a lead leaves the winding, one of the highest-stress spots in the insulation system (§5.2).',
+  [0,21,0],'endins');
+}
+{
+  /* tap selector + GRP lead assembly (right-hand side, as in works photos) */
+  const g=new THREE.Group();
+  const bracket=box(14,2.2,2.2,M.steel); bracket.position.set(28,37.2,0); g.add(bracket);
+  const grpTube=cyl(3.1,3.1,11,M.grp,28); grpTube.position.set(33,30.5,0); g.add(grpTube);
+  const capT=cyl(3.3,3.3,.7,M.steelDk); capT.position.set(33,36.2,0); g.add(capT);
+  const capB=cyl(3.3,3.3,.7,M.steelDk); capB.position.set(33,24.8,0); g.add(capB);
+  /* selector column: two GRP bars with contact studs */
+  for(const z of [1.6,-1.6]){const bar=box(1.1,16,.7,M.grpBar); bar.position.set(33,15.5,z); g.add(bar);}
+  for(let r=0;r<6;r++){ for(const z of [1.6,-1.6]){
+    const stud=cyl(.55,.55,1.5,M.copperL); stud.rotation.x=Math.PI/2; stud.position.set(33,9.5+r*2.4,z*1.05); g.add(stud);
+    const nut=cyl(.8,.8,.5,M.steelDk); nut.rotation.x=Math.PI/2; nut.position.set(33,9.5+r*2.4,z*1.5); g.add(nut);
+  }}
+  /* crepe-paper covered leads curving from tap winding to selector */
+  const V=(x,y,z)=>new THREE.Vector3(x,y,z);
+  for(let i=0;i<6;i++){
+    const crv=new THREE.CatmullRomCurve3([
+      V(19.5,27.5-i*0.7,5.5-i*0.6),
+      V(24,25-i*0.8,3.5-i*0.4),
+      V(28.5,21-i*1.2,1.2),
+      V(31.6,10.5+i*2.4,0)
+    ]);
+    const tube=new THREE.Mesh(new THREE.TubeGeometry(crv,24,.42,8),M.kraft); g.add(tube);
+  }
+  reg(ccaRoot,g,'Tap selector & GRP lead assembly',
+  'The off-circuit / on-load tap selector hangs on the clamp frame: a glass-fibre (GRP) cylinder and laminated bars carrying rows of contact studs, fed by crepe-paper-insulated tap leads curving over from the regulating winding — the green tube and beige cables of every works photo. On OLTC designs this column couples to the diverter head once the assembly is tanked.',
+  [16,0,0],'selector');
+}
+{
+  const g=new THREE.Group();
+  limbX.forEach(x=>{
+    const ar=torus(10.6,.9,M.boardS); ar.rotation.x=Math.PI/2; ar.scale.y=.45; ar.position.set(x,30.4,0); g.add(ar);
+    const ar2=ar.clone(); ar2.position.y=7.8; g.add(ar2);
+  });
+  reg(ccaRoot,g,'Angle rings & end insulation (pressboard)',
+  'Moulded pressboard angle rings cap each winding end, forcing creepage paths to cross equipotential lines at right angles where the field bends hardest (§5.2). The end-insulation stack also transmits the clamping pressure from the press screws into the discs.',
+  [0,18,0],'endins');
+}
+{
+  const g=new THREE.Group();
+  limbX.forEach(x=>{ for(const z of [5.2,-5.2]){
+    const s=cyl(.45,.45,3.2,M.steelDk); s.position.set(x,33,z); g.add(s);
+    const pad=box(2,1,2,M.boardS); pad.position.set(x,31.2,z); g.add(pad);
+  }});
+  reg(ccaRoot,g,'Press screws (axial pre-compression)',
+  'Jack screws through the top clamp frame load each winding stack through pressboard pads to its calculated clamping force — and are re-tightened after drying, because the insulation shrinks. A winding that loses pre-compression fails its first through-fault (§4.5): this humble screw is short-circuit strength.',
+  [0,17,0],'screws');
+}
+{
+  const g=new THREE.Group();
+  /* HV leads up to a wooden lead-support with cleats */
+  const beam=box(46,1.6,2.4,M.wood); beam.position.set(0,38.6,-4.5); g.add(beam);
+  limbX.forEach(x=>{
+    const v=cyl(.55,.55,7.5,M.copperL); v.position.set(x,34.5,-4.5); g.add(v);
+    const cl=box(2.4,2.2,3.2,M.woodDk); cl.position.set(x,38.6,-4.5); g.add(cl);
+  });
+  /* tap-lead bundle to the left */
+  for(let i=0;i<6;i++){
+    const t=cyl(.22,.22,14,M.copperL); t.rotation.z=Math.PI/2.25;
+    t.position.set(-22-i*0.5,30-i*0.8,3.5); g.add(t);
+  }
+  const cleat2=box(2.2,6,4.4,M.woodDk); cleat2.position.set(-25.5,27,3.5); g.add(cleat2);
+  /* LV risers */
+  [-18,0,18].forEach(x=>{const b=box(1.5,8,.6,M.copperL); b.position.set(x+3.2,34.5,5.6); g.add(b);});
+  reg(ccaRoot,g,'Leads, cleats & lead support structure (wood)',
+  'Every lead is dressed through cleats of densified laminated wood or pressboard blocks on a wooden support frame — strong, oil-compatible and insulating. Lead clearances to clamps and tank are calculated dielectric distances, not packaging convenience: a sagging lead after a short circuit is a classic failure root cause found at untanking.',
+  [0,24,0],'leads');
+}
+{
+  const g=new THREE.Group();
+  const strap=box(.5,30,.25,M.copperL); strap.position.set(-23.5,18,7.9); g.add(strap);
+  const lk=box(2,1.2,.5,M.copperL); lk.position.set(-23.5,34.5,7.9); g.add(lk);
+  reg(ccaRoot,g,'Core & frame earthing straps (single-point)',
+  'Copper straps bond core and clamping frame each to ONE earth point, brought out via the cover for testing. Two earths = a shorted turn around flux = circulating current = gassing (§3.9). At CCA stage the megger check between core, frame and earth takes one minute and prevents that entire failure family.',
+  [-10,0,0],'leads');
+}
+
+/* ===================================================================
+   MODE B — CORE BUILDING (wooden clamps + insulation + stacking)
+=================================================================== */
+const coreRoot=new THREE.Group(); coreRoot.visible=false; scene.add(coreRoot);
+const YB=4.5, YT=33.7;   /* yoke centrelines */
+let stackLayers=[];
+{
+  const g=new THREE.Group();
+  const b1=box(58,2.6,4,M.wood); b1.position.set(0,-1.4,6); g.add(b1);
+  const b2=b1.clone(); b2.position.z=-6; g.add(b2);
+  for(const x of [-22,0,22]){const cross=box(4,2.2,16,M.woodDk); cross.position.set(x,-1.3,0); g.add(cross);}
+  reg(coreRoot,g,'Building bed (timber)',
+  'Cores are stacked horizontally on a building frame, then tilted upright. Modelled here upright for clarity — imagine this bed lying flat with laminations laid into it like a giant book.',
+  [0,-7,0],'frame');
+}
+{
+  /* limbs — cruciform packets along the lamination-stack direction (z) */
+  const g=new THREE.Group();
+  limbX.forEach(x=>steppedLimb(g,x,24,19,M.core,M.coreEdge));
+  reg(coreRoot,g,'Limbs — stepped (cruciform) lamination packets',
+  'Laminations stack front-to-back: each packet along the stack is a different sheet width, so the pile fills the circular winding bore (§3.3, Fig 3.2) — 9 steps ≈ 94% circle fill. Every packet is hundreds of 0.23 mm laminations; the alternating shading marks the packet boundaries.',
+  [0,0,0],'core');
+}
+{
+  /* bottom yoke — stepped packets with step-lap joints, matching limb profile */
+  const g=new THREE.Group();
+  for(let i=0;i<9;i++){
+    const off=((i%5)-2)*1.2, h=H9[i], z=-4+DZ*(i+.5), m=i%2?M.core:M.coreEdge;
+    const seg1=box(15+off-0.12,h,DZ*.94,m); seg1.position.set(-24+(15+off)/2,YB,z); g.add(seg1);
+    const segM=box(18-2*off-0.12,h,DZ*.94,m); segM.position.set(0,YB,z); g.add(segM);
+    const seg3=box(15+off-0.12,h,DZ*.94,m); seg3.position.set(24-(15+off)/2,YB,z); g.add(seg3);
+  }
+  reg(coreRoot,g,'Bottom yoke — stepped section, step-lap joints',
+  'The yoke carries the same cruciform "rounded" section as the limbs — packet heights step down toward the faces so limb and yoke fluxes meet area-for-area. And look at the joints: each packet\'s gap position shifts in a 5-step cycle (the step-lap of §3.4), so no two neighbouring packets have a gap in the same place.',
+  [0,0,0],'core');
+}
+{
+  /* TOP yoke — stackable stepped packets (front to back) */
+  const g=new THREE.Group();
+  for(let i=0;i<9;i++){
+    const off=((i%5)-2)*1.2, h=H9[i], z=-4+DZ*(i+.5), m=i%2?M.core:M.coreEdge;
+    const layer=new THREE.Group();
+    const seg1=box(15+off-0.12,h,DZ*.94,m); seg1.position.set(-24+(15+off)/2,0,0); layer.add(seg1);
+    const segM=box(18-2*off-0.12,h,DZ*.94,m); segM.position.set(0,0,0); layer.add(segM);
+    const seg3=box(15+off-0.12,h,DZ*.94,m); seg3.position.set(24-(15+off)/2,0,0); layer.add(seg3);
+    layer.position.set(0,YT,z); layer.userData.homeY=YT;
+    g.add(layer); stackLayers.push(layer);
+  }
+  reg(coreRoot,g,'Top yoke — stack it yourself (slider)',
+  'Use the ⬇ stacking slider: the yoke builds packet by packet from front to back — the real lamination-stack direction — each packet with its own width (the stepped profile) and its own step-lap joint offset. This is re-yoking: done at first build and again after the windings are mounted. The step-lap discipline here is what separates a quiet, efficient core from a noisy one.',
+  [0,14,0],'core');
+}
+{
+  /* wooden step blocks — BOTTOM yoke (pre-fitted, static) */
+  const g=new THREE.Group();
+  for(let i=0;i<9;i++){
+    const fill=(HMAX-H9[i])/2; if(fill<0.05) continue;
+    const z=-4+DZ*(i+.5);
+    const bt=box(46,fill,DZ*.9,M.wood); bt.position.set(0,YB+H9[i]/2+fill/2,z); g.add(bt);
+    const bb=box(46,fill,DZ*.9,M.wood); bb.position.set(0,YB-H9[i]/2-fill/2,z); g.add(bb);
+  }
+  reg(coreRoot,g,'Wooden step blocks — bottom yoke (pre-fitted)',
+  'Shaped laminated-wood blocks fill the steps of the bottom-yoke profile, giving the clamps and winding supports a flat, load-bearing surface. The bottom set is fitted during the original core build and never moves again.',
+  [0,0,0],'wood');
+}
+const topStepBlocks=[];
+{
+  /* wooden step blocks — TOP yoke: wait in a pile, fitted only after re-yoking */
+  const g=new THREE.Group();
+  let j=0;
+  for(let i=0;i<9;i++){
+    const fill=(HMAX-H9[i])/2; if(fill<0.05) continue;
+    const z=-4+DZ*(i+.5);
+    for(const s of [1,-1]){
+      const b=box(46,fill,DZ*.9,M.wood);
+      b.userData.home=new THREE.Vector3(0, YT+s*(H9[i]/2+fill/2), z);
+      b.userData.pile=new THREE.Vector3(33+(j%2)*5.5, 0.6+Math.floor(j/2)*1.35, 9+(j%2)*0.4);
+      b.position.copy(b.userData.pile);
+      g.add(b); topStepBlocks.push(b); j++;
+    }
+  }
+  reg(coreRoot,g,'Wooden step blocks — top yoke (fitted after re-yoking)',
+  'The top-yoke step blocks wait in a pile beside the core until the yoke is fully re-stacked — you cannot fill steps that do not exist yet. Drag the stacking slider to the end: once the last packet is laid, the blocks fly up and seat into the step profile, ready for the clamping beams to close on a flat surface. In the works this is exactly the sequence: stack, fit blocks, land the clamps, torque the tie rods.',
+  [0,14,0],'wood');
+}
+{
+  /* wooden clamping beams + insulated tie rods */
+  const g=new THREE.Group();
+  for(const z of [5.9,-5.9]){
+    const wt=box(52,3.6,2.8,M.wood); wt.position.set(0,33.7,z); g.add(wt);
+    const wb=box(52,3.6,2.8,M.wood); wb.position.set(0,4.5,z); g.add(wb);
+  }
+  for(const x of [-25,-9,9,25]){
+    for(const zs of [1,-1]){
+      const rod=cyl(.5,.5,36.2,M.steelDk); rod.position.set(x,18.8,zs*5.9); g.add(rod);
+      const sleeve=cyl(.75,.75,26,M.kraft); sleeve.position.set(x,19,zs*5.9); g.add(sleeve);
+      const washW=box(2.4,.8,2.4,M.woodDk); washW.position.set(x,35.9,zs*5.9); g.add(washW);
+      const nut=cyl(.95,.95,.8,M.steelDk); nut.position.set(x,36.6,zs*5.9); g.add(nut);
+    }
+  }
+  reg(coreRoot,g,'Wooden clamping beams & insulated tie rods',
+  'Distribution and smaller power cores are classically clamped with beams of seasoned or densified laminated wood (beech laminate): strong, light, fully oil-compatible — and crucially non-magnetic and insulating, so the clamp cannot form a shorted loop around the yoke flux. The steel tie rods are sleeved in kraft insulating tube and land on wooden washers for the same reason: every conductive loop around a yoke must be broken somewhere.',
+  [0,0,14],'wood');
+}
+{
+  /* clamp insulation strips */
+  const g=new THREE.Group();
+  for(const z of [4.35,-4.35]){
+    const st=box(50,4.6,.45,M.boardS); st.position.set(0,33.7,z); g.add(st);
+    const sb=box(50,4.6,.45,M.boardS); sb.position.set(0,4.5,z); g.add(sb);
+  }
+  reg(coreRoot,g,'Yoke-to-clamp pressboard insulation',
+  'A pressboard strip separates the lamination stack from each clamping beam: it spreads the clamping pressure evenly (lamination edges are fragile) and insulates the stack from the clamp so the core\'s single-point earthing discipline (§3.9) survives. On steel-clamped cores this strip is thicker and often combined with anti-vibration material.',
+  [0,0,9],'insul');
+}
+{
+  /* limb banding */
+  const g=new THREE.Group();
+  limbX.forEach(x=>{ for(const y of [11,19,27]){
+    const b=cyl(4.9,4.9,1.6,M.band,30); b.position.set(x,y,0); b.scale.z=1.55; g.add(b);
+  }});
+  reg(coreRoot,g,'Limb banding (resin-impregnated glass tape)',
+  'Limbs are banded with cured glass-fibre tape — never bolted through: a bolt hole would concentrate flux, cost loss, and risk inter-laminar shorts. The bands hold the stepped packets into their circular form until the winding cylinder takes over that job. (Modern power cores: the same principle with banding machines and higher tension.)',
+  [0,0,-9],'band');
+}
+{
+  /* earthing link */
+  const g=new THREE.Group();
+  const strap=box(.4,3.5,2,M.copperL); strap.position.set(20,33.7,4.3); g.add(strap);
+  reg(coreRoot,g,'Core earthing link (single point)',
+  'A copper foil inserted between laminations, brought out to one — exactly one — earth connection. During core building this is the moment the earthing discipline is established; everything afterwards (§3.9 diagnostics, the 2 kV megger test) just verifies it was done right.',
+  [10,0,0],'leads');
+}
+
+/* ============ stacking control ============ */
+const stackBox=document.getElementById('stackBox');
+const stackSl=document.getElementById('stackSl');
+function applyStack(){
+  const val=+stackSl.value;
+  /* packets stack over 0–88% of the slider */
+  const v=Math.min(1,val/88)*stackLayers.length;
+  stackLayers.forEach((L,i)=>{
+    if(i<Math.floor(v)){ L.visible=true; L.position.y=L.userData.homeY; }
+    else if(i<v){ L.visible=true;
+      const u=v-i; /* 0..1 descending */
+      L.position.y=L.userData.homeY+(1-u)*22;
+    }
+    else L.visible=false;
+  });
+  /* step blocks fit over the final 88–100%, arcing from the waiting pile —
+     they can only seat once the yoke below them is complete */
+  const fb=Math.max(0,Math.min(1,(val-88)/12));
+  const e=fb<.5?2*fb*fb:1-Math.pow(-2*fb+2,2)/2;
+  topStepBlocks.forEach(b=>{
+    const h=b.userData.home, p=b.userData.pile;
+    b.position.set(
+      p.x+(h.x-p.x)*e,
+      p.y+(h.y-p.y)*e + Math.sin(Math.PI*e)*7,
+      p.z+(h.z-p.z)*e);
+  });
+}
+stackSl.addEventListener('input',applyStack);
+
+/* ============ toggles ============ */
+const toggleDefs=[
+ ['core','Core (CRGO)','#6e7f93'],
+ ['clamps','Steel clamping (CCA)','#5d7186'],
+ ['wood','Wooden clamping (core-build)','#9a6b3f'],
+ ['insul','Clamp insulation','#e8dfc4'],
+ ['band','Glass banding','#d8d2b8'],
+ ['lv','LV winding','#c9772f'],
+ ['hv','HV winding','#a8503c'],
+ ['tap','Tap winding','#8c6a3f'],
+ ['barriers','Pressboard barriers','#e6dcbf'],
+ ['endins','Angle rings / end insulation','#e8dfc4'],
+ ['screws','Press screws','#5d7186'],
+ ['leads','Leads, cleats & earthing','#d98f4a'],
+ ['selector','Tap selector & GRP leads','#a9bd97'],
+ ['frame','Support / building bed','#77502e'],
+];
+const togglesBox=document.getElementById('toggles');
+const toggleState={};
+toggleDefs.forEach(([k,lab,colr])=>{
+  toggleState[k]=true;
+  const l=document.createElement('label'); l.className='tgl';
+  l.innerHTML=`<input type="checkbox" checked data-k="${k}"><span class="sw" style="background:${colr}"></span>${lab}`;
+  togglesBox.appendChild(l);
+});
+togglesBox.addEventListener('change',e=>{toggleState[e.target.dataset.k]=e.target.checked;applyToggles();});
+function applyToggles(){parts.forEach(p=>{if(p.toggle)p.root.visible=toggleState[p.toggle]!==false;});}
+
+/* ============ explode ============ */
+const explodeSl=document.getElementById('explode');
+function applyExplode(){
+  const t=explodeSl.value/100;
+  parts.forEach(p=>{p.root.position.copy(p.base).addScaledVector(p.explode,t);});
+}
+explodeSl.addEventListener('input',applyExplode);
+
+/* ============ camera ============ */
+let mode='cca';
+const target=new THREE.Vector3(0,19,0);
+let sph={r:95,th:.7,ph:1.15};
+let autoRotate=false;
+function applyCam(){
+  sph.ph=Math.max(.12,Math.min(Math.PI-.25,sph.ph));
+  sph.r=Math.max(30,Math.min(280,sph.r));
+  camera.position.set(
+    target.x+sph.r*Math.sin(sph.ph)*Math.sin(sph.th),
+    target.y+sph.r*Math.cos(sph.ph),
+    target.z+sph.r*Math.sin(sph.ph)*Math.cos(sph.th));
+  camera.lookAt(target);
+}
+applyCam();
+let dragging=false,panning=false,lastX=0,lastY=0,moved=0;
+const el=renderer.domElement;
+el.addEventListener('contextmenu',e=>e.preventDefault());
+el.addEventListener('pointerdown',e=>{dragging=true;moved=0;panning=(e.button===2||e.shiftKey);
+  lastX=e.clientX;lastY=e.clientY;container.classList.add('dragging');el.setPointerCapture(e.pointerId);});
+el.addEventListener('pointermove',e=>{
+  if(!dragging)return;
+  const dx=e.clientX-lastX,dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;moved+=Math.abs(dx)+Math.abs(dy);
+  if(panning){const s=sph.r/700;
+    const right=new THREE.Vector3().subVectors(camera.position,target).cross(camera.up).normalize();
+    target.addScaledVector(right,dx*s); target.y+=dy*s;
+  }else{sph.th-=dx*.0055;sph.ph-=dy*.0055;}
+  applyCam();
+});
+el.addEventListener('pointerup',e=>{dragging=false;container.classList.remove('dragging');if(moved<6)pick(e);});
+el.addEventListener('wheel',e=>{e.preventDefault();sph.r*=(1+Math.sign(e.deltaY)*.09);applyCam();},{passive:false});
+let pinchD=0;
+el.addEventListener('touchstart',e=>{if(e.touches.length===2){pinchD=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);}},{passive:true});
+el.addEventListener('touchmove',e=>{if(e.touches.length===2){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);sph.r*=pinchD/d;pinchD=d;applyCam();}},{passive:true});
+
+/* ============ picking ============ */
+const ray=new THREE.Raycaster(); const mouse=new THREE.Vector2();
+let selected=null;
+function setEmissive(part,on,col=0x2b6ea8){
+  part.root.traverse(o=>{if(o.isMesh&&o.material.emissive){
+    if(on){o.userData.em=o.material;o.material=o.material.clone();o.material.emissive=new THREE.Color(col);o.material.emissiveIntensity=.8;}
+    else if(o.userData.em){o.material.dispose();o.material=o.userData.em;delete o.userData.em;}
+  }});
+}
+function pick(e){
+  const r=el.getBoundingClientRect();
+  mouse.x=((e.clientX-r.left)/r.width)*2-1;
+  mouse.y=-((e.clientY-r.top)/r.height)*2+1;
+  ray.setFromCamera(mouse,camera);
+  const activeRoot=mode==='cca'?ccaRoot:coreRoot;
+  const hits=ray.intersectObjects(activeRoot.children,true).filter(h=>h.object.visible&&meshIndex.get(h.object)&&meshIndex.get(h.object).root.visible);
+  const info=document.getElementById('info');
+  if(selected){setEmissive(selected,false);selected=null;}
+  if(hits.length){
+    const p=meshIndex.get(hits[0].object);
+    selected=p;setEmissive(p,true);
+    info.innerHTML=`<b>${p.name}</b><br>${p.desc}`;
+  }else{
+    info.innerHTML='<span class="hint">Click any part to identify it.</span>';
+  }
+}
+
+/* ============ labels ============ */
+const labelEls=[];
+function makeLabel(part,text,dx,dy,dz){
+  if(!part)return;
+  const el2=document.createElement('div'); el2.className='lbl'; el2.textContent=text; document.body.appendChild(el2);
+  labelEls.push({el:el2,part,off:new THREE.Vector3(dx,dy,dz)});
+}
+function buildLabels(){
+  labelEls.forEach(l=>l.el.remove()); labelEls.length=0;
+  const activeRoot=mode==='cca'?ccaRoot:coreRoot;
+  const find=n=>parts.find(p=>p.name.startsWith(n)&&p.root.parent===activeRoot);
+  if(mode==='cca'){
+    makeLabel(find('Top yoke'),'Top yoke',0,38,0);
+    makeLabel(find('Clamping frames'),'Clamp frame',-26,37,0);
+    makeLabel(find('Tapping winding'),'Tap winding (paper)',18,30,0);
+    makeLabel(find('HV winding'),'HV winding (paper)',-18,30,0);
+    makeLabel(find('Wooden support'),'Wooden rings',0,33.5,12.2);
+    makeLabel(find('Tap selector'),'Tap selector (GRP)',33,38.5,0);
+    makeLabel(find('Leads, cleats'),'Leads & cleats',0,41,-4.5);
+    makeLabel(find('Transport'),'Transport beams',-26,1,6.5);
+  }else{
+    makeLabel(find('Top yoke — stack'),'Top yoke (stack me!)',0,39,0);
+    makeLabel(find('Wooden clamping'),'Wooden clamp beams',0,36,5.9);
+    makeLabel(find('Wooden step'),'Step blocks',24,8.2,0);
+    makeLabel(find('Limbs —'),'Stepped packets',-18,32,0);
+    makeLabel(find('Limb banding'),'Glass banding',18,19,5.5);
+    makeLabel(find('Yoke-to-clamp'),'Clamp insulation',-25,5.5,5);
+    makeLabel(find('Building bed'),'Building bed',26,0,6);
+  }
+}
+
+/* ============ mode switch ============ */
+const bCca=document.getElementById('mCca'), bCore=document.getElementById('mCore');
+function setMode(m){
+  mode=m;
+  ccaRoot.visible=m==='cca'; coreRoot.visible=m==='core';
+  bCca.classList.toggle('active',m==='cca'); bCore.classList.toggle('active',m==='core');
+  stackBox.style.display = m==='core'?'block':'none';
+  if(selected){setEmissive(selected,false);selected=null;}
+  document.getElementById('info').innerHTML = m==='core'
+    ? '<span class="hint">The core is shown fully built. Drag the ⬇ "Stack the top yoke" slider to the left to open it for re-yoking, then slide right to re-stack it packet by packet. Click any part to identify it.</span>'
+    : '<span class="hint">Click any part to identify it.</span>';
+  const ccaHidden=['insul','band'];
+  const coreHidden=['lv','hv','tap','barriers','endins','screws','clamps','selector'];
+  document.querySelectorAll('#toggles .tgl').forEach(l=>{
+    const k=l.querySelector('input').dataset.k;
+    const hidden=m==='cca'?ccaHidden:coreHidden;
+    l.style.display=hidden.includes(k)?'none':'flex';
+  });
+  buildLabels(); applyToggles(); applyExplode(); applyStack();
+}
+bCca.onclick=()=>setMode('cca'); bCore.onclick=()=>setMode('core');
+
+/* ============ view buttons ============ */
+const bRot=document.getElementById('bRotate');
+bRot.onclick=()=>{autoRotate=!autoRotate;bRot.classList.toggle('on',autoRotate);};
+const bLab=document.getElementById('bLabels');
+let labelsOn=true;
+bLab.onclick=()=>{labelsOn=!labelsOn;bLab.classList.toggle('on',labelsOn);};
+document.getElementById('bReset').onclick=()=>{
+  sph={r:95,th:.7,ph:1.15};target.set(0,19,0);
+  explodeSl.value=0;stackSl.value=100;
+  applyExplode();applyStack();applyCam();
+};
+
+/* ============ render loop ============ */
+const v3=new THREE.Vector3();
+function tick(){
+  requestAnimationFrame(tick);
+  if(autoRotate&&!dragging){sph.th+=.0033;applyCam();}
+  renderer.render(scene,camera);
+  labelEls.forEach(L=>{
+    if(!labelsOn||!L.part.root.visible||!L.part.root.parent.visible){L.el.style.display='none';return;}
+    v3.copy(L.off).add(L.part.root.position).sub(L.part.base);
+    const pr=v3.project(camera);
+    if(pr.z>1){L.el.style.display='none';return;}
+    L.el.style.display='block';
+    L.el.style.left=((pr.x+1)/2*innerWidth)+'px';
+    L.el.style.top=((-pr.y+1)/2*innerHeight)+'px';
+  });
+}
+setMode('cca');
+tick();
+addEventListener('resize',()=>{
+  camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth,innerHeight);
+});
+</script>
+</body>
+</html>
