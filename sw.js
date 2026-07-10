@@ -1,9 +1,9 @@
 /* TrafoPath service worker — offline support + always-fresh HTML */
-const CACHE = 'trafopath-v2';
+const CACHE = 'trafopath-v3';
 const CORE = [
   'index.html', 'style.css', 'intel.html', 'manufacturers.html', 'events.html',
   'grids.html', 'learn.html', 'resources.html', 'subscribe.html',
-  'explorer.html', 'vendor/three.min.js',
+  'explorer.html', 'vendor/three.min.js', 'offline.html',
   'brand/favicon-32.png', 'brand/icon-192.png', 'manifest.webmanifest'
 ];
 
@@ -33,7 +33,7 @@ self.addEventListener('fetch', e => {
         const copy = r.clone();
         caches.open(CACHE).then(c => c.put(req, copy));
         return r;
-      }).catch(() => caches.match(req).then(m => m || caches.match('index.html')))
+      }).catch(() => caches.match(req).then(m => m || caches.match('offline.html')))
     );
     return;
   }

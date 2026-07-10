@@ -1,6 +1,6 @@
-/* ═══ TrafoPath analytics loader ═══
+/* ═══ TransformerPath analytics loader ═══
    To activate, paste ONE id below and redeploy. No other page edits needed.
-   Option A (recommended, privacy-friendly, paid): Plausible — set PLAUSIBLE_DOMAIN = "trafopath.com"
+   Option A (recommended, privacy-friendly, paid): Plausible — set PLAUSIBLE_DOMAIN = "transformerpath.com"
    Option B (free): Google Analytics 4 — set GA4_ID = "G-XXXXXXXXXX"           */
 var PLAUSIBLE_DOMAIN = "";
 var GA4_ID = "";
