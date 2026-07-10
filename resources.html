@@ -3,59 +3,149 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Resources — TransformerInsider</title>
+<title>Knowledge & Resources — Transformer Guides, Standards & Articles | TrafoPath</title>
+<meta name="description" content="The transformer industry's knowledge hub — technical articles, in-depth design guides, the daily market briefing, IEC/ANSI standards and utility portals, all in one place.">
+<link rel="canonical" href="https://trafopath.com/resources.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TrafoPath">
+<meta property="og:title" content="Knowledge &amp; Resources — Transformer Guides, Standards &amp; Articles | TrafoPath">
+<meta property="og:description" content="The transformer industry's knowledge hub — technical articles, in-depth design guides, the daily market briefing, IEC/ANSI standards and utility portals, all in one place.">
+<meta property="og:url" content="https://trafopath.com/resources.html">
+<meta property="og:image" content="https://trafopath.com/brand/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Knowledge &amp; Resources — Transformer Guides, Standards &amp; Articles | TrafoPath">
+<meta name="twitter:description" content="The transformer industry's knowledge hub — technical articles, in-depth design guides, the daily market briefing, IEC/ANSI standards and utility portals, all in one place.">
+<meta name="twitter:image" content="https://trafopath.com/brand/og-image.png">
 <link rel="stylesheet" href="style.css">
+<link rel="icon" href="brand/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<style>
+.art-card { display:flex; flex-direction:column; }
+.art-card .k { display:inline-block; background:#eef2ff; color:#1e40af; font-size:.66rem; font-weight:800; text-transform:uppercase; letter-spacing:.4px; padding:3px 9px; border-radius:999px; margin-bottom:8px; align-self:flex-start; }
+.art-card h3 { color:var(--navy); font-size:1.05rem; margin:0 0 6px; }
+.art-card p { color:var(--muted); font-size:.9rem; flex:1; margin:0 0 12px; }
+.art-card .more { color:var(--amber-dark); font-weight:700; font-size:.85rem; }
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TrafoPath">
 </head>
 <body>
 
 <header>
   <div class="container nav">
-    <a href="index.html" class="logo">Transformer<span>Insider</span></a>
-    <button class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
-    <nav class="nav-links">
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg width="30" height="30" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="none" stroke="#fff" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.3" fill="none" opacity="0.8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg>Trafo<span>Path</span></a>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav" onclick="var n=document.querySelector('.nav-links');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))">☰</button>
+    <nav class="nav-links" id="mainNav">
       <a href="intel.html">Daily Intel</a>
       <a href="events.html">Events</a>
+      <a href="webinars.html">Webinars</a>
       <a href="manufacturers.html">Manufacturers</a>
       <a href="learn.html">Learn</a>
       <a href="grids.html">Grids</a>
-      
-      <a href="resources.html" class="active">Resources</a>
+      <a href="resources.html" aria-current="page">Knowledge</a>
+      <a href="blog.html">Blog</a>
       <a href="sponsor.html">Sponsor</a>
-      <a href="intel.html" class="btn btn-amber">Subscribe</a>
+      <a href="search.html" title="Search" aria-label="Search">🔍</a>
+      <a href="subscribe.html" class="btn btn-amber">Subscribe</a>
     </nav>
   </div>
 </header>
 
 <section class="hero" style="padding:50px 0 40px">
   <div class="container">
-    <h1 style="font-size:2.2rem">Industry <span>Resources</span></h1>
-    <p>Standards, utility portals and reference material for transformer professionals worldwide.</p>
+    <h1 style="font-size:2.2rem">Knowledge & <span>Resources</span></h1>
+    <p>Technical articles, in-depth guides, the daily market briefing, standards and utility portals — the transformer industry's reference shelf.</p>
   </div>
 </section>
 
 <section class="block">
   <div class="container">
-    <div class="card" style="text-align:center; border-left:4px solid var(--amber); margin-bottom:44px">
+
+    <!-- Articles -->
+    <div class="section-head"><p style="text-align:center;margin-bottom:26px;font-size:.94rem"><a href="blog.html" style="color:var(--amber-dark);font-weight:700">✍️ Blog</a> · <a href="archive.html" style="color:var(--amber-dark);font-weight:700">📁 Intel Archive</a> · <a href="components.html" style="color:var(--amber-dark);font-weight:700">🔩 Components Directory</a> · <a href="rfq.html" style="color:var(--amber-dark);font-weight:700">📨 RFQ Board</a> · <a href="search.html" style="color:var(--amber-dark);font-weight:700">🔍 Search</a></p>
+<h2>Articles & Briefings</h2><p>Practical, evergreen reads for buyers, engineers and suppliers.</p></div>
+    <div class="grid grid-3">
+      <a class="card art-card" href="article-lead-times.html">
+        <span class="k">Procurement</span>
+        <h3>Why lead times hit four years — and what buyers do</h3>
+        <p>The CRGO, copper, labour and demand squeeze behind 36–48-month deliveries, and the moves buyers use to protect projects.</p>
+        <span class="more">Read the guide →</span>
+      </a>
+      <a class="card art-card" href="article-crgo-vs-amorphous.html">
+        <span class="k">Materials</span>
+        <h3>CRGO vs amorphous cores: a buyer's guide</h3>
+        <p>No-load loss, cost, weight, noise and supply compared — and when each core material is the right call.</p>
+        <span class="more">Read the guide →</span>
+      </a>
+      <a class="card art-card" href="hydrogen.html">
+        <span class="k">Demand Driver</span>
+        <h3>Green hydrogen &amp; transformers</h3>
+        <p>Why every electrolyser FID is a transformer order — rectifier duty, grid connections and a live tracker of the world's major green-H₂ projects.</p>
+        <span class="more">Read the guide →</span>
+      </a>
+      <a class="card art-card" href="intel.html">
+        <span class="k">Daily</span>
+        <h3>Today's market briefing</h3>
+        <p>Tenders, project awards, supplier moves and material prices worldwide — refreshed twice a day and ordered to your region.</p>
+        <span class="more">Open Daily Intel →</span>
+      </a>
+    </div>
+
+    <!-- In-depth guides (course sections) -->
+    <div class="section-head" style="margin-top:52px"><h2>In-Depth Design Guides</h2><p>Deep dives from the free engineering course. <a href="learn.html" style="color:var(--amber-dark);font-weight:600">See all 26 chapters →</a></p></div>
+    <div class="grid grid-3">
+      <a class="card" href="tutorial.html#core"><span class="emoji" aria-hidden="true">🧲</span><h3>Core & CRGO →</h3><p>Core area, flux density, grades and stacking — setting iron weight and no-load loss.</p></a>
+      <a class="card" href="tutorial.html#windings"><span class="emoji" aria-hidden="true">🧵</span><h3>Windings →</h3><p>Conductor sizing, current density, layer/disc/helical arrangements and the window-area check.</p></a>
+      <a class="card" href="tutorial.html#insulation"><span class="emoji" aria-hidden="true">📑</span><h3>Insulation →</h3><p>Turn, layer and major insulation; pressboard and paper; clearances and oil as a dielectric.</p></a>
+      <a class="card" href="tutorial.html#cooling"><span class="emoji" aria-hidden="true">🌡️</span><h3>Cooling →</h3><p>Temperature rise, radiators and fans, ONAN/ONAF classes and hot-spot control.</p></a>
+      <a class="card" href="tutorial.html#testing"><span class="emoji" aria-hidden="true">🔬</span><h3>Testing →</h3><p>Routine, type and special tests that verify a design against IEC 60076.</p></a>
+      <a class="card" href="tutorial.html#protection"><span class="emoji" aria-hidden="true">🛡️</span><h3>Protection →</h3><p>Differential, REF, Buchholz and pressure relief — keeping the unit and grid safe.</p></a>
+    </div>
+
+    <!-- Grid pointer -->
+    <div class="card" style="text-align:center; border-left:4px solid var(--amber); margin-top:44px">
       <h3 style="color:var(--navy)">🌐 Looking for grid operators & utilities?</h3>
       <p style="color:var(--muted); margin:8px 0 16px">Our worldwide grid census lists transmission operators and utilities country by country, with voltages, frequencies and official links.</p>
       <a href="grids.html" class="btn btn-amber">Browse World Grids →</a>
     </div>
 
-    <div class="section-head"><h2>Key Standards & References</h2></div>
+    <!-- Standards -->
+    <div class="section-head" style="margin-top:52px"><h2>Key Standards & References</h2></div>
     <div class="grid grid-3">
-      <div class="card"><span class="emoji">📘</span><h3>IEC 60076 Series</h3><p>Power transformers — the core standard family for GCC utility specs.</p></div>
-      <div class="card"><span class="emoji">📗</span><h3>IEC 60137</h3><p>Insulated bushings for AC voltages above 1000V.</p></div>
-      <div class="card"><span class="emoji">📙</span><h3>IEC 60214</h3><p>Tap-changers — on-load tap-changer requirements & application.</p></div>
-      <div class="card"><span class="emoji">📕</span><h3>IEC 60296</h3><p>Mineral insulating oils for transformers and switchgear.</p></div>
-      <div class="card"><span class="emoji">📓</span><h3>IEC 60641</h3><p>Pressboard and presspaper for electrical purposes.</p></div>
-      <div class="card"><span class="emoji">🗞️</span><h3>Industry News</h3><p>Transformers Magazine, T&D World, MEED, SaudiGulf Projects.</p></div>
+      <div class="card"><span class="emoji" aria-hidden="true">📘</span><h3>IEC 60076 Series</h3><p>Power transformers — the core standard family utilities specify to.</p></div>
+      <div class="card"><span class="emoji" aria-hidden="true">📗</span><h3>IEC 60137</h3><p>Insulated bushings for AC voltages above 1000 V.</p></div>
+      <div class="card"><span class="emoji" aria-hidden="true">📙</span><h3>IEC 60214</h3><p>Tap-changers — on-load tap-changer requirements & application.</p></div>
+      <div class="card"><span class="emoji" aria-hidden="true">📕</span><h3>IEC 60296</h3><p>Mineral insulating oils for transformers and switchgear.</p></div>
+      <div class="card"><span class="emoji" aria-hidden="true">📓</span><h3>IEC 60641</h3><p>Pressboard and presspaper for electrical purposes.</p></div>
+      <div class="card"><span class="emoji" aria-hidden="true">📘</span><h3>IEEE / ANSI C57</h3><p>The North American power & distribution transformer standard family.</p></div>
     </div>
+
   </div>
 </section>
 
 <footer>
-  <div class="container"><div class="copyright">© 2026 TransformerInsider.</div></div>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="none" stroke="#fff" stroke-width="2"/><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg>Trafo<span style="color:var(--amber)">Path</span></a>
+        <p style="margin-top:12px">The global intelligence and networking platform for transformer manufacturers, suppliers, engineers and utilities.</p>
+      </div>
+      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="vendors.html">Vendors</a><a href="learn.html">Learn</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="sponsor.html">Sponsor</a></div>
+      <div><h4>COMPANY</h4><a href="about.html">About Us</a><a href="mailto:hello@trafopath.com">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><h4>CONTACT</h4><a href="mailto:hello@trafopath.com">hello@trafopath.com</a><a href="https://www.linkedin.com/company/trafopath" target="_blank" rel="noopener">LinkedIn ↗</a><span style="display:block">Dubai, UAE</span></div>
+    </div>
+    <div class="copyright">© 2026 TrafoPath. All rights reserved.</div>
+  </div>
 </footer>
 
+<script>
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
+(function(){var dp;window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();dp=e;if(document.getElementById('tpInstall'))return;var b=document.createElement('button');b.id='tpInstall';b.textContent='\u2913 Install TrafoPath';b.setAttribute('style','position:fixed;right:16px;bottom:16px;z-index:9999;background:#f5a623;color:#0d1b2e;border:0;border-radius:999px;padding:11px 18px;font-weight:800;font-size:.9rem;box-shadow:0 6px 20px rgba(0,0,0,.28);cursor:pointer;font-family:inherit');b.onclick=function(){b.remove();dp.prompt();dp.userChoice.finally(function(){dp=null;});};document.body.appendChild(b);});})();
+</script>
+<script src="analytics.js" defer></script>
 </body>
 </html>

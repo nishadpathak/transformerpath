@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Country-Based Transformer Designer</title>
+<meta name="description" content="Design a transformer to any country's grid — voltages, frequencies and IEC/IEEE requirements for 196 countries.">
+<link rel="canonical" href="https://trafopath.com/country-designer.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TrafoPath">
+<meta property="og:title" content="Country-Based Transformer Designer">
+<meta property="og:description" content="Design a transformer to any country's grid — voltages, frequencies and IEC/IEEE requirements for 196 countries.">
+<meta property="og:url" content="https://trafopath.com/country-designer.html">
+<meta property="og:image" content="https://trafopath.com/brand/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
 <style>
 :root{
   --bg:#f5f7fa; --card:#ffffff; --ink:#1a2332; --muted:#5a6a7e;
@@ -43,14 +52,14 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:18px}
 </style>
 </head>
 <body>
-<div style="background:#0d1b2e;color:#fff;padding:10px 18px;font-family:'Segoe UI',system-ui,sans-serif;display:flex;align-items:center;gap:16px;font-size:.9rem;flex-wrap:wrap">
-  <a href="index.html" style="color:#fff;font-weight:800;text-decoration:none;font-size:1.05rem;letter-spacing:-.3px">Transformer<span style="color:#f5a623">Insider</span></a>
-  <a href="learn.html" style="color:#cbd5e1;text-decoration:none;margin-left:auto">&#8592; Learn hub</a>
-</div>
+<div style="background:#0d1b2e;color:#fff;padding:10px 18px;font-family:'Segoe UI',system-ui,sans-serif;display:flex;align-items:center;gap:12px;font-size:.9rem;flex-wrap:wrap">
+     <a href="index.html" style="color:#fff;font-weight:800;text-decoration:none;font-size:1.05rem;letter-spacing:-.3px;display:inline-flex;align-items:center;gap:7px"><svg width="22" height="22" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="27" fill="none" stroke="#fff" stroke-width="2"/><path d="M37 9 L23 35 L31 35 L26 55 L42 29 L34 29 L40 9 Z" fill="#f5a623"/></svg>Trafo<span style="color:#f5a623">Path</span></a>
+     <a href="learn.html" style="color:#cbd5e1;text-decoration:none;margin-left:auto">&#8592; Learn hub</a>
+   </div>
 <header>
 <h1>🌍 Country-Based Transformer Designer</h1>
 <p style="margin-bottom:6px"><a href="academy.html" style="color:#ffd9b8">🏠 Academy Hub</a></p>
-<p>196 countries, A–Z. Choose a country and a rating: the tool re-runs the design loop of <a href="transformer-design-tutorial.html#design">course §9</a> with that country's grid frequency, voltages, climate, temperature-rise practice and loss regulations. 22 major markets carry individually curated profiles; the rest use regional engineering practice — always verify the local utility schedule for a real tender. Figures are indicative teaching values, not a manufacturer's design program.</p>
+<p>196 countries, A–Z. Choose a country and a rating: the tool re-runs the design loop of <a href="tutorial.html#design">course §9</a> with that country's grid frequency, voltages, climate, temperature-rise practice and loss regulations. 22 major markets carry individually curated profiles; the rest use regional engineering practice — always verify the local utility schedule for a real tender. Figures are indicative teaching values, not a manufacturer's design program.</p>
 </header>
 <main>
 
@@ -70,3728 +79,3730 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:18px}
 
 <script>
 const C = [
-{
-"n": "Afghanistan",
-"fl": "🇦🇫",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 400,
-"ambMax": 48,
-"ambAvg": 30,
-"rise": "50 / 55 K",
-"regime": "util",
-"regName": "National IEC-based specs",
-"vec": "Dyn11",
-"pol": "tropical / monsoon",
-"corr": "C4 / C5-M coastal",
-"notes": "Subcontinent practice: 11/33 kV, monsoon humidity swings, heavy summer ambients — reduced rises common."
-},
-{
-"n": "Albania",
-"fl": "🇦🇱",
-"f": 50,
-"mv": [
-10,
-35,
-20
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 16,
-"rise": "60 / 65 K (IEC)",
-"regime": "util",
-"regName": "National IEC-based specifications",
-"vec": "Dyn11 / Yzn",
-"pol": "normal",
-"corr": "C3",
-"notes": "IEC-based national practice on 10/20/35 kV networks; verify the utility loss schedule before tendering."
-},
-{
-"n": "Algeria",
-"fl": "🇩🇿",
-"f": 50,
-"mv": [
-20,
-30
-],
-"lv": 400,
-"ambMax": 47,
-"ambAvg": 27,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National IEC-based specifications (French-heritage network)",
-"vec": "Dyn11",
-"pol": "desert / coastal",
-"corr": "C4 / C5-M coastal",
-"notes": "French-heritage 20/30 kV practice with Saharan ambients inland and marine atmosphere on the coast."
-},
-{
-"n": "Andorra",
-"fl": "🇦🇩",
-"f": 50,
-"mv": [
-20,
-10
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 18,
-"rise": "60 / 65 K (IEC)",
-"regime": "eu",
-"regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
-"vec": "Dyn11 / Dyn5",
-"pol": "normal",
-"corr": "C3",
-"notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
-},
-{
-"n": "Angola",
-"fl": "🇦🇴",
-"f": 50,
-"mv": [
-20,
-30
-],
-"lv": 400,
-"ambMax": 42,
-"ambAvg": 27,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (French-heritage)",
-"vec": "Dyn11",
-"pol": "tropical humid",
-"corr": "C4 / C5-M coastal",
-"notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
-},
-{
-"n": "Antigua and Barbuda",
-"fl": "🇦🇬",
-"f": 50,
-"mv": [
-11
-],
-"lv": 400,
-"ambMax": 38,
-"ambAvg": 28,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "Utility specs (British-heritage, IEC)",
-"vec": "Dyn11",
-"pol": "marine island",
-"corr": "C5-M",
-"notes": "Island grid: salt atmosphere, hurricane hardening and spares logistics dominate lifecycle cost."
-},
-{
-"n": "Argentina",
-"fl": "🇦🇷",
-"f": 50,
-"mv": [
-13.2,
-33
-],
-"lv": 400,
-"ambMax": 42,
-"ambAvg": 20,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National specs (IEC-derived)",
-"vec": "Dyn11 / Dyn1",
-"pol": "mixed",
-"corr": "C3/C4",
-"notes": "13.2/33 kV practice; wide climate span from Patagonia cold to Chaco heat."
-},
-{
-"n": "Armenia",
-"fl": "🇦🇲",
-"f": 50,
-"mv": [
-10,
-6,
-35
-],
-"lv": 400,
-"ambMax": 45,
-"ambAvg": 15,
-"rise": "60 / 65 K",
-"regime": "util",
-"regName": "GOST-heritage / IEC-based national specs",
-"vec": "Dyn11 / Yzn",
-"pol": "continental",
-"corr": "C3/C4",
-"notes": "GOST-heritage 10(6)/0.4 kV networks; continental extremes from −40 °C winters to +45 °C summers — cold-start oil viscosity matters as much as summer rise."
-},
-{
-"n": "Australia",
-"fl": "🇦🇺",
-"f": 50,
-"mv": [
-11,
-22,
-33
-],
-"lv": 400,
-"ambMax": 45,
-"ambAvg": 25,
-"rise": "55 / 60 K (AS)",
-"regime": "aus",
-"regName": "MEPS AS 2374.1.2 / AS-NZS 60076",
-"vec": "Dyn11",
-"pol": "mixed; bushfire zones",
-"corr": "C3/C4",
-"notes": "MEPS efficiency floors; bushfire-zone hardware and high rural ambient drive specials."
-},
-{
-"n": "Austria",
-"fl": "🇦🇹",
-"f": 50,
-"mv": [
-20,
-10
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 18,
-"rise": "60 / 65 K (IEC)",
-"regime": "eu",
-"regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
-"vec": "Dyn11 / Dyn5",
-"pol": "normal",
-"corr": "C3",
-"notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
-},
-{
-"n": "Azerbaijan",
-"fl": "🇦🇿",
-"f": 50,
-"mv": [
-10,
-6,
-35
-],
-"lv": 400,
-"ambMax": 45,
-"ambAvg": 15,
-"rise": "60 / 65 K",
-"regime": "util",
-"regName": "GOST-heritage / IEC-based national specs",
-"vec": "Dyn11 / Yzn",
-"pol": "continental",
-"corr": "C3/C4",
-"notes": "GOST-heritage 10(6)/0.4 kV networks; continental extremes from −40 °C winters to +45 °C summers — cold-start oil viscosity matters as much as summer rise."
-},
-{
-"n": "Bahamas",
-"fl": "🇧🇸",
-"f": 60,
-"mv": [
-13.8
-],
-"lv": 220,
-"ambMax": 38,
-"ambAvg": 28,
-"rise": "65 K avg over 30 °C (IEEE)",
-"regime": "util",
-"regName": "ANSI/IEEE-based utility specs",
-"vec": "Dyn1 (ANSI 30° lag)",
-"pol": "marine island",
-"corr": "C5-M",
-"notes": "60 Hz island grid, ANSI practice: salt atmosphere, hurricane hardening and spares logistics dominate."
-},
-{
-"n": "Bahrain",
-"fl": "🇧🇭",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 415,
-"ambMax": 50,
-"ambAvg": 35,
-"rise": "50 / 55 K",
-"regime": "gcc",
-"regName": "EWA specifications",
-"vec": "Dyn11",
-"pol": "coastal",
-"corr": "C5-M",
-"notes": "Island grid, salt-laden air — corrosion system and creepage govern external design."
-},
-{
-"n": "Bangladesh",
-"fl": "🇧🇩",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 400,
-"ambMax": 45,
-"ambAvg": 30,
-"rise": "50 / 55 K",
-"regime": "util",
-"regName": "National IEC-based specs",
-"vec": "Dyn11",
-"pol": "tropical / monsoon",
-"corr": "C4 / C5-M coastal",
-"notes": "Monsoon humidity, dense urban loading and flood siting requirements; 11/33 kV practice."
-},
-{
-"n": "Barbados",
-"fl": "🇧🇧",
-"f": 50,
-"mv": [
-11
-],
-"lv": 400,
-"ambMax": 38,
-"ambAvg": 28,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "Utility specs (British-heritage, IEC)",
-"vec": "Dyn11",
-"pol": "marine island",
-"corr": "C5-M",
-"notes": "Island grid: salt atmosphere, hurricane hardening and spares logistics dominate lifecycle cost."
-},
-{
-"n": "Belarus",
-"fl": "🇧🇾",
-"f": 50,
-"mv": [
-10,
-6,
-35
-],
-"lv": 400,
-"ambMax": 45,
-"ambAvg": 15,
-"rise": "60 / 65 K",
-"regime": "util",
-"regName": "GOST-heritage / IEC-based national specs",
-"vec": "Dyn11 / Yzn",
-"pol": "continental",
-"corr": "C3/C4",
-"notes": "GOST-heritage 10(6)/0.4 kV networks; continental extremes from −40 °C winters to +45 °C summers — cold-start oil viscosity matters as much as summer rise."
-},
-{
-"n": "Belgium",
-"fl": "🇧🇪",
-"f": 50,
-"mv": [
-20,
-10
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 18,
-"rise": "60 / 65 K (IEC)",
-"regime": "eu",
-"regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
-"vec": "Dyn11 / Dyn5",
-"pol": "normal",
-"corr": "C3",
-"notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
-},
-{
-"n": "Belize",
-"fl": "🇧🇿",
-"f": 60,
-"mv": [
-13.8,
-34.5
-],
-"lv": 220,
-"ambMax": 40,
-"ambAvg": 27,
-"rise": "65 K avg over 30 °C (IEEE)",
-"regime": "util",
-"regName": "ANSI/IEEE-based utility specs",
-"vec": "Dyn1 (ANSI 30° lag)",
-"pol": "tropical",
-"corr": "C4",
-"notes": "ANSI/IEEE practice: 60 Hz, 30° lag convention, %Z on self-cooled base — see course §12.6 before mixing with IEC fleets."
-},
-{
-"n": "Benin",
-"fl": "🇧🇯",
-"f": 50,
-"mv": [
-20,
-30
-],
-"lv": 400,
-"ambMax": 42,
-"ambAvg": 27,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (French-heritage)",
-"vec": "Dyn11",
-"pol": "tropical humid",
-"corr": "C4 / C5-M coastal",
-"notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
-},
-{
-"n": "Bhutan",
-"fl": "🇧🇹",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 400,
-"ambMax": 48,
-"ambAvg": 30,
-"rise": "50 / 55 K",
-"regime": "util",
-"regName": "National IEC-based specs",
-"vec": "Dyn11",
-"pol": "tropical / monsoon",
-"corr": "C4 / C5-M coastal",
-"notes": "Subcontinent practice: 11/33 kV, monsoon humidity swings, heavy summer ambients — reduced rises common."
-},
-{
-"n": "Bolivia",
-"fl": "🇧🇴",
-"f": 50,
-"mv": [
-13.2,
-33
-],
-"lv": 400,
-"ambMax": 42,
-"ambAvg": 20,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National specs (IEC-derived)",
-"vec": "Dyn11 / Dyn1",
-"pol": "mixed",
-"corr": "C3/C4",
-"notes": "Southern-cone 50 Hz practice with IEC-derived national standards."
-},
-{
-"n": "Bosnia and Herzegovina",
-"fl": "🇧🇦",
-"f": 50,
-"mv": [
-10,
-35,
-20
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 16,
-"rise": "60 / 65 K (IEC)",
-"regime": "util",
-"regName": "National IEC-based specifications",
-"vec": "Dyn11 / Yzn",
-"pol": "normal",
-"corr": "C3",
-"notes": "IEC-based national practice on 10/20/35 kV networks; verify the utility loss schedule before tendering."
-},
-{
-"n": "Botswana",
-"fl": "🇧🇼",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 415,
-"ambMax": 42,
-"ambAvg": 26,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (British-heritage)",
-"vec": "Dyn11",
-"pol": "tropical",
-"corr": "C4",
-"notes": "British-heritage 11/33 kV practice; loading cycles and network voltage excursions argue for conservative design margins."
-},
-{
-"n": "Brazil",
-"fl": "🇧🇷",
-"f": 60,
-"mv": [
-13.8,
-34.5
-],
-"lv": 380,
-"ambMax": 40,
-"ambAvg": 27,
-"rise": "55 / 60 K (ABNT)",
-"regime": "util",
-"regName": "ABNT NBR 5356 / PROCEL efficiency",
-"vec": "Dyn1",
-"pol": "tropical / coastal",
-"corr": "C4/C5-M",
-"notes": "60 Hz, ABNT standards (IEC-derived); tropical humidity and lightning density shape insulation and arrester practice."
-},
-{
-"n": "Brunei",
-"fl": "🇧🇳",
-"f": 50,
-"mv": [
-22,
-33
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 28,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National utility specs (IEC-based)",
-"vec": "Dyn11",
-"pol": "tropical coastal",
-"corr": "C5-M",
-"notes": "Permanent tropical humidity and salt air: sealed tanks, surface protection and creepage govern life more than peak ambient."
-},
-{
-"n": "Bulgaria",
-"fl": "🇧🇬",
-"f": 50,
-"mv": [
-20,
-10
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 18,
-"rise": "60 / 65 K (IEC)",
-"regime": "eu",
-"regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
-"vec": "Dyn11 / Dyn5",
-"pol": "normal",
-"corr": "C3",
-"notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
-},
-{
-"n": "Burkina Faso",
-"fl": "🇧🇫",
-"f": 50,
-"mv": [
-20,
-30
-],
-"lv": 400,
-"ambMax": 47,
-"ambAvg": 32,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs",
-"vec": "Dyn11",
-"pol": "desert dust (harmattan)",
-"corr": "C4",
-"notes": "Sahel duty: 47 °C+ ambients with harmattan dust — cooling-surface margin and cleaning cycles govern life."
-},
-{
-"n": "Burundi",
-"fl": "🇧🇮",
-"f": 50,
-"mv": [
-20,
-30
-],
-"lv": 400,
-"ambMax": 42,
-"ambAvg": 27,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (French-heritage)",
-"vec": "Dyn11",
-"pol": "tropical humid",
-"corr": "C4 / C5-M coastal",
-"notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
-},
-{
-"n": "Cabo Verde",
-"fl": "🇨🇻",
-"f": 50,
-"mv": [
-20,
-30
-],
-"lv": 400,
-"ambMax": 42,
-"ambAvg": 27,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (French-heritage)",
-"vec": "Dyn11",
-"pol": "tropical humid",
-"corr": "C4 / C5-M coastal",
-"notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
-},
-{
-"n": "Cambodia",
-"fl": "🇰🇭",
-"f": 50,
-"mv": [
-22,
-33
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 28,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National utility specs (IEC-based)",
-"vec": "Dyn11",
-"pol": "tropical coastal",
-"corr": "C5-M",
-"notes": "Permanent tropical humidity and salt air: sealed tanks, surface protection and creepage govern life more than peak ambient."
-},
-{
-"n": "Cameroon",
-"fl": "🇨🇲",
-"f": 50,
-"mv": [
-20,
-30
-],
-"lv": 400,
-"ambMax": 42,
-"ambAvg": 27,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (French-heritage)",
-"vec": "Dyn11",
-"pol": "tropical humid",
-"corr": "C4 / C5-M coastal",
-"notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
-},
-{
-"n": "Canada",
-"fl": "🇨🇦",
-"f": 60,
-"mv": [
-13.8,
-27.6
-],
-"lv": 600,
-"ambMax": 40,
-"ambAvg": 20,
-"rise": "65 K avg over 30 °C",
-"regime": "doe",
-"regName": "NRCan efficiency / CSA C802 / IEEE C57",
-"vec": "Dyn1 (ANSI)",
-"pol": "normal",
-"corr": "C3",
-"notes": "600 V secondary is a Canadian specialty; cold starts (−40 °C) set oil viscosity and conservator design, not heat."
-},
-{
-"n": "Central African Republic",
-"fl": "🇨🇫",
-"f": 50,
-"mv": [
-20,
-30
-],
-"lv": 400,
-"ambMax": 42,
-"ambAvg": 27,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (French-heritage)",
-"vec": "Dyn11",
-"pol": "tropical humid",
-"corr": "C4 / C5-M coastal",
-"notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
-},
-{
-"n": "Chad",
-"fl": "🇹🇩",
-"f": 50,
-"mv": [
-20,
-30
-],
-"lv": 400,
-"ambMax": 47,
-"ambAvg": 32,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs",
-"vec": "Dyn11",
-"pol": "desert dust (harmattan)",
-"corr": "C4",
-"notes": "Sahel duty: 47 °C+ ambients with harmattan dust — cooling-surface margin and cleaning cycles govern life."
-},
-{
-"n": "Chile",
-"fl": "🇨🇱",
-"f": 50,
-"mv": [
-13.2,
-33
-],
-"lv": 400,
-"ambMax": 42,
-"ambAvg": 20,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National specs (IEC-derived)",
-"vec": "Dyn11 / Dyn1",
-"pol": "mixed",
-"corr": "C3/C4",
-"notes": "50 Hz with strong seismic qualification culture; mining loads drive converter-duty specials (§15.3)."
-},
-{
-"n": "China",
-"fl": "🇨🇳",
-"f": 50,
-"mv": [
-10,
-35
-],
-"lv": 400,
-"ambMax": 45,
-"ambAvg": 25,
-"rise": "60 / 65 K",
-"regime": "china",
-"regName": "GB 20052 efficiency grades / GB/T 6451",
-"vec": "Dyn11 / Yyn0",
-"pol": "mixed",
-"corr": "C3/C4",
-"notes": "GB efficiency Grade 1–3 maps the S13/S15/S17… design series; amorphous cores (SBH-type) widely deployed at 10 kV."
-},
-{
-"n": "Colombia",
-"fl": "🇨🇴",
-"f": 60,
-"mv": [
-13.8,
-34.5
-],
-"lv": 220,
-"ambMax": 40,
-"ambAvg": 27,
-"rise": "65 K avg over 30 °C (IEEE)",
-"regime": "util",
-"regName": "ANSI/IEEE-based utility specs",
-"vec": "Dyn1 (ANSI 30° lag)",
-"pol": "tropical",
-"corr": "C4",
-"notes": "ANSI/IEEE practice: 60 Hz, 30° lag convention, %Z on self-cooled base — see course §12.6 before mixing with IEC fleets."
-},
-{
-"n": "Comoros",
-"fl": "🇰🇲",
-"f": 50,
-"mv": [
-20,
-30
-],
-"lv": 400,
-"ambMax": 42,
-"ambAvg": 27,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (French-heritage)",
-"vec": "Dyn11",
-"pol": "tropical humid",
-"corr": "C4 / C5-M coastal",
-"notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
-},
-{
-"n": "Congo (DR)",
-"fl": "🇨🇩",
-"f": 50,
-"mv": [
-20,
-30
-],
-"lv": 400,
-"ambMax": 42,
-"ambAvg": 27,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (French-heritage)",
-"vec": "Dyn11",
-"pol": "tropical humid",
-"corr": "C4 / C5-M coastal",
-"notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
-},
-{
-"n": "Congo (Republic)",
-"fl": "🇨🇬",
-"f": 50,
-"mv": [
-20,
-30
-],
-"lv": 400,
-"ambMax": 42,
-"ambAvg": 27,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (French-heritage)",
-"vec": "Dyn11",
-"pol": "tropical humid",
-"corr": "C4 / C5-M coastal",
-"notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
-},
-{
-"n": "Costa Rica",
-"fl": "🇨🇷",
-"f": 60,
-"mv": [
-13.8,
-34.5
-],
-"lv": 220,
-"ambMax": 40,
-"ambAvg": 27,
-"rise": "65 K avg over 30 °C (IEEE)",
-"regime": "util",
-"regName": "ANSI/IEEE-based utility specs",
-"vec": "Dyn1 (ANSI 30° lag)",
-"pol": "tropical",
-"corr": "C4",
-"notes": "ANSI/IEEE practice: 60 Hz, 30° lag convention, %Z on self-cooled base — see course §12.6 before mixing with IEC fleets."
-},
-{
-"n": "Cote d'Ivoire",
-"fl": "🇨🇮",
-"f": 50,
-"mv": [
-20,
-30
-],
-"lv": 400,
-"ambMax": 42,
-"ambAvg": 27,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (French-heritage)",
-"vec": "Dyn11",
-"pol": "tropical humid",
-"corr": "C4 / C5-M coastal",
-"notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
-},
-{
-"n": "Croatia",
-"fl": "🇭🇷",
-"f": 50,
-"mv": [
-20,
-15
-],
-"lv": 400,
-"ambMax": 44,
-"ambAvg": 24,
-"rise": "60 / 65 K (IEC)",
-"regime": "eu",
-"regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
-"vec": "Dyn11",
-"pol": "coastal Mediterranean",
-"corr": "C3 / C4 coastal",
-"notes": "EU Tier 2 applies; warm-summer derating and coastal creepage on the littoral. Regional values — confirm DSO specs."
-},
-{
-"n": "Cuba",
-"fl": "🇨🇺",
-"f": 60,
-"mv": [
-13.8
-],
-"lv": 220,
-"ambMax": 38,
-"ambAvg": 28,
-"rise": "65 K avg over 30 °C (IEEE)",
-"regime": "util",
-"regName": "ANSI/IEEE-based utility specs",
-"vec": "Dyn1 (ANSI 30° lag)",
-"pol": "marine island",
-"corr": "C5-M",
-"notes": "60 Hz island grid, ANSI practice: salt atmosphere, hurricane hardening and spares logistics dominate."
-},
-{
-"n": "Cyprus",
-"fl": "🇨🇾",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 15,
-"rise": "60 / 65 K (IEC)",
-"regime": "eu",
-"regName": "Ecodesign Tier 2 (UK SI / EU) + network specs",
-"vec": "Dyn11",
-"pol": "normal / coastal",
-"corr": "C3/C4",
-"notes": "British-practice 11/33 kV network under Ecodesign-level loss caps."
-},
-{
-"n": "Czechia",
-"fl": "🇨🇿",
-"f": 50,
-"mv": [
-20,
-10
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 18,
-"rise": "60 / 65 K (IEC)",
-"regime": "eu",
-"regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
-"vec": "Dyn11 / Dyn5",
-"pol": "normal",
-"corr": "C3",
-"notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
-},
-{
-"n": "Denmark",
-"fl": "🇩🇰",
-"f": 50,
-"mv": [
-20,
-10
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 18,
-"rise": "60 / 65 K (IEC)",
-"regime": "eu",
-"regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
-"vec": "Dyn11 / Dyn5",
-"pol": "normal",
-"corr": "C3",
-"notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
-},
-{
-"n": "Djibouti",
-"fl": "🇩🇯",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 400,
-"ambMax": 48,
-"ambAvg": 30,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National IEC-based specifications",
-"vec": "Dyn11",
-"pol": "desert",
-"corr": "C4 / C5-M coastal",
-"notes": "Hot-climate IEC practice: cooling margin, dust management and reduced rises govern. Verify national type-approval requirements."
-},
-{
-"n": "Dominica",
-"fl": "🇩🇲",
-"f": 50,
-"mv": [
-11
-],
-"lv": 400,
-"ambMax": 38,
-"ambAvg": 28,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "Utility specs (British-heritage, IEC)",
-"vec": "Dyn11",
-"pol": "marine island",
-"corr": "C5-M",
-"notes": "Island grid: salt atmosphere, hurricane hardening and spares logistics dominate lifecycle cost."
-},
-{
-"n": "Dominican Republic",
-"fl": "🇩🇴",
-"f": 60,
-"mv": [
-13.8
-],
-"lv": 220,
-"ambMax": 38,
-"ambAvg": 28,
-"rise": "65 K avg over 30 °C (IEEE)",
-"regime": "util",
-"regName": "ANSI/IEEE-based utility specs",
-"vec": "Dyn1 (ANSI 30° lag)",
-"pol": "marine island",
-"corr": "C5-M",
-"notes": "60 Hz island grid, ANSI practice: salt atmosphere, hurricane hardening and spares logistics dominate."
-},
-{
-"n": "Ecuador",
-"fl": "🇪🇨",
-"f": 60,
-"mv": [
-13.8,
-34.5
-],
-"lv": 220,
-"ambMax": 40,
-"ambAvg": 27,
-"rise": "65 K avg over 30 °C (IEEE)",
-"regime": "util",
-"regName": "ANSI/IEEE-based utility specs",
-"vec": "Dyn1 (ANSI 30° lag)",
-"pol": "tropical",
-"corr": "C4",
-"notes": "ANSI/IEEE practice: 60 Hz, 30° lag convention, %Z on self-cooled base — see course §12.6 before mixing with IEC fleets."
-},
-{
-"n": "Egypt",
-"fl": "🇪🇬",
-"f": 50,
-"mv": [
-11,
-22,
-33
-],
-"lv": 400,
-"ambMax": 48,
-"ambAvg": 30,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "EETC / distribution co. specs (IEC-based)",
-"vec": "Dyn11",
-"pol": "desert + Nile delta humidity",
-"corr": "C4 / C5-M coastal",
-"notes": "IEC-based national specs; 22 kV expanding in new cities."
-},
-{
-"n": "El Salvador",
-"fl": "🇸🇻",
-"f": 60,
-"mv": [
-13.8,
-34.5
-],
-"lv": 220,
-"ambMax": 40,
-"ambAvg": 27,
-"rise": "65 K avg over 30 °C (IEEE)",
-"regime": "util",
-"regName": "ANSI/IEEE-based utility specs",
-"vec": "Dyn1 (ANSI 30° lag)",
-"pol": "tropical",
-"corr": "C4",
-"notes": "ANSI/IEEE practice: 60 Hz, 30° lag convention, %Z on self-cooled base — see course §12.6 before mixing with IEC fleets."
-},
-{
-"n": "Equatorial Guinea",
-"fl": "🇬🇶",
-"f": 50,
-"mv": [
-20,
-30
-],
-"lv": 400,
-"ambMax": 42,
-"ambAvg": 27,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (French-heritage)",
-"vec": "Dyn11",
-"pol": "tropical humid",
-"corr": "C4 / C5-M coastal",
-"notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
-},
-{
-"n": "Eritrea",
-"fl": "🇪🇷",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 400,
-"ambMax": 48,
-"ambAvg": 30,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National IEC-based specifications",
-"vec": "Dyn11",
-"pol": "desert",
-"corr": "C4 / C5-M coastal",
-"notes": "Hot-climate IEC practice: cooling margin, dust management and reduced rises govern. Verify national type-approval requirements."
-},
-{
-"n": "Estonia",
-"fl": "🇪🇪",
-"f": 50,
-"mv": [
-20,
-10
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 18,
-"rise": "60 / 65 K (IEC)",
-"regime": "eu",
-"regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
-"vec": "Dyn11 / Dyn5",
-"pol": "normal",
-"corr": "C3",
-"notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
-},
-{
-"n": "Eswatini",
-"fl": "🇸🇿",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 415,
-"ambMax": 42,
-"ambAvg": 26,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (British-heritage)",
-"vec": "Dyn11",
-"pol": "tropical",
-"corr": "C4",
-"notes": "British-heritage 11/33 kV practice; loading cycles and network voltage excursions argue for conservative design margins."
-},
-{
-"n": "Ethiopia",
-"fl": "🇪🇹",
-"f": 50,
-"mv": [
-15,
-33
-],
-"lv": 415,
-"ambMax": 42,
-"ambAvg": 26,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (British-heritage)",
-"vec": "Dyn11",
-"pol": "tropical",
-"corr": "C4",
-"notes": "EEU 15/33 kV practice; highland altitude derating applies above 1500 m (Addis ≈ 2350 m)."
-},
-{
-"n": "Fiji",
-"fl": "🇫🇯",
-"f": 50,
-"mv": [
-11
-],
-"lv": 415,
-"ambMax": 38,
-"ambAvg": 28,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "Utility specs (IEC / AS-NZS influenced)",
-"vec": "Dyn11",
-"pol": "marine island",
-"corr": "C5-M",
-"notes": "Pacific island grid: salt atmosphere (C5-M), shipping logistics and spares strategy dominate lifecycle cost."
-},
-{
-"n": "Finland",
-"fl": "🇫🇮",
-"f": 50,
-"mv": [
-20,
-10
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 18,
-"rise": "60 / 65 K (IEC)",
-"regime": "eu",
-"regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
-"vec": "Dyn11 / Dyn5",
-"pol": "normal",
-"corr": "C3",
-"notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
-},
-{
-"n": "France",
-"fl": "🇫🇷",
-"f": 50,
-"mv": [
-20,
-10
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 18,
-"rise": "60 / 65 K (IEC)",
-"regime": "eu",
-"regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
-"vec": "Dyn11 / Dyn5",
-"pol": "normal",
-"corr": "C3",
-"notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
-},
-{
-"n": "Gabon",
-"fl": "🇬🇦",
-"f": 50,
-"mv": [
-20,
-30
-],
-"lv": 400,
-"ambMax": 42,
-"ambAvg": 27,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (French-heritage)",
-"vec": "Dyn11",
-"pol": "tropical humid",
-"corr": "C4 / C5-M coastal",
-"notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
-},
-{
-"n": "Gambia",
-"fl": "🇬🇲",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 415,
-"ambMax": 42,
-"ambAvg": 26,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (British-heritage)",
-"vec": "Dyn11",
-"pol": "tropical",
-"corr": "C4",
-"notes": "British-heritage 11/33 kV practice; loading cycles and network voltage excursions argue for conservative design margins."
-},
-{
-"n": "Georgia",
-"fl": "🇬🇪",
-"f": 50,
-"mv": [
-10,
-6,
-35
-],
-"lv": 400,
-"ambMax": 45,
-"ambAvg": 15,
-"rise": "60 / 65 K",
-"regime": "util",
-"regName": "GOST-heritage / IEC-based national specs",
-"vec": "Dyn11 / Yzn",
-"pol": "continental",
-"corr": "C3/C4",
-"notes": "GOST-heritage 10(6)/0.4 kV networks; continental extremes from −40 °C winters to +45 °C summers — cold-start oil viscosity matters as much as summer rise."
-},
-{
-"n": "Germany",
-"fl": "🇩🇪",
-"f": 50,
-"mv": [
-20,
-10
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 20,
-"rise": "60 / 65 K (IEC)",
-"regime": "eu",
-"regName": "EU 548/2014 Tier 2 / EN 50708",
-"vec": "Dyn5 / Dyn11",
-"pol": "normal",
-"corr": "C3",
-"notes": "Tier-2 loss caps drive low-flux Hi-B or amorphous cores; Dyn5 historic in DACH networks — check before paralleling with Dyn11 stock."
-},
-{
-"n": "Ghana",
-"fl": "🇬🇭",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 415,
-"ambMax": 42,
-"ambAvg": 26,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (British-heritage)",
-"vec": "Dyn11",
-"pol": "tropical",
-"corr": "C4",
-"notes": "British-heritage 11/33 kV practice; loading cycles and network voltage excursions argue for conservative design margins."
-},
-{
-"n": "Greece",
-"fl": "🇬🇷",
-"f": 50,
-"mv": [
-20,
-15
-],
-"lv": 400,
-"ambMax": 44,
-"ambAvg": 24,
-"rise": "60 / 65 K (IEC)",
-"regime": "eu",
-"regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
-"vec": "Dyn11",
-"pol": "coastal Mediterranean",
-"corr": "C3 / C4 coastal",
-"notes": "EU Tier 2 applies; warm-summer derating and coastal creepage on the littoral. Regional values — confirm DSO specs."
-},
-{
-"n": "Grenada",
-"fl": "🇬🇩",
-"f": 50,
-"mv": [
-11
-],
-"lv": 400,
-"ambMax": 38,
-"ambAvg": 28,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "Utility specs (British-heritage, IEC)",
-"vec": "Dyn11",
-"pol": "marine island",
-"corr": "C5-M",
-"notes": "Island grid: salt atmosphere, hurricane hardening and spares logistics dominate lifecycle cost."
-},
-{
-"n": "Guatemala",
-"fl": "🇬🇹",
-"f": 60,
-"mv": [
-13.8,
-34.5
-],
-"lv": 220,
-"ambMax": 40,
-"ambAvg": 27,
-"rise": "65 K avg over 30 °C (IEEE)",
-"regime": "util",
-"regName": "ANSI/IEEE-based utility specs",
-"vec": "Dyn1 (ANSI 30° lag)",
-"pol": "tropical",
-"corr": "C4",
-"notes": "ANSI/IEEE practice: 60 Hz, 30° lag convention, %Z on self-cooled base — see course §12.6 before mixing with IEC fleets."
-},
-{
-"n": "Guinea",
-"fl": "🇬🇳",
-"f": 50,
-"mv": [
-20,
-30
-],
-"lv": 400,
-"ambMax": 42,
-"ambAvg": 27,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (French-heritage)",
-"vec": "Dyn11",
-"pol": "tropical humid",
-"corr": "C4 / C5-M coastal",
-"notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
-},
-{
-"n": "Guinea-Bissau",
-"fl": "🇬🇼",
-"f": 50,
-"mv": [
-20,
-30
-],
-"lv": 400,
-"ambMax": 42,
-"ambAvg": 27,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (French-heritage)",
-"vec": "Dyn11",
-"pol": "tropical humid",
-"corr": "C4 / C5-M coastal",
-"notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
-},
-{
-"n": "Guyana",
-"fl": "🇬🇾",
-"f": 60,
-"mv": [
-13.8
-],
-"lv": 220,
-"ambMax": 38,
-"ambAvg": 28,
-"rise": "65 K avg over 30 °C (IEEE)",
-"regime": "util",
-"regName": "ANSI/IEEE-based utility specs",
-"vec": "Dyn1 (ANSI 30° lag)",
-"pol": "marine island",
-"corr": "C5-M",
-"notes": "60 Hz island grid, ANSI practice: salt atmosphere, hurricane hardening and spares logistics dominate."
-},
-{
-"n": "Haiti",
-"fl": "🇭🇹",
-"f": 60,
-"mv": [
-13.8
-],
-"lv": 220,
-"ambMax": 38,
-"ambAvg": 28,
-"rise": "65 K avg over 30 °C (IEEE)",
-"regime": "util",
-"regName": "ANSI/IEEE-based utility specs",
-"vec": "Dyn1 (ANSI 30° lag)",
-"pol": "marine island",
-"corr": "C5-M",
-"notes": "60 Hz island grid, ANSI practice: salt atmosphere, hurricane hardening and spares logistics dominate."
-},
-{
-"n": "Honduras",
-"fl": "🇭🇳",
-"f": 60,
-"mv": [
-13.8,
-34.5
-],
-"lv": 220,
-"ambMax": 40,
-"ambAvg": 27,
-"rise": "65 K avg over 30 °C (IEEE)",
-"regime": "util",
-"regName": "ANSI/IEEE-based utility specs",
-"vec": "Dyn1 (ANSI 30° lag)",
-"pol": "tropical",
-"corr": "C4",
-"notes": "ANSI/IEEE practice: 60 Hz, 30° lag convention, %Z on self-cooled base — see course §12.6 before mixing with IEC fleets."
-},
-{
-"n": "Hungary",
-"fl": "🇭🇺",
-"f": 50,
-"mv": [
-20,
-10
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 18,
-"rise": "60 / 65 K (IEC)",
-"regime": "eu",
-"regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
-"vec": "Dyn11 / Dyn5",
-"pol": "normal",
-"corr": "C3",
-"notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
-},
-{
-"n": "Iceland",
-"fl": "🇮🇸",
-"f": 50,
-"mv": [
-20,
-10
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 18,
-"rise": "60 / 65 K (IEC)",
-"regime": "eu",
-"regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
-"vec": "Dyn11 / Dyn5",
-"pol": "normal",
-"corr": "C3",
-"notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
-},
-{
-"n": "India",
-"fl": "🇮🇳",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 433,
-"ambMax": 50,
-"ambAvg": 32,
-"rise": "50 / 55 K (IS 1180)",
-"regime": "india",
-"regName": "IS 1180 + BEE star rating (BIS mandatory)",
-"vec": "Dyn11",
-"pol": "mixed; heavy in coastal/industrial belts",
-"corr": "C4 / C5-M coastal",
-"notes": "BEE star levels set total-loss caps at 50% and 100% load; 433 V secondary standard. Aluminium windings widespread at distribution sizes."
-},
-{
-"n": "Indonesia",
-"fl": "🇮🇩",
-"f": 50,
-"mv": [
-20
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 28,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "PLN specifications (SPLN, IEC-based)",
-"vec": "Dyn5 / Dyn11",
-"pol": "tropical coastal",
-"corr": "C5-M",
-"notes": "20 kV unified nationwide; permanent high humidity — sealed tanks and surface protection govern life."
-},
-{
-"n": "Iran",
-"fl": "🇮🇷",
-"f": 50,
-"mv": [
-20,
-33
-],
-"lv": 400,
-"ambMax": 48,
-"ambAvg": 30,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National IEC-based specifications",
-"vec": "Dyn11",
-"pol": "desert",
-"corr": "C4 / C5-M coastal",
-"notes": "20 kV national MV standard; hot interior, Caspian humidity north, Gulf salt south — three climates in one fleet."
-},
-{
-"n": "Iraq",
-"fl": "🇮🇶",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 400,
-"ambMax": 52,
-"ambAvg": 30,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National IEC-based specifications",
-"vec": "Dyn11",
-"pol": "desert",
-"corr": "C4 / C5-M coastal",
-"notes": "Among the hottest grids on earth (52 °C); cooling margin and dust management govern everything."
-},
-{
-"n": "Ireland",
-"fl": "🇮🇪",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 15,
-"rise": "60 / 65 K (IEC)",
-"regime": "eu",
-"regName": "Ecodesign Tier 2 (UK SI / EU) + network specs",
-"vec": "Dyn11",
-"pol": "normal / coastal",
-"corr": "C3/C4",
-"notes": "British-practice 11/33 kV network under Ecodesign-level loss caps."
-},
-{
-"n": "Israel",
-"fl": "🇮🇱",
-"f": 50,
-"mv": [
-22,
-33
-],
-"lv": 400,
-"ambMax": 45,
-"ambAvg": 30,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "IEC-based national specs (IEC 60076 aligned)",
-"vec": "Dyn11",
-"pol": "desert",
-"corr": "C4 / C5-M coastal",
-"notes": "Hot-climate IEC practice: cooling margin, dust management and reduced rises govern. Verify national type-approval requirements."
-},
-{
-"n": "Italy",
-"fl": "🇮🇹",
-"f": 50,
-"mv": [
-20,
-15
-],
-"lv": 400,
-"ambMax": 42,
-"ambAvg": 22,
-"rise": "60 / 65 K (IEC)",
-"regime": "eu",
-"regName": "EU Tier 2 / e-distribuzione unified specs",
-"vec": "Dyn11",
-"pol": "normal / coastal south",
-"corr": "C3/C4",
-"notes": "e-distribuzione's unified 20 kV standardisation is a model of fleet-level design standardisation (§18)."
-},
-{
-"n": "Jamaica",
-"fl": "🇯🇲",
-"f": 50,
-"mv": [
-11
-],
-"lv": 400,
-"ambMax": 38,
-"ambAvg": 28,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "Utility specs (British-heritage, IEC)",
-"vec": "Dyn11",
-"pol": "marine island",
-"corr": "C5-M",
-"notes": "Island grid: salt atmosphere, hurricane hardening and spares logistics dominate lifecycle cost."
-},
-{
-"n": "Japan",
-"fl": "🇯🇵",
-"f": 50,
-"mv": [
-6.6,
-22
-],
-"lv": 210,
-"ambMax": 40,
-"ambAvg": 22,
-"rise": "55 / 60 K (JEC)",
-"regime": "jis",
-"regName": "Top Runner efficiency / JEC, JIS standards",
-"vec": "Dyn1 / special",
-"pol": "coastal + seismic",
-"corr": "C4/C5-M",
-"notes": "50 Hz east / 60 Hz west split grid (50 Hz modelled here); 6.6 kV distribution, Top Runner pushes amorphous cores; seismic qualification is a first-class requirement."
-},
-{
-"n": "Jordan",
-"fl": "🇯🇴",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 400,
-"ambMax": 48,
-"ambAvg": 30,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National IEC-based specifications",
-"vec": "Dyn11",
-"pol": "desert",
-"corr": "C4 / C5-M coastal",
-"notes": "Hot-climate IEC practice: cooling margin, dust management and reduced rises govern. Verify national type-approval requirements."
-},
-{
-"n": "Kazakhstan",
-"fl": "🇰🇿",
-"f": 50,
-"mv": [
-10,
-6,
-35
-],
-"lv": 400,
-"ambMax": 45,
-"ambAvg": 15,
-"rise": "60 / 65 K",
-"regime": "util",
-"regName": "GOST-heritage / IEC-based national specs",
-"vec": "Dyn11 / Yzn",
-"pol": "continental",
-"corr": "C3/C4",
-"notes": "GOST-heritage 10(6)/0.4 kV networks; continental extremes from −40 °C winters to +45 °C summers — cold-start oil viscosity matters as much as summer rise."
-},
-{
-"n": "Kenya",
-"fl": "🇰🇪",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 415,
-"ambMax": 42,
-"ambAvg": 26,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (British-heritage)",
-"vec": "Dyn11",
-"pol": "tropical",
-"corr": "C4",
-"notes": "British-heritage 11/33 kV practice; loading cycles and network voltage excursions argue for conservative design margins."
-},
-{
-"n": "Kiribati",
-"fl": "🇰🇮",
-"f": 50,
-"mv": [
-11
-],
-"lv": 415,
-"ambMax": 38,
-"ambAvg": 28,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "Utility specs (IEC / AS-NZS influenced)",
-"vec": "Dyn11",
-"pol": "marine island",
-"corr": "C5-M",
-"notes": "Pacific island grid: salt atmosphere (C5-M), shipping logistics and spares strategy dominate lifecycle cost."
-},
-{
-"n": "Korea (North)",
-"fl": "🇰🇵",
-"f": 60,
-"mv": [
-10,
-6,
-35
-],
-"lv": 400,
-"ambMax": 45,
-"ambAvg": 15,
-"rise": "60 / 65 K",
-"regime": "util",
-"regName": "GOST-heritage / IEC-based national specs",
-"vec": "Dyn11 / Yzn",
-"pol": "continental",
-"corr": "C3/C4",
-"notes": "Reported 60 Hz practice, GOST-influenced equipment heritage; data limited."
-},
-{
-"n": "Korea (South)",
-"fl": "🇰🇷",
-"f": 60,
-"mv": [
-22.9
-],
-"lv": 380,
-"ambMax": 40,
-"ambAvg": 28,
-"rise": "65 K avg over 30 °C",
-"regime": "doe",
-"regName": "KS standards / MEPS (KEPCO)",
-"vec": "Dyn1 / Ygzn (multi-grounded 22.9 kV)",
-"pol": "tropical coastal",
-"corr": "C5-M",
-"notes": "KEPCO's 22.9 kV multi-grounded network is American-influenced at 60 Hz; strict MEPS efficiency floors."
-},
-{
-"n": "Kosovo",
-"fl": "🇽🇰",
-"f": 50,
-"mv": [
-10,
-35,
-20
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 16,
-"rise": "60 / 65 K (IEC)",
-"regime": "util",
-"regName": "National IEC-based specifications",
-"vec": "Dyn11 / Yzn",
-"pol": "normal",
-"corr": "C3",
-"notes": "IEC-based national practice on 10/20/35 kV networks; verify the utility loss schedule before tendering."
-},
-{
-"n": "Kuwait",
-"fl": "🇰🇼",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 415,
-"ambMax": 52,
-"ambAvg": 37,
-"rise": "50 / 55 K",
-"regime": "gcc",
-"regName": "MEW specifications",
-"vec": "Dyn11",
-"pol": "desert",
-"corr": "C4/C5",
-"notes": "Among the world's highest design ambients (52 °C+); cooling margin governs."
-},
-{
-"n": "Kyrgyzstan",
-"fl": "🇰🇬",
-"f": 50,
-"mv": [
-10,
-6,
-35
-],
-"lv": 400,
-"ambMax": 45,
-"ambAvg": 15,
-"rise": "60 / 65 K",
-"regime": "util",
-"regName": "GOST-heritage / IEC-based national specs",
-"vec": "Dyn11 / Yzn",
-"pol": "continental",
-"corr": "C3/C4",
-"notes": "GOST-heritage 10(6)/0.4 kV networks; continental extremes from −40 °C winters to +45 °C summers — cold-start oil viscosity matters as much as summer rise."
-},
-{
-"n": "Laos",
-"fl": "🇱🇦",
-"f": 50,
-"mv": [
-22,
-33
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 28,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National utility specs (IEC-based)",
-"vec": "Dyn11",
-"pol": "tropical coastal",
-"corr": "C5-M",
-"notes": "Permanent tropical humidity and salt air: sealed tanks, surface protection and creepage govern life more than peak ambient."
-},
-{
-"n": "Latvia",
-"fl": "🇱🇻",
-"f": 50,
-"mv": [
-20,
-10
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 18,
-"rise": "60 / 65 K (IEC)",
-"regime": "eu",
-"regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
-"vec": "Dyn11 / Dyn5",
-"pol": "normal",
-"corr": "C3",
-"notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
-},
-{
-"n": "Lebanon",
-"fl": "🇱🇧",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 400,
-"ambMax": 48,
-"ambAvg": 30,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National IEC-based specifications",
-"vec": "Dyn11",
-"pol": "desert",
-"corr": "C4 / C5-M coastal",
-"notes": "Hot-climate IEC practice: cooling margin, dust management and reduced rises govern. Verify national type-approval requirements."
-},
-{
-"n": "Lesotho",
-"fl": "🇱🇸",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 415,
-"ambMax": 42,
-"ambAvg": 26,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (British-heritage)",
-"vec": "Dyn11",
-"pol": "tropical",
-"corr": "C4",
-"notes": "British-heritage 11/33 kV practice; loading cycles and network voltage excursions argue for conservative design margins."
-},
-{
-"n": "Liberia",
-"fl": "🇱🇷",
-"f": 60,
-"mv": [
-11,
-33
-],
-"lv": 415,
-"ambMax": 42,
-"ambAvg": 26,
-"rise": "65 K avg over 30 °C (IEEE)",
-"regime": "util",
-"regName": "National / utility IEC-based specs (British-heritage)",
-"vec": "Dyn1 (ANSI 30° lag)",
-"pol": "tropical",
-"corr": "C4",
-"notes": "US-legacy 60 Hz grid — the West African exception; ANSI practice."
-},
-{
-"n": "Libya",
-"fl": "🇱🇾",
-"f": 50,
-"mv": [
-20,
-30
-],
-"lv": 400,
-"ambMax": 50,
-"ambAvg": 27,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National IEC-based specifications (French-heritage network)",
-"vec": "Dyn11",
-"pol": "desert / coastal",
-"corr": "C4 / C5-M coastal",
-"notes": "French-heritage 20/30 kV practice with Saharan ambients inland and marine atmosphere on the coast."
-},
-{
-"n": "Liechtenstein",
-"fl": "🇱🇮",
-"f": 50,
-"mv": [
-20,
-10
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 18,
-"rise": "60 / 65 K (IEC)",
-"regime": "eu",
-"regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
-"vec": "Dyn11 / Dyn5",
-"pol": "normal",
-"corr": "C3",
-"notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
-},
-{
-"n": "Lithuania",
-"fl": "🇱🇹",
-"f": 50,
-"mv": [
-20,
-10
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 18,
-"rise": "60 / 65 K (IEC)",
-"regime": "eu",
-"regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
-"vec": "Dyn11 / Dyn5",
-"pol": "normal",
-"corr": "C3",
-"notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
-},
-{
-"n": "Luxembourg",
-"fl": "🇱🇺",
-"f": 50,
-"mv": [
-20,
-10
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 18,
-"rise": "60 / 65 K (IEC)",
-"regime": "eu",
-"regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
-"vec": "Dyn11 / Dyn5",
-"pol": "normal",
-"corr": "C3",
-"notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
-},
-{
-"n": "Madagascar",
-"fl": "🇲🇬",
-"f": 50,
-"mv": [
-20,
-30
-],
-"lv": 400,
-"ambMax": 42,
-"ambAvg": 27,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (French-heritage)",
-"vec": "Dyn11",
-"pol": "tropical humid",
-"corr": "C4 / C5-M coastal",
-"notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
-},
-{
-"n": "Malawi",
-"fl": "🇲🇼",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 415,
-"ambMax": 42,
-"ambAvg": 26,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (British-heritage)",
-"vec": "Dyn11",
-"pol": "tropical",
-"corr": "C4",
-"notes": "British-heritage 11/33 kV practice; loading cycles and network voltage excursions argue for conservative design margins."
-},
-{
-"n": "Malaysia",
-"fl": "🇲🇾",
-"f": 50,
-"mv": [
-22,
-33
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 28,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National utility specs (IEC-based)",
-"vec": "Dyn11",
-"pol": "tropical coastal",
-"corr": "C5-M",
-"notes": "Permanent tropical humidity and salt air: sealed tanks, surface protection and creepage govern life more than peak ambient."
-},
-{
-"n": "Maldives",
-"fl": "🇲🇻",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 400,
-"ambMax": 48,
-"ambAvg": 30,
-"rise": "50 / 55 K",
-"regime": "util",
-"regName": "National IEC-based specs",
-"vec": "Dyn11",
-"pol": "tropical / monsoon",
-"corr": "C4 / C5-M coastal",
-"notes": "Subcontinent practice: 11/33 kV, monsoon humidity swings, heavy summer ambients — reduced rises common."
-},
-{
-"n": "Mali",
-"fl": "🇲🇱",
-"f": 50,
-"mv": [
-20,
-30
-],
-"lv": 400,
-"ambMax": 47,
-"ambAvg": 32,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs",
-"vec": "Dyn11",
-"pol": "desert dust (harmattan)",
-"corr": "C4",
-"notes": "Sahel duty: 47 °C+ ambients with harmattan dust — cooling-surface margin and cleaning cycles govern life."
-},
-{
-"n": "Malta",
-"fl": "🇲🇹",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 15,
-"rise": "60 / 65 K (IEC)",
-"regime": "eu",
-"regName": "Ecodesign Tier 2 (UK SI / EU) + network specs",
-"vec": "Dyn11",
-"pol": "normal / coastal",
-"corr": "C3/C4",
-"notes": "British-practice 11/33 kV network under Ecodesign-level loss caps."
-},
-{
-"n": "Marshall Islands",
-"fl": "🇲🇭",
-"f": 60,
-"mv": [
-13.8
-],
-"lv": 480,
-"ambMax": 36,
-"ambAvg": 28,
-"rise": "65 K avg over 30 °C (IEEE)",
-"regime": "util",
-"regName": "US-practice utility specs",
-"vec": "Dyn1 (ANSI 30° lag)",
-"pol": "marine island",
-"corr": "C5-M",
-"notes": "US-practice 60 Hz island grid; marine atmosphere and logistics govern."
-},
-{
-"n": "Mauritania",
-"fl": "🇲🇷",
-"f": 50,
-"mv": [
-20,
-30
-],
-"lv": 400,
-"ambMax": 47,
-"ambAvg": 32,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs",
-"vec": "Dyn11",
-"pol": "desert dust (harmattan)",
-"corr": "C4",
-"notes": "Sahel duty: 47 °C+ ambients with harmattan dust — cooling-surface margin and cleaning cycles govern life."
-},
-{
-"n": "Mauritius",
-"fl": "🇲🇺",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 415,
-"ambMax": 42,
-"ambAvg": 26,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (British-heritage)",
-"vec": "Dyn11",
-"pol": "tropical",
-"corr": "C4",
-"notes": "British-heritage 11/33 kV practice; loading cycles and network voltage excursions argue for conservative design margins."
-},
-{
-"n": "Mexico",
-"fl": "🇲🇽",
-"f": 60,
-"mv": [
-13.8,
-23,
-34.5
-],
-"lv": 220,
-"ambMax": 40,
-"ambAvg": 27,
-"rise": "65 K avg over 30 °C (IEEE)",
-"regime": "doe",
-"regName": "NOM-002-SEDE efficiency / CFE specs",
-"vec": "Dyn1 (ANSI 30° lag)",
-"pol": "tropical",
-"corr": "C4",
-"notes": "NOM efficiency rules with CFE specifications; 60 Hz ANSI practice throughout."
-},
-{
-"n": "Micronesia",
-"fl": "🇫🇲",
-"f": 60,
-"mv": [
-13.8
-],
-"lv": 480,
-"ambMax": 36,
-"ambAvg": 28,
-"rise": "65 K avg over 30 °C (IEEE)",
-"regime": "util",
-"regName": "US-practice utility specs",
-"vec": "Dyn1 (ANSI 30° lag)",
-"pol": "marine island",
-"corr": "C5-M",
-"notes": "US-practice 60 Hz island grid; marine atmosphere and logistics govern."
-},
-{
-"n": "Moldova",
-"fl": "🇲🇩",
-"f": 50,
-"mv": [
-10,
-35,
-20
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 16,
-"rise": "60 / 65 K (IEC)",
-"regime": "util",
-"regName": "National IEC-based specifications",
-"vec": "Dyn11 / Yzn",
-"pol": "normal",
-"corr": "C3",
-"notes": "IEC-based national practice on 10/20/35 kV networks; verify the utility loss schedule before tendering."
-},
-{
-"n": "Monaco",
-"fl": "🇲🇨",
-"f": 50,
-"mv": [
-20,
-10
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 18,
-"rise": "60 / 65 K (IEC)",
-"regime": "eu",
-"regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
-"vec": "Dyn11 / Dyn5",
-"pol": "normal",
-"corr": "C3",
-"notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
-},
-{
-"n": "Mongolia",
-"fl": "🇲🇳",
-"f": 50,
-"mv": [
-10,
-6,
-35
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 15,
-"rise": "60 / 65 K",
-"regime": "util",
-"regName": "GOST-heritage / IEC-based national specs",
-"vec": "Dyn11 / Yzn",
-"pol": "continental",
-"corr": "C3/C4",
-"notes": "GOST-heritage network with the world's widest temperature span (−45…+40 °C); cold-start behaviour governs."
-},
-{
-"n": "Montenegro",
-"fl": "🇲🇪",
-"f": 50,
-"mv": [
-10,
-35,
-20
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 16,
-"rise": "60 / 65 K (IEC)",
-"regime": "util",
-"regName": "National IEC-based specifications",
-"vec": "Dyn11 / Yzn",
-"pol": "normal",
-"corr": "C3",
-"notes": "IEC-based national practice on 10/20/35 kV networks; verify the utility loss schedule before tendering."
-},
-{
-"n": "Morocco",
-"fl": "🇲🇦",
-"f": 50,
-"mv": [
-20,
-30
-],
-"lv": 400,
-"ambMax": 47,
-"ambAvg": 27,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National IEC-based specifications (French-heritage network)",
-"vec": "Dyn11",
-"pol": "desert / coastal",
-"corr": "C4 / C5-M coastal",
-"notes": "French-heritage 20/30 kV practice with Saharan ambients inland and marine atmosphere on the coast."
-},
-{
-"n": "Mozambique",
-"fl": "🇲🇿",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 415,
-"ambMax": 42,
-"ambAvg": 26,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (British-heritage)",
-"vec": "Dyn11",
-"pol": "tropical",
-"corr": "C4",
-"notes": "British-heritage 11/33 kV practice; loading cycles and network voltage excursions argue for conservative design margins."
-},
-{
-"n": "Myanmar",
-"fl": "🇲🇲",
-"f": 50,
-"mv": [
-22,
-33
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 28,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National utility specs (IEC-based)",
-"vec": "Dyn11",
-"pol": "tropical coastal",
-"corr": "C5-M",
-"notes": "Permanent tropical humidity and salt air: sealed tanks, surface protection and creepage govern life more than peak ambient."
-},
-{
-"n": "Namibia",
-"fl": "🇳🇦",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 415,
-"ambMax": 42,
-"ambAvg": 26,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (British-heritage)",
-"vec": "Dyn11",
-"pol": "tropical",
-"corr": "C4",
-"notes": "British-heritage 11/33 kV practice; loading cycles and network voltage excursions argue for conservative design margins."
-},
-{
-"n": "Nauru",
-"fl": "🇳🇷",
-"f": 50,
-"mv": [
-11
-],
-"lv": 415,
-"ambMax": 38,
-"ambAvg": 28,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "Utility specs (IEC / AS-NZS influenced)",
-"vec": "Dyn11",
-"pol": "marine island",
-"corr": "C5-M",
-"notes": "Pacific island grid: salt atmosphere (C5-M), shipping logistics and spares strategy dominate lifecycle cost."
-},
-{
-"n": "Nepal",
-"fl": "🇳🇵",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 400,
-"ambMax": 48,
-"ambAvg": 30,
-"rise": "50 / 55 K",
-"regime": "util",
-"regName": "National IEC-based specs",
-"vec": "Dyn11",
-"pol": "tropical / monsoon",
-"corr": "C4 / C5-M coastal",
-"notes": "Subcontinent practice: 11/33 kV, monsoon humidity swings, heavy summer ambients — reduced rises common."
-},
-{
-"n": "Netherlands",
-"fl": "🇳🇱",
-"f": 50,
-"mv": [
-20,
-10
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 18,
-"rise": "60 / 65 K (IEC)",
-"regime": "eu",
-"regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
-"vec": "Dyn11 / Dyn5",
-"pol": "normal",
-"corr": "C3",
-"notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
-},
-{
-"n": "New Zealand",
-"fl": "🇳🇿",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 400,
-"ambMax": 38,
-"ambAvg": 15,
-"rise": "60 / 65 K (IEC)",
-"regime": "aus",
-"regName": "MEPS AS/NZS 2374 / network co. specs",
-"vec": "Dyn11",
-"pol": "normal / coastal",
-"corr": "C3/C4",
-"notes": "MEPS efficiency floors; 11/33 kV British-heritage practice; seismic qualification for substation plant."
-},
-{
-"n": "Nicaragua",
-"fl": "🇳🇮",
-"f": 60,
-"mv": [
-13.8,
-34.5
-],
-"lv": 220,
-"ambMax": 40,
-"ambAvg": 27,
-"rise": "65 K avg over 30 °C (IEEE)",
-"regime": "util",
-"regName": "ANSI/IEEE-based utility specs",
-"vec": "Dyn1 (ANSI 30° lag)",
-"pol": "tropical",
-"corr": "C4",
-"notes": "ANSI/IEEE practice: 60 Hz, 30° lag convention, %Z on self-cooled base — see course §12.6 before mixing with IEC fleets."
-},
-{
-"n": "Niger",
-"fl": "🇳🇪",
-"f": 50,
-"mv": [
-20,
-30
-],
-"lv": 400,
-"ambMax": 47,
-"ambAvg": 32,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs",
-"vec": "Dyn11",
-"pol": "desert dust (harmattan)",
-"corr": "C4",
-"notes": "Sahel duty: 47 °C+ ambients with harmattan dust — cooling-surface margin and cleaning cycles govern life."
-},
-{
-"n": "Nigeria",
-"fl": "🇳🇬",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 415,
-"ambMax": 45,
-"ambAvg": 28,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "NEMSA / DisCo specs (IEC-based)",
-"vec": "Dyn11",
-"pol": "tropical / harmattan dust",
-"corr": "C4/C5-M coastal",
-"notes": "Severe network conditions: voltage swings, harmonics and loading cycles argue for conservative J and robust OLTC/DETC margins."
-},
-{
-"n": "North Macedonia",
-"fl": "🇲🇰",
-"f": 50,
-"mv": [
-10,
-35,
-20
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 16,
-"rise": "60 / 65 K (IEC)",
-"regime": "util",
-"regName": "National IEC-based specifications",
-"vec": "Dyn11 / Yzn",
-"pol": "normal",
-"corr": "C3",
-"notes": "IEC-based national practice on 10/20/35 kV networks; verify the utility loss schedule before tendering."
-},
-{
-"n": "Norway",
-"fl": "🇳🇴",
-"f": 50,
-"mv": [
-20,
-10
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 18,
-"rise": "60 / 65 K (IEC)",
-"regime": "eu",
-"regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
-"vec": "Dyn11 / Dyn5",
-"pol": "normal",
-"corr": "C3",
-"notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
-},
-{
-"n": "Oman",
-"fl": "🇴🇲",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 415,
-"ambMax": 50,
-"ambAvg": 34,
-"rise": "50 / 55 K",
-"regime": "gcc",
-"regName": "OETC / MEDC specs",
-"vec": "Dyn11",
-"pol": "desert + coastal",
-"corr": "C5-M",
-"notes": "Coastal humidity plus desert dust — radiator/fin cleaning cycles are short."
-},
-{
-"n": "Pakistan",
-"fl": "🇵🇰",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 400,
-"ambMax": 50,
-"ambAvg": 33,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "DISCO / WAPDA specs (IEC-based)",
-"vec": "Dyn11",
-"pol": "mixed",
-"corr": "C4",
-"notes": "IEC-aligned utility specs; severe loading cycles and harmonics in urban feeders."
-},
-{
-"n": "Palau",
-"fl": "🇵🇼",
-"f": 60,
-"mv": [
-13.8
-],
-"lv": 480,
-"ambMax": 36,
-"ambAvg": 28,
-"rise": "65 K avg over 30 °C (IEEE)",
-"regime": "util",
-"regName": "US-practice utility specs",
-"vec": "Dyn1 (ANSI 30° lag)",
-"pol": "marine island",
-"corr": "C5-M",
-"notes": "US-practice 60 Hz island grid; marine atmosphere and logistics govern."
-},
-{
-"n": "Palestine",
-"fl": "🇵🇸",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 400,
-"ambMax": 48,
-"ambAvg": 30,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National IEC-based specifications",
-"vec": "Dyn11",
-"pol": "desert",
-"corr": "C4 / C5-M coastal",
-"notes": "Hot-climate IEC practice: cooling margin, dust management and reduced rises govern. Verify national type-approval requirements."
-},
-{
-"n": "Panama",
-"fl": "🇵🇦",
-"f": 60,
-"mv": [
-13.8,
-34.5
-],
-"lv": 220,
-"ambMax": 40,
-"ambAvg": 27,
-"rise": "65 K avg over 30 °C (IEEE)",
-"regime": "util",
-"regName": "ANSI/IEEE-based utility specs",
-"vec": "Dyn1 (ANSI 30° lag)",
-"pol": "tropical",
-"corr": "C4",
-"notes": "ANSI/IEEE practice: 60 Hz, 30° lag convention, %Z on self-cooled base — see course §12.6 before mixing with IEC fleets."
-},
-{
-"n": "Papua New Guinea",
-"fl": "🇵🇬",
-"f": 50,
-"mv": [
-11
-],
-"lv": 415,
-"ambMax": 38,
-"ambAvg": 28,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "Utility specs (IEC / AS-NZS influenced)",
-"vec": "Dyn11",
-"pol": "marine island",
-"corr": "C5-M",
-"notes": "Pacific island grid: salt atmosphere (C5-M), shipping logistics and spares strategy dominate lifecycle cost."
-},
-{
-"n": "Paraguay",
-"fl": "🇵🇾",
-"f": 50,
-"mv": [
-13.2,
-33
-],
-"lv": 400,
-"ambMax": 42,
-"ambAvg": 20,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National specs (IEC-derived)",
-"vec": "Dyn11 / Dyn1",
-"pol": "mixed",
-"corr": "C3/C4",
-"notes": "Southern-cone 50 Hz practice with IEC-derived national standards."
-},
-{
-"n": "Peru",
-"fl": "🇵🇪",
-"f": 60,
-"mv": [
-13.8,
-34.5
-],
-"lv": 220,
-"ambMax": 40,
-"ambAvg": 27,
-"rise": "65 K avg over 30 °C (IEEE)",
-"regime": "util",
-"regName": "ANSI/IEEE-based utility specs",
-"vec": "Dyn1 (ANSI 30° lag)",
-"pol": "tropical",
-"corr": "C4",
-"notes": "ANSI/IEEE practice: 60 Hz, 30° lag convention, %Z on self-cooled base — see course §12.6 before mixing with IEC fleets."
-},
-{
-"n": "Philippines",
-"fl": "🇵🇭",
-"f": 60,
-"mv": [
-13.8,
-34.5
-],
-"lv": 220,
-"ambMax": 40,
-"ambAvg": 27,
-"rise": "65 K avg over 30 °C (IEEE)",
-"regime": "util",
-"regName": "PNS / ERC, Meralco specs (ANSI-influenced)",
-"vec": "Dyn1 (ANSI 30° lag)",
-"pol": "tropical",
-"corr": "C4",
-"notes": "60 Hz ANSI-influenced practice; typhoon hardening and island logistics shape designs."
-},
-{
-"n": "Poland",
-"fl": "🇵🇱",
-"f": 50,
-"mv": [
-20,
-10
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 18,
-"rise": "60 / 65 K (IEC)",
-"regime": "eu",
-"regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
-"vec": "Dyn11 / Dyn5",
-"pol": "normal",
-"corr": "C3",
-"notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
-},
-{
-"n": "Portugal",
-"fl": "🇵🇹",
-"f": 50,
-"mv": [
-20,
-15
-],
-"lv": 400,
-"ambMax": 44,
-"ambAvg": 24,
-"rise": "60 / 65 K (IEC)",
-"regime": "eu",
-"regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
-"vec": "Dyn11",
-"pol": "coastal Mediterranean",
-"corr": "C3 / C4 coastal",
-"notes": "EU Tier 2 applies; warm-summer derating and coastal creepage on the littoral. Regional values — confirm DSO specs."
-},
-{
-"n": "Qatar",
-"fl": "🇶🇦",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 415,
-"ambMax": 50,
-"ambAvg": 35,
-"rise": "50 / 55 K",
-"regime": "gcc",
-"regName": "KAHRAMAA specifications",
-"vec": "Dyn11",
-"pol": "desert + coastal",
-"corr": "C5-M",
-"notes": "KAHRAMAA specifies reduced rises and C5-M coastal protection throughout."
-},
-{
-"n": "Romania",
-"fl": "🇷🇴",
-"f": 50,
-"mv": [
-20,
-10
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 18,
-"rise": "60 / 65 K (IEC)",
-"regime": "eu",
-"regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
-"vec": "Dyn11 / Dyn5",
-"pol": "normal",
-"corr": "C3",
-"notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
-},
-{
-"n": "Russia",
-"fl": "🇷🇺",
-"f": 50,
-"mv": [
-10,
-6,
-35
-],
-"lv": 400,
-"ambMax": 42,
-"ambAvg": 15,
-"rise": "60 / 65 K",
-"regime": "util",
-"regName": "GOST-heritage / IEC-based national specs",
-"vec": "Dyn11 / Yzn",
-"pol": "continental",
-"corr": "C3/C4",
-"notes": "GOST 10/6 kV practice; −40 °C cold starts set oil and conservator design in Siberia while southern summers still reach +40 °C."
-},
-{
-"n": "Rwanda",
-"fl": "🇷🇼",
-"f": 50,
-"mv": [
-20,
-30
-],
-"lv": 400,
-"ambMax": 42,
-"ambAvg": 27,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (French-heritage)",
-"vec": "Dyn11",
-"pol": "tropical humid",
-"corr": "C4 / C5-M coastal",
-"notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
-},
-{
-"n": "Saint Kitts and Nevis",
-"fl": "🇰🇳",
-"f": 50,
-"mv": [
-11
-],
-"lv": 400,
-"ambMax": 38,
-"ambAvg": 28,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "Utility specs (British-heritage, IEC)",
-"vec": "Dyn11",
-"pol": "marine island",
-"corr": "C5-M",
-"notes": "Island grid: salt atmosphere, hurricane hardening and spares logistics dominate lifecycle cost."
-},
-{
-"n": "Saint Lucia",
-"fl": "🇱🇨",
-"f": 50,
-"mv": [
-11
-],
-"lv": 400,
-"ambMax": 38,
-"ambAvg": 28,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "Utility specs (British-heritage, IEC)",
-"vec": "Dyn11",
-"pol": "marine island",
-"corr": "C5-M",
-"notes": "Island grid: salt atmosphere, hurricane hardening and spares logistics dominate lifecycle cost."
-},
-{
-"n": "Saint Vincent and the Grenadines",
-"fl": "🇻🇨",
-"f": 50,
-"mv": [
-11
-],
-"lv": 400,
-"ambMax": 38,
-"ambAvg": 28,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "Utility specs (British-heritage, IEC)",
-"vec": "Dyn11",
-"pol": "marine island",
-"corr": "C5-M",
-"notes": "Island grid: salt atmosphere, hurricane hardening and spares logistics dominate lifecycle cost."
-},
-{
-"n": "Samoa",
-"fl": "🇼🇸",
-"f": 50,
-"mv": [
-11
-],
-"lv": 415,
-"ambMax": 38,
-"ambAvg": 28,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "Utility specs (IEC / AS-NZS influenced)",
-"vec": "Dyn11",
-"pol": "marine island",
-"corr": "C5-M",
-"notes": "Pacific island grid: salt atmosphere (C5-M), shipping logistics and spares strategy dominate lifecycle cost."
-},
-{
-"n": "San Marino",
-"fl": "🇸🇲",
-"f": 50,
-"mv": [
-20,
-10
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 18,
-"rise": "60 / 65 K (IEC)",
-"regime": "eu",
-"regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
-"vec": "Dyn11 / Dyn5",
-"pol": "normal",
-"corr": "C3",
-"notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
-},
-{
-"n": "Sao Tome and Principe",
-"fl": "🇸🇹",
-"f": 50,
-"mv": [
-20,
-30
-],
-"lv": 400,
-"ambMax": 42,
-"ambAvg": 27,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (French-heritage)",
-"vec": "Dyn11",
-"pol": "tropical humid",
-"corr": "C4 / C5-M coastal",
-"notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
-},
-{
-"n": "Saudi Arabia",
-"fl": "🇸🇦",
-"f": 60,
-"mv": [
-13.8,
-33
-],
-"lv": 400,
-"ambMax": 52,
-"ambAvg": 36,
-"rise": "55 / 60 K (SEC)",
-"regime": "gcc",
-"regName": "SASO / SEC specifications",
-"vec": "Dyn11",
-"pol": "desert",
-"corr": "C5-M (coastal) / C4 (inland)",
-"notes": "The GCC's 60 Hz grid: cores are ~15% smaller for the same volts-per-turn, but specific core loss rises ~30% — the loss balance shifts. SEC 13.8 kV distribution standard."
-},
-{
-"n": "Senegal",
-"fl": "🇸🇳",
-"f": 50,
-"mv": [
-20,
-30
-],
-"lv": 400,
-"ambMax": 42,
-"ambAvg": 27,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (French-heritage)",
-"vec": "Dyn11",
-"pol": "tropical humid",
-"corr": "C4 / C5-M coastal",
-"notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
-},
-{
-"n": "Serbia",
-"fl": "🇷🇸",
-"f": 50,
-"mv": [
-10,
-35,
-20
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 16,
-"rise": "60 / 65 K (IEC)",
-"regime": "util",
-"regName": "National IEC-based specifications",
-"vec": "Dyn11 / Yzn",
-"pol": "normal",
-"corr": "C3",
-"notes": "IEC-based national practice on 10/20/35 kV networks; verify the utility loss schedule before tendering."
-},
-{
-"n": "Seychelles",
-"fl": "🇸🇨",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 415,
-"ambMax": 42,
-"ambAvg": 26,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (British-heritage)",
-"vec": "Dyn11",
-"pol": "tropical",
-"corr": "C4",
-"notes": "British-heritage 11/33 kV practice; loading cycles and network voltage excursions argue for conservative design margins."
-},
-{
-"n": "Sierra Leone",
-"fl": "🇸🇱",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 415,
-"ambMax": 42,
-"ambAvg": 26,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (British-heritage)",
-"vec": "Dyn11",
-"pol": "tropical",
-"corr": "C4",
-"notes": "British-heritage 11/33 kV practice; loading cycles and network voltage excursions argue for conservative design margins."
-},
-{
-"n": "Singapore",
-"fl": "🇸🇬",
-"f": 50,
-"mv": [
-22,
-6.6
-],
-"lv": 400,
-"ambMax": 36,
-"ambAvg": 28,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "SP Group specs (IEC)",
-"vec": "Dyn11",
-"pol": "tropical coastal",
-"corr": "C5-M",
-"notes": "Dense urban 22 kV cable network; compact substations favour cast resin and low-noise designs."
-},
-{
-"n": "Slovakia",
-"fl": "🇸🇰",
-"f": 50,
-"mv": [
-20,
-10
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 18,
-"rise": "60 / 65 K (IEC)",
-"regime": "eu",
-"regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
-"vec": "Dyn11 / Dyn5",
-"pol": "normal",
-"corr": "C3",
-"notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
-},
-{
-"n": "Slovenia",
-"fl": "🇸🇮",
-"f": 50,
-"mv": [
-20,
-10
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 18,
-"rise": "60 / 65 K (IEC)",
-"regime": "eu",
-"regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
-"vec": "Dyn11 / Dyn5",
-"pol": "normal",
-"corr": "C3",
-"notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
-},
-{
-"n": "Solomon Islands",
-"fl": "🇸🇧",
-"f": 50,
-"mv": [
-11
-],
-"lv": 415,
-"ambMax": 38,
-"ambAvg": 28,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "Utility specs (IEC / AS-NZS influenced)",
-"vec": "Dyn11",
-"pol": "marine island",
-"corr": "C5-M",
-"notes": "Pacific island grid: salt atmosphere (C5-M), shipping logistics and spares strategy dominate lifecycle cost."
-},
-{
-"n": "Somalia",
-"fl": "🇸🇴",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 400,
-"ambMax": 48,
-"ambAvg": 30,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National IEC-based specifications",
-"vec": "Dyn11",
-"pol": "desert",
-"corr": "C4 / C5-M coastal",
-"notes": "Hot-climate IEC practice: cooling margin, dust management and reduced rises govern. Verify national type-approval requirements."
-},
-{
-"n": "South Africa",
-"fl": "🇿🇦",
-"f": 50,
-"mv": [
-11,
-22,
-33
-],
-"lv": 400,
-"ambMax": 42,
-"ambAvg": 23,
-"rise": "55 / 60 K (SANS)",
-"regime": "util",
-"regName": "SANS 780 / Eskom specifications",
-"vec": "Dyn11",
-"pol": "mixed; highveld altitude",
-"corr": "C3/C4",
-"notes": "Altitude derating matters: Johannesburg sits at ~1750 m — external insulation and cooling both derate above 1000 m (§8.5 logic applies to oil units too)."
-},
-{
-"n": "South Sudan",
-"fl": "🇸🇸",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 415,
-"ambMax": 42,
-"ambAvg": 26,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (British-heritage)",
-"vec": "Dyn11",
-"pol": "tropical",
-"corr": "C4",
-"notes": "British-heritage 11/33 kV practice; loading cycles and network voltage excursions argue for conservative design margins."
-},
-{
-"n": "Spain",
-"fl": "🇪🇸",
-"f": 50,
-"mv": [
-20,
-15
-],
-"lv": 400,
-"ambMax": 44,
-"ambAvg": 24,
-"rise": "60 / 65 K (IEC)",
-"regime": "eu",
-"regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
-"vec": "Dyn11",
-"pol": "coastal Mediterranean",
-"corr": "C3 / C4 coastal",
-"notes": "EU Tier 2 applies; warm-summer derating and coastal creepage on the littoral. Regional values — confirm DSO specs."
-},
-{
-"n": "Sri Lanka",
-"fl": "🇱🇰",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 400,
-"ambMax": 48,
-"ambAvg": 30,
-"rise": "50 / 55 K",
-"regime": "util",
-"regName": "National IEC-based specs",
-"vec": "Dyn11",
-"pol": "tropical / monsoon",
-"corr": "C4 / C5-M coastal",
-"notes": "Subcontinent practice: 11/33 kV, monsoon humidity swings, heavy summer ambients — reduced rises common."
-},
-{
-"n": "Sudan",
-"fl": "🇸🇩",
-"f": 50,
-"mv": [
-20,
-30
-],
-"lv": 400,
-"ambMax": 47,
-"ambAvg": 32,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs",
-"vec": "Dyn11",
-"pol": "desert dust (harmattan)",
-"corr": "C4",
-"notes": "Sahel duty: 47 °C+ ambients with harmattan dust — cooling-surface margin and cleaning cycles govern life."
-},
-{
-"n": "Suriname",
-"fl": "🇸🇷",
-"f": 60,
-"mv": [
-13.8
-],
-"lv": 220,
-"ambMax": 38,
-"ambAvg": 28,
-"rise": "65 K avg over 30 °C (IEEE)",
-"regime": "util",
-"regName": "ANSI/IEEE-based utility specs",
-"vec": "Dyn1 (ANSI 30° lag)",
-"pol": "marine island",
-"corr": "C5-M",
-"notes": "60 Hz island grid, ANSI practice: salt atmosphere, hurricane hardening and spares logistics dominate."
-},
-{
-"n": "Sweden",
-"fl": "🇸🇪",
-"f": 50,
-"mv": [
-20,
-10
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 18,
-"rise": "60 / 65 K (IEC)",
-"regime": "eu",
-"regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
-"vec": "Dyn11 / Dyn5",
-"pol": "normal",
-"corr": "C3",
-"notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
-},
-{
-"n": "Switzerland",
-"fl": "🇨🇭",
-"f": 50,
-"mv": [
-20,
-10
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 18,
-"rise": "60 / 65 K (IEC)",
-"regime": "eu",
-"regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
-"vec": "Dyn11 / Dyn5",
-"pol": "normal",
-"corr": "C3",
-"notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
-},
-{
-"n": "Syria",
-"fl": "🇸🇾",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 400,
-"ambMax": 48,
-"ambAvg": 30,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National IEC-based specifications",
-"vec": "Dyn11",
-"pol": "desert",
-"corr": "C4 / C5-M coastal",
-"notes": "Hot-climate IEC practice: cooling margin, dust management and reduced rises govern. Verify national type-approval requirements."
-},
-{
-"n": "Taiwan",
-"fl": "🇹🇼",
-"f": 60,
-"mv": [
-22.8,
-11.4
-],
-"lv": 380,
-"ambMax": 40,
-"ambAvg": 28,
-"rise": "65 K avg over 30 °C",
-"regime": "aus",
-"regName": "CNS standards / MEPS (Taipower)",
-"vec": "Dyn1",
-"pol": "tropical coastal",
-"corr": "C5-M",
-"notes": "60 Hz Taipower grid (22.8/11.4 kV); MEPS efficiency floors; typhoon and seismic siting requirements."
-},
-{
-"n": "Tajikistan",
-"fl": "🇹🇯",
-"f": 50,
-"mv": [
-10,
-6,
-35
-],
-"lv": 400,
-"ambMax": 45,
-"ambAvg": 15,
-"rise": "60 / 65 K",
-"regime": "util",
-"regName": "GOST-heritage / IEC-based national specs",
-"vec": "Dyn11 / Yzn",
-"pol": "continental",
-"corr": "C3/C4",
-"notes": "GOST-heritage 10(6)/0.4 kV networks; continental extremes from −40 °C winters to +45 °C summers — cold-start oil viscosity matters as much as summer rise."
-},
-{
-"n": "Tanzania",
-"fl": "🇹🇿",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 415,
-"ambMax": 42,
-"ambAvg": 26,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (British-heritage)",
-"vec": "Dyn11",
-"pol": "tropical",
-"corr": "C4",
-"notes": "British-heritage 11/33 kV practice; loading cycles and network voltage excursions argue for conservative design margins."
-},
-{
-"n": "Thailand",
-"fl": "🇹🇭",
-"f": 50,
-"mv": [
-22,
-33
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 28,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "PEA/MEA specs (IEC-based)",
-"vec": "Dyn11",
-"pol": "tropical coastal",
-"corr": "C5-M",
-"notes": "Permanent tropical humidity and salt air: sealed tanks, surface protection and creepage govern life more than peak ambient."
-},
-{
-"n": "Timor-Leste",
-"fl": "🇹🇱",
-"f": 50,
-"mv": [
-22,
-33
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 28,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National utility specs (IEC-based)",
-"vec": "Dyn11",
-"pol": "tropical coastal",
-"corr": "C5-M",
-"notes": "Permanent tropical humidity and salt air: sealed tanks, surface protection and creepage govern life more than peak ambient."
-},
-{
-"n": "Togo",
-"fl": "🇹🇬",
-"f": 50,
-"mv": [
-20,
-30
-],
-"lv": 400,
-"ambMax": 42,
-"ambAvg": 27,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (French-heritage)",
-"vec": "Dyn11",
-"pol": "tropical humid",
-"corr": "C4 / C5-M coastal",
-"notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
-},
-{
-"n": "Tonga",
-"fl": "🇹🇴",
-"f": 50,
-"mv": [
-11
-],
-"lv": 415,
-"ambMax": 38,
-"ambAvg": 28,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "Utility specs (IEC / AS-NZS influenced)",
-"vec": "Dyn11",
-"pol": "marine island",
-"corr": "C5-M",
-"notes": "Pacific island grid: salt atmosphere (C5-M), shipping logistics and spares strategy dominate lifecycle cost."
-},
-{
-"n": "Trinidad and Tobago",
-"fl": "🇹🇹",
-"f": 60,
-"mv": [
-13.8
-],
-"lv": 220,
-"ambMax": 38,
-"ambAvg": 28,
-"rise": "65 K avg over 30 °C (IEEE)",
-"regime": "util",
-"regName": "ANSI/IEEE-based utility specs",
-"vec": "Dyn1 (ANSI 30° lag)",
-"pol": "marine island",
-"corr": "C5-M",
-"notes": "60 Hz island grid, ANSI practice: salt atmosphere, hurricane hardening and spares logistics dominate."
-},
-{
-"n": "Tunisia",
-"fl": "🇹🇳",
-"f": 50,
-"mv": [
-20,
-30
-],
-"lv": 400,
-"ambMax": 47,
-"ambAvg": 27,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National IEC-based specifications (French-heritage network)",
-"vec": "Dyn11",
-"pol": "desert / coastal",
-"corr": "C4 / C5-M coastal",
-"notes": "French-heritage 20/30 kV practice with Saharan ambients inland and marine atmosphere on the coast."
-},
-{
-"n": "Turkey",
-"fl": "🇹🇷",
-"f": 50,
-"mv": [
-34.5,
-11
-],
-"lv": 400,
-"ambMax": 45,
-"ambAvg": 25,
-"rise": "60 / 65 K",
-"regime": "eu",
-"regName": "EU Ecodesign Tier 2 (aligned) / TEDAŞ specs",
-"vec": "Dyn11",
-"pol": "mixed",
-"corr": "C3/C4",
-"notes": "TEDAŞ specs align with EU Ecodesign; 34.5 kV is the workhorse MV level — note the higher insulation class it demands."
-},
-{
-"n": "Turkmenistan",
-"fl": "🇹🇲",
-"f": 50,
-"mv": [
-10,
-6,
-35
-],
-"lv": 400,
-"ambMax": 45,
-"ambAvg": 15,
-"rise": "60 / 65 K",
-"regime": "util",
-"regName": "GOST-heritage / IEC-based national specs",
-"vec": "Dyn11 / Yzn",
-"pol": "continental",
-"corr": "C3/C4",
-"notes": "GOST-heritage 10(6)/0.4 kV networks; continental extremes from −40 °C winters to +45 °C summers — cold-start oil viscosity matters as much as summer rise."
-},
-{
-"n": "Tuvalu",
-"fl": "🇹🇻",
-"f": 50,
-"mv": [
-11
-],
-"lv": 415,
-"ambMax": 38,
-"ambAvg": 28,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "Utility specs (IEC / AS-NZS influenced)",
-"vec": "Dyn11",
-"pol": "marine island",
-"corr": "C5-M",
-"notes": "Pacific island grid: salt atmosphere (C5-M), shipping logistics and spares strategy dominate lifecycle cost."
-},
-{
-"n": "Uganda",
-"fl": "🇺🇬",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 415,
-"ambMax": 42,
-"ambAvg": 26,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (British-heritage)",
-"vec": "Dyn11",
-"pol": "tropical",
-"corr": "C4",
-"notes": "British-heritage 11/33 kV practice; loading cycles and network voltage excursions argue for conservative design margins."
-},
-{
-"n": "Ukraine",
-"fl": "🇺🇦",
-"f": 50,
-"mv": [
-10,
-35,
-20
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 16,
-"rise": "60 / 65 K (IEC)",
-"regime": "util",
-"regName": "National IEC-based specifications",
-"vec": "Dyn11 / Yzn",
-"pol": "normal",
-"corr": "C3",
-"notes": "IEC-based national practice on 10/20/35 kV networks; verify the utility loss schedule before tendering."
-},
-{
-"n": "United Arab Emirates",
-"fl": "🇦🇪",
-"f": 50,
-"mv": [
-11,
-22,
-33
-],
-"lv": 400,
-"ambMax": 50,
-"ambAvg": 35,
-"rise": "50 / 55 K (reduced)",
-"regime": "gcc",
-"regName": "GSO / ESMA + utility specs (DEWA, EWEC, SEWA)",
-"vec": "Dyn11",
-"pol": "desert + coastal",
-"corr": "C5-M",
-"notes": "Reduced rises (50/55 K) compensate the 50 °C summer ambient so insulation ages at normal rates. Hermetic corrugated tanks dominate distribution; DEWA/EWEC type-approval required."
-},
-{
-"n": "United Arab Emirates",
-"fl": "🇬🇧",
-"f": 50,
-"mv": [
-11,
-22,
-33
-],
-"lv": 400,
-"ambMax": 50,
-"ambAvg": 35,
-"rise": "50 / 55 K (reduced)",
-"regime": "gcc",
-"regName": "GSO / ESMA + utility specs (DEWA, EWEC, SEWA)",
-"vec": "Dyn11",
-"pol": "desert + coastal",
-"corr": "C5-M",
-"notes": "Reduced rises (50/55 K) compensate the 50 °C summer ambient so insulation ages at normal rates. Hermetic corrugated tanks dominate distribution; DEWA/EWEC type-approval required."
-},
-{
-"n": "United Arab Emirates",
-"fl": "🇺🇸",
-"f": 50,
-"mv": [
-11,
-22,
-33
-],
-"lv": 400,
-"ambMax": 50,
-"ambAvg": 35,
-"rise": "50 / 55 K (reduced)",
-"regime": "gcc",
-"regName": "GSO / ESMA + utility specs (DEWA, EWEC, SEWA)",
-"vec": "Dyn11",
-"pol": "desert + coastal",
-"corr": "C5-M",
-"notes": "Reduced rises (50/55 K) compensate the 50 °C summer ambient so insulation ages at normal rates. Hermetic corrugated tanks dominate distribution; DEWA/EWEC type-approval required."
-},
-{
-"n": "Uruguay",
-"fl": "🇺🇾",
-"f": 50,
-"mv": [
-13.2,
-33
-],
-"lv": 400,
-"ambMax": 42,
-"ambAvg": 20,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National specs (IEC-derived)",
-"vec": "Dyn11 / Dyn1",
-"pol": "mixed",
-"corr": "C3/C4",
-"notes": "Southern-cone 50 Hz practice with IEC-derived national standards."
-},
-{
-"n": "Uzbekistan",
-"fl": "🇺🇿",
-"f": 50,
-"mv": [
-10,
-6,
-35
-],
-"lv": 400,
-"ambMax": 45,
-"ambAvg": 15,
-"rise": "60 / 65 K",
-"regime": "util",
-"regName": "GOST-heritage / IEC-based national specs",
-"vec": "Dyn11 / Yzn",
-"pol": "continental",
-"corr": "C3/C4",
-"notes": "GOST-heritage 10(6)/0.4 kV networks; continental extremes from −40 °C winters to +45 °C summers — cold-start oil viscosity matters as much as summer rise."
-},
-{
-"n": "Vanuatu",
-"fl": "🇻🇺",
-"f": 50,
-"mv": [
-11
-],
-"lv": 415,
-"ambMax": 38,
-"ambAvg": 28,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "Utility specs (IEC / AS-NZS influenced)",
-"vec": "Dyn11",
-"pol": "marine island",
-"corr": "C5-M",
-"notes": "Pacific island grid: salt atmosphere (C5-M), shipping logistics and spares strategy dominate lifecycle cost."
-},
-{
-"n": "Venezuela",
-"fl": "🇻🇪",
-"f": 60,
-"mv": [
-13.8,
-34.5
-],
-"lv": 220,
-"ambMax": 40,
-"ambAvg": 27,
-"rise": "65 K avg over 30 °C (IEEE)",
-"regime": "util",
-"regName": "ANSI/IEEE-based utility specs",
-"vec": "Dyn1 (ANSI 30° lag)",
-"pol": "tropical",
-"corr": "C4",
-"notes": "ANSI/IEEE practice: 60 Hz, 30° lag convention, %Z on self-cooled base — see course §12.6 before mixing with IEC fleets."
-},
-{
-"n": "Vietnam",
-"fl": "🇻🇳",
-"f": 50,
-"mv": [
-22,
-35
-],
-"lv": 400,
-"ambMax": 40,
-"ambAvg": 28,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "EVN specs (IEC-based)",
-"vec": "Dyn11",
-"pol": "tropical coastal",
-"corr": "C5-M",
-"notes": "Permanent tropical humidity and salt air: sealed tanks, surface protection and creepage govern life more than peak ambient."
-},
-{
-"n": "Yemen",
-"fl": "🇾🇪",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 400,
-"ambMax": 48,
-"ambAvg": 30,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National IEC-based specifications",
-"vec": "Dyn11",
-"pol": "desert",
-"corr": "C4 / C5-M coastal",
-"notes": "Hot-climate IEC practice: cooling margin, dust management and reduced rises govern. Verify national type-approval requirements."
-},
-{
-"n": "Zambia",
-"fl": "🇿🇲",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 415,
-"ambMax": 42,
-"ambAvg": 26,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (British-heritage)",
-"vec": "Dyn11",
-"pol": "tropical",
-"corr": "C4",
-"notes": "British-heritage 11/33 kV practice; loading cycles and network voltage excursions argue for conservative design margins."
-},
-{
-"n": "Zimbabwe",
-"fl": "🇿🇼",
-"f": 50,
-"mv": [
-11,
-33
-],
-"lv": 415,
-"ambMax": 42,
-"ambAvg": 26,
-"rise": "55 / 60 K",
-"regime": "util",
-"regName": "National / utility IEC-based specs (British-heritage)",
-"vec": "Dyn11",
-"pol": "tropical",
-"corr": "C4",
-"notes": "British-heritage 11/33 kV practice; loading cycles and network voltage excursions argue for conservative design margins."
-}
+ {
+  "n": "Afghanistan",
+  "fl": "🇦🇫",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 48,
+  "ambAvg": 30,
+  "rise": "50 / 55 K",
+  "regime": "util",
+  "regName": "National IEC-based specs",
+  "vec": "Dyn11",
+  "pol": "tropical / monsoon",
+  "corr": "C4 / C5-M coastal",
+  "notes": "Subcontinent practice: 11/33 kV, monsoon humidity swings, heavy summer ambients — reduced rises common."
+ },
+ {
+  "n": "Albania",
+  "fl": "🇦🇱",
+  "f": 50,
+  "mv": [
+   10,
+   35,
+   20
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 16,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "util",
+  "regName": "National IEC-based specifications",
+  "vec": "Dyn11 / Yzn",
+  "pol": "normal",
+  "corr": "C3",
+  "notes": "IEC-based national practice on 10/20/35 kV networks; verify the utility loss schedule before tendering."
+ },
+ {
+  "n": "Algeria",
+  "fl": "🇩🇿",
+  "f": 50,
+  "mv": [
+   20,
+   30
+  ],
+  "lv": 400,
+  "ambMax": 47,
+  "ambAvg": 27,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National IEC-based specifications (French-heritage network)",
+  "vec": "Dyn11",
+  "pol": "desert / coastal",
+  "corr": "C4 / C5-M coastal",
+  "notes": "French-heritage 20/30 kV practice with Saharan ambients inland and marine atmosphere on the coast."
+ },
+ {
+  "n": "Andorra",
+  "fl": "🇦🇩",
+  "f": 50,
+  "mv": [
+   20,
+   10
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 18,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "eu",
+  "regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
+  "vec": "Dyn11 / Dyn5",
+  "pol": "normal",
+  "corr": "C3",
+  "notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
+ },
+ {
+  "n": "Angola",
+  "fl": "🇦🇴",
+  "f": 50,
+  "mv": [
+   20,
+   30
+  ],
+  "lv": 400,
+  "ambMax": 42,
+  "ambAvg": 27,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (French-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical humid",
+  "corr": "C4 / C5-M coastal",
+  "notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
+ },
+ {
+  "n": "Antigua and Barbuda",
+  "fl": "🇦🇬",
+  "f": 50,
+  "mv": [
+   11
+  ],
+  "lv": 400,
+  "ambMax": 38,
+  "ambAvg": 28,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "Utility specs (British-heritage, IEC)",
+  "vec": "Dyn11",
+  "pol": "marine island",
+  "corr": "C5-M",
+  "notes": "Island grid: salt atmosphere, hurricane hardening and spares logistics dominate lifecycle cost."
+ },
+ {
+  "n": "Argentina",
+  "fl": "🇦🇷",
+  "f": 50,
+  "mv": [
+   13.2,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 42,
+  "ambAvg": 20,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National specs (IEC-derived)",
+  "vec": "Dyn11 / Dyn1",
+  "pol": "mixed",
+  "corr": "C3/C4",
+  "notes": "13.2/33 kV practice; wide climate span from Patagonia cold to Chaco heat."
+ },
+ {
+  "n": "Armenia",
+  "fl": "🇦🇲",
+  "f": 50,
+  "mv": [
+   10,
+   6,
+   35
+  ],
+  "lv": 400,
+  "ambMax": 45,
+  "ambAvg": 15,
+  "rise": "60 / 65 K",
+  "regime": "util",
+  "regName": "GOST-heritage / IEC-based national specs",
+  "vec": "Dyn11 / Yzn",
+  "pol": "continental",
+  "corr": "C3/C4",
+  "notes": "GOST-heritage 10(6)/0.4 kV networks; continental extremes from −40 °C winters to +45 °C summers — cold-start oil viscosity matters as much as summer rise."
+ },
+ {
+  "n": "Australia",
+  "fl": "🇦🇺",
+  "f": 50,
+  "mv": [
+   11,
+   22,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 45,
+  "ambAvg": 25,
+  "rise": "55 / 60 K (AS)",
+  "regime": "aus",
+  "regName": "MEPS AS 2374.1.2 / AS-NZS 60076",
+  "vec": "Dyn11",
+  "pol": "mixed; bushfire zones",
+  "corr": "C3/C4",
+  "notes": "MEPS efficiency floors; bushfire-zone hardware and high rural ambient drive specials."
+ },
+ {
+  "n": "Austria",
+  "fl": "🇦🇹",
+  "f": 50,
+  "mv": [
+   20,
+   10
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 18,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "eu",
+  "regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
+  "vec": "Dyn11 / Dyn5",
+  "pol": "normal",
+  "corr": "C3",
+  "notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
+ },
+ {
+  "n": "Azerbaijan",
+  "fl": "🇦🇿",
+  "f": 50,
+  "mv": [
+   10,
+   6,
+   35
+  ],
+  "lv": 400,
+  "ambMax": 45,
+  "ambAvg": 15,
+  "rise": "60 / 65 K",
+  "regime": "util",
+  "regName": "GOST-heritage / IEC-based national specs",
+  "vec": "Dyn11 / Yzn",
+  "pol": "continental",
+  "corr": "C3/C4",
+  "notes": "GOST-heritage 10(6)/0.4 kV networks; continental extremes from −40 °C winters to +45 °C summers — cold-start oil viscosity matters as much as summer rise."
+ },
+ {
+  "n": "Bahamas",
+  "fl": "🇧🇸",
+  "f": 60,
+  "mv": [
+   13.8
+  ],
+  "lv": 220,
+  "ambMax": 38,
+  "ambAvg": 28,
+  "rise": "65 K avg over 30 °C (IEEE)",
+  "regime": "util",
+  "regName": "ANSI/IEEE-based utility specs",
+  "vec": "Dyn1 (ANSI 30° lag)",
+  "pol": "marine island",
+  "corr": "C5-M",
+  "notes": "60 Hz island grid, ANSI practice: salt atmosphere, hurricane hardening and spares logistics dominate."
+ },
+ {
+  "n": "Bahrain",
+  "fl": "🇧🇭",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 415,
+  "ambMax": 50,
+  "ambAvg": 35,
+  "rise": "50 / 55 K",
+  "regime": "gcc",
+  "regName": "EWA specifications",
+  "vec": "Dyn11",
+  "pol": "coastal",
+  "corr": "C5-M",
+  "notes": "Island grid, salt-laden air — corrosion system and creepage govern external design."
+ },
+ {
+  "n": "Bangladesh",
+  "fl": "🇧🇩",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 45,
+  "ambAvg": 30,
+  "rise": "50 / 55 K",
+  "regime": "util",
+  "regName": "National IEC-based specs",
+  "vec": "Dyn11",
+  "pol": "tropical / monsoon",
+  "corr": "C4 / C5-M coastal",
+  "notes": "Monsoon humidity, dense urban loading and flood siting requirements; 11/33 kV practice."
+ },
+ {
+  "n": "Barbados",
+  "fl": "🇧🇧",
+  "f": 50,
+  "mv": [
+   11
+  ],
+  "lv": 400,
+  "ambMax": 38,
+  "ambAvg": 28,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "Utility specs (British-heritage, IEC)",
+  "vec": "Dyn11",
+  "pol": "marine island",
+  "corr": "C5-M",
+  "notes": "Island grid: salt atmosphere, hurricane hardening and spares logistics dominate lifecycle cost."
+ },
+ {
+  "n": "Belarus",
+  "fl": "🇧🇾",
+  "f": 50,
+  "mv": [
+   10,
+   6,
+   35
+  ],
+  "lv": 400,
+  "ambMax": 45,
+  "ambAvg": 15,
+  "rise": "60 / 65 K",
+  "regime": "util",
+  "regName": "GOST-heritage / IEC-based national specs",
+  "vec": "Dyn11 / Yzn",
+  "pol": "continental",
+  "corr": "C3/C4",
+  "notes": "GOST-heritage 10(6)/0.4 kV networks; continental extremes from −40 °C winters to +45 °C summers — cold-start oil viscosity matters as much as summer rise."
+ },
+ {
+  "n": "Belgium",
+  "fl": "🇧🇪",
+  "f": 50,
+  "mv": [
+   20,
+   10
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 18,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "eu",
+  "regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
+  "vec": "Dyn11 / Dyn5",
+  "pol": "normal",
+  "corr": "C3",
+  "notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
+ },
+ {
+  "n": "Belize",
+  "fl": "🇧🇿",
+  "f": 60,
+  "mv": [
+   13.8,
+   34.5
+  ],
+  "lv": 220,
+  "ambMax": 40,
+  "ambAvg": 27,
+  "rise": "65 K avg over 30 °C (IEEE)",
+  "regime": "util",
+  "regName": "ANSI/IEEE-based utility specs",
+  "vec": "Dyn1 (ANSI 30° lag)",
+  "pol": "tropical",
+  "corr": "C4",
+  "notes": "ANSI/IEEE practice: 60 Hz, 30° lag convention, %Z on self-cooled base — see course §12.6 before mixing with IEC fleets."
+ },
+ {
+  "n": "Benin",
+  "fl": "🇧🇯",
+  "f": 50,
+  "mv": [
+   20,
+   30
+  ],
+  "lv": 400,
+  "ambMax": 42,
+  "ambAvg": 27,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (French-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical humid",
+  "corr": "C4 / C5-M coastal",
+  "notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
+ },
+ {
+  "n": "Bhutan",
+  "fl": "🇧🇹",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 48,
+  "ambAvg": 30,
+  "rise": "50 / 55 K",
+  "regime": "util",
+  "regName": "National IEC-based specs",
+  "vec": "Dyn11",
+  "pol": "tropical / monsoon",
+  "corr": "C4 / C5-M coastal",
+  "notes": "Subcontinent practice: 11/33 kV, monsoon humidity swings, heavy summer ambients — reduced rises common."
+ },
+ {
+  "n": "Bolivia",
+  "fl": "🇧🇴",
+  "f": 50,
+  "mv": [
+   13.2,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 42,
+  "ambAvg": 20,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National specs (IEC-derived)",
+  "vec": "Dyn11 / Dyn1",
+  "pol": "mixed",
+  "corr": "C3/C4",
+  "notes": "Southern-cone 50 Hz practice with IEC-derived national standards."
+ },
+ {
+  "n": "Bosnia and Herzegovina",
+  "fl": "🇧🇦",
+  "f": 50,
+  "mv": [
+   10,
+   35,
+   20
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 16,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "util",
+  "regName": "National IEC-based specifications",
+  "vec": "Dyn11 / Yzn",
+  "pol": "normal",
+  "corr": "C3",
+  "notes": "IEC-based national practice on 10/20/35 kV networks; verify the utility loss schedule before tendering."
+ },
+ {
+  "n": "Botswana",
+  "fl": "🇧🇼",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 415,
+  "ambMax": 42,
+  "ambAvg": 26,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (British-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical",
+  "corr": "C4",
+  "notes": "British-heritage 11/33 kV practice; loading cycles and network voltage excursions argue for conservative design margins."
+ },
+ {
+  "n": "Brazil",
+  "fl": "🇧🇷",
+  "f": 60,
+  "mv": [
+   13.8,
+   34.5
+  ],
+  "lv": 380,
+  "ambMax": 40,
+  "ambAvg": 27,
+  "rise": "55 / 60 K (ABNT)",
+  "regime": "util",
+  "regName": "ABNT NBR 5356 / PROCEL efficiency",
+  "vec": "Dyn1",
+  "pol": "tropical / coastal",
+  "corr": "C4/C5-M",
+  "notes": "60 Hz, ABNT standards (IEC-derived); tropical humidity and lightning density shape insulation and arrester practice."
+ },
+ {
+  "n": "Brunei",
+  "fl": "🇧🇳",
+  "f": 50,
+  "mv": [
+   22,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 28,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National utility specs (IEC-based)",
+  "vec": "Dyn11",
+  "pol": "tropical coastal",
+  "corr": "C5-M",
+  "notes": "Permanent tropical humidity and salt air: sealed tanks, surface protection and creepage govern life more than peak ambient."
+ },
+ {
+  "n": "Bulgaria",
+  "fl": "🇧🇬",
+  "f": 50,
+  "mv": [
+   20,
+   10
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 18,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "eu",
+  "regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
+  "vec": "Dyn11 / Dyn5",
+  "pol": "normal",
+  "corr": "C3",
+  "notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
+ },
+ {
+  "n": "Burkina Faso",
+  "fl": "🇧🇫",
+  "f": 50,
+  "mv": [
+   20,
+   30
+  ],
+  "lv": 400,
+  "ambMax": 47,
+  "ambAvg": 32,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs",
+  "vec": "Dyn11",
+  "pol": "desert dust (harmattan)",
+  "corr": "C4",
+  "notes": "Sahel duty: 47 °C+ ambients with harmattan dust — cooling-surface margin and cleaning cycles govern life."
+ },
+ {
+  "n": "Burundi",
+  "fl": "🇧🇮",
+  "f": 50,
+  "mv": [
+   20,
+   30
+  ],
+  "lv": 400,
+  "ambMax": 42,
+  "ambAvg": 27,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (French-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical humid",
+  "corr": "C4 / C5-M coastal",
+  "notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
+ },
+ {
+  "n": "Cabo Verde",
+  "fl": "🇨🇻",
+  "f": 50,
+  "mv": [
+   20,
+   30
+  ],
+  "lv": 400,
+  "ambMax": 42,
+  "ambAvg": 27,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (French-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical humid",
+  "corr": "C4 / C5-M coastal",
+  "notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
+ },
+ {
+  "n": "Cambodia",
+  "fl": "🇰🇭",
+  "f": 50,
+  "mv": [
+   22,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 28,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National utility specs (IEC-based)",
+  "vec": "Dyn11",
+  "pol": "tropical coastal",
+  "corr": "C5-M",
+  "notes": "Permanent tropical humidity and salt air: sealed tanks, surface protection and creepage govern life more than peak ambient."
+ },
+ {
+  "n": "Cameroon",
+  "fl": "🇨🇲",
+  "f": 50,
+  "mv": [
+   20,
+   30
+  ],
+  "lv": 400,
+  "ambMax": 42,
+  "ambAvg": 27,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (French-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical humid",
+  "corr": "C4 / C5-M coastal",
+  "notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
+ },
+ {
+  "n": "Canada",
+  "fl": "🇨🇦",
+  "f": 60,
+  "mv": [
+   13.8,
+   27.6
+  ],
+  "lv": 600,
+  "ambMax": 40,
+  "ambAvg": 20,
+  "rise": "65 K avg over 30 °C",
+  "regime": "doe",
+  "regName": "NRCan efficiency / CSA C802 / IEEE C57",
+  "vec": "Dyn1 (ANSI)",
+  "pol": "normal",
+  "corr": "C3",
+  "notes": "600 V secondary is a Canadian specialty; cold starts (−40 °C) set oil viscosity and conservator design, not heat."
+ },
+ {
+  "n": "Central African Republic",
+  "fl": "🇨🇫",
+  "f": 50,
+  "mv": [
+   20,
+   30
+  ],
+  "lv": 400,
+  "ambMax": 42,
+  "ambAvg": 27,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (French-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical humid",
+  "corr": "C4 / C5-M coastal",
+  "notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
+ },
+ {
+  "n": "Chad",
+  "fl": "🇹🇩",
+  "f": 50,
+  "mv": [
+   20,
+   30
+  ],
+  "lv": 400,
+  "ambMax": 47,
+  "ambAvg": 32,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs",
+  "vec": "Dyn11",
+  "pol": "desert dust (harmattan)",
+  "corr": "C4",
+  "notes": "Sahel duty: 47 °C+ ambients with harmattan dust — cooling-surface margin and cleaning cycles govern life."
+ },
+ {
+  "n": "Chile",
+  "fl": "🇨🇱",
+  "f": 50,
+  "mv": [
+   13.2,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 42,
+  "ambAvg": 20,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National specs (IEC-derived)",
+  "vec": "Dyn11 / Dyn1",
+  "pol": "mixed",
+  "corr": "C3/C4",
+  "notes": "50 Hz with strong seismic qualification culture; mining loads drive converter-duty specials (§15.3)."
+ },
+ {
+  "n": "China",
+  "fl": "🇨🇳",
+  "f": 50,
+  "mv": [
+   10,
+   35
+  ],
+  "lv": 400,
+  "ambMax": 45,
+  "ambAvg": 25,
+  "rise": "60 / 65 K",
+  "regime": "china",
+  "regName": "GB 20052 efficiency grades / GB/T 6451",
+  "vec": "Dyn11 / Yyn0",
+  "pol": "mixed",
+  "corr": "C3/C4",
+  "notes": "GB efficiency Grade 1–3 maps the S13/S15/S17… design series; amorphous cores (SBH-type) widely deployed at 10 kV."
+ },
+ {
+  "n": "Colombia",
+  "fl": "🇨🇴",
+  "f": 60,
+  "mv": [
+   13.8,
+   34.5
+  ],
+  "lv": 220,
+  "ambMax": 40,
+  "ambAvg": 27,
+  "rise": "65 K avg over 30 °C (IEEE)",
+  "regime": "util",
+  "regName": "ANSI/IEEE-based utility specs",
+  "vec": "Dyn1 (ANSI 30° lag)",
+  "pol": "tropical",
+  "corr": "C4",
+  "notes": "ANSI/IEEE practice: 60 Hz, 30° lag convention, %Z on self-cooled base — see course §12.6 before mixing with IEC fleets."
+ },
+ {
+  "n": "Comoros",
+  "fl": "🇰🇲",
+  "f": 50,
+  "mv": [
+   20,
+   30
+  ],
+  "lv": 400,
+  "ambMax": 42,
+  "ambAvg": 27,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (French-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical humid",
+  "corr": "C4 / C5-M coastal",
+  "notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
+ },
+ {
+  "n": "Congo (DR)",
+  "fl": "🇨🇩",
+  "f": 50,
+  "mv": [
+   20,
+   30
+  ],
+  "lv": 400,
+  "ambMax": 42,
+  "ambAvg": 27,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (French-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical humid",
+  "corr": "C4 / C5-M coastal",
+  "notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
+ },
+ {
+  "n": "Congo (Republic)",
+  "fl": "🇨🇬",
+  "f": 50,
+  "mv": [
+   20,
+   30
+  ],
+  "lv": 400,
+  "ambMax": 42,
+  "ambAvg": 27,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (French-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical humid",
+  "corr": "C4 / C5-M coastal",
+  "notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
+ },
+ {
+  "n": "Costa Rica",
+  "fl": "🇨🇷",
+  "f": 60,
+  "mv": [
+   13.8,
+   34.5
+  ],
+  "lv": 220,
+  "ambMax": 40,
+  "ambAvg": 27,
+  "rise": "65 K avg over 30 °C (IEEE)",
+  "regime": "util",
+  "regName": "ANSI/IEEE-based utility specs",
+  "vec": "Dyn1 (ANSI 30° lag)",
+  "pol": "tropical",
+  "corr": "C4",
+  "notes": "ANSI/IEEE practice: 60 Hz, 30° lag convention, %Z on self-cooled base — see course §12.6 before mixing with IEC fleets."
+ },
+ {
+  "n": "Cote d'Ivoire",
+  "fl": "🇨🇮",
+  "f": 50,
+  "mv": [
+   20,
+   30
+  ],
+  "lv": 400,
+  "ambMax": 42,
+  "ambAvg": 27,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (French-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical humid",
+  "corr": "C4 / C5-M coastal",
+  "notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
+ },
+ {
+  "n": "Croatia",
+  "fl": "🇭🇷",
+  "f": 50,
+  "mv": [
+   20,
+   15
+  ],
+  "lv": 400,
+  "ambMax": 44,
+  "ambAvg": 24,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "eu",
+  "regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
+  "vec": "Dyn11",
+  "pol": "coastal Mediterranean",
+  "corr": "C3 / C4 coastal",
+  "notes": "EU Tier 2 applies; warm-summer derating and coastal creepage on the littoral. Regional values — confirm DSO specs."
+ },
+ {
+  "n": "Cuba",
+  "fl": "🇨🇺",
+  "f": 60,
+  "mv": [
+   13.8
+  ],
+  "lv": 220,
+  "ambMax": 38,
+  "ambAvg": 28,
+  "rise": "65 K avg over 30 °C (IEEE)",
+  "regime": "util",
+  "regName": "ANSI/IEEE-based utility specs",
+  "vec": "Dyn1 (ANSI 30° lag)",
+  "pol": "marine island",
+  "corr": "C5-M",
+  "notes": "60 Hz island grid, ANSI practice: salt atmosphere, hurricane hardening and spares logistics dominate."
+ },
+ {
+  "n": "Cyprus",
+  "fl": "🇨🇾",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 15,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "eu",
+  "regName": "Ecodesign Tier 2 (UK SI / EU) + network specs",
+  "vec": "Dyn11",
+  "pol": "normal / coastal",
+  "corr": "C3/C4",
+  "notes": "British-practice 11/33 kV network under Ecodesign-level loss caps."
+ },
+ {
+  "n": "Czechia",
+  "fl": "🇨🇿",
+  "f": 50,
+  "mv": [
+   20,
+   10
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 18,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "eu",
+  "regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
+  "vec": "Dyn11 / Dyn5",
+  "pol": "normal",
+  "corr": "C3",
+  "notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
+ },
+ {
+  "n": "Denmark",
+  "fl": "🇩🇰",
+  "f": 50,
+  "mv": [
+   20,
+   10
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 18,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "eu",
+  "regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
+  "vec": "Dyn11 / Dyn5",
+  "pol": "normal",
+  "corr": "C3",
+  "notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
+ },
+ {
+  "n": "Djibouti",
+  "fl": "🇩🇯",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 48,
+  "ambAvg": 30,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National IEC-based specifications",
+  "vec": "Dyn11",
+  "pol": "desert",
+  "corr": "C4 / C5-M coastal",
+  "notes": "Hot-climate IEC practice: cooling margin, dust management and reduced rises govern. Verify national type-approval requirements."
+ },
+ {
+  "n": "Dominica",
+  "fl": "🇩🇲",
+  "f": 50,
+  "mv": [
+   11
+  ],
+  "lv": 400,
+  "ambMax": 38,
+  "ambAvg": 28,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "Utility specs (British-heritage, IEC)",
+  "vec": "Dyn11",
+  "pol": "marine island",
+  "corr": "C5-M",
+  "notes": "Island grid: salt atmosphere, hurricane hardening and spares logistics dominate lifecycle cost."
+ },
+ {
+  "n": "Dominican Republic",
+  "fl": "🇩🇴",
+  "f": 60,
+  "mv": [
+   13.8
+  ],
+  "lv": 220,
+  "ambMax": 38,
+  "ambAvg": 28,
+  "rise": "65 K avg over 30 °C (IEEE)",
+  "regime": "util",
+  "regName": "ANSI/IEEE-based utility specs",
+  "vec": "Dyn1 (ANSI 30° lag)",
+  "pol": "marine island",
+  "corr": "C5-M",
+  "notes": "60 Hz island grid, ANSI practice: salt atmosphere, hurricane hardening and spares logistics dominate."
+ },
+ {
+  "n": "Ecuador",
+  "fl": "🇪🇨",
+  "f": 60,
+  "mv": [
+   13.8,
+   34.5
+  ],
+  "lv": 220,
+  "ambMax": 40,
+  "ambAvg": 27,
+  "rise": "65 K avg over 30 °C (IEEE)",
+  "regime": "util",
+  "regName": "ANSI/IEEE-based utility specs",
+  "vec": "Dyn1 (ANSI 30° lag)",
+  "pol": "tropical",
+  "corr": "C4",
+  "notes": "ANSI/IEEE practice: 60 Hz, 30° lag convention, %Z on self-cooled base — see course §12.6 before mixing with IEC fleets."
+ },
+ {
+  "n": "Egypt",
+  "fl": "🇪🇬",
+  "f": 50,
+  "mv": [
+   11,
+   22,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 48,
+  "ambAvg": 30,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "EETC / distribution co. specs (IEC-based)",
+  "vec": "Dyn11",
+  "pol": "desert + Nile delta humidity",
+  "corr": "C4 / C5-M coastal",
+  "notes": "IEC-based national specs; 22 kV expanding in new cities."
+ },
+ {
+  "n": "El Salvador",
+  "fl": "🇸🇻",
+  "f": 60,
+  "mv": [
+   13.8,
+   34.5
+  ],
+  "lv": 220,
+  "ambMax": 40,
+  "ambAvg": 27,
+  "rise": "65 K avg over 30 °C (IEEE)",
+  "regime": "util",
+  "regName": "ANSI/IEEE-based utility specs",
+  "vec": "Dyn1 (ANSI 30° lag)",
+  "pol": "tropical",
+  "corr": "C4",
+  "notes": "ANSI/IEEE practice: 60 Hz, 30° lag convention, %Z on self-cooled base — see course §12.6 before mixing with IEC fleets."
+ },
+ {
+  "n": "Equatorial Guinea",
+  "fl": "🇬🇶",
+  "f": 50,
+  "mv": [
+   20,
+   30
+  ],
+  "lv": 400,
+  "ambMax": 42,
+  "ambAvg": 27,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (French-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical humid",
+  "corr": "C4 / C5-M coastal",
+  "notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
+ },
+ {
+  "n": "Eritrea",
+  "fl": "🇪🇷",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 48,
+  "ambAvg": 30,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National IEC-based specifications",
+  "vec": "Dyn11",
+  "pol": "desert",
+  "corr": "C4 / C5-M coastal",
+  "notes": "Hot-climate IEC practice: cooling margin, dust management and reduced rises govern. Verify national type-approval requirements."
+ },
+ {
+  "n": "Estonia",
+  "fl": "🇪🇪",
+  "f": 50,
+  "mv": [
+   20,
+   10
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 18,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "eu",
+  "regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
+  "vec": "Dyn11 / Dyn5",
+  "pol": "normal",
+  "corr": "C3",
+  "notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
+ },
+ {
+  "n": "Eswatini",
+  "fl": "🇸🇿",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 415,
+  "ambMax": 42,
+  "ambAvg": 26,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (British-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical",
+  "corr": "C4",
+  "notes": "British-heritage 11/33 kV practice; loading cycles and network voltage excursions argue for conservative design margins."
+ },
+ {
+  "n": "Ethiopia",
+  "fl": "🇪🇹",
+  "f": 50,
+  "mv": [
+   15,
+   33
+  ],
+  "lv": 415,
+  "ambMax": 42,
+  "ambAvg": 26,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (British-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical",
+  "corr": "C4",
+  "notes": "EEU 15/33 kV practice; highland altitude derating applies above 1500 m (Addis ≈ 2350 m)."
+ },
+ {
+  "n": "Fiji",
+  "fl": "🇫🇯",
+  "f": 50,
+  "mv": [
+   11
+  ],
+  "lv": 415,
+  "ambMax": 38,
+  "ambAvg": 28,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "Utility specs (IEC / AS-NZS influenced)",
+  "vec": "Dyn11",
+  "pol": "marine island",
+  "corr": "C5-M",
+  "notes": "Pacific island grid: salt atmosphere (C5-M), shipping logistics and spares strategy dominate lifecycle cost."
+ },
+ {
+  "n": "Finland",
+  "fl": "🇫🇮",
+  "f": 50,
+  "mv": [
+   20,
+   10
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 18,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "eu",
+  "regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
+  "vec": "Dyn11 / Dyn5",
+  "pol": "normal",
+  "corr": "C3",
+  "notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
+ },
+ {
+  "n": "France",
+  "fl": "🇫🇷",
+  "f": 50,
+  "mv": [
+   20,
+   10
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 18,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "eu",
+  "regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
+  "vec": "Dyn11 / Dyn5",
+  "pol": "normal",
+  "corr": "C3",
+  "notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
+ },
+ {
+  "n": "Gabon",
+  "fl": "🇬🇦",
+  "f": 50,
+  "mv": [
+   20,
+   30
+  ],
+  "lv": 400,
+  "ambMax": 42,
+  "ambAvg": 27,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (French-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical humid",
+  "corr": "C4 / C5-M coastal",
+  "notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
+ },
+ {
+  "n": "Gambia",
+  "fl": "🇬🇲",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 415,
+  "ambMax": 42,
+  "ambAvg": 26,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (British-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical",
+  "corr": "C4",
+  "notes": "British-heritage 11/33 kV practice; loading cycles and network voltage excursions argue for conservative design margins."
+ },
+ {
+  "n": "Georgia",
+  "fl": "🇬🇪",
+  "f": 50,
+  "mv": [
+   10,
+   6,
+   35
+  ],
+  "lv": 400,
+  "ambMax": 45,
+  "ambAvg": 15,
+  "rise": "60 / 65 K",
+  "regime": "util",
+  "regName": "GOST-heritage / IEC-based national specs",
+  "vec": "Dyn11 / Yzn",
+  "pol": "continental",
+  "corr": "C3/C4",
+  "notes": "GOST-heritage 10(6)/0.4 kV networks; continental extremes from −40 °C winters to +45 °C summers — cold-start oil viscosity matters as much as summer rise."
+ },
+ {
+  "n": "Germany",
+  "fl": "🇩🇪",
+  "f": 50,
+  "mv": [
+   20,
+   10
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 20,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "eu",
+  "regName": "EU 548/2014 Tier 2 / EN 50708",
+  "vec": "Dyn5 / Dyn11",
+  "pol": "normal",
+  "corr": "C3",
+  "notes": "Tier-2 loss caps drive low-flux Hi-B or amorphous cores; Dyn5 historic in DACH networks — check before paralleling with Dyn11 stock."
+ },
+ {
+  "n": "Ghana",
+  "fl": "🇬🇭",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 415,
+  "ambMax": 42,
+  "ambAvg": 26,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (British-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical",
+  "corr": "C4",
+  "notes": "British-heritage 11/33 kV practice; loading cycles and network voltage excursions argue for conservative design margins."
+ },
+ {
+  "n": "Greece",
+  "fl": "🇬🇷",
+  "f": 50,
+  "mv": [
+   20,
+   15
+  ],
+  "lv": 400,
+  "ambMax": 44,
+  "ambAvg": 24,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "eu",
+  "regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
+  "vec": "Dyn11",
+  "pol": "coastal Mediterranean",
+  "corr": "C3 / C4 coastal",
+  "notes": "EU Tier 2 applies; warm-summer derating and coastal creepage on the littoral. Regional values — confirm DSO specs."
+ },
+ {
+  "n": "Grenada",
+  "fl": "🇬🇩",
+  "f": 50,
+  "mv": [
+   11
+  ],
+  "lv": 400,
+  "ambMax": 38,
+  "ambAvg": 28,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "Utility specs (British-heritage, IEC)",
+  "vec": "Dyn11",
+  "pol": "marine island",
+  "corr": "C5-M",
+  "notes": "Island grid: salt atmosphere, hurricane hardening and spares logistics dominate lifecycle cost."
+ },
+ {
+  "n": "Guatemala",
+  "fl": "🇬🇹",
+  "f": 60,
+  "mv": [
+   13.8,
+   34.5
+  ],
+  "lv": 220,
+  "ambMax": 40,
+  "ambAvg": 27,
+  "rise": "65 K avg over 30 °C (IEEE)",
+  "regime": "util",
+  "regName": "ANSI/IEEE-based utility specs",
+  "vec": "Dyn1 (ANSI 30° lag)",
+  "pol": "tropical",
+  "corr": "C4",
+  "notes": "ANSI/IEEE practice: 60 Hz, 30° lag convention, %Z on self-cooled base — see course §12.6 before mixing with IEC fleets."
+ },
+ {
+  "n": "Guinea",
+  "fl": "🇬🇳",
+  "f": 50,
+  "mv": [
+   20,
+   30
+  ],
+  "lv": 400,
+  "ambMax": 42,
+  "ambAvg": 27,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (French-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical humid",
+  "corr": "C4 / C5-M coastal",
+  "notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
+ },
+ {
+  "n": "Guinea-Bissau",
+  "fl": "🇬🇼",
+  "f": 50,
+  "mv": [
+   20,
+   30
+  ],
+  "lv": 400,
+  "ambMax": 42,
+  "ambAvg": 27,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (French-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical humid",
+  "corr": "C4 / C5-M coastal",
+  "notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
+ },
+ {
+  "n": "Guyana",
+  "fl": "🇬🇾",
+  "f": 60,
+  "mv": [
+   13.8
+  ],
+  "lv": 220,
+  "ambMax": 38,
+  "ambAvg": 28,
+  "rise": "65 K avg over 30 °C (IEEE)",
+  "regime": "util",
+  "regName": "ANSI/IEEE-based utility specs",
+  "vec": "Dyn1 (ANSI 30° lag)",
+  "pol": "marine island",
+  "corr": "C5-M",
+  "notes": "60 Hz island grid, ANSI practice: salt atmosphere, hurricane hardening and spares logistics dominate."
+ },
+ {
+  "n": "Haiti",
+  "fl": "🇭🇹",
+  "f": 60,
+  "mv": [
+   13.8
+  ],
+  "lv": 220,
+  "ambMax": 38,
+  "ambAvg": 28,
+  "rise": "65 K avg over 30 °C (IEEE)",
+  "regime": "util",
+  "regName": "ANSI/IEEE-based utility specs",
+  "vec": "Dyn1 (ANSI 30° lag)",
+  "pol": "marine island",
+  "corr": "C5-M",
+  "notes": "60 Hz island grid, ANSI practice: salt atmosphere, hurricane hardening and spares logistics dominate."
+ },
+ {
+  "n": "Honduras",
+  "fl": "🇭🇳",
+  "f": 60,
+  "mv": [
+   13.8,
+   34.5
+  ],
+  "lv": 220,
+  "ambMax": 40,
+  "ambAvg": 27,
+  "rise": "65 K avg over 30 °C (IEEE)",
+  "regime": "util",
+  "regName": "ANSI/IEEE-based utility specs",
+  "vec": "Dyn1 (ANSI 30° lag)",
+  "pol": "tropical",
+  "corr": "C4",
+  "notes": "ANSI/IEEE practice: 60 Hz, 30° lag convention, %Z on self-cooled base — see course §12.6 before mixing with IEC fleets."
+ },
+ {
+  "n": "Hungary",
+  "fl": "🇭🇺",
+  "f": 50,
+  "mv": [
+   20,
+   10
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 18,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "eu",
+  "regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
+  "vec": "Dyn11 / Dyn5",
+  "pol": "normal",
+  "corr": "C3",
+  "notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
+ },
+ {
+  "n": "Iceland",
+  "fl": "🇮🇸",
+  "f": 50,
+  "mv": [
+   20,
+   10
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 18,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "eu",
+  "regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
+  "vec": "Dyn11 / Dyn5",
+  "pol": "normal",
+  "corr": "C3",
+  "notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
+ },
+ {
+  "n": "India",
+  "fl": "🇮🇳",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 433,
+  "ambMax": 50,
+  "ambAvg": 32,
+  "rise": "50 / 55 K (IS 1180)",
+  "regime": "india",
+  "regName": "IS 1180 + BEE star rating (BIS mandatory)",
+  "vec": "Dyn11",
+  "pol": "mixed; heavy in coastal/industrial belts",
+  "corr": "C4 / C5-M coastal",
+  "notes": "BEE star levels set total-loss caps at 50% and 100% load; 433 V secondary standard. Aluminium windings widespread at distribution sizes."
+ },
+ {
+  "n": "Indonesia",
+  "fl": "🇮🇩",
+  "f": 50,
+  "mv": [
+   20
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 28,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "PLN specifications (SPLN, IEC-based)",
+  "vec": "Dyn5 / Dyn11",
+  "pol": "tropical coastal",
+  "corr": "C5-M",
+  "notes": "20 kV unified nationwide; permanent high humidity — sealed tanks and surface protection govern life."
+ },
+ {
+  "n": "Iran",
+  "fl": "🇮🇷",
+  "f": 50,
+  "mv": [
+   20,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 48,
+  "ambAvg": 30,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National IEC-based specifications",
+  "vec": "Dyn11",
+  "pol": "desert",
+  "corr": "C4 / C5-M coastal",
+  "notes": "20 kV national MV standard; hot interior, Caspian humidity north, Gulf salt south — three climates in one fleet."
+ },
+ {
+  "n": "Iraq",
+  "fl": "🇮🇶",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 52,
+  "ambAvg": 30,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National IEC-based specifications",
+  "vec": "Dyn11",
+  "pol": "desert",
+  "corr": "C4 / C5-M coastal",
+  "notes": "Among the hottest grids on earth (52 °C); cooling margin and dust management govern everything."
+ },
+ {
+  "n": "Ireland",
+  "fl": "🇮🇪",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 15,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "eu",
+  "regName": "Ecodesign Tier 2 (UK SI / EU) + network specs",
+  "vec": "Dyn11",
+  "pol": "normal / coastal",
+  "corr": "C3/C4",
+  "notes": "British-practice 11/33 kV network under Ecodesign-level loss caps."
+ },
+ {
+  "n": "Israel",
+  "fl": "🇮🇱",
+  "f": 50,
+  "mv": [
+   22,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 45,
+  "ambAvg": 30,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "IEC-based national specs (IEC 60076 aligned)",
+  "vec": "Dyn11",
+  "pol": "desert",
+  "corr": "C4 / C5-M coastal",
+  "notes": "Hot-climate IEC practice: cooling margin, dust management and reduced rises govern. Verify national type-approval requirements."
+ },
+ {
+  "n": "Italy",
+  "fl": "🇮🇹",
+  "f": 50,
+  "mv": [
+   20,
+   15
+  ],
+  "lv": 400,
+  "ambMax": 42,
+  "ambAvg": 22,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "eu",
+  "regName": "EU Tier 2 / e-distribuzione unified specs",
+  "vec": "Dyn11",
+  "pol": "normal / coastal south",
+  "corr": "C3/C4",
+  "notes": "e-distribuzione's unified 20 kV standardisation is a model of fleet-level design standardisation (§18)."
+ },
+ {
+  "n": "Jamaica",
+  "fl": "🇯🇲",
+  "f": 50,
+  "mv": [
+   11
+  ],
+  "lv": 400,
+  "ambMax": 38,
+  "ambAvg": 28,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "Utility specs (British-heritage, IEC)",
+  "vec": "Dyn11",
+  "pol": "marine island",
+  "corr": "C5-M",
+  "notes": "Island grid: salt atmosphere, hurricane hardening and spares logistics dominate lifecycle cost."
+ },
+ {
+  "n": "Japan",
+  "fl": "🇯🇵",
+  "f": 50,
+  "mv": [
+   6.6,
+   22
+  ],
+  "lv": 210,
+  "ambMax": 40,
+  "ambAvg": 22,
+  "rise": "55 / 60 K (JEC)",
+  "regime": "jis",
+  "regName": "Top Runner efficiency / JEC, JIS standards",
+  "vec": "Dyn1 / special",
+  "pol": "coastal + seismic",
+  "corr": "C4/C5-M",
+  "notes": "50 Hz east / 60 Hz west split grid (50 Hz modelled here); 6.6 kV distribution, Top Runner pushes amorphous cores; seismic qualification is a first-class requirement."
+ },
+ {
+  "n": "Jordan",
+  "fl": "🇯🇴",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 48,
+  "ambAvg": 30,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National IEC-based specifications",
+  "vec": "Dyn11",
+  "pol": "desert",
+  "corr": "C4 / C5-M coastal",
+  "notes": "Hot-climate IEC practice: cooling margin, dust management and reduced rises govern. Verify national type-approval requirements."
+ },
+ {
+  "n": "Kazakhstan",
+  "fl": "🇰🇿",
+  "f": 50,
+  "mv": [
+   10,
+   6,
+   35
+  ],
+  "lv": 400,
+  "ambMax": 45,
+  "ambAvg": 15,
+  "rise": "60 / 65 K",
+  "regime": "util",
+  "regName": "GOST-heritage / IEC-based national specs",
+  "vec": "Dyn11 / Yzn",
+  "pol": "continental",
+  "corr": "C3/C4",
+  "notes": "GOST-heritage 10(6)/0.4 kV networks; continental extremes from −40 °C winters to +45 °C summers — cold-start oil viscosity matters as much as summer rise."
+ },
+ {
+  "n": "Kenya",
+  "fl": "🇰🇪",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 415,
+  "ambMax": 42,
+  "ambAvg": 26,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (British-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical",
+  "corr": "C4",
+  "notes": "British-heritage 11/33 kV practice; loading cycles and network voltage excursions argue for conservative design margins."
+ },
+ {
+  "n": "Kiribati",
+  "fl": "🇰🇮",
+  "f": 50,
+  "mv": [
+   11
+  ],
+  "lv": 415,
+  "ambMax": 38,
+  "ambAvg": 28,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "Utility specs (IEC / AS-NZS influenced)",
+  "vec": "Dyn11",
+  "pol": "marine island",
+  "corr": "C5-M",
+  "notes": "Pacific island grid: salt atmosphere (C5-M), shipping logistics and spares strategy dominate lifecycle cost."
+ },
+ {
+  "n": "Korea (North)",
+  "fl": "🇰🇵",
+  "f": 60,
+  "mv": [
+   10,
+   6,
+   35
+  ],
+  "lv": 400,
+  "ambMax": 45,
+  "ambAvg": 15,
+  "rise": "60 / 65 K",
+  "regime": "util",
+  "regName": "GOST-heritage / IEC-based national specs",
+  "vec": "Dyn11 / Yzn",
+  "pol": "continental",
+  "corr": "C3/C4",
+  "notes": "Reported 60 Hz practice, GOST-influenced equipment heritage; data limited."
+ },
+ {
+  "n": "Korea (South)",
+  "fl": "🇰🇷",
+  "f": 60,
+  "mv": [
+   22.9
+  ],
+  "lv": 380,
+  "ambMax": 40,
+  "ambAvg": 28,
+  "rise": "65 K avg over 30 °C",
+  "regime": "doe",
+  "regName": "KS standards / MEPS (KEPCO)",
+  "vec": "Dyn1 / Ygzn (multi-grounded 22.9 kV)",
+  "pol": "tropical coastal",
+  "corr": "C5-M",
+  "notes": "KEPCO's 22.9 kV multi-grounded network is American-influenced at 60 Hz; strict MEPS efficiency floors."
+ },
+ {
+  "n": "Kosovo",
+  "fl": "🇽🇰",
+  "f": 50,
+  "mv": [
+   10,
+   35,
+   20
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 16,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "util",
+  "regName": "National IEC-based specifications",
+  "vec": "Dyn11 / Yzn",
+  "pol": "normal",
+  "corr": "C3",
+  "notes": "IEC-based national practice on 10/20/35 kV networks; verify the utility loss schedule before tendering."
+ },
+ {
+  "n": "Kuwait",
+  "fl": "🇰🇼",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 415,
+  "ambMax": 52,
+  "ambAvg": 37,
+  "rise": "50 / 55 K",
+  "regime": "gcc",
+  "regName": "MEW specifications",
+  "vec": "Dyn11",
+  "pol": "desert",
+  "corr": "C4/C5",
+  "notes": "Among the world's highest design ambients (52 °C+); cooling margin governs."
+ },
+ {
+  "n": "Kyrgyzstan",
+  "fl": "🇰🇬",
+  "f": 50,
+  "mv": [
+   10,
+   6,
+   35
+  ],
+  "lv": 400,
+  "ambMax": 45,
+  "ambAvg": 15,
+  "rise": "60 / 65 K",
+  "regime": "util",
+  "regName": "GOST-heritage / IEC-based national specs",
+  "vec": "Dyn11 / Yzn",
+  "pol": "continental",
+  "corr": "C3/C4",
+  "notes": "GOST-heritage 10(6)/0.4 kV networks; continental extremes from −40 °C winters to +45 °C summers — cold-start oil viscosity matters as much as summer rise."
+ },
+ {
+  "n": "Laos",
+  "fl": "🇱🇦",
+  "f": 50,
+  "mv": [
+   22,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 28,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National utility specs (IEC-based)",
+  "vec": "Dyn11",
+  "pol": "tropical coastal",
+  "corr": "C5-M",
+  "notes": "Permanent tropical humidity and salt air: sealed tanks, surface protection and creepage govern life more than peak ambient."
+ },
+ {
+  "n": "Latvia",
+  "fl": "🇱🇻",
+  "f": 50,
+  "mv": [
+   20,
+   10
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 18,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "eu",
+  "regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
+  "vec": "Dyn11 / Dyn5",
+  "pol": "normal",
+  "corr": "C3",
+  "notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
+ },
+ {
+  "n": "Lebanon",
+  "fl": "🇱🇧",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 48,
+  "ambAvg": 30,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National IEC-based specifications",
+  "vec": "Dyn11",
+  "pol": "desert",
+  "corr": "C4 / C5-M coastal",
+  "notes": "Hot-climate IEC practice: cooling margin, dust management and reduced rises govern. Verify national type-approval requirements."
+ },
+ {
+  "n": "Lesotho",
+  "fl": "🇱🇸",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 415,
+  "ambMax": 42,
+  "ambAvg": 26,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (British-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical",
+  "corr": "C4",
+  "notes": "British-heritage 11/33 kV practice; loading cycles and network voltage excursions argue for conservative design margins."
+ },
+ {
+  "n": "Liberia",
+  "fl": "🇱🇷",
+  "f": 60,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 415,
+  "ambMax": 42,
+  "ambAvg": 26,
+  "rise": "65 K avg over 30 °C (IEEE)",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (British-heritage)",
+  "vec": "Dyn1 (ANSI 30° lag)",
+  "pol": "tropical",
+  "corr": "C4",
+  "notes": "US-legacy 60 Hz grid — the West African exception; ANSI practice."
+ },
+ {
+  "n": "Libya",
+  "fl": "🇱🇾",
+  "f": 50,
+  "mv": [
+   20,
+   30
+  ],
+  "lv": 400,
+  "ambMax": 50,
+  "ambAvg": 27,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National IEC-based specifications (French-heritage network)",
+  "vec": "Dyn11",
+  "pol": "desert / coastal",
+  "corr": "C4 / C5-M coastal",
+  "notes": "French-heritage 20/30 kV practice with Saharan ambients inland and marine atmosphere on the coast."
+ },
+ {
+  "n": "Liechtenstein",
+  "fl": "🇱🇮",
+  "f": 50,
+  "mv": [
+   20,
+   10
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 18,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "eu",
+  "regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
+  "vec": "Dyn11 / Dyn5",
+  "pol": "normal",
+  "corr": "C3",
+  "notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
+ },
+ {
+  "n": "Lithuania",
+  "fl": "🇱🇹",
+  "f": 50,
+  "mv": [
+   20,
+   10
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 18,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "eu",
+  "regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
+  "vec": "Dyn11 / Dyn5",
+  "pol": "normal",
+  "corr": "C3",
+  "notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
+ },
+ {
+  "n": "Luxembourg",
+  "fl": "🇱🇺",
+  "f": 50,
+  "mv": [
+   20,
+   10
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 18,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "eu",
+  "regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
+  "vec": "Dyn11 / Dyn5",
+  "pol": "normal",
+  "corr": "C3",
+  "notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
+ },
+ {
+  "n": "Madagascar",
+  "fl": "🇲🇬",
+  "f": 50,
+  "mv": [
+   20,
+   30
+  ],
+  "lv": 400,
+  "ambMax": 42,
+  "ambAvg": 27,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (French-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical humid",
+  "corr": "C4 / C5-M coastal",
+  "notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
+ },
+ {
+  "n": "Malawi",
+  "fl": "🇲🇼",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 415,
+  "ambMax": 42,
+  "ambAvg": 26,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (British-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical",
+  "corr": "C4",
+  "notes": "British-heritage 11/33 kV practice; loading cycles and network voltage excursions argue for conservative design margins."
+ },
+ {
+  "n": "Malaysia",
+  "fl": "🇲🇾",
+  "f": 50,
+  "mv": [
+   22,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 28,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National utility specs (IEC-based)",
+  "vec": "Dyn11",
+  "pol": "tropical coastal",
+  "corr": "C5-M",
+  "notes": "Permanent tropical humidity and salt air: sealed tanks, surface protection and creepage govern life more than peak ambient."
+ },
+ {
+  "n": "Maldives",
+  "fl": "🇲🇻",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 48,
+  "ambAvg": 30,
+  "rise": "50 / 55 K",
+  "regime": "util",
+  "regName": "National IEC-based specs",
+  "vec": "Dyn11",
+  "pol": "tropical / monsoon",
+  "corr": "C4 / C5-M coastal",
+  "notes": "Subcontinent practice: 11/33 kV, monsoon humidity swings, heavy summer ambients — reduced rises common."
+ },
+ {
+  "n": "Mali",
+  "fl": "🇲🇱",
+  "f": 50,
+  "mv": [
+   20,
+   30
+  ],
+  "lv": 400,
+  "ambMax": 47,
+  "ambAvg": 32,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs",
+  "vec": "Dyn11",
+  "pol": "desert dust (harmattan)",
+  "corr": "C4",
+  "notes": "Sahel duty: 47 °C+ ambients with harmattan dust — cooling-surface margin and cleaning cycles govern life."
+ },
+ {
+  "n": "Malta",
+  "fl": "🇲🇹",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 15,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "eu",
+  "regName": "Ecodesign Tier 2 (UK SI / EU) + network specs",
+  "vec": "Dyn11",
+  "pol": "normal / coastal",
+  "corr": "C3/C4",
+  "notes": "British-practice 11/33 kV network under Ecodesign-level loss caps."
+ },
+ {
+  "n": "Marshall Islands",
+  "fl": "🇲🇭",
+  "f": 60,
+  "mv": [
+   13.8
+  ],
+  "lv": 480,
+  "ambMax": 36,
+  "ambAvg": 28,
+  "rise": "65 K avg over 30 °C (IEEE)",
+  "regime": "util",
+  "regName": "US-practice utility specs",
+  "vec": "Dyn1 (ANSI 30° lag)",
+  "pol": "marine island",
+  "corr": "C5-M",
+  "notes": "US-practice 60 Hz island grid; marine atmosphere and logistics govern."
+ },
+ {
+  "n": "Mauritania",
+  "fl": "🇲🇷",
+  "f": 50,
+  "mv": [
+   20,
+   30
+  ],
+  "lv": 400,
+  "ambMax": 47,
+  "ambAvg": 32,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs",
+  "vec": "Dyn11",
+  "pol": "desert dust (harmattan)",
+  "corr": "C4",
+  "notes": "Sahel duty: 47 °C+ ambients with harmattan dust — cooling-surface margin and cleaning cycles govern life."
+ },
+ {
+  "n": "Mauritius",
+  "fl": "🇲🇺",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 415,
+  "ambMax": 42,
+  "ambAvg": 26,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (British-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical",
+  "corr": "C4",
+  "notes": "British-heritage 11/33 kV practice; loading cycles and network voltage excursions argue for conservative design margins."
+ },
+ {
+  "n": "Mexico",
+  "fl": "🇲🇽",
+  "f": 60,
+  "mv": [
+   13.8,
+   23,
+   34.5
+  ],
+  "lv": 220,
+  "ambMax": 40,
+  "ambAvg": 27,
+  "rise": "65 K avg over 30 °C (IEEE)",
+  "regime": "doe",
+  "regName": "NOM-002-SEDE efficiency / CFE specs",
+  "vec": "Dyn1 (ANSI 30° lag)",
+  "pol": "tropical",
+  "corr": "C4",
+  "notes": "NOM efficiency rules with CFE specifications; 60 Hz ANSI practice throughout."
+ },
+ {
+  "n": "Micronesia",
+  "fl": "🇫🇲",
+  "f": 60,
+  "mv": [
+   13.8
+  ],
+  "lv": 480,
+  "ambMax": 36,
+  "ambAvg": 28,
+  "rise": "65 K avg over 30 °C (IEEE)",
+  "regime": "util",
+  "regName": "US-practice utility specs",
+  "vec": "Dyn1 (ANSI 30° lag)",
+  "pol": "marine island",
+  "corr": "C5-M",
+  "notes": "US-practice 60 Hz island grid; marine atmosphere and logistics govern."
+ },
+ {
+  "n": "Moldova",
+  "fl": "🇲🇩",
+  "f": 50,
+  "mv": [
+   10,
+   35,
+   20
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 16,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "util",
+  "regName": "National IEC-based specifications",
+  "vec": "Dyn11 / Yzn",
+  "pol": "normal",
+  "corr": "C3",
+  "notes": "IEC-based national practice on 10/20/35 kV networks; verify the utility loss schedule before tendering."
+ },
+ {
+  "n": "Monaco",
+  "fl": "🇲🇨",
+  "f": 50,
+  "mv": [
+   20,
+   10
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 18,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "eu",
+  "regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
+  "vec": "Dyn11 / Dyn5",
+  "pol": "normal",
+  "corr": "C3",
+  "notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
+ },
+ {
+  "n": "Mongolia",
+  "fl": "🇲🇳",
+  "f": 50,
+  "mv": [
+   10,
+   6,
+   35
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 15,
+  "rise": "60 / 65 K",
+  "regime": "util",
+  "regName": "GOST-heritage / IEC-based national specs",
+  "vec": "Dyn11 / Yzn",
+  "pol": "continental",
+  "corr": "C3/C4",
+  "notes": "GOST-heritage network with the world's widest temperature span (−45…+40 °C); cold-start behaviour governs."
+ },
+ {
+  "n": "Montenegro",
+  "fl": "🇲🇪",
+  "f": 50,
+  "mv": [
+   10,
+   35,
+   20
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 16,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "util",
+  "regName": "National IEC-based specifications",
+  "vec": "Dyn11 / Yzn",
+  "pol": "normal",
+  "corr": "C3",
+  "notes": "IEC-based national practice on 10/20/35 kV networks; verify the utility loss schedule before tendering."
+ },
+ {
+  "n": "Morocco",
+  "fl": "🇲🇦",
+  "f": 50,
+  "mv": [
+   20,
+   30
+  ],
+  "lv": 400,
+  "ambMax": 47,
+  "ambAvg": 27,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National IEC-based specifications (French-heritage network)",
+  "vec": "Dyn11",
+  "pol": "desert / coastal",
+  "corr": "C4 / C5-M coastal",
+  "notes": "French-heritage 20/30 kV practice with Saharan ambients inland and marine atmosphere on the coast."
+ },
+ {
+  "n": "Mozambique",
+  "fl": "🇲🇿",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 415,
+  "ambMax": 42,
+  "ambAvg": 26,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (British-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical",
+  "corr": "C4",
+  "notes": "British-heritage 11/33 kV practice; loading cycles and network voltage excursions argue for conservative design margins."
+ },
+ {
+  "n": "Myanmar",
+  "fl": "🇲🇲",
+  "f": 50,
+  "mv": [
+   22,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 28,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National utility specs (IEC-based)",
+  "vec": "Dyn11",
+  "pol": "tropical coastal",
+  "corr": "C5-M",
+  "notes": "Permanent tropical humidity and salt air: sealed tanks, surface protection and creepage govern life more than peak ambient."
+ },
+ {
+  "n": "Namibia",
+  "fl": "🇳🇦",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 415,
+  "ambMax": 42,
+  "ambAvg": 26,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (British-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical",
+  "corr": "C4",
+  "notes": "British-heritage 11/33 kV practice; loading cycles and network voltage excursions argue for conservative design margins."
+ },
+ {
+  "n": "Nauru",
+  "fl": "🇳🇷",
+  "f": 50,
+  "mv": [
+   11
+  ],
+  "lv": 415,
+  "ambMax": 38,
+  "ambAvg": 28,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "Utility specs (IEC / AS-NZS influenced)",
+  "vec": "Dyn11",
+  "pol": "marine island",
+  "corr": "C5-M",
+  "notes": "Pacific island grid: salt atmosphere (C5-M), shipping logistics and spares strategy dominate lifecycle cost."
+ },
+ {
+  "n": "Nepal",
+  "fl": "🇳🇵",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 48,
+  "ambAvg": 30,
+  "rise": "50 / 55 K",
+  "regime": "util",
+  "regName": "National IEC-based specs",
+  "vec": "Dyn11",
+  "pol": "tropical / monsoon",
+  "corr": "C4 / C5-M coastal",
+  "notes": "Subcontinent practice: 11/33 kV, monsoon humidity swings, heavy summer ambients — reduced rises common."
+ },
+ {
+  "n": "Netherlands",
+  "fl": "🇳🇱",
+  "f": 50,
+  "mv": [
+   20,
+   10
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 18,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "eu",
+  "regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
+  "vec": "Dyn11 / Dyn5",
+  "pol": "normal",
+  "corr": "C3",
+  "notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
+ },
+ {
+  "n": "New Zealand",
+  "fl": "🇳🇿",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 38,
+  "ambAvg": 15,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "aus",
+  "regName": "MEPS AS/NZS 2374 / network co. specs",
+  "vec": "Dyn11",
+  "pol": "normal / coastal",
+  "corr": "C3/C4",
+  "notes": "MEPS efficiency floors; 11/33 kV British-heritage practice; seismic qualification for substation plant."
+ },
+ {
+  "n": "Nicaragua",
+  "fl": "🇳🇮",
+  "f": 60,
+  "mv": [
+   13.8,
+   34.5
+  ],
+  "lv": 220,
+  "ambMax": 40,
+  "ambAvg": 27,
+  "rise": "65 K avg over 30 °C (IEEE)",
+  "regime": "util",
+  "regName": "ANSI/IEEE-based utility specs",
+  "vec": "Dyn1 (ANSI 30° lag)",
+  "pol": "tropical",
+  "corr": "C4",
+  "notes": "ANSI/IEEE practice: 60 Hz, 30° lag convention, %Z on self-cooled base — see course §12.6 before mixing with IEC fleets."
+ },
+ {
+  "n": "Niger",
+  "fl": "🇳🇪",
+  "f": 50,
+  "mv": [
+   20,
+   30
+  ],
+  "lv": 400,
+  "ambMax": 47,
+  "ambAvg": 32,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs",
+  "vec": "Dyn11",
+  "pol": "desert dust (harmattan)",
+  "corr": "C4",
+  "notes": "Sahel duty: 47 °C+ ambients with harmattan dust — cooling-surface margin and cleaning cycles govern life."
+ },
+ {
+  "n": "Nigeria",
+  "fl": "🇳🇬",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 415,
+  "ambMax": 45,
+  "ambAvg": 28,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "NEMSA / DisCo specs (IEC-based)",
+  "vec": "Dyn11",
+  "pol": "tropical / harmattan dust",
+  "corr": "C4/C5-M coastal",
+  "notes": "Severe network conditions: voltage swings, harmonics and loading cycles argue for conservative J and robust OLTC/DETC margins."
+ },
+ {
+  "n": "North Macedonia",
+  "fl": "🇲🇰",
+  "f": 50,
+  "mv": [
+   10,
+   35,
+   20
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 16,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "util",
+  "regName": "National IEC-based specifications",
+  "vec": "Dyn11 / Yzn",
+  "pol": "normal",
+  "corr": "C3",
+  "notes": "IEC-based national practice on 10/20/35 kV networks; verify the utility loss schedule before tendering."
+ },
+ {
+  "n": "Norway",
+  "fl": "🇳🇴",
+  "f": 50,
+  "mv": [
+   20,
+   10
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 18,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "eu",
+  "regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
+  "vec": "Dyn11 / Dyn5",
+  "pol": "normal",
+  "corr": "C3",
+  "notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
+ },
+ {
+  "n": "Oman",
+  "fl": "🇴🇲",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 415,
+  "ambMax": 50,
+  "ambAvg": 34,
+  "rise": "50 / 55 K",
+  "regime": "gcc",
+  "regName": "OETC / MEDC specs",
+  "vec": "Dyn11",
+  "pol": "desert + coastal",
+  "corr": "C5-M",
+  "notes": "Coastal humidity plus desert dust — radiator/fin cleaning cycles are short."
+ },
+ {
+  "n": "Pakistan",
+  "fl": "🇵🇰",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 50,
+  "ambAvg": 33,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "DISCO / WAPDA specs (IEC-based)",
+  "vec": "Dyn11",
+  "pol": "mixed",
+  "corr": "C4",
+  "notes": "IEC-aligned utility specs; severe loading cycles and harmonics in urban feeders."
+ },
+ {
+  "n": "Palau",
+  "fl": "🇵🇼",
+  "f": 60,
+  "mv": [
+   13.8
+  ],
+  "lv": 480,
+  "ambMax": 36,
+  "ambAvg": 28,
+  "rise": "65 K avg over 30 °C (IEEE)",
+  "regime": "util",
+  "regName": "US-practice utility specs",
+  "vec": "Dyn1 (ANSI 30° lag)",
+  "pol": "marine island",
+  "corr": "C5-M",
+  "notes": "US-practice 60 Hz island grid; marine atmosphere and logistics govern."
+ },
+ {
+  "n": "Palestine",
+  "fl": "🇵🇸",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 48,
+  "ambAvg": 30,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National IEC-based specifications",
+  "vec": "Dyn11",
+  "pol": "desert",
+  "corr": "C4 / C5-M coastal",
+  "notes": "Hot-climate IEC practice: cooling margin, dust management and reduced rises govern. Verify national type-approval requirements."
+ },
+ {
+  "n": "Panama",
+  "fl": "🇵🇦",
+  "f": 60,
+  "mv": [
+   13.8,
+   34.5
+  ],
+  "lv": 220,
+  "ambMax": 40,
+  "ambAvg": 27,
+  "rise": "65 K avg over 30 °C (IEEE)",
+  "regime": "util",
+  "regName": "ANSI/IEEE-based utility specs",
+  "vec": "Dyn1 (ANSI 30° lag)",
+  "pol": "tropical",
+  "corr": "C4",
+  "notes": "ANSI/IEEE practice: 60 Hz, 30° lag convention, %Z on self-cooled base — see course §12.6 before mixing with IEC fleets."
+ },
+ {
+  "n": "Papua New Guinea",
+  "fl": "🇵🇬",
+  "f": 50,
+  "mv": [
+   11
+  ],
+  "lv": 415,
+  "ambMax": 38,
+  "ambAvg": 28,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "Utility specs (IEC / AS-NZS influenced)",
+  "vec": "Dyn11",
+  "pol": "marine island",
+  "corr": "C5-M",
+  "notes": "Pacific island grid: salt atmosphere (C5-M), shipping logistics and spares strategy dominate lifecycle cost."
+ },
+ {
+  "n": "Paraguay",
+  "fl": "🇵🇾",
+  "f": 50,
+  "mv": [
+   13.2,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 42,
+  "ambAvg": 20,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National specs (IEC-derived)",
+  "vec": "Dyn11 / Dyn1",
+  "pol": "mixed",
+  "corr": "C3/C4",
+  "notes": "Southern-cone 50 Hz practice with IEC-derived national standards."
+ },
+ {
+  "n": "Peru",
+  "fl": "🇵🇪",
+  "f": 60,
+  "mv": [
+   13.8,
+   34.5
+  ],
+  "lv": 220,
+  "ambMax": 40,
+  "ambAvg": 27,
+  "rise": "65 K avg over 30 °C (IEEE)",
+  "regime": "util",
+  "regName": "ANSI/IEEE-based utility specs",
+  "vec": "Dyn1 (ANSI 30° lag)",
+  "pol": "tropical",
+  "corr": "C4",
+  "notes": "ANSI/IEEE practice: 60 Hz, 30° lag convention, %Z on self-cooled base — see course §12.6 before mixing with IEC fleets."
+ },
+ {
+  "n": "Philippines",
+  "fl": "🇵🇭",
+  "f": 60,
+  "mv": [
+   13.8,
+   34.5
+  ],
+  "lv": 220,
+  "ambMax": 40,
+  "ambAvg": 27,
+  "rise": "65 K avg over 30 °C (IEEE)",
+  "regime": "util",
+  "regName": "PNS / ERC, Meralco specs (ANSI-influenced)",
+  "vec": "Dyn1 (ANSI 30° lag)",
+  "pol": "tropical",
+  "corr": "C4",
+  "notes": "60 Hz ANSI-influenced practice; typhoon hardening and island logistics shape designs."
+ },
+ {
+  "n": "Poland",
+  "fl": "🇵🇱",
+  "f": 50,
+  "mv": [
+   20,
+   10
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 18,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "eu",
+  "regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
+  "vec": "Dyn11 / Dyn5",
+  "pol": "normal",
+  "corr": "C3",
+  "notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
+ },
+ {
+  "n": "Portugal",
+  "fl": "🇵🇹",
+  "f": 50,
+  "mv": [
+   20,
+   15
+  ],
+  "lv": 400,
+  "ambMax": 44,
+  "ambAvg": 24,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "eu",
+  "regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
+  "vec": "Dyn11",
+  "pol": "coastal Mediterranean",
+  "corr": "C3 / C4 coastal",
+  "notes": "EU Tier 2 applies; warm-summer derating and coastal creepage on the littoral. Regional values — confirm DSO specs."
+ },
+ {
+  "n": "Qatar",
+  "fl": "🇶🇦",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 415,
+  "ambMax": 50,
+  "ambAvg": 35,
+  "rise": "50 / 55 K",
+  "regime": "gcc",
+  "regName": "KAHRAMAA specifications",
+  "vec": "Dyn11",
+  "pol": "desert + coastal",
+  "corr": "C5-M",
+  "notes": "KAHRAMAA specifies reduced rises and C5-M coastal protection throughout."
+ },
+ {
+  "n": "Romania",
+  "fl": "🇷🇴",
+  "f": 50,
+  "mv": [
+   20,
+   10
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 18,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "eu",
+  "regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
+  "vec": "Dyn11 / Dyn5",
+  "pol": "normal",
+  "corr": "C3",
+  "notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
+ },
+ {
+  "n": "Russia",
+  "fl": "🇷🇺",
+  "f": 50,
+  "mv": [
+   10,
+   6,
+   35
+  ],
+  "lv": 400,
+  "ambMax": 42,
+  "ambAvg": 15,
+  "rise": "60 / 65 K",
+  "regime": "util",
+  "regName": "GOST-heritage / IEC-based national specs",
+  "vec": "Dyn11 / Yzn",
+  "pol": "continental",
+  "corr": "C3/C4",
+  "notes": "GOST 10/6 kV practice; −40 °C cold starts set oil and conservator design in Siberia while southern summers still reach +40 °C."
+ },
+ {
+  "n": "Rwanda",
+  "fl": "🇷🇼",
+  "f": 50,
+  "mv": [
+   20,
+   30
+  ],
+  "lv": 400,
+  "ambMax": 42,
+  "ambAvg": 27,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (French-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical humid",
+  "corr": "C4 / C5-M coastal",
+  "notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
+ },
+ {
+  "n": "Saint Kitts and Nevis",
+  "fl": "🇰🇳",
+  "f": 50,
+  "mv": [
+   11
+  ],
+  "lv": 400,
+  "ambMax": 38,
+  "ambAvg": 28,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "Utility specs (British-heritage, IEC)",
+  "vec": "Dyn11",
+  "pol": "marine island",
+  "corr": "C5-M",
+  "notes": "Island grid: salt atmosphere, hurricane hardening and spares logistics dominate lifecycle cost."
+ },
+ {
+  "n": "Saint Lucia",
+  "fl": "🇱🇨",
+  "f": 50,
+  "mv": [
+   11
+  ],
+  "lv": 400,
+  "ambMax": 38,
+  "ambAvg": 28,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "Utility specs (British-heritage, IEC)",
+  "vec": "Dyn11",
+  "pol": "marine island",
+  "corr": "C5-M",
+  "notes": "Island grid: salt atmosphere, hurricane hardening and spares logistics dominate lifecycle cost."
+ },
+ {
+  "n": "Saint Vincent and the Grenadines",
+  "fl": "🇻🇨",
+  "f": 50,
+  "mv": [
+   11
+  ],
+  "lv": 400,
+  "ambMax": 38,
+  "ambAvg": 28,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "Utility specs (British-heritage, IEC)",
+  "vec": "Dyn11",
+  "pol": "marine island",
+  "corr": "C5-M",
+  "notes": "Island grid: salt atmosphere, hurricane hardening and spares logistics dominate lifecycle cost."
+ },
+ {
+  "n": "Samoa",
+  "fl": "🇼🇸",
+  "f": 50,
+  "mv": [
+   11
+  ],
+  "lv": 415,
+  "ambMax": 38,
+  "ambAvg": 28,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "Utility specs (IEC / AS-NZS influenced)",
+  "vec": "Dyn11",
+  "pol": "marine island",
+  "corr": "C5-M",
+  "notes": "Pacific island grid: salt atmosphere (C5-M), shipping logistics and spares strategy dominate lifecycle cost."
+ },
+ {
+  "n": "San Marino",
+  "fl": "🇸🇲",
+  "f": 50,
+  "mv": [
+   20,
+   10
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 18,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "eu",
+  "regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
+  "vec": "Dyn11 / Dyn5",
+  "pol": "normal",
+  "corr": "C3",
+  "notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
+ },
+ {
+  "n": "Sao Tome and Principe",
+  "fl": "🇸🇹",
+  "f": 50,
+  "mv": [
+   20,
+   30
+  ],
+  "lv": 400,
+  "ambMax": 42,
+  "ambAvg": 27,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (French-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical humid",
+  "corr": "C4 / C5-M coastal",
+  "notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
+ },
+ {
+  "n": "Saudi Arabia",
+  "fl": "🇸🇦",
+  "f": 60,
+  "mv": [
+   13.8,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 52,
+  "ambAvg": 36,
+  "rise": "55 / 60 K (SEC)",
+  "regime": "gcc",
+  "regName": "SASO / SEC specifications",
+  "vec": "Dyn11",
+  "pol": "desert",
+  "corr": "C5-M (coastal) / C4 (inland)",
+  "notes": "The GCC's 60 Hz grid: cores are ~15% smaller for the same volts-per-turn, but specific core loss rises ~30% — the loss balance shifts. SEC 13.8 kV distribution standard."
+ },
+ {
+  "n": "Senegal",
+  "fl": "🇸🇳",
+  "f": 50,
+  "mv": [
+   20,
+   30
+  ],
+  "lv": 400,
+  "ambMax": 42,
+  "ambAvg": 27,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (French-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical humid",
+  "corr": "C4 / C5-M coastal",
+  "notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
+ },
+ {
+  "n": "Serbia",
+  "fl": "🇷🇸",
+  "f": 50,
+  "mv": [
+   10,
+   35,
+   20
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 16,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "util",
+  "regName": "National IEC-based specifications",
+  "vec": "Dyn11 / Yzn",
+  "pol": "normal",
+  "corr": "C3",
+  "notes": "IEC-based national practice on 10/20/35 kV networks; verify the utility loss schedule before tendering."
+ },
+ {
+  "n": "Seychelles",
+  "fl": "🇸🇨",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 415,
+  "ambMax": 42,
+  "ambAvg": 26,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (British-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical",
+  "corr": "C4",
+  "notes": "British-heritage 11/33 kV practice; loading cycles and network voltage excursions argue for conservative design margins."
+ },
+ {
+  "n": "Sierra Leone",
+  "fl": "🇸🇱",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 415,
+  "ambMax": 42,
+  "ambAvg": 26,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (British-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical",
+  "corr": "C4",
+  "notes": "British-heritage 11/33 kV practice; loading cycles and network voltage excursions argue for conservative design margins."
+ },
+ {
+  "n": "Singapore",
+  "fl": "🇸🇬",
+  "f": 50,
+  "mv": [
+   22,
+   6.6
+  ],
+  "lv": 400,
+  "ambMax": 36,
+  "ambAvg": 28,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "SP Group specs (IEC)",
+  "vec": "Dyn11",
+  "pol": "tropical coastal",
+  "corr": "C5-M",
+  "notes": "Dense urban 22 kV cable network; compact substations favour cast resin and low-noise designs."
+ },
+ {
+  "n": "Slovakia",
+  "fl": "🇸🇰",
+  "f": 50,
+  "mv": [
+   20,
+   10
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 18,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "eu",
+  "regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
+  "vec": "Dyn11 / Dyn5",
+  "pol": "normal",
+  "corr": "C3",
+  "notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
+ },
+ {
+  "n": "Slovenia",
+  "fl": "🇸🇮",
+  "f": 50,
+  "mv": [
+   20,
+   10
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 18,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "eu",
+  "regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
+  "vec": "Dyn11 / Dyn5",
+  "pol": "normal",
+  "corr": "C3",
+  "notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
+ },
+ {
+  "n": "Solomon Islands",
+  "fl": "🇸🇧",
+  "f": 50,
+  "mv": [
+   11
+  ],
+  "lv": 415,
+  "ambMax": 38,
+  "ambAvg": 28,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "Utility specs (IEC / AS-NZS influenced)",
+  "vec": "Dyn11",
+  "pol": "marine island",
+  "corr": "C5-M",
+  "notes": "Pacific island grid: salt atmosphere (C5-M), shipping logistics and spares strategy dominate lifecycle cost."
+ },
+ {
+  "n": "Somalia",
+  "fl": "🇸🇴",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 48,
+  "ambAvg": 30,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National IEC-based specifications",
+  "vec": "Dyn11",
+  "pol": "desert",
+  "corr": "C4 / C5-M coastal",
+  "notes": "Hot-climate IEC practice: cooling margin, dust management and reduced rises govern. Verify national type-approval requirements."
+ },
+ {
+  "n": "South Africa",
+  "fl": "🇿🇦",
+  "f": 50,
+  "mv": [
+   11,
+   22,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 42,
+  "ambAvg": 23,
+  "rise": "55 / 60 K (SANS)",
+  "regime": "util",
+  "regName": "SANS 780 / Eskom specifications",
+  "vec": "Dyn11",
+  "pol": "mixed; highveld altitude",
+  "corr": "C3/C4",
+  "notes": "Altitude derating matters: Johannesburg sits at ~1750 m — external insulation and cooling both derate above 1000 m (§8.5 logic applies to oil units too)."
+ },
+ {
+  "n": "South Sudan",
+  "fl": "🇸🇸",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 415,
+  "ambMax": 42,
+  "ambAvg": 26,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (British-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical",
+  "corr": "C4",
+  "notes": "British-heritage 11/33 kV practice; loading cycles and network voltage excursions argue for conservative design margins."
+ },
+ {
+  "n": "Spain",
+  "fl": "🇪🇸",
+  "f": 50,
+  "mv": [
+   20,
+   15
+  ],
+  "lv": 400,
+  "ambMax": 44,
+  "ambAvg": 24,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "eu",
+  "regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
+  "vec": "Dyn11",
+  "pol": "coastal Mediterranean",
+  "corr": "C3 / C4 coastal",
+  "notes": "EU Tier 2 applies; warm-summer derating and coastal creepage on the littoral. Regional values — confirm DSO specs."
+ },
+ {
+  "n": "Sri Lanka",
+  "fl": "🇱🇰",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 48,
+  "ambAvg": 30,
+  "rise": "50 / 55 K",
+  "regime": "util",
+  "regName": "National IEC-based specs",
+  "vec": "Dyn11",
+  "pol": "tropical / monsoon",
+  "corr": "C4 / C5-M coastal",
+  "notes": "Subcontinent practice: 11/33 kV, monsoon humidity swings, heavy summer ambients — reduced rises common."
+ },
+ {
+  "n": "Sudan",
+  "fl": "🇸🇩",
+  "f": 50,
+  "mv": [
+   20,
+   30
+  ],
+  "lv": 400,
+  "ambMax": 47,
+  "ambAvg": 32,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs",
+  "vec": "Dyn11",
+  "pol": "desert dust (harmattan)",
+  "corr": "C4",
+  "notes": "Sahel duty: 47 °C+ ambients with harmattan dust — cooling-surface margin and cleaning cycles govern life."
+ },
+ {
+  "n": "Suriname",
+  "fl": "🇸🇷",
+  "f": 60,
+  "mv": [
+   13.8
+  ],
+  "lv": 220,
+  "ambMax": 38,
+  "ambAvg": 28,
+  "rise": "65 K avg over 30 °C (IEEE)",
+  "regime": "util",
+  "regName": "ANSI/IEEE-based utility specs",
+  "vec": "Dyn1 (ANSI 30° lag)",
+  "pol": "marine island",
+  "corr": "C5-M",
+  "notes": "60 Hz island grid, ANSI practice: salt atmosphere, hurricane hardening and spares logistics dominate."
+ },
+ {
+  "n": "Sweden",
+  "fl": "🇸🇪",
+  "f": 50,
+  "mv": [
+   20,
+   10
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 18,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "eu",
+  "regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
+  "vec": "Dyn11 / Dyn5",
+  "pol": "normal",
+  "corr": "C3",
+  "notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
+ },
+ {
+  "n": "Switzerland",
+  "fl": "🇨🇭",
+  "f": 50,
+  "mv": [
+   20,
+   10
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 18,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "eu",
+  "regName": "EU Ecodesign Tier 2 / EN 50708 + national DSO specs",
+  "vec": "Dyn11 / Dyn5",
+  "pol": "normal",
+  "corr": "C3",
+  "notes": "EU Ecodesign Tier 2 loss caps apply; 20/10 kV MV practice. Regional values — confirm the DSO framework specification."
+ },
+ {
+  "n": "Syria",
+  "fl": "🇸🇾",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 48,
+  "ambAvg": 30,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National IEC-based specifications",
+  "vec": "Dyn11",
+  "pol": "desert",
+  "corr": "C4 / C5-M coastal",
+  "notes": "Hot-climate IEC practice: cooling margin, dust management and reduced rises govern. Verify national type-approval requirements."
+ },
+ {
+  "n": "Taiwan",
+  "fl": "🇹🇼",
+  "f": 60,
+  "mv": [
+   22.8,
+   11.4
+  ],
+  "lv": 380,
+  "ambMax": 40,
+  "ambAvg": 28,
+  "rise": "65 K avg over 30 °C",
+  "regime": "aus",
+  "regName": "CNS standards / MEPS (Taipower)",
+  "vec": "Dyn1",
+  "pol": "tropical coastal",
+  "corr": "C5-M",
+  "notes": "60 Hz Taipower grid (22.8/11.4 kV); MEPS efficiency floors; typhoon and seismic siting requirements."
+ },
+ {
+  "n": "Tajikistan",
+  "fl": "🇹🇯",
+  "f": 50,
+  "mv": [
+   10,
+   6,
+   35
+  ],
+  "lv": 400,
+  "ambMax": 45,
+  "ambAvg": 15,
+  "rise": "60 / 65 K",
+  "regime": "util",
+  "regName": "GOST-heritage / IEC-based national specs",
+  "vec": "Dyn11 / Yzn",
+  "pol": "continental",
+  "corr": "C3/C4",
+  "notes": "GOST-heritage 10(6)/0.4 kV networks; continental extremes from −40 °C winters to +45 °C summers — cold-start oil viscosity matters as much as summer rise."
+ },
+ {
+  "n": "Tanzania",
+  "fl": "🇹🇿",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 415,
+  "ambMax": 42,
+  "ambAvg": 26,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (British-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical",
+  "corr": "C4",
+  "notes": "British-heritage 11/33 kV practice; loading cycles and network voltage excursions argue for conservative design margins."
+ },
+ {
+  "n": "Thailand",
+  "fl": "🇹🇭",
+  "f": 50,
+  "mv": [
+   22,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 28,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "PEA/MEA specs (IEC-based)",
+  "vec": "Dyn11",
+  "pol": "tropical coastal",
+  "corr": "C5-M",
+  "notes": "Permanent tropical humidity and salt air: sealed tanks, surface protection and creepage govern life more than peak ambient."
+ },
+ {
+  "n": "Timor-Leste",
+  "fl": "🇹🇱",
+  "f": 50,
+  "mv": [
+   22,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 28,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National utility specs (IEC-based)",
+  "vec": "Dyn11",
+  "pol": "tropical coastal",
+  "corr": "C5-M",
+  "notes": "Permanent tropical humidity and salt air: sealed tanks, surface protection and creepage govern life more than peak ambient."
+ },
+ {
+  "n": "Togo",
+  "fl": "🇹🇬",
+  "f": 50,
+  "mv": [
+   20,
+   30
+  ],
+  "lv": 400,
+  "ambMax": 42,
+  "ambAvg": 27,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (French-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical humid",
+  "corr": "C4 / C5-M coastal",
+  "notes": "French-heritage 20/30 kV practice; tropical humidity and storm lightning shape insulation and arrester choices."
+ },
+ {
+  "n": "Tonga",
+  "fl": "🇹🇴",
+  "f": 50,
+  "mv": [
+   11
+  ],
+  "lv": 415,
+  "ambMax": 38,
+  "ambAvg": 28,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "Utility specs (IEC / AS-NZS influenced)",
+  "vec": "Dyn11",
+  "pol": "marine island",
+  "corr": "C5-M",
+  "notes": "Pacific island grid: salt atmosphere (C5-M), shipping logistics and spares strategy dominate lifecycle cost."
+ },
+ {
+  "n": "Trinidad and Tobago",
+  "fl": "🇹🇹",
+  "f": 60,
+  "mv": [
+   13.8
+  ],
+  "lv": 220,
+  "ambMax": 38,
+  "ambAvg": 28,
+  "rise": "65 K avg over 30 °C (IEEE)",
+  "regime": "util",
+  "regName": "ANSI/IEEE-based utility specs",
+  "vec": "Dyn1 (ANSI 30° lag)",
+  "pol": "marine island",
+  "corr": "C5-M",
+  "notes": "60 Hz island grid, ANSI practice: salt atmosphere, hurricane hardening and spares logistics dominate."
+ },
+ {
+  "n": "Tunisia",
+  "fl": "🇹🇳",
+  "f": 50,
+  "mv": [
+   20,
+   30
+  ],
+  "lv": 400,
+  "ambMax": 47,
+  "ambAvg": 27,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National IEC-based specifications (French-heritage network)",
+  "vec": "Dyn11",
+  "pol": "desert / coastal",
+  "corr": "C4 / C5-M coastal",
+  "notes": "French-heritage 20/30 kV practice with Saharan ambients inland and marine atmosphere on the coast."
+ },
+ {
+  "n": "Turkey",
+  "fl": "🇹🇷",
+  "f": 50,
+  "mv": [
+   34.5,
+   11
+  ],
+  "lv": 400,
+  "ambMax": 45,
+  "ambAvg": 25,
+  "rise": "60 / 65 K",
+  "regime": "eu",
+  "regName": "EU Ecodesign Tier 2 (aligned) / TEDAŞ specs",
+  "vec": "Dyn11",
+  "pol": "mixed",
+  "corr": "C3/C4",
+  "notes": "TEDAŞ specs align with EU Ecodesign; 34.5 kV is the workhorse MV level — note the higher insulation class it demands."
+ },
+ {
+  "n": "Turkmenistan",
+  "fl": "🇹🇲",
+  "f": 50,
+  "mv": [
+   10,
+   6,
+   35
+  ],
+  "lv": 400,
+  "ambMax": 45,
+  "ambAvg": 15,
+  "rise": "60 / 65 K",
+  "regime": "util",
+  "regName": "GOST-heritage / IEC-based national specs",
+  "vec": "Dyn11 / Yzn",
+  "pol": "continental",
+  "corr": "C3/C4",
+  "notes": "GOST-heritage 10(6)/0.4 kV networks; continental extremes from −40 °C winters to +45 °C summers — cold-start oil viscosity matters as much as summer rise."
+ },
+ {
+  "n": "Tuvalu",
+  "fl": "🇹🇻",
+  "f": 50,
+  "mv": [
+   11
+  ],
+  "lv": 415,
+  "ambMax": 38,
+  "ambAvg": 28,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "Utility specs (IEC / AS-NZS influenced)",
+  "vec": "Dyn11",
+  "pol": "marine island",
+  "corr": "C5-M",
+  "notes": "Pacific island grid: salt atmosphere (C5-M), shipping logistics and spares strategy dominate lifecycle cost."
+ },
+ {
+  "n": "Uganda",
+  "fl": "🇺🇬",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 415,
+  "ambMax": 42,
+  "ambAvg": 26,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (British-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical",
+  "corr": "C4",
+  "notes": "British-heritage 11/33 kV practice; loading cycles and network voltage excursions argue for conservative design margins."
+ },
+ {
+  "n": "Ukraine",
+  "fl": "🇺🇦",
+  "f": 50,
+  "mv": [
+   10,
+   35,
+   20
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 16,
+  "rise": "60 / 65 K (IEC)",
+  "regime": "util",
+  "regName": "National IEC-based specifications",
+  "vec": "Dyn11 / Yzn",
+  "pol": "normal",
+  "corr": "C3",
+  "notes": "IEC-based national practice on 10/20/35 kV networks; verify the utility loss schedule before tendering."
+ },
+ {
+  "n": "United Arab Emirates",
+  "fl": "🇦🇪",
+  "f": 50,
+  "mv": [
+   11,
+   22,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 50,
+  "ambAvg": 35,
+  "rise": "50 / 55 K (reduced)",
+  "regime": "gcc",
+  "regName": "GSO / ESMA + utility specs (DEWA, EWEC, SEWA)",
+  "vec": "Dyn11",
+  "pol": "desert + coastal",
+  "corr": "C5-M",
+  "notes": "Reduced rises (50/55 K) compensate the 50 °C summer ambient so insulation ages at normal rates. Hermetic corrugated tanks dominate distribution; DEWA/EWEC type-approval required."
+ },
+ {
+  "n": "United Kingdom",
+  "fl": "🇬🇧",
+  "f": 50,
+  "mv": [
+   11,
+   33,
+   66,
+   132
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 20,
+  "rise": "60 / 65 K",
+  "regime": "eu",
+  "regName": "BS EN 60076 + ENA Technical Specs (DNO)",
+  "vec": "Dyn11",
+  "pol": "temperate maritime",
+  "corr": "C3 / C4 coastal",
+  "notes": "UK practice: 11 kV primary distribution with 33/66/132 kV sub-transmission, standard 60/65 K rises, ENA technical specifications; ester-filled and low-loss units increasingly specified for urban DNO substations."
+ },
+ {
+  "n": "United States",
+  "fl": "🇺🇸",
+  "f": 60,
+  "mv": [
+   4.16,
+   12.47,
+   13.8,
+   34.5
+  ],
+  "lv": 480,
+  "ambMax": 40,
+  "ambAvg": 30,
+  "rise": "65 °C (ANSI)",
+  "regime": "doe",
+  "regName": "ANSI/IEEE C57 + DOE 10 CFR 431 efficiency",
+  "vec": "Dyn1 (ANSI 30°)",
+  "pol": "temperate / continental",
+  "corr": "C3",
+  "notes": "US practice: 60 Hz, 12.47/13.8 kV distribution and 34.5 kV sub-transmission, ANSI C57 65 °C rise on a 30 °C average ambient, DOE efficiency minimums; pad-mounted and pole-mounted units dominate."
+ },
+ {
+  "n": "Uruguay",
+  "fl": "🇺🇾",
+  "f": 50,
+  "mv": [
+   13.2,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 42,
+  "ambAvg": 20,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National specs (IEC-derived)",
+  "vec": "Dyn11 / Dyn1",
+  "pol": "mixed",
+  "corr": "C3/C4",
+  "notes": "Southern-cone 50 Hz practice with IEC-derived national standards."
+ },
+ {
+  "n": "Uzbekistan",
+  "fl": "🇺🇿",
+  "f": 50,
+  "mv": [
+   10,
+   6,
+   35
+  ],
+  "lv": 400,
+  "ambMax": 45,
+  "ambAvg": 15,
+  "rise": "60 / 65 K",
+  "regime": "util",
+  "regName": "GOST-heritage / IEC-based national specs",
+  "vec": "Dyn11 / Yzn",
+  "pol": "continental",
+  "corr": "C3/C4",
+  "notes": "GOST-heritage 10(6)/0.4 kV networks; continental extremes from −40 °C winters to +45 °C summers — cold-start oil viscosity matters as much as summer rise."
+ },
+ {
+  "n": "Vanuatu",
+  "fl": "🇻🇺",
+  "f": 50,
+  "mv": [
+   11
+  ],
+  "lv": 415,
+  "ambMax": 38,
+  "ambAvg": 28,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "Utility specs (IEC / AS-NZS influenced)",
+  "vec": "Dyn11",
+  "pol": "marine island",
+  "corr": "C5-M",
+  "notes": "Pacific island grid: salt atmosphere (C5-M), shipping logistics and spares strategy dominate lifecycle cost."
+ },
+ {
+  "n": "Venezuela",
+  "fl": "🇻🇪",
+  "f": 60,
+  "mv": [
+   13.8,
+   34.5
+  ],
+  "lv": 220,
+  "ambMax": 40,
+  "ambAvg": 27,
+  "rise": "65 K avg over 30 °C (IEEE)",
+  "regime": "util",
+  "regName": "ANSI/IEEE-based utility specs",
+  "vec": "Dyn1 (ANSI 30° lag)",
+  "pol": "tropical",
+  "corr": "C4",
+  "notes": "ANSI/IEEE practice: 60 Hz, 30° lag convention, %Z on self-cooled base — see course §12.6 before mixing with IEC fleets."
+ },
+ {
+  "n": "Vietnam",
+  "fl": "🇻🇳",
+  "f": 50,
+  "mv": [
+   22,
+   35
+  ],
+  "lv": 400,
+  "ambMax": 40,
+  "ambAvg": 28,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "EVN specs (IEC-based)",
+  "vec": "Dyn11",
+  "pol": "tropical coastal",
+  "corr": "C5-M",
+  "notes": "Permanent tropical humidity and salt air: sealed tanks, surface protection and creepage govern life more than peak ambient."
+ },
+ {
+  "n": "Yemen",
+  "fl": "🇾🇪",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 400,
+  "ambMax": 48,
+  "ambAvg": 30,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National IEC-based specifications",
+  "vec": "Dyn11",
+  "pol": "desert",
+  "corr": "C4 / C5-M coastal",
+  "notes": "Hot-climate IEC practice: cooling margin, dust management and reduced rises govern. Verify national type-approval requirements."
+ },
+ {
+  "n": "Zambia",
+  "fl": "🇿🇲",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 415,
+  "ambMax": 42,
+  "ambAvg": 26,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (British-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical",
+  "corr": "C4",
+  "notes": "British-heritage 11/33 kV practice; loading cycles and network voltage excursions argue for conservative design margins."
+ },
+ {
+  "n": "Zimbabwe",
+  "fl": "🇿🇼",
+  "f": 50,
+  "mv": [
+   11,
+   33
+  ],
+  "lv": 415,
+  "ambMax": 42,
+  "ambAvg": 26,
+  "rise": "55 / 60 K",
+  "regime": "util",
+  "regName": "National / utility IEC-based specs (British-heritage)",
+  "vec": "Dyn11",
+  "pol": "tropical",
+  "corr": "C4",
+  "notes": "British-heritage 11/33 kV practice; loading cycles and network voltage excursions argue for conservative design margins."
+ }
 ];
 
 const REG = {
@@ -3926,5 +3937,6 @@ selK.addEventListener('change', design);
 selM.addEventListener('change', design);
 fillMv(); design();
 </script>
+<script src="analytics.js" defer></script>
 </body>
 </html>

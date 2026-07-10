@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Electrical Transformer Design &amp; Construction — Complete Engineering Tutorial</title>
+<meta name="description" content="Complete 16-section transformer design tutorial — from magnetic circuit fundamentals to full worked design examples.">
+<link rel="canonical" href="https://trafopath.com/tutorial.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TrafoPath">
+<meta property="og:title" content="Electrical Transformer Design &amp; Construction — Complete Engineering Tutorial">
+<meta property="og:description" content="Complete 16-section transformer design tutorial — from magnetic circuit fundamentals to full worked design examples.">
+<meta property="og:url" content="https://trafopath.com/tutorial.html">
+<meta property="og:image" content="https://trafopath.com/brand/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
 <style>
 :root{
   --bg:#f5f7fa; --card:#ffffff; --ink:#1a2332; --muted:#5a6a7e;
@@ -55,11 +64,10 @@ code{background:#eef2f7;padding:1px 6px;border-radius:4px;font-size:.9em}
 </style>
 </head>
 <body>
-<div style="background:#0d1b2e;color:#fff;padding:10px 18px;font-family:'Segoe UI',system-ui,sans-serif;display:flex;align-items:center;gap:16px;font-size:.9rem;flex-wrap:wrap">
-  <a href="index.html" style="color:#fff;font-weight:800;text-decoration:none;font-size:1.05rem;letter-spacing:-.3px">Transformer<span style="color:#f5a623">Insider</span></a>
-  <a href="learn.html" style="color:#cbd5e1;text-decoration:none;margin-left:auto">&#8592; Learn hub</a>
-  <a href="explorer.html" style="color:#cbd5e1;text-decoration:none">3D Explorer &#8594;</a>
-</div>
+<div style="background:#0d1b2e;color:#fff;padding:10px 18px;font-family:'Segoe UI',system-ui,sans-serif;display:flex;align-items:center;gap:12px;font-size:.9rem;flex-wrap:wrap">
+     <a href="index.html" style="color:#fff;font-weight:800;text-decoration:none;font-size:1.05rem;letter-spacing:-.3px;display:inline-flex;align-items:center;gap:7px"><svg width="22" height="22" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="27" fill="none" stroke="#fff" stroke-width="2"/><path d="M37 9 L23 35 L31 35 L26 55 L42 29 L34 29 L40 9 Z" fill="#f5a623"/></svg>Trafo<span style="color:#f5a623">Path</span></a>
+     <a href="learn.html" style="color:#cbd5e1;text-decoration:none;margin-left:auto">&#8592; Learn hub</a>
+   </div>
 
 <header class="hero">
 <h1>Electrical Transformer Design &amp; Construction</h1>
@@ -87,6 +95,11 @@ code{background:#eef2f7;padding:1px 6px;border-radius:4px;font-size:.9em}
 <a href="#procurement">18 Procurement</a>
 <a href="#glossary">19 Glossary &amp; Test</a>
 <a href="#aftersales">20 After-Sales</a>
+<a href="#bushings">21 Bushings</a>
+<a href="#tapchangers">22 Tap-Changers</a>
+<a href="#stresscontrol">23 Impulse &amp; Stress</a>
+<a href="#fireenv">24 Fire &amp; Environment</a>
+<a href="#powerdesign">25 500 MVA Design</a>
 <a href="academy.html" style="background:#1a2332;color:#ffd9b8;border-radius:6px;margin-left:8px">🏠 Academy Hub</a>
 <a href="explorer.html" style="background:#0b5fa5;color:#fff;border-radius:6px;margin-left:6px">🧊 3D Distribution</a>
 <a href="power3d.html" style="background:#e8732a;color:#fff;border-radius:6px;margin-left:6px">🏗 3D Power</a>
@@ -98,7 +111,7 @@ code{background:#eef2f7;padding:1px 6px;border-radius:4px;font-size:.9em}
 
 <section class="toc-card">
 <h3 style="margin-top:0">How to use this tutorial</h3>
-<p>Sections 1–2 establish theory and terminology — including the per-unit system and the open/short-circuit tests that measure the equivalent circuit. Sections 3–7 walk through the construction of an oil-immersed transformer from core outward, down to building factors, core noise and how windings are physically made. Section 8 covers dry-type and cast-resin technology. Section 9 is a complete worked design of a 1000 kVA distribution transformer, and §6.4 adds the matching thermal ladder. Sections 10–12 cover losses, factory testing (with impulse, heat-run and SFRA explained in detail) and the standards map. Sections 13–16 go deeper: vector groups and parallel operation, inrush and overfluxing, special transformer types, and site installation, commissioning and life management. Sections 17–19 complete the course with protection schemes, procurement and tender economics, and a glossary plus a twelve-question self-test.</p>
+<p>Sections 1–2 establish theory and terminology — including the per-unit system and the open/short-circuit tests that measure the equivalent circuit. Sections 3–7 walk through the construction of an oil-immersed transformer from core outward, down to building factors, core noise and how windings are physically made. Section 8 covers dry-type and cast-resin technology. Section 9 is a complete worked design of a 1000 kVA distribution transformer, and §6.4 adds the matching thermal ladder. Sections 10–12 cover losses, factory testing (with impulse, heat-run and SFRA explained in detail) and the standards map. Sections 13–16 go deeper: vector groups and parallel operation, inrush and overfluxing, special transformer types, and site installation, commissioning and life management. Sections 17–20 cover protection schemes, procurement and tender economics, a glossary plus a sixteen-question self-test, and the after-sales service business. Sections 21–25 add dedicated chapters on <b>bushings</b>, <b>tap-changers</b>, <b>impulse response &amp; electrostatic stress control</b>, <b>fire, oil-containment &amp; environmental protection</b>, and a <b>worked 500 MVA EHV design</b> — each linked to its interactive 3D model.</p>
 <p style="margin-top:12px">
 <a href="explorer.html" style="display:inline-block;background:linear-gradient(135deg,#0b5fa5,#1278c8);color:#fff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;box-shadow:0 2px 8px rgba(11,95,165,.35);margin-right:10px">🧊 3D: Distribution &amp; Cast-Resin →</a>
 <a href="power3d.html" style="display:inline-block;background:linear-gradient(135deg,#9c4a12,#e8732a);color:#fff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;box-shadow:0 2px 8px rgba(232,115,42,.35)">🏗 3D: Power Transformer (100 MVA) →</a><br>
@@ -1973,7 +1986,195 @@ Repeat that cycle — real document → course section → back to the document 
 </section>
 
 
+
+<section id="bushings">
+<h2>21. Bushings — Getting the Conductor Through the Tank</h2>
+<p>A bushing carries a live conductor through the earthed tank wall while holding off the full phase-to-earth voltage across a few hundred millimetres. It is deceptively critical: industry failure surveys (CIGRÉ TB&nbsp;642) attribute roughly <b>30–40 % of catastrophic, fire-causing transformer failures to bushings</b> — more than any other single component. For a 400&nbsp;kV unit the bushing is also one of the most expensive bought-in parts. It deserves its own chapter. <span class="tag">interactive</span> Rotate and section a 400&nbsp;kV bushing in the <a href="bushing.html">🔌 3D Condenser-Bushing Cutaway</a>.</p>
+
+<h3>21.1 Why a plain insulator will not do — condenser grading</h3>
+<p>If you simply passed the conductor through a porcelain tube, the radial field at the conductor surface and the axial field along the flange would both concentrate to the point of discharge. A <b>condenser (capacitor-graded) bushing</b> solves both at once: thin conducting foils are wound into the insulation at set radii, forming a stack of series capacitors between the conductor and the earthed flange.</p>
+<div class="eq">Each layer holds ΔV = Q&nbsp;/&nbsp;C<sub>layer</sub>; by choosing radii and axial lengths so every C<sub>layer</sub> is equal, the voltage divides into many <b>equal</b> steps — linearising both the radial and the axial stress.</div>
+<p>The outermost foil is earthed at the flange; the last-but-one foil is brought to the <b>test tap</b>. This is the whole idea behind the concentric foils you can slice open in the 3D model.</p>
+
+<h3>21.2 Types — the family tree</h3>
+<table>
+<tr><th>Type</th><th>Insulation</th><th>Notes</th></tr>
+<tr><td><b>OIP</b> — oil-impregnated paper</td><td>kraft paper wound on the tube, vacuum-dried, oil-filled</td><td>The long-time workhorse. Contains its own oil → a leak or moisture ingress can lead to violent failure. Needs an oil level gauge.</td></tr>
+<tr><td><b>RIP</b> — resin-impregnated paper</td><td>paper core vacuum-impregnated with epoxy, cured solid</td><td>No free oil → non-explosive, drier, lower partial discharge, lighter. Now standard for new EHV; pairs with a <b>composite (silicone) housing</b>.</td></tr>
+<tr><td><b>RIS</b> — resin-impregnated synthetic</td><td>synthetic (non-cellulose) mat + resin</td><td>Even lower moisture sensitivity; premium.</td></tr>
+<tr><td><b>RBP</b> — resin-bonded paper</td><td>paper coated with resin, wound dry</td><td>Legacy; high PD, prone to ageing — being retired.</td></tr>
+<tr><td>Dry / solid</td><td>cast epoxy, no condenser</td><td>MV and dry-type units, and generator-voltage LV bushings.</td></tr>
+</table>
+<div class="keypoint"><b>GCC selection note:</b> for Gulf substations we specify <b>RIP with composite housing</b> — the silicone shed sheds sand and salt fog far better than porcelain (lower pollution-flashover risk), it will not shatter, and with no internal oil it removes the classic bushing fire mechanism. Creepage is chosen for IEC&nbsp;60815 <b>pollution class d/e (heavy/very heavy)</b>, i.e. ≥&nbsp;31&nbsp;mm/kV, versus ~16&nbsp;mm/kV for a clean inland site.</div>
+
+<h3>21.3 Construction &amp; ratings</h3>
+<p>Working from the top down: the <b>top terminal</b> and a <b>corona/grading ring</b> (round-off of the air-end field); the porcelain or composite <b>air-side insulator</b> climbing the creepage distance; the <b>condenser core</b> (foils + paper/resin); the <b>mounting flange</b> with the <b>test tap</b>; the shorter <b>oil-side insulator</b>; and the central <b>conductor</b> — either a fixed rod, a bottom-connected stem, or a flexible <b>draw-lead</b> pulled through after the bushing is fitted. A <b>bushing CT</b> sits in the turret around the oil end (see §11 / §17).</p>
+<table>
+<tr><th>Rating</th><th>Set by</th></tr>
+<tr><td>Highest voltage U<sub>m</sub> &amp; BIL</td><td>system insulation coordination (e.g. 420&nbsp;kV / 1425&nbsp;kV LI)</td></tr>
+<tr><td>Rated current</td><td>winding line current + overload; drives conductor size &amp; thermal design</td></tr>
+<tr><td>Creepage distance</td><td>pollution class (mm/kV of U<sub>m</sub>) — IEC 60815</td></tr>
+<tr><td>Cantilever (bending) load</td><td>connection pull + wind + short-circuit forces on the jumper</td></tr>
+<tr><td>Test tap voltage / capacitance C1, C2</td><td>diagnostic baseline; C1 = conductor-to-tap, C2 = tap-to-flange</td></tr>
+</table>
+<p>Governing standards: <b>IEC&nbsp;60137</b> and <b>IEEE&nbsp;C57.19</b>; oil-side interface per the transformer's own insulation design.</p>
+
+<h3>21.4 Failure modes &amp; monitoring — why bushings burn transformers</h3>
+<p>The dominant failure chain is <b>moisture ingress / gasket ageing → partial discharge in the condenser core → rising capacitance (a shorted foil steps C up) and rising dissipation factor tan&nbsp;δ → thermal runaway → flashover and, with OIP, tank rupture and pool fire.</b> Because the process is gradual, it is <b>monitorable</b>:</p>
+<ul>
+<li><b>Offline:</b> C1/C2 capacitance and tan&nbsp;δ (power factor) measured at the test tap at each outage; a &gt;&nbsp;+5–10 % capacitance rise or tan&nbsp;δ climbing above ~0.7 % (OIP) is an alarm.</li>
+<li><b>Online bushing monitors:</b> sum the three phase test-tap leakage currents — a healthy set nearly cancels; a developing fault unbalances the sum and shifts its phase angle, giving weeks of warning.</li>
+</ul>
+<div class="note"><b>Handling rule:</b> the test tap <b>must be earthed in service</b>. Left floating, it charges to a high potential through C1 and will flash the tap insulation — a common, avoidable field failure.</div>
+</section>
+
+<section id="tapchangers">
+<h2>22. Tap-Changers — Regulating Voltage Under Load</h2>
+<p>The tap-changer is the transformer's only moving power part, and after bushings it is the second-largest contributor to failures (CIGRÉ) — precisely because it moves, arcs and wears. It is also core to your accessory business, so it gets its own chapter. <span class="tag">interactive</span> Watch a tap operation, snap the diverter and swap resistor↔vacuum in the <a href="oltc.html">🔀 3D OLTC Cutaway</a>.</p>
+
+<h3>22.1 On-load vs de-energised</h3>
+<table>
+<tr><th></th><th>DETC / off-circuit</th><th>OLTC / on-load</th></tr>
+<tr><td>Switches</td><td>only with the unit de-energised</td><td>under full load, without interruption</td></tr>
+<tr><td>Range</td><td>±2×2.5 % typical (seasonal set-and-forget)</td><td>±10 – 16 %, many small steps</td></tr>
+<tr><td>Use</td><td>distribution, GSU (generator AVR regulates)</td><td>grid inter-bus, sub-transmission, anywhere the voltage must be held live</td></tr>
+</table>
+
+<h3>22.2 How an OLTC transfers current without interrupting it</h3>
+<p>The trick is to split the job between two devices (see the 3D model): a <b>tap selector</b> that pre-selects the next tap <b>off-load</b> (so its contacts never arc), and a fast <b>diverter switch</b> that then transfers the current from the present tap to the pre-selected one in ~40–60&nbsp;ms. During that brief transfer both taps are momentarily bridged; a <b>transition impedance</b> limits the circulating current and takes the switching arc:</p>
+<ul>
+<li><b>Resistor type</b> (IEC world): a transition resistor carries the arc; a spring energy-accumulator snaps the diverter so arc energy is small and independent of how fast the operator drives the mechanism.</li>
+<li><b>Reactor type</b> (traditional North American): a preventive autotransformer (reactor) allows continuous operation bridged across two taps.</li>
+<li><b>Vacuum type</b> (modern): switching happens inside sealed <b>vacuum interrupters</b> — no arcing in oil, so the oil stays clean, maintenance stretches to ~300,000 operations and no diverter-oil filter is needed.</li>
+</ul>
+<p>A <b>change-over (reversing) selector</b> flips the regulating winding in series-additive or series-subtractive with the main winding, doubling the range from one set of tap leads. On a star HV the regulating winding sits at the <b>neutral end</b>, where insulation to earth is lowest.</p>
+<div class="eq">Step voltage V<sub>step</sub> = (regulating turns per step) × volts-per-turn. Rated step voltage × rated through-current sets the diverter's switching duty.</div>
+
+<h3>22.3 Control — holding the setpoint</h3>
+<p>An <b>automatic voltage regulating (AVR) relay</b> compares the measured voltage to a setpoint with a deadband and time delay, and commands raise/lower steps. <b>Line-drop compensation</b> lets it regulate a remote point by modelling the feeder impedance. Paralleled transformers need coordination — <b>master–follower</b>, <b>circulating-current</b> or <b>negative-reactance</b> methods — or they will fight each other and drive reactive current between units.</p>
+
+<h3>22.4 Maintenance &amp; diagnostics</h3>
+<ul>
+<li><b>Operation counter</b> triggers time/'000-operation-based servicing of the diverter (contacts, springs, oil).</li>
+<li><b>DGA of the diverter oil</b> is read <b>separately</b> from the main tank — the diverter arcs by design, so its gas signature is different; rising C<sub>2</sub>H<sub>2</sub> beyond the arc baseline flags contact coking or a mis-operation.</li>
+<li><b>Motor-drive</b> checks: torque, step completion, limit switches, heater.</li>
+</ul>
+<p>Standards: <b>IEC&nbsp;60214</b> (OLTC) and <b>IEEE&nbsp;C57.131</b>; selection per <b>IEC&nbsp;60214-1</b> duty classes.</p>
+<div class="keypoint"><b>Why it fails:</b> contact wear and <b>coking</b> (carbon build-up from arcing in ageing oil) raise contact resistance → local heating → runaway. Vacuum switching largely removes this mechanism, which is why utilities increasingly specify vacuum OLTCs despite the price premium — a strong sales point in the GCC replacement market.</div>
+</section>
+
+<section id="stresscontrol">
+<h2>23. Impulse Response &amp; Electrostatic Stress Control</h2>
+<p>Chapters 5 and 11 size the insulation for the BIL and test it. This chapter explains the missing physics in between: <b>how a winding actually sees a lightning surge</b>, and the hardware — <b>static rings, end shields and interleaving</b> — that keeps the line-end turns from being destroyed. This is the design detail that separates an EHV transformer engineer from a hobbyist.</p>
+
+<h3>23.1 A steep front is a capacitive problem, not a resistive one</h3>
+<p>A lightning impulse rises in ~1.2&nbsp;µs. At that speed the winding inductance is momentarily "open" — the surge cannot yet flow as turns current. The winding instead behaves as a <b>ladder of capacitors</b>: <b>series capacitance C<sub>s</sub></b> between adjacent discs/turns, and <b>ground capacitance C<sub>g</sub></b> from each point to the earthed core and tank. The initial voltage therefore distributes <b>non-uniformly</b>, crowding at the line end.</p>
+<div class="eq">Distribution constant &nbsp; α = √(C<sub>g</sub> / C<sub>s</sub>)&nbsp;&nbsp;·&nbsp;&nbsp; Initial distribution e(x) = E · sinh(αx⁄L) ⁄ sinh(α)</div>
+<p>The initial stress at the line end is roughly <b>α times</b> the average. A plain disc winding has α ≈ 5–15, so the first few discs see 5–15× their "fair share" — the classic cause of line-end failures.</p>
+
+<div class="fig">
+<svg viewBox="0 0 640 260" xmlns="http://www.w3.org/2000/svg">
+<rect x="0" y="0" width="640" height="260" fill="#fdfefe"/>
+<line x1="60" y1="210" x2="600" y2="210" stroke="#5a6a7e" stroke-width="1.5"/>
+<line x1="60" y1="210" x2="60" y2="30" stroke="#5a6a7e" stroke-width="1.5"/>
+<text x="330" y="240" font-size="13" fill="#5a6a7e" text-anchor="middle">winding position — line end (left) → neutral (right)</text>
+<text x="24" y="120" font-size="13" fill="#5a6a7e" transform="rotate(-90 24 120)" text-anchor="middle">voltage to earth</text>
+<!-- final (linear) -->
+<line x1="60" y1="40" x2="600" y2="210" stroke="#1d7a4f" stroke-width="2.5" stroke-dasharray="6 5"/>
+<text x="470" y="150" font-size="12.5" fill="#1d7a4f">final (linear) — inductive</text>
+<!-- initial (nonuniform, high alpha) -->
+<path d="M60,40 C150,150 300,195 600,210" fill="none" stroke="#c0392b" stroke-width="2.8"/>
+<text x="150" y="80" font-size="12.5" fill="#c0392b">initial, plain winding (α≈10)</text>
+<!-- with rings/interleaving -->
+<path d="M60,40 C220,110 420,175 600,210" fill="none" stroke="#0b5fa5" stroke-width="2.8"/>
+<text x="300" y="120" font-size="12.5" fill="#0b5fa5">with static ring + interleaving (α≈2)</text>
+<circle cx="60" cy="40" r="4" fill="#c0392b"/>
+<text x="70" y="34" font-size="12" fill="#1a2332">line-end stress ∝ α</text>
+</svg>
+<div class="cap">Fig. 23-1 — Initial (capacitive) vs final (inductive/linear) impulse distribution. Raising series capacitance flattens the initial curve toward the final line, cutting line-end stress.</div>
+</div>
+
+<h3>23.2 The remedies — raise C<sub>s</sub>, intercept C<sub>g</sub></h3>
+<ul>
+<li><b>Static end rings (stress rings):</b> a floating metal ring, at line potential, wrapped in insulation and placed just outside the first discs. It supplies the ground-capacitance current that would otherwise flow through the winding, so the first turns are relieved — the single most important line-end fix.</li>
+<li><b>Electrostatic / wound shields:</b> shield turns tied to the line end that add capacitance to the outer discs, linearising the profile.</li>
+<li><b>Interleaved &amp; intershielded disc windings:</b> re-ordering the conductors so that turns far apart electrically sit physically adjacent multiplies the effective series capacitance C<sub>s</sub>, pushing α toward 1–3 (near-linear). This is why big HV windings are interleaved (see §4).</li>
+<li><b>Grading of the major insulation and oil ducts</b> to match the now-linear stress.</li>
+</ul>
+
+<h3>23.3 After the front — the oscillation</h3>
+<p>Once inductance re-enters (microseconds later) the winding swings from its non-uniform <b>initial</b> distribution toward the linear <b>final</b> one, overshooting and <b>oscillating</b>. The transient can drive <b>mid-winding and inter-disc</b> voltages temporarily higher than the applied crest — so the designer checks not only the line end but the whole envelope. The <b>chopped-wave</b> test (a flashover-chopped impulse, even steeper) is the most severe case for inter-turn stress.</p>
+<div class="keypoint"><b>How it's verified:</b> the factory <b>lightning-impulse test</b> (full and chopped) with <b>transfer-function / RSO</b> comparison of the neutral-current and capacitively-transferred waveshapes detects any inter-turn breakdown — a shift between reduced- and full-level records means a fault. This closes the loop from design (this chapter) to test (§11).</div>
+</section>
+
+<section id="fireenv">
+<h2>24. Fire, Oil Containment &amp; Environmental Protection</h2>
+<p>A 500&nbsp;MVA unit holds ~95,000&nbsp;litres of flammable oil beside 400&nbsp;kV. When a bushing or OLTC fails, the arc can rupture the tank and ignite a pool fire that threatens the whole substation. Designing the <b>envelope around</b> the transformer — fire prevention, containment and environmental protection — is as much a part of the job as the active part, and is mandated by substation codes. This chapter pulls together what §16 and §7 only touched.</p>
+
+<h3>24.1 Pressure &amp; arc protection (stop the rupture)</h3>
+<ul>
+<li><b>Pressure-relief valve (PRV):</b> spring-loaded, vents a sudden internal pressure rise and reseals.</li>
+<li><b>Sudden-/rapid-pressure-rise relay:</b> trips on the <i>rate</i> of pressure rise from an internal arc, faster than Buchholz for a violent fault.</li>
+<li><b>Buchholz</b> (§7): gas accumulation alarm + oil-surge trip.</li>
+<li><b>Nitrogen-injection fire-prevention systems</b> (e.g. transformer "fire protector" units): on a confirmed internal fault they <b>drain oil from the top</b> to kill the expansion and <b>inject nitrogen at the bottom</b> to stir and cool below the fire point — preventing or extinguishing a tank fire. Increasingly specified for urban and critical GCC substations.</li>
+</ul>
+
+<h3>24.2 Fire suppression &amp; separation (contain the fire)</h3>
+<ul>
+<li><b>Deluge / water-spray systems</b> per <b>NFPA&nbsp;850</b> for oil-filled units above threshold size or too close to other assets.</li>
+<li><b>Fire-rated separation walls (barriers)</b> between adjacent transformers and to buildings, or code <b>separation distances</b> where walls are impractical — governed by <b>IEC&nbsp;61936-1</b> and local utility standards (DEWA/ADDC/SEC substation fire codes in the GCC).</li>
+<li><b>K-class (ester) fluids</b>, fire point ≥&nbsp;300&nbsp;°C, can <b>remove the deluge requirement</b> and enable indoor/rooftop installation — a growing driver for natural/synthetic esters.</li>
+</ul>
+
+<h3>24.3 Oil containment &amp; the environment (contain the spill)</h3>
+<ul>
+<li><b>Bund / oil-containment pit</b> sized for <b>100 % of the oil volume plus firewater</b>, with a fire-quenching stone/grating layer over a drain to a remote holding tank.</li>
+<li><b>Oil–water separator</b> on the site drainage so rainwater can be released but oil is trapped.</li>
+<li><b>Kerbs, ramps and interceptors</b> to keep a spill on-site and out of ground/surface water.</li>
+<li>Legacy hazards: <b>PCB</b> in old askarel-filled units (disposal controls); <b>SF₆</b> in some bushings/GIS interfaces (greenhouse gas handling).</li>
+</ul>
+
+<h3>24.4 Sustainability — the losses <i>are</i> the footprint</h3>
+<p>Over a 40-year life the CO₂ from a transformer's <b>losses</b> dwarfs the embodied carbon of its steel and copper — which is exactly why the loss-capitalisation A&amp;B factors (§18, §26) and the minimum-efficiency regulations (EU EcoDesign Tier&nbsp;2, DOE, GSO/SASO) exist. Eco-levers: <b>lower flux density and better core steel</b> (amorphous cuts no-load loss ~70 %), <b>biodegradable esters</b>, and end-of-life <b>recovery</b> of copper, electrical steel and <b>regeneration of oil</b> rather than disposal.</p>
+<div class="keypoint"><b>Tender takeaway:</b> in the Gulf, fire strategy and containment are increasingly scored in EHV substation tenders. Offering <b>RIP composite bushings + vacuum OLTC + nitrogen-injection + ester option</b> is a coherent "low-fire-risk" package that differentiates a bid.</div>
+</section>
+
+<section id="powerdesign">
+<h2>25. Worked Design — 500 MVA, 400/220 kV Power Transformer</h2>
+<p>Section 9 sized a 1000&nbsp;kVA distribution unit. Here is the EHV counterpart that sits behind the <a href="power500.html">🏭 500&nbsp;MVA 3D model</a> and the calculator's <b>Power</b> mode — a two-winding 400/220&nbsp;kV grid transformer, YNyn0+d, 5-limb, ONAN/ONAF/ODAF. The method is identical; only the scale, the impulse grading and the cooling stages change.</p>
+
+<h3>Step 1 — Ratings &amp; line currents</h3>
+<div class="eq">I = S ⁄ (√3 · U<sub>L</sub>) &nbsp;→&nbsp; HV: 500&nbsp;MVA ⁄ (√3·400&nbsp;kV) ≈ <b>722&nbsp;A</b>; &nbsp; LV: 500&nbsp;MVA ⁄ (√3·220&nbsp;kV) ≈ <b>1312&nbsp;A</b></div>
+<p>The 220&nbsp;kV winding carries the higher current, so it is the heavier-conductor <b>disc</b> winding; both main windings are disc (not helical) at these voltages.</p>
+
+<h3>Step 2 — Volts-per-turn, flux &amp; core</h3>
+<p>EHV design runs a high volts-per-turn to keep the turn count and hence the winding height sensible. Taking a Hi-B steel at B<sub>m</sub>&nbsp;≈&nbsp;1.7&nbsp;T:</p>
+<div class="eq">E<sub>t</sub> = 4.44·f·B<sub>m</sub>·A<sub>net</sub>. &nbsp;A representative 500&nbsp;MVA design lands near E<sub>t</sub> ≈ 90–110&nbsp;V/turn → HV turns ≈ (400,000⁄√3) ⁄ 100 ≈ <b>2,300</b>, LV ≈ <b>1,270</b>.</div>
+<p>Solving A<sub>net</sub> from E<sub>t</sub> gives a core diameter around <b>0.85–0.95&nbsp;m</b>; a <b>5-limb</b> core keeps the yoke — and therefore the transport height — within rail/road limits and gives zero-sequence flux a return path for the YN/yn connection.</p>
+
+<h3>Step 3 — Impedance &amp; short-circuit</h3>
+<p>Grid units at this rating run high impedance to limit downstream fault levels:</p>
+<div class="eq">Target Z ≈ <b>13–14 %</b>. Peak asymmetric short-circuit force scales with (1⁄Z)²·(kVA); the radial/axial withstand of the windings (§4.5) is designed to the resulting ~tens-of-kA through-fault.</div>
+
+<h3>Step 4 — Insulation &amp; impulse grading</h3>
+<p>BIL 1425&nbsp;kV (400&nbsp;kV) / 1050&nbsp;kV (220&nbsp;kV). The line end gets <b>static rings and interleaved discs</b> (§23) to hold α near 2; major insulation is pressboard barriers with graded oil ducts; the neutral end runs at low insulation and carries the tap winding.</p>
+
+<h3>Step 5 — Cooling stages</h3>
+<p>Total loss ≈ NLL + LL ≈ <b>~1.3&nbsp;MW</b> at full load. Dual/triple rating is normal:</p>
+<table>
+<tr><th>Stage</th><th>Mechanism</th><th>Approx. capacity</th></tr>
+<tr><td>ONAN</td><td>natural oil + natural air (panel radiators)</td><td>~60 % (≈300 MVA)</td></tr>
+<tr><td>ONAF</td><td>+ radiator fans</td><td>~80 % (≈400 MVA)</td></tr>
+<tr><td>ODAF</td><td>+ directed-oil pumps</td><td>100 % (500 MVA)</td></tr>
+</table>
+
+<h3>Step 6 — Losses, mass &amp; economics</h3>
+<p>Indicative: NLL ≈ 250–350&nbsp;kW, LL ≈ 900–1100&nbsp;kW (at rated), total mass ≈ <b>340&nbsp;t</b>, oil ≈ <b>95&nbsp;kL</b>. Evaluated with GCC loss-capitalisation (§18): with A ≈ 6,000&nbsp;$/kW and B ≈ 2,000&nbsp;$/kW, the capitalised loss cost is on the order of the purchase price — so the optimiser spends iron (better steel, lower B<sub>m</sub>) to buy back no-load loss.</p>
+<div class="keypoint"><b>Try it:</b> open the calculator in <b>Power</b> mode pre-loaded near this machine and sweep B<sub>m</sub> and current density δ; watch volts-per-turn, core area and the loss split move, then re-capitalise against A&amp;B. Rotate the <a href="power500.html">🏭 500&nbsp;MVA model</a> to see every part this design produces — 5-limb core, panel-radiator banks, conservator, OLTC, 400&nbsp;kV bushings and the full accessory set.</div>
+</section>
+
 </main>
 <footer>Electrical Transformer Design &amp; Construction Tutorial — prepared June 2026. References: IEC 60076 series, IEEE C57 series, standard transformer engineering practice.</footer>
+<script src="analytics.js" defer></script>
 </body>
 </html>

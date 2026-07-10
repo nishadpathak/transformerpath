@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Condenser Bushing — Interactive 3D Cutaway (RIP / OIP)</title>
+<meta name="description" content="Transformer bushing explained in interactive 3D — condenser bushing construction, materials, test taps and failure modes.">
+<link rel="canonical" href="https://trafopath.com/bushing.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TrafoPath">
+<meta property="og:title" content="Condenser Bushing — Interactive 3D Cutaway (RIP / OIP)">
+<meta property="og:description" content="Transformer bushing explained in interactive 3D — condenser bushing construction, materials, test taps and failure modes.">
+<meta property="og:url" content="https://trafopath.com/bushing.html">
+<meta property="og:image" content="https://trafopath.com/brand/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+:root{--panel:#0e1c2c;--panel2:#13263a;--ink:#e8eef5;--mut:#8fa6bc;--acc:#3da5f4;--acc2:#e8732a;--line:#23415e}
+*{box-sizing:border-box;margin:0;padding:0}html,body{height:100%;overflow:hidden}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#08121e;color:var(--ink)}
+#c3d{position:absolute;inset:0;cursor:grab}#c3d.dragging{cursor:grabbing}
+#topbar{position:absolute;top:0;left:0;right:0;height:52px;background:linear-gradient(180deg,rgba(8,18,30,.95),rgba(8,18,30,.78) 70%,transparent);display:flex;align-items:center;gap:12px;padding:0 18px;z-index:10;pointer-events:none}
+#topbar h1{font-size:1rem;font-weight:600;white-space:nowrap}
+#topbar a{pointer-events:auto;color:var(--acc);text-decoration:none;font-size:.8rem;border:1px solid var(--line);padding:4px 10px;border-radius:6px;background:rgba(14,28,44,.7);white-space:nowrap}
+#topbar a:hover{background:var(--panel2)}
+#panel{position:absolute;top:60px;right:12px;width:300px;max-height:calc(100% - 80px);overflow-y:auto;background:rgba(14,28,44,.92);border:1px solid var(--line);border-radius:12px;padding:14px 16px;z-index:10;backdrop-filter:blur(6px)}
+#panel h2{font-size:.78rem;text-transform:uppercase;letter-spacing:1px;color:var(--mut);margin:12px 0 6px}#panel h2:first-child{margin-top:0}
+.sl{width:100%;margin:4px 0 2px;accent-color:var(--acc)}
+.slrow{display:flex;justify-content:space-between;font-size:.72rem;color:var(--mut)}
+.tgl{display:flex;align-items:center;gap:8px;font-size:.83rem;padding:2.5px 0;cursor:pointer;user-select:none}.tgl input{accent-color:var(--acc)}
+.sw{width:11px;height:11px;border-radius:3px;display:inline-block;flex:none}
+#info{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin-top:6px;font-size:.83rem;line-height:1.5;min-height:78px}#info b{color:var(--acc)}#info .hint{color:var(--mut);font-size:.78rem}
+.btnrow{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.btnrow button{flex:1;background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:7px;padding:6px 4px;font-size:.77rem;cursor:pointer;white-space:nowrap}
+.btnrow button:hover{border-color:var(--acc)}.btnrow button.on{background:var(--acc);color:#04121f;font-weight:600}
+.spec{font-size:.74rem;color:var(--mut);line-height:1.5;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 10px}.spec b{color:var(--acc2)}
+#help{position:absolute;left:14px;bottom:12px;z-index:10;font-size:.74rem;color:var(--mut);background:rgba(14,28,44,.75);border:1px solid var(--line);border-radius:8px;padding:7px 11px;line-height:1.6;pointer-events:none}
+.lbl{position:absolute;transform:translate(-50%,-130%);background:rgba(10,22,36,.88);border:1px solid var(--line);color:#dbe7f3;font-size:11px;padding:2px 7px;border-radius:5px;pointer-events:auto;cursor:pointer;white-space:nowrap;z-index:5}
+.lbl::after{content:"";position:absolute;left:50%;top:100%;margin-left:-4px;border:4px solid transparent;border-top-color:var(--line)}
+@media(max-width:760px){#panel{width:248px}#topbar h1{font-size:.8rem}}
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TrafoPath">
+</head>
+<body>
+<div style="background:#0d1b2e;color:#fff;padding:10px 18px;display:flex;align-items:center;gap:16px;font-size:.9rem;flex-wrap:wrap">
+  <a href="index.html" style="color:#fff;font-weight:800;text-decoration:none;font-size:1.05rem;letter-spacing:-.3px">Trafo<span style="color:#f5a623">Path</span></a>
+  <a href="learn.html" style="color:#cbd5e1;text-decoration:none;margin-left:auto">&#8592; Learn hub</a>
+</div>
+<div id="c3d"></div>
+<div id="topbar">
+  <h1>🔌 Condenser Bushing — Cutaway</h1>
+  <a href="academy.html">🏠 Hub</a>
+  <a href="masterclass.html">← Masterclass</a>
+  <a href="power500.html">500 MVA →</a>
+</div>
+<div id="panel">
+  <div class="spec"><b>400 kV</b> condenser bushing · capacitor-graded · brings the HV lead through the earthed tank lid while controlling the radial &amp; axial field.</div>
+  <h2>Section cut</h2>
+  <input id="cut" class="sl" type="range" min="0" max="100" value="55">
+  <div class="slrow"><span>solid</span><span>half-section</span></div>
+  <h2>Voltage gradient</h2>
+  <div class="btnrow"><button id="bGrad">⚡ Show field grading</button></div>
+  <h2>Core type</h2>
+  <div class="btnrow">
+    <button id="bRIP" class="on">RIP (resin)</button>
+    <button id="bOIP">OIP (oil)</button>
+  </div>
+  <h2>Components</h2>
+  <div id="toggles"></div>
+  <h2>View</h2>
+  <div class="btnrow">
+    <button id="bRotate">⟳ Rotate</button>
+    <button id="bLabels" class="on">🏷 Labels</button>
+    <button id="bReset">⌂ Reset</button>
+  </div>
+  <h2>Selected part</h2>
+  <div id="info"><span class="hint">Click any part to identify it. Use the section slider to cut the bushing open and reveal the capacitor core.</span></div>
+</div>
+<div id="help">🖱 drag = orbit · wheel = zoom · right-drag = pan · click = identify<br>The concentric foils turn one huge axial stress into many small, equal steps — that is "condenser grading".</div>
+
+<script src="vendor/three.min.js"></script>
+<script>
+const container=document.getElementById('c3d');
+const renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.outputEncoding=THREE.sRGBEncoding;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;
+renderer.localClippingEnabled=true;
+container.appendChild(renderer.domElement);
+const scene=new THREE.Scene();
+(function(){const cv=document.createElement('canvas');cv.width=16;cv.height=512;const g=cv.getContext('2d');
+ const gr=g.createLinearGradient(0,0,0,512);gr.addColorStop(0,'#27557f');gr.addColorStop(.45,'#143049');gr.addColorStop(.78,'#0c1c30');gr.addColorStop(1,'#0a1624');
+ g.fillStyle=gr;g.fillRect(0,0,16,512);scene.background=new THREE.CanvasTexture(cv);})();
+scene.fog=new THREE.Fog(0x0d1f33,220,560);
+const camera=new THREE.PerspectiveCamera(44,innerWidth/innerHeight,0.4,900);
+scene.add(new THREE.HemisphereLight(0xbcd4ea,0x16202c,.9));
+const sun=new THREE.DirectionalLight(0xffffff,1);sun.position.set(80,120,80);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);
+const scam=sun.shadow.camera;scam.left=-90;scam.right=90;scam.top=140;scam.bottom=-30;scam.far=360;scene.add(sun);
+const fill=new THREE.DirectionalLight(0x88aacc,.32);fill.position.set(-80,40,-70);scene.add(fill);
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(700,700),new THREE.MeshStandardMaterial({color:0x16314a,roughness:1}));
+ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
+
+/* clipping plane for the section cut */
+const clip=new THREE.Plane(new THREE.Vector3(0,0,-1),0); // cut +z half away when active
+const M={
+  metal:new THREE.MeshStandardMaterial({color:0x9aa9bb,metalness:.9,roughness:.32,clippingPlanes:[clip]}),
+  cond:new THREE.MeshStandardMaterial({color:0xc97a3d,metalness:.75,roughness:.4,clippingPlanes:[clip]}),
+  porc:new THREE.MeshStandardMaterial({color:0xb9c2cb,metalness:.12,roughness:.4,clippingPlanes:[clip]}),
+  porcOil:new THREE.MeshStandardMaterial({color:0x8a6a48,metalness:.15,roughness:.4,clippingPlanes:[clip]}),
+  rip:new THREE.MeshStandardMaterial({color:0xd8c79a,metalness:0,roughness:.85,clippingPlanes:[clip]}),
+  oip:new THREE.MeshStandardMaterial({color:0xe6cf86,metalness:0,roughness:.7,transparent:true,opacity:.92,clippingPlanes:[clip]}),
+  foil:new THREE.MeshStandardMaterial({color:0xaf8a4e,metalness:.85,roughness:.35,clippingPlanes:[clip]}),
+  flange:new THREE.MeshStandardMaterial({color:0x6b7886,metalness:.7,roughness:.45,clippingPlanes:[clip]}),
+  ct:new THREE.MeshStandardMaterial({color:0x2c3a4a,metalness:.6,roughness:.6,clippingPlanes:[clip]}),
+  tap:new THREE.MeshStandardMaterial({color:0xc0392b,metalness:.4,roughness:.6,clippingPlanes:[clip]})
+};
+const PARTS={};const pickables=[];
+function reg(obj,key,name,desc,ex){obj.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;o.userData.key=key;pickables.push(o);}});PARTS[key]={root:obj,name,desc,base:obj.position.clone(),ex:ex||new THREE.Vector3()};return obj;}
+const root=new THREE.Group();scene.add(root);
+
+const FLANGE_Y=46; // lid line
+/* ===== central conductor ===== */
+const conductor=new THREE.Mesh(new THREE.CylinderGeometry(2.2,2.2,120,28),M.cond);conductor.position.y=62;root.add(conductor);
+reg(conductor,'cond','Central conductor','The HV current path — a copper tube (fixed) or a flexible <b>draw-lead</b> pulled through after the bushing is fitted. It is at full line potential along its whole length.',new THREE.Vector3(0,0,0));
+
+/* ===== top terminal + arcing fitting ===== */
+const top=new THREE.Group();
+const term=new THREE.Mesh(new THREE.CylinderGeometry(4,4,8,24),M.metal);term.position.y=124;top.add(term);
+const corona=new THREE.Mesh(new THREE.TorusGeometry(7,1.6,12,32),M.metal);corona.position.y=120;corona.rotation.x=Math.PI/2;top.add(corona);
+root.add(top);
+reg(top,'term','Top terminal & corona ring','The air-end terminal connects to the line/jumper. The <b>corona (grading) ring</b> rounds off the field at the top to stop visible discharge and radio interference.',new THREE.Vector3(0,20,0));
+
+/* ===== air-side insulator (sheds) ===== */
+const airIns=new THREE.Group();
+const SHEDS=24;
+for(let i=0;i<SHEDS;i++){const r=8 - i/SHEDS*1.5;const s=new THREE.Mesh(new THREE.CylinderGeometry(r,r,1.0,28),M.porc);s.position.y=58+i*2.6;airIns.add(s);
+  const stem=new THREE.Mesh(new THREE.CylinderGeometry(r*0.62,r*0.62,2.6,24),M.porc);stem.position.y=58+i*2.6;airIns.add(stem);}
+root.add(airIns);
+reg(airIns,'air','Air-side insulator (sheds)','The skirts climb the creepage distance through dirty, wet air. Long shed profiles matter most in dusty, salty GCC sites; composite (silicone) sheds resist pollution flashover better than porcelain.',new THREE.Vector3(0,30,0));
+
+/* ===== condenser core (concentric foils + dielectric) ===== */
+const coreGrp=new THREE.Group();coreGrp.position.y=46;
+const NF=8;const foilMeshes=[];
+// dielectric body (RIP solid)
+const ripBody=new THREE.Mesh(new THREE.CylinderGeometry(6.6,6.6,84,40,1,false),M.rip);coreGrp.add(ripBody);ripBody.userData.ripOnly=true;
+// concentric foil layers
+for(let i=0;i<NF;i++){const r=2.8+i*0.45;const h=80-i*7;const f=new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,40,1,true),M.foil.clone());
+  f.material.clippingPlanes=[clip];coreGrp.add(f);foilMeshes.push(f);}
+root.add(coreGrp);
+reg(coreGrp,'core','Capacitor (condenser) core','Concentric conducting <b>foils</b> are wound into the insulation around the conductor. Each foil + dielectric layer is a capacitor; in series they split one huge axial voltage into many small, equal steps — controlling both the radial and the axial field. This is the heart of a "condenser bushing".',new THREE.Vector3(0,0,0));
+
+/* ===== mounting flange + test tap ===== */
+const flange=new THREE.Mesh(new THREE.CylinderGeometry(11,11,5,32),M.flange);flange.position.y=FLANGE_Y;root.add(flange);
+reg(flange,'flange','Mounting flange','Bolts the bushing to the earthed tank turret and carries its weight. The outermost foil is earthed here — the reference for the whole grading stack.',new THREE.Vector3(8,0,0));
+const tap=new THREE.Mesh(new THREE.CylinderGeometry(1.3,1.3,5,16),M.tap);tap.rotation.z=Math.PI/2;tap.position.set(11,FLANGE_Y,0);root.add(tap);
+reg(tap,'tap','Test / voltage tap','Connected to the last-but-one foil. Used to measure capacitance &amp; tan-δ (insulation health) and, on some designs, to derive a voltage signal. <b>Must be earthed in service</b> — an open tap floats to a dangerous potential.',new THREE.Vector3(10,0,0));
+
+/* ===== oil-side insulator (into transformer) ===== */
+const oilIns=new THREE.Group();
+const OSHEDS=10;
+for(let i=0;i<OSHEDS;i++){const r=7 - i/OSHEDS*1.2;const s=new THREE.Mesh(new THREE.CylinderGeometry(r,r,1.0,28),M.porcOil);s.position.y=FLANGE_Y-6-i*3;oilIns.add(s);
+  const stem=new THREE.Mesh(new THREE.CylinderGeometry(r*0.6,r*0.6,3,24),M.porcOil);stem.position.y=FLANGE_Y-6-i*3;oilIns.add(stem);}
+root.add(oilIns);
+reg(oilIns,'oilend','Oil-side insulator','The lower end lives in transformer oil. It is shorter because oil is a far better insulator than air, so less creepage is needed below the lid.',new THREE.Vector3(0,-26,0));
+
+/* ===== bushing CT ===== */
+const ct=new THREE.Mesh(new THREE.TorusGeometry(9,2.4,14,36),M.ct);ct.rotation.x=Math.PI/2;ct.position.y=FLANGE_Y-10;root.add(ct);
+reg(ct,'ct','Bushing current transformer','A ring CT slipped over the oil end inside the turret — the cheap, standard source for metering and differential (87T) protection.',new THREE.Vector3(0,-12,0));
+
+/* gradient overlay objects (rings showing potential) */
+const gradRings=[];
+for(let i=0;i<NF;i++){const r=2.8+i*0.45+0.1;const ring=new THREE.Mesh(new THREE.CylinderGeometry(r,r,80-i*7,32,1,true),
+  new THREE.MeshBasicMaterial({transparent:true,opacity:0,side:THREE.DoubleSide,clippingPlanes:[clip]}));ring.position.y=46;root.add(ring);gradRings.push(ring);}
+
+/* ===== toggles ===== */
+const swatch={cond:'#c97a3d',term:'#9aa9bb',air:'#b9c2cb',core:'#af8a4e',flange:'#6b7886',tap:'#c0392b',oilend:'#8a6a48',ct:'#2c3a4a'};
+const togList=[['cond','Central conductor'],['term','Top terminal'],['air','Air-side sheds'],['core','Capacitor core'],['flange','Mounting flange'],['tap','Test tap'],['oilend','Oil-side end'],['ct','Bushing CT']];
+const togBox=document.getElementById('toggles');
+togList.forEach(([k,label])=>{const l=document.createElement('label');l.className='tgl';
+  l.innerHTML=`<input type="checkbox" data-k="${k}" checked><span class="sw" style="background:${swatch[k]}"></span>${label}`;togBox.appendChild(l);});
+togBox.addEventListener('change',e=>{const k=e.target.dataset.k;if(PARTS[k])PARTS[k].root.visible=e.target.checked;});
+
+/* ===== orbit / pick / labels ===== */
+const el=renderer.domElement;
+let sph={r:200,th:.7,ph:1.05};const target=new THREE.Vector3(0,56,0);
+function applyCam(){sph.ph=Math.max(.15,Math.min(1.5,sph.ph));sph.r=Math.max(55,Math.min(460,sph.r));
+  camera.position.set(target.x+sph.r*Math.sin(sph.ph)*Math.sin(sph.th),target.y+sph.r*Math.cos(sph.ph),target.z+sph.r*Math.sin(sph.ph)*Math.cos(sph.th));camera.lookAt(target);}
+applyCam();
+let dragging=false,panning=false,moved=0,px=0,py=0,pinchD=0;
+el.addEventListener('contextmenu',e=>e.preventDefault());
+el.addEventListener('pointerdown',e=>{dragging=true;moved=0;panning=(e.button===2||e.shiftKey);px=e.clientX;py=e.clientY;container.classList.add('dragging');});
+el.addEventListener('pointermove',e=>{if(!dragging)return;const dx=e.clientX-px,dy=e.clientY-py;px=e.clientX;py=e.clientY;moved+=Math.abs(dx)+Math.abs(dy);
+  if(panning){const s=sph.r*0.0016;const right=new THREE.Vector3().subVectors(camera.position,target).cross(camera.up).normalize();target.addScaledVector(right,-dx*s);target.y+=dy*s;}
+  else{sph.th-=dx*0.005;sph.ph-=dy*0.005;}applyCam();});
+el.addEventListener('pointerup',e=>{dragging=false;container.classList.remove('dragging');if(moved<6)pick(e);});
+el.addEventListener('wheel',e=>{e.preventDefault();sph.r*=(1+Math.sign(e.deltaY)*.09);applyCam();},{passive:false});
+el.addEventListener('touchstart',e=>{if(e.touches.length===2)pinchD=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);},{passive:true});
+el.addEventListener('touchmove',e=>{if(e.touches.length===2){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);sph.r*=pinchD/d;pinchD=d;applyCam();}},{passive:true});
+const ray=new THREE.Raycaster();const mouse=new THREE.Vector2();
+function pick(e){mouse.x=(e.clientX/innerWidth)*2-1;mouse.y=-(e.clientY/innerHeight)*2+1;ray.setFromCamera(mouse,camera);
+  const hits=ray.intersectObjects(pickables,true);for(const h of hits){if(h.object.visible&&h.object.userData.key){selectPart(h.object.userData.key);return;}}}
+const info=document.getElementById('info');
+function selectPart(k){const p=PARTS[k];if(!p)return;info.innerHTML=`<b>${p.name}</b><br>${p.desc}`;}
+const labels=[];
+function makeLabel(key,text,dx,dy,dz){const p=PARTS[key];if(!p)return;const e=document.createElement('div');e.className='lbl';e.textContent=text;e.addEventListener('click',()=>selectPart(key));document.body.appendChild(e);labels.push({key,el:e,off:new THREE.Vector3(dx,dy,dz)});}
+makeLabel('term','Terminal + corona ring',0,78,0);makeLabel('air','Air-side sheds',8,40,0);
+makeLabel('core','Capacitor core',6,4,0);makeLabel('flange','Flange (earth)',12,0,0);
+makeLabel('tap','Test tap',14,-2,0);makeLabel('oilend','Oil-side end',0,-30,0);makeLabel('ct','Bushing CT',-10,-10,0);makeLabel('cond','Conductor',0,100,0);
+let labelsOn=true;document.getElementById('bLabels').onclick=function(){labelsOn=!labelsOn;this.classList.toggle('on',labelsOn);};
+
+/* ===== controls ===== */
+const cutSl=document.getElementById('cut');
+function applyCut(){const t=cutSl.value/100;clip.constant=(t<=0)?1000:(8 - t*16);} // move plane so +z gets clipped progressively; >0.5 cuts past centre
+cutSl.addEventListener('input',applyCut);applyCut();
+let rotating=false;document.getElementById('bRotate').onclick=function(){rotating=!rotating;this.classList.toggle('on',rotating);};
+document.getElementById('bReset').onclick=()=>{sph={r:200,th:.7,ph:1.05};target.set(0,56,0);applyCam();cutSl.value=55;applyCut();};
+function setCore(type){const rip=type==='rip';ripBody.visible=rip;document.getElementById('bRIP').classList.toggle('on',rip);document.getElementById('bOIP').classList.toggle('on',!rip);
+  foilMeshes.forEach(f=>f.material.color.set(rip?0xaf8a4e:0xb89a5a));
+  // OIP shows translucent oil-paper body
+  if(!rip){if(!setCore._oip){const b=new THREE.Mesh(new THREE.CylinderGeometry(6.6,6.6,84,40),M.oip);b.position.y=0;b.userData.key='core';coreGrp.add(b);b.castShadow=true;b.receiveShadow=true;pickables.push(b);setCore._oip=b;}setCore._oip.visible=true;}
+  else if(setCore._oip)setCore._oip.visible=false;}
+document.getElementById('bRIP').onclick=()=>setCore('rip');
+document.getElementById('bOIP').onclick=()=>setCore('oip');
+let gradOn=false;document.getElementById('bGrad').onclick=function(){gradOn=!gradOn;this.classList.toggle('on',gradOn);
+  gradRings.forEach((r,i)=>{const f=i/(gradRings.length-1);r.material.opacity=gradOn?0.55:0;r.material.color.setHSL((1-f)*0.62,0.9,0.5);});};
+
+/* ===== animate ===== */
+function tick(){requestAnimationFrame(tick);
+  if(rotating){sph.th+=0.004;applyCam();}
+  labels.forEach(L=>{const p=PARTS[L.key];if(!labelsOn||!p.root.visible){L.el.style.display='none';return;}
+    const v=p.base.clone().add(L.off);v.project(camera);if(v.z>1){L.el.style.display='none';return;}
+    L.el.style.display='block';L.el.style.left=((v.x*.5+.5)*innerWidth)+'px';L.el.style.top=((-v.y*.5+.5)*innerHeight)+'px';});
+  renderer.render(scene,camera);
+}
+tick();
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
+</script>
+<script>
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
+(function(){var dp;window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();dp=e;if(document.getElementById('tpInstall'))return;var b=document.createElement('button');b.id='tpInstall';b.textContent='\u2913 Install TrafoPath';b.setAttribute('style','position:fixed;right:16px;bottom:16px;z-index:9999;background:#f5a623;color:#0d1b2e;border:0;border-radius:999px;padding:11px 18px;font-weight:800;font-size:.9rem;box-shadow:0 6px 20px rgba(0,0,0,.28);cursor:pointer;font-family:inherit');b.onclick=function(){b.remove();dp.prompt();dp.userChoice.finally(function(){dp=null;});};document.body.appendChild(b);});})();
+</script>
+<script src="analytics.js" defer></script>
+</body>
+</html>

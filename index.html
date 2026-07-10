@@ -2,16 +2,31 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<script>document.documentElement.className += ' js';</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TransformerInsider — Global Transformer Industry Intelligence & Network</title>
+<title>TrafoPath — Global Transformer Industry Intelligence & Network</title>
 <meta name="description" content="The global platform for transformer professionals — daily market intel, industry events, jobs, a world grid census and an interactive 3D transformer explorer.">
+<link rel="canonical" href="https://trafopath.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TrafoPath">
+<meta property="og:title" content="TrafoPath — Global Transformer Industry Intelligence &amp; Network">
+<meta property="og:description" content="The global platform for transformer professionals — daily market intel, industry events, jobs, a world grid census and an interactive 3D transformer explorer.">
+<meta property="og:url" content="https://trafopath.com/">
+<meta property="og:image" content="https://trafopath.com/brand/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="TrafoPath — Global Transformer Industry Intelligence &amp; Network">
+<meta name="twitter:description" content="The global platform for transformer professionals — daily market intel, industry events, jobs, a world grid census and an interactive 3D transformer explorer.">
+<meta name="twitter:image" content="https://trafopath.com/brand/og-image.png">
 <link rel="stylesheet" href="style.css">
+<link rel="icon" href="brand/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
 <style>
 /* ── Cinematic hero ── */
 .hero-cine { position:relative; overflow:hidden; background:radial-gradient(1200px 600px at 70% -10%, #1b3a5c 0%, var(--navy) 55%, #0a1626 100%); color:#fff; padding:78px 0 88px; }
 .hero-cine .container { position:relative; z-index:3; }
-.hero-art { position:absolute; inset:0; z-index:1; opacity:.9; pointer-events:none; }
-.hero-cine::after { content:""; position:absolute; inset:0; z-index:2; background:linear-gradient(90deg, var(--navy) 0%, rgba(13,27,46,.72) 42%, rgba(13,27,46,.15) 100%); }
+.hero-art { position:absolute; inset:0; z-index:1; width:100%; height:100%; pointer-events:none; display:block; }
+.hero-cine::after { content:""; position:absolute; inset:0; z-index:2; background:linear-gradient(90deg, var(--navy) 0%, rgba(13,27,46,.78) 38%, rgba(13,27,46,.30) 72%, rgba(13,27,46,.10) 100%); }
 .hero-cine .kicker { display:inline-block; background:rgba(245,166,35,.14); color:var(--amber); padding:6px 18px; border-radius:999px; font-size:.82rem; font-weight:700; letter-spacing:.3px; margin-bottom:22px; border:1px solid rgba(245,166,35,.3); }
 .hero-cine h1 { font-size:3.1rem; line-height:1.08; letter-spacing:-1.2px; margin-bottom:18px; max-width:680px; }
 .hero-cine h1 span { color:var(--amber); }
@@ -44,102 +59,126 @@
 @media (max-width:820px){ .feat3d .wrap { grid-template-columns:1fr; } }
 
 /* ── Scroll reveal ── */
-.reveal { opacity:0; transform:translateY(22px); transition:opacity .7s ease, transform .7s ease; }
+/* Only hide-then-reveal when JS is available; without JS all content stays visible */
+.js .reveal { opacity:0; transform:translateY(22px); transition:opacity .7s ease, transform .7s ease; }
 .reveal.in { opacity:1; transform:none; }
+@media (prefers-reduced-motion: reduce){ .js .reveal { opacity:1; transform:none; transition:none; } }
 
 /* ── Card hover lift ── */
 .block .card { transition:transform .2s ease, box-shadow .2s ease; }
 .block .card:hover { transform:translateY(-4px); box-shadow:0 14px 34px rgba(13,27,46,.13); }
+
+/* ── 3D tap-to-load poster ── */
+.load3d { position:absolute; inset:0; width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; background:radial-gradient(600px 300px at 50% 30%, #16304c 0%, #0a1d30 70%); border:0; cursor:pointer; color:#fff; font-family:inherit; }
+.load3d .l3-icon { font-size:2.6rem; filter:drop-shadow(0 0 14px rgba(245,166,35,.55)); }
+.load3d .l3-txt { font-size:1.05rem; font-weight:800; color:var(--amber); }
+.load3d .l3-sub { font-size:.8rem; color:#9fb0c4; }
+.load3d:hover .l3-icon { transform:scale(1.08); transition:transform .2s; }
+
+/* ── Live glance cards ── */
+#glanceCards .g-region { display:inline-block; font-size:.7rem; font-weight:800; text-transform:uppercase; letter-spacing:.6px; color:var(--amber-dark); background:#fef3c7; padding:3px 10px; border-radius:999px; margin-bottom:10px; }
+#glanceCards .g-val { color:var(--amber-dark); font-weight:800; font-size:.85rem; }
 </style>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","name":"TrafoPath","url":"https://trafopath.com/","logo":"https://trafopath.com/brand/og-image.png","slogan":"Navigate the Transformer Industry","description":"A global information platform for the transformer industry — daily market intelligence, a worldwide manufacturer directory, an electrical-grid census, industry events and engineering tools."},{"@type":"WebSite","name":"TrafoPath","url":"https://trafopath.com/"}]}</script>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TrafoPath">
 </head>
 <body>
 
 <header>
   <div class="container nav">
-    <a href="index.html" class="logo">Transformer<span>Insider</span></a>
-    <button class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
-    <nav class="nav-links">
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg width="30" height="30" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="none" stroke="#fff" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.3" fill="none" opacity="0.8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg>Trafo<span>Path</span></a>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav" onclick="var n=document.querySelector('.nav-links');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))">☰</button>
+    <nav class="nav-links" id="mainNav">
       <a href="intel.html">Daily Intel</a>
       <a href="events.html">Events</a>
+      <a href="webinars.html">Webinars</a>
       <a href="manufacturers.html">Manufacturers</a>
       <a href="learn.html">Learn</a>
       <a href="grids.html">Grids</a>
-      <a href="resources.html">Resources</a>
+      <a href="resources.html">Knowledge</a>
+      <a href="blog.html">Blog</a>
       <a href="sponsor.html">Sponsor</a>
-      <a href="intel.html" class="btn btn-amber">Subscribe</a>
+      <a href="search.html" title="Search" aria-label="Search">🔍</a>
+      <a href="subscribe.html" class="btn btn-amber">Subscribe</a>
     </nav>
   </div>
 </header>
 
 <div class="ticker">
-  <div class="ticker-inner" id="ticker">
-    <b>Copper</b> ~$6.29/lb (≈$13,870/t, record $6.6 on 2 Jun) <b>Electrical Steel (US)</b> ~$5,550/MT <b>LPT Lead Times</b> up to 48 months <b>IEA</b> Mideast conflict shifts $2.2T into grids & energy security <b>SEC</b> $906M Afif 380kV + $376M SPTC deal <b>UAE DCs</b> Microsoft/Khazna $5.2B + Stargate 1GW <b>PGCIL</b> Hitachi Rs 6.47B 765kV order <b>Weidmann</b> $220M+ China transformerboard plant &nbsp;&nbsp;&nbsp;
-    <b>Copper</b> ~$6.29/lb (≈$13,870/t, record $6.6 on 2 Jun) <b>Electrical Steel (US)</b> ~$5,550/MT <b>LPT Lead Times</b> up to 48 months <b>IEA</b> Mideast conflict shifts $2.2T into grids & energy security <b>SEC</b> $906M Afif 380kV + $376M SPTC deal <b>UAE DCs</b> Microsoft/Khazna $5.2B + Stargate 1GW <b>PGCIL</b> Hitachi Rs 6.47B 765kV order <b>Weidmann</b> $220M+ China transformerboard plant &nbsp;&nbsp;&nbsp;
-  </div>
+  <div class="ticker-inner" id="ticker"></div>
 </div>
 
-<!-- ══ Cinematic hero with animated power flow ══ -->
-<section class="hero-cine">
-  <svg class="hero-art" viewBox="0 0 1200 520" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="cu" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#f5a623"/><stop offset="1" stop-color="#c97a3d"/></linearGradient>
-      <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#f5a623" stop-opacity=".55"/><stop offset="1" stop-color="#f5a623" stop-opacity="0"/></radialGradient>
-      <filter id="soft"><feGaussianBlur stdDeviation="2.2"/></filter>
-    </defs>
+<!-- ══ Cinematic hero — animated grid network ══ -->
+<style>
+/* ===== Hero v2 — "The Index" (static, no globe) ===== */
+.hero-cine.hero-v2 { padding: 84px 0 92px; background: radial-gradient(1100px 560px at 78% -20%, #1b3a5c 0%, var(--navy) 52%, #0a1626 100%); }
+.hero-cine.hero-v2::after { content: none; }
+.hero-v2 .hero-grid { display: grid; grid-template-columns: 1.08fr 0.92fr; gap: 60px; align-items: center; }
+.hero-v2 h1 { max-width: 620px; }
+.hero-v2 .lead { max-width: 540px; }
+.hero-v2 .hero-panel { position: relative; }
+.hero-v2 .hero-arcs { position: absolute; inset: -70px -60px -70px -40px; width: calc(100% + 100px); height: calc(100% + 140px); pointer-events: none; z-index: 0; }
+.hero-v2 .panel-head { position: relative; z-index: 1; display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid rgba(196,210,228,.14); }
+.hero-v2 .panel-head strong { color: #fff; font-size: .8rem; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase; }
+.hero-v2 .panel-head em { color: #9fb0c4; font-style: normal; font-size: .78rem; letter-spacing: .3px; }
+.hero-v2 .stat-grid { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.hero-v2 .stat-card { background: linear-gradient(180deg, rgba(20,37,61,.92), rgba(20,37,61,.62)); border: 1px solid rgba(196,210,228,.13); border-radius: 14px; padding: 22px 20px 19px; }
+.hero-v2 .stat-card b { display: block; font-size: 2.15rem; font-weight: 800; letter-spacing: -1px; line-height: 1; color: #fff; font-variant-numeric: tabular-nums; }
+.hero-v2 .stat-card b.is-amber { color: var(--amber); }
+.hero-v2 .stat-card span { display: block; margin-top: 8px; color: #c4d2e4; font-size: .86rem; font-weight: 600; letter-spacing: .2px; }
+.hero-v2 .stat-card i { display: block; width: 26px; height: 3px; border-radius: 2px; background: var(--amber); opacity: .85; margin-bottom: 14px; }
+.hero-v2 .panel-foot { position: relative; z-index: 1; margin-top: 14px; color: #8fa2ba; font-size: .78rem; letter-spacing: .3px; }
+.hero-v2 .panel-foot b { color: var(--amber); font-weight: 700; }
+@keyframes heroRise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.hero-v2 .hero-copy  { animation: heroRise .7s ease-out both; }
+.hero-v2 .hero-panel { animation: heroRise .7s ease-out .15s both; }
+@media (prefers-reduced-motion: reduce) { .hero-v2 .hero-copy, .hero-v2 .hero-panel { animation: none; } }
+@media (max-width: 940px) { .hero-v2 .hero-grid { grid-template-columns: 1fr; gap: 46px; } .hero-v2 .hero-arcs { inset: -40px -30px; width: calc(100% + 60px); height: calc(100% + 80px); } }
+@media (max-width: 480px) { .hero-v2 .stat-grid { gap: 10px; } .hero-v2 .stat-card { padding: 16px 14px 14px; } .hero-v2 .stat-card b { font-size: 1.7rem; } }
+</style>
 
-    <!-- incoming + outgoing transmission lines -->
-    <path id="lineIn" d="M-20,150 H470" stroke="#33526f" stroke-width="2" fill="none"/>
-    <path id="lineOut" d="M730,370 H1240" stroke="#33526f" stroke-width="2" fill="none"/>
-    <path d="M470,150 C560,150 560,260 600,260" stroke="#33526f" stroke-width="2" fill="none"/>
-    <path d="M600,260 C640,260 640,370 730,370" stroke="#33526f" stroke-width="2" fill="none"/>
-
-    <!-- pylons -->
-    <g stroke="#33526f" stroke-width="2" fill="none" opacity=".6">
-      <path d="M120,150 l-16,46 m16,-46 l16,46 m-22,16 h12"/>
-      <path d="M1080,370 l-16,46 m16,-46 l16,46 m-22,16 h12"/>
-    </g>
-
-    <!-- glow behind transformer -->
-    <circle cx="600" cy="260" r="170" fill="url(#glow)" filter="url(#soft)"/>
-
-    <!-- transformer core (laminated window) -->
-    <g transform="translate(600,260)">
-      <rect x="-78" y="-104" width="156" height="208" rx="10" fill="none" stroke="#8a9bb0" stroke-width="16"/>
-      <!-- primary coil (left limb) -->
-      <g>
-        <rect x="-66" y="-78" width="34" height="156" rx="9" fill="url(#cu)" opacity=".9"/>
-        <rect x="-66" y="-78" width="34" height="156" rx="9" fill="none" stroke="#ffd98a" stroke-width="1" opacity=".5"/>
-      </g>
-      <!-- secondary coil (right limb) -->
-      <g>
-        <rect x="32" y="-78" width="34" height="156" rx="9" fill="url(#cu)" opacity=".9"/>
-        <rect x="32" y="-78" width="34" height="156" rx="9" fill="none" stroke="#ffd98a" stroke-width="1" opacity=".5"/>
-      </g>
-      <!-- animated flux loops through the window -->
-      <g fill="none" stroke="#f5a623" stroke-width="2.4" opacity=".85">
-        <ellipse cx="0" cy="0" rx="22" ry="92" stroke-dasharray="10 14"><animate attributeName="stroke-dashoffset" from="0" to="-96" dur="2.2s" repeatCount="indefinite"/></ellipse>
-        <ellipse cx="0" cy="0" rx="40" ry="98" stroke-dasharray="8 18" opacity=".5"><animate attributeName="stroke-dashoffset" from="0" to="-104" dur="3s" repeatCount="indefinite"/></ellipse>
-      </g>
-    </g>
-
-    <!-- moving power particles along the lines -->
-    <g fill="#f5a623">
-      <circle r="4"><animateMotion dur="2.6s" repeatCount="indefinite" keyPoints="0;1" keyTimes="0;1"><mpath href="#lineIn"/></animateMotion></circle>
-      <circle r="4" opacity=".7"><animateMotion dur="2.6s" begin="1.3s" repeatCount="indefinite"><mpath href="#lineIn"/></animateMotion></circle>
-      <circle r="4"><animateMotion dur="2.6s" begin=".6s" repeatCount="indefinite"><mpath href="#lineOut"/></animateMotion></circle>
-      <circle r="4" opacity=".7"><animateMotion dur="2.6s" begin="1.9s" repeatCount="indefinite"><mpath href="#lineOut"/></animateMotion></circle>
-    </g>
-  </svg>
-
+<section class="hero-cine hero-v2">
   <div class="container">
-    <span class="kicker">The Inside Track on the Global Transformer Industry</span>
-    <h1>Where the world's<br><span>transformer industry</span><br>stays ahead.</h1>
-    <p class="lead">Daily market intelligence, industry events, jobs, a 124-country grid census and an interactive 3D transformer explorer — all in one place, all free.</p>
-    <div class="hero-ctas">
-      <a href="intel.html" class="btn btn-amber">Read Today's Intel</a>
-      <a href="#explore3d" class="btn btn-outline">See it in 3D ▶</a>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="kicker">Navigate the Transformer Industry</span>
+        <h1>Where the world's <span>transformer industry</span> stays ahead.</h1>
+        <p class="lead">Daily market intelligence, a global manufacturer directory, a country-by-country grid census, and engineering tools &mdash; one platform, updated every morning.</p>
+        <div class="hero-ctas">
+          <a href="intel.html" class="btn btn-amber">Read Today's Intel</a>
+          <a href="manufacturers.html" class="btn btn-outline">Explore Manufacturers</a>
+        </div>
+        <div class="trust"><span>Updated daily</span><span>Global coverage</span><span>Free to read</span></div>
+      </div>
+      <div class="hero-panel" aria-label="TrafoPath platform at a glance">
+        <svg class="hero-arcs" viewBox="0 0 560 560" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+          <g fill="none" stroke="#f5a623">
+            <circle cx="430" cy="120" r="90"  stroke-opacity=".10" stroke-width="1"/>
+            <circle cx="430" cy="120" r="160" stroke-opacity=".07" stroke-width="1"/>
+            <circle cx="430" cy="120" r="235" stroke-opacity=".05" stroke-width="1"/>
+            <circle cx="430" cy="120" r="315" stroke-opacity=".035" stroke-width="1"/>
+            <circle cx="430" cy="120" r="400" stroke-opacity=".025" stroke-width="1"/>
+          </g>
+          <g fill="#f5a623">
+            <circle cx="340" cy="120" r="2.5" fill-opacity=".45"/>
+            <circle cx="430" cy="280" r="2.5" fill-opacity=".35"/>
+            <circle cx="270" cy="330" r="2"   fill-opacity=".25"/>
+          </g>
+        </svg>
+        <div class="panel-head"><strong>The Platform at a Glance</strong><em>trafopath.com</em></div>
+        <div class="stat-grid">
+          <div class="stat-card"><i></i><b>519</b><span>Manufacturers profiled</span></div>
+          <div class="stat-card"><i></i><b>86</b><span>Manufacturing countries</span></div>
+          <div class="stat-card"><i></i><b>124</b><span>National grids surveyed</span></div>
+          <div class="stat-card"><i></i><b class="is-amber">Daily</b><span>Market-intelligence briefing</span></div>
+        </div>
+        <p class="panel-foot">Plus industry events, webinars &amp; interactive <b>3D engineering models</b>.</p>
+      </div>
     </div>
-    <div class="trust"><span>Free Forever</span><span>Updated Daily</span><span>Global Coverage</span></div>
   </div>
 </section>
 
@@ -163,9 +202,13 @@
       <a href="explorer.html" class="btn btn-amber">Open the full 3D explorer →</a>
     </div>
     <div class="reveal">
-      <div class="frame3d">
-        <iframe src="explorer.html" title="Interactive 3D transformer" loading="lazy"></iframe>
-        <span class="hint">🖱️ Drag to rotate · scroll to zoom</span>
+      <div class="frame3d" id="frame3d">
+        <button class="load3d" id="load3dBtn" type="button">
+          <span class="l3-icon">⚡</span>
+          <span class="l3-txt">Tap to load the 3D transformer</span>
+          <span class="l3-sub">Interactive · rotates in your hand</span>
+        </button>
+        <span class="hint" hidden>🖱️ Drag to rotate · scroll to zoom</span>
       </div>
     </div>
   </div>
@@ -175,13 +218,13 @@
   <div class="container">
     <div class="section-head reveal">
       <h2>Built for Every Role in the Transformer Industry</h2>
-      <p>Whether you're a utility engineer, accessories supplier, OEM or consultant — TransformerInsider is your platform.</p>
+      <p>Whether you're a utility engineer, accessories supplier, OEM or consultant — TrafoPath is your platform.</p>
     </div>
     <div class="grid grid-4">
-      <div class="card reveal"><span class="emoji">🏭</span><h3>Manufacturers & OEMs</h3><p>Track tenders, project awards and capacity moves across every major market.</p></div>
-      <div class="card reveal"><span class="emoji">🔧</span><h3>Accessories Suppliers</h3><p>Bushings, tap-changers, insulation, oil, radiators — follow demand signals and material prices.</p></div>
-      <div class="card reveal"><span class="emoji">⚡</span><h3>Utilities & EPCs</h3><p>Stay ahead of supplier capacity, lead times and grid investment worldwide.</p></div>
-      <div class="card reveal"><span class="emoji">🤝</span><h3>Consultants & Engineers</h3><p>Daily intel, industry events, a grid census and a global jobs board in one place.</p></div>
+      <div class="card reveal"><span class="emoji" aria-hidden="true">🏭</span><h3>Manufacturers & OEMs</h3><p>Track tenders, project awards and capacity moves across every major market.</p></div>
+      <div class="card reveal"><span class="emoji" aria-hidden="true">🔧</span><h3>Accessories Suppliers</h3><p>Bushings, tap-changers, insulation, oil, radiators — follow demand signals and material prices.</p></div>
+      <div class="card reveal"><span class="emoji" aria-hidden="true">⚡</span><h3>Utilities & EPCs</h3><p>Stay ahead of supplier capacity, lead times and grid investment worldwide.</p></div>
+      <div class="card reveal"><span class="emoji" aria-hidden="true">🤝</span><h3>Consultants & Engineers</h3><p>Daily intel, industry events, a grid census and a global jobs board in one place.</p></div>
     </div>
   </div>
 </section>
@@ -190,12 +233,12 @@
   <div class="container">
     <div class="section-head reveal">
       <h2>Today's Transformer Intel — At a Glance</h2>
-      <p>A daily briefing covering tenders & projects, supplier news and material prices worldwide.</p>
+      <p id="glanceSub">A daily briefing covering tenders & projects, supplier news and material prices worldwide.</p>
     </div>
-    <div class="grid grid-3">
-      <div class="card reveal"><span class="emoji">📋</span><h3>Tenders & Projects</h3><p>SEC awards SPTC a $376M transformer & reactor deal; Hitachi Energy India wins a Rs 6.47B 765kV PGCIL order; KAHRAMAA 2026 expansion packages out.</p></div>
-      <div class="card reveal"><span class="emoji">🌍</span><h3>Supplier & Capacity News</h3><p>Weidmann commits $220M+ to a new China transformerboard plant; Voltamp and Virginia Transformer add new capacity; US LPT lead times still stretch to 4 years.</p></div>
-      <div class="card reveal"><span class="emoji">📈</span><h3>Prices & Materials</h3><p>Copper near $6.29/lb (≈$13,870/t), easing from a record $6.6 on 2 June as Mideast supply risks bite; CRGO firm near $5,550/MT US and ~$1,075/MT China.</p></div>
+    <div class="grid grid-3" id="glanceCards">
+      <div class="card reveal"><span class="emoji" aria-hidden="true">📋</span><h3>Tenders & Projects</h3><p>SEC awards SPTC a $376M transformer & reactor deal; Hitachi Energy India wins a Rs 6.47B 765kV PGCIL order; KAHRAMAA 2026 expansion packages out.</p></div>
+      <div class="card reveal"><span class="emoji" aria-hidden="true">🌍</span><h3>Supplier & Capacity News</h3><p>Weidmann commits $220M+ to a new China transformerboard plant; Voltamp and Virginia Transformer add new capacity; US LPT lead times still stretch to 4 years.</p></div>
+      <div class="card reveal"><span class="emoji" aria-hidden="true">📈</span><h3>Prices & Materials</h3><p>Copper near $6.29/lb (≈$13,870/t), easing from a record $6.6 on 2 June as Mideast supply risks bite; CRGO firm near $5,550/MT US and ~$1,075/MT China.</p></div>
     </div>
     <p style="text-align:center; margin-top:30px" class="reveal"><a href="intel.html" class="btn btn-amber">Read the Full Briefing →</a></p>
   </div>
@@ -208,12 +251,14 @@
       <p>Five tools the transformer industry didn't have until now.</p>
     </div>
     <div class="grid grid-3">
-      <a class="card reveal" href="intel.html"><span class="emoji">📰</span><h3>Daily Intel →</h3><p>Twice-daily global briefing — tenders, supplier moves, prices — ordered by your region.</p></a>
-      <a class="card reveal" href="grids.html"><span class="emoji">🌐</span><h3>World Grids →</h3><p>124 countries, 139 operators, 16 synchronous areas — voltages, frequencies and official links.</p></a>
-      <a class="card reveal" href="events.html"><span class="emoji">📅</span><h3>Events →</h3><p>Every major power & transformer exhibition through 2028, with one-click hotel and flight booking.</p></a>
-      <a class="card reveal" href="manufacturers.html"><span class="emoji">🏭</span><h3>Manufacturers →</h3><p>A worldwide census of 500+ transformer makers — power, distribution and dry-type — country by country.</p></a>
-      <a class="card reveal" href="learn.html"><span class="emoji">🎓</span><h3>Learn →</h3><p>A free 16-section design course plus the interactive 3D explorer.</p></a>
-      <a class="card reveal" href="resources.html"><span class="emoji">📚</span><h3>Resources →</h3><p>IEC / ANSI standards and reference material every designer reaches for.</p></a>
+      <a class="card reveal" href="intel.html"><span class="emoji" aria-hidden="true">📰</span><h3>Daily Intel →</h3><p>Twice-daily global briefing — tenders, supplier moves, prices — ordered by your region.</p></a>
+      <a class="card reveal" href="grids.html"><span class="emoji" aria-hidden="true">🌐</span><h3>World Grids →</h3><p>124 countries, 139 operators, 16 synchronous areas — voltages, frequencies and official links.</p></a>
+      <a class="card reveal" href="events.html"><span class="emoji" aria-hidden="true">📅</span><h3>Events →</h3><p>Every major power & transformer exhibition through 2028, with one-click hotel and flight booking.</p></a>
+      <a class="card reveal" href="manufacturers.html"><span class="emoji" aria-hidden="true">🏭</span><h3>Manufacturers →</h3><p>A worldwide census of 519 transformer makers — power, distribution and dry-type — country by country.</p></a>
+      <a class="card reveal" href="learn.html"><span class="emoji" aria-hidden="true">🎓</span><h3>Learn →</h3><p>A free 26-chapter design masterclass — 3D models and a live design calculator built in.</p></a>
+      <a class="card reveal" href="resources.html"><span class="emoji" aria-hidden="true">📚</span><h3>Resources →</h3><p>IEC / ANSI standards and reference material every designer reaches for.</p></a>
+      <a class="card reveal" href="components.html"><span class="emoji" aria-hidden="true">🔩</span><h3>Components →</h3><p>Every transformer part mapped — bushings to Buchholz relays — with supplier connections.</p></a>
+      <a class="card reveal" href="rfq.html"><span class="emoji" aria-hidden="true">📨</span><h3>RFQ Board →</h3><p>Post a requirement and reach manufacturers and suppliers worldwide — free.</p></a>
     </div>
   </div>
 </section>
@@ -222,7 +267,15 @@
   <div class="container">
     <h2>Ready to Power Up Your Transformer Business?</h2>
     <p>Get the twice-daily intel briefing — free.</p>
-    <a href="intel.html" class="btn btn-amber">Subscribe Free →</a>
+    <a href="subscribe.html" class="btn btn-amber">Subscribe Free →</a>
+  </div>
+</section>
+
+<section class="block" style="background:linear-gradient(135deg,var(--navy),#1b3a5c)">
+  <div class="container" style="max-width:680px;text-align:center;color:#fff">
+    <h2 style="color:#fff;font-size:1.8rem;margin-bottom:8px">Get the transformer industry in your inbox</h2>
+    <p style="color:#c4d2e4;margin:0 auto 20px;max-width:520px">Daily market intel and a weekly digest — tenders, supplier moves, prices, events and grid news. One email, free.</p>
+    <a href="subscribe.html" class="btn btn-amber">Subscribe free →</a>
   </div>
 </section>
 
@@ -230,22 +283,21 @@
   <div class="container">
     <div class="cols">
       <div>
-        <a href="index.html" class="logo" style="font-size:1.2rem">Transformer<span style="color:var(--amber)">Insider</span></a>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="none" stroke="#fff" stroke-width="2"/><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg>Trafo<span style="color:var(--amber)">Path</span></a>
         <p style="margin-top:12px">The global intelligence and networking platform for transformer manufacturers, suppliers, engineers and utilities.</p>
       </div>
-      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a>
-      <a href="events.html">Events</a><a href="manufacturers.html">Manufacturers</a>
-      <a href="learn.html">Learn</a>
-      <a href="grids.html">Grids</a><a href="resources.html">Resources</a>
-      <a href="sponsor.html">Sponsor</a></div>
-      <div><h4>COMPANY</h4><a href="#">About Us</a><a href="#">Contact</a><a href="#">Privacy</a><a href="#">Terms</a></div>
-      <div><h4>CONTACT</h4><a href="mailto:hello@transformerinsider.com">hello@transformerinsider.com</a><a href="#">Dubai, UAE</a></div>
+      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="vendors.html">Vendors</a><a href="learn.html">Learn</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="sponsor.html">Sponsor</a></div>
+      <div><h4>COMPANY</h4><a href="about.html">About Us</a><a href="mailto:hello@trafopath.com">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><h4>CONTACT</h4><a href="mailto:hello@trafopath.com">hello@trafopath.com</a><a href="https://www.linkedin.com/company/trafopath" target="_blank" rel="noopener">LinkedIn ↗</a><span style="display:block">Dubai, UAE</span></div>
     </div>
-    <div class="copyright">© 2026 TransformerInsider. All rights reserved.</div>
+    <div class="copyright">© 2026 TrafoPath. All rights reserved.</div>
   </div>
 </footer>
 
 <script>
+/* ====== DAILY-UPDATED TICKER (the daily intel job rewrites this one line) ====== */
+const TICKER = "<b>Copper</b> ~$13,357 / t (9 Jul, ▲2.0%)  <b>Aluminium</b> ~$3,164 / t (▲0.7%)  <b>Mexico CFE</b> 75 MVA energised at Los Cabos  <b>Brazil ANEEL</b> lots 7–10, R$1.8bn (Axia)  <b>India</b> 2-yr PPO exemption for TBEA/Nanjing/Taikai  <b>TARIL</b> Rs 1,000cr+ PGCIL ultra-mega  <b>US</b> lead times up to 4 yrs";
+(function(){var tk=document.getElementById('ticker'); if(tk) tk.innerHTML = TICKER + ' &nbsp;&nbsp;&nbsp; ' + TICKER + ' &nbsp;&nbsp;&nbsp; ';})();
 // Count-up KPIs (fire when the row scrolls into view)
 function countUp(el){
   const target = +el.dataset.count, suffix = el.dataset.suffix || '';
@@ -257,17 +309,86 @@ function countUp(el){
     if(p<1) requestAnimationFrame(tick);
   })(t0);
 }
-const kpiObs = new IntersectionObserver((es)=>{
-  es.forEach(e=>{ if(e.isIntersecting){ e.target.querySelectorAll('[data-count]').forEach(countUp); kpiObs.unobserve(e.target); } });
-},{threshold:.4});
-const kpiRow = document.getElementById('kpiRow'); if(kpiRow) kpiObs.observe(kpiRow);
+const kpiRow = document.getElementById('kpiRow');
+if(kpiRow){
+  if('IntersectionObserver' in window){
+    const kpiObs = new IntersectionObserver((es)=>{
+      es.forEach(e=>{ if(e.isIntersecting){ e.target.querySelectorAll('[data-count]').forEach(countUp); kpiObs.unobserve(e.target); } });
+    },{threshold:.4});
+    kpiObs.observe(kpiRow);
+  } else {
+    kpiRow.querySelectorAll('[data-count]').forEach(el=>{ el.textContent = el.dataset.count + (el.dataset.suffix||''); });
+  }
+}
 
-// Scroll reveal
-const revObs = new IntersectionObserver((es)=>{
-  es.forEach((e,i)=>{ if(e.isIntersecting){ e.target.style.transitionDelay=(Math.min(i,4)*60)+'ms'; e.target.classList.add('in'); revObs.unobserve(e.target); } });
-},{threshold:.15});
-document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
+// Close mobile nav when a link is tapped
+document.querySelectorAll('#mainNav a').forEach(a=>a.addEventListener('click',()=>{
+  const n=document.getElementById('mainNav'), t=document.querySelector('.menu-toggle');
+  n.classList.remove('open'); if(t) t.setAttribute('aria-expanded','false');
+}));
+
+/* ── 3D explorer: auto-load on desktop, tap-to-load on mobile (saves ~1MB of JS on phones) ── */
+(function(){
+  const frame=document.getElementById('frame3d'), btn=document.getElementById('load3dBtn');
+  if(!frame||!btn) return;
+  function load(){
+    if(frame.querySelector('iframe')) return;
+    const f=document.createElement('iframe');
+    f.src='explorer.html'; f.title='Interactive 3D transformer'; f.loading='lazy';
+    frame.insertBefore(f, frame.firstChild);
+    btn.remove();
+    const h=frame.querySelector('.hint'); if(h) h.hidden=false;
+  }
+  btn.addEventListener('click',load);
+  if(window.innerWidth>=820 && 'IntersectionObserver' in window){
+    new IntersectionObserver((es,o)=>{ es.forEach(e=>{ if(e.isIntersecting){ load(); o.disconnect(); } }); },{rootMargin:'200px'}).observe(frame);
+  }
+})();
+
+/* ── Live "at a glance" headlines pulled from today's intel.html ── */
+(function(){
+  const host=document.getElementById('glanceCards'), sub=document.getElementById('glanceSub');
+  if(!host||!window.fetch) return;
+  fetch('intel.html',{cache:'no-cache'}).then(r=>r.text()).then(txt=>{
+    const nm=txt.match(/const NEWS = (\{[\s\S]*?\});\s*\n/);
+    if(!nm) return;
+    let NEWS; try{ NEWS=(new Function('return '+nm[1]))(); }catch(e){ return; }
+    const dm=txt.match(/const BRIEFING_DATE = "([^"]+)"/);
+    const items=[];
+    Object.keys(NEWS).forEach(rk=>{
+      (NEWS[rk].items||[]).forEach(it=>items.push(Object.assign({region:rk},it)));
+    });
+    const fresh=items.filter(i=>i.isNew), rest=items.filter(i=>!i.isNew);
+    const pick=fresh.concat(rest).slice(0,3);
+    if(pick.length<3) return;
+    const esc=s=>String(s||'').replace(/</g,'&lt;');
+    host.innerHTML=pick.map(it=>{
+      const snip=esc(it.snippet).length>170? esc(it.snippet).slice(0,167).replace(/\s+\S*$/,'')+'…' : esc(it.snippet);
+      return '<a class="card reveal in" href="intel.html"><span class="g-region">'+esc(it.region)+'</span>'+
+        '<h3 style="font-size:1rem">'+esc(it.title)+'</h3><p>'+snip+'</p>'+
+        (it.value?'<p class="g-val" style="margin-top:8px">'+esc(it.value)+'</p>':'')+'</a>';
+    }).join('');
+    if(sub&&dm) sub.innerHTML='Live from the briefing for <b>'+esc(dm[1])+'</b> — tenders, supplier news and material prices worldwide.';
+  }).catch(()=>{});
+})();
+
+// Scroll reveal (with fallback: if IntersectionObserver is unavailable, show everything)
+if('IntersectionObserver' in window){
+  const revObs = new IntersectionObserver((es)=>{
+    es.forEach((e,i)=>{ if(e.isIntersecting){ e.target.style.transitionDelay=(Math.min(i,4)*60)+'ms'; e.target.classList.add('in'); revObs.unobserve(e.target); } });
+  },{threshold:.15});
+  document.querySelectorAll('.reveal').forEach(el=>revObs.observe(el));
+} else {
+  document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'));
+}
+
+
 </script>
 
+<script>
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
+(function(){var dp;window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();dp=e;if(document.getElementById('tpInstall'))return;var b=document.createElement('button');b.id='tpInstall';b.textContent='\u2913 Install TrafoPath';b.setAttribute('style','position:fixed;right:16px;bottom:16px;z-index:9999;background:#f5a623;color:#0d1b2e;border:0;border-radius:999px;padding:11px 18px;font-weight:800;font-size:.9rem;box-shadow:0 6px 20px rgba(0,0,0,.28);cursor:pointer;font-family:inherit');b.onclick=function(){b.remove();dp.prompt();dp.userChoice.finally(function(){dp=null;});};document.body.appendChild(b);});})();
+</script>
+<script src="analytics.js" defer></script>
 </body>
 </html>

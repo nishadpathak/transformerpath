@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Power Transformer — Interactive 3D Explorer (100 MVA, 132/33 kV)</title>
+<meta name="description" content="Interactive 3D power transformer model — explore the core, windings, bushings, OLTC and cooling system.">
+<link rel="canonical" href="https://trafopath.com/power3d.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TrafoPath">
+<meta property="og:title" content="Power Transformer — Interactive 3D Explorer (100 MVA, 132/33 kV)">
+<meta property="og:description" content="Interactive 3D power transformer model — explore the core, windings, bushings, OLTC and cooling system.">
+<meta property="og:url" content="https://trafopath.com/power3d.html">
+<meta property="og:image" content="https://trafopath.com/brand/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
 <style>
 :root{--panel:#0e1c2c;--panel2:#13263a;--ink:#e8eef5;--mut:#8fa6bc;--acc:#3da5f4;--acc2:#e8732a;--line:#23415e}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -33,7 +42,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#08121e;color:var(--
 .btnrow button:hover{border-color:var(--acc)}
 .btnrow button.on{background:var(--acc);color:#04121f;font-weight:600}
 #help{position:absolute;left:14px;bottom:12px;z-index:10;font-size:.74rem;color:var(--mut);background:rgba(14,28,44,.75);border:1px solid var(--line);border-radius:8px;padding:7px 11px;line-height:1.6;pointer-events:none}
-.lbl{position:absolute;transform:translate(-50%,-130%);background:rgba(10,22,36,.88);border:1px solid var(--line);color:#dbe7f3;font-size:11px;padding:2px 7px;border-radius:5px;pointer-events:none;white-space:nowrap;z-index:5}
+.lbl{position:absolute;transform:translate(-50%,-130%);background:rgba(10,22,36,.88);border:1px solid var(--line);color:#dbe7f3;font-size:11px;padding:2px 7px;border-radius:5px;pointer-events:auto;cursor:pointer;white-space:nowrap;z-index:5}
 .lbl::after{content:"";position:absolute;left:50%;top:100%;margin-left:-4px;border:4px solid transparent;border-top-color:var(--line)}
 #tourcap{position:absolute;left:50%;bottom:64px;transform:translateX(-50%);max-width:680px;background:rgba(8,18,30,.88);border:1px solid var(--acc);border-radius:12px;padding:14px 22px;font-size:1.02rem;line-height:1.5;text-align:center;z-index:20;display:none;backdrop-filter:blur(6px);box-shadow:0 4px 24px rgba(0,0,0,.5)}
 #tourcap .step{color:var(--acc);font-size:.75rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:700}
@@ -41,10 +50,10 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#08121e;color:var(--
 </style>
 </head>
 <body>
-<div style="background:#0d1b2e;color:#fff;padding:10px 18px;font-family:'Segoe UI',system-ui,sans-serif;display:flex;align-items:center;gap:16px;font-size:.9rem;flex-wrap:wrap">
-  <a href="index.html" style="color:#fff;font-weight:800;text-decoration:none;font-size:1.05rem;letter-spacing:-.3px">Transformer<span style="color:#f5a623">Insider</span></a>
-  <a href="learn.html" style="color:#cbd5e1;text-decoration:none;margin-left:auto">&#8592; Learn hub</a>
-</div>
+<div style="background:#0d1b2e;color:#fff;padding:10px 18px;font-family:'Segoe UI',system-ui,sans-serif;display:flex;align-items:center;gap:12px;font-size:.9rem;flex-wrap:wrap">
+     <a href="index.html" style="color:#fff;font-weight:800;text-decoration:none;font-size:1.05rem;letter-spacing:-.3px;display:inline-flex;align-items:center;gap:7px"><svg width="22" height="22" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="27" fill="none" stroke="#fff" stroke-width="2"/><path d="M37 9 L23 35 L31 35 L26 55 L42 29 L34 29 L40 9 Z" fill="#f5a623"/></svg>Trafo<span style="color:#f5a623">Path</span></a>
+     <a href="learn.html" style="color:#cbd5e1;text-decoration:none;margin-left:auto">&#8592; Learn hub</a>
+   </div>
 <div id="c3d"></div>
 
 <div id="topbar">
@@ -102,7 +111,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#08121e;color:var(--
 <div id="help">🖱 drag = orbit · wheel = zoom · right-drag/shift-drag = pan · click = identify<br>🎬 sit back for the build story · ⚡ hear it hum · 🚨 watch a fault unfold</div>
 <div id="tourcap"><div class="step" id="tourstep"></div><div id="tourtext"></div></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="vendor/three.min.js"></script>
 <script>
 /* ================= scene ================= */
 const container = document.getElementById('c3d');
@@ -564,19 +573,18 @@ const labelEls=[];
 function makeLabel(prefix,text,dx,dy,dz){
   const part=parts.find(p=>p.name.startsWith(prefix));
   if(!part) return;
-  const el=document.createElement('div'); el.className='lbl'; el.textContent=text; document.body.appendChild(el);
+  const el=document.createElement('div'); el.className='lbl'; el.textContent=text; el.addEventListener('click',()=>{ if(part) selectPart(part); }); document.body.appendChild(el);
   labelEls.push({el,part,off:new THREE.Vector3(dx,dy,dz)});
 }
-makeLabel('Conservator','Conservator (main + OLTC)', -4, 68, -2);
-makeLabel('132 kV condenser','132 kV bushings', 0, 73, -8);
-makeLabel('33 kV bushings','33 kV bushings', 0, 59, 9);
-makeLabel('Radiator','Radiators + fans', 0, 35, 22);
-makeLabel('On-load','OLTC + drive', -40, 34, 0);
-makeLabel('Marshalling','Marshalling & DGA', 38.5, 20, 4);
-makeLabel('132 kV metal-oxide','Surge arresters', 0, 28, -30);
-makeLabel('Tapping','Tap winding', 18, 30, 0);
-makeLabel('Core — limbs','Core', 0, 8, 0);
-makeLabel('Tank,','Tank', -34.5, 22, 0);
+parts.forEach(function(p){
+    if(!p||!p.root) return;
+    var box=new THREE.Box3().setFromObject(p.root); if(box.isEmpty()) return;
+    var ctr=box.getCenter(new THREE.Vector3()), rp=p.root.getWorldPosition(new THREE.Vector3());
+    var off=ctr.sub(rp); off.y += (box.max.y-box.min.y)*0.12;
+    var el=document.createElement("div"); el.className="lbl"; el.textContent=p.name;
+    el.addEventListener("click",function(){ selectPart(p); }); document.body.appendChild(el);
+    labelEls.push({el:el, part:p, off:off});
+  });
 /* note: offsets are world-ish; resolved per-frame from part world pos + (off - basePos) */
 
 /* ================= toggles ================= */
@@ -682,6 +690,13 @@ function setEmissive(part,on){
     if(on){o.userData.em=o.material;o.material=o.material.clone();o.material.emissive=new THREE.Color(0x2b6ea8);o.material.emissiveIntensity=.8;}
     else if(o.userData.em){o.material.dispose();o.material=o.userData.em;delete o.userData.em;}
   }});
+}
+function selectPart(p){
+  if(!p) return;
+  if(typeof quizOn!=="undefined" && quizOn && typeof quizAnswer==="function"){ quizAnswer(p); return; }
+  if(typeof selected!=="undefined"){ if(selected) setEmissive(selected,false); selected=p; } else { setEmissive(p,true); }
+  setEmissive(p,true);
+  var info=document.getElementById("info"); if(info) info.innerHTML="<b>"+(p.name||"")+"</b><br>"+(p.desc||"");
 }
 function pick(e){
   const r=el.getBoundingClientRect();
@@ -897,5 +912,6 @@ addEventListener('resize',()=>{
   renderer.setSize(innerWidth,innerHeight);
 });
 </script>
+<script src="analytics.js" defer></script>
 </body>
 </html>

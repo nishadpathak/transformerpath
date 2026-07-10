@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Autotransformer — Series + Common Winding (Interactive 3D, 400/220 kV)</title>
+<meta name="description" content="Interactive 3D autotransformer model — see how the shared series and common windings of a 400/220 kV autotransformer work, with exploded views and click-to-identify parts.">
+<link rel="canonical" href="https://trafopath.com/autotransformer.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TrafoPath">
+<meta property="og:title" content="Autotransformer — Series + Common Winding (Interactive 3D)">
+<meta property="og:description" content="Interactive 3D autotransformer model — see how the shared series and common windings of a 400/220 kV autotransformer work, with exploded views and click-to-identify parts.">
+<meta property="og:url" content="https://trafopath.com/autotransformer.html">
+<meta property="og:image" content="https://trafopath.com/brand/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+:root{--panel:#0e1c2c;--panel2:#13263a;--ink:#e8eef5;--mut:#8fa6bc;--acc:#3da5f4;--acc2:#e8732a;--line:#23415e}
+*{box-sizing:border-box;margin:0;padding:0}html,body{height:100%;overflow:hidden}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#08121e;color:var(--ink)}
+#c3d{position:absolute;inset:0;cursor:grab}#c3d.dragging{cursor:grabbing}
+#topbar{position:absolute;top:0;left:0;right:0;height:52px;background:linear-gradient(180deg,rgba(8,18,30,.95),rgba(8,18,30,.78) 70%,transparent);display:flex;align-items:center;gap:12px;padding:0 18px;z-index:10;pointer-events:none}
+#topbar h1{font-size:1rem;font-weight:600;white-space:nowrap}
+#topbar a{pointer-events:auto;color:var(--acc);text-decoration:none;font-size:.8rem;border:1px solid var(--line);padding:4px 10px;border-radius:6px;background:rgba(14,28,44,.7);white-space:nowrap}
+#topbar a:hover{background:var(--panel2)}
+#panel{position:absolute;top:60px;right:12px;width:300px;max-height:calc(100% - 80px);overflow-y:auto;background:rgba(14,28,44,.92);border:1px solid var(--line);border-radius:12px;padding:14px 16px;z-index:10;backdrop-filter:blur(6px)}
+#panel h2{font-size:.78rem;text-transform:uppercase;letter-spacing:1px;color:var(--mut);margin:12px 0 6px}#panel h2:first-child{margin-top:0}
+.spec{font-size:.74rem;color:var(--mut);line-height:1.5;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 10px}.spec b{color:var(--acc2)}
+.tgl{display:flex;align-items:center;gap:8px;font-size:.83rem;padding:2.5px 0;cursor:pointer;user-select:none}.tgl input{accent-color:var(--acc)}
+.sw{width:11px;height:11px;border-radius:3px;display:inline-block;flex:none}
+#info{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin-top:6px;font-size:.83rem;line-height:1.5;min-height:90px}#info b{color:var(--acc)}#info .hint{color:var(--mut);font-size:.78rem}
+.btnrow{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.btnrow button{flex:1;background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:7px;padding:6px 4px;font-size:.77rem;cursor:pointer;white-space:nowrap}
+.btnrow button:hover{border-color:var(--acc)}.btnrow button.on{background:var(--acc);color:#04121f;font-weight:600}
+#help{position:absolute;left:14px;bottom:12px;z-index:10;font-size:.74rem;color:var(--mut);background:rgba(14,28,44,.75);border:1px solid var(--line);border-radius:8px;padding:7px 11px;line-height:1.6;pointer-events:none}
+.lbl{position:absolute;transform:translate(-50%,-130%);background:rgba(10,22,36,.88);border:1px solid var(--line);color:#dbe7f3;font-size:11px;padding:2px 7px;border-radius:5px;pointer-events:auto;cursor:pointer;white-space:nowrap;z-index:5}
+.lbl::after{content:"";position:absolute;left:50%;top:100%;margin-left:-4px;border:4px solid transparent;border-top-color:var(--line)}
+@media(max-width:760px){#panel{width:248px}#topbar h1{font-size:.78rem}}
+</style>
+</head>
+<body>
+<div style="background:#0d1b2e;color:#fff;padding:10px 18px;display:flex;align-items:center;gap:16px;font-size:.9rem;flex-wrap:wrap">
+  <a href="index.html" style="color:#fff;font-weight:800;text-decoration:none;font-size:1.05rem;letter-spacing:-.3px">Trafo<span style="color:#f5a623">Path</span></a>
+  <a href="learn.html" style="color:#cbd5e1;text-decoration:none;margin-left:auto">&#8592; Learn hub</a>
+</div>
+<div id="c3d"></div>
+<div id="topbar">
+  <h1>🔗 Autotransformer</h1>
+  <a href="academy.html">🏠 Hub</a>
+  <a href="masterclass.html">← Masterclass</a>
+  <a href="gsu.html">GSU →</a>
+</div>
+<div id="panel">
+  <div class="spec"><b>Auto</b> · 400/220 kV interconnecting · YNa0(d) · series + common winding share one magnetic circuit · buried delta tertiary</div>
+  <h2>Current path</h2>
+  <div class="btnrow"><button id="bFlow" class="on">⚡ Animate current path</button></div>
+  <h2>Windings</h2>
+  <div id="toggles"></div>
+  <h2>View</h2>
+  <div class="btnrow">
+    <button id="bRotate">⟳ Rotate</button>
+    <button id="bLabels" class="on">🏷 Labels</button>
+    <button id="bReset">⌂ Reset</button>
+  </div>
+  <h2>Selected part</h2>
+  <div id="info"><span class="hint">Click any part to identify it. An autotransformer shares one winding between HV and IV — that is why it is smaller and cheaper than a two-winding unit at close ratios, but offers no galvanic isolation.</span></div>
+</div>
+<div id="help">🖱 drag = orbit · wheel = zoom · right-drag = pan · click = identify<br>The IV terminal taps the junction of the <b>common</b> and <b>series</b> windings — HV = series + common in series.</div>
+
+<script src="vendor/three.min.js"></script>
+<script>
+const container=document.getElementById('c3d');
+const renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.setSize(innerWidth,innerHeight);
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.outputEncoding=THREE.sRGBEncoding;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.14;
+container.appendChild(renderer.domElement);
+const scene=new THREE.Scene();
+(function(){const cv=document.createElement('canvas');cv.width=16;cv.height=512;const g=cv.getContext('2d');
+ const gr=g.createLinearGradient(0,0,0,512);gr.addColorStop(0,'#2b5a86');gr.addColorStop(.45,'#143049');gr.addColorStop(.78,'#0c1c30');gr.addColorStop(1,'#0a1624');
+ g.fillStyle=gr;g.fillRect(0,0,16,512);scene.background=new THREE.CanvasTexture(cv);})();
+scene.fog=new THREE.Fog(0x0d1f33,220,560);
+const camera=new THREE.PerspectiveCamera(46,innerWidth/innerHeight,0.4,900);
+scene.add(new THREE.HemisphereLight(0xbcd4ea,0x16202c,.92));
+const sun=new THREE.DirectionalLight(0xffffff,1);sun.position.set(90,140,90);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);
+const scam=sun.shadow.camera;scam.left=-110;scam.right=110;scam.top=140;scam.bottom=-30;scam.far=400;scene.add(sun);
+scene.add(Object.assign(new THREE.DirectionalLight(0x88aacc,.3),{position:new THREE.Vector3(-80,50,-80)}));
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(800,800),new THREE.MeshStandardMaterial({color:0x16314a,roughness:1}));
+ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
+
+const M={
+  core:new THREE.MeshStandardMaterial({color:0x47556a,metalness:.78,roughness:.34}),
+  common:new THREE.MeshStandardMaterial({color:0xc97a3d,metalness:.7,roughness:.45,side:THREE.DoubleSide}),
+  series:new THREE.MeshStandardMaterial({color:0x3da5f4,metalness:.6,roughness:.5,side:THREE.DoubleSide}),
+  tert:new THREE.MeshStandardMaterial({color:0x1d7a4f,metalness:.6,roughness:.5,side:THREE.DoubleSide}),
+  junc:new THREE.MeshStandardMaterial({color:0xffd36a,metalness:.8,roughness:.3}),
+  lead:new THREE.MeshStandardMaterial({color:0x9aa9bb,metalness:.85,roughness:.4}),
+  hv:new THREE.MeshStandardMaterial({color:0xe8732a,metalness:.6,roughness:.5}),
+  neu:new THREE.MeshStandardMaterial({color:0x8a9bb0,metalness:.7,roughness:.45})
+};
+const PARTS={};const pickables=[];
+function reg(obj,key,name,desc){obj.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;o.userData.key=key;pickables.push(o);}});PARTS[key]={root:obj,name,desc};return obj;}
+const root=new THREE.Group();scene.add(root);
+
+/* core: 5-limb */
+const LIMB_X=[-26,0,26], RET_X=[-50,50];
+const H=78, Y0=12;
+const coreGrp=new THREE.Group();
+LIMB_X.forEach(x=>{const l=new THREE.Mesh(new THREE.CylinderGeometry(5,5,H,28),M.core);l.position.set(x,Y0+H/2,0);coreGrp.add(l);});
+RET_X.forEach(x=>{const l=new THREE.Mesh(new THREE.CylinderGeometry(4.2,4.2,H,22),M.core);l.position.set(x,Y0+H/2,0);coreGrp.add(l);});
+[1,-1].forEach(s=>{const yk=new THREE.Mesh(new THREE.BoxGeometry(116,9,9),M.core);yk.position.set(0,Y0+H/2+s*H/2,0);coreGrp.add(yk);});
+root.add(coreGrp);reg(coreGrp,'core','5-limb core','The magnetic circuit shared by all the windings. Two return limbs keep the yoke low and give zero-sequence flux a path for the YNa connection.');
+
+/* windings per limb: tertiary (inner) → common (lower) → series (upper) */
+const COMMON_Y0=Y0+6, COMMON_H=40, SERIES_H=26, GAP=3;
+const wTert=new THREE.Group(),wCommon=new THREE.Group(),wSeries=new THREE.Group(),juncGrp=new THREE.Group();
+LIMB_X.forEach(x=>{
+  const ter=new THREE.Mesh(new THREE.CylinderGeometry(7,7,COMMON_H+SERIES_H,36,1,true),M.tert);ter.position.set(x,COMMON_Y0+(COMMON_H+SERIES_H)/2,0);wTert.add(ter);
+  const com=new THREE.Mesh(new THREE.CylinderGeometry(10,10,COMMON_H,40,1,true),M.common);com.position.set(x,COMMON_Y0+COMMON_H/2,0);wCommon.add(com);
+  const serY=COMMON_Y0+COMMON_H+GAP;
+  const ser=new THREE.Mesh(new THREE.CylinderGeometry(10,10,SERIES_H,40,1,true),M.series);ser.position.set(x,serY+SERIES_H/2,0);wSeries.add(ser);
+  // junction ring (auto point = IV terminal tap) between common top and series bottom
+  const j=new THREE.Mesh(new THREE.TorusGeometry(10.6,1.1,10,40),M.junc);j.rotation.x=Math.PI/2;j.position.set(x,COMMON_Y0+COMMON_H+GAP/2,0);juncGrp.add(j);
+});
+root.add(wTert,wCommon,wSeries,juncGrp);
+reg(wCommon,'common','Common winding','Carried by <b>both</b> circuits. It sits between the neutral and the junction (IV) tap; the current in it is the <b>difference</b> I<sub>IV</sub> − I<sub>HV</sub>, which is why an autotransformer uses less copper than a two-winding unit.');
+reg(wSeries,'series','Series winding','In series above the common. HV = series + common in series, so the HV terminal is the top of the series winding; the IV terminal is the junction below it.');
+reg(wTert,'tert','Delta tertiary','A buried delta close to the core. It carries third-harmonic magnetising current and stabilises the neutral (an auto with an earthed star pair needs it); it can also be loaded at MV.');
+reg(juncGrp,'junc','Auto junction (IV tap)','The electrical join between common and series windings — the <b>220 kV (IV) terminal</b> is tapped here. This shared point is what removes the galvanic isolation of a two-winding transformer.');
+
+/* terminals / leads */
+const HV_Y=COMMON_Y0+COMMON_H+GAP+SERIES_H+6;
+const termGrp=new THREE.Group();
+const leads=[]; // for flow animation: {mesh}
+LIMB_X.forEach(x=>{
+  // HV lead up from series top
+  const hv=new THREE.Mesh(new THREE.CylinderGeometry(1.1,1.1,14,12),M.hv);hv.position.set(x,HV_Y,0);termGrp.add(hv);
+  const hvb=new THREE.Mesh(new THREE.SphereGeometry(2,12,10),M.hv);hvb.position.set(x,HV_Y+8,0);termGrp.add(hvb);
+  // IV lead from junction out to the side
+  const iv=new THREE.Mesh(new THREE.CylinderGeometry(1.0,1.0,16,12),M.lead);iv.rotation.z=Math.PI/2;iv.position.set(x,COMMON_Y0+COMMON_H+GAP/2,16);termGrp.add(iv);
+});
+root.add(termGrp);
+reg(termGrp,'term','HV &amp; IV terminals','Orange = <b>400 kV HV</b> leads from the series-winding tops; grey = <b>220 kV IV</b> leads tapped from the junctions. Their star points share the neutral.');
+
+/* neutral bus joining all common bottoms */
+const neu=new THREE.Mesh(new THREE.BoxGeometry(88,1.6,1.6),M.neu);neu.position.set(0,COMMON_Y0-2,0);
+root.add(neu);reg(neu,'neu','Common neutral','The bottoms of the common windings join to one earthed neutral — brought out to a neutral bushing and solidly earthed.');
+
+/* current-path particles: HV(top) -> series -> junction -> common -> neutral, on centre limb */
+const flowGrp=new THREE.Group();root.add(flowGrp);
+const dots=[];for(let i=0;i<26;i++){const d=new THREE.Mesh(new THREE.SphereGeometry(.8,7,7),new THREE.MeshBasicMaterial({color:0xffe08a}));d.visible=false;flowGrp.add(d);dots.push({m:d,t:i/26});}
+const flowPath=new THREE.CatmullRomCurve3([
+  new THREE.Vector3(0,HV_Y+6,0),new THREE.Vector3(0,COMMON_Y0+COMMON_H+GAP+SERIES_H/2,10),
+  new THREE.Vector3(0,COMMON_Y0+COMMON_H+GAP/2,11),new THREE.Vector3(0,COMMON_Y0+COMMON_H/2,10),
+  new THREE.Vector3(0,COMMON_Y0-2,0)]);
+
+/* ===== toggles ===== */
+const swatch={core:'#47556a',common:'#c97a3d',series:'#3da5f4',tert:'#1d7a4f',junc:'#ffd36a',term:'#e8732a',neu:'#8a9bb0'};
+const togList=[['core','5-limb core'],['series','Series winding'],['common','Common winding'],['tert','Delta tertiary'],['junc','Auto junction (IV)'],['term','HV / IV terminals'],['neu','Neutral bus']];
+const togBox=document.getElementById('toggles');
+togList.forEach(([k,label])=>{const l=document.createElement('label');l.className='tgl';
+  l.innerHTML=`<input type="checkbox" data-k="${k}" checked><span class="sw" style="background:${swatch[k]}"></span>${label}`;togBox.appendChild(l);});
+togBox.addEventListener('change',e=>{const k=e.target.dataset.k;if(PARTS[k])PARTS[k].root.visible=e.target.checked;});
+
+/* ===== orbit / pick / labels ===== */
+const el=renderer.domElement;
+let sph={r:190,th:.75,ph:1.02};const target=new THREE.Vector3(0,Y0+H/2,0);
+function applyCam(){sph.ph=Math.max(.16,Math.min(1.5,sph.ph));sph.r=Math.max(60,Math.min(420,sph.r));
+  camera.position.set(target.x+sph.r*Math.sin(sph.ph)*Math.sin(sph.th),target.y+sph.r*Math.cos(sph.ph),target.z+sph.r*Math.sin(sph.ph)*Math.cos(sph.th));camera.lookAt(target);}
+applyCam();
+let dragging=false,panning=false,moved=0,px=0,py=0,pinchD=0;
+el.addEventListener('contextmenu',e=>e.preventDefault());
+el.addEventListener('pointerdown',e=>{dragging=true;moved=0;panning=(e.button===2||e.shiftKey);px=e.clientX;py=e.clientY;container.classList.add('dragging');});
+el.addEventListener('pointermove',e=>{if(!dragging)return;const dx=e.clientX-px,dy=e.clientY-py;px=e.clientX;py=e.clientY;moved+=Math.abs(dx)+Math.abs(dy);
+  if(panning){const s=sph.r*0.0016;const right=new THREE.Vector3().subVectors(camera.position,target).cross(camera.up).normalize();target.addScaledVector(right,-dx*s);target.y+=dy*s;}
+  else{sph.th-=dx*0.005;sph.ph-=dy*0.005;}applyCam();});
+el.addEventListener('pointerup',e=>{dragging=false;container.classList.remove('dragging');if(moved<6)pick(e);});
+el.addEventListener('wheel',e=>{e.preventDefault();sph.r*=(1+Math.sign(e.deltaY)*.09);applyCam();},{passive:false});
+el.addEventListener('touchstart',e=>{if(e.touches.length===2)pinchD=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);},{passive:true});
+el.addEventListener('touchmove',e=>{if(e.touches.length===2){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);sph.r*=pinchD/d;pinchD=d;applyCam();}},{passive:true});
+const ray=new THREE.Raycaster();const mouse=new THREE.Vector2();
+function pick(e){mouse.x=(e.clientX/innerWidth)*2-1;mouse.y=-(e.clientY/innerHeight)*2+1;ray.setFromCamera(mouse,camera);
+  const hits=ray.intersectObjects(pickables,true);for(const h of hits){if(h.object.visible&&h.object.userData.key){selectPart(h.object.userData.key);return;}}}
+const info=document.getElementById('info');
+function selectPart(k){const p=PARTS[k];if(!p)return;info.innerHTML=`<b>${p.name}</b><br>${p.desc}`;}
+const labels=[];
+function mkLabel(text,pos,key){const e=document.createElement('div');e.className='lbl';e.textContent=text;if(key)e.addEventListener('click',()=>selectPart(key));document.body.appendChild(e);labels.push({el:e,pos});}
+mkLabel('HV 400 kV',new THREE.Vector3(0,HV_Y+10,0),'term');
+mkLabel('Series',new THREE.Vector3(10,COMMON_Y0+COMMON_H+GAP+SERIES_H/2,0),'series');
+mkLabel('IV 220 kV (junction)',new THREE.Vector3(0,COMMON_Y0+COMMON_H+GAP/2,17),'junc');
+mkLabel('Common',new THREE.Vector3(10,COMMON_Y0+COMMON_H/2,0),'common');
+mkLabel('Tertiary Δ',new THREE.Vector3(-26,COMMON_Y0+8,0),'tert');
+mkLabel('Neutral',new THREE.Vector3(-40,COMMON_Y0-2,0),'neu');
+let labelsOn=true;document.getElementById('bLabels').onclick=function(){labelsOn=!labelsOn;this.classList.toggle('on',labelsOn);};
+let rotating=false;document.getElementById('bRotate').onclick=function(){rotating=!rotating;this.classList.toggle('on',rotating);};
+document.getElementById('bReset').onclick=()=>{sph={r:190,th:.75,ph:1.02};target.set(0,Y0+H/2,0);applyCam();};
+let flow=true;document.getElementById('bFlow').onclick=function(){flow=!flow;this.classList.toggle('on',flow);};
+
+function tick(){requestAnimationFrame(tick);
+  if(rotating){sph.th+=0.0038;applyCam();}
+  dots.forEach(o=>{o.m.visible=flow;if(!flow)return;o.t+=0.004;if(o.t>1)o.t-=1;o.m.position.copy(flowPath.getPoint(o.t));});
+  labels.forEach(L=>{if(!labelsOn){L.el.style.display='none';return;}const v=L.pos.clone();v.project(camera);
+    if(v.z>1){L.el.style.display='none';return;}L.el.style.display='block';L.el.style.left=((v.x*.5+.5)*innerWidth)+'px';L.el.style.top=((-v.y*.5+.5)*innerHeight)+'px';});
+  renderer.render(scene,camera);
+}
+tick();
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
+</script>
+</body>
+</html>

@@ -3,9 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Learn Transformer Design — Complete Course | TransformerInsider</title>
-<meta name="description" content="Learn transformer design step by step — a free 20-section engineering course from specification and core to windings, insulation, cooling, losses, testing and standards, plus an interactive 3D construction explorer. A fresh lesson is spotlighted each week.">
+<title>Learn Transformer Design — Complete Course | TrafoPath</title>
+<meta name="description" content="Learn transformer design step by step — a free 26-chapter engineering masterclass from specification and core to windings, insulation, cooling, losses, testing and standards, plus seven interactive 3D models and a live design calculator. A fresh lesson is spotlighted each week.">
+<link rel="canonical" href="https://trafopath.com/learn.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TrafoPath">
+<meta property="og:title" content="Learn Transformer Design — Complete Course | TrafoPath">
+<meta property="og:description" content="Learn transformer design step by step — a free 26-chapter engineering masterclass from specification and core to windings, insulation, cooling, losses, testing and standards, plus seven interactive 3D models and a live design calculator. A fresh lesson is spotlighted each week.">
+<meta property="og:url" content="https://trafopath.com/learn.html">
+<meta property="og:image" content="https://trafopath.com/brand/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Learn Transformer Design — Complete Course | TrafoPath">
+<meta name="twitter:description" content="Learn transformer design step by step — a free 26-chapter engineering masterclass from specification and core to windings, insulation, cooling, losses, testing and standards, plus seven interactive 3D models and a live design calculator. A fresh lesson is spotlighted each week.">
+<meta name="twitter:image" content="https://trafopath.com/brand/og-image.png">
 <link rel="stylesheet" href="style.css">
+<link rel="icon" href="brand/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
 <style>
 .module { background:#fff; border:1px solid var(--border); border-radius:12px; padding:18px 22px; margin-bottom:12px; transition:box-shadow .2s; }
 .module.spotlight { border-color:var(--amber); box-shadow:0 4px 18px rgba(245,166,35,.18); }
@@ -43,22 +57,30 @@
 .calc-out h4 { margin:0 0 8px; font-size:.74rem; text-transform:uppercase; letter-spacing:.6px; color:#9fb0c4; }
 @media (max-width:700px){ .calc { grid-template-columns:1fr; } }
 </style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TrafoPath">
 </head>
 <body>
 
 <header>
   <div class="container nav">
-    <a href="index.html" class="logo">Transformer<span>Insider</span></a>
-    <button class="menu-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')">☰</button>
-    <nav class="nav-links">
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg width="30" height="30" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="none" stroke="#fff" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.3" fill="none" opacity="0.8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg>Trafo<span>Path</span></a>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav" onclick="var n=document.querySelector('.nav-links');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))">☰</button>
+    <nav class="nav-links" id="mainNav">
       <a href="intel.html">Daily Intel</a>
       <a href="events.html">Events</a>
+      <a href="webinars.html">Webinars</a>
       <a href="manufacturers.html">Manufacturers</a>
-      <a href="learn.html" class="active">Learn</a>
+      <a href="learn.html" aria-current="page">Learn</a>
       <a href="grids.html">Grids</a>
-      <a href="resources.html">Resources</a>
+      <a href="resources.html">Knowledge</a>
+      <a href="blog.html">Blog</a>
       <a href="sponsor.html">Sponsor</a>
-      <a href="intel.html" class="btn btn-amber">Subscribe</a>
+      <a href="search.html" title="Search" aria-label="Search">🔍</a>
+      <a href="subscribe.html" class="btn btn-amber">Subscribe</a>
     </nav>
   </div>
 </header>
@@ -66,19 +88,27 @@
 <section class="hero" style="padding:50px 0 40px">
   <div class="container">
     <h1 style="font-size:2.2rem">Learn Transformer <span>Design</span></h1>
-    <p>A free, in-depth engineering course — 20 sections taking you from a customer specification to a complete power/distribution transformer design, with worked calculations, diagrams and an interactive 3D model. A fresh lesson is spotlighted every week.</p>
+    <p>A free, in-depth engineering course — 26 chapters taking you from a customer specification to a complete power/distribution transformer design — with worked calculations, diagrams, seven interactive 3D models and a live design calculator. A fresh lesson is spotlighted every week.</p>
   </div>
 </section>
 
 <section class="block">
   <div class="container" style="max-width:860px">
 
+    <!-- Design Engineer Track banner -->
+    <div class="featured" style="margin-bottom:24px">
+      <span class="kick">New · Professional Program</span>
+      <h3>🛠️ Design Engineer Track</h3>
+      <p>The knowledge of 3–5 years as a transformer design engineer, structured: four levels, ~400 guided hours, five capstone design projects with real acceptance criteria — free to learn, certificate track available.</p>
+      <a class="btn btn-amber" href="engineer-track.html">Start the track →</a>
+    </div>
+
     <!-- Two entry points: full course + 3D explorer -->
     <div class="hero-cards">
       <div class="hero-card tut">
-        <h3>📘 The Complete Course</h3>
-        <p>Fundamentals, core &amp; CRGO, windings, insulation, cooling, tank &amp; accessories, a fully worked 1000 kVA design, losses, testing, standards, vector groups and more — 20 sections with diagrams and formulas.</p>
-        <a class="btn btn-amber" href="tutorial.html">Open the full course →</a>
+        <h3>🎓 TX Design Masterclass</h3>
+        <p>The unified experience — all 26 chapters with the three 3D models and the design calculator embedded inline, plus a new engineering data appendix. Fundamentals to after-sales, theory you can rotate and recalculate.</p>
+        <a class="btn btn-amber" href="masterclass.html">Open the masterclass →</a>
       </div>
       <div class="hero-card exp">
         <h3>🧩 Interactive 3D Explorer</h3>
@@ -90,12 +120,17 @@
     <!-- More courses & tools hub -->
     <div class="section-head" style="margin-bottom:14px"><h2>More Courses & Tools</h2><p>Interactive learning and engineering tools — all free.</p></div>
     <div class="grid grid-3" style="margin-bottom:36px">
-      <a class="card" href="academy.html"><span class="emoji">🎓</span><h3>Transformer Academy</h3><p>An interactive masterclass — learn transformers the way they're actually built.</p></a>
-      <a class="card" href="power3d.html"><span class="emoji">🔌</span><h3>Power Transformer 3D</h3><p>Explore a 100 MVA 132/33 kV power transformer in interactive 3D.</p></a>
-      <a class="card" href="coilassembly.html"><span class="emoji">🧵</span><h3>Core & Coil Assembly 3D</h3><p>See how the core is built and the coils are assembled, step by step.</p></a>
-      <a class="card" href="calculator.html"><span class="emoji">🧮</span><h3>Design Calculator</h3><p>Full distribution / power / cast-resin design calculator.</p></a>
-      <a class="card" href="construction-guide.html"><span class="emoji">📐</span><h3>Construction Guide</h3><p>From core to customer — a complete construction walkthrough.</p></a>
-      <a class="card" href="country-designer.html"><span class="emoji">🌍</span><h3>Country-Based Designer</h3><p>Design a transformer to a chosen country's grid and standards.</p></a>
+      <a class="card" href="academy.html"><span class="emoji" aria-hidden="true">🎓</span><h3>Transformer Academy</h3><p>An interactive masterclass — learn transformers the way they're actually built.</p></a>
+      <a class="card" href="power3d.html"><span class="emoji" aria-hidden="true">🔌</span><h3>Power Transformer 3D</h3><p>Explore a 100 MVA 132/33 kV power transformer in interactive 3D.</p></a>
+      <a class="card" href="coilassembly.html"><span class="emoji" aria-hidden="true">🧵</span><h3>Core & Coil Assembly 3D</h3><p>See how the core is built and the coils are assembled, step by step.</p></a>
+      <a class="card" href="calculator.html"><span class="emoji" aria-hidden="true">🧮</span><h3>TX Calculation</h3><p>Live IEC 60076 sizing suite — distribution / power / cast-resin, three modes.</p></a>
+      <a class="card" href="construction-guide.html"><span class="emoji" aria-hidden="true">📐</span><h3>Construction Guide</h3><p>From core to customer — a complete construction walkthrough.</p></a>
+      <a class="card" href="country-designer.html"><span class="emoji" aria-hidden="true">🌍</span><h3>Country-Based Designer</h3><p>Design a transformer to a chosen country's grid and standards.</p></a>
+      <a class="card" href="masterclass.html"><span class="emoji" aria-hidden="true">📖</span><h3>TX Design Masterclass</h3><p>The full course — 26 chapters with figures, tables and equations, plus a data lab.</p></a>
+      <a class="card" href="power500.html"><span class="emoji" aria-hidden="true">⚡</span><h3>500 MVA Transformer 3D</h3><p>A 400/220 kV giant in interactive 3D — radiators, conservator and OLTC.</p></a>
+      <a class="card" href="oltc.html"><span class="emoji" aria-hidden="true">⚙️</span><h3>OLTC 3D Cutaway</h3><p>See inside an on-load tap-changer — diverter, selector and drive in 3D.</p></a>
+      <a class="card" href="bushing.html"><span class="emoji" aria-hidden="true">🔩</span><h3>Condenser Bushing 3D</h3><p>RIP and OIP bushings in an interactive 3D cutaway.</p></a>
+      <a class="card" href="coretopology.html"><span class="emoji" aria-hidden="true">🧲</span><h3>Core Topology 3D</h3><p>3-limb vs 5-limb vs shell-form cores, compared in interactive 3D.</p></a>
     </div>
 
     <!-- Lesson of the week (auto-rotates by ISO week) -->
@@ -134,17 +169,28 @@
     </div>
 
     <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:22px">
-      Engineering course authored for TransformerInsider. The calculator gives a first-pass estimate using simplified formulas — always design to the applicable IEC 60076 / ANSI C57 standard.
+      Engineering course authored for TrafoPath. The calculator gives a first-pass estimate using simplified formulas — always design to the applicable IEC 60076 / ANSI C57 standard.
     </p>
   </div>
 </section>
 
 <footer>
-  <div class="container"><div class="copyright">© 2026 TransformerInsider. Educational content for learning purposes.</div></div>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="none" stroke="#fff" stroke-width="2"/><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg>Trafo<span style="color:var(--amber)">Path</span></a>
+        <p style="margin-top:12px">The global intelligence and networking platform for transformer manufacturers, suppliers, engineers and utilities.</p>
+      </div>
+      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="vendors.html">Vendors</a><a href="learn.html">Learn</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="sponsor.html">Sponsor</a></div>
+      <div><h4>COMPANY</h4><a href="about.html">About Us</a><a href="mailto:hello@trafopath.com">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><h4>CONTACT</h4><a href="mailto:hello@trafopath.com">hello@trafopath.com</a><a href="https://www.linkedin.com/company/trafopath" target="_blank" rel="noopener">LinkedIn ↗</a><span style="display:block">Dubai, UAE</span></div>
+    </div>
+    <div class="copyright">© 2026 TrafoPath. All rights reserved.</div>
+  </div>
 </footer>
 
 <script>
-// 20-section curriculum — each deep-links into the full course (tutorial.html#anchor).
+// Design curriculum — each deep-links into the full course (tutorial.html#anchor); the unified masterclass adds a data appendix (Ch 21).
 const MODULES = [
  { n:1,  t:"Fundamentals", a:"fundamentals", d:"How a transformer works — mutual induction, the EMF equation, ideal vs real behaviour, and the rating inputs (kVA, voltage ratio, frequency, phases) that drive everything downstream." },
  { n:2,  t:"Classification & Specification", a:"classification", d:"Power vs distribution, core-type vs shell-type, cooling classes (ONAN/ONAF), vector group, impedance, tap range and the standards (IEC 60076 / ANSI C57) the customer specifies." },
@@ -165,7 +211,12 @@ const MODULES = [
  { n:17, t:"Protection", a:"protection", d:"Differential, REF, overcurrent, Buchholz and pressure-relief protection — the relays and devices that keep a transformer (and the grid) safe." },
  { n:18, t:"Procurement & Tendering", a:"procurement", d:"Reading a tender spec, building a compliant offer, guarantees and penalties, FAT/SAT and how buyers actually evaluate transformer bids." },
  { n:19, t:"Glossary & Self-Test", a:"glossary", d:"Key terms in one place plus a quick self-test to check your understanding of the whole course." },
- { n:20, t:"After-Sales & Service", a:"aftersales", d:"Warranty, spares, retrofits, oil treatment and field service — the support a transformer needs across decades in operation." }
+ { n:20, t:"After-Sales & Service", a:"aftersales", d:"Warranty, spares, retrofits, oil treatment and field service — the support a transformer needs across decades in operation." },
+ { n:21, t:"Bushings", a:"bushings", d:"OIP/RIP/RIS types, condenser grading, test taps, creepage & pollution class, and why bushings cause most transformer fires — with the 3D condenser-bushing cutaway." },
+ { n:22, t:"Tap-Changers", a:"tapchangers", d:"OLTC vs DETC, diverter/selector/change-over, resistor vs vacuum switching, AVR control and DGA of the diverter — with the 3D OLTC cutaway." },
+ { n:23, t:"Impulse & Stress Control", a:"stresscontrol", d:"How a winding sees a steep surge: initial vs final distribution, the α constant, and static rings, shields & interleaving that protect the line-end turns." },
+ { n:24, t:"Fire, Containment & Environment", a:"fireenv", d:"Pressure/arc protection, nitrogen-injection & deluge, bunds and oil-water separation, ester fire safety and sustainability — the envelope around the transformer." },
+ { n:25, t:"Worked 500 MVA Design", a:"powerdesign", d:"An EHV 400/220 kV worked design — currents, volts-per-turn, 5-limb core, impedance, impulse grading and ONAN/ONAF/ODAF cooling — behind the 500 MVA 3D model." }
 ];
 
 function isoWeek(d){
@@ -234,5 +285,10 @@ document.getElementById('curriculum').innerHTML = MODULES.map((m,i)=>
 })();
 </script>
 
+<script>
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
+(function(){var dp;window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();dp=e;if(document.getElementById('tpInstall'))return;var b=document.createElement('button');b.id='tpInstall';b.textContent='\u2913 Install TrafoPath';b.setAttribute('style','position:fixed;right:16px;bottom:16px;z-index:9999;background:#f5a623;color:#0d1b2e;border:0;border-radius:999px;padding:11px 18px;font-weight:800;font-size:.9rem;box-shadow:0 6px 20px rgba(0,0,0,.28);cursor:pointer;font-family:inherit');b.onclick=function(){b.remove();dp.prompt();dp.userChoice.finally(function(){dp=null;});};document.body.appendChild(b);});})();
+</script>
+<script src="analytics.js" defer></script>
 </body>
 </html>
