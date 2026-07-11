@@ -112,10 +112,11 @@ const EVENTS = [{"n":"POWERGEN International 2026","s":"2026-01-20","e":"2026-01
    ════════════════════════════════════════════════════════════════ */
 const AFFILIATE = {
   travelpayoutsMarker: "736890",
-  aviasalesLink: "https://aviasales.tpk.ro/NbcoQVMy",  // direct Aviasales affiliate short link (marker 736890 baked in) — used as flight-booking fallback
+  kiwiLink: "https://kiwi.tpk.ro/dClaRHg1",  // Kiwi.com affiliate link for all flight bookings
+  travelLink: "https://kkday.tpk.ro/lvVVi32A",  // combined flights+hotels affiliate link — branded fallback for both Book Hotel and Find Flights buttons
   // KKday (tours & activities) tracks via a fixed affiliate short link, not the
   // Travelpayouts marker — leave "" to hide the button.
-  kkdayLink: "https://kkday.tpk.ro/lvVVi32A"
+  kkdayLink: "https://kkday.tpk.ro/VGC9WqGf"
 };
 
 /* City → nearest airport IATA (for flight links) */
@@ -127,7 +128,7 @@ function hotelURL(ev) {
   if (AFFILIATE.travelpayoutsMarker) {
     return `https://search.hotellook.com/?marker=${AFFILIATE.travelpayoutsMarker}&destination=${encodeURIComponent(ev.c)}&checkIn=${ev.s}&checkOut=${ev.e}`;
   }
-  return `https://www.booking.com/searchresults.html?ss=${encodeURIComponent(ev.c)}&checkin=${ev.s}&checkout=${ev.e}`;
+  return AFFILIATE.travelLink || `https://www.booking.com/searchresults.html?ss=${encodeURIComponent(ev.c)}&checkin=${ev.s}&checkout=${ev.e}`;
 }
 /* Visitor's origin airport — set after IP geolocation (see bottom of script). */
 let originIATA = "DXB";  // default origin (GCC audience) so dates always embed; geo upgrades it below
@@ -144,21 +145,8 @@ const COUNTRY_HUB = {
   AU:"SYD",NZ:"AKL"
 };
 function flightURL(ev) {
-  const dest = CITY_IATA[ev.c];
-  if (!dest) return AFFILIATE.aviasalesLink || null;
-  const M = AFFILIATE.travelpayoutsMarker;
-  const ddmm = s => s.slice(8,10) + s.slice(5,7);   // "YYYY-MM-DD" → "DDMM"
-  // Full origin→destination round trip on the event dates (when we know the visitor's hub)
-  if (M && originIATA && originIATA !== dest) {
-    return `https://www.aviasales.com/search/${originIATA}${ddmm(ev.s)}${dest}${ddmm(ev.e)}1?marker=${M}`;
-  }
-  // Marker but no origin yet → destination-only search
-  if (M) {
-    return `https://www.aviasales.com/search?marker=${M}&destination_iata=${dest}`;
-  }
-  // No marker → plain Skyscanner
-  const ym = ev.s.slice(2,4) + ev.s.slice(5,7);
-  return `https://www.skyscanner.net/transport/flights-to/${dest.toLowerCase()}/?oym=${ym}`;
+  // All flight bookings route through Kiwi.com affiliate link
+  return AFFILIATE.kiwiLink || null;
 }
 
 let yearF = "all", regionF = "all";
