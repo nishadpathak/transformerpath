@@ -112,9 +112,10 @@ const EVENTS = [{"n":"POWERGEN International 2026","s":"2026-01-20","e":"2026-01
    ════════════════════════════════════════════════════════════════ */
 const AFFILIATE = {
   travelpayoutsMarker: "736890",
+  aviasalesLink: "https://aviasales.tpk.ro/NbcoQVMy",  // direct Aviasales affiliate short link (marker 736890 baked in) — used as flight-booking fallback
   // KKday (tours & activities) tracks via a fixed affiliate short link, not the
   // Travelpayouts marker — leave "" to hide the button.
-  kkdayLink: "https://kkday.tpk.ro/VGC9WqGf"
+  kkdayLink: "https://kkday.tpk.ro/lvVVi32A"
 };
 
 /* City → nearest airport IATA (for flight links) */
@@ -144,7 +145,7 @@ const COUNTRY_HUB = {
 };
 function flightURL(ev) {
   const dest = CITY_IATA[ev.c];
-  if (!dest) return null;
+  if (!dest) return AFFILIATE.aviasalesLink || null;
   const M = AFFILIATE.travelpayoutsMarker;
   const ddmm = s => s.slice(8,10) + s.slice(5,7);   // "YYYY-MM-DD" → "DDMM"
   // Full origin→destination round trip on the event dates (when we know the visitor's hub)
