@@ -46,7 +46,9 @@
 .progressbar { background:#e7edf3; border-radius:999px; height:10px; overflow:hidden; margin:6px 0 2px; }
 .progressbar>div { background:linear-gradient(90deg,var(--amber),#e8732a); height:100%; width:0; transition:width .4s; }
 .track-note { background:#eef4fb; border-left:4px solid #0b5fa5; border-radius:0 10px 10px 0; padding:14px 18px; font-size:.9rem; color:#33475c; margin:0 0 30px; }
-@media (max-width:760px){ .how { grid-template-columns:1fr; } .level-meta{ text-align:left; margin-left:58px; } }
+.level.locked { opacity:0.6; pointer-events:none; position:relative; }
+.level.locked::after { content:'🔒 Unlock to view'; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(13,27,46,.95); color:#fff; padding:20px 30px; border-radius:12px; font-weight:600; font-size:1rem; white-space:nowrap; z-index:10; }
+@media (max-width:760px){ .how { grid-template-columns:1fr; } .level-meta{ text-align:left; margin-left:58px; } .level.locked::after { font-size:.85rem; padding:14px 20px; } }
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0d1b2e">
@@ -128,8 +130,16 @@
       </div>
     </div>
 
+    <!-- PAYWALL: Levels 2-4 locked -->
+    <div class="paywall-notice" id="paywall" style="background:linear-gradient(135deg,#f5a623,#e8732a);color:#0d1b2e;border-radius:14px;padding:30px 26px;margin:30px 0;text-align:center;display:none">
+      <h2 style="margin:0 0 8px;font-size:1.4rem">Unlock Levels 2–4 + Capstone Reviews</h2>
+      <p style="margin:0 0 18px;font-size:.95rem;opacity:.9">Distribution, Power Transformer, Specials — plus engineer-reviewed capstone grading, model answers, and certificates.</p>
+      <a class="btn" href="https://buy.stripe.com/5kQ00c3pS8tv9g4fdMfYY00" target="_blank" rel="noopener" style="background:#0d1b2e;color:#f5a623;font-weight:800;padding:14px 32px;display:inline-block;border-radius:10px;text-decoration:none">Yearly Access — $199 →</a>
+      <p style="margin:14px 0 0;font-size:.78rem;opacity:.8">One-time payment. Access for 12 months.</p>
+    </div>
+
     <!-- LEVEL 2 -->
-    <div class="level" id="level2">
+    <div class="level" id="level2" data-paid="true">
       <div class="level-head">
         <span class="level-no">2</span>
         <h2>Distribution Transformer Designer</h2>
@@ -163,7 +173,7 @@
     </div>
 
     <!-- LEVEL 3 -->
-    <div class="level" id="level3">
+    <div class="level" id="level3" data-paid="true">
       <div class="level-head">
         <span class="level-no">3</span>
         <h2>Power Transformer Designer</h2>
@@ -194,7 +204,7 @@
     </div>
 
     <!-- LEVEL 4 -->
-    <div class="level" id="level4">
+    <div class="level" id="level4" data-paid="true">
       <div class="level-head">
         <span class="level-no">4</span>
         <h2>Specials &amp; Mastery</h2>
@@ -225,10 +235,10 @@
     </div>
 
     <div class="featured" style="background:linear-gradient(135deg,#0d1b2e,#1b3a5c);color:#fff;border-radius:14px;padding:24px 26px;margin-top:6px">
-      <span style="display:inline-block;background:#f5a623;color:#0d1b2e;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;padding:3px 10px;border-radius:999px;margin-bottom:10px">Certificate Track</span>
+      <span style="display:inline-block;background:#f5a623;color:#0d1b2e;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;padding:3px 10px;border-radius:999px;margin-bottom:10px">Unlock Levels 2–4</span>
       <h3 style="margin:0 0 6px;font-size:1.2rem">Capstone review, model answers &amp; certificates</h3>
-      <p style="color:#b8c4d4;font-size:.92rem;margin:0 0 14px">All lessons above are free, forever. The paid tier adds engineer-reviewed capstone grading with a marked-up critique, the full model answer for every project, the Level-3 review pack (short-circuit force and impulse distribution worked methods), and a verifiable TransformerPath Design Engineer certificate per level.</p>
-      <a class="btn btn-amber" href="subscribe.html">Join the certificate track →</a>
+      <p style="color:#b8c4d4;font-size:.92rem;margin:0 0 14px">Level 1 (Foundations) is free forever. The paid tier ($199/year) unlocks Levels 2–4 plus engineer-reviewed capstone grading with detailed critiques, full model answers for every project, the Level-3 review pack, and verifiable TransformerPath Design Engineer certificates.</p>
+      <a class="btn btn-amber" href="https://buy.stripe.com/5kQ00c3pS8tv9g4fdMfYY00" target="_blank" rel="noopener">Yearly Access — $199 →</a>
     </div>
 
   </div>
@@ -273,6 +283,49 @@
   paint();
 })();
 </script>
+
+<script>
+(function(){
+  var PAID_KEY = 'tp-course-access';
+  var STRIPE_RETURN = new URLSearchParams(window.location.search).get('session_id');
+
+  function checkAccess(){
+    var now = new Date().getTime();
+    try {
+      var access = JSON.parse(localStorage.getItem(PAID_KEY) || '{}');
+      // Check if access is still valid (expires after 12 months)
+      if(access.expiry && access.expiry > now) return true;
+    } catch(e) {}
+    return false;
+  }
+
+  function grantAccess(){
+    var expiry = new Date().getTime() + (365 * 24 * 60 * 60 * 1000); // 12 months
+    try {
+      localStorage.setItem(PAID_KEY, JSON.stringify({expiry: expiry, paid_at: new Date().toISOString()}));
+    } catch(e) {}
+    location.href = location.pathname; // reload without query params
+  }
+
+  function lockLevels(){
+    var levels = document.querySelectorAll('[data-paid="true"]');
+    levels.forEach(function(el){ el.classList.add('locked'); });
+    var paywall = document.getElementById('paywall');
+    if(paywall) paywall.style.display = 'block';
+  }
+
+  // If returning from Stripe, grant access
+  if(STRIPE_RETURN){
+    grantAccess();
+  }
+
+  // Check access on load
+  if(!checkAccess()){
+    lockLevels();
+  }
+})();
+</script>
+
 <script defer src="analytics.js"></script>
 </body>
 </html>
