@@ -1,5 +1,5 @@
-/* TrafoPath service worker — offline support + always-fresh HTML */
-const CACHE = 'trafopath-v3';
+/* TransformerPath service worker — offline support + always-fresh HTML */
+const CACHE = 'transformerpath-v1';
 const CORE = [
   'index.html', 'style.css', 'intel.html', 'manufacturers.html', 'events.html',
   'grids.html', 'learn.html', 'resources.html', 'subscribe.html',

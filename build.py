@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-TrafoPath static-site binder.
+TransformerPath static-site binder.
 
 Single source of truth for the shared site chrome lives in _partials/.
 Running this script stamps _partials/header.html and _partials/footer.html into
