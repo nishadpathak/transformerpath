@@ -14,34 +14,38 @@ async function fetchIntel() {
   }
 
   try {
-    // EventRegistry query: transformer + power industry + energy
-    const query = {
-      $query: {
-        $and: [
-          {
-            $or: [
-              { keyword: 'Electrical Transformers', keywordLoc: 'body' },
-              { keyword: 'Power transformers', keywordLoc: 'body' },
-              { keyword: 'Distribution transformers', keywordLoc: 'body' },
-              { conceptUri: 'http://en.wikipedia.org/wiki/Electrical_grid' },
-              { conceptUri: 'http://en.wikipedia.org/wiki/Electricity_market' },
-              { conceptUri: 'http://en.wikipedia.org/wiki/Electricity' },
-            ],
-          },
-          { categoryUri: 'dmoz/Business' },
-        ],
+    // EventRegistry query: transformer + power industry + energy (POST with JSON body)
+    const payload = {
+      query: {
+        $query: {
+          $and: [
+            {
+              $or: [
+                { keyword: 'Electrical Transformers', keywordLoc: 'body' },
+                { keyword: 'Power transformers', keywordLoc: 'body' },
+                { keyword: 'Distribution transformers', keywordLoc: 'body' },
+                { conceptUri: 'http://en.wikipedia.org/wiki/Electrical_grid' },
+                { conceptUri: 'http://en.wikipedia.org/wiki/Electricity_market' },
+                { conceptUri: 'http://en.wikipedia.org/wiki/Electricity' },
+              ],
+            },
+            { categoryUri: 'dmoz/Business' },
+          ],
+        },
+        $filter: { forceMaxDataTimeWindow: '31' }, // Last 31 days
       },
-      $filter: { forceMaxDataTimeWindow: '31' }, // Last 31 days
+      resultType: 'articles',
+      articlesSortBy: 'date',
+      articlesCount: 50,
+      apiKey: EVENTREGISTRY_KEY,
     };
 
-    const url = new URL(EVENTREGISTRY_URL);
-    url.searchParams.append('query', JSON.stringify(query));
-    url.searchParams.append('resultType', 'articles');
-    url.searchParams.append('articlesSortBy', 'date');
-    url.searchParams.append('articlesCount', '50');
-    url.searchParams.append('apiKey', EVENTREGISTRY_KEY);
+    const response = await fetch(EVENTREGISTRY_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
 
-    const response = await fetch(url.toString());
     if (!response.ok) {
       console.error(`EventRegistry error: ${response.status}`);
       return null;
