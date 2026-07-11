@@ -4,37 +4,56 @@
 const fs = require('fs');
 const path = require('path');
 
-const NEWSAPI_KEY = process.env.NEWSAPI_KEY || '';
-const NEWSAPI_URL = 'https://newsapi.org/v2/everything';
+const EVENTREGISTRY_KEY = process.env.EVENTREGISTRY_KEY || '';
+const EVENTREGISTRY_URL = 'https://eventregistry.org/api/v1/article/getArticles';
 
 async function fetchIntel() {
-  if (!NEWSAPI_KEY) {
-    console.warn('NEWSAPI_KEY not set. Skipping intel fetch.');
+  if (!EVENTREGISTRY_KEY) {
+    console.warn('EVENTREGISTRY_KEY not set. Skipping intel fetch.');
     return null;
   }
 
   try {
-    // Query: transformer industry + power grid + energy news
-    const query = encodeURIComponent(
-      '(transformer OR "power transformer" OR "distribution transformer" OR electrical) AND ' +
-      '("power grid" OR energy OR utility OR "power system")'
-    );
+    // EventRegistry query: transformer + power industry + energy
+    const query = {
+      $query: {
+        $and: [
+          {
+            $or: [
+              { keyword: 'Electrical Transformers', keywordLoc: 'body' },
+              { keyword: 'Power transformers', keywordLoc: 'body' },
+              { keyword: 'Distribution transformers', keywordLoc: 'body' },
+              { conceptUri: 'http://en.wikipedia.org/wiki/Electrical_grid' },
+              { conceptUri: 'http://en.wikipedia.org/wiki/Electricity_market' },
+              { conceptUri: 'http://en.wikipedia.org/wiki/Electricity' },
+            ],
+          },
+          { categoryUri: 'dmoz/Business' },
+        ],
+      },
+      $filter: { forceMaxDataTimeWindow: '31' }, // Last 31 days
+    };
 
-    const url = `${NEWSAPI_URL}?q=${query}&category=business&language=en&sortBy=publishedAt&pageSize=15&apiKey=${NEWSAPI_KEY}`;
+    const url = new URL(EVENTREGISTRY_URL);
+    url.searchParams.append('query', JSON.stringify(query));
+    url.searchParams.append('resultType', 'articles');
+    url.searchParams.append('articlesSortBy', 'date');
+    url.searchParams.append('articlesCount', '50');
+    url.searchParams.append('apiKey', EVENTREGISTRY_KEY);
 
-    const response = await fetch(url);
+    const response = await fetch(url.toString());
     if (!response.ok) {
-      console.error(`NewsAPI error: ${response.status}`);
+      console.error(`EventRegistry error: ${response.status}`);
       return null;
     }
 
     const data = await response.json();
     if (!data.articles || data.articles.length === 0) {
-      console.warn('No articles found from NewsAPI');
+      console.warn('No articles found from EventRegistry');
       return null;
     }
 
-    // Group by region (best effort from title/content)
+    // Group by region (extract from location or title)
     const regions = {
       'Middle East / GCC': [],
       'India / South Asia': [],
@@ -44,20 +63,30 @@ async function fetchIntel() {
     };
 
     // Map articles to regions
-    data.articles.forEach((article) => {
-      const text = (article.title + ' ' + article.description).toLowerCase();
+    data.articles.slice(0, 30).forEach((article) => {
+      const text = (article.title + ' ' + (article.body || '')).toLowerCase();
+      const location = article.location?.label || '';
       let region = 'Global';
 
-      if (text.includes('uae') || text.includes('saudi') || text.includes('gulf')) region = 'Middle East / GCC';
-      else if (text.includes('india') || text.includes('bangladesh') || text.includes('asia')) region = 'India / South Asia';
-      else if (text.includes('europe') || text.includes('germany') || text.includes('uk')) region = 'Europe';
-      else if (text.includes('us') || text.includes('canada') || text.includes('america')) region = 'North America';
+      // Smart region detection from location + text
+      if (location.includes('UAE') || location.includes('Saudi') || location.includes('Gulf') ||
+          text.includes('uae') || text.includes('saudi') || text.includes('gulf') || text.includes('middle east')) {
+        region = 'Middle East / GCC';
+      } else if (location.includes('India') || location.includes('Bangladesh') ||
+                 text.includes('india') || text.includes('south asia')) {
+        region = 'India / South Asia';
+      } else if (location.includes('Europe') || text.includes('europe') || text.includes('germany') || text.includes('uk')) {
+        region = 'Europe';
+      } else if (location.includes('United States') || location.includes('Canada') ||
+                 text.includes('us') || text.includes('united states') || text.includes('canada')) {
+        region = 'North America';
+      }
 
       regions[region].push({
         title: article.title,
-        snippet: article.description || article.content?.substring(0, 150) || '',
+        snippet: (article.body || article.summary || '').substring(0, 150),
         value: '',
-        src: `${article.source.name} · ${new Date(article.publishedAt).toLocaleDateString('en-US', {year: '2-digit', month: 'short', day: 'numeric'})}`,
+        src: `${article.source.title} · ${new Date(article.dateTime).toLocaleDateString('en-US', {year: '2-digit', month: 'short', day: 'numeric'})}`,
         url: article.url,
         isNew: true,
       });
@@ -73,7 +102,7 @@ async function fetchIntel() {
 
     return intel;
   } catch (err) {
-    console.error('NewsAPI fetch failed:', err.message);
+    console.error('EventRegistry fetch failed:', err.message);
     return null;
   }
 }
@@ -98,7 +127,7 @@ exports.handler = async (event) => {
       timestamp: new Date().toISOString(),
       status: 'success',
       updates,
-      note: 'NewsAPI key required: set NEWSAPI_KEY in Netlify env vars',
+      note: 'EventRegistry key required: set EVENTREGISTRY_KEY in Netlify env vars',
     };
 
     console.log('Data refresh complete:', refreshReport);
@@ -120,9 +149,16 @@ exports.handler = async (event) => {
 };
 
 // SETUP INSTRUCTIONS:
-// 1. Get free NewsAPI key: https://newsapi.org → sign up → copy key
-// 2. Add to Netlify env: Site settings → Build & deploy → Environment → add NEWSAPI_KEY
-// 3. Deploy this function: netlify deploy
-// 4. Test: Netlify UI → Functions → refresh-data → invoke
+// 1. Get EventRegistry API key: https://eventregistry.org/api → create account → copy key
+// 2. Add to Netlify env: Site settings → Build & deploy → Environment → add EVENTREGISTRY_KEY
+// 3. Deploy this function: netlify deploy --functions
+// 4. Test: Netlify UI → Functions → refresh-data → Invoke
 // 5. Schedule: netlify.toml already has cron: "0 6 * * *" (daily 6am UTC)
-// 6. Result: data/intel.json auto-updates daily with fresh transformer industry news
+// 6. Result: intel-feed.xml auto-updates daily with fresh transformer industry news (grouped by region)
+//
+// Why EventRegistry over NewsAPI?
+// ✓ Semantic search (understands concepts like "electrical grid")
+// ✓ Transformer-specific queries built-in
+// ✓ Better categorization (Business, Energy, etc.)
+// ✓ Regional detection via location field
+// ✓ Free tier: 20k articles/month (1 request/day = plenty)
