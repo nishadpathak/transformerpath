@@ -130,13 +130,6 @@ Apply to remaining pages:
 - ✅ Payment link: `https://buy.stripe.com/5kQ00c3pS8tv9g4fdMfYY00`
 - ⏳ Create separate links for different tiers (optional)
 
-**MailerLite** (15 min):
-- Sign up: mailerlite.com
-- Create form
-- Copy form action URL
-- Paste in `subscribe.html` line 202
-- Test signup → verify email in MailerLite
-
 **Analytics** (15 min, choose one):
 - **Plausible**: Sign up, add domain, paste in `analytics.js` line 5
 - **GA4**: Create property, copy ID, paste in `analytics.js` line 6
@@ -212,7 +205,6 @@ app.use(cors({
 - [ ] Search and filters work
 - [ ] Events page works (once fixed)
 - [ ] Stripe checkout button works
-- [ ] Newsletter signup works (MailerLite)
 - [ ] Analytics tracking fires
 - [ ] Forms submit to backend
 - [ ] Mobile responsive
@@ -306,10 +298,9 @@ git push # Netlify auto-deploys
 1. Homepage loads quickly
 2. Manufacturers page fetches API data
 3. Stripe checkout works
-4. Newsletter signup captures email
-5. Analytics tracking fires
-6. Mobile responsive
-7. No console errors
+4. Analytics tracking fires
+5. Mobile responsive
+6. No console errors
 
 **Expected traffic first week**: 100-1000 visitors (depending on marketing)
 
@@ -319,7 +310,6 @@ git push # Netlify auto-deploys
 
 - **Netlify support**: https://support.netlify.com
 - **Stripe support**: https://support.stripe.com
-- **MailerLite support**: https://mailerlite.com/support
 
 ---
 

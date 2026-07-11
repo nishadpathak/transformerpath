@@ -29,26 +29,7 @@ netlify deploy --prod
 netlify sites:create
 ```
 
-### 2. MailerLite Newsletter Integration
-
-**Status**: Ready (form skeleton in `subscribe.html`)
-
-**To activate**:
-1. Log in to MailerLite dashboard
-2. Go to Settings → Integrations → API
-3. Copy your form's action URL (format: `https://app.mailerlite.com/webforms/...`)
-4. Update `subscribe.html` line 202:
-   ```html
-   <form action="PASTE_MAILERLITE_FORM_ACTION_URL" method="POST">
-   ```
-
-**Current form fields**:
-- `fields[name]` — subscriber name
-- `fields[email]` — email address
-- `fields[region]` — region select (8 options)
-- Custom field for consent checkbox
-
-### 3. Analytics Integration
+### 2. Analytics Integration
 
 **Status**: Ready (placeholder in `analytics.js`)
 
@@ -72,7 +53,7 @@ netlify sites:create
    const GA4_MEASUREMENT_ID = 'G-XXXXXXXXXX';
    ```
 
-### 4. Form Submission Handling
+### 3. Form Submission Handling
 
 **Endpoint**: `/api/forms/:type`
 
@@ -103,7 +84,7 @@ document.getElementById('enquiryForm').addEventListener('submit', async (e) => {
 
 Repeat for `sponsor.html` and `list-company.html`.
 
-### 5. Daily Data Refresh Automation
+### 4. Daily Data Refresh Automation
 
 **Status**: Skeleton ready (needs data source integration)
 
@@ -140,7 +121,7 @@ Repeat for `sponsor.html` and `list-company.html`.
    - Update: Monthly/quarterly
    - Schema: `[{country, region, grids: [...]}]`
 
-### 6. Stripe Payment Links (Additional Tiers)
+### 5. Stripe Payment Links (Additional Tiers)
 
 Currently configured:
 - Team: `https://buy.stripe.com/5kQ00c3pS8tv9g4fdMfYY00`
@@ -171,7 +152,6 @@ To add separate tier pricing:
 
 - [ ] Stripe Payment Links configured
 - [ ] Netlify Functions deployed (`functions/forms.js`, `functions/refresh-data.js`)
-- [ ] MailerLite form action URL pasted in `subscribe.html`
 - [ ] Analytics domain/ID added to `analytics.js`
 - [ ] Data sources identified and wired to `functions/refresh-data.js`
 - [ ] Form submission handlers implemented in `teams.html`, `sponsor.html`, `list-company.html`
@@ -192,6 +172,5 @@ To add separate tier pricing:
 
 - **Stripe**: https://dashboard.stripe.com
 - **Netlify**: https://app.netlify.com
-- **MailerLite**: https://app.mailerlite.com
 - **Plausible**: https://plausible.io
 - **Google Analytics**: https://analytics.google.com
