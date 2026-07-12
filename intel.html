@@ -404,13 +404,22 @@ const COMPETITORS = [
 ];
 
 /* CHANGELOG — maintained by the daily job: 2-4 bullets, newest run only */
-const CHANGELOG = [
-  "Evening run (11 Jul, 18:00 Dubai): full core-lane refresh (GCC/India/Europe/USA/China + green-hydrogen + pressboard lanes); no new contract awards found vs morning cycle. GCC portals stable (DEWA reachable, 1,500 kVA DT tender still in eval). Material rates unchanged from 9 Jul (Cu $13,356.50/t, Al $3,164/t). China State Grid 2026-2 results (30 Apr, outside 30-day window) confirmed. Egypt Scatec H2 project (100 MW, Jan 2026) and PTTX Turkey factory (commissioning 2026) confirmed via source re-check.",
-  "Morning run (11 Jul, rotation Pair D — SE Asia + Africa/Australia): added USA item — AP/Reuters 9 Jul 'US power companies scramble' for transformers/turbines/switchgear (lead times 3–5 yr, prices +4–10%); SE-Asia (TNB/Meralco) and Africa/Australia (Eskom, Transgrid) lanes returned nothing new (Eskom 101-transformer panel is a 2024 story)",
-  "Materials unchanged: LME still at 9 Jul settlements — copper $13,356.50/t (stocks 307,750 t), aluminium $3,164.00/t (stocks 289,225 t); Fri 10 Jul settlement not yet published on Westmetall as of Sat 06:00 Dubai, so metals card/panel held at 9 Jul",
-  "DEWA portal re-check (11 Jul): reachable, no new transformer/substation tender openings surfaced; 11/0.4 kV 1,500 kVA DT tender (2052600034) still in evaluation",
-  "isNew hygiene: 30-day cutoff = 11 Jun; dropped NEW badge from Transgrid Project EnergyConnect (10 Jun, now aged out); all other badged items remain within window"
-];
+let CHANGELOG = []; // Auto-populated from EventRegistry briefing.json
+
+// Fetch auto-generated briefing on page load
+async function loadBriefing() {
+  try {
+    const res = await fetch('data/briefing.json');
+    if (res.ok) {
+      const data = await res.json();
+      CHANGELOG = [data.briefing];
+      renderChangelog();
+    }
+  } catch (err) {
+    console.warn('Could not load briefing:', err.message);
+    CHANGELOG = ['(Briefing loading...) EventRegistry refresh pending. Check back in a few minutes.'];
+  }
+}
 
 /* PIPELINE — pre-award chase list, maintained by the daily job.
    status: expected | tendering | evaluation | awarded (then move to NEWS and drop here) */
@@ -566,7 +575,7 @@ function renderTech(){
   document.getElementById("panel-tech").innerHTML =
     `<div class="region-h">Technology Watch — worldwide</div>`+note+h;
 }
-renderChangelog(); renderPipeline(); renderH2(); renderTech();
+loadBriefing(); renderPipeline(); renderH2(); renderTech();
 
 document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
   document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));

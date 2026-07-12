@@ -7,6 +7,21 @@ const path = require('path');
 const EVENTREGISTRY_KEY = process.env.EVENTREGISTRY_KEY || '';
 const EVENTREGISTRY_URL = 'https://eventregistry.org/api/v1/article/getArticles';
 
+// Write briefing to file for frontend to display
+async function writeBriefing(briefing) {
+  try {
+    const fs = require('fs');
+    const path = require('path');
+    const briefingPath = path.join(process.env.LAMBDA_TASK_ROOT || '.', 'data', 'briefing.json');
+    fs.mkdirSync(path.dirname(briefingPath), { recursive: true });
+    fs.writeFileSync(briefingPath, JSON.stringify({ briefing, timestamp: new Date().toISOString() }, null, 2));
+    return true;
+  } catch (err) {
+    console.warn('Could not write briefing file:', err.message);
+    return false;
+  }
+}
+
 async function fetchIntel() {
   if (!EVENTREGISTRY_KEY) {
     console.warn('EVENTREGISTRY_KEY not set. Skipping intel fetch.');
@@ -104,6 +119,25 @@ async function fetchIntel() {
         items: items.slice(0, 5), // Max 5 per region
       }));
 
+    // Generate auto briefing summary
+    const regionCounts = Object.entries(regions)
+      .filter(([, items]) => items.length > 0)
+      .map(([region, items]) => `${region} (${items.length})`)
+      .join(', ');
+
+    const totalArticles = Object.values(regions).flat().length;
+    const timestamp = new Date().toLocaleString('en-GB', {
+      day: 'numeric',
+      month: 'short',
+      hour: '2-digit',
+      minute: '2-digit',
+      timeZone: 'Asia/Dubai'
+    });
+
+    const autoBriefing = `Daily auto-refresh (${timestamp} Dubai): EventRegistry fetched ${totalArticles} transformer industry articles across regions (${regionCounts}). Grouped by region and sorted by date. No manual curation — raw feeds only.`;
+
+    // Return both data and briefing
+    intel.autoBriefing = autoBriefing;
     return intel;
   } catch (err) {
     console.error('EventRegistry fetch failed:', err.message);
@@ -122,7 +156,13 @@ exports.handler = async (event) => {
     // Fetch latest intel/news
     const intelData = await fetchIntel();
     if (intelData) {
+      const briefing = intelData.autoBriefing;
+      delete intelData.autoBriefing; // Remove from data, keep in briefing file
       updates.intel = `Updated: ${intelData.reduce((sum, r) => sum + r.items.length, 0)} articles`;
+
+      // Write briefing to file for frontend
+      await writeBriefing(briefing);
+
       // In production, write to data/intel.json and commit to git
       console.log('New intel data ready:', JSON.stringify(intelData, null, 2));
     }
