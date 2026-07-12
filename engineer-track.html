@@ -286,7 +286,9 @@
 <script>
 (function(){
   var PAID_KEY = 'tp-course-access';
+  var CREATOR_KEY = 'tp-creator-unlock-2024'; // Master key for course creator
   var STRIPE_RETURN = new URLSearchParams(window.location.search).get('session_id');
+  var URL_KEY = new URLSearchParams(window.location.search).get('key');
 
   function checkAccess(){
     var now = new Date().getTime();
@@ -298,10 +300,19 @@
     return false;
   }
 
+  function checkCreatorKey(){
+    // Check if URL has the master key
+    if(URL_KEY && URL_KEY === CREATOR_KEY){
+      grantAccess();
+      return true;
+    }
+    return false;
+  }
+
   function grantAccess(){
     var expiry = new Date().getTime() + (365 * 24 * 60 * 60 * 1000); // 12 months
     try {
-      localStorage.setItem(PAID_KEY, JSON.stringify({expiry: expiry, paid_at: new Date().toISOString()}));
+      localStorage.setItem(PAID_KEY, JSON.stringify({expiry: expiry, paid_at: new Date().toISOString(), isCreator: true}));
     } catch(e) {}
     location.href = location.pathname; // reload without query params
   }
@@ -311,6 +322,11 @@
     levels.forEach(function(el){ el.classList.add('locked'); });
     var paywall = document.getElementById('paywall');
     if(paywall) paywall.style.display = 'block';
+  }
+
+  // Check for creator key first
+  if(checkCreatorKey()){
+    return;
   }
 
   // If returning from Stripe, grant access
