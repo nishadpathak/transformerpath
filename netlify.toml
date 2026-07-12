@@ -7,8 +7,7 @@
   node_bundler = "esbuild"
   external_node_modules = ["express"]
 
-[[functions]]
-  name = "refresh-data"
+[functions."refresh-data"]
   schedule = "0 6 * * *"
 
 [[redirects]]
