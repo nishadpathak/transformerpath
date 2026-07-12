@@ -1,5 +1,5 @@
 /* TransformerPath service worker — offline support + always-fresh HTML */
-const CACHE = 'transformerpath-v1';
+const CACHE = 'transformerpath-v2';
 const CORE = [
   'index.html', 'style.css', 'intel.html', 'manufacturers.html', 'events.html',
   'grids.html', 'learn.html', 'resources.html', 'subscribe.html',
@@ -24,6 +24,9 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   const req = e.request;
   if (req.method !== 'GET') return;
+  // Never intercept cross-origin requests (geolocation API, analytics, Stripe) —
+  // caching them would serve stale location data forever.
+  if (new URL(req.url).origin !== self.location.origin) return;
   const accept = req.headers.get('accept') || '';
 
   // Network-first for pages, so daily intel + data are never stale; fall back to cache offline.
