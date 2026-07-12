@@ -192,14 +192,26 @@ function render() {
       <p style="color:var(--muted); font-size:.92rem; margin-bottom:10px">${ev.d}</p>
       <div style="display:flex; gap:8px; flex-wrap:wrap">
         <a class="btn btn-amber" style="padding:7px 14px; font-size:.82rem" href="${ev.u}" target="_blank" rel="noopener">Official site →</a>
-        <a class="btn btn-outline" style="padding:7px 14px; font-size:.82rem; border-color:var(--navy); color:var(--navy)" href="${hotelURL(ev)}" target="_blank" rel="noopener sponsored">🏨 Book Hotel</a>
-        ${flightURL(ev) ? `<a class="btn btn-outline" style="padding:7px 14px; font-size:.82rem; border-color:var(--navy); color:var(--navy)" href="${flightURL(ev)}" target="_blank" rel="noopener sponsored">✈ Find Flights</a>` : ""}
-        ${AFFILIATE.kkdayLink ? `<a class="btn btn-outline" style="padding:7px 14px; font-size:.82rem; border-color:var(--navy); color:var(--navy)" href="${AFFILIATE.kkdayLink}" target="_blank" rel="noopener sponsored">🎟️ Things to Do</a>` : ""}
+        <a class="btn btn-outline" data-aff="hotel" data-ev="${ev.n.replace(/"/g,'&quot;')}" style="padding:7px 14px; font-size:.82rem; border-color:var(--navy); color:var(--navy)" href="${hotelURL(ev)}" target="_blank" rel="noopener sponsored">🏨 Book Hotel</a>
+        ${flightURL(ev) ? `<a class="btn btn-outline" data-aff="flights" data-ev="${ev.n.replace(/"/g,'&quot;')}" style="padding:7px 14px; font-size:.82rem; border-color:var(--navy); color:var(--navy)" href="${flightURL(ev)}" target="_blank" rel="noopener sponsored">✈ Find Flights</a>` : ""}
+        ${AFFILIATE.kkdayLink ? `<a class="btn btn-outline" data-aff="activities" data-ev="${ev.n.replace(/"/g,'&quot;')}" style="padding:7px 14px; font-size:.82rem; border-color:var(--navy); color:var(--navy)" href="${AFFILIATE.kkdayLink}" target="_blank" rel="noopener sponsored">🎟️ Things to Do</a>` : ""}
       </div>
     </div>`;
   }).join("");
   document.getElementById("count").textContent = `Showing ${list.length} upcoming events`;
 }
+
+// Affiliate click tracking — counts stored locally, viewable in admin.html.
+// (Conversion/revenue figures live in the TPK/Kiwi partner dashboard.)
+document.getElementById("grid").addEventListener("click", e => {
+  const a = e.target.closest("[data-aff]");
+  if (!a) return;
+  try {
+    const clicks = JSON.parse(localStorage.getItem("tp-aff-clicks") || "[]");
+    clicks.push({ t: new Date().toISOString(), aff: a.dataset.aff, ev: a.dataset.ev || "" });
+    localStorage.setItem("tp-aff-clicks", JSON.stringify(clicks.slice(-500)));
+  } catch {}
+});
 
 document.querySelectorAll("#year-filters button").forEach(b => b.addEventListener("click", () => {
   document.querySelectorAll("#year-filters button").forEach(x => x.classList.remove("on"));
