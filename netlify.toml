@@ -5,15 +5,9 @@
 
 [functions]
   node_bundler = "esbuild"
-  external_node_modules = ["express"]
 
 [functions."refresh-data"]
   schedule = "0 6 * * *"
-
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/api:splat"
-  status = 200
 
 # Long-lived caching for static assets; HTML stays revalidated so daily intel is never stale.
 [[headers]]
