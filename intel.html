@@ -61,19 +61,16 @@ a.plain:hover { text-decoration:underline; }
     <div class="tab" data-panel="grid">Power Grid News</div>
     <div class="tab" data-panel="repair">UAE Repair Demand</div>
     <div class="tab" data-panel="factories">New Factories</div>
-    <div class="tab" data-panel="pressboard">Pressboard / Insulation</div>
     <div class="tab" data-panel="materials">Material Rates</div>
     <div class="tab" data-panel="pipeline">Pipeline (Pre-Award)</div>
     <div class="tab" data-panel="h2">Green H₂</div>
     <div class="tab" data-panel="tech">Technology Watch</div>
-    <div class="tab" data-panel="competitors">Competitors / Players</div>
   </div>
 
   <div class="panel active" id="panel-news"></div>
   <div class="panel" id="panel-grid"></div>
   <div class="panel" id="panel-repair"></div>
   <div class="panel" id="panel-factories"></div>
-  <div class="panel" id="panel-pressboard"></div>
   <div class="panel" id="panel-materials">
     <div class="region-h">Transformer Material Rates (LME / market)</div>
     <div class="stat-grid">
@@ -106,7 +103,6 @@ a.plain:hover { text-decoration:underline; }
   <div class="panel" id="panel-pipeline"></div>
   <div class="panel" id="panel-h2"></div>
   <div class="panel" id="panel-tech"></div>
-  <div class="panel" id="panel-competitors"></div>
 
   <div class="footer">Auto-refreshed daily 06:00 by the transformer-intel agent. Items sourced from live web search with real URLs — no invented facts.</div>
 </div>
@@ -533,15 +529,6 @@ function renderFactories(){
     `<div class="region-h">New / Expanding Transformer Factories — sorted closest to Dubai 🇦🇪 first</div>
      <table class="factory-grid"><thead><tr><th>Project</th><th>Location</th><th>Backer</th><th>Capability</th><th>Status</th><th>Src</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
-function renderPressboard(){
-  document.getElementById("panel-pressboard").innerHTML =
-    `<div class="region-h">Pressboard / Insulation Supply Chain</div>`+PRESSBOARD.map(card).join("");
-}
-function renderCompetitors(){
-  document.getElementById("panel-competitors").innerHTML =
-    `<div class="region-h">Competitors & New Players (UAE / GCC)</div>`+
-    COMPETITORS.map(c=>`<div class="card"><div class="card-title">${c.name}</div><div class="card-snippet">${c.note}</div><div class="card-meta"><a class="plain" href="${c.src}" target="_blank" rel="noopener">source</a></div></div>`).join("");
-}
 function renderChangelog(){
   const el=document.getElementById("changelog-strip"); if(!el) return;
   el.innerHTML = '<strong style="color:#4ade80">Changed since last run:</strong> ' +
@@ -556,7 +543,7 @@ function renderPipeline(){
     `<div class="region-h">Pre-Award Pipeline \u2014 tenders & expected awards to chase</div>
      <table class="factory-grid"><thead><tr><th>Project</th><th>Buyer</th><th>Scope</th><th>Expected</th><th>Status</th><th>Src</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
-renderNews(); renderGrid(); renderRepair(); renderFactories(); renderPressboard(); function renderH2(){
+renderNews(); renderGrid(); renderRepair(); renderFactories(); function renderH2(){
   const GCC_IN = ["\ud83c\uddf8\ud83c\udde6","\ud83c\udde6\ud83c\uddea","\ud83c\uddf4\ud83c\uddf2","\ud83c\uddf6\ud83c\udde6","\ud83c\uddf0\ud83c\uddfc","\ud83c\udde7\ud83c\udded","\ud83c\uddea\ud83c\uddec","\ud83c\uddee\ud83c\uddf3"];
   const rows=H2_PROJECTS.map(p=>{
     const near = GCC_IN.some(f=>p[1].includes(f));
@@ -579,7 +566,7 @@ function renderTech(){
   document.getElementById("panel-tech").innerHTML =
     `<div class="region-h">Technology Watch — worldwide</div>`+note+h;
 }
-renderCompetitors(); renderChangelog(); renderPipeline(); renderH2(); renderTech();
+renderChangelog(); renderPipeline(); renderH2(); renderTech();
 
 document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
   document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
