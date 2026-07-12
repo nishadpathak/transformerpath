@@ -50,16 +50,28 @@ a.plain:hover { text-decoration:underline; }
 </style>
 </head>
 <body>
+<header>
+  <div class="container nav" style="display:flex; align-items:center; justify-content:space-between; padding:16px 20px; background:#0d1b2e; color:#fff;">
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px;color:#fff;text-decoration:none;font-weight:600"><svg width="24" height="24" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span style="color:#f5a623">Path</span></a>
+    <nav style="display:flex;gap:24px;font-size:14px;align-items:center">
+      <a href="index.html" style="color:#fff;text-decoration:none">Home</a>
+      <a href="blog.html" style="color:#fff;text-decoration:none">Blog</a>
+      <a href="events.html" style="color:#fff;text-decoration:none">Events</a>
+      <a href="manufacturers.html" style="color:#fff;text-decoration:none">Manufacturers</a>
+      <a href="learn.html" style="color:#fff;text-decoration:none">Learn</a>
+    </nav>
+  </div>
+</header>
 <div class="wrap">
   <h1>Transformer Market Intelligence</h1>
-  <div class="sub">Elin Insulation FZ LLC · Elin Transformer Services LLC — Dubai, UAE · <a href="intel-feed.xml" style="color:#0b5fb8;text-decoration:none;font-weight:600">📡 RSS Feed</a></div>
-  <div class="stamp" id="stamp">11 Jul 2026 · 18:00 UAE</div>
+  <div class="sub">Daily intel and market analysis · <a href="intel-feed.xml" style="color:#0b5fb8;text-decoration:none;font-weight:600">📡 RSS Feed</a></div>
+  <div class="stamp" id="stamp">11 Jul 2026</div>
   <div id="changelog-strip" style="background:#0f2a1e;border:1px solid #1e5c40;border-radius:8px;padding:8px 14px;margin:10px 0;font-size:.85rem;line-height:1.5"></div>
 
   <div class="tabs">
     <div class="tab active" data-panel="news">Daily News</div>
     <div class="tab" data-panel="grid">Power Grid News</div>
-    <div class="tab" data-panel="repair">UAE Repair Demand</div>
+    <div class="tab" data-panel="repair">Service Demand</div>
     <div class="tab" data-panel="factories">New Factories</div>
     <div class="tab" data-panel="materials">Material Rates</div>
     <div class="tab" data-panel="pipeline">Pipeline (Pre-Award)</div>
@@ -112,7 +124,7 @@ a.plain:hover { text-decoration:underline; }
 
 const NEWS = {
   GCC: {
-    label: "GCC (UAE · Saudi · Qatar · Oman · Kuwait · Bahrain)",
+    label: "GCC (Saudi · Qatar · Oman · Kuwait · Bahrain · UAE)",
     items: [
       { title:"KAHRAMAA awards QR 2.2bn ($604m) grid contracts for Dukhan Solar connection — Qatar's largest-ever grid expansion", snippet:"Qatar's Kahramaa signed EPC contracts worth over QR 2.2bn with Voltage Engineering, Best & Betas Consortium, L&T and LS Cable covering a new 400 kV substation, new/upgraded substations, underground cables and OHLs to tie the Dukhan solar plant into the national grid — fresh Qatar EHV transformer, GIS and accessory scope now in execution.", value:"$604m", src:"SaudiGulf Projects / Gulf Times · Jun–Jul 2026 [en]", url:"https://www.saudigulfprojects.com/2026/06/qatar-awards-over-604-million-in-contracts-for-dukhan-solar-project-grid-connection-infrastructure/", isNew:true },
       { title:"H1 2026 GCC electricity-deal roundup: KSA competes for the top spot", snippet:"أكبر صفقات الكهرباء في دول الخليج خلال النصف الأول من 2026 — Attaqa's roundup of the region's largest H1 power deals, headlined by Siemens Energy's Taweelah C equipment win (2.6 GW) and Saudi substation/EPC packages — a useful digest of Jan–Jun 2026 awards.", value:"", src:"Attaqa الطاقة · 3 Jul 2026 [ar]", url:"https://attaqa.net/2026/07/03/%D8%A3%D9%83%D8%A8%D8%B1-%D8%B5%D9%81%D9%82%D8%A7%D8%AA-%D8%A7%D9%84%D9%83%D9%87%D8%B1%D8%A8%D8%A7%D8%A1-%D9%81%D9%8A-%D8%A7%D9%84%D9%86%D8%B5%D9%81-%D8%A7%D9%84%D8%A3%D9%88%D9%84-2026-%D8%A7%D9%84/", isNew:true },
@@ -527,7 +539,7 @@ function renderGrid(){
 }
 function renderRepair(){
   document.getElementById("panel-repair").innerHTML =
-    `<div class="region-h">UAE / GCC Repair & Service Demand Signals</div>`+REPAIR_NEWS.map(card).join("");
+    `<div class="region-h">Transformer Service & Repair Demand</div>`+REPAIR_NEWS.map(card).join("");
 }
 function renderFactories(){
   const rows=FACTORIES.map(f=>`<tr>
@@ -584,5 +596,19 @@ document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
   document.getElementById("panel-"+t.dataset.panel).classList.add("active");
 }));
 </script>
+
+<footer style="background:#0d1b2e;color:#fff;padding:40px 20px;margin-top:60px;text-align:center;font-size:13px">
+  <div style="max-width:1200px;margin:0 auto;margin-bottom:20px">
+    <a href="index.html" style="color:#fff;text-decoration:none;margin:0 16px">Home</a>
+    <a href="blog.html" style="color:#fff;text-decoration:none;margin:0 16px">Blog</a>
+    <a href="events.html" style="color:#fff;text-decoration:none;margin:0 16px">Events</a>
+    <a href="manufacturers.html" style="color:#fff;text-decoration:none;margin:0 16px">Manufacturers</a>
+    <a href="learn.html" style="color:#fff;text-decoration:none;margin:0 16px">Learn</a>
+    <a href="grids.html" style="color:#fff;text-decoration:none;margin:0 16px">Grids</a>
+    <a href="about.html" style="color:#fff;text-decoration:none;margin:0 16px">About</a>
+    <a href="contact.html" style="color:#fff;text-decoration:none;margin:0 16px">Contact</a>
+  </div>
+  <div style="opacity:.7">© 2026 TransformerPath. All rights reserved.</div>
+</footer>
 </body>
 </html>
