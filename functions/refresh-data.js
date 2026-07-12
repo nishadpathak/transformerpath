@@ -129,12 +129,10 @@ async function fetchIntel() {
     const timestamp = new Date().toLocaleString('en-GB', {
       day: 'numeric',
       month: 'short',
-      hour: '2-digit',
-      minute: '2-digit',
-      timeZone: 'Asia/Dubai'
+      year: '2-digit'
     });
 
-    const autoBriefing = `Daily auto-refresh (${timestamp} Dubai): EventRegistry fetched ${totalArticles} transformer industry articles across regions (${regionCounts}). Grouped by region and sorted by date. No manual curation — raw feeds only.`;
+    const autoBriefing = `Daily auto-refresh (${timestamp}): EventRegistry fetched ${totalArticles} transformer industry articles across regions (${regionCounts}). Grouped by region and sorted by date. No manual curation — raw feeds only.`;
 
     // Return both data and briefing
     intel.autoBriefing = autoBriefing;
