@@ -114,7 +114,7 @@
 <section class="hero" style="padding:50px 0 40px">
   <div class="container">
     <h1 style="font-size:2.2rem">Learn Transformer <span>Design</span></h1>
-    <p>A free, in-depth engineering course — 26 chapters taking you from a customer specification to a complete power/distribution transformer design — with worked calculations, diagrams, seven interactive 3D models and a live design calculator. A fresh lesson is spotlighted every week.</p>
+    <p>An in-depth engineering program — 26 chapters taking you from a customer specification to a complete power/distribution transformer design — with worked calculations, diagrams, seven interactive 3D models and a live design calculator. All of it included with Yearly Access.</p>
   </div>
 </section>
 
@@ -135,9 +135,10 @@
         <div style="max-width:60ch">
           <span style="display:inline-block;background:var(--amber);color:var(--navy);font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;padding:3px 10px;border-radius:999px;margin-bottom:10px">Premium</span>
           <h3 style="margin:0 0 6px">Design Engineer Track — Yearly Access</h3>
-          <p style="color:var(--muted);margin:0 0 12px">Level 1 (Foundations) is free forever. Yearly Access unlocks the rest of the professional program:</p>
+          <p style="color:var(--muted);margin:0 0 12px">One payment unlocks the entire learning platform:</p>
           <ul style="margin:0 0 6px 20px;padding:0;color:var(--text);font-size:.92rem;line-height:1.7">
-            <li><b>Levels 2–4</b> — Distribution, Power Transformer and Specials &amp; Mastery</li>
+            <li><b>All four levels</b> — Foundations, Distribution, Power Transformer and Specials &amp; Mastery</li>
+            <li><b>All courses &amp; tools</b> — masterclass, tutorial, academy, 3D models, formulas and design calculators</li>
             <li><b>Engineer-reviewed capstones</b> — marked-up critique + model answer for all five design projects</li>
             <li><b>Certificates</b> — a verifiable completion certificate per level</li>
           </ul>
@@ -174,7 +175,7 @@
     </div>
 
     <!-- More courses & tools hub -->
-    <div class="section-head" style="margin-bottom:14px"><h2>More Courses & Tools</h2><p>Interactive learning and engineering tools — all free.</p></div>
+    <div class="section-head" style="margin-bottom:14px"><h2>More Courses & Tools</h2><p>Interactive learning and engineering tools — included with Yearly Access.</p></div>
     <div class="grid grid-3" style="margin-bottom:36px">
       <a class="card" href="academy.html"><span class="emoji" aria-hidden="true">🎓</span><h3>Transformer Academy</h3><p>An interactive masterclass — learn transformers the way they're actually built.</p></a>
       <a class="card" href="power3d.html"><span class="emoji" aria-hidden="true">🔌</span><h3>Power Transformer 3D</h3><p>Explore a 100 MVA 132/33 kV power transformer in interactive 3D.</p></a>
@@ -197,8 +198,9 @@
 
     <div id="curriculum"></div>
 
-    <!-- Key formulas -->
-    <div class="section-head" style="margin:44px auto 18px"><h2>Key Design Formulas</h2><p>The core calculations every transformer designer reaches for.</p></div>
+    <!-- Key formulas + quick calculator: premium, locked without course access -->
+    <div id="paid-tools">
+    <div class="section-head" style="margin:44px auto 18px"><h2>Key Design Formulas <span style="display:inline-block;background:var(--navy);color:var(--amber);font-size:.62rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;padding:3px 10px;border-radius:999px;vertical-align:middle">Paid</span></h2><p>The core calculations every transformer designer reaches for.</p></div>
     <div class="formula-grid">
       <div class="formula"><h4>EMF / Volts-per-Turn</h4><code>E = 4.44 · f · N · B&#8344; · A&#8343;</code><small>f = frequency (Hz), N = turns, B&#8344; = peak flux density (T), A&#8343; = net core area (m²)</small></div>
       <div class="formula"><h4>Turns per Volt</h4><code>T&#8341; = 1 / (4.44 · f · B&#8344; · A&#8343;)</code><small>Multiply by winding voltage to get the number of turns</small></div>
@@ -223,12 +225,39 @@
       </div>
       <div class="calc-out" id="calcOut"></div>
     </div>
+    </div><!-- /paid-tools -->
 
     <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:22px">
       Engineering course authored for TransformerPath. The calculator gives a first-pass estimate using simplified formulas — always design to the applicable IEC 60076 / ANSI C57 standard.
     </p>
   </div>
 </section>
+
+<style>
+#paid-tools.locked { position:relative; }
+#paid-tools.locked > :not(.unlock-overlay) { filter:blur(5px); pointer-events:none; user-select:none; }
+#paid-tools.locked .unlock-overlay { position:absolute; inset:0; z-index:5; display:flex; align-items:center; justify-content:center; }
+#paid-tools.locked .unlock-box { background:rgba(13,27,46,.96); color:#fff; border-radius:14px; padding:28px 34px; text-align:center; max-width:420px; box-shadow:0 12px 40px rgba(0,0,0,.35); }
+</style>
+<script>
+// Lock the embedded formulas + quick calculator unless course access exists.
+(function(){
+  try {
+    var a = JSON.parse(localStorage.getItem('tp-course-access') || 'null');
+    if (a && a.expiry > Date.now()) return;
+  } catch(e) {}
+  var s = document.getElementById('paid-tools');
+  if (!s) return;
+  s.classList.add('locked');
+  var o = document.createElement('div');
+  o.className = 'unlock-overlay';
+  o.innerHTML = '<div class="unlock-box"><div style="font-size:2rem;margin-bottom:6px">🔒</div>' +
+    '<h3 style="margin:0 0 8px;color:#fff">Formulas &amp; calculator are premium</h3>' +
+    '<p style="color:#b8c4d4;font-size:.9rem;margin:0 0 16px">Included with Yearly Access, along with the full course, 3D models and design calculators.</p>' +
+    '<a href="https://buy.stripe.com/5kQ00c3pS8tv9g4fdMfYY00" target="_blank" rel="noopener" style="display:inline-block;background:#f5a623;color:#0d1b2e;font-weight:800;padding:11px 26px;border-radius:9px;text-decoration:none">Unlock — $199/year →</a></div>';
+  s.appendChild(o);
+})();
+</script>
 
 <footer>
   <div class="container">
