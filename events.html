@@ -22,7 +22,7 @@
 <link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
 <style>
 .event-card h3 { margin-bottom: 4px; }
-.event-card .dates { color: var(--amber-dark); font-weight: 700; font-size: .9rem; }
+.event-card .dates { color:var(--accent); font-weight: 700; font-size: .9rem; }
 .event-card .venue { color: var(--muted); font-size: .88rem; margin: 4px 0 8px; }
 .badge-soon { display:inline-block; background:#fee2e2; color:#b91c1c; font-size:.7rem; font-weight:800; text-transform:uppercase; letter-spacing:.5px; padding:3px 10px; border-radius:999px; margin-left:8px; }
 </style>
@@ -193,9 +193,9 @@ function render() {
       <p style="color:var(--muted); font-size:.92rem; margin-bottom:10px">${ev.d}</p>
       <div style="display:flex; gap:8px; flex-wrap:wrap">
         <a class="btn btn-amber" style="padding:7px 14px; font-size:.82rem" href="${ev.u}" target="_blank" rel="noopener">Official site →</a>
-        <a class="btn btn-outline" data-aff="hotel" data-ev="${ev.n.replace(/"/g,'&quot;')}" style="padding:7px 14px; font-size:.82rem; border-color:var(--navy); color:var(--navy)" href="${hotelURL(ev)}" target="_blank" rel="noopener sponsored">🏨 Book Hotel</a>
-        ${flightURL(ev) ? `<a class="btn btn-outline" data-aff="flights" data-ev="${ev.n.replace(/"/g,'&quot;')}" style="padding:7px 14px; font-size:.82rem; border-color:var(--navy); color:var(--navy)" href="${flightURL(ev)}" target="_blank" rel="noopener sponsored">✈ Find Flights</a>` : ""}
-        ${AFFILIATE.kkdayLink ? `<a class="btn btn-outline" data-aff="activities" data-ev="${ev.n.replace(/"/g,'&quot;')}" style="padding:7px 14px; font-size:.82rem; border-color:var(--navy); color:var(--navy)" href="${AFFILIATE.kkdayLink}" target="_blank" rel="noopener sponsored">🎟️ Things to Do</a>` : ""}
+        <a class="btn btn-outline" data-aff="hotel" data-ev="${ev.n.replace(/"/g,'&quot;')}" style="padding:7px 14px; font-size:.82rem; border-color:var(--ink); color:var(--ink)" href="${hotelURL(ev)}" target="_blank" rel="noopener sponsored">🏨 Book Hotel</a>
+        ${flightURL(ev) ? `<a class="btn btn-outline" data-aff="flights" data-ev="${ev.n.replace(/"/g,'&quot;')}" style="padding:7px 14px; font-size:.82rem; border-color:var(--ink); color:var(--ink)" href="${flightURL(ev)}" target="_blank" rel="noopener sponsored">✈ Find Flights</a>` : ""}
+        ${AFFILIATE.kkdayLink ? `<a class="btn btn-outline" data-aff="activities" data-ev="${ev.n.replace(/"/g,'&quot;')}" style="padding:7px 14px; font-size:.82rem; border-color:var(--ink); color:var(--ink)" href="${AFFILIATE.kkdayLink}" target="_blank" rel="noopener sponsored">🎟️ Things to Do</a>` : ""}
       </div>
     </div>`;
   }).join("");

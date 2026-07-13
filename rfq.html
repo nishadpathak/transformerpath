@@ -21,12 +21,12 @@
 <meta name="theme-color" content="#0d1b2e">
 <style>
 .legal { max-width:760px; margin:0 auto; padding:56px 20px 72px; }
-.legal h1 { color:var(--navy); font-size:2.1rem; letter-spacing:-.5px; margin-bottom:6px; }
+.legal h1 { color:var(--ink); font-size:2.1rem; letter-spacing:-.5px; margin-bottom:6px; }
 .legal .sub { color:var(--muted); margin-bottom:36px; font-size:.95rem; }
-.legal h2 { color:var(--navy); font-size:1.25rem; margin:32px 0 10px; }
+.legal h2 { color:var(--ink); font-size:1.25rem; margin:32px 0 10px; }
 .legal p, .legal li { color:var(--text); font-size:.97rem; margin-bottom:12px; }
 .legal ul { padding-left:22px; margin-bottom:12px; }
-.legal a { color:var(--amber-dark); font-weight:600; }
+.legal a { color:var(--accent); font-weight:600; }
 </style>
 </head>
 <body>
@@ -90,13 +90,13 @@
     const RFQS = [];
     (function(){
       const host=document.getElementById('liveRfqs');
-      if(!RFQS.length){ host.innerHTML='<p style="text-align:center;color:var(--muted);background:#fff;border:1px dashed var(--border);border-radius:12px;padding:22px;margin-bottom:34px">📭 No open RFQs yet — be the first to post one below. Posted RFQs appear here with buyer details kept private.</p>'; return; }
-      host.innerHTML = RFQS.map(r=>'<div class="card" style="margin-bottom:14px"><b style="color:var(--navy)">'+r.title+'</b><p style="color:var(--muted);font-size:.92rem;margin:6px 0">'+r.detail+'</p><span style="font-size:.8rem;color:var(--amber-dark);font-weight:700">'+r.country+' · '+r.cat+' · closes '+r.close+'</span><p style="margin-top:8px"><a class="btn btn-amber" style="padding:7px 16px;font-size:.85rem" href="mailto:hello@transformerpath.com?subject=Quote for RFQ: '+encodeURIComponent(r.title)+'">Respond to this RFQ →</a></p></div>').join('');
+      if(!RFQS.length){ host.innerHTML='<p style="text-align:center;color:var(--muted);background:var(--card);border:1px dashed var(--border);border-radius:12px;padding:22px;margin-bottom:34px">📭 No open RFQs yet — be the first to post one below. Posted RFQs appear here with buyer details kept private.</p>'; return; }
+      host.innerHTML = RFQS.map(r=>'<div class="card" style="margin-bottom:14px"><b style="color:var(--ink)">'+r.title+'</b><p style="color:var(--muted);font-size:.92rem;margin:6px 0">'+r.detail+'</p><span style="font-size:.8rem;color:var(--accent);font-weight:700">'+r.country+' · '+r.cat+' · closes '+r.close+'</span><p style="margin-top:8px"><a class="btn btn-amber" style="padding:7px 16px;font-size:.85rem" href="mailto:hello@transformerpath.com?subject=Quote for RFQ: '+encodeURIComponent(r.title)+'">Respond to this RFQ →</a></p></div>').join('');
     })();
     </script>
 
     <div class="card">
-      <h3 style="color:var(--navy);margin-bottom:14px">Post your RFQ</h3>
+      <h3 style="color:var(--ink);margin-bottom:14px">Post your RFQ</h3>
       <form name="rfq" method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
         <input type="hidden" name="form-name" value="rfq">
         <p style="display:none"><label>Do not fill: <input name="bot-field"></label></p>

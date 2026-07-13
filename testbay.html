@@ -39,7 +39,7 @@
 .gas-panel td:last-child { text-align:right; }
 .gas-panel tr.duval td { color:var(--amber); font-weight:600; }
 .gas-note { color:#5f6e84; font-size:.72rem; margin-top:8px; border-top:1px solid #2c4566; padding-top:6px; }
-.tri-panel { background:#fff; border-radius:10px; padding:10px 14px 4px; }
+.tri-panel { background:var(--card); border-radius:10px; padding:10px 14px 4px; }
 .tri-meta { font-size:.78rem; color:var(--muted); display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px; }
 .tri-meta .coords { font-family:ui-monospace, Consolas, monospace; }
 .opts { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; padding:0 24px 6px; }
@@ -68,12 +68,12 @@
 .pcase:hover { border-color:var(--amber); color:var(--amber); }
 .pcase.active { background:var(--amber); color:var(--navy); border-color:var(--amber); font-weight:700; }
 .pcase.done { border-color:#5DCAA5; color:#5DCAA5; }
-.pcase.done.active { background:#5DCAA5; color:var(--navy); }
+.pcase.done.active { background:#5DCAA5; color:var(--ink); }
 .ranks { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; }
-.rank-card { background:#fff; border:1px solid var(--border); border-radius:10px; padding:14px; text-align:center; }
+.rank-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:14px; text-align:center; }
 .rank-card.current { border:2px solid var(--amber); }
 .rank-card .ico { font-size:1.5rem; }
-.rank-card b { display:block; color:var(--navy); font-size:.9rem; margin-top:4px; }
+.rank-card b { display:block; color:var(--ink); font-size:.9rem; margin-top:4px; }
 .rank-card small { color:var(--muted); font-size:.75rem; }
 .rankbar { height:8px; background:var(--border); border-radius:4px; overflow:hidden; margin-top:10px; }
 .rankbar div { height:100%; background:var(--amber); }

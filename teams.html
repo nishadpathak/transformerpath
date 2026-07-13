@@ -22,12 +22,12 @@
 <link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
 <style>
 .tiers { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
-.tier { background:#fff; border:1px solid var(--border,#e2e8f0); border-radius:16px; padding:26px 22px; display:flex; flex-direction:column; }
+.tier { background:var(--card); border:1px solid var(--border,#e2e8f0); border-radius:16px; padding:26px 22px; display:flex; flex-direction:column; }
 .tier.featured { border-color:var(--amber); box-shadow:0 14px 34px rgba(13,27,46,.10); position:relative; }
 .tier .tag { position:absolute; top:-12px; left:22px; background:var(--amber); color:var(--navy); font-size:.7rem; font-weight:800; text-transform:uppercase; letter-spacing:1px; padding:4px 12px; border-radius:999px; }
 .tier h3 { margin-bottom:4px; }
 .tier .seats { color:var(--muted); font-size:.9rem; margin-bottom:14px; }
-.tier .price { color:var(--amber-dark); font-weight:800; font-size:1.25rem; margin-bottom:14px; }
+.tier .price { color:var(--accent); font-weight:800; font-size:1.25rem; margin-bottom:14px; }
 .tier ul { list-style:none; padding:0; margin:0 0 20px; }
 .tier li { padding:7px 0 7px 24px; position:relative; font-size:.93rem; border-bottom:1px solid #f1f5f9; }
 .tier li::before { content:"✓"; position:absolute; left:0; color:var(--green,#16a34a); font-weight:800; }
@@ -94,7 +94,7 @@
 
 <section class="hero" style="padding:56px 0 44px">
   <div class="container">
-    <p class="eyebrow" style="color:var(--amber-dark);font-weight:800;letter-spacing:.12em;text-transform:uppercase;font-size:.8rem">For Manufacturers, Utilities & EPCs</p>
+    <p class="eyebrow" style="color:var(--accent);font-weight:800;letter-spacing:.12em;text-transform:uppercase;font-size:.8rem">For Manufacturers, Utilities & EPCs</p>
     <h1 style="font-size:2.4rem;max-width:16ch">Train your transformer engineers — <span>at scale</span>.</h1>
     <p style="max-width:60ch">Give your whole team the industry's most practical transformer education: 26 structured chapters, ten interactive 3D models, live IEC&nbsp;60076 design practice and engineer-reviewed certification — with a dashboard to track every seat.</p>
     <div class="hero-ctas" style="display:flex;gap:12px;flex-wrap:wrap;margin-top:18px">
@@ -161,8 +161,8 @@
         <a href="#enquire" class="btn btn-outline">Talk to sales</a>
       </div>
     </div>
-    <p style="text-align:center;color:var(--muted);font-size:.86rem;margin-top:18px">All plans are billed <b>annually</b>; seats renew each year as new engineers cycle through. Need Enterprise, monthly billing or a bespoke rollout? <a href="#enquire" style="color:var(--amber-dark);font-weight:600">Talk to sales</a>.</p>
-    <p style="text-align:center;color:var(--muted);font-size:.86rem;margin-top:6px">Individual engineers can start any time on the <a href="learn.html" style="color:var(--amber-dark);font-weight:600">free curriculum</a> and add a <a href="engineer-track.html" style="color:var(--amber-dark);font-weight:600">paid certificate</a>.</p>
+    <p style="text-align:center;color:var(--muted);font-size:.86rem;margin-top:18px">All plans are billed <b>annually</b>; seats renew each year as new engineers cycle through. Need Enterprise, monthly billing or a bespoke rollout? <a href="#enquire" style="color:var(--accent);font-weight:600">Talk to sales</a>.</p>
+    <p style="text-align:center;color:var(--muted);font-size:.86rem;margin-top:6px">Individual engineers can start any time on the <a href="learn.html" style="color:var(--accent);font-weight:600">free curriculum</a> and add a <a href="engineer-track.html" style="color:var(--accent);font-weight:600">paid certificate</a>.</p>
   </div>
 </section>
 
@@ -225,7 +225,7 @@
         <p class="sub-note" id="teamStatus" style="margin-top:12px;color:var(--muted);font-size:.9rem">Our sales team will reply within one business day. Your details are used only to prepare your proposal.</p>
       </form>
     </div>
-    <p style="text-align:center;margin-top:16px;font-size:.9rem;color:var(--muted)">Prefer email? <a href="mailto:hello@transformerpath.com?subject=Team%20training%20enquiry" style="color:var(--amber-dark);font-weight:700">hello@transformerpath.com</a></p>
+    <p style="text-align:center;margin-top:16px;font-size:.9rem;color:var(--muted)">Prefer email? <a href="mailto:hello@transformerpath.com?subject=Team%20training%20enquiry" style="color:var(--accent);font-weight:700">hello@transformerpath.com</a></p>
   </div>
 </section>
 
@@ -275,7 +275,7 @@ var CHECKOUT = {
     s.style.display='none';
     var ok=document.createElement('div');
     ok.style.cssText='text-align:center;padding:10px 0';
-    ok.innerHTML='<div style="font-size:2.2rem">✅</div><h3 style="color:var(--navy);margin:6px 0">Thanks — we’ve got it</h3><p style="color:var(--muted)">Our sales team will be in touch within one business day.</p>';
+    ok.innerHTML='<div style="font-size:2.2rem">✅</div><h3 style="color:var(--ink);margin:6px 0">Thanks — we’ve got it</h3><p style="color:var(--muted)">Our sales team will be in touch within one business day.</p>';
     f.parentNode.appendChild(ok);
   });
 })();

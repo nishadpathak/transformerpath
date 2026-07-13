@@ -23,7 +23,7 @@
 <style>
 .tag-service { background:#ede9fe; color:#5b21b6; }
 </style>
-<style>.region-h{font-size:1.05rem;font-weight:800;color:var(--navy);margin:26px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--amber)}.intel-item .card-meta{margin-top:8px;font-size:.82rem}.intel-item .ival{color:var(--amber-dark);font-weight:700}.intel-item .src{color:var(--amber-dark);font-weight:600}</style>
+<style>.region-h{font-size:1.05rem;font-weight:800;color:var(--ink);margin:26px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--amber)}.intel-item .card-meta{margin-top:8px;font-size:.82rem}.intel-item .ival{color:var(--accent);font-weight:700}.intel-item .src{color:var(--accent);font-weight:600}</style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0d1b2e">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -92,24 +92,24 @@
 .tp-kpi .k b{display:block;font-size:1.3rem;color:var(--amber);line-height:1.15}
 .tp-kpi .k span{font-size:.7rem;color:#cbd5e1;text-transform:uppercase;letter-spacing:.04em}
 @media(max-width:620px){.tp-kpi{grid-template-columns:repeat(2,1fr)}}
-.tp-ticker{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;background:#fff;border:1px solid var(--border);border-radius:999px;padding:8px 18px;margin:0 auto 16px;max-width:660px;font-size:.82rem;font-weight:700;color:var(--navy)}
+.tp-ticker{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;background:var(--card);border:1px solid var(--border);border-radius:999px;padding:8px 18px;margin:0 auto 16px;max-width:660px;font-size:.82rem;font-weight:700;color:var(--ink)}
 .tp-ticker small{color:var(--muted);font-weight:600}
 .tp-tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center;margin-bottom:12px}
 .tp-tools input[type=search]{flex:1;min-width:210px;max-width:360px;padding:9px 14px;border:1px solid var(--border);border-radius:999px;font-size:.9rem}
-.tp-tools select{padding:9px 12px;border:1px solid var(--border);border-radius:999px;font-size:.84rem;background:#fff;color:var(--navy);font-weight:600}
-.tp-tools button{padding:8px 14px;border-radius:999px;border:1px solid var(--border);background:#fff;cursor:pointer;font-weight:700;font-size:.82rem;color:var(--muted)}
+.tp-tools select{padding:9px 12px;border:1px solid var(--border);border-radius:999px;font-size:.84rem;background:var(--card);color:var(--ink);font-weight:600}
+.tp-tools button{padding:8px 14px;border-radius:999px;border:1px solid var(--border);background:var(--card);cursor:pointer;font-weight:700;font-size:.82rem;color:var(--muted)}
 .tp-tools button.on{background:var(--amber);color:var(--navy);border-color:var(--amber)}
 .tp-chips{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin-bottom:14px}
-.tp-chip{padding:5px 12px;border-radius:999px;border:1px solid var(--border);background:#fff;cursor:pointer;font-size:.77rem;font-weight:700;color:var(--muted)}
-.tp-chip.on{background:var(--navy);color:var(--amber);border-color:var(--navy)}
+.tp-chip{padding:5px 12px;border-radius:999px;border:1px solid var(--border);background:var(--card);cursor:pointer;font-size:.77rem;font-weight:700;color:var(--muted)}
+.tp-chip.on{background:var(--navy);color:var(--amber);border-color:var(--ink)}
 .tp-count{text-align:center;color:var(--muted);font-size:.8rem;margin:0 0 16px}
 .intel-item{position:relative}
 .intel-item h3{padding-right:76px}
 .tp-actions{position:absolute;top:14px;right:14px;display:flex;gap:6px}
-.tp-actions button{border:1px solid var(--border);background:#fff;border-radius:8px;width:30px;height:30px;cursor:pointer;font-size:.9rem;line-height:1;color:var(--muted);padding:0}
-.tp-actions button.saved{color:var(--amber-dark);border-color:var(--amber);background:#fff7e6}
+.tp-actions button{border:1px solid var(--border);background:var(--card);border-radius:8px;width:30px;height:30px;cursor:pointer;font-size:.9rem;line-height:1;color:var(--muted);padding:0}
+.tp-actions button.saved{color:var(--accent);border-color:var(--amber);background:#fff7e6}
 .tp-item-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;align-items:center}
-.tp-tag{font-size:.67rem;font-weight:700;color:var(--amber-dark);background:#fff7e6;border:1px solid #ffe1a6;border-radius:6px;padding:2px 7px;cursor:pointer}
+.tp-tag{font-size:.67rem;font-weight:700;color:var(--accent);background:#fff7e6;border:1px solid #ffe1a6;border-radius:6px;padding:2px 7px;cursor:pointer}
 .tp-rchip{font-size:.67rem;font-weight:700;color:#fff;background:var(--navy);border-radius:6px;padding:2px 7px}
 .tp-new{font-size:.64rem;font-weight:800;color:#fff;background:#c0392b;border-radius:5px;padding:2px 6px;margin-left:6px;vertical-align:middle}
 .tp-flash{position:fixed;left:50%;bottom:26px;transform:translateX(-50%);background:var(--navy);color:#fff;padding:9px 18px;border-radius:999px;font-size:.82rem;font-weight:700;z-index:9998;opacity:0;transition:opacity .2s;pointer-events:none}
@@ -118,7 +118,7 @@
 <section class="block">
   <div class="container" style="max-width:820px">
     <p class="intel-date" id="intelDate"></p>
-    <p style="text-align:center;margin:-18px 0 16px"><a href="archive.html" style="color:var(--amber-dark);font-weight:700;font-size:.86rem">📁 Browse past briefings</a> &middot; <a href="feed.xml" style="color:var(--amber-dark);font-weight:700;font-size:.86rem">📡 RSS feed</a></p>
+    <p style="text-align:center;margin:-18px 0 16px"><a href="archive.html" style="color:var(--accent);font-weight:700;font-size:.86rem">📁 Browse past briefings</a> &middot; <a href="feed.xml" style="color:var(--accent);font-weight:700;font-size:.86rem">📡 RSS feed</a></p>
 
     <div class="tp-kpi" id="tpKpi"></div>
     <div class="tp-ticker" id="tpTicker" style="display:none"></div>
@@ -475,7 +475,7 @@ const BRIEFING_DATE = "Thursday, 9 July 2026";
   fetch('https://ipapi.co/json/').then(function(r){return r.ok?r.json():Promise.reject();}).then(function(d){
     var rk=d&&REGMAP[d.country_code];
     if(rk && order.indexOf(rk)>0){ order=[rk].concat(order.filter(function(x){return x!==rk;})); buildRegions(); render();
-      var dl=document.getElementById('intelDate'); if(dl&&!document.getElementById('geo-note')){var sp=document.createElement('span');sp.id='geo-note';sp.style.cssText='display:block;margin-top:4px;color:var(--amber-dark);font-size:.82rem;font-weight:600';sp.textContent='Showing '+rk+' first';dl.appendChild(sp);} }
+      var dl=document.getElementById('intelDate'); if(dl&&!document.getElementById('geo-note')){var sp=document.createElement('span');sp.id='geo-note';sp.style.cssText='display:block;margin-top:4px;color:var(--accent);font-size:.82rem;font-weight:600';sp.textContent='Showing '+rk+' first';dl.appendChild(sp);} }
   }).catch(function(){});
 })();
 </script>

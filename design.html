@@ -35,22 +35,22 @@
 .spec-card td:first-child { color:#9fb0c4; }
 .spec-card td:last-child { text-align:right; color:#fff; font-family:ui-monospace, Consolas, monospace; }
 .spec-card .caprate td:last-child { color:var(--amber); font-weight:700; }
-.bench { background:#fff; border:1px solid var(--border); border-radius:14px; padding:20px 22px; }
-.bench h3 { color:var(--navy); font-size:1.05rem; margin-bottom:4px; }
+.bench { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:20px 22px; }
+.bench h3 { color:var(--ink); font-size:1.05rem; margin-bottom:4px; }
 .bench .sub { color:var(--muted); font-size:.82rem; margin-bottom:12px; }
 .ctl-group { margin-bottom:16px; }
-.ctl-group label.title { display:block; font-weight:700; color:var(--navy); font-size:.88rem; margin-bottom:6px; }
+.ctl-group label.title { display:block; font-weight:700; color:var(--ink); font-size:.88rem; margin-bottom:6px; }
 .seg { display:flex; gap:8px; flex-wrap:wrap; }
-.seg button { flex:1; min-width:130px; border:1.5px solid var(--border); background:#fff; border-radius:8px; padding:8px 10px; cursor:pointer; text-align:left; font-family:inherit; font-size:.82rem; color:var(--text); }
+.seg button { flex:1; min-width:130px; border:1.5px solid var(--border); background:var(--card); border-radius:8px; padding:8px 10px; cursor:pointer; text-align:left; font-family:inherit; font-size:.82rem; color:var(--text); }
 .seg button small { display:block; color:var(--muted); font-size:.72rem; margin-top:2px; }
 .seg button.sel { border-color:var(--amber); background:#fff8ec; }
 .slider-row { display:flex; align-items:center; gap:12px; }
 .slider-row input[type=range] { flex:1; accent-color: var(--amber); }
-.slider-row .val { font-family:ui-monospace, Consolas, monospace; font-weight:700; color:var(--navy); min-width:74px; text-align:right; font-size:.9rem; }
+.slider-row .val { font-family:ui-monospace, Consolas, monospace; font-weight:700; color:var(--ink); min-width:74px; text-align:right; font-size:.9rem; }
 .readouts { display:grid; grid-template-columns:repeat(6,1fr); gap:8px; margin:14px 0 10px; }
 .ro { background:var(--bg); border-radius:8px; padding:8px 10px; text-align:center; }
 .ro small { display:block; color:var(--muted); font-size:.68rem; letter-spacing:.5px; }
-.ro b { font-size:.98rem; color:var(--navy); font-family:ui-monospace, Consolas, monospace; }
+.ro b { font-size:.98rem; color:var(--ink); font-family:ui-monospace, Consolas, monospace; }
 .ro.bad b { color:var(--red); }
 .evalbar { display:flex; height:18px; border-radius:9px; overflow:hidden; margin:6px 0 4px; }
 .evalbar div { height:100%; }
@@ -68,10 +68,10 @@
 .submit-btn:disabled { background:#d8dce2; color:#8a919c; cursor:not-allowed; }
 .lab-note { font-size:.78rem; color:var(--muted); }
 .results { margin-top:18px; display:none; }
-.results table { width:100%; border-collapse:collapse; font-size:.86rem; background:#fff; border-radius:10px; overflow:hidden; }
+.results table { width:100%; border-collapse:collapse; font-size:.86rem; background:var(--card); border-radius:10px; overflow:hidden; }
 .results th { background:var(--navy); color:#cbd5e1; text-align:left; padding:8px 12px; font-size:.74rem; letter-spacing:1px; }
 .results td { padding:8px 12px; border-bottom:1px solid var(--border); font-family:ui-monospace, Consolas, monospace; font-size:.82rem; }
-.results td:first-child { font-family:inherit; font-weight:600; color:var(--navy); }
+.results td:first-child { font-family:inherit; font-weight:600; color:var(--ink); }
 .results tr.you td { background:#fff8ec; }
 .results tr.winner td:first-child::after { content:" 🏆"; }
 .results .dq { color:var(--red); font-weight:700; }
@@ -257,7 +257,7 @@
         </div>
 
         <div class="results" id="results">
-          <h3 style="margin:6px 0 8px; color:var(--navy);">Bid Opening — <span id="res-utility"></span></h3>
+          <h3 style="margin:6px 0 8px; color:var(--ink);">Bid Opening — <span id="res-utility"></span></h3>
           <table>
             <thead><tr><th>BIDDER</th><th>PRICE</th><th>NLL</th><th>LL+AUX</th><th>EVALUATED</th><th>STATUS</th></tr></thead>
             <tbody id="res-body"></tbody>

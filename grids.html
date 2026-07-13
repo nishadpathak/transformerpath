@@ -21,39 +21,39 @@
 <link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
 <link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
 <style>
-.sync-table { width:100%; border-collapse:collapse; background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 2px 12px rgba(13,27,46,.08); font-size:.88rem; margin-bottom:10px; }
+.sync-table { width:100%; border-collapse:collapse; background:var(--card); border-radius:12px; overflow:hidden; box-shadow:0 2px 12px rgba(13,27,46,.08); font-size:.88rem; margin-bottom:10px; }
 .sync-table th, .sync-table td { padding:11px 14px; text-align:left; border-bottom:1px solid var(--border); vertical-align:top; }
 .sync-table th { background:var(--navy); color:#fff; font-size:.78rem; text-transform:uppercase; letter-spacing:.5px; }
-.sync-table td:first-child { font-weight:700; color:var(--navy); white-space:nowrap; }
+.sync-table td:first-child { font-weight:700; color:var(--ink); white-space:nowrap; }
 .controls { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:18px; }
 .controls input, .controls select { padding:9px 13px; border:1px solid var(--border); border-radius:8px; font-size:.92rem; font-family:inherit; }
 .controls input { flex:1; min-width:200px; }
-.country-card { background:#fff; border:1px solid var(--border); border-radius:12px; padding:16px 20px; margin-bottom:12px; }
+.country-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px 20px; margin-bottom:12px; }
 .country-head { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:10px; }
 .country-head .flag { font-size:1.4rem; }
-.country-head h3 { color:var(--navy); font-size:1.05rem; margin:0; }
+.country-head h3 { color:var(--ink); font-size:1.05rem; margin:0; }
 .badge { display:inline-block; font-size:.68rem; font-weight:700; text-transform:uppercase; letter-spacing:.4px; padding:2px 9px; border-radius:999px; }
 .b-freq { background:#dbeafe; color:#1e40af; }
 .b-sync { background:#dcfce7; color:#166534; }
 .b-cnt { background:#f1f5f9; color:#475569; margin-left:auto; }
 .grid-row { display:grid; grid-template-columns: 1.4fr 2fr auto auto; gap:12px; align-items:center; padding:8px 0; border-top:1px solid #f1f4f9; font-size:.9rem; }
-.grid-row b { color:var(--navy); }
-.grid-row .kv { color:var(--amber-dark); font-weight:700; white-space:nowrap; }
-.grid-row a { color:var(--amber-dark); font-weight:600; white-space:nowrap; }
-.region-h { font-size:1.15rem; font-weight:800; color:var(--navy); margin:30px 0 14px; padding-bottom:6px; border-bottom:2px solid var(--amber); }
+.grid-row b { color:var(--ink); }
+.grid-row .kv { color:var(--accent); font-weight:700; white-space:nowrap; }
+.grid-row a { color:var(--accent); font-weight:600; white-space:nowrap; }
+.region-h { font-size:1.15rem; font-weight:800; color:var(--ink); margin:30px 0 14px; padding-bottom:6px; border-bottom:2px solid var(--amber); }
 .ic-table td:first-child { white-space:normal; }
 .ic-table .rt { color:var(--muted); font-size:.84rem; display:block; margin-top:2px; font-weight:400; }
-.ic-table .kv { color:var(--amber-dark); font-weight:700; white-space:nowrap; font-size:.84rem; }
+.ic-table .kv { color:var(--accent); font-weight:700; white-space:nowrap; font-size:.84rem; }
 .st-op { background:#dcfce7; color:#166534; }
 .st-con { background:#fef3c7; color:#92400e; }
 .st-plan { background:#dbeafe; color:#1e40af; }
 .st-hold { background:#fee2e2; color:#991b1b; }
 .st-study { background:#f1f5f9; color:#475569; }
-.csv-btn { background:#fff; border:1px solid var(--border); border-radius:8px; padding:7px 13px; font-size:.85rem; font-family:inherit; cursor:pointer; color:var(--navy); font-weight:600; }
+.csv-btn { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:7px 13px; font-size:.85rem; font-family:inherit; cursor:pointer; color:var(--ink); font-weight:600; }
 .csv-btn:hover { border-color:var(--amber); }
 .proj-links { font-size:.8rem; color:var(--muted); margin-top:9px; padding-top:8px; border-top:1px dashed #e5eaf1; }
 .stat-row { display:flex; gap:24px; justify-content:center; flex-wrap:wrap; margin-bottom:26px; }
-.stat-row .s b { display:block; font-size:1.8rem; color:var(--amber-dark); text-align:center; }
+.stat-row .s b { display:block; font-size:1.8rem; color:var(--accent); text-align:center; }
 .stat-row .s small { color:var(--muted); font-size:.82rem; }
 @media (max-width:640px){ .grid-row { grid-template-columns:1fr; gap:3px; } }
 

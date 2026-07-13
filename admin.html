@@ -13,16 +13,16 @@
 .admin-wrap { max-width: 960px; margin: 30px auto; padding: 0 20px; }
 .gate { max-width: 380px; margin: 80px auto; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 32px; text-align: center; }
 .gate input { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; margin: 14px 0; background: var(--card); color: var(--text); }
-.gate button { width: 100%; padding: 11px; background: var(--amber); color: var(--navy); border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
+.gate button { width: 100%; padding: 11px; background: var(--amber); color:var(--navy); border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
 #panel { display: none; }
 .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
 @media (max-width: 700px) { .grid2 { grid-template-columns: 1fr; } }
 .acard { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 22px; }
 .acard h3 { margin: 0 0 6px; font-size: 1.02rem; color: var(--text); }
 .acard .sub { color: var(--muted); font-size: .84rem; margin-bottom: 14px; }
-.acard .big { font-size: 2rem; font-weight: 800; color: var(--amber-dark); }
+.acard .big { font-size: 2rem; font-weight: 800; color:var(--accent); }
 .abtn { display: inline-block; padding: 8px 16px; background: var(--navy); color: #fff; border: none; border-radius: 8px; font-weight: 600; font-size: .88rem; cursor: pointer; text-decoration: none; margin: 4px 6px 4px 0; }
-.abtn.amber { background: var(--amber); color: var(--navy); }
+.abtn.amber { background: var(--amber); color:var(--navy); }
 .abtn.danger { background: #b91c1c; }
 .mono { font-family: monospace; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font-size: .82rem; word-break: break-all; display: block; margin: 8px 0; color: var(--text); }
 .out { font-size: .82rem; color: var(--muted); margin-top: 10px; white-space: pre-wrap; }
@@ -41,8 +41,8 @@ table.aff th, table.aff td { text-align: left; padding: 6px 8px; border-bottom: 
 </div>
 
 <div class="admin-wrap" id="panel">
-  <h1 style="margin:20px 0 4px">TransformerPath <span style="color:var(--amber-dark)">Admin</span></h1>
-  <p style="color:var(--muted);margin-bottom:24px">Local control panel · <a href="index.html" style="color:var(--amber-dark)">← back to site</a></p>
+  <h1 style="margin:20px 0 4px">TransformerPath <span style="color:var(--accent)">Admin</span></h1>
+  <p style="color:var(--muted);margin-bottom:24px">Local control panel · <a href="index.html" style="color:var(--accent)">← back to site</a></p>
 
   <div class="grid2">
 
@@ -55,7 +55,7 @@ table.aff th, table.aff td { text-align: left; padding: 6px 8px; border-bottom: 
 
     <div class="acard">
       <h3>✈️ Affiliate Clicks (this device)</h3>
-      <p class="sub">Outbound clicks tracked locally on events.html. Real conversions & revenue: <a href="https://tp.media/en/dashboard" target="_blank" rel="noopener" style="color:var(--amber-dark)">Travelpayouts dashboard ↗</a></p>
+      <p class="sub">Outbound clicks tracked locally on events.html. Real conversions & revenue: <a href="https://tp.media/en/dashboard" target="_blank" rel="noopener" style="color:var(--accent)">Travelpayouts dashboard ↗</a></p>
       <div class="big" id="aff-total">0</div>
       <div id="aff-breakdown"></div>
       <button class="abtn danger" onclick="if(confirm('Clear local click log?')){localStorage.removeItem('tp-aff-clicks');renderAff()}">Clear log</button>

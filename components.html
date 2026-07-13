@@ -21,12 +21,12 @@
 <meta name="theme-color" content="#0d1b2e">
 <style>
 .legal { max-width:760px; margin:0 auto; padding:56px 20px 72px; }
-.legal h1 { color:var(--navy); font-size:2.1rem; letter-spacing:-.5px; margin-bottom:6px; }
+.legal h1 { color:var(--ink); font-size:2.1rem; letter-spacing:-.5px; margin-bottom:6px; }
 .legal .sub { color:var(--muted); margin-bottom:36px; font-size:.95rem; }
-.legal h2 { color:var(--navy); font-size:1.25rem; margin:32px 0 10px; }
+.legal h2 { color:var(--ink); font-size:1.25rem; margin:32px 0 10px; }
 .legal p, .legal li { color:var(--text); font-size:.97rem; margin-bottom:12px; }
 .legal ul { padding-left:22px; margin-bottom:12px; }
-.legal a { color:var(--amber-dark); font-weight:600; }
+.legal a { color:var(--accent); font-weight:600; }
 </style>
 </head>
 <body>
@@ -81,7 +81,7 @@
   <div class="container">
     <div class="section-head" style="margin-bottom:24px">
       <h2>Transformer Components & Accessories — The Complete Map</h2>
-      <p>Every part that goes into (and onto) a transformer, explained in one line. Suppliers: <a href="list-company.html" style="color:var(--amber-dark);font-weight:700">get listed</a>. Buyers: <a href="rfq.html" style="color:var(--amber-dark);font-weight:700">post an RFQ</a>.</p>
+      <p>Every part that goes into (and onto) a transformer, explained in one line. Suppliers: <a href="list-company.html" style="color:var(--accent);font-weight:700">get listed</a>. Buyers: <a href="rfq.html" style="color:var(--accent);font-weight:700">post an RFQ</a>.</p>
     </div>
     <div class="filters" id="catFilters"></div>
     <input id="compQ" type="search" placeholder="Filter components… e.g. bushing, Buchholz, DDP" style="width:100%;max-width:420px;display:block;margin:0 auto 28px;padding:11px 16px;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:.95rem">
@@ -160,7 +160,7 @@ const COMPONENTS = {
     cats.filter(c=>!active||c===active).forEach(c=>{
       COMPONENTS[c].forEach(([n,d])=>{
         if(q && !(n+' '+d+' '+c).toLowerCase().includes(q)) return;
-        html+='<div class="card"><span style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--amber-dark)">'+c+'</span><h3 style="margin:6px 0 6px">'+n+'</h3><p>'+d+'</p><p style="margin-top:10px;font-size:.83rem"><a href="rfq.html" style="color:var(--amber-dark);font-weight:700">Request quotes →</a></p></div>';
+        html+='<div class="card"><span style="font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--accent)">'+c+'</span><h3 style="margin:6px 0 6px">'+n+'</h3><p>'+d+'</p><p style="margin-top:10px;font-size:.83rem"><a href="rfq.html" style="color:var(--accent);font-weight:700">Request quotes →</a></p></div>';
       });
     });
     grid.innerHTML = html || '<p style="grid-column:1/-1;text-align:center;color:var(--muted)">No components match.</p>';

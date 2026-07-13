@@ -25,15 +25,15 @@
 .controls input, .controls select { padding:9px 13px; border:1px solid var(--border); border-radius:8px; font-size:.92rem; font-family:inherit; }
 .controls input { flex:1; min-width:200px; }
 .stat-row { display:flex; gap:24px; justify-content:center; flex-wrap:wrap; margin-bottom:26px; }
-.stat-row .s b { display:block; font-size:1.8rem; color:var(--amber-dark); text-align:center; }
+.stat-row .s b { display:block; font-size:1.8rem; color:var(--accent); text-align:center; }
 .stat-row .s small { color:var(--muted); font-size:.82rem; }
-.region-h { font-size:1.15rem; font-weight:800; color:var(--navy); margin:30px 0 14px; padding-bottom:6px; border-bottom:2px solid var(--amber); }
-.ctry-card { background:#fff; border:1px solid var(--border); border-radius:12px; padding:16px 20px; margin-bottom:12px; }
+.region-h { font-size:1.15rem; font-weight:800; color:var(--ink); margin:30px 0 14px; padding-bottom:6px; border-bottom:2px solid var(--amber); }
+.ctry-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px 20px; margin-bottom:12px; }
 .ctry-head { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:8px; }
-.ctry-head .flag { font-size:1.3rem; } .ctry-head h3 { color:var(--navy); font-size:1.02rem; margin:0; }
+.ctry-head .flag { font-size:1.3rem; } .ctry-head h3 { color:var(--ink); font-size:1.02rem; margin:0; }
 .ctry-head .cnt { margin-left:auto; background:#f1f5f9; color:#475569; font-size:.68rem; font-weight:700; text-transform:uppercase; letter-spacing:.4px; padding:2px 9px; border-radius:999px; }
 .mk-row { display:grid; grid-template-columns:1.6fr 1.3fr auto auto; gap:12px; align-items:center; padding:7px 0; border-top:1px solid #f1f4f9; font-size:.9rem; }
-.mk-row b { color:var(--navy); } .mk-row .city { color:var(--muted); } .mk-row a { color:var(--amber-dark); font-weight:600; white-space:nowrap; }
+.mk-row b { color:var(--ink); } .mk-row .city { color:var(--muted); } .mk-row a { color:var(--accent); font-weight:600; white-space:nowrap; }
 .mk-row .note { grid-column:1/-1; color:var(--muted); font-style:italic; }
 .tpill { font-size:.62rem; font-weight:800; padding:2px 7px; border-radius:999px; margin-left:4px; letter-spacing:.3px; }
 .t-PT{background:#dbeafe;color:#1e40af} .t-DT{background:#dcfce7;color:#166534} .t-DRY{background:#fef3c7;color:#92400e}
@@ -49,23 +49,23 @@
 @media (max-width:700px){ .feat-grid { grid-template-columns:1fr; } .mk-row { grid-template-columns:1fr; gap:3px; } }
 /* category browse tiles */
 .cat-tiles { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:24px; }
-.cat-tile { background:#fff; border:1px solid var(--border); border-radius:12px; padding:16px 18px; cursor:pointer; text-align:left; transition:transform .15s, box-shadow .15s, border-color .15s; }
+.cat-tile { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px 18px; cursor:pointer; text-align:left; transition:transform .15s, box-shadow .15s, border-color .15s; }
 .cat-tile:hover { transform:translateY(-2px); box-shadow:0 8px 22px rgba(13,27,46,.1); }
 .cat-tile.on { border-color:var(--amber); box-shadow:0 4px 16px rgba(245,166,35,.18); }
-.cat-tile .ct-ico { font-size:1.4rem; } .cat-tile h3 { color:var(--navy); font-size:1rem; margin:6px 0 2px; }
-.cat-tile .ct-n { color:var(--amber-dark); font-weight:800; font-size:1.5rem; line-height:1; }
+.cat-tile .ct-ico { font-size:1.4rem; } .cat-tile h3 { color:var(--ink); font-size:1rem; margin:6px 0 2px; }
+.cat-tile .ct-n { color:var(--accent); font-weight:800; font-size:1.5rem; line-height:1; }
 .cat-tile small { color:var(--muted); font-size:.8rem; }
 @media (max-width:640px){ .cat-tiles { grid-template-columns:1fr; } }
 /* verified badge + tiers */
 .v-badge { display:inline-flex; align-items:center; gap:3px; background:#dcfce7; color:#166534; font-size:.62rem; font-weight:800; text-transform:uppercase; letter-spacing:.4px; padding:2px 7px; border-radius:999px; margin-left:6px; }
 .v-badge.pro { background:var(--amber); color:var(--navy); }
-.mk-row a.prof { color:var(--navy); font-weight:600; white-space:nowrap; }
-.mk-row a.prof:hover { color:var(--amber-dark); }
+.mk-row a.prof { color:var(--ink); font-weight:600; white-space:nowrap; }
+.mk-row a.prof:hover { color:var(--accent); }
 .tier-legend { display:flex; gap:14px; flex-wrap:wrap; align-items:center; justify-content:center; font-size:.78rem; color:var(--muted); margin:4px 0 18px; }
 .tier-legend .lg { display:inline-flex; align-items:center; gap:5px; }
 .tier-legend .dot { font-size:.6rem; font-weight:800; padding:2px 7px; border-radius:999px; }
 .tier-legend .d-L { background:#f1f5f9; color:#475569; } .tier-legend .d-V { background:#dcfce7; color:#166534; } .tier-legend .d-P { background:var(--amber); color:var(--navy); }
-.tier-legend a { color:var(--amber-dark); font-weight:600; text-decoration:none; }
+.tier-legend a { color:var(--accent); font-weight:600; text-decoration:none; }
 /* list-your-company CTA */
 .list-cta { background:linear-gradient(135deg,var(--navy),#1b3a5c); color:#fff; border-radius:16px; padding:28px 30px; margin-top:40px; text-align:center; }
 .list-cta h2 { margin:0 0 8px; font-size:1.5rem; } .list-cta p { color:#b8c4d4; margin:0 auto 18px; max-width:560px; }
@@ -138,7 +138,7 @@
     <div class="stat-row" id="statRow"></div>
 
     <div class="section-head" style="margin-bottom:14px"><h2>Browse by Product Category</h2><p>Pick a category to filter the directory, or search and refine below.</p></div>
-    <p style="text-align:center;margin:-4px 0 22px;font-size:.92rem;color:var(--muted)">Looking for parts, not transformers? Browse the <a href="components.html" style="color:var(--amber-dark);font-weight:700">Components &amp; Accessories directory →</a> or <a href="rfq.html" style="color:var(--amber-dark);font-weight:700">post an RFQ →</a></p>
+    <p style="text-align:center;margin:-4px 0 22px;font-size:.92rem;color:var(--muted)">Looking for parts, not transformers? Browse the <a href="components.html" style="color:var(--accent);font-weight:700">Components &amp; Accessories directory →</a> or <a href="rfq.html" style="color:var(--accent);font-weight:700">post an RFQ →</a></p>
     <div class="cat-tiles" id="catTiles"></div>
 
     <div class="controls">
@@ -163,7 +163,7 @@
     <div id="board"></div>
 
     <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:20px">
-      PT = Power Transformers · DT = Distribution Transformers · DRY = Dry-type / Cast Resin. Listed entries are compiled from public sources; <a href="verified-standards.html" style="color:var(--amber-dark);font-weight:600">Verified &amp; Pro Verified</a> entries are confirmed by the company. Verify capability before commercial decisions.
+      PT = Power Transformers · DT = Distribution Transformers · DRY = Dry-type / Cast Resin. Listed entries are compiled from public sources; <a href="verified-standards.html" style="color:var(--accent);font-weight:600">Verified &amp; Pro Verified</a> entries are confirmed by the company. Verify capability before commercial decisions.
     </p>
 
     <!-- List / claim your company -->

@@ -27,12 +27,12 @@
   .card h2 .tag { float:right; font-size:11px; color:var(--muted); font-weight:400; }
   label { display:block; font-size:12px; color:var(--muted); margin:9px 0 2px; font-weight:600; }
   input, select { width:100%; padding:7px 9px; border:1px solid var(--line); border-radius:6px;
-                  font-size:14px; background:#fff; color:var(--ink); }
+                  font-size:14px; background:var(--card); color:var(--ink); }
   input:focus, select:focus { outline:2px solid #9cc3e8; border-color:var(--accent); }
   .row2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
   .row3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
   .typesel { display:flex; gap:6px; margin-bottom:6px; }
-  .typesel button { flex:1; padding:9px 4px; border:1.5px solid var(--line); background:#fff;
+  .typesel button { flex:1; padding:9px 4px; border:1.5px solid var(--line); background:var(--card);
                     border-radius:8px; cursor:pointer; font-size:12.5px; font-weight:600; color:var(--muted); }
   .typesel button.on { background:var(--accent); border-color:var(--accent); color:#fff; }
   details { margin-top:10px; }
@@ -62,7 +62,7 @@
   .b2 { background:var(--chip); color:var(--accent); }
   footer { margin-top:26px; font-size:11.5px; color:var(--muted); line-height:1.6; }
   @media print {
-    body{background:#fff;} header{-webkit-print-color-adjust:exact;}
+    body{background:var(--card);} header{-webkit-print-color-adjust:exact;}
     .inputs-col{display:none;} .cols{grid-template-columns:1fr;}
   }
 </style>

@@ -18,7 +18,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
 <link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
 <style>
-.level { background:#fff; border:1px solid var(--border); border-radius:14px; margin-bottom:26px; overflow:hidden; }
+.level { background:var(--card); border:1px solid var(--border); border-radius:14px; margin-bottom:26px; overflow:hidden; }
 .level-head { display:flex; align-items:center; gap:14px; padding:20px 24px; background:linear-gradient(135deg,var(--navy),#1b3a5c); color:#fff; flex-wrap:wrap; }
 .level-no { display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; border-radius:50%; background:var(--amber); color:var(--navy); font-weight:800; font-size:1.25rem; flex-shrink:0; }
 .level-head h2 { margin:0; font-size:1.25rem; color:#fff; }
@@ -29,16 +29,16 @@
 .mod-row { display:flex; align-items:baseline; gap:10px; padding:9px 0; border-bottom:1px solid var(--border); font-size:.92rem; }
 .mod-row:last-child { border-bottom:0; }
 .mod-row input[type=checkbox] { transform:translateY(2px); accent-color:#f5a623; flex-shrink:0; }
-.mod-row .what { color:var(--navy); font-weight:600; }
+.mod-row .what { color:var(--ink); font-weight:600; }
 .mod-row .with { color:var(--muted); font-size:.84rem; }
-.mod-row .with a { color:var(--amber-dark); font-weight:600; }
+.mod-row .with a { color:var(--accent); font-weight:600; }
 .mod-row .hrs { margin-left:auto; color:var(--muted); font-size:.78rem; white-space:nowrap; }
 .capstone { background:#fdf7ec; border:1px solid #f0dcb4; border-left:5px solid var(--amber); border-radius:10px; padding:18px 20px; margin-top:18px; }
-.capstone h3 { color:var(--navy); font-size:1rem; margin:0 0 8px; }
+.capstone h3 { color:var(--ink); font-size:1rem; margin:0 0 8px; }
 .capstone .brief { font-size:.9rem; color:#4a5568; margin:0 0 10px; }
 .capstone ul { margin:0 0 4px; padding-left:20px; font-size:.86rem; color:#4a5568; }
 .capstone ul li { margin-bottom:4px; }
-.capstone .accept { font-size:.78rem; font-weight:800; text-transform:uppercase; letter-spacing:.5px; color:var(--amber-dark); display:block; margin:10px 0 6px; }
+.capstone .accept { font-size:.78rem; font-weight:800; text-transform:uppercase; letter-spacing:.5px; color:var(--accent); display:block; margin:10px 0 6px; }
 .paid-chip { display:inline-block; background:var(--navy); color:var(--amber); font-size:.68rem; font-weight:800; text-transform:uppercase; letter-spacing:.5px; padding:3px 10px; border-radius:999px; margin-left:8px; vertical-align:middle; }
 .free-chip { display:inline-block; background:#e6f4ea; color:#1e7a3c; font-size:.68rem; font-weight:800; text-transform:uppercase; letter-spacing:.5px; padding:3px 10px; border-radius:999px; margin-left:8px; vertical-align:middle; }
 .how { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin:0 0 36px; }
@@ -122,7 +122,7 @@
     <div style="margin:0 0 26px">
       <div style="display:flex;justify-content:space-between;font-size:.8rem;color:var(--muted)"><span>Your progress (saved on this device)</span><span id="pct">0%</span></div>
       <div class="progressbar"><div id="bar"></div></div>
-      <div style="text-align:right;margin-top:8px;font-size:.85rem"><a href="certificate.html" style="color:var(--amber-dark);font-weight:600">📜 Completed a level? Generate your certificate →</a></div>
+      <div style="text-align:right;margin-top:8px;font-size:.85rem"><a href="certificate.html" style="color:var(--accent);font-weight:600">📜 Completed a level? Generate your certificate →</a></div>
     </div>
 
     <!-- LEVEL 1 -->

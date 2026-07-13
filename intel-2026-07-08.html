@@ -23,7 +23,7 @@
 <style>
 .tag-service { background:#ede9fe; color:#5b21b6; }
 </style>
-<style>.region-h{font-size:1.05rem;font-weight:800;color:var(--navy);margin:26px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--amber)}.intel-item .card-meta{margin-top:8px;font-size:.82rem}.intel-item .ival{color:var(--amber-dark);font-weight:700}.intel-item .src{color:var(--amber-dark);font-weight:600}</style>
+<style>.region-h{font-size:1.05rem;font-weight:800;color:var(--ink);margin:26px 0 12px;padding-bottom:6px;border-bottom:2px solid var(--amber)}.intel-item .card-meta{margin-top:8px;font-size:.82rem}.intel-item .ival{color:var(--accent);font-weight:700}.intel-item .src{color:var(--accent);font-weight:600}</style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0d1b2e">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -89,7 +89,7 @@
 <section class="block">
   <div class="container" style="max-width:820px">
     <p class="intel-date" id="intelDate"></p>
-    <p style="text-align:center;margin:-18px 0 24px"><a href="archive.html" style="color:var(--amber-dark);font-weight:700;font-size:.86rem">📁 Browse past briefings →</a></p>
+    <p style="text-align:center;margin:-18px 0 24px"><a href="archive.html" style="color:var(--accent);font-weight:700;font-size:.86rem">📁 Browse past briefings →</a></p>
 
     <div class="filters" id="regionFilters"></div>
 
@@ -263,7 +263,7 @@ const BRIEFING_DATE = "Wednesday, 8 July 2026";
   fetch('https://ipapi.co/json/').then(function(r){return r.ok?r.json():Promise.reject();}).then(function(d){
     var rk=d&&REGMAP[d.country_code];
     if(rk && order.indexOf(rk)>0){ order=[rk].concat(order.filter(function(x){return x!==rk;})); render('all');
-      var dl=document.getElementById('intelDate'); if(dl&&!document.getElementById('geo-note')){var sp=document.createElement('span');sp.id='geo-note';sp.style.cssText='display:block;margin-top:4px;color:var(--amber-dark);font-size:.82rem;font-weight:600';sp.textContent='Showing '+rk+' first';dl.appendChild(sp);} }
+      var dl=document.getElementById('intelDate'); if(dl&&!document.getElementById('geo-note')){var sp=document.createElement('span');sp.id='geo-note';sp.style.cssText='display:block;margin-top:4px;color:var(--accent);font-size:.82rem;font-weight:600';sp.textContent='Showing '+rk+' first';dl.appendChild(sp);} }
   }).catch(function(){});
 })();
 </script>

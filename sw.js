@@ -56,7 +56,9 @@ self.addEventListener('fetch', e => {
   // so style/data updates reach returning visitors on their next view.
   e.respondWith(
     caches.match(req).then(cached => {
-      const refresh = fetch(req).then(r => {
+      // no-cache: revalidate with the server (ETag) instead of trusting the
+      // browser HTTP cache, so updated CSS/JS actually reaches the SW cache.
+      const refresh = fetch(req, { cache: 'no-cache' }).then(r => {
         if (r && r.ok) {
           const copy = r.clone();
           caches.open(CACHE).then(c => c.put(req, copy));

@@ -11,6 +11,11 @@
   --border: #e5e7eb;
   --green: #16a34a;
   --red: #dc2626;
+  /* Semantic text colors — same as navy/amber-dark in light mode,
+     but readable equivalents in dark mode. Use for TEXT only;
+     backgrounds keep using --navy / --amber directly. */
+  --ink: #0d1b2e;
+  --accent: #d48806;
 }
 
 /* Dark mode colors */
@@ -20,7 +25,16 @@
   --bg: #111827;
   --card: #1f2937;
   --border: #374151;
+  --ink: #e8edf4;
+  --accent: #fbbf24;
 }
+
+/* Dark-mode fixes for pale tinted boxes that would glow on the night palette */
+:root[data-theme="dark"] .capstone { background: #2b2416; border-color: #6b5518; }
+:root[data-theme="dark"] .capstone .brief, :root[data-theme="dark"] .capstone ul { color: #cbd5e1; }
+:root[data-theme="dark"] .track-note { background: #16283c; color: #a9c0d8; }
+:root[data-theme="dark"] .free-chip { background: #14351f; color: #4ade80; }
+:root[data-theme="dark"] .progressbar { background: #223047; }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; color: var(--text); background: var(--bg); line-height: 1.6; }
 a { color: inherit; text-decoration: none; }
@@ -60,9 +74,9 @@ header { background: var(--navy); color: #fff; position: sticky; top: 0; z-index
 
 /* Sections */
 section.block { padding: 64px 0; }
-section.block.alt { background: #fff; }
+section.block.alt { background: var(--card); }
 .section-head { text-align: center; max-width: 640px; margin: 0 auto 44px; }
-.section-head h2 { font-size: 2rem; color: var(--navy); margin-bottom: 10px; }
+.section-head h2 { font-size: 2rem; color: var(--ink); margin-bottom: 10px; }
 .section-head p { color: var(--muted); }
 .grid { display: grid; gap: 22px; }
 .grid-4 { grid-template-columns: repeat(4, 1fr); }
@@ -71,14 +85,14 @@ section.block.alt { background: #fff; }
 .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 26px; transition: box-shadow .2s, transform .2s; }
 .card:hover { box-shadow: 0 8px 24px rgba(13,27,46,.1); transform: translateY(-2px); }
 .card .emoji { font-size: 2rem; margin-bottom: 12px; display: block; }
-.card h3 { color: var(--navy); font-size: 1.08rem; margin-bottom: 8px; }
+.card h3 { color: var(--ink); font-size: 1.08rem; margin-bottom: 8px; }
 .card p { color: var(--muted); font-size: .92rem; }
 
 /* Intel feed */
 .intel-item { background: var(--card); border: 1px solid var(--border); border-left: 4px solid var(--amber); border-radius: 10px; padding: 20px 24px; margin-bottom: 16px; }
-.intel-item h3 { color: var(--navy); font-size: 1.05rem; margin-bottom: 6px; }
+.intel-item h3 { color: var(--ink); font-size: 1.05rem; margin-bottom: 6px; }
 .intel-item p { color: var(--muted); font-size: .93rem; margin-bottom: 8px; }
-.intel-item a.src { color: var(--amber-dark); font-size: .85rem; font-weight: 600; }
+.intel-item a.src { color: var(--accent); font-size: .85rem; font-weight: 600; }
 .tag { display: inline-block; font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; padding: 3px 10px; border-radius: 999px; margin-bottom: 10px; }
 .tag-tender { background: #fef3c7; color: #92400e; }
 .tag-project { background: #dbeafe; color: #1e40af; }
@@ -92,7 +106,7 @@ section.block.alt { background: #fff; }
 
 /* Filters */
 .filters { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 30px; }
-.filters button { padding: 8px 18px; border-radius: 999px; border: 1px solid var(--border); background: #fff; cursor: pointer; font-weight: 600; font-size: .88rem; color: var(--muted); }
+.filters button { padding: 8px 18px; border-radius: 999px; border: 1px solid var(--border); background: var(--card); cursor: pointer; font-weight: 600; font-size: .88rem; color: var(--muted); }
 .filters button.on { background: var(--navy); color: var(--amber); border-color: var(--navy); }
 
 /* Vendor cards */
@@ -102,8 +116,8 @@ section.block.alt { background: #fff; }
 
 /* Forms */
 form .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-form label { display: block; font-weight: 600; font-size: .9rem; margin-bottom: 6px; color: var(--navy); }
-form input, form select, form textarea { width: 100%; padding: 11px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: .95rem; font-family: inherit; background: #fff; }
+form label { display: block; font-weight: 600; font-size: .9rem; margin-bottom: 6px; color: var(--ink); }
+form input, form select, form textarea { width: 100%; padding: 11px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: .95rem; font-family: inherit; background: var(--card); color: var(--text); }
 form input:focus, form select:focus, form textarea:focus { outline: 2px solid var(--amber); border-color: var(--amber); }
 
 /* CTA strip */

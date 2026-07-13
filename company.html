@@ -19,19 +19,19 @@
 <link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
 <style>
 .crumb { font-size:.82rem; color:var(--muted); margin-bottom:18px; }
-.crumb a { color:var(--amber-dark); font-weight:600; text-decoration:none; }
+.crumb a { color:var(--accent); font-weight:600; text-decoration:none; }
 .profile-head { display:flex; align-items:flex-start; gap:16px; flex-wrap:wrap; margin-bottom:6px; }
 .profile-head h1 { font-size:2rem; margin:0; color:#fff; }
 .tier { display:inline-flex; align-items:center; gap:4px; font-size:.7rem; font-weight:800; text-transform:uppercase; letter-spacing:.5px; padding:4px 11px; border-radius:999px; }
 .tier-V { background:#dcfce7; color:#166534; }
 .tier-P { background:var(--amber); color:var(--navy); }
 .tier-L { background:rgba(255,255,255,.14); color:#dbe6f2; }
-.pcard { background:#fff; border:1px solid var(--border); border-radius:14px; padding:24px 26px; margin-bottom:18px; }
-.pcard h2 { font-size:1.05rem; color:var(--navy); margin:0 0 14px; }
+.pcard { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:24px 26px; margin-bottom:18px; }
+.pcard h2 { font-size:1.05rem; color:var(--ink); margin:0 0 14px; }
 .fact { display:grid; grid-template-columns:150px 1fr; gap:10px; padding:9px 0; border-top:1px solid #f1f4f9; font-size:.93rem; }
 .fact:first-of-type { border-top:0; }
 .fact .k { color:var(--muted); font-weight:600; }
-.fact .v { color:var(--navy); font-weight:600; }
+.fact .v { color:var(--ink); font-weight:600; }
 .tpill { font-size:.66rem; font-weight:800; padding:2px 8px; border-radius:999px; margin-right:5px; letter-spacing:.3px; }
 .t-PT{background:#dbeafe;color:#1e40af} .t-DT{background:#dcfce7;color:#166534} .t-DRY{background:#fef3c7;color:#92400e}
 .trust-panel { background:linear-gradient(135deg,var(--navy),#1b3a5c); color:#fff; border-radius:14px; padding:24px 26px; margin-bottom:18px; }
@@ -39,7 +39,7 @@
 .trust-panel p { color:#c4d2e4; font-size:.9rem; margin:0 0 14px; }
 .trust-panel .btn-row { display:flex; gap:10px; flex-wrap:wrap; }
 .sibling { display:flex; align-items:center; gap:8px; padding:8px 0; border-top:1px solid #f1f4f9; font-size:.9rem; }
-.sibling a { color:var(--amber-dark); font-weight:600; text-decoration:none; }
+.sibling a { color:var(--accent); font-weight:600; text-decoration:none; }
 .sibling .city { color:var(--muted); font-size:.82rem; margin-left:auto; }
 #notfound { text-align:center; padding:40px 0; color:var(--muted); }
 </style>
@@ -113,7 +113,7 @@
     <div id="profile"></div>
     <div id="notfound" style="display:none">
       <h2>Company not found</h2>
-      <p>We couldn't find that listing. <a href="manufacturers.html" style="color:var(--amber-dark);font-weight:600">Browse the full directory →</a></p>
+      <p>We couldn't find that listing. <a href="manufacturers.html" style="color:var(--accent);font-weight:600">Browse the full directory →</a></p>
     </div>
   </div>
 </section>
@@ -199,7 +199,7 @@ function render(m, c, DATA){
       <div class="fact"><span class="k">Product lines</span><span class="v">${tpills(m[3])||'—'}</span></div>
       <div class="fact"><span class="k">Region</span><span class="v">${c.region}</span></div>
       ${est}
-      ${m[2] ? `<div class="fact"><span class="k">Website</span><span class="v"><a href="${m[2]}" target="_blank" rel="noopener" style="color:var(--amber-dark)">${m[2].replace(/^https?:\/\//,'').replace(/\/$/,'')}</a></span></div>` : ''}
+      ${m[2] ? `<div class="fact"><span class="k">Website</span><span class="v"><a href="${m[2]}" target="_blank" rel="noopener" style="color:var(--accent)">${m[2].replace(/^https?:\/\//,'').replace(/\/$/,'')}</a></span></div>` : ''}
       <div style="margin-top:16px">${site}</div>
     </div>
 
@@ -214,7 +214,7 @@ function render(m, c, DATA){
 
     ${sibHtml}
 
-    <p style="margin-top:10px"><a href="manufacturers.html" style="color:var(--amber-dark);font-weight:600;text-decoration:none">← Back to the full directory</a></p>
+    <p style="margin-top:10px"><a href="manufacturers.html" style="color:var(--accent);font-weight:600;text-decoration:none">← Back to the full directory</a></p>
   `;
 }
 </script>
