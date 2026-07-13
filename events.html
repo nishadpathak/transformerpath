@@ -89,26 +89,32 @@
 
 <section class="block">
   <div class="container" style="max-width:860px">
-    <div class="filters" id="year-filters">
-      <button class="on" data-y="all">All Years</button>
-      <button data-y="2026">2026</button>
-      <button data-y="2027">2027</button>
-      <button data-y="2028">2028</button>
-    </div>
-    <div class="filters" id="month-filters">
-      <button class="on" data-m="all">All Months</button>
-      <button data-m="0">Jan</button>
-      <button data-m="1">Feb</button>
-      <button data-m="2">Mar</button>
-      <button data-m="3">Apr</button>
-      <button data-m="4">May</button>
-      <button data-m="5">Jun</button>
-      <button data-m="6">Jul</button>
-      <button data-m="7">Aug</button>
-      <button data-m="8">Sep</button>
-      <button data-m="9">Oct</button>
-      <button data-m="10">Nov</button>
-      <button data-m="11">Dec</button>
+    <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin-bottom:18px">
+      <label style="display:flex; align-items:center; gap:8px; font-size:.88rem; color:var(--muted); font-weight:600">Year
+        <select id="year-select" style="padding:8px 14px; border:1px solid var(--border); border-radius:999px; background:var(--card); color:var(--text); font-size:.88rem; font-weight:600; cursor:pointer">
+          <option value="all">All Years</option>
+          <option value="2026">2026</option>
+          <option value="2027">2027</option>
+          <option value="2028">2028</option>
+        </select>
+      </label>
+      <label style="display:flex; align-items:center; gap:8px; font-size:.88rem; color:var(--muted); font-weight:600">Month
+        <select id="month-select" style="padding:8px 14px; border:1px solid var(--border); border-radius:999px; background:var(--card); color:var(--text); font-size:.88rem; font-weight:600; cursor:pointer">
+          <option value="all">All Months</option>
+          <option value="0">January</option>
+          <option value="1">February</option>
+          <option value="2">March</option>
+          <option value="3">April</option>
+          <option value="4">May</option>
+          <option value="5">June</option>
+          <option value="6">July</option>
+          <option value="7">August</option>
+          <option value="8">September</option>
+          <option value="9">October</option>
+          <option value="10">November</option>
+          <option value="11">December</option>
+        </select>
+      </label>
     </div>
     <div class="filters" id="region-filters">
       <button class="on" data-r="all">All Regions</button>
@@ -230,14 +236,8 @@ document.getElementById("grid").addEventListener("click", e => {
   } catch {}
 });
 
-document.querySelectorAll("#year-filters button").forEach(b => b.addEventListener("click", () => {
-  document.querySelectorAll("#year-filters button").forEach(x => x.classList.remove("on"));
-  b.classList.add("on"); yearF = b.dataset.y; render();
-}));
-document.querySelectorAll("#month-filters button").forEach(b => b.addEventListener("click", () => {
-  document.querySelectorAll("#month-filters button").forEach(x => x.classList.remove("on"));
-  b.classList.add("on"); monthF = b.dataset.m; render();
-}));
+document.getElementById("year-select").addEventListener("change", e => { yearF = e.target.value; render(); });
+document.getElementById("month-select").addEventListener("change", e => { monthF = e.target.value; render(); });
 document.querySelectorAll("#region-filters button").forEach(b => b.addEventListener("click", () => {
   document.querySelectorAll("#region-filters button").forEach(x => x.classList.remove("on"));
   b.classList.add("on"); regionF = b.dataset.r; render();
