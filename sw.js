@@ -1,5 +1,5 @@
 /* TransformerPath service worker — offline support + always-fresh HTML */
-const CACHE = 'transformerpath-v2';
+const CACHE = 'transformerpath-v3';
 const CORE = [
   'index.html', 'style.css', 'intel.html', 'manufacturers.html', 'events.html',
   'grids.html', 'learn.html', 'resources.html', 'subscribe.html',
@@ -41,12 +41,29 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  // Cache-first for static assets (css, images, icons).
-  e.respondWith(
-    caches.match(req).then(m => m || fetch(req).then(r => {
+  // Immutable vendor libs: cache-first (never change without a filename change).
+  if (new URL(req.url).pathname.startsWith('/vendor/')) {
+    e.respondWith(caches.match(req).then(m => m || fetch(req).then(r => {
       const copy = r.clone();
       caches.open(CACHE).then(c => c.put(req, copy));
       return r;
-    }).catch(() => m))
+    })));
+    return;
+  }
+
+  // Everything else (css, js, images, json): stale-while-revalidate —
+  // serve from cache instantly but refresh the cache in the background,
+  // so style/data updates reach returning visitors on their next view.
+  e.respondWith(
+    caches.match(req).then(cached => {
+      const refresh = fetch(req).then(r => {
+        if (r && r.ok) {
+          const copy = r.clone();
+          caches.open(CACHE).then(c => c.put(req, copy));
+        }
+        return r;
+      }).catch(() => cached);
+      return cached || refresh;
+    })
   );
 });

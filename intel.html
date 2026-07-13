@@ -8,75 +8,115 @@
 <link rel="canonical" href="https://transformerpath.com/intel.html">
 <link rel="preconnect" href="https://ipapi.co" crossorigin>
 <link rel="alternate" type="application/rss+xml" title="TransformerPath Daily Intel" href="https://transformerpath.com/intel-feed.xml">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
 <style>
-:root { color-scheme: light; }
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background: #f6f7f9; color: #1a1f2e; font-size: 14px; line-height: 1.5;
-}
-.wrap { max-width: 1200px; margin: 0 auto; padding: 20px; }
-h1 { font-size: 22px; margin: 0 0 4px; color: #0b1f3a; }
-.sub { color: #5a6478; font-size: 13px; margin-bottom: 6px; }
-.stamp { display:inline-block; background:#0b5fb8; color:#fff; font-size:12px; font-weight:600; padding:3px 10px; border-radius:12px; margin-bottom:16px; }
-.tabs { display:flex; gap:6px; flex-wrap:wrap; border-bottom:2px solid #e3e6ed; margin-bottom:16px; }
-.tab { padding:8px 14px; cursor:pointer; font-weight:600; font-size:13px; color:#5a6478; border-bottom:3px solid transparent; margin-bottom:-2px; }
-.tab.active { color:#0b5fb8; border-bottom-color:#0b5fb8; }
+/* Intel-page components, on top of the shared site styles (light + dark via vars). */
+:root { --link:#0b5fb8; --ok:#0d6e2f; --ok-bg:#e6f4ea; }
+:root[data-theme="dark"] { --link:#60a5fa; --ok:#4ade80; --ok-bg:#14351f; }
+.wrap { max-width: 1100px; margin: 0 auto; padding: 24px 20px 40px; font-size: 14px; }
+.sub { color: var(--muted); font-size: 13px; margin-bottom: 6px; }
+.stamp { display:inline-block; background:var(--navy-2); color:var(--amber); font-size:12px; font-weight:600; padding:3px 10px; border-radius:12px; margin-bottom:16px; }
+.tabs { display:flex; gap:6px; flex-wrap:wrap; border-bottom:2px solid var(--border); margin-bottom:16px; }
+.tab { padding:8px 14px; cursor:pointer; font-weight:600; font-size:13px; color:var(--muted); border-bottom:3px solid transparent; margin-bottom:-2px; }
+.tab.active { color:var(--amber-dark); border-bottom-color:var(--amber); }
 .panel { display:none; }
 .panel.active { display:block; }
-.region-h { font-size:15px; font-weight:700; color:#0b1f3a; margin:18px 0 8px; padding-bottom:4px; border-bottom:1px solid #e3e6ed; }
-.card { background:#fff; border:1px solid #e3e6ed; border-radius:8px; padding:12px 14px; margin-bottom:10px; }
-.card-title { font-weight:600; color:#0b1f3a; margin-bottom:4px; }
-.card-title a { color:#0b5fb8; text-decoration:none; }
+.region-h { font-size:15px; font-weight:700; color:var(--text); margin:18px 0 8px; padding-bottom:4px; border-bottom:1px solid var(--border); }
+.card { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:12px 14px; margin-bottom:10px; }
+.card-title { font-weight:600; color:var(--text); margin-bottom:4px; }
+.card-title a { color:var(--link); text-decoration:none; }
 .card-title a:hover { text-decoration:underline; }
-.card-snippet { color:#3a4459; font-size:13px; }
-.card-meta { margin-top:6px; font-size:12px; color:#6b7280; }
-.val { display:inline-block; background:#e6f4ea; color:#0d6e2f; font-weight:600; padding:1px 8px; border-radius:10px; font-size:12px; }
-.src { color:#8088a0; }
+.card-snippet { color:var(--text); opacity:.85; font-size:13px; }
+.card-meta { margin-top:6px; font-size:12px; color:var(--muted); }
+.val { display:inline-block; background:var(--ok-bg); color:var(--ok); font-weight:600; padding:1px 8px; border-radius:10px; font-size:12px; }
+.src { color:var(--muted); }
 .new-badge { display:inline-block; background:#c43838; color:#fff; font-weight:700; font-size:10px; letter-spacing:.04em; padding:1px 6px; border-radius:8px; margin-left:6px; vertical-align:middle; }
-.factory-grid { width:100%; border-collapse:collapse; background:#fff; border:1px solid #e3e6ed; border-radius:8px; overflow:hidden; }
-.factory-grid th, .factory-grid td { padding:10px 12px; text-align:left; border-bottom:1px solid #eef0f4; font-size:13px; vertical-align:top; }
-.factory-grid th { background:#f0f3f8; font-size:12px; text-transform:uppercase; letter-spacing:.03em; color:#3a4459; }
+.factory-grid { width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+.factory-grid th, .factory-grid td { padding:10px 12px; text-align:left; border-bottom:1px solid var(--border); font-size:13px; vertical-align:top; }
+.factory-grid th { background:var(--bg); font-size:12px; text-transform:uppercase; letter-spacing:.03em; color:var(--muted); }
 .dot { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:6px; }
 .green{background:#1a9d4a} .amber{background:#e0a800} .gold{background:#c9971b} .red{background:#c43838}
-.footer { margin-top:20px; font-size:11px; color:#8088a0; text-align:center; }
-a.plain { color:#0b5fb8; text-decoration:none; }
+a.plain { color:var(--link); text-decoration:none; }
 a.plain:hover { text-decoration:underline; }
-.sort-btn { transition:all 0.2s; }
-.sort-btn.active { background:#0b5fb8 !important; color:#fff !important; border-color:#0b5fb8 !important; }
+.sort-btn { transition:all 0.2s; background:var(--card); color:var(--text); border:1px solid var(--border); }
+.sort-btn.active { background:var(--amber) !important; color:var(--navy) !important; border-color:var(--amber) !important; }
+#region-select { background:var(--card); color:var(--text); border:1px solid var(--border); }
 .stat-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-top:8px; }
-.stat { background:#fff; border:1px solid #e3e6ed; border-radius:8px; padding:14px 16px; }
-.stat .lbl { font-size:12px; text-transform:uppercase; letter-spacing:.03em; color:#6b7280; margin-bottom:6px; }
-.stat .val { font-size:22px; font-weight:700; color:#0b1f3a; }
+.stat { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:14px 16px; }
+.stat .lbl { font-size:12px; text-transform:uppercase; letter-spacing:.03em; color:var(--muted); margin-bottom:6px; }
+.stat .val { font-size:22px; font-weight:700; color:var(--text); background:none; padding:0; }
 .stat .delta { font-size:12px; font-weight:600; margin-top:4px; }
-.stat .delta.up { color:#0d6e2f; } .stat .delta.down { color:#c43838; } .stat .delta.flat { color:#6b7280; }
-.stat .note { font-size:11px; color:#8088a0; margin-top:6px; }
+.stat .delta.up { color:var(--ok); } .stat .delta.down { color:#c43838; } .stat .delta.flat { color:var(--muted); }
+.stat .note { font-size:11px; color:var(--muted); margin-top:6px; }
 </style>
 </head>
 <body>
 <header>
-  <div class="container nav" style="display:flex; align-items:center; justify-content:space-between; padding:16px 20px; background:#0d1b2e; color:#fff;">
-    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px;color:#fff;text-decoration:none;font-weight:600"><svg width="24" height="24" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span style="color:#f5a623">Path</span></a>
-    <nav style="display:flex;gap:24px;font-size:14px;align-items:center">
-      <a href="index.html" style="color:#fff;text-decoration:none">Home</a>
-      <a href="blog.html" style="color:#fff;text-decoration:none">Blog</a>
-      <a href="events.html" style="color:#fff;text-decoration:none">Events</a>
-      <a href="manufacturers.html" style="color:#fff;text-decoration:none">Manufacturers</a>
-      <a href="learn.html" style="color:#fff;text-decoration:none">Learn</a>
+  <div class="container nav">
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg width="30" height="30" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span>Path</span></a>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav" onclick="var n=document.querySelector('.nav-links');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))">☰</button>
+    <nav class="nav-links" id="mainNav">
+      <a href="intel.html" aria-current="page">Daily Intel</a>
+      <a href="events.html">Events</a>
+      <a href="webinars.html">Webinars</a>
+      <a href="manufacturers.html">Manufacturers</a>
+      <a href="learn.html">Learn</a>
+      <a href="grids.html">Grids</a>
+      <a href="resources.html">Knowledge</a>
+      <a href="blog.html">Blog</a>
+      <a href="sponsor.html">Sponsor</a>
+      <a href="search.html" title="Search" aria-label="Search">🔍</a>
+      <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">🌙</button>
     </nav>
   </div>
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    // Night mode is the default; light is opt-in via the toggle.
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+
+    if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
+    updateThemeIcon();
+
+    themeToggle?.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      updateThemeIcon();
+    });
+
+    function updateThemeIcon() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+    }
+  </script>
 </header>
+
+<section class="hero" style="padding:50px 0 40px">
+  <div class="container">
+    <h1 style="font-size:2.2rem">Daily <span>Intel</span></h1>
+    <p>Transformer industry market intelligence, updated every morning · <a href="intel-feed.xml" style="color:var(--amber);text-decoration:none;font-weight:600">📡 RSS Feed</a></p>
+  </div>
+</section>
+
 <div class="wrap">
-  <h1>Transformer Market Intelligence</h1>
-  <div class="sub">Daily intel and market analysis · <a href="intel-feed.xml" style="color:#0b5fb8;text-decoration:none;font-weight:600">📡 RSS Feed</a></div>
   <div class="stamp" id="stamp">11 Jul 2026</div>
   <div id="changelog-strip" style="background:#0f2a1e;border:1px solid #1e5c40;border-radius:8px;padding:8px 14px;margin:10px 0;font-size:.85rem;line-height:1.5"></div>
 
   <div style="display:flex; gap:20px; margin-bottom:16px; align-items:center; flex-wrap:wrap">
     <div style="display:flex; gap:12px; align-items:center">
-      <span style="font-size:13px; color:#6b7280; font-weight:600">📍 Your Region:</span>
-      <select id="region-select" style="padding:6px 12px; border:1px solid #e3e6ed; border-radius:6px; font-size:13px; cursor:pointer; background:#fff">
+      <span style="font-size:13px; color:var(--muted); font-weight:600">📍 Your Region:</span>
+      <select id="region-select" style="padding:6px 12px; border-radius:6px; font-size:13px; cursor:pointer">
         <option value="">Detecting location...</option>
       </select>
     </div>
@@ -94,10 +134,10 @@ a.plain:hover { text-decoration:underline; }
   </div>
 
   <div id="sort-controls" style="display:flex; gap:12px; margin-bottom:12px; align-items:center; flex-wrap:wrap">
-    <span style="font-size:12px; color:#6b7280; font-weight:600">Sort by:</span>
-    <button id="sort-date" class="sort-btn active" data-sort="date" style="padding:4px 10px; border:1px solid #e3e6ed; border-radius:6px; font-size:12px; cursor:pointer; background:#fff">Date</button>
-    <button id="sort-value" class="sort-btn" data-sort="value" style="padding:4px 10px; border:1px solid #e3e6ed; border-radius:6px; font-size:12px; cursor:pointer; background:#fff">Value</button>
-    <button id="sort-region" class="sort-btn" data-sort="region" style="padding:4px 10px; border:1px solid #e3e6ed; border-radius:6px; font-size:12px; cursor:pointer; background:#fff">Your Region</button>
+    <span style="font-size:12px; color:var(--muted); font-weight:600">Sort by:</span>
+    <button id="sort-date" class="sort-btn active" data-sort="date" style="padding:4px 10px; border-radius:6px; font-size:12px; cursor:pointer">Date</button>
+    <button id="sort-value" class="sort-btn" data-sort="value" style="padding:4px 10px; border-radius:6px; font-size:12px; cursor:pointer">Value</button>
+    <button id="sort-region" class="sort-btn" data-sort="region" style="padding:4px 10px; border-radius:6px; font-size:12px; cursor:pointer">Your Region</button>
   </div>
 
   <div class="panel active" id="panel-news"></div>
@@ -721,18 +761,19 @@ document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
 }));
 </script>
 
-<footer style="background:#0d1b2e;color:#fff;padding:40px 20px;margin-top:60px;text-align:center;font-size:13px">
-  <div style="max-width:1200px;margin:0 auto;margin-bottom:20px">
-    <a href="index.html" style="color:#fff;text-decoration:none;margin:0 16px">Home</a>
-    <a href="blog.html" style="color:#fff;text-decoration:none;margin:0 16px">Blog</a>
-    <a href="events.html" style="color:#fff;text-decoration:none;margin:0 16px">Events</a>
-    <a href="manufacturers.html" style="color:#fff;text-decoration:none;margin:0 16px">Manufacturers</a>
-    <a href="learn.html" style="color:#fff;text-decoration:none;margin:0 16px">Learn</a>
-    <a href="grids.html" style="color:#fff;text-decoration:none;margin:0 16px">Grids</a>
-    <a href="about.html" style="color:#fff;text-decoration:none;margin:0 16px">About</a>
-    <a href="contact.html" style="color:#fff;text-decoration:none;margin:0 16px">Contact</a>
+<footer>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span style="color:var(--amber)">Path</span></a>
+        <p style="margin-top:12px">The global intelligence and networking platform for transformer manufacturers, suppliers, engineers and utilities.</p>
+      </div>
+      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="vendors.html">Vendors</a><a href="learn.html">Learn</a><a href="teams.html">Corporate Training</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="sponsor.html">Sponsor</a></div>
+      <div><h4>COMPANY</h4><a href="about.html">About Us</a><a href="mailto:hello@transformerpath.com">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><h4>CONTACT</h4><a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a><a href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener">LinkedIn ↗</a></div>
+    </div>
+    <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
   </div>
-  <div style="opacity:.7">© 2026 TransformerPath. All rights reserved.</div>
 </footer>
 </body>
 </html>

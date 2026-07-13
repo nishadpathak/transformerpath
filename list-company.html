@@ -63,7 +63,8 @@ form input[type="checkbox"] { width:auto; min-width:0; padding:0; margin:0; flex
   <script>
     const themeToggle = document.getElementById('theme-toggle');
     const html = document.documentElement;
-    const savedTheme = localStorage.getItem('theme') || 'light';
+    // Night mode is the default; light is opt-in via the toggle.
+    const savedTheme = localStorage.getItem('theme') || 'dark';
 
     if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
     updateThemeIcon();

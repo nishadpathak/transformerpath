@@ -86,7 +86,8 @@
   <script>
     const themeToggle = document.getElementById('theme-toggle');
     const html = document.documentElement;
-    const savedTheme = localStorage.getItem('theme') || 'light';
+    // Night mode is the default; light is opt-in via the toggle.
+    const savedTheme = localStorage.getItem('theme') || 'dark';
 
     if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
     updateThemeIcon();
@@ -126,6 +127,27 @@
       <h3>🛠️ Design Engineer Track</h3>
       <p>The knowledge of 3–5 years as a transformer design engineer, structured: four levels, ~400 guided hours, five capstone design projects with real acceptance criteria — free to learn, certificate track available.</p>
       <a class="btn btn-amber" href="engineer-track.html">Start the track →</a>
+    </div>
+
+    <!-- Premium: what the paid tier unlocks (Stripe) -->
+    <div class="card" style="margin-bottom:24px;padding:26px 28px;border:2px solid var(--amber)">
+      <div style="display:flex;gap:20px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap">
+        <div style="max-width:60ch">
+          <span style="display:inline-block;background:var(--amber);color:var(--navy);font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;padding:3px 10px;border-radius:999px;margin-bottom:10px">Premium</span>
+          <h3 style="margin:0 0 6px">Design Engineer Track — Yearly Access</h3>
+          <p style="color:var(--muted);margin:0 0 12px">Level 1 (Foundations) is free forever. Yearly Access unlocks the rest of the professional program:</p>
+          <ul style="margin:0 0 6px 20px;padding:0;color:var(--text);font-size:.92rem;line-height:1.7">
+            <li><b>Levels 2–4</b> — Distribution, Power Transformer and Specials &amp; Mastery</li>
+            <li><b>Engineer-reviewed capstones</b> — marked-up critique + model answer for all five design projects</li>
+            <li><b>Certificates</b> — a verifiable completion certificate per level</li>
+          </ul>
+        </div>
+        <div style="flex:none;text-align:center;padding:10px 6px">
+          <div style="font-size:2rem;font-weight:800;color:var(--amber-dark)">$199<span style="font-size:.9rem;color:var(--muted);font-weight:600">/year</span></div>
+          <a class="btn btn-amber" href="https://buy.stripe.com/5kQ00c3pS8tv9g4fdMfYY00" target="_blank" rel="noopener" style="margin-top:10px;display:inline-block">Unlock Yearly Access →</a>
+          <div style="font-size:.75rem;color:var(--muted);margin-top:8px">One-time payment · 12 months access</div>
+        </div>
+      </div>
     </div>
 
     <!-- Corporate / team training CTA -->

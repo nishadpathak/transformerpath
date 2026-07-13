@@ -100,7 +100,8 @@
   <script>
     const themeToggle = document.getElementById('theme-toggle');
     const html = document.documentElement;
-    const savedTheme = localStorage.getItem('theme') || 'light';
+    // Night mode is the default; light is opt-in via the toggle.
+    const savedTheme = localStorage.getItem('theme') || 'dark';
 
     if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
     updateThemeIcon();
@@ -191,8 +192,9 @@
 </footer>
 
 <script>
-const API_URL = 'http://localhost:3001/api/manufacturers';
+const DATA_URL = 'data/manufacturers.json';
 let DATA = [];
+let regions = [];
 const REGION_ORDER = ["North America","Latin America","Europe","Eurasia","Middle East","Africa","South Asia","East Asia","Southeast Asia","Oceania"];
 
 const TNAME={PT:"Power",DT:"Distribution",DRY:"Dry/Cast"};
@@ -202,17 +204,17 @@ const search=document.getElementById('search'), fType=document.getElementById('f
 
 async function loadData() {
   try {
-    const res = await fetch(API_URL);
-    if (!res.ok) throw new Error('API error');
+    const res = await fetch(DATA_URL);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
     const json = await res.json();
-    DATA = json.data;
-    const regions = [...new Set(DATA.map(c=>c.region))].sort((a,b)=>REGION_ORDER.indexOf(a)-REGION_ORDER.indexOf(b));
+    DATA = Array.isArray(json) ? json : json.data;
+    regions = [...new Set(DATA.map(c=>c.region))].sort((a,b)=>REGION_ORDER.indexOf(a)-REGION_ORDER.indexOf(b));
     regions.forEach(r=>{const o=document.createElement('option');o.value=r;o.textContent=r;fRegion.appendChild(o);});
     initCatTiles();
     render();
   } catch (err) {
     console.error('Failed to load manufacturers:', err);
-    document.getElementById('board').innerHTML = '<p style="color:red;text-align:center;padding:40px">Failed to load manufacturers. Ensure the API server is running on port 3001.</p>';
+    document.getElementById('board').innerHTML = '<p style="color:var(--red);text-align:center;padding:40px">Could not load the manufacturer directory. Please refresh the page.</p>';
   }
 }
 
