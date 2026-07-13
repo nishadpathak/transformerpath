@@ -95,6 +95,21 @@
       <button data-y="2027">2027</button>
       <button data-y="2028">2028</button>
     </div>
+    <div class="filters" id="month-filters">
+      <button class="on" data-m="all">All Months</button>
+      <button data-m="0">Jan</button>
+      <button data-m="1">Feb</button>
+      <button data-m="2">Mar</button>
+      <button data-m="3">Apr</button>
+      <button data-m="4">May</button>
+      <button data-m="5">Jun</button>
+      <button data-m="6">Jul</button>
+      <button data-m="7">Aug</button>
+      <button data-m="8">Sep</button>
+      <button data-m="9">Oct</button>
+      <button data-m="10">Nov</button>
+      <button data-m="11">Dec</button>
+    </div>
     <div class="filters" id="region-filters">
       <button class="on" data-r="all">All Regions</button>
       <button data-r="Middle East">Middle East</button>
@@ -175,13 +190,14 @@ function flightURL(ev) {
   return AFFILIATE.kiwiLink || null;
 }
 
-let yearF = "all", regionF = "all";
+let yearF = "all", regionF = "all", monthF = "all";
 const fmt = d => new Date(d).toLocaleDateString("en-GB", {day:"numeric", month:"short", year:"numeric"});
 
 function render() {
   const now = new Date(new Date().toDateString());
   let list = EVENTS.filter(ev => new Date(ev.e) >= now);
   if (yearF !== "all") list = list.filter(ev => ev.s.startsWith(yearF));
+  if (monthF !== "all") list = list.filter(ev => new Date(ev.s).getMonth() === +monthF);
   if (regionF !== "all") list = list.filter(ev => ev.r === regionF);
   list.sort((a,b) => a.s.localeCompare(b.s));
   document.getElementById("grid").innerHTML = list.map(ev => {
@@ -217,6 +233,10 @@ document.getElementById("grid").addEventListener("click", e => {
 document.querySelectorAll("#year-filters button").forEach(b => b.addEventListener("click", () => {
   document.querySelectorAll("#year-filters button").forEach(x => x.classList.remove("on"));
   b.classList.add("on"); yearF = b.dataset.y; render();
+}));
+document.querySelectorAll("#month-filters button").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll("#month-filters button").forEach(x => x.classList.remove("on"));
+  b.classList.add("on"); monthF = b.dataset.m; render();
 }));
 document.querySelectorAll("#region-filters button").forEach(b => b.addEventListener("click", () => {
   document.querySelectorAll("#region-filters button").forEach(x => x.classList.remove("on"));
