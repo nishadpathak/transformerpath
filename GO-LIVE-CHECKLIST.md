@@ -5,11 +5,11 @@ All 4 phases complete. Here's what to do to launch transformerpath.com.
 ---
 
 ## Phase 1: Branding ✅
-- ✅ Rebranded to TransformerPath (from TrafoPath)
+- ✅ Rebranded to TransformerPath (from TransformerPath)
 - ✅ Core-and-windings logo (amber coils + white core)
 - ✅ Updated header/footer on 37 pages via build.py
 - ✅ Hero image integrated (transformer substation at sunset)
-- ✅ Service worker updated (trafopath-v3 → transformerpath-v1)
+- ✅ Service worker updated (transformerpath-v3 → transformerpath-v1)
 - ✅ favicon.svg created
 - ⏳ favicon.ico needs regeneration → see FAVICON-REGENERATE.md
 
