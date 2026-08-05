@@ -27,12 +27,12 @@
   .card h2 .tag { float:right; font-size:11px; color:var(--muted); font-weight:400; }
   label { display:block; font-size:12px; color:var(--muted); margin:9px 0 2px; font-weight:600; }
   input, select { width:100%; padding:7px 9px; border:1px solid var(--line); border-radius:6px;
-                  font-size:14px; background:var(--card); color:var(--ink); }
+                  font-size:14px; background:#fff; color:var(--ink); }
   input:focus, select:focus { outline:2px solid #9cc3e8; border-color:var(--accent); }
   .row2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
   .row3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
   .typesel { display:flex; gap:6px; margin-bottom:6px; }
-  .typesel button { flex:1; padding:9px 4px; border:1.5px solid var(--line); background:var(--card);
+  .typesel button { flex:1; padding:9px 4px; border:1.5px solid var(--line); background:#fff;
                     border-radius:8px; cursor:pointer; font-size:12.5px; font-weight:600; color:var(--muted); }
   .typesel button.on { background:var(--accent); border-color:var(--accent); color:#fff; }
   details { margin-top:10px; }
@@ -62,18 +62,16 @@
   .b2 { background:var(--chip); color:var(--accent); }
   footer { margin-top:26px; font-size:11.5px; color:var(--muted); line-height:1.6; }
   @media print {
-    body{background:var(--card);} header{-webkit-print-color-adjust:exact;}
+    body{background:#fff;} header{-webkit-print-color-adjust:exact;}
     .inputs-col{display:none;} .cols{grid-template-columns:1fr;}
   }
 </style>
-    <link rel="canonical" href="https://transformerpath.com/calculator.html">
-    <script src="analytics.js" defer></script><script src="course-gate.js"></script>
 </head>
 <body>
-<div style="background:#0d1b2e;color:#fff;padding:10px 18px;font-family:'Segoe UI',system-ui,sans-serif;display:flex;align-items:center;gap:12px;font-size:.9rem;flex-wrap:wrap">
-  <a href="index.html" style="color:#fff;font-weight:800;text-decoration:none;font-size:1.05rem;letter-spacing:-.3px;display:inline-flex;align-items:center;gap:7px"><svg width="22" height="22" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="27" fill="none" stroke="#fff" stroke-width="2"/><path d="M37 9 L23 35 L31 35 L26 55 L42 29 L34 29 L40 9 Z" fill="#f5a623"/></svg>Transformer<span style="color:#f5a623">Path</span></a>
-  <a href="learn.html" style="color:#cbd5e1;text-decoration:none;margin-left:auto">&#8592; Learn hub</a>
-</div>
+  <div style="background:#0d1b2e;color:#fff;padding:10px 18px;font-family:'Segoe UI',system-ui,sans-serif;display:flex;align-items:center;gap:12px;font-size:.9rem;flex-wrap:wrap">
+    <a href="index.html" style="color:#fff;font-weight:800;text-decoration:none;font-size:1.05rem;letter-spacing:-.3px;display:inline-flex;align-items:center;gap:7px"><svg width="22" height="22" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="27" fill="none" stroke="#fff" stroke-width="2"/><path d="M37 9 L23 35 L31 35 L26 55 L42 29 L34 29 L40 9 Z" fill="#f5a623"/></svg>Trafo<span style="color:#f5a623">Path</span></a>
+    <a href="learn.html" style="color:#cbd5e1;text-decoration:none;margin-left:auto">&#8592; Learn hub</a>
+  </div>
 
 <header>
   <h1>Transformer Design &amp; Calculation Workbench</h1>
