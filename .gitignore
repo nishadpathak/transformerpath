@@ -10,5 +10,6 @@ secrets.txt
 # Archive — old files not needed in repo
 archive/
 # Internal strategy / setup notes — kept local, never published or pushed.
-# (netlify.toml also 404s /*.md in case the folder is deployed directly.)
+# (netlify.toml also 404s /_docs/* in case the folder is deployed directly.)
+_docs/
 *.md

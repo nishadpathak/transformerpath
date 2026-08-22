@@ -14,7 +14,7 @@
 # markdown and the stale archive/ copies would otherwise be fetchable
 # directly (e.g. /PREMIUM-PRICING-STRATEGY.md). Serve 404 instead.
 [[redirects]]
-  from = "/*.md"
+  from = "/_docs/*"
   to = "/404.html"
   status = 404
   force = true
