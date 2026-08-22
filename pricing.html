@@ -260,15 +260,15 @@ table.cmp .n { color:var(--border); }
   var TWELVE_MONTHS = 365*24*3600*1000;
 
   // ── Plan checkout links ──────────────────────────────────────────────
-  // Learner is the LIVE, existing Stripe Payment Link — do not change.
-  // Professional / Enterprise are placeholders until real Payment Links
-  // are created in the Stripe Dashboard. See STRIPE-SETUP-TODO.md for the
-  // exact steps (create link → set price → set "after payment" redirect
-  // to pricing.html?unlocked=<tier> → paste the resulting URL below).
+  // All three are LIVE Stripe Payment Links. Each one's "after payment"
+  // redirect must point at pricing.html?unlocked=<tier> so the browser is
+  // granted the right tier on return — otherwise a payer lands back with no
+  // access. The bulk-seat Team/Department products on teams.html are separate
+  // products; never reuse these single-plan links there.
   var LINKS = {
     learner:      'https://buy.stripe.com/5kQ00c3pS8tv9g4fdMfYY00',
     professional: 'https://buy.stripe.com/fZu00c3pScJL1NC3v4fYY01',
-    enterprise:   'REPLACE_WITH_STRIPE_LINK_ENTERPRISE_1999'
+    enterprise:   'https://buy.stripe.com/aFacMY6C4aBD2RG2r0fYY02'
   };
 
   Object.keys(LINKS).forEach(function(tier){
