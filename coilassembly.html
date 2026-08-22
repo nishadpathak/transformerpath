@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="tp-dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +11,7 @@
 <meta name="theme-color" content="#0d1b2e">
 <meta name="description" content="Interactive 3D walkthrough of transformer core building and core & coil assembly — how the core is stacked and the windings are built up, stage by stage.">
 <style>
-:root{--panel:#0e1c2c;--panel2:#13263a;--ink:#e8eef5;--mut:#8fa6bc;--acc:#3da5f4;--acc2:#e8732a;--line:#23415e}
+:root{--panel:#0e1c2c;--panel2:#13263a;--ink:#e8eef5;--mut:#8fa6bc;--acc:#3da5f4;--acc2:#f5a623;--line:#23415e}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:#08121e;color:var(--ink)}
@@ -46,6 +46,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#08121e;color:var(--
 </style>
     <link rel="canonical" href="https://transformerpath.com/coilassembly.html">
     <script src="analytics.js" defer></script><script src="course-gate.js"></script>
+    <link rel="stylesheet" href="tp-theme.css?v=3">
 </head>
 <body>
 <div class="tp-sitehead" role="banner">
@@ -770,5 +771,6 @@ addEventListener('resize',()=>{
   renderer.setSize(innerWidth,innerHeight);
 });
 </script>
+<script src="tp-theme.js?v=1" defer></script>
 </body>
 </html>

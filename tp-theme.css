@@ -1,0 +1,247 @@
+/* ============================================================================
+   TransformerPath — shared theme bridge
+   ----------------------------------------------------------------------------
+   The site grew three separate colour identities:
+     A. style.css pages ...... navy + amber, light/dark via [data-theme]
+     B. tool pages ........... their own blue accent, locked to light
+     C. 3D / visual pages .... their own dark palette, blue + orange accents
+
+   Families B and C use DIFFERENT variable names for the same roles, which is
+   why they never picked up the site palette. This file re-declares every
+   legacy variable name in terms of one canonical palette, so existing page
+   CSS keeps working but renders in brand colours.
+
+   Load it LAST in <head> (after the page's own <style>). The :root:root
+   selector raises specificity so it wins even if a page loads it earlier.
+
+   Pages opt into permanent dark (3D viewers) with <html class="tp-dark">.
+   ========================================================================== */
+
+/* ── Canonical palette — light ─────────────────────────────────────────── */
+:root:root {
+  --tp-navy:      #0d1b2e;
+  --tp-navy-2:    #14253d;
+  --tp-amber:     #f5a623;
+  --tp-amber-dk:  #d48806;
+
+  /* Family A names */
+  --navy:   #0d1b2e;
+  --navy-2: #14253d;
+  --amber:  #f5a623;
+  --amber-dark: #d48806;
+  --text:   #1f2937;
+  --muted:  #6b7280;
+  --bg:     #f7f8fa;
+  --card:   #ffffff;
+  --border: #e5e7eb;
+  --green:  #16a34a;
+  --red:    #dc2626;
+  --ink:    #0d1b2e;
+  --accent: #d48806;
+
+  /* Family B names (tool pages) — mapped onto the same palette */
+  --accent2: #0a8f6c;
+  --warn:    #b4500a;
+  --bad:     #c0262d;
+  --line:    #e5e7eb;
+  --chip:    #fdf3e0;
+
+  /* Family C names (3D pages) — light values so the toggle works if used */
+  --panel:  #ffffff;
+  --panel2: #f7f8fa;
+  --mut:    #6b7280;
+  --acc:    #d48806;
+  --acc2:   #0e5fa8;
+
+  color-scheme: light;
+}
+
+/* ── Canonical palette — dark ──────────────────────────────────────────── */
+:root:root[data-theme="dark"],
+:root:root.tp-dark {
+  --text:   #e5e7eb;
+  --muted:  #9ca3af;
+  --bg:     #111827;
+  --card:   #1f2937;
+  --border: #374151;
+  --ink:    #e8edf4;
+  --accent: #fbbf24;
+
+  --accent2: #34d399;
+  --warn:    #fbbf24;
+  --bad:     #f87171;
+  --line:    #374151;
+  --chip:    #2b2416;
+
+  --panel:  #14253d;
+  --panel2: #0d1b2e;
+  --mut:    #9fb0c4;
+  --acc:    #f5a623;
+  --acc2:   #5eb3f5;
+
+  color-scheme: dark;
+}
+
+/* 3D / visual pages are dark by design: deeper navy ground, amber accents.
+   They keep a dark canvas because renders and technical diagrams read better
+   on it — but the palette is now the site's navy + amber, not a stray blue. */
+:root:root.tp-dark {
+  --bg:     #0a1624;
+  --card:   #14253d;
+  --border: #1e3a5c;
+  --line:   #1e3a5c;
+}
+
+/* ── International typography ──────────────────────────────────────────────
+   'Segoe UI' first meant non-Windows visitors fell through to a generic
+   sans, and CJK / Arabic / Cyrillic readers got inconsistent metrics.
+   system-ui leads so every platform uses its own well-hinted UI face. */
+:root:root {
+  --tp-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+             Arial, "Noto Sans", "Noto Sans Arabic", "Noto Sans SC",
+             "Noto Sans JP", "Noto Sans Devanagari", sans-serif;
+  --tp-mono: ui-monospace, SFMono-Regular, "SF Mono", Consolas,
+             "Liberation Mono", Menlo, monospace;
+}
+body { font-family: var(--tp-sans); }
+
+/* Long technical terms and part numbers shouldn't overflow narrow screens or
+   force a horizontal scrollbar in languages that don't break where English
+   does. */
+body { overflow-wrap: break-word; }
+
+/* Wide tables scroll inside their own box rather than pushing the page. */
+.table-wrap, .cmp-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+/* ── Dark-mode repairs for hardcoded light surfaces ────────────────────────
+   The tool pages were written light-only, so several surfaces hardcode
+   background:#fff while their text colour comes from a variable. Once the
+   variable flips for dark mode that becomes near-white text on white — the
+   calculator's input values measured 1.1:1 contrast, i.e. invisible.
+
+   These rules only apply in dark mode; light mode renders exactly as before. */
+:root[data-theme="dark"] input,
+:root[data-theme="dark"] select,
+:root[data-theme="dark"] textarea {
+  background: #0f1a2a;
+  color: var(--ink);
+  border-color: var(--line);
+}
+:root[data-theme="dark"] input::placeholder,
+:root[data-theme="dark"] textarea::placeholder {
+  color: #7d8fa6;
+  opacity: 1;                      /* Firefox dims placeholders by default */
+}
+:root[data-theme="dark"] input:focus,
+:root[data-theme="dark"] select:focus,
+:root[data-theme="dark"] textarea:focus {
+  outline: 2px solid var(--amber);
+  outline-offset: 1px;
+  border-color: var(--amber);
+}
+/* Segmented type-selector buttons (calculator) */
+:root[data-theme="dark"] .typesel button {
+  background: #0f1a2a;
+  color: var(--ink);
+  border-color: var(--line);
+}
+:root[data-theme="dark"] .typesel button.on,
+:root[data-theme="dark"] .typesel button[aria-pressed="true"] {
+  background: var(--amber);
+  color: var(--tp-navy);
+  border-color: var(--amber);
+}
+/* Cream call-out panels (masterclass, tutorial, country-designer) */
+:root[data-theme="dark"] .note,
+:root[data-theme="dark"] .embed-intro {
+  background: #2b2416;
+  color: var(--text);
+}
+:root[data-theme="dark"] .embed-panel { background: var(--card); }
+/* Sticky sub-nav (construction-guide) */
+:root[data-theme="dark"] nav[class],
+:root[data-theme="dark"] .subnav { background: var(--card); }
+
+/* Tables and code blocks commonly inherit a white ground too. */
+:root[data-theme="dark"] table { background: transparent; }
+:root[data-theme="dark"] pre,
+:root[data-theme="dark"] code { background: #0f1a2a; color: var(--ink); }
+
+/* Tinted content panels across the tool pages. Each keeps its original hue
+   (blue = reference, amber = note, green = key point) but at dark-surface
+   luminance, so the tint still reads as a category cue. */
+:root[data-theme="dark"] .eq,
+:root[data-theme="dark"] .kv,
+:root[data-theme="dark"] .toc-card,
+:root[data-theme="dark"] .embed-head,
+:root[data-theme="dark"] .figbox,
+:root[data-theme="dark"] details        { background: #16263c; color: var(--text); }
+:root[data-theme="dark"] .tag,
+:root[data-theme="dark"] .stdtag        { background: #1d3350; color: #bcd4ee; }
+:root[data-theme="dark"] .keypoint      { background: #14351f; color: #cfe9d8; }
+:root[data-theme="dark"] .flag.ok       { background: #14351f; color: #86efac; }
+:root[data-theme="dark"] .flag.warn     { background: #34290f; color: #fcd34d; }
+:root[data-theme="dark"] .flag.bad      { background: #3a1b1b; color: #fca5a5; }
+:root[data-theme="dark"] .res           { background: var(--card); color: var(--text); }
+:root[data-theme="dark"] table.res tr.hl td { background: #1d3350; color: var(--ink); }
+:root[data-theme="dark"] tr:nth-child(even) td { background: rgba(255,255,255,.035); }
+
+/* Technical figures keep a light ground on purpose: the diagrams inside are
+   drawn with dark strokes, so inverting them would erase the linework. A
+   soft off-white reads as "printed figure" rather than a glaring panel. */
+:root[data-theme="dark"] .fig svg { background: #eef2f7; border-radius: 6px; }
+
+/* The mirror problem: headings that hardcode a dark navy TEXT colour, which
+   drops to ~1:1 against a dark ground. Lift them to the light ink instead. */
+:root[data-theme="dark"] h2,
+:root[data-theme="dark"] section h3,
+:root[data-theme="dark"] .embed-title { color: var(--ink); }
+:root[data-theme="dark"] section h4    { color: #b8c9dd; }
+:root[data-theme="dark"] .flag.ok,
+:root[data-theme="dark"] .res b        { color: #86efac; }
+/* …but the amber CTA keeps navy text — it sits on an amber ground in both
+   themes, where navy is the higher-contrast choice (8.54:1). */
+:root[data-theme="dark"] .mc-cta a.primary { color: #0d1b2e; }
+
+/* Printing is always on white paper — force legible ink regardless of theme. */
+@media print {
+  :root, :root[data-theme="dark"] {
+    --bg: #fff; --card: #fff; --ink: #000; --text: #111;
+    --muted: #444; --line: #999; --border: #999;
+  }
+  .tp-theme-toggle { display: none !important; }
+}
+
+/* ── Theme toggle button (injected by tp-theme.js) ─────────────────────── */
+.tp-theme-toggle {
+  background: none;
+  border: 0;
+  color: currentColor;
+  font-size: 1.15rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 8px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 8px;
+  transition: background-color .15s;
+}
+.tp-theme-toggle:hover { background: rgba(127, 127, 127, .18); }
+.tp-theme-toggle:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+
+/* Standalone placement for pages whose header has no nav row to sit in. */
+.tp-theme-toggle.tp-floating {
+  position: fixed;
+  top: 10px;
+  right: 12px;
+  z-index: 9999;
+  background: rgba(13, 27, 46, .72);
+  color: #fff;
+  backdrop-filter: blur(6px);
+}
+.tp-theme-toggle.tp-floating:hover { background: rgba(13, 27, 46, .9); }
+
+/* Respect users who ask for reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  .tp-theme-toggle { transition: none; }
+}

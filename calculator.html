@@ -12,7 +12,9 @@
 <meta name="description" content="Live IEC 60076 transformer design calculator — distribution, power and cast-resin modes. First-cut electromagnetic, performance and thermal sizing: core area, turns, conductor sizes and losses.">
 <style>
   :root {
-    color-scheme: light;
+    /* Palette now comes from tp-theme.css (loaded last in <head>), which maps
+       these same variable names onto the site's navy + amber identity and
+       supplies the dark-mode values. Kept here as the standalone fallback. */
     --bg: #f4f6f9; --card: #ffffff; --ink: #1a2332; --muted: #5b6b7f;
     --accent: #0e5fa8; --accent2: #0a8f6c; --warn: #b4500a; --bad: #c0262d;
     --line: #dde4ec; --chip: #eaf1f8; --mono: "SF Mono", Consolas, Menlo, monospace;
@@ -74,6 +76,7 @@
   }
 </style>
     <link rel="canonical" href="https://transformerpath.com/calculator.html">
+    <link rel="stylesheet" href="tp-theme.css?v=3">
     <script src="analytics.js" defer></script><script src="course-gate.js"></script>
 </head>
 <body>
@@ -1825,5 +1828,6 @@ function downloadPDF(){
 }
 calc();
 </script>
+<script src="tp-theme.js?v=1" defer></script>
 </body>
 </html>

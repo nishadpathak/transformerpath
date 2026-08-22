@@ -13,7 +13,7 @@
 <style>
 :root{
   --bg:#f5f7fa; --card:#ffffff; --ink:#1a2332; --muted:#5a6a7e;
-  --accent:#0b5fa5; --accent2:#e8732a; --line:#d8e0ea;
+  --accent:#0b5fa5; --accent2:#f5a623; --line:#d8e0ea;
   --cu:#c97a3d; --steel:#8a9bb0; --oil:#e8c46a; --resin:#b85c4a;
   --good:#1d7a4f; --warn:#b5651d;
 }
@@ -61,6 +61,7 @@ code{background:#eef2f7;padding:1px 6px;border-radius:4px;font-size:.9em}
 </style>
     <link rel="canonical" href="https://transformerpath.com/tutorial.html">
     <script src="analytics.js" defer></script><script src="course-gate.js"></script>
+    <link rel="stylesheet" href="tp-theme.css?v=3">
 </head>
 <body>
 <div class="tp-sitehead" role="banner">
@@ -138,7 +139,7 @@ code{background:#eef2f7;padding:1px 6px;border-radius:4px;font-size:.9em}
 <a href="#powerdesign">25 500 MVA Design</a>
 <a href="academy.html" style="background:#1a2332;color:#ffd9b8;border-radius:6px;margin-left:8px">🏠 Academy Hub</a>
 <a href="explorer.html" style="background:#0b5fa5;color:#fff;border-radius:6px;margin-left:6px">🧊 3D Distribution</a>
-<a href="power3d.html" style="background:#e8732a;color:#fff;border-radius:6px;margin-left:6px">🏗 3D Power</a>
+<a href="power3d.html" style="background:#f5a623;color:#0d1b2e;border-radius:6px;margin-left:6px">🏗 3D Power</a>
 <a href="country-designer.html" style="background:#1d7a4f;color:#fff;border-radius:6px;margin-left:6px">🌍 Country Designer</a>
 <a href="coilassembly.html" style="background:#7a5230;color:#fff;border-radius:6px;margin-left:6px">🧱 3D Core &amp; CCA</a>
 </div></nav>
@@ -150,7 +151,7 @@ code{background:#eef2f7;padding:1px 6px;border-radius:4px;font-size:.9em}
 <p>Sections 1–2 establish theory and terminology — including the per-unit system and the open/short-circuit tests that measure the equivalent circuit. Sections 3–7 walk through the construction of an oil-immersed transformer from core outward, down to building factors, core noise and how windings are physically made. Section 8 covers dry-type and cast-resin technology. Section 9 is a complete worked design of a 1000 kVA distribution transformer, and §6.4 adds the matching thermal ladder. Sections 10–12 cover losses, factory testing (with impulse, heat-run and SFRA explained in detail) and the standards map. Sections 13–16 go deeper: vector groups and parallel operation, inrush and overfluxing, special transformer types, and site installation, commissioning and life management. Sections 17–20 cover protection schemes, procurement and tender economics, a glossary plus a sixteen-question self-test, and the after-sales service business. Sections 21–25 add dedicated chapters on <b>bushings</b>, <b>tap-changers</b>, <b>impulse response &amp; electrostatic stress control</b>, <b>fire, oil-containment &amp; environmental protection</b>, and a <b>worked 500 MVA EHV design</b> — each linked to its interactive 3D model.</p>
 <p style="margin-top:12px">
 <a href="explorer.html" style="display:inline-block;background:linear-gradient(135deg,#0b5fa5,#1278c8);color:#fff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;box-shadow:0 2px 8px rgba(11,95,165,.35);margin-right:10px">🧊 3D: Distribution &amp; Cast-Resin →</a>
-<a href="power3d.html" style="display:inline-block;background:linear-gradient(135deg,#9c4a12,#e8732a);color:#fff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;box-shadow:0 2px 8px rgba(232,115,42,.35)">🏗 3D: Power Transformer (100 MVA) →</a><br>
+<a href="power3d.html" style="display:inline-block;background:linear-gradient(135deg,#a86a05,#f5a623);color:#fff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;box-shadow:0 2px 8px rgba(245,166,35,.35)">🏗 3D: Power Transformer (100 MVA) →</a><br>
 <span style="font-size:.85rem;color:var(--muted)">Rotate, explode and dissect the transformers in 3D — exploded-view slider, winding cutaway, animated oil flow, click any part for its engineering role. (Companion files in this folder; need an internet connection once to load the 3D engine.)</span></p>
 </section>
 
@@ -619,7 +620,7 @@ code{background:#eef2f7;padding:1px 6px;border-radius:4px;font-size:.9em}
 </div>
 
 <h3>3.5 Core building, clamping and earthing</h3>
-<p><a href="coilassembly.html" style="color:#0b5fa5;font-weight:700">🧱 Open the interactive 3D: build the core yourself — stack the step-lap top yoke, inspect the wooden clamps and insulation, then explore the complete core &amp; coil assembly →</a></p>
+<p><a href="coilassembly.html" style="color:var(--accent);font-weight:700">🧱 Open the interactive 3D: build the core yourself — stack the step-lap top yoke, inspect the wooden clamps and insulation, then explore the complete core &amp; coil assembly →</a></p>
 <ol>
 <li><b>Slitting &amp; cropping:</b> coil steel is slit to the packet widths, then cut to length with 45° mitres on automatic cut-to-length lines (e.g. Georg, AEM); burr ≤ 20 µm to avoid inter-laminar shorts.</li>
 <li><b>Stacking:</b> laminations are stacked horizontally on a building frame, usually 2 laminations per layer, with step-lap offsets; modern lines auto-stack.</li>
@@ -940,7 +941,7 @@ code{background:#eef2f7;padding:1px 6px;border-radius:4px;font-size:.9em}
       <text x="39" y="158" font-size="12" fill="#5a6a7e" text-anchor="middle">D = directed into windings</text>
     </g>
     <g transform="translate(450,40)">
-      <rect x="0" y="0" width="78" height="78" rx="10" fill="#e8732a"/>
+      <rect x="0" y="0" width="78" height="78" rx="10" fill="#f5a623"/>
       <text x="39" y="52" font-size="38" fill="#fff" text-anchor="middle" font-weight="bold">A</text>
       <text x="39" y="104" font-size="13.5" fill="#0b3a63" text-anchor="middle" font-weight="bold">external medium</text>
       <text x="39" y="124" font-size="12" fill="#5a6a7e" text-anchor="middle">A = air</text>
@@ -1040,7 +1041,7 @@ code{background:#eef2f7;padding:1px 6px;border-radius:4px;font-size:.9em}
   <text x="424" y="91" font-size="12.5" fill="#34516e" text-anchor="middle">CONSERVATOR</text>
   <!-- pipe with buchholz -->
   <line x1="500" y1="112" x2="500" y2="150" stroke="#46586d" stroke-width="5"/>
-  <rect x="486" y="150" width="30" height="24" fill="#e8732a" stroke="#9c4a12" stroke-width="2"/>
+  <rect x="486" y="150" width="30" height="24" fill="#f5a623" stroke="#a86a05" stroke-width="2"/>
   <line x1="500" y1="174" x2="500" y2="192" stroke="#46586d" stroke-width="5"/>
   <!-- breather -->
   <line x1="330" y1="86" x2="288" y2="86" stroke="#46586d" stroke-width="4"/>
@@ -2211,5 +2212,6 @@ Repeat that cycle — real document → course section → back to the document 
 
 </main>
 <footer>Electrical Transformer Design &amp; Construction Tutorial — prepared June 2026. References: IEC 60076 series, IEEE C57 series, standard transformer engineering practice.</footer>
+<script src="tp-theme.js?v=1" defer></script>
 </body>
 </html>

@@ -13,7 +13,7 @@
 <meta property="og:url" content="https://transformerpath.com/pricing.html">
 <meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=2">
 <link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
 <link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
@@ -319,7 +319,7 @@ table.cmp .n { color:var(--border); }
     if (justGranted) {
       b.innerHTML = '✅ You\'re unlocked — ' + label + ' plan is active on this device. <a href="learn.html" style="color:#fff;text-decoration:underline">Start learning →</a>';
     } else {
-      b.innerHTML = '✅ ' + label + ' plan active on this device, until ' + new Date(current.expiry).toLocaleDateString() + '. <a href="learn.html" style="color:#fff;text-decoration:underline">Go to Learn →</a>';
+      b.innerHTML = '✅ ' + label + ' plan active on this device, until ' + new Date(current.expiry).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' }) + '. <a href="learn.html" style="color:#fff;text-decoration:underline">Go to Learn →</a>';
     }
     b.style.display = 'block';
   }

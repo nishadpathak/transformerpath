@@ -20,8 +20,7 @@
 <link rel="canonical" href="https://transformerpath.com/test-report.html">
 <style>
   :root {
-    color-scheme: light;
-    --bg: #f4f6f9; --card: #ffffff; --ink: #1a2332; --muted: #5b6b7f;
+        --bg: #f4f6f9; --card: #ffffff; --ink: #1a2332; --muted: #5b6b7f;
     --accent: #0e5fa8; --accent2: #0a8f6c; --warn: #b4500a; --bad: #c0262d;
     --line: #dde4ec; --chip: #eaf1f8; --mono: "SF Mono", Consolas, Menlo, monospace;
   }
@@ -49,6 +48,7 @@
   .btn.primary:hover{background:#0a4c8a}
   .hint{font-size:11px;color:var(--muted);margin-top:2px}
 </style>
+    <link rel="stylesheet" href="tp-theme.css?v=3">
 </head>
 <body>
 <div class="tp-sitehead" role="banner">
@@ -328,5 +328,6 @@ function downloadTestReportPDF(){
   setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},2000);
 }
 </script>
+<script src="tp-theme.js?v=1" defer></script>
 </body>
 </html>

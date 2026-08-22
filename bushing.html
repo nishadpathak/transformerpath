@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="tp-dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,7 +19,7 @@
 <meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <style>
-:root{--panel:#0e1c2c;--panel2:#13263a;--ink:#e8eef5;--mut:#8fa6bc;--acc:#3da5f4;--acc2:#e8732a;--line:#23415e}
+:root{--panel:#0e1c2c;--panel2:#13263a;--ink:#e8eef5;--mut:#8fa6bc;--acc:#3da5f4;--acc2:#f5a623;--line:#23415e}
 *{box-sizing:border-box;margin:0;padding:0}html,body{height:100%;overflow:hidden}
 body{font-family:'Segoe UI',system-ui,sans-serif;background:#08121e;color:var(--ink)}
 #c3d{position:absolute;inset:0;cursor:grab}#c3d.dragging{cursor:grabbing}
@@ -49,6 +49,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#08121e;color:var(--
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="TransformerPath">
 <script src="course-gate.js"></script>
+    <link rel="stylesheet" href="tp-theme.css?v=3">
 </head>
 <body>
 <div class="tp-sitehead" role="banner">
@@ -169,11 +170,11 @@ const conductor=new THREE.Mesh(new THREE.CylinderGeometry(2.2,2.2,120,28),M.cond
 reg(conductor,'cond','Central conductor','The HV current path — a copper tube (fixed) or a flexible <b>draw-lead</b> pulled through after the bushing is fitted. It is at full line potential along its whole length.',new THREE.Vector3(0,0,0));
 
 /* ===== top terminal + arcing fitting ===== */
-const top=new THREE.Group();
-const term=new THREE.Mesh(new THREE.CylinderGeometry(4,4,8,24),M.metal);term.position.y=124;top.add(term);
-const corona=new THREE.Mesh(new THREE.TorusGeometry(7,1.6,12,32),M.metal);corona.position.y=120;corona.rotation.x=Math.PI/2;top.add(corona);
-root.add(top);
-reg(top,'term','Top terminal & corona ring','The air-end terminal connects to the line/jumper. The <b>corona (grading) ring</b> rounds off the field at the top to stop visible discharge and radio interference.',new THREE.Vector3(0,20,0));
+const topAsm=new THREE.Group();
+const term=new THREE.Mesh(new THREE.CylinderGeometry(4,4,8,24),M.metal);term.position.y=124;topAsm.add(term);
+const corona=new THREE.Mesh(new THREE.TorusGeometry(7,1.6,12,32),M.metal);corona.position.y=120;corona.rotation.x=Math.PI/2;topAsm.add(corona);
+root.add(topAsm);
+reg(topAsm,'term','Top terminal & corona ring','The air-end terminal connects to the line/jumper. The <b>corona (grading) ring</b> rounds off the field at the top to stop visible discharge and radio interference.',new THREE.Vector3(0,20,0));
 
 /* ===== air-side insulator (sheds) ===== */
 const airIns=new THREE.Group();
@@ -285,5 +286,6 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
 (function(){var dp;window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();dp=e;if(document.getElementById('tpInstall'))return;var b=document.createElement('button');b.id='tpInstall';b.textContent='\u2913 Install TransformerPath';b.setAttribute('style','position:fixed;right:16px;bottom:16px;z-index:9999;background:#f5a623;color:#0d1b2e;border:0;border-radius:999px;padding:11px 18px;font-weight:800;font-size:.9rem;box-shadow:0 6px 20px rgba(0,0,0,.28);cursor:pointer;font-family:inherit');b.onclick=function(){b.remove();dp.prompt();dp.userChoice.finally(function(){dp=null;});};document.body.appendChild(b);});})();
 </script>
 <script src="analytics.js" defer></script>
+<script src="tp-theme.js?v=1" defer></script>
 </body>
 </html>

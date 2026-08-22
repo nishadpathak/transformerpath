@@ -31,6 +31,15 @@
   status = 404
   force = true
 
+# transformerpath-site/ is an early-August snapshot of ~25 pages that also
+# exist at the top level. Serving it would publish stale duplicates and split
+# SEO ranking between two copies of the same page.
+[[redirects]]
+  from = "/transformerpath-site/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
 # Long-lived caching for static assets; HTML stays revalidated so daily intel is never stale.
 [[headers]]
   for = "/vendor/*"
@@ -44,5 +53,18 @@
 
 [[headers]]
   for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Root-level CSS/JS had no cache policy, so browsers applied their own
+# heuristic and returning visitors could sit on a stale stylesheet. Revalidate
+# these; the ?v= query on the tag is what forces a fresh copy after a change.
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/*.js"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"

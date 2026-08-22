@@ -13,7 +13,7 @@
 <meta property="og:url" content="https://transformerpath.com/engineer-track.html">
 <meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=2">
 <link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
 <link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
@@ -44,7 +44,7 @@
 .how { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin:0 0 36px; }
 .how .card h3 { font-size:.98rem; }
 .progressbar { background:#e7edf3; border-radius:999px; height:10px; overflow:hidden; margin:6px 0 2px; }
-.progressbar>div { background:linear-gradient(90deg,var(--amber),#e8732a); height:100%; width:0; transition:width .4s; }
+.progressbar>div { background:linear-gradient(90deg,var(--amber),#f5a623); height:100%; width:0; transition:width .4s; }
 .track-note { background:#eef4fb; border-left:4px solid #0b5fa5; border-radius:0 10px 10px 0; padding:14px 18px; font-size:.9rem; color:#33475c; margin:0 0 30px; }
 .level.locked { opacity:0.6; pointer-events:none; position:relative; }
 .level.locked::after { content:'🔒 Unlock to view'; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(13,27,46,.95); color:#fff; padding:20px 30px; border-radius:12px; font-weight:600; font-size:1rem; white-space:nowrap; z-index:10; }
@@ -160,7 +160,7 @@
     </div>
 
     <!-- PAYWALL: Levels 2-4 locked -->
-    <div class="paywall-notice" id="paywall" style="background:linear-gradient(135deg,#f5a623,#e8732a);color:#0d1b2e;border-radius:14px;padding:30px 26px;margin:30px 0;text-align:center;display:none">
+    <div class="paywall-notice" id="paywall" style="background:linear-gradient(135deg,#f5a623,#f5a623);color:#0d1b2e;border-radius:14px;padding:30px 26px;margin:30px 0;text-align:center;display:none">
       <h2 style="margin:0 0 8px;font-size:1.4rem">Unlock Levels 2–4 + Capstone Reviews</h2>
       <p style="margin:0 0 18px;font-size:.95rem;opacity:.9">Distribution, Power Transformer, Specials — plus engineer-reviewed capstone grading, model answers, and certificates.</p>
       <a class="btn" href="pricing.html" style="background:#0d1b2e;color:#f5a623;font-weight:800;padding:14px 32px;display:inline-block;border-radius:10px;text-decoration:none">See Plans — from $199 →</a>
