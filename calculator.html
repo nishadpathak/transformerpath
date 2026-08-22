@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Transformer Design Calculator — Distribution | Power | Cast Resin</title>
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
+<meta name="description" content="Live IEC 60076 transformer design calculator — distribution, power and cast-resin modes. First-cut electromagnetic, performance and thermal sizing: core area, turns, conductor sizes and losses.">
 <style>
   :root {
     color-scheme: light;
@@ -17,6 +23,7 @@
   header { background:linear-gradient(135deg,#0d2c4f 0%,#0e5fa8 100%); color:#fff; padding:18px 28px; }
   header h1 { margin:0; font-size:21px; font-weight:650; }
   header p { margin:4px 0 0; opacity:.85; font-size:13px; }
+  header .trust-line { margin:8px 0 0; opacity:.72; font-size:11.5px; }
   .wrap { max-width:1280px; margin:0 auto; padding:18px 22px 60px; }
   .cols { display:grid; grid-template-columns:330px 1fr; gap:18px; align-items:start; }
   @media (max-width:980px){ .cols{grid-template-columns:1fr;} }
@@ -66,16 +73,55 @@
     .inputs-col{display:none;} .cols{grid-template-columns:1fr;}
   }
 </style>
+    <link rel="canonical" href="https://transformerpath.com/calculator.html">
+    <script src="analytics.js" defer></script><script src="course-gate.js"></script>
 </head>
 <body>
-  <div style="background:#0d1b2e;color:#fff;padding:10px 18px;font-family:'Segoe UI',system-ui,sans-serif;display:flex;align-items:center;gap:12px;font-size:.9rem;flex-wrap:wrap">
-    <a href="index.html" style="color:#fff;font-weight:800;text-decoration:none;font-size:1.05rem;letter-spacing:-.3px;display:inline-flex;align-items:center;gap:7px"><svg width="22" height="22" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="27" fill="none" stroke="#fff" stroke-width="2"/><path d="M37 9 L23 35 L31 35 L26 55 L42 29 L34 29 L40 9 Z" fill="#f5a623"/></svg>Trafo<span style="color:#f5a623">Path</span></a>
-    <a href="learn.html" style="color:#cbd5e1;text-decoration:none;margin-left:auto">&#8592; Learn hub</a>
+<div class="tp-sitehead" role="banner">
+  <div class="tp-nav">
+    <a href="index.html" class="tp-logo"><svg width="22" height="22" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="27" fill="none" stroke="#fff" stroke-width="2"/><path d="M37 9 L23 35 L31 35 L26 55 L42 29 L34 29 L40 9 Z" fill="#f5a623"/></svg>Transformer<span>Path</span></a>
+    <button class="tp-menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="tpNav" onclick="var n=document.getElementById('tpNav');var open=n.classList.toggle('open');this.setAttribute('aria-expanded',open)">☰</button>
+    <div class="tp-navlinks" id="tpNav" role="navigation">
+      <a href="intel.html">Daily Intel</a>
+      <a href="events.html">Events</a>
+      <a href="webinars.html">Webinars</a>
+      <a href="manufacturers.html">Manufacturers</a>
+      <a href="learn.html">Learn</a>
+      <a href="grids.html">Grids</a>
+      <a href="resources.html">Knowledge</a>
+      <a href="blog.html">Blog</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="testbay.html">Test Bay</a>
+      <a href="search.html" title="Search" aria-label="Search">🔍</a>
+    </div>
   </div>
+</div>
+<style>
+/* Self-contained site header for TransformerPath's interactive/tool pages —
+   deliberately independent of style.css (this page doesn't load it) so it can
+   never interfere with the page's own CSS. Scoped under .tp- prefix. */
+.tp-sitehead{background:#0d1b2e;color:#fff;position:sticky;top:0;z-index:1000;box-shadow:0 2px 8px rgba(0,0,0,.25);font-family:'Segoe UI',system-ui,-apple-system,sans-serif}
+.tp-nav{max-width:1100px;margin:0 auto;padding:0 18px;height:56px;display:flex;align-items:center;gap:16px}
+.tp-logo{color:#fff;font-weight:800;text-decoration:none;font-size:1.05rem;letter-spacing:-.3px;display:inline-flex;align-items:center;gap:7px;flex:none}
+.tp-logo span{color:#f5a623}
+.tp-menu-toggle{display:none;background:none;border:0;color:#fff;font-size:1.3rem;cursor:pointer;padding:8px;margin-left:auto}
+.tp-navlinks{display:flex;align-items:center;gap:16px;margin-left:auto}
+.tp-navlinks a{color:#cbd5e1;text-decoration:none;font-size:.88rem;font-weight:500;white-space:nowrap;transition:color .15s}
+.tp-navlinks a:hover,.tp-navlinks a[aria-current="page"]{color:#f5a623}
+.tp-navlinks a[aria-current="page"]{font-weight:700}
+@media (max-width:900px){
+  .tp-menu-toggle{display:block}
+  .tp-navlinks{display:none;position:absolute;top:56px;left:0;right:0;background:#0d1b2e;flex-direction:column;align-items:stretch;padding:8px 0 10px;box-shadow:0 14px 24px rgba(0,0,0,.35);gap:0;margin-left:0}
+  .tp-navlinks.open{display:flex}
+  .tp-navlinks a{padding:12px 20px;border-bottom:1px solid rgba(255,255,255,.06)}
+  .tp-navlinks a:last-child{border-bottom:0}
+}
+</style>
 
 <header>
   <h1>Transformer Design &amp; Calculation Workbench</h1>
   <p id="subt">Distribution (oil) · Power (oil) · Cast Resin (dry) — first-cut electromagnetic, performance &amp; thermal design to IEC 60076</p>
+  <p class="trust-line">🔒 Runs entirely in your browser — no server call, no AI model in the loop, nothing you enter is ever sent anywhere.</p>
 </header>
 <div class="wrap">
   <div class="cols">
@@ -170,7 +216,7 @@
 
       <div class="card">
         <h2 id="qrefh">IEC 60076 quick reference</h2>
-        <table class="res" id="qref"></table>
+        <div class="table-wrap"><table class="res" id="qref"></table></div>
       </div>
     </div>
 
@@ -178,19 +224,19 @@
     <div>
       <div class="kpis" id="kpis"></div>
       <div class="grid2">
-        <div class="card"><h2>3 · Core &amp; magnetic circuit</h2><table class="res" id="t_core"></table></div>
-        <div class="card"><h2>4 · Windings &amp; conductors</h2><table class="res" id="t_wind"></table></div>
-        <div class="card"><h2>5 · Losses &amp; no-load performance</h2><table class="res" id="t_loss"></table>
+        <div class="card"><h2>3 · Core &amp; magnetic circuit</h2><div class="table-wrap"><table class="res" id="t_core"></table></div></div>
+        <div class="card"><h2>4 · Windings &amp; conductors</h2><div class="table-wrap"><table class="res" id="t_wind"></table></div></div>
+        <div class="card"><h2>5 · Losses &amp; no-load performance</h2><div class="table-wrap"><table class="res" id="t_loss"></table></div>
           <div style="display:flex;align-items:center;gap:8px;margin-top:12px;flex-wrap:wrap">
             <span style="font-size:12px;font-weight:700;color:var(--accent)">Core grade comparison</span>
             <label style="margin:0;font-size:11.5px;display:flex;align-items:center;gap:6px">NLL capitalisation (USD/kW)
               <input id="caprate" type="number" value="8000" step="500" style="width:90px;padding:4px 6px"></label>
           </div>
           <div id="gradecmp" style="margin-top:6px"></div></div>
-        <div class="card"><h2>6 · Impedance, regulation &amp; efficiency</h2><table class="res" id="t_perf"></table></div>
-        <div class="card" id="thermcard"><h2>7 · Thermal, tank / enclosure</h2><table class="res" id="t_therm"></table><div id="thermflags"></div></div>
-        <div class="card"><h2>7b · Insulation stress — Weidmann method <span class="tag">cf. Transformerboard III</span></h2><table class="res" id="t_ins"></table><div id="insflags"></div></div>
-        <div class="card"><h2>8 · Weights &amp; materials</h2><table class="res" id="t_wt"></table></div>
+        <div class="card"><h2>6 · Impedance, regulation &amp; efficiency</h2><div class="table-wrap"><table class="res" id="t_perf"></table></div></div>
+        <div class="card" id="thermcard"><h2>7 · Thermal, tank / enclosure</h2><div class="table-wrap"><table class="res" id="t_therm"></table></div><div id="thermflags"></div></div>
+        <div class="card"><h2>7b · Insulation stress — Weidmann method <span class="tag">cf. Transformerboard III</span></h2><div class="table-wrap"><table class="res" id="t_ins"></table></div><div id="insflags"></div></div>
+        <div class="card"><h2>8 · Weights &amp; materials</h2><div class="table-wrap"><table class="res" id="t_wt"></table></div></div>
       </div>
       <div class="card">
         <h2>9 · Bill of Materials <span class="tag">quantities from design · prices editable</span></h2>
@@ -221,6 +267,83 @@
         </div>
         <div id="animbox"></div>
       </div>
+      <div class="card">
+        <h2>12 · Rating plate &amp; terminal marking <span class="tag">IEC 60076-1 §7 layout</span></h2>
+        <div id="ratingplate"></div>
+        <div class="btnrow" style="max-width:420px">
+          <button class="b2" onclick="downloadRatingPlatePDF()">Download Rating Plate (PDF)</button>
+        </div>
+        <div class="note">Plate values are populated straight from this design — enter your own manufacturer name, serial number and year of manufacture before fitting to a real unit. Tapping voltages shown for the maximum HV tap; a full design includes every tap. Once the unit is built and tested, log the results in the <a href="test-report.html" style="color:var(--accent);font-weight:700">test report generator</a> to produce a matching test certificate.</div>
+      </div>
+
+      <div class="card">
+        <h2>13 · Impulse voltage distribution <span class="tag">analytical envelope + time-domain ladder</span></h2>
+        <div class="calcrow" style="margin-bottom:10px">
+          <div><label>Distribution constant α = √(Cg/Cs)</label><input id="alphaK" type="number" value="8" step="0.5" min="1" max="30" oninput="drawImpulse(LAST);drawImpulseTD(LAST)"></div>
+          <div><label>Ground capacitance C<sub>g</sub></label><select id="cgSrc" onchange="drawImpulseTD(LAST)">
+            <option value="geo" selected>estimate from this design's geometry</option>
+            <option value="man">manual (nF, below)</option></select></div>
+          <div><label>C<sub>g</sub> manual value (nF)</label><input id="cgMan" type="number" value="2" step="0.25" min="0.05" max="100" oninput="drawImpulseTD(LAST)"></div>
+        </div>
+        <div class="note" style="margin-bottom:12px">α is set by winding geometry and insulation design (ground vs series capacitance) — this tool does not compute it from first principles. Typical published ranges: ≈4–7 for smaller/MV windings or units with static-ring stress control, ≈10–20 for larger EHV windings without special mitigation. Enter your own value if you have it from a detailed capacitance calculation; otherwise use this to explore how sensitive line-end stress is to α. <b>C<sub>g</sub> does not change the §13 shape</b> (which depends on α alone) but it does set the <b>time scale</b> of the §13b transient — on <i>estimate from geometry</i> it is taken as the HV→LV coaxial capacitance of this design, 2πε₀ε<sub>r</sub>h / ln(r₃/r₂), which ignores the HV-to-tank and winding-to-yoke paths and so is a lower bound.</div>
+        <div id="impulsebox"></div>
+
+        <h2 style="margin-top:22px">13b · Impulse transient — RLC ladder, time domain <span class="tag">RK4 · full &amp; chopped wave</span></h2>
+        <div class="calcrow" style="margin-bottom:10px">
+          <div><label>Ladder sections n</label><input id="impN" type="number" value="40" step="5" min="10" max="120" oninput="drawImpulseTD(LAST)"></div>
+          <div><label>Series damping ζ (0 = lossless)</label><input id="impZeta" type="number" value="0.04" step="0.01" min="0" max="0.5" oninput="drawImpulseTD(LAST)"></div>
+          <div><label>Chop time (µs)</label><input id="impChop" type="number" value="3" step="0.5" min="0.5" max="8" oninput="drawImpulseTD(LAST)"></div>
+          <div><label>Simulated window (µs) <span style="font-weight:400">— auto from √(L·C<sub>g</sub>)</span></label><input id="impTend" type="number" value="60" step="5" min="10" max="600" oninput="IMPT=true;drawImpulseTD(LAST)"></div>
+        </div>
+        <div id="impulsetdbox"></div>
+        <div class="note" style="margin-top:10px"><b>Method — §13:</b> classical uniform-RLC-ladder model. Initial distribution e(x)/V₀ = sinh(α(1−x/L))/sinh(α) (x = 0 at line end); final (steady-state, grounded neutral) distribution is linear. Line-end gradient concentration factor = α·coth(α) versus a uniform winding.<br>
+        <b>Method — §13b:</b> the same ladder solved in the <b>time domain</b> instead of at t = 0⁺ only. The winding is discretised into n sections, each with series inductance L/n (air-core solenoid inductance — core flux cannot follow a fast front), series capacitance C<sub>s</sub>·n, ground capacitance C<sub>g</sub>/n and a series resistance set by the damping factor ζ. Node equations M·v̇ = i<sub>j</sub> − i<sub>j+1</sub> (M tridiagonal, symmetric, positive-definite — solved by the Thomas algorithm) and L·i̇ = v<sub>j−1</sub> − v<sub>j</sub> − R·i are integrated with 4th-order Runge–Kutta under a standard 1.2/50 µs double-exponential wave and the same wave chopped on the tail. The <b>envelope</b> traces are max|v| over the whole simulation at each point of the winding — this is the oscillatory overshoot between the initial and final distributions that the §13 static curves cannot show, and it is what actually sets peak turn-to-turn stress.<br>
+        <b>Still an estimate.</b> A uniform ladder with lumped C<sub>g</sub>/C<sub>s</sub> ignores mutual inductance between sections, the real (non-uniform) capacitance of interleaved or shielded discs, static-ring effects, tap-lead capacitance and frequency-dependent losses. It will tell you whether your design is in comfortable or marginal territory and how sensitive it is to α — it is not a substitute for FEM-extracted capacitance matrices plus a full transient solve before finalising insulation and static-ring design. <a href="article-fem-vs-analytical.html" style="color:var(--accent);font-weight:700">Where analytical methods break down →</a></div>
+      </div>
+
+      <div class="card">
+        <h2>14 · Short-circuit forces <span class="tag">analytical estimate, IEC 60076-5 basis</span></h2>
+        <div class="calcrow" style="margin-bottom:10px">
+          <div><label>Asymmetry factor k (peak = k√2 × I<sub>sc</sub>)</label><input id="kAsym" type="number" value="1.8" step="0.05" min="1.2" max="2" oninput="calc()"></div>
+        </div>
+        <div class="note" style="margin-bottom:12px">k = 1.8 is the IEC 60076-5 default for power transformers (assumes a high X/R ratio, i.e. worst-case DC offset). Use a higher value only if you have calculated the actual system X/R ratio and it justifies it.</div>
+        <div class="table-wrap"><table class="res" id="t_sc"></table></div>
+        <div id="leakbox" style="margin-top:14px"></div>
+        <div class="note" style="margin-top:10px"><b>Method:</b> peak asymmetrical current I<sub>peak</sub> = k√2 × I<sub>sc</sub> (I<sub>sc</sub> from this design's %Z). Radial force from the classical leakage-flux model: F<sub>r</sub> = B<sub>avg</sub>·(N·I<sub>peak</sub>)·π·D<sub>m</sub> with B<sub>avg</sub> = μ₀·N·I<sub>peak</sub>/(2·h<sub>w</sub>) — the triangular/trapezoidal ampere-turn profile plotted above, averaged across each winding's radial build. Ampere-turn balance means HV and LV carry equal and opposite totals; the per-winding figures differ only through their own mean diameters. The outer winding goes into <b>tension</b> (bursting), the inner into <b>compression</b> (buckling risk) — both are evaluated in §14b.</div>
+      </div>
+
+      <div class="card">
+        <h2>14b · Mechanical stress &amp; withstand <span class="tag">hoop · buckling · axial · spacer pressure</span></h2>
+        <div class="calcrow" style="margin-bottom:10px">
+          <div><label>Conductor temper (outer winding)</label><select id="scTemper" onchange="calc()">
+            <option value="70">Soft / annealed — Rp0.2 ≈ 70 MPa</option>
+            <option value="160" selected>Half-hard — Rp0.2 ≈ 160 MPa</option>
+            <option value="250">Hard-drawn — Rp0.2 ≈ 250 MPa</option>
+            <option value="200">CTC, epoxy-bonded — Rp0.2 ≈ 200 MPa</option></select></div>
+          <div><label>Radial spacer columns n<sub>s</sub></label><input id="scCols" type="number" value="8" step="1" min="2" max="24" oninput="calc()"></div>
+          <div><label>Spacer width (circumferential, mm)</label><input id="scSpW" type="number" value="40" step="5" min="10" max="120" oninput="calc()"></div>
+          <div><label>Inner-winding layers acting independently</label><input id="scLayers" type="number" value="1" step="1" min="1" max="12" oninput="calc()"></div>
+          <div><label>Axial ampere-turn imbalance ε (%)</label><input id="scImbal" type="number" value="3" step="0.5" min="0" max="25" oninput="calc()"></div>
+        </div>
+        <div class="note" style="margin-bottom:12px">ε is the fraction of ampere-turns <b>not</b> axially balanced between HV and LV. Even a nominally balanced pair carries a few percent from tap-zone gaps, winding-height tolerances and end-turn effects — 2–5 % is a realistic first-cut band. Use 8–15 % for a winding with a mid-height tap gap, and check the extreme tap position, which is usually the worst case. <b>n<sub>s</sub> = 1 layer</b> treats the inner winding radial build as one bonded ring (optimistic — right for epoxy-bonded CTC or a fully keyed disc winding); raise it to the number of layers that can buckle independently for a conservative bound on a plain layer winding.</div>
+        <div class="table-wrap"><table class="res" id="t_scstress"></table></div>
+        <div id="scflags"></div>
+        <div class="note" style="margin-top:10px"><b>Method.</b> <b>Hoop stress</b> σ = F<sub>r</sub>/(2π·N·a) — ring tension F<sub>r</sub>/2π carried by the winding's total conductor section. Compared against the widely used industry ceiling of 0.9 × Rp0.2 for the outer (tensile) winding; IEC 60076-5 itself sets no numeric stress limit, it requires demonstrated withstand.
+        <b>Buckling</b> uses the classical thin-ring result under uniform external pressure with n<sub>s</sub> equally spaced radial supports: σ<sub>cr</sub> = (n<sub>s</sub>²−1)·E·t²/(12·R²), E = 110 GPa for copper, t = inner-winding radial build (divided by the independent-layer count), R = its mean radius. n<sub>s</sub> = 2 degenerates to the free-buckling case σ<sub>cr</sub> = E·t²/(4R²), as it should.
+        <b>Axial force</b> uses the residual ampere-turn method: F<sub>ax</sub> = μ₀·π·D<sub>m</sub>·(ε·N·I<sub>peak</sub>)²/(2·h<sub>w</sub>) — the radial leakage flux created by the unbalanced ampere-turns acting on the axial current. <b>Spacer pressure</b> = F<sub>ax</sub> divided by the true bearing area of the radial spacer columns, checked against ≈35 MPa, a common design ceiling for precompressed transformerboard under short-circuit (ultimate crushing is well above this; the design limit protects clamping stability and prevents permanent set).
+        <b>Limits of this check.</b> Uniform, monolithic rings; no allowance for winding ovality, conductor tilting, joint and lead forces, cumulative axial forces through the clamping structure, or the dynamic amplification when the fault frequency is near a mechanical natural frequency. A genuine withstand demonstration is either a certified short-circuit test or FEM electrodynamic force mapping per IEC 60076-5 — <b>treat everything here as a sizing sanity-check, not a certification</b>. <a href="article-fem-vs-analytical.html" style="color:var(--accent);font-weight:700">When you need FEM →</a> · <a href="software.html" style="color:var(--accent);font-weight:700">Simulation software directory →</a></div>
+      </div>
+
+      <div class="card">
+        <h2>15 · Short-circuit thermal withstand <span class="tag">adiabatic, copper conductor, IEC 60076-5</span></h2>
+        <div class="calcrow" style="margin-bottom:10px">
+          <div><label>Fault duration t (s)</label><input id="scDur" type="number" value="2" step="0.5" min="0.2" max="5" oninput="calc()"></div>
+          <div><label>Winding temp. before fault θᵢ (°C)</label><input id="scTi" type="number" value="105" step="5" oninput="calc()"></div>
+        </div>
+        <div class="note" style="margin-bottom:12px">t = 2 s is the IEC 60076-5 standard design duration; use your protection's actual clearing time if it's faster (this lowers the temperature rise, since heating scales with t). θᵢ defaults to a typical pre-fault hot winding temperature — use the actual value if you have it (this calculator does not compute a hot-spot temperature itself).</div>
+        <div class="table-wrap"><table class="res" id="t_scth"></table></div>
+        <div class="note" style="margin-top:10px"><b>Method:</b> adiabatic (no heat loss during the fault) temperature rise for <b>copper</b> conductors, Δθ ≈ 2·J²·t (J in A/mm² at fault current, t in seconds) — the standard short-form of the IEC 60076-5 thermal withstand check. Current density at fault J = (rated current density) × (SC current multiple), i.e. this design's own conductor sizing carried through to fault conditions. Compared against 250 °C, the commonly cited maximum for normal Kraft-paper-insulated copper windings (check your actual insulation class — thermally upgraded paper permits higher). <b>Adiabatic means no cooling during the fault</b> — correct for the short IEC-standard duration, but this is still a first-cut check: it doesn't account for uneven current distribution, contact/joint hot-spots, or aluminium conductors.</div>
+      </div>
       <footer id="foot">
         <b>Method &amp; validity.</b> Classic core-type design chain: volts/turn E<sub>t</sub>=K√S → net core section A<sub>i</sub>=E<sub>t</sub>/4.44·f·B<sub>m</sub> →
         turns from phase voltages → conductors from current density → leakage reactance by the ampere-turn / duct
@@ -238,7 +361,7 @@
 "use strict";
 const MU0=4e-7*Math.PI, RHO75=0.0211, RHO120=0.0244, DCU=8890, DFE=7650, DOIL=890;
 const $=id=>document.getElementById(id);
-let TTYPE="dist", touched={}, LAST=null, CURSTD="iec", GOVR=null;
+let TTYPE="dist", touched={}, LAST=null, CURSTD="iec", GOVR=null, IMPT=false;
 
 /* Standards: reference temps for losses, rise limits, tolerances, cooling target */
 const STDS={
@@ -564,6 +687,125 @@ function calc(){
     row("Max-efficiency load point",fmt(r.Lmax*100,0)+" % ("+fmt(r.eff(r.Lmax,1),2)+" %)");
   $("t_perf").innerHTML=perf;
 
+  sec("Short-circuit forces (analytical estimate)");
+  {
+    const k=Math.max(1.2,+$("kAsym").value||1.8);
+    const IscLV=r.IlvL*r.Isc, IscHV=r.IhvL*r.Isc;           // symmetrical RMS SC line currents
+    const IpeakLV=k*Math.SQRT2*r.Isc*r.Ilv, IpeakHV=k*Math.SQRT2*r.Isc*r.Ihv; // peak asymmetrical phase current
+    const NIpeak=r.Tlv*IpeakLV;                              // ampere-turns balance — LV taken as reference
+    const Dm=(r.D2+r.D3)/2, hw=r.h;
+    const Bavg=MU0*NIpeak/(2*hw);                            // mean axial leakage flux density over a winding build
+    const Bmax=MU0*NIpeak/hw;                                // peak, in the HV-LV gap
+    const DmLV=(r.D1+r.D2)/2, DmHV=(r.D3+r.D4)/2;
+    const Fr=(MU0*Math.PI*Dm/(2*hw))*NIpeak*NIpeak;          // total radial force at the gap, N
+    const FrLV=Bavg*NIpeak*Math.PI*DmLV;                     // inward (compressive) on inner winding
+    const FrHV=Bavg*NIpeak*Math.PI*DmHV;                     // outward (tensile) on outer winding
+    Object.assign(r,{scK:k,IscLV,IscHV,IpeakLV,IpeakHV,NIpeak,scDm:Dm,scHw:hw,Fr,FrLV,FrHV,Bavg,Bmax,DmLV,DmHV});
+    $("t_sc").innerHTML=
+      row("Symmetrical SC current — LV / HV (RMS line)",fmt(IscLV,0)+" / "+fmt(IscHV,0)+" A","hl")+
+      row("SC current, multiple of rated",fmt(r.Isc,1)+" ×")+
+      row("Asymmetry factor k used",fmt(k,2))+
+      row("Peak asymmetrical current — LV / HV",fmt(IpeakLV,0)+" / "+fmt(IpeakHV,0)+" A","hl")+
+      row("Ampere-turns at peak (N·I, balanced)",fmt(NIpeak,0)+" A-t")+
+      row("Peak leakage flux density in gap Bmax",fmt(Bmax,3)+" T")+
+      row("Mean flux density over a winding build Bavg",fmt(Bavg,3)+" T")+
+      row("Mean duct diameter Dm used",fmt(Dm*1e3,0)+" mm")+
+      row("Winding height hw used",fmt(hw*1e3,0)+" mm")+
+      row("Total radial force at gap (reference)",fmt(Fr/1e3,1)+" kN","hl")+
+      row("Radial force — inner LV (compressive, inward)",fmt(FrLV/1e3,1)+" kN")+
+      row("Radial force — outer HV (tensile, outward)",fmt(FrHV/1e3,1)+" kN","hl");
+  }
+
+  sec("Mechanical stress & withstand (short circuit)");
+  {
+    const Rp02=+$("scTemper").value||160, ncol=Math.max(2,+$("scCols").value||8);
+    const wsp=Math.max(5,+$("scSpW").value||40)/1e3, nlay=Math.max(1,+$("scLayers").value||1);
+    const eps=Math.max(0,+$("scImbal").value||0)/100;
+    const ECU=110e9, PBLIM=35e6, hoopLim=0.9*Rp02*1e6;
+
+    // hoop stress: ring tension Fr/2pi carried by the total conductor section of that winding
+    const Ahv=r.Thv*r.ahv*1e-6, Alv=r.Tlv*r.alv*1e-6;        // m^2
+    const sHV=r.FrHV/(2*Math.PI*Ahv), sLV=r.FrLV/(2*Math.PI*Alv);
+    const hoopSF=hoopLim/sHV;
+
+    // inner-winding buckling: thin ring, uniform external pressure, ncol equally spaced supports.
+    // Elastic buckling only governs if it happens BELOW the compressive yield stress; for a stubby
+    // winding the ring formula runs away above E, which is meaningless — the winding yields first.
+    const tIn=(r.blv/nlay), Rin=(r.D1+r.D2)/4, slend=tIn/Rin;
+    const sCrEl=(ncol*ncol-1)*ECU*tIn*tIn/(12*Rin*Rin);
+    const buckles=sCrEl<hoopLim;
+    const sCr=Math.min(sCrEl,hoopLim);                        // governing critical stress
+    const buckMode=buckles?"elastic buckling":"compressive yield";
+    const buckSF=sCr/sLV;
+
+    // axial force by the residual ampere-turn method
+    const NIres=eps*r.NIpeak;
+    const Fax=MU0*Math.PI*r.scDm*NIres*NIres/(2*r.scHw);
+    const Asp=ncol*wsp*r.bhv;                                 // bearing area of the radial spacer columns
+    const pSp=Asp>0?Fax/Asp:0;
+
+    Object.assign(r,{scRp02:Rp02,scNcol:ncol,scWsp:wsp,scNlay:nlay,scEps:eps,
+                     sHV,sLV,hoopSF,sCr,sCrEl,buckles,buckMode,buckSF,NIres,Fax,pSp,scHoopLim:hoopLim});
+    const vt=(sf,g,y)=>sf>=g?"hl":(sf>=y?"":"warnrow");
+    $("t_scstress").innerHTML=
+      row("Conductor section — LV / HV (total)",fmt(Alv*1e6,0)+" / "+fmt(Ahv*1e6,0)+" mm²")+
+      row("Hoop stress — outer HV (tensile)",fmt(sHV/1e6,1)+" MPa","hl")+
+      row("Hoop stress — inner LV (compressive)",fmt(sLV/1e6,1)+" MPa")+
+      row("Design ceiling 0.9 × Rp0.2",fmt(hoopLim/1e6,0)+" MPa (Rp0.2 = "+fmt(Rp02,0)+" MPa)")+
+      row("Tensile safety factor",fmt(hoopSF,2),vt(hoopSF,1.5,1.0))+
+      row("Inner build t / mean radius R used",fmt(tIn*1e3,1)+" / "+fmt(Rin*1e3,0)+" mm (t/R = "+fmt(slend,2)+")"+(nlay>1?" — "+nlay+" independent layers":" — monolithic ring"))+
+      row("Elastic buckling stress (nₛ = "+ncol+")",sCrEl>1e11?"> 100 000 MPa (ring far too stubby to buckle)":fmt(sCrEl/1e6,0)+" MPa")+
+      row("Governing failure mode",buckMode,"hl")+
+      row("Governing critical stress",fmt(sCr/1e6,0)+" MPa")+
+      row("Inner-winding safety factor",fmt(buckSF,2),vt(buckSF,buckles?2.0:1.5,buckles?1.2:1.0))+
+      row("Ampere-turn imbalance ε used",fmt(eps*100,1)+" % → "+fmt(NIres,0)+" A-t residual")+
+      row("Axial force from residual A-t",fmt(Fax/1e3,1)+" kN","hl")+
+      row("Spacer bearing area ("+ncol+" × "+fmt(wsp*1e3,0)+" mm × "+fmt(r.bhv*1e3,0)+" mm build)",fmt(Asp*1e4,0)+" cm²")+
+      row("Spacer compressive pressure",fmt(pSp/1e6,1)+" MPa")+
+      row("Pressboard design ceiling",fmt(PBLIM/1e6,0)+" MPa",pSp<=PBLIM?"hl":"warnrow");
+
+    const fg=[];
+    if(hoopSF>=1.5) fg.push(`<div class="flag ok">Outer-winding tensile stress ${fmt(sHV/1e6,1)} MPa — SF ${fmt(hoopSF,2)} against 0.9·Rp0.2. Comfortable.</div>`);
+    else if(hoopSF>=1.0) fg.push(`<div class="flag warn">Outer-winding tensile stress ${fmt(sHV/1e6,1)} MPa — SF only ${fmt(hoopSF,2)}. Inside the ceiling but with little margin. Consider a harder temper, more conductor section, or a higher %Z to cut the fault current.</div>`);
+    else fg.push(`<div class="flag bad">Outer-winding hoop stress ${fmt(sHV/1e6,1)} MPa EXCEEDS 0.9·Rp0.2 = ${fmt(hoopLim/1e6,0)} MPa. Increase conductor section, move to a harder temper, or raise %Z to cut the fault current.</div>`);
+    if(!buckles) fg.push(`<div class="flag ${buckSF>=1.5?"ok":(buckSF>=1.0?"warn":"bad")}">Inner winding will not buckle elastically at t/R = ${fmt(slend,2)} with ${ncol} spacer columns — <b>compressive yield governs instead</b>, SF ${fmt(buckSF,2)} against 0.9·Rp0.2.${buckSF<1.5?" That margin is thin: increase the inner conductor section or raise %Z to cut the fault current.":" Buckling only becomes the failure mode on thin, large-diameter inner windings."}</div>`);
+    else if(buckSF>=2.0) fg.push(`<div class="flag ok">Inner-winding buckling SF ${fmt(buckSF,2)} with ${ncol} spacer columns.</div>`);
+    else if(buckSF>=1.2) fg.push(`<div class="flag warn">Inner-winding buckling SF ${fmt(buckSF,2)} — thin margin. Add spacer columns (σ<sub>cr</sub> scales with nₛ²), thicken the radial build, or fit a solid inner support cylinder.</div>`);
+    else fg.push(`<div class="flag bad">Inner winding is buckling-critical (SF ${fmt(buckSF,2)}). ${ncol} spacer columns are not enough for a ${fmt(tIn*1e3,1)} mm build at ${fmt(Rin*1e3,0)} mm radius — add columns, bond the layers, or support against a rigid cylinder.</div>`);
+    if(buckles&&slend>0.1) fg.push(`<div class="flag warn">t/R = ${fmt(slend,2)} is outside the thin-ring validity range (≲0.1) the buckling formula assumes — read σ<sub>cr</sub> as indicative only.</div>`);
+    if(pSp>PBLIM) fg.push(`<div class="flag warn">Spacer pressure ${fmt(pSp/1e6,1)} MPa exceeds the ${fmt(PBLIM/1e6,0)} MPa design ceiling — widen the spacers or add columns.</div>`);
+    $("scflags").innerHTML=fg.join("");
+    REC.flag=(REC.flag?REC.flag+" ":"")+strip(fg.join(" ")).replace(/\s+/g," ").trim();
+  }
+
+  sec("Short-circuit thermal withstand (adiabatic, copper)");
+  {
+    const t=Math.max(0.2,+$("scDur").value||2), Ti=+$("scTi").value||105, LIMIT=250;
+    const JscLV=r.dlv*r.Isc, JscHV=r.dhv*r.Isc;              // fault current density = rated density x SC multiple
+    const dTLV=2*JscLV*JscLV*t, dTHV=2*JscHV*JscHV*t;        // adiabatic copper rise, deg C (J in A/mm^2, t in s)
+    const TfLV=Ti+dTLV, TfHV=Ti+dTHV;
+    const CUMELT=1083; // copper melting point, deg C — the adiabatic formula is meaningless past this
+    const okLV=TfLV<=LIMIT, okHV=TfHV<=LIMIT;
+    const showT=Tf=>Tf>CUMELT?"> "+fmt(CUMELT,0)+" °C (melts before this — formula invalid this far past limit)":fmt(Tf,0)+" °C";
+    Object.assign(r,{scDur:t,scTi:Ti,JscLV,JscHV,TfLV,TfHV,scThLimit:LIMIT});
+    $("t_scth").innerHTML=
+      row("Fault current density — LV / HV",fmt(JscLV,1)+" / "+fmt(JscHV,1)+" A/mm²","hl")+
+      row("Duration used",fmt(t,1)+" s")+
+      row("Initial temperature θᵢ",fmt(Ti,0)+" °C")+
+      row("Final temperature — LV",showT(TfLV),okLV?"hl":"warnrow")+
+      row("Final temperature — HV",showT(TfHV),okHV?"hl":"warnrow")+
+      row("Limit (normal Kraft paper, copper)",fmt(LIMIT,0)+" °C")+
+      row("Verdict",(okLV&&okHV)?"✓ within limit at "+fmt(t,1)+" s":"⚠ EXCEEDS limit — needs faster protection clearing, lower rated current density, or thermally upgraded paper",(okLV&&okHV)?"hl":"warnrow");
+  }
+
+  sec("Impulse voltage distribution (analytical estimate)");
+  {
+    const a=Math.max(0.5,+$("alphaK").value||8), conc=a/Math.tanh(a);
+    row("Distribution constant α = √(Cg/Cs)",fmt(a,2));
+    row("Line-end gradient, initial vs uniform",fmt(conc,2)+"×","hl");
+    row("Method note","Classical uniform-RLC-ladder estimate — verify with time-domain transient simulation before finalising insulation design");
+  }
+
   sec("Thermal, tank / enclosure");
   let th="",fl="";
   if(!r.dry){
@@ -647,7 +889,7 @@ function calc(){
                 cc:d2.Wfe*1.05*GRADES[g].p,own:d2.Wfe*1.05*GRADES[g].p+cap*d2.NLL/1e3});
     }
     const best=Math.min(...res.map(x=>x.own));
-    let gh=`<table class="res" style="font-size:12.5px"><tr style="background:var(--chip)">
+    let gh=`<div class="table-wrap"><table class="res" style="font-size:12.5px"><tr style="background:var(--chip)">
       <td style="font-weight:700">Grade</td><td style="font-weight:700">t (mm)</td><td style="font-weight:700">Bm (T)</td>
       <td style="font-weight:700">W/kg</td><td style="font-weight:700">Core (kg)</td><td style="font-weight:700">NLL (kW)</td>
       ${nllTgt>0?'<td style="font-weight:700">≤ NLL tgt</td>':""}
@@ -665,14 +907,15 @@ function calc(){
           "NLL "+fmt(x.NLL/1e3,2)+" kW - core "+fmt(x.Wfe,0)+" kg - owning $"+fmt(x.own,0)+(bst?" (best)":"")+
           (nllTgt>0?(x.NLL/1e3<=nllTgt?" - meets NLL target":" - exceeds NLL target"):""));
     }
-    gh+=`</table><div class="note" style="margin-top:6px">Click a row to design with that grade. ★ = lowest owning cost
+    gh+=`</table></div><div class="note" style="margin-top:6px">Click a row to design with that grade. ★ = lowest owning cost
       (core material + NLL × ${fmt(cap,0)} USD/kW capitalisation, IEC 60076-20 logic). Thinner laminations cut eddy loss but
       cost more and take longer to stack; Hi-B/laser-scribed earn their premium at high Bm or high capitalisation rates;
       laser-scribed benefit is lost if annealed after slitting; amorphous needs Bm ≤ 1.35 T and a larger core window.</div>`;
     $("gradecmp").innerHTML=gh;
   }
   renderBOM(r);
-  drawSketch(r); drawEff(r); drawCore(r); drawVec(r);
+  drawSketch(r); drawEff(r); drawCore(r); drawVec(r); drawRatingPlate(r); drawImpulse(r);
+  drawLeakage(r); drawImpulseTD(r);
 
   const chk=[];
   chk.push(r.Kw>0.45?"⚠ window fill > 0.45 — congested, increase h/d":"✓ window fill OK");
@@ -759,6 +1002,215 @@ function drawCore(r){
   g+=`<text x="${cx+R+18}" y="${cy+28}">${r.gkey} — ${r.G.t} mm laminations</text>`;
   g+="</svg>"; $("coresteps").innerHTML=g;
 }
+function drawImpulse(r){
+  // Classical initial/final impulse voltage distribution along the winding.
+  // x = per-unit position, 0 = line end, 1 = neutral end. e(x)/V0 initial = sinh(a(1-x))/sinh(a); final = (1-x).
+  if(!r) return;
+  const box=$("impulsebox"); if(!box) return;
+  const a=Math.max(0.5,+$("alphaK").value||8);
+  const W=560,H=360,mL=44,mB=40,mT=20,mR=14;
+  const X=x=>mL+x*(W-mL-mR), Y=v=>H-mB-v*(H-mB-mT);
+  const path=f=>{const p=[];for(let x=0;x<=1.0001;x+=0.02)p.push([x,f(x)]);
+    return p.map((pt,i)=>(i?"L":"M")+X(pt[0]).toFixed(1)+","+Y(pt[1]).toFixed(1)).join(" ");};
+  const initF=x=>Math.sinh(a*(1-x))/Math.sinh(a), finF=x=>1-x;
+  let g=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="max-width:100%">`;
+  for(let i=0;i<=4;i++){const v=i/4,y=Y(v);
+    g+=`<line x1="${mL}" y1="${y}" x2="${W-mR}" y2="${y}" stroke="#e3e9f0"/><text x="4" y="${y+4}">${v.toFixed(2)}</text>`;}
+  for(const x of [0,0.25,0.5,0.75,1.0]){const xx=X(x);
+    g+=`<line x1="${xx}" y1="${mT}" x2="${xx}" y2="${H-mB}" stroke="#eef2f7"/><text x="${xx-10}" y="${H-mB+16}">${(x*100).toFixed(0)}%</text>`;}
+  g+=`<path d="${path(initF)}" fill="none" stroke="#c0262d" stroke-width="2.4"/>`;
+  g+=`<path d="${path(finF)}" fill="none" stroke="#0a8f6c" stroke-width="2.4" stroke-dasharray="6 4"/>`;
+  g+=`<text x="${mL+8}" y="${mT+12}">— initial (t=0⁺)   - - final (steady-state)</text>`;
+  g+=`<text x="${W/2-100}" y="${H-6}">position along winding — 0% = line end, 100% = neutral</text>`;
+  g+="</svg>";
+  const conc=a/Math.tanh(a); // = a*coth(a)
+  box.innerHTML=g+
+    `<div class="table-wrap"><table class="res">`+
+    `<tr><td>Distribution constant α</td><td>${fmt(a,2)}</td></tr>`+
+    `<tr><td>Line-end gradient, initial vs uniform (α·coth α)</td><td>${fmt(conc,2)}×</td></tr>`+
+    `<tr><td>Initial voltage at 10% of winding from line end</td><td>${fmt(initF(0.1)*100,1)}% of V₀ (linear/uniform would be ${fmt((1-0.1)*100,0)}%)</td></tr>`+
+    `</table></div>`;
+}
+
+// ---------- leakage flux / ampere-turn profile across the radial build ----------
+function drawLeakage(r){
+  if(!r||!r.NIpeak) return;
+  const box=$("leakbox"); if(!box) return;
+  const r1=r.D1/2, r2=r.D2/2, r3=r.D3/2, r4=r.D4/2, hw=r.h, NI=r.NIpeak;
+  const W=560,H=300,mL=52,mB=42,mT=26,mR=16;
+  const X=x=>mL+((x-r1)/(r4-r1))*(W-mL-mR), Y=v=>H-mB-(v/(r.Bmax*1.15))*(H-mB-mT);
+  // enclosed ampere-turns: ramps up across LV build, flat across the gap, ramps down across HV build
+  const AT=x=>x<=r2?NI*(x-r1)/Math.max(1e-9,r2-r1):(x<=r3?NI:NI*(r4-x)/Math.max(1e-9,r4-r3));
+  const B=x=>MU0*AT(x)/hw;
+  const pts=[];for(let i=0;i<=160;i++){const x=r1+(r4-r1)*i/160;pts.push([x,B(x)]);}
+  let g=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="max-width:100%">`;
+  g+=`<rect x="${X(r1)}" y="${mT}" width="${X(r2)-X(r1)}" height="${H-mB-mT}" fill="#0a8f6c" opacity="0.08"/>`;
+  g+=`<rect x="${X(r3)}" y="${mT}" width="${X(r4)-X(r3)}" height="${H-mB-mT}" fill="#0e5fa8" opacity="0.08"/>`;
+  for(let i=0;i<=4;i++){const v=r.Bmax*1.15*i/4,y=Y(v);
+    g+=`<line x1="${mL}" y1="${y}" x2="${W-mR}" y2="${y}" stroke="#e3e9f0"/><text x="4" y="${y+4}">${v.toFixed(2)}</text>`;}
+  g+=`<path d="${pts.map((p,i)=>(i?"L":"M")+X(p[0]).toFixed(1)+","+Y(p[1]).toFixed(1)).join(" ")}" fill="none" stroke="#c0262d" stroke-width="2.6"/>`;
+  g+=`<line x1="${mL}" y1="${Y(r.Bavg)}" x2="${W-mR}" y2="${Y(r.Bavg)}" stroke="#5b6b7f" stroke-dasharray="5 4"/>`;
+  g+=`<text x="${W-mR-108}" y="${Y(r.Bavg)-5}">Bavg = ${fmt(r.Bavg,3)} T</text>`;
+  g+=`<text x="${X((r1+r2)/2)-14}" y="${H-mB+16}">LV</text>`;
+  g+=`<text x="${X((r2+r3)/2)-14}" y="${H-mB+16}">gap</text>`;
+  g+=`<text x="${X((r3+r4)/2)-14}" y="${H-mB+16}">HV</text>`;
+  g+=`<text x="${mL}" y="${mT-8}">axial leakage flux density B (T) at peak short-circuit current</text>`;
+  g+=`<text x="6" y="${mT-8}">T</text>`;
+  g+=`<text x="${W/2-96}" y="${H-6}">radius — ${fmt(r1*1e3,0)} mm (LV inner) to ${fmt(r4*1e3,0)} mm (HV outer)</text>`;
+  g+="</svg>";
+  box.innerHTML=g+`<div class="note" style="margin-top:6px">The trapezoid is the classical ampere-turn picture: enclosed A-t ramp linearly through each winding build and are constant across the gap, so B peaks at <b>${fmt(r.Bmax,3)} T</b> in the duct and averages <b>${fmt(r.Bavg,3)} T</b> over each winding — that average is what multiplies the winding current to give the radial force in the table above. Anything that breaks this picture (unequal winding heights, tap gaps, off-centre windings) produces the radial flux component that drives axial force in §14b.</div>`;
+}
+
+// ---------- time-domain RLC ladder impulse solver ----------
+function impulseSolve(P,chop){
+  // P: {n, L, Cs, Cg, R, tEnd, dt, tc}
+  const n=P.n, m=n-1, Cg=P.Cg, Cs=P.Cs, L=P.L, R=P.R;
+  const T1=68.2e-6, T2=0.405e-6, A0=1.037, TC=0.1e-6;
+  const base=t=>A0*(Math.exp(-t/T1)-Math.exp(-t/T2));
+  const dbase=t=>A0*(-Math.exp(-t/T1)/T1+Math.exp(-t/T2)/T2);
+  const Vc=base(P.tc), dVc=dbase(P.tc);
+  const src=t=>(!chop||t<P.tc)?base(t):Vc*Math.exp(-(t-P.tc)/TC);
+  const dsrc=t=>(!chop||t<P.tc)?dbase(t):-Vc*Math.exp(-(t-P.tc)/TC)/TC;
+  // tridiagonal M = [-Cs, Cg+2Cs, -Cs], precomputed Thomas sweep
+  const a=-Cs,b=Cg+2*Cs,c=-Cs, cp=new Float64Array(m), den=new Float64Array(m);
+  den[0]=b; cp[0]=c/b;
+  for(let j=1;j<m;j++){den[j]=b-a*cp[j-1]; cp[j]=c/den[j];}
+  const dp=new Float64Array(m);
+  const solve=(d,out)=>{
+    dp[0]=d[0]/den[0];
+    for(let j=1;j<m;j++) dp[j]=(d[j]-a*dp[j-1])/den[j];
+    out[m-1]=dp[m-1];
+    for(let j=m-2;j>=0;j--) out[j]=dp[j]-cp[j]*out[j+1];
+  };
+  const v=new Float64Array(m), i=new Float64Array(n);
+  const rhs=new Float64Array(m), vd=new Float64Array(m), id=new Float64Array(n);
+  const kv=[0,1,2,3].map(()=>new Float64Array(m)), ki=[0,1,2,3].map(()=>new Float64Array(n));
+  const tv=new Float64Array(m), ti=new Float64Array(n);
+  const deriv=(t,vv,ii,ov,oi)=>{
+    const v0=src(t), dv0=dsrc(t);
+    for(let j=0;j<m;j++) rhs[j]=ii[j]-ii[j+1];
+    rhs[0]+=Cs*dv0;
+    solve(rhs,ov);
+    for(let j=0;j<n;j++){
+      const vl=(j===0)?v0:vv[j-1], vr=(j===n-1)?0:vv[j];
+      oi[j]=(vl-vr-R*ii[j])/L;
+    }
+  };
+  const env=new Float64Array(n+1), grad=new Float64Array(n);
+  let peakT=0, peakV=0;
+  const dt=P.dt, steps=P.steps;
+  for(let s=0;s<steps;s++){
+    const t=s*dt;
+    deriv(t,v,i,kv[0],ki[0]);
+    for(let j=0;j<m;j++) tv[j]=v[j]+0.5*dt*kv[0][j];
+    for(let j=0;j<n;j++) ti[j]=i[j]+0.5*dt*ki[0][j];
+    deriv(t+0.5*dt,tv,ti,kv[1],ki[1]);
+    for(let j=0;j<m;j++) tv[j]=v[j]+0.5*dt*kv[1][j];
+    for(let j=0;j<n;j++) ti[j]=i[j]+0.5*dt*ki[1][j];
+    deriv(t+0.5*dt,tv,ti,kv[2],ki[2]);
+    for(let j=0;j<m;j++) tv[j]=v[j]+dt*kv[2][j];
+    for(let j=0;j<n;j++) ti[j]=i[j]+dt*ki[2][j];
+    deriv(t+dt,tv,ti,kv[3],ki[3]);
+    for(let j=0;j<m;j++) v[j]+=dt/6*(kv[0][j]+2*kv[1][j]+2*kv[2][j]+kv[3][j]);
+    for(let j=0;j<n;j++) i[j]+=dt/6*(ki[0][j]+2*ki[1][j]+2*ki[2][j]+ki[3][j]);
+    if(!isFinite(v[0])) return null;                       // numerical blow-up guard
+    const v0=src(t+dt);
+    const at=k=>k===0?v0:(k===n?0:v[k-1]);
+    for(let k=0;k<=n;k++){const av=Math.abs(at(k)); if(av>env[k])env[k]=av;}
+    for(let k=0;k<n;k++){const gg=Math.abs(at(k)-at(k+1)); if(gg>grad[k])grad[k]=gg;}
+    for(let k=1;k<=n;k++){const av=Math.abs(at(k)); if(av>peakV){peakV=av;peakT=t+dt;}}
+  }
+  return {env,grad,peakV,peakT};
+}
+function drawImpulseTD(r){
+  const box=$("impulsetdbox"); if(!box) return;
+  if(!r){box.innerHTML="";return;}
+  const alpha=Math.max(0.5,+$("alphaK").value||8);
+  const n=Math.max(10,Math.min(120,Math.round(+$("impN").value||40)));
+  const zeta=Math.max(0,Math.min(0.5,+$("impZeta").value||0.04));
+  const tc=Math.max(0.5,+$("impChop").value||3)*1e-6;
+  // ground capacitance: HV->LV coaxial, or manual
+  const EPS0=8.854e-12, epsr=r.dry?4.0:3.2;
+  const r2=r.D2/2, r3=r.D3/2;
+  let Cg=(r3>r2)?2*Math.PI*EPS0*epsr*r.h/Math.log(r3/r2):2e-9;
+  let cgMode=$("cgSrc")?$("cgSrc").value:"geo";
+  if(cgMode==="man") Cg=Math.max(5e-11,(+$("cgMan").value||2)*1e-9);
+  const Cs=Cg/(alpha*alpha);
+  const rm=r.DmHV?r.DmHV/2:(r.D3+r.D4)/4;
+  const Lt=MU0*r.Thv*r.Thv*Math.PI*rm*rm/(r.h+0.9*rm);      // air-core solenoid inductance (Wheeler)
+  const Lk=Lt/n, Cgk=Cg/n, Csk=Cs*n;
+  // surge impedance of the WHOLE winding; the total series resistance is then spread over the n sections
+  const Zw=Math.sqrt(Lt/Cg), R=2*zeta*Zw/n;
+  // the winding's own natural period sets a sensible window — a fixed one truncates big units
+  const tRec=Math.min(600e-6,Math.max(20e-6,3*Math.sqrt(Lt*Cg)));
+  let tEnd;
+  if(!IMPT){ tEnd=tRec; if($("impTend")) $("impTend").value=Math.round(tRec*1e6); }
+  else tEnd=Math.max(10,+$("impTend").value||60)*1e-6;
+  let dt=Math.min(0.08*Math.sqrt(Lk*Cgk),20e-9);
+  let steps=Math.ceil(tEnd/dt); if(steps>80000){steps=80000;dt=tEnd/steps;}
+  const P={n,L:Lk,Cs:Csk,Cg:Cgk,R,tc,dt,steps};
+  const full=impulseSolve(P,false), ch=impulseSolve(P,true);
+  if(!full||!ch){box.innerHTML=`<div class="flag bad">Transient solve did not converge with these parameters — reduce the section count or raise the damping factor.</div>`;return;}
+  const LIkV=parseFloat(bilOf(r.hv/1000).split("/")[0])||0;
+  const uni=1/n;                                            // uniform per-section gradient, per unit
+  const gmaxF=Math.max(...full.grad)/uni, gmaxC=Math.max(...ch.grad)/uni;
+  const iF=full.grad.indexOf(Math.max(...full.grad)), iC=ch.grad.indexOf(Math.max(...ch.grad));
+  const initF=x=>Math.sinh(alpha*(1-x))/Math.sinh(alpha);
+  const initMaxGrad=(initF(0)-initF(1/n))/uni;
+  // --- envelope plot
+  const W=560,H=340,mL=44,mB=40,mT=22,mR=14;
+  const ymax=Math.max(1.25,Math.ceil(Math.max(full.peakV,ch.peakV)*10)/10+0.05);
+  const X=x=>mL+x*(W-mL-mR), Y=v=>H-mB-(v/ymax)*(H-mB-mT);
+  const poly=arr=>arr.map((v,k)=>(k?"L":"M")+X(k/n).toFixed(1)+","+Y(v).toFixed(1)).join(" ");
+  let g=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="max-width:100%">`;
+  for(let i2=0;i2<=5;i2++){const v=ymax*i2/5,y=Y(v);
+    g+=`<line x1="${mL}" y1="${y}" x2="${W-mR}" y2="${y}" stroke="#e3e9f0"/><text x="4" y="${y+4}">${v.toFixed(2)}</text>`;}
+  for(const x of [0,0.25,0.5,0.75,1.0]){const xx=X(x);
+    g+=`<line x1="${xx}" y1="${mT}" x2="${xx}" y2="${H-mB}" stroke="#eef2f7"/><text x="${xx-10}" y="${H-mB+16}">${(x*100).toFixed(0)}%</text>`;}
+  g+=`<line x1="${mL}" y1="${Y(1)}" x2="${W-mR}" y2="${Y(1)}" stroke="#b9c6d6" stroke-dasharray="3 3"/>`;
+  const initPts=[];for(let k=0;k<=n;k++)initPts.push(initF(k/n));
+  g+=`<path d="${poly(initPts)}" fill="none" stroke="#c0262d" stroke-width="1.8" stroke-dasharray="5 4" opacity="0.75"/>`;
+  g+=`<path d="${poly(Array.from(full.env))}" fill="none" stroke="#0e5fa8" stroke-width="2.6"/>`;
+  g+=`<path d="${poly(Array.from(ch.env))}" fill="none" stroke="#b4500a" stroke-width="2.4"/>`;
+  g+=`<text x="${mL+8}" y="${mT+12}">— full 1.2/50 envelope   — chopped @ ${fmt(tc*1e6,1)} µs   - - initial (t=0⁺)</text>`;
+  g+=`<text x="${W/2-104}" y="${H-6}">position along winding — 0% = line end, 100% = neutral</text>`;
+  g+="</svg>";
+  // --- gradient plot
+  const gmax=Math.max(2,Math.ceil(Math.max(gmaxF,gmaxC,initMaxGrad)+0.5));
+  const Y2=v=>H-mB-(v/gmax)*(H-mB-mT);
+  const poly2=arr=>arr.map((v,k)=>(k?"L":"M")+X((k+0.5)/n).toFixed(1)+","+Y2(v/uni).toFixed(1)).join(" ");
+  let g2=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="max-width:100%">`;
+  for(let i2=0;i2<=5;i2++){const v=gmax*i2/5,y=Y2(v);
+    g2+=`<line x1="${mL}" y1="${y}" x2="${W-mR}" y2="${y}" stroke="#e3e9f0"/><text x="4" y="${y+4}">${v.toFixed(1)}</text>`;}
+  for(const x of [0,0.25,0.5,0.75,1.0]){const xx=X(x);
+    g2+=`<line x1="${xx}" y1="${mT}" x2="${xx}" y2="${H-mB}" stroke="#eef2f7"/><text x="${xx-10}" y="${H-mB+16}">${(x*100).toFixed(0)}%</text>`;}
+  g2+=`<line x1="${mL}" y1="${Y2(1)}" x2="${W-mR}" y2="${Y2(1)}" stroke="#b9c6d6" stroke-dasharray="3 3"/><text x="${W-mR-96}" y="${Y2(1)-5}">uniform = 1.0×</text>`;
+  g2+=`<path d="${poly2(Array.from(full.grad))}" fill="none" stroke="#0e5fa8" stroke-width="2.6"/>`;
+  g2+=`<path d="${poly2(Array.from(ch.grad))}" fill="none" stroke="#b4500a" stroke-width="2.4"/>`;
+  g2+=`<text x="${mL+8}" y="${mT+12}">peak inter-section gradient, × the uniform value</text>`;
+  g2+=`<text x="${W/2-104}" y="${H-6}">position along winding — 0% = line end, 100% = neutral</text>`;
+  g2+="</svg>";
+  const kvPer=LIkV>0?" ("+fmt(LIkV*Math.max(...full.grad),1)+" kV across the worst section at LI = "+fmt(LIkV,0)+" kV)":"";
+  Object.assign(r,{tdCg:Cg,tdCs:Cs,tdL:Lt,tdPeakF:full.peakV,tdPeakC:ch.peakV,tdGradF:gmaxF,tdGradC:gmaxC});
+  box.innerHTML=`<div class="grid2">${g}${g2}</div>`+
+    `<div class="table-wrap"><table class="res">`+
+    `<tr><td>Ground capacitance C<sub>g</sub> ${cgMode==="geo"?"(from geometry)":"(manual)"}</td><td>${fmt(Cg*1e9,3)} nF</td></tr>`+
+    `<tr><td>Series capacitance C<sub>s</sub> = C<sub>g</sub>/α²</td><td>${fmt(Cs*1e12,1)} pF</td></tr>`+
+    `<tr><td>Air-core winding inductance (Wheeler)</td><td>${fmt(Lt*1e3,1)} mH</td></tr>`+
+    `<tr><td>Winding natural time constant √(L·C<sub>g</sub>)</td><td>${fmt(Math.sqrt(Lt*Cg)*1e6,1)} µs → suggested window ${fmt(tRec*1e6,0)} µs</td></tr>`+
+    `<tr><td>Ladder — sections / Δt / steps / window</td><td>${n} / ${fmt(dt*1e9,1)} ns / ${fmt(steps,0)} / ${fmt(tEnd*1e6,0)} µs</td></tr>`+
+    `<tr class="hl"><td>Peak node voltage — full wave</td><td>${fmt(full.peakV*100,1)} % of V₀ at t = ${fmt(full.peakT*1e6,2)} µs</td></tr>`+
+    `<tr class="hl"><td>Peak node voltage — chopped wave</td><td>${fmt(ch.peakV*100,1)} % of V₀ at t = ${fmt(ch.peakT*1e6,2)} µs</td></tr>`+
+    `<tr><td>Overshoot above the applied wave</td><td>${fmt((Math.max(full.peakV,ch.peakV)-1)*100,1)} % — the §13 static curves cannot exceed 100 %</td></tr>`+
+    `<tr class="hl"><td>Max inter-section gradient — full / chopped</td><td>${fmt(gmaxF,2)}× / ${fmt(gmaxC,2)}× uniform${kvPer}</td></tr>`+
+    `<tr><td>Worst gradient located at</td><td>${fmt(100*(iF+0.5)/n,0)} % (full) / ${fmt(100*(iC+0.5)/n,0)} % (chopped) from the line end</td></tr>`+
+    `<tr><td>Initial-distribution gradient at the line end</td><td>${fmt(initMaxGrad,2)}× uniform — for comparison with the transient peak</td></tr>`+
+    `</table></div>`+
+    (gmaxC>gmaxF*1.05?`<div class="flag warn">The <b>chopped</b> wave is the governing case here — its peak gradient is ${fmt(gmaxC/gmaxF,2)}× the full-wave value. Chopping excites the higher ladder modes; if your specification includes a chopped-wave test, the turn insulation must be designed to this figure, not the full-wave one.</div>`:
+     `<div class="flag ok">The full wave governs the peak gradient in this configuration (chopped = ${fmt(gmaxC/Math.max(gmaxF,1e-9),2)}× the full-wave value).</div>`)+
+    (Math.max(full.peakV,ch.peakV)>1.35?`<div class="flag warn">Envelope peaks at ${fmt(Math.max(full.peakV,ch.peakV)*100,0)} % of V₀ — that is a strongly oscillatory winding. Lower α (more interleaving, static rings, shielded conductor) to bring the initial distribution nearer the final one and cut the swing.</div>`:"")+
+    (Math.max(full.peakT,ch.peakT)>0.9*tEnd?`<div class="flag warn">The peak lands in the last 10 % of the simulated window — the true maximum is probably later than this. Increase the window (suggested ≈ ${fmt(tRec*1e6,0)} µs for this winding) and re-read the figures.</div>`:"");
+}
 function drawVec(r){
   // vector-group phasor clock: HV reference at 12, LV displaced by -30° x group number
   const W=560,H=360, rad=78;
@@ -794,6 +1246,98 @@ function drawVec(r){
   g+=star(410,H/2-10,30*n,"#0a8f6c",`LV — ${lvStar?"star (y)":"delta (d)"} — clock ${n}`,lvStar?"Y":"D");
   g+=`<text x="120" y="24">Vector group ${r.vec} — phase displacement −30° × ${n}</text>`;
   g+="</svg>"; $("phasor").innerHTML=g;
+}
+
+/* ---------- Rating plate & terminal marking (IEC 60076-1 §7) ---------- */
+function ratingPlateFields(r){
+  const kva=r.isMVA?fmt(r.Sin,0)+" MVA":fmt(r.Sin,0)+" kVA";
+  const type=(r.dry?"Cast-resin dry-type":"Oil-immersed")+" "+(r.power?"power":"distribution")+" transformer";
+  const bil=bilOf(r.hv/1000);
+  const tapLine=r.tap>0?`±${fmt(r.tap,1)}% (${fmt(r.ThvMax-r.Thv,0)} turns / step at max tap)`:"No tapping (fixed ratio)";
+  const rows=[
+    ["Type", type],
+    ["Standard", r.std.name],
+    ["Rated power", kva+"  ("+r.cool+")"],
+    ["Rated frequency", fmt(r.f,0)+" Hz"],
+    ["Number of phases", "3"],
+    ["Rated voltage — HV / LV", fmt(r.hv/1000,r.hv>=1000?2:0)+" / "+fmt(r.lv/1000,r.lv>=1000?2:1)+" kV"],
+    ["Rated current — HV / LV", fmt(r.IhvL,1)+" / "+fmt(r.IlvL,1)+" A"],
+    ["Connection symbol", r.vec],
+    ["Tapping (HV)", tapLine],
+    ["Impedance voltage at rated current", fmt(r.ez*100,2)+" %"],
+    ["Insulation level — HV (LI/AC)", bil+" kV"],
+    ["Type of cooling", r.cool],
+    ["Winding temperature rise", r.dry?r.std.dryRise:r.std.oilRise],
+    ["Total mass", fmt(r.Wtot,0)+" kg"]
+  ];
+  if(!r.dry) rows.push(["Mass of oil", fmt(r.Woil,0)+" kg"]);
+  return rows;
+}
+function drawRatingPlate(r){
+  const rows=ratingPlateFields(r);
+  const W=720, rowH=25, padTop=86, W2=W/2-24;
+  const H=padTop+Math.ceil(rows.length/2)*rowH+26;
+  let g=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;font-family:'Segoe UI',system-ui,sans-serif">`;
+  // brushed-plate background
+  g+=`<rect x="1" y="1" width="${W-2}" height="${H-2}" rx="6" fill="#c9d0d8" stroke="#8a939e" stroke-width="2"/>`;
+  g+=`<rect x="7" y="7" width="${W-14}" height="${H-14}" rx="3" fill="none" stroke="#aeb6bf" stroke-width="1"/>`;
+  for(let i=0;i<5;i++) g+=`<circle cx="${18+i*2}" cy="18" r="0" fill="none"/>`; // (rivet holes intentionally omitted — kept simple)
+  g+=`<circle cx="20" cy="20" r="5" fill="#8a939e"/><circle cx="${W-20}" cy="20" r="5" fill="#8a939e"/>`;
+  g+=`<circle cx="20" cy="${H-20}" r="5" fill="#8a939e"/><circle cx="${W-20}" cy="${H-20}" r="5" fill="#8a939e"/>`;
+  g+=`<text x="${W/2}" y="34" text-anchor="middle" font-size="16" font-weight="800" letter-spacing="1" fill="#1a2332">TRANSFORMER — RATING PLATE</text>`;
+  g+=`<text x="${W/2}" y="52" text-anchor="middle" font-size="10.5" fill="#4a5566">Manufacturer: ______________________   Serial No.: ____________   Year: ________</text>`;
+  g+=`<line x1="30" y1="64" x2="${W-30}" y2="64" stroke="#8a939e" stroke-width="1"/>`;
+  rows.forEach((row,i)=>{
+    const col=i%2, r0=Math.floor(i/2);
+    const x=30+col*(W2+24), y=padTop+r0*rowH;
+    g+=`<text x="${x}" y="${y}" font-size="9.5" font-weight="700" fill="#4a5566" letter-spacing=".3">${row[0].toUpperCase()}</text>`;
+    g+=`<text x="${x}" y="${y+14}" font-size="12.5" font-weight="700" fill="#0d1b2e">${row[1]}</text>`;
+  });
+  g+="</svg>"; $("ratingplate").innerHTML=g;
+}
+function downloadRatingPlatePDF(){
+  if(!LAST)calc();
+  const r=LAST;
+  const NAVY="0.05 0.17 0.31",GREY="0.29 0.34 0.40",BLACK="0 0 0";
+  let cur="",y=780;
+  const T=(x,yy,s,f,sz,col)=>{cur+=`BT /${f} ${sz} Tf ${col||BLACK} rg 1 0 0 1 ${x} ${yy} Tm (${pdfSan(s)}) Tj ET\n`;};
+  const L=(x1,y1,x2,y2,w,col)=>{cur+=`${col||"0.54 0.58 0.62"} RG ${w||0.9} w ${x1} ${y1} m ${x2} ${y2} l S\n`;};
+  const RECT=(x,yy,w,h,col,fill)=>{cur+=`${col} ${fill===false?"RG":"rg"} 1.2 w ${x} ${yy} ${w} ${h} re ${fill===false?"S":"f"}\n`;};
+  RECT(50,y-15-560,495,590,"0.79 0.82 0.85");
+  RECT(56,y-21-560,483,578,"0.68 0.72 0.75",false);
+  T(297,y+2,"TRANSFORMER — RATING PLATE","F2",17,NAVY);
+  y-=8; T(60,y,"Manufacturer: ________________________   Serial No.: ______________   Year: ________","F1",9.5,GREY);
+  y-=10; L(70,y,525,y,0.8); y-=26;
+  const rows=ratingPlateFields(r);
+  const colX=[70,300], colW=210;
+  rows.forEach((row,i)=>{
+    const col=i%2, r0=Math.floor(i/2);
+    const x=colX[col], yy=y-r0*30;
+    T(x,yy+13,row[0],"F1",8.2,GREY);
+    for(const ln of pdfWrap(row[1],col===0?38:38)) { T(x,yy,ln,"F2",11,"0.05 0.17 0.31"); }
+  });
+  y-=(Math.ceil(rows.length/2))*30+14;
+  T(60,y,"Standard reference: "+r.std.name+".  Values computed from a first-cut design — verify against the final","F1",7.6,GREY); y-=9;
+  T(60,y,"works design and stamp the actual test results before fitting to a manufactured unit.","F1",7.6,GREY);
+  const objs=[];
+  objs[1]="<< /Type /Catalog /Pages 2 0 R >>";
+  objs[2]="<< /Type /Pages /Kids [5 0 R] /Count 1 >>";
+  objs[3]="<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>";
+  objs[4]="<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>";
+  objs[5]="<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents 6 0 R >>";
+  objs[6]=`<< /Length ${cur.length} >>\nstream\n${cur}\nendstream`;
+  let pdf="%PDF-1.4\n";const xref=[0];
+  for(let i=1;i<objs.length;i++){xref[i]=pdf.length;pdf+=`${i} 0 obj\n${objs[i]}\nendobj\n`;}
+  const xs=pdf.length;
+  pdf+=`xref\n0 ${objs.length}\n0000000000 65535 f \n`;
+  for(let i=1;i<objs.length;i++)pdf+=String(xref[i]).padStart(10,"0")+" 00000 n \n";
+  pdf+=`trailer\n<< /Size ${objs.length} /Root 1 0 R >>\nstartxref\n${xs}\n%%EOF`;
+  const blob=new Blob([pdf],{type:"application/pdf"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download=`Rating_Plate_${TTYPE}_${Math.round(r.Sin)}${r.isMVA?"MVA":"kVA"}_${Math.round(r.hv/1000)}kV.pdf`;
+  document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},2000);
 }
 
 /* ---------- Bill of Materials ---------- */
@@ -909,7 +1453,7 @@ function buildBOM(r){
 }
 function renderBOM(r){
   LASTBOM=buildBOM(r);
-  let html=`<table class="res bom"><tr style="background:var(--chip)">
+  let html=`<div class="table-wrap"><table class="res bom"><tr style="background:var(--chip)">
     <td style="font-weight:700;color:var(--accent)">Item</td><td style="font-weight:700;color:var(--accent)">Specification</td>
     <td style="font-weight:700;color:var(--accent)">Unit</td><td style="font-weight:700;color:var(--accent);text-align:right">Qty</td>
     <td style="font-weight:700;color:var(--accent);text-align:right">Unit USD</td><td style="font-weight:700;color:var(--accent);text-align:right">Amount USD</td></tr>`;
@@ -925,7 +1469,7 @@ function renderBOM(r){
   });
   const tot=LASTBOM.reduce((a,b)=>a+b.qty*b.price,0);
   html+=`<tr class="hl"><td colspan="5" style="font-weight:700">Total — indicative material & component cost</td>
-    <td style="text-align:right;font-family:var(--mono);font-weight:700;color:var(--accent)" id="bomtotal">${fmt(tot,0)}</td></tr></table>`;
+    <td style="text-align:right;font-family:var(--mono);font-weight:700;color:var(--accent)" id="bomtotal">${fmt(tot,0)}</td></tr></table></div>`;
   $("bombox").innerHTML=html;
   document.querySelectorAll(".bprice").forEach(inp=>inp.addEventListener("input",()=>{
     const i=+inp.dataset.i, v=parseFloat(inp.value)||0;

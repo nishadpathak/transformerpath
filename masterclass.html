@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TX Design Masterclass — Transformer Design, Construction, 3D &amp; Calculator | TransformerPath</title>
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
 <meta name="description" content="Complete interactive transformer design &amp; construction masterclass: 26 chapters, 10 interactive 3D models, an IEC 60076 design calculator and a 196-country design adapter.">
 <style>
 
@@ -94,12 +99,55 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 @media(max-width:820px){.mc-hero h1{font-size:1.8rem}}
 
 </style>
+    <!-- masterclass.html shares ~25 of 26 chapters verbatim with tutorial.html. Every internal
+         deep link (learn.html's curriculum grid, engineer-track.html's module links) points to
+         tutorial.html#anchor, so that's the page actually carrying inbound link signal —
+         canonical points there to avoid splitting search ranking across two near-identical
+         2000+ line pages. -->
+    <link rel="canonical" href="https://transformerpath.com/masterclass.html">
+    <script src="analytics.js" defer></script><script src="course-gate.js"></script>
 </head>
 <body>
-  <div style="background:#0d1b2e;color:#fff;padding:10px 18px;font-family:'Segoe UI',system-ui,sans-serif;display:flex;align-items:center;gap:12px;font-size:.9rem;flex-wrap:wrap">
-    <a href="index.html" style="color:#fff;font-weight:800;text-decoration:none;font-size:1.05rem;letter-spacing:-.3px;display:inline-flex;align-items:center;gap:7px"><svg width="22" height="22" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="27" fill="none" stroke="#fff" stroke-width="2"/><path d="M37 9 L23 35 L31 35 L26 55 L42 29 L34 29 L40 9 Z" fill="#f5a623"/></svg>Trafo<span style="color:#f5a623">Path</span></a>
-    <a href="learn.html" style="color:#cbd5e1;text-decoration:none;margin-left:auto">&#8592; Learn hub</a>
+<div class="tp-sitehead" role="banner">
+  <div class="tp-nav">
+    <a href="index.html" class="tp-logo"><svg width="22" height="22" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="27" fill="none" stroke="#fff" stroke-width="2"/><path d="M37 9 L23 35 L31 35 L26 55 L42 29 L34 29 L40 9 Z" fill="#f5a623"/></svg>Transformer<span>Path</span></a>
+    <button class="tp-menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="tpNav" onclick="var n=document.getElementById('tpNav');var open=n.classList.toggle('open');this.setAttribute('aria-expanded',open)">☰</button>
+    <div class="tp-navlinks" id="tpNav" role="navigation">
+      <a href="intel.html">Daily Intel</a>
+      <a href="events.html">Events</a>
+      <a href="webinars.html">Webinars</a>
+      <a href="manufacturers.html">Manufacturers</a>
+      <a href="learn.html">Learn</a>
+      <a href="grids.html">Grids</a>
+      <a href="resources.html">Knowledge</a>
+      <a href="blog.html">Blog</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="testbay.html">Test Bay</a>
+      <a href="search.html" title="Search" aria-label="Search">🔍</a>
+    </div>
   </div>
+</div>
+<style>
+/* Self-contained site header for TransformerPath's interactive/tool pages —
+   deliberately independent of style.css (this page doesn't load it) so it can
+   never interfere with the page's own CSS. Scoped under .tp- prefix. */
+.tp-sitehead{background:#0d1b2e;color:#fff;position:sticky;top:0;z-index:1000;box-shadow:0 2px 8px rgba(0,0,0,.25);font-family:'Segoe UI',system-ui,-apple-system,sans-serif}
+.tp-nav{max-width:1100px;margin:0 auto;padding:0 18px;height:56px;display:flex;align-items:center;gap:16px}
+.tp-logo{color:#fff;font-weight:800;text-decoration:none;font-size:1.05rem;letter-spacing:-.3px;display:inline-flex;align-items:center;gap:7px;flex:none}
+.tp-logo span{color:#f5a623}
+.tp-menu-toggle{display:none;background:none;border:0;color:#fff;font-size:1.3rem;cursor:pointer;padding:8px;margin-left:auto}
+.tp-navlinks{display:flex;align-items:center;gap:16px;margin-left:auto}
+.tp-navlinks a{color:#cbd5e1;text-decoration:none;font-size:.88rem;font-weight:500;white-space:nowrap;transition:color .15s}
+.tp-navlinks a:hover,.tp-navlinks a[aria-current="page"]{color:#f5a623}
+.tp-navlinks a[aria-current="page"]{font-weight:700}
+@media (max-width:900px){
+  .tp-menu-toggle{display:block}
+  .tp-navlinks{display:none;position:absolute;top:56px;left:0;right:0;background:#0d1b2e;flex-direction:column;align-items:stretch;padding:8px 0 10px;box-shadow:0 14px 24px rgba(0,0,0,.35);gap:0;margin-left:0}
+  .tp-navlinks.open{display:flex}
+  .tp-navlinks a{padding:12px 20px;border-bottom:1px solid rgba(255,255,255,.06)}
+  .tp-navlinks a:last-child{border-bottom:0}
+}
+</style>
 
 
 <header class="mc-hero">
@@ -219,13 +267,13 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 
 <h3>1.2 Ideal vs. real transformer — the equivalent circuit</h3>
 <p>An ideal transformer has V₁/V₂ = N₁/N₂ = I₂/I₁ and no losses. A real transformer adds four imperfections, each with a physical origin in the construction:</p>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Element</th><th>Symbol</th><th>Physical origin</th><th>Design lever</th></tr>
 <tr><td>Winding resistance</td><td>R₁, R₂</td><td>Resistivity of copper/aluminium conductor</td><td>Conductor cross-section, mean turn length</td></tr>
 <tr><td>Leakage reactance</td><td>X₁, X₂</td><td>Flux that links one winding only, in the duct between windings</td><td>Winding geometry, HV–LV gap, winding height</td></tr>
 <tr><td>Core (iron) loss</td><td>R<sub>c</sub></td><td>Hysteresis + eddy currents in core steel</td><td>Steel grade, lamination thickness, B<sub>m</sub></td></tr>
 <tr><td>Magnetising reactance</td><td>X<sub>m</sub></td><td>Finite permeability of core → magnetising current</td><td>Core material, joint quality, B<sub>m</sub></td></tr>
-</table>
+</table></div>
 
 <div class="fig">
 <svg viewBox="0 0 820 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Transformer equivalent circuit referred to primary">
@@ -319,14 +367,14 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 </ul>
 
 <h3>1.6 Measuring the equivalent circuit: open-circuit &amp; short-circuit tests</h3>
-<table>
+<div class="table-wrap"><table>
 <tr><th></th><th>Open-circuit (no-load) test</th><th>Short-circuit (load-loss) test</th></tr>
 <tr><td>Setup</td><td>Rated voltage on LV, HV open</td><td>HV energised at reduced voltage, LV bolted short</td></tr>
 <tr><td>Applied voltage</td><td>100% rated</td><td>only u<sub>k</sub> (≈5–15%) needed to drive rated current</td></tr>
 <tr><td>What flows</td><td>Magnetising current only (0.2–2%)</td><td>Rated current; magnetising branch negligible (flux is tiny)</td></tr>
 <tr><td>Wattmeter reads</td><td>Core loss P₀ (I²R negligible)</td><td>Load loss P<sub>k</sub> (core loss negligible)</td></tr>
 <tr><td>Yields</td><td>R<sub>c</sub>, X<sub>m</sub> (shunt branch)</td><td>R₁+R₂′, X₁+X₂′ (series branch), u<sub>k</sub></td></tr>
-</table>
+</table></div>
 <p>The elegance: each test isolates one branch of the equivalent circuit because the other branch carries almost nothing. These are exactly the routine tests of §11 — the equivalent circuit is not an abstraction, it is what the test bay measures on every unit shipped.</p>
 <div class="keypoint"><b>Worked check (1000 kVA example of §9):</b> P₀ = 970 W at 433 V ⇒ R<sub>c</sub> ≈ V²/P₀ ≈ 193 Ω (LV ref). I₀ ≈ 0.7% = 9.3 A ⇒ Z<sub>m</sub> ≈ 26.8 Ω, X<sub>m</sub> ≈ 27 Ω. SC test: 10.2 kW at 1333 A ⇒ R<sub>series</sub> ≈ 1.9 mΩ; u<sub>k</sub>=4.9% ⇒ Z ≈ 9.2 mΩ, X ≈ 9.0 mΩ. Numbers an engineer can sanity-check on any test certificate.</div>
 
@@ -362,7 +410,7 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 <h2>2. Classification: Power, Distribution, Dry-Type &amp; Cast Resin</h2>
 <p>Transformers are classified by function in the network, insulation/cooling medium, and construction. The four families covered in this tutorial share identical electromagnetic theory but differ sharply in materials, manufacturing and accessories.</p>
 
-<table>
+<div class="table-wrap"><table>
 <tr><th></th><th>Distribution transformer</th><th>Power transformer</th><th>Dry-type (VPI/VPE)</th><th>Cast resin (CRT)</th></tr>
 <tr><td><b>Typical rating</b></td><td>25 kVA – 2.5 MVA</td><td>2.5 MVA – 1000+ MVA</td><td>100 kVA – 5 MVA</td><td>100 kVA – 25 MVA</td></tr>
 <tr><td><b>Voltage class</b></td><td>≤ 36 kV</td><td>36 kV – 765 kV+</td><td>≤ 12 kV (typ.)</td><td>≤ 36 kV (52 kV special)</td></tr>
@@ -372,7 +420,7 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 <tr><td><b>Tap changing</b></td><td>Off-circuit links (DETC)</td><td>OLTC standard</td><td colspan="2">Off-circuit links on HV</td></tr>
 <tr><td><b>Typical locations</b></td><td>Pole/pad-mounted, substations, packaged substations</td><td>Generation step-up, transmission substations, interconnectors</td><td colspan="2">Buildings, tunnels, marine/offshore, metros, data centres — anywhere fire risk rules out oil</td></tr>
 <tr><td><b>Governing standards</b></td><td colspan="2">IEC 60076-1/-2/-3/-5; IEEE C57.12.00</td><td colspan="2">IEC 60076-11; IEEE C57.12.01</td></tr>
-</table>
+</table></div>
 
 <div class="fig">
 <svg viewBox="0 0 960 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four transformer families side by side">
@@ -476,13 +524,13 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 <div class="note"><b>Note:</b> natural and synthetic ester liquids (IEC 61099 / IEC 62770) with fire points &gt; 300 °C increasingly bridge the gap — fire-safer than mineral oil while keeping liquid-immersed compactness. K-class liquid transformers compete directly with cast resin in many GCC building projects.</div>
 
 <h3>2.2 Oil preservation systems compared</h3>
-<table>
+<div class="table-wrap"><table>
 <tr><th>System</th><th>How it works</th><th>Strengths</th><th>Weaknesses</th><th>Typical use</th></tr>
 <tr><td>Free-breathing conservator</td><td>Air drawn through silica-gel breather as oil level swings</td><td>Simple, serviceable, full visual level</td><td>Oil slowly absorbs moisture/oxygen; breather upkeep</td><td>Older fleets, large power tx</td></tr>
 <tr><td>Conservator + rubber bag (COPS)</td><td>Flexible bag inside conservator; air side breathes, oil never touches air</td><td>Near-hermetic oil chemistry with conservator serviceability</td><td>Bag integrity must be checked (DGA shows O₂/N₂ trend)</td><td>Modern power transformers — default</td></tr>
 <tr><td>Hermetic, flexible fin walls</td><td>Completely sealed; corrugated walls flex to absorb expansion</td><td>Zero maintenance, no breather, dry oil for life</td><td>No level gauge margin; oil sampling less convenient; size-limited</td><td>Distribution &lt; ~3–4 MVA, pad-mounts</td></tr>
 <tr><td>Hermetic with gas cushion</td><td>Sealed tank with N₂ blanket above oil</td><td>Simple sealing for medium sizes</td><td>Gas can supersaturate oil on cooling (bubble risk under sudden load)</td><td>Some US-practice and pad-mount designs</td></tr>
-</table>
+</table></div>
 <p>The preservation system decides the unit's moisture destiny (§5, §16): a free-breathing 30-year-old transformer typically carries 2–3% moisture in paper; a healthy hermetic unit of the same age stays under 1% — half a lifetime of difference from one constructional choice.</p>
 </section>
 
@@ -491,14 +539,14 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 <p>The core provides a low-reluctance path for the mutual flux. Its design fixes the no-load loss, no-load current and sound level for the life of the transformer — none of these can be improved after manufacture. Core cost is typically 20–25% of total material cost.</p>
 
 <h3>3.1 Core steel</h3>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Material</th><th>Thickness</th><th>Specific loss @1.7 T, 50 Hz</th><th>Use</th></tr>
 <tr><td>CRGO M5 (conventional grain-oriented)</td><td>0.30 mm</td><td>~1.30 W/kg</td><td>Economy distribution units</td></tr>
 <tr><td>CRGO M4 / M3</td><td>0.27 / 0.23 mm</td><td>~1.17 / 1.03 W/kg</td><td>Standard distribution &amp; power</td></tr>
 <tr><td>Hi-B (e.g. 23ZH90 / MOH)</td><td>0.23 mm</td><td>~0.90 W/kg</td><td>Low-loss designs, power transformers</td></tr>
 <tr><td>Laser/mechanically domain-refined Hi-B (23ZDKH)</td><td>0.23–0.18 mm</td><td>~0.75–0.85 W/kg</td><td>Premium low-loss, EU Ecodesign Tier 2</td></tr>
 <tr><td>Amorphous metal (Fe-B-Si ribbon)</td><td>~0.025 mm</td><td>~0.25–0.30 W/kg @1.4 T</td><td>Ultra-low no-load loss distribution; lower B<sub>m</sub>, bulkier core</td></tr>
-</table>
+</table></div>
 <p>Grain-oriented silicon steel (~3% Si) has its magnetic domains aligned with the rolling direction; flux must follow that direction, which dictates the mitred joint geometry below. Laminations are coated with an inorganic insulation (C5/C6 “carlite”) ~2–4 µm thick to suppress inter-laminar eddy currents.</p>
 
 <h3>3.2 Core-form vs shell-form</h3>
@@ -651,19 +699,19 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 
 <h3>3.7 The building factor — why a real core loses more than the steel datasheet</h3>
 <p>Epstein-frame datasheet loss (W/kg) is measured on perfect strips magnetised along the rolling direction. A built core adds: flux turning 90° at joints (local off-grain magnetisation), normal-flux eddy currents where laminations cross, burr-induced inter-laminar shorts, stacking stresses, and slitting-edge damage. The ratio of real to datasheet loss is the <b>building factor</b>:</p>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Construction quality</th><th>Building factor</th></tr>
 <tr><td>Large power core, wide multi-step-lap laminations, laser-scribed Hi-B, careful stacking</td><td>1.08 – 1.15</td></tr>
 <tr><td>Good distribution core, step-lap, M3/M4</td><td>1.15 – 1.25</td></tr>
 <tr><td>Conventional-lap, narrow laminations, high burr</td><td>1.3 – 1.5+</td></tr>
-</table>
+</table></div>
 <p>A guaranteed P₀ missed at test means penalty or rejection — which is why core-cutting line condition (burr!) and stacking discipline are checked in any factory audit.</p>
 
 <h3>3.8 Amorphous and wound-core construction</h3>
 <p>Amorphous ribbon (Fe₈₀B₁₁Si₉, ~25 µm, no crystal structure) cuts no-load loss ~65–70% versus CRGO — but it saturates at ~1.56 T (design B<sub>m</sub> ≈ 1.3–1.4 T), is brittle, and has a poor stacking factor (~0.86), so the core is bigger and the copper path longer. It is used almost exclusively in <b>wound cores</b> (ribbon wound into rectangular loops, then cut and re-lapped) for distribution transformers up to ~2500 kVA, where energy-efficiency regulation or loss capitalisation justifies the premium. Wound-core construction with CRGO ("unicore") is likewise common for small distribution units: lower building factor and cheaper automation, at the cost of repairability.</p>
 
 <h3>3.9 Core quality control — factory and field</h3>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Check</th><th>Method / limit</th><th>What failure looks like</th></tr>
 <tr><td>Burr height</td><td>Measured per slitting campaign; ≤ 20 µm target</td><td>Inter-laminar shorts → local eddy heating, raised P₀</td></tr>
 <tr><td>Coating integrity</td><td>Franklin tester (surface insulation resistance per ASTM A717)</td><td>Lamination-to-lamination conduction paths</td></tr>
@@ -671,7 +719,7 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 <tr><td>Core insulation test</td><td>1–2 kV DC core-to-clamp and core-to-earth via test link, ≥ 500 MΩ new</td><td>Unintended second earth → circulating-current heating</td></tr>
 <tr><td>No-load current pattern</td><td>Three-phase excitation test: I₀ pattern should read high–low–high (centre limb has the shortest magnetic path)</td><td>Asymmetry beyond pattern → shorted turn or joint defect</td></tr>
 <tr><td>In service: DGA signature</td><td>CH₄ + C₂H₆ rising <i>without</i> CO/CO₂</td><td>Hot metal, not hot paper — classic core circulating-current fault; confirm with core-ground current measurement (&lt; ~100 mA expected)</td></tr>
-</table>
+</table></div>
 <div class="note"><b>Field tip:</b> an unintended core earth (dropped washer, shifted shield, varnish failure) is one of the few faults you can sometimes fix without untanking — locate it by injecting current through the test link, then burn it off or live with a managed resistor. It shows up as gassing with a clean furan/CO picture: metal heat, paper untouched.</div>
 </section>
 <div class="embed-panel" id="embed-coretop">
@@ -794,14 +842,14 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 <div class="cap">Fig. 4.1 — Principal winding types, shown in axial cross-section beside the core limb (grey bar at left of each panel). Copper sections in orange; spacers/insulation in cream.</div>
 </div>
 
-<table>
+<div class="table-wrap"><table>
 <tr><th>Winding type</th><th>Best for</th><th>Turns</th><th>Current</th><th>Notes</th></tr>
 <tr><td>Layer / multilayer</td><td>HV of small distribution tx</td><td>Many (1000s)</td><td>Low</td><td>Cheap to wind; graded layer insulation; limited impulse strength control</td></tr>
 <tr><td>Foil</td><td>LV of distribution &amp; cast resin tx</td><td>Few (10s)</td><td>High</td><td>Welded/brazed terminal bars; no axial unbalance → strong under short circuit</td></tr>
 <tr><td>Helical (single/double/multi-start)</td><td>LV of power tx</td><td>Few–moderate</td><td>Very high</td><td>Many parallel strands; needs transposition to balance strand impedances</td></tr>
 <tr><td>Continuous disc</td><td>HV 36–245 kV</td><td>Many</td><td>Moderate</td><td>Made without joints by “crossing back” alternate discs; good voltage distribution</td></tr>
 <tr><td>Interleaved / shielded disc</td><td>HV ≥ 145 kV (impulse-critical)</td><td>Many</td><td>Moderate</td><td>Interleaving raises series capacitance → near-linear impulse distribution</td></tr>
-</table>
+</table></div>
 
 <h3>4.3 Concentric arrangement and leakage duct</h3>
 <p>In core-form construction the LV winding sits innermost (cheapest to insulate from the earthed core), the HV outermost, separated by the <b>main duct</b> — pressboard cylinders and axial oil ducts. Tapping turns sit either within the HV or in a separate tap winding. The duct dimensions set the leakage reactance:</p>
@@ -878,14 +926,14 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 <li><b>Gradient budget:</b> average winding-to-oil gradient g ≈ 8–15 K for ON cooling. The designer reaches the target by trading conductor current density, paper thickness (every 0.1 mm of paper adds ~1–2 K), duct count, and disc grouping (oil-guide washers force a zig-zag flow path through disc winding sections, multiplying duct utilisation).</li>
 <li><b>Where windings actually fail thermally:</b> not at the average — at the ends (radial leakage flux → extra eddy loss, §4.6) and under the top oil where ducts exhaust warmest. Hence hotspot factor H = 1.1–1.3 and fibre-optic probes placed in the top discs.</li>
 </ul>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Winding type</th><th>Comfortable current range</th><th>Turns range</th><th>Limiting factor</th></tr>
 <tr><td>Layer (round wire)</td><td>&lt; 80 A</td><td>100s–1000s</td><td>Cooling of inner layers</td></tr>
 <tr><td>Layer/multilayer (strip)</td><td>30 – 600 A</td><td>100s</td><td>Layer insulation impulse stress</td></tr>
 <tr><td>Continuous disc</td><td>50 – 1500 A</td><td>100s–1000s</td><td>Eddy loss in wide strips</td></tr>
 <tr><td>Helical (multi-strand/CTC)</td><td>300 – 5000+ A</td><td>10s–100s</td><td>Strand circulating currents → transposition quality</td></tr>
 <tr><td>Foil</td><td>200 – 3000+ A</td><td>10s</td><td>Terminal bar brazing &amp; edge stress</td></tr>
-</table>
+</table></div>
 </section>
 <div class="embed-panel" id="embed-wind">
   <div class="embed-head" style="border-left:5px solid #c97a3d">
@@ -917,14 +965,14 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 <p>Design responses: reinforced paper on line-end turns, static end rings (stress shields), interleaved or shielded discs, and graded barrier counts toward the line end.</p>
 
 <h3>5.3 Thermal classes and life</h3>
-<table>
+<div class="table-wrap"><table>
 <tr><th>System</th><th>Thermal class</th><th>Max hotspot (cont.)</th><th>Average winding rise limit</th></tr>
 <tr><td>Mineral oil + kraft</td><td>105 (A)</td><td>98 °C (IEC loading guide)</td><td>55 K</td></tr>
 <tr><td>Mineral oil + thermally upgraded paper</td><td>120 (E)</td><td>110 °C</td><td>65 K</td></tr>
 <tr><td>Ester + aramid hybrid</td><td>130–155</td><td>130 °C+</td><td>per IEC 60076-14</td></tr>
 <tr><td>Cast resin (epoxy, class F)</td><td>155 (F)</td><td>155 °C</td><td>100 K</td></tr>
 <tr><td>VPI dry (class H systems)</td><td>180 (H)</td><td>180 °C</td><td>125 K</td></tr>
-</table>
+</table></div>
 <p>Ageing is Arrhenius-type: per IEC 60076-7, every ~6 K above the reference hotspot roughly doubles the cellulose ageing rate. This is the basis of all loading-capability and loss-of-life calculations.</p>
 
 <h3>5.4 Processing: drying and impregnation</h3>
@@ -936,7 +984,7 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 </ol>
 
 <h3>5.5 Insulation levels and the stress numbers designers carry in their heads</h3>
-<table>
+<div class="table-wrap"><table>
 <tr><th>U<sub>m</sub> (kV)</th><th>AC withstand (kV, 1 min)</th><th>LI withstand (kVp)</th><th>Typical system voltage</th></tr>
 <tr><td>3.6 / 7.2 / 12</td><td>10 / 20 / 28</td><td>40 / 60 / 75</td><td>3.3 / 6.6 / 11 kV</td></tr>
 <tr><td>24 / 36</td><td>50 / 70</td><td>125 / 170</td><td>22 / 33 kV</td></tr>
@@ -944,7 +992,7 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 <tr><td>145</td><td>230 / 275</td><td>550 / 650</td><td>132 kV</td></tr>
 <tr><td>245</td><td>360 / 395</td><td>850 / 950 (+ SI 750)</td><td>220 kV</td></tr>
 <tr><td>420</td><td>570 / 630</td><td>1300 / 1425 (+ SI 1050)</td><td>400 kV</td></tr>
-</table>
+</table></div>
 <p>Working stress rules of thumb (mineral oil system, 1-minute design): subdivided oil ducts 5–10 kV/mm; large unsubdivided gaps 2–4 kV/mm; oil-impregnated pressboard 10–20 kV/mm; creepage along solid surfaces derated ~3× versus puncture (surface tracking is the weak mode — hence angle rings that force creepage paths to cross equipotentials at right angles). The barrier system's whole purpose is to convert one big weak gap into many small strong ones.</p>
 
 <h3>5.6 Moisture physics — the quiet life-limiter</h3>
@@ -1004,14 +1052,14 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 <p>Oil heated in the winding ducts becomes buoyant, rises to the tank top, flows out through radiators or fins where it cools and sinks, and re-enters the tank bottom — a thermosiphon needing no pumps. The driving head is the height difference between winding thermal centre and radiator thermal centre, so radiator mounting height is a real design variable.</p>
 
 <h3>6.2 Cooling stages and uprating</h3>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Mode</th><th>What is added</th><th>Typical gain</th><th>Notes</th></tr>
 <tr><td>ONAN</td><td>—(base)</td><td>100%</td><td>Silent, zero auxiliary power; standard for distribution</td></tr>
 <tr><td>ONAF</td><td>Fans on radiators</td><td>+25–33%</td><td>Dual rating e.g. 20/25 MVA ONAN/ONAF; fans staged by WTI</td></tr>
 <tr><td>OFAF</td><td>Oil pumps + fans</td><td>+up to 50–60% over ONAN</td><td>Pumped oil, but flow not forced into windings</td></tr>
 <tr><td>ODAF/ODWF</td><td>Directed flow into winding ducts</td><td>highest</td><td>Large power tx; beware static electrification at high flow</td></tr>
 <tr><td>AN → AF (dry/cast resin)</td><td>Cross-flow fans on coils</td><td>+40–50%</td><td>AF rating usually for emergency/peak duty</td></tr>
-</table>
+</table></div>
 
 <h3>6.3 Temperature-rise limits (IEC 60076-2, mineral oil)</h3>
 <ul>
@@ -1021,24 +1069,24 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 <div class="keypoint"><b>Hotspot factor:</b> hotspot rise ≈ top-oil rise + H × gradient, with H ≈ 1.1–1.3. The hotspot, not average temperature, sets the life of the unit — which is why fibre-optic hotspot sensors are increasingly specified on power transformers.</div>
 
 <h3>6.4 Worked thermal ladder — 1000 kVA ONAN at full load</h3>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Step</th><th>Temperature</th><th>How it's set</th></tr>
 <tr><td>Ambient (IEC reference)</td><td>20 °C avg</td><td>site condition / spec</td></tr>
 <tr><td>+ bottom-oil rise</td><td>+30 K → 50 °C</td><td>radiator/fin surface &amp; thermosiphon head</td></tr>
 <tr><td>+ oil rise through windings</td><td>+22 K → top oil 72 °C (rise 52 K &lt; 60 K ✓)</td><td>duct sizing, loss density</td></tr>
 <tr><td>winding average gradient over adjacent oil</td><td>g ≈ 13 K → avg winding rise ≈ (40+13)=… ≈ 63 K &lt; 65 K ✓</td><td>current density, paper thickness, duct velocity</td></tr>
 <tr><td>hotspot = top oil + H·g</td><td>72 + 1.2×13 ≈ 88 °C (&lt; 98 °C ✓)</td><td>H covers extra end-winding eddy loss</td></tr>
-</table>
+</table></div>
 <p>Now repeat at a 50 °C GCC summer ambient: hotspot ≈ 118 °C — ageing ~8–10× reference rate while it lasts. That is exactly why Gulf utilities specify reduced rise limits (e.g. 50/55 K) or larger cooling: the transformer is bought oversized in thermal terms so its insulation lives a normal life in an abnormal climate.</p>
 <div class="note"><b>Dynamic loading:</b> IEC 60076-7 exponential thermal models (oil and winding time constants ~hours and ~minutes respectively) let operators ride short peaks above nameplate — emergency loading to 1.3–1.5 pu is legitimate if hotspot and loss-of-life are tracked. This is the engineering behind "dynamic rating" software on modern fleets.</div>
 
 <h3>6.5 How far can you load it? (IEC 60076-7 framework)</h3>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Loading regime</th><th>Distribution tx</th><th>Medium power tx</th><th>Large power tx</th><th>Hard limits (mineral oil)</th></tr>
 <tr><td>Normal cyclic</td><td>≤ 1.5 pu</td><td>≤ 1.5 pu</td><td>≤ 1.3 pu</td><td>Hotspot ≤ 120 °C, top oil ≤ 105 °C</td></tr>
 <tr><td>Long-time emergency</td><td>≤ 1.8 pu</td><td>≤ 1.5 pu</td><td>≤ 1.3 pu</td><td>Hotspot ≤ 140 °C — accelerated ageing accepted</td></tr>
 <tr><td>Short-time emergency (≤ 30 min)</td><td>≤ 2.0 pu</td><td>≤ 1.8 pu</td><td>≤ 1.5 pu</td><td>Hotspot ≤ 160 °C — bubbling risk governs (§5.6)</td></tr>
-</table>
+</table></div>
 <ul>
 <li><b>Time constants do the work:</b> oil heats with a 1.5–3 h time constant, windings in 5–10 min. A 2-hour peak rides mostly on stored thermal mass — which is exactly what cyclic-loading calculations exploit.</li>
 <li><b>What else limits overload:</b> bushings, OLTC contacts and CTs are rated components too — IEC 60076-7 warns that above 1.5 pu, ancillary equipment is often the real ceiling, not the windings.</li>
@@ -1192,7 +1240,7 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 </ul>
 
 <h3>7.4 Protection &amp; monitoring devices</h3>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Device</th><th>Detects / does</th><th>Typical action</th></tr>
 <tr><td>Buchholz relay (conservator pipe)</td><td>Slow gas accumulation; oil surge from internal fault</td><td>Alarm (gas) / trip (surge)</td></tr>
 <tr><td>Pressure-relief valve (PRV)</td><td>Sudden tank overpressure</td><td>Vents + trip contact</td></tr>
@@ -1203,7 +1251,7 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 <tr><td>Silica-gel breather / maintenance-free breather</td><td>Dries breathed air</td><td>—</td></tr>
 <tr><td>Online DGA monitor</td><td>Dissolved H₂/CO/C₂H₂… in oil</td><td>Early-warning analytics</td></tr>
 <tr><td>Fibre-optic sensors</td><td>True winding hotspot</td><td>Dynamic loading input</td></tr>
-</table>
+</table></div>
 <div class="note"><b>Practice point:</b> accessory specification is where otherwise identical transformers diverge in tenders — climate (50 °C GCC ambient), altitude, harmonic content (K-factor), and utility-specific protection philosophies all land here.</div>
 
 <h3>7.5 Assembly sequence (factory)</h3>
@@ -1245,14 +1293,14 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 <p>Dry-type transformers replace the oil–cellulose system with solid polymer insulation cooled directly by air. Two technologies dominate the MV market: <b>VPI (vacuum pressure impregnation)</b> open-wound coils, and <b>cast resin</b> (CRT), in which the complete HV coil is vacuum-cast in filled epoxy — but they sit inside a wider family.</p>
 
 <h3>8.0 The dry-type family at a glance</h3>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Technology</th><th>Insulation build</th><th>Thermal class</th><th>Environment</th><th>Typical use</th><th>Repairable?</th></tr>
 <tr><td>Dip &amp; bake (open wound)</td><td>Enamel/Nomex® conductor, varnish dip, oven cure</td><td>155–180</td><td>Clean, dry indoor only (E0/E1)</td><td>LV–LV isolation tx, small auxiliaries ≤ ~300 kVA</td><td>Yes</td></tr>
 <tr><td>VPI</td><td>As above + repeated vacuum-pressure impregnation in polyester/silicone resin</td><td>180 (H) – 220</td><td>E1/E2 with heaters</td><td>MV to ~5 MVA / 12 kV; marine, North-American practice</td><td>Yes — coils strippable</td></tr>
 <tr><td>VPE (vacuum pressure encapsulation)</td><td>VPI repeated until a thick void-free resin shell seals the coil completely</td><td>180–220</td><td>E2+ — washdown, chemical, coastal sites</td><td>Harsh-environment MV duty where CRT or VPI won't survive</td><td>Limited</td></tr>
 <tr><td>Cast resin (CRT)</td><td>HV coil vacuum-cast in filled, glass-reinforced epoxy mould</td><td>155 (F)</td><td>E2/E3 C2 F1 — humidity-proof</td><td>MV workhorse to ~25 MVA / 36 kV; buildings, metros, offshore</td><td>No — coil is replaced, not repaired</td></tr>
 <tr><td>Encapsulated / potted</td><td>Complete small transformer potted in resin enclosure</td><td>130–155</td><td>Sealed</td><td>Small control/instrument transformers</td><td>No</td></tr>
-</table>
+</table></div>
 
 <h3>8.1 VPI (open-wound, impregnated)</h3>
 <ul>
@@ -1317,12 +1365,12 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 </ul>
 
 <h3>8.3 Classification per IEC 60076-11</h3>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Class</th><th>Grades</th><th>Meaning / type test</th></tr>
 <tr><td>Environmental</td><td>E0 / E1 / E2 / E3</td><td>E2: frequent condensation or heavy pollution; E3 (ed.2 2018): severe — coils tested energised after humidity chamber</td></tr>
 <tr><td>Climatic</td><td>C1 / C2 (C3, C4*)</td><td>C2: storage/operation to −25 °C — thermal-shock test on coils</td></tr>
 <tr><td>Fire behaviour</td><td>F0 / F1 (F2*)</td><td>F1: flame-retardant, self-extinguishing, low toxic emission — full coil fire test</td></tr>
-</table>
+</table></div>
 <p>Cast resin routinely achieves <b>E2/E3 C2 F1</b> — the combination that qualifies it for tunnels, metros, high-rise risers and offshore platforms where oil is excluded.</p>
 
 <h3>8.4 Enclosures, ventilation and installation</h3>
@@ -1352,14 +1400,14 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 <p>This section walks the classical hand-calculation sequence a design engineer follows before optimisation software refines it. Numbers are rounded for clarity but self-consistent.</p>
 
 <h3>Step 1 — Ratings and currents</h3>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Quantity</th><th>Value</th><th>Calculation</th></tr>
 <tr><td>Rated power S</td><td>1000 kVA</td><td>given (50 Hz, ONAN, Dyn11)</td></tr>
 <tr><td>HV line / phase voltage</td><td>11 000 V / 11 000 V</td><td>delta: V<sub>ph</sub> = V<sub>line</sub></td></tr>
 <tr><td>LV line / phase voltage</td><td>433 V / 250 V</td><td>star: V<sub>ph</sub> = 433/√3</td></tr>
 <tr><td>LV line current</td><td>1333 A</td><td>1 000 000 / (√3 × 433)</td></tr>
 <tr><td>HV line / winding current</td><td>52.5 A / 30.3 A</td><td>1 000 000 / (√3 × 11 000); winding = 52.5/√3</td></tr>
-</table>
+</table></div>
 
 <h3>Step 2 — Volts per turn and turns</h3>
 <div class="eq">E<sub>t</sub> = K√S = 0.45 × √1000 ≈ 14.2 V/turn (choose from experience constant K)</div>
@@ -1371,13 +1419,13 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 <p>With 9-step section (K<sub>s</sub> ≈ 0.93) and stacking factor 0.97, gross circle area = 379/0.90 ≈ 421 cm² → <b>core circle diameter d ≈ 232 mm</b>. Steel: Hi-B 0.23 mm, step-lap mitred joints. Estimated core mass ≈ 800 kg → P₀ ≈ 800 kg × 1.05 W/kg × 1.15 (building factor) ≈ <b>≈ 970 W no-load loss</b> — comfortably inside a 1100 W guarantee.</p>
 
 <h3>Step 4 — Windings</h3>
-<table>
+<div class="table-wrap"><table>
 <tr><th></th><th>LV (inner)</th><th>HV (outer)</th></tr>
 <tr><td>Type</td><td>Foil, 18 turns</td><td>Multilayer wire/strip, 792 turns + taps</td></tr>
 <tr><td>Conductor</td><td>Al or Cu foil ≈ 1.2 mm × 380 mm</td><td>DPC strip ≈ 9.6 mm² (e.g. 6 × 1.6 mm)</td></tr>
 <tr><td>Current density J</td><td>≈ 2.9 A/mm² (Cu)</td><td>≈ 3.2 A/mm²</td></tr>
 <tr><td>Cooling</td><td>axial ducts vs core &amp; in main gap</td><td>inter-layer ducts as required</td></tr>
-</table>
+</table></div>
 <p>J is chosen from the loss guarantee, not from thermal limits alone: lower J → more copper mass → lower load loss but higher first cost. Distribution transformers bought on capitalised losses (€/W) often end nearer 2.5 A/mm²; lowest-first-cost designs push past 3.5 A/mm².</p>
 
 <h3>Step 5 — Impedance check</h3>
@@ -1398,7 +1446,7 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 <div class="keypoint"><b>The design loop in one line:</b> E<sub>t</sub> ⇄ core area ⇄ turns ⇄ winding geometry ⇄ impedance ⇄ losses ⇄ temperature rise ⇄ short-circuit strength — iterate until every guarantee is met at minimum evaluated cost (first cost + capitalised losses).</div>
 
 <h3>Step 8 — What the finished design weighs and costs (indicative)</h3>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Item</th><th>Mass</th><th>Share of material cost</th><th>Cost driver</th></tr>
 <tr><td>Core (Hi-B CRGO)</td><td>≈ 800 kg</td><td>≈ 22–28%</td><td>GOES market price, grade choice</td></tr>
 <tr><td>Copper (LV foil + HV strip)</td><td>≈ 550–650 kg</td><td>≈ 25–32%</td><td>LME copper + fabrication; the A/B loss values steer this mass</td></tr>
@@ -1407,7 +1455,7 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 <tr><td>Tank + fins + frame</td><td>≈ 800–900 kg</td><td>≈ 15–20%</td><td>Steel price, corrosion system</td></tr>
 <tr><td>Accessories &amp; bushings</td><td>—</td><td>≈ 8–12%</td><td>Spec-driven (DETC vs OLTC swings this hugely)</td></tr>
 <tr><td><b>Complete unit</b></td><td><b>≈ 2.9–3.3 t</b></td><td>+ labour/overhead ≈ 25–35% of works cost</td><td></td></tr>
-</table>
+</table></div>
 <p>Sanity ratios a reviewer carries: distribution transformers run ≈ 2.8–3.5 kg/kVA total mass and ≈ 0.55–0.8 kg/kVA of conductor; if a bid is 25% lighter than the field, the losses or the short-circuit margin paid for it somewhere.</p>
 
 <h3>Step 9 — What the optimiser actually does</h3>
@@ -1448,7 +1496,7 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 <h2>10. Losses, Efficiency, Regulation</h2>
 
 <h3>10.1 Loss inventory</h3>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Loss</th><th>Origin</th><th>Varies with</th><th>Reduced by</th></tr>
 <tr><td>Hysteresis (core)</td><td>Domain wall motion in steel</td><td>f · B<sup>~1.9</sup>; constant with load</td><td>Better steel grade, lower B<sub>m</sub></td></tr>
 <tr><td>Eddy current (core)</td><td>Induced currents in laminations</td><td>f² · B² · t²</td><td>Thinner laminations, domain refining</td></tr>
@@ -1456,7 +1504,7 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 <tr><td>Winding eddy</td><td>Leakage flux through conductors</td><td>load², worst at winding ends</td><td>Subdivided strands, CTC, smaller strip height</td></tr>
 <tr><td>Stray (structural)</td><td>Leakage flux in tank, clamps</td><td>load²</td><td>Magnetic shunts, non-magnetic inserts</td></tr>
 <tr><td>Auxiliary</td><td>Fans, pumps, OLTC drive</td><td>cooling stage</td><td>Efficient cooling design</td></tr>
-</table>
+</table></div>
 <div class="eq">Efficiency η = S·cosφ·x / (S·cosφ·x + P₀ + x²·P<sub>k</sub>) — maximum where x = √(P₀/P<sub>k</sub>), i.e. where load loss equals no-load loss.</div>
 <p>Because P₀ flows 8760 h/year regardless of load, utilities capitalise it heavily (typical evaluation 5–10 €/W for P₀ vs 1–2 €/W for P<sub>k</sub>). Distribution transformers are therefore designed with √(P₀/P<sub>k</sub>) ≈ 0.3–0.45, putting peak efficiency at 30–45% load — matching real feeder load profiles. Minimum-efficiency regulations (EU Ecodesign Tier 2, DOE 2016/2024, GSO equivalents in the GCC) now set the floor.</p>
 
@@ -1479,7 +1527,7 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 <h2>11. Factory Testing</h2>
 <p>IEC 60076-1 divides tests into <b>routine</b> (every unit), <b>type</b> (one unit of a design), and <b>special</b> (by agreement). The test sequence matters: dielectric tests come after loss measurement, and PD/repeat tests follow any dielectric test that could have aged the insulation.</p>
 
-<table>
+<div class="table-wrap"><table>
 <tr><th>Test</th><th>Category</th><th>Verifies</th><th>Acceptance essence</th></tr>
 <tr><td>Winding resistance</td><td>Routine</td><td>Joints, conductor CSA; baseline for loss correction &amp; heat-run</td><td>Phase balance, vs design</td></tr>
 <tr><td>Ratio &amp; vector group</td><td>Routine</td><td>Turns, connections, polarity</td><td>±0.5% of declared ratio</td></tr>
@@ -1493,7 +1541,7 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 <tr><td>Sound level</td><td>Type/Special</td><td>Core B<sub>m</sub>, design</td><td>≤ guaranteed L<sub>WA</sub> (IEC 60076-10)</td></tr>
 <tr><td>Short-circuit withstand</td><td>Special</td><td>Mechanical design (§4.5)</td><td>≤ ~1–2% reactance change, no damage (IEC 60076-5)</td></tr>
 <tr><td>SFRA, capacitance &amp; tan δ, oil tests, DGA</td><td>Routine/Special</td><td>Fingerprint records for life-long comparison</td><td>Baseline for site diagnostics</td></tr>
-</table>
+</table></div>
 
 <div class="note"><b>Cast-resin specifics (IEC 60076-11):</b> routine PD measurement on every unit is the heart of CRT quality; type tests add climatic (C2 thermal shock), environmental (E2/E3 humidity) and fire (F1) class tests on coil samples.</div>
 
@@ -1547,7 +1595,7 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 
 <section id="standards">
 <h2>12. Standards Map</h2>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Topic</th><th>IEC</th><th>IEEE/ANSI</th></tr>
 <tr><td>General requirements</td><td>IEC 60076-1</td><td>IEEE C57.12.00</td></tr>
 <tr><td>Temperature rise</td><td>IEC 60076-2</td><td>C57.12.00 / C57.91</td></tr>
@@ -1567,10 +1615,10 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 <tr><td>Insulating liquids</td><td>IEC 60296 (mineral), 61099 (synth. ester), 62770 (nat. ester)</td><td>ASTM D3487 etc.</td></tr>
 <tr><td>DGA interpretation</td><td>IEC 60599</td><td>IEEE C57.104</td></tr>
 <tr><td>Converter/rectifier transformers</td><td>IEC 61378</td><td>C57.18.10</td></tr>
-</table>
+</table></div>
 
 <h3>12.1 The IEC 60076 series, part by part</h3>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Part</th><th>Title / scope</th><th>Where this course uses it</th></tr>
 <tr><td>-1</td><td>General — ratings, tolerances, service conditions</td><td>§1, §9, §18 (tolerances)</td></tr>
 <tr><td>-2</td><td>Temperature rise (liquid-immersed)</td><td>§6</td></tr>
@@ -1592,10 +1640,10 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 <tr><td>-22 series</td><td><b>Accessories</b>: protective devices (-22-1), radiators (-22-2), conservators/dehydrators (-22-3…) — the standard family for the accessory ecosystem of §7</td><td>§7.4</td></tr>
 <tr><td>-23</td><td>DC magnetic bias suppression devices</td><td>§14.4</td></tr>
 <tr><td>-24</td><td>Voltage regulating distribution transformers</td><td>—</td></tr>
-</table>
+</table></div>
 
 <h3>12.2 The IEEE C57 family, grouped the way it's used</h3>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Group</th><th>Key documents</th><th>Scope</th></tr>
 <tr><td>Product &amp; general</td><td>C57.12.00 (liquid-immersed general), C57.12.01 (dry-type general), C57.12.10 (230 kV and below requirements), C57.12.20 (overhead distribution), C57.12.34 (pad-mounted compartmental), C57.12.28/.29 (enclosure integrity)</td><td>Ratings, construction, tolerances per product family</td></tr>
 <tr><td>Test codes</td><td>C57.12.90 (liquid-immersed tests), C57.12.91 (dry-type tests), C57.98 (impulse guide), C57.113 (PD in liquid-filled), C57.123 (loss measurement guide), C57.149 (SFRA guide)</td><td>How every §11 test is run under IEEE practice</td></tr>
@@ -1603,10 +1651,10 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 <tr><td>Installation &amp; site</td><td>C57.93 (installation liquid-immersed), C57.94 (installation dry-type), C57.150 (transport &amp; storage? — transportation guide)</td><td>§16 practice</td></tr>
 <tr><td>Diagnostics &amp; life</td><td>C57.104 (DGA), C57.106 (oil acceptance &amp; maintenance), C57.139 (DGA in OLTCs), C57.140 (life extension), C57.143 (online monitoring guide), C57.152 (field diagnostic tests), C57.125 (failure investigation), C57.154 (high-temp insulation)</td><td>§16, §20 — the after-sales library</td></tr>
 <tr><td>Components</td><td>C57.19.00/.01 (bushings), C57.131 (OLTC requirements), C57.13 (instrument transformers)</td><td>§7, §15.7</td></tr>
-</table>
+</table></div>
 
 <h3>12.3 Liquids, materials and oil-laboratory standards</h3>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Topic</th><th>IEC</th><th>ASTM / other</th></tr>
 <tr><td>Mineral oil — new, spec</td><td>IEC 60296</td><td>ASTM D3487</td></tr>
 <tr><td>Oil in service — supervision</td><td>IEC 60422</td><td>IEEE C57.106</td></tr>
@@ -1619,10 +1667,10 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 <tr><td>Oxidation stability / inhibitor</td><td>IEC 61125 / 60666</td><td>ASTM D2440 / D2668</td></tr>
 <tr><td>Core steel (GOES)</td><td>IEC 60404-8-7</td><td>ASTM A876; coating test A717 (Franklin)</td></tr>
 <tr><td>Pressboard &amp; paper</td><td>IEC 60641 / 60554</td><td>ASTM D3394 family</td></tr>
-</table>
+</table></div>
 
 <h3>12.4 Efficiency regulation &amp; regional frameworks</h3>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Region</th><th>Framework</th><th>Essence</th></tr>
 <tr><td>EU</td><td>Regulation 548/2014 + amendment (Ecodesign Tier 2, 2021); EN 50708 series (which superseded EN 50464/50541 product standards)</td><td>Mandatory max P₀/P<sub>k</sub> or PEI (peak efficiency index) per rating</td></tr>
 <tr><td>USA</td><td>DOE 10 CFR 431 (2016, updated 2024+); NEMA TP-1 historic</td><td>Minimum efficiency at 50% load, by class</td></tr>
@@ -1630,7 +1678,7 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 <tr><td>India</td><td>IS 1180 (distribution, with BEE star ratings), IS 2026 (power, aligned to IEC 60076)</td><td>Star-labelled loss levels; BIS certification mandatory</td></tr>
 <tr><td>China</td><td>GB/T 6451, GB 20052 (energy-efficiency grades)</td><td>Grade 1–3 loss levels, S13/S15… series designs</td></tr>
 <tr><td>Australia/NZ</td><td>AS/NZS 60076 + MEPS (AS 2374.1.2)</td><td>Minimum energy performance, IEC-aligned product standard</td></tr>
-</table>
+</table></div>
 
 <h3>12.5 CIGRÉ — the working literature between standards</h3>
 <p>Standards say <i>what</i>; CIGRÉ technical brochures (study committee A2) explain <i>why and how</i>. The ones every transformer engineer ends up reading: TB 642 (transformer reliability survey — the failure statistics quoted in §16.5), TB 445 (maintenance guide), TB 761 (condition assessment), TB 343/glossy guides on SFRA interpretation, TB 296 (DGA interpretation refinements), TB 659/779 (bushing reliability), TB 575 (OLTC reliability), and the A2 brochures on GIC, short-circuit design review and dynamic loading. They are purchasable references — for a service business (§20), the reliability and condition-assessment brochures are the technical backbone of the Green/Amber/Red report.</p>
@@ -1653,12 +1701,12 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 <h2>13. Vector Groups, Connections &amp; Parallel Operation</h2>
 
 <h3>13.1 Why connection choice matters</h3>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Connection</th><th>Strengths</th><th>Watch-outs</th><th>Typical use</th></tr>
 <tr><td>Delta (D/d)</td><td>Traps triplen (3rd, 9th…) harmonic currents; no neutral shift; phase winding sees line voltage → fewer turns × more current</td><td>No neutral available; full line insulation</td><td>HV of distribution tx; stabilising tertiaries</td></tr>
 <tr><td>Star (Y/y)</td><td>Neutral available for earthing/4-wire loads; phase winding insulated for V/√3 only — economical at high voltage</td><td>Y-y without a delta path suffers neutral instability and 3rd-harmonic flux problems</td><td>HV of large power tx; LV of distribution tx</td></tr>
 <tr><td>Zigzag (Z/z)</td><td>Each phase split across two limbs → zero-sequence MMF cancels; very low zero-sequence impedance</td><td>~15% more copper for the same rating</td><td>Earthing transformers; LV of small units with heavy unbalance</td></tr>
-</table>
+</table></div>
 
 <h3>13.2 Clock notation</h3>
 <p>The vector group symbol — e.g. <b>Dyn11</b> — reads: HV delta (D), LV star (y), neutral brought out (n), LV phasor at clock position 11, i.e. the LV leads the HV by 30° (each clock hour = 30°). Standard groups: 0 (Yy0, Dd0), 6, 1 (Dyn1, Yd1) and 11 (Dyn11, Yd11). Dyn11 is the IEC/GCC default for distribution.</p>
@@ -1709,14 +1757,14 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 <p>Dyn and Yzn groups feed unbalanced LV networks gracefully: the delta (or zigzag) gives zero-sequence MMF a path, so the neutral holds. A plain Yyn0 three-limb unit on unbalanced load suffers neutral displacement and tank heating from zero-sequence flux returning through tank steel — the reason Yy is avoided for 4-wire distribution.</p>
 
 <h3>13.5 Zero-sequence impedance — the connection's hidden fingerprint</h3>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Connection / core</th><th>Z₀ (seen from star side)</th><th>Consequence</th></tr>
 <tr><td>Dyn, 3-limb</td><td>≈ 0.85–1.0 × Z₁</td><td>Strong earth-fault current, neutral holds — the 4-wire workhorse</td></tr>
 <tr><td>YNd (power tx)</td><td>≈ 0.8–1.0 × Z₁</td><td>Delta traps zero-sequence; predictable earth-fault levels for grading</td></tr>
 <tr><td>YNyn, 3-limb, no delta</td><td>≈ 3–10 × Z₁ (tank acts as a lossy delta)</td><td>Weak, temperature-dependent earth-fault current; tank heating — avoid, or add a delta tertiary</td></tr>
 <tr><td>YNyn, 5-limb or shell</td><td>≈ 10–100 × Z₁ (free return path, no opposing MMF)</td><td>Practically no earth-fault contribution without a tertiary</td></tr>
 <tr><td>ZNyn / earthing zigzag</td><td>≈ 0.1–0.25 × Z₁</td><td>Deliberately strong neutral — earthing-transformer duty</td></tr>
-</table>
+</table></div>
 <p>Protection engineers ask for Z₀ before anything else: it sets earth-fault levels, REF sensitivity and neutral-earthing-resistor sizing. Note that Z₀ is a <i>core-construction</i> property as much as a connection property — the same YNyn nameplate behaves completely differently on 3-limb vs 5-limb iron (§14.4 told the same story for DC flux).</p>
 </section>
 
@@ -1845,7 +1893,7 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 </ol>
 
 <h3>16.3 Commissioning test set (typical)</h3>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Check</th><th>Compared against</th></tr>
 <tr><td>IR + polarisation index</td><td>Class values; PI &gt; 1.3–2</td></tr>
 <tr><td>Ratio (all taps), vector group, winding resistance</td><td>Factory test report</td></tr>
@@ -1854,7 +1902,7 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 <tr><td>Oil BDV, moisture, baseline DGA</td><td>IEC 60422 limits</td></tr>
 <tr><td>Protection: Buchholz float/surge, PRV contact, OTI/WTI injection, fan/pump staging, OLTC through-run, AVR</td><td>Scheme logic</td></tr>
 <tr><td>Soak: energise off-load 12–24 h; load in steps; DGA at 24 h and 1 week</td><td>No combustible-gas trend</td></tr>
-</table>
+</table></div>
 
 <h3>16.4 Condition monitoring through life</h3>
 <ul>
@@ -1938,7 +1986,7 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 <div class="cap">Fig. 17.1 — Biased differential (87T) compares HV and LV currents; anything entering the zone that doesn't leave is an internal fault. The neutral CT adds restricted-earth-fault (87N/REF) coverage for faults near the star point that 87T cannot see.</div>
 </div>
 
-<table>
+<div class="table-wrap"><table>
 <tr><th>Protection</th><th>ANSI</th><th>Covers</th><th>Key design points</th></tr>
 <tr><td>Biased differential</td><td>87T</td><td>Phase &amp; ground faults inside the CT zone</td><td>Vector-group &amp; ratio compensation (numerical relays do it in software); 2nd-harmonic restraint for inrush; 5th-harmonic for overfluxing; bias slope rides through CT saturation on through-faults</td></tr>
 <tr><td>Restricted earth fault</td><td>87N/64REF</td><td>Faults near the star point (last 15–20% of winding where 87T is blind)</td><td>High-impedance scheme with matched CTs, or low-impedance numerical version</td></tr>
@@ -1947,7 +1995,7 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 <tr><td>Thermal image / hotspot</td><td>49</td><td>Overload</td><td>WTI replica or fibre-optic input; stages: alarm → fans → trip</td></tr>
 <tr><td>Overfluxing</td><td>24</td><td>V/f excursions (GSU essential)</td><td>Inverse-time V/f characteristic</td></tr>
 <tr><td>Arc/fire mitigation</td><td>—</td><td>Tank rupture &amp; fire</td><td>PRVs, rupture-resistant tank design, deluge systems, fire walls, ester liquids</td></tr>
-</table>
+</table></div>
 
 <div class="keypoint"><b>Coordination rule of thumb:</b> Buchholz catches what differential can't (tiny inter-turn faults); differential catches what overcurrent can't (low-current internal faults); overcurrent backs everything up and protects the network below. A transformer that trips on Buchholz gas alone has usually been saved cheap — investigate before re-energising, never just reset.</div>
 
@@ -1973,7 +2021,7 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 </ul>
 
 <h3>18.2 What a complete technical tender schedule contains</h3>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Block</th><th>Items the evaluator checks</th></tr>
 <tr><td>Ratings &amp; system</td><td>MVA (all cooling stages), voltages &amp; tapping range, vector group, frequency, impedance (+tolerances), parallel duty with existing fleet</td></tr>
 <tr><td>Guaranteed performance</td><td>P₀, P<sub>k</sub> (at 75 °C, principal tap), I₀, sound power, temperature rises — with penalty/rejection clauses (IEC tolerances: P₀ +15%, total +10%, u<sub>k</sub> ±7.5/10%)</td></tr>
@@ -1982,7 +2030,7 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 <tr><td>Materials &amp; makes</td><td>Core steel grade, conductor material, insulation system, accepted accessory makes (bushings, OLTC, relays, gauges) — where accessory suppliers are specified by name</td></tr>
 <tr><td>Tests</td><td>Routine + agreed type/special tests, witness points, test-bay accreditation (ISO 17025)</td></tr>
 <tr><td>Docs &amp; logistics</td><td>Drawings for approval, QA plan, transport method &amp; impact recording, site services, warranty (typ. 24–60 months), spares list</td></tr>
-</table>
+</table></div>
 
 <h3>18.3 Factory assessment — what to look at in an audit</h3>
 <ul>
@@ -2012,7 +2060,7 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 <h2>19. Glossary &amp; Self-Test</h2>
 
 <h3>19.1 Quick glossary</h3>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Term</th><th>Meaning</th></tr>
 <tr><td>Active part</td><td>Core + windings + cleating + leads + tap-changer: everything that does the work, lives under oil</td></tr>
 <tr><td>B<sub>m</sub> / flux density</td><td>Peak operating flux density in the core (T); the central core-design choice</td></tr>
@@ -2043,7 +2091,7 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 <tr><td>MOG</td><td>Magnetic oil-level gauge on the conservator</td></tr>
 <tr><td>NER</td><td>Neutral earthing resistor — limits earth-fault current from a star point</td></tr>
 <tr><td>PWF / capitalisation</td><td>Present-worth factor turning W of loss into $ of evaluated cost (§18.5)</td></tr>
-</table>
+</table></div>
 
 <h3>19.2 Self-test — sixteen questions</h3>
 <p>Answers are hidden under each question. Do them after reading the linked sections.</p>
@@ -2086,14 +2134,14 @@ Repeat that cycle — real document → course section → back to the document 
 </ul>
 
 <h3>20.2 Preventive maintenance schedule (oil-immersed, typical)</h3>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Interval</th><th>Tasks</th></tr>
 <tr><td>Monthly (visual round)</td><td>Oil levels, breather silica-gel colour, leaks, gauge readings, fan/pump operation, surge-arrester counters, corrosion spots</td></tr>
 <tr><td>Annual</td><td>Oil sample: DGA + moisture + BDV + acidity + tan δ (IEC 60422); IR thermography under load; protection trip tests; fan/pump service; OLTC drive lubrication; earth-connection checks</td></tr>
 <tr><td>3–5 years</td><td>Bushing C &amp; tan δ; winding resistance + ratio spot-check; SFRA vs fingerprint; furans (paper ageing); paint/corrosion repair; gasket programme; OTI/WTI calibration</td></tr>
 <tr><td>By operations count / OEM book</td><td>OLTC diverter inspection (arcing-in-oil: ~50–100k operations or 5–7 yr; vacuum type: ~300k); breather media; PRV function test</td></tr>
 <tr><td>Cast resin / dry types</td><td>Annually: de-energised cleaning (vacuum/compressed air), louvre filters, torque checks, fan service, PT100 relay test, PD spot test if history warrants — no oil work at all</td></tr>
-</table>
+</table></div>
 
 <h3>20.3 Condition-based services — reading the asset</h3>
 <ul>
@@ -2103,7 +2151,7 @@ Repeat that cycle — real document → course section → back to the document 
 </ul>
 
 <h3>20.4 Corrective services — the heavy end</h3>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Service</th><th>What it involves</th><th>When justified</th></tr>
 <tr><td>Site oil treatment</td><td>Mobile degassing/dehydration/filtration rig circulating hot oil under vacuum — the factory oil-processing technology in truck-mounted form</td><td>Moisture/gas out of limits, post-repair, retrofill preparation</td></tr>
 <tr><td>Oil regeneration (reclamation)</td><td>Fuller's-earth columns restore oxidised oil to near-new acidity/IFT, usually energised, multi-pass</td><td>Acidity &gt; ~0.15 mg KOH/g on an otherwise healthy unit</td></tr>
@@ -2111,7 +2159,7 @@ Repeat that cycle — real document → course section → back to the document 
 <tr><td>Bushing &amp; OLTC replacement</td><td>Like-for-like or upgrades (RIP bushings, vacuum-type OLTC retrofit kits)</td><td>Tan δ trend, moisture ingress, obsolete spares — recall §16.5: these two lead the failure statistics</td></tr>
 <tr><td>Active-part repair</td><td>Workshop (or site, for minor damage): untank, replace windings/leads/cleating, re-dry, re-process oil, full re-test — effectively remanufacture. Engineered insulation kits and repair design reviews are available from specialists such as Weidmann's transformer-engineering services</td><td>Where repair cost + outage &lt; replacement + lead time — with today's long new-build lead times, repair wins far more often than a decade ago</td></tr>
 <tr><td>Retrofit &amp; upgrade</td><td>Cooling uprates (added radiators/fans), conservator rubber-bag retrofits, online monitors, fire protection, ester retrofill for fire-critical sites</td><td>Load growth, code changes, fire-safety reviews</td></tr>
-</table>
+</table></div>
 
 <h3>20.5 Spares strategy</h3>
 <ul>
@@ -2144,26 +2192,26 @@ Repeat that cycle — real document → course section → back to the document 
 <p>The outermost foil is earthed at the flange; the last-but-one foil is brought to the <b>test tap</b>. This is the whole idea behind the concentric foils you can slice open in the 3D model.</p>
 
 <h3>21.2 Types — the family tree</h3>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Type</th><th>Insulation</th><th>Notes</th></tr>
 <tr><td><b>OIP</b> — oil-impregnated paper</td><td>kraft paper wound on the tube, vacuum-dried, oil-filled</td><td>The long-time workhorse. Contains its own oil → a leak or moisture ingress can lead to violent failure. Needs an oil level gauge.</td></tr>
 <tr><td><b>RIP</b> — resin-impregnated paper</td><td>paper core vacuum-impregnated with epoxy, cured solid</td><td>No free oil → non-explosive, drier, lower partial discharge, lighter. Now standard for new EHV; pairs with a <b>composite (silicone) housing</b>.</td></tr>
 <tr><td><b>RIS</b> — resin-impregnated synthetic</td><td>synthetic (non-cellulose) mat + resin</td><td>Even lower moisture sensitivity; premium.</td></tr>
 <tr><td><b>RBP</b> — resin-bonded paper</td><td>paper coated with resin, wound dry</td><td>Legacy; high PD, prone to ageing — being retired.</td></tr>
 <tr><td>Dry / solid</td><td>cast epoxy, no condenser</td><td>MV and dry-type units, and generator-voltage LV bushings.</td></tr>
-</table>
+</table></div>
 <div class="keypoint"><b>GCC selection note:</b> for Gulf substations we specify <b>RIP with composite housing</b> — the silicone shed sheds sand and salt fog far better than porcelain (lower pollution-flashover risk), it will not shatter, and with no internal oil it removes the classic bushing fire mechanism. Creepage is chosen for IEC&nbsp;60815 <b>pollution class d/e (heavy/very heavy)</b>, i.e. ≥&nbsp;31&nbsp;mm/kV, versus ~16&nbsp;mm/kV for a clean inland site.</div>
 
 <h3>21.3 Construction &amp; ratings</h3>
 <p>Working from the top down: the <b>top terminal</b> and a <b>corona/grading ring</b> (round-off of the air-end field); the porcelain or composite <b>air-side insulator</b> climbing the creepage distance; the <b>condenser core</b> (foils + paper/resin); the <b>mounting flange</b> with the <b>test tap</b>; the shorter <b>oil-side insulator</b>; and the central <b>conductor</b> — either a fixed rod, a bottom-connected stem, or a flexible <b>draw-lead</b> pulled through after the bushing is fitted. A <b>bushing CT</b> sits in the turret around the oil end (see §11 / §17).</p>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Rating</th><th>Set by</th></tr>
 <tr><td>Highest voltage U<sub>m</sub> &amp; BIL</td><td>system insulation coordination (e.g. 420&nbsp;kV / 1425&nbsp;kV LI)</td></tr>
 <tr><td>Rated current</td><td>winding line current + overload; drives conductor size &amp; thermal design</td></tr>
 <tr><td>Creepage distance</td><td>pollution class (mm/kV of U<sub>m</sub>) — IEC 60815</td></tr>
 <tr><td>Cantilever (bending) load</td><td>connection pull + wind + short-circuit forces on the jumper</td></tr>
 <tr><td>Test tap voltage / capacitance C1, C2</td><td>diagnostic baseline; C1 = conductor-to-tap, C2 = tap-to-flange</td></tr>
-</table>
+</table></div>
 <p>Governing standards: <b>IEC&nbsp;60137</b> and <b>IEEE&nbsp;C57.19</b>; oil-side interface per the transformer's own insulation design.</p>
 
 <h3>21.4 Failure modes &amp; monitoring — why bushings burn transformers</h3>
@@ -2190,12 +2238,12 @@ Repeat that cycle — real document → course section → back to the document 
 <p>The tap-changer is the transformer's only moving power part, and after bushings it is the second-largest contributor to failures (CIGRÉ) — precisely because it moves, arcs and wears. It is also core to your accessory business, so it gets its own chapter. <span class="tag">interactive</span> Watch a tap operation, snap the diverter and swap resistor↔vacuum in the <a href="oltc.html">🔀 3D OLTC Cutaway</a>.</p>
 
 <h3>22.1 On-load vs de-energised</h3>
-<table>
+<div class="table-wrap"><table>
 <tr><th></th><th>DETC / off-circuit</th><th>OLTC / on-load</th></tr>
 <tr><td>Switches</td><td>only with the unit de-energised</td><td>under full load, without interruption</td></tr>
 <tr><td>Range</td><td>±2×2.5 % typical (seasonal set-and-forget)</td><td>±10 – 16 %, many small steps</td></tr>
 <tr><td>Use</td><td>distribution, GSU (generator AVR regulates)</td><td>grid inter-bus, sub-transmission, anywhere the voltage must be held live</td></tr>
-</table>
+</table></div>
 
 <h3>22.2 How an OLTC transfers current without interrupting it</h3>
 <p>The trick is to split the job between two devices (see the 3D model): a <b>tap selector</b> that pre-selects the next tap <b>off-load</b> (so its contacts never arc), and a fast <b>diverter switch</b> that then transfers the current from the present tap to the pre-selected one in ~40–60&nbsp;ms. During that brief transfer both taps are momentarily bridged; a <b>transition impedance</b> limits the circulating current and takes the switching arc:</p>
@@ -2328,12 +2376,12 @@ Repeat that cycle — real document → course section → back to the document 
 
 <h3>Step 5 — Cooling stages</h3>
 <p>Total loss ≈ NLL + LL ≈ <b>~1.3&nbsp;MW</b> at full load. Dual/triple rating is normal:</p>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Stage</th><th>Mechanism</th><th>Approx. capacity</th></tr>
 <tr><td>ONAN</td><td>natural oil + natural air (panel radiators)</td><td>~60 % (≈300 MVA)</td></tr>
 <tr><td>ONAF</td><td>+ radiator fans</td><td>~80 % (≈400 MVA)</td></tr>
 <tr><td>ODAF</td><td>+ directed-oil pumps</td><td>100 % (500 MVA)</td></tr>
-</table>
+</table></div>
 
 <h3>Step 6 — Losses, mass &amp; economics</h3>
 <p>Indicative: NLL ≈ 250–350&nbsp;kW, LL ≈ 900–1100&nbsp;kW (at rated), total mass ≈ <b>340&nbsp;t</b>, oil ≈ <b>95&nbsp;kL</b>. Evaluated with GCC loss-capitalisation (§18): with A ≈ 6,000&nbsp;$/kW and B ≈ 2,000&nbsp;$/kW, the capitalised loss cost is on the order of the purchase price — so the optimiser spends iron (better steel, lower B<sub>m</sub>) to buy back no-load loss.</p>
@@ -2358,18 +2406,18 @@ Repeat that cycle — real document → course section → back to the document 
 
 <h3>26.1 Standard ratings — the R10 ladder</h3>
 <p>Distribution and power transformers are not built in arbitrary sizes; they follow the IEC&nbsp;60076 preferred-number (R10) series. Quoting an off-ladder rating almost always costs more for no benefit.</p>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Band</th><th>Preferred kVA / MVA ratings</th></tr>
 <tr><td>Small distribution</td><td>25, 50, 100, 160, 250, 315, 400, 500, 630 kVA</td></tr>
 <tr><td>Large distribution</td><td>800, 1000, 1250, 1600, 2000, 2500 kVA</td></tr>
 <tr><td>Medium power</td><td>3.15, 5, 6.3, 8, 10, 12.5, 16, 20, 25, 31.5 MVA</td></tr>
 <tr><td>Large power</td><td>40, 50, 63, 80, 100, 125, 160, 200, 250, 315, 400 MVA</td></tr>
-</table>
+</table></div>
 <div class="keypoint"><b>GCC note:</b> DEWA, ADDC/AADC, SEC and KAHRAMAA standardise on this ladder; 11&nbsp;kV and 33&nbsp;kV distribution units of 500/1000/1500/2000&nbsp;kVA dominate the order book, and a 1500&nbsp;kVA "GCC special" sits between R10 steps because of compact substation room sizing.</div>
 
 <h3>26.2 Insulation levels — rated withstand voltages (IEC 60076-3)</h3>
 <p>Pick the highest voltage for equipment <b>U<sub>m</sub></b> from the system, then read across to the short-duration power-frequency withstand (AC) and the lightning impulse level (LI / BIL). The dielectric design of clearances, the bushing class and the test sequence all flow from this row.</p>
-<table>
+<div class="table-wrap"><table>
 <tr><th>U<sub>m</sub> (kV)</th><th>AC withstand (kV rms)</th><th>Lightning impulse BIL (kV peak)</th><th>Typical use</th></tr>
 <tr><td>1.1</td><td>3</td><td>—</td><td>LV winding (0.4 kV)</td></tr>
 <tr><td>3.6</td><td>10</td><td>20 / 40</td><td>3.3 kV</td></tr>
@@ -2384,12 +2432,12 @@ Repeat that cycle — real document → course section → back to the document 
 <tr><td>145</td><td>230 / 275</td><td>550 / 650</td><td>132 / 138 kV</td></tr>
 <tr><td>245</td><td>360 / 395 / 460</td><td>850 / 950 / 1050</td><td>220 / 230 kV</td></tr>
 <tr><td>420</td><td>510 / 570 / 630</td><td>1300 / 1425</td><td>400 kV</td></tr>
-</table>
+</table></div>
 <div class="note"><b>Designer's habit:</b> the BIL number — not the AC number — usually sets the major insulation distances and the line-end winding grading, because the impulse stress concentrates non-linearly at the line end (see §5.2). On a 132 kV unit the 550 kV BIL is what drives the static-ring and the first-turns reinforcement.</div>
 
 <h3>26.3 Typical short-circuit impedance by size</h3>
 <p>Impedance is a commercial decision dressed as a physical one: lower Z means better regulation and less reactive absorption but higher fault duty downstream; higher Z limits fault current but worsens voltage drop and costs copper. These are the bands customers expect unless they specify otherwise.</p>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Rating</th><th>Typical Z (%)</th><th>Driver</th></tr>
 <tr><td>≤ 630 kVA distribution</td><td>4.0</td><td>Regulation on radial LV feeders</td></tr>
 <tr><td>800–2500 kVA distribution</td><td>4.5 – 6.0</td><td>Fault limiting at the LV board</td></tr>
@@ -2397,10 +2445,10 @@ Repeat that cycle — real document → course section → back to the document 
 <tr><td>12.5–31.5 MVA</td><td>9 – 12.5</td><td>Limit 11/33 kV switchgear duty</td></tr>
 <tr><td>40–100 MVA</td><td>12.5 – 14</td><td>Bus fault level ceilings</td></tr>
 <tr><td>GSU (generator step-up)</td><td>12 – 16</td><td>Generator stability + fault limiting</td></tr>
-</table>
+</table></div>
 
 <h3>26.4 Temperature-rise limits</h3>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Quantity</th><th>Limit</th><th>Reference</th></tr>
 <tr><td>Top-oil rise (free-breathing / sealed, mineral)</td><td>60 K</td><td>IEC 60076-2</td></tr>
 <tr><td>Average winding rise (ON / OF)</td><td>65 K / 70 K</td><td>IEC 60076-2</td></tr>
@@ -2408,11 +2456,11 @@ Repeat that cycle — real document → course section → back to the document 
 <tr><td>Hot-spot, thermally upgraded paper / ester</td><td>+ up to 20 K allowed</td><td>IEC 60076-14</td></tr>
 <tr><td>Dry-type class F winding rise</td><td>100 K</td><td>IEC 60076-11</td></tr>
 <tr><td>Dry-type class H winding rise</td><td>125 K</td><td>IEC 60076-11</td></tr>
-</table>
+</table></div>
 <div class="keypoint"><b>GCC ambient correction:</b> IEC limits assume a 40 °C max / 30 °C daily-average ambient. Gulf substations routinely specify 50 °C ambient, so the guaranteed rise is reduced (typically by 10–12.5 K) or the unit is uprated in cooling — the single most common Gulf deviation from the base IEC design.</div>
 
 <h3>26.5 Insulating liquids compared</h3>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Property</th><th>Mineral oil</th><th>Natural ester</th><th>Synthetic ester</th><th>Silicone</th></tr>
 <tr><td>Density @20 °C (g/cm³)</td><td>0.87</td><td>0.92</td><td>0.97</td><td>0.96</td></tr>
 <tr><td>Fire point (°C)</td><td>~170</td><td>360</td><td>316</td><td>340</td></tr>
@@ -2422,11 +2470,11 @@ Repeat that cycle — real document → course section → back to the document 
 <tr><td>Viscosity @40 °C (cSt)</td><td>9</td><td>33</td><td>29</td><td>40</td></tr>
 <tr><td>Moisture tolerance</td><td>low (~55 ppm sat.)</td><td>high (~1100 ppm)</td><td>high</td><td>moderate</td></tr>
 <tr><td>Biodegradable</td><td>no</td><td>yes (readily)</td><td>yes</td><td>no</td></tr>
-</table>
+</table></div>
 <div class="note"><b>Why it matters:</b> esters' high ε<sub>r</sub> (3.2 vs 2.2) raises the share of dielectric stress carried by the adjacent pressboard, so a unit is not simply "retro-fillable" — the insulation structure should be designed for the fluid. Esters' fire class K is why they win indoor, rooftop and offshore jobs.</div>
 
 <h3>26.6 Insulation thermal classes (IEC 60085)</h3>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Class</th><th>Hot-spot limit (°C)</th><th>Typical materials</th></tr>
 <tr><td>Y / 90</td><td>90</td><td>untreated cellulose, unimpregnated</td></tr>
 <tr><td>A / 105</td><td>105</td><td>oil-impregnated kraft paper / pressboard</td></tr>
@@ -2435,10 +2483,10 @@ Repeat that cycle — real document → course section → back to the document 
 <tr><td>F / 155</td><td>155</td><td>VPI / cast resin, upgraded systems</td></tr>
 <tr><td>H / 180</td><td>180</td><td>silicone-bonded, aramid (Nomex)</td></tr>
 <tr><td>N / 200 · 220</td><td>200 / 220</td><td>high-temp aramid / mica composites</td></tr>
-</table>
+</table></div>
 
 <h3>26.7 Vector-group selection matrix</h3>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Application</th><th>Usual group</th><th>Why</th></tr>
 <tr><td>11/0.4 kV distribution (4-wire LV)</td><td>Dyn11</td><td>delta gives zero-sequence path; LV neutral stable; +30° shift</td></tr>
 <tr><td>33/11 kV sub-transmission</td><td>Dyn1 / Dyn11 / YNd11</td><td>match existing network phase shift; delta where earthing needed</td></tr>
@@ -2446,17 +2494,17 @@ Repeat that cycle — real document → course section → back to the document 
 <tr><td>Large interconnecting auto</td><td>YNa0d (with tertiary)</td><td>buried delta carries 3rd harmonic + stabilises neutral</td></tr>
 <tr><td>Generator step-up</td><td>YNd1 / YNd11</td><td>HV star earthed for transmission; LV delta to generator</td></tr>
 <tr><td>Earthing / neutral derivation</td><td>ZNyn / zigzag</td><td>low zero-sequence impedance to create a neutral</td></tr>
-</table>
+</table></div>
 <div class="note"><b>Parallel rule of thumb:</b> two transformers parallel only if they share the same vector-group <i>number</i> (phase shift), nominal ratio and have impedances within ±10 % — and the higher-Z unit will quietly under-share the load in proportion to the impedance mismatch (see §13.3).</div>
 
 <h3>26.8 Loss capitalisation — A &amp; B factors</h3>
 <p>The number that actually wins or loses a power-transformer tender is not the price; it is the <b>total owning cost</b> TOC = Price + A·(no-load loss) + B·(load loss), where A and B are the present value of one kilowatt of loss over the asset life (see §18.1 and §18.5). Indicative GCC values at 2026 tariffs:</p>
-<table>
+<div class="table-wrap"><table>
 <tr><th>Quantity</th><th>Symbol</th><th>Indicative value</th></tr>
 <tr><td>No-load (iron) loss capitalisation</td><td>A</td><td>US$ 4,000 – 8,000 / kW</td></tr>
 <tr><td>Load (copper) loss capitalisation</td><td>B</td><td>US$ 1,000 – 3,000 / kW</td></tr>
 <tr><td>Ratio A : B (energised continuously, loaded ~60 %)</td><td>—</td><td>≈ 3 : 1 to 5 : 1</td></tr>
-</table>
+</table></div>
 <div class="keypoint"><b>Design consequence:</b> because A &gt;&gt; B, a high A pushes the optimiser toward lower flux density, better steel (Hi-B or laser-scribed, even amorphous) and more core mass — you spend iron to buy back no-load loss that runs 8,760 h/yr. A low A and high B (a heavily, intermittently loaded unit) pushes the opposite way: more copper, larger ducts. The calculator below lets you watch this trade move.</div>
 
 <h3>26.9 Put the data to work</h3>

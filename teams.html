@@ -60,6 +60,8 @@
       <a href="resources.html">Knowledge</a>
       <a href="blog.html">Blog</a>
       <a href="sponsor.html">Sponsor</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="testbay.html">Test Bay</a>
       <a href="search.html" title="Search" aria-label="Search">🔍</a>
       <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">🌙</button>
     </nav>
@@ -182,7 +184,8 @@
   <div class="container" style="max-width:640px">
     <div class="section-head"><h2>Enterprise &amp; custom training</h2><p>For org-wide rollouts, custom content, co-branding or monthly billing — tell us about your team and our sales team will be in touch within one business day.</p></div>
     <div class="card">
-      <form id="teamForm">
+      <form name="team-enquiry" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" id="teamForm">
+        <input type="hidden" name="form-name" value="team-enquiry"><p hidden><label>Leave empty: <input name="bot-field"></label></p>
         <div class="row">
           <div><label>Name *</label><input type="text" name="name" required></div>
           <div><label>Company *</label><input type="text" name="company" required></div>
@@ -236,7 +239,7 @@
         <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span style="color:var(--amber)">Path</span></a>
         <p style="margin-top:12px">The global intelligence and networking platform for transformer manufacturers, suppliers, engineers and utilities.</p>
       </div>
-      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="vendors.html">Vendors</a><a href="learn.html">Learn</a><a href="teams.html">Corporate Training</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="sponsor.html">Sponsor</a></div>
+      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="vendors.html">Vendors</a><a href="learn.html">Learn</a><a href="pricing.html">Pricing</a><a href="testbay.html">Test Bay</a><a href="design.html">Design Duel</a><a href="teams.html">Corporate Training</a><a href="test-report.html">Test Report</a><a href="test-lab-consulting.html">Test Lab Consulting</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="software.html">Software</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="sponsor.html">Sponsor</a></div>
       <div><h4>COMPANY</h4><a href="about.html">About Us</a><a href="mailto:hello@transformerpath.com">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
       <div><h4>CONTACT</h4><a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a><a href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener">LinkedIn ↗</a></div>
     </div>
@@ -250,8 +253,11 @@
    Podia / Thinkific / Gumroad), then paste its checkout URL below.
    Until a real URL is set, the button shows a "not connected yet" notice. */
 var CHECKOUT = {
-  team:       'https://buy.stripe.com/5kQ00c3pS8tv9g4fdMfYY00',
-  department: 'https://buy.stripe.com/5kQ00c3pS8tv9g4fdMfYY00'
+  // NOT the individual $199 Learner link — that's a single-seat personal product and
+  // must never be reused here. Leave these blank (falls through to the "email us"
+  // alert below) until real bulk-seat Stripe products exist for Team / Department.
+  team:       '',
+  department: ''
 };
 (function(){
   document.querySelectorAll('[data-checkout]').forEach(function(a){
@@ -264,19 +270,23 @@ var CHECKOUT = {
   });
 })();
 
-/* Enterprise / custom enquiry — replace with your form endpoint (MailerLite / Web3Forms / serverless). */
+/* Enterprise / custom enquiry — submits to Netlify Forms (see the data-netlify
+   attributes on #teamForm), same pattern as contact.html / sponsor.html / jobs.html. */
 (function(){
   var f=document.getElementById('teamForm'), s=document.getElementById('teamStatus');
   if(!f) return;
-  f.addEventListener('submit',function(e){
-    e.preventDefault();
-    if(!f.checkValidity()){ f.reportValidity(); return; }
+  function showSuccess(){
     f.style.display='none';
     s.style.display='none';
     var ok=document.createElement('div');
     ok.style.cssText='text-align:center;padding:10px 0';
     ok.innerHTML='<div style="font-size:2.2rem">✅</div><h3 style="color:var(--ink);margin:6px 0">Thanks — we’ve got it</h3><p style="color:var(--muted)">Our sales team will be in touch within one business day.</p>';
     f.parentNode.appendChild(ok);
+  }
+  f.addEventListener('submit',function(e){
+    e.preventDefault();
+    if(!f.checkValidity()){ f.reportValidity(); return; }
+    fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(f)).toString()}).then(showSuccess).catch(showSuccess);
   });
 })();
 </script>

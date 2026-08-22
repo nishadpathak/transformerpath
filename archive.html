@@ -19,15 +19,6 @@
 <link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0d1b2e">
-<style>
-.legal { max-width:760px; margin:0 auto; padding:56px 20px 72px; }
-.legal h1 { color:var(--ink); font-size:2.1rem; letter-spacing:-.5px; margin-bottom:6px; }
-.legal .sub { color:var(--muted); margin-bottom:36px; font-size:.95rem; }
-.legal h2 { color:var(--ink); font-size:1.25rem; margin:32px 0 10px; }
-.legal p, .legal li { color:var(--text); font-size:.97rem; margin-bottom:12px; }
-.legal ul { padding-left:22px; margin-bottom:12px; }
-.legal a { color:var(--accent); font-weight:600; }
-</style>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5646978915498298" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -46,6 +37,8 @@
       <a href="resources.html">Knowledge</a>
       <a href="blog.html">Blog</a>
       <a href="sponsor.html">Sponsor</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="testbay.html">Test Bay</a>
       <a href="search.html" title="Search" aria-label="Search">🔍</a>
       <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">🌙</button>
     </nav>
@@ -86,6 +79,16 @@
 <script>
 /* ====== DAILY-UPDATED: the daily intel job PREPENDS one entry per day. Never overwrite this array. ====== */
 const ARCHIVE = [
+  { d:"2026-08-21", label:"Friday, 21 August 2026", file:"intel-2026-08-21.html",
+    hl:"India commissions 35,670 MVA of &ge;220 kV transformation capacity in Apr&ndash;Jul FY27 &mdash; 66% of plan in four months, PGCIL 16,000 MVA of it &middot; Atlanta Electricals takes a Rs 193.92 cr APTRANSCO letter of intent for twelve 160 MVA, 220/132 kV auto-transformers &middot; Ukrenergo auctions six war-damaged transformers and autotransformers, 785 MVA combined, from $239,700 in Odesa on 7 Sep &middot; TE&#304;A&#350; contracts the Antalya GIS and Side GIS trafo merkezi completion works to GES Genel Elektrik at &#8378;547,202,038" },
+  { d:"2026-08-19", label:"Wednesday, 19 August 2026", file:"intel-2026-08-19.html",
+    hl:"Oman signs ten agreements worth RO15m ($39m) to localise transformer-component manufacturing &mdash; seven new factories for eight components plus two new production lines, with Voltamp Energy under the APSR &middot; SPPC extends the Round-7 NREP bid deadlines &mdash; four solar IPPs to 13 Sep and two wind IPPs to 14 Sep, 5,300 MW in total &middot; State Grid&rsquo;s third 2026 UHV equipment batch lands at CNY 10.872bn, taking the year to date to CNY 29.261bn &mdash; already past all of 2025 &middot; Korea&rsquo;s top three power-equipment makers reach a combined &#8361;36.73tn ($25.7bn) order backlog" },
+  { d:"2026-08-18", label:"Tuesday, 18 August 2026", file:"intel-2026-08-18.html",
+    hl:"Saudi Energy awards the Expo 2030 Riyadh power package &mdash; one 380/132 kV BSP plus three 132/13.8 kV primary substations to Al-Babtain, Haif, Alfanar and TDP &middot; KSA approves a new Government Tenders &amp; Procurement Law &mdash; 20% variation cap, direct-procurement ceiling up 10&times; to SR1m &middot; State Grid&rsquo;s first four 2026 UHV tenders total CNY 29.26bn, converter transformers CNY 5.13bn across nine packages &middot; First hydrogen flows Lingen&rarr;Marl on the 120 km GET H2 Nukleus pipeline &middot; Copper $14,545/t and aluminium $3,248/t (14 Aug cash) &mdash; Cu/Al 4.478" },
+  { d:"2026-08-16", label:"Sunday, 16 August 2026", file:"intel-2026-08-16.html",
+    hl:"Hitachi Energy signs the Erbil three-substation deal for the Kurdistan Region (northern Iraq) &middot; Hitachi Energy Italy wins five e-distribuzione HV/MV transformer contracts worth &euro;181.76m &middot; Egypt EETC signs the Girga upgrade &mdash; 33 kV (3&times;20 MVA) rebuilt to 66 kV (3&times;40 MVA), turnkey &middot; Copper $14,545/t and aluminium $3,248/t (14 Aug cash) &mdash; Cu/Al 4.478, the widest ratio of 2026" },
+  { d:"2026-08-14", label:"Friday, 14 August 2026", file:"intel-2026-08-14.html",
+    hl:"Hitachi Energy signs Erbil substations deal for Kurdistan Region (northern Iraq) · PGCIL bulk award splits Rs 6.3bn between CG Power &amp; Siemens Energy India (765/400 kV transformers &amp; reactors) · Copper $14,285/t (13 Aug), easing $91 off the 6 Aug 2026 peak of $14,455/t" },
   { d:"2026-08-03", label:"Monday, 3 August 2026", file:"intel-2026-08-03.html",
     hl:"Egypt EETC signs Heliopolis 2 220/66/11 kV GIS (3×175+4×40 MVA) &amp; the Ain Sokhna 220 kV bay expansions · BRUSH Group acquires instrument-transformer maker D K Moriarty · TenneT posts €6.023bn of H1 2026 grid capex, Sengwarden 4 GW hub starts · EEI: ~$1.1tn of US grid investment planned over five years" },
   { d:"2026-07-25", label:"Saturday, 25 July 2026", file:"intel-2026-07-25.html",
@@ -113,17 +116,53 @@ const ARCHIVE = [
 ];
 (function(){
   const host = document.getElementById('archList');
-  host.innerHTML = ARCHIVE.map(a =>
-    '<a class="arch-item" href="'+a.file+'"><span class="arch-date">'+a.label+'</span><span class="arch-hl">'+a.hl+'</span><span class="arch-go">Read briefing →</span></a>'
-  ).join('');
+
+  // Lightweight keyword tagging — cosmetic scan-aid only, not a data classification.
+  function tagFor(text){
+    var t = text.toLowerCase();
+    if (/copper|aluminium|aluminum|cu\/al|\blme\b|\bcomex\b|\$[\d,]+\s*\/\s*t\b/.test(t)) return 'Pricing';
+    if (/\biec\b|standard|compliance|ballot|regulation|\blaw\b/.test(t)) return 'Standards';
+    if (/backlog|\bposts\b|acquir|confirms|\bplant\b|factory|expansion|\bexpands\b/.test(t)) return 'OEM';
+    if (/\bsigns?\b|\baward|\bwins?\b|\bcontract\b|\btender\b|\bdeal\b|\bbid\b|\border\b/.test(t)) return 'Procurement';
+    return 'Market';
+  }
+
+  host.innerHTML = ARCHIVE.map(function(a){
+    var parts = a.label.split(',');
+    var weekday = (parts[0] || '').trim().slice(0,3);
+    var dbits = (parts[1] || '').trim().split(' '); // ["19","August","2026"]
+    var shortDate = dbits.length >= 2 ? (dbits[0] + ' ' + dbits[1].slice(0,3)) : a.d;
+    var bullets = a.hl.split(/\s*(?:&middot;|&#183;|·)\s*/).filter(Boolean);
+    var bulletsHtml = bullets.map(function(b){
+      var tag = tagFor(b);
+      return '<li><span class="tag tag-' + tag.toLowerCase() + '">' + tag + '</span><span class="bt">' + b + '</span></li>';
+    }).join('');
+    return '<a class="arch-card" href="' + a.file + '">' +
+      '<div class="arch-date-col"><span class="wk">' + weekday + '</span><span class="dt">' + shortDate + '</span></div>' +
+      '<div class="arch-body"><ul class="arch-bullets">' + bulletsHtml + '</ul>' +
+      '<span class="arch-go">Read full briefing →</span></div>' +
+      '</a>';
+  }).join('');
 })();
 </script>
 <style>
-.arch-item { display:block; background:var(--card); border:1px solid var(--border); border-left:4px solid var(--amber); border-radius:10px; padding:18px 22px; margin-bottom:14px; transition:box-shadow .15s, transform .15s; }
-.arch-item:hover { box-shadow:0 8px 22px rgba(13,27,46,.12); transform:translateY(-2px); }
-.arch-date { display:block; font-weight:800; color:var(--ink); margin-bottom:4px; }
-.arch-hl { display:block; color:var(--muted); font-size:.92rem; margin-bottom:6px; }
-.arch-go { color:var(--accent); font-weight:700; font-size:.86rem; }
+.arch-card { display:flex; gap:18px; align-items:flex-start; background:var(--card); border:1px solid var(--border); border-left:4px solid var(--amber); border-radius:12px; padding:16px 20px; margin-bottom:12px; text-decoration:none; transition:box-shadow .15s, transform .15s; }
+.arch-card:hover { box-shadow:0 8px 22px rgba(13,27,46,.12); transform:translateY(-2px); }
+.arch-date-col { flex:none; width:66px; text-align:center; }
+.arch-date-col .wk { display:block; font-size:.7rem; font-weight:800; letter-spacing:.06em; color:var(--amber); text-transform:uppercase; }
+.arch-date-col .dt { display:block; font-size:.82rem; font-weight:700; color:var(--ink); margin-top:2px; }
+.arch-body { flex:1; min-width:0; }
+.arch-bullets { list-style:none; margin:0 0 8px; padding:0; }
+.arch-bullets li { display:flex; gap:8px; align-items:baseline; padding:3px 0; font-size:.88rem; color:var(--text); line-height:1.5; }
+.arch-bullets .bt { flex:1; }
+.tag { flex:none; font-size:.62rem; font-weight:800; letter-spacing:.04em; padding:2px 7px; border-radius:5px; text-transform:uppercase; white-space:nowrap; }
+.tag-pricing { background:rgba(30,158,90,.14); color:#1e9e5a; }
+.tag-procurement { background:rgba(14,95,168,.14); color:#0e5fa8; }
+.tag-oem { background:rgba(180,80,10,.14); color:#b4500a; }
+.tag-standards { background:rgba(120,80,200,.14); color:#7850c8; }
+.tag-market { background:var(--border); color:var(--muted); }
+.arch-go { color:var(--accent); font-weight:700; font-size:.82rem; }
+@media (max-width:560px){ .arch-card{ flex-direction:column; gap:10px; } .arch-date-col{ width:auto; text-align:left; display:flex; gap:8px; align-items:baseline; } }
 </style>
 </div>
 
@@ -134,7 +173,7 @@ const ARCHIVE = [
         <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span style="color:var(--amber)">Path</span></a>
         <p style="margin-top:12px">The global intelligence and networking platform for transformer manufacturers, suppliers, engineers and utilities.</p>
       </div>
-      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="vendors.html">Vendors</a><a href="learn.html">Learn</a><a href="teams.html">Corporate Training</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="sponsor.html">Sponsor</a></div>
+      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="vendors.html">Vendors</a><a href="learn.html">Learn</a><a href="pricing.html">Pricing</a><a href="testbay.html">Test Bay</a><a href="design.html">Design Duel</a><a href="teams.html">Corporate Training</a><a href="test-report.html">Test Report</a><a href="test-lab-consulting.html">Test Lab Consulting</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="software.html">Software</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="sponsor.html">Sponsor</a></div>
       <div><h4>COMPANY</h4><a href="about.html">About Us</a><a href="mailto:hello@transformerpath.com">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
       <div><h4>CONTACT</h4><a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a><a href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener">LinkedIn ↗</a></div>
     </div>

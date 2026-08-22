@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Country-Based Transformer Designer</title>
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
+<meta name="description" content="Design a transformer to a chosen country's grid voltages and standards — an interactive tool covering voltage levels, vector groups and code requirements across 196 countries.">
 <style>
 :root{
   --bg:#f5f7fa; --card:#ffffff; --ink:#1a2332; --muted:#5a6a7e;
@@ -41,17 +47,55 @@ td b{font-size:1.02em}
 .kv .l{font-size:.72rem;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:700}
 footer{text-align:center;color:var(--muted);font-size:.8rem;padding:18px}
 </style>
+    <link rel="canonical" href="https://transformerpath.com/country-designer.html">
+    <script src="analytics.js" defer></script><script src="course-gate.js"></script>
 </head>
 <body>
-  <div style="background:#0d1b2e;color:#fff;padding:10px 18px;font-family:'Segoe UI',system-ui,sans-serif;display:flex;align-items:center;gap:12px;font-size:.9rem;flex-wrap:wrap">
-    <a href="index.html" style="color:#fff;font-weight:800;text-decoration:none;font-size:1.05rem;letter-spacing:-.3px;display:inline-flex;align-items:center;gap:7px"><svg width="22" height="22" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="27" fill="none" stroke="#fff" stroke-width="2"/><path d="M37 9 L23 35 L31 35 L26 55 L42 29 L34 29 L40 9 Z" fill="#f5a623"/></svg>Trafo<span style="color:#f5a623">Path</span></a>
-    <a href="learn.html" style="color:#cbd5e1;text-decoration:none;margin-left:auto">&#8592; Learn hub</a>
+<div class="tp-sitehead" role="banner">
+  <div class="tp-nav">
+    <a href="index.html" class="tp-logo"><svg width="22" height="22" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="27" fill="none" stroke="#fff" stroke-width="2"/><path d="M37 9 L23 35 L31 35 L26 55 L42 29 L34 29 L40 9 Z" fill="#f5a623"/></svg>Transformer<span>Path</span></a>
+    <button class="tp-menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="tpNav" onclick="var n=document.getElementById('tpNav');var open=n.classList.toggle('open');this.setAttribute('aria-expanded',open)">☰</button>
+    <div class="tp-navlinks" id="tpNav" role="navigation">
+      <a href="intel.html">Daily Intel</a>
+      <a href="events.html">Events</a>
+      <a href="webinars.html">Webinars</a>
+      <a href="manufacturers.html">Manufacturers</a>
+      <a href="learn.html">Learn</a>
+      <a href="grids.html">Grids</a>
+      <a href="resources.html">Knowledge</a>
+      <a href="blog.html">Blog</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="testbay.html">Test Bay</a>
+      <a href="search.html" title="Search" aria-label="Search">🔍</a>
+    </div>
   </div>
+</div>
+<style>
+/* Self-contained site header for TransformerPath's interactive/tool pages —
+   deliberately independent of style.css (this page doesn't load it) so it can
+   never interfere with the page's own CSS. Scoped under .tp- prefix. */
+.tp-sitehead{background:#0d1b2e;color:#fff;position:sticky;top:0;z-index:1000;box-shadow:0 2px 8px rgba(0,0,0,.25);font-family:'Segoe UI',system-ui,-apple-system,sans-serif}
+.tp-nav{max-width:1100px;margin:0 auto;padding:0 18px;height:56px;display:flex;align-items:center;gap:16px}
+.tp-logo{color:#fff;font-weight:800;text-decoration:none;font-size:1.05rem;letter-spacing:-.3px;display:inline-flex;align-items:center;gap:7px;flex:none}
+.tp-logo span{color:#f5a623}
+.tp-menu-toggle{display:none;background:none;border:0;color:#fff;font-size:1.3rem;cursor:pointer;padding:8px;margin-left:auto}
+.tp-navlinks{display:flex;align-items:center;gap:16px;margin-left:auto}
+.tp-navlinks a{color:#cbd5e1;text-decoration:none;font-size:.88rem;font-weight:500;white-space:nowrap;transition:color .15s}
+.tp-navlinks a:hover,.tp-navlinks a[aria-current="page"]{color:#f5a623}
+.tp-navlinks a[aria-current="page"]{font-weight:700}
+@media (max-width:900px){
+  .tp-menu-toggle{display:block}
+  .tp-navlinks{display:none;position:absolute;top:56px;left:0;right:0;background:#0d1b2e;flex-direction:column;align-items:stretch;padding:8px 0 10px;box-shadow:0 14px 24px rgba(0,0,0,.35);gap:0;margin-left:0}
+  .tp-navlinks.open{display:flex}
+  .tp-navlinks a{padding:12px 20px;border-bottom:1px solid rgba(255,255,255,.06)}
+  .tp-navlinks a:last-child{border-bottom:0}
+}
+</style>
 
 <header>
 <h1>🌍 Country-Based Transformer Designer</h1>
 <p style="margin-bottom:6px"><a href="academy.html" style="color:#ffd9b8">🏠 Academy Hub</a></p>
-<p>196 countries, A–Z. Choose a country and a rating: the tool re-runs the design loop of <a href="tutorial.html#design">course §9</a> with that country's grid frequency, voltages, climate, temperature-rise practice and loss regulations. 22 major markets carry individually curated profiles; the rest use regional engineering practice — always verify the local utility schedule for a real tender. Figures are indicative teaching values, not a manufacturer's design program.</p>
+<p>196 countries, A–Z. Choose a country and a rating: the tool re-runs the design loop of <a href="tutorial.html#design">course §9</a> with that country's grid frequency, voltages, climate, temperature-rise practice and loss regulations. Dozens of major markets carry individually curated profiles; the rest use regional engineering practice — always verify the local utility schedule for a real tender. Figures are indicative teaching values, not a manufacturer's design program.</p>
 </header>
 <main>
 
@@ -1779,7 +1823,7 @@ const C = [
   "notes": "Reported 60 Hz practice, GOST-influenced equipment heritage; data limited."
  },
  {
-  "n": "Korea (South)",
+  "n": "South Korea",
   "fl": "🇰🇷",
   "f": 60,
   "mv": [
@@ -3486,7 +3530,7 @@ const C = [
   "notes": "French-heritage 20/30 kV practice with Saharan ambients inland and marine atmosphere on the coast."
  },
  {
-  "n": "Turkey",
+  "n": "Türkiye",
   "fl": "🇹🇷",
   "f": 50,
   "mv": [
@@ -3872,7 +3916,7 @@ function design(){
 
   <div class="card">
     <h2>⚡ Electrical design</h2>
-    <table>
+    <div class="table-wrap"><table>
       <tr><td>LV winding (star)</td><td><b>${N2} turns</b> · ${I2.toFixed(0)} A line · foil/helical, J ≈ ${J.toFixed(1)} A/mm²</td></tr>
       <tr><td>HV winding (delta, principal tap)</td><td><b>${N1} turns</b> · ${I1w.toFixed(1)} A in winding (${I1line.toFixed(1)} A line)</td></tr>
       <tr><td>Tapping</td><td>±2 × 2.5% DETC${S>=1600?' (consider OLTC for weak grids)':''}</td></tr>
@@ -3880,30 +3924,30 @@ function design(){
       <tr><td>Core steel (regime-driven)</td><td>${r.steel}</td></tr>
       <tr><td>Estimated core / copper mass</td><td>≈ ${mCore.toFixed(0)} kg / ≈ ${mCu.toFixed(0)} kg</td></tr>
       <tr><td>Frequency effect</td><td>${f===60? 'At 60 Hz the core is ~15% smaller for the same Eₜ, but specific core loss is ~28–30% higher — see the loss card.':'50 Hz baseline (course §9 basis).'}</td></tr>
-    </table>
+    </table></div>
   </div>
 
   <div class="card">
     <h2>📉 Losses &amp; compliance — ${r.capLbl}</h2>
-    <table>
+    <div class="table-wrap"><table>
       <tr><td>No-load loss P₀</td><td><b>${(P0).toFixed(0)} W</b> vs cap ≈ ${capP0.toFixed(0)} W ${badge(okP0)}</td></tr>
       <tr><td>Load loss P<sub>k</sub> (75 °C)</td><td><b>${(Pk/1000).toFixed(2)} kW</b> vs cap ≈ ${(capPk/1000).toFixed(2)} kW ${badge(okPk)}</td></tr>
       <tr><td>Efficiency 100% / 50% load (pf 1)</td><td><b>${eta100.toFixed(2)}%</b> / <b>${eta50.toFixed(2)}%</b></td></tr>
       <tr><td>Design levers used</td><td>B<sub>m</sub> = ${Bm.toFixed(2)} T, J = ${J.toFixed(1)} A/mm² — ${r.p0f<=1.05? 'strict regime → low flux + generous copper':'utility regime → balanced first-cost design'}</td></tr>
-    </table>
+    </table></div>
     <div class="note">"CHECK" = within engineering reach but iterate (§9 loop): drop B<sub>m</sub> ~0.05 T or J ~0.2 A/mm² and re-cost. Caps are indicative curve fits for teaching — quote the actual schedule in a real tender.</div>
   </div>
 
   <div class="card">
     <h2>🌡 Climate &amp; thermal adaptation</h2>
-    <table>
+    <div class="table-wrap"><table>
       <tr><td>Design ambient (max / avg)</td><td><b>${c.ambMax} °C</b> / ${c.ambAvg} °C</td></tr>
       <tr><td>Temperature-rise spec</td><td><b>${c.rise}</b></td></tr>
       <tr><td>Cooling surface vs 40 °C-ambient design</td><td><b>× ${coolMult.toFixed(2)}</b> fin/radiator area${coolMult>1.15?' — the visible difference of a hot-climate unit':''}</td></tr>
       <tr><td>Pollution / creepage</td><td>${c.pol} → ${creep}</td></tr>
       <tr><td>Corrosion / paint system</td><td>${c.corr}</td></tr>
       <tr><td>Oil preservation</td><td>${S<=2500 && (c.regime==='gcc'||c.pol.includes('tropical')) ? 'Hermetic corrugated tank preferred (no breather to maintain, dry oil for life — §2.2)' : 'Hermetic or conservator + bag per utility practice (§2.2)'}</td></tr>
-    </table>
+    </table></div>
   </div>
 
   <div class="card">
@@ -3917,10 +3961,10 @@ function design(){
       ${c.regime==='china' ? '<span class="stdtag">GB/T 6451</span>':''}
       <span class="stdtag">IEC 60296 oil</span>
     </div>
-    <table>
+    <div class="table-wrap"><table>
       <tr><td>Regulatory basis</td><td>${c.regName}</td></tr>
       <tr><td>Market note</td><td>${c.notes}</td></tr>
-    </table>
+    </table></div>
   </div>`;
 }
 

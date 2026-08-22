@@ -110,6 +110,8 @@
       <a href="resources.html">Knowledge</a>
       <a href="blog.html">Blog</a>
       <a href="sponsor.html">Sponsor</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="testbay.html">Test Bay</a>
       <a href="search.html" title="Search" aria-label="Search">🔍</a>
       <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">🌙</button>
     </nav>
@@ -164,7 +166,7 @@
         <div class="tag" id="spec-tag">TENDER · WEEK</div>
         <h2 id="spec-utility"></h2>
         <p class="brief" id="spec-brief"></p>
-        <table>
+        <div class="table-wrap"><table>
           <tr><td>Rating</td><td>100 MVA · 220/33 kV</td></tr>
           <tr><td>Frequency / phases</td><td>50 Hz · 3-ph</td></tr>
           <tr><td>Impedance window</td><td id="sp-z"></td></tr>
@@ -175,7 +177,7 @@
           <tr class="caprate"><td>NLL capitalized at</td><td id="sp-nllrate"></td></tr>
           <tr class="caprate"><td>LL capitalized at</td><td id="sp-llrate"></td></tr>
           <tr><td>Copper this week</td><td id="sp-cu"></td></tr>
-        </table>
+        </table></div>
         <p style="font-size:.74rem; color:#5f6e84; margin-top:10px;">Evaluated cost = bid price + NLL×rate + (LL+cooling aux)×rate. Non-compliant bids are disqualified at design review.</p>
       </div>
 
@@ -259,10 +261,10 @@
 
         <div class="results" id="results">
           <h3 style="margin:6px 0 8px; color:var(--ink);">Bid Opening — <span id="res-utility"></span></h3>
-          <table>
+          <div class="table-wrap"><table>
             <thead><tr><th>BIDDER</th><th>PRICE</th><th>NLL</th><th>LL+AUX</th><th>EVALUATED</th><th>STATUS</th></tr></thead>
             <tbody id="res-body"></tbody>
-          </table>
+          </table></div>
           <div class="banner" id="res-banner"></div>
         </div>
       </div>
@@ -300,7 +302,7 @@
         <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span style="color:var(--amber)">Path</span></a>
         <p style="margin-top:12px">The global intelligence and networking platform for transformer manufacturers, suppliers, engineers and utilities.</p>
       </div>
-      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="vendors.html">Vendors</a><a href="learn.html">Learn</a><a href="teams.html">Corporate Training</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="sponsor.html">Sponsor</a></div>
+      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="vendors.html">Vendors</a><a href="learn.html">Learn</a><a href="pricing.html">Pricing</a><a href="testbay.html">Test Bay</a><a href="design.html">Design Duel</a><a href="teams.html">Corporate Training</a><a href="test-report.html">Test Report</a><a href="test-lab-consulting.html">Test Lab Consulting</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="software.html">Software</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="sponsor.html">Sponsor</a></div>
       <div><h4>COMPANY</h4><a href="about.html">About Us</a><a href="mailto:hello@transformerpath.com">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
       <div><h4>CONTACT</h4><a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a><a href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener">LinkedIn ↗</a></div>
     </div>
@@ -345,7 +347,7 @@ function store(k,v){ try{ if(v===undefined) return JSON.parse(localStorage.getIt
 function isoWeek(d){ d=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())); var day=d.getUTCDay()||7; d.setUTCDate(d.getUTCDate()+4-day); var y0=new Date(Date.UTC(d.getUTCFullYear(),0,1)); return Math.ceil((((d-y0)/864e5)+1)/7); }
 function mulberry32(a){ return function(){ a|=0; a=(a+0x6D2B79F5)|0; var t=Math.imul(a^(a>>>15),1|a); t=(t+Math.imul(t^(t>>>7),61|t))^t; return ((t^(t>>>14))>>>0)/4294967296; }; }
 function fmtM(x){ return '$'+(x/1e6).toFixed(3)+'M'; }
-function fmtK(x){ return '$'+Math.round(x/1000).toLocaleString()+'k'; }
+function fmtK(x){ return '$'+Math.round(x/1000).toLocaleString("en")+'k'; }
 
 var WEEK = isoWeek(new Date());
 var SPEC = TENDERS[WEEK % TENDERS.length];
@@ -403,9 +405,9 @@ var submitted = store('ddweek')===WEEK;
 
 function rankFor(x){ var r=RANKS[0]; for(var i=0;i<RANKS.length;i++){ if(x>=RANKS[i].xp) r=RANKS[i]; } return r; }
 function chips(){
-  document.getElementById('chip-xp').textContent = xp.toLocaleString();
+  document.getElementById('chip-xp').textContent = xp.toLocaleString("en");
   document.getElementById('chip-rank').textContent = rankFor(xp).n;
-  document.getElementById('chip-profit').textContent = '$'+Math.round(profit).toLocaleString();
+  document.getElementById('chip-profit').textContent = '$'+Math.round(profit).toLocaleString("en");
 }
 
 function renderSpec(){
@@ -417,8 +419,8 @@ function renderSpec(){
   document.getElementById('sp-ll').textContent = SPEC.llMax+' kW';
   document.getElementById('sp-noise').textContent = SPEC.noiseMax+' dB(A)';
   document.getElementById('sp-mass').textContent = SPEC.massMax+' t';
-  document.getElementById('sp-nllrate').textContent = '$'+SPEC.nllRate.toLocaleString()+'/kW';
-  document.getElementById('sp-llrate').textContent = '$'+SPEC.llRate.toLocaleString()+'/kW';
+  document.getElementById('sp-nllrate').textContent = '$'+SPEC.nllRate.toLocaleString("en")+'/kW';
+  document.getElementById('sp-llrate').textContent = '$'+SPEC.llRate.toLocaleString("en")+'/kW';
   document.getElementById('sp-cu').textContent = '$'+(CU_USD/1.5).toFixed(2).replace('.',',')+'/kg LME-eq';
 }
 

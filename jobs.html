@@ -66,6 +66,8 @@
       <a href="resources.html">Knowledge</a>
       <a href="blog.html">Blog</a>
       <a href="sponsor.html">Sponsor</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="testbay.html">Test Bay</a>
       <a href="search.html" title="Search" aria-label="Search">🔍</a>
       <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">🌙</button>
     </nav>
@@ -130,16 +132,17 @@
     <div id="board"></div>
 
     <div class="card" id="post" style="margin-top:44px">
-      <div class="section-head" style="margin-bottom:20px"><h2>Hiring? Post a Job — Free at Launch</h2><p>Reach transformer professionals worldwide.</p></div>
-      <form onsubmit="alert('Prototype — job postings will be wired to your database at launch.'); return false;">
+      <div class="section-head" style="margin-bottom:20px"><h2>Hiring? Post a Job — Free</h2><p>Reach transformer professionals worldwide.</p></div>
+      <form name="job-posting" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" id="jForm">
+        <input type="hidden" name="form-name" value="job-posting"><p hidden><label>Leave empty: <input name="bot-field"></label></p>
         <div class="row">
-          <div><label>Job Title *</label><input type="text" required placeholder="e.g. Power Transformer Design Engineer"></div>
-          <div><label>Company *</label><input type="text" required></div>
+          <div><label>Job Title *</label><input type="text" name="title" required placeholder="e.g. Power Transformer Design Engineer"></div>
+          <div><label>Company *</label><input type="text" name="company" required></div>
         </div>
         <div class="row">
-          <div><label>Location *</label><input type="text" required placeholder="City, Country"></div>
+          <div><label>Location *</label><input type="text" name="location" required placeholder="City, Country"></div>
           <div><label>Function *</label>
-            <select required>
+            <select name="function" required>
               <option value="">Select...</option>
               <option>Engineering & Design</option><option>Manufacturing & Operations</option>
               <option>Service, Testing & Commissioning</option><option>Sales & Commercial</option>
@@ -147,14 +150,18 @@
             </select>
           </div>
         </div>
-        <div style="margin-bottom:16px"><label>Job Description *</label><textarea rows="4" required placeholder="Role, requirements, experience..."></textarea></div>
+        <div style="margin-bottom:16px"><label>Job Description *</label><textarea name="description" rows="4" required placeholder="Role, requirements, experience..."></textarea></div>
         <div class="row">
-          <div><label>Contact Email *</label><input type="email" required></div>
-          <div><label>Apply URL (optional)</label><input type="url" placeholder="https://..."></div>
+          <div><label>Contact Email *</label><input type="email" name="email" required></div>
+          <div><label>Apply URL (optional)</label><input type="url" name="apply_url" placeholder="https://..."></div>
         </div>
         <button class="btn btn-amber" type="submit" style="width:100%">Post Job →</button>
       </form>
+      <div id="jThanks" style="display:none;text-align:center;padding:20px 0">
+        <p style="font-size:1.1rem;font-weight:700;color:var(--ink)">Thanks — we'll review and publish it shortly.</p>
+      </div>
     </div>
+    <script>(function(){var f=document.getElementById('jForm');if(!f)return;f.addEventListener('submit',function(e){e.preventDefault();if(!f.checkValidity()){f.reportValidity();return;}fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(f)).toString()}).then(d).catch(d);function d(){f.style.display='none';document.getElementById('jThanks').style.display='block';}});})();</script>
 
     <p style="text-align:center; color:var(--muted); font-size:.86rem; margin-top:24px">
       Also browse aggregators:
@@ -171,7 +178,7 @@
         <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span style="color:var(--amber)">Path</span></a>
         <p style="margin-top:12px">The global intelligence and networking platform for transformer manufacturers, suppliers, engineers and utilities.</p>
       </div>
-      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="vendors.html">Vendors</a><a href="learn.html">Learn</a><a href="teams.html">Corporate Training</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="sponsor.html">Sponsor</a></div>
+      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="vendors.html">Vendors</a><a href="learn.html">Learn</a><a href="pricing.html">Pricing</a><a href="testbay.html">Test Bay</a><a href="design.html">Design Duel</a><a href="teams.html">Corporate Training</a><a href="test-report.html">Test Report</a><a href="test-lab-consulting.html">Test Lab Consulting</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="software.html">Software</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="sponsor.html">Sponsor</a></div>
       <div><h4>COMPANY</h4><a href="about.html">About Us</a><a href="mailto:hello@transformerpath.com">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
       <div><h4>CONTACT</h4><a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a><a href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener">LinkedIn ↗</a></div>
     </div>
@@ -185,9 +192,9 @@ const FN_CLASS = { eng:"fn-eng", mfg:"fn-mfg", svc:"fn-svc", sal:"fn-sal" };
 
 // Live postings captured from employer career pages (refreshed weekly)
 const LIVE = [
- { t:"Senior Power Transformer Crew Lead", co:"GE Vernova", loc:"Remote – USA / Boston, MA", fn:"Service & Field", posted:"Posted 8 Jun 2026", url:"https://careers.gevernova.com/jobs?keywords=transformer" },
- { t:"Senior Transformer Commissioning Specialist", co:"GE Vernova", loc:"Remote – Oklahoma, USA", fn:"Service & Field", posted:"Posted 8 Jun 2026", url:"https://careers.gevernova.com/jobs?keywords=transformer" },
- { t:"Electrical Substation Field Specialist", co:"GE Vernova", loc:"Remote – Texas, USA", fn:"Service & Field", posted:"Posted 8 Jun 2026", url:"https://careers.gevernova.com/jobs?keywords=transformer" },
+ { t:"Senior Power Transformer Crew Lead", co:"GE Vernova", loc:"Remote – USA / Boston, MA", fn:"Service & Field", posted:"Open now", url:"https://careers.gevernova.com/jobs?keywords=transformer" },
+ { t:"Senior Transformer Commissioning Specialist", co:"GE Vernova", loc:"Remote – Oklahoma, USA", fn:"Service & Field", posted:"Open now", url:"https://careers.gevernova.com/jobs?keywords=transformer" },
+ { t:"Electrical Substation Field Specialist", co:"GE Vernova", loc:"Remote – Texas, USA", fn:"Service & Field", posted:"Open now", url:"https://careers.gevernova.com/jobs?keywords=transformer" },
  { t:"Field Service Engineer (multiple openings)", co:"Hitachi Energy", loc:"Dammam, Saudi Arabia", fn:"Service & Field", posted:"Open now", url:"https://www.hitachienergy.com/me/en/careers/open-jobs" },
  { t:"Senior Field Service Engineer", co:"Hitachi Energy", loc:"Dammam, Saudi Arabia", fn:"Service & Field", posted:"Open now", url:"https://www.hitachienergy.com/me/en/careers/open-jobs" },
  { t:"Mechanical Designer (transformers)", co:"Hitachi Energy", loc:"Monselice, Padova, Italy", fn:"Engineering & Design", posted:"Open now", url:"https://www.hitachienergy.com/careers/open-jobs" },
@@ -216,7 +223,7 @@ const DATA = [
  { co:"SGB-SMIT Group", country:"Germany", flag:"🇩🇪", hq:"Regensburg / Neumark", url:"https://www.sgb-smit.com/careers-jobs/current-vacancies", roles:["Power & cast-resin transformer design engineers","Production specialists & skilled trades","Project management & sales"], fn:["eng","mfg","sal"] },
  { co:"Siemens Energy", country:"Germany", flag:"🇩🇪", hq:"Nuremberg / Dresden", url:"https://jobs.siemens-energy.com/jobs", roles:["High-voltage transformer design engineers","Manufacturing & test engineering","R&D and digitalization"], fn:["eng","mfg"] },
  { co:"Hitachi Energy", country:"Spain", flag:"🇪🇸", hq:"Zaragoza (dry-type plant, expanding to 2026)", url:"https://www.hitachienergy.com/careers/open-jobs", roles:["Dry-type transformer engineers (new factory)","Production & operations (capacity expansion)","Quality & test engineers"], fn:["eng","mfg"] },
- { co:"Tironi / Italian transformer OEMs", country:"Italy", flag:"🇮🇹", hq:"Lombardy region", url:"https://www.linkedin.com/jobs/search/?keywords=transformer&location=Italy", roles:["Distribution & power transformer designers","Production & winding specialists","Export sales engineers"], fn:["eng","mfg","sal"] },
+ { co:"Italian Transformer OEMs (LinkedIn jobs search)", country:"Italy", flag:"🇮🇹", hq:"Lombardy region", url:"https://www.linkedin.com/jobs/search/?keywords=transformer&location=Italy", roles:["Distribution & power transformer designers","Production & winding specialists","Export sales engineers"], fn:["eng","mfg","sal"] },
  { co:"Wilson Power Solutions", country:"UK", flag:"🇬🇧", hq:"Leeds", url:"https://www.wilsonpowersolutions.co.uk/careers/", roles:["Transformer design & R&D engineers","Manufacturing & assembly operatives","Technical sales & after-sales service"], fn:["eng","mfg","svc","sal"] },
  { co:"Schneider Electric", country:"France", flag:"🇫🇷", hq:"Rueil-Malmaison", url:"https://www.se.com/ww/en/about-us/careers/", roles:["MV/dry transformer & digital engineering","Operations & supply chain","Solution / commercial roles"], fn:["eng","mfg","sal"] },
  { co:"Siemens Energy", country:"Saudi Arabia", flag:"🇸🇦", hq:"Dammam", url:"https://jobs.siemens-energy.com/jobs", roles:["Transformer Testing Engineer (Saudi Arabia)","Installation & commissioning supervisors","Field service engineers"], fn:["eng","svc"] },

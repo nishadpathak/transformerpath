@@ -47,6 +47,8 @@
       <a href="resources.html">Knowledge</a>
       <a href="blog.html">Blog</a>
       <a href="sponsor.html">Sponsor</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="testbay.html">Test Bay</a>
       <a href="search.html" title="Search" aria-label="Search">🔍</a>
       <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">🌙</button>
     </nav>
@@ -95,7 +97,7 @@
 
 <h2>Major green-hydrogen projects — status tracker</h2>
 <p>Tracked from public announcements and updated as projects reach FID, construction and commissioning. Sourced from the same census behind our <a href="grids.html">Grids</a> page.</p>
-<table class="h2-table"><thead><tr><th>Project</th><th>Location</th><th>Electrolyser</th><th>Output</th><th>Status</th><th>Note</th></tr></thead><tbody id="h2Body"></tbody></table>
+<div class="table-wrap"><table class="h2-table"><thead><tr><th>Project</th><th>Location</th><th>Electrolyser</th><th>Output</th><th>Status</th><th>Note</th></tr></thead><tbody id="h2Body"></tbody></table></div>
 
 <h2>What to watch</h2>
 <ul>
@@ -114,7 +116,7 @@
         <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span style="color:var(--amber)">Path</span></a>
         <p style="margin-top:12px">The global intelligence and networking platform for transformer manufacturers, suppliers, engineers and utilities.</p>
       </div>
-      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="vendors.html">Vendors</a><a href="learn.html">Learn</a><a href="teams.html">Corporate Training</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="sponsor.html">Sponsor</a></div>
+      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="vendors.html">Vendors</a><a href="learn.html">Learn</a><a href="pricing.html">Pricing</a><a href="testbay.html">Test Bay</a><a href="design.html">Design Duel</a><a href="teams.html">Corporate Training</a><a href="test-report.html">Test Report</a><a href="test-lab-consulting.html">Test Lab Consulting</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="software.html">Software</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="sponsor.html">Sponsor</a></div>
       <div><h4>COMPANY</h4><a href="about.html">About Us</a><a href="mailto:hello@transformerpath.com">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
       <div><h4>CONTACT</h4><a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a><a href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener">LinkedIn ↗</a></div>
     </div>
@@ -123,7 +125,9 @@
 </footer>
 <script>
 const H2_PROJECTS = [
+ ["Djewels (Power2X / HyCC)","🇳🇱 Chemical Park Delfzijl, Groningen, Netherlands","20 MW pressurised alkaline (John Cockerill)","~2,000 t/yr green H₂ to regional industry","FID + Notice to Proceed 22 May 2026 · in construction · first H₂ mid-2028","First project into construction after Power2X’s acquisition of HyCC. Rely (the Technip Energies / John Cockerill JV) holds EPC and integration with plant performance guarantees, so rectifier-transformer and grid-connection scope sits inside Rely. Backed by Province of Groningen, Waddenfonds, the EU Clean Hydrogen Partnership and the Dutch Ministry of Climate Policy and Green Growth (Global e-Fuels, 22 May 2026)"],
  ["NEOM Green Hydrogen (NGHC)","🇸🇦 NEOM, Saudi Arabia","2.2 GW electrolysis + 4 GW wind/solar","1.2 Mtpa green NH₃ (600 t/d H₂)","Commissioning · offtake chain closed 30 Jul 2026, product 2027","World's largest; >90% complete. Air Products signed the green-ammonia marketing & distribution agreement with Yara International (FY26 Q3 results, 30 Jul 2026) — Yara lifts FOB at Oxagon and sells via 12 carriers and 18 import terminals; Air Products stays sole offtaker on the 30-yr deal"],
+ ["Acwa Power Yanbu Green Hydrogen Hub","🇸🇦 Yanbu, Saudi Arabia","gigascale (capacity not yet disclosed)","2.5 Mtpa green NH₃ for export","Development · financing pending · COD target 2030","KSA's named follow-on to NEOM. Germany's EnBW has joined as co-developer and minority investor and Japan's Itochu as co-developer, investor and offtaker; the project must still clear development and financing before construction (MEED, 17 Aug 2026)"],
  ["Sinopec Kuqa","🇨🇳 Xinjiang, China","260 MW","20 ktpa H₂ → Tahe refinery","Operational since 2023","World's largest operating plant; still ramping electrolyzer utilization"],
  ["Egypt Green (Scatec / Fertiglobe)","🇪🇬 Ain Sokhna, SCZone","100 MW","green NH₃ feed for Fertiglobe","Operational · first exports Jan 2026","Egypt's proof-of-concept against an $83 bn MoU pipeline"],
  ["Hyport Duqm","🇴🇲 Duqm, Oman","500 MW Phase-1 (1.4 GW RE)","green NH₃","FID expected 2026–27","bp / OQ / DEME — likely first of Oman's eight land-block projects"],
@@ -133,7 +137,7 @@ const H2_PROJECTS = [
  ["Adani ANIL Mundra Hub","🇮🇳 Mundra, Gujarat","5 MW off-grid pilot live; GW-scale hub next","H₂ → NH₃ & derivatives","Pilot operational · hub in development","India's first off-grid green H₂ plant"],
  ["Kandla Green H₂ Hub (RIL + L&T / DPA)","🇮🇳 Kandla, Gujarat","targets 1.4 Mtpa H₂ / 7 Mtpa NH₃","export hub","Development","Anchor project of India's National Green Hydrogen Mission hubs"],
  ["SECI NGHM Programme","🇮🇳 India-wide","3 GW/yr electrolyzer PLI awarded to 15 manufacturers","370 ktpa NH₃ to ACME (Nov 2025 auctions)","Under way","National mission: 5 Mtpa green H₂ per year by 2030"],
- ["RWE GET H2 Nukleus","🇩🇪 Lingen, Germany","300 MW (first 100 MW phases)","H₂ into national core network","Commissioning 2026","Europe's largest plant as it comes online"],
+ ["RWE GET H2 Nukleus","🇩🇪 Lingen, Germany","300 MW (first 100 MW phases)","H₂ into national core network","FIRST HYDROGEN DELIVERED 4 Aug 2026 · full commissioning under way","The first RFNBO-certified hydrogen from Lingen reached Evonik's Marl Chemical Park via the 120 km Nowega/OGE/SYNEQT pipeline network, now in live network operation. RWE Generation is preparing the plants for commercial operation over the coming months (Global e-Fuels, 4 Aug 2026)"],
  ["Galp Sines","🇵🇹 Sines refinery, Portugal","100 MW","refinery decarbonization","Operational 2026","Europe's largest operating unit at start-up"],
  ["Iberdrola Puertollano","🇪🇸 Puertollano, Spain","20 MW (+100 MW PV + 20 MWh BESS)","green NH₃ (Fertiberia)","Operational since 2022","Europe's pioneer industrial-scale plant"],
  ["Stegra Boden (ex-H2 Green Steel)","🇸🇪 Boden, Sweden","~700 MW","green steel (H₂-DRI)","Under construction","World's first large-scale green-steel plant with integrated H₂"],

@@ -137,6 +137,26 @@ footer a:hover { color: var(--amber); }
 .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 12px; }
 .table-wrap > table { min-width: 560px; }
 
+/* Simple content page — self-contained hero + body (archive, blog, search).
+   Shared here instead of duplicated inline per page; identical rule was previously
+   copy-pasted verbatim into archive.html, blog.html and search.html. */
+.legal { max-width: 760px; margin: 0 auto; padding: 56px 20px 72px; }
+.legal h1 { color: var(--ink); font-size: 2.1rem; letter-spacing: -.5px; margin-bottom: 6px; }
+.legal .sub { color: var(--muted); margin-bottom: 36px; font-size: .95rem; }
+.legal h2 { color: var(--ink); font-size: 1.25rem; margin: 32px 0 10px; }
+.legal p, .legal li { color: var(--text); font-size: .97rem; margin-bottom: 12px; }
+.legal ul { padding-left: 22px; margin-bottom: 12px; }
+.legal a { color: var(--accent); font-weight: 600; }
+
+/* Content body inside the shared .hero + .container shell (about, contact, privacy,
+   terms, 404). Same consolidation as .legal above — was duplicated identically on
+   5 pages. */
+.legal-body h2 { color: var(--ink); font-size: 1.15rem; margin: 26px 0 8px; }
+.legal-body p, .legal-body li { color: var(--text); font-size: .94rem; line-height: 1.6; }
+.legal-body ul { margin: 6px 0 6px 20px; }
+.legal-body a { color: var(--accent); font-weight: 600; }
+.legal-body .muted { color: var(--muted); font-size: .85rem; }
+
 @media (max-width: 800px) {
   .grid-4, .grid-3 { grid-template-columns: repeat(2, 1fr); }
   .hero h1 { font-size: 2.1rem; }
@@ -158,6 +178,8 @@ footer a:hover { color: var(--amber); }
   .filters button { padding: 9px 16px; }
   .cta-strip h2 { font-size: 1.5rem; }
   footer .cols { grid-template-columns: 1fr; gap: 24px; }
+  .legal { padding: 40px 16px 56px; }
+  .legal h1 { font-size: 1.65rem; }
 }
 
 /* Respect users who prefer reduced motion — disable transitions, animations and hover lifts site-wide */

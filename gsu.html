@@ -4,11 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Generator Step-Up Transformer — Delta LV / Star HV (Interactive 3D, 420/21 kV)</title>
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
 <meta name="description" content="Interactive 3D generator step-up (GSU) transformer — explore the delta LV / star HV configuration of a 420/21 kV unit with rotate, zoom and exploded views.">
 <link rel="canonical" href="https://transformerpath.com/gsu.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TransformerPath">
-<meta property="og:title" content="Generator Step-Up Transformer — Delta LV / Star HV (Interactive 3D)">
+<meta property="og:title" content="Generator Step-Up Transformer — Delta LV / Star HV (Interactive 3D, 420/21 kV)">
 <meta property="og:description" content="Interactive 3D generator step-up (GSU) transformer — explore the delta LV / star HV configuration of a 420/21 kV unit with rotate, zoom and exploded views.">
 <meta property="og:url" content="https://transformerpath.com/gsu.html">
 <meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
@@ -39,10 +44,46 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#08121e;color:var(--
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5646978915498298" crossorigin="anonymous"></script>
 </head>
 <body>
-<div style="background:#0d1b2e;color:#fff;padding:10px 18px;display:flex;align-items:center;gap:16px;font-size:.9rem;flex-wrap:wrap">
-  <a href="index.html" style="color:#fff;font-weight:800;text-decoration:none;font-size:1.05rem;letter-spacing:-.3px">Transformer<span style="color:#f5a623">Path</span></a>
-  <a href="learn.html" style="color:#cbd5e1;text-decoration:none;margin-left:auto">&#8592; Learn hub</a>
+<div class="tp-sitehead" role="banner">
+  <div class="tp-nav">
+    <a href="index.html" class="tp-logo"><svg width="22" height="22" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="27" fill="none" stroke="#fff" stroke-width="2"/><path d="M37 9 L23 35 L31 35 L26 55 L42 29 L34 29 L40 9 Z" fill="#f5a623"/></svg>Transformer<span>Path</span></a>
+    <button class="tp-menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="tpNav" onclick="var n=document.getElementById('tpNav');var open=n.classList.toggle('open');this.setAttribute('aria-expanded',open)">☰</button>
+    <div class="tp-navlinks" id="tpNav" role="navigation">
+      <a href="intel.html">Daily Intel</a>
+      <a href="events.html">Events</a>
+      <a href="webinars.html">Webinars</a>
+      <a href="manufacturers.html">Manufacturers</a>
+      <a href="learn.html">Learn</a>
+      <a href="grids.html">Grids</a>
+      <a href="resources.html">Knowledge</a>
+      <a href="blog.html">Blog</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="testbay.html">Test Bay</a>
+      <a href="search.html" title="Search" aria-label="Search">🔍</a>
+    </div>
+  </div>
 </div>
+<style>
+/* Self-contained site header for TransformerPath's interactive/tool pages —
+   deliberately independent of style.css (this page doesn't load it) so it can
+   never interfere with the page's own CSS. Scoped under .tp- prefix. */
+.tp-sitehead{background:#0d1b2e;color:#fff;position:sticky;top:0;z-index:1000;box-shadow:0 2px 8px rgba(0,0,0,.25);font-family:'Segoe UI',system-ui,-apple-system,sans-serif}
+.tp-nav{max-width:1100px;margin:0 auto;padding:0 18px;height:56px;display:flex;align-items:center;gap:16px}
+.tp-logo{color:#fff;font-weight:800;text-decoration:none;font-size:1.05rem;letter-spacing:-.3px;display:inline-flex;align-items:center;gap:7px;flex:none}
+.tp-logo span{color:#f5a623}
+.tp-menu-toggle{display:none;background:none;border:0;color:#fff;font-size:1.3rem;cursor:pointer;padding:8px;margin-left:auto}
+.tp-navlinks{display:flex;align-items:center;gap:16px;margin-left:auto}
+.tp-navlinks a{color:#cbd5e1;text-decoration:none;font-size:.88rem;font-weight:500;white-space:nowrap;transition:color .15s}
+.tp-navlinks a:hover,.tp-navlinks a[aria-current="page"]{color:#f5a623}
+.tp-navlinks a[aria-current="page"]{font-weight:700}
+@media (max-width:900px){
+  .tp-menu-toggle{display:block}
+  .tp-navlinks{display:none;position:absolute;top:56px;left:0;right:0;background:#0d1b2e;flex-direction:column;align-items:stretch;padding:8px 0 10px;box-shadow:0 14px 24px rgba(0,0,0,.35);gap:0;margin-left:0}
+  .tp-navlinks.open{display:flex}
+  .tp-navlinks a{padding:12px 20px;border-bottom:1px solid rgba(255,255,255,.06)}
+  .tp-navlinks a:last-child{border-bottom:0}
+}
+</style>
 <div id="c3d"></div>
 <div id="topbar">
   <h1>⚙️ Generator Step-Up (GSU)</h1>

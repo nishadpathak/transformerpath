@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test Lab &amp; Design Services Consulting | TransformerPath</title>
+<meta name="description" content="Test bay design and specification, digitalization retrofits for existing test bays, and specialty test-procedure consulting for transformer manufacturers — from the team behind TransformerPath's design and testing tools.">
+<link rel="canonical" href="https://transformerpath.com/test-lab-consulting.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TransformerPath">
+<meta property="og:title" content="Test Lab &amp; Design Services Consulting | TransformerPath">
+<meta property="og:description" content="Test bay design, digitalization retrofits and specialty test-procedure consulting for transformer manufacturers.">
+<meta property="og:url" content="https://transformerpath.com/test-lab-consulting.html">
+<meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Test Lab &amp; Design Services Consulting | TransformerPath">
+<meta name="twitter:description" content="Test bay design, digitalization retrofits and specialty test-procedure consulting for transformer manufacturers.">
+<meta name="twitter:image" content="https://transformerpath.com/brand/og-image.png">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<style>
+.tiers { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+.tier { background:var(--card); border:1px solid var(--border,#e2e8f0); border-radius:16px; padding:26px 22px; display:flex; flex-direction:column; }
+.tier.featured { border-color:var(--amber); box-shadow:0 14px 34px rgba(13,27,46,.10); position:relative; }
+.tier .tag { position:absolute; top:-12px; left:22px; background:var(--amber); color:var(--navy); font-size:.7rem; font-weight:800; text-transform:uppercase; letter-spacing:1px; padding:4px 12px; border-radius:999px; }
+.tier h3 { margin-bottom:4px; }
+.tier .who { color:var(--muted); font-size:.88rem; margin-bottom:14px; }
+.tier .price { color:var(--accent); font-weight:800; font-size:1.2rem; margin-bottom:14px; }
+.tier ul { list-style:none; padding:0; margin:0 0 20px; }
+.tier li { padding:7px 0 7px 24px; position:relative; font-size:.9rem; border-bottom:1px solid #f1f5f9; }
+.tier li::before { content:"✓"; position:absolute; left:0; color:var(--green,#16a34a); font-weight:800; }
+.tier .btn { margin-top:auto; }
+.steps { counter-reset:s; display:grid; grid-template-columns:repeat(4,1fr); gap:18px; }
+.steps .step { position:relative; padding-top:8px; }
+.steps .step::before { counter-increment:s; content:counter(s); display:flex; align-items:center; justify-content:center; width:38px; height:38px; border-radius:50%; background:var(--navy); color:#fff; font-weight:800; margin-bottom:12px; }
+@media (max-width:900px){ .tiers,.steps { grid-template-columns:1fr; } }
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg width="30" height="30" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span>Path</span></a>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav" onclick="var n=document.querySelector('.nav-links');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))">☰</button>
+    <nav class="nav-links" id="mainNav">
+      <a href="intel.html">Daily Intel</a>
+      <a href="events.html">Events</a>
+      <a href="webinars.html">Webinars</a>
+      <a href="manufacturers.html">Manufacturers</a>
+      <a href="learn.html">Learn</a>
+      <a href="grids.html">Grids</a>
+      <a href="resources.html">Knowledge</a>
+      <a href="blog.html">Blog</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="testbay.html">Test Bay</a>
+      <a href="search.html" title="Search" aria-label="Search">🔍</a>
+      <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">🌙</button>
+    </nav>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
+    updateThemeIcon();
+    themeToggle?.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) { html.removeAttribute('data-theme'); localStorage.setItem('theme', 'light'); }
+      else { html.setAttribute('data-theme', 'dark'); localStorage.setItem('theme', 'dark'); }
+      updateThemeIcon();
+    });
+    function updateThemeIcon() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+    }
+  </script>
+</header>
+
+<section class="hero" style="padding:56px 0 44px">
+  <div class="container">
+    <p class="eyebrow" style="color:var(--accent);font-weight:800;letter-spacing:.12em;text-transform:uppercase;font-size:.8rem">For Transformer Manufacturers</p>
+    <h1 style="font-size:2.4rem;max-width:20ch">Test lab &amp; design services <span>consulting</span>.</h1>
+    <p style="max-width:64ch">Spec a new test bay, turn an existing one into a compliant reporting system, or get a specialty test procedure documented and running — from the team building TransformerPath's <a href="calculator.html" style="color:var(--amber);font-weight:700">design calculator</a> and <a href="test-report.html" style="color:var(--amber);font-weight:700">test report generator</a>.</p>
+    <div class="hero-ctas" style="display:flex;gap:12px;flex-wrap:wrap;margin-top:18px">
+      <a href="#enquire" class="btn btn-amber">Talk to us →</a>
+      <a href="calculator.html" class="btn btn-outline">See the free tools first</a>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="container">
+    <div class="section-head"><h2>Three ways to work with us</h2><p>Software you can use for free today, backed by consulting when you need hands-on help.</p></div>
+    <div class="tiers">
+
+      <div class="tier">
+        <h3>Test Bay Design &amp; Specification</h3>
+        <div class="who">For factories planning a new or expanded test bay</div>
+        <div class="price">Scoped per project</div>
+        <ul>
+          <li>Equipment list matched to your product range &amp; target markets/standards</li>
+          <li>Routine vs. type test capability planning</li>
+          <li>Layout &amp; power-supply requirements review</li>
+          <li>Vendor-neutral — we don't sell hardware, we spec what you actually need</li>
+        </ul>
+        <a class="btn btn-outline" href="#enquire">Enquire →</a>
+      </div>
+
+      <div class="tier featured">
+        <span class="tag">Most requested</span>
+        <h3>Digitalization Retrofit</h3>
+        <div class="who">For factories with a test bay but no reporting software</div>
+        <div class="price">Scoped per project</div>
+        <ul>
+          <li>Deploy the <a href="test-report.html" style="color:var(--accent);font-weight:700">test report generator</a> as your standard reporting layer</li>
+          <li>Template your report format to match buyer/tender requirements</li>
+          <li>Train your test engineers on the workflow</li>
+          <li>Fastest path to compliant, professional reports — no new hardware</li>
+        </ul>
+        <a class="btn btn-amber" href="#enquire">Enquire →</a>
+      </div>
+
+      <div class="tier">
+        <h3>Specialty Test Procedures</h3>
+        <div class="who">For non-standard or equipment-specific test methodology</div>
+        <div class="price">Scoped per project</div>
+        <ul>
+          <li>Document and validate a test procedure for your specific equipment</li>
+          <li>e.g. testing tap-changer control panels without the tap-changer connected</li>
+          <li>Delivered as a written procedure + report template</li>
+          <li>Built once, reused on every future unit</li>
+        </ul>
+        <a class="btn btn-outline" href="#enquire">Enquire →</a>
+      </div>
+
+    </div>
+    <p style="text-align:center;color:var(--muted);font-size:.86rem;margin-top:18px">All engagements are scoped and priced after a short discovery call — every factory's setup is different. <a href="#enquire" style="color:var(--accent);font-weight:600">Start with the form below</a>.</p>
+  </div>
+</section>
+
+<section class="block alt" style="background:var(--bg)">
+  <div class="container">
+    <div class="section-head"><h2>How it works</h2></div>
+    <div class="steps">
+      <div class="step"><h3>Tell us about your setup</h3><p>What you test today, what you're trying to fix or add.</p></div>
+      <div class="step"><h3>Discovery call</h3><p>30 minutes, no cost — we scope what's actually needed.</p></div>
+      <div class="step"><h3>Fixed-scope proposal</h3><p>Clear deliverables and price before any work starts.</p></div>
+      <div class="step"><h3>Delivery &amp; handover</h3><p>Documentation, training, and support after go-live.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="enquire">
+  <div class="container" style="max-width:640px">
+    <div class="section-head"><h2>Tell us about your project</h2><p>We'll reply within one business day to schedule a discovery call.</p></div>
+    <div class="card">
+      <form name="test-lab-enquiry" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" id="tlForm">
+        <input type="hidden" name="form-name" value="test-lab-enquiry"><p hidden><label>Leave empty: <input name="bot-field"></label></p>
+        <div class="row">
+          <div><label>Name *</label><input type="text" name="name" required></div>
+          <div><label>Company *</label><input type="text" name="company" required></div>
+        </div>
+        <div class="row">
+          <div><label>Work email *</label><input type="email" name="email" required placeholder="you@company.com"></div>
+          <div><label>Which service? *</label>
+            <select name="service" required>
+              <option value="">Select…</option>
+              <option>Test Bay Design &amp; Specification</option>
+              <option>Digitalization Retrofit</option>
+              <option>Specialty Test Procedures</option>
+              <option>Not sure — help me figure it out</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-bottom:16px"><label>Tell us about your current setup</label><textarea name="message" rows="4" placeholder="e.g. we have a routine test bay but no reporting software, or: we're planning a new bay for 5-315 MVA units"></textarea></div>
+        <button class="btn btn-amber" type="submit" style="width:100%">Request a discovery call →</button>
+      </form>
+      <div id="tlThanks" style="display:none;text-align:center;padding:20px 0">
+        <p style="font-size:1.1rem;font-weight:700;color:var(--ink)">Thanks — we'll be in touch.</p>
+        <p class="muted">We typically reply within 1–2 business days to schedule a call.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span style="color:var(--amber)">Path</span></a>
+        <p style="margin-top:12px">The global intelligence and networking platform for transformer manufacturers, suppliers, engineers and utilities.</p>
+      </div>
+      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="vendors.html">Vendors</a><a href="learn.html">Learn</a><a href="pricing.html">Pricing</a><a href="testbay.html">Test Bay</a><a href="design.html">Design Duel</a><a href="teams.html">Corporate Training</a><a href="test-lab-consulting.html">Test Lab Consulting</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="software.html">Software</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="sponsor.html">Sponsor</a></div>
+      <div><h4>COMPANY</h4><a href="about.html">About Us</a><a href="mailto:hello@transformerpath.com">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><h4>CONTACT</h4><a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a><a href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener">LinkedIn ↗</a></div>
+    </div>
+    <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>(function(){var f=document.getElementById('tlForm');if(!f)return;f.addEventListener('submit',function(e){e.preventDefault();if(!f.checkValidity()){f.reportValidity();return;}fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(f)).toString()}).then(d).catch(d);function d(){f.style.display='none';document.getElementById('tlThanks').style.display='block';}});})();</script>
+<script src="analytics.js" defer></script>
+</body>
+</html>

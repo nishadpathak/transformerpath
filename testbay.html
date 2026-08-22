@@ -108,6 +108,8 @@
       <a href="resources.html">Knowledge</a>
       <a href="blog.html">Blog</a>
       <a href="sponsor.html">Sponsor</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="testbay.html">Test Bay</a>
       <a href="search.html" title="Search" aria-label="Search">🔍</a>
       <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">🌙</button>
     </nav>
@@ -165,7 +167,7 @@
       <div class="console-grid">
         <div class="gas-panel">
           <h4>OIL SAMPLE · PPM</h4>
-          <table id="gas-table"></table>
+          <div class="table-wrap"><table id="gas-table"></table></div>
           <div class="gas-note">Duval Triangle 1 uses CH₄ / C₂H₄ / C₂H₂ — the amber rows.</div>
         </div>
         <div class="tri-panel">
@@ -224,7 +226,7 @@
         <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span style="color:var(--amber)">Path</span></a>
         <p style="margin-top:12px">The global intelligence and networking platform for transformer manufacturers, suppliers, engineers and utilities.</p>
       </div>
-      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="vendors.html">Vendors</a><a href="learn.html">Learn</a><a href="teams.html">Corporate Training</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="sponsor.html">Sponsor</a></div>
+      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="vendors.html">Vendors</a><a href="learn.html">Learn</a><a href="pricing.html">Pricing</a><a href="testbay.html">Test Bay</a><a href="design.html">Design Duel</a><a href="teams.html">Corporate Training</a><a href="test-report.html">Test Report</a><a href="test-lab-consulting.html">Test Lab Consulting</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="software.html">Software</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="sponsor.html">Sponsor</a></div>
       <div><h4>COMPANY</h4><a href="about.html">About Us</a><a href="mailto:hello@transformerpath.com">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
       <div><h4>CONTACT</h4><a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a><a href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener">LinkedIn ↗</a></div>
     </div>
@@ -314,21 +316,21 @@ function rankFor(x){ var r=RANKS[0]; for(var i=0;i<RANKS.length;i++){ if(x>=RANK
 function nextRank(x){ for(var i=0;i<RANKS.length;i++){ if(x<RANKS[i].xp) return RANKS[i]; } return null; }
 
 function refreshChips(){
-  document.getElementById('chip-xp').textContent = xp.toLocaleString();
+  document.getElementById('chip-xp').textContent = xp.toLocaleString("en");
   document.getElementById('chip-rank').textContent = rankFor(xp).n;
   document.getElementById('chip-streak').textContent = streak;
   var rEl = document.getElementById('ranks'); rEl.innerHTML='';
   var cur = rankFor(xp);
   RANKS.forEach(function(r){
     var d=document.createElement('div'); d.className='rank-card'+(r===cur?' current':'');
-    d.innerHTML='<span class="ico">'+r.i+'</span><b>'+r.n+'</b><small>'+r.xp.toLocaleString()+' XP'+(r===cur?' · you are here':'')+'</small>';
+    d.innerHTML='<span class="ico">'+r.i+'</span><b>'+r.n+'</b><small>'+r.xp.toLocaleString("en")+' XP'+(r===cur?' · you are here':'')+'</small>';
     rEl.appendChild(d);
   });
   var nx = nextRank(xp);
   if(nx){
     var prev = cur.xp, pct = Math.min(100, Math.round(100*(xp-prev)/(nx.xp-prev)));
     document.getElementById('rankbar-fill').style.width = pct+'%';
-    document.getElementById('rank-progress').textContent = xp.toLocaleString()+' XP — '+(nx.xp-xp).toLocaleString()+' XP to '+nx.n;
+    document.getElementById('rank-progress').textContent = xp.toLocaleString("en")+' XP — '+(nx.xp-xp).toLocaleString("en")+' XP to '+nx.n;
   } else {
     document.getElementById('rankbar-fill').style.width = '100%';
     document.getElementById('rank-progress').textContent = 'Duval Master. The triangle holds no secrets for you.';
@@ -369,7 +371,7 @@ function loadCase(c, isWeekly){
   Object.keys(c.g).forEach(function(k){
     var tr=document.createElement('tr');
     if(k==='CH4'||k==='C2H4'||k==='C2H2') tr.className='duval';
-    tr.innerHTML='<td>'+sub(k)+'</td><td>'+c.g[k].toLocaleString()+'</td>';
+    tr.innerHTML='<td>'+sub(k)+'</td><td>'+c.g[k].toLocaleString("en")+'</td>';
     gt.appendChild(tr);
   });
   drawTriangle(c);

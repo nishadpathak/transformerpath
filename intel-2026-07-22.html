@@ -72,6 +72,8 @@ a.plain:hover { text-decoration:underline; }
       <a href="resources.html">Knowledge</a>
       <a href="blog.html">Blog</a>
       <a href="sponsor.html">Sponsor</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="testbay.html">Test Bay</a>
       <a href="search.html" title="Search" aria-label="Search">🔍</a>
       <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">🌙</button>
     </nav>
@@ -179,7 +181,7 @@ a.plain:hover { text-decoration:underline; }
   <div class="panel" id="panel-h2"></div>
   <div class="panel" id="panel-tech"></div>
 
-  <div class="footer">Auto-refreshed daily 06:00 by the transformer-intel agent. Items sourced from live web search with real URLs — no invented facts.</div>
+  <div class="footer">Auto-refreshed daily 06:00 UTC by the transformer-intel agent. Items sourced from live web search with real URLs — no invented facts.</div>
 </div>
 
 <script>
@@ -744,7 +746,7 @@ function renderFactories(){
     <td>${f.status}</td><td><a class="plain" href="${f.src}" target="_blank" rel="noopener">source</a></td></tr>`).join("");
   document.getElementById("panel-factories").innerHTML =
     `<div class="region-h">New / Expanding Transformer Factories</div>
-     <table class="factory-grid"><thead><tr><th>Project</th><th>Location</th><th>Backer</th><th>Capability</th><th>Status</th><th>Src</th></tr></thead><tbody>${rows}</tbody></table>`;
+     <div class="table-wrap"><table class="factory-grid"><thead><tr><th>Project</th><th>Location</th><th>Backer</th><th>Capability</th><th>Status</th><th>Src</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 function renderChangelog(){
   const el=document.getElementById("changelog-strip"); if(!el) return;
@@ -759,7 +761,7 @@ function renderPipeline(){
     <td><a class="plain" href="${p.url}" target="_blank" rel="noopener">${p.src}</a></td></tr>`).join("");
   document.getElementById("panel-pipeline").innerHTML =
     `<div class="region-h">Pre-Award Pipeline \u2014 tenders & expected awards to chase</div>
-     <table class="factory-grid"><thead><tr><th>Project</th><th>Buyer</th><th>Scope</th><th>Expected</th><th>Status</th><th>Src</th></tr></thead><tbody>${rows}</tbody></table>`;
+     <div class="table-wrap"><table class="factory-grid"><thead><tr><th>Project</th><th>Buyer</th><th>Scope</th><th>Expected</th><th>Status</th><th>Src</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 renderNews(); renderGrid(); renderRepair(); renderFactories(); function renderH2(){
   const GCC_IN = ["\ud83c\uddf8\ud83c\udde6","\ud83c\udde6\ud83c\uddea","\ud83c\uddf4\ud83c\uddf2","\ud83c\uddf6\ud83c\udde6","\ud83c\uddf0\ud83c\uddfc","\ud83c\udde7\ud83c\udded","\ud83c\uddea\ud83c\uddec","\ud83c\uddee\ud83c\uddf3"];
@@ -772,7 +774,7 @@ renderNews(); renderGrid(); renderRepair(); renderFactories(); function renderH2
   document.getElementById("panel-h2").innerHTML =
     `<div class="region-h">Green Hydrogen Projects \u2014 electrolyser & grid-connection transformer demand</div>
      <div style="font-size:.85rem;opacity:.85;margin:4px 0 10px">Every ~100 MW electrolyser block needs rectifier-transformer sets plus a dedicated grid-connection substation. Rectifier duty (high harmonics, thermal cycling) favours upgraded insulation systems \u2014 aramid / hybrid kits over standard kraft. Highlighted rows = GCC / Egypt / India, Elin-addressable. Seeded from the Grids census; statuses maintained by the daily job.</div>
-     <table class="factory-grid"><thead><tr><th>Project</th><th>Location</th><th>Electrolyser</th><th>Output</th><th>Status</th><th>Note</th></tr></thead><tbody>${rows}</tbody></table>`;
+     <div class="table-wrap"><table class="factory-grid"><thead><tr><th>Project</th><th>Location</th><th>Electrolyser</th><th>Output</th><th>Status</th><th>Note</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 function renderTech(){
   let h="";
@@ -810,7 +812,7 @@ document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
         <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span style="color:var(--amber)">Path</span></a>
         <p style="margin-top:12px">The global intelligence and networking platform for transformer manufacturers, suppliers, engineers and utilities.</p>
       </div>
-      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="vendors.html">Vendors</a><a href="learn.html">Learn</a><a href="teams.html">Corporate Training</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="sponsor.html">Sponsor</a></div>
+      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="vendors.html">Vendors</a><a href="learn.html">Learn</a><a href="pricing.html">Pricing</a><a href="testbay.html">Test Bay</a><a href="design.html">Design Duel</a><a href="teams.html">Corporate Training</a><a href="test-report.html">Test Report</a><a href="test-lab-consulting.html">Test Lab Consulting</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="software.html">Software</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="sponsor.html">Sponsor</a></div>
       <div><h4>COMPANY</h4><a href="about.html">About Us</a><a href="mailto:hello@transformerpath.com">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
       <div><h4>CONTACT</h4><a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a><a href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener">LinkedIn ↗</a></div>
     </div>

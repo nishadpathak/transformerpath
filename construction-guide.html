@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Transformer Construction Guide — From Core to Customer</title>
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
+<meta name="description" content="A complete transformer manufacturing walkthrough — stages, quality hold points, process parameters, testing, packing, lifting and transport for distribution, power and cast-resin units.">
 <style>
   :root{ color-scheme:light;
     --bg:#f4f6f9; --card:#fff; --ink:#1a2332; --muted:#5b6b7f; --accent:#0e5fa8;
@@ -51,12 +57,50 @@
   footer{font-size:11.5px;color:var(--muted);margin-top:24px;line-height:1.6}
   svg text{font:9.5px var(--mono);fill:#33445c}
 </style>
+    <link rel="canonical" href="https://transformerpath.com/construction-guide.html">
+    <script src="analytics.js" defer></script><script src="course-gate.js"></script>
 </head>
 <body>
-  <div style="background:#0d1b2e;color:#fff;padding:10px 18px;font-family:'Segoe UI',system-ui,sans-serif;display:flex;align-items:center;gap:12px;font-size:.9rem;flex-wrap:wrap">
-    <a href="index.html" style="color:#fff;font-weight:800;text-decoration:none;font-size:1.05rem;letter-spacing:-.3px;display:inline-flex;align-items:center;gap:7px"><svg width="22" height="22" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="27" fill="none" stroke="#fff" stroke-width="2"/><path d="M37 9 L23 35 L31 35 L26 55 L42 29 L34 29 L40 9 Z" fill="#f5a623"/></svg>Trafo<span style="color:#f5a623">Path</span></a>
-    <a href="learn.html" style="color:#cbd5e1;text-decoration:none;margin-left:auto">&#8592; Learn hub</a>
+<div class="tp-sitehead" role="banner">
+  <div class="tp-nav">
+    <a href="index.html" class="tp-logo"><svg width="22" height="22" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="27" fill="none" stroke="#fff" stroke-width="2"/><path d="M37 9 L23 35 L31 35 L26 55 L42 29 L34 29 L40 9 Z" fill="#f5a623"/></svg>Transformer<span>Path</span></a>
+    <button class="tp-menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="tpNav" onclick="var n=document.getElementById('tpNav');var open=n.classList.toggle('open');this.setAttribute('aria-expanded',open)">☰</button>
+    <div class="tp-navlinks" id="tpNav" role="navigation">
+      <a href="intel.html">Daily Intel</a>
+      <a href="events.html">Events</a>
+      <a href="webinars.html">Webinars</a>
+      <a href="manufacturers.html">Manufacturers</a>
+      <a href="learn.html">Learn</a>
+      <a href="grids.html">Grids</a>
+      <a href="resources.html">Knowledge</a>
+      <a href="blog.html">Blog</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="testbay.html">Test Bay</a>
+      <a href="search.html" title="Search" aria-label="Search">🔍</a>
+    </div>
   </div>
+</div>
+<style>
+/* Self-contained site header for TransformerPath's interactive/tool pages —
+   deliberately independent of style.css (this page doesn't load it) so it can
+   never interfere with the page's own CSS. Scoped under .tp- prefix. */
+.tp-sitehead{background:#0d1b2e;color:#fff;position:sticky;top:0;z-index:1000;box-shadow:0 2px 8px rgba(0,0,0,.25);font-family:'Segoe UI',system-ui,-apple-system,sans-serif}
+.tp-nav{max-width:1100px;margin:0 auto;padding:0 18px;height:56px;display:flex;align-items:center;gap:16px}
+.tp-logo{color:#fff;font-weight:800;text-decoration:none;font-size:1.05rem;letter-spacing:-.3px;display:inline-flex;align-items:center;gap:7px;flex:none}
+.tp-logo span{color:#f5a623}
+.tp-menu-toggle{display:none;background:none;border:0;color:#fff;font-size:1.3rem;cursor:pointer;padding:8px;margin-left:auto}
+.tp-navlinks{display:flex;align-items:center;gap:16px;margin-left:auto}
+.tp-navlinks a{color:#cbd5e1;text-decoration:none;font-size:.88rem;font-weight:500;white-space:nowrap;transition:color .15s}
+.tp-navlinks a:hover,.tp-navlinks a[aria-current="page"]{color:#f5a623}
+.tp-navlinks a[aria-current="page"]{font-weight:700}
+@media (max-width:900px){
+  .tp-menu-toggle{display:block}
+  .tp-navlinks{display:none;position:absolute;top:56px;left:0;right:0;background:#0d1b2e;flex-direction:column;align-items:stretch;padding:8px 0 10px;box-shadow:0 14px 24px rgba(0,0,0,.35);gap:0;margin-left:0}
+  .tp-navlinks.open{display:flex}
+  .tp-navlinks a{padding:12px 20px;border-bottom:1px solid rgba(255,255,255,.06)}
+  .tp-navlinks a:last-child{border-bottom:0}
+}
+</style>
 
 <header>
   <h1>Transformer Construction Guide</h1>
@@ -84,21 +128,21 @@
     <button class="btn" onclick="pre(245,4.4,3.9,7.1)">315 MVA (transport mass, oil-out)</button>
     <div class="res" id="liftres"></div>
     <h3>Crane selection bands (mobile crane at ≈ 8–10 m working radius)</h3>
-    <table class="par"><tr><th>Lift weight</th><th>Crane</th><th>Rigging</th></tr>
+    <div class="table-wrap"><table class="par"><tr><th>Lift weight</th><th>Crane</th><th>Rigging</th></tr>
       <tr><td>≤ 5 t</td><td>25–30 t mobile</td><td>4-leg chain sling, ≥ 60° angle</td></tr>
       <tr><td>≤ 15 t</td><td>70 t mobile</td><td>wire-rope slings + shackles WLL ≥ W/2 × 1.25</td></tr>
       <tr><td>≤ 30 t</td><td>130 t mobile</td><td>spreader beam mandatory (bushing clearance)</td></tr>
       <tr><td>≤ 60 t</td><td>220 t mobile</td><td>spreader beam, tag lines</td></tr>
       <tr><td>≤ 120 t</td><td>400–450 t mobile / crawler</td><td>engineered lift plan, CoG verified</td></tr>
       <tr><td>≤ 250 t</td><td>500–750 t lattice / gantry</td><td>hydraulic gantry or strand jacks at site</td></tr>
-      <tr><td>&gt; 250 t</td><td>hydraulic gantry / jack-and-slide</td><td>specialist heavy-lift contractor</td></tr></table>
+      <tr><td>&gt; 250 t</td><td>hydraulic gantry / jack-and-slide</td><td>specialist heavy-lift contractor</td></tr></table></div>
     <h3>Road transport bands (GCC practice)</h3>
-    <table class="par"><tr><th>Transport weight</th><th>Vehicle</th><th>Notes</th></tr>
+    <div class="table-wrap"><table class="par"><tr><th>Transport weight</th><th>Vehicle</th><th>Notes</th></tr>
       <tr><td>≤ 24 t</td><td>flatbed semi-trailer</td><td>normal permits</td></tr>
       <tr><td>≤ 45 t</td><td>3-axle lowbed</td><td>abnormal-load permit</td></tr>
       <tr><td>≤ 80 t</td><td>4–6 axle lowbed</td><td>route survey, escort if wide</td></tr>
       <tr><td>≤ 150 t</td><td>8–12 line hydraulic modular trailer</td><td>police escort, night movement</td></tr>
-      <tr><td>&gt; 150 t</td><td>SPMT / multi-line modular</td><td>bridge assessments, utility lifting of cables/gantries</td></tr></table>
+      <tr><td>&gt; 150 t</td><td>SPMT / multi-line modular</td><td>bridge assessments, utility lifting of cables/gantries</td></tr></table></div>
     <div class="note">Rules of thumb used: axle-line limit ≈ 12 t (GCC), travel height limit ≈ 4.95 m (UAE major routes — survey lower routes!), width &gt; 3.5 m or height &gt; 4.95 m triggers escort + route survey. EHV units ship oil-out with bushings, conservator and radiators removed; dry-air or N₂ blanket with pressure gauge and a 3-axis impact recorder (alarm ≥ 3 g).</div>
   </div>
 
@@ -487,7 +531,7 @@ const host=document.getElementById("stages");
 STAGES.forEach((st,i)=>{
   const id="s"+(i+1);
   nav.innerHTML+=`<a href="#${id}">${i+1}. ${st.t}</a>`;
-  let par=st.par?`<h3>Key parameters</h3><table class="par">${st.par.map(p=>`<tr><td>${p[0]}</td><td><b>${p[1]}</b></td></tr>`).join("")}</table>`:"";
+  let par=st.par?`<h3>Key parameters</h3><div class="table-wrap"><table class="par">${st.par.map(p=>`<tr><td>${p[0]}</td><td><b>${p[1]}</b></td></tr>`).join("")}</table></div>`:"";
   let chk=`<h3>Checklist <span style="color:var(--warn)">(H = hold point)</span></h3><ul class="chk">${st.chk.map(c=>Array.isArray(c)?`<li class="hold">${c[1]}</li>`:`<li>${c}</li>`).join("")}</ul>`;
   host.innerHTML+=`<div class="card" id="${id}"><div class="stage">
     <div class="figbox">${st.svg()}</div>
