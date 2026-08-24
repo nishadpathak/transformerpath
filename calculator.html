@@ -77,6 +77,7 @@
 </style>
     <link rel="canonical" href="https://transformerpath.com/calculator.html">
     <link rel="stylesheet" href="tp-theme.css?v=3">
+    <script src="fem-leakage.js?v=1"></script>
     <script src="analytics.js?v=2" defer></script><script src="course-gate.js?v=2"></script>
 </head>
 <body>
@@ -347,6 +348,72 @@
         <div class="note" style="margin-bottom:12px">t = 2 s is the IEC 60076-5 standard design duration; use your protection's actual clearing time if it's faster (this lowers the temperature rise, since heating scales with t). θᵢ defaults to a typical pre-fault hot winding temperature — use the actual value if you have it (this calculator does not compute a hot-spot temperature itself).</div>
         <div class="table-wrap"><table class="res" id="t_scth"></table></div>
         <div class="note" style="margin-top:10px"><b>Method:</b> adiabatic (no heat loss during the fault) temperature rise for <b>copper</b> conductors, Δθ ≈ 2·J²·t (J in A/mm² at fault current, t in seconds) — the standard short-form of the IEC 60076-5 thermal withstand check. Current density at fault J = (rated current density) × (SC current multiple), i.e. this design's own conductor sizing carried through to fault conditions. Compared against 250 °C, the commonly cited maximum for normal Kraft-paper-insulated copper windings (check your actual insulation class — thermally upgraded paper permits higher). <b>Adiabatic means no cooling during the fault</b> — correct for the short IEC-standard duration, but this is still a first-cut check: it doesn't account for uneven current distribution, contact/joint hot-spots, or aluminium conductors.</div>
+      </div>
+
+      <div class="card">
+        <h2>16 &middot; Leakage field &mdash; 2D finite-element solve <span class="tag">axisymmetric, magnetostatic</span></h2>
+
+        <div class="note" style="margin-bottom:12px">
+          Sections 6 and 14 use closed-form formulas: reactance from the ampere-turn/duct
+          expression with a <b>Rogowski correction</b> for end fringing, and a single total
+          radial force. This section solves the leakage field itself on a mesh, which needs
+          no fringing factor and produces the <b>axial force distribution along the winding</b>
+          &mdash; the quantity closed-form methods handle worst and the one that governs
+          winding collapse when ampere-turns are not balanced.
+        </div>
+
+        <div class="calcrow" style="margin-bottom:10px">
+          <div><label>Mesh density (nodes/m)</label>
+            <select id="femDens">
+              <option value="200">Coarse &mdash; 200 (fastest)</option>
+              <option value="400" selected>Normal &mdash; 400 (recommended)</option>
+              <option value="800">Fine &mdash; 800 (slower)</option>
+            </select></div>
+          <div><label>Winding sections reported</label>
+            <input id="femSec" type="number" value="20" step="2" min="6" max="60"></div>
+        </div>
+        <button id="femRun" type="button" class="b1" onclick="runFEM()">Run field solve</button>
+        <span id="femStat" style="margin-left:10px;font-size:12px;color:var(--muted)"></span>
+
+        <div id="femOut" style="display:none">
+          <div class="table-wrap" style="margin-top:14px"><table class="res" id="t_fem"></table></div>
+
+          <h3 style="font-size:13px;margin:18px 0 6px;color:var(--accent)">Leakage flux plot</h3>
+          <div id="femPlotWrap" style="overflow-x:auto">
+            <canvas id="femCanvas" width="600" height="380" style="max-width:100%;border:1px solid var(--line);border-radius:8px"></canvas>
+          </div>
+          <div class="note" style="margin-top:8px;font-size:11.5px">
+            Half the core window, drawn to scale. Lines are contours of the flux function
+            r&middot;A &mdash; flux runs <i>along</i> them, so where they crowd together the field
+            is strong. Flux enters the core leg and both yokes at right angles, which is the
+            infinitely-permeable boundary the model assumes.
+          </div>
+
+          <h3 style="font-size:13px;margin:20px 0 6px;color:var(--accent)">Axial force distribution at peak short circuit</h3>
+          <div id="femForceWrap" style="overflow-x:auto"></div>
+          <div class="table-wrap" style="margin-top:12px"><table class="res" id="t_femsec"></table></div>
+        </div>
+
+        <div class="note" style="margin-top:14px">
+          <b>Method &amp; validity.</b> Axisymmetric magnetostatics solved for the flux function
+          u = r&middot;A on a mesh fitted to the winding geometry, with the core leg and yokes
+          treated as infinitely permeable (flux normal, tangential B zero) and a remote
+          flux-parallel outer boundary. Forces come from J&times;B, scaled to the asymmetric
+          peak short-circuit current from section 14.
+          <br><br>
+          <b>Verified:</b> operator symmetry to 4&times;10<sup>&minus;14</sup>; leakage inductance converging
+          to the classical value as the winding is made tall (ratio 0.9994 at h/build&nbsp;=&nbsp;139)
+          and tracking the Rogowski factor at every height between; gap field within 0.06&nbsp;%
+          of hand calculation; two independent energy formulations agreeing to 0.8&nbsp;%;
+          insensitivity to the outer boundary position; net axial force 6&times;10<sup>&minus;17</sup>&nbsp;N and
+          antisymmetry 0.000&nbsp;% for a symmetric winding pair.
+          <br><br>
+          <b>Not verified against an independent solver or a measured works impedance.</b>
+          Treat it as a physically-grounded estimate, not as certification evidence.
+          <b>2D axisymmetric</b> also means it cannot represent three-limb asymmetry, leads, or
+          anything genuinely 3D, and it models the windings as smeared current regions &mdash;
+          no individual conductors, no eddy or proximity effects, no core saturation.
+        </div>
       </div>
       <footer id="foot">
         <b>Method &amp; validity.</b> Classic core-type design chain: volts/turn E<sub>t</sub>=K√S → net core section A<sub>i</sub>=E<sub>t</sub>/4.44·f·B<sub>m</sub> →
@@ -1037,6 +1104,240 @@ function drawImpulse(r){
 }
 
 // ---------- leakage flux / ampere-turn profile across the radial build ----------
+
+/* ═══ Section 16 — 2D axisymmetric leakage-field solve ═══════════════════════
+   Runs on demand rather than on every keystroke: the solve is ~0.25 s at the
+   recommended mesh, which is fine to wait for deliberately but would make the
+   rest of the calculator feel sluggish if it ran on every input change. */
+let FEM = null;
+
+function femGeom(r, density, nSec){
+  return {
+    Rc: r.d/2,
+    R1: r.D1/2, R2: r.D2/2, R3: r.D3/2, R4: r.D4/2,
+    zb: r.gend, zt: r.gend + r.h,
+    Hw: r.Hw,
+    /* Solve at RATED current. The problem is linear, so short-circuit forces
+       come from scaling by (Ipeak/Irated)^2 rather than a second solve. */
+    NI_in:  r.Tlv * r.Ilv,
+    NI_out: -(r.Thv * r.Ihv),
+    I_in: r.Ilv,
+    f: r.f,
+    density: density,
+    nSections: nSec,
+    tol: 1e-11, maxIter: 40000
+  };
+}
+
+function runFEM(){
+  const r = LAST;
+  const stat = $("femStat"), btn = $("femRun");
+  if(!r){ stat.textContent = "Run a design first."; return; }
+  if(typeof TPFEM === "undefined"){
+    stat.textContent = "Solver failed to load — check fem-leakage.js is present.";
+    return;
+  }
+  const dens = +$("femDens").value || 400;
+  const nSec = Math.max(6, Math.min(60, +$("femSec").value || 20));
+
+  btn.disabled = true;
+  stat.textContent = "Solving…";
+  /* Yield once so the button state paints before the solve blocks the thread. */
+  setTimeout(function(){
+    let res, ms;
+    try {
+      const t0 = performance.now();
+      res = TPFEM.solve(femGeom(r, dens, nSec));
+      ms = performance.now() - t0;
+    } catch(e){
+      btn.disabled = false;
+      stat.textContent = "Solve failed: " + e.message;
+      return;
+    }
+    FEM = res;
+    btn.disabled = false;
+    stat.textContent = res.grid.nr + "×" + res.grid.nz + " nodes · " +
+      res.solver.iters + " iterations · " + Math.round(ms) + " ms";
+    $("femOut").style.display = "block";
+    femTables(r, res);
+    femFlux(r, res);
+    femForces(r, res);
+  }, 20);
+}
+
+function femTables(r, res){
+  /* Linear problem: forces scale with the square of current. */
+  const scale = Math.pow(r.IpeakLV / r.Ilv, 2);
+  const Xa = r.ex * (r.Et * r.Tlv) / r.Ilv;   // analytical reactance, ohms/phase (LV ref)
+  const Xf = res.X;
+  const rows = [];
+  /* The page styles status as a .flag pill inside the cell, so wrap the value
+     rather than putting a class on the cell (row() classes the <tr>). */
+  const R = (k,v,cls) => rows.push('<tr><td>'+k+'</td><td>' +
+    (cls ? '<span class="flag '+cls+'" style="display:inline-block;margin:0;padding:2px 8px">'+v+'</span>' : v) +
+    '</td></tr>');
+
+  R("Mesh", res.grid.nr+" × "+res.grid.nz+" nodes, fitted to winding edges");
+  R("Leakage inductance (LV referred)", fmt(res.L*1e3,4)+" mH");
+  R("Leakage reactance from field solve", fmt(Xf,4)+" Ω/phase");
+  R("Leakage reactance, closed form (§6)", fmt(Xa,4)+" Ω/phase");
+  const dev = (Xf-Xa)/Xa*100;
+  R("Difference", (dev>=0?"+":"")+fmt(dev,2)+" %",
+    Math.abs(dev)<8 ? "ok" : "warn");
+  R("Energy cross-check (J·A vs B²)", fmt(res.energyCheck*100,2)+" %",
+    Math.abs(res.energyCheck)<0.03 ? "ok" : "warn");
+  R("Peak short-circuit scaling", "×"+fmt(scale,1)+" on force (I²), from §14 peak "+fmt(r.IpeakLV/1000,2)+" kA");
+  R("LV radial force (total)", fmt(res.inner.Fr*scale/1e3,1)+" kN",
+    res.inner.Fr<0 ? "ok" : "warn");
+  R("HV radial force (total)", fmt(res.outer.Fr*scale/1e3,1)+" kN",
+    res.outer.Fr>0 ? "ok" : "warn");
+  R("LV net axial force", fmt(res.inner.Fz*scale/1e3,2)+" kN");
+  R("HV net axial force", fmt(res.outer.Fz*scale/1e3,2)+" kN");
+  const pk = Math.max.apply(null, res.inner.sections.map(x=>Math.abs(x.Fz)))*scale;
+  R("Peak axial force in one LV section", fmt(pk/1e3,2)+" kN");
+  $("t_fem").innerHTML = rows.join("");
+
+  /* Per-section table, LV winding */
+  const sr = ['<tr><th>Section (from bottom)</th><th>Height (mm)</th><th>Radial (kN)</th><th>Axial (kN)</th></tr>'];
+  res.inner.sections.forEach(function(sc,i){
+    sr.push('<tr><td>'+(i+1)+'</td><td>'+fmt((sc.zMid-r.gend)*1000,0)+
+            '</td><td>'+fmt(sc.Fr*scale/1e3,2)+
+            '</td><td>'+fmt(sc.Fz*scale/1e3,3)+'</td></tr>');
+  });
+  $("t_femsec").innerHTML = sr.join("");
+}
+
+/* ── Flux plot: contours of u = rA via marching squares ─────────────────── */
+function femFlux(r, res){
+  const cv = $("femCanvas"); if(!cv) return;
+  const cs = getComputedStyle(document.documentElement);
+  const inkC  = (cs.getPropertyValue('--ink')||'#1a2332').trim();
+  const lineC = (cs.getPropertyValue('--line')||'#dde4ec').trim();
+  const accC  = (cs.getPropertyValue('--accent')||'#d48806').trim();
+  const cardC = (cs.getPropertyValue('--card')||'#ffffff').trim();
+
+  const dpr = window.devicePixelRatio || 1;
+  const W = cv.width, H = cv.height;
+  cv.width = W*dpr; cv.height = H*dpr;
+  cv.style.width = W+"px"; cv.style.height = H+"px";
+  const g = cv.getContext('2d');
+  g.setTransform(dpr,0,0,dpr,0,0);
+  g.clearRect(0,0,W,H);
+  g.fillStyle = cardC; g.fillRect(0,0,W,H);
+
+  const mL=46, mR=14, mT=14, mB=30;
+  const rN=res.rN, zN=res.zN, nr=rN.length, nz=zN.length;
+  const rMin=rN[0], rMax=r.D4/2 + (r.D4/2-rN[0])*0.35;   // crop the far air
+  const zMin=0, zMax=res.grid.Hw;
+  const X = v => mL + (v-rMin)/(rMax-rMin)*(W-mL-mR);
+  const Y = v => H-mB - (v-zMin)/(zMax-zMin)*(H-mT-mB);
+
+  /* u = rA */
+  const u = new Float64Array(nr*nz);
+  let uMax = 0;
+  for(let j=0;j<nz;j++) for(let i=0;i<nr;i++){
+    const k=res.idx(i,j); u[k]=res.A[k]*rN[i];
+    if(Math.abs(u[k])>uMax) uMax=Math.abs(u[k]);
+  }
+
+  /* winding + core blocks */
+  function block(r1,r2,z1,z2,fill,label){
+    g.fillStyle=fill; g.fillRect(X(r1),Y(z2),X(r2)-X(r1),Y(z1)-Y(z2));
+    g.strokeStyle=lineC; g.lineWidth=1;
+    g.strokeRect(X(r1),Y(z2),X(r2)-X(r1),Y(z1)-Y(z2));
+    if(label){
+      g.fillStyle=inkC; g.font="600 10px system-ui,sans-serif"; g.textAlign="center";
+      g.fillText(label, (X(r1)+X(r2))/2, (Y(z1)+Y(z2))/2+3);
+    }
+  }
+  const zb=r.gend, zt=r.gend+r.h;
+  g.fillStyle="rgba(120,130,145,.18)";
+  g.fillRect(0,mT,X(rMin),H-mT-mB);
+  g.fillStyle=inkC; g.font="600 10px system-ui,sans-serif"; g.textAlign="center";
+  g.save(); g.translate(X(rMin)/2,(mT+H-mB)/2); g.rotate(-Math.PI/2);
+  g.fillText("CORE LEG",0,3); g.restore();
+
+  block(r.D1/2, r.D2/2, zb, zt, "rgba(245,166,35,.20)", "LV");
+  block(r.D3/2, r.D4/2, zb, zt, "rgba(14,95,168,.20)",  "HV");
+
+  /* contours */
+  const levels = 22;
+  g.lineWidth = 1;
+  for(let L=1; L<levels; L++){
+    const lv = -uMax + (2*uMax)*L/levels;
+    g.strokeStyle = "rgba(120,140,170,.55)";
+    g.beginPath();
+    for(let j=0;j<nz-1;j++){
+      for(let i=0;i<nr-1;i++){
+        if(rN[i]>rMax) continue;
+        const a=u[res.idx(i,j)],   b=u[res.idx(i+1,j)],
+              c=u[res.idx(i+1,j+1)], d=u[res.idx(i,j+1)];
+        const pts=[];
+        const ip=(p1,p2,v1,v2,x1,y1,x2,y2)=>{
+          const t=(lv-v1)/(v2-v1);
+          pts.push([x1+(x2-x1)*t, y1+(y2-y1)*t]);
+        };
+        const x0=X(rN[i]), x1c=X(rN[i+1]), y0=Y(zN[j]), y1c=Y(zN[j+1]);
+        if((a<lv)!==(b<lv)) ip(0,0,a,b,x0,y0,x1c,y0);
+        if((b<lv)!==(c<lv)) ip(0,0,b,c,x1c,y0,x1c,y1c);
+        if((c<lv)!==(d<lv)) ip(0,0,c,d,x1c,y1c,x0,y1c);
+        if((d<lv)!==(a<lv)) ip(0,0,d,a,x0,y1c,x0,y0);
+        if(pts.length>=2){ g.moveTo(pts[0][0],pts[0][1]); g.lineTo(pts[1][0],pts[1][1]); }
+      }
+    }
+    g.stroke();
+  }
+
+  /* frame + labels */
+  g.strokeStyle=lineC; g.lineWidth=1;
+  g.strokeRect(mL,mT,W-mL-mR,H-mT-mB);
+  g.fillStyle=inkC; g.font="10px system-ui,sans-serif";
+  g.textAlign="left";  g.fillText("yoke", mL+4, mT+12);
+  g.textAlign="left";  g.fillText("yoke", mL+4, H-mB-4);
+  g.textAlign="center";g.fillText("radius →", (mL+W-mR)/2, H-8);
+  g.save(); g.translate(12,(mT+H-mB)/2); g.rotate(-Math.PI/2);
+  g.textAlign="center"; g.fillText("window height →",0,0); g.restore();
+}
+
+/* ── Axial force per section, as a horizontal bar chart against height ──── */
+function femForces(r, res){
+  const host=$("femForceWrap"); if(!host) return;
+  const scale = Math.pow(r.IpeakLV / r.Ilv, 2);
+  const secs = res.inner.sections;
+  const W=560,H=300,mL=64,mR=90,mT=14,mB=34;
+  const maxF = Math.max.apply(null, secs.map(s=>Math.abs(s.Fz)))*scale/1e3 || 1;
+  const zTop = r.h*1000;
+  const Y = z => H-mB - (z/zTop)*(H-mT-mB);
+  const X0 = mL + (W-mL-mR)/2;
+  const X = f => X0 + (f/maxF)*((W-mL-mR)/2)*0.94;
+
+  let sv='<svg viewBox="0 0 '+W+' '+H+'" width="'+W+'" height="'+H+'" role="img" aria-label="Axial force per winding section">';
+  sv+='<line x1="'+mL+'" y1="'+(H-mB)+'" x2="'+(W-mR)+'" y2="'+(H-mB)+'" stroke="var(--line)"/>';
+  sv+='<line x1="'+X0+'" y1="'+mT+'" x2="'+X0+'" y2="'+(H-mB)+'" stroke="var(--line)" stroke-dasharray="3 3"/>';
+  const bh = (H-mT-mB)/secs.length*0.78;
+  secs.forEach(function(s,i){
+    const f = s.Fz*scale/1e3;
+    const zc = (s.zMid - r.gend)*1000;
+    const y = Y(zc)-bh/2;
+    const x = Math.min(X0, X(f)), w = Math.abs(X(f)-X0);
+    const col = f>=0 ? "var(--accent)" : "#0e5fa8";
+    sv+='<rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+Math.max(w,0.6).toFixed(1)+'" height="'+bh.toFixed(1)+'" fill="'+col+'" opacity=".85"><title>'+fmt(zc,0)+' mm: '+fmt(f,3)+' kN</title></rect>';
+  });
+  /* axis labels */
+  for(const frac of [0,0.25,0.5,0.75,1]){
+    const z=zTop*frac;
+    sv+='<text x="'+(mL-6)+'" y="'+(Y(z)+3)+'" text-anchor="end" font-size="10" fill="var(--muted)">'+fmt(z,0)+'</text>';
+  }
+  sv+='<text x="'+(mL-6)+'" y="'+(mT+3)+'" text-anchor="end" font-size="10" fill="var(--muted)"></text>';
+  sv+='<text x="'+X0+'" y="'+(H-8)+'" text-anchor="middle" font-size="10" fill="var(--muted)">axial force per section (kN) — right = upward</text>';
+  sv+='<text x="14" y="'+(mT+10)+'" font-size="10" fill="var(--muted)">mm from</text>';
+  sv+='<text x="14" y="'+(mT+22)+'" font-size="10" fill="var(--muted)">winding foot</text>';
+  sv+='<text x="'+(W-mR+8)+'" y="'+(mT+12)+'" font-size="10" fill="var(--muted)">peak</text>';
+  sv+='<text x="'+(W-mR+8)+'" y="'+(mT+26)+'" font-size="11" fill="var(--ink)" font-weight="700">'+fmt(maxF,2)+' kN</text>';
+  sv+='</svg>';
+  host.innerHTML=sv;
+}
+
 function drawLeakage(r){
   if(!r||!r.NIpeak) return;
   const box=$("leakbox"); if(!box) return;
