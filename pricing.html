@@ -109,7 +109,7 @@ table.cmp .n { color:var(--border); }
 <section class="hero" style="padding:50px 0 40px">
   <div class="container">
     <h1 style="font-size:2.2rem">Plans &amp; <span>Pricing</span></h1>
-    <p>One payment, twelve months, everything on that plan included — the full masterclass, every 3D model, the design calculator, and the Design Engineer Track. No recurring billing surprises, no per-chapter paywalls. All prices in US dollars (USD).</p>
+    <p>Twelve months of everything on that plan — the full masterclass, every 3D model, the design calculator, and the Design Engineer Track. No per-chapter paywalls. Learner renews annually and can be cancelled any time; Professional and Enterprise are single payments. All prices in US dollars (USD).</p>
   </div>
 </section>
 
@@ -148,7 +148,7 @@ table.cmp .n { color:var(--border); }
           <li><span class="ok">✓</span> 1 person, standard review queue</li>
         </ul>
         <a class="cta primary" id="ctaLearner" href="#" target="_blank" rel="noopener">Unlock Learner — $199 →</a>
-        <div class="fine">One-time payment · 12 months access</div>
+        <div class="fine">$199/year, renews annually · cancel any time in Stripe</div>
       </div>
 
       <!-- PROFESSIONAL -->
@@ -211,7 +211,8 @@ table.cmp .n { color:var(--border); }
       <div class="section-head" style="margin-bottom:18px"><h2>Questions</h2></div>
       <details>
         <summary>Is this a subscription?</summary>
-        <p>No. Each plan is a single payment that unlocks everything on that plan for 12 months. There's no auto-renewal — if you want to continue after 12 months, you purchase again.</p>
+        <p><strong>Learner</strong> is an annual subscription — $199 a year, renewing automatically until you cancel. You can cancel any time from the receipt Stripe emails you, and you keep access to the end of the period you've paid for.</p>
+        <p><strong>Professional</strong> and <strong>Enterprise</strong> are single payments. They unlock everything on that plan for 12 months with no auto-renewal — if you want to continue afterwards, you purchase again.</p>
       </details>
       <details>
         <summary>Which plan should I pick?</summary>
@@ -266,7 +267,7 @@ table.cmp .n { color:var(--border); }
   // access. The bulk-seat Team/Department products on teams.html are separate
   // products; never reuse these single-plan links there.
   var LINKS = {
-    learner:      'https://buy.stripe.com/5kQ00c3pS8tv9g4fdMfYY00',
+    learner:      'https://buy.stripe.com/4gMbIU2lO5hj1NC5DcfYY03',
     professional: 'https://buy.stripe.com/fZu00c3pScJL1NC3v4fYY01',
     enterprise:   'https://buy.stripe.com/aFacMY6C4aBD2RG2r0fYY02'
   };
