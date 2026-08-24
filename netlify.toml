@@ -31,6 +31,13 @@
   status = 404
   force = true
 
+# Solver validation harness — version-controlled, but not site content.
+[[redirects]]
+  from = "/tests/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
 # transformerpath-site/ is an early-August snapshot of ~25 pages that also
 # exist at the top level. Serving it would publish stale duplicates and split
 # SEO ranking between two copies of the same page.
