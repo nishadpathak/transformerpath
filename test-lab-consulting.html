@@ -204,6 +204,6 @@
 </footer>
 
 <script>(function(){var f=document.getElementById('tlForm');if(!f)return;f.addEventListener('submit',function(e){e.preventDefault();if(!f.checkValidity()){f.reportValidity();return;}fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(f)).toString()}).then(d).catch(d);function d(){f.style.display='none';document.getElementById('tlThanks').style.display='block';}});})();</script>
-<script src="analytics.js" defer></script>
+<script src="analytics.js?v=2" defer></script>
 </body>
 </html>
