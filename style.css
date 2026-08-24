@@ -48,7 +48,12 @@ a { color: inherit; text-decoration: none; }
 
 /* Header */
 header { background: var(--navy); color: #fff; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,.25); }
-.nav { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+.nav { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 24px; }
+/* The 12-item nav needs ~1200px, which does not fit the 1100px content
+   container — the links used to run past its edge and sit flush against
+   the logo. Give the header alone a wider container; page content keeps
+   the 1100px measure. */
+header .container { max-width: 1280px; }
 .logo { font-size: 1.35rem; font-weight: 800; letter-spacing: -.5px; }
 .logo span { color: var(--amber); }
 .nav-links { display: flex; gap: 18px; align-items: center; }
@@ -163,7 +168,11 @@ footer a:hover { color: var(--amber); }
 .legal-body a { color: var(--accent); font-weight: 600; }
 .legal-body .muted { color: var(--muted); font-size: .85rem; }
 
-@media (max-width: 800px) {
+/* The horizontal nav carries 12 top-level items and needs ~1200px. The old
+   800px breakpoint left it overflowing the viewport on every laptop width
+   between the two — links ran off-screen and the logo collided with the
+   first item. Collapse to the menu button before that can happen. */
+@media (max-width: 1240px) {
   .grid-4, .grid-3 { grid-template-columns: repeat(2, 1fr); }
   .hero h1 { font-size: 2.1rem; }
   .nav-links { display: none; position: absolute; top: 64px; left: 0; right: 0; background: var(--navy); flex-direction: column; padding: 12px 0 14px; gap: 0; box-shadow: 0 14px 24px rgba(0,0,0,.35); align-items: stretch; }

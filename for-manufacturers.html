@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Transformer Manufacturers — Design Tools, Training &amp; Test Lab Consulting | TransformerPath</title>
+<meta name="description" content="What TransformerPath offers a transformer manufacturer: an IEC 60076 first-cut design calculator, rating-plate and test-report generators, engineering training for your design and test teams, and vendor-neutral test lab consulting. Plus an honest guide to when you need FEM simulation instead.">
+<link rel="canonical" href="https://transformerpath.com/for-manufacturers.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TransformerPath">
+<meta property="og:title" content="For Transformer Manufacturers | TransformerPath">
+<meta property="og:description" content="Design tools, engineering training and vendor-neutral test lab consulting for transformer manufacturers — and a straight answer on where FEM simulation is the right tool instead.">
+<meta property="og:url" content="https://transformerpath.com/for-manufacturers.html">
+<meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="For Transformer Manufacturers | TransformerPath">
+<meta name="twitter:description" content="Design tools, engineering training and vendor-neutral test lab consulting for transformer manufacturers.">
+<meta name="twitter:image" content="https://transformerpath.com/brand/og-image.png">
+<link rel="stylesheet" href="style.css?v=4">
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
+<style>
+.honest { background:var(--card); border:1px solid var(--border); border-left:4px solid var(--amber);
+          border-radius:12px; padding:22px 26px; margin:0 0 34px; }
+.honest h2 { margin:0 0 10px; font-size:1.24rem; color:var(--ink); }
+.honest p { color:var(--text); font-size:.95rem; line-height:1.7; margin:0 0 12px; }
+.honest p:last-child { margin-bottom:0; }
+.honest a { color:var(--accent); font-weight:600; }
+
+.offer { display:grid; grid-template-columns:repeat(auto-fit,minmax(290px,1fr)); gap:18px; margin:0 0 40px; }
+.card2 { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:22px 22px 20px;
+         display:flex; flex-direction:column; }
+.card2 .kicker { font-size:.68rem; font-weight:800; letter-spacing:.6px; text-transform:uppercase;
+                 color:var(--accent); margin-bottom:8px; }
+.card2 h3 { margin:0 0 8px; font-size:1.06rem; color:var(--ink); }
+.card2 p { color:var(--muted); font-size:.89rem; line-height:1.62; margin:0 0 14px; }
+.card2 ul { list-style:none; margin:0 0 16px; padding:0; }
+.card2 ul li { font-size:.86rem; color:var(--text); padding:4px 0 4px 18px; position:relative; line-height:1.5; }
+.card2 ul li::before { content:"\2022"; color:var(--amber); position:absolute; left:4px; font-weight:800; }
+.card2 .go { margin-top:auto; color:var(--accent); font-weight:700; font-size:.87rem; text-decoration:none; }
+.card2 .go:hover { text-decoration:underline; }
+.card2 .badge-free { display:inline-block; background:rgba(30,158,90,.14); color:#1e9e5a; font-size:.63rem;
+                     font-weight:800; letter-spacing:.4px; text-transform:uppercase; padding:2px 8px;
+                     border-radius:999px; margin-left:6px; vertical-align:middle; }
+.card2 .badge-plan { display:inline-block; background:rgba(245,166,35,.16); color:var(--accent); font-size:.63rem;
+                     font-weight:800; letter-spacing:.4px; text-transform:uppercase; padding:2px 8px;
+                     border-radius:999px; margin-left:6px; vertical-align:middle; }
+
+.fitwrap { overflow-x:auto; margin:0 0 40px; }
+table.fit { width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--border);
+            border-radius:12px; overflow:hidden; font-size:.88rem; min-width:620px; }
+table.fit th, table.fit td { padding:12px 16px; text-align:left; border-bottom:1px solid var(--border);
+                             vertical-align:top; }
+table.fit th { background:var(--navy); color:#fff; font-weight:700; font-size:.79rem;
+               text-transform:uppercase; letter-spacing:.3px; }
+table.fit td:first-child { color:var(--ink); font-weight:600; }
+table.fit tr:last-child td { border-bottom:0; }
+table.fit .yes { color:#1e9e5a; font-weight:700; }
+table.fit .no  { color:var(--muted); }
+
+form label { display:block; font-size:.85rem; font-weight:600; color:var(--ink); margin:14px 0 5px; }
+form input, form select, form textarea { width:100%; padding:11px 13px; border:1px solid var(--border);
+    border-radius:9px; font-size:.93rem; font-family:inherit; background:var(--card); color:var(--text); }
+form textarea { min-height:112px; resize:vertical; }
+.formwrap { max-width:640px; margin:0 auto; background:var(--card); border:1px solid var(--border);
+            border-radius:16px; padding:26px 28px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg width="30" height="30" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span>Path</span></a>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav" onclick="var n=document.querySelector('.nav-links');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))">☰</button>
+    <nav class="nav-links" id="mainNav">
+      <a href="intel.html">Daily Intel</a>
+      <a href="events.html">Events</a>
+      <a href="webinars.html">Webinars</a>
+      <a href="manufacturers.html">Manufacturers</a>
+      <a href="learn.html">Learn</a>
+      <a href="grids.html">Grids</a>
+      <a href="resources.html">Knowledge</a>
+      <a href="blog.html">Blog</a>
+      <a href="for-manufacturers.html">For Manufacturers</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="testbay.html">Test Bay</a>
+      <a href="search.html" title="Search" aria-label="Search">🔍</a>
+      <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">🌙</button>
+    </nav>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
+    updateThemeIcon();
+    themeToggle?.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) { html.removeAttribute('data-theme'); localStorage.setItem('theme', 'light'); }
+      else { html.setAttribute('data-theme', 'dark'); localStorage.setItem('theme', 'dark'); }
+      updateThemeIcon();
+    });
+    function updateThemeIcon() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+    }
+  </script>
+</header>
+
+<section class="hero" style="padding:52px 0 40px">
+  <div class="container">
+    <h1 style="font-size:2.15rem">For transformer <span>manufacturers</span></h1>
+    <p>Design tools your engineers can use on a live tender, training that brings new
+       hires up to one methodology, and vendor-neutral consulting on your test bay —
+       plus a straight answer on where you need simulation software instead of us.</p>
+  </div>
+</section>
+
+<section class="block">
+  <div class="container" style="max-width:1080px">
+
+    <div class="honest">
+      <h2>First, the honest part: we are not FEM simulation software</h2>
+      <p>If what you need is coupled electromagnetic&ndash;thermal&ndash;structural simulation of
+         transformer components &mdash; leakage-field mapping, local eddy and stray loss, hot-spot
+         prediction from a meshed geometry &mdash; then you need a general-purpose finite-element
+         package, and we are not it. We would rather tell you that now than after an invoice.</p>
+      <p>Because the question comes up constantly, we publish a
+         <a href="software.html">vendor-neutral directory of the tools that do solve it</a>,
+         grouped by the job they do rather than by vendor. It covers the commercial packages
+         (Ansys Maxwell, COMSOL, Simcenter MAGNET and Flux, Opera/CST, JMAG, EMWorks) and the
+         free and open-source options &mdash; for 2D axisymmetric work, which covers most
+         leakage-field, short-circuit-force and electrostatic-stress problems, FEMM is genuinely
+         capable. We sell none of them and take no commission.</p>
+      <p>Our tools sit <strong>upstream</strong> of that, at the sizing and documentation stages
+         where FEM is slow and overkill. Classical closed-form methods land within roughly
+         10&ndash;15&nbsp;% of a works design &mdash; excellent for tender sizing, costing and
+         sanity-checking a supplier's numbers, and not a substitute for FEM where the failure
+         mode is local rather than average.
+         <a href="article-fem-vs-analytical.html">We wrote up exactly where that boundary sits &rarr;</a></p>
+    </div>
+
+    <div class="section-head" style="margin-bottom:18px">
+      <h2>What we offer a manufacturer</h2>
+      <p>Four things, and they are useful in a different order depending on whether your
+         bottleneck is design capacity, engineer ramp-up or test-bay reporting.</p>
+    </div>
+
+    <div class="offer">
+
+      <div class="card2">
+        <span class="kicker">Design</span>
+        <h3>IEC 60076 design calculator <span class="badge-plan">In plans</span></h3>
+        <p>Rating, voltages, vector group and target impedance in; a first-cut design out, in
+           seconds. Distribution (oil), power (oil) and cast-resin (dry) modes.</p>
+        <ul>
+          <li>Core area, flux density, turns and conductor sizing</li>
+          <li>No-load and load losses, impedance, regulation, efficiency</li>
+          <li>Thermal and tank sizing, weights and materials</li>
+          <li>Impulse voltage distribution, short-circuit forces and adiabatic thermal withstand &mdash; analytical estimates</li>
+          <li>Cross-section, efficiency, core-step and vector-group diagrams</li>
+        </ul>
+        <a class="go" href="calculator.html">See the calculator &rarr;</a>
+      </div>
+
+      <div class="card2">
+        <span class="kicker">Documentation</span>
+        <h3>Rating plate &amp; test report generators <span class="badge-plan">In plans</span></h3>
+        <p>The fastest practical win for a factory: standardise what your test bay hands a
+           customer, with no new hardware.</p>
+        <ul>
+          <li>Rating plate to IEC 60076-1 &sect;7 layout, exported as PDF</li>
+          <li>Routine test results into a formatted, buyer-ready PDF</li>
+          <li>Templated to match your buyers' and tenders' requirements</li>
+        </ul>
+        <a class="go" href="test-report.html">See the test report generator &rarr;</a>
+      </div>
+
+      <div class="card2">
+        <span class="kicker">People</span>
+        <h3>Engineering training <span class="badge-plan">In plans</span></h3>
+        <p>Bring new design and test engineers up to speed on one consistent methodology
+           instead of whoever happened to train them.</p>
+        <ul>
+          <li>26-chapter masterclass, from the EMF equation to tender economics</li>
+          <li>Ten interactive 3D models &mdash; core, windings, bushings, OLTC, GSU and more</li>
+          <li>Design Engineer Track, four levels, reviewed capstones and certification</li>
+          <li>Team rollout on one shared access link &mdash; see Enterprise below</li>
+        </ul>
+        <a class="go" href="teams.html">Corporate &amp; team training &rarr;</a>
+      </div>
+
+      <div class="card2">
+        <span class="kicker">Consulting</span>
+        <h3>Test lab &amp; design services</h3>
+        <p>Scoped per project, quoted against your product range and target markets. We are
+           vendor-neutral &mdash; we don't sell hardware, we spec what you actually need.</p>
+        <ul>
+          <li>Test bay design and specification, routine vs. type test capability planning</li>
+          <li>Digitalization retrofit &mdash; reporting layer for an existing bay</li>
+          <li>Specialty test procedures documented and validated for your equipment</li>
+        </ul>
+        <a class="go" href="test-lab-consulting.html">Consulting detail &rarr;</a>
+      </div>
+
+    </div>
+
+    <div class="section-head" style="margin-bottom:18px">
+      <h2>Where we fit, and where we don't</h2>
+      <p>The same table we would talk you through on a call.</p>
+    </div>
+    <div class="fitwrap">
+      <table class="fit">
+        <thead>
+          <tr><th>What you need to do</th><th>Right tool</th><th>Why</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Size a unit for a tender, fast</td><td class="yes">TransformerPath calculator</td>
+              <td>Seconds per iteration, within ~10&ndash;15&nbsp;% of a works design. FEM is far too slow at this stage.</td></tr>
+          <tr><td>Sanity-check a supplier's or a junior engineer's numbers</td><td class="yes">TransformerPath calculator</td>
+              <td>Independent closed-form second opinion on losses, impedance and regulation.</td></tr>
+          <tr><td>Produce a buyer-ready routine test report</td><td class="yes">Test report generator</td>
+              <td>Formatting and consistency problem, not a physics problem.</td></tr>
+          <tr><td>Train new design or test engineers</td><td class="yes">Masterclass + Design Engineer Track</td>
+              <td>One methodology, reviewed capstones, certification per level.</td></tr>
+          <tr><td>Spec or digitalise a test bay</td><td class="yes">Consulting engagement</td>
+              <td>Vendor-neutral scoping against your product range and target standards.</td></tr>
+          <tr><td>Map leakage flux or local stray loss in a real geometry</td><td class="no">FEM package &mdash; not us</td>
+              <td>Needs a meshed model. See the <a href="software.html">software directory</a>.</td></tr>
+          <tr><td>Predict a winding hot spot from geometry</td><td class="no">Coupled FEM/CFD &mdash; not us</td>
+              <td>Our thermal output is a sizing estimate, not a local hot-spot solve.</td></tr>
+          <tr><td>Prove short-circuit withstand for a type test</td><td class="no">FEM + physical test &mdash; not us</td>
+              <td>Our force and thermal figures are analytical estimates, not certification evidence.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section-head" style="margin-bottom:18px">
+      <h2>What it costs</h2>
+      <p>Platform access is a single annual payment &mdash; no auto-renewal, no per-seat setup.
+         Consulting is scoped and quoted per project.</p>
+    </div>
+    <div class="fitwrap">
+      <table class="fit">
+        <thead><tr><th>Plan</th><th>Price (USD/year)</th><th>Seats</th><th>Best for</th></tr></thead>
+        <tbody>
+          <tr><td>Learner</td><td>$199</td><td>1</td><td>One engineer building their foundation</td></tr>
+          <tr><td>Professional</td><td>$599</td><td>1</td><td>Priority capstone review, early access to new tools</td></tr>
+          <tr><td><strong>Enterprise</strong></td><td><strong>$1,999</strong></td><td>up to 10</td>
+              <td><strong>An engineering department on one shared access link &mdash; the usual starting point for a manufacturer</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="color:var(--muted);font-size:.88rem;margin:-24px 0 40px">
+      Larger seat counts, multi-site rollouts, co-branded certificates and invoicing in AED or USD
+      are handled through <a href="teams.html" style="color:var(--accent);font-weight:600">corporate training</a>.
+      Access is stored in the browser it was purchased from, so a team plan is a shared link rather than
+      individual logins &mdash; if your IT policy requires per-user accounts and SSO, tell us and we'll be
+      straight about whether we're a fit. Full detail on <a href="pricing.html" style="color:var(--accent);font-weight:600">pricing</a>.
+    </p>
+
+    <div class="section-head" style="margin-bottom:18px" id="enquire">
+      <h2>Talk to us</h2>
+      <p>Tell us your product range and what you're trying to solve, and we'll come back with
+         something concrete rather than a brochure. Prefer a live walkthrough? We'll use one of
+         your own designs as the worked example.</p>
+    </div>
+    <div class="formwrap">
+      <form name="manufacturer-enquiry" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" id="mfForm">
+        <input type="hidden" name="form-name" value="manufacturer-enquiry">
+        <p hidden><label>Leave empty: <input name="bot-field"></label></p>
+        <label for="mf-name">Your name</label>
+        <input id="mf-name" name="name" type="text" required autocomplete="name">
+        <label for="mf-company">Company</label>
+        <input id="mf-company" name="company" type="text" required autocomplete="organization">
+        <label for="mf-email">Work email</label>
+        <input id="mf-email" name="email" type="email" required autocomplete="email">
+        <label for="mf-range">Product range (MVA and voltage class)</label>
+        <input id="mf-range" name="range" type="text" placeholder="e.g. up to 100 MVA, 132 kV">
+        <label for="mf-interest">What are you looking for?</label>
+        <select id="mf-interest" name="interest">
+          <option>Design tools for our engineers</option>
+          <option>Training for our design / test team</option>
+          <option>Test bay specification or digitalization</option>
+          <option>Specialty test procedure</option>
+          <option>A live walkthrough before deciding</option>
+          <option>Not sure yet — advice welcome</option>
+        </select>
+        <label for="mf-msg">Anything else we should know</label>
+        <textarea id="mf-msg" name="message" placeholder="Target markets and standards, current toolchain, team size, timeline…"></textarea>
+        <button class="btn btn-amber" type="submit" style="width:100%;margin-top:18px">Send enquiry &rarr;</button>
+        <p style="color:var(--muted);font-size:.78rem;text-align:center;margin-top:12px">
+          Goes straight to the engineering team. No newsletter signup, no sales sequence.</p>
+      </form>
+      <div id="mfDone" style="display:none;text-align:center;padding:14px 0">
+        <p style="font-weight:700;color:#1e9e5a;font-size:1.05rem">Thank you — that's with us.</p>
+        <p style="color:var(--muted);font-size:.9rem;margin-top:6px">
+          We reply from hello@transformerpath.com, usually within one working day.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span style="color:var(--amber)">Path</span></a>
+        <p style="margin-top:12px">The global intelligence and networking platform for transformer manufacturers, suppliers, engineers and utilities.</p>
+      </div>
+      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="vendors.html">Vendors</a><a href="learn.html">Learn</a><a href="pricing.html">Pricing</a><a href="testbay.html">Test Bay</a><a href="design.html">Design Duel</a><a href="teams.html">Corporate Training</a><a href="test-lab-consulting.html">Test Lab Consulting</a><a href="for-manufacturers.html">For Manufacturers</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="software.html">Software</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="sponsor.html">Sponsor</a></div>
+      <div><h4>COMPANY</h4><a href="about.html">About Us</a><a href="mailto:hello@transformerpath.com">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><h4>CONTACT</h4><a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a><a href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener">LinkedIn ↗</a></div>
+    </div>
+    <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+/* Netlify Forms submit — same pattern as teams.html / test-lab-consulting.html. */
+(function(){
+  var f = document.getElementById('mfForm');
+  if (!f) return;
+  f.addEventListener('submit', function(e){
+    e.preventDefault();
+    var data = new URLSearchParams(new FormData(f)).toString();
+    fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:data })
+      .then(function(){
+        f.style.display = 'none';
+        document.getElementById('mfDone').style.display = 'block';
+      })
+      .catch(function(){
+        alert('Sorry — that didn\'t send. Please email hello@transformerpath.com directly.');
+      });
+  });
+})();
+</script>
+<script src="analytics.js" defer></script>
+</body>
+</html>
