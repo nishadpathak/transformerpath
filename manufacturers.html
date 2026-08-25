@@ -247,12 +247,21 @@ async function loadTiers() {
       h += items.map(r => `<tr>
         <td>${r.site?'<a href="'+r.site+'" target="_blank" rel="noopener">'+r.name+'</a>':r.name}</td>
         <td>${r.country||r.cc}</td>
-        <td>${r.mva?r.mva.toLocaleString()+' MVA':'—'}</td>
+        <td${r.note?' title="'+r.note.replace(/"/g,'&quot;')+'"':''}>${r.mva?'~'+r.mva.toLocaleString()+' MVA':'—'}${r.note?' <span aria-hidden="true" style="color:var(--muted);cursor:help">&#8505;</span>':''}</td>
         <td>${r.kv?r.kv+' kV':'—'}</td>
         <td>${(r.certs||[]).join(', ')||'—'}</td>
         <td>${(r.regions||[]).join(', ')||'—'}</td>
         <td style="font-size:.78rem;color:var(--muted)">${r.source||'—'}</td></tr>`).join('');
       h += '</tbody></table>';
+    }
+    if (h) {
+      h += '<p style="font-size:.8rem;color:var(--muted);margin-top:10px;line-height:1.6">' +
+           'Capacity figures are <b>indicative</b>, compiled from published market research and ' +
+           'industry directories rather than measured or manufacturer-confirmed; some rest on a ' +
+           '2012 DOE study and will have moved since. Treat them as an ordering of scale, not as ' +
+           'procurement data &mdash; hover a figure for its caveat. Corrections are welcome: ' +
+           '<a href="mailto:hello@transformerpath.com?subject=Manufacturer%20tier%20data" ' +
+           'style="color:var(--accent)">hello@transformerpath.com</a>.</p>';
     }
     root.innerHTML = h || '<p style="color:var(--muted)">Tier data unavailable.</p>';
   } catch (e) {
