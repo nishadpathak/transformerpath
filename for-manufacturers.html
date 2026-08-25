@@ -126,11 +126,20 @@ form textarea { min-height:112px; resize:vertical; }
   <div class="container" style="max-width:1080px">
 
     <div class="honest">
-      <h2>First, the honest part: we are not FEM simulation software</h2>
-      <p>If what you need is coupled electromagnetic&ndash;thermal&ndash;structural simulation of
-         transformer components &mdash; leakage-field mapping, local eddy and stray loss, hot-spot
-         prediction from a meshed geometry &mdash; then you need a general-purpose finite-element
-         package, and we are not it. We would rather tell you that now than after an invoice.</p>
+      <h2>First, the honest part: what we do and don&rsquo;t simulate</h2>
+      <p>If what you need is a general-purpose finite-element package &mdash; arbitrary 3D
+         geometry, coupled electromagnetic&ndash;thermal&ndash;structural physics, local eddy and
+         stray loss in tank and clamping steel, hot-spot prediction from a meshed model &mdash;
+         then that is Ansys or COMSOL territory and we are not it. We would rather tell you that
+         now than after an invoice.</p>
+
+      <p><strong>We do, however, solve one part of it properly.</strong> The calculator carries a
+         2D axisymmetric magnetostatic solve of the leakage field in the core window. It needs no
+         CAD import, because the winding geometry is already parametric &mdash; you get the flux
+         plot, the leakage reactance computed from stored energy rather than from an empirical
+         fringing factor, and the <strong>axial force distribution along the winding</strong>,
+         which is the quantity closed-form methods handle worst and the one that governs winding
+         collapse when ampere-turns are unbalanced by a tap.</p>
       <p>Because the question comes up constantly, we publish a
          <a href="software.html">vendor-neutral directory of the tools that do solve it</a>,
          grouped by the job they do rather than by vendor. It covers the commercial packages
@@ -163,7 +172,8 @@ form textarea { min-height:112px; resize:vertical; }
           <li>Core area, flux density, turns and conductor sizing</li>
           <li>No-load and load losses, impedance, regulation, efficiency</li>
           <li>Thermal and tank sizing, weights and materials</li>
-          <li>Impulse voltage distribution, short-circuit forces and adiabatic thermal withstand &mdash; analytical estimates</li>
+          <li>Impulse voltage distribution, short-circuit forces and adiabatic thermal withstand</li>
+          <li>2D leakage-field solve &mdash; flux plot, reactance from stored energy, axial force per winding section</li>
           <li>Cross-section, efficiency, core-step and vector-group diagrams</li>
         </ul>
         <a class="go" href="calculator.html">See the calculator &rarr;</a>
@@ -231,8 +241,10 @@ form textarea { min-height:112px; resize:vertical; }
               <td>One methodology, reviewed capstones, certification per level.</td></tr>
           <tr><td>Spec or digitalise a test bay</td><td class="yes">Consulting engagement</td>
               <td>Vendor-neutral scoping against your product range and target standards.</td></tr>
-          <tr><td>Map leakage flux or local stray loss in a real geometry</td><td class="no">FEM package &mdash; not us</td>
-              <td>Needs a meshed model. See the <a href="software.html">software directory</a>.</td></tr>
+          <tr><td>Map leakage flux in concentric windings; get axial force per section</td><td class="yes">TransformerPath field solve</td>
+              <td>2D axisymmetric, built from the design you just entered. Runs in about a second.</td></tr>
+          <tr><td>Local stray loss in tank, clamps or flitch plates</td><td class="no">3D FEM &mdash; not us</td>
+              <td>Genuinely 3D and outside an axisymmetric model. See the <a href="software.html">software directory</a>.</td></tr>
           <tr><td>Predict a winding hot spot from geometry</td><td class="no">Coupled FEM/CFD &mdash; not us</td>
               <td>Our thermal output is a sizing estimate, not a local hot-spot solve.</td></tr>
           <tr><td>Prove short-circuit withstand for a type test</td><td class="no">FEM + physical test &mdash; not us</td>
