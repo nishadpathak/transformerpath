@@ -19,6 +19,15 @@
   status = 404
   force = true
 
+# The live "Intel Archive" page is archive.html. Map the pretty-URL "/archive"
+# to it so a nav that uses /archive (no .html) still resolves.
+[[redirects]]
+  from = "/archive"
+  to = "/archive.html"
+  status = 301
+  force = true
+
+# ...but keep the stale archive/ directory (if present) from being served.
 [[redirects]]
   from = "/archive/*"
   to = "/404.html"
@@ -41,9 +50,41 @@
   status = 404
   force = true
 
+# Belt-and-suspenders: if any stale copy of the book RCs / SQL export is left
+# in the published root from an older deploy, never serve it.
+[[redirects]]
+  from = "/Power_Transformer_Design_V2_RC1.pdf"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/The_Transformer_Path_v3.0-RC11.pdf"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# Netlify only honours * as a TRAILING splat, so "/deepseek_sql_*.sql" would
+# never match and the file would stay downloadable. Use the exact path.
+[[redirects]]
+  from = "/deepseek_sql_20260825_ea08ed.sql"
+  to = "/404.html"
+  status = 404
+  force = true
+
 # Solver validation harness — version-controlled, but not site content.
 [[redirects]]
   from = "/tests/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# Serverless function SOURCE must not be published as static files. Netlify
+# builds these into /.netlify/functions/* separately; without this redirect the
+# raw .js source (checkout-verification logic, email recipient, refresh internals)
+# is public at /functions/*.js. Serve 404 instead.
+[[redirects]]
+  from = "/functions/*"
   to = "/404.html"
   status = 404
   force = true
@@ -56,6 +97,18 @@
   to = "/404.html"
   status = 404
   force = true
+
+# Security hardening headers — safe to set globally; chosen so nothing on the
+# JS-heavy site breaks. CSP is intentionally NOT set here (inline scripts +
+# AdSense/Stripe/geolocation callers make it easy to get wrong); add it in a
+# tested way if you want it.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
 
 # Long-lived caching for static assets; HTML stays revalidated so daily intel is never stale.
 [[headers]]
