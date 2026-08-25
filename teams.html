@@ -188,13 +188,12 @@
       <form name="team-enquiry" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" id="teamForm">
         <input type="hidden" name="form-name" value="team-enquiry"><p hidden><label>Leave empty: <input name="bot-field"></label></p>
         <div class="row">
-          <div><label>Name *</label><input type="text" name="name" required></div>
-          <div><label>Company *</label><input type="text" name="company" required></div>
+          <div><label for="fld_name">Name *</label><input id="fld_name" type="text" name="name" required></div>
+          <div><label for="fld_company">Company *</label><input id="fld_company" type="text" name="company" required></div>
         </div>
         <div class="row">
-          <div><label>Work email *</label><input type="email" name="email" required placeholder="you@company.com"></div>
-          <div><label>Team size *</label>
-            <select name="team_size" required>
+          <div><label for="fld_email">Work email *</label><input id="fld_email" type="email" name="email" required placeholder="you@company.com"></div>
+          <div><label for="fld_team_size">Team size *</label><select id="fld_team_size" name="team_size" required>
               <option value="">Select…</option>
               <option>2–10 engineers</option>
               <option>11–50 engineers</option>
@@ -204,16 +203,14 @@
           </div>
         </div>
         <div class="row">
-          <div><label>Region</label>
-            <select name="region">
+          <div><label for="fld_region">Region</label><select id="fld_region" name="region">
               <option value="">Select…</option>
               <option>Middle East / GCC</option><option>India / South Asia</option><option>Europe</option>
               <option>North America</option><option>Latin America</option><option>Africa</option>
               <option>East / SE Asia</option><option>Oceania</option>
             </select>
           </div>
-          <div><label>Organisation type</label>
-            <select name="org_type">
+          <div><label for="fld_org_type">Organisation type</label><select id="fld_org_type" name="org_type">
               <option value="">Select…</option>
               <option>Transformer manufacturer / OEM</option>
               <option>Utility / grid operator</option>
@@ -224,7 +221,7 @@
             </select>
           </div>
         </div>
-        <div style="margin-bottom:16px"><label>What are your training goals?</label><textarea name="message" rows="4" placeholder="e.g. onboard 15 new graduate engineers over 3 months"></textarea></div>
+        <div style="margin-bottom:16px"><label for="fld_message">What are your training goals?</label><textarea id="fld_message" name="message" rows="4" placeholder="e.g. onboard 15 new graduate engineers over 3 months"></textarea></div>
         <button class="btn btn-amber" type="submit" style="width:100%">Talk to sales →</button>
         <p class="sub-note" id="teamStatus" style="margin-top:12px;color:var(--muted);font-size:.9rem">Our sales team will reply within one business day. Your details are used only to prepare your proposal.</p>
       </form>

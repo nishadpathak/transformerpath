@@ -162,13 +162,12 @@
       <form name="test-lab-enquiry" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" id="tlForm">
         <input type="hidden" name="form-name" value="test-lab-enquiry"><p hidden><label>Leave empty: <input name="bot-field"></label></p>
         <div class="row">
-          <div><label>Name *</label><input type="text" name="name" required></div>
-          <div><label>Company *</label><input type="text" name="company" required></div>
+          <div><label for="fld_name">Name *</label><input id="fld_name" type="text" name="name" required></div>
+          <div><label for="fld_company">Company *</label><input id="fld_company" type="text" name="company" required></div>
         </div>
         <div class="row">
-          <div><label>Work email *</label><input type="email" name="email" required placeholder="you@company.com"></div>
-          <div><label>Which service? *</label>
-            <select name="service" required>
+          <div><label for="fld_email">Work email *</label><input id="fld_email" type="email" name="email" required placeholder="you@company.com"></div>
+          <div><label for="fld_service">Which service? *</label><select id="fld_service" name="service" required>
               <option value="">Select…</option>
               <option>Test Bay Design &amp; Specification</option>
               <option>Digitalization Retrofit</option>
@@ -177,7 +176,7 @@
             </select>
           </div>
         </div>
-        <div style="margin-bottom:16px"><label>Tell us about your current setup</label><textarea name="message" rows="4" placeholder="e.g. we have a routine test bay but no reporting software, or: we're planning a new bay for 5-315 MVA units"></textarea></div>
+        <div style="margin-bottom:16px"><label for="fld_message">Tell us about your current setup</label><textarea id="fld_message" name="message" rows="4" placeholder="e.g. we have a routine test bay but no reporting software, or: we're planning a new bay for 5-315 MVA units"></textarea></div>
         <button class="btn btn-amber" type="submit" style="width:100%">Request a discovery call →</button>
       </form>
       <div id="tlThanks" style="display:none;text-align:center;padding:20px 0">
@@ -203,7 +202,8 @@
   </div>
 </footer>
 
-<script>(function(){var f=document.getElementById('tlForm');if(!f)return;f.addEventListener('submit',function(e){e.preventDefault();if(!f.checkValidity()){f.reportValidity();return;}fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(f)).toString()}).then(d).catch(d);function d(){f.style.display='none';document.getElementById('tlThanks').style.display='block';}});})();</script>
+<script>(function(){var f=document.getElementById('tlForm');if(!f)return;f.addEventListener('submit',function(e){e.preventDefault();if(window.TP_NOTIFY)window.TP_NOTIFY(f);if(!f.checkValidity()){f.reportValidity();return;}fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(f)).toString()}).then(d).catch(d);function d(){f.style.display='none';document.getElementById('tlThanks').style.display='block';}});})();</script>
+<script src="form-notify.js" defer></script>
 <script src="analytics.js?v=2" defer></script>
 </body>
 </html>

@@ -1,27 +1,41 @@
-// Netlify scheduled function to refresh data daily
-// Fetches transformer industry news from NewsAPI and updates data/intel.json
+// Netlify scheduled function to refresh transformer-industry news daily.
+// Fetches from EventRegistry and caches a briefing so the frontend changelog
+// can actually populate.
+//
+// Handlers:
+//   GET  /.netlify/functions/refresh-data            -> return cached briefing
+//        (fires a refresh if nothing is cached yet)
+//   POST /.netlify/functions/refresh-data            -> refresh + refresh report
+//   GET  /.netlify/functions/refresh-data?run=1      -> same as POST (admin "run now")
+//
+// Scheduled via netlify.toml: [functions."refresh-data"] schedule = "0 6 * * *"
 
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 
 const EVENTREGISTRY_KEY = process.env.EVENTREGISTRY_KEY || '';
 const EVENTREGISTRY_URL = 'https://eventregistry.org/api/v1/article/getArticles';
 
-// Write briefing to file for frontend to display
-async function writeBriefing(briefing) {
+// Netlify function filesystems are read-only except /tmp — never write into the
+// deployment directory. The frontend fetches the briefing from this function
+// (GET), which reads/writes this cache.
+const BRIEF_FILE = path.join(os.tmpdir(), 'transformerpath-briefing.json');
+
+function readCached() {
+  try { return JSON.parse(fs.readFileSync(BRIEF_FILE, 'utf8')); } catch (e) { return null; }
+}
+
+function writeCache(data) {
   try {
-    const fs = require('fs');
-    const path = require('path');
-    const briefingPath = path.join(process.env.LAMBDA_TASK_ROOT || '.', 'data', 'briefing.json');
-    fs.mkdirSync(path.dirname(briefingPath), { recursive: true });
-    fs.writeFileSync(briefingPath, JSON.stringify({ briefing, timestamp: new Date().toISOString() }, null, 2));
-    return true;
-  } catch (err) {
-    console.warn('Could not write briefing file:', err.message);
-    return false;
+    fs.mkdirSync(path.dirname(BRIEF_FILE), { recursive: true });
+    fs.writeFileSync(BRIEF_FILE, JSON.stringify(data, null, 2));
+  } catch (e) {
+    console.warn('Could not write briefing cache:', e.message);
   }
 }
 
+// Fetch and normalize intel from EventRegistry (region-grouped).
 async function fetchIntel() {
   if (!EVENTREGISTRY_KEY) {
     console.warn('EVENTREGISTRY_KEY not set. Skipping intel fetch.');
@@ -29,7 +43,6 @@ async function fetchIntel() {
   }
 
   try {
-    // EventRegistry query: transformer + power industry + energy (POST with JSON body)
     const payload = {
       query: {
         $query: {
@@ -72,7 +85,6 @@ async function fetchIntel() {
       return null;
     }
 
-    // Group by region (extract from location or title)
     const regions = {
       'Middle East / GCC': [],
       'India / South Asia': [],
@@ -81,13 +93,11 @@ async function fetchIntel() {
       'Global': [],
     };
 
-    // Map articles to regions
     data.articles.slice(0, 30).forEach((article) => {
       const text = (article.title + ' ' + (article.body || '')).toLowerCase();
       const location = article.location?.label || '';
       let region = 'Global';
 
-      // Smart region detection from location + text
       if (location.includes('UAE') || location.includes('Saudi') || location.includes('Gulf') ||
           text.includes('uae') || text.includes('saudi') || text.includes('gulf') || text.includes('middle east')) {
         region = 'Middle East / GCC';
@@ -111,15 +121,13 @@ async function fetchIntel() {
       });
     });
 
-    // Format as intel.json schema
     const intel = Object.entries(regions)
       .filter(([, items]) => items.length > 0)
       .map(([label, items]) => ({
         label,
-        items: items.slice(0, 5), // Max 5 per region
+        items: items.slice(0, 5),
       }));
 
-    // Generate auto briefing summary
     const regionCounts = Object.entries(regions)
       .filter(([, items]) => items.length > 0)
       .map(([region, items]) => `${region} (${items.length})`)
@@ -127,14 +135,11 @@ async function fetchIntel() {
 
     const totalArticles = Object.values(regions).flat().length;
     const timestamp = new Date().toLocaleString('en-GB', {
-      day: 'numeric',
-      month: 'short',
-      year: '2-digit'
+      day: 'numeric', month: 'short', year: '2-digit',
     });
 
     const autoBriefing = `Daily auto-refresh (${timestamp}): EventRegistry fetched ${totalArticles} transformer industry articles across regions (${regionCounts}). Grouped by region and sorted by date. No manual curation — raw feeds only.`;
 
-    // Return both data and briefing
     intel.autoBriefing = autoBriefing;
     return intel;
   } catch (err) {
@@ -143,64 +148,52 @@ async function fetchIntel() {
   }
 }
 
+async function refresh() {
+  const intelData = await fetchIntel();
+  if (!intelData) return null;
+  const briefing = intelData.autoBriefing;
+  delete intelData.autoBriefing;
+  const cache = { briefing, timestamp: new Date().toISOString(), articles: intelData };
+  writeCache(cache);
+  return cache;
+}
+
+function articleCount(cache) {
+  if (!cache || !cache.articles) return 0;
+  return cache.articles.reduce((s, r) => s + (r.items ? r.items.length : 0), 0);
+}
+
 exports.handler = async (event) => {
-  console.log('Starting daily data refresh...');
+  const method = event.httpMethod || 'GET';
+  const isRun = method === 'POST' || (event.queryStringParameters && event.queryStringParameters.run === '1');
 
-  try {
-    const updates = {
-      intel: 'pending',
-    };
-
-    // Fetch latest intel/news
-    const intelData = await fetchIntel();
-    if (intelData) {
-      const briefing = intelData.autoBriefing;
-      delete intelData.autoBriefing; // Remove from data, keep in briefing file
-      updates.intel = `Updated: ${intelData.reduce((sum, r) => sum + r.items.length, 0)} articles`;
-
-      // Write briefing to file for frontend
-      await writeBriefing(briefing);
-
-      // In production, write to data/intel.json and commit to git
-      console.log('New intel data ready:', JSON.stringify(intelData, null, 2));
+  // Manual / scheduled refresh -> background report (admin control panel).
+  if (isRun) {
+    try {
+      const cache = await refresh();
+      return {
+        statusCode: 200,
+        body: JSON.stringify({
+          timestamp: new Date().toISOString(),
+          status: 'success',
+          updated: articleCount(cache),
+          note: 'Set EVENTREGISTRY_KEY in Netlify env vars to enable the fetch.',
+        }),
+      };
+    } catch (err) {
+      return { statusCode: 500, body: JSON.stringify({ error: 'Refresh failed', details: err.message }) };
     }
-
-    const refreshReport = {
-      timestamp: new Date().toISOString(),
-      status: 'success',
-      updates,
-      note: 'EventRegistry key required: set EVENTREGISTRY_KEY in Netlify env vars',
-    };
-
-    console.log('Data refresh complete:', refreshReport);
-
-    return {
-      statusCode: 200,
-      body: JSON.stringify(refreshReport),
-    };
-  } catch (err) {
-    console.error('Data refresh failed:', err);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({
-        error: 'Data refresh failed',
-        details: err.message,
-      }),
-    };
   }
-};
 
-// SETUP INSTRUCTIONS:
-// 1. Get EventRegistry API key: https://eventregistry.org/api → create account → copy key
-// 2. Add to Netlify env: Site settings → Build & deploy → Environment → add EVENTREGISTRY_KEY
-// 3. Deploy this function: netlify deploy --functions
-// 4. Test: Netlify UI → Functions → refresh-data → Invoke
-// 5. Schedule: netlify.toml already has cron: "0 6 * * *" (daily 6am UTC)
-// 6. Result: intel-feed.xml auto-updates daily with fresh transformer industry news (grouped by region)
-//
-// Why EventRegistry over NewsAPI?
-// ✓ Semantic search (understands concepts like "electrical grid")
-// ✓ Transformer-specific queries built-in
-// ✓ Better categorization (Business, Energy, etc.)
-// ✓ Regional detection via location field
-// ✓ Free tier: 20k articles/month (1 request/day = plenty)
+  // GET -> serve the latest briefing to the frontend (changelog).
+  const cached = readCached();
+  if (cached && cached.briefing) {
+    return { statusCode: 200, headers: { 'Cache-Control': 'no-cache' }, body: JSON.stringify(cached) };
+  }
+  const fresh = await refresh();
+  return {
+    statusCode: 200,
+    headers: { 'Cache-Control': 'no-cache' },
+    body: JSON.stringify(fresh || { briefing: '(Briefing loading...) EventRegistry refresh pending.', timestamp: new Date().toISOString() }),
+  };
+};

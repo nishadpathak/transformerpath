@@ -54,7 +54,17 @@ a.plain:hover { text-decoration:underline; }
 .stat .delta.up { color:var(--ok); } .stat .delta.down { color:#c43838; } .stat .delta.flat { color:var(--muted); }
 .stat .note { font-size:11px; color:var(--muted); margin-top:6px; }
 </style>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5646978915498298" crossorigin="anonymous"></script>
+<script src="consent.js" defer></script>
+<meta property="og:title" content="Transformer Market Intelligence — TransformerPath">
+<meta property="og:description" content="Daily transformer industry intelligence: market news by region, power grid projects, tenders, copper and CRGO material rates, new factories, green hydrogen and technology watch.">
+<meta property="og:url" content="https://transformerpath.com/intel.html">
+<meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TransformerPath">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Transformer Market Intelligence — TransformerPath">
+<meta name="twitter:description" content="Daily transformer industry intelligence: market news by region, power grid projects, tenders, copper and CRGO material rates, new factories, green hydrogen and technology watch.">
+<meta name="twitter:image" content="https://transformerpath.com/brand/og-image.png">
 </head>
 <body>
 <header>
@@ -620,6 +630,7 @@ const COMPETITORS = [
 
 /* CHANGELOG — maintained by the daily job: 2-4 bullets, newest run only */
 let CHANGELOG = []; // Auto-populated from EventRegistry briefing.json
+let AUTO_FEED = []; // Region-grouped articles from refresh-data, rendered when present
 
 // Geolocation & Region Detection
 const REGION_MAP = {
@@ -706,11 +717,13 @@ function sortAndFilterCards(cards, region) {
 // Fetch auto-generated briefing on page load
 async function loadBriefing() {
   try {
-    const res = await fetch('data/briefing.json');
+    const res = await fetch('/.netlify/functions/refresh-data');
     if (res.ok) {
       const data = await res.json();
       CHANGELOG = [data.briefing];
       renderChangelog();
+      AUTO_FEED = (data && Array.isArray(data.articles)) ? data.articles : [];
+      if (AUTO_FEED.length) renderNews();
     }
   } catch (err) {
     console.warn('Could not load briefing:', err.message);
@@ -807,6 +820,15 @@ function card(it){
   </div>`;
 }
 function renderNews(){
+  // Auto-refreshed feed takes priority when the backend has content (2×/day).
+  if (AUTO_FEED && AUTO_FEED.length) {
+    let af = "";
+    for (const r of AUTO_FEED) {
+      if (!r || !r.items || !r.items.length) continue;
+      af += `<div class="region-h">${r.label}</div>` + r.items.map(card).join("");
+    }
+    if (af) { document.getElementById("panel-news").innerHTML = af; return; }
+  }
   let h="";
   const regionOrder = USER_REGION === 'Global' ? ["GCC","India","Europe","USA","RoW"] :
                       USER_REGION === 'GCC' ? ["GCC","India","Europe","USA","RoW"] :

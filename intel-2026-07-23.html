@@ -54,7 +54,17 @@ a.plain:hover { text-decoration:underline; }
 .stat .delta.up { color:var(--ok); } .stat .delta.down { color:#c43838; } .stat .delta.flat { color:var(--muted); }
 .stat .note { font-size:11px; color:var(--muted); margin-top:6px; }
 </style>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5646978915498298" crossorigin="anonymous"></script>
+<script src="consent.js" defer></script>
+<meta property="og:title" content="Transformer Industry Briefing — 23 July 2026 | TransformerPath">
+<meta property="og:description" content="Daily transformer industry intelligence: market news by region, power grid projects, tenders, copper and CRGO material rates, new factories, green hydrogen and technology watch.">
+<meta property="og:url" content="https://transformerpath.com/intel-2026-07-23.html">
+<meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TransformerPath">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Transformer Industry Briefing — 23 July 2026 | TransformerPath">
+<meta name="twitter:description" content="Daily transformer industry intelligence: market news by region, power grid projects, tenders, copper and CRGO material rates, new factories, green hydrogen and technology watch.">
+<meta name="twitter:image" content="https://transformerpath.com/brand/og-image.png">
 </head>
 <body>
 <div style="background:#fef3c7;color:#92400e;text-align:center;padding:9px 16px;font-size:.88rem;font-weight:600">📁 Archived briefing (23 July 2026) — <a href="intel.html" style="color:#b45309;text-decoration:underline">read today's intel →</a></div>
@@ -614,7 +624,7 @@ function sortAndFilterCards(cards, region) {
 // Fetch auto-generated briefing on page load
 async function loadBriefing() {
   try {
-    const res = await fetch('data/briefing.json');
+    const res = await fetch('/.netlify/functions/refresh-data');
     if (res.ok) {
       const data = await res.json();
       CHANGELOG = [data.briefing];

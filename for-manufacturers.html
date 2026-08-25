@@ -115,6 +115,10 @@ form textarea { min-height:112px; resize:vertical; }
     <p>Design tools your engineers can use on a live tender, training that brings new
        hires up to one methodology, and vendor-neutral consulting on your test bay —
        plus a straight answer on where you need simulation software instead of us.</p>
+    <div style="margin-top:22px">
+      <a href="#enquire" style="display:inline-block;background:#f5a623;color:#0d1b2e;font-weight:800;padding:13px 28px;border-radius:10px;text-decoration:none">Request a live walkthrough &rarr;</a>
+      <a href="software.html" style="display:inline-block;margin-left:14px;color:var(--accent);font-weight:700">Browse the simulation-software directory &rarr;</a>
+    </div>
   </div>
 </section>
 
@@ -288,6 +292,23 @@ form textarea { min-height:112px; resize:vertical; }
           <option>A live walkthrough before deciding</option>
           <option>Not sure yet — advice welcome</option>
         </select>
+        <label for="mf-seats">Engineering team size</label>
+        <select id="mf-seats" name="seats">
+          <option>Just me</option><option>2–5</option><option>6–10</option><option>11+ (department)</option>
+        </select>
+        <label for="mf-standards">Target standards</label>
+        <select id="mf-standards" name="standards">
+          <option>IEC 60076</option><option>IEEE / ANSI C57</option><option>Both IEC &amp; IEEE</option><option>Not sure yet</option>
+        </select>
+        <label>Which tools are you interested in?</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 14px;font-size:.9rem;margin:2px 0 12px">
+          <label><input type="checkbox" name="tools" value="calculator"> IEC design calculator</label>
+          <label><input type="checkbox" name="tools" value="test-report"> Test-report generator</label>
+          <label><input type="checkbox" name="tools" value="rating-plate"> Rating-plate generator</label>
+          <label><input type="checkbox" name="tools" value="3d-models"> 3D models / masterclass</label>
+          <label><input type="checkbox" name="tools" value="engineer-track"> Design Engineer Track</label>
+          <label><input type="checkbox" name="tools" value="consulting"> Test-lab / design consulting</label>
+        </div>
         <label for="mf-msg">Anything else we should know</label>
         <textarea id="mf-msg" name="message" placeholder="Target markets and standards, current toolchain, team size, timeline…"></textarea>
         <button class="btn btn-amber" type="submit" style="width:100%;margin-top:18px">Send enquiry &rarr;</button>
@@ -326,6 +347,8 @@ form textarea { min-height:112px; resize:vertical; }
   if (!f) return;
   f.addEventListener('submit', function(e){
     e.preventDefault();
+    // Notify the owner by email too (graceful if RESEND_API_KEY isn't set yet).
+    if (window.TP_NOTIFY) window.TP_NOTIFY(f);
     var data = new URLSearchParams(new FormData(f)).toString();
     fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:data })
       .then(function(){
@@ -338,6 +361,7 @@ form textarea { min-height:112px; resize:vertical; }
   });
 })();
 </script>
+<script src="form-notify.js" defer></script>
 <script src="analytics.js?v=2" defer></script>
 </body>
 </html>

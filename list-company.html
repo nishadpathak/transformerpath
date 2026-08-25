@@ -134,12 +134,12 @@ form input[type="checkbox"] { width:auto; min-width:0; padding:0; margin:0; flex
         <input type="hidden" name="form-name" value="list-company">
         <p hidden><label>Leave this empty: <input name="bot-field"></label></p>
         <div class="row">
-          <div><label>Company Name *</label><input type="text" name="company" required placeholder="Your company"></div>
-          <div><label>Country *</label><input type="text" name="country" required placeholder="Country"></div>
+          <div><label for="fld_company">Company Name *</label><input id="fld_company" type="text" name="company" required placeholder="Your company"></div>
+          <div><label for="fld_country">Country *</label><input id="fld_country" type="text" name="country" required placeholder="Country"></div>
         </div>
         <div class="row">
-          <div><label>City</label><input type="text" name="city" placeholder="City / region"></div>
-          <div><label>Website</label><input type="url" name="website" placeholder="https://..."></div>
+          <div><label for="fld_city">City</label><input id="fld_city" type="text" name="city" placeholder="City / region"></div>
+          <div><label for="fld_website">Website</label><input id="fld_website" type="url" name="website" placeholder="https://..."></div>
         </div>
 
         <label style="font-weight:600; font-size:.9rem; color:var(--ink); display:block; margin:6px 0 4px">Product / Service Categories *</label>
@@ -159,16 +159,14 @@ form input[type="checkbox"] { width:auto; min-width:0; padding:0; margin:0; flex
         </div>
 
         <div class="row" style="margin-top:14px">
-          <div><label>This is *</label>
-            <select name="request_type" required>
+          <div><label for="fld_request_type">This is *</label><select id="fld_request_type" name="request_type" required>
               <option value="">Select...</option>
               <option>A new listing</option>
               <option>A claim of an existing listing</option>
               <option>An update to our existing listing</option>
             </select>
           </div>
-          <div><label>Listing tier</label>
-            <select name="tier">
+          <div><label for="fld_tier">Listing tier</label><select id="fld_tier" name="tier">
               <option>Basic (free)</option>
               <option>Verified</option>
               <option>Premium</option>
@@ -176,14 +174,14 @@ form input[type="checkbox"] { width:auto; min-width:0; padding:0; margin:0; flex
           </div>
         </div>
         <div class="row">
-          <div><label>Contact Name *</label><input type="text" name="contact_name" required></div>
-          <div><label>Contact Email *</label><input type="email" name="contact_email" required></div>
+          <div><label for="fld_contact_name">Contact Name *</label><input id="fld_contact_name" type="text" name="contact_name" required></div>
+          <div><label for="fld_contact_email">Contact Email *</label><input id="fld_contact_email" type="email" name="contact_email" required></div>
         </div>
         <div class="row">
-          <div><label>Phone / WhatsApp</label><input type="tel" name="phone" placeholder="+971 ..."></div>
+          <div><label for="fld_phone">Phone / WhatsApp</label><input id="fld_phone" type="tel" name="phone" placeholder="+971 ..."></div>
           <div></div>
         </div>
-        <div style="margin-bottom:14px"><label>Short company description</label><textarea name="description" rows="3" placeholder="What you make / supply / service, key markets, certifications..."></textarea></div>
+        <div style="margin-bottom:14px"><label for="fld_description">Short company description</label><textarea id="fld_description" name="description" rows="3" placeholder="What you make / supply / service, key markets, certifications..."></textarea></div>
         <label style="display:flex; gap:9px; align-items:flex-start; font-size:.84rem; color:var(--muted); font-weight:400; margin-bottom:8px"><input type="checkbox" name="consent" required style="width:auto;margin-top:3px"> I confirm I'm authorised to submit this company and that TransformerPath may contact me about this listing.</label>
         <button class="btn btn-amber" type="submit" style="width:100%">Submit company &rarr;</button>
         <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:12px">We review every submission before it goes live. Verified / Premium upgrades are invoiced separately after approval.</p>

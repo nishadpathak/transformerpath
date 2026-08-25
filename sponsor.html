@@ -114,19 +114,18 @@
       <form name="sponsor-enquiry" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" id="sForm">
         <input type="hidden" name="form-name" value="sponsor-enquiry"><p hidden><label>Leave empty: <input name="bot-field"></label></p>
         <div class="row">
-          <div><label>Name *</label><input type="text" name="name" required></div>
-          <div><label>Company *</label><input type="text" name="company" required></div>
+          <div><label for="fld_name">Name *</label><input id="fld_name" type="text" name="name" required></div>
+          <div><label for="fld_company">Company *</label><input id="fld_company" type="text" name="company" required></div>
         </div>
         <div class="row">
-          <div><label>Email *</label><input type="email" name="email" required></div>
-          <div><label>Interested In *</label>
-            <select name="interest" required>
+          <div><label for="fld_email">Email *</label><input id="fld_email" type="email" name="email" required></div>
+          <div><label for="fld_interest">Interested In *</label><select id="fld_interest" name="interest" required>
               <option value="">Select...</option>
               <option>Daily Brief Sponsorship</option><option>Featured Article</option>
             </select>
           </div>
         </div>
-        <div style="margin-bottom:16px"><label>Message</label><textarea name="message" rows="4" placeholder="Tell us about your goals..."></textarea></div>
+        <div style="margin-bottom:16px"><label for="fld_message">Message</label><textarea id="fld_message" name="message" rows="4" placeholder="Tell us about your goals..."></textarea></div>
         <button class="btn btn-amber" type="submit" style="width:100%">Send Enquiry →</button>
       </form>
       <div id="sThanks" style="display:none;text-align:center;padding:20px 0">

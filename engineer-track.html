@@ -315,60 +315,43 @@
 </script>
 
 <script>
+/* Gate for the paid levels (2-4). Access is granted only after the server
+   verifies a paid Stripe session — never from a ?key= or an unverified
+   ?session_id= (both were forgeable client-side). See /functions/verify-access.js. */
 (function(){
   var PAID_KEY = 'tp-course-access';
-  var CREATOR_KEY = 'tp-creator-unlock-2024'; // Master key for course creator
-  var STRIPE_RETURN = new URLSearchParams(window.location.search).get('session_id');
-  var URL_KEY = new URLSearchParams(window.location.search).get('key');
+  var params = new URLSearchParams(window.location.search);
+  var SESSION = params.get('session_id');
+  var MONTHS = 365*24*60*60*1000;
 
-  function checkAccess(){
-    var now = new Date().getTime();
-    try {
-      var access = JSON.parse(localStorage.getItem(PAID_KEY) || '{}');
-      // Check if access is still valid (expires after 12 months)
-      if(access.expiry && access.expiry > now) return true;
-    } catch(e) {}
-    return false;
+  function readAccess(){ try { return JSON.parse(localStorage.getItem(PAID_KEY)||'null'); } catch(e){return null;} }
+  function checkAccess(){ var a=readAccess(); return !!(a && a.expiry && a.expiry>Date.now()); }
+  function grant(tier){
+    var RANK={learner:1,professional:2,enterprise:3};
+    var now=Date.now(), existing=readAccess(), expiry=now+MONTHS;
+    var t=RANK[tier]?tier:'learner';
+    if(existing && existing.expiry>now){ if((RANK[existing.tier]||1)>(RANK[t]||1)) t=existing.tier; if(existing.expiry>expiry) expiry=existing.expiry; }
+    try { localStorage.setItem(PAID_KEY, JSON.stringify({expiry:expiry, paid_at:(existing&&existing.paid_at)||new Date().toISOString(), tier:t})); } catch(e){}
   }
-
-  function checkCreatorKey(){
-    // Check if URL has the master key
-    if(URL_KEY && URL_KEY === CREATOR_KEY){
-      grantAccess();
-      return true;
-    }
-    return false;
-  }
-
-  function grantAccess(){
-    var expiry = new Date().getTime() + (365 * 24 * 60 * 60 * 1000); // 12 months
-    try {
-      localStorage.setItem(PAID_KEY, JSON.stringify({expiry: expiry, paid_at: new Date().toISOString(), isCreator: true}));
-    } catch(e) {}
-    location.href = location.pathname; // reload without query params
-  }
-
   function lockLevels(){
-    var levels = document.querySelectorAll('[data-paid="true"]');
-    levels.forEach(function(el){ el.classList.add('locked'); });
-    var paywall = document.getElementById('paywall');
-    if(paywall) paywall.style.display = 'block';
+    document.querySelectorAll('[data-paid="true"]').forEach(function(el){ el.classList.add('locked'); });
+    var p=document.getElementById('paywall'); if(p) p.style.display='block';
   }
 
-  // Check for creator key first
-  if(checkCreatorKey()){
+  if(checkAccess()){ return; }
+
+  if(SESSION){
+    fetch('/.netlify/functions/verify-access',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session_id:SESSION})})
+      .then(function(r){return r.json();})
+      .then(function(res){
+        if(res && res.valid){ grant(res.tier||'learner'); location.href=location.pathname; }
+        else{ lockLevels(); }
+      })
+      .catch(function(){ lockLevels(); });
     return;
   }
 
-  // If returning from Stripe, grant access
-  if(STRIPE_RETURN){
-    grantAccess();
-  }
-
-  // Check access on load
-  if(!checkAccess()){
-    lockLevels();
-  }
+  lockLevels();
 })();
 </script>
 

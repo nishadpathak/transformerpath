@@ -21,7 +21,7 @@
 <meta name="theme-color" content="#0d1b2e">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="TransformerPath">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5646978915498298" crossorigin="anonymous"></script>
+<script src="consent.js" defer></script>
 </head>
 <body>
 <header>
@@ -74,14 +74,15 @@
 </header><section class="hero" style="padding:48px 0 34px"><div class="container" style="max-width:840px"><h1 style="font-size:2.1rem">Contact <span>TransformerPath</span></h1><p>We read every message. Tell us what you need.</p></div></section><section class="block"><div class="container legal-body" style="max-width:840px"><p>Whether it is a correction to a listing, a Verified/Pro application, a sponsorship enquiry, or a partnership idea — send it here and we will reply by email.</p>
  <form name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" id="cForm" style="margin-top:18px;max-width:560px">
    <input type="hidden" name="form-name" value="contact"><p hidden><label>Leave empty: <input name="bot-field"></label></p>
-   <div class="row"><div><label>Name *</label><input type="text" name="name" required></div><div><label>Email *</label><input type="email" name="email" required></div></div>
-   <div style="margin:6px 0"><label>Topic</label><select name="topic"><option>General enquiry</option><option>Correct / update a listing</option><option>Verified / Pro application</option><option>Sponsorship / advertising</option><option>Partnership</option><option>Press</option></select></div>
-   <div style="margin-bottom:14px"><label>Message *</label><textarea name="message" rows="5" required></textarea></div>
+   <div class="row"><div><label for="fld_name">Name *</label><input id="fld_name" type="text" name="name" required></div><div><label for="fld_email">Email *</label><input id="fld_email" type="email" name="email" required></div></div>
+   <div style="margin:6px 0"><label for="fld_topic">Topic</label><select id="fld_topic" name="topic"><option>General enquiry</option><option>Correct / update a listing</option><option>Verified / Pro application</option><option>Sponsorship / advertising</option><option>Partnership</option><option>Press</option></select></div>
+   <div style="margin-bottom:14px"><label for="fld_message">Message *</label><textarea id="fld_message" name="message" rows="5" required></textarea></div>
    <button class="btn btn-amber" type="submit" style="width:100%">Send message →</button>
  </form>
  <div id="cThanks" style="display:none;text-align:center;padding:22px"><div style="font-size:2.2rem">✅</div><h2>Thanks — message received</h2><p class="muted">We will reply by email shortly.</p></div>
  <p class="muted" style="margin-top:16px">Prefer email? Reach us at <b>hello@transformerpath.com</b>. We typically reply within 1–2 business days.</p>
- <script>(function(){var f=document.getElementById('cForm');if(!f)return;f.addEventListener('submit',function(e){e.preventDefault();if(!f.checkValidity()){f.reportValidity();return;}fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(f)).toString()}).then(d).catch(d);function d(){f.style.display='none';document.getElementById('cThanks').style.display='block';}});})();</script></div></section><footer>
+ <script>(function(){var f=document.getElementById('cForm');if(!f)return;f.addEventListener('submit',function(e){e.preventDefault();if(window.TP_NOTIFY)window.TP_NOTIFY(f);if(!f.checkValidity()){f.reportValidity();return;}fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(f)).toString()}).then(d).catch(d);function d(){f.style.display='none';document.getElementById('cThanks').style.display='block';}});})();</script>
+<script src="form-notify.js" defer></script></div></section><footer>
   <div class="container">
     <div class="cols">
       <div>

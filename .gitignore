@@ -16,3 +16,9 @@ _docs/
 
 # Stale early-August snapshot of the site — superseded by the top-level pages.
 transformerpath-site/
+
+# Manuscripts, data dumps and anything else that must never be published
+# or committed. Blocked at the Netlify layer too (see netlify.toml).
+_private/
+*.pdf
+*.sql

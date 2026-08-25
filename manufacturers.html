@@ -76,7 +76,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="TransformerPath">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5646978915498298" crossorigin="anonymous"></script>
+<script src="consent.js" defer></script>
+
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "name": "Transformer Manufacturers — Worldwide Census | TransformerPath", "url": "https://transformerpath.com/manufacturers.html", "description": "A worldwide census of transformer manufacturers — power, distribution and dry-type — across 86 countries, with ranked global leaders and verified company profiles."}</script>
 </head>
 <body>
 
@@ -180,6 +182,27 @@
   </div>
 </section>
 
+<!-- Global leaders — tiered leaderboard (from data/manufacturer-tiers.json) -->
+<section class="block">
+  <div class="container" style="max-width:1080px">
+    <style>
+      .tiers h3 { margin:24px 0 8px; color:var(--ink); font-size:1.12rem; }
+      .tiers table { width:100%; border-collapse:collapse; font-size:.86rem; }
+      .tiers th { text-align:left; color:var(--muted); font-weight:800; font-size:.72rem; text-transform:uppercase; letter-spacing:.04em; padding:8px 10px; border-bottom:2px solid var(--border); white-space:nowrap; }
+      .tiers td { padding:8px 10px; border-bottom:1px solid var(--border); vertical-align:top; }
+      .tiers td a { color:var(--accent); font-weight:700; text-decoration:none; }
+      .tiers .tbadge { display:inline-block; font-size:.66rem; font-weight:800; letter-spacing:.04em; padding:2px 8px; border-radius:999px; text-transform:uppercase; }
+      .tiers .t1 { background:#f5a623; color:#0d1b2e; }
+    </style>
+    <div class="section-head" style="margin-bottom:16px">
+      <h2>Global leaders — a tiered view</h2>
+      <p>The strongest transformer manufacturers by tier, with indicative annual capacity and voltage capability. Figures are summary values from cited third-party research; <b>verify capability with the manufacturer before a commercial decision.</b></p>
+    </div>
+    <div class="tiers" id="tiersRoot"><p style="color:var(--muted);padding:12px 0">Loading tier data…</p></div>
+    <p style="color:var(--muted);font-size:.8rem;margin-top:18px">Tier 1 = Global leader &middot; Tier 2 = Major regional &middot; Tier 3 = Specialized / custom. Compiled from Fortune Business Insights, the DOE Large Power Transformer study, industry directories and the Sinovoltaics China factory map; confirm current capability with each manufacturer.</p>
+  </div>
+</section>
+
 <footer>
   <div class="container">
     <div class="cols">
@@ -205,6 +228,38 @@ const TNAME={PT:"Power",DT:"Distribution",DRY:"Dry/Cast"};
 
 const fRegion=document.getElementById('fRegion');
 const search=document.getElementById('search'), fType=document.getElementById('fType');
+
+// ── Global leaders tiered leaderboard ──────────────────────────────────────
+const TIER_LABEL = { 1:'Global leaders', 2:'Major regional', 3:'Specialized / custom' };
+async function loadTiers() {
+  const root = document.getElementById('tiersRoot');
+  if (!root) return;
+  try {
+    const res = await fetch('data/manufacturer-tiers.json');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const rows = await res.json();
+    let h = '';
+    for (const t of [1, 2, 3]) {
+      const items = (rows || []).filter(r => r.tier === t);
+      if (!items.length) continue;
+      h += `<h3><span class="tbadge t${t}">Tier ${t}</span> ${TIER_LABEL[t]}</h3>`;
+      h += '<table><thead><tr><th>Manufacturer</th><th>Country</th><th>Capacity / yr</th><th>Max voltage</th><th>Certifications</th><th>Regions</th><th>Source</th></tr></thead><tbody>';
+      h += items.map(r => `<tr>
+        <td>${r.site?'<a href="'+r.site+'" target="_blank" rel="noopener">'+r.name+'</a>':r.name}</td>
+        <td>${r.country||r.cc}</td>
+        <td>${r.mva?r.mva.toLocaleString()+' MVA':'—'}</td>
+        <td>${r.kv?r.kv+' kV':'—'}</td>
+        <td>${(r.certs||[]).join(', ')||'—'}</td>
+        <td>${(r.regions||[]).join(', ')||'—'}</td>
+        <td style="font-size:.78rem;color:var(--muted)">${r.source||'—'}</td></tr>`).join('');
+      h += '</tbody></table>';
+    }
+    root.innerHTML = h || '<p style="color:var(--muted)">Tier data unavailable.</p>';
+  } catch (e) {
+    root.innerHTML = '<p style="color:var(--muted)">Could not load tier data.</p>';
+  }
+}
+loadTiers();
 
 async function loadData() {
   try {

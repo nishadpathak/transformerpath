@@ -28,7 +28,7 @@
 .legal ul { padding-left:22px; margin-bottom:12px; }
 .legal a { color:var(--accent); font-weight:600; }
 </style>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5646978915498298" crossorigin="anonymous"></script>
+<script src="consent.js" defer></script>
 </head>
 <body>
 
@@ -84,7 +84,7 @@
 <section class="block" style="padding-top:48px">
   <div class="container" style="max-width:860px">
     <div class="section-head" style="margin-bottom:28px">
-      <h2>RFQ Board — Buyers Meet Makers</h2>
+      <h1>RFQ Board — Buyers Meet Makers</h1>
       <p>Post a requirement for transformers, accessories or services. We circulate it to relevant listed manufacturers and suppliers worldwide — free while in beta.</p>
     </div>
 
@@ -105,17 +105,16 @@
         <input type="hidden" name="form-name" value="rfq">
         <p style="display:none"><label>Do not fill: <input name="bot-field"></label></p>
         <div class="row">
-          <div><label>Your Name *</label><input type="text" name="name" required placeholder="Full name"></div>
-          <div><label>Company *</label><input type="text" name="company" required placeholder="Company name"></div>
+          <div><label for="fld_name">Your Name *</label><input id="fld_name" type="text" name="name" required placeholder="Full name"></div>
+          <div><label for="fld_company">Company *</label><input id="fld_company" type="text" name="company" required placeholder="Company name"></div>
         </div>
         <div class="row">
-          <div><label>Email *</label><input type="email" name="email" required placeholder="you@company.com"></div>
-          <div><label>Phone / WhatsApp</label><input type="tel" name="phone" placeholder="+971 …"></div>
+          <div><label for="fld_email">Email *</label><input id="fld_email" type="email" name="email" required placeholder="you@company.com"></div>
+          <div><label for="fld_phone">Phone / WhatsApp</label><input id="fld_phone" type="tel" name="phone" placeholder="+971 …"></div>
         </div>
         <div class="row">
-          <div><label>Country *</label><input type="text" name="country" required placeholder="Delivery country"></div>
-          <div><label>Category *</label>
-            <select name="category" required>
+          <div><label for="fld_country">Country *</label><input id="fld_country" type="text" name="country" required placeholder="Delivery country"></div>
+          <div><label for="fld_category">Category *</label><select id="fld_category" name="category" required>
               <option value="">Select…</option>
               <option>Power Transformer</option><option>Distribution Transformer</option><option>Dry-Type / Cast Resin</option>
               <option>Bushings</option><option>Tap-Changers (OLTC/DETC)</option>
@@ -125,12 +124,11 @@
             </select>
           </div>
         </div>
-        <div style="margin-bottom:16px"><label>Requirement Details *</label>
-          <textarea rows="5" name="details" required placeholder="Specs, quantity, standards (IEC/ANSI), delivery location, timeline…"></textarea>
+        <div style="margin-bottom:16px"><label for="fld_details">Requirement Details *</label><textarea id="fld_details" rows="5" name="details" required placeholder="Specs, quantity, standards (IEC/ANSI), delivery location, timeline…"></textarea>
         </div>
         <div class="row">
-          <div><label>Target Delivery</label><input type="text" name="delivery" placeholder="e.g. Q2 2027"></div>
-          <div><label>Budget (optional)</label><input type="text" name="budget" placeholder="USD / AED / EUR"></div>
+          <div><label for="fld_delivery">Target Delivery</label><input id="fld_delivery" type="text" name="delivery" placeholder="e.g. Q2 2027"></div>
+          <div><label for="fld_budget">Budget (optional)</label><input id="fld_budget" type="text" name="budget" placeholder="USD / AED / EUR"></div>
         </div>
         <button class="btn btn-amber" type="submit" style="width:100%">Submit RFQ →</button>
         <p style="text-align:center; color:var(--muted); font-size:.85rem; margin-top:12px">Reviewed before publication. Your contact details are never shown publicly — responses are forwarded to you.</p>

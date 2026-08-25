@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin — TransformerPath</title>
+<meta name="description" content="TransformerPath admin control panel — data refresh, affiliate click stats and course access tools.">
 <meta name="robots" content="noindex, nofollow">
 <link rel="stylesheet" href="style.css?v=4">
 <link rel="icon" type="image/svg+xml" href="brand/favicon.svg">
@@ -71,8 +72,7 @@ table.aff th, table.aff td { text-align: left; padding: 6px 8px; border-bottom: 
       <h3>💳 Course & Payments</h3>
       <p class="sub">Three plans via Stripe Payment Links — Learner $199/yr, Professional $599/yr, Enterprise $1,999/yr. See <a href="pricing.html">pricing.html</a> for the live CTAs and STRIPE-SETUP-TODO.md for the link IDs.</p>
       <a class="abtn" href="https://dashboard.stripe.com/payments" target="_blank" rel="noopener">Stripe Dashboard ↗</a>
-      <p class="sub" style="margin-top:14px">Creator unlock link (bookmark, don't share):</p>
-      <span class="mono">https://transformerpath.com/engineer-track.html?key=tp-creator-unlock-2024</span>
+      <p class="sub" style="margin-top:14px">Course access is granted only after <code>functions/verify-access.js</code> confirms a paid Stripe session. Set the <b>STRIPE_SECRET_KEY</b> env var and update each Payment Link's after-payment redirect to include <code>session_id={CHECKOUT_SESSION_ID}</code>.</p>
     </div>
 
     <div class="acard">
@@ -150,7 +150,7 @@ async function triggerRefresh() {
   const out = document.getElementById('refresh-out');
   out.textContent = 'Invoking /.netlify/functions/refresh-data …';
   try {
-    const r = await fetch('/.netlify/functions/refresh-data');
+    const r = await fetch('/.netlify/functions/refresh-data?run=1');
     const body = await r.text();
     out.textContent = 'HTTP ' + r.status + '\n' + body.slice(0, 400);
   } catch (e) {

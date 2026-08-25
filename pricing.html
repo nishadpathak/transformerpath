@@ -66,6 +66,8 @@ table.cmp .n { color:var(--border); }
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0d1b2e">
+
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "TransformerPath Yearly Access", "description": "Annual access to the TransformerPath transformer-design masterclass, interactive 3D models, IEC 60076 design calculator, test-report and rating-plate generators and the Design Engineer Track.", "brand": {"@type": "Organization", "name": "TransformerPath"}, "offers": {"@type": "AggregateOffer", "priceCurrency": "USD", "lowPrice": "199", "highPrice": "1999", "offerCount": "3", "offers": [{"@type": "Offer", "name": "Learner", "price": "199", "priceCurrency": "USD", "description": "Individual engineer — 1 seat"}, {"@type": "Offer", "name": "Professional", "price": "599", "priceCurrency": "USD", "description": "Professional tier — 1 seat"}, {"@type": "Offer", "name": "Enterprise", "price": "1999", "priceCurrency": "USD", "description": "Engineering department — up to 10 seats"}]}}</script>
 </head>
 <body>
 
@@ -109,7 +111,7 @@ table.cmp .n { color:var(--border); }
 <section class="hero" style="padding:50px 0 40px">
   <div class="container">
     <h1 style="font-size:2.2rem">Plans &amp; <span>Pricing</span></h1>
-    <p>Twelve months of everything on that plan — the full masterclass, every 3D model, the design calculator, and the Design Engineer Track. No per-chapter paywalls. Learner renews annually and can be cancelled any time; Professional and Enterprise are single payments. All prices in US dollars (USD).</p>
+    <p>Twelve months of everything on that plan — the full masterclass, every 3D model, the design calculator, and the Design Engineer Track. No per-chapter paywalls. All three are single payments for 12 months of access; Learner checkout is temporarily by email while we refresh its payment link. All prices in US dollars (USD).</p>
   </div>
 </section>
 
@@ -148,7 +150,7 @@ table.cmp .n { color:var(--border); }
           <li><span class="ok">✓</span> 1 person, standard review queue</li>
         </ul>
         <a class="cta primary" id="ctaLearner" href="#" target="_blank" rel="noopener">Unlock Learner — $199 →</a>
-        <div class="fine">$199/year, renews annually · cancel any time in Stripe</div>
+        <div class="fine">$199/year · checkout paused — email us to unlock</div>
       </div>
 
       <!-- PROFESSIONAL -->
@@ -211,7 +213,7 @@ table.cmp .n { color:var(--border); }
       <div class="section-head" style="margin-bottom:18px"><h2>Questions</h2></div>
       <details>
         <summary>Is this a subscription?</summary>
-        <p><strong>Learner</strong> is an annual subscription — $199 a year, renewing automatically until you cancel. You can cancel any time from the receipt Stripe emails you, and you keep access to the end of the period you've paid for.</p>
+        <p><strong>Learner</strong> is a single $199 payment for 12 months of access. (Checkout is temporarily by email while we refresh the payment link — email hello@transformerpath.com and we'll send it over.)</p>
         <p><strong>Professional</strong> and <strong>Enterprise</strong> are single payments. They unlock everything on that plan for 12 months with no auto-renewal — if you want to continue afterwards, you purchase again.</p>
       </details>
       <details>
@@ -261,11 +263,20 @@ table.cmp .n { color:var(--border); }
   var TWELVE_MONTHS = 365*24*3600*1000;
 
   // ── Plan checkout links ──────────────────────────────────────────────
-  // All three are LIVE Stripe Payment Links. Each one's "after payment"
-  // redirect must point at pricing.html?unlocked=<tier> so the browser is
-  // granted the right tier on return — otherwise a payer lands back with no
-  // access. The bulk-seat Team/Department products on teams.html are separate
-  // products; never reuse these single-plan links there.
+  // Professional and Enterprise are LIVE Stripe Payment Links. Each "after
+  // payment" redirect must point at
+  //   pricing.html?session_id={CHECKOUT_SESSION_ID}
+  // so course-gate.js can verify the payment server-side (verify-access.js)
+  // and grant the right tier on return. Never add ?unlocked= as the grant
+  // source — it is forgeable.
+  //
+  // NOTE (Learner): the old link that charged $100 was replaced. The link
+  // below was checked live on the Stripe checkout page and renders
+  // "Subscribe to Transformerpath Learner - $199.00 per year", i.e. the
+  // advertised price, billed as an annual subscription. Professional and
+  // Enterprise remain one-off payments; the pricing copy states that
+  // difference per tier.
+  var PRICE = { learner: 199, professional: 599, enterprise: 1999 };
   var LINKS = {
     learner:      'https://buy.stripe.com/4gMbIU2lO5hj1NC5DcfYY03',
     professional: 'https://buy.stripe.com/fZu00c3pScJL1NC3v4fYY01',
@@ -278,7 +289,7 @@ table.cmp .n { color:var(--border); }
     var url = LINKS[tier];
     if (!url || url.indexOf('REPLACE_WITH') === 0) {
       a.href = 'mailto:hello@transformerpath.com?subject=' + encodeURIComponent('TransformerPath ' + tier + ' plan');
-      a.textContent = 'Email us to unlock — $' + (tier==='professional'?'599':'1,999') + ' →';
+      a.textContent = 'Email us to unlock — $' + PRICE[tier] + ' →';
       a.classList.add('soon');
       a.removeAttribute('target');
     } else {
@@ -304,19 +315,21 @@ table.cmp .n { color:var(--border); }
   }
 
   var params = new URLSearchParams(location.search);
-  var unlockedTier = params.get('unlocked');
   var stripeReturn = params.get('session_id');
   var justGranted = null;
-  if (unlockedTier || stripeReturn) {
-    justGranted = grant(unlockedTier || 'learner');
-    params.delete('unlocked'); params.delete('session_id');
-    history.replaceState({}, '', location.pathname + (params.toString() ? '?' + params : ''));
-  }
 
-  var current = readAccess();
-  if (current && current.expiry > Date.now()) {
+  // Access is granted ONLY after the server verifies a paid Stripe session
+  // (functions/verify-access.js). ?unlocked= and a bare ?session_id= are no
+  // longer trusted to grant access — both were forgeable in the browser.
+  function renderBanner() {
+    params.delete('unlocked'); params.delete('session_id');
+    history.replaceState({}, '', location.pathname + (params.toString() ? '?' + params.toString() : ''));
+
+    var current = readAccess();
+    if (!(current && current.expiry > Date.now())) return;
     var label = current.tier === 'enterprise' ? 'Enterprise' : current.tier === 'professional' ? 'Professional' : 'Learner';
     var b = document.getElementById('unlockBanner');
+    if (!b) return;
     if (justGranted) {
       b.innerHTML = '✅ You\'re unlocked — ' + label + ' plan is active on this device. <a href="learn.html" style="color:#fff;text-decoration:underline">Start learning →</a>';
     } else {
@@ -324,6 +337,19 @@ table.cmp .n { color:var(--border); }
     }
     b.style.display = 'block';
   }
+
+  if (stripeReturn) {
+    fetch('/.netlify/functions/verify-access', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ session_id: stripeReturn }) })
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (res && res.valid) { justGranted = grant(res.tier || 'learner'); }
+        renderBanner();
+      })
+      .catch(function () { renderBanner(); });
+    return;
+  }
+
+  renderBanner();
 })();
 </script>
 

@@ -97,7 +97,8 @@
       <h2>Subscribe to Daily Brief</h2>
       <p class="desc">Get daily market intelligence, tenders, grid updates, and equipment news from the global transformer industry. No spam, one email per day.</p>
 
-      <form name="subscribe" method="POST" netlify>
+      <form name="subscribe" method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="subscribe"><p hidden><label>Leave empty: <input name="bot-field"></label></p>
         <div class="form-group">
           <label for="email">Email Address *</label>
           <input type="email" id="email" name="email" required placeholder="you@company.com">
