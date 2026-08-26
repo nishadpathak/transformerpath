@@ -176,6 +176,40 @@ a.plain:hover { text-decoration:underline; }
     </div>
   </div>
 
+  <section class="matidx" id="materials" style="max-width:860px;margin:0 auto 22px">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:8px">
+      <h2 style="font-size:1.15rem;color:var(--ink);margin:0">Transformer Material Index</h2>
+      <span style="font-size:.72rem;color:var(--muted)">input-cost signal · latest reference</span>
+    </div>
+    <div id="matRows" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px"></div>
+    <div id="matImpact" style="margin-top:10px"></div>
+    <p style="font-size:.74rem;color:var(--muted);line-height:1.5;margin:8px 0 0">Copper &amp; aluminium are a latest reference from the LME 3-month official ring settlement (varies by day — verify against LME official before commercial use). CRGO, ester/oil and pressboard have no public daily index, so they are shown as estimate/contact. Cost-impact is an estimate assuming copper ≈ 15–20% of a power transformer's material cost. Source: <a href="https://www.lme.com/en/market-data/lme-reference-prices/lme-official-price" target="_blank" rel="noopener" style="color:var(--accent)">LME official prices</a>.</p>
+  </section>
+  <div class="sowhat" style="max-width:860px;margin:0 auto 20px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:11px 16px">
+    <b style="color:var(--ink);font-size:.9rem">How to read each panel:</b>
+    <span style="color:var(--muted);font-size:.86rem;line-height:1.7">
+      <b style="color:var(--text)">Daily News</b> = the market · <b style="color:var(--text)">Power Grid</b> = transmission/distribution projects moving ·
+      <b style="color:var(--text)">Service Demand</b> = testing/repair &amp; aftermarket · <b style="color:var(--text)">New Factories</b> = the lead-time signal ·
+      <b style="color:var(--text)">Green H₂ &amp; Tech</b> = where next-generation demand sits.
+    </span>
+  </div>
+  <script>
+  (function(){
+    var el=document.getElementById('matRows'), imp=document.getElementById('matImpact');
+    if(!el) return;
+    fetch('data/materials.json').then(function(r){ return r.json().catch(function(){ return {}; }); }).then(function(d){
+      var out=(d.rows||[]).map(function(m){
+        return '<div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 14px">'
+          +'<div style="font-size:.68rem;font-weight:800;letter-spacing:.4px;text-transform:uppercase;color:var(--muted)">'+m.name+'</div>'
+          +'<div style="font-size:1.15rem;font-weight:800;color:var(--ink);margin:2px 0 1px">'+m.value_display+'</div>'
+          +'<div style="font-size:.7rem;color:var(--muted)">'+m.unit+'</div></div>';
+      }).join('');
+      el.innerHTML=out;
+      if(imp && d.cost_impact) imp.innerHTML='<div style="background:rgba(245,166,35,.12);border:1px solid var(--accent);border-radius:8px;padding:9px 13px;font-size:.85rem;color:var(--text)"><b style="color:var(--accent)">Cost impact:</b> '+d.cost_impact.example+'</div>';
+    }).catch(function(){});
+  })();
+  </script>
+
   <div class="tabs">
     <div class="tab active" data-panel="news">Daily News</div>
     <div class="tab" data-panel="grid">Power Grid News</div>

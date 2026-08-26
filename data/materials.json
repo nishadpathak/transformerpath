@@ -1,0 +1,42 @@
+{
+  "$schema": "https://transformerpath.com/material-index.schema.json",
+  "updated": "2026-08-26",
+  "currency": "USD",
+  "note": "TransformerPath Material Index — input-cost signal for transformer sourcing. Copper and aluminium use the LME 3-month official ring settlement as a latest REFERENCE (varies by day; verify against LME official before commercial use). CRGO, ester/oil and pressboard have no public daily index and are shown as unavailable. Value is an estimate; it is NOT a quote.",
+  "rows": [
+    {
+      "id": "copper",
+      "name": "Copper",
+      "unit": "USD / t",
+      "value_display": "≈ 13000",
+      "source": "LME 3-month official ring settlement (latest reference)",
+      "note": "Record territory; drives winding conductor cost."
+    },
+    {
+      "id": "aluminium",
+      "name": "Aluminium",
+      "unit": "USD / t",
+      "value_display": "≈ 3100",
+      "source": "LME 3-month official ring settlement (latest reference)",
+      "note": "Used for HV winding / foil in some distribution designs."
+    },
+    { "id": "crgo", "name": "CRGO (grain-oriented steel)", "unit": "USD / t",
+      "value_display": "Contact / estimate",
+      "source": "No public daily index — negotiated per grade (M-4 / M-OH)",
+      "note": "Core material; grades vary M-3/M-4/M-OH." },
+    { "id": "oil", "name": "Transformer oil / ester", "unit": "USD / t",
+      "value_display": "Contact / estimate",
+      "source": "No public daily index — mineral oil vs. natural/synthetic ester",
+      "note": "Ester premium over mineral oil affects sealed units." },
+    { "id": "pressboard", "name": "Pressboard / insulation", "unit": "USD / kg",
+      "value_display": "Contact / estimate",
+      "source": "No public daily index",
+      "note": "High-density pressboard for lead exits & barrier/end rings." }
+  ],
+  "cost_impact": {
+    "assumption": "Copper is ≈ 15–20% of a representative power transformer's material cost.",
+    "formula": "≈ material cost change = (assumed copper share) × (copper price change %)",
+    "example": "If copper rises +10% and copper is ~18% of material cost → approximately +1.8% on material cost. Varies by design (oil-immersed power vs. cast-resin distribution).",
+    "render": true
+  }
+}
