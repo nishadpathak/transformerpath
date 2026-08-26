@@ -135,6 +135,11 @@
     <div class="ws-sec"><h3>Notes</h3><div id="tpNotes"></div></div>
     <div class="ws-sec"><h3>Following</h3><div id="tpFollows" class="ws-tags"></div></div>
     <div class="ws-sec"><h3>Learning progress</h3><div id="tpProgress"></div></div>
+    <div class="ws-sec"><h3>My Subscription</h3><div id="tpSub"></div></div>
+    <div class="ws-sec"><h3>My Books</h3><div id="tpBooks"></div></div>
+    <div class="ws-sec"><h3>My RFQs</h3><div id="tpRfqs"></div></div>
+    <div class="ws-sec"><h3>My Companies</h3><div id="tpClaims"></div></div>
+    <div class="ws-sec"><h3>Email preferences</h3><div id="tpEmail"></div></div>
   </div>
 </main>
 <footer>
@@ -225,8 +230,13 @@ document.addEventListener('DOMContentLoaded', function(){
     TP.listProgress().then(function(ps){
       document.getElementById('tpProgress').innerHTML = ps.length ? ps.map(function(p){
         return '<div class="ws-row"><span class="ws-note-title">'+esc(p.course)+'</span><span class="ws-sub">'+esc(p.chapter)+(p.status&&p.status!=='completed'?'' : '')+' · '+esc(p.status||'')+'</span></div>';
-      }).join('') : '<p class="ws-empty">No learning progress yet.</p>';
+      }).join('') : '<p class=\"ws-empty\">No learning progress yet.</p>';
     });
+    TP.getEntitlements().then(function(e){ document.getElementById('tpSub').innerHTML = '<div class=\"ws-row\"><span class=\"ws-note-title\">Plan</span><span class=\"ws-sub\">'+esc(e&&e.plan||'free')+'</span></div>' + (e&&e.plan&&e.plan!=='free' ? '' : '<p class=\"ws-empty\">Free plan. Upgrade at <a href=\"pricing.html\">pricing</a>.</p>'); });
+    TP.listBooks().then(function(b){ document.getElementById('tpBooks').innerHTML = (b&&b.length) ? b.map(function(x){ return '<div class=\"ws-row\"><span class=\"ws-note-title\">'+esc(x.book_id)+'</span><span class=\"ws-sub\">'+esc(x.edition||'digital')+'</span></div>'; }).join('') : '<p class=\"ws-empty\">No books activated yet.</p>'; });
+    TP.listRfqs().then(function(r){ document.getElementById('tpRfqs').innerHTML = (r&&r.length) ? r.map(function(x){ return '<div class=\"ws-row\"><span class=\"ws-note-title\">'+esc(x.reference||'RFQ')+'</span><span class=\"ws-sub\">'+esc(x.category||'')+' · '+esc(x.status||'open')+'</span></div>'; }).join('') : '<p class=\"ws-empty\">No RFQs submitted yet.</p>'; });
+    TP.listClaims().then(function(c){ document.getElementById('tpClaims').innerHTML = (c&&c.length) ? c.map(function(x){ return '<div class=\"ws-row\"><span class=\"ws-note-title\">'+esc(x.company)+'</span><span class=\"ws-sub\">'+esc(x.country||'')+' · '+esc(x.status||'claimed')+'</span></div>'; }).join('') : '<p class=\"ws-empty\">No company claims yet — claim your profile from a manufacturer listing.</p>'; });
+    TP.getEmailPrefs().then(function(pr){ document.getElementById('tpEmail').innerHTML = '<div class=\"ws-row\"><span class=\"ws-note-title\">Preferences</span><span class=\"ws-sub\">Daily Brief '+(pr&&pr.daily_brief?'on':'off')+' · Alerts '+(pr&&pr.alerts?'on':'off')+'</span></div>'; });
   }
 
   // action delegation for the "✕" buttons

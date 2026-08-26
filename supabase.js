@@ -208,6 +208,63 @@
       return q.then(function (r) { return r.error ? [] : r.data; });
     };
 
+    /* books */
+    TP.saveBook = function (bookId, edition) {
+      if (!guard()) return Promise.resolve(false);
+      return supabase.from('user_books').upsert({ user_id: uid(), book_id: bookId, edition: edition || 'digital', activated: true },
+        { onConflict: 'user_id,book_id' }).then(function (r) { if (r.error) throw r.error; return true; });
+    };
+    TP.listBooks = function () {
+      if (!guard()) return emptyArray();
+      return supabase.from('user_books').select('*').eq('user_id', uid()).order('activated_at', { ascending: false })
+        .then(function (r) { return r.error ? [] : r.data; });
+    };
+
+    /* RFQs */
+    TP.saveRfq = function (o) {
+      if (!guard()) return Promise.resolve(false);
+      return supabase.from('user_rfqs').insert({
+        user_id: uid(), reference: o.reference || '', category: o.category || '', quantity: o.quantity || '',
+        rating: o.rating || '', voltage: o.voltage || '', standard: o.standard || '', destination: o.destination || '', status: 'open'
+      }).then(function (r) { if (r.error) throw r.error; return true; });
+    };
+    TP.listRfqs = function () {
+      if (!guard()) return emptyArray();
+      return supabase.from('user_rfqs').select('*').eq('user_id', uid()).order('created_at', { ascending: false })
+        .then(function (r) { return r.error ? [] : r.data; });
+    };
+
+    /* company claim / ownership */
+    TP.claimCompany = function (company, country) {
+      if (!guard()) return Promise.resolve(false);
+      return supabase.from('company_claims').upsert({ user_id: uid(), company: company, country: country || '', status: 'claimed' },
+        { onConflict: 'user_id,company,country' }).then(function (r) { if (r.error) throw r.error; return true; });
+    };
+    TP.listClaims = function () {
+      if (!guard()) return emptyArray();
+      return supabase.from('company_claims').select('*').eq('user_id', uid()).order('created_at', { ascending: false })
+        .then(function (r) { return r.error ? [] : r.data; });
+    };
+
+    /* email preferences */
+    TP.getEmailPrefs = function () {
+      if (!guard()) return Promise.resolve({ daily_brief: true, alerts: true, newsletters: false });
+      return supabase.from('email_prefs').select('*').eq('user_id', uid()).maybeSingle()
+        .then(function (r) { return r.data || { daily_brief: true, alerts: true, newsletters: false }; });
+    };
+    TP.setEmailPrefs = function (prefs) {
+      if (!guard()) return Promise.resolve(false);
+      return supabase.from('email_prefs').upsert({ user_id: uid(), daily_brief: !!prefs.daily_brief, alerts: !!prefs.alerts, newsletters: !!prefs.newsletters },
+        { onConflict: 'user_id' }).then(function (r) { if (r.error) throw r.error; return true; });
+    };
+
+    /* entitlements for the current plan (free / engineer / professional / enterprise) */
+    TP.getEntitlements = function () {
+      if (!guard()) return Promise.resolve({ plan: 'free', features: [] });
+      return supabase.from('profiles').select('plan').eq('id', uid()).maybeSingle()
+        .then(function (r) { return { plan: (r.data && r.data.plan) || 'free' }; });
+    };
+
     /* inject an "Account" link into the main + tool navs so the workspace page
      * is reachable without editing every header. Idempotent. */
     function injectNav() {
