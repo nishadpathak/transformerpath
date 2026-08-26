@@ -154,7 +154,7 @@
 </div>
     <p style="text-align:center;color:var(--muted);font-size:.8rem;margin:-12px 0 24px" id="lvLine">
 <!--SSR:grids-lv-->
-Data last verified 2026-07-07 · synced daily from the TransformerPath grid census
+Data last verified 2026-07-07 · maintained encyclopedia-style from the TransformerPath grid census
 <!--/SSR:grids-lv-->
 </p>
 
@@ -2237,7 +2237,7 @@ document.getElementById('csvProjects').addEventListener('click',()=>{
     .concat(GREEN_H2.map(p=>['Green hydrogen'].concat(p)))
     .concat(GRID_CAPEX.map(p=>['Grid CAPEX'].concat(p))));
 });
-const lvL=document.getElementById('lvLine'); if(lvL) lvL.textContent='Data last verified '+LAST_VERIFIED+' · synced daily from the TransformerPath grid census';
+const lvL=document.getElementById('lvLine'); if(lvL) lvL.textContent='Data last verified '+LAST_VERIFIED+' · maintained encyclopedia-style from the TransformerPath grid census';
 
 // ── Interactive world map ──
 (function(){

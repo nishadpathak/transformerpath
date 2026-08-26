@@ -374,7 +374,7 @@ function renderGrids(html) {
   html = inject(html, '<div id="board">', 'grids-board', board);
   html = inject(html, '<div class="stat-row" id="statRow">', 'grids-stats', stats);
   html = inject(html, 'id="lvLine">', 'grids-lv',
-    `Data last verified ${LAST_VERIFIED} · synced daily from the TransformerPath grid census`);
+    `Data last verified ${LAST_VERIFIED} · maintained encyclopedia-style from the TransformerPath grid census`);
   return { page: html, records: DATA.length };
 }
 
