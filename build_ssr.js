@@ -126,7 +126,9 @@ function renderEvents(html) {
   let list = EVENTS.filter((ev) => new Date(ev.e) >= now);
   list.sort((a, b) => a.s.localeCompare(b.s));
 
-  const relDays = (d) => Math.ceil((new Date(d) - now) / 86400000);
+  const PLATFORM_TZ_MS = 4*60*60*1000; // GST/Asia-Dubai
+  const todayUTC = (function(){ var g=new Date(Date.now()+PLATFORM_TZ_MS); return Date.UTC(g.getUTCFullYear(),g.getUTCMonth(),g.getUTCDate()); })();
+  const relDays = (d) => Math.ceil((Date.parse(d+'T00:00:00Z') - todayUTC) / 86400000);
   const badgeHTML = (ev) => {
     if (/unconfirmed|date est\.|⚠/i.test(ev.d)) return '<span class="badge-unc">Date est.</span>';
     if (/tbc|tbd/i.test(ev.v)) return '<span class="badge-unc">Venue TBC</span>';
@@ -134,7 +136,7 @@ function renderEvents(html) {
   };
   const relLabel = (ev) => {
     const d = relDays(ev.s);
-    if (d <= 0) return new Date(ev.e) >= now ? '<span class="rel-today">Live now</span>' : '';
+    if (d <= 0) return Date.parse(ev.e+'T00:00:00Z') >= todayUTC ? '<span class="rel-today">Live now</span>' : '';
     if (d === 1) return '<span class="rel-soon">In 1 day</span>';
     if (d <= 31) return `<span class="rel-soon">In ${d} days</span>`;
     return '';
