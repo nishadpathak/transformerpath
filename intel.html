@@ -151,6 +151,31 @@ a.plain:hover { text-decoration:underline; }
     </div>
   </div>
 
+  <div class="std" style="max-width:860px;margin:0 auto 22px">
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 16px;margin-bottom:10px">
+      <b style="color:var(--ink)">A press operation, not a marketing feed.</b>
+      <span style="color:var(--muted);font-size:.9rem">The daily briefing is free and open — built for the desks that buy, build and rate transformers. Every item is sourced; corrections are published, not buried.</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:11px 14px">
+        <div style="font-size:.66rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--accent)">Sourced</div>
+        <div style="font-size:.84rem;color:var(--text);line-height:1.45;margin-top:3px">Traced to a primary filing, release or named counterparty — never a re-blog.</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:11px 14px">
+        <div style="font-size:.66rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--accent)">Verified</div>
+        <div style="font-size:.84rem;color:var(--text);line-height:1.45;margin-top:3px">Supplier moves checked against a recent type-test or announcement record.</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:11px 14px">
+        <div style="font-size:.66rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--accent)">Materials</div>
+        <div style="font-size:.84rem;color:var(--text);line-height:1.45;margin-top:3px">LME copper &amp; aluminium cross-checked against the official ring settlement.</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:11px 14px">
+        <div style="font-size:.66rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--accent)">Corrections</div>
+        <div style="font-size:.84rem;color:var(--text);line-height:1.45;margin-top:3px">Issued as a stamped foot-of-page note — we correct openly, not silently.</div>
+      </div>
+    </div>
+  </div>
+
   <div class="tabs">
     <div class="tab active" data-panel="news">Daily News</div>
     <div class="tab" data-panel="grid">Power Grid News</div>
@@ -206,7 +231,7 @@ a.plain:hover { text-decoration:underline; }
   <div class="panel" id="panel-h2"></div>
   <div class="panel" id="panel-tech"></div>
 
-  <div class="footer" id="intelFooter">Updated twice daily at 06:00 and 18:00 UTC. Each item links to its original source.</div>
+  <div class="footer" id="intelFooter">Two editions per workday at 06:00 and 18:00 UTC. Each item links to its original source.</div>
 </div>
 
 <script>
@@ -742,7 +767,7 @@ async function loadBriefing() {
       const foot = document.getElementById('intelFooter');
       if (foot && data && data.timestamp) {
         const d = new Date(data.timestamp);
-        foot.innerHTML = 'Updated twice daily at 06:00 and 18:00 UTC &middot; <b>Last updated</b> ' +
+        foot.innerHTML = 'Two editions per workday at 06:00 and 18:00 UTC &middot; <b>Last updated</b> ' +
           d.toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'}) + ' ' +
           d.toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'}) + ' UTC. Each item links to its original source.';
       }
