@@ -12,6 +12,6 @@
  * page shows a "sign in unavailable" state.
  * ========================================================================== */
 window.TP_SUPABASE = {
-  url:  "",   // e.g. "https://abcdefghij.supabase.co"
+  url:  "https://rpzpgfstrxeevhkizxsx.supabase.co",
   anon: ""    // the public / publishable anon key
 };

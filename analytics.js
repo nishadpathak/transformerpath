@@ -12,7 +12,7 @@
    tracking works the same either way — and stays silent when neither is set.
    ═════════════════════════════════════════════════════════════════════════ */
 var PLAUSIBLE_DOMAIN = "";
-var GA4_ID = "";
+var GA4_ID = "G-98Q0V62L72";
 
 (function () {
   'use strict';
