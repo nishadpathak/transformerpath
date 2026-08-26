@@ -406,6 +406,7 @@ function renderManufacturers(html) {
     }).join('')).join('');
 
   const makers = DATA.reduce((s, c) => s + c.makers.filter((m) => !/^Served by/i.test(m[0])).length, 0);
+  if (makers < 400) { console.warn('!! manufacturer census unexpectedly small ('+makers+'); check data/manufacturers.json'); }
   const stats = `<div class="s"><b>${makers}</b><small>Manufacturers</small></div>
      <div class="s"><b>${DATA.length}</b><small>Countries</small></div>
      <div class="s"><b>${new Set(DATA.map((c) => c.region)).size}</b><small>Regions</small></div>`;
