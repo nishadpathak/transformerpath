@@ -381,12 +381,73 @@ function renderGrids(html) {
 /* ------------------------------------------------------------------ *
  * Run
  * ------------------------------------------------------------------ */
+/* ------------------------------------------------------------------ *
+ * MANUFACTURERS — the 519-maker census lives in data/manufacturers.json
+ * (86 country groups) and is fetched client-side today, leaving the
+ * #board empty for crawlers. Replicate the default render into the HTML.
+ * ------------------------------------------------------------------ */
+function renderManufacturers(html) {
+  const DATA = JSON.parse(fs.readFileSync('data/manufacturers.json', 'utf8'));
+  const TNAME = { PT: 'Power', DT: 'Distribution', DRY: 'Dry/Cast' };
+  const regions = [...new Set(DATA.map((c) => c.region))];
+  const vbadge = (m) => { if (m[4] === 'P') return '<span class="v-badge pro">★ Pro Verified</span>'; if (m[4] === 'V') return '<span class="v-badge">✓ Verified</span>'; return ''; };
+  const tpills = (types) => { if (!types) return ''; return types.split(',').map((t) => t.trim()).filter(Boolean).map((t) => `<span class="tpill t-${t}">${esc(TNAME[t] || t)}</span>`).join(''); };
+  const groups = {};
+  DATA.forEach((c) => { (groups[c.region] = groups[c.region] || []).push(c); });
+
+  const board = regions.filter((rg) => groups[rg]).map((region) =>
+    `<div class="region-h">${esc(region)}</div>` + groups[region].map((c) => {
+      const real = c.makers.filter((m) => !/^Served by/i.test(m[0])).length;
+      return `<div class="ctry-card"><div class="ctry-head"><span class="flag">${esc(c.flag)}</span><h3>${esc(c.country)}</h3><span class="cnt">${real} maker${real !== 1 ? 's' : ''}</span></div>` +
+        c.makers.map((m) => /^Served by/i.test(m[0])
+          ? `<div class="mk-row"><span class="note">${esc(m[0])}</span></div>`
+          : `<div class="mk-row"><b>${esc(m[0])}${vbadge(m)}${tpills(m[3])}</b><span class="city">${esc(m[1] || '')}${m[5] ? ` · est. ${esc(m[5])}` : ''}</span><a class="prof" href="company.html?c=${encodeURIComponent(m[0])}&y=${encodeURIComponent(c.country)}">Profile →</a>${m[2] ? `<a href="${esc(m[2])}" target="_blank" rel="noopener">Site →</a>` : '<span></span>'}</div>`).join('') +
+        `</div>`;
+    }).join('')).join('');
+
+  const makers = DATA.reduce((s, c) => s + c.makers.filter((m) => !/^Served by/i.test(m[0])).length, 0);
+  const stats = `<div class="s"><b>${makers}</b><small>Manufacturers</small></div>
+     <div class="s"><b>${DATA.length}</b><small>Countries</small></div>
+     <div class="s"><b>${new Set(DATA.map((c) => c.region)).size}</b><small>Regions</small></div>`;
+
+  html = inject(html, '<div id="board">', 'mfg-board', board);
+  html = inject(html, '<p style="color:var(--muted); font-size:.85rem; margin-bottom:14px" id="count">', 'mfg-count',
+    `Showing ${makers} makers in ${DATA.length} countries`);
+  html = inject(html, '<div class="stat-row" id="statRow">', 'mfg-stats', stats);
+
+  // Global-leaders tier leaderboard (data/manufacturer-tiers.json)
+  try {
+    const TIERS = JSON.parse(fs.readFileSync('data/manufacturer-tiers.json', 'utf8'));
+    const TIER_LABEL = { 1: 'Global leaders', 2: 'Major regional', 3: 'Specialized / custom' };
+    let tierHtml = '';
+    for (const t of [1, 2, 3]) {
+      const items = (TIERS || []).filter((r) => r.tier === t);
+      if (!items.length) continue;
+      tierHtml += `<h3><span class="tbadge t${t}">Tier ${t}</span> ${TIER_LABEL[t]}</h3>`;
+      tierHtml += '<table><thead><tr><th>Manufacturer</th><th>Country</th><th>Capacity / yr</th><th>Max voltage</th><th>Certifications</th><th>Regions</th><th>Source</th></tr></thead><tbody>';
+      tierHtml += items.map((r) => `<tr>
+        <td>${r.site ? `<a href="${esc(r.site)}" target="_blank" rel="noopener">${esc(r.name)}</a>` : esc(r.name)}</td>
+        <td>${esc(r.country || r.cc)}</td>
+        <td${r.note ? ` title="${esc(r.note)}"` : ''}>${r.mva ? '~' + r.mva.toLocaleString('en-US') + ' MVA' : '—'}${r.note ? ' <span aria-hidden="true" style="color:var(--muted);cursor:help">&#8505;</span>' : ''}</td>
+        <td>${r.kv ? esc(r.kv) + ' kV' : '—'}</td>
+        <td>${esc((r.certs || []).join(', ') || '—')}</td>
+        <td>${esc((r.regions || []).join(', ') || '—')}</td>
+        <td style="font-size:.78rem;color:var(--muted)">${esc(r.source || '—')}</td></tr>`).join('');
+      tierHtml += '</tbody></table>';
+    }
+    html = inject(html, '<div class="tiers" id="tiersRoot">', 'mfg-tiers', tierHtml);
+  } catch (e) { /* tiers optional */ }
+
+  return { page: html, records: makers };
+}
+
 const jobs = [
   ['events.html', renderEvents, 'events'],
   ['webinars.html', renderWebinars, 'webinars'],
   ['components.html', renderComponents, 'components'],
   ['jobs.html', renderJobs, 'jobs'],
   ['grids.html', renderGrids, 'grids'],
+  ['manufacturers.html', renderManufacturers, 'manufacturers'],
 ];
 
 for (const [file, fn, label] of jobs) {
