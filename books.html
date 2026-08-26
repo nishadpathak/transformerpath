@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Books — The TransformerPath Professional Engineering Series</title>
+<meta name="description" content="The TransformerPath Professional Engineering Series — Volume 1 (The Transformer Path) and Volume 2 (Power Transformer Design). Digital and Premium printed editions with online companions, calculators and 3D models.">
+<link rel="canonical" href="https://transformerpath.com/books.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TransformerPath">
+<meta property="og:title" content="Books — The TransformerPath Professional Engineering Series">
+<meta property="og:description" content="Volume 1 (The Transformer Path) and Volume 2 (Power Transformer Design). Digital and Premium printed editions with online companions.">
+<meta property="og:url" content="https://transformerpath.com/books.html">
+<meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
+<meta name="robots" content="index,follow">
+<link rel="stylesheet" href="style.css?v=5">
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Book","name":"The TransformerPath Professional Engineering Series","author":{"@type":"Person","name":"Nishad Milind Pathak"},"publisher":{"@type":"Organization","name":"TransformerPath"}}</script>
+<style>
+  .bk-wrap { max-width: 980px; margin: 0 auto; padding: 44px 20px 80px; }
+  .bk-wrap h1 { font-size: 2.1rem; color: var(--ink); }
+  .bk-wrap .lead { color: var(--muted); font-size: 1.05rem; margin: 6px 0 30px; }
+  .vol { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  @media (max-width:720px){ .vol{ grid-template-columns:1fr; } }
+  .vol-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 24px; }
+  .vol-card h2 { font-size: 1.25rem; color: var(--ink); margin: 0 0 4px; }
+  .vol-card .tier { font-size: .78rem; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .vol-card p { color: var(--muted); font-size: .92rem; line-height: 1.6; }
+  .editions { margin-top: 14px; }
+  .edition { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: .9rem; }
+  .edition:last-child { border-bottom: 0; }
+  .edition b { color: var(--ink); }
+  .edition .pr { color: var(--accent); font-weight: 700; white-space: nowrap; }
+  .bk-offer { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 100%); color: #fff; border-radius: 14px; padding: 22px; margin-top: 22px; }
+  .bk-offer h3 { margin: 0 0 6px; }
+  .bk-offer p { color: #b8c4d4; font-size: .92rem; }
+  .bk-offer .btn { margin-top: 10px; }
+  .bk-note { font-size: .8rem; color: var(--muted); margin-top: 18px; line-height: 1.5; }
+</style>
+</head>
+<body>
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg width="30" height="30" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span>Path</span></a>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav" onclick="var n=document.querySelector('.nav-links');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))">☰</button>
+    <nav class="nav-links" id="mainNav">
+      <a href="intel.html">Daily Intel</a>
+      <a href="events.html">Events</a>
+      <a href="webinars.html">Webinars</a>
+      <a href="manufacturers.html">Manufacturers</a>
+      <a href="learn.html">Learn</a>
+      <a href="grids.html">Grids</a>
+      <a href="resources.html">Knowledge</a>
+      <a href="blog.html">Blog</a>
+      <a href="sponsor.html">Sponsor</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="testbay.html">Test Bay</a>
+      <a href="search.html" title="Search" aria-label="Search">🔍</a>
+      <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">🌙</button>
+    </nav>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    // Night mode is the default; light is opt-in via the toggle.
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+
+    if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
+    updateThemeIcon();
+
+    themeToggle?.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      updateThemeIcon();
+    });
+
+    function updateThemeIcon() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+    }
+  </script>
+</header>
+
+<main class="bk-wrap">
+  <h1>The TransformerPath Professional Engineering Series</h1>
+  <p class="lead">Two volumes of transformer engineering, written to work with the TransformerPath platform — every chapter links to interactive 3D models, calculators and the Academy.</p>
+  <div class="vol">
+    <div class="vol-card">
+      <div class="tier">Volume 1</div>
+      <h2>The Transformer Path</h2>
+      <p>The complete engineering tour: fundamentals, magnetic circuit, windings, insulation, cooling, losses &amp; impedance, testing, standards, and design to IEC 60076 / IEEE C57 — with the interactive companion models.</p>
+      <div class="editions">
+        <div class="edition"><span><b>Digital Professional</b></span><span class="pr">$49</span></div>
+        <div class="edition"><span><b>Premium printed</b></span><span class="pr">≈$99</span></div>
+      </div>
+    </div>
+    <div class="vol-card">
+      <div class="tier">Volume 2</div>
+      <h2>Power Transformer Design</h2>
+      <p>The working design companion: core &amp; winding sizing, the rating-plate and design calculator workflow, short-circuit &amp; thermal withstand, OLTC, bushings, and a full worked example end-to-end.</p>
+      <div class="editions">
+        <div class="edition"><span><b>Digital Professional</b></span><span class="pr">$49</span></div>
+        <div class="edition"><span><b>Premium printed</b></span><span class="pr">≈$99</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="bk-offer">
+    <h3>V1 + V2 Professional Library</h3>
+    <p>Both volumes, digital — the discounted bundle for a real design office.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+      <div style="font-size:1.5rem;font-weight:800;color:#fff">$79 <span style="font-size:.8rem;color:#9fb0c4">digital pair</span></div>
+      <div style="font-size:1.5rem;font-weight:800;color:#fff">≈$169 <span style="font-size:.8rem;color:#9fb0c4">printed library</span></div>
+      <a class="btn btn-amber" href="mailto:hello@transformerpath.com?subject=Books%20order">Email to order →</a>
+    </div>
+  </div>
+  <p class="bk-note">Each volume includes <b>online companions</b> — figures, calculators, 3D models, extra examples, answers and errata — activated via the TransformerPath account. Printed editions ship on demand; prices are indicative and subject to print/fulfilment cost. Books are currently available on request by email while the storefront and account activation are completed.</p>
+</main>
+<footer>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span style="color:var(--amber)">Path</span></a>
+        <p style="margin-top:12px">The global intelligence and networking platform for transformer manufacturers, suppliers, engineers and utilities.</p>
+      </div>
+      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="vendors.html">Vendors</a><a href="learn.html">Learn</a><a href="teams.html">Corporate Training</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="books.html">Books</a><a href="sponsor.html">Sponsor</a></div>
+      <div><h4>COMPANY</h4><a href="about.html">About Us</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><h4>CONTACT</h4><a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a><a href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener">LinkedIn ↗</a></div>
+    </div>
+    <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
+  </div>
+</footer>
+
+<script src="analytics.js?v=2" defer></script>
+</body>
+</html>
