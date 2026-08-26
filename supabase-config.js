@@ -13,5 +13,5 @@
  * ========================================================================== */
 window.TP_SUPABASE = {
   url:  "https://rpzpgfstrxeevhkizxsx.supabase.co",
-  anon: ""    // the public / publishable anon key
+  anon: "sb_publishable_Hex-P9AY5L7Kz4WOwpDHNw_X_wNSlVe"   // public publishable key
 };
