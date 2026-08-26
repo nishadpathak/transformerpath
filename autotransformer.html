@@ -252,6 +252,56 @@ addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updat
 </script>
 <script src="tp-theme.js?v=1" defer></script>
 <script src="analytics.js?v=2" defer></script>
+<section class="autocalc" id="autocalc" style="max-width:960px;margin:0 auto;padding:30px 20px 50px">
+  <style>
+    .autocalc label{display:block;font-size:.78rem;font-weight:700;color:var(--muted);margin-bottom:4px}
+    .autocalc input{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--text);font-size:.95rem;font-family:inherit}
+    .autocalc .arow{display:flex;justify-content:space-between;gap:14px;border-bottom:1px solid var(--border);padding:8px 0;font-size:.92rem}
+    .autocalc .arow span{color:var(--muted)}
+    .autocalc .arow b{color:var(--ink);text-align:right}
+    @media print{ #topbar,#panel,#canvas,#help,header,footer{display:none!important} }
+  </style>
+  <h2 style="color:var(--ink);font-size:1.5rem;margin:0 0 4px">Autotransformer design check</h2>
+  <p style="color:var(--muted);font-size:.92rem;margin:0 0 16px">First-cut check for a two-winding autotransformer (series + common, no galvanic isolation). Tender / estimation grade — verify with the manufacturer.</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:0 0 16px">
+    <div><label for="avh">HV (kV)</label><input id="avh" type="number" value="400" step="1"></div>
+    <div><label for="avl">LV (kV)</label><input id="avl" type="number" value="220" step="1"></div>
+    <div><label for="as">Rating (MVA)</label><input id="as" type="number" value="400" step="10"></div>
+    <div><label for="az">Assumed %Z</label><input id="az" type="number" value="12" step="0.1"></div>
+  </div>
+  <button class="btn btn-amber" type="button" onclick="autoCalc()">Calculate</button>
+  <button class="btn btn-outline" type="button" onclick="window.print()" style="margin-left:8px">Print / PDF report</button>
+  <div id="autoOut" style="margin-top:16px"></div>
+  <p class="note" style="font-size:.8rem;color:var(--muted);margin-top:14px;line-height:1.5">Method (step-down autotransformer): series voltage = HV−LV, common = LV; series:common turns = (HV−LV):LV. Common-winding current I<sub>c</sub> = I<sub>LV</sub> − I<sub>HV</sub>. Self (transformer) rating = S·(HV−LV)/HV — the autotransformer only processes this fraction of throughput, which is why it is smaller. Short-circuit currents use the assumed %Z; the autotransformer's actual %Z is lower than an equivalent two-winding, and the exact IEC 60076-5 value needs the coupled-winding equivalent circuit — treat the impedance figures as first-cut.</p>
+</section>
+<script>
+function autoCalc(){
+  var Vh=+document.getElementById('avh').value, Vl=+document.getElementById('avl').value,
+      S=+document.getElementById('as').value, z=+document.getElementById('az').value;
+  var out=document.getElementById('autoOut');
+  if(!(Vh>Vl&&Vh>0&&Vl>0&&S>0)){ out.innerHTML='<p style="color:#b91c1c">Enter HV &gt; LV &gt; 0 and a rating.</p>'; return; }
+  var k=Vh/Vl, VS=Vh-Vl, VC=Vl, r=VS/VC;
+  var Ih=S*1000/(Math.sqrt(3)*Vh), Il=S*1000/(Math.sqrt(3)*Vl), Ic=Il-Ih;
+  var St=S*(Vh-Vl)/Vh, econ=(1-Vl/Vh)*100;
+  var IscH=Ih/(z/100), IscL=Il/(z/100);
+  function f(x,d){return (Math.round(x*Math.pow(10,d))/Math.pow(10,d)).toLocaleString('en-US',{maximumFractionDigits:d});}
+  function row(k,v){return '<div class="arow"><span>'+k+'</span><b>'+v+'</b></div>';}
+  out.innerHTML=
+    row('HV / LV voltage', f(Vh,1)+' / '+f(Vl,1)+' kV')+
+    row('Ratio (HV : LV)', k.toFixed(3)+' : 1')+
+    row('Series : common voltage', f(VS,1)+' / '+f(VC,1)+' kV')+
+    row('Series : common turns', r.toFixed(2)+' : 1')+
+    row('HV line current', f(Ih,1)+' A')+
+    row('LV line current', f(Il,1)+' A')+
+    row('Common-winding current', f(Ic,1)+' A (I<sub>LV</sub> &minus; I<sub>HV</sub>)')+
+    row('Throughput rating', f(S,1)+' MVA')+
+    row('Self (transformer) rating', f(St,1)+' MVA = S · (HV−LV)/HV')+
+    row('Material vs two-winding', '≈ '+f(econ,1)+' % smaller')+
+    row('Short-circuit — HV', f(IscH,0)+' A (at '+f(z,1)+'&nbsp;%Z)')+
+    row('Short-circuit — LV', f(IscL,0)+' A');
+}
+document.addEventListener('DOMContentLoaded', autoCalc);
+</script>
 <footer>
   <div class="container">
     <div class="cols">
