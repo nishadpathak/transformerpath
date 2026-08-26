@@ -283,19 +283,41 @@ table.cmp .n { color:var(--border); }
     enterprise:   'https://buy.stripe.com/aFacMY6C4aBD2RG2r0fYY02'
   };
 
+  var TIER_NAME = { learner: 'Engineer', professional: 'Professional', enterprise: 'Enterprise' };
+  function renderBuyCtas(configured){
+    Object.keys(LINKS).forEach(function(tier){
+      var a = document.getElementById('cta' + tier.charAt(0).toUpperCase() + tier.slice(1));
+      if (!a) return;
+      var url = LINKS[tier];
+      var name = TIER_NAME[tier] || tier;
+      var ok = configured && url && url.indexOf('REPLACE_WITH') !== 0;
+      if (ok) {
+        a.href = url;
+        a.textContent = 'Unlock ' + name + ' — $' + PRICE[tier] + ' →';
+        a.classList.remove('soon');
+        a.setAttribute('target', '_blank');
+        a.setAttribute('rel', 'noopener');
+      } else {
+        a.classList.add('soon');
+        a.href = 'mailto:hello@transformerpath.com?subject=' + encodeURIComponent('TransformerPath ' + name + ' plan');
+        a.textContent = 'Unavailable — email us to unlock →';
+        a.removeAttribute('target');
+        a.removeAttribute('rel');
+      }
+    });
+  }
+  // Start non-clickable so a click can never open a payment link before we know
+  // the backend can verify it. Enable only once /.netlify/functions/verify-access
+  // (a GET config probe — never a grant) reports configured:true; otherwise stay
+  // on the "email us" state so nobody is charged into a locked-out account.
   Object.keys(LINKS).forEach(function(tier){
     var a = document.getElementById('cta' + tier.charAt(0).toUpperCase() + tier.slice(1));
-    if (!a) return;
-    var url = LINKS[tier];
-    if (!url || url.indexOf('REPLACE_WITH') === 0) {
-      a.href = 'mailto:hello@transformerpath.com?subject=' + encodeURIComponent('TransformerPath ' + tier + ' plan');
-      a.textContent = 'Email us to unlock — $' + PRICE[tier] + ' →';
-      a.classList.add('soon');
-      a.removeAttribute('target');
-    } else {
-      a.href = url;
-    }
+    if (a) a.classList.add('soon');
   });
+  fetch('/.netlify/functions/verify-access', { method: 'GET' })
+    .then(function(r){ return r.json().catch(function(){ return {}; }); })
+    .then(function(res){ renderBuyCtas(!!(res && res.configured)); })
+    .catch(function(){ renderBuyCtas(false); });
 
   // ── Grant detection (mirrors course-gate.js) ────────────────────────
   function readAccess(){ try { return JSON.parse(localStorage.getItem(KEY) || 'null'); } catch(e){ return null; } }

@@ -27,7 +27,16 @@ function deriveTier(session) {
 }
 
 exports.handler = async (event) => {
-  // Only POST is meaningful; a plain GET must never grant anything.
+  // A plain GET is a CONFIG status probe only — it must never grant access.
+  // The pricing page uses it to disable checkout when the backend can't verify
+  // payments, so a customer is never charged into a locked-out account.
+  if (event.httpMethod === 'GET') {
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ configured: !!SK, reason: SK ? 'ok' : 'STRIPE_SECRET_KEY not set' }),
+    };
+  }
+  // Only POST is meaningful for a grant; any other method never grants.
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: JSON.stringify({ error: 'Method not allowed' }) };
   }
