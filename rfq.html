@@ -101,7 +101,9 @@
 
     <div class="card">
       <h3 style="color:var(--ink);margin-bottom:14px">Post your RFQ</h3>
+      <p style="font-size:.82rem;color:var(--muted);margin:0 0 10px">Your reference: <b id="refDisplay" style="color:var(--accent)">RFQ TP-2026-0000</b> — quote it in any follow-up email.</p>
       <form name="rfq" method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
+        <input type="hidden" name="reference" id="fld_ref" value="">
         <input type="hidden" name="form-name" value="rfq">
         <p style="display:none"><label>Do not fill: <input name="bot-field"></label></p>
         <div class="row">
@@ -123,12 +125,26 @@
             </select>
           </div>
         </div>
+        <div class="row">
+          <div><label for="fld_qty">Quantity</label><input id="fld_qty" type="number" name="quantity" min="1" placeholder="e.g. 3"></div>
+          <div><label for="fld_rating">Rating (MVA / kVA)</label><input id="fld_rating" type="text" name="rating" placeholder="e.g. 100 MVA"></div>
+        </div>
+        <div class="row">
+          <div><label for="fld_voltage">Voltage class (kV)</label><input id="fld_voltage" type="text" name="voltage" placeholder="e.g. 400 / 132 / 33"></div>
+          <div><label for="fld_standard">Applicable standard</label><select id="fld_standard" name="standard">
+              <option value="">Select…</option>
+              <option>IEC 60076</option><option>ANSI / IEEE C57</option><option>Both</option><option>Other / client spec</option>
+            </select></div>
+        </div>
         <div style="margin-bottom:16px"><label for="fld_details">Requirement Details *</label><textarea id="fld_details" rows="5" name="details" required placeholder="Specs, quantity, standards (IEC/ANSI), delivery location, timeline…"></textarea>
         </div>
         <div class="row">
           <div><label for="fld_delivery">Target Delivery</label><input id="fld_delivery" type="text" name="delivery" placeholder="e.g. Q2 2027"></div>
           <div><label for="fld_budget">Budget (optional)</label><input id="fld_budget" type="text" name="budget" placeholder="USD / AED / EUR"></div>
         </div>
+        <div style="margin-bottom:16px"><label for="fld_dest">Required delivery destination</label><input id="fld_dest" type="text" name="destination" placeholder="City / country, e.g. Riyadh, Saudi Arabia"></div>
+        <div style="margin-bottom:16px"><label for="fld_att">Attach a specification (optional)</label><input id="fld_att" type="file" name="attachment" accept=".pdf,.doc,.docx,.xls,.xlsx,.txt,.zip"><p style="font-size:.78rem;color:var(--muted);margin-top:6px">Attachments can be shared by email after submitting with your reference number — the online form captures your details, quantity, rating, voltage and standard here.</p></div>
+        <p style="font-size:.82rem;color:var(--muted);margin:0 0 12px">Buyers submit free. We match your requirement against supplier capability (rating, voltage, categories) and forward responses to you.</p>
         <button class="btn btn-amber" type="submit" style="width:100%">Submit RFQ →</button>
         <p style="text-align:center; color:var(--muted); font-size:.85rem; margin-top:12px">Reviewed before publication. Your contact details are never shown publicly — responses are forwarded to you.</p>
       </form>
@@ -155,5 +171,8 @@
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
 </script>
 <script src="analytics.js?v=2" defer></script>
+<script>/* auto RFQ reference */
+(function(){var r=document.getElementById("fld_ref"),d=document.getElementById("refDisplay");if(!d)return;var y=new Date().getFullYear(),n=1000+Math.floor(Math.random()*9000),ref="RFQ TP-"+y+"-"+n;d.textContent=ref;if(r)r.value=ref;})();
+</script>
 </body>
 </html>
