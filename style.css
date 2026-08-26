@@ -16,6 +16,10 @@
      backgrounds keep using --navy / --amber directly. */
   --ink: #0d1b2e;
   --accent: #d48806;
+
+  /* Canonical type faces – one stack for the whole site */
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Noto Sans Arabic", "Noto Sans SC", "Noto Sans JP", "Noto Sans Devanagari", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
 }
 
 /* Dark mode colors */
@@ -40,9 +44,7 @@
    still resolves to Segoe UI on Windows). The Noto fallbacks give CJK,
    Arabic and Devanagari readers consistent metrics instead of dropping to
    a generic sans mid-sentence. */
-body { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
-       'Noto Sans', 'Noto Sans Arabic', 'Noto Sans SC', 'Noto Sans JP', 'Noto Sans Devanagari',
-       sans-serif; color: var(--text); background: var(--bg); line-height: 1.6; }
+body { font-family: var(--font-sans); color: var(--text); background: var(--bg); line-height: 1.6; }
 a { color: inherit; text-decoration: none; }
 .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
 
@@ -65,6 +67,7 @@ header .container { max-width: 1280px; }
 .btn-amber:hover { background: var(--amber-dark); }
 .btn-outline { border: 2px solid var(--amber); color: var(--amber); background: transparent; }
 .btn-outline:hover { background: var(--amber); color: var(--navy); }
+.btn-sm { padding: 7px 14px; font-size: .82rem; }
 .menu-toggle { display: none; background: none; border: none; color: #fff; font-size: 1.6rem; cursor: pointer; }
 
 /* Hero */
@@ -139,7 +142,10 @@ form input:focus, form select:focus, form textarea:focus { outline: 2px solid va
 /* Footer */
 footer { background: var(--navy); color: #9fb0c4; padding: 48px 0 28px; font-size: .9rem; }
 footer .cols { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 36px; margin-bottom: 36px; }
-footer h4 { color: #fff; font-size: .82rem; letter-spacing: 1px; margin-bottom: 14px; }
+/* Footer column labels are h2, not h4: they sit in the contentinfo landmark
+   after content that ends at h1 or h2, so h4 skipped a level on 56 pages.
+   Styling is unchanged — only the element level moved. */
+footer h2 { color: #fff; font-size: .82rem; letter-spacing: 1px; margin-bottom: 14px; font-weight: 700; }
 footer a { display: block; margin-bottom: 8px; }
 footer a:hover { color: var(--amber); }
 .copyright { border-top: 1px solid rgba(255,255,255,.1); padding-top: 22px; text-align: center; font-size: .82rem; }
@@ -205,4 +211,55 @@ footer a:hover { color: var(--amber); }
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* ── World-class polish ─────────────────────────────────────────────────────
+   Accessibility, affordance and branded micro-detail. All additive; no layout
+   change. Uses the existing design tokens so it adapts to light/dark. */
+
+/* Anchor links land below the sticky header instead of underneath it. */
+html { scroll-padding-top: 82px; }
+
+/* Predictable, high-contrast focus ring for keyboard users on every interactive element
+   (links, buttons, nav). Form fields keep their amber ring below. */
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Branded text selection instead of the browser's default blue. */
+::selection { background: #f5a623; color: #0d1b2e; }
+:root[data-theme="dark"] ::selection { background: #fbbf24; color: #0d1b2e; }
+
+/* Buttons: a soft shadow on hover (no transform, so nothing shifts), a press-down
+   shadow on click, and a consistent active state. */
+.btn:hover, .btn-amber:hover, .btn-outline:hover { box-shadow: 0 5px 16px rgba(13,27,46,.18); }
+.btn:active, .btn-amber:active, .btn-outline:active { box-shadow: 0 1px 5px rgba(13,27,46,.14); }
+
+/* Current page in the top nav: a hairline underline instead of relying on colour alone
+   (also doubles as a WCAG non-colour indicator). */
+.nav-links a[aria-current="page"] { position: relative; }
+.nav-links a[aria-current="page"]::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -3px;
+  height: 2px; border-radius: 2px; background: var(--amber);
+}
+
+/* Keep Chrome's autofill from flooding fields with its default yellow. */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px var(--card) inset;
+  -webkit-text-fill-color: var(--text);
+  caret-color: var(--text);
+  transition: background-color 9999s ease-out;
+}
+
+/* Prose links: a touch of underline offset so descenders don't collide. */
+.legal a, .legal-body a, .lead a, .hero p a { text-underline-offset: 2px; }
+
+/* Comfortable tap targets on small screens. */
+@media (max-width: 520px) {
+  .btn, .btn-amber, .btn-outline { padding: 12px 24px; }
+  .filters button { padding: 10px 18px; font-size: .92rem; }
+  .menu-toggle { padding: 10px 14px; }
 }

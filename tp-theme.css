@@ -97,13 +97,13 @@
    sans, and CJK / Arabic / Cyrillic readers got inconsistent metrics.
    system-ui leads so every platform uses its own well-hinted UI face. */
 :root:root {
-  --tp-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
-             Arial, "Noto Sans", "Noto Sans Arabic", "Noto Sans SC",
-             "Noto Sans JP", "Noto Sans Devanagari", sans-serif;
-  --tp-mono: ui-monospace, SFMono-Regular, "SF Mono", Consolas,
-             "Liberation Mono", Menlo, monospace;
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Noto Sans Arabic", "Noto Sans SC", "Noto Sans JP", "Noto Sans Devanagari", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+  /* legacy aliases for pages that referenced the old names */
+  --tp-sans: var(--font-sans);
+  --tp-mono: var(--font-mono);
 }
-body { font-family: var(--tp-sans); }
+body { font-family: var(--font-sans); line-height: 1.6; }
 
 /* Long technical terms and part numbers shouldn't overflow narrow screens or
    force a horizontal scrollbar in languages that don't break where English
@@ -245,3 +245,6 @@ body { overflow-wrap: break-word; }
 @media (prefers-reduced-motion: reduce) {
   .tp-theme-toggle { transition: none; }
 }
+
+/* Locked-dark (3D viewer) pages force dark; hide the header toggle there */
+html.tp-dark #theme-toggle, :root:root.tp-dark #theme-toggle { display:none; }

@@ -1,0 +1,128 @@
+{
+  "$schema": "https://transformerpath.com/product-matrix.schema.json",
+  "version": "1.0.0",
+  "updated": "2026-08-26",
+  "note": "Single source of truth for TransformerPath products and the free-vs-paid feature matrix. Website pricing pages should derive from this table rather than inventing features page-by-page. Price positions are target/placeholder positions; the Stripe checkout links are filled separately.",
+  "currency": "USD",
+  "always_free": [
+    "Daily Intel (public briefing)",
+    "Basic manufacturer directory (listed, public-source profiles)",
+    "Basic supplier directory",
+    "Events list",
+    "Webinar listings",
+    "Grids (map + tables)",
+    "Industry news",
+    "Basic knowledge articles",
+    "Basic jobs browsing",
+    "RFQ submission (buyer)",
+    "Selected engineering calculators",
+    "Selected book excerpts"
+  ],
+  "consumer": {
+    "free": {
+      "id": "free",
+      "name": "TransformerPath Free",
+      "customer": "Everyone",
+      "purpose": "Discovery / intelligence",
+      "price": 0,
+      "cadence": null,
+      "positioning": "The free network. Protects the Google → TransformerPath → recurring visitor flywheel."
+    },
+    "engineer": {
+      "id": "engineer",
+      "name": "Engineer",
+      "customer": "Individual engineers",
+      "purpose": "Learning + core tools",
+      "price": 199,
+      "cadence": "year",
+      "seats": 1,
+      "positioning": "Formerly 'Learner'. Full Academy, digital books, 3D models, saved designs, the IEC 60076 calculator and the Design Engineer Track."
+    },
+    "professional": {
+      "id": "professional",
+      "name": "Professional",
+      "customer": "Working engineers",
+      "purpose": "Advanced engineering",
+      "price": 599,
+      "cadence": "year",
+      "seats": 1,
+      "positioning": "Everything in Engineer, plus the professional engineering suite: costing workbench, specification builder, bid evaluation, DGA workspace and faster capstone turnaround."
+    },
+    "enterprise": {
+      "id": "enterprise",
+      "name": "Enterprise",
+      "customer": "Companies",
+      "purpose": "Teams / training / tools",
+      "price": 1999,
+      "cadence": "year",
+      "seats": 10,
+      "positioning": "A team of up to 10 on one plan, with team management, corporate training, progress and certificates."
+    }
+  },
+  "b2b": {
+    "intelligence_pro": {
+      "id": "intelligence_pro",
+      "name": "Intelligence Pro",
+      "customer": "Sales / management",
+      "purpose": "Projects / tenders / data",
+      "price": 999,
+      "cadence": "year"
+    },
+    "intelligence_corporate": {
+      "id": "intelligence_corporate",
+      "name": "Intelligence Corporate",
+      "customer": "Companies",
+      "purpose": "Projects / tenders / data (multi-user)",
+      "price": 4999,
+      "cadence": "year"
+    },
+    "intelligence_enterprise": {
+      "id": "intelligence_enterprise",
+      "name": "Intelligence Enterprise",
+      "customer": "Large enterprises",
+      "purpose": "Data depth / API / custom research",
+      "price": 9999,
+      "cadence": "year",
+      "note": "Priced per engagement; 9999+"
+    },
+    "supplier_verified": {
+      "id": "supplier_verified",
+      "name": "Supplier Verified",
+      "customer": "Industry suppliers",
+      "purpose": "Credibility / visibility",
+      "price": 499,
+      "cadence": "year"
+    },
+    "supplier_pro": {
+      "id": "supplier_pro",
+      "name": "Supplier Pro",
+      "customer": "Suppliers",
+      "purpose": "Leads + promotion",
+      "price": 1499,
+      "cadence": "year"
+    },
+    "supplier_premium": {
+      "id": "supplier_premium",
+      "name": "Supplier Premium",
+      "customer": "Major suppliers",
+      "purpose": "Maximum exposure",
+      "price": 4999,
+      "cadence": "year"
+    }
+  },
+  "feature_matrix": {
+    "daily_intel":            { "free": true,  "engineer": true, "professional": true, "enterprise": true },
+    "basic_calculator":       { "free": true,  "engineer": true, "professional": true, "enterprise": true },
+    "full_academy":           { "free": false, "engineer": true, "professional": true, "enterprise": true },
+    "digital_books":          { "free": false, "engineer": true, "professional": true, "enterprise": true },
+    "3d_models":              { "free": "limited", "engineer": true, "professional": true, "enterprise": true },
+    "saved_designs":          { "free": false, "engineer": true, "professional": true, "enterprise": true },
+    "costing_workbench":      { "free": false, "engineer": false, "professional": true, "enterprise": true },
+    "specification_builder":  { "free": false, "engineer": false, "professional": true, "enterprise": true },
+    "bid_evaluation":         { "free": false, "engineer": false, "professional": true, "enterprise": true },
+    "dga_workspace":          { "free": false, "engineer": false, "professional": true, "enterprise": true },
+    "team_management":        { "free": false, "engineer": false, "professional": false, "enterprise": true },
+    "corporate_training":     { "free": false, "engineer": false, "professional": false, "enterprise": true },
+    "certificates":           { "free": false, "engineer": true, "professional": true, "enterprise": true }
+  }
+}

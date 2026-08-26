@@ -21,7 +21,7 @@
 <style>
 :root{--panel:#0e1c2c;--panel2:#13263a;--ink:#e8eef5;--mut:#8fa6bc;--acc:#3da5f4;--acc2:#f5a623;--line:#23415e}
 *{box-sizing:border-box;margin:0;padding:0}html,body{height:100%;overflow:hidden}
-body{font-family:'Segoe UI',system-ui,sans-serif;background:#08121e;color:var(--ink)}
+body{font-family:var(--font-sans);background:#08121e;color:var(--ink)}
 #c3d{position:absolute;inset:0;cursor:grab}#c3d.dragging{cursor:grabbing}
 #topbar{position:absolute;top:0;left:0;right:0;height:52px;background:linear-gradient(180deg,rgba(8,18,30,.95),rgba(8,18,30,.78) 70%,transparent);display:flex;align-items:center;gap:12px;padding:0 18px;z-index:10;pointer-events:none}
 #topbar h1{font-size:1rem;font-weight:600;white-space:nowrap}
@@ -66,10 +66,11 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#08121e;color:var(--
       <a href="grids.html">Grids</a>
       <a href="resources.html">Knowledge</a>
       <a href="blog.html">Blog</a>
-      <a href="for-manufacturers.html">For Manufacturers</a>
+      <a href="sponsor.html">Sponsor</a>
       <a href="pricing.html">Pricing</a>
       <a href="testbay.html">Test Bay</a>
       <a href="search.html" title="Search" aria-label="Search">🔍</a>
+      <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">🌙</button>
     </div>
   </div>
 </div>
@@ -77,7 +78,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#08121e;color:var(--
 /* Self-contained site header for TransformerPath's interactive/tool pages —
    deliberately independent of style.css (this page doesn't load it) so it can
    never interfere with the page's own CSS. Scoped under .tp- prefix. */
-.tp-sitehead{background:#0d1b2e;color:#fff;position:sticky;top:0;z-index:1000;box-shadow:0 2px 8px rgba(0,0,0,.25);font-family:'Segoe UI',system-ui,-apple-system,sans-serif}
+.tp-sitehead{background:#0d1b2e;color:#fff;position:sticky;top:0;z-index:1000;box-shadow:0 2px 8px rgba(0,0,0,.25);font-family:var(--font-sans)}
 .tp-nav{max-width:1100px;margin:0 auto;padding:0 18px;height:56px;display:flex;align-items:center;gap:16px}
 .tp-logo{color:#fff;font-weight:800;text-decoration:none;font-size:1.05rem;letter-spacing:-.3px;display:inline-flex;align-items:center;gap:7px;flex:none}
 .tp-logo span{color:#f5a623}
@@ -329,5 +330,27 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
 </script>
 <script src="analytics.js?v=2" defer></script>
 <script src="tp-theme.js?v=1" defer></script>
+<footer>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span style="color:var(--amber)">Path</span></a>
+        <p style="margin-top:12px">The global intelligence and networking platform for transformer manufacturers, suppliers, engineers and utilities.</p>
+      </div>
+      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="vendors.html">Vendors</a><a href="learn.html">Learn</a><a href="teams.html">Corporate Training</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="sponsor.html">Sponsor</a></div>
+      <div><h4>COMPANY</h4><a href="about.html">About Us</a><a href="mailto:hello@transformerpath.com">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><h4>CONTACT</h4><a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a><a href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener">LinkedIn ↗</a></div>
+    </div>
+    <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
+  </div>
+</footer>
+<script>
+(function(){var b=document.getElementById('theme-toggle');if(!b)return;var html=document.documentElement;
+function upd(){var d=html.getAttribute('data-theme')==='dark';b.textContent=d?'☀️':'🌙';}
+if((localStorage.getItem('theme')||'dark')==='dark')html.setAttribute('data-theme','dark');upd();
+b.addEventListener('click',function(){var d=html.getAttribute('data-theme')==='dark';
+if(d){html.removeAttribute('data-theme');localStorage.setItem('theme','light');}else{html.setAttribute('data-theme','dark');localStorage.setItem('theme','dark');}upd();});
+})();
+</script>
 </body>
 </html>

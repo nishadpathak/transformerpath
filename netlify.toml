@@ -40,6 +40,15 @@
   status = 404
   force = true
 
+# The 26-chapter course is delivered as the interactive masterclass.
+# tutorial.html was a duplicate copy of the same text; send the old URL to the
+# single canonical page (see /masterclass.html).
+[[redirects]]
+  from = "/tutorial.html"
+  to = "/masterclass.html"
+  status = 301
+  force = true
+
 # Manuscripts, exports and raw data drops. publish = "." would otherwise
 # serve these straight off the site root — the two book release candidates
 # are 839 pages of saleable work and the SQL dump is the whole manufacturer
@@ -68,6 +77,30 @@
 # never match and the file would stay downloadable. Use the exact path.
 [[redirects]]
   from = "/deepseek_sql_20260825_ea08ed.sql"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# The certification offering was withdrawn — TransformerPath is not accredited
+# to issue credentials. Both pages moved to _private/; 404 any stale copy
+# left in a previous deploy.
+[[redirects]]
+  from = "/certificate.html"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/verify-certificate.html"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# Database schema. Gitignored, so a git deploy never carries it — but block
+# it at the edge too, since publish = "." would serve /supabase/schema.sql
+# verbatim from any deploy that did include it.
+[[redirects]]
+  from = "/supabase/*"
   to = "/404.html"
   status = 404
   force = true

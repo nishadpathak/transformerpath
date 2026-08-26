@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0d1b2e">
-<meta name="description" content="Live IEC 60076 transformer design calculator — distribution, power and cast-resin modes. First-cut electromagnetic, performance and thermal sizing: core area, turns, conductor sizes and losses.">
+<meta name="description" content="An analytical transformer design calculator using IEC-referenced methods — distribution, power and cast-resin modes. First-cut sizing: core area, turns, conductor sizes, losses, impedance, regulation, thermal and short-circuit figures. Verify outputs against the current standard before use.">
 <style>
   :root {
     /* Palette now comes from tp-theme.css (loaded last in <head>), which maps
@@ -21,7 +21,7 @@
   }
   * { box-sizing: border-box; }
   body { margin:0; background:var(--bg); color:var(--ink);
-         font:14px/1.5 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+         font:1rem/1.6 var(--font-sans); }
   header { background:linear-gradient(135deg,#0d2c4f 0%,#0e5fa8 100%); color:#fff; padding:18px 28px; }
   header h1 { margin:0; font-size:21px; font-weight:650; }
   header p { margin:4px 0 0; opacity:.85; font-size:13px; }
@@ -104,10 +104,11 @@
       <a href="grids.html">Grids</a>
       <a href="resources.html">Knowledge</a>
       <a href="blog.html">Blog</a>
-      <a href="for-manufacturers.html">For Manufacturers</a>
+      <a href="sponsor.html">Sponsor</a>
       <a href="pricing.html">Pricing</a>
       <a href="testbay.html">Test Bay</a>
       <a href="search.html" title="Search" aria-label="Search">🔍</a>
+      <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">🌙</button>
     </div>
   </div>
 </div>
@@ -115,7 +116,7 @@
 /* Self-contained site header for TransformerPath's interactive/tool pages —
    deliberately independent of style.css (this page doesn't load it) so it can
    never interfere with the page's own CSS. Scoped under .tp- prefix. */
-.tp-sitehead{background:#0d1b2e;color:#fff;position:sticky;top:0;z-index:1000;box-shadow:0 2px 8px rgba(0,0,0,.25);font-family:'Segoe UI',system-ui,-apple-system,sans-serif}
+.tp-sitehead{background:#0d1b2e;color:#fff;position:sticky;top:0;z-index:1000;box-shadow:0 2px 8px rgba(0,0,0,.25);font-family:var(--font-sans)}
 .tp-nav{max-width:1100px;margin:0 auto;padding:0 18px;height:56px;display:flex;align-items:center;gap:16px}
 .tp-logo{color:#fff;font-weight:800;text-decoration:none;font-size:1.05rem;letter-spacing:-.3px;display:inline-flex;align-items:center;gap:7px;flex:none}
 .tp-logo span{color:#f5a623}
@@ -135,8 +136,9 @@
 
 <header>
   <h1>Transformer Design &amp; Calculation Workbench</h1>
-  <p id="subt">Distribution (oil) · Power (oil) · Cast Resin (dry) — first-cut electromagnetic, performance &amp; thermal design to IEC 60076</p>
+  <p id="subt">Distribution (oil) · Power (oil) · Cast Resin (dry) — an analytical transformer-design calculator using IEC-referenced methods (first-cut sizing, not a certified compliance tool)</p>
   <p class="trust-line">🔒 Runs entirely in your browser — no server call, no AI model in the loop, nothing you enter is ever sent anywhere.</p>
+  <div class="note" style="margin:10px 0 0;background:#fff8ec;border:1px solid #f0dcb4;color:#6b5a2e"><b>Important.</b> This is an <b>analytical, first-pass design tool using IEC-referenced methods</b>, not a compliance or verification tool. Outputs — core, turns, losses, impedance, thermal and short-circuit figures — must be checked against the current published edition of the invoked standard (e.g. IEC 60076) and the judgement of a qualified transformer design engineer before being relied upon. Where a failure mode is local (hot-spots, stray loss, short-circuit forces) finite-element analysis is required; we point to where that applies throughout.</div>
 </header>
 <div class="wrap">
   <div class="cols">
@@ -357,7 +359,7 @@
         </div>
         <div class="note" style="margin-bottom:12px">t = 2 s is the IEC 60076-5 standard design duration; use your protection's actual clearing time if it's faster (this lowers the temperature rise, since heating scales with t). θᵢ defaults to a typical pre-fault hot winding temperature — use the actual value if you have it (this calculator does not compute a hot-spot temperature itself).</div>
         <div class="table-wrap"><table class="res" id="t_scth"></table></div>
-        <div class="note" style="margin-top:10px"><b>Method:</b> adiabatic (no heat loss during the fault) temperature rise for <b>copper</b> conductors, Δθ ≈ 2·J²·t (J in A/mm² at fault current, t in seconds) — the standard short-form of the IEC 60076-5 thermal withstand check. Current density at fault J = (rated current density) × (SC current multiple), i.e. this design's own conductor sizing carried through to fault conditions. Compared against 250 °C, the commonly cited maximum for normal Kraft-paper-insulated copper windings (check your actual insulation class — thermally upgraded paper permits higher). <b>Adiabatic means no cooling during the fault</b> — correct for the short IEC-standard duration, but this is still a first-cut check: it doesn't account for uneven current distribution, contact/joint hot-spots, or aluminium conductors.</div>
+        <div class="note" style="margin-top:10px"><b>Method:</b> adiabatic (no heat loss during the fault) temperature rise for <b>copper</b> conductors, Δθ ≈ 0.0062·J²·t — i.e. Δθ = J²·ρ·t/(c·γ) (J in A/mm² at fault current, t in seconds; ρ ≈ 0.0211 Ω·mm²/m at the reference temperature, c = 385 J/(kg·K), γ = 8 890 kg/m³) — the standard short-form of the IEC 60076-5 thermal withstand check. Current density at fault J = (rated current density) × (SC current multiple), i.e. this design's own conductor sizing carried through to fault conditions. Compared against 250 °C, the commonly cited maximum for normal Kraft-paper-insulated copper windings (check your actual insulation class — thermally upgraded paper permits higher). <b>Adiabatic means no cooling during the fault</b> — correct for the short IEC-standard duration, but this is still a first-cut check: it doesn't account for uneven current distribution, contact/joint hot-spots, or aluminium conductors.</div>
       </div>
 
       <div class="card">
@@ -862,8 +864,11 @@ function calc(){
   sec("Short-circuit thermal withstand (adiabatic, copper)");
   {
     const t=Math.max(0.2,+$("scDur").value||2), Ti=+$("scTi").value||105, LIMIT=250;
-    const JscLV=r.dlv*r.Isc, JscHV=r.dhv*r.Isc;              // fault current density = rated density x SC multiple
-    const dTLV=2*JscLV*JscLV*t, dTHV=2*JscHV*JscHV*t;        // adiabatic copper rise, deg C (J in A/mm^2, t in s)
+    const JscLV=r.dlv*r.Isc, JscHV=r.dhv*r.Isc;              // fault current density = rated density x SC multiple (A/mm²)
+    // Correct adiabatic copper rise: Δθ = J²·ρ·t/(c·γ). Convert J (A/mm²) to A/m² (×1e6),
+    // ρ (Ω·m) = ρ(Ω·mm²/m)·1e-6, c=385 J/(kg·K), γ=DCU (8890 kg/m³)  => Δθ ≈ 0.0062·J²·t.
+    const CCU=385, rhoSC=0.0211*(235+r.refT)/310, kSC=(1e6*rhoSC)/(CCU*DCU);
+    const dTLV=kSC*JscLV*JscLV*t, dTHV=kSC*JscHV*JscHV*t;    // deg C (J in A/mm², t in s)
     const TfLV=Ti+dTLV, TfHV=Ti+dTHV;
     const CUMELT=1083; // copper melting point, deg C — the adiabatic formula is meaningless past this
     const okLV=TfLV<=LIMIT, okHV=TfHV<=LIMIT;
@@ -1592,7 +1597,7 @@ function drawRatingPlate(r){
   const rows=ratingPlateFields(r);
   const W=720, rowH=25, padTop=86, W2=W/2-24;
   const H=padTop+Math.ceil(rows.length/2)*rowH+26;
-  let g=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;font-family:'Segoe UI',system-ui,sans-serif">`;
+  let g=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;font-family:var(--font-sans)">`;
   // brushed-plate background
   g+=`<rect x="1" y="1" width="${W-2}" height="${H-2}" rx="6" fill="#c9d0d8" stroke="#8a939e" stroke-width="2"/>`;
   g+=`<rect x="7" y="7" width="${W-14}" height="${H-14}" rx="3" fill="none" stroke="#aeb6bf" stroke-width="1"/>`;
@@ -2141,5 +2146,27 @@ function downloadPDF(){
 calc();
 </script>
 <script src="tp-theme.js?v=1" defer></script>
+<footer>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span style="color:var(--amber)">Path</span></a>
+        <p style="margin-top:12px">The global intelligence and networking platform for transformer manufacturers, suppliers, engineers and utilities.</p>
+      </div>
+      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="vendors.html">Vendors</a><a href="learn.html">Learn</a><a href="teams.html">Corporate Training</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="sponsor.html">Sponsor</a></div>
+      <div><h4>COMPANY</h4><a href="about.html">About Us</a><a href="mailto:hello@transformerpath.com">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><h4>CONTACT</h4><a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a><a href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener">LinkedIn ↗</a></div>
+    </div>
+    <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
+  </div>
+</footer>
+<script>
+(function(){var b=document.getElementById('theme-toggle');if(!b)return;var html=document.documentElement;
+function upd(){var d=html.getAttribute('data-theme')==='dark';b.textContent=d?'☀️':'🌙';}
+if((localStorage.getItem('theme')||'dark')==='dark')html.setAttribute('data-theme','dark');upd();
+b.addEventListener('click',function(){var d=html.getAttribute('data-theme')==='dark';
+if(d){html.removeAttribute('data-theme');localStorage.setItem('theme','light');}else{html.setAttribute('data-theme','dark');localStorage.setItem('theme','dark');}upd();});
+})();
+</script>
 </body>
 </html>

@@ -21,13 +21,14 @@
   ],
   "mva": 500000,
   "kv": 1200,
-  "cap": 3000,
+  "cap": 1500,
   "regions": [
    "Global"
   ],
   "tier": 1,
   "source": "Fortune Business Insights",
-  "note": "Reports up to 500,000 MVA production / 1200 kV capability. Indicative summary figure from Fortune Business Insights; verify against current manufacturer data."
+  "note": "Reports up to 500,000 MVA production / 1200 kV capability. Indicative summary figure from Fortune Business Insights; verify against current manufacturer data.",
+  "capNote": "max single 3-phase unit ceiling (1,500 MVA); original figure in source data was higher"
  },
  {
   "name": "Siemens Energy",
@@ -41,8 +42,7 @@
   ],
   "voltage": [
    "MV",
-   "HV",
-   "UHV"
+   "HV"
   ],
   "certs": [
    "IEC",
@@ -71,8 +71,7 @@
   ],
   "voltage": [
    "MV",
-   "HV",
-   "UHV"
+   "HV"
   ],
   "certs": [
    "IEEE",
@@ -140,13 +139,14 @@
   ],
   "mva": 210000,
   "kv": 1050,
-  "cap": 3000,
+  "cap": 1500,
   "regions": [
    "Global"
   ],
   "tier": 1,
   "source": "Fortune Business Insights",
-  "note": "Reports up to 210,000 MVA production / 1050 kV capability. Indicative summary figure from Fortune Business Insights; verify against current manufacturer data."
+  "note": "Reports up to 210,000 MVA production / 1050 kV capability. Indicative summary figure from Fortune Business Insights; verify against current manufacturer data.",
+  "capNote": "max single 3-phase unit ceiling (1,500 MVA); original figure in source data was higher"
  },
  {
   "name": "HD Hyundai Electric",
@@ -183,14 +183,13 @@
   "name": "Toshiba Energy Systems",
   "country": "Japan",
   "cc": "JP",
-  "site": "https://toshiba.com/energy",
+  "site": "https://www.global.toshiba",
   "types": [
    "power",
    "HVDC"
   ],
   "voltage": [
-   "HV",
-   "UHV"
+   "HV"
   ],
   "certs": [
    "IEC",
@@ -211,7 +210,7 @@
   "name": "TBEA Co. Ltd.",
   "country": "China",
   "cc": "CN",
-  "site": "https://tbea.com",
+  "site": "https://en.tbea.com/",
   "types": [
    "power",
    "UHV"
@@ -226,14 +225,15 @@
   ],
   "mva": 162000,
   "kv": 1100,
-  "cap": 2200,
+  "cap": 1500,
   "regions": [
    "Asia",
    "Global"
   ],
   "tier": 1,
   "source": "Fortune Business Insights",
-  "note": "Reports up to 162,000 MVA production / 1100 kV capability. Indicative summary figure from Fortune Business Insights; verify against current manufacturer data."
+  "note": "Reports up to 162,000 MVA production / 1100 kV capability. Indicative summary figure from Fortune Business Insights; verify against current manufacturer data.",
+  "capNote": "max single 3-phase unit ceiling (1,500 MVA); original figure in source data was higher"
  },
  {
   "name": "CG Power",
@@ -323,14 +323,13 @@
   "name": "Smit Transformers",
   "country": "Netherlands",
   "cc": "NL",
-  "site": "https://smit-transformer.com",
+  "site": "https://www.sgb-smit.com",
   "types": [
    "power"
   ],
   "voltage": [
    "MV",
-   "HV",
-   "UHV"
+   "HV"
   ],
   "certs": [
    "IEC"
@@ -377,7 +376,7 @@
   "name": "Wilson Transformer Company",
   "country": "Australia",
   "cc": "AU",
-  "site": "https://wilsontransformers.com",
+  "site": "https://www.wtc.com.au",
   "types": [
    "power",
    "distribution"
@@ -462,8 +461,7 @@
    "distribution"
   ],
   "voltage": [
-   "HV",
-   "UHV"
+   "HV"
   ],
   "certs": [
    "IEC",
@@ -471,27 +469,27 @@
   ],
   "mva": 120000,
   "kv": 765,
-  "cap": 2200,
+  "cap": 1500,
   "regions": [
    "Asia",
    "Americas"
   ],
   "tier": 2,
   "source": "DOE Study",
-  "note": "Reports up to 120,000 MVA production / 765 kV capability. Indicative summary figure from DOE Study; verify against current manufacturer data."
+  "note": "Reports up to 120,000 MVA production / 765 kV capability. Indicative summary figure from DOE Study; verify against current manufacturer data.",
+  "capNote": "max single 3-phase unit ceiling (1,500 MVA); original figure in source data was higher"
  },
  {
   "name": "HICO Technology",
   "country": "South Korea",
   "cc": "KR",
-  "site": "https://hico.co.kr",
+  "site": "https://www.hicoamerica.com/",
   "types": [
    "power",
    "distribution"
   ],
   "voltage": [
-   "HV",
-   "UHV"
+   "HV"
   ],
   "certs": [
    "IEC",
@@ -499,20 +497,21 @@
   ],
   "mva": 75000,
   "kv": 765,
-  "cap": 2200,
+  "cap": 1500,
   "regions": [
    "Korea",
    "Americas"
   ],
   "tier": 2,
   "source": "DOE Study",
-  "note": "Reports up to 75,000 MVA production / 765 kV capability. Indicative summary figure from DOE Study; verify against current manufacturer data."
+  "note": "Reports up to 75,000 MVA production / 765 kV capability. Indicative summary figure from DOE Study; verify against current manufacturer data.",
+  "capNote": "max single 3-phase unit ceiling (1,500 MVA); original figure in source data was higher"
  },
  {
   "name": "China XD Group",
   "country": "China",
   "cc": "CN",
-  "site": "https://xd.com",
+  "site": "https://www.xd.com.cn/",
   "types": [
    "power",
    "UHV"
@@ -526,20 +525,21 @@
   ],
   "mva": 150000,
   "kv": 1100,
-  "cap": 3000,
+  "cap": 1500,
   "regions": [
    "Asia",
    "Global"
   ],
   "tier": 2,
   "source": "DOE Study",
-  "note": "Reports up to 150,000 MVA production / 1100 kV capability. Indicative summary figure from DOE Study; verify against current manufacturer data."
+  "note": "Reports up to 150,000 MVA production / 1100 kV capability. Indicative summary figure from DOE Study; verify against current manufacturer data.",
+  "capNote": "max single 3-phase unit ceiling (1,500 MVA); original figure in source data was higher"
  },
  {
   "name": "JSHP Transformer (Jiangsu)",
   "country": "China",
   "cc": "CN",
-  "site": "https://jshp-transformer.com",
+  "site": "https://www.jshp.com/",
   "types": [
    "power",
    "distribution"
@@ -566,7 +566,7 @@
   "name": "Transformers & Rectifiers (India)",
   "country": "India",
   "cc": "IN",
-  "site": "https://transformersandrectifiers.com",
+  "site": "https://www.transformerindia.com",
   "types": [
    "power",
    "rectifier"
@@ -599,8 +599,7 @@
    "UHV"
   ],
   "voltage": [
-   "HV",
-   "UHV"
+   "HV"
   ],
   "certs": [
    "IEC"
@@ -620,7 +619,7 @@
   "name": "Prolec GE",
   "country": "Mexico",
   "cc": "MX",
-  "site": "https://prolecge.com",
+  "site": "https://www.prolec.energy/",
   "types": [
    "power",
    "distribution"
@@ -705,7 +704,7 @@
   "name": "Virginia Transformer Corp",
   "country": "United States",
   "cc": "US",
-  "site": "https://virginiatransformer.com",
+  "site": "https://www.vatransformer.com/",
   "types": [
    "power",
    "custom",

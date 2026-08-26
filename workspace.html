@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Workspace — TransformerPath</title>
+<meta name="description" content="Sign in to TransformerPath to keep your transformer designs, saved content, notes, follows and learning progress — on any device.">
+<link rel="canonical" href="https://transformerpath.com/workspace.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TransformerPath">
+<meta property="og:title" content="Your Workspace — TransformerPath">
+<meta property="og:description" content="Sign in to TransformerPath to keep your transformer designs, saved content, notes, follows and learning progress.">
+<meta property="og:url" content="https://transformerpath.com/workspace.html">
+<meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="index,follow">
+<link rel="stylesheet" href="style.css?v=5">
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<style>
+  .ws-wrap { max-width: 900px; margin: 0 auto; padding: 40px 20px 80px; }
+  .ws-wrap h1 { font-size: 2rem; color: var(--ink); margin-bottom: 6px; }
+  .ws-lead { color: var(--muted); font-size: 1.05rem; margin-bottom: 30px; }
+  .auth-card { max-width: 460px; margin: 0 auto; background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 28px; }
+  .auth-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+  .auth-tabs button { flex: 1; padding: 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-weight: 700; cursor: pointer; }
+  .auth-tabs button.on { background: var(--navy); color: #fff; border-color: var(--navy); }
+  .auth-card label { display: block; font-size: .82rem; font-weight: 700; color: var(--muted); margin: 14px 0 4px; }
+  .auth-card input { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: .95rem; font-family: inherit; }
+  .auth-card .btn { width: 100%; margin-top: 18px; }
+  .auth-note { font-size: .8rem; color: var(--muted); margin-top: 14px; line-height: 1.5; }
+  #tpMsg { min-height: 20px; margin-top: 14px; font-size: .9rem; }
+  .ws-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 26px; }
+  .ws-head h2 { font-size: 1.3rem; color: var(--ink); margin: 0; }
+  .ws-sec { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; margin-bottom: 18px; }
+  .ws-sec h3 { font-size: 1.05rem; margin: 0 0 12px; color: var(--ink); }
+  .ws-row { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border); }
+  .ws-row:last-child { border-bottom: 0; }
+  .ws-row a { color: var(--ink); font-weight: 600; }
+  .ws-sub { color: var(--muted); font-size: .82rem; }
+  .ws-x { margin-left: auto; background: none; border: 0; color: var(--muted); cursor: pointer; font-size: .9rem; }
+  .ws-empty { color: var(--muted); font-size: .9rem; }
+  .ws-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .ws-tag { background: var(--bg); border: 1px solid var(--border); border-radius: 999px; padding: 4px 12px; font-size: .8rem; color: var(--text); }
+  .ws-note-title { font-weight: 700; color: var(--ink); }
+  .ws-plus { color: var(--bg); }
+</style>
+</head>
+<body>
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg width="30" height="30" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span>Path</span></a>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav" onclick="var n=document.querySelector('.nav-links');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))">☰</button>
+    <nav class="nav-links" id="mainNav">
+      <a href="intel.html">Daily Intel</a>
+      <a href="events.html">Events</a>
+      <a href="webinars.html">Webinars</a>
+      <a href="manufacturers.html">Manufacturers</a>
+      <a href="learn.html">Learn</a>
+      <a href="grids.html">Grids</a>
+      <a href="resources.html">Knowledge</a>
+      <a href="blog.html">Blog</a>
+      <a href="sponsor.html">Sponsor</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="testbay.html">Test Bay</a>
+      <a href="search.html" title="Search" aria-label="Search">🔍</a>
+      <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">🌙</button>
+    </nav>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    // Night mode is the default; light is opt-in via the toggle.
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+
+    if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
+    updateThemeIcon();
+
+    themeToggle?.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      updateThemeIcon();
+    });
+
+    function updateThemeIcon() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+    }
+  </script>
+</header>
+<main class="ws-wrap">
+  <h1>Your workspace</h1>
+  <p class="ws-lead">Sign in to TransformerPath to keep your designs, saved content, notes and follows — on any device.</p>
+
+  <div class="auth-card" id="tpAuth">
+    <div class="auth-tabs">
+      <button id="tabIn" class="on" type="button">Sign in</button>
+      <button id="tabUp" type="button">Create account</button>
+    </div>
+    <form id="signinForm">
+      <label for="siEmail">Email</label>
+      <input id="siEmail" type="email" autocomplete="email" required>
+      <label for="siPass">Password</label>
+      <input id="siPass" type="password" autocomplete="current-password" required>
+      <button class="btn btn-amber" type="submit">Sign in</button>
+    </form>
+    <form id="signupForm" style="display:none">
+      <label for="suName">Name (optional)</label>
+      <input id="suName" type="text" autocomplete="name">
+      <label for="suEmail">Email</label>
+      <input id="suEmail" type="email" autocomplete="email" required>
+      <label for="suPass">Password</label>
+      <input id="suPass" type="password" autocomplete="new-password" minlength="8" required>
+      <button class="btn btn-amber" type="submit">Create account</button>
+      <p class="auth-note">Use 8+ characters. Your password is hashed and stored securely.</p>
+    </form>
+    <div id="tpMsg"></div>
+    <p class="auth-note" id="tpSetup" style="display:none">Accounts are being set up — this workspace will be available soon.</p>
+  </div>
+
+  <div id="tpWorkspace" style="display:none">
+    <div class="ws-head">
+      <h2>Signed in as <span id="tpName">—</span></h2>
+      <button class="btn btn-outline btn-sm" id="tpSignOut" type="button">Sign out</button>
+    </div>
+
+    <div class="ws-sec"><h3>Saved content</h3><div id="tpSaved" class="ws-tags"></div></div>
+    <div class="ws-sec"><h3>Saved designs</h3><div id="tpDesigns"></div></div>
+    <div class="ws-sec"><h3>Notes</h3><div id="tpNotes"></div></div>
+    <div class="ws-sec"><h3>Following</h3><div id="tpFollows" class="ws-tags"></div></div>
+    <div class="ws-sec"><h3>Learning progress</h3><div id="tpProgress"></div></div>
+  </div>
+</main>
+<footer>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span style="color:var(--amber)">Path</span></a>
+        <p style="margin-top:12px">The global intelligence and networking platform for transformer manufacturers, suppliers, engineers and utilities.</p>
+      </div>
+      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="vendors.html">Vendors</a><a href="learn.html">Learn</a><a href="teams.html">Corporate Training</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="sponsor.html">Sponsor</a></div>
+      <div><h4>COMPANY</h4><a href="about.html">About Us</a><a href="mailto:hello@transformerpath.com">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><h4>CONTACT</h4><a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a><a href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener">LinkedIn ↗</a></div>
+    </div>
+    <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
+  </div>
+</footer>
+<script src="supabase-config.js"></script>
+<script src="supabase.js" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  (function(){
+  function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  var cfg = window.TP_SUPABASE || {url:'',anon:''};
+  var auth=document.getElementById('tpAuth'), ws=document.getElementById('tpWorkspace'),
+      msg=document.getElementById('tpMsg'), setup=document.getElementById('tpSetup'),
+      tabIn=document.getElementById('tabIn'), tabUp=document.getElementById('tabUp'),
+      si=document.getElementById('signinForm'), su=document.getElementById('signupForm');
+  function show(el,on){ el.style.display = on ? '' : 'none'; }
+  function setMsg(t,ok){ msg.textContent=t; msg.style.color = ok ? '#16a34a' : '#b91c1c'; }
+
+  if(!cfg.url || !cfg.anon){
+    /* tpSetup lives INSIDE tpAuth, so hiding tpAuth hid the notice too and the
+       page rendered empty. Keep the card visible and hide only the interactive
+       parts, so a visitor is told what is going on instead of seeing nothing. */
+    show(setup, true);
+    var tabs = auth.querySelector('.auth-tabs');
+    if (tabs) show(tabs, false);
+    show(si, false); show(su, false);
+    return;
+  }
+
+  tabIn.addEventListener('click',function(){ tabIn.classList.add('on'); tabUp.classList.remove('on'); show(si,true); show(su,false); });
+  tabUp.addEventListener('click',function(){ tabUp.classList.add('on'); tabIn.classList.remove('on'); show(su,true); show(si,false); });
+
+  si.addEventListener('submit',function(e){
+    e.preventDefault();
+    TP.signIn(si.email.value.trim(), si.pass.value).then(function(){ setMsg('',true); })
+      .catch(function(x){ setMsg((x&&x.message)||'Sign-in failed', false); });
+  });
+  su.addEventListener('submit',function(e){
+    e.preventDefault();
+    TP.signUp(su.email.value.trim(), su.pass.value, {display_name:su.name.value.trim()}).then(function(r){
+      if(r && r.data && r.data.session){ setMsg('',true); }
+      else { setMsg('Almost there — check your inbox to confirm your email.', true); }
+    }).catch(function(x){ setMsg((x&&x.message)||'Sign-up failed', false); });
+  });
+  document.getElementById('tpSignOut').addEventListener('click',function(){ TP.signOut(); });
+
+  TP.onAuth(function(user){
+    if(user){ show(ws,true); show(auth,false); render(user); }
+    else { show(auth,true); show(ws,false); }
+  });
+
+  function render(user){
+    document.getElementById('tpName').textContent = (user && user.email) || 'engineer';
+    TP.listSaved().then(function(it){
+      var el=document.getElementById('tpSaved');
+      el.innerHTML = it.length ? it.map(function(i){
+        return '<span class="ws-tag"><a href="'+esc(i.url||'#')+'" style="color:var(--text);text-decoration:none">'+esc(i.title||i.item_id)+'</a> <button class="ws-x" data-unsave="'+esc(i.item_type)+'|'+esc(i.item_id)+'" aria-label="Remove">✕</button></span>';
+      }).join('') : '<span class="ws-empty">Nothing saved yet — use “Save” on manufacturers, events, webinars.</span>';
+    });
+    TP.listDesigns().then(function(ds){
+      document.getElementById('tpDesigns').innerHTML = ds.length ? ds.map(function(d){
+        return '<div class="ws-row"><span class="ws-note-title">'+esc(d.name||'Untitled')+'</span><span class="ws-sub">'+(d.kind||'design')+'</span><button class="ws-x" data-deldesign="'+esc(d.id)+'" aria-label="Delete">✕</button></div>';
+      }).join('') : '<p class="ws-empty">No saved designs yet. Save results from the Design Calculator.</p>';
+    });
+    TP.listNotes().then(function(ns){
+      document.getElementById('tpNotes').innerHTML = ns.length ? ns.map(function(n){
+        return '<div class="ws-row"><span class="ws-note-title">'+esc(n.title||'Note')+'</span><span class="ws-sub">'+esc((n.body||'').slice(0,80))+'</span><button class="ws-x" data-delnote="'+esc(n.id)+'" aria-label="Delete">✕</button></div>';
+      }).join('') : '<p class="ws-empty">No notes yet.</p>';
+    });
+    TP.listFollows().then(function(fl){
+      var el=document.getElementById('tpFollows');
+      el.innerHTML = fl.length ? fl.map(function(f){
+        return '<span class="ws-tag">'+esc(f.subject)+'<button class="ws-x" data-unfollow="'+esc(f.subject_type)+'|'+esc(f.subject)+'" aria-label="Unfollow">✕</button></span>';
+      }).join('') : '<span class="ws-empty">Following nothing yet — hit “Follow” on markets, companies, topics.</span>';
+    });
+    TP.listProgress().then(function(ps){
+      document.getElementById('tpProgress').innerHTML = ps.length ? ps.map(function(p){
+        return '<div class="ws-row"><span class="ws-note-title">'+esc(p.course)+'</span><span class="ws-sub">'+esc(p.chapter)+(p.status&&p.status!=='completed'?'' : '')+' · '+esc(p.status||'')+'</span></div>';
+      }).join('') : '<p class="ws-empty">No learning progress yet.</p>';
+    });
+  }
+
+  // action delegation for the "✕" buttons
+  document.getElementById('tpWorkspace').addEventListener('click', function(e){
+    var t=e.target;
+    if(t.dataset.unsave){ var a=t.dataset.unsave.split('|'); TP.unsave(a[0],a[1]).then(renderRefresh); }
+    else if(t.dataset.deldesign){ TP.deleteDesign(t.dataset.deldesign).then(renderRefresh); }
+    else if(t.dataset.delnote){ TP.deleteNote(t.dataset.delnote).then(renderRefresh); }
+    else if(t.dataset.unfollow){ var b=t.dataset.unfollow.split('|'); TP.unfollow(b[0],b[1]).then(renderRefresh); }
+  });
+  function renderRefresh(){ TP.getSession().then(function(r){ render(r && r.data && r.data.session ? r.data.session.user : (TP.user||null)); }); }
+  })();
+});
+</script>
+</body>
+</html>

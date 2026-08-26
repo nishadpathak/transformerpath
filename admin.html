@@ -6,7 +6,7 @@
 <title>Admin — TransformerPath</title>
 <meta name="description" content="TransformerPath admin control panel — data refresh, affiliate click stats and course access tools.">
 <meta name="robots" content="noindex, nofollow">
-<link rel="stylesheet" href="style.css?v=4">
+<link rel="stylesheet" href="style.css?v=5">
 <link rel="icon" type="image/svg+xml" href="brand/favicon.svg">
 <meta name="theme-color" content="#0d1b2e">
 <script>if ((localStorage.getItem('theme') || 'dark') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');</script>
@@ -70,7 +70,7 @@ table.aff th, table.aff td { text-align: left; padding: 6px 8px; border-bottom: 
 
     <div class="acard">
       <h3>💳 Course & Payments</h3>
-      <p class="sub">Three plans via Stripe Payment Links — Learner $199/yr, Professional $599/yr, Enterprise $1,999/yr. See <a href="pricing.html">pricing.html</a> for the live CTAs and STRIPE-SETUP-TODO.md for the link IDs.</p>
+      <p class="sub">Three plans via Stripe Payment Links — Engineer $199/yr, Professional $599/yr, Enterprise $1,999/yr. See <a href="pricing.html">pricing.html</a> for the live CTAs and STRIPE-SETUP-TODO.md for the link IDs.</p>
       <a class="abtn" href="https://dashboard.stripe.com/payments" target="_blank" rel="noopener">Stripe Dashboard ↗</a>
       <p class="sub" style="margin-top:14px">Course access is granted only after <code>functions/verify-access.js</code> confirms a paid Stripe session. Set the <b>STRIPE_SECRET_KEY</b> env var and update each Payment Link's after-payment redirect to include <code>session_id={CHECKOUT_SESSION_ID}</code>.</p>
     </div>
@@ -86,8 +86,6 @@ table.aff th, table.aff td { text-align: left; padding: 6px 8px; border-bottom: 
 
     <div class="acard">
       <h3>🔗 Quick Links</h3>
-      <a class="abtn" href="certificate.html">Certificate generator</a>
-      <a class="abtn" href="verify-certificate.html">Verify certificate</a>
       <a class="abtn" href="subscribe.html">Subscribe page</a>
       <a class="abtn" href="intel.html">Daily Intel</a>
       <a class="abtn" href="https://app.netlify.com/" target="_blank" rel="noopener">Netlify ↗</a>
@@ -148,11 +146,24 @@ function renderAff() {
 
 async function triggerRefresh() {
   const out = document.getElementById('refresh-out');
-  out.textContent = 'Invoking /.netlify/functions/refresh-data …';
+  /* refresh-data is a SCHEDULED function, and Netlify answers 403 to any HTTP
+     invocation of one — so this button cannot call it. intel-feed is the
+     unscheduled endpoint; hitting it with a cache-buster bypasses the CDN copy
+     and forces a fresh pull from the source, which is what "refresh now" means
+     here. The 06:00/18:00 cron still runs refresh-data on its own. */
+  out.textContent = 'Fetching a fresh feed via /.netlify/functions/intel-feed …';
   try {
-    const r = await fetch('/.netlify/functions/refresh-data?run=1');
+    const r = await fetch('/.netlify/functions/intel-feed?cb=' + Date.now(), { cache: 'no-store' });
     const body = await r.text();
-    out.textContent = 'HTTP ' + r.status + '\n' + body.slice(0, 400);
+    let summary = body.slice(0, 400);
+    try {
+      const j = JSON.parse(body);
+      const n = (j.articles || []).reduce((s, g) => s + ((g.items || []).length), 0);
+      summary = (j.configured ? '' : 'EVENTREGISTRY_KEY is not set — no source configured.\n')
+        + n + ' article(s) across ' + (j.articles || []).length + ' region(s)\n'
+        + (j.briefing || '');
+    } catch (e) {}
+    out.textContent = 'HTTP ' + r.status + '\n' + summary;
   } catch (e) {
     out.textContent = '✗ ' + e.message + ' — only works on the deployed Netlify site, not localhost.';
   }
