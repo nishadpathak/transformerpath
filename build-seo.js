@@ -113,3 +113,25 @@ for (const c of MGF) {
   if (MGF.indexOf(c) < 5) console.log('OK manufacturers/' + slug + '.html');
 }
 console.log('generated', countryIndex.length, 'country pages');
+
+/* ── Individual manufacturer profile pages (tier-leader companies) ─────────── */
+const TIERS = JSON.parse(fs.readFileSync('data/manufacturer-tiers.json', 'utf8'));
+const TIER_NAME = { 1: 'Global leader', 2: 'Major regional', 3: 'Specialized / custom' };
+for (const r of TIERS) {
+  const slug = slugify(r.name);
+  const rows = [
+    ['Country', r.country || r.cc || '—'],
+    ['Site', r.site ? '<a href="' + esc(r.site) + '" target="_blank" rel="noopener">' + esc(r.site.replace(/^https?:\/\//, '')) + '</a>' : '—'],
+    ['Transformer types', esc((r.types || []).join(', '))],
+    ['Voltage capability', esc((r.voltage || []).join(', ')) || '—'],
+    ['Max capacity / yr', r.mva ? '~' + r.mva.toLocaleString('en-US') + ' MVA' : '—'],
+    ['Max voltage', r.kv ? r.kv + ' kV' : '—'],
+    ['Certifications', esc((r.certs || []).join(', ') || '—')],
+    ['Regions served', esc((r.regions || []).join(', ') || '—')],
+    ['Verification tier', TIER_NAME[r.tier] || ('Tier ' + r.tier)],
+    ['Source', esc(r.source || '—')]
+  ].map(function (x) { return '<tr><th>' + x[0] + '</th><td>' + x[1] + '</td></tr>'; }).join('');
+  const html = '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">\n<title>' + esc(r.name) + ' — Transformer Manufacturer | TransformerPath</title>\n<meta name="description" content="' + esc(r.name) + ' — power/distribution transformer manufacturer (' + esc((r.types || []).join(', ')) + '). Capability, certifications and sourcing.">\n<link rel="canonical" href="https://transformerpath.com/manufacturers/' + slug + '.html">\n<meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath"><meta property="og:title" content="' + esc(r.name) + ' — Transformer Manufacturer"><meta property="og:url" content="https://transformerpath.com/manufacturers/' + slug + '.html"><meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow">\n<link rel="stylesheet" href="../style.css?v=5"><link rel="icon" type="image/svg+xml" href="../brand/favicon.svg"><link rel="icon" href="../brand/favicon.ico" sizes="any"><link rel="apple-touch-icon" href="../brand/apple-touch-icon.png">\n<style>.c-wrap{max-width:820px;margin:0 auto;padding:44px 20px 80px}.c-wrap h1{font-size:1.8rem;color:var(--ink)}.c-wrap table{width:100%;border-collapse:collapse;margin:14px 0}.c-wrap th{text-align:left;color:var(--muted);font-weight:600;padding:8px 12px;border-bottom:1px solid var(--border);width:42%}.c-wrap td{padding:8px 12px;border-bottom:1px solid var(--border);color:var(--text)}</style>\n</head>\n<body>\n' + HEAD + '\n<main class="c-wrap">\n<nav style="font-size:.8rem;color:var(--muted);margin-bottom:10px"><a href="../manufacturers.html" style="color:var(--accent)">Manufacturers</a> \u203a ' + esc(r.name) + '</nav>\n<h1>' + esc(r.name) + '</h1>\n<p style="color:var(--muted);font-size:.95rem">Transformer manufacturer and supplier profile \u2014 capabilities and verification from the TransformerPath census.</p>\n<table><tbody>' + rows + '</tbody></table>\n<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:16px 18px;text-align:center"><b style="color:var(--text)">Compare ' + esc(r.name) + ' with other suppliers?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Browse the worldwide census or post an RFQ.</p><a class="btn btn-amber" href="../manufacturers.html">All manufacturers</a> <a class="btn btn-outline btn-sm" href="../rfq.html">Post an RFQ</a></div>\n</main>\n' + FOOT + '\n<script src="../analytics.js?v=2" defer></script>\n</body>\n</html>';
+  fs.writeFileSync('manufacturers/' + slug + '.html', html);
+}
+console.log('generated', TIERS.length, 'company profile pages');
