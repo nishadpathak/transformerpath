@@ -387,7 +387,8 @@ function renderGrids(html) {
  * #board empty for crawlers. Replicate the default render into the HTML.
  * ------------------------------------------------------------------ */
 function renderManufacturers(html) {
-  const DATA = JSON.parse(fs.readFileSync('data/manufacturers.json', 'utf8'));
+  const DATA = JSON.parse(fs.readFileSync('data/manufacturers.json', 'utf8'))
+    .filter((c) => c.makers.some((m) => !/^Served by/i.test(m[0])));
   const TNAME = { PT: 'Power', DT: 'Distribution', DRY: 'Dry/Cast' };
   const regions = [...new Set(DATA.map((c) => c.region))];
   const vbadge = (m) => { if (m[4] === 'P') return '<span class="v-badge pro">★ Pro Verified</span>'; if (m[4] === 'V') return '<span class="v-badge">✓ Verified</span>'; return ''; };

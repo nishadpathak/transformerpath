@@ -102,6 +102,7 @@ const tpills2 = (types) => { if (!types) return ''; const T = { PT: 'Power', DT:
 fs.mkdirSync('manufacturers', { recursive: true });
 let countryIndex = [];
 for (const c of MGF) {
+  if (!c.makers.some(function(x){ return !/^Served by/i.test(x[0]); })) continue;
   const slug = slugify(c.country);
   const real = c.makers.filter((m) => !/^Served by/i.test(m[0]).valueOf() && !/^Served by/i.test(m[0]));
   const rows = c.makers.map((m) => /^Served by/i.test(m[0])
