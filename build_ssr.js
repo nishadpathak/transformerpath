@@ -444,6 +444,9 @@ function renderManufacturers(html) {
     html = inject(html, '<div class="tiers" id="tiersRoot">', 'mfg-tiers', tierHtml);
   } catch (e) { /* tiers optional */ }
 
+  // Keep the Dataset schema "size" in sync with the live census count.
+  html = html.replace(/("size"\s*:\s*)\d+/g, '$1' + makers);
+
   return { page: html, records: makers };
 }
 
