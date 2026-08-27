@@ -114,9 +114,10 @@
       <a href="events.html">Events</a>
       <a href="webinars.html">Webinars</a>
       <a href="manufacturers.html">Manufacturers</a>
+      <a href="markets.html">Markets</a>
       <a href="learn.html">Learn</a>
       <a href="grids.html">Grids</a>
-      <a href="resources.html">Knowledge</a>
+      <a href="knowledge.html">Knowledge</a><a href="resources.html">Resources</a>
       <a href="blog.html">Blog</a>
       <a href="sponsor.html">Sponsor</a>
       <a href="pricing.html">Pricing</a>
@@ -304,7 +305,7 @@
         <div class="btnrow" style="max-width:420px">
           <button class="b2" onclick="downloadRatingPlatePDF()">Download Rating Plate (PDF)</button>
         </div>
-        <div class="note">Plate values are populated straight from this design — enter your own manufacturer name, serial number and year of manufacture before fitting to a real unit. Tapping voltages shown for the maximum HV tap; a full design includes every tap. Once the unit is built and tested, log the results in the <a href="test-report.html" style="color:var(--accent);font-weight:700">test report generator</a> to produce a matching test certificate.</div>
+        <div class="note">Plate values are populated straight from this design — enter your own manufacturer name, serial number and year of manufacture before fitting to a real unit. Tapping voltages shown for the maximum HV tap; a full design includes every tap. Once the unit is built and tested, log the results in the <a href="test-report.html" style="color:var(--accent);font-weight:700">test report generator</a> to produce a matching test report.</div>
       </div>
 
       <div class="card">
@@ -362,7 +363,7 @@
         <div class="note" style="margin-top:10px"><b>Method.</b> <b>Hoop stress</b> σ = F<sub>r</sub>/(2π·N·a) — ring tension F<sub>r</sub>/2π carried by the winding's total conductor section. Compared against the widely used industry ceiling of 0.9 × Rp0.2 for the outer (tensile) winding; IEC 60076-5 itself sets no numeric stress limit, it requires demonstrated withstand.
         <b>Buckling</b> uses the classical thin-ring result under uniform external pressure with n<sub>s</sub> equally spaced radial supports: σ<sub>cr</sub> = (n<sub>s</sub>²−1)·E·t²/(12·R²), E = 110 GPa for copper, t = inner-winding radial build (divided by the independent-layer count), R = its mean radius. n<sub>s</sub> = 2 degenerates to the free-buckling case σ<sub>cr</sub> = E·t²/(4R²), as it should.
         <b>Axial force</b> uses the residual ampere-turn method: F<sub>ax</sub> = μ₀·π·D<sub>m</sub>·(ε·N·I<sub>peak</sub>)²/(2·h<sub>w</sub>) — the radial leakage flux created by the unbalanced ampere-turns acting on the axial current. <b>Spacer pressure</b> = F<sub>ax</sub> divided by the true bearing area of the radial spacer columns, checked against ≈35 MPa, a common design ceiling for precompressed transformerboard under short-circuit (ultimate crushing is well above this; the design limit protects clamping stability and prevents permanent set).
-        <b>Limits of this check.</b> Uniform, monolithic rings; no allowance for winding ovality, conductor tilting, joint and lead forces, cumulative axial forces through the clamping structure, or the dynamic amplification when the fault frequency is near a mechanical natural frequency. A genuine withstand demonstration is either a certified short-circuit test or FEM electrodynamic force mapping per IEC 60076-5 — <b>treat everything here as a sizing sanity-check, not a certification</b>. <a href="article-fem-vs-analytical.html" style="color:var(--accent);font-weight:700">When you need FEM →</a> · <a href="software.html" style="color:var(--accent);font-weight:700">Simulation software directory →</a></div>
+        <b>Limits of this check.</b> Uniform, monolithic rings; no allowance for winding ovality, conductor tilting, joint and lead forces, cumulative axial forces through the clamping structure, or the dynamic amplification when the fault frequency is near a mechanical natural frequency. A genuine withstand demonstration is either a certified short-circuit test or FEM electrodynamic force mapping per IEC 60076-5 — <b>treat everything here as a sizing sanity-check, not a certificate of conformance or product certification</b>. <a href="article-fem-vs-analytical.html" style="color:var(--accent);font-weight:700">When you need FEM →</a> · <a href="software.html" style="color:var(--accent);font-weight:700">Simulation software directory →</a></div>
       </div>
 
       <div class="card">
@@ -445,7 +446,7 @@
         <b>Method &amp; validity.</b> Classic core-type design chain: volts/turn E<sub>t</sub>=K√S → net core section A<sub>i</sub>=E<sub>t</sub>/4.44·f·B<sub>m</sub> →
         turns from phase voltages → conductors from current density → leakage reactance by the ampere-turn / duct
         formula with Rogowski correction → losses from material weights → thermal from dissipating surfaces.
-        Results are a <b>first-cut (tender/estimation grade) design</b>, typically within ±10–15 % of an optimised works design.
+        Results are a <b>first-cut (tender/estimation grade) design</b> — a preliminary estimate whose accuracy varies with transformer type, geometry, design assumptions and the quantity being calculated.
         Final designs require manufacturer optimisation: conductor standardisation, tap winding detail, short-circuit force
         withstand (IEC 60076-5), insulation coordination (60076-3), sound level (60076-10) and eco-design loss limits
         (EU 548/2014 Tier 2 / GSO equivalents) where applicable.
@@ -1853,7 +1854,7 @@ function bomXLSX(){
   const title=`Bill of Materials — ${r.ratStr}, ${fmt(r.hv,0)}/${fmt(r.lv,0)} V, ${r.vec} (${r.std.name})`;
   let rows="";
   rows+=`<row r="1">${cs("A",1,title,2)}</row>`;
-  rows+=`<row r="2">${cs("A",2,"Generated "+new Date().toISOString().slice(0,10)+" — quantities from first-cut design (±10–15 %); indicative supply-only prices, edit column F.",0)}</row>`;
+  rows+=`<row r="2">${cs("A",2,"Generated "+new Date().toISOString().slice(0,10)+" — quantities from a first-cut (preliminary) design; accuracy varies with type, geometry and assumptions. Indicative supply-only prices, edit column F.",0)}</row>`;
   const heads=["Category","Item","Specification","Unit","Qty","Unit price USD","Amount USD"];
   rows+=`<row r="4">${heads.map((h,i)=>cs(COLS[i],4,h,3)).join("")}</row>`;
   let rr=5;
@@ -2128,7 +2129,7 @@ function downloadPDF(){
   y-=16;T(60,y,"Design checks","F2",11,BLUE);y-=4;L(60,y,535,y,0.7);y-=13;
   for(const ln of pdfWrap(REC.checks,100)){if(y<60){newPage();y-=10;}T(66,y,ln,"F1",8.5,BLACK);y-=11;}
   y-=10;
-  for(const ln of pdfWrap("Validity: first-cut (tender/estimation grade) design, typically within +/-10-15% of an optimised works design. Final designs require manufacturer optimisation per IEC 60076-3/-5/-10 and applicable eco-design loss limits.",100)){
+  for(const ln of pdfWrap("Validity: first-cut (tender/estimation grade) design — a preliminary estimate; accuracy varies with transformer type, geometry, design assumptions and the quantity being calculated. Final designs require manufacturer optimisation per IEC 60076-3/-5/-10 and applicable eco-design loss limits.",100)){
     if(y<60){newPage();y-=10;}T(60,y,ln,"F1",8,GREY);y-=10;
   }
   if(cur)pages.push(cur); // flush last page
@@ -2167,7 +2168,7 @@ calc();
         <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span style="color:var(--amber)">Path</span></a>
         <p style="margin-top:12px">The global intelligence and networking platform for transformer manufacturers, suppliers, engineers and utilities.</p>
       </div>
-      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="learn.html">Learn</a><a href="teams.html">Corporate Training</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="books.html">Books</a><a href="sponsor.html">Sponsor</a></div>
+      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="learn.html">Learn</a><a href="teams.html">Corporate Training</a><a href="grids.html">Grids</a><a href="knowledge.html">Knowledge</a><a href="resources.html">Resources</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="books.html">Books</a><a href="sponsor.html">Sponsor</a></div>
       <div><h4>COMPANY</h4><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
       <div><h4>CONTACT</h4><a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a><a href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener">LinkedIn ↗</a></div>
     </div>

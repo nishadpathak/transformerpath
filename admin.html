@@ -70,7 +70,7 @@ table.aff th, table.aff td { text-align: left; padding: 6px 8px; border-bottom: 
 
     <div class="acard">
       <h3>💳 Course & Payments</h3>
-      <p class="sub">Three plans via Stripe Payment Links — Engineer $199/yr, Professional $599/yr, Enterprise $1,999/yr. See <a href="pricing.html">pricing.html</a> for the live CTAs and STRIPE-SETUP-TODO.md for the link IDs.</p>
+      <p class="sub">Three plans via Stripe Payment Links — Learning $199/yr, Professional $599/yr, Team $1,999/yr. See <a href="pricing.html">pricing.html</a> for the live CTAs and STRIPE-SETUP-TODO.md for the link IDs.</p>
       <a class="abtn" href="https://dashboard.stripe.com/payments" target="_blank" rel="noopener">Stripe Dashboard ↗</a>
       <p class="sub" style="margin-top:14px">Course access is granted only after <code>functions/verify-access.js</code> confirms a paid Stripe session. Set the <b>STRIPE_SECRET_KEY</b> env var and update each Payment Link's after-payment redirect to include <code>session_id={CHECKOUT_SESSION_ID}</code>.</p>
     </div>
@@ -150,7 +150,7 @@ async function triggerRefresh() {
      invocation of one — so this button cannot call it. intel-feed is the
      unscheduled endpoint; hitting it with a cache-buster bypasses the CDN copy
      and forces a fresh pull from the source, which is what "refresh now" means
-     here. The 06:00/18:00 cron still runs refresh-data on its own. */
+     here. The hourly cron still runs refresh-data on its own. */
   out.textContent = 'Fetching a fresh feed via /.netlify/functions/intel-feed …';
   try {
     const r = await fetch('/.netlify/functions/intel-feed?cb=' + Date.now(), { cache: 'no-store' });

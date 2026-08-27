@@ -1,5 +1,5 @@
 [build]
-  command = "node stamp-intel.js && echo 'Static site with serverless functions'"
+  command = "node build-entity-graph.js && node build-company-pages.js && node build-applications.js && node build-knowledge.js && node build-markets.js && node build-events.js && node build-books.js && node build_ssr.js && node build-seo.js && node stamp-intel.js && echo 'Static site with serverless functions'"
   publish = "."
   functions = "functions"
 
@@ -7,7 +7,7 @@
   node_bundler = "esbuild"
 
 [functions."refresh-data"]
-  schedule = "0 6,18 * * *"
+  schedule = "0 * * * *"
 
 # ── Keep internal docs off the public site ──────────────────────────────
 # publish = "." deploys the whole folder, so the internal strategy/setup
@@ -122,6 +122,17 @@
   status = 404
   force = true
 
+# Türkiye's country-page slug was cleaned from a diacritic-mangled "t-rkiye"
+# to a proper "turkiye" (the ü no longer becomes a dash). 301 the old URL so
+# any previously-indexed or bookmarked link resolves to the canonical page.
+[[redirects]]
+  from = "/manufacturers/t-rkiye.html"
+  to = "/manufacturers/turkiye.html"
+  status = 301
+  force = true
+
+
+
 # transformerpath-site/ is an early-August snapshot of ~25 pages that also
 # exist at the top level. Serving it would publish stale duplicates and split
 # SEO ranking between two copies of the same page.
@@ -171,3 +182,220 @@
   for = "/*.js"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
+
+# Manufacturer entity pages moved to nested /manufacturers/<company>/ (build-company-pages.js).
+[[redirects]]
+  from = "/manufacturers/hitachi-energy.html"
+  to = "/manufacturers/hitachi-energy/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/siemens-energy.html"
+  to = "/manufacturers/siemens-energy/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/ge-vernova.html"
+  to = "/manufacturers/ge-vernova/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/schneider-electric.html"
+  to = "/manufacturers/schneider-electric/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/mitsubishi-electric.html"
+  to = "/manufacturers/mitsubishi-electric/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/hd-hyundai-electric.html"
+  to = "/manufacturers/hd-hyundai-electric/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/toshiba-energy-systems.html"
+  to = "/manufacturers/toshiba-energy-systems/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/tbea-co-ltd.html"
+  to = "/manufacturers/tbea-co-ltd/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/cg-power.html"
+  to = "/manufacturers/cg-power/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/elsewedy-electric.html"
+  to = "/manufacturers/elsewedy-electric/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/sgb-smit-group.html"
+  to = "/manufacturers/sgb-smit-group/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/smit-transformers.html"
+  to = "/manufacturers/smit-transformers/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/efacec-power-solutions.html"
+  to = "/manufacturers/efacec-power-solutions/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/wilson-transformer-company.html"
+  to = "/manufacturers/wilson-transformer-company/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/tmc-transformers-spa.html"
+  to = "/manufacturers/tmc-transformers-spa/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/specialtrasfo-spa.html"
+  to = "/manufacturers/specialtrasfo-spa/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/hyosung-heavy-industries.html"
+  to = "/manufacturers/hyosung-heavy-industries/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/hico-technology.html"
+  to = "/manufacturers/hico-technology/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/china-xd-group.html"
+  to = "/manufacturers/china-xd-group/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/jshp-transformer-jiangsu.html"
+  to = "/manufacturers/jshp-transformer-jiangsu/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/transformers-and-rectifiers-india.html"
+  to = "/manufacturers/transformers-and-rectifiers-india/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/bhel-bharat-heavy-electricals.html"
+  to = "/manufacturers/bhel-bharat-heavy-electricals/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/prolec-ge.html"
+  to = "/manufacturers/prolec-ge/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/weg.html"
+  to = "/manufacturers/weg/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/hammond-power-solutions.html"
+  to = "/manufacturers/hammond-power-solutions/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/virginia-transformer-corp.html"
+  to = "/manufacturers/virginia-transformer-corp/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/vantran-industries.html"
+  to = "/manufacturers/vantran-industries/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/gangheng-electric.html"
+  to = "/manufacturers/gangheng-electric/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/altran-corporation.html"
+  to = "/manufacturers/altran-corporation/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/custom-transformers-ltd.html"
+  to = "/manufacturers/custom-transformers-ltd/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/emerald-transformer.html"
+  to = "/manufacturers/emerald-transformer/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/foster-transformer-company.html"
+  to = "/manufacturers/foster-transformer-company/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/jefferson-electric.html"
+  to = "/manufacturers/jefferson-electric/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/electronetics-llc.html"
+  to = "/manufacturers/electronetics-llc/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/bridgeport-magnetics.html"
+  to = "/manufacturers/bridgeport-magnetics/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/ctm-magnetics.html"
+  to = "/manufacturers/ctm-magnetics/"
+  status = 301
+  force = true

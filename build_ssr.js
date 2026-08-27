@@ -157,12 +157,12 @@ function renderEvents(html) {
   const up = EVENTS.filter((ev) => new Date(ev.e) >= now).sort((a, b) => a.s.localeCompare(b.s)).slice(0, 3);
   const upNext = up.map((ev) => {
     const d = relDays(ev.s);
-    const lbl = d <= 0 ? 'Today' : d === 1 ? 'Tomorrow' : 'In ' + d + ' days';
+    const lbl = d < 0 ? 'Live now' : d === 0 ? 'Today' : d === 1 ? 'Tomorrow' : 'In ' + d + ' days';
     return `<div class="up-next-card"><span class="up-num">${lbl}</span><h3>${esc(ev.n)}</h3><div class="dates">${fmt(ev.s)} → ${fmt(ev.e)}</div><div class="venue">📍 ${esc(ev.v)} — ${esc(ev.c)}, ${esc(ev.co)}</div><a class="btn btn-amber btn-sm" href="${esc(ev.u)}" target="_blank" rel="noopener">View →</a></div>`;
   }).join('\n');
 
   const cards = list.map((ev) => {
-    const soon = (new Date(ev.s) - now) / 86400000 <= 31 && new Date(ev.e) >= now;
+    const soon = new Date(ev.s) > now && (new Date(ev.s) - now) / 86400000 <= 31;
     return `<div class="intel-item event-card">
       <h3>${esc(ev.n)}${soon ? '<span class="badge-soon">Soon</span>' : ''}${badgeHTML(ev)}</h3>
       <div class="dates">${fmt(ev.s)} → ${fmt(ev.e)}${relLabel(ev)}</div>
@@ -202,7 +202,7 @@ function renderWebinars(html) {
   });
 
   const cards = list.map((w) => {
-    const soon = w.date && (new Date(w.date) - now) / 86400000 <= 31 && new Date(w.date) >= now;
+    const soon = w.date && new Date(w.date) > now && (new Date(w.date) - now) / 86400000 <= 31;
     const dateLine = w.date
       ? `<div class="dates">🗓️ ${fmt(w.date)} · Live session</div>`
       : `<div class="dates">${w.fmt === 'On-demand' ? '▶ On-demand library' : w.fmt === 'Recurring' ? '🔁 Recurring series' : '● Live program'}</div>`;
@@ -391,6 +391,10 @@ function renderManufacturers(html) {
     .filter((c) => c.makers.some((m) => !/^Served by/i.test(m[0])));
   const TNAME = { PT: 'Power', DT: 'Distribution', DRY: 'Dry/Cast' };
   const regions = [...new Set(DATA.map((c) => c.region))];
+  // Manufacturer -> company entity page slug (for the directory -> entity link graph).
+  let CSMAP = {};
+  try { JSON.parse(fs.readFileSync('data/company-slugs.json', 'utf8')).forEach(function (c) { CSMAP[c.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()] = c.slug; }); } catch (e) {}
+  const csl = (m) => CSMAP[String(m[0]).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()];
   const vbadge = (m) => { if (m[4] === 'P') return '<span class="v-badge pro">★ Pro Verified</span>'; if (m[4] === 'V') return '<span class="v-badge">✓ Verified</span>'; return ''; };
   const tpills = (types) => { if (!types) return ''; return types.split(',').map((t) => t.trim()).filter(Boolean).map((t) => `<span class="tpill t-${t}">${esc(TNAME[t] || t)}</span>`).join(''); };
   const groups = {};
@@ -402,7 +406,7 @@ function renderManufacturers(html) {
       return `<div class="ctry-card"><div class="ctry-head"><span class="flag">${esc(c.flag)}</span><h3>${esc(c.country)}</h3><span class="cnt">${real} maker${real !== 1 ? 's' : ''}</span></div>` +
         c.makers.map((m) => /^Served by/i.test(m[0])
           ? `<div class="mk-row"><span class="note">${esc(m[0])}</span></div>`
-          : `<div class="mk-row"><b>${esc(m[0])}${vbadge(m)}${tpills(m[3])}</b><span class="city">${esc(m[1] || '')}${m[5] ? ` · est. ${esc(m[5])}` : ''}</span><a class="prof" href="company.html?c=${encodeURIComponent(m[0])}&y=${encodeURIComponent(c.country)}">Profile →</a>${m[2] ? `<a href="${esc(m[2])}" target="_blank" rel="noopener">Site →</a>` : '<span></span>'}</div>`).join('') +
+          : `<div class="mk-row">${csl(m) ? `<a class="prof" href="manufacturers/${csl(m)}/" style="color:var(--accent);font-weight:700">${esc(m[0])}</a>` : `<b>${esc(m[0])}</b>`}${vbadge(m)}${tpills(m[3])}<span class="city">${esc(m[1] || '')}${m[5] ? ` · est. ${esc(m[5])}` : ''}</span>${m[2] ? `<a href="${esc(m[2])}" target="_blank" rel="noopener">Site →</a>` : '<span></span>'}</div>`).join('') +
         `</div>`;
     }).join('')).join('');
 
@@ -463,3 +467,29 @@ for (const [file, fn, label] of jobs) {
     console.error('!! ' + file + ' failed: ' + e.message + '\n   ' + (e.stack || '').split('\n').slice(1, 3).join('\n   '));
   }
 }
+
+/* ── Census count assertion ──────────────────────────────────────────────
+   Guard against accidental data loss in the manufacturer/grid census. If the
+   counts fall below the thresholds, fail the build so a bad edit never ships. */
+try {
+  const M = JSON.parse(fs.readFileSync('data/manufacturers.json', 'utf8'));
+  const G = JSON.parse(fs.readFileSync('data/grids.json', 'utf8'));
+  const makers = M.reduce((s, g) => s + g.makers.filter((x) => !String(x[0] || '').startsWith('Served by')).length, 0);
+  const mkgCountries = M.filter((g) => g.makers.some((x) => !String(x[0] || '').startsWith('Served by'))).length;
+  const gridCountries = G.length;
+  const gridOperators = G.reduce((s, g) => s + g.grids.length, 0);
+  const prev = (function () { try { return JSON.parse(fs.readFileSync('data/site-stats.json', 'utf8')); } catch (e) { return {}; } })();
+  let ok = true;
+  if (makers < 500) { console.error('!! manufacturers census < 500: ' + makers); ok = false; }
+  if (mkgCountries < 80) { console.error('!! manufacturing countries < 80: ' + mkgCountries); ok = false; }
+  if (gridCountries < 140) { console.error('!! grid countries < 140: ' + gridCountries); ok = false; }
+  if (ok) {
+    console.log('OK  census assertion — ' + makers + ' makers / ' + mkgCountries + ' manufacturing countries / ' +
+      gridCountries + ' grid countries / ' + gridOperators + ' operators');
+    if (prev.manufacturers && prev.manufacturers !== makers) {
+      console.log('NOTE manufacturers count changed ' + prev.manufacturers + ' -> ' + makers);
+    }
+  } else {
+    process.exitCode = 1; // fail the Netlify build
+  }
+} catch (e) { console.error('!! census assertion error: ' + e.message); }

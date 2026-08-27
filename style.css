@@ -263,3 +263,62 @@ input:-webkit-autofill:focus {
   .filters button { padding: 10px 18px; font-size: .92rem; }
   .menu-toggle { padding: 10px 14px; }
 }
+
+/* ── LinkedIn share + follow buttons (site stylesheet so they render even
+      before analytics.js loads) ─────────────────────────────────────── */
+.tp-li-btn { display: inline-flex; align-items: center; gap: 6px; font-family: inherit;
+  font-weight: 700; font-size: .82rem; text-decoration: none; cursor: pointer; border: 0;
+  border-radius: 999px; padding: 8px 14px; line-height: 1; color: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,.16); transition: transform .12s ease, opacity .12s ease;
+  margin-top: 6px; white-space: nowrap; }
+.tp-li-btn:hover { transform: translateY(-1px); opacity: .94; }
+.tp-li-btn svg { width: 15px; height: 15px; fill: currentColor; flex: none; }
+.tp-li-follow { background: #0a66c2; }
+.tp-li-share { background: #1b6fb3; }
+.tp-li-share-inline { margin-left: 8px; font-size: .78rem; font-weight: 600; color: #1b6fb3;
+  text-decoration: none; cursor: pointer; white-space: nowrap; }
+.tp-li-share-inline:hover { text-decoration: underline; }
+
+/* ══ Brand lift — Global Bolt, gradients & motion ══════════════════════ */
+:root { --glow: rgba(245,166,35,.16); --accent-grad: linear-gradient(135deg, #f5a623 0%, #d48806 100%); }
+html { scroll-behavior: smooth; }
+::selection { background: #f5a623; color: #0d1b2e; }
+:focus-visible { outline: 2px solid #f5a623; outline-offset: 2px; }
+
+/* Logo mark micro-interaction */
+.logo { display: inline-flex; align-items: center; gap: 9px; }
+.logo .logo-mark { flex: none; transition: transform .55s cubic-bezier(.34,1.56,.64,1); transform-origin: center; }
+.logo:hover .logo-mark { transform: rotate(120deg) scale(1.05); }
+.logo .word { color: var(--ink); font-weight: 800; letter-spacing: -.5px; }
+.logo .word .accent { color: #f5a623; }
+
+/* Nav animated underline */
+.nav-links a { position: relative; }
+.nav-links a::after { content: ""; position: absolute; left: 0; bottom: -5px; height: 2px; width: 0; background: #f5a623; border-radius: 2px; transition: width .28s ease; }
+.nav-links a:hover::after, .nav-links a.active::after, .nav-links a[aria-current="page"]::after { width: 100%; }
+
+/* Buttons: gradient, lift, glow */
+.btn, .btn-amber, .btn-primary, .cta, .btn-outline { border-radius: 999px; transition: transform .16s ease, box-shadow .22s ease, background .22s ease; }
+.btn-amber, .btn-primary, .cta { background: var(--accent-grad); color: #0d1b2e; border: none; box-shadow: 0 6px 18px var(--glow); }
+.btn-amber:hover, .btn-primary:hover, .cta:hover { transform: translateY(-2px); box-shadow: 0 12px 26px var(--glow); }
+.btn-outline:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(0,0,0,.15); }
+
+/* Cards: hover lift + amber edge */
+.card, .card2, .intel-item, .ctry-card, .vol-card, .stat-card { transition: transform .2s ease, box-shadow .26s ease, border-color .22s ease; }
+.card:hover, .card2:hover, .intel-item:hover, .ctry-card:hover, .vol-card:hover { transform: translateY(-3px); border-color: #f5a623; box-shadow: 0 14px 32px rgba(0,0,0,.20); }
+
+/* Hero aurora glow (behind content) */
+.hero { position: relative; overflow: hidden; }
+.hero::before { content: ""; position: absolute; left: -12%; top: -35%; width: 124%; height: 170%; z-index: 1; background:
+    radial-gradient(38% 42% at 22% 28%, rgba(245,166,35,.20), transparent 62%),
+    radial-gradient(42% 50% at 78% 24%, rgba(56,130,246,.18), transparent 60%),
+    radial-gradient(52% 58% at 50% 92%, rgba(245,166,35,.12), transparent 60%);
+  filter: blur(34px); opacity: .9; pointer-events: none; animation: aurora 18s ease-in-out infinite alternate; }
+.hero > * { position: relative; z-index: 3; }
+@keyframes aurora { 0% { transform: translate(-3%, -2%) scale(1); } 100% { transform: translate(3%, 3%) scale(1.06); } }
+
+/* Kicker amber bar */
+.kicker { position: relative; padding-left: 14px; }
+.kicker::before { content: ""; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 4px; height: 1.2em; background: #f5a623; border-radius: 2px; }
+
+@media (prefers-reduced-motion: reduce) { .hero::before, .logo-mark { animation: none !important; transition: none !important; } }

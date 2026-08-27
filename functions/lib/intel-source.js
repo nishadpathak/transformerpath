@@ -16,22 +16,32 @@
 const EVENTREGISTRY_KEY = process.env.EVENTREGISTRY_KEY || '';
 const EVENTREGISTRY_URL = 'https://eventregistry.org/api/v1/article/getArticles';
 
-/* Keyless public RSS feeds that reliably carry transformer / power news. */
+/* Keyless public RSS feeds that reliably carry transformer / power news.
+   Each entry carries the feed's language (used for the UI badge) and, where
+   the source is a single home market, a default region — so a Spanish or a
+   German feed lands in the right panel even though our text classifier is
+   English-based. Non-English feeds widen coverage beyond the Anglophone
+   trade press without needing an API key. */
 const RSS_FEEDS = [
-  'https://www.tdworld.com/rss.xml',
-  'https://www.power-eng.com/rss.xml',
-  'https://www.transformers-magazine.com/feed',
-  'https://www.powermag.com/feed/',
+  { url: 'https://www.tdworld.com/rss.xml',                  lang: 'en', region: null },
+  { url: 'https://www.power-eng.com/rss.xml',                lang: 'en', region: null },
+  { url: 'https://www.transformers-magazine.com/feed',       lang: 'en', region: null },
+  { url: 'https://www.powermag.com/feed/',                   lang: 'en', region: null },
+  // Multi-language market coverage (energy / grid news, transformer-adjacent)
+  { url: 'https://www.pv-magazine-mexico.com/feed/',         lang: 'es', region: 'Latin America' },
+  { url: 'https://www.revistaei.cl/feed/',                   lang: 'es', region: 'Latin America' },
+  { url: 'https://www.pv-magazine.de/feed/',                 lang: 'de', region: 'Europe' },
 ];
 
-const REGION_LABELS = ['Middle East / GCC', 'India / South Asia', 'Europe', 'North America', 'Global'];
+const REGION_LABELS = ['Middle East / GCC', 'India / South Asia', 'Europe', 'North America', 'Latin America', 'Global'];
 
-function regionOf(t) {
+function regionOf(t, def) {
   if (/(uae|saudi|gulf|middle east|oman|kuwait|qatar|bahrain|emirat)/.test(t)) return 'Middle East / GCC';
   if (/(india|south asia|bangladesh|pakistan|sri lanka)/.test(t)) return 'India / South Asia';
-  if (/(europe|germany|uk\b|britain|france|italy|spain|netherlands|poland|sweden|norway|denmark|austria)/.test(t)) return 'Europe';
+  if (/(latin america|latinoam|brasil|brazil|m[eé]xico|mexico|chile|argentina|per[uú]|colombia|ecuador|venezuela|rep[uú]blica dominicana|españa|spain)/.test(t)) return 'Latin America';
+  if (/(europe|germany|deutschland|uk\b|britain|france|italy|spain|netherlands|poland|sweden|norway|denmark|austria)/.test(t)) return 'Europe';
   if (/(united states|usa|canada|north america|\bus\b)/.test(t)) return 'North America';
-  return 'Global';
+  return def || 'Global';
 }
 
 function strip(x) {
@@ -86,6 +96,7 @@ async function fetchEventRegistry() {
         title: article.title,
         snippet: (article.body || article.summary || '').substring(0, 150),
         value: '',
+        lang: article.lang || 'en',
         src: `${article.source.title} · ${new Date(article.dateTime).toLocaleDateString('en-US', {year: '2-digit', month: 'short', day: 'numeric'})}`,
         url: article.url,
         isNew: true,
@@ -100,10 +111,10 @@ async function fetchEventRegistry() {
 async function fetchRSS() {
   const regions = emptyRegions();
   let ok = false;
-  for (const url of RSS_FEEDS) {
+  for (const feed of RSS_FEEDS) {
     try {
-      const r = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0 TransformerPath' } });
-      if (!r.ok) { console.warn('RSS http', r.status, url); continue; }
+      const r = await fetch(feed.url, { headers: { 'User-Agent': 'Mozilla/5.0 TransformerPath' } });
+      if (!r.ok) { console.warn('RSS http', r.status, feed.url); continue; }
       const xml = await r.text();
       const items = xml.match(/<item[\s\S]*?<\/item>/g) || [];
       for (const it of items) {
@@ -112,19 +123,22 @@ async function fetchRSS() {
         const desc = strip((it.match(/<description[^>]*>([\s\S]*?)<\/description>/) || [])[1]);
         const pubD = (it.match(/<pubDate[^>]*>([\s\S]*?)<\/pubDate>/) || [])[1];
         if (!title) continue;
-        const region = regionOf((title + ' ' + desc).toLowerCase());
+        // Curated home-market feeds (non-English) are authoritative about which
+        // region they cover; only the English feeds rely on text detection.
+        const region = feed.region || regionOf((title + ' ' + desc).toLowerCase());
         const d = pubD ? new Date(pubD) : new Date();
         regions[region].push({
           title,
           snippet: desc.substring(0, 150),
           value: '',
+          lang: feed.lang || 'en',
           src: 'RSS · ' + d.toLocaleDateString('en-US', {year: '2-digit', month: 'short', day: 'numeric'}),
           url: link,
           isNew: true,
         });
         if (link) ok = true;
       }
-    } catch (e) { console.warn('RSS fetch failed:', url, e.message); }
+    } catch (e) { console.warn('RSS fetch failed:', feed.url, e.message); }
   }
   return ok ? finalize(regions, 'RSS', false) : null;
 }

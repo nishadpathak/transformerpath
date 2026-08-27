@@ -79,9 +79,10 @@ form textarea { min-height:112px; resize:vertical; }
       <a href="events.html">Events</a>
       <a href="webinars.html">Webinars</a>
       <a href="manufacturers.html">Manufacturers</a>
+      <a href="markets.html">Markets</a>
       <a href="learn.html">Learn</a>
       <a href="grids.html">Grids</a>
-      <a href="resources.html">Knowledge</a>
+      <a href="knowledge.html">Knowledge</a><a href="resources.html">Resources</a>
       <a href="blog.html">Blog</a>
       <a href="for-manufacturers.html">For Manufacturers</a>
       <a href="pricing.html">Pricing</a>
@@ -112,11 +113,11 @@ form textarea { min-height:112px; resize:vertical; }
 <section class="hero" style="padding:52px 0 40px">
   <div class="container">
     <h1 style="font-size:2.15rem">For transformer <span>manufacturers</span></h1>
-    <p>Design tools your engineers can use on a live tender, training that brings new
-       hires up to one methodology, and vendor-neutral consulting on your test bay —
-       plus a straight answer on where you need simulation software instead of us.</p>
+    <p>Design tools for live tenders, training that brings new hires up to one methodology,
+       and vendor-neutral consulting on a test bay — plus a straight answer on when
+       simulation software is required.</p>
     <div style="margin-top:22px">
-      <a href="#enquire" style="display:inline-block;background:#f5a623;color:#0d1b2e;font-weight:800;padding:13px 28px;border-radius:10px;text-decoration:none">Send us a brief &rarr;</a>
+      <a href="#enquire" style="display:inline-block;background:#f5a623;color:#0d1b2e;font-weight:800;padding:13px 28px;border-radius:10px;text-decoration:none">Send a brief &rarr;</a>
       <a href="software.html" style="display:inline-block;margin-left:14px;color:var(--accent);font-weight:700">Browse the simulation-software directory &rarr;</a>
     </div>
   </div>
@@ -126,45 +127,47 @@ form textarea { min-height:112px; resize:vertical; }
   <div class="container" style="max-width:1080px">
 
     <div class="honest">
-      <h2>First, the honest part: what we do and don&rsquo;t simulate</h2>
-      <p>If what you need is a general-purpose finite-element package &mdash; arbitrary 3D
-         geometry, coupled electromagnetic&ndash;thermal&ndash;structural physics, local eddy and
-         stray loss in tank and clamping steel, hot-spot prediction from a meshed model &mdash;
-         then that is Ansys or COMSOL territory and we are not it. We would rather tell you that
-         now than after an invoice.</p>
+      <h2>What the analytical tools simulate &mdash; and when FEM is required</h2>
+      <p>TransformerPath engineering tools use analytical and closed-form methods for
+         preliminary design, tender sizing and engineering checks. They are not a substitute for
+         a general-purpose finite-element package &mdash; arbitrary 3D geometry, coupled
+         electromagnetic&ndash;thermal&ndash;structural physics, local eddy and stray loss in tank
+         and clamping steel, hot-spot prediction from a meshed model. Where that is required, a
+         package such as Ansys or COMSOL is the right tool.</p>
 
-      <p><strong>We do, however, solve one part of it properly.</strong> The calculator carries a
-         2D axisymmetric magnetostatic solve of the leakage field in the core window. It needs no
+      <p><strong>The calculator does solve one part of it properly.</strong> It carries a
+         2D axisymmetric magnetostatic solve of the leakage field in the core window.
+         It needs no
          CAD import, because the winding geometry is already parametric &mdash; you get the flux
          plot, the leakage reactance computed from stored energy rather than from an empirical
          fringing factor, and the <strong>axial force distribution along the winding</strong>,
          which is the quantity closed-form methods handle worst and the one that governs winding
          collapse when ampere-turns are unbalanced by a tap.</p>
-      <p>Because the question comes up constantly, we publish a
+      <p>Because the question comes up constantly, TransformerPath publishes a
          <a href="software.html">vendor-neutral directory of the tools that do solve it</a>,
          grouped by the job they do rather than by vendor. It covers the commercial packages
          (Ansys Maxwell, COMSOL, Simcenter MAGNET and Flux, Opera/CST, JMAG, EMWorks) and the
          free and open-source options &mdash; for 2D axisymmetric work, which covers most
          leakage-field, short-circuit-force and electrostatic-stress problems, FEMM is genuinely
-         capable. We sell none of them and take no commission.</p>
-      <p>Our tools sit <strong>upstream</strong> of that, at the sizing and documentation stages
-         where FEM is slow and overkill. Classical closed-form methods land within roughly
-         10&ndash;15&nbsp;% of a works design &mdash; excellent for tender sizing, costing and
-         sanity-checking a supplier's numbers, and not a substitute for FEM where the failure
-         mode is local rather than average.
-         <a href="article-fem-vs-analytical.html">We wrote up exactly where that boundary sits &rarr;</a></p>
+         capable. TransformerPath sells none of them and takes no commission.</p>
+      <p>TransformerPath engineering tools sit <strong>upstream</strong> of that, at the sizing and documentation stages
+         where FEM is slow and overkill. Classical closed-form methods give useful preliminary
+         estimates for tender sizing and costing; accuracy depends materially on transformer
+         type, geometry, design assumptions and the quantity being calculated. They are not a
+         substitute for FEM where the failure mode is local rather than average.
+         <a href="article-fem-vs-analytical.html">TransformerPath explains exactly where that boundary sits &rarr;</a></p>
     </div>
 
     <div class="section-head" style="margin-bottom:18px">
-      <h2>What we offer a manufacturer</h2>
-      <p>Four things, and they are useful in a different order depending on whether your
-         bottleneck is design capacity, engineer ramp-up or test-bay reporting.</p>
+      <h2>What TransformerPath offers a manufacturer</h2>
+      <p><b>Engineering Tools</b> · <b>Technical Learning</b> · <b>Industry Intelligence</b> · <b>Technical Services</b> &mdash; useful in a different order depending on whether your
+         bottleneck is design capacity, engineer ramp-up, market visibility or test-bay reporting.</p>
     </div>
 
     <div class="offer">
 
       <div class="card2">
-        <span class="kicker">Design</span>
+        <span class="kicker">Engineering Tools</span>
         <h3>IEC 60076 design calculator <span class="badge-plan">In plans</span></h3>
         <p>Rating, voltages, vector group and target impedance in; a first-cut design out, in
            seconds. Distribution (oil), power (oil) and cast-resin (dry) modes.</p>
@@ -180,7 +183,7 @@ form textarea { min-height:112px; resize:vertical; }
       </div>
 
       <div class="card2">
-        <span class="kicker">Documentation</span>
+        <span class="kicker">Engineering Tools</span>
         <h3>Rating plate &amp; test report generators <span class="badge-plan">In plans</span></h3>
         <p>The fastest practical win for a factory: standardise what your test bay hands a
            customer, with no new hardware.</p>
@@ -193,24 +196,24 @@ form textarea { min-height:112px; resize:vertical; }
       </div>
 
       <div class="card2">
-        <span class="kicker">People</span>
+        <span class="kicker">Technical Learning</span>
         <h3>Engineering training <span class="badge-plan">In plans</span></h3>
         <p>Bring new design and test engineers up to speed on one consistent methodology
            instead of whoever happened to train them.</p>
         <ul>
           <li>26-chapter masterclass, from the EMF equation to tender economics</li>
           <li>Ten interactive 3D models &mdash; core, windings, bushings, OLTC, GSU and more</li>
-          <li>Design Engineer Track, four levels, with engineer-reviewed capstones</li>
+          <li>Design Engineer Track, four levels, with manually reviewed capstones</li>
           <li>Team rollout on one shared access link &mdash; see Enterprise below</li>
         </ul>
         <a class="go" href="teams.html">Corporate &amp; team training &rarr;</a>
       </div>
 
       <div class="card2">
-        <span class="kicker">Consulting</span>
+        <span class="kicker">Technical Services</span>
         <h3>Test lab &amp; design services</h3>
-        <p>Scoped per project, quoted against your product range and target markets. We are
-           vendor-neutral &mdash; we don't sell hardware, we spec what you actually need.</p>
+        <p>Scoped per project, quoted against your product range and target markets. TransformerPath is
+           vendor-neutral &mdash; it does not sell hardware; it specifies what you actually need.</p>
         <ul>
           <li>Test bay design and specification, routine vs. type test capability planning</li>
           <li>Digitalization retrofit &mdash; reporting layer for an existing bay</li>
@@ -219,10 +222,24 @@ form textarea { min-height:112px; resize:vertical; }
         <a class="go" href="test-lab-consulting.html">Consulting detail &rarr;</a>
       </div>
 
+      <div class="card2">
+        <span class="kicker">Industry Intelligence</span>
+        <h3>Daily Intel &amp; the transformer market data</h3>
+        <p>Track tenders, prices (copper, CRGO, esters), new factories and the grid build-out that
+           decides where your capacity sells next &mdash; region-filterable, with an RSS feed.</p>
+        <ul>
+          <li>Daily Intel &mdash; updated hourly, region-filterable, free</li>
+          <li>World grid census (151 countries, 166 operators) and Market hubs</li>
+          <li>Thousands of events &amp; webinars, plus the manufacturer &amp; supplier directory</li>
+          <li>Projects &amp; quotations look-up, and RFQ intake</li>
+        </ul>
+        <a class="go" href="intel.html">See Daily Intel &rarr;</a>
+      </div>
+
     </div>
 
     <div class="section-head" style="margin-bottom:18px">
-      <h2>Where we fit, and where we don't</h2>
+      <h2>Where the analytical tools apply, and where they don't</h2>
       <p>The full comparison, with the reasoning behind each column, is in the table below.</p>
     </div>
     <div class="fitwrap">
@@ -232,30 +249,30 @@ form textarea { min-height:112px; resize:vertical; }
         </thead>
         <tbody>
           <tr><td>Size a unit for a tender, fast</td><td class="yes">TransformerPath calculator</td>
-              <td>Seconds per iteration, within ~10&ndash;15&nbsp;% of a works design. FEM is far too slow at this stage.</td></tr>
+              <td>Seconds per iteration — a useful preliminary estimate; accuracy depends on type, geometry and assumptions. FEM is far too slow at this stage.</td></tr>
           <tr><td>Sanity-check a supplier's or a junior engineer's numbers</td><td class="yes">TransformerPath calculator</td>
               <td>Independent closed-form second opinion on losses, impedance and regulation.</td></tr>
           <tr><td>Produce a buyer-ready routine test report</td><td class="yes">Test report generator</td>
               <td>Formatting and consistency problem, not a physics problem.</td></tr>
           <tr><td>Train new design or test engineers</td><td class="yes">Masterclass + Design Engineer Track</td>
-              <td>One methodology, engineer-reviewed capstones, written feedback per level.</td></tr>
+              <td>One methodology, manually reviewed capstones, written feedback per level.</td></tr>
           <tr><td>Spec or digitalise a test bay</td><td class="yes">Consulting engagement</td>
               <td>Vendor-neutral scoping against your product range and target standards.</td></tr>
           <tr><td>Map leakage flux in concentric windings; get axial force per section</td><td class="yes">TransformerPath field solve</td>
               <td>2D axisymmetric, built from the design you just entered. Runs in about a second.</td></tr>
-          <tr><td>Local stray loss in tank, clamps or flitch plates</td><td class="no">3D FEM &mdash; not us</td>
+          <tr><td>Local stray loss in tank, clamps or flitch plates</td><td class="no">3D FEM &mdash; outside this scope</td>
               <td>Genuinely 3D and outside an axisymmetric model. See the <a href="software.html">software directory</a>.</td></tr>
-          <tr><td>Predict a winding hot spot from geometry</td><td class="no">Coupled FEM/CFD &mdash; not us</td>
-              <td>Our thermal output is a sizing estimate, not a local hot-spot solve.</td></tr>
-          <tr><td>Prove short-circuit withstand for a type test</td><td class="no">FEM + physical test &mdash; not us</td>
-              <td>Our force and thermal figures are analytical estimates, not certification evidence.</td></tr>
+          <tr><td>Predict a winding hot spot from geometry</td><td class="no">Coupled FEM/CFD &mdash; outside this scope</td>
+              <td>The tool's thermal output is a sizing estimate, not a local hot-spot solve.</td></tr>
+          <tr><td>Prove short-circuit withstand for a type test</td><td class="no">FEM + physical test &mdash; outside this scope</td>
+              <td>The force and thermal figures are analytical estimates, not certification evidence.</td></tr>
         </tbody>
       </table>
     </div>
 
     <div class="section-head" style="margin-bottom:18px">
       <h2>What it costs</h2>
-      <p>Engineer is an annual subscription; Professional and Enterprise remain single payments for 12 months. No per-seat setup on any of them.
+      <p>Learning, Professional and Team are each a single payment for 12 months of access &mdash; not a recurring subscription. No per-seat setup on any of them.
          Consulting is scoped and quoted per project.</p>
     </div>
     <div class="fitwrap">
@@ -270,7 +287,7 @@ form textarea { min-height:112px; resize:vertical; }
       </table>
     </div>
     <p style="color:var(--muted);font-size:.88rem;margin:-24px 0 40px">
-      Larger seat counts, multi-site rollouts, and invoicing in AED or USD
+      Larger seat counts, multi-site rollouts, and invoicing in USD or EUR
       are handled through <a href="teams.html" style="color:var(--accent);font-weight:600">corporate training</a>.
       Access is stored in the browser it was purchased from, so a team plan is a shared link rather than
       individual logins &mdash; if your IT policy requires per-user accounts and SSO, tell us and we'll be
@@ -278,10 +295,10 @@ form textarea { min-height:112px; resize:vertical; }
     </p>
 
     <div class="section-head" style="margin-bottom:18px" id="enquire">
-      <h2>Send us a brief</h2>
-      <p>Tell us your product range and what you're trying to solve, and we'll come back with
-         something concrete rather than a brochure. Send a design you already know and we'll
-         come back with what our tools make of it, in writing.</p>
+      <h2>Send a brief</h2>
+      <p>Describe your product range and the problem you're solving. TransformerPath returns
+         something concrete rather than a brochure &mdash; send a design you already know and it comes
+         back run through the engineering tools, in writing.</p>
     </div>
     <div class="formwrap">
       <form name="manufacturer-enquiry" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" id="mfForm">
@@ -344,7 +361,7 @@ form textarea { min-height:112px; resize:vertical; }
         <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span style="color:var(--amber)">Path</span></a>
         <p style="margin-top:12px">The global intelligence and networking platform for transformer manufacturers, suppliers, engineers and utilities.</p>
       </div>
-      <div><h2>PLATFORM</h2><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="learn.html">Learn</a><a href="pricing.html">Pricing</a><a href="testbay.html">Test Bay</a><a href="design.html">Design Duel</a><a href="teams.html">Corporate Training</a><a href="test-lab-consulting.html">Test Lab Consulting</a><a href="for-manufacturers.html">For Manufacturers</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="software.html">Software</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="books.html">Books</a><a href="sponsor.html">Sponsor</a></div>
+      <div><h2>PLATFORM</h2><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="learn.html">Learn</a><a href="pricing.html">Pricing</a><a href="testbay.html">Test Bay</a><a href="design.html">Design Duel</a><a href="teams.html">Corporate Training</a><a href="test-lab-consulting.html">Test Lab Consulting</a><a href="for-manufacturers.html">For Manufacturers</a><a href="grids.html">Grids</a><a href="knowledge.html">Knowledge</a><a href="resources.html">Resources</a><a href="software.html">Software</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="books.html">Books</a><a href="sponsor.html">Sponsor</a></div>
       <div><h2>COMPANY</h2><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
       <div><h2>CONTACT</h2><a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a><a href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener">LinkedIn ↗</a></div>
     </div>

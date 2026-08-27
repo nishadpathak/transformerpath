@@ -78,9 +78,10 @@ a.plain:hover { text-decoration:underline; }
       <a href="events.html">Events</a>
       <a href="webinars.html">Webinars</a>
       <a href="manufacturers.html">Manufacturers</a>
+      <a href="markets.html">Markets</a>
       <a href="learn.html">Learn</a>
       <a href="grids.html">Grids</a>
-      <a href="resources.html">Knowledge</a>
+      <a href="knowledge.html">Knowledge</a><a href="resources.html">Resources</a>
       <a href="blog.html">Blog</a>
       <a href="sponsor.html">Sponsor</a>
       <a href="for-manufacturers.html">For Manufacturers</a>
@@ -193,7 +194,7 @@ a.plain:hover { text-decoration:underline; }
   <div class="panel" id="panel-h2"></div>
   <div class="panel" id="panel-tech"></div>
 
-  <div class="footer">Updated twice daily at 06:00 and 18:00 UTC. Each item links to its original source.</div>
+  <div class="footer">Updated hourly. Each item links to its original source.</div>
 </div>
 
 <script>
@@ -482,7 +483,7 @@ const GRID_NEWS = {
 };
 
 const REPAIR_NEWS = [
-  { title:"Kuwait MEW main-substation maintenance & repair tender (132/300/400 kV) at Audit Bureau — final value ~KWD 129.5m ($421m)", snippet:"Kuwait's Ministry of Electricity, Water & Renewable Energy referred a large maintenance-and-repair tender for the country's main 132/300/400 kV transformer substations to the Audit Bureau (Diwan al-Muhasaba) for pre-award control review; after the Bureau's edits (removing still-under-warranty scope and un-supportable spares) the final contract value was set at ~KWD 129.492m (~$421m), down from KWD 135.4m. A major multi-year substation O&M scope — transformer overhaul, spares, oil-treatment and field-service demand squarely in Elin Transformer Services' lane.", value:"~$421m", src:"Al-Jarida / Alwifaq · Dec 2025 [ar]", url:"https://www.aljarida.com/article/123005" },
+  { title:"Kuwait MEW main-substation maintenance & repair tender (132/300/400 kV) at Audit Bureau — final value ~KWD 129.5m ($421m)", snippet:"Kuwait's Ministry of Electricity, Water & Renewable Energy referred a large maintenance-and-repair tender for the country's main 132/300/400 kV transformer substations to the Audit Bureau (Diwan al-Muhasaba) for pre-award control review; after the Bureau's edits (removing still-under-warranty scope and un-supportable spares) the final contract value was set at ~KWD 129.492m (~$421m), down from KWD 135.4m. A major multi-year substation O&M scope — transformer overhaul, spares, oil-treatment and field-service demand squarely in transformer field-services' lane.", value:"~$421m", src:"Al-Jarida / Alwifaq · Dec 2025 [ar]", url:"https://www.aljarida.com/article/123005" },
   { title:"DEWA portal re-check (9 Jul): 1,500 kVA DT supply tender in evaluation; K-Station transformer protection-relay job closed — no new transformer tenders since last check", snippet:"Direct DEWA tender-portal re-check (9 Jul): portal reachable, no new transformer/substation openings surfaced since the 8 Jul check. Still live: open tender 2052600034 — supply of 11/0.4 kV, 1500 kVA mineral-oil distribution transformers (closed 2 Jun) in evaluation; selected tender 2182600065 — protection-relay replacement of BPST-54 generator & transformer at 'K' Station, Jebel Ali (closed 25 Jun); spare CT/PT supply for D-Repowering generators (closed 26 May); plus a transformer-oil-filtration service contract for D/E/G stations on the board. Near-term DT, accessory, oil-treatment and spares scope in Dubai.", value:"", src:"DEWA tender portal · re-checked 9 Jul 2026 [en]", url:"https://www.dewa.gov.ae/en/supplier/services/tender-opening-results" },
   { title:"Kuwait tenders three 132/11 kV substations powering Google/Microsoft cloud data centres (~$72m)", snippet:"CAPT extended bidding for supply/installation of three main substations (GOGL A/B/C) at Sulaibiya, North Saad Al-Abdullah and Al-Mutlaa serving the Cloud Data Center project; ~KD 22m, award targeted 2026, completion Q4 2027 — new GCC data-centre substations mean fresh transformer supply now and a service/spares base later.", value:"~$72m", src:"Arab Times / AGBI · Q1 2026", url:"https://www.arabtimesonline.com/news/cloud-data-center-tender-extended/" },
   { title:"DEWA AED 8.5bn grid expansion + 10 substations commissioned", snippet:"Large active substation fleet expansion in Dubai — drives transformer accessory supply, spares and overhaul/maintenance demand.", value:"AED 8.5bn", src:"SolarQuarter", url:"https://solarquarter.com/2026/05/21/dubai-electricity-and-water-authority-commissions-10-substations-expands-dubai-power-grid-with-d-8-5-billion-projects/" },
@@ -711,7 +712,7 @@ const H2_PROJECTS = [
 ];
 
 /* Technology Watch — weekly scan of transformer & grid-equipment technology.
-   Grouped by theme; newest / most Elin-relevant flagged isNew. Maintained by the weekly tech run. */
+   Grouped by theme; newest / most supplier-relevant flagged isNew. Maintained by the weekly tech run. */
 const TECH_WATCH = {
   SST: {
     label: "Solid-State Transformers (SST) — commercialising for AI data centres & grid edge",
@@ -733,7 +734,7 @@ const TECH_WATCH = {
   FLUIDS: {
     label: "Dielectric fluids & insulation — bio-based ester momentum",
     items: [
-      { title:"Cargill opens FR3 natural-ester plant in Gouda, NL — triples European supply", snippet:"Cargill's new Gouda plant triples European FR3 natural-ester production as demand climbs from grid expansion, data centres, renewables and battery storage. Ester fill (330°C fire point vs 145°C mineral oil, 5–8× paper life) also shifts insulation duty toward aramid / hybrid kits — an Elin-addressable materials signal.", value:"", src:"Business Wire / Cargill · Mar 2026 [en]", url:"https://www.businesswire.com/news/home/20260323395163/en/New-Cargill-Plant-Triples-European-Supply-of-FR3-Natural-Ester-Dielectric-Fluid-as-Demand-Grows-for-Bio-Based-High-Performance-Transformer-Fluids", isNew:true },
+      { title:"Cargill opens FR3 natural-ester plant in Gouda, NL — triples European supply", snippet:"Cargill's new Gouda plant triples European FR3 natural-ester production as demand climbs from grid expansion, data centres, renewables and battery storage. Ester fill (330°C fire point vs 145°C mineral oil, 5–8× paper life) also shifts insulation duty toward aramid / hybrid kits — an supplier-addressable materials signal.", value:"", src:"Business Wire / Cargill · Mar 2026 [en]", url:"https://www.businesswire.com/news/home/20260323395163/en/New-Cargill-Plant-Triples-European-Supply-of-FR3-Natural-Ester-Dielectric-Fluid-as-Demand-Grows-for-Bio-Based-High-Performance-Transformer-Fluids", isNew:true },
       { title:"Review: emerging dielectric fluids for sustainable, resilient transformers", snippet:"A 2026 MDPI review maps the field beyond mineral oil — natural & synthetic esters, silicone, gas-to-liquid oils and nanofluids — assessed on fire safety, biodegradability and solid-insulation preservation. Useful frame for spec conversations with utilities tightening environmental rules.", value:"", src:"MDPI Engineering Proceedings · 2026 [en]", url:"https://www.mdpi.com/2673-4591/140/1/64" }
     ]
   },
@@ -749,7 +750,7 @@ const TECH_WATCH = {
     label: "Digital twin & AI condition monitoring",
     items: [
       { title:"CIGRE brochure: condition monitoring & predictive maintenance for HVDC converter-station transformers", snippet:"CIGRE's Apr 2026 technical brochure reviews current diagnostic methods and lays out a roadmap for moving HVDC substations to predictive maintenance — relevant as HVDC and converter-transformer fleets grow.", value:"", src:"CIGRE ELECTRA · Apr 2026 [en]", url:"https://electra.cigre.org/345-april-2026/technical-brochures/transformer-condition-health-monitoring-and-predictive-maintenance-of-hvdc-converter-stations.html", isNew:true },
-      { title:"GCC: digital-twin-enabled transformers emerging as a new value layer", snippet:"Siemens' 2026 Middle East Infrastructure Transition Monitor finds 62% expect AI to reshape infrastructure ops within three years and 64% see smart grids/grid software as key enablers. Digital-twin transformers (embedded sensors + AI predictive analytics) are called out as a value layer beyond equipment supply — a GCC / Elin-addressable angle for service offerings.", value:"", src:"Siemens / Zawya · 2026 [en]", url:"https://www.zawya.com/en/press-release/research-and-studies/middle-east-leads-global-infrastructure-transition-as-ai-resilience-and-grid-modernization-accelerate-siemens-report-finds-gd15ue4m", isNew:true }
+      { title:"GCC: digital-twin-enabled transformers emerging as a new value layer", snippet:"Siemens' 2026 Middle East Infrastructure Transition Monitor finds 62% expect AI to reshape infrastructure ops within three years and 64% see smart grids/grid software as key enablers. Digital-twin transformers (embedded sensors + AI predictive analytics) are called out as a value layer beyond equipment supply — a GCC / supplier-addressable angle for service offerings.", value:"", src:"Siemens / Zawya · 2026 [en]", url:"https://www.zawya.com/en/press-release/research-and-studies/middle-east-leads-global-infrastructure-transition-as-ai-resilience-and-grid-modernization-accelerate-siemens-report-finds-gd15ue4m", isNew:true }
     ]
   }
 };
@@ -822,12 +823,12 @@ renderNews(); renderGrid(); renderRepair(); renderFactories(); function renderH2
   const rows=H2_PROJECTS.map(p=>{
     const near = GCC_IN.some(f=>p[1].includes(f));
     return `<tr${near?' style="background:rgba(74,222,128,.06)"':''}>
-      <td><strong>${p[0]}</strong>${near?' <span class="new-badge" title="GCC / India — Elin-addressable">\u25CF</span>':''}</td>
+      <td><strong>${p[0]}</strong>${near?' <span class="new-badge" title="GCC / India — supplier-addressable">\u25CF</span>':''}</td>
       <td>${p[1]}</td><td>${p[2]}</td><td>${p[3]}</td><td>${p[4]}</td><td>${p[5]}</td></tr>`;
   }).join("");
   document.getElementById("panel-h2").innerHTML =
     `<div class="region-h">Green Hydrogen Projects \u2014 electrolyser & grid-connection transformer demand</div>
-     <div style="font-size:.85rem;opacity:.85;margin:4px 0 10px">Every ~100 MW electrolyser block needs rectifier-transformer sets plus a dedicated grid-connection substation. Rectifier duty (high harmonics, thermal cycling) favours upgraded insulation systems \u2014 aramid / hybrid kits over standard kraft. Highlighted rows = GCC / Egypt / India, Elin-addressable. Seeded from the Grids census; statuses maintained by the daily job.</div>
+     <div style="font-size:.85rem;opacity:.85;margin:4px 0 10px">Every ~100 MW electrolyser block needs rectifier-transformer sets plus a dedicated grid-connection substation. Rectifier duty (high harmonics, thermal cycling) favours upgraded insulation systems \u2014 aramid / hybrid kits over standard kraft. Highlighted rows = GCC / Egypt / India, supplier-addressable. Seeded from the Grids census; statuses maintained by the daily job.</div>
      <div class="table-wrap"><table class="factory-grid"><thead><tr><th>Project</th><th>Location</th><th>Electrolyser</th><th>Output</th><th>Status</th><th>Note</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 function renderTech(){
@@ -836,7 +837,7 @@ function renderTech(){
     const r=TECH_WATCH[k]; if(!r) continue;
     h+=`<div class="region-h">${r.label}</div>`+r.items.map(card).join("");
   }
-  const note=`<div style="font-size:.85rem;opacity:.85;margin:4px 0 10px">Weekly scan of transformer &amp; grid-equipment technology — solid-state transformers, SF₆-free HV, ester/insulation fluids, hybrid &amp; amorphous cores, and digital-twin monitoring. <span class="new-badge">NEW</span> = added this week. Items with an Elin-addressable angle are noted in the snippet.</div>`;
+  const note=`<div style="font-size:.85rem;opacity:.85;margin:4px 0 10px">Weekly scan of transformer &amp; grid-equipment technology — solid-state transformers, SF₆-free HV, ester/insulation fluids, hybrid &amp; amorphous cores, and digital-twin monitoring. <span class="new-badge">NEW</span> = added this week. Items with an supplier-addressable angle are noted in the snippet.</div>`;
   document.getElementById("panel-tech").innerHTML =
     `<div class="region-h">Technology Watch — worldwide</div>`+note+h;
 }
@@ -866,7 +867,7 @@ document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
         <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span style="color:var(--amber)">Path</span></a>
         <p style="margin-top:12px">The global intelligence and networking platform for transformer manufacturers, suppliers, engineers and utilities.</p>
       </div>
-      <div><h2>PLATFORM</h2><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="learn.html">Learn</a><a href="pricing.html">Pricing</a><a href="testbay.html">Test Bay</a><a href="design.html">Design Duel</a><a href="teams.html">Corporate Training</a><a href="test-report.html">Test Report</a><a href="test-lab-consulting.html">Test Lab Consulting</a><a href="for-manufacturers.html">For Manufacturers</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="software.html">Software</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="books.html">Books</a><a href="sponsor.html">Sponsor</a></div>
+      <div><h2>PLATFORM</h2><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="learn.html">Learn</a><a href="pricing.html">Pricing</a><a href="testbay.html">Test Bay</a><a href="design.html">Design Duel</a><a href="teams.html">Corporate Training</a><a href="test-report.html">Test Report</a><a href="test-lab-consulting.html">Test Lab Consulting</a><a href="for-manufacturers.html">For Manufacturers</a><a href="grids.html">Grids</a><a href="knowledge.html">Knowledge</a><a href="resources.html">Resources</a><a href="software.html">Software</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="books.html">Books</a><a href="sponsor.html">Sponsor</a></div>
       <div><h2>COMPANY</h2><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
       <div><h2>CONTACT</h2><a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a><a href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener">LinkedIn ↗</a></div>
     </div>

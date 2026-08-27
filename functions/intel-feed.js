@@ -26,9 +26,9 @@
 
 const { buildFeed, isConfigured } = require('./lib/intel-source');
 
-/* Browser revalidates every 30 min; the CDN holds it for 6 h and may serve a
-   stale copy for a day while it refreshes behind the scenes. */
-const CACHE = 'public, max-age=1800, s-maxage=21600, stale-while-revalidate=86400';
+/* Browser revalidates every 15 min; the CDN holds it for 1 h and may serve a
+   stale copy for up to 6 h while it refreshes behind the scenes. */
+const CACHE = 'public, max-age=900, s-maxage=3600, stale-while-revalidate=21600';
 
 exports.handler = async (event) => {
   const method = (event && event.httpMethod) || 'GET';

@@ -16,7 +16,7 @@
 <link rel="stylesheet" href="style.css?v=5">
 <link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Book","name":"The TransformerPath Professional Engineering Series","author":{"@type":"Person","name":"Nishad Milind Pathak"},"publisher":{"@type":"Organization","name":"TransformerPath"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Book","name":"The TransformerPath Professional Engineering Series","author":{"@type":"Organization","name":"TransformerPath","url":"https://transformerpath.com/"},"publisher":{"@type":"Organization","name":"TransformerPath"}}</script>
 <style>
   .bk-wrap { max-width: 980px; margin: 0 auto; padding: 44px 20px 80px; }
   .bk-wrap h1 { font-size: 2.1rem; color: var(--ink); }
@@ -27,6 +27,16 @@
   .vol-card h2 { font-size: 1.25rem; color: var(--ink); margin: 0 0 4px; }
   .vol-card .tier { font-size: .78rem; font-weight: 800; letter-spacing: .5px; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
   .vol-card p { color: var(--muted); font-size: .92rem; line-height: 1.6; }
+  .vol-card .sub { color: var(--accent); font-size: .86rem; font-style: italic; margin: 0 0 6px; }
+  .bkroad { margin-top: 26px; }
+  .bkroad h2 { font-size: 1.2rem; color: var(--ink); margin: 0 0 10px; }
+  .bkroad table { width: 100%; border-collapse: collapse; }
+  .bkroad th { text-align: left; color: var(--muted); font-weight: 600; padding: 8px 10px; border-bottom: 1px solid var(--border); font-size: .8rem; }
+  .bkroad td { padding: 8px 10px; border-bottom: 1px solid var(--border); color: var(--text); font-size: .9rem; vertical-align: top; }
+  .bkroad td.v { color: var(--accent); font-weight: 700; white-space: nowrap; }
+  .bkroad td.st { white-space: nowrap; font-size: .78rem; }
+  .bkroad a { color: var(--accent); text-decoration: none; }
+  .bkroad .sub { color: var(--muted); font-size: .82rem; display: block; }
   .editions { margin-top: 14px; }
   .edition { display: flex; justify-content: space-between; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: .9rem; }
   .edition:last-child { border-bottom: 0; }
@@ -49,9 +59,10 @@
       <a href="events.html">Events</a>
       <a href="webinars.html">Webinars</a>
       <a href="manufacturers.html">Manufacturers</a>
+      <a href="markets.html">Markets</a>
       <a href="learn.html">Learn</a>
       <a href="grids.html">Grids</a>
-      <a href="resources.html">Knowledge</a>
+      <a href="knowledge.html">Knowledge</a><a href="resources.html">Resources</a>
       <a href="blog.html">Blog</a>
       <a href="sponsor.html">Sponsor</a>
       <a href="pricing.html">Pricing</a>
@@ -90,21 +101,22 @@
 
 <main class="bk-wrap">
   <h1>The TransformerPath Professional Engineering Series</h1>
-  <p class="lead">Two volumes of transformer engineering, written to work with the TransformerPath platform — every chapter links to interactive 3D models, calculators and the Academy.</p>
+  <p class="lead">The TransformerPath Professional Engineering Series — an 18-volume global engineering reference library, written to work with the TransformerPath platform; every chapter links to interactive 3D models, calculators and the Academy. The first releases (Volume 1 and Volume 2) are available now; the remaining volumes are in development.</p>
+  <p class="series-route" style="text-align:center;font-size:.82rem;color:var(--muted);margin:0 0 20px">18-volume series — <a href="#vol1" style="color:var(--text);font-weight:700">Volume 1</a> ✓ Available · <a href="#vol2" style="color:var(--text);font-weight:700">Volume 2</a> ✓ Available · <a href="books/volume-0/" style="color:var(--text)">Volume 0</a> · <a href="books/volume-3/" style="color:var(--text)">Volume 3</a> · … in development · <a href="#roadmap" style="color:var(--accent)">full roadmap</a></p>
   <div class="vol">
-    <div class="vol-card">
+    <div class="vol-card" id="vol1">
       <div class="tier">Volume 1</div>
-      <h2>The Transformer Path</h2>
-      <p>The complete engineering tour: fundamentals, magnetic circuit, windings, insulation, cooling, losses &amp; impedance, testing, standards, and design to IEC 60076 / IEEE C57 — with the interactive companion models.</p>
+      <h2>The Transformer Path — A Practical Guide</h2>
+      <p class="sub">Distribution Transformer Design — IEC and IEEE/ANSI Practice. The complete engineering tour: fundamentals, magnetic circuit, windings, insulation, cooling, losses &amp; impedance, testing, standards, and design to IEC 60076 / IEEE C57 — with the interactive companion models.</p>
       <div class="editions">
         <div class="edition"><span><b>Digital Professional</b></span><span class="pr">$49</span></div>
         <div class="edition"><span><b>Premium printed</b></span><span class="pr">≈$99</span></div>
       </div>
     </div>
-    <div class="vol-card">
+    <div class="vol-card" id="vol2">
       <div class="tier">Volume 2</div>
       <h2>Power Transformer Design</h2>
-      <p>The working design companion: core &amp; winding sizing, the rating-plate and design calculator workflow, short-circuit &amp; thermal withstand, OLTC, bushings, and a full worked example end-to-end.</p>
+      <p class="sub">Large Power Transformers and Generator Step-Up Units — IEC and IEEE/ANSI Practice. The working design companion: core &amp; winding sizing, the rating-plate and design calculator workflow, short-circuit &amp; thermal withstand, OLTC, bushings, and a full worked example end-to-end.</p>
       <div class="editions">
         <div class="edition"><span><b>Digital Professional</b></span><span class="pr">$49</span></div>
         <div class="edition"><span><b>Premium printed</b></span><span class="pr">≈$99</span></div>
@@ -117,10 +129,36 @@
     <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
       <div style="font-size:1.5rem;font-weight:800;color:#fff">$79 <span style="font-size:.8rem;color:#9fb0c4">digital pair</span></div>
       <div style="font-size:1.5rem;font-weight:800;color:#fff">≈$169 <span style="font-size:.8rem;color:#9fb0c4">printed library</span></div>
-      <a class="btn btn-amber" href="mailto:hello@transformerpath.com?subject=Books%20order">Email to order →</a>
+      <a class="btn btn-amber" href="mailto:hello@transformerpath.com?subject=Books%20order" data-track="book_purchase" data-track-book="Professional Engineering Series">Email to order →</a>
     </div>
   </div>
   <p class="bk-note">Each volume includes <b>online companions</b> — figures, calculators, 3D models, extra examples, answers and errata — activated via the TransformerPath account. Printed editions ship on demand; prices are indicative and subject to print/fulfilment cost. Books are currently available on request by email while the storefront and account activation are completed.</p>
+  <div class="bkroad" id="roadmap">
+    <h2>The 18-volume roadmap</h2>
+    <table>
+      <thead><tr><th>#</th><th>Volume</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td class="v">V0</td><td><a href="books/volume-0/">Fundamentals of Transformer Engineering</a><span class="sub">Magnetic Circuits, Principles, and the Physics of Transformation</span></td><td class="st">Coming soon</td></tr>
+        <tr><td class="v">V1</td><td><a href="#vol1">The Transformer Path — A Practical Guide: From Specification to Service</a><span class="sub">Distribution Transformer Design — IEC and IEEE/ANSI Practice</span></td><td class="st">✓ Available</td></tr>
+        <tr><td class="v">V2</td><td><a href="#vol2">Power Transformer Design</a><span class="sub">Large Power Transformers and Generator Step-Up Units — IEC and IEEE/ANSI Practice</span></td><td class="st">✓ Available</td></tr>
+        <tr><td class="v">V3</td><td><a href="books/volume-3/">Transformer Testing</a><span class="sub">From Routine Tests to Partial Discharge Diagnosis — IEC and IEEE/ANSI Practice</span></td><td class="st">Coming soon</td></tr>
+        <tr><td class="v">V4</td><td><a href="books/volume-4/">Transformer Diagnostics &amp; Condition Assessment</a><span class="sub">Monitoring, Interpretation, and Condition Assessment</span></td><td class="st">Coming soon</td></tr>
+        <tr><td class="v">V5</td><td><a href="books/volume-5/">Transformer Failures &amp; Forensic Engineering</a><span class="sub">Analysis, Root Causes, and Lessons Learned</span></td><td class="st">Coming soon</td></tr>
+        <tr><td class="v">V6</td><td><a href="books/volume-6/">Transformer Manufacturing &amp; Quality</a><span class="sub">Process, Quality, and Production Management</span></td><td class="st">Coming soon</td></tr>
+        <tr><td class="v">V7</td><td><a href="books/volume-7/">Transformer Insulation, Materials &amp; Dielectrics</a><span class="sub">Paper, Oil, Pressboard, and the Solid/Liquid Interface</span></td><td class="st">Coming soon</td></tr>
+        <tr><td class="v">V8</td><td><a href="books/volume-8/">Transformer Components &amp; Accessories</a><span class="sub">Hardware Selection, Integration, and Maintenance</span></td><td class="st">Coming soon</td></tr>
+        <tr><td class="v">V9</td><td><a href="books/volume-9/">Special-Purpose &amp; Emerging Transformers</a><span class="sub">Special Applications, Emerging Technologies, and Extreme Environments</span></td><td class="st">Coming soon</td></tr>
+        <tr><td class="v">V10</td><td><a href="books/volume-10/">Protection, Control, Power Electronics &amp; Grid Integration</a><span class="sub">The Transformer as a System Component</span></td><td class="st">Coming soon</td></tr>
+        <tr><td class="v">V11</td><td><a href="books/volume-11/">Transformer Commercial Engineering &amp; Costing</a><span class="sub">OEM Costing, Bid Strategy, and Post-Award Control</span></td><td class="st">Coming soon</td></tr>
+        <tr><td class="v">V12</td><td><a href="books/volume-12/">Utility Specifications, Tenders &amp; Bid Management</a><span class="sub">Specification Interpretation, Compliance, and Bid Management</span></td><td class="st">Coming soon</td></tr>
+        <tr><td class="v">V13</td><td><a href="books/volume-13/">Transformer Economics, Procurement &amp; Supply Chain</a><span class="sub">Total Cost of Ownership, Sourcing, and Logistics</span></td><td class="st">Coming soon</td></tr>
+        <tr><td class="v">V14</td><td><a href="books/volume-14/">Transformer Safety, Sustainability &amp; Environment</a><span class="sub">People, Equipment, and Environmental Protection</span></td><td class="st">Coming soon</td></tr>
+        <tr><td class="v">V15</td><td><a href="books/volume-15/">Transformer Installation, Commissioning, Service &amp; Life Extension</a><span class="sub">Field Operations, Maintenance, and Lifecycle Management</span></td><td class="st">Coming soon</td></tr>
+        <tr><td class="v">V16</td><td><a href="books/volume-16/">Transformer Standards, Quality &amp; Test Frameworks</a><span class="sub">Standards Architecture, Quality Management, and Test Frameworks</span></td><td class="st">Coming soon</td></tr>
+        <tr><td class="v">V17</td><td><a href="books/volume-17/">Utility Transformer Asset Management</a><span class="sub">Fleet Health, Risk, and Replacement Strategy</span></td><td class="st">Coming soon</td></tr>
+      </tbody>
+    </table>
+  </div>
 </main>
 <footer>
   <div class="container">
@@ -129,7 +167,7 @@
         <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span style="color:var(--amber)">Path</span></a>
         <p style="margin-top:12px">The global intelligence and networking platform for transformer manufacturers, suppliers, engineers and utilities.</p>
       </div>
-      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="learn.html">Learn</a><a href="teams.html">Corporate Training</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="books.html">Books</a><a href="sponsor.html">Sponsor</a></div>
+      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="learn.html">Learn</a><a href="teams.html">Corporate Training</a><a href="grids.html">Grids</a><a href="knowledge.html">Knowledge</a><a href="resources.html">Resources</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="books.html">Books</a><a href="sponsor.html">Sponsor</a></div>
       <div><h4>COMPANY</h4><a href="about.html">About Us</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
       <div><h4>CONTACT</h4><a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a><a href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener">LinkedIn ↗</a></div>
     </div>

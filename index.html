@@ -26,7 +26,12 @@
 .hero-cine { position:relative; overflow:hidden; background-image:url('brand/hero.jpg'); background-size:cover; background-position:center; background-repeat:no-repeat; background-color:#0a1626; color:#fff; padding:78px 0 88px; }
 .hero-cine .container { position:relative; z-index:3; }
 .hero-art { position:absolute; inset:0; z-index:1; width:100%; height:100%; pointer-events:none; display:block; }
-.hero-cine::after { content:""; position:absolute; inset:0; z-index:2; background:linear-gradient(90deg, rgba(13,27,46,.85) 0%, rgba(13,27,46,.82) 38%, rgba(13,27,46,.55) 72%, rgba(13,27,46,.25) 100%); }
+.hero-cine::before { content:""; position:absolute; left:-12%; top:-35%; width:124%; height:170%; z-index:2; background:
+  radial-gradient(38% 42% at 24% 30%, rgba(245,166,35,.20), transparent 62%),
+  radial-gradient(42% 50% at 78% 26%, rgba(56,130,246,.20), transparent 60%),
+  radial-gradient(52% 58% at 50% 94%, rgba(245,166,35,.12), transparent 60%);
+  filter: blur(34px); opacity:.9; pointer-events:none; animation: aurora 18s ease-in-out infinite alternate; }
+.hero-cine::after { content:""; position:absolute; inset:0; z-index:1; background:linear-gradient(90deg, rgba(13,27,46,.85) 0%, rgba(13,27,46,.82) 38%, rgba(13,27,46,.55) 72%, rgba(13,27,46,.25) 100%); }
 .hero-cine .kicker { display:inline-block; background:rgba(245,166,35,.14); color:var(--amber); padding:6px 18px; border-radius:999px; font-size:.82rem; font-weight:700; letter-spacing:.3px; margin-bottom:22px; border:1px solid rgba(245,166,35,.3); }
 .hero-cine h1 { font-size:3.1rem; line-height:1.08; letter-spacing:-1.2px; margin-bottom:18px; max-width:680px; }
 .hero-cine h1 span { color:var(--amber); }
@@ -91,17 +96,21 @@
 
 <header>
   <div class="container nav">
-    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg width="30" height="30" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span>Path</span></a>
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg>Transformer<span>Path</span></a>
     <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav" onclick="var n=document.querySelector('.nav-links');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))">☰</button>
     <nav class="nav-links" id="mainNav">
       <a href="intel.html">Daily Intel</a>
       <a href="events.html">Events</a>
       <a href="webinars.html">Webinars</a>
+      <a href="applications.html">Applications</a>
       <a href="manufacturers.html">Manufacturers</a>
+      <a href="markets.html">Markets</a>
       <a href="learn.html">Learn</a>
       <a href="grids.html">Grids</a>
-      <a href="resources.html">Knowledge</a>
+      <a href="knowledge.html">Knowledge</a>
+      <a href="resources.html">Resources</a>
       <a href="blog.html">Blog</a>
+      <a href="books.html">Books</a>
       <a href="sponsor.html">Sponsor</a>
       <a href="for-manufacturers.html">For Manufacturers</a>
       <a href="pricing.html">Pricing</a>
@@ -177,12 +186,12 @@
       <div class="hero-copy">
         <span class="kicker">Navigate the Transformer Industry</span>
         <h1>Where the world's <span>transformer industry</span> stays ahead.</h1>
-        <p class="lead">Daily market intelligence, a global manufacturer directory, a country-by-country grid census, and engineering tools &mdash; one platform, updated twice daily (06:00 & 18:00 UTC).</p>
+        <p class="lead">Industry intelligence, engineering tools, manufacturer and supplier data, and professional learning for the global transformer industry &mdash; one platform, updated hourly.</p>
         <div class="hero-ctas">
           <a href="intel.html" class="btn btn-amber">Read Today's Intel</a>
           <a href="manufacturers.html" class="btn btn-outline">Explore Manufacturers</a>
         </div>
-        <div class="trust"><span>Updated twice daily (06:00 &amp; 18:00 UTC)</span><span>Global coverage</span><span>Data free to read</span></div>
+        <div class="trust"><span>Updated hourly</span><span>Global coverage</span><span>Data free to read</span></div>
       </div>
       <div class="hero-panel" aria-label="TransformerPath platform at a glance">
         <svg class="hero-arcs" viewBox="0 0 560 560" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
@@ -268,7 +277,7 @@
     <div class="grid grid-3" id="glanceCards">
       <div class="card reveal"><span class="emoji" aria-hidden="true">📋</span><h3>Tenders & Projects</h3><p>SEC awards SPTC a $376M transformer & reactor deal; Hitachi Energy India wins a Rs 6.47B 765kV PGCIL order; KAHRAMAA 2026 expansion packages out.</p></div>
       <div class="card reveal"><span class="emoji" aria-hidden="true">🌍</span><h3>Supplier & Capacity News</h3><p>Weidmann commits $220M+ to a new China transformerboard plant; Voltamp and Virginia Transformer add new capacity; US LPT lead times run 30–36 months per the latest NLR report, insulation materials named a bottleneck.</p></div>
-      <div class="card reveal"><span class="emoji" aria-hidden="true">📈</span><h3>Prices & Materials</h3><p>Copper near $14,545/t (~$6.60/lb), holding at its 2026 high as Mideast supply risk persists; CRGO firm near $5,550/MT US and ~$1,075/MT China.</p></div>
+      <div class="card reveal"><span class="emoji" aria-hidden="true">📈</span><h3>Prices & Materials</h3><p>Copper near <b data-m="copper">≈$14,170/t</b>; CRGO near <b data-m="crgo_us">≈$5,550/MT</b> US and <b data-m="crgo_cn">≈$1,075/MT</b> China. <span style="color:var(--muted);font-size:.82rem">Observed <span data-m-obs="copper">26 Aug 2026</span>.</span></p></div>
     </div>
     <p style="text-align:center; margin-top:30px" class="reveal"><a href="intel.html" class="btn btn-amber">Read the Full Briefing →</a></p>
   </div>
@@ -281,13 +290,16 @@
       <p>The transformer industry, in one place.</p>
     </div>
     <div class="grid grid-3">
-      <a class="card reveal" href="intel.html"><span class="emoji" aria-hidden="true">📰</span><h3>Daily Intel →</h3><p>Twice-daily global briefing — tenders, supplier moves, prices — ordered by your region.</p></a>
+      <a class="card reveal" href="intel.html"><span class="emoji" aria-hidden="true">📰</span><h3>Daily Intel →</h3><p>Hourly global briefing — tenders, supplier moves, prices — ordered by your region.</p></a>
       <a class="card reveal" href="grids.html"><span class="emoji" aria-hidden="true">🌐</span><h3>World Grids →</h3><p>151 countries, 166 operators, 16 synchronous areas — voltages, frequencies and official links.</p></a>
       <a class="card reveal" href="events.html"><span class="emoji" aria-hidden="true">📅</span><h3>Events →</h3><p>Every major power & transformer exhibition through 2028, with one-click hotel and flight booking.</p></a>
       <a class="card reveal" href="manufacturers.html"><span class="emoji" aria-hidden="true">🏭</span><h3>Manufacturers →</h3><p>A worldwide census of 520 transformer makers — power, distribution and dry-type — country by country.</p></a>
+      <a class="card reveal" href="markets.html"><span class="emoji" aria-hidden="true">🌍</span><h3>Markets →</h3><p>Country intelligence hubs — grid operators, manufacturers, projects, events and technical context, market by market.</p></a>
       <a class="card reveal" href="learn.html"><span class="emoji" aria-hidden="true">🎓</span><h3>Learn →</h3><p>A 26-chapter design masterclass — 3D models and a live design calculator, included with Yearly Access.</p></a>
+      <a class="card reveal" href="knowledge.html"><span class="emoji" aria-hidden="true">💡</span><h3>Knowledge →</h3><p>Clear, source-referenced answers to transformer-engineering questions, from cooling codes to DGA and bushings.</p></a>
       <a class="card reveal" href="resources.html"><span class="emoji" aria-hidden="true">📚</span><h3>Resources →</h3><p>IEC / ANSI standards and reference material every designer reaches for.</p></a>
       <a class="card reveal" href="components.html"><span class="emoji" aria-hidden="true">🔩</span><h3>Components →</h3><p>Every transformer part mapped — bushings to Buchholz relays — with supplier connections.</p></a>
+      <a class="card reveal" href="applications.html"><span class="emoji" aria-hidden="true">🏭</span><h3>Applications →</h3><p>Buyers' guides by industry — data centres, renewables, mining, oil & gas, rail, grid and industrial — with relevant suppliers and events.</p></a>
       <a class="card reveal" href="rfq.html"><span class="emoji" aria-hidden="true">📨</span><h3>RFQ Board →</h3><p>Post a requirement and reach manufacturers and suppliers worldwide — free.</p></a>
     </div>
   </div>
@@ -304,7 +316,7 @@
 <section class="block" style="background:linear-gradient(135deg,var(--navy),#1b3a5c)">
   <div class="container" style="max-width:680px;text-align:center;color:#fff">
     <h2 style="color:#fff;font-size:1.8rem;margin-bottom:8px">Want to design transformers, not just read about them?</h2>
-    <p style="color:#c4d2e4;margin:0 auto 20px;max-width:520px">A 26-chapter masterclass, ten interactive 3D models and a live IEC 60076 design calculator — plans from $199/year.</p>
+    <p style="color:#c4d2e4;margin:0 auto 20px;max-width:520px">A 26-chapter masterclass, ten interactive 3D models and a live IEC 60076 design calculator — plans from $199.</p>
     <a href="pricing.html" class="btn btn-amber">See plans →</a>
   </div>
 </section>
@@ -313,12 +325,16 @@
   <div class="container">
     <div class="cols">
       <div>
-        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span style="color:var(--amber)">Path</span></a>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg>Transformer<span>Path</span></a>
         <p style="margin-top:12px">The global intelligence and networking platform for transformer manufacturers, suppliers, engineers and utilities.</p>
       </div>
-      <div><h2>PLATFORM</h2><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="learn.html">Learn</a><a href="pricing.html">Pricing</a><a href="testbay.html">Test Bay</a><a href="design.html">Design Duel</a><a href="teams.html">Corporate Training</a><a href="test-report.html">Test Report</a><a href="test-lab-consulting.html">Test Lab Consulting</a><a href="for-manufacturers.html">For Manufacturers</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="software.html">Software</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="books.html">Books</a><a href="sponsor.html">Sponsor</a></div>
+      <div><h2>PLATFORM</h2><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="applications.html">Applications</a><a href="manufacturers.html">Manufacturers</a><a href="markets.html">Markets</a><a href="learn.html">Learn</a><a href="pricing.html">Pricing</a><a href="testbay.html">Test Bay</a><a href="design.html">Design Duel</a><a href="teams.html">Corporate Training</a><a href="test-report.html">Test Report</a><a href="test-lab-consulting.html">Test Lab Consulting</a><a href="for-manufacturers.html">For Manufacturers</a><a href="grids.html">Grids</a><a href="knowledge.html">Knowledge</a><a href="resources.html">Resources</a><a href="software.html">Software</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="books.html">Books</a><a href="sponsor.html">Sponsor</a></div>
       <div><h2>COMPANY</h2><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
-      <div><h2>CONTACT</h2><a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a><a href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener">LinkedIn ↗</a></div>
+      <div><h2>CONTACT</h2>
+        <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
+        <a class="tp-li-btn tp-li-follow" data-linkedin-follow href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>Follow us on LinkedIn</a>
+        <a class="tp-li-btn tp-li-share" data-linkedin-share href="#">Share this page</a>
+      </div>
     </div>
     <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
   </div>
@@ -326,7 +342,7 @@
 
 <script>
 /* ====== DAILY-UPDATED TICKER (the daily intel job rewrites this one line) ====== */
-const TICKER = "<b>Copper</b> $14,170 / t (20 Aug cash — no new settlement published, 21 Aug row not yet posted) &nbsp; <b>Aluminium</b> $3,182 / t (20 Aug cash, stocks unchanged a third session, contango $1.00) &nbsp; <b>Cu/Al 4.453</b> &nbsp; <b>UK</b> National Grid appoints Laing O’Rourke to the North West London Upgrade — 400 kV works at Letchmore Heath, Elstree, St John’s Wood &nbsp; <b>Malaysia</b> MN Holdings takes two TNB awards in a week — RM122.31m 132 kV cable (Penang) and RM71.02m 2 × 45 MVA intake (Cameron Highlands) &nbsp; <b>Tanzania</b> 2,115 MW / $2.814bn Julius Nyerere hydropower plant fully commissioned &nbsp; <b>India</b> 35,670 MVA of ≥220 kV transformation commissioned Apr–Jul FY27 &nbsp; <b>UAE</b> six DEWA transformer-adjacent tenders close 25 Aug – 17 Sep";
+const TICKER = "<b>Copper</b> $<span data-m='copper' data-m-type='num'>14,170</span> / t (20 Aug cash — no new settlement published, 21 Aug row not yet posted) &nbsp; <b>Aluminium</b> $<span data-m='aluminium' data-m-type='num'>3,182</span> / t (20 Aug cash, stocks unchanged a third session, contango $1.00) &nbsp; <b>Cu/Al 4.453</b> &nbsp; <b>UK</b> National Grid appoints Laing O’Rourke to the North West London Upgrade — 400 kV works at Letchmore Heath, Elstree, St John’s Wood &nbsp; <b>Malaysia</b> MN Holdings takes two TNB awards in a week — RM122.31m 132 kV cable (Penang) and RM71.02m 2 × 45 MVA intake (Cameron Highlands) &nbsp; <b>Tanzania</b> 2,115 MW / $2.814bn Julius Nyerere hydropower plant fully commissioned &nbsp; <b>India</b> 35,670 MVA of ≥220 kV transformation commissioned Apr–Jul FY27 &nbsp; <b>UAE</b> six DEWA transformer-adjacent tenders close 25 Aug – 17 Sep";
 (function(){var tk=document.getElementById('ticker'); if(tk) tk.innerHTML = TICKER + ' &nbsp;&nbsp;&nbsp; ' + TICKER + ' &nbsp;&nbsp;&nbsp; ';})();
 // Count-up KPIs (fire when the row scrolls into view)
 function countUp(el){
@@ -421,5 +437,6 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
 </script>
 <script src="analytics.js?v=2" defer></script>
 <script src="site-stats.js" defer></script>
+<script src="material-latest.js" defer></script>
 </body>
 </html>
