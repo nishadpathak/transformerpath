@@ -114,8 +114,11 @@ function page(r, slug) {
   const evHtml = evs.map(function (ev) { return '<li style="margin:6px 0"><a href="' + esc(ev.u) + '" target="_blank" rel="noopener" style="color:var(--accent)">' + esc(ev.n) + '</a> <span style="color:var(--muted);font-size:.85rem">' + fmt(ev.s) + ' · ' + esc(ev.c) + ', ' + esc(ev.co) + '</span></li>'; }).join('') || '<li style="color:var(--muted)">No confirmed events for this market yet.</li>';
   const intel = intelFor(r);
   const intelHtml = intel.map(function (it) { return '<li style="margin:6px 0"><b style="color:var(--text);font-size:.9rem">' + esc(it.title) + '</b><p style="color:var(--muted);font-size:.84rem;margin:2px 0 0">' + esc(it.snippet.slice(0, 150)) + (it.snippet.length > 150 ? '…' : '') + '</p></li>'; }).join('') || '<li style="color:var(--muted)">Daily Intel for this market is refreshed hourly.</li>';
+  const lastReviewed = (STATS.updated || '2026-08-26');
   const verify = r.flagV === 'P' ? '★ Pro Verified' : r.flagV === 'V' ? '✓ Verified' : 'Listed (directory)';
-  const trust = '<p style="font-size:.8rem;color:var(--muted);margin-top:2px">TransformerPath records this company from public sources and lists it independently. Verification confirms the <b>listed</b> information; it is not an endorsement or a guarantee of quality. ' + esc(r.name) + ' is <b>not</b> affiliated with TransformerPath.</p>';
+  const trust = '<div class="src"><b>Data sources</b> <span class="tpill">Company website</span><span class="tpill">Public manufacturer documentation</span><span class="tpill">Public project announcements</span><span class="tpill">TransformerPath industry database</span></div>' +
+    '<div class="src" style="margin-top:6px"><b>Last reviewed</b> ' + lastReviewed + ' &nbsp;&middot;&nbsp; <b>Profile status</b> <span style="color:var(--accent)">' + verify + '</span></div>' +
+    '<p style="font-size:.78rem;color:var(--muted);margin-top:6px">Listed profiles are informational directory entries and do not imply verification, endorsement or commercial affiliation. ' + esc(r.name) + ' is <b>not</b> affiliated with TransformerPath.</p>';
   // conservative schema: describe the company, never claim affiliation
   const orgSchema = { '@context': 'https://schema.org', '@type': 'Organization', name: r.name, url: r.url ? r.url : url, description: (r.types.length ? 'Transformer manufacturer (' + r.types.map(typeBadge).join(', ') + ')' : 'Transformer manufacturer') + ' — ' + r.country + (r.city ? ', ' + r.city : ''), address: { '@type': 'PostalAddress', addressCountry: r.country, addressLocality: r.city || undefined } };
   const pageSchema = { '@context': 'https://schema.org', '@type': 'WebPage', name: r.name + ' — Company Profile', url: url, about: { '@type': 'Organization', name: r.name } };
@@ -129,7 +132,6 @@ function page(r, slug) {
     const kv = tier.kv ? tier.kv + ' kV' : '—';
     tierTable = '<table class="tbl"><tbody>' + row('Indicative capacity / yr', c) + row('Max voltage capability', kv) + row('Product types', (tier.types || []).join(', ')) + row('Regions served', (tier.regions || []).join(', ')) + row('Reported standards', (tier.certs || []).join(', ')) + row('Source', esc(tier.source || '—') + (tier.note ? ' <span style="color:var(--muted);cursor:help" title="' + esc(tier.note) + '">&#8505;</span>' : '')) + '</tbody></table>' + '<p style="font-size:.72rem;color:var(--muted)">Indicative, compiled from published market research/industry directories; verify against the manufacturer before a procurement decision.</p>';
   }
-  const lastReviewed = (STATS.updated || '2026-08-26');
 
   return '<!DOCTYPE html>\n<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
     '<title>' + esc(r.name) + ' — Company Profile, Products &amp; Industry Information | TransformerPath</title>' +
