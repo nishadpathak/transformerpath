@@ -165,7 +165,7 @@ console.log('generated', countryIndex.length, 'country pages');
     'article-fem-vs-analytical.html', 'article-lead-times.html', 'article-crgo-vs-amorphous.html',
     'verified-standards.html', 'autotransformer.html', 'bushing.html', 'coilassembly.html',
     'coretopology.html', 'gsu.html', 'oltc.html', 'windings.html', 'country-designer.html', 'subscribe.html',
-    'applications.html', 'knowledge.html', 'markets.html'];
+    'applications.html', 'knowledge.html', 'markets.html', 'projects.html'];
   var urls = [];
   MAIN.forEach(function (u) { urls.push('https://transformerpath.com/' + (u || '')); });
   ['manufacturers', 'components', 'applications', 'knowledge'].forEach(function (dir) {
@@ -190,6 +190,11 @@ console.log('generated', countryIndex.length, 'country pages');
   try {
     fs.readdirSync('utilities').forEach(function (d) {
       if (fs.existsSync('utilities/' + d + '/index.html')) urls.push('https://transformerpath.com/utilities/' + d + '/');
+    });
+  } catch (e) {}
+  try {
+    fs.readdirSync('projects').forEach(function (d) {
+      if (fs.existsSync('projects/' + d + '/index.html')) urls.push('https://transformerpath.com/projects/' + d + '/');
     });
   } catch (e) {}
   try {
