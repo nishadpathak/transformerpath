@@ -21,6 +21,9 @@ const ci = (s) => (s || '').toLowerCase();
 const DATA = JSON.parse(fs.readFileSync('data/projects.json', 'utf8'));
 const PROJECTS = DATA.projects || [];
 const MARKET_SLUG = { 'United Arab Emirates': 'uae', 'Saudi Arabia': 'saudi-arabia', 'Qatar': 'qatar', 'Kuwait': 'kuwait', 'Bahrain': 'bahrain', 'India': 'india', 'China': 'china' };
+// Utility buyer name fragment -> utility entity slug (data/grids.json derived, matches build-utilities.js).
+const UTILITY_SLUG = { 'kahramaa': 'kahramaa', 'dewa': 'dewa', 'ewa': 'ewa', 'ministry of electricity': 'mewre-ministry-of-electricity-and-water', 'saudi': 'saudi-electricity-co-national-grid-sa' };
+const uSlug = (u) => { const k = ci(u); for (const [frag, slug] of Object.entries(UTILITY_SLUG)) { if (k.indexOf(frag) >= 0) return slug; } return ''; };
 const GRADE_HELP = {
   CONFIRMED: 'Transformer scope is explicitly documented in the source.',
   INFERRED: 'Transformer requirement is reasonably inferred from the substation / grid scope.',
@@ -34,6 +37,7 @@ function page(p) {
   const grade = (p.transformer_requirement || 'UNKNOWN').toUpperCase();
   const vol = p.voltage || '—';
   const marketLink = MARKET_SLUG[p.country] ? '<a class="tpill" href="../../markets/' + MARKET_SLUG[p.country] + '/">' + esc(p.country) + ' market</a>' : '';
+  const utilLink = (p.utility && uSlug(p.utility)) ? '<a class="tpill" href="../../utilities/' + uSlug(p.utility) + '/">' + esc(p.utility) + ' profile</a>' : '';
   const srcLinks = (p.sources || []).filter((u) => u).map((u) => '<a href="' + esc(u) + '" target="_blank" rel="noopener" style="color:var(--accent)">source</a>').join(' · ') || '—';
 
   return '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
@@ -64,7 +68,7 @@ function page(p) {
     '<tr><th>Expected</th><td>' + esc(p.expected || '—') + '</td></tr>' +
     '</table>' +
     '<h2>Sources</h2><ul><li>' + esc(p.src_label || 'public announcement') + ' · ' + srcLinks + '</li></ul>' +
-    '<h2>Market context</h2><div>' + (marketLink || '<span style="color:var(--muted);font-size:.85rem">Market hub not yet built.</span>') + '</div>' +
+    '<h2>Market context</h2><div>' + (marketLink || '<span style="color:var(--muted);font-size:.85rem">Market hub not yet built.</span>') + (utilLink ? ' ' + utilLink : '') + '</div>' +
     '<p style="font-size:.78rem;color:var(--muted);margin-top:8px">Last reviewed: ' + new Date().toISOString().slice(0, 10) + '. Sources: public tender/project announcements and TransformerPath Daily Intel; transformer scope graded per the CONFIRMED / INFERRED / UNKNOWN taxonomy. Report a <a href="mailto:hello@transformerpath.com?subject=Project%20correction" style="color:var(--accent)">correction</a>.</p>' +
     '<div class="card" style="background:rgba(245,166,35,.06);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:24px"><b style="color:var(--text)">Supply this project</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Submit a transformer requirement and TransformerPath will match it against the relevant manufacturing base.</p>' +
     '<a class="btn btn-amber" href="../../rfq.html" data-track="rfq_started" data-track-project="' + esc(slug) + '">Submit an RFQ</a></div>' +

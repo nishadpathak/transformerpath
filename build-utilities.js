@@ -26,6 +26,7 @@ const MANUF = JSON.parse(fs.readFileSync('data/manufacturers.json', 'utf8'));
 const GRIDS = JSON.parse(fs.readFileSync('data/grids.json', 'utf8'));
 const EVENTS = JSON.parse(fs.readFileSync('data/events.json', 'utf8'));
 const INTEL = JSON.parse(fs.readFileSync('data/intel.json', 'utf8'));
+const PROJECTS = (JSON.parse(fs.readFileSync('data/projects.json', 'utf8'))).projects || [];
 
 // Company entity slug map (manufacturer entity graphs).
 let CSMAP = {};
@@ -107,6 +108,10 @@ function buildUtility(u) {
   const evMatches = evArr.filter((e) => ci((e.c || '') + (e.co || '')).indexOf(ci(country)) >= 0 || ci(e.co || '').indexOf(ci(country)) >= 0);
   const evHtml = evMatches.slice(0, 3).map((e) => '<li style="margin:6px 0"><a href="' + esc(e.u || '#') + '" target="_blank" rel="noopener" style="color:var(--accent)">' + esc(e.n) + '</a> <span style="color:var(--muted);font-size:.85rem">' + esc((e.s || '').slice(0, 10)) + ' · ' + esc((e.c || '') + ', ' + (e.co || '')) + '</span></li>').join('') || '<li style="color:var(--muted)">No confirmed transformer industry events for this market yet.</li>';
 
+  // Related projects: match by country, and by utility name where possible.
+  const projMatches = PROJECTS.filter((p) => ci(p.country || '').indexOf(ci(country)) >= 0 || ci((p.utility || '') + ' ' + (p.country || '')).indexOf(ci(opName)) >= 0);
+  const projHtml = projMatches.slice(0, 4).map((p) => '<li style="margin:6px 0"><a href="../../projects/' + slugify(p.project) + '/" style="color:var(--accent)">' + esc(p.project) + '</a> <span style="color:var(--muted);font-size:.85rem">' + esc((p.status || '')) + ' · ' + ((p.transformer_requirement || 'UNKNOWN').toUpperCase()) + '</span></li>').join('') || '<li style="color:var(--muted)">No transformer-relevant project records yet for this market — see the <a href="../../projects.html" style="color:var(--accent)">projects list</a>.</li>';
+
   // Voltage classes (parse the operator's declared voltage + a sensible ladder).
   const vClass = voltage ? esc(voltage.split('/')[0].replace(/ kV.*/, '') + ' kV') : '';
   const odesc = opDesc;
@@ -141,6 +146,7 @@ function buildUtility(u) {
     '<h2>Relevant manufacturers</h2><p style="color:var(--muted);font-size:.94rem;margin:4px 0 8px">' + mkCount + ' transformer makers recorded in the ' + esc(country) + ' census — power, distribution and dry-type. Verify capability before a decision.</p><div style="margin:4px 0 8px">' + mkPills + '</div>' + (manufCountryLink ? '<div style="margin-top:8px">' + manufCountryLink + '</div>' : '') +
     '<h2>Market context</h2><div>' + (marketLink || '<span style="color:var(--muted);font-size:.85rem">Market hub not yet built for this country.</span>') + '</div>' +
     '<h2>Latest TransformerPath intel</h2><ul>' + intelHtml + '</ul>' +
+    '<h2>Related projects</h2><ul>' + projHtml + '</ul>' +
     '<h2>Upcoming events</h2><ul>' + evHtml + '</ul>' +
     '<p style="font-size:.78rem;color:var(--muted);margin-top:8px">Last reviewed: ' + new Date().toISOString().slice(0, 10) + '. Sources: official utility / operator filings and public announcements; maintained encyclopedia-style from the TransformerPath grid census. Report a <a href="mailto:hello@transformerpath.com?subject=Grid%20census%20correction" style="color:var(--accent)">correction</a>.</p>' +
     '<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:24px"><b style="color:var(--text)">Supply this utility</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Submit a transformer requirement and TransformerPath will match it against the ' + esc(country) + ' and regional manufacturing base.</p>' +
