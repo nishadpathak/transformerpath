@@ -258,6 +258,49 @@ if (CFG.assets) {
   check('sw.js cache name = ' + SWC, SW.includes("const CACHE = '" + SWC + "'"));
 }
 
+// ── 5c. Strategic-route consistency (source → build → artifact gate) ───────
+// Every route the audit flagged must, in its BUILT artifact, contain the current
+// architecture and EXCLUDE the forbidden old architecture. This is the
+// production-consistency gate: if a stale generation ever ships, the build fails
+// instead of silently serving an old page to crawlers.
+function routeCheck(route, req, forb, rawReqs) {
+  let s = '';
+  try { s = fs.readFileSync(route, 'utf8'); } catch (e) { problems.push('route-missing ' + route); return; }
+  const text = s.replace(/<!--[\s\S]*?-->/g, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+  const head = text.slice(0, 4000);
+  for (const r of (req || [])) {
+    check(route + ' requires "' + r + '"', new RegExp(r, 'i').test(text));
+  }
+  for (const r of (rawReqs || [])) {
+    check(route + ' requires (raw) "' + r + '"', new RegExp(r, 'i').test(s));
+  }
+  for (const f of (forb || [])) {
+    if (new RegExp(f, 'i').test(head)) problems.push('route-stale ' + route + ' :: forbidden "' + f + '" found');
+  }
+}
+// /pricing — canonical plans, single 12-month payments, no cert claims, no $/year.
+routeCheck('pricing.html', ['Learning', 'Professional', 'Team', '\\$199', '\\$599', '\\$1,999', 'no auto-renewal', '12 months'],
+  ['Learner\\s*(plan|tier)?\\s*<', 'Enterprise\\s*(plan|tier)?\\s*<', '\\$199\\s*/\\s*year', 'certificate per level', 'co-branded certificates?', 'capstone review \\+ certificate']);
+// /for-manufacturers — neutral voice, no old claims, no old plan names.
+routeCheck('for-manufacturers.html', [], ['we are not FEM', 'we would rather tell you', 'instead of us', 'co-branded certificates?', '\\bLearner\\b\\s*(plan|tier)?\\s*<']);
+// FEM article + repository-wide 10-15% accuracy claim.
+routeCheck('article-fem-vs-analytical.html', ['accuracy depends materially on transformer type, geometry'], ['10[\\s\\u2013-]?15\\s*%']);
+for (const f of pages) {
+  const s = fs.readFileSync(f, 'utf8').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+  if (/10[\s\u2013-]?15\s*%\s+of an? (optimised|optimized) works design/i.test(s)) {
+    problems.push('route-stale ' + f + ' :: 10-15% works-design claim');
+  }
+}
+// Books — first releases, direct checkout, no email-only ordering.
+routeCheck('books.html', ['first releases'], ['Email to order', 'Two volumes of transformer engineering'], ['data-buy=']);
+// Design Duel SSR — values must be present in crawlable HTML.
+routeCheck('design.html', ['72 kW', '355 kW', '215 t'], ['id="sp-nll"></', 'id="sp-ll"></']);
+// Footer — no "networking" positioning.
+for (const f of pages) {
+  const s = fs.readFileSync(f, 'utf8').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+  if (/global (intelligence|information) and networking platform/i.test(s)) problems.push('route-stale ' + f + ' :: footer "networking"');
+}
+
 // ── 6. Build the regression report ────────────────────────────────────────
 if (problems.length) {
   console.error('CONFIG CHECK FAILED — ' + problems.length + ' issue(s):');

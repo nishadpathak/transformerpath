@@ -22,10 +22,16 @@
           // optionally show the observation date inline
         }
       });
-      // Fill any [data-m-obs="<id>"] with that commodity's observation date.
+      // Fill any [data-m-obs="<id>"] with that commodity's observation date, and
+      // mark stale values honestly: 'Last verified <date>' instead of pseudo-live.
       document.querySelectorAll('[data-m-obs]').forEach(function (el) {
         var r = map[el.getAttribute('data-m-obs')];
-        if (r && r.observation_date) el.textContent = r.observation_date;
+        if (!r || !r.observation_date) return;
+        var last = r.last_verified || r.observation_date;
+        el.textContent = (r.status === 'stale') ? ('Last verified ' + last) : r.observation_date;
+        if (r.status === 'stale') {
+          el.style.color = 'var(--warn, #b5651d)';
+        }
       });
     })
     .catch(function () { /* keep authored fallback text */ });
