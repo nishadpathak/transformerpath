@@ -103,7 +103,7 @@
   --tp-sans: var(--font-sans);
   --tp-mono: var(--font-mono);
 }
-body { font-family: var(--font-sans); line-height: 1.6; }
+body { font-family: var(--font-sans); line-height: 1.6; word-spacing: 0.02em; -webkit-font-smoothing: antialiased; }
 
 /* Long technical terms and part numbers shouldn't overflow narrow screens or
    force a horizontal scrollbar in languages that don't break where English
