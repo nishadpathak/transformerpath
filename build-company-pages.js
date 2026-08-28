@@ -249,6 +249,19 @@ list.forEach(function (r) {
   if (r.url) { indexed++; if (r.tierFile) rich++; } else noindexed++;
 });
 console.log('company pages:', list.length, '| indexed:', indexed, '(rich tier:', rich + ')', '| noindex(follow):', noindexed);
+// Prune stale company directories (companies no longer in the census) so the
+// published tree always matches the current census and no orphaned/thin pages
+// are served.
+const currentSlugs = new Set(list.map(function (r) { return r.slug; }));
+(function pruneStale(dir) {
+  fs.readdirSync(dir, { withFileTypes: true }).forEach(function (e) {
+    if (!e.isDirectory() || e.name.startsWith('.')) return;
+    if (!currentSlugs.has(e.name)) {
+      try { fs.rmSync(dir + '/' + e.name, { recursive: true, force: true }); console.log('pruned stale company dir: ' + dir + '/' + e.name); }
+      catch (err) { console.warn('could not prune ' + dir + '/' + e.name + ': ' + err.message); }
+    }
+  });
+})('manufacturers');
 // Slug manifest so other builders can link a maker -> its company entity page,
 // and know which company pages are indexable (vs noindex,follow).
 fs.writeFileSync('data/company-slugs.json', JSON.stringify(Object.keys(records).map(function (k) { const r = records[k]; return { name: r.name, slug: r.slug, country: r.country, indexable: !!r.url }; }), null, 2));

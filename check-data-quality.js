@@ -140,6 +140,26 @@ for (const p of PROV) {
   }
 }
 console.log('R7 provenance: entities ' + PROV.length + ' | bad url: ' + provBadUrl + ' | bad confidence: ' + provBadConf + ' | bad claim_type: ' + provBadClaim + ' | combined field: ' + provCombinedField + ' | combined claim: ' + provCombinedClaim);
+
+// ── R8: manufacturer CTA + corrections-form regression guard ─────────────
+let pageNoCorrCta = 0, pageNoSiteClick = 0, corrForm = 0;
+const corrPath = 'correct-company.html';
+let corrHtml = '';
+try { corrHtml = fs.readFileSync(corrPath, 'utf8'); } catch (e) { problems.push('R8 correct-company.html missing'); corrHtml = ''; }
+// corrections page must exist with Netlify form + tracking + required fields
+if (corrHtml) {
+  if (!/name="correct-company"/.test(corrHtml)) { problems.push('R8 correct-company form name missing'); }
+  if (!/data-track-form="manufacturer_correction_submitted"/.test(corrHtml)) { problems.push('R8 correct-company form tracking missing'); }
+  ['name="field"', 'name="correct"'].forEach(function (req) { if (corrHtml.indexOf(req) < 0) { problems.push('R8 correct-company missing field :: ' + req); } });
+  if (/name="correct-company"/.test(corrHtml)) corrForm++;
+}
+for (const f of companyPages) {
+  if (!fs.existsSync(f)) continue;
+  const html = fs.readFileSync(f, 'utf8');
+  if (!/Suggest a correction/.test(html) || html.indexOf('correct-company.html') < 0) { pageNoCorrCta++; problems.push('R8 manufacturer page missing corrections CTA :: ' + f); }
+  if (/Official website/.test(html) && !/data-track="official_website_click"/.test(html)) { pageNoSiteClick++; problems.push('R8 manufacturer page missing official_website_click :: ' + f); }
+}
+console.log('R8 CTA/form guard: pages without corrections CTA: ' + pageNoCorrCta + ' | pages without official_website_click: ' + pageNoSiteClick + ' | corrections form present: ' + corrForm);
 if (advisory.length) {
   console.log('\nAdvisory (confirm separation, no action required):');
   advisory.slice(0, 12).forEach((a) => console.log('  ' + a));
