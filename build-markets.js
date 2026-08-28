@@ -32,6 +32,12 @@ const COMPONENTS = {
   'protection-monitoring': 'Protection & monitoring', 'tank-and-mechanical': 'Tank & mechanical',
 };
 
+// Company entity-page slug map -> reciprocal link from market/event pages back
+// to each manufacturer's own profile (the entity-graph reverse edge).
+let CSMAP = {};
+try { JSON.parse(fs.readFileSync('data/company-slugs.json', 'utf8')).forEach(function (c) { CSMAP[c.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()] = c.slug; }); } catch (e) {}
+const csl = function (m) { return CSMAP[String(m).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()]; };
+
 const MARKETS = [
   { slug: 'uae', name: 'UAE', gridsName: 'United Arab Emirates', manufName: 'UAE', region: 'Middle East', flag: '🇦🇪',
     intel: 'GCC', kw: ['uae', 'emirati', 'dubai', 'abu dhabi', 'dewa', 'taqa', 'etihad'],
@@ -438,7 +444,9 @@ function marketPage(m) {
   const utl = (g && g.grids) ? g.grids : [];
   const typeCount = function (t) { return mk.filter(function (x) { return String(x.types || '').toUpperCase().indexOf(t) >= 0; }).length; };
   const mkHtml = mk.slice(0, 14).map(function (x) {
-    return '<div class="mk-row"><b>' + esc(x.name) + '</b><span class="city">' + esc(x.city || '') + '</span><span class="prof">' + esc(x.types || '') + '</span></div>';
+    const slug = csl(x.name);
+    const name = slug ? '<a class="prof" href="../../manufacturers/' + slug + '/" style="color:var(--accent);font-weight:700">' + esc(x.name) + '</a>' : '<b>' + esc(x.name) + '</b>';
+    return '<div class="mk-row">' + name + '<span class="city">' + esc(x.city || '') + '</span><span class="prof">' + esc(x.types || '') + '</span>' + (x.url ? ' <a href="' + esc(x.url) + '" style="color:var(--accent);font-size:.78rem" target="_blank" rel="noopener">↗</a>' : '') + '</div>';
   }).join('') + (mk.length > 14 ? '<p style="color:var(--muted);font-size:.82rem">+' + (mk.length - 14) + ' more on the country page.</p>' : '');
   const utlHtml = utl.map(function (u) { return '<div class="mk-row"><b>' + esc(u[0]) + '</b><span class="city">' + esc(u[1]) + '</span><span class="prof">' + esc(u[2]) + '</span>' + (u[3] ? ' <a href="' + esc(u[3]) + '" style="color:var(--accent);font-size:.78rem" target="_blank" rel="noopener">↗</a>' : '') + '</div>'; }).join('');
   const evHtml = evs.map(function (ev) { return '<li style="margin:6px 0"><a href="' + esc(ev.u) + '" target="_blank" rel="noopener" style="color:var(--accent)">' + esc(ev.n) + '</a> <span style="color:var(--muted);font-size:.85rem">' + fmt(ev.s) + ' · ' + esc(ev.c) + ', ' + esc(ev.co) + '</span></li>'; }).join('') || '<li style="color:var(--muted)">No local events yet — check the events calendar.</li>';
