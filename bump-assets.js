@@ -47,7 +47,7 @@ for (const f of files) {
   s = s.replace(/tp-theme\.css\?v=\d+/g, 'tp-theme.css?v=' + THEME_V);
   // JS assets: analytics.js, course-gate.js, supabase.js, etc.
   s = s.replace(/(analytics\.js|course-gate\.js|sitemap\.js|material-latest\.js)\?v=\d+/g, '$1?v=' + JS_V);
-  s = s.replace(/(<script src="material-latest\.js")(")/g, '$1?v=' + JS_V + '$2');
+  s = s.replace(/(<script src="material-latest\.js)([">])/g, '$1?v=' + JS_V + '$2');
   if (s !== before) {
     fs.writeFileSync(f, s);
     touched++;
