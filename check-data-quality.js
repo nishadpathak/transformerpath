@@ -110,6 +110,18 @@ console.log('R1 combined MVA+kV capability claims: ' + combinedClaims);
 console.log('R2/R3 tier missing source / missing mva: ' + tierNoSource + ' / ' + tierBadUnit);
 console.log('R3 census empty names: ' + emptyNames + ' | invalid urls: ' + badUrls + ' | no country: ' + noCountry);
 console.log('R5 site model: groups ' + SITES.length + ' | missing city: ' + siteNoCity + ' | missing country: ' + siteNoCountry + ' | bad status: ' + siteBadStatus + ' | unverified factory claim: ' + siteClaimedFactory);
+
+// ── R6: company developments (Intel → Manufacturer) integrity ───────────
+let DEV_NO_TITLE = 0, DEV_BAD_URL = 0;
+const DEVS = JSON.parse(fs.readFileSync('data/company-developments.json', 'utf8'));
+for (const d of DEVS) {
+  if (!d.name) { problems.push('R6 developments without entity name'); continue; }
+  for (const x of (d.developments || [])) {
+    if (!x.title) { DEV_NO_TITLE++; problems.push('R6 development without title :: ' + d.name); }
+    if (!x.url || !/^https?:\/\//i.test(x.url)) { DEV_BAD_URL++; problems.push('R6 development invalid url :: ' + d.name); }
+  }
+}
+console.log('R6 developments: entities ' + DEVS.length + ' | missing title: ' + DEV_NO_TITLE + ' | invalid url: ' + DEV_BAD_URL);
 if (advisory.length) {
   console.log('\nAdvisory (confirm separation, no action required):');
   advisory.slice(0, 12).forEach((a) => console.log('  ' + a));

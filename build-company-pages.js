@@ -38,6 +38,10 @@ const SITES = JSON.parse(fs.readFileSync('data/manufacturer-sites.json', 'utf8')
 function normUrl(u) { return String(u || '').replace(/^https?:\/\//, '').replace(/\/+$/, '').toLowerCase().trim(); }
 const SITE_GROUP = {};
 SITES.forEach(function (g) { SITE_GROUP[normUrl(g.url)] = g; });
+// Company-specific, sourced developments from TransformerPath Daily Intel.
+const DEVELOPMENTS = JSON.parse(fs.readFileSync('data/company-developments.json', 'utf8'));
+const DEV_BY_NAME = {};
+DEVELOPMENTS.forEach(function (d) { DEV_BY_NAME[norm(d.name)] = d; });
 const COMPONENTS = { 'transformer-bushings': 'Transformer bushings', 'on-load-tap-changers': 'On-load tap changers', 'transformer-cooling': 'Cooling systems', 'insulation-materials': 'Insulation materials', 'conductors-and-core': 'Conductors & core steel', 'oil-fluids-preservation': 'Oil & preservation', 'protection-monitoring': 'Protection & monitoring', 'tank-and-mechanical': 'Tank & mechanical' };
 const APPS = { 'utilities-grid': 'Utilities & Grid', 'renewables': 'Renewable Energy', 'data-centres': 'Data Centres', 'hvdc': 'HVDC & Converters', 'solar': 'Solar PV', 'bess': 'Battery Storage', 'offshore-wind': 'Offshore Wind', 'mining-metals': 'Mining & Metals', 'oil-gas': 'Oil, Gas & Energy', 'railways': 'Railways & Metro', 'cement-industrial': 'Cement & Industrial' };
 
@@ -96,6 +100,20 @@ function brandSitesHtml(r) {
   }).join('');
   return '<h2>Sites &amp; locations</h2><p style="font-size:.82rem;color:var(--muted)">TransformerPath lists the sites it has in its census for this brand. It does <b>not</b> classify whether each is a manufacturing plant, office or service centre without independent confirmation.</p>' +
     '<table class="tbl"><tbody>' + items + '</tbody></table>';
+}
+// Sourced, company-specific developments (orders, expansions, acquisitions,
+// rebrands) pulled from TransformerPath Daily Intel — linked to their sources.
+function developmentsHtml(r) {
+  const d = DEV_BY_NAME[norm(r.name)];
+  if (!d || !d.developments || !d.developments.length) return '';
+  const lis = d.developments.map(function (x) {
+    const dateMatch = String(x.src || '').match(/(\d{1,2}\s+\w{3}\s+\d{4})/);
+    const date = dateMatch ? dateMatch[1] : '';
+    return '<li style="margin:7px 0"><a href="' + esc(x.url) + '" target="_blank" rel="noopener" style="color:var(--accent);font-weight:600">' + esc(x.title) + '</a><br>' +
+      '<span style="color:var(--muted);font-size:.82rem">' + esc(x.src || '') + '</span></li>';
+  }).join('');
+  return '<h2>Recent developments</h2><p style="font-size:.82rem;color:var(--muted)">Sourced from TransformerPath Daily Intel. An item is shown because it <b>references</b> this company — it is not an independently verified award, order or project attribution.</p>' +
+    '<ul>' + lis + '</ul>';
 }
 function eventsFor(rec) {
   const now = new Date(); const alias = COUNTRY_ALIAS[ci(rec.country)] || rec.country;
@@ -183,7 +201,7 @@ function page(r, slug) {
     '<h2>Related components</h2><div>' + compLinks + '</div>' +
     '<h2>Relevant applications</h2><div>' + appLinks + '</div>' +
     '<h2>Markets</h2><div>' + countryLink + (cityHtml ? ' ' + cityHtml : '') + (marketLink ? ' ' + marketLink : '') + '</div>' +
-    brandSitesHtml(r) +
+    brandSitesHtml(r) + developmentsHtml(r) +
     '<h2>Latest TransformerPath intelligence</h2><ul>' + intelHtml + '</ul>' +
     '<h2>Upcoming events</h2><ul>' + evHtml + '</ul>' +
     '<p style="font-size:.72rem;color:var(--muted)">Last reviewed: ' + lastReviewed + '.</p>' +

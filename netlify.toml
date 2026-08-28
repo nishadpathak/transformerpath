@@ -1,5 +1,5 @@
 [build]
-  command = "node build-entity-graph.js && node build-factories.js && node build-company-pages.js && node build-applications.js && node build-knowledge.js && node build-markets.js && node build-utilities.js && node build-projects.js && node build-case-studies.js && node build-events.js && node build-books.js && node build_ssr.js && node build-seo.js && node stamp-intel.js && node bump-assets.js && node check-data-quality.js && node check-config.js && node check-links.js && echo 'Static site with serverless functions'"
+  command = "node build-entity-graph.js && node build-factories.js && node build-company-developments.js && node build-company-pages.js && node build-applications.js && node build-knowledge.js && node build-markets.js && node build-utilities.js && node build-projects.js && node build-case-studies.js && node build-events.js && node build-books.js && node build_ssr.js && node build-seo.js && node stamp-intel.js && node bump-assets.js && node check-data-quality.js && node check-config.js && node check-links.js && echo 'Static site with serverless functions'"
   publish = "."
   functions = "functions"
 
