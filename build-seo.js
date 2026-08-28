@@ -188,6 +188,11 @@ console.log('generated', countryIndex.length, 'country pages');
     });
   } catch (e) {}
   try {
+    fs.readdirSync('utilities').forEach(function (d) {
+      if (fs.existsSync('utilities/' + d + '/index.html')) urls.push('https://transformerpath.com/utilities/' + d + '/');
+    });
+  } catch (e) {}
+  try {
     fs.readdirSync('books').forEach(function (d) {
       if (fs.existsSync('books/' + d + '/index.html')) urls.push('https://transformerpath.com/books/' + d + '/');
     });
