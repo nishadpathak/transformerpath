@@ -193,6 +193,28 @@ for (const f of pages) {
     const m = text.match(/\bELIN\b|\bpersonal\s+reference\b/i);
     problems.push('voice-elinstrict ' + f + ' :: ' + (m && m[0]));
   }
+  // ── Commercial-architecture forbidden terminology (audit P0) ──────────
+  // Public plan names must be Learning/Professional/Team. Reject old "Learner"
+  // plan-tier and "$X/year" per-year billing phrasing on the public pricing
+  // surface only (not intel data, not JS internals, not legitimate company/
+  // business uses of "enterprise"). Standard/cert references (IEC, ISO, UL,
+  // IEEE, CE, ANSI) and negations are allowed.
+  const pricingSurface = /pricing\.html$/.test(f);
+  const learnSurface = /learn\.html$/.test(f);
+  if (pricingSurface || learnSurface) {
+    const nodec = text; // text already has HTML comments stripped upstream
+    // Learner as a standalone plan/heading word (exclude "individual learner — 1 seat").
+    const learnerHeading = /\bLearner\b\s*(?:plan|tier)?\s*<\/|>Learner(?!\s*—\s*1 seat)/.test(nodec) || /<h\d[^>]*>\s*Learner\s*<\/h\d>/i.test(nodec);
+    if (learnerHeading) problems.push('voice-commercial-terms ' + f + ' :: Learner plan tier');
+    // Per-year billing phrasing on the surface (exclude JS PRICE vars / comments).
+    if (/\$\d[\d,]*\s*\/\s*year\b/i.test(nodec)) {
+      problems.push('voice-commercial-terms ' + f + ' :: per-year billing');
+    }
+    // Confirm the canonical names are all present.
+    if (!/Learning/.test(nodec) || !/\bProfessional\b/.test(nodec) || !/\bTeam\b/.test(nodec)) {
+      problems.push('voice-commercial-terms ' + f + ' :: missing canonical plan names');
+    }
+  }
 }
 
 // ── 5. Navigation structure ───────────────────────────────────────────────
