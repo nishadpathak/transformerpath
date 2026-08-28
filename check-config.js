@@ -129,6 +129,14 @@ for (const [k, val] of Object.entries({
 check('books page uses a checkout (Stripe links or email fallback), not a bare text form',
   /buy\.stripe|REPLACE_WITH_STRIPE|checkout|data-track="book_purchase"/.test(BOOKS));
 
+// ── 2c. Supplier tiers (verified.html) must reflect config ────────────────
+const VERIFIED = fs.readFileSync('verified.html', 'utf8');
+check('verified.Verified = $' + bp.verifiedSupplier.price, new RegExp('\\$' + bp.verifiedSupplier.price + '\\b').test(VERIFIED));
+check('verified.Pro Verified = $' + bp.proVerifiedSupplier.price,
+  new RegExp('\\$' + bp.proVerifiedSupplier.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',?') + '\\b').test(VERIFIED));
+check('verified has Listed (free) tier', /<h2>Listed<\/h2>[\s\S]*?<div class="price">Free<\/div>/.test(VERIFIED));
+check('verified has Founding offer', new RegExp('\\$' + bp.foundingVerified.price + '\\b').test(VERIFIED));
+
 // ── 3. Intel cadence + classification ─────────────────────────────────────
 const INTEL = fs.readFileSync('intel.html', 'utf8');
 check('intel cadence label = config', new RegExp('\\b' + CFG.intel.cadenceLabel + '\\b', 'i').test(INTEL));
