@@ -938,7 +938,7 @@ function card(it){
   return `<div class="card">
     <div class="card-title"><a href="${it.url}" target="_blank" rel="noopener">${it.title}</a>${langBadge}${cls}${it.isNew?'<span class="new-badge">NEW</span>':''}</div>
     <div class="card-snippet">${it.snippet}</div>
-    <div class="card-meta">${it.value?`<span class="val">${it.value}</span> · `:""}<span class="src">${it.src}</span><a class="tp-li-share-inline" data-linkedin-share data-url="${it.url}" href="#" rel="noopener" title="Share this item on LinkedIn">Share · Found on TransformerPath.com</a></div>
+    <div class="card-meta">${it.value?`<span class="val">${it.value}</span> · `:""}<span class="src">${it.src}</span><a class="tp-li-share-inline" data-linkedin-share data-url="${it.url}" href="#" rel="noopener" title="Share this item on LinkedIn">LinkedIn</a></div>
   </div>`;
 }
 function renderNews(){
@@ -1063,7 +1063,7 @@ document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
       <div><h2>CONTACT</h2>
         <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
         <a class="tp-li-btn tp-li-follow" data-linkedin-follow href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>Follow us on LinkedIn</a>
-        <a class="tp-li-btn tp-li-share" data-linkedin-share href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>Found on TransformerPath.com</a>
+        <a class="tp-li-btn tp-li-share" data-linkedin-share href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>LinkedIn</a>
       </div>
     </div>
     <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
