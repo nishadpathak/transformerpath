@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suggest a Correction — TransformerPath</title>
+<meta name="description" content="Report an error or update a TransformerPath manufacturer profile — company identity, classified categories, locations, reported capability or a source. Corrections are reviewed before being applied.">
+<link rel="canonical" href="https://transformerpath.com/correct-company.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TransformerPath">
+<meta property="og:title" content="Suggest a Correction — TransformerPath">
+<meta property="og:description" content="Report an error or update a TransformerPath manufacturer profile. Corrections require review before they are applied.">
+<meta property="og:url" content="https://transformerpath.com/correct-company.html">
+<meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Suggest a Correction — TransformerPath">
+<meta name="twitter:description" content="Report an error or update a TransformerPath manufacturer profile. Corrections require review before they are applied.">
+<meta name="twitter:image" content="https://transformerpath.com/brand/og-image.png">
+<link rel="stylesheet" href="style.css?v=8">
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<style>
+.formwrap { max-width:680px; margin:0 auto 40px; }
+form label { display:block; margin:12px 0 4px; font-weight:600; font-size:.9rem; color:var(--ink); }
+form input[type="text"],form input[type="email"],form input[type="url"],form select,form textarea { width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:9px; background:var(--bg); color:var(--text); font-size:.92rem; }
+form textarea { min-height:88px; }
+form input:focus,form textarea:focus,form select:focus { outline:2px solid var(--accent); border-color:transparent; }
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TransformerPath">
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="30" height="30" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg>Transformer<span class="accent">Path</span></a>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav" onclick="var n=document.querySelector('.nav-links');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))">☰</button>
+    <nav class="nav-links" id="mainNav">
+      <span class="nav-group"><span class="nav-group-label">Intelligence</span><span class="nav-items"><a href="intel.html">Intel</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="events.html">Events</a></span></span>
+      <span class="nav-group"><span class="nav-group-label">Industry</span><span class="nav-items"><a href="manufacturers.html">Manufacturers</a><a href="components.html">Components</a><a href="applications.html">Applications</a><a href="rfq.html">RFQ</a></span></span>
+      <span class="nav-group"><span class="nav-group-label">Engineering</span><span class="nav-items"><a href="knowledge.html">Knowledge</a><a href="calculator.html">Tools</a><a href="explorer.html">3D</a><a href="resources.html">Resources</a></span></span>
+      <span class="nav-group"><span class="nav-group-label">Business</span><span class="nav-items"><a href="for-manufacturers.html">For Manufacturers</a><a href="sponsor.html">Sponsor</a><a href="pricing.html">Pricing</a></span></span>
+      <span class="nav-util"><a href="search.html" title="Search" aria-label="Search">🔍</a><a href="workspace.html">Account</a></span>
+      <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">🌙</button>
+    </nav>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
+    updateThemeIcon();
+    themeToggle?.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) { html.removeAttribute('data-theme'); localStorage.setItem('theme', 'light'); }
+      else { html.setAttribute('data-theme', 'dark'); localStorage.setItem('theme', 'dark'); }
+      updateThemeIcon();
+    });
+    function updateThemeIcon() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+    }
+  </script>
+</header>
+
+<section class="hero" style="padding:50px 0 36px">
+  <div class="container">
+    <h1 style="font-size:2.1rem">Suggest a <span>Correction</span></h1>
+    <p>Found something wrong on a transformer manufacturer profile? Tell us what and why, with a source where you can. Corrections are reviewed by the engineering and research team before that profile is changed.</p>
+  </div>
+</section>
+
+<section class="block">
+  <div class="container formwrap">
+
+    <div class="card" style="padding:26px 24px">
+      <p style="color:var(--muted);font-size:.9rem;line-height:1.6;margin:0 0 4px">
+        <b style="color:var(--text)">How it works.</b> TransformerPath profiles separate <b>researched facts</b> (factories, reported capability, approvals, projects) from <b>company-provided information</b> (description, catalogue, contacts, logos). A correction suggests a change to either; it is <b>not</b> applied automatically. We verify against a source before updating. Verified/paid listing status does <b>not</b> influence the research or editorial outcome of a correction.</p>
+      <form name="correct-company" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" id="ccForm" data-track-form="manufacturer_correction_submitted">
+        <input type="hidden" name="form-name" value="correct-company">
+        <p hidden><label>Leave this empty: <input name="bot-field"></label></p>
+
+        <label for="fld_company">Company / profile *</label>
+        <input id="fld_company" type="text" name="company" required placeholder="e.g. Hitachi Energy">
+
+        <label for="fld_field">What is this about? *</label>
+        <select id="fld_field" name="field" required>
+          <option value="">Select a field...</option>
+          <option>Identity / name / country</option>
+          <option>Classified product category</option>
+          <option>Manufacturing facility / location</option>
+          <option>Reported capability (voltage / rating)</option>
+          <option>Testing / engineering</option>
+          <option>Utility approval</option>
+          <option>Project / order</option>
+          <option>Source or citation</option>
+          <option>Other</option>
+        </select>
+
+        <label for="fld_current">What the profile currently says</label>
+        <input id="fld_current" type="text" name="current" placeholder="Current information shown">
+
+        <label for="fld_correct">Suggested correction *</label>
+        <textarea id="fld_correct" name="correct" required placeholder="What it should say instead"></textarea>
+
+        <label for="fld_source">Supporting URL / document</label>
+        <input id="fld_source" type="url" name="source" placeholder="https://... official page, filing, registry, news article">
+
+        <label for="fld_name">Your name</label>
+        <input id="fld_name" type="text" name="name" placeholder="(optional)">
+
+        <label for="fld_email">Your email (optional)</label>
+        <input id="fld_email" type="email" name="email" placeholder="We reply only if we need clarification">
+
+        <label for="fld_notes">Anything else we should know</label>
+        <textarea id="fld_notes" name="notes" rows="3" placeholder="Context, or why the source is authoritative"></textarea>
+
+        <label style="display:flex;gap:9px;align-items:flex-start;font-size:.84rem;color:var(--muted);font-weight:400;margin:14px 0 8px"><input type="checkbox" name="consent" required style="width:auto;margin-top:3px"> I understand TransformerPath reviews corrections against a source before applying them, and that a correction is not guaranteed to be adopted.</label>
+
+        <button class="btn btn-amber" type="submit" style="width:100%">Submit correction &rarr;</button>
+        <p style="text-align:center;color:var(--muted);font-size:.82rem;margin-top:12px">Corrections are reviewed. A profile is never auto-overwritten; researched facts are only changed with a credible source.</p>
+      </form>
+      <div id="ccThanks" style="display:none;text-align:center;padding:26px">
+        <div style="font-size:2.6rem">&#9989;</div>
+        <h2 style="color:var(--ink);margin:6px 0">Thanks &mdash; received</h2>
+        <p style="color:var(--muted);max-width:460px;margin:0 auto">Your correction has been submitted for review. If we need clarification we'll reach out. <a href="manufacturers.html" style="color:var(--accent);font-weight:600">Back to manufacturers &rarr;</a></p>
+      </div>
+      <script>
+      (function(){
+        // Prefill the company from ?company= (e.g. manufacturer profile links).
+        try {
+          var c=new URLSearchParams(location.search).get('company');
+          if(c){ var inp=document.getElementById('fld_company'); if(inp) inp.value=c.replace(/_/g,' '); }
+        } catch(e){}
+        var f=document.getElementById('ccForm'); if(!f) return;
+        f.addEventListener('submit',function(e){
+          e.preventDefault();
+          if(typeof f.checkValidity==='function' && !f.checkValidity()){ f.reportValidity(); return; }
+          var body=new URLSearchParams(new FormData(f)).toString();
+          fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:body}).then(done).catch(done);
+        });
+        function done(){ f.style.display='none'; var t=document.getElementById('ccThanks'); t.style.display='block'; t.scrollIntoView({behavior:'smooth',block:'center'}); }
+      })();
+      </script>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg>Transformer<span class="accent">Path</span></a>
+        <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data. Built for utilities, transformer manufacturers, component suppliers, EPCs, consultants and engineers.</p>
+      </div>
+      <div><h2>INTELLIGENCE</h2><a href="intel.html">Daily Intel</a><a href="intel.html">Intel Archive</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="events.html">Events</a></div>
+      <div><h2>INDUSTRY</h2><a href="manufacturers.html">Manufacturers</a><a href="components.html">Components</a><a href="applications.html">Applications</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a></div>
+      <div><h2>ENGINEERING</h2><a href="knowledge.html">Knowledge</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Models</a><a href="design.html">Design Duel</a><a href="resources.html">Resources</a></div>
+      <div><h2>LEARN</h2><a href="learn.html">Learn</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy</a><a href="books.html">Books</a><a href="teams.html">Corporate Training</a></div>
+      <div><h2>BUSINESS</h2><a href="for-manufacturers.html">For Manufacturers</a><a href="pricing.html">Pricing</a><a href="verified.html">Verified</a><a href="sponsor.html">Sponsor</a><a href="webinars.html">Webinars</a></div>
+      <div><h2>COMPANY</h2><a href="about.html">About Us</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><h2>CONTACT</h2>
+        <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
+        <a class="tp-li-btn tp-li-follow" data-linkedin-follow href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>Follow us on LinkedIn</a>
+        <a class="tp-li-btn tp-li-share" data-linkedin-share href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>LinkedIn</a>
+      </div>
+    </div>
+    <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
+</script>
+<script src="analytics.js?v=5" defer></script>
+</body>
+</html>

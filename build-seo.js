@@ -158,7 +158,7 @@ console.log('generated', countryIndex.length, 'country pages');
 (function () {
   var MAIN = ['', 'intel.html', 'events.html', 'webinars.html', 'manufacturers.html', 'grids.html',
     'learn.html', 'blog.html', 'components.html', 'buyers-guide.html', 'rfq.html', 'jobs.html', 'resources.html',
-    'software.html', 'books.html', 'pricing.html', 'verified.html', 'list-company.html',
+    'software.html', 'books.html', 'pricing.html', 'verified.html', 'list-company.html', 'correct-company.html',
     'sponsor.html', 'faq.html', 'about.html', 'contact.html', 'calculator.html', 'masterclass.html',
     'academy.html', 'explorer.html', 'design.html', 'engineer-track.html', 'teams.html',
     'for-manufacturers.html', 'power3d.html', 'testbay.html', 'hydrogen.html', 'construction-guide.html',
