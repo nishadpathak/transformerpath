@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "updated": "2026-08-28",
+
+  "counters": {
+    "manufacturers": 553,
+    "manufacturingCountries": 84,
+    "gridCountries": 151,
+    "gridOperators": 166,
+    "events": 203,
+    "regions": 10,
+    "syncAreas": 16
+  },
+
+  "intel": {
+    "cadence": "daily",
+    "cadenceLabel": "Daily",
+    "classificationLevels": ["CONFIRMED", "INFERRED", "PIPELINE", "WATCH"],
+    "badgeColors": {
+      "CONFIRMED": "#1d7a4f",
+      "INFERRED": "#0b5fa5",
+      "PIPELINE": "#a86a05",
+      "WATCH": "#6b7280"
+    }
+  },
+
+  "pricing": {
+    "currency": "USD",
+    "plans": {
+      "Learning":     { "price": 199,  "seatLabel": "1 seat",  "billing": "12 months", "autoRenew": false },
+      "Professional": { "price": 599,  "seatLabel": "1 seat",  "billing": "12 months", "autoRenew": false },
+      "Team":         { "price": 1999, "seatLabel": "up to 10 seats", "billing": "12 months", "autoRenew": false }
+    },
+    "verifiedSupplier": { "price": 499, "billing": "12 months" },
+    "proVerifiedSupplier": { "price": 1499, "billing": "12 months" },
+    "featuredEventExhibitor": { "price": 399, "billing": "per event" },
+    "hostedWebinarFrom": 1500,
+    "sponsorshipFrom": 299,
+    "intelligenceFrom": 999,
+    "bookDigitalV1": 49,
+    "bookPrintV1": 99,
+    "bookBundleV1": 119,
+    "bookDigitalV2": 49,
+    "bookPrintV2": 99,
+    "bookBundleV2": 119,
+    "bookBundleV1V2Digital": 79,
+    "noAutoRenew": true
+  },
+
+  "voice": {
+    "neutralInstitutional": true,
+    "noEducationalCertificationClaims": true,
+    "noPersonalReferences": true,
+    "noELINReferences": true
+  }
+}
