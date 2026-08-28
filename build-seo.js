@@ -157,7 +157,7 @@ console.log('generated', countryIndex.length, 'country pages');
    never drifts from the pages actually on disk. */
 (function () {
   var MAIN = ['', 'intel.html', 'events.html', 'webinars.html', 'manufacturers.html', 'grids.html',
-    'learn.html', 'blog.html', 'components.html', 'rfq.html', 'jobs.html', 'resources.html',
+    'learn.html', 'blog.html', 'components.html', 'buyers-guide.html', 'rfq.html', 'jobs.html', 'resources.html',
     'software.html', 'books.html', 'pricing.html', 'verified.html', 'list-company.html',
     'sponsor.html', 'faq.html', 'about.html', 'contact.html', 'calculator.html', 'masterclass.html',
     'academy.html', 'explorer.html', 'design.html', 'engineer-track.html', 'teams.html',
