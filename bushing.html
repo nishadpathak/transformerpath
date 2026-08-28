@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="tp-dark">
+<html lang="en" data-theme="dark" class="tp-dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -48,8 +48,8 @@ body{font-family:var(--font-sans);background:#08121e;color:var(--ink)}
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="TransformerPath">
-<script src="course-gate.js?v=2"></script>
-    <link rel="stylesheet" href="tp-theme.css?v=3">
+<script src="course-gate.js?v=3"></script>
+    <link rel="stylesheet" href="tp-theme.css?v=4">
 </head>
 <body>
 <div class="tp-sitehead" role="banner">
@@ -275,7 +275,7 @@ addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updat
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
 (function(){var dp;window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();dp=e;if(document.getElementById('tpInstall'))return;var b=document.createElement('button');b.id='tpInstall';b.textContent='\u2913 Install TransformerPath';b.setAttribute('style','position:fixed;right:16px;bottom:16px;z-index:9999;background:#f5a623;color:#0d1b2e;border:0;border-radius:999px;padding:11px 18px;font-weight:800;font-size:.9rem;box-shadow:0 6px 20px rgba(0,0,0,.28);cursor:pointer;font-family:inherit');b.onclick=function(){b.remove();dp.prompt();dp.userChoice.finally(function(){dp=null;});};document.body.appendChild(b);});})();
 </script>
-<script src="analytics.js?v=2" defer></script>
+<script src="analytics.js?v=3" defer></script>
 <script src="tp-theme.js?v=1" defer></script>
 <footer>
   <div class="container">

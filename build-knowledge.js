@@ -2275,7 +2275,7 @@ function articlePage(a) {
   const schema = '<script type="application/ld+json">' + JSON.stringify(faqSchema) + '</script><script type="application/ld+json">' + JSON.stringify(techSchema) + '</script>';
   const liS = (a.quick.length > 155 ? a.quick.slice(0, 150).replace(/\s+\S*$/, '') + '…' : a.quick);
 
-  return '<!DOCTYPE html>\n<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
+  return '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
     '<title>' + esc(a.title) + ' | TransformerPath</title>' +
     '<meta name="description" content="' + esc(liS) + '">' +
     '<link rel="canonical" href="https://transformerpath.com/knowledge/' + a.slug + '.html">' +
@@ -2313,7 +2313,7 @@ function catCards(cat) {
   }).join('');
 }
 const grouped = CATS.filter(function (c) { return cards.some(function (a) { return a.topic === c; }); });
-const idx = '<!DOCTYPE html>\n<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
+const idx = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
   '<title>Transformer Knowledge — Technical Answers | TransformerPath</title>' +
   '<meta name="description" content="Clear, source-referenced answers to transformer engineering questions — design, manufacturing, testing, diagnostics, insulation, components and applications.">' +
   '<link rel="canonical" href="https://transformerpath.com/knowledge.html"><link rel="stylesheet" href="style.css?v=5"><link rel="icon" type="image/svg+xml" href="brand/favicon.svg"></head><body>' +

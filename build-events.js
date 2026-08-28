@@ -208,7 +208,7 @@ function eventPage(ev) {
   const schema = '<script type="application/ld+json">' + JSON.stringify(faqSchema) + '</script>' +
     '<script type="application/ld+json">' + JSON.stringify({ '@context': 'https://schema.org', '@type': 'Event', name: ev.name, startDate: rec.s, endDate: rec.e, location: { '@type': 'Place', name: rec.v, address: { '@type': 'PostalAddress', addressLocality: rec.c, addressCountry: rec.co } }, url: rec.u, description: rec.d }) + '</script>';
 
-  return '<!DOCTYPE html>\n<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
+  return '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
     '<title>' + esc(ev.name) + ' — Transformer Exhibitors & Coverage | TransformerPath</title>' +    '<meta name="description" content="' + esc(ev.blurb.slice(0, 155)) + '">' +
     '<link rel="canonical" href="' + url + '">' +
     '<meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath">' +

@@ -291,7 +291,7 @@ function page(app) {
     '<script type="application/ld+json">' + JSON.stringify({ '@context': 'https://schema.org', '@type': 'WebPage', name: app.title, url: 'https://transformerpath.com/applications/' + app.slug + '.html', description: app.intro }) + '</script>';
   const faqHtml = faqQuestions.map(function (f) { return '<div style="margin:12px 0"><b style="color:var(--ink)">' + esc(f.q) + '</b><p style="color:var(--text);margin:4px 0 0;line-height:1.7">' + esc(f.a) + '</p></div>'; }).join('');
 
-  return '<!DOCTYPE html>\n<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
+  return '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
     '<title>' + esc(app.title) + ' | TransformerPath</title>' +
     '<meta name="description" content="' + esc(app.intro.slice(0, 150)) + '">' +
     '<link rel="canonical" href="https://transformerpath.com/applications/' + app.slug + '.html">' +
@@ -325,7 +325,7 @@ APPLICATIONS.forEach(function (app) {
   console.log('OK applications/' + app.slug + '.html');
 });
 // Index page
-const idx = '<!DOCTYPE html>\n<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
+const idx = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
   '<title>Transformer Applications by Industry | TransformerPath</title>' +
   '<meta name="description" content="Transformer requirements by industry — data centres, renewables, mining, oil and gas, railways, utilities and industrial. Buyer guides, suppliers, components and events.">' +
   '<link rel="canonical" href="https://transformerpath.com/applications.html">' +

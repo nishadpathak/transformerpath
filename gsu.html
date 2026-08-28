@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="tp-dark">
+<html lang="en" data-theme="dark" class="tp-dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -42,7 +42,7 @@ body{font-family:var(--font-sans);background:#08121e;color:var(--ink)}
 @media(max-width:760px){#panel{width:248px}#topbar h1{font-size:.78rem}}
 </style>
 <script src="consent.js" defer></script>
-    <link rel="stylesheet" href="tp-theme.css?v=3">
+    <link rel="stylesheet" href="tp-theme.css?v=4">
 </head>
 <body>
 <div class="tp-sitehead" role="banner">
@@ -243,7 +243,7 @@ tick();
 addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
 </script>
 <script src="tp-theme.js?v=1" defer></script>
-<script src="analytics.js?v=2" defer></script>
+<script src="analytics.js?v=3" defer></script>
 <footer>
   <div class="container">
     <div class="cols">

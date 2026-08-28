@@ -133,7 +133,7 @@ function page(r, slug) {
     tierTable = '<table class="tbl"><tbody>' + row('Indicative capacity / yr', c) + row('Max voltage capability', kv) + row('Product types', (tier.types || []).join(', ')) + row('Regions served', (tier.regions || []).join(', ')) + row('Reported standards', (tier.certs || []).join(', ')) + row('Source', esc(tier.source || '—') + (tier.note ? ' <span style="color:var(--muted);cursor:help" title="' + esc(tier.note) + '">&#8505;</span>' : '')) + '</tbody></table>' + '<p style="font-size:.72rem;color:var(--muted)">Indicative, compiled from published market research/industry directories; verify against the manufacturer before a procurement decision.</p>';
   }
 
-  return '<!DOCTYPE html>\n<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
+  return '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
     '<title>' + esc(r.name) + ' — Company Profile, Products &amp; Industry Information | TransformerPath</title>' +
     '<meta name="description" content="' + esc(r.name) + ' — independent company profile: transformer capabilities (' + esc((r.types.length ? r.types : ['DT']).map(typeBadge).join(', ')) + '), location, related components, market intelligence and events, from the TransformerPath census.">' +
     '<link rel="canonical" href="' + url + '">' +

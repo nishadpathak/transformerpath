@@ -62,7 +62,7 @@ function page(v) {
       '<a class="btn btn-amber" href="../../subscribe.html" data-track="book_waitlist" data-track-book="volume-' + v.n + '">Subscribe for updates →</a></div>';
   }
 
-  return '<!DOCTYPE html>\n<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
+  return '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
     '<title>' + head + ' | TransformerPath</title>' +
     '<meta name="description" content="Transformers, Volume ' + v.n + ': ' + esc(v.title) + ' — ' + esc(v.sub) + '. ' + status + ' in the TransformerPath Professional Engineering Series.">' +
     '<link rel="canonical" href="' + url + '">' +

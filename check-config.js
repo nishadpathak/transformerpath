@@ -206,6 +206,36 @@ for (const lbl of NAV_LABELS) {
 check('nav has Search', NAV_HTML.includes('href="search.html"'));
 check('nav has Account', NAV_HTML.includes('href="workspace.html">Account'));
 
+// ── 5b. Asset cache-busters + dark-theme default must match config ─────────
+// CSS/JS version queries and the SW cache name come from data/config.json assets.
+// They MUST match what's actually referenced on the served pages, otherwise
+// browsers serve stale CSS/JS (the "not updated" symptom).
+if (CFG.assets) {
+  const CSSV = CFG.assets.css, JSV = CFG.assets.js, THEMEV = CFG.assets.theme, SWC = CFG.assets.sw;
+  // Every served HTML page must reference the current CSS version.
+  const SAMPLE = ['index.html', 'intel.html', 'manufacturers.html', 'learn.html'];
+  let badCss = 0, badJs = 0, badTheme = 0;
+  for (const f of pages) {
+    const s = fs.readFileSync(f, 'utf8');
+    if (/style\.css\?v=\d+/.test(s) && !s.includes('style.css?v=' + CSSV)) badCss++;
+    if (/tp-theme\.css\?v=\d+/.test(s) && !s.includes('tp-theme.css?v=' + THEMEV)) badTheme++;
+  }
+  check('all served pages reference style.css?v=' + CSSV, badCss === 0, badCss + ' pages stale');
+  check('tool pages reference tp-theme.css?v=' + THEMEV, badTheme === 0, badTheme + ' pages stale');
+  // Dark theme must be the CSS default on the html element (no light flash).
+  let noDark = 0;
+  for (const f of pages) {
+    if (/<html[^>]*data-theme="dark"/.test(fs.readFileSync(f, 'utf8'))) continue;
+    // system/redirect stubs and non-nav pages are exempt
+    if (/admin\.html|offline\.html|tutorial\.html|tx-design-masterclass\.html$/.test(f)) continue;
+    if (/<html[^>]*lang="en"/.test(fs.readFileSync(f, 'utf8'))) noDark++;
+  }
+  check('all served pages default to dark theme (data-theme="dark")', noDark === 0, noDark + ' pages light-flash');
+  // SW cache name must match config.
+  const SW = fs.readFileSync('sw.js', 'utf8');
+  check('sw.js cache name = ' + SWC, SW.includes("const CACHE = '" + SWC + "'"));
+}
+
 // ── 6. Build the regression report ────────────────────────────────────────
 if (problems.length) {
   console.error('CONFIG CHECK FAILED — ' + problems.length + ' issue(s):');

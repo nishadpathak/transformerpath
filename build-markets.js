@@ -460,7 +460,7 @@ function marketPage(m) {
     '<script type="application/ld+json">' + JSON.stringify({ '@context': 'https://schema.org', '@type': 'WebPage', name: 'Transformer Industry — ' + m.name, url: url, description: m.blurb.slice(0, 150) }) + '</script>';
   const mkCount = typeCount('PT') + typeCount('DT') + typeCount('DRY');
 
-  return '<!DOCTYPE html>\n<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
+  return '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
     '<title>Transformer Industry — ' + esc(m.name) + ' | TransformerPath</title>' +
     '<meta name="description" content="' + esc(m.blurb.slice(0, 155)) + '">' +
     '<link rel="canonical" href="' + url + '">' +
@@ -503,7 +503,7 @@ MARKETS.forEach(function (m) {
 });
 
 // Market index
-const idx = '<!DOCTYPE html>\n<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
+const idx = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
   '<title>Transformer Markets by Country | TransformerPath</title>' +
   '<meta name="description" content="Country transformer intelligence hubs — grid operators, manufacturers, components, projects, events, technical context and RFQ for the world\'s key markets.">' +
   '<link rel="canonical" href="https://transformerpath.com/markets.html"><link rel="stylesheet" href="style.css?v=5"><link rel="icon" type="image/svg+xml" href="brand/favicon.svg"></head><body>' +
