@@ -102,8 +102,8 @@
       <h2>The Transformer Path — A Practical Guide</h2>
       <p class="sub">Distribution Transformer Design — IEC and IEEE/ANSI Practice. The complete engineering tour: fundamentals, magnetic circuit, windings, insulation, cooling, losses &amp; impedance, testing, standards, and design to IEC 60076 / IEEE C57 — with the interactive companion models.</p>
       <div class="editions">
-        <div class="edition"><span><b>Digital Professional</b></span><span class="pr">$49</span></div>
-        <div class="edition"><span><b>Premium printed</b></span><span class="pr">≈$99</span></div>
+        <div class="edition"><span><b>Digital Professional</b></span><span class="pr">$49</span><a class="btn btn-amber btn-sm" data-buy="v1_digital" data-track="book_purchase" data-track-book="Volume 1 (digital)">Buy digital →</a></div>
+        <div class="edition"><span><b>Premium printed</b></span><span class="pr">≈$99</span><a class="btn btn-outline btn-sm" data-buy="v1_print" data-track="book_purchase" data-track-book="Volume 1 (print)">Buy print →</a></div>
       </div>
     </div>
     <div class="vol-card" id="vol2">
@@ -111,21 +111,22 @@
       <h2>Power Transformer Design</h2>
       <p class="sub">Large Power Transformers and Generator Step-Up Units — IEC and IEEE/ANSI Practice. The working design companion: core &amp; winding sizing, the rating-plate and design calculator workflow, short-circuit &amp; thermal withstand, OLTC, bushings, and a full worked example end-to-end.</p>
       <div class="editions">
-        <div class="edition"><span><b>Digital Professional</b></span><span class="pr">$49</span></div>
-        <div class="edition"><span><b>Premium printed</b></span><span class="pr">≈$99</span></div>
+        <div class="edition"><span><b>Digital Professional</b></span><span class="pr">$49</span><a class="btn btn-amber btn-sm" data-buy="v2_digital" data-track="book_purchase" data-track-book="Volume 2 (digital)">Buy digital →</a></div>
+        <div class="edition"><span><b>Premium printed</b></span><span class="pr">≈$99</span><a class="btn btn-outline btn-sm" data-buy="v2_print" data-track="book_purchase" data-track-book="Volume 2 (print)">Buy print →</a></div>
       </div>
     </div>
   </div>
   <div class="bk-offer">
     <h3>V1 + V2 Professional Library</h3>
-    <p>Both volumes, digital — the discounted bundle for a real design office.</p>
+    <p>Both volumes — the discounted bundle for a real design office. Buy digital for instant access, or the printed library delivered on demand.</p>
     <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
       <div style="font-size:1.5rem;font-weight:800;color:#fff">$79 <span style="font-size:.8rem;color:#9fb0c4">digital pair</span></div>
       <div style="font-size:1.5rem;font-weight:800;color:#fff">≈$169 <span style="font-size:.8rem;color:#9fb0c4">printed library</span></div>
-      <a class="btn btn-amber" href="mailto:hello@transformerpath.com?subject=Books%20order" data-track="book_purchase" data-track-book="Professional Engineering Series">Email to order →</a>
+      <a class="btn btn-amber" data-buy="both_digital" data-track="book_purchase" data-track-book="V1+V2 digital pair">Buy both (digital) — $79 →</a>
+      <a class="btn btn-outline" data-buy="both_print" data-track="book_purchase" data-track-book="V1+V2 printed library">Buy printed library →</a>
     </div>
   </div>
-  <p class="bk-note">Each volume includes <b>online companions</b> — figures, calculators, 3D models, extra examples, answers and errata — activated via the TransformerPath account. Printed editions ship on demand; prices are indicative and subject to print/fulfilment cost. Books are currently available on request by email while the storefront and account activation are completed.</p>
+  <p class="bk-note">Each volume includes <b>online companions</b> — figures, calculators, 3D models, extra examples, answers and errata — activated via the TransformerPath account. Printed editions ship on demand; prices are indicative and subject to print/fulfilment cost. Checkout runs through Stripe; if a payment link is not yet configured for an edition, we fall back to email so you are never blocked.</p>
   <div class="bkroad" id="roadmap">
     <h2>The 18-volume roadmap</h2>
     <table>
@@ -177,5 +178,34 @@
 </footer>
 
 <script src="analytics.js?v=2" defer></script>
+<script>
+// Direct book checkout via Stripe Payment Links (config-driven). Each edition
+// has a Stripe link in data/config.json -> pricing.bookStripeLinks. When a link
+// is not yet configured, fall back to email so the buyer is never blocked.
+(function(){
+  var PRICE = { v1_digital:49, v1_print:99, v1_bundle:119, v2_digital:49, v2_print:99, v2_bundle:119, both_digital:79, both_print:169 };
+  var NAME = { v1_digital:'Volume 1 (digital)', v1_print:'Volume 1 (print)', v1_bundle:'Volume 1 (digital+print)', v2_digital:'Volume 2 (digital)', v2_print:'Volume 2 (print)', v2_bundle:'Volume 2 (digital+print)', both_digital:'Volume 1 + 2 (digital)', both_print:'Volume 1 + 2 (printed library)' };
+  var LINKS = {};
+  var buy = document.querySelectorAll('[data-buy]');
+  fetch('data/config.json').then(function(r){ return r.json(); }).then(function(cfg){
+    LINKS = (cfg && cfg.pricing && cfg.pricing.bookStripeLinks) || {};
+    buy.forEach(function(a){
+      var key = a.getAttribute('data-buy');
+      var url = LINKS[key];
+      var ok = url && url.indexOf('REPLACE_WITH') !== 0;
+      if (ok) {
+        a.href = url;
+        a.textContent = a.textContent.replace(/→\s*$/,'');
+        a.setAttribute('target','_blank');
+        a.setAttribute('rel','noopener');
+      } else {
+        a.href = 'mailto:hello@transformerpath.com?subject=' + encodeURIComponent('Buy ' + (NAME[key]||'TransformerPath book'));
+        a.setAttribute('data-fallback','email');
+        a.classList.add('soon');
+      }
+    });
+  }).catch(function(){ /* leave default mailto fallback */ });
+})();
+</script>
 </body>
 </html>

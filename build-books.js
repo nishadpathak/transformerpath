@@ -53,8 +53,8 @@ function page(v) {
   let body;
   if (v.st === 'available') {
     body = '<p class="lead">Now available &mdash; Volume ' + v.n + ' of the TransformerPath Professional Engineering Series.</p>' +
-      '<div class="box"><b style="color:var(--text)">Get this volume</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Volume 1 and Volume 2 are available now. Digital and printed editions are described on the books page; ordering is currently by request while the storefront is completed.</p>' +
-      '<a class="btn btn-amber" href="../../books.html" data-track="book_view" data-track-book="volume-' + v.n + '">See editions &amp; ordering →</a></div>';
+      '<div class="box"><b style="color:var(--text)">Get this volume</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Digital and printed editions of Volume 1 and Volume 2 are available now. Checkout runs directly through Stripe on the books page; a digital copy unlocks instantly and the printed library ships on demand.</p>' +
+      '<a class="btn btn-amber" href="../../books.html" data-track="book_view" data-track-book="volume-' + v.n + '">Buy this volume →</a></div>';
   } else {
     body = '<p class="lead">In development &mdash; the next volume in the TransformerPath Professional Engineering Series.</p>' +
       '<p>This volume is part of the 18-volume TransformerPath Professional Engineering Series. It joins the volumes available now, and is written to work with the TransformerPath platform &mdash; linking the engineering reference to the interactive 3D models, calculators and the Academy.</p>' +

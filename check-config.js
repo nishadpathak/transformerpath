@@ -116,6 +116,19 @@ const offerHi = PRICING.match(/"highPrice"\s*:\s*"(\d+)"/);
 check('pricing schema lowPrice = config', offer && +offer[1] === Math.min(...Object.values(plans).map((p) => p.price)));
 check('pricing schema highPrice = config', offerHi && +offerHi[1] === Math.max(...Object.values(plans).map((p) => p.price)));
 
+// ── 2b. Books — prices must equal config and checkout must be direct (or email fallback) ──
+const BOOKS = fs.readFileSync('books.html', 'utf8');
+const bp = CFG.pricing;
+for (const [k, val] of Object.entries({
+  bookDigitalV1: bp.bookDigitalV1, bookDigitalV2: bp.bookDigitalV2,
+  bookBundleV1V2Digital: bp.bookBundleV1V2Digital, bookPrintV1: bp.bookPrintV1, bookPrintV2: bp.bookPrintV2,
+})) {
+  const key = k.replace(/^book/, '').replace(/([A-Z])/g, '_$1').toUpperCase();
+  check('books.' + key + ' price = $' + val, new RegExp('\\$' + val + '\\b').test(BOOKS));
+}
+check('books page uses a checkout (Stripe links or email fallback), not a bare text form',
+  /buy\.stripe|REPLACE_WITH_STRIPE|checkout|data-track="book_purchase"/.test(BOOKS));
+
 // ── 3. Intel cadence + classification ─────────────────────────────────────
 const INTEL = fs.readFileSync('intel.html', 'utf8');
 check('intel cadence label = config', new RegExp('\\b' + CFG.intel.cadenceLabel + '\\b', 'i').test(INTEL));
