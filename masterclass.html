@@ -1833,6 +1833,19 @@ nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
 
 <h3>15.1 Autotransformers</h3>
 <p>Series + common winding share one electrical circuit. The built (frame) size shrinks by the co-ratio (1 − V₂/V₁): a 400/220 kV interconnector (co-ratio 0.45) needs only ~45% of the equivalent two-winding frame — cheaper, smaller, lower losses. The costs: no galvanic separation, lower natural impedance (higher fault duty), direct surge transfer, and the neutral must be solidly earthed. Universal at 400/220/132 kV; the delta tertiary stabilises the star point and feeds reactive compensation or station supply.</p>
+<p><b>Worked example — how the co-ratio saves material.</b> Take a 200 MVA 400/220 kV autotransformer. Since the HV and LV windings share a common magnetic path, the <b>throughput</b> is carried on the series winding for the differential, not the full 200 MVA. The apparent or "design" rating reduces by the co-ratio k = 1 − V₂/V₁ = 1 − 220/400 = <b>0.45</b>, so the equivalent two-winding (insulated-separate) frame would need ≈ 200 × 0.45 = <b>90 MVA</b> of active material. That is the whole economic argument: you build a 90 MVA transformer and pass 200 MVA.</p>
+<p>The winding powers split as:</p>
+<div class="table-wrap"><table>
+<tr><th>Quantity</th><th>Value</th><th>Note</th></tr>
+<tr><td>Throughput S</td><td>200 MVA</td><td>HV=400 kV, LV=220 kV, star/star with delta tertiary</td></tr>
+<tr><td>Co-ratio k = 1 − V₂/V₁</td><td>0.45</td><td>The design (frame) rating multiplier</td></tr>
+<tr><td>Design rating k·S</td><td>≈ 90 MVA</td><td>Active material ~45% of a two-winding unit</td></tr>
+<tr><td>Series-winding power k·S</td><td>≈ 90 MVA</td><td>Carries the voltage difference; wire sized on the differential</td></tr>
+<tr><td>Common-winding power (1−k)·S</td><td>≈ 110 MVA</td><td>Carries the LV-side current; thicker, fewer turns</td></tr>
+</table></div>
+<p>Efficiency follows because losses scale with material: at the same flux density and current density, the no-load and load losses of an autotransformer sit closer to those of a unit rated at the co-ratio (here ≈ 90 MVA) than to a full 200 MVA two-winding transformer. So the autotransformer is both smaller and lower-loss than an equivalent insulated-separate unit — the exact saving depends on the co-ratio and the operating power factor. The trade is the fault duty: with no separate reactance between windings, the short-circuit impedance is lower, so through-fault currents and the mechanical stresses they impose are higher. That is why the neutral must be solidly earthed and why a designer checks the through-fault withstand (IEC 60076-5) carefully on an autotransformer.</p>
+<p><b>Check your understanding.</b> If the same 200 MVA were built as an autotransformer at 400/132 kV, what is the design rating? (<i>Answer: k = 1 − 132/400 = 0.67, so the design rating ≈ 200 × 0.67 = 134 MVA — an even bigger saving, at the price of a smaller galvanic step between the two networks.</i>)</p>
+<p>For sizing any autotransformer arithmetically, the equations are the same as a two-winding unit once you use the inherent (co-ratio) rating for the volts-per-turn, core area and winding dimensions — enter the design rating in the <a href="calculator.html">TX Calculation</a> suite to see the core/winding/window numbers fall out for a given kVA.</p>
 
 <h3>15.2 Earthing (grounding) transformers</h3>
 <p>Zigzag (or Yd) units that manufacture a neutral on a delta-fed network, rated for short-time fault current, often with a neutral earthing resistor; frequently combined with an auxiliary LV winding for substation supplies.</p>
