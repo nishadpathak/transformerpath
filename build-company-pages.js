@@ -130,7 +130,14 @@ function page(r, slug) {
     const row = function (k, v) { return v ? '<tr><th>' + k + '</th><td>' + v + '</td></tr>' : ''; };
     const c = tier.mva ? '~' + tier.mva.toLocaleString('en-US') + ' MVA' : '—';
     const kv = tier.kv ? tier.kv + ' kV' : '—';
-    tierTable = '<table class="tbl"><tbody>' + row('Indicative capacity / yr', c) + row('Max voltage capability', kv) + row('Product types', (tier.types || []).join(', ')) + row('Regions served', (tier.regions || []).join(', ')) + row('Reported standards', (tier.certs || []).join(', ')) + row('Source', esc(tier.source || '—') + (tier.note ? ' <span style="color:var(--muted);cursor:help" title="' + esc(tier.note) + '">&#8505;</span>' : '')) + '</tbody></table>' + '<p style="font-size:.72rem;color:var(--muted)">Indicative, compiled from published market research/industry directories; verify against the manufacturer before a procurement decision.</p>';
+    // Source-authority honesty: capability figures resting only on a
+    // low-authority third-party directory (Ensun / IQS / Sinovoltaics / generic
+    // "industry directory") must be flagged as unverified — they are not
+    // independently sourced evidence of a capability.
+    const LOW_AUTH = /ensun|iqs|sinovoltaics|industry directory|directory/i;
+    const lowAuth = LOW_AUTH.test('' + tier.source);
+    const srcLabel = (tier.source || '—') + (lowAuth ? ' <span style="color:var(--muted);font-weight:600">(third-party directory — not independently verified)</span>' : '') + (tier.note ? ' <span style="color:var(--muted);cursor:help" title="' + esc(tier.note) + '">&#8505;</span>' : '');
+    tierTable = '<table class="tbl"><tbody>' + row('Indicative capacity / yr', c) + row('Max voltage capability', kv) + row('Product types', (tier.types || []).join(', ')) + row('Regions served', (tier.regions || []).join(', ')) + row('Reported standards', (tier.certs || []).join(', ')) + row('Source', srcLabel) + '</tbody></table>' + '<p style="font-size:.72rem;color:var(--muted)">Separate figures: annual manufacturing capacity and maximum voltage capability are independently reported values — they are <b>not</b> combined here into a single product capability. Indicative, compiled from published market research/industry directories; verify against the manufacturer before a procurement decision.</p>';
   }
 
   return '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +

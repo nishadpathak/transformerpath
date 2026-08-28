@@ -12,21 +12,38 @@ function walk(d, skip) {
   return out;
 }
 const skip = ['archive', '_private', 'transformerpath-site', 'node_modules', '.git'];
-const files = walk('.', skip);
+const files = walk('.', skip)
+  // Immutable historical edition snapshots — never edited, so never flagged.
+  // They legitimately contain business words ("enterprise"), project dates
+  // ("2-year", "per year") and technical cert/standard references.
+  .filter((f) => !/intel-2026-\d{2}-\d{2}\.html$/.test(f));
 
-// Forbidden educational-credential/commercial-architecture terms
+// Forbidden educational-credential/commercial-architecture terms.
+//
+// NOTE: these are PHRASE-level guards. We deliberately do NOT blanket-flag the
+// bare words "enterprise", "learner", "credential" or "certification": those
+// appear legitimately (a company named Enterprise; "ISO certification";
+// "course completion record") and were producing false positives that drowned
+// out real hits. Plan-tier naming (Learning/Professional/Team) is enforced
+// separately by check-config.js and audit-consistency.js, which match the
+// actual rendered heading/CTA text.
 const FORBIDDEN = [
-  /\bLeaner\b|\blearner\b/gi,            // 'learner' tier naming
-  /\bEnterprise\b|\benterprise\b/gi,     // 'Enterprise' tier naming
+  // Plan naming used AS A TIER (not the business word "enterprise").
+  /\b(?:leaner|learner|enterprise)\s+(?:plan|tier|checkout|unlock|payment|access)\b/gi,
+  // Educational-credential wording (PhrasePath is not an accreditation body).
   /\$199\/year|\$599\/year|\$1,999\/year/gi,
   /\bcertified engineer\b/gi,
-  /\bcredential\b/gi,
   /\bco-branded certificates?\b/gi,
   /\bcertificate per level\b/gi,
   /\bprofessional certificate\b/gi,
   /\baccredited qualification\b/gi,
-  /\bcertification\b(?![ -]"(?:ISO|IEC|UL|IEEE|CE|ANSI))/gi, // allow product/standard cert refs
   /\bcapstone review \+ certificate\b/gi,
+  // Positive credential CLAIMS only. Negations ("...is NOT an accredited or
+  // licensed professional credential") are the required honest disclaimer and
+  // must not be flagged.
+  /\b(?:is|are|offers?|issues?|awards?|grants?|provides?)\s+(?:an?\s+)?(?:accredited|professional|certified|recognised|licensed)\s+credential\b/gi,
+  /\b(?:is|are|offers?|issues?|awards?)\s+(?:an?\s+)?(?:accredited|professional|certified|recognised|licensed)\s+qualification\b/gi,
+  // Honesty/compliance wording (no "we sell/are not FEM" copy, no 10-15% claim).
   /\bwe are not FEM\b|\bwe sell none of them\b|\bwe would rather tell you\b/gi,
   /\b10[\s\u2013-]?15%\b/gi,
   /\boptimised works design\b|\boptimized works design\b|\bworks design\b/gi,
