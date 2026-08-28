@@ -42,6 +42,10 @@ SITES.forEach(function (g) { SITE_GROUP[normUrl(g.url)] = g; });
 const DEVELOPMENTS = JSON.parse(fs.readFileSync('data/company-developments.json', 'utf8'));
 const DEV_BY_NAME = {};
 DEVELOPMENTS.forEach(function (d) { DEV_BY_NAME[norm(d.name)] = d; });
+// Source-provenance facts (single-field, never a combined MVA+kV capability).
+const PROV = JSON.parse(fs.readFileSync('data/manufacturer-provenance.json', 'utf8'));
+const PROV_BY_NAME = {};
+PROV.forEach(function (p) { PROV_BY_NAME[norm(p.name)] = p; });
 const COMPONENTS = { 'transformer-bushings': 'Transformer bushings', 'on-load-tap-changers': 'On-load tap changers', 'transformer-cooling': 'Cooling systems', 'insulation-materials': 'Insulation materials', 'conductors-and-core': 'Conductors & core steel', 'oil-fluids-preservation': 'Oil & preservation', 'protection-monitoring': 'Protection & monitoring', 'tank-and-mechanical': 'Tank & mechanical' };
 const APPS = { 'utilities-grid': 'Utilities & Grid', 'renewables': 'Renewable Energy', 'data-centres': 'Data Centres', 'hvdc': 'HVDC & Converters', 'solar': 'Solar PV', 'bess': 'Battery Storage', 'offshore-wind': 'Offshore Wind', 'mining-metals': 'Mining & Metals', 'oil-gas': 'Oil, Gas & Energy', 'railways': 'Railways & Metro', 'cement-industrial': 'Cement & Industrial' };
 
@@ -114,6 +118,21 @@ function developmentsHtml(r) {
   }).join('');
   return '<h2>Recent developments</h2><p style="font-size:.82rem;color:var(--muted)">Sourced from TransformerPath Daily Intel. An item is shown because it <b>references</b> this company — it is not an independently verified award, order or project attribution.</p>' +
     '<ul>' + lis + '</ul>';
+}
+// Sourced capability EVIDENCE with provenance — a single field per fact, never
+// asserted as a company maximum.
+function provenanceHtml(r) {
+  const p = PROV_BY_NAME[norm(r.name)];
+  if (!p || !p.facts || !p.facts.length) return '';
+  const rows = p.facts.map(function (f) {
+    const cap = f.field.replace(/_/g, ' ').replace(/^./, function (c) { return c.toUpperCase(); });
+    return '<tr><th style="text-align:left;color:var(--muted);font-weight:600;padding:6px 10px;border-bottom:1px solid var(--border);width:38%">' + esc(cap) + '</th>' +
+      '<td style="padding:6px 10px;border-bottom:1px solid var(--border);color:var(--text);font-weight:600">' + esc(f.value) + ' ' + esc(f.unit) + '</td>' +
+      '<td style="padding:6px 10px;border-bottom:1px solid var(--border);color:var(--muted);font-size:.78rem">' + esc(f.confidence) + ' · ' + esc(f.claim_type.replace(/_/g, ' ')) + '<br><a href="' + esc(f.source_url) + '" target="_blank" rel="noopener nofollow" style="color:var(--accent)">source</a></td></tr>';
+  }).join('');
+  const notes = p.facts.map(function (f) { return '<li style="color:var(--muted);font-size:.8rem">' + esc(f.note) + '</li>'; }).join('');
+  return '<h2>Reported capability — sourced evidence</h2><p style="font-size:.82rem;color:var(--muted)">Evidence is attached to a <b>single</b> reported quantity (voltage or rating) and is <b>not</b> combined into a single product capability. It is shown because a source confirms it; it is <b>not</b> asserted as the company\'s maximum.</p>' +
+    '<table class="tbl"><tbody>' + rows + '</tbody></table><ul>' + notes + '</ul>';
 }
 function eventsFor(rec) {
   const now = new Date(); const alias = COUNTRY_ALIAS[ci(rec.country)] || rec.country;
@@ -201,7 +220,7 @@ function page(r, slug) {
     '<h2>Related components</h2><div>' + compLinks + '</div>' +
     '<h2>Relevant applications</h2><div>' + appLinks + '</div>' +
     '<h2>Markets</h2><div>' + countryLink + (cityHtml ? ' ' + cityHtml : '') + (marketLink ? ' ' + marketLink : '') + '</div>' +
-    brandSitesHtml(r) + developmentsHtml(r) +
+    brandSitesHtml(r) + developmentsHtml(r) + provenanceHtml(r) +
     '<h2>Latest TransformerPath intelligence</h2><ul>' + intelHtml + '</ul>' +
     '<h2>Upcoming events</h2><ul>' + evHtml + '</ul>' +
     '<p style="font-size:.72rem;color:var(--muted)">Last reviewed: ' + lastReviewed + '.</p>' +

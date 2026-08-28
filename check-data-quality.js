@@ -122,6 +122,24 @@ for (const d of DEVS) {
   }
 }
 console.log('R6 developments: entities ' + DEVS.length + ' | missing title: ' + DEV_NO_TITLE + ' | invalid url: ' + DEV_BAD_URL);
+
+// ── R7: source-provenance model integrity ───────────────────────────────
+const CONF = ['HIGH', 'MEDIUM', 'LIMITED'];
+const CLAIMS = ['INDEPENDENTLY_SOURCED', 'COMPANY_REPORTED', 'INFERRED', 'UNVERIFIED'];
+const PROV = JSON.parse(fs.readFileSync('data/manufacturer-provenance.json', 'utf8'));
+let provBadUrl = 0, provBadConf = 0, provBadClaim = 0, provCombinedField = 0, provCombinedClaim = 0;
+for (const p of PROV) {
+  for (const f of (p.facts || [])) {
+    if (!f.source_url || !/^https?:\/\//i.test(f.source_url)) { provBadUrl++; problems.push('R7 provenance invalid url :: ' + p.name); }
+    if (!CONF.includes(f.confidence)) { provBadConf++; problems.push('R7 provenance bad confidence :: ' + p.name); }
+    if (!CLAIMS.includes(f.claim_type)) { provBadClaim++; problems.push('R7 provenance bad claim_type :: ' + p.name); }
+    // Never combine a separately-stated MVA and kV into one capability field.
+    if (/mva/i.test(f.field || '') && /kv/i.test(f.field || '')) { provCombinedField++; problems.push('R7 provenance combined field :: ' + p.name); }
+    // Never state a combined "X MVA, Y kV transformer" capability in the note.
+    if (/\b[\d,.]+\s*MVA\b[^\n]*\b[\d,.]+\s*kV\b[^\n]*transformer/i.test(f.note || '')) { provCombinedClaim++; problems.push('R7 provenance combined capability claim :: ' + p.name); }
+  }
+}
+console.log('R7 provenance: entities ' + PROV.length + ' | bad url: ' + provBadUrl + ' | bad confidence: ' + provBadConf + ' | bad claim_type: ' + provBadClaim + ' | combined field: ' + provCombinedField + ' | combined claim: ' + provCombinedClaim);
 if (advisory.length) {
   console.log('\nAdvisory (confirm separation, no action required):');
   advisory.slice(0, 12).forEach((a) => console.log('  ' + a));
