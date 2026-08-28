@@ -173,12 +173,9 @@ var META_PIXEL_ID = "";            // Meta Pixel ID, e.g. "1234567890" (optional
 
     function openShare(el) {
       var url = el.getAttribute('data-url') || currentUrl();
+      // Open LinkedIn's official share composer in a NEW TAB (not a popup window).
       var href = 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(url);
-      var w = 640, h = 660;
-      var l = Math.max(0, Math.round((screen.width - w) / 2));
-      var t = Math.max(0, Math.round((screen.height - h) / 2));
-      var win = window.open(href, 'tp-share-linkedin',
-        'width=' + w + ',height=' + h + ',left=' + l + ',top=' + t + ',noopener');
+      var win = window.open(href, '_blank', 'noopener');
       if (win) win.opener = null;
       track('social_share', { network: 'linkedin', page: url.replace(/^https?:\/\//, '') });
     }
