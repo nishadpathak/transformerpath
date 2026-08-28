@@ -174,7 +174,18 @@ for (const f of pages) {
   }
 }
 
-// ── 5. Build the regression report ────────────────────────────────────────
+// ── 5. Navigation structure ───────────────────────────────────────────────
+// The header nav must use the grouped INTELLIGENCE/INDUSTRY/ENGINEERING/LEARN/
+// BUSINESS structure with Search + Account, and never regress to the flat list.
+const NAV_LABELS = ['Intelligence', 'Industry', 'Engineering', 'Learn', 'Business'];
+const NAV_HTML = fs.readFileSync('index.html', 'utf8');
+for (const lbl of NAV_LABELS) {
+  check('nav group "' + lbl + '" present', NAV_HTML.includes('nav-group-label">' + lbl));
+}
+check('nav has Search', NAV_HTML.includes('href="search.html"'));
+check('nav has Account', NAV_HTML.includes('href="workspace.html">Account'));
+
+// ── 6. Build the regression report ────────────────────────────────────────
 if (problems.length) {
   console.error('CONFIG CHECK FAILED — ' + problems.length + ' issue(s):');
   problems.forEach((p) => console.error('  ✗ ' + p));
