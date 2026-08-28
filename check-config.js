@@ -119,6 +119,17 @@ check('pricing schema highPrice = config', offerHi && +offerHi[1] === Math.max(.
 // ── 3. Intel cadence + classification ─────────────────────────────────────
 const INTEL = fs.readFileSync('intel.html', 'utf8');
 check('intel cadence label = config', new RegExp('\\b' + CFG.intel.cadenceLabel + '\\b', 'i').test(INTEL));
+// No contradicting intel-feed cadence text (e.g. "updated hourly", "2×/day") on served
+// intel/index pages. Legitimate other-cadence uses (LME hourly, "announced weekly", the
+// "Weekly scan of technology" label) are excluded by matching only intel-cadence phrasing.
+const CADENCE_BAD = /(updated\s+(?:hourly|2×\/day|2x\/day|every\s+hour))|(\bHourly\b\s+global\s+briefing)|(<b>\s*Hourly\s*<\/b>)/gi;
+for (const f of ['intel.html', 'index.html']) {
+  const txt = fs.readFileSync(f, 'utf8');
+  if (CADENCE_BAD.test(txt)) {
+    const m = txt.match(CADENCE_BAD);
+    problems.push('intel-cadence-contradiction ' + f + ' :: ' + (m && m[0]));
+  }
+}
 for (const c of CFG.intel.classificationLevels) {
   check('intel classification level ' + c + ' present', INTEL.includes(c));
 }
