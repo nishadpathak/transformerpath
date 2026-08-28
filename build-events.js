@@ -31,6 +31,7 @@ const COUNTRY_MARKET = { uae: 'uae', 'united arab emirates': 'uae', 'saudi arabi
 // Curated transformer-relevant exhibitions (the "10 major exhibition pages").
 const CURATED = [
   { slug: 'middle-east-energy', name: 'Middle East Energy 2026 (50th edition)', market: 'uae',
+    register: 'https://register.visitcloud.com/survey/1ilpu1hxi14hc?actioncode=MEEV567264',
     blurb: 'The Gulf\'s flagship power & energy exhibition, held at the Dubai World Trade Centre. Fifty editions of T&D, generation, renewables and smart-grid content make it the region\'s busiest window for transformer, switchgear and substation D&I — a hard requirement for suppliers selling into the GCC projects boom.',
     faq: [['Who exhibits transformer equipment at Middle East Energy?', 'Global and regional transformer, switchgear and substation OEMs, plus component makers and service providers — see the related supplier list on this page.'], ['Does TransformerPath track UAE transformer suppliers?', 'Yes — the UAE market hub aggregates the UAE manufacturer census, grid operators, projects and events, and links to an RFQ.'], ['How can my company be featured?', 'TransformerPath offers a featured exhibitor slot for this event; submit the inquiry link at the bottom of this page.']],
     comps: ['transformer-bushings', 'transformer-cooling', 'protection-monitoring'] },
@@ -223,6 +224,7 @@ function eventPage(ev) {
     '<span><b>Venue</b> ' + esc(rec.v || rec.c) + '</span>' +
     '<span><b>Location</b> ' + esc(rec.c + ', ' + rec.co) + '</span>' +
     (rec.u !== '#' ? '<span><a href="' + esc(rec.u) + '" target="_blank" rel="noopener" style="color:var(--accent)">Official site ↗</a></span>' : '') + '</div>' +
+    (ev.register ? '<div style="margin:10px 0 4px"><a class="btn btn-amber" href="' + esc(ev.register) + '" target="_blank" rel="noopener" data-track="event_register" data-track-event="' + esc(ev.slug) + '">Register for ' + esc(ev.name) + ' →</a></div>' : '') +
     '<p class="lead">' + esc(ev.blurb) + '</p>' +
     '<h2>What it covers</h2><p style="line-height:1.7;color:var(--text)">' + esc(rec.d || ev.blurb) + '</p>' +
     '<h2>Transformer companies &amp; suppliers</h2><p style="color:var(--muted);font-size:.94rem;margin:4px 0 8px">Companies in this market (TransformerPath entity pages) — verify capability before a decision.</p><div style="margin:4px 0 8px">' + mkPills + '</div>' + (countryLink ? '<div style="margin-top:8px">' + countryLink + '</div>' : '') +
