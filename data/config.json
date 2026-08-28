@@ -1,9 +1,8 @@
 {
   "version": 1,
   "updated": "2026-08-28",
-
   "counters": {
-    "manufacturers": 553,
+    "manufacturers": 546,
     "manufacturingCountries": 84,
     "gridCountries": 151,
     "gridOperators": 166,
@@ -11,11 +10,15 @@
     "regions": 10,
     "syncAreas": 16
   },
-
   "intel": {
     "cadence": "daily",
     "cadenceLabel": "Daily",
-    "classificationLevels": ["CONFIRMED", "INFERRED", "PIPELINE", "WATCH"],
+    "classificationLevels": [
+      "CONFIRMED",
+      "INFERRED",
+      "PIPELINE",
+      "WATCH"
+    ],
     "badgeColors": {
       "CONFIRMED": "#1d7a4f",
       "INFERRED": "#0b5fa5",
@@ -23,18 +26,44 @@
       "WATCH": "#6b7280"
     }
   },
-
   "pricing": {
     "currency": "USD",
     "plans": {
-      "Learning":     { "price": 199,  "seatLabel": "1 seat",  "billing": "12 months", "autoRenew": false },
-      "Professional": { "price": 599,  "seatLabel": "1 seat",  "billing": "12 months", "autoRenew": false },
-      "Team":         { "price": 1999, "seatLabel": "up to 10 seats", "billing": "12 months", "autoRenew": false }
+      "Learning": {
+        "price": 199,
+        "seatLabel": "1 seat",
+        "billing": "12 months",
+        "autoRenew": false
+      },
+      "Professional": {
+        "price": 599,
+        "seatLabel": "1 seat",
+        "billing": "12 months",
+        "autoRenew": false
+      },
+      "Team": {
+        "price": 1999,
+        "seatLabel": "up to 10 seats",
+        "billing": "12 months",
+        "autoRenew": false
+      }
     },
-    "verifiedSupplier": { "price": 499, "billing": "12 months" },
-    "proVerifiedSupplier": { "price": 1499, "billing": "12 months" },
-    "foundingVerified": { "price": 199, "note": "first 50-100 companies, first year" },
-    "featuredEventExhibitor": { "price": 399, "billing": "per event" },
+    "verifiedSupplier": {
+      "price": 499,
+      "billing": "12 months"
+    },
+    "proVerifiedSupplier": {
+      "price": 1499,
+      "billing": "12 months"
+    },
+    "foundingVerified": {
+      "price": 199,
+      "note": "first 50-100 companies, first year"
+    },
+    "featuredEventExhibitor": {
+      "price": 399,
+      "billing": "per event"
+    },
     "hostedWebinarFrom": 1500,
     "sponsorshipFrom": 299,
     "intelligenceFrom": 999,
@@ -57,7 +86,6 @@
       "both_print": "REPLACE_WITH_STRIPE_LINK"
     }
   },
-
   "voice": {
     "neutralInstitutional": true,
     "noEducationalCertificationClaims": true,
