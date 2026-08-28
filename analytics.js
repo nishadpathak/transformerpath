@@ -263,5 +263,9 @@ var META_PIXEL_ID = "";            // Meta Pixel ID, e.g. "1234567890" (optional
     if (/^pricing(_|$)/.test(path)) track('pricing_view', { plan: 'all' });
     if (/^books(_|$)/.test(path)) track('book_view', { book: 'series' });
     if (/^verified(_|$)/.test(path)) track('verified_view', {});
+    if (/^manufacturers_[a-z0-9-_]+$/.test(path)) {
+      var slug = path.replace(/^manufacturers_/, '').replace(/_$/, '');
+      track('manufacturer_view', { manufacturer: slug.replace(/_/g, '-') });
+    }
   })();
 })();

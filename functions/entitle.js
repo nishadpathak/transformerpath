@@ -27,6 +27,12 @@ const AMOUNT_PRODUCT = {
   59900: { product: 'professional', plan: 'Professional' },
   199900: { product: 'team', plan: 'Team' },
   49900: { product: 'verified_supplier', plan: 'Verified Supplier' },
+  // Books (Volume 1 / Volume 2 digital, and the V1+V2 digital bundle).
+  // Stripe session metadata (product/plan) is read first and is authoritative;
+  // the amount map below is only a fallback when metadata is absent. V1 and V2
+  // digital both cost $49 (4900), so they are distinguished via metadata.
+  4900:  { product: 'book_v01', plan: 'Book Volume 1' },
+  7900:  { product: 'book_bundle', plan: 'Book Volume 1 + 2' },
 };
 
 function derive(session) {

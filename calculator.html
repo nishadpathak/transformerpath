@@ -78,7 +78,7 @@
     <link rel="canonical" href="https://transformerpath.com/calculator.html">
     <link rel="stylesheet" href="tp-theme.css?v=6">
     <script src="fem-leakage.js?v=1" defer></script>
-    <script src="analytics.js?v=3" defer></script><script src="course-gate.js?v=3"></script>
+    <script src="analytics.js?v=4" defer></script><script src="course-gate.js?v=4"></script>
 <meta property="og:title" content="Transformer Design Calculator — Distribution | Power | Cast Resin">
 <meta property="og:description" content="Live IEC 60076 transformer design calculator — distribution, power and cast-resin modes. First-cut electromagnetic, performance and thermal sizing: core area, turns, conductor sizes and losses.">
 <meta property="og:url" content="https://transformerpath.com/calculator.html">
@@ -678,6 +678,11 @@ const row=(k,v,cls="")=>{if(REC.cur)REC.cur.rows.push([strip(k),strip(v)]);
   return `<tr class="${cls}"><td>${k}</td><td>${v}</td></tr>`;};
 
 function calc(){
+  // ── Analytics (guarded): record the first run and each completed run. ──
+  if (window.TP_TRACK) {
+    if (!calc.fired) { calc.fired = true; window.TP_TRACK('calculator_started', {}); }
+    window.TP_TRACK('calculator_completed', {});
+  }
   // ---- auto grade selection: cheapest core grade meeting the guaranteed NLL
   const nllTgt=+($("nlltgt").value||0);
   let gradeAutoNote="", anyMeets=true;
