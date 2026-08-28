@@ -22,6 +22,8 @@ const GRIDS = r('data/grids.json');
 const EVENTS = r('data/events.json');
 const INTEL = r('data/intel.json');
 const STATS = r('data/site-stats.json');
+const DEVS = r('data/company-developments.json');
+const SITES = r('data/manufacturer-sites.json');
 
 const byCountry = {};
 MANUF.forEach(function (c) {
@@ -70,6 +72,14 @@ const graph = {
   type: typeSets,
   // per-country upcoming events (top 5 by date)
   countryEvents: Object.fromEntries(Object.entries(countryEvents).map(function (e) { return [e[0], e[1].slice(0, 5)]; })),
+  // Manufacturer ↔ Intel: sourced developments per manufacturer entity.
+  manufacturerIntel: Object.fromEntries(DEVS.map(function (d) {
+    return [d.name, d.developments.map(function (x) { return { title: x.title, url: x.url, src: x.src }; })];
+  })),
+  // Manufacturer ↔ Site: brand grouping from the census (multi-site brands).
+  manufacturerSites: Object.fromEntries(SITES.filter(function (g) { return g.siteCount > 1; }).map(function (g) {
+    return [g.brand, { siteCount: g.siteCount, url: g.url, sites: g.sites.map(function (s) { return { name: s.name, city: s.city, country: s.country, products: s.products, status: s.status }; }) }];
+  })),
 };
 fs.writeFileSync('data/entity-graph.json', JSON.stringify(graph, null, 2));
 // concise summary
@@ -77,4 +87,6 @@ console.log('entity-graph.json wrote',
   Object.keys(graph.country).length, 'countries |',
   Object.keys(graph.region).length, 'regions |',
   Object.keys(graph.type).length, 'types |',
-  Object.keys(graph.countryEvents).length, 'countries with events');
+  Object.keys(graph.countryEvents).length, 'countries with events |',
+  Object.keys(graph.manufacturerIntel).length, 'manufacturer<intel |',
+  Object.keys(graph.manufacturerSites).length, 'manufacturer<sites');
