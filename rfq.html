@@ -172,9 +172,10 @@
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
 </script>
 <script src="analytics.js?v=3" defer></script>
-<script>/* auto RFQ reference — generated once at submit so the reference matches the submission */
+<script>/* auto RFQ reference — generated once at submit so the reference matches the submission.
+   Time-based + random so it is collision-resistant without a database. */
 (function(){var f=document.querySelector('form[name="rfq"]'),r=document.getElementById("fld_ref");if(!f||!r)return;
-f.addEventListener("submit",function(){if(!r.value){var y=new Date().getFullYear(),n=1000+Math.floor(Math.random()*9000);r.value="RFQ TP-"+y+"-"+n;}});
+f.addEventListener("submit",function(){if(!r.value){var d=new Date(),y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,"0"),day=String(d.getDate()).padStart(2,"0"),h=String(d.getHours()).padStart(2,"0"),mi=String(d.getMinutes()).padStart(2,"0"),s=String(d.getSeconds()).padStart(2,"0"),rand=Math.floor(1000+Math.random()*9000);r.value="RFQ TP-"+y+m+day+"-"+h+mi+s+"-"+rand;}});
 })();
 </script>
 </body>
