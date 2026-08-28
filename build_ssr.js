@@ -108,7 +108,7 @@ function inject(html, openTag, id, newInner) {
 
 // en-GB short date, e.g. "23 Aug 2026"
 const fmt = (d) =>
-  new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Dubai' });
 
 /* ------------------------------------------------------------------ *
  * EVENTS
@@ -158,7 +158,10 @@ function renderEvents(html) {
   const upNext = up.map((ev) => {
     const d = relDays(ev.s);
     const lbl = d < 0 ? 'Live now' : d === 0 ? 'Today' : d === 1 ? 'Tomorrow' : 'In ' + d + ' days';
-    return `<div class="up-next-card"><span class="up-num">${lbl}</span><h3>${esc(ev.n)}</h3><div class="dates">${fmt(ev.s)} → ${fmt(ev.e)}</div><div class="venue">📍 ${esc(ev.v)} — ${esc(ev.c)}, ${esc(ev.co)}</div><a class="btn btn-amber btn-sm" href="${esc(ev.u)}" target="_blank" rel="noopener">View →</a></div>`;
+    // Absolute date is the primary, timezone-stable label; the relative badge is
+    // recomputed client-side (data-rel="<start date>") so it can never go stale
+    // between builds (a crawl can never see "Today" for a passed event).
+    return `<div class="up-next-card"><span class="up-next-abs">${fmt(ev.s)} → ${fmt(ev.e)}</span><h3>${esc(ev.n)}</h3><span class="up-next-rel" data-rel="${esc(ev.s)}">${lbl}</span><div class="venue">📍 ${esc(ev.v)} — ${esc(ev.c)}, ${esc(ev.co)}</div><a class="btn btn-amber btn-sm" href="${esc(ev.u)}" target="_blank" rel="noopener">View →</a></div>`;
   }).join('\n');
 
   const cards = list.map((ev) => {
