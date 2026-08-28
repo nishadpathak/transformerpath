@@ -33,6 +33,11 @@ const EVENTS = JSON.parse(fs.readFileSync('data/events.json', 'utf8'));
 const INTEL = JSON.parse(fs.readFileSync('data/intel.json', 'utf8'));
 const STATS = JSON.parse(fs.readFileSync('data/site-stats.json', 'utf8'));
 const CS = require('./data/site-stats.json');
+// Company → Brand → Site inventory (internal; grouped by shared website).
+const SITES = JSON.parse(fs.readFileSync('data/manufacturer-sites.json', 'utf8'));
+function normUrl(u) { return String(u || '').replace(/^https?:\/\//, '').replace(/\/+$/, '').toLowerCase().trim(); }
+const SITE_GROUP = {};
+SITES.forEach(function (g) { SITE_GROUP[normUrl(g.url)] = g; });
 const COMPONENTS = { 'transformer-bushings': 'Transformer bushings', 'on-load-tap-changers': 'On-load tap changers', 'transformer-cooling': 'Cooling systems', 'insulation-materials': 'Insulation materials', 'conductors-and-core': 'Conductors & core steel', 'oil-fluids-preservation': 'Oil & preservation', 'protection-monitoring': 'Protection & monitoring', 'tank-and-mechanical': 'Tank & mechanical' };
 const APPS = { 'utilities-grid': 'Utilities & Grid', 'renewables': 'Renewable Energy', 'data-centres': 'Data Centres', 'hvdc': 'HVDC & Converters', 'solar': 'Solar PV', 'bess': 'Battery Storage', 'offshore-wind': 'Offshore Wind', 'mining-metals': 'Mining & Metals', 'oil-gas': 'Oil, Gas & Energy', 'railways': 'Railways & Metro', 'cement-industrial': 'Cement & Industrial' };
 
@@ -75,6 +80,23 @@ TIERS.forEach(function (t) {
 });
 
 function typeBadge(t) { return { PT: 'Power', DT: 'Distribution', DRY: 'Dry-type' }[t] || t; }
+// Brand sites (grouped by shared website). Rendered only for multi-site brands,
+// and ONLY as a site inventory — never as a claim that a site is a factory.
+function brandSitesHtml(r) {
+  const grp = r.url ? SITE_GROUP[normUrl(r.url)] : null;
+  if (!grp || grp.siteCount <= 1) return '';
+  const own = grp.sites.filter(function (s) { return s.name === r.name; });
+  const others = grp.sites.filter(function (s) { return s.name !== r.name; });
+  const list = others.length ? others : grp.sites; // if this is the canonical row, list them all
+  const items = list.map(function (s) {
+    const prods = (s.products || []).map(function (t) { return '<span class="tpill">' + esc(typeBadge(t)) + '</span>'; }).join(' ');
+    return '<tr><td style="padding:6px 10px;vertical-align:top"><b style="color:var(--text)">' + esc(s.name) + '</b><br><span style="color:var(--muted);font-size:.82rem">' + esc(s.city || '—') + ', ' + esc(s.country) + '</span></td>' +
+      '<td style="padding:6px 10px;vertical-align:top">' + (prods || '<span style="color:var(--muted)">—</span>') + '</td>' +
+      '<td style="padding:6px 10px;vertical-align:top"><span style="font-size:.74rem;color:var(--muted)">Unclassified</span></td></tr>';
+  }).join('');
+  return '<h2>Sites &amp; locations</h2><p style="font-size:.82rem;color:var(--muted)">TransformerPath lists the sites it has in its census for this brand. It does <b>not</b> classify whether each is a manufacturing plant, office or service centre without independent confirmation.</p>' +
+    '<table class="tbl"><tbody>' + items + '</tbody></table>';
+}
 function eventsFor(rec) {
   const now = new Date(); const alias = COUNTRY_ALIAS[ci(rec.country)] || rec.country;
   return EVENTS.filter(function (ev) { return ci(ev.co) === ci(rec.country) || ci(ev.co) === ci(alias); })
@@ -161,6 +183,7 @@ function page(r, slug) {
     '<h2>Related components</h2><div>' + compLinks + '</div>' +
     '<h2>Relevant applications</h2><div>' + appLinks + '</div>' +
     '<h2>Markets</h2><div>' + countryLink + (cityHtml ? ' ' + cityHtml : '') + (marketLink ? ' ' + marketLink : '') + '</div>' +
+    brandSitesHtml(r) +
     '<h2>Latest TransformerPath intelligence</h2><ul>' + intelHtml + '</ul>' +
     '<h2>Upcoming events</h2><ul>' + evHtml + '</ul>' +
     '<p style="font-size:.72rem;color:var(--muted)">Last reviewed: ' + lastReviewed + '.</p>' +

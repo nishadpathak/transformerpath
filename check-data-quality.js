@@ -86,12 +86,30 @@ for (const g of CENSUS) {
   }
 }
 
+// ── R5: Company → Brand → Site model integrity ──────────────────────────
+const SITES = JSON.parse(fs.readFileSync('data/manufacturer-sites.json', 'utf8'));
+const SITE_STATUSES = ['OPERATIONAL', 'EXPANDING', 'ANNOUNCED', 'UNDER_CONSTRUCTION', 'TEMPORARILY_INACTIVE', 'CLOSED', 'UNCLEAR'];
+let siteNoCity = 0, siteNoCountry = 0, siteBadStatus = 0, siteClaimedFactory = 0;
+for (const grp of SITES) {
+  if (!grp.siteCount || !grp.sites || !grp.sites.length) { problems.push('R5 site group empty :: ' + grp.brand); continue; }
+  for (const s of grp.sites) {
+    if (!s.city) { siteNoCity++; advisory.push('R5 site without a known city (advisory — city may be unpublished) :: ' + s.name); }
+    if (!s.country) { siteNoCountry++; problems.push('R5 site without country :: ' + s.name); }
+    if (!SITE_STATUSES.includes(s.status)) { siteBadStatus++; problems.push('R5 site bad status :: ' + s.name + ' :: ' + s.status); }
+    // A site must never be labelled a factory without an independent source.
+    if (/factory|plant/i.test(s.status) && !/independently|census|source/i.test(s.source)) {
+      siteClaimedFactory++; problems.push('R5 site asserted as factory without source :: ' + s.name);
+    }
+  }
+}
+
 console.log('DATA QUALITY GATE');
 console.log('Company pages scanned: ' + companyPages.length);
 console.log('Tier records: ' + TIERS.length + ' | Census country groups: ' + CENSUS.length);
 console.log('R1 combined MVA+kV capability claims: ' + combinedClaims);
 console.log('R2/R3 tier missing source / missing mva: ' + tierNoSource + ' / ' + tierBadUnit);
 console.log('R3 census empty names: ' + emptyNames + ' | invalid urls: ' + badUrls + ' | no country: ' + noCountry);
+console.log('R5 site model: groups ' + SITES.length + ' | missing city: ' + siteNoCity + ' | missing country: ' + siteNoCountry + ' | bad status: ' + siteBadStatus + ' | unverified factory claim: ' + siteClaimedFactory);
 if (advisory.length) {
   console.log('\nAdvisory (confirm separation, no action required):');
   advisory.slice(0, 12).forEach((a) => console.log('  ' + a));
