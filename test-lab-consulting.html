@@ -206,6 +206,6 @@
 
 <script>(function(){var f=document.getElementById('tlForm');if(!f)return;f.addEventListener('submit',function(e){e.preventDefault();if(window.TP_NOTIFY)window.TP_NOTIFY(f);if(!f.checkValidity()){f.reportValidity();return;}fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(f)).toString()}).then(d).catch(d);function d(){f.style.display='none';document.getElementById('tlThanks').style.display='block';}});})();</script>
 <script src="form-notify.js" defer></script>
-<script src="analytics.js?v=3" defer></script>
+<script src="analytics.js?v=4" defer></script>
 </body>
 </html>
