@@ -414,17 +414,21 @@ function chips(){
 }
 
 function renderSpec(){
-  document.getElementById('spec-tag').textContent = 'TENDER #'+WEEK+'-100 · CLOSES SUNDAY 23:59';
-  document.getElementById('spec-utility').textContent = SPEC.u+' · '+SPEC.cc;
-  document.getElementById('spec-brief').textContent = SPEC.brief;
-  document.getElementById('sp-z').textContent = SPEC.zLo+' – '+SPEC.zHi+' %';
-  document.getElementById('sp-nll').textContent = SPEC.nllMax+' kW';
-  document.getElementById('sp-ll').textContent = SPEC.llMax+' kW';
-  document.getElementById('sp-noise').textContent = SPEC.noiseMax+' dB(A)';
-  document.getElementById('sp-mass').textContent = SPEC.massMax+' t';
-  document.getElementById('sp-nllrate').textContent = '$'+SPEC.nllRate.toLocaleString("en")+'/kW';
-  document.getElementById('sp-llrate').textContent = '$'+SPEC.llRate.toLocaleString("en")+'/kW';
-  document.getElementById('sp-cu').textContent = '$'+(CU_USD/1.5).toFixed(2).replace('.',',')+'/kg LME-eq';
+  // If a spec field is absent, render "Not specified" rather than blank so the
+  // crawler never sees an empty cell (SSR visibility).
+  function V(v, unit){ return (v === undefined || v === null || v === '') ? 'Not specified' : v + (unit || ''); }
+  var val = function(id, txt){ document.getElementById(id).textContent = txt; };
+  val('spec-tag', 'TENDER #'+WEEK+'-100 · CLOSES SUNDAY 23:59');
+  val('spec-utility', SPEC.u+' · '+SPEC.cc);
+  val('spec-brief', SPEC.brief);
+  val('sp-z', SPEC.zLo !== undefined && SPEC.zHi !== undefined ? SPEC.zLo+' – '+SPEC.zHi+' %' : 'Not specified');
+  val('sp-nll', V(SPEC.nllMax, ' kW'));
+  val('sp-ll', V(SPEC.llMax, ' kW'));
+  val('sp-noise', V(SPEC.noiseMax, ' dB(A)'));
+  val('sp-mass', V(SPEC.massMax, ' t'));
+  val('sp-nllrate', (SPEC.nllRate === undefined || SPEC.nllRate === null) ? 'Not specified' : '$'+SPEC.nllRate.toLocaleString('en')+'/kW');
+  val('sp-llrate', (SPEC.llRate === undefined || SPEC.llRate === null) ? 'Not specified' : '$'+SPEC.llRate.toLocaleString('en')+'/kW');
+  val('sp-cu', '$'+(CU_USD/1.5).toFixed(2).replace('.',',')+'/kg LME-eq');
 }
 
 function refresh(){
