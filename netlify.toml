@@ -27,6 +27,15 @@
   status = 301
   force = true
 
+# The live "Grids" directory page is grids.html. Map the pretty-URL "/grids"
+# to it so an extensionless /grids link (or a stale bookmark) resolves instead
+# of falling through to the 404 page.
+[[redirects]]
+  from = "/grids"
+  to = "/grids.html"
+  status = 301
+  force = true
+
 # ...but keep the stale archive/ directory (if present) from being served.
 [[redirects]]
   from = "/archive/*"
