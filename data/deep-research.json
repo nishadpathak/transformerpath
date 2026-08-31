@@ -1,6 +1,68 @@
 {
   "$schema": "https://transformerpath.com/deep-research.schema.json",
-  "$comment": "TransformerPath deep-research enrichment store. Populated from source-backed research (brand-site, capability and factory verification). Every field carries its claim_type (INDEPENDENTLY_SOURCED / COMPANY_REPORTED / UNKNOWN) and a source_url. Capability maxima are stored SEPARATELY and never combined; company capability is never merged into factory capability. Do not invent values. Generated manually from verified research; not produced by a scraper.",
+  "$comment": "TransformerPath deep-research enrichment store. Fields populated only from source-backed research; each carries claim_type (INDEPENDENTLY_SOURCED / COMPANY_REPORTED / UNKNOWN) and a source_url. Voltage and MVA maxima are stored separately and never combined; company capability is never merged into factory capability. No fabricated values; UNKNOWN where unverified.",
   "generated": "2026-08-31",
-  "companies": []
+  "companies": [
+    {
+      "name": "Hitachi Energy",
+      "slug": "hitachi-energy",
+      "headquarters": { "city": "Zurich, Switzerland", "source_url": "https://www.hitachienergy.com", "claim_type": "INDEPENDENTLY_SOURCED" },
+      "official_website": { "url": "https://www.hitachienergy.com", "claim_type": "INDEPENDENTLY_SOURCED" },
+      "transformer_products": [{ "type": "POWER" }, { "type": "HVDC_CONVERTER" }],
+      "reported_max_voltage_kv": null,
+      "reported_max_mva": null,
+      "factories": [
+        { "city": "Dilovasi", "country": "Türkiye", "produces": "power transformers (+ factory & service center)", "source_url": "https://www.hitachienergy.com/ch/de/news-and-events/events-and-webinars/2026/06/dilovasi-power-transformers-factory-service-center", "claim_type": "INDEPENDENTLY_SOURCED" },
+        { "city": "Gujarat", "country": "India", "produces": "new transformer factory (announced, Rs 20 bn)", "source_url": "https://powerline.net.in/2026/06/15/hitachi-energy-to-set-up-rs-20-billion-transformer-factory-in-gujarat/", "claim_type": "COMPANY_REPORTED" }
+      ],
+      "notes": "New transformer factory announced for Gujarat, India (Rs 20 bn)."
+    },
+    {
+      "name": "Siemens Energy",
+      "slug": "siemens-energy",
+      "headquarters": { "city": "Munich, Germany", "source_url": "https://www.siemens-energy.com", "claim_type": "INDEPENDENTLY_SOURCED" },
+      "official_website": { "url": "https://www.siemens-energy.com", "claim_type": "INDEPENDENTLY_SOURCED" },
+      "transformer_products": [{ "type": "POWER" }],
+      "reported_max_voltage_kv": null,
+      "reported_max_mva": null,
+      "factories": [
+        { "city": "Nuremberg", "country": "Germany", "produces": "power transformers", "source_url": "https://www.siemens-energy.com/global/en/home/press-releases/siemens-energy-invests--220-million.html", "claim_type": "INDEPENDENTLY_SOURCED" },
+        { "city": "Weiz", "country": "Austria", "produces": "transformer plant expansion", "source_url": "https://www.greentech.at/en/groundbreaking-ceremony-for-siemens-energy-plant-expansion-in-weiz/", "claim_type": "COMPANY_REPORTED" }
+      ],
+      "notes": "Weiz, Austria transformer plant expansion documented."
+    },
+    {
+      "name": "GE Vernova",
+      "slug": "ge-vernova",
+      "headquarters": { "city": "Cambridge, Massachusetts, United States", "source_url": "https://www.gevernova.com", "claim_type": "INDEPENDENTLY_SOURCED" },
+      "official_website": { "url": "https://www.gevernova.com", "claim_type": "INDEPENDENTLY_SOURCED" },
+      "transformer_products": [{ "type": "POWER" }],
+      "reported_max_voltage_kv": null,
+      "reported_max_mva": null,
+      "factories": [],
+      "notes": "Power transformers product page confirmed."
+    },
+    {
+      "name": "CG Power and Industrial Solutions Limited",
+      "slug": "cg-power-and-industrial-solutions",
+      "headquarters": { "city": "Mumbai, India", "source_url": "https://www.cgglobal.com", "claim_type": "COMPANY_REPORTED" },
+      "official_website": { "url": "https://www.cgglobal.com", "claim_type": "INDEPENDENTLY_SOURCED" },
+      "transformer_products": [{ "type": "POWER" }],
+      "reported_max_voltage_kv": null,
+      "reported_max_mva": null,
+      "factories": [],
+      "notes": "Owner group: Murugappa. Power transformer expansion announced (BSE filing)."
+    },
+    {
+      "name": "Prolec GE",
+      "slug": "prolec-ge",
+      "headquarters": { "city": "Monterrey, Mexico", "source_url": "https://www.gevernova.com/grid-solutions/equipment/transformers/prolec-ge-transformers", "claim_type": "COMPANY_REPORTED" },
+      "official_website": { "url": "https://www.gevernova.com/grid-solutions/equipment/transformers/prolec-ge-transformers", "claim_type": "INDEPENDENTLY_SOURCED" },
+      "transformer_products": [{ "type": "DISTRIBUTION" }, { "type": "POWER" }],
+      "reported_max_voltage_kv": null,
+      "reported_max_mva": null,
+      "factories": [],
+      "notes": "Distribution & medium-power transformers; official GE Vernova product page verified."
+    }
+  ]
 }

@@ -32,10 +32,12 @@ let SLUGS = []; try { SLUGS = JSON.parse(fs.readFileSync('data/company-slugs.jso
 let TIERS = []; try { TIERS = JSON.parse(fs.readFileSync('data/manufacturer-tiers.json', 'utf8')); } catch (e) {}
 let PROV = []; try { PROV = JSON.parse(fs.readFileSync('data/manufacturer-provenance.json', 'utf8')); } catch (e) {}
 let DEV = []; try { DEV = JSON.parse(fs.readFileSync('data/company-developments.json', 'utf8')); } catch (e) {}
-
 const norm = (s) => String(s || '').toLowerCase().replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, ' ').trim().replace(/\s+/g, ' ');
 const slugOf = (name) => { const n = norm(name); const hit = SLUGS.find((c) => norm(c.name) === n); return hit ? hit.slug : null; };
 const byName = (arr, key) => { const o = {}; arr.forEach((x) => { o[norm(x[key] || x.name || '')] = x; }); return o; };
+let DEEP = []; try { DEEP = JSON.parse(fs.readFileSync('data/deep-research.json', 'utf8')).companies || []; } catch (e) {}
+const DEEP_BY = {};
+DEEP.forEach((x) => { DEEP_BY[norm(x.name)] = x; DEEP_BY[norm(x.slug)] = x; });
 const TIER_BY = byName(TIERS, 'name');
 // Additional tier matching: a multinational census record (e.g. "Hitachi Energy
 // USA") should attach the group tier capability even when its name differs from
@@ -130,6 +132,23 @@ Object.keys(censusByName).forEach((name) => {
     research_status: (audit && AUDIT_BY[norm(primary.name) + '|' + norm(primary.country)]) ? AUDIT_BY[norm(primary.name) + '|' + norm(primary.country)].status : 'ACTIVE_LIMITED_DATA',
     company_reported: false,
   };
+  // Merge source-backed deep-research enrichment (factories, HQ, verified
+  // products) where it exists. Capability maxima stay separate; factory
+  // capability is not asserted from the group maximum.
+  const deep = DEEP_BY[norm(primary.name)] || DEEP_BY[norm(primary.name).replace(/(group|worldwide|global|inc|ltd|limited|corporation|co ltd)$/i, '').trim()] || (tier ? (DEEP_BY[norm(tier.name)] || DEEP_BY[norm(tier.name.replace(/(group|worldwide|global|inc|ltd|limited|corporation|co ltd)$/i, '').trim())]) : null);
+  if (deep) {
+    if (deep.headquarters && !rec.headquarters) rec.headquarters = deep.headquarters.city;
+    if (deep.transformer_products && deep.transformer_products.length) {
+      const deepTypes = deep.transformer_products.map((p) => (p.type || '').toUpperCase()).filter(Boolean);
+      // only add product categories we have not already normalised from census,
+      // and only verified ones (never unsupported)
+      rec.products = deepTypes.length ? [...new Set(rec.products.concat(deepTypes))] : rec.products;
+    }
+    if (deep.factories && deep.factories.length) {
+      rec.factories = rec.factories.concat(deep.factories.map((f) => ({ city: f.city, country: f.country, produces: f.produces || '', source_url: f.source_url || '', claim_type: f.claim_type || 'UNKNOWN' })));
+    }
+    if (deep.notes) rec.research_notes = deep.notes;
+  }
   rec.manufacturing_is_likely = !!rec.website && rec.products.length > 0;
   rec.research_completeness = completeness(rec);
   // Commercial status is a separate axis (always LISTED here; CLAIMED/VERIFIED

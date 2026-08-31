@@ -52,6 +52,10 @@ const BI_EVENTS = JSON.parse(fs.readFileSync('data/entity-events.json', 'utf8'))
 const EVENTS_BY_NAME = {};
 Object.keys(BI_EVENTS.companies_events || {}).forEach(function (k) { EVENTS_BY_NAME[norm(k)] = BI_EVENTS.companies_events[k]; });
 const EVT_TYPE_LABEL = BI_EVENTS.types || {};
+// Source-backed verified manufacturing facilities (from deep-research intel store).
+const INTEL_STORE = (function () { try { return JSON.parse(fs.readFileSync('data/manufacturer-intel.json', 'utf8')); } catch (e) { return null; } })();
+const INTEL_BY_SLUG = {};
+if (INTEL_STORE && INTEL_STORE.companies) INTEL_STORE.companies.forEach(function (c) { if (c.slug) INTEL_BY_SLUG[c.slug] = c; });
 const COMPONENTS = { 'transformer-bushings': 'Transformer bushings', 'on-load-tap-changers': 'On-load tap changers', 'transformer-cooling': 'Cooling systems', 'insulation-materials': 'Insulation materials', 'conductors-and-core': 'Conductors & core steel', 'oil-fluids-preservation': 'Oil & preservation', 'protection-monitoring': 'Protection & monitoring', 'tank-and-mechanical': 'Tank & mechanical' };
 const APPS = { 'utilities-grid': 'Utilities & Grid', 'renewables': 'Renewable Energy', 'data-centres': 'Data Centres', 'hvdc': 'HVDC & Converters', 'solar': 'Solar PV', 'bess': 'Battery Storage', 'offshore-wind': 'Offshore Wind', 'mining-metals': 'Mining & Metals', 'oil-gas': 'Oil, Gas & Energy', 'railways': 'Railways & Metro', 'cement-industrial': 'Cement & Industrial' };
 
@@ -113,6 +117,26 @@ TIERS.forEach(function (t) {
 })();
 
 function typeBadge(t) { return { PT: 'Power', DT: 'Distribution', DRY: 'Dry-type' }[t] || t; }
+// Source-backed verified manufacturing facilities (from deep-research intel).
+// Rendered ONLY when a facility has an independent source; never from the group
+// maximum. Factory capability is separate from company capability.
+function verifiedFactoriesHtml(r) {
+  const rec = INTEL_BY_SLUG[r.slug] || null;
+  if (!rec || !rec.factories) return '';
+  const verified = rec.factories.filter(function (f) { return f && (f.source_url || f.produces); });
+  if (!verified.length) return '';
+  const rows = verified.map(function (f) {
+    const lo = (f.city ? esc(f.city) : '') + (f.country ? ', ' + esc(f.country) : '');
+    const prod = f.produces ? '<div style="font-size:.8rem;color:var(--muted);margin-top:2px">' + esc(f.produces) + '</div>' : '';
+    const src = f.source_url ? '<a href="' + esc(f.source_url) + '" target="_blank" rel="noopener" style="color:var(--accent);font-size:.78rem">source</a>' : '';
+    const ct = f.claim_type ? '<span class="vbadge" style="font-size:.68rem;font-weight:600">' + esc(f.claim_type.replace(/_/g, ' ')) + '</span>' : '';
+    return '<tr><td style="padding:6px 10px;vertical-align:top"><b style="color:var(--text)">' + (lo || '—') + '</b>' + prod + '</td>' +
+      '<td style="padding:6px 10px;vertical-align:top;font-size:.8rem;color:var(--muted)">' + ct + ' ' + src + '</td></tr>';
+  }).join('');
+  return '<h2>Confirmed manufacturing facilities</h2><p style="font-size:.82rem;color:var(--muted)">Where an independent source documents a transformer manufacturing plant, it is shown here with the source. Factory capability is separate from the company maximum and is not inferred from it.</p>' +
+    '<table class="tbl"><tbody>' + rows + '</tbody></table>';
+}
+
 // Brand sites (grouped by shared website). Rendered only for multi-site brands,
 // and ONLY as a site inventory — never as a claim that a site is a factory.
 function brandSitesHtml(r) {
@@ -276,7 +300,7 @@ function page(r, slug) {
     '<h2>Related components</h2><div>' + compLinks + '</div>' +
     '<h2>Relevant applications</h2><div>' + appLinks + '</div>' +
     '<h2>Markets</h2><div>' + countryLink + (cityHtml ? ' ' + cityHtml : '') + (marketLink ? ' ' + marketLink : '') + '</div>' +
-    brandSitesHtml(r) + timelineHtml(r) + developmentsHtml(r) + provenanceHtml(r) +
+    verifiedFactoriesHtml(r) + brandSitesHtml(r) + timelineHtml(r) + developmentsHtml(r) + provenanceHtml(r) +
     '<h2>Latest TransformerPath intelligence</h2><ul>' + intelHtml + '</ul>' +
     '<h2>Upcoming events</h2><ul>' + evHtml + '</ul>' +
     '<p style="font-size:.72rem;color:var(--muted)">Last reviewed: ' + lastReviewed + '.</p>' +
