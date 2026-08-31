@@ -2,7 +2,7 @@
   "$schema": "https://transformerpath.com/exhibitions.schema.json",
   "directory_type": "transformer-exhibitions",
   "generated_date": "2026-08-31",
-  "note": "TransformerPath Transformer Exhibition Directory — a verified, curated subset of transformer-relevant exhibitions, trade shows, conferences and industry events. Every entry carries a verification_status and verification_date reflecting a website check on the recorded date; the official event website was confirmed as current and transformer-relevant. Entries are informational listings and do not imply endorsement, verification of event quality, or commercial affiliation. Transformer focus is graded: 'Primary' (explicit transformer/electrical-manufacturing scope), 'Major' (significant T&D/power-transmission content), 'Secondary' (transformer presence within a broader energy/industrial scope). An event whose website is defunct, redirected, or cancelled is marked Inactive/Cancelled and excluded from the live directory.",
+  "note": "TransformerPath Transformer Exhibition Directory — a verified, curated subset of transformer-relevant exhibitions, trade shows, conferences and industry events. Every entry carries a verification_status and verification_date reflecting a website check on the recorded date; the official event website was confirmed as current and transformer-relevant. Entries are informational listings and do not imply endorsement, verification of event quality, or commercial affiliation. Transformer focus is graded: 'Primary' (explicit transformer/electrical-manufacturing scope), 'Major' (significant T&D/power-transmission content), 'Secondary' (transformer presence within a broader energy/industrial scope). An event whose website is defunct, redirected, or cancelled is marked Inactive/Cancelled and excluded from the live directory. Several events have been rebranded or merged since earlier references: African Utility Week is now Enlit Africa, POWER-GEN Asia & Asian Utility Week have merged into Enlit Asia, and European Utility Week has been absorbed into Enlit Europe — each is recorded once under its current name.",
   "verified_workflow": "For each event the official website was located by search, then confirmed to (a) exist and be scheduled for the stated dates, (b) match the event name and organizer, (c) be current (not an archived or past-event page), and (d) show transformer-relevant content. Dates, venue, city and organizer were taken from the official site; where a figure (exhibition area, exhibitor or visitor count) was not published on the official site it is left null rather than inferred.",
   "entries": [
     {
@@ -382,6 +382,44 @@
       "visitor_count": null,
       "transformer_focus": "Primary - Gulf CIGRE power conference with a focus on GCC T&D and transformer demand",
       "description": "The Gulf Cooperation Council power conference and CIGRE technical event, focused on the GCC grid, T&D build-out, and the substation and transformer investment the regional projects boom is driving. A key window into Gulf transformer demand.",
+      "verification_status": "Verified - Website Checked",
+      "verification_date": "2026-08-31"
+    },
+    {
+      "event_name": "Enlit Africa 2026 (formerly African Utility Week)",
+      "country": "South Africa",
+      "state": "Western Cape",
+      "city": "Cape Town",
+      "website": "https://www.enlit-africa.com/",
+      "organizer": "Clarion Events (Power & Energy)",
+      "event_type": "Exhibition + Conference",
+      "frequency": "Annual",
+      "next_dates": "2026-05-19 to 2026-05-21",
+      "venue": "Cape Town International Convention Centre (CTICC)",
+      "exhibition_area_sqm": null,
+      "exhibitor_count": null,
+      "visitor_count": null,
+      "transformer_focus": "Major - Pan-African power and energy event; grid, T&D and utility content with transformer presence",
+      "description": "Enlit Africa, the rebrand of African Utility Week, is the flagship pan-African power, energy and water event at the Cape Town International Convention Centre. It covers generation, transmission and distribution, grid modernisation and utility investment, and is a key window into the transformer, substation and grid-equipment market serving Africa.",
+      "verification_status": "Verified - Website Checked",
+      "verification_date": "2026-08-31"
+    },
+    {
+      "event_name": "ELFACK (Gothenburg)",
+      "country": "Sweden",
+      "state": "Västra Götaland",
+      "city": "Gothenburg",
+      "website": "https://en.elfack.com/",
+      "organizer": "Elfack (evenemang)",
+      "event_type": "Exhibition + Conference",
+      "frequency": "Biennial",
+      "next_dates": "2027-05-11 to 2027-05-14",
+      "venue": "Svenska Mässan",
+      "exhibition_area_sqm": null,
+      "exhibitor_count": null,
+      "visitor_count": null,
+      "transformer_focus": "Secondary - Nordic power and electrical tradeshow; grid and transformer content present",
+      "description": "ELFACK is the Nordic region's leading electrical, power and energy tradeshow at Svenska Mässan, Gothenburg. It covers power distribution, electrical installation, grid technology and the energy transition — including transformer, switchgear and substation equipment for the Scandinavian grid and industry.",
       "verification_status": "Verified - Website Checked",
       "verification_date": "2026-08-31"
     }
