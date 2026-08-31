@@ -8,7 +8,7 @@
 <link rel="canonical" href="https://transformerpath.com/intel-2026-08-14.html">
 <link rel="preconnect" href="https://ipapi.co" crossorigin>
 <link rel="alternate" type="application/rss+xml" title="TransformerPath Daily Intel" href="https://transformerpath.com/intel-feed.xml">
-<link rel="stylesheet" href="style.css?v=9">
+<link rel="stylesheet" href="style.css?v=10">
 <link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
 <link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
@@ -73,13 +73,61 @@ a.plain:hover { text-decoration:underline; }
   <div class="container nav">
     <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="30" height="30" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg>Transformer<span class="accent">Path</span></a>
     <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav" onclick="var n=document.querySelector('.nav-links');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))">☰</button>
-    <nav class="nav-links" id="mainNav">
-      <span class="nav-group"><span class="nav-group-label">Intelligence</span><span class="nav-items"><a href="intel.html">Intel</a><a href="intelligence.html">Intelligence</a><a href="projects.html">Projects</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="exhibitions.html">Exhibitions</a><a href="events.html">Events</a></span></span>
-      <span class="nav-group"><span class="nav-group-label">Industry</span><span class="nav-items"><a href="manufacturers.html">Manufacturers</a><a href="buyers-guide.html">Buyer's Guide</a><a href="accessories.html">Accessories</a><a href="components.html">Components</a><a href="applications.html">Applications</a><a href="rfq.html">RFQ</a></span></span>
-      <span class="nav-group"><span class="nav-group-label">Engineering</span><span class="nav-items"><a href="knowledge.html">Knowledge</a><a href="case-studies.html">Case Studies</a><a href="calculator.html">Tools</a><a href="explorer.html">3D</a><a href="resources.html">Resources</a></span></span>
-      <span class="nav-group"><span class="nav-group-label">Learn</span><span class="nav-items"><a href="masterclass.html">Masterclass</a><a href="books.html">Books</a></span></span>
-      <span class="nav-group"><span class="nav-group-label">Business</span><span class="nav-items"><a href="for-manufacturers.html">For Manufacturers</a><a href="sponsor.html">Sponsor</a><a href="pricing.html">Pricing</a></span></span>
-      <span class="nav-util"><a href="search.html" title="Search" aria-label="Search">🔍</a><a href="workspace.html">Account</a></span>
+        <nav class="nav-links" id="mainNav" aria-label="Primary">
+      <div class="nav-group" role="menuitem">
+        <button class="nav-group-label" aria-expanded="false" aria-controls="nav-intelligence" tabindex="0">Intelligence ▾</button>
+        <span class="nav-mega" id="nav-intelligence">
+          <a href="intel.html">Daily Intel</a>
+          <a href="markets.html">Markets</a>
+          <a href="grids.html">Grids</a>
+          <a href="events.html">Events</a>
+          <a href="webinars.html">Webinars</a>
+          <a href="projects.html">Projects</a>
+        </span>
+      </div>
+      <div class="nav-group" role="menuitem">
+        <button class="nav-group-label" aria-expanded="false" aria-controls="nav-industry" tabindex="0">Industry ▾</button>
+        <span class="nav-mega" id="nav-industry">
+          <a href="manufacturers.html">Manufacturers</a>
+          <a href="buyers-guide.html">Buyer's Guide</a>
+          <a href="components.html">Components</a>
+          <a href="applications.html">Applications</a>
+          <a href="rfq.html">RFQ</a>
+        </span>
+      </div>
+      <div class="nav-group" role="menuitem">
+        <button class="nav-group-label" aria-expanded="false" aria-controls="nav-engineering" tabindex="0">Engineering ▾</button>
+        <span class="nav-mega" id="nav-engineering">
+          <a href="knowledge.html">Knowledge</a>
+          <a href="case-studies.html">Case Studies</a>
+          <a href="calculator.html">Design Calculator</a>
+          <a href="explorer.html">3D Models</a>
+          <a href="test-report.html">Test Report</a>
+          <a href="resources.html">Resources</a>
+          <a href="software.html">Software</a>
+        </span>
+      </div>
+      <div class="nav-group" role="menuitem">
+        <button class="nav-group-label" aria-expanded="false" aria-controls="nav-learn" tabindex="0">Learn ▾</button>
+        <span class="nav-mega" id="nav-learn">
+          <a href="masterclass.html">Masterclass</a>
+          <a href="books.html">Books</a>
+          <a href="learn.html">Learning Access</a>
+        </span>
+      </div>
+      <div class="nav-group" role="menuitem">
+        <button class="nav-group-label" aria-expanded="false" aria-controls="nav-business" tabindex="0">Business ▾</button>
+        <span class="nav-mega" id="nav-business">
+          <a href="for-manufacturers.html">For Manufacturers</a>
+          <a href="verified.html">Verified Profiles</a>
+          <a href="sponsor.html">Sponsor</a>
+          <a href="pricing.html">Pricing</a>
+        </span>
+      </div>
+      <div class="nav-util">
+        <a href="search.html" title="Search" aria-label="Search">🔍</a>
+        <a href="workspace.html">Account</a>
+      </div>
       <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">🌙</button>
     </nav>
   </div>
@@ -108,6 +156,35 @@ a.plain:hover { text-decoration:underline; }
       const isDark = html.getAttribute('data-theme') === 'dark';
       themeToggle.textContent = isDark ? '☀️' : '🌙';
     }
+    // Dropdown nav: each category opens an accessible mega-menu on hover
+    // (desktop) or tap (touch/keyboard). Escape and outside-click close.
+    (function () {
+      const groups = Array.prototype.slice.call(document.querySelectorAll('.nav-links .nav-group'));
+      const canHover = function () { return window.matchMedia('(hover: hover) and (pointer: fine)').matches; };
+      function closeAll(except) {
+        groups.forEach(function (g) {
+          if (g === except) return;
+          g.classList.remove('open');
+          const b = g.querySelector('.nav-group-label');
+          if (b) b.setAttribute('aria-expanded', 'false');
+        });
+      }
+      function toggle(group, button) {
+        const isOpen = group.classList.toggle('open');
+        button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        if (isOpen) closeAll(group);
+      }
+      groups.forEach(function (group) {
+        const button = group.querySelector('.nav-group-label');
+        if (!button) return;
+        button.addEventListener('click', function (e) { e.preventDefault(); toggle(group, button); });
+        group.addEventListener('mouseenter', function () { if (canHover()) { group.classList.add('open'); button.setAttribute('aria-expanded', 'true'); closeAll(group); } });
+        group.addEventListener('mouseleave', function () { if (canHover()) { group.classList.remove('open'); button.setAttribute('aria-expanded', 'false'); } });
+      });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAll(); });
+      document.addEventListener('click', function (e) { if (!e.target.closest('.nav-group')) closeAll(); });
+    })();
+  
   </script>
 </header>
 

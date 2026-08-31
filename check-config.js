@@ -223,7 +223,8 @@ for (const f of pages) {
 const NAV_LABELS = ['Intelligence', 'Industry', 'Engineering', 'Learn', 'Business'];
 const NAV_HTML = fs.readFileSync('index.html', 'utf8');
 for (const lbl of NAV_LABELS) {
-  check('nav group "' + lbl + '" present', NAV_HTML.includes('nav-group-label">' + lbl));
+  // Each group is a .nav-group-label button (desktop dropdown) carrying the label.
+  check('nav group "' + lbl + '" present', new RegExp('nav-group-label[^>]*>\\s*' + lbl).test(NAV_HTML) || NAV_HTML.includes('nav-group-label">' + lbl));
 }
 check('nav has Search', NAV_HTML.includes('href="search.html"'));
 check('nav has Account', NAV_HTML.includes('href="workspace.html">Account'));

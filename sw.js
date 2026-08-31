@@ -1,5 +1,5 @@
 /* TransformerPath service worker — offline support + always-fresh HTML */
-const CACHE = 'transformerpath-v9';
+const CACHE = 'transformerpath-v10';
 const CORE = [
   'index.html', 'style.css?v=6', 'intel.html', 'manufacturers.html', 'events.html',
   'grids.html', 'learn.html', 'resources.html', 'subscribe.html',

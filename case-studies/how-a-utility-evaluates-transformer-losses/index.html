@@ -5,13 +5,61 @@
   <div class="container nav">
     <a href="/index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
     <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav" onclick="var n=document.querySelector('.nav-links');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))">☰</button>
-    <nav class="nav-links" id="mainNav">
-      <span class="nav-group"><span class="nav-group-label">Intelligence</span><span class="nav-items"><a href="/intel.html">Intel</a><a href="/intelligence.html">Intelligence</a><a href="/projects.html">Projects</a><a href="/markets.html">Markets</a><a href="/grids.html">Grids</a><a href="/exhibitions.html">Exhibitions</a><a href="/events.html">Events</a></span></span>
-      <span class="nav-group"><span class="nav-group-label">Industry</span><span class="nav-items"><a href="/manufacturers.html">Manufacturers</a><a href="/buyers-guide.html">Buyer's Guide</a><a href="/accessories.html">Accessories</a><a href="/components.html">Components</a><a href="/applications.html">Applications</a><a href="/rfq.html">RFQ</a></span></span>
-      <span class="nav-group"><span class="nav-group-label">Engineering</span><span class="nav-items"><a href="/knowledge.html">Knowledge</a><a href="/calculator.html">Tools</a><a href="/explorer.html">3D</a><a href="/resources.html">Resources</a></span></span>
-      <span class="nav-group"><span class="nav-group-label">Learn</span><span class="nav-items"><a href="/masterclass.html">Masterclass</a><a href="/books.html">Books</a></span></span>
-      <span class="nav-group"><span class="nav-group-label">Business</span><span class="nav-items"><a href="/for-manufacturers.html">For Manufacturers</a><a href="/sponsor.html">Sponsor</a><a href="/pricing.html">Pricing</a></span></span>
-      <span class="nav-util"><a href="/search.html" title="Search" aria-label="Search">🔍</a><a href="/workspace.html">Account</a></span>
+    <nav class="nav-links" id="mainNav" aria-label="Primary">
+      <div class="nav-group" role="menuitem">
+        <button class="nav-group-label" aria-expanded="false" aria-controls="nav-intelligence" tabindex="0">Intelligence ▾</button>
+        <span class="nav-mega" id="nav-intelligence">
+          <a href="/intel.html">Daily Intel</a>
+          <a href="/markets.html">Markets</a>
+          <a href="/grids.html">Grids</a>
+          <a href="/events.html">Events</a>
+          <a href="/webinars.html">Webinars</a>
+          <a href="/projects.html">Projects</a>
+        </span>
+      </div>
+      <div class="nav-group" role="menuitem">
+        <button class="nav-group-label" aria-expanded="false" aria-controls="nav-industry" tabindex="0">Industry ▾</button>
+        <span class="nav-mega" id="nav-industry">
+          <a href="/manufacturers.html">Manufacturers</a>
+          <a href="/buyers-guide.html">Buyer's Guide</a>
+          <a href="/components.html">Components</a>
+          <a href="/applications.html">Applications</a>
+          <a href="/rfq.html">RFQ</a>
+        </span>
+      </div>
+      <div class="nav-group" role="menuitem">
+        <button class="nav-group-label" aria-expanded="false" aria-controls="nav-engineering" tabindex="0">Engineering ▾</button>
+        <span class="nav-mega" id="nav-engineering">
+          <a href="/knowledge.html">Knowledge</a>
+          <a href="/case-studies.html">Case Studies</a>
+          <a href="/calculator.html">Design Calculator</a>
+          <a href="/explorer.html">3D Models</a>
+          <a href="/test-report.html">Test Report</a>
+          <a href="/resources.html">Resources</a>
+          <a href="/software.html">Software</a>
+        </span>
+      </div>
+      <div class="nav-group" role="menuitem">
+        <button class="nav-group-label" aria-expanded="false" aria-controls="nav-learn" tabindex="0">Learn ▾</button>
+        <span class="nav-mega" id="nav-learn">
+          <a href="/masterclass.html">Masterclass</a>
+          <a href="/books.html">Books</a>
+          <a href="/learn.html">Learning Access</a>
+        </span>
+      </div>
+      <div class="nav-group" role="menuitem">
+        <button class="nav-group-label" aria-expanded="false" aria-controls="nav-business" tabindex="0">Business ▾</button>
+        <span class="nav-mega" id="nav-business">
+          <a href="/for-manufacturers.html">For Manufacturers</a>
+          <a href="/verified.html">Verified Profiles</a>
+          <a href="/sponsor.html">Sponsor</a>
+          <a href="/pricing.html">Pricing</a>
+        </span>
+      </div>
+      <div class="nav-util">
+        <a href="/search.html" title="Search" aria-label="Search">🔍</a>
+        <a href="/workspace.html">Account</a>
+      </div>
       <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">🌙</button>
     </nav>
   </div>
@@ -40,6 +88,36 @@
       const isDark = html.getAttribute('data-theme') === 'dark';
       themeToggle.textContent = isDark ? '☀️' : '🌙';
     }
+
+    // Dropdown nav: each category opens an accessible mega-menu on hover
+    // (desktop) or tap (touch/keyboard). Escape and outside-click close.
+    (function () {
+      const groups = Array.prototype.slice.call(document.querySelectorAll('.nav-links .nav-group'));
+      const canHover = function () { return window.matchMedia('(hover: hover) and (pointer: fine)').matches; };
+      function closeAll(except) {
+        groups.forEach(function (g) {
+          if (g === except) return;
+          g.classList.remove('open');
+          const b = g.querySelector('.nav-group-label');
+          if (b) b.setAttribute('aria-expanded', 'false');
+        });
+      }
+      function toggle(group, button) {
+        const isOpen = group.classList.toggle('open');
+        button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        if (isOpen) closeAll(group);
+      }
+      groups.forEach(function (group) {
+        const button = group.querySelector('.nav-group-label');
+        if (!button) return;
+        button.addEventListener('click', function (e) { e.preventDefault(); toggle(group, button); });
+        group.addEventListener('mouseenter', function () { if (canHover()) { group.classList.add('open'); button.setAttribute('aria-expanded', 'true'); closeAll(group); } });
+        group.addEventListener('mouseleave', function () { if (canHover()) { group.classList.remove('open'); button.setAttribute('aria-expanded', 'false'); } });
+        // Keyboard: Space/Enter toggles (button default handles Enter/Space on click).
+      });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAll(); });
+      document.addEventListener('click', function (e) { if (!e.target.closest('.nav-group')) closeAll(); });
+    })();
   </script>
 </header>
 <main class="c-wrap"><nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="../../case-studies.html" style="color:var(--accent)">Case Studies</a> › How a Utility Evaluates Transformer Losses: Loss-Capitalisation in Practice</nav><span class="label cls-CONFIRMED">EDITORIAL</span><h1>How a Utility Evaluates Transformer Losses: Loss-Capitalisation in Practice</h1><div class="meta"><span><b>Type</b> Case Study</span><span><b>Topic</b> Loss evaluation / tendering</span><span> · TransformerPath editorial</span></div><p class="lead" style="margin-bottom:20px">A worked view of how no-load and load loss are valued over the life of a transformer and turned into a tender evaluation.</p><p style="line-height:1.8;color:var(--text);margin:0 0 14px">A tender rarely compares transformers on price alone. Utilities capitalise losses — convert the lifetime energy cost of no-load and load loss into a present value added to the bid price.</p><p style="line-height:1.8;color:var(--text);margin:0 0 14px">No-load loss is the dominant lifetime cost on a lightly-loaded or distribution transformer, because it is present whenever the unit is energised. Load loss, quadratic in load, dominates where a unit runs heavily loaded.</p><p style="line-height:1.8;color:var(--text);margin:0 0 14px">The capitalisation rates A (for no-load loss) and B (for load loss), expressed in currency per watt, come from the utility's cost of energy, the load factor and the discount rate. A rule of thumb for a high-load-factor transmission unit: the capitalised loss cost can be of the same order as the purchase price.</p><p style="line-height:1.8;color:var(--text);margin:0 0 14px">The designer's response is a trade-off: spend on better core steel and lower flux density to cut no-load loss, or on more conductor to cut load loss, until the marginal cost of a further loss reduction equals its capitalised value.</p><p style="line-height:1.8;color:var(--text);margin:0 0 14px">The balance shifts with the evaluation. A utility with expensive energy and a high load factor will pay a premium for a low-loss design; a utility that values first cost over lifetime energy will not. This is precisely why the same transformer is rarely optimal for two different buyers.</p><h2>Related principle</h2><p style="color:var(--text);line-height:1.7">Transformer losses and tender evaluation (see the Masterclass chapters on losses/efficiency and procurement).</p><h2>Related reading</h2><div style="margin:4px 0 8px"><a class="tpill" href="../../masterclass.html#losses">masterclass.html#losses</a> <a class="tpill" href="../../masterclass.html#procurement">masterclass.html#procurement</a></div></main>
