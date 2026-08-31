@@ -93,6 +93,25 @@ TIERS.forEach(function (t) {
   records[key] = r;
 });
 
+// Group capability/HQ inheritance: a multinational's corporate capability
+// (tier) and sourced developments belong to the group HQ, but the census may
+// hold the HQ under a name like "Hitachi Energy (global HQ)" while the tier
+// leader name ("Hitachi Energy") matches a different (plant) record. Propagate
+// the tier to the HQ record so the corporate profile carries it. Factory-level
+// capability is never asserted from this — it attaches per-site elsewhere.
+(function inheritHqTier() {
+  TIERS.forEach(function (t) {
+    const leaderKey = norm(t.name);
+    Object.keys(records).forEach(function (key) {
+      const r = records[key];
+      if (!r || r.tierFile || !r.name) return;
+      if (norm(r.name).indexOf(leaderKey) >= 0 && /global hq/i.test(r.name)) {
+        r.tierFile = t; // corporate capability shown on the HQ profile
+      }
+    });
+  });
+})();
+
 function typeBadge(t) { return { PT: 'Power', DT: 'Distribution', DRY: 'Dry-type' }[t] || t; }
 // Brand sites (grouped by shared website). Rendered only for multi-site brands,
 // and ONLY as a site inventory — never as a claim that a site is a factory.
@@ -115,7 +134,8 @@ function brandSitesHtml(r) {
 // Grouped by event type; every entry keeps its verbatim source URL. Confidence
 // carried through (defaults to LIMITED for keyword-matched Daily-Intel items).
 function timelineHtml(r) {
-  const ev = EVENTS_BY_NAME[norm(r.name)];
+  const lookup = lookupName(r);
+  const ev = EVENTS_BY_NAME[norm(lookup)];
   if (!ev || !ev.events || !ev.events.length) return '';
   const TYPE_ORDER = ['order_award', 'factory_expansion', 'new_test_lab', 'ownership_change', 'rebranding', 'utility_approval', 'market_entry', 'reference'];
   const CONF = { HIGH: 'High', MEDIUM: 'Medium', LIMITED: 'Limited' };
@@ -133,10 +153,18 @@ function timelineHtml(r) {
   return '<h2>Company timeline</h2><p style="font-size:.82rem;color:var(--muted)">Typed, sourced developments attached to this permanent entity. Every item is linked to its published source and carries a confidence label. An item is shown because it <b>references</b> this company — it is not an independently verified award, order or project attribution unless the source explicitly confirms one. Confidence defaults to <b>Limited</b> for a keyword-matched Daily-Intel item and is never upgraded without corroborating source evidence.</p>' + grouped;
 }
 
+// Resolve the canonical lookup name for a record. An inherited-HQ record
+// (e.g. "Hitachi Energy (global HQ)") should look up the tier leader name
+// ("Hitachi Energy") for developments/timeline/provenance.
+function lookupName(r) {
+  if (r.tierFile && /global hq/i.test(r.name || '') && norm(r.tierFile.name) !== norm(r.name)) return r.tierFile.name;
+  return r.name;
+}
+
 // Sourced, company-specific developments (orders, expansions, acquisitions,
 // rebrands) pulled from TransformerPath Daily Intel — linked to their sources.
 function developmentsHtml(r) {
-  const d = DEV_BY_NAME[norm(r.name)];
+  const d = DEV_BY_NAME[norm(lookupName(r))];
   if (!d || !d.developments || !d.developments.length) return '';
   const lis = d.developments.map(function (x) {
     const dateMatch = String(x.src || '').match(/(\d{1,2}\s+\w{3}\s+\d{4})/);
@@ -150,7 +178,7 @@ function developmentsHtml(r) {
 // Sourced capability EVIDENCE with provenance — a single field per fact, never
 // asserted as a company maximum.
 function provenanceHtml(r) {
-  const p = PROV_BY_NAME[norm(r.name)];
+  const p = PROV_BY_NAME[norm(lookupName(r))];
   if (!p || !p.facts || !p.facts.length) return '';
   const rows = p.facts.map(function (f) {
     const cap = f.field.replace(/_/g, ' ').replace(/^./, function (c) { return c.toUpperCase(); });
