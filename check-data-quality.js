@@ -187,6 +187,33 @@ if (auditStore) {
   if (auditStore.total !== 546 && auditStore.total !== intelStoreCount()) problems.push('R9 census-audit record count drift :: ' + auditStore.total);
 }
 function intelStoreCount() { try { return JSON.parse(fs.readFileSync('data/manufacturer-intel.json', 'utf8')).companies.length; } catch (e) { return -1; } }
+
+// ── R10: deep-research store integrity ─────────────────────────────────────
+// Every deep-research fact (headquarters, factory) must carry a source_url and
+// a valid claim_type. A factory must never assert a capability (voltage/MVA) —
+// those stay UNKNOWN/unverified, never fabricated, and are never merged into a
+// company maximum.
+let deepStore = null;
+try { deepStore = JSON.parse(fs.readFileSync('data/deep-research.json', 'utf8')).companies || []; } catch (e) {}
+if (deepStore && deepStore.length) {
+  const CLAIM = new Set(['INDEPENDENTLY_SOURCED', 'COMPANY_REPORTED', 'UNKNOWN']);
+  let noSrc = 0, badClaim = 0, facCapability = 0, capNoSrc = 0;
+  deepStore.forEach(function (c) {
+    const check = function (f, allowUrlAsSource) { if (f && !(f.source_url || (allowUrlAsSource && f.url))) noSrc++; if (f && f.claim_type && !CLAIM.has(f.claim_type)) badClaim++; };
+    check(c.headquarters); check(c.official_website, true);
+    (c.factories || []).forEach(function (f) {
+      check(f);
+      if (f && (f.voltage_kv || f.mva || f.reported_voltage_kv || f.reported_max_mva)) facCapability++;
+    });
+    // capability maxima must be null/absent (unverified), never fabricated
+    if (c.reported_max_voltage_kv || c.reported_max_mva) capNoSrc++;
+  });
+  if (noSrc) problems.push('R10 deep-research fact without source_url :: ' + noSrc);
+  if (badClaim) problems.push('R10 deep-research invalid claim_type :: ' + badClaim);
+  if (facCapability) problems.push('R10 deep-research factory asserts capability :: ' + facCapability);
+  if (capNoSrc) problems.push('R10 deep-research company capability without source :: ' + capNoSrc);
+  console.log('R10 deep-research: companies ' + deepStore.length + ' | no-source: ' + noSrc + ' | bad claim: ' + badClaim + ' | factory capability claim: ' + facCapability + ' | unsourced capability: ' + capNoSrc);
+}
 if (advisory.length) {
   console.log('\nAdvisory (confirm separation, no action required):');
   advisory.slice(0, 12).forEach((a) => console.log('  ' + a));
