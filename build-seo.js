@@ -198,6 +198,11 @@ console.log('generated', countryIndex.length, 'country pages');
     });
   } catch (e) {}
   try {
+    fs.readdirSync('utilities').forEach(function (d) {
+      if (fs.existsSync('utilities/' + d + '/index.html')) urls.push('https://transformerpath.com/utilities/' + d + '/');
+    });
+  } catch (e) {}
+  try {
     fs.readdirSync('case-studies').forEach(function (d) {
       if (fs.existsSync('case-studies/' + d + '/index.html')) urls.push('https://transformerpath.com/case-studies/' + d + '/');
     });
