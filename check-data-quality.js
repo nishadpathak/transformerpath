@@ -160,6 +160,33 @@ for (const f of companyPages) {
   if (/Official website/.test(html) && !/data-track="official_website_click"/.test(html)) { pageNoSiteClick++; problems.push('R8 manufacturer page missing official_website_click :: ' + f); }
 }
 console.log('R8 CTA/form guard: pages without corrections CTA: ' + pageNoCorrCta + ' | pages without official_website_click: ' + pageNoSiteClick + ' | corrections form present: ' + corrForm);
+
+// ── R9: consolidated manufacturer-intel + census-audit integrity ────────────
+// Guards the durable intelligence store built by build-manufacturer-intel.js
+// and the census audit built by build-census-audit.js.
+let intelStore = null, auditStore = null;
+try { intelStore = JSON.parse(fs.readFileSync('data/manufacturer-intel.json', 'utf8')); } catch (e) {}
+try { auditStore = JSON.parse(fs.readFileSync('data/census-audit.json', 'utf8')); } catch (e) {}
+if (intelStore && intelStore.companies) {
+  const seen = {}; let dup = 0, badUrl = 0, noCountry = 0, vNoSource = 0;
+  intelStore.companies.forEach(function (c) {
+    const key = (c.name || '').toLowerCase().trim() + '|' + (c.country || '').toLowerCase().trim();
+    if (seen[key]) dup++; seen[key] = 1;
+    if (c.website && !/^https?:\/\//i.test(c.website)) badUrl++;
+    if (!c.country) noCountry++;
+    if ((c.reported_voltage || c.reported_mva) && !(c.sources && (c.sources.capability_source || c.sources.capability_note))) vNoSource++;
+  });
+  if (dup) problems.push('R9 manufacturer-intel duplicate company|country :: ' + dup);
+  if (badUrl) problems.push('R9 manufacturer-intel invalid website :: ' + badUrl);
+  if (noCountry) problems.push('R9 manufacturer-intel company without country :: ' + noCountry);
+  if (vNoSource) problems.push('R9 manufacturer-intel capability without source :: ' + vNoSource);
+  console.log('R9 manufacturer-intel: companies ' + intelStore.companies.length + ' | duplicate: ' + dup + ' | invalid site: ' + badUrl + ' | capability without source: ' + vNoSource);
+}
+if (auditStore) {
+  console.log('R9 census-audit: records ' + auditStore.total + ' | no-website: ' + auditStore.no_website_count + ' | review queue: ' + auditStore.review_queue_count + ' | status: ' + JSON.stringify(auditStore.status_counts));
+  if (auditStore.total !== 546 && auditStore.total !== intelStoreCount()) problems.push('R9 census-audit record count drift :: ' + auditStore.total);
+}
+function intelStoreCount() { try { return JSON.parse(fs.readFileSync('data/manufacturer-intel.json', 'utf8')).companies.length; } catch (e) { return -1; } }
 if (advisory.length) {
   console.log('\nAdvisory (confirm separation, no action required):');
   advisory.slice(0, 12).forEach((a) => console.log('  ' + a));
