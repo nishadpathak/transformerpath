@@ -64,6 +64,7 @@ header .container { max-width: 1280px; }
 .nav-links a[aria-current="page"] { font-weight: 700; }
 /* Grouped nav: label groups on desktop, stacked groups on mobile. */
 .nav-links .nav-group { display: inline-flex; align-items: center; gap: 8px; }
+.nav-links .nav-items { display: inline-flex; align-items: center; gap: 7px; }
 .nav-links .nav-group-label { font-size: .64rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: #7c8aa0; }
 .nav-links .nav-util { display: inline-flex; align-items: center; gap: 8px; margin-left: 4px; padding-left: 14px; border-left: 1px solid rgba(255,255,255,.14); }
 .nav-links .nav-util a { font-weight: 700; }
@@ -191,6 +192,7 @@ footer a:hover { color: var(--amber); }
   .nav-links a { padding: 13px 24px; font-size: 1rem; border-bottom: 1px solid rgba(255,255,255,.06); }
   .nav-links a:last-child { border-bottom: 0; }
   .nav-links .nav-group { display: flex; flex-direction: column; align-items: stretch; gap: 0; }
+  .nav-links .nav-items { display: contents; }
   .nav-links .nav-group-label { padding: 14px 24px 4px; font-size: .7rem; letter-spacing: .1em; color: var(--amber); }
   .nav-links .nav-util { border-left: 0; margin-left: 0; padding-left: 0; border-top: 1px solid rgba(255,255,255,.08); margin-top: 8px; }
   .nav-links a.btn { margin: 12px 20px 4px; text-align: center; border-radius: 8px; }
