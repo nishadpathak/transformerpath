@@ -28,6 +28,41 @@ const CATEGORIES = DATA.categories || [];
 
 function catPills(list) { return (list || []).map((c) => '<span class="tpill">' + esc(c) + '</span>').join(' '); }
 
+// Map an accessory category to the relevant /components/<slug> page so each
+// supplier entity page cross-links to the Components guide (part of the site's
+// buyer/navigation loop). Only exact/high-confidence matches; unmatched
+// categories simply produce no component link (never an invented one).
+const CAT_TO_COMP = {
+  'Buchholz relays': 'protection-monitoring',
+  'Protection / monitoring': 'protection-monitoring',
+  'Monitoring / diagnostic devices': 'protection-monitoring',
+  'Temperature indicators': 'protection-monitoring',
+  'Oil-level indicators': 'protection-monitoring',
+  'Pressure-relief devices': 'protection-monitoring',
+  'Bushings (HV, LV)': 'transformer-bushings',
+  'Tap changers (OLTC / DETC)': 'on-load-tap-changers',
+  'Radiators / cooling systems': 'transformer-cooling',
+  'Cooling fans': 'transformer-cooling',
+  'Pressboard / insulation materials': 'insulation-materials',
+  'DDP / DPE (densified pressboard)': 'insulation-materials',
+  'Laminated wood / insulation wood': 'insulation-materials',
+  'Transformer oil / ester fluids': 'oil-fluids-preservation',
+  'CRGO (core steel)': 'conductors-and-core',
+  'Copper / CTC conductors': 'conductors-and-core',
+  'Conservator tanks': 'tank-and-mechanical',
+  'Breathers (silica gel)': 'tank-and-mechanical',
+  'Oil treatment devices': 'tank-and-mechanical',
+  'Oil-circulation pumps': 'tank-and-mechanical',
+  'Transformer Accessories': 'tank-and-mechanical'
+};
+function compLinks(s) {
+  const slugs = [...new Set((s.categories || []).map((c) => CAT_TO_COMP[c]).filter(Boolean))];
+  if (!slugs.length) return '';
+  // Component directory labels for the pills' accessible text.
+  const LABEL = { 'protection-monitoring': 'Protection & Monitoring', 'transformer-bushings': 'Bushings & Terminations', 'on-load-tap-changers': 'Tap-Changers', 'transformer-cooling': 'Cooling', 'insulation-materials': 'Insulation Materials', 'conductors-and-core': 'Conductors & Core', 'oil-fluids-preservation': 'Oil, Fluids & Preservation', 'tank-and-mechanical': 'Tank & Mechanical' };
+  return '<h2>Related components</h2><div style="margin:4px 0 8px">' + slugs.map((c) => '<a class="tpill" href="../../components/' + c + '.html" data-track="component_crosslink" data-track-supplier="' + esc(s.name) + '">' + esc(LABEL[c] || c) + '</a>').join(' ') + '</div>';
+}
+
 function page(s) {
   const slug = slugify(s.name);
   const url = 'https://transformerpath.com/accessories/' + slug + '/';
@@ -48,6 +83,7 @@ function page(s) {
     '<div class="evmeta"><span><b>Country</b> ' + esc(s.country) + '</span>' + (s.state ? '<span><b>State</b> ' + esc(s.state) + '</span>' : '') + (s.city ? '<span><b>City</b> ' + esc(s.city) + '</span>' : '') + (s.website ? '<span><a href="' + esc(s.website) + '" target="_blank" rel="noopener" style="color:var(--accent)">Official website ↗</a></span>' : '') + (s.email ? '<span><b>Email</b> ' + esc(s.email) + '</span>' : '') + '</div>' +
     '<p class="lead">' + esc(s.description) + '</p>' +
     '<h2>Product categories</h2><div style="margin:4px 0 8px">' + catPills(s.categories) + '</div>' +
+    compLinks(s) +
     '<h2>Company record</h2><table>' +
     '<tr><th>Company</th><td>' + esc(s.name) + '</td></tr>' +
     '<tr><th>Location</th><td>' + esc(loc || '—') + '</td></tr>' +
@@ -59,6 +95,7 @@ function page(s) {
     '<p style="font-size:.78rem;color:var(--muted);margin-top:8px">Directory entries are informational supplier listings and do not imply verification, endorsement or commercial affiliation. Verification reflects a website check on the date recorded; always carry out your own due diligence before a commercial decision.</p>' +
     '<div class="card" style="background:rgba(245,166,35,.06);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:24px"><b style="color:var(--text)">Supply transformer accessories?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Get your company listed in the directory, or post a requirement to reach accessory suppliers.</p>' +
     '<a class="btn btn-amber" href="../../list-company.html" data-track="supplier_claim_started">Get listed</a> <a class="btn btn-outline btn-sm" href="../../rfq.html" data-track="rfq_started">Submit an RFQ</a></div>' +
+    '<p style="font-size:.85rem;color:var(--muted);text-align:center;margin-top:18px">Compare suppliers side by side in the <a href="../../buyers-guide.html" style="color:var(--accent);font-weight:600" data-track="buyers_guide_crosslink" data-track-supplier="' + esc(s.name) + '">Buyer\'s Guide</a>, or browse the <a href="../../components.html" style="color:var(--accent);font-weight:600">Components</a> library.</p>' +
     '</main>\n' + FOOT + '\n<script src="../../analytics.js" defer></script>\n</body>\n</html>';
 }
 
