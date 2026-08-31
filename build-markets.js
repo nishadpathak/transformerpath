@@ -25,6 +25,11 @@ const GRIDS = JSON.parse(fs.readFileSync('data/grids.json', 'utf8'));
 const EVENTS = JSON.parse(fs.readFileSync('data/events.json', 'utf8'));
 const INTEL = JSON.parse(fs.readFileSync('data/intel.json', 'utf8'));
 const STATS = JSON.parse(fs.readFileSync('data/site-stats.json', 'utf8'));
+// Business-intelligence graph: typed company events + structured projects.
+const BI = JSON.parse(fs.readFileSync('data/entity-events.json', 'utf8'));
+const BI_EVENTS = BI.companies_events || {};
+const BI_PROJECTS = BI.projects || [];
+const BI_TYPES = BI.types || {};
 const COMPONENTS = {
   'transformer-bushings': 'Transformer bushings', 'on-load-tap-changers': 'On-load tap changers',
   'transformer-cooling': 'Cooling systems', 'insulation-materials': 'Insulation materials',
@@ -436,6 +441,23 @@ function intelFor(m) {
   });
   return out.slice(0, 5);
 }
+// Business-intelligence activity for a market: typed company developments and
+// structured projects that involve this country/region. Only sourced entries.
+function biFor(m) {
+  const countries = [ci(m.gridsName), ci(m.name)].filter(Boolean);
+  const countryHit = function (c) { return countries.indexOf(ci(c)) >= 0; };
+  // Projects matching the country (or region keywords).
+  const projects = BI_PROJECTS.filter(function (p) { return countryHit(p.country) || m.kw.some(function (k) { return ci(p.country + ' ' + p.name).indexOf(k) >= 0; }); });
+  // Typed company events for companies headquartered/operating in this market.
+  const events = [];
+  Object.keys(BI_EVENTS).forEach(function (co) {
+    const c = BI_EVENTS[co];
+    const inMarket = c.country && countryHit(c.country) || m.kw.some(function (k) { return ci(co + ' ' + (c.country || '')).indexOf(k) >= 0; });
+    if (!inMarket) return;
+    (c.events || []).forEach(function (e) { if (e.type !== 'reference') events.push({ co: co, e: e }); });
+  });
+  return { projects: projects, events: events };
+}
 const fmt = function (d) { try { return new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }); } catch (e) { return ''; } };
 
 function marketPage(m) {
@@ -451,6 +473,21 @@ function marketPage(m) {
   const utlHtml = utl.map(function (u) { return '<div class="mk-row"><b>' + esc(u[0]) + '</b><span class="city">' + esc(u[1]) + '</span><span class="prof">' + esc(u[2]) + '</span>' + (u[3] ? ' <a href="' + esc(u[3]) + '" style="color:var(--accent);font-size:.78rem" target="_blank" rel="noopener">↗</a>' : '') + '</div>'; }).join('');
   const evHtml = evs.map(function (ev) { return '<li style="margin:6px 0"><a href="' + esc(ev.u) + '" target="_blank" rel="noopener" style="color:var(--accent)">' + esc(ev.n) + '</a> <span style="color:var(--muted);font-size:.85rem">' + fmt(ev.s) + ' · ' + esc(ev.c) + ', ' + esc(ev.co) + '</span></li>'; }).join('') || '<li style="color:var(--muted)">No local events yet — check the events calendar.</li>';
   const intelHtml = intel.map(function (it) { return '<li style="margin:6px 0"><b style="color:var(--text)">' + esc(it.title) + '</b><p style="color:var(--muted);font-size:.86rem;margin:2px 0 0">' + esc(it.snippet.slice(0, 200)) + (it.snippet.length > 200 ? '…' : '') + '</p></li>'; }).join('') || '<li style="color:var(--muted)">Intel for this market is refreshed hourly.</li>';
+  // Structured business-intelligence feed (typed company developments + projects).
+  const bi = biFor(m);
+  const biEvt = bi.events.slice(0, 8).map(function (x) {
+    const label = BI_TYPES[x.e.type] || x.e.type;
+    return '<li style="margin:6px 0"><b style="color:var(--accent);font-size:.78rem;text-transform:uppercase;letter-spacing:.03em">' + esc(label) + '</b> · <a href="' + esc(x.e.url) + '" target="_blank" rel="noopener" style="color:var(--accent);font-weight:600">' + esc(x.e.title) + '</a> <span style="color:var(--muted);font-size:.82rem">· ' + esc(x.co) + '</span></li>';
+  }).join('');
+  const biProj = bi.projects.slice(0, 8).map(function (p) {
+    return '<li style="margin:6px 0"><a href="' + esc(p.url) + '" style="color:var(--accent);font-weight:600">' + esc(p.name) + '</a> <span style="color:var(--muted);font-size:.82rem">· ' + esc(p.country) + (p.voltage ? ' · ' + esc(p.voltage) : '') + ' · ' + esc(p.status || '') + ' · transformer scope <b>' + esc(p.transformer_requirement) + '</b></span></li>';
+  }).join('');
+  const biHtml = (biEvt || biProj)
+    ? '<p style="font-size:.85rem;color:var(--muted)">Sourced company developments and transformer-relevant projects with a footprint in this market. An item is shown because it <b>references</b> the company or project — it is not an independently verified award or scope unless the source confirms one.</p>' +
+      (biEvt ? '<div><b style="color:var(--text)">Company activity</b><ul>' + biEvt + '</ul></div>' : '') +
+      (biProj ? '<div style="margin-top:8px"><b style="color:var(--text)">Transformer projects</b><ul>' + biProj + '</ul></div>' : '') +
+      '<p style="font-size:.82rem;color:var(--muted)">See the <a href="../../intelligence.html" style="color:var(--accent)">Intelligence</a> hub for the full activity feed.</p>'
+    : '<p style="color:var(--muted)">No source-backed business activity published for this market yet.</p>';
   const compHtml = Object.keys(COMPONENTS).map(function (c) { return '<a class="tpill" href="../../components/' + c + '.html">' + esc(COMPONENTS[c]) + '</a>'; }).join(' ');
   const techHtml = m.tech.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('');
   const faqHtml = m.faq.map(function (f) { return '<div style="margin:12px 0"><b style="color:var(--ink)">' + esc(f[0]) + '</b><p style="color:var(--text);margin:4px 0 0">' + esc(f[1]) + '</p></div>'; }).join('');
@@ -482,6 +519,7 @@ function marketPage(m) {
     '<h2>Grid &amp; utilities</h2>' + (utlHtml || '<p style="color:var(--muted)">See the grid directory for operator details.</p>') +
     '<h2>Transformer manufacturers</h2><p style="font-size:.85rem;color:var(--muted)">' + mkCount + ' maker records in the ' + esc(m.name) + ' census — power, distribution and dry-type. <a href="../../manufacturers/' + slugify(m.manufName) + '.html" style="color:var(--accent)">All ' + esc(m.name) + ' manufacturers →</a></p>' + (mkHtml || '<p style="color:var(--muted)">No manufacturers listed yet.</p>') +
     '<h2>Components &amp; suppliers</h2><div style="margin:4px 0">' + compHtml + '</div>' +
+    '<h2>Business activity</h2>' + biHtml +
     '<h2>Projects &amp; intelligence</h2><ul>' + intelHtml + '</ul>' +
     '<h2>Upcoming events</h2><ul>' + evHtml + '</ul>' +
     '<h2>Technical context</h2><ul>' + techHtml + '</ul>' +
