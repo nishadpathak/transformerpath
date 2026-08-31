@@ -86,3 +86,31 @@ PROJECTS.forEach((p) => {
   } catch (e) { console.error('!! ' + p.project + ' failed: ' + e.message); }
 });
 console.log('project entity pages:', built);
+
+/* ── Server-side render the /projects index so it paints instantly. ──────────
+ * projects.html was previously client-rendered (an empty #pjGrid filled by a
+ * fetch), which flashed empty then popped in. Bake the cards into the HTML here
+ * and neutralise the client fetch. Idempotent: re-injects from the source JSON.
+ */
+(function renderProjectsIndex() {
+  const label = function (s) { return { evaluation: 'Pre-award / evaluation', tendering: 'Tendering', expected: 'Expected', awarded: 'Awarded', construction: 'Construction', energized: 'Energized' }[s] || s; };
+  let cards = PROJECTS.map(function (p) {
+    const g = (p.transformer_requirement || 'UNKNOWN').toUpperCase();
+    return '<div class="pj-card"><h3><a href="projects/' + slugify(p.project) + '/">' + esc(p.project) + '</a></h3>' +
+      '<div class="meta"><b>Country</b> ' + esc(p.country) + ' &middot; <b>Voltage</b> ' + esc(p.voltage || '—') + ' &middot; <b>Status</b> ' + esc(label(p.status) || '—') + ' <span class="cls-badge cls-' + g + '">' + g + '</span></div>' +
+      (p.utility ? '<div class="meta"><b>Utility</b> ' + esc(p.utility) + '</div>' : '') + '</div>';
+  }).join('') || '<div class="pj-card"><p style="color:var(--muted)">No projects published yet.</p></div>';
+  let f = 'projects.html';
+  try {
+    let s = fs.readFileSync(f, 'utf8');
+    // Inject the baked cards into #pjGrid.
+    s = s.replace(/(<div class="pj-grid" id="pjGrid">)[\s\S]*?(<\/div>)/, function (m, a, b) { return a + cards + b; });
+    // Neutralise the client-rendered IIFE entirely so the baked cards stay the
+    // source of truth (no empty-container pop-in after a fetch).
+    s = s.replace(/(\s*\(function\(\)\{[\s\S]*?fetch\('data\/projects\.json'\)[\s\S]*?\)\.catch\(function\(\)\{\}\);\s*\}\)\(\);)/, '  (function(){}); /* server-rendered */');
+    // Version the stylesheet for cache-busting consistency (was bare style.css).
+    s = s.replace(/href="style\.css"(?!\?v=)/, 'href="style.css?v=9"');
+    fs.writeFileSync(f, s);
+    console.log('projects.html wrote (server-rendered, no client fetch)');
+  } catch (e) { console.warn('projects.html server-render skipped: ' + e.message); }
+})();

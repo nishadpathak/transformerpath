@@ -116,3 +116,26 @@ SUPPLIERS.forEach((s) => {
 console.log('accessory supplier entity pages:', built, '| verified (index,follow):', indexable);
 
 fs.writeFileSync('data/accessories-meta.json', JSON.stringify({ total: indexable, categories: CATEGORIES }, null, 2));
+
+/* ── Embed accessories data inline in the /accessories index so it paints with
+ * no fetch round-trip (removes the empty-list flash). The interactive category
+ * filter + search still run, but as soon as the page loads, not after a JSON
+ * round-trip. Idempotent: re-injects every build.
+ */
+(function embedIndexData() {
+  try {
+    const json = fs.readFileSync('data/accessories.json', 'utf8').replace(/<\/script/gi, '<\\/script');
+    const marker = "<script src='data/accessories.json'";
+    let s = fs.readFileSync('accessories.html', 'utf8');
+    // Inject the inline data variable right before the app <script> that fetches it.
+    const inject = '<script>window.__TP_ACCESSORIES__=' + json + ';</script>\n';
+    // Remove any previously injected block (idempotent).
+    s = s.replace(/<script>window\.__TP_ACCESSORIES__=[\s\S]*?<\/script>\n/g, '');
+    // Replace the fetch with the inline data (guard against re-application).
+    s = s.replace(/fetch\('data\/accessories\.json'\)\.then\(function\(r\)\{return r\.json\(\);\}\)/, 'Promise.resolve(window.__TP_ACCESSORIES__)');
+    // Insert the data block immediately before the app IIFE.
+    s = s.replace(/(<script>\s*\(function\(\)\{[\s\S]*?document\.getElementById\('accSearch'\)\.addEventListener)/, inject + '$1');
+    fs.writeFileSync('accessories.html', s);
+    console.log('accessories.html wrote (inline data, no fetch round-trip)');
+  } catch (e) { console.warn('accessories.html inline-data skip: ' + e.message); }
+})();
