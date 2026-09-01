@@ -6,63 +6,457 @@
     {
       "name": "Hitachi Energy",
       "slug": "hitachi-energy",
-      "headquarters": { "city": "Zurich, Switzerland", "source_url": "https://www.hitachienergy.com", "claim_type": "INDEPENDENTLY_SOURCED" },
-      "official_website": { "url": "https://www.hitachienergy.com", "claim_type": "INDEPENDENTLY_SOURCED" },
-      "transformer_products": [{ "type": "POWER" }, { "type": "HVDC_CONVERTER" }],
-      "reported_max_voltage_kv": null,
-      "reported_max_mva": null,
-      "factories": [
-        { "city": "Dilovasi", "country": "Türkiye", "produces": "power transformers (+ factory & service center)", "source_url": "https://www.hitachienergy.com/ch/de/news-and-events/events-and-webinars/2026/06/dilovasi-power-transformers-factory-service-center", "claim_type": "INDEPENDENTLY_SOURCED" },
-        { "city": "Gujarat", "country": "India", "produces": "new transformer factory (announced, Rs 20 bn)", "source_url": "https://powerline.net.in/2026/06/15/hitachi-energy-to-set-up-rs-20-billion-transformer-factory-in-gujarat/", "claim_type": "COMPANY_REPORTED" }
+      "headquarters": {
+        "city": "Zurich, Switzerland",
+        "source_url": "https://www.hitachienergy.com",
+        "claim_type": "INDEPENDENTLY_SOURCED"
+      },
+      "official_website": {
+        "url": "https://www.hitachienergy.com",
+        "claim_type": "INDEPENDENTLY_SOURCED"
+      },
+      "transformer_products": [
+        {
+          "type": "POWER"
+        },
+        {
+          "type": "HVDC_CONVERTER"
+        },
+        {
+          "type": "GSU"
+        },
+        {
+          "type": "DISTRIBUTION"
+        }
       ],
-      "notes": "New transformer factory announced for Gujarat, India (Rs 20 bn)."
+      "reported_max_voltage_kv": 1100,
+      "reported_max_mva": 1500,
+      "voltage_source": {
+        "value": "1100 kV (world-first ±1100 kV HVDC converter transformers for China UHVDC; official page also states 1200 kV AC)",
+        "source_url": "https://www.hitachienergy.com",
+        "claim_type": "INDEPENDENTLY_SOURCED"
+      },
+      "mva_source": {
+        "value": "1500 MVA (GSU product page)",
+        "source_url": "https://www.hitachienergy.com",
+        "claim_type": "INDEPENDENTLY_SOURCED"
+      },
+      "factories": [
+        {
+          "city": "Ludvika",
+          "country": "Sweden",
+          "produces": "HVDC converter transformers",
+          "source_url": "https://www.hitachienergy.com",
+          "claim_type": "INDEPENDENTLY_SOURCED"
+        },
+        {
+          "city": "Maneja / Karjan (Vadodara)",
+          "country": "India",
+          "produces": "power transformers",
+          "source_url": "https://www.hitachienergy.com",
+          "claim_type": "INDEPENDENTLY_SOURCED"
+        },
+        {
+          "city": "Zhongshan",
+          "country": "China",
+          "produces": "transformers",
+          "source_url": "https://www.hitachienergy.com",
+          "claim_type": "INDEPENDENTLY_SOURCED"
+        },
+        {
+          "city": "Dilovası",
+          "country": "Türkiye",
+          "produces": "power transformers (+ factory & service center)",
+          "source_url": "https://www.hitachienergy.com/ch/de/news-and-events/events-and-webinars/2026/06/dilovasi-power-transformers-factory-service-center",
+          "claim_type": "INDEPENDENTLY_SOURCED"
+        },
+        {
+          "city": "Vaasa",
+          "country": "Finland",
+          "produces": "transformers",
+          "source_url": "https://www.hitachienergy.com",
+          "claim_type": "INDEPENDENTLY_SOURCED"
+        }
+      ],
+      "notes": "Former name: Hitachi ABB Power Grids. Parent: Hitachi Ltd. (80.1%). Capability maxima reported separately."
     },
     {
       "name": "Siemens Energy",
       "slug": "siemens-energy",
-      "headquarters": { "city": "Munich, Germany", "source_url": "https://www.siemens-energy.com", "claim_type": "INDEPENDENTLY_SOURCED" },
-      "official_website": { "url": "https://www.siemens-energy.com", "claim_type": "INDEPENDENTLY_SOURCED" },
-      "transformer_products": [{ "type": "POWER" }],
-      "reported_max_voltage_kv": null,
-      "reported_max_mva": null,
-      "factories": [
-        { "city": "Nuremberg", "country": "Germany", "produces": "power transformers", "source_url": "https://www.siemens-energy.com/global/en/home/press-releases/siemens-energy-invests--220-million.html", "claim_type": "INDEPENDENTLY_SOURCED" },
-        { "city": "Weiz", "country": "Austria", "produces": "transformer plant expansion", "source_url": "https://www.greentech.at/en/groundbreaking-ceremony-for-siemens-energy-plant-expansion-in-weiz/", "claim_type": "COMPANY_REPORTED" }
+      "headquarters": {
+        "city": "Munich, Germany (Otto-Hahn-Ring 6)",
+        "source_url": "https://www.siemens-energy.com",
+        "claim_type": "INDEPENDENTLY_SOURCED"
+      },
+      "official_website": {
+        "url": "https://www.siemens-energy.com",
+        "claim_type": "INDEPENDENTLY_SOURCED"
+      },
+      "transformer_products": [
+        {
+          "type": "POWER"
+        },
+        {
+          "type": "HVDC_CONVERTER"
+        },
+        {
+          "type": "DISTRIBUTION"
+        }
       ],
-      "notes": "Weiz, Austria transformer plant expansion documented."
+      "reported_max_voltage_kv": 1100,
+      "reported_max_mva": 1300,
+      "voltage_source": {
+        "value": "Large power transformers up to 1100 kV; HVDC converter transformers ±1100 kV",
+        "source_url": "https://www.siemens-energy.com",
+        "claim_type": "INDEPENDENTLY_SOURCED"
+      },
+      "mva_source": {
+        "value": "Large power transformers up to 1300 MVA; HVDC converter transformers up to 750 MVA",
+        "source_url": "https://www.siemens-energy.com",
+        "claim_type": "INDEPENDENTLY_SOURCED"
+      },
+      "factories": [
+        {
+          "city": "Nuremberg",
+          "country": "Germany",
+          "produces": "power transformers (since 1912)",
+          "source_url": "https://www.siemens-energy.com",
+          "claim_type": "INDEPENDENTLY_SOURCED"
+        },
+        {
+          "city": "Weiz",
+          "country": "Austria",
+          "produces": "phase-shifting transformers",
+          "source_url": "https://www.siemens-energy.com",
+          "claim_type": "INDEPENDENTLY_SOURCED"
+        },
+        {
+          "city": "Trento / Spini",
+          "country": "Italy",
+          "produces": "transformers",
+          "source_url": "https://www.siemens-energy.com",
+          "claim_type": "INDEPENDENTLY_SOURCED"
+        },
+        {
+          "city": "Linz",
+          "country": "Austria",
+          "produces": "transformer service",
+          "source_url": "https://www.siemens-energy.com",
+          "claim_type": "INDEPENDENTLY_SOURCED"
+        }
+      ],
+      "notes": "Spun off from Siemens AG July 2020. Capability maxima reported separately."
     },
     {
       "name": "GE Vernova",
       "slug": "ge-vernova",
-      "headquarters": { "city": "Cambridge, Massachusetts, United States", "source_url": "https://www.gevernova.com", "claim_type": "INDEPENDENTLY_SOURCED" },
-      "official_website": { "url": "https://www.gevernova.com", "claim_type": "INDEPENDENTLY_SOURCED" },
-      "transformer_products": [{ "type": "POWER" }],
-      "reported_max_voltage_kv": null,
-      "reported_max_mva": null,
-      "factories": [],
-      "notes": "Power transformers product page confirmed."
+      "headquarters": {
+        "city": "Cambridge, Massachusetts, United States",
+        "source_url": "https://www.gevernova.com",
+        "claim_type": "INDEPENDENTLY_SOURCED"
+      },
+      "official_website": {
+        "url": "https://www.gevernova.com",
+        "claim_type": "INDEPENDENTLY_SOURCED"
+      },
+      "transformer_products": [
+        {
+          "type": "POWER"
+        },
+        {
+          "type": "HVDC_CONVERTER"
+        },
+        {
+          "type": "AUTOTRANSFORMER"
+        },
+        {
+          "type": "DISTRIBUTION"
+        }
+      ],
+      "reported_max_voltage_kv": 600,
+      "reported_max_mva": 1200,
+      "voltage_source": {
+        "value": "600 kV (UHVDC converter transformers, Rio Madeira; official brochure)",
+        "source_url": "https://www.gevernova.com/grid-solutions/equipment/transformers/power-transformers",
+        "claim_type": "INDEPENDENTLY_SOURCED"
+      },
+      "mva_source": {
+        "value": "Prolec GE autotransformers up to 1200 MVA 3-phase at 550 kV (official Prolec GE brochure — a documented combined spec)",
+        "source_url": "https://www.gevernova.com/grid-solutions/equipment/transformers/prolec-ge-transformers",
+        "claim_type": "INDEPENDENTLY_SOURCED"
+      },
+      "factories": [
+        {
+          "city": "Stafford",
+          "country": "United Kingdom",
+          "produces": "HVDC converter transformers",
+          "source_url": "https://www.gevernova.com",
+          "claim_type": "INDEPENDENTLY_SOURCED"
+        },
+        {
+          "city": "Goldsboro, North Carolina",
+          "country": "United States",
+          "produces": "power transformers (Prolec GE)",
+          "source_url": "https://www.gevernova.com/grid-solutions/equipment/transformers/prolec-ge-transformers",
+          "claim_type": "INDEPENDENTLY_SOURCED"
+        },
+        {
+          "city": "Shreveport, Louisiana",
+          "country": "United States",
+          "produces": "power transformers (Prolec GE)",
+          "source_url": "https://www.gevernova.com/grid-solutions/equipment/transformers/prolec-ge-transformers",
+          "claim_type": "INDEPENDENTLY_SOURCED"
+        },
+        {
+          "city": "Hai Phong",
+          "country": "Vietnam",
+          "produces": "transformer factory (announced 2026)",
+          "source_url": "https://www.gevernova.com",
+          "claim_type": "COMPANY_REPORTED"
+        }
+      ],
+      "notes": "Spin-off from GE April 2, 2024. Capability maxima reported separately; the Prolec GE 1200 MVA @ 550 kV combined spec is documented in the official brochure."
     },
     {
       "name": "CG Power and Industrial Solutions Limited",
       "slug": "cg-power-and-industrial-solutions",
-      "headquarters": { "city": "Mumbai, India", "source_url": "https://www.cgglobal.com", "claim_type": "COMPANY_REPORTED" },
-      "official_website": { "url": "https://www.cgglobal.com", "claim_type": "INDEPENDENTLY_SOURCED" },
-      "transformer_products": [{ "type": "POWER" }],
-      "reported_max_voltage_kv": null,
-      "reported_max_mva": null,
-      "factories": [],
-      "notes": "Owner group: Murugappa. Power transformer expansion announced (BSE filing)."
+      "headquarters": {
+        "city": "Mumbai, India",
+        "source_url": "https://www.cgglobal.com/",
+        "claim_type": "COMPANY_REPORTED"
+      },
+      "official_website": {
+        "url": "https://www.cgglobal.com/",
+        "claim_type": "COMPANY_REPORTED"
+      },
+      "transformer_products": [
+        {
+          "type": "POWER"
+        },
+        {
+          "type": "DISTRIBUTION"
+        },
+        {
+          "type": "DRY_TYPE"
+        },
+        {
+          "type": "CAST_RESIN"
+        },
+        {
+          "type": "GSU"
+        },
+        {
+          "type": "AUTOTRANSFORMER"
+        },
+        {
+          "type": "TRACTION"
+        },
+        {
+          "type": "RENEWABLE"
+        }
+      ],
+      "reported_max_voltage_kv": 1200,
+      "reported_max_mva": 1500,
+      "voltage_source": {
+        "value": "1200 kV (autotransformer portfolio line, FY2024-25 Annual Report p.40, NSE filing)",
+        "source_url": "https://www.cgglobal.com/",
+        "claim_type": "COMPANY_REPORTED"
+      },
+      "mva_source": {
+        "value": "1500 MVA (annual report: '160kVA to 1500MVA')",
+        "source_url": "https://www.cgglobal.com/",
+        "claim_type": "COMPANY_REPORTED"
+      },
+      "factories": [
+        {
+          "city": "Bhopal",
+          "country": "India",
+          "produces": "power transformers",
+          "source_url": "https://www.cgglobal.com/",
+          "claim_type": "COMPANY_REPORTED"
+        },
+        {
+          "city": "Malanpur",
+          "country": "India",
+          "produces": "distribution/dry-type/locomotive transformers",
+          "source_url": "https://www.cgglobal.com/",
+          "claim_type": "COMPANY_REPORTED"
+        },
+        {
+          "city": "Sehore",
+          "country": "India",
+          "produces": "greenfield transformer plant (45,000 MVA)",
+          "source_url": "https://www.business-standard.com/",
+          "claim_type": "COMPANY_REPORTED"
+        }
+      ],
+      "notes": "Former name: Crompton Greaves Ltd. Parent: Murugappa Group. Capability figures are company-reported maxima kept separate (never combined into a product rating)."
     },
     {
       "name": "Prolec GE",
       "slug": "prolec-ge",
-      "headquarters": { "city": "Monterrey, Mexico", "source_url": "https://www.gevernova.com/grid-solutions/equipment/transformers/prolec-ge-transformers", "claim_type": "COMPANY_REPORTED" },
-      "official_website": { "url": "https://www.gevernova.com/grid-solutions/equipment/transformers/prolec-ge-transformers", "claim_type": "INDEPENDENTLY_SOURCED" },
-      "transformer_products": [{ "type": "DISTRIBUTION" }, { "type": "POWER" }],
+      "headquarters": {
+        "city": "Monterrey, Mexico",
+        "source_url": "https://www.gevernova.com/grid-solutions/equipment/transformers/prolec-ge-transformers",
+        "claim_type": "COMPANY_REPORTED"
+      },
+      "official_website": {
+        "url": "https://www.gevernova.com/grid-solutions/equipment/transformers/prolec-ge-transformers",
+        "claim_type": "INDEPENDENTLY_SOURCED"
+      },
+      "transformer_products": [
+        {
+          "type": "DISTRIBUTION"
+        },
+        {
+          "type": "POWER"
+        }
+      ],
       "reported_max_voltage_kv": null,
       "reported_max_mva": null,
       "factories": [],
       "notes": "Distribution & medium-power transformers; official GE Vernova product page verified."
+    },
+    {
+      "name": "TBEA Co., Ltd.",
+      "slug": "tbea-co-ltd",
+      "headquarters": {
+        "city": "Changji, Xinjiang, China",
+        "source_url": "https://www.tbea.com/",
+        "claim_type": "COMPANY_REPORTED"
+      },
+      "official_website": {
+        "url": "https://www.tbea.com/",
+        "claim_type": "COMPANY_REPORTED"
+      },
+      "transformer_products": [
+        {
+          "type": "POWER"
+        },
+        {
+          "type": "HVDC_CONVERTER"
+        },
+        {
+          "type": "PAD_MOUNTED"
+        }
+      ],
+      "reported_max_voltage_kv": 1100,
+      "reported_max_mva": 1000,
+      "voltage_source": {
+        "value": "1100 kV (±1100 kV converter transformers, Hengyang unit)",
+        "source_url": "https://www.tbea.com/enterprise_detail/73.html",
+        "claim_type": "COMPANY_REPORTED"
+      },
+      "mva_source": {
+        "value": "1000 MVA (1000kV/1000MVA ODFPS-1000000/1000)",
+        "source_url": "https://en.tbea.com/product-detail/97.html",
+        "claim_type": "COMPANY_REPORTED"
+      },
+      "factories": [
+        {
+          "city": "Hengyang",
+          "country": "China",
+          "produces": "power transformers",
+          "source_url": "https://www.tbea.com/",
+          "claim_type": "COMPANY_REPORTED"
+        },
+        {
+          "city": "Shenyang",
+          "country": "China",
+          "produces": "power transformers",
+          "source_url": "https://www.chinadaily.com.cn/",
+          "claim_type": "COMPANY_REPORTED"
+        },
+        {
+          "city": "Changji",
+          "country": "China",
+          "produces": "transformers",
+          "source_url": "https://www.tbea.com/",
+          "claim_type": "COMPANY_REPORTED"
+        }
+      ],
+      "notes": "Capability maxima reported separately (1100 kV converter class / 1000 MVA unit). Company-reported, not independently re-verified."
+    },
+    {
+      "name": "HD Hyundai Electric",
+      "slug": "hd-hyundai-electric",
+      "headquarters": {
+        "city": "Seongnam-si, Gyeonggi-do, South Korea",
+        "source_url": "https://www.hd-hyundaielectric.com/",
+        "claim_type": "COMPANY_REPORTED"
+      },
+      "official_website": {
+        "url": "https://www.hd-hyundaielectric.com/",
+        "claim_type": "COMPANY_REPORTED"
+      },
+      "transformer_products": [
+        {
+          "type": "POWER"
+        },
+        {
+          "type": "DISTRIBUTION"
+        },
+        {
+          "type": "CAST_RESIN"
+        },
+        {
+          "type": "GSU"
+        },
+        {
+          "type": "HVDC_CONVERTER"
+        },
+        {
+          "type": "TRACTION"
+        },
+        {
+          "type": "FURNACE"
+        },
+        {
+          "type": "RENEWABLE"
+        },
+        {
+          "type": "MOBILE"
+        },
+        {
+          "type": "SPECIAL"
+        }
+      ],
+      "reported_max_voltage_kv": 800,
+      "reported_max_mva": 1500,
+      "voltage_source": {
+        "value": "800 kV (official statement 'Up to 800kV and 1,500MVA' — stated alongside rating, not as a combined product spec)",
+        "source_url": "https://www.hd-hyundaielectric.com/elect/en/product/product1.jsp",
+        "claim_type": "COMPANY_REPORTED"
+      },
+      "mva_source": {
+        "value": "1500 MVA (official statement 'Up to 800kV and 1,500MVA' — stated alongside voltage, not as a combined product spec)",
+        "source_url": "https://www.hd-hyundaielectric.com/elect/en/product/product1.jsp",
+        "claim_type": "COMPANY_REPORTED"
+      },
+      "factories": [
+        {
+          "city": "Ulsan Dong-gu",
+          "country": "South Korea",
+          "produces": "power transformers",
+          "source_url": "https://www.hd-hyundaielectric.com/",
+          "claim_type": "COMPANY_REPORTED"
+        },
+        {
+          "city": "Ulsan Seonam",
+          "country": "South Korea",
+          "produces": "distribution transformers",
+          "source_url": "https://www.hd-hyundaielectric.com/",
+          "claim_type": "COMPANY_REPORTED"
+        },
+        {
+          "city": "Montgomery, Alabama",
+          "country": "United States",
+          "produces": "power transformers (2nd 765 kV-class plant groundbroken 2026)",
+          "source_url": "https://www.hd-hyundaielectric.com/",
+          "claim_type": "COMPANY_REPORTED"
+        }
+      ],
+      "notes": "Former name: Hyundai Electric & Energy Systems. Parent: HD Hyundai Group. The source states 'Up to 800kV and 1,500MVA' — recorded as two separate maxima and never combined into a single product rating."
     }
   ]
 }

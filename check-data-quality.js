@@ -205,8 +205,8 @@ if (deepStore && deepStore.length) {
       check(f);
       if (f && (f.voltage_kv || f.mva || f.reported_voltage_kv || f.reported_max_mva)) facCapability++;
     });
-    // capability maxima must be null/absent (unverified), never fabricated
-    if (c.reported_max_voltage_kv || c.reported_max_mva) capNoSrc++;
+    // capability maxima must carry a source (voltage_source/mva_source) or be absent
+    if ((c.reported_max_voltage_kv && !(c.voltage_source && c.voltage_source.source_url)) || (c.reported_max_mva && !(c.mva_source && c.mva_source.source_url))) capNoSrc++;
   });
   if (noSrc) problems.push('R10 deep-research fact without source_url :: ' + noSrc);
   if (badClaim) problems.push('R10 deep-research invalid claim_type :: ' + badClaim);
