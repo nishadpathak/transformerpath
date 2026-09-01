@@ -220,6 +220,8 @@
         <button class="btn btn-amber" type="submit" style="width:100%">Submit RFQ →</button>
         <p style="text-align:center; color:var(--muted); font-size:.85rem; margin-top:12px">Reviewed before publication. Your contact details are never shown publicly — responses are forwarded to you.</p>
       </form>
+
+      <div id="rfqResult" style="display:none; margin-top:18px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:18px"></div>
     </div>
   </div>
 </section>
@@ -251,11 +253,40 @@
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
 </script>
 <script src="analytics.js?v=5" defer></script>
-<script>/* auto RFQ reference — generated once at submit so the reference matches the submission.
-   Time-based + random so it is collision-resistant without a database. */
-(function(){var f=document.querySelector('form[name="rfq"]'),r=document.getElementById("fld_ref");if(!f||!r)return;
-f.addEventListener("submit",function(){if(!r.value){var d=new Date(),y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,"0"),day=String(d.getDate()).padStart(2,"0"),h=String(d.getHours()).padStart(2,"0"),mi=String(d.getMinutes()).padStart(2,"0"),s=String(d.getSeconds()).padStart(2,"0"),rand=Math.floor(1000+Math.random()*9000);r.value="RFQ TP-"+y+m+day+"-"+h+mi+s+"-"+rand;}});
+<script>/* RFQ submit: auto-reference + persist to Supabase (if signed in) +
+   fact-based "potentially relevant manufacturers" matching, rendered after submit. */
+(function(){
+  var f=document.querySelector('form[name="rfq"]'),r=document.getElementById("fld_ref");
+  var result=document.getElementById("rfqResult");
+  function ref(){ if(!r.value){ var d=new Date(),y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,"0"),day=String(d.getDate()).padStart(2,"0"),h=String(d.getHours()).padStart(2,"0"),mi=String(d.getMinutes()).padStart(2,"0"),s=String(d.getSeconds()).padStart(2,"0"),rand=Math.floor(1000+Math.random()*9000); r.value="RFQ TP-"+y+m+day+"-"+h+mi+s+"-"+rand; } return r.value; }
+  function val(id){ var e=document.getElementById(id); return e?e.value:''; }
+  function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function runMatching(){
+    var category=val("fld_category"), rating=val("fld_rating"), voltage=val("fld_voltage"), dest=val("fld_dest");
+    if(!window.TP_RFQ) return;
+    window.TP_RFQ.match({category:category,rating:rating,voltage:voltage,destination:dest}).then(function(matches){
+      if(!result || !matches || !matches.length) return;
+      var html='<div style="font-size:1.1rem;font-weight:800;color:var(--ink);margin-bottom:4px">Potentially relevant manufacturers <span style="color:var(--muted);font-weight:600;font-size:.85rem">('+matches.length+')</span></div>'+
+        '<p style="font-size:.84rem;color:var(--muted);margin:0 0 12px">Matched from the source-backed TransformerPath census on category, reported rating/voltage and manufacturing geography. This is a <b>capability-based</b> match — it is not a ranking, not a score and not an endorsement. Verify with the manufacturer before a commercial decision.</p>';
+      html += matches.map(function(m){
+        var mva=m.reported_mva?(' · '+esc(m.reported_mva)):''; var kv=m.reported_voltage?(' · '+esc(m.reported_voltage)):'';
+        return '<div style="padding:9px 12px;border-bottom:1px solid var(--border);font-size:.9rem"><a href="manufacturers/'+esc(m.slug)+'/" style="color:var(--accent);font-weight:700">'+esc(m.name)+'</a> <span style="color:var(--muted);font-size:.8rem">'+esc(m.country||'')+mva+kv+'</span><div style="font-size:.8rem;color:var(--muted);margin-top:2px">'+m.reasons.map(esc).join(' · ')+'</div></div>';
+      }).join('');
+      result.innerHTML=html; result.style.display='block';
+    });
+  }
+  if(!f || !result) return; // no form on this page
+  f.addEventListener("submit",function(){
+    var reference=ref();
+    if(window.TP && window.TP.saveRfq){
+      window.TP.saveRfq({reference:reference, category:val("fld_category"), quantity:val("fld_qty"), rating:val("fld_rating"), voltage:val("fld_voltage"), standard:val("fld_standard"), destination:val("fld_dest")});
+    }
+    setTimeout(runMatching, 60);
+  });
 })();
 </script>
+<script src="supabase-config.js" defer></script>
+<script src="supabase.js" defer></script>
+<script src="rfq-engine.js" defer></script>
 </body>
 </html>
