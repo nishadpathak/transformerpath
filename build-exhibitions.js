@@ -61,6 +61,30 @@ const TYPE_LABEL = { 'Exhibition': 'Exhibition', 'Conference': 'Conference', 'Ex
 // Replace the '&' in a slug for the market link label.
 const marketSlug = (c) => MARKET_BY_COUNTRY[c] || slugify(c);
 
+// Travelpayout-affiliated attendee buttons (Book Hotel / Flights / Things to Do /
+// Add to calendar) for a verified exhibition. Mirrors the events.html pattern so
+// the Exhibitions directory is monetized like the Events calendar. The calendar
+// entry is a data: URI VEVENT; hotel uses a destination-scoped hotellook search.
+const TP = { hotel: 'https://search.hotellook.com/?marker=736890&destination=', flights: 'https://kiwi.tpk.ro/dClaRHg1', activities: 'https://kkday.tpk.ro/VGC9WqGf' };
+function travelButtons(e, slug) {
+  if (!e.city) return '';
+  const dest = encodeURIComponent(e.city);
+  const hotel = TP.hotel + dest;
+  // Build an .ics-safe calendar URI from the event name/city/country.
+  const name = String(e.event_name || '').replace(/[\r\n]/g, ' ').trim();
+  const loc = [e.city, e.country].filter(Boolean).join(', ');
+  const dates = (e.next_dates || '').match(/(\d{4})-(\d{2})-(\d{2})/g) || [];
+  const start = dates[0] ? dates[0].replace(/-/g, '') : '';
+  const end = dates[1] ? dates[1].replace(/-/g, '') : start;
+  const cal = 'data:text/calendar;charset=utf-8,BEGIN%3AVCALENDAR%0D%0AVERSION%3A2.0%0D%0APRODID%3A-%2F%2FTransformerPath%2F%2FEvents%2F%2FEN%0D%0ACALSCALE%3AGREGORIAN%0D%0ABEGIN%3AVEVENT%0D%0AUID%3A' + (start || 'tbd') + '%40transformerpath.com%0D%0ADTSTAMP%3A20260901T000000Z%0D%0ADTSTART%3BVALUE%3DDATE%3A' + (start || '') + '%0D%0ADTEND%3BVALUE%3DDATE%3A' + (end || '') + '%0D%0ASUMMARY%3A' + encodeURIComponent(name) + '%0D%0ALOCATION%3A' + encodeURIComponent(loc) + '%0D%0AEND%3AVEVENT%0D%0AEND%3AVCALENDAR';
+  return '<div class="ev-travel" style="margin:6px 0 4px">' +
+    '<a class="btn btn-outline btn-sm" data-aff="hotel" data-ev="' + esc(name) + '" href="' + esc(hotel) + '" target="_blank" rel="noopener sponsored">🏨 Book Hotel</a> ' +
+    '<a class="btn btn-outline btn-sm" data-aff="flights" data-ev="' + esc(name) + '" href="' + esc(TP.flights) + '" target="_blank" rel="noopener sponsored">✈ Find Flights</a> ' +
+    '<a class="btn btn-outline btn-sm" data-aff="activities" data-ev="' + esc(name) + '" href="' + esc(TP.activities) + '" target="_blank" rel="noopener sponsored">&#127915;&#65039; Things to Do</a> ' +
+    '<a class="btn btn-outline btn-sm" data-aff="calendar" data-ev="' + esc(name) + '" href="' + cal + '" download target="_blank" rel="noopener">&#128197; Add</a>' +
+    '</div>';
+}
+
 function eventPage(e) {
   const slug = slugify(e.event_name);
   const url = 'https://transformerpath.com/events/' + slug + '/';
@@ -135,6 +159,7 @@ function indexPage() {
     '</head>\n<body>\n' + HEAD + '\n<main class="ex-wrap">' +
     '<h1>Transformer <span style="color:var(--accent)">Exhibitions</span> &amp; Conferences</h1>' +
     '<p class="lead">A verified, searchable directory of transformer-related exhibitions, trade shows, conferences and industry events worldwide. Each entry is checked against the event\'s official website for dates, venue, organiser and transformer relevance, and carries a verification status. Organised by country — filter by category or search to find the events that matter to your market.</p>' +
+    '<div style="margin:0 0 18px"><a class="btn btn-outline btn-sm" data-aff="hotel" href="' + esc(TP.hotel) + '" target="_blank" rel="noopener sponsored">🏨 Book Hotels</a> <a class="btn btn-outline btn-sm" data-aff="flights" href="' + esc(TP.flights) + '" target="_blank" rel="noopener sponsored">✈ Find Flights</a> <a class="btn btn-outline btn-sm" data-aff="activities" href="' + esc(TP.activities) + '" target="_blank" rel="noopener sponsored">&#127915;&#65039; Things to Do</a></div>' +
     '<div class="ex-counts" id="exCounts"></div>' +
     '<input id="exSearch" class="acc-search" type="search" placeholder="Search events… e.g. CWIEME, CIGRE, transformer, Dubai" aria-label="Search exhibitions" style="width:100%;max-width:420px;display:block;margin:0 0 22px;padding:11px 16px;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:.95rem;background:var(--card);color:var(--text)">' +
     '<div id="exList">' + countryBlocks + '</div>' +
