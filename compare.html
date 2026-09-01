@@ -15,7 +15,7 @@
 <meta name="theme-color" content="#0d1b2e">
 <link rel="icon" type="image/svg+xml" href="brand/favicon.svg">
 <link rel="icon" href="brand/favicon.ico" sizes="any">
-<link rel="stylesheet" href="style.css?v=11">
+<link rel="stylesheet" href="style.css?v=12">
 <style>
   .cmp-wrap { max-width: 1100px; margin: 0 auto; padding: 44px 20px 90px; }
   .cmp-wrap h1 { font-size: 2rem; color: var(--ink); }
@@ -62,6 +62,27 @@
 </header>
 <script>
 (function(){var h=document.documentElement;if((localStorage.getItem('theme')||'dark')==='dark')h.setAttribute('data-theme','dark');var g=document.querySelector('.theme-toggle');if(g){var m=function(){var d=h.getAttribute('data-theme')==='dark';g.textContent=d?'🌙':'☀️';};g.addEventListener('click',function(){if(h.getAttribute('data-theme')==='dark'){h.removeAttribute('data-theme');localStorage.setItem('theme','light');}else{h.setAttribute('data-theme','dark');localStorage.setItem('theme','dark');}m();});m();}})();
+/* Dropdown nav: open on hover (desktop) / tap, with a grace period so moving to a
+   link never closes the menu mid-travel; Escape closes. */
+(function () {
+  var groups = Array.prototype.slice.call(document.querySelectorAll('.nav-links .nav-group'));
+  var canHover = function () { return window.matchMedia('(hover: hover) and (pointer: fine)').matches; };
+  function closeAll(except) { groups.forEach(function (g) { if (g === except) return; g.classList.remove('open'); var b = g.querySelector('.nav-group-label'); if (b) b.setAttribute('aria-expanded', 'false'); }); }
+  function toggle(group, button) { var isOpen = group.classList.toggle('open'); button.setAttribute('aria-expanded', isOpen ? 'true' : 'false'); if (isOpen) closeAll(group); }
+  groups.forEach(function (group) {
+    var button = group.querySelector('.nav-group-label'); if (!button) return;
+    button.addEventListener('click', function (e) { e.preventDefault(); toggle(group, button); });
+    group.addEventListener('mouseenter', function () { if (canHover()) { group.classList.add('open'); button.setAttribute('aria-expanded', 'true'); closeAll(group); } });
+    group.addEventListener('mouseleave', function () {
+      if (!canHover()) return;
+      var x = group;
+      setTimeout(function () { if (!x.contains(document.activeElement) && !x.matches(':hover')) { x.classList.remove('open'); var b = x.querySelector('.nav-group-label'); if (b) b.setAttribute('aria-expanded', 'false'); } }, 110);
+    });
+    group.addEventListener('focusin', function () { group.classList.add('open'); var b = group.querySelector('.nav-group-label'); if (b) b.setAttribute('aria-expanded', 'true'); });
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAll(); });
+  document.addEventListener('click', function (e) { if (!e.target.closest('.nav-group')) closeAll(); });
+})();
 </script>
 <main class="cmp-wrap">
   <h1>Compare <span style="color:var(--accent)">Transformer Manufacturers</span></h1>

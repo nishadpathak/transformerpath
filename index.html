@@ -17,7 +17,7 @@
 <meta name="twitter:title" content="TransformerPath — Global Transformer Industry Intelligence &amp; Network">
 <meta name="twitter:description" content="The global platform for transformer professionals — daily market intel, industry events, jobs, a world grid census and an interactive 3D transformer explorer.">
 <meta name="twitter:image" content="https://transformerpath.com/brand/og-image-hero.jpg">
-<link rel="stylesheet" href="style.css?v=11">
+<link rel="stylesheet" href="style.css?v=12">
 <link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
 <link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
@@ -206,7 +206,16 @@
         if (!button) return;
         button.addEventListener('click', function (e) { e.preventDefault(); toggle(group, button); });
         group.addEventListener('mouseenter', function () { if (canHover()) { group.classList.add('open'); button.setAttribute('aria-expanded', 'true'); closeAll(group); } });
-        group.addEventListener('mouseleave', function () { if (canHover()) { group.classList.remove('open'); button.setAttribute('aria-expanded', 'false'); } });
+        // Grace period: the menu is contiguous with the label, so a short delay plus
+        // a :hover check keeps it open while the cursor travels from label to link.
+        group.addEventListener('mouseleave', function () {
+          if (!canHover()) return;
+          var g = group;
+          setTimeout(function () {
+            if (!g.contains(document.activeElement) && !g.matches(':hover')) { g.classList.remove('open'); var b = g.querySelector('.nav-group-label'); if (b) b.setAttribute('aria-expanded', 'false'); }
+          }, 110);
+        });
+        group.addEventListener('focusin', function () { group.classList.add('open'); var b = group.querySelector('.nav-group-label'); if (b) b.setAttribute('aria-expanded', 'true'); });
       });
       document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAll(); });
       document.addEventListener('click', function (e) { if (!e.target.closest('.nav-group')) closeAll(); });

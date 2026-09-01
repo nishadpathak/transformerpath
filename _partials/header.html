@@ -111,8 +111,18 @@
         if (!button) return;
         button.addEventListener('click', function (e) { e.preventDefault(); toggle(group, button); });
         group.addEventListener('mouseenter', function () { if (canHover()) { group.classList.add('open'); button.setAttribute('aria-expanded', 'true'); closeAll(group); } });
-        group.addEventListener('mouseleave', function () { if (canHover()) { group.classList.remove('open'); button.setAttribute('aria-expanded', 'false'); } });
-        // Keyboard: Space/Enter toggles (button default handles Enter/Space on click).
+        // Small grace period so moving the cursor from the label into the mega
+        // menu (which is contiguous) never closes it mid-travel. Only a true
+        // leave of the whole group closes the menu.
+        group.addEventListener('mouseleave', function () {
+          if (!canHover()) return;
+          var g = group;
+          setTimeout(function () {
+            if (!g.contains(document.activeElement) && !g.matches(':hover')) { g.classList.remove('open'); var b = g.querySelector('.nav-group-label'); if (b) b.setAttribute('aria-expanded', 'false'); }
+          }, 110);
+        });
+        group.addEventListener('focusin', function () { group.classList.add('open'); var b = group.querySelector('.nav-group-label'); if (b) b.setAttribute('aria-expanded', 'true'); });
+        // Keyboard: Escape closes any open menu.
       });
       document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAll(); });
       document.addEventListener('click', function (e) { if (!e.target.closest('.nav-group')) closeAll(); });
