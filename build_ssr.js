@@ -432,16 +432,24 @@ function renderManufacturers(html) {
     `Showing ${makers} makers in ${DATA.length} countries`);
   html = inject(html, '<div class="stat-row" id="statRow">', 'mfg-stats', stats);
 
-  // Global-leaders tier leaderboard (data/manufacturer-tiers.json)
+  // Documented power-equipment suppliers (data/manufacturer-tiers.json).
+  // Presented as fact-typed capability records (source-backed capacity, voltage,
+  // certifications, regions) NOT as an editorial quality ranking. No "best",
+  // "Tier 1" or "Global leader" hierarchy — the underlying capability figures
+  // stand on their own with their source.
   try {
     const TIERS = JSON.parse(fs.readFileSync('data/manufacturer-tiers.json', 'utf8'));
-    const TIER_LABEL = { 1: 'Global leaders', 2: 'Major regional', 3: 'Specialized / custom' };
+    const TIER_NOTE = {
+      1: 'Documented global-scale suppliers — reported capacity/voltage figures from the cited source',
+      2: 'Documented regional suppliers — reported capacity/voltage figures from the cited source',
+      3: 'Documented specialist / custom suppliers — reported capacity/voltage figures from the cited source',
+    };
     let tierHtml = '';
     for (const t of [1, 2, 3]) {
       const items = (TIERS || []).filter((r) => r.tier === t);
       if (!items.length) continue;
-      tierHtml += `<h3><span class="tbadge t${t}">Tier ${t}</span> ${TIER_LABEL[t]}</h3>`;
-      tierHtml += '<table><thead><tr><th>Manufacturer</th><th>Country</th><th>Capacity / yr</th><th>Max voltage</th><th>Certifications</th><th>Regions</th><th>Source</th></tr></thead><tbody>';
+      tierHtml += `<h3><span class="tbadge t${t}">Reported capability</span> ${TIER_NOTE[t]}</h3>`;
+      tierHtml += '<table><thead><tr><th>Supplier</th><th>Country</th><th>Reported capacity / yr</th><th>Reported max voltage</th><th>Reported certifications</th><th>Markets</th><th>Source</th></tr></thead><tbody>';
       tierHtml += items.map((r) => `<tr>
         <td>${r.site ? `<a href="${esc(r.site)}" target="_blank" rel="noopener">${esc(r.name)}</a>` : esc(r.name)}</td>
         <td>${esc(r.country || r.cc)}</td>

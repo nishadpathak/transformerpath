@@ -32,7 +32,7 @@ let SLUGS = []; try { SLUGS = JSON.parse(fs.readFileSync('data/company-slugs.jso
 let TIERS = []; try { TIERS = JSON.parse(fs.readFileSync('data/manufacturer-tiers.json', 'utf8')); } catch (e) {}
 let PROV = []; try { PROV = JSON.parse(fs.readFileSync('data/manufacturer-provenance.json', 'utf8')); } catch (e) {}
 let DEV = []; try { DEV = JSON.parse(fs.readFileSync('data/company-developments.json', 'utf8')); } catch (e) {}
-const norm = (s) => String(s || '').toLowerCase().replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, ' ').trim().replace(/\s+/g, ' ');
+const norm = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, ' ').trim().replace(/\s+/g, ' ');
 const slugOf = (name) => { const n = norm(name); const hit = SLUGS.find((c) => norm(c.name) === n); return hit ? hit.slug : null; };
 const byName = (arr, key) => { const o = {}; arr.forEach((x) => { o[norm(x[key] || x.name || '')] = x; }); return o; };
 let DEEP = []; try { DEEP = JSON.parse(fs.readFileSync('data/deep-research.json', 'utf8')).companies || []; } catch (e) {}

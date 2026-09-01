@@ -55,6 +55,14 @@ table.aff th, table.aff td { text-align: left; padding: 6px 8px; border-bottom: 
     </div>
 
     <div class="acard">
+      <h3>🔎 Data Quality</h3>
+      <p class="sub">Integrity engine findings (data/data-quality.json). Detection-only — nothing is auto-corrected.</p>
+      <div id="dq-summary"><p style="color:var(--muted)">Loading…</p></div>
+      <div id="dq-severity" style="display:flex;gap:10px;flex-wrap:wrap;margin:4px 0 10px"></div>
+      <div id="dq-queues"></div>
+    </div>
+
+    <div class="acard">
       <h3>✈️ Affiliate Clicks (this device)</h3>
       <p class="sub">Outbound clicks tracked locally on events.html. Real conversions & revenue: <a href="https://tp.media/en/dashboard" target="_blank" rel="noopener" style="color:var(--accent)">Travelpayouts dashboard ↗</a></p>
       <div class="big" id="aff-total">0</div>
@@ -127,10 +135,48 @@ function show() {
   document.getElementById('gate').style.display = 'none';
   document.getElementById('panel').style.display = 'block';
   renderAff();
+  renderDataQuality();
 }
 if (sessionStorage.getItem('tp-admin') === '1') show();
 
 function say(msg) { document.getElementById('tools-out').textContent = '✓ ' + msg; }
+
+// ── Data Quality triage (reads data/data-quality.json) ─────────────────────
+function renderDataQuality() {
+  fetch('data/data-quality.json').then(function (r) { return r.json(); }).then(function (d) {
+    var sev = d.counts.by_severity || {};
+    var sevEl = document.getElementById('dq-severity');
+    if (sevEl) {
+      sevEl.innerHTML = ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'].map(function (s) {
+        return '<span class="dq-pill dq-' + s.toLowerCase() + '" style="padding:3px 10px;border-radius:999px;font-weight:700;font-size:.72rem;letter-spacing:.04em;color:#fff;background:' +
+          (s === 'CRITICAL' ? '#b91c1c' : s === 'HIGH' ? '#d97706' : s === 'MEDIUM' ? '#2563eb' : '#475569') + '">' + s + ' ' + (sev[s] || 0) + '</span>';
+      }).join('');
+    }
+    var sum = document.getElementById('dq-summary');
+    if (sum) sum.innerHTML = '<div class="big" style="display:inline-block;margin-right:12px">' + (d.counts.issues || 0) + '</div><span style="color:var(--muted);font-size:.84rem">issues · ' +
+      (d.counts.manufacturers || 0) + ' manufacturers · ' + (d.counts.projects || 0) + ' projects · ' + (d.counts.intel_items || 0) + ' intel items</span>';
+    var q = document.getElementById('dq-queues');
+    if (!q) return;
+    var rows = (d.issues || []).slice().sort(function (a, b) {
+      var o = { CRITICAL: 0, HIGH: 1, MEDIUM: 2, LOW: 3 }; return (o[a.severity] - o[b.severity]) || String(a.entity).localeCompare(b.entity);
+    });
+    var maxShow = 60;
+    q.innerHTML = '<div style="font-size:.8rem;color:var(--muted);margin-bottom:8px">Queues: CRITICAL → HIGH → MEDIUM → LOW (detected ' + (d.updated || '') + '). Detection only — review before acting.</div>' +
+      rows.slice(0, maxShow).map(function (i) {
+        var bg = i.severity === 'CRITICAL' ? '#fef2f2' : i.severity === 'HIGH' ? '#fffbeb' : i.severity === 'MEDIUM' ? '#eff6ff' : '#f8fafc';
+        return '<div style="background:' + bg + ';border:1px solid var(--border);border-radius:8px;padding:9px 12px;margin:6px 0;font-size:.82rem">' +
+          '<b style="color:var(--text)">' + i.issue + '</b> <span style="color:var(--muted)">· ' + i.severity + '</span><br>' +
+          '<span style="color:var(--accent);font-weight:600">' + (i.entity || '') + '</span>' + (i.field ? ' <span style="color:var(--muted)">→ ' + i.field + '</span>' : '') + '<br>' +
+          '<span style="color:var(--muted)">' + (i.reason || '') + '</span>' +
+          (i.source ? '<br><span style="color:var(--muted);font-size:.74rem">source: ' + i.source + '</span>' : '') +
+          (i.recommended_action ? '<br><span style="color:var(--text);font-size:.74rem">action: ' + i.recommended_action + '</span>' : '') +
+          '</div>';
+      }).join('') + (rows.length > maxShow ? '<p style="color:var(--muted);font-size:.76rem;margin-top:8px">' + (rows.length - maxShow) + ' more not shown (LOW advisories).</p>' : '');
+  }).catch(function () {
+    var sum = document.getElementById('dq-summary');
+    if (sum) sum.innerHTML = '<p style="color:var(--muted)">Data-quality report not available. Run <code style="color:var(--accent)">node build-data-quality.js</code>.</p>';
+  });
+}
 
 function renderAff() {
   let clicks = [];
