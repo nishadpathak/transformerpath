@@ -63,6 +63,13 @@ table.aff th, table.aff td { text-align: left; padding: 6px 8px; border-bottom: 
     </div>
 
     <div class="acard">
+      <h3>🩺 Source Health</h3>
+      <p class="sub">Canonical freshness (data/freshness.json) — page-build vs data-refresh dates are distinct; broken/unhealthy sources are called out honestly.</p>
+      <div id="healthSummary"><p style="color:var(--muted)" class="sub">Loading…</p></div>
+      <div id="healthRows"></div>
+    </div>
+
+    <div class="acard">
       <h3>✈️ Affiliate Clicks (this device)</h3>
       <p class="sub">Outbound clicks tracked locally on events.html. Real conversions & revenue: <a href="https://tp.media/en/dashboard" target="_blank" rel="noopener" style="color:var(--accent)">Travelpayouts dashboard ↗</a></p>
       <div class="big" id="aff-total">0</div>
@@ -153,6 +160,7 @@ function show() {
   document.getElementById('panel').style.display = 'block';
   renderAff();
   renderDataQuality();
+  renderSourceHealth();
   renderRevenue();
   renderOpportunities();
 }
@@ -214,6 +222,38 @@ function renderRevenue() {
       pEl.innerHTML = '<b style="color:var(--text)">Commercial catalog (from data/commerce.json)</b><br><span style="font-size:.78rem">' + cats + '</span>';
     }
   }).catch(function () { var e = document.getElementById('revStatus'); if (e) e.innerHTML = '<p class="sub" style="color:var(--muted)">commerce-intel not available.</p>'; });
+}
+
+// ── Source Health (reads data/freshness.json — canonical freshness) ───────
+function renderSourceHealth() {
+  fetch('data/freshness.json').then(function (r) { return r.json().catch(function () { return {}; }); }).then(function (d) {
+    var noteEl = document.getElementById('healthSummary');
+    if (noteEl) noteEl.innerHTML = '<span class="sub" style="color:var(--muted)">' + esc((d.honest_note) || 'Freshness is tracked per surface; build vs data-refresh dates are distinct.') + '</span>';
+    var rowsEl = document.getElementById('healthRows');
+    if (!rowsEl) return;
+    var order = ['daily_intel', 'auto_briefing', 'projects', 'tenders', 'awards', 'materials'];
+    var byId = {};
+    (d.surfaces || []).forEach(function (s) { byId[s.id] = s; });
+    var grid = order.filter(function (k) { return byId[k]; })
+      .map(function (k) {
+        var s = byId[k];
+        var healthy = s.source_health !== 'unhealthy';
+        var bg = healthy ? 'var(--card)' : '#fef2f2';
+        return '<div style="background:' + bg + ';border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin:6px 0;font-size:.8rem">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center">' +
+          '<b style="color:var(--text)">' + esc(s.name || k) + '</b>' +
+          '<span style="font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:999px;color:#fff;background:' + (healthy ? '#16a34a' : '#b91c1c') + '">' + (healthy ? 'HEALTHY' : 'UNHEALTHY') + '</span>' +
+          '</div>' +
+          '<div style="color:var(--muted);margin-top:4px">cadence: <b style="color:var(--text)">' + esc(s.cadence || '—') + '</b> · last_build: <b style="color:var(--text)">' + esc(s.last_build || '—') + '</b> · last_data_refresh: <b style="color:var(--text)">' + esc(s.last_data_refresh || '—') + '</b></div>' +
+          (s.source_health && s.source_health !== 'healthy' ? '<div style="color:#b91c1c;margin-top:4px">source_health: ' + esc(s.source_health) + '</div>' : '') +
+          (s.note ? '<div style="color:var(--muted);margin-top:4px;font-size:.74rem">' + esc(s.note) + '</div>' : '') +
+          '</div>';
+      }).join('');
+    rowsEl.innerHTML = grid || '<p class="sub" style="color:var(--muted)">No freshness surfaces recorded.</p>';
+  }).catch(function () {
+    var e = document.getElementById('healthSummary');
+    if (e) e.innerHTML = '<span class="sub" style="color:var(--muted)">data/freshness.json not available. Run <code style="color:var(--accent)">node build-freshness.js</code>.</span>';
+  });
 }
 
 // ── Commercial opportunities (honest, derived prospect queues) ──────────────

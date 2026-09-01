@@ -17,7 +17,7 @@
 //   POST /.netlify/functions/refresh-data            -> refresh + refresh report
 //   GET  /.netlify/functions/refresh-data?run=1      -> same as POST (admin "run now")
 //
-// Scheduled via netlify.toml: [functions."refresh-data"] schedule = "0 6 * * *"
+// Scheduled via netlify.toml: [functions."refresh-data"] schedule = "0 * * * *" (hourly).
 
 const fs = require('fs');
 const path = require('path');
