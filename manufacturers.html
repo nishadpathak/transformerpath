@@ -568,7 +568,7 @@ Showing 546 makers in 84 countries
         <td style="font-size:.78rem;color:var(--muted)">IQS Directory</td></tr></tbody></table>
 <!--/SSR:mfg-tiers-->
 </div>
-    <p style="color:var(--muted);font-size:.8rem;margin-top:18px">Tier 1 = Global leader &middot; Tier 2 = Major regional &middot; Tier 3 = Specialized / custom. Compiled from Fortune Business Insights, the DOE Large Power Transformer study, industry directories and the Sinovoltaics China factory map; confirm current capability with each manufacturer.</p>
+    <p style="color:var(--muted);font-size:.8rem;margin-top:18px">Reported capability figures compiled from Fortune Business Insights, the DOE Large Power Transformer study, industry directories and the Sinovoltaics China factory map; confirm current capability with each manufacturer. These are fact-typed reported values with their sources — TransformerPath does not rank or tier manufacturers.</p>
   </div>
 </section>
 
@@ -606,8 +606,8 @@ const TNAME={PT:"Power",DT:"Distribution",DRY:"Dry/Cast"};
 const fRegion=document.getElementById('fRegion');
 const search=document.getElementById('search'), fType=document.getElementById('fType');
 
-// ── Global leaders tiered leaderboard ──────────────────────────────────────
-const TIER_LABEL = { 1:'Global leaders', 2:'Major regional', 3:'Specialized / custom' };
+// ── Documented power-equipment suppliers — reported capability ───────────
+const TIER_NOTE = { 1: 'Documented global-scale suppliers — reported capacity/voltage from the cited source', 2: 'Documented regional suppliers — reported capacity/voltage from the cited source', 3: 'Documented specialist / custom suppliers — reported capacity/voltage from the cited source' };
 async function loadTiers() {
   const root = document.getElementById('tiersRoot');
   if (!root) return;
@@ -619,8 +619,8 @@ async function loadTiers() {
     for (const t of [1, 2, 3]) {
       const items = (rows || []).filter(r => r.tier === t);
       if (!items.length) continue;
-      h += `<h3><span class="tbadge t${t}">Tier ${t}</span> ${TIER_LABEL[t]}</h3>`;
-      h += '<table><thead><tr><th>Manufacturer</th><th>Country</th><th>Capacity / yr</th><th>Max voltage</th><th>Certifications</th><th>Regions</th><th>Source</th></tr></thead><tbody>';
+      h += `<h3><span class="tbadge t${t}">Reported capability</span> ${TIER_NOTE[t]}</h3>`;
+      h += '<table><thead><tr><th>Supplier</th><th>Country</th><th>Reported capacity / yr</th><th>Reported max voltage</th><th>Reported certifications</th><th>Markets</th><th>Source</th></tr></thead><tbody>';
       h += items.map(r => `<tr>
         <td>${r.site?'<a href="'+r.site+'" target="_blank" rel="noopener">'+r.name+'</a>':r.name}</td>
         <td>${r.country||r.cc}</td>
