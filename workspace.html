@@ -207,6 +207,12 @@
     <div class="ws-sec"><h3>Saved designs</h3><div id="tpDesigns"></div></div>
     <div class="ws-sec"><h3>Notes</h3><div id="tpNotes"></div></div>
     <div class="ws-sec"><h3>Following</h3><div id="tpFollows" class="ws-tags"></div></div>
+
+    <div class="ws-sec"><h3>My Market</h3>
+      <p class="ws-sub" style="font-size:.82rem;color:var(--muted);margin:0 0 8px">Live aggregation across what you follow — projects, tenders, intel, manufacturers, utilities and markets. Counts are computed from canonical platform data at page load.</p>
+      <div id="tpMarket" class="ws-tags"><span class="ws-empty">Sign in and follow companies, projects, tenders or markets to populate this dashboard.</span></div>
+    </div>
+
     <div class="ws-sec"><h3>Learning progress</h3><div id="tpProgress"></div></div>
     <div class="ws-sec"><h3>My Subscription</h3><div id="tpSub"></div></div>
     <div class="ws-sec"><h3>My Books</h3><div id="tpBooks"></div></div>
@@ -318,6 +324,52 @@ document.addEventListener('DOMContentLoaded', function(){
     TP.listRfqs().then(function(r){ document.getElementById('tpRfqs').innerHTML = (r&&r.length) ? r.map(function(x){ return '<div class=\"ws-row\"><span class=\"ws-note-title\">'+esc(x.reference||'RFQ')+'</span><span class=\"ws-sub\">'+esc(x.category||'')+' · '+esc(x.status||'open')+'</span></div>'; }).join('') : '<p class=\"ws-empty\">No RFQs submitted yet.</p>'; });
     TP.listClaims().then(function(c){ document.getElementById('tpClaims').innerHTML = (c&&c.length) ? c.map(function(x){ return '<div class=\"ws-row\"><span class=\"ws-note-title\">'+esc(x.company)+'</span><span class=\"ws-sub\">'+esc(x.country||'')+' · '+esc(x.status||'claimed')+'</span></div>'; }).join('') : '<p class=\"ws-empty\">No company claims yet — claim your profile from a manufacturer listing.</p>'; });
     TP.getEmailPrefs().then(function(pr){ document.getElementById('tpEmail').innerHTML = '<div class=\"ws-row\"><span class=\"ws-note-title\">Preferences</span><span class=\"ws-sub\">Daily Brief '+(pr&&pr.daily_brief?'on':'off')+' · Alerts '+(pr&&pr.alerts?'on':'off')+'</span></div>'; });
+    TP.listFollows().then(function(fl){ TP.getSession().then(function(r){ renderMyMarket(fl || []); }); });
+  }
+
+  // ── My Market: aggregate followed subjects against canonical platform data ──
+  function renderMyMarket(follows){
+    var el=document.getElementById('tpMarket');
+    if(!el) return;
+    var types = {}; var subs = {};
+    follows.forEach(function(f){ types[f.subject_type]=(types[f.subject_type]||0)+1; subs[f.subject_type]=subs[f.subject_type]||[]; subs[f.subject_type].push(String(f.subject||'').toLowerCase()); });
+    // Load canonical datasets in parallel and aggregate. If any is unavailable, omit that bucket.
+    var buckets = {};
+    var ds = {
+      projects: Promise.resolve().then(function(){ throw null; }).catch(function(){ return fetch('data/projects.json').then(function(r){return r.json();}).then(function(d){return d.projects||[];}); }).catch(function(){return [];}),
+      tenders: fetch('data/tenders.json').then(function(r){return r.json();}).then(function(d){return d.tenders||[];}).catch(function(){return [];}),
+    };
+    Promise.all([ds.projects, ds.tenders]).then(function(res){
+      var projects=res[0], tenders=res[1];
+      var countries = (subs.market || subs.country || subs["company,country"] || []);
+      // Followed companies also count if their country matches a project/tender.
+      var projMatch = projects.filter(function(p){ return countries.some(function(c){ return (p.country||'').toLowerCase().indexOf(c)>=0; }); });
+      var tMatch = tenders.filter(function(t){ return countries.some(function(c){ return (t.country||'').toLowerCase().indexOf(c)>=0; }); });
+      var stat = {};
+      projMatch.forEach(function(p){ stat[p.status]=(stat[p.status]||0)+1; });
+      var tstat={}; tMatch.forEach(function(t){ tstat[t.status]=(tstat[t.status]||0)+1; });
+      var totalP=projMatch.length, totalT=tMatch.length;
+      var openCode = (tstat.OPEN||0)+(tstat.EVALUATION||0);
+      buckets = { projects: totalP, tenders_total: totalT, open: openCode, statuses: stat };
+      var chips=[];
+      function pill(label, n){ if(n>0) chips.push('<span class="ws-tag" style="font-weight:700">'+esc(label)+' <b style="color:var(--accent)">'+n+'</b></span>'); }
+      pill('Projects', totalP); pill('Open tenders', openCode); pill('Tenders', totalT);
+      pill('Following', follows.length);
+      var html='';
+      if(!totalP && !totalT && !follows.length){ html='<span class="ws-empty">Following nothing yet — follow companies, projects, tenders or markets to populate this dashboard.</span>'; }
+      else {
+        html += '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px">'+chips.join('')+'</div>';
+        if(totalP){
+          html += '<div style="font-size:.8rem;color:var(--muted);margin-bottom:4px"><b style="color:var(--text)">'+totalP+' project'+(totalP>1?'s':'')+'</b> in your followed markets — '+
+            Object.keys(stat).map(function(s){ return esc(s)+' '+stat[s]; }).join(' · ')+'</div>';
+        }
+        if(totalT){
+          html += '<div style="font-size:.8rem;color:var(--muted)"><b style="color:var(--text)">'+totalT+' tender'+(totalT>1?'s':'')+'</b> — '+(tstat.OPEN?esc(tstat.OPEN)+' open · ':'')+(tstat.EVALUATION?esc(tstat.EVALUATION)+' in evaluation · ':'')+(tstat.AWARDED?esc(tstat.AWARDED)+' awarded':'')+'</div>';
+        }
+        html += '<div style="font-size:.78rem;color:var(--muted);margin-top:8px"><a href="projects.html" style="color:var(--accent)">Browse projects →</a> · <a href="tenders.html" style="color:var(--accent)">Tender Watch →</a></div>';
+      }
+      el.innerHTML=html;
+    }).catch(function(){ el.innerHTML='<span class="ws-empty">Sign in and follow companies, projects, tenders or markets to populate this dashboard.</span>'; });
   }
 
   // action delegation for the "✕" buttons

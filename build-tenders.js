@@ -248,7 +248,7 @@ function tenderPage(t) {
     '.c-wrap{max-width:900px;margin:0 auto;padding:44px 20px 80px}.c-wrap h1{font-size:1.7rem;color:var(--ink)}.c-wrap .lead{color:var(--muted);font-size:1rem}.cw-meta{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:.9rem;color:var(--muted);margin:8px 0 16px}.cw-meta b{color:var(--text)}table{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:8px}th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:top}th{color:var(--muted);font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.03em}.cls-badge{display:inline-block;font-weight:700;font-size:.66rem;letter-spacing:.05em;padding:1px 7px;border-radius:8px;text-transform:uppercase}.cls-CONFIRMED{background:#14351f;color:#4ade80;border:1px solid rgba(74,222,128,.35)}.cls-INFERRED{background:#12283f;color:#60a5fa;border:1px solid rgba(96,165,250,.35)}.cls-UNKNOWN{background:#1d2330;color:#9fb0c4;border:1px solid rgba(159,176,196,.35)}</style></head><body>\n' +
     HEAD + '\n<main class="c-wrap">' +
     '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="../../tenders.html" style="color:var(--accent)">Tenders</a> › ' + esc(t.region) + ' › ' + esc(t.title) + '</nav>' +
-    '<h1>' + esc(t.title) + '</h1>' +
+    '<h1>' + esc(t.title) + ' <button class="follow-btn" data-follow-type="tender" data-follow-subject="' + esc(t.title) + '" data-follow-label="' + esc(t.title) + '" title="Follow this tender in My TransformerPath">Follow</button></h1>' +
     '<p class="lead">A ' + esc(t.statusLabel.toLowerCase()) + ' transformer-relevant procurement opportunity, tracked as an entity (not an article) by TransformerPath. Derived from public, source-backed signals; never fabricated.</p>' +
     '<div class="cw-meta"><span><b>Status</b> ' + esc(t.statusLabel) + '</span><span><b>Country</b> ' + esc(t.country || '—') + '</span>' + (t.voltage ? '<span><b>Voltage</b> ' + esc(t.voltage) + '</span>' : '') + '<span><b>Scope</b> ' + esc(t.transformer_scope) + '</span></div>' +
     '<table>' + rows + '</table>' +
@@ -257,7 +257,7 @@ function tenderPage(t) {
     '<div class="card" style="background:rgba(245,166,35,.06);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:24px"><b style="color:var(--text)">Supply this requirement</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Submit a transformer requirement and TransformerPath will match it against the relevant manufacturing base.</p>' +
     '<a class="btn btn-amber" href="../../rfq.html" data-track="rfq_started" data-track-tender="' + esc(slug) + '">Submit an RFQ</a> <a class="btn btn-outline btn-sm" href="../../list-company.html" data-track="supplier_claim_started" data-track-tender="' + esc(slug) + '">Are you a supplier? Get Verified →</a></div>' +
     '<p style="font-size:.78rem;color:var(--muted);margin-top:16px">Tender metadata is public and source-tracked; TransformerPath does not republish restricted procurement documentation. Status and details may change — verify against the official procurement source.</p>' +
-    '</main>\n' + FOOT + '\n<script src="../../analytics.js" defer></script>\n</body>\n</html>';
+    '</main>\n' + FOOT + '\n<script src="../../analytics.js" defer></script>\n<script src="../../follow-button.js" defer></script>\n</body>\n</html>';
 }
 fs.mkdirSync('tenders', { recursive: true });
 const tSlugs = new Set();

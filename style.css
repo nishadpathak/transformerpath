@@ -77,6 +77,10 @@ header .container { max-width: 1320px; padding-left: 20px; padding-right: 20px; 
 .btn-outline { border: 2px solid var(--amber); color: var(--amber); background: transparent; }
 .btn-outline:hover { background: var(--amber); color: var(--navy); }
 .btn-sm { padding: 7px 14px; font-size: .82rem; }
+.follow-btn { display: inline-block; padding: 7px 14px; border-radius: 8px; font-weight: 700; font-size: .82rem; cursor: pointer; border: 2px solid var(--amber); color: var(--amber); background: transparent; transition: all .15s; }
+.follow-btn:hover { background: var(--amber); color: var(--navy); }
+.follow-btn.following { background: var(--amber); color: var(--navy); border-color: var(--amber); }
+.follow-btn[aria-disabled="true"] { border-color: var(--border); color: var(--muted); cursor: pointer; }
 .menu-toggle { display: none; background: none; border: none; color: #fff; font-size: 1.6rem; cursor: pointer; }
 
 /* Hero */

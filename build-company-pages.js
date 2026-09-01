@@ -291,7 +291,7 @@ function page(r, slug) {
     '<style>.c-wrap{max-width:900px;margin:0 auto;padding:44px 20px 88px}.c-wrap h1{font-size:2rem;color:var(--ink)}.c-wrap h2{font-size:1.2rem;color:var(--ink);margin-top:26px}.c-wrap p{color:var(--text);line-height:1.7}.c-wrap .lead{color:var(--muted);font-size:1rem}.c-wrap .tpill{display:inline-block;background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:2px 10px;font-size:.74rem;color:var(--text);margin:3px 4px 3px 0}.c-wrap .tbl{width:100%;border-collapse:collapse;margin:10px 0}.c-wrap .tbl th{text-align:left;color:var(--muted);font-weight:600;padding:6px 10px;border-bottom:1px solid var(--border);width:40%}.c-wrap .tbl td{padding:6px 10px;border-bottom:1px solid var(--border);color:var(--text)}.c-wrap ul{padding-left:20px;line-height:1.7}.vbadge{color:var(--green);font-weight:700;font-size:.8rem}</style>' +
     '</head>\n<body>\n' + HEAD + '\n<main class="c-wrap">' +
     '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="../../manufacturers.html" style="color:var(--accent)">Manufacturers</a> › ' + crumbCountry + ' › ' + esc(r.name) + '</nav>' +
-    '<h1>' + esc(r.name) + '</h1>' +
+    '<h1>' + esc(r.name) + ' <button class="follow-btn" data-follow-type="company" data-follow-subject="' + esc(r.name) + '" data-follow-label="' + esc(r.name) + '" title="Follow this manufacturer in My TransformerPath">Follow</button></h1>' +
     '<p class="lead">Independent company profile covering reported transformer capabilities, markets, related industry developments and relevant events.</p>' +
     '<p style="font-size:.9rem;color:var(--muted);margin:6px 0 0">' + (r.flag || '') + ' <b style="color:var(--text)">' + esc(r.country) + '</b>' + (r.city ? ' · ' + esc(r.city) : '') + ' · <span style="color:var(--accent)">' + verify + '</span>' + (r.url ? ' · <a href="' + esc(r.url) + '" target="_blank" rel="noopener nofollow" data-track="official_website_click" data-track-manufacturer="' + esc(r.name) + '" style="color:var(--accent)">Official website ↗</a>' : '') + '</p>' +
     trust +
@@ -310,7 +310,7 @@ function page(r, slug) {
     '<a class="btn btn-outline btn-sm" href="../../correct-company.html?company=' + encodeURIComponent(r.name) + '" data-track="manufacturer_correction_started" data-track-manufacturer="' + esc(r.name) + '">Suggest a correction →</a></div>' +
     '<div class="card" style="background:var(--bg);border:1px solid var(--border);padding:16px 18px;text-align:center;margin-top:14px"><b style="color:var(--text)">Looking for transformer suppliers?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Submit a technical requirement for supplier matching across the ' + esc(r.country) + ' and regional manufacturing base.</p>' +
     '<a class="btn btn-amber" href="../../rfq.html" data-track="rfq_started" data-track-manufacturer="' + esc(r.name) + '">Submit an RFQ</a> <a class="btn btn-outline btn-sm" href="../../compare.html?m=' + esc(r.slug) + '" data-track="manufacturer_compare" data-track-manufacturer="' + esc(r.name) + '">Compare with others →</a></div>' +
-    '</main>\n' + FOOT + '\n<script src="../../analytics.js?v=2" defer></script>\n</body>\n</html>';
+    '</main>\n' + FOOT + '\n<script src="../../analytics.js?v=2" defer></script>\n<script src="../../follow-button.js" defer></script>\n</body>\n</html>';
 }
 
 fs.mkdirSync('manufacturers', { recursive: true });
