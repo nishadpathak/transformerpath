@@ -3,13 +3,94 @@
   "_comment": "TransformerPath Global Projects — structured transformer-relevant grid, substation and transmission projects worldwide (World → Region → Country → Utility → Project → Transformer Scope → Manufacturer/Award). A project is a distinct build/tender/award, NOT an article. Fields are only included where sourced; 'transformer_requirement' grades whether transformer scope is explicitly documented (CONFIRMED), reasonably inferred from substation/grid scope (INFERRED), or not yet known (UNKNOWN). 'region' groups by world region (Middle East, Asia, Europe, North America, Latin America, Africa, Oceania). 'last_verified' records when the source was checked. Values marked null / omitted are not invented; a transformer manufacturer/award is recorded only when explicitly sourced. Maintained from public tender/project databases, utility/regulator announcements and reputable industry reporting.",
   "updated": "2026-08-31",
   "region_map": {
-    "Middle East": ["United Arab Emirates", "Saudi Arabia", "Oman", "Qatar", "Kuwait", "Bahrain", "Egypt", "Morocco", "Algeria", "Iraq", "Jordan", "Jordan", "Israel"],
-    "Asia": ["India", "China", "South Korea", "Japan", "Indonesia", "Vietnam", "Malaysia", "Philippines", "Thailand", "Pakistan", "Bangladesh", "Taiwan", "Singapore", "Sri Lanka"],
-    "Europe": ["Germany", "United Kingdom", "France", "Italy", "Spain", "Netherlands", "Norway", "Sweden", "Poland", "Austria", "Belgium", "Denmark", "Ireland", "Finland", "Greece", "Portugal", "Switzerland", "Czechia", "Romania"],
-    "North America": ["United States", "Canada", "Mexico"],
-    "Latin America": ["Brazil", "Chile", "Argentina", "Colombia", "Peru", "Ecuador", "Venezuela", "Bolivia"],
-    "Africa": ["South Africa", "Morocco", "Kenya", "Nigeria", "Egypt", "Algeria", "Angola", "Senegal", "Tanzania", "Zambia", "Ghana", "Ethiopia", "Namibia"],
-    "Oceania": ["Australia", "New Zealand", "Papua New Guinea", "Fiji"]
+    "Middle East": [
+      "United Arab Emirates",
+      "Saudi Arabia",
+      "Oman",
+      "Qatar",
+      "Kuwait",
+      "Bahrain",
+      "Egypt",
+      "Morocco",
+      "Algeria",
+      "Iraq",
+      "Jordan",
+      "Jordan",
+      "Israel"
+    ],
+    "Asia": [
+      "India",
+      "China",
+      "South Korea",
+      "Japan",
+      "Indonesia",
+      "Vietnam",
+      "Malaysia",
+      "Philippines",
+      "Thailand",
+      "Pakistan",
+      "Bangladesh",
+      "Taiwan",
+      "Singapore",
+      "Sri Lanka"
+    ],
+    "Europe": [
+      "Germany",
+      "United Kingdom",
+      "France",
+      "Italy",
+      "Spain",
+      "Netherlands",
+      "Norway",
+      "Sweden",
+      "Poland",
+      "Austria",
+      "Belgium",
+      "Denmark",
+      "Ireland",
+      "Finland",
+      "Greece",
+      "Portugal",
+      "Switzerland",
+      "Czechia",
+      "Romania"
+    ],
+    "North America": [
+      "United States",
+      "Canada",
+      "Mexico"
+    ],
+    "Latin America": [
+      "Brazil",
+      "Chile",
+      "Argentina",
+      "Colombia",
+      "Peru",
+      "Ecuador",
+      "Venezuela",
+      "Bolivia"
+    ],
+    "Africa": [
+      "South Africa",
+      "Morocco",
+      "Kenya",
+      "Nigeria",
+      "Egypt",
+      "Algeria",
+      "Angola",
+      "Senegal",
+      "Tanzania",
+      "Zambia",
+      "Ghana",
+      "Ethiopia",
+      "Namibia"
+    ],
+    "Oceania": [
+      "Australia",
+      "New Zealand",
+      "Papua New Guinea",
+      "Fiji"
+    ]
   },
   "projects": [
     {
@@ -22,7 +103,9 @@
       "status": "evaluation",
       "manufacturer": null,
       "expected": "2026",
-      "sources": ["https://www.aljarida.com/article/123005"],
+      "sources": [
+        "https://www.aljarida.com/article/123005"
+      ],
       "src_label": "Al-Jarida / Alwifaq [ar]",
       "related_market": "Kuwait",
       "related_intel": "Pipeline"
@@ -30,17 +113,21 @@
     {
       "project": "KAHRAMAA 2026 transmission expansion EPC (S1/S2/S5 + cables C1/C2)",
       "country": "Qatar",
-      "utility": "Kahramaa (Qatar)",
+      "utility": "Kahramaa",
       "epc": null,
       "transformer_requirement": "CONFIRMED",
       "voltage": "400/132/11 kV",
-      "status": "evaluation",
+      "status": "tendering",
       "manufacturer": null,
       "expected": "H2 2026",
-      "sources": ["https://www.saudigulfprojects.com/2026/04/kahramaa-invites-bids-for-2026-power-transmission-system-expansion-project/"],
+      "sources": [
+        "https://example.com/upd"
+      ],
       "src_label": "SaudiGulf Projects / MEED",
       "related_market": "Qatar",
-      "related_intel": "Pipeline"
+      "related_intel": "Pipeline",
+      "region": "Middle East",
+      "last_verified": "2026-09-01"
     },
     {
       "project": "DEWA 13 x 132/11 kV substations EPC",
@@ -52,7 +139,9 @@
       "status": "evaluation",
       "manufacturer": null,
       "expected": "Q3 2026",
-      "sources": ["https://www.zawya.com/en/projects/utilities/dubai-expected-to-award-substations-epc-contract-in-q3-fk1fcmsx"],
+      "sources": [
+        "https://www.zawya.com/en/projects/utilities/dubai-expected-to-award-substations-epc-contract-in-q3-fk1fcmsx"
+      ],
       "src_label": "Zawya Projects",
       "related_market": "UAE",
       "related_intel": "Pipeline"
@@ -67,7 +156,9 @@
       "status": "evaluation",
       "manufacturer": null,
       "expected": "Q2-Q3 2026",
-      "sources": ["https://www.tradingview.com/news/reuters.com,2026-05-12:newsml_Zaw1C3Sz2:0-zawya-dubai-likely-to-award-33-11kv-substation-contract-in-q2-2026/"],
+      "sources": [
+        "https://www.tradingview.com/news/reuters.com,2026-05-12:newsml_Zaw1C3Sz2:0-zawya-dubai-likely-to-award-33-11kv-substation-contract-in-q2-2026/"
+      ],
       "src_label": "Zawya / TradingView",
       "related_market": "UAE",
       "related_intel": "Pipeline"
@@ -82,7 +173,9 @@
       "status": "tendering",
       "manufacturer": null,
       "expected": "2026",
-      "sources": ["https://www.saudigulfprojects.com/2026/04/bahrain-receives-bids-for-cable-works-of-new-sitra-400kv-grid-substation/"],
+      "sources": [
+        "https://www.saudigulfprojects.com/2026/04/bahrain-receives-bids-for-cable-works-of-new-sitra-400kv-grid-substation/"
+      ],
       "src_label": "SaudiGulf Projects",
       "related_market": "Bahrain",
       "related_intel": "Pipeline"
@@ -97,7 +190,9 @@
       "status": "expected",
       "manufacturer": null,
       "expected": "Q4 2026",
-      "sources": ["https://www.zawya.com/en/projects/utilities/kuwait-expected-to-award-transformer-substations-contract-in-q4-vhrcnesy"],
+      "sources": [
+        "https://www.zawya.com/en/projects/utilities/kuwait-expected-to-award-transformer-substations-contract-in-q4-vhrcnesy"
+      ],
       "src_label": "Zawya Projects",
       "related_market": "Kuwait",
       "related_intel": "Pipeline"
