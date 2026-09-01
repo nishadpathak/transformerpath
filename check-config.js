@@ -72,6 +72,12 @@ check('index data-stat="manufacturingCountries" fallback = config',
   dataStatFallback(HOME, 'manufacturingCountries') === CFG.counters.manufacturingCountries);
 check('index data-stat="countries" fallback = config',
   dataStatFallback(HOME, 'countries') === CFG.counters.gridCountries);
+// Homepage "Industry pulse" metrics must show the canonical project/tender/award
+// counts (from site-stats.json), not a hard-coded example.
+check('index data-stat="projects" fallback = canonical', dataStatFallback(HOME, 'projects') === STATS.projects);
+check('index data-stat="tenders" fallback = canonical', dataStatFallback(HOME, 'tenders') === STATS.tenders);
+check('index data-stat="openTenders" fallback = canonical', dataStatFallback(HOME, 'openTenders') === STATS.openTenders);
+check('index data-stat="awards" fallback = canonical', dataStatFallback(HOME, 'awards') === STATS.awards);
 
 // manufacturers.html Dataset schema "size" (build_ssr now syncs it).
 const MFG_PAGE = pages.find((p) => p === 'manufacturers.html') || 'manufacturers.html';
