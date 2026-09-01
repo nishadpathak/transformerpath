@@ -2150,11 +2150,66 @@
           "city": "Huehuetoca",
           "country": "Mexico",
           "url": "https://www.voltran.com.mx/"
+        },
+        {
+          "city": "Blumenau",
+          "country": "Brazil",
+          "produces": "power transformers (incl. 550 kV)",
+          "source_url": "https://www.weg.net",
+          "claim_type": "INDEPENDENTLY_SOURCED"
+        },
+        {
+          "city": "Betim",
+          "country": "Brazil",
+          "produces": "power transformers (3x 500 MVA / 525 kV)",
+          "source_url": "https://www.weg.net",
+          "claim_type": "INDEPENDENTLY_SOURCED"
+        },
+        {
+          "city": "Itajubá",
+          "country": "Brazil",
+          "produces": "instrument transformers",
+          "source_url": "https://www.weg.net",
+          "claim_type": "INDEPENDENTLY_SOURCED"
+        },
+        {
+          "city": "Huehuetoca",
+          "country": "Mexico",
+          "produces": "transformers (138-230 kV)",
+          "source_url": "https://www.weg.net",
+          "claim_type": "INDEPENDENTLY_SOURCED"
+        },
+        {
+          "city": "Atotonilco de Tula",
+          "country": "Mexico",
+          "produces": "transformers (announced up to 550 kV)",
+          "source_url": "https://www.weg.net",
+          "claim_type": "COMPANY_REPORTED"
+        },
+        {
+          "city": "Rionegro",
+          "country": "Colombia",
+          "produces": "transformers (announced up to 60 MVA)",
+          "source_url": "https://www.weg.net",
+          "claim_type": "COMPANY_REPORTED"
+        },
+        {
+          "city": "Washington, Missouri",
+          "country": "United States",
+          "produces": "transformers up to 10 MVA / 46 kV",
+          "source_url": "https://www.weg.net",
+          "claim_type": "INDEPENDENTLY_SOURCED"
         }
       ],
       "website": "https://www.voltran.com.mx/",
       "products": [
-        "DT"
+        "DT",
+        "POWER",
+        "DISTRIBUTION",
+        "DRY_TYPE",
+        "PAD_MOUNTED",
+        "GSU",
+        "RENEWABLE"
       ],
       "reported_voltage": "500 kV",
       "reported_mva": "80,000 MVA",
@@ -2174,6 +2229,8 @@
       },
       "research_status": "ACTIVE_CONFIRMED",
       "company_reported": false,
+      "headquarters": "Jaraguá do Sul, Santa Catarina, Brazil",
+      "research_notes": "Capability maxima reported separately; per-plant capability never merged into company maximum.",
       "manufacturing_is_likely": true,
       "research_completeness": 6,
       "commercial_status": "LISTED"
@@ -2402,13 +2459,68 @@
           "city": "Jaraguá do Sul / Blumenau, SC",
           "country": "Brazil",
           "url": "https://www.weg.net"
+        },
+        {
+          "city": "Blumenau",
+          "country": "Brazil",
+          "produces": "power transformers (incl. 550 kV)",
+          "source_url": "https://www.weg.net",
+          "claim_type": "INDEPENDENTLY_SOURCED"
+        },
+        {
+          "city": "Betim",
+          "country": "Brazil",
+          "produces": "power transformers (3x 500 MVA / 525 kV)",
+          "source_url": "https://www.weg.net",
+          "claim_type": "INDEPENDENTLY_SOURCED"
+        },
+        {
+          "city": "Itajubá",
+          "country": "Brazil",
+          "produces": "instrument transformers",
+          "source_url": "https://www.weg.net",
+          "claim_type": "INDEPENDENTLY_SOURCED"
+        },
+        {
+          "city": "Huehuetoca",
+          "country": "Mexico",
+          "produces": "transformers (138-230 kV)",
+          "source_url": "https://www.weg.net",
+          "claim_type": "INDEPENDENTLY_SOURCED"
+        },
+        {
+          "city": "Atotonilco de Tula",
+          "country": "Mexico",
+          "produces": "transformers (announced up to 550 kV)",
+          "source_url": "https://www.weg.net",
+          "claim_type": "COMPANY_REPORTED"
+        },
+        {
+          "city": "Rionegro",
+          "country": "Colombia",
+          "produces": "transformers (announced up to 60 MVA)",
+          "source_url": "https://www.weg.net",
+          "claim_type": "COMPANY_REPORTED"
+        },
+        {
+          "city": "Washington, Missouri",
+          "country": "United States",
+          "produces": "transformers up to 10 MVA / 46 kV",
+          "source_url": "https://www.weg.net",
+          "claim_type": "INDEPENDENTLY_SOURCED"
         }
       ],
       "website": "https://www.weg.net",
       "products": [
         "PT",
         "DT",
-        "DRY"
+        "DRY",
+        "POWER",
+        "DISTRIBUTION",
+        "DRY_TYPE",
+        "PAD_MOUNTED",
+        "GSU",
+        "RENEWABLE"
       ],
       "reported_voltage": "500 kV",
       "reported_mva": "80,000 MVA",
@@ -2428,6 +2540,8 @@
       },
       "research_status": "ACTIVE_CONFIRMED",
       "company_reported": false,
+      "headquarters": "Jaraguá do Sul, Santa Catarina, Brazil",
+      "research_notes": "Capability maxima reported separately; per-plant capability never merged into company maximum.",
       "manufacturing_is_likely": true,
       "research_completeness": 6,
       "commercial_status": "LISTED"
@@ -11693,12 +11807,38 @@
           "city": "Ahmedabad",
           "country": "India",
           "url": "https://www.transformerindia.com"
+        },
+        {
+          "city": "Moraiya",
+          "country": "India",
+          "produces": "transformers up to 1000 MVA / 1200 kV",
+          "source_url": "https://www.transformerindia.com",
+          "claim_type": "COMPANY_REPORTED"
+        },
+        {
+          "city": "Changodar",
+          "country": "India",
+          "produces": "transformers up to 200 MVA / 220 kV",
+          "source_url": "https://www.transformerindia.com",
+          "claim_type": "COMPANY_REPORTED"
+        },
+        {
+          "city": "Odhav",
+          "country": "India",
+          "produces": "transformers up to 10 MVA / 66 kV",
+          "source_url": "https://www.transformerindia.com",
+          "claim_type": "COMPANY_REPORTED"
         }
       ],
       "website": "https://www.transformerindia.com",
       "products": [
         "PT",
-        "DT"
+        "DT",
+        "POWER",
+        "DISTRIBUTION",
+        "FURNACE",
+        "RECTIFIER",
+        "SPECIAL"
       ],
       "reported_voltage": "400 kV",
       "reported_mva": "50,000 MVA",
@@ -11742,6 +11882,8 @@
       },
       "research_status": "ACTIVE_CONFIRMED",
       "company_reported": false,
+      "headquarters": "Moraiya, Sanand, Ahmedabad district, India",
+      "research_notes": "Former name: Triveni Electric Company Ltd. No legal rename to TARIL (BSE scrip ID only TRIL->TARIL). Per-plant maxima recorded separately.",
       "manufacturing_is_likely": true,
       "research_completeness": 7,
       "commercial_status": "LISTED"
@@ -11793,11 +11935,35 @@
           "city": "Bhopal / Jhansi",
           "country": "India",
           "url": "https://www.bhel.com"
+        },
+        {
+          "city": "Bhopal",
+          "country": "India",
+          "produces": "power transformers, shunt reactors, ±800 kV HVDC converter transformers (295.1 MVA)",
+          "source_url": "https://www.bhel.com",
+          "claim_type": "COMPANY_REPORTED"
+        },
+        {
+          "city": "Jhansi",
+          "country": "India",
+          "produces": "cast-resin dry-type transformers",
+          "source_url": "https://www.bhel.com",
+          "claim_type": "COMPANY_REPORTED"
         }
       ],
       "website": "https://www.bhel.com",
       "products": [
-        "PT"
+        "PT",
+        "POWER",
+        "GSU",
+        "AUTOTRANSFORMER",
+        "HVDC_CONVERTER",
+        "TRACTION",
+        "FURNACE",
+        "RECTIFIER",
+        "DRY_TYPE",
+        "CAST_RESIN",
+        "SPECIAL"
       ],
       "reported_voltage": "765 kV",
       "reported_mva": "70,000 MVA",
@@ -11816,6 +11982,8 @@
       },
       "research_status": "ACTIVE_CONFIRMED",
       "company_reported": false,
+      "headquarters": "New Delhi, India",
+      "research_notes": "Parent: Government of India (Maharatna CPSE, ~58.17%). Capability maxima reported separately.",
       "manufacturing_is_likely": true,
       "research_completeness": 6,
       "commercial_status": "LISTED"
