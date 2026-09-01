@@ -1,25 +1,89 @@
 {
-  "generated": "2026-09-01T18:47:32.327Z",
-  "generated_at": "2026-09-01T18:47:32.327Z",
+  "generated": "2026-09-01T18:49:31.587Z",
+  "generated_at": "2026-09-01T18:49:31.587Z",
   "updated": "2026-09-01",
   "schema": "https://transformerpath.com/data-quality.schema.json",
   "counts": {
     "manufacturers": 542,
     "projects": 306,
+    "tenders": 150,
+    "awards": 56,
     "intel_items": 183,
-    "issues": 37,
+    "issues": 42,
     "by_severity": {
       "CRITICAL": 0,
       "HIGH": 0,
-      "MEDIUM": 1,
-      "LOW": 36
+      "MEDIUM": 3,
+      "LOW": 39
     },
     "duplicates": 0,
     "capability_without_source": 0,
     "factory_without_source": 0,
-    "manufacturers_without_evidence": 0
+    "manufacturers_without_evidence": 0,
+    "tender_without_source": 2,
+    "award_without_source": 0
   },
   "issues": [
+    {
+      "issue": "tender_without_source",
+      "entity": "GCCIA Saudi-Kuwait interconnection",
+      "field": "official_procurement_url",
+      "current": "",
+      "reason": "A tender record has no verifiable source URL — provenance cannot be audited.",
+      "source": "Pipeline",
+      "recommended_action": "Attach the official procurement/source URL, or mark the record for review.",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "detected": "2026-09-01"
+    },
+    {
+      "issue": "tender_duplicated_from_project",
+      "entity": "GCCIA Saudi-Kuwait interconnection",
+      "field": "project_slug",
+      "current": "gccia-saudi-kuwait-interconnection",
+      "reason": "A project-derived tender lacks an independent procurement source — it may duplicate the project record.",
+      "source": "Pipeline",
+      "recommended_action": "Add an independent tender/procurement source so it is not a mirror of the project.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-01"
+    },
+    {
+      "issue": "tender_without_source",
+      "entity": "KAHRAMAA 2026 transmission expansion EPC",
+      "field": "official_procurement_url",
+      "current": "https://example.com/upd",
+      "reason": "A tender record has no verifiable source URL — provenance cannot be audited.",
+      "source": "SaudiGulf Projects / MEED",
+      "recommended_action": "Attach the official procurement/source URL, or mark the record for review.",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "detected": "2026-09-01"
+    },
+    {
+      "issue": "tender_duplicated_from_project",
+      "entity": "KAHRAMAA 2026 transmission expansion EPC",
+      "field": "project_slug",
+      "current": "kahramaa-2026-transmission-expansion-epc-s1-s2-s5-cables-c1-c2",
+      "reason": "A project-derived tender lacks an independent procurement source — it may duplicate the project record.",
+      "source": "SaudiGulf Projects / MEED",
+      "recommended_action": "Add an independent tender/procurement source so it is not a mirror of the project.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-01"
+    },
+    {
+      "issue": "award_missing_country",
+      "entity": "平高电气 Pinggao Electric: wins CNY 876m of State Grid procurement",
+      "field": "country",
+      "current": "",
+      "reason": "An Award record has no country — it cannot be geographically placed.",
+      "source": "Jiemian 界面 · Apr 2026 (announcement 1 Apr 2026) [zh]",
+      "recommended_action": "Populate the country from the source, or mark for review.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-01"
+    },
     {
       "issue": "placeholder_source_url",
       "entity": "KAHRAMAA 2026 transmission expansion EPC (S1/S2/S5 + cables C1/C2)",

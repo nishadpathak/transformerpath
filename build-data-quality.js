@@ -36,6 +36,8 @@ const TODAY = nowIso.slice(0, 10);
 
 const PROJ = readJson('data/projects.json', {});
 const PROJECTS = PROJ.projects || [];
+const TENDERS = readJson('data/tenders.json', {}).tenders || [];
+const AWARDS = readJson('data/awards.json', {}).awards || [];
 const INTEL = readJson('data/manufacturer-intel.json', {});
 const COMPANIES = INTEL.companies || [];
 const SITES = readJson('data/manufacturer-sites.json', {});
@@ -110,6 +112,58 @@ Object.keys(intel).forEach((r) => {
       intelUrlSeen.set(it.url, it.title);
     }
   });
+});
+
+// ── Tender integrity ────────────────────────────────────────────────────────
+// A tender is the procurement process; an Award is the confirmed result.
+const tenderSeen = new Map();
+TENDERS.forEach((t) => {
+  const dk = norm(t.title + '|' + t.country);
+  if (tenderSeen.has(dk)) {
+    add('CRITICAL', 'duplicate_tender', t.title, 'tender', t.title,
+      'Two tender records share a title+country (possible duplicate procurement entry).',
+      srcStr(t.source || ''), 'Merge into one canonical tender; keep the strongest source.');
+  } else {
+    tenderSeen.set(dk, t);
+  }
+  // A tender must carry a real official/source URL to be auditable.
+  const srcOk = (t.source_urls || []).some((u) => /^https?:\/\//.test(u) && !/example\.com|\bupd\b/.test(u));
+  if (!srcOk) {
+    add('MEDIUM', 'tender_without_source', t.title, 'official_procurement_url', t.official_procurement_url || '',
+      'A tender record has no verifiable source URL — provenance cannot be audited.',
+      srcStr(t.source || ''), 'Attach the official procurement/source URL, or mark the record for review.');
+  }
+  if (t.status && !/^(EXPECTED|OPEN|CLOSING_SOON|CLOSED|EVALUATION|AWARDED|CANCELLED|UNKNOWN)$/.test(t.status)) {
+    add('MEDIUM', 'invalid_tender_status', t.title, 'status', t.status, 'Tender status is not a recognized lifecycle value.',
+      srcStr(t.source || ''), 'Reclassify against the tender lifecycle (EXPECTED/OPEN/CLOSING_SOON/CLOSED/EVALUATION/AWARDED/CANCELLED).');
+  }
+  // A tender "duplicated from a project" is when a project-derived tender simply
+  // mirrors a project record with no additional source (thin duplication).
+  if (t.project_slug && !t.source_verified) {
+    add('LOW', 'tender_duplicated_from_project', t.title, 'project_slug', t.project_slug,
+      'A project-derived tender lacks an independent procurement source — it may duplicate the project record.',
+      srcStr(t.source || ''), 'Add an independent tender/procurement source so it is not a mirror of the project.');
+  }
+});
+
+// ── Award integrity ─────────────────────────────────────────────────────────
+AWARDS.forEach((a) => {
+  const srcOk = (a.source_urls || []).some((u) => /^https?:\/\//.test(u) && !/example\.com|\bupd\b/.test(u));
+  if (!srcOk) {
+    add('CRITICAL', 'award_without_source', a.title, 'source_url', a.source_urls.join(', '),
+      'An Award record carries no verifiable source — it cannot be confirmed.',
+      srcStr(a.source || ''), 'Require explicit source evidence for the award, or remove the record.');
+  }
+  if (!a.country) {
+    add('LOW', 'award_missing_country', a.title, 'country', a.country,
+      'An Award record has no country — it cannot be geographically placed.',
+      srcStr(a.source || ''), 'Populate the country from the source, or mark for review.');
+  }
+  if (a.transformer_scope === 'CONFIRMED' && !a.buyer && !a.epc) {
+    add('LOW', 'award_confirmed_scope_incomplete', a.title, 'buyer', a.buyer,
+      'An Award with CONFIRMED transformer scope has no buyer/EPC attribution — verify the source states it.',
+      srcStr(a.source || ''), 'Add the buyer/EPC from the source, or downgrade the scope.');
+  }
 });
 
 // ── Capability without source / without claim_type / without unit ──────────
@@ -211,6 +265,8 @@ const report = {
   counts: {
     manufacturers: COMPANIES.length,
     projects: PROJECTS.length,
+    tenders: TENDERS.length,
+    awards: AWARDS.length,
     intel_items: Object.keys(intel).reduce((s, r) => s + (intel[r].items || []).length, 0),
     issues: issues.length,
     by_severity: COUNT,
@@ -218,6 +274,8 @@ const report = {
     capability_without_source: issues.filter((i) => i.issue === 'capability_without_source').length,
     factory_without_source: issues.filter((i) => i.issue === 'factory_without_source').length,
     manufacturers_without_evidence: issues.filter((i) => i.issue === 'manufacturer_without_evidence').length,
+    tender_without_source: issues.filter((i) => i.issue === 'tender_without_source').length,
+    award_without_source: issues.filter((i) => i.issue === 'award_without_source').length,
   },
   issues,
 };
