@@ -84,6 +84,21 @@ table.aff th, table.aff td { text-align: left; padding: 6px 8px; border-bottom: 
     </div>
 
     <div class="acard">
+      <h3>💰 Revenue</h3>
+      <p class="sub">Honest view — revenue is NOT estimated or fabricated. Live revenue requires the Stripe checkout + Supabase entitlement integration to be wired and verified.</p>
+      <div id="revStatus"><p style="color:var(--muted)" class="sub">Loading…</p></div>
+      <div class="out" id="revMetrics" style="margin-top:8px"></div>
+      <div id="revProducts" class="out" style="margin-top:8px"></div>
+    </div>
+
+    <div class="acard">
+      <h3>🎯 Commercial Opportunities</h3>
+      <p class="sub">Real prospect queues derived from canonical platform data (supplier claims + event promotion). Not a ranking, not a sales score.</p>
+      <div class="out" id="oppSummary"></div>
+      <div class="out" id="oppQueues"></div>
+    </div>
+
+    <div class="acard">
       <h3>🧹 Local State Tools</h3>
       <p class="sub">Reset browser-stored state on this device for testing:</p>
       <button class="abtn" onclick="localStorage.removeItem('tp-user-region');say('Region preference cleared')">Clear region pref</button>
@@ -120,6 +135,8 @@ async function sha256(s) {
   return Array.from(new Uint8Array(b)).map(x => x.toString(16).padStart(2, '0')).join('');
 }
 
+function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+
 async function unlock() {
   const h = await sha256(document.getElementById('pw').value);
   if (h === PW_HASH) {
@@ -136,6 +153,8 @@ function show() {
   document.getElementById('panel').style.display = 'block';
   renderAff();
   renderDataQuality();
+  renderRevenue();
+  renderOpportunities();
 }
 if (sessionStorage.getItem('tp-admin') === '1') show();
 
@@ -176,6 +195,45 @@ function renderDataQuality() {
     var sum = document.getElementById('dq-summary');
     if (sum) sum.innerHTML = '<p style="color:var(--muted)">Data-quality report not available. Run <code style="color:var(--accent)">node build-data-quality.js</code>.</p>';
   });
+}
+
+// ── Revenue (honest) — never estimates revenue; shows real platform scale ──
+function renderRevenue() {
+  fetch('data/commerce-intel.json').then(function (r) { return r.json().catch(function () { return {}; }); }).then(function (d) {
+    var st = d.revenue ? d.revenue.status : 'unknown';
+    var stEl = document.getElementById('revStatus');
+    if (stEl) stEl.innerHTML = '<span style="font-size:.82rem;color:var(--muted)">Revenue status: <b style="color:' + (st === 'collection-in-progress' ? 'var(--accent)' : 'var(--text)') + '">' + esc(st) + '</b> — ' + esc((d.revenue && d.revenue.note) || 'Live revenue requires the Stripe + Supabase integration to be wired.') + '</span>';
+    var m = d.metrics ? d.metrics.platform_scale : {};
+    var mEl = document.getElementById('revMetrics');
+    if (mEl) mEl.innerHTML = '<b style="color:var(--text)">Real platform scale</b><br>' +
+      'Manufacturers ' + (m.manufacturers || '—') + ' · Projects ' + (m.projects || '—') + ' · Tenders ' + (m.tenders || '—') +
+      ' · Open tenders ' + (m.open_tenders || '—') + ' · Awards ' + (m.awards || '—') + ' · Events ' + (m.events || '—');
+    var pEl = document.getElementById('revProducts');
+    if (pEl) {
+      var cats = (d.products || []).map(function (s) { return '<b style="color:var(--text)">' + esc(s.label || s.id) + '</b>: ' + s.products.map(function (p) { return esc(p.name) + (p.price ? ' ($' + p.price + ')' : ''); }).join(', '); }).join(' · ');
+      pEl.innerHTML = '<b style="color:var(--text)">Commercial catalog (from data/commerce.json)</b><br><span style="font-size:.78rem">' + cats + '</span>';
+    }
+  }).catch(function () { var e = document.getElementById('revStatus'); if (e) e.innerHTML = '<p class="sub" style="color:var(--muted)">commerce-intel not available.</p>'; });
+}
+
+// ── Commercial opportunities (honest, derived prospect queues) ──────────────
+function renderOpportunities() {
+  fetch('data/commerce-intel.json').then(function (r) { return r.json().catch(function () { return {}; }); }).then(function (d) {
+    var sum = d.metrics ? d.metrics.prospect_signals : {};
+    var sEl = document.getElementById('oppSummary');
+    if (sEl) sEl.innerHTML = '<b style="color:var(--text)">Prospect signals</b><br>' +
+      'Supplier prospects with a website: <b style="color:var(--accent)">' + (sum.supplier_prospects_with_website || 0) + '</b> · Upcoming events: <b style="color:var(--accent)">' + (sum.upcoming_events || 0) + '</b>' +
+      '<div style="color:var(--muted);font-size:.72rem;margin-top:4px">Prospects are derived from canonical data (website-present companies; upcoming events). Live claim/verified order state lives in Supabase — shown separately.</div>';
+    var qEl = document.getElementById('oppQueues');
+    if (!qEl) return;
+    var sp = (d.supplier_prospects || []).slice(0, 20);
+    var ev = (d.event_prospects || []).slice(0, 10);
+    var h = '<div style="font-size:.8rem;color:var(--muted);margin:6px 0 4px"><b style="color:var(--text)">Supplier claim pipeline (top by country)</b></div>' +
+      sp.map(function (p) { return '<div style="padding:3px 0;font-size:.78rem"><b style="color:var(--text)">' + esc(p.name) + '</b> <span style="color:var(--muted)">· ' + esc(p.country) + ' · ' + esc((p.categories || []).join('/')) + '</span></div>'; }).join('') +
+      '<div style="font-size:.8rem;color:var(--muted);margin:10px 0 4px"><b style="color:var(--text)">Event promotion prospects (next up)</b></div>' +
+      ev.map(function (e) { return '<div style="padding:3px 0;font-size:.78rem"><b style="color:var(--text)">' + esc(e.name) + '</b> <span style="color:var(--muted)">· ' + esc(e.date) + ' · ' + esc(e.city || e.country) + '</span></div>'; }).join('');
+    qEl.innerHTML = h;
+  }).catch(function () {});
 }
 
 function renderAff() {
