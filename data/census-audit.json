@@ -3,13 +3,14 @@
   "generated": "2026-09-01",
   "total": 546,
   "status_counts": {
-    "ACTIVE_CONFIRMED": 533,
+    "ACTIVE_CONFIRMED": 534,
     "ACTIVE_LIMITED_DATA": 5,
-    "RESEARCH_REQUIRED": 8
+    "RESEARCH_REQUIRED": 6,
+    "NOT_TRANSFORMER_MANUFACTURER": 1
   },
   "duplicate_name_count": 0,
   "no_website_count": 8,
-  "review_queue_count": 8,
+  "review_queue_count": 7,
   "records": [
     {
       "name": "Prolec GE (GE Vernova)",
@@ -2959,9 +2960,9 @@
       "url": null,
       "types": "PT",
       "established": null,
-      "status": "RESEARCH_REQUIRED",
+      "status": "ACTIVE_CONFIRMED",
       "duplicate_name": null,
-      "review": true
+      "review": false
     },
     {
       "name": "Elsewedy Electric (Kingdom of Saudi Arabia)",
@@ -4051,7 +4052,7 @@
       "url": null,
       "types": "DT",
       "established": null,
-      "status": "RESEARCH_REQUIRED",
+      "status": "NOT_TRANSFORMER_MANUFACTURER",
       "duplicate_name": null,
       "review": true
     },
@@ -6572,12 +6573,6 @@
       "reason": "no verifiable website"
     },
     {
-      "name": "National Transformer Company (Saudi Voltamp)",
-      "country": "Saudi Arabia",
-      "status": "RESEARCH_REQUIRED",
-      "reason": "no verifiable website"
-    },
-    {
       "name": "Niroo Transfo",
       "country": "Iran",
       "status": "RESEARCH_REQUIRED",
@@ -6586,7 +6581,7 @@
     {
       "name": "Viji Power Transformers",
       "country": "India",
-      "status": "RESEARCH_REQUIRED",
+      "status": "NOT_TRANSFORMER_MANUFACTURER",
       "reason": "no verifiable website"
     },
     {

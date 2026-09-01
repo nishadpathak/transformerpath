@@ -188,6 +188,27 @@ if (auditStore) {
 }
 function intelStoreCount() { try { return JSON.parse(fs.readFileSync('data/manufacturer-intel.json', 'utf8')).companies.length; } catch (e) { return -1; } }
 
+// ── R9.1: research-verdicts integrity ──────────────────────────────────────
+// Deep-research verdicts must carry a claim_type and, when they assert a
+// manufacturer/non-manufacturer classification or a source-backed fact, a source.
+// Never fabricate a website or category.
+let verdicts = [];
+try { verdicts = JSON.parse(fs.readFileSync('data/research-verdicts.json', 'utf8')).verdicts || []; } catch (e) {}
+if (verdicts && verdicts.length) {
+  const CLAIM = new Set(['INDEPENDENTLY_SOURCED', 'COMPANY_REPORTED', 'UNKNOWN']);
+  let vNoClaim = 0, vNoSource = 0, vBadStatus = 0;
+  const OK_STATUS = new Set([true, false, null]);
+  verdicts.forEach(function (v) {
+    if (!CLAIM.has(v.claim_type)) vNoClaim++;
+    if (v.claim_type === 'INDEPENDENTLY_SOURCED' && (!v.sources || !v.sources.length)) vNoSource++;
+    if (v.is_transformer_manufacturer !== undefined && !OK_STATUS.has(v.is_transformer_manufacturer)) vBadStatus++;
+  });
+  if (vNoClaim) problems.push('R9.1 research-verdict invalid claim_type :: ' + vNoClaim);
+  if (vNoSource) problems.push('R9.1 research-verdict sourced fact without source :: ' + vNoSource);
+  if (vBadStatus) problems.push('R9.1 research-verdict invalid is_transformer_manufacturer :: ' + vBadStatus);
+  console.log('R9.1 research-verdicts: ' + verdicts.length + ' | bad claim: ' + vNoClaim + ' | sourced-without-source: ' + vNoSource + ' | bad status: ' + vBadStatus);
+}
+
 // ── R10: deep-research store integrity ─────────────────────────────────────
 // Every deep-research fact (headquarters, factory) must carry a source_url and
 // a valid claim_type. A factory must never assert a capability (voltage/MVA) —

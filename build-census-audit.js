@@ -62,6 +62,13 @@ records.forEach(function (r) {
 });
 
 const RETIRED_NAMES = new Set(RETIRED.map(function (r) { return r.name.toLowerCase().trim(); }));
+// Deep-research verdicts: records independently verified as manufacturer or
+// non-manufacturer (retailer/distributor). Used to refine the research status
+// so the review queue reflects what has been resolved, never auto-deleting.
+let VERDICTS = [];
+try { VERDICTS = (JSON.parse(fs.readFileSync('data/research-verdicts.json', 'utf8')).verdicts) || []; } catch (e) {}
+const VERDICT_BY = {};
+VERDICTS.forEach(function (v) { VERDICT_BY[v.name.toLowerCase().trim()] = v; });
 
 const audited = records.map(function (r) {
   const hasW = hasUrl(r.url);
@@ -85,11 +92,23 @@ const audited = records.map(function (r) {
 
   const dupFlag = sameNameCountryDup ? 'DUPLICATE_NAME' : null;
 
+  // Apply a deep-research verdict if one exists (resolves research-required).
+  const verdict = VERDICT_BY[r.name.toLowerCase().trim()];
+  if (verdict) {
+    if (verdict.is_transformer_manufacturer === true) {
+      state = 'ACTIVE_CONFIRMED'; // verified manufacturer (e.g. Saudi Voltamp)
+    } else if (verdict.is_transformer_manufacturer === false) {
+      state = 'NOT_TRANSFORMER_MANUFACTURER'; // asserted non-manufacturer (keep flagged)
+    } else if (verdict.is_transformer_manufacturer === null) {
+      state = state; // unknown — leave as data-state; still flagged if no website
+    }
+  }
+
   return {
     name: r.name, country: r.country, region: r.region, city: r.city || null,
     url: r.url || null, types: r.types || null, established: r.est || null,
     status: state, duplicate_name: dupFlag,
-    review: (dupFlag || state === 'RESEARCH_REQUIRED' || state === 'UNVERIFIED') ? true : false,
+    review: (dupFlag || state === 'RESEARCH_REQUIRED' || state === 'UNVERIFIED' || state === 'NOT_TRANSFORMER_MANUFACTURER') ? true : false,
   };
 });
 
