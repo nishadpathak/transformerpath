@@ -103,14 +103,29 @@ console.log('project entity pages:', built);
   let f = 'projects.html';
   try {
     let s = fs.readFileSync(f, 'utf8');
-    // Inject the baked cards into #pjGrid.
-    s = s.replace(/(<div class="pj-grid" id="pjGrid">)[\s\S]*?(<\/div>)/, function (m, a, b) { return a + cards + b; });
+    // Idempotently replace the ENTIRE #pjGrid element. The block previously
+    // accumulated one card-set per build (55 cards for 7 projects) because the
+    // old regex stopped at the first inner </div>. Here we locate the pjGrid
+    // open tag and replace through to the close tag that precedes the SSR
+    // script boundary, so every run yields exactly ONE card per project.
+    const openTag = '<div class="pj-grid" id="pjGrid">';
+    const oi = s.indexOf(openTag);
+    if (oi >= 0) {
+      // The neutralised SSR script follows the card block; its two lines of
+      // whitespace + <script> mark the end of the grid's card region.
+      const script = s.indexOf('<script>', oi);
+      const close = (script >= 0 ? s.lastIndexOf('</div>', script) : -1);
+      const contentEnd = close >= 0 ? close + '</div>'.length : -1;
+      if (contentEnd > oi) {
+        s = s.slice(0, oi) + openTag + cards + '</div>' + s.slice(contentEnd);
+      }
+    }
     // Neutralise the client-rendered IIFE entirely so the baked cards stay the
     // source of truth (no empty-container pop-in after a fetch).
     s = s.replace(/(\s*\(function\(\)\{[\s\S]*?fetch\('data\/projects\.json'\)[\s\S]*?\)\.catch\(function\(\)\{\}\);\s*\}\)\(\);)/, '  (function(){}); /* server-rendered */');
     // Version the stylesheet for cache-busting consistency (was bare style.css).
     s = s.replace(/href="style\.css"(?!\?v=)/, 'href="style.css?v=9"');
     fs.writeFileSync(f, s);
-    console.log('projects.html wrote (server-rendered, no client fetch)');
+    console.log('projects.html wrote (server-rendered, idempotent, no client fetch)');
   } catch (e) { console.warn('projects.html server-render skipped: ' + e.message); }
 })();
