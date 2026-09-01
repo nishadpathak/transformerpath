@@ -1,7 +1,16 @@
 {
   "$schema": "https://transformerpath.com/projects.schema.json",
-  "_comment": "TransformerPath Projects — structured transformer-relevant grid/substation projects. A project is a distinct build/tender/award, NOT an article. Fields are only included where sourced; 'transformer_requirement' grades whether transformer scope is explicitly documented (CONFIRMED), reasonably inferred from substation/grid scope (INFERRED), or not yet known (UNKNOWN). Values marked null / omitted are not invented. Maintained from Daily Intel pipeline and public project announcements.",
-  "updated": "2026-08-28",
+  "_comment": "TransformerPath Global Projects — structured transformer-relevant grid, substation and transmission projects worldwide (World → Region → Country → Utility → Project → Transformer Scope → Manufacturer/Award). A project is a distinct build/tender/award, NOT an article. Fields are only included where sourced; 'transformer_requirement' grades whether transformer scope is explicitly documented (CONFIRMED), reasonably inferred from substation/grid scope (INFERRED), or not yet known (UNKNOWN). 'region' groups by world region (Middle East, Asia, Europe, North America, Latin America, Africa, Oceania). 'last_verified' records when the source was checked. Values marked null / omitted are not invented; a transformer manufacturer/award is recorded only when explicitly sourced. Maintained from public tender/project databases, utility/regulator announcements and reputable industry reporting.",
+  "updated": "2026-08-31",
+  "region_map": {
+    "Middle East": ["United Arab Emirates", "Saudi Arabia", "Oman", "Qatar", "Kuwait", "Bahrain", "Egypt", "Morocco", "Algeria", "Iraq", "Jordan", "Jordan", "Israel"],
+    "Asia": ["India", "China", "South Korea", "Japan", "Indonesia", "Vietnam", "Malaysia", "Philippines", "Thailand", "Pakistan", "Bangladesh", "Taiwan", "Singapore", "Sri Lanka"],
+    "Europe": ["Germany", "United Kingdom", "France", "Italy", "Spain", "Netherlands", "Norway", "Sweden", "Poland", "Austria", "Belgium", "Denmark", "Ireland", "Finland", "Greece", "Portugal", "Switzerland", "Czechia", "Romania"],
+    "North America": ["United States", "Canada", "Mexico"],
+    "Latin America": ["Brazil", "Chile", "Argentina", "Colombia", "Peru", "Ecuador", "Venezuela", "Bolivia"],
+    "Africa": ["South Africa", "Morocco", "Kenya", "Nigeria", "Egypt", "Algeria", "Angola", "Senegal", "Tanzania", "Zambia", "Ghana", "Ethiopia", "Namibia"],
+    "Oceania": ["Australia", "New Zealand", "Papua New Guinea", "Fiji"]
+  },
   "projects": [
     {
       "project": "Kuwait MEW main 132/300/400 kV substation maintenance & repair",
