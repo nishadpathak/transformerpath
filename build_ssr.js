@@ -36,6 +36,14 @@ function esc(s) {
     .replace(/"/g, '&quot;');
 }
 
+// Lowercased kebab slug for a grid-country name; must match the directory
+// names build-grids.js writes under /grids/<slug>/.
+function countrySlug(s) {
+  return String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+    .trim().replace(/&/g, 'and').replace(/['’´]/g, '').replace(/[^a-z0-9]+/g, '-')
+    .replace(/-+/g, '-').replace(/^-|-$/g, '');
+}
+
 // Extract a `const NAME = <value>;` value. Works for array/object literals
 // (bracket-matching that ignores strings and // and /* */ comments) and for
 // primitive string/number/boolean values. Returns the evaluated value.
@@ -350,7 +358,7 @@ function renderGrids(html) {
     `<div class="region-h">${esc(region)}</div>` + groups[region].map((c) =>
       `<div class="country-card">
         <div class="country-head">
-          <span class="flag">${esc(c.flag)}</span><h3>${esc(c.country)}</h3>
+          <span class="flag">${esc(c.flag)}</span><h3><a href="/grids/${esc(countrySlug(c.country))}/" style="color:inherit;text-decoration:none">${esc(c.country)}</a></h3>
           <span class="badge b-freq">${esc(c.freq)} Hz</span>
           <span class="badge b-sync">${esc(c.sync)}</span>
           <span class="badge b-cnt">${c.grids.length} operator${c.grids.length > 1 ? 's' : ''}</span>

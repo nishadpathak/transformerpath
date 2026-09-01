@@ -172,6 +172,11 @@ console.log('generated', countryIndex.length, 'country pages');
     try { fs.readdirSync(dir).filter(function (f) { return f.endsWith('.html'); }).sort().forEach(function (f) { urls.push('https://transformerpath.com/' + dir + '/' + f); }); } catch (e) {}
   });
   try {
+    fs.readdirSync('grids').forEach(function (d) {
+      if (fs.existsSync('grids/' + d + '/index.html')) urls.push('https://transformerpath.com/grids/' + d + '/');
+    });
+  } catch (e) {}
+  try {
     var IDX = {}; try { JSON.parse(fs.readFileSync('data/company-slugs.json', 'utf8')).forEach(function (c) { if (c.indexable) IDX[c.slug] = 1; }); } catch (e) {}
     fs.readdirSync('manufacturers').forEach(function (d) {
       if (fs.existsSync('manufacturers/' + d + '/index.html') && IDX[d]) urls.push('https://transformerpath.com/manufacturers/' + d + '/');
