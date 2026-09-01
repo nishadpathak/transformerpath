@@ -296,26 +296,90 @@
       "name": "Prolec GE",
       "slug": "prolec-ge",
       "headquarters": {
-        "city": "Monterrey, Mexico",
-        "source_url": "https://www.gevernova.com/grid-solutions/equipment/transformers/prolec-ge-transformers",
-        "claim_type": "COMPANY_REPORTED"
+        "city": "Monterrey (Apodaca, Nuevo León), Mexico",
+        "source_url": "https://www.prolec.energy",
+        "claim_type": "INDEPENDENTLY_SOURCED"
       },
       "official_website": {
-        "url": "https://www.gevernova.com/grid-solutions/equipment/transformers/prolec-ge-transformers",
+        "url": "https://www.prolec.energy",
         "claim_type": "INDEPENDENTLY_SOURCED"
       },
       "transformer_products": [
         {
+          "type": "POWER"
+        },
+        {
           "type": "DISTRIBUTION"
         },
         {
-          "type": "POWER"
+          "type": "GSU"
+        },
+        {
+          "type": "AUTOTRANSFORMER"
+        },
+        {
+          "type": "RENEWABLE"
+        },
+        {
+          "type": "PAD_MOUNTED"
+        },
+        {
+          "type": "POLE_MOUNTED"
+        },
+        {
+          "type": "SPECIAL"
         }
       ],
-      "reported_max_voltage_kv": null,
-      "reported_max_mva": null,
-      "factories": [],
-      "notes": "Distribution & medium-power transformers; official GE Vernova product page verified."
+      "reported_max_voltage_kv": 800,
+      "reported_max_mva": 1200,
+      "voltage_source": {
+        "value": "800 kV (official page 'primary voltage through 800 kV')",
+        "source_url": "https://www.prolec.energy",
+        "claim_type": "INDEPENDENTLY_SOURCED"
+      },
+      "mva_source": {
+        "value": "1200 MVA (official page '5 to 1200 MVA')",
+        "source_url": "https://www.prolec.energy",
+        "claim_type": "INDEPENDENTLY_SOURCED"
+      },
+      "factories": [
+        {
+          "city": "Waukesha, Wisconsin",
+          "country": "United States",
+          "produces": "transformers 5-1200 MVA, up to 345 kV",
+          "source_url": "https://www.prolec.energy",
+          "claim_type": "INDEPENDENTLY_SOURCED"
+        },
+        {
+          "city": "Canoas",
+          "country": "Brazil",
+          "produces": "transformers 60-1000 MVA up to 800 kV + shunt reactors",
+          "source_url": "https://www.prolec.energy",
+          "claim_type": "INDEPENDENTLY_SOURCED"
+        },
+        {
+          "city": "Goldsboro, North Carolina",
+          "country": "United States",
+          "produces": "power transformers",
+          "source_url": "https://www.prolec.energy",
+          "claim_type": "INDEPENDENTLY_SOURCED"
+        },
+        {
+          "city": "Shreveport, Louisiana",
+          "country": "United States",
+          "produces": "power transformers",
+          "source_url": "https://www.prolec.energy",
+          "claim_type": "INDEPENDENTLY_SOURCED"
+        },
+        {
+          "city": "Apodaca",
+          "country": "Mexico",
+          "produces": "power transformers",
+          "source_url": "https://www.prolec.energy",
+          "claim_type": "INDEPENDENTLY_SOURCED"
+        }
+      ],
+      "notes": "Former 1995 Xignux/GE JV; 100% GE Vernova since Feb 2, 2026. Company vs factory capability kept distinct."
     },
     {
       "name": "TBEA Co., Ltd.",
@@ -694,6 +758,173 @@
         }
       ],
       "notes": "Capability maxima reported separately; per-plant capability never merged into company maximum."
+    },
+    {
+      "name": "Elsewedy Electric",
+      "slug": "elsewedy-electric",
+      "headquarters": {
+        "city": "New Cairo, Egypt",
+        "source_url": "https://elsewedyelectric.com",
+        "claim_type": "INDEPENDENTLY_SOURCED"
+      },
+      "official_website": {
+        "url": "https://elsewedyelectric.com",
+        "claim_type": "INDEPENDENTLY_SOURCED"
+      },
+      "transformer_products": [
+        {
+          "type": "POWER"
+        },
+        {
+          "type": "DISTRIBUTION"
+        },
+        {
+          "type": "DRY_TYPE"
+        },
+        {
+          "type": "CAST_RESIN"
+        },
+        {
+          "type": "GSU"
+        },
+        {
+          "type": "RENEWABLE"
+        },
+        {
+          "type": "FURNACE"
+        },
+        {
+          "type": "TRACTION"
+        },
+        {
+          "type": "RECTIFIER"
+        },
+        {
+          "type": "EARTHING"
+        },
+        {
+          "type": "SPECIAL"
+        },
+        {
+          "type": "PAD_MOUNTED"
+        },
+        {
+          "type": "POLE_MOUNTED"
+        },
+        {
+          "type": "MOBILE"
+        }
+      ],
+      "reported_max_voltage_kv": 500,
+      "reported_max_mva": 400,
+      "voltage_source": {
+        "value": "500 kV (official page 'voltages up to 500 kV')",
+        "source_url": "https://elsewedyelectric.com",
+        "claim_type": "INDEPENDENTLY_SOURCED"
+      },
+      "mva_source": {
+        "value": "400 MVA (official page 'up to 400 MVA')",
+        "source_url": "https://elsewedyelectric.com",
+        "claim_type": "INDEPENDENTLY_SOURCED"
+      },
+      "factories": [
+        {
+          "city": "10th of Ramadan City",
+          "country": "Egypt",
+          "produces": "power (~10,000 MVA annual), dry-type, oil-distribution",
+          "source_url": "https://elsewedyelectric.com",
+          "claim_type": "INDEPENDENTLY_SOURCED"
+        },
+        {
+          "city": "Karachi",
+          "country": "Pakistan",
+          "produces": "transformers (ex-Siemens plant, via Validus Engineering)",
+          "source_url": "https://elsewedyelectric.com",
+          "claim_type": "COMPANY_REPORTED"
+        }
+      ],
+      "notes": "Former name: Elswedy Cables Co. Capability maxima reported separately."
+    },
+    {
+      "name": "Hyosung Heavy Industries",
+      "slug": "hyosung-heavy-industries",
+      "headquarters": {
+        "city": "Seoul (Mapo-gu), South Korea",
+        "source_url": "https://www.hyosungheavyindustries.com",
+        "claim_type": "INDEPENDENTLY_SOURCED"
+      },
+      "official_website": {
+        "url": "https://www.hyosungheavyindustries.com",
+        "claim_type": "INDEPENDENTLY_SOURCED"
+      },
+      "transformer_products": [
+        {
+          "type": "POWER"
+        },
+        {
+          "type": "DISTRIBUTION"
+        },
+        {
+          "type": "DRY_TYPE"
+        },
+        {
+          "type": "CAST_RESIN"
+        },
+        {
+          "type": "AUTOTRANSFORMER"
+        },
+        {
+          "type": "GSU"
+        },
+        {
+          "type": "FURNACE"
+        },
+        {
+          "type": "TRACTION"
+        },
+        {
+          "type": "MOBILE"
+        },
+        {
+          "type": "SPECIAL"
+        }
+      ],
+      "reported_max_voltage_kv": 765,
+      "reported_max_mva": 1500,
+      "voltage_source": {
+        "value": "765 kV (official product page)",
+        "source_url": "https://www.hyosungheavyindustries.com",
+        "claim_type": "INDEPENDENTLY_SOURCED"
+      },
+      "mva_source": {
+        "value": "1500 MVA (official product page; 2018 catalogue stated 2000 MVA)",
+        "source_url": "https://www.hyosungheavyindustries.com",
+        "claim_type": "INDEPENDENTLY_SOURCED"
+      },
+      "factories": [
+        {
+          "city": "Changwon",
+          "country": "South Korea",
+          "produces": "EHV transformers (7,500+ units)",
+          "source_url": "https://www.hyosungheavyindustries.com",
+          "claim_type": "INDEPENDENTLY_SOURCED"
+        },
+        {
+          "city": "Nantong",
+          "country": "China",
+          "produces": "transformers",
+          "source_url": "https://www.hyosungheavyindustries.com",
+          "claim_type": "COMPANY_REPORTED"
+        },
+        {
+          "city": "Memphis, Tennessee",
+          "country": "United States",
+          "produces": "765 kV UHV transformers (only US facility)",
+          "source_url": "https://www.hyosungheavyindustries.com",
+          "claim_type": "INDEPENDENTLY_SOURCED"
+        }
+      ],
+      "notes": "Parent: Hyosung Group (spin-off 2018). Capability maxima reported separately."
     }
   ]
 }
