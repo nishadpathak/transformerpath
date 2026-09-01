@@ -88,6 +88,7 @@ function eventPage(e) {
     '<div class="evmeta"><span><b>Country</b> ' + esc(e.country) + '</span>' + (e.state ? '<span><b>Region</b> ' + esc(e.state) + '</span>' : '') + (e.city ? '<span><b>City</b> ' + esc(e.city) + '</span>' : '') + (e.next_dates ? '<span><b>Dates</b> ' + esc(e.next_dates) + '</span>' : '') + '</div>' +
     '<p class="lead" style="margin-bottom:14px">A ' + esc(e.event_type) + ' (' + esc(e.frequency) + '), verified against its official website on ' + esc(e.verification_date) + '.</p>' +
     (e.website ? '<a class="btn btn-amber" href="' + esc(e.website) + '" target="_blank" rel="noopener" data-track="event_register" data-track-event="' + esc(slug) + '">Official event website →</a>' : '') +
+    travelButtons(e, slug) +
     '<h2>Exhibition record</h2><table>' +
     row('Event', e.event_name) + row('Organizer', e.organizer) + row('Country', e.country) + row('Region / state', e.state) + row('City', e.city) +
     row('Event type', e.event_type) + row('Frequency', e.frequency) + row('Next edition', e.next_dates) + row('Venue', e.venue) +

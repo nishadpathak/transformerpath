@@ -20,7 +20,17 @@ const fs = require('fs');
 const D = JSON.parse(fs.readFileSync('data/projects.json', 'utf8'));
 const REGION = {};
 Object.keys(D.region_map || {}).forEach(function (r) { (D.region_map[r] || []).forEach(function (c) { REGION[c.toLowerCase()] = r; }); });
-function regionOf(c) { return REGION[String(c || '').toLowerCase()] || 'Other'; }
+function regionOf(c) {
+  const exact = REGION[String(c || '').toLowerCase()];
+  if (exact) return exact;
+  return /(UAE|Saudi|Oman|Qatar|Kuwait|Bahrain|Dubai|Abu Dhabi|Middle East)/i.test(c) ? 'Middle East'
+    : /(India|China|Korea|Japan|Indonesia|Vietnam|Malaysia|Philippines|Thailand|Pakistan|Bangladesh|Asia)/i.test(c) ? 'Asia'
+    : /(Germany|UK|France|Italy|Spain|Netherlands|Norway|Sweden|Poland|Austria|Belgium|Denmark|Europe)/i.test(c) ? 'Europe'
+    : /(USA|United States|Canada|Mexico|North America)/i.test(c) ? 'North America'
+    : /(Brazil|Chile|Argentina|Colombia|Peru|Latin America)/i.test(c) ? 'Latin America'
+    : /(South Africa|Egypt|Morocco|Kenya|Nigeria|Africa|Algeria|Angola|Senegal|Tanzania|Zambia)/i.test(c) ? 'Africa'
+    : /(Australia|New Zealand|Oceania)/i.test(c) ? 'Oceania' : 'Other';
+}
 const canon = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim().replace(/\s+/g, ' ');
 const date = new Date().toISOString().slice(0, 10);
 
