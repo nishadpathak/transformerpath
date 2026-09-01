@@ -165,3 +165,57 @@ STRATEGIC.forEach((u) => {
   } catch (e) { console.error('!! ' + u.name + ' failed: ' + e.message); }
 });
 console.log('utility entity pages:', built);
+
+/* ── Worldwide Utilities index (/utilities): region → country → profile ───────
+ * Lists every built utility profile grouped by region and country, so /utilities
+ * resolves (it was 404) and readers can navigate to procurement profiles
+ * worldwide. No fabricated data: groups by the existing profile's country and
+ * the grid census region. */
+(function utilitiesIndex() {
+  const REGION_ORDER = ['Middle East', 'Europe', 'Asia', 'East Asia', 'South Asia', 'North America', 'Latin America', 'Africa', 'Oceania'];
+  const regionByCountry = {};
+  const countryRegion = {};
+  GRIDS.forEach(function (g) { countryRegion[ci(g.country)] = g.region; regionByCountry[g.region] = regionByCountry[g.region] || []; });
+
+  const rows = [];
+  const grouped = {}; // region -> [{country, items: []}]
+  STRATEGIC.forEach(function (u) {
+    const country = u.country;
+    const region = countryRegion[ci(country)] || 'Other';
+    const slug = slugify(u.slug || u.name);
+    (grouped[region] = grouped[region] || {});
+    if (!grouped[region][country]) grouped[region][country] = [];
+    grouped[region][country].push({ name: u.name, country: country, slug: slug, blurb: (u.blurb || '').slice(0, 120) });
+  });
+
+  const regions = Object.keys(grouped);
+  regions.sort(function (a, b) {
+    const ia = REGION_ORDER.indexOf(a); const ib = REGION_ORDER.indexOf(b);
+    return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
+  });
+  const blocks = regions.map(function (region) {
+    const countries = Object.keys(grouped[region]).sort();
+    const countryRows = countries.map(function (country) {
+      const items = grouped[region][country].map(function (p) {
+        return '<div class="u-row"><a class="u-name" href="utilities/' + esc(p.slug) + '/">' + esc(p.name) + '</a><div class="u-blurb">' + esc(p.blurb) + '</div></div>';
+      }).join('');
+      return '<div class="u-country"><b class="u-cname">' + esc(country) + '</b>' + items + '</div>';
+    }).join('');
+    return '<div class="region-h">' + esc(region) + '</div>' + countryRows;
+  }).join('');
+
+  const html = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Transformer Utilities &amp; Grid Operators — Global Index | TransformerPath</title>' +
+    '<meta name="description" content="A worldwide index of transmission & distribution utilities, grid operators and TSOs that procure transformers — by region and country, with transformer procurement profiles and grid characteristics.">' +
+    '<link rel="canonical" href="https://transformerpath.com/utilities.html"><meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath"><meta property="og:title" content="Transformer Utilities &amp; Grid Operators — Global Index"><meta property="og:url" content="https://transformerpath.com/utilities.html"><meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow"><meta name="theme-color" content="#0d1b2e">' +
+    '<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any"><link rel="stylesheet" href="style.css?v=9"><style>' +
+    '.u-wrap{max-width:1000px;margin:0 auto;padding:44px 20px 90px}.u-wrap h1{font-size:2rem;color:var(--ink)}.u-wrap .lead{color:var(--muted);font-size:1.02rem;max-width:820px;margin:8px 0 26px}.region-h{font-size:1.05rem;font-weight:800;color:var(--ink);text-transform:uppercase;letter-spacing:.05em;margin:26px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--border)}.u-country{margin:8px 0 16px}.u-cname{display:block;font-size:.92rem;font-weight:800;color:var(--accent);margin:10px 0 4px;text-transform:uppercase;letter-spacing:.03em}.u-row{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px}.u-row .u-name{color:var(--text);font-weight:700;font-size:.96rem;text-decoration:none}.u-row .u-name:hover{color:var(--accent)}.u-row .u-blurb{color:var(--muted);font-size:.82rem;margin-top:4px}</style></head><body>\n' +
+    HEAD + '\n<main class="u-wrap">' +
+    '<h1>Transformer <span style="color:var(--accent)">Utilities</span> &amp; Grid Operators</h1>' +
+    '<p class="lead">A worldwide index of the transmission &amp; distribution utilities, TSOs and grid operators that procure transformers — grouped by region and country. Each profile covers the operator\'s grid characteristics, transformer &amp; substation profile, relevant manufacturers and related projects. Organised from the TransformerPath grid census; only distinguished operators with meaningful procurement data are profiled.</p>' +
+    '<div class="u-counts" style="display:flex;flex-wrap:wrap;gap:14px;margin:0 0 8px"><div class="s" style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 18px;text-align:center;min-width:110px"><b style="color:var(--text);font-size:1.4rem;display:block">' + STRATEGIC.length + '</b><small style="color:var(--muted);font-size:.78rem;font-weight:600">Utility profiles</small></div><div class="s" style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 18px;text-align:center;min-width:110px"><b style="color:var(--text);font-size:1.4rem;display:block">' + Object.keys(grouped).length + '</b><small style="color:var(--muted);font-size:.78rem;font-weight:600">Regions</small></div><div class="s" style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 18px;text-align:center;min-width:110px"><b style="color:var(--text);font-size:1.4rem;display:block">' + new Set(STRATEGIC.map(function (u) { return u.country; })).size + '</b><small style="color:var(--muted);font-size:.78rem;font-weight:600">Countries</small></div></div>' +
+    blocks +
+    '<p style="font-size:.8rem;color:var(--muted);margin-top:22px">Profiles are informational and compiled from public utility / operator filings and announcements; coverage grows with the grid census. Report a <a href="mailto:hello@transformerpath.com?subject=Utilities%20correction" style="color:var(--accent)">correction</a>.</p>' +
+    '</main>\n' + FOOT + '\n<script src="analytics.js" defer></script>\n</body>\n</html>';
+  fs.writeFileSync('utilities.html', html);
+  console.log('utilities.html wrote (worldwide index, ' + STRATEGIC.length + ' profiles / ' + Object.keys(grouped).length + ' regions)');
+})();
