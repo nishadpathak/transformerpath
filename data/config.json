@@ -90,6 +90,33 @@
       "v2_bundle": "REPLACE_WITH_STRIPE_LINK",
       "both_digital": "REPLACE_WITH_STRIPE_LINK",
       "both_print": "REPLACE_WITH_STRIPE_LINK"
+    },
+    "intelPro": {
+      "price": null,
+      "priceMonthly": 49,
+      "priceYear": 499,
+      "billing": "12 months",
+      "autoRenew": false,
+      "status": "TARGET"
+    },
+    "intelTeam": {
+      "price": null,
+      "priceMonthly": 199,
+      "priceYear": 1999,
+      "billing": "12 months",
+      "autoRenew": false,
+      "status": "TARGET"
+    },
+    "featuredEvent": {
+      "price": 299,
+      "billing": "per event",
+      "status": "REFERENCE"
+    },
+    "enterpriseIntelligence": {
+      "price": null,
+      "billing": "custom",
+      "status": "CUSTOM",
+      "cta": "Talk to TransformerPath"
     }
   },
   "voice": {

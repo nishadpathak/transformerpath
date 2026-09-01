@@ -1,0 +1,172 @@
+{
+  "$schema": "https://transformerpath.com/commerce.schema.json",
+  "generated": "2026-09-01T18:54:10.382Z",
+  "currency": "USD",
+  "neutral_principle": "Payment never influences research quality, technical capability, factory classification, project/award relationships, organic technical matching, Intel conclusions or source confidence. A free Listed manufacturer may be technically more relevant than a paying Supplier Pro.",
+  "sections": [
+    {
+      "id": "engineers",
+      "label": "For Engineers",
+      "products": [
+        {
+          "id": "free",
+          "name": "Free",
+          "price": 0,
+          "cadence": null,
+          "cta": "Start free",
+          "outcome": "Read daily intel, browse manufacturers/projects/tenders/events, post an RFQ, use selected tools and learning."
+        },
+        {
+          "id": "learning",
+          "name": "Learning",
+          "price": 199,
+          "cadence": "12 months",
+          "cta": "Unlock Learning",
+          "outcome": "Learn: full pathways, practice, progress, 3D learning, Test Bay, capstones, completion records.",
+          "single_payment": true,
+          "auto_renew": false,
+          "billing": "single payment for 12 months access"
+        },
+        {
+          "id": "professional",
+          "name": "Professional",
+          "price": 599,
+          "cadence": "12 months",
+          "cta": "Unlock Professional",
+          "outcome": "Work: Learning plus professional engineering utility — costing workbench, specification builder, bid evaluation, DGA workspace, professional exports.",
+          "single_payment": true,
+          "auto_renew": false,
+          "billing": "single payment for 12 months access"
+        },
+        {
+          "id": "team",
+          "name": "Team",
+          "price": 1999,
+          "cadence": "12 months",
+          "cta": "Unlock Team",
+          "outcome": "A team on one plan with organization management, members, individual progress, assigned pathways and a shared workspace.",
+          "single_payment": true,
+          "auto_renew": false,
+          "billing": "single payment for 12 months access"
+        }
+      ]
+    },
+    {
+      "id": "manufacturers",
+      "label": "For Manufacturers",
+      "products": [
+        {
+          "id": "listed",
+          "name": "Listed",
+          "price": 0,
+          "cadence": null,
+          "cta": "Claim your company",
+          "outcome": "A factual public listing — company, country, researched categories, official website, sourced capability.",
+          "neutrality": "No endorsement. Listed is a census listing, not a recommendation."
+        },
+        {
+          "id": "verified",
+          "name": "Verified Manufacturer",
+          "price": 499,
+          "cadence": "12 months",
+          "cta": "Get Verified",
+          "outcome": "Verified company contact, enhanced profile, logo/media, product info, brochure, contact CTA, RFQ response eligibility, basic analytics, website backlink where organically relevant.",
+          "neutrality": "VERIFIED MANUFACTURER means the organization/contact/profile completed TransformerPath's defined verification process. It does NOT mean product certified, quality certified, approved supplier, or technically superior."
+        },
+        {
+          "id": "supplier_pro",
+          "name": "Supplier Pro",
+          "price": 1499,
+          "cadence": "12 months",
+          "cta": "Become Supplier Pro",
+          "outcome": "Everything in Verified plus advanced analytics, commercial profile tools, RFQ workflow, market watchlists, Intel Pro entitlement, monthly performance report, promotional inventory, advanced opportunity alerts.",
+          "neutrality": "Promotional placement is explicitly FEATURED or SPONSORED. Pro never buys organic technical ranking."
+        }
+      ]
+    },
+    {
+      "id": "intelligence",
+      "label": "For Market Intelligence",
+      "products": [
+        {
+          "id": "intel_free",
+          "name": "Intel Free",
+          "price": 0,
+          "cadence": null,
+          "cta": "Create a free account",
+          "outcome": "Daily intel, factual summaries, projects, tenders, basic company activity, limited follows and alerts."
+        },
+        {
+          "id": "intel_pro",
+          "name": "Intel Pro",
+          "price": 499,
+          "price_monthly": 49,
+          "cadence": "12 months",
+          "cta": "Unlock Intel Pro",
+          "outcome": "Advanced project/tender filters, award history, factory expansions, company timelines, saved searches, watchlists, alerts, country dashboards, historical archive, monthly brief, exports when ready.",
+          "neutrality": "Intel Pro adds monitoring/filtering/decision value — it never paywalls the factual headline. Factual Intel stays public.",
+          "price_status": "TARGET"
+        },
+        {
+          "id": "intel_team",
+          "name": "Intel Team",
+          "price": 1999,
+          "price_monthly": 199,
+          "cadence": "12 months",
+          "cta": "Explore Intel Team",
+          "outcome": "Organization, members, shared watchlists, shared saved searches, team alerts, exports, shared reports.",
+          "price_status": "TARGET"
+        },
+        {
+          "id": "enterprise",
+          "name": "Enterprise Intelligence",
+          "price": null,
+          "cadence": "custom",
+          "cta": "Talk to TransformerPath",
+          "outcome": "Multi-user access, advanced exports, custom market monitoring, custom reports, research requests, bespoke briefings, company/project tracking."
+        }
+      ]
+    },
+    {
+      "id": "events",
+      "label": "For Events & Marketing",
+      "products": [
+        {
+          "id": "featured_event",
+          "name": "Featured Event",
+          "price": 299,
+          "cadence": "per event",
+          "cta": "Feature your event",
+          "outcome": "Prominent, clearly-labelled placement, logo/banner, enhanced event page, registration CTA, sponsor/exhibitor links, analytics.",
+          "neutrality": "FEATURED is promotional placement, clearly labelled. It is not an editorial recommendation."
+        },
+        {
+          "id": "featured_exhibitor",
+          "name": "Featured Exhibitor",
+          "price": 399,
+          "cadence": "per event",
+          "cta": "Feature your exhibitor",
+          "outcome": "FEATURED label, logo, booth number, products, brochure, manufacturer profile, meeting CTA, event analytics.",
+          "neutrality": "FEATURED is promotional placement. It never implies an editorial recommendation."
+        },
+        {
+          "id": "hosted_webinar",
+          "name": "Hosted Webinar",
+          "price": 1500,
+          "cadence": "engagement",
+          "cta": "Host a webinar",
+          "outcome": "Event page, registration, promotion, hosting, recording where supported, post-event replay, sponsor identification. Attendee reporting subject to privacy/consent."
+        },
+        {
+          "id": "sponsorship",
+          "name": "Sponsorship",
+          "price": 299,
+          "cadence": "engagement",
+          "cta": "Sponsor TransformerPath",
+          "outcome": "Daily Intel sponsor, event spotlight, category sponsor, market sponsor, newsletter sponsor, annual knowledge partner. Every paid placement is visibly SPONSORED or FEATURED.",
+          "neutrality": "Every paid placement is visibly SPONSORED or FEATURED. We never sell editorial conclusions."
+        }
+      ]
+    }
+  ]
+}
