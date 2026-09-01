@@ -303,8 +303,8 @@ html { scroll-behavior: smooth; }
 .logo { display: inline-flex; align-items: center; gap: 9px; }
 .logo .logo-mark { flex: none; transition: transform .55s cubic-bezier(.34,1.56,.64,1); transform-origin: center; }
 .logo:hover .logo-mark { transform: rotate(120deg) scale(1.05); }
-.logo .word { color: var(--ink); font-weight: 800; letter-spacing: -.5px; }
-.logo .word .accent { color: #f5a623; }
+.logo .word { color: var(--ink); font-weight: 800; letter-spacing: -.5px; display: inline; }
+.logo .word .accent { color: #f5a623; display: inline; letter-spacing: -.5px; }
 
 /* Nav animated underline */
 .nav-links a { position: relative; }
