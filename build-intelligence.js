@@ -37,6 +37,8 @@ const TODAY = new Date().toISOString().slice(0, 10);
 // ── Source data (all pre-verified/attributed upstream) ───────────────────────
 const DEV = JSON.parse(fs.readFileSync('data/company-developments.json', 'utf8'));
 const PROJECTS = (JSON.parse(fs.readFileSync('data/projects.json', 'utf8')).projects) || [];
+const TENDERS = (JSON.parse(fs.readFileSync('data/tenders.json', 'utf8')).tenders) || [];
+const MANUF_INTEL = (JSON.parse(fs.readFileSync('data/manufacturer-intel.json', 'utf8')).companies) || [];
 const VERIFIED_BY_NAME = {};
 try {
   JSON.parse(fs.readFileSync('data/company-slugs.json', 'utf8')).forEach(function (c) { VERIFIED_BY_NAME[ci(c.name)] = c; });
@@ -128,6 +130,27 @@ const projectSummary = PROJECTS.map(function (p) {
   };
 });
 
+// ── Tender / Award summary from the canonical Tender Watch dataset ──────────
+// Tenders are the procurement process; an AWARDED tender is a confirmed contract
+// RESULT (an Award). Pre-award = EXPECTED/OPEN/CLOSING_SOON/EVALUATION. We do
+// not infer an award from a tender that is merely "awarded" by project status —
+// we only surface a tender whose source explicitly confirms the result.
+const PREAWARD = ['EXPECTED', 'OPEN', 'CLOSING_SOON', 'EVALUATION'];
+const tenderSummary = TENDERS.map(function (t) {
+  return {
+    title: t.title, country: t.country, region: t.region, voltage: t.voltage || '',
+    status: t.status, statusLabel: t.statusLabel, statusGroup: t.statusGroup,
+    transformer_scope: t.transformer_scope, utility: t.utility || '', epc: t.epc || '',
+    deadline: t.deadline || '', source: t.source || '',
+    url: 'https://transformerpath.com/tenders/' + slugify(t.title) + '/',
+    source_url: (t.source_urls && t.source_urls[0]) || '',
+  };
+});
+const openTenders = tenderSummary.filter(function (t) { return t.status === 'OPEN'; });
+const preAwardTenders = tenderSummary.filter(function (t) { return PREAWARD.indexOf(t.status) >= 0; });
+// Awarded tenders are the award result feed (source-confirmed).
+const awardSummary = tenderSummary.filter(function (t) { return t.status === 'AWARDED'; });
+
 // ── Aggregate: counts by type, companies with events, market split ──────────
 const allEvents = [];
 Object.keys(entities).forEach(function (k) { allEvents.push.apply(allEvents, entities[k].events); });
@@ -145,15 +168,22 @@ const graph = {
   type_counts: typeCounts,
   companies: companiesWithEvents.length,
   projects: projectSummary.length,
+  tenders: tenderSummary.length,
+  open_tenders: openTenders.length,
+  preaward_tenders: preAwardTenders.length,
+  awards: awardSummary.length,
+  factory_expansions: allEvents.filter(function (e) { return e.type === 'factory_expansion'; }).length,
   events_total: allEvents.length,
   events_typed: verifiedEvents.length,
   events_reference: referenceEvents.length,
   types: TYPE_LABEL,
   companies_events: entities,
   projects: projectSummary,
+  tenders: tenderSummary,
+  awards: awardSummary,
 };
 fs.writeFileSync('data/entity-events.json', JSON.stringify(graph, null, 2));
-console.log('entity-events.json wrote ' + allEvents.length + ' events (' + verifiedEvents.length + ' typed, ' + referenceEvents.length + ' reference) across ' + companiesWithEvents.length + ' companies and ' + projectSummary.length + ' projects');
+console.log('entity-events.json wrote ' + allEvents.length + ' events (' + verifiedEvents.length + ' typed, ' + referenceEvents.length + ' reference) across ' + companiesWithEvents.length + ' companies, ' + projectSummary.length + ' projects, ' + tenderSummary.length + ' tenders (' + openTenders.length + ' open), ' + awardSummary.length + ' awards');
 console.log('  event type counts: ' + JSON.stringify(typeCounts));
 
 // ── Server-side rendered /intelligence page (flash-free, no client fetch) ─────
@@ -167,12 +197,14 @@ function renderIntelligence() {
   const typed = evts.filter(function (e) { return e.type !== 'reference'; });
   const TYPE_LABEL2 = graph.types || TYPE_LABEL;
 
-  // Counts row.
+  // Counts row — all canonical, computed from the shared datasets. Never typed.
   const counts = '<div class="biw-counts">' +
-    '<div class="s"><b>' + evts.length + '</b><small>Events</small></div>' +
-    '<div class="s"><b>' + typed.length + '</b><small>Typed developments</small></div>' +
+    '<div class="s"><b>' + (graph.projects || []).length + '</b><small>Projects tracked</small></div>' +
+    '<div class="s"><b>' + (graph.tenders || []).length + '</b><small>Tenders</small></div>' +
+    '<div class="s"><b>' + (graph.open_tenders || 0) + '</b><small>Open now</small></div>' +
+    '<div class="s"><b>' + (graph.awards || 0) + '</b><small>Recent awards</small></div>' +
     '<div class="s"><b>' + Object.keys(co).length + '</b><small>Companies</small></div>' +
-    '<div class="s"><b>' + (graph.projects || []).length + '</b><small>Projects</small></div></div>';
+    '<div class="s"><b>' + (graph.factory_expansions || 0) + '</b><small>Factory expansions</small></div></div>';
 
   // Activity feed: typed events first (date desc), then reference items. De-dupe by company+title.
   const all = typed.concat(evts.filter(function (e) { return e.type === 'reference'; }));
@@ -204,13 +236,34 @@ function renderIntelligence() {
       (p.utility ? '<div class="tl-co">' + esc(p.utility) + '</div>' : '') + '</div>';
   }).join('') || '<div class="tl-row" style="color:var(--muted)">No projects published yet.</div>';
 
+  // Tender Watch: prefer pre-award (OPEN/CLOSING_SOON/EVALUATION/EXPECTED), not history.
+  const T_ORDER = { OPEN: 0, CLOSING_SOON: 1, EVALUATION: 2, EXPECTED: 3 };
+  const tRows = (graph.tenders || []).slice().sort(function (a, b) {
+    return (T_ORDER[a.status] ?? 9) - (T_ORDER[b.status] ?? 9) || String(a.country).localeCompare(b.country);
+  }).slice(0, 10).map(function (t) {
+    return '<div class="tl-row"><div class="tl-evt">' + esc(t.statusLabel || t.status) + '</div>' +
+      '<div class="tl-co">' + esc(t.country || t.region || '') + (t.voltage ? ' · ' + esc(t.voltage) : '') + '</div>' +
+      '<a class="ttl" href="' + esc(t.url) + '">' + esc(t.title) + '</a>' +
+      '<div class="src">' + esc(t.source || '') + (t.deadline ? ' · deadline ' + esc(t.deadline) : '') + '</div></div>';
+  }).join('') || '<div class="tl-row" style="color:var(--muted)">No tenders tracked yet.</div>';
+
+  // Recent awards (source-confirmed awarded tenders).
+  const aw = (graph.awards || []).slice(0, 8).map(function (a) {
+    return '<div class="tl-row"><div class="tl-evt">Awarded</div>' +
+      '<div class="tl-co">' + esc(a.country || a.region || '') + (a.voltage ? ' · ' + esc(a.voltage) : '') + '</div>' +
+      '<a class="ttl" href="' + esc(a.url) + '">' + esc(a.title) + '</a>' +
+      '<div class="src">' + esc(a.source || '') + '</div></div>';
+  }).join('') || '<div class="tl-row" style="color:var(--muted)">No confirmed awards yet.</div>';
+
   const body = '<main class="biw-wrap">' +
     '<h1>TransformerPath <span style="color:var(--accent)">Intelligence</span></h1>' +
     '<p class="lead">The transformer-industry business-intelligence hub. TransformerPath accumulates industry memory — every sourced development is attached to a permanent company, project or utility and typed as an event, so you can follow what changed, where and when. All entries are source-tracked with confidence labels; nothing is inferred without a source.</p>' +
     counts +
+    '<div class="biw-sec"><h2>Transformer-relevant projects</h2><p class="sub">Structured grid, substation and transformer projects — tenders, awards, construction and energisation — with the transformer scope graded confirmed / inferred / unknown per the published source.</p><div>' + pj + '</div></div>' +
+    '<div class="biw-sec"><h2>Tender Watch</h2><p class="sub">Pre-award procurement opportunities — open, closing soon, under evaluation and expected. Awards are carried separately (see Recent awards); awarded tenders move out of the active procurement flow.</p><div>' + tRows + '</div></div>' +
+    '<div class="biw-sec"><h2>Recent awards</h2><p class="sub">Source-confirmed contract results. A tender is only shown here when its source explicitly confirms the award — a vendor list or a project is never an award.</p><div>' + aw + '</div></div>' +
     '<div class="biw-sec"><h2>Latest company activity</h2><p class="sub">Typed, source-backed events attached to permanent manufacturer entities. Only high-confidence keyword matches are typed; everything else is labelled "Intel reference".</p><div>' + activity + '</div></div>' +
     '<div class="biw-sec"><h2>Companies with structured timelines</h2><p class="sub">Follow a manufacturer entity to see its full development history (orders, factory expansions, ownership, rebranding, approvals).</p><div>' + companies + '</div></div>' +
-    '<div class="biw-sec"><h2>Transformer-relevant projects</h2><p class="sub">Structured grid, substation and transformer projects — tenders, awards, construction and energisation — with the transformer scope graded confirmed / inferred / unknown per the published source.</p><div>' + pj + '</div></div>' +
     '<div class="biw-note"><b style="color:var(--text)">Read our <a href="methodology.html" style="color:var(--accent)">research methodology</a>.</b> ' +
     'Every event is sourced from published public information (company, utility, regulator, government and industry reporting) or the TransformerPath Daily Intel feed, and carries a confidence label. A company development is shown because it <b>references</b> that company — it is not an independently verified award, order or project attribution unless the source explicitly confirms one. TransformerPath is independent and editorially neutral: commercial relationships never affect research confidence, editorial treatment or the accuracy of factual data.</div>' +
     '</main>';
