@@ -149,7 +149,7 @@ check('intel cadence label = config', new RegExp('\\b' + CFG.intel.cadenceLabel 
 // No contradicting intel-feed cadence text (e.g. "updated hourly", "2×/day") on served
 // intel/index pages. Legitimate other-cadence uses (LME hourly, "announced weekly", the
 // "Weekly scan of technology" label) are excluded by matching only intel-cadence phrasing.
-const CADENCE_BAD = /(updated\s+(?:hourly|2×\/day|2x\/day|every\s+hour))|(\bHourly\b\s+global\s+briefing)|(<b>\s*Hourly\s*<\/b>)/gi;
+const CADENCE_BAD = /(updated\s+(?:hourly|2×\/day|2x\/day|every\s+hour))|(refreshed\s+(?:hourly|twice\s+a\s+day|2x\/day|2×\/day))|(refreshed\s+twice\s+daily)|(\bHourly\b\s+global\s+briefing)|(<b>\s*Hourly\s*<\/b>)/gi;
 for (const f of ['intel.html', 'index.html']) {
   const txt = fs.readFileSync(f, 'utf8');
   if (CADENCE_BAD.test(txt)) {
@@ -157,6 +157,32 @@ for (const f of ['intel.html', 'index.html']) {
     problems.push('intel-cadence-contradiction ' + f + ' :: ' + (m && m[0]));
   }
 }
+// Sitewide live-surface sweep for the same contradiction strings. Immutable dated
+// Intel archives (intel-2026-*.html) are frozen historical snapshots and are
+// excluded — their old copy is not a live claim. Legitimate negations ("not a
+// live rate") are not matched by these patterns.
+(function () {
+  const fsx = require('fs');
+  const pathx = require('path');
+  const files = [];
+  const SKIP = ['archive', '_private', 'transformerpath-site', 'node_modules', 'functions'];
+  (function walk(dir) {
+    fsx.readdirSync(dir, { withFileTypes: true }).forEach((e) => {
+      if (e.name.startsWith('.')) return;
+      if (SKIP.includes(e.name)) return;
+      if (e.isDirectory()) walk(pathx.join(dir, e.name));
+      else if (e.name.endsWith('.html')) files.push(pathx.join(dir, e.name));
+    });
+  })('.');
+  files.forEach(function (f) {
+    if (/^intel-2026-\d{2}-\d{2}\.html$/.test(f)) return; // frozen archive
+    const txt = fsx.readFileSync(f, 'utf8');
+    if (CADENCE_BAD.test(txt)) {
+      const m = txt.match(CADENCE_BAD);
+      problems.push('live-cadence-contradiction ' + f + ' :: ' + (m && m[0]));
+    }
+  });
+})();
 for (const c of CFG.intel.classificationLevels) {
   check('intel classification level ' + c + ' present', INTEL.includes(c));
 }

@@ -1,0 +1,187 @@
+{
+  "$schema": "https://transformerpath.com/production-audit.schema.json",
+  "generated": "2026-09-02T02:36:11.099Z",
+  "note": "POST-SPRINT PRODUCTION AUDIT. READ-ONLY verification of checked-in source + generated data + served HTML. Does not assert anything about an unobserved live runtime. UNKNOWN > INCORRECT.",
+  "surfaces": [
+    {
+      "surface": "intel.html",
+      "kind": "news-feed",
+      "title": "Transformer Market Intelligence — TransformerPath",
+      "source_present": true,
+      "sitemap_indexed": true,
+      "has_canonical": true,
+      "has_h1": true,
+      "client_fetches_data": true,
+      "freshness_contradictions": []
+    },
+    {
+      "surface": "intelligence.html",
+      "kind": "intel-hub",
+      "title": "TransformerPath Intelligence — Industry Business Intelligence Dashboard",
+      "source_present": true,
+      "sitemap_indexed": true,
+      "has_canonical": true,
+      "has_h1": true,
+      "client_fetches_data": false,
+      "freshness_contradictions": []
+    },
+    {
+      "surface": "materials.html",
+      "kind": "materials",
+      "title": "Transformer Materials Intelligence — Copper, Aluminium, CRGO | TransformerPath",
+      "source_present": true,
+      "sitemap_indexed": true,
+      "has_canonical": true,
+      "has_h1": true,
+      "client_fetches_data": false,
+      "freshness_contradictions": []
+    },
+    {
+      "surface": "materials/crgo/index.html",
+      "kind": "crgo-monitor",
+      "title": "CRGO Electrical Steel Market Monitor | TransformerPath",
+      "source_present": true,
+      "sitemap_indexed": true,
+      "has_canonical": true,
+      "has_h1": true,
+      "client_fetches_data": false,
+      "freshness_contradictions": []
+    },
+    {
+      "surface": "learn.html",
+      "kind": "learn",
+      "title": "Learn Transformer Design — Complete Course | TransformerPath",
+      "source_present": true,
+      "sitemap_indexed": true,
+      "has_canonical": true,
+      "has_h1": true,
+      "client_fetches_data": false,
+      "freshness_contradictions": []
+    },
+    {
+      "surface": "masterclass.html",
+      "kind": "masterclass",
+      "title": "TX Design Masterclass — Transformer Design, Construction, 3D &amp; Calculator | TransformerPath",
+      "source_present": true,
+      "sitemap_indexed": true,
+      "has_canonical": true,
+      "has_h1": true,
+      "client_fetches_data": false,
+      "freshness_contradictions": []
+    },
+    {
+      "surface": "explorer.html",
+      "kind": "3d",
+      "title": "Transformer Construction — Interactive 3D Explorer",
+      "source_present": true,
+      "sitemap_indexed": true,
+      "has_canonical": true,
+      "has_h1": true,
+      "client_fetches_data": false,
+      "freshness_contradictions": []
+    },
+    {
+      "surface": "buyers-guide.html",
+      "kind": "buyers-guide",
+      "title": "TransformerPath Buyer's Guide — Find Transformer Suppliers | TransformerPath",
+      "source_present": true,
+      "sitemap_indexed": true,
+      "has_canonical": true,
+      "has_h1": true,
+      "client_fetches_data": false,
+      "freshness_contradictions": []
+    },
+    {
+      "surface": "components.html",
+      "kind": "components",
+      "title": "Transformer Components & Accessories Directory | TransformerPath",
+      "source_present": true,
+      "sitemap_indexed": true,
+      "has_canonical": true,
+      "has_h1": true,
+      "client_fetches_data": false,
+      "freshness_contradictions": []
+    },
+    {
+      "surface": "equipment.html",
+      "kind": "equipment",
+      "title": "equipment",
+      "source_present": false,
+      "sitemap_indexed": false,
+      "has_canonical": false,
+      "has_h1": false,
+      "client_fetches_data": false,
+      "freshness_contradictions": []
+    },
+    {
+      "surface": "testing.html",
+      "kind": "testing",
+      "title": "testing",
+      "source_present": false,
+      "sitemap_indexed": false,
+      "has_canonical": false,
+      "has_h1": false,
+      "client_fetches_data": false,
+      "freshness_contradictions": []
+    },
+    {
+      "surface": "software.html",
+      "kind": "software",
+      "title": "Transformer Simulation &amp; Design Software: A Neutral Directory | TransformerPath",
+      "source_present": true,
+      "sitemap_indexed": true,
+      "has_canonical": true,
+      "has_h1": true,
+      "client_fetches_data": false,
+      "freshness_contradictions": []
+    },
+    {
+      "surface": "manufacturers.html",
+      "kind": "manufacturers",
+      "title": "Transformer Manufacturers — Worldwide Census | TransformerPath",
+      "source_present": true,
+      "sitemap_indexed": true,
+      "has_canonical": true,
+      "has_h1": true,
+      "client_fetches_data": true,
+      "freshness_contradictions": []
+    },
+    {
+      "surface": "rfq.html",
+      "kind": "rfq",
+      "title": "RFQ Board — Post Transformer Requirements | TransformerPath",
+      "source_present": true,
+      "sitemap_indexed": true,
+      "has_canonical": true,
+      "has_h1": true,
+      "client_fetches_data": false,
+      "freshness_contradictions": []
+    },
+    {
+      "surface": "workspace.html",
+      "kind": "account",
+      "title": "Your Workspace — TransformerPath",
+      "source_present": true,
+      "sitemap_indexed": false,
+      "has_canonical": true,
+      "has_h1": true,
+      "client_fetches_data": true,
+      "freshness_contradictions": []
+    },
+    {
+      "surface": "pricing.html",
+      "kind": "pricing",
+      "title": "Pricing — Learning, Professional &amp; Team Plans | TransformerPath",
+      "source_present": true,
+      "sitemap_indexed": true,
+      "has_canonical": true,
+      "has_h1": true,
+      "client_fetches_data": false,
+      "freshness_contradictions": []
+    }
+  ],
+  "freshness_contradiction_sweep": {
+    "pages_with_contradictions": 0,
+    "pages": []
+  }
+}
