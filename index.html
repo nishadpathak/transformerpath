@@ -355,7 +355,7 @@
 <section class="block alt">
   <div class="container">
     <div class="section-head reveal">
-      <h2>Today's Transformer Intel — At a Glance</h2>
+      <h2>Transformer Intel — At a Glance</h2>
       <p id="glanceSub">A daily briefing covering tenders & projects, supplier news and material prices worldwide.</p>
     </div>
     <div class="grid grid-3" id="glanceCards">
@@ -479,7 +479,11 @@ document.querySelectorAll('#mainNav a').forEach(a=>a.addEventListener('click',()
   }
 })();
 
-/* ── Live "at a glance" headlines pulled from today's intel.html ── */
+/* ── Latest "at a glance" headlines pulled from intel.html ─────────────
+   The cards are the latest curated items; the sub-line shows the canonical
+   data-refresh date from data/freshness.json. We do NOT label them "today's
+   live briefing" because that implies freshness the curated feed does not
+   guarantee — a new deployment is not new intelligence. */
 (function(){
   const host=document.getElementById('glanceCards'), sub=document.getElementById('glanceSub');
   if(!host||!window.fetch) return;
@@ -487,7 +491,6 @@ document.querySelectorAll('#mainNav a').forEach(a=>a.addEventListener('click',()
     const nm=txt.match(/const NEWS = (\{[\s\S]*?\});\s*\n/);
     if(!nm) return;
     let NEWS; try{ NEWS=(new Function('return '+nm[1]))(); }catch(e){ return; }
-    const dm=txt.match(/const BRIEFING_DATE = "([^"]+)"/);
     const items=[];
     Object.keys(NEWS).forEach(rk=>{
       (NEWS[rk].items||[]).forEach(it=>items.push(Object.assign({region:rk},it)));
@@ -502,7 +505,14 @@ document.querySelectorAll('#mainNav a').forEach(a=>a.addEventListener('click',()
         '<h3 style="font-size:1rem">'+esc(it.title)+'</h3><p>'+snip+'</p>'+
         (it.value?'<p class="g-val" style="margin-top:8px">'+esc(it.value)+'</p>':'')+'</a>';
     }).join('');
-    if(sub&&dm) sub.innerHTML='Live from the briefing for <b>'+esc(dm[1])+'</b> — tenders, supplier news and material prices worldwide.';
+    // Canonical refresh date (not the visitor's "today").
+    fetch('data/freshness.json',{cache:'no-cache'}).then(function(r){ return r.json().catch(function(){ return {}; }); }).then(function(d){
+      if(!sub) return;
+      const di=(d.surfaces||[]).find(function(s){ return s.id==='daily_intel'; })||{};
+      const date=di.last_data_refresh||di.last_successful_refresh||di.last_build;
+      const dstr=date?(function(){ var dt=new Date(date); return isNaN(dt)?date:dt.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}); })():'—';
+      sub.innerHTML='Latest briefing <b>'+dstr+'</b> — tenders, supplier news and material prices worldwide. Curated, refreshed at build. <a href="intel.html" style="color:var(--accent)">Read Daily Intel →</a>';
+    }).catch(function(){});
   }).catch(()=>{});
 })();
 

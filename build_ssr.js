@@ -433,22 +433,18 @@ function renderManufacturers(html) {
   html = inject(html, '<div class="stat-row" id="statRow">', 'mfg-stats', stats);
 
   // Documented power-equipment suppliers (data/manufacturer-tiers.json).
-  // Presented as fact-typed capability records (source-backed capacity, voltage,
-  // certifications, regions) NOT as an editorial quality ranking. No "best",
-  // "Tier 1" or "Global leader" hierarchy — the underlying capability figures
-  // stand on their own with their source.
+  // Presented as ONE neutral set of fact-typed capability records (source-backed
+  // capacity, voltage, certifications, regions) — NOT a tiered "Global leaders"
+  // leaderboard and NOT a quality ranking. No "best", no Tier 1/2/3 hierarchy, no
+  // promotional ordering: every row is a sourced capability figure that stands on
+  // its own, sorted alphabetically for neutrality. Capability must be verified
+  // with the manufacturer before a commercial decision.
   try {
-    const TIERS = JSON.parse(fs.readFileSync('data/manufacturer-tiers.json', 'utf8'));
-    const TIER_NOTE = {
-      1: 'Documented global-scale suppliers — reported capacity/voltage figures from the cited source',
-      2: 'Documented regional suppliers — reported capacity/voltage figures from the cited source',
-      3: 'Documented specialist / custom suppliers — reported capacity/voltage figures from the cited source',
-    };
     let tierHtml = '';
-    for (const t of [1, 2, 3]) {
-      const items = (TIERS || []).filter((r) => r.tier === t);
-      if (!items.length) continue;
-      tierHtml += `<h3><span class="tbadge t${t}">Reported capability</span> ${TIER_NOTE[t]}</h3>`;
+    const items = (TIERS || []).slice().sort((a, b) => String(a.name).localeCompare(String(b.name)));
+    if (items.length) {
+      tierHtml += `<h3 style="margin:6px 0 10px">Sourced capability records — <b style="color:var(--ink)">reported values, not a ranking</b></h3>`;
+      tierHtml += '<p style="font-size:.85rem;color:var(--muted);margin:0 0 12px">The suppliers below are shown because they are well-documented, with their reported capacity/voltage/certifications attributed to a cited source. Presented alphabetically for neutrality. <b>Figures are summary values from the cited research — verify capability with the manufacturer before a commercial decision.</b></p>';
       tierHtml += '<table><thead><tr><th>Supplier</th><th>Country</th><th>Reported capacity / yr</th><th>Reported max voltage</th><th>Reported certifications</th><th>Markets</th><th>Source</th></tr></thead><tbody>';
       tierHtml += items.map((r) => `<tr>
         <td>${r.site ? `<a href="${esc(r.site)}" target="_blank" rel="noopener">${esc(r.name)}</a>` : esc(r.name)}</td>

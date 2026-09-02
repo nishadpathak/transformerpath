@@ -22,7 +22,6 @@
 const fs = require('fs');
 function readJson(p, fb) { try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch (e) { return fb; } }
 function ts(f) { const d = readJson('data/' + f + '.json', {}); return d.updated || d.generated || d.generated_at || d.last_updated || (d.stats && d.stats.generated_at) || null; }
-
 const NOW = new Date().toISOString();
 const TODAY = NOW.slice(0, 10);
 

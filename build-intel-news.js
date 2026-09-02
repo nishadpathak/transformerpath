@@ -145,6 +145,15 @@ if (insertedCount > 0) {
 // pick up the international coverage without breaking the 5-key contract.
 const ISO_PATH = 'data/intel.json';
 const intel = JSON.parse(fs.readFileSync(ISO_PATH, 'utf8'));
+// Canonical data-refresh timestamp. This is a CURATED dataset compiled at build;
+// it is not a live scrape. The public freshness readout must show THIS date, not
+// the visitor's local "today", and never imply a change that is only a redeploy.
+intel.updated = new Date().toISOString();
+intel.refresh_meta = {
+  cadence: 'daily (curated)',
+  refreshed_at_build: true,
+  note: 'Curated transformer-industry intelligence. Compiled and regenerated at each build — not an automatic live scrape.',
+};
 const FOLD = { China: 'RoW', AsiaPac: 'RoW', LatAm: 'RoW', Africa: 'RoW' };
 const srcByRegion = {};
 ITEMS.forEach((it) => { const fold = FOLD[it.region] || it.region; (srcByRegion[fold] = srcByRegion[fold] || []).push(it); });
