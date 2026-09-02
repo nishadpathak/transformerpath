@@ -249,6 +249,41 @@ for (const f of pages) {
   }
 }
 
+// ── 4b. Trust / launch-day wording ─────────────────────────────────────────
+// Guard against stale or overclaiming copy that sophisticated users notice.
+//  - "accounts are being added" (stale account-launch framing) on the live FAQ.
+//  - overclaimed credential phrasing on pricing/learn ("certificate per level",
+//    "certificate badge", "completion certificate issued" as an affirmative
+//    claim) — the honest position is a completion RECORD, never an accreditation.
+//  - homepage "Today's / Read Today's Intel" framing (implies freshness the
+//    curated feed cannot guarantee).
+const TRUST_FILES = ['faq.html', 'pricing.html', 'learn.html', 'index.html'];
+const staleAccount = /accounts are being added|accounts being added|Not today\./i;
+// Overclaimed credential phrasing, negation-aware (a leading "no / not / not an"
+// makes the phrase honest, so it must NOT be flagged).
+function overCredClaim(text) {
+  const re = /(certificate\s+(?:per\s+level|badge)|(?:completion|course[- ]?completion)\s+certificate\s+(?:issued|awarded)|issues?\s+(?:a\s+)?certificate)/gi;
+  let m;
+  while ((m = re.exec(text))) {
+    // Walk back over the ~40 chars preceding and ~60 following for a negation,
+    // and skip the FAQ question-verb form ("Do you issue a certificate of...").
+    const beg = Math.max(0, re.lastIndex - m[0].length - 45);
+    const ctx = (text.slice(beg, re.lastIndex + 60) || '').toLowerCase();
+    if (/\bno\b|\bnot\b|\bnever\b|\bdoesn't\b|\bdo not\b|\bdo we\b|do you issue|does transformerpath|we do not|is not|are not\b/.test(ctx)) continue;
+    return m[0];
+  }
+  return null;
+}
+const todayFrame = /Read Today('s|&#39;s)? Intel|Today('s|&#39;s)? Transformer Intel|read today('s|&#39;s)? intel\b|Today('s|&#39;s)? briefing\b|read today('s|&#39;s)? briefing\b/i;
+for (const f of TRUST_FILES) {
+  const t = fs.readFileSync(f, 'utf8');
+  const strip = t.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+  if (staleAccount.test(strip)) problems.push('voice-stale-account ' + f + ' :: stale account-launch framing');
+  const cred = overCredClaim(strip);
+  if (cred) problems.push('voice-overclaim-cert ' + f + ' :: ' + cred);
+  if (todayFrame.test(strip)) problems.push('voice-todays-intel ' + f + ' :: ' + todayFrame.source);
+}
+
 // ── 5. Navigation structure ───────────────────────────────────────────────
 // The header nav must use the grouped INTELLIGENCE/INDUSTRY/ENGINEERING/LEARN/
 // BUSINESS structure with Search + Account, and never regress to the flat list.

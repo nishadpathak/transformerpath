@@ -54,6 +54,7 @@ function materialsIndex() {
     '<h2 class="mt-h2">Focused monitors</h2>' +
     '<div class="mt-grid"><div class="mt-card"><h3>CRGO Electrical Steel</h3><div class="val">No single global price</div><div class="meta">Market · Grade · Thickness · Basis</div><div class="mt-fig" style="margin-top:6px">Prices legitimately differ by market, grade, loss class and commercial basis. See the market monitor for why, and the full context.</div><a href="materials/crgo/">Open CRGO Market Monitor &rarr;</a></div></div>' +
     '<p class="mt-fig" style="margin-top:20px">Material references are the LME 3-month official settlement (reference) where available and are clearly labelled; they are not live feeds and must be verified against the official source for a commercial decision. See the <a href="methodology.html" style="color:var(--accent)">research methodology</a>.</p>' +
+    (function () { try { return fs.readFileSync('_partials/feedback-inline.html', 'utf8'); } catch (e) { return ''; } })() +
     '</main>\n' + FOOT + '\n<script src="analytics.js" defer></script>\n</body>\n</html>';
 }
 fs.writeFileSync('materials.html', materialsIndex());

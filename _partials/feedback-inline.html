@@ -1,0 +1,18 @@
+<!-- Was this useful? — unobtrusive feedback capture (Netlify Forms) -->
+<div class="feedback-inline" style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:26px 0 6px;max-width:720px">
+  <b style="color:var(--text);font-size:.92rem">Was this useful?</b>
+  <p style="color:var(--muted);font-size:.82rem;margin:3px 0 10px">One tap tells us what to improve. Optional email for a follow-up.</p>
+  <form name="page-feedback" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" id="pageFeedback">
+    <input type="hidden" name="form-name" value="page-feedback">
+    <input type="hidden" name="page" value="">
+    <p hidden><label>Leave empty: <input name="bot-field"></label></p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <label style="display:inline-flex;align-items:center;gap:6px;font-size:.86rem;color:var(--text)"><input type="radio" name="useful" value="yes" required> Yes</label>
+      <label style="display:inline-flex;align-items:center;gap:6px;font-size:.86rem;color:var(--text)"><input type="radio" name="useful" value="no"> Not quite</label>
+    </div>
+    <input style="width:100%;margin-top:10px;padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:.86rem;background:var(--bg);color:var(--text)" type="text" name="note" placeholder="What did you expect? (optional)" maxlength="300">
+    <button class="btn btn-amber btn-sm" type="submit" style="margin-top:10px">Send feedback →</button>
+  </form>
+  <p id="feedbackThanks" style="display:none;color:var(--text);font-size:.86rem;margin:8px 0 0">✓ Thanks — that helps us prioritise.</p>
+</div>
+<script>(function(){var f=document.getElementById('pageFeedback');if(!f)return;var page=f.querySelector('input[name="page"]');if(page)page.value=location.pathname;f.addEventListener('submit',function(e){e.preventDefault();if(!f.checkValidity()){f.reportValidity();return;}fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(f)).toString()}).then(ok).catch(function(){location.href='mailto:hello@transformerpath.com?subject=Feedback: '+encodeURIComponent(location.pathname)+'&body='+encodeURIComponent((f.querySelector('input[name=useful]:checked')||{}).value||'')+'%0A'+encodeURIComponent((f.querySelector('input[name=note]')||{}).value||'');});function ok(){f.style.display='none';var t=document.getElementById('feedbackThanks');if(t)t.style.display='block';}});})();</script>
