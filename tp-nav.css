@@ -1,0 +1,182 @@
+/* ============================================================================
+   TransformerPath — flat primary navigation
+   ----------------------------------------------------------------------------
+   Replaces the five mega-menus (Intelligence / Industry / Engineering / Learn /
+   Business) with direct links. The nine primary destinations are one click, not
+   two. Only lower-priority items collapse into a single-column "More" menu, and
+   only when the row would not otherwise fit.
+
+   Breakpoints are driven by how much room the row actually needs, not by device
+   guesses:
+     >= 1400px   all nine primary links
+     1180-1399   Grids and Tools fold into More
+     1024-1179   Materials-class items already in More; Grids/Tools stay there
+     < 1024px    one flat hamburger panel, no nesting
+
+   Loaded after style.css, so it overrides the older .nav-links rules.
+   ========================================================================== */
+
+/* ── Row ──────────────────────────────────────────────────────────────── */
+.tpnav {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: auto;
+  flex-wrap: nowrap;               /* the row must never wrap to two lines */
+}
+.tpnav a,
+.tpnav .tpnav-more-btn {
+  color: #cbd5e1;
+  font-size: .88rem;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  padding: 9px 10px;
+  border-radius: 7px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font-family: inherit;
+  transition: color .12s, background-color .12s;
+}
+.tpnav a:hover,
+.tpnav .tpnav-more-btn:hover {
+  color: var(--amber, #f5a623);
+  background: rgba(255, 255, 255, .06);
+}
+.tpnav a[aria-current="page"] {
+  color: var(--amber, #f5a623);
+  font-weight: 700;
+}
+.tpnav a:focus-visible,
+.tpnav .tpnav-more-btn:focus-visible,
+.tpnav-more-panel a:focus-visible {
+  outline: 2px solid var(--amber, #f5a623);
+  outline-offset: 2px;
+}
+
+/* Search / account / theme sit slightly apart from the link run. */
+.tpnav-utils {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: 8px;
+  padding-left: 8px;
+  border-left: 1px solid rgba(255, 255, 255, .14);
+  flex: none;
+}
+
+/* ── More: a plain single-column list, never a panel ──────────────────── */
+.tpnav-more { position: relative; flex: none; }
+.tpnav-more-btn::after { content: " \25BE"; opacity: .7; font-size: .8em; }
+.tpnav-more-panel {
+  display: none;
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 184px;
+  max-height: calc(100vh - 90px);
+  overflow-y: auto;
+  background: var(--navy-2, #14253d);
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 9px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .38);
+  padding: 5px;
+  z-index: 200;
+}
+.tpnav-more.open .tpnav-more-panel { display: block; }
+.tpnav-more-panel a {
+  display: block;
+  padding: 8px 12px;
+  font-size: .86rem;
+  border-radius: 6px;
+}
+
+/* Hidden by default; each width band decides what to reveal. */
+.tpnav-more { display: none; }
+.tpnav .tpnav-opt { display: inline-block; }
+
+/* ── Width bands ──────────────────────────────────────────────────────── */
+/* Below 1400 the full row starts to crowd the logo, so demote two items. */
+@media (max-width: 1399px) {
+  .tpnav-more { display: block; }
+  .tpnav .tpnav-opt { display: none; }
+  .tpnav a, .tpnav .tpnav-more-btn { padding: 9px 8px; font-size: .86rem; }
+}
+/* Tighter still: trim padding rather than dropping another destination. */
+@media (max-width: 1179px) {
+  .tpnav a, .tpnav .tpnav-more-btn { padding: 8px 6px; font-size: .84rem; }
+  .tpnav-utils { margin-left: 4px; padding-left: 4px; }
+}
+
+/* ── Mobile / tablet: one flat panel ──────────────────────────────────── */
+@media (max-width: 1023px) {
+  .tpnav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    background: var(--navy, #0d1b2e);
+    border-top: 1px solid rgba(255, 255, 255, .12);
+    box-shadow: 0 16px 26px rgba(0, 0, 0, .4);
+    padding: 6px 0 10px;
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
+  }
+  .tpnav.open { display: flex; }
+  .tpnav a {
+    padding: 13px 22px;             /* comfortable touch target */
+    border-radius: 0;
+    font-size: .98rem;
+    border-bottom: 1px solid rgba(255, 255, 255, .06);
+  }
+  /* Everything is one flat list on mobile — no nested accordion. The More
+     wrapper stops being a menu and its links join the run, so a phone user
+     gets the full set in one scroll instead of a second level to open. */
+  .tpnav .tpnav-opt { display: block; }
+  .tpnav-more { display: contents; }
+  .tpnav-more-btn { display: none; }
+  .tpnav-more-panel {
+    display: block;
+    position: static;
+    background: none;
+    border: 0;
+    box-shadow: none;
+    padding: 0;
+    max-height: none;
+    min-width: 0;
+    overflow: visible;
+  }
+  .tpnav-more-panel a {
+    padding: 13px 22px;
+    font-size: .98rem;
+    border-radius: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, .06);
+  }
+  /* Grids and Tools are primary links on mobile, so drop the More copies. */
+  .tpnav-more-panel a[href="grids.html"],
+  .tpnav-more-panel a[href="tools.html"] { display: none; }
+  .tpnav-utils {
+    margin: 8px 22px 0;
+    padding: 10px 0 0;
+    border-left: 0;
+    border-top: 1px solid rgba(255, 255, 255, .12);
+    gap: 10px;
+  }
+  .tpnav-utils a,
+  .tpnav-utils button { border-bottom: 0; padding: 12px 10px; min-height: 44px;
+                        display: inline-flex; align-items: center; }
+  header .container.nav { position: relative; }
+  .menu-toggle { display: block; }
+}
+@media (min-width: 1024px) {
+  .menu-toggle { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tpnav a, .tpnav .tpnav-more-btn { transition: none; }
+}

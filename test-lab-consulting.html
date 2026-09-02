@@ -40,75 +40,44 @@
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0d1b2e">
+    <link rel="stylesheet" href="tp-nav.css?v=2">
 </head>
 <body>
 
 <header>
   <div class="container nav">
     <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="30" height="30" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg>Transformer<span class="accent">Path</span></a>
-    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav" onclick="var n=document.querySelector('.nav-links');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))">☰</button>
-        <nav class="nav-links" id="mainNav" aria-label="Primary">
-      <div class="nav-group" role="menuitem">
-        <button class="nav-group-label" aria-expanded="false" aria-controls="nav-intelligence" tabindex="0">Intelligence ▾</button>
-        <span class="nav-mega" id="nav-intelligence">
-          <a href="intel.html">Daily Intel</a>
-          <a href="markets.html">Markets</a>
-          <a href="grids.html">Grids</a>
-          <a href="utilities.html">Utilities</a>
-          <a href="events.html">Events</a>
-          <a href="webinars.html">Webinars</a>
-          <a href="projects.html">Projects</a>
-          <a href="tenders.html">Tenders</a>
-          <a href="awards.html">Awards</a>
-        </span>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
+        <nav class="tpnav" id="mainNav" aria-label="Primary">
+      <a href="intel.html">Intel</a>
+      <a href="manufacturers.html">Manufacturers</a>
+      <a href="projects.html">Projects</a>
+      <a href="tenders.html">Tenders</a>
+      <a href="grids.html" class="tpnav-opt">Grids</a>
+      <a href="events.html">Events</a>
+      <a href="learn.html">Learn</a>
+      <a href="tools.html" class="tpnav-opt">Tools</a>
+      <a href="rfq.html">RFQ</a>
+      <div class="tpnav-more">
+        <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
+        <div class="tpnav-more-panel" role="menu">
+          <a href="grids.html" role="menuitem">Grids</a>
+          <a href="tools.html" role="menuitem">Tools</a>
+          <a href="materials.html" role="menuitem">Materials</a>
+          <a href="buyers-guide.html" role="menuitem">Buyer's Guide</a>
+          <a href="components.html" role="menuitem">Components</a>
+          <a href="utilities.html" role="menuitem">Utilities</a>
+          <a href="standards.html" role="menuitem">Standards</a>
+          <a href="books.html" role="menuitem">Books</a>
+          <a href="webinars.html" role="menuitem">Webinars</a>
+          <a href="pricing.html" role="menuitem">Pricing</a>
+        </div>
       </div>
-      <div class="nav-group" role="menuitem">
-        <button class="nav-group-label" aria-expanded="false" aria-controls="nav-industry" tabindex="0">Industry ▾</button>
-        <span class="nav-mega" id="nav-industry">
-          <a href="manufacturers.html">Manufacturers</a>
-          <a href="buyers-guide.html">Buyer's Guide</a>
-          <a href="components.html">Components</a>
-          <a href="materials.html">Materials</a>
-          <a href="applications.html">Applications</a>
-          <a href="rfq.html">RFQ</a>
-        </span>
-      </div>
-      <div class="nav-group" role="menuitem">
-        <button class="nav-group-label" aria-expanded="false" aria-controls="nav-engineering" tabindex="0">Engineering ▾</button>
-        <span class="nav-mega" id="nav-engineering">
-          <a href="knowledge.html">Knowledge</a>
-          <a href="standards.html">Standards</a>
-          <a href="case-studies.html">Case Studies</a>
-          <a href="calculator.html">Design Calculator</a>
-          <a href="explorer.html">3D Models</a>
-          <a href="test-report.html">Test Report</a>
-          <a href="resources.html">Resources</a>
-          <a href="software.html">Software</a>
-        </span>
-      </div>
-      <div class="nav-group" role="menuitem">
-        <button class="nav-group-label" aria-expanded="false" aria-controls="nav-learn" tabindex="0">Learn ▾</button>
-        <span class="nav-mega" id="nav-learn">
-          <a href="masterclass.html">Masterclass</a>
-          <a href="books.html">Books</a>
-          <a href="learn.html">Learning Access</a>
-        </span>
-      </div>
-      <div class="nav-group" role="menuitem">
-        <button class="nav-group-label" aria-expanded="false" aria-controls="nav-business" tabindex="0">Business ▾</button>
-        <span class="nav-mega" id="nav-business">
-          <a href="for-manufacturers.html">For Manufacturers</a>
-          <a href="verified.html">Verified Profiles</a>
-          <a href="sponsor.html">Sponsor</a>
-          <a href="intel-pro.html">Intel Pro</a>
-          <a href="pricing.html">Pricing</a>
-        </span>
-      </div>
-      <div class="nav-util">
-        <a href="search.html" title="Search" aria-label="Search">🔍</a>
-        <a href="workspace.html">Account</a>
-      </div>
-      <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">🌙</button>
+      <span class="tpnav-utils">
+        <a href="search.html" title="Search" aria-label="Search">&#128269;</a>
+        <a href="workspace.html" data-tp-account>Account</a>
+        <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">&#127769;</button>
+      </span>
     </nav>
   </div>
   <script>
@@ -129,41 +98,6 @@
     }
     // Dropdown nav: each category opens an accessible mega-menu on hover
     // (desktop) or tap (touch/keyboard). Escape and outside-click close.
-    (function () {
-      const groups = Array.prototype.slice.call(document.querySelectorAll('.nav-links .nav-group'));
-      const canHover = function () { return window.matchMedia('(hover: hover) and (pointer: fine)').matches; };
-      function closeAll(except) {
-        groups.forEach(function (g) {
-          if (g === except) return;
-          g.classList.remove('open');
-          const b = g.querySelector('.nav-group-label');
-          if (b) b.setAttribute('aria-expanded', 'false');
-        });
-      }
-      function toggle(group, button) {
-        const isOpen = group.classList.toggle('open');
-        button.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-        if (isOpen) closeAll(group);
-      }
-      groups.forEach(function (group) {
-        const button = group.querySelector('.nav-group-label');
-        if (!button) return;
-        button.addEventListener('click', function (e) { e.preventDefault(); toggle(group, button); });
-        group.addEventListener('mouseenter', function () { if (canHover()) { group.classList.add('open'); button.setAttribute('aria-expanded', 'true'); closeAll(group); } });
-        // Grace period: the menu is contiguous with the label, so a short delay plus
-        // a :hover check keeps it open while the cursor travels from label to link.
-        group.addEventListener('mouseleave', function () {
-          if (!canHover()) return;
-          var g = group;
-          setTimeout(function () {
-            if (!g.contains(document.activeElement) && !g.matches(':hover')) { g.classList.remove('open'); var b = g.querySelector('.nav-group-label'); if (b) b.setAttribute('aria-expanded', 'false'); }
-          }, 110);
-        });
-        group.addEventListener('focusin', function () { group.classList.add('open'); var b = group.querySelector('.nav-group-label'); if (b) b.setAttribute('aria-expanded', 'true'); });
-      });
-      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeAll(); });
-      document.addEventListener('click', function (e) { if (!e.target.closest('.nav-group')) closeAll(); });
-    })();
   
   </script>
 </header>
@@ -276,22 +210,11 @@
 
 <footer>
   <div class="container">
-    <div class="cols">
-      <div>
+    <div class="cols"><div>
         <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
         <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data. Built for utilities, transformer manufacturers, component suppliers, EPCs, consultants and engineers.</p>
       </div>
-      <div><h2>INTELLIGENCE</h2><a href="intel.html">Daily Intel</a><a href="intel.html">Intel Archive</a><a href="intelligence.html">Intelligence</a><a href="projects.html">Projects</a><a href="tenders.html">Tenders</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="exhibitions.html">Exhibitions</a><a href="events.html">Events</a></div>
-      <div><h2>INDUSTRY</h2><a href="manufacturers.html">Manufacturers</a><a href="accessories.html">Accessories</a><a href="components.html">Components</a><a href="materials.html">Materials</a><a href="applications.html">Applications</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a></div>
-      <div><h2>ENGINEERING</h2><a href="knowledge.html">Knowledge</a><a href="standards.html">Standards</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Models</a><a href="design.html">Design Duel</a><a href="resources.html">Resources</a></div>
-      <div><h2>LEARN</h2><a href="learn.html">Learn</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy</a><a href="books.html">Books</a><a href="teams.html">Corporate Training</a></div>
-      <div><h2>BUSINESS</h2><a href="for-manufacturers.html">For Manufacturers</a><a href="pricing.html">Pricing</a><a href="verified.html">Verified</a><a href="sponsor.html">Sponsor</a><a href="webinars.html">Webinars</a></div>
-      <div><h2>COMPANY</h2><a href="about.html">About Us</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
-      <div><h2>CONTACT</h2>
-        <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
-        <a class="tp-li-btn tp-li-follow" data-linkedin-follow href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>Follow us on LinkedIn</a>
-        <a class="tp-li-btn tp-li-share" data-linkedin-share href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>LinkedIn</a>
-      </div>
+      <div><h2>INTELLIGENCE</h2><a href="intel.html">Intel</a><a href="projects.html">Projects</a><a href="tenders.html">Tenders</a><a href="awards.html">Awards</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="utilities.html">Utilities</a><a href="archive.html">Intel Archive</a></div><div><h2>INDUSTRY</h2><a href="manufacturers.html">Manufacturers</a><a href="buyers-guide.html">Buyer's Guide</a><a href="components.html">Components</a><a href="materials.html">Materials</a><a href="applications.html">Applications</a><a href="vendors.html">Vendors</a><a href="rfq.html">RFQ Board</a></div><div><h2>ENGINEERING</h2><a href="tools.html">Tools</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Models</a><a href="test-report.html">Test Report</a><a href="knowledge.html">Knowledge</a><a href="standards.html">Standards</a><a href="software.html">Software Directory</a></div><div><h2>LEARN</h2><a href="learn.html">Learn</a><a href="masterclass.html">Masterclass</a><a href="books.html">Books</a><a href="case-studies.html">Case Studies</a><a href="engineer-track.html">Design Engineer Track</a></div><div><h2>BUSINESS</h2><a href="for-manufacturers.html">For Manufacturers</a><a href="verified.html">Verified Profiles</a><a href="sponsor.html">Sponsor</a><a href="webinars.html">Webinars</a><a href="events.html">Events</a><a href="jobs.html">Jobs</a><a href="pricing.html">Pricing</a></div><div><h2>ABOUT</h2><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="search.html">Search</a></div></div>
     </div>
     <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
   </div>
@@ -300,5 +223,6 @@
 <script>(function(){var f=document.getElementById('tlForm');if(!f)return;f.addEventListener('submit',function(e){e.preventDefault();if(window.TP_NOTIFY)window.TP_NOTIFY(f);if(!f.checkValidity()){f.reportValidity();return;}fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(f)).toString()}).then(d).catch(d);function d(){f.style.display='none';document.getElementById('tlThanks').style.display='block';}});})();</script>
 <script src="form-notify.js" defer></script>
 <script src="analytics.js?v=5" defer></script>
+<script src="tp-nav.js?v=2" defer></script>
 </body>
 </html>
