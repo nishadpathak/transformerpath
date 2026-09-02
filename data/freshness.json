@@ -1,15 +1,23 @@
 {
   "$schema": "https://transformerpath.com/freshness.schema.json",
-  "generated": "2026-09-01T19:20:32.841Z",
-  "honest_note": "PAGE BUILD DATE is when this artifact was last regenerated; DATA REFRESH DATE is the last successful source refresh. These are distinct. The curated Daily Intel feed is refreshed at build (daily cadence label) — it is not an hourly live scrape. The serverless auto-briefing cache is a separate background cache.",
+  "generated": "2026-09-02T02:30:27.345Z",
+  "honest_note": "PAGE BUILD DATE is when this artifact was last regenerated; DATA REFRESH DATE is the last successful source refresh. These are distinct. The curated Daily Intel feed is refreshed at build (daily cadence label) — it is not an hourly live scrape. The serverless auto-briefing cache is a separate background cache. A freshness status of HEALTHY/AGING/STALE is computed from observed dates; nothing is presented as live.",
   "surfaces": [
     {
       "id": "daily_intel",
       "name": "Daily Intel",
       "cadence": "daily (curated)",
       "description": "Curated transformer-industry intelligence feed. Data is compiled and regenerated at each build; it is not an automatic live scrape.",
-      "last_build": "2026-09-01",
+      "last_build": "2026-09-02",
       "last_data_refresh": null,
+      "last_attempted_refresh": null,
+      "last_successful_refresh": null,
+      "latest_source_observation": "curated items carry their own per-item source date",
+      "records_added": null,
+      "records_updated": null,
+      "source_count": "per-item",
+      "source_failures": null,
+      "status": "HEALTHY",
       "source_health": "curated — refreshed at build; next refresh depends on the publishing cycle",
       "records": {
         "GCC": {
@@ -1433,6 +1441,14 @@
       "description": "A serverless refresh function (functions/refresh-data.js) pulls transformer-industry headlines into a cache to populate the changelog/briefing. This is a background cache, distinct from the curated Daily Intel feed.",
       "last_build": null,
       "last_data_refresh": null,
+      "last_attempted_refresh": null,
+      "last_successful_refresh": null,
+      "latest_source_observation": null,
+      "records_added": null,
+      "records_updated": null,
+      "source_count": null,
+      "source_failures": null,
+      "status": "MANUAL_REVIEW",
       "source_health": "depends on the Netlify runtime schedule and EventRegistry availability; not verified in this static build",
       "records": null
     },
@@ -1442,6 +1458,14 @@
       "cadence": "maintained",
       "last_build": "2026-08-31",
       "last_data_refresh": "2026-08-31",
+      "last_attempted_refresh": "2026-08-31",
+      "last_successful_refresh": "2026-08-31",
+      "latest_source_observation": "2026-08-31",
+      "records_added": null,
+      "records_updated": null,
+      "source_count": null,
+      "source_failures": null,
+      "status": "HEALTHY",
       "source_health": "curated, source-tracked",
       "records": 306
     },
@@ -1449,8 +1473,16 @@
       "id": "tenders",
       "name": "Tender Watch",
       "cadence": "maintained",
-      "last_build": "2026-09-01",
-      "last_data_refresh": "2026-09-01",
+      "last_build": "2026-09-02",
+      "last_data_refresh": "2026-09-02",
+      "last_attempted_refresh": "2026-09-02",
+      "last_successful_refresh": "2026-09-02",
+      "latest_source_observation": "2026-09-02",
+      "records_added": null,
+      "records_updated": null,
+      "source_count": null,
+      "source_failures": null,
+      "status": "HEALTHY",
       "source_health": "derived from source-backed projects + intel; never fabricated",
       "records": 150
     },
@@ -1458,8 +1490,16 @@
       "id": "awards",
       "name": "Awards",
       "cadence": "maintained",
-      "last_build": "2026-09-01",
-      "last_data_refresh": "2026-09-01",
+      "last_build": "2026-09-02",
+      "last_data_refresh": "2026-09-02",
+      "last_attempted_refresh": "2026-09-02",
+      "last_successful_refresh": "2026-09-02",
+      "latest_source_observation": "2026-09-02",
+      "records_added": null,
+      "records_updated": null,
+      "source_count": null,
+      "source_failures": null,
+      "status": "HEALTHY",
       "source_health": "source-confirmed only",
       "records": 56
     },
@@ -1467,11 +1507,60 @@
       "id": "materials",
       "name": "Materials Intelligence",
       "cadence": "reference",
-      "description": "Copper/aluminium are the LME reference (dated, sourced). CRGO and others are shown as unavailable (no public daily index).",
-      "last_build": "2026-09-01",
-      "last_data_refresh": "2026-09-01",
+      "description": "Copper/aluminium are the LME reference (dated, sourced, freshness_status). CRGO and others are shown as unavailable (no public daily index).",
+      "last_build": "2026-09-02",
+      "last_data_refresh": "2026-09-02",
+      "last_attempted_refresh": "2026-09-02",
+      "last_successful_refresh": "2026-09-02",
+      "latest_source_observation": "LME reference observed 2026-08-20 (per record); others have no verified reference",
+      "records_added": null,
+      "records_updated": null,
+      "source_count": 1,
+      "source_failures": null,
+      "status": "HEALTHY",
       "source_health": "reference only — not a live feed",
       "records": 7
+    }
+  ],
+  "sources": [
+    {
+      "name": "LME official price (copper / aluminium)",
+      "type": "market-reference",
+      "region": "Global",
+      "works_for": [
+        "materials"
+      ],
+      "last_checked": "2026-09-02",
+      "last_success": "2026-09-02",
+      "latest_content_date": "2026-08-20",
+      "failure_count": 0,
+      "status": "HEALTHY"
+    },
+    {
+      "name": "Curated Daily Intel editorial items",
+      "type": "curated-content",
+      "region": "Global",
+      "works_for": [
+        "daily_intel"
+      ],
+      "last_checked": "2026-09-02",
+      "last_success": null,
+      "latest_content_date": "per-item source date",
+      "failure_count": 0,
+      "status": "HEALTHY"
+    },
+    {
+      "name": "EventRegistry (auto-briefing)",
+      "type": "serverless-cache",
+      "region": "Global",
+      "works_for": [
+        "auto_briefing"
+      ],
+      "last_checked": null,
+      "last_success": null,
+      "latest_content_date": null,
+      "failure_count": null,
+      "status": "MANUAL_REVIEW"
     }
   ]
 }

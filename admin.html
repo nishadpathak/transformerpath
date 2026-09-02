@@ -118,6 +118,7 @@ table.aff th, table.aff td { text-align: left; padding: 6px 8px; border-bottom: 
       <h3>🔗 Quick Links</h3>
       <a class="abtn" href="subscribe.html">Subscribe page</a>
       <a class="abtn" href="intel.html">Daily Intel</a>
+      <a class="abtn" href="admin/source-health.html">Source Health ↗</a>
       <a class="abtn" href="https://app.netlify.com/" target="_blank" rel="noopener">Netlify ↗</a>
       <a class="abtn" href="https://eventregistry.org/" target="_blank" rel="noopener">EventRegistry ↗</a>
     </div>
@@ -234,19 +235,20 @@ function renderSourceHealth() {
     var order = ['daily_intel', 'auto_briefing', 'projects', 'tenders', 'awards', 'materials'];
     var byId = {};
     (d.surfaces || []).forEach(function (s) { byId[s.id] = s; });
+    var pill = function (st) { var c = (st === 'HEALTHY' ? '#16a34a' : st === 'MANUAL_REVIEW' ? '#475569' : st === 'STALE' ? '#b45309' : '#d97706'); return '<span style="font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:999px;color:#fff;background:' + c + '">' + esc(st || '—') + '</span>'; };
     var grid = order.filter(function (k) { return byId[k]; })
       .map(function (k) {
         var s = byId[k];
-        var healthy = s.source_health !== 'unhealthy';
-        var bg = healthy ? 'var(--card)' : '#fef2f2';
+        var st = s.status || (s.source_health === 'unhealthy' ? 'MANUAL_REVIEW' : 'HEALTHY');
+        var bg = st === 'HEALTHY' ? 'var(--card)' : '#fef2f2';
         return '<div style="background:' + bg + ';border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin:6px 0;font-size:.8rem">' +
           '<div style="display:flex;justify-content:space-between;align-items:center">' +
-          '<b style="color:var(--text)">' + esc(s.name || k) + '</b>' +
-          '<span style="font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:999px;color:#fff;background:' + (healthy ? '#16a34a' : '#b91c1c') + '">' + (healthy ? 'HEALTHY' : 'UNHEALTHY') + '</span>' +
+          '<b style="color:var(--text)">' + esc(s.name || k) + '</b>' + pill(st) +
           '</div>' +
           '<div style="color:var(--muted);margin-top:4px">cadence: <b style="color:var(--text)">' + esc(s.cadence || '—') + '</b> · last_build: <b style="color:var(--text)">' + esc(s.last_build || '—') + '</b> · last_data_refresh: <b style="color:var(--text)">' + esc(s.last_data_refresh || '—') + '</b></div>' +
-          (s.source_health && s.source_health !== 'healthy' ? '<div style="color:#b91c1c;margin-top:4px">source_health: ' + esc(s.source_health) + '</div>' : '') +
-          (s.note ? '<div style="color:var(--muted);margin-top:4px;font-size:.74rem">' + esc(s.note) + '</div>' : '') +
+          (s.latest_source_observation ? '<div style="color:var(--muted);margin-top:3px">latest_source_observation: <b style="color:var(--text)">' + esc(s.latest_source_observation) + '</b></div>' : '') +
+          (s.records != null ? '<div style="color:var(--muted);margin-top:3px">records: <b style="color:var(--text)">' + esc(s.records) + '</b></div>' : '') +
+          '<a href="admin/source-health.html" style="color:var(--accent);font-size:.76rem;display:inline-block;margin-top:5px">Open per-source health →</a>' +
           '</div>';
       }).join('');
     rowsEl.innerHTML = grid || '<p class="sub" style="color:var(--muted)">No freshness surfaces recorded.</p>';

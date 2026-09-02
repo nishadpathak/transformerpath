@@ -30,55 +30,76 @@ function esc(s) { return String(s == null ? '' : s); }
 
 const TODAY = new Date().toISOString().slice(0, 10);
 
+// P0 freshness_status — computed HONESTLY from the observation/retrieval dates and
+// whether a verified reference exists. Never invents a "current" claim when the
+// observation date is old; a reference with no verified figure is HISTORICAL.
+//   CURRENT_REFERENCE  — verified figure, observed within the short freshness window
+//   AGING              — verified figure, observation older than the freshness window
+//   STALE              — verified figure, substantially older (still shown, truthfully)
+//   HISTORICAL         — no verified public reference (no comparable price exists)
+// Only the relative age of copper/aluminium (both observed 2026-08-20, retrieved
+// 2026-08-26) is used; thresholds are conservative so we never over-claim.
+const FRESH_WINDOW_DAYS = 5;   // "current" only if observed within ~1 week
+function freshnessStatus(obs, noRef) {
+  if (noRef) return 'HISTORICAL';
+  if (!obs) return 'HISTORICAL';
+  const d = new Date(obs + 'T00:00:00Z');
+  if (isNaN(d)) return 'HISTORICAL';
+  const ageDays = Math.round((Date.now() - d.getTime()) / 86400000);
+  if (ageDays <= FRESH_WINDOW_DAYS) return 'CURRENT_REFERENCE';
+  if (ageDays <= 30) return 'AGING';
+  return 'STALE';
+}
+
 // Copper / aluminium — verifiable LME reference; delay is inherent (reference,
 // not a live feed). These are genuinely sourced.
 const LME = 'https://www.lme.com/en/market-data/lme-reference-prices/lme-official-price';
 const rows = [
   {
     material: 'Copper', grade: 'Cu-ETP / windings', market: 'LME', country: 'Global', region: 'Global',
-    price: 14170, currency: 'USD', unit: 'USD / t', price_basis: '3-month official ring settlement (reference)',
+    price: 14170, currency: 'USD', unit: 'USD / t', price_basis: '3-month official ring settlement (reference)', basis: '3-month official ring settlement (reference)',
     observation_date: '2026-08-20', source: 'LME official price', source_url: LME,
     retrieved_at: '2026-08-26', delay_type: 'REFERENCE', confidence: 'MEDIUM',
     notes: 'LME 3-month official ring settlement as a latest reference. Varies by day; verify against the LME official price before commercial use. Not a live feed.',
   },
   {
     material: 'Aluminium', grade: 'Al conductor / foil', market: 'LME', country: 'Global', region: 'Global',
-    price: 3182, currency: 'USD', unit: 'USD / t', price_basis: '3-month official ring settlement (reference)',
+    price: 3182, currency: 'USD', unit: 'USD / t', price_basis: '3-month official ring settlement (reference)', basis: '3-month official ring settlement (reference)',
     observation_date: '2026-08-20', source: 'LME official price', source_url: LME,
     retrieved_at: '2026-08-26', delay_type: 'REFERENCE', confidence: 'MEDIUM',
     notes: 'LME 3-month official ring settlement as a latest reference. Varies by day; verify against the LME official price before commercial use. Not a live feed.',
   },
   {
     material: 'CRGO / grain-oriented electrical steel', grade: 'GRADE NOT SPECIFIED', market: 'Various', country: '', region: '',
-    price: null, currency: 'USD', unit: 'USD / MT', price_basis: 'NOT VERIFIED',
+    price: null, currency: 'USD', unit: 'USD / MT', price_basis: 'NOT VERIFIED', basis: 'NOT VERIFIED',
     observation_date: null, source: 'No established public reference', source_url: '',
     retrieved_at: TODAY, delay_type: 'HISTORICAL', confidence: 'LIMITED',
     notes: 'There is no single global CRGO exchange price. Price varies by market, grade (M-3/M-4/M-OH etc.), loss class, conventional vs Hi-B, domain refinement, thickness, width, coil/slit form, volume, commercial basis, tariffs, freight and delivery basis. No grade-, thickness- and basis-specific verified figure is available here, so no concrete number is shown. Unknown > incorrect.',
   },
   {
     material: 'Transformer oil (mineral)', grade: 'GRADE NOT SPECIFIED', market: 'Various', country: '', region: '',
-    price: null, currency: 'USD', unit: 'USD / t', price_basis: 'NOT VERIFIED',
+    price: null, currency: 'USD', unit: 'USD / t', price_basis: 'NOT VERIFIED', basis: 'NOT VERIFIED',
     observation_date: null, source: 'No established public reference', source_url: '',
     retrieved_at: TODAY, delay_type: 'HISTORICAL', confidence: 'LIMITED',
     notes: 'No public daily index for mineral transformer oil; price is negotiated. Shown as unavailable rather than invented.',
   },
   {
     material: 'Natural ester', grade: 'GRADE NOT SPECIFIED', market: 'Various', country: '', region: '',
-    price: null, currency: 'USD', unit: 'USD / t', price_basis: 'NOT VERIFIED',
+    price: null, currency: 'USD', unit: 'USD / t', price_basis: 'NOT VERIFIED', basis: 'NOT VERIFIED',
     observation_date: null, source: 'No established public reference', source_url: '',
     retrieved_at: TODAY, delay_type: 'HISTORICAL', confidence: 'LIMITED',
     notes: 'No public daily index for natural ester; price is negotiated and runs at a premium over mineral oil. Shown as unavailable rather than invented.',
   },
   {
     material: 'Pressboard / laminated pressboard', grade: 'GRADE NOT SPECIFIED', market: 'Various', country: '', region: '',
-    price: null, currency: 'USD', unit: 'USD / kg', price_basis: 'NOT VERIFIED',
+    price: null, currency: 'USD', unit: 'USD / kg', price_basis: 'NOT VERIFIED', basis: 'NOT VERIFIED',
     observation_date: null, source: 'No established public reference', source_url: '',
     retrieved_at: TODAY, delay_type: 'HISTORICAL', confidence: 'LIMITED',
     notes: 'No public daily index for transformer pressboard; price is negotiated by grade and thickness. Shown as unavailable rather than invented.',
   },
   {
     material: 'Tank steel', grade: 'GRADE NOT SPECIFIED', market: 'Various', country: '', region: '',
-    price: null, currency: 'USD', unit: 'USD / t', price_basis: 'NOT VERIFIED',
+    price: null, currency: 'USD', unit: 'USD / t', price_basis: 'NOT VERIFIED', basis: 'NOT VERIFIED',
     observation_date: null, source: 'No established public reference', source_url: '',
     retrieved_at: TODAY, delay_type: 'HISTORICAL', confidence: 'LIMITED',
     notes: 'Mild steel plate for tanks; price is a general steel-market input, not a transformer-specific public index. Shown as unavailable rather than invented.',
@@ -87,20 +108,27 @@ const rows = [
 // Sort: sourced reference first, then unavailable.
 rows.sort((a, b) => (a.price == null) - (b.price == null) || String(a.material).localeCompare(b.material));
 
+// Attach P0 freshness_status per record (computed honestly from observation date
+// and whether a verified figure exists). Purely additive — preserves all legacy fields.
+rows.forEach((r) => {
+  r.freshness_status = freshnessStatus(r.observation_date, r.price == null);
+});
+
 const out = {
   $schema: 'https://transformerpath.com/materials.schema.json',
   generated: new Date().toISOString(),
   updated: TODAY,
   currency: 'USD',
   honesty_note: 'Copper and aluminium are the LME 3-month official ring settlement as latest REFERENCE (dated, sourced, not a live feed). CRGO, oil, ester, pressboard and tank steel have no established public daily index and are shown as unavailable/GRADE NOT SPECIFIED rather than invented. Unknown > incorrect.',
+  freshness_scale: 'CURRENT_REFERENCE (observed within ~1 week) | AGING (verified, older) | STALE (verified, substantially older) | HISTORICAL (no verified public reference). Computed from observation_date; a reference is never presented as "live".',
   materials: rows,
   // Backward-compatible row for the homepage / intel ticker (material-latest.js).
   latest_rows: rows.map((r) => ({
     id: r.material.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, ''),
     name: r.material, unit: r.unit, value: r.price, value_display: (r.price == null ? '—' : '≈ ' + r.price.toLocaleString('en-US')),
     currency: r.currency, market: r.market, source: r.source, observation_date: r.observation_date || null,
-    last_verified: r.retrieved_at, status: (r.price == null ? 'historical' : 'recent'),
-    note: r.notes,
+    last_verified: r.retrieved_at, status: (r.price == null ? 'historical' : r.freshness_status.toLowerCase()),
+    freshness_status: r.freshness_status, basis: r.basis, note: r.notes,
   })),
 };
 fs.writeFileSync('data/materials.json', JSON.stringify(out, null, 2));
