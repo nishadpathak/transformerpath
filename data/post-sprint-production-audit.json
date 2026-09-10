@@ -1,6 +1,6 @@
 {
   "$schema": "https://transformerpath.com/production-audit.schema.json",
-  "generated": "2026-09-10T10:09:14.619Z",
+  "generated": "2026-09-10T10:20:36.366Z",
   "note": "POST-SPRINT PRODUCTION AUDIT. READ-ONLY verification of checked-in source + generated data + served HTML. Does not assert anything about an unobserved live runtime. UNKNOWN > INCORRECT.",
   "surfaces": [
     {
@@ -181,7 +181,62 @@
     }
   ],
   "freshness_contradiction_sweep": {
-    "pages_with_contradictions": 0,
-    "pages": []
+    "pages_with_contradictions": 9,
+    "pages": [
+      {
+        "file": "dist/intel-2026-07-11.html",
+        "claims": [
+          "updated hourly"
+        ]
+      },
+      {
+        "file": "dist/intel-2026-07-15.html",
+        "claims": [
+          "updated hourly"
+        ]
+      },
+      {
+        "file": "dist/intel-2026-07-21.html",
+        "claims": [
+          "updated hourly"
+        ]
+      },
+      {
+        "file": "dist/intel-2026-07-22.html",
+        "claims": [
+          "updated hourly"
+        ]
+      },
+      {
+        "file": "dist/intel-2026-07-25.html",
+        "claims": [
+          "updated hourly"
+        ]
+      },
+      {
+        "file": "dist/intel-2026-08-03.html",
+        "claims": [
+          "updated hourly"
+        ]
+      },
+      {
+        "file": "dist/intel-2026-08-16.html",
+        "claims": [
+          "updated hourly"
+        ]
+      },
+      {
+        "file": "dist/intel-2026-08-18.html",
+        "claims": [
+          "updated hourly"
+        ]
+      },
+      {
+        "file": "dist/intel-2026-08-21.html",
+        "claims": [
+          "updated hourly"
+        ]
+      }
+    ]
   }
 }
