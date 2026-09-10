@@ -36,12 +36,78 @@ const RSS_FEEDS = [
 const REGION_LABELS = ['Middle East / GCC', 'India / South Asia', 'Europe', 'North America', 'Latin America', 'Global'];
 
 function regionOf(t, def) {
-  if (/(uae|saudi|gulf|middle east|oman|kuwait|qatar|bahrain|emirat)/.test(t)) return 'Middle East / GCC';
-  if (/(india|south asia|bangladesh|pakistan|sri lanka)/.test(t)) return 'India / South Asia';
-  if (/(latin america|latinoam|brasil|brazil|m[eé]xico|mexico|chile|argentina|per[uú]|colombia|ecuador|venezuela|rep[uú]blica dominicana|españa|spain)/.test(t)) return 'Latin America';
-  if (/(europe|germany|deutschland|uk\b|britain|france|italy|spain|netherlands|poland|sweden|norway|denmark|austria)/.test(t)) return 'Europe';
-  if (/(united states|usa|canada|north america|\bus\b)/.test(t)) return 'North America';
+  /* Word-boundary matching throughout. Plain substring tests put "Indiana
+     Michigan Power" in India / South Asia, "industry" in North America (it
+     contains "us") and "Ukraine" in Europe via "uk". Every term below is
+     anchored so a country name only matches when it stands on its own. */
+  const has = (re) => re.test(t);
+
+  /* Check the most specific place names first: a headline naming a US state
+     must not be captured by a broader rule later. */
+  if (has(/\b(indiana|indianapolis)\b/)) return 'North America';
+
+  if (has(/\b(uae|u\.a\.e|saudi|gulf|middle east|oman|kuwait|qatar|bahrain|emirates?|dubai|abu dhabi)\b/))
+    return 'Middle East / GCC';
+
+  if (has(/\b(india|south asia|bangladesh|pakistan|sri lanka|nepal)\b/))
+    return 'India / South Asia';
+
+  if (has(/\b(latin america|latinoam\w*|brasil|brazil|m[eé]xico|mexico|chile|argentina|per[uú]|colombia|ecuador|venezuela|rep[uú]blica dominicana)\b/))
+    return 'Latin America';
+
+  if (has(/\b(europe|european|germany|deutschland|uk|u\.k|britain|british|france|italy|spain|españa|netherlands|poland|sweden|norway|denmark|austria|ukraine)\b/))
+    return 'Europe';
+
+  if (has(/\b(united states|u\.s\.?a?|usa|canada|canadian|north america|american)\b/))
+    return 'North America';
+
   return def || 'Global';
+}
+
+/* ── Editorial filters ─────────────────────────────────────────────────────
+   Two things must never reach the feed:
+
+   1. ADVERTISING. Trade publications syndicate sponsored posts through the
+      same RSS as their journalism. Republishing another site's advertorial as
+      TransformerPath news misleads the reader and borrows someone else's sales
+      copy. "Increase Pole Life by 20 Years: Choosing the Right Barrier System"
+      was live on the feed — a vendor pitch, not a news item.
+
+   2. DUPLICATES. The same story arrives from several feeds; it was appearing
+      twice in the same region block. */
+
+const AD_PATTERNS = [
+  /\bsponsored\b/i, /\badvertorial\b/i, /\bpaid (?:post|content|partnership)\b/i,
+  /\bpromoted\b/i, /\bpress release\b/i, /\bwebinar\b.*\bregister\b/i,
+  /\bwhite ?paper\b/i, /\bdownload (?:our|the|your|now|free)\b/i,
+  /\bcontact us today\b/i, /\brequest a (?:quote|demo)\b/i,
+  /\bbuy(?:er'?s)? guide\b/i, /\bfree trial\b/i, /\bsubscribe now\b/i,
+  /\bin partnership with\b/i, /\bbrought to you by\b/i,
+  /^\s*\[?(?:ad|advert|sponsored)\b/i,
+  /\bchoosing the right\b/i, /\bwhy you should\b/i, /\btop \d+ (?:reasons|ways|benefits)\b/i,
+  /\bincrease .{0,30}\bby \d+ (?:years|%|percent)\b/i
+];
+
+function looksLikeAd(title, desc, url) {
+  const hay = (title + ' ' + (desc || '')).trim();
+  /* Feeds emit stubs — a bare vendor name, a placeholder row. "Zaigo" reached
+     the live homepage as a headline. A real story needs more than one word. */
+  const t = String(title || '').trim();
+  if (t.length < 18 || t.split(/\s+/).length < 3) return true;
+  if (AD_PATTERNS.some((re) => re.test(hay))) return true;
+  /* Feed URLs frequently label their own sponsored sections. */
+  if (/\/(sponsored|advertorial|partner-content|promoted|press-release)\//i.test(url || '')) return true;
+  return false;
+}
+
+/* Normalised key for dedupe: same story, different feed or tracking suffix. */
+function dedupeKey(title, url) {
+  const t = String(title || '').toLowerCase()
+    .replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
+  try {
+    const u = new URL(url);
+    return t || (u.hostname + u.pathname);
+  } catch (e) { return t; }
 }
 
 function strip(x) {
@@ -89,12 +155,24 @@ async function fetchEventRegistry() {
     if (!data.articles || !data.articles.length) { console.warn('No articles from EventRegistry'); return null; }
 
     const regions = emptyRegions();
+    const seen = new Set();
+    let dropped = { ads: 0, dupes: 0 };
     data.articles.slice(0, 30).forEach((article) => {
-      const text = (article.title + ' ' + (article.body || '')).toLowerCase();
+      const body = article.body || '';
+
+      /* Someone else's advertising is not our news. */
+      if (looksLikeAd(article.title, body, article.url)) { dropped.ads++; return; }
+
+      /* Aggregators syndicate the same story under several sources. */
+      const key = dedupeKey(article.title, article.url);
+      if (seen.has(key)) { dropped.dupes++; return; }
+      seen.add(key);
+
+      const text = (article.title + ' ' + body).toLowerCase();
       const loc = (article.location && article.location.label) || '';
       regions[regionOf(text + ' ' + loc)].push({
         title: article.title,
-        snippet: (article.body || article.summary || '').substring(0, 150),
+        snippet: (body || article.summary || '').substring(0, 150),
         value: '',
         lang: article.lang || 'en',
         src: `${article.source.title} · ${new Date(article.dateTime).toLocaleDateString('en-US', {year: '2-digit', month: 'short', day: 'numeric'})}`,
@@ -103,6 +181,9 @@ async function fetchEventRegistry() {
       });
     });
 
+    if (dropped.ads || dropped.dupes) {
+      console.info('[intel] filtered ' + dropped.ads + ' advert(s), ' + dropped.dupes + ' duplicate(s)');
+    }
     return finalize(regions, 'EventRegistry', true);
   } catch (err) { console.error('EventRegistry fetch failed:', err.message); return null; }
 }
@@ -111,6 +192,8 @@ async function fetchEventRegistry() {
 async function fetchRSS() {
   const regions = emptyRegions();
   let ok = false;
+  const seen = new Set();      /* dedupe across every feed, not just within one */
+  let dropped = { ads: 0, dupes: 0 };
   for (const feed of RSS_FEEDS) {
     try {
       const r = await fetch(feed.url, { headers: { 'User-Agent': 'Mozilla/5.0 TransformerPath' } });
@@ -123,6 +206,15 @@ async function fetchRSS() {
         const desc = strip((it.match(/<description[^>]*>([\s\S]*?)<\/description>/) || [])[1]);
         const pubD = (it.match(/<pubDate[^>]*>([\s\S]*?)<\/pubDate>/) || [])[1];
         if (!title) continue;
+
+        /* Someone else's advertising is not our news. */
+        if (looksLikeAd(title, desc, link)) { dropped.ads++; continue; }
+
+        /* The same story reaches us from several feeds. */
+        const key = dedupeKey(title, link);
+        if (seen.has(key)) { dropped.dupes++; continue; }
+        seen.add(key);
+
         // Curated home-market feeds (non-English) are authoritative about which
         // region they cover; only the English feeds rely on text detection.
         const region = feed.region || regionOf((title + ' ' + desc).toLowerCase());
@@ -140,6 +232,9 @@ async function fetchRSS() {
       }
     } catch (e) { console.warn('RSS fetch failed:', feed.url, e.message); }
   }
+  if (dropped.ads || dropped.dupes) {
+    console.info('[intel] filtered ' + dropped.ads + ' advert(s), ' + dropped.dupes + ' duplicate(s)');
+  }
   return ok ? finalize(regions, 'RSS', false) : null;
 }
 
@@ -156,7 +251,7 @@ function finalize(regions, sourceName, configured) {
   const total = grouped.reduce((s, r) => s + r.items.length, 0);
   const regionCounts = grouped.map((r) => `${r.label} (${r.items.length})`).join(', ');
   const stamp = new Date().toLocaleString('en-GB', { day: 'numeric', month: 'short', year: '2-digit', hour: '2-digit', minute: '2-digit' });
-  const autoBriefing = `Live refresh (${stamp}): ${sourceName} returned ${total} transformer-industry articles (${regionCounts}). Grouped by region; each item links to its original source.`;
+  const autoBriefing = `Live refresh (${stamp}): ${sourceName} returned ${total} articles from transformer and grid industry sources (${regionCounts}). Grouped by region; each item links to its original source.`;
 
   grouped.autoBriefing = autoBriefing;
   grouped.configured = configured;

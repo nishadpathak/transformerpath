@@ -78,7 +78,7 @@
 <meta name="apple-mobile-web-app-title" content="TransformerPath">
 <script src="consent.js" defer></script>
 
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "name": "Transformer Manufacturers — Worldwide Census | TransformerPath", "url": "https://transformerpath.com/manufacturers.html", "description": "A worldwide census of transformer manufacturers — power, distribution and dry-type — across 86 countries, with ranked global leaders and verified company profiles."}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "name": "Transformer Manufacturers — Worldwide Census | TransformerPath", "url": "https://transformerpath.com/manufacturers.html", "description": "A worldwide census of transformer manufacturers — power, distribution and dry-type — across 86 countries, with source-backed capability figures and verified company profiles."}</script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -91,7 +91,8 @@
   "creator": { "@type": "Organization", "name": "TransformerPath", "url": "https://transformerpath.com/" }
 }
 </script>
-    <link rel="stylesheet" href="tp-nav.css?v=2">
+    <link rel="stylesheet" href="tp-nav.css?v=12">
+  <link rel="stylesheet" href="tp-feedback.css?v=12">
 </head>
 <body>
 
@@ -166,6 +167,7 @@
   <div class="container">
     <h1 style="font-size:2.2rem">Transformer <span>Manufacturers</span></h1>
     <p>A worldwide census of transformer makers — power, distribution and dry-type/cast-resin — country by country, with locations and official links.</p>
+    <p style="margin:12px 0 0"><a href="directory.html" style="color:var(--accent);font-weight:700">Searchable sourcing directory →</a> <span style="color:var(--muted)">filter by transformer type, voltage, country and capability evidence, then compare and RFQ. No ranking.</span></p>
   </div>
 </section>
 
@@ -291,7 +293,7 @@ async function loadTiers() {
     const items = (rows || []).slice().sort((a, b) => String(a.name).localeCompare(String(b.name)));
     if (!items.length) { root.innerHTML = '<p style="color:var(--muted)">No sourced capability records available.</p>'; return; }
     let h = '<p style="font-size:.85rem;color:var(--muted);margin:0 0 12px">The suppliers below are shown because they are well-documented, with their reported capacity, voltage, certifications and markets attributed to a cited source. Presented alphabetically for neutrality. <b>Figures are summary values from the cited research — verify capability with the manufacturer before a commercial decision.</b></p>';
-    h += '<table><thead><tr><th>Supplier</th><th>Country</th><th>Reported capacity / yr</th><th>Reported max voltage</th><th>Reported certifications</th><th>Markets</th><th>Source</th></tr></thead><tbody>';
+    h += '<div class="table-wrap"><table><thead><tr><th>Supplier</th><th>Country</th><th>Reported capacity / yr</th><th>Reported max voltage</th><th>Reported certifications</th><th>Markets</th><th>Source</th></tr></thead><tbody>';
     h += items.map(r => `<tr>
       <td>${r.site?'<a href="'+r.site+'" target="_blank" rel="noopener">'+r.name+'</a>':r.name}</td>
       <td>${r.country||r.cc}</td>
@@ -300,7 +302,7 @@ async function loadTiers() {
       <td>${(r.certs||[]).join(', ')||'—'}</td>
       <td>${(r.regions||[]).join(', ')||'—'}</td>
       <td style="font-size:.78rem;color:var(--muted)">${r.source||'—'}</td></tr>`).join('');
-    h += '</tbody></table>';
+    h += '</tbody></table></div>';
     h += '<p style="font-size:.8rem;color:var(--muted);margin-top:10px;line-height:1.6">' +
          'Capacity figures are <b>indicative</b>, compiled from published market research and ' +
          'industry directories rather than measured or manufacturer-confirmed; some rest on a ' +
@@ -390,6 +392,8 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
 (function(){var dp;window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();dp=e;if(document.getElementById('tpInstall'))return;var b=document.createElement('button');b.id='tpInstall';b.textContent='\u2913 Install TransformerPath';b.setAttribute('style','position:fixed;right:16px;bottom:16px;z-index:9999;background:#f5a623;color:#0d1b2e;border:0;border-radius:999px;padding:11px 18px;font-weight:800;font-size:.9rem;box-shadow:0 6px 20px rgba(0,0,0,.28);cursor:pointer;font-family:inherit');b.onclick=function(){b.remove();dp.prompt();dp.userChoice.finally(function(){dp=null;});};document.body.appendChild(b);});})();
 </script>
 <script src="analytics.js?v=5" defer></script>
-<script src="tp-nav.js?v=2" defer></script>
+<script src="tp-nav.js?v=5" defer></script>
+<script src="tp-freshness.js?v=5" defer></script>
+<script src="tp-feedback.js?v=5" defer></script>
 </body>
 </html>

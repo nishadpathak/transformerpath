@@ -42,7 +42,8 @@
   .cta { background: rgba(245,166,35,.08); border: 1px solid var(--accent); border-radius: 12px; padding: 16px 18px; text-align: center; margin-top: 24px; }
   .row-note { color: var(--muted); font-size: .78rem; margin-top: 14px; }
 </style>
-    <link rel="stylesheet" href="tp-nav.css?v=2">
+    <link rel="stylesheet" href="tp-nav.css?v=12">
+  <link rel="stylesheet" href="tp-feedback.css?v=12">
 </head>
 <body>
 <header>
@@ -204,6 +205,8 @@ fetch('data/manufacturer-intel.json').then(function(r){ return r.json(); }).then
   renderChips();
 }).catch(function(){ document.getElementById('cmp').innerHTML='<div class="empty">Manufacturer data unavailable.</div>'; });
 </script>
-<script src="tp-nav.js?v=2" defer></script>
+<script src="tp-nav.js?v=5" defer></script>
+<script src="tp-freshness.js?v=5" defer></script>
+<script src="tp-feedback.js?v=5" defer></script>
 </body>
 </html>

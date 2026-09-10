@@ -29,7 +29,8 @@
 .legal a { color:var(--accent); font-weight:600; }
 </style>
 <script src="consent.js" defer></script>
-    <link rel="stylesheet" href="tp-nav.css?v=2">
+    <link rel="stylesheet" href="tp-nav.css?v=12">
+  <link rel="stylesheet" href="tp-feedback.css?v=12">
 </head>
 <body>
 
@@ -202,7 +203,10 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
     if(!window.TP_RFQ) return;
     window.TP_RFQ.match({category:category,rating:rating,voltage:voltage,destination:dest}).then(function(matches){
       if(!result || !matches || !matches.length) return;
-      var html='<div style="font-size:1.1rem;font-weight:800;color:var(--ink);margin-bottom:4px">Potentially relevant manufacturers <span style="color:var(--muted);font-weight:600;font-size:.85rem">('+matches.length+')</span></div>'+
+      var refNo = (document.getElementById('fld_ref') && document.getElementById('fld_ref').value) || '';
+      var html='';
+      if(refNo){ html += '<div style="font-size:.9rem;color:var(--text);margin-bottom:8px">✅ Your RFQ reference: <b style="color:var(--accent)">'+esc(refNo)+'</b> — quote it in any follow-up. We\u2019ll match suppliers and forward responses to your email.</div>'; }
+      html += '<div style="font-size:1.1rem;font-weight:800;color:var(--ink);margin-bottom:4px">Potentially relevant manufacturers <span style="color:var(--muted);font-weight:600;font-size:.85rem">('+matches.length+')</span></div>'+
         '<p style="font-size:.84rem;color:var(--muted);margin:0 0 12px">Matched from the source-backed TransformerPath census on category, reported rating/voltage and manufacturing geography. This is a <b>capability-based</b> match — it is not a ranking, not a score and not an endorsement. Verify with the manufacturer before a commercial decision.</p>';
       html += matches.map(function(m){
         var mva=m.reported_mva?(' · '+esc(m.reported_mva)):''; var kv=m.reported_voltage?(' · '+esc(m.reported_voltage)):'';
@@ -224,6 +228,8 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
 <script src="supabase-config.js" defer></script>
 <script src="supabase.js" defer></script>
 <script src="rfq-engine.js" defer></script>
-<script src="tp-nav.js?v=2" defer></script>
+<script src="tp-nav.js?v=5" defer></script>
+<script src="tp-freshness.js?v=5" defer></script>
+<script src="tp-feedback.js?v=5" defer></script>
 </body>
 </html>

@@ -9,7 +9,7 @@
 <link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0d1b2e">
-<meta name="description" content="An analytical transformer design calculator using IEC-referenced methods — distribution, power and cast-resin modes. First-cut sizing: core area, turns, conductor sizes, losses, impedance, regulation, thermal and short-circuit figures. Verify outputs against the current standard before use.">
+<meta name="description" content="An analytical transformer design workspace (BETA / engineering review). A leakage-field solver is implemented and the first-pass core, turns and conductor sizing runs as an analytical module, both under review. Outputs are analytical estimates — verify against the current standard and a qualified design engineer before use.">
 <style>
   :root {
     /* Palette now comes from tp-theme.css (loaded last in <head>), which maps
@@ -80,30 +80,31 @@
     <script src="fem-leakage.js?v=1" defer></script>
     <script src="analytics.js?v=5" defer></script><script src="course-gate.js?v=5"></script>
 <meta property="og:title" content="Transformer Design Calculator — Distribution | Power | Cast Resin">
-<meta property="og:description" content="Live IEC 60076 transformer design calculator — distribution, power and cast-resin modes. First-cut electromagnetic, performance and thermal sizing: core area, turns, conductor sizes and losses.">
+<meta property="og:description" content="Analytical transformer design workspace (BETA / engineering review) with a leakage-field solver; first-pass core, turns and conductor sizing runs analytically. Outputs are analytical estimates — verify before use.">
 <meta property="og:url" content="https://transformerpath.com/calculator.html">
 <meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TransformerPath">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Transformer Design Calculator — Distribution | Power | Cast Resin">
-<meta name="twitter:description" content="Live IEC 60076 transformer design calculator — distribution, power and cast-resin modes. First-cut electromagnetic, performance and thermal sizing: core area, turns, conductor sizes and losses.">
+<meta name="twitter:description" content="Analytical transformer design workspace (BETA / engineering review) with a leakage-field solver; first-pass core, turns and conductor sizing runs analytically. Outputs are analytical estimates — verify before use.">
 <meta name="twitter:image" content="https://transformerpath.com/brand/og-image.png">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   "name": "Transformer Design & Calculation Workbench",
-  "description": "Live IEC 60076 transformer design calculator — distribution, power and cast-resin modes. First-cut electromagnetic, performance and thermal sizing: core area, turns, conductor sizes, losses and efficiency, leakage reactance, short-circuit thermal withstand (IEC 60076-5) and impulse / BIL levels, with a scaled cross-section drawing and PDF report.",
+  "description": "Analytical transformer design workspace (BETA / engineering review). The leakage-field solver is implemented and first-pass core, turns and conductor sizing runs analytically. Outputs are analytical estimates — verify against the current standard and a qualified design engineer before use.",
   "applicationCategory": "EngineeringApplication",
   "operatingSystem": "Web",
   "url": "https://transformerpath.com/calculator.html",
   "provider": { "@type": "Organization", "name": "TransformerPath", "url": "https://transformerpath.com/" },
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD", "availability": "https://schema.org/InStock" },
-  "featureList": "IEC 60076-1 rating plate, core & winding sizing, losses & efficiency, leakage reactance, short-circuit thermal withstand (IEC 60076-5), impulse / BIL, to-scale cross-section drawing, PDF report"
+  "featureList": "BETA analytical workspace: leakage-field solve; first-pass core / turns / conductor sizing (analytical, under engineering review)"
 }
 </script>
-    <link rel="stylesheet" href="tp-nav.css?v=2">
+    <link rel="stylesheet" href="tp-nav.css?v=12">
+  <link rel="stylesheet" href="tp-feedback.css?v=12">
 </head>
 <body>
 <header>
@@ -194,9 +195,9 @@
 
 <header>
   <h1>Transformer Design &amp; Calculation Workbench</h1>
-  <p id="subt">Distribution (oil) · Power (oil) · Cast Resin (dry) — an analytical transformer-design calculator using IEC-referenced methods (first-cut sizing, not a certified compliance tool)</p>
+  <p id="subt">Analytical transformer design workspace (BETA / engineering review) — leakage-field solve and first-pass core/turns/conductor sizing. Outputs are analytical estimates; not a compliance or verification tool.</p>
   <p class="trust-line">🔒 Runs entirely in your browser — no server call, no AI model in the loop, nothing you enter is ever sent anywhere.</p>
-  <div class="note" style="margin:10px 0 0;background:#fff8ec;border:1px solid #f0dcb4;color:#6b5a2e"><b>Important.</b> This is an <b>analytical, first-pass design tool using IEC-referenced methods</b>, not a compliance or verification tool. Outputs — core, turns, losses, impedance, thermal and short-circuit figures — must be checked against the current published edition of the invoked standard (e.g. IEC 60076) and the judgement of a qualified transformer design engineer before being relied upon. Where a failure mode is local (hot-spots, stray loss, short-circuit forces) finite-element analysis is required; we point to where that applies throughout.</div>
+  <div class="note" style="margin:10px 0 0;background:#fff8ec;border:1px solid #f0dcb4;color:#6b5a2e"><b>Important.</b> This is an <b>analytical, first-pass design workspace (BETA / engineering review)</b>, not a compliance or verification tool. The leakage-field solve and the first-pass core, turns, current, conductor and DC-resistance estimates are analytical — they must be checked against the current published edition of the invoked standard (e.g. IEC 60076) and the judgement of a qualified transformer design engineer before being relied upon. Losses, impedance, thermal, short-circuit and BOM modules remain under engineering review and are not yet released as validated calculations. Where a failure mode is local (hot-spots, stray loss, short-circuit forces), finite-element analysis is required.</div>
 </header>
 <div class="wrap">
   <div class="cols"><div><label id="ratlbl">Rating (kVA)</label><input id="skva" type="number" value="1000"></div>
@@ -213,6 +214,8 @@ b.addEventListener('click',function(){var d=html.getAttribute('data-theme')==='d
 if(d){html.removeAttribute('data-theme');localStorage.setItem('theme','light');}else{html.setAttribute('data-theme','dark');localStorage.setItem('theme','dark');}upd();});
 })();
 </script>
-<script src="tp-nav.js?v=2" defer></script>
+<script src="tp-nav.js?v=5" defer></script>
+<script src="tp-freshness.js?v=5" defer></script>
+<script src="tp-feedback.js?v=5" defer></script>
 </body>
 </html>

@@ -41,7 +41,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="TransformerPath">
 <script src="consent.js" defer></script>
-    <link rel="stylesheet" href="tp-nav.css?v=2">
+    <link rel="stylesheet" href="tp-nav.css?v=12">
+  <link rel="stylesheet" href="tp-feedback.css?v=12">
 </head>
 <body>
 
@@ -171,7 +172,7 @@
       <tr><td>Zenithar (HVTra, 2D Trafo MAG, 2DESFem)</td><td>Zenithar, Izmir, Türkiye</td><td>A transformer-focused set: HVTra for high-frequency transient RLC modelling with an FEM-extracted capacitance matrix and SPICE export; 2D Trafo MAG for short-circuit impedance, electrodynamic force and stray-loss evaluation; 2DESFem as an electrostatic FEA studio with DXF import and meshing.</td></tr>
       <tr><td>SimScale</td><td>SimScale</td><td>Browser-based EM and thermal simulation — no local install, subscription/compute model.</td></tr>
       <tr><td>Integrated Engineering Software</td><td>IES</td><td>Combined boundary-element and finite-element field solvers; BEM handles open/unbounded field regions well, which suits insulation problems.</td></tr>
-      <tr><td>OEM in-house design suites</td><td>Major manufacturers</td><td>The largest transformer builders run proprietary design chains refined over decades against their own test-floor data. Not licensable — but it is why a works design beats a first-cut analytical one.</td></tr>
+      <tr><td>OEM in-house design suites</td><td>Major manufacturers</td><td>The largest transformer builders run proprietary design chains refined over decades against their own test-floor data. Not licensable — but it is why a detailed factory design beats a first-cut analytical one.</td></tr>
     </table></div>
 
     <h2>4 · System and network studies</h2>
@@ -236,6 +237,8 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
 (function(){var dp;window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();dp=e;if(document.getElementById('tpInstall'))return;var b=document.createElement('button');b.id='tpInstall';b.textContent='\u2913 Install TransformerPath';b.setAttribute('style','position:fixed;right:16px;bottom:16px;z-index:9999;background:#f5a623;color:#0d1b2e;border:0;border-radius:999px;padding:11px 18px;font-weight:800;font-size:.9rem;box-shadow:0 6px 20px rgba(0,0,0,.28);cursor:pointer;font-family:inherit');b.onclick=function(){b.remove();dp.prompt();dp.userChoice.finally(function(){dp=null;});};document.body.appendChild(b);});})();
 </script>
 <script src="analytics.js?v=5" defer></script>
-<script src="tp-nav.js?v=2" defer></script>
+<script src="tp-nav.js?v=5" defer></script>
+<script src="tp-freshness.js?v=5" defer></script>
+<script src="tp-feedback.js?v=5" defer></script>
 </body>
 </html>

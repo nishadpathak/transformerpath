@@ -74,6 +74,14 @@
     return (c.research_completeness || 0) * 10 + (c.reported_mva ? 3 : 0) + (c.reported_voltage ? 2 : 0) + (c.reported_certs && c.reported_certs.length ? 1 : 0);
   }
 
+  function evid(c) {
+    if (c.company_reported) return 'COMPANY_REPORTED';
+    if (c.research_status === 'ACTIVE_CONFIRMED') return 'CONFIRMED';
+    if (c.research_status === 'ACTIVE_LIMITED_DATA' || c.research_status === 'RESEARCH_REQUIRED') return 'INFERRED';
+    return 'UNKNOWN';
+  }
+  function evidenceLabel(e) { return e === 'CONFIRMED' ? 'confirmed' : e === 'COMPANY_REPORTED' ? 'company-reported' : e === 'INFERRED' ? 'inferred' : 'unknown'; }
+
   function match(req) {
     if (!DATA) return Promise.resolve([]);
     var cat = req && req.category || '';
@@ -82,15 +90,18 @@
     var dest = req && req.destination || '';
     var matches = matchOne(cat, rating, voltage, dest).map(function (c) {
       var reasons = [];
+      var ev = evid(c);
       reasons.push('Product categories cover ' + (cat || 'requested equipment'));
-      if (rating && mvaNumber(rating)) reasons.push('Reported rating reaches ' + rating);
-      if (voltage && kvNumber(voltage)) reasons.push('Reported voltage reaches ' + voltage);
+      if (rating && mvaNumber(rating)) reasons.push('Reported rating reaches ' + rating + ' (' + evidenceLabel(ev) + ')');
+      if (voltage && kvNumber(voltage)) reasons.push('Reported voltage reaches ' + voltage + ' (' + evidenceLabel(ev) + ')');
       if (dest && hasCountry(c, dest)) reasons.push('Manufactures/serves in ' + dest);
+      if (c.research_completeness == null || c.research_completeness < 3) reasons.push('Research completeness limited — verify with the manufacturer');
       return {
         name: c.name, slug: c.slug, country: c.country, region: c.region,
         products: c.products || [], reported_voltage: c.reported_voltage || '',
         reported_mva: c.reported_mva || '', factory_countries: [...new Set(factoryCountries(c))],
         research_status: c.research_status || '', research_completeness: c.research_completeness || 0,
+        evidence: ev, evidence_label: evidenceLabel(ev), company_reported: !!c.company_reported,
         website: c.website || '', reasons: reasons,
       };
     }).sort(function (a, b) { return (b.research_completeness - a.research_completeness); });

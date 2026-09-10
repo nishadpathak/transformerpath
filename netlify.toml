@@ -1,6 +1,10 @@
 [build]
-  command = "node build-factories.js && node build-company-developments.js && node build-provenance.js && node build-entity-graph.js && node build-census-audit.js && node build-manufacturer-intel.js && node build-company-pages.js && node build-data-quality.js && node build-intelligence.js && node build-intel-news.js && node build-intel-categories.js && node build-applications.js && node build-standards.js && node build-knowledge.js && node build-engineering-claims.js && node build-course-depth.js && node build-materials.js && node build-materials-pages.js && node build-markets.js && node build-utilities.js && node build-grids.js && node build-projects.js && node build-tenders.js && node build-awards.js && node build-case-studies.js && node build-accessories.js && node build-events.js && node build-exhibitions.js && node build-books.js && node build-commerce.js && node build-commerce-intel.js && node build-freshness.js && node build-production-audit.js && node build-site-stats.js && node build_ssr.js && node build-seo.js && node stamp-intel.js && node bump-assets.js && node check-archives.js && node check-data-quality.js && node check-config.js && node check-links.js && echo 'Static site with serverless functions'"
-  publish = "."
+  command = "node build-factories.js && node build-company-developments.js && node build-provenance.js && node build-entity-graph.js && node build-census-audit.js && node build-manufacturer-intel.js && node build-directory-index.js && node build-company-pages.js && node build-data-quality.js && node build-intelligence.js && node build-intel-news.js && node build-intel-categories.js && node build-applications.js && node build-standards.js && node build-knowledge.js && node build-engineering-claims.js && node build-course-depth.js && node build-materials.js && node build-materials-pages.js && node build-markets.js && node build-utilities.js && node build-grids.js && node build-projects.js && node build-tenders.js && node build-awards.js && node build-case-studies.js && node build-accessories.js && node build-events.js && node build-post-event-intel.js && node build-event-summary-pages.js && node build-topic-hubs.js && node build-masterclass-paywall.js && node build-exhibitions.js && node build-books.js && node build-commerce.js && node build-commerce-intel.js && node build-freshness.js && node build-production-audit.js && node build-site-stats.js && node build_ssr.js && node build-seo.js && node stamp-intel.js && node bump-assets.js && node check-archives.js && node check-data-quality.js && node check-config.js && node check-brand.js && node check-links.js && node check-design.js && node tests/engine-sanity.js && node check-event-intel.js && node check-event-integrity.js && node check-topics.js && node check-data-graph.js && node check-masterclass-paywall.js && node tests/masterclass-live-qa.test.js && node tests/viz-math.test.js && node build-dist.js && echo 'Static site with serverless functions'"
+  # publish = "." shipped the whole working folder, so every internal file was on
+  # the CDN and "protected" only by case-sensitive 404 rules that Netlify's
+  # case-insensitive file serving defeated. dist/ is an allowlisted artifact:
+  # nothing is published unless build-dist.js names it.
+  publish = "dist"
   functions = "functions"
 
 [functions]
@@ -54,6 +58,14 @@
 # single canonical page (see /masterclass.html).
 [[redirects]]
   from = "/tutorial.html"
+  to = "/masterclass.html"
+  status = 301
+  force = true
+
+# tx-design-masterclass.html is a meta-refresh stub to the same page. A 301
+# passes link equity and saves the round trip; the stub stays as a fallback.
+[[redirects]]
+  from = "/tx-design-masterclass.html"
   to = "/masterclass.html"
   status = 301
   force = true
@@ -150,6 +162,39 @@
   to = "/404.html"
   status = 404
   force = true
+
+# Transformer Equipments/ is a stale legacy snapshot of a previous iteration
+# (old intel pages with a "refreshed daily" cadence, _synctmp/, site-archive/,
+# the legacy mega-menu nav, an "Elin" voice and long-dead claims). publish = "."
+# would otherwise serve it verbatim alongside the current site. Block it at the
+# edge (exact path and everything under it); check-config.js skips it and it is
+# gitignored for the same reason.
+[[redirects]]
+  from = "/Transformer Equipments"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/Transformer Equipments/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# Transformer Radiators/ contains internal factory feasibility models and
+# commercial brochures. Block them from being served.
+[[redirects]]
+  from = "/Transformer Radiators"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/Transformer Radiators/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
 
 # Security hardening headers — safe to set globally; chosen so nothing on the
 # JS-heavy site breaks. CSP is intentionally NOT set here (inline scripts +

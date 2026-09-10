@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TransformerPath Visual Engine — Interactive Labs | TransformerPath</title>
+<meta name="description" content="Interactive transformer learning labs — vector group simulator, inrush simulator and construction explorer. Analytical, educational models.">
+<link rel="robots" content="noindex, follow">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
+<link rel="stylesheet" href="/style.css?v=12"><link rel="stylesheet" href="/tp-nav.css?v=12">
+<style>
+.vz-wrap{max-width:1100px;margin:0 auto;padding:40px 20px 90px}
+.vz-wrap h1{font-size:1.8rem;color:var(--ink)}
+.vz-label{font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:22px 0 8px}
+.tp-viz{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin:10px 0}
+.tp-viz-head{font-weight:800;color:var(--ink);font-size:1rem;margin-bottom:8px}
+.tp-viz-canvas{margin:8px 0;overflow-x:auto}
+.tp-viz-svg{max-width:100%;height:auto;background:#fff;border:1px solid var(--border);border-radius:8px}
+.tp-viz-controls{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0}
+.tp-viz-ctl{display:flex;align-items:center;gap:6px;font-size:.84rem;color:var(--muted)}
+.tp-viz-ctl select,.tp-viz-ctl input[type=range]{font:inherit;color:var(--text);background:var(--bg);border:1px solid var(--border);border-radius:6px}
+.tp-viz-val{min-width:46px;text-align:right;font-weight:700;color:var(--text)}
+.tp-viz-stat,.tp-viz-paraout{font-size:.9rem;color:var(--text);margin:6px 0}
+.tp-viz-paraout ul{margin:6px 0 0 18px}
+.tp-viz-note{font-size:.78rem;color:var(--muted);margin-top:8px}
+.tp-viz-info{font-size:.9rem;color:var(--text);background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-top:8px}
+.tp-viz-locked{background:var(--card);border:1px solid var(--accent);border-radius:12px;padding:16px;text-align:center;font-size:.95rem}
+.tp-viz-comp{cursor:pointer}
+.tp-viz-comp:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tp-status{background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:10px 14px;margin:8px 0;font-size:.82rem}
+.tp-status-head{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.tp-status-items{display:flex;flex-wrap:wrap;gap:8px 12px;margin:6px 0;color:var(--muted)}
+.tp-status-note{color:var(--muted);font-size:.78rem;line-height:1.5;border-top:1px solid var(--border);padding-top:6px}
+.vz-disclaimer{font-size:.8rem;color:var(--muted);line-height:1.6;margin-top:14px}
+</style>
+</head>
+<body>
+<header><link rel="stylesheet" href="/tp-nav.css?v=12">
+  <div class="container nav">
+    <a href="/index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg>Transformer<span class="accent">Path</span></a>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
+    <nav class="tpnav" id="mainNav" aria-label="Primary">
+      <a href="/intel.html">Intel</a><a href="/manufacturers.html">Manufacturers</a><a href="/projects.html">Projects</a><a href="/tenders.html">Tenders</a><a href="/grids.html">Grids</a><a href="/events.html">Events</a><a href="/learn.html">Learn</a><a href="/tools.html">Tools</a><a href="/rfq.html">RFQ</a>
+      <span class="tpnav-utils"><a href="/search.html">🔍</a><a href="/workspace.html" data-tp-account>Account</a></span>
+    </nav>
+  </div>
+</header>
+
+<main class="vz-wrap">
+  <h1>Interactive transformer learning labs</h1>
+  <p style="color:var(--muted);font-size:.95rem">Analytical, educational visualisations. Each is an <b>engineering model</b>, not an EMT/CFD simulation or a design calculation.</p>
+
+  <div class="vz-label">Vector Group Simulator</div>
+  <div data-viz="vector-group"></div>
+
+  <div class="vz-label">Inrush / Energisation Simulator</div>
+  <div data-viz="inrush"></div>
+
+  <div class="vz-label">Transformer Construction Explorer</div>
+  <div data-viz="construction"></div>
+
+  <div class="vz-label">Short-Circuit Forces Explorer</div>
+  <div data-viz="short-circuit"></div>
+
+  <div class="vz-label">Loading, Hot-Spot &amp; Life</div>
+  <div data-viz="loading"></div>
+
+  <div class="vz-label">Calculation Status (reusable component)</div>
+  <div id="vz-status-demo" class="tp-viz"></div>
+
+  <p class="vz-disclaimer"><b>Scope.</b> These are simplified analytical/educational models used to explain concepts. They are not EMT-type simulations, CFD, or validated design calculations, and they do not claim IEC/IEEE compliance. Each lab declares machine-readable model metadata (<code>model_type / model_version / validation_scope / assumptions / limitations / required_inputs / reference_basis / benchmark_status / engineering_review_status</code>) so the Masterclass and Workbench share the same model identity and validation status. The engineering math is unit-tested (see tests/viz-math.test.js); interactive rendering requires a modern browser and is gated for Learning subscribers where the lab is premium.</p>
+</main>
+
+<footer><div class="container"><p style="margin:0;color:var(--muted);font-size:.85rem">© 2026 TransformerPath. All rights reserved. <a href="/learn.html" style="color:var(--accent)">Learn</a></p></div></footer>
+
+<script src="/viz/viz-math.js" defer></script>
+<script src="/viz/tp-viz.js" defer></script>
+<script src="/viz/status.js" defer></script>
+<script src="/viz/vector-group.js" defer></script>
+<script src="/viz/inrush.js" defer></script>
+<script src="/viz/construction.js" defer></script>
+<script src="/viz/short-circuit.js" defer></script>
+<script src="/viz/loading.js" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){ if(window.TP_STATUS) window.TP_STATUS.render(document.getElementById('vz-status-demo'), { analytical:true, inputsComplete:true, benchmark:false, criterion:false }); });
+</script>
+<script src="/tp-nav.js?v=5" defer></script>
+<script src="/analytics.js?v=5" defer></script>
+</body>
+</html>

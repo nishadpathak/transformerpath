@@ -71,7 +71,11 @@ exports.handler = async (event) => {
     // unpaid, expired, refunded) is rejected.
     if (session.payment_status === 'paid') {
       const tier = deriveTier(session);
-      return { statusCode: 200, body: JSON.stringify({ valid: true, paid: true, tier }) };
+      // Issue a server-trusted, expiring entitlement token (not localStorage,
+      // not a query param) so gated content delivery can be verified server-side.
+      const ent = require('./lib/entitlement');
+      const entitlement_token = ent.issue(tier, 365 * 24 * 3600);
+      return { statusCode: 200, body: JSON.stringify({ valid: true, paid: true, tier, entitlement_token }) };
     }
     return { statusCode: 200, body: JSON.stringify({ valid: false, paid: false, payment_status: session.payment_status }) };
   } catch (e) {

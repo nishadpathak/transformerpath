@@ -68,7 +68,8 @@ table.cmp .n { color:var(--border); }
 <meta name="theme-color" content="#0d1b2e">
 
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "TransformerPath Yearly Access", "description": "Annual access to the TransformerPath transformer-design masterclass, interactive 3D models, IEC 60076 design calculator, test-report and rating-plate generators and the Design Engineer Track.", "brand": {"@type": "Organization", "name": "TransformerPath"}, "offers": {"@type": "AggregateOffer", "priceCurrency": "USD", "lowPrice": "199", "highPrice": "1999", "offerCount": "3", "offers": [{"@type": "Offer", "name": "Learning", "price": "199", "priceCurrency": "USD", "description": "Individual learner — 1 seat"}, {"@type": "Offer", "name": "Professional", "price": "599", "priceCurrency": "USD", "description": "Professional tier — 1 seat"}, {"@type": "Offer", "name": "Team", "price": "1999", "priceCurrency": "USD", "description": "Team — up to 10 seats"}]}}</script>
-    <link rel="stylesheet" href="tp-nav.css?v=2">
+    <link rel="stylesheet" href="tp-nav.css?v=12">
+  <link rel="stylesheet" href="tp-feedback.css?v=12">
 </head>
 <body>
 
@@ -171,7 +172,7 @@ table.cmp .n { color:var(--border); }
           <li><span class="ok">✓</span> Course completion record for the Design Engineer Track (a record of completion — not a qualification)</li>
           <li><span class="ok">✓</span> 1 person, standard review queue</li>
         </ul>
-        <a class="cta primary" id="ctaEngineer" href="#" target="_blank" rel="noopener" data-track="learning_checkout_started" data-track-plan="Learning">Unlock Learning — $199 →</a>
+        <a class="cta primary" id="ctaLearner" href="#" target="_blank" rel="noopener" data-track="learning_checkout_started" data-track-plan="Learning">Unlock Learning — $199 →</a>
         <div class="fine">Single payment · 12 months access · no auto-renewal</div>
       </div>
 
@@ -408,7 +409,19 @@ table.cmp .n { color:var(--border); }
     fetch('/.netlify/functions/verify-access', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ session_id: stripeReturn }) })
       .then(function (r) { return r.json(); })
       .then(function (res) {
-        if (res && res.valid) { justGranted = grant(res.tier || 'learner'); }
+        if (res && res.valid) {
+          justGranted = grant(res.tier || 'learner');
+          // Persist the server-issued entitlement token as a cookie so gated
+          // content delivery (/.netlify/functions/masterclass-content) can be
+          // verified server-side. SameSite=Lax + Secure + Path=/ + 12-month
+          // expiry. Not HttpOnly (the client entitlement gate reads it), but
+          // the token is HMAC-signed server-side and cannot be forged; expiry
+          // is enforced server-side. Never logs the token.
+          if (res.entitlement_token) {
+            var e = new Date(); e.setFullYear(e.getFullYear() + 1);
+            document.cookie = 'tp_ent=' + encodeURIComponent(res.entitlement_token) + '; expires=' + e.toUTCString() + '; path=/; SameSite=Lax' + (location.protocol === 'https:' ? '; Secure' : '');
+          }
+        }
         renderBanner();
       })
       .catch(function () { renderBanner(); });
@@ -420,6 +433,8 @@ table.cmp .n { color:var(--border); }
 </script>
 
 <script defer src="analytics.js?v=5"></script>
-<script src="tp-nav.js?v=2" defer></script>
+<script src="tp-nav.js?v=5" defer></script>
+<script src="tp-freshness.js?v=5" defer></script>
+<script src="tp-feedback.js?v=5" defer></script>
 </body>
 </html>

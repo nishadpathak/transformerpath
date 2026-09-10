@@ -7,7 +7,7 @@
 (function () {
   'use strict';
   if (!window.fetch) return;
-  fetch('data/site-stats.json')
+  fetch('/data/site-stats.json')
     .then(function (r) { return r.json().catch(function () { return {}; }); })
     .then(function (d) {
       Object.keys(d).forEach(function (k) {

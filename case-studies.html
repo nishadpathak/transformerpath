@@ -31,7 +31,8 @@
 .label-legend{display:flex;flex-wrap:wrap;gap:14px;align-items:center;margin:8px 0 24px;font-size:.82rem;color:var(--muted)}
 @media (max-width:640px){.pj-grid{grid-template-columns:1fr}}
 </style>
-    <link rel="stylesheet" href="tp-nav.css?v=2">
+    <link rel="stylesheet" href="tp-nav.css?v=12">
+  <link rel="stylesheet" href="tp-feedback.css?v=12">
 </head>
 <body>
 <header>
@@ -126,6 +127,8 @@
 <script>
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
 </script>
-<script src="tp-nav.js?v=2" defer></script>
+<script src="tp-nav.js?v=5" defer></script>
+<script src="tp-freshness.js?v=5" defer></script>
+<script src="tp-feedback.js?v=5" defer></script>
 </body>
 </html>

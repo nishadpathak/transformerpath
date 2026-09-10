@@ -28,7 +28,8 @@
 .ct-form label{display:block;font-size:.88rem;font-weight:700;color:var(--ink);margin:12px 0 4px}
 .ct-form input,.ct-form select,.ct-form textarea{width:100%;padding:11px 14px;border:1px solid var(--border);border-radius:8px;font-size:.95rem;font-family:inherit;background:var(--card);color:var(--text)}
 </style>
-    <link rel="stylesheet" href="tp-nav.css?v=2">
+    <link rel="stylesheet" href="tp-nav.css?v=12">
+  <link rel="stylesheet" href="tp-feedback.css?v=12">
 </head>
 <body>
 <header>
@@ -144,6 +145,8 @@
 <script>
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
 </script>
-<script src="tp-nav.js?v=2" defer></script>
+<script src="tp-nav.js?v=5" defer></script>
+<script src="tp-freshness.js?v=5" defer></script>
+<script src="tp-feedback.js?v=5" defer></script>
 </body>
 </html>

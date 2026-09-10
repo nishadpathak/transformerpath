@@ -46,7 +46,12 @@ for (const f of files) {
   // tp-theme.css?v=N
   s = s.replace(/tp-theme\.css\?v=\d+/g, 'tp-theme.css?v=' + THEME_V);
   // JS assets: analytics.js, course-gate.js, supabase.js, etc.
-  s = s.replace(/(analytics\.js|course-gate\.js|sitemap\.js|material-latest\.js)\?v=\d+/g, '$1?v=' + JS_V);
+  /* Every versioned JS asset must be listed here or its ?v= never moves and
+     returning visitors keep the old file. tp-nav, tp-feedback, tp-freshness and
+     site-stats were shipping with a frozen ?v=1 for exactly that reason. */
+  s = s.replace(/(analytics\.js|course-gate\.js|sitemap\.js|material-latest\.js|site-stats\.js|tp-nav\.js|tp-freshness\.js|tp-feedback\.js)\?v=\d+/g, '$1?v=' + JS_V);
+  /* Same for the stylesheets that arrived after style.css/tp-theme.css. */
+  s = s.replace(/(tp-nav\.css|tp-feedback\.css)\?v=\d+/g, '$1?v=' + CSS_V);
   s = s.replace(/(<script src="material-latest\.js)([">])/g, '$1?v=' + JS_V + '$2');
   if (s !== before) {
     fs.writeFileSync(f, s);
@@ -61,7 +66,7 @@ if (fs.existsSync('sw.js')) {
   const swBefore = sw;
   sw = sw.replace(/const CACHE = '[^']*';/, "const CACHE = '" + SW_CACHE + "';");
   // Also update any CORE asset string to the versioned filename so precache is fresh.
-  sw = sw.replace(/'style\.css(?!\?v=)'/g, "'style.css?v=" + CSS_V + "'");
+  sw = sw.replace(/'style\.css(\?v=\d+)?'/g, "'style.css?v=" + CSS_V + "'");
   if (sw !== swBefore) fs.writeFileSync('sw.js', sw);
 }
 

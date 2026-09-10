@@ -156,16 +156,26 @@ console.log('generated', countryIndex.length, 'country pages');
    Covers all indexable pages (main + generated + dated Intel editions) so it
    never drifts from the pages actually on disk. */
 (function () {
-  var MAIN = ['', 'intel.html', 'events.html', 'webinars.html', 'manufacturers.html', 'grids.html',
-    'learn.html', 'blog.html', 'components.html', 'buyers-guide.html', 'rfq.html', 'jobs.html', 'resources.html',
-    'software.html', 'books.html', 'pricing.html', 'verified.html', 'list-company.html', 'correct-company.html',
-    'sponsor.html', 'faq.html', 'about.html', 'contact.html', 'calculator.html', 'masterclass.html',
-    'academy.html', 'explorer.html', 'design.html', 'engineer-track.html', 'teams.html',
-    'for-manufacturers.html', 'power3d.html', 'testbay.html', 'hydrogen.html', 'construction-guide.html',
-    'article-fem-vs-analytical.html', 'article-lead-times.html', 'article-crgo-vs-amorphous.html',
-    'verified-standards.html', 'autotransformer.html', 'bushing.html', 'coilassembly.html',
-    'coretopology.html', 'gsu.html', 'oltc.html', 'windings.html', 'country-designer.html', 'subscribe.html',
-    'applications.html', 'knowledge.html', 'standards.html', 'materials.html', 'markets.html', 'projects.html', 'tenders.html', 'awards.html', 'compare.html', 'intel-pro.html', 'case-studies.html', 'contribute.html', 'accessories.html', 'intelligence.html', 'methodology.html', 'exhibitions.html', 'utilities.html', 'vendors.html', 'company.html', 'archive.html'];
+  /* MAIN was a hand-typed list of 68 filenames while the comment above promised
+     the sitemap "never drifts from the pages actually on disk". It drifted:
+     tools.html was indexable and absent. Derive it instead — every top-level
+     page that is not a stub, an error page or explicitly noindex. */
+  var SITEMAP_SKIP = ['404.html', 'offline.html', 'admin.html', 'index.html'];
+  var MAIN = [''].concat(
+    fs.readdirSync('.')
+      .filter(function (f) { return /\.html$/.test(f); })
+      .filter(function (f) { return f.charAt(0) !== '_'; })
+      .filter(function (f) { return SITEMAP_SKIP.indexOf(f) < 0; })
+      .filter(function (f) { return !/^intel-2026-/.test(f); })   /* added below */
+      .filter(function (f) {
+        var html = '';
+        try { html = fs.readFileSync(f, 'utf8'); } catch (e) { return false; }
+        if (/<meta[^>]+name=["']robots["'][^>]*content=["'][^"']*noindex/i.test(html)) return false;
+        if (/http-equiv=["']refresh["']/i.test(html)) return false;   /* redirect stubs */
+        return true;
+      })
+      .sort()
+  );
   var urls = [];
   MAIN.forEach(function (u) { urls.push('https://transformerpath.com/' + (u || '')); });
   ['manufacturers', 'components', 'applications', 'knowledge'].forEach(function (dir) {
@@ -174,6 +184,14 @@ console.log('generated', countryIndex.length, 'country pages');
   try {
     fs.readdirSync('grids').forEach(function (d) {
       if (fs.existsSync('grids/' + d + '/index.html')) urls.push('https://transformerpath.com/grids/' + d + '/');
+    });
+  } catch (e) {}
+  /* topics/ was built by build-topic-hubs.js but listed nowhere: absent from the
+     sitemap AND with no inbound internal link, leaving all six hubs reachable
+     only through the JS site-search — i.e. invisible to crawlers. */
+  try {
+    fs.readdirSync('topics').forEach(function (d) {
+      if (fs.existsSync('topics/' + d + '/index.html')) urls.push('https://transformerpath.com/topics/' + d + '/');
     });
   } catch (e) {}
   try {

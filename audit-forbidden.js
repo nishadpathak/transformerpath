@@ -11,7 +11,7 @@ function walk(d, skip) {
   }
   return out;
 }
-const skip = ['archive', '_private', 'transformerpath-site', 'node_modules', '.git'];
+const skip = ['archive', '_private', 'transformerpath-site', 'dist', 'node_modules', '.git', 'Transformer Equipments', 'Transformer Radiators'];
 const files = walk('.', skip)
   // Immutable historical edition snapshots — never edited, so never flagged.
   // They legitimately contain business words ("enterprise"), project dates

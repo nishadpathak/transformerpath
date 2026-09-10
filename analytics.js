@@ -20,7 +20,24 @@ var META_PIXEL_ID = "";            // Meta Pixel ID, e.g. "1234567890" (optional
 (function () {
   'use strict';
 
+  // Run-once guard: even if a page includes analytics.js more than once (or a
+  // template adds it after a hand-authored page already did), only the first
+  // inclusion initialises — so the tag never double-loads and GA4 never
+  // double-fires page_view on the same document.
+  if (window.__TP_ANALYTICS__) return;
+  window.__TP_ANALYTICS__ = true;
+
   var provider = null;
+  // Production-domain guard + consent gate. The Google tag must only load and
+  // fire on the CANONICAL transformerpath.com host (not www, so a www->canonical
+  // redirect records a single page_view), and only after the visitor has
+  // accepted cookies. This keeps www / transformerpath.polsia.io / the Netlify
+  // hostname / deploy previews / localhost / staging from contaminating
+  // production GA4, and respects the site consent implementation (consent.js
+  // gates AdSense; we gate GA4 on the SAME choice so no non-essential
+  // measurement cookie is set until the visitor opts in).
+  var PROD_HOST = /^transformerpath\.com$/i.test(location.hostname);
+  var CONSENT_OK = (function () { try { return localStorage.getItem('tp-cookie-consent') === 'accepted'; } catch (e) { return false; } })();
 
   if (PLAUSIBLE_DOMAIN) {
     var s = document.createElement('script');
@@ -33,7 +50,7 @@ var META_PIXEL_ID = "";            // Meta Pixel ID, e.g. "1234567890" (optional
     };
     window.plausible('pageview');
     provider = 'plausible';
-  } else if (GA4_ID) {
+  } else if (GA4_ID && PROD_HOST && CONSENT_OK) {
     var g = document.createElement('script');
     g.async = true;
     g.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA4_ID;

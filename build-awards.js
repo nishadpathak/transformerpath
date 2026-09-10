@@ -65,6 +65,10 @@ TENDERS.forEach((t) => {
     source_urls: srcUrls,
     confidence: 'LIMITED',
     claim_type: 'INDEPENDENTLY_SOURCED',
+    // The AWARD/order result is EXPLICIT (derived only from a source-confirmed
+    // AWARDED tender with real source URLs). This is distinct from the
+    // transformer-SCOPE confidence (transformer_scope), which may be INFERRED.
+    award_status: 'CONFIRMED',
     last_verified: t.last_verified || new Date().toISOString().slice(0, 10),
     _derived: isProjectDerived,
   });
@@ -95,7 +99,7 @@ console.log('awards.json wrote ' + awards.length + ' awards / ' + stats.countrie
   const body = regionKeys.map((region) => {
     const rows = byRegion[region].sort((a, b) => String(a.country).localeCompare(b.country)).map((a) =>
       '<div class="aw-row"><a class="aw-title" href="' + (a.source_urls[0] ? esc(a.source_urls[0]) : '#') + '"' + (a.source_urls[0] ? ' target="_blank" rel="noopener"' : '') + '>' + esc(a.title) + '</a>' +
-      '<span class="aw-meta">' + esc(a.country || a.region) + (a.voltage ? ' · ' + esc(a.voltage) : '') + (a.transformer_scope ? ' · ' + esc(a.transformer_scope) : '') + (a.buyer ? ' · ' + esc(a.buyer) : '') + '</span></div>').join('');
+      '<span class="aw-meta">' + esc(a.country || a.region) + (a.voltage ? ' · ' + esc(a.voltage) : '') + (a.award_status ? ' · <b>Award status:</b> ' + esc(a.award_status) : '') + (a.transformer_scope && a.transformer_scope !== 'CONFIRMED' ? ' · <b>Transformer scope:</b> ' + esc(a.transformer_scope) : '') + (a.buyer ? ' · ' + esc(a.buyer) : '') + '</span></div>').join('');
     return '<div class="region-h">' + esc(region) + ' (' + byRegion[region].length + ')</div>' + rows;
   }).join('');
   const html = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Transformer Awards — Confirmed Contract Results | TransformerPath</title>' +
@@ -103,7 +107,7 @@ console.log('awards.json wrote ' + awards.length + ' awards / ' + stats.countrie
     '<link rel="canonical" href="https://transformerpath.com/awards.html"><meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath"><meta property="og:title" content="Transformer Awards — Confirmed Contract Results"><meta property="og:url" content="https://transformerpath.com/awards.html"><meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow"><meta name="theme-color" content="#0d1b2e">' +
     '<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any"><link rel="stylesheet" href="style.css?v=12"><style>' + style + '</style></head><body>\n' + HEAD + '\n<main class="aw-wrap">' +
     '<h1>Transformer <span style="color:var(--accent)">Awards</span></h1>' +
-    '<p class="lead">Confirmed contract results across the transformer industry — the outcome of a tender/procurement process. An award is only shown where a source explicitly confirms the result; it is never inferred from a vendor list, a project, or a technical capability. Each award links to its source.</p>' +
+    '<p class="lead">Confirmed contract results across the transformer industry — the outcome of a tender/procurement process. <b>Award status</b> confirms that the award/order result is explicit (never inferred from a vendor list, a project, or a technical capability). <b>Transformer scope</b> is a separate confidence in whether the transformer content itself is explicit or only inferred. Each award links to its source.</p>' +
     '<div class="aw-stats"><div class="s"><b>' + awards.length + '</b><small>Awards</small></div><div class="s"><b>' + stats.countries + '</b><small>Countries</small></div><div class="s"><b>' + Object.keys(stats.by_region).length + '</b><small>Regions</small></div><div class="s"><b>' + stats.confirmed_scope + '</b><small>Confirmed transformer scope</small></div></div>' +
     body +
     '<p class="aw-note">Award metadata is source-tracked. A vendor list or a project is never treated as an award; a confirmed result requires explicit source evidence. Report a <a href="mailto:hello@transformerpath.com?subject=Award%20correction" style="color:var(--accent)">correction</a>. See the <a href="methodology.html" style="color:var(--accent)">research methodology</a>.</p>' +

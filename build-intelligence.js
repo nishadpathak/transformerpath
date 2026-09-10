@@ -202,7 +202,7 @@ function renderIntelligence() {
     '<div class="s"><b>' + (graph.projects || []).length + '</b><small>Projects tracked</small></div>' +
     '<div class="s"><b>' + (graph.tenders || []).length + '</b><small>Tenders</small></div>' +
     '<div class="s"><b>' + (graph.open_tenders || 0) + '</b><small>Open now</small></div>' +
-    '<div class="s"><b>' + (graph.awards || 0) + '</b><small>Recent awards</small></div>' +
+    '<div class="s"><b>' + (graph.awards || []).length + '</b><small>Recent awards</small></div>' +
     '<div class="s"><b>' + Object.keys(co).length + '</b><small>Companies</small></div>' +
     '<div class="s"><b>' + (graph.factory_expansions || 0) + '</b><small>Factory expansions</small></div></div>';
 

@@ -22,6 +22,9 @@ const ci = function (s) { return (s || '').toLowerCase(); };
 const MANUF = JSON.parse(fs.readFileSync('data/manufacturers.json', 'utf8'));
 const EVENTS = JSON.parse(fs.readFileSync('data/events.json', 'utf8'));
 const INTEL = JSON.parse(fs.readFileSync('data/intel.json', 'utf8'));
+// ONE canonical event-status resolver (shared across Events/Homepage/Search/
+// Market/Company/Structured-data surfaces). Replaces the local heuristic below.
+const { resolveStatus, isTravelSafe, chip: statusChip } = require('./lib/event-status');
 // Company entity pages (built by build-company-pages) -> exhibitor map for events.
 const CSMAP = {}; const COUNTRY_CO = {};
 try { JSON.parse(fs.readFileSync('data/company-slugs.json', 'utf8')).forEach(function (c) { CSMAP[c.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()] = c.slug; (COUNTRY_CO[c.country] = COUNTRY_CO[c.country] || []).push({ name: c.name, slug: c.slug }); }); } catch (e) {}
@@ -184,6 +187,17 @@ function travelButtons(name, city, country, s, e) {
     '<a class="btn btn-outline btn-sm" data-aff="calendar" data-ev="' + esc(nm) + '" href="' + cal + '" download target="_blank" rel="noopener">&#128197; Add</a></div>';
 }
 
+/* ── Event confirmation state ───────────────────────────────────────────────
+ * Event status is resolved by the SINGLE shared resolver in lib/event-status.js
+ * (P0 "one canonical event status"). It reads the same cues the registry carries
+ * (dates s/e, description d, venue v) and normalises them to one of the canonical
+ * states: CONFIRMED_UPCOMING / LIVE / COMPLETED / DATE_TBC / VENUE_TBC /
+ * MONITORING / POSTPONED / CANCELLED. It never invents confirmation: a record
+ * with "Date est." / "provisional" / venue-TBC cues stays DATE_TBC / VENUE_TBC,
+ * so an unconfirmed event can never surface firm dates or book-travel CTAs. */
+const travelable = isTravelSafe;
+
+
 // Map each curated event to its region (for "related events" cross-links).
 const EVENT_REGION = {};
 CURATED.forEach(function (ev) { const rec = EVENTS.find(function (x) { return ci(x.n).indexOf(ci(ev.name)) >= 0; }); EVENT_REGION[ev.slug] = rec ? rec.r : ''; });
@@ -202,6 +216,8 @@ function knowLabel(s) { return s.replace(/-/g, ' ').replace(/\b\w/g, function (c
 
 function eventPage(ev) {
   const rec = EVENTS.find(function (x) { return ci(x.n).indexOf(ci(ev.name)) >= 0; }) || { n: ev.name, s: '', e: '', c: '', co: '', r: '', v: '', u: '#', d: ev.blurb };
+  const st = resolveStatus(rec);
+  const confirmed = travelable(st);
   const mk = makersForMarket(ev.market);
   const intel = intelFor(rec);
   const comps = (ev.comps || []).map(function (c) { return '<a class="tpill" href="../../components/' + c + '.html">' + esc(c.replace(/-/g, ' ')) + '</a>'; }).join(' ');
@@ -223,7 +239,7 @@ function eventPage(ev) {
   const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: ev.faq.map(function (f) { return { '@type': 'Question', name: f[0], acceptedAnswer: { '@type': 'Answer', text: f[1] } }; }) };
   const url = 'https://transformerpath.com/events/' + ev.slug + '/';
   const schema = '<script type="application/ld+json">' + JSON.stringify(faqSchema) + '</script>' +
-    '<script type="application/ld+json">' + JSON.stringify({ '@context': 'https://schema.org', '@type': 'Event', name: ev.name, startDate: rec.s, endDate: rec.e, location: { '@type': 'Place', name: rec.v, address: { '@type': 'PostalAddress', addressLocality: rec.c, addressCountry: rec.co } }, url: rec.u, description: rec.d }) + '</script>';
+    (confirmed ? '<script type="application/ld+json">' + JSON.stringify({ '@context': 'https://schema.org', '@type': 'Event', name: ev.name, startDate: rec.s, endDate: rec.e, location: { '@type': 'Place', name: rec.v, address: { '@type': 'PostalAddress', addressLocality: rec.c, addressCountry: rec.co } }, url: rec.u, description: rec.d }) + '</script>' : '');
 
   return '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
     '<title>' + esc(ev.name) + ' — Transformer Exhibitors & Coverage | TransformerPath</title>' +    '<meta name="description" content="' + esc(ev.blurb.slice(0, 155)) + '">' +
@@ -236,12 +252,18 @@ function eventPage(ev) {
     '</head>\n<body>\n' + HEAD + '\n<main class="c-wrap">' +
     '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="../../events.html" style="color:var(--accent)">Events</a> › ' + esc(ev.name) + '</nav>' +
     '<h1>' + esc(ev.name) + '</h1>' +
-    '<div class="evmeta"><span><b>Dates</b> ' + fmt(rec.s) + (rec.e !== rec.s ? ' – ' + fmt(rec.e) : '') + '</span>' +
-    '<span><b>Venue</b> ' + esc(rec.v || rec.c) + '</span>' +
+    '<div style="margin:4px 0 12px">' + statusChip(st) + (confirmed ? '' : '<span style="font-size:.82rem;color:var(--muted)">Do not book travel on unconfirmed dates — verify with the organiser.</span>') + '</div>' +
+    '<div class="evmeta">' +
+    (st.key === 'DATE_TBC' || st.key === 'MONITORING'
+      ? '<span><b>Dates</b> To be confirmed</span>'
+      : '<span><b>Dates</b> ' + fmt(rec.s) + (rec.e !== rec.s ? ' – ' + fmt(rec.e) : '') + '</span>') +
+    (st.key === 'VENUE_TBC'
+      ? '<span><b>Venue</b> To be confirmed</span>'
+      : '<span><b>Venue</b> ' + esc(rec.v || rec.c) + '</span>') +
     '<span><b>Location</b> ' + esc(rec.c + ', ' + rec.co) + '</span>' +
     (rec.u !== '#' ? '<span><a href="' + esc(rec.u) + '" target="_blank" rel="noopener" style="color:var(--accent)">Official site ↗</a></span>' : '') + '</div>' +
-    (ev.register ? '<div style="margin:10px 0 4px"><a class="btn btn-amber" href="' + esc(ev.register) + '" target="_blank" rel="noopener" data-track="event_register" data-track-event="' + esc(ev.slug) + '">Register for ' + esc(ev.name) + ' →</a></div>' : '') +
-    travelButtons(ev.name, rec.c, rec.co, rec.s, rec.e) +
+    (confirmed && ev.register ? '<div style="margin:10px 0 4px"><a class="btn btn-amber" href="' + esc(ev.register) + '" target="_blank" rel="noopener" data-track="event_register" data-track-event="' + esc(ev.slug) + '">Register for ' + esc(ev.name) + ' →</a></div>' : '') +
+    (confirmed ? travelButtons(ev.name, rec.c, rec.co, rec.s, rec.e) : '') +
     '<p class="lead">' + esc(ev.blurb) + '</p>' +
     '<h2>What it covers</h2><p style="line-height:1.7;color:var(--text)">' + esc(rec.d || ev.blurb) + '</p>' +
     '<h2>Transformer companies &amp; suppliers</h2><p style="color:var(--muted);font-size:.94rem;margin:4px 0 8px">Companies in this market (TransformerPath entity pages) — verify capability before a decision.</p><div style="margin:4px 0 8px">' + mkPills + '</div>' + (countryLink ? '<div style="margin-top:8px">' + countryLink + '</div>' : '') +
@@ -255,7 +277,8 @@ function eventPage(ev) {
     '<div style="font-size:.8rem;color:var(--muted);margin-bottom:12px">Exhibiting here? Feature your company on TransformerPath — from $399 per event.</div>' +
     '<a class="btn btn-amber" href="../../events.html" data-track="event_feature_inquiry" data-track-event="' + esc(ev.slug) + '">Feature your company — $399 →</a> <a class="btn btn-outline btn-sm" href="../../rfq.html" data-track="rfq_started" data-track-component_category="' + esc(ev.slug) + '">Submit an RFQ</a> <a class="btn btn-outline btn-sm" href="../../list-company.html" data-track="supplier_claim_started" data-track-component_category="' + esc(ev.slug) + '">Get Verified</a></div>' +
     '<div style="font-size:.85rem;color:var(--muted);text-align:center;margin-top:8px">Explore: <a href="../../markets.html" style="color:var(--accent);font-weight:600">Markets</a> · <a href="../../knowledge.html" style="color:var(--accent);font-weight:600">Knowledge</a> · <a href="../../applications.html" style="color:var(--accent);font-weight:600">Applications</a> · <a href="../../components.html" style="color:var(--accent);font-weight:600">Components</a> · <a href="../../books.html" style="color:var(--accent);font-weight:600">Books</a> · <a href="../../academy.html" style="color:var(--accent);font-weight:600">Academy</a></div>' +
-    '</main>\n' + FOOT + '\n<script src="../../analytics.js?v=2" defer></script>\n</body>\n</html>';
+    '</main>\n' + FOOT + '\n<script src="../../analytics.js?v=2" defer></script>\n' +
+    '<script>(function(){function ok(){try{return localStorage.getItem("tp-cookie-consent")==="accepted"}catch(e){return false}}function load(){var s=document.createElement("script");s.async=1;s.src="https://emrldtp.com/NTQ4OTM4.js?t=548938";s.setAttribute("data-cmp-ab","2");document.head.appendChild(s)}if(ok()){load()}else{var h=function(e){if(e.key==="tp-cookie-consent"&&e.newValue==="accepted"){load();document.removeEventListener("storage",h)}};document.addEventListener("storage",h)}})();<\/script>\n</body>\n</html>';
 }
 const OEMS_SAMPLE = 'SIEMENS ENERGY · HITACHI ENERGY · GE VERNOVA · TBEA · HYOSUNG HEAVY INDUSTRIES'; // (kept for reference)
 

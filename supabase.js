@@ -30,6 +30,7 @@
   var supabase = null;
   var authListeners = [];
   var navInjected = false;
+  var currentUser = null;
 
   /* ------------------------------------------------------------------ *
    * No-op promises for the unconfigured case
@@ -77,14 +78,15 @@
     });
   }
 
-  function notifyAuth() {
-    TP.user = supabase ? supabase.auth.getUser() : null;
+  function setUser(u) {
+    currentUser = u || null;
+    TP.user = currentUser;
     authListeners.forEach(function (cb) { try { cb(TP.user); } catch (e) {} });
   }
 
   /*  The helpers below all require an authenticated user; RLS on the tables
    *  enforces ownership server-side, and each write pins user_id = current uid. */
-  function uid() { var u = supabase.auth.getUser(); return u ? u.id : null; }
+  function uid() { return currentUser ? currentUser.id : null; }
 
   function guard() { return !!uid(); }
 
@@ -103,12 +105,32 @@
         .then(function (r) { if (r.error) throw r.error; return r; });
     };
     TP.signOut = function () {
-      return supabase.auth.signOut().then(function () { notifyAuth(); });
+      return supabase.auth.signOut().then(function () { setUser(null); });
     };
     TP.getSession = function () { return supabase.auth.getSession(); };
+    // ── Password recovery (Supabase-supported flow) ──────────────────────
+    // Sends a recovery email (generic result — never reveals whether the
+    // address exists). Callers handle the redirect route to set a new password.
+    TP.resetPassword = function (email) {
+      if (!email) return Promise.reject({ message: 'Email required' });
+      return supabase.auth.resetPasswordForEmail(String(email).trim(), {
+        redirectTo: window.location.origin + '/workspace.html?recovery=1'
+      }).then(function (r) { if (r.error) throw r.error; return true; });
+    };
+    // Called on the recovery landing route to set the new password after the
+    // user follows the emailed recovery link.
+    TP.updatePassword = function (newPassword) {
+      return supabase.auth.updateUser({ password: newPassword })
+        .then(function (r) { if (r.error) throw r.error; return r; });
+    };
 
-    supabase.auth.onAuthStateChange(function () { notifyAuth(); });
-    TP.getSession().then(function () { notifyAuth(); ready = true; TP.ready = true; injectNav(); });
+    supabase.auth.onAuthStateChange(function (_event, session) {
+      setUser(session ? session.user : null);
+    });
+    supabase.auth.getSession().then(function (r) {
+      setUser(r && r.data && r.data.session ? r.data.session.user : null);
+      ready = true; TP.ready = true; injectNav();
+    });
 
     /* saved items */
     TP.saveItem = function (o) {

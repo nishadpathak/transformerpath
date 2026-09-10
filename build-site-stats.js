@@ -29,7 +29,21 @@ const makers = MANUF.reduce((s, g) => s + (g.makers || []).filter((m) => !/^Serv
 const openTenders = TENDERS.filter((t) => t.status === 'OPEN' || t.status === 'CLOSING_SOON').length;
 const preAward = TENDERS.filter((t) => ['EXPECTED', 'OPEN', 'CLOSING_SOON', 'EVALUATION'].indexOf(t.status) >= 0).length;
 const regions = new Set(GRIDS.map((g) => g.region).filter(Boolean)).size;
-const syncAreas = new Set(GRIDS.map((g) => g.sync).filter(Boolean)).size;
+
+/* grids.json's `sync` is free text, not a controlled vocabulary: it holds
+   "Continental Europe", "Continental Europe (via Sicily)", "GCCIA",
+   "GCCIA-linked" and 21 rows of "Isolated" — which is not a synchronous area
+   at all. Counting distinct strings gave 56 and the homepage claimed 16;
+   neither is defensible, so we count the labels and say so. Publish this as a
+   synchronous-area total only once the field is normalised. */
+const syncLabels = new Set(GRIDS.map((g) => g.sync).filter(Boolean)).size;
+
+/* Events: total tracked, and those still ahead of today. Previously this was
+   num(prev.events) — a hand-typed 203 that copied itself forward while the
+   dataset held 300. */
+const EVENTS = readJson('data/events.json', []);
+const todayISO = new Date().toISOString().slice(0, 10);
+const upcomingEvents = EVENTS.filter((e) => (e.s || e.startDate || '') >= todayISO).length;
 
 // Keep last-known values as a floor so an absent/empty dataset never zeroes a counter.
 const prev = readJson('data/site-stats.json', {});
@@ -41,14 +55,17 @@ const current = {
   countries: GRIDS.length || num(prev.countries, 0),
   gridOperators: GRIDS.reduce((s, g) => s + (g.grids || []).length, 0) || num(prev.gridOperators, 0),
   gridRegions: regions || num(prev.gridRegions, 0),
-  syncAreas: syncAreas || num(prev.syncAreas, 0),
+  syncLabels: syncLabels || num(prev.syncLabels, 0),
   projects: PROJECTS.length || num(prev.projects, 0),
   tenders: TENDERS.length || num(prev.tenders, 0),
   openTenders: openTenders || num(prev.openTenders, 0),
   preAward: preAward || num(prev.preAward, 0),
   awards: AWARDS.length || num(prev.awards, 0),
-  events: num(prev.events, 0),
-  gridsCardText: '151 countries, ' + (GRIDS.reduce((s, g) => s + (g.grids || []).length, 0)) + ' operators, ' + syncAreas + ' synchronous areas — voltages, frequencies and official links.',
+  events: EVENTS.length || num(prev.events, 0),
+  upcomingEvents: upcomingEvents || num(prev.upcomingEvents, 0),
+  gridsCardText: GRIDS.length + ' countries, ' +
+    (GRIDS.reduce((s, g) => s + (g.grids || []).length, 0)) +
+    ' operators — voltages, frequencies and official links.',
 };
 fs.writeFileSync('data/site-stats.json', JSON.stringify(current, null, 2) + '\n');
-console.log('site-stats.json wrote: ' + makers + ' manufacturers / ' + mkgCountries + ' manufacturing countries / ' + GRIDS.length + ' grids / ' + current.gridOperators + ' operators / ' + PROJECTS.length + ' projects / ' + TENDERS.length + ' tenders (' + openTenders + ' open) / ' + AWARDS.length + ' awards');
+console.log('site-stats.json wrote: ' + makers + ' manufacturers / ' + mkgCountries + ' manufacturing countries / ' + GRIDS.length + ' grids / ' + current.gridOperators + ' operators / ' + PROJECTS.length + ' projects / ' + TENDERS.length + ' tenders (' + openTenders + ' open) / ' + AWARDS.length + ' awards / ' + EVENTS.length + ' events (' + upcomingEvents + ' upcoming)');

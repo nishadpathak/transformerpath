@@ -20,6 +20,10 @@ process.env.TZ = 'UTC';
 
 const fs = require('fs');
 const path = require('path');
+/* ONE canonical event-status resolver, shared with build-events.js and
+   check-event-integrity.js. This file used to re-derive status and countdowns
+   from raw dates, which is how "Dates TBC" could render beside "Live now". */
+const { resolveStatus, isTravelSafe, isDiscoverable } = require('./lib/event-status');
 
 /* ------------------------------------------------------------------ *
  * Helpers
@@ -131,20 +135,41 @@ function renderEvents(html) {
       : (AFF.travelLink || `https://www.booking.com/searchresults.html?ss=${encodeURIComponent(ev.c)}&checkin=${ev.s}&checkout=${ev.e}`);
   const flightURL = () => AFF.kiwiLink || null;
 
-  let list = EVENTS.filter((ev) => new Date(ev.e) >= now);
+  /* Normal upcoming discovery. A record whose organiser calendar was checked and
+     did not list it (REJECTED_NO_EVIDENCE) or that is still under research is not
+     an upcoming event — it leaves this list rather than sitting in it with a
+     warning nobody reads. */
+  let list = EVENTS.filter((ev) => new Date(ev.e) >= now && isDiscoverable(resolveStatus(ev)));
   list.sort((a, b) => a.s.localeCompare(b.s));
 
   const PLATFORM_TZ_MS = 4*60*60*1000; // GST/Asia-Dubai
   const todayUTC = (function(){ var g=new Date(Date.now()+PLATFORM_TZ_MS); return Date.UTC(g.getUTCFullYear(),g.getUTCMonth(),g.getUTCDate()); })();
   const relDays = (d) => Math.ceil((Date.parse(d+'T00:00:00Z') - todayUTC) / 86400000);
-  const badgeHTML = (ev) => {
-    if (/unconfirmed|date est\.|⚠/i.test(ev.d)) return '<span class="badge-unc">Date est.</span>';
-    if (/tbc|tbd/i.test(ev.v)) return '<span class="badge-unc">Venue TBC</span>';
-    return '';
+  /* Adapter over the canonical resolver. The old local copy re-implemented the
+     rules and drifted: it treated a past end-date as COMPLETED even when the
+     dates were never confirmed, and it had no notion of "this countdown is not
+     allowed". Card labels stay as before; the STATE now comes from one place. */
+  const CARD_LABEL = {
+    CONFIRMED_UPCOMING: '', LIVE: '', COMPLETED: '',
+    DATE_TBC: 'Date est.', VENUE_TBC: 'Venue TBC',
+    MONITORING: 'Verify with organiser', POSTPONED: 'Postponed', CANCELLED: 'Cancelled',
   };
+  const evState = (ev) => {
+    const st = resolveStatus(ev);
+    return { key: st.key, label: CARD_LABEL[st.key] === undefined ? st.label : CARD_LABEL[st.key], st: st };
+  };
+  const badgeHTML = (ev) => { const s = evState(ev); return s.label ? '<span class="badge-unc">' + s.label + '</span>' : ''; };
+  const travelable = (ev) => isTravelSafe(evState(ev).st);
+  /* A relative chip is a CLAIM about when the event happens. It is therefore only
+     permitted when the canonical resolver says the dates are confirmed. DATE_TBC,
+     MONITORING, VENUE_TBC, POSTPONED, CANCELLED and COMPLETED get no countdown and
+     can never say "Live now" — that combination was reaching production. */
   const relLabel = (ev) => {
+    const key = evState(ev).key;
+    if (key === 'LIVE') return '<span class="rel-today">Live now</span>';
+    if (key !== 'CONFIRMED_UPCOMING') return '';
     const d = relDays(ev.s);
-    if (d <= 0) return Date.parse(ev.e+'T00:00:00Z') >= todayUTC ? '<span class="rel-today">Live now</span>' : '';
+    if (d <= 0) return '';
     if (d === 1) return '<span class="rel-soon">In 1 day</span>';
     if (d <= 31) return `<span class="rel-soon">In ${d} days</span>`;
     return '';
@@ -162,10 +187,20 @@ function renderEvents(html) {
   };
 
   // Up-Next strip (soonest 3) — pre-rendered so crawlers see it too
-  const up = EVENTS.filter((ev) => new Date(ev.e) >= now).sort((a, b) => a.s.localeCompare(b.s)).slice(0, 3);
+  /* The hero strip must consume the SAME canonical record as the full list, or the
+     same event can show two different date-confidence states on one page. Only
+     confirmed-date events are eligible for the strip at all, because every card in
+     it carries a relative-time claim. */
+  const upEligible = EVENTS.filter((ev) => {
+    const st = evState(ev).st;
+    if (!isDiscoverable(st)) return false;   // failed verification -> not discoverable
+    return (st.key === 'CONFIRMED_UPCOMING' || st.key === 'LIVE') && new Date(ev.e) >= now;
+  });
+  const up = upEligible.sort((a, b) => a.s.localeCompare(b.s)).slice(0, 3);
   const upNext = up.map((ev) => {
     const d = relDays(ev.s);
-    const lbl = d < 0 ? 'Live now' : d === 0 ? 'Today' : d === 1 ? 'Tomorrow' : 'In ' + d + ' days';
+    const lbl = evState(ev).key === 'LIVE' ? 'Live now'
+      : d === 0 ? 'Today' : d === 1 ? 'Tomorrow' : 'In ' + d + ' days';
     // Absolute date is the primary, timezone-stable label; the relative badge is
     // recomputed client-side (data-rel="<start date>") so it can never go stale
     // between builds (a crawl can never see "Today" for a passed event).
@@ -174,17 +209,21 @@ function renderEvents(html) {
 
   const cards = list.map((ev) => {
     const soon = new Date(ev.s) > now && (new Date(ev.s) - now) / 86400000 <= 31;
+    const st = evState(ev);
+    const trav = travelable(ev);
+    const dateLbl = (st.key === 'DATE_TBC' || st.key === 'UNCONFIRMED' || st.key === 'MONITORING') ? 'Dates TBC' : (`${fmt(ev.s)} → ${fmt(ev.e)}`);
+    const venueLbl = (st.key === 'VENUE_TBC') ? 'Venue TBC' : `${esc(ev.v)} — ${esc(ev.c)}, ${esc(ev.co)}`;
     return `<div class="intel-item event-card">
       <h3>${esc(ev.n)}${soon ? '<span class="badge-soon">Soon</span>' : ''}${badgeHTML(ev)}</h3>
-      <div class="dates">${fmt(ev.s)} → ${fmt(ev.e)}${relLabel(ev)}</div>
-      <div class="venue">📍 ${esc(ev.v)} — ${esc(ev.c)}, ${esc(ev.co)} · ${esc(ev.r)}</div>
+      <div class="dates">${dateLbl}${relLabel(ev)}</div>
+      <div class="venue">📍 ${venueLbl}${st.key !== 'CONFIRMED' && st.key !== 'COMPLETED' ? ' · <span class="badge-unc">verify with organiser before booking travel</span>' : ''}${esc(ev.r) ? ' · ' + esc(ev.r) : ''}</div>
       <p style="color:var(--muted); font-size:.92rem; margin-bottom:10px">${esc(ev.d)}</p>
       <div style="display:flex; gap:8px; flex-wrap:wrap">
         <a class="btn btn-amber btn-sm" href="${esc(ev.u)}" target="_blank" rel="noopener">Official site →</a>
-        <a class="btn btn-outline btn-sm" data-aff="hotel" data-ev="${esc(ev.n)}" href="${esc(hotelURL(ev))}" target="_blank" rel="noopener sponsored">🏨 Book Hotel</a>
-        ${flightURL(ev) ? `<a class="btn btn-outline btn-sm" data-aff="flights" data-ev="${esc(ev.n)}" href="${esc(flightURL(ev))}" target="_blank" rel="noopener sponsored">✈ Find Flights</a>` : ''}
-        ${AFF.kkdayLink ? `<a class="btn btn-outline btn-sm" data-aff="activities" data-ev="${esc(ev.n)}" href="${esc(AFF.kkdayLink)}" target="_blank" rel="noopener sponsored">🎟️ Things to Do</a>` : ''}
-        <a class="btn btn-outline btn-sm" data-aff="calendar" data-ev="${esc(ev.n)}" href="${esc(icsHref(ev))}" download target="_blank" rel="noopener">📅 Add</a>
+        ${trav ? `<a class="btn btn-outline btn-sm" data-aff="hotel" data-ev="${esc(ev.n)}" href="${esc(hotelURL(ev))}" target="_blank" rel="noopener sponsored">🏨 Book Hotel</a>` : ''}
+        ${trav && flightURL(ev) ? `<a class="btn btn-outline btn-sm" data-aff="flights" data-ev="${esc(ev.n)}" href="${esc(flightURL(ev))}" target="_blank" rel="noopener sponsored">✈ Find Flights</a>` : ''}
+        ${trav && AFF.kkdayLink ? `<a class="btn btn-outline btn-sm" data-aff="activities" data-ev="${esc(ev.n)}" href="${esc(AFF.kkdayLink)}" target="_blank" rel="noopener sponsored">🎟️ Things to Do</a>` : ''}
+        ${trav ? `<a class="btn btn-outline btn-sm" data-aff="calendar" data-ev="${esc(ev.n)}" href="${esc(icsHref(ev))}" download target="_blank" rel="noopener">📅 Add</a>` : ''}
       </div>
     </div>`;
   }).join('\n');

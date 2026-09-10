@@ -42,18 +42,31 @@ const GRADE_HELP = {
 };
 const STATUS_LABEL = { evaluation: 'Pre-award / evaluation', tendering: 'Tendering', expected: 'Expected', awarded: 'Awarded', construction: 'Construction', energized: 'Energized' };
 
+/* Status labels are Title Case ("Energized", "Pre-award / evaluation"), so
+   splicing them after a hardcoded "A " produced "A Energized ...". Lowercase the
+   label in running prose and pick the article from its first sound. */
+function withArticle(label, capitalise) {
+  const l = String(label || '').toLowerCase();
+  const art = /^[aeiou]/.test(l) ? 'an' : 'a';
+  return (capitalise ? art.charAt(0).toUpperCase() + art.slice(1) : art) + ' ' + l;
+}
+
 function page(p) {
   const slug = slugify(p.project);
   const url = 'https://transformerpath.com/projects/' + slug + '/';
   const grade = (p.transformer_requirement || 'UNKNOWN').toUpperCase();
   const vol = p.voltage || '—';
-  const marketLink = MARKET_SLUG[p.country] ? '<a class="tpill" href="../../markets/' + MARKET_SLUG[p.country] + '/">' + esc(p.country) + ' market</a>' : '';
+  /* MARKET_SLUG maps every country; market hubs exist for 39 of them. Linking
+     on the map alone produced 33 dead links (Australia 25, Kuwait/Qatar/Bahrain).
+     Same guard build-exhibitions.js already uses. */
+  const marketSlug = MARKET_SLUG[p.country];
+  const marketLink = (marketSlug && fs.existsSync('markets/' + marketSlug + '/index.html')) ? '<a class="tpill" href="../../markets/' + marketSlug + '/">' + esc(p.country) + ' market</a>' : '';
   const utilLink = (p.utility && uSlug(p.utility)) ? '<a class="tpill" href="../../utilities/' + uSlug(p.utility) + '/">' + esc(p.utility) + ' profile</a>' : '';
   const srcLinks = (p.sources || []).filter((u) => u).map((u) => '<a href="' + esc(u) + '" target="_blank" rel="noopener" style="color:var(--accent)">source</a>').join(' · ') || '—';
 
   return '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
     '<title>' + esc(p.project) + ' — Transformer Project | TransformerPath</title>' +
-    '<meta name="description" content="' + esc(p.project) + ' (' + esc(p.country) + ') — a ' + esc((STATUS_LABEL[p.status] || p.status)) + ' transformer-relevant grid/substation project. Voltage ' + esc(vol) + ', ' + esc(grade.toLowerCase()) + ' transformer requirement. Source-tracked by TransformerPath.">' +
+    '<meta name="description" content="' + esc(p.project) + ' (' + esc(p.country) + ') — ' + esc(withArticle(STATUS_LABEL[p.status] || p.status, false)) + ' transformer-relevant grid/substation project. Voltage ' + esc(vol) + ', ' + esc(grade.toLowerCase()) + ' transformer requirement. Source-tracked by TransformerPath.">' +
     '<link rel="canonical" href="' + url + '">' +
     '<meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath">' +
     '<meta property="og:title" content="' + esc(p.project) + ' — Transformer Project"><meta property="og:url" content="' + url + '">' +
@@ -64,7 +77,7 @@ function page(p) {
     '</head>\n<body>\n' + HEAD + '\n<main class="c-wrap">' +
     '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="../../projects.html" style="color:var(--accent)">Projects</a> › ' + esc(regionOf(p.country)) + ' › ' + esc(p.country) + ' › ' + esc(p.project) + '</nav>' +
     '<h1>' + esc(p.project) + ' <button class="follow-btn" data-follow-type="project" data-follow-subject="' + esc(p.project) + '" data-follow-label="' + esc(p.project) + '" title="Follow this project in My TransformerPath">Follow</button></h1>' +
-    '<p class="lead" style="margin-bottom:14px">A ' + esc((STATUS_LABEL[p.status] || p.status)) + ' transformer-relevant grid/substation project, tracked as an entity (not an article) by TransformerPath.</p>' +
+    '<p class="lead" style="margin-bottom:14px">' + esc(withArticle(STATUS_LABEL[p.status] || p.status, true)) + ' transformer-relevant grid/substation project, tracked as an entity (not an article) by TransformerPath.</p>' +
     '<div class="evmeta"><span><b>Region</b> ' + esc(regionOf(p.country)) + '</span><span><b>Country</b> ' + esc(p.country) + '</span><span><b>Voltage</b> ' + esc(vol) + '</span><span><b>Status</b> ' + esc((STATUS_LABEL[p.status] || p.status)) + '</span>' + (p.expected ? '<span><b>Expected</b> ' + esc(p.expected) + '</span>' : '') + '</div>' +
     '<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:14px 18px;margin-bottom:22px"><span class="cls-badge cls-' + grade + '">' + grade + '</span> <span style="font-size:.9rem;color:var(--text)">' + esc(GRADE_HELP[grade] || GRADE_HELP.UNKNOWN) + '</span></div>' +
     '<h2>Project record</h2><table>' +

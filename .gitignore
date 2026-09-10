@@ -1,8 +1,10 @@
 # OS junk
 .DS_Store
 Thumbs.db
+.claude/
 # Dependencies — never track
 node_modules/
+scratch/
 # Secrets — never commit
 .env
 *.token
@@ -17,8 +19,25 @@ _docs/
 # Stale early-August snapshot of the site — superseded by the top-level pages.
 transformerpath-site/
 
+# Stale legacy snapshot of a PREVIOUS iteration of the site (old intel pages
+# with a "refreshed daily" cadence, _synctmp/, site-archive/, the legacy
+# mega-menu nav, an "Elin" voice and long-dead claims). Superseded by the
+# top-level pages. Blocked at the Netlify layer too (see netlify.toml).
+Transformer Equipments/
+Transformer Radiators/
+
 # Manuscripts, data dumps and anything else that must never be published
 # or committed. Blocked at the Netlify layer too (see netlify.toml).
 _private/
 *.pdf
 *.sql
+*.xlsx
+
+
+# Generated public deploy artifact — assembled by build-dist.js
+dist/
+
+# Private assets outside repo
+../private_assets/
+# Archived Intel snapshots
+archive/intel_snapshots/

@@ -15,8 +15,11 @@ const path = require('path');
 const CFG = JSON.parse(fs.readFileSync('data/config.json', 'utf8'));
 
 // Whittle down to served files (skip gitignored/stale dirs the Netlify build
-// 404s, and the system/redirect stubs).
-const SERVED_SKIP = ['archive', '_private', 'transformerpath-site', 'node_modules', '.git'];
+// 404s, and the system/redirect stubs). "Transformer Equipments" is a stale
+// legacy snapshot (old intel pages, _synctmp/, site-archive/, legacy mega-menu
+// nav, "Elin" voice + long-dead claims) that must never be published; it is
+// 404'd in netlify.toml and gitignored, so the gate ignores it too.
+const SERVED_SKIP = ['archive', '_private', 'transformerpath-site', 'dist', 'node_modules', '.git', 'Transformer Equipments'];
 function servedHtml() {
   const out = [];
   (function walk(dir) {
@@ -149,7 +152,20 @@ check('intel cadence label = config', new RegExp('\\b' + CFG.intel.cadenceLabel 
 // No contradicting intel-feed cadence text (e.g. "updated hourly", "2×/day") on served
 // intel/index pages. Legitimate other-cadence uses (LME hourly, "announced weekly", the
 // "Weekly scan of technology" label) are excluded by matching only intel-cadence phrasing.
-const CADENCE_BAD = /(updated\s+(?:hourly|2×\/day|2x\/day|every\s+hour))|(refreshed\s+(?:hourly|twice\s+a\s+day|2x\/day|2×\/day))|(refreshed\s+twice\s+daily)|(\bHourly\b\s+global\s+briefing)|(<b>\s*Hourly\s*<\/b>)/gi;
+// The forbidden phrases are DERIVED from the configured cadence, not hard-coded.
+// This block used to treat "hourly" as always wrong, which was true only while
+// config said daily. netlify.toml now schedules refresh-data at "0 * * * *", so
+// hourly is the correct claim and a "daily"/"weekly" claim is the contradiction.
+const CADENCE_ALTERNATIVES = {
+  hourly: ['daily', 'twice a day', 'twice daily', '2x/day', '2×/day', 'weekly', 'every morning'],
+  daily: ['hourly', 'every hour', 'twice a day', 'twice daily', '2x/day', '2×/day', 'weekly'],
+  weekly: ['hourly', 'every hour', 'daily', 'twice a day', 'twice daily'],
+};
+const WRONG_CADENCES = CADENCE_ALTERNATIVES[CFG.intel.cadence] || [];
+const CADENCE_BAD = new RegExp(
+  '(?:updated|refreshed)\\s+(?:' +
+  WRONG_CADENCES.map((c) => c.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') +
+  ')', 'gi');
 for (const f of ['intel.html', 'index.html']) {
   const txt = fs.readFileSync(f, 'utf8');
   if (CADENCE_BAD.test(txt)) {
@@ -165,7 +181,7 @@ for (const f of ['intel.html', 'index.html']) {
   const fsx = require('fs');
   const pathx = require('path');
   const files = [];
-  const SKIP = ['archive', '_private', 'transformerpath-site', 'node_modules', 'functions'];
+  const SKIP = ['archive', '_private', 'transformerpath-site', 'dist', 'node_modules', 'functions', 'Transformer Equipments'];
   (function walk(dir) {
     fsx.readdirSync(dir, { withFileTypes: true }).forEach((e) => {
       if (e.name.startsWith('.')) return;
@@ -176,7 +192,14 @@ for (const f of ['intel.html', 'index.html']) {
   })('.');
   files.forEach(function (f) {
     if (/^intel-2026-\d{2}-\d{2}\.html$/.test(f)) return; // frozen archive
-    const txt = fsx.readFileSync(f, 'utf8');
+    /* Only VISIBLE claims count. Reading raw HTML flagged a JS comment in
+       jobs.html ("// ... (refreshed weekly)") that no visitor ever sees, and
+       which describes the jobs board rather than the intel feed. Strip script
+       blocks, style blocks and HTML comments before matching. */
+    const txt = fsx.readFileSync(f, 'utf8')
+      .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+      .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+      .replace(/<!--[\s\S]*?-->/g, ' ');
     if (CADENCE_BAD.test(txt)) {
       const m = txt.match(CADENCE_BAD);
       problems.push('live-cadence-contradiction ' + f + ' :: ' + (m && m[0]));
@@ -285,16 +308,22 @@ for (const f of TRUST_FILES) {
 }
 
 // ── 5. Navigation structure ───────────────────────────────────────────────
-// The header nav must use the grouped INTELLIGENCE/INDUSTRY/ENGINEERING/LEARN/
-// BUSINESS structure with Search + Account, and never regress to the flat list.
-const NAV_LABELS = ['Intelligence', 'Industry', 'Engineering', 'Learn', 'Business'];
+// The header nav is the FLAT structure that replaced the five mega-menus
+// (Intelligence / Industry / Engineering / Learn / Business): nine primary
+// destinations reachable in one click, lower-priority items in a single "More"
+// list, and a flat hamburger panel below 1024px. This guards against a
+// regression BACK to nested dropdowns.
 const NAV_HTML = fs.readFileSync('index.html', 'utf8');
-for (const lbl of NAV_LABELS) {
-  // Each group is a .nav-group-label button (desktop dropdown) carrying the label.
-  check('nav group "' + lbl + '" present', new RegExp('nav-group-label[^>]*>\\s*' + lbl).test(NAV_HTML) || NAV_HTML.includes('nav-group-label">' + lbl));
+const NAV_PRIMARY = ['intel.html', 'manufacturers.html', 'projects.html', 'tenders.html',
+  'grids.html', 'events.html', 'learn.html', 'tools.html', 'rfq.html'];
+for (const href of NAV_PRIMARY) {
+  check('nav primary link ' + href, new RegExp('class="tpnav"[\\s\\S]{0,4000}?href="' + href.replace('.', '\\.') + '"').test(NAV_HTML));
 }
+check('nav has flat container', /class="tpnav"/.test(NAV_HTML));
+check('nav has More list', /tpnav-more-panel/.test(NAV_HTML));
 check('nav has Search', NAV_HTML.includes('href="search.html"'));
-check('nav has Account', NAV_HTML.includes('href="workspace.html">Account'));
+check('nav has Account', /href="workspace\.html"/.test(NAV_HTML));
+check('nav has no mega-menu regression', !/nav-group-label/.test(NAV_HTML));
 
 // ── 5b. Asset cache-busters + dark-theme default must match config ─────────
 // CSS/JS version queries and the SW cache name come from data/config.json assets.
@@ -368,6 +397,19 @@ for (const f of pages) {
   const s = fs.readFileSync(f, 'utf8').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
   if (/global (intelligence|information) and networking platform/i.test(s)) problems.push('route-stale ' + f + ' :: footer "networking"');
 }
+
+// ── 5d. Navigation + manufacturer-neutrality regression (confirmed defects) ──
+// The flat-nav migration must never regress to the five-category mega-menu, and
+// the manufacturer directory must stay neutral (find/filter/compare, never
+// "declare winners"). Both guard P0 defects found in production trust QA.
+let megaNav = 0, rankClaim = 0;
+for (const f of pages) {
+  const raw = fs.readFileSync(f, 'utf8');
+  if (/<nav class="nav-links"[^>]*>/.test(raw)) megaNav++;
+  if (/ranked global leaders|strongest manufacturers|declare (a|the) (dominant )?winner(s)?/i.test(raw)) rankClaim++;
+}
+check('no served page uses the legacy mega-menu nav', megaNav === 0, megaNav + ' page(s)');
+check('no served page ranks manufacturers ("global leaders"/"strongest")', rankClaim === 0, rankClaim + ' page(s)');
 
 // ── 6. Build the regression report ────────────────────────────────────────
 if (problems.length) {

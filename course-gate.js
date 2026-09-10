@@ -78,7 +78,17 @@
     // Async: verify a Stripe session on the server; grant on success.
     verify: function (sessionId, cb) {
       verifySession(sessionId).then(function (res) {
-        if (res && res.valid) grant(res.tier || 'learner', false);
+        if (res && res.valid) {
+          grant(res.tier || 'learner', false);
+          // Persist the server-issued entitlement token (SameSite=Lax, Secure on
+          // https, path=/, 12-month) so gated content delivery can verify it.
+          if (res.entitlement_token) {
+            try {
+              var e = new Date(); e.setFullYear(e.getFullYear() + 1);
+              document.cookie = 'tp_ent=' + encodeURIComponent(res.entitlement_token) + '; expires=' + e.toUTCString() + '; path=/; SameSite=Lax' + (location.protocol === 'https:' ? '; Secure' : '');
+            } catch (x) {}
+          }
+        }
         if (typeof cb === 'function') cb(res);
         return res;
       });

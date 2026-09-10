@@ -91,7 +91,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="TransformerPath">
 <script src="consent.js" defer></script>
-    <link rel="stylesheet" href="tp-nav.css?v=2">
+    <link rel="stylesheet" href="tp-nav.css?v=12">
+<link rel="stylesheet" href="tp-feedback.css?v=12">
 </head>
 <body>
 
@@ -206,7 +207,7 @@
           <a href="intel.html" class="btn btn-amber">Read Daily Intel</a>
           <a href="manufacturers.html" class="btn btn-outline">Explore Manufacturers</a>
         </div>
-        <div class="trust"><span>Updated daily</span><span>Global coverage</span><span>Data free to read</span></div>
+        <div class="trust"><span>Curated daily</span><span>Global coverage</span><span>Data free to read</span></div>
       </div>
       <div class="hero-panel" aria-label="TransformerPath platform at a glance">
         <svg class="hero-arcs" viewBox="0 0 560 560" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
@@ -295,7 +296,7 @@
     <div class="grid grid-3" id="glanceCards">
       <div class="card reveal"><span class="emoji" aria-hidden="true">📋</span><h3>Tenders & Projects</h3><p>SEC awards SPTC a $376M transformer & reactor deal; Hitachi Energy India wins a Rs 6.47B 765kV PGCIL order; KAHRAMAA 2026 expansion packages out.</p></div>
       <div class="card reveal"><span class="emoji" aria-hidden="true">🌍</span><h3>Supplier & Capacity News</h3><p>Weidmann commits $220M+ to a new China transformerboard plant; Voltamp and Virginia Transformer add new capacity; US LPT lead times run 30–36 months per the latest NLR report, insulation materials named a bottleneck.</p></div>
-      <div class="card reveal"><span class="emoji" aria-hidden="true">📈</span><h3>Prices & Materials</h3><p>Copper <b data-m="copper">≈$14,170/t</b> (LME 3-month reference); Aluminium <b data-m="aluminium">≈$3,182/t</b> (LME reference). CRGO has <b>no public daily index</b> — it varies by market, grade, thickness and commercial basis, so it is shown as <b>GRADE NOT SPECIFIED</b> rather than a single comparable number. <span style="color:var(--muted);font-size:.82rem">Observed <span data-m-obs="copper">26 Aug 2026</span> · <a href="materials.html" style="color:var(--accent);font-weight:600">Materials &rarr;</a></span></p></div>
+      <div class="card reveal"><span class="emoji" aria-hidden="true">📈</span><h3>Prices & Materials</h3><p>Copper <b data-m="copper" style="color:var(--accent)">≈$14,170/t</b> (LME 3-month reference); Aluminium <b data-m="aluminium" style="color:var(--accent)">≈$3,182/t</b> (LME reference). CRGO has <b>no public daily index</b> — it varies by market, grade, thickness and commercial basis, so it is shown as <b>GRADE NOT SPECIFIED</b> rather than a single comparable number. <span style="color:var(--muted);font-size:.82rem">Observed <span data-m-obs="copper">26 Aug 2026</span> · <a href="materials.html" style="color:var(--accent);font-weight:600">Materials &rarr;</a></span></p></div>
     </div>
     <p style="text-align:center; margin-top:30px" class="reveal"><a href="intel.html" class="btn btn-amber">Read the Full Briefing →</a></p>
   </div>
@@ -309,7 +310,7 @@
     </div>
     <div class="grid grid-3">
       <a class="card reveal" href="intel.html"><span class="emoji" aria-hidden="true">📰</span><h3>Daily Intel →</h3><p>Daily global briefing — tenders, supplier moves, prices — ordered by your region.</p></a>
-      <a class="card reveal" href="grids.html"><span class="emoji" aria-hidden="true">🌐</span><h3>World Grids →</h3><p>151 countries, 166 operators, 16 synchronous areas — voltages, frequencies and official links.</p></a>
+      <a class="card reveal" href="grids.html"><span class="emoji" aria-hidden="true">🌐</span><h3>World Grids →</h3><p><span data-stat="countries">151</span> countries, <span data-stat="gridOperators">166</span> operators — voltages, frequencies and official links.</p></a>
       <a class="card reveal" href="events.html"><span class="emoji" aria-hidden="true">📅</span><h3>Events →</h3><p>Every major power & transformer exhibition through 2028, with one-click hotel and flight booking.</p></a>
       <a class="card reveal" href="manufacturers.html"><span class="emoji" aria-hidden="true">🏭</span><h3>Manufacturers →</h3><p>A worldwide census of 546 transformer makers — power, distribution and dry-type — country by country.</p></a>
       <a class="card reveal" href="markets.html"><span class="emoji" aria-hidden="true">🌍</span><h3>Markets →</h3><p>Country intelligence hubs — grid operators, manufacturers, projects, events and technical context, market by market.</p></a>
@@ -456,9 +457,33 @@ if('IntersectionObserver' in window){
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
 (function(){var dp;window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();dp=e;if(document.getElementById('tpInstall'))return;var b=document.createElement('button');b.id='tpInstall';b.textContent='\u2913 Install TransformerPath';b.setAttribute('style','position:fixed;right:16px;bottom:16px;z-index:9999;background:#f5a623;color:#0d1b2e;border:0;border-radius:999px;padding:11px 18px;font-weight:800;font-size:.9rem;box-shadow:0 6px 20px rgba(0,0,0,.28);cursor:pointer;font-family:inherit');b.onclick=function(){b.remove();dp.prompt();dp.userChoice.finally(function(){dp=null;});};document.body.appendChild(b);});})();
 </script>
+
+<!-- TP-FEEDBACK-DECLARATION ————————————————————————————————————————————————
+     Netlify registers form names by parsing STATIC HTML at deploy time. The
+     site-wide feedback widget (tp-feedback.js) builds its form in JavaScript,
+     which the deploy-time parser never sees — so without this hidden twin,
+     every submission would POST into a 404.
+
+     Field list must stay in step with the data appended in tp-feedback.js.
+     Not for humans: hidden, and skipped by assistive tech.
+———————————————————————————————————————————————————————————————————————— -->
+<form name="site-feedback" method="POST" data-netlify="true"
+      data-netlify-honeypot="bot-field" hidden aria-hidden="true">
+  <input type="hidden" name="form-name" value="site-feedback">
+  <input name="bot-field">
+  <input name="category">
+  <textarea name="message"></textarea>
+  <input type="email" name="email">
+  <input name="page">
+  <input name="entity">
+  <input name="url">
+  <input name="title">
+</form>
 <script src="analytics.js?v=5" defer></script>
-<script src="site-stats.js" defer></script>
+<script src="site-stats.js?v=5" defer></script>
 <script src="material-latest.js?v=5" defer></script>
-<script src="tp-nav.js?v=2" defer></script>
+<script src="tp-nav.js?v=5" defer></script>
+<script src="tp-freshness.js?v=5" defer></script>
+<script src="tp-feedback.js?v=5" defer></script>
 </body>
 </html>

@@ -45,7 +45,8 @@
   .ws-note-title { font-weight: 700; color: var(--ink); }
   .ws-plus { color: var(--bg); }
 </style>
-    <link rel="stylesheet" href="tp-nav.css?v=2">
+    <link rel="stylesheet" href="tp-nav.css?v=12">
+  <link rel="stylesheet" href="tp-feedback.css?v=12">
 </head>
 <body>
 <header>
@@ -182,6 +183,7 @@
 <script src="supabase-config.js"></script>
 <script src="supabase.js" defer></script>
 <script src="rfq-engine.js" defer></script>
+<script src="analytics.js?v=5" defer></script>
 <script>
 document.addEventListener('DOMContentLoaded', function(){
   (function(){
@@ -325,6 +327,8 @@ document.addEventListener('DOMContentLoaded', function(){
   })();
 });
 </script>
-<script src="tp-nav.js?v=2" defer></script>
+<script src="tp-nav.js?v=5" defer></script>
+<script src="tp-freshness.js?v=5" defer></script>
+<script src="tp-feedback.js?v=5" defer></script>
 </body>
 </html>

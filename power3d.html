@@ -58,7 +58,8 @@ body{font-family:var(--font-sans);background:#08121e;color:var(--ink)}
 <meta name="twitter:title" content="Power Transformer — Interactive 3D Explorer (100 MVA, 132/33 kV)">
 <meta name="twitter:description" content="Explore a 100 MVA, 132/33 kV YNd11 power transformer in interactive 3D — core, windings, OLTC, bushings and cooling on a reference ONAN/ONAF design.">
 <meta name="twitter:image" content="https://transformerpath.com/brand/og-image.png">
-    <link rel="stylesheet" href="tp-nav.css?v=2">
+    <link rel="stylesheet" href="tp-nav.css?v=12">
+  <link rel="stylesheet" href="tp-feedback.css?v=12">
 </head>
 <body>
 <header>
@@ -1025,6 +1026,8 @@ b.addEventListener('click',function(){var d=html.getAttribute('data-theme')==='d
 if(d){html.removeAttribute('data-theme');localStorage.setItem('theme','light');}else{html.setAttribute('data-theme','dark');localStorage.setItem('theme','dark');}upd();});
 })();
 </script>
-<script src="tp-nav.js?v=2" defer></script>
+<script src="tp-nav.js?v=5" defer></script>
+<script src="tp-freshness.js?v=5" defer></script>
+<script src="tp-feedback.js?v=5" defer></script>
 </body>
 </html>

@@ -11,7 +11,7 @@ function walk(d, skip) {
   }
   return out;
 }
-const skip = ['archive', '_private', 'transformerpath-site', 'node_modules', '.git'];
+const skip = ['archive', '_private', 'transformerpath-site', 'dist', 'node_modules', '.git'];
 const files = walk('.', skip);
 const txt = (f) => fs.readFileSync(f, 'utf8').replace(/<!--[\s\S]*?-->/g, '');
 const vis = (f) => txt(f).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
@@ -83,6 +83,6 @@ console.log('  served pages with "and networking platform":', netHits.length ? n
 // ── 8. ACCOUNTS honesty ──
 console.log('ACCOUNTS');
 const faq = vis('faq.html');
-console.log('  FAQ honest about accounts:', pick(/accounts are being added|not today/i.test(faq)));
+console.log('  FAQ honest about accounts:', pick(/accounts are being added|not today|account layer is in beta/i.test(faq)));
 
 console.log('\nDONE — see FAIL lines above for any genuine source issues.');

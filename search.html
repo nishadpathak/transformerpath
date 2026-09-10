@@ -21,7 +21,9 @@
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0d1b2e">
 <script src="consent.js" defer></script>
-    <link rel="stylesheet" href="tp-nav.css?v=2">
+<script src="lib/event-search.js" defer></script>
+    <link rel="stylesheet" href="tp-nav.css?v=12">
+  <link rel="stylesheet" href="tp-feedback.css?v=12">
 </head>
 <body>
 
@@ -110,10 +112,12 @@
     events:  { label:"📅 Events",        on:true },
     webinars:{ label:"🎥 Webinars",      on:true },
     makers:  { label:"🏭 Manufacturers", on:true },
+    directory:{ label:"🔍 Directory",   on:true },
+    topics:  { label:"📚 Topics",         on:true },
     grids:   { label:"🌐 Grids",         on:true },
     blog:    { label:"✍️ Blog",          on:true }
   };
-  let INDEX = null, loading = false;
+  let INDEX = null, loading = false, EVENT_EDITIONS = null;
 
   function grab(txt, name){
     const m = txt.match(new RegExp('const '+name+' = ([\\[{][\\s\\S]*?[\\]}]);\\s*\\n'));
@@ -126,7 +130,7 @@
     loading = true;
     document.getElementById('status').textContent = 'Loading the live index…';
     const get = f => fetch(f,{cache:'no-cache'}).then(r=>r.text()).catch(()=>'');
-    return Promise.all([get('intel.html'),get('events.html'),get('webinars.html'),get('manufacturers.html'),get('grids.html'),get('blog.html')]).then(([ti,te,tw,tm,tg,tb])=>{
+    return Promise.all([get('intel.html'),get('events.html'),get('webinars.html'),get('manufacturers.html'),get('grids.html'),get('blog.html'),get('data/directory-index.json'),get('data/topic-index.json'),get('data/event-series.json')]).then(([ti,te,tw,tm,tg,tb,td,tj,tes])=>{
       const ix = [];
       const NEWS = grab(ti,'NEWS');
       if(NEWS) Object.keys(NEWS).forEach(rk=> (NEWS[rk].items||[]).forEach(it=>
@@ -138,6 +142,23 @@
       const MAKERS = grab(tm,'DATA');
       if(MAKERS && MAKERS[0] && MAKERS[0].makers) MAKERS.forEach(c=> (c.makers||[]).forEach(mk=>
         ix.push({s:'makers', t:mk[0], x:[mk[1],c.country,c.region,mk[3]].join(' '), href:'manufacturers.html', tag:c.country})));
+      // Structured directory capability index (reuses canonical records).
+      try { const DJ = JSON.parse(td||'{}'); (DJ.companies||[]).forEach(c=>{
+        if(!c || !c.name) return;
+        const types = [];
+        ['power','distribution','dry_type','special'].forEach(t=> Object.keys((c.transformer_types&&c.transformer_types[t])||{}).forEach(k=>{ if(k!=='__present') types.push(k.replace(/_/g,' ')); }));
+        const fac = (c.factories||[]).map(f=>(f.city||'')+' '+(f.country||'')).join(' ');
+        ix.push({s:'directory', t:c.name, x:[c.country,c.region,(c.capability_labels||[]).join(' '),types.join(' '),c.voltage&&c.voltage.value,c.mva&&c.mva.value,(c.certs||[]).join(' '),fac].join(' '), href:'directory.html', tag:c.country});
+      }); } catch(e){}
+      // Topic hubs (searchable entity).
+      try { const TJ = JSON.parse(tj||'{}'); (TJ.topics||[]).forEach(tp=>{
+        if(!tp || !tp.label) return;
+        ix.push({s:'topics', t:tp.label, x:[tp.label, tp.topic, tp.type].join(' '), href:'topics/'+tp.topic+'/', tag:'Topic'});
+      }); } catch(e){}
+      // Canonical event editions (series -> edition) from data/event-series.json.
+      try { const ESJ = JSON.parse(tes||'{}'); EVENT_EDITIONS = [];
+        (ESJ.series||[]).forEach(s=> (s.editions||[]).forEach(ed=> EVENT_EDITIONS.push(Object.assign({}, ed, { series:s.name, seriesKey:s.key, seriesSlug:s.seriesSlug, href:s.href || ('/events/'+s.seriesSlug+'/'), categories:ed.categories||[] }))));
+      } catch(e){}
       const GRIDS = grab(tg,'DATA');
       if(GRIDS && GRIDS[0] && GRIDS[0].grids) GRIDS.forEach(c=>{
         const names = (c.grids||[]).map(g=> typeof g==='object' ? Object.values(g).filter(v=>typeof v==='string').join(' ') : String(g)).join(' ');
@@ -167,7 +188,24 @@
       const words = q.split(/\s+/);
       const hits = ix.filter(it=> SOURCES[it.s].on && words.every(w=> (it.t+' '+it.x).toLowerCase().includes(w)));
       document.getElementById('status').textContent = hits.length + ' result' + (hits.length===1?'':'s') + ' for “' + q + '”';
-      host.innerHTML = hits.slice(0,60).map(it=>
+      // Event-intent resolution: series queries default to the nearest UPCOMING
+      // edition. Pure lifecycle/date intent — SEO score, sponsorship, Featured
+      // or payment NEVER override it.
+      let eventCards = '';
+      try {
+        if (typeof TP_EVENT_SEARCH !== 'undefined' && EVENT_EDITIONS && EVENT_EDITIONS.length) {
+          const es = TP_EVENT_SEARCH.resolve(q, EVENT_EDITIONS);
+          if (es.type === 'edition' && es.primary) {
+            eventCards = TP_EVENT_SEARCH.renderCard(es.primary, { primary:true });
+            eventCards += (es.ranked||[]).slice(0,3).filter(e=> e !== es.primary).map(e=> TP_EVENT_SEARCH.renderCard(e, {})).join('');
+          } else if (es.type === 'series_only' && es.series) {
+            eventCards = '<div class="sr-item es-series-page"><span class="sr-src">EVENT SERIES</span><span class="sr-t">'+esc(es.series.series)+'</span><span class="sr-x">'+esc(es.note||'Next edition: not yet announced')+' — most-recent past editions below.</span></div>';
+            eventCards += (es.ranked||[]).slice(0,3).map(e=> TP_EVENT_SEARCH.renderCard(e, {})).join('');
+          }
+        }
+      } catch(e5){}
+      host.innerHTML = (eventCards ? '<div class="es-block">'+eventCards+'</div>' : '') +
+        hits.slice(0,60).map(it=>
         '<a class="sr-item" href="'+it.href+'"><span class="sr-src">'+SOURCES[it.s].label+(it.tag?' · '+esc(it.tag):'')+'</span><span class="sr-t">'+esc(it.t)+'</span><span class="sr-x">'+esc(String(it.x).slice(0,160))+'</span></a>'
       ).join('') + (hits.length>60 ? '<p style="color:var(--muted)">Showing first 60 — refine your search.</p>' : '');
     });
@@ -182,6 +220,19 @@
 .sr-src { display:block; font-size:.72rem; font-weight:800; color:var(--accent); text-transform:uppercase; letter-spacing:.5px; margin-bottom:4px; }
 .sr-t { display:block; font-weight:700; color:var(--ink); margin-bottom:3px; }
 .sr-x { display:block; color:var(--muted); font-size:.88rem; }
+/* Event-series->edition intent cards (rendered by lib/event-search.js). */
+.es-block { margin-bottom:6px; }
+.es-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px 18px; margin-bottom:10px; }
+.es-card.es-primary { border-color:var(--accent); border-width:2px; }
+.es-chip { display:inline-block; border:1px solid; border-radius:999px; padding:2px 10px; font-size:.7rem; font-weight:800; text-transform:uppercase; letter-spacing:.5px; margin:0 4px 4px 0; }
+.es-title { font-weight:800; color:var(--ink); font-size:1.05rem; margin:4px 0; }
+.es-meta { color:var(--muted); font-size:.88rem; margin:2px 0; }
+.es-cats { margin:6px 0; }
+.es-cat { display:inline-block; background:var(--bg); border:1px solid var(--border); border-radius:999px; padding:1px 8px; font-size:.72rem; color:var(--text); margin:2px 4px 2px 0; }
+.es-acts { margin-top:8px; display:flex; gap:10px; flex-wrap:wrap; }
+.es-act { font-size:.82rem; font-weight:700; color:var(--accent); text-decoration:none; }
+.es-act.es-save { background:none; border:none; color:var(--accent); font-family:inherit; cursor:pointer; text-decoration:underline; padding:0; }
+.es-series-page { border-left:3px solid var(--accent); }
 </style>
 </div>
 
@@ -201,6 +252,8 @@
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
 </script>
 <script src="analytics.js?v=5" defer></script>
-<script src="tp-nav.js?v=2" defer></script>
+<script src="tp-nav.js?v=5" defer></script>
+<script src="tp-freshness.js?v=5" defer></script>
+<script src="tp-feedback.js?v=5" defer></script>
 </body>
 </html>

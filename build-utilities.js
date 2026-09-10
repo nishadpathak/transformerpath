@@ -28,6 +28,27 @@ const EVENTS = JSON.parse(fs.readFileSync('data/events.json', 'utf8'));
 const INTEL = JSON.parse(fs.readFileSync('data/intel.json', 'utf8'));
 const PROJECTS = (JSON.parse(fs.readFileSync('data/projects.json', 'utf8'))).projects || [];
 
+/* ── Synchronous-area normalisation ────────────────────────────────────────
+ * The census "sync" field is uncontrolled free text (56 distinct tokens). For
+ * the commercially important utility pages we classify it against the canonical
+ * registry (data/synchronous-areas.json). Something the registry cannot
+ * confidently resolve is shown honestly as unclassified / research-needed,
+ * never as a confirmed area, and is not used to derive any public count. */
+const SYNC_REG = JSON.parse(fs.readFileSync('data/synchronous-areas.json', 'utf8'));
+const SYNC_ALIAS = {}; const SYNC_ISO = new Set(); const SYNC_CNT = new Set();
+SYNC_REG.canonical.forEach((c) => c.aliases.forEach((a) => { SYNC_ALIAS[ci(a).normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim()] = c.name; }));
+(SYNC_REG.isolated_aliases || []).forEach((a) => SYNC_ISO.add(ci(a)));
+(SYNC_REG.country_isolated_aliases || []).forEach((a) => SYNC_CNT.add(ci(a)));
+function syncAreaLabel(raw) {
+  const k = ci(raw).normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+  if (!k) return 'not recorded';
+  if (SYNC_ALIAS[k]) return SYNC_ALIAS[k];
+  if (SYNC_ISO.has(k)) return 'Isolated grid';
+  if (SYNC_CNT.has(k)) return 'Country grid (isolated / HVDC-tied)';
+  return raw + ' (unclassified — research needed)';
+}
+
+
 // Company entity slug map (manufacturer entity graphs).
 let CSMAP = {};
 try { JSON.parse(fs.readFileSync('data/company-slugs.json', 'utf8')).forEach((c) => { CSMAP[c.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()] = c.slug; }); } catch (e) {}
@@ -93,10 +114,14 @@ function buildUtility(u) {
     return s ? '<a class="tpill" href="../../manufacturers/' + s + '/">' + esc(m[0]) + '</a>' : '<span class="tpill">' + esc(m[0]) + '</span>';
   }).join(' ') : '<span style="color:var(--muted);font-size:.85rem">No transformer manufacturers recorded for this market yet.</span>');
   const mkCount = manuf ? manuf.makers.filter((m) => !/^served by/i.test(m[0])).length : 0;
-  const manufCountryLink = COUNTRY_SLUG[country] ? '<a class="tpill" href="../../manufacturers/' + COUNTRY_SLUG[country] + '.html">All ' + esc(country) + ' manufacturers →</a>' : '';
+  /* Census country pages exist for 84 countries; COUNTRY_SLUG names more.
+     Offer the link only when the page is on disk. */
+  const censusSlug = COUNTRY_SLUG[country];
+  const manufCountryLink = (censusSlug && fs.existsSync('manufacturers/' + censusSlug + '.html')) ? '<a class="tpill" href="../../manufacturers/' + censusSlug + '.html">All ' + esc(country) + ' manufacturers →</a>' : '';
 
   // Market hub link.
-  const marketLink = MARKET_SLUG[country] ? '<a class="tpill" href="../../markets/' + MARKET_SLUG[country] + '/">' + esc(country) + ' market hub</a>' : '';
+  const uMarketSlug = MARKET_SLUG[country];
+  const marketLink = (uMarketSlug && fs.existsSync('markets/' + uMarketSlug + '/index.html')) ? '<a class="tpill" href="../../markets/' + uMarketSlug + '/">' + esc(country) + ' market hub</a>' : '';
 
   // Intel for this region (GCC/Europe/etc.) — map region to intel key.
   const intelKey = gridRec && gridRec.region ? (ci(gridRec.region).indexOf('middle east') >= 0 || ci(gridRec.region).indexOf('gcc') >= 0 ? 'GCC' : '') : '';
@@ -127,7 +152,13 @@ function buildUtility(u) {
     '<script type="application/ld+json">' + JSON.stringify({ '@context': 'https://schema.org', '@type': 'Organization', name: opName, url: site || url, description: 'Transmission / distribution utility operating in ' + country + '.', address: { '@type': 'PostalAddress', addressCountry: country } }) + '</script>' +
     '<style>.c-wrap{max-width:900px;margin:0 auto;padding:44px 20px 90px}.c-wrap h1{font-size:1.8rem;color:var(--ink)}.c-wrap .lead{color:var(--muted);font-size:1rem;max-width:760px}.c-wrap h2{font-size:1.25rem;color:var(--ink);margin-top:26px}.c-wrap .evmeta{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:.9rem;color:var(--muted);margin:6px 0 16px}.c-wrap .evmeta b{color:var(--text)}.c-wrap .tpill{display:inline-block;background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:2px 10px;font-size:.74rem;color:var(--text);margin:3px 4px 3px 0}.c-wrap ul{padding-left:20px;line-height:1.7}</style>' +
     '</head>\n<body>\n' + HEAD + '\n<main class="c-wrap">' +
-    '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="../../grids.html" style="color:var(--accent)">Grids</a> › <a href="../../markets/' + (MARKET_SLUG[country] || (slugify(country))) + '/" style="color:var(--accent)">' + esc(country) + '</a> › ' + esc(opName) + '</nav>' +
+    /* The breadcrumb used to fall back to slugify(country), inventing a market
+       URL for countries that have no hub — 10 dead links. Link only when the
+       page is really there; otherwise show the country as plain text. */
+    '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="../../grids.html" style="color:var(--accent)">Grids</a> › ' +
+    (uMarketSlug && fs.existsSync('markets/' + uMarketSlug + '/index.html')
+      ? '<a href="../../markets/' + uMarketSlug + '/" style="color:var(--accent)">' + esc(country) + '</a>'
+      : esc(country)) + ' › ' + esc(opName) + '</nav>' +
     '<h1>' + esc(opName) + '</h1>' +
     '<div class="evmeta"><span><b>Country</b> ' + esc(country) + '</span>' + (voltage ? '<span><b>Top voltage</b> ' + esc(voltage) + '</span>' : '') + ((gridRec && gridRec.region) ? '<span><b>Region</b> ' + esc(gridRec.region) + '</span>' : '') + (site ? '<span><a href="' + esc(site) + '" target="_blank" rel="noopener" style="color:var(--accent)">Official site ↗</a></span>' : '') + '</div>' +
     '<p class="lead">' + esc(odesc) + '</p>' +
@@ -135,7 +166,7 @@ function buildUtility(u) {
     '<h2>Grid characteristics</h2><ul>' +
     '<li><b>Operating region:</b> ' + esc(country) + (gridRec && gridRec.region ? ' — ' + esc(gridRec.region) : '') + '</li>' +
     '<li><b>System frequency:</b> ' + esc((gridRec && gridRec.freq) || '50') + ' Hz</li>' +
-    '<li><b>Synchronous area:</b> ' + esc((gridRec && gridRec.sync) || '') + '</li>' +
+    '<li><b>Synchronous area:</b> ' + esc(syncAreaLabel(gridRec && gridRec.sync)) + '</li>' +
     '<li><b>Top voltage class:</b> ' + esc(voltage || '—') + '</li>' +
     '</ul>' +
     '<h2>Transformer &amp; substation profile</h2><ul>' +
