@@ -102,15 +102,25 @@
 .tpnav-dropdown-panel {
   display: none;
   position: absolute;
-  top: calc(100% + 6px);
+  top: 100%;
+  margin-top: 4px;
   left: 0;
-  min-width: 220px;
+  min-width: 230px;
   background: var(--navy-2, #14253d);
   border: 1px solid rgba(255, 255, 255, .14);
   border-radius: 9px;
   box-shadow: 0 12px 30px rgba(0, 0, 0, .38);
   padding: 6px;
   z-index: 210;
+}
+/* Invisible hover bridge to eliminate gap and prevent mouseleave when moving from button to panel */
+.tpnav-dropdown-panel::before {
+  content: "";
+  position: absolute;
+  top: -14px;
+  left: -6px;
+  right: -6px;
+  height: 14px;
 }
 .tpnav-dropdown:hover .tpnav-dropdown-panel,
 .tpnav-dropdown:focus-within .tpnav-dropdown-panel,
@@ -134,7 +144,8 @@
 .tpnav-more-panel {
   display: none;
   position: absolute;
-  top: calc(100% + 6px);
+  top: 100%;
+  margin-top: 4px;
   right: 0;
   min-width: 184px;
   max-height: calc(100vh - 90px);
@@ -146,6 +157,16 @@
   padding: 5px;
   z-index: 200;
 }
+.tpnav-more-panel::before {
+  content: "";
+  position: absolute;
+  top: -14px;
+  left: -6px;
+  right: -6px;
+  height: 14px;
+}
+.tpnav-more:hover .tpnav-more-panel,
+.tpnav-more:focus-within .tpnav-more-panel,
 .tpnav-more.open .tpnav-more-panel { display: block; }
 .tpnav-more-panel a {
   display: block;
@@ -196,6 +217,45 @@
     font-size: .98rem;
     border-bottom: 1px solid rgba(255, 255, 255, .06);
   }
+  /* Mobile dropdown handling for Directory */
+  .tpnav-dropdown {
+    display: block;
+    width: 100%;
+    position: static;
+  }
+  .tpnav-dropdown-btn {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 13px 22px;
+    font-size: .98rem;
+    border-radius: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, .06);
+  }
+  .tpnav-dropdown-panel {
+    display: none;
+    position: static;
+    background: rgba(0, 0, 0, .22);
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 4px 0 8px;
+    min-width: 0;
+    z-index: auto;
+  }
+  .tpnav-dropdown.open .tpnav-dropdown-panel {
+    display: block;
+  }
+  .tpnav-dropdown-panel a {
+    padding: 12px 22px 12px 36px;
+    font-size: .92rem;
+    border-radius: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, .04);
+  }
+  .tpnav-dropdown-panel::before {
+    display: none;
+  }
+
   /* Everything is one flat list on mobile — no nested accordion. The More
      wrapper stops being a menu and its links join the run, so a phone user
      gets the full set in one scroll instead of a second level to open. */

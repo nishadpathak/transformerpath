@@ -49,14 +49,14 @@ body{font-family:var(--font-sans);background:#08121e;color:var(--ink)}
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="TransformerPath">
-<script src="course-gate.js?v=5"></script>
+<script src="course-gate.js?v=6"></script>
     <link rel="stylesheet" href="tp-theme.css?v=6">
-    <link rel="stylesheet" href="tp-nav.css?v=12">
-  <link rel="stylesheet" href="tp-feedback.css?v=12">
+    <link rel="stylesheet" href="tp-nav.css?v=13">
+  <link rel="stylesheet" href="tp-feedback.css?v=13">
 </head>
 <body>
 <header>
-  <link rel="stylesheet" href="tp-nav.css?v=12">
+  <link rel="stylesheet" href="tp-nav.css?v=13">
   <div class="container nav">
     <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
     <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
@@ -153,7 +153,7 @@ body{font-family:var(--font-sans);background:#08121e;color:var(--ink)}
       themeToggle.textContent = isDark ? '☀️' : '🌙';
     }
   </script>
-  <script src="tp-nav.js?v=5" defer></script>
+  <script src="tp-nav.js?v=6" defer></script>
 </header>
 
 
@@ -349,7 +349,7 @@ addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updat
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
 (function(){var dp;window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();dp=e;if(document.getElementById('tpInstall'))return;var b=document.createElement('button');b.id='tpInstall';b.textContent='\u2913 Install TransformerPath';b.setAttribute('style','position:fixed;right:16px;bottom:16px;z-index:9999;background:#f5a623;color:#0d1b2e;border:0;border-radius:999px;padding:11px 18px;font-weight:800;font-size:.9rem;box-shadow:0 6px 20px rgba(0,0,0,.28);cursor:pointer;font-family:inherit');b.onclick=function(){b.remove();dp.prompt();dp.userChoice.finally(function(){dp=null;});};document.body.appendChild(b);});})();
 </script>
-<script src="analytics.js?v=5" defer></script>
+<script src="analytics.js?v=6" defer></script>
 <script src="tp-theme.js?v=1" defer></script>
 <footer>
   <div class="container">
@@ -381,8 +381,8 @@ b.addEventListener('click',function(){var d=html.getAttribute('data-theme')==='d
 if(d){html.removeAttribute('data-theme');localStorage.setItem('theme','light');}else{html.setAttribute('data-theme','dark');localStorage.setItem('theme','dark');}upd();});
 })();
 </script>
-<script src="tp-nav.js?v=5" defer></script>
-<script src="tp-freshness.js?v=5" defer></script>
-<script src="tp-feedback.js?v=5" defer></script>
+<script src="tp-nav.js?v=6" defer></script>
+<script src="tp-freshness.js?v=6" defer></script>
+<script src="tp-feedback.js?v=6" defer></script>
 </body>
 </html>

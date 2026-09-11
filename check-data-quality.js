@@ -183,8 +183,10 @@ if (intelStore && intelStore.companies) {
   console.log('R9 manufacturer-intel: companies ' + intelStore.companies.length + ' | duplicate: ' + dup + ' | invalid site: ' + badUrl + ' | capability without source: ' + vNoSource);
 }
 if (auditStore) {
+  const CFG = (() => { try { return JSON.parse(fs.readFileSync('data/config.json', 'utf8')); } catch(e) { return {}; } })();
+  const expectedCount = (CFG.counters && CFG.counters.manufacturers) || 701;
   console.log('R9 census-audit: records ' + auditStore.total + ' | no-website: ' + auditStore.no_website_count + ' | review queue: ' + auditStore.review_queue_count + ' | status: ' + JSON.stringify(auditStore.status_counts));
-  if (auditStore.total !== 546 && auditStore.total !== intelStoreCount()) problems.push('R9 census-audit record count drift :: ' + auditStore.total);
+  if (auditStore.total !== expectedCount && auditStore.total !== intelStoreCount()) problems.push('R9 census-audit record count drift :: ' + auditStore.total);
 }
 function intelStoreCount() { try { return JSON.parse(fs.readFileSync('data/manufacturer-intel.json', 'utf8')).companies.length; } catch (e) { return -1; } }
 

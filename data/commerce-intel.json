@@ -1,10 +1,10 @@
 {
   "$schema": "https://transformerpath.com/commerce-intel.schema.json",
-  "generated": "2026-09-11T10:22:10.475Z",
+  "generated": "2026-09-11T17:08:53.315Z",
   "honesty_note": "Revenue and conversion figures are NOT shown because live Stripe/Supabase transaction data is not available in this static build. No revenue, no conversion rate and no pipeline value are fabricated. The figures below are real platform-scale and prospect signals derived from the canonical datasets.",
   "metrics": {
     "platform_scale": {
-      "manufacturers": 546,
+      "manufacturers": 701,
       "projects": 306,
       "tenders": 150,
       "open_tenders": 21,
@@ -12,7 +12,7 @@
       "events": 295
     },
     "prospect_signals": {
-      "supplier_prospects_with_website": 535,
+      "supplier_prospects_with_website": 690,
       "upcoming_events": 181
     }
   },
@@ -50,6 +50,18 @@
         "DT"
       ],
       "website": "http://faradaysa.com.ar",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Faraday Transformadores",
+      "country": "Argentina",
+      "region": "Latin America",
+      "city": "Buenos Aires",
+      "categories": [
+        "DT",
+        "DRY"
+      ],
+      "website": "https://www.faraday.com.ar/",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
@@ -143,6 +155,19 @@
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
+      "name": "Transformadores Tadeo Czerweny S.A.",
+      "country": "Argentina",
+      "region": "Latin America",
+      "city": "Gálvez, Santa Fe",
+      "categories": [
+        "PT",
+        "DT",
+        "SR"
+      ],
+      "website": "https://www.tadeoczerweny.com.ar/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
       "name": "TTE (Tubos Trans Electric)",
       "country": "Argentina",
       "region": "Latin America",
@@ -177,6 +202,19 @@
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
+      "name": "Ampcontrol Transformers",
+      "country": "Australia",
+      "region": "Oceania",
+      "city": "Tomago, NSW",
+      "categories": [
+        "DT",
+        "TX",
+        "DRY"
+      ],
+      "website": "https://www.ampcontrolgroup.com/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
       "name": "ETEL Australia",
       "country": "Australia",
       "region": "Oceania",
@@ -197,6 +235,30 @@
         "DRY"
       ],
       "website": "https://www.rlp.com.au",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Schneider Electric Australia Transformers",
+      "country": "Australia",
+      "region": "Oceania",
+      "city": "Benalla, VIC",
+      "categories": [
+        "DT",
+        "DRY"
+      ],
+      "website": "https://www.se.com/au/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Tesseract Transformers",
+      "country": "Australia",
+      "region": "Oceania",
+      "city": "Melbourne, VIC",
+      "categories": [
+        "DT",
+        "DRY"
+      ],
+      "website": "https://www.tesseract.net.au/",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
@@ -243,6 +305,18 @@
         "DRY"
       ],
       "website": "https://www.trafomodern.com",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Trafonetz Transformatoren",
+      "country": "Austria",
+      "region": "Europe",
+      "city": "Vienna",
+      "categories": [
+        "DRY",
+        "DT"
+      ],
+      "website": "https://www.trafonetz.at/",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
@@ -339,6 +413,18 @@
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
+      "name": "Pauwels Transformers",
+      "country": "Belgium",
+      "region": "Europe",
+      "city": "Mechelen, Antwerp",
+      "categories": [
+        "PT",
+        "DT"
+      ],
+      "website": "https://www.pauwels.com/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
       "name": "CDA Ingenieros",
       "country": "Bolivia",
       "region": "Latin America",
@@ -385,6 +471,30 @@
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
+      "name": "Ilumatic Transformadores",
+      "country": "Brazil",
+      "region": "Latin America",
+      "city": "São Paulo, SP",
+      "categories": [
+        "DT",
+        "DRY"
+      ],
+      "website": "https://www.ilumatic.com.br/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Inepar Triel-HT",
+      "country": "Brazil",
+      "region": "Latin America",
+      "city": "Curitiba, PR",
+      "categories": [
+        "PT",
+        "SR"
+      ],
+      "website": "https://www.inepar.com.br/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
       "name": "Itaipu Transformadores",
       "country": "Brazil",
       "region": "Latin America",
@@ -407,6 +517,19 @@
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
+      "name": "ITEL Transformadores",
+      "country": "Brazil",
+      "region": "Latin America",
+      "city": "Itatiba, SP",
+      "categories": [
+        "DT",
+        "PT",
+        "DRY"
+      ],
+      "website": "https://www.iteltransformadores.com.br/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
       "name": "Jund-Trafo",
       "country": "Brazil",
       "region": "Latin America",
@@ -415,6 +538,30 @@
         "DT"
       ],
       "website": "https://www.jundtrafo.com.br",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Luterma Transformadores",
+      "country": "Brazil",
+      "region": "Latin America",
+      "city": "São Paulo, SP",
+      "categories": [
+        "DT",
+        "DRY"
+      ],
+      "website": "https://www.luterma.com.br/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Magnetron Brasil",
+      "country": "Brazil",
+      "region": "Latin America",
+      "city": "Curitiba, PR",
+      "categories": [
+        "DT",
+        "DRY"
+      ],
+      "website": "https://www.magnetron.com.br/",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
@@ -487,6 +634,30 @@
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
+      "name": "Toshiba América do Sul (TBE)",
+      "country": "Brazil",
+      "region": "Latin America",
+      "city": "Curitiba, PR",
+      "categories": [
+        "PT",
+        "SR"
+      ],
+      "website": "https://www.toshiba.com.br/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Trael Transformadores",
+      "country": "Brazil",
+      "region": "Latin America",
+      "city": "Cuiabá, MT",
+      "categories": [
+        "DT",
+        "PT"
+      ],
+      "website": "https://www.trael.com.br/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
       "name": "Trafotaipu",
       "country": "Brazil",
       "region": "Latin America",
@@ -495,6 +666,18 @@
         "DT"
       ],
       "website": "https://trafotaipu.com.br",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Transformadores Itaipu",
+      "country": "Brazil",
+      "region": "Latin America",
+      "city": "Mococa, SP",
+      "categories": [
+        "DT",
+        "PT"
+      ],
+      "website": "https://www.transformadoresitaipu.com.br/",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
@@ -569,6 +752,18 @@
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
+      "name": "Elprom Trafo",
+      "country": "Bulgaria",
+      "region": "Europe",
+      "city": "Sofia",
+      "categories": [
+        "DT",
+        "PT"
+      ],
+      "website": "https://www.elprom-trafo.com/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
       "name": "Elprom Trafo CH",
       "country": "Bulgaria",
       "region": "Europe",
@@ -589,6 +784,18 @@
         "DRY"
       ],
       "website": "https://lemi-trafo.com",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Bemag Transformer",
+      "country": "Canada",
+      "region": "North America",
+      "city": "Saint-Hyacinthe, QC",
+      "categories": [
+        "DRY",
+        "DT"
+      ],
+      "website": "https://www.bemag.ca/",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
@@ -659,6 +866,18 @@
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
+      "name": "Moloney Electric Canada",
+      "country": "Canada",
+      "region": "North America",
+      "city": "Toronto, ON",
+      "categories": [
+        "DT",
+        "PT"
+      ],
+      "website": "https://www.moloney.ca/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
       "name": "Northern Transformer",
       "country": "Canada",
       "region": "North America",
@@ -706,6 +925,19 @@
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
+      "name": "Rhona S.A. Transformadores",
+      "country": "Chile",
+      "region": "Latin America",
+      "city": "Viña del Mar, Valparaíso",
+      "categories": [
+        "DT",
+        "PT",
+        "DRY"
+      ],
+      "website": "https://www.rhona.cl/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
       "name": "Transformadores CH",
       "country": "Chile",
       "region": "Latin America",
@@ -727,6 +959,19 @@
         "DRY"
       ],
       "website": "https://tusan.cl",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Baoding Tianwei Baobian Electric (BTW)",
+      "country": "China",
+      "region": "East Asia",
+      "city": "Baoding, Hebei",
+      "categories": [
+        "PT",
+        "SR",
+        "TX"
+      ],
+      "website": "https://www.btw.cn/",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
@@ -775,6 +1020,19 @@
         "DRY"
       ],
       "website": "http://www.xd.com.cn/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Chint T&D Shanghai",
+      "country": "China",
+      "region": "East Asia",
+      "city": "Songjiang, Shanghai",
+      "categories": [
+        "PT",
+        "DT",
+        "DRY"
+      ],
+      "website": "https://chintglobal.com/",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
@@ -852,6 +1110,44 @@
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
+      "name": "Guangdong Mingyang Electric",
+      "country": "China",
+      "region": "East Asia",
+      "city": "Zhongshan, Guangdong",
+      "categories": [
+        "DT",
+        "DRY",
+        "PT"
+      ],
+      "website": "https://www.mingyang.com.cn/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Guangzhou Zhiguang Electric",
+      "country": "China",
+      "region": "East Asia",
+      "city": "Guangzhou, Guangdong",
+      "categories": [
+        "DT",
+        "DRY",
+        "PT"
+      ],
+      "website": "https://www.gzzg.com.cn/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Guodian Nanjing Automation (SAC)",
+      "country": "China",
+      "region": "East Asia",
+      "city": "Nanjing, Jiangsu",
+      "categories": [
+        "DT",
+        "PT"
+      ],
+      "website": "https://www.sac.com.cn/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
       "name": "Hainan Jinpan (Jinpan Group; Guilin, Yangzhou)",
       "country": "China",
       "region": "East Asia",
@@ -887,6 +1183,18 @@
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
+      "name": "Hebei Tianwei Huarui Electric",
+      "country": "China",
+      "region": "East Asia",
+      "city": "Baoding, Hebei",
+      "categories": [
+        "PT",
+        "DT"
+      ],
+      "website": "https://www.tw-hr.com/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
       "name": "Henan Pinggao Electric (State Grid)",
       "country": "China",
       "region": "East Asia",
@@ -895,6 +1203,31 @@
         "PT"
       ],
       "website": "https://en.pinggao.com/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Henan Pinggao Electric (Transformers)",
+      "country": "China",
+      "region": "East Asia",
+      "city": "Pingdingshan, Henan",
+      "categories": [
+        "PT",
+        "DT"
+      ],
+      "website": "https://www.pinggao.com/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Henan Senyuan Electric",
+      "country": "China",
+      "region": "East Asia",
+      "city": "Changge, Henan",
+      "categories": [
+        "DT",
+        "PT",
+        "DRY"
+      ],
+      "website": "https://www.senyuan.cn/",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
@@ -919,6 +1252,18 @@
         "DRY"
       ],
       "website": "https://www.hitachienergy.com/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Jiangshan Transformer",
+      "country": "China",
+      "region": "East Asia",
+      "city": "Jiangshan, Zhejiang",
+      "categories": [
+        "PT",
+        "DT"
+      ],
+      "website": "https://www.jstt.cn/",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
@@ -958,6 +1303,19 @@
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
+      "name": "Jiangsu Huapeng Transformer",
+      "country": "China",
+      "region": "East Asia",
+      "city": "Liyang, Jiangsu",
+      "categories": [
+        "PT",
+        "DT",
+        "DRY"
+      ],
+      "website": "https://www.huapeng.net/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
       "name": "Jiangsu Tianwei Transformer",
       "country": "China",
       "region": "East Asia",
@@ -984,6 +1342,18 @@
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
+      "name": "Jiangxi Huawu Transformer",
+      "country": "China",
+      "region": "East Asia",
+      "city": "Nanchang, Jiangxi",
+      "categories": [
+        "PT",
+        "DT"
+      ],
+      "website": "https://www.huawutrans.com/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
       "name": "Jinguan Electric",
       "country": "China",
       "region": "East Asia",
@@ -997,6 +1367,32 @@
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
+      "name": "Jinpan Smart Grid (JST)",
+      "country": "China",
+      "region": "East Asia",
+      "city": "Haikou, Hainan",
+      "categories": [
+        "DRY",
+        "DT",
+        "PT"
+      ],
+      "website": "https://www.jst.com.cn/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Ningbo Tianan (Group) Co., Ltd.",
+      "country": "China",
+      "region": "East Asia",
+      "city": "Ningbo, Zhejiang",
+      "categories": [
+        "PT",
+        "DT",
+        "DRY"
+      ],
+      "website": "https://www.tianan.com/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
       "name": "Qingdao Qingdian Electric Group",
       "country": "China",
       "region": "East Asia",
@@ -1006,6 +1402,30 @@
         "DRY"
       ],
       "website": "http://www.qdqb.com",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Qingdao Transformer Group",
+      "country": "China",
+      "region": "East Asia",
+      "city": "Qingdao, Shandong",
+      "categories": [
+        "PT",
+        "DT"
+      ],
+      "website": "https://www.qdtg.com/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Sanbian Science & Technology",
+      "country": "China",
+      "region": "East Asia",
+      "city": "Sanmen, Zhejiang",
+      "categories": [
+        "PT",
+        "DT"
+      ],
+      "website": "https://www.sanbian.cn/",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
@@ -1043,6 +1463,18 @@
         "DRY"
       ],
       "website": "https://www.sgb-smit.com/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Shaanxi Yinhe Transformer",
+      "country": "China",
+      "region": "East Asia",
+      "city": "Baoji, Shaanxi",
+      "categories": [
+        "PT",
+        "DT"
+      ],
+      "website": "https://www.yinhetrans.com/",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
@@ -1095,6 +1527,19 @@
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
+      "name": "Shandong Taikai Transformer",
+      "country": "China",
+      "region": "East Asia",
+      "city": "Tai'an, Shandong",
+      "categories": [
+        "PT",
+        "SR",
+        "DT"
+      ],
+      "website": "https://www.taikai.cn/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
       "name": "Shandong Taishan / Luneng Mount Tai (Taishan Group)",
       "country": "China",
       "region": "East Asia",
@@ -1144,6 +1589,18 @@
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
+      "name": "Shanghai Huaming Power Equipment",
+      "country": "China",
+      "region": "East Asia",
+      "city": "Shanghai",
+      "categories": [
+        "PT",
+        "TX"
+      ],
+      "website": "https://www.huaming.com/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
       "name": "Shanghai Huguang Transformer",
       "country": "China",
       "region": "East Asia",
@@ -1166,6 +1623,18 @@
         "DRY"
       ],
       "website": "https://www.shenda.com/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Sichuan Transformer Co., Ltd.",
+      "country": "China",
+      "region": "East Asia",
+      "city": "Chengdu, Sichuan",
+      "categories": [
+        "PT",
+        "DT"
+      ],
+      "website": "https://www.chuandian.com/",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
@@ -1193,6 +1662,19 @@
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
+      "name": "Siyuan Electric Co., Ltd.",
+      "country": "China",
+      "region": "East Asia",
+      "city": "Shanghai / Rugao",
+      "categories": [
+        "PT",
+        "SR",
+        "DT"
+      ],
+      "website": "https://www.siyuan.com/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
       "name": "Sunten Electric",
       "country": "China",
       "region": "East Asia",
@@ -1202,6 +1684,19 @@
         "DRY"
       ],
       "website": "https://en.sunten.com.cn/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Sunten Electric Co., Ltd.",
+      "country": "China",
+      "region": "East Asia",
+      "city": "Foshan, Guangdong",
+      "categories": [
+        "DRY",
+        "DT",
+        "PT"
+      ],
+      "website": "https://www.sunten.com.cn/",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
@@ -1218,6 +1713,33 @@
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
+      "name": "TBEA Shenyang Transformer Group",
+      "country": "China",
+      "region": "East Asia",
+      "city": "Shenyang, Liaoning",
+      "categories": [
+        "PT",
+        "SR",
+        "TX"
+      ],
+      "website": "https://www.tbea.com/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Wolong Electric Group",
+      "country": "China",
+      "region": "East Asia",
+      "city": "Shaoxing, Zhejiang",
+      "categories": [
+        "PT",
+        "TX",
+        "DT",
+        "DRY"
+      ],
+      "website": "https://www.wolong.com/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
       "name": "Wuhan UHV Power Technology",
       "country": "China",
       "region": "East Asia",
@@ -1226,6 +1748,18 @@
         "PT"
       ],
       "website": "https://www.cnuhv.com/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Wujiang Transformer Co., Ltd.",
+      "country": "China",
+      "region": "East Asia",
+      "city": "Suzhou, Jiangsu",
+      "categories": [
+        "PT",
+        "DT"
+      ],
+      "website": "https://www.wj-trafo.com/",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
@@ -1241,6 +1775,19 @@
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
+      "name": "XD Group - Xi'an XD Transformer",
+      "country": "China",
+      "region": "East Asia",
+      "city": "Xi'an, Shaanxi",
+      "categories": [
+        "PT",
+        "SR",
+        "TX"
+      ],
+      "website": "https://www.xd.com.cn/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
       "name": "Yueqing Zhongming Electric",
       "country": "China",
       "region": "East Asia",
@@ -1250,6 +1797,18 @@
         "DRY"
       ],
       "website": "http://www.zmelec.com/en/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Zhejiang Huada Transformer",
+      "country": "China",
+      "region": "East Asia",
+      "city": "Yueqing, Wenzhou, Zhejiang",
+      "categories": [
+        "DT",
+        "DRY"
+      ],
+      "website": "https://www.huadatransformer.com/",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
@@ -1286,6 +1845,30 @@
         "DRY"
       ],
       "website": "https://www.zjyb-electric.com/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Zhejiang Zhongguang Transformer",
+      "country": "China",
+      "region": "East Asia",
+      "city": "Yueqing, Zhejiang",
+      "categories": [
+        "DT",
+        "DRY"
+      ],
+      "website": "https://www.cn-zhongguang.com/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Zhuzhou CRRC Times Electric (Traction Transformers)",
+      "country": "China",
+      "region": "East Asia",
+      "city": "Zhuzhou, Hunan",
+      "categories": [
+        "TX",
+        "PT"
+      ],
+      "website": "https://www.crrcgc.cc/tec",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
@@ -1371,6 +1954,19 @@
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
+      "name": "Rymel S.A.S.",
+      "country": "Colombia",
+      "region": "Latin America",
+      "city": "Medellín, Antioquia",
+      "categories": [
+        "DT",
+        "DRY",
+        "PT"
+      ],
+      "website": "https://www.rymel.com.co/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
       "name": "Tesla Transformadores",
       "country": "Colombia",
       "region": "Latin America",
@@ -1379,6 +1975,31 @@
         "DT"
       ],
       "website": "https://tesla.com.co",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Končar - Distribution & Special Transformers (D&ST)",
+      "country": "Croatia",
+      "region": "Europe",
+      "city": "Zagreb",
+      "categories": [
+        "DT",
+        "PT",
+        "DRY",
+        "TX"
+      ],
+      "website": "https://www.koncar-dst.hr/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Končar - Instrument Transformers",
+      "country": "Croatia",
+      "region": "Europe",
+      "city": "Zagreb",
+      "categories": [
+        "IT"
+      ],
+      "website": "https://www.koncar-mjt.hr/",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
@@ -1392,6 +2013,19 @@
         "DRY"
       ],
       "website": "https://www.koncar.hr",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "ETD Transformátory a.s.",
+      "country": "Czech Republic",
+      "region": "Global",
+      "city": "Plzeň",
+      "categories": [
+        "PT",
+        "TX",
+        "SR"
+      ],
+      "website": "https://www.etd-transformatory.cz/",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
@@ -1461,6 +2095,18 @@
         "DRY"
       ],
       "website": "https://dantrafo.dk",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Dantrafo A/S",
+      "country": "Denmark",
+      "region": "Europe",
+      "city": "Lemvig",
+      "categories": [
+        "DRY",
+        "DT"
+      ],
+      "website": "https://www.dantrafo.dk/",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
@@ -1541,6 +2187,18 @@
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
+      "name": "Egemac Transformers",
+      "country": "Egypt",
+      "region": "Africa",
+      "city": "Cairo",
+      "categories": [
+        "PT",
+        "DT"
+      ],
+      "website": "https://www.egemac.com.eg/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
       "name": "EGYTRAFO Group",
       "country": "Egypt",
       "region": "Africa",
@@ -1600,6 +2258,18 @@
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
+      "name": "Schneider Electric Egypt Transformers",
+      "country": "Egypt",
+      "region": "Africa",
+      "city": "Badr City, Cairo",
+      "categories": [
+        "DT",
+        "DRY"
+      ],
+      "website": "https://www.se.com/eg/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
       "name": "Star Trans (Star Transformer Technology)",
       "country": "Egypt",
       "region": "Africa",
@@ -1633,6 +2303,19 @@
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
+      "name": "AQ Trafotek Oy",
+      "country": "Finland",
+      "region": "Europe",
+      "city": "Kaarina",
+      "categories": [
+        "DRY",
+        "TX",
+        "DT"
+      ],
+      "website": "https://www.aqgroup.com/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
       "name": "Hitachi Energy Finland",
       "country": "Finland",
       "region": "Europe",
@@ -1653,6 +2336,18 @@
         "DRY"
       ],
       "website": "https://www.trafox.fi",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "VEO Oy - Transformers & Substation Systems",
+      "country": "Finland",
+      "region": "Europe",
+      "city": "Vaasa",
+      "categories": [
+        "DT",
+        "PT"
+      ],
+      "website": "https://www.veo.fi/",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
@@ -1699,648 +2394,6 @@
         "PT"
       ],
       "website": "https://jst-transformers.eu/qui-sommes-nous",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Schneider Electric",
-      "country": "France",
-      "region": "Europe",
-      "city": "Rueil-Malmaison",
-      "categories": [
-        "DT",
-        "DRY"
-      ],
-      "website": "https://www.se.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Transfos MARY",
-      "country": "France",
-      "region": "Europe",
-      "city": "Clermont-Ferrand",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://www.transfosmary.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Block Transformatoren-Elektronik",
-      "country": "Germany",
-      "region": "Europe",
-      "city": "Verden",
-      "categories": [
-        "DRY"
-      ],
-      "website": "https://www.block.eu",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "J. Schneider Elektrotechnik",
-      "country": "Germany",
-      "region": "Europe",
-      "city": "Offenburg",
-      "categories": [
-        "DRY"
-      ],
-      "website": "https://www.j-schneider.de",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "SGB (Neumark works)",
-      "country": "Germany",
-      "region": "Europe",
-      "city": "Neumark",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://www.sgb-smit.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "SGB-SMIT Group",
-      "country": "Germany",
-      "region": "Europe",
-      "city": "Regensburg",
-      "categories": [
-        "PT",
-        "DT",
-        "DRY"
-      ],
-      "website": "https://www.sgb-smit.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "ELECSA",
-      "country": "Guatemala",
-      "region": "Latin America",
-      "city": "Mixco, Guatemala City",
-      "categories": [
-        "DT",
-        "DRY"
-      ],
-      "website": "https://www.elecsa.com.gt/",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Ganz Transformers & Electric Rotating Machines",
-      "country": "Hungary",
-      "region": "Europe",
-      "city": "Tápiószele",
-      "categories": [
-        "PT",
-        "DT"
-      ],
-      "website": "https://www.ganzelectric.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "ABC Transformers",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Faridabad / UP",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://www.abctransformers.in",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Aditya Powers",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Faridabad",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://adityapowers.in",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Alfa Transformers",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Bhubaneswar",
-      "categories": [
-        "DT",
-        "DRY"
-      ],
-      "website": "https://alfa.in",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "AMCO Electrical & Engineering",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Kolkata",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://amcoelectrical.in",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Amptech Power Transformers",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Coimbatore",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://amptechtransformers.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Andrew Yule & Co.",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Kolkata / Chennai",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://www.andrewyule.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Atlanta Electricals",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Anand",
-      "categories": [
-        "PT",
-        "DT"
-      ],
-      "website": "https://aetrafo.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Bharat Bijlee",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Navi Mumbai",
-      "categories": [
-        "PT",
-        "DT",
-        "DRY"
-      ],
-      "website": "https://www.bharatbijlee.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "BHEL",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Bhopal / Jhansi",
-      "categories": [
-        "PT"
-      ],
-      "website": "https://www.bhel.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "BSR Power Constructions",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Guntur",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://www.bsrpower.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Century Transformers",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Howrah",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://www.centurytransformer.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "CG Power & Industrial Solutions",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Mumbai / Bhopal",
-      "categories": [
-        "PT",
-        "DT",
-        "DRY"
-      ],
-      "website": "https://www.cgpower.co.in",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Classic Transformers",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Bengaluru",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://classictransformers.co.in",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Danish Power",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Jaipur",
-      "categories": [
-        "PT",
-        "DT"
-      ],
-      "website": "https://www.danish.co.in",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Divya Electrical Transformers",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Hyderabad",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://www.divyatransformers.co.in",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "East India Udyog",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Sahibabad, UP",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://www.eastindiaudyog.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Electrica Energy Products",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Vadodara",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://www.eeptransformers.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Electrotherm (India)",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Ahmedabad",
-      "categories": [
-        "PT",
-        "DT"
-      ],
-      "website": "https://www.electrotherm.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Elmag Transformers",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Hyderabad",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://www.elmagtransformers.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "EMC Limited",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Kolkata",
-      "categories": [
-        "PT",
-        "DT"
-      ],
-      "website": "https://www.emcpower.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Esennar Transformers",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Hyderabad",
-      "categories": [
-        "PT",
-        "DT"
-      ],
-      "website": "https://esennar.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "EVR Power Systems",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Hyderabad / Chennai",
-      "categories": [
-        "PT",
-        "DT"
-      ],
-      "website": "https://evrpower.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "GE Vernova T&D India",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Vadodara / Noida",
-      "categories": [
-        "PT"
-      ],
-      "website": "https://www.gevernova.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "GNT Transformers",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Faridabad",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://www.gnttransformers.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Gujarat Transformers",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Vadodara",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://gujarattransformers.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "H.D. Transformers",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Jaipur",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://www.hdtransformers.co.in",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Hitachi Energy India",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Bengaluru / Vadodara",
-      "categories": [
-        "PT",
-        "DT",
-        "DRY"
-      ],
-      "website": "https://www.hitachienergy.com/in/en",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "IMP Powers",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Silvassa",
-      "categories": [
-        "PT",
-        "DT"
-      ],
-      "website": "https://imp-powers.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Indo Tech Transformers",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Kancheepuram",
-      "categories": [
-        "PT",
-        "DT",
-        "DRY"
-      ],
-      "website": "https://www.indo-tech.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Indpower Group",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Visakhapatnam",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://indpowergroup.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Indus Transformers & Devices",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Thrissur",
-      "categories": [
-        "DT"
-      ],
-      "website": "http://www.industransformers.net",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Indusree",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Kolkata",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://www.indusree.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Intrans Electro Components",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Tumkur / Kochi",
-      "categories": [
-        "DT",
-        "DRY"
-      ],
-      "website": "https://intranselectro.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "iPower (Arun Enterprises)",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Howrah",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://www.ipowertransformer.in",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Jaybee Industries",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Faridabad",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://jaybeeindustries.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Kanohar Electricals",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Meerut",
-      "categories": [
-        "PT",
-        "DT"
-      ],
-      "website": "https://www.kanohar.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Kanyaka Power (KPEL)",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Sangareddy",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://www.kanyaka.in",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "KEL Transformer Division",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Ernakulam",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://kel.co.in",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Kiran Power (KPRS)",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Bengaluru",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://kprs.in",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Kirloskar Electric",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Bengaluru",
-      "categories": [
-        "PT",
-        "DT"
-      ],
-      "website": "https://kirloskarelectric.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Kotsons",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Agra / Alwar",
-      "categories": [
-        "PT",
-        "DT"
-      ],
-      "website": "https://kotsons.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Macroplast Transformers",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Greater Noida",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://www.macroplasttransformers.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Makpower Transformer",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Howrah",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://makpowertransformer.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Marsons Ltd",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Kolkata",
-      "categories": [
-        "PT",
-        "DT"
-      ],
-      "website": "https://www.marsonsonline.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "MSC Transformers",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Pune",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://www.msctransformers.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Om Shakti Transformers",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Kolkata",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://omshaktitransformers.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Orissa Transformers (OTPL)",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Bhubaneswar",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://www.orissatransformers.in",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Pactil Transformers",
-      "country": "India",
-      "region": "South Asia",
-      "city": "Mumbai",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://www.pactil.net",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     }
   ],

@@ -17,7 +17,7 @@
 <meta name="twitter:title" content="TransformerPath — Global Transformer Industry Intelligence &amp; Network">
 <meta name="twitter:description" content="The global platform for transformer professionals — daily market intel, industry events, jobs, a world grid census and an interactive 3D transformer explorer.">
 <meta name="twitter:image" content="https://transformerpath.com/brand/og-image-hero.jpg">
-<link rel="stylesheet" href="style.css?v=12">
+<link rel="stylesheet" href="style.css?v=13">
 <link rel="preload" as="image" href="brand/hero.jpg">
 <link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
@@ -92,13 +92,13 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="TransformerPath">
 <script src="consent.js" defer></script>
-    <link rel="stylesheet" href="tp-nav.css?v=12">
-<link rel="stylesheet" href="tp-feedback.css?v=12">
+    <link rel="stylesheet" href="tp-nav.css?v=13">
+<link rel="stylesheet" href="tp-feedback.css?v=13">
 </head>
 <body>
 
 <header>
-  <link rel="stylesheet" href="tp-nav.css?v=12">
+  <link rel="stylesheet" href="tp-nav.css?v=13">
   <div class="container nav">
     <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
     <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
@@ -195,7 +195,7 @@
       themeToggle.textContent = isDark ? '☀️' : '🌙';
     }
   </script>
-  <script src="tp-nav.js?v=5" defer></script>
+  <script src="tp-nav.js?v=6" defer></script>
 </header>
 
 <div class="ticker">
@@ -204,12 +204,12 @@
 
 <!-- ══ Cinematic Hero — Intelligence Terminal ══ -->
 <style>
-/* ===== Hero v2 — High-Impact Intelligence Terminal ===== */
+/* ===== Hero v2 — Disciplined Industrial Intelligence Terminal ===== */
 .hero-cine.hero-v2 {
   position: relative;
   overflow: hidden;
-  padding: 80px 0 88px;
-  background: radial-gradient(1200px 650px at 78% -15%, #183c66 0%, var(--navy) 48%, #08121f 100%);
+  padding: 76px 0 84px;
+  background: radial-gradient(1100px 600px at 78% -15%, #16365c 0%, var(--navy) 48%, #08121f 100%);
   color: #fff;
 }
 .hero-cine.hero-v2::before {
@@ -217,8 +217,8 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(650px 380px at 15% 20%, rgba(14, 165, 233, 0.12), transparent 70%),
-    radial-gradient(550px 350px at 85% 65%, rgba(245, 166, 35, 0.10), transparent 70%);
+    radial-gradient(550px 320px at 15% 20%, rgba(14, 165, 233, 0.08), transparent 70%),
+    radial-gradient(480px 300px at 85% 65%, rgba(245, 166, 35, 0.07), transparent 70%);
   pointer-events: none;
   z-index: 0;
 }
@@ -230,7 +230,7 @@
   align-items: center;
 }
 .hero-v2 h1 {
-  font-size: 3.1rem;
+  font-size: 3.05rem;
   line-height: 1.08;
   letter-spacing: -1.2px;
   margin-bottom: 16px;
@@ -250,40 +250,26 @@
 .hero-v2 .hero-live-pill {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
-  background: rgba(16, 34, 58, 0.82);
-  border: 1px solid rgba(14, 165, 233, 0.35);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  padding: 6px 16px;
+  gap: 8px;
+  background: rgba(14, 28, 46, 0.85);
+  border: 1px solid rgba(196, 210, 228, 0.2);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+  padding: 5px 14px;
   border-radius: 999px;
-  font-size: .78rem;
+  font-size: .76rem;
   font-weight: 700;
-  letter-spacing: .8px;
+  letter-spacing: .6px;
   text-transform: uppercase;
   color: #cbd5e1;
-  margin-bottom: 20px;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  margin-bottom: 18px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
-.hero-v2 .pulse-dot {
-  position: relative;
-  width: 8px;
-  height: 8px;
+.hero-v2 .live-dot {
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: #10b981;
-  box-shadow: 0 0 10px #10b981;
-}
-.hero-v2 .pulse-dot::after {
-  content: "";
-  position: absolute;
-  inset: -4px;
-  border-radius: 50%;
-  border: 2px solid #10b981;
-  animation: pulseRing 2s cubic-bezier(0.24, 0, 0.38, 1) infinite;
-}
-@keyframes pulseRing {
-  0% { transform: scale(.7); opacity: .9; }
-  100% { transform: scale(2.2); opacity: 0; }
 }
 .hero-v2 .live-badge-text { color: #f5a623; }
 .hero-v2 .live-sep { opacity: .4; }
@@ -293,7 +279,7 @@
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
-  margin-bottom: 24px;
+  margin-bottom: 22px;
 }
 .hero-v2 .hero-ctas .btn {
   display: inline-flex;
@@ -309,23 +295,23 @@
 .hero-v2 .btn-amber {
   background: var(--amber);
   color: var(--navy);
-  box-shadow: 0 4px 18px rgba(245, 166, 35, 0.35);
+  box-shadow: 0 4px 16px rgba(245, 166, 35, 0.3);
   border: none;
 }
 .hero-v2 .btn-amber:hover {
   background: #f7b746;
   transform: translateY(-2px);
-  box-shadow: 0 6px 24px rgba(245, 166, 35, 0.5);
+  box-shadow: 0 6px 20px rgba(245, 166, 35, 0.45);
 }
 .hero-v2 .btn-glass {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   color: #fff;
   backdrop-filter: blur(8px);
 }
 .hero-v2 .btn-glass:hover {
-  background: rgba(255, 255, 255, 0.16);
-  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.32);
   transform: translateY(-2px);
   color: #fff;
 }
@@ -333,12 +319,12 @@
 /* Integrated Hero Search Box */
 .hero-v2 .hero-search-wrap {
   background: rgba(14, 27, 44, 0.72);
-  border: 1px solid rgba(196, 210, 228, 0.18);
+  border: 1px solid rgba(196, 210, 228, 0.16);
   border-radius: 14px;
   padding: 12px 14px;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.2);
   max-width: 560px;
 }
 .hero-v2 .hero-search-form {
@@ -346,14 +332,14 @@
   gap: 8px;
   align-items: center;
   background: rgba(8, 18, 32, 0.85);
-  border: 1px solid rgba(245, 166, 35, 0.3);
+  border: 1px solid rgba(245, 166, 35, 0.28);
   border-radius: 10px;
   padding: 3px 5px 3px 12px;
   transition: border-color .2s, box-shadow .2s;
 }
 .hero-v2 .hero-search-form:focus-within {
   border-color: var(--amber);
-  box-shadow: 0 0 0 3px rgba(245, 166, 35, 0.2);
+  box-shadow: 0 0 0 3px rgba(245, 166, 35, 0.18);
 }
 .hero-v2 .hero-search-icon {
   font-size: 1rem;
@@ -436,16 +422,16 @@
   font-weight: 800;
 }
 
-/* Right Column Panel: Terminal & Stat Grid */
+/* Right Column Panel: Terminal & Stat Hierarchy */
 .hero-v2 .hero-panel {
   position: relative;
   background: rgba(14, 27, 44, 0.68);
   border: 1px solid rgba(196, 210, 228, 0.14);
-  border-radius: 20px;
+  border-radius: 18px;
   padding: 22px 22px 18px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
 .hero-v2 .hero-arcs {
   position: absolute;
@@ -462,7 +448,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   padding-bottom: 12px;
   border-bottom: 1px solid rgba(196, 210, 228, 0.12);
 }
@@ -478,11 +464,10 @@
 }
 .hero-v2 .panel-head-title::before {
   content: "";
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   background: var(--amber);
   border-radius: 2px;
-  box-shadow: 0 0 8px rgba(245, 166, 35, 0.6);
 }
 .hero-v2 .panel-head em {
   color: #8fa2ba;
@@ -490,12 +475,15 @@
   font-size: .78rem;
   letter-spacing: .3px;
 }
-.hero-v2 .stat-grid {
+
+/* Primary 4-Metric Grid */
+.hero-v2 .stat-grid-primary {
   position: relative;
   z-index: 1;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 .hero-v2 .stat-card {
   display: flex;
@@ -503,11 +491,11 @@
   justify-content: space-between;
   background: rgba(18, 35, 58, 0.72);
   border: 1px solid rgba(196, 210, 228, 0.12);
-  border-radius: 12px;
-  padding: 15px 16px 13px;
+  border-radius: 11px;
+  padding: 14px 16px 12px;
   text-decoration: none;
   color: inherit;
-  transition: transform .2s cubic-bezier(.16,1,.3,1), border-color .2s, box-shadow .2s, background .2s;
+  transition: transform .2s cubic-bezier(.16,1,.3,1), border-color .2s, background .2s;
   position: relative;
   overflow: hidden;
 }
@@ -520,21 +508,11 @@
   height: 2px;
   background: var(--amber);
   opacity: .75;
-  transition: opacity .2s;
 }
 .hero-v2 .stat-card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   background: rgba(23, 44, 72, 0.92);
-  border-color: rgba(245, 166, 35, 0.5);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3), 0 0 16px rgba(245, 166, 35, 0.14);
-}
-.hero-v2 .stat-card:hover::before {
-  opacity: 1;
-  box-shadow: 0 0 8px var(--amber);
-}
-.hero-v2 .stat-card.is-highlight {
-  background: linear-gradient(180deg, rgba(245, 166, 35, 0.12), rgba(18, 35, 58, 0.85));
-  border-color: rgba(245, 166, 35, 0.35);
+  border-color: rgba(245, 166, 35, 0.45);
 }
 .hero-v2 .stat-card-top {
   display: flex;
@@ -549,9 +527,6 @@
   line-height: 1;
   color: #fff;
   font-variant-numeric: tabular-nums;
-}
-.hero-v2 .stat-card b.is-amber {
-  color: var(--amber);
 }
 .hero-v2 .stat-card-arrow {
   font-size: .88rem;
@@ -571,11 +546,77 @@
   letter-spacing: .2px;
   line-height: 1.35;
 }
+
+/* Secondary 4-Metric Intelligence Strip */
+.hero-v2 .stat-strip {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  background: rgba(11, 23, 39, 0.6);
+  border: 1px solid rgba(196, 210, 228, 0.1);
+  border-radius: 10px;
+  padding: 10px 8px;
+}
+.hero-v2 .strip-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+  padding: 4px 6px;
+  border-radius: 6px;
+  transition: background .15s;
+  position: relative;
+}
+.hero-v2 .strip-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+.hero-v2 .strip-item b {
+  font-size: 1.18rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.hero-v2 .strip-item b.is-amber {
+  color: var(--amber);
+}
+.hero-v2 .strip-item span {
+  font-size: .72rem;
+  color: #9fb0c4;
+  font-weight: 600;
+  margin-top: 4px;
+  line-height: 1.2;
+}
+.hero-v2 .strip-item.is-live {
+  background: rgba(245, 166, 35, 0.08);
+  border: 1px solid rgba(245, 166, 35, 0.25);
+}
+.hero-v2 .strip-live-dot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #f5a623;
+  box-shadow: 0 0 6px #f5a623;
+  animation: pulseDot 2s infinite;
+}
+@keyframes pulseDot {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: .4; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
 .hero-v2 .panel-foot {
   position: relative;
   z-index: 1;
-  margin-top: 14px;
-  padding-top: 12px;
+  margin-top: 12px;
+  padding-top: 10px;
   border-top: 1px solid rgba(196, 210, 228, 0.1);
   color: #8fa2ba;
   font-size: .78rem;
@@ -599,18 +640,19 @@
 .hero-v2 .hero-copy  { animation: heroRise .7s ease-out both; }
 .hero-v2 .hero-panel { animation: heroRise .7s ease-out .15s both; }
 @media (prefers-reduced-motion: reduce) {
-  .hero-v2 .hero-copy, .hero-v2 .hero-panel, .hero-v2 .pulse-dot::after { animation: none; }
+  .hero-v2 .hero-copy, .hero-v2 .hero-panel, .hero-v2 .strip-live-dot { animation: none; }
 }
 @media (max-width: 940px) {
-  .hero-v2 .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+  .hero-v2 .hero-grid { grid-template-columns: 1fr; gap: 36px; }
   .hero-v2 .hero-arcs { inset: -40px -30px; width: calc(100% + 60px); height: calc(100% + 80px); }
   .hero-v2 .hero-search-wrap { max-width: 100%; }
 }
-@media (max-width: 480px) {
-  .hero-v2 h1 { font-size: 2.2rem; }
-  .hero-v2 .stat-grid { gap: 8px; }
-  .hero-v2 .stat-card { padding: 13px 12px 11px; }
-  .hero-v2 .stat-card b { font-size: 1.55rem; }
+@media (max-width: 540px) {
+  .hero-v2 h1 { font-size: 2.15rem; }
+  .hero-v2 .stat-grid-primary { gap: 8px; }
+  .hero-v2 .stat-card { padding: 12px 12px 10px; }
+  .hero-v2 .stat-card b { font-size: 1.5rem; }
+  .hero-v2 .stat-strip { grid-template-columns: 1fr 1fr; gap: 6px; }
   .hero-v2 .hero-search-form { flex-direction: column; align-items: stretch; }
   .hero-v2 .hero-search-form button { width: 100%; }
 }
@@ -621,30 +663,31 @@
     <div class="hero-grid">
       <div class="hero-copy">
         <div class="hero-live-pill">
-          <span class="pulse-dot" aria-hidden="true"></span>
-          <span class="live-badge-text">Live Intelligence Platform</span>
+          <span class="live-dot" aria-hidden="true"></span>
+          <span class="live-badge-text">Platform Data Current</span>
           <span class="live-sep">&middot;</span>
-          <span>Canonical Data 11 Sep 2026</span>
+          <span data-tp-fresh="refreshed">Updated 11 Sep 2026</span>
         </div>
         <h1>Where the world's <span>transformer industry</span> stays ahead.</h1>
         <p class="lead">Industry intelligence &middot; Engineering &middot; Manufacturers &middot; Markets &middot; Tools.</p>
         <div class="hero-ctas">
           <a href="intel.html" class="btn btn-amber">⚡ Read Daily Briefing →</a>
-          <a href="directory.html" class="btn btn-glass">Explore Global Directory</a>
+          <a href="manufacturers.html" class="btn btn-glass">Explore Global Directory</a>
         </div>
 
         <div class="hero-search-wrap">
           <form action="directory.html" method="get" class="hero-search-form" role="search">
             <span class="hero-search-icon" aria-hidden="true">🔍</span>
-            <input type="search" name="q" placeholder="Search 546 companies, 546 facilities, 151 grids, tenders..." autocomplete="off" required>
+            <input type="search" name="q" placeholder="Search the global transformer industry…" autocomplete="off" required>
             <button type="submit">Search Data →</button>
           </form>
           <div class="hero-search-pills">
-            <span class="pill-tag">Trending:</span>
-            <a href="directory.html?q=765+kV" class="pill">⚡ 765 kV+ Power Transformers</a>
-            <a href="tenders.html" class="pill">📋 Active Tenders</a>
-            <a href="directory.html?q=Bushing" class="pill">🏭 Bushings &amp; OLTC</a>
-            <a href="grids.html" class="pill">🌐 151 National Grids</a>
+            <span class="pill-tag">Quick search:</span>
+            <a href="directory.html?q=765+kV" class="pill">765 kV manufacturers</a>
+            <a href="directory.html?q=Transformerboard" class="pill">Transformerboard</a>
+            <a href="directory.html?q=Saudi+Arabia" class="pill">Saudi Arabia</a>
+            <a href="tenders.html?status=open" class="pill">Active tenders</a>
+            <a href="laboratories.html" class="pill">Testing laboratories</a>
           </div>
         </div>
 
@@ -666,42 +709,45 @@
             <circle cx="270" cy="330" r="2"   fill-opacity=".25"/>
           </g>
         </svg>
-        <div class="panel-head"><strong class="panel-head-title">The Platform at a Glance</strong><em>transformerpath.com</em></div>
-        <div class="stat-grid">
-          <a href="directory.html" class="stat-card" title="Browse all 546 transformer companies">
-            <div class="stat-card-top"><b data-stat="manufacturers">546</b><span class="stat-card-arrow" aria-hidden="true">&rarr;</span></div>
+        <div class="panel-head"><strong class="panel-head-title">Platform Intelligence &middot; 2026 Census</strong><em>transformerpath.com</em></div>
+        <div class="stat-grid-primary">
+          <a href="manufacturers.html" class="stat-card" title="Browse all 701 transformer companies">
+            <div class="stat-card-top"><b data-stat="manufacturers">701</b><span class="stat-card-arrow" aria-hidden="true">&rarr;</span></div>
             <span class="stat-label">Transformer Companies</span>
           </a>
-          <a href="directory.html" class="stat-card" title="Browse all 546 manufacturing facilities">
-            <div class="stat-card-top"><b data-stat="factories">546</b><span class="stat-card-arrow" aria-hidden="true">&rarr;</span></div>
-            <span class="stat-label">Production Facilities</span>
-          </a>
-          <a href="manufacturers.html" class="stat-card" title="Explore manufacturers by country">
-            <div class="stat-card-top"><b data-stat="manufacturingCountries">84</b><span class="stat-card-arrow" aria-hidden="true">&rarr;</span></div>
+          <a href="manufacturers.html?view=countries" class="stat-card" title="Explore manufacturing across 85 countries">
+            <div class="stat-card-top"><b data-stat="manufacturingCountries">85</b><span class="stat-card-arrow" aria-hidden="true">&rarr;</span></div>
             <span class="stat-label">Manufacturing Countries</span>
-          </a>
-          <a href="grids.html" class="stat-card" title="Survey 151 national grid systems">
-            <div class="stat-card-top"><b data-stat="countries">151</b><span class="stat-card-arrow" aria-hidden="true">&rarr;</span></div>
-            <span class="stat-label">National Grids Mapped</span>
           </a>
           <a href="projects.html" class="stat-card" title="Track 306 global grid and substation projects">
             <div class="stat-card-top"><b data-stat="projects">306</b><span class="stat-card-arrow" aria-hidden="true">&rarr;</span></div>
             <span class="stat-label">Global Projects Tracked</span>
           </a>
-          <a href="tenders.html" class="stat-card" title="View 150 procurement tenders worldwide">
-            <div class="stat-card-top"><b data-stat="tenders">150</b><span class="stat-card-arrow" aria-hidden="true">&rarr;</span></div>
-            <span class="stat-label">Tenders Tracked</span>
-          </a>
-          <a href="tenders.html" class="stat-card is-highlight" title="21 open tenders accepting bids right now">
-            <div class="stat-card-top"><b class="is-amber" data-stat="openTenders">21</b><span class="stat-card-arrow" aria-hidden="true">&rarr;</span></div>
-            <span class="stat-label">Open Tenders Active</span>
-          </a>
-          <a href="intel.html" class="stat-card" title="Review 56 confirmed contract awards">
-            <div class="stat-card-top"><b data-stat="awards">56</b><span class="stat-card-arrow" aria-hidden="true">&rarr;</span></div>
-            <span class="stat-label">Confirmed Awards</span>
+          <a href="grids.html" class="stat-card" title="Survey 151 national grid systems">
+            <div class="stat-card-top"><b data-stat="countries">151</b><span class="stat-card-arrow" aria-hidden="true">&rarr;</span></div>
+            <span class="stat-label">National Grids Mapped</span>
           </a>
         </div>
-        <p class="panel-foot"><span>Interactive 3D engineering models &amp; daily intelligence.</span> <a href="explorer.html">Explore 3D &rarr;</a></p>
+        <div class="stat-strip">
+          <a href="tenders.html" class="strip-item" title="View 150 procurement tenders worldwide">
+            <b data-stat="tenders">150</b>
+            <span>Tenders Tracked</span>
+          </a>
+          <a href="tenders.html?status=open" class="strip-item is-live" title="21 open tenders accepting bids right now">
+            <span class="strip-live-dot" aria-hidden="true"></span>
+            <b class="is-amber" data-stat="openTenders">21</b>
+            <span>Open Tenders</span>
+          </a>
+          <a href="intel.html?type=awards" class="strip-item" title="Review 56 confirmed contract awards">
+            <b data-stat="awards">56</b>
+            <span>Confirmed Awards</span>
+          </a>
+          <a href="events.html" class="strip-item" title="Explore 181 upcoming industry conferences and exhibitions">
+            <b data-stat="upcomingEvents">181</b>
+            <span>Upcoming Events</span>
+          </a>
+        </div>
+        <p class="panel-foot"><span>Interactive 3D engineering models &amp; daily market briefings.</span> <a href="explorer.html">Explore 3D Model &rarr;</a></p>
       </div>
     </div>
   </div>
@@ -947,11 +993,11 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
   <input name="url">
   <input name="title">
 </form>
-<script src="analytics.js?v=5" defer></script>
-<script src="site-stats.js?v=5" defer></script>
-<script src="material-latest.js?v=5" defer></script>
-<script src="tp-nav.js?v=5" defer></script>
-<script src="tp-freshness.js?v=5" defer></script>
-<script src="tp-feedback.js?v=5" defer></script>
+<script src="analytics.js?v=6" defer></script>
+<script src="site-stats.js?v=6" defer></script>
+<script src="material-latest.js?v=6" defer></script>
+<script src="tp-nav.js?v=6" defer></script>
+<script src="tp-freshness.js?v=6" defer></script>
+<script src="tp-feedback.js?v=6" defer></script>
 </body>
 </html>
