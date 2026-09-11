@@ -1,6 +1,6 @@
 {
   "$schema": "https://transformerpath.com/production-audit.schema.json",
-  "generated": "2026-09-10T10:20:36.366Z",
+  "generated": "2026-09-11T05:05:43.437Z",
   "note": "POST-SPRINT PRODUCTION AUDIT. READ-ONLY verification of checked-in source + generated data + served HTML. Does not assert anything about an unobserved live runtime. UNKNOWN > INCORRECT.",
   "surfaces": [
     {
@@ -94,7 +94,7 @@
     {
       "surface": "components.html",
       "kind": "components",
-      "title": "Transformer Components & Accessories Directory | TransformerPath",
+      "title": "Transformer Component Manufacturers Directory (Deep Dive) | TransformerPath",
       "source_present": true,
       "sitemap_indexed": true,
       "has_canonical": true,
@@ -181,62 +181,7 @@
     }
   ],
   "freshness_contradiction_sweep": {
-    "pages_with_contradictions": 9,
-    "pages": [
-      {
-        "file": "dist/intel-2026-07-11.html",
-        "claims": [
-          "updated hourly"
-        ]
-      },
-      {
-        "file": "dist/intel-2026-07-15.html",
-        "claims": [
-          "updated hourly"
-        ]
-      },
-      {
-        "file": "dist/intel-2026-07-21.html",
-        "claims": [
-          "updated hourly"
-        ]
-      },
-      {
-        "file": "dist/intel-2026-07-22.html",
-        "claims": [
-          "updated hourly"
-        ]
-      },
-      {
-        "file": "dist/intel-2026-07-25.html",
-        "claims": [
-          "updated hourly"
-        ]
-      },
-      {
-        "file": "dist/intel-2026-08-03.html",
-        "claims": [
-          "updated hourly"
-        ]
-      },
-      {
-        "file": "dist/intel-2026-08-16.html",
-        "claims": [
-          "updated hourly"
-        ]
-      },
-      {
-        "file": "dist/intel-2026-08-18.html",
-        "claims": [
-          "updated hourly"
-        ]
-      },
-      {
-        "file": "dist/intel-2026-08-21.html",
-        "claims": [
-          "updated hourly"
-        ]
-      }
-    ]
+    "pages_with_contradictions": 0,
+    "pages": []
   }
 }

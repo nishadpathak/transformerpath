@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Directory Health &amp; Data Quality — TransformerPath Admin</title>
+<meta name="description" content="TransformerPath Directory V2 health, data completeness, duplicate detection and moderation queue monitor.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="../style.css?v=12">
+<link rel="icon" type="image/svg+xml" href="../brand/favicon.svg">
+<meta name="theme-color" content="#0d1b2e">
+<script>if ((localStorage.getItem('theme') || 'dark') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');</script>
+<style>
+.admin-wrap { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+.gate { max-width: 380px; margin: 80px auto; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 32px; text-align: center; }
+.gate input { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; margin: 14px 0; background: var(--card); color: var(--text); }
+.gate button { width: 100%; padding: 11px; background: var(--amber); color: var(--navy); border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
+#panel { display: none; }
+
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 24px; }
+.kcard { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; }
+.kcard .klabel { font-size: .75rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 700; }
+.kcard .kval { font-size: 1.85rem; font-weight: 800; color: var(--accent); margin: 6px 0 2px; }
+.kcard .ksub { font-size: .78rem; color: var(--muted); }
+
+.acard { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 22px; margin-bottom: 22px; }
+.acard h3 { margin: 0 0 6px; font-size: 1.08rem; color: var(--text); }
+.acard .sub { color: var(--muted); font-size: .84rem; margin-bottom: 16px; }
+
+.dist-bar-wrap { height: 18px; border-radius: 999px; display: flex; overflow: hidden; background: var(--border); margin: 12px 0 8px; }
+.dist-seg { height: 100%; transition: width .3s ease; }
+.seg-high { background: #10b981; }
+.seg-mid { background: #f5a623; }
+.seg-low { background: #ef4444; }
+
+.tab-nav { display: flex; gap: 8px; border-bottom: 1px solid var(--border); margin-bottom: 16px; flex-wrap: wrap; }
+.tab-btn { background: none; border: none; border-bottom: 2px solid transparent; color: var(--muted); padding: 8px 14px; font-size: .86rem; font-weight: 600; cursor: pointer; }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+.dh-table { width: 100%; border-collapse: collapse; font-size: .84rem; margin-top: 10px; }
+.dh-table th { text-align: left; color: var(--muted); font-weight: 800; font-size: .7rem; text-transform: uppercase; letter-spacing: .04em; padding: 10px; border-bottom: 2px solid var(--border); }
+.dh-table td { padding: 9px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.pill { display: inline-block; font-size: .66rem; font-weight: 700; letter-spacing: .04em; padding: 2px 8px; border-radius: 999px; color: #fff; text-transform: uppercase; }
+.p-high { background: #b91c1c; }
+.p-med { background: #d97706; }
+.p-ok { background: #16a34a; }
+.p-gray { background: #475569; }
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .8rem; }
+.badge-count { background: rgba(245,166,35,.15); color: var(--accent); padding: 1px 6px; border-radius: 999px; font-size: .74rem; font-weight: 700; margin-left: 6px; }
+</style>
+</head>
+<body>
+
+<div class="gate" id="gate">
+  <h2 style="margin:0 0 6px">🔐 Directory Health</h2>
+  <p style="color:var(--muted);font-size:.88rem">TransformerPath Directory V2 Health &amp; Integrity Console</p>
+  <input type="password" id="pw" placeholder="Passphrase" onkeydown="if(event.key==='Enter')unlock()">
+  <button onclick="unlock()">Unlock Dashboard</button>
+  <p style="color:var(--muted);font-size:.75rem;margin-top:14px">Client-side gate for internal inspection. Never commit production secrets.</p>
+</div>
+
+<div class="admin-wrap" id="panel">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:18px">
+    <div>
+      <h1 style="margin:0 0 4px;font-size:1.8rem">📊 Directory <span style="color:var(--accent)">Health &amp; Quality</span></h1>
+      <p style="color:var(--muted);margin:0;font-size:.9rem">Canonical Database V2 Audit · <a href="../admin.html" style="color:var(--accent)">← Admin</a> · <a href="source-health.html" style="color:var(--accent)">Source Health</a> · <a href="../directory.html" style="color:var(--accent)">Live Directory ↗</a></p>
+    </div>
+    <div style="text-align:right">
+      <span class="pill p-ok">ENGINE ACTIVE</span>
+      <div style="font-size:.74rem;color:var(--muted);margin-top:4px" id="lastUpdated">Updated: Loading…</div>
+    </div>
+  </div>
+
+  <!-- Executive KPIs -->
+  <div class="kpi-grid" id="kpiGrid">
+    <div class="kcard"><div class="klabel">Total Companies</div><div class="kval" id="kCompanies">—</div><div class="ksub">Active census records</div></div>
+    <div class="kcard"><div class="klabel">Documented Factories</div><div class="kval" id="kFactories">—</div><div class="ksub">Classified production plants</div></div>
+    <div class="kcard"><div class="klabel">Sourced Data Points</div><div class="kval" id="kSourced">—</div><div class="ksub">Verified capability facts</div></div>
+    <div class="kcard"><div class="klabel">Database Completeness</div><div class="kval" id="kCompleteness" style="color:#10b981">—</div><div class="ksub">Weighted multi-criteria score</div></div>
+    <div class="kcard"><div class="klabel">Duplicates Flagged</div><div class="kval" id="kDups" style="color:#f5a623">—</div><div class="ksub">Review only (never auto-merged)</div></div>
+    <div class="kcard"><div class="klabel">Pending Moderation</div><div class="kval" id="kPending" style="color:#60a5fa">—</div><div class="ksub">Claims &amp; user corrections</div></div>
+  </div>
+
+  <!-- Completeness Distribution Section -->
+  <div class="acard">
+    <h3>Profile Completeness Distribution (0–100%)</h3>
+    <p class="sub">Measures verified research coverage across 8 criteria (Identity, Website, Products, Voltage, MVA, Plants, Certs, Test bays). Commercial payment never alters this score.</p>
+    <div class="dist-bar-wrap">
+      <div class="dist-seg seg-high" id="barHigh" style="width: 15%" title=">80% Complete"></div>
+      <div class="dist-seg seg-mid" id="barMid" style="width: 75%" title="40-80% Complete"></div>
+      <div class="dist-seg seg-low" id="barLow" style="width: 10%" title="<40% Complete"></div>
+    </div>
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;font-size:.82rem;color:var(--muted);margin-top:6px">
+      <div><span style="color:#10b981;font-weight:700">● &gt;80% High Completeness:</span> <b id="cntHigh" style="color:var(--text)">0</b> (<span id="pctHigh">0%</span>)</div>
+      <div><span style="color:#f5a623;font-weight:700">● 40–80% Moderate Coverage:</span> <b id="cntMid" style="color:var(--text)">0</b> (<span id="pctMid">0%</span>)</div>
+      <div><span style="color:#ef4444;font-weight:700">● &lt;40% Sparse / Research Required:</span> <b id="cntLow" style="color:var(--text)">0</b> (<span id="pctLow">0%</span>)</div>
+    </div>
+  </div>
+
+  <!-- Interactive Triage Tabs -->
+  <div class="acard">
+    <div class="tab-nav">
+      <button class="tab-btn active" onclick="showTab('dups', this)">Suspected Duplicates <span class="badge-count" id="badgeDups">0</span></button>
+      <button class="tab-btn" onclick="showTab('claims', this)">Claims &amp; Corrections <span class="badge-count" id="badgeClaims">0</span></button>
+      <button class="tab-btn" onclick="showTab('sources', this)">Missing Sources &amp; URLs <span class="badge-count" id="badgeSources">0</span></button>
+      <button class="tab-btn" onclick="showTab('stale', this)">Stale Records (&gt;12m) <span class="badge-count" id="badgeStale">0</span></button>
+      <button class="tab-btn" onclick="showTab('taxonomy', this)">Taxonomy Alignment <span class="badge-count" id="badgeTax">0</span></button>
+    </div>
+
+    <!-- Tab 1: Duplicates -->
+    <div id="tab-dups" class="tab-content">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <p class="sub" style="margin:0">Rule P0: Multi-factor detection across normalized name, domain, and group aliases. <b>Never automatically merged</b>. Preserve 301 redirects when consolidating.</p>
+        <input type="text" id="dupSearch" placeholder="Filter duplicates…" oninput="filterTable('dupsTable', this.value)" style="padding:5px 10px;background:var(--bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:.8rem">
+      </div>
+      <div style="overflow-x:auto">
+        <table class="dh-table" id="dupsTable">
+          <thead>
+            <tr>
+              <th>Entity A</th>
+              <th>Entity B</th>
+              <th>Country</th>
+              <th>Match Type</th>
+              <th>Reason &amp; Recommendation</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="dupsBody"><tr><td colspan="6" style="color:var(--muted)">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab 2: Claims & Corrections -->
+    <div id="tab-claims" class="tab-content" style="display:none">
+      <p class="sub">Claim requests and technical correction proposals submitted via the live forms. External claims enter moderation and require source proof before publication.</p>
+      <div style="overflow-x:auto">
+        <table class="dh-table">
+          <thead>
+            <tr>
+              <th>Queue Type</th>
+              <th>Company</th>
+              <th>Submitter / Field</th>
+              <th>Evidence / Proposed Value</th>
+              <th>Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="claimsBody"><tr><td colspan="6" style="color:var(--muted)">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab 3: Missing Sources -->
+    <div id="tab-sources" class="tab-content" style="display:none">
+      <p class="sub">Active directory records lacking an official corporate website, or flagged with broken/placeholder URLs.</p>
+      <div style="overflow-x:auto">
+        <table class="dh-table">
+          <thead>
+            <tr>
+              <th>Company Name</th>
+              <th>Country</th>
+              <th>Current Source State</th>
+              <th>Action Required</th>
+            </tr>
+          </thead>
+          <tbody id="sourcesBody"><tr><td colspan="4" style="color:var(--muted)">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab 4: Stale Records -->
+    <div id="tab-stale" class="tab-content" style="display:none">
+      <p class="sub">Company profiles that have not undergone source verification within the last 12 months.</p>
+      <div style="overflow-x:auto">
+        <table class="dh-table">
+          <thead>
+            <tr>
+              <th>Company Name</th>
+              <th>Country</th>
+              <th>Last Reviewed</th>
+              <th>Age (Days)</th>
+              <th>Priority</th>
+            </tr>
+          </thead>
+          <tbody id="staleBody"><tr><td colspan="5" style="color:var(--muted)">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab 5: Taxonomy -->
+    <div id="tab-taxonomy" class="tab-content" style="display:none">
+      <p class="sub">Free-text product tags that do not strictly resolve to canonical controlled taxonomy IDs in <code>data/industry-taxonomy.json</code>.</p>
+      <div style="overflow-x:auto">
+        <table class="dh-table">
+          <thead>
+            <tr>
+              <th>Company Name</th>
+              <th>Country</th>
+              <th>Unmapped String</th>
+              <th>Suggested Canonical Mapping</th>
+            </tr>
+          </thead>
+          <tbody id="taxBody"><tr><td colspan="4" style="color:var(--muted)">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+var PW_HASH = '941b8378581ccb8f06432b05180349fef279bd9c9356c25b9771d54c4d533039';
+var SRC = '../data/directory-health.json';
+
+function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+async function sha256(s) {
+  var b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
+  return Array.from(new Uint8Array(b)).map(function (x) { return x.toString(16).padStart(2, '0'); }).join('');
+}
+async function unlock() {
+  var h = await sha256(document.getElementById('pw').value);
+  if (h === PW_HASH) { sessionStorage.setItem('tp-admin', '1'); show(); }
+  else { document.getElementById('pw').value = ''; document.getElementById('pw').placeholder = 'Wrong passphrase'; }
+}
+function show() { document.getElementById('gate').style.display = 'none'; document.getElementById('panel').style.display = 'block'; loadData(); }
+if (sessionStorage.getItem('tp-admin') === '1') show();
+
+function showTab(tabId, btn) {
+  document.querySelectorAll('.tab-content').forEach(function(el) { el.style.display = 'none'; });
+  document.querySelectorAll('.tab-btn').forEach(function(el) { el.classList.remove('active'); });
+  var target = document.getElementById('tab-' + tabId);
+  if (target) target.style.display = 'block';
+  if (btn) btn.classList.add('active');
+}
+
+function filterTable(tableId, query) {
+  var q = (query || '').toLowerCase().trim();
+  var rows = document.querySelectorAll('#' + tableId + ' tbody tr');
+  rows.forEach(function(tr) {
+    tr.style.display = tr.textContent.toLowerCase().includes(q) ? '' : 'none';
+  });
+}
+
+function loadData() {
+  fetch(SRC).then(function(r) { return r.json(); }).then(function(data) {
+    var k = data.kpi_summary || {};
+    document.getElementById('lastUpdated').textContent = 'Audit: ' + (data.date || '—');
+    document.getElementById('kCompanies').textContent = (k.total_companies || 0).toLocaleString();
+    document.getElementById('kFactories').textContent = (k.total_factories || 0).toLocaleString();
+    document.getElementById('kSourced').textContent = (k.total_sourced_fields || 0).toLocaleString();
+    document.getElementById('kCompleteness').textContent = (k.overall_completeness_pct || 0) + '%';
+    document.getElementById('kDups').textContent = (k.suspected_duplicates_count || 0).toLocaleString();
+    document.getElementById('kPending').textContent = ((k.pending_claims_count || 0) + (k.pending_corrections_count || 0)).toLocaleString();
+
+    // Completeness Bars
+    var b = data.completeness_breakdown || {};
+    var highPct = (b.above_80 && b.above_80.pct) || 0;
+    var midPct = (b.between_40_and_80 && b.between_40_and_80.pct) || 0;
+    var lowPct = (b.below_40 && b.below_40.pct) || 0;
+
+    document.getElementById('barHigh').style.width = highPct + '%';
+    document.getElementById('barMid').style.width = midPct + '%';
+    document.getElementById('barLow').style.width = lowPct + '%';
+
+    document.getElementById('cntHigh').textContent = ((b.above_80 && b.above_80.count) || 0).toLocaleString();
+    document.getElementById('pctHigh').textContent = highPct + '%';
+    document.getElementById('cntMid').textContent = ((b.between_40_and_80 && b.between_40_and_80.count) || 0).toLocaleString();
+    document.getElementById('pctMid').textContent = midPct + '%';
+    document.getElementById('cntLow').textContent = ((b.below_40 && b.below_40.count) || 0).toLocaleString();
+    document.getElementById('pctLow').textContent = lowPct + '%';
+
+    // Badges
+    document.getElementById('badgeDups').textContent = k.suspected_duplicates_count || 0;
+    document.getElementById('badgeClaims').textContent = (k.pending_claims_count || 0) + (k.pending_corrections_count || 0);
+    document.getElementById('badgeSources').textContent = (k.records_missing_sources_count || 0) + (k.broken_websites_count || 0);
+    document.getElementById('badgeStale').textContent = k.records_not_reviewed_12m_count || 0;
+    document.getElementById('badgeTax').textContent = k.unmapped_taxonomy_count || 0;
+
+    // Render Duplicates
+    var dups = data.suspected_duplicates || [];
+    var dupsBody = document.getElementById('dupsBody');
+    if (!dups.length) {
+      dupsBody.innerHTML = '<tr><td colspan="6" style="color:var(--muted)">No suspected duplicates flagged. Clean integrity.</td></tr>';
+    } else {
+      dupsBody.innerHTML = dups.map(function(d) {
+        var mPill = d.confidence === 'HIGH' ? '<span class="pill p-high">HIGH</span>' : '<span class="pill p-med">MED</span>';
+        return '<tr>' +
+          '<td><b style="color:var(--text)">' + esc(d.entity_a) + '</b></td>' +
+          '<td><b style="color:var(--text)">' + esc(d.entity_b) + '</b></td>' +
+          '<td>' + esc(d.country_a) + (d.country_b !== d.country_a ? ' / ' + esc(d.country_b) : '') + '</td>' +
+          '<td><span class="mono" style="font-size:.74rem">' + esc(d.match_type) + '</span> ' + mPill + '</td>' +
+          '<td><div style="color:var(--text);font-size:.8rem">' + esc(d.reason) + '</div><div style="color:var(--muted);font-size:.74rem;margin-top:3px">' + esc(d.recommendation) + '</div></td>' +
+          '<td><span class="pill p-gray">FLAGGED FOR REVIEW</span></td>' +
+          '</tr>';
+      }).join('');
+    }
+
+    // Render Claims & Corrections
+    var claims = data.pending_claims || [];
+    var corrections = data.pending_corrections || [];
+    var claimsBody = document.getElementById('claimsBody');
+    var allQueues = [];
+    claims.forEach(function(c) {
+      allQueues.push({
+        type: 'CLAIM',
+        company: c.company,
+        sub: c.contact_name + ' (' + c.email + ')<br><span style="color:var(--muted)">' + c.position + '</span>',
+        detail: c.proof,
+        date: c.received,
+        status: c.status
+      });
+    });
+    corrections.forEach(function(co) {
+      allQueues.push({
+        type: 'CORRECTION',
+        company: co.company,
+        sub: 'Field: <b>' + co.field + '</b><br>Current: <i>' + co.current + '</i>',
+        detail: 'Suggested: <b>' + co.suggested + '</b><br><a href="' + esc(co.source) + '" target="_blank" rel="noopener" style="color:var(--accent);font-size:.75rem">Source ↗</a>',
+        date: co.submitted,
+        status: co.status
+      });
+    });
+    if (!allQueues.length) {
+      claimsBody.innerHTML = '<tr><td colspan="6" style="color:var(--muted)">No pending moderation items.</td></tr>';
+    } else {
+      claimsBody.innerHTML = allQueues.map(function(q) {
+        var tPill = q.type === 'CLAIM' ? '<span class="pill p-ok">CLAIM</span>' : '<span class="pill p-med">CORRECTION</span>';
+        return '<tr>' +
+          '<td>' + tPill + '</td>' +
+          '<td><b style="color:var(--text)">' + esc(q.company) + '</b></td>' +
+          '<td>' + q.sub + '</td>' +
+          '<td>' + q.detail + '</td>' +
+          '<td class="mono">' + esc(q.date) + '</td>' +
+          '<td><button class="pill p-ok" style="border:none;cursor:pointer" onclick="alert(\'Action logged for review.\')">Verify &amp; Apply</button></td>' +
+          '</tr>';
+      }).join('');
+    }
+
+    // Render Missing Sources
+    var sources = data.records_missing_sources || [];
+    var sourcesBody = document.getElementById('sourcesBody');
+    if (!sources.length) {
+      sourcesBody.innerHTML = '<tr><td colspan="4" style="color:var(--muted)">All records carry valid sourcing citations.</td></tr>';
+    } else {
+      sourcesBody.innerHTML = sources.map(function(s) {
+        return '<tr>' +
+          '<td><b style="color:var(--text)">' + esc(s.name) + '</b></td>' +
+          '<td>' + esc(s.country) + '</td>' +
+          '<td style="color:var(--muted)">' + esc(s.issue) + '</td>' +
+          '<td><a href="../correct-company.html?company=' + encodeURIComponent(s.name) + '" target="_blank" style="color:var(--accent);font-weight:600;font-size:.78rem">Research &amp; Attach Source →</a></td>' +
+          '</tr>';
+      }).join('');
+    }
+
+    // Render Stale Records
+    var stale = data.records_not_reviewed_12m || [];
+    var staleBody = document.getElementById('staleBody');
+    if (!stale.length) {
+      staleBody.innerHTML = '<tr><td colspan="5" style="color:var(--muted)">All profiles verified within the last 12 months.</td></tr>';
+    } else {
+      staleBody.innerHTML = stale.map(function(st) {
+        return '<tr>' +
+          '<td><b style="color:var(--text)">' + esc(st.name) + '</b></td>' +
+          '<td>' + esc(st.country) + '</td>' +
+          '<td class="mono">' + esc(st.last_reviewed) + '</td>' +
+          '<td class="mono">' + esc(st.days_since_review) + ' d</td>' +
+          '<td><span class="pill p-med">REFRESH DUE</span></td>' +
+          '</tr>';
+      }).join('');
+    }
+
+    // Render Taxonomy Unmapped
+    var tax = data.unmapped_taxonomy || [];
+    var taxBody = document.getElementById('taxBody');
+    if (!tax.length) {
+      taxBody.innerHTML = '<tr><td colspan="4" style="color:var(--muted)">100% of product tags conform to canonical taxonomy.</td></tr>';
+    } else {
+      taxBody.innerHTML = tax.map(function(t) {
+        return '<tr>' +
+          '<td><b style="color:var(--text)">' + esc(t.company) + '</b></td>' +
+          '<td>' + esc(t.country) + '</td>' +
+          '<td><code style="color:var(--accent)">' + esc(t.type_string) + '</code></td>' +
+          '<td style="color:var(--muted);font-size:.78rem">Pending taxonomy classification</td>' +
+          '</tr>';
+      }).join('');
+    }
+
+  }).catch(function(err) {
+    console.error(err);
+    document.getElementById('panel').innerHTML = '<p style="color:#ef4444;padding:40px">Failed to load data/directory-health.json. Run <code>node build-directory-health.js</code>.</p>';
+  });
+}
+</script>
+
+</body>
+</html>

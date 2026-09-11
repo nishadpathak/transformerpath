@@ -36,7 +36,7 @@ function nameNoYear(s) { return norm(String(s || '').replace(/(20\d{2})/g, ' '))
 
 // Transformer relevance keyword scoring (SPEC: HIGH/MEDIUM/LOW).
 const HIGH = /transformer|bushing|oltc|tap-?changer|reactor|substation|gsu|generator step-?up|crgo|core.?clamp|winding|insulation|dielectric|partial discharge|hvdc|converter transformer|power transformer|distribution transformer|dry-?type|rectifier transformer|furnace transformer|instrument transformer/i;
-const MED = /hv |high voltage|medium voltage|mv |transmission|distribution|grid|t&d|power equipment|switchgear|circuit breaker|electrical|ctc|conductor|cable|manufacturing equipment|vacuum|drying/vacuum|testing|diagnostic|dga|monitoring|asset management|standards|iec|cigre|ieee/i;
+const MED = /hv |high voltage|medium voltage|mv |transmission|distribution|grid|t&d|power equipment|switchgear|circuit breaker|electrical|ctc|conductor|cable|manufacturing equipment|vacuum|drying\/vacuum|testing|diagnostic|dga|monitoring|asset management|standards|iec|cigre|ieee/i;
 const LOW = /solar pv|wind turbine|battery|energy storage|ev charging|consumer|smart meter|lighting|hydrogen|water|bess|e-?mobility/i;
 
 function relevanceClass(rec) {

@@ -41,3 +41,22 @@ dist/
 ../private_assets/
 # Archived Intel snapshots
 archive/intel_snapshots/
+
+# Office documents, archives and key material never belong in the site repo.
+# (*.docx was not covered — the Design Manual in "Transformer Equipments/" would
+# have been committed had that folder not been gitignored.) .netlify/ holds
+# the local CLI site link.
+*.docx
+*.doc
+*.zip
+*.pem
+*.key
+.netlify/
+
+# iCloud Drive / macOS conflict copies ("index 2.html", "usa 2/"). The site folder
+# lives in iCloud, and concurrent writes on 10 Sept produced 83 of them. No legitimate
+# path in this site ends in " <number>", so these patterns cannot hide real content.
+* [0-9]
+* [0-9].*
+* [0-9][0-9]
+* [0-9][0-9].*

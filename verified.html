@@ -42,10 +42,11 @@
 </head>
 <body>
 <header>
+  <link rel="stylesheet" href="tp-nav.css?v=12">
   <div class="container nav">
-    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="30" height="30" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg>Transformer<span class="accent">Path</span></a>
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
     <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
-        <nav class="tpnav" id="mainNav" aria-label="Primary">
+    <nav class="tpnav" id="mainNav" aria-label="Primary">
       <a href="intel.html">Intel</a>
       <a href="manufacturers.html">Manufacturers</a>
       <a href="projects.html">Projects</a>
@@ -58,15 +59,38 @@
       <div class="tpnav-more">
         <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
         <div class="tpnav-more-panel" role="menu">
-          <a href="grids.html" role="menuitem">Grids</a>
-          <a href="tools.html" role="menuitem">Tools</a>
-          <a href="materials.html" role="menuitem">Materials</a>
+          <a href="directory.html" role="menuitem">Directory</a>
+          <a href="services.html" role="menuitem">Service & Repair</a>
+          <a href="logistics.html" role="menuitem">Transport & Logistics</a>
+          <a href="laboratories.html" role="menuitem">Testing Labs</a>
+          <a href="machinery.html" role="menuitem">Machinery</a>
+          <a href="associations.html" role="menuitem">Industry Associations</a>
+          <a href="education.html" role="menuitem">Education & Training</a>
+          <a href="buyers.html" role="menuitem">Buyers & Procurement</a>
+          <a href="media.html" role="menuitem">Media & Publications</a>
+          <a href="compare.html" role="menuitem">Compare</a>
+          <a href="accessories.html" role="menuitem">Accessories</a>
+          <a href="markets.html" role="menuitem">Markets</a>
+          <a href="utilities.html" role="menuitem">Utilities</a>
+          <a href="webinars.html" role="menuitem">Webinars</a>
+          <a href="awards.html" role="menuitem">Awards</a>
           <a href="buyers-guide.html" role="menuitem">Buyer's Guide</a>
           <a href="components.html" role="menuitem">Components</a>
-          <a href="utilities.html" role="menuitem">Utilities</a>
+          <a href="materials.html" role="menuitem">Materials</a>
+          <a href="applications.html" role="menuitem">Applications</a>
+          <a href="knowledge.html" role="menuitem">Knowledge</a>
           <a href="standards.html" role="menuitem">Standards</a>
+          <a href="case-studies.html" role="menuitem">Case Studies</a>
+          <a href="calculator.html" role="menuitem">Calculator</a>
+          <a href="explorer.html" role="menuitem">3D Models</a>
+          <a href="test-report.html" role="menuitem">Test Report</a>
+          <a href="software.html" role="menuitem">Software</a>
+          <a href="masterclass.html" role="menuitem">Masterclass</a>
           <a href="books.html" role="menuitem">Books</a>
-          <a href="webinars.html" role="menuitem">Webinars</a>
+          <a href="for-manufacturers.html" role="menuitem">For Manufacturers</a>
+          <a href="verified.html" role="menuitem">Verified Profiles</a>
+          <a href="intel-pro.html" role="menuitem">Intel Pro</a>
+          <a href="sponsor.html" role="menuitem">Sponsor</a>
           <a href="pricing.html" role="menuitem">Pricing</a>
         </div>
       </div>
@@ -102,10 +126,8 @@
       const isDark = html.getAttribute('data-theme') === 'dark';
       themeToggle.textContent = isDark ? '☀️' : '🌙';
     }
-    // Dropdown nav: each category opens an accessible mega-menu on hover
-    // (desktop) or tap (touch/keyboard). Escape and outside-click close.
-  
   </script>
+  <script src="tp-nav.js?v=5" defer></script>
 </header>
 
 <main class="vf-wrap">
@@ -145,7 +167,7 @@
       <p class="vf-note" style="font-size:.78rem;color:var(--muted);margin-top:10px"><b>What Verified means.</b> Verified indicates that company identity and submitted profile information have been reviewed by TransformerPath. It does <b>not</b> constitute product certification, factory approval, financial verification or endorsement. Always carry out your own due diligence before any commercial decision.</p>
     </div>
     <div class="tier pro">
-      <h2>Pro Verified</h2>
+      <h2>Supplier Pro</h2>
       <div class="price">$1,499 <small>/ 12 months</small></div>
       <div class="cap">Priority visibility, richer content and sourcing features.</div>
       <ul>
@@ -157,8 +179,8 @@
         <li>Supporting factory-certification documents where submitted</li>
         <li>Option to appear as a featured supplier in related markets &amp; events</li>
       </ul>
-      <a class="btn btn-amber" href="mailto:hello@transformerpath.com?subject=Pro%20Verified%20profile%20request" data-track="verified_checkout_started" data-track-plan="Pro Verified">Get Pro Verified →</a>
-      <p class="vf-note" style="font-size:.78rem;color:var(--muted);margin-top:10px"><b>What Pro Verified means.</b> Same verification standard as Verified — company identity and submitted information reviewed — with added visibility and sourcing features. It is <b>not</b> product certification, factory approval, financial verification or endorsement.</p>
+      <a class="btn btn-amber" href="mailto:hello@transformerpath.com?subject=Supplier%20Pro%20profile%20request" data-track="verified_checkout_started" data-track-plan="Supplier Pro">Get Supplier Pro →</a>
+      <p class="vf-note" style="font-size:.78rem;color:var(--muted);margin-top:10px"><b>What Supplier Pro means.</b> Same verification standard as Verified — company identity and submitted information reviewed — with added visibility and sourcing features. It is <b>not</b> product certification, factory approval, financial verification or endorsement.</p>
       <p class="vf-note" style="font-size:.78rem;color:var(--muted);margin-top:6px"><b>Founding offer.</b> The first verified suppliers can join at a reduced <b>$199</b> first year (limited to the first 50–100 companies) before the standard $499/$1,499 pricing applies on renewal.</p>
     </div>
   </div>
@@ -166,11 +188,22 @@
 </main>
 <footer>
   <div class="container">
-    <div class="cols"><div>
+    <div class="cols">
+      <div>
         <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
         <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data. Built for utilities, transformer manufacturers, component suppliers, EPCs, consultants and engineers.</p>
       </div>
-      <div><h2>INTELLIGENCE</h2><a href="intel.html">Intel</a><a href="projects.html">Projects</a><a href="tenders.html">Tenders</a><a href="awards.html">Awards</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="utilities.html">Utilities</a><a href="archive.html">Intel Archive</a></div><div><h2>INDUSTRY</h2><a href="manufacturers.html">Manufacturers</a><a href="buyers-guide.html">Buyer's Guide</a><a href="components.html">Components</a><a href="materials.html">Materials</a><a href="applications.html">Applications</a><a href="vendors.html">Vendors</a><a href="rfq.html">RFQ Board</a></div><div><h2>ENGINEERING</h2><a href="tools.html">Tools</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Models</a><a href="test-report.html">Test Report</a><a href="knowledge.html">Knowledge</a><a href="standards.html">Standards</a><a href="software.html">Software Directory</a></div><div><h2>LEARN</h2><a href="learn.html">Learn</a><a href="masterclass.html">Masterclass</a><a href="books.html">Books</a><a href="case-studies.html">Case Studies</a><a href="engineer-track.html">Design Engineer Track</a></div><div><h2>BUSINESS</h2><a href="for-manufacturers.html">For Manufacturers</a><a href="verified.html">Verified Profiles</a><a href="sponsor.html">Sponsor</a><a href="webinars.html">Webinars</a><a href="events.html">Events</a><a href="jobs.html">Jobs</a><a href="pricing.html">Pricing</a></div><div><h2>ABOUT</h2><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="search.html">Search</a></div></div>
+      <div><h2>INTELLIGENCE</h2><a href="intel.html">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="intelligence.html">Intelligence</a><a href="projects.html">Projects</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="exhibitions.html">Exhibitions</a><a href="events.html">Events</a></div>
+      <div><h2>INDUSTRY</h2><a href="manufacturers.html">Manufacturers</a><a href="directory.html">Directory</a><a href="services.html">Service &amp; Repair</a><a href="logistics.html">Transport &amp; Logistics</a><a href="laboratories.html">Testing Labs</a><a href="buyers.html">Buyers &amp; Utilities</a><a href="buyers-guide.html">Buyer's Guide</a><a href="accessories.html">Accessories</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a></div>
+      <div><h2>ENGINEERING</h2><a href="knowledge.html">Knowledge</a><a href="standards.html">Standards &amp; Codes</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Models</a><a href="design.html">Design Duel</a><a href="resources.html">Resources</a></div>
+      <div><h2>LEARN</h2><a href="learn.html">Learn</a><a href="education.html">Education &amp; Training</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy</a><a href="books.html">Books</a></div>
+      <div><h2>BUSINESS</h2><a href="for-manufacturers.html">For Manufacturers</a><a href="associations.html">Industry Associations</a><a href="media.html">Media &amp; Publications</a><a href="pricing.html">Pricing</a><a href="verified.html">Verified</a><a href="sponsor.html">Sponsor</a><a href="webinars.html">Webinars</a></div>
+      <div><h2>COMPANY</h2><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><h2>CONTACT</h2>
+        <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
+        <a class="tp-li-btn tp-li-follow" data-linkedin-follow href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>Follow us on LinkedIn</a>
+        <a class="tp-li-btn tp-li-share" data-linkedin-share href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>LinkedIn</a>
+      </div>
     </div>
     <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
   </div>

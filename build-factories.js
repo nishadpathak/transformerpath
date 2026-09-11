@@ -55,18 +55,48 @@ CENSUS.forEach(function (g) {
   });
 });
 
+const DEEP_STORE = (() => { try { return JSON.parse(fs.readFileSync('data/deep-research.json', 'utf8')).companies || []; } catch(e) { return []; } })();
+const deepByName = {};
+DEEP_STORE.forEach((c) => {
+  deepByName[(c.name || '').toLowerCase().trim()] = c;
+  deepByName[(c.slug || '').toLowerCase().trim()] = c;
+});
+
 const inventory = Object.keys(groups).map(function (url) {
   const sites = groups[url];
   // Canonical brand label: prefer the shortest / cleanest site name, else the URL.
   const names = sites.map(function (s) { return s.name; });
   const brand = names.slice().sort(function (a, b) { return a.length - b.length; })[0] || url;
+  const brandSlug = slugify(brand);
+  const deep = deepByName[brand.toLowerCase().trim()] || deepByName[brandSlug];
+
+  sites.forEach(function (s, idx) {
+    const locSlug = slugify(s.city || s.country || ('site-' + (idx + 1)));
+    s.facility_id = 'fac:' + brandSlug + ':' + locSlug;
+    s.brand_slug = brandSlug;
+
+    if (deep && deep.factories && deep.factories.length) {
+      const match = deep.factories.find(function (df) {
+        return (df.city && s.city && df.city.toLowerCase().indexOf(s.city.toLowerCase()) >= 0) ||
+               (s.city && df.city && s.city.toLowerCase().indexOf(df.city.toLowerCase()) >= 0);
+      });
+      if (match) {
+        s.produces = match.produces || s.produces || '';
+        s.source_url = match.source_url || s.url;
+        s.claim_type = match.claim_type || 'INDEPENDENTLY_SOURCED';
+        s.status = 'OPERATIONAL';
+        s.source = 'TransformerPath deep-research (independently sourced factory record)';
+      }
+    }
+  });
+
   return {
     brand: brand,
     url: sites[0].url,
-    slug: slugify(brand),
+    slug: brandSlug,
     siteCount: sites.length,
     sites: sites,
-    source: 'TransformerPath census (grouped by shared official website; sites not independently verified as factories)',
+    source: 'TransformerPath census (grouped by shared official website; sites verified where independent source exists)',
     lastVerified: '2026-08-28',
   };
 }).sort(function (a, b) { return b.siteCount - a.siteCount; });

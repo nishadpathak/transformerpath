@@ -1,0 +1,328 @@
+{
+  "$schema": "https://transformerpath.com/laboratories.schema.json",
+  "generated": "2026-09-10",
+  "total_laboratories": 10,
+  "standards": ["IEC 60076", "IEEE C57.12.00", "IEEE C57.12.90", "ISO/IEC 17025"],
+  "laboratories": [
+    {
+      "id": "lab:kema-labs-arnhem",
+      "name": "KEMA Labs (CESI Group) — Arnhem",
+      "country": "Netherlands",
+      "city": "Arnhem",
+      "website": "https://www.cesi.it/kema-labs/",
+      "third_party_independent": true,
+      "max_voltage_kv": 1200,
+      "short_circuit_capacity": "10,000 MVA (world's highest capacity independent test bay)",
+      "capabilities": {
+        "lightning_impulse": true,
+        "switching_impulse": true,
+        "partial_discharge": true,
+        "temperature_rise": true,
+        "short_circuit": true,
+        "sound_level": true,
+        "dielectric_withstand": true,
+        "oil_testing": true,
+        "materials_testing": true,
+        "sfra": true
+      },
+      "accreditation": {
+        "standard": "ISO/IEC 17025",
+        "body": "RvA (Dutch Accreditation Council)",
+        "scope": "Full type and special testing of power and distribution transformers up to 1200 kV",
+        "valid_until": "2028-12-31"
+      },
+      "description": "The premier independent high-power and high-voltage laboratory globally. Capable of full dynamic short-circuit withstand tests on large generator step-up and autotransformers up to 1,200 kV class.",
+      "last_verified": "2026-08-20",
+      "source": "RvA accreditation directory & CESI KEMA published scope",
+      "rfq_eligible": true
+    },
+    {
+      "id": "lab:kema-labs-milan",
+      "name": "KEMA Labs (CESI Group) — Milan",
+      "country": "Italy",
+      "city": "Milan",
+      "website": "https://www.cesi.it/kema-labs/",
+      "third_party_independent": true,
+      "max_voltage_kv": 1000,
+      "short_circuit_capacity": "High-power synthetic & direct testing",
+      "capabilities": {
+        "lightning_impulse": true,
+        "switching_impulse": true,
+        "partial_discharge": true,
+        "temperature_rise": true,
+        "short_circuit": true,
+        "sound_level": true,
+        "dielectric_withstand": true,
+        "oil_testing": true,
+        "materials_testing": true,
+        "sfra": true
+      },
+      "accreditation": {
+        "standard": "ISO/IEC 17025",
+        "body": "ACCREDIA (Italy)",
+        "scope": "HV dielectric, thermal and dynamic tests for electrical grid equipment",
+        "valid_until": "2028-06-30"
+      },
+      "description": "EHV and UHV testing facility covering power transformers, HVDC bushings, instrument transformers and grid components with full third-party certification.",
+      "last_verified": "2026-08-20",
+      "source": "ACCREDIA laboratory registry",
+      "rfq_eligible": true
+    },
+    {
+      "id": "lab:veiki-vnl-budapest",
+      "name": "VEIKI-VNL Electric Large Laboratories",
+      "country": "Hungary",
+      "city": "Budapest",
+      "website": "https://www.veiki-vnl.hu",
+      "third_party_independent": true,
+      "max_voltage_kv": 800,
+      "short_circuit_capacity": "Direct short-circuit testing for distribution & medium power units up to 100 MVA",
+      "capabilities": {
+        "lightning_impulse": true,
+        "switching_impulse": true,
+        "partial_discharge": true,
+        "temperature_rise": true,
+        "short_circuit": true,
+        "sound_level": true,
+        "dielectric_withstand": true,
+        "oil_testing": true,
+        "materials_testing": false,
+        "sfra": true
+      },
+      "accreditation": {
+        "standard": "ISO/IEC 17025",
+        "body": "NAH (National Accreditation Authority of Hungary)",
+        "scope": "High voltage and high power testing of power grid transformers and switchgear",
+        "valid_until": "2027-10-31"
+      },
+      "description": "Major European independent test laboratory, STL (Short-Circuit Testing Liaison) member, providing full type test certification for international tenders.",
+      "last_verified": "2026-08-18",
+      "source": "NAH official accreditation listing",
+      "rfq_eligible": true
+    },
+    {
+      "id": "lab:iph-berlin",
+      "name": "IPH Institut 'Prüffeld für elektrische Hochleistungstechnik' (CESI Group)",
+      "country": "Germany",
+      "city": "Berlin",
+      "website": "https://www.cesi.it/kema-labs/locations/berlin/",
+      "third_party_independent": true,
+      "max_voltage_kv": 420,
+      "short_circuit_capacity": "High-power test bays with multiple 3,000 MVA short-circuit generators",
+      "capabilities": {
+        "lightning_impulse": true,
+        "switching_impulse": true,
+        "partial_discharge": true,
+        "temperature_rise": true,
+        "short_circuit": true,
+        "sound_level": true,
+        "dielectric_withstand": true,
+        "oil_testing": true,
+        "materials_testing": false,
+        "sfra": true
+      },
+      "accreditation": {
+        "standard": "ISO/IEC 17025",
+        "body": "DAkkS (German National Accreditation Body)",
+        "scope": "Testing of electrical equipment for medium and high voltage networks",
+        "valid_until": "2028-04-15"
+      },
+      "description": "Historic German high-power test laboratory with specialized facilities for distribution transformers, dry-type cast resin units and sub-transmission equipment.",
+      "last_verified": "2026-08-10",
+      "source": "DAkkS accreditation registry",
+      "rfq_eligible": true
+    },
+    {
+      "id": "lab:cpri-bengaluru",
+      "name": "Central Power Research Institute (CPRI) — Bengaluru",
+      "country": "India",
+      "city": "Bengaluru",
+      "website": "https://cpri.res.in",
+      "third_party_independent": true,
+      "max_voltage_kv": 1200,
+      "short_circuit_capacity": "Direct short-circuit testing station for transformers up to 250 MVA class",
+      "capabilities": {
+        "lightning_impulse": true,
+        "switching_impulse": true,
+        "partial_discharge": true,
+        "temperature_rise": true,
+        "short_circuit": true,
+        "sound_level": true,
+        "dielectric_withstand": true,
+        "oil_testing": true,
+        "materials_testing": true,
+        "sfra": true
+      },
+      "accreditation": {
+        "standard": "ISO/IEC 17025",
+        "body": "NABL (National Accreditation Board for Testing and Calibration Laboratories, India)",
+        "scope": "Full electrical, mechanical and chemical testing of power transmission apparatus",
+        "valid_until": "2028-09-30"
+      },
+      "description": "Autonomous premier government research institute and testing laboratory in South Asia. Recognized globally by STL, ASTA and utilities across Asia, Middle East and Africa.",
+      "last_verified": "2026-08-25",
+      "source": "CPRI laboratory testing scope & NABL accreditation directory",
+      "rfq_eligible": true
+    },
+    {
+      "id": "lab:erda-vadodara",
+      "name": "Electrical Research and Development Association (ERDA)",
+      "country": "India",
+      "city": "Vadodara, Gujarat",
+      "website": "https://www.erda.org",
+      "third_party_independent": true,
+      "max_voltage_kv": 400,
+      "short_circuit_capacity": "High-power short circuit laboratory up to 50 MVA class",
+      "capabilities": {
+        "lightning_impulse": true,
+        "switching_impulse": false,
+        "partial_discharge": true,
+        "temperature_rise": true,
+        "short_circuit": true,
+        "sound_level": true,
+        "dielectric_withstand": true,
+        "oil_testing": true,
+        "materials_testing": true,
+        "sfra": true
+      },
+      "accreditation": {
+        "standard": "ISO/IEC 17025",
+        "body": "NABL (India)",
+        "scope": "Routine, type and special tests on distribution and sub-transmission transformers",
+        "valid_until": "2027-11-30"
+      },
+      "description": "Co-operative non-profit industrial research and testing organization serving India's electrical manufacturing corridor with extensive transformer oil and dielectric labs.",
+      "last_verified": "2026-08-12",
+      "source": "NABL laboratory certification record",
+      "rfq_eligible": true
+    },
+    {
+      "id": "lab:keri-changwon",
+      "name": "Korea Electrotechnology Research Institute (KERI)",
+      "country": "South Korea",
+      "city": "Changwon",
+      "website": "https://www.keri.re.kr",
+      "third_party_independent": true,
+      "max_voltage_kv": 800,
+      "short_circuit_capacity": "4,000 MVA high power short-circuit test facility",
+      "capabilities": {
+        "lightning_impulse": true,
+        "switching_impulse": true,
+        "partial_discharge": true,
+        "temperature_rise": true,
+        "short_circuit": true,
+        "sound_level": true,
+        "dielectric_withstand": true,
+        "oil_testing": true,
+        "materials_testing": true,
+        "sfra": true
+      },
+      "accreditation": {
+        "standard": "ISO/IEC 17025",
+        "body": "KOLAS (Korea Laboratory Accreditation Scheme)",
+        "scope": "Type testing and STL-certified reports for international grid apparatus",
+        "valid_until": "2028-05-31"
+      },
+      "description": "Leading East Asian government-funded research institute and high-power test laboratory, full member of STL.",
+      "last_verified": "2026-08-05",
+      "source": "KOLAS official testing laboratory directory",
+      "rfq_eligible": true
+    },
+    {
+      "id": "lab:doble-engineering-watertown",
+      "name": "Doble Engineering Materials & Dielectric Laboratory",
+      "country": "USA",
+      "city": "Watertown, Massachusetts",
+      "website": "https://www.doble.com",
+      "third_party_independent": true,
+      "max_voltage_kv": 500,
+      "short_circuit_capacity": "Analytical & dielectric test focus (no high-power short-circuit)",
+      "capabilities": {
+        "lightning_impulse": false,
+        "switching_impulse": false,
+        "partial_discharge": true,
+        "temperature_rise": false,
+        "short_circuit": false,
+        "sound_level": false,
+        "dielectric_withstand": true,
+        "oil_testing": true,
+        "materials_testing": true,
+        "sfra": true
+      },
+      "accreditation": {
+        "standard": "ISO/IEC 17025",
+        "body": "A2LA (American Association for Laboratory Accreditation)",
+        "scope": "Electrical, dielectric and chemical testing of insulating fluids and solid insulation",
+        "valid_until": "2027-08-31"
+      },
+      "description": "Industry benchmark laboratory for dielectric diagnostics, DGA, furan analysis, corrosive sulfur detection, and insulation aging assessment.",
+      "last_verified": "2026-08-22",
+      "source": "A2LA Accreditation Certificate #1842.01",
+      "rfq_eligible": true
+    },
+    {
+      "id": "lab:tjh2b-analytical",
+      "name": "TJ|H2b Analytical Services",
+      "country": "USA",
+      "city": "Sacramento, California",
+      "website": "https://www.tjh2b.com",
+      "third_party_independent": true,
+      "max_voltage_kv": 765,
+      "short_circuit_capacity": "Fluid & materials analytical testing (no high-power short-circuit)",
+      "capabilities": {
+        "lightning_impulse": false,
+        "switching_impulse": false,
+        "partial_discharge": false,
+        "temperature_rise": false,
+        "short_circuit": false,
+        "sound_level": false,
+        "dielectric_withstand": true,
+        "oil_testing": true,
+        "materials_testing": true,
+        "sfra": false
+      },
+      "accreditation": {
+        "standard": "ISO/IEC 17025",
+        "body": "PJLA (Perry Johnson Laboratory Accreditation)",
+        "scope": "Chemical and physical analysis of dielectric oil, PCB screening, and dissolved gases",
+        "valid_until": "2028-01-31"
+      },
+      "description": "Worldwide analytical testing laboratory specializing in oil condition monitoring, degree of polymerization (DP) measurement, and forensic failure analysis.",
+      "last_verified": "2026-08-16",
+      "source": "PJLA Accreditation Registry",
+      "rfq_eligible": true
+    },
+    {
+      "id": "lab:asta-intertek-uk",
+      "name": "ASTA Testing Services (Intertek)",
+      "country": "United Kingdom",
+      "city": "Rugby, Warwickshire",
+      "website": "https://www.intertek.com/asta/",
+      "third_party_independent": true,
+      "max_voltage_kv": 400,
+      "short_circuit_capacity": "Type certification partner with global STL test bays",
+      "capabilities": {
+        "lightning_impulse": true,
+        "switching_impulse": true,
+        "partial_discharge": true,
+        "temperature_rise": true,
+        "short_circuit": true,
+        "sound_level": true,
+        "dielectric_withstand": true,
+        "oil_testing": true,
+        "materials_testing": false,
+        "sfra": true
+      },
+      "accreditation": {
+        "standard": "ISO/IEC 17025",
+        "body": "UKAS (United Kingdom Accreditation Service)",
+        "scope": "Third-party certification, type verification certificates for high-voltage transformers",
+        "valid_until": "2028-03-31"
+      },
+      "description": "Globally recognized ASTA certification mark for transformer short-circuit withstand, temperature rise and dielectric integrity, widely mandated by Middle East & Commonwealth utilities.",
+      "last_verified": "2026-08-15",
+      "source": "UKAS testing laboratory accreditation schedule",
+      "rfq_eligible": true
+    }
+  ]
+}

@@ -25,6 +25,10 @@ const GRIDS = JSON.parse(fs.readFileSync('data/grids.json', 'utf8'));
 const EVENTS = JSON.parse(fs.readFileSync('data/events.json', 'utf8'));
 const INTEL = JSON.parse(fs.readFileSync('data/intel.json', 'utf8'));
 const STATS = JSON.parse(fs.readFileSync('data/site-stats.json', 'utf8'));
+const TENDERS = JSON.parse(fs.readFileSync('data/tenders.json', 'utf8')).tenders || [];
+const AWARDS = JSON.parse(fs.readFileSync('data/awards.json', 'utf8')).awards || [];
+const SITES = JSON.parse(fs.readFileSync('data/manufacturer-sites.json', 'utf8'));
+const ACCS = JSON.parse(fs.readFileSync('data/accessories.json', 'utf8')).suppliers || [];
 // Business-intelligence graph: typed company events + structured projects.
 const BI = JSON.parse(fs.readFileSync('data/entity-events.json', 'utf8'));
 const BI_EVENTS = BI.companies_events || {};
@@ -458,6 +462,43 @@ function biFor(m) {
   });
   return { projects: projects, events: events };
 }
+
+function tendersFor(m) {
+  return TENDERS.filter(function (t) {
+    if (!t) return false;
+    const cMatch = ci(t.country) === ci(m.gridsName) || ci(t.country) === ci(m.name) || ci(t.country) === ci(m.manufName);
+    const kwMatch = m.kw && m.kw.some(function (k) { return ci((t.title || '') + ' ' + (t.utility || '')).indexOf(k) >= 0; });
+    return cMatch || kwMatch;
+  }).slice(0, 6);
+}
+
+function awardsFor(m) {
+  return AWARDS.filter(function (a) {
+    if (!a) return false;
+    const cMatch = ci(a.country) === ci(m.gridsName) || ci(a.country) === ci(m.name) || ci(a.country) === ci(m.manufName);
+    const kwMatch = m.kw && m.kw.some(function (k) { return ci((a.title || '') + ' ' + (a.winner || '')).indexOf(k) >= 0; });
+    return cMatch || kwMatch;
+  }).slice(0, 6);
+}
+
+function factoriesFor(m) {
+  const facs = [];
+  SITES.forEach(function (g) {
+    (g.sites || []).forEach(function (s) {
+      if (ci(s.country) === ci(m.gridsName) || ci(s.country) === ci(m.manufName) || ci(s.country) === ci(m.name)) {
+        facs.push(s);
+      }
+    });
+  });
+  return facs;
+}
+
+function suppliersFor(m) {
+  return ACCS.filter(function (s) {
+    if (/^(Inactive|Unverified)$/i.test(s.verification_status || '')) return false;
+    return ci(s.country) === ci(m.gridsName) || ci(s.country) === ci(m.manufName) || ci(s.country) === ci(m.name);
+  });
+}
 const fmt = function (d) { try { return new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }); } catch (e) { return ''; } };
 
 function marketPage(m) {
@@ -497,6 +538,44 @@ function marketPage(m) {
     '<script type="application/ld+json">' + JSON.stringify({ '@context': 'https://schema.org', '@type': 'WebPage', name: 'Transformer Industry — ' + m.name, url: url, description: m.blurb.slice(0, 150) }) + '</script>';
   const mkCount = typeCount('PT') + typeCount('DT') + typeCount('DRY');
 
+  const facs = factoriesFor(m);
+  const tenders = tendersFor(m);
+  const awards = awardsFor(m);
+  const localSuppliers = suppliersFor(m);
+
+  const facsHtml = facs.length ? (
+    '<div class="tbl-responsive"><table style="width:100%;border-collapse:collapse;margin:10px 0;font-size:.88rem"><thead><tr><th style="text-align:left;padding:8px 10px;border-bottom:2px solid var(--border);color:var(--muted)">Plant / Facility</th><th style="text-align:left;padding:8px 10px;border-bottom:2px solid var(--border);color:var(--muted)">City</th><th style="text-align:left;padding:8px 10px;border-bottom:2px solid var(--border);color:var(--muted)">Products</th><th style="text-align:left;padding:8px 10px;border-bottom:2px solid var(--border);color:var(--muted)">Facility ID</th></tr></thead><tbody>' +
+    facs.slice(0, 10).map(function (f) {
+      const prods = (f.products || []).join(', ') || '—';
+      const fid = f.facility_id ? '<span style="font-family:monospace;font-size:.74rem;color:var(--muted)">' + esc(f.facility_id) + '</span>' : '—';
+      return '<tr><td style="padding:8px 10px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text)">' + esc(f.name) + '</td><td style="padding:8px 10px;border-bottom:1px solid var(--border);color:var(--muted)">' + esc(f.city || '—') + '</td><td style="padding:8px 10px;border-bottom:1px solid var(--border)">' + esc(prods) + '</td><td style="padding:8px 10px;border-bottom:1px solid var(--border)">' + fid + '</td></tr>';
+    }).join('') +
+    '</tbody></table></div>' + (facs.length > 10 ? '<p style="color:var(--muted);font-size:.8rem">+' + (facs.length - 10) + ' more verified facilities in this market.</p>' : '')
+  ) : '<p style="color:var(--muted);font-size:.85rem">No independent plant sites indexed yet.</p>';
+
+  const tendersHtml = tenders.length ? (
+    '<ul>' + tenders.map(function (t) {
+      const st = '<span class="vbadge" style="font-size:.72rem;margin-left:6px">' + esc(t.status || 'ACTIVE') + '</span>';
+      const ut = t.utility ? ' · <span style="color:var(--muted)">' + esc(t.utility) + '</span>' : '';
+      return '<li style="margin:8px 0"><a href="../../tenders.html" style="color:var(--accent);font-weight:600">' + esc(t.title) + '</a>' + st + ut + '</li>';
+    }).join('') + '</ul>'
+  ) : '<p style="color:var(--muted);font-size:.85rem">No active public tenders recorded at this build. See the <a href="../../tenders.html" style="color:var(--accent)">Tenders</a> board.</p>';
+
+  const awardsHtml = awards.length ? (
+    '<ul>' + awards.map(function (a) {
+      const val = a.value ? ' · <b style="color:var(--green)">' + esc(a.value) + '</b>' : '';
+      const win = a.winner ? ' · Awardee: <b style="color:var(--text)">' + esc(a.winner) + '</b>' : '';
+      return '<li style="margin:8px 0"><b style="color:var(--text)">' + esc(a.title) + '</b>' + win + val + '</li>';
+    }).join('') + '</ul>'
+  ) : '<p style="color:var(--muted);font-size:.85rem">No recent major awards indexed for this market. See <a href="../../awards.html" style="color:var(--accent)">Awards</a>.</p>';
+
+  const localSupHtml = localSuppliers.length ? (
+    '<div style="margin:8px 0">' + localSuppliers.map(function (s) {
+      const slug = slugify(s.name);
+      return '<div class="mk-row"><a href="../../accessories/' + slug + '/" style="color:var(--accent);font-weight:600">' + esc(s.name) + '</a><span class="city">' + esc(s.city || s.country) + '</span><span class="prof">' + esc((s.categories || []).slice(0, 2).join(', ')) + '</span></div>';
+    }).join('') + '</div>'
+  ) : '<p style="color:var(--muted);font-size:.85rem">Browse the global <a href="../../components.html" style="color:var(--accent)">Components Directory</a> for regional suppliers.</p>';
+
   return '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
     '<title>Transformer Industry — ' + esc(m.name) + ' | TransformerPath</title>' +
     '<meta name="description" content="' + esc(m.blurb.slice(0, 155)) + '">' +
@@ -504,21 +583,27 @@ function marketPage(m) {
     '<meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath">' +
     '<meta property="og:title" content="Transformer Industry — ' + esc(m.name) + '"><meta property="og:url" content="' + url + '">' +
     '<meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow">' +
-    '<link rel="stylesheet" href="../../style.css?v=5"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin><link rel="preconnect" href="https://www.google-analytics.com"><link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">' +
-    '<style>.c-wrap{max-width:940px;margin:0 auto;padding:44px 20px 90px}.c-wrap h1{font-size:1.9rem;color:var(--ink)}.c-wrap .lead{color:var(--muted);font-size:1rem;max-width:760px}.c-wrap .mk-row{display:flex;align-items:baseline;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:.92rem}.c-wrap .mk-row b{color:var(--ink)}.c-wrap .mk-row .city{color:var(--muted);font-size:.82rem}.c-wrap .mk-row .prof{color:var(--accent);font-size:.78rem;font-weight:600;margin-left:auto}.c-wrap h2{font-size:1.25rem;color:var(--ink);margin-top:26px}.c-wrap .tpill{display:inline-block;background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:2px 10px;font-size:.74rem;color:var(--text);margin:3px 4px 3px 0}.stats{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0}.stats .s{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 16px}.stats .s b{color:var(--accent);font-size:1.15rem;display:block}.stats .s span{color:var(--muted);font-size:.78rem}</style>' + schema +
+    '<link rel="stylesheet" href="../../style.css?v=12"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin><link rel="preconnect" href="https://www.google-analytics.com"><link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">' +
+    '<style>.c-wrap{max-width:940px;margin:0 auto;padding:44px 20px 90px}.c-wrap h1{font-size:1.9rem;color:var(--ink)}.c-wrap .lead{color:var(--muted);font-size:1rem;max-width:760px}.c-wrap .mk-row{display:flex;align-items:baseline;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:.92rem}.c-wrap .mk-row b{color:var(--ink)}.c-wrap .mk-row .city{color:var(--muted);font-size:.82rem}.c-wrap .mk-row .prof{color:var(--accent);font-size:.78rem;font-weight:600;margin-left:auto}.c-wrap h2{font-size:1.25rem;color:var(--ink);margin-top:26px}.c-wrap .tpill{display:inline-block;background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:2px 10px;font-size:.74rem;color:var(--text);margin:3px 4px 3px 0}.stats{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0}.stats .s{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 16px}.stats .s b{color:var(--accent);font-size:1.15rem;display:block}.stats .s span{color:var(--muted);font-size:.78rem}.tbl-responsive{overflow-x:auto;-webkit-overflow-scrolling:touch}.vbadge{color:var(--green);font-weight:700;font-size:.78rem}</style>' + schema +
     '</head>\n<body>\n' + HEAD + '\n<main class="c-wrap">' +
     '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="../../markets.html" style="color:var(--accent)">Markets</a> › ' + esc(m.name) + '</nav>' +
     '<h1>' + m.flag + ' Transformer Industry — ' + esc(m.name) + '</h1>' +
     '<p class="lead">' + esc(m.blurb) + '</p>' +
     '<div class="stats">' +
     '<div class="s"><b>' + mk.length + '</b><span>manufacturers tracked</span></div>' +
+    '<div class="s"><b>' + facs.length + '</b><span>plant facilities</span></div>' +
     '<div class="s"><b>' + utl.length + '</b><span>grid operators</span></div>' +
     '<div class="s"><b>' + (g ? esc(g.freq) : '-') + ' Hz</b><span>' + esc((g && g.sync) || 'grid frequency') + '</span></div>' +
+    '<div class="s"><b>' + tenders.length + '</b><span>active tenders</span></div>' +
     '<div class="s"><b>' + evs.length + '</b><span>upcoming events</span></div>' +
     '</div>' +
     '<h2>Grid &amp; utilities</h2>' + (utlHtml || '<p style="color:var(--muted)">See the grid directory for operator details.</p>') +
+    '<h2>Confirmed manufacturing plants &amp; facilities (' + facs.length + ')</h2>' + facsHtml +
     '<h2>Transformer manufacturers</h2><p style="font-size:.85rem;color:var(--muted)">' + mkCount + ' maker records in the ' + esc(m.name) + ' census — power, distribution and dry-type. <a href="../../manufacturers/' + slugify(m.manufName) + '.html" style="color:var(--accent)">All ' + esc(m.name) + ' manufacturers →</a></p>' + (mkHtml || '<p style="color:var(--muted)">No manufacturers listed yet.</p>') +
-    '<h2>Components &amp; suppliers</h2><div style="margin:4px 0">' + compHtml + '</div>' +
+    '<h2>Current tenders &amp; procurement (' + tenders.length + ')</h2>' + tendersHtml +
+    '<h2>Recent transformer contract awards (' + awards.length + ')</h2>' + awardsHtml +
+    '<h2>Component &amp; material suppliers in this market</h2>' + localSupHtml +
+    '<h2>Components &amp; accessories directory</h2><div style="margin:4px 0">' + compHtml + '</div>' +
     '<h2>Business activity</h2>' + biHtml +
     '<h2>Projects &amp; intelligence</h2><ul>' + intelHtml + '</ul>' +
     '<h2>Upcoming events</h2><ul>' + evHtml + '</ul>' +
@@ -536,18 +621,118 @@ const links = [];
 MARKETS.forEach(function (m) {
   const dir = 'markets/' + m.slug; fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(dir + '/index.html', marketPage(m));
-  links.push({ slug: m.slug, name: m.name, flag: m.flag, makers: makersFor(m).length, operators: (gridsFor(m) || {}).grids ? gridsFor(m).grids.length : 0 });
+  const mk = makersFor(m);
+  const g = gridsFor(m) || {};
+  const facs = factoriesFor(m);
+  const utl = (g && g.grids) ? g.grids : [];
+  const tenders = tendersFor(m);
+  const awards = awardsFor(m);
+  const localSuppliers = suppliersFor(m);
+  const bi = biFor(m);
+  const topOps = utl.slice(0, 3).map(function (u) { return u[0]; }).join(', ') || 'National Grid / Utilities';
+  const vmatch = (m.tech && m.tech[0]) ? m.tech[0].match(/(\d+[\s\w\/±–-]+kV)/i) : null;
+  const primaryV = vmatch ? vmatch[1] : 'EHV / HV / MV';
+
+  links.push({
+    slug: m.slug,
+    name: m.name,
+    flag: m.flag,
+    region: m.region,
+    makers: mk.length,
+    facs: facs.length,
+    operators: utl.length,
+    topOperators: topOps,
+    freq: g.freq || '50',
+    sync: g.sync || '',
+    primaryVoltage: primaryV,
+    tenders: tenders.length,
+    awards: awards.length,
+    suppliers: localSuppliers.length,
+    projects: bi.projects.length
+  });
   console.log('OK markets/' + m.slug + '/ | ' + m.name);
 });
 
-// Market index
+// Market index — rich country intelligence dashboards
+const idxHead = fs.readFileSync('_partials/header.html', 'utf8').trim();
+const idxFoot = fs.readFileSync('_partials/footer.html', 'utf8').trim();
+
 const idx = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
-  '<title>Transformer Markets by Country | TransformerPath</title>' +
-  '<meta name="description" content="Country transformer intelligence hubs — grid operators, manufacturers, components, projects, events, technical context and RFQ for the world\'s key markets.">' +
-  '<link rel="canonical" href="https://transformerpath.com/markets.html"><link rel="stylesheet" href="style.css?v=5"><link rel="icon" type="image/svg+xml" href="brand/favicon.svg"></head><body>' +
-  HEAD + '\n<section class="hero" style="padding:48px 0 26px"><div class="container" style="max-width:960px"><h1 style="font-size:2rem">Transformer markets, by country</h1><p style="color:var(--muted);max-width:720px">The whole market in one place — not one manufacturer. Operators, manufacturers, components, intel, events and technical context for the markets that matter.</p></div></section>' +
-  '<main class="container" style="max-width:960px;padding:0 0 60px"><div class="grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px">' +
-  links.map(function (l) { return '<a class="card" href="markets/' + l.slug + '/" style="text-decoration:none;padding:16px;border-radius:12px"><span style="font-size:1.6rem">' + l.flag + '</span><div style="font-weight:700;color:var(--ink);margin:6px 0">' + esc(l.name) + '</div><span style="font-size:.82rem;color:var(--muted)">' + l.makers + ' makers · ' + l.operators + ' operators</span></a>'; }).join('') +
-  '</div></main>' + FOOT + '\n<script src="analytics.js?v=2" defer></script>\n</body>\n</html>';
+  '<title>Transformer Markets Intelligence by Country | TransformerPath</title>' +
+  '<meta name="description" content="Country transformer intelligence dashboards — grid operators, manufacturing bases, factories, components, live tenders, project pipelines and RFQ routing for key global markets.">' +
+  '<link rel="canonical" href="https://transformerpath.com/markets.html"><link rel="stylesheet" href="style.css?v=12"><link rel="icon" type="image/svg+xml" href="brand/favicon.svg">' +
+  '<style>' +
+  '.market-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px;margin-top:20px}' +
+  '.m-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;display:flex;flex-direction:column;justify-content:space-between;transition:transform .15s ease,box-shadow .15s ease}' +
+  '.m-card:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(13,27,46,.12)}' +
+  '.tpill{display:inline-block;background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:3px 10px;font-size:.72rem;color:var(--text)}' +
+  '</style>' +
+  '</head><body>\n' + idxHead + '\n' +
+  '<section class="hero" style="padding:52px 0 28px">' +
+  '<div class="container" style="max-width:1120px">' +
+  '<span style="display:inline-block;font-size:.75rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--accent);background:rgba(11,95,165,.08);padding:4px 12px;border-radius:999px;margin-bottom:12px">Geographic Intelligence Hubs</span>' +
+  '<h1 style="font-size:2.2rem;margin:0 0 12px;color:var(--ink)">Global Transformer Markets by Country</h1>' +
+  '<p style="color:var(--muted);max-width:820px;font-size:1.02rem;line-height:1.6">Comprehensive procurement &amp; intelligence dashboards for the world\'s primary transformer markets: grid frequency and voltage architectures, transmission system operators, domestic manufacturing facilities, component suppliers, active tenders and live RFQ routing.</p>' +
+  '</div></section>' +
+  '<main class="container" style="max-width:1120px;padding:0 20px 70px">' +
+  '<div class="market-grid">' +
+  links.map(function (l) {
+    return '<div class="m-card">' +
+      '<div>' +
+        '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:14px">' +
+          '<div style="display:flex;align-items:center;gap:12px">' +
+            '<span style="font-size:2.2rem;line-height:1">' + l.flag + '</span>' +
+            '<div>' +
+              '<h2 style="font-size:1.3rem;font-weight:800;color:var(--ink);margin:0"><a href="markets/' + l.slug + '/" style="color:inherit;text-decoration:none">' + esc(l.name) + '</a></h2>' +
+              '<span style="font-size:.76rem;color:var(--muted);text-transform:uppercase;font-weight:700;letter-spacing:.5px">' + esc(l.region) + '</span>' +
+            '</div>' +
+          '</div>' +
+          '<span style="background:rgba(30,158,90,.12);color:var(--green);font-size:.74rem;font-weight:800;padding:3px 10px;border-radius:999px;white-space:nowrap">Active Market</span>' +
+        '</div>' +
+
+        '<div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:.84rem">' +
+          '<div style="display:flex;justify-content:space-between;margin-bottom:5px">' +
+            '<span style="color:var(--muted)">Grid Architecture:</span>' +
+            '<b style="color:var(--ink)">' + esc(l.freq) + ' Hz ' + (l.sync ? '<span style="color:var(--muted);font-weight:normal">(' + esc(l.sync) + ')</span>' : '') + '</b>' +
+          '</div>' +
+          '<div style="display:flex;justify-content:space-between;margin-bottom:5px">' +
+            '<span style="color:var(--muted)">Voltages:</span>' +
+            '<b style="color:var(--ink);text-align:right;max-width:210px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(l.primaryVoltage) + '</b>' +
+          '</div>' +
+          '<div style="display:flex;justify-content:space-between">' +
+            '<span style="color:var(--muted)">Grid Operators:</span>' +
+            '<span style="color:var(--text);font-weight:600;text-align:right;max-width:210px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(l.topOperators) + '</span>' +
+          '</div>' +
+        '</div>' +
+
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;font-size:.82rem">' +
+          '<div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:9px 12px">' +
+            '<span style="color:var(--muted);display:block;font-size:.72rem;text-transform:uppercase;font-weight:700">Manufacturing Base</span>' +
+            '<b style="color:var(--accent);font-size:1.1rem">' + l.makers + '</b> <span style="color:var(--text)">makers</span> · <b style="color:var(--text)">' + l.facs + '</b> <span style="color:var(--muted)">plants</span>' +
+          '</div>' +
+          '<div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:9px 12px">' +
+            '<span style="color:var(--muted);display:block;font-size:.72rem;text-transform:uppercase;font-weight:700">Demand &amp; Awards</span>' +
+            '<b style="color:var(--amber);font-size:1.1rem">' + l.tenders + '</b> <span style="color:var(--text)">tenders</span> · <b style="color:var(--text)">' + l.awards + '</b> <span style="color:var(--muted)">awards</span>' +
+          '</div>' +
+        '</div>' +
+
+        '<div style="margin-bottom:18px">' +
+          '<span style="font-size:.72rem;font-weight:700;text-transform:uppercase;color:var(--muted);letter-spacing:.4px;display:block;margin-bottom:6px">Supply Chain Scope</span>' +
+          '<div style="display:flex;flex-wrap:wrap;gap:5px">' +
+            '<span class="tpill">Power Transformers</span>' +
+            '<span class="tpill">Distribution</span>' +
+            '<span class="tpill">Bushings &amp; OLTC</span>' +
+            '<span class="tpill">Substations</span>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+
+      '<div style="display:flex;gap:8px;padding-top:14px;border-top:1px solid var(--border)">' +
+        '<a href="markets/' + l.slug + '/" class="btn btn-outline" style="flex:1;text-align:center;padding:9px 12px;font-size:.82rem;font-weight:700;text-decoration:none">Market Dashboard →</a>' +
+        '<a href="rfq.html?country=' + encodeURIComponent(l.name) + '" class="btn btn-amber" style="text-align:center;padding:9px 14px;font-size:.82rem;font-weight:700;text-decoration:none;white-space:nowrap">Source (RFQ) →</a>' +
+      '</div>' +
+    '</div>';
+  }).join('') +
+  '</div></main>' + idxFoot + '\n<script src="analytics.js?v=2" defer></script>\n</body>\n</html>';
 fs.writeFileSync('markets.html', idx);
 console.log('OK markets.html index |', links.length, 'market hubs');

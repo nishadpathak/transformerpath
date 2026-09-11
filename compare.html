@@ -17,30 +17,36 @@
 <link rel="icon" href="brand/favicon.ico" sizes="any">
 <link rel="stylesheet" href="style.css?v=12">
 <style>
-  .cmp-wrap { max-width: 1100px; margin: 0 auto; padding: 44px 20px 90px; }
-  .cmp-wrap h1 { font-size: 2rem; color: var(--ink); }
-  .cmp-wrap .lead { color: var(--muted); font-size: 1.02rem; max-width: 860px; margin: 8px 0 22px; }
-  .picker { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-bottom: 22px; }
-  .picker h2 { font-size: 1.05rem; color: var(--ink); margin: 0 0 8px; }
-  .picker .sub { color: var(--muted); font-size: .84rem; margin-bottom: 12px; }
-  .pick-input { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: .95rem; background: var(--bg); color: var(--text); }
-  .pick-results { max-height: 260px; overflow: auto; margin-top: 8px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); }
-  .pick-res { display: flex; gap: 8px; align-items: center; padding: 8px 12px; border-bottom: 1px solid var(--border); font-size: .9rem; cursor: pointer; }
-  .pick-res:hover { background: var(--card); }
-  .pick-res .cn { color: var(--muted); font-size: .78rem; }
-  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 4px; }
-  .chip { display: inline-flex; align-items: center; gap: 6px; background: var(--card); border: 1px solid var(--border); border-radius: 999px; padding: 4px 10px; font-size: .8rem; color: var(--text); }
-  .chip .x { cursor: pointer; color: var(--muted); font-weight: 800; }
-  .chart-note { color: var(--muted); font-size: .8rem; margin: 6px 0 18px; }
-  .cmp-table { width: 100%; border-collapse: collapse; font-size: .9rem; }
-  .cmp-table th, .cmp-table td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
-  .cmp-table th.rh { color: var(--muted); font-weight: 700; font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; width: 190px; }
-  .cmp-table th.co { color: var(--ink); font-weight: 800; font-size: .96rem; }
-  .cmp-table td .sub-l { color: var(--muted); font-size: .78rem; }
+  .cmp-wrap { max-width: 1140px; margin: 0 auto; padding: 44px 20px 90px; }
+  .cmp-wrap h1 { font-size: 2.1rem; color: var(--ink); letter-spacing: -.02em; }
+  .cmp-wrap .lead { color: var(--muted); font-size: 1rem; max-width: 860px; margin: 8px 0 24px; line-height: 1.55; }
+  .picker { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px; margin-bottom: 24px; box-shadow: 0 4px 20px rgba(0,0,0,.08); }
+  .picker h2 { font-size: 1.12rem; color: var(--ink); margin: 0 0 6px; font-weight: 700; }
+  .picker .sub { color: var(--muted); font-size: .86rem; margin-bottom: 14px; }
+  .pick-input { width: 100%; padding: 11px 14px; border: 1px solid var(--border); border-radius: 10px; font-size: .95rem; background: var(--bg); color: var(--text); }
+  .pick-results { max-height: 280px; overflow: auto; margin-top: 8px; border: 1px solid var(--border); border-radius: 10px; background: var(--card); box-shadow: 0 10px 28px rgba(0,0,0,.25); }
+  .pick-res { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--border); font-size: .92rem; cursor: pointer; transition: background .12s; }
+  .pick-res:hover { background: rgba(245,166,35,.08); }
+  .pick-res .cn { color: var(--muted); font-size: .8rem; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 4px; }
+  .chip { display: inline-flex; align-items: center; gap: 8px; background: var(--bg); border: 1px solid var(--amber); border-radius: 999px; padding: 6px 14px; font-size: .84rem; color: var(--text); font-weight: 600; }
+  .chip .x { cursor: pointer; color: var(--muted); font-weight: 800; font-size: 1.1rem; line-height: 1; }
+  .chip .x:hover { color: var(--red); }
+  .presets-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 14px; }
+  .preset-btn { background: var(--bg); border: 1px solid var(--border); border-radius: 999px; padding: 5px 12px; font-size: .76rem; color: var(--muted); cursor: pointer; transition: all .14s; }
+  .preset-btn:hover { border-color: var(--amber); color: var(--amber); background: rgba(245,166,35,.06); }
+  .chart-note { color: var(--muted); font-size: .82rem; margin: 12px 0 18px; }
+  .cmp-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: .9rem; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: var(--card); }
+  .cmp-table thead tr th { position: sticky; top: 64px; z-index: 20; background: var(--navy); color: #fff; padding: 14px 16px; border-bottom: 2px solid var(--amber); }
+  .cmp-table th, .cmp-table td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .cmp-table th.rh { color: var(--muted); font-weight: 700; font-size: .76rem; text-transform: uppercase; letter-spacing: .05em; width: 200px; background: var(--bg); border-right: 1px solid var(--border); }
+  .cmp-table th.co { color: #fff; font-weight: 800; font-size: 1.05rem; letter-spacing: -.01em; }
+  .cmp-table td .sub-l { color: var(--muted); font-size: .8rem; }
   .cmp-table a { color: var(--accent); font-weight: 700; text-decoration: none; }
-  .empty { text-align: center; color: var(--muted); background: var(--card); border: 1px dashed var(--border); border-radius: 12px; padding: 34px; }
-  .cta { background: rgba(245,166,35,.08); border: 1px solid var(--accent); border-radius: 12px; padding: 16px 18px; text-align: center; margin-top: 24px; }
-  .row-note { color: var(--muted); font-size: .78rem; margin-top: 14px; }
+  .cmp-yes { display: inline-flex; align-items: center; gap: 4px; background: rgba(16,185,129,.12); color: #10b981; border: 1px solid rgba(16,185,129,.3); border-radius: 999px; padding: 2px 10px; font-size: .76rem; font-weight: 700; }
+  .empty { text-align: center; color: var(--muted); background: var(--card); border: 1px dashed var(--border); border-radius: 14px; padding: 44px 20px; }
+  .cta { background: linear-gradient(135deg, rgba(245,166,35,.10) 0%, rgba(20,37,61,.30) 100%); border: 1px solid var(--amber); border-radius: 14px; padding: 22px 24px; text-align: center; margin-top: 30px; }
+  .row-note { color: var(--muted); font-size: .78rem; margin-top: 16px; line-height: 1.6; }
 </style>
     <link rel="stylesheet" href="tp-nav.css?v=12">
   <link rel="stylesheet" href="tp-feedback.css?v=12">
@@ -53,6 +59,7 @@
     <nav class="tpnav" id="mainNav" aria-label="Primary">
       <a href="intel.html">Intel</a>
       <a href="manufacturers.html">Manufacturers</a>
+      <a href="directory.html">Directory</a>
       <a href="projects.html">Projects</a>
       <a href="tenders.html">Tenders</a>
       <a href="grids.html" class="tpnav-opt">Grids</a>
@@ -63,15 +70,13 @@
       <div class="tpnav-more">
         <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
         <div class="tpnav-more-panel" role="menu">
-          <a href="grids.html" role="menuitem">Grids</a>
-          <a href="tools.html" role="menuitem">Tools</a>
-          <a href="materials.html" role="menuitem">Materials</a>
-          <a href="buyers-guide.html" role="menuitem">Buyer's Guide</a>
-          <a href="components.html" role="menuitem">Components</a>
+          <a href="machinery.html" role="menuitem">Machinery</a>
+          <a href="laboratories.html" role="menuitem">Testing Labs</a>
+          <a href="compare.html" role="menuitem">Compare</a>
+          <a href="markets.html" role="menuitem">Markets</a>
           <a href="utilities.html" role="menuitem">Utilities</a>
-          <a href="standards.html" role="menuitem">Standards</a>
-          <a href="books.html" role="menuitem">Books</a>
-          <a href="webinars.html" role="menuitem">Webinars</a>
+          <a href="materials.html" role="menuitem">Materials</a>
+          <a href="components.html" role="menuitem">Components</a>
           <a href="pricing.html" role="menuitem">Pricing</a>
         </div>
       </div>
@@ -83,28 +88,34 @@
     </nav>
   </div>
 </header>
-<script>
-</script>
 <main class="cmp-wrap">
-  <h1>Compare <span style="color:var(--accent)">Transformer Manufacturers</span></h1>
-  <p class="lead">Side-by-side comparison of electrical transformer manufacturers on reported capability — product categories, voltage, rating, factory locations, testing and research status. This is a <b>fact-based comparison</b>: there is no ranking, no score and no "best". Every capability is drawn from the source-backed TransformerPath manufacturer census; a blank means the data is not reported in that field.</p>
+  <nav style="font-size:.82rem;color:var(--muted);margin-bottom:12px"><a href="directory.html" style="color:var(--accent)">Directory</a> › Capability Comparison</nav>
+  <h1>Technical Comparison of <span style="color:var(--accent)">Transformer Manufacturers</span></h1>
+  <p class="lead">Side-by-side technical comparison of transformer manufacturers across verified capability parameters: voltage classes, unit ratings, separated manufacturing facilities, compliance standards, and provenance. <b>Purely fact-based: no subjective scoring or commercial bias.</b></p>
 
   <div class="picker">
-    <h2>Select manufacturers to compare</h2>
-    <p class="sub">Search by company name or country, then pick 2–4. Comparison links are shareable (<code style="color:var(--accent)">/compare.html?m=slug1,slug2</code>).</p>
-    <input class="pick-input" id="pickInput" type="text" placeholder="Search manufacturers…" autocomplete="off">
+    <h2>Select Manufacturers to Compare (up to 5)</h2>
+    <p class="sub">Search by company name or country, or select a preset group. Shareable URL links: <code style="color:var(--accent)">/compare.html?m=slug1,slug2,slug3</code>.</p>
+    <input class="pick-input" id="pickInput" type="text" placeholder="Type company name or country (e.g. Hitachi, Siemens, India, Germany, TBEA)..." autocomplete="off">
     <div class="pick-results" id="pickResults" style="display:none"></div>
     <div class="chips" id="chips"></div>
+
+    <div class="presets-bar">
+      <span style="font-size:.76rem;color:var(--muted);font-weight:700;text-transform:uppercase">Quick Presets:</span>
+      <button class="preset-btn" onclick="applyPreset(['hitachi-energy','siemens-energy','ge-vernova'])">⚡ Tier-1 Global (Hitachi · Siemens · GE)</button>
+      <button class="preset-btn" onclick="applyPreset(['bhel-bharat-heavy-electricals','cg-power','transformers-rectifiers-india-taril'])">🇮🇳 India Power OEMs (BHEL · CG · TARIL)</button>
+      <button class="preset-btn" onclick="applyPreset(['tbea-co-ltd','china-xd-group','hd-hyundai-electric'])">⚡ UHV Specialists (TBEA · XD · Hyundai)</button>
+    </div>
   </div>
 
   <div id="cmp"></div>
 
   <div class="cta">
-    <b style="color:var(--text)">Procurement decision, not a vendor list</b>
-    <p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Shortlisted a manufacturer? Submit an RFQ and TransformerPath will match your requirement against the relevant manufacturing base.</p>
-    <a class="btn btn-amber" href="rfq.html" data-track="rfq_started" data-track-utility="compare">Submit an RFQ</a>
+    <b style="color:var(--text);font-size:1.05rem">Technical Shortlisting to Qualified Procurement</b>
+    <p style="color:var(--muted);font-size:.92rem;margin:6px auto 14px;max-width:640px">Ready to evaluate pricing and lead-times? Submit an RFQ and TransformerPath will route your technical parameters directly to verified suppliers.</p>
+    <a class="btn btn-amber" href="rfq.html" data-track="rfq_started" data-track-utility="compare">Submit an RFQ →</a>
   </div>
-  <p class="row-note">Capability figures are as reported to / independently sourced for the TransformerPath census. A blank cell indicates the value is not reported for that manufacturer — it is not a claim of absence. Verify all capability with the manufacturer before a commercial decision.</p>
+  <p class="row-note">Capability figures are as reported to or independently verified for the TransformerPath Industry Knowledge Graph. A blank cell indicates the value is not documented in that field. Verify all technical requirements with the manufacturer before commercial award.</p>
 </main>
 <footer>
   <div class="container">
@@ -137,7 +148,9 @@ function factoryCountries(c){
   return (c.factories||[]).map(function(f){ return f.country||''; }).filter(Boolean);
 }
 function factoryRows(c){
-  return (c.factories||[]).filter(function(f){ return f.city || f.produces; }).map(function(f){
+  var facs = (c.factories||[]).filter(function(f){ return f.city || f.produces; });
+  if (!facs.length) return '<span class="sub-l">1 plant (headquarters)</span>';
+  return facs.map(function(f){
     var lo=(f.city?esc(f.city):'')+(f.country?', '+esc(f.country):'');
     return '<div style="margin:2px 0"><b style="color:var(--text)">'+(lo||'—')+'</b>'+(f.produces?' <span class="sub-l">'+esc(f.produces)+'</span>':'')+(f.source_url?' <a href="'+esc(f.source_url)+'" target="_blank" rel="noopener" style="font-size:.72rem">src</a>':'')+'</div>';
   }).join('');
@@ -148,36 +161,54 @@ function researchBadge(c){
   return '<span style="font-size:.8rem;color:'+(st==='ACTIVE_CONFIRMED'?'var(--ok)':'var(--muted)')+'">'+esc(map[st]||st)+'</span>';
 }
 
+function hasStd(c, std) {
+  var certs = (c.reported_certs || []).join(' ').toLowerCase();
+  var notes = ((c.sources && c.sources.capability_note) || '').toLowerCase();
+  var match = certs.indexOf(std) >= 0 || notes.indexOf(std) >= 0;
+  return match ? '<span class="cmp-yes">✓ Yes</span>' : '<span class="sub-l">—</span>';
+}
+
+function hasType(c, re) {
+  var prods = (c.products || []).join(' ');
+  return re.test(prods) ? '<span class="cmp-yes">✓ Yes</span>' : '<span class="sub-l">—</span>';
+}
+
 function renderTable(){
   var el=document.getElementById('cmp');
-  if(!selected.length){ el.innerHTML='<div class="empty">Select 2–4 manufacturers to compare side-by-side. Use the search above.</div>'; return; }
+  if(!selected.length){ el.innerHTML='<div class="empty">Select 2–5 manufacturers to compare side-by-side. Use the search or quick presets above.</div>'; return; }
   if(selected.length===1){ el.innerHTML='<div class="empty">Add at least one more manufacturer to compare. Search above and pick.</div>'; return; }
   var cols=selected.map(function(sel){ return companyBySlug(sel.slug); }).filter(Boolean);
 
-  // Build the comparison table. Only rows where at least one column is populated.
   var rows=[];
-  function row(label, get){ var vals=cols.map(get); if(vals.every(function(v){return !v;} )) return; rows.push([label, cols, vals]); }
+  function row(label, get){ var vals=cols.map(get); rows.push([label, cols, vals]); }
 
-  row('Company', function(c){ return '<a href="manufacturers/'+esc(c.slug)+'/">'+esc(c.name)+'</a>'; });
-  row('Country', function(c){ return esc(c.country||'—'); });
-  row('Product categories', productChips);
-  row('Reported max voltage', function(c){ return fmtVoltage(c.reported_voltage); });
-  row('Reported max rating', function(c){ return fmtMva(c.reported_mva); });
-  row('Reported certifications', function(c){ return (c.reported_certs||[]).join(', ')||''; });
-  row('Testing capability', function(c){ return c.testing_capability?esc(c.testing_capability):''; });
-  row('Factory locations', factoryRows);
-  row('Factory countries', function(c){ return [...new Set(factoryCountries(c))].join(', '); });
-  row('Reported utility approvals', function(c){ return (c.approvals||[]).join(', ')||''; });
-  row('Research status', researchBadge);
-  row('Commercial status', function(c){ return c.commercial_status?esc(c.commercial_status):''; });
-  row('Profile', function(c){ return '<a href="manufacturers/'+esc(c.slug)+'/">Open profile →</a>'; });
+  row('Company', function(c){ return '<a href="manufacturers/'+esc(c.slug)+'/" style="font-size:1.02rem"><b>'+esc(c.name)+'</b></a>'; });
+  row('Country / HQ', function(c){ return esc(c.country||'—') + (c.headquarters ? '<br><span class="sub-l">' + esc(c.headquarters) + '</span>' : ''); });
+  row('Max Reported Voltage', function(c){ return c.reported_voltage ? '<b style="color:var(--accent);font-size:1rem">' + fmtVoltage(c.reported_voltage) + '</b>' : '<span class="sub-l">—</span>'; });
+  row('Max Reported MVA / Rating', function(c){ return c.reported_mva ? '<b style="color:var(--text);font-size:1rem">' + fmtMva(c.reported_mva) + '</b>' : '<span class="sub-l">—</span>'; });
+  row('IEC Standards', function(c){ return hasStd(c, 'iec'); });
+  row('IEEE / ANSI Standards', function(c){ return hasStd(c, 'ieee') !== '<span class="sub-l">—</span>' ? hasStd(c, 'ieee') : hasStd(c, 'ansi'); });
+  row('Power Transformers', function(c){ return hasType(c, /pt|power|gsu|auto/i); });
+  row('Distribution Transformers', function(c){ return hasType(c, /dt|distribution|pad|pole/i); });
+  row('Dry-Type Transformers', function(c){ return hasType(c, /dry|cast/i); });
+  row('Special Transformers', function(c){ return hasType(c, /furnace|rectifier|traction|hvdc|reactor|special/i); });
+  row('Factory Locations', factoryRows);
+  row('Factory Countries', function(c){ return [...new Set(factoryCountries(c))].join(', ') || esc(c.country); });
+  row('Directory Completeness', function(c){
+    var score = c.completeness_score != null ? c.completeness_score : (c.research_completeness ? Math.min(100, c.research_completeness * 15) : 40);
+    var cls = score >= 70 ? 'kg-comp-high' : (score >= 45 ? 'kg-comp-mid' : 'kg-comp-low');
+    return '<div><b>' + score + '%</b> <span class="sub-l">(' + (c.provenance_type || 'Researched') + ')</span></div>' +
+      '<div class="kg-comp-bar" style="width:100px;margin-top:4px"><div class="kg-comp-fill ' + cls + '" style="width:' + score + '%"></div></div>';
+  });
+  row('Research Status', researchBadge);
+  row('Procurement RFQ', function(c){ return '<a class="btn btn-amber btn-sm" href="rfq.html?company=' + encodeURIComponent(c.name) + '">Request RFQ →</a>'; });
 
-  var thead='<tr><th class="rh">Feature</th>'+cols.map(function(c){ return '<th class="co">'+esc(c.name)+'</th>'; }).join('')+'</tr>';
+  var thead='<tr><th class="rh">Specification</th>'+cols.map(function(c){ return '<th class="co">'+esc(c.name)+'</th>'; }).join('')+'</tr>';
   var tbody=rows.map(function(r){
     return '<tr><th class="rh">'+r[0]+'</th>'+r[2].map(function(v){ return '<td>'+(v||'<span class="sub-l">—</span>')+'</td>'; }).join('')+'</tr>';
   }).join('');
-  el.innerHTML='<div class="chart-note">Comparing '+cols.length+' manufacturers. Rows with no reported data are omitted — so a blank here means "not reported", not "absent".</div>'+
-    '<table class="cmp-table"><thead>'+thead+'</thead><tbody>'+tbody+'</tbody></table>';
+  el.innerHTML='<div class="chart-note">Comparing '+cols.length+' manufacturers side-by-side. Technical fields are sourced from the canonical TransformerPath Knowledge Graph.</div>'+
+    '<div class="table-wrap" style="overflow-x:auto"><table class="cmp-table"><thead>'+thead+'</thead><tbody>'+tbody+'</tbody></table></div>';
 }
 
 function renderChips(){
@@ -191,16 +222,31 @@ function renderChips(){
   history.replaceState(null,'',qs?('?m='+qs):'compare.html');
 }
 function removeSel(i){ selected.splice(i,1); renderChips(); }
-function addSel(c){ if(selected.length>=4) alert('You can compare up to 4 manufacturers.'); if(selected.some(function(s){return s.slug===c.slug;})) return; selected.push({slug:c.slug,name:c.name,country:c.country}); renderChips(); }
+function addSel(c){
+  if(selected.length>=5) { alert('You can compare up to 5 manufacturers side-by-side.'); return; }
+  if(selected.some(function(s){return s.slug===c.slug;})) return;
+  selected.push({slug:c.slug,name:c.name,country:c.country});
+  renderChips();
+}
+
+window.applyPreset = function(slugs){
+  selected = [];
+  slugs.forEach(function(sl){
+    var c=companyBySlug(sl);
+    if(c) selected.push({slug:c.slug,name:c.name,country:c.country});
+  });
+  renderChips();
+};
 
 // picker
 var pi=document.getElementById('pickInput'), pr=document.getElementById('pickResults');
-pi.addEventListener('input',function(){ var q=pi.value; var r=findByName(q); if(!q||!r.length){ pr.style.display='none'; return; } pr.style.display='block'; pr.innerHTML=r.map(function(c){ return '<div class="pick-res" onclick="addSel({slug:\''+esc(c.slug)+'\',name:\''+esc(c.name).replace(/'/g,"\\'")+'\',country:\''+esc(c.country).replace(/'/g,"\\'")+'\'});pi.value=\'\';pr.style.display=\'none\'">'+esc(c.name)+' <span class="cn">'+esc(c.country||'')+'</span></div>'; }).join(''); });
+pi.addEventListener('input',function(){ var q=pi.value; var r=findByName(q); if(!q||!r.length){ pr.style.display='none'; return; } pr.style.display='block'; pr.innerHTML=r.map(function(c){ return '<div class="pick-res" onclick="addSel({slug:\''+esc(c.slug)+'\',name:\''+esc(c.name).replace(/'/g,"\\'")+'\',country:\''+esc(c.country).replace(/'/g,"\\'")+'\'});pi.value=\'\';pr.style.display=\'none\'"><b>'+esc(c.name)+'</b> <span class="cn">'+esc(c.country||'')+'</span></div>'; }).join(''); });
 document.addEventListener('click',function(e){ if(!pi.contains(e.target)&&!pr.contains(e.target)) pr.style.display='none'; });
 
 fetch('data/manufacturer-intel.json').then(function(r){ return r.json(); }).then(function(d){
   DATA=d.companies||[];
-  var m=new URLSearchParams(location.search).get('m');
+  var params=new URLSearchParams(location.search);
+  var m=params.get('m') || params.get('companies');
   if(m){ m.split(',').filter(Boolean).forEach(function(sl){ var c=companyBySlug(sl); if(c) selected.push({slug:c.slug,name:c.name,country:c.country}); }); }
   renderChips();
 }).catch(function(){ document.getElementById('cmp').innerHTML='<div class="empty">Manufacturer data unavailable.</div>'; });

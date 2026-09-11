@@ -55,7 +55,13 @@ const EVT_TYPE_LABEL = BI_EVENTS.types || {};
 // Source-backed verified manufacturing facilities (from deep-research intel store).
 const INTEL_STORE = (function () { try { return JSON.parse(fs.readFileSync('data/manufacturer-intel.json', 'utf8')); } catch (e) { return null; } })();
 const INTEL_BY_SLUG = {};
-if (INTEL_STORE && INTEL_STORE.companies) INTEL_STORE.companies.forEach(function (c) { if (c.slug) INTEL_BY_SLUG[c.slug] = c; });
+const INTEL_BY_NAME = {};
+if (INTEL_STORE && INTEL_STORE.companies) {
+  INTEL_STORE.companies.forEach(function (c) {
+    if (c.slug) INTEL_BY_SLUG[c.slug] = c;
+    if (c.name) INTEL_BY_NAME[norm(c.name)] = c;
+  });
+}
 const COMPONENTS = { 'transformer-bushings': 'Transformer bushings', 'on-load-tap-changers': 'On-load tap changers', 'transformer-cooling': 'Cooling systems', 'insulation-materials': 'Insulation materials', 'conductors-and-core': 'Conductors & core steel', 'oil-fluids-preservation': 'Oil & preservation', 'protection-monitoring': 'Protection & monitoring', 'tank-and-mechanical': 'Tank & mechanical' };
 const APPS = { 'utilities-grid': 'Utilities & Grid', 'renewables': 'Renewable Energy', 'data-centres': 'Data Centres', 'hvdc': 'HVDC & Converters', 'solar': 'Solar PV', 'bess': 'Battery Storage', 'offshore-wind': 'Offshore Wind', 'mining-metals': 'Mining & Metals', 'oil-gas': 'Oil, Gas & Energy', 'railways': 'Railways & Metro', 'cement-industrial': 'Cement & Industrial' };
 
@@ -121,19 +127,20 @@ function typeBadge(t) { return { PT: 'Power', DT: 'Distribution', DRY: 'Dry-type
 // Rendered ONLY when a facility has an independent source; never from the group
 // maximum. Factory capability is separate from company capability.
 function verifiedFactoriesHtml(r) {
-  const rec = INTEL_BY_SLUG[r.slug] || null;
+  const rec = INTEL_BY_SLUG[r.slug] || INTEL_BY_NAME[norm(r.name)] || null;
   if (!rec || !rec.factories) return '';
-  const verified = rec.factories.filter(function (f) { return f && (f.source_url || f.produces); });
+  const verified = rec.factories.filter(function (f) { return f && (f.source_url || f.produces || f.city); });
   if (!verified.length) return '';
   const rows = verified.map(function (f) {
     const lo = (f.city ? esc(f.city) : '') + (f.country ? ', ' + esc(f.country) : '');
+    const fid = f.facility_id ? '<span style="font-family:monospace;font-size:.72rem;background:rgba(255,255,255,.06);padding:1px 6px;border-radius:4px;color:var(--muted);margin-left:6px">' + esc(f.facility_id) + '</span>' : '';
     const prod = f.produces ? '<div style="font-size:.8rem;color:var(--muted);margin-top:2px">' + esc(f.produces) + '</div>' : '';
-    const src = f.source_url ? '<a href="' + esc(f.source_url) + '" target="_blank" rel="noopener" style="color:var(--accent);font-size:.78rem">source</a>' : '';
+    const src = f.source_url ? '<a href="' + esc(f.source_url) + '" target="_blank" rel="noopener" style="color:var(--accent);font-size:.78rem">source ↗</a>' : '';
     const ct = f.claim_type ? '<span class="vbadge" style="font-size:.68rem;font-weight:600">' + esc(f.claim_type.replace(/_/g, ' ')) + '</span>' : '';
-    return '<tr><td style="padding:6px 10px;vertical-align:top"><b style="color:var(--text)">' + (lo || '—') + '</b>' + prod + '</td>' +
-      '<td style="padding:6px 10px;vertical-align:top;font-size:.8rem;color:var(--muted)">' + ct + ' ' + src + '</td></tr>';
+    return '<tr><td style="padding:8px 10px;vertical-align:top"><b style="color:var(--text)">' + (lo || '—') + '</b>' + fid + prod + '</td>' +
+      '<td style="padding:8px 10px;vertical-align:top;font-size:.8rem;color:var(--muted)">' + ct + ' ' + src + '</td></tr>';
   }).join('');
-  return '<h2>Confirmed manufacturing facilities</h2><p style="font-size:.82rem;color:var(--muted)">Where an independent source documents a transformer manufacturing plant, it is shown here with the source. Factory capability is separate from the company maximum and is not inferred from it.</p>' +
+  return '<h2>Confirmed manufacturing facilities</h2><p style="font-size:.82rem;color:var(--muted)">Where an independent source documents a transformer manufacturing plant, it is catalogued here with its verified facility ID and source attribution. Factory capability is separate from the company group maximum and is never inferred from it.</p>' +
     '<table class="tbl"><tbody>' + rows + '</tbody></table>';
 }
 
@@ -146,10 +153,11 @@ function brandSitesHtml(r) {
   const others = grp.sites.filter(function (s) { return s.name !== r.name; });
   const list = others.length ? others : grp.sites; // if this is the canonical row, list them all
   const items = list.map(function (s) {
+    const fid = s.facility_id ? '<div style="font-family:monospace;font-size:.7rem;color:var(--muted)">' + esc(s.facility_id) + '</div>' : '';
     const prods = (s.products || []).map(function (t) { return '<span class="tpill">' + esc(typeBadge(t)) + '</span>'; }).join(' ');
-    return '<tr><td style="padding:6px 10px;vertical-align:top"><b style="color:var(--text)">' + esc(s.name) + '</b><br><span style="color:var(--muted);font-size:.82rem">' + esc(s.city || '—') + ', ' + esc(s.country) + '</span></td>' +
+    return '<tr><td style="padding:6px 10px;vertical-align:top"><b style="color:var(--text)">' + esc(s.name) + '</b><br><span style="color:var(--muted);font-size:.82rem">' + esc(s.city || '—') + ', ' + esc(s.country) + '</span>' + fid + '</td>' +
       '<td style="padding:6px 10px;vertical-align:top">' + (prods || '<span style="color:var(--muted)">—</span>') + '</td>' +
-      '<td style="padding:6px 10px;vertical-align:top"><span style="font-size:.74rem;color:var(--muted)">Unclassified</span></td></tr>';
+      '<td style="padding:6px 10px;vertical-align:top"><span style="font-size:.74rem;color:var(--muted)">' + esc(s.status || 'Unclassified') + '</span></td></tr>';
   }).join('');
   return '<h2>Sites &amp; locations</h2><p style="font-size:.82rem;color:var(--muted)">TransformerPath lists the sites it has in its census for this brand. It does <b>not</b> classify whether each is a manufacturing plant, office or service centre without independent confirmation.</p>' +
     '<table class="tbl"><tbody>' + items + '</tbody></table>';
@@ -253,11 +261,46 @@ function page(r, slug) {
   const evHtml = evs.map(function (ev) { return '<li style="margin:6px 0"><a href="' + esc(ev.u) + '" target="_blank" rel="noopener" style="color:var(--accent)">' + esc(ev.n) + '</a> <span style="color:var(--muted);font-size:.85rem">' + fmt(ev.s) + ' · ' + esc(ev.c) + ', ' + esc(ev.co) + '</span></li>'; }).join('') || '<li style="color:var(--muted)">No confirmed events for this market yet.</li>';
   const intel = intelFor(r);
   const intelHtml = intel.map(function (it) { return '<li style="margin:6px 0"><b style="color:var(--text);font-size:.9rem">' + esc(it.title) + '</b><p style="color:var(--muted);font-size:.84rem;margin:2px 0 0">' + esc(it.snippet.slice(0, 150)) + (it.snippet.length > 150 ? '…' : '') + '</p></li>'; }).join('') || '<li style="color:var(--muted)">No published intelligence items for this company yet. Curated Daily Intel is refreshed at build — see <a href="../../intel.html">Daily Intel</a> for the latest feed.</li>';
-  const lastReviewed = (STATS.updated || '2026-08-26');
+  const intelRec = INTEL_BY_SLUG[slug] || INTEL_BY_NAME[norm(r.name)] || null;
+  const score = intelRec ? (intelRec.completeness_score || 0) : (r.tierFile ? 65 : (r.url ? 45 : 25));
+  const missing = (intelRec && intelRec.missing_fields) ? intelRec.missing_fields : [];
+  const provType = (intelRec && intelRec.provenance_type) || (r.flagV ? 'MANUFACTURER_SUPPLIED' : (r.url ? 'PUBLIC_SOURCE' : 'TRANSFORMERPATH_RESEARCHED'));
+  const provLabels = {
+    'OFFICIAL_SOURCE': 'Official Manufacturer Source',
+    'MANUFACTURER_SUPPLIED': 'Manufacturer Supplied',
+    'TRANSFORMERPATH_RESEARCHED': 'TransformerPath Researched',
+    'PUBLIC_SOURCE': 'Public Industry Census',
+    'ESTIMATED': 'Estimated'
+  };
+  const provLabel = provLabels[provType] || provType;
+  const lastReviewed = (intelRec && intelRec.last_verified) || (STATS.updated || '2026-08-26');
   const verify = r.flagV === 'P' ? '★ Pro Verified' : r.flagV === 'V' ? '✓ Verified' : 'Listed (directory)';
   const trust = '<div class="src"><b>Data sources</b> <span class="tpill">Company website</span><span class="tpill">Public manufacturer documentation</span><span class="tpill">Public project announcements</span><span class="tpill">TransformerPath industry database</span></div>' +
     '<div class="src" style="margin-top:6px"><b>Last reviewed</b> ' + lastReviewed + ' &nbsp;&middot;&nbsp; <b>Profile status</b> <span style="color:var(--accent)">' + verify + '</span></div>' +
     '<p style="font-size:.78rem;color:var(--muted);margin-top:6px">Listed profiles are informational directory entries and do not imply verification, endorsement or commercial affiliation. ' + esc(r.name) + ' is <b>not</b> affiliated with TransformerPath.</p>';
+
+  const meterColor = score >= 75 ? '#10b981' : (score >= 50 ? 'var(--accent)' : 'var(--muted)');
+  const meterGrad = score >= 75
+    ? 'linear-gradient(90deg, #10b981, #059669)'
+    : (score >= 50 ? 'linear-gradient(90deg, #f5a623, #d97706)' : 'linear-gradient(90deg, #94a3b8, #64748b)');
+  const missingList = missing.length ? '<div style="font-size:.82rem;color:var(--muted);border-top:1px solid var(--border);padding-top:10px;margin-top:10px">' +
+    '<b style="color:var(--accent)">Pending technical specifications:</b> ' + missing.map(function(m){ return esc(m); }).join(' · ') +
+    '<div style="margin-top:8px"><a href="../../claim-profile.html?company=' + encodeURIComponent(r.name) + '" class="btn btn-outline btn-sm" style="font-size:.74rem;padding:3px 10px" data-track="claim_from_completeness" data-track-manufacturer="' + esc(r.name) + '">Claim profile to complete specifications →</a></div></div>' : '';
+
+  const completenessCard = '<div class="card" style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin:18px 0;box-shadow:0 4px 16px rgba(0,0,0,.08)">' +
+    '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px">' +
+      '<div><div style="font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:700">Directory Completeness Score</div>' +
+      '<div style="font-size:1.5rem;font-weight:800;color:' + meterColor + '">' + score + '% Complete</div></div>' +
+      '<div style="text-align:right">' +
+        '<div style="font-size:.76rem;color:var(--muted)">Data Provenance: <b style="color:var(--text)">' + esc(provLabel) + '</b></div>' +
+        '<div style="font-size:.76rem;color:var(--muted)">Last reviewed: <b style="color:var(--text)">' + esc(lastReviewed) + '</b></div>' +
+      '</div>' +
+    '</div>' +
+    '<div style="background:rgba(255,255,255,.08);height:7px;border-radius:999px;margin:12px 0 8px;overflow:hidden">' +
+      '<div style="width:' + score + '%;height:100%;background:' + meterGrad + ';border-radius:999px"></div>' +
+    '</div>' +
+    missingList +
+  '</div>';
   // conservative schema: describe the company, never claim affiliation
   const orgSchema = { '@context': 'https://schema.org', '@type': 'Organization', name: r.name, url: r.url ? r.url : url, description: (r.types.length ? 'Transformer manufacturer (' + r.types.map(typeBadge).join(', ') + ')' : 'Transformer manufacturer') + ' — ' + r.country + (r.city ? ', ' + r.city : ''), address: { '@type': 'PostalAddress', addressCountry: r.country, addressLocality: r.city || undefined } };
   const pageSchema = { '@context': 'https://schema.org', '@type': 'WebPage', name: r.name + ' — Company Profile', url: url, about: { '@type': 'Organization', name: r.name } };
@@ -295,6 +338,7 @@ function page(r, slug) {
     '<p class="lead">Independent company profile covering reported transformer capabilities, markets, related industry developments and relevant events.</p>' +
     '<p style="font-size:.9rem;color:var(--muted);margin:6px 0 0">' + (r.flag || '') + ' <b style="color:var(--text)">' + esc(r.country) + '</b>' + (r.city ? ' · ' + esc(r.city) : '') + ' · <span style="color:var(--accent)">' + verify + '</span>' + (r.url ? ' · <a href="' + esc(r.url) + '" target="_blank" rel="noopener nofollow" data-track="official_website_click" data-track-manufacturer="' + esc(r.name) + '" style="color:var(--accent)">Official website ↗</a>' : '') + '</p>' +
     trust +
+    completenessCard +
     '<h2>Capabilities</h2><div style="margin:4px 0 8px">' + typeHtml + '</div>' +
     (tierTable ? '<h2>Indicative capability data</h2>' + tierTable : '') +
     '<h2>Related components</h2><div>' + compLinks + '</div>' +
@@ -305,7 +349,7 @@ function page(r, slug) {
     '<h2>Upcoming events</h2><ul>' + evHtml + '</ul>' +
     '<p style="font-size:.72rem;color:var(--muted)">Last reviewed: ' + lastReviewed + '.</p>' +
     '<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:22px"><b style="color:var(--text)">Represent this company?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Claim and update this profile to keep its capabilities, markets and verification accurate.</p>' +
-    '<a class="btn btn-outline btn-sm" href="../../list-company.html" data-track="supplier_claim_started" data-track-manufacturer="' + esc(r.name) + '">Claim and update this profile →</a></div>' +
+    '<a class="btn btn-outline btn-sm" href="../../claim-profile.html?company=' + encodeURIComponent(r.name) + '" data-track="supplier_claim_started" data-track-manufacturer="' + esc(r.name) + '">Claim this profile →</a></div>' +
     '<div class="card" style="background:var(--bg);border:1px solid var(--border);padding:16px 18px;text-align:center;margin-top:14px"><b style="color:var(--text)">Find something inaccurate?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Tell us what and why, with a source where you can. Corrections are reviewed against a source before they are applied — they are never auto-overwritten.</p>' +
     '<a class="btn btn-outline btn-sm" href="../../correct-company.html?company=' + encodeURIComponent(r.name) + '" data-track="manufacturer_correction_started" data-track-manufacturer="' + esc(r.name) + '">Suggest a correction →</a></div>' +
     '<div class="card" style="background:var(--bg);border:1px solid var(--border);padding:16px 18px;text-align:center;margin-top:14px"><b style="color:var(--text)">Looking for transformer suppliers?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Submit a technical requirement for supplier matching across the ' + esc(r.country) + ' and regional manufacturing base.</p>' +
@@ -333,6 +377,10 @@ console.log('company pages:', list.length, '| indexed:', indexed, '(rich tier:',
 // published tree always matches the current census and no orphaned/thin pages
 // are served.
 const currentSlugs = new Set(list.map(function (r) { return r.slug; }));
+// Protect programmatic SEO product-type hubs from being pruned
+['power-transformers', 'distribution-transformers', 'dry-type-transformers'].forEach(function (s) {
+  currentSlugs.add(s);
+});
 (function pruneStale(dir) {
   fs.readdirSync(dir, { withFileTypes: true }).forEach(function (e) {
     if (!e.isDirectory() || e.name.startsWith('.')) return;

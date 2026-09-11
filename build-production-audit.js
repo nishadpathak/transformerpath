@@ -87,7 +87,7 @@ function main() {
   const files = [];
   (function walk(dir) {
     fs.readdirSync(dir, { withFileTypes: true }).forEach((e) => {
-      if (e.isDirectory()) { if (!/^(node_modules|\.git)$/.test(e.name)) walk(path.join(dir, e.name)); }
+      if (e.isDirectory()) { if (!/^(node_modules|\.git|dist|scratch|\.claude)$/.test(e.name)) walk(path.join(dir, e.name)); }
       else if (e.name.endsWith('.html')) files.push(path.join(dir, e.name));
     });
   })('.');

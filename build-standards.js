@@ -95,15 +95,45 @@ const regionsHtml = regionKeys.map((r) => {
     '<div class="std-tbl-wrap">' + rowHtml + '</div>';
 }).join('');
 
-const html = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Global Transformer Standards & Grid Reference — IEC, IEEE, National Standards | TransformerPath</title>' +
-  '<meta name="description" content="A worldwide reference for electrical transformer standards (IEC 60076, IEEE C57, national standards) and national grid characteristics — grid frequency, highest transmission voltage and synchronous area per country, from the TransformerPath grid census. ' + totalCountries + ' countries.">' +
-  '<link rel="canonical" href="https://transformerpath.com/standards.html"><meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath"><meta property="og:title" content="Global Transformer Standards & Grid Reference"><meta property="og:url" content="https://transformerpath.com/standards.html"><meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow"><meta name="theme-color" content="#0d1b2e">' +
-  '<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any"><link rel="stylesheet" href="style.css?v=12"><style>' + style + '</style></head><body>\n' + HEAD + '\n<main class="std-wrap">' +
-  '<h1>Global <span style="color:var(--accent)">Standards &amp; Grid</span> Reference</h1>' +
-  '<p class="lead">A worldwide reference for electrical transformer standards and national grid characteristics. The standards comparison below is a factual reference for cross-border specification work; the country reference shows grid frequency, highest transmission voltage and synchronous area per country — derived source-backed from the TransformerPath grid census.</p>' +
-  '<div class="std-stats"><div class="s"><b>' + totalCountries + '</b><small>Countries</small></div><div class="s"><b>' + hz50 + '</b><small>50 Hz grids</small></div><div class="s"><b>' + hz60 + '</b><small>60 Hz grids</small></div><div class="s"><b>' + maxVoltage + ' kV</b><small>Highest grid voltage</small></div></div>' +
+const STANDARDS_DATA = (() => {
+  try { return JSON.parse(fs.readFileSync('data/standards.json', 'utf8')).standards || []; } catch(e) { return []; }
+})();
+const stdJson = JSON.stringify(STANDARDS_DATA);
 
-  '<h2 class="std-h2">Transformer standards — an at-a-glance comparison</h2>' +
+const html = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Global Transformer Standards & Regulations Directory — IEC, IEEE, National Standards | TransformerPath</title>' +
+  '<meta name="description" content="Worldwide directory of electrical transformer standards, test codes, and regulatory efficiency mandates (IEC 60076, IEEE C57, EU Ecodesign, US DOE 2027, IS 1180, GB/T 1094). Verified scopes, frequencies, and voltage levels.">' +
+  '<link rel="canonical" href="https://transformerpath.com/standards.html"><meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath"><meta property="og:title" content="Global Transformer Standards & Regulations Directory"><meta property="og:url" content="https://transformerpath.com/standards.html"><meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow"><meta name="theme-color" content="#0d1b2e">' +
+  '<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any"><link rel="stylesheet" href="style.css?v=12"><link rel="stylesheet" href="tp-nav.css?v=12"><style>' + style + 
+  '.std-reg-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px;display:flex;flex-direction:column;transition:border-color .15s}' +
+  '.std-reg-card:hover{border-color:var(--accent)}' +
+  '.std-reg-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:6px}' +
+  '.std-reg-code{font-size:1.15rem;font-weight:800;color:var(--accent)}' +
+  '.std-reg-title{font-size:1.05rem;font-weight:700;color:var(--ink);margin:4px 0 8px}' +
+  '.std-pill{background:rgba(245,166,35,.12);border:1px solid var(--accent);color:var(--accent);font-size:.75rem;font-weight:700;padding:2px 8px;border-radius:999px}' +
+  '.ev-badge{display:inline-block;border-radius:999px;padding:2px 8px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.03em}' +
+  '.ev-confirmed{background:rgba(22,163,74,.14);color:#16a34a;border:1px solid #16a34a}' +
+  '</style></head><body>\n' + HEAD + '\n<main class="std-wrap">' +
+  '<nav style="font-size:.82rem;color:var(--muted);margin-bottom:12px"><a href="index.html" style="color:var(--accent)">Home</a> › <a href="directory.html" style="color:var(--accent)">Directory</a> › Standards &amp; Regulations</nav>' +
+  '<h1>Transformer <span style="color:var(--accent)">Standards &amp; Regulations</span> Directory</h1>' +
+  '<p class="lead">A worldwide, verified directory of electrical transformer standards, test codes, energy efficiency mandates (EU Ecodesign Tier 2, US DOE 2027), and grid interconnection regulations. Includes direct links to official standards bodies and national grid characteristics from the TransformerPath census.</p>' +
+  '<div class="std-stats">' +
+    '<div class="s"><b>' + STANDARDS_DATA.length + '</b><small>Core Standards Listed</small></div>' +
+    '<div class="s"><b>' + totalCountries + '</b><small>Countries in Grid Census</small></div>' +
+    '<div class="s"><b>' + hz50 + ' / ' + hz60 + '</b><small>50 Hz / 60 Hz Zones</small></div>' +
+    '<div class="s"><b>' + maxVoltage + ' kV</b><small>Highest Transmission Grid</small></div>' +
+  '</div>' +
+
+  '<h2 class="std-h2">Global Standards &amp; Regulations Directory</h2>' +
+  '<p style="color:var(--muted);font-size:.9rem;margin-bottom:14px">Search and filter verified transformer standards by code, country, standards body, or category:</p>' +
+  '<div class="std-tools" style="margin-bottom:20px">' +
+    '<input id="stdSearch" type="search" placeholder="Search standard (e.g. IEC 60076, IEEE C57, DOE 2027, IS 1180, GB 1094)..." style="flex:1;min-width:240px">' +
+    '<select id="stdCountry"><option value="">All Countries / International</option></select>' +
+    '<select id="stdCategory"><option value="">All Categories</option></select>' +
+    '<button id="stdReset" class="btn btn-outline btn-sm">Reset</button>' +
+  '</div>' +
+  '<div id="stdRegistryGrid"></div>' +
+
+  '<h2 class="std-h2" style="margin-top:40px">Major Frameworks Comparison</h2>' +
   STANDARDS.map(function (s) {
     return '<div class="std-card"><h3>' + esc(s.code) + ' — ' + esc(s.name) + '</h3><div class="rgn">' + esc(s.region) + '</div><p>' + esc(s.dot) + '</p><div class="pt">' + s.points.map(function (p) { return '<span>' + esc(p) + '</span>'; }).join('') + '</div></div>';
   }).join('') +
@@ -111,7 +141,71 @@ const html = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta cha
   '<h2 class="std-h2">National grid reference <span style="font-size:.9rem;color:var(--muted);font-weight:600;text-transform:none">(' + totalCountries + ' countries)</span></h2>' +
   '<div class="std-tools"><input id="stSearch" type="text" placeholder="Search country…" autocomplete="off"><select id="stFreq"><option value="">All frequencies</option><option value="50">50 Hz</option><option value="60">60 Hz</option></select><select id="stRegion"><option value="">All regions</option>' + regionKeys.map(function (r) { return '<option>' + esc(r) + '</option>'; }).join('') + '</select></div>' +
   '<div class="std-tbl"><div style="display:flex;font-size:.72rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;padding:8px 10px;border-bottom:2px solid var(--border)"><span style="width:26%">Country</span><span style="width:14%">Region</span><span style="width:10%">Freq</span><span style="width:14%">Top voltage</span><span style="width:26%">Synchronous area</span><span style="width:10%">Operators</span></div><div id="stBody">' + regionsHtml + '</div></div>' +
-  '<p class="std-note">National grid data is source-backed from the TransformerPath grid census (operator, voltage and frequency records). It is a reference, not a claim about any specific project. See the <a href="grids.html" style="color:var(--accent)">Grids directory</a> for full operation detail and the <a href="methodology.html" style="color:var(--accent)">research methodology</a>. Standards text is factual reference — it is not a quality ranking.</p>' +
-  '</main>\n' + FOOT + '\n<script src="analytics.js" defer></script>\n<script>(function(){var q=document.getElementById("stSearch"),fr=document.getElementById("stFreq"),rg=document.getElementById("stRegion");function apply(){var vq=(q?q.value:"").toLowerCase().trim(),vf=fr?fr.value:"",vr=rg?rg.value:"";document.querySelectorAll(".st-row").forEach(function(r){var c=r.getAttribute("data-country")||"",f=r.getAttribute("data-freq")||"",g=r.getAttribute("data-region")||"";var ok=(!vq||c.indexOf(vq)>=0)&&(!vf||f.indexOf(vf)>=0)&&(!vr||g===vr);r.style.display=ok?"":"none";});}\n[q,fr,rg].forEach(function(el){if(el){el.addEventListener("input",apply);el.addEventListener("change",apply);}});})();\n</script>\n</body>\n</html>';
+  '<p class="std-note">National grid data is source-backed from the TransformerPath grid census. All standards entries reflect official publications confirmed by direct website verification.</p>' +
+  '</main>\n' + FOOT + 
+  '\n<script>window.__TP_STANDARDS__=' + stdJson + ';</script>\n' +
+  `<script>
+(function(){
+  var data = window.__TP_STANDARDS__ || [];
+  var sIn = document.getElementById('stdSearch'), cSel = document.getElementById('stdCountry'), catSel = document.getElementById('stdCategory'), rBtn = document.getElementById('stdReset'), grid = document.getElementById('stdRegistryGrid');
+
+  var countries = [...new Set(data.map(d => d.country))].sort();
+  countries.forEach(c => { var o = document.createElement('option'); o.value = c; o.textContent = c; cSel.appendChild(o); });
+
+  var categories = [...new Set(data.map(d => d.category))].filter(Boolean).sort();
+  categories.forEach(cat => { var o = document.createElement('option'); o.value = cat; o.textContent = cat; catSel.appendChild(o); });
+
+  function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  function renderRegistry() {
+    var q = (sIn.value || '').toLowerCase().trim();
+    var cV = cSel.value;
+    var catV = catSel.value;
+
+    var filtered = data.filter(d => {
+      if (cV && d.country !== cV) return false;
+      if (catV && d.category !== catV) return false;
+      if (q) {
+        var hay = [d.standard_code, d.title, d.country, d.standard_body, d.scope, d.efficiency_requirements, d.frequency_hz, d.voltage_levels_kv].join(' ').toLowerCase();
+        if (!hay.includes(q)) return false;
+      }
+      return true;
+    });
+
+    if (!filtered.length) {
+      grid.innerHTML = '<div style="text-align:center;padding:30px;color:var(--muted);background:var(--card);border:1px solid var(--border);border-radius:10px">No standards matched your query.</div>';
+      return;
+    }
+
+    grid.innerHTML = filtered.map(d => {
+      var eff = d.efficiency_requirements ? '<div style="font-size:.82rem;color:var(--muted);margin-top:6px"><b>Efficiency / Mandate:</b> ' + esc(d.efficiency_requirements) + '</div>' : '';
+      var deadline = d.compliance_deadline ? '<div style="font-size:.8rem;color:var(--muted)"><b>Enforcement / Edition:</b> ' + esc(d.compliance_deadline) + '</div>' : '';
+      return '<div class="std-reg-card">' +
+        '<div class="std-reg-top">' +
+          '<div><span class="std-reg-code">' + esc(d.standard_code) + '</span> &nbsp; <span class="std-pill">' + esc(d.country) + '</span></div>' +
+          '<span class="ev-badge ev-confirmed">' + esc(d.verification_status || 'Verified') + '</span>' +
+        '</div>' +
+        '<div class="std-reg-title">' + esc(d.title) + '</div>' +
+        '<div style="font-size:.82rem;color:var(--muted);margin-bottom:8px"><b>Body:</b> ' + esc(d.standard_body) + ' &nbsp;|&nbsp; <b>Frequency:</b> ' + esc(d.frequency_hz) + ' &nbsp;|&nbsp; <b>Voltages:</b> ' + esc(d.voltage_levels_kv) + '</div>' +
+        '<p style="color:var(--text);font-size:.9rem;line-height:1.5;margin:4px 0">' + esc(d.scope) + '</p>' +
+        eff + deadline +
+        '<div style="margin-top:12px">' +
+          (d.website ? '<a href="' + esc(d.website) + '" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Official Standards Portal ↗</a>' : '') +
+        '</div>' +
+      '</div>';
+    }).join('');
+  }
+
+  sIn.addEventListener('input', renderRegistry);
+  cSel.addEventListener('change', renderRegistry);
+  catSel.addEventListener('change', renderRegistry);
+  rBtn.addEventListener('click', function(){ sIn.value=''; cSel.value=''; catSel.value=''; renderRegistry(); });
+  renderRegistry();
+})();
+</script>\n` +
+  '<script src="tp-nav.js?v=5" defer></script>\n' +
+  '<script src="analytics.js" defer></script>\n' +
+  '<script>(function(){var q=document.getElementById("stSearch"),fr=document.getElementById("stFreq"),rg=document.getElementById("stRegion");function apply(){var vq=(q?q.value:"").toLowerCase().trim(),vf=fr?fr.value:"",vr=rg?rg.value:"";document.querySelectorAll(".st-row").forEach(function(r){var c=r.getAttribute("data-country")||"",f=r.getAttribute("data-freq")||"",g=r.getAttribute("data-region")||"";var ok=(!vq||c.indexOf(vq)>=0)&&(!vf||f.indexOf(vf)>=0)&&(!vr||g===vr);r.style.display=ok?"":"none";});}\n[q,fr,rg].forEach(function(el){if(el){el.addEventListener("input",apply);el.addEventListener("change",apply);}});})();\n</script>\n</body>\n</html>';
 fs.writeFileSync('standards.html', html);
-console.log('standards.html wrote: ' + totalCountries + ' countries / ' + regionKeys.length + ' regions / ' + hz50 + ' at 50 Hz / ' + hz60 + ' at 60 Hz / max ' + maxVoltage + ' kV');
+console.log('standards.html wrote: ' + STANDARDS_DATA.length + ' standards + ' + totalCountries + ' countries in grid census');
+

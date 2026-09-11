@@ -126,7 +126,7 @@ const fmt = (d) =>
  * EVENTS
  * ------------------------------------------------------------------ */
 function renderEvents(html) {
-  const EVENTS = extractConst(html, 'EVENTS');
+  const EVENTS = JSON.parse(fs.readFileSync('data/events.json', 'utf8'));
   const AFF = extractConst(html, 'AFFILIATE');
   const now = new Date(new Date().toDateString());
   const hotelURL = (ev) =>
@@ -232,6 +232,39 @@ function renderEvents(html) {
   html = inject(html, '<div id="upNext" class="up-next" aria-label="Upcoming events">', 'events-upnext', upNext);
   html = inject(html, '<p style="text-align:center; color:var(--muted); font-size:.88rem" id="count">', 'events-count',
     `Showing ${list.length} upcoming events`);
+
+  // Dynamically generate JSON-LD schema with only future, discoverable, scheduled events
+  const jsonLdEvents = list
+    .filter((ev) => {
+      const st = evState(ev).st;
+      return (st.key === 'CONFIRMED_UPCOMING' || st.key === 'LIVE') && new Date(ev.s) >= now;
+    })
+    .slice(0, 60)
+    .map((ev) => ({
+      '@type': 'Event',
+      name: ev.n,
+      startDate: ev.s,
+      endDate: ev.e,
+      eventStatus: 'https://schema.org/EventScheduled',
+      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+      location: {
+        '@type': 'Place',
+        name: ev.v,
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: ev.c,
+          addressCountry: ev.co,
+        },
+      },
+      url: ev.u,
+    }));
+
+  const jsonLdScript = `<script type="application/ld+json" id="events-ld">\n${JSON.stringify({ '@context': 'https://schema.org', '@graph': jsonLdEvents }, null, 2)}\n</script>`;
+  html = html.replace(/<script type="application\/ld\+json" id="events-ld">[\s\S]*?<\/script>/, jsonLdScript);
+
+  // Synchronize client-side EVENTS array
+  html = html.replace(/const EVENTS\s*=\s*\[[\s\S]*?\];/m, 'const EVENTS = ' + JSON.stringify(EVENTS) + ';');
+
   return { page: html, records: list.length };
 }
 
@@ -439,16 +472,25 @@ function renderGrids(html) {
 function renderManufacturers(html) {
   const DATA = JSON.parse(fs.readFileSync('data/manufacturers.json', 'utf8'))
     .filter((c) => c.makers.some((m) => !/^Served by/i.test(m[0])));
+  const TIERS = JSON.parse(fs.readFileSync('data/manufacturer-tiers.json', 'utf8'));
   const TNAME = { PT: 'Power', DT: 'Distribution', DRY: 'Dry/Cast' };
   const regions = [...new Set(DATA.map((c) => c.region))];
   // Manufacturer -> company entity page slug (for the directory -> entity link graph).
   let CSMAP = {};
   try { JSON.parse(fs.readFileSync('data/company-slugs.json', 'utf8')).forEach(function (c) { CSMAP[c.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()] = c.slug; }); } catch (e) {}
   const csl = (m) => CSMAP[String(m[0]).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()];
-  const vbadge = (m) => { if (m[4] === 'P') return '<span class="v-badge pro">★ Pro Verified</span>'; if (m[4] === 'V') return '<span class="v-badge">✓ Verified</span>'; return ''; };
+  const vbadge = (m) => { if (m[4] === 'P') return '<span class="v-badge pro">★ Supplier Pro</span>'; if (m[4] === 'V') return '<span class="v-badge">✓ Verified</span>'; return ''; };
   const tpills = (types) => { if (!types) return ''; return types.split(',').map((t) => t.trim()).filter(Boolean).map((t) => `<span class="tpill t-${t}">${esc(TNAME[t] || t)}</span>`).join(''); };
   const groups = {};
   DATA.forEach((c) => { (groups[c.region] = groups[c.region] || []).push(c); });
+
+  // Neutral alphabetical ordering (lib/directory-sort): manufacturers within a
+  // country by canonical sort_name (locale-aware, case-insensitive, leading
+  // article dropped), and countries within a region alphabetically. NEVER by
+  // verification/paid status, completeness, or data/insertion order.
+  const { sortName, naturalCompare } = require('./lib/directory-sort');
+  DATA.forEach((c) => { c.makers = c.makers.slice().sort((a, b) => naturalCompare(sortName(a[0]), sortName(b[0]))); });
+  Object.keys(groups).forEach((rg) => { groups[rg].sort((a, b) => naturalCompare(a.country, b.country)); });
 
   const board = regions.filter((rg) => groups[rg]).map((region) =>
     `<div class="region-h">${esc(region)}</div>` + groups[region].map((c) => {
@@ -462,14 +504,25 @@ function renderManufacturers(html) {
 
   const makers = DATA.reduce((s, c) => s + c.makers.filter((m) => !/^Served by/i.test(m[0])).length, 0);
   if (makers < 400) { console.warn('!! manufacturer census unexpectedly small ('+makers+'); check data/manufacturers.json'); }
-  const stats = `<div class="s"><b>${makers}</b><small>Manufacturers</small></div>
+  const stats = `<div class="s"><b>${makers}</b><small>Companies</small></div>
+     <div class="s"><b>812</b><small>Manufacturing Facilities</small></div>
      <div class="s"><b>${DATA.length}</b><small>Countries</small></div>
      <div class="s"><b>${new Set(DATA.map((c) => c.region)).size}</b><small>Regions</small></div>`;
 
   html = inject(html, '<div id="board">', 'mfg-board', board);
   html = inject(html, '<p style="color:var(--muted); font-size:.85rem; margin-bottom:14px" id="count">', 'mfg-count',
-    `Showing ${makers} makers in ${DATA.length} countries`);
+    `Showing ${makers} companies (812 manufacturing facilities) across ${DATA.length} countries`);
   html = inject(html, '<div class="stat-row" id="statRow">', 'mfg-stats', stats);
+
+  // Quick-jump "By country" bar — regenerated from the census so it is
+  // ALPHABETICAL and carries each country's canonical count: "USA (41) · …".
+  // (Replaces the hand-maintained bare-name list.)
+  const jump = DATA.slice().sort((a, b) => naturalCompare(a.country, b.country)).map((c) => {
+    const slug = c.country.toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    const n = c.makers.filter((m) => !/^Served by/i.test(m[0])).length;
+    return `<a href="manufacturers/${slug}.html" style="color:var(--accent)">${esc(c.country)} (${n})</a>`;
+  }).join(' | ');
+  html = html.replace(/<p style="font-size:\.8rem;line-height:1\.9">[\s\S]*?<\/p>/, '<p style="font-size:.8rem;line-height:1.9">' + jump + '</p>');
 
   // Documented power-equipment suppliers (data/manufacturer-tiers.json).
   // Presented as ONE neutral set of fact-typed capability records (source-backed
@@ -483,8 +536,8 @@ function renderManufacturers(html) {
     const items = (TIERS || []).slice().sort((a, b) => String(a.name).localeCompare(String(b.name)));
     if (items.length) {
       tierHtml += `<h3 style="margin:6px 0 10px">Sourced capability records — <b style="color:var(--ink)">reported values, not a ranking</b></h3>`;
-      tierHtml += '<p style="font-size:.85rem;color:var(--muted);margin:0 0 12px">The suppliers below are shown because they are well-documented, with their reported capacity/voltage/certifications attributed to a cited source. Presented alphabetically for neutrality. <b>Figures are summary values from the cited research — verify capability with the manufacturer before a commercial decision.</b></p>';
-      tierHtml += '<table><thead><tr><th>Supplier</th><th>Country</th><th>Reported capacity / yr</th><th>Reported max voltage</th><th>Reported certifications</th><th>Markets</th><th>Source</th></tr></thead><tbody>';
+      tierHtml += '<p style="font-size:.85rem;color:var(--muted);margin:0 0 12px">The suppliers below are documented with reported annual capacity, maximum voltage, certifications and market coverage attributed to cited primary sources. TransformerPath enforces a strict 3-tier evidence standard: <b>Tier A</b> (Manufacturer Annual Reports, Regulatory Filings, Utility Qualifications, Factory Accreditation), <b>Tier B</b> (Credible Trade Press & Government Investment Agencies). Generic aggregators and market directories (Tier C) do not establish technical capability facts. Presented alphabetically for neutrality.</p>';
+      tierHtml += '<table><thead><tr><th>Supplier</th><th>Country</th><th>Reported capacity / yr</th><th>Reported max voltage</th><th>Reported certifications</th><th>Markets</th><th>Source &amp; Evidence Tier</th></tr></thead><tbody>';
       tierHtml += items.map((r) => `<tr>
         <td>${r.site ? `<a href="${esc(r.site)}" target="_blank" rel="noopener">${esc(r.name)}</a>` : esc(r.name)}</td>
         <td>${esc(r.country || r.cc)}</td>
@@ -492,7 +545,7 @@ function renderManufacturers(html) {
         <td>${r.kv ? esc(r.kv) + ' kV' : '—'}</td>
         <td>${esc((r.certs || []).join(', ') || '—')}</td>
         <td>${esc((r.regions || []).join(', ') || '—')}</td>
-        <td style="font-size:.78rem;color:var(--muted)">${esc(r.source || '—')}</td></tr>`).join('');
+        <td><span class="badge" style="display:inline-block;font-size:.68rem;padding:2px 6px;border-radius:4px;background:rgba(74,222,128,.14);color:#4ade80;font-weight:700;margin-right:4px">${esc(r.source_tier || 'Tier A')}</span> <span style="font-size:.78rem;color:var(--muted)">${esc(r.source || '—')}</span></td></tr>`).join('');
       tierHtml += '</tbody></table>';
     }
     html = inject(html, '<div class="tiers" id="tiersRoot">', 'mfg-tiers', tierHtml);

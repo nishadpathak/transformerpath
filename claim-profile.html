@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claim Company Profile — TransformerPath</title>
+<meta name="description" content="Claim and verify your transformer manufacturing, component or service company profile on TransformerPath. Confirm technical capabilities, factories, certifications and manage RFQ routing.">
+<link rel="canonical" href="https://transformerpath.com/claim-profile.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TransformerPath">
+<meta property="og:title" content="Claim Company Profile — TransformerPath">
+<meta property="og:description" content="Claim and verify your transformer manufacturing profile on TransformerPath.">
+<meta property="og:url" content="https://transformerpath.com/claim-profile.html">
+<meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Claim Company Profile — TransformerPath">
+<meta name="twitter:description" content="Claim and verify your transformer manufacturing profile on TransformerPath.">
+<meta name="twitter:image" content="https://transformerpath.com/brand/og-image.png">
+<link rel="stylesheet" href="style.css?v=12">
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<style>
+.formwrap { max-width:680px; margin:0 auto 40px; }
+form label { display:block; margin:14px 0 4px; font-weight:600; font-size:.9rem; color:var(--ink); }
+form input[type="text"],form input[type="email"],form input[type="url"],form select,form textarea { width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:9px; background:var(--bg); color:var(--text); font-size:.92rem; }
+form textarea { min-height:90px; }
+form input:focus,form textarea:focus,form select:focus { outline:2px solid var(--accent); border-color:transparent; }
+.claim-note { font-size:.82rem; color:var(--muted); margin-top:4px; line-height:1.45; }
+.claim-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+@media (max-width:600px) { .claim-grid { grid-template-columns:1fr; } }
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
+<link rel="stylesheet" href="tp-nav.css?v=12">
+<link rel="stylesheet" href="tp-feedback.css?v=12">
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="30" height="30" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg>Transformer<span class="accent">Path</span></a>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
+    <nav class="tpnav" id="mainNav" aria-label="Primary">
+      <a href="intel.html">Intel</a>
+      <a href="manufacturers.html">Manufacturers</a>
+      <a href="directory.html">Directory</a>
+      <a href="projects.html">Projects</a>
+      <a href="tenders.html">Tenders</a>
+      <a href="grids.html" class="tpnav-opt">Grids</a>
+      <a href="events.html">Events</a>
+      <a href="learn.html">Learn</a>
+      <a href="rfq.html">RFQ</a>
+      <div class="tpnav-more">
+        <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
+        <div class="tpnav-more-panel" role="menu">
+          <a href="machinery.html" role="menuitem">Machinery</a>
+          <a href="laboratories.html" role="menuitem">Testing Labs</a>
+          <a href="components.html" role="menuitem">Components</a>
+          <a href="materials.html" role="menuitem">Materials</a>
+          <a href="compare.html" role="menuitem">Compare</a>
+          <a href="pricing.html" role="menuitem">Pricing</a>
+          <a href="verified.html" role="menuitem">Verification</a>
+        </div>
+      </div>
+      <span class="tpnav-utils">
+        <a href="search.html" title="Search" aria-label="Search">&#128269;</a>
+        <a href="workspace.html" data-tp-account>Account</a>
+        <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">&#127769;</button>
+      </span>
+    </nav>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
+    updateThemeIcon();
+    themeToggle?.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) { html.removeAttribute('data-theme'); localStorage.setItem('theme', 'light'); }
+      else { html.setAttribute('data-theme', 'dark'); localStorage.setItem('theme', 'dark'); }
+      updateThemeIcon();
+    });
+    function updateThemeIcon() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+    }
+  </script>
+</header>
+
+<section class="hero" style="padding:50px 0 36px">
+  <div class="container">
+    <h1 style="font-size:2.1rem">Claim Your <span>Company Profile</span></h1>
+    <p>Represent a transformer manufacturer, component supplier, or machine maker? Claim your listing to complete technical specifications, verify factory capabilities, and unlock direct RFQ leads.</p>
+  </div>
+</section>
+
+<section class="block">
+  <div class="container formwrap">
+    <div class="card" style="padding:28px 24px">
+      <p style="color:var(--muted);font-size:.9rem;line-height:1.6;margin:0 0 16px">
+        <b style="color:var(--text)">Integrity & Verification Standard.</b> TransformerPath strictly verifies every representative claim to maintain industry trust. Commercial status or payments never imply technical certification or endorsement. Profile updates and capability claims are held in moderation until verified by our research team.
+      </p>
+
+      <form name="claim-profile" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" id="claimForm" data-track-form="supplier_claim_submitted">
+        <input type="hidden" name="form-name" value="claim-profile">
+        <p hidden><label>Leave this empty: <input name="bot-field"></label></p>
+
+        <label for="fld_company">Company Profile to Claim *</label>
+        <input id="fld_company" type="text" name="company" required placeholder="e.g. Hitachi Energy, Voltamp Transformers, etc.">
+        <p class="claim-note">Specify the canonical entity name as listed in the TransformerPath directory.</p>
+
+        <div class="claim-grid">
+          <div>
+            <label for="fld_name">Your Full Name *</label>
+            <input id="fld_name" type="text" name="name" required placeholder="First and last name">
+          </div>
+          <div>
+            <label for="fld_position">Your Job Title / Position *</label>
+            <input id="fld_position" type="text" name="position" required placeholder="e.g. VP Sales, Plant Director, Marketing Head">
+          </div>
+        </div>
+
+        <div class="claim-grid">
+          <div>
+            <label for="fld_email">Business Email Address *</label>
+            <input id="fld_email" type="email" name="email" required placeholder="name@company.com">
+            <p class="claim-note">Must use official company domain (e.g. @hitachienergy.com). Generic webmail accounts require additional verification.</p>
+          </div>
+          <div>
+            <label for="fld_website">Official Company Website *</label>
+            <input id="fld_website" type="url" name="website" required placeholder="https://www.company.com">
+          </div>
+        </div>
+
+        <label for="fld_proof">Proof of Representation / Authorization *</label>
+        <textarea id="fld_proof" name="proof" required placeholder="Please provide your LinkedIn profile link, corporate email confirmation, corporate registration document link, or details verifying your authority to represent this company."></textarea>
+        <p class="claim-note">Used by our research team during moderation to confirm representative authenticity.</p>
+
+        <label for="fld_tier">Desired Profile Status</label>
+        <select id="fld_tier" name="tier">
+          <option value="CLAIMED_FREE">Claimed (Free) — Complete factory specs, receive buyer RFQ notifications</option>
+          <option value="VERIFIED">Verified ($499 / 12 months) — Verified badge, catalogue upload, lead routing & analytics</option>
+          <option value="PRO_VERIFIED">Pro Verified ($1,499 / 12 months) — Priority placement, enriched profile, full intelligence access</option>
+        </select>
+
+        <label for="fld_updates">Initial Profile Updates / Specifications to Complete</label>
+        <textarea id="fld_updates" name="updates" placeholder="List any factory locations, maximum verified voltage (kV), maximum MVA rating, ISO/IEC certifications, or test bay parameters to be added."></textarea>
+
+        <label style="display:flex;gap:10px;align-items:flex-start;font-size:.84rem;color:var(--muted);font-weight:400;margin:18px 0 12px">
+          <input type="checkbox" name="consent" required style="width:auto;margin-top:3px">
+          I certify that I am a duly authorized employee or representative of this organization, and understand that all technical claims are verified before publication.
+        </label>
+
+        <button class="btn btn-amber" type="submit" style="width:100%;padding:12px;font-size:.96rem;font-weight:700">Submit Profile Claim &rarr;</button>
+        <p style="text-align:center;color:var(--muted);font-size:.8rem;margin-top:12px">Our directory research team reviews claims within 1 business day. Profiles are never automatically transferred.</p>
+      </form>
+
+      <div id="claimThanks" style="display:none;text-align:center;padding:32px 16px">
+        <div style="font-size:3rem">&#9989;</div>
+        <h2 style="color:var(--ink);margin:8px 0">Profile Claim Received</h2>
+        <p style="color:var(--muted);max-width:480px;margin:0 auto 18px">Thank you. Your claim has been submitted to the TransformerPath moderation queue. We will verify your credentials against the corporate domain and confirm within 1 business day.</p>
+        <a href="directory.html" class="btn btn-amber" style="display:inline-block">Return to Directory &rarr;</a>
+      </div>
+
+      <script>
+      (function(){
+        try {
+          var c = new URLSearchParams(location.search).get('company');
+          if (c) {
+            var inp = document.getElementById('fld_company');
+            if (inp) inp.value = c.replace(/_/g, ' ');
+          }
+        } catch(e){}
+        var f = document.getElementById('claimForm');
+        if (!f) return;
+        f.addEventListener('submit', function(e){
+          e.preventDefault();
+          if (typeof f.checkValidity === 'function' && !f.checkValidity()){ f.reportValidity(); return; }
+          var body = new URLSearchParams(new FormData(f)).toString();
+          fetch('/', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:body}).then(done).catch(done);
+        });
+        function done(){
+          f.style.display = 'none';
+          var t = document.getElementById('claimThanks');
+          t.style.display = 'block';
+          t.scrollIntoView({behavior:'smooth', block:'center'});
+        }
+      })();
+      </script>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="cols"><div>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg>Transformer<span class="accent">Path</span></a>
+        <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data. Built for utilities, transformer manufacturers, component suppliers, EPCs, consultants and engineers.</p>
+      </div>
+      <div><h2>INTELLIGENCE</h2><a href="intel.html">Intel</a><a href="projects.html">Projects</a><a href="tenders.html">Tenders</a><a href="awards.html">Awards</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="utilities.html">Utilities</a><a href="archive.html">Intel Archive</a></div><div><h2>INDUSTRY</h2><a href="directory.html">Directory V2</a><a href="manufacturers.html">Manufacturers</a><a href="components.html">Components</a><a href="materials.html">Materials</a><a href="machinery.html">Machinery</a><a href="laboratories.html">Testing Labs</a><a href="compare.html">Compare</a><a href="rfq.html">RFQ Board</a></div><div><h2>ENGINEERING</h2><a href="tools.html">Tools</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Models</a><a href="test-report.html">Test Report</a><a href="knowledge.html">Knowledge</a><a href="standards.html">Standards</a><a href="software.html">Software Directory</a></div><div><h2>LEARN</h2><a href="learn.html">Learn</a><a href="masterclass.html">Masterclass</a><a href="books.html">Books</a><a href="case-studies.html">Case Studies</a><a href="engineer-track.html">Design Engineer Track</a></div><div><h2>BUSINESS</h2><a href="for-manufacturers.html">For Manufacturers</a><a href="claim-profile.html">Claim Profile</a><a href="verified.html">Verified Profiles</a><a href="sponsor.html">Sponsor</a><a href="webinars.html">Webinars</a><a href="events.html">Events</a><a href="jobs.html">Jobs</a><a href="pricing.html">Pricing</a></div><div><h2>ABOUT</h2><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="search.html">Search</a></div></div>
+    </div>
+    <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
+  </div>
+</footer>
+
+<script src="analytics.js?v=5" defer></script>
+<script src="tp-nav.js?v=5" defer></script>
+<script src="tp-freshness.js?v=5" defer></script>
+<script src="tp-feedback.js?v=5" defer></script>
+</body>
+</html>

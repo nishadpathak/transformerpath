@@ -92,6 +92,46 @@ function completeness(rec) {
   return n; // 0-10 research-coverage components, not a quality score
 }
 
+function evaluateCompleteness(rec) {
+  let score = 0;
+  const missing = [];
+
+  // 1. Identity & HQ (15 pts)
+  if (rec.name && rec.country) {
+    score += 10;
+    if (rec.headquarters) score += 5;
+    else missing.push('Headquarters address');
+  }
+
+  // 2. Official website (10 pts)
+  if (rec.website) score += 10;
+  else missing.push('Official corporate website');
+
+  // 3. Documented product types (15 pts)
+  if (rec.products && rec.products.length > 0) score += 15;
+  else missing.push('Classified transformer product types');
+
+  // 4. Technical specifications (20 pts)
+  if (rec.reported_voltage) score += 10;
+  else missing.push('Maximum voltage rating');
+  if (rec.reported_mva) score += 10;
+  else missing.push('Maximum unit MVA / rating');
+
+  // 5. Documented manufacturing facilities (15 pts)
+  if (rec.factories && rec.factories.length > 0) score += 15;
+  else missing.push('Manufacturing facility locations');
+
+  // 6. Standards & Certifications (15 pts)
+  if (rec.reported_certs && rec.reported_certs.length > 0) score += 15;
+  else missing.push('Standards compliance (IEC/IEEE) & ISO certifications');
+
+  // 7. Testing / Engineering references (10 pts)
+  if (rec.testing_capability || (rec.orders_projects && rec.orders_projects.length > 0)) score += 10;
+  else missing.push('Test bay specifications & utility references');
+
+  return { score, missing };
+}
+
 const out = [];
 Object.keys(censusByName).forEach((name) => {
   const variants = censusByName[name];
@@ -151,6 +191,22 @@ Object.keys(censusByName).forEach((name) => {
   }
   rec.manufacturing_is_likely = !!rec.website && rec.products.length > 0;
   rec.research_completeness = completeness(rec);
+  const compEval = evaluateCompleteness(rec);
+  rec.completeness_score = compEval.score;
+  rec.missing_fields = compEval.missing;
+
+  // Provenance & verification metadata
+  if (rec.company_reported) {
+    rec.provenance_type = 'MANUFACTURER_SUPPLIED';
+  } else if (rec.sources && rec.sources.capability_source && /official|filing|doe|government|iso/i.test(rec.sources.capability_source)) {
+    rec.provenance_type = 'OFFICIAL_SOURCE';
+  } else if (rec.sources && rec.sources.capability_source) {
+    rec.provenance_type = 'TRANSFORMERPATH_RESEARCHED';
+  } else {
+    rec.provenance_type = 'PUBLIC_SOURCE';
+  }
+  rec.last_verified = (rec.research_status === 'ACTIVE_CONFIRMED') ? '2026-08-28' : '2026-08-15';
+
   // Commercial status is a separate axis (always LISTED here; CLAIMED/VERIFIED
   // are set through the claim/verified workflow, never derived from research).
   rec.commercial_status = 'LISTED';

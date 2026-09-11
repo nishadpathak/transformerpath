@@ -1,0 +1,425 @@
+{
+  "$schema": "https://transformerpath.com/machinery.schema.json",
+  "generated": "2026-09-10",
+  "total_machinery_records": 12,
+  "categories": [
+    { "id": "MAC_CORE", "label": "Core Cutting & Processing Lines" },
+    { "id": "MAC_WINDING", "label": "Winding Machinery (HV, LV, Foil)" },
+    { "id": "MAC_DRYING", "label": "Vapour-Phase & Vacuum Drying Systems" },
+    { "id": "MAC_OIL_FILTRATION", "label": "Oil Purification & Filtration Plants" },
+    { "id": "MAC_FABRICATION", "label": "Tank, Fin & Radiator Manufacturing Lines" },
+    { "id": "MAC_INSULATION_CNC", "label": "CNC Pressboard & Insulation Processing" },
+    { "id": "MAC_TESTING", "label": "High-Voltage Test Bay Systems & Impulse Generators" }
+  ],
+  "machinery": [
+    {
+      "id": "mach:georg-tba-step-lap",
+      "name": "GEORG precisioncut TBA Step-Lap Line",
+      "category_id": "MAC_CORE",
+      "category": "Core Cutting & Processing Lines",
+      "manufacturer": "Heinrich Georg GmbH Maschinenfabrik",
+      "country": "Germany",
+      "city": "Kreuztal",
+      "website": "https://www.georg.com",
+      "machine_type": "CNC Cut-to-Length & Step-Lap Line",
+      "capacity_range": "Strip width up to 1,000 mm, strip thickness 0.18 - 0.35 mm",
+      "automation_level": "Fully Automated CNC",
+      "transformer_application": "Distribution & Power Transformers (up to 1,200 MVA)",
+      "specs": {
+        "max_strip_width_mm": 1000,
+        "cutting_speed_m_per_min": 250,
+        "hole_punching": "Integrated CNC hole punch",
+        "stacking_mode": "Automated e-stack robot or manual tilting table"
+      },
+      "key_features": [
+        "High-speed precision cut-to-length with minimal burr (<0.02 mm)",
+        "Integrated 7-step step-lap cutting for lowest core loss and noise",
+        "Automatic sheet thickness measurement and loop control"
+      ],
+      "installations_count": "500+ global transformer plants",
+      "service_regions": ["Europe", "North America", "Asia-Pacific", "Middle East", "Latin America"],
+      "last_verified": "2026-08-28",
+      "source": "Manufacturer technical catalog & CIGRE exhibition record",
+      "rfq_eligible": true
+    },
+    {
+      "id": "mach:tuboly-cut-to-length-ecc",
+      "name": "Tuboly-Astronic ECC Core Cutting Line",
+      "category_id": "MAC_CORE",
+      "category": "Core Cutting & Processing Lines",
+      "manufacturer": "Tuboly-Astronic AG",
+      "country": "Switzerland",
+      "city": "Dällikon",
+      "website": "https://www.tuboly-astronic.ch",
+      "machine_type": "Core Cutting & Stacking Line",
+      "capacity_range": "Strip width 40 - 450 mm (distribution) up to 850 mm (power)",
+      "automation_level": "Automated with robotic stacking",
+      "transformer_application": "Distribution & Medium Power Transformers",
+      "specs": {
+        "max_strip_width_mm": 850,
+        "cutting_accuracy_mm": 0.05,
+        "system_type": "Step-lap with tip-cutting"
+      },
+      "key_features": [
+        "High precision Swiss-engineered cutting heads",
+        "Compact footprint with automated log-stacking",
+        "Direct CAD link for core geometry import"
+      ],
+      "installations_count": "350+ machines operating worldwide",
+      "service_regions": ["Global"],
+      "last_verified": "2026-08-15",
+      "source": "Official vendor technical specification",
+      "rfq_eligible": true
+    },
+    {
+      "id": "mach:tuboly-foil-winding-fmt",
+      "name": "Tuboly-Astronic FMT Foil Winding Machine",
+      "category_id": "MAC_WINDING",
+      "category": "Winding Machinery (HV, LV, Foil)",
+      "manufacturer": "Tuboly-Astronic AG",
+      "country": "Switzerland",
+      "city": "Dällikon",
+      "website": "https://www.tuboly-astronic.ch",
+      "machine_type": "LV Foil Winding Machine (Aluminium & Copper)",
+      "capacity_range": "Foil width up to 1,600 mm, strip thickness 0.2 - 3.0 mm",
+      "automation_level": "Semi-automatic CNC with auto-welding",
+      "transformer_application": "Distribution & Dry-Type Cast Resin Transformers",
+      "specs": {
+        "max_foil_width_mm": 1600,
+        "foil_materials": "Copper, Aluminium",
+        "insulation_layers": "Double decoiler for interlayer film/paper",
+        "welding": "Cold-pressure or TIG busbar welding"
+      },
+      "key_features": [
+        "Edge-guiding ultrasonic tracking system for zero edge burr offset",
+        "Constant foil tension control across entire winding cycle",
+        "High-precision busbar lead welding station"
+      ],
+      "installations_count": "400+ installed units",
+      "service_regions": ["Europe", "North America", "Middle East", "India", "East Asia"],
+      "last_verified": "2026-08-19",
+      "source": "Manufacturer documentation",
+      "rfq_eligible": true
+    },
+    {
+      "id": "mach:georg-slitting-sl",
+      "name": "GEORG precisioncut High-Precision Slitting Line",
+      "category_id": "MAC_CORE",
+      "category": "Core Cutting & Processing Lines",
+      "manufacturer": "Heinrich Georg GmbH Maschinenfabrik",
+      "country": "Germany",
+      "city": "Kreuztal",
+      "website": "https://www.georg.com",
+      "machine_type": "CRGO Longitudinal Slitting Line",
+      "capacity_range": "Master coil width up to 1,250 mm, thickness 0.18 - 0.35 mm",
+      "automation_level": "CNC with automated knife setup",
+      "transformer_application": "CRGO Service Centres & Large Transformer Core Shops",
+      "specs": {
+        "max_coil_weight_t": 10,
+        "line_speed_m_min": 300,
+        "slitting_tolerance_mm": 0.01
+      },
+      "key_features": [
+        "CNC high-rigidity slitting shear arbor",
+        "Minimal burr formation (< 0.01 mm) preserving CRGO magnetic properties",
+        "Low-tension recoil system to prevent edge distortion"
+      ],
+      "installations_count": "150+ operational lines worldwide",
+      "service_regions": ["Global"],
+      "last_verified": "2026-07-22",
+      "source": "Manufacturer documentation",
+      "rfq_eligible": true
+    },
+    {
+      "id": "mach:hedrich-vapour-phase-vpd",
+      "name": "HEDRICH Vapour-Phase Drying System (VPD)",
+      "category_id": "MAC_DRYING",
+      "category": "Vapour-Phase & Vacuum Drying Systems",
+      "manufacturer": "Hedrich Group",
+      "country": "Germany",
+      "city": "Ehringshausen-Katzenfurt",
+      "website": "https://www.hedrich.com",
+      "machine_type": "Kerosene Vapour-Phase Drying Autoclave",
+      "capacity_range": "Autoclave volumes up to 800 m³, active parts up to 500 tonnes",
+      "automation_level": "Fully Automated SCADA / Process Controlled",
+      "transformer_application": "Large Power Transformers (LPT) & EHV/UHV Transformers",
+      "specs": {
+        "heating_medium": "Hydrocarbon (kerosene) solvent vapour",
+        "operating_vacuum_mbar": "< 0.1 mbar",
+        "cycle_time_reduction": "40 - 60% compared to conventional hot air drying",
+        "residual_moisture_target": "< 0.5% in insulation pressboard"
+      },
+      "key_features": [
+        "Deep thermal penetration into thick pressboard cylinders and winding assemblies",
+        "Solvent recovery system with >99% kerosene reclamation efficiency",
+        "Real-time residual moisture and desorption monitoring"
+      ],
+      "installations_count": "300+ systems in tier-1 transformer factories globally",
+      "service_regions": ["Global"],
+      "last_verified": "2026-08-30",
+      "source": "Hedrich technical whitepaper & plant specifications",
+      "rfq_eligible": true
+    },
+    {
+      "id": "mach:micafluid-oil-purification-vop",
+      "name": "MICAFLUID VOP Mobile Transformer Oil Purification Plant",
+      "category_id": "MAC_OIL_FILTRATION",
+      "category": "Oil Purification & Filtration Plants",
+      "manufacturer": "Micafluid AG",
+      "country": "Switzerland",
+      "city": "Schlieren / Zurich",
+      "website": "https://www.micafluid.ch",
+      "machine_type": "High-Vacuum Oil Degassing & Filtration Plant",
+      "capacity_range": "Flow rates from 1,000 L/h to 15,000 L/h",
+      "automation_level": "PLC Controlled with remote telemetry",
+      "transformer_application": "Factory Oil Filling & On-Site Grid Transformer Commissioning",
+      "specs": {
+        "operating_vacuum": "< 0.5 mbar (two-stage vacuum pump with Roots blower)",
+        "dielectric_strength_after_treatment": "> 75 kV (IEC 60156)",
+        "water_content_reduction": "< 3 ppm",
+        "gas_content_reduction": "< 0.1% by volume"
+      },
+      "key_features": [
+        "Advanced vacuum column with patented dispersion system",
+        "Particulate filtration down to 0.5 micron (micro-glass filters)",
+        "Weatherproof containerized or trailer configuration for substation deployment"
+      ],
+      "installations_count": "1,200+ plants supplied in 80+ countries",
+      "service_regions": ["Global"],
+      "last_verified": "2026-08-14",
+      "source": "Manufacturer catalog and operational certificates",
+      "rfq_eligible": true
+    },
+    {
+      "id": "mach:haefely-impulse-test-sg",
+      "name": "HAEFELY SG Series Lightning & Switching Impulse Generator",
+      "category_id": "MAC_TESTING",
+      "category": "High-Voltage Test Bay Systems & Impulse Generators",
+      "manufacturer": "Haefely AG (Hubbell Inc.)",
+      "country": "Switzerland",
+      "city": "Basel",
+      "website": "https://www.haefely.com",
+      "machine_type": "Marx High-Voltage Impulse Generator",
+      "capacity_range": "Voltages up to 3,200 kV, energy ratings up to 320 kJ",
+      "automation_level": "Digital Control via Haefely DIAS Digital Impulse Analyzer",
+      "transformer_application": "Factory Routine, Type & Special Impulse Testing on Power Transformers",
+      "specs": {
+        "max_voltage_kv": 3200,
+        "waveforms": "Standard lightning impulse (1.2/50 μs), switching impulse (250/2500 μs), chopped waves",
+        "standards": "IEC 60076-3, IEC 60060-1, IEEE C57.12.90"
+      },
+      "key_features": [
+        "Automatic sphere gap adjustment and resistor selection",
+        "Integrated chopping gap for front and tail chopped impulse waves",
+        "Direct optical link to digital impulse analysis station with fault detection algorithms"
+      ],
+      "installations_count": "800+ test bays worldwide",
+      "service_regions": ["Global"],
+      "last_verified": "2026-08-25",
+      "source": "Haefely technical manual and laboratory references",
+      "rfq_eligible": true
+    },
+    {
+      "id": "mach:haefely-tms-loss-measuring",
+      "name": "HAEFELY TMS Transformer Loss Measuring System",
+      "category_id": "MAC_TESTING",
+      "category": "High-Voltage Test Bay Systems & Impulse Generators",
+      "manufacturer": "Haefely AG (Hubbell Inc.)",
+      "country": "Switzerland",
+      "city": "Basel",
+      "website": "https://www.haefely.com",
+      "machine_type": "High-Precision No-Load & Load Loss Measuring System",
+      "capacity_range": "Test voltages up to 100 kV, currents up to 2,000 A (expandable with CT/PT)",
+      "automation_level": "Fully Automated Loss Data Acquisition",
+      "transformer_application": "Power & Distribution Transformer Factory Routine & Acceptance Testing",
+      "specs": {
+        "power_factor_range": "cos φ down to 0.01 at rated accuracy",
+        "overall_uncertainty": "< 1% at low power factors (crucial for loss evaluation capitalization)",
+        "compliance": "IEC 60076-1, IEEE C57.12.90"
+      },
+      "key_features": [
+        "Unmatched measurement accuracy under low-power-factor conditions (core & copper loss)",
+        "Automated temperature correction to 75°C / 85°C standard reference temperatures",
+        "Automated report generation compliant with international utility standards"
+      ],
+      "installations_count": "450+ transformer manufacturer test bays",
+      "service_regions": ["Global"],
+      "last_verified": "2026-08-20",
+      "source": "Haefely TMS system specification",
+      "rfq_eligible": true
+    },
+    {
+      "id": "mach:lae-corrugated-fin-line",
+      "name": "LAE LF Series Corrugated Fin Wall Production Line",
+      "category_id": "MAC_FABRICATION",
+      "category": "Tank, Fin & Radiator Manufacturing Lines",
+      "manufacturer": "LAE S.r.l.",
+      "country": "Italy",
+      "city": "Lugo (Ravenna)",
+      "website": "https://www.lae-srl.com",
+      "machine_type": "Corrugated Fin Forming & Spot Welding Line",
+      "capacity_range": "Fin height 50 - 400 mm, sheet width 400 - 1,600 mm, thickness 1.0 - 1.5 mm",
+      "automation_level": "CNC Fully Automated Line (Hydraulic or Servo-Electric)",
+      "transformer_application": "Distribution Transformer Corrugated Tanks (Hermetically Sealed)",
+      "specs": {
+        "max_fin_height_mm": 400,
+        "pitch_mm": "40 - 80 mm variable",
+        "welding_speed": "Automatic robotic seam welding of fin tips"
+      },
+      "key_features": [
+        "Simultaneous folding and embossing for increased heat-dissipation stiffness",
+        "Automated spot and seam welding stations with zero oil leakage tolerances",
+        "Servo-driven folding motion for high cycle speed and energy efficiency"
+      ],
+      "installations_count": "200+ production lines worldwide",
+      "service_regions": ["Europe", "Middle East", "Americas", "Asia"],
+      "last_verified": "2026-08-01",
+      "source": "LAE corporate machinery catalog",
+      "rfq_eligible": true
+    },
+    {
+      "id": "mach:lae-vertical-winding-tov",
+      "name": "LAE TOV Series Vertical Winding Machine",
+      "category_id": "MAC_WINDING",
+      "category": "Winding Machinery (HV, LV, Foil)",
+      "manufacturer": "LAE S.r.l.",
+      "country": "Italy",
+      "city": "Lugo (Ravenna)",
+      "website": "https://www.lae-srl.com",
+      "machine_type": "Vertical Winding Machine for Heavy Windings",
+      "capacity_range": "Max coil weight up to 25 tonnes, diameter up to 3,000 mm, height up to 4,000 mm",
+      "automation_level": "CNC with variable torque and tension control",
+      "transformer_application": "Large Power Transformers (HV Disc & Helical Windings)",
+      "specs": {
+        "max_torque_nm": 40000,
+        "max_faceplate_diameter_mm": 2500,
+        "conductor_handling": "CTC and multiple transposed conductor guides"
+      },
+      "key_features": [
+        "Hydraulic lifting work platform synchronized with coil height advancement",
+        "Pneumatic clamping and pre-tensioning units for tight winding packing",
+        "Eliminates coil sag during heavy power winding fabrication"
+      ],
+      "installations_count": "120+ power transformer plants",
+      "service_regions": ["Global"],
+      "last_verified": "2026-07-28",
+      "source": "LAE technical equipment index",
+      "rfq_eligible": true
+    },
+    {
+      "id": "mach:weidmann-cnc-insulation-machining",
+      "name": "Weidmann Component Machining CNC Center",
+      "category_id": "MAC_INSULATION_CNC",
+      "category": "CNC Pressboard & Insulation Processing",
+      "manufacturer": "Weidmann Electrical Technology",
+      "country": "Switzerland",
+      "city": "Rapperswil-Jona",
+      "website": "https://www.weidmann-electrical.com",
+      "machine_type": "5-Axis CNC Milling & Cutting Centre for Transformerboard",
+      "capacity_range": "Machining envelope up to 4,000 mm x 2,500 mm x 800 mm",
+      "automation_level": "Full 5-Axis CNC with dust extraction",
+      "transformer_application": "Pressboard Cylinders, Angle Rings, Spacers & Winding Support Blocks",
+      "specs": {
+        "spindle_speed_rpm": 24000,
+        "dust_extraction": "Explosion-proof ATEX certified paper/wood dust extractor",
+        "vacuum_clamping": "High-power grid vacuum table"
+      },
+      "key_features": [
+        "Clean, burr-free chamfering and bevelling of electrical grade pressboard",
+        "High-precision dovetail slot cutting for winding spacer strips",
+        "Maintains dielectric cleanliness standards required for EHV insulation kits"
+      ],
+      "installations_count": "Proprietary & licensed equipment in global insulation facilities",
+      "service_regions": ["Global"],
+      "last_verified": "2026-08-11",
+      "source": "Weidmann process engineering specifications",
+      "rfq_eligible": true
+    },
+    {
+      "id": "mach:phenix-resonance-test-system",
+      "name": "Phenix Variable Frequency Resonant Test System (RTS)",
+      "category_id": "MAC_TESTING",
+      "category": "High-Voltage Test Bay Systems & Impulse Generators",
+      "manufacturer": "Phenix Technologies",
+      "country": "USA",
+      "city": "Accident, Maryland",
+      "website": "https://www.phenixtech.com",
+      "machine_type": "Variable Frequency Resonant HV AC Test System",
+      "capacity_range": "Test voltages up to 800 kV, reactive power up to 10 MVA",
+      "automation_level": "PLC with digital waveform analysis",
+      "transformer_application": "High-Voltage Factory Applied AC & Induced Overvoltage Testing",
+      "specs": {
+        "frequency_range_hz": "20 - 300 Hz",
+        "pd_background_level": "< 2 pC at full test voltage",
+        "input_power": "Low main utility demand due to resonant Q-factor multiplication"
+      },
+      "key_features": [
+        "Ultra-low partial discharge noise level (<2 pC) enabling sensitive PD diagnostics",
+        "Lightweight modular reactor design suitable for factory test bays and on-site testing",
+        "Fully automated tuning to resonance and dwell timing"
+      ],
+      "installations_count": "300+ systems in North America, Europe and Asia",
+      "service_regions": ["Americas", "Europe", "Asia-Pacific", "Middle East"],
+      "last_verified": "2026-08-04",
+      "source": "Phenix Technologies product catalog",
+      "rfq_eligible": true
+    },
+    {
+      "id": "mach:de-angeli-ctc-line",
+      "name": "De Angeli CTC Transposition & Paper Lapping Line",
+      "category_id": "MAC_WINDING",
+      "category": "Winding Machinery (HV, LV, Foil)",
+      "manufacturer": "De Angeli Prodotti S.r.l.",
+      "country": "Italy",
+      "city": "Bagnoli di Sopra (Padua)",
+      "website": "https://www.deangeliprodotti.com",
+      "machine_type": "Continuously Transposed Conductor (CTC) Transposition & Paper Covering Line",
+      "capacity_range": "Number of strands 5 to 73, strip width 3 - 12 mm, thickness 1.0 - 3.5 mm",
+      "automation_level": "Fully Automated Multi-Axis Synchronized Line",
+      "transformer_application": "Power Transformer Windings & EHV Shunt Reactors",
+      "specs": {
+        "transposition_speed": "Up to 120 transpositions/min",
+        "lapping_heads": "Multi-head concentric paper wrapping",
+        "conductor_types": "Copper enamelled strips, epoxy bonded or bare"
+      },
+      "key_features": [
+        "Zero-scraping transposition mechanism preserving delicate enamel coating",
+        "Constant-tension concentric paper tapping heads with broken-tape detector",
+        "Online dimensional laser monitoring of finished cable bundle"
+      ],
+      "installations_count": "80+ global wire and transformer plants",
+      "service_regions": ["Europe", "Americas", "Asia"],
+      "last_verified": "2026-08-18",
+      "source": "Manufacturer technical catalog",
+      "rfq_eligible": true
+    },
+    {
+      "id": "mach:menk-radiator-line",
+      "name": "Menk Automated Transformer Panel Radiator Line",
+      "category_id": "MAC_FABRICATION",
+      "category": "Tank, Fin & Radiator Manufacturing Lines",
+      "manufacturer": "Menk Apparatebau GmbH",
+      "country": "Germany",
+      "city": "Bad Marienberg",
+      "website": "https://www.menk-apparatebau.de",
+      "machine_type": "Automated Transformer Panel Radiator Production Line",
+      "capacity_range": "Radiator element width 300 - 520 mm, length up to 4,000 mm",
+      "automation_level": "Automated roll forming and robotic seam welding",
+      "transformer_application": "Cooling Systems (ONAN/ONAF/OFAF) for Distribution and Power Transformers",
+      "specs": {
+        "welding_technology": "Robotic resistance roll seam welding",
+        "pressure_testing": "In-line 2.0 bar hydrostatic leak testing"
+      },
+      "key_features": [
+        "Integrated embossing and oil header pipe joining",
+        "Zero leakage precision seam welding",
+        "Pre-treatment preparation for hot-dip galvanizing and C5-M marine epoxy coating"
+      ],
+      "installations_count": "100+ global radiator production facilities",
+      "service_regions": ["Europe", "North America", "Middle East", "Asia"],
+      "last_verified": "2026-08-12",
+      "source": "Menk technical documentation",
+      "rfq_eligible": true
+    }
+  ]
+}

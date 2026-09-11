@@ -80,6 +80,7 @@ const ROOT_CSS_RE = /\.css$/;
    build fails rather than deploying. Belt and braces. */
 const FORBIDDEN_PATTERNS = [
   /\.pdf$/i, /\.sql$/i, /\.xlsx?$/i, /\.docx?$/i, /\.md$/i, /\.py$/i,
+  /(^|\/)[^/]* \d{1,2}(\.[^./]+)?$/,   // conflict copies — backstop for the skip above
   /^_private\//, /^_docs\//, /^_partials\//, /^tests\//, /^supabase\//,
   /^functions\//, /^engine\//, /^archive\//, /^transformerpath-site\//,
   /^Transformer Equipments\//, /^Transformer Radiators\//,
@@ -89,6 +90,12 @@ const FORBIDDEN_PATTERNS = [
   /^asia_transformer_projects\.json$/, /^netlify\.toml$/, /^package(-lock)?\.json$/,
   /^stamp-intel\.js$/, /^bump-assets\.js$/, /^build_ssr\.js$/, /^build\.py$/,
 ];
+
+/* iCloud Drive / macOS conflict copies ("index 2.html", "usa 2/"). The site folder
+   lives in iCloud; concurrent writes on 10 Sept produced 83 of them, and one reached
+   dist/ as a stale page with the old navigation. They are never deployable content. */
+const CONFLICT_COPY = / \d{1,2}(\.[^./]+)?$/;
+const skippedConflicts = [];
 
 function rm(p) { try { fs.rmSync(p, { recursive: true, force: true }); } catch (e) {} }
 
@@ -103,6 +110,7 @@ function copyDir(dir) {
   let n = 0;
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
     if (e.name.startsWith('.')) continue;            // .DS_Store and friends
+    if (CONFLICT_COPY.test(e.name)) { skippedConflicts.push(path.join(dir, e.name)); continue; }
     const p = path.join(dir, e.name);
     if (e.isDirectory()) n += copyDir(p);
     else { copyFile(p, p); n++; }
@@ -118,6 +126,7 @@ let count = 0;
 
 // 1. Every served HTML page at the root.
 for (const f of fs.readdirSync('.')) {
+  if (CONFLICT_COPY.test(f)) { skippedConflicts.push(f); continue; }
   if (f.endsWith('.html')) { copyFile(f, f); count++; }
   else if (ROOT_CSS_RE.test(f)) { copyFile(f, f); count++; }
 }
@@ -157,6 +166,10 @@ const bytes = (function size(dir) {
   return t;
 })(DIST);
 
+if (skippedConflicts.length) {
+  console.warn('  ! skipped ' + skippedConflicts.length + ' iCloud conflict cop' + (skippedConflicts.length === 1 ? 'y' : 'ies') + ' — clean them out of the source folder:');
+  skippedConflicts.slice(0, 8).forEach((c) => console.warn('      ' + c));
+}
 console.log('dist/ assembled: ' + count + ' root/allowlisted entries, ' +
   (bytes / 1048576).toFixed(1) + ' MB total');
 
