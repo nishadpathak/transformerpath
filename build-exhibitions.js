@@ -85,6 +85,7 @@ function travelButtons(e, slug) {
   const end = dates[1] ? dates[1].replace(/-/g, '') : start;
   const cal = 'data:text/calendar;charset=utf-8,BEGIN%3AVCALENDAR%0D%0AVERSION%3A2.0%0D%0APRODID%3A-%2F%2FTransformerPath%2F%2FEvents%2F%2FEN%0D%0ACALSCALE%3AGREGORIAN%0D%0ABEGIN%3AVEVENT%0D%0AUID%3A' + (start || 'tbd') + '%40transformerpath.com%0D%0ADTSTAMP%3A20260901T000000Z%0D%0ADTSTART%3BVALUE%3DDATE%3A' + (start || '') + '%0D%0ADTEND%3BVALUE%3DDATE%3A' + (end || '') + '%0D%0ASUMMARY%3A' + encodeURIComponent(name) + '%0D%0ALOCATION%3A' + encodeURIComponent(loc) + '%0D%0AEND%3AVEVENT%0D%0AEND%3AVCALENDAR';
   return '<div class="ev-travel" style="margin:6px 0 4px">' +
+    '<div style="font-size:.72rem;color:var(--muted);margin-bottom:4px">Travel links may earn an affiliate commission to support TransformerPath independent research.</div>' +
     '<a class="btn btn-outline btn-sm" data-aff="hotel" data-ev="' + esc(name) + '" href="' + esc(hotel) + '" target="_blank" rel="noopener sponsored">🏨 Book Hotel</a> ' +
     '<a class="btn btn-outline btn-sm" data-aff="flights" data-ev="' + esc(name) + '" href="' + esc(TP.flights) + '" target="_blank" rel="noopener sponsored">✈ Find Flights</a> ' +
     '<a class="btn btn-outline btn-sm" data-aff="activities" data-ev="' + esc(name) + '" href="' + esc(TP.activities) + '" target="_blank" rel="noopener sponsored">&#127915;&#65039; Things to Do</a> ' +
@@ -102,7 +103,7 @@ function eventPage(e) {
   // Component categories relevant to transformer exhibitions (cross-link).
   const comps = ['transformer-bushings', 'on-load-tap-changers', 'insulation-materials', 'transformer-cooling', 'protection-monitoring', 'conductors-and-core'];
   const compPills = comps.map(function (c) { return '<a class="tpill" href="../../components/' + c + '.html">' + esc(c.replace(/-/g, ' ')) + '</a>'; }).join(' ');
-  const row = function (k, v) { return v ? '<tr><th>' + esc(k) + '</th><td>' + esc(v) + '</td></tr>' : ''; };
+  const row = function (k, v) { return v ? '<tr><th scope="row">' + esc(k) + '</th><td>' + esc(v) + '</td></tr>' : ''; };
   const schema = '<script type="application/ld+json">' + JSON.stringify({ '@context': 'https://schema.org', '@type': 'Event', name: e.event_name, startDate: (e.next_dates || '').split(' to ')[0], endDate: (e.next_dates || '').split(' to ')[1], eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode', location: { '@type': 'Place', name: e.venue, address: { '@type': 'PostalAddress', addressLocality: e.city, addressRegion: e.state, addressCountry: e.country } }, organizer: { '@type': 'Organization', name: e.organizer } }) + '</script>';
 
   return '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +

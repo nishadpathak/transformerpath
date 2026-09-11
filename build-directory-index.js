@@ -25,6 +25,51 @@ const MFG = JSON.parse(fs.readFileSync('data/manufacturer-intel.json', 'utf8')).
 const ACC = JSON.parse(fs.readFileSync('data/accessories.json', 'utf8'));
 const ACC_SUPPLIERS = ACC.suppliers || [];
 
+const CANON_COMPANIES = (() => {
+  try { return JSON.parse(fs.readFileSync('data/companies.json', 'utf8')).companies || []; } catch (e) { return []; }
+})();
+const CANON_FACILITIES = (() => {
+  try { return JSON.parse(fs.readFileSync('data/facilities.json', 'utf8')).facilities || []; } catch (e) { return []; }
+})();
+
+const canonBySlug = new Map();
+const canonByName = new Map();
+CANON_COMPANIES.forEach(c => {
+  if (c.slug) canonBySlug.set(c.slug, c);
+  if (c.name) canonByName.set(c.name.toLowerCase().trim(), c);
+});
+
+function defaultRole(kind) {
+  switch (kind) {
+    case 'manufacturer': return 'Transformer Manufacturer';
+    case 'component_supplier': return 'Component Manufacturer';
+    case 'machinery_manufacturer': return 'Machinery Builder';
+    case 'testing_laboratory': return 'Testing Laboratory';
+    case 'service_repair': return 'Service & Repair Provider';
+    case 'transport_logistics': return 'Transport & Logistics Provider';
+    case 'buyer_procurement': return 'Buyer & Procurement Organization';
+    case 'industry_association': return 'Industry Association';
+    case 'education_provider': return 'Education & Training Provider';
+    case 'media_publication': return 'Media & Publication';
+    default: return 'Industry Participant';
+  }
+}
+
+function getCanonProps(slug, name, fallbackKind, fallbackFacCount) {
+  let c = null;
+  if (slug && canonBySlug.has(slug)) c = canonBySlug.get(slug);
+  else if (name) {
+    const n = name.toLowerCase().trim();
+    if (canonByName.has(n)) c = canonByName.get(n);
+  }
+  const cleanSlug = slug || (name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const canonId = c ? c.id : ('cmp:' + cleanSlug);
+  const roles = (c && c.roles && c.roles.length) ? c.roles : [defaultRole(fallbackKind)];
+  const factoryCount = c ? (c.factory_count || 0) : (fallbackFacCount || 0);
+  const facilityIds = c ? (c.facility_ids || []) : [];
+  return { id: canonId, canonical_id: canonId, roles, factory_count: factoryCount, facility_ids: facilityIds };
+}
+
 const NUM = (s) => { const m = String(s || '').replace(/,/g, '').match(/(\d+(?:\.\d+)?)/); return m ? parseFloat(m[1]) : null; };
 
 // SOURCE > CLAIM. A capability fact is CONFIRMED only when a source is actually
@@ -88,8 +133,11 @@ function buildManufacturer(c) {
     if (c.company_reported) return 'COMPANY_REPORTED';
     return hasCapSource(c) ? 'CONFIRMED' : 'INFERRED';
   };
+  const cp = getCanonProps(c.slug, c.name, 'manufacturer', (c.factories || []).length);
   return {
-    id: 'mfg:' + c.slug,
+    id: cp.id,
+    canonical_id: cp.canonical_id,
+    roles: cp.roles,
     kind: 'manufacturer',
     name: c.name,
     slug: c.slug,
@@ -104,6 +152,7 @@ function buildManufacturer(c) {
     mva: { value: c.reported_mva || '', num: NUM(c.reported_mva), unit: 'MVA' },
     certs: c.reported_certs || [],
     testing_capability: c.testing_capability || null,
+    facility_ids: cp.facility_ids,
     factories: (c.factories || []).map((f) => ({
       city: f.city || '', country: f.country || '', produces: f.produces || '',
       claim_type: f.claim_type || '', source_url: f.source_url || '',
@@ -125,17 +174,21 @@ function buildManufacturer(c) {
     research_status: c.research_status || '',
     commercial_status: c.commercial_status || '',
     sources: c.sources || {},
-    factory_count: (c.factories || []).length,
+    factory_count: cp.factory_count,
   };
 }
 
 function buildSupplier(s) {
   const labels = (s.categories || []).slice();
+  const slug = (s.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const cp = getCanonProps(slug, s.name, 'component_supplier', 0);
   return {
-    id: 'sup:' + (s.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+    id: cp.id,
+    canonical_id: cp.canonical_id,
+    roles: cp.roles,
     kind: 'component_supplier',
     name: s.name,
-    slug: (s.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+    slug: slug,
     country: s.country,
     region: s.state || '',
     website: s.website,
@@ -147,6 +200,7 @@ function buildSupplier(s) {
     mva: { value: '', num: null, unit: 'MVA' },
     certs: s.certifications || [],
     testing_capability: null,
+    facility_ids: cp.facility_ids,
     factories: [],
     capability_evidence: { products: (s.verification_status || '').toLowerCase().indexOf('verified') >= 0 ? 'CONFIRMED' : 'INFERRED', voltage: 'UNKNOWN', mva: 'UNKNOWN' },
     evidence: (s.verification_status || '').toLowerCase().indexOf('verified') >= 0 ? 'CONFIRMED' : 'INFERRED',
@@ -160,7 +214,7 @@ function buildSupplier(s) {
     research_status: s.verification_status || '',
     commercial_status: '',
     sources: { website: s.website },
-    factory_count: 0,
+    factory_count: cp.factory_count,
   };
 }
 
@@ -168,11 +222,15 @@ const MACH_DATA = (() => { try { return JSON.parse(fs.readFileSync('data/machine
 function buildMachinery(m) {
   const labels = [m.category, m.machine_type];
   if (m.automation_level) labels.push(m.automation_level);
+  const slug = (m.id || '').replace(/^mach:/, '') || (m.manufacturer || m.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const cp = getCanonProps(slug, m.manufacturer || m.name, 'machinery_manufacturer', 1);
   return {
-    id: m.id || ('mach:' + (m.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-')),
+    id: cp.id,
+    canonical_id: cp.canonical_id,
+    roles: cp.roles,
     kind: 'machinery_manufacturer',
     name: m.manufacturer + ' — ' + m.name,
-    slug: (m.id || '').replace(/^mach:/, ''),
+    slug: slug,
     country: m.country,
     region: m.city || '',
     website: m.website,
@@ -184,6 +242,7 @@ function buildMachinery(m) {
     mva: { value: '', num: null, unit: 'MVA' },
     certs: [],
     testing_capability: null,
+    facility_ids: cp.facility_ids,
     factories: [],
     capability_evidence: { products: 'CONFIRMED', voltage: 'UNKNOWN', mva: 'UNKNOWN' },
     evidence: 'CONFIRMED',
@@ -197,7 +256,7 @@ function buildMachinery(m) {
     research_status: 'ACTIVE_CONFIRMED',
     commercial_status: '',
     sources: { website: m.website },
-    factory_count: 1,
+    factory_count: cp.factory_count,
   };
 }
 
@@ -208,11 +267,15 @@ function buildLaboratory(l) {
   if (l.capabilities && l.capabilities.short_circuit) labels.push('Short-Circuit Testing');
   if (l.capabilities && l.capabilities.partial_discharge) labels.push('PD Measurement');
   if (l.capabilities && l.capabilities.oil_testing) labels.push('Oil & DGA Lab');
+  const slug = (l.id || '').replace(/^lab:/, '') || (l.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const cp = getCanonProps(slug, l.name, 'testing_laboratory', 1);
   return {
-    id: l.id || ('lab:' + (l.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-')),
+    id: cp.id,
+    canonical_id: cp.canonical_id,
+    roles: cp.roles,
     kind: 'testing_laboratory',
     name: l.name,
-    slug: (l.id || '').replace(/^lab:/, ''),
+    slug: slug,
     country: l.country,
     region: l.city || '',
     website: l.website,
@@ -224,6 +287,7 @@ function buildLaboratory(l) {
     mva: { value: l.short_circuit_capacity || '', num: null, unit: 'MVA' },
     certs: ['ISO/IEC 17025'],
     testing_capability: 'Accredited Testing Laboratory',
+    facility_ids: cp.facility_ids,
     factories: [],
     capability_evidence: { products: 'CONFIRMED', voltage: 'CONFIRMED', mva: 'CONFIRMED' },
     evidence: 'CONFIRMED',
@@ -237,18 +301,22 @@ function buildLaboratory(l) {
     research_status: 'ACTIVE_CONFIRMED',
     commercial_status: '',
     sources: { website: l.website },
-    factory_count: 1,
+    factory_count: cp.factory_count,
   };
 }
 
 const SRV_DATA = (() => { try { return JSON.parse(fs.readFileSync('data/services.json', 'utf8')).services || []; } catch (e) { return []; } })();
 function buildService(s) {
   const labels = (s.service_types || []).slice(0, 5);
+  const slug = (s.id || '').replace(/^srv:/, '') || (s.company_name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const cp = getCanonProps(slug, s.company_name, 'service_repair', 1);
   return {
-    id: s.id || ('srv:' + (s.company_name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-')),
+    id: cp.id,
+    canonical_id: cp.canonical_id,
+    roles: cp.roles,
     kind: 'service_repair',
     name: s.company_name,
-    slug: (s.id || '').replace(/^srv:/, ''),
+    slug: slug,
     country: s.country,
     region: s.state_province || '',
     website: s.website,
@@ -260,6 +328,7 @@ function buildService(s) {
     mva: { value: s.capacity_mva ? (s.capacity_mva + ' MVA') : '', num: s.capacity_mva || null, unit: 'MVA' },
     certs: s.certifications || [],
     testing_capability: 'On-Site Diagnostic Testing & Overhaul',
+    facility_ids: cp.facility_ids,
     factories: [],
     capability_evidence: { products: 'CONFIRMED', voltage: 'CONFIRMED', mva: 'CONFIRMED' },
     evidence: 'CONFIRMED',
@@ -273,18 +342,22 @@ function buildService(s) {
     research_status: 'ACTIVE_CONFIRMED',
     commercial_status: '',
     sources: { website: s.website },
-    factory_count: 1,
+    factory_count: cp.factory_count,
   };
 }
 
 const LOG_DATA = (() => { try { return JSON.parse(fs.readFileSync('data/logistics.json', 'utf8')).companies || []; } catch (e) { return []; } })();
 function buildLogistics(l) {
   const labels = (l.transport_modes || []).slice(0, 4);
+  const slug = (l.id || '').replace(/^log:/, '') || (l.company_name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const cp = getCanonProps(slug, l.company_name, 'transport_logistics', 1);
   return {
-    id: l.id || ('log:' + (l.company_name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-')),
+    id: cp.id,
+    canonical_id: cp.canonical_id,
+    roles: cp.roles,
     kind: 'transport_logistics',
     name: l.company_name,
-    slug: (l.id || '').replace(/^log:/, ''),
+    slug: slug,
     country: l.country,
     region: l.state_province || '',
     website: l.website,
@@ -296,6 +369,7 @@ function buildLogistics(l) {
     mva: { value: l.max_weight_tons ? ('Max ' + l.max_weight_tons + ' t') : '', num: null, unit: 't' },
     certs: l.certifications || [],
     testing_capability: 'Heavy Haulage & Rigging',
+    facility_ids: cp.facility_ids,
     factories: [],
     capability_evidence: { products: 'CONFIRMED', voltage: 'UNKNOWN', mva: 'UNKNOWN' },
     evidence: 'CONFIRMED',
@@ -309,18 +383,22 @@ function buildLogistics(l) {
     research_status: 'ACTIVE_CONFIRMED',
     commercial_status: '',
     sources: { website: l.website },
-    factory_count: 1,
+    factory_count: cp.factory_count,
   };
 }
 
 const ASC_DATA = (() => { try { return JSON.parse(fs.readFileSync('data/associations.json', 'utf8')).associations || []; } catch (e) { return []; } })();
 function buildAssociation(a) {
   const labels = (a.focus_areas || []).slice(0, 4);
+  const slug = (a.id || '').replace(/^asc:/, '') || (a.association_name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const cp = getCanonProps(slug, a.association_name, 'industry_association', 0);
   return {
-    id: a.id || ('asc:' + (a.association_name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-')),
+    id: cp.id,
+    canonical_id: cp.canonical_id,
+    roles: cp.roles,
     kind: 'industry_association',
     name: a.association_name,
-    slug: (a.id || '').replace(/^asc:/, ''),
+    slug: slug,
     country: a.country,
     region: a.scope || '',
     website: a.website,
@@ -332,6 +410,7 @@ function buildAssociation(a) {
     mva: { value: '', num: null, unit: 'MVA' },
     certs: [],
     testing_capability: 'Technical Standardization & Trade Body',
+    facility_ids: cp.facility_ids,
     factories: [],
     capability_evidence: { products: 'CONFIRMED', voltage: 'UNKNOWN', mva: 'UNKNOWN' },
     evidence: 'CONFIRMED',
@@ -345,18 +424,22 @@ function buildAssociation(a) {
     research_status: 'ACTIVE_CONFIRMED',
     commercial_status: '',
     sources: { website: a.website },
-    factory_count: 0,
+    factory_count: cp.factory_count,
   };
 }
 
 const EDU_DATA = (() => { try { return JSON.parse(fs.readFileSync('data/education.json', 'utf8')).providers || []; } catch (e) { return []; } })();
 function buildEducation(e) {
   const labels = (e.course_types || []).slice(0, 4);
+  const slug = (e.id || '').replace(/^edu:/, '') || (e.provider_name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const cp = getCanonProps(slug, e.provider_name, 'education_provider', 1);
   return {
-    id: e.id || ('edu:' + (e.provider_name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-')),
+    id: cp.id,
+    canonical_id: cp.canonical_id,
+    roles: cp.roles,
     kind: 'education_provider',
     name: e.provider_name,
-    slug: (e.id || '').replace(/^edu:/, ''),
+    slug: slug,
     country: e.country,
     region: e.state_province || '',
     website: e.website,
@@ -368,6 +451,7 @@ function buildEducation(e) {
     mva: { value: '', num: null, unit: 'MVA' },
     certs: [e.certification_offered].filter(Boolean),
     testing_capability: 'Training & Laboratory Research',
+    facility_ids: cp.facility_ids,
     factories: [],
     capability_evidence: { products: 'CONFIRMED', voltage: 'UNKNOWN', mva: 'UNKNOWN' },
     evidence: 'CONFIRMED',
@@ -381,18 +465,22 @@ function buildEducation(e) {
     research_status: 'ACTIVE_CONFIRMED',
     commercial_status: '',
     sources: { website: e.website },
-    factory_count: 1,
+    factory_count: cp.factory_count,
   };
 }
 
 const BYR_DATA = (() => { try { return JSON.parse(fs.readFileSync('data/buyers.json', 'utf8')).buyers || []; } catch (e) { return []; } })();
 function buildBuyer(b) {
   const labels = [b.buyer_type].concat((b.transformer_types_purchased || []).slice(0, 3));
+  const slug = (b.id || '').replace(/^byr:/, '') || (b.organization_name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const cp = getCanonProps(slug, b.organization_name, 'buyer_procurement', 0);
   return {
-    id: b.id || ('byr:' + (b.organization_name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-')),
+    id: cp.id,
+    canonical_id: cp.canonical_id,
+    roles: cp.roles,
     kind: 'buyer_procurement',
     name: b.organization_name,
-    slug: (b.id || '').replace(/^byr:/, ''),
+    slug: slug,
     country: b.country,
     region: b.state_province || '',
     website: b.website,
@@ -404,6 +492,7 @@ function buildBuyer(b) {
     mva: { value: b.capacity_range || '', num: null, unit: 'MVA' },
     certs: [],
     testing_capability: 'Procurement & Grid Interconnection',
+    facility_ids: cp.facility_ids,
     factories: [],
     capability_evidence: { products: 'CONFIRMED', voltage: 'CONFIRMED', mva: 'CONFIRMED' },
     evidence: 'CONFIRMED',
@@ -417,18 +506,22 @@ function buildBuyer(b) {
     research_status: 'ACTIVE_CONFIRMED',
     commercial_status: '',
     sources: { website: b.website },
-    factory_count: 0,
+    factory_count: cp.factory_count,
   };
 }
 
 const MED_DATA = (() => { try { return JSON.parse(fs.readFileSync('data/media.json', 'utf8')).publications || []; } catch (e) { return []; } })();
 function buildMedia(m) {
   const labels = [m.publication_type, m.frequency].concat((m.coverage_areas || []).slice(0, 3));
+  const slug = (m.id || '').replace(/^med:/, '') || (m.publication_name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const cp = getCanonProps(slug, m.publication_name, 'media_publication', 0);
   return {
-    id: m.id || ('med:' + (m.publication_name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-')),
+    id: cp.id,
+    canonical_id: cp.canonical_id,
+    roles: cp.roles,
     kind: 'media_publication',
     name: m.publication_name,
-    slug: (m.id || '').replace(/^med:/, ''),
+    slug: slug,
     country: m.country,
     region: m.language || '',
     website: m.website,
@@ -440,6 +533,7 @@ function buildMedia(m) {
     mva: { value: '', num: null, unit: 'MVA' },
     certs: [],
     testing_capability: 'Industry Publishing & Media',
+    facility_ids: cp.facility_ids,
     factories: [],
     capability_evidence: { products: 'CONFIRMED', voltage: 'UNKNOWN', mva: 'UNKNOWN' },
     evidence: 'CONFIRMED',
@@ -453,7 +547,7 @@ function buildMedia(m) {
     research_status: 'ACTIVE_CONFIRMED',
     commercial_status: '',
     sources: { website: m.website },
-    factory_count: 0,
+    factory_count: cp.factory_count,
   };
 }
 

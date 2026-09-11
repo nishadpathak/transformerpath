@@ -80,6 +80,13 @@
   status = 404
   force = true
 
+# Commercial pipeline and supplier prospect lists. Internal CRM/pipeline only.
+[[redirects]]
+  from = "/data/commerce-intel.json"
+  to = "/404.html"
+  status = 404
+  force = true
+
 # Belt-and-suspenders: if any stale copy of the book RCs / SQL export is left
 # in the published root from an older deploy, never serve it.
 [[redirects]]

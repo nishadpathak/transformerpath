@@ -22,7 +22,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 HEADER = open(os.path.join(ROOT, "_partials/header.html")).read().strip("\n")
 FOOTER = open(os.path.join(ROOT, "_partials/footer.html")).read().strip("\n")
 
-HEADER_RE = re.compile(r"<header[^>]*>\s*<div class=\"container nav\">.*?</header>", re.S)
+HEADER_RE = re.compile(r"<header[^>]*>.*?<div class=\"container nav\">.*?</header>", re.S)
 FOOTER_RE = re.compile(r"<footer[^>]*>.*?</footer>", re.S)
 
 check = "--check" in sys.argv

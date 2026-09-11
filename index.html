@@ -18,6 +18,7 @@
 <meta name="twitter:description" content="The global platform for transformer professionals — daily market intel, industry events, jobs, a world grid census and an interactive 3D transformer explorer.">
 <meta name="twitter:image" content="https://transformerpath.com/brand/og-image-hero.jpg">
 <link rel="stylesheet" href="style.css?v=12">
+<link rel="preload" as="image" href="brand/hero.jpg">
 <link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
 <link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
@@ -103,13 +104,25 @@
     <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
     <nav class="tpnav" id="mainNav" aria-label="Primary">
       <a href="intel.html">Intel</a>
-      <a href="manufacturers.html">Manufacturers</a>
+      <div class="tpnav-dropdown">
+        <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
+        <div class="tpnav-dropdown-panel" role="menu">
+          <a href="manufacturers.html">Manufacturers</a>
+          <a href="components.html">Components &amp; Materials</a>
+          <a href="machinery.html">Machinery</a>
+          <a href="laboratories.html">Testing Labs</a>
+          <a href="services.html">Services &amp; Repair</a>
+          <a href="markets.html">Markets</a>
+          <a href="buyers-guide.html">Buyer's Guide</a>
+          <a href="directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
+        </div>
+      </div>
       <a href="projects.html">Projects</a>
       <a href="tenders.html">Tenders</a>
       <a href="grids.html" class="tpnav-opt">Grids</a>
       <a href="events.html">Events</a>
+      <a href="tools.html" class="tpnav-opt">Engineering</a>
       <a href="learn.html">Learn</a>
-      <a href="tools.html" class="tpnav-opt">Tools</a>
       <a href="rfq.html">RFQ</a>
       <div class="tpnav-more">
         <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
@@ -248,7 +261,7 @@
         </svg>
         <div class="panel-head"><strong>The Platform at a Glance</strong><em>transformerpath.com</em></div>
         <div class="stat-grid">
-          <div class="stat-card"><i></i><b data-stat="manufacturers">546</b><span>Companies · 812 Facilities</span></div>
+          <div class="stat-card"><i></i><b data-stat="manufacturers">546</b><span>Companies · <span data-stat="factories">546</span> Facilities</span></div>
           <div class="stat-card"><i></i><b data-stat="manufacturingCountries">84</b><span>Manufacturing countries</span></div>
           <div class="stat-card"><i></i><b data-stat="projects">306</b><span>Global projects tracked</span></div>
           <div class="stat-card"><i></i><b data-stat="tenders">150</b><span>Tenders tracked</span></div>
@@ -277,7 +290,7 @@
   <div class="container" style="max-width:920px;text-align:center">
     <span style="display:inline-block;font-size:.74rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--accent);background:rgba(11,95,165,.08);padding:4px 14px;border-radius:999px;margin-bottom:12px">Universal Industry Database</span>
     <h2 style="font-size:1.85rem;color:var(--ink);margin:0 0 10px;font-weight:800;letter-spacing:-.3px">Search the global transformer industry</h2>
-    <p style="color:var(--muted);font-size:.95rem;margin:0 auto 22px;max-width:650px;line-height:1.55">Explore 546 companies, 812 manufacturing facilities, component suppliers, 151 grids, and live procurement tenders across 84 countries.</p>
+    <p style="color:var(--muted);font-size:.95rem;margin:0 auto 22px;max-width:650px;line-height:1.55">Explore 546 companies, 546 manufacturing facilities, component suppliers, 151 grids, and live procurement tenders across 84 countries.</p>
     
     <form action="directory.html" method="get" style="display:flex;gap:10px;max-width:760px;margin:0 auto 18px;background:var(--bg);padding:6px;border:2px solid var(--border);border-radius:14px;box-shadow:0 8px 24px rgba(13,27,46,.07)">
       <div style="display:flex;align-items:center;padding-left:14px;color:var(--muted);font-size:1.2rem">🔍</div>

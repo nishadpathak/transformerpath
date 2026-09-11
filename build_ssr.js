@@ -118,6 +118,27 @@ function inject(html, openTag, id, newInner) {
   return html.slice(0, at) + '\n' + startM + '\n' + newInner + '\n' + endM + '\n' + html.slice(at);
 }
 
+// Inject `newInner` into the element matching `id="..."`, bracketed by
+// invisible idempotent marker comments. Robust across arbitrary attributes.
+function injectById(html, id, newInner) {
+  const startM = '<!--SSR:' + id + '-->';
+  const endM = '<!--/SSR:' + id + '-->';
+  let cm = html.indexOf(startM);
+  if (cm >= 0) {
+    const em = html.indexOf(endM, cm);
+    if (em >= 0) {
+      const before = html.slice(0, cm + startM.length);
+      const after = html.slice(em);
+      return before + '\n' + newInner + '\n' + after;
+    }
+  }
+  const re = new RegExp('<([a-zA-Z0-9]+)[^>]*\\bid=["\']' + id + '["\'][^>]*>');
+  const m = re.exec(html);
+  if (!m) return html;
+  const at = m.index + m[0].length;
+  return html.slice(0, at) + '\n' + startM + '\n' + newInner + '\n' + endM + '\n' + html.slice(at);
+}
+
 // en-GB short date, e.g. "23 Aug 2026"
 const fmt = (d) =>
   new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Dubai' });
@@ -504,14 +525,19 @@ function renderManufacturers(html) {
 
   const makers = DATA.reduce((s, c) => s + c.makers.filter((m) => !/^Served by/i.test(m[0])).length, 0);
   if (makers < 400) { console.warn('!! manufacturer census unexpectedly small ('+makers+'); check data/manufacturers.json'); }
+  let facCount = 546;
+  try {
+    const facData = JSON.parse(fs.readFileSync('data/facilities.json', 'utf8'));
+    facCount = facData.count || (facData.facilities && facData.facilities.length) || facCount;
+  } catch (e) {}
   const stats = `<div class="s"><b>${makers}</b><small>Companies</small></div>
-     <div class="s"><b>812</b><small>Manufacturing Facilities</small></div>
+     <div class="s"><b>${facCount}</b><small>Manufacturing Facilities</small></div>
      <div class="s"><b>${DATA.length}</b><small>Countries</small></div>
      <div class="s"><b>${new Set(DATA.map((c) => c.region)).size}</b><small>Regions</small></div>`;
 
   html = inject(html, '<div id="board">', 'mfg-board', board);
   html = inject(html, '<p style="color:var(--muted); font-size:.85rem; margin-bottom:14px" id="count">', 'mfg-count',
-    `Showing ${makers} companies (812 manufacturing facilities) across ${DATA.length} countries`);
+    `Showing ${makers} companies (${facCount} manufacturing facilities) across ${DATA.length} countries`);
   html = inject(html, '<div class="stat-row" id="statRow">', 'mfg-stats', stats);
 
   // Quick-jump "By country" bar — regenerated from the census so it is
@@ -524,37 +550,177 @@ function renderManufacturers(html) {
   }).join(' | ');
   html = html.replace(/<p style="font-size:\.8rem;line-height:1\.9">[\s\S]*?<\/p>/, '<p style="font-size:.8rem;line-height:1.9">' + jump + '</p>');
 
-  // Documented power-equipment suppliers (data/manufacturer-tiers.json).
-  // Presented as ONE neutral set of fact-typed capability records (source-backed
-  // capacity, voltage, certifications, regions) — NOT a tiered "Global leaders"
-  // leaderboard and NOT a quality ranking. No "best", no Tier 1/2/3 hierarchy, no
-  // promotional ordering: every row is a sourced capability figure that stands on
-  // its own, sorted alphabetically for neutrality. Capability must be verified
-  // with the manufacturer before a commercial decision.
-  try {
-    let tierHtml = '';
-    const items = (TIERS || []).slice().sort((a, b) => String(a.name).localeCompare(String(b.name)));
-    if (items.length) {
-      tierHtml += `<h3 style="margin:6px 0 10px">Sourced capability records — <b style="color:var(--ink)">reported values, not a ranking</b></h3>`;
-      tierHtml += '<p style="font-size:.85rem;color:var(--muted);margin:0 0 12px">The suppliers below are documented with reported annual capacity, maximum voltage, certifications and market coverage attributed to cited primary sources. TransformerPath enforces a strict 3-tier evidence standard: <b>Tier A</b> (Manufacturer Annual Reports, Regulatory Filings, Utility Qualifications, Factory Accreditation), <b>Tier B</b> (Credible Trade Press & Government Investment Agencies). Generic aggregators and market directories (Tier C) do not establish technical capability facts. Presented alphabetically for neutrality.</p>';
-      tierHtml += '<table><thead><tr><th>Supplier</th><th>Country</th><th>Reported capacity / yr</th><th>Reported max voltage</th><th>Reported certifications</th><th>Markets</th><th>Source &amp; Evidence Tier</th></tr></thead><tbody>';
-      tierHtml += items.map((r) => `<tr>
-        <td>${r.site ? `<a href="${esc(r.site)}" target="_blank" rel="noopener">${esc(r.name)}</a>` : esc(r.name)}</td>
-        <td>${esc(r.country || r.cc)}</td>
-        <td${r.note ? ` title="${esc(r.note)}"` : ''}>${r.mva ? '~' + r.mva.toLocaleString('en-US') + ' MVA' : '—'}${r.note ? ' <span aria-hidden="true" style="color:var(--muted);cursor:help">&#8505;</span>' : ''}</td>
-        <td>${r.kv ? esc(r.kv) + ' kV' : '—'}</td>
-        <td>${esc((r.certs || []).join(', ') || '—')}</td>
-        <td>${esc((r.regions || []).join(', ') || '—')}</td>
-        <td><span class="badge" style="display:inline-block;font-size:.68rem;padding:2px 6px;border-radius:4px;background:rgba(74,222,128,.14);color:#4ade80;font-weight:700;margin-right:4px">${esc(r.source_tier || 'Tier A')}</span> <span style="font-size:.78rem;color:var(--muted)">${esc(r.source || '—')}</span></td></tr>`).join('');
-      tierHtml += '</tbody></table>';
-    }
-    html = inject(html, '<div class="tiers" id="tiersRoot">', 'mfg-tiers', tierHtml);
-  } catch (e) { /* tiers optional */ }
-
   // Keep the Dataset schema "size" in sync with the live census count.
   html = html.replace(/("size"\s*:\s*)\d+/g, '$1' + makers);
 
   return { page: html, records: makers };
+}
+
+/* ------------------------------------------------------------------ *
+ * INTEL — daily market intelligence feed & archive editions.
+ * Pre-renders embedded constants into static HTML containers so
+ * search engine crawlers and preview scrapers see the content.
+ * ------------------------------------------------------------------ */
+function renderIntel(html) {
+  let records = 0;
+  const CLASSIFY = {
+    CONFIRMED: { help: 'Transformer scope explicitly established.' },
+    INFERRED:  { help: 'Transformer opportunity reasonably inferred from the source.' },
+    PIPELINE:  { help: 'Planned / tender / pre-award stage.' },
+    WATCH:     { help: 'Early signal; monitor for confirmation.' },
+  };
+  function tag(items, base) {
+    return (items || []).map(function(it) { return (it && !it.cls) ? Object.assign({}, it, { cls: base }) : it; });
+  }
+  function card(it) {
+    const langBadge = (it.lang && it.lang !== 'en') ? `<span class="lang-badge">${esc(it.lang.toUpperCase())}</span>` : '';
+    const cls = it.cls && CLASSIFY[it.cls] ? `<span class="cls-badge cls-${esc(it.cls)}" title="${esc(CLASSIFY[it.cls].help)}">${esc(it.cls)}</span>` : '';
+    const newBadge = it.isNew ? '<span class="new-badge">NEW</span>' : '';
+    const val = it.value ? `<span class="val">${esc(it.value)}</span> · ` : '';
+    const src = it.src ? `<span class="src">${esc(it.src)}</span>` : '';
+    const url = it.url || '#';
+    return `<div class="card">
+      <div class="card-title"><a href="${esc(url)}" target="_blank" rel="noopener">${esc(it.title)}</a>${langBadge}${cls}${newBadge}</div>
+      <div class="card-snippet">${esc(it.snippet)}</div>
+      <div class="card-meta">${val}${src}<a class="tp-li-share-inline" data-linkedin-share data-url="${esc(url)}" href="#" rel="noopener" title="Share this item on LinkedIn">LinkedIn</a></div>
+    </div>`;
+  }
+
+  // 1. Generation 2 (tabs & panels: intel.html and 13 dated editions)
+  if (html.includes('id="panel-news"')) {
+    // NEWS
+    try {
+      const NEWS = extractConst(html, 'NEWS');
+      if (NEWS) {
+        const order = ['GCC', 'India', 'Europe', 'USA', 'RoW'];
+        const keys = order.filter(k => NEWS[k]).concat(Object.keys(NEWS).filter(k => !order.includes(k)));
+        let newsHtml = '';
+        for (const k of keys) {
+          const r = NEWS[k];
+          if (!r || !r.items || !r.items.length) continue;
+          records += r.items.length;
+          newsHtml += `<div class="region-h">${esc(r.label || k)}</div>` + tag(r.items, 'INFERRED').map(card).join('');
+        }
+        html = injectById(html, 'panel-news', newsHtml);
+      }
+    } catch (e) { /* ignore */ }
+
+    // GRID_NEWS
+    try {
+      const GRID_NEWS = extractConst(html, 'GRID_NEWS');
+      if (GRID_NEWS) {
+        const order = ['GCC', 'India', 'Europe', 'USA', 'China', 'AsiaPac', 'LatAm', 'Africa'];
+        const keys = order.filter(k => GRID_NEWS[k]).concat(Object.keys(GRID_NEWS).filter(k => !order.includes(k)));
+        let gridHtml = '';
+        for (const k of keys) {
+          const r = GRID_NEWS[k];
+          if (!r || !r.items || !r.items.length) continue;
+          records += r.items.length;
+          gridHtml += `<div class="region-h">${esc(r.label || k)}</div>` + tag(r.items, 'CONFIRMED').map(card).join('');
+        }
+        html = injectById(html, 'panel-grid', gridHtml);
+      }
+    } catch (e) { /* ignore */ }
+
+    // REPAIR_NEWS
+    try {
+      const REPAIR_NEWS = extractConst(html, 'REPAIR_NEWS');
+      if (Array.isArray(REPAIR_NEWS)) {
+        records += REPAIR_NEWS.length;
+        const repHtml = `<div class="region-h">Transformer Service &amp; Repair Demand</div>` + tag(REPAIR_NEWS, 'WATCH').map(card).join('');
+        html = injectById(html, 'panel-repair', repHtml);
+      }
+    } catch (e) { /* ignore */ }
+
+    // FACTORIES
+    try {
+      const FACTORIES = extractConst(html, 'FACTORIES');
+      if (Array.isArray(FACTORIES)) {
+        records += FACTORIES.length;
+        const rows = FACTORIES.map(f => `<tr>
+          <td><span class="dot ${esc(f.color || '')}"></span><strong>${esc(f.name)}</strong></td>
+          <td>${esc(f.loc || '')}</td><td>${esc(f.backer || '')}</td><td>${esc(f.cap || '')}</td>
+          <td>${esc(f.status || '')}</td><td><a class="plain" href="${esc(f.src || '#')}" target="_blank" rel="noopener">source</a></td></tr>`).join('');
+        const facHtml = `<div class="region-h">New / Expanding Transformer Factories</div>
+          <div class="table-wrap"><table class="factory-grid"><thead><tr><th scope="col">Project</th><th scope="col">Location</th><th scope="col">Backer</th><th scope="col">Capability</th><th scope="col">Status</th><th scope="col">Src</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+        html = injectById(html, 'panel-factories', facHtml);
+      }
+    } catch (e) { /* ignore */ }
+
+    // PIPELINE
+    try {
+      const PIPELINE = extractConst(html, 'PIPELINE');
+      if (Array.isArray(PIPELINE)) {
+        records += PIPELINE.length;
+        const rows = PIPELINE.map(p => `<tr>
+          <td><strong>${esc(p.project)}</strong></td><td>${esc(p.buyer || '')}</td><td>${esc(p.scope || '')}</td>
+          <td>${esc(p.expected || '')}</td><td>${esc(p.status || '')}</td>
+          <td><a class="plain" href="${esc(p.url || '#')}" target="_blank" rel="noopener">${esc(p.src || 'source')}</a></td></tr>`).join('');
+        const pipHtml = `<div class="region-h">Pre-Award Pipeline — tenders &amp; expected awards to chase</div>
+          <div class="table-wrap"><table class="factory-grid"><thead><tr><th scope="col">Project</th><th scope="col">Buyer</th><th scope="col">Scope</th><th scope="col">Expected</th><th scope="col">Status</th><th scope="col">Src</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+        html = injectById(html, 'panel-pipeline', pipHtml);
+      }
+    } catch (e) { /* ignore */ }
+
+    // H2_PROJECTS
+    try {
+      const H2_PROJECTS = extractConst(html, 'H2_PROJECTS');
+      if (Array.isArray(H2_PROJECTS)) {
+        records += H2_PROJECTS.length;
+        const GCC_IN = ['\ud83c\uddf8\ud83c\udde6', '\ud83c\udde6\ud83c\uddea', '\ud83c\uddf4\ud83c\uddf2', '\ud83c\uddf6\ud83c\udde6', '\ud83c\uddf0\ud83c\uddfc', '\ud83c\udde7\ud83c\udded', '\ud83c\uddea\ud83c\uddec', '\ud83c\uddee\ud83c\uddf3'];
+        const rows = H2_PROJECTS.map(p => {
+          const near = GCC_IN.some(f => (p[1] || '').includes(f));
+          return `<tr${near ? ' style="background:rgba(74,222,128,.06)"' : ''}>
+            <td><strong>${esc(p[0])}</strong>${near ? ' <span class="new-badge" title="GCC / India — addressable">●</span>' : ''}</td>
+            <td>${esc(p[1])}</td><td>${esc(p[2])}</td><td>${esc(p[3])}</td><td>${esc(p[4])}</td><td>${esc(p[5])}</td></tr>`;
+        }).join('');
+        const h2Html = `<div class="region-h">Green Hydrogen Projects — electrolyser &amp; grid-connection transformer demand</div>
+          <div style="font-size:.85rem;opacity:.85;margin:4px 0 10px">Every ~100 MW electrolyser block needs rectifier-transformer sets plus a dedicated grid-connection substation. Rectifier duty (high harmonics, thermal cycling) favours upgraded insulation systems — aramid / hybrid kits over standard kraft. Highlighted rows = GCC / Egypt / India, addressable. Seeded from the Grids census; statuses maintained by the daily job.</div>
+          <div class="table-wrap"><table class="factory-grid"><thead><tr><th scope="col">Project</th><th scope="col">Location</th><th scope="col">Electrolyser</th><th scope="col">Output</th><th scope="col">Status</th><th scope="col">Note</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+        html = injectById(html, 'panel-h2', h2Html);
+      }
+    } catch (e) { /* ignore */ }
+
+    // TECH_WATCH
+    try {
+      const TECH_WATCH = extractConst(html, 'TECH_WATCH');
+      if (TECH_WATCH) {
+        let techCards = '';
+        for (const k of ['SST', 'SF6FREE', 'FLUIDS', 'HYBRID', 'DIGITAL']) {
+          const r = TECH_WATCH[k];
+          if (!r || !r.items || !r.items.length) continue;
+          records += r.items.length;
+          techCards += `<div class="region-h">${esc(r.label || k)}</div>` + tag(r.items, 'WATCH').map(card).join('');
+        }
+        const note = `<div style="font-size:.85rem;opacity:.85;margin:4px 0 10px">Weekly scan of transformer &amp; grid-equipment technology — solid-state transformers, SF₆-free HV, ester/insulation fluids, hybrid &amp; amorphous cores, and digital-twin monitoring. <span class="new-badge">NEW</span> = added this week. Items with an addressable angle are noted in the snippet.</div>`;
+        const techHtml = `<div class="region-h">Technology Watch — worldwide</div>` + note + techCards;
+        html = injectById(html, 'panel-tech', techHtml);
+      }
+    } catch (e) { /* ignore */ }
+  } else if (html.includes('id="intelList"')) {
+    // 2. Generation 1 (intel-2026-06-18 to 07-09)
+    try {
+      const NEWS = extractConst(html, 'NEWS');
+      if (NEWS) {
+        function legacyCard(it) {
+          return '<div class="intel-item"><h3>' + esc(it.title) + '</h3><p>' + esc(it.snippet) + '</p>' +
+            '<div class="card-meta">' + (it.value ? '<span class="ival">' + esc(it.value) + '</span> · ' : '') +
+            (it.url ? '<a class="src" href="' + esc(it.url) + '" target="_blank" rel="noopener">Source: ' + esc(it.src) + ' →</a>' : '<span class="src">' + esc(it.src) + '</span>') +
+            '</div></div>';
+        }
+        let legacyHtml = '';
+        for (const k of Object.keys(NEWS)) {
+          const r = NEWS[k];
+          if (!r || !r.items || !r.items.length) continue;
+          records += r.items.length;
+          legacyHtml += '<h2 class="region-h">' + esc(r.label || k) + '</h2>' + r.items.map(legacyCard).join('');
+        }
+        html = injectById(html, 'intelList', legacyHtml);
+      }
+    } catch (e) { /* ignore */ }
+  }
+
+  return { page: html, records };
 }
 
 const jobs = [
@@ -564,7 +730,14 @@ const jobs = [
   ['jobs.html', renderJobs, 'jobs'],
   ['grids.html', renderGrids, 'grids'],
   ['manufacturers.html', renderManufacturers, 'manufacturers'],
+  ['intel.html', renderIntel, 'intel'],
 ];
+
+// Pre-render all dated intel archive editions
+const intelFiles = fs.readdirSync('.').filter(f => /^intel-2026-\d{2}-\d{2}\.html$/.test(f)).sort();
+for (const f of intelFiles) {
+  jobs.push([f, renderIntel, 'intel-archive']);
+}
 
 for (const [file, fn, label] of jobs) {
   let html;

@@ -129,7 +129,7 @@ function slugify(n){ return String(n).normalize('NFKD').replace(/[\u0300-\u036f]
 const MGF = JSON.parse(fs.readFileSync('data/manufacturers.json', 'utf8'));
 var CSMAP={}; try{ JSON.parse(fs.readFileSync('data/company-slugs.json','utf8')).forEach(function(c){ CSMAP[c.name.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()] = c.slug; }); }catch(e){}
 
-const vbadge2 = (m) => { const f = m.length > 4 ? m[4] : null; if (f === 'P') return ' <span class="v-badge pro">★ Pro Verified</span>'; if (f === 'V') return ' <span class="v-badge">✓ Verified</span>'; return ''; };
+const vbadge2 = (m) => { const f = m.length > 4 ? m[4] : null; if (f === 'P') return ' <span class="v-badge pro">★ Supplier Pro</span>'; if (f === 'V') return ' <span class="v-badge">✓ Verified</span>'; return ''; };
 const tpills2 = (types) => { if (!types) return ''; const T = { PT: 'Power', DT: 'Distribution', DRY: 'Dry/Cast' }; return types.split(',').map((t) => t.trim()).filter(Boolean).map((t) => '<span class="tpill t-' + t + '">' + esc(T[t] || t) + '</span>').join(''); };
 fs.mkdirSync('manufacturers', { recursive: true });
 let countryIndex = [];
@@ -182,7 +182,7 @@ TYPE_HUBS.forEach(function (th) {
     const rows = makersList.map(function (m) {
       const cslug = CSMAP[m.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()];
       const nameLink = cslug ? '<a href="/manufacturers/' + cslug + '/" style="color:var(--accent);font-weight:700">' + esc(m.name) + '</a>' : '<b style="color:var(--text)">' + esc(m.name) + '</b>';
-      const vb = m.flagV === 'P' ? ' <span class="v-badge pro">★ Pro Verified</span>' : (m.flagV === 'V' ? ' <span class="v-badge">✓ Verified</span>' : '');
+      const vb = m.flagV === 'P' ? ' <span class="v-badge pro">★ Supplier Pro</span>' : (m.flagV === 'V' ? ' <span class="v-badge">✓ Verified</span>' : '');
       const siteLink = m.url ? '<a href="' + esc(m.url) + '" target="_blank" rel="noopener nofollow" style="color:var(--muted);font-size:.78rem" data-track="official_website_click" data-track-manufacturer="' + esc(m.name) + '">Official website ↗</a>' : '';
       return '<div class="mk-row" style="display:flex;align-items:baseline;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:.92rem">' +
         '<div>' + nameLink + vb + '<div style="color:var(--muted);font-size:.8rem">' + esc(m.city ? m.city + ', ' : '') + esc(m.country) + (m.est ? ' · est. ' + esc(m.est) : '') + '</div></div>' +

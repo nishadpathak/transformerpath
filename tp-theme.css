@@ -158,6 +158,14 @@ body { overflow-wrap: break-word; }
   color: var(--text);
 }
 :root[data-theme="dark"] .embed-panel { background: var(--card); }
+/* Transformer Material Index cards (intel.html) */
+:root[data-theme="dark"] #matRows > div,
+:root[data-theme="dark"] #matRowsTab > div,
+:root[data-theme="dark"] .matidx .mat-card {
+  background: var(--card) !important;
+  border-color: var(--border) !important;
+  color: var(--ink) !important;
+}
 /* Sticky sub-nav (construction-guide) */
 :root[data-theme="dark"] nav[class],
 :root[data-theme="dark"] .subnav { background: var(--card); }

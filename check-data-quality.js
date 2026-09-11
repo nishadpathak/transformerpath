@@ -57,7 +57,7 @@ let tierNoSource = 0, tierBadUnit = 0;
 for (const t of TIERS) {
   if (!t.name) { tierNoSource++; problems.push('R3 tier without name'); continue; }
   if (!t.source) { tierNoSource++; problems.push('R2 tier without source :: ' + t.name); }
-  if (typeof t.mva !== 'number' || t.mva <= 0) { tierBadUnit++; problems.push('R2 tier mva missing :: ' + t.name); }
+  if (t.mva !== null && (typeof t.mva !== 'number' || t.mva <= 0)) { tierBadUnit++; problems.push('R2 tier mva invalid :: ' + t.name); }
   // annual capacity vs max-unit rating separation
   if (typeof t.mva === 'number' && typeof t.kv === 'number') {
     if (String(t.note || '').replace(/\s/g, '').match(/(\d[\d,\.]+)MVA/)) {

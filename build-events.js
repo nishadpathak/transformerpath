@@ -22,6 +22,8 @@ const ci = function (s) { return (s || '').toLowerCase(); };
 const MANUF = JSON.parse(fs.readFileSync('data/manufacturers.json', 'utf8'));
 const EVENTS = JSON.parse(fs.readFileSync('data/events.json', 'utf8'));
 const INTEL = JSON.parse(fs.readFileSync('data/intel.json', 'utf8'));
+const CFG = JSON.parse(fs.readFileSync('data/config.json', 'utf8'));
+const CSSV = (CFG.assets && CFG.assets.css) || 12;
 // ONE canonical event-status resolver (shared across Events/Homepage/Search/
 // Market/Company/Structured-data surfaces). Replaces the local heuristic below.
 const { resolveStatus, isTravelSafe, chip: statusChip } = require('./lib/event-status');
@@ -181,6 +183,7 @@ function travelButtons(name, city, country, s, e) {
   const d0 = String(s || '').replace(/-/g, ''), d1 = String(e || '').replace(/-/g, '') || d0;
   const cal = 'data:text/calendar;charset=utf-8,BEGIN%3AVCALENDAR%0D%0AVERSION%3A2.0%0D%0APRODID%3A-%2F%2FTransformerPath%2F%2FEvents%2F%2FEN%0D%0ACALSCALE%3AGREGORIAN%0D%0ABEGIN%3AVEVENT%0D%0AUID%3A' + (d0 || 'tbd') + '%40transformerpath.com%0D%0ADTSTAMP%3A20260901T000000Z%0D%0ADTSTART%3BVALUE%3DDATE%3A' + d0 + '%0D%0ADTEND%3BVALUE%3DDATE%3A' + d1 + '%0D%0ASUMMARY%3A' + encodeURIComponent(nm) + '%0D%0ALOCATION%3A' + encodeURIComponent(loc) + '%0D%0AEND%3AVEVENT%0D%0AEND%3AVCALENDAR';
   return '<div class="ev-travel" style="margin:10px 0 4px">' +
+    '<div style="font-size:.72rem;color:var(--muted);margin-bottom:4px">Travel links may earn an affiliate commission to support TransformerPath independent research.</div>' +
     '<a class="btn btn-outline btn-sm" data-aff="hotel" data-ev="' + esc(nm) + '" href="' + esc(hotel) + '" target="_blank" rel="noopener sponsored">🏨 Book Hotel</a> ' +
     '<a class="btn btn-outline btn-sm" data-aff="flights" data-ev="' + esc(nm) + '" href="' + esc(TP.flights) + '" target="_blank" rel="noopener sponsored">✈ Find Flights</a> ' +
     '<a class="btn btn-outline btn-sm" data-aff="activities" data-ev="' + esc(nm) + '" href="' + esc(TP.activities) + '" target="_blank" rel="noopener sponsored">&#127915;&#65039; Things to Do</a> ' +
@@ -247,7 +250,7 @@ function eventPage(ev) {
     '<meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath">' +
     '<meta property="og:title" content="' + esc(ev.name) + ' — Transformer Exhibitors"><meta property="og:url" content="' + url + '">' +
     '<meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow">' +
-    '<link rel="stylesheet" href="../../style.css?v=5"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin><link rel="preconnect" href="https://www.google-analytics.com"><link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">' +
+    '<link rel="stylesheet" href="../../style.css?v=' + CSSV + '"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin><link rel="preconnect" href="https://www.google-analytics.com"><link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">' +
     '<style>.c-wrap{max-width:900px;margin:0 auto;padding:44px 20px 90px}.c-wrap h1{font-size:1.8rem;color:var(--ink)}.c-wrap .lead{color:var(--muted);font-size:1rem;max-width:760px}.c-wrap h2{font-size:1.25rem;color:var(--ink);margin-top:26px}.c-wrap .evmeta{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:.9rem;color:var(--muted);margin:6px 0 16px}.c-wrap .evmeta b{color:var(--text)}.c-wrap .tpill{display:inline-block;background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:2px 10px;font-size:.74rem;color:var(--text);margin:3px 4px 3px 0}.c-wrap ul{padding-left:20px;line-height:1.7}</style>' + schema +
     '</head>\n<body>\n' + HEAD + '\n<main class="c-wrap">' +
     '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="../../events.html" style="color:var(--accent)">Events</a> › ' + esc(ev.name) + '</nav>' +

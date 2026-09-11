@@ -274,7 +274,7 @@ function page(r, slug) {
   };
   const provLabel = provLabels[provType] || provType;
   const lastReviewed = (intelRec && intelRec.last_verified) || (STATS.updated || '2026-08-26');
-  const verify = r.flagV === 'P' ? '★ Pro Verified' : r.flagV === 'V' ? '✓ Verified' : 'Listed (directory)';
+  const verify = r.flagV === 'P' ? '★ Supplier Pro' : r.flagV === 'V' ? '✓ Verified' : 'Listed (directory)';
   const trust = '<div class="src"><b>Data sources</b> <span class="tpill">Company website</span><span class="tpill">Public manufacturer documentation</span><span class="tpill">Public project announcements</span><span class="tpill">TransformerPath industry database</span></div>' +
     '<div class="src" style="margin-top:6px"><b>Last reviewed</b> ' + lastReviewed + ' &nbsp;&middot;&nbsp; <b>Profile status</b> <span style="color:var(--accent)">' + verify + '</span></div>' +
     '<p style="font-size:.78rem;color:var(--muted);margin-top:6px">Listed profiles are informational directory entries and do not imply verification, endorsement or commercial affiliation. ' + esc(r.name) + ' is <b>not</b> affiliated with TransformerPath.</p>';

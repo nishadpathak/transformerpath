@@ -1143,6 +1143,108 @@
       "domain": "laboratory",
       "label": "Sweep Frequency Response Analysis (SFRA)",
       "landing": "/laboratories/"
+    },
+    "TR_GSU": {
+      "id": "TR_GSU",
+      "domain": "transformer",
+      "parent": "TR_POWER",
+      "label": "Generator Step-Up (GSU) Transformer"
+    },
+    "TR_AUTO": {
+      "id": "TR_AUTO",
+      "domain": "transformer",
+      "parent": "TR_POWER",
+      "label": "Autotransformer"
+    },
+    "TR_FURNACE": {
+      "id": "TR_FURNACE",
+      "domain": "transformer",
+      "parent": "TR_SPECIAL",
+      "label": "Electric Arc Furnace (EAF) Transformer"
+    },
+    "TR_RECTIFIER": {
+      "id": "TR_RECTIFIER",
+      "domain": "transformer",
+      "parent": "TR_SPECIAL",
+      "label": "Rectifier Transformer"
+    },
+    "TR_TRACTION": {
+      "id": "TR_TRACTION",
+      "domain": "transformer",
+      "parent": "TR_SPECIAL",
+      "label": "Traction Transformer"
+    },
+    "CMP_RELAY_BUCHHOLZ": {
+      "id": "CMP_RELAY_BUCHHOLZ",
+      "domain": "component",
+      "parent": "CMP_PROTECTION",
+      "label": "Buchholz Relays"
+    },
+    "MAT_CRGO": {
+      "id": "MAT_CRGO",
+      "domain": "material",
+      "parent": "MAT_CORE_STEEL",
+      "label": "CRGO Electrical Core Steel"
+    },
+    "MAT_OIL_MINERAL": {
+      "id": "MAT_OIL_MINERAL",
+      "domain": "material",
+      "parent": "MAT_FLUID",
+      "label": "Mineral Insulating Oil"
+    },
+    "MAT_OIL_ESTER": {
+      "id": "MAT_OIL_ESTER",
+      "domain": "material",
+      "parent": "MAT_FLUID",
+      "label": "Natural & Synthetic Ester Fluids"
+    },
+    "MAC_CORE_CUTTING": {
+      "id": "MAC_CORE_CUTTING",
+      "domain": "machinery",
+      "parent": "MAC_CORE",
+      "label": "Core Cutting & Step-Lap Lines"
+    },
+    "MAC_VPD": {
+      "id": "MAC_VPD",
+      "domain": "machinery",
+      "parent": "MAC_DRYING",
+      "label": "Vapour-Phase Drying (VPD) Plants"
+    },
+    "MAC_VACUUM_DRYING": {
+      "id": "MAC_VACUUM_DRYING",
+      "domain": "machinery",
+      "parent": "MAC_DRYING",
+      "label": "Vacuum Drying Ovens"
+    },
+    "MAC_OIL_PURIFICATION": {
+      "id": "MAC_OIL_PURIFICATION",
+      "domain": "machinery",
+      "parent": "MAC_OIL",
+      "label": "Oil Purification & Degassing Plants"
+    },
+    "MAC_TEST_SYSTEM": {
+      "id": "MAC_TEST_SYSTEM",
+      "domain": "machinery",
+      "parent": "MAC_TESTING",
+      "label": "Impulse Voltage & Test Bay Systems"
+    },
+    "LAB_HIGH_VOLTAGE": {
+      "id": "LAB_HIGH_VOLTAGE",
+      "domain": "laboratory",
+      "parent": "LAB_IMPULSE",
+      "label": "High Voltage & Impulse Testing"
+    },
+    "LAB_TEMPERATURE_RISE": {
+      "id": "LAB_TEMPERATURE_RISE",
+      "domain": "laboratory",
+      "parent": "LAB_TEST",
+      "label": "Temperature Rise / Heat Run Testing"
+    },
+    "LAB_OIL_MATERIALS": {
+      "id": "LAB_OIL_MATERIALS",
+      "domain": "laboratory",
+      "parent": "LAB_TEST",
+      "label": "Dielectric Oil & Materials Analysis"
     }
   }
 }

@@ -69,7 +69,6 @@ const ROOT_JS = [
 const ROOT_OTHER = [
   'robots.txt', 'ads.txt', 'sitemap.xml', 'feed.xml', 'intel-feed.xml',
   'manifest.webmanifest', 'favicon.ico', 'apple-touch-icon.png',
-  'TransformerPath logo.png',
 ];
 
 // Root stylesheets — small and fully enumerable.
@@ -89,6 +88,7 @@ const FORBIDDEN_PATTERNS = [
   /^_merge_validate\.js$/, /^americas_transformer_projects.*\.json$/,
   /^asia_transformer_projects\.json$/, /^netlify\.toml$/, /^package(-lock)?\.json$/,
   /^stamp-intel\.js$/, /^bump-assets\.js$/, /^build_ssr\.js$/, /^build\.py$/,
+  /^data\/commerce-intel\.json$/,
 ];
 
 /* iCloud Drive / macOS conflict copies ("index 2.html", "usa 2/"). The site folder
@@ -112,6 +112,8 @@ function copyDir(dir) {
     if (e.name.startsWith('.')) continue;            // .DS_Store and friends
     if (CONFLICT_COPY.test(e.name)) { skippedConflicts.push(path.join(dir, e.name)); continue; }
     const p = path.join(dir, e.name);
+    // Never copy internal prospect intelligence to the public distribution
+    if (p === 'data/commerce-intel.json') continue;
     if (e.isDirectory()) n += copyDir(p);
     else { copyFile(p, p); n++; }
   }

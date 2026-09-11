@@ -1,6 +1,6 @@
 {
   "$schema": "https://transformerpath.com/production-audit.schema.json",
-  "generated": "2026-09-11T05:50:27.959Z",
+  "generated": "2026-09-11T10:22:11.077Z",
   "note": "POST-SPRINT PRODUCTION AUDIT. READ-ONLY verification of checked-in source + generated data + served HTML. Does not assert anything about an unobserved live runtime. UNKNOWN > INCORRECT.",
   "surfaces": [
     {
@@ -143,7 +143,7 @@
       "sitemap_indexed": true,
       "has_canonical": true,
       "has_h1": true,
-      "client_fetches_data": true,
+      "client_fetches_data": false,
       "freshness_contradictions": []
     },
     {

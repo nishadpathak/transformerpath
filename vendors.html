@@ -60,26 +60,38 @@
     <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
     <nav class="tpnav" id="mainNav" aria-label="Primary">
       <a href="intel.html">Intel</a>
-      <a href="manufacturers.html">Manufacturers</a>
+      <div class="tpnav-dropdown">
+        <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
+        <div class="tpnav-dropdown-panel" role="menu">
+          <a href="manufacturers.html">Manufacturers</a>
+          <a href="components.html">Components &amp; Materials</a>
+          <a href="machinery.html">Machinery</a>
+          <a href="laboratories.html">Testing Labs</a>
+          <a href="services.html">Services &amp; Repair</a>
+          <a href="markets.html">Markets</a>
+          <a href="buyers-guide.html">Buyer's Guide</a>
+          <a href="directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
+        </div>
+      </div>
       <a href="projects.html">Projects</a>
       <a href="tenders.html">Tenders</a>
       <a href="grids.html" class="tpnav-opt">Grids</a>
       <a href="events.html">Events</a>
+      <a href="tools.html" class="tpnav-opt">Engineering</a>
       <a href="learn.html">Learn</a>
-      <a href="tools.html" class="tpnav-opt">Tools</a>
       <a href="rfq.html">RFQ</a>
       <div class="tpnav-more">
         <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
         <div class="tpnav-more-panel" role="menu">
           <a href="directory.html" role="menuitem">Directory</a>
-          <a href="services.html" role="menuitem">Service &amp; Repair</a>
-          <a href="logistics.html" role="menuitem">Transport &amp; Logistics</a>
+          <a href="services.html" role="menuitem">Service & Repair</a>
+          <a href="logistics.html" role="menuitem">Transport & Logistics</a>
           <a href="laboratories.html" role="menuitem">Testing Labs</a>
           <a href="machinery.html" role="menuitem">Machinery</a>
           <a href="associations.html" role="menuitem">Industry Associations</a>
-          <a href="education.html" role="menuitem">Education &amp; Training</a>
-          <a href="buyers.html" role="menuitem">Buyers &amp; Procurement</a>
-          <a href="media.html" role="menuitem">Media &amp; Publications</a>
+          <a href="education.html" role="menuitem">Education & Training</a>
+          <a href="buyers.html" role="menuitem">Buyers & Procurement</a>
+          <a href="media.html" role="menuitem">Media & Publications</a>
           <a href="compare.html" role="menuitem">Compare</a>
           <a href="accessories.html" role="menuitem">Accessories</a>
           <a href="markets.html" role="menuitem">Markets</a>
@@ -116,11 +128,28 @@
   <script>
     const themeToggle = document.getElementById('theme-toggle');
     const html = document.documentElement;
+    // Night mode is the default; light is opt-in via the toggle.
     const savedTheme = localStorage.getItem('theme') || 'dark';
+
     if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
-    function updateThemeIcon(){const isDark=html.getAttribute('data-theme')==='dark';themeToggle&&(themeToggle.textContent=isDark?'☀️':'🌙');}
     updateThemeIcon();
-    themeToggle&&themeToggle.addEventListener('click',()=>{const isDark=html.getAttribute('data-theme')==='dark';if(isDark){html.removeAttribute('data-theme');localStorage.setItem('theme','light');}else{html.setAttribute('data-theme','dark');localStorage.setItem('theme','dark');}updateThemeIcon();});
+
+    themeToggle?.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      updateThemeIcon();
+    });
+
+    function updateThemeIcon() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+    }
   </script>
   <script src="tp-nav.js?v=5" defer></script>
 </header>
@@ -134,8 +163,8 @@
 
   <div class="stats-bar">
     <div class="stat-box"><div class="num" id="cntTotal">643</div><div class="lbl">Total Suppliers</div></div>
-    <div class="stat-box"><div class="num">546</div><div class="lbl">Transformer OEMs</div></div>
-    <div class="stat-box"><div class="num">812+</div><div class="lbl">Production Plants</div></div>
+    <div class="stat-box"><div class="num">542</div><div class="lbl">Transformer OEMs</div></div>
+    <div class="stat-box"><div class="num">546</div><div class="lbl">Production Plants</div></div>
     <div class="stat-box"><div class="num">84</div><div class="lbl">Countries</div></div>
     <div class="stat-box"><div class="num">100%</div><div class="lbl">Website-Verified</div></div>
   </div>
@@ -241,13 +270,10 @@
   }
 
   function profileUrl(c) {
+    if (c.canonical_id) return 'company.html?id=' + encodeURIComponent(c.canonical_id);
+    if (c.id && c.id.indexOf('cmp:') === 0) return 'company.html?id=' + encodeURIComponent(c.id);
     if (c.kind === 'manufacturer' && c.slug) return 'manufacturers/' + encodeURIComponent(c.slug) + '/';
-    if (c.kind === 'component_supplier') return 'components.html';
-    if (c.kind === 'machinery_manufacturer') return 'machinery.html';
-    if (c.kind === 'testing_laboratory') return 'laboratories.html';
-    if (c.kind === 'service_repair') return 'services.html';
-    if (c.kind === 'transport_logistics') return 'logistics.html';
-    if (c.kind === 'buyer_procurement') return 'buyers.html';
+    if (c.slug) return 'company.html?c=' + encodeURIComponent(c.slug);
     return c.website || '#';
   }
 
@@ -258,6 +284,7 @@
       if (q) {
         var text = [
           c.name, c.country, c.region, c.headquarters,
+          (c.roles || []).join(' '),
           (c.capability_labels || []).join(' '),
           (c.product_codes || []).join(' '),
           c.voltage && c.voltage.value
@@ -280,12 +307,19 @@
       var kLbl = KIND_LABELS[c.kind] || c.kind;
       var loc = [c.headquarters, c.country].filter(Boolean).join(', ') || c.country || 'Global';
       var caps = (c.capability_labels || []).slice(0, 5);
+      var roleList = (c.roles && c.roles.length) ? c.roles : [kLbl];
+      var roleBadges = roleList.map(function(r) {
+        return '<span class="vnd-badge">' + kIcon + ' ' + esc(r) + '</span>';
+      }).join(' ');
+      var facBadge = (c.factory_count && c.factory_count > 1)
+        ? '<span class="vnd-badge" style="background:rgba(245,166,35,.14);color:var(--amber)">🏭 ' + c.factory_count + ' Plants</span>'
+        : '';
 
       return '<div class="vnd-card">' +
         '<div>' +
           '<div class="vnd-card-head">' +
             '<a href="' + profileUrl(c) + '" class="vnd-name">' + esc(c.name) + '</a>' +
-            '<span class="vnd-badge">' + kIcon + ' ' + esc(kLbl) + '</span>' +
+            '<div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center">' + roleBadges + facBadge + '</div>' +
           '</div>' +
           '<div class="vnd-loc">📍 ' + esc(loc) + '</div>' +
           (caps.length ? '<div class="vnd-caps">' + caps.map(function(l) { return '<span class="vnd-cap">' + esc(l) + '</span>'; }).join('') + '</div>' : '') +

@@ -73,14 +73,45 @@ exports.handler = async function (event) {
   }
 };
 
-function verifySignature(payload, signature, secret) {
-  const expected = crypto.createHmac('sha256', secret).update(payload, 'utf8').digest('hex');
-  // (A real implementation should parse the Stripe `t=...`/`v1=...` scheme and
-  //  use timing-safe equality; this is the signature-verification skeleton.)
-  if (!signature || !signature.startsWith('v1=')) throw new Error('no/short signature');
-  const given = signature.replace(/^.*?v1=/, '');
-  const a = Buffer.from(expected), b = Buffer.from(given);
-  if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) throw new Error('signature mismatch');
+function verifySignature(payload, signatureHeader, secret, tolerance = 300) {
+  if (!signatureHeader || typeof signatureHeader !== 'string') throw new Error('no signature header');
+  const items = signatureHeader.split(',');
+  let timestamp = null;
+  const signatures = [];
+
+  for (const item of items) {
+    const parts = item.trim().split('=');
+    if (parts[0] === 't') timestamp = parts[1];
+    else if (parts[0] === 'v1') signatures.push(parts[1]);
+  }
+
+  if (!timestamp || !signatures.length) {
+    throw new Error('missing timestamp or v1 signature');
+  }
+
+  const ts = parseInt(timestamp, 10);
+  if (isNaN(ts)) throw new Error('invalid timestamp');
+
+  // Replay attack tolerance check (default 5 minutes = 300s)
+  const now = Math.floor(Date.now() / 1000);
+  if (Math.abs(now - ts) > tolerance) {
+    throw new Error('timestamp outside tolerance');
+  }
+
+  const signedPayload = `${timestamp}.${payload}`;
+  const expected = crypto.createHmac('sha256', secret).update(signedPayload, 'utf8').digest('hex');
+  const expectedBuf = Buffer.from(expected, 'hex');
+
+  const matches = signatures.some(sig => {
+    try {
+      const givenBuf = Buffer.from(sig, 'hex');
+      return givenBuf.length === expectedBuf.length && crypto.timingSafeEqual(givenBuf, expectedBuf);
+    } catch (e) {
+      return false;
+    }
+  });
+
+  if (!matches) throw new Error('signature mismatch');
   return JSON.parse(payload);
 }
 
