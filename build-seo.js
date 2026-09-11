@@ -178,7 +178,7 @@ TYPE_HUBS.forEach(function (th) {
     });
   });
 
-  function renderHub(title, lead, makersList, canonicalPath, breadcrumbs) {
+  function renderHub(title, lead, makersList, canonicalPath, breadcrumbs, isNoindex) {
     const rows = makersList.map(function (m) {
       const cslug = CSMAP[m.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()];
       const nameLink = cslug ? '<a href="/manufacturers/' + cslug + '/" style="color:var(--accent);font-weight:700">' + esc(m.name) + '</a>' : '<b style="color:var(--text)">' + esc(m.name) + '</b>';
@@ -202,8 +202,8 @@ TYPE_HUBS.forEach(function (th) {
       '<link rel="canonical" href="https://transformerpath.com/' + canonicalPath + '">\n' +
       '<meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath">\n' +
       '<meta property="og:title" content="' + esc(title) + '"><meta property="og:url" content="https://transformerpath.com/' + canonicalPath + '">\n' +
-      '<meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow">\n' +
-      '<link rel="stylesheet" href="/style.css?v=5"><link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">\n' +
+      '<meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="' + (isNoindex ? 'noindex,follow' : 'index,follow') + '">\n' +
+      '<link rel="stylesheet" href="/style.css?v=12"><link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">\n' +
       '<style>.c-wrap{max-width:920px;margin:0 auto;padding:44px 20px 90px}.c-wrap h1{font-size:2rem;color:var(--ink)}.c-wrap .lead{color:var(--muted);font-size:1.02rem;line-height:1.6}.c-wrap .v-badge{color:var(--green);font-size:.72rem;font-weight:700}.c-wrap .tpill{display:inline-block;background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:2px 10px;font-size:.74rem;color:var(--text);margin:3px 4px 3px 0}</style>\n' +
       '</head>\n<body>\n' + HEAD + '\n<main class="c-wrap">\n' +
       '<nav style="font-size:.82rem;color:var(--muted);margin-bottom:12px">' + crumbs + '</nav>\n' +
@@ -254,7 +254,8 @@ TYPE_HUBS.forEach(function (th) {
           { name: 'Manufacturers', url: '/manufacturers.html' },
           { name: th.name, url: '/manufacturers/' + th.slug + '/' },
           { name: countryName, url: '/manufacturers/' + th.slug + '/' + cslug + '/' }
-        ]
+        ],
+        true
       );
       fs.writeFileSync(comboDir + '/index.html', comboHtml);
       comboHubCount++;
@@ -309,7 +310,12 @@ console.log('generated', typeHubCount, 'type hubs and', comboHubCount, 'type-cou
           if (TYPE_HUBS.some(th => th.slug === d)) {
             try {
               fs.readdirSync('manufacturers/' + d).forEach(function (sub) {
-                if (fs.existsSync('manufacturers/' + d + '/' + sub + '/index.html')) {
+                var subPath = 'manufacturers/' + d + '/' + sub + '/index.html';
+                if (fs.existsSync(subPath)) {
+                  try {
+                    var subHtml = fs.readFileSync(subPath, 'utf8');
+                    if (/<meta[^>]+name=["']robots["'][^>]*content=["'][^"']*noindex/i.test(subHtml)) return;
+                  } catch (e) { return; }
                   urls.push('https://transformerpath.com/manufacturers/' + d + '/' + sub + '/');
                 }
               });

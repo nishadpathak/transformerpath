@@ -79,11 +79,11 @@
   // Ensure supabase-config.js + supabase.js are present, then init.
   if (!window.TP_SUPABASE) {
     var config = document.createElement('script');
-    config.src = 'supabase-config.js'; config.async = true;
-    config.onload = function () { loadScript('supabase.js').then(init); };
+    config.src = '/supabase-config.js'; config.async = true;
+    config.onload = function () { loadScript('/supabase.js').then(init); };
     config.onerror = function () { init(); }; // no config -> inert buttons
     document.head.appendChild(config);
   } else {
-    loadScript('supabase.js').then(init);
+    loadScript('/supabase.js').then(init);
   }
 })();

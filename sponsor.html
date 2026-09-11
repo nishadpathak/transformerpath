@@ -154,6 +154,7 @@
         </div>
         <div style="margin-bottom:16px"><label for="fld_message">Message</label><textarea id="fld_message" name="message" rows="4" placeholder="Tell us about your goals..."></textarea></div>
         <button class="btn btn-amber" type="submit" style="width:100%">Send Enquiry →</button>
+        <div id="sError" style="display:none;margin-top:12px;padding:10px;background:rgba(239,68,68,.12);color:#ef4444;border:1px solid rgba(239,68,68,.3);border-radius:6px;font-size:0.9rem;text-align:center">Submission failed. Please try again or email us directly at contact@transformerpath.com.</div>
       </form>
       <div id="sThanks" style="display:none;text-align:center;padding:20px 0">
         <p style="font-size:1.1rem;font-weight:700;color:var(--ink)">Thanks — we'll be in touch.</p>
@@ -162,7 +163,7 @@
     </div>
   </div>
 </section>
-<script>(function(){var f=document.getElementById('sForm');if(!f)return;f.addEventListener('submit',function(e){e.preventDefault();if(!f.checkValidity()){f.reportValidity();return;}fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(f)).toString()}).then(d).catch(d);function d(){f.style.display='none';document.getElementById('sThanks').style.display='block';}});})();</script>
+<script>(function(){var f=document.getElementById('sForm');if(!f)return;f.addEventListener('submit',function(e){e.preventDefault();if(!f.checkValidity()){f.reportValidity();return;}var btn=f.querySelector('button[type="submit"]');if(btn)btn.disabled=true;var err=document.getElementById('sError');if(err)err.style.display='none';fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(f)).toString()}).then(function(r){if(!r.ok)throw new Error('Submission failed');f.style.display='none';document.getElementById('sThanks').style.display='block';}).catch(function(){if(btn)btn.disabled=false;if(err)err.style.display='block';else alert('Submission failed. Please try again or email contact@transformerpath.com.');});});})();</script>
 
 <footer>
   <div class="container">

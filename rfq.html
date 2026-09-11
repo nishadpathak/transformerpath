@@ -122,7 +122,7 @@
     <div class="card">
       <h3 style="color:var(--ink);margin-bottom:14px">Post your RFQ</h3>
       <p style="font-size:.82rem;color:var(--muted);margin:0 0 10px">A unique RFQ reference is generated and confirmed by email when the requirement is submitted — quote it in any follow-up email.</p>
-      <form name="rfq" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" data-track-form="rfq_submitted">
+      <form name="rfq" method="POST" enctype="multipart/form-data" data-netlify="true" data-netlify-honeypot="bot-field" data-track-form="rfq_submitted">
         <input type="hidden" name="reference" id="fld_ref" value="">
         <input type="hidden" name="form-name" value="rfq">
         <p style="display:none"><label>Do not fill: <input name="bot-field"></label></p>

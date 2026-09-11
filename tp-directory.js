@@ -212,6 +212,71 @@
       { key: 'media_publication', label: '📰 Media', count: facets.kinds.media_publication || 0 }
     ].filter(function (t) { return t.key === '' || t.count > 0; });
 
+    var existingControls = root.querySelector('.dir-controls');
+    if (existingControls) {
+      // Update quick pill states
+      var pills = root.querySelectorAll('.kg-quick-pill');
+      pills.forEach(function (p) {
+        if (p.hasAttribute('data-set-minkv')) {
+          var v = parseInt(p.getAttribute('data-set-minkv'), 10);
+          p.classList.toggle('on', minKv === v);
+        } else if (p.hasAttribute('data-toggle')) {
+          p.classList.toggle('on', !!onlyMultiPlant);
+        } else if (p.hasAttribute('data-set-ev')) {
+          p.classList.toggle('on', evFilter === p.getAttribute('data-set-ev'));
+        } else if (p.hasAttribute('data-set-mincomp')) {
+          p.classList.toggle('on', minComp === parseInt(p.getAttribute('data-set-mincomp'), 10));
+        }
+      });
+
+      // Update ecosystem tabs
+      var tabBtns = root.querySelectorAll('.kg-tab-btn');
+      tabBtns.forEach(function (tb) {
+        tb.classList.toggle('active', tb.getAttribute('data-set-kind') === kind);
+      });
+
+      // Update input and select values only if out of sync and not currently focused
+      var elQ = document.getElementById('dirQ');
+      if (elQ && document.activeElement !== elQ && elQ.value !== q) elQ.value = q;
+      var elC = document.getElementById('dirCountry');
+      if (elC && document.activeElement !== elC && elC.value !== country) elC.value = country;
+      var elT = document.getElementById('dirType');
+      if (elT && document.activeElement !== elT && elT.value !== type) elT.value = type;
+      var elK = document.getElementById('dirKv');
+      if (elK && document.activeElement !== elK && elK.value !== String(minKv)) elK.value = String(minKv);
+      var elE = document.getElementById('dirEv');
+      if (elE && document.activeElement !== elE && elE.value !== evFilter) elE.value = evFilter;
+
+      // Update count
+      var countEl = root.querySelector('.dir-count');
+      if (countEl) {
+        countEl.innerHTML = '<span>Showing <b>' + hits.length + '</b> of ' + DATA.length + ' verified records</span><span style="font-size:.8rem;color:var(--accent);font-weight:600">Tip: Select up to 5 entities to compare side-by-side</span>';
+      }
+
+      // Update list
+      var listEl = root.querySelector('.dir-list');
+      if (listEl) {
+        listEl.innerHTML = hits.length ? hits.slice(0, 60).map(cardHtml).join('') : '<div class="card" style="text-align:center;padding:40px;color:var(--muted)"><h3>No matching entities found</h3><p style="margin:8px 0">Try relaxing your search terms or clearing the voltage/evidence filters.</p><button id="btnResetEmpty" class="btn btn-amber btn-sm">Clear All Filters</button></div>';
+      }
+
+      var moreEl = root.querySelector('.dir-more-note');
+      if (hits.length > 60) {
+        if (!moreEl && listEl) {
+          moreEl = document.createElement('p');
+          moreEl.className = 'dir-more-note';
+          moreEl.style.cssText = 'text-align:center;color:var(--muted);font-size:.85rem;padding:12px 0 24px';
+          listEl.parentNode.insertBefore(moreEl, listEl.nextSibling);
+        }
+        if (moreEl) moreEl.textContent = 'Showing top 60 matches — use the search bar or filters above to refine your shortlist.';
+      } else if (moreEl) {
+        moreEl.remove();
+      }
+
+      renderCompare();
+      renderCmpDock();
+      return;
+    }
+
     var tabsHtml = tabsConfig.map(function (t) {
       return '<button class="kg-tab-btn ' + (kind === t.key ? 'active' : '') + '" data-set-kind="' + esc(t.key) + '">' + t.label + ' <span class="badge-cnt">' + t.count + '</span></button>';
     }).join('');
@@ -270,6 +335,7 @@
 
     if (hits.length > 60) {
       var more = document.createElement('p');
+      more.className = 'dir-more-note';
       more.style.cssText = 'text-align:center;color:var(--muted);font-size:.85rem;padding:12px 0 24px';
       more.textContent = 'Showing top 60 matches — use the search bar or filters above to refine your shortlist.';
       root.appendChild(more);
@@ -368,11 +434,11 @@
     var clr = document.getElementById('dirClear');
     if (clr) clr.addEventListener('click', function () {
       q = ''; kind = ''; country = ''; type = ''; minKv = 0; evFilter = ''; onlyMultiPlant = false; minComp = 0;
-      render();
-    });
-    var btnResetEmpty = document.getElementById('btnResetEmpty');
-    if (btnResetEmpty) btnResetEmpty.addEventListener('click', function () {
-      q = ''; kind = ''; country = ''; type = ''; minKv = 0; evFilter = ''; onlyMultiPlant = false; minComp = 0;
+      var elQ = document.getElementById('dirQ'); if (elQ) elQ.value = '';
+      var elC = document.getElementById('dirCountry'); if (elC) elC.value = '';
+      var elT = document.getElementById('dirType'); if (elT) elT.value = '';
+      var elK = document.getElementById('dirKv'); if (elK) elK.value = '0';
+      var elE = document.getElementById('dirEv'); if (elE) elE.value = '';
       render();
     });
 

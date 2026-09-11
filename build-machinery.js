@@ -34,10 +34,10 @@ function render() {
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TransformerPath">
 <meta property="og:title" content="Transformer Manufacturing Machinery Directory | TransformerPath">
-<meta property="og:description" content="Verified transformer production equipment: core cutting, winding, vapour-phase drying, oil purification, tank lines and high-voltage test bays.">
+<meta property="og:description" content="Transformer production equipment: core cutting, winding, vapour-phase drying, oil purification, tank lines and high-voltage test bays.">
 <meta property="og:url" content="https://transformerpath.com/machinery.html">
 <meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
-<meta name="robots" content="index,follow">
+<meta name="robots" content="noindex,follow">
 <meta name="theme-color" content="#0d1b2e">
 <link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
 <link rel="stylesheet" href="style.css?v=12">
@@ -138,7 +138,7 @@ ${HEAD}
 
   <div class="rfq-banner">
     <h3>Planning a Transformer Factory Expansion or Greenfield Plant?</h3>
-    <p>Submit your equipment specification to connect directly with verified European, American and global machinery manufacturers for factory equipment procurement.</p>
+    <p>Browse equipment categories and connect with transformer machinery manufacturers for factory equipment procurement.</p>
     <a href="rfq.html?type=machinery" class="btn btn-amber">Request Machinery RFQ &rarr;</a>
   </div>
 </main>

@@ -61,13 +61,20 @@ const TYPE_LABEL = { 'Exhibition': 'Exhibition', 'Conference': 'Conference', 'Ex
 // Replace the '&' in a slug for the market link label.
 const marketSlug = (c) => MARKET_BY_COUNTRY[c] || slugify(c);
 
+function getEventStatus(e) {
+  const dates = (e.next_dates || '').match(/(\d{4}-\d{2}-\d{2})/g) || [];
+  const end = dates[1] || dates[0] || '';
+  const today = '2026-09-11';
+  return (end && end < today) ? 'Completed' : 'Upcoming';
+}
+
 // Travelpayout-affiliated attendee buttons (Book Hotel / Flights / Things to Do /
 // Add to calendar) for a verified exhibition. Mirrors the events.html pattern so
 // the Exhibitions directory is monetized like the Events calendar. The calendar
 // entry is a data: URI VEVENT; hotel uses a destination-scoped hotellook search.
 const TP = { hotel: 'https://search.hotellook.com/?marker=736890&destination=', flights: 'https://kiwi.tpk.ro/dClaRHg1', activities: 'https://kkday.tpk.ro/VGC9WqGf' };
 function travelButtons(e, slug) {
-  if (!e.city) return '';
+  if (!e.city || getEventStatus(e) === 'Completed') return '';
   const dest = encodeURIComponent(e.city);
   const hotel = TP.hotel + dest;
   // Build an .ics-safe calendar URI from the event name/city/country.
@@ -91,6 +98,7 @@ function eventPage(e) {
   const market = marketSlug(e.country);
   const marketExists = market && fs.existsSync('markets/' + market + '/index.html');
   const marketLink = marketExists ? '<a class="tpill" href="../../markets/' + market + '/">' + esc(e.country) + ' market hub</a>' : '';
+  const status = getEventStatus(e);
   // Component categories relevant to transformer exhibitions (cross-link).
   const comps = ['transformer-bushings', 'on-load-tap-changers', 'insulation-materials', 'transformer-cooling', 'protection-monitoring', 'conductors-and-core'];
   const compPills = comps.map(function (c) { return '<a class="tpill" href="../../components/' + c + '.html">' + esc(c.replace(/-/g, ' ')) + '</a>'; }).join(' ');
@@ -104,18 +112,18 @@ function eventPage(e) {
     '<meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath">' +
     '<meta property="og:title" content="' + esc(e.event_name) + ' — Transformer Exhibition"><meta property="og:url" content="' + url + '">' +
     '<meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow">' +
-    '<link rel="stylesheet" href="../../style.css?v=5"><link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">' + schema +
+    '<link rel="stylesheet" href="../../style.css?v=12"><link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">' + schema +
     '<style>.c-wrap{max-width:900px;margin:0 auto;padding:44px 20px 90px}.c-wrap h1{font-size:1.7rem;color:var(--ink)}.c-wrap .lead{color:var(--muted);font-size:1rem;max-width:760px}.c-wrap h2{font-size:1.25rem;color:var(--ink);margin-top:26px}.c-wrap .evmeta{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:.9rem;color:var(--muted);margin:6px 0 16px}.c-wrap .evmeta b{color:var(--text)}.c-wrap .tpill{display:inline-block;background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:2px 10px;font-size:.74rem;color:var(--text);margin:3px 4px 3px 0}.c-wrap table{width:100%;border-collapse:collapse;margin:10px 0}.c-wrap table th{text-align:left;color:var(--muted);font-weight:600;padding:6px 10px;border-bottom:1px solid var(--border);width:36%}.c-wrap table td{padding:6px 10px;border-bottom:1px solid var(--border);color:var(--text)}</style>' +
     '</head>\n<body>\n' + HEAD + '\n<main class="c-wrap">' +
     '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="../../exhibitions.html" style="color:var(--accent)">Exhibitions</a> › ' + esc(e.city) + ' › ' + esc(e.event_name) + '</nav>' +
     '<h1>' + esc(e.event_name) + '</h1>' +
-    '<div class="evmeta"><span><b>Country</b> ' + esc(e.country) + '</span>' + (e.state ? '<span><b>Region</b> ' + esc(e.state) + '</span>' : '') + (e.city ? '<span><b>City</b> ' + esc(e.city) + '</span>' : '') + (e.next_dates ? '<span><b>Dates</b> ' + esc(e.next_dates) + '</span>' : '') + '</div>' +
-    '<p class="lead" style="margin-bottom:14px">A ' + esc(e.event_type) + ' (' + esc(e.frequency) + '), verified against its official website on ' + esc(e.verification_date) + '.</p>' +
+    '<div class="evmeta"><span><b>Country</b> ' + esc(e.country) + '</span>' + (e.state ? '<span><b>Region</b> ' + esc(e.state) + '</span>' : '') + (e.city ? '<span><b>City</b> ' + esc(e.city) + '</span>' : '') + (e.next_dates ? '<span><b>Dates</b> ' + esc(e.next_dates) + '</span>' : '') + '<span><b>Status</b> ' + (status === 'Completed' ? '<span style="color:var(--muted);font-weight:700">Completed</span>' : '<span style="color:var(--green);font-weight:700">Upcoming</span>') + '</span></div>' +
+    '<p class="lead" style="margin-bottom:14px">A ' + esc(e.event_type) + ' (' + esc(e.frequency) + '), verified against its official website on ' + esc(e.verification_date) + (status === 'Completed' ? ' · <i>This edition has ended</i>' : '') + '.</p>' +
     (e.website ? '<a class="btn btn-amber" href="' + esc(e.website) + '" target="_blank" rel="noopener" data-track="event_register" data-track-event="' + esc(slug) + '">Official event website →</a>' : '') +
     travelButtons(e, slug) +
     '<h2>Exhibition record</h2><table>' +
     row('Event', e.event_name) + row('Organizer', e.organizer) + row('Country', e.country) + row('Region / state', e.state) + row('City', e.city) +
-    row('Event type', e.event_type) + row('Frequency', e.frequency) + row('Next edition', e.next_dates) + row('Venue', e.venue) +
+    row('Event type', e.event_type) + row('Frequency', e.frequency) + row('Edition status', status) + row('Dates', e.next_dates) + row('Venue', e.venue) +
     row('Exhibition area (sqm)', e.exhibition_area_sqm) + row('Exhibitors', e.exhibitor_count) + row('Visitors', e.visitor_count) +
     row('Transformer focus', e.transformer_focus) + row('Verification', e.verification_status + ' · ' + e.verification_date) +
     '</table>' +
@@ -138,7 +146,11 @@ function indexPage() {
       const curated = CURATED_SLUG[e.event_name];
       const href = curated && fs.existsSync('events/' + curated + '/index.html') ? 'events/' + curated + '/' : 'events/' + slugify(e.event_name) + '/';
       const focus = String(e.transformer_focus || '').split(' - ')[0];
-      return '<div class="ex-row" data-name="' + esc(e.event_name.toLowerCase()) + '" data-country="' + esc(e.country.toLowerCase()) + '" data-city="' + esc((e.city || '').toLowerCase()) + '" data-org="' + esc((e.organizer || '').toLowerCase()) + '"><div class="ex-top"><a class="ex-name" href="' + href + '">' + esc(e.event_name) + '</a><span class="ex-focus">' + esc(focus) + '</span></div>' +
+      const status = getEventStatus(e);
+      const statusBadge = status === 'Completed'
+        ? '<span style="display:inline-block;background:#1d2330;color:#9fb0c4;font-size:.72rem;font-weight:700;padding:1px 7px;border-radius:6px;margin-left:6px">Completed</span>'
+        : '<span style="display:inline-block;background:rgba(34,197,94,.15);color:#4ade80;font-size:.72rem;font-weight:700;padding:1px 7px;border-radius:6px;margin-left:6px">Upcoming</span>';
+      return '<div class="ex-row" data-name="' + esc(e.event_name.toLowerCase()) + '" data-country="' + esc(e.country.toLowerCase()) + '" data-city="' + esc((e.city || '').toLowerCase()) + '" data-org="' + esc((e.organizer || '').toLowerCase()) + '"><div class="ex-top"><a class="ex-name" href="' + href + '">' + esc(e.event_name) + '</a><span class="ex-focus">' + esc(focus) + '</span>' + statusBadge + '</div>' +
         '<div class="ex-meta">' + esc(e.city) + (e.state ? ', ' + esc(e.state) : '') + ' · ' + esc(e.event_type) + ' · ' + esc(e.frequency) + ' · ' + esc(e.next_dates) + (e.venue ? ' · ' + esc(e.venue) : '') + '</div>' +
         '<div class="ex-src"><b>' + esc(e.organizer) + '</b> · ' + esc(e.verification_status) + '</div>' +
         (e.website ? '<a class="ex-site" href="' + esc(e.website) + '" target="_blank" rel="noopener">Official site ↗</a>' : '') +
@@ -154,7 +166,7 @@ function indexPage() {
     '<meta property="og:title" content="Transformer Exhibitions &amp; Conferences — Global Directory"><meta property="og:url" content="https://transformerpath.com/exhibitions.html">' +
     '<meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow">' +
     '<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">' +
-    '<link rel="stylesheet" href="style.css?v=5"><link rel="manifest" href="manifest.webmanifest">' +
+    '<link rel="stylesheet" href="style.css?v=12"><link rel="manifest" href="manifest.webmanifest">' +
     '<style>.ex-wrap{max-width:1000px;margin:0 auto;padding:44px 20px 90px}.ex-wrap h1{font-size:2rem;color:var(--ink)}.ex-wrap .lead{color:var(--muted);font-size:1.02rem;max-width:820px;margin:8px 0 26px}.ex-counts{display:flex;flex-wrap:wrap;gap:14px;margin:0 0 26px}.ex-counts .s{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 18px;text-align:center;min-width:110px}.ex-counts .s b{color:var(--text);font-size:1.4rem;display:block}.ex-counts .s small{color:var(--muted);font-size:.78rem;font-weight:600}.region-h{font-size:1.05rem;font-weight:800;color:var(--ink);text-transform:uppercase;letter-spacing:.05em;margin:26px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--border)}.ex-row{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:13px 16px;margin-bottom:10px}.ex-row .ex-top{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px}.ex-row .ex-name{color:var(--accent);font-weight:700;font-size:.98rem;text-decoration:none}.ex-row .ex-name:hover{text-decoration:underline}.ex-row .ex-focus{color:var(--muted);font-size:.76rem;font-weight:600}.ex-row .ex-meta{color:var(--muted);font-size:.85rem;margin:4px 0}.ex-row .ex-src{color:var(--muted);font-size:.8rem}.ex-row .ex-src b{color:var(--text)}.ex-row .ex-site{display:inline-block;color:var(--accent);font-size:.78rem;font-weight:600;margin-top:6px;text-decoration:none}.ex-row .ex-site:hover{text-decoration:underline}</style>' +
     '</head>\n<body>\n' + HEAD + '\n<main class="ex-wrap">' +
     '<h1>Transformer <span style="color:var(--accent)">Exhibitions</span> &amp; Conferences</h1>' +

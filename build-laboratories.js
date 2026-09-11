@@ -34,7 +34,7 @@ function render() {
 <meta property="og:description" content="Find accredited independent testing laboratories capable of transformer impulse, short-circuit and dielectric testing above 400 kV.">
 <meta property="og:url" content="https://transformerpath.com/laboratories.html">
 <meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
-<meta name="robots" content="index,follow">
+<meta name="robots" content="noindex,follow">
 <meta name="theme-color" content="#0d1b2e">
 <link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
 <link rel="stylesheet" href="style.css?v=12">
