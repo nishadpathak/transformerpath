@@ -184,26 +184,34 @@ a.plain:hover { text-decoration:underline; }
 <section class="hero" style="padding:50px 0 40px">
   <div class="container">
     <h1 style="font-size:2.2rem">Daily <span>Intel</span></h1>
-    <p>Transformer industry market intelligence · Updated daily</p>
+    <p>Curated transformer industry market intelligence &middot; Sourced global briefings</p>
   </div>
 </section>
 
 <div class="wrap">
-  <div class="stamp" id="stamp">Updated: 11 Sept 2026</div>
-  <script>/* Truthful freshness: show the canonical last-refresh date from data/freshness.json,
-     NOT the visitor's local "today". A new deployment is not new intelligence. */
+  <div class="stamp" id="stamp">Loading freshness status…</div>
+  <script>/* Truthful freshness: calculate tier (<36h: DATA CURRENT, 36-72h: REFRESH DELAYED, >72h: DATA STALE)
+     from canonical data/freshness.json, NOT the visitor's local clock. */
     (function () {
       var el = document.getElementById('stamp'); if (!el || !window.fetch) return;
       fetch('data/freshness.json', { cache: 'no-cache' }).then(function (r) { return r.json().catch(function () { return {}; }); }).then(function (d) {
         var di = (d.surfaces || []).find(function (s) { return s.id === 'daily_intel'; }) || {};
-        var date = di.last_data_refresh || di.last_successful_refresh || di.last_build;
-        if (!date) { el.textContent = 'Updated: —'; return; }
-        var dt = new Date(date); if (isNaN(dt)) { el.textContent = 'Updated: ' + date; return; }
-        var dstr = dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-        var href = dt.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
-        el.innerHTML = 'Updated: <b style="color:var(--text)">' + dstr + '</b>' +
-          (di.last_data_refresh === di.last_build ? '' : ' <span style="color:var(--muted);font-size:.8rem">· data refreshed ' + dstr + '</span>');
-      }).catch(function () { el.textContent = 'Updated: —'; });
+        var date = di.last_successful_refresh || di.last_data_refresh || di.last_build;
+        if (!date) { el.textContent = 'Status: DATA STALE · Refresh pending'; return; }
+        var dt = new Date(date);
+        var dstr = isNaN(dt.getTime()) ? date : dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+        var ageHours = !isNaN(dt.getTime()) ? (Date.now() - dt.getTime()) / (1000 * 60 * 60) : 0;
+        var statusLabel = 'DATA CURRENT';
+        var badgeColor = 'var(--ok)';
+        if (ageHours > 72) {
+          statusLabel = 'DATA STALE';
+          badgeColor = '#94a3b8';
+        } else if (ageHours > 36) {
+          statusLabel = 'REFRESH DELAYED';
+          badgeColor = 'var(--amber)';
+        }
+        el.innerHTML = '<span style="color:' + badgeColor + ';font-weight:800;letter-spacing:.5px">● ' + statusLabel + '</span> &middot; Last Refreshed: <b style="color:var(--text)">' + dstr + '</b>';
+      }).catch(function () { el.textContent = 'Status: Refreshed at build'; });
     })();
   </script>
   <div id="changelog-strip" style="display:none;background:#0f2a1e;border:1px solid #1e5c40;border-radius:8px;padding:8px 14px;margin:10px 0;font-size:.85rem;line-height:1.5"></div>

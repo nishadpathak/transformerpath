@@ -662,11 +662,11 @@
   <div class="container">
     <div class="hero-grid">
       <div class="hero-copy">
-        <div class="hero-live-pill">
-          <span class="live-dot" aria-hidden="true"></span>
-          <span class="live-badge-text">Platform Data Current</span>
+        <div class="hero-live-pill" id="hero-live-pill">
+          <span class="live-dot" id="hero-live-dot" aria-hidden="true"></span>
+          <span class="live-badge-text" id="hero-live-status">Platform Data Current</span>
           <span class="live-sep">&middot;</span>
-          <span data-tp-fresh="refreshed">Updated 11 Sep 2026</span>
+          <span id="hero-live-date" data-tp-fresh="refreshed">Refreshed 11 Sep 2026</span>
         </div>
         <h1>Where the world's <span>transformer industry</span> stays ahead.</h1>
         <p class="lead">Industry intelligence &middot; Engineering &middot; Manufacturers &middot; Markets &middot; Tools.</p>
@@ -676,16 +676,17 @@
         </div>
 
         <div class="hero-search-wrap">
-          <form action="directory.html" method="get" class="hero-search-form" role="search">
+          <form action="search.html" method="get" class="hero-search-form" role="search">
             <span class="hero-search-icon" aria-hidden="true">🔍</span>
-            <input type="search" name="q" placeholder="Search the global transformer industry…" autocomplete="off" required>
+            <input type="search" name="q" placeholder="Search companies, factories, components, grids, projects, tenders…" autocomplete="off" required>
             <button type="submit">Search Data →</button>
           </form>
           <div class="hero-search-pills">
-            <span class="pill-tag">Quick search:</span>
-            <a href="directory.html?q=765+kV" class="pill">765 kV manufacturers</a>
-            <a href="directory.html?q=Transformerboard" class="pill">Transformerboard</a>
-            <a href="directory.html?q=Saudi+Arabia" class="pill">Saudi Arabia</a>
+            <span class="pill-tag">Suggested:</span>
+            <a href="search.html?q=765+kV" class="pill">765 kV manufacturers</a>
+            <a href="search.html?q=Transformerboard" class="pill">Transformerboard suppliers</a>
+            <a href="search.html?q=OLTC" class="pill">OLTC manufacturers</a>
+            <a href="search.html?q=Saudi+Arabia" class="pill">Saudi Arabia</a>
             <a href="tenders.html?status=open" class="pill">Active tenders</a>
             <a href="laboratories.html" class="pill">Testing laboratories</a>
           </div>
@@ -943,13 +944,36 @@ document.querySelectorAll('#mainNav a').forEach(a=>a.addEventListener('click',()
         '<h3 style="font-size:1rem">'+esc(it.title)+'</h3><p>'+snip+'</p>'+
         (it.value?'<p class="g-val" style="margin-top:8px">'+esc(it.value)+'</p>':'')+'</a>';
     }).join('');
-    // Canonical refresh date (not the visitor's "today").
+    // Canonical refresh date & 3-tier freshness calculation
     fetch('data/freshness.json',{cache:'no-cache'}).then(function(r){ return r.json().catch(function(){ return {}; }); }).then(function(d){
-      if(!sub) return;
       const di=(d.surfaces||[]).find(function(s){ return s.id==='daily_intel'; })||{};
-      const date=di.last_data_refresh||di.last_successful_refresh||di.last_build;
-      const dstr=date?(function(){ var dt=new Date(date); return isNaN(dt)?date:dt.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}); })():'—';
-      sub.innerHTML='Latest briefing <b>'+dstr+'</b> — tenders, supplier news and material prices worldwide. Curated, refreshed at build. <a href="intel.html" style="color:var(--accent)">Read Daily Intel →</a>';
+      const date=di.last_successful_refresh||di.last_data_refresh||di.last_build;
+      if(!date) return;
+      const dt=new Date(date);
+      const dstr=isNaN(dt)?date:dt.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+      
+      // Calculate freshness tier: <36h: CURRENT, 36-72h: DELAYED, >72h: STALE
+      const ageHours = !isNaN(dt) ? (Date.now() - dt.getTime()) / (1000 * 60 * 60) : 0;
+      let statusLabel = 'DATA CURRENT';
+      let dotColor = '#1a9d4a';
+      if (ageHours > 72) {
+        statusLabel = 'DATA STALE';
+        dotColor = '#94a3b8';
+      } else if (ageHours > 36) {
+        statusLabel = 'REFRESH DELAYED';
+        dotColor = '#e0a800';
+      }
+
+      const pillStatus = document.getElementById('hero-live-status');
+      const pillDate = document.getElementById('hero-live-date');
+      const pillDot = document.getElementById('hero-live-dot');
+      if (pillStatus) pillStatus.textContent = statusLabel;
+      if (pillDate) pillDate.textContent = 'Refreshed ' + dstr;
+      if (pillDot) pillDot.style.background = dotColor;
+
+      if(sub){
+        sub.innerHTML='Latest briefing <b>'+dstr+'</b> ('+statusLabel+') — tenders, supplier news and material prices worldwide. Curated, refreshed at build. <a href="intel.html" style="color:var(--accent)">Read Daily Intel →</a>';
+      }
     }).catch(function(){});
   }).catch(()=>{});
 })();

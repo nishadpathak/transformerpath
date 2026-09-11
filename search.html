@@ -125,129 +125,299 @@
       themeToggle.textContent = isDark ? '☀️' : '🌙';
     }
   </script>
-  <script src="tp-nav.js?v=6" defer></script>
-</header>
-
-<div class="legal" style="max-width:820px">
-<h1>Search TransformerPath</h1>
-<p class="sub">One box for everything — news, events, webinars, manufacturers, grids and articles.</p>
+  <script src="tp-nav.js?v=6" defer></scr<div class="legal" style="max-width:920px">
+<h1>Search The Global Transformer Industry</h1>
+<p class="sub">Structured universal search across companies, manufacturing facilities, components, projects, tenders, grids, and technical specifications.</p>
 
 <div style="display:flex;gap:10px;margin-bottom:14px">
-  <input id="q" type="search" placeholder="Try: Hitachi, Saudi tender, CIGRE, cast resin, Türkiye…" style="flex:1;padding:14px 18px;border:2px solid var(--border);border-radius:10px;font-size:1.05rem;font-family:inherit" autofocus>
+  <input id="q" type="search" placeholder="Search companies, factories, components, grids, projects, tenders…" style="flex:1;padding:14px 18px;border:2px solid var(--border);border-radius:10px;font-size:1.05rem;font-family:inherit;background:var(--card);color:var(--text)" autofocus>
 </div>
-<div class="filters" id="srcFilters" style="justify-content:flex-start"></div>
+<div class="filters" id="srcFilters" style="justify-content:flex-start;display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px"></div>
 <p id="status" role="status" aria-live="polite" style="color:var(--muted);font-size:.9rem;margin-bottom:18px"></p>
 <div id="results" role="region" aria-label="Search results" aria-live="polite"></div>
+
+<style>
+.entity-group { margin-bottom: 24px; }
+.entity-group-title { font-size: .8rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 6px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+.entity-group-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
+.sr-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; justify-content: space-between; text-decoration: none; color: inherit; transition: border-color .15s, transform .15s; }
+.sr-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.sr-title { font-size: .98rem; font-weight: 700; color: var(--ink); margin: 0 0 4px; }
+.sr-tag { font-size: .74rem; color: var(--muted); margin-bottom: 6px; }
+.sr-snippet { font-size: .84rem; color: var(--text); line-height: 1.45; }
+.sr-empty { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 32px 24px; text-align: center; }
+.sr-empty-title { font-size: 1.15rem; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+.sr-empty-desc { font-size: .9rem; color: var(--muted); max-width: 500px; margin: 0 auto 18px; line-height: 1.5; }
+</style>
 
 <script>
 (function(){
   const SOURCES = {
-    intel:   { label:"📰 Intel",         on:true },
-    events:  { label:"📅 Events",        on:true },
-    webinars:{ label:"🎥 Webinars",      on:true },
-    makers:  { label:"🏭 Manufacturers", on:true },
-    directory:{ label:"🔍 Directory",   on:true },
-    topics:  { label:"📚 Topics",         on:true },
-    grids:   { label:"🌐 Grids",         on:true },
-    blog:    { label:"✍️ Blog",          on:true }
+    companies: { label:"🏭 Companies & Plants", on:true, group:"COMPANIES & OEMS" },
+    projects:  { label:"🏗️ Projects & Tenders", on:true, group:"PROJECTS & TENDERS" },
+    components:{ label:"🔩 Components & Materials", on:true, group:"COMPONENTS & MATERIALS" },
+    labs:      { label:"🧪 Labs & Machinery", on:true, group:"MACHINERY & TESTING LABS" },
+    grids:     { label:"🌐 Grids & Utilities", on:true, group:"NATIONAL GRIDS & UTILITIES" },
+    intel:     { label:"📰 Daily Intel", on:true, group:"INTELLIGENCE & BRIEFINGS" },
+    events:    { label:"📅 Events", on:true, group:"EVENTS & EXHIBITIONS" }
   };
-  let INDEX = null, loading = false, EVENT_EDITIONS = null;
-
-  function grab(txt, name){
-    const m = txt.match(new RegExp('const '+name+' = ([\\[{][\\s\\S]*?[\\]}]);\\s*\\n'));
-    if(!m) return null;
-    try { return (new Function('return '+m[1]))(); } catch(e){ return null; }
-  }
+  let INDEX = null, loading = false;
 
   function buildIndex(){
     if(INDEX || loading) return Promise.resolve(INDEX);
     loading = true;
-    document.getElementById('status').textContent = 'Loading the live index…';
-    const get = f => fetch(f,{cache:'no-cache'}).then(r=>r.text()).catch(()=>'');
-    return Promise.all([get('intel.html'),get('events.html'),get('webinars.html'),get('manufacturers.html'),get('grids.html'),get('blog.html'),get('data/directory-index.json'),get('data/topic-index.json'),get('data/event-series.json')]).then(([ti,te,tw,tm,tg,tb,td,tj,tes])=>{
+    document.getElementById('status').textContent = 'Loading canonical industry index…';
+    const get = f => fetch(f,{cache:'no-cache'}).then(r=>r.json()).catch(()=>null);
+    return Promise.all([
+      get('data/directory-index.json'),
+      get('data/projects.json'),
+      get('data/tenders.json'),
+      get('data/components-deep-dive.json'),
+      get('data/grids.json'),
+      get('data/laboratories.json'),
+      get('data/machinery.json'),
+      get('data/intel.json'),
+      get('data/events.json')
+    ]).then(([td, tp, tt, tc, tg, tl, tm, ti, te])=>{
       const ix = [];
-      const NEWS = grab(ti,'NEWS');
-      if(NEWS) Object.keys(NEWS).forEach(rk=> (NEWS[rk].items||[]).forEach(it=>
-        ix.push({s:'intel', t:it.title, x:(it.snippet||'')+' '+(it.value||''), href:'intel.html', tag:rk})));
-      const EVENTS = grab(te,'EVENTS');
-      if(EVENTS) EVENTS.forEach(e=> ix.push({s:'events', t:e.n, x:[e.c,e.co,e.r,e.v,e.d,e.s].join(' '), href:'events.html', tag:(e.s||'').slice(0,7)}));
-      const WEBINARS = grab(tw,'WEBINARS');
-      if(WEBINARS) WEBINARS.forEach(w=> ix.push({s:'webinars', t:w.n, x:[w.d,w.r,w.fmt,(w.lang||[]).join(' ')].join(' '), href:'webinars.html', tag:w.t}));
-      const MAKERS = grab(tm,'DATA');
-      if(MAKERS && MAKERS[0] && MAKERS[0].makers) MAKERS.forEach(c=> (c.makers||[]).forEach(mk=>
-        ix.push({s:'makers', t:mk[0], x:[mk[1],c.country,c.region,mk[3]].join(' '), href:'manufacturers.html', tag:c.country})));
-      // Structured directory capability index (reuses canonical records).
-      try { const DJ = JSON.parse(td||'{}'); (DJ.companies||[]).forEach(c=>{
-        if(!c || !c.name) return;
-        const types = [];
-        ['power','distribution','dry_type','special'].forEach(t=> Object.keys((c.transformer_types&&c.transformer_types[t])||{}).forEach(k=>{ if(k!=='__present') types.push(k.replace(/_/g,' ')); }));
-        const fac = (c.factories||[]).map(f=>(f.city||'')+' '+(f.country||'')).join(' ');
-        const roles = (c.roles || []).join(' ');
-        const targetHref = c.canonical_id ? ('company.html?id=' + encodeURIComponent(c.canonical_id)) : (c.slug ? ('company.html?c=' + encodeURIComponent(c.slug)) : ('company.html?id=' + encodeURIComponent(c.id)));
-        ix.push({s:'directory', t:c.name, x:[c.country,c.region,roles,(c.capability_labels||[]).join(' '),types.join(' '),c.voltage&&c.voltage.value,c.mva&&c.mva.value,(c.certs||[]).join(' '),fac].join(' '), href:targetHref, tag:c.country});
-      }); } catch(e){}
-      // Topic hubs (searchable entity).
-      try { const TJ = JSON.parse(tj||'{}'); (TJ.topics||[]).forEach(tp=>{
-        if(!tp || !tp.label) return;
-        ix.push({s:'topics', t:tp.label, x:[tp.label, tp.topic, tp.type].join(' '), href:'topics/'+tp.topic+'/', tag:'Topic'});
-      }); } catch(e){}
-      // Canonical event editions (series -> edition) from data/event-series.json.
-      try { const ESJ = JSON.parse(tes||'{}'); EVENT_EDITIONS = [];
-        (ESJ.series||[]).forEach(s=> (s.editions||[]).forEach(ed=> EVENT_EDITIONS.push(Object.assign({}, ed, { series:s.name, seriesKey:s.key, seriesSlug:s.seriesSlug, href:s.href || ('/events/'+s.seriesSlug+'/'), categories:ed.categories||[] }))));
-      } catch(e){}
-      const GRIDS = grab(tg,'DATA');
-      if(GRIDS && GRIDS[0] && GRIDS[0].grids) GRIDS.forEach(c=>{
-        const names = (c.grids||[]).map(g=> typeof g==='object' ? Object.values(g).filter(v=>typeof v==='string').join(' ') : String(g)).join(' ');
-        ix.push({s:'grids', t:c.country+' — grid & operators', x:[names,c.region,c.freq+' Hz',c.sync].join(' '), href:'grids.html', tag:(c.freq||'')+' Hz'});
-      });
-      const POSTS = grab(tb,'POSTS');
-      if(POSTS) POSTS.forEach(p=> ix.push({s:'blog', t:p.title, x:p.excerpt||'', href:p.file, tag:p.label}));
-      INDEX = ix; loading = false;
-      document.getElementById('status').textContent = ix.length + ' items indexed, live from today’s site.';
+
+      // 1. Companies & Plants
+      if(td && td.companies) {
+        td.companies.forEach(c => {
+          if(!c || !c.name) return;
+          const fac = (c.factories||[]).map(f=>(f.city||'')+' '+(f.country||'')).join(' ');
+          const types = (c.capability_labels||[]).join(' ');
+          const kv = c.voltage && c.voltage.value ? (c.voltage.value + ' kV') : '';
+          const mva = c.mva && c.mva.value ? (c.mva.value + ' MVA') : '';
+          const slug = c.slug || c.id.replace('cmp:', '');
+          ix.push({
+            s: 'companies',
+            t: c.name,
+            x: [c.country, c.region, types, kv, mva, fac, (c.certs||[]).join(' ')].join(' '),
+            href: 'manufacturers/' + slug + '/',
+            tag: c.country + (kv ? ' · ' + kv : ''),
+            desc: types || 'Transformer Manufacturer'
+          });
+        });
+      }
+
+      // 2. Projects & Tenders
+      if(tp && tp.projects) {
+        tp.projects.forEach(p => {
+          ix.push({
+            s: 'projects',
+            t: p.name || p.title,
+            x: [p.country, p.utility, p.status, p.voltage, p.scope].join(' '),
+            href: 'projects.html?q=' + encodeURIComponent(p.name || p.title),
+            tag: (p.country || '') + (p.status ? ' · ' + p.status.toUpperCase() : ''),
+            desc: (p.utility ? p.utility + ' · ' : '') + (p.scope || p.voltage || '')
+          });
+        });
+      }
+      if(tt && tt.tenders) {
+        tt.tenders.forEach(t => {
+          ix.push({
+            s: 'projects',
+            t: t.title || t.name,
+            x: [t.country, t.authority, t.status, t.scope].join(' '),
+            href: 'tenders.html',
+            tag: (t.country || '') + ' · TENDER ' + (t.status || '').toUpperCase(),
+            desc: (t.authority ? t.authority + ' · ' : '') + (t.scope || '')
+          });
+        });
+      }
+
+      // 3. Components & Materials
+      if(tc && tc.categories) {
+        tc.categories.forEach(cat => {
+          ix.push({
+            s: 'components',
+            t: cat.name,
+            x: [cat.scope, (cat.suppliers||[]).map(s=>s.name+' '+s.country).join(' ')].join(' '),
+            href: 'components/' + (cat.id==='bushings'?'transformer-bushings.html':cat.id==='tap-changers'?'on-load-tap-changers.html':cat.id==='radiators'?'transformer-cooling.html':'insulation-materials.html'),
+            tag: 'Category Standard',
+            desc: cat.scope
+          });
+          (cat.suppliers || []).forEach(s => {
+            ix.push({
+              s: 'components',
+              t: s.name + ' (' + cat.name + ')',
+              x: [s.country, s.city, s.description, cat.name].join(' '),
+              href: s.website || 'components.html',
+              tag: s.country + ' · Supplier',
+              desc: s.description || cat.name + ' supplier'
+            });
+          });
+        });
+      }
+
+      // 4. Labs & Machinery
+      if(tl && tl.laboratories) {
+        tl.laboratories.forEach(l => {
+          ix.push({
+            s: 'labs',
+            t: l.name,
+            x: [l.country, l.city, l.type, (l.capabilities||[]).join(' ')].join(' '),
+            href: 'laboratories.html',
+            tag: l.country + ' · Testing Lab',
+            desc: (l.capabilities||[]).slice(0,3).join(' · ') || 'High-Voltage Laboratory'
+          });
+        });
+      }
+      if(tm && tm.machinery) {
+        tm.machinery.forEach(m => {
+          ix.push({
+            s: 'labs',
+            t: m.name,
+            x: [m.country, m.category, m.description].join(' '),
+            href: 'machinery.html',
+            tag: m.country + ' · Machinery',
+            desc: m.category || m.description
+          });
+        });
+      }
+
+      // 5. Grids & Utilities
+      if(tg && Array.isArray(tg)) {
+        tg.forEach(g => {
+          const names = (g.grids||[]).map(x=> typeof x==='object'?Object.values(x).join(' '):String(x)).join(' ');
+          ix.push({
+            s: 'grids',
+            t: g.country + ' National Grid',
+            x: [names, g.region, g.freq + ' Hz', g.sync].join(' '),
+            href: 'grids.html',
+            tag: g.freq + ' Hz · ' + g.region,
+            desc: names || 'Grid transmission system'
+          });
+        });
+      }
+
+      // 6. Intel
+      if(ti) {
+        Object.keys(ti).forEach(rk => {
+          (ti[rk].items || []).forEach(item => {
+            ix.push({
+              s: 'intel',
+              t: item.title,
+              x: [item.snippet, item.value, item.src, rk].join(' '),
+              href: item.url || 'intel.html',
+              tag: rk + (item.value ? ' · ' + item.value : ''),
+              desc: item.snippet
+            });
+          });
+        });
+      }
+
+      // 7. Events
+      if(te && Array.isArray(te)) {
+        te.forEach(ev => {
+          ix.push({
+            s: 'events',
+            t: ev.n,
+            x: [ev.c, ev.co, ev.r, ev.s].join(' '),
+            href: ev.u || 'events.html',
+            tag: (ev.s||'').slice(0,10) + ' · ' + ev.co,
+            desc: ev.c + ', ' + ev.co
+          });
+        });
+      }
+
+      INDEX = ix;
+      loading = false;
+      document.getElementById('status').textContent = ix.length + ' verified canonical records indexed.';
       return ix;
     });
   }
 
   const fh = document.getElementById('srcFilters');
-  Object.keys(SOURCES).forEach(k=>{
-    const b=document.createElement('button'); b.textContent=SOURCES[k].label; b.className='on';
-    b.onclick=()=>{ SOURCES[k].on=!SOURCES[k].on; b.classList.toggle('on'); run(); };
+  Object.keys(SOURCES).forEach(k => {
+    const b = document.createElement('button');
+    b.textContent = SOURCES[k].label;
+    b.className = 'btn btn-outline btn-sm on';
+    b.style.fontSize = '.8rem';
+    b.style.padding = '4px 10px';
+    b.onclick = () => {
+      SOURCES[k].on = !SOURCES[k].on;
+      b.classList.toggle('on');
+      b.style.opacity = SOURCES[k].on ? '1' : '0.5';
+      run();
+    };
     fh.appendChild(b);
   });
 
-  const esc=s=>String(s||'').replace(/</g,'&lt;');
+  const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
   function run(){
     const q = document.getElementById('q').value.trim().toLowerCase();
     const host = document.getElementById('results');
-    if(q.length<2){ host.innerHTML=''; return; }
-    buildIndex().then(ix=>{
-      const words = q.split(/\s+/);
-      const hits = ix.filter(it=> SOURCES[it.s].on && words.every(w=> (it.t+' '+it.x).toLowerCase().includes(w)));
-      document.getElementById('status').textContent = hits.length + ' result' + (hits.length===1?'':'s') + ' for “' + q + '”';
-      // Event-intent resolution: series queries default to the nearest UPCOMING
-      // edition. Pure lifecycle/date intent — SEO score, sponsorship, Featured
-      // or payment NEVER override it.
-      let eventCards = '';
-      try {
-        if (typeof TP_EVENT_SEARCH !== 'undefined' && EVENT_EDITIONS && EVENT_EDITIONS.length) {
-          const es = TP_EVENT_SEARCH.resolve(q, EVENT_EDITIONS);
-          if (es.type === 'edition' && es.primary) {
-            eventCards = TP_EVENT_SEARCH.renderCard(es.primary, { primary:true });
-            eventCards += (es.ranked||[]).slice(0,3).filter(e=> e !== es.primary).map(e=> TP_EVENT_SEARCH.renderCard(e, {})).join('');
-          } else if (es.type === 'series_only' && es.series) {
-            eventCards = '<div class="sr-item es-series-page"><span class="sr-src">EVENT SERIES</span><span class="sr-t">'+esc(es.series.series)+'</span><span class="sr-x">'+esc(es.note||'Next edition: not yet announced')+' — most-recent past editions below.</span></div>';
-            eventCards += (es.ranked||[]).slice(0,3).map(e=> TP_EVENT_SEARCH.renderCard(e, {})).join('');
-          }
-        }
-      } catch(e5){}
-      host.innerHTML = (eventCards ? '<div class="es-block">'+eventCards+'</div>' : '') +
-        hits.slice(0,60).map(it=>
-        '<a class="sr-item" href="'+it.href+'"><span class="sr-src">'+SOURCES[it.s].label+(it.tag?' · '+esc(it.tag):'')+'</span><span class="sr-t">'+esc(it.t)+'</span><span class="sr-x">'+esc(String(it.x).slice(0,160))+'</span></a>'
-      ).join('') + (hits.length>60 ? '<p style="color:var(--muted)">Showing first 60 — refine your search.</p>' : '');
+    if(q.length < 2) { host.innerHTML = ''; return; }
+
+    buildIndex().then(ix => {
+      const words = q.split(/\s+/).filter(Boolean);
+      const hits = ix.filter(it => SOURCES[it.s].on && words.every(w => (it.t + ' ' + it.x).toLowerCase().includes(w)));
+      document.getElementById('status').textContent = hits.length + ' record' + (hits.length === 1 ? '' : 's') + ' found for “' + q + '”';
+
+      if(hits.length === 0) {
+        host.innerHTML = `
+          <div class="sr-empty">
+            <div style="font-size:2rem;margin-bottom:8px">🔍</div>
+            <div class="sr-empty-title">No direct records found for “${esc(q)}”</div>
+            <div class="sr-empty-desc">Check spelling, try searching by voltage class (e.g. 765 kV, 400 kV), component category (e.g. OLTC, Bushings, Transformerboard), or submit an RFQ to match suppliers worldwide.</div>
+            <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+              <a class="btn btn-amber btn-sm" href="rfq.html">Submit Technical RFQ →</a>
+              <a class="btn btn-outline btn-sm" href="directory.html">Browse All Directory →</a>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      // Group hits by entity category
+      const groups = {};
+      hits.forEach(it => {
+        const grp = SOURCES[it.s].group || 'OTHER';
+        (groups[grp] = groups[grp] || []).push(it);
+      });
+
+      let htmlOut = '';
+      Object.keys(groups).forEach(gName => {
+        const items = groups[gName].slice(0, 8);
+        htmlOut += `
+          <div class="entity-group">
+            <div class="entity-group-title">
+              <span>${esc(gName)}</span>
+              <span style="font-size:.74rem;color:var(--muted)">${groups[gName].length} match${groups[gName].length===1?'':'es'}</span>
+            </div>
+            <div class="entity-group-grid">
+              ${items.map(it => `
+                <a class="sr-card" href="${esc(it.href)}" ${it.href.startsWith('http')?'target="_blank" rel="noopener"':''}>
+                  <div>
+                    <div class="sr-tag">${esc(it.tag)}</div>
+                    <div class="sr-title">${esc(it.t)}</div>
+                    <div class="sr-snippet">${esc(String(it.desc).slice(0, 130))}${it.desc && it.desc.length > 130 ? '…' : ''}</div>
+                  </div>
+                  <div style="font-size:.76rem;color:var(--accent);font-weight:700;margin-top:10px">View Record →</div>
+                </a>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      });
+
+      host.innerHTML = htmlOut;
     });
   }
-  let deb; document.getElementById('q').addEventListener('input',()=>{ clearTimeout(deb); deb=setTimeout(run,250); });
-  document.getElementById('q').addEventListener('focus',buildIndex,{once:true});
+
+  let deb;
+  document.getElementById('q').addEventListener('input', () => { clearTimeout(deb); deb = setTimeout(run, 200); });
+  document.getElementById('q').addEventListener('focus', buildIndex, { once: true });
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const initialQ = urlParams.get('q');
+  if(initialQ) {
+    document.getElementById('q').value = initialQ;
+    buildIndex().then(run);
+  }
 })();
 </script>
 <style>
