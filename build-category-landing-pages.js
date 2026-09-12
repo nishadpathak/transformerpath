@@ -32,6 +32,13 @@ function esc(s) {
     .replace(/"/g, '&quot;');
 }
 
+function safeUrl(u) {
+  if (!u) return '';
+  const s = String(u).trim();
+  if (/^https?:\/\/[a-z0-9]/i.test(s)) return s;
+  return '';
+}
+
 function slugify(s) {
   return String(s || '').normalize('NFKD')
     .replace(/[\u0300-\u036f]/g, '').toLowerCase().trim()
@@ -304,7 +311,8 @@ CATEGORY_PAGES.forEach(function (cat) {
 
   const supplierRows = suppliers.map(s => {
     const loc = [s.city, s.country].filter(Boolean).join(', ');
-    const siteLink = s.website ? `<a href="${esc(s.website)}" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a>` : '<span style="color:var(--muted)">—</span>';
+    const site = safeUrl(s.website);
+    const siteLink = site ? `<a href="${esc(site)}" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a>` : '<span style="color:var(--muted)">—</span>';
     const slug = slugify(s.name);
     const hasProfile = fs.existsSync(`accessories/${slug}/index.html`);
     const nameLink = hasProfile ? `<a href="../../accessories/${slug}/" style="color:var(--text);font-weight:700">${esc(s.name)}</a>` : `<b style="color:var(--text)">${esc(s.name)}</b>`;
@@ -366,7 +374,7 @@ CATEGORY_PAGES.forEach(function (cat) {
 <meta property="og:url" content="${cat.canonicalUrl}">
 <meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
 <meta name="robots" content="index,follow">
-<link rel="stylesheet" href="../../style.css?v=12">
+<link rel="stylesheet" href="../../style.css?v=13">
 <link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">
 <link rel="apple-touch-icon" href="../../brand/apple-touch-icon.png">
 <script type="application/ld+json">${JSON.stringify(jsonLd)}</script>
