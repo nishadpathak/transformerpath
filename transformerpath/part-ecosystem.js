@@ -1187,7 +1187,220 @@
         { name: 'IT OEMs', role: 'Complete secondary interface', url: 'manufacturers.html' }
       ],
       sourceHint: 'Small but critical sourced accessory — shorting provision is non-negotiable.'
-    })
+    }),
+
+    entry({
+      id: 'cooling-fans', family: 'power',
+      match: ['Cooling fans', 'ONAF fans', 'cooling fan'],
+      title: 'Cooling fans (ONAF)',
+      marketNote: 'Fan groups are bought-in cooling plant — staged by WTI. Spec by airflow, IP, noise and voltage.',
+      components: [
+        { name: 'Axial fans & guards', note: 'ONAF stage groups' },
+        { name: 'Fan contactors / VFDs', note: 'Marshalling / cooler control' }
+      ],
+      machinery: [
+        { name: 'Cooler assembly line', note: 'Fan + radiator skid build' }
+      ],
+      manufacturers: [
+        { name: 'Hitachi Energy', role: 'Cooling package', url: 'manufacturers.html' },
+        { name: 'Siemens Energy', role: 'Cooling package', url: 'manufacturers.html' },
+        { name: 'SGB-SMIT Group', role: 'Cooling package', url: 'manufacturers.html' }
+      ],
+      sourceHint: 'Fans are a high-velocity sourced accessory — feature your brand on the 3D hotspot.'
+    }),
+    entry({
+      id: 'radiator-valves', family: 'power',
+      match: ['Radiator butterfly valves', 'radiator valves', 'butterfly valves'],
+      title: 'Radiator butterfly valves',
+      marketNote: 'Tank-wall valves isolate radiator banks for transport and change-out without a full drain.',
+      components: [
+        { name: 'Butterfly valves', note: 'DN matching collector flanges' },
+        { name: 'Gaskets & fasteners', note: 'Oil-resistant' }
+      ],
+      machinery: [{ name: 'Valve assembly / hydro test', note: 'Leak test' }],
+      manufacturers: [
+        { name: 'Hitachi Energy', role: 'Cooling BOM', url: 'manufacturers.html' },
+        { name: 'Siemens Energy', role: 'Cooling BOM', url: 'manufacturers.html' }
+      ],
+      sourceHint: 'Valves ship with radiator packages or as spares — directory-linked OEMs and valve specialists.'
+    }),
+    entry({
+      id: 'mog', family: 'power',
+      match: ['Magnetic oil-level gauges', 'MOG', 'oil-level gauge'],
+      title: 'Magnetic oil-level gauges (MOG)',
+      marketNote: 'One MOG per conservator compartment with alarm contacts to SCADA.',
+      components: [
+        { name: 'Magnetic level gauge', note: 'Alarm / trip contacts' },
+        { name: 'Float & dial assembly', note: 'Conservator end' }
+      ],
+      machinery: [{ name: 'Gauge calibration', note: 'Contact set points' }],
+      manufacturers: [
+        { name: 'Hitachi Energy', role: 'Protection accessories', url: 'manufacturers.html' },
+        { name: 'Siemens Energy', role: 'Protection accessories', url: 'manufacturers.html' }
+      ],
+      sourceHint: 'Classic bought-in accessory — Qualitrol/Messko-class ecosystem.'
+    }),
+    entry({
+      id: 'air-cell', family: 'power',
+      match: ['Air-cell / bladder indicator', 'air cell', 'rubber bag indicator'],
+      title: 'Air-cell / bladder indicator',
+      marketNote: 'Signals rubber-bag integrity in the conservator — a collapsed bag is a moisture path.',
+      components: [
+        { name: 'Air cell / rubber bag', note: 'Conservator bladder' },
+        { name: 'Bag-collapse indicator', note: 'End-of-bag sensor' }
+      ],
+      machinery: [{ name: 'Conservator bag fitment', note: 'Leak / pressure test' }],
+      manufacturers: [
+        { name: 'Hitachi Energy', role: 'Conservator system', url: 'manufacturers.html' },
+        { name: 'SGB-SMIT Group', role: 'Conservator system', url: 'manufacturers.html' }
+      ],
+      sourceHint: 'Bag and indicator are sourced with the conservator package.'
+    }),
+    entry({
+      id: 'rs-relay', family: 'power',
+      match: ['OLTC oil-surge (RS) relay', 'RS relay', 'oil-surge relay'],
+      title: 'OLTC oil-surge (RS) relay',
+      marketNote: 'Instant trip on diverter oil surge — separate pipe from main Buchholz.',
+      components: [
+        { name: 'Oil-surge relay', note: 'OLTC pipe' },
+        { name: 'Isolating valves', note: 'In-service test' }
+      ],
+      machinery: [{ name: 'Relay test bench', note: 'Trip calibration' }],
+      manufacturers: [
+        { name: 'Hitachi Energy', role: 'OLTC protection', url: 'manufacturers.html' },
+        { name: 'Siemens Energy', role: 'OLTC protection', url: 'manufacturers.html' }
+      ],
+      sourceHint: 'Messko/Qualitrol-class bought-in device on virtually every power datasheet.'
+    }),
+    entry({
+      id: 'sudden-pressure', family: 'power',
+      match: ['Sudden pressure / rapid-rise relay', 'sudden pressure', 'SPR', 'rapid-rise'],
+      title: 'Sudden pressure relay',
+      marketNote: 'Detects fast tank pressure rise from internal arcing — complements Buchholz.',
+      components: [
+        { name: 'Sudden pressure relay', note: 'Tank-wall mount' },
+        { name: 'Pressure sensing element', note: 'Rapid-rise' }
+      ],
+      machinery: [{ name: 'Protection panel wiring', note: 'Trip circuits' }],
+      manufacturers: [
+        { name: 'Hitachi Energy', role: 'Tank protection', url: 'manufacturers.html' },
+        { name: 'Siemens Energy', role: 'Tank protection', url: 'manufacturers.html' }
+      ],
+      sourceHint: 'Specify alongside PRDs and Buchholz in the protection schedule.'
+    }),
+    entry({
+      id: 'bushing-cts', family: 'power',
+      match: ['Bushing CT rings', 'bushing CT', 'turret CT'],
+      title: 'Bushing CT rings',
+      marketNote: 'Multi-ratio ring CTs inside HV turrets for differential, REF and backup.',
+      components: [
+        { name: 'Ring-type bushing CTs', note: 'Ratio / class / ID-OD' },
+        { name: 'Secondary shorting terminals', note: 'Safety-critical' }
+      ],
+      machinery: [{ name: 'CT winding / casting', note: 'Ring CT manufacture' }],
+      manufacturers: [
+        { name: 'Hitachi Energy', role: 'Instrument transformers', url: 'manufacturers.html' },
+        { name: 'Siemens Energy', role: 'Instrument transformers', url: 'manufacturers.html' }
+      ],
+      sourceHint: 'Often a separate RFQ line from the bushing itself — open the CT 3D explorer for detail.',
+      detail3d: 'ct3d.html'
+    }),
+    entry({
+      id: 'oltc-drive', family: 'power',
+      match: ['OLTC motor-drive cabinet', 'motor-drive', 'OLTC drive'],
+      title: 'OLTC motor-drive cabinet',
+      marketNote: 'Motor drive with hand-crank — steps the tap range under AVR / parallel control.',
+      components: [
+        { name: 'Motor-drive mechanism', note: 'With hand crank' },
+        { name: 'Position contacts', note: 'SCADA / AVR' }
+      ],
+      machinery: [{ name: 'Drive FAT / timing test', note: 'Operations counter' }],
+      manufacturers: [
+        { name: 'Hitachi Energy', role: 'OLTC drives', url: 'manufacturers.html' },
+        { name: 'Siemens Energy', role: 'OLTC drives', url: 'manufacturers.html' }
+      ],
+      sourceHint: 'Drive cabinet is a distinct sourced accessory from the diverter body.'
+    }),
+    entry({
+      id: 'oltc-filter', family: 'power',
+      match: ['OLTC oil filter unit', 'OLTC filter', 'tap-changer filter'],
+      title: 'OLTC oil filter unit',
+      marketNote: 'Keeps diverter oil clean — extends vacuum-bottle and contact life.',
+      components: [
+        { name: 'OLTC oil filter', note: 'Online or offline' },
+        { name: 'Filter cartridges', note: 'Consumable' }
+      ],
+      machinery: [{ name: 'Oil processing skid', note: 'Filter / degas' }],
+      manufacturers: [
+        { name: 'Hitachi Energy', role: 'OLTC accessories', url: 'manufacturers.html' },
+        { name: 'Siemens Energy', role: 'OLTC accessories', url: 'manufacturers.html' }
+      ],
+      sourceHint: 'Popular aftermarket / upgrade accessory for ageing fleets.'
+    }),
+    entry({
+      id: 'online-dga', family: 'power',
+      match: ['Online DGA monitor', 'online DGA', 'DGA monitor'],
+      title: 'Online DGA monitor',
+      marketNote: 'Multi-gas online DGA — early-warning analytics on oil health.',
+      components: [
+        { name: 'Multi-gas DGA monitor', note: 'H₂, C₂H₂, CO, moisture' },
+        { name: 'Oil sampling loop', note: 'Tank connection' }
+      ],
+      machinery: [{ name: 'Monitor commissioning', note: 'Baseline DGA' }],
+      manufacturers: [
+        { name: 'Hitachi Energy', role: 'Monitoring package', url: 'manufacturers.html' },
+        { name: 'Siemens Energy', role: 'Monitoring package', url: 'manufacturers.html' }
+      ],
+      sourceHint: 'High-value monitoring accessory — strong sponsor slot on the 3D model.'
+    }),
+    entry({
+      id: 'oti-wti', family: 'power',
+      match: ['OTI / WTI temperature devices', 'OTI', 'WTI', 'winding temperature'],
+      title: 'OTI / WTI temperature devices',
+      marketNote: 'Oil and winding temperature indicators with alarm/trip and cooler stage outputs.',
+      components: [
+        { name: 'OTI / WTI instruments', note: 'Pockets + capillaries or digital' },
+        { name: 'Cooler stage relays', note: 'Fan / pump control' }
+      ],
+      machinery: [{ name: 'Instrument calibration', note: 'Trip set-points' }],
+      manufacturers: [
+        { name: 'Hitachi Energy', role: 'Temperature devices', url: 'manufacturers.html' },
+        { name: 'Siemens Energy', role: 'Temperature devices', url: 'manufacturers.html' }
+      ],
+      sourceHint: 'Split from marshalling so buyers can source gauges independently.'
+    }),
+    entry({
+      id: 'fibre-probes', family: 'power',
+      match: ['Fibre-optic winding temperature probes', 'fibre-optic', 'hotspot probes'],
+      title: 'Fibre-optic winding temperature probes',
+      marketNote: 'Direct hotspot probes in the winding — complements thermal-image WTI.',
+      components: [
+        { name: 'Fibre-optic probes', note: 'Winding hotspot' },
+        { name: 'Interrogator / monitor', note: 'Control cabinet' }
+      ],
+      machinery: [{ name: 'Probe installation during wind', note: 'Coil shop' }],
+      manufacturers: [
+        { name: 'Hitachi Energy', role: 'Monitoring', url: 'manufacturers.html' },
+        { name: 'Siemens Energy', role: 'Monitoring', url: 'manufacturers.html' }
+      ],
+      sourceHint: 'Specify at winding stage — hard to retrofit deep in the coil.'
+    }),
+    entry({
+      id: 'haulage-wheels', family: 'power',
+      match: ['Haulage wheels', 'skid rollers', 'haulage'],
+      title: 'Haulage wheels / skid rollers',
+      marketNote: 'Flanged wheels or rollers for rail / trailer moves — often removed after install.',
+      components: [
+        { name: 'Flanged haulage wheels', note: 'Rail gauge options' },
+        { name: 'Skid rollers', note: 'Site moves' }
+      ],
+      machinery: [{ name: 'Undercarriage fitment', note: 'Tank shop' }],
+      manufacturers: [
+        { name: 'Hitachi Energy', role: 'Tank accessories', url: 'manufacturers.html' },
+        { name: 'SGB-SMIT Group', role: 'Tank accessories', url: 'manufacturers.html' }
+      ],
+      sourceHint: 'Mechanical accessory line — often rented or project-supplied.'
+    }),
   ];
 
   function inferFamily(partName) {

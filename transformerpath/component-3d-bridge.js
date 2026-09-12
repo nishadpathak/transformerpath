@@ -78,6 +78,10 @@
     }
     html +=
       '<div style="margin-top:8px"><a class="tp-eco-link" href="manufacturers.html">All transformer manufacturers →</a> · ' +
+      '<a class="tp-eco-link" href="components.html">Components →</a> · ' +
+      '<a class="tp-eco-link" href="machinery.html">Machinery →</a> · ' +
+      '<a class="tp-eco-link" href="vendors.html">Suppliers →</a> · ' +
+      '<a class="tp-eco-link" href="grids.html">Grids / utilities →</a> · ' +
       '<a class="tp-eco-link" href="rfq.html">Request quote →</a></div>';
     html += '</div>';
     return html;
@@ -135,10 +139,16 @@
         );
       });
       html += listBlock('OEMs & specialists', eco.manufacturers, function (m) {
-        var name = m.url
+        var href = m.url || '';
+        if (root.TPDirectory && root.TPDirectory.resolveOemHref) {
+          href = root.TPDirectory.resolveOemHref(m.name, href);
+        } else if (!href || href === 'manufacturers.html') {
+          href = 'manufacturers.html?q=' + encodeURIComponent(m.name || '');
+        }
+        var name = href
           ? '<a class="tp-eco-link" href="' +
-            esc(m.url) +
-            '" target="_blank" rel="noopener">' +
+            esc(href) +
+            '">' +
             esc(m.name) +
             '</a>'
           : '<b>' + esc(m.name) + '</b>';
