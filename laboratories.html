@@ -45,6 +45,7 @@
 .lab-name { font-size: 1.25rem; font-weight: 800; color: var(--ink); margin: 0; }
 .lab-loc { font-size: .88rem; color: var(--muted); margin-bottom: 12px; }
 .kv-pill { background: rgba(245,166,35,.12); border: 1px solid var(--accent); color: var(--accent); font-size: .78rem; font-weight: 800; padding: 3px 9px; border-radius: 999px; }
+.kv-pill.uhv { background: rgba(239,68,68,.15); border-color: #ef4444; color: #f87171; }
 
 .cap-table { width: 100%; border-collapse: collapse; font-size: .84rem; margin: 12px 0 16px; }
 .cap-table td { padding: 5px 6px; border-bottom: 1px solid var(--border); }
@@ -61,73 +62,73 @@
 </head>
 <body>
 <header>
-  <link rel="stylesheet" href="tp-nav.css?v=13">
+  <link rel="stylesheet" href="/tp-nav.css?v=13">
   <div class="container nav">
-    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+    <a href="/index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
     <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
     <nav class="tpnav" id="mainNav" aria-label="Primary">
-      <a href="intel.html">Intel</a>
+      <a href="/intel.html">Intel</a>
       <div class="tpnav-dropdown">
-        <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
+        <a href="/directory.html" class="tpnav-dropdown-btn">Directory</a>
         <div class="tpnav-dropdown-panel" role="menu">
-          <a href="manufacturers.html">Manufacturers</a>
-          <a href="components.html">Components &amp; Materials</a>
-          <a href="machinery.html">Machinery</a>
-          <a href="laboratories.html" aria-current="page">Testing Labs</a>
-          <a href="services.html">Services &amp; Repair</a>
-          <a href="markets.html">Markets</a>
-          <a href="buyers-guide.html">Buyer's Guide</a>
-          <a href="directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
+          <a href="/manufacturers.html">Manufacturers</a>
+          <a href="/components.html">Components &amp; Materials</a>
+          <a href="/machinery.html">Machinery</a>
+          <a href="/laboratories.html">Testing Labs</a>
+          <a href="/services.html">Services &amp; Repair</a>
+          <a href="/markets.html">Markets</a>
+          <a href="/buyers-guide.html">Buyer's Guide</a>
+          <a href="/directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
         </div>
       </div>
-      <a href="projects.html">Projects</a>
-      <a href="tenders.html">Tenders</a>
-      <a href="grids.html" class="tpnav-opt">Grids</a>
-      <a href="events.html">Events</a>
-      <a href="tools.html" class="tpnav-opt">Engineering</a>
-      <a href="learn.html">Learn</a>
-      <a href="rfq.html">RFQ</a>
+      <a href="/projects.html">Projects</a>
+      <a href="/tenders.html">Tenders</a>
+      <a href="/grids.html" class="tpnav-opt">Grids</a>
+      <a href="/events.html">Events</a>
+      <a href="/tools.html" class="tpnav-opt">Engineering</a>
+      <a href="/learn.html">Learn</a>
+      <a href="/rfq.html">RFQ</a>
       <div class="tpnav-more">
         <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
         <div class="tpnav-more-panel" role="menu">
-          <a href="directory.html" role="menuitem">Directory</a>
-          <a href="services.html" role="menuitem">Service & Repair</a>
-          <a href="logistics.html" role="menuitem">Transport & Logistics</a>
-          <a href="laboratories.html" role="menuitem">Testing Labs</a>
-          <a href="machinery.html" role="menuitem">Machinery</a>
-          <a href="associations.html" role="menuitem">Industry Associations</a>
-          <a href="education.html" role="menuitem">Education & Training</a>
-          <a href="buyers.html" role="menuitem">Buyers & Procurement</a>
-          <a href="media.html" role="menuitem">Media & Publications</a>
-          <a href="compare.html" role="menuitem">Compare</a>
-          <a href="accessories.html" role="menuitem">Accessories</a>
-          <a href="markets.html" role="menuitem">Markets</a>
-          <a href="utilities.html" role="menuitem">Utilities</a>
-          <a href="webinars.html" role="menuitem">Webinars</a>
-          <a href="awards.html" role="menuitem">Awards</a>
-          <a href="buyers-guide.html" role="menuitem">Buyer's Guide</a>
-          <a href="components.html" role="menuitem">Components</a>
-          <a href="materials.html" role="menuitem">Materials</a>
-          <a href="applications.html" role="menuitem">Applications</a>
-          <a href="knowledge.html" role="menuitem">Knowledge</a>
-          <a href="standards.html" role="menuitem">Standards</a>
-          <a href="case-studies.html" role="menuitem">Case Studies</a>
-          <a href="calculator.html" role="menuitem">Calculator</a>
-          <a href="explorer.html" role="menuitem">3D Models</a>
-          <a href="test-report.html" role="menuitem">Test Report</a>
-          <a href="software.html" role="menuitem">Software</a>
-          <a href="masterclass.html" role="menuitem">Masterclass</a>
-          <a href="books.html" role="menuitem">Books</a>
-          <a href="for-manufacturers.html" role="menuitem">For Manufacturers</a>
-          <a href="verified.html" role="menuitem">Verified Profiles</a>
-          <a href="intel-pro.html" role="menuitem">Intel Pro</a>
-          <a href="sponsor.html" role="menuitem">Sponsor</a>
-          <a href="pricing.html" role="menuitem">Pricing</a>
+          <a href="/directory.html" role="menuitem">Directory</a>
+          <a href="/services.html" role="menuitem">Service & Repair</a>
+          <a href="/logistics.html" role="menuitem">Transport & Logistics</a>
+          <a href="/laboratories.html" role="menuitem">Testing Labs</a>
+          <a href="/machinery.html" role="menuitem">Machinery</a>
+          <a href="/associations.html" role="menuitem">Industry Associations</a>
+          <a href="/education.html" role="menuitem">Education & Training</a>
+          <a href="/buyers.html" role="menuitem">Buyers & Procurement</a>
+          <a href="/media.html" role="menuitem">Media & Publications</a>
+          <a href="/compare.html" role="menuitem">Compare</a>
+          <a href="/accessories.html" role="menuitem">Accessories</a>
+          <a href="/markets.html" role="menuitem">Markets</a>
+          <a href="/utilities.html" role="menuitem">Utilities</a>
+          <a href="/webinars.html" role="menuitem">Webinars</a>
+          <a href="/awards.html" role="menuitem">Awards</a>
+          <a href="/buyers-guide.html" role="menuitem">Buyer's Guide</a>
+          <a href="/components.html" role="menuitem">Components</a>
+          <a href="/materials.html" role="menuitem">Materials</a>
+          <a href="/applications.html" role="menuitem">Applications</a>
+          <a href="/knowledge.html" role="menuitem">Knowledge</a>
+          <a href="/standards.html" role="menuitem">Standards</a>
+          <a href="/case-studies.html" role="menuitem">Case Studies</a>
+          <a href="/calculator.html" role="menuitem">Calculator</a>
+          <a href="/explorer.html" role="menuitem">3D Models</a>
+          <a href="/test-report.html" role="menuitem">Test Report</a>
+          <a href="/software.html" role="menuitem">Software</a>
+          <a href="/masterclass.html" role="menuitem">Masterclass</a>
+          <a href="/books.html" role="menuitem">Books</a>
+          <a href="/for-manufacturers.html" role="menuitem">For Manufacturers</a>
+          <a href="/verified.html" role="menuitem">Verified Profiles</a>
+          <a href="/intel-pro.html" role="menuitem">Intel Pro</a>
+          <a href="/sponsor.html" role="menuitem">Sponsor</a>
+          <a href="/pricing.html" role="menuitem">Pricing</a>
         </div>
       </div>
       <span class="tpnav-utils">
-        <a href="search.html" title="Search" aria-label="Search">&#128269;</a>
-        <a href="workspace.html" data-tp-account>Account</a>
+        <a href="/search.html" title="Search" aria-label="Search">&#128269;</a>
+        <a href="/workspace.html" data-tp-account>Account</a>
         <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">&#127769;</button>
       </span>
     </nav>
@@ -175,15 +176,15 @@
     </div>
     <div class="stat-box">
       <div class="num">1,200 kV</div>
-      <div class="lbl">Peak Test Rating</div>
+      <div class="lbl">Peak Test Voltage</div>
     </div>
     <div class="stat-box">
-      <div class="num">10,000 MVA</div>
-      <div class="lbl">Max Short-Circuit</div>
-    </div>
-    <div class="stat-box">
-      <div class="num">100%</div>
+      <div class="num">10</div>
       <div class="lbl">ISO/IEC 17025 Accredited</div>
+    </div>
+    <div class="stat-box">
+      <div class="num">10</div>
+      <div class="lbl">Third-Party Independent</div>
     </div>
   </div>
 
@@ -198,13 +199,13 @@
       </select>
       <select id="countryFilter" class="select-input">
         <option value="">All Countries</option>
-        <option value="Netherlands">Netherlands</option>
-        <option value="Italy">Italy</option>
         <option value="Germany">Germany</option>
         <option value="Hungary">Hungary</option>
         <option value="India">India</option>
-        <option value="USA">USA</option>
+        <option value="Italy">Italy</option>
+        <option value="Netherlands">Netherlands</option>
         <option value="South Korea">South Korea</option>
+        <option value="USA">USA</option>
         <option value="United Kingdom">United Kingdom</option>
       </select>
     </div>
@@ -217,13 +218,15 @@
         <span class="cap-toggle" data-cap="partial_discharge">🔬 Partial Discharge</span>
         <span class="cap-toggle" data-cap="temperature_rise">🌡️ Temperature Rise</span>
         <span class="cap-toggle" data-cap="sound_level">🔊 Sound / Noise Level</span>
+        <span class="cap-toggle" data-cap="dielectric_withstand">⚡ Power-Frequency Dielectric</span>
         <span class="cap-toggle" data-cap="oil_testing">🛢️ Oil &amp; DGA Analysis</span>
         <span class="cap-toggle" data-cap="materials_testing">🧪 Insulation &amp; Materials</span>
+        <span class="cap-toggle" data-cap="sfra">📈 SFRA Frequency Response</span>
       </div>
     </div>
   </div>
 
-  <div class="lab-grid" id="labGrid"></div>
+  <div class="lab-grid" id="labGrid"><div class="lab-card" style="box-shadow:0 4px 18px rgba(0,0,0,.12)"><div class="lab-top"><h2 class="lab-name" style="font-size:1.28rem">KEMA Labs (CESI Group) — Arnhem</h2><span class="kv-pill uhv">1200 kV Peak</span></div><div class="lab-loc">📍 Arnhem, Netherlands · <span style="color:#10b981;font-weight:700">Third-Party Independent</span></div><p style="font-size:.86rem;color:var(--muted);line-height:1.5;margin:0 0 12px">The premier independent high-power and high-voltage laboratory globally. Capable of full dynamic short-circuit withstand tests on large generator step-up and autotransformers up to 1,200 kV class.</p><div class="accred-box"><div><b>Accreditation:</b> <span style="color:var(--accent);font-weight:700">ISO/IEC 17025</span> (RvA (Dutch Accreditation Council))</div><div style="font-size:.76rem;margin-top:4px"><b>Scope:</b> Full type and special testing of power and distribution transformers up to 1200 kV</div><div style="font-size:.76rem;margin-top:4px;color:var(--text)"><b>Short-Circuit:</b> 10,000 MVA (world's highest capacity independent test bay)</div></div><table class="cap-table"><tbody><tr><td class="c-name">⚡ Lightning Impulse (1.2/50 μs)</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">⚡ Switching Impulse (250/2500 μs)</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">💥 Short-Circuit Withstand</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🔬 Partial Discharge (PD)</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🌡️ Temperature Rise Test</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🔊 Sound / Noise Measurement</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">⚡ Power-Frequency Dielectric</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🛢️ Oil &amp; DGA Laboratory</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🧪 Insulation Materials Testing</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">📈 SFRA Frequency Response</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr></tbody></table><div class="card-foot"><span style="font-size:.74rem;color:var(--muted)">Reviewed: 2026-08-20</span><div style="display:flex;gap:6px"><a href="https://www.cesi.it/kema-labs/" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Website ↗</a><a href="rfq.html?company=KEMA%20Labs%20(CESI%20Group)%20%E2%80%94%20Arnhem&service=testing" class="btn btn-amber btn-sm">Inquire →</a></div></div></div><div class="lab-card" style="box-shadow:0 4px 18px rgba(0,0,0,.12)"><div class="lab-top"><h2 class="lab-name" style="font-size:1.28rem">KEMA Labs (CESI Group) — Milan</h2><span class="kv-pill uhv">1000 kV Peak</span></div><div class="lab-loc">📍 Milan, Italy · <span style="color:#10b981;font-weight:700">Third-Party Independent</span></div><p style="font-size:.86rem;color:var(--muted);line-height:1.5;margin:0 0 12px">EHV and UHV testing facility covering power transformers, HVDC bushings, instrument transformers and grid components with full third-party certification.</p><div class="accred-box"><div><b>Accreditation:</b> <span style="color:var(--accent);font-weight:700">ISO/IEC 17025</span> (ACCREDIA (Italy))</div><div style="font-size:.76rem;margin-top:4px"><b>Scope:</b> HV dielectric, thermal and dynamic tests for electrical grid equipment</div><div style="font-size:.76rem;margin-top:4px;color:var(--text)"><b>Short-Circuit:</b> High-power synthetic &amp; direct testing</div></div><table class="cap-table"><tbody><tr><td class="c-name">⚡ Lightning Impulse (1.2/50 μs)</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">⚡ Switching Impulse (250/2500 μs)</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">💥 Short-Circuit Withstand</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🔬 Partial Discharge (PD)</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🌡️ Temperature Rise Test</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🔊 Sound / Noise Measurement</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">⚡ Power-Frequency Dielectric</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🛢️ Oil &amp; DGA Laboratory</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🧪 Insulation Materials Testing</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">📈 SFRA Frequency Response</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr></tbody></table><div class="card-foot"><span style="font-size:.74rem;color:var(--muted)">Reviewed: 2026-08-20</span><div style="display:flex;gap:6px"><a href="https://www.cesi.it/kema-labs/" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Website ↗</a><a href="rfq.html?company=KEMA%20Labs%20(CESI%20Group)%20%E2%80%94%20Milan&service=testing" class="btn btn-amber btn-sm">Inquire →</a></div></div></div><div class="lab-card" style="box-shadow:0 4px 18px rgba(0,0,0,.12)"><div class="lab-top"><h2 class="lab-name" style="font-size:1.28rem">VEIKI-VNL Electric Large Laboratories</h2><span class="kv-pill uhv">800 kV Peak</span></div><div class="lab-loc">📍 Budapest, Hungary · <span style="color:#10b981;font-weight:700">Third-Party Independent</span></div><p style="font-size:.86rem;color:var(--muted);line-height:1.5;margin:0 0 12px">Major European independent test laboratory, STL (Short-Circuit Testing Liaison) member, providing full type test certification for international tenders.</p><div class="accred-box"><div><b>Accreditation:</b> <span style="color:var(--accent);font-weight:700">ISO/IEC 17025</span> (NAH (National Accreditation Authority of Hungary))</div><div style="font-size:.76rem;margin-top:4px"><b>Scope:</b> High voltage and high power testing of power grid transformers and switchgear</div><div style="font-size:.76rem;margin-top:4px;color:var(--text)"><b>Short-Circuit:</b> Direct short-circuit testing for distribution &amp; medium power units up to 100 MVA</div></div><table class="cap-table"><tbody><tr><td class="c-name">⚡ Lightning Impulse (1.2/50 μs)</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">⚡ Switching Impulse (250/2500 μs)</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">💥 Short-Circuit Withstand</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🔬 Partial Discharge (PD)</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🌡️ Temperature Rise Test</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🔊 Sound / Noise Measurement</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">⚡ Power-Frequency Dielectric</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🛢️ Oil &amp; DGA Laboratory</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🧪 Insulation Materials Testing</td><td class="c-status c-no"><span class="sub-l">—</span></td></tr><tr><td class="c-name">📈 SFRA Frequency Response</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr></tbody></table><div class="card-foot"><span style="font-size:.74rem;color:var(--muted)">Reviewed: 2026-08-18</span><div style="display:flex;gap:6px"><a href="https://www.veiki-vnl.hu" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Website ↗</a><a href="rfq.html?company=VEIKI-VNL%20Electric%20Large%20Laboratories&service=testing" class="btn btn-amber btn-sm">Inquire →</a></div></div></div><div class="lab-card" style="box-shadow:0 4px 18px rgba(0,0,0,.12)"><div class="lab-top"><h2 class="lab-name" style="font-size:1.28rem">IPH Institut 'Prüffeld für elektrische Hochleistungstechnik' (CESI Group)</h2><span class="kv-pill ">420 kV Peak</span></div><div class="lab-loc">📍 Berlin, Germany · <span style="color:#10b981;font-weight:700">Third-Party Independent</span></div><p style="font-size:.86rem;color:var(--muted);line-height:1.5;margin:0 0 12px">Historic German high-power test laboratory with specialized facilities for distribution transformers, dry-type cast resin units and sub-transmission equipment.</p><div class="accred-box"><div><b>Accreditation:</b> <span style="color:var(--accent);font-weight:700">ISO/IEC 17025</span> (DAkkS (German National Accreditation Body))</div><div style="font-size:.76rem;margin-top:4px"><b>Scope:</b> Testing of electrical equipment for medium and high voltage networks</div><div style="font-size:.76rem;margin-top:4px;color:var(--text)"><b>Short-Circuit:</b> High-power test bays with multiple 3,000 MVA short-circuit generators</div></div><table class="cap-table"><tbody><tr><td class="c-name">⚡ Lightning Impulse (1.2/50 μs)</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">⚡ Switching Impulse (250/2500 μs)</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">💥 Short-Circuit Withstand</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🔬 Partial Discharge (PD)</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🌡️ Temperature Rise Test</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🔊 Sound / Noise Measurement</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">⚡ Power-Frequency Dielectric</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🛢️ Oil &amp; DGA Laboratory</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🧪 Insulation Materials Testing</td><td class="c-status c-no"><span class="sub-l">—</span></td></tr><tr><td class="c-name">📈 SFRA Frequency Response</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr></tbody></table><div class="card-foot"><span style="font-size:.74rem;color:var(--muted)">Reviewed: 2026-08-10</span><div style="display:flex;gap:6px"><a href="https://www.cesi.it/kema-labs/locations/berlin/" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Website ↗</a><a href="rfq.html?company=IPH%20Institut%20'Pr%C3%BCffeld%20f%C3%BCr%20elektrische%20Hochleistungstechnik'%20(CESI%20Group)&service=testing" class="btn btn-amber btn-sm">Inquire →</a></div></div></div><div class="lab-card" style="box-shadow:0 4px 18px rgba(0,0,0,.12)"><div class="lab-top"><h2 class="lab-name" style="font-size:1.28rem">Central Power Research Institute (CPRI) — Bengaluru</h2><span class="kv-pill uhv">1200 kV Peak</span></div><div class="lab-loc">📍 Bengaluru, India · <span style="color:#10b981;font-weight:700">Third-Party Independent</span></div><p style="font-size:.86rem;color:var(--muted);line-height:1.5;margin:0 0 12px">Autonomous premier government research institute and testing laboratory in South Asia. Recognized globally by STL, ASTA and utilities across Asia, Middle East and Africa.</p><div class="accred-box"><div><b>Accreditation:</b> <span style="color:var(--accent);font-weight:700">ISO/IEC 17025</span> (NABL (National Accreditation Board for Testing and Calibration Laboratories, India))</div><div style="font-size:.76rem;margin-top:4px"><b>Scope:</b> Full electrical, mechanical and chemical testing of power transmission apparatus</div><div style="font-size:.76rem;margin-top:4px;color:var(--text)"><b>Short-Circuit:</b> Direct short-circuit testing station for transformers up to 250 MVA class</div></div><table class="cap-table"><tbody><tr><td class="c-name">⚡ Lightning Impulse (1.2/50 μs)</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">⚡ Switching Impulse (250/2500 μs)</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">💥 Short-Circuit Withstand</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🔬 Partial Discharge (PD)</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🌡️ Temperature Rise Test</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🔊 Sound / Noise Measurement</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">⚡ Power-Frequency Dielectric</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🛢️ Oil &amp; DGA Laboratory</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🧪 Insulation Materials Testing</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">📈 SFRA Frequency Response</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr></tbody></table><div class="card-foot"><span style="font-size:.74rem;color:var(--muted)">Reviewed: 2026-08-25</span><div style="display:flex;gap:6px"><a href="https://cpri.res.in" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Website ↗</a><a href="rfq.html?company=Central%20Power%20Research%20Institute%20(CPRI)%20%E2%80%94%20Bengaluru&service=testing" class="btn btn-amber btn-sm">Inquire →</a></div></div></div><div class="lab-card" style="box-shadow:0 4px 18px rgba(0,0,0,.12)"><div class="lab-top"><h2 class="lab-name" style="font-size:1.28rem">Electrical Research and Development Association (ERDA)</h2><span class="kv-pill ">400 kV Peak</span></div><div class="lab-loc">📍 Vadodara, Gujarat, India · <span style="color:#10b981;font-weight:700">Third-Party Independent</span></div><p style="font-size:.86rem;color:var(--muted);line-height:1.5;margin:0 0 12px">Co-operative non-profit industrial research and testing organization serving India's electrical manufacturing corridor with extensive transformer oil and dielectric labs.</p><div class="accred-box"><div><b>Accreditation:</b> <span style="color:var(--accent);font-weight:700">ISO/IEC 17025</span> (NABL (India))</div><div style="font-size:.76rem;margin-top:4px"><b>Scope:</b> Routine, type and special tests on distribution and sub-transmission transformers</div><div style="font-size:.76rem;margin-top:4px;color:var(--text)"><b>Short-Circuit:</b> High-power short circuit laboratory up to 50 MVA class</div></div><table class="cap-table"><tbody><tr><td class="c-name">⚡ Lightning Impulse (1.2/50 μs)</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">⚡ Switching Impulse (250/2500 μs)</td><td class="c-status c-no"><span class="sub-l">—</span></td></tr><tr><td class="c-name">💥 Short-Circuit Withstand</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🔬 Partial Discharge (PD)</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🌡️ Temperature Rise Test</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🔊 Sound / Noise Measurement</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">⚡ Power-Frequency Dielectric</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🛢️ Oil &amp; DGA Laboratory</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🧪 Insulation Materials Testing</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">📈 SFRA Frequency Response</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr></tbody></table><div class="card-foot"><span style="font-size:.74rem;color:var(--muted)">Reviewed: 2026-08-12</span><div style="display:flex;gap:6px"><a href="https://www.erda.org" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Website ↗</a><a href="rfq.html?company=Electrical%20Research%20and%20Development%20Association%20(ERDA)&service=testing" class="btn btn-amber btn-sm">Inquire →</a></div></div></div><div class="lab-card" style="box-shadow:0 4px 18px rgba(0,0,0,.12)"><div class="lab-top"><h2 class="lab-name" style="font-size:1.28rem">Korea Electrotechnology Research Institute (KERI)</h2><span class="kv-pill uhv">800 kV Peak</span></div><div class="lab-loc">📍 Changwon, South Korea · <span style="color:#10b981;font-weight:700">Third-Party Independent</span></div><p style="font-size:.86rem;color:var(--muted);line-height:1.5;margin:0 0 12px">Leading East Asian government-funded research institute and high-power test laboratory, full member of STL.</p><div class="accred-box"><div><b>Accreditation:</b> <span style="color:var(--accent);font-weight:700">ISO/IEC 17025</span> (KOLAS (Korea Laboratory Accreditation Scheme))</div><div style="font-size:.76rem;margin-top:4px"><b>Scope:</b> Type testing and STL-certified reports for international grid apparatus</div><div style="font-size:.76rem;margin-top:4px;color:var(--text)"><b>Short-Circuit:</b> 4,000 MVA high power short-circuit test facility</div></div><table class="cap-table"><tbody><tr><td class="c-name">⚡ Lightning Impulse (1.2/50 μs)</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">⚡ Switching Impulse (250/2500 μs)</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">💥 Short-Circuit Withstand</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🔬 Partial Discharge (PD)</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🌡️ Temperature Rise Test</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🔊 Sound / Noise Measurement</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">⚡ Power-Frequency Dielectric</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🛢️ Oil &amp; DGA Laboratory</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🧪 Insulation Materials Testing</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">📈 SFRA Frequency Response</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr></tbody></table><div class="card-foot"><span style="font-size:.74rem;color:var(--muted)">Reviewed: 2026-08-05</span><div style="display:flex;gap:6px"><a href="https://www.keri.re.kr" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Website ↗</a><a href="rfq.html?company=Korea%20Electrotechnology%20Research%20Institute%20(KERI)&service=testing" class="btn btn-amber btn-sm">Inquire →</a></div></div></div><div class="lab-card" style="box-shadow:0 4px 18px rgba(0,0,0,.12)"><div class="lab-top"><h2 class="lab-name" style="font-size:1.28rem">Doble Engineering Materials &amp; Dielectric Laboratory</h2><span class="kv-pill ">500 kV Peak</span></div><div class="lab-loc">📍 Watertown, Massachusetts, USA · <span style="color:#10b981;font-weight:700">Third-Party Independent</span></div><p style="font-size:.86rem;color:var(--muted);line-height:1.5;margin:0 0 12px">Industry benchmark laboratory for dielectric diagnostics, DGA, furan analysis, corrosive sulfur detection, and insulation aging assessment.</p><div class="accred-box"><div><b>Accreditation:</b> <span style="color:var(--accent);font-weight:700">ISO/IEC 17025</span> (A2LA (American Association for Laboratory Accreditation))</div><div style="font-size:.76rem;margin-top:4px"><b>Scope:</b> Electrical, dielectric and chemical testing of insulating fluids and solid insulation</div><div style="font-size:.76rem;margin-top:4px;color:var(--text)"><b>Short-Circuit:</b> Analytical &amp; dielectric test focus (no high-power short-circuit)</div></div><table class="cap-table"><tbody><tr><td class="c-name">⚡ Lightning Impulse (1.2/50 μs)</td><td class="c-status c-no"><span class="sub-l">—</span></td></tr><tr><td class="c-name">⚡ Switching Impulse (250/2500 μs)</td><td class="c-status c-no"><span class="sub-l">—</span></td></tr><tr><td class="c-name">💥 Short-Circuit Withstand</td><td class="c-status c-no"><span class="sub-l">—</span></td></tr><tr><td class="c-name">🔬 Partial Discharge (PD)</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🌡️ Temperature Rise Test</td><td class="c-status c-no"><span class="sub-l">—</span></td></tr><tr><td class="c-name">🔊 Sound / Noise Measurement</td><td class="c-status c-no"><span class="sub-l">—</span></td></tr><tr><td class="c-name">⚡ Power-Frequency Dielectric</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🛢️ Oil &amp; DGA Laboratory</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🧪 Insulation Materials Testing</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">📈 SFRA Frequency Response</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr></tbody></table><div class="card-foot"><span style="font-size:.74rem;color:var(--muted)">Reviewed: 2026-08-22</span><div style="display:flex;gap:6px"><a href="https://www.doble.com" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Website ↗</a><a href="rfq.html?company=Doble%20Engineering%20Materials%20%26%20Dielectric%20Laboratory&service=testing" class="btn btn-amber btn-sm">Inquire →</a></div></div></div><div class="lab-card" style="box-shadow:0 4px 18px rgba(0,0,0,.12)"><div class="lab-top"><h2 class="lab-name" style="font-size:1.28rem">TJ|H2b Analytical Services</h2><span class="kv-pill uhv">765 kV Peak</span></div><div class="lab-loc">📍 Sacramento, California, USA · <span style="color:#10b981;font-weight:700">Third-Party Independent</span></div><p style="font-size:.86rem;color:var(--muted);line-height:1.5;margin:0 0 12px">Worldwide analytical testing laboratory specializing in oil condition monitoring, degree of polymerization (DP) measurement, and forensic failure analysis.</p><div class="accred-box"><div><b>Accreditation:</b> <span style="color:var(--accent);font-weight:700">ISO/IEC 17025</span> (PJLA (Perry Johnson Laboratory Accreditation))</div><div style="font-size:.76rem;margin-top:4px"><b>Scope:</b> Chemical and physical analysis of dielectric oil, PCB screening, and dissolved gases</div><div style="font-size:.76rem;margin-top:4px;color:var(--text)"><b>Short-Circuit:</b> Fluid &amp; materials analytical testing (no high-power short-circuit)</div></div><table class="cap-table"><tbody><tr><td class="c-name">⚡ Lightning Impulse (1.2/50 μs)</td><td class="c-status c-no"><span class="sub-l">—</span></td></tr><tr><td class="c-name">⚡ Switching Impulse (250/2500 μs)</td><td class="c-status c-no"><span class="sub-l">—</span></td></tr><tr><td class="c-name">💥 Short-Circuit Withstand</td><td class="c-status c-no"><span class="sub-l">—</span></td></tr><tr><td class="c-name">🔬 Partial Discharge (PD)</td><td class="c-status c-no"><span class="sub-l">—</span></td></tr><tr><td class="c-name">🌡️ Temperature Rise Test</td><td class="c-status c-no"><span class="sub-l">—</span></td></tr><tr><td class="c-name">🔊 Sound / Noise Measurement</td><td class="c-status c-no"><span class="sub-l">—</span></td></tr><tr><td class="c-name">⚡ Power-Frequency Dielectric</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🛢️ Oil &amp; DGA Laboratory</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🧪 Insulation Materials Testing</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">📈 SFRA Frequency Response</td><td class="c-status c-no"><span class="sub-l">—</span></td></tr></tbody></table><div class="card-foot"><span style="font-size:.74rem;color:var(--muted)">Reviewed: 2026-08-16</span><div style="display:flex;gap:6px"><a href="https://www.tjh2b.com" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Website ↗</a><a href="rfq.html?company=TJ%7CH2b%20Analytical%20Services&service=testing" class="btn btn-amber btn-sm">Inquire →</a></div></div></div><div class="lab-card" style="box-shadow:0 4px 18px rgba(0,0,0,.12)"><div class="lab-top"><h2 class="lab-name" style="font-size:1.28rem">ASTA Testing Services (Intertek)</h2><span class="kv-pill ">400 kV Peak</span></div><div class="lab-loc">📍 Rugby, Warwickshire, United Kingdom · <span style="color:#10b981;font-weight:700">Third-Party Independent</span></div><p style="font-size:.86rem;color:var(--muted);line-height:1.5;margin:0 0 12px">Globally recognized ASTA certification mark for transformer short-circuit withstand, temperature rise and dielectric integrity, widely mandated by Middle East &amp; Commonwealth utilities.</p><div class="accred-box"><div><b>Accreditation:</b> <span style="color:var(--accent);font-weight:700">ISO/IEC 17025</span> (UKAS (United Kingdom Accreditation Service))</div><div style="font-size:.76rem;margin-top:4px"><b>Scope:</b> Third-party certification, type verification certificates for high-voltage transformers</div><div style="font-size:.76rem;margin-top:4px;color:var(--text)"><b>Short-Circuit:</b> Type certification partner with global STL test bays</div></div><table class="cap-table"><tbody><tr><td class="c-name">⚡ Lightning Impulse (1.2/50 μs)</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">⚡ Switching Impulse (250/2500 μs)</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">💥 Short-Circuit Withstand</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🔬 Partial Discharge (PD)</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🌡️ Temperature Rise Test</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🔊 Sound / Noise Measurement</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">⚡ Power-Frequency Dielectric</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🛢️ Oil &amp; DGA Laboratory</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr><tr><td class="c-name">🧪 Insulation Materials Testing</td><td class="c-status c-no"><span class="sub-l">—</span></td></tr><tr><td class="c-name">📈 SFRA Frequency Response</td><td class="c-status c-yes"><span class="cmp-yes">✓ Yes</span></td></tr></tbody></table><div class="card-foot"><span style="font-size:.74rem;color:var(--muted)">Reviewed: 2026-08-15</span><div style="display:flex;gap:6px"><a href="https://www.intertek.com/asta/" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Website ↗</a><a href="rfq.html?company=ASTA%20Testing%20Services%20(Intertek)&service=testing" class="btn btn-amber btn-sm">Inquire →</a></div></div></div></div>
 
   <div style="background:linear-gradient(135deg, rgba(245,166,35,.10) 0%, rgba(20,37,61,.30) 100%);border:1px solid var(--accent);border-radius:14px;padding:26px;text-align:center;margin-top:40px">
     <h3 style="color:var(--ink);margin:0 0 8px">Need Independent Laboratory Testing or Third-Party Witnessing?</h3>
@@ -275,14 +278,30 @@ var CAP_NAMES = {
   sfra: '📈 SFRA Frequency Response'
 };
 
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function safeUrl(u) {
+  if (!u) return '';
+  var s = String(u).trim();
+  if (/^https?:\/\/[a-z0-9]/i.test(s)) return esc(s);
+  return '';
+}
+
 function renderCards() {
   var grid = document.getElementById('labGrid');
   var hits = LABS.filter(function(lab) {
-    if (minVoltage > 0 && lab.max_voltage_kv < minVoltage) return false;
+    if (minVoltage > 0 && (lab.max_voltage_kv || 0) < minVoltage) return false;
     if (selectedCountry && lab.country !== selectedCountry) return false;
     if (searchQuery) {
       var q = searchQuery.toLowerCase();
-      var text = (lab.name + ' ' + lab.city + ' ' + lab.country + ' ' + lab.description + ' ' + (lab.accreditation ? lab.accreditation.scope : '')).toLowerCase();
+      var accredScope = (lab.accreditation && lab.accreditation.scope) ? lab.accreditation.scope : '';
+      var text = (lab.name + ' ' + lab.city + ' ' + lab.country + ' ' + lab.description + ' ' + accredScope).toLowerCase();
       if (text.indexOf(q) < 0) return false;
     }
     for (var cap in requiredCaps) {
@@ -301,29 +320,40 @@ function renderCards() {
   grid.innerHTML = hits.map(function(lab) {
     var capRows = Object.keys(CAP_NAMES).map(function(k) {
       var ok = lab.capabilities && lab.capabilities[k];
-      return '<tr><td class="c-name">' + CAP_NAMES[k] + '</td><td class="c-status ' + (ok ? 'c-yes"><span class="cmp-yes">✓ Yes</span>' : 'c-no"><span class="sub-l">—</span>') + '</td></tr>';
+      return '<tr><td class="c-name">' + esc(CAP_NAMES[k]) + '</td><td class="c-status ' + (ok ? 'c-yes"><span class="cmp-yes">✓ Yes</span>' : 'c-no"><span class="sub-l">—</span>') + '</td></tr>';
     }).join('');
 
-    var isUhv = lab.max_voltage_kv >= 765;
+    var isUhv = (lab.max_voltage_kv || 0) >= 765;
+    var webUrl = safeUrl(lab.website);
+
+    var accredHtml = '';
+    if (lab.accreditation) {
+      var std = esc(lab.accreditation.standard || 'ISO/IEC 17025');
+      var body = lab.accreditation.body ? ' (' + esc(lab.accreditation.body) + ')' : '';
+      var scope = lab.accreditation.scope ? '<div style="font-size:.76rem;margin-top:4px"><b>Scope:</b> ' + esc(lab.accreditation.scope) + '</div>' : '';
+      accredHtml = '<div class="accred-box">' +
+        '<div><b>Accreditation:</b> <span style="color:var(--accent);font-weight:700">' + std + '</span>' + body + '</div>' +
+        scope +
+        (lab.short_circuit_capacity ? '<div style="font-size:.76rem;margin-top:4px;color:var(--text)"><b>Short-Circuit:</b> ' + esc(lab.short_circuit_capacity) + '</div>' : '') +
+      '</div>';
+    } else if (lab.short_circuit_capacity) {
+      accredHtml = '<div class="accred-box"><div style="font-size:.76rem;color:var(--text)"><b>Short-Circuit:</b> ' + esc(lab.short_circuit_capacity) + '</div></div>';
+    }
 
     return '<div class="lab-card" style="box-shadow:0 4px 18px rgba(0,0,0,.12)">' +
       '<div class="lab-top">' +
-        '<h2 class="lab-name" style="font-size:1.28rem">' + lab.name + '</h2>' +
-        '<span class="kv-pill ' + (isUhv ? 'uhv' : '') + '">' + lab.max_voltage_kv + ' kV Peak</span>' +
+        '<h2 class="lab-name" style="font-size:1.28rem">' + esc(lab.name) + '</h2>' +
+        '<span class="kv-pill ' + (isUhv ? 'uhv' : '') + '">' + esc(lab.max_voltage_kv) + ' kV Peak</span>' +
       '</div>' +
-      '<div class="lab-loc">📍 ' + lab.city + ', ' + lab.country + (lab.third_party_independent ? ' · <span style="color:#10b981;font-weight:700">Third-Party Independent</span>' : '') + '</div>' +
-      '<p style="font-size:.86rem;color:var(--muted);line-height:1.5;margin:0 0 12px">' + lab.description + '</p>' +
-      '<div class="accred-box">' +
-        '<div><b>Accreditation:</b> <span style="color:var(--accent);font-weight:700">' + (lab.accreditation.standard || 'ISO/IEC 17025') + '</span> (' + lab.accreditation.body + ')</div>' +
-        '<div style="font-size:.76rem;margin-top:4px"><b>Scope:</b> ' + lab.accreditation.scope + '</div>' +
-        (lab.short_circuit_capacity ? '<div style="font-size:.76rem;margin-top:4px;color:var(--text)"><b>Short-Circuit:</b> ' + lab.short_circuit_capacity + '</div>' : '') +
-      '</div>' +
+      '<div class="lab-loc">📍 ' + esc(lab.city) + ', ' + esc(lab.country) + (lab.third_party_independent ? ' · <span style="color:#10b981;font-weight:700">Third-Party Independent</span>' : '') + '</div>' +
+      '<p style="font-size:.86rem;color:var(--muted);line-height:1.5;margin:0 0 12px">' + esc(lab.description) + '</p>' +
+      accredHtml +
       '<table class="cap-table"><tbody>' + capRows + '</tbody></table>' +
       '<div class="card-foot">' +
-        '<span style="font-size:.74rem;color:var(--muted)">Reviewed: ' + (lab.last_verified || '2026') + '</span>' +
+        '<span style="font-size:.74rem;color:var(--muted)">Reviewed: ' + esc(lab.last_verified || '2026') + '</span>' +
         '<div style="display:flex;gap:6px">' +
-          (lab.website ? '<a href="' + lab.website + '" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Website ↗</a>' : '') +
-          '<a href="rfq.html?company=' + encodeURIComponent(lab.name) + '&service=testing" class="btn btn-amber btn-sm">Inquire →</a>' +
+          (webUrl ? '<a href="' + webUrl + '" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Website ↗</a>' : '') +
+          '<a href="rfq.html?company=' + encodeURIComponent(lab.name || '') + '&service=testing" class="btn btn-amber btn-sm">Inquire →</a>' +
         '</div>' +
       '</div>' +
     '</div>';
@@ -358,8 +388,6 @@ document.getElementById('capToggles').addEventListener('click', function(e) {
   }
   renderCards();
 });
-
-renderCards();
 </script>
 <script src="analytics.js" defer></script>
 </body>

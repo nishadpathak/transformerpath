@@ -13,14 +13,66 @@ const fs = require('fs');
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
-function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function safeUrl(u) {
+  if (!u) return '';
+  const s = String(u).trim();
+  if (/^https?:\/\/[a-z0-9]/i.test(s)) return esc(s);
+  return '';
+}
 
 const DATA = JSON.parse(fs.readFileSync('data/machinery.json', 'utf8'));
 const MACHINES = DATA.machinery || [];
 const CATEGORIES = DATA.categories || [];
 
+function renderCardServer(m) {
+  const features = (m.key_features || []).map(function(f) {
+    return '<li style="margin:3px 0;font-size:.82rem;color:var(--muted)">' + esc(f) + '</li>';
+  }).join('');
+
+  const webUrl = safeUrl(m.website);
+
+  return '<div class="mach-card" style="box-shadow:0 4px 18px rgba(0,0,0,.12)">' +
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">' +
+      '<span class="mach-cat-tag">' + esc(m.category) + '</span>' +
+      '<span style="font-size:.78rem;color:var(--muted);background:rgba(255,255,255,.06);padding:2px 8px;border-radius:999px">' + esc(m.country) + '</span>' +
+    '</div>' +
+    '<h2 class="mach-name" style="font-size:1.25rem">' + esc(m.name) + '</h2>' +
+    '<div class="mach-maker">By <b>' + esc(m.manufacturer) + '</b> · ' + esc(m.city) + ', ' + esc(m.country) + '</div>' +
+    '<div class="spec-badges" style="margin:4px 0 10px">' +
+      '<span class="kg-spec-pill" style="color:var(--accent);border-color:rgba(245,166,35,.35)">⚙️ ' + esc(m.machine_type) + '</span>' +
+      '<span class="kg-spec-pill" style="color:#10b981;border-color:rgba(16,185,129,.35)">🤖 ' + esc(m.automation_level) + '</span>' +
+    '</div>' +
+    '<div class="mach-detail">' +
+      '<p><span class="label">Capacity / Range:</span> <b style="color:var(--text)">' + esc(m.capacity_range) + '</b></p>' +
+      '<p><span class="label">Application:</span> ' + esc(m.transformer_application) + '</p>' +
+      '<p><span class="label">Proven Reference Base:</span> ' + esc(m.installations_count || 'Verified manufacturing plants') + '</p>' +
+      '<div style="margin-top:10px"><span class="label">Key Technical Highlights:</span><ul style="padding-left:18px;margin:4px 0">' + features + '</ul></div>' +
+    '</div>' +
+    '<div class="card-foot">' +
+      '<span class="verified-tag">Reviewed: ' + esc(m.last_verified || '2026') + '</span>' +
+      '<div style="display:flex;gap:6px">' +
+        (webUrl ? '<a href="' + webUrl + '" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Website ↗</a>' : '') +
+        '<a href="rfq.html?company=' + encodeURIComponent(m.manufacturer || '') + '&machinery=' + encodeURIComponent(m.name || '') + '" class="btn btn-amber btn-sm">RFQ →</a>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+}
+
 function render() {
-  const catsJson = JSON.stringify(CATEGORIES);
+  const uniqueCountries = [...new Set(MACHINES.map(m => m.country).filter(Boolean))].sort();
+  const uniqueMakers = [...new Set(MACHINES.map(m => m.manufacturer).filter(Boolean))];
+  const initialCardsHtml = MACHINES.map(renderCardServer).join('');
+
+  const countryOptions = uniqueCountries.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('\n        ');
   const machJson = JSON.stringify(MACHINES);
 
   const html = `<!DOCTYPE html>
@@ -37,12 +89,12 @@ function render() {
 <meta property="og:description" content="Transformer production equipment: core cutting, winding, vapour-phase drying, oil purification, tank lines and high-voltage test bays.">
 <meta property="og:url" content="https://transformerpath.com/machinery.html">
 <meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
-<meta name="robots" content="noindex,follow">
+<meta name="robots" content="index,follow">
 <meta name="theme-color" content="#0d1b2e">
 <link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
-<link rel="stylesheet" href="style.css?v=12">
-<link rel="stylesheet" href="tp-nav.css?v=12">
-<link rel="stylesheet" href="tp-feedback.css?v=12">
+<link rel="stylesheet" href="style.css?v=13">
+<link rel="stylesheet" href="tp-nav.css?v=13">
+<link rel="stylesheet" href="tp-feedback.css?v=13">
 <style>
 .mach-wrap { max-width: 1140px; margin: 0 auto; padding: 40px 20px 90px; }
 .mach-head { margin-bottom: 24px; }
@@ -94,20 +146,20 @@ ${HEAD}
 
   <div class="stats-bar">
     <div class="stat-box">
-      <div class="num" id="statTotal">12</div>
+      <div class="num" id="statTotal">${MACHINES.length}</div>
       <div class="lbl">Machines Listed</div>
     </div>
     <div class="stat-box">
-      <div class="num">7</div>
+      <div class="num">${CATEGORIES.length}</div>
       <div class="lbl">Equipment Classes</div>
     </div>
     <div class="stat-box">
-      <div class="num">100%</div>
-      <div class="lbl">Manufacturer Sourced</div>
+      <div class="num">${uniqueMakers.length}</div>
+      <div class="lbl">Equipment Builders</div>
     </div>
     <div class="stat-box">
-      <div class="num">RFQ Ready</div>
-      <div class="lbl">Lead Transmission</div>
+      <div class="num">${uniqueCountries.length}</div>
+      <div class="lbl">Manufacturing Countries</div>
     </div>
   </div>
 
@@ -116,10 +168,7 @@ ${HEAD}
       <input type="search" id="machSearch" class="search-input" placeholder="Search by machine model, manufacturer (Georg, Tuboly, Hedrich), or country...">
       <select id="machCountry" class="search-input" style="max-width:200px">
         <option value="">All Countries</option>
-        <option value="Germany">Germany</option>
-        <option value="Switzerland">Switzerland</option>
-        <option value="Italy">Italy</option>
-        <option value="USA">USA</option>
+        ${countryOptions}
       </select>
     </div>
     <div class="cat-pills" id="catPills">
@@ -134,7 +183,7 @@ ${HEAD}
     </div>
   </div>
 
-  <div class="mach-grid" id="machGrid"></div>
+  <div class="mach-grid" id="machGrid">${initialCardsHtml}</div>
 
   <div class="rfq-banner">
     <h3>Planning a Transformer Factory Expansion or Greenfield Plant?</h3>
@@ -150,6 +199,21 @@ var MACHINES = ${machJson};
 var activeCat = '';
 var activeCountry = '';
 var activeQuery = '';
+
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function safeUrl(u) {
+  if (!u) return '';
+  var s = String(u).trim();
+  if (/^https?:\\/\\/[a-z0-9]/i.test(s)) return esc(s);
+  return '';
+}
 
 function renderCards() {
   var grid = document.getElementById('machGrid');
@@ -173,31 +237,33 @@ function renderCards() {
 
   grid.innerHTML = hits.map(function(m) {
     var features = (m.key_features || []).map(function(f) {
-      return '<li style="margin:3px 0;font-size:.82rem;color:var(--muted)">' + f + '</li>';
+      return '<li style="margin:3px 0;font-size:.82rem;color:var(--muted)">' + esc(f) + '</li>';
     }).join('');
+
+    var webUrl = safeUrl(m.website);
 
     return '<div class="mach-card" style="box-shadow:0 4px 18px rgba(0,0,0,.12)">' +
       '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">' +
-        '<span class="mach-cat-tag">' + m.category + '</span>' +
-        '<span style="font-size:.78rem;color:var(--muted);background:rgba(255,255,255,.06);padding:2px 8px;border-radius:999px">' + m.country + '</span>' +
+        '<span class="mach-cat-tag">' + esc(m.category) + '</span>' +
+        '<span style="font-size:.78rem;color:var(--muted);background:rgba(255,255,255,.06);padding:2px 8px;border-radius:999px">' + esc(m.country) + '</span>' +
       '</div>' +
-      '<h2 class="mach-name" style="font-size:1.25rem">' + m.name + '</h2>' +
-      '<div class="mach-maker">By <b>' + m.manufacturer + '</b> · ' + m.city + ', ' + m.country + '</div>' +
+      '<h2 class="mach-name" style="font-size:1.25rem">' + esc(m.name) + '</h2>' +
+      '<div class="mach-maker">By <b>' + esc(m.manufacturer) + '</b> · ' + esc(m.city) + ', ' + esc(m.country) + '</div>' +
       '<div class="spec-badges" style="margin:4px 0 10px">' +
-        '<span class="kg-spec-pill" style="color:var(--accent);border-color:rgba(245,166,35,.35)">⚙️ ' + m.machine_type + '</span>' +
-        '<span class="kg-spec-pill" style="color:#10b981;border-color:rgba(16,185,129,.35)">🤖 ' + m.automation_level + '</span>' +
+        '<span class="kg-spec-pill" style="color:var(--accent);border-color:rgba(245,166,35,.35)">⚙️ ' + esc(m.machine_type) + '</span>' +
+        '<span class="kg-spec-pill" style="color:#10b981;border-color:rgba(16,185,129,.35)">🤖 ' + esc(m.automation_level) + '</span>' +
       '</div>' +
       '<div class="mach-detail">' +
-        '<p><span class="label">Capacity / Range:</span> <b style="color:var(--text)">' + m.capacity_range + '</b></p>' +
-        '<p><span class="label">Application:</span> ' + m.transformer_application + '</p>' +
-        '<p><span class="label">Proven Reference Base:</span> ' + (m.installations_count || 'Verified manufacturing plants') + '</p>' +
+        '<p><span class="label">Capacity / Range:</span> <b style="color:var(--text)">' + esc(m.capacity_range) + '</b></p>' +
+        '<p><span class="label">Application:</span> ' + esc(m.transformer_application) + '</p>' +
+        '<p><span class="label">Proven Reference Base:</span> ' + esc(m.installations_count || 'Verified manufacturing plants') + '</p>' +
         '<div style="margin-top:10px"><span class="label">Key Technical Highlights:</span><ul style="padding-left:18px;margin:4px 0">' + features + '</ul></div>' +
       '</div>' +
       '<div class="card-foot">' +
-        '<span class="verified-tag">Reviewed: ' + (m.last_verified || '2026') + '</span>' +
+        '<span class="verified-tag">Reviewed: ' + esc(m.last_verified || '2026') + '</span>' +
         '<div style="display:flex;gap:6px">' +
-          (m.website ? '<a href="' + m.website + '" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Website ↗</a>' : '') +
-          '<a href="rfq.html?company=' + encodeURIComponent(m.manufacturer) + '&machinery=' + encodeURIComponent(m.name) + '" class="btn btn-amber btn-sm">RFQ →</a>' +
+          (webUrl ? '<a href="' + webUrl + '" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Website ↗</a>' : '') +
+          '<a href="rfq.html?company=' + encodeURIComponent(m.manufacturer || '') + '&machinery=' + encodeURIComponent(m.name || '') + '" class="btn btn-amber btn-sm">RFQ →</a>' +
         '</div>' +
       '</div>' +
     '</div>';
@@ -221,15 +287,13 @@ document.getElementById('catPills').addEventListener('click', function(e) {
   activeCat = e.target.getAttribute('data-cat');
   renderCards();
 });
-
-renderCards();
 </script>
 <script src="analytics.js" defer></script>
 </body>
 </html>`;
 
   fs.writeFileSync('machinery.html', html);
-  console.log('build-machinery.js wrote machinery.html with', MACHINES.length, 'records');
+  console.log('build-machinery.js wrote machinery.html with', MACHINES.length, 'records (SSR + dynamic stats + client esc)');
 }
 
 render();

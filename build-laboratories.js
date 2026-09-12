@@ -14,10 +14,87 @@ const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|dat
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
 
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function safeUrl(u) {
+  if (!u) return '';
+  const s = String(u).trim();
+  if (/^https?:\/\/[a-z0-9]/i.test(s)) return esc(s);
+  return '';
+}
+
 const DATA = JSON.parse(fs.readFileSync('data/laboratories.json', 'utf8'));
 const LABS = DATA.laboratories || [];
 
+const CAP_NAMES = {
+  lightning_impulse: '⚡ Lightning Impulse (1.2/50 μs)',
+  switching_impulse: '⚡ Switching Impulse (250/2500 μs)',
+  short_circuit: '💥 Short-Circuit Withstand',
+  partial_discharge: '🔬 Partial Discharge (PD)',
+  temperature_rise: '🌡️ Temperature Rise Test',
+  sound_level: '🔊 Sound / Noise Measurement',
+  dielectric_withstand: '⚡ Power-Frequency Dielectric',
+  oil_testing: '🛢️ Oil & DGA Laboratory',
+  materials_testing: '🧪 Insulation Materials Testing',
+  sfra: '📈 SFRA Frequency Response'
+};
+
+function renderCardServer(lab) {
+  const capRows = Object.keys(CAP_NAMES).map(function(k) {
+    const ok = lab.capabilities && lab.capabilities[k];
+    return '<tr><td class="c-name">' + esc(CAP_NAMES[k]) + '</td><td class="c-status ' + (ok ? 'c-yes"><span class="cmp-yes">✓ Yes</span>' : 'c-no"><span class="sub-l">—</span>') + '</td></tr>';
+  }).join('');
+
+  const isUhv = (lab.max_voltage_kv || 0) >= 765;
+  const webUrl = safeUrl(lab.website);
+
+  let accredHtml = '';
+  if (lab.accreditation) {
+    const std = esc(lab.accreditation.standard || 'ISO/IEC 17025');
+    const body = lab.accreditation.body ? ' (' + esc(lab.accreditation.body) + ')' : '';
+    const scope = lab.accreditation.scope ? '<div style="font-size:.76rem;margin-top:4px"><b>Scope:</b> ' + esc(lab.accreditation.scope) + '</div>' : '';
+    accredHtml = '<div class="accred-box">' +
+      '<div><b>Accreditation:</b> <span style="color:var(--accent);font-weight:700">' + std + '</span>' + body + '</div>' +
+      scope +
+      (lab.short_circuit_capacity ? '<div style="font-size:.76rem;margin-top:4px;color:var(--text)"><b>Short-Circuit:</b> ' + esc(lab.short_circuit_capacity) + '</div>' : '') +
+    '</div>';
+  } else if (lab.short_circuit_capacity) {
+    accredHtml = '<div class="accred-box"><div style="font-size:.76rem;color:var(--text)"><b>Short-Circuit:</b> ' + esc(lab.short_circuit_capacity) + '</div></div>';
+  }
+
+  return '<div class="lab-card" style="box-shadow:0 4px 18px rgba(0,0,0,.12)">' +
+    '<div class="lab-top">' +
+      '<h2 class="lab-name" style="font-size:1.28rem">' + esc(lab.name) + '</h2>' +
+      '<span class="kv-pill ' + (isUhv ? 'uhv' : '') + '">' + esc(lab.max_voltage_kv) + ' kV Peak</span>' +
+    '</div>' +
+    '<div class="lab-loc">📍 ' + esc(lab.city) + ', ' + esc(lab.country) + (lab.third_party_independent ? ' · <span style="color:#10b981;font-weight:700">Third-Party Independent</span>' : '') + '</div>' +
+    '<p style="font-size:.86rem;color:var(--muted);line-height:1.5;margin:0 0 12px">' + esc(lab.description) + '</p>' +
+    accredHtml +
+    '<table class="cap-table"><tbody>' + capRows + '</tbody></table>' +
+    '<div class="card-foot">' +
+      '<span style="font-size:.74rem;color:var(--muted)">Reviewed: ' + esc(lab.last_verified || '2026') + '</span>' +
+      '<div style="display:flex;gap:6px">' +
+        (webUrl ? '<a href="' + webUrl + '" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Website ↗</a>' : '') +
+        '<a href="rfq.html?company=' + encodeURIComponent(lab.name || '') + '&service=testing" class="btn btn-amber btn-sm">Inquire →</a>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+}
+
 function render() {
+  const uniqueCountries = [...new Set(LABS.map(l => l.country).filter(Boolean))].sort();
+  const maxVoltage = Math.max.apply(null, LABS.map(l => l.max_voltage_kv || 0));
+  const accreditedCount = LABS.filter(l => l.accreditation && l.accreditation.standard && l.accreditation.standard.indexOf('17025') >= 0).length;
+  const independentCount = LABS.filter(l => l.third_party_independent).length;
+
+  const countryOptions = uniqueCountries.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('\n        ');
+  const initialCardsHtml = LABS.map(renderCardServer).join('');
   const labsJson = JSON.stringify(LABS);
 
   const html = `<!DOCTYPE html>
@@ -34,12 +111,12 @@ function render() {
 <meta property="og:description" content="Find accredited independent testing laboratories capable of transformer impulse, short-circuit and dielectric testing above 400 kV.">
 <meta property="og:url" content="https://transformerpath.com/laboratories.html">
 <meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
-<meta name="robots" content="noindex,follow">
+<meta name="robots" content="index,follow">
 <meta name="theme-color" content="#0d1b2e">
 <link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
-<link rel="stylesheet" href="style.css?v=12">
-<link rel="stylesheet" href="tp-nav.css?v=12">
-<link rel="stylesheet" href="tp-feedback.css?v=12">
+<link rel="stylesheet" href="style.css?v=13">
+<link rel="stylesheet" href="tp-nav.css?v=13">
+<link rel="stylesheet" href="tp-feedback.css?v=13">
 <style>
 .lab-wrap { max-width: 1140px; margin: 0 auto; padding: 40px 20px 90px; }
 .lab-head { margin-bottom: 24px; }
@@ -67,6 +144,7 @@ function render() {
 .lab-name { font-size: 1.25rem; font-weight: 800; color: var(--ink); margin: 0; }
 .lab-loc { font-size: .88rem; color: var(--muted); margin-bottom: 12px; }
 .kv-pill { background: rgba(245,166,35,.12); border: 1px solid var(--accent); color: var(--accent); font-size: .78rem; font-weight: 800; padding: 3px 9px; border-radius: 999px; }
+.kv-pill.uhv { background: rgba(239,68,68,.15); border-color: #ef4444; color: #f87171; }
 
 .cap-table { width: 100%; border-collapse: collapse; font-size: .84rem; margin: 12px 0 16px; }
 .cap-table td { padding: 5px 6px; border-bottom: 1px solid var(--border); }
@@ -93,20 +171,20 @@ ${HEAD}
 
   <div class="stats-bar">
     <div class="stat-box">
-      <div class="num" id="statLabCount">10</div>
+      <div class="num" id="statLabCount">${LABS.length}</div>
       <div class="lbl">Laboratories Listed</div>
     </div>
     <div class="stat-box">
-      <div class="num">1,200 kV</div>
-      <div class="lbl">Peak Test Rating</div>
+      <div class="num">${maxVoltage.toLocaleString()} kV</div>
+      <div class="lbl">Peak Test Voltage</div>
     </div>
     <div class="stat-box">
-      <div class="num">10,000 MVA</div>
-      <div class="lbl">Max Short-Circuit</div>
-    </div>
-    <div class="stat-box">
-      <div class="num">100%</div>
+      <div class="num">${accreditedCount}</div>
       <div class="lbl">ISO/IEC 17025 Accredited</div>
+    </div>
+    <div class="stat-box">
+      <div class="num">${independentCount}</div>
+      <div class="lbl">Third-Party Independent</div>
     </div>
   </div>
 
@@ -121,14 +199,7 @@ ${HEAD}
       </select>
       <select id="countryFilter" class="select-input">
         <option value="">All Countries</option>
-        <option value="Netherlands">Netherlands</option>
-        <option value="Italy">Italy</option>
-        <option value="Germany">Germany</option>
-        <option value="Hungary">Hungary</option>
-        <option value="India">India</option>
-        <option value="USA">USA</option>
-        <option value="South Korea">South Korea</option>
-        <option value="United Kingdom">United Kingdom</option>
+        ${countryOptions}
       </select>
     </div>
     <div class="filter-row" style="flex-direction:column;align-items:flex-start;gap:6px">
@@ -140,13 +211,15 @@ ${HEAD}
         <span class="cap-toggle" data-cap="partial_discharge">🔬 Partial Discharge</span>
         <span class="cap-toggle" data-cap="temperature_rise">🌡️ Temperature Rise</span>
         <span class="cap-toggle" data-cap="sound_level">🔊 Sound / Noise Level</span>
+        <span class="cap-toggle" data-cap="dielectric_withstand">⚡ Power-Frequency Dielectric</span>
         <span class="cap-toggle" data-cap="oil_testing">🛢️ Oil &amp; DGA Analysis</span>
         <span class="cap-toggle" data-cap="materials_testing">🧪 Insulation &amp; Materials</span>
+        <span class="cap-toggle" data-cap="sfra">📈 SFRA Frequency Response</span>
       </div>
     </div>
   </div>
 
-  <div class="lab-grid" id="labGrid"></div>
+  <div class="lab-grid" id="labGrid">${initialCardsHtml}</div>
 
   <div style="background:linear-gradient(135deg, rgba(245,166,35,.10) 0%, rgba(20,37,61,.30) 100%);border:1px solid var(--accent);border-radius:14px;padding:26px;text-align:center;margin-top:40px">
     <h3 style="color:var(--ink);margin:0 0 8px">Need Independent Laboratory Testing or Third-Party Witnessing?</h3>
@@ -177,14 +250,30 @@ var CAP_NAMES = {
   sfra: '📈 SFRA Frequency Response'
 };
 
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function safeUrl(u) {
+  if (!u) return '';
+  var s = String(u).trim();
+  if (/^https?:\\/\\/[a-z0-9]/i.test(s)) return esc(s);
+  return '';
+}
+
 function renderCards() {
   var grid = document.getElementById('labGrid');
   var hits = LABS.filter(function(lab) {
-    if (minVoltage > 0 && lab.max_voltage_kv < minVoltage) return false;
+    if (minVoltage > 0 && (lab.max_voltage_kv || 0) < minVoltage) return false;
     if (selectedCountry && lab.country !== selectedCountry) return false;
     if (searchQuery) {
       var q = searchQuery.toLowerCase();
-      var text = (lab.name + ' ' + lab.city + ' ' + lab.country + ' ' + lab.description + ' ' + (lab.accreditation ? lab.accreditation.scope : '')).toLowerCase();
+      var accredScope = (lab.accreditation && lab.accreditation.scope) ? lab.accreditation.scope : '';
+      var text = (lab.name + ' ' + lab.city + ' ' + lab.country + ' ' + lab.description + ' ' + accredScope).toLowerCase();
       if (text.indexOf(q) < 0) return false;
     }
     for (var cap in requiredCaps) {
@@ -203,29 +292,40 @@ function renderCards() {
   grid.innerHTML = hits.map(function(lab) {
     var capRows = Object.keys(CAP_NAMES).map(function(k) {
       var ok = lab.capabilities && lab.capabilities[k];
-      return '<tr><td class="c-name">' + CAP_NAMES[k] + '</td><td class="c-status ' + (ok ? 'c-yes"><span class="cmp-yes">✓ Yes</span>' : 'c-no"><span class="sub-l">—</span>') + '</td></tr>';
+      return '<tr><td class="c-name">' + esc(CAP_NAMES[k]) + '</td><td class="c-status ' + (ok ? 'c-yes"><span class="cmp-yes">✓ Yes</span>' : 'c-no"><span class="sub-l">—</span>') + '</td></tr>';
     }).join('');
 
-    var isUhv = lab.max_voltage_kv >= 765;
+    var isUhv = (lab.max_voltage_kv || 0) >= 765;
+    var webUrl = safeUrl(lab.website);
+
+    var accredHtml = '';
+    if (lab.accreditation) {
+      var std = esc(lab.accreditation.standard || 'ISO/IEC 17025');
+      var body = lab.accreditation.body ? ' (' + esc(lab.accreditation.body) + ')' : '';
+      var scope = lab.accreditation.scope ? '<div style="font-size:.76rem;margin-top:4px"><b>Scope:</b> ' + esc(lab.accreditation.scope) + '</div>' : '';
+      accredHtml = '<div class="accred-box">' +
+        '<div><b>Accreditation:</b> <span style="color:var(--accent);font-weight:700">' + std + '</span>' + body + '</div>' +
+        scope +
+        (lab.short_circuit_capacity ? '<div style="font-size:.76rem;margin-top:4px;color:var(--text)"><b>Short-Circuit:</b> ' + esc(lab.short_circuit_capacity) + '</div>' : '') +
+      '</div>';
+    } else if (lab.short_circuit_capacity) {
+      accredHtml = '<div class="accred-box"><div style="font-size:.76rem;color:var(--text)"><b>Short-Circuit:</b> ' + esc(lab.short_circuit_capacity) + '</div></div>';
+    }
 
     return '<div class="lab-card" style="box-shadow:0 4px 18px rgba(0,0,0,.12)">' +
       '<div class="lab-top">' +
-        '<h2 class="lab-name" style="font-size:1.28rem">' + lab.name + '</h2>' +
-        '<span class="kv-pill ' + (isUhv ? 'uhv' : '') + '">' + lab.max_voltage_kv + ' kV Peak</span>' +
+        '<h2 class="lab-name" style="font-size:1.28rem">' + esc(lab.name) + '</h2>' +
+        '<span class="kv-pill ' + (isUhv ? 'uhv' : '') + '">' + esc(lab.max_voltage_kv) + ' kV Peak</span>' +
       '</div>' +
-      '<div class="lab-loc">📍 ' + lab.city + ', ' + lab.country + (lab.third_party_independent ? ' · <span style="color:#10b981;font-weight:700">Third-Party Independent</span>' : '') + '</div>' +
-      '<p style="font-size:.86rem;color:var(--muted);line-height:1.5;margin:0 0 12px">' + lab.description + '</p>' +
-      '<div class="accred-box">' +
-        '<div><b>Accreditation:</b> <span style="color:var(--accent);font-weight:700">' + (lab.accreditation.standard || 'ISO/IEC 17025') + '</span> (' + lab.accreditation.body + ')</div>' +
-        '<div style="font-size:.76rem;margin-top:4px"><b>Scope:</b> ' + lab.accreditation.scope + '</div>' +
-        (lab.short_circuit_capacity ? '<div style="font-size:.76rem;margin-top:4px;color:var(--text)"><b>Short-Circuit:</b> ' + lab.short_circuit_capacity + '</div>' : '') +
-      '</div>' +
+      '<div class="lab-loc">📍 ' + esc(lab.city) + ', ' + esc(lab.country) + (lab.third_party_independent ? ' · <span style="color:#10b981;font-weight:700">Third-Party Independent</span>' : '') + '</div>' +
+      '<p style="font-size:.86rem;color:var(--muted);line-height:1.5;margin:0 0 12px">' + esc(lab.description) + '</p>' +
+      accredHtml +
       '<table class="cap-table"><tbody>' + capRows + '</tbody></table>' +
       '<div class="card-foot">' +
-        '<span style="font-size:.74rem;color:var(--muted)">Reviewed: ' + (lab.last_verified || '2026') + '</span>' +
+        '<span style="font-size:.74rem;color:var(--muted)">Reviewed: ' + esc(lab.last_verified || '2026') + '</span>' +
         '<div style="display:flex;gap:6px">' +
-          (lab.website ? '<a href="' + lab.website + '" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Website ↗</a>' : '') +
-          '<a href="rfq.html?company=' + encodeURIComponent(lab.name) + '&service=testing" class="btn btn-amber btn-sm">Inquire →</a>' +
+          (webUrl ? '<a href="' + webUrl + '" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Website ↗</a>' : '') +
+          '<a href="rfq.html?company=' + encodeURIComponent(lab.name || '') + '&service=testing" class="btn btn-amber btn-sm">Inquire →</a>' +
         '</div>' +
       '</div>' +
     '</div>';
@@ -260,15 +360,13 @@ document.getElementById('capToggles').addEventListener('click', function(e) {
   }
   renderCards();
 });
-
-renderCards();
 </script>
 <script src="analytics.js" defer></script>
 </body>
 </html>`;
 
   fs.writeFileSync('laboratories.html', html);
-  console.log('build-laboratories.js wrote laboratories.html with', LABS.length, 'records');
+  console.log('build-laboratories.js wrote laboratories.html with', LABS.length, 'records (SSR + dynamic stats + client esc)');
 }
 
 render();
