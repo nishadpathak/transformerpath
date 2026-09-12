@@ -223,9 +223,9 @@ function renderEvents(html) {
     const lbl = evState(ev).key === 'LIVE' ? 'Live now'
       : d === 0 ? 'Today' : d === 1 ? 'Tomorrow' : 'In ' + d + ' days';
     // Absolute date is the primary, timezone-stable label; the relative badge is
-    // recomputed client-side (data-rel="<start date>") so it can never go stale
-    // between builds (a crawl can never see "Today" for a passed event).
-    return `<div class="up-next-card"><span class="up-next-abs">${fmt(ev.s)} → ${fmt(ev.e)}</span><h3>${esc(ev.n)}</h3><span class="up-next-rel" data-rel="${esc(ev.s)}">${lbl}</span><div class="venue">📍 ${esc(ev.v)} — ${esc(ev.c)}, ${esc(ev.co)}</div><a class="btn btn-amber btn-sm" href="${esc(ev.u)}" target="_blank" rel="noopener">View →</a></div>`;
+    // recomputed client-side (data-rel="<start date>", data-rel-end="<end date>") so it can never go stale
+    // between builds (a crawl can never see "Today" or "Live now" for a passed event).
+    return `<div class="up-next-card"><span class="up-next-abs">${fmt(ev.s)} → ${fmt(ev.e)}</span><h3>${esc(ev.n)}</h3><span class="up-next-rel" data-rel="${esc(ev.s)}" data-rel-end="${esc(ev.e)}">${lbl}</span><div class="venue">📍 ${esc(ev.v)} — ${esc(ev.c)}, ${esc(ev.co)}</div><a class="btn btn-amber btn-sm" href="${esc(ev.u)}" target="_blank" rel="noopener">View →</a></div>`;
   }).join('\n');
 
   const cards = list.map((ev) => {
@@ -525,19 +525,19 @@ function renderManufacturers(html) {
 
   const makers = DATA.reduce((s, c) => s + c.makers.filter((m) => !/^Served by/i.test(m[0])).length, 0);
   if (makers < 400) { console.warn('!! manufacturer census unexpectedly small ('+makers+'); check data/manufacturers.json'); }
-  let facCount = 546;
+  let completeness = 54;
   try {
-    const facData = JSON.parse(fs.readFileSync('data/facilities.json', 'utf8'));
-    facCount = facData.count || (facData.facilities && facData.facilities.length) || facCount;
+    const siteStats = JSON.parse(fs.readFileSync('data/site-stats.json', 'utf8'));
+    if (typeof siteStats.dataCompleteness === 'number') completeness = siteStats.dataCompleteness;
   } catch (e) {}
   const stats = `<div class="s"><b>${makers}</b><small>Companies</small></div>
-     <div class="s"><b>${facCount}</b><small>Manufacturing Facilities</small></div>
      <div class="s"><b>${DATA.length}</b><small>Countries</small></div>
-     <div class="s"><b>${new Set(DATA.map((c) => c.region)).size}</b><small>Regions</small></div>`;
+     <div class="s"><b>${new Set(DATA.map((c) => c.region)).size}</b><small>Regions</small></div>
+     <div class="s"><b>${completeness}%</b><small>Data completeness</small></div>`;
 
   html = inject(html, '<div id="board">', 'mfg-board', board);
   html = inject(html, '<p style="color:var(--muted); font-size:.85rem; margin-bottom:14px" id="count">', 'mfg-count',
-    `Showing ${makers} companies (${facCount} manufacturing facilities) across ${DATA.length} countries`);
+    `Showing ${makers} companies across ${DATA.length} countries`);
   html = inject(html, '<div class="stat-row" id="statRow">', 'mfg-stats', stats);
 
   // Quick-jump "By country" bar — regenerated from the census so it is

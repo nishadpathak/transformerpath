@@ -26,13 +26,16 @@ const path = require('path');
 // The canonical production tag.
 const GA4_ID = 'G-98Q0V62L72';
 const ANALYTICS_SCRIPT = 'analytics.js';
-// Current analytics.js version to enforce consistency (stamp with bump-assets).
-const ANALYTICS_V = 'v=5';
+// Current analytics.js version to enforce consistency (matches config.json).
+let CFG = {};
+try { CFG = JSON.parse(fs.readFileSync('data/config.json', 'utf8')); } catch (e) {}
+const JSV = (CFG.assets && CFG.assets.js) || 6;
+const ANALYTICS_V = 'v=' + JSV;
 
 // Dirs gitignored/stale or never served (404) — skip.
 const SKIP = ['archive', '_private', 'transformerpath-site', 'dist', 'node_modules', '.git', 'Transformer Equipments', '_docs', '_partials', 'functions', 'admin'];
 // Routes that are NOT normal public pages (system/redirect stubs) — exempt.
-const EXEMPT = /^(404|offline|admin|tutorial|tx-design-masterclass)\.html$/;
+const EXEMPT = /^(404|offline|admin|tutorial|tx-design-masterclass|claim)\.html$/;
 
 function walk(dir) {
   let out = [];

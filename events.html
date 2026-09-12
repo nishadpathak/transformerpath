@@ -1315,9 +1315,9 @@
 
     <div id="upNext" class="up-next" aria-label="Upcoming events">
 <!--SSR:events-upnext-->
-<div class="up-next-card"><span class="up-next-abs">14 Sept 2026 → 18 Sept 2026</span><h3>ECCE Europe 2026 (EPE Conference)</h3><span class="up-next-rel" data-rel="2026-09-14">In 2 days</span><div class="venue">📍 Valencia Conference Centre — Valencia, Spain</div><a class="btn btn-amber btn-sm" href="https://www.ecce-europe.org/2026/" target="_blank" rel="noopener">View →</a></div>
-<div class="up-next-card"><span class="up-next-abs">15 Sept 2026 → 17 Sept 2026</span><h3>ENERGETAB 2026 (Bielsko-Biała) — Poland's flagship power fair</h3><span class="up-next-rel" data-rel="2026-09-15">In 3 days</span><div class="venue">📍 ZIAD Bielsko-Biała Exhibition Grounds — Bielsko-Biała, Poland</div><a class="btn btn-amber btn-sm" href="https://energetab.pl/" target="_blank" rel="noopener">View →</a></div>
-<div class="up-next-card"><span class="up-next-abs">16 Sept 2026 → 18 Sept 2026</span><h3>Electricity Eurasia 2026</h3><span class="up-next-rel" data-rel="2026-09-16">In 4 days</span><div class="venue">📍 Istanbul Expo Centre — Istanbul, Turkey</div><a class="btn btn-amber btn-sm" href="https://electricityeurasia.com/en/" target="_blank" rel="noopener">View →</a></div>
+<div class="up-next-card"><span class="up-next-abs">14 Sept 2026 → 18 Sept 2026</span><h3>ECCE Europe 2026 (EPE Conference)</h3><span class="up-next-rel" data-rel="2026-09-14" data-rel-end="2026-09-18">In 2 days</span><div class="venue">📍 Valencia Conference Centre — Valencia, Spain</div><a class="btn btn-amber btn-sm" href="https://www.ecce-europe.org/2026/" target="_blank" rel="noopener">View →</a></div>
+<div class="up-next-card"><span class="up-next-abs">15 Sept 2026 → 17 Sept 2026</span><h3>ENERGETAB 2026 (Bielsko-Biała) — Poland's flagship power fair</h3><span class="up-next-rel" data-rel="2026-09-15" data-rel-end="2026-09-17">In 3 days</span><div class="venue">📍 ZIAD Bielsko-Biała Exhibition Grounds — Bielsko-Biała, Poland</div><a class="btn btn-amber btn-sm" href="https://energetab.pl/" target="_blank" rel="noopener">View →</a></div>
+<div class="up-next-card"><span class="up-next-abs">16 Sept 2026 → 18 Sept 2026</span><h3>Electricity Eurasia 2026</h3><span class="up-next-rel" data-rel="2026-09-16" data-rel-end="2026-09-18">In 4 days</span><div class="venue">📍 Istanbul Expo Centre — Istanbul, Turkey</div><a class="btn btn-amber btn-sm" href="https://electricityeurasia.com/en/" target="_blank" rel="noopener">View →</a></div>
 <!--/SSR:events-upnext-->
 </div>
     <p style="text-align:center; color:var(--muted); font-size:.88rem" id="count">
@@ -3771,8 +3771,10 @@ function badgeHTML(ev){
   return '';
 }
 function relLabel(ev){
+  const endPassed = Date.parse(ev.e + 'T23:59:59Z') < todayUTC;
+  if (endPassed) return '';
   const d = relDays(ev.s);
-  if (d <= 0) return Date.parse(ev.e+'T00:00:00Z') >= todayUTC ? '<span class="rel-today">Live now</span>' : '';
+  if (d <= 0) return Date.parse(ev.e + 'T23:59:59Z') >= todayUTC ? '<span class="rel-today">Live now</span>' : '';
   if (d === 1) return '<span class="rel-soon">In 1 day</span>';
   if (d <= 31) return '<span class="rel-soon">In '+d+' days</span>';
   return '';
@@ -3823,8 +3825,10 @@ function render() {
     const up = list.filter(ev => isDiscoverableClient(ev) && !/unconfirmed|date est\.|⚠/i.test(ev.d || '')).slice(0,3);
     elUp.innerHTML = up.map(ev => {
       const d = relDays(ev.s);
-      const lbl = d < 0 ? 'Live now' : d === 0 ? 'Today' : d === 1 ? 'Tomorrow' : 'In '+d+' days';
-      return `<div class="up-next-card"><span class="up-next-abs">${fmt(ev.s)} → ${fmt(ev.e)}</span><h3>${ev.n}</h3><span class="up-next-rel">${lbl}</span><div class="venue">📍 ${ev.v} — ${ev.c}, ${ev.co}</div><a class="btn btn-amber btn-sm" href="${ev.u}" target="_blank" rel="noopener">View →</a></div>`;
+      const endPassed = Date.parse(ev.e + 'T23:59:59Z') < todayUTC;
+      const isLive = !endPassed && Date.parse(ev.s + 'T00:00:00Z') <= todayUTC;
+      const lbl = endPassed ? 'Ended' : isLive ? 'Live now' : d === 0 ? 'Today' : d === 1 ? 'Tomorrow' : 'In '+d+' days';
+      return `<div class="up-next-card"><span class="up-next-abs">${fmt(ev.s)} → ${fmt(ev.e)}</span><h3>${ev.n}</h3><span class="up-next-rel" data-rel="${ev.s}" data-rel-end="${ev.e}">${lbl}</span><div class="venue">📍 ${ev.v} — ${ev.c}, ${ev.co}</div><a class="btn btn-amber btn-sm" href="${ev.u}" target="_blank" rel="noopener">View →</a></div>`;
     }).join('');
   }
 
@@ -3900,10 +3904,42 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
 </script>
 <script src="analytics.js?v=6" defer></script>
 <script>
-// Recompute event relative-date badges client-side (Asia/Dubai) so a crawl or
-// returning visitor never sees a stale "Today / In N days" label. The absolute
+// Recompute event relative-date badges client-side so a crawl or
+// returning visitor never sees a stale "Today / In N days / Live now" label. The absolute
 // dates stay server-rendered; only the relative badge refreshes against now.
-(function(){function upd(){document.querySelectorAll('[data-rel]').forEach(function(el){var ds=el.getAttribute('data-rel');if(!ds)return;var dt=Math.ceil((new Date(ds+'T00:00:00Z')-new Date())/86400000);el.textContent=dt<=0?'Live now':dt===1?'Tomorrow':'In '+dt+' days';});}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',upd);else upd();})();
+(function(){
+  function upd(){
+    var now = new Date();
+    document.querySelectorAll('[data-rel]').forEach(function(el){
+      var ds = el.getAttribute('data-rel');
+      var de = el.getAttribute('data-rel-end') || ds;
+      if (!ds) return;
+      var start = new Date(ds + 'T00:00:00Z');
+      var end = new Date(de + 'T23:59:59Z');
+      var dt = Math.ceil((start - now) / 86400000);
+      if (now > end) {
+        el.textContent = 'Ended';
+        el.classList.remove('rel-today', 'rel-soon');
+      } else if (now >= start && now <= end) {
+        el.textContent = 'Live now';
+        el.classList.add('rel-today');
+      } else if (dt === 1) {
+        el.textContent = 'Tomorrow';
+        el.classList.add('rel-soon');
+      } else if (dt === 0) {
+        el.textContent = 'Today';
+        el.classList.add('rel-soon');
+      } else if (dt > 1 && dt <= 31) {
+        el.textContent = 'In ' + dt + ' days';
+        el.classList.add('rel-soon');
+      } else if (dt > 31) {
+        el.textContent = 'In ' + dt + ' days';
+      }
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', upd);
+  else upd();
+})();
 </script>
 <script src="supabase-config.js"></script>
 <script src="supabase.js" defer></script>
