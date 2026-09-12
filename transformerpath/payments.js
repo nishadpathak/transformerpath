@@ -62,7 +62,8 @@
       metadata: {
         company: opts.company || '',
         contact_name: opts.name || '',
-        source_page: location.pathname
+        source_page: location.pathname,
+        component_id: opts.componentId || ''
       }
     };
 
@@ -117,6 +118,7 @@
           email: btn.getAttribute('data-email') || undefined,
           company: btn.getAttribute('data-company') || undefined,
           name: btn.getAttribute('data-name') || undefined,
+          componentId: btn.getAttribute('data-component') || undefined,
           openInNewTab: btn.getAttribute('data-new-tab') === 'true'
         }).catch(function (err) {
           console.error(err);

@@ -55,3 +55,23 @@ with `{ sku, successUrl, cancelUrl, customerEmail? }`.
 ## Pro course (unchanged)
 
 Existing Payment Link in `course-gate.js` (~$199/year).
+
+
+## 3D component sponsorship (suppliers)
+
+Unlocked 3D explorers (`power3d.html`, `bushing.html`, `oltc.html`, `coretopology.html`, `power500.html`) are linked to individual components.
+
+| SKU | Product | Price |
+|-----|---------|-------|
+| `component_3d_feature` | Featured supplier on one 3D component + directory card | **$999/year** |
+| `component_3d_exclusive` | Exclusive sponsor for one 3D component hotspot | **$2,499/year** |
+
+### Flow
+1. Buyer opens `power3d.html`, clicks a part (or lands via `?part=oltc`)
+2. Selection panel shows component directory link + featured supplier (or Pay CTA)
+3. `components.html` cards deep-link to the same part and sell the same sponsorship
+
+### After payment
+1. Note `metadata.component_id` from Stripe / Netlify checkout
+2. Set `window.TP_FEATURED_SUPPLIERS = { oltc: { name, url, tagline } }` in a small site snippet, or edit `components-catalog.js` featured map
+3. Confirm go-live with the supplier

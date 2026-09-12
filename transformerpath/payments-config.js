@@ -46,6 +46,28 @@
       paymentLink: '',
       successPath: '/checkout-success.html?sku=sponsor_daily_brief'
     },
+    component_3d_feature: {
+      sku: 'component_3d_feature',
+      name: '3D Component Feature',
+      description: 'Featured supplier on one component hotspot in the 3D explorer + components directory — 12 months.',
+      amountCents: 99900,
+      currency: 'usd',
+      displayPrice: '$999',
+      displayPeriod: '/year',
+      paymentLink: '',
+      successPath: '/checkout-success.html?sku=component_3d_feature'
+    },
+    component_3d_exclusive: {
+      sku: 'component_3d_exclusive',
+      name: '3D Component Exclusive',
+      description: 'Exclusive supplier sponsorship for one component in the 3D explorer (logo + CTA when part is selected) — 12 months.',
+      amountCents: 249900,
+      currency: 'usd',
+      displayPrice: '$2,499',
+      displayPeriod: '/year',
+      paymentLink: '',
+      successPath: '/checkout-success.html?sku=component_3d_exclusive'
+    },
     sponsor_featured_article: {
       sku: 'sponsor_featured_article',
       name: 'Featured Article',

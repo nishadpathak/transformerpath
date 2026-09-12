@@ -30,6 +30,20 @@ const CATALOG = {
     currency: 'usd',
     mode: 'payment'
   },
+  component_3d_feature: {
+    name: '3D Component Feature',
+    description: 'Featured supplier on one 3D component hotspot + directory card — 12 months.',
+    amountCents: 99900,
+    currency: 'usd',
+    mode: 'payment'
+  },
+  component_3d_exclusive: {
+    name: '3D Component Exclusive',
+    description: 'Exclusive supplier sponsorship for one 3D component hotspot — 12 months.',
+    amountCents: 249900,
+    currency: 'usd',
+    mode: 'payment'
+  },
   sponsor_featured_article: {
     name: 'Featured Article',
     description: 'Sponsored technical article or case study — one placement.',
