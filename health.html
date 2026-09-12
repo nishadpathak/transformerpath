@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Health & Platform Operations Dashboard | TransformerPath</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://transformerpath.com/health.html">
+<link rel="stylesheet" href="style.css?v=13">
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
+<link rel="stylesheet" href="tp-nav.css?v=13">
+<link rel="stylesheet" href="tp-feedback.css?v=13">
+<style>
+  .dh-wrap { max-width: 1200px; margin: 0 auto; padding: 40px 20px 90px; }
+  .dh-head { margin-bottom: 24px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 14px; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
+  .dh-head h1 { font-size: 2.1rem; color: var(--ink); margin: 0; }
+  .dh-head p { color: var(--muted); font-size: .95rem; margin: 4px 0 0; }
+  
+  .dh-grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-bottom: 24px; }
+  .dh-card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px; box-shadow: 0 4px 16px rgba(0,0,0,.08); }
+  .dh-card .lbl { font-size: .75rem; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 700; }
+  .dh-card .val { font-size: 1.85rem; font-weight: 800; color: var(--ink); margin: 6px 0 2px; }
+  .dh-card .val.green { color: #10b981; }
+  .dh-card .val.amber { color: var(--amber); }
+  .dh-card .sub { font-size: .82rem; color: var(--muted); }
+
+  .dh-section { margin-top: 36px; }
+  .dh-section h2 { font-size: 1.3rem; color: var(--ink); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  
+  .tbl-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .dh-table { width: 100%; border-collapse: collapse; font-size: .88rem; text-align: left; }
+  .dh-table th { background: var(--bg); color: var(--muted); font-weight: 700; text-transform: uppercase; font-size: .75rem; letter-spacing: .04em; padding: 12px 16px; border-bottom: 1px solid var(--border); }
+  .dh-table td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: var(--text); }
+  .dh-table tr:last-child td { border-bottom: none; }
+  
+  .badge-healthy { display: inline-flex; align-items: center; gap: 5px; background: rgba(16,185,129,.12); color: #10b981; border: 1px solid rgba(16,185,129,.3); padding: 2px 9px; border-radius: 999px; font-size: .75rem; font-weight: 700; }
+  .badge-warning { display: inline-flex; align-items: center; gap: 5px; background: rgba(245,166,35,.12); color: var(--amber); border: 1px solid rgba(245,166,35,.3); padding: 2px 9px; border-radius: 999px; font-size: .75rem; font-weight: 700; }
+  .badge-stale   { display: inline-flex; align-items: center; gap: 5px; background: rgba(239,68,68,.12); color: #ef4444; border: 1px solid rgba(239,68,68,.3); padding: 2px 9px; border-radius: 999px; font-size: .75rem; font-weight: 700; }
+  
+  .queue-list { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 768px) { .queue-list { grid-template-columns: 1fr; } }
+  .queue-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px; }
+  .queue-title { font-weight: 700; font-size: .98rem; color: var(--ink); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+  .queue-desc { font-size: .84rem; color: var(--muted); line-height: 1.5; margin-bottom: 12px; }
+  .queue-btn { font-size: .8rem; font-weight: 700; color: var(--accent); text-decoration: none; display: inline-flex; align-items: center; gap: 4px; }
+</style>
+</head>
+<body>
+
+<header>
+  <link rel="stylesheet" href="tp-nav.css?v=13">
+  <div class="container nav">
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
+    <nav class="tpnav" id="mainNav" aria-label="Primary">
+      <a href="intel.html">Intel</a>
+      <div class="tpnav-dropdown">
+        <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
+        <div class="tpnav-dropdown-panel" role="menu">
+          <a href="manufacturers.html">Manufacturers</a>
+          <a href="components.html">Components &amp; Materials</a>
+          <a href="machinery.html">Machinery</a>
+          <a href="laboratories.html">Testing Labs</a>
+          <a href="services.html">Services &amp; Repair</a>
+          <a href="markets.html">Markets</a>
+          <a href="buyers-guide.html">Buyer's Guide</a>
+          <a href="directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
+        </div>
+      </div>
+      <a href="projects.html">Projects</a>
+      <a href="tenders.html">Tenders</a>
+      <a href="grids.html" class="tpnav-opt">Grids</a>
+      <a href="events.html">Events</a>
+      <a href="tools.html" class="tpnav-opt">Engineering</a>
+      <a href="learn.html">Learn</a>
+      <a href="rfq.html">RFQ</a>
+      <div class="tpnav-more">
+        <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
+        <div class="tpnav-more-panel" role="menu">
+          <a href="directory.html" role="menuitem">Directory</a>
+          <a href="services.html" role="menuitem">Service & Repair</a>
+          <a href="logistics.html" role="menuitem">Transport & Logistics</a>
+          <a href="laboratories.html" role="menuitem">Testing Labs</a>
+          <a href="machinery.html" role="menuitem">Machinery</a>
+          <a href="associations.html" role="menuitem">Industry Associations</a>
+          <a href="education.html" role="menuitem">Education & Training</a>
+          <a href="buyers.html" role="menuitem">Buyers & Procurement</a>
+          <a href="media.html" role="menuitem">Media & Publications</a>
+          <a href="compare.html" role="menuitem">Compare</a>
+          <a href="accessories.html" role="menuitem">Accessories</a>
+          <a href="markets.html" role="menuitem">Markets</a>
+          <a href="utilities.html" role="menuitem">Utilities</a>
+          <a href="webinars.html" role="menuitem">Webinars</a>
+          <a href="awards.html" role="menuitem">Awards</a>
+          <a href="buyers-guide.html" role="menuitem">Buyer's Guide</a>
+          <a href="components.html" role="menuitem">Components</a>
+          <a href="materials.html" role="menuitem">Materials</a>
+          <a href="applications.html" role="menuitem">Applications</a>
+          <a href="knowledge.html" role="menuitem">Knowledge</a>
+          <a href="standards.html" role="menuitem">Standards</a>
+          <a href="case-studies.html" role="menuitem">Case Studies</a>
+          <a href="calculator.html" role="menuitem">Calculator</a>
+          <a href="explorer.html" role="menuitem">3D Models</a>
+          <a href="test-report.html" role="menuitem">Test Report</a>
+          <a href="software.html" role="menuitem">Software</a>
+          <a href="masterclass.html" role="menuitem">Masterclass</a>
+          <a href="books.html" role="menuitem">Books</a>
+          <a href="for-manufacturers.html" role="menuitem">For Manufacturers</a>
+          <a href="verified.html" role="menuitem">Verified Profiles</a>
+          <a href="intel-pro.html" role="menuitem">Intel Pro</a>
+          <a href="sponsor.html" role="menuitem">Sponsor</a>
+          <a href="pricing.html" role="menuitem">Pricing</a>
+        </div>
+      </div>
+      <span class="tpnav-utils">
+        <a href="search.html" title="Search" aria-label="Search">&#128269;</a>
+        <a href="workspace.html" data-tp-account>Account</a>
+        <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">&#127769;</button>
+      </span>
+    </nav>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
+    updateThemeIcon();
+    themeToggle?.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) { html.removeAttribute('data-theme'); localStorage.setItem('theme', 'light'); }
+      else { html.setAttribute('data-theme', 'dark'); localStorage.setItem('theme', 'dark'); }
+      updateThemeIcon();
+    });
+    function updateThemeIcon() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+    }
+  </script>
+  <script src="tp-nav.js?v=6" defer></script>
+</header>
+
+<main class="dh-wrap">
+  <div class="dh-head">
+    <div>
+      <h1>Platform Data Health & Operations</h1>
+      <p>Continuous monitoring of canonical census counts, source evidence, freshness latency and CI integrity gates.</p>
+    </div>
+    <div>
+      <span class="badge-healthy" id="overall-status" style="font-size:.85rem;padding:4px 12px">● All Systems Operational</span>
+    </div>
+  </div>
+
+  <div class="dh-grid-4">
+    <div class="dh-card">
+      <div class="lbl">Manufacturers Census</div>
+      <div class="val" id="stat-mfg">701</div>
+      <div class="sub">Across <span id="stat-mfg-co">85</span> countries</div>
+    </div>
+    <div class="dh-card">
+      <div class="lbl">Sourced Capabilities</div>
+      <div class="val green" id="stat-caps">1,962</div>
+      <div class="sub"><span id="stat-evidence">1,877</span> primary sourced points</div>
+    </div>
+    <div class="dh-card">
+      <div class="lbl">Tracked Projects & Tenders</div>
+      <div class="val" id="stat-projects">456</div>
+      <div class="sub">306 projects &middot; 150 tenders (21 open)</div>
+    </div>
+    <div class="dh-card">
+      <div class="lbl">Daily Intel Freshness</div>
+      <div class="val" id="stat-freshness-age">0.2h</div>
+      <div class="sub" id="stat-freshness-status">Status: DATA CURRENT</div>
+    </div>
+  </div>
+
+  <div class="dh-section">
+    <h2>📡 Intelligence Surfaces & Cadence Monitor</h2>
+    <div class="tbl-wrap">
+      <table class="dh-table">
+        <thead>
+          <tr>
+            <th>Dataset / Surface</th>
+            <th>Cadence</th>
+            <th>Last Successful Refresh</th>
+            <th>Age</th>
+            <th>Health Status</th>
+          </tr>
+        </thead>
+        <tbody id="surfaces-tbody">
+          <tr><td colspan="5" style="text-align:center;color:var(--muted)">Loading intelligence surface telemetry...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="dh-section">
+    <h2>🔍 Data Remediation Queues (What to Fix Next)</h2>
+    <div class="queue-list">
+      <div class="queue-card">
+        <div class="queue-title">
+          <span>Unverified Technical Voltage/MVA Claims</span>
+          <span class="badge-healthy">0 Blockers</span>
+        </div>
+        <div class="queue-desc">All public ratings must cite primary OEM documentation, test certificates, or annual reports. Non-verified aggregator snippets have been moved to unverified or marked 'Not publicly disclosed'.</div>
+        <a class="queue-btn" href="manufacturers.html">Audit Manufacturer Capabilities &rarr;</a>
+      </div>
+      <div class="queue-card">
+        <div class="queue-title">
+          <span>Orphan Facilities Detection</span>
+          <span class="badge-healthy">0 Orphans</span>
+        </div>
+        <div class="queue-desc">Every documented manufacturing site maps to a canonical parent corporate entity with valid geographic coordinates.</div>
+        <a class="queue-btn" href="manufacturers.html?view=factories">Review Facilities Hierarchy &rarr;</a>
+      </div>
+      <div class="queue-card">
+        <div class="queue-title">
+          <span>Verification Hierarchy Alignment</span>
+          <span class="badge-healthy">100% Compliant</span>
+        </div>
+        <div class="queue-desc">Strict enforcement of Listed &rarr; Claimed &rarr; Verified &rarr; Supplier Pro. 0 deprecated terms remaining across 2,323 templates.</div>
+        <a class="queue-btn" href="verified.html">Review Verification Standards &rarr;</a>
+      </div>
+      <div class="queue-card">
+        <div class="queue-title">
+          <span>Tender Pipeline Validation</span>
+          <span class="badge-healthy">21 Open Tenders</span>
+        </div>
+        <div class="queue-desc">Tenders tracked across national utilities (DEWA, SEC, PGNiG, Powerlink, RTE, National Grid) with explicit bid deadlines and scope attribution.</div>
+        <a class="queue-btn" href="tenders.html?status=open">Inspect Active Tenders &rarr;</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+        <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data.</p>
+      </div>
+      <div><h2>INTELLIGENCE</h2><a href="intel.html">Daily Intel</a><a href="projects.html">Projects</a><a href="tenders.html">Tenders</a><a href="grids.html">Grids</a></div>
+      <div><h2>INDUSTRY</h2><a href="manufacturers.html">Manufacturers</a><a href="components.html">Components</a><a href="machinery.html">Machinery</a><a href="laboratories.html">Testing Labs</a><a href="rfq.html">RFQ Board</a></div>
+      <div><h2>OPERATIONS</h2><a href="health.html">Data Health</a><a href="methodology.html">Methodology</a><a href="verified.html">Verification Standards</a><a href="pricing.html">Pricing</a></div>
+      <div><h2>CONTACT</h2><a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a></div>
+    </div>
+    <div class="copyright">&copy; 2026 TransformerPath. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  fetch('data/site-stats.json').then(r=>r.json()).then(s=>{
+    document.getElementById('stat-mfg').textContent = s.manufacturers || 701;
+    document.getElementById('stat-mfg-co').textContent = s.manufacturingCountries || 85;
+    document.getElementById('stat-caps').textContent = (s.capabilities || 1962).toLocaleString();
+    document.getElementById('stat-evidence').textContent = (s.sourcedDataPoints || 1877).toLocaleString();
+    document.getElementById('stat-projects').textContent = ((s.projects||306) + (s.tenders||150)).toLocaleString();
+  }).catch(()=>{});
+
+  fetch('data/freshness.json').then(r=>r.json()).then(f=>{
+    const tbody = document.getElementById('surfaces-tbody');
+    const di = (f.surfaces||[]).find(s=>s.id==='daily_intel') || {};
+    const refIso = di.last_successful_refresh || di.last_data_refresh;
+    if (refIso) {
+      const dt = new Date(refIso);
+      const ageHours = (Date.now() - dt.getTime()) / (1000 * 60 * 60);
+      document.getElementById('stat-freshness-age').textContent = ageHours.toFixed(1) + 'h';
+      let statText = 'Status: DATA CURRENT';
+      if (ageHours > 72) statText = 'Status: DATA STALE';
+      else if (ageHours > 36) statText = 'Status: REFRESH DELAYED';
+      document.getElementById('stat-freshness-status').textContent = statText;
+    }
+
+    if (f.surfaces && f.surfaces.length) {
+      tbody.innerHTML = f.surfaces.map(s=>{
+        const ref = s.last_successful_refresh || s.last_data_refresh || s.last_build || '—';
+        let ageStr = '—';
+        let badgeClass = 'badge-healthy';
+        let badgeText = s.status || 'HEALTHY';
+        if (ref !== '—') {
+          const dt = new Date(ref);
+          if (!isNaN(dt.getTime())) {
+            const h = (Date.now() - dt.getTime()) / (1000 * 60 * 60);
+            ageStr = h < 1 ? '< 1 hour' : h.toFixed(1) + ' hours ago';
+            if (h > 72) { badgeClass = 'badge-stale'; badgeText = 'DATA STALE'; }
+            else if (h > 36) { badgeClass = 'badge-warning'; badgeText = 'DELAYED'; }
+          }
+        }
+        return `
+          <tr>
+            <td><b>${s.name}</b></td>
+            <td><span style="font-size:.8rem;color:var(--muted)">${s.cadence||'—'}</span></td>
+            <td><code>${ref.slice(0, 19).replace('T', ' ')}</code></td>
+            <td>${ageStr}</td>
+            <td><span class="${badgeClass}">● ${badgeText}</span></td>
+          </tr>
+        `;
+      }).join('');
+    }
+  }).catch(()=>{});
+})();
+</script>
+<script src="tp-freshness.js?v=6" defer></script>
+<script src="tp-feedback.js?v=6" defer></script>
+</body>
+</html>

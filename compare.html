@@ -47,6 +47,16 @@
   .empty { text-align: center; color: var(--muted); background: var(--card); border: 1px dashed var(--border); border-radius: 14px; padding: 44px 20px; }
   .cta { background: linear-gradient(135deg, rgba(245,166,35,.10) 0%, rgba(20,37,61,.30) 100%); border: 1px solid var(--amber); border-radius: 14px; padding: 22px 24px; text-align: center; margin-top: 30px; }
   .row-note { color: var(--muted); font-size: .78rem; margin-top: 16px; line-height: 1.6; }
+  .table-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
+  @media print {
+    header, footer, .picker, .cta, .tp-feedback-btn, .table-toolbar button, .presets-bar { display: none !important; }
+    .cmp-wrap { max-width: 100% !important; padding: 0 !important; }
+    body { background: #fff !important; color: #000 !important; }
+    .cmp-table { border: 1px solid #ccc !important; }
+    .cmp-table th, .cmp-table td { color: #000 !important; border-bottom: 1px solid #ccc !important; }
+    .cmp-table thead tr th { background: #f0f0f0 !important; color: #000 !important; }
+    .cmp-table th.rh { background: #f8f8f8 !important; color: #333 !important; }
+  }
 </style>
     <link rel="stylesheet" href="tp-nav.css?v=13">
   <link rel="stylesheet" href="tp-feedback.css?v=13">
@@ -288,7 +298,10 @@ function renderTable(){
   var tbody=rows.map(function(r){
     return '<tr><th class="rh">'+r[0]+'</th>'+r[2].map(function(v){ return '<td>'+(v||'<span class="sub-l">—</span>')+'</td>'; }).join('')+'</tr>';
   }).join('');
-  el.innerHTML='<div class="chart-note">Comparing '+cols.length+' manufacturers side-by-side. Technical fields are sourced from the canonical TransformerPath Knowledge Graph.</div>'+
+  el.innerHTML='<div class="table-toolbar">'+
+    '<div class="chart-note" style="margin:0">Comparing <b>'+cols.length+'</b> manufacturers side-by-side. Sourced from the TransformerPath Knowledge Graph.</div>'+
+    '<button type="button" class="btn btn-outline btn-sm" onclick="window.print()" style="font-size:.8rem;padding:5px 12px">🖨️ Print / Export PDF</button>'+
+    '</div>'+
     '<div class="table-wrap" style="overflow-x:auto"><table class="cmp-table"><thead>'+thead+'</thead><tbody>'+tbody+'</tbody></table></div>';
 }
 
