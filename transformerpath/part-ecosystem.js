@@ -373,42 +373,282 @@
       ],
       sourceHint: 'Switchyard commodity — source by rated voltage & protective level.'
     }),
+    /* ───────── DISTRIBUTION — OIL (SGB-class pad / pole) ───────── */
     entry({
-      id: 'enclosure-dry', family: 'distribution',
+      id: 'corrugated-tank', family: 'distribution',
+      match: [
+        'Corrugated fin walls', 'Corrugated fin', 'ONAN cooling',
+        'Tank', 'Hermetic tank', 'distribution tank'
+      ],
+      title: 'Corrugated distribution tank',
+      marketNote: 'SGB-SMIT, Hitachi and Siemens distribution lines commonly use corrugated-wall hermetic tanks (ONAN) — fins are both radiator and expansion volume, deleting the conservator on sealed units.',
+      components: [
+        { name: 'Corrugated steel fin packs', note: 'Deep vertical fins, elastically expand' },
+        { name: 'Hermetic cover weld or bolted gasket', note: 'Sealed vs free-breathing' },
+        { name: 'Drain / sample / earth fittings', note: 'Utility service points' },
+        { name: 'C3–C5 paint system', note: 'Coastal / industrial finish' }
+      ],
+      machinery: [
+        { name: 'Corrugation press line', note: 'Fin forming' },
+        { name: 'Tank welding / leak test', note: 'Vacuum integrity' },
+        { name: 'Shot-blast & paint booth', note: 'Corrosion system' }
+      ],
+      manufacturers: [
+        { name: 'SGB-SMIT / Hitachi Energy / Siemens Energy', role: 'Distribution OEMs', url: 'manufacturers.html' },
+        { name: 'Tank fabricators', role: 'Local-content steelwork', url: 'components.html#tank' }
+      ],
+      sourceHint: 'Corrugated tanks are a high-volume sourced fab line — RFQ by kVA, BIL and paint class.'
+    }),
+    entry({
+      id: 'dist-oltc', family: 'distribution',
+      match: [
+        'On-load tap-changer (OLTC)', 'On-load tap-changer', 'distribution OLTC'
+      ],
+      title: 'Distribution OLTC / DETC',
+      marketNote: 'Many SGB/Hitachi/Siemens distribution units ship with off-circuit taps; OLTC (often MR ECOTAP or vacuum) is specified when LV voltage must track load — same OEM ecosystem as power, smaller frame.',
+      components: [
+        { name: 'DETC or compact OLTC', note: '±2×2.5% or ±10% typical' },
+        { name: 'Tap leads & board', note: 'From HV winding' },
+        { name: 'Motor drive (OLTC)', note: 'AVR / SCADA ready' }
+      ],
+      machinery: [
+        { name: 'Tap-board assembly', note: 'Lead dress' },
+        { name: 'OLTC test stand', note: 'Operation count / timing' }
+      ],
+      manufacturers: [
+        { name: 'Maschinenfabrik Reinhausen', role: 'Compact OLTCs', url: 'oltc.html' },
+        { name: 'Distribution OEMs', role: 'Integrate DETC/OLTC', url: 'manufacturers.html' }
+      ],
+      detail3d: 'oltc.html',
+      sourceHint: 'Name the tap scheme in the RFQ — DETC vs OLTC changes the entire BOM.'
+    }),
+
+    /* ───────── CAST-RESIN (Siemens GEAFOL / Hitachi RESIBLOC / SGB CRT) ───────── */
+    entry({
+      id: 'crt-core', family: 'castresin',
+      match: [
+        'Core (CRGO, resin-coated)', 'Core (CRGO, CRT', 'CRT core',
+        'Core (CRGO, resin', 'resin-coated)'
+      ],
+      title: 'Cast-resin magnetic core',
+      marketNote: 'Siemens GEAFOL, Hitachi RESIBLOC and SGB cast-resin lines use step-lap CRGO with resin/varnish coating (no oil protection) and slightly lower Bm for noise in buildings — same architecture shown here.',
+      components: [
+        { name: 'Step-lap CRGO / Hi-B core', note: 'Resin- or varnish-coated' },
+        { name: 'Clamping frames & insulated tie-rods', note: 'Single-point earthing' },
+        { name: 'Lifting eyes on top frame', note: 'Never sling coils' }
+      ],
+      machinery: [
+        { name: 'Cut-to-length / mitre line', note: 'Step-lap packets' },
+        { name: 'Stacking table', note: 'Limb + yoke build' },
+        { name: 'Core coating / varnish station', note: 'Corrosion seal' }
+      ],
+      manufacturers: [
+        { name: 'Siemens Energy (GEAFOL)', role: 'CRT OEM', url: 'manufacturers.html' },
+        { name: 'Hitachi Energy (RESIBLOC)', role: 'CRT OEM', url: 'manufacturers.html' },
+        { name: 'SGB-SMIT', role: 'Cast-resin OEM', url: 'manufacturers.html' }
+      ],
+      detail3d: 'castresin3d.html',
+      sourceHint: 'Source CRGO + coating, or buy the wound active part from CRT OEMs.'
+    }),
+    entry({
+      id: 'crt-lv-foil', family: 'castresin',
+      match: [
+        'LV foil windings', 'LV foil', 'LV foil winding (CRT',
+        'Aluminium foil LV', 'foil windings'
+      ],
+      title: 'CRT LV foil winding',
+      marketNote: 'Full-height Al or Cu foil with class-F prepreg is the GEAFOL/RESIBLOC/SGB standard LV — each turn spans winding height so axial SC forces self-balance.',
+      components: [
+        { name: 'Al / Cu foil conductor', note: 'Full-height turns' },
+        { name: 'Class-F / H prepreg interlayer', note: 'Oven-cured tube' },
+        { name: 'Cooling duct spacers', note: 'Axial air channels' },
+        { name: 'LV busbar stubs', note: 'Upward or side exit' }
+      ],
+      machinery: [
+        { name: 'Foil winding machine', note: 'Constant tension' },
+        { name: 'Curing oven', note: 'Prepreg set' },
+        { name: 'Coil press', note: 'Final build' }
+      ],
+      manufacturers: [
+        { name: 'CRT OEMs (Siemens / Hitachi / SGB)', role: 'Wind in-house', url: 'manufacturers.html' },
+        { name: 'Foil & prepreg mills', role: 'Materials', url: 'components.html' }
+      ],
+      detail3d: 'castresin3d.html',
+      sourceHint: 'RFQ foil alloy, width, prepreg class — or finished LV coils from the OEM tier.'
+    }),
+    entry({
+      id: 'crt-hv-coil', family: 'castresin',
+      match: [
+        'HV cast-resin coils', 'HV cast-resin', 'cast-resin coils',
+        'epoxy HV', 'vacuum-cast', 'delta links'
+      ],
+      title: 'Vacuum-cast HV epoxy coils',
+      marketNote: 'Defining CRT feature: HV winding vacuum-cast in silica-filled glass-epoxy (Siemens GEAFOL / Hitachi RESIBLOC / SGB). Every coil PD-tested (<10 pC). E2/E3 humidity + F1 fire classes are the European market ask.',
+      components: [
+        { name: 'Vacuum-cast epoxy HV coil', note: 'Silica-filled, glass-reinforced' },
+        { name: 'HV delta / star links', note: 'Top copper bars' },
+        { name: 'Static end rings (as required)', note: 'Impulse grading' },
+        { name: 'HV porcelain / epoxy terminals', note: 'Cable or bus' }
+      ],
+      machinery: [
+        { name: 'Epoxy vacuum casting plant', note: 'Mould fill under vacuum' },
+        { name: 'Curing oven / autoclave', note: 'Cross-link cycle' },
+        { name: 'PD / impulse test bay', note: 'IEC 60076-11' }
+      ],
+      manufacturers: [
+        { name: 'Siemens Energy GEAFOL', role: 'CRT OEM', url: 'manufacturers.html' },
+        { name: 'Hitachi Energy RESIBLOC', role: 'CRT OEM', url: 'manufacturers.html' },
+        { name: 'SGB-SMIT / TMC / others', role: 'Cast-resin OEMs', url: 'manufacturers.html' },
+        { name: 'Epoxy & filler suppliers', role: 'Resin systems', url: 'components.html' }
+      ],
+      detail3d: 'castresin3d.html',
+      sourceHint: 'HV cast coils are the premium sourced CRT BOM line — RFQ by kV, BIL, E/C/F class string.'
+    }),
+    entry({
+      id: 'crt-air-ducts', family: 'castresin',
+      match: [
+        'Cooling air ducts', 'LV–HV air duct', 'air ducts (CRT',
+        'axial cooling ducts'
+      ],
+      title: 'CRT cooling air ducts',
+      marketNote: 'Axial ducts between LV foil and HV cast coil set AN rating; AF fans boost 40–50%. Same duct philosophy across GEAFOL / RESIBLOC / SGB.',
+      components: [
+        { name: 'Glass / polyester duct spacers', note: 'Define air channels' },
+        { name: 'Air baffles / guides', note: 'Directed flow on AF' }
+      ],
+      machinery: [
+        { name: 'Spacer cutting / moulding', note: 'Duct geometry' }
+      ],
+      manufacturers: [
+        { name: 'CRT OEMs & insulation specialists', role: 'Duct kits', url: 'manufacturers.html' }
+      ],
+      sourceHint: 'Duct kit is part of the active-part insulation package.'
+    }),
+    entry({
+      id: 'crt-fans', family: 'castresin',
+      match: [
+        'Cross-flow fans', 'Cross-flow fans (AN', 'AF fans',
+        'fan trays', 'AN → AF'
+      ],
+      title: 'AF cooling fans',
+      marketNote: 'Fan trays under coils add AF rating — staged by PT100/PT1000 relay. Standard option on Siemens/Hitachi/SGB indoor CRTs for peak or emergency load.',
+      components: [
+        { name: 'Cross-flow / axial fans', note: 'Low-noise building duty' },
+        { name: 'Fan trays & guards', note: 'Under-coil mount' },
+        { name: 'Fan contactor / staging', note: 'From temp relay' }
+      ],
+      machinery: [
+        { name: 'Fan balance & airflow test', note: 'Noise + CFM' }
+      ],
+      manufacturers: [
+        { name: 'Fan OEMs + CRT makers', role: 'AF option', url: 'components.html' }
+      ],
+      sourceHint: 'High-volume accessory — source by airflow, IP, and noise class.'
+    }),
+    entry({
+      id: 'crt-sensors', family: 'castresin',
+      match: [
+        'PT100 marshalling', 'PT100', 'temperature relay',
+        'LV terminals + PT100', 'thermal sensors'
+      ],
+      title: 'CRT thermal sensors & relay',
+      marketNote: 'PT100s in LV ducts (3+spare) + temperature relay for alarm/trip/fan control is mandatory practice on GEAFOL/RESIBLOC/SGB indoor units.',
+      components: [
+        { name: 'PT100 / PT1000 sensors', note: 'Embedded in LV ducts' },
+        { name: 'Temperature relay', note: 'Alarm, trip, AF stages' },
+        { name: 'Marshalling box', note: 'Sensor terminations' }
+      ],
+      machinery: [
+        { name: 'Sensor calibration bench', note: 'Resistance check' }
+      ],
+      manufacturers: [
+        { name: 'Trafag / Qualitrol / OEM kits', role: 'Sensors & relays', url: 'components.html' },
+        { name: 'CRT OEMs', role: 'Package wiring', url: 'manufacturers.html' }
+      ],
+      sourceHint: 'Bought-in protection package — specify sensor count and relay make in the datasheet.'
+    }),
+    entry({
+      id: 'crt-taps', family: 'castresin',
+      match: [
+        'Off-circuit tap links', 'DETC links', 'tap links (CRT',
+        'HV tap board'
+      ],
+      title: 'CRT off-circuit taps',
+      marketNote: 'Most cast-resin units use bolted off-circuit tap links on the HV coil (±2×2.5% typical). OLTC is rare indoors; Hitachi/Siemens/SGB quote DETC as default.',
+      components: [
+        { name: 'Bolted tap links / board', note: 'De-energised change' },
+        { name: 'Tap leads from HV cast coil', note: 'Epoxy exits' }
+      ],
+      machinery: [
+        { name: 'Tap-board assembly', note: 'Labelled links' }
+      ],
+      manufacturers: [
+        { name: 'CRT OEMs', role: 'Tap map with coil', url: 'manufacturers.html' }
+      ],
+      sourceHint: 'Usually integral to the HV cast coil — source as part of the winding package.'
+    }),
+    entry({
+      id: 'enclosure-dry', family: 'castresin',
       match: [
         'Ventilated enclosure', 'Ventilated enclosure (IP', 'enclosure (VPI',
-        'Lifting eyes & rating plate'
+        'Lifting eyes & rating plate', 'IP21/23/31', 'IP21/23'
       ],
-      title: 'Dry-type enclosure',
-      marketNote: 'IP21–IP33 ventilated housings as used on Siemens/SGB cast-resin and VPI indoor units.',
+      title: 'CRT / dry-type enclosure',
+      marketNote: 'IP21–IP33 ventilated housings as used on Siemens GEAFOL, Hitachi RESIBLOC and SGB indoor CRTs; IP54 needs derating or forced air.',
       components: [
         { name: 'Sheet-steel enclosure', note: 'Louvre / mesh panels' },
         { name: 'Door interlocks & earthing', note: 'Safety' },
-        { name: 'Cable entry plates', note: 'Bottom/side gland plates' }
+        { name: 'Cable entry plates', note: 'Bottom/side gland plates' },
+        { name: 'Anti-condensation heaters (option)', note: 'Humid sites' }
       ],
       machinery: [
         { name: 'Sheet-metal CNC & paint', note: 'Enclosure fab' }
       ],
       manufacturers: [
-        { name: 'Dry-type OEMs (Siemens, SGB, Hitachi…)', role: 'Package', url: 'manufacturers.html' }
+        { name: 'Dry-type OEMs (Siemens, SGB, Hitachi…)', role: 'Package', url: 'manufacturers.html' },
+        { name: 'Local sheet-metal shops', role: 'Local content', url: 'manufacturers.html' }
       ],
-      sourceHint: 'Enclosures are often local-content fabrication.'
+      detail3d: 'castresin3d.html',
+      sourceHint: 'Enclosures are often local-content fabrication — strong supplier opportunity.'
     }),
     entry({
-      id: 'resilient-pads', family: 'distribution',
+      id: 'resilient-pads', family: 'castresin',
       match: [
-        'Resilient coil-support pads', 'Resilient coil-support', 'coil-support pads'
+        'Resilient coil-support pads', 'Resilient coil-support', 'coil-support pads',
+        'Resilient coil-support pads', 'silicone-rubber'
       ],
-      title: 'Coil support pads',
-      marketNote: 'Allow thermal expansion of cast-resin coils — standard on Hitachi/Siemens/SGB CRT designs.',
+      title: 'CRT coil support pads',
+      marketNote: 'Allow thermal expansion of cast-resin coils — standard on Hitachi RESIBLOC / Siemens GEAFOL / SGB CRT designs. Missing pads → coil cracking years later.',
       components: [
-        { name: 'Elastomer / composite pads', note: 'Coil feet' }
+        { name: 'Silicone-rubber / elastomer pads', note: 'Coil feet' },
+        { name: 'Pad retainers', note: 'Keep position under SC force' }
       ],
       machinery: [{ name: 'Pad moulding / cut', note: 'Elastomer parts' }],
       manufacturers: [
         { name: 'Dry-type OEMs & pad specialists', role: 'Mounting kits', url: 'manufacturers.html' }
       ],
-      sourceHint: 'Small sourced part, high volume on CRT fleets.'
+      sourceHint: 'Small sourced part, high volume on CRT fleets — easy supplier feature slot.'
+    }),
+    entry({
+      id: 'crt-terminals', family: 'castresin',
+      match: [
+        'LV terminals + PT100', 'HV terminals (CRT', 'cable box (CRT',
+        'busduct flanges'
+      ],
+      title: 'CRT HV/LV terminations',
+      marketNote: 'Top or side HV epoxy terminals and LV bus stubs for busduct/cable — Siemens/Hitachi/SGB package options for indoor switchrooms.',
+      components: [
+        { name: 'HV epoxy / porcelain terminals', note: 'Cable or bus' },
+        { name: 'LV busbar stubs / flanges', note: 'Busduct ready' },
+        { name: 'Cable box / shrouds', note: 'IP upgrade option' }
+      ],
+      machinery: [
+        { name: 'Terminal casting / assembly', note: 'Epoxy bushings' }
+      ],
+      manufacturers: [
+        { name: 'CRT OEMs + bushing specialists', role: 'Terminations', url: 'bushing.html' }
+      ],
+      sourceHint: 'Specify connection style (cable/busduct) early — it drives the enclosure and terminal BOM.'
     }),
 
     /* ───────── CURRENT TRANSFORMERS ───────── */

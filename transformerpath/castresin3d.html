@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Transformer Construction — Interactive 3D Explorer</title>
+<title>Cast-Resin Transformer — 3D Sourcing Explorer (GEAFOL / RESIBLOC / SGB)</title>
 <style>
 :root{--panel:#0e1c2c;--panel2:#13263a;--ink:#e8eef5;--mut:#8fa6bc;--acc:#3da5f4;--acc2:#e8732a;--line:#23415e}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -53,19 +53,22 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#08121e;color:var(--
 <div id="c3d"></div>
 
 <div id="topbar">
-  <h1>⚡ Transformer Construction — 3D Explorer</h1>
-  <a href="academy.html">🏠 Hub</a>
-  <a href="tutorial.html">← Tutorial</a>
-  <a href="power3d.html">Power transformer 3D →</a>
-  <a href="castresin3d.html">Cast resin 3D</a>
-  <a href="ct3d.html">Current transformer 3D</a>
-  <div id="modeswitch">
-    <button id="mOil" class="active">Oil-immersed</button>
-    <button id="mCrt">Cast resin</button>
+  <div>
+    <h1>Cast-Resin Transformer — 3D Sourcing Explorer</h1>
+    <div class="sub" style="font-size:.72rem;color:var(--mut)">Siemens GEAFOL · Hitachi RESIBLOC · SGB CRT · click any part to source it</div>
+  </div>
+  <a href="power3d.html">Power</a>
+  <a href="explorer.html?mode=oil">Oil distribution</a>
+  <a href="castresin3d.html" style="background:var(--acc);color:#04121f;font-weight:700">Cast resin</a>
+  <a href="ct3d.html">CT</a>
+  <a href="components.html">Components</a>
+  <a href="academy.html">Hub</a>
+  <div id="modeswitch" style="display:none">
+    <button id="mOil">Oil-immersed</button>
+    <button id="mCrt" class="active">Cast resin</button>
     <button id="mVpi">Dry VPI</button>
   </div>
 </div>
-
 <div id="panel">
   <h2>Assembly / Exploded view</h2>
   <input id="explode" class="sl" type="range" min="0" max="100" value="0">
@@ -86,8 +89,8 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#08121e;color:var(--
     <button id="bQuiz">🎯 Quiz me</button>
   </div>
 
-  <h2>Selected part</h2>
-  <div id="info"><span class="hint">Click any part of the transformer to identify it and read what it does. Drag to orbit · scroll to zoom · right-drag to pan.</span></div>
+  <h2>Selected part — source it</h2>
+  <div id="info"><span class="hint">Click any part to see GEAFOL / RESIBLOC / SGB market practice and where that component can be sourced.</span></div>
 </div>
 
 <div id="help">🖱 drag = orbit &nbsp;·&nbsp; wheel = zoom &nbsp;·&nbsp; right-drag / shift-drag = pan &nbsp;·&nbsp; click = identify part<br>📱 one finger = orbit &nbsp;·&nbsp; pinch = zoom</div>
@@ -142,6 +145,7 @@ grid2.position.y = -4.15; scene.add(grid2);
 
 /* ============ materials ============ */
 const M = {
+  glass: new THREE.MeshStandardMaterial({color:0xa8c4d8, roughness:.2, metalness:.05, transparent:true, opacity:.3}),
   steel:   new THREE.MeshStandardMaterial({color:0x8fa3b8, roughness:.45, metalness:.65}),
   steelDk: new THREE.MeshStandardMaterial({color:0x5d7186, roughness:.5,  metalness:.6}),
   core:    new THREE.MeshStandardMaterial({color:0x6e7f93, roughness:.35, metalness:.8}),
@@ -207,7 +211,7 @@ const limbX = [-12,0,12];
   const yb = box(36,4,6,M.core); yb.position.set(0,4,0); g.add(yb);
   g.position.set(0,0,0); oilRoot.add(g);
   reg(g,'Core (limbs + bottom yoke)',
-   'Three-limb step-lap CRGO core as used on SGB-SMIT / Hitachi / Siemens distribution lines. Grade and joints set no-load loss and hum for life. Single-point earthing. Source CRGO packets, banding and clamps — or the full active part from distribution OEMs.',
+   'Three-limb core stacked from 0.23 mm Hi-B grain-oriented silicon steel with mitred step-lap joints. Carries the mutual flux; its grade and joint quality fix no-load loss, magnetising current and hum for the life of the unit. Earthed at exactly one point.',
    [0,0,0],'core');
 }
 /* top yoke separately so it can lift off in exploded view */
@@ -357,7 +361,7 @@ let oilMesh;
   }
   oilRoot.add(g);
   reg(g,'Corrugated fin walls (ONAN cooling)',
-   'SGB-class corrugated tank: fins are both radiator and expansion volume (ONAN). Hermetic designs delete the conservator. Source corrugated fin packs, welding and C3–C5 paint — a major local-content BOM line on distribution fleets. ≥1600 kVA often moves to detachable radiators.',
+   'On distribution transformers the tank wall IS the radiator: thin steel sheet is pressed into deep vertical fins (the corrugations you see on every pad-mount and pole-mount unit). Hot oil rises inside, sheds heat through the fin faces, and sinks — pure ONAN thermosiphon, no fans, no valves, nothing to maintain. The fins also flex elastically to absorb oil expansion, which is what lets hermetically sealed designs delete the conservator entirely. Larger distribution units (≥1600 kVA) switch to detachable plate-type radiators like the power transformer’s.',
    [0,0,0],'cooling');
 }
 /* --- OLTC --- */
@@ -424,7 +428,7 @@ const crtRoot = new THREE.Group(); crtRoot.visible=false; scene.add(crtRoot);
   const yb=box(38,5,6,M.core); yb.position.set(0,4.5,0); g.add(yb);
   crtRoot.add(g);
   reg(g,'Core (CRGO, resin-coated)',
-   'Identical step-lap CRGO technology to oil units, sealed with an anti-corrosion resin coating since there is no oil to protect the steel. Flux density is kept slightly lower (≈1.4–1.6 T) to limit noise in occupied buildings.',
+   'Step-lap CRGO with resin/varnish coating — Siemens GEAFOL, Hitachi RESIBLOC and SGB CRT practice. Bm ≈1.4–1.6 T for building noise. Source CRGO packets, coating and clamps, or the full active part from CRT OEMs.',
    [0,0,0],'core');
 }
 {
@@ -445,7 +449,7 @@ const crtRoot = new THREE.Group(); crtRoot.visible=false; scene.add(crtRoot);
   limbX.forEach(x=>{ const w=cyl(4.9,4.9,17,M.copperL); w.position.set(x,16,0); g.add(w); });
   crtRoot.add(g);
   reg(g,'LV foil windings',
-   'Aluminium or copper foil wound full-height with class-F prepreg between layers, oven-cured into a rigid tube. Each turn spans the whole winding height, so axial short-circuit forces are inherently balanced.',
+   'Full-height Al/Cu foil with class-F prepreg — GEAFOL/RESIBLOC/SGB standard LV. Each turn spans winding height so axial SC forces self-balance. Source foil + prepreg, or finished LV coils.',
    [0,8,0],'lv');
 }
 {
@@ -460,7 +464,7 @@ const crtRoot = new THREE.Group(); crtRoot.visible=false; scene.add(crtRoot);
   for(let i=0;i<2;i++){ const bar=box(12,1,.8,M.copperL); bar.position.set(-6+i*12,27.4,8.4); g.add(bar); }
   crtRoot.add(g);
   reg(g,'HV cast-resin coils + delta links',
-   'The complete HV winding is vacuum-cast inside a steel mould in silica-filled, glass-reinforced epoxy — void-free, verified by a <10 pC partial-discharge test on every single coil. Humidity-proof (E2/E3), flame-retardant (F1), touch-safe surface. Copper links on top close the delta.',
+   'HV winding vacuum-cast in silica-filled glass-epoxy — void-free, every coil PD-tested. E2/E3 + F1 classes are the European ask on GEAFOL / RESIBLOC / SGB. This is the premium CRT BOM line to source or feature.',
    [0,16,0],'hv');
 }
 {
@@ -470,7 +474,7 @@ const crtRoot = new THREE.Group(); crtRoot.visible=false; scene.add(crtRoot);
   const tb=box(4,2.6,1.4,M.steelDk); tb.position.set(19.5,9,7.8); g.add(tb);
   crtRoot.add(g);
   reg(g,'LV terminals + PT100 marshalling box',
-   'LV busbar stubs exit upward for busduct or cable connection. PT100 sensors embedded in the LV ducts (typically 3 + 1 spare) feed a temperature relay: alarm, trip and AF-fan control thresholds.',
+   'LV bus stubs for busduct/cable. PT100s in LV ducts (3+spare) feed alarm/trip/AF stages — mandatory GEAFOL/RESIBLOC/SGB practice. Source sensors, relay and marshalling as a bought-in package.',
    [0,10,0],'bushings');
 }
 {
@@ -484,7 +488,7 @@ const crtRoot = new THREE.Group(); crtRoot.visible=false; scene.add(crtRoot);
   g.userData.encMat = encMat;
   crtRoot.add(g);
   reg(g,'Ventilated enclosure (IP21/23/31)',
-   'Optional sheet-steel enclosure with inlet/outlet louvres — rule of thumb ≥0.25 m² of free inlet + outlet area per 10 kW of loss, with ≥1 m height difference. IP54 or harsh-site enclosures require derating or forced air. Without enclosure the unit is IP00 inside a dedicated room.',
+   'IP21–IP33 ventilated housing as on Siemens/Hitachi/SGB indoor CRTs. ≥0.25 m² free inlet+outlet per 10 kW loss. Strong local-content fab opportunity — source louvre panels, interlocks and gland plates.',
    [0,-34,0],'tank');
 }
 {
@@ -495,7 +499,7 @@ const crtRoot = new THREE.Group(); crtRoot.visible=false; scene.add(crtRoot);
     g.add(f); g.add(fr); });
   crtRoot.add(g);
   reg(g,'Cross-flow fans (AN → AF)',
-   'Fan trays beneath the coils blow air up the LV–HV duct, adding 40–50% rating (AF) for peak or emergency duty — usually started automatically by the PT100 temperature relay.',
+   'Fan trays under coils add AF rating for peaks — staged by the PT100 relay. Standard option on GEAFOL / RESIBLOC / SGB. Source by airflow, IP and noise class.',
    [0,0,14],'cooling');
 }
 
@@ -505,7 +509,7 @@ const crtRoot = new THREE.Group(); crtRoot.visible=false; scene.add(crtRoot);
   limbX.forEach(x=>{ for(const z of [5.6,-5.6]){ const pad=box(2.2,1.2,1.6,M.rubber); pad.position.set(x,7.1,z); g.add(pad); } });
   crtRoot.add(g);
   reg(g,'Resilient coil-support pads',
-   'The cast coils sit on resilient (often silicone-rubber) blocks, never rigidly bolted: epoxy and copper expand differently from the steel frame every load cycle, and the pads absorb that movement plus the 100 Hz core vibration. Missing or hardened pads show up years later as coil cracking — check them during the annual clean.',
+   'Silicone-rubber pads let cast coils expand thermally — standard on RESIBLOC / GEAFOL / SGB. Missing pads → coil cracks years later. Small high-volume sourced part for CRT fleets.',
    [0,0,0],'core');
 }
 /* --- detail pass: CRT lifting eyes & rating plate --- */
@@ -518,6 +522,47 @@ const crtRoot = new THREE.Group(); crtRoot.visible=false; scene.add(crtRoot);
   reg(g,'Lifting eyes & rating plate (CRT)',
    'Lift only by the top-frame eyes — slinging around the coils cracks resin. The rating plate carries the IEC 60076-11 class string (e.g. E2 C2 F1) alongside the electrical data; that three-class code is the unit\'s environmental passport.',
    [0,14,0],'core');
+}
+
+
+/* --- CRT cooling air ducts (explicit sourcing hotspot) --- */
+{
+  const g = new THREE.Group();
+  limbX.forEach(x=>{
+    const d=cyl(5.6,5.6,16,M.glass||new THREE.MeshStandardMaterial({color:0xa8c4d8,transparent:true,opacity:.28,roughness:.2}));
+    d.position.set(x,16,0); g.add(d);
+  });
+  crtRoot.add(g);
+  reg(g,'Cooling air ducts (CRT)',
+   'Axial ducts between LV foil and HV cast coil set AN rating; AF fans boost 40–50%. Same duct philosophy across Siemens GEAFOL, Hitachi RESIBLOC and SGB CRTs — source duct spacers with the insulation kit.',
+   [12,0,0],'cooling');
+}
+/* --- CRT off-circuit tap links --- */
+{
+  const g = new THREE.Group();
+  limbX.forEach(x=>{
+    for(let k=0;k<5;k++){
+      const peg=cyl(.35,.35,1.4,M.copper); peg.rotation.z=Math.PI/2;
+      peg.position.set(x+7.6,20-k*1.2,0); g.add(peg);
+    }
+    const link=box(.3,5.2,.25,M.copperL||M.copper); link.position.set(x+8.3,17.6,0); g.add(link);
+  });
+  crtRoot.add(g);
+  reg(g,'Off-circuit tap links (CRT)',
+   'Bolted DETC links on the HV cast coil (±2×2.5% typical). OLTC is rare indoors — Hitachi/Siemens/SGB quote off-circuit taps as default. Usually integral to the HV cast-coil package.',
+   [16,0,0],'hv');
+}
+/* --- CRT HV epoxy terminals --- */
+{
+  const g = new THREE.Group();
+  limbX.forEach(x=>{
+    const stem=cyl(.7,.9,5,M.resinIn||M.resin); stem.position.set(x,36,6); g.add(stem);
+    const cap=box(1.8,1.2,1.8,M.copper); cap.position.set(x,39,6); g.add(cap);
+  });
+  crtRoot.add(g);
+  reg(g,'HV terminals (CRT)',
+   'Epoxy HV terminals for cable or bus — top/side exit options on Siemens/Hitachi/SGB indoor packages. Specify connection style early; it drives enclosure and terminal BOM.',
+   [0,14,0],'bushings');
 }
 
 /* ============ VPI DRY-TYPE MODEL ============ */
@@ -756,7 +801,7 @@ function pick(e){
   }else{
     info.innerHTML = quizOn
       ? `<b>🎯 Find and click: ${qTarget?qTarget.name:''}</b><br><span class="hint">Score: ${qScore}/${qCount} — that click hit empty space.</span>`
-      : '<span class="hint">Click any part of the transformer to identify it and read what it does.</span>';
+      : '<span class="hint">Click any part to see GEAFOL / RESIBLOC / SGB market practice and where it can be sourced.</span>';
   }
 }
 
@@ -814,10 +859,7 @@ function setMode(m){
   buildLabels(); applyToggles(); applyExplode();
   if(typeof quizOn!=='undefined' && quizOn) nextQ();
 }
-bOil.onclick=()=>(function(){
-  var q=new URLSearchParams(location.search).get('mode');
-  if(q==='crt'||q==='vpi'||q==='oil') setMode(q); else setMode('oil');
-})(); bCrt.onclick=()=>setMode('crt'); bVpi.onclick=()=>setMode('vpi');
+bOil.onclick=()=> bCrt.onclick=()=>setMode('crt'); bVpi.onclick=()=>setMode('vpi');
 
 const bRot=document.getElementById('bRotate');
 bRot.onclick=()=>{ autoRotate=!autoRotate; bRot.classList.toggle('on',autoRotate); };
@@ -846,7 +888,12 @@ function tick(){
     L.el.style.top  = ((-pr.y+1)/2*innerHeight)+'px';
   });
 }
-setMode('oil');
+
+(function(){
+  var q = new URLSearchParams(location.search).get('mode');
+  if(q==='oil'||q==='vpi'||q==='crt') setMode(q);
+  else setMode('crt');
+})();
 tick();
 
 addEventListener('resize',()=>{

@@ -7,7 +7,8 @@
 (function (root) {
   var FAMILY_LABEL = {
     power: 'Power transformer',
-    distribution: 'Distribution / dry-type',
+    distribution: 'Oil distribution',
+    castresin: 'Cast-resin / dry-type',
     ct: 'Current transformer'
   };
 
