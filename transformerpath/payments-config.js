@@ -78,6 +78,72 @@
       displayPeriod: ' one-time',
       paymentLink: '',
       successPath: '/checkout-success.html?sku=sponsor_featured_article'
+    },
+    directory_enterprise: {
+      sku: 'directory_enterprise',
+      name: 'Directory — Enterprise',
+      description: 'Multi-plant profiles, SSO seats, API export, dedicated account manager — 12 months.',
+      amountCents: 999900,
+      currency: 'usd',
+      displayPrice: '$9,999',
+      displayPeriod: '/year',
+      paymentLink: '',
+      successPath: '/checkout-success.html?sku=directory_enterprise'
+    },
+    academy_pro: {
+      sku: 'academy_pro',
+      name: 'Academy Pro',
+      description: 'Full design masterclass, calculator, certificate track — 12 months.',
+      amountCents: 19900,
+      currency: 'usd',
+      displayPrice: '$199',
+      displayPeriod: '/year',
+      paymentLink: 'https://buy.stripe.com/5kQ00c3pS8tv9g4fdMfYY00',
+      successPath: '/checkout-success.html?sku=academy_pro'
+    },
+    academy_team: {
+      sku: 'academy_team',
+      name: 'Academy Team',
+      description: '10 seats, shared progress, corporate invoice — 12 months.',
+      amountCents: 149900,
+      currency: 'usd',
+      displayPrice: '$1,499',
+      displayPeriod: '/year',
+      paymentLink: '',
+      successPath: '/checkout-success.html?sku=academy_team'
+    },
+    academy_enterprise: {
+      sku: 'academy_enterprise',
+      name: 'Academy Enterprise',
+      description: 'Unlimited seats, SSO, LMS export, custom modules — annual contract.',
+      amountCents: 1499900,
+      currency: 'usd',
+      displayPrice: '$14,999',
+      displayPeriod: '/year',
+      paymentLink: '',
+      successPath: '/checkout-success.html?sku=academy_enterprise'
+    },
+    rfq_boost: {
+      sku: 'rfq_boost',
+      name: 'RFQ Lead Access',
+      description: 'Priority RFQ routing for your categories + weekly lead digest — 12 months.',
+      amountCents: 299900,
+      currency: 'usd',
+      displayPrice: '$2,999',
+      displayPeriod: '/year',
+      paymentLink: '',
+      successPath: '/checkout-success.html?sku=rfq_boost'
+    },
+    jobs_featured: {
+      sku: 'jobs_featured',
+      name: 'Featured Job Listing',
+      description: 'Pinned role on jobs board + intel newsletter mention — 30 days.',
+      amountCents: 49900,
+      currency: 'usd',
+      displayPrice: '$499',
+      displayPeriod: '/30 days',
+      paymentLink: '',
+      successPath: '/checkout-success.html?sku=jobs_featured'
     }
   };
 

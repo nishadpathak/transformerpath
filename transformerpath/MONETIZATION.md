@@ -52,9 +52,38 @@ with `{ sku, successUrl, cancelUrl, customerEmail? }`.
 2. Set badge in manufacturer/vendor data (`Verified` or `Premium`)
 3. Reply confirming go-live date
 
-## Pro course (unchanged)
+## Learning & academy
 
-Existing Payment Link in `course-gate.js` (~$199/year).
+| SKU | Product | Price |
+|-----|---------|-------|
+| `academy_pro` | Academy Pro (same as legacy course gate) | **$199/year** |
+| `academy_team` | Academy Team (10 seats) | **$1,499/year** |
+| `academy_enterprise` | Academy Enterprise (SSO / LMS) | **$14,999/year** |
+
+Existing Payment Link in `course-gate.js` maps to `academy_pro`.
+
+## Commerce expansion (high-scale)
+
+| SKU | Product | Price |
+|-----|---------|-------|
+| `directory_enterprise` | Multi-plant directory + API | **$9,999/year** |
+| `rfq_boost` | Priority RFQ lead access | **$2,999/year** |
+| `jobs_featured` | Featured job listing | **$499 / 30 days** |
+
+### Platform graph
+
+`data/site-graph.json` + `site-graph.js` stamp every major page with related hubs and monetization CTAs. `platform-map.html` is the human-readable map of the full graph (directories ↔ learning ↔ 3D ↔ intel ↔ grids ↔ commerce).
+
+### Scale roadmap (integration order)
+
+1. **Trust layer** — verified / premium / enterprise directory badges (live SKUs)
+2. **Attention layer** — daily brief + featured articles + 3D hotspots
+3. **Intent layer** — RFQ boost + utility-grid preferred OEMs
+4. **Capability layer** — Academy Pro → Team → Enterprise seats
+5. **Talent layer** — featured jobs tied to OEM profiles
+6. **Data layer** — paid API / export of directory + intel (enterprise contract)
+
+Every SKU should remain reachable from the node that creates demand (e.g. 3D part → `component_3d_feature`, learn chapter → `academy_pro`).
 
 
 ## 3D component sponsorship (suppliers)
