@@ -145,12 +145,12 @@
       var exact = state.byKey[keyOf(name, country)];
       if (exact) return exact;
     }
-    if (state.byKey[n]) return state.byKey[n];
 
+    // Prefer canonical brand aliases before the first local plant that shares a short name.
     for (var i = 0; i < ALIASES.length; i++) {
       var a = ALIASES[i];
       for (var k = 0; k < a.keys.length; k++) {
-        if (n === a.keys[k] || n.indexOf(a.keys[k]) !== -1 || a.keys[k].indexOf(n) !== -1) {
+        if (n === a.keys[k] || (a.keys[k].length >= 6 && (n.indexOf(a.keys[k]) !== -1 || a.keys[k].indexOf(n) !== -1))) {
           var hit = state.byKey[keyOf(a.name, a.country)] || state.byKey[norm(a.name)];
           if (hit) return hit;
           return {
@@ -167,6 +167,8 @@
         }
       }
     }
+
+    if (state.byKey[n]) return state.byKey[n];
 
     // Fuzzy: directory name contained in query or vice-versa (min length 6)
     if (n.length >= 6) {
@@ -429,7 +431,9 @@
   function explorerStripHtml(types, opts) {
     opts = opts || {};
     var explorers = explorersForTypes(types);
-    if (!explorers.length && opts.fallbackAll) explorers = allExplorers();
+    if (!explorers.length && (opts.fallbackAll || opts.fallbackAll || opts.fallbackAll)) {
+      explorers = allExplorers();
+    }
     if (!explorers.length) return '';
     return (
       '<div class="tp-explorer-strip">' +
@@ -452,10 +456,63 @@
     );
   }
 
+  function normalizeProfile(raw) {
+    if (!raw) return null;
+    return {
+      headline: raw.headline || raw.summary || '',
+      kvRange: raw.kvRange || raw.voltageRange || '',
+      mvaRange: raw.mvaRange || raw.powerRange || '',
+      certifications: raw.certifications || raw.certs || [],
+      capabilities: raw.capabilities || raw.capability || [],
+      leadTimeNote: raw.leadTimeNote || raw.leadTimes || '',
+      featured3d: raw.featured3d || raw.explorers || [],
+      componentCategories: raw.componentCategories || raw.components || [],
+      rfqHint: raw.rfqHint || raw.rfqNote || '',
+      plants: raw.plants || raw.factories || [],
+      utilityApprovals: raw.utilityApprovals || raw.approvedBy || [],
+      serviceFootprint: raw.serviceFootprint || raw.regions || '',
+      aftermarket: raw.aftermarket || raw.service || '',
+      typicalSlots: raw.typicalSlots || '',
+      verifiedClaims: raw.verifiedClaims || []
+    };
+  }
+
   function getExpandedProfile(name, country) {
     var k1 = keyOf(name, country);
     var k2 = norm(name);
-    return state.profiles[k1] || state.profiles[k2] || null;
+    if (state.profiles[k1]) return normalizeProfile(state.profiles[k1]);
+    if (state.profiles[k2]) return normalizeProfile(state.profiles[k2]);
+
+    // Alias / canonical brand → expanded profile (e.g. local plant → global HQ card)
+    var aliasHit = null;
+    var n = norm(name);
+    ALIASES.forEach(function (a) {
+      if (aliasHit) return;
+      a.keys.forEach(function (k) {
+        if (aliasHit) return;
+        if (n === k || n.indexOf(k) !== -1 || k.indexOf(n) !== -1) {
+          aliasHit = a;
+        }
+      });
+    });
+    if (aliasHit) {
+      var ak = norm(aliasHit.name);
+      if (state.profiles[ak]) return normalizeProfile(state.profiles[ak]);
+      if (state.profiles[keyOf(aliasHit.name, aliasHit.country)]) {
+        return normalizeProfile(state.profiles[keyOf(aliasHit.name, aliasHit.country)]);
+      }
+    }
+
+    // Fuzzy: profile key contains OEM token (min 6 chars)
+    if (n.length >= 6) {
+      var keys = Object.keys(state.profiles);
+      for (var i = 0; i < keys.length; i++) {
+        if (keys[i].indexOf(n) !== -1 || n.indexOf(keys[i]) !== -1) {
+          return normalizeProfile(state.profiles[keys[i]]);
+        }
+      }
+    }
+    return null;
   }
 
   function load(opts) {

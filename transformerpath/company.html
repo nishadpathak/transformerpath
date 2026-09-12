@@ -33,7 +33,7 @@
 .fact .k { color:var(--muted); font-weight:600; }
 .fact .v { color:var(--ink); font-weight:600; }
 .tpill { font-size:.66rem; font-weight:800; padding:2px 8px; border-radius:999px; margin-right:5px; letter-spacing:.3px; }
-.t-PT{background:#dbeafe;color:#1e40af} .t-DT{background:#dcfce7;color:#166534} .t-DRY{background:#fef3c7;color:#92400e}
+.t-PT{background:#dbeafe;color:#1e40af} .t-DT{background:#dcfce7;color:#166534} .t-DRY{background:#fef3c7;color:#92400e} .t-CT{background:#ede9fe;color:#5b21b6}
 .trust-panel { background:linear-gradient(135deg,var(--navy),#1b3a5c); color:#fff; border-radius:14px; padding:24px 26px; margin-bottom:18px; }
 .trust-panel h2 { color:#fff; margin:0 0 8px; font-size:1.05rem; }
 .trust-panel p { color:#c4d2e4; font-size:.9rem; margin:0 0 14px; }
@@ -186,13 +186,25 @@ function render(m, c, DATA, intelNews, profile){
 
   let expandedHtml = '';
   if (profile) {
+    const feat3d = (profile.featured3d || []).map(href => {
+      const label = href.indexOf('castresin')>=0 ? 'Cast-resin 3D' : href.indexOf('ct3d')>=0 ? 'CT 3D' : href.indexOf('explorer')>=0 ? 'Oil DT 3D' : href.indexOf('500')>=0 ? '500 kV 3D' : 'Power 3D';
+      return `<a class="tp-explorer-link" href="${TPDirectory.esc(href)}">${TPDirectory.esc(label)} →</a>`;
+    }).join('');
     expandedHtml = `<div class="pcard"><h2>Capability snapshot</h2>
       ${profile.headline ? `<p style="margin:0 0 12px;color:var(--ink)">${TPDirectory.esc(profile.headline)}</p>` : ''}
       ${profile.kvRange ? `<div class="fact"><span class="k">Voltage</span><span class="v">${TPDirectory.esc(profile.kvRange)}</span></div>` : ''}
       ${profile.mvaRange ? `<div class="fact"><span class="k">Power range</span><span class="v">${TPDirectory.esc(profile.mvaRange)}</span></div>` : ''}
       ${profile.leadTimeNote ? `<div class="fact"><span class="k">Lead times</span><span class="v">${TPDirectory.esc(profile.leadTimeNote)}</span></div>` : ''}
+      ${profile.typicalSlots ? `<div class="fact"><span class="k">Typical slots</span><span class="v">${TPDirectory.esc(profile.typicalSlots)}</span></div>` : ''}
+      ${profile.serviceFootprint ? `<div class="fact"><span class="k">Service footprint</span><span class="v">${TPDirectory.esc(profile.serviceFootprint)}</span></div>` : ''}
+      ${profile.aftermarket ? `<div class="fact"><span class="k">Aftermarket</span><span class="v">${TPDirectory.esc(profile.aftermarket)}</span></div>` : ''}
       ${profile.certifications && profile.certifications.length ? `<div class="fact"><span class="k">Certifications</span><span class="v">${profile.certifications.map(TPDirectory.esc).join(' · ')}</span></div>` : ''}
+      ${profile.plants && profile.plants.length ? `<div class="fact"><span class="k">Key plants</span><span class="v">${profile.plants.map(TPDirectory.esc).join(' · ')}</span></div>` : ''}
+      ${profile.utilityApprovals && profile.utilityApprovals.length ? `<div class="fact"><span class="k">Utility / TSO footprint</span><span class="v">${profile.utilityApprovals.map(TPDirectory.esc).join(' · ')}</span></div>` : ''}
       ${profile.capabilities && profile.capabilities.length ? `<div style="margin-top:12px"><b style="font-size:.9rem">Capabilities</b><ul class="cap-list">${profile.capabilities.map(x=>`<li>${TPDirectory.esc(x)}</li>`).join('')}</ul></div>` : ''}
+      ${profile.componentCategories && profile.componentCategories.length ? `<div style="margin-top:10px;font-size:.88rem;color:var(--muted)">Component focus: ${profile.componentCategories.map(TPDirectory.esc).join(' · ')} · <a href="components.html" style="color:var(--accent);font-weight:700">Components directory →</a></div>` : ''}
+      ${profile.rfqHint ? `<p style="margin:10px 0 0;font-size:.88rem;color:var(--muted)">${TPDirectory.esc(profile.rfqHint)}</p>` : ''}
+      ${feat3d ? `<div class="tp-explorer-strip" style="margin-top:12px">${feat3d}</div>` : ''}
       <div style="margin-top:14px"><a href="rfq.html?company=${encodeURIComponent(m[0])}" class="btn btn-amber">RFQ this company →</a></div>
     </div>`;
   }
