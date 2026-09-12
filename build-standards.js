@@ -103,7 +103,7 @@ const stdJson = JSON.stringify(STANDARDS_DATA);
 const html = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Global Transformer Standards & Regulations Directory — IEC, IEEE, National Standards | TransformerPath</title>' +
   '<meta name="description" content="Worldwide directory of electrical transformer standards, test codes, and regulatory efficiency mandates (IEC 60076, IEEE C57, EU Ecodesign, US DOE 2027, IS 1180, GB/T 1094). Verified scopes, frequencies, and voltage levels.">' +
   '<link rel="canonical" href="https://transformerpath.com/standards.html"><meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath"><meta property="og:title" content="Global Transformer Standards & Regulations Directory"><meta property="og:url" content="https://transformerpath.com/standards.html"><meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow"><meta name="theme-color" content="#0d1b2e">' +
-  '<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any"><link rel="stylesheet" href="style.css?v=13"><link rel="stylesheet" href="tp-nav.css?v=13"><style>' + style + 
+  '<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any"><link rel="stylesheet" href="style.css?v=15"><link rel="stylesheet" href="tp-nav.css?v=15"><style>' + style + 
   '.std-reg-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px;display:flex;flex-direction:column;transition:border-color .15s}' +
   '.std-reg-card:hover{border-color:var(--accent)}' +
   '.std-reg-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:6px}' +
@@ -137,6 +137,23 @@ const html = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta cha
   STANDARDS.map(function (s) {
     return '<div class="std-card"><h3>' + esc(s.code) + ' — ' + esc(s.name) + '</h3><div class="rgn">' + esc(s.region) + '</div><p>' + esc(s.dot) + '</p><div class="pt">' + s.points.map(function (p) { return '<span>' + esc(p) + '</span>'; }).join('') + '</div></div>';
   }).join('') +
+
+  '<!-- ===== INTERACTIVE STANDARDS CROSS-REFERENCE MATRIX (TRACK 3) ===== -->' +
+  '<div class="card" style="margin:36px 0 28px; border:1px solid rgba(245,166,35,.35); background:linear-gradient(180deg, rgba(13,27,46,.95) 0%, rgba(13,27,46,.8) 100%); padding:24px;">' +
+    '<span style="font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.06em; color:var(--amber); background:rgba(245,166,35,.15); padding:3px 8px; border-radius:6px; border:1px solid rgba(245,166,35,.3);">⚡ Interactive Cross-Reference Explorer</span>' +
+    '<h2 style="font-size:1.4rem; color:var(--ink); margin:10px 0 6px">Side-by-Side Standards Engineering Matrix</h2>' +
+    '<p style="font-size:.88rem; color:var(--muted); margin:0 0 16px">Compare technical clauses, limits, tolerances, and calculation methodologies across IEC 60076, IEEE C57, IS 2026/1180, and GB 1094.</p>' +
+    '<div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px;" id="stdMatrixTabs">' +
+      '<button type="button" class="cat-pill active" data-tab="temp">🌡️ Temperature Rise Limits</button>' +
+      '<button type="button" class="cat-pill" data-tab="bil">⚡ Dielectric &amp; BIL Ladders</button>' +
+      '<button type="button" class="cat-pill" data-tab="loss">📊 Loss Tolerances &amp; Guarantees</button>' +
+      '<button type="button" class="cat-pill" data-tab="sc">💥 Short-Circuit Withstand</button>' +
+      '<button type="button" class="cat-pill" data-tab="term">🔤 Terminal Markings &amp; Vector Groups</button>' +
+    '</div>' +
+    '<div id="stdMatrixContent" style="background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:18px; overflow-x:auto;">' +
+      '<!-- Loaded by JS -->' +
+    '</div>' +
+  '</div>' +
 
   '<h2 class="std-h2">National grid reference <span style="font-size:.9rem;color:var(--muted);font-weight:600;text-transform:none">(' + totalCountries + ' countries)</span></h2>' +
   '<div class="std-tools"><input id="stSearch" type="text" placeholder="Search country…" autocomplete="off"><select id="stFreq"><option value="">All frequencies</option><option value="50">50 Hz</option><option value="60">60 Hz</option></select><select id="stRegion"><option value="">All regions</option>' + regionKeys.map(function (r) { return '<option>' + esc(r) + '</option>'; }).join('') + '</select></div>' +
@@ -196,16 +213,64 @@ const html = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta cha
     }).join('');
   }
 
-  sIn.addEventListener('input', renderRegistry);
-  cSel.addEventListener('change', renderRegistry);
-  catSel.addEventListener('change', renderRegistry);
-  rBtn.addEventListener('click', function(){ sIn.value=''; cSel.value=''; catSel.value=''; renderRegistry(); });
-  renderRegistry();
+  var MATRIX_DATA = {
+    temp: '<table class="std-tbl" style="margin-top:8px"><thead><tr><th>Parameter</th><th>IEC 60076-2 (International)</th><th>IEEE C57.12.00 (North America)</th><th>IS 2026 / GB 1094</th></tr></thead><tbody>' +
+      '<tr><td><b>Ambient Baseline</b></td><td>40°C peak, 30°C monthly avg, 20°C annual avg</td><td>40°C peak, 30°C 24-hr daily average</td><td>40°C peak (IS 2026 specifies 50°C tropical option)</td></tr>' +
+      '<tr><td><b>Top Oil Temperature Rise</b></td><td><b style="color:var(--amber)">60 K</b> (mineral oil with conservator)</td><td><b style="color:var(--amber)">65 K</b></td><td>60 K (50 K / 55 K in high ambient zones)</td></tr>' +
+      '<tr><td><b>Average Winding Rise</b></td><td><b style="color:var(--amber)">65 K</b> (by resistance method)</td><td><b style="color:var(--amber)">65 K</b></td><td>65 K (55 K in tropical specifications)</td></tr>' +
+      '<tr><td><b>Hot-Spot Temperature Rise</b></td><td><b style="color:var(--amber)">78 K</b> (max 118°C continuous)</td><td><b style="color:var(--amber)">80 K</b> (max 120°C continuous)</td><td>78 K (118°C normal life expectation)</td></tr>' +
+      '<tr><td><b>Forced Oil Flow (ODAF)</b></td><td>Specific oil duct velocity verification</td><td>Directed oil flow (FOA / FOW)</td><td>Conforms to IEC 60076-2 Annex A</td></tr>' +
+      '</tbody></table>',
+    bil: '<table class="std-tbl" style="margin-top:8px"><thead><tr><th>System Voltage (kV)</th><th>IEC 60076-3 Lightning Impulse (BIL)</th><th>IEEE C57.12.00 Basic Impulse Level</th><th>Power Frequency Withstand (AC 1 min)</th></tr></thead><tbody>' +
+      '<tr><td><b>11 / 12 kV</b></td><td>75 kV / 95 kV (List 1 / List 2)</td><td>95 kV / 110 kV</td><td>28 kV (IEC) / 34 kV (IEEE)</td></tr>' +
+      '<tr><td><b>33 / 36 kV</b></td><td>170 kV</td><td>200 kV</td><td>70 kV (IEC) / 70 kV (IEEE)</td></tr>' +
+      '<tr><td><b>66 / 72.5 kV</b></td><td>325 kV</td><td>350 kV</td><td>140 kV (IEC) / 140 kV (IEEE)</td></tr>' +
+      '<tr><td><b>132 / 145 kV</b></td><td>550 kV / 650 kV</td><td>550 kV / 650 kV</td><td>230 kV / 275 kV</td></tr>' +
+      '<tr><td><b>220 / 245 kV</b></td><td>950 kV / 1050 kV</td><td>900 kV / 1050 kV</td><td>395 kV / 460 kV</td></tr>' +
+      '<tr><td><b>400 / 420 kV</b></td><td>1425 kV (Switching Impulse 1050 kV)</td><td>1300 kV / 1425 kV (SIL 1050 kV)</td><td>630 kV AC induced (IEC)</td></tr>' +
+      '<tr><td><b>765 / 800 kV</b></td><td>2100 kV (Switching Impulse 1550 kV)</td><td>2050 kV (SIL 1550 kV)</td><td>830 kV AC induced (IEC)</td></tr>' +
+      '</tbody></table>',
+    loss: '<table class="std-tbl" style="margin-top:8px"><thead><tr><th>Measurement &amp; Guaranteed Limits</th><th>IEC 60076-1 (Clause 10)</th><th>IEEE C57.12.00 (Clause 9)</th><th>Commercial Impact</th></tr></thead><tbody>' +
+      '<tr><td><b>Total Loss Tolerance</b></td><td>+10% of guaranteed total loss</td><td>+6% of total guaranteed loss</td><td>Exceeding tolerance triggers penalty or rejection</td></tr>' +
+      '<tr><td><b>Component Loss (P₀ or Pk)</b></td><td>+15% on individual P₀ or Pk (provided total ≤ +10%)</td><td>+10% on component loss</td><td>No-load loss P₀ penalized heavily ($5–10/W)</td></tr>' +
+      '<tr><td><b>Impedance Tolerance (Z%)</b></td><td>±10% (for Z ≥ 10%) · ±15% (for Z &lt; 10%)</td><td>±7.5% for two-winding units</td><td>Critical for parallel transformer sharing</td></tr>' +
+      '<tr><td><b>Voltage Ratio Tolerance</b></td><td>±0.5% or 1/10th of actual impedance %</td><td>±0.5% on rated tap</td><td>Guarantees tap switch voltage symmetry</td></tr>' +
+      '<tr><td><b>Reference Temperature</b></td><td>75°C (mineral oil) / 85°C (synthetic ester)</td><td>85°C for 65°C rise units</td><td>All load losses must be normalized before compare</td></tr>' +
+      '</tbody></table>',
+    sc: '<table class="std-tbl" style="margin-top:8px"><thead><tr><th>Short-Circuit Verification</th><th>IEC 60076-5</th><th>IEEE C57.12.90</th><th>Engineering Significance</th></tr></thead><tbody>' +
+      '<tr><td><b>Thermal Withstand Duration</b></td><td><b>2.0 seconds</b> standard</td><td><b>2.0 seconds</b> (up to 3.0s for small units)</td><td>Prevents conductor annealing / insulation charring</td></tr>' +
+      '<tr><td><b>Dynamic Peak Factor (k√2)</b></td><td>k√2 ≈ 2.55 (for X/R ≥ 14)</td><td>k_peak based on X/R per C57.12.00</td><td>Determines maximum radial &amp; axial bursting force</td></tr>' +
+      '<tr><td><b>Pre-Fault System Voltage</b></td><td>1.05 p.u. of rated voltage</td><td>1.05 p.u. maximum operating voltage</td><td>Ensures full fault energy transfer</td></tr>' +
+      '<tr><td><b>Post-Test Integrity Criteria</b></td><td>Max 1.0% impedance shift, visual active part inspection, SFRA</td><td>Max 2.0% impedance shift, dielectric re-test</td><td>Confirms no winding deformation occurred</td></tr>' +
+      '</tbody></table>',
+    term: '<table class="std-tbl" style="margin-top:8px"><thead><tr><th>Marking &amp; Notation</th><th>IEC 60076 Convention</th><th>IEEE / ANSI C57 Convention</th><th>Notes &amp; Phase Relationship</th></tr></thead><tbody>' +
+      '<tr><td><b>HV Primary Terminals</b></td><td>1U, 1V, 1W (Phase) · 1N (Neutral)</td><td>H₁, H₂, H₃ (Phase) · H₀ (Neutral)</td><td>IEC uses numeric prefix for winding level</td></tr>' +
+      '<tr><td><b>LV Secondary Terminals</b></td><td>2U, 2V, 2W (Phase) · 2N (Neutral)</td><td>X₁, X₂, X₃ (Phase) · X₀ (Neutral)</td><td>Tertiary terminals: 3U/3V/3W vs Y₁/Y₂/Y₃</td></tr>' +
+      '<tr><td><b>Standard Phase Shift</b></td><td>Clock notation (e.g. Dyn11 = LV leads HV by +30°)</td><td>Standard 30° LV lag (H₁-X₁ angular displacement)</td><td>Dyn11 is European/GCC norm; Dyn1 is common in US/ANSI</td></tr>' +
+      '<tr><td><b>Nameplate Vector Diagram</b></td><td>Phasor clock diagram mandatory</td><td>Phasor vector diagram with angular displacement</td><td>Crucial for substation commissioning &amp; relaying</td></tr>' +
+      '</tbody></table>'
+  };
+
+  var matrixBox = document.getElementById('stdMatrixContent');
+  if(matrixBox && MATRIX_DATA.temp) matrixBox.innerHTML = MATRIX_DATA.temp;
+
+  document.getElementById('stdMatrixTabs')?.addEventListener('click', function(e){
+    var btn = e.target.closest('.cat-pill');
+    if(!btn) return;
+    document.querySelectorAll('#stdMatrixTabs .cat-pill').forEach(function(p){ p.classList.remove('active'); });
+    btn.classList.add('active');
+    var tab = btn.getAttribute('data-tab');
+    if(matrixBox && MATRIX_DATA[tab]) matrixBox.innerHTML = MATRIX_DATA[tab];
+  });
 })();
-</script>\n` +
-  '<script src="tp-nav.js?v=5" defer></script>\n' +
-  '<script src="analytics.js" defer></script>\n' +
-  '<script>(function(){var q=document.getElementById("stSearch"),fr=document.getElementById("stFreq"),rg=document.getElementById("stRegion");function apply(){var vq=(q?q.value:"").toLowerCase().trim(),vf=fr?fr.value:"",vr=rg?rg.value:"";document.querySelectorAll(".st-row").forEach(function(r){var c=r.getAttribute("data-country")||"",f=r.getAttribute("data-freq")||"",g=r.getAttribute("data-region")||"";var ok=(!vq||c.indexOf(vq)>=0)&&(!vf||f.indexOf(vf)>=0)&&(!vr||g===vr);r.style.display=ok?"":"none";});}\n[q,fr,rg].forEach(function(el){if(el){el.addEventListener("input",apply);el.addEventListener("change",apply);}});})();\n</script>\n</body>\n</html>';
+</script>
+<script src="tp-nav.js?v=6" defer></script>
+<script src="analytics.js?v=6" defer></script>
+<script>(function(){var q=document.getElementById("stSearch"),fr=document.getElementById("stFreq"),rg=document.getElementById("stRegion");function apply(){var vq=(q?q.value:"").toLowerCase().trim(),vf=fr?fr.value:"",vr=rg?rg.value:"";document.querySelectorAll(".st-row").forEach(function(r){var c=r.getAttribute("data-country")||"",f=r.getAttribute("data-freq")||"",g=r.getAttribute("data-region")||"";var ok=(!vq||c.indexOf(vq)>=0)&&(!vf||f.indexOf(vf)>=0)&&(!vr||g===vr);r.style.display=ok?"":"none";});}\n[q,fr,rg].forEach(function(el){if(el){el.addEventListener("input",apply);el.addEventListener("change",apply);}});})();
+</script>
+</body>
+</html>`;
+
 fs.writeFileSync('standards.html', html);
 console.log('standards.html wrote: ' + STANDARDS_DATA.length + ' standards + ' + totalCountries + ' countries in grid census');
 
