@@ -84,8 +84,11 @@
   }
 
   function render(partName, desc) {
+    var preferred =
+      (typeof root.TP_EXPLORER_FAMILY === 'string' && root.TP_EXPLORER_FAMILY) || null;
     var eco =
-      root.TP_PART_ECOSYSTEM && root.TP_PART_ECOSYSTEM.matchPartName(partName);
+      root.TP_PART_ECOSYSTEM &&
+      root.TP_PART_ECOSYSTEM.matchPartName(partName, preferred);
     var html = '<div class="tp-eco">';
     html += '<div class="tp-eco-title">' + esc(partName || '') + '</div>';
     if (eco) {
@@ -106,12 +109,13 @@
           esc(eco.marketNote) +
           '</p></div>';
       }
-      if (eco.sourceHint) {
-        html +=
-          '<div class="tp-eco-source"><b>Can this be sourced?</b> ' +
-          esc(eco.sourceHint) +
-          '</div>';
-      }
+      html +=
+        '<div class="tp-eco-source"><b>Can this be sourced?</b> ' +
+        esc(
+          eco.sourceHint ||
+            'Yes — this assembly maps to bought-in components, machinery and OEM specialists listed below.'
+        ) +
+        '</div>';
       html += listBlock('Components & materials', eco.components, function (c) {
         return (
           '<li><b>' +
@@ -155,8 +159,11 @@
       html += supplierCta(eco);
     } else {
       html +=
+        '<div class="tp-eco-source"><b>Can this be sourced?</b> Mapping not yet in the ecosystem — browse the directories below or ask via RFQ.</div>';
+      html +=
         '<div class="tp-eco-block"><a class="tp-eco-link" href="components.html">Components directory →</a> · ' +
-        '<a class="tp-eco-link" href="manufacturers.html">Manufacturers →</a></div>';
+        '<a class="tp-eco-link" href="manufacturers.html">Manufacturers →</a> · ' +
+        '<a class="tp-eco-link" href="rfq.html">Request quote →</a></div>';
     }
     html += '</div>';
     return { html: html, eco: eco };

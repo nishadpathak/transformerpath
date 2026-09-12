@@ -51,7 +51,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#08121e;color:var(--
 <div id="topbar">
   <div>
     <h1>⚡ Power Transformer — 3D Explorer</h1>
-    <div class="sub">Reference design: 100 MVA · 132/33 kV · YNd11 · ONAN/ONAF · OLTC ±10% in 17 steps</div>
+    <div class="sub">100 MVA · 132/33 kV · YNd11 · Hitachi/Siemens/SGB-class practice · click any part to source it</div>
   </div>
   <div class="right">
   <div class="tp-family-nav" style="pointer-events:auto;display:flex;gap:6px;flex-wrap:wrap;margin-left:auto">
@@ -318,29 +318,42 @@ let oilMesh;
   'Inhibited mineral oil to IEC 60296 (or ester for fire-critical sites), processed to <10 ppm moisture and <1% gas. Oil is the dielectric, the coolant and the diagnostic medium: a yearly DGA sample tells the unit’s health better than any other single test. Toggle 🌊 Oil flow to see the ONAN thermosiphon loop.',
   [0,0,0],'oil');
 }
-/* cover */
+/* cover (without PRDs — those are a separate sourced BOM line) */
 {
   const g=new THREE.Group();
   const cov=box(70,2,34,M.steel); cov.position.set(0,41,0); g.add(cov);
-  /* PRVs */
-  for(const x of [-14,14]){const p=cyl(2,2.4,2,M.red); p.position.set(x,43,6); g.add(p);}
   /* inspection hatches */
   for(const x of [-8,8]){const hch=cyl(3,3,1,M.steelLt); hch.position.set(x,42.6,-2); g.add(hch);}
   /* core earth test link box */
   const tl=box(2.4,1.6,2,M.cabinet); tl.position.set(26,42.8,-4); g.add(tl);
-  reg(g,'Tank cover — PRVs, hatches, core test link',
-  'Bolted, gasketed cover (large units are increasingly bell-tank: the body lifts off instead, so the active part never hangs from a crane hook on site). Two spring pressure-relief valves (red) vent a sudden internal pressure wave and flag a trip. Inspection hatches give access to bushing connections and the OLTC head. The small box is the core/frame earthing test link.',
+  reg(g,'Tank cover — hatches & core test link',
+  'Bolted, gasketed cover (large Hitachi/Siemens units are increasingly bell-tank: the body lifts off instead, so the active part never hangs from a crane hook on site). Inspection hatches give access to bushing connections and the OLTC head. The small box is the core/frame earthing test link — megger the core insulation in service without draining.',
   [0,22,0],'tank');
 }
+/* PRDs — separate click-to-source hotspot */
+{
+  const g=new THREE.Group();
+  for(const x of [-14,14]){const p=cyl(2,2.4,2,M.red); p.position.set(x,43,6); g.add(p);}
+  reg(g,'Pressure relief devices (PRDs)',
+  'Two spring pressure-relief valves vent a sudden internal pressure wave and flag a trip contact to the protection scheme. Mandatory on Hitachi Energy / Siemens Energy / SGB power tanks — Qualitrol/Emco-class sourced accessories. Set-point is type-tested; flanges and gaskets are checked every outage.',
+  [0,24,0],'prd');
+}
 
-/* ================= HV bushings + turrets + CTs ================= */
+/* ================= HV bushing turrets + CTs (sourced separately from bushings) ================= */
 {
   const g=new THREE.Group();
   limbX.forEach(x=>{
     const t=cyl(3,3.4,7,M.steel); t.position.set(x,45.5,-8); g.add(t);
-    /* turret CT ring */
     const ct=torus(3.6,.8,M.steelDk); ct.rotation.x=Math.PI/2; ct.position.set(x,43.6,-8); g.add(ct);
-    /* condenser bushing */
+  });
+  reg(g,'HV bushing turrets & bushing CT rings',
+  'Each HV bushing sits on a steel turret welded to the cover/tank. Inside: multi-ratio ring-type bushing CTs for differential, REF and backup — a classic sourced CT line (Hitachi/Siemens IT plants and specialists). Specify ratios, accuracy class and ID/OD in the RFQ.',
+  [0,22,0],'turrets');
+}
+/* ================= HV condenser bushings ================= */
+{
+  const g=new THREE.Group();
+  limbX.forEach(x=>{
     const b=new THREE.Group();
     const lower=cyl(1.4,1.8,4,M.porcelDk); lower.position.y=2; b.add(lower);
     for(let i=0;i<9;i++){const sh=torus(2.6-i*0.13,.55,M.porcel); sh.rotation.x=Math.PI/2; sh.position.y=4.5+i*1.9; b.add(sh);}
@@ -349,8 +362,8 @@ let oilMesh;
     const ring=torus(2.2,.3,M.steelLt); ring.position.y=20.6; ring.rotation.x=Math.PI/2; b.add(ring);
     b.position.set(x,49,-8); g.add(b);
   });
-  reg(g,'132 kV condenser bushings, turrets & bushing CTs',
-  'Condenser-graded bushings — RIP/RIS (dry resin-impregnated) increasingly preferred over classic OIP because they cannot feed an oil fire. Concentric foil layers inside grade the radial field; the test tap allows on-line tan δ / capacitance monitoring (a rising C₁ means foil-to-foil breakdown — replace before it explodes). Each turret carries multi-ratio bushing CTs for differential, REF and backup protection. Corona ring on top; arcing horns optional.',
+  reg(g,'132 kV condenser bushings (RIP/OIP)',
+  'Condenser-graded bushings — RIP/RIS increasingly preferred on new Hitachi/Siemens specs over classic OIP (cannot feed an oil fire). Concentric foil layers grade the radial field; the test tap allows on-line tan δ / capacitance monitoring. Corona ring on top; arcing horns optional. Source by kV, creepage, RIP/OIP and CT interface.',
   [0,24,0],'bushings');
 }
 /* LV bushings */
@@ -375,35 +388,44 @@ let oilMesh;
   [0,20,0],'bushings');
 }
 
-/* ================= CONSERVATOR system ================= */
+/* ================= CONSERVATOR vessel ================= */
 {
   const g=new THREE.Group();
-  /* support structure */
   for(const x of [-16,8]){const leg=cyl(.9,.9,16,M.steelDk); leg.position.set(x,51,-2); g.add(leg);}
-  /* main vessel (two compartments) */
   const cons=cyl(5.5,5.5,42,M.steel); cons.rotation.z=Math.PI/2; cons.position.set(-4,61,-2); g.add(cons);
   const e1=cyl(5.6,5.6,1,M.steelDk); e1.rotation.z=Math.PI/2; e1.position.set(17.5,61,-2); g.add(e1);
   const e2=e1.clone(); e2.position.x=-25.5; g.add(e2);
   const divider=cyl(5.65,5.65,.8,M.steelDk); divider.rotation.z=Math.PI/2; divider.position.set(8,61,-2); g.add(divider);
-  /* magnetic oil gauges */
   const g1=cyl(1.5,1.5,.6,M.glass); g1.rotation.x=Math.PI/2; g1.position.set(-8,61,3.8); g.add(g1);
   const g2=g1.clone(); g2.position.x=13; g.add(g2);
-  /* buchholz pipe (main) */
-  const p1=cyl(.9,.9,12,M.steelDk); p1.position.set(0,48.5,-2); g.add(p1);
+  const pMain=cyl(.9,.9,8,M.steelDk); pMain.position.set(0,52,-2); g.add(pMain);
+  const pOltc=cyl(.6,.6,10,M.steelDk); pOltc.position.set(-22,54,-2); g.add(pOltc);
+  reg(g,'Conservator (2 compartments) + magnetic oil-level gauges',
+  'Twin-compartment rubber-bag conservator — Hitachi/Siemens/SGB free-breathing power practice. Large side: main tank expansion; small side: OLTC diverter oil (kept separate because arcing blackens it). Magnetic oil-level gauges per compartment. Hermetic distribution designs delete this assembly.',
+  [0,30,0],'conservator');
+}
+/* Buchholz + RS — separate sourced protection devices */
+{
+  const g=new THREE.Group();
+  const p1=cyl(.9,.9,6,M.steelDk); p1.position.set(0,46.5,-2); g.add(p1);
   const buch=box(3.2,3,3,M.orange); buch.position.set(0,47.5,-2); g.add(buch);
-  /* gate valves either side of buchholz */
   for(const y of [50.5,45]){const v=cyl(1.2,1.2,1,M.red); v.position.set(0,y,-2); g.add(v);}
-  /* OLTC surge pipe + RS relay */
-  const p2=cyl(.6,.6,16,M.steelDk); p2.position.set(-22,50,-2); g.add(p2);
+  const p2=cyl(.6,.6,8,M.steelDk); p2.position.set(-22,48,-2); g.add(p2);
   const rs=box(2.4,2.2,2.2,M.red); rs.position.set(-22,49,-2); g.add(rs);
-  /* breathers x2 */
+  reg(g,'Buchholz relay + OLTC oil-surge (RS) relay',
+  'Buchholz (orange) on the main conservator pipe: slow gas → alarm; oil surge from an internal fault → instant trip. Isolating valves allow in-service testing. The OLTC pipe carries an oil-surge (RS) relay — instant trip on diverter faults. Messko/Qualitrol-class bought-in devices on virtually every Hitachi/Siemens/SGB power datasheet.',
+  [0,28,0],'buchholz');
+}
+/* Breathers — separate sourced accessories */
+{
+  const g=new THREE.Group();
   const mk=(x)=>{const bp=cyl(.5,.5,9,M.steelDk); bp.position.set(x,55.5,3); g.add(bp);
     const br=cyl(1.3,1.3,5.5,M.glass); br.position.set(x,49,3); g.add(br);
     const bc=cyl(1.4,1.4,.9,M.steelDk); bc.position.set(x,45.9,3); g.add(bc);};
   mk(16.5); mk(-25);
-  reg(g,'Conservator (2 compartments), Buchholz, RS relay & breathers',
-  'Twin-compartment conservator: the large side breathes for the main tank through the Buchholz relay (orange — gas alarm / surge trip, with isolating valves so it can be tested in service); the small side serves the OLTC diverter oil, which is deliberately kept separate because diverter arcing blackens its oil. The OLTC pipe carries an oil-surge (RS) relay — instant trip. A rubber bag inside the main compartment stops air ever touching the oil; each compartment has its own magnetic level gauge and maintenance-free (or silica-gel) breather.',
-  [0,30,0],'conservator');
+  reg(g,'Dehydrating breathers (silica-gel / maintenance-free)',
+  'One breather per conservator compartment. Classic silica-gel or maintenance-free regenerating types — Messko/Qualitrol ecosystem. Dry every breath the rubber-bag system takes. High-volume sourced accessory; omitted entirely on hermetic tanks.',
+  [0,28,0],'breathers');
 }
 
 /* ================= RADIATORS + fans + pumps ================= */
@@ -426,9 +448,6 @@ const fanBlades=[];
         const p=box(5.2,26,.55,M.steel); p.position.set(ux,19,zs*(17.9+k*1.45)); bank.add(p);
       }
     }
-    /* oil pump + flow indicator on the bottom pipework between units */
-    const pump=cyl(1.9,1.9,3.2,M.cabinet); pump.rotation.x=Math.PI/2; pump.position.set(5.5,5.2,zs*18.5); bank.add(pump);
-    const fi=cyl(1.1,1.1,.7,M.glass); fi.rotation.x=Math.PI/2; fi.position.set(5.5,5.2,zs*21.5); bank.add(fi);
     /* fans below, blowing up */
     for(const fx of [-15,0,15]){
       const ring=torus(3.2,.35,M.steelDk); ring.rotation.x=Math.PI/2; ring.position.set(fx,1.8,zs*22); bank.add(ring);
@@ -441,9 +460,20 @@ const fanBlades=[];
     bank.userData.exDir=new THREE.Vector3(0,0,zs*26);
     g.add(bank);
   }
-  reg(g,'Radiator banks, fans, pumps & valves (ONAN/ONAF/OFAF)',
-  'Each radiator is a stack of pressed-plate elements (two steel sheets seam-welded with vertical oil channels, ~520 mm wide, hung at ~45 mm pitch) on top and bottom collector pipes that bolt to the tank wall through butterfly valves — so every radiator detaches for transport without draining the tank. Hot oil enters the top collector, falls through the plate channels as it cools, and returns via the bottom collector. Fan groups beneath blow air up between the plates: ONAN ≈ 60% rating, first fan stage ONAF₁ ≈ 80%, all fans ONAF₂ = 100%; the bottom-pipework pump and flow indicator add OFAF for emergency duty. Fans and pumps are staged automatically by the winding-temperature relay. Watch the blades spin — and toggle 🌊 to see the oil loop they serve.',
+  reg(g,'Radiator banks, fans & valves (ONAN/ONAF)',
+  'Hitachi/Siemens power practice: each radiator is a stack of pressed-plate elements (~520 mm, ~45 mm pitch) on top/bottom collectors that bolt through butterfly valves — detach for transport without draining. Hot oil enters top, cools through plates, returns bottom. Fan groups: ONAN ≈ 60%, ONAF₁ ≈ 80%, ONAF₂ = 100%, staged by WTI. High-volume sourced cooling plant.',
   [0,0,0],'cooling');
+}
+/* Oil pumps — separate OFAF sourced line */
+{
+  const g=new THREE.Group();
+  for(const zs of [1,-1]){
+    const pump=cyl(1.9,1.9,3.2,M.cabinet); pump.rotation.x=Math.PI/2; pump.position.set(5.5,5.2,zs*18.5); g.add(pump);
+    const fi=cyl(1.1,1.1,.7,M.glass); fi.rotation.x=Math.PI/2; fi.position.set(5.5,5.2,zs*21.5); g.add(fi);
+  }
+  reg(g,'Oil circulating pumps & flow indicators (OFAF)',
+  'Forced-oil pumps on the bottom header pipework add OFAF/ODAF emergency duty on large power units. Magnetic-drive pumps preferred; flow indicators confirm loop integrity. Staged with fans by the winding-temperature relay. Named bought-in item on Hitachi/Siemens BOMs — not used on small ONAN distribution.',
+  [0,-8,0],'pumps');
 }
 
 /* ================= OLTC ================= */
@@ -598,9 +628,14 @@ const toggleDefs=[
  ['hv','HV winding (132 kV)','#a8503c'],
  ['tap','Tap winding','#8c6a3f'],
  ['barriers','Pressboard barriers','#e6dcbf'],
- ['bushings','Bushings & CTs','#c9b78a'],
- ['conservator','Conservator system','#8fa3b8'],
- ['cooling','Cooling plant','#7d93a8'],
+ ['bushings','Bushings & flanges','#c9b78a'],
+ ['turrets','Turrets & bushing CTs','#b8a878'],
+ ['conservator','Conservator','#8fa3b8'],
+ ['buchholz','Buchholz & RS relays','#e8732a'],
+ ['breathers','Breathers','#8fa3b8'],
+ ['prd','Pressure relief (PRD)','#c23232'],
+ ['cooling','Radiators & fans','#7d93a8'],
+ ['pumps','Oil pumps (OFAF)','#6d8398'],
  ['oltc','OLTC & drive','#8fa3b8'],
  ['controls','Cabinets & monitoring','#7d93a8'],
  ['arresters','Surge arresters','#9a8a64'],
@@ -921,6 +956,7 @@ addEventListener('resize',()=>{
 <script src="payments.js"></script>
 <script src="component-3d-bridge.js"></script>
 <script>
+window.TP_EXPLORER_FAMILY = 'power';
 /* Enrich part selection with component marketplace CTAs */
 (function(){
   function enrich(p){
@@ -931,7 +967,6 @@ addEventListener('resize',()=>{
   if(_select){
     selectPart = function(p){ _select(p); enrich(p); };
   }
-  var info = document.getElementById('info');
   var _pick = typeof pick === 'function' ? pick : null;
   if(_pick){
     pick = function(e){

@@ -53,14 +53,17 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#08121e;color:var(--
 <div id="c3d"></div>
 
 <div id="topbar">
-  <h1>⚡ Transformer Construction — 3D Explorer</h1>
+  <h1>Oil Distribution Transformer — 3D Sourcing Explorer</h1>
+  <div class="tp-family-nav" style="pointer-events:auto;display:flex;gap:6px;flex-wrap:wrap">
+    <a href="power3d.html">Power</a>
+    <a href="explorer.html?mode=oil" style="background:var(--acc);color:#04121f;font-weight:700">Oil distribution</a>
+    <a href="castresin3d.html">Cast resin</a>
+    <a href="ct3d.html">CT</a>
+  </div>
   <a href="academy.html">🏠 Hub</a>
-  <a href="tutorial.html">← Tutorial</a>
-  <a href="power3d.html">Power transformer 3D →</a>
-  <a href="castresin3d.html">Cast resin 3D</a>
-  <a href="ct3d.html">Current transformer 3D</a>
+  <a href="components.html">Components</a>
   <div id="modeswitch">
-    <button id="mOil" class="active">Oil-immersed</button>
+    <button id="mOil" class="active">Oil distribution</button>
     <button id="mCrt">Cast resin</button>
     <button id="mVpi">Dry VPI</button>
   </div>
@@ -86,11 +89,11 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:#08121e;color:var(--
     <button id="bQuiz">🎯 Quiz me</button>
   </div>
 
-  <h2>Selected part</h2>
-  <div id="info"><span class="hint">Click any part of the transformer to identify it and read what it does. Drag to orbit · scroll to zoom · right-drag to pan.</span></div>
+  <h2>Selected part — source it</h2>
+  <div id="info"><span class="hint">Click any part to see SGB / Hitachi / Siemens distribution practice and where that component can be sourced.</span></div>
 </div>
 
-<div id="help">🖱 drag = orbit &nbsp;·&nbsp; wheel = zoom &nbsp;·&nbsp; right-drag / shift-drag = pan &nbsp;·&nbsp; click = identify part<br>📱 one finger = orbit &nbsp;·&nbsp; pinch = zoom</div>
+<div id="help">🖱 drag = orbit · wheel = zoom · click = identify &amp; source<br>SGB-class corrugated ONAN · hermetic vs conservator · DETC / OLTC · click any fitting</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
@@ -207,7 +210,7 @@ const limbX = [-12,0,12];
   const yb = box(36,4,6,M.core); yb.position.set(0,4,0); g.add(yb);
   g.position.set(0,0,0); oilRoot.add(g);
   reg(g,'Core (limbs + bottom yoke)',
-   'Three-limb step-lap CRGO core as used on SGB-SMIT / Hitachi / Siemens distribution lines. Grade and joints set no-load loss and hum for life. Single-point earthing. Source CRGO packets, banding and clamps — or the full active part from distribution OEMs.',
+   'Three-limb step-lap CRGO core as used on SGB-SMIT / Hitachi Energy / Siemens Energy distribution lines. Grade and joints set no-load loss and hum for life. Single-point earthing. Source CRGO packets, banding and clamps — or the full active part from distribution OEMs.',
    [0,0,0],'core');
 }
 /* top yoke separately so it can lift off in exploded view */
@@ -218,7 +221,7 @@ const limbX = [-12,0,12];
   const c2 = c1.clone(); c2.position.z = -4.4; g.add(c2);
   oilRoot.add(g);
   reg(g,'Top yoke + clamping frame',
-   'The top yoke is removed ("re-yoking") so finished windings can be lowered over the limbs, then re-laid lamination by lamination. Steel clamping frames press the yokes and carry the lifting and short-circuit end-thrust forces.',
+   'Removed for winding drop-on, re-laid lamination-by-lamination. Distribution clamps are lighter than power but still take through-fault end thrust. Frames earthed at one removable link — SGB/Hitachi/Siemens practice.',
    [0,14,0],'core');
 }
 /* --- LV windings --- */
@@ -229,7 +232,7 @@ const limbX = [-12,0,12];
     const r2=r1.clone(); r2.position.y=6.9; g.add(r2); });
   oilRoot.add(g);
   reg(g,'LV windings (inner)',
-   'Low-voltage windings sit innermost — cheapest to insulate from the earthed core. Foil or helical copper, few turns, very high current (1333 A in the 1000 kVA example). End rings and axial oil ducts visible at top and bottom.',
+   'Distribution LV: layer or foil (Al/Cu), high current, few turns. Foil increasingly specified above a few hundred kVA for short-circuit strength on SGB/Hitachi/Siemens padmounts. End rings and axial oil ducts at top and bottom.',
    [0,9,0],'lv');
 }
 /* --- HV windings --- */
@@ -238,7 +241,7 @@ const limbX = [-12,0,12];
   limbX.forEach(x=>{ const w = cyl(7.2,7.2,15,M.hvWdg); w.position.set(x,15,0); g.add(w); });
   oilRoot.add(g);
   reg(g,'HV windings (outer)',
-   'High-voltage windings: many turns of paper-covered strip (multilayer or continuous-disc). Separated from the LV by the main pressboard duct, whose width sets the impedance voltage uk%. Tapping leads connect to the tap-changer.',
+   'Distribution HV: multi-layer paper-covered strip (SGB/Hitachi/Siemens padmount practice). Main duct to LV sets uk%. Tap leads run to the DETC board or compact OLTC — name which in the RFQ.',
    [0,9,0],'hv');
 }
 /* --- tank --- */
@@ -253,7 +256,7 @@ const limbX = [-12,0,12];
     const w = roller(2.1); w.position.set(x,-2.1,z); g.add(w); });
   oilRoot.add(g);
   reg(g,'Tank',
-   'Welded mild-steel tank with stiffeners, designed for full vacuum during oil filling. Shot-blasted and painted (C5-M marine systems common in the Gulf). On distribution units the walls are often corrugated fins that do the cooling themselves. Use the opacity slider to see inside.',
+   'SGB-class distribution tank: welded mild steel, full-vacuum rated, C3–C5 paint. Often hermetic (cover welded) with corrugated walls doing the cooling — or free-breathing with a small conservator. Prime local-content fab opportunity. Use opacity to see inside.',
    [0,-28,0],'tank');
 }
 /* --- oil --- */
@@ -264,7 +267,7 @@ let oilMesh;
   oilMesh.castShadow = false; oilMesh.receiveShadow=false;
   g.add(oilMesh); oilRoot.add(g);
   reg(g,'Insulating oil',
-   'Mineral oil (IEC 60296) — or fire-safer ester liquid — is insulant, coolant and diagnostic window at once. Heated oil rises through the winding ducts, cools in the radiators and sinks back: the ONAN thermosiphon.',
+   'IEC 60296 mineral oil dominates SGB/Hitachi/Siemens pad & pole fleets; natural esters for indoor/fire-sensitive sites. Hermetic fills are processed and sealed for life — still keep a sample valve for DGA. ONAN thermosiphon through winding ducts and corrugated fins.',
    [0,0,0],'oil');
 }
 /* --- cover --- */
@@ -277,7 +280,7 @@ let oilMesh;
   const ti = cyl(.9,.9,2.2,M.glass); ti.position.set(2,32.7,5.5); g.add(ti);
   oilRoot.add(g);
   reg(g,'Tank cover (+ PRV, OTI/WTI pockets)',
-   'Bolted, gasketed cover carrying the bushings, pressure-relief valve (red) and thermometer pockets for the oil- and winding-temperature indicators that stage the fans and trip on overheating.',
+   'Bolted gasket or hermetic weld. Carries bushings, spring PRV (red) and OTI/WTI pockets — mandatory even on sealed SGB-class tanks. Thermal devices stage protection and any AF options.',
    [0,18,0],'tank');
 }
 /* --- HV bushings --- */
@@ -292,7 +295,7 @@ let oilMesh;
   });
   oilRoot.add(g);
   reg(g,'HV bushings (3)',
-   'Porcelain (≤36 kV solid type; condenser-graded OIP/RIP above 52 kV) bushings bring the HV line through the earthed cover. Sheds lengthen the creepage path against pollution — a key spec in coastal/desert GCC sites. Bushing failure is a leading cause of transformer fires.',
+   '≤36 kV solid porcelain or epoxy — SGB/Hitachi/Siemens distribution standard. Plug-in elbows on many padmounts. Creepage dominates coastal/desert specs. High-volume sourced bushing line.',
    [0,12,0],'bushings');
 }
 /* --- LV bushings --- */
@@ -308,7 +311,7 @@ let oilMesh;
   });
   oilRoot.add(g);
   reg(g,'LV bushings (4: a-b-c-n)',
-   'Four low-voltage bushings — three phases plus neutral (Dyn11 brings the star point out for earthing and single-phase loads). High current, so they end in palm connectors for busbar or cable lugs.',
+   'Four LV bushings on Dyn11 — phases + neutral for earthing and single-phase loads. High-current palms for bus or cable. Epoxy and DIN porcelain dominate distribution fleets.',
    [0,10,0],'bushings');
 }
 /* --- conservator + pipe + Buchholz + breather --- */
@@ -328,7 +331,7 @@ let oilMesh;
   const bc = cyl(1.2,1.2,.8,M.steelDk); bc.position.set(-15.5,30,0); g.add(bc);
   oilRoot.add(g);
   reg(g,'Conservator, Buchholz relay & breather',
-   'The conservator absorbs oil expansion (~7–8% over the temperature swing). In the connecting pipe sits the Buchholz relay (orange): slow gas → alarm; oil surge from an internal fault → instant trip. The silica-gel breather dries every breath the conservator takes; rubber-bag designs stop air contact entirely.',
+   'Free-breathing distribution option: small conservator + Buchholz + silica-gel breather. Hermetic corrugated SGB-class designs DELETE this assembly — fins provide expansion volume instead. Confirm hermetic vs free-breathing in every RFQ.',
    [0,26,0],'conservator');
 }
 /* --- corrugated fin walls (the classic distribution-tank radiator) --- */
@@ -357,8 +360,21 @@ let oilMesh;
   }
   oilRoot.add(g);
   reg(g,'Corrugated fin walls (ONAN cooling)',
-   'SGB-class corrugated tank: fins are both radiator and expansion volume (ONAN). Hermetic designs delete the conservator. Source corrugated fin packs, welding and C3–C5 paint — a major local-content BOM line on distribution fleets. ≥1600 kVA often moves to detachable radiators.',
+   'Defining SGB-class feature: deep corrugated fins are both radiator and expansion volume (ONAN). Hermetic designs use fin elasticity instead of a conservator. ≥1600 kVA often moves to detachable radiators. Source fin packs, welding and C3–C5 paint — major local-content BOM line.',
    [0,0,0],'cooling');
+}
+/* --- DETC (default distribution tap scheme) --- */
+{
+  const g = new THREE.Group();
+  const board=box(4,8,1.2,M.steelDk); board.position.set(24.2,16,-6); g.add(board);
+  for(let i=0;i<5;i++){
+    const link=box(2.2,.35,.35,M.copperL); link.position.set(22.6,12+i*1.6,-6); g.add(link);
+  }
+  const handle=cyl(.5,.5,2.2,M.steelLt); handle.rotation.z=Math.PI/2; handle.position.set(26.2,20,-6); g.add(handle);
+  oilRoot.add(g);
+  reg(g,'Off-circuit tap-changer (DETC)',
+   'Default on most SGB/Hitachi/Siemens distribution units: bolted or rotary off-circuit taps (±2×2.5% typical). Changed only when de-energised. Cheap, reliable, high volume — specify tap range before asking for OLTC.',
+   [12,0,0],'detc');
 }
 /* --- OLTC --- */
 {
@@ -368,7 +384,7 @@ let oilMesh;
   const mot = box(3,4.5,3,M.steelDk); mot.position.set(-25.4,6,5); g.add(mot);
   oilRoot.add(g);
   reg(g,'On-load tap-changer (OLTC)',
-   'Adjusts HV turns under load (e.g. ±10% in 17 steps) to hold the LV voltage as network load swings. Diverter switch with transition resistors — modern units switch in vacuum interrupters, stretching maintenance to ~300 000 operations. Driven by the motor box below, commanded by an AVR relay.',
+   'Optional when LV must track load: compact OLTC (often MR ECOTAP or vacuum) — same OEM ecosystem as power, smaller frame. Changes the entire BOM vs DETC. Driven by motor box + AVR.',
    [-14,0,0],'oltc');
 }
 
@@ -399,7 +415,7 @@ let oilMesh;
   const ep=box(.5,2.2,1.8,M.copperL); ep.position.set(-22.2,3,9); g.add(ep);
   oilRoot.add(g);
   reg(g,'Tank fittings — lugs, rating plate, drain valve, earth pad',
-   'Lifting lugs are rated for the complete oil-filled mass and define the slinging angles. The rating plate is the transformer\'s legal identity: every guaranteed figure of §10–§11 is stamped on it. The bottom drain/filter valve is where oil sampling (§16.6) and processing connect. Two earthing pads bond the tank to the substation grid — check them at every visit; a floating tank turns a winding fault into a touch-voltage hazard.',
+   'Lifting lugs rated for oil-filled mass; stainless rating plate (contract data); drain/filter valve + sampling point (even hermetic units keep a sample valve for DGA); earthing pads bond tank to grid. High-volume sourced accessories on every SGB-class datasheet.',
    [0,-28,0],'tank');
 }
 
@@ -637,8 +653,9 @@ const toggleDefs = [
   ['hv','HV windings / coils','#a8503c'],
   ['conservator','Conservator system','#8fa3b8'],
   ['bushings','Bushings / terminals','#c9b78a'],
-  ['cooling','Cooling (radiators/fans)','#7d93a8'],
-  ['oltc','Tap-changer','#8fa3b8'],
+  ['cooling','Corrugated fins / fans','#7d93a8'],
+  ['detc','DETC (off-circuit taps)','#c9a86a'],
+  ['oltc','OLTC (on-load)','#8fa3b8'],
   ['frame','Base / rollers','#5d7186'],
 ];
 const togglesBox = document.getElementById('toggles');
@@ -802,22 +819,22 @@ const bOil=document.getElementById('mOil'), bCrt=document.getElementById('mCrt')
 function setMode(m){
   mode=m;
   oilRoot.visible = m==='oil'; crtRoot.visible = m==='crt'; vpiRoot.visible = m==='vpi';
+  window.TP_EXPLORER_FAMILY = m==='oil' ? 'distribution' : (m==='crt' || m==='vpi' ? 'castresin' : 'distribution');
   bOil.classList.toggle('active',m==='oil'); bCrt.classList.toggle('active',m==='crt'); bVpi.classList.toggle('active',m==='vpi');
   if(selected){ setEmissive(selected,false); selected=null; }
-  document.getElementById('info').innerHTML='<span class="hint">Click any part to identify it.</span>';
+  document.getElementById('info').innerHTML='<span class="hint">Click any part to see market practice and where it can be sourced.</span>';
   /* hide irrelevant toggles: dry types have no oil system; oil unit has no base frame */
   document.querySelectorAll('#toggles .tgl').forEach(l=>{
     const k=l.querySelector('input').dataset.k;
-    const hidden = m==='oil' ? ['frame'] : ['oil','conservator','oltc'];
+    const hidden = m==='oil' ? ['frame'] : ['oil','conservator','oltc','detc','cooling'];
     l.style.display = hidden.includes(k) ? 'none':'flex';
   });
   buildLabels(); applyToggles(); applyExplode();
   if(typeof quizOn!=='undefined' && quizOn) nextQ();
 }
-bOil.onclick=()=>(function(){
-  var q=new URLSearchParams(location.search).get('mode');
-  if(q==='crt'||q==='vpi'||q==='oil') setMode(q); else setMode('oil');
-})(); bCrt.onclick=()=>setMode('crt'); bVpi.onclick=()=>setMode('vpi');
+bOil.onclick=()=>setMode('oil');
+bCrt.onclick=()=>setMode('crt');
+bVpi.onclick=()=>setMode('vpi');
 
 const bRot=document.getElementById('bRotate');
 bRot.onclick=()=>{ autoRotate=!autoRotate; bRot.classList.toggle('on',autoRotate); };
@@ -846,7 +863,10 @@ function tick(){
     L.el.style.top  = ((-pr.y+1)/2*innerHeight)+'px';
   });
 }
-setMode('oil');
+(function(){
+  var q=new URLSearchParams(location.search).get('mode');
+  if(q==='crt'||q==='vpi'||q==='oil') setMode(q); else setMode('oil');
+})();
 tick();
 
 addEventListener('resize',()=>{
@@ -862,6 +882,7 @@ addEventListener('resize',()=>{
 <script src="payments.js"></script>
 <script src="component-3d-bridge.js"></script>
 <script>
+window.TP_EXPLORER_FAMILY = 'distribution';
 (function(){
   function enrich(p){
     if(!p || !window.TPComponent3D) return;
