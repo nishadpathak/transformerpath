@@ -89,6 +89,7 @@ const FORBIDDEN_PATTERNS = [
   /^asia_transformer_projects\.json$/, /^netlify\.toml$/, /^package(-lock)?\.json$/,
   /^stamp-intel\.js$/, /^bump-assets\.js$/, /^build_ssr\.js$/, /^build\.py$/,
   /^data\/commerce-intel\.json$/,
+  /^data\/engineer-track-paid\.json$/,
 ];
 
 /* iCloud Drive / macOS conflict copies ("index 2.html", "usa 2/"). The site folder
@@ -113,7 +114,7 @@ function copyDir(dir) {
     if (CONFLICT_COPY.test(e.name)) { skippedConflicts.push(path.join(dir, e.name)); continue; }
     const p = path.join(dir, e.name);
     // Never copy internal prospect intelligence to the public distribution
-    if (p === 'data/commerce-intel.json') continue;
+    if (p === 'data/commerce-intel.json' || p === 'data/engineer-track-paid.json') continue;
     if (e.isDirectory()) n += copyDir(p);
     else { copyFile(p, p); n++; }
   }

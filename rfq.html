@@ -34,8 +34,8 @@
 </head>
 <body>
 
+<a class="skip-link" href="#main">Skip to content</a>
 <header>
-  <link rel="stylesheet" href="tp-nav.css?v=13">
   <div class="container nav">
     <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
     <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
@@ -64,7 +64,6 @@
       <div class="tpnav-more">
         <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
         <div class="tpnav-more-panel" role="menu">
-          <a href="directory.html" role="menuitem">Directory</a>
           <a href="services.html" role="menuitem">Service & Repair</a>
           <a href="logistics.html" role="menuitem">Transport & Logistics</a>
           <a href="laboratories.html" role="menuitem">Testing Labs</a>
@@ -136,10 +135,94 @@
 </header>
 
 <section class="block" style="padding-top:48px">
-  <div class="container" style="max-width:860px">
+  <div class="container" style="max-width:920px">
     <div class="section-head" style="margin-bottom:28px">
       <h1>RFQ Board — Buyers Meet Makers</h1>
-      <p>Post a requirement for transformers, accessories or services. We circulate it to relevant listed manufacturers and suppliers worldwide — free while in beta.</p>
+      <p>Configure standardized engineering schedules, post transformer requirements, or match with 600+ verified global manufacturers and component suppliers.</p>
+    </div>
+
+    <!-- ===== TECHNICAL SPECIFICATION & SCHEDULE BUILDER (TRACK 1) ===== -->
+    <div class="card" style="margin-bottom:32px; border:1px solid rgba(245,166,35,.35); background:linear-gradient(180deg, rgba(13,27,46,.95) 0%, rgba(13,27,46,.8) 100%);">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+        <div>
+          <span style="font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.06em; color:var(--amber); background:rgba(245,166,35,.15); padding:3px 8px; border-radius:6px; border:1px solid rgba(245,166,35,.3);">⚡ Specifier Tool</span>
+          <h2 style="font-size:1.4rem; color:var(--ink); margin:8px 0 4px">Technical Schedule &amp; RFQ Builder</h2>
+          <p style="font-size:.88rem; color:var(--muted); margin:0">Generate an IEC 60076 / IEEE C57 technical schedule, calculate currents &amp; BIL, and insert into your RFQ or export.</p>
+        </div>
+        <div style="display:flex; gap:6px; flex-wrap:wrap;">
+          <button type="button" id="specPresetDist" class="btn btn-outline btn-sm" style="font-size:.78rem">1000 kVA Dist</button>
+          <button type="button" id="specPresetSub" class="btn btn-outline btn-sm" style="font-size:.78rem">25 MVA Primary</button>
+          <button type="button" id="specPresetGrid" class="btn btn-outline btn-sm" style="font-size:.78rem">63 MVA Grid</button>
+          <button type="button" id="specPresetEHV" class="btn btn-outline btn-sm" style="font-size:.78rem">500 MVA EHV</button>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:14px; margin-bottom:18px;">
+        <div>
+          <label for="spec_rating" style="font-size:.82rem; font-weight:700; color:var(--text); display:block; margin-bottom:4px">Rating (MVA / kVA)</label>
+          <input type="text" id="spec_rating" value="25 MVA" style="width:100%; padding:8px 12px; background:var(--bg); border:1px solid var(--border); border-radius:8px; color:var(--text); font-size:.9rem">
+        </div>
+        <div>
+          <label for="spec_hv" style="font-size:.82rem; font-weight:700; color:var(--text); display:block; margin-bottom:4px">HV Primary Voltage (kV)</label>
+          <input type="number" id="spec_hv" value="66" step="any" style="width:100%; padding:8px 12px; background:var(--bg); border:1px solid var(--border); border-radius:8px; color:var(--text); font-size:.9rem">
+        </div>
+        <div>
+          <label for="spec_lv" style="font-size:.82rem; font-weight:700; color:var(--text); display:block; margin-bottom:4px">LV Secondary Voltage (kV)</label>
+          <input type="number" id="spec_lv" value="11" step="any" style="width:100%; padding:8px 12px; background:var(--bg); border:1px solid var(--border); border-radius:8px; color:var(--text); font-size:.9rem">
+        </div>
+        <div>
+          <label for="spec_std" style="font-size:.82rem; font-weight:700; color:var(--text); display:block; margin-bottom:4px">Standard</label>
+          <select id="spec_std" style="width:100%; padding:8px 12px; background:var(--bg); border:1px solid var(--border); border-radius:8px; color:var(--text); font-size:.9rem">
+            <option value="IEC 60076" selected>IEC 60076 (International)</option>
+            <option value="IEEE C57">IEEE C57 / ANSI (North America)</option>
+            <option value="Both">IEC &amp; IEEE Dual Compliance</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:14px; margin-bottom:18px;">
+        <div>
+          <label for="spec_cool" style="font-size:.82rem; font-weight:700; color:var(--text); display:block; margin-bottom:4px">Cooling Class</label>
+          <select id="spec_cool" style="width:100%; padding:8px 12px; background:var(--bg); border:1px solid var(--border); border-radius:8px; color:var(--text); font-size:.9rem">
+            <option value="ONAN / ONAF" selected>ONAN / ONAF (Oil Natural / Forced Air)</option>
+            <option value="ONAN">ONAN (Oil Natural / Air Natural)</option>
+            <option value="OFAF / ODAF">ODAF / OFAF (Directed Forced Oil)</option>
+            <option value="AN / AF (Cast Resin)">AN / AF (Dry-Type / Cast Resin)</option>
+            <option value="KNAN / KNAF (Synthetic/Natural Ester)">KNAN / KNAF (Ester Fluid / Bio-Oil)</option>
+          </select>
+        </div>
+        <div>
+          <label for="spec_vec" style="font-size:.82rem; font-weight:700; color:var(--text); display:block; margin-bottom:4px">Vector Group</label>
+          <select id="spec_vec" style="width:100%; padding:8px 12px; background:var(--bg); border:1px solid var(--border); border-radius:8px; color:var(--text); font-size:.9rem">
+            <option value="Dyn11" selected>Dyn11 (Delta HV / Star LV +30°)</option>
+            <option value="YNd11">YNd11 (Star HV with neutral / Delta LV)</option>
+            <option value="YNyn0+d">YNyn0 + tertiary delta (Grid / Autotransformer)</option>
+            <option value="Dyn5">Dyn5 (Delta HV / Star LV -150°)</option>
+            <option value="Yy0">Yy0 (Star-Star 0°)</option>
+          </select>
+        </div>
+        <div>
+          <label for="spec_imp" style="font-size:.82rem; font-weight:700; color:var(--text); display:block; margin-bottom:4px">Target Impedance (Z %)</label>
+          <input type="number" id="spec_imp" value="10.0" step="0.1" style="width:100%; padding:8px 12px; background:var(--bg); border:1px solid var(--border); border-radius:8px; color:var(--text); font-size:.9rem">
+        </div>
+        <div>
+          <label for="spec_eval" style="font-size:.82rem; font-weight:700; color:var(--text); display:block; margin-bottom:4px">Loss Capitalization (A / B)</label>
+          <input type="text" id="spec_eval" value="A = $6.00/W (P₀), B = $1.50/W (Pk)" style="width:100%; padding:8px 12px; background:var(--bg); border:1px solid var(--border); border-radius:8px; color:var(--text); font-size:.9rem">
+        </div>
+      </div>
+
+      <!-- Real-Time Computed Technical Preview -->
+      <div id="specPreviewBox" style="background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:16px; margin-bottom:16px; font-family:monospace; font-size:.84rem; color:var(--text); overflow-x:auto;">
+        <!-- Filled by JS -->
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+        <span style="font-size:.8rem; color:var(--muted)">IEC 60076-1/2/3 &amp; IEEE C57.12.00 design benchmarks</span>
+        <div style="display:flex; gap:8px;">
+          <button type="button" id="btnCopySpec" class="btn btn-outline btn-sm" style="font-size:.82rem">📋 Copy Schedule (MD)</button>
+          <button type="button" id="btnInsertSpec" class="btn btn-amber btn-sm" style="font-size:.82rem">⬇ Insert into RFQ Below</button>
+        </div>
+      </div>
     </div>
 
     <div id="liveRfqs"></div>
@@ -215,13 +298,13 @@
         <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
         <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data. Built for utilities, transformer manufacturers, component suppliers, EPCs, consultants and engineers.</p>
       </div>
-      <div><h2>INTELLIGENCE</h2><a href="intel.html">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="intelligence.html">Intelligence</a><a href="projects.html">Projects</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="exhibitions.html">Exhibitions</a><a href="events.html">Events</a></div>
-      <div><h2>INDUSTRY</h2><a href="manufacturers.html">Manufacturers</a><a href="directory.html">Directory</a><a href="services.html">Service &amp; Repair</a><a href="logistics.html">Transport &amp; Logistics</a><a href="laboratories.html">Testing Labs</a><a href="buyers.html">Buyers &amp; Utilities</a><a href="buyers-guide.html">Buyer's Guide</a><a href="accessories.html">Accessories</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a></div>
-      <div><h2>ENGINEERING</h2><a href="knowledge.html">Knowledge</a><a href="standards.html">Standards &amp; Codes</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Models</a><a href="design.html">Design Duel</a><a href="resources.html">Resources</a></div>
-      <div><h2>LEARN</h2><a href="learn.html">Learn</a><a href="education.html">Education &amp; Training</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy</a><a href="books.html">Books</a></div>
-      <div><h2>BUSINESS</h2><a href="for-manufacturers.html">For Manufacturers</a><a href="associations.html">Industry Associations</a><a href="media.html">Media &amp; Publications</a><a href="pricing.html">Pricing</a><a href="verified.html">Verified</a><a href="sponsor.html">Sponsor</a><a href="webinars.html">Webinars</a></div>
-      <div><h2>COMPANY</h2><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
-      <div><h2>CONTACT</h2>
+      <div><p class="footer-col-label">INTELLIGENCE</p><a href="intel.html">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="intelligence.html">Intelligence</a><a href="projects.html">Projects</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="exhibitions.html">Exhibitions</a><a href="events.html">Events</a></div>
+      <div><p class="footer-col-label">INDUSTRY</p><a href="manufacturers.html">Manufacturers</a><a href="directory.html">Directory</a><a href="services.html">Service &amp; Repair</a><a href="logistics.html">Transport &amp; Logistics</a><a href="laboratories.html">Testing Labs</a><a href="buyers.html">Buyers &amp; Utilities</a><a href="buyers-guide.html">Buyer's Guide</a><a href="accessories.html">Accessories</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a></div>
+      <div><p class="footer-col-label">ENGINEERING</p><a href="knowledge.html">Knowledge</a><a href="standards.html">Standards &amp; Codes</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Models</a><a href="design.html">Design Duel</a><a href="resources.html">Resources</a></div>
+      <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learn</a><a href="education.html">Education &amp; Training</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy</a><a href="books.html">Books</a></div>
+      <div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="associations.html">Industry Associations</a><a href="media.html">Media &amp; Publications</a><a href="pricing.html">Pricing</a><a href="verified.html">Verified</a><a href="sponsor.html">Sponsor</a><a href="webinars.html">Webinars</a></div>
+      <div><p class="footer-col-label">COMPANY</p><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><p class="footer-col-label">CONTACT</p>
         <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
         <a class="tp-li-btn tp-li-follow" data-linkedin-follow href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>Follow us on LinkedIn</a>
         <a class="tp-li-btn tp-li-share" data-linkedin-share href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>LinkedIn</a>
@@ -235,6 +318,184 @@
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
 </script>
 <script src="analytics.js?v=6" defer></script>
+<script>
+/* ====== TECHNICAL SPECIFICATION & SCHEDULE BUILDER (TRACK 1) ====== */
+(function(){
+  function parseMva(s){
+    if(!s) return 25;
+    var str = String(s).toLowerCase();
+    var num = parseFloat(str.replace(/[^\d.]/g, '')) || 25;
+    if(str.indexOf('kva') >= 0) return num / 1000;
+    return num;
+  }
+
+  function getBil(kv){
+    var v = parseFloat(kv) || 0;
+    if(v <= 1.1) return { bil: '30 kV / None', pf: '3 kV' };
+    if(v <= 7.2) return { bil: '60 kV', pf: '20 kV' };
+    if(v <= 12) return { bil: '75 / 95 kV', pf: '28 kV' };
+    if(v <= 24) return { bil: '125 / 145 kV', pf: '50 kV' };
+    if(v <= 36) return { bil: '170 / 200 kV', pf: '70 kV' };
+    if(v <= 72.5) return { bil: '325 / 350 kV', pf: '140 kV' };
+    if(v <= 145) return { bil: '550 / 650 kV', pf: '230 / 275 kV' };
+    if(v <= 245) return { bil: '950 / 1050 kV', pf: '395 / 460 kV' };
+    if(v <= 420) return { bil: '1425 kV', pf: '630 kV' };
+    return { bil: '2100 kV', pf: '830 kV' };
+  }
+
+  function renderSchedule(){
+    var ratingStr = document.getElementById('spec_rating').value || '25 MVA';
+    var mva = parseMva(ratingStr);
+    var v1 = parseFloat(document.getElementById('spec_hv').value) || 66;
+    var v2 = parseFloat(document.getElementById('spec_lv').value) || 11;
+    var std = document.getElementById('spec_std').value;
+    var cool = document.getElementById('spec_cool').value;
+    var vec = document.getElementById('spec_vec').value;
+    var imp = parseFloat(document.getElementById('spec_imp').value) || 10;
+    var evalFactors = document.getElementById('spec_eval').value;
+
+    var i1 = (mva * 1000) / (Math.sqrt(3) * v1);
+    var i2 = (mva * 1000) / (Math.sqrt(3) * v2);
+    var iSc = i1 / (imp / 100);
+    var sSc = mva / (imp / 100);
+
+    var bil1 = getBil(v1);
+    var bil2 = getBil(v2);
+
+    var previewHtml = '<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:12px;">' +
+      '<div>' +
+        '<div style="color:var(--amber); font-weight:700; margin-bottom:6px">⚡ Electrical Ratings</div>' +
+        '<div>Rated Power: <b>' + ratingStr + '</b> (' + mva.toFixed(2) + ' MVA)</div>' +
+        '<div>Voltage Ratio: <b>' + v1 + ' kV / ' + v2 + ' kV</b></div>' +
+        '<div>Primary Full Load Current: <b>' + i1.toFixed(1) + ' A</b></div>' +
+        '<div>Secondary Full Load Current: <b>' + i2.toFixed(1) + ' A</b></div>' +
+        '<div>Vector Group: <b>' + vec + '</b></div>' +
+      '</div>' +
+      '<div>' +
+        '<div style="color:var(--amber); font-weight:700; margin-bottom:6px">🛡 Insulation &amp; Short-Circuit</div>' +
+        '<div>HV Insulation: BIL <b>' + bil1.bil + '</b> (PF ' + bil1.pf + ')</div>' +
+        '<div>LV Insulation: BIL <b>' + bil2.bil + '</b> (PF ' + bil2.pf + ')</div>' +
+        '<div>Impedance (Z%): <b>' + imp.toFixed(1) + '%</b></div>' +
+        '<div>Sym. Fault Current: <b>' + (iSc/1000).toFixed(2) + ' kA</b> (' + sSc.toFixed(0) + ' MVA)</div>' +
+        '<div>Cooling: <b>' + cool + '</b></div>' +
+      '</div>' +
+    '</div>' +
+    '<div style="margin-top:10px; padding-top:8px; border-top:1px dashed var(--border); font-size:.78rem; color:var(--muted)">' +
+      'Standard: <b>' + std + '</b> · Temperature Rise: Top Oil 60 K / Winding Avg 65 K · Capitalisation: ' + evalFactors +
+    '</div>';
+
+    var pBox = document.getElementById('specPreviewBox');
+    if(pBox) pBox.innerHTML = previewHtml;
+  }
+
+  function generateMarkdown(){
+    var ratingStr = document.getElementById('spec_rating').value || '25 MVA';
+    var mva = parseMva(ratingStr);
+    var v1 = parseFloat(document.getElementById('spec_hv').value) || 66;
+    var v2 = parseFloat(document.getElementById('spec_lv').value) || 11;
+    var std = document.getElementById('spec_std').value;
+    var cool = document.getElementById('spec_cool').value;
+    var vec = document.getElementById('spec_vec').value;
+    var imp = parseFloat(document.getElementById('spec_imp').value) || 10;
+    var evalFactors = document.getElementById('spec_eval').value;
+
+    var i1 = (mva * 1000) / (Math.sqrt(3) * v1);
+    var i2 = (mva * 1000) / (Math.sqrt(3) * v2);
+    var iSc = i1 / (imp / 100);
+    var sSc = mva / (imp / 100);
+    var bil1 = getBil(v1);
+    var bil2 = getBil(v2);
+
+    return '### Transformer Technical Schedule (' + ratingStr + ' ' + v1 + '/' + v2 + ' kV)\n' +
+      '- Governing Standard: ' + std + '\n' +
+      '- Rated Capacity: ' + ratingStr + ' (' + mva.toFixed(2) + ' MVA)\n' +
+      '- Voltage Ratio: ' + v1 + ' kV (HV) / ' + v2 + ' kV (LV)\n' +
+      '- Rated Currents: Primary ' + i1.toFixed(1) + ' A | Secondary ' + i2.toFixed(1) + ' A\n' +
+      '- Vector Group & Phase Shift: ' + vec + '\n' +
+      '- Cooling Mode: ' + cool + ' (Top oil rise <= 60 K, Winding rise <= 65 K)\n' +
+      '- Short-Circuit Impedance: ' + imp.toFixed(1) + '% (Withstand duty: ' + sSc.toFixed(0) + ' MVA / ' + (iSc/1000).toFixed(2) + ' kA)\n' +
+      '- Dielectric Withstand (HV): BIL ' + bil1.bil + ' / Power Freq ' + bil1.pf + '\n' +
+      '- Dielectric Withstand (LV): BIL ' + bil2.bil + ' / Power Freq ' + bil2.pf + '\n' +
+      '- Loss Capitalisation: ' + evalFactors + '\n' +
+      '- Accessories Required: Conservator/Breather, Pressure Relief Device, Buchholz Relay, Oil Temp & Winding Temp Indicators, Off-Circuit/On-Load Tap Changer.\n';
+  }
+
+  // Bind preset buttons
+  function setPreset(rating, hv, lv, cool, vec, imp, cat){
+    document.getElementById('spec_rating').value = rating;
+    document.getElementById('spec_hv').value = hv;
+    document.getElementById('spec_lv').value = lv;
+    document.getElementById('spec_cool').value = cool;
+    document.getElementById('spec_vec').value = vec;
+    document.getElementById('spec_imp').value = imp;
+    if(cat && document.getElementById('fld_category')) document.getElementById('fld_category').value = cat;
+    renderSchedule();
+  }
+
+  document.getElementById('specPresetDist')?.addEventListener('click', function(){ setPreset('1000 kVA', 11, 0.433, 'ONAN', 'Dyn11', 5.0, 'Distribution Transformer'); });
+  document.getElementById('specPresetSub')?.addEventListener('click', function(){ setPreset('25 MVA', 66, 11, 'ONAN / ONAF', 'Dyn11', 10.0, 'Power Transformer'); });
+  document.getElementById('specPresetGrid')?.addEventListener('click', function(){ setPreset('63 MVA', 132, 33, 'ONAN / ONAF', 'YNd11', 12.5, 'Power Transformer'); });
+  document.getElementById('specPresetEHV')?.addEventListener('click', function(){ setPreset('500 MVA', 400, 220, 'OFAF / ODAF', 'YNyn0+d', 16.0, 'Power Transformer'); });
+
+  ['spec_rating','spec_hv','spec_lv','spec_std','spec_cool','spec_vec','spec_imp','spec_eval'].forEach(function(id){
+    var el = document.getElementById(id);
+    if(el){ el.addEventListener('input', renderSchedule); el.addEventListener('change', renderSchedule); }
+  });
+
+  // Copy button
+  document.getElementById('btnCopySpec')?.addEventListener('click', function(){
+    var md = generateMarkdown();
+    navigator.clipboard.writeText(md).then(function(){
+      var btn = document.getElementById('btnCopySpec');
+      var old = btn.textContent;
+      btn.textContent = '✅ Copied!';
+      setTimeout(function(){ btn.textContent = old; }, 2000);
+    });
+  });
+
+  // Insert into RFQ
+  document.getElementById('btnInsertSpec')?.addEventListener('click', function(){
+    var md = generateMarkdown();
+    var details = document.getElementById('fld_details');
+    if(details){
+      details.value = md;
+      details.scrollIntoView({ behavior: 'smooth' });
+      details.focus();
+    }
+    var r = document.getElementById('spec_rating').value;
+    var hv = document.getElementById('spec_hv').value;
+    var lv = document.getElementById('spec_lv').value;
+    var std = document.getElementById('spec_std').value;
+    if(document.getElementById('fld_rating')) document.getElementById('fld_rating').value = r;
+    if(document.getElementById('fld_voltage')) document.getElementById('fld_voltage').value = hv + ' / ' + lv + ' kV';
+    if(document.getElementById('fld_standard')) document.getElementById('fld_standard').value = std.indexOf('IEC')>=0 ? 'IEC 60076' : std.indexOf('IEEE')>=0 ? 'ANSI / IEEE C57' : 'Both';
+  });
+
+  // Query parameter auto-population
+  function loadQueryParams(){
+    var p = new URLSearchParams(window.location.search);
+    if(p.has('rating')){ document.getElementById('spec_rating').value = p.get('rating'); if(document.getElementById('fld_rating')) document.getElementById('fld_rating').value = p.get('rating'); }
+    if(p.has('voltage')){
+      var v = p.get('voltage');
+      if(document.getElementById('fld_voltage')) document.getElementById('fld_voltage').value = v;
+      var parts = v.split(/[\/\-]/);
+      if(parts.length >= 2){
+        document.getElementById('spec_hv').value = parseFloat(parts[0]) || 66;
+        document.getElementById('spec_lv').value = parseFloat(parts[1]) || 11;
+      }
+    }
+    if(p.has('country') && document.getElementById('fld_country')){ document.getElementById('fld_country').value = p.get('country'); }
+    if(p.has('company')){
+      var comp = p.get('company');
+      var d = document.getElementById('fld_details');
+      if(d) d.value = 'Inquiry directed to: ' + comp + '\n\n' + (d.value || '');
+    }
+    renderSchedule();
+  }
+
+  loadQueryParams();
+})();
+</script>
 <script>/* RFQ submit: auto-reference + persist to Supabase (if signed in) +
    fact-based "potentially relevant manufacturers" matching, rendered after submit. */
 (function(){

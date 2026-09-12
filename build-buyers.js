@@ -38,9 +38,9 @@ function render() {
 <meta name="robots" content="index,follow">
 <meta name="theme-color" content="#0d1b2e">
 <link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
-<link rel="stylesheet" href="style.css?v=12">
-<link rel="stylesheet" href="tp-nav.css?v=12">
-<link rel="stylesheet" href="tp-feedback.css?v=12">
+<link rel="stylesheet" href="style.css?v=13">
+<link rel="stylesheet" href="tp-nav.css?v=14">
+<link rel="stylesheet" href="tp-feedback.css?v=13">
 <style>
 .byr-wrap { max-width: 1140px; margin: 0 auto; padding: 40px 20px 90px; }
 .byr-head { margin-bottom: 24px; }
@@ -195,9 +195,12 @@ window.__TP_BUYERS__ = ${byrJson};
         (d.voltage_classes ? '<div style="font-size:.8rem;color:var(--muted);margin-bottom:6px"><b>Voltages:</b> ' + esc(d.voltage_classes) + '</div>' : '') +
         (d.procurement_process ? '<div style="font-size:.78rem;color:var(--muted);margin-bottom:10px;line-height:1.4"><b>Process:</b> ' + esc(d.procurement_process) + '</div>' : '') +
         '<div class="purchased-tags">' + itemsHtml + '</div>' +
-        '<div class="card-foot">' +
-          (d.website ? '<a href="' + esc(d.website) + '" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Supplier / Tender Portal ↗</a>' : '<span></span>') +
-          '<a href="tenders.html" class="btn btn-outline btn-sm">Active Tenders →</a>' +
+        '<div class="card-foot" style="display:flex; gap:6px; flex-wrap:wrap; justify-content:space-between; align-items:center;">' +
+          (d.website ? '<a href="' + esc(d.website) + '" target="_blank" rel="noopener" class="btn btn-outline btn-sm" style="font-size:.76rem">Portal ↗</a>' : '<span></span>') +
+          '<div style="display:flex; gap:6px;">' +
+            '<a href="rfq.html?country=' + encodeURIComponent(d.country) + (d.voltage_classes ? ('&voltage=' + encodeURIComponent(d.voltage_classes.split(',')[0].trim())) : '') + '" class="btn btn-amber btn-sm" style="font-size:.76rem">⚡ Build Spec / RFQ →</a>' +
+            '<a href="tenders.html" class="btn btn-outline btn-sm" style="font-size:.76rem">Tenders →</a>' +
+          '</div>' +
         '</div>' +
       '</div>';
     }).join('');
