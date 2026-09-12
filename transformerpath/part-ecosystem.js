@@ -1,323 +1,545 @@
 /**
- * Part ecosystem for power3d.html — each selectable assembly maps to:
- *   - components / materials (what buyers source)
- *   - machinery / process equipment (how factories build it)
- *   - manufacturers & specialist suppliers (who makes / integrates it)
+ * Market-realistic part ecosystem for TransformerPath 3D explorers.
+ * Families: power | distribution | ct
  *
- * Keys match substrings of power3d part names (case-insensitive).
+ * Each entry maps a clicked 3D assembly to:
+ *   components / materials, factory machinery, and real-market OEMs & specialists
+ *   (Hitachi Energy, Siemens Energy, SGB-SMIT, GE Vernova, MR, Weidmann, …)
  */
 (function (root) {
+  function entry(o) { return o; }
+
   var PARTS = [
-    {
-      id: 'core',
-      match: ['Core — limbs', 'Top yoke, clamping'],
+    /* ───────── POWER TRANSFORMER (power3d / power500) ───────── */
+    entry({
+      id: 'core', family: 'power',
+      match: [
+        'Core — limbs', 'Top yoke, clamping', 'Core (limbs', 'Core (CRGO',
+        'Core (limbs + bottom yoke)', 'Top yoke + clamping', 'Core (CRGO, resin',
+        'Core (CRGO, VPI', 'Active part (core', '5-limb core', 'Magnetic core'
+      ],
       title: 'Magnetic core & clamping',
+      marketNote: 'Hitachi Energy, Siemens Energy and SGB-SMIT typically run Hi-B / domain-refined CRGO, step-lap joints and single-point core earthing — the same architecture shown here.',
       components: [
-        { name: 'CRGO / Hi-B electrical steel', note: '0.23–0.27 mm laser domain-refined grades' },
-        { name: 'Core banding tape', note: 'Resin-impregnated glass, no through-bolts' },
-        { name: 'Clamping frames & tie rods', note: 'Insulated steel frames, single-point earth' },
-        { name: 'Step-lap joint kits', note: 'Mitred 6-step packets with cooling ducts' }
+        { name: 'CRGO / Hi-B electrical steel', note: '0.23–0.27 mm laser domain-refined (Nippon, POSCO, TKES, Baosteel)' },
+        { name: 'Core banding tape', note: 'Resin-glass hoop banding — no through-bolts on modern designs' },
+        { name: 'Clamping frames & insulated tie rods', note: 'Frames earthed at one removable test link' },
+        { name: 'Step-lap joint packets', note: '5–7 step mitred joints, cooling ducts in large cores' }
       ],
       machinery: [
-        { name: 'Slitting line', note: 'Coil → strip width for limb/yoke packets' },
-        { name: 'Cut-to-length / mitre shear', note: 'Step-lap cut geometry' },
-        { name: 'Core stacking table', note: 'Limb build + yoke re-lay' },
-        { name: 'Annealing / stress-relief furnace', note: 'Optional for Hi-B processing' },
-        { name: 'Banding / hoop station', note: 'Glass-tape banding of limbs' }
+        { name: 'Slitting line', note: 'Mother coil → limb/yoke strip widths' },
+        { name: 'Cut-to-length / mitre shear', note: 'Step-lap geometry' },
+        { name: 'Automatic stacking table', note: 'Limb build + yoke re-lay (GEORG, Heinrich, Laco…)' },
+        { name: 'Banding station', note: 'Glass-tape hoop application' },
+        { name: 'Annealing furnace (optional)', note: 'Stress relief for some Hi-B grades' }
       ],
       manufacturers: [
-        { name: 'Hitachi Energy', role: 'OEM (core design & build)', url: 'https://www.hitachienergy.com/' },
-        { name: 'Siemens Energy', role: 'OEM', url: 'https://www.siemens-energy.com/' },
-        { name: 'GE Vernova / Prolec', role: 'OEM', url: 'https://www.prolec.energy/' },
-        { name: 'CRGO mills (Nippon, POSCO, TKES…)', role: 'Core steel suppliers', url: 'manufacturers.html' }
+        { name: 'Hitachi Energy', role: 'Power OEM — core design & build', url: 'manufacturers.html' },
+        { name: 'Siemens Energy', role: 'Power OEM', url: 'manufacturers.html' },
+        { name: 'SGB-SMIT Group', role: 'Power & distribution OEM', url: 'manufacturers.html' },
+        { name: 'GE Vernova / Prolec', role: 'Power OEM (Americas)', url: 'https://www.prolec.energy/' },
+        { name: 'CRGO mills', role: 'Steel suppliers', url: 'components.html#core-steel' }
       ],
-      detail3d: 'coretopology.html'
-    },
-    {
-      id: 'lv-winding',
-      match: ['LV winding (33 kV'],
-      title: 'LV winding (helical / CTC)',
+      detail3d: 'coretopology.html',
+      sourceHint: 'Source CRGO, banding and clamping hardware — or ask OEMs who build this class of core.'
+    }),
+    entry({
+      id: 'lv-winding', family: 'power',
+      match: [
+        'LV winding (33 kV', 'LV windings (inner)', 'LV foil windings', 'LV winding (VPI)',
+        'LV windings (inner)', 'LV foil', 'LV winding (VPI)', 'LV foil windings'
+      ],
+      title: 'LV winding',
+      marketNote: 'Large power units: helical CTC. Distribution & dry-type: foil or layer. Same sourcing logic OEMs use in RFQs.',
       components: [
-        { name: 'CTC (continuously transposed conductor)', note: 'Multi-strand copper, enamel + paper' },
-        { name: 'End rings & pressure rings', note: 'Axial clamping of the coil' },
-        { name: 'Layer insulation / DDP', note: 'Diamond-dotted paper bonding' },
+        { name: 'CTC / foil / layer conductor', note: 'Copper (or Al foil on distribution)' },
+        { name: 'End & pressure rings', note: 'Axial clamp of the coil' },
+        { name: 'DDP / layer insulation', note: 'Diamond-dotted paper bonding' },
         { name: 'Cooling duct spacers', note: 'Pressboard sticks & wedges' }
       ],
       machinery: [
-        { name: 'CTC winding machine', note: 'Helical / layer wind with tension control' },
-        { name: 'Conductor pay-off & tensioner', note: 'Constant tension on CTC cable' },
-        { name: 'Vapour-phase / oven dry-out', note: 'Moisture removal before tanking' },
-        { name: 'Coil sizing / pressing press', note: 'Sets final axial build' }
+        { name: 'CTC / foil winding machine', note: 'Tuboly, Tuboly-Laco, BR Technologies…' },
+        { name: 'Conductor pay-off & tensioner', note: 'Constant tension' },
+        { name: 'Coil press', note: 'Sets final axial build' },
+        { name: 'Vapour-phase / oven dry-out', note: 'Pre-tanking moisture removal' }
       ],
       manufacturers: [
-        { name: 'Essex / CTC cable specialists', role: 'Conductor suppliers', url: 'components.html#ctc' },
-        { name: 'Transformer OEMs', role: 'Wind & assemble in-house', url: 'manufacturers.html' }
+        { name: 'Essex / CTC specialists', role: 'Conductor', url: 'components.html#ctc' },
+        { name: 'Hitachi Energy / Siemens Energy / SGB', role: 'Wind in-house or specify', url: 'manufacturers.html' }
       ],
-      detail3d: 'windings.html'
-    },
-    {
-      id: 'hv-winding',
-      match: ['HV winding (132 kV'],
-      title: 'HV winding (continuous disc)',
+      detail3d: 'windings.html',
+      sourceHint: 'Buyers typically RFQ CTC/foil + insulation pack, or full wound coils from OEMs.'
+    }),
+    entry({
+      id: 'hv-winding', family: 'power',
+      match: [
+        'HV winding (132 kV', 'HV windings (outer)', 'HV cast-resin coils', 'HV winding (VPI',
+        'HV windings (outer)', 'HV cast-resin', 'HV winding (VPI open',
+        'HV cast coils', 'continuous disc', 'Active part (core + windings)'
+      ],
+      title: 'HV winding',
+      marketNote: 'Power: continuous/interleaved disc. Cast-resin: epoxy moulded coils. Impulse grading (static rings) is a Hitachi/Siemens standard ask.',
       components: [
-        { name: 'Paper-covered copper strip', note: 'Disc turns, transposed where required' },
-        { name: 'Inter-disc spacers', note: 'Pressboard duct sticks' },
-        { name: 'Static end rings', note: 'Impulse grading at line end' },
-        { name: 'Lead exits & shielding', note: 'Crepe-paper wrapped leads' }
+        { name: 'Paper-covered Cu strip or cast-resin coil', note: 'Disc turns or epoxy moulding' },
+        { name: 'Inter-disc spacers / resin fillers', note: 'Ducts + mechanical strength' },
+        { name: 'Static end rings / shields', note: 'Line-end impulse grading' },
+        { name: 'Lead exits', note: 'Crepe-wrapped or moulded leads' }
       ],
       machinery: [
-        { name: 'Disc winding machine', note: 'Horizontal/vertical disc winders' },
-        { name: 'Shielding / grading station', note: 'Static rings & electrostatic shields' },
-        { name: 'Impulse test tap prep', note: 'Lead dressing for type tests' }
+        { name: 'Disc / layer winding machine', note: 'Horizontal or vertical' },
+        { name: 'Epoxy casting plant (CRT)', note: 'Vacuum casting for cast-resin' },
+        { name: 'Shielding / grading station', note: 'Static rings' },
+        { name: 'Impulse prep / lead dressing', note: 'Type-test readiness' }
       ],
       manufacturers: [
-        { name: 'Power transformer OEMs', role: 'Design & wind HV coils', url: 'manufacturers.html' },
-        { name: 'Conductor mills', role: 'Paper-covered strip', url: 'components.html#hv-winding' }
+        { name: 'Power & dry-type OEMs', role: 'Design & wind', url: 'manufacturers.html' },
+        { name: 'Conductor / resin suppliers', role: 'Materials', url: 'components.html#hv-winding' }
       ],
-      detail3d: 'windings.html'
-    },
-    {
-      id: 'tap-winding',
+      detail3d: 'windings.html',
+      sourceHint: 'Source conductor + insulation, or finished HV coils from the OEM tier.'
+    }),
+    entry({
+      id: 'tap-winding', family: 'power',
       match: ['Tapping / regulating winding'],
-      title: 'Tapping / regulating winding',
+      title: 'Regulating / tap winding',
+      marketNote: 'Coordinated with MR / Hitachi / Huaming OLTC layouts — tap lead geometry is part of the OEM design package.',
       components: [
-        { name: 'Tap conductor', note: 'Often separate regulating winding' },
+        { name: 'Tap conductor', note: 'Separate regulating winding on large units' },
         { name: 'Tap leads to OLTC', note: 'Crepe-wrapped flexible leads' },
-        { name: 'Barrier cylinders', note: 'HV–tap insulation barriers' }
+        { name: 'HV–tap barrier cylinders', note: 'Pressboard insulation' }
       ],
       machinery: [
         { name: 'Regulating-winding winder', note: 'Fine pitch, many taps' },
-        { name: 'Lead forming bench', note: 'Dress leads into OLTC turret' }
+        { name: 'Lead forming bench', note: 'Dress into OLTC turret' }
       ],
       manufacturers: [
-        { name: 'OEM winding shops', role: 'Integrated with OLTC design', url: 'manufacturers.html' },
-        { name: 'MR / ABB / Huaming…', role: 'Coordinate tap layout with OLTC', url: 'components.html#oltc' }
+        { name: 'Transformer OEMs', role: 'Wind + lead dress', url: 'manufacturers.html' },
+        { name: 'MR / Hitachi Energy OLTC', role: 'Coordinate tap map', url: 'oltc.html' }
       ],
-      detail3d: 'windings.html'
-    },
-    {
-      id: 'pressboard',
-      match: ['pressboard', 'barrier cylinders', 'HV–tap barrier'],
+      detail3d: 'windings.html',
+      sourceHint: 'Usually sold as part of the active-part package with the OLTC.'
+    }),
+    entry({
+      id: 'pressboard', family: 'power',
+      match: ['pressboard', 'barrier cylinders', 'HV–tap barrier', 'Main HV'],
       title: 'Main insulation barriers',
+      marketNote: 'Weidmann-class transformerboard remains the reference for Hitachi/Siemens/SGB barrier systems.',
       components: [
         { name: 'Transformerboard / pressboard', note: 'Cylinders, angle rings, washers' },
-        { name: 'Machined spacers & wedges', note: 'Cooling ducts + coil support' },
+        { name: 'Machined spacers & wedges', note: 'Ducts + coil support' },
         { name: 'Laminated wood beams', note: 'Clamping & lead supports' }
       ],
       machinery: [
-        { name: 'CNC pressboard machining', note: 'Cylinders, rings, custom shapes' },
-        { name: 'Hot press / densification', note: 'High-density board production' },
-        { name: 'Vacuum dry-out', note: 'Insulation moisture <0.5%' }
+        { name: 'CNC pressboard machining', note: 'Custom shapes' },
+        { name: 'Hot press / densification', note: 'High-density board' },
+        { name: 'Vacuum dry-out', note: 'Insulation moisture control' }
       ],
       manufacturers: [
         { name: 'Weidmann / Munksjö / specialist mills', role: 'Insulation materials', url: 'components.html#pressboard' },
-        { name: 'Transformer OEMs', role: 'Design barrier system', url: 'manufacturers.html' }
-      ]
-    },
-    {
-      id: 'tank',
-      match: ['Tank, skid base', 'Cover bolting', 'Tank fittings'],
-      title: 'Tank, cover & fittings',
+        { name: 'OEMs', role: 'Barrier system design', url: 'manufacturers.html' }
+      ],
+      sourceHint: 'Insulation kits are a major sourced BOM line — often Weidmann-spec equivalents.'
+    }),
+    entry({
+      id: 'tank', family: 'power',
+      match: [
+        'Tank',
+        'Tank, skid base', 'Cover bolting', 'Tank fittings', 'Main tank', 'Base channels',
+        'Tank cover', 'Cover bolting & gasket', 'Base frame', 'under-carriage',
+        'Lifting lugs', 'Rating &', 'Rating plate', 'Drain / sampling',
+        'Base channels + rollers', 'Flanged haulage', 'haulage wheels', 'skid base',
+        'jacking pads', 'Cover bolting & gasket joint', 'Tank fittings —'
+      ],
+      title: 'Tank, cover & base',
+      marketNote: 'Bell tanks on large Hitachi/Siemens units; corrugated walls on SGB-class distribution. C5-M paint systems common for coastal/Gulf specs.',
       components: [
-        { name: 'Fabricated steel tank', note: 'Bell or cover-joint construction' },
-        { name: 'Gaskets & O-rings', note: 'Nitrile/cork or Viton systems' },
-        { name: 'Valves (drain, filter, sample)', note: 'Butterfly & sampling valves' },
-        { name: 'Rating plate & ladder', note: 'Contract data in stainless' }
+        { name: 'Fabricated steel tank / enclosure', note: 'Bell, cover-joint or corrugated' },
+        { name: 'Gaskets & O-rings', note: 'Nitrile/cork or Viton' },
+        { name: 'Valves & earth pads', note: 'Drain, filter, sample, earthing' },
+        { name: 'Rating plate & lifting', note: 'Contract data + haulage' }
       ],
       machinery: [
-        { name: 'Plate cutting & rolling', note: 'Tank shell fabrication' },
-        { name: 'Welding bay / robots', note: 'Seam & nozzle welding' },
-        { name: 'Shot-blast & paint line', note: 'Corrosion protection system' },
-        { name: 'Leak / pressure test rig', note: 'Tank integrity before active-part drop' }
+        { name: 'Plate cutting & rolling', note: 'Shell fab' },
+        { name: 'Welding bay / robots', note: 'Seams & nozzles' },
+        { name: 'Shot-blast & paint line', note: 'C3–C5 systems' },
+        { name: 'Leak / vacuum test rig', note: 'Before active-part drop-in' }
       ],
       manufacturers: [
-        { name: 'Transformer OEMs', role: 'Tank design & fab (or outsourced)', url: 'manufacturers.html' },
-        { name: 'Tank fabricators', role: 'Specialist steelwork', url: 'components.html#tank' }
-      ]
-    },
-    {
-      id: 'oil',
-      match: ['cooling oil', 'Insulating & cooling oil'],
-      title: 'Insulating & cooling oil',
+        { name: 'Hitachi Energy / Siemens Energy / SGB-SMIT', role: 'Tank design (in-house or fab partners)', url: 'manufacturers.html' },
+        { name: 'Specialist tank fabricators', role: 'Outsourced steelwork', url: 'components.html#tank' }
+      ],
+      sourceHint: 'Tanks are often local-content opportunities for EPC markets.'
+    }),
+    entry({
+      id: 'oil', family: 'power',
+      match: ['cooling oil', 'Insulating oil', 'Insulating & cooling oil', 'Insulating & cooling'],
+      title: 'Insulating liquid',
+      marketNote: 'IEC 60296 mineral oil still dominates; Hitachi/Siemens/SGB increasingly quote natural/synthetic esters for fire-safe and indoor sites.',
       components: [
-        { name: 'Mineral transformer oil', note: 'IEC 60296 naphthenic' },
-        { name: 'Natural / synthetic esters', note: 'K-class fire-safe options' },
-        { name: 'Oil sampling bottles & valves', note: 'DGA programme feed' }
+        { name: 'Mineral transformer oil', note: 'IEC 60296' },
+        { name: 'Natural / synthetic esters', note: 'K-class fire-safe' },
+        { name: 'Sampling valves & kits', note: 'DGA programme' }
       ],
       machinery: [
-        { name: 'Oil filtration / degassing plant', note: 'Mobile or fixed processing rigs' },
-        { name: 'Vacuum filling system', note: 'Dry oil fill under vacuum' },
-        { name: 'Oil storage tanks', note: 'Clean & used oil segregation' }
+        { name: 'Oil filtration / degassing plant', note: 'Mobile or fixed (e.g. Highvac, Filtervac)' },
+        { name: 'Vacuum filling system', note: 'Dry fill under vacuum' },
+        { name: 'Oil storage farm', note: 'Clean vs used segregation' }
       ],
       manufacturers: [
-        { name: 'Nynas / Ergon / Shell…', role: 'Oil producers', url: 'components.html#transformer-oil' },
-        { name: 'Ester suppliers (MIDEL…)', role: 'Alternative fluids', url: 'components.html#transformer-oil' }
-      ]
-    },
-    {
-      id: 'hv-bushings',
-      match: ['132 kV condenser bushings', 'Bushing mounting flanges'],
-      title: 'HV condenser bushings',
+        { name: 'Nynas / Ergon / Shell', role: 'Mineral oil', url: 'components.html#transformer-oil' },
+        { name: 'MIDEL / ester suppliers', role: 'Alternative fluids', url: 'components.html#transformer-oil' }
+      ],
+      sourceHint: 'Oil is a recurring OPEX/sourced commodity — specify brand + IEC grade in RFQs.'
+    }),
+    entry({
+      id: 'hv-bushings', family: 'power',
+      match: [
+        '132 kV condenser bushings', 'Bushing mounting flanges', 'HV bushings',
+        '400 kV HV bushings', 'condenser bushings', 'bushing turrets'
+      ],
+      title: 'HV bushings',
+      marketNote: 'RIP preferred on many new Hitachi/Siemens specs; OIP still widely installed. Turrets + bushing CTs are standard on power transformers.',
       components: [
-        { name: 'OIP / RIP condenser bushings', note: '36–550 kV line entries' },
-        { name: 'Bushing turrets', note: 'Tank nozzles + CT housings' },
+        { name: 'OIP / RIP condenser bushings', note: 'HSP, RHM, Hitachi Energy, Siemens…' },
+        { name: 'Bushing turrets', note: 'Tank nozzles' },
         { name: 'Bushing CTs', note: 'Ring-type metering/protection' },
-        { name: 'Test taps & flanges', note: 'tan δ / capacitance checks' }
+        { name: 'Test taps', note: 'C1/C2, tan δ' }
       ],
       machinery: [
-        { name: 'Condenser-core winder', note: 'Capacitive grading layers' },
-        { name: 'Impregnation / curing autoclave', note: 'OIP oil or RIP resin' },
-        { name: 'Bushing test bay', note: 'AC withstand, PD, capacitance' }
+        { name: 'Condenser-core winder', note: 'Capacitive grading' },
+        { name: 'Impregnation / curing autoclave', note: 'Oil or resin' },
+        { name: 'Bushing test bay', note: 'AC, PD, capacitance' }
       ],
       manufacturers: [
-        { name: 'HSP / RHM / ABB / Siemens Energy', role: 'Bushing specialists', url: 'bushing.html' },
+        { name: 'HSP / RHM / Hitachi Energy / Siemens Energy', role: 'Bushing specialists', url: 'bushing.html' },
         { name: 'Transformer OEMs', role: 'Specify & integrate', url: 'manufacturers.html' }
       ],
-      detail3d: 'bushing.html'
-    },
-    {
-      id: 'lv-bushings',
-      match: ['33 kV bushings'],
-      title: 'LV & neutral bushings',
+      detail3d: 'bushing.html',
+      sourceHint: 'Bushings are a classic sourced commodity — RFQ by kV, creepage, RIP/OIP, CT ratios.'
+    }),
+    entry({
+      id: 'lv-bushings', family: 'power',
+      match: [
+        '33 kV bushings', 'LV bushings', 'LV terminals', '220 kV LV bushings',
+        'Neutral + tertiary', 'neutral bushing', 'HV neutral'
+      ],
+      title: 'LV / MV terminations',
+      marketNote: 'DIN porcelain, epoxy, or plug-in elbows on distribution; high-current LV bushings on power.',
       components: [
-        { name: 'DIN / epoxy LV bushings', note: '1–36 kV, high current' },
-        { name: 'Neutral bushing', note: 'HV neutral bring-out' },
-        { name: 'Cable boxes / glands', note: 'Optional MV/LV terminations' }
+        { name: 'DIN / epoxy LV bushings', note: 'High current' },
+        { name: 'Neutral bushing', note: 'HV or LV neutral' },
+        { name: 'Cable boxes / plug-in elbows', note: 'Distribution terminations' }
       ],
       machinery: [
-        { name: 'Epoxy casting line', note: 'For cast-resin bushings' },
+        { name: 'Epoxy casting line', note: 'Cast bushings' },
         { name: 'Porcelain assembly', note: 'Cementing & sealing' }
       ],
       manufacturers: [
-        { name: 'Bushing & epoxy specialists', role: 'LV terminations', url: 'bushing.html' },
-        { name: 'Transformer OEMs', role: 'Integration', url: 'manufacturers.html' }
+        { name: 'Bushing & epoxy specialists', role: 'LV/MV terminations', url: 'bushing.html' },
+        { name: 'OEMs', role: 'Integration', url: 'manufacturers.html' }
       ],
-      detail3d: 'bushing.html'
-    },
-    {
-      id: 'conservator',
-      match: ['Buchholz', 'Conservator'],
-      title: 'Conservator, Buchholz & breathers',
+      detail3d: 'bushing.html',
+      sourceHint: 'High-volume sourced item on distribution fleets.'
+    }),
+    entry({
+      id: 'conservator', family: 'power',
+      match: [
+        'Buchholz', 'Conservator', 'Conservator tank', 'Silica-gel breather',
+        'breather', 'Magnetic oil-level', 'MOG'
+      ],
+      title: 'Conservator & gas protection',
+      marketNote: 'Rubber-bag conservators + Buchholz remain Hitachi/Siemens/SGB default on free-breathing power tanks; hermetic designs delete this on many distribution units.',
       components: [
-        { name: 'Conservator tank', note: 'Main + OLTC compartments' },
-        { name: 'Buchholz / RS relays', note: 'Gas & surge protection' },
-        { name: 'Silica-gel breathers', note: 'Standard or self-regenerating' },
+        { name: 'Conservator (main + OLTC)', note: 'Oil expansion' },
+        { name: 'Buchholz / RS relays', note: 'Messko, Qualitrol…' },
+        { name: 'Silica-gel breathers', note: 'Standard or regenerating' },
         { name: 'Air cell / rubber bag', note: 'Oil–air separation' }
       ],
       machinery: [
-        { name: 'Conservator fabrication', note: 'Small tank shop' },
-        { name: 'Relay calibration bench', note: 'Buchholz trip settings' }
+        { name: 'Small tank fab', note: 'Conservator shells' },
+        { name: 'Relay calibration bench', note: 'Trip settings' }
       ],
       manufacturers: [
-        { name: 'Messko / Qualitrol / relay makers', role: 'Protection devices', url: 'components.html#buchholz' },
-        { name: 'Transformer OEMs', role: 'System packaging', url: 'manufacturers.html' }
-      ]
-    },
-    {
-      id: 'prd',
-      match: ['Tank cover', 'PRVs'],
-      title: 'Cover devices (PRV, hatches)',
+        { name: 'Messko / Qualitrol', role: 'Relays & breathers', url: 'components.html#buchholz' },
+        { name: 'OEMs', role: 'Package', url: 'manufacturers.html' }
+      ],
+      sourceHint: 'Protection devices are almost always bought-in — specify make/model in the datasheet.'
+    }),
+    entry({
+      id: 'prd', family: 'power',
+      match: [
+        'PRVs', 'Tank cover (+', 'Pressure-relief', 'PRV',
+        'Oil / winding temperature', 'OTI', 'WTI'
+      ],
+      title: 'Cover devices (PRD, OTI/WTI)',
+      marketNote: 'Spring PRDs with trip contacts are mandatory on sealed/power tanks across Hitachi/Siemens/SGB specs.',
       components: [
-        { name: 'Pressure relief device', note: 'Spring valve + trip contact' },
-        { name: 'Inspection hatches', note: 'Cover access' },
-        { name: 'Core earth test link', note: 'Single-point core earth' }
+        { name: 'Pressure relief device', note: 'Spring valve + contact' },
+        { name: 'OTI / WTI pockets', note: 'Fan staging & trip' },
+        { name: 'Inspection hatches', note: 'Cover access' }
       ],
-      machinery: [
-        { name: 'PRV test bench', note: 'Set point verification' }
-      ],
+      machinery: [{ name: 'PRD test bench', note: 'Set-point check' }],
       manufacturers: [
-        { name: 'Qualitrol / Emco / specialists', role: 'PRD suppliers', url: 'components.html#prd' }
-      ]
-    },
-    {
-      id: 'radiators',
-      match: ['Radiator banks'],
+        { name: 'Qualitrol / Emco / specialists', role: 'PRD & gauges', url: 'components.html#prd' }
+      ],
+      sourceHint: 'Standard sourced accessories — easy upsell for suppliers.'
+    }),
+    entry({
+      id: 'radiators', family: 'power',
+      match: [
+        'Radiator banks', 'Corrugated fin walls', 'Cross-flow fans',
+        'Panel radiator', 'Oil pumps', 'ODAF', 'radiator banks'
+      ],
       title: 'Cooling plant',
+      marketNote: 'Detachable radiators + ONAF on power (Hitachi/Siemens); corrugated fins on SGB-style distribution; AF fans on dry-type.',
       components: [
-        { name: 'Pressed-steel radiators', note: 'Bolt-on or welded banks' },
-        { name: 'Cooling fans', note: 'ONAF / OFAF stages' },
-        { name: 'Oil pumps', note: 'OF / OD circulation' },
-        { name: 'Radiator valves', note: 'Butterfly isolation valves' }
+        { name: 'Pressed-steel radiators or corrugated fins', note: 'ONAN base' },
+        { name: 'Cooling fans', note: 'ONAF / AF stages' },
+        { name: 'Oil pumps (OF/OD)', note: 'Forced oil on large units' },
+        { name: 'Radiator valves', note: 'Butterfly isolation' }
       ],
       machinery: [
-        { name: 'Radiator panel press', note: 'Formed cooling panels' },
+        { name: 'Radiator panel press', note: 'Formed panels' },
         { name: 'Header welding line', note: 'Bank assembly' },
-        { name: 'Fan / pump test stand', note: 'Airflow & flow rate checks' }
+        { name: 'Fan test stand', note: 'Airflow verification' }
       ],
       manufacturers: [
-        { name: 'Radiator specialists (e.g. local fab + OEM)', role: 'Cooling hardware', url: 'components.html#radiators' },
-        { name: 'Transformer OEMs', role: 'Thermal design', url: 'manufacturers.html' }
-      ]
-    },
-    {
-      id: 'oltc',
-      match: ['On-load tap-changer', 'OLTC position indicator'],
+        { name: 'Radiator specialists + OEMs', role: 'Cooling hardware', url: 'components.html#radiators' },
+        { name: 'SGB-SMIT / distribution OEMs', role: 'Corrugated tank cooling', url: 'manufacturers.html' }
+      ],
+      sourceHint: 'Radiators and fans are high-volume sourced parts — strong supplier marketplace fit.'
+    }),
+    entry({
+      id: 'oltc', family: 'power',
+      match: [
+        'On-load tap-changer', 'OLTC position indicator', 'On-load tap-changer (OLTC)',
+        'OLTC motor', 'motor-drive'
+      ],
       title: 'On-load tap-changer',
+      marketNote: 'MR (Reinhausen) dominates globally; Hitachi Energy and Huaming are major alternatives on Siemens/Hitachi/SGB platforms.',
       components: [
-        { name: 'OLTC diverter (vacuum/oil)', note: 'Changes ratio under load' },
-        { name: 'Motor-drive mechanism', note: 'Position transmitters & controllers' },
-        { name: 'OLTC oil / filter unit', note: 'Diverter oil maintenance' },
-        { name: 'Drive conduit & indicator', note: 'Deck to conservator route' }
+        { name: 'OLTC diverter (vacuum/oil)', note: 'MR VACUTAP / OILTAP class' },
+        { name: 'Motor-drive mechanism', note: 'Position TX & controller' },
+        { name: 'OLTC oil filter (if oil type)', note: 'Diverter maintenance' },
+        { name: 'Drive conduit & indicator', note: 'Deck routing' }
       ],
       machinery: [
-        { name: 'Precision machining cells', note: 'Contacts, shafts, housings' },
-        { name: 'Vacuum interrupter assembly', note: 'For vacuum OLTCs' },
-        { name: 'Type-test / life-test rigs', note: 'Switching endurance' }
+        { name: 'Precision machining cells', note: 'Contacts & housings' },
+        { name: 'Vacuum interrupter assembly', note: 'Vacuum OLTCs' },
+        { name: 'Life / type-test rigs', note: 'Switching endurance' }
       ],
       manufacturers: [
-        { name: 'Maschinenfabrik Reinhausen (MR)', role: 'OLTC specialist', url: 'oltc.html' },
-        { name: 'Hitachi Energy / Huaming…', role: 'OLTC suppliers', url: 'components.html#oltc' },
-        { name: 'Transformer OEMs', role: 'Specify & mount', url: 'manufacturers.html' }
+        { name: 'Maschinenfabrik Reinhausen (MR)', role: 'Global OLTC leader', url: 'oltc.html' },
+        { name: 'Hitachi Energy', role: 'OLTC + transformers', url: 'manufacturers.html' },
+        { name: 'Huaming / others', role: 'OLTC alternatives', url: 'components.html#oltc' }
       ],
-      detail3d: 'oltc.html'
-    },
-    {
-      id: 'monitoring',
-      match: ['online DGA', 'Marshalling cabinet', 'Control cabling'],
+      detail3d: 'oltc.html',
+      sourceHint: 'Almost always a named bought-in product on the transformer BOM.'
+    }),
+    entry({
+      id: 'monitoring', family: 'power',
+      match: ['online DGA', 'Marshalling cabinet', 'Control cabling', 'PT100'],
       title: 'Monitoring & marshalling',
+      marketNote: 'Online DGA + fibre hot-spot is now common on Hitachi/Siemens fleet-critical units; Qualitrol/Serveron ecosystem is widely specified.',
       components: [
-        { name: 'Online DGA monitor', note: 'Continuous gas-in-oil' },
-        { name: 'OTI / WTI gauges', note: 'Alarm & trip contacts' },
-        { name: 'Marshalling box', note: 'All secondary wiring' },
-        { name: 'Fibre-optic hot-spot sensors', note: 'Optional winding sensors' }
+        { name: 'Online DGA monitor', note: 'Multi-gas or hydrogen' },
+        { name: 'OTI / WTI / PT100', note: 'Thermal protection' },
+        { name: 'Marshalling cabinet', note: 'All secondaries' },
+        { name: 'Fibre hot-spot sensors', note: 'Optional winding sensors' }
       ],
       machinery: [
         { name: 'Panel wiring benches', note: 'Marshalling build' },
-        { name: 'Sensor calibration', note: 'Temperature & gas sensors' }
+        { name: 'Sensor calibration', note: 'Gas & temperature' }
       ],
       manufacturers: [
-        { name: 'Qualitrol / Serveron / GE…', role: 'DGA & monitoring', url: 'components.html#dga' },
-        { name: 'Transformer OEMs', role: 'Package & commission', url: 'manufacturers.html' }
-      ]
-    },
-    {
-      id: 'arresters',
+        { name: 'Qualitrol / Serveron / GE', role: 'DGA & monitoring', url: 'components.html#dga' },
+        { name: 'OEMs', role: 'Package & commission', url: 'manufacturers.html' }
+      ],
+      sourceHint: 'Monitoring is a high-margin sourced add-on for suppliers.'
+    }),
+    entry({
+      id: 'arresters', family: 'power',
       match: ['surge arresters'],
       title: 'Surge arresters',
+      marketNote: 'ZnO arresters coordinated to BIL — Hitachi Energy, Siemens and ABB/Hitachi lines dominate utility specs.',
       components: [
         { name: 'ZnO metal-oxide arresters', note: 'Close to HV bushings' },
-        { name: 'Leakage-current monitors', note: 'Substation inspection' }
+        { name: 'Leakage monitors', note: 'Inspection aids' }
+      ],
+      machinery: [{ name: 'Arrester assembly & test', note: 'IEC 60099' }],
+      manufacturers: [
+        { name: 'Hitachi Energy / Siemens Energy', role: 'Arrester makers', url: 'components.html#surge-arresters' },
+        { name: 'EPCs & OEMs', role: 'Insulation coordination', url: 'manufacturers.html' }
+      ],
+      sourceHint: 'Switchyard commodity — source by rated voltage & protective level.'
+    }),
+    entry({
+      id: 'enclosure-dry', family: 'distribution',
+      match: [
+        'Ventilated enclosure', 'Ventilated enclosure (IP', 'enclosure (VPI',
+        'Lifting eyes & rating plate'
+      ],
+      title: 'Dry-type enclosure',
+      marketNote: 'IP21–IP33 ventilated housings as used on Siemens/SGB cast-resin and VPI indoor units.',
+      components: [
+        { name: 'Sheet-steel enclosure', note: 'Louvre / mesh panels' },
+        { name: 'Door interlocks & earthing', note: 'Safety' },
+        { name: 'Cable entry plates', note: 'Bottom/side gland plates' }
       ],
       machinery: [
-        { name: 'Arrester assembly & test', note: 'IEC 60099 routines' }
+        { name: 'Sheet-metal CNC & paint', note: 'Enclosure fab' }
       ],
       manufacturers: [
-        { name: 'Hitachi Energy / Siemens / ABB…', role: 'Arrester makers', url: 'components.html#surge-arresters' },
-        { name: 'EPCs & OEMs', role: 'Insulation coordination', url: 'manufacturers.html' }
-      ]
-    }
+        { name: 'Dry-type OEMs (Siemens, SGB, Hitachi…)', role: 'Package', url: 'manufacturers.html' }
+      ],
+      sourceHint: 'Enclosures are often local-content fabrication.'
+    }),
+    entry({
+      id: 'resilient-pads', family: 'distribution',
+      match: [
+        'Resilient coil-support pads', 'Resilient coil-support', 'coil-support pads'
+      ],
+      title: 'Coil support pads',
+      marketNote: 'Allow thermal expansion of cast-resin coils — standard on Hitachi/Siemens/SGB CRT designs.',
+      components: [
+        { name: 'Elastomer / composite pads', note: 'Coil feet' }
+      ],
+      machinery: [{ name: 'Pad moulding / cut', note: 'Elastomer parts' }],
+      manufacturers: [
+        { name: 'Dry-type OEMs & pad specialists', role: 'Mounting kits', url: 'manufacturers.html' }
+      ],
+      sourceHint: 'Small sourced part, high volume on CRT fleets.'
+    }),
+
+    /* ───────── CURRENT TRANSFORMERS ───────── */
+    entry({
+      id: 'ct-core', family: 'ct',
+      match: ['CT magnetic core', 'Toroidal CT core'],
+      title: 'CT magnetic core',
+      marketNote: 'Ring-type bushing CTs and wound CTs use CRGO or nanocrystalline cores — same supply chain Hitachi/Siemens instrument-transformer plants use.',
+      components: [
+        { name: 'Toroidal CRGO / nanocrystalline core', note: 'Gapless ring for bushing CTs' },
+        { name: 'Core impregnation varnish', note: 'Noise & corrosion control' }
+      ],
+      machinery: [
+        { name: 'Toroidal core winder', note: 'Strip-wound rings' },
+        { name: 'Annealing furnace', note: 'Magnetic property set' }
+      ],
+      manufacturers: [
+        { name: 'Hitachi Energy / Siemens Energy', role: 'IT & bushing CT OEMs', url: 'manufacturers.html' },
+        { name: 'Specialist IT makers', role: 'MV/HV CTs', url: 'manufacturers.html' }
+      ],
+      sourceHint: 'Core is the magnetic heart — source by ratio accuracy class (0.2s, 5P20…).'
+    }),
+    entry({
+      id: 'ct-secondary', family: 'ct',
+      match: ['CT secondary winding'],
+      title: 'CT secondary winding',
+      marketNote: 'Multi-ratio secondaries (1A/5A) with accuracy classes per IEC 61869 — standard utility ask.',
+      components: [
+        { name: 'Secondary copper winding', note: 'Enamel wire on toroid' },
+        { name: 'Inter-layer insulation', note: 'Tape / film' },
+        { name: 'Secondary terminals', note: 'Shorting links required' }
+      ],
+      machinery: [
+        { name: 'Toroidal winding machine', note: 'Secondary turns' },
+        { name: 'Ratio / burden test set', note: 'IEC 61869 verification' }
+      ],
+      manufacturers: [
+        { name: 'Instrument transformer OEMs', role: 'Wind & test', url: 'manufacturers.html' }
+      ],
+      sourceHint: 'Specify ratios, burden (VA) and accuracy class when sourcing.'
+    }),
+    entry({
+      id: 'ct-primary', family: 'ct',
+      match: ['CT primary', 'Primary bar / wound primary'],
+      title: 'CT primary',
+      marketNote: 'Bushing CTs use the bushing stem as primary; wound CTs have an insulated primary winding for MV outdoor tanks.',
+      components: [
+        { name: 'Primary bar or wound primary', note: 'Bus / line current path' },
+        { name: 'Primary insulation', note: 'Paper/oil or resin' }
+      ],
+      machinery: [
+        { name: 'Primary winding / bar prep', note: 'Current path assembly' }
+      ],
+      manufacturers: [
+        { name: 'IT OEMs (Hitachi, Siemens, Arteche…)', role: 'Complete CTs', url: 'manufacturers.html' }
+      ],
+      sourceHint: 'For bushing CTs, primary is the bushing — source CT rings by ID/OD and ratio.'
+    }),
+    entry({
+      id: 'ct-insulation', family: 'ct',
+      match: ['CT insulation', 'CT oil / resin insulation'],
+      title: 'CT insulation system',
+      marketNote: 'Oil-paper for outdoor HV CTs; cast resin for indoor MV — mirrors dry-type vs oil split in transformers.',
+      components: [
+        { name: 'Oil-paper or epoxy insulation', note: 'Dielectric system' },
+        { name: 'Screen / grading layers', note: 'Field control on HV CTs' }
+      ],
+      machinery: [
+        { name: 'Vacuum impregnation / casting', note: 'Dry or resin fill' },
+        { name: 'PD test bay', note: 'Insulation integrity' }
+      ],
+      manufacturers: [
+        { name: 'IT OEMs', role: 'Insulation process', url: 'manufacturers.html' }
+      ],
+      sourceHint: 'Insulation process defines outdoor vs indoor CT product lines.'
+    }),
+    entry({
+      id: 'ct-housing', family: 'ct',
+      match: ['CT housing', 'CT tank / porcelain', 'CT tank', 'porcelain'],
+      title: 'CT housing & tank',
+      marketNote: 'Porcelain or composite housings on outdoor CTs; metal enclosures on indoor bushing-CT junction boxes.',
+      components: [
+        { name: 'Porcelain / composite housing', note: 'Outdoor creepage' },
+        { name: 'Steel tank / base', note: 'Oil volume & mounting' },
+        { name: 'Primary terminals', note: 'P1–P2' }
+      ],
+      machinery: [
+        { name: 'Porcelain assembly', note: 'Cementing' },
+        { name: 'Tank fab & paint', note: 'Outdoor finish' }
+      ],
+      manufacturers: [
+        { name: 'IT OEMs + porcelain suppliers', role: 'Housing', url: 'manufacturers.html' }
+      ],
+      sourceHint: 'Housing and creepage are climate/pollution-driven sourced specs.'
+    }),
+    entry({
+      id: 'ct-terminal-box', family: 'ct',
+      match: ['CT secondary box', 'CT terminal box', 'CT secondary terminal', 'terminal box'],
+      title: 'CT secondary terminal box',
+      marketNote: 'Must include shorting links — utility safety requirement worldwide.',
+      components: [
+        { name: 'Secondary terminal board', note: 'S1–S2, multi-ratio taps' },
+        { name: 'Shorting links', note: 'Mandatory before open-circuit' },
+        { name: 'Gland plate', note: 'Cable entry' }
+      ],
+      machinery: [
+        { name: 'Terminal board assembly', note: 'Wiring & labelling' }
+      ],
+      manufacturers: [
+        { name: 'IT OEMs', role: 'Complete secondary interface', url: 'manufacturers.html' }
+      ],
+      sourceHint: 'Small but critical sourced accessory — shorting provision is non-negotiable.'
+    })
   ];
 
   function matchPartName(partName) {
     if (!partName) return null;
     var lower = String(partName).toLowerCase();
+    var best = null;
+    var bestLen = 0;
     for (var i = 0; i < PARTS.length; i++) {
       var p = PARTS[i];
       for (var j = 0; j < p.match.length; j++) {
-        if (lower.indexOf(String(p.match[j]).toLowerCase()) !== -1) return p;
+        var m = String(p.match[j]).toLowerCase();
+        if (m && lower.indexOf(m) !== -1 && m.length > bestLen) {
+          best = p;
+          bestLen = m.length;
+        }
       }
     }
-    return null;
+    return best;
   }
 
   function byId(id) {
@@ -325,9 +547,14 @@
     return null;
   }
 
+  function byFamily(family) {
+    return PARTS.filter(function (p) { return p.family === family; });
+  }
+
   root.TP_PART_ECOSYSTEM = {
     parts: PARTS,
     matchPartName: matchPartName,
-    byId: byId
+    byId: byId,
+    byFamily: byFamily
   };
 })(typeof window !== 'undefined' ? window : globalThis);

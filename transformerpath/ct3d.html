@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Current Transformer — Interactive 3D Sourcing Explorer</title>
+<meta name="description" content="Click any part of a live tank-type HV current transformer to see market practice (Hitachi / Siemens / Arteche-class) and where that part can be sourced.">
+<style>
+:root{--panel:#0e1c2c;--panel2:#13263a;--ink:#e8eef5;--mut:#8fa6bc;--acc:#3da5f4;--acc2:#e8732a;--line:#23415e}
+*{box-sizing:border-box;margin:0;padding:0}html,body{height:100%;overflow:hidden}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#08121e;color:var(--ink)}
+#c3d{position:absolute;inset:0;cursor:grab}#c3d.dragging{cursor:grabbing}
+#topbar{position:absolute;top:0;left:0;right:0;height:56px;background:linear-gradient(180deg,rgba(8,18,30,.95),rgba(8,18,30,.78) 70%,transparent);display:flex;align-items:center;gap:12px;padding:0 18px;z-index:10;pointer-events:none}
+#topbar h1{font-size:1rem;font-weight:600}
+#topbar .sub{font-size:.72rem;color:var(--mut)}
+#topbar a{pointer-events:auto;color:var(--acc);text-decoration:none;font-size:.8rem;border:1px solid var(--line);padding:4px 10px;border-radius:6px;background:rgba(14,28,44,.7);white-space:nowrap}
+#topbar a:hover,#topbar a.on{background:var(--acc);color:#04121f;border-color:var(--acc);font-weight:700}
+#topbar .right{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+#panel{position:absolute;top:64px;right:12px;width:360px;max-height:calc(100% - 84px);overflow-y:auto;background:rgba(14,28,44,.92);border:1px solid var(--line);border-radius:12px;padding:14px 16px;z-index:10;backdrop-filter:blur(6px)}
+#panel h2{font-size:.78rem;text-transform:uppercase;letter-spacing:1px;color:var(--mut);margin:12px 0 6px}#panel h2:first-child{margin-top:0}
+.sl{width:100%;margin:4px 0 2px;accent-color:var(--acc)}
+.slrow{display:flex;justify-content:space-between;font-size:.72rem;color:var(--mut)}
+.tgl{display:flex;align-items:center;gap:8px;font-size:.83rem;padding:2.5px 0;cursor:pointer;user-select:none}.tgl input{accent-color:var(--acc)}
+.sw{width:11px;height:11px;border-radius:3px;display:inline-block;flex:none}
+#info{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin-top:6px;font-size:.82rem;line-height:1.5;min-height:90px}#info b{color:var(--acc)}#info .hint{color:var(--mut);font-size:.78rem}
+.btnrow{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.btnrow button{flex:1 1 30%;background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:7px;padding:6px 4px;font-size:.75rem;cursor:pointer}
+.btnrow button:hover{border-color:var(--acc)}.btnrow button.on{background:var(--acc);color:#04121f;font-weight:600}
+.spec{font-size:.74rem;color:var(--mut);line-height:1.5;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-bottom:8px}.spec b{color:var(--acc2)}
+#help{position:absolute;left:14px;bottom:12px;z-index:10;font-size:.74rem;color:var(--mut);background:rgba(14,28,44,.75);border:1px solid var(--line);border-radius:8px;padding:7px 11px;line-height:1.6;pointer-events:none}
+.lbl{position:absolute;transform:translate(-50%,-130%);background:rgba(10,22,36,.88);border:1px solid var(--line);color:#dbe7f3;font-size:11px;padding:2px 7px;border-radius:5px;pointer-events:auto;cursor:pointer;white-space:nowrap;z-index:5}
+.lbl::after{content:"";position:absolute;left:50%;top:100%;margin-left:-4px;border:4px solid transparent;border-top-color:var(--line)}
+@media(max-width:760px){#panel{width:248px}#topbar h1{font-size:.82rem}#topbar .sub{display:none}}
+</style>
+</head>
+<body>
+  <div style="background:#0d1b2e;color:#fff;padding:10px 18px;display:flex;align-items:center;gap:12px;font-size:.9rem;flex-wrap:wrap">
+    <a href="index.html" style="color:#fff;font-weight:800;text-decoration:none;font-size:1.05rem;letter-spacing:-.3px;display:inline-flex;align-items:center;gap:7px"><svg width="22" height="22" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="27" fill="none" stroke="#fff" stroke-width="2"/><path d="M37 9 L23 35 L31 35 L26 55 L42 29 L34 29 L40 9 Z" fill="#f5a623"/></svg>Trafo<span style="color:#f5a623">Path</span></a>
+    <a href="learn.html" style="color:#cbd5e1;text-decoration:none;margin-left:auto">&#8592; Learn hub</a>
+  </div>
+
+<div id="c3d"></div>
+
+<div id="topbar">
+  <div>
+    <h1>Current Transformer — 3D Sourcing Explorer</h1>
+    <div class="sub">Outdoor tank-type HV CT · IEC 61869 · click any part to source it</div>
+  </div>
+  <div class="right">
+    <a href="power3d.html">Power</a>
+    <a href="explorer.html">Distribution</a>
+    <a class="on" href="ct3d.html">CT</a>
+    <a href="components.html">Components</a>
+    <a href="manufacturers.html">Manufacturers</a>
+    <a href="academy.html">Hub</a>
+  </div>
+</div>
+
+<div id="panel">
+  <div class="spec"><b>145 kV</b> outdoor oil-paper CT · ratio 800–400/1 A · classes 0.2s / 5P20 · tank-type primary (Hitachi / Siemens / Arteche market practice)</div>
+
+  <h2>Assembly / Exploded view</h2>
+  <input id="explode" class="sl" type="range" min="0" max="100" value="0">
+  <div class="slrow"><span>assembled</span><span>exploded</span></div>
+
+  <h2>Housing opacity</h2>
+  <input id="tankop" class="sl" type="range" min="0" max="100" value="45">
+  <div class="slrow"><span>see inside</span><span>solid</span></div>
+
+  <h2>Components</h2>
+  <div id="toggles"></div>
+
+  <h2>View</h2>
+  <div class="btnrow">
+    <button id="bRotate">⟳ Auto-rotate</button>
+    <button id="bLabels" class="on">🏷 Labels</button>
+    <button id="bReset">⌂ Reset</button>
+  </div>
+
+  <h2>Selected part — source it</h2>
+  <div id="info"><span class="hint">Click any part of the CT. The panel shows market practice (Hitachi / Siemens / Arteche-class) and where that component can be sourced.</span></div>
+</div>
+
+<div id="help">🖱 drag = orbit · wheel = zoom · click = identify &amp; source<br>This CT is a sourcing map: every assembly links to components, machinery and OEMs.</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const container = document.getElementById('c3d');
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.1;
+container.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+(function () {
+  const cv = document.createElement('canvas'); cv.width = 16; cv.height = 512;
+  const g = cv.getContext('2d');
+  const gr = g.createLinearGradient(0, 0, 0, 512);
+  gr.addColorStop(0, '#27557f'); gr.addColorStop(0.45, '#143049');
+  gr.addColorStop(0.78, '#0c1c30'); gr.addColorStop(1, '#0a1624');
+  g.fillStyle = gr; g.fillRect(0, 0, 16, 512);
+  scene.background = new THREE.CanvasTexture(cv);
+})();
+scene.fog = new THREE.Fog(0x0d1f33, 140, 320);
+
+const camera = new THREE.PerspectiveCamera(46, innerWidth / innerHeight, 0.4, 500);
+scene.add(new THREE.HemisphereLight(0xbcd4ea, 0x16202c, 0.9));
+const sun = new THREE.DirectionalLight(0xffffff, 1.05);
+sun.position.set(60, 90, 50); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048);
+scene.add(sun);
+const fill = new THREE.DirectionalLight(0x88aacc, 0.35); fill.position.set(-50, 30, -40); scene.add(fill);
+const ground = new THREE.Mesh(
+  new THREE.PlaneGeometry(400, 400),
+  new THREE.MeshStandardMaterial({ color: 0x16314a, roughness: 1 })
+);
+ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
+
+const housingMat = new THREE.MeshStandardMaterial({
+  color: 0xd5dde6, metalness: 0.08, roughness: 0.28, transparent: true, opacity: 0.45
+});
+const M = {
+  steel: new THREE.MeshStandardMaterial({ color: 0x7a8796, metalness: 0.85, roughness: 0.35 }),
+  steelDk: new THREE.MeshStandardMaterial({ color: 0x4a5562, metalness: 0.8, roughness: 0.4 }),
+  copper: new THREE.MeshStandardMaterial({ color: 0xb87333, metalness: 0.85, roughness: 0.32 }),
+  copperLite: new THREE.MeshStandardMaterial({ color: 0xd4a574, metalness: 0.7, roughness: 0.35 }),
+  core: new THREE.MeshStandardMaterial({ color: 0x3a4a3a, metalness: 0.4, roughness: 0.55 }),
+  oil: new THREE.MeshStandardMaterial({ color: 0xc9a227, metalness: 0, roughness: 0.2, transparent: true, opacity: 0.35 }),
+  paper: new THREE.MeshStandardMaterial({ color: 0xe8d9a8, metalness: 0, roughness: 0.85, transparent: true, opacity: 0.55 }),
+  box: new THREE.MeshStandardMaterial({ color: 0x2c3a4a, metalness: 0.5, roughness: 0.55 }),
+  red: new THREE.MeshStandardMaterial({ color: 0xc0392b, metalness: 0.3, roughness: 0.5 })
+};
+
+const parts = [];
+const meshIndex = new Map();
+function reg(root, name, desc, explode, toggle) {
+  const p = { root: root, name: name, desc: desc, explode: new THREE.Vector3(explode[0], explode[1], explode[2]), base: root.position.clone(), toggle: toggle };
+  parts.push(p);
+  root.traverse(function (o) {
+    if (o.isMesh) { meshIndex.set(o, p); o.castShadow = true; o.receiveShadow = true; }
+  });
+  return p;
+}
+function mkBox(w, h, d, m) { return new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m); }
+function mkCyl(rt, rb, h, m, seg) { return new THREE.Mesh(new THREE.CylinderGeometry(rt, rb, h, seg || 36), m); }
+function mkTorus(r, t, m, rs, ts) { return new THREE.Mesh(new THREE.TorusGeometry(r, t, rs || 16, ts || 48), m); }
+
+const model = new THREE.Group(); scene.add(model);
+
+/* tank / base */
+(function () {
+  const g = new THREE.Group();
+  const tank = mkCyl(10, 10, 18, M.steelDk); tank.position.y = 9; g.add(tank);
+  const base = mkBox(22, 2, 16, M.steel); base.position.y = 1; g.add(base);
+  [[-8, 5], [8, 5], [-8, -5], [8, -5]].forEach(function (xz) {
+    const f = mkBox(2.2, 1.2, 2.2, M.steel); f.position.set(xz[0], 0.6, xz[1]); g.add(f);
+  });
+  const plate = mkBox(5, 3.2, 0.2, M.steelDk); plate.position.set(0, 8, 10.2); g.add(plate);
+  model.add(g);
+  reg(g, 'CT tank / porcelain',
+    'Oil-filled steel tank and base frame. Outdoor HV CTs (Hitachi Energy, Siemens Energy, Arteche class) carry the active part in mineral oil with a porcelain or composite insulator above.',
+    [0, -10, 0], 'housing');
+})();
+
+/* porcelain housing */
+(function () {
+  const g = new THREE.Group();
+  const stem = mkCyl(5.2, 6.2, 28, housingMat); stem.position.y = 36; g.add(stem);
+  for (let i = 0; i < 10; i++) {
+    const sh = mkTorus(7.2 - i * 0.12, 0.85, housingMat);
+    sh.rotation.x = Math.PI / 2; sh.position.y = 24 + i * 2.6; g.add(sh);
+  }
+  const top = mkCyl(4.5, 4.5, 2.2, M.steel); top.position.y = 51; g.add(top);
+  model.add(g);
+  reg(g, 'CT housing',
+    'Porcelain or composite housing sets outdoor creepage. Pollution/creepage class is a climate-driven sourced spec on Hitachi/Siemens/Arteche outdoor CTs.',
+    [0, 18, 0], 'housing');
+})();
+
+/* insulation */
+(function () {
+  const g = new THREE.Group();
+  const oil = mkCyl(8.5, 8.5, 16, M.oil); oil.position.y = 9; g.add(oil);
+  const paper = mkCyl(6.4, 6.4, 22, M.paper); paper.position.y = 28; g.add(paper);
+  for (let i = 0; i < 4; i++) {
+    const scrMat = M.paper.clone(); scrMat.opacity = 0.35;
+    const scr = mkCyl(5.2 + i * 0.35, 5.2 + i * 0.35, 18 - i * 2, scrMat);
+    scr.position.y = 30; g.add(scr);
+  }
+  model.add(g);
+  reg(g, 'CT oil / resin insulation',
+    'Oil-paper insulation for outdoor HV CTs (or cast resin for indoor MV). Grading screens control the field — same process split Hitachi/Siemens instrument-transformer plants use.',
+    [12, 0, 0], 'insulation');
+})();
+
+/* magnetic core */
+(function () {
+  const g = new THREE.Group();
+  const core = mkTorus(5.5, 1.35, M.core, 18, 64); core.rotation.x = Math.PI / 2; core.position.y = 14; g.add(core);
+  const core2 = mkTorus(5.5, 1.2, M.core, 18, 64); core2.rotation.x = Math.PI / 2; core2.position.y = 17.2; g.add(core2);
+  model.add(g);
+  reg(g, 'CT magnetic core',
+    'Toroidal CRGO or nanocrystalline cores for metering/protection cores. Accuracy class (0.2s, 5P20…) is set here — the magnetic heart of the CT.',
+    [-14, 0, 0], 'core');
+})();
+
+/* secondary */
+(function () {
+  const g = new THREE.Group();
+  const sec = mkTorus(5.5, 0.55, M.copper, 12, 64); sec.rotation.x = Math.PI / 2; sec.position.y = 14; g.add(sec);
+  const sec2 = mkTorus(5.5, 0.5, M.copperLite, 12, 64); sec2.rotation.x = Math.PI / 2; sec2.position.y = 17.2; g.add(sec2);
+  model.add(g);
+  reg(g, 'CT secondary winding',
+    'Multi-ratio secondary windings (1 A / 5 A) with IEC 61869 accuracy classes. Specify ratios, burden (VA) and class when sourcing.',
+    [-16, 4, 0], 'secondary');
+})();
+
+/* primary */
+(function () {
+  const g = new THREE.Group();
+  const bar = mkCyl(1.4, 1.4, 56, M.copper); bar.position.y = 30; g.add(bar);
+  const p1 = mkBox(3.2, 2.2, 6, M.copperLite); p1.position.set(0, 56, 0); g.add(p1);
+  const p2 = mkBox(3.2, 2.2, 6, M.copperLite); p2.position.set(0, 4, 0); g.add(p2);
+  const cap1 = mkCyl(2.2, 2.2, 1.2, M.steel); cap1.position.y = 58; g.add(cap1);
+  const cap2 = mkCyl(2.2, 2.2, 1.2, M.steel); cap2.position.y = 2.2; g.add(cap2);
+  model.add(g);
+  reg(g, 'CT primary',
+    'Primary bar (or wound primary on MV designs). On bushing CTs the bushing stem is the primary — source CT rings by ID/OD and ratio.',
+    [0, 22, 0], 'primary');
+})();
+
+/* terminal box */
+(function () {
+  const g = new THREE.Group();
+  const bx = mkBox(8, 6, 5, M.box); bx.position.set(12, 6, 0); g.add(bx);
+  const door = mkBox(7.2, 5.2, 0.3, M.steelDk); door.position.set(12, 6, 2.7); g.add(door);
+  for (let i = 0; i < 4; i++) {
+    const t = mkCyl(0.35, 0.35, 1.2, M.copper); t.rotation.z = Math.PI / 2; t.position.set(16.2, 4.5 + i * 1.1, 0); g.add(t);
+  }
+  const shortLink = mkBox(1.6, 0.25, 0.25, M.red); shortLink.position.set(16.8, 5.5, 0); g.add(shortLink);
+  model.add(g);
+  reg(g, 'CT secondary terminal box',
+    'Secondary terminal board with mandatory shorting links — a non-negotiable utility safety requirement worldwide.',
+    [14, 0, 0], 'terminals');
+})();
+
+/* toggles */
+const togBox = document.getElementById('toggles');
+[
+  ['housing', 'Housing & tank', '#7a8796'],
+  ['insulation', 'Insulation system', '#c9a227'],
+  ['core', 'Magnetic cores', '#3a4a3a'],
+  ['secondary', 'Secondary windings', '#b87333'],
+  ['primary', 'Primary path', '#d4a574'],
+  ['terminals', 'Terminal box', '#2c3a4a']
+].forEach(function (row) {
+  const l = document.createElement('label'); l.className = 'tgl';
+  l.innerHTML = '<input type="checkbox" data-k="' + row[0] + '" checked><span class="sw" style="background:' + row[2] + '"></span>' + row[1];
+  togBox.appendChild(l);
+});
+function applyToggles() {
+  const on = {};
+  togBox.querySelectorAll('input').forEach(function (inp) { on[inp.dataset.k] = inp.checked; });
+  parts.forEach(function (p) { p.root.visible = !!on[p.toggle]; });
+}
+togBox.addEventListener('change', applyToggles);
+
+const explodeSl = document.getElementById('explode');
+const tankSl = document.getElementById('tankop');
+function applyExplode() {
+  const t = explodeSl.value / 100;
+  parts.forEach(function (p) { p.root.position.copy(p.base).addScaledVector(p.explode, t); });
+}
+explodeSl.addEventListener('input', applyExplode);
+tankSl.addEventListener('input', function () {
+  const o = tankSl.value / 100;
+  housingMat.opacity = Math.max(0.08, o);
+  housingMat.transparent = o < 0.98;
+  housingMat.depthWrite = o > 0.55;
+});
+tankSl.dispatchEvent(new Event('input'));
+
+/* camera */
+let sph = { r: 110, th: 0.85, ph: 1.15 };
+const target = new THREE.Vector3(0, 28, 0);
+function applyCam() {
+  sph.ph = Math.max(0.2, Math.min(1.45, sph.ph));
+  sph.r = Math.max(40, Math.min(220, sph.r));
+  camera.position.set(
+    target.x + sph.r * Math.sin(sph.ph) * Math.sin(sph.th),
+    target.y + sph.r * Math.cos(sph.ph),
+    target.z + sph.r * Math.sin(sph.ph) * Math.cos(sph.th)
+  );
+  camera.lookAt(target);
+}
+applyCam();
+
+let dragging = false, panning = false, moved = 0, lx = 0, ly = 0;
+let autoRotate = false, labelsOn = true;
+const el = renderer.domElement;
+el.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+el.addEventListener('pointerdown', function (e) {
+  dragging = true; moved = 0; panning = (e.button === 2 || e.shiftKey);
+  lx = e.clientX; ly = e.clientY; container.classList.add('dragging');
+});
+el.addEventListener('pointermove', function (e) {
+  if (!dragging) return;
+  const dx = e.clientX - lx, dy = e.clientY - ly; lx = e.clientX; ly = e.clientY;
+  moved += Math.abs(dx) + Math.abs(dy);
+  if (panning) {
+    const s = sph.r / 700;
+    const right = new THREE.Vector3().subVectors(camera.position, target).cross(camera.up).normalize();
+    target.addScaledVector(right, -dx * s); target.y += dy * s;
+  } else { sph.th -= dx * 0.0055; sph.ph -= dy * 0.0055; }
+  applyCam();
+});
+el.addEventListener('pointerup', function (e) {
+  dragging = false; container.classList.remove('dragging');
+  if (moved < 6) pick(e);
+});
+el.addEventListener('wheel', function (e) { e.preventDefault(); sph.r *= (1 + Math.sign(e.deltaY) * 0.09); applyCam(); }, { passive: false });
+
+const ray = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+let selected = null;
+function setEmissive(part, on, col) {
+  col = col || 0x2b6ea8;
+  part.root.traverse(function (o) {
+    if (o.isMesh && o.material && o.material.emissive) {
+      if (on) {
+        o.userData.em = o.material;
+        o.material = o.material.clone();
+        o.material.emissive = new THREE.Color(col);
+        o.material.emissiveIntensity = 0.75;
+      } else if (o.userData.em) {
+        o.material.dispose(); o.material = o.userData.em; delete o.userData.em;
+      }
+    }
+  });
+}
+function selectPart(p) {
+  if (!p) return;
+  if (selected) setEmissive(selected, false);
+  selected = p; setEmissive(p, true);
+  document.getElementById('info').innerHTML = '<b>' + p.name + '</b><br>' + p.desc;
+}
+function pick(e) {
+  const r = el.getBoundingClientRect();
+  mouse.x = ((e.clientX - r.left) / r.width) * 2 - 1;
+  mouse.y = -((e.clientY - r.top) / r.height) * 2 + 1;
+  ray.setFromCamera(mouse, camera);
+  const hits = ray.intersectObjects(model.children, true).filter(function (h) {
+    return h.object.visible && meshIndex.get(h.object) && meshIndex.get(h.object).root.visible;
+  });
+  if (selected) { setEmissive(selected, false); selected = null; }
+  if (hits.length) selectPart(meshIndex.get(hits[0].object));
+  else document.getElementById('info').innerHTML =
+    '<span class="hint">Click any part of the CT to identify it and see where it can be sourced.</span>';
+}
+
+const labelEls = [];
+function makeLabel(part, text, ox, oy, oz) {
+  const e = document.createElement('div'); e.className = 'lbl'; e.textContent = text;
+  e.addEventListener('click', function () { selectPart(part); }); document.body.appendChild(e);
+  labelEls.push({ el: e, part: part, off: new THREE.Vector3(ox, oy, oz) });
+}
+parts.forEach(function (p) { makeLabel(p, p.name.replace(/^CT /, ''), 0, 2, 0); });
+
+document.getElementById('bRotate').onclick = function () {
+  autoRotate = !autoRotate; this.classList.toggle('on', autoRotate);
+};
+document.getElementById('bLabels').onclick = function () {
+  labelsOn = !labelsOn; this.classList.toggle('on', labelsOn);
+};
+document.getElementById('bReset').onclick = function () {
+  sph = { r: 110, th: 0.85, ph: 1.15 }; target.set(0, 28, 0);
+  explodeSl.value = 0; tankSl.value = 45;
+  applyExplode(); tankSl.dispatchEvent(new Event('input')); applyCam();
+};
+
+const v3 = new THREE.Vector3();
+function tick() {
+  requestAnimationFrame(tick);
+  if (autoRotate && !dragging) { sph.th += 0.0035; applyCam(); }
+  renderer.render(scene, camera);
+  labelEls.forEach(function (L) {
+    if (!labelsOn || !L.part.root.visible) { L.el.style.display = 'none'; return; }
+    v3.copy(L.part.root.position).add(L.off);
+    const pr = v3.clone().project(camera);
+    if (pr.z > 1) { L.el.style.display = 'none'; return; }
+    L.el.style.display = 'block';
+    L.el.style.left = ((pr.x + 1) / 2 * innerWidth) + 'px';
+    L.el.style.top = ((-pr.y + 1) / 2 * innerHeight) + 'px';
+  });
+}
+applyToggles(); applyExplode(); tick();
+addEventListener('resize', function () {
+  camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+</script>
+<script src="featured-suppliers.js"></script>
+<script src="components-catalog.js"></script>
+<script src="part-ecosystem.js"></script>
+<script src="payments-config.js"></script>
+<script src="payments.js"></script>
+<script src="component-3d-bridge.js"></script>
+<script>
+(function () {
+  function enrich(p) {
+    if (!p || !window.TPComponent3D) return;
+    TPComponent3D.writeInfo(p.name, p.desc);
+  }
+  var _select = typeof selectPart === 'function' ? selectPart : null;
+  if (_select) selectPart = function (p) { _select(p); enrich(p); };
+  var _pick = typeof pick === 'function' ? pick : null;
+  if (_pick) pick = function (e) { _pick(e); if (typeof selected !== 'undefined' && selected) enrich(selected); };
+})();
+</script>
+</body>
+</html>
