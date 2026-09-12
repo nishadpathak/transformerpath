@@ -142,13 +142,12 @@
     entry({
       id: 'tank', family: 'power',
       match: [
-        'Tank',
-        'Tank, skid base', 'Cover bolting', 'Tank fittings', 'Main tank', 'Base channels',
-        'Tank cover', 'Cover bolting & gasket', 'Base frame', 'under-carriage',
-        'Lifting lugs', 'Rating &', 'Rating plate', 'Drain / sampling',
-        'Base channels + rollers', 'Flanged haulage', 'haulage wheels', 'skid base',
-        'jacking pads', 'Cover bolting & gasket joint', 'Tank fittings —',
-        'Tank cover — hatches', 'hatches & core test link'
+        'Tank, skid base & jacking pads',
+        'Cover bolting & gasket joint',
+        'Ladder & rating plate',
+        'Drain / filter valve',
+        'Haulage wheels / skid rollers',
+        'Tank'
       ],
       title: 'Tank, cover & base',
       marketNote: 'Bell tanks on large Hitachi/Siemens units; corrugated walls on SGB-class distribution. C5-M paint systems common for coastal/Gulf specs.',
@@ -172,7 +171,9 @@
     }),
     entry({
       id: 'oil', family: 'power',
-      match: ['cooling oil', 'Insulating oil', 'Insulating & cooling oil', 'Insulating & cooling'],
+      match: ['cooling oil', 'Insulating oil', 'Insulating & cooling oil', 'Insulating & cooling',
+        'Oil sampling valve', 'Insulating & cooling oil (~60 000 L)'
+      ],
       title: 'Insulating liquid',
       marketNote: 'IEC 60296 mineral oil still dominates; Hitachi/Siemens/SGB increasingly quote natural/synthetic esters for fire-safe and indoor sites.',
       components: [
@@ -333,7 +334,8 @@
       id: 'oil-pumps', family: 'power',
       match: [
         'Oil pumps', 'oil pump', 'OFAF pumps', 'forced-oil pumps',
-        'pumps & valves', 'Oil circulating pumps'
+        'pumps & valves', 'Oil circulating pumps',
+        'Oil flow indicators', 'oil flow'
       ],
       title: 'Forced-oil pumps',
       marketNote: 'OFAF/ODAF duty on large Hitachi/Siemens units: tank-wall or header-mounted pumps with flow indicators, staged by WTI. Not used on small ONAN distribution.',
@@ -485,8 +487,9 @@
     entry({
       id: 'dist-core', family: 'distribution',
       match: [
-        'Core (limbs + bottom yoke)', 'Top yoke + clamping frame',
-        'Distribution core', 'SGB core', 'oil distribution core'
+        'Core — limbs & bottom yoke (with clamping)',
+        'Top yoke, clamping frame & tie rods',
+        'Distribution core'
       ],
       title: 'Distribution magnetic core',
       marketNote: 'SGB-SMIT, Hitachi Energy and Siemens Energy distribution lines use step-lap CRGO (often Hi-B) with single-point earthing — same stacking architecture as power, sized for pad/pole losses and noise.',
@@ -509,7 +512,9 @@
     entry({
       id: 'dist-lv', family: 'distribution',
       match: [
-        'LV windings (inner)', 'Distribution LV', 'foil/layer LV (distribution)'
+        'LV winding (0.4 kV, inner) — foil / helical',
+        'LV winding (0.4 kV',
+        'foil / helical'
       ],
       title: 'Distribution LV winding',
       marketNote: 'Distribution LV is typically layer or foil (Al or Cu) — high current, few turns. SGB/Hitachi/Siemens quote foil increasingly above a few hundred kVA for SC strength.',
@@ -531,7 +536,9 @@
     entry({
       id: 'dist-hv', family: 'distribution',
       match: [
-        'HV windings (outer)', 'Distribution HV', 'layer HV (distribution)'
+        'HV winding (11–33 kV) — layer / disc',
+        'HV winding (11–33 kV)',
+        'layer / disc'
       ],
       title: 'Distribution HV winding',
       marketNote: 'MV distribution HV is usually multi-layer with inter-layer insulation and electrostatic shields as required — SGB/Hitachi/Siemens padmount and unit-substation practice.',
@@ -550,10 +557,31 @@
       sourceHint: 'Often wound in-house by the DT OEM — source conductor + insulation pack if localising.'
     }),
     entry({
+      id: 'dist-barriers', family: 'distribution',
+      match: [
+        'HV–LV insulation barriers (pressboard)',
+        'insulation barriers (pressboard)',
+        'pressboard'
+      ],
+      title: 'Distribution HV–LV barriers',
+      marketNote: 'Pressboard cylinders and washers between LV and HV on oil distribution units — same Weidmann/Oji supply chain as power, thinner builds.',
+      components: [
+        { name: 'Pressboard cylinders / washers', note: 'HV–LV barrier' },
+        { name: 'Oil ducts / spacers', note: 'Axial cooling' }
+      ],
+      machinery: [{ name: 'Insulation kit cut', note: 'Board shop' }],
+      manufacturers: [
+        { name: 'Weidmann / Oji / DuPont Nomex converters', role: 'Board', url: 'components.html#insulation' }
+      ],
+      sourceHint: 'Barrier kits travel with the winding BOM — RFQ with kV class.'
+    }),
+    entry({
       id: 'dist-tank', family: 'distribution',
       match: [
-        'Tank', 'Hermetic tank', 'distribution tank', 'Oil distribution tank',
-        'Cover bolting & gasket joint', 'Base channels + rollers'
+        'Tank, skid base & jacking pads',
+        'Lifting lugs',
+        'Earthing boss / tank earth terminal',
+        'distribution tank'
       ],
       title: 'Distribution tank & base',
       marketNote: 'SGB-class practice: welded mild-steel tank, often hermetic (cover welded) with corrugated walls doing the cooling. Free-breathing units keep a small conservator. C3–C5 paint for coastal/industrial sites.',
@@ -577,7 +605,10 @@
     }),
     entry({
       id: 'dist-oil', family: 'distribution',
-      match: ['Insulating oil', 'Distribution oil', 'hermetic oil fill'],
+      match: [
+        'Insulating & cooling oil (~800–1200 L)',
+        'Insulating & cooling oil'
+      ],
       title: 'Distribution insulating liquid',
       marketNote: 'IEC 60296 mineral oil dominates pad/pole fleets; Hitachi/Siemens/SGB increasingly offer natural esters for indoor / fire-sensitive sites. Hermetic fills are processed and sealed for life.',
       components: [
@@ -597,8 +628,9 @@
     entry({
       id: 'dist-cover-prd', family: 'distribution',
       match: [
-        'Tank cover (+ PRV', 'Tank cover (+ PRV, OTI/WTI pockets)',
-        'Distribution PRV', 'OTI/WTI pockets'
+        'Tank cover with pressure-relief valve (PRV)',
+        'pressure-relief valve (PRV)',
+        'Thermometer pocket (OTI)'
       ],
       title: 'Distribution cover, PRV & pockets',
       marketNote: 'Even hermetic SGB-class tanks carry a PRV and thermometer pockets; free-breathing covers also take bushings and the conservator pipe.',
@@ -615,7 +647,10 @@
     }),
     entry({
       id: 'dist-hv-bushings', family: 'distribution',
-      match: ['HV bushings (3)', 'Distribution HV bushings', 'MV porcelain bushings'],
+      match: [
+        'HV bushings (3) — porcelain / RIP',
+        'HV bushings (3)'
+      ],
       title: 'Distribution HV bushings',
       marketNote: '≤36 kV solid porcelain or epoxy is SGB/Hitachi/Siemens distribution standard; plug-in elbows on many padmounts. Creepage dominates coastal/desert specs.',
       components: [
@@ -634,7 +669,11 @@
     }),
     entry({
       id: 'dist-lv-bushings', family: 'distribution',
-      match: ['LV bushings (4: a-b-c-n)', 'LV bushings (4', 'Distribution LV bushings'],
+      match: [
+        'LV bushings (4 incl. neutral)',
+        'LV cable box / arbor',
+        'LV bushings (4'
+      ],
       title: 'Distribution LV bushings',
       marketNote: 'Four bushings (a-b-c-n) on Dyn11 distribution — high current palms for bus or cable. Epoxy and DIN porcelain dominate SGB-class fleets.',
       components: [
@@ -650,8 +689,10 @@
     entry({
       id: 'dist-conservator', family: 'distribution',
       match: [
-        'Conservator, Buchholz relay & breather',
-        'Distribution conservator', 'free-breathing distribution'
+        'Freestanding conservator (expansion vessel)',
+        'Buchholz relay',
+        'Dehydrating silica-gel breather',
+        'Oil level indicator (MOG / prismatic)'
       ],
       title: 'Distribution conservator (free-breathing)',
       marketNote: 'Free-breathing SGB/Hitachi/Siemens distribution units keep a small conservator + Buchholz + silica-gel breather. Hermetic corrugated designs delete this assembly — confirm which architecture the RFQ wants.',
@@ -669,8 +710,9 @@
     entry({
       id: 'corrugated-tank', family: 'distribution',
       match: [
-        'Corrugated fin walls', 'Corrugated fin', 'ONAN cooling',
-        'corrugated walls', 'fin walls (ONAN'
+        'Radiator fins / tank corrugations (ONAN)',
+        'tank corrugations (ONAN)',
+        'ONAN'
       ],
       title: 'Corrugated fin walls (ONAN)',
       marketNote: 'Defining SGB-class distribution feature: deep corrugated fins are both radiator and expansion volume (ONAN). Hermetic designs use fin elasticity instead of a conservator. ≥1600 kVA often moves to detachable radiators.',
@@ -693,8 +735,8 @@
     entry({
       id: 'dist-oltc', family: 'distribution',
       match: [
-        'On-load tap-changer (OLTC)', 'distribution OLTC', 'ECOTAP',
-        'compact OLTC'
+        'Optional small OLTC pocket (side pocket)',
+        'OLTC pocket'
       ],
       title: 'Distribution OLTC',
       marketNote: 'When LV must track load, SGB/Hitachi/Siemens specify compact OLTCs (often MR ECOTAP or vacuum) — same OEM ecosystem as power, smaller frame. Most padmounts still ship DETC-only.',
@@ -716,8 +758,8 @@
     entry({
       id: 'dist-detc', family: 'distribution',
       match: [
-        'Off-circuit tap-changer', 'DETC', 'de-energised tap',
-        'Off-circuit taps (distribution)', 'tap board (DETC)'
+        'Off-circuit tap-changer (DETC)',
+        'DETC'
       ],
       title: 'Distribution DETC (off-circuit taps)',
       marketNote: 'Default on most SGB/Hitachi/Siemens distribution units: bolted or rotary off-circuit taps (±2×2.5% typical). Must be changed de-energised — cheap, reliable, high volume.',
@@ -735,9 +777,9 @@
     entry({
       id: 'dist-fittings', family: 'distribution',
       match: [
-        'Tank fittings — lugs, rating plate, drain valve, earth pad',
-        'drain valve, earth pad', 'Distribution fittings',
-        'oil sampling valve'
+        'Drain / filter valve',
+        'Oil sampling valve',
+        'Rating / nameplate'
       ],
       title: 'Distribution tank fittings',
       marketNote: 'Lifting lugs, rating plate, drain/filter valve, sampling point and earthing pads are mandatory on SGB-class tanks — even hermetic units keep a sample valve for DGA programmes.',
@@ -758,9 +800,9 @@
     entry({
       id: 'crt-core', family: 'castresin',
       match: [
-        'Core (CRGO, resin-coated)', 'Core (CRGO, CRT', 'CRT core',
-        'Core (CRGO, resin', 'resin-coated)',
-        'Top yoke + clamping frame', 'Top yoke + clamping frame (CRT'
+        'Core — limbs & bottom yoke (CRGO, resin-coated)',
+        'Top yoke, clamping frame & tie rods',
+        'resin-coated'
       ],
       title: 'Cast-resin magnetic core',
       marketNote: 'Siemens GEAFOL, Hitachi RESIBLOC and SGB cast-resin lines use step-lap CRGO with resin/varnish coating (no oil protection) and slightly lower Bm for noise in buildings — same architecture shown here.',
@@ -785,8 +827,7 @@
     entry({
       id: 'crt-lv-foil', family: 'castresin',
       match: [
-        'LV foil windings', 'LV foil', 'LV foil winding (CRT',
-        'Aluminium foil LV', 'foil windings'
+        'LV foil windings'
       ],
       title: 'CRT LV foil winding',
       marketNote: 'Full-height Al or Cu foil with class-F prepreg is the GEAFOL/RESIBLOC/SGB standard LV — each turn spans winding height so axial SC forces self-balance.',
@@ -811,8 +852,8 @@
     entry({
       id: 'crt-hv-coil', family: 'castresin',
       match: [
-        'HV cast-resin coils', 'HV cast-resin', 'cast-resin coils',
-        'epoxy HV', 'vacuum-cast', 'delta links'
+        'HV cast-resin coils (3)',
+        'cast-resin coils'
       ],
       title: 'Vacuum-cast HV epoxy coils',
       marketNote: 'Defining CRT feature: HV winding vacuum-cast in silica-filled glass-epoxy (Siemens GEAFOL / Hitachi RESIBLOC / SGB). Every coil PD-tested (<10 pC). E2/E3 humidity + F1 fire classes are the European market ask.',
@@ -839,8 +880,7 @@
     entry({
       id: 'crt-air-ducts', family: 'castresin',
       match: [
-        'Cooling air ducts', 'LV–HV air duct', 'air ducts (CRT',
-        'axial cooling ducts'
+        'Cooling air ducts'
       ],
       title: 'CRT cooling air ducts',
       marketNote: 'Axial ducts between LV foil and HV cast coil set AN rating; AF fans boost 40–50%. Same duct philosophy across GEAFOL / RESIBLOC / SGB.',
@@ -859,8 +899,8 @@
     entry({
       id: 'crt-fans', family: 'castresin',
       match: [
-        'Cross-flow fans', 'Cross-flow fans (AN', 'AF fans',
-        'fan trays', 'AN → AF'
+        'Cross-flow fans (AN → AF)',
+        'Cross-flow fans'
       ],
       title: 'AF cooling fans',
       marketNote: 'Fan trays under coils add AF rating — staged by PT100/PT1000 relay. Standard option on Siemens/Hitachi/SGB indoor CRTs for peak or emergency load.',
@@ -880,8 +920,7 @@
     entry({
       id: 'crt-sensors', family: 'castresin',
       match: [
-        'PT100 marshalling', 'PT100', 'temperature relay',
-        'LV terminals + PT100', 'thermal sensors'
+        'Winding temperature relay'
       ],
       title: 'CRT thermal sensors & relay',
       marketNote: 'PT100s in LV ducts (3+spare) + temperature relay for alarm/trip/fan control is mandatory practice on GEAFOL/RESIBLOC/SGB indoor units.',
@@ -902,8 +941,8 @@
     entry({
       id: 'crt-taps', family: 'castresin',
       match: [
-        'Off-circuit tap links', 'DETC links', 'tap links (CRT',
-        'HV tap board'
+        'Off-circuit tap links',
+        'HV delta links'
       ],
       title: 'CRT off-circuit taps',
       marketNote: 'Most cast-resin units use bolted off-circuit tap links on the HV coil (±2×2.5% typical). OLTC is rare indoors; Hitachi/Siemens/SGB quote DETC as default.',
@@ -922,8 +961,8 @@
     entry({
       id: 'enclosure-dry', family: 'castresin',
       match: [
-        'Ventilated enclosure', 'Ventilated enclosure (IP', 'enclosure (VPI',
-        'Lifting eyes & rating plate', 'IP21/23/31', 'IP21/23'
+        'Ventilated enclosure (IP21/23/31)',
+        'Ventilated enclosure'
       ],
       title: 'CRT / dry-type enclosure',
       marketNote: 'IP21–IP33 ventilated housings as used on Siemens GEAFOL, Hitachi RESIBLOC and SGB indoor CRTs; IP54 needs derating or forced air.',
@@ -946,8 +985,7 @@
     entry({
       id: 'resilient-pads', family: 'castresin',
       match: [
-        'Resilient coil-support pads', 'Resilient coil-support', 'coil-support pads',
-        'Resilient coil-support pads', 'silicone-rubber'
+        'Resilient coil-support pads'
       ],
       title: 'CRT coil support pads',
       marketNote: 'Allow thermal expansion of cast-resin coils — standard on Hitachi RESIBLOC / Siemens GEAFOL / SGB CRT designs. Missing pads → coil cracking years later.',
@@ -964,8 +1002,7 @@
     entry({
       id: 'crt-terminals', family: 'castresin',
       match: [
-        'HV terminals (CRT', 'LV terminals (CRT', 'cable box (CRT',
-        'busduct flanges', 'LV bus stubs'
+        'HV epoxy terminals'
       ],
       title: 'CRT HV/LV terminations',
       marketNote: 'Top or side HV epoxy terminals and LV bus stubs for busduct/cable — Siemens/Hitachi/SGB package options for indoor switchrooms.',
@@ -985,7 +1022,8 @@
     entry({
       id: 'crt-lv-terminals', family: 'castresin',
       match: [
-        'LV terminals + PT100', 'LV terminals + PT100 marshalling'
+        'LV terminals + PT100 marshalling box',
+        'PT100 marshalling'
       ],
       title: 'CRT LV terminals & sensor box',
       marketNote: 'LV bus stubs exit upward or sideways; the PT100 marshalling box sits beside them on GEAFOL/RESIBLOC/SGB indoor packages.',
@@ -1003,8 +1041,9 @@
     entry({
       id: 'crt-base', family: 'castresin',
       match: [
-        'Base channels + rollers', 'Base channels + rollers (VPI',
-        'CRT base', 'anti-vibration pads'
+        'Base channels & rollers',
+        'Lifting eyes',
+        'Rating plate'
       ],
       title: 'CRT / dry-type base & rollers',
       marketNote: 'Rolled-steel base channels with bi-directional rollers and anti-vibration pads — Siemens GEAFOL / Hitachi RESIBLOC / SGB indoor practice to keep 100 Hz hum out of the building structure.',
@@ -1080,7 +1119,9 @@
     /* ───────── CURRENT TRANSFORMERS ───────── */
     entry({
       id: 'ct-core', family: 'ct',
-      match: ['CT magnetic core', 'Toroidal CT core'],
+      match: [
+        'Magnetic core'
+      ],
       title: 'CT magnetic core',
       marketNote: 'Ring-type bushing CTs and wound CTs use CRGO or nanocrystalline cores — same supply chain Hitachi/Siemens instrument-transformer plants use.',
       components: [
@@ -1099,7 +1140,9 @@
     }),
     entry({
       id: 'ct-secondary', family: 'ct',
-      match: ['CT secondary winding'],
+      match: [
+        'Secondary winding'
+      ],
       title: 'CT secondary winding',
       marketNote: 'Multi-ratio secondaries (1A/5A) with accuracy classes per IEC 61869 — standard utility ask.',
       components: [
@@ -1118,7 +1161,10 @@
     }),
     entry({
       id: 'ct-primary', family: 'ct',
-      match: ['CT primary', 'Primary bar / wound primary'],
+      match: [
+        'Primary bar / winding',
+        'Primary terminals'
+      ],
       title: 'CT primary',
       marketNote: 'Bushing CTs use the bushing stem as primary; wound CTs have an insulated primary winding for MV outdoor tanks.',
       components: [
@@ -1135,7 +1181,10 @@
     }),
     entry({
       id: 'ct-insulation', family: 'ct',
-      match: ['CT insulation', 'CT oil / resin insulation'],
+      match: [
+        'Insulation (oil-paper / cast resin)',
+        'oil-paper / cast resin'
+      ],
       title: 'CT insulation system',
       marketNote: 'Oil-paper for outdoor HV CTs; cast resin for indoor MV — mirrors dry-type vs oil split in transformers.',
       components: [
@@ -1153,7 +1202,12 @@
     }),
     entry({
       id: 'ct-housing', family: 'ct',
-      match: ['CT housing', 'CT tank / porcelain', 'CT tank', 'porcelain'],
+      match: [
+        'Mounting base & oil tank',
+        'Housing / porcelain insulator',
+        'Oil expansion cap / bellows',
+        'Nameplate'
+      ],
       title: 'CT housing & tank',
       marketNote: 'Porcelain or composite housings on outdoor CTs; metal enclosures on indoor bushing-CT junction boxes.',
       components: [
@@ -1172,7 +1226,9 @@
     }),
     entry({
       id: 'ct-terminal-box', family: 'ct',
-      match: ['CT secondary box', 'CT terminal box', 'CT secondary terminal', 'terminal box'],
+      match: [
+        'Secondary terminal box'
+      ],
       title: 'CT secondary terminal box',
       marketNote: 'Must include shorting links — utility safety requirement worldwide.',
       components: [
@@ -1210,7 +1266,9 @@
     }),
     entry({
       id: 'radiator-valves', family: 'power',
-      match: ['Radiator butterfly valves', 'radiator valves', 'butterfly valves'],
+      match: [
+        'Radiator butterfly valves', 'radiator valves', 'butterfly valves'
+      ],
       title: 'Radiator butterfly valves',
       marketNote: 'Tank-wall valves isolate radiator banks for transport and change-out without a full drain.',
       components: [

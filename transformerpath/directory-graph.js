@@ -366,13 +366,18 @@
     var metaBits = [];
     if (item.value) metaBits.push('<span class="val">' + esc(item.value) + '</span>');
     if (item.src) metaBits.push('<span class="src">' + esc(item.src) + '</span>');
+    if (item.url) {
+      metaBits.push(
+        '<a class="plain" href="' +
+          esc(item.url) +
+          '" target="_blank" rel="noopener">source ↗</a>'
+      );
+    }
+    // Title HTML may already contain OEM profile links — do not wrap in another <a>.
     return (
       '<div class="card">' +
-      '<div class="card-title"><a href="' +
-      esc(item.url || '#') +
-      '" target="_blank" rel="noopener">' +
+      '<div class="card-title">' +
       e.titleHtml +
-      '</a>' +
       (item.isNew ? '<span class="new-badge">NEW</span>' : '') +
       '</div>' +
       (e.pillsHtml || e.companyChipsHtml
