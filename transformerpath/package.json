@@ -10,6 +10,7 @@
     "smoke": "node scripts/smoke-part-coverage.js",
     "search": "node scripts/search-index.js",
     "search:smoke": "node scripts/search-smoke.js",
+    "search:precision": "node scripts/check-search-precision.js",
     "health": "node scripts/directory-health.js",
     "gates": "node scripts/gates.js",
     "test": "node scripts/gates.js"

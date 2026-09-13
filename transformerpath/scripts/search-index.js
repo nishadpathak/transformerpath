@@ -62,11 +62,53 @@ const KNOWN_LOCATIONS = [
   'australia', 'africa', 'egypt', 'europe', 'asia', 'gulf', 'americas'
 ];
 
-/** Parse a query into PRODUCT + CAPABILITY + LOCATION + INTENT (§15). */
+// Canonical product/material/component/machinery lexicon. A query term only
+// counts as a category if it appears here; a record only "matches" a category
+// if its own content references it — location alone never establishes a match.
+const CATEGORY_LEXICON = [
+  { surfaces: ['transformerboard', 'pressboard'], canonical: 'transformerboard-pressboard', kind: 'material' },
+  { surfaces: ['ddp'], canonical: 'ddp', kind: 'material' },
+  { surfaces: ['dpe'], canonical: 'dpe', kind: 'material' },
+  { surfaces: ['crepe'], canonical: 'crepe-paper', kind: 'material' },
+  { surfaces: ['ctc', 'continuously transposed'], canonical: 'ctc', kind: 'material' },
+  { surfaces: ['crgo', 'core steel', 'grain oriented'], canonical: 'crgo', kind: 'material' },
+  { surfaces: ['amorphous'], canonical: 'amorphous-metal', kind: 'material' },
+  { surfaces: ['kraft'], canonical: 'kraft-paper', kind: 'material' },
+  { surfaces: ['aramid', 'nomex'], canonical: 'aramid-paper', kind: 'material' },
+  { surfaces: ['densified wood', 'laminated wood'], canonical: 'laminated-densified-wood', kind: 'material' },
+  { surfaces: ['transformer oil', 'insulating oil'], canonical: 'transformer-oil', kind: 'material' },
+  { surfaces: ['natural ester', 'synthetic ester', 'ester'], canonical: 'ester', kind: 'material' },
+  { surfaces: ['oltc', 'on-load tap', 'on load tap'], canonical: 'oltc', kind: 'component' },
+  { surfaces: ['detc', 'de-energized tap', 'off-circuit tap'], canonical: 'detc', kind: 'component' },
+  { surfaces: ['bushing'], canonical: 'bushings', kind: 'component' },
+  { surfaces: ['radiator'], canonical: 'radiators', kind: 'component' },
+  { surfaces: ['buchholz'], canonical: 'buchholz-relays', kind: 'component' },
+  { surfaces: ['conservator'], canonical: 'conservators', kind: 'component' },
+  { surfaces: ['breather'], canonical: 'breathers', kind: 'component' },
+  { surfaces: ['arrester'], canonical: 'surge-arresters', kind: 'component' },
+  { surfaces: ['monitoring', 'online dga', 'dga'], canonical: 'transformer-monitoring', kind: 'component' },
+  { surfaces: ['winding machine', 'foil winding', 'vertical winding', 'horizontal winding'], canonical: 'winding', kind: 'machinery' },
+  { surfaces: ['vpd', 'vacuum pressure drying', 'vapour phase'], canonical: 'vpd', kind: 'machinery' },
+  { surfaces: ['core cutting', 'step-lap', 'step lap'], canonical: 'core-cutting-lines', kind: 'machinery' },
+  { surfaces: ['oil filtration', 'oil filling'], canonical: 'oil-filtration', kind: 'machinery' }
+];
+
+function detectCategories(lower) {
+  const found = [];
+  for (const entry of CATEGORY_LEXICON) {
+    if (entry.surfaces.some((s) => lower.includes(s))) {
+      found.push(entry);
+    }
+  }
+  return found;
+}
+
+/** Parse a query into PRODUCT/CATEGORY + CAPABILITY + LOCATION + INTENT (§15). */
 function parseQuery(q) {
   const lower = String(q || '').toLowerCase();
   const voltages = (lower.match(/\b(\d{2,4})\s*kv\b/g) || []).map((s) => s.replace(/\s*kv/, ''));
-  const location = KNOWN_LOCATIONS.filter((l) => lower.includes(l));
+  const location = KNOWN_LOCATIONS.filter((l) => new RegExp('\\b' + l + '\\b').test(lower));
+  const categories = detectCategories(lower);
   let intent = null;
   for (const term of Object.keys(INTENT_TERMS)) {
     if (new RegExp('\\b' + term + '\\b').test(lower)) {
@@ -74,7 +116,7 @@ function parseQuery(q) {
       break;
     }
   }
-  return { voltages, location, intent };
+  return { voltages, location, intent, categories: categories.map((c) => c.canonical), categoryEntries: categories };
 }
 
 function loadJson(rel) {
@@ -212,37 +254,144 @@ function haystack(rec) {
   return parts.join(' | ').toLowerCase();
 }
 
-/** Returns { total, groups: { company:[], component:[], utility:[] }, byType } */
-function search(query, index) {
-  const idx = index || buildIndex();
-  const tokens = tokenize(query);
-  const scored = [];
-  for (const rec of idx) {
-    if (tokens.length === 0) break;
-    const hay = haystack(rec);
-    let hits = 0;
-    for (const t of tokens) if (hay.includes(t)) hits++;
-    if (hits === 0) continue;
-    const confidence = hits / tokens.length; // 0..1
-    scored.push({ rec, hits, confidence });
+function categoryBlob(rec) {
+  if (rec.type === 'company') {
+    return []
+      .concat(rec.componentCategories || [], rec.capabilities || [], [
+        (rec.transformerTypes || '')
+          .replace(/PT/g, 'power')
+          .replace(/DT/g, 'distribution')
+          .replace(/DRY/g, 'dry-type cast-resin')
+          .replace(/CT/g, 'current')
+      ])
+      .join(' ')
+      .toLowerCase();
   }
-  scored.sort((a, b) => b.confidence - a.confidence || b.hits - a.hits);
-
-  const groups = {};
-  for (const s of scored) {
-    (groups[s.rec.type] ??= []).push(s);
-  }
-  const byType = {};
-  Object.keys(groups).forEach((t) => (byType[t] = groups[t].length));
-  return { query, tokens, parse: parseQuery(query), total: scored.length, groups, byType };
+  if (rec.type === 'component') return [rec.name, rec.category, rec.blurb].join(' ').toLowerCase();
+  return '';
 }
 
-module.exports = { buildIndex, search, tokenize, parseQuery };
+function locationBlob(rec) {
+  return [rec.country, rec.region, rec.city]
+    .concat(rec.plants || [], rec.utilityApprovals || [], rec.capabilities || [])
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase();
+}
+
+function voltageBlob(rec) {
+  return [rec.highestSourcedVoltageEvidence, rec.name, rec.blurb]
+    .concat(rec.capabilities || [])
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase();
+}
+
+function matchCategory(rec, categoryEntries) {
+  const blob = categoryBlob(rec);
+  return categoryEntries.some(
+    (e) => blob.includes(e.canonical) || e.surfaces.some((s) => blob.includes(s))
+  );
+}
+
+function matchLocation(rec, locations) {
+  const blob = locationBlob(rec);
+  return locations.some((l) => new RegExp('\\b' + l + '\\b').test(blob));
+}
+
+function matchVoltage(rec, voltages) {
+  const blob = voltageBlob(rec);
+  return voltages.some((v) => new RegExp('\\b' + v + '\\b').test(blob));
+}
+
+/**
+ * Precision-first search (§15). Category/capability queries return ONLY records
+ * that genuinely match the canonical category/capability; a location term
+ * refines/boosts but never stands in for a category or capability match.
+ * Location-only near-misses on a capability query are separated into
+ * `locationCandidates` (reported, never counted as confident answers).
+ *
+ * Each result carries `relevance`: CATEGORY | CAPABILITY | LOCATION.
+ */
+function search(query, index) {
+  const idx = index || buildIndex();
+  const p = parseQuery(query);
+  const hasCat = p.categoryEntries.length > 0;
+  const hasVolt = p.voltages.length > 0;
+  const hasLoc = p.location.length > 0;
+  const freeTokens = tokenize(query).filter((t) => !/^\d+$/.test(t));
+
+  const scored = [];
+  const locationCandidates = [];
+
+  for (const rec of idx) {
+    const cat = hasCat && matchCategory(rec, p.categoryEntries);
+    const loc = hasLoc && matchLocation(rec, p.location);
+    const volt = hasVolt && matchVoltage(rec, p.voltages);
+    let relevance = null;
+    let confidence = 0;
+
+    if (hasCat) {
+      if (!cat) continue; // precision: exclude non-category records entirely
+      relevance = 'CATEGORY';
+      confidence = 0.85 + (volt ? 0.1 : 0);
+      if (hasLoc) confidence = loc ? confidence + 0.05 : 0.55; // location unknown => partial
+    } else if (hasVolt) {
+      if (volt && (!hasLoc || loc)) {
+        relevance = 'CAPABILITY';
+        confidence = hasLoc ? 0.95 : 0.9;
+      } else if (volt && hasLoc && !loc) {
+        // right capability, wrong location — a candidate, not a confident answer
+        locationCandidates.push({ rec, relevance: 'CAPABILITY_ELSEWHERE', confidence: 0.4 });
+        continue;
+      } else {
+        // capability query with no sourced capability match
+        if (hasLoc && loc) locationCandidates.push({ rec, relevance: 'LOCATION', confidence: 0.4 });
+        continue;
+      }
+    } else if (hasLoc) {
+      if (!loc) continue;
+      relevance = 'LOCATION';
+      confidence = 0.8;
+    } else {
+      // free-text only — precision-first: require ALL terms to be present.
+      if (freeTokens.length === 0) continue;
+      const blob = haystack(rec);
+      const hits = freeTokens.filter((t) => blob.includes(t)).length;
+      if (hits < freeTokens.length) continue;
+      relevance = 'TEXT';
+      confidence = 0.7;
+    }
+
+    scored.push({ rec, relevance, confidence });
+  }
+
+  scored.sort((a, b) => b.confidence - a.confidence);
+  locationCandidates.sort((a, b) => b.confidence - a.confidence);
+
+  const groups = {};
+  for (const s of scored) (groups[s.rec.type] ??= []).push(s);
+  const byType = {};
+  Object.keys(groups).forEach((t) => (byType[t] = groups[t].length));
+
+  return {
+    query,
+    parse: p,
+    total: scored.length,
+    groups,
+    byType,
+    ranked: scored,
+    locationCandidates
+  };
+}
+
+module.exports = { buildIndex, search, tokenize, parseQuery, matchCategory, matchLocation, matchVoltage };
 
 if (require.main === module) {
   const q = process.argv.slice(2).join(' ') || '765 kV';
   const res = search(q);
-  console.log('Query:', q, '| tokens:', res.tokens.join(','), '| total:', res.total, '| byType:', JSON.stringify(res.byType));
+  console.log('Query:', q, '| parse:', JSON.stringify(res.parse.categories) + ' v=' + JSON.stringify(res.parse.voltages) + ' loc=' + JSON.stringify(res.parse.location));
+  console.log('total:', res.total, '| byType:', JSON.stringify(res.byType), '| locationCandidates:', res.locationCandidates.length);
   Object.keys(res.groups).forEach((type) => {
     console.log('\n' + type.toUpperCase());
     res.groups[type].slice(0, 8).forEach((s) => {
@@ -253,7 +402,7 @@ if (require.main === module) {
               .filter(Boolean)
               .join(' · ')
           : r.category || r.country || '';
-      console.log('  [' + (s.confidence * 100).toFixed(0) + '%] ' + (r.displayName || r.name) + (extra ? '  — ' + extra : ''));
+      console.log('  [' + s.relevance + ' ' + (s.confidence * 100).toFixed(0) + '%] ' + (r.displayName || r.name) + (extra ? '  — ' + extra : ''));
     });
   });
 }
