@@ -161,14 +161,14 @@
     intel:     { label:"📰 Daily Intel", on:true, group:"INTELLIGENCE" },
     events:    { label:"📅 Events", on:true, group:"EVENTS & EXHIBITIONS" }
   };
-  let INDEX = null, loading = false;
+  let INDEX = null, loadPromise = null;
 
   function buildIndex(){
-    if(INDEX || loading) return Promise.resolve(INDEX);
-    loading = true;
+    if(INDEX) return Promise.resolve(INDEX);
+    if(loadPromise) return loadPromise;
     document.getElementById('status').textContent = 'Loading canonical industry index…';
     const get = f => fetch(f,{cache:'no-cache'}).then(r=>r.json()).catch(()=>null);
-    return Promise.all([
+    loadPromise = Promise.all([
       get('data/directory-index.json'),
       get('data/projects.json'),
       get('data/tenders.json'),
@@ -298,13 +298,18 @@
       // 4. Labs & Machinery
       if(tl && tl.laboratories) {
         tl.laboratories.forEach(l => {
+          const caps = Array.isArray(l.capabilities)
+            ? l.capabilities
+            : (l.capabilities && typeof l.capabilities === 'object'
+              ? Object.keys(l.capabilities).filter(function(k){ return l.capabilities[k]; })
+              : []);
           ix.push({
             s: 'labs',
             t: l.name,
-            x: [l.country, l.city, l.type, (l.capabilities||[]).join(' ')].join(' '),
+            x: [l.country, l.city, l.type, caps.join(' ')].join(' '),
             href: 'laboratories.html',
-            tag: l.country + ' · Testing Lab',
-            desc: (l.capabilities||[]).slice(0,3).join(' · ') || 'High-Voltage Laboratory'
+            tag: (l.country || '') + ' · Testing Lab',
+            desc: caps.slice(0,3).join(' · ') || 'High-Voltage Laboratory'
           });
         });
       }
@@ -337,9 +342,12 @@
       }
 
       // 6. Intel
-      if(ti) {
+      if(ti && typeof ti === 'object' && !Array.isArray(ti)) {
         Object.keys(ti).forEach(rk => {
-          (ti[rk].items || []).forEach(item => {
+          const bucket = ti[rk];
+          if(!bucket || typeof bucket !== 'object') return;
+          (bucket.items || []).forEach(item => {
+            if(!item || !item.title) return;
             ix.push({
               s: 'intel',
               t: item.title,
@@ -367,10 +375,15 @@
       }
 
       INDEX = ix;
-      loading = false;
       document.getElementById('status').textContent = ix.length + ' verified canonical records indexed.';
       return ix;
+    }).catch(err => {
+      loadPromise = null;
+      document.getElementById('status').textContent = 'Could not load the canonical industry index.';
+      console.error('search index failed', err);
+      return [];
     });
+    return loadPromise;
   }
 
   const fh = document.getElementById('srcFilters');
@@ -397,6 +410,10 @@
     if(q.length < 2) { host.innerHTML = ''; return; }
 
     buildIndex().then(ix => {
+      if(!ix || !ix.length) {
+        if(!document.getElementById('status').textContent) document.getElementById('status').textContent = 'Could not load the canonical industry index.';
+        return;
+      }
       const nq = q.replace(/(\d+)\s*k\s*v/gi, '$1 kv').replace(/(\d+)kv/gi, '$1 kv');
       const words = nq.split(/\s+/).filter(Boolean);
       const kvWant = (nq.match(/(\d+)\s*kv/) || [])[1];

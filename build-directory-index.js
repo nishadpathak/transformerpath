@@ -560,14 +560,24 @@ function buildMedia(m) {
   };
 }
 
+function countryKey(c) {
+  const s = String(c || '').toLowerCase().trim();
+  if (s === 'usa' || s === 'us' || s === 'united states of america') return 'united states';
+  if (s === 'uae' || s === 'u.a.e.') return 'united arab emirates';
+  if (s === 'uk' || s === 'great britain') return 'united kingdom';
+  if (s === 'brasil') return 'brazil';
+  return s;
+}
+
 function mergeFactories(a, b) {
   const out = [];
   const seen = new Set();
   (a || []).concat(b || []).forEach((f) => {
-    const k = String(f.city || '').toLowerCase().split(',')[0].trim() + '|' + String(f.country || '').toLowerCase();
+    const cityHead = String(f.city || '').toLowerCase().split(',')[0].trim();
+    const k = cityHead + '|' + countryKey(f.country);
     if (!k || k === '|') return;
     if (seen.has(k)) {
-      const dest = out.find((x) => String(x.city || '').toLowerCase().split(',')[0].trim() + '|' + String(x.country || '').toLowerCase() === k);
+      const dest = out.find((x) => String(x.city || '').toLowerCase().split(',')[0].trim() + '|' + countryKey(x.country) === k);
       if (dest && f.produces && !dest.produces) dest.produces = f.produces;
       return;
     }

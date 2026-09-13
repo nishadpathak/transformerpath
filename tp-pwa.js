@@ -113,6 +113,19 @@
     iosHint();
   });
 
+  var mq = window.matchMedia('(display-mode: standalone)');
+  function onStandaloneChange() {
+    if (mq.matches) {
+      var hint = document.getElementById('tpIosHint');
+      if (hint) hint.remove();
+      var install = document.getElementById('tpInstall');
+      if (install) install.remove();
+      ready(bottomNav);
+    }
+  }
+  if (mq.addEventListener) mq.addEventListener('change', onStandaloneChange);
+  else if (mq.addListener) mq.addListener(onStandaloneChange);
+
   var deferredPrompt = null;
   window.addEventListener('beforeinstallprompt', function (e) {
     e.preventDefault();

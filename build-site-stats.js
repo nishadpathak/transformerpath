@@ -116,7 +116,7 @@ const current = {
   manufacturers: makers || num(prev.manufacturers, 0),
   factories: factoryCount,
   facilityRecords: CANON_FACILITIES.length,
-  factoriesNote: 'Sourced or multi-site plant records only. Not a 1:1 clone of the manufacturer census.',
+  factoriesNote: 'Sourced plant records only (produces, source_url, or independently sourced). Not a 1:1 clone of the manufacturer census.',
   capabilities: totalCapabilities || num(prev.capabilities, intelCapabilityCount),
   manufacturingCountries: mkgCountries || num(prev.manufacturingCountries, 0),
   dataCompleteness: avgCompleteness || 73,

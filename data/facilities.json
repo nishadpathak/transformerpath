@@ -1,9 +1,9 @@
 {
   "$schema": "https://transformerpath.com/facilities.schema.json",
-  "generated_at": "2026-09-13T06:47:37.638Z",
+  "generated_at": "2026-09-13T06:53:11.263Z",
   "count": 891,
-  "public_count": 239,
-  "note": "count = every explicit plant record (census city or sourced). public_count = plants with sourced evidence or belonging to a multi-site company. HQ-clone facilities are not created.",
+  "public_count": 173,
+  "note": "count = every explicit plant record (census city or sourced). public_count = plants with sourced evidence (produces, source_url, or INDEPENDENTLY_SOURCED). HQ-clone facilities are not created.",
   "facilities": [
     {
       "id": "fac:a-plus-power-solution:metro-manila",
@@ -2025,7 +2025,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER"
@@ -3470,7 +3470,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -3501,7 +3501,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -3875,7 +3875,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -3906,7 +3906,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER"
@@ -5306,7 +5306,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -5400,7 +5400,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER"
@@ -5430,7 +5430,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -6048,7 +6048,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_DISTRIBUTION",
@@ -6079,7 +6079,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -6972,7 +6972,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -7003,7 +7003,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -7174,7 +7174,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -7401,7 +7401,7 @@
       "region": "Europe",
       "status": "UNCLEAR",
       "claim_type": "INDEPENDENTLY_SOURCED",
-      "produces": "",
+      "produces": "HVDC converter transformers",
       "public_count": true,
       "capabilities": {
         "transformer_types": [
@@ -7440,7 +7440,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER"
@@ -7469,7 +7469,7 @@
       "region": "Europe",
       "status": "UNCLEAR",
       "claim_type": "INDEPENDENTLY_SOURCED",
-      "produces": "",
+      "produces": "HVDC converter transformers",
       "public_count": true,
       "capabilities": {
         "transformer_types": [
@@ -7500,7 +7500,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER"
@@ -7766,7 +7766,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_DISTRIBUTION",
@@ -7797,7 +7797,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_DISTRIBUTION",
@@ -8535,7 +8535,7 @@
       "region": "North America",
       "status": "UNCLEAR",
       "claim_type": "",
-      "produces": "",
+      "produces": "power transformers (2nd 765 kV-class plant groundbroken 2026)",
       "public_count": true,
       "capabilities": {
         "transformer_types": [
@@ -9120,7 +9120,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -9151,7 +9151,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -9183,7 +9183,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER"
@@ -9213,7 +9213,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER"
@@ -9243,7 +9243,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER"
@@ -9303,7 +9303,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER"
@@ -9333,7 +9333,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -9364,7 +9364,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -9395,7 +9395,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER"
@@ -9425,7 +9425,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER"
@@ -9485,7 +9485,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER"
@@ -9515,7 +9515,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -9546,7 +9546,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER"
@@ -9576,7 +9576,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -10010,7 +10010,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -10088,7 +10088,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -10430,7 +10430,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -10506,7 +10506,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -10847,7 +10847,7 @@
       "region": "Europe",
       "status": "UNCLEAR",
       "claim_type": "INDEPENDENTLY_SOURCED",
-      "produces": "",
+      "produces": "transformers",
       "public_count": true,
       "capabilities": {
         "transformer_types": [
@@ -10924,7 +10924,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -11270,7 +11270,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -11501,7 +11501,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -11618,7 +11618,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER"
@@ -11877,7 +11877,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -12072,7 +12072,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -12414,7 +12414,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -12528,7 +12528,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER"
@@ -12786,7 +12786,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -13090,7 +13090,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -13321,7 +13321,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -13498,7 +13498,7 @@
       "region": "North America",
       "status": "UNCLEAR",
       "claim_type": "INDEPENDENTLY_SOURCED",
-      "produces": "",
+      "produces": "765 kV UHV transformers (only US facility)",
       "public_count": true,
       "capabilities": {
         "transformer_types": [
@@ -16573,7 +16573,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_DISTRIBUTION"
@@ -16603,7 +16603,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -17497,7 +17497,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -19009,7 +19009,7 @@
       "region": "North America",
       "status": "UNCLEAR",
       "claim_type": "INDEPENDENTLY_SOURCED",
-      "produces": "",
+      "produces": "power transformers",
       "public_count": true,
       "capabilities": {
         "transformer_types": [
@@ -20955,7 +20955,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER"
@@ -20985,7 +20985,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_DISTRIBUTION"
@@ -21015,7 +21015,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_DISTRIBUTION",
@@ -21046,7 +21046,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -21734,7 +21734,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER"
@@ -21764,7 +21764,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER"
@@ -21928,7 +21928,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER"
@@ -21958,7 +21958,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER"
@@ -22098,7 +22098,7 @@
       "region": "Europe",
       "status": "UNCLEAR",
       "claim_type": "INDEPENDENTLY_SOURCED",
-      "produces": "",
+      "produces": "phase-shifting transformers",
       "public_count": true,
       "capabilities": {
         "transformer_types": [
@@ -22136,7 +22136,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -22321,7 +22321,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER"
@@ -22678,7 +22678,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -23762,7 +23762,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_DISTRIBUTION"
@@ -23792,7 +23792,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_DISTRIBUTION"
@@ -23885,7 +23885,7 @@
       "region": "East Asia",
       "status": "UNCLEAR",
       "claim_type": "",
-      "produces": "",
+      "produces": "transformers",
       "public_count": true,
       "capabilities": {
         "transformer_types": [
@@ -24243,7 +24243,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_DISTRIBUTION",
@@ -24274,7 +24274,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_DISTRIBUTION",
@@ -25991,7 +25991,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -27390,7 +27390,7 @@
       "region": "North America",
       "status": "UNCLEAR",
       "claim_type": "INDEPENDENTLY_SOURCED",
-      "produces": "",
+      "produces": "transformers (138-230 kV)",
       "public_count": true,
       "capabilities": {
         "transformer_types": [
@@ -27685,7 +27685,7 @@
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
-      "public_count": true,
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",

@@ -255,9 +255,13 @@ function addFacility(opts) {
     const existing = facilitiesList.find((f) => f.id === facId);
     if (existing && opts.produces && !existing.capabilities.produces) {
       existing.capabilities.produces = opts.produces;
+      if (!existing.produces) existing.produces = opts.produces;
     }
+    if (existing && opts.source_url && !existing.source_url) existing.source_url = opts.source_url;
     if (existing && opts.claim_type === 'INDEPENDENTLY_SOURCED') {
       existing.claim_type = 'INDEPENDENTLY_SOURCED';
+      existing.public_count = true;
+    } else if (existing && opts.public_count) {
       existing.public_count = true;
     }
     return existing;
@@ -357,17 +361,10 @@ INTEL.forEach((c) => {
   });
 });
 
-// A plant on a multi-site company is an explicit facility even if the census
-// row was only a city listing (Prolec Shreveport next to sourced Waukesha).
-const facByCompany = {};
-facilitiesList.forEach((f) => {
-  (facByCompany[f.company_id] = facByCompany[f.company_id] || []).push(f);
-});
-Object.keys(facByCompany).forEach((id) => {
-  const group = facByCompany[id];
-  if (group.length < 2) return;
-  group.forEach((f) => { if (f.city) f.public_count = true; });
-});
+// Multi-site city listings stay in facilities.json as plant records, but they
+// are not added to the public "sourced plants" counter. Only independently
+// sourced / produces / source_url evidence is counted (Prolec's five plants
+// already carry that evidence; unsourced HQ-city clones do not).
 
 // ── 3. Finalize Companies List ──────────────────────────────────────────────
 const distinctCompanies = Array.from(new Set(companyList)).map((co) => {
@@ -397,7 +394,7 @@ const facilitiesPayload = {
   generated_at: new Date().toISOString(),
   count: facilitiesList.length,
   public_count: publicFacilities.length,
-  note: 'count = every explicit plant record (census city or sourced). public_count = plants with sourced evidence or belonging to a multi-site company. HQ-clone facilities are not created.',
+  note: 'count = every explicit plant record (census city or sourced). public_count = plants with sourced evidence (produces, source_url, or INDEPENDENTLY_SOURCED). HQ-clone facilities are not created.',
   facilities: facilitiesList
 };
 

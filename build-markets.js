@@ -613,7 +613,7 @@ function marketPage(m) {
     '<p class="lead">' + esc(m.blurb) + '</p>' +
     '<div class="stats">' +
     '<div class="s"><b>' + mk.length + '</b><span>manufacturers tracked</span></div>' +
-    '<div class="s"><b>' + facs.length + '</b><span>plant facilities</span></div>' +
+    '<div class="s"><b>' + facs.length + '</b><span>sourced plants</span></div>' +
     '<div class="s"><b>' + utl.length + '</b><span>grid operators</span></div>' +
     '<div class="s"><b>' + (g ? esc(g.freq) : '-') + ' Hz</b><span>' + esc((g && g.sync) || 'grid frequency') + '</span></div>' +
     '<div class="s"><b>' + tenders.length + '</b><span>active tenders</span></div>' +
