@@ -59,12 +59,13 @@
 /* verified badge + tiers */
 .v-badge { display:inline-flex; align-items:center; gap:3px; background:#dcfce7; color:#166534; font-size:.62rem; font-weight:800; text-transform:uppercase; letter-spacing:.4px; padding:2px 7px; border-radius:999px; margin-left:6px; }
 .v-badge.pro { background:var(--amber); color:var(--navy); }
+.v-badge.claimed { background:#e0f2fe; color:#075985; }
 .mk-row a.prof { color:var(--ink); font-weight:600; white-space:nowrap; }
 .mk-row a.prof:hover { color:var(--accent); }
 .tier-legend { display:flex; gap:14px; flex-wrap:wrap; align-items:center; justify-content:center; font-size:.78rem; color:var(--muted); margin:4px 0 18px; }
 .tier-legend .lg { display:inline-flex; align-items:center; gap:5px; }
 .tier-legend .dot { font-size:.6rem; font-weight:800; padding:2px 7px; border-radius:999px; }
-.tier-legend .d-L { background:#f1f5f9; color:#475569; } .tier-legend .d-V { background:#dcfce7; color:#166534; } .tier-legend .d-P { background:var(--amber); color:var(--navy); }
+.tier-legend .d-L { background:#f1f5f9; color:#475569; } .tier-legend .d-C { background:#e0f2fe; color:#075985; } .tier-legend .d-V { background:#dcfce7; color:#166534; } .tier-legend .d-P { background:var(--amber); color:var(--navy); }
 .tier-legend a { color:var(--accent); font-weight:600; text-decoration:none; }
 /* list-your-company CTA */
 .list-cta { background:linear-gradient(135deg,var(--navy),#1b3a5c); color:#fff; border-radius:16px; padding:28px 30px; margin-top:40px; text-align:center; }
@@ -159,15 +160,16 @@
 
     <div class="tier-legend">
       <span class="lg"><span class="dot d-L">Listed</span> public-source entry</span>
-      <span class="lg"><span class="dot d-V">✓ Verified</span> company-confirmed</span>
-      <span class="lg"><span class="dot d-P">★ Pro Verified</span> credentials reviewed</span>
+      <span class="lg"><span class="dot d-C">Claimed</span> controlled by the company</span>
+      <span class="lg"><span class="dot d-V">✓ Verified</span> company identity &amp; profile reviewed</span>
+      <span class="lg"><span class="dot d-P">★ Supplier Pro</span> paid commercial plan</span>
       <a href="verified-standards.html">How verification works →</a>
     </div>
 
     <div id="board"></div>
 
     <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:20px">
-      PT = Power Transformers · DT = Distribution Transformers · DRY = Dry-type / Cast Resin. Listed entries are compiled from public sources; <a href="verified-standards.html" style="color:var(--accent);font-weight:600">Verified &amp; Pro Verified</a> entries are confirmed by the company. Verify capability before commercial decisions.
+      PT = Power Transformers · DT = Distribution Transformers · DRY = Dry-type / Cast Resin. Listed entries are compiled from public sources; <a href="verified-standards.html" style="color:var(--accent);font-weight:600">Verified</a> entries have company-confirmed identity and profile, and Supplier Pro is a paid commercial plan (not a higher verification level). Verify capability before commercial decisions.
     </p>
 
     <!-- List / claim your company -->
@@ -224,8 +226,8 @@ async function loadData() {
 
 function tpills(types){ if(!types) return ''; return types.split(',').map(t=>t.trim()).filter(Boolean).map(t=>`<span class="tpill t-${t}">${TNAME[t]||t}</span>`).join(''); }
 // A maker tuple is [name, city, website, types, tierFlag?, established?].
-// m[4]: 'P' = Pro Verified, 'V' = Verified, else Listed. m[5]: established year (optional).
-function vbadge(m){ if(m[4]==='P') return '<span class="v-badge pro">★ Pro Verified</span>'; if(m[4]==='V') return '<span class="v-badge">✓ Verified</span>'; return ''; }
+// m[4]: 'P' = Supplier Pro (paid), 'V' = Verified, 'C' = Claimed, else Listed. m[5]: established year (optional).
+function vbadge(m){ if(m[4]==='P') return '<span class="v-badge pro">★ Supplier Pro</span>'; if(m[4]==='V') return '<span class="v-badge">✓ Verified</span>'; if(m[4]==='C') return '<span class="v-badge claimed">Claimed</span>'; return ''; }
 
 // Category browse tiles (count makers offering each transformer type)
 const CATS=[{k:'PT',ico:'⚡',t:'Power Transformers',d:'HV / EHV power units'},{k:'DT',ico:'🔌',t:'Distribution',d:'MV/LV distribution'},{k:'DRY',ico:'🌀',t:'Dry-type / Cast Resin',d:'Cast-resin & VPI'}];
@@ -256,7 +258,7 @@ function render(){
     if(ty) makers=makers.filter(m=>/^Served by/i.test(m[0]) ? false : (m[3]||'').split(',').map(x=>x.trim()).includes(ty));
     if(q) makers=makers.filter(m=>(m[0]+' '+(m[1]||'')+' '+c.country).toLowerCase().includes(q));
     return {...c, makers};
-  }).filter(c=>{ if(r&&c.region!==r) return false; return c.makers.length>0; });
+  }).filter(c=>{ if(r&&c.region!==r) return false; return c.makers.some(m=>!/^Served by/i.test(m[0])); });
   const groups={}; list.forEach(c=>{(groups[c.region]??=[]).push(c);});
   const order=regions.filter(rg=>groups[rg]);
   document.getElementById('board').innerHTML=order.map(region=>
