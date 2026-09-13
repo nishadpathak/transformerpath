@@ -11,12 +11,12 @@
 <meta name="theme-color" content="#0d1b2e">
 <meta name="description" content="An analytical transformer design workspace (BETA / engineering review) with a leakage-field solver; first-pass core, turns and conductor sizing runs analytically. Outputs are analytical estimates — verify against current standards and a qualified design engineer before use.">
 <link rel="canonical" href="https://transformerpath.com/calculator.html">
-<link rel="stylesheet" href="tp-nav.css?v=13">
+<link rel="stylesheet" href="tp-nav.css?v=14">
 <link rel="stylesheet" href="tp-theme.css?v=6">
-<link rel="stylesheet" href="tp-feedback.css?v=13">
+<link rel="stylesheet" href="tp-feedback.css?v=14">
 <script src="fem-leakage.js?v=1" defer></script>
-<script src="analytics.js?v=6" defer></script>
-<script src="course-gate.js?v=6"></script>
+<script src="analytics.js?v=7" defer></script>
+<script src="course-gate.js?v=7"></script>
 <meta property="og:title" content="Transformer Design Calculator — Distribution | Power | Cast Resin">
 <meta property="og:description" content="Analytical transformer design workspace (BETA / engineering review) with a leakage-field solver; first-pass core, turns and conductor sizing runs analytically. Outputs are analytical estimates — verify before use.">
 <meta property="og:url" content="https://transformerpath.com/calculator.html">
@@ -193,9 +193,9 @@
       themeToggle.textContent = isDark ? '☀️' : '🌙';
     }
   </script>
-  <script src="tp-nav.js?v=6" defer></script>
+  <script src="tp-nav.js?v=7" defer></script>
+  <script src="tp-pwa.js?v=7" defer></script>
 </header>
-
 <div class="calc-header">
   <div class="wrap" style="padding:0">
     <h1>Transformer Design &amp; Calculation Workbench</h1>
@@ -211,6 +211,18 @@
   <div class="cols">
     <!-- ============ INPUTS ============ -->
     <div class="inputs-col">
+      
+      <div class="card" style="background:linear-gradient(180deg,#14253d,#0d1b2e);border:1px solid #234268">
+        <h2 style="color:var(--amber);border-bottom:1px solid rgba(255,255,255,.1)">⚡ Design Actions &amp; Portability <span class="tag">JSON / RFQ / MD</span></h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px">
+          <button class="b2" id="btn_save_json" onclick="exportDesignJSON()" style="font-size:12px;padding:8px 6px">💾 Save (.json)</button>
+          <button class="b2" id="btn_load_json" onclick="document.getElementById('file_import_json').click()" style="font-size:12px;padding:8px 6px">📂 Load (.json)</button>
+          <input type="file" id="file_import_json" style="display:none" accept=".json" onchange="importDesignJSON(event)">
+          <button class="b1" id="btn_push_rfq" onclick="pushToRFQ()" style="font-size:12px;padding:8px 6px;grid-column:span 2;background:#f5a623;color:#0d1b2e;font-weight:800">⚡ Push to RFQ Schedule →</button>
+          <button class="b2" id="btn_copy_md" onclick="copyDesignMarkdown()" style="font-size:12px;padding:8px 6px;grid-column:span 2">📋 Copy Full Spec (MD)</button>
+        </div>
+      </div>
+
       <div class="card">
         <h2>1 · Specification</h2>
         <div class="typesel" id="typesel">
@@ -231,6 +243,49 @@
           <option value="jis">JIS C 4304 (Japan, Top Runner)</option>
           <option value="as">AS/NZS 60076 + MEPS (AU/NZ)</option>
         </select>
+        
+        <div class="row2">
+          <div><label>Dielectric fluid</label>
+            <select id="fluid" onchange="calc()">
+              <option value="mineral" selected>Mineral Oil (IEC 60296)</option>
+              <option value="synthetic_ester">Synthetic Ester (IEC 61099)</option>
+              <option value="natural_ester">Natural Ester / FR3 (IEC 62770)</option>
+              <option value="silicone">Silicone Fluid (IEC 60836)</option>
+            </select></div>
+          <div><label>Insulation system</label>
+            <select id="insclass" onchange="calc()">
+              <option value="kraft" selected>Kraft Paper (Class A 105°C)</option>
+              <option value="tuk">Thermally Upgraded (TUK 120°C)</option>
+              <option value="nomex">Nomex/Aramid Hybrid (Class F/H)</option>
+            </select></div>
+        </div>
+        <div class="row2">
+          <div><label>Harmonic load profile</label>
+            <select id="harmonic_profile" onchange="calc()">
+              <option value="linear" selected>Standard Grid Load (K=1.0)</option>
+              <option value="solar">Solar PV Inverter (K=4.0)</option>
+              <option value="wind">Wind Converter (K=9.0)</option>
+              <option value="datacenter">Data Center / UPS (K=13.0)</option>
+              <option value="vfd">Industrial / VFD Drive (K=20.0)</option>
+            </select></div>
+          <div><label>Loss capitalisation preset</label>
+            <select id="tco_preset" onchange="applyTcoPreset()">
+              <option value="iec" selected>IEC Europe (A=$6500, B=$1800)</option>
+              <option value="ieee">US Utility / IEEE (A=$8000, B=$2500)</option>
+              <option value="gcc">GCC / DEWA / SEC (A=$5000, B=$1200)</option>
+              <option value="india">India DISCOM (A=$3500, B=$1050)</option>
+              <option value="custom">Custom A &amp; B Factors</option>
+            </select></div>
+        </div>
+        <div class="row2">
+          <div><label>Factor A ($/kW No-load)</label><input id="cost_a" type="number" value="6500" step="100" oninput="calc()"></div>
+          <div><label>Factor B ($/kW Load-loss)</label><input id="cost_b" type="number" value="1800" step="50" oninput="calc()"></div>
+        </div>
+        <div class="row2">
+          <div><label>Base Price / CAPEX ($)</label><input id="capex_base" type="number" value="45000" step="1000" oninput="calc()"></div>
+          <div><label>TOC Horizon (years)</label><select id="toc_years" onchange="calc()"><option value="25">25 years</option><option value="30" selected>30 years</option></select></div>
+        </div>
+
         <div class="row2">
           <div><label id="ratlbl">Rating (kVA)</label><input id="skva" type="number" value="1000"></div>
           <div><label>Frequency (Hz)</label><select id="freq"><option>50</option><option>60</option></select></div>
@@ -494,6 +549,31 @@
           no individual conductors, no eddy or proximity effects, no core saturation.
         </div>
       </div>
+
+      <div class="card">
+        <h2>17 · Total Owning Cost (TOC / TCO) &amp; Loss Capitalisation <span class="tag">IEC / IEEE / utility formulas</span></h2>
+        <div class="table-wrap"><table class="res" id="t_toc"></table></div>
+        <div class="note" style="margin-top:10px"><b>Formula:</b> $\text{TOC} = \text{CAPEX} + (A \times P_0) + (B \times P_k)$. A factor capitalises continuous no-load losses across the operational lifetime (8,760 h/year); B factor capitalises load-dependent copper losses based on expected load profile and loss factor.</div>
+      </div>
+
+      <div class="card">
+        <h2>18 · Dielectric Fluid &amp; High-Temp Insulation <span class="tag">IEC 60076-14 / IEC 62770</span></h2>
+        <div class="table-wrap"><table class="res" id="t_fluid"></table></div>
+        <div class="note" style="margin-top:10px"><b>Standards reference:</b> IEC 60076-14 governs liquid-immersed transformers using high-temperature insulation materials and ester fluids. Natural and synthetic esters provide K-class fire safety (&gt;300 °C fire point per IEC 61099/62770) allowing reduced substation clearances under NFPA 850 / IEC 61936-1.</div>
+      </div>
+
+      <div class="card">
+        <h2>19 · Acoustic Noise &amp; Sound Power Level <span class="tag">IEC 60076-10 / NEMA TR-1</span></h2>
+        <div class="table-wrap"><table class="res" id="t_noise"></table></div>
+        <div class="note" style="margin-top:10px"><b>Method:</b> Core magnetostriction sound power $L_{WA} \approx 45 + 10\log_{10}(W_{\text{core}}) + 20\log_{10}(B_m/1.7) + \Delta L_{\text{fans}}$. Sound pressure $L_p$ is calculated over the measurement surface contour at 1 m/2 m distance per IEC 60076-10.</div>
+      </div>
+
+      <div class="card">
+        <h2>20 · Harmonic Loading, K-Factor &amp; Inverter Derating <span class="tag">IEEE C57.110 / IEC 61378-1</span></h2>
+        <div class="table-wrap"><table class="res" id="t_harmonic"></table></div>
+        <div class="note" style="margin-top:10px"><b>Method:</b> Harmonic currents from solar inverters, wind converters and data center UPS rectifiers increase winding eddy-current losses ($P_{\text{EC}} \propto h^2$). Harmonic Loss Factor $F_{\text{HL}}$ evaluates maximum permissible continuous loading to prevent premature insulation thermal degradation.</div>
+      </div>
+
       <footer id="foot">
         <b>Method &amp; validity.</b> Classic core-type design chain: volts/turn E<sub>t</sub>=K√S → net core section A<sub>i</sub>=E<sub>t</sub>/4.44·f·B<sub>m</sub> →
         turns from phase voltages → conductors from current density → leakage reactance by the ampere-turn / duct
@@ -1073,7 +1153,9 @@ function calc(){
   }
   renderBOM(r);
   drawSketch(r); drawEff(r); drawCore(r); drawVec(r); drawRatingPlate(r); drawImpulse(r);
-  drawLeakage(r); drawImpulseTD(r);
+  drawLeakage(r);
+  calcExtendedModules(r);
+ drawImpulseTD(r);
 
   const chk=[];
   chk.push(r.Kw>0.45?"⚠ window fill > 0.45 — congested, increase h/d":"✓ window fill OK");
@@ -2215,6 +2297,349 @@ function downloadPDF(){
   document.body.appendChild(a);a.click();
   setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},2000);
 }
+
+/* ============================================================================
+ * MODULES 17 - 21: TOC, FLUID, NOISE, HARMONICS, EXPORTS
+ * ========================================================================== */
+
+function applyTcoPreset() {
+  const p = $('tco_preset').value;
+  if (p === 'iec') { $('cost_a').value = 6500; $('cost_b').value = 1800; }
+  else if (p === 'ieee') { $('cost_a').value = 8000; $('cost_b').value = 2500; }
+  else if (p === 'gcc') { $('cost_a').value = 5000; $('cost_b').value = 1200; }
+  else if (p === 'india') { $('cost_a').value = 3500; $('cost_b').value = 1050; }
+  calc();
+}
+
+function calcExtendedModules(r) {
+  if (!r) return;
+
+  // --- 17. TOC / TCO Calculation ---
+  const costA = parseFloat($('cost_a').value) || 6500;
+  const costB = parseFloat($('cost_b').value) || 1800;
+  const capex = parseFloat($('capex_base').value) || (r.P0 * 5000 + r.Pk * 800 + 20000);
+  const p0_kW = (r.P0 || 0) / 1000;
+  const pk_kW = (r.Pk || 0) / 1000;
+  const capP0 = p0_kW * costA;
+  const capPk = pk_kW * costB;
+  const totalCapLosses = capP0 + capPk;
+  const tocTotal = capex + totalCapLosses;
+  const tocYears = parseInt($('toc_years').value, 10) || 30;
+
+  let tocHtml = `
+    <tr><td>Base purchase CAPEX estimate</td><td>${fmt(capex, 0)}</td></tr>
+    <tr><td>No-load loss capitalisation (A = ${fmt(costA, 0)}/kW)</td><td>${fmt(capP0, 0)}</td></tr>
+    <tr><td>Load loss capitalisation (B = ${fmt(costB, 0)}/kW)</td><td>${fmt(capPk, 0)}</td></tr>
+    <tr class="hl"><td>Total Capitalised Losses</td><td>${fmt(totalCapLosses, 0)}</td></tr>
+    <tr class="hl" style="color:var(--amber)"><td>Total Owning Cost (TOC, ${tocYears}-year horizon)</td><td>${fmt(tocTotal, 0)}</td></tr>
+    <tr><td>Capitalised Losses / CAPEX Ratio</td><td>${fmt((totalCapLosses / (capex || 1)) * 100, 1)} %</td></tr>
+  `;
+  const elToc = $('t_toc');
+  if (elToc) elToc.innerHTML = tocHtml;
+
+  // --- 18. Dielectric Fluid & High-Temp Insulation ---
+  const fluidType = $('fluid').value;
+  const insType = $('insclass').value;
+  
+  let fluidData = {
+    name: "Uninhibited Mineral Oil", std: "IEC 60296", flash: "145 °C", fire: "170 °C",
+    kClass: "No (Class O1)", visc: "9.5 mm²/s", radFactor: 1.00,
+    topRise: 60, wdgRise: 65, hotSpot: 78, fireClearance: "7.5 m / fire barrier required"
+  };
+
+  if (fluidType === "synthetic_ester") {
+    fluidData = {
+      name: "Synthetic Organic Ester", std: "IEC 61099", flash: "275 °C", fire: "316 °C",
+      kClass: "Yes (Class K3 >300°C)", visc: "29.0 mm²/s", radFactor: 1.12,
+      topRise: 65, wdgRise: 70, hotSpot: 85, fireClearance: "1.5 m / barrier typically waived"
+    };
+  } else if (fluidType === "natural_ester") {
+    fluidData = {
+      name: "Natural Ester (Seed Oil / FR3)", std: "IEC 62770", flash: "330 °C", fire: "360 °C",
+      kClass: "Yes (Class K2 >300°C)", visc: "33.5 mm²/s", radFactor: 1.18,
+      topRise: 65, wdgRise: 70, hotSpot: 85, fireClearance: "1.5 m / barrier typically waived"
+    };
+  } else if (fluidType === "silicone") {
+    fluidData = {
+      name: "Silicone Dielectric Fluid", std: "IEC 60836", flash: "300 °C", fire: "340 °C",
+      kClass: "Yes (Class K1 >300°C)", visc: "38.0 mm²/s", radFactor: 1.22,
+      topRise: 65, wdgRise: 70, hotSpot: 85, fireClearance: "3.0 m"
+    };
+  }
+
+  // Adjust for high-temp insulation
+  let insBonusRise = 0;
+  let insName = "Kraft Paper (Class A 105°C)";
+  if (insType === "tuk") {
+    insBonusRise = 10;
+    insName = "Thermally Upgraded Kraft (Class E/B 120°C)";
+  } else if (insType === "nomex") {
+    insBonusRise = 25;
+    insName = "Aramid / Nomex Hybrid (Class F/H 155/180°C)";
+  }
+
+  const effectiveTopRise = fluidData.topRise + Math.min(insBonusRise, 15);
+  const effectiveWdgRise = fluidData.wdgRise + insBonusRise;
+  const effectiveHotSpot = fluidData.hotSpot + insBonusRise;
+  const adjRadArea = (r.radArea || 50) * fluidData.radFactor;
+
+  let fluidHtml = `
+    <tr><td>Selected Dielectric Fluid</td><td>${fluidData.name} (${fluidData.std})</td></tr>
+    <tr><td>Flash Point / Fire Point</td><td>${fluidData.flash} / ${fluidData.fire}</td></tr>
+    <tr><td>Fire Safety Classification</td><td>${fluidData.kClass}</td></tr>
+    <tr><td>Kinematic Viscosity @ 40 °C</td><td>${fluidData.visc}</td></tr>
+    <tr><td>Viscosity Cooling Area Multiplier</td><td>× ${fmt(fluidData.radFactor, 2)}</td></tr>
+    <tr><td>Recommended Radiator Surface (adjusted)</td><td>${fmt(adjRadArea, 1)} m²</td></tr>
+    <tr><td>Insulation System</td><td>${insName}</td></tr>
+    <tr class="hl"><td>Max Top-Liquid Rise (IEC 60076-14)</td><td>${effectiveTopRise} K</td></tr>
+    <tr class="hl"><td>Max Winding Average Rise</td><td>${effectiveWdgRise} K</td></tr>
+    <tr><td>Max Winding Hot-Spot Limit</td><td>${effectiveHotSpot} K</td></tr>
+    <tr><td>Substation Fire Clearance (NFPA 850)</td><td>${fluidData.fireClearance}</td></tr>
+  `;
+  const elFluid = $('t_fluid');
+  if (elFluid) elFluid.innerHTML = fluidHtml;
+
+  // --- 19. Acoustic Noise & Sound Power ---
+  const wCore_kg = r.Wfe || 2000;
+  const bm = r.bm || 1.70;
+  const isOnaf = (r.cool || "").includes("AF");
+  
+  // Core sound power level Lwa = 45 + 10*log10(Wcore) + 20*log10(Bm/1.7)
+  const lwa_core = 45 + 10 * Math.log10(Math.max(100, wCore_kg)) + 20 * Math.log10(Math.max(0.8, bm) / 1.70);
+  const fanNoiseAdder = isOnaf ? 4.5 : 0;
+  const lwa_total = lwa_core + fanNoiseAdder;
+
+  // Measurement surface area at 1m contour: S = 1.25 * Htank * 2*(Ltank + Wtank + 4)
+  const lTank = (r.Wfr || 1.8) + 0.4;
+  const wTank = (r.Dfr || 0.8) + 0.4;
+  const hTank = (r.Hfr || 2.0) + 0.5;
+  const sm1 = 1.25 * hTank * 2 * (lTank + wTank + 4);
+  const lp1m = lwa_total - 10 * Math.log10(Math.max(1, sm1));
+  const lp2m = lp1m - 3.0; // 3 dB attenuation for 2m
+
+  // NEMA TR-1 benchmark limit for rating
+  const kva = r.Sin || 1000;
+  let nemaLimit = 58;
+  if (kva <= 500) nemaLimit = 56;
+  else if (kva <= 1000) nemaLimit = 58;
+  else if (kva <= 1500) nemaLimit = 60;
+  else if (kva <= 2000) nemaLimit = 61;
+  else if (kva <= 3000) nemaLimit = 63;
+  else if (kva <= 5000) nemaLimit = 65;
+  else if (kva <= 10000) nemaLimit = 68;
+  else nemaLimit = 72;
+  if (isOnaf) nemaLimit += 3;
+
+  const margin = nemaLimit - lp1m;
+
+  let noiseHtml = `
+    <tr><td>Core Sound Power Level ($L_{WA,\text{core}}$)</td><td>${fmt(lwa_core, 1)} dBA</td></tr>
+    ${isOnaf ? `<tr><td>Cooling Fan Noise Contribution</td><td>+${fmt(fanNoiseAdder, 1)} dBA</td></tr>` : ``}
+    <tr class="hl"><td>Total Sound Power ($L_{WA}$)</td><td>${fmt(lwa_total, 1)} dBA</td></tr>
+    <tr><td>Sound Pressure Level @ 1 m contour ($L_{pA, 1\text{m}}$)</td><td>${fmt(lp1m, 1)} dBA</td></tr>
+    <tr><td>Sound Pressure Level @ 2 m contour ($L_{pA, 2\text{m}}$)</td><td>${fmt(lp2m, 1)} dBA</td></tr>
+    <tr><td>NEMA TR-1 Maximum Allowable Limit</td><td>${nemaLimit} dBA</td></tr>
+    <tr class="hl" style="color:${margin >= 0 ? '#10b981' : 'var(--bad)'}">
+      <td>NEMA TR-1 Compliance Margin</td>
+      <td>${margin >= 0 ? '✓ ' + fmt(margin, 1) + ' dBA margin' : '✗ Exceeds by ' + fmt(-margin, 1) + ' dBA'}</td>
+    </tr>
+  `;
+  const elNoise = $('t_noise');
+  if (elNoise) elNoise.innerHTML = noiseHtml;
+
+  // --- 20. Harmonic Loading & K-Factor ---
+  const harmProf = $('harmonic_profile').value;
+  let kFactor = 1.0;
+  let fhl = 1.0;
+  let profLabel = "Standard Grid Load (Linear)";
+
+  if (harmProf === "solar") {
+    kFactor = 4.0;
+    fhl = 2.85; // Solar inverter harmonic spectrum
+    profLabel = "Solar PV Inverter Station";
+  } else if (harmProf === "wind") {
+    kFactor = 9.0;
+    fhl = 6.20; // Full converter wind turbine
+    profLabel = "Wind Converter Duty";
+  } else if (harmProf === "datacenter") {
+    kFactor = 13.0;
+    fhl = 9.40; // High SMPS / 6-pulse UPS
+    profLabel = "Data Center / UPS Rectifier";
+  } else if (harmProf === "vfd") {
+    kFactor = 20.0;
+    fhl = 14.80; // Heavy VFD / Smelter drives
+    profLabel = "Industrial / VFD Drive";
+  }
+
+  const basePec_kW = ((r.Pk || 10000) * 0.12) / 1000; // ~12% eddy in load loss
+  const harmPec_kW = basePec_kW * fhl;
+  const extraEddy_kW = harmPec_kW - basePec_kW;
+  const totalHarmPk_kW = (r.Pk / 1000) + extraEddy_kW;
+
+  // Max permissible loading factor = sqrt( (1 + Pec_pu) / (1 + Fhl * Pec_pu) )
+  const pec_pu = 0.12;
+  const maxLoadRatio = Math.sqrt((1 + pec_pu) / (1 + fhl * pec_pu));
+  const maxLoadPct = maxLoadRatio * 100;
+  const deratedCapacity_kVA = (r.Sin || 1000) * maxLoadRatio;
+
+  let harmHtml = `
+    <tr><td>Application Profile</td><td>${profLabel}</td></tr>
+    <tr><td>Harmonic Loss Factor ($F_{\text{HL}}$, IEEE C57.110)</td><td>${fmt(fhl, 2)}</td></tr>
+    <tr><td>Fundamental Eddy Loss (base)</td><td>${fmt(basePec_kW, 2)} kW</td></tr>
+    <tr><td>Harmonic Eddy Loss under Spectrum</td><td>${fmt(harmPec_kW, 2)} kW (+${fmt(extraEddy_kW, 2)} kW)</td></tr>
+    <tr><td>Total Load Loss under Harmonic Spectrum</td><td>${fmt(totalHarmPk_kW, 2)} kW</td></tr>
+    <tr class="hl"><td>Max Continuous Load Capability (without derating)</td><td>${fmt(maxLoadPct, 1)} %</td></tr>
+    <tr><td>Derated Continuous Rating</td><td>${fmt(deratedCapacity_kVA, 0)} kVA</td></tr>
+    <tr class="hl" style="color:var(--amber)"><td>Recommended Standard K-Factor Rating</td><td>K-${kFactor}</td></tr>
+  `;
+  const elHarm = $('t_harmonic');
+  if (elHarm) elHarm.innerHTML = harmHtml;
+}
+
+// --- 21. Data Portability & Workflow Handlers ---
+function exportDesignJSON() {
+  if (!LAST) { alert("Please click Calculate first."); return; }
+  const state = {
+    app: "TransformerPath Calculator",
+    version: "2.0",
+    timestamp: new Date().toISOString(),
+    spec: {
+      type: TTYPE,
+      standard: $('std').value,
+      rating_kVA: parseFloat($('skva').value),
+      freq_hz: parseFloat($('freq').value),
+      hv_v: parseFloat($('hv').value),
+      lv_v: parseFloat($('lv').value),
+      vector_group: $('vec').value,
+      target_z_pct: parseFloat($('ztgt').value),
+      tap_range_pct: parseFloat($('tap').value),
+      cooling: $('cool').value,
+      fluid: $('fluid').value,
+      insulation: $('insclass').value,
+      harmonic_profile: $('harmonic_profile').value,
+      cost_a: parseFloat($('cost_a').value),
+      cost_b: parseFloat($('cost_b').value)
+    },
+    results: {
+      volts_per_turn: LAST.Et,
+      core_diameter_mm: LAST.d * 1000,
+      flux_density_t: LAST.bm,
+      lv_turns: LAST.Nlv,
+      hv_turns: LAST.Nhv,
+      p0_w: LAST.P0,
+      pk_w: LAST.Pk,
+      z_pct: LAST.z,
+      eff_100_pct: LAST.eff100,
+      total_mass_kg: LAST.Wtot
+    }
+  };
+  const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `Transformer_Design_${TTYPE}_${state.spec.rating_kVA}kVA_${state.spec.hv_v/1000}kV.tp-design.json`;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+}
+
+function importDesignJSON(event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (data.spec) {
+        const s = data.spec;
+        if (s.standard) $('std').value = s.standard;
+        if (s.rating_kVA) $('skva').value = s.rating_kVA;
+        if (s.freq_hz) $('freq').value = s.freq_hz;
+        if (s.hv_v) $('hv').value = s.hv_v;
+        if (s.lv_v) $('lv').value = s.lv_v;
+        if (s.vector_group) $('vec').value = s.vector_group;
+        if (s.target_z_pct) $('ztgt').value = s.target_z_pct;
+        if (s.tap_range_pct) $('tap').value = s.tap_range_pct;
+        if (s.cooling) $('cool').value = s.cooling;
+        if (s.fluid) $('fluid').value = s.fluid;
+        if (s.insulation) $('insclass').value = s.insulation;
+        if (s.harmonic_profile) $('harmonic_profile').value = s.harmonic_profile;
+        if (s.cost_a) $('cost_a').value = s.cost_a;
+        if (s.cost_b) $('cost_b').value = s.cost_b;
+        calc();
+        alert("Design loaded successfully!");
+      }
+    } catch (err) {
+      alert("Invalid design JSON file: " + err.message);
+    }
+  };
+  reader.readAsText(file);
+}
+
+function pushToRFQ() {
+  if (!LAST) calc();
+  const kva = $('skva').value;
+  const hv = (parseFloat($('hv').value) / 1000).toFixed(1);
+  const lv = (parseFloat($('lv').value) / 1000).toFixed(3);
+  const vec = $('vec').value;
+  const std = $('std').value.toUpperCase();
+  const cool = $('cool').value;
+  const z = LAST ? LAST.z.toFixed(2) : $('ztgt').value;
+  const fluid = $('fluid').options[$('fluid').selectedIndex].text;
+
+  const url = `rfq.html?rating=${encodeURIComponent(kva + " kVA")}&voltage=${encodeURIComponent(hv + "/" + lv + " kV")}&standard=${encodeURIComponent(std)}&cooling=${encodeURIComponent(cool)}&vector=${encodeURIComponent(vec)}&impedance=${encodeURIComponent(z + "%")}&fluid=${encodeURIComponent(fluid)}`;
+  window.location.href = url;
+}
+
+function copyDesignMarkdown() {
+  if (!LAST) calc();
+  const r = LAST;
+  const md = `# Transformer Technical Data Sheet & Specification
+*Generated by TransformerPath Design Workbench (https://transformerpath.com/calculator.html)*
+
+## 1. General Characteristics
+- **Rated Power:** ${fmt(r.Sin, 1)} ${r.isMVA ? "MVA" : "kVA"}
+- **Rated Voltages:** ${fmt(r.hv/1000, 2)} kV / ${fmt(r.lv/1000, 3)} kV
+- **Rated Frequency:** ${r.freq} Hz | **Phases:** 3-Phase
+- **Vector Group:** ${r.vec} | **Cooling:** ${r.cool}
+- **Applicable Standard:** ${r.stdName}
+- **Dielectric Fluid:** ${$('fluid').options[$('fluid').selectedIndex].text}
+- **Insulation System:** ${$('insclass').options[$('insclass').selectedIndex].text}
+
+## 2. Electrical Performance & Guarantees
+- **Short-Circuit Impedance (%Z):** ${fmt(r.z, 2)} % (X/R = ${fmt(r.xr, 1)})
+- **No-Load Loss (P0):** ${fmt(r.P0/1000, 3)} kW
+- **Load Loss (Pk @ 75°C):** ${fmt(r.Pk/1000, 2)} kW
+- **Total Losses:** ${fmt((r.P0 + r.Pk)/1000, 2)} kW
+- **Full Load Efficiency (1.0 PF):** ${fmt(r.eff100, 3)} %
+- **Voltage Regulation (0.8 PF lag):** ${fmt(r.reg08, 2)} %
+
+## 3. Core & Winding Design
+- **Volts per Turn (Et):** ${fmt(r.Et, 2)} V/turn
+- **Core Diameter:** ${fmt(r.d*1000, 0)} mm | **Limb Pitch:** ${fmt(r.Dcc*1000, 0)} mm
+- **Operating Flux Density (Bm):** ${fmt(r.bm, 2)} T
+- **LV Winding:** ${r.Nlv} turns | ${fmt(r.dlv, 2)} A/mm² | ${fmt(r.Alv, 1)} mm²
+- **HV Winding:** ${r.Nhv} turns | ${fmt(r.dhv, 2)} A/mm² | ${fmt(r.Ahv, 2)} mm²
+
+## 4. Mechanical & Thermal Withstand
+- **Short-Circuit Fault Current:** ${fmt(r.Isc/1000, 2)} kA (Duration: 2.0 s)
+- **Peak Radial Bursting Force:** ${fmt(r.Fr/1000, 1)} kN (Hoop Stress: ${fmt(r.sigmaH, 1)} MPa)
+- **Adiabatic SC Temp Rise:** ${fmt(r.thetaSc, 1)} °C (&lt; 250 °C max limit)
+- **Sound Power Level (Lwa):** ${$('t_noise') ? $('t_noise').rows[2].cells[1].innerText : "N/A"}
+
+## 5. Weights & Enclosure
+- **Core Steel Weight:** ${fmt(r.Wfe, 0)} kg
+- **Winding Conductor Weight:** ${fmt(r.Wcu, 0)} kg
+- **Dielectric Liquid Weight:** ${fmt(r.Woil, 0)} kg
+- **Total Transport Mass:** ${fmt(r.Wtot, 0)} kg
+`;
+
+  navigator.clipboard.writeText(md).then(() => {
+    alert("Full Engineering Specification copied to clipboard in Markdown!");
+  }).catch(() => {
+    prompt("Copy specification markdown below:", md);
+  });
+}
+
 calc();
 </script>
 
@@ -2243,8 +2668,7 @@ calc();
   </div>
 </footer>
 
-<script src="tp-nav.js?v=6" defer></script>
-<script src="tp-freshness.js?v=6" defer></script>
-<script src="tp-feedback.js?v=6" defer></script>
+<script src="tp-freshness.js?v=7" defer></script>
+<script src="tp-feedback.js?v=7" defer></script>
 </body>
 </html>
