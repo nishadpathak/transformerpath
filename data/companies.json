@@ -1,7 +1,7 @@
 {
   "$schema": "https://transformerpath.com/companies.schema.json",
-  "generated_at": "2026-09-13T06:53:11.262Z",
-  "count": 880,
+  "generated_at": "2026-09-13T12:14:57.435Z",
+  "count": 915,
   "companies": [
     {
       "id": "cmp:a-plus-power-solution",
@@ -626,6 +626,103 @@
       }
     },
     {
+      "id": "cmp:al-hilal-industrial-company",
+      "name": "Al-Hilal Industrial Company",
+      "slug": "al-hilal-industrial-company",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Iraq",
+        "city": "",
+        "address": ""
+      },
+      "website": "http://www.alhilal-iq.com/",
+      "facility_ids": [
+        "fac:al-hilal-industrial-company:baghdad"
+      ],
+      "factory_count": 1,
+      "capabilities": [
+        "TR_DISTRIBUTION"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "http://www.alhilal-iq.com/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:al-mansour-state-company-for-electrical-industries",
+      "name": "Al-Mansour State Company for Electrical Industries",
+      "slug": "al-mansour-state-company-for-electrical-industries",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Iraq",
+        "city": "",
+        "address": ""
+      },
+      "website": "http://www.almansour.industry.gov.iq/",
+      "facility_ids": [
+        "fac:al-mansour-state-company-for-electrical-industries:baghdad"
+      ],
+      "factory_count": 1,
+      "capabilities": [
+        "TR_DISTRIBUTION"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "http://www.almansour.industry.gov.iq/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:al-zawraa-state-company",
+      "name": "Al-Zawraa State Company",
+      "slug": "al-zawraa-state-company",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Iraq",
+        "city": "",
+        "address": ""
+      },
+      "website": "http://www.alzawraa.industry.gov.iq/",
+      "facility_ids": [
+        "fac:al-zawraa-state-company:baghdad"
+      ],
+      "factory_count": 1,
+      "capabilities": [
+        "TR_DISTRIBUTION",
+        "TR_POWER"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "http://www.alzawraa.industry.gov.iq/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:alageum-electric-group-kentau-uralsk-shymkent-aktau-plants",
       "name": "Alageum Electric Group (Kentau, Uralsk, Shymkent, Aktau plants)",
       "slug": "alageum-electric-group-kentau-uralsk-shymkent-aktau-plants",
@@ -837,12 +934,46 @@
       },
       "website": "https://www.alfanar.com/",
       "facility_ids": [
+        "fac:alfanar:casablanca",
         "fac:alfanar:riyadh"
+      ],
+      "factory_count": 2,
+      "capabilities": [
+        "TR_DISTRIBUTION",
+        "TR_DRY_CAST",
+        "TR_POWER"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.alfanar.com/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:alfanar-maroc",
+      "name": "Alfanar Maroc",
+      "slug": "alfanar-maroc",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Morocco",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.alfanar.com/",
+      "facility_ids": [
+        "fac:alfanar-maroc:casablanca"
       ],
       "factory_count": 1,
       "capabilities": [
         "TR_DISTRIBUTION",
-        "TR_DRY_CAST",
         "TR_POWER"
       ],
       "commercial_status": "LISTED",
@@ -1178,6 +1309,39 @@
       },
       "sources": {
         "website": "https://amcoelectrical.in",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:amimer-energie",
+      "name": "Amimer Energie",
+      "slug": "amimer-energie",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Algeria",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.amimerenergie.com/",
+      "facility_ids": [
+        "fac:amimer-energie:seddouk"
+      ],
+      "factory_count": 1,
+      "capabilities": [
+        "TR_DISTRIBUTION",
+        "TR_DRY_CAST"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.amimerenergie.com/",
         "capability_source": "",
         "capability_note": ""
       }
@@ -1653,6 +1817,38 @@
       },
       "sources": {
         "website": "https://arestrafo.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:armese-power-solutions",
+      "name": "Armese Power Solutions",
+      "slug": "armese-power-solutions",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Nigeria",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.armesepower.com/",
+      "facility_ids": [
+        "fac:armese-power-solutions:ikeja"
+      ],
+      "factory_count": 1,
+      "capabilities": [
+        "TR_DISTRIBUTION"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.armesepower.com/",
         "capability_source": "",
         "capability_note": ""
       }
@@ -3607,6 +3803,38 @@
         "website": "https://www.cgpower.co.in",
         "capability_source": "CG Power and Industrial Solutions Annual Report",
         "capability_note": "Bhopal and Malanpur power transformer capacity disclosed in BSE/NSE audited annual filings."
+      }
+    },
+    {
+      "id": "cmp:chakira-cable-and-transformers-elloumi-group-coficab",
+      "name": "Chakira Cable & Transformers (Elloumi Group / Coficab)",
+      "slug": "chakira-cable-and-transformers-elloumi-group-coficab",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Tunisia",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.chakira.com.tn/",
+      "facility_ids": [
+        "fac:chakira-cable-and-transformers-elloumi-group-coficab:ben-arous"
+      ],
+      "factory_count": 1,
+      "capabilities": [
+        "TR_DISTRIBUTION"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.chakira.com.tn/",
+        "capability_source": "",
+        "capability_note": ""
       }
     },
     {
@@ -6849,10 +7077,57 @@
       "facility_ids": [
         "fac:elsewedy-electric-transformers:10th-of-ramadan-city",
         "fac:elsewedy-electric-transformers:cairo",
-        "fac:elsewedy-electric-transformers:dammam",
         "fac:elsewedy-electric-transformers:karachi"
       ],
-      "factory_count": 4,
+      "factory_count": 3,
+      "capabilities": [
+        "PAD_MOUNTED",
+        "POLE_MOUNTED",
+        "SPECIAL",
+        "TR_DISTRIBUTION",
+        "TR_DRY_CAST",
+        "TR_FURNACE",
+        "TR_GSU",
+        "TR_POWER",
+        "TR_RECTIFIER",
+        "TR_SPEC_EARTHING",
+        "TR_SPEC_MOBILE",
+        "TR_SPEC_RENEWABLE",
+        "TR_TRACTION"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 90,
+      "provenance": {
+        "type": "TRANSFORMERPATH_RESEARCHED",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.elsewedyelectric.com/",
+        "capability_source": "Elsewedy Electric Annual Report & Investor Factsheet",
+        "capability_note": "Middle East and Africa transformer manufacturing line capacities disclosed in audited consolidated investor reports."
+      }
+    },
+    {
+      "id": "cmp:elsewedy-electric-algeria",
+      "name": "Elsewedy Electric Algeria",
+      "slug": "elsewedy-electric-algeria",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Algeria",
+        "city": "New Cairo, Egypt",
+        "address": ""
+      },
+      "website": "https://www.elsewedyelectric.com/",
+      "facility_ids": [
+        "fac:elsewedy-electric-algeria:10th-of-ramadan-city",
+        "fac:elsewedy-electric-algeria:ain-defla",
+        "fac:elsewedy-electric-algeria:cairo",
+        "fac:elsewedy-electric-algeria:dammam",
+        "fac:elsewedy-electric-algeria:karachi"
+      ],
+      "factory_count": 5,
       "capabilities": [
         "PAD_MOUNTED",
         "POLE_MOUNTED",
@@ -8561,6 +8836,39 @@
       },
       "sources": {
         "website": "https://www.fujielectric.com.ph/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:g-transfo-algerie-general-transformer",
+      "name": "G-Transfo Algerie (General Transformer)",
+      "slug": "g-transfo-algerie-general-transformer",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Algeria",
+        "city": "",
+        "address": ""
+      },
+      "website": "http://www.gtransfo.dz/",
+      "facility_ids": [
+        "fac:g-transfo-algerie-general-transformer:boufarik"
+      ],
+      "factory_count": 1,
+      "capabilities": [
+        "TR_DISTRIBUTION",
+        "TR_DRY_CAST"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "http://www.gtransfo.dz/",
         "capability_source": "",
         "capability_note": ""
       }
@@ -11945,6 +12253,39 @@
       }
     },
     {
+      "id": "cmp:ingelec-groupe-sekkat",
+      "name": "Ingelec (Groupe Sekkat)",
+      "slug": "ingelec-groupe-sekkat",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Morocco",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.ingelec.ma/",
+      "facility_ids": [
+        "fac:ingelec-groupe-sekkat:casablanca"
+      ],
+      "factory_count": 1,
+      "capabilities": [
+        "TR_DISTRIBUTION",
+        "TR_DRY_CAST"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.ingelec.ma/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:international-electric-iec",
       "name": "International Electric (IEC)",
       "slug": "international-electric-iec",
@@ -13088,6 +13429,71 @@
       }
     },
     {
+      "id": "cmp:kahrakib-sonelgaz-group",
+      "name": "Kahrakib (Sonelgaz Group)",
+      "slug": "kahrakib-sonelgaz-group",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Algeria",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.kahrakib.dz/",
+      "facility_ids": [
+        "fac:kahrakib-sonelgaz-group:kouba"
+      ],
+      "factory_count": 1,
+      "capabilities": [
+        "TR_DISTRIBUTION",
+        "TR_POWER"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.kahrakib.dz/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:kahrif-sonelgaz-group",
+      "name": "Kahrif (Sonelgaz Group)",
+      "slug": "kahrif-sonelgaz-group",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Algeria",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.kahrif.dz/",
+      "facility_ids": [
+        "fac:kahrif-sonelgaz-group:hussein-dey"
+      ],
+      "factory_count": 1,
+      "capabilities": [
+        "TR_DISTRIBUTION"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.kahrif.dz/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:kanohar-electricals",
       "name": "Kanohar Electricals",
       "slug": "kanohar-electricals",
@@ -13927,6 +14333,38 @@
       },
       "sources": {
         "website": "https://www.krenzvent.com/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:kresta-laurel-ltd",
+      "name": "Kresta Laurel Ltd",
+      "slug": "kresta-laurel-ltd",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Nigeria",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://krestalaurel.com/",
+      "facility_ids": [
+        "fac:kresta-laurel-ltd:maryland"
+      ],
+      "factory_count": 1,
+      "capabilities": [
+        "TR_DISTRIBUTION"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://krestalaurel.com/",
         "capability_source": "",
         "capability_note": ""
       }
@@ -15351,6 +15789,39 @@
       }
     },
     {
+      "id": "cmp:mei-maintenance-des-equipements-industriels-sonelgaz",
+      "name": "MEI — Maintenance des Equipements Industriels (Sonelgaz)",
+      "slug": "mei-maintenance-des-equipements-industriels-sonelgaz",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Algeria",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.mei.dz/",
+      "facility_ids": [
+        "fac:mei-maintenance-des-equipements-industriels-sonelgaz:m-sila"
+      ],
+      "factory_count": 1,
+      "capabilities": [
+        "TR_DISTRIBUTION",
+        "TR_POWER"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.mei.dz/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:meiden-singapore",
       "name": "Meiden Singapore",
       "slug": "meiden-singapore",
@@ -15477,6 +15948,38 @@
       },
       "sources": {
         "website": "https://www.memf.com.sa/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:memmcol-momas-electricity-meters-and-transformers",
+      "name": "MEMMCOL (Momas Electricity Meters & Transformers)",
+      "slug": "memmcol-momas-electricity-meters-and-transformers",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Nigeria",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.momas.tv/",
+      "facility_ids": [
+        "fac:memmcol-momas-electricity-meters-and-transformers:mowe"
+      ],
+      "factory_count": 1,
+      "capabilities": [
+        "TR_DISTRIBUTION"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.momas.tv/",
         "capability_source": "",
         "capability_note": ""
       }
@@ -15674,6 +16177,38 @@
       },
       "sources": {
         "website": "https://www.metsantrafo.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:metsec-cables-and-transformers-doshi-group",
+      "name": "Metsec Cables & Transformers (Doshi Group)",
+      "slug": "metsec-cables-and-transformers-doshi-group",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Kenya",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.metseccables.com/",
+      "facility_ids": [
+        "fac:metsec-cables-and-transformers-doshi-group:nairobi"
+      ],
+      "factory_count": 1,
+      "capabilities": [
+        "TR_DISTRIBUTION"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.metseccables.com/",
         "capability_source": "",
         "capability_note": ""
       }
@@ -17224,9 +17759,10 @@
       },
       "website": "https://www.ormazabal.com",
       "facility_ids": [
+        "fac:ormazabal:casablanca",
         "fac:ormazabal:igorre-bizkaia"
       ],
-      "factory_count": 1,
+      "factory_count": 2,
       "capabilities": [
         "TR_DISTRIBUTION",
         "TR_DRY_CAST"
@@ -17239,6 +17775,38 @@
       },
       "sources": {
         "website": "https://www.ormazabal.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:ormazabal-maroc",
+      "name": "Ormazabal Maroc",
+      "slug": "ormazabal-maroc",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Morocco",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.ormazabal.com/",
+      "facility_ids": [
+        "fac:ormazabal-maroc:casablanca"
+      ],
+      "factory_count": 1,
+      "capabilities": [
+        "TR_DISTRIBUTION"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.ormazabal.com/",
         "capability_source": "",
         "capability_note": ""
       }
@@ -18126,6 +18694,39 @@
       }
     },
     {
+      "id": "cmp:power-technics-ltd",
+      "name": "Power Technics Ltd",
+      "slug": "power-technics-ltd",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Kenya",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.powertechnics.biz/",
+      "facility_ids": [
+        "fac:power-technics-ltd:nairobi"
+      ],
+      "factory_count": 1,
+      "capabilities": [
+        "TR_DISTRIBUTION",
+        "TR_DRY_CAST"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.powertechnics.biz/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:power-transformers-pty-ltd",
       "name": "Power Transformers (Pty) Ltd",
       "slug": "power-transformers-pty-ltd",
@@ -18347,6 +18948,39 @@
       },
       "sources": {
         "website": "https://www.primemeiden.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:proforce-transformers-proforce-galaxy",
+      "name": "Proforce Transformers (Proforce Galaxy)",
+      "slug": "proforce-transformers-proforce-galaxy",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Nigeria",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://proforcegalaxy.com/",
+      "facility_ids": [
+        "fac:proforce-transformers-proforce-galaxy:ode-remo"
+      ],
+      "factory_count": 1,
+      "capabilities": [
+        "TR_DISTRIBUTION",
+        "TR_POWER"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://proforcegalaxy.com/",
         "capability_source": "",
         "capability_note": ""
       }
@@ -20019,6 +20653,200 @@
       }
     },
     {
+      "id": "cmp:sarl-belfar-belfar-transfo",
+      "name": "SARL Belfar (Belfar Transfo)",
+      "slug": "sarl-belfar-belfar-transfo",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Algeria",
+        "city": "",
+        "address": ""
+      },
+      "website": "http://www.belfar-dz.com/",
+      "facility_ids": [
+        "fac:sarl-belfar-belfar-transfo:bordj-bou-arreridj"
+      ],
+      "factory_count": 1,
+      "capabilities": [
+        "TR_DISTRIBUTION"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "http://www.belfar-dz.com/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:sarl-etral",
+      "name": "SARL ETRAL",
+      "slug": "sarl-etral",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Algeria",
+        "city": "",
+        "address": ""
+      },
+      "website": "http://www.etral-dz.com/",
+      "facility_ids": [
+        "fac:sarl-etral:batna"
+      ],
+      "factory_count": 1,
+      "capabilities": [
+        "TR_DISTRIBUTION"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "http://www.etral-dz.com/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:sarl-intelec-algerie",
+      "name": "SARL Intelec Algerie",
+      "slug": "sarl-intelec-algerie",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Algeria",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.intelec-dz.com/",
+      "facility_ids": [
+        "fac:sarl-intelec-algerie:baba-hassen"
+      ],
+      "factory_count": 1,
+      "capabilities": [
+        "TR_DISTRIBUTION",
+        "TR_DRY_CAST"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.intelec-dz.com/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:sarl-kherfi-transformateurs-kherfi-electrique",
+      "name": "SARL Kherfi Transformateurs (Kherfi Electrique)",
+      "slug": "sarl-kherfi-transformateurs-kherfi-electrique",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Algeria",
+        "city": "",
+        "address": ""
+      },
+      "website": "http://www.kherfi-electrique.dz/",
+      "facility_ids": [
+        "fac:sarl-kherfi-transformateurs-kherfi-electrique:el-eulma"
+      ],
+      "factory_count": 1,
+      "capabilities": [
+        "TR_DISTRIBUTION",
+        "TR_DRY_CAST"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "http://www.kherfi-electrique.dz/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:sarl-transfo-est-transformateurs-de-lest",
+      "name": "SARL Transfo Est (Transformateurs de l'Est)",
+      "slug": "sarl-transfo-est-transformateurs-de-lest",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Algeria",
+        "city": "",
+        "address": ""
+      },
+      "website": "http://www.transfo-est.com/",
+      "facility_ids": [
+        "fac:sarl-transfo-est-transformateurs-de-lest:constantine"
+      ],
+      "factory_count": 1,
+      "capabilities": [
+        "TR_DISTRIBUTION"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "http://www.transfo-est.com/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:sarl-transfo-ouest-transfo-ouest",
+      "name": "SARL Transfo Ouest (Transfo-Ouest)",
+      "slug": "sarl-transfo-ouest-transfo-ouest",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Algeria",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.transfo-ouest.dz/",
+      "facility_ids": [
+        "fac:sarl-transfo-ouest-transfo-ouest:es-senia"
+      ],
+      "factory_count": 1,
+      "capabilities": [
+        "TR_DISTRIBUTION"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.transfo-ouest.dz/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:saudi-power-transformer-company-sptc",
       "name": "Saudi Power Transformer Company (SPTC)",
       "slug": "saudi-power-transformer-company-sptc",
@@ -20339,6 +21167,39 @@
       },
       "sources": {
         "website": "https://www.se.com/id",
+        "capability_source": "Schneider Electric Universal Registration Document",
+        "capability_note": "Medium-voltage distribution and dry-type transformer production capacity benchmarked in official annual registration filings."
+      }
+    },
+    {
+      "id": "cmp:schneider-electric-nigeria",
+      "name": "Schneider Electric Nigeria",
+      "slug": "schneider-electric-nigeria",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Nigeria",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.se.com/ng/",
+      "facility_ids": [
+        "fac:schneider-electric-nigeria:victoria-island"
+      ],
+      "factory_count": 1,
+      "capabilities": [
+        "TR_DISTRIBUTION",
+        "TR_DRY_CAST"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 85,
+      "provenance": {
+        "type": "TRANSFORMERPATH_RESEARCHED",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.se.com/ng/",
         "capability_source": "Schneider Electric Universal Registration Document",
         "capability_note": "Medium-voltage distribution and dry-type transformer production capacity benchmarked in official annual registration filings."
       }
@@ -21686,6 +22547,39 @@
       }
     },
     {
+      "id": "cmp:siame-societe-industrielle-dappareillage-et-de-materiels-electriques",
+      "name": "SIAME (Societe Industrielle d'Appareillage et de Materiels Electriques)",
+      "slug": "siame-societe-industrielle-dappareillage-et-de-materiels-electriques",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Tunisia",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.siame.com.tn/",
+      "facility_ids": [
+        "fac:siame-societe-industrielle-dappareillage-et-de-materiels-electriques:grombalia"
+      ],
+      "factory_count": 1,
+      "capabilities": [
+        "INST",
+        "TR_DISTRIBUTION"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.siame.com.tn/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:sichuan-transformer-co-ltd",
       "name": "Sichuan Transformer Co., Ltd.",
       "slug": "sichuan-transformer-co-ltd",
@@ -22262,6 +23156,39 @@
       },
       "sources": {
         "website": "https://www.spangpower.com/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:specialised-power-systems-ltd-sps",
+      "name": "Specialised Power Systems Ltd (SPS)",
+      "slug": "specialised-power-systems-ltd-sps",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Kenya",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.specialisedpower.com/",
+      "facility_ids": [
+        "fac:specialised-power-systems-ltd-sps:nairobi"
+      ],
+      "factory_count": 1,
+      "capabilities": [
+        "TR_DISTRIBUTION",
+        "TR_DRY_CAST"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.specialisedpower.com/",
         "capability_source": "",
         "capability_note": ""
       }
@@ -25448,6 +26375,71 @@
       }
     },
     {
+      "id": "cmp:transfo-maroc-industrie-tmi",
+      "name": "Transfo Maroc Industrie (TMI)",
+      "slug": "transfo-maroc-industrie-tmi",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Morocco",
+        "city": "",
+        "address": ""
+      },
+      "website": "http://www.tmi.ma/",
+      "facility_ids": [
+        "fac:transfo-maroc-industrie-tmi:ain-sebaa"
+      ],
+      "factory_count": 1,
+      "capabilities": [
+        "TR_DISTRIBUTION"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "http://www.tmi.ma/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:transfo-plus-tunisie",
+      "name": "Transfo Plus Tunisie",
+      "slug": "transfo-plus-tunisie",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Tunisia",
+        "city": "",
+        "address": ""
+      },
+      "website": "http://www.transfoplus.tn/",
+      "facility_ids": [
+        "fac:transfo-plus-tunisie:sfax"
+      ],
+      "factory_count": 1,
+      "capabilities": [
+        "TR_DISTRIBUTION",
+        "TR_DRY_CAST"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "http://www.transfoplus.tn/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:transfopower-industries",
       "name": "Transfopower Industries",
       "slug": "transfopower-industries",
@@ -26268,6 +27260,38 @@
       }
     },
     {
+      "id": "cmp:tts-tunisie-transformateurs-et-services",
+      "name": "TTS (Tunisie Transformateurs et Services)",
+      "slug": "tts-tunisie-transformateurs-et-services",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Tunisia",
+        "city": "",
+        "address": ""
+      },
+      "website": "http://www.tts.com.tn/",
+      "facility_ids": [
+        "fac:tts-tunisie-transformateurs-et-services:megrine"
+      ],
+      "factory_count": 1,
+      "capabilities": [
+        "TR_DISTRIBUTION"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "http://www.tts.com.tn/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:tuboly-astronic-ag",
       "name": "Tuboly-Astronic AG",
       "slug": "tuboly-astronic-ag",
@@ -26326,6 +27350,38 @@
       },
       "sources": {
         "website": "https://tte.com.ar",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:tuvallec-maroc",
+      "name": "Tuvallec Maroc",
+      "slug": "tuvallec-maroc",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Morocco",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.tuvallec.com/",
+      "facility_ids": [
+        "fac:tuvallec-maroc:berrechid"
+      ],
+      "factory_count": 1,
+      "capabilities": [
+        "TR_DISTRIBUTION"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.tuvallec.com/",
         "capability_source": "",
         "capability_note": ""
       }
@@ -26650,6 +27706,38 @@
       },
       "sources": {
         "website": "https://universalradiators.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:ur-state-company-ministry-of-industry-and-minerals",
+      "name": "Ur State Company (Ministry of Industry and Minerals)",
+      "slug": "ur-state-company-ministry-of-industry-and-minerals",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Iraq",
+        "city": "",
+        "address": ""
+      },
+      "website": "http://www.ur.industry.gov.iq/",
+      "facility_ids": [
+        "fac:ur-state-company-ministry-of-industry-and-minerals:nasiriyah"
+      ],
+      "factory_count": 1,
+      "capabilities": [
+        "TR_DISTRIBUTION"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "http://www.ur.industry.gov.iq/",
         "capability_source": "",
         "capability_note": ""
       }
@@ -27076,6 +28164,38 @@
       }
     },
     {
+      "id": "cmp:vijai-electricals-algeria-sonelgaz-jv",
+      "name": "Vijai Electricals Algeria (Sonelgaz JV)",
+      "slug": "vijai-electricals-algeria-sonelgaz-jv",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Algeria",
+        "city": "",
+        "address": ""
+      },
+      "website": "https://www.vijaielectricals.com/",
+      "facility_ids": [
+        "fac:vijai-electricals-algeria-sonelgaz-jv:azazga"
+      ],
+      "factory_count": 1,
+      "capabilities": [
+        "TR_DISTRIBUTION"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.vijaielectricals.com/",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:vijai-electricals-ltd",
       "name": "Vijai Electricals Ltd",
       "slug": "vijai-electricals-ltd",
@@ -27089,9 +28209,10 @@
       },
       "website": "https://www.vijaielectricals.com/",
       "facility_ids": [
+        "fac:vijai-electricals-ltd:azazga",
         "fac:vijai-electricals-ltd:hyderabad"
       ],
-      "factory_count": 1,
+      "factory_count": 2,
       "capabilities": [
         "TR_DISTRIBUTION",
         "TR_POWER"
@@ -28361,6 +29482,39 @@
       },
       "sources": {
         "website": "https://yashhv.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
+      "id": "cmp:yocean-group-kenya-power-transformer-plant",
+      "name": "Yocean Group (Kenya Power Transformer Plant)",
+      "slug": "yocean-group-kenya-power-transformer-plant",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "headquarters": {
+        "country": "Kenya",
+        "city": "",
+        "address": ""
+      },
+      "website": "http://www.yoceangroup.com/",
+      "facility_ids": [
+        "fac:yocean-group-kenya-power-transformer-plant:athi-river"
+      ],
+      "factory_count": 1,
+      "capabilities": [
+        "TR_DISTRIBUTION",
+        "TR_POWER"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "http://www.yoceangroup.com/",
         "capability_source": "",
         "capability_note": ""
       }

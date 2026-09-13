@@ -1,9 +1,9 @@
 {
   "$schema": "https://transformerpath.com/directory.schema.json",
-  "generated": "2026-09-13T06:58:36.406Z",
-  "count": 912,
+  "generated": "2026-09-13T12:14:57.513Z",
+  "count": 947,
   "counts": {
-    "manufacturers": 700,
+    "manufacturers": 735,
     "component_suppliers": 137,
     "machinery_manufacturers": 14,
     "testing_laboratories": 10,
@@ -1552,6 +1552,271 @@
       "factory_count": 1
     },
     {
+      "id": "cmp:al-hilal-industrial-company",
+      "canonical_id": "cmp:al-hilal-industrial-company",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "Al-Hilal Industrial Company",
+      "slug": "al-hilal-industrial-company",
+      "country": "Iraq",
+      "region": "Middle East",
+      "website": "http://www.alhilal-iq.com/",
+      "headquarters": "",
+      "product_codes": [
+        "DT"
+      ],
+      "capability_labels": [
+        "Distribution transformer"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [
+        "fac:al-hilal-industrial-company:baghdad"
+      ],
+      "factories": [
+        {
+          "city": "Baghdad",
+          "country": "Iraq",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        }
+      ],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INFERRED",
+      "confidence": "LIMITED",
+      "source_meta": {
+        "source_title": "",
+        "source_type": "",
+        "source_url": "http://www.alhilal-iq.com/"
+      },
+      "completeness_score": 50,
+      "missing_fields": [
+        "Headquarters address",
+        "Maximum voltage rating",
+        "Maximum unit MVA / rating",
+        "Standards compliance (IEC/IEEE) & ISO certifications",
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "PUBLIC_SOURCE",
+      "last_verified": "2026-08-28",
+      "research_completeness": 4,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "http://www.alhilal-iq.com/",
+        "capability_source": "",
+        "capability_note": ""
+      },
+      "factory_count": 1
+    },
+    {
+      "id": "cmp:al-mansour-state-company-for-electrical-industries",
+      "canonical_id": "cmp:al-mansour-state-company-for-electrical-industries",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "Al-Mansour State Company for Electrical Industries",
+      "slug": "al-mansour-state-company-for-electrical-industries",
+      "country": "Iraq",
+      "region": "Middle East",
+      "website": "http://www.almansour.industry.gov.iq/",
+      "headquarters": "",
+      "product_codes": [
+        "DT"
+      ],
+      "capability_labels": [
+        "Distribution transformer"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [
+        "fac:al-mansour-state-company-for-electrical-industries:baghdad"
+      ],
+      "factories": [
+        {
+          "city": "Baghdad",
+          "country": "Iraq",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        }
+      ],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INFERRED",
+      "confidence": "LIMITED",
+      "source_meta": {
+        "source_title": "",
+        "source_type": "",
+        "source_url": "http://www.almansour.industry.gov.iq/"
+      },
+      "completeness_score": 50,
+      "missing_fields": [
+        "Headquarters address",
+        "Maximum voltage rating",
+        "Maximum unit MVA / rating",
+        "Standards compliance (IEC/IEEE) & ISO certifications",
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "PUBLIC_SOURCE",
+      "last_verified": "2026-08-28",
+      "research_completeness": 4,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "http://www.almansour.industry.gov.iq/",
+        "capability_source": "",
+        "capability_note": ""
+      },
+      "factory_count": 1
+    },
+    {
+      "id": "cmp:al-zawraa-state-company",
+      "canonical_id": "cmp:al-zawraa-state-company",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "Al-Zawraa State Company",
+      "slug": "al-zawraa-state-company",
+      "country": "Iraq",
+      "region": "Middle East",
+      "website": "http://www.alzawraa.industry.gov.iq/",
+      "headquarters": "",
+      "product_codes": [
+        "DT",
+        "PT"
+      ],
+      "capability_labels": [
+        "Distribution transformer",
+        "Power transformer"
+      ],
+      "transformer_types": {
+        "power": {
+          "__present": true
+        },
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [
+        "fac:al-zawraa-state-company:baghdad"
+      ],
+      "factories": [
+        {
+          "city": "Baghdad",
+          "country": "Iraq",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        }
+      ],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INFERRED",
+      "confidence": "LIMITED",
+      "source_meta": {
+        "source_title": "",
+        "source_type": "",
+        "source_url": "http://www.alzawraa.industry.gov.iq/"
+      },
+      "completeness_score": 50,
+      "missing_fields": [
+        "Headquarters address",
+        "Maximum voltage rating",
+        "Maximum unit MVA / rating",
+        "Standards compliance (IEC/IEEE) & ISO certifications",
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "PUBLIC_SOURCE",
+      "last_verified": "2026-08-28",
+      "research_completeness": 4,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "http://www.alzawraa.industry.gov.iq/",
+        "capability_source": "",
+        "capability_note": ""
+      },
+      "factory_count": 1
+    },
+    {
       "id": "cmp:alageum-electric-group-kentau-uralsk-shymkent-aktau-plants",
       "canonical_id": "cmp:alageum-electric-group-kentau-uralsk-shymkent-aktau-plants",
       "roles": [
@@ -2051,12 +2316,104 @@
       "certs": [],
       "testing_capability": null,
       "facility_ids": [
+        "fac:alfanar:casablanca",
         "fac:alfanar:riyadh"
       ],
       "factories": [
         {
           "city": "Riyadh",
           "country": "Saudi Arabia",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        }
+      ],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INFERRED",
+      "confidence": "LIMITED",
+      "source_meta": {
+        "source_title": "",
+        "source_type": "",
+        "source_url": "https://www.alfanar.com/"
+      },
+      "completeness_score": 50,
+      "missing_fields": [
+        "Headquarters address",
+        "Maximum voltage rating",
+        "Maximum unit MVA / rating",
+        "Standards compliance (IEC/IEEE) & ISO certifications",
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "PUBLIC_SOURCE",
+      "last_verified": "2026-08-28",
+      "research_completeness": 4,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "https://www.alfanar.com/",
+        "capability_source": "",
+        "capability_note": ""
+      },
+      "factory_count": 2
+    },
+    {
+      "id": "cmp:alfanar-maroc",
+      "canonical_id": "cmp:alfanar-maroc",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "Alfanar Maroc",
+      "slug": "alfanar-maroc",
+      "country": "Morocco",
+      "region": "Africa",
+      "website": "https://www.alfanar.com/",
+      "headquarters": "",
+      "product_codes": [
+        "PT",
+        "DT"
+      ],
+      "capability_labels": [
+        "Power transformer",
+        "Distribution transformer"
+      ],
+      "transformer_types": {
+        "power": {
+          "__present": true
+        },
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [
+        "fac:alfanar-maroc:casablanca"
+      ],
+      "factories": [
+        {
+          "city": "Casablanca",
+          "country": "Morocco",
           "produces": "",
           "claim_type": "",
           "source_url": ""
@@ -2910,6 +3267,97 @@
       "factory_count": 1
     },
     {
+      "id": "cmp:amimer-energie",
+      "canonical_id": "cmp:amimer-energie",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "Amimer Energie",
+      "slug": "amimer-energie",
+      "country": "Algeria",
+      "region": "Africa",
+      "website": "https://www.amimerenergie.com/",
+      "headquarters": "",
+      "product_codes": [
+        "DT",
+        "DRY"
+      ],
+      "capability_labels": [
+        "Distribution transformer",
+        "Dry-type"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {
+          "__present": true
+        },
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [
+        "fac:amimer-energie:seddouk"
+      ],
+      "factories": [
+        {
+          "city": "Seddouk, Bejaia",
+          "country": "Algeria",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        }
+      ],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INFERRED",
+      "confidence": "LIMITED",
+      "source_meta": {
+        "source_title": "",
+        "source_type": "",
+        "source_url": "https://www.amimerenergie.com/"
+      },
+      "completeness_score": 50,
+      "missing_fields": [
+        "Headquarters address",
+        "Maximum voltage rating",
+        "Maximum unit MVA / rating",
+        "Standards compliance (IEC/IEEE) & ISO certifications",
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "PUBLIC_SOURCE",
+      "last_verified": "2026-08-28",
+      "research_completeness": 4,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "https://www.amimerenergie.com/",
+        "capability_source": "",
+        "capability_note": ""
+      },
+      "factory_count": 1
+    },
+    {
       "id": "cmp:ampcontrol-transformers",
       "canonical_id": "cmp:ampcontrol-transformers",
       "roles": [
@@ -3703,6 +4151,93 @@
       "verified": false,
       "sources": {
         "website": "https://www.ardantrafo.com/",
+        "capability_source": "",
+        "capability_note": ""
+      },
+      "factory_count": 1
+    },
+    {
+      "id": "cmp:armese-power-solutions",
+      "canonical_id": "cmp:armese-power-solutions",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "Armese Power Solutions",
+      "slug": "armese-power-solutions",
+      "country": "Nigeria",
+      "region": "Africa",
+      "website": "https://www.armesepower.com/",
+      "headquarters": "",
+      "product_codes": [
+        "DT"
+      ],
+      "capability_labels": [
+        "Distribution transformer"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [
+        "fac:armese-power-solutions:ikeja"
+      ],
+      "factories": [
+        {
+          "city": "Ikeja, Lagos",
+          "country": "Nigeria",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        }
+      ],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INFERRED",
+      "confidence": "LIMITED",
+      "source_meta": {
+        "source_title": "",
+        "source_type": "",
+        "source_url": "https://www.armesepower.com/"
+      },
+      "completeness_score": 50,
+      "missing_fields": [
+        "Headquarters address",
+        "Maximum voltage rating",
+        "Maximum unit MVA / rating",
+        "Standards compliance (IEC/IEEE) & ISO certifications",
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "PUBLIC_SOURCE",
+      "last_verified": "2026-08-28",
+      "research_completeness": 4,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "https://www.armesepower.com/",
         "capability_source": "",
         "capability_note": ""
       },
@@ -7696,6 +8231,93 @@
         "capability_note": "Bhopal and Malanpur power transformer capacity disclosed in BSE/NSE audited annual filings."
       },
       "factory_count": 4
+    },
+    {
+      "id": "cmp:chakira-cable-and-transformers-elloumi-group-coficab",
+      "canonical_id": "cmp:chakira-cable-and-transformers-elloumi-group-coficab",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "Chakira Cable & Transformers (Elloumi Group / Coficab)",
+      "slug": "chakira-cable-and-transformers-elloumi-group-coficab",
+      "country": "Tunisia",
+      "region": "Africa",
+      "website": "https://www.chakira.com.tn/",
+      "headquarters": "",
+      "product_codes": [
+        "DT"
+      ],
+      "capability_labels": [
+        "Distribution transformer"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [
+        "fac:chakira-cable-and-transformers-elloumi-group-coficab:ben-arous"
+      ],
+      "factories": [
+        {
+          "city": "Ben Arous",
+          "country": "Tunisia",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        }
+      ],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INFERRED",
+      "confidence": "LIMITED",
+      "source_meta": {
+        "source_title": "",
+        "source_type": "",
+        "source_url": "https://www.chakira.com.tn/"
+      },
+      "completeness_score": 50,
+      "missing_fields": [
+        "Headquarters address",
+        "Maximum voltage rating",
+        "Maximum unit MVA / rating",
+        "Standards compliance (IEC/IEEE) & ISO certifications",
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "PUBLIC_SOURCE",
+      "last_verified": "2026-08-28",
+      "research_completeness": 4,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "https://www.chakira.com.tn/",
+        "capability_source": "",
+        "capability_note": ""
+      },
+      "factory_count": 1
     },
     {
       "id": "cmp:chang-yang-electric",
@@ -14916,7 +15538,6 @@
       "facility_ids": [
         "fac:elsewedy-electric-transformers:10th-of-ramadan-city",
         "fac:elsewedy-electric-transformers:cairo",
-        "fac:elsewedy-electric-transformers:dammam",
         "fac:elsewedy-electric-transformers:karachi"
       ],
       "factories": [
@@ -14972,7 +15593,157 @@
         "capability_source": "Elsewedy Electric Annual Report & Investor Factsheet",
         "capability_note": "Middle East and Africa transformer manufacturing line capacities disclosed in audited consolidated investor reports."
       },
-      "factory_count": 4
+      "factory_count": 3
+    },
+    {
+      "id": "cmp:elsewedy-electric-algeria",
+      "canonical_id": "cmp:elsewedy-electric-algeria",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "Elsewedy Electric Algeria",
+      "slug": "elsewedy-electric-algeria",
+      "country": "Algeria",
+      "region": "Africa",
+      "website": "https://www.elsewedyelectric.com/",
+      "headquarters": "New Cairo, Egypt",
+      "product_codes": [
+        "PT",
+        "DT",
+        "POWER",
+        "DISTRIBUTION",
+        "DRY_TYPE",
+        "CAST_RESIN",
+        "GSU",
+        "RENEWABLE",
+        "FURNACE",
+        "TRACTION",
+        "RECTIFIER",
+        "EARTHING",
+        "SPECIAL",
+        "PAD_MOUNTED",
+        "POLE_MOUNTED",
+        "MOBILE"
+      ],
+      "capability_labels": [
+        "Power transformer",
+        "Distribution transformer",
+        "Power transformer",
+        "Distribution transformer",
+        "Dry-type",
+        "Cast resin / dry-type",
+        "Generator step-up",
+        "Renewable / application-specific transformer",
+        "Furnace transformer",
+        "Traction transformer",
+        "Rectifier transformer",
+        "Earthing / grounding transformer",
+        "Special transformer",
+        "Pad-mounted",
+        "Pole-mounted",
+        "Mobile transformer"
+      ],
+      "transformer_types": {
+        "power": {
+          "__present": true,
+          "gsu": true
+        },
+        "distribution": {
+          "__present": true,
+          "pad_mounted": true,
+          "pole_mounted": true
+        },
+        "dry_type": {
+          "__present": true,
+          "cast_resin": true
+        },
+        "special": {
+          "__present": true,
+          "renewable": true,
+          "furnace": true,
+          "traction": true,
+          "rectifier": true,
+          "earthing": true,
+          "mobile": true
+        }
+      },
+      "voltage": {
+        "value": "400 kV",
+        "num": 400,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "126,000 MVA",
+        "num": 126000,
+        "unit": "MVA"
+      },
+      "certs": [
+        "IEC",
+        "CE"
+      ],
+      "testing_capability": null,
+      "facility_ids": [
+        "fac:elsewedy-electric-algeria:10th-of-ramadan-city",
+        "fac:elsewedy-electric-algeria:ain-defla",
+        "fac:elsewedy-electric-algeria:cairo",
+        "fac:elsewedy-electric-algeria:dammam",
+        "fac:elsewedy-electric-algeria:karachi"
+      ],
+      "factories": [
+        {
+          "city": "Ain Defla",
+          "country": "Algeria",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        },
+        {
+          "city": "10th of Ramadan City",
+          "country": "Egypt",
+          "produces": "power (~10,000 MVA annual), dry-type, oil-distribution",
+          "claim_type": "INDEPENDENTLY_SOURCED",
+          "source_url": "https://elsewedyelectric.com"
+        },
+        {
+          "city": "Karachi",
+          "country": "Pakistan",
+          "produces": "transformers (ex-Siemens plant, via Validus Engineering)",
+          "claim_type": "COMPANY_REPORTED",
+          "source_url": "https://elsewedyelectric.com"
+        }
+      ],
+      "capability_evidence": {
+        "products": "CONFIRMED",
+        "voltage": "CONFIRMED",
+        "mva": "CONFIRMED"
+      },
+      "evidence": "CONFIRMED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
+      "source_meta": {
+        "source_title": "Elsewedy Electric Annual Report & Investor Factsheet",
+        "source_type": "industry_publication",
+        "source_url": "https://www.elsewedyelectric.com/"
+      },
+      "completeness_score": 90,
+      "missing_fields": [
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
+      "last_verified": "2026-08-28",
+      "research_completeness": 6,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "https://www.elsewedyelectric.com/",
+        "capability_source": "Elsewedy Electric Annual Report & Investor Factsheet",
+        "capability_note": "Middle East and Africa transformer manufacturing line capacities disclosed in audited consolidated investor reports."
+      },
+      "factory_count": 5
     },
     {
       "id": "cmp:eltas-transformator",
@@ -18924,6 +19695,97 @@
       "verified": false,
       "sources": {
         "website": "https://www.fujielectric.com.ph/",
+        "capability_source": "",
+        "capability_note": ""
+      },
+      "factory_count": 1
+    },
+    {
+      "id": "cmp:g-transfo-algerie-general-transformer",
+      "canonical_id": "cmp:g-transfo-algerie-general-transformer",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "G-Transfo Algerie (General Transformer)",
+      "slug": "g-transfo-algerie-general-transformer",
+      "country": "Algeria",
+      "region": "Africa",
+      "website": "http://www.gtransfo.dz/",
+      "headquarters": "",
+      "product_codes": [
+        "DT",
+        "DRY"
+      ],
+      "capability_labels": [
+        "Distribution transformer",
+        "Dry-type"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {
+          "__present": true
+        },
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [
+        "fac:g-transfo-algerie-general-transformer:boufarik"
+      ],
+      "factories": [
+        {
+          "city": "Boufarik, Blida",
+          "country": "Algeria",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        }
+      ],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INFERRED",
+      "confidence": "LIMITED",
+      "source_meta": {
+        "source_title": "",
+        "source_type": "",
+        "source_url": "http://www.gtransfo.dz/"
+      },
+      "completeness_score": 50,
+      "missing_fields": [
+        "Headquarters address",
+        "Maximum voltage rating",
+        "Maximum unit MVA / rating",
+        "Standards compliance (IEC/IEEE) & ISO certifications",
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "PUBLIC_SOURCE",
+      "last_verified": "2026-08-28",
+      "research_completeness": 4,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "http://www.gtransfo.dz/",
         "capability_source": "",
         "capability_note": ""
       },
@@ -27542,6 +28404,97 @@
       "factory_count": 1
     },
     {
+      "id": "cmp:ingelec-groupe-sekkat",
+      "canonical_id": "cmp:ingelec-groupe-sekkat",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "Ingelec (Groupe Sekkat)",
+      "slug": "ingelec-groupe-sekkat",
+      "country": "Morocco",
+      "region": "Africa",
+      "website": "https://www.ingelec.ma/",
+      "headquarters": "",
+      "product_codes": [
+        "DT",
+        "DRY"
+      ],
+      "capability_labels": [
+        "Distribution transformer",
+        "Dry-type"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {
+          "__present": true
+        },
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [
+        "fac:ingelec-groupe-sekkat:casablanca"
+      ],
+      "factories": [
+        {
+          "city": "Casablanca",
+          "country": "Morocco",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        }
+      ],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INFERRED",
+      "confidence": "LIMITED",
+      "source_meta": {
+        "source_title": "",
+        "source_type": "",
+        "source_url": "https://www.ingelec.ma/"
+      },
+      "completeness_score": 50,
+      "missing_fields": [
+        "Headquarters address",
+        "Maximum voltage rating",
+        "Maximum unit MVA / rating",
+        "Standards compliance (IEC/IEEE) & ISO certifications",
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "PUBLIC_SOURCE",
+      "last_verified": "2026-08-28",
+      "research_completeness": 4,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "https://www.ingelec.ma/",
+        "capability_source": "",
+        "capability_note": ""
+      },
+      "factory_count": 1
+    },
+    {
       "id": "cmp:international-electric-iec",
       "canonical_id": "cmp:international-electric-iec",
       "roles": [
@@ -30264,6 +31217,184 @@
       "factory_count": 1
     },
     {
+      "id": "cmp:kahrakib-sonelgaz-group",
+      "canonical_id": "cmp:kahrakib-sonelgaz-group",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "Kahrakib (Sonelgaz Group)",
+      "slug": "kahrakib-sonelgaz-group",
+      "country": "Algeria",
+      "region": "Africa",
+      "website": "https://www.kahrakib.dz/",
+      "headquarters": "",
+      "product_codes": [
+        "PT",
+        "DT"
+      ],
+      "capability_labels": [
+        "Power transformer",
+        "Distribution transformer"
+      ],
+      "transformer_types": {
+        "power": {
+          "__present": true
+        },
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [
+        "fac:kahrakib-sonelgaz-group:kouba"
+      ],
+      "factories": [
+        {
+          "city": "Kouba, Algiers",
+          "country": "Algeria",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        }
+      ],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INFERRED",
+      "confidence": "LIMITED",
+      "source_meta": {
+        "source_title": "",
+        "source_type": "",
+        "source_url": "https://www.kahrakib.dz/"
+      },
+      "completeness_score": 50,
+      "missing_fields": [
+        "Headquarters address",
+        "Maximum voltage rating",
+        "Maximum unit MVA / rating",
+        "Standards compliance (IEC/IEEE) & ISO certifications",
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "PUBLIC_SOURCE",
+      "last_verified": "2026-08-28",
+      "research_completeness": 4,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "https://www.kahrakib.dz/",
+        "capability_source": "",
+        "capability_note": ""
+      },
+      "factory_count": 1
+    },
+    {
+      "id": "cmp:kahrif-sonelgaz-group",
+      "canonical_id": "cmp:kahrif-sonelgaz-group",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "Kahrif (Sonelgaz Group)",
+      "slug": "kahrif-sonelgaz-group",
+      "country": "Algeria",
+      "region": "Africa",
+      "website": "https://www.kahrif.dz/",
+      "headquarters": "",
+      "product_codes": [
+        "DT"
+      ],
+      "capability_labels": [
+        "Distribution transformer"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [
+        "fac:kahrif-sonelgaz-group:hussein-dey"
+      ],
+      "factories": [
+        {
+          "city": "Hussein Dey, Algiers",
+          "country": "Algeria",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        }
+      ],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INFERRED",
+      "confidence": "LIMITED",
+      "source_meta": {
+        "source_title": "",
+        "source_type": "",
+        "source_url": "https://www.kahrif.dz/"
+      },
+      "completeness_score": 50,
+      "missing_fields": [
+        "Headquarters address",
+        "Maximum voltage rating",
+        "Maximum unit MVA / rating",
+        "Standards compliance (IEC/IEEE) & ISO certifications",
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "PUBLIC_SOURCE",
+      "last_verified": "2026-08-28",
+      "research_completeness": 4,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "https://www.kahrif.dz/",
+        "capability_source": "",
+        "capability_note": ""
+      },
+      "factory_count": 1
+    },
+    {
       "id": "cmp:kanohar-electricals",
       "canonical_id": "cmp:kanohar-electricals",
       "roles": [
@@ -32078,6 +33209,93 @@
       "verified": false,
       "sources": {
         "website": "https://www.kpelectric.co.kr/",
+        "capability_source": "",
+        "capability_note": ""
+      },
+      "factory_count": 1
+    },
+    {
+      "id": "cmp:kresta-laurel-ltd",
+      "canonical_id": "cmp:kresta-laurel-ltd",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "Kresta Laurel Ltd",
+      "slug": "kresta-laurel-ltd",
+      "country": "Nigeria",
+      "region": "Africa",
+      "website": "https://krestalaurel.com/",
+      "headquarters": "",
+      "product_codes": [
+        "DT"
+      ],
+      "capability_labels": [
+        "Distribution transformer"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [
+        "fac:kresta-laurel-ltd:maryland"
+      ],
+      "factories": [
+        {
+          "city": "Maryland, Lagos",
+          "country": "Nigeria",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        }
+      ],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INFERRED",
+      "confidence": "LIMITED",
+      "source_meta": {
+        "source_title": "",
+        "source_type": "",
+        "source_url": "https://krestalaurel.com/"
+      },
+      "completeness_score": 50,
+      "missing_fields": [
+        "Headquarters address",
+        "Maximum voltage rating",
+        "Maximum unit MVA / rating",
+        "Standards compliance (IEC/IEEE) & ISO certifications",
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "PUBLIC_SOURCE",
+      "last_verified": "2026-08-28",
+      "research_completeness": 4,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "https://krestalaurel.com/",
         "capability_source": "",
         "capability_note": ""
       },
@@ -34887,6 +36105,97 @@
       "factory_count": 1
     },
     {
+      "id": "cmp:mei-maintenance-des-equipements-industriels-sonelgaz",
+      "canonical_id": "cmp:mei-maintenance-des-equipements-industriels-sonelgaz",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "MEI — Maintenance des Equipements Industriels (Sonelgaz)",
+      "slug": "mei-maintenance-des-equipements-industriels-sonelgaz",
+      "country": "Algeria",
+      "region": "Africa",
+      "website": "https://www.mei.dz/",
+      "headquarters": "",
+      "product_codes": [
+        "PT",
+        "DT"
+      ],
+      "capability_labels": [
+        "Power transformer",
+        "Distribution transformer"
+      ],
+      "transformer_types": {
+        "power": {
+          "__present": true
+        },
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [
+        "fac:mei-maintenance-des-equipements-industriels-sonelgaz:m-sila"
+      ],
+      "factories": [
+        {
+          "city": "M'Sila",
+          "country": "Algeria",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        }
+      ],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INFERRED",
+      "confidence": "LIMITED",
+      "source_meta": {
+        "source_title": "",
+        "source_type": "",
+        "source_url": "https://www.mei.dz/"
+      },
+      "completeness_score": 50,
+      "missing_fields": [
+        "Headquarters address",
+        "Maximum voltage rating",
+        "Maximum unit MVA / rating",
+        "Standards compliance (IEC/IEEE) & ISO certifications",
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "PUBLIC_SOURCE",
+      "last_verified": "2026-08-28",
+      "research_completeness": 4,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "https://www.mei.dz/",
+        "capability_source": "",
+        "capability_note": ""
+      },
+      "factory_count": 1
+    },
+    {
       "id": "cmp:meiden-singapore",
       "canonical_id": "cmp:meiden-singapore",
       "roles": [
@@ -35247,6 +36556,93 @@
       "factory_count": 1
     },
     {
+      "id": "cmp:memmcol-momas-electricity-meters-and-transformers",
+      "canonical_id": "cmp:memmcol-momas-electricity-meters-and-transformers",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "MEMMCOL (Momas Electricity Meters & Transformers)",
+      "slug": "memmcol-momas-electricity-meters-and-transformers",
+      "country": "Nigeria",
+      "region": "Africa",
+      "website": "https://www.momas.tv/",
+      "headquarters": "",
+      "product_codes": [
+        "DT"
+      ],
+      "capability_labels": [
+        "Distribution transformer"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [
+        "fac:memmcol-momas-electricity-meters-and-transformers:mowe"
+      ],
+      "factories": [
+        {
+          "city": "Mowe, Ogun State",
+          "country": "Nigeria",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        }
+      ],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INFERRED",
+      "confidence": "LIMITED",
+      "source_meta": {
+        "source_title": "",
+        "source_type": "",
+        "source_url": "https://www.momas.tv/"
+      },
+      "completeness_score": 50,
+      "missing_fields": [
+        "Headquarters address",
+        "Maximum voltage rating",
+        "Maximum unit MVA / rating",
+        "Standards compliance (IEC/IEEE) & ISO certifications",
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "PUBLIC_SOURCE",
+      "last_verified": "2026-08-28",
+      "research_completeness": 4,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "https://www.momas.tv/",
+        "capability_source": "",
+        "capability_note": ""
+      },
+      "factory_count": 1
+    },
+    {
       "id": "cmp:merytronic-ariadna-grid",
       "canonical_id": "cmp:merytronic-ariadna-grid",
       "roles": [
@@ -35598,6 +36994,93 @@
       "verified": false,
       "sources": {
         "website": "https://www.metsantrafo.com",
+        "capability_source": "",
+        "capability_note": ""
+      },
+      "factory_count": 1
+    },
+    {
+      "id": "cmp:metsec-cables-and-transformers-doshi-group",
+      "canonical_id": "cmp:metsec-cables-and-transformers-doshi-group",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "Metsec Cables & Transformers (Doshi Group)",
+      "slug": "metsec-cables-and-transformers-doshi-group",
+      "country": "Kenya",
+      "region": "Africa",
+      "website": "https://www.metseccables.com/",
+      "headquarters": "",
+      "product_codes": [
+        "DT"
+      ],
+      "capability_labels": [
+        "Distribution transformer"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [
+        "fac:metsec-cables-and-transformers-doshi-group:nairobi"
+      ],
+      "factories": [
+        {
+          "city": "Nairobi",
+          "country": "Kenya",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        }
+      ],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INFERRED",
+      "confidence": "LIMITED",
+      "source_meta": {
+        "source_title": "",
+        "source_type": "",
+        "source_url": "https://www.metseccables.com/"
+      },
+      "completeness_score": 50,
+      "missing_fields": [
+        "Headquarters address",
+        "Maximum voltage rating",
+        "Maximum unit MVA / rating",
+        "Standards compliance (IEC/IEEE) & ISO certifications",
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "PUBLIC_SOURCE",
+      "last_verified": "2026-08-28",
+      "research_completeness": 4,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "https://www.metseccables.com/",
         "capability_source": "",
         "capability_note": ""
       },
@@ -38824,6 +40307,7 @@
       "certs": [],
       "testing_capability": null,
       "facility_ids": [
+        "fac:ormazabal:casablanca",
         "fac:ormazabal:igorre-bizkaia"
       ],
       "factories": [
@@ -38866,6 +40350,93 @@
       "verified": false,
       "sources": {
         "website": "https://www.ormazabal.com",
+        "capability_source": "",
+        "capability_note": ""
+      },
+      "factory_count": 2
+    },
+    {
+      "id": "cmp:ormazabal-maroc",
+      "canonical_id": "cmp:ormazabal-maroc",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "Ormazabal Maroc",
+      "slug": "ormazabal-maroc",
+      "country": "Morocco",
+      "region": "Africa",
+      "website": "https://www.ormazabal.com/",
+      "headquarters": "",
+      "product_codes": [
+        "DT"
+      ],
+      "capability_labels": [
+        "Distribution transformer"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [
+        "fac:ormazabal-maroc:casablanca"
+      ],
+      "factories": [
+        {
+          "city": "Casablanca",
+          "country": "Morocco",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        }
+      ],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INFERRED",
+      "confidence": "LIMITED",
+      "source_meta": {
+        "source_title": "",
+        "source_type": "",
+        "source_url": "https://www.ormazabal.com/"
+      },
+      "completeness_score": 50,
+      "missing_fields": [
+        "Headquarters address",
+        "Maximum voltage rating",
+        "Maximum unit MVA / rating",
+        "Standards compliance (IEC/IEEE) & ISO certifications",
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "PUBLIC_SOURCE",
+      "last_verified": "2026-08-28",
+      "research_completeness": 4,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "https://www.ormazabal.com/",
         "capability_source": "",
         "capability_note": ""
       },
@@ -40466,6 +42037,97 @@
       "factory_count": 1
     },
     {
+      "id": "cmp:power-technics-ltd",
+      "canonical_id": "cmp:power-technics-ltd",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "Power Technics Ltd",
+      "slug": "power-technics-ltd",
+      "country": "Kenya",
+      "region": "Africa",
+      "website": "https://www.powertechnics.biz/",
+      "headquarters": "",
+      "product_codes": [
+        "DT",
+        "DRY"
+      ],
+      "capability_labels": [
+        "Distribution transformer",
+        "Dry-type"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {
+          "__present": true
+        },
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [
+        "fac:power-technics-ltd:nairobi"
+      ],
+      "factories": [
+        {
+          "city": "Nairobi",
+          "country": "Kenya",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        }
+      ],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INFERRED",
+      "confidence": "LIMITED",
+      "source_meta": {
+        "source_title": "",
+        "source_type": "",
+        "source_url": "https://www.powertechnics.biz/"
+      },
+      "completeness_score": 50,
+      "missing_fields": [
+        "Headquarters address",
+        "Maximum voltage rating",
+        "Maximum unit MVA / rating",
+        "Standards compliance (IEC/IEEE) & ISO certifications",
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "PUBLIC_SOURCE",
+      "last_verified": "2026-08-28",
+      "research_completeness": 4,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "https://www.powertechnics.biz/",
+        "capability_source": "",
+        "capability_note": ""
+      },
+      "factory_count": 1
+    },
+    {
       "id": "cmp:power-transformers-pty-ltd",
       "canonical_id": "cmp:power-transformers-pty-ltd",
       "roles": [
@@ -40816,6 +42478,97 @@
       "verified": false,
       "sources": {
         "website": "https://www.primemeiden.com",
+        "capability_source": "",
+        "capability_note": ""
+      },
+      "factory_count": 1
+    },
+    {
+      "id": "cmp:proforce-transformers-proforce-galaxy",
+      "canonical_id": "cmp:proforce-transformers-proforce-galaxy",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "Proforce Transformers (Proforce Galaxy)",
+      "slug": "proforce-transformers-proforce-galaxy",
+      "country": "Nigeria",
+      "region": "Africa",
+      "website": "https://proforcegalaxy.com/",
+      "headquarters": "",
+      "product_codes": [
+        "DT",
+        "PT"
+      ],
+      "capability_labels": [
+        "Distribution transformer",
+        "Power transformer"
+      ],
+      "transformer_types": {
+        "power": {
+          "__present": true
+        },
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [
+        "fac:proforce-transformers-proforce-galaxy:ode-remo"
+      ],
+      "factories": [
+        {
+          "city": "Ode Remo, Ogun State",
+          "country": "Nigeria",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        }
+      ],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INFERRED",
+      "confidence": "LIMITED",
+      "source_meta": {
+        "source_title": "",
+        "source_type": "",
+        "source_url": "https://proforcegalaxy.com/"
+      },
+      "completeness_score": 50,
+      "missing_fields": [
+        "Headquarters address",
+        "Maximum voltage rating",
+        "Maximum unit MVA / rating",
+        "Standards compliance (IEC/IEEE) & ISO certifications",
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "PUBLIC_SOURCE",
+      "last_verified": "2026-08-28",
+      "research_completeness": 4,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "https://proforcegalaxy.com/",
         "capability_source": "",
         "capability_note": ""
       },
@@ -44575,6 +46328,536 @@
       "factory_count": 1
     },
     {
+      "id": "cmp:sarl-belfar-belfar-transfo",
+      "canonical_id": "cmp:sarl-belfar-belfar-transfo",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "SARL Belfar (Belfar Transfo)",
+      "slug": "sarl-belfar-belfar-transfo",
+      "country": "Algeria",
+      "region": "Africa",
+      "website": "http://www.belfar-dz.com/",
+      "headquarters": "",
+      "product_codes": [
+        "DT"
+      ],
+      "capability_labels": [
+        "Distribution transformer"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [
+        "fac:sarl-belfar-belfar-transfo:bordj-bou-arreridj"
+      ],
+      "factories": [
+        {
+          "city": "Bordj Bou Arreridj",
+          "country": "Algeria",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        }
+      ],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INFERRED",
+      "confidence": "LIMITED",
+      "source_meta": {
+        "source_title": "",
+        "source_type": "",
+        "source_url": "http://www.belfar-dz.com/"
+      },
+      "completeness_score": 50,
+      "missing_fields": [
+        "Headquarters address",
+        "Maximum voltage rating",
+        "Maximum unit MVA / rating",
+        "Standards compliance (IEC/IEEE) & ISO certifications",
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "PUBLIC_SOURCE",
+      "last_verified": "2026-08-28",
+      "research_completeness": 4,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "http://www.belfar-dz.com/",
+        "capability_source": "",
+        "capability_note": ""
+      },
+      "factory_count": 1
+    },
+    {
+      "id": "cmp:sarl-etral",
+      "canonical_id": "cmp:sarl-etral",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "SARL ETRAL",
+      "slug": "sarl-etral",
+      "country": "Algeria",
+      "region": "Africa",
+      "website": "http://www.etral-dz.com/",
+      "headquarters": "",
+      "product_codes": [
+        "DT"
+      ],
+      "capability_labels": [
+        "Distribution transformer"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [
+        "fac:sarl-etral:batna"
+      ],
+      "factories": [
+        {
+          "city": "Batna",
+          "country": "Algeria",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        }
+      ],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INFERRED",
+      "confidence": "LIMITED",
+      "source_meta": {
+        "source_title": "",
+        "source_type": "",
+        "source_url": "http://www.etral-dz.com/"
+      },
+      "completeness_score": 50,
+      "missing_fields": [
+        "Headquarters address",
+        "Maximum voltage rating",
+        "Maximum unit MVA / rating",
+        "Standards compliance (IEC/IEEE) & ISO certifications",
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "PUBLIC_SOURCE",
+      "last_verified": "2026-08-28",
+      "research_completeness": 4,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "http://www.etral-dz.com/",
+        "capability_source": "",
+        "capability_note": ""
+      },
+      "factory_count": 1
+    },
+    {
+      "id": "cmp:sarl-intelec-algerie",
+      "canonical_id": "cmp:sarl-intelec-algerie",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "SARL Intelec Algerie",
+      "slug": "sarl-intelec-algerie",
+      "country": "Algeria",
+      "region": "Africa",
+      "website": "https://www.intelec-dz.com/",
+      "headquarters": "",
+      "product_codes": [
+        "DT",
+        "DRY"
+      ],
+      "capability_labels": [
+        "Distribution transformer",
+        "Dry-type"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {
+          "__present": true
+        },
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [
+        "fac:sarl-intelec-algerie:baba-hassen"
+      ],
+      "factories": [
+        {
+          "city": "Baba Hassen, Algiers",
+          "country": "Algeria",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        }
+      ],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INFERRED",
+      "confidence": "LIMITED",
+      "source_meta": {
+        "source_title": "",
+        "source_type": "",
+        "source_url": "https://www.intelec-dz.com/"
+      },
+      "completeness_score": 50,
+      "missing_fields": [
+        "Headquarters address",
+        "Maximum voltage rating",
+        "Maximum unit MVA / rating",
+        "Standards compliance (IEC/IEEE) & ISO certifications",
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "PUBLIC_SOURCE",
+      "last_verified": "2026-08-28",
+      "research_completeness": 4,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "https://www.intelec-dz.com/",
+        "capability_source": "",
+        "capability_note": ""
+      },
+      "factory_count": 1
+    },
+    {
+      "id": "cmp:sarl-kherfi-transformateurs-kherfi-electrique",
+      "canonical_id": "cmp:sarl-kherfi-transformateurs-kherfi-electrique",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "SARL Kherfi Transformateurs (Kherfi Electrique)",
+      "slug": "sarl-kherfi-transformateurs-kherfi-electrique",
+      "country": "Algeria",
+      "region": "Africa",
+      "website": "http://www.kherfi-electrique.dz/",
+      "headquarters": "",
+      "product_codes": [
+        "DT",
+        "DRY"
+      ],
+      "capability_labels": [
+        "Distribution transformer",
+        "Dry-type"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {
+          "__present": true
+        },
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [
+        "fac:sarl-kherfi-transformateurs-kherfi-electrique:el-eulma"
+      ],
+      "factories": [
+        {
+          "city": "El Eulma, Setif",
+          "country": "Algeria",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        }
+      ],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INFERRED",
+      "confidence": "LIMITED",
+      "source_meta": {
+        "source_title": "",
+        "source_type": "",
+        "source_url": "http://www.kherfi-electrique.dz/"
+      },
+      "completeness_score": 50,
+      "missing_fields": [
+        "Headquarters address",
+        "Maximum voltage rating",
+        "Maximum unit MVA / rating",
+        "Standards compliance (IEC/IEEE) & ISO certifications",
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "PUBLIC_SOURCE",
+      "last_verified": "2026-08-28",
+      "research_completeness": 4,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "http://www.kherfi-electrique.dz/",
+        "capability_source": "",
+        "capability_note": ""
+      },
+      "factory_count": 1
+    },
+    {
+      "id": "cmp:sarl-transfo-est-transformateurs-de-l-est",
+      "canonical_id": "cmp:sarl-transfo-est-transformateurs-de-l-est",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "SARL Transfo Est (Transformateurs de l'Est)",
+      "slug": "sarl-transfo-est-transformateurs-de-l-est",
+      "country": "Algeria",
+      "region": "Africa",
+      "website": "http://www.transfo-est.com/",
+      "headquarters": "",
+      "product_codes": [
+        "DT"
+      ],
+      "capability_labels": [
+        "Distribution transformer"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [
+        "fac:sarl-transfo-est-transformateurs-de-lest:constantine"
+      ],
+      "factories": [
+        {
+          "city": "Constantine",
+          "country": "Algeria",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        }
+      ],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INFERRED",
+      "confidence": "LIMITED",
+      "source_meta": {
+        "source_title": "",
+        "source_type": "",
+        "source_url": "http://www.transfo-est.com/"
+      },
+      "completeness_score": 50,
+      "missing_fields": [
+        "Headquarters address",
+        "Maximum voltage rating",
+        "Maximum unit MVA / rating",
+        "Standards compliance (IEC/IEEE) & ISO certifications",
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "PUBLIC_SOURCE",
+      "last_verified": "2026-08-28",
+      "research_completeness": 4,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "http://www.transfo-est.com/",
+        "capability_source": "",
+        "capability_note": ""
+      },
+      "factory_count": 1
+    },
+    {
+      "id": "cmp:sarl-transfo-ouest-transfo-ouest",
+      "canonical_id": "cmp:sarl-transfo-ouest-transfo-ouest",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "SARL Transfo Ouest (Transfo-Ouest)",
+      "slug": "sarl-transfo-ouest-transfo-ouest",
+      "country": "Algeria",
+      "region": "Africa",
+      "website": "https://www.transfo-ouest.dz/",
+      "headquarters": "",
+      "product_codes": [
+        "DT"
+      ],
+      "capability_labels": [
+        "Distribution transformer"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [
+        "fac:sarl-transfo-ouest-transfo-ouest:es-senia"
+      ],
+      "factories": [
+        {
+          "city": "Es-Senia, Oran",
+          "country": "Algeria",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        }
+      ],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INFERRED",
+      "confidence": "LIMITED",
+      "source_meta": {
+        "source_title": "",
+        "source_type": "",
+        "source_url": "https://www.transfo-ouest.dz/"
+      },
+      "completeness_score": 50,
+      "missing_fields": [
+        "Headquarters address",
+        "Maximum voltage rating",
+        "Maximum unit MVA / rating",
+        "Standards compliance (IEC/IEEE) & ISO certifications",
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "PUBLIC_SOURCE",
+      "last_verified": "2026-08-28",
+      "research_completeness": 4,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "https://www.transfo-ouest.dz/",
+        "capability_source": "",
+        "capability_note": ""
+      },
+      "factory_count": 1
+    },
+    {
       "id": "cmp:saudi-power-transformer-company-sptc",
       "canonical_id": "cmp:saudi-power-transformer-company-sptc",
       "roles": [
@@ -45386,6 +47669,98 @@
       "verified": false,
       "sources": {
         "website": "https://www.se.com/id",
+        "capability_source": "Schneider Electric Universal Registration Document",
+        "capability_note": "Medium-voltage distribution and dry-type transformer production capacity benchmarked in official annual registration filings."
+      },
+      "factory_count": 1
+    },
+    {
+      "id": "cmp:schneider-electric-nigeria",
+      "canonical_id": "cmp:schneider-electric-nigeria",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "Schneider Electric Nigeria",
+      "slug": "schneider-electric-nigeria",
+      "country": "Nigeria",
+      "region": "Africa",
+      "website": "https://www.se.com/ng/",
+      "headquarters": "",
+      "product_codes": [
+        "DT",
+        "DRY"
+      ],
+      "capability_labels": [
+        "Distribution transformer",
+        "Dry-type"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {
+          "__present": true
+        },
+        "special": {}
+      },
+      "voltage": {
+        "value": "36 kV",
+        "num": 36,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "250,000 MVA",
+        "num": 250000,
+        "unit": "MVA"
+      },
+      "certs": [
+        "IEC",
+        "CE",
+        "UL"
+      ],
+      "testing_capability": null,
+      "facility_ids": [
+        "fac:schneider-electric-nigeria:victoria-island"
+      ],
+      "factories": [
+        {
+          "city": "Victoria Island, Lagos",
+          "country": "Nigeria",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        }
+      ],
+      "capability_evidence": {
+        "products": "CONFIRMED",
+        "voltage": "CONFIRMED",
+        "mva": "CONFIRMED"
+      },
+      "evidence": "CONFIRMED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
+      "source_meta": {
+        "source_title": "Schneider Electric Universal Registration Document",
+        "source_type": "industry_publication",
+        "source_url": "https://www.se.com/ng/"
+      },
+      "completeness_score": 85,
+      "missing_fields": [
+        "Headquarters address",
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
+      "last_verified": "2026-08-28",
+      "research_completeness": 6,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "https://www.se.com/ng/",
         "capability_source": "Schneider Electric Universal Registration Document",
         "capability_note": "Medium-voltage distribution and dry-type transformer production capacity benchmarked in official annual registration filings."
       },
@@ -48316,6 +50691,95 @@
       "factory_count": 1
     },
     {
+      "id": "cmp:siame-societe-industrielle-d-appareillage-et-de-materiels-electriques",
+      "canonical_id": "cmp:siame-societe-industrielle-d-appareillage-et-de-materiels-electriques",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "SIAME (Societe Industrielle d'Appareillage et de Materiels Electriques)",
+      "slug": "siame-societe-industrielle-d-appareillage-et-de-materiels-electriques",
+      "country": "Tunisia",
+      "region": "Africa",
+      "website": "https://www.siame.com.tn/",
+      "headquarters": "",
+      "product_codes": [
+        "DT",
+        "INST"
+      ],
+      "capability_labels": [
+        "Distribution transformer",
+        "INST"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [
+        "fac:siame-societe-industrielle-dappareillage-et-de-materiels-electriques:grombalia"
+      ],
+      "factories": [
+        {
+          "city": "Grombalia, Nabeul",
+          "country": "Tunisia",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        }
+      ],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INFERRED",
+      "confidence": "LIMITED",
+      "source_meta": {
+        "source_title": "",
+        "source_type": "",
+        "source_url": "https://www.siame.com.tn/"
+      },
+      "completeness_score": 50,
+      "missing_fields": [
+        "Headquarters address",
+        "Maximum voltage rating",
+        "Maximum unit MVA / rating",
+        "Standards compliance (IEC/IEEE) & ISO certifications",
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "PUBLIC_SOURCE",
+      "last_verified": "2026-08-28",
+      "research_completeness": 4,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "https://www.siame.com.tn/",
+        "capability_source": "",
+        "capability_note": ""
+      },
+      "factory_count": 1
+    },
+    {
       "id": "cmp:sichuan-transformer-co-ltd",
       "canonical_id": "cmp:sichuan-transformer-co-ltd",
       "roles": [
@@ -49703,6 +52167,97 @@
       "verified": false,
       "sources": {
         "website": "https://www.spangpower.com/",
+        "capability_source": "",
+        "capability_note": ""
+      },
+      "factory_count": 1
+    },
+    {
+      "id": "cmp:specialised-power-systems-ltd-sps",
+      "canonical_id": "cmp:specialised-power-systems-ltd-sps",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "Specialised Power Systems Ltd (SPS)",
+      "slug": "specialised-power-systems-ltd-sps",
+      "country": "Kenya",
+      "region": "Africa",
+      "website": "https://www.specialisedpower.com/",
+      "headquarters": "",
+      "product_codes": [
+        "DT",
+        "DRY"
+      ],
+      "capability_labels": [
+        "Distribution transformer",
+        "Dry-type"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {
+          "__present": true
+        },
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [
+        "fac:specialised-power-systems-ltd-sps:nairobi"
+      ],
+      "factories": [
+        {
+          "city": "Nairobi",
+          "country": "Kenya",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        }
+      ],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INFERRED",
+      "confidence": "LIMITED",
+      "source_meta": {
+        "source_title": "",
+        "source_type": "",
+        "source_url": "https://www.specialisedpower.com/"
+      },
+      "completeness_score": 50,
+      "missing_fields": [
+        "Headquarters address",
+        "Maximum voltage rating",
+        "Maximum unit MVA / rating",
+        "Standards compliance (IEC/IEEE) & ISO certifications",
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "PUBLIC_SOURCE",
+      "last_verified": "2026-08-28",
+      "research_completeness": 4,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "https://www.specialisedpower.com/",
         "capability_source": "",
         "capability_note": ""
       },
@@ -57301,6 +59856,184 @@
       "factory_count": 1
     },
     {
+      "id": "cmp:transfo-maroc-industrie-tmi",
+      "canonical_id": "cmp:transfo-maroc-industrie-tmi",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "Transfo Maroc Industrie (TMI)",
+      "slug": "transfo-maroc-industrie-tmi",
+      "country": "Morocco",
+      "region": "Africa",
+      "website": "http://www.tmi.ma/",
+      "headquarters": "",
+      "product_codes": [
+        "DT"
+      ],
+      "capability_labels": [
+        "Distribution transformer"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [
+        "fac:transfo-maroc-industrie-tmi:ain-sebaa"
+      ],
+      "factories": [
+        {
+          "city": "Ain Sebaa, Casablanca",
+          "country": "Morocco",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        }
+      ],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INFERRED",
+      "confidence": "LIMITED",
+      "source_meta": {
+        "source_title": "",
+        "source_type": "",
+        "source_url": "http://www.tmi.ma/"
+      },
+      "completeness_score": 50,
+      "missing_fields": [
+        "Headquarters address",
+        "Maximum voltage rating",
+        "Maximum unit MVA / rating",
+        "Standards compliance (IEC/IEEE) & ISO certifications",
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "PUBLIC_SOURCE",
+      "last_verified": "2026-08-28",
+      "research_completeness": 4,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "http://www.tmi.ma/",
+        "capability_source": "",
+        "capability_note": ""
+      },
+      "factory_count": 1
+    },
+    {
+      "id": "cmp:transfo-plus-tunisie",
+      "canonical_id": "cmp:transfo-plus-tunisie",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "Transfo Plus Tunisie",
+      "slug": "transfo-plus-tunisie",
+      "country": "Tunisia",
+      "region": "Africa",
+      "website": "http://www.transfoplus.tn/",
+      "headquarters": "",
+      "product_codes": [
+        "DT",
+        "DRY"
+      ],
+      "capability_labels": [
+        "Distribution transformer",
+        "Dry-type"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {
+          "__present": true
+        },
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [
+        "fac:transfo-plus-tunisie:sfax"
+      ],
+      "factories": [
+        {
+          "city": "Sfax",
+          "country": "Tunisia",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        }
+      ],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INFERRED",
+      "confidence": "LIMITED",
+      "source_meta": {
+        "source_title": "",
+        "source_type": "",
+        "source_url": "http://www.transfoplus.tn/"
+      },
+      "completeness_score": 50,
+      "missing_fields": [
+        "Headquarters address",
+        "Maximum voltage rating",
+        "Maximum unit MVA / rating",
+        "Standards compliance (IEC/IEEE) & ISO certifications",
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "PUBLIC_SOURCE",
+      "last_verified": "2026-08-28",
+      "research_completeness": 4,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "http://www.transfoplus.tn/",
+        "capability_source": "",
+        "capability_note": ""
+      },
+      "factory_count": 1
+    },
+    {
       "id": "cmp:transfopower-industries",
       "canonical_id": "cmp:transfopower-industries",
       "roles": [
@@ -59401,6 +62134,93 @@
       "factory_count": 1
     },
     {
+      "id": "cmp:tts-tunisie-transformateurs-et-services",
+      "canonical_id": "cmp:tts-tunisie-transformateurs-et-services",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "TTS (Tunisie Transformateurs et Services)",
+      "slug": "tts-tunisie-transformateurs-et-services",
+      "country": "Tunisia",
+      "region": "Africa",
+      "website": "http://www.tts.com.tn/",
+      "headquarters": "",
+      "product_codes": [
+        "DT"
+      ],
+      "capability_labels": [
+        "Distribution transformer"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [
+        "fac:tts-tunisie-transformateurs-et-services:megrine"
+      ],
+      "factories": [
+        {
+          "city": "Megrine, Ben Arous",
+          "country": "Tunisia",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        }
+      ],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INFERRED",
+      "confidence": "LIMITED",
+      "source_meta": {
+        "source_title": "",
+        "source_type": "",
+        "source_url": "http://www.tts.com.tn/"
+      },
+      "completeness_score": 50,
+      "missing_fields": [
+        "Headquarters address",
+        "Maximum voltage rating",
+        "Maximum unit MVA / rating",
+        "Standards compliance (IEC/IEEE) & ISO certifications",
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "PUBLIC_SOURCE",
+      "last_verified": "2026-08-28",
+      "research_completeness": 4,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "http://www.tts.com.tn/",
+        "capability_source": "",
+        "capability_note": ""
+      },
+      "factory_count": 1
+    },
+    {
       "id": "cmp:tubos-trans-electric-tte",
       "canonical_id": "cmp:tubos-trans-electric-tte",
       "roles": [
@@ -59482,6 +62302,93 @@
       "verified": false,
       "sources": {
         "website": "https://tte.com.ar",
+        "capability_source": "",
+        "capability_note": ""
+      },
+      "factory_count": 1
+    },
+    {
+      "id": "cmp:tuvallec-maroc",
+      "canonical_id": "cmp:tuvallec-maroc",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "Tuvallec Maroc",
+      "slug": "tuvallec-maroc",
+      "country": "Morocco",
+      "region": "Africa",
+      "website": "https://www.tuvallec.com/",
+      "headquarters": "",
+      "product_codes": [
+        "DT"
+      ],
+      "capability_labels": [
+        "Distribution transformer"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [
+        "fac:tuvallec-maroc:berrechid"
+      ],
+      "factories": [
+        {
+          "city": "Berrechid, Casablanca",
+          "country": "Morocco",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        }
+      ],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INFERRED",
+      "confidence": "LIMITED",
+      "source_meta": {
+        "source_title": "",
+        "source_type": "",
+        "source_url": "https://www.tuvallec.com/"
+      },
+      "completeness_score": 50,
+      "missing_fields": [
+        "Headquarters address",
+        "Maximum voltage rating",
+        "Maximum unit MVA / rating",
+        "Standards compliance (IEC/IEEE) & ISO certifications",
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "PUBLIC_SOURCE",
+      "last_verified": "2026-08-28",
+      "research_completeness": 4,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "https://www.tuvallec.com/",
         "capability_source": "",
         "capability_note": ""
       },
@@ -60202,6 +63109,93 @@
       "verified": false,
       "sources": {
         "website": "https://upt.in",
+        "capability_source": "",
+        "capability_note": ""
+      },
+      "factory_count": 1
+    },
+    {
+      "id": "cmp:ur-state-company-ministry-of-industry-and-minerals",
+      "canonical_id": "cmp:ur-state-company-ministry-of-industry-and-minerals",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "Ur State Company (Ministry of Industry and Minerals)",
+      "slug": "ur-state-company-ministry-of-industry-and-minerals",
+      "country": "Iraq",
+      "region": "Middle East",
+      "website": "http://www.ur.industry.gov.iq/",
+      "headquarters": "",
+      "product_codes": [
+        "DT"
+      ],
+      "capability_labels": [
+        "Distribution transformer"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [
+        "fac:ur-state-company-ministry-of-industry-and-minerals:nasiriyah"
+      ],
+      "factories": [
+        {
+          "city": "Nasiriyah, Dhi Qar",
+          "country": "Iraq",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        }
+      ],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INFERRED",
+      "confidence": "LIMITED",
+      "source_meta": {
+        "source_title": "",
+        "source_type": "",
+        "source_url": "http://www.ur.industry.gov.iq/"
+      },
+      "completeness_score": 50,
+      "missing_fields": [
+        "Headquarters address",
+        "Maximum voltage rating",
+        "Maximum unit MVA / rating",
+        "Standards compliance (IEC/IEEE) & ISO certifications",
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "PUBLIC_SOURCE",
+      "last_verified": "2026-08-28",
+      "research_completeness": 4,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "http://www.ur.industry.gov.iq/",
         "capability_source": "",
         "capability_note": ""
       },
@@ -61098,6 +64092,93 @@
       "factory_count": 1
     },
     {
+      "id": "cmp:vijai-electricals-algeria-sonelgaz-jv",
+      "canonical_id": "cmp:vijai-electricals-algeria-sonelgaz-jv",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "Vijai Electricals Algeria (Sonelgaz JV)",
+      "slug": "vijai-electricals-algeria-sonelgaz-jv",
+      "country": "Algeria",
+      "region": "Africa",
+      "website": "https://www.vijaielectricals.com/",
+      "headquarters": "",
+      "product_codes": [
+        "DT"
+      ],
+      "capability_labels": [
+        "Distribution transformer"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [
+        "fac:vijai-electricals-algeria-sonelgaz-jv:azazga"
+      ],
+      "factories": [
+        {
+          "city": "Azazga, Tizi Ouzou",
+          "country": "Algeria",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        }
+      ],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INFERRED",
+      "confidence": "LIMITED",
+      "source_meta": {
+        "source_title": "",
+        "source_type": "",
+        "source_url": "https://www.vijaielectricals.com/"
+      },
+      "completeness_score": 50,
+      "missing_fields": [
+        "Headquarters address",
+        "Maximum voltage rating",
+        "Maximum unit MVA / rating",
+        "Standards compliance (IEC/IEEE) & ISO certifications",
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "PUBLIC_SOURCE",
+      "last_verified": "2026-08-28",
+      "research_completeness": 4,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "https://www.vijaielectricals.com/",
+        "capability_source": "",
+        "capability_note": ""
+      },
+      "factory_count": 1
+    },
+    {
       "id": "cmp:vijai-electricals-ltd",
       "canonical_id": "cmp:vijai-electricals-ltd",
       "roles": [
@@ -61141,6 +64222,7 @@
       "certs": [],
       "testing_capability": null,
       "facility_ids": [
+        "fac:vijai-electricals-ltd:azazga",
         "fac:vijai-electricals-ltd:hyderabad"
       ],
       "factories": [
@@ -61186,7 +64268,7 @@
         "capability_source": "",
         "capability_note": ""
       },
-      "factory_count": 1
+      "factory_count": 2
     },
     {
       "id": "cmp:vijay-transformers",
@@ -63951,6 +67033,97 @@
       "verified": false,
       "sources": {
         "website": "https://yangontransformer.com",
+        "capability_source": "",
+        "capability_note": ""
+      },
+      "factory_count": 1
+    },
+    {
+      "id": "cmp:yocean-group-kenya-power-transformer-plant",
+      "canonical_id": "cmp:yocean-group-kenya-power-transformer-plant",
+      "roles": [
+        "Transformer Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "Yocean Group (Kenya Power Transformer Plant)",
+      "slug": "yocean-group-kenya-power-transformer-plant",
+      "country": "Kenya",
+      "region": "Africa",
+      "website": "http://www.yoceangroup.com/",
+      "headquarters": "",
+      "product_codes": [
+        "DT",
+        "PT"
+      ],
+      "capability_labels": [
+        "Distribution transformer",
+        "Power transformer"
+      ],
+      "transformer_types": {
+        "power": {
+          "__present": true
+        },
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [
+        "fac:yocean-group-kenya-power-transformer-plant:athi-river"
+      ],
+      "factories": [
+        {
+          "city": "Athi River, Machakos",
+          "country": "Kenya",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        }
+      ],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INFERRED",
+      "confidence": "LIMITED",
+      "source_meta": {
+        "source_title": "",
+        "source_type": "",
+        "source_url": "http://www.yoceangroup.com/"
+      },
+      "completeness_score": 50,
+      "missing_fields": [
+        "Headquarters address",
+        "Maximum voltage rating",
+        "Maximum unit MVA / rating",
+        "Standards compliance (IEC/IEEE) & ISO certifications",
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "PUBLIC_SOURCE",
+      "last_verified": "2026-08-28",
+      "research_completeness": 4,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "http://www.yoceangroup.com/",
         "capability_source": "",
         "capability_note": ""
       },

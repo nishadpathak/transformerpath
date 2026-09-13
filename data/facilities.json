@@ -1,8 +1,8 @@
 {
   "$schema": "https://transformerpath.com/facilities.schema.json",
-  "generated_at": "2026-09-13T06:53:11.263Z",
-  "count": 891,
-  "public_count": 173,
+  "generated_at": "2026-09-13T12:14:57.436Z",
+  "count": 932,
+  "public_count": 175,
   "note": "count = every explicit plant record (census city or sourced). public_count = plants with sourced evidence (produces, source_url, or INDEPENDENTLY_SOURCED). HQ-clone facilities are not created.",
   "facilities": [
     {
@@ -530,6 +530,97 @@
       "confidence": "LIMITED"
     },
     {
+      "id": "fac:al-hilal-industrial-company:baghdad",
+      "company_id": "cmp:al-hilal-industrial-company",
+      "company_name": "Al-Hilal Industrial Company",
+      "facility_name": "Al-Hilal Industrial Company",
+      "city": "Baghdad",
+      "country": "Iraq",
+      "region": "Middle East",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DISTRIBUTION"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "http://www.alhilal-iq.com/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:al-mansour-state-company-for-electrical-industries:baghdad",
+      "company_id": "cmp:al-mansour-state-company-for-electrical-industries",
+      "company_name": "Al-Mansour State Company for Electrical Industries",
+      "facility_name": "Al-Mansour State Company for Electrical Industries",
+      "city": "Baghdad",
+      "country": "Iraq",
+      "region": "Middle East",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DISTRIBUTION"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "http://www.almansour.industry.gov.iq/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:al-zawraa-state-company:baghdad",
+      "company_id": "cmp:al-zawraa-state-company",
+      "company_name": "Al-Zawraa State Company",
+      "facility_name": "Al-Zawraa State Company",
+      "city": "Baghdad",
+      "country": "Iraq",
+      "region": "Middle East",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DISTRIBUTION",
+          "TR_POWER"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "http://www.alzawraa.industry.gov.iq/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
       "id": "fac:alageum-electric-group-kentau-uralsk-shymkent-aktau-plants:kentau-almaty",
       "company_id": "cmp:alageum-electric-group-kentau-uralsk-shymkent-aktau-plants",
       "company_name": "Alageum Electric Group (Kentau, Uralsk, Shymkent, Aktau plants)",
@@ -710,6 +801,68 @@
         "produces": ""
       },
       "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.alfanar.com/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:alfanar:casablanca",
+      "company_id": "cmp:alfanar",
+      "company_name": "alfanar",
+      "facility_name": "Alfanar Maroc",
+      "city": "Casablanca",
+      "country": "Morocco",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_POWER",
+          "TR_DISTRIBUTION"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.alfanar.com/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:alfanar-maroc:casablanca",
+      "company_id": "cmp:alfanar-maroc",
+      "company_name": "Alfanar Maroc",
+      "facility_name": "Alfanar Maroc — Casablanca",
+      "city": "Casablanca",
+      "country": "Morocco",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_POWER",
+          "TR_DISTRIBUTION"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
       "source_tier": "Tier C",
       "source_url": "https://www.alfanar.com/",
       "last_checked": "2026-08-28",
@@ -993,6 +1146,37 @@
       "confidence": "LIMITED"
     },
     {
+      "id": "fac:amimer-energie:seddouk",
+      "company_id": "cmp:amimer-energie",
+      "company_name": "Amimer Energie",
+      "facility_name": "Amimer Energie",
+      "city": "Seddouk, Bejaia",
+      "country": "Algeria",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DISTRIBUTION",
+          "TR_DRY_CAST"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.amimerenergie.com/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
       "id": "fac:ampcontrol-transformers:tomago",
       "company_id": "cmp:ampcontrol-transformers",
       "company_name": "Ampcontrol Transformers",
@@ -1263,6 +1447,36 @@
       "source": "TransformerPath census (site list; status unclassified)",
       "source_tier": "Tier C",
       "source_url": "https://www.ardantrafo.com/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:armese-power-solutions:ikeja",
+      "company_id": "cmp:armese-power-solutions",
+      "company_name": "Armese Power Solutions",
+      "facility_name": "Armese Power Solutions",
+      "city": "Ikeja, Lagos",
+      "country": "Nigeria",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DISTRIBUTION"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.armesepower.com/",
       "last_checked": "2026-08-28",
       "confidence": "LIMITED"
     },
@@ -2804,6 +3018,36 @@
       "source_url": "https://www.business-standard.com/",
       "last_checked": "2026-08-28",
       "confidence": "HIGH"
+    },
+    {
+      "id": "fac:chakira-cable-and-transformers-elloumi-group-coficab:ben-arous",
+      "company_id": "cmp:chakira-cable-and-transformers-elloumi-group-coficab",
+      "company_name": "Chakira Cable & Transformers (Elloumi Group / Coficab)",
+      "facility_name": "Chakira Cable & Transformers (Elloumi Group / Coficab)",
+      "city": "Ben Arous",
+      "country": "Tunisia",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DISTRIBUTION"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.chakira.com.tn/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
     },
     {
       "id": "fac:chang-yang-electric:new-taipei-city",
@@ -5390,68 +5634,6 @@
       "confidence": "HIGH"
     },
     {
-      "id": "fac:elsewedy-electric-transformers:dammam",
-      "company_id": "cmp:elsewedy-electric-transformers",
-      "company_name": "Elsewedy Electric (Transformers)",
-      "facility_name": "Elsewedy Electric (Kingdom of Saudi Arabia)",
-      "city": "Dammam",
-      "country": "Saudi Arabia",
-      "region": "Middle East",
-      "status": "UNCLEAR",
-      "claim_type": "",
-      "produces": "",
-      "public_count": false,
-      "capabilities": {
-        "transformer_types": [
-          "TR_POWER"
-        ],
-        "max_voltage_kv": null,
-        "max_mva": null,
-        "annual_mva_capacity": null,
-        "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [],
-        "test_capabilities": [],
-        "produces": ""
-      },
-      "source": "TransformerPath census (site list; status unclassified)",
-      "source_tier": "Tier C",
-      "source_url": "https://www.elsewedyelectric.com/",
-      "last_checked": "2026-08-28",
-      "confidence": "LIMITED"
-    },
-    {
-      "id": "fac:elsewedy-electric-transformers:cairo",
-      "company_id": "cmp:elsewedy-electric-transformers",
-      "company_name": "Elsewedy Electric (Transformers)",
-      "facility_name": "Elsewedy Electric (Transformers)",
-      "city": "Cairo",
-      "country": "Egypt",
-      "region": "Africa",
-      "status": "UNCLEAR",
-      "claim_type": "",
-      "produces": "",
-      "public_count": false,
-      "capabilities": {
-        "transformer_types": [
-          "TR_POWER",
-          "TR_DISTRIBUTION",
-          "TR_DRY_CAST"
-        ],
-        "max_voltage_kv": null,
-        "max_mva": null,
-        "annual_mva_capacity": null,
-        "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [],
-        "test_capabilities": [],
-        "produces": ""
-      },
-      "source": "TransformerPath census (site list; status unclassified)",
-      "source_tier": "Tier C",
-      "source_url": "https://www.elsewedyelectric.com/",
-      "last_checked": "2026-08-28",
-      "confidence": "LIMITED"
-    },
-    {
       "id": "fac:elsewedy-electric-transformers:10th-of-ramadan-city",
       "company_id": "cmp:elsewedy-electric-transformers",
       "company_name": "Elsewedy Electric (Transformers)",
@@ -5501,6 +5683,55 @@
       "confidence": "HIGH"
     },
     {
+      "id": "fac:elsewedy-electric-transformers:cairo",
+      "company_id": "cmp:elsewedy-electric-transformers",
+      "company_name": "Elsewedy Electric (Transformers)",
+      "facility_name": "Elsewedy Electric (Transformers) — Cairo",
+      "city": "Cairo",
+      "country": "Egypt",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_POWER",
+          "TR_DISTRIBUTION",
+          "TR_DRY_CAST",
+          "TR_POWER",
+          "TR_DISTRIBUTION",
+          "TR_DRY_CAST",
+          "TR_DRY_CAST",
+          "TR_GSU",
+          "TR_SPEC_RENEWABLE",
+          "TR_FURNACE",
+          "TR_TRACTION",
+          "TR_RECTIFIER",
+          "TR_SPEC_EARTHING",
+          "SPECIAL",
+          "PAD_MOUNTED",
+          "POLE_MOUNTED",
+          "TR_SPEC_MOBILE"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [
+          "IEC",
+          "CE"
+        ],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.elsewedyelectric.com/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
       "id": "fac:elsewedy-electric-transformers:karachi",
       "company_id": "cmp:elsewedy-electric-transformers",
       "company_name": "Elsewedy Electric (Transformers)",
@@ -5517,6 +5748,195 @@
           "TR_POWER",
           "TR_DISTRIBUTION",
           "TR_DRY_CAST",
+          "TR_POWER",
+          "TR_DISTRIBUTION",
+          "TR_DRY_CAST",
+          "TR_DRY_CAST",
+          "TR_GSU",
+          "TR_SPEC_RENEWABLE",
+          "TR_FURNACE",
+          "TR_TRACTION",
+          "TR_RECTIFIER",
+          "TR_SPEC_EARTHING",
+          "SPECIAL",
+          "PAD_MOUNTED",
+          "POLE_MOUNTED",
+          "TR_SPEC_MOBILE"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [
+          "IEC",
+          "CE"
+        ],
+        "test_capabilities": [],
+        "produces": "transformers (ex-Siemens plant, via Validus Engineering)"
+      },
+      "source": "Company intelligence store (sourced plant)",
+      "source_tier": "Tier C",
+      "source_url": "https://elsewedyelectric.com",
+      "last_checked": "2026-08-28",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "fac:elsewedy-electric-algeria:dammam",
+      "company_id": "cmp:elsewedy-electric-algeria",
+      "company_name": "Elsewedy Electric Algeria",
+      "facility_name": "Elsewedy Electric (Kingdom of Saudi Arabia)",
+      "city": "Dammam",
+      "country": "Saudi Arabia",
+      "region": "Middle East",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_POWER"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.elsewedyelectric.com/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:elsewedy-electric-algeria:cairo",
+      "company_id": "cmp:elsewedy-electric-algeria",
+      "company_name": "Elsewedy Electric Algeria",
+      "facility_name": "Elsewedy Electric (Transformers)",
+      "city": "Cairo",
+      "country": "Egypt",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_POWER",
+          "TR_DISTRIBUTION",
+          "TR_DRY_CAST"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.elsewedyelectric.com/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:elsewedy-electric-algeria:ain-defla",
+      "company_id": "cmp:elsewedy-electric-algeria",
+      "company_name": "Elsewedy Electric Algeria",
+      "facility_name": "Elsewedy Electric Algeria",
+      "city": "Ain Defla",
+      "country": "Algeria",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_POWER",
+          "TR_DISTRIBUTION"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.elsewedyelectric.com/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:elsewedy-electric-algeria:10th-of-ramadan-city",
+      "company_id": "cmp:elsewedy-electric-algeria",
+      "company_name": "Elsewedy Electric Algeria",
+      "facility_name": "Elsewedy Electric Algeria — 10th of Ramadan City",
+      "city": "10th of Ramadan City",
+      "country": "Egypt",
+      "region": "Africa",
+      "status": "OPERATIONAL",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "produces": "power (~10,000 MVA annual), dry-type, oil-distribution",
+      "public_count": true,
+      "capabilities": {
+        "transformer_types": [
+          "TR_POWER",
+          "TR_DISTRIBUTION",
+          "TR_POWER",
+          "TR_DISTRIBUTION",
+          "TR_DRY_CAST",
+          "TR_DRY_CAST",
+          "TR_GSU",
+          "TR_SPEC_RENEWABLE",
+          "TR_FURNACE",
+          "TR_TRACTION",
+          "TR_RECTIFIER",
+          "TR_SPEC_EARTHING",
+          "SPECIAL",
+          "PAD_MOUNTED",
+          "POLE_MOUNTED",
+          "TR_SPEC_MOBILE"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [
+          "IEC",
+          "CE"
+        ],
+        "test_capabilities": [],
+        "produces": "power (~10,000 MVA annual), dry-type, oil-distribution"
+      },
+      "source": "Company intelligence store (sourced plant)",
+      "source_tier": "Tier A",
+      "source_url": "https://elsewedyelectric.com",
+      "last_checked": "2026-08-28",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "fac:elsewedy-electric-algeria:karachi",
+      "company_id": "cmp:elsewedy-electric-algeria",
+      "company_name": "Elsewedy Electric Algeria",
+      "facility_name": "Elsewedy Electric Algeria — Karachi",
+      "city": "Karachi",
+      "country": "Pakistan",
+      "region": "Africa",
+      "status": "OPERATIONAL",
+      "claim_type": "COMPANY_REPORTED",
+      "produces": "transformers (ex-Siemens plant, via Validus Engineering)",
+      "public_count": true,
+      "capabilities": {
+        "transformer_types": [
+          "TR_POWER",
+          "TR_DISTRIBUTION",
           "TR_POWER",
           "TR_DISTRIBUTION",
           "TR_DRY_CAST",
@@ -6927,6 +7347,37 @@
       "source": "TransformerPath census (site list; status unclassified)",
       "source_tier": "Tier C",
       "source_url": "https://www.fujielectric.com.ph/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:g-transfo-algerie-general-transformer:boufarik",
+      "company_id": "cmp:g-transfo-algerie-general-transformer",
+      "company_name": "G-Transfo Algerie (General Transformer)",
+      "facility_name": "G-Transfo Algerie (General Transformer)",
+      "city": "Boufarik, Blida",
+      "country": "Algeria",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DISTRIBUTION",
+          "TR_DRY_CAST"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "http://www.gtransfo.dz/",
       "last_checked": "2026-08-28",
       "confidence": "LIMITED"
     },
@@ -14182,6 +14633,37 @@
       "confidence": "LIMITED"
     },
     {
+      "id": "fac:ingelec-groupe-sekkat:casablanca",
+      "company_id": "cmp:ingelec-groupe-sekkat",
+      "company_name": "Ingelec (Groupe Sekkat)",
+      "facility_name": "Ingelec (Groupe Sekkat)",
+      "city": "Casablanca",
+      "country": "Morocco",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DISTRIBUTION",
+          "TR_DRY_CAST"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.ingelec.ma/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
       "id": "fac:international-electric-iec:eumseong",
       "company_id": "cmp:international-electric-iec",
       "company_name": "International Electric (IEC)",
@@ -15110,6 +15592,67 @@
       "confidence": "LIMITED"
     },
     {
+      "id": "fac:kahrakib-sonelgaz-group:kouba",
+      "company_id": "cmp:kahrakib-sonelgaz-group",
+      "company_name": "Kahrakib (Sonelgaz Group)",
+      "facility_name": "Kahrakib (Sonelgaz Group)",
+      "city": "Kouba, Algiers",
+      "country": "Algeria",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_POWER",
+          "TR_DISTRIBUTION"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.kahrakib.dz/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:kahrif-sonelgaz-group:hussein-dey",
+      "company_id": "cmp:kahrif-sonelgaz-group",
+      "company_name": "Kahrif (Sonelgaz Group)",
+      "facility_name": "Kahrif (Sonelgaz Group)",
+      "city": "Hussein Dey, Algiers",
+      "country": "Algeria",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DISTRIBUTION"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.kahrif.dz/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
       "id": "fac:kanohar-electricals:meerut",
       "company_id": "cmp:kanohar-electricals",
       "company_name": "Kanohar Electricals",
@@ -15726,6 +16269,36 @@
       "source": "TransformerPath census (site list; status unclassified)",
       "source_tier": "Tier C",
       "source_url": "https://www.kpelectric.co.kr/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:kresta-laurel-ltd:maryland",
+      "company_id": "cmp:kresta-laurel-ltd",
+      "company_name": "Kresta Laurel Ltd",
+      "facility_name": "Kresta Laurel Ltd",
+      "city": "Maryland, Lagos",
+      "country": "Nigeria",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DISTRIBUTION"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "https://krestalaurel.com/",
       "last_checked": "2026-08-28",
       "confidence": "LIMITED"
     },
@@ -16716,6 +17289,37 @@
       "confidence": "LIMITED"
     },
     {
+      "id": "fac:mei-maintenance-des-equipements-industriels-sonelgaz:m-sila",
+      "company_id": "cmp:mei-maintenance-des-equipements-industriels-sonelgaz",
+      "company_name": "MEI — Maintenance des Equipements Industriels (Sonelgaz)",
+      "facility_name": "MEI — Maintenance des Equipements Industriels (Sonelgaz)",
+      "city": "M'Sila",
+      "country": "Algeria",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_POWER",
+          "TR_DISTRIBUTION"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.mei.dz/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
       "id": "fac:meiden-singapore:singapore",
       "company_id": "cmp:meiden-singapore",
       "company_name": "Meiden Singapore",
@@ -16839,6 +17443,36 @@
       "confidence": "LIMITED"
     },
     {
+      "id": "fac:memmcol-momas-electricity-meters-and-transformers:mowe",
+      "company_id": "cmp:memmcol-momas-electricity-meters-and-transformers",
+      "company_name": "MEMMCOL (Momas Electricity Meters & Transformers)",
+      "facility_name": "MEMMCOL (Momas Electricity Meters & Transformers)",
+      "city": "Mowe, Ogun State",
+      "country": "Nigeria",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DISTRIBUTION"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.momas.tv/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
       "id": "fac:merytronic-ariadna-grid:amorebieta",
       "company_id": "cmp:merytronic-ariadna-grid",
       "company_name": "Merytronic / Ariadna Grid",
@@ -16957,6 +17591,36 @@
       "source": "TransformerPath census (site list; status unclassified)",
       "source_tier": "Tier C",
       "source_url": "https://www.metsantrafo.com",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:metsec-cables-and-transformers-doshi-group:nairobi",
+      "company_id": "cmp:metsec-cables-and-transformers-doshi-group",
+      "company_name": "Metsec Cables & Transformers (Doshi Group)",
+      "facility_name": "Metsec Cables & Transformers (Doshi Group)",
+      "city": "Nairobi",
+      "country": "Kenya",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DISTRIBUTION"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.metseccables.com/",
       "last_checked": "2026-08-28",
       "confidence": "LIMITED"
     },
@@ -18258,6 +18922,66 @@
       "confidence": "LIMITED"
     },
     {
+      "id": "fac:ormazabal:casablanca",
+      "company_id": "cmp:ormazabal",
+      "company_name": "Ormazabal",
+      "facility_name": "Ormazabal Maroc",
+      "city": "Casablanca",
+      "country": "Morocco",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DISTRIBUTION"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.ormazabal.com/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:ormazabal-maroc:casablanca",
+      "company_id": "cmp:ormazabal-maroc",
+      "company_name": "Ormazabal Maroc",
+      "facility_name": "Ormazabal Maroc — Casablanca",
+      "city": "Casablanca",
+      "country": "Morocco",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DISTRIBUTION"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.ormazabal.com/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
       "id": "fac:otc-services:louisville",
       "company_id": "cmp:otc-services",
       "company_name": "OTC Services",
@@ -18805,6 +19529,37 @@
       "confidence": "LIMITED"
     },
     {
+      "id": "fac:power-technics-ltd:nairobi",
+      "company_id": "cmp:power-technics-ltd",
+      "company_name": "Power Technics Ltd",
+      "facility_name": "Power Technics Ltd",
+      "city": "Nairobi",
+      "country": "Kenya",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DISTRIBUTION",
+          "TR_DRY_CAST"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.powertechnics.biz/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
       "id": "fac:power-transformers-pty-ltd:cape-town",
       "company_id": "cmp:power-transformers-pty-ltd",
       "company_name": "Power Transformers (Pty) Ltd",
@@ -18923,6 +19678,37 @@
       "source": "TransformerPath census (site list; status unclassified)",
       "source_tier": "Tier C",
       "source_url": "https://www.primemeiden.com",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:proforce-transformers-proforce-galaxy:ode-remo",
+      "company_id": "cmp:proforce-transformers-proforce-galaxy",
+      "company_name": "Proforce Transformers (Proforce Galaxy)",
+      "facility_name": "Proforce Transformers (Proforce Galaxy)",
+      "city": "Ode Remo, Ogun State",
+      "country": "Nigeria",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DISTRIBUTION",
+          "TR_POWER"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "https://proforcegalaxy.com/",
       "last_checked": "2026-08-28",
       "confidence": "LIMITED"
     },
@@ -20326,6 +21112,188 @@
       "confidence": "LIMITED"
     },
     {
+      "id": "fac:sarl-belfar-belfar-transfo:bordj-bou-arreridj",
+      "company_id": "cmp:sarl-belfar-belfar-transfo",
+      "company_name": "SARL Belfar (Belfar Transfo)",
+      "facility_name": "SARL Belfar (Belfar Transfo)",
+      "city": "Bordj Bou Arreridj",
+      "country": "Algeria",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DISTRIBUTION"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "http://www.belfar-dz.com/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:sarl-etral:batna",
+      "company_id": "cmp:sarl-etral",
+      "company_name": "SARL ETRAL",
+      "facility_name": "SARL ETRAL",
+      "city": "Batna",
+      "country": "Algeria",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DISTRIBUTION"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "http://www.etral-dz.com/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:sarl-intelec-algerie:baba-hassen",
+      "company_id": "cmp:sarl-intelec-algerie",
+      "company_name": "SARL Intelec Algerie",
+      "facility_name": "SARL Intelec Algerie",
+      "city": "Baba Hassen, Algiers",
+      "country": "Algeria",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DISTRIBUTION",
+          "TR_DRY_CAST"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.intelec-dz.com/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:sarl-kherfi-transformateurs-kherfi-electrique:el-eulma",
+      "company_id": "cmp:sarl-kherfi-transformateurs-kherfi-electrique",
+      "company_name": "SARL Kherfi Transformateurs (Kherfi Electrique)",
+      "facility_name": "SARL Kherfi Transformateurs (Kherfi Electrique)",
+      "city": "El Eulma, Setif",
+      "country": "Algeria",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DISTRIBUTION",
+          "TR_DRY_CAST"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "http://www.kherfi-electrique.dz/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:sarl-transfo-est-transformateurs-de-lest:constantine",
+      "company_id": "cmp:sarl-transfo-est-transformateurs-de-lest",
+      "company_name": "SARL Transfo Est (Transformateurs de l'Est)",
+      "facility_name": "SARL Transfo Est (Transformateurs de l'Est)",
+      "city": "Constantine",
+      "country": "Algeria",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DISTRIBUTION"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "http://www.transfo-est.com/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:sarl-transfo-ouest-transfo-ouest:es-senia",
+      "company_id": "cmp:sarl-transfo-ouest-transfo-ouest",
+      "company_name": "SARL Transfo Ouest (Transfo-Ouest)",
+      "facility_name": "SARL Transfo Ouest (Transfo-Ouest)",
+      "city": "Es-Senia, Oran",
+      "country": "Algeria",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DISTRIBUTION"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.transfo-ouest.dz/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
       "id": "fac:saudi-power-transformer-company-sptc:dammam",
       "company_id": "cmp:saudi-power-transformer-company-sptc",
       "company_name": "Saudi Power Transformer Company (SPTC)",
@@ -20599,6 +21567,37 @@
       "source": "TransformerPath census (site list; status unclassified)",
       "source_tier": "Tier C",
       "source_url": "https://www.se.com/id",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:schneider-electric-nigeria:victoria-island",
+      "company_id": "cmp:schneider-electric-nigeria",
+      "company_name": "Schneider Electric Nigeria",
+      "facility_name": "Schneider Electric Nigeria",
+      "city": "Victoria Island, Lagos",
+      "country": "Nigeria",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DISTRIBUTION",
+          "TR_DRY_CAST"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.se.com/ng/",
       "last_checked": "2026-08-28",
       "confidence": "LIMITED"
     },
@@ -21689,6 +22688,37 @@
       "source": "TransformerPath census (site list; status unclassified)",
       "source_tier": "Tier C",
       "source_url": "https://www.ssel.net/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:siame-societe-industrielle-dappareillage-et-de-materiels-electriques:grombalia",
+      "company_id": "cmp:siame-societe-industrielle-dappareillage-et-de-materiels-electriques",
+      "company_name": "SIAME (Societe Industrielle d'Appareillage et de Materiels Electriques)",
+      "facility_name": "SIAME (Societe Industrielle d'Appareillage et de Materiels Electriques)",
+      "city": "Grombalia, Nabeul",
+      "country": "Tunisia",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DISTRIBUTION",
+          "INST"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.siame.com.tn/",
       "last_checked": "2026-08-28",
       "confidence": "LIMITED"
     },
@@ -22887,6 +23917,37 @@
       "source": "TransformerPath census (site list; status unclassified)",
       "source_tier": "Tier C",
       "source_url": "https://www.spangpower.com/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:specialised-power-systems-ltd-sps:nairobi",
+      "company_id": "cmp:specialised-power-systems-ltd-sps",
+      "company_name": "Specialised Power Systems Ltd (SPS)",
+      "facility_name": "Specialised Power Systems Ltd (SPS)",
+      "city": "Nairobi",
+      "country": "Kenya",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DISTRIBUTION",
+          "TR_DRY_CAST"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.specialisedpower.com/",
       "last_checked": "2026-08-28",
       "confidence": "LIMITED"
     },
@@ -25610,6 +26671,67 @@
       "confidence": "LIMITED"
     },
     {
+      "id": "fac:transfo-maroc-industrie-tmi:ain-sebaa",
+      "company_id": "cmp:transfo-maroc-industrie-tmi",
+      "company_name": "Transfo Maroc Industrie (TMI)",
+      "facility_name": "Transfo Maroc Industrie (TMI)",
+      "city": "Ain Sebaa, Casablanca",
+      "country": "Morocco",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DISTRIBUTION"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "http://www.tmi.ma/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:transfo-plus-tunisie:sfax",
+      "company_id": "cmp:transfo-plus-tunisie",
+      "company_name": "Transfo Plus Tunisie",
+      "facility_name": "Transfo Plus Tunisie",
+      "city": "Sfax",
+      "country": "Tunisia",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DISTRIBUTION",
+          "TR_DRY_CAST"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "http://www.transfoplus.tn/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
       "id": "fac:transfopower-industries:lahore",
       "company_id": "cmp:transfopower-industries",
       "company_name": "Transfopower Industries",
@@ -26430,6 +27552,36 @@
       "confidence": "LIMITED"
     },
     {
+      "id": "fac:tts-tunisie-transformateurs-et-services:megrine",
+      "company_id": "cmp:tts-tunisie-transformateurs-et-services",
+      "company_name": "TTS (Tunisie Transformateurs et Services)",
+      "facility_name": "TTS (Tunisie Transformateurs et Services)",
+      "city": "Megrine, Ben Arous",
+      "country": "Tunisia",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DISTRIBUTION"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "http://www.tts.com.tn/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
       "id": "fac:tubos-trans-electric-tte:buenos-aires",
       "company_id": "cmp:tubos-trans-electric-tte",
       "company_name": "Tubos Trans Electric (TTE)",
@@ -26456,6 +27608,36 @@
       "source": "TransformerPath census (site list; status unclassified)",
       "source_tier": "Tier C",
       "source_url": "https://tte.com.ar",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:tuvallec-maroc:berrechid",
+      "company_id": "cmp:tuvallec-maroc",
+      "company_name": "Tuvallec Maroc",
+      "facility_name": "Tuvallec Maroc",
+      "city": "Berrechid, Casablanca",
+      "country": "Morocco",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DISTRIBUTION"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.tuvallec.com/",
       "last_checked": "2026-08-28",
       "confidence": "LIMITED"
     },
@@ -26702,6 +27884,36 @@
       "source": "TransformerPath census (site list; status unclassified)",
       "source_tier": "Tier C",
       "source_url": "https://upt.in",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:ur-state-company-ministry-of-industry-and-minerals:nasiriyah",
+      "company_id": "cmp:ur-state-company-ministry-of-industry-and-minerals",
+      "company_name": "Ur State Company (Ministry of Industry and Minerals)",
+      "facility_name": "Ur State Company (Ministry of Industry and Minerals)",
+      "city": "Nasiriyah, Dhi Qar",
+      "country": "Iraq",
+      "region": "Middle East",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DISTRIBUTION"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "http://www.ur.industry.gov.iq/",
       "last_checked": "2026-08-28",
       "confidence": "LIMITED"
     },
@@ -27007,6 +28219,66 @@
       "source": "TransformerPath census (site list; status unclassified)",
       "source_tier": "Tier C",
       "source_url": "http://vijaielectricals.com",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:vijai-electricals-algeria-sonelgaz-jv:azazga",
+      "company_id": "cmp:vijai-electricals-algeria-sonelgaz-jv",
+      "company_name": "Vijai Electricals Algeria (Sonelgaz JV)",
+      "facility_name": "Vijai Electricals Algeria (Sonelgaz JV) — Azazga, Tizi Ouzou",
+      "city": "Azazga, Tizi Ouzou",
+      "country": "Algeria",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DISTRIBUTION"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.vijaielectricals.com/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:vijai-electricals-ltd:azazga",
+      "company_id": "cmp:vijai-electricals-ltd",
+      "company_name": "Vijai Electricals Ltd",
+      "facility_name": "Vijai Electricals Algeria (Sonelgaz JV)",
+      "city": "Azazga, Tizi Ouzou",
+      "country": "Algeria",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DISTRIBUTION"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.vijaielectricals.com/",
       "last_checked": "2026-08-28",
       "confidence": "LIMITED"
     },
@@ -28454,6 +29726,37 @@
       "source": "TransformerPath census (site list; status unclassified)",
       "source_tier": "Tier C",
       "source_url": "https://yangontransformer.com",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:yocean-group-kenya-power-transformer-plant:athi-river",
+      "company_id": "cmp:yocean-group-kenya-power-transformer-plant",
+      "company_name": "Yocean Group (Kenya Power Transformer Plant)",
+      "facility_name": "Yocean Group (Kenya Power Transformer Plant)",
+      "city": "Athi River, Machakos",
+      "country": "Kenya",
+      "region": "Africa",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DISTRIBUTION",
+          "TR_POWER"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "http://www.yoceangroup.com/",
       "last_checked": "2026-08-28",
       "confidence": "LIMITED"
     },

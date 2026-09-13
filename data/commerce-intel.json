@@ -1,10 +1,10 @@
 {
   "$schema": "https://transformerpath.com/commerce-intel.schema.json",
-  "generated": "2026-09-13T06:47:40.341Z",
+  "generated": "2026-09-13T12:15:00.035Z",
   "honesty_note": "Revenue and conversion figures are NOT shown because live Stripe/Supabase transaction data is not available in this static build. No revenue, no conversion rate and no pipeline value are fabricated. The figures below are real platform-scale and prospect signals derived from the canonical datasets.",
   "metrics": {
     "platform_scale": {
-      "manufacturers": 709,
+      "manufacturers": 744,
       "projects": 306,
       "tenders": 150,
       "open_tenders": 21,
@@ -12,11 +12,23 @@
       "events": 295
     },
     "prospect_signals": {
-      "supplier_prospects_with_website": 698,
+      "supplier_prospects_with_website": 733,
       "upcoming_events": 181
     }
   },
   "supplier_prospects": [
+    {
+      "name": "Amimer Energie",
+      "country": "Algeria",
+      "region": "Africa",
+      "city": "Seddouk, Bejaia",
+      "categories": [
+        "DT",
+        "DRY"
+      ],
+      "website": "https://www.amimerenergie.com/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
     {
       "name": "Electro-Industries (ENEL — Sonelgaz group)",
       "country": "Algeria",
@@ -27,6 +39,144 @@
         "DT"
       ],
       "website": "https://electro-industries.dz/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Elsewedy Electric Algeria",
+      "country": "Algeria",
+      "region": "Africa",
+      "city": "Ain Defla",
+      "categories": [
+        "PT",
+        "DT"
+      ],
+      "website": "https://www.elsewedyelectric.com/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "G-Transfo Algerie (General Transformer)",
+      "country": "Algeria",
+      "region": "Africa",
+      "city": "Boufarik, Blida",
+      "categories": [
+        "DT",
+        "DRY"
+      ],
+      "website": "http://www.gtransfo.dz/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Kahrakib (Sonelgaz Group)",
+      "country": "Algeria",
+      "region": "Africa",
+      "city": "Kouba, Algiers",
+      "categories": [
+        "PT",
+        "DT"
+      ],
+      "website": "https://www.kahrakib.dz/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Kahrif (Sonelgaz Group)",
+      "country": "Algeria",
+      "region": "Africa",
+      "city": "Hussein Dey, Algiers",
+      "categories": [
+        "DT"
+      ],
+      "website": "https://www.kahrif.dz/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "MEI — Maintenance des Equipements Industriels (Sonelgaz)",
+      "country": "Algeria",
+      "region": "Africa",
+      "city": "M'Sila",
+      "categories": [
+        "PT",
+        "DT"
+      ],
+      "website": "https://www.mei.dz/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "SARL Belfar (Belfar Transfo)",
+      "country": "Algeria",
+      "region": "Africa",
+      "city": "Bordj Bou Arreridj",
+      "categories": [
+        "DT"
+      ],
+      "website": "http://www.belfar-dz.com/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "SARL ETRAL",
+      "country": "Algeria",
+      "region": "Africa",
+      "city": "Batna",
+      "categories": [
+        "DT"
+      ],
+      "website": "http://www.etral-dz.com/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "SARL Intelec Algerie",
+      "country": "Algeria",
+      "region": "Africa",
+      "city": "Baba Hassen, Algiers",
+      "categories": [
+        "DT",
+        "DRY"
+      ],
+      "website": "https://www.intelec-dz.com/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "SARL Kherfi Transformateurs (Kherfi Electrique)",
+      "country": "Algeria",
+      "region": "Africa",
+      "city": "El Eulma, Setif",
+      "categories": [
+        "DT",
+        "DRY"
+      ],
+      "website": "http://www.kherfi-electrique.dz/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "SARL Transfo Est (Transformateurs de l'Est)",
+      "country": "Algeria",
+      "region": "Africa",
+      "city": "Constantine",
+      "categories": [
+        "DT"
+      ],
+      "website": "http://www.transfo-est.com/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "SARL Transfo Ouest (Transfo-Ouest)",
+      "country": "Algeria",
+      "region": "Africa",
+      "city": "Es-Senia, Oran",
+      "categories": [
+        "DT"
+      ],
+      "website": "https://www.transfo-ouest.dz/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Vijai Electricals Algeria (Sonelgaz JV)",
+      "country": "Algeria",
+      "region": "Africa",
+      "city": "Azazga, Tizi Ouzou",
+      "categories": [
+        "DT"
+      ],
+      "website": "https://www.vijaielectricals.com/",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
@@ -2243,158 +2393,6 @@
         "DT"
       ],
       "website": "http://www.elmaco-egypt.com.eg/",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Elsewedy Electric (Transformers)",
-      "country": "Egypt",
-      "region": "Africa",
-      "city": "Cairo",
-      "categories": [
-        "PT",
-        "DT",
-        "DRY"
-      ],
-      "website": "https://www.elsewedyelectric.com/",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Hitachi Energy Transformers SAE",
-      "country": "Egypt",
-      "region": "Africa",
-      "city": "Cairo",
-      "categories": [
-        "PT"
-      ],
-      "website": "https://www.hitachienergy.com/africa/en",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Schneider Electric Egypt Transformers",
-      "country": "Egypt",
-      "region": "Africa",
-      "city": "Badr City, Cairo",
-      "categories": [
-        "DT",
-        "DRY"
-      ],
-      "website": "https://www.se.com/eg/",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Star Trans (Star Transformer Technology)",
-      "country": "Egypt",
-      "region": "Africa",
-      "city": "",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://startranseg.com/en-eg/pages/about-us",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Abay Transformers",
-      "country": "Ethiopia",
-      "region": "Africa",
-      "city": "Addis Ababa",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://advertiseethiopianbusiness.com/listing/abay-transformers-plc/",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Mesfin Industrial Engineering",
-      "country": "Ethiopia",
-      "region": "Africa",
-      "city": "Mekelle",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://mesfinme.com/",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "AQ Trafotek Oy",
-      "country": "Finland",
-      "region": "Europe",
-      "city": "Kaarina",
-      "categories": [
-        "DRY",
-        "TX",
-        "DT"
-      ],
-      "website": "https://www.aqgroup.com/",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Hitachi Energy Finland",
-      "country": "Finland",
-      "region": "Europe",
-      "city": "Vaasa",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://www.hitachienergy.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Trafox",
-      "country": "Finland",
-      "region": "Europe",
-      "city": "Helsinki",
-      "categories": [
-        "DT",
-        "DRY"
-      ],
-      "website": "https://www.trafox.fi",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "VEO Oy - Transformers & Substation Systems",
-      "country": "Finland",
-      "region": "Europe",
-      "city": "Vaasa",
-      "categories": [
-        "DT",
-        "PT"
-      ],
-      "website": "https://www.veo.fi/",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Alstom (traction transformers)",
-      "country": "France",
-      "region": "Europe",
-      "city": "Tarbes",
-      "categories": [
-        "PT"
-      ],
-      "website": "https://www.alstom.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "France Transfo (Schneider)",
-      "country": "France",
-      "region": "Europe",
-      "city": "Maizières-lès-Metz",
-      "categories": [
-        "DT",
-        "DRY"
-      ],
-      "website": "https://www.francetransfo.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Green Transfo",
-      "country": "France",
-      "region": "Europe",
-      "city": "Cahors",
-      "categories": [
-        "DT",
-        "DRY"
-      ],
-      "website": "https://green-transfo.com",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     }
   ],
