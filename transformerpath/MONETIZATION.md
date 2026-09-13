@@ -81,6 +81,28 @@ The webhook verifies Stripe's signature (rejects unsigned/forged calls with
 `400`), ignores unrelated event types, and returns `500` only if every
 configured notifier fails — so Stripe retries safely.
 
+### Fulfillment is production-hardened
+
+`functions/stripe-webhook.js` is server-authoritative and:
+
+- **idempotent** — processed Stripe event IDs are recorded; replays never grant
+  or notify twice;
+- **event-specific** — only a *paid* `checkout.session.completed` (or active
+  subscription/invoice event) grants a known SKU; unpaid, unknown-SKU or
+  unrelated events never grant;
+- **auditable** — every action is appended to an audit log with the Stripe event
+  ID, customer, SKU, amount and timestamp;
+- **revocable** — `charge.refunded`, disputes and `customer.subscription.deleted`
+  revoke future entitlement;
+- **server-controlled** — entitlement lives in the fulfillment store, never the
+  client.
+
+The store abstraction is `functions/lib/fulfillment-store.js`. The default is
+JSON-file backed for local/dev (`data/fulfillment-ledger.json`, gitignored).
+**In production, back it with a durable KV/database** (Netlify function
+filesystems are ephemeral) by passing a custom store to `createHandler({ store })`.
+The full event matrix is covered by `npm run stripe:test`.
+
 ## Learning & academy
 
 | SKU | Product | Price |

@@ -15,6 +15,7 @@ const GATES = [
   { name: 'MVA semantic integrity', script: 'check-mva.js', p0: true },
   { name: 'directory quality & evidence', script: 'check-directory-quality.js', p0: true },
   { name: 'search precision', script: 'check-search-precision.js', p0: true },
+  { name: 'stripe fulfillment', script: 'check-stripe-fulfillment.js', p0: true },
   { name: 'part-coverage smoke', script: 'smoke-part-coverage.js', p0: true },
   { name: 'search smoke', script: 'search-smoke.js', p0: false }
 ];

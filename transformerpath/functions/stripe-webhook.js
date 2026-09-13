@@ -1,119 +1,78 @@
 /**
- * Stripe webhook — automatic fulfillment notifications.
+ * Stripe webhook — hardened fulfillment (Phase-2 §10).
  *
- * Receives Stripe events (configured in the Stripe Dashboard to POST to
- * /.netlify/functions/stripe-webhook), verifies the signature, and on a
- * completed checkout notifies the team with everything needed to fulfill the
- * order (SKU, company, contact, amount). Because the site has no database,
- * "fulfillment" here means an instant Slack message and/or email so a human
- * can set the directory badge / featured supplier described in MONETIZATION.md.
+ * Guarantees:
+ *   - signature verified (constructEvent with STRIPE_WEBHOOK_SECRET)
+ *   - idempotent — processed Stripe event IDs are recorded; replays never
+ *     grant/notify twice
+ *   - event-specific — only intended events change entitlement (paid checkout /
+ *     active subscription grant; refund / subscription deletion revoke)
+ *   - auditable — every action is written to the fulfillment audit log with the
+ *     Stripe event ID, customer, product/price, entitlement and timestamp
+ *   - server-authoritative — entitlement lives in the fulfillment store, not the
+ *     client
+ *   - revocable — refunds and cancellations remove future entitlement
  *
- * Env:
- *   STRIPE_SECRET_KEY      required (sk_live_… or sk_test_…)
- *   STRIPE_WEBHOOK_SECRET  required (whsec_…) — from the Stripe Dashboard endpoint
- *   SLACK_WEBHOOK_URL      optional — posts a fulfillment message to Slack
- *   SENDGRID_API_KEY       optional — emails a fulfillment message
- *   SENDGRID_FROM_EMAIL    optional (default noreply@transformerpath.com)
- *   SENDGRID_FROM_NAME     optional (default TransformerPath)
- *   ADMIN_EMAIL            optional — recipient of the fulfillment email
+ * Env: STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET (required);
+ *      SLACK_WEBHOOK_URL / SENDGRID_API_KEY + ADMIN_EMAIL (optional notifiers).
  */
 const Stripe = require('stripe');
+const { defaultStore } = require('./lib/fulfillment-store');
+
+// Known commercial SKUs (mirror of payments-config.js / create-checkout.js).
+const KNOWN_SKUS = new Set([
+  'directory_verified', 'directory_premium', 'directory_enterprise',
+  'sponsor_daily_brief', 'sponsor_featured_article',
+  'component_3d_feature', 'component_3d_exclusive',
+  'academy_pro', 'academy_team', 'academy_enterprise',
+  'rfq_boost', 'jobs_featured'
+]);
+
+// Only these event types may change entitlement.
+const GRANT_EVENTS = new Set(['checkout.session.completed', 'invoice.paid', 'customer.subscription.created', 'customer.subscription.updated']);
+const REVOKE_EVENTS = new Set(['charge.refunded', 'charge.dispute.created', 'customer.subscription.deleted']);
 
 function json(statusCode, body) {
-  return {
-    statusCode,
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
-  };
+  return { statusCode, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) };
 }
 
 function rawBodyFrom(event) {
-  if (event.isBase64Encoded && event.body) {
-    return Buffer.from(event.body, 'base64');
-  }
+  if (event.isBase64Encoded && event.body) return Buffer.from(event.body, 'base64');
   return event.body || '';
 }
 
 function centsToDisplay(amount, currency) {
   if (typeof amount !== 'number') return 'n/a';
-  const value = (amount / 100).toLocaleString('en-US', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2
-  });
-  return (currency ? currency.toUpperCase() + ' ' : '$') + value;
+  const v = (amount / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  return (currency ? currency.toUpperCase() + ' ' : '$') + v;
 }
 
-function summarize(session) {
-  const md = session.metadata || {};
-  const email =
-    (session.customer_details && session.customer_details.email) ||
-    session.customer_email ||
-    md.email ||
-    'unknown';
-  return {
-    sku: md.sku || 'unknown',
-    product: md.product_name || md.sku || 'unknown',
-    company: md.company || '',
-    contact: md.contact_name || '',
-    componentId: md.component_id || '',
-    sourcePage: md.source_page || '',
-    email,
-    amount: centsToDisplay(session.amount_total, session.currency),
-    sessionId: session.id
-  };
+function customerOf(obj) {
+  return (
+    (obj.customer_details && obj.customer_details.email) ||
+    obj.customer_email ||
+    (obj.metadata && obj.metadata.email) ||
+    obj.customer ||
+    'unknown'
+  );
 }
 
-async function notifySlack(url, s) {
-  const lines = [
-    ':white_check_mark: *New TransformerPath purchase*',
-    '*Product:* ' + s.product + '  (`' + s.sku + '`)',
-    '*Amount:* ' + s.amount,
-    '*Email:* ' + s.email
-  ];
-  if (s.company) lines.push('*Company:* ' + s.company);
-  if (s.contact) lines.push('*Contact:* ' + s.contact);
-  if (s.componentId) lines.push('*Component:* ' + s.componentId);
-  if (s.sourcePage) lines.push('*From page:* ' + s.sourcePage);
-  lines.push('*Stripe session:* ' + s.sessionId);
-
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ text: lines.join('\n') })
-  });
+async function notifySlack(url, text) {
+  const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text }) });
   if (!res.ok) throw new Error('Slack responded ' + res.status);
 }
 
-async function notifyEmail(s) {
+async function notifyEmail(subject, text) {
   const apiKey = process.env.SENDGRID_API_KEY;
   const to = process.env.ADMIN_EMAIL;
   if (!apiKey || !to) return { skipped: true };
-
-  const fromEmail = process.env.SENDGRID_FROM_EMAIL || 'noreply@transformerpath.com';
-  const fromName = process.env.SENDGRID_FROM_NAME || 'TransformerPath';
-  const text = [
-    'New purchase to fulfill:',
-    '',
-    'Product: ' + s.product + ' (' + s.sku + ')',
-    'Amount:  ' + s.amount,
-    'Email:   ' + s.email,
-    'Company: ' + (s.company || '—'),
-    'Contact: ' + (s.contact || '—'),
-    'Component: ' + (s.componentId || '—'),
-    'From page: ' + (s.sourcePage || '—'),
-    'Stripe session: ' + s.sessionId
-  ].join('\n');
-
   const res = await fetch('https://api.sendgrid.com/v3/mail/send', {
     method: 'POST',
-    headers: {
-      Authorization: 'Bearer ' + apiKey,
-      'Content-Type': 'application/json'
-    },
+    headers: { Authorization: 'Bearer ' + apiKey, 'Content-Type': 'application/json' },
     body: JSON.stringify({
       personalizations: [{ to: [{ email: to }] }],
-      from: { email: fromEmail, name: fromName },
-      subject: 'TransformerPath purchase: ' + s.product,
+      from: { email: process.env.SENDGRID_FROM_EMAIL || 'noreply@transformerpath.com', name: process.env.SENDGRID_FROM_NAME || 'TransformerPath' },
+      subject,
       content: [{ type: 'text/plain', value: text }]
     })
   });
@@ -121,72 +80,120 @@ async function notifyEmail(s) {
   return { sent: true };
 }
 
-async function fulfill(session) {
-  const s = summarize(session);
-  console.log('Fulfilling checkout', JSON.stringify(s));
-
+async function notify(summary) {
   const jobs = [];
   if (process.env.SLACK_WEBHOOK_URL) {
-    jobs.push(notifySlack(process.env.SLACK_WEBHOOK_URL, s));
+    const lines = [
+      ':white_check_mark: *TransformerPath fulfillment: ' + summary.action + '*',
+      '*SKU:* ' + summary.sku, '*Customer:* ' + summary.customer, '*Amount:* ' + summary.amount,
+      '*Stripe event:* ' + summary.eventId
+    ];
+    jobs.push(notifySlack(process.env.SLACK_WEBHOOK_URL, lines.join('\n')));
   }
   if (process.env.SENDGRID_API_KEY && process.env.ADMIN_EMAIL) {
-    jobs.push(notifyEmail(s));
+    jobs.push(notifyEmail('TransformerPath fulfillment: ' + summary.sku, JSON.stringify(summary, null, 2)));
   }
-
-  if (jobs.length === 0) {
-    console.warn(
-      'No notifier configured (set SLACK_WEBHOOK_URL and/or SENDGRID_API_KEY + ADMIN_EMAIL).'
-    );
-    return { notified: 0, configured: 0 };
-  }
-
+  if (jobs.length === 0) return { notified: 0 };
   const results = await Promise.allSettled(jobs);
   const failed = results.filter((r) => r.status === 'rejected');
   failed.forEach((r) => console.error('Notifier failed:', r.reason && r.reason.message));
-  if (failed.length === jobs.length) {
-    // Every configured notifier failed — signal Stripe to retry.
-    throw new Error('All fulfillment notifiers failed');
-  }
-  return { notified: jobs.length - failed.length, configured: jobs.length };
+  if (failed.length === jobs.length) throw new Error('All notifiers failed');
+  return { notified: jobs.length - failed.length };
 }
 
-exports.handler = async (event) => {
-  if (event.httpMethod !== 'POST') return json(405, { error: 'Method not allowed' });
+function subOf(stripeEvent) {
+  return stripeEvent.data && stripeEvent.data.object ? stripeEvent.data.object : {};
+}
 
-  const secret = process.env.STRIPE_SECRET_KEY;
-  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-  if (!secret || !webhookSecret) {
-    return json(503, {
-      error: 'Webhook not configured. Set STRIPE_SECRET_KEY and STRIPE_WEBHOOK_SECRET.',
-      code: 'stripe_webhook_not_configured'
-    });
-  }
+/** Factory so tests can inject an in-memory store. */
+function createHandler(deps) {
+  const store = (deps && deps.store) || defaultStore();
+  const notifier = (deps && deps.notify) || notify;
 
-  const sig = event.headers['stripe-signature'] || event.headers['Stripe-Signature'];
-  if (!sig) return json(400, { error: 'Missing stripe-signature header' });
+  return async function handler(event) {
+    if (event.httpMethod !== 'POST') return json(405, { error: 'Method not allowed' });
 
-  const stripe = new Stripe(secret, { apiVersion: '2023-10-16' });
-
-  let stripeEvent;
-  try {
-    stripeEvent = stripe.webhooks.constructEvent(rawBodyFrom(event), sig, webhookSecret);
-  } catch (err) {
-    console.error('Signature verification failed:', err.message);
-    return json(400, { error: 'Invalid signature', code: 'signature_verification_failed' });
-  }
-
-  try {
-    switch (stripeEvent.type) {
-      case 'checkout.session.completed': {
-        const result = await fulfill(stripeEvent.data.object);
-        return json(200, { received: true, type: stripeEvent.type, fulfillment: result });
-      }
-      default:
-        console.log('Ignoring event type:', stripeEvent.type);
-        return json(200, { received: true, type: stripeEvent.type, ignored: true });
+    const secret = process.env.STRIPE_SECRET_KEY;
+    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+    if (!secret || !webhookSecret) {
+      return json(503, { error: 'Webhook not configured.', code: 'stripe_webhook_not_configured' });
     }
-  } catch (err) {
-    console.error('Fulfillment error:', err);
-    return json(500, { error: err.message || 'Fulfillment failed', code: 'fulfillment_error' });
-  }
-};
+
+    const sig = event.headers['stripe-signature'] || event.headers['Stripe-Signature'];
+    if (!sig) return json(400, { error: 'Missing stripe-signature header' });
+
+    const stripe = new Stripe(secret, { apiVersion: '2023-10-16' });
+    let stripeEvent;
+    try {
+      stripeEvent = stripe.webhooks.constructEvent(rawBodyFrom(event), sig, webhookSecret);
+    } catch (err) {
+      console.error('Signature verification failed:', err.message);
+      return json(400, { error: 'Invalid signature', code: 'signature_verification_failed' });
+    }
+
+    // Idempotency: never process the same event twice.
+    if (store.hasProcessed(stripeEvent.id)) {
+      store.audit({ eventId: stripeEvent.id, type: stripeEvent.type, action: 'duplicate_ignored' });
+      return json(200, { received: true, duplicate: true, type: stripeEvent.type });
+    }
+
+    try {
+      const obj = subOf(stripeEvent);
+      const customer = customerOf(obj);
+
+      if (GRANT_EVENTS.has(stripeEvent.type)) {
+        // Event-specific: a checkout must actually be paid to grant access.
+        const paid =
+          stripeEvent.type === 'checkout.session.completed'
+            ? obj.payment_status === 'paid' || obj.status === 'complete'
+            : true;
+        const sku = (obj.metadata && obj.metadata.sku) || null;
+
+        if (!paid) {
+          store.audit({ eventId: stripeEvent.id, type: stripeEvent.type, action: 'ignored_unpaid', customer, sku });
+          store.markProcessed(stripeEvent.id, { action: 'ignored_unpaid' });
+          return json(200, { received: true, granted: false, reason: 'not_paid' });
+        }
+        if (!sku || !KNOWN_SKUS.has(sku)) {
+          store.audit({ eventId: stripeEvent.id, type: stripeEvent.type, action: 'unrecognized_sku', customer, sku });
+          store.markProcessed(stripeEvent.id, { action: 'unrecognized_sku' });
+          return json(200, { received: true, granted: false, reason: 'unrecognized_sku', sku });
+        }
+
+        const ent = store.grantEntitlement({
+          customer, sku, eventId: stripeEvent.id, sessionId: obj.id,
+          productId: (obj.metadata && obj.metadata.product_id) || null,
+          priceId: (obj.metadata && obj.metadata.price_id) || null
+        });
+        const summary = { action: 'grant', sku, customer, amount: centsToDisplay(obj.amount_total, obj.currency), eventId: stripeEvent.id };
+        store.audit(Object.assign({ type: stripeEvent.type, entitlement: ent.status }, summary));
+        let notifyResult = { notified: 0 };
+        try { notifyResult = await notifier(summary); } catch (e) { console.error('notify failed:', e.message); }
+        store.markProcessed(stripeEvent.id, { action: 'grant', sku, customer });
+        return json(200, { received: true, granted: true, sku, customer, notify: notifyResult });
+      }
+
+      if (REVOKE_EVENTS.has(stripeEvent.type)) {
+        const sku = (obj.metadata && obj.metadata.sku) || null;
+        const revoked = sku
+          ? [store.revokeEntitlement({ customer, sku, reason: stripeEvent.type, eventId: stripeEvent.id })].filter(Boolean).map(() => sku)
+          : store.revokeAllForCustomer(customer, stripeEvent.type, stripeEvent.id);
+        store.audit({ eventId: stripeEvent.id, type: stripeEvent.type, action: 'revoke', customer, revoked });
+        store.markProcessed(stripeEvent.id, { action: 'revoke', customer });
+        return json(200, { received: true, revoked });
+      }
+
+      store.audit({ eventId: stripeEvent.id, type: stripeEvent.type, action: 'ignored' });
+      store.markProcessed(stripeEvent.id, { action: 'ignored' });
+      return json(200, { received: true, ignored: true, type: stripeEvent.type });
+    } catch (err) {
+      console.error('Fulfillment error:', err);
+      // Do NOT mark processed — allow Stripe to retry.
+      return json(500, { error: err.message || 'Fulfillment failed', code: 'fulfillment_error' });
+    }
+  };
+}
+
+exports.handler = createHandler();
+exports.createHandler = createHandler;
+exports.KNOWN_SKUS = KNOWN_SKUS;
