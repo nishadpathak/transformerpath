@@ -16,7 +16,7 @@
 const crypto = require('crypto');
 
 // Learning/Professional/Team all unlock the course. 'enterprise' == Team.
-const PLAN_RANK = { learning: 1, professional: 2, enterprise: 3, team: 3 };
+const PLAN_RANK = { learning: 1, learner: 1, professional: 2, enterprise: 3, team: 3 };
 
 function secret() { return (process.env.ENTITLEMENT_SECRET || process.env.STRIPE_SECRET_KEY || '').trim(); }
 function b64u(buf) { return Buffer.from(buf).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }

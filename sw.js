@@ -1,9 +1,10 @@
 /* TransformerPath service worker — offline support + always-fresh HTML */
-const CACHE = 'transformerpath-v12';
+const CACHE = 'transformerpath-v13';
 const CORE = [
-  'index.html', 'style.css?v=13', 'intel.html', 'manufacturers.html', 'events.html',
+  'index.html', 'style.css?v=14', 'intel.html', 'manufacturers.html', 'events.html',
   'grids.html', 'learn.html', 'resources.html', 'subscribe.html',
-  'explorer.html', 'vendor/three.min.js', 'offline.html',
+  'map.html', 'directory.html',
+  'offline.html',
   'brand/favicon-32.png', 'brand/icon-192.png', 'manifest.webmanifest'
 ];
 

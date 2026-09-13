@@ -13,7 +13,7 @@
 <meta property="og:url" content="https://transformerpath.com/components/radiators/">
 <meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
 <meta name="robots" content="index,follow">
-<link rel="stylesheet" href="../../style.css?v=13">
+<link rel="stylesheet" href="../../style.css?v=14">
 <link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">
 <link rel="apple-touch-icon" href="../../brand/apple-touch-icon.png">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://transformerpath.com/"},{"@type":"ListItem","position":2,"name":"Components","item":"https://transformerpath.com/components.html"},{"@type":"ListItem","position":3,"name":"Transformer Radiators & Cooling Systems","item":"https://transformerpath.com/components/radiators/"}]},{"@type":"CollectionPage","name":"Transformer Radiators & Cooling Systems","description":"Transformer radiator and cooling systems directory. Detachable radiators, corrugated cooling fins, forced-oil heat exchangers and fans compliant with DIN 42559 and EN 50216.","url":"https://transformerpath.com/components/radiators/"}]}</script>
@@ -30,10 +30,11 @@
   .hub-tbl th{text-align:left;color:var(--muted);font-size:.76rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:10px 12px;border-bottom:2px solid var(--border)}
   .rfq-banner{background:linear-gradient(135deg, rgba(245,166,35,.12), rgba(13,27,46,.85));border:1px solid var(--accent);border-radius:12px;padding:24px;margin-top:36px;text-align:center}
 </style>
+<link rel="stylesheet" href="../../tp-nav.css?v=14">
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
 <header>
-  <link rel="stylesheet" href="/tp-nav.css?v=13">
   <div class="container nav">
     <a href="/index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
     <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
@@ -43,6 +44,7 @@
         <a href="/directory.html" class="tpnav-dropdown-btn">Directory</a>
         <div class="tpnav-dropdown-panel" role="menu">
           <a href="/manufacturers.html">Manufacturers</a>
+          <a href="/map.html">Industry Map</a>
           <a href="/components.html">Components &amp; Materials</a>
           <a href="/machinery.html">Machinery</a>
           <a href="/laboratories.html">Testing Labs</a>
@@ -55,6 +57,7 @@
       <a href="/projects.html">Projects</a>
       <a href="/tenders.html">Tenders</a>
       <a href="/grids.html" class="tpnav-opt">Grids</a>
+      <a href="/map.html" class="tpnav-opt">Map</a>
       <a href="/events.html">Events</a>
       <a href="/tools.html" class="tpnav-opt">Engineering</a>
       <a href="/learn.html">Learn</a>
@@ -62,23 +65,17 @@
       <div class="tpnav-more">
         <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
         <div class="tpnav-more-panel" role="menu">
-          <a href="/directory.html" role="menuitem">Directory</a>
-          <a href="/services.html" role="menuitem">Service & Repair</a>
-          <a href="/logistics.html" role="menuitem">Transport & Logistics</a>
-          <a href="/laboratories.html" role="menuitem">Testing Labs</a>
-          <a href="/machinery.html" role="menuitem">Machinery</a>
+          <a href="/map.html" role="menuitem">Industry Map</a>
+          <a href="/logistics.html" role="menuitem">Transport &amp; Logistics</a>
           <a href="/associations.html" role="menuitem">Industry Associations</a>
-          <a href="/education.html" role="menuitem">Education & Training</a>
-          <a href="/buyers.html" role="menuitem">Buyers & Procurement</a>
-          <a href="/media.html" role="menuitem">Media & Publications</a>
+          <a href="/education.html" role="menuitem">Education &amp; Training</a>
+          <a href="/buyers.html" role="menuitem">Buyers &amp; Procurement</a>
+          <a href="/media.html" role="menuitem">Media &amp; Publications</a>
           <a href="/compare.html" role="menuitem">Compare</a>
           <a href="/accessories.html" role="menuitem">Accessories</a>
-          <a href="/markets.html" role="menuitem">Markets</a>
           <a href="/utilities.html" role="menuitem">Utilities</a>
           <a href="/webinars.html" role="menuitem">Webinars</a>
           <a href="/awards.html" role="menuitem">Awards</a>
-          <a href="/buyers-guide.html" role="menuitem">Buyer's Guide</a>
-          <a href="/components.html" role="menuitem">Components</a>
           <a href="/materials.html" role="menuitem">Materials</a>
           <a href="/applications.html" role="menuitem">Applications</a>
           <a href="/knowledge.html" role="menuitem">Knowledge</a>
@@ -130,7 +127,8 @@
       themeToggle.textContent = isDark ? '☀️' : '🌙';
     }
   </script>
-  <script src="/tp-nav.js?v=6" defer></script>
+  <script src="/tp-nav.js?v=7" defer></script>
+  <script src="/tp-pwa.js?v=7" defer></script>
 </header>
 <main class="hub-wrap">
   <nav style="font-size:.82rem;color:var(--muted);margin-bottom:14px">
@@ -225,7 +223,7 @@
       </div>
     </div>
 
-  <h2>Verified Global Suppliers &amp; Manufacturers (5)</h2>
+  <h2>Verified Global Suppliers &amp; Manufacturers (19)</h2>
   <p style="font-size:.85rem;color:var(--muted)">Verified suppliers with independent factory documentation, technical capability certifications, and direct quotation channels.</p>
 
   <div class="tbl-responsive">
@@ -290,6 +288,166 @@
     
       <tr>
         <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
+          <a href="../../accessories/preis-group/" style="color:var(--text);font-weight:700">PREIS Group</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">Pernitz, Austria</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
+          Bushings (HV, LV), Radiators / cooling systems
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
+          <span style="font-size:.72rem;color:var(--muted)">Listed</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
+          <a href="https://preisgroup.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Transformer%20Radiators%20%26%20Cooling%20Systems&vendor=PREIS%20Group" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="PREIS Group">RFQ</a>
+        </td>
+      </tr>
+    
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
+          <a href="../../accessories/changzhou-apex-machinery-co-ltd/" style="color:var(--text);font-weight:700">Changzhou Apex Machinery Co., Ltd.</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">Changzhou, China</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
+          Radiators / cooling systems
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
+          <span style="font-size:.72rem;color:var(--muted)">Listed</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
+          <a href="https://transformer-radiator.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Transformer%20Radiators%20%26%20Cooling%20Systems&vendor=Changzhou%20Apex%20Machinery%20Co.%2C%20Ltd." class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="Changzhou Apex Machinery Co., Ltd.">RFQ</a>
+        </td>
+      </tr>
+    
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
+          <a href="../../accessories/shenyang-tiantong-electricity-co-ltd/" style="color:var(--text);font-weight:700">Shenyang Tiantong Electricity Co., Ltd.</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">Shenyang, China</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
+          Radiators / cooling systems
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
+          <span style="font-size:.72rem;color:var(--muted)">Listed</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
+          <a href="https://www.ttradiator.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Transformer%20Radiators%20%26%20Cooling%20Systems&vendor=Shenyang%20Tiantong%20Electricity%20Co.%2C%20Ltd." class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="Shenyang Tiantong Electricity Co., Ltd.">RFQ</a>
+        </td>
+      </tr>
+    
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
+          <a href="../../accessories/multi-wing-group/" style="color:var(--text);font-weight:700">Multi-Wing Group</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">Vedbaek, Denmark</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
+          Cooling fans
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
+          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
+          <a href="https://www.multi-wing.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Transformer%20Radiators%20%26%20Cooling%20Systems&vendor=Multi-Wing%20Group" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="Multi-Wing Group">RFQ</a>
+        </td>
+      </tr>
+    
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
+          <a href="../../accessories/ebm-papst-group/" style="color:var(--text);font-weight:700">ebm-papst Group</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">Mulfingen, Germany</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
+          Cooling fans
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
+          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
+          <a href="https://www.ebmpapst.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Transformer%20Radiators%20%26%20Cooling%20Systems&vendor=ebm-papst%20Group" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="ebm-papst Group">RFQ</a>
+        </td>
+      </tr>
+    
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
+          <a href="../../accessories/kelvion-holding-gmbh/" style="color:var(--text);font-weight:700">Kelvion Holding GmbH</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">Bochum, Germany</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
+          Radiators / cooling systems
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
+          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
+          <a href="https://www.kelvion.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Transformer%20Radiators%20%26%20Cooling%20Systems&vendor=Kelvion%20Holding%20GmbH" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="Kelvion Holding GmbH">RFQ</a>
+        </td>
+      </tr>
+    
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
+          <a href="../../accessories/menk-apparatebau-gmbh/" style="color:var(--text);font-weight:700">Menk Apparatebau GmbH</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">Bad Marienberg, Germany</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
+          Radiators / cooling systems, Conservator tanks
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
+          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
+          <a href="https://www.menk-apparatebau.de" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Transformer%20Radiators%20%26%20Cooling%20Systems&vendor=Menk%20Apparatebau%20GmbH" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="Menk Apparatebau GmbH">RFQ</a>
+        </td>
+      </tr>
+    
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
+          <a href="../../accessories/ziehl-abegg-se/" style="color:var(--text);font-weight:700">Ziehl-Abegg SE</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">KÃ¼nzelsau, Germany</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
+          Cooling fans
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
+          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
+          <a href="https://www.ziehl-abegg.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Transformer%20Radiators%20%26%20Cooling%20Systems&vendor=Ziehl-Abegg%20SE" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="Ziehl-Abegg SE">RFQ</a>
+        </td>
+      </tr>
+    
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
+          <a href="../../accessories/thermocool-engineering-pvt-ltd/" style="color:var(--text);font-weight:700">Thermocool Engineering Pvt. Ltd.</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">Kolkata, India</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
+          Radiators / cooling systems
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
+          <span style="font-size:.72rem;color:var(--muted)">Listed</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
+          <a href="https://thermocoolengg.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Transformer%20Radiators%20%26%20Cooling%20Systems&vendor=Thermocool%20Engineering%20Pvt.%20Ltd." class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="Thermocool Engineering Pvt. Ltd.">RFQ</a>
+        </td>
+      </tr>
+    
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
+          <a href="../../accessories/universal-radiators-ltd/" style="color:var(--text);font-weight:700">Universal Radiators Ltd</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">Coimbatore, India</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
+          Radiators / cooling systems
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
+          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
+          <a href="https://universalradiators.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Transformer%20Radiators%20%26%20Cooling%20Systems&vendor=Universal%20Radiators%20Ltd" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="Universal Radiators Ltd">RFQ</a>
+        </td>
+      </tr>
+    
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
           <a href="../../accessories/fuji-electric-co-ltd/" style="color:var(--text);font-weight:700">Fuji Electric Co., Ltd.</a><br>
           <span style="font-size:.8rem;color:var(--muted)">Tokyo, Japan</span>
         </td>
@@ -301,6 +459,70 @@
         </td>
         <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
           <a href="https://www.fujielectric.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Transformer%20Radiators%20%26%20Cooling%20Systems&vendor=Fuji%20Electric%20Co.%2C%20Ltd." class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="Fuji Electric Co., Ltd.">RFQ</a>
+        </td>
+      </tr>
+    
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
+          <a href="../../accessories/anka-radyator-metal-ve-makina-a-s/" style="color:var(--text);font-weight:700">ANKA Radyatör Metal ve Makina A.Ş.</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">Kahramankazan, Türkiye</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
+          Radiators / cooling systems
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
+          <span style="font-size:.72rem;color:var(--muted)">Listed</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
+          <a href="https://ankaradyator.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Transformer%20Radiators%20%26%20Cooling%20Systems&vendor=ANKA%20Radyat%C3%B6r%20Metal%20ve%20Makina%20A.%C5%9E." class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="ANKA Radyatör Metal ve Makina A.Ş.">RFQ</a>
+        </td>
+      </tr>
+    
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
+          <a href="../../accessories/rad-tek-radyator-metal-sanayi-ve-ticaret-a-s/" style="color:var(--text);font-weight:700">RAD-TEK Radyatör Metal Sanayi ve Ticaret A.Ş.</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">Hendek, Türkiye</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
+          Radiators / cooling systems, Conservator tanks
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
+          <span style="font-size:.72rem;color:var(--muted)">Listed</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
+          <a href="https://www.radtek.com.tr" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Transformer%20Radiators%20%26%20Cooling%20Systems&vendor=RAD-TEK%20Radyat%C3%B6r%20Metal%20Sanayi%20ve%20Ticaret%20A.%C5%9E." class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="RAD-TEK Radyatör Metal Sanayi ve Ticaret A.Ş.">RFQ</a>
+        </td>
+      </tr>
+    
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
+          <a href="../../accessories/sterling-thermal-technology-ltd/" style="color:var(--text);font-weight:700">Sterling Thermal Technology Ltd</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">Aylesbury, United Kingdom</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
+          Radiators / cooling systems
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
+          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
+          <a href="https://www.sterlingthermal.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Transformer%20Radiators%20%26%20Cooling%20Systems&vendor=Sterling%20Thermal%20Technology%20Ltd" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="Sterling Thermal Technology Ltd">RFQ</a>
+        </td>
+      </tr>
+    
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
+          <a href="../../accessories/krenz-and-company/" style="color:var(--text);font-weight:700">Krenz &amp; Company</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">Germantown, United States</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
+          Cooling fans
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
+          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
+          <a href="https://www.krenzvent.com/" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Transformer%20Radiators%20%26%20Cooling%20Systems&vendor=Krenz%20%26%20Company" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="Krenz &amp; Company">RFQ</a>
         </td>
       </tr>
     
@@ -340,14 +562,15 @@
         <a href="/index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
         <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data. Built for utilities, transformer manufacturers, component suppliers, EPCs, consultants and engineers.</p>
       </div>
-      <div><h2>INTELLIGENCE</h2><a href="/intel.html">Daily Intel</a><a href="/archive.html">Intel Archive</a><a href="/intelligence.html">Intelligence</a><a href="/projects.html">Projects</a><a href="/markets.html">Markets</a><a href="/grids.html">Grids</a><a href="/exhibitions.html">Exhibitions</a><a href="/events.html">Events</a></div>
-      <div><h2>INDUSTRY</h2><a href="/manufacturers.html">Manufacturers</a><a href="/directory.html">Directory</a><a href="/services.html">Service &amp; Repair</a><a href="/logistics.html">Transport &amp; Logistics</a><a href="/laboratories.html">Testing Labs</a><a href="/buyers.html">Buyers &amp; Utilities</a><a href="/buyers-guide.html">Buyer's Guide</a><a href="/accessories.html">Accessories</a><a href="/components.html">Components</a><a href="/rfq.html">RFQ Board</a></div>
-      <div><h2>ENGINEERING</h2><a href="/knowledge.html">Knowledge</a><a href="/standards.html">Standards &amp; Codes</a><a href="/calculator.html">Design Calculator</a><a href="/explorer.html">3D Models</a><a href="/design.html">Design Duel</a><a href="/resources.html">Resources</a></div>
-      <div><h2>LEARN</h2><a href="/learn.html">Learn</a><a href="/education.html">Education &amp; Training</a><a href="/masterclass.html">Masterclass</a><a href="/engineer-track.html">Design Engineer Track</a><a href="/academy.html">Academy</a><a href="/books.html">Books</a></div>
-      <div><h2>BUSINESS</h2><a href="/for-manufacturers.html">For Manufacturers</a><a href="/associations.html">Industry Associations</a><a href="/media.html">Media &amp; Publications</a><a href="/pricing.html">Pricing</a><a href="/verified.html">Verified</a><a href="/sponsor.html">Sponsor</a><a href="/webinars.html">Webinars</a></div>
-      <div><h2>COMPANY</h2><a href="/about.html">About Us</a><a href="/workspace.html">Account</a><a href="/faq.html">FAQ</a><a href="/methodology.html">Methodology</a><a href="/contact.html">Contact</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a></div>
-      <div><h2>CONTACT</h2>
+      <div><p class="footer-col-label">INTELLIGENCE</p><a href="/intel.html">Daily Intel</a><a href="/archive.html">Intel Archive</a><a href="/intelligence.html">Intelligence</a><a href="/projects.html">Projects</a><a href="/markets.html">Markets</a><a href="/grids.html">Grids</a><a href="/map.html">Industry Map</a><a href="/exhibitions.html">Exhibitions</a><a href="/events.html">Events</a></div>
+      <div><p class="footer-col-label">INDUSTRY</p><a href="/manufacturers.html">Manufacturers</a><a href="/directory.html">Directory</a><a href="/map.html">Industry Map</a><a href="/services.html">Service &amp; Repair</a><a href="/logistics.html">Transport &amp; Logistics</a><a href="/laboratories.html">Testing Labs</a><a href="/buyers.html">Buyers &amp; Utilities</a><a href="/buyers-guide.html">Buyer's Guide</a><a href="/accessories.html">Accessories</a><a href="/components.html">Components</a><a href="/rfq.html">RFQ Board</a></div>
+      <div><p class="footer-col-label">ENGINEERING</p><a href="/knowledge.html">Knowledge</a><a href="/standards.html">Standards &amp; Codes</a><a href="/calculator.html">Design Calculator</a><a href="/explorer.html">3D Models</a><a href="/design.html">Design Duel</a><a href="/resources.html">Resources</a></div>
+      <div><p class="footer-col-label">LEARN</p><a href="/learn.html">Learn</a><a href="/education.html">Education &amp; Training</a><a href="/masterclass.html">Masterclass</a><a href="/engineer-track.html">Design Engineer Track</a><a href="/academy.html">Academy</a><a href="/books.html">Books</a></div>
+      <div><p class="footer-col-label">BUSINESS</p><a href="/for-manufacturers.html">For Manufacturers</a><a href="/associations.html">Industry Associations</a><a href="/media.html">Media &amp; Publications</a><a href="/pricing.html">Pricing</a><a href="/verified.html">Verified</a><a href="/sponsor.html">Sponsor</a><a href="/webinars.html">Webinars</a></div>
+      <div><p class="footer-col-label">COMPANY</p><a href="/about.html">About Us</a><a href="/workspace.html">Account</a><a href="/faq.html">FAQ</a><a href="/methodology.html">Methodology</a><a href="/contact.html">Contact</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a></div>
+      <div><p class="footer-col-label">CONTACT</p>
         <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
+        <a href="/privacy.html#cookies" onclick="if(window.tpResetConsent){window.tpResetConsent();return false}">Cookie settings</a>
         <a class="tp-li-btn tp-li-follow" data-linkedin-follow href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>Follow us on LinkedIn</a>
         <a class="tp-li-btn tp-li-share" data-linkedin-share href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>LinkedIn</a>
       </div>
@@ -355,6 +578,6 @@
     <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
   </div>
 </footer>
-<script src="../../analytics.js?v=2" defer></script>
+<script src="../../analytics.js?v=7" defer></script>
 </body>
 </html>

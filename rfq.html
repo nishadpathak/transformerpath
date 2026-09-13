@@ -13,7 +13,7 @@
 <meta property="og:url" content="https://transformerpath.com/rfq.html">
 <meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="style.css?v=13">
+<link rel="stylesheet" href="style.css?v=14">
 <link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
 <link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
@@ -29,8 +29,8 @@
 .legal a { color:var(--accent); font-weight:600; }
 </style>
 <script src="consent.js" defer></script>
-    <link rel="stylesheet" href="tp-nav.css?v=13">
-  <link rel="stylesheet" href="tp-feedback.css?v=13">
+    <link rel="stylesheet" href="tp-nav.css?v=14">
+  <link rel="stylesheet" href="tp-feedback.css?v=14">
 </head>
 <body>
 
@@ -45,6 +45,7 @@
         <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
         <div class="tpnav-dropdown-panel" role="menu">
           <a href="manufacturers.html">Manufacturers</a>
+          <a href="map.html">Industry Map</a>
           <a href="components.html">Components &amp; Materials</a>
           <a href="machinery.html">Machinery</a>
           <a href="laboratories.html">Testing Labs</a>
@@ -57,29 +58,25 @@
       <a href="projects.html">Projects</a>
       <a href="tenders.html">Tenders</a>
       <a href="grids.html" class="tpnav-opt">Grids</a>
+      <a href="map.html" class="tpnav-opt">Map</a>
       <a href="events.html">Events</a>
       <a href="tools.html" class="tpnav-opt">Engineering</a>
       <a href="learn.html">Learn</a>
-      <a href="rfq.html" aria-current="page">RFQ</a>
+      <a href="rfq.html">RFQ</a>
       <div class="tpnav-more">
         <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
         <div class="tpnav-more-panel" role="menu">
-          <a href="services.html" role="menuitem">Service & Repair</a>
-          <a href="logistics.html" role="menuitem">Transport & Logistics</a>
-          <a href="laboratories.html" role="menuitem">Testing Labs</a>
-          <a href="machinery.html" role="menuitem">Machinery</a>
+          <a href="map.html" role="menuitem">Industry Map</a>
+          <a href="logistics.html" role="menuitem">Transport &amp; Logistics</a>
           <a href="associations.html" role="menuitem">Industry Associations</a>
-          <a href="education.html" role="menuitem">Education & Training</a>
-          <a href="buyers.html" role="menuitem">Buyers & Procurement</a>
-          <a href="media.html" role="menuitem">Media & Publications</a>
+          <a href="education.html" role="menuitem">Education &amp; Training</a>
+          <a href="buyers.html" role="menuitem">Buyers &amp; Procurement</a>
+          <a href="media.html" role="menuitem">Media &amp; Publications</a>
           <a href="compare.html" role="menuitem">Compare</a>
           <a href="accessories.html" role="menuitem">Accessories</a>
-          <a href="markets.html" role="menuitem">Markets</a>
           <a href="utilities.html" role="menuitem">Utilities</a>
           <a href="webinars.html" role="menuitem">Webinars</a>
           <a href="awards.html" role="menuitem">Awards</a>
-          <a href="buyers-guide.html" role="menuitem">Buyer's Guide</a>
-          <a href="components.html" role="menuitem">Components</a>
           <a href="materials.html" role="menuitem">Materials</a>
           <a href="applications.html" role="menuitem">Applications</a>
           <a href="knowledge.html" role="menuitem">Knowledge</a>
@@ -131,9 +128,9 @@
       themeToggle.textContent = isDark ? '☀️' : '🌙';
     }
   </script>
-  <script src="tp-nav.js?v=6" defer></script>
+  <script src="tp-nav.js?v=7" defer></script>
+  <script src="tp-pwa.js?v=7" defer></script>
 </header>
-
 <section class="block" style="padding-top:48px">
   <div class="container" style="max-width:920px">
     <div class="section-head" style="margin-bottom:28px">
@@ -314,10 +311,7 @@
   </div>
 </footer>
 
-<script>
-if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
-</script>
-<script src="analytics.js?v=6" defer></script>
+<script src="analytics.js?v=7" defer></script>
 <script>
 /* ====== TECHNICAL SPECIFICATION & SCHEDULE BUILDER (TRACK 1) ====== */
 (function(){
@@ -534,8 +528,7 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
 <script src="supabase-config.js" defer></script>
 <script src="supabase.js" defer></script>
 <script src="rfq-engine.js" defer></script>
-<script src="tp-nav.js?v=6" defer></script>
-<script src="tp-freshness.js?v=6" defer></script>
-<script src="tp-feedback.js?v=6" defer></script>
+<script src="tp-freshness.js?v=7" defer></script>
+<script src="tp-feedback.js?v=7" defer></script>
 </body>
 </html>

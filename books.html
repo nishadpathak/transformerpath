@@ -13,7 +13,7 @@
 <meta property="og:url" content="https://transformerpath.com/books.html">
 <meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
 <meta name="robots" content="index,follow">
-<link rel="stylesheet" href="style.css?v=13">
+<link rel="stylesheet" href="style.css?v=14">
 <link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Book","name":"The TransformerPath Professional Engineering Series","author":{"@type":"Organization","name":"TransformerPath","url":"https://transformerpath.com/"},"publisher":{"@type":"Organization","name":"TransformerPath"}}</script>
@@ -48,12 +48,12 @@
   .bk-offer .btn { margin-top: 10px; }
   .bk-note { font-size: .8rem; color: var(--muted); margin-top: 18px; line-height: 1.5; }
 </style>
-    <link rel="stylesheet" href="tp-nav.css?v=13">
-  <link rel="stylesheet" href="tp-feedback.css?v=13">
+    <link rel="stylesheet" href="tp-nav.css?v=14">
+  <link rel="stylesheet" href="tp-feedback.css?v=14">
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
 <header>
-  <link rel="stylesheet" href="tp-nav.css?v=13">
   <div class="container nav">
     <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
     <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
@@ -63,6 +63,7 @@
         <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
         <div class="tpnav-dropdown-panel" role="menu">
           <a href="manufacturers.html">Manufacturers</a>
+          <a href="map.html">Industry Map</a>
           <a href="components.html">Components &amp; Materials</a>
           <a href="machinery.html">Machinery</a>
           <a href="laboratories.html">Testing Labs</a>
@@ -75,6 +76,7 @@
       <a href="projects.html">Projects</a>
       <a href="tenders.html">Tenders</a>
       <a href="grids.html" class="tpnav-opt">Grids</a>
+      <a href="map.html" class="tpnav-opt">Map</a>
       <a href="events.html">Events</a>
       <a href="tools.html" class="tpnav-opt">Engineering</a>
       <a href="learn.html">Learn</a>
@@ -82,23 +84,17 @@
       <div class="tpnav-more">
         <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
         <div class="tpnav-more-panel" role="menu">
-          <a href="directory.html" role="menuitem">Directory</a>
-          <a href="services.html" role="menuitem">Service & Repair</a>
-          <a href="logistics.html" role="menuitem">Transport & Logistics</a>
-          <a href="laboratories.html" role="menuitem">Testing Labs</a>
-          <a href="machinery.html" role="menuitem">Machinery</a>
+          <a href="map.html" role="menuitem">Industry Map</a>
+          <a href="logistics.html" role="menuitem">Transport &amp; Logistics</a>
           <a href="associations.html" role="menuitem">Industry Associations</a>
-          <a href="education.html" role="menuitem">Education & Training</a>
-          <a href="buyers.html" role="menuitem">Buyers & Procurement</a>
-          <a href="media.html" role="menuitem">Media & Publications</a>
+          <a href="education.html" role="menuitem">Education &amp; Training</a>
+          <a href="buyers.html" role="menuitem">Buyers &amp; Procurement</a>
+          <a href="media.html" role="menuitem">Media &amp; Publications</a>
           <a href="compare.html" role="menuitem">Compare</a>
           <a href="accessories.html" role="menuitem">Accessories</a>
-          <a href="markets.html" role="menuitem">Markets</a>
           <a href="utilities.html" role="menuitem">Utilities</a>
           <a href="webinars.html" role="menuitem">Webinars</a>
           <a href="awards.html" role="menuitem">Awards</a>
-          <a href="buyers-guide.html" role="menuitem">Buyer's Guide</a>
-          <a href="components.html" role="menuitem">Components</a>
           <a href="materials.html" role="menuitem">Materials</a>
           <a href="applications.html" role="menuitem">Applications</a>
           <a href="knowledge.html" role="menuitem">Knowledge</a>
@@ -150,27 +146,27 @@
       themeToggle.textContent = isDark ? '☀️' : '🌙';
     }
   </script>
-  <script src="tp-nav.js?v=6" defer></script>
+  <script src="tp-nav.js?v=7" defer></script>
+  <script src="tp-pwa.js?v=7" defer></script>
 </header>
-
-<main class="bk-wrap">
+<main id="main" tabindex="-1" class="bk-wrap">
   <h1>The TransformerPath Professional Engineering Series</h1>
-  <p class="lead">The TransformerPath Professional Engineering Series — an 18-volume global engineering reference library, written to work with the TransformerPath platform; every chapter links to interactive 3D models, calculators and the Academy. The first releases (Volume 1 and Volume 2) are available now; the remaining volumes are in development.</p>
-  <p class="series-route" style="text-align:center;font-size:.82rem;color:var(--muted);margin:0 0 20px">18-volume series — <a href="#vol1" style="color:var(--text);font-weight:700">Volume 1</a> ✓ Available · <a href="#vol2" style="color:var(--text);font-weight:700">Volume 2</a> ✓ Available · <a href="books/volume-0/" style="color:var(--text)">Volume 0</a> · <a href="books/volume-3/" style="color:var(--text)">Volume 3</a> · … in development · <a href="#roadmap" style="color:var(--accent)">full roadmap</a></p>
+  <p class="lead">The TransformerPath Professional Engineering Series — Volumes 0–19, written to work with the TransformerPath Learn path; every volume has a matching Masterclass module. The first releases (Volume 1 and Volume 2) are available now; the remaining volumes are in development.</p>
+  <p class="series-route" style="text-align:center;font-size:.82rem;color:var(--muted);margin:0 0 20px">Volumes 0–19 — <a href="#vol1" style="color:var(--text);font-weight:700">Volume 1</a> ✓ Available · Edition 1 · <a href="#vol2" style="color:var(--text);font-weight:700">Volume 2</a> ✓ Available · Edition 1 · <a href="books/volume-0/" style="color:var(--text)">Volume 0</a> planned · <a href="books/volume-19/" style="color:var(--text)">Volume 19</a> · <a href="#roadmap" style="color:var(--accent)">full roadmap</a> · <a href="learn.html#series-path" style="color:var(--accent)">course map</a></p>
   <div class="vol">
     <div class="vol-card" id="vol1">
-      <div class="tier">Volume 1</div>
+      <div class="tier">Volume 1 · Edition 1</div>
       <h2>The Transformer Path — A Practical Guide</h2>
-      <p class="sub">Distribution Transformer Design — IEC and IEEE/ANSI Practice. The complete engineering tour: fundamentals, magnetic circuit, windings, insulation, cooling, losses &amp; impedance, testing, standards, and design to IEC 60076 / IEEE C57 — with the interactive companion models.</p>
+      <p class="sub">Distribution Transformer Design — IEC and IEEE/ANSI Practice. Edition 1: sixty-six chapters in thirteen parts. Companion figures, calculators and 3D models sit on TransformerPath; this page holds titles and outcomes only.</p>
       <div class="editions">
         <div class="edition"><span><b>Digital Professional</b></span><span class="pr">$49</span><a class="btn btn-amber btn-sm" data-buy="v1_digital" data-track="book_purchase" data-track-book="Volume 1 (digital)">Buy digital →</a></div>
         <div class="edition"><span><b>Premium printed</b></span><span class="pr">≈$99</span><a class="btn btn-outline btn-sm" data-buy="v1_print" data-track="book_purchase" data-track-book="Volume 1 (print)">Buy print →</a></div>
       </div>
     </div>
     <div class="vol-card" id="vol2">
-      <div class="tier">Volume 2</div>
+      <div class="tier">Volume 2 · Edition 1</div>
       <h2>Power Transformer Design</h2>
-      <p class="sub">Large Power Transformers and Generator Step-Up Units — IEC and IEEE/ANSI Practice. The working design companion: core &amp; winding sizing, the rating-plate and design calculator workflow, short-circuit &amp; thermal withstand, OLTC, bushings, and a full worked example end-to-end.</p>
+      <p class="sub">Large Power Transformers — IEC and IEEE/ANSI Practice. Edition 1: sixty chapters in thirteen parts. Companion figures, calculators and 3D models sit on TransformerPath; this page holds titles and outcomes only.</p>
       <div class="editions">
         <div class="edition"><span><b>Digital Professional</b></span><span class="pr">$49</span><a class="btn btn-amber btn-sm" data-buy="v2_digital" data-track="book_purchase" data-track-book="Volume 2 (digital)">Buy digital →</a></div>
         <div class="edition"><span><b>Premium printed</b></span><span class="pr">≈$99</span><a class="btn btn-outline btn-sm" data-buy="v2_print" data-track="book_purchase" data-track-book="Volume 2 (print)">Buy print →</a></div>
@@ -189,28 +185,31 @@
   </div>
   <p class="bk-note">Each volume includes <b>online companions</b> — figures, calculators, 3D models, extra examples, answers and errata — activated via the TransformerPath account. Printed editions ship on demand; prices are indicative and subject to print/fulfilment cost. Checkout runs through Stripe; if a payment link is not yet configured for an edition, we fall back to email so you are never blocked.</p>
   <div class="bkroad" id="roadmap">
-    <h2>The 18-volume roadmap</h2>
+    <h2>Volumes 0–19 roadmap</h2>
+    <p style="color:var(--muted);font-size:.9rem;margin:0 0 12px">Each volume has a matching Masterclass module. The course teaches; the book is the reference.</p>
     <table>
-      <thead><tr><th>#</th><th>Volume</th><th>Status</th></tr></thead>
+      <thead><tr><th>#</th><th>Volume</th><th>Course</th><th>Status</th></tr></thead>
       <tbody>
-        <tr><td class="v">V0</td><td><a href="books/volume-0/">Fundamentals of Transformer Engineering</a><span class="sub">Magnetic Circuits, Principles, and the Physics of Transformation</span></td><td class="st">Coming soon</td></tr>
-        <tr><td class="v">V1</td><td><a href="#vol1">The Transformer Path — A Practical Guide: From Specification to Service</a><span class="sub">Distribution Transformer Design — IEC and IEEE/ANSI Practice</span></td><td class="st">✓ Available</td></tr>
-        <tr><td class="v">V2</td><td><a href="#vol2">Power Transformer Design</a><span class="sub">Large Power Transformers and Generator Step-Up Units — IEC and IEEE/ANSI Practice</span></td><td class="st">✓ Available</td></tr>
-        <tr><td class="v">V3</td><td><a href="books/volume-3/">Transformer Testing</a><span class="sub">From Routine Tests to Partial Discharge Diagnosis — IEC and IEEE/ANSI Practice</span></td><td class="st">Coming soon</td></tr>
-        <tr><td class="v">V4</td><td><a href="books/volume-4/">Transformer Diagnostics &amp; Condition Assessment</a><span class="sub">Monitoring, Interpretation, and Condition Assessment</span></td><td class="st">Coming soon</td></tr>
-        <tr><td class="v">V5</td><td><a href="books/volume-5/">Transformer Failures &amp; Forensic Engineering</a><span class="sub">Analysis, Root Causes, and Lessons Learned</span></td><td class="st">Coming soon</td></tr>
-        <tr><td class="v">V6</td><td><a href="books/volume-6/">Transformer Manufacturing &amp; Quality</a><span class="sub">Process, Quality, and Production Management</span></td><td class="st">Coming soon</td></tr>
-        <tr><td class="v">V7</td><td><a href="books/volume-7/">Transformer Insulation, Materials &amp; Dielectrics</a><span class="sub">Paper, Oil, Pressboard, and the Solid/Liquid Interface</span></td><td class="st">Coming soon</td></tr>
-        <tr><td class="v">V8</td><td><a href="books/volume-8/">Transformer Components &amp; Accessories</a><span class="sub">Hardware Selection, Integration, and Maintenance</span></td><td class="st">Coming soon</td></tr>
-        <tr><td class="v">V9</td><td><a href="books/volume-9/">Special-Purpose &amp; Emerging Transformers</a><span class="sub">Special Applications, Emerging Technologies, and Extreme Environments</span></td><td class="st">Coming soon</td></tr>
-        <tr><td class="v">V10</td><td><a href="books/volume-10/">Protection, Control, Power Electronics &amp; Grid Integration</a><span class="sub">The Transformer as a System Component</span></td><td class="st">Coming soon</td></tr>
-        <tr><td class="v">V11</td><td><a href="books/volume-11/">Transformer Commercial Engineering &amp; Costing</a><span class="sub">OEM Costing, Bid Strategy, and Post-Award Control</span></td><td class="st">Coming soon</td></tr>
-        <tr><td class="v">V12</td><td><a href="books/volume-12/">Utility Specifications, Tenders &amp; Bid Management</a><span class="sub">Specification Interpretation, Compliance, and Bid Management</span></td><td class="st">Coming soon</td></tr>
-        <tr><td class="v">V13</td><td><a href="books/volume-13/">Transformer Economics, Procurement &amp; Supply Chain</a><span class="sub">Total Cost of Ownership, Sourcing, and Logistics</span></td><td class="st">Coming soon</td></tr>
-        <tr><td class="v">V14</td><td><a href="books/volume-14/">Transformer Safety, Sustainability &amp; Environment</a><span class="sub">People, Equipment, and Environmental Protection</span></td><td class="st">Coming soon</td></tr>
-        <tr><td class="v">V15</td><td><a href="books/volume-15/">Transformer Installation, Commissioning, Service &amp; Life Extension</a><span class="sub">Field Operations, Maintenance, and Lifecycle Management</span></td><td class="st">Coming soon</td></tr>
-        <tr><td class="v">V16</td><td><a href="books/volume-16/">Transformer Standards, Quality &amp; Test Frameworks</a><span class="sub">Standards Architecture, Quality Management, and Test Frameworks</span></td><td class="st">Coming soon</td></tr>
-        <tr><td class="v">V17</td><td><a href="books/volume-17/">Utility Transformer Asset Management</a><span class="sub">Fleet Health, Risk, and Replacement Strategy</span></td><td class="st">Coming soon</td></tr>
+        <tr><td class="v">V0</td><td><a href="books/volume-0/">Fundamentals of Transformer Engineering</a><span class="sub">Magnetic Circuits, Principles, and the Physics of Transformation</span></td><td><a href="masterclass.html#fundamentals">Ch.1</a></td><td class="st">Coming soon — being prepared</td></tr>
+        <tr><td class="v">V1</td><td><a href="#vol1">The Transformer Path — A Practical Guide: From Specification to Service</a><span class="sub">Distribution Transformer Design — IEC and IEEE/ANSI Practice · Edition 1</span></td><td><a href="masterclass.html#fundamentals">Design core</a></td><td class="st">✓ Available · Edition 1</td></tr>
+        <tr><td class="v">V2</td><td><a href="#vol2">Power Transformer Design</a><span class="sub">Large Power Transformers — IEC and IEEE/ANSI Practice · Edition 1</span></td><td><a href="masterclass.html#powerdesign">Ch.25</a></td><td class="st">✓ Available · Edition 1</td></tr>
+        <tr><td class="v">V3</td><td><a href="books/volume-3/">Transformer Testing</a><span class="sub">From Routine Tests to Partial Discharge Diagnosis — IEC and IEEE/ANSI Practice</span></td><td><a href="masterclass.html#testing">Ch.11</a></td><td class="st">Coming soon — being prepared</td></tr>
+        <tr><td class="v">V4</td><td><a href="books/volume-4/">Transformer Diagnostics &amp; Condition Assessment</a><span class="sub">Monitoring, interpretation, and condition assessment</span></td><td><a href="masterclass.html#diagnostics">Diagnostics</a></td><td class="st">Coming soon — being prepared</td></tr>
+        <tr><td class="v">V5</td><td><a href="books/volume-5/">Transformer Failures and Forensics</a><span class="sub">Diagnosis, investigation and the discipline of evidence</span></td><td><a href="masterclass.html#failures">Failures</a></td><td class="st">Coming soon</td></tr>
+        <tr><td class="v">V6</td><td><a href="books/volume-6/">Transformer Manufacturing</a><span class="sub">What is decided in the works and cannot be undone</span></td><td><a href="masterclass.html#manufacturing">Manufacturing</a></td><td class="st">Coming soon</td></tr>
+        <tr><td class="v">V7</td><td><a href="books/volume-7/">Transformer Insulation and Materials</a><span class="sub">Dielectrics, cellulose, oil and the clocks they keep</span></td><td><a href="masterclass.html#insulation">Ch.5</a></td><td class="st">Coming soon</td></tr>
+        <tr><td class="v">V8</td><td><a href="books/volume-8/">Transformer Components</a><span class="sub">Bushings, tap changers, cooling and the interfaces between them</span></td><td><a href="masterclass.html#construction">Ch.7 · 21 · 22</a></td><td class="st">Coming soon</td></tr>
+        <tr><td class="v">V9</td><td><a href="books/volume-9/">Losses, Efficiency and Economics</a><span class="sub">Measurement, capitalisation and the money in a loss figure</span></td><td><a href="masterclass.html#losses">Ch.10</a></td><td class="st">Coming soon</td></tr>
+        <tr><td class="v">V10</td><td><a href="books/volume-10/">Short Circuit and Mechanical Withstand</a><span class="sub">Forces, buckling, clamping and the verification of strength</span></td><td><a href="masterclass.html#shortcircuit">Short-circuit</a></td><td class="st">Coming soon</td></tr>
+        <tr><td class="v">V11</td><td><a href="books/volume-11/">Protection, Control and the Network</a><span class="sub">Relays, settings, trip paths and the machine in a system</span></td><td><a href="masterclass.html#protection">Ch.17</a></td><td class="st">Coming soon</td></tr>
+        <tr><td class="v">V12</td><td><a href="books/volume-12/">Special Transformers</a><span class="sub">Converter, phase-shifting, furnace, traction and rectifier duty</span></td><td><a href="masterclass.html#special">Ch.15</a></td><td class="st">Coming soon</td></tr>
+        <tr><td class="v">V13</td><td><a href="books/volume-13/">Installation, Commissioning and Site Work</a><span class="sub">Manufacturing performed by people who are not manufacturers</span></td><td><a href="masterclass.html#sitelife">Ch.16</a></td><td class="st">Coming soon</td></tr>
+        <tr><td class="v">V14</td><td><a href="books/volume-14/">Operation, Loading and Overload</a><span class="sub">The thermal model, the loading guide and the decision taken hourly</span></td><td><a href="masterclass.html#loading">Loading</a></td><td class="st">Coming soon</td></tr>
+        <tr><td class="v">V15</td><td><a href="books/volume-15/">Maintenance, Repair and Refurbishment</a><span class="sub">A programme is a set of bets about failure mechanisms</span></td><td><a href="masterclass.html#repair">Repair</a></td><td class="st">Coming soon</td></tr>
+        <tr><td class="v">V16</td><td><a href="books/volume-16/">Standards, Quality and Assurance</a><span class="sub">Compliance and quality are different things</span></td><td><a href="masterclass.html#standards">Ch.12</a></td><td class="st">Coming soon</td></tr>
+        <tr><td class="v">V17</td><td><a href="books/volume-17/">Utility Asset Management</a><span class="sub">Fleet decisions and the questions the engineering does not answer</span></td><td><a href="masterclass.html#assetmgmt">Asset mgmt</a></td><td class="st">Coming soon</td></tr>
+        <tr><td class="v">V18</td><td><a href="books/volume-18/">The Transformer Engineer&rsquo;s Handbook</a><span class="sub">The series inverted — indexed by the question</span></td><td><a href="masterclass.html#handbook">Handbook</a></td><td class="st">Coming soon</td></tr>
+        <tr><td class="v">V19</td><td><a href="books/volume-19/">Power Electronics, HVDC and Grid Integration</a><span class="sub">The grid the installed fleet was not specified for</span></td><td><a href="masterclass.html#hvdc">HVDC</a></td><td class="st">Coming soon</td></tr>
       </tbody>
     </table>
   </div>
@@ -222,13 +221,13 @@
         <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
         <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data. Built for utilities, transformer manufacturers, component suppliers, EPCs, consultants and engineers.</p>
       </div>
-      <div><h2>INTELLIGENCE</h2><a href="intel.html">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="intelligence.html">Intelligence</a><a href="projects.html">Projects</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="exhibitions.html">Exhibitions</a><a href="events.html">Events</a></div>
-      <div><h2>INDUSTRY</h2><a href="manufacturers.html">Manufacturers</a><a href="directory.html">Directory</a><a href="services.html">Service &amp; Repair</a><a href="logistics.html">Transport &amp; Logistics</a><a href="laboratories.html">Testing Labs</a><a href="buyers.html">Buyers &amp; Utilities</a><a href="buyers-guide.html">Buyer's Guide</a><a href="accessories.html">Accessories</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a></div>
-      <div><h2>ENGINEERING</h2><a href="knowledge.html">Knowledge</a><a href="standards.html">Standards &amp; Codes</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Models</a><a href="design.html">Design Duel</a><a href="resources.html">Resources</a></div>
-      <div><h2>LEARN</h2><a href="learn.html">Learn</a><a href="education.html">Education &amp; Training</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy</a><a href="books.html">Books</a></div>
-      <div><h2>BUSINESS</h2><a href="for-manufacturers.html">For Manufacturers</a><a href="associations.html">Industry Associations</a><a href="media.html">Media &amp; Publications</a><a href="pricing.html">Pricing</a><a href="verified.html">Verified</a><a href="sponsor.html">Sponsor</a><a href="webinars.html">Webinars</a></div>
-      <div><h2>COMPANY</h2><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
-      <div><h2>CONTACT</h2>
+      <div><p class="footer-col-label">INTELLIGENCE</p><a href="intel.html">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="intelligence.html">Intelligence</a><a href="projects.html">Projects</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="exhibitions.html">Exhibitions</a><a href="events.html">Events</a></div>
+      <div><p class="footer-col-label">INDUSTRY</p><a href="manufacturers.html">Manufacturers</a><a href="directory.html">Directory</a><a href="services.html">Service &amp; Repair</a><a href="logistics.html">Transport &amp; Logistics</a><a href="laboratories.html">Testing Labs</a><a href="buyers.html">Buyers &amp; Utilities</a><a href="buyers-guide.html">Buyer's Guide</a><a href="accessories.html">Accessories</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a></div>
+      <div><p class="footer-col-label">ENGINEERING</p><a href="knowledge.html">Knowledge</a><a href="standards.html">Standards &amp; Codes</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Models</a><a href="design.html">Design Duel</a><a href="resources.html">Resources</a></div>
+      <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learn</a><a href="education.html">Education &amp; Training</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy</a><a href="books.html">Books</a></div>
+      <div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="associations.html">Industry Associations</a><a href="media.html">Media &amp; Publications</a><a href="pricing.html">Pricing</a><a href="verified.html">Verified</a><a href="sponsor.html">Sponsor</a><a href="webinars.html">Webinars</a></div>
+      <div><p class="footer-col-label">COMPANY</p><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><p class="footer-col-label">CONTACT</p>
         <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
         <a class="tp-li-btn tp-li-follow" data-linkedin-follow href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>Follow us on LinkedIn</a>
         <a class="tp-li-btn tp-li-share" data-linkedin-share href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>LinkedIn</a>
@@ -238,7 +237,7 @@
   </div>
 </footer>
 
-<script src="analytics.js?v=6" defer></script>
+<script src="analytics.js?v=7" defer></script>
 <script>
 // Direct book checkout via Stripe Payment Links (config-driven). Each edition
 // has a Stripe link in data/config.json -> pricing.bookStripeLinks. When a link
@@ -268,8 +267,7 @@
   }).catch(function(){ /* leave default mailto fallback */ });
 })();
 </script>
-<script src="tp-nav.js?v=6" defer></script>
-<script src="tp-freshness.js?v=6" defer></script>
-<script src="tp-feedback.js?v=6" defer></script>
+<script src="tp-freshness.js?v=7" defer></script>
+<script src="tp-feedback.js?v=7" defer></script>
 </body>
 </html>

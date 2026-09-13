@@ -263,7 +263,7 @@ PAGES.forEach(cfg => {
 <meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
 <meta name="robots" content="index,follow">
 <link rel="stylesheet" href="/style.css?v=13">
-<link rel="stylesheet" href="/tp-nav.css?v=13">
+<link rel="stylesheet" href="/tp-nav.css?v=15">
 <link rel="stylesheet" href="/tp-feedback.css?v=13">
 <link rel="icon" type="image/svg+xml" href="/brand/favicon.svg"><link rel="icon" href="/brand/favicon.ico" sizes="any">
 <style>

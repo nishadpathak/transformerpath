@@ -90,7 +90,8 @@ header .container { max-width: 1320px; padding-left: 20px; padding-right: 20px; 
 /* Hero */
 .hero { background: linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 60%, #1b3a5c 100%); color: #fff; padding: 80px 0 70px; text-align: center; }
 .hero .kicker { display: inline-block; background: rgba(245,166,35,.15); color: var(--amber); padding: 6px 18px; border-radius: 999px; font-size: .85rem; font-weight: 600; margin-bottom: 22px; }
-.hero h1 { font-size: 2.9rem; line-height: 1.15; margin-bottom: 18px; letter-spacing: -0.5px; }
+.hero h1 { font-size: 2.9rem; line-height: 1.15; margin-bottom: 18px; letter-spacing: -0.5px; max-width: 100%; overflow-wrap: anywhere; }
+h1 { overflow-wrap: anywhere; }
 .hero h1 span { color: var(--amber); }
 .hero p { color: #b8c4d4; max-width: 640px; margin: 0 auto 32px; font-size: 1.12rem; }
 .hero-ctas { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
@@ -130,10 +131,28 @@ section.block.alt { background: var(--card); }
 .tag-supplier { background: #dcfce7; color: #166534; }
 .tag-price { background: #fce7f3; color: #9d174d; }
 .intel-date { text-align: center; color: var(--muted); font-size: .88rem; margin-bottom: 28px; }
-.ticker { background: var(--navy); color: #fff; padding: 12px 0; font-size: .9rem; overflow: hidden; white-space: nowrap; }
+.ticker {
+  background: #08121f;
+  color: #d6e0ec;
+  padding: 8px 0;
+  font-size: .8rem;
+  overflow: hidden;
+  white-space: nowrap;
+  border-top: 1px solid rgba(245, 166, 35, .42);
+  border-bottom: 1px solid rgba(255, 255, 255, .06);
+}
 .ticker-inner { display: inline-block; animation: scroll 45s linear infinite; }
+.ticker:hover .ticker-inner,
+.ticker:focus-within .ticker-inner { animation-play-state: paused; }
 .ticker-inner b { color: var(--amber); margin: 0 6px 0 24px; }
 @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (max-width: 700px) {
+  .ticker { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ticker-inner { animation: none; }
+  .ticker { overflow-x: auto; white-space: nowrap; }
+}
 
 /* Filters */
 .filters { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 30px; }
@@ -210,7 +229,9 @@ footer .cols { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 36px;
 /* Footer column labels are h2, not h4: they sit in the contentinfo landmark
    after content that ends at h1 or h2, so h4 skipped a level on 56 pages.
    Styling is unchanged — only the element level moved. */
-footer h2 { color: #fff; font-size: .82rem; letter-spacing: 1px; margin-bottom: 14px; font-weight: 700; }
+footer h2,
+footer .footer-col-label { color: #fff; font-size: .82rem; letter-spacing: 1px; margin-bottom: 14px; font-weight: 700; }
+footer .footer-col-label { display: block; }
 footer a { display: block; margin-bottom: 8px; }
 footer a:hover { color: var(--amber); }
 .copyright { border-top: 1px solid rgba(255,255,255,.1); padding-top: 22px; text-align: center; font-size: .82rem; }
@@ -266,6 +287,9 @@ footer a:hover { color: var(--amber); }
   section.block { padding: 44px 0; }
   .section-head h2 { font-size: 1.55rem; }
   .card { padding: 20px; }
+  .hero h1 { font-size: 1.55rem; line-height: 1.2; }
+  .hero h1 span { display: block; }
+  .hero-ctas { flex-direction: column; align-items: center; }
   .filters button { padding: 9px 16px; }
   .cta-strip h2 { font-size: 1.5rem; }
   footer .cols { grid-template-columns: 1fr; gap: 24px; }

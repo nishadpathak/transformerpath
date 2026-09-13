@@ -24,6 +24,7 @@ const path = require('path');
    check-event-integrity.js. This file used to re-derive status and countdowns
    from raw dates, which is how "Dates TBC" could render beside "Live now". */
 const { resolveStatus, isTravelSafe, isDiscoverable } = require('./lib/event-status');
+const { eventHref, eventPageMap } = require('./lib/event-href');
 
 /* ------------------------------------------------------------------ *
  * Helpers
@@ -139,9 +140,19 @@ function injectById(html, id, newInner) {
   return html.slice(0, at) + '\n' + startM + '\n' + newInner + '\n' + endM + '\n' + html.slice(at);
 }
 
-// en-GB short date, e.g. "23 Aug 2026"
-const fmt = (d) =>
-  new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Dubai' });
+// en-GB short date, e.g. "23 Aug 2026" — never emit "Invalid Date"
+const fmt = (d) => {
+  if (!d || !/^\d{4}-\d{2}-\d{2}$/.test(d)) return '';
+  const dt = new Date(d + 'T12:00:00Z');
+  if (isNaN(dt.getTime())) return '';
+  return dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Dubai' });
+};
+function webinarCta(w) {
+  if (w.fmt === 'On-demand') return 'Watch replay →';
+  if (w.fmt === 'Recurring') return 'View programme →';
+  if (w.fmt === 'Live') return 'Register →';
+  return 'View →';
+}
 
 /* ------------------------------------------------------------------ *
  * EVENTS
@@ -225,7 +236,7 @@ function renderEvents(html) {
     // Absolute date is the primary, timezone-stable label; the relative badge is
     // recomputed client-side (data-rel="<start date>", data-rel-end="<end date>") so it can never go stale
     // between builds (a crawl can never see "Today" or "Live now" for a passed event).
-    return `<div class="up-next-card"><span class="up-next-abs">${fmt(ev.s)} → ${fmt(ev.e)}</span><h3>${esc(ev.n)}</h3><span class="up-next-rel" data-rel="${esc(ev.s)}" data-rel-end="${esc(ev.e)}">${lbl}</span><div class="venue">📍 ${esc(ev.v)} — ${esc(ev.c)}, ${esc(ev.co)}</div><a class="btn btn-amber btn-sm" href="${esc(ev.u)}" target="_blank" rel="noopener">View →</a></div>`;
+    return `<div class="up-next-card"><span class="up-next-abs">${fmt(ev.s)} → ${fmt(ev.e)}</span><h3>${esc(ev.n)}</h3><span class="up-next-rel" data-rel="${esc(ev.s)}" data-rel-end="${esc(ev.e)}">${lbl}</span><div class="venue">📍 ${esc(ev.v)} — ${esc(ev.c)}, ${esc(ev.co)}</div><a class="btn btn-amber btn-sm" href="${esc(ev.u)}" target="_blank" rel="noopener">View →</a> <a class="btn btn-outline btn-sm" href="${esc('map.html?layer=events&q=' + encodeURIComponent(ev.n))}">View on map</a></div>`;
   }).join('\n');
 
   const cards = list.map((ev) => {
@@ -241,6 +252,8 @@ function renderEvents(html) {
       <p style="color:var(--muted); font-size:.92rem; margin-bottom:10px">${esc(ev.d)}</p>
       <div style="display:flex; gap:8px; flex-wrap:wrap">
         <a class="btn btn-amber btn-sm" href="${esc(ev.u)}" target="_blank" rel="noopener">Official site →</a>
+        ${eventHref(ev, { fallbackListing: false }) ? `<a class="btn btn-outline btn-sm" href="${esc(eventHref(ev, { fallbackListing: false }))}">Event page →</a>` : ''}
+        <a class="btn btn-outline btn-sm" href="${esc('map.html?layer=events&q=' + encodeURIComponent(ev.n))}">View on map</a>
         ${trav ? `<a class="btn btn-outline btn-sm" data-aff="hotel" data-ev="${esc(ev.n)}" href="${esc(hotelURL(ev))}" target="_blank" rel="noopener sponsored">🏨 Book Hotel</a>` : ''}
         ${trav && flightURL(ev) ? `<a class="btn btn-outline btn-sm" data-aff="flights" data-ev="${esc(ev.n)}" href="${esc(flightURL(ev))}" target="_blank" rel="noopener sponsored">✈ Find Flights</a>` : ''}
         ${trav && AFF.kkdayLink ? `<a class="btn btn-outline btn-sm" data-aff="activities" data-ev="${esc(ev.n)}" href="${esc(AFF.kkdayLink)}" target="_blank" rel="noopener sponsored">🎟️ Things to Do</a>` : ''}
@@ -283,7 +296,8 @@ function renderEvents(html) {
   const jsonLdScript = `<script type="application/ld+json" id="events-ld">\n${JSON.stringify({ '@context': 'https://schema.org', '@graph': jsonLdEvents }, null, 2)}\n</script>`;
   html = html.replace(/<script type="application\/ld\+json" id="events-ld">[\s\S]*?<\/script>/, jsonLdScript);
 
-  // Synchronize client-side EVENTS array
+  // Synchronize client-side EVENTS array and event-page slug map
+  html = html.replace(/const EVENT_PAGES\s*=\s*\{[\s\S]*?\};/m, 'const EVENT_PAGES = ' + JSON.stringify(eventPageMap()) + ';');
   html = html.replace(/const EVENTS\s*=\s*\[[\s\S]*?\];/m, 'const EVENTS = ' + JSON.stringify(EVENTS) + ';');
 
   return { page: html, records: list.length };
@@ -297,7 +311,7 @@ function renderWebinars(html) {
   const now = new Date(new Date().toDateString());
   const TYPE_LABEL = { OEM: 'Manufacturer', Supplier: 'Supplier', Institute: 'Institute / Media' };
 
-  let list = WEBINARS.filter((w) => !w.date || new Date(w.date) >= now);
+  let list = WEBINARS.filter((w) => !w.date || (/^\d{4}-\d{2}-\d{2}$/.test(w.date) && new Date(w.date + 'T23:59:59') >= now));
   list.sort((a, b) => {
     if (a.date && b.date) return a.date.localeCompare(b.date);
     if (a.date) return -1;
@@ -306,10 +320,10 @@ function renderWebinars(html) {
   });
 
   const cards = list.map((w) => {
-    const soon = w.date && new Date(w.date) > now && (new Date(w.date) - now) / 86400000 <= 31;
+    const soon = w.date && new Date(w.date + 'T00:00:00') > now && (new Date(w.date + 'T00:00:00') - now) / 86400000 <= 31;
     const dateLine = w.date
-      ? `<div class="dates">🗓️ ${fmt(w.date)} · Live session</div>`
-      : `<div class="dates">${w.fmt === 'On-demand' ? '▶ On-demand library' : w.fmt === 'Recurring' ? '🔁 Recurring series' : '● Live program'}</div>`;
+      ? `<div class="dates">🗓️ ${fmt(w.date)} · Live session · timezone on organiser page</div>`
+      : `<div class="dates">${w.fmt === 'On-demand' ? '▶ On-demand / replay' : w.fmt === 'Recurring' ? '🔁 Recurring series' : '● Live program'}</div>`;
     const langTags = (w.lang || []).map((l) => `<span class="tag tag-lang">${esc(l)}</span>`).join('');
     return `<div class="intel-item webinar-card">
       <h3>${esc(w.n)}${soon ? '<span class="badge-soon">Soon</span>' : ''}</h3>
@@ -321,7 +335,7 @@ function renderWebinars(html) {
         <span style="color:var(--muted)">· ${esc(w.r)}</span>
       </div>
       <p style="color:var(--muted); font-size:.92rem; margin-bottom:10px">${esc(w.d)}</p>
-      <a class="btn btn-amber btn-sm" href="${esc(w.u)}" target="_blank" rel="noopener">Register / Watch →</a>
+      <a class="btn btn-amber btn-sm" href="${esc(w.u)}" target="_blank" rel="noopener">${webinarCta(w)}</a>
     </div>`;
   }).join('\n');
 
@@ -588,6 +602,33 @@ function renderIntel(html) {
 
   // 1. Generation 2 (tabs & panels: intel.html and 13 dated editions)
   if (html.includes('id="panel-news"')) {
+    // Live intel.html: first-page timeline from compact JSON. Archives keep the full dump.
+    if (html.includes('id="intel-timeline"') && fs.existsSync('data/intel-feed-ui.json')) {
+      try {
+        const feed = JSON.parse(fs.readFileSync('data/intel-feed-ui.json', 'utf8'));
+        const first = (feed.posts || []).filter(function (p) {
+          return p.desk === 'news' || p.desk === 'grid' || p.desk === 'awards';
+        }).slice(0, 12);
+        const cards = first.map(function (p) {
+          const href = p.url || ('intel.html#p-' + p.id);
+          return '<article class="intel-post" id="p-' + esc(p.id) + '">' +
+            '<div class="intel-avatar" aria-hidden="true">TP</div><div class="intel-body">' +
+            '<div class="intel-byline"><strong>TransformerPath</strong><span class="intel-date">' +
+            esc(p.date || 'Date not stated') + '</span></div>' +
+            '<h3 class="intel-headline"><a href="' + esc(href) + '" target="_blank" rel="noopener">' + esc(p.headline) + '</a></h3>' +
+            (p.soWhat ? '<p class="intel-sowhat">' + esc(p.soWhat) + '</p>' : '') +
+            '<div class="intel-meta">' +
+            (p.cls ? '<span class="cls-badge cls-' + esc(p.cls) + '">' + esc(p.cls) + '</span>' : '') +
+            (p.provenance ? '<span class="intel-prov intel-prov-' + esc(p.provenance) + '">' + esc(p.provenance) + '</span>' : '') +
+            '<span class="intel-region">' + esc(p.region || '') + '</span>' +
+            '<span class="src">' + esc(p.sourceName || p.src || '') + '</span></div></div></article>';
+        }).join('');
+        html = injectById(html, 'intel-timeline', cards);
+        records += first.length;
+        html = injectById(html, 'panel-news',
+          '<p class="intel-legacy-note">Full regional dump loads from curated NEWS when you open this desk. The timeline is the briefing.</p>');
+      } catch (e) { /* fall through to NEWS dump */ }
+    } else {
     // NEWS
     try {
       const NEWS = extractConst(html, 'NEWS');
@@ -604,6 +645,7 @@ function renderIntel(html) {
         html = injectById(html, 'panel-news', newsHtml);
       }
     } catch (e) { /* ignore */ }
+    }
 
     // GRID_NEWS
     try {

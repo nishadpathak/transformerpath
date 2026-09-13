@@ -115,12 +115,12 @@ function render() {
 <meta name="theme-color" content="#0d1b2e">
 <link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
 <link rel="stylesheet" href="style.css?v=13">
-<link rel="stylesheet" href="tp-nav.css?v=13">
+<link rel="stylesheet" href="tp-nav.css?v=15">
 <link rel="stylesheet" href="tp-feedback.css?v=13">
 <style>
 .lab-wrap { max-width: 1140px; margin: 0 auto; padding: 40px 20px 90px; }
 .lab-head { margin-bottom: 24px; }
-.lab-head h1 { font-size: 2.2rem; color: var(--ink); margin: 0 0 8px; }
+.lab-head h1 { font-size: 2.2rem; color: var(--ink); margin: 0 0 8px; overflow-wrap: anywhere; }
 .lab-head .lead { color: var(--muted); font-size: 1.05rem; max-width: 860px; line-height: 1.5; margin: 0 0 20px; }
 
 .stats-bar { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 24px; }

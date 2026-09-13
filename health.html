@@ -6,10 +6,10 @@
 <title>Data Health & Platform Operations Dashboard | TransformerPath</title>
 <meta name="robots" content="noindex, nofollow">
 <link rel="canonical" href="https://transformerpath.com/health.html">
-<link rel="stylesheet" href="style.css?v=13">
+<link rel="stylesheet" href="style.css?v=14">
 <link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
-<link rel="stylesheet" href="tp-nav.css?v=13">
-<link rel="stylesheet" href="tp-feedback.css?v=13">
+<link rel="stylesheet" href="tp-nav.css?v=14">
+<link rel="stylesheet" href="tp-feedback.css?v=14">
 <style>
   .dh-wrap { max-width: 1200px; margin: 0 auto; padding: 40px 20px 90px; }
   .dh-head { margin-bottom: 24px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 14px; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
@@ -58,6 +58,7 @@
         <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
         <div class="tpnav-dropdown-panel" role="menu">
           <a href="manufacturers.html">Manufacturers</a>
+          <a href="map.html">Industry Map</a>
           <a href="components.html">Components &amp; Materials</a>
           <a href="machinery.html">Machinery</a>
           <a href="laboratories.html">Testing Labs</a>
@@ -70,6 +71,7 @@
       <a href="projects.html">Projects</a>
       <a href="tenders.html">Tenders</a>
       <a href="grids.html" class="tpnav-opt">Grids</a>
+      <a href="map.html" class="tpnav-opt">Map</a>
       <a href="events.html">Events</a>
       <a href="tools.html" class="tpnav-opt">Engineering</a>
       <a href="learn.html">Learn</a>
@@ -77,22 +79,17 @@
       <div class="tpnav-more">
         <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
         <div class="tpnav-more-panel" role="menu">
-          <a href="services.html" role="menuitem">Service & Repair</a>
-          <a href="logistics.html" role="menuitem">Transport & Logistics</a>
-          <a href="laboratories.html" role="menuitem">Testing Labs</a>
-          <a href="machinery.html" role="menuitem">Machinery</a>
+          <a href="map.html" role="menuitem">Industry Map</a>
+          <a href="logistics.html" role="menuitem">Transport &amp; Logistics</a>
           <a href="associations.html" role="menuitem">Industry Associations</a>
-          <a href="education.html" role="menuitem">Education & Training</a>
-          <a href="buyers.html" role="menuitem">Buyers & Procurement</a>
-          <a href="media.html" role="menuitem">Media & Publications</a>
+          <a href="education.html" role="menuitem">Education &amp; Training</a>
+          <a href="buyers.html" role="menuitem">Buyers &amp; Procurement</a>
+          <a href="media.html" role="menuitem">Media &amp; Publications</a>
           <a href="compare.html" role="menuitem">Compare</a>
           <a href="accessories.html" role="menuitem">Accessories</a>
-          <a href="markets.html" role="menuitem">Markets</a>
           <a href="utilities.html" role="menuitem">Utilities</a>
           <a href="webinars.html" role="menuitem">Webinars</a>
           <a href="awards.html" role="menuitem">Awards</a>
-          <a href="buyers-guide.html" role="menuitem">Buyer's Guide</a>
-          <a href="components.html" role="menuitem">Components</a>
           <a href="materials.html" role="menuitem">Materials</a>
           <a href="applications.html" role="menuitem">Applications</a>
           <a href="knowledge.html" role="menuitem">Knowledge</a>
@@ -121,23 +118,32 @@
   <script>
     const themeToggle = document.getElementById('theme-toggle');
     const html = document.documentElement;
+    // Night mode is the default; light is opt-in via the toggle.
     const savedTheme = localStorage.getItem('theme') || 'dark';
+
     if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
     updateThemeIcon();
+
     themeToggle?.addEventListener('click', () => {
       const isDark = html.getAttribute('data-theme') === 'dark';
-      if (isDark) { html.removeAttribute('data-theme'); localStorage.setItem('theme', 'light'); }
-      else { html.setAttribute('data-theme', 'dark'); localStorage.setItem('theme', 'dark'); }
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
       updateThemeIcon();
     });
+
     function updateThemeIcon() {
       const isDark = html.getAttribute('data-theme') === 'dark';
       themeToggle.textContent = isDark ? '☀️' : '🌙';
     }
   </script>
-  <script src="tp-nav.js?v=6" defer></script>
+  <script src="tp-nav.js?v=7" defer></script>
+  <script src="tp-pwa.js?v=7" defer></script>
 </header>
-
 <main id="main" tabindex="-1" class="dh-wrap">
   <div class="dh-head">
     <div>
@@ -300,9 +306,8 @@
   }).catch(()=>{});
 })();
 </script>
-<script src="analytics.js?v=6" defer></script>
-<script src="tp-nav.js?v=6" defer></script>
-<script src="tp-freshness.js?v=6" defer></script>
-<script src="tp-feedback.js?v=6" defer></script>
+<script src="analytics.js?v=7" defer></script>
+<script src="tp-freshness.js?v=7" defer></script>
+<script src="tp-feedback.js?v=7" defer></script>
 </body>
 </html>

@@ -49,7 +49,15 @@ for (const f of files) {
   /* Every versioned JS asset must be listed here or its ?v= never moves and
      returning visitors keep the old file. tp-nav, tp-feedback, tp-freshness and
      site-stats were shipping with a frozen ?v=1 for exactly that reason. */
-  s = s.replace(/(analytics\.js|course-gate\.js|sitemap\.js|material-latest\.js|site-stats\.js|tp-nav\.js|tp-freshness\.js|tp-feedback\.js)\?v=\d+/g, '$1?v=' + JS_V);
+  s = s.replace(/(analytics\.js|course-gate\.js|sitemap\.js|material-latest\.js|site-stats\.js|tp-nav\.js|tp-pwa\.js|tp-freshness\.js|tp-feedback\.js)\?v=\d+/g, '$1?v=' + JS_V);
+  if (!s.includes('tp-pwa.js')) {
+    s = s.replace(
+      /<script src="((?:[^"]*\/)?)tp-nav\.js\?v=\d+"[^>]*><\/script>/,
+      function (m, prefix) {
+        return m + '\n  <script src="' + prefix + 'tp-pwa.js?v=' + JS_V + '" defer></script>';
+      }
+    );
+  }
   /* Same for the stylesheets that arrived after style.css/tp-theme.css. */
   s = s.replace(/(tp-nav\.css|tp-feedback\.css)\?v=\d+/g, '$1?v=' + CSS_V);
   s = s.replace(/(<script src="material-latest\.js)([">])/g, '$1?v=' + JS_V + '$2');

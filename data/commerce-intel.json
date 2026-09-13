@@ -1,10 +1,10 @@
 {
   "$schema": "https://transformerpath.com/commerce-intel.schema.json",
-  "generated": "2026-09-11T17:08:53.315Z",
+  "generated": "2026-09-13T06:47:40.341Z",
   "honesty_note": "Revenue and conversion figures are NOT shown because live Stripe/Supabase transaction data is not available in this static build. No revenue, no conversion rate and no pipeline value are fabricated. The figures below are real platform-scale and prospect signals derived from the canonical datasets.",
   "metrics": {
     "platform_scale": {
-      "manufacturers": 701,
+      "manufacturers": 709,
       "projects": 306,
       "tenders": 150,
       "open_tenders": 21,
@@ -12,7 +12,7 @@
       "events": 295
     },
     "prospect_signals": {
-      "supplier_prospects_with_website": 690,
+      "supplier_prospects_with_website": 698,
       "upcoming_events": 181
     }
   },
@@ -1098,6 +1098,18 @@
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
+      "name": "Gangheng Electric",
+      "country": "China",
+      "region": "East Asia",
+      "city": "",
+      "categories": [
+        "DT",
+        "DRY"
+      ],
+      "website": "https://ghswitchcabinet.com",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
       "name": "Guangdong Haihong Transformer",
       "country": "China",
       "region": "East Asia",
@@ -2016,19 +2028,6 @@
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
-      "name": "ETD Transformátory a.s.",
-      "country": "Czech Republic",
-      "region": "Global",
-      "city": "Plzeň",
-      "categories": [
-        "PT",
-        "TX",
-        "SR"
-      ],
-      "website": "https://www.etd-transformatory.cz/",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
       "name": "Elpro-Energo",
       "country": "Czechia",
       "region": "Europe",
@@ -2061,6 +2060,19 @@
         "DT"
       ],
       "website": "https://etd-transformers.com",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "ETD Transformátory a.s.",
+      "country": "Czechia",
+      "region": "Europe",
+      "city": "Plzeň",
+      "categories": [
+        "PT",
+        "TX",
+        "SR"
+      ],
+      "website": "https://www.etd-transformatory.cz/",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
@@ -2383,17 +2395,6 @@
         "DRY"
       ],
       "website": "https://green-transfo.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "JST Transformateurs",
-      "country": "France",
-      "region": "Europe",
-      "city": "",
-      "categories": [
-        "PT"
-      ],
-      "website": "https://jst-transformers.eu/qui-sommes-nous",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     }
   ],
@@ -3914,7 +3915,7 @@
           "price": 499,
           "cadence": "12 months",
           "cta": "Get Verified",
-          "outcome": "Verified company contact, enhanced profile, logo/media, product info, brochure, contact CTA, RFQ response eligibility, basic analytics, website backlink where organically relevant.",
+          "outcome": "Verified company contact, enhanced profile, logo/media, product info, brochure, contact CTA, RFQ response eligibility, basic analytics, website backlink where organically relevant, featured pin on the Industry Map.",
           "neutrality": "VERIFIED MANUFACTURER means the organization/contact/profile completed TransformerPath's defined verification process. It does NOT mean product certified, quality certified, approved supplier, or technically superior."
         },
         {
@@ -3923,7 +3924,7 @@
           "price": 1499,
           "cadence": "12 months",
           "cta": "Become Supplier Pro",
-          "outcome": "Everything in Verified plus advanced analytics, commercial profile tools, RFQ workflow, market watchlists, Intel Pro entitlement, monthly performance report, promotional inventory, advanced opportunity alerts.",
+          "outcome": "Everything in Verified plus advanced analytics, commercial profile tools, RFQ workflow, market watchlists, Intel Pro entitlement, monthly performance report, promotional inventory (including a featured Industry Map pin), advanced opportunity alerts.",
           "neutrality": "Promotional placement is explicitly FEATURED or SPONSORED. Pro never buys organic technical ranking."
         }
       ]

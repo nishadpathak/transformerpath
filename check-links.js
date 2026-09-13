@@ -53,8 +53,9 @@ for (const f of files) {
   while ((m = re.exec(clean))) {
     const target = m[1];
     /* stripJsLiterals() rewrites ${...} to the placeholder JS; that is a template
-       expression, not a link. */
-    if (/(^|\/)JS(\/|$)/.test(target)) continue;
+       expression, not a link. Match JS as a path segment (/JS/) or glued onto a
+       slug (books/volume-JS/, masterclass.html#JS) — not only a whole segment. */
+    if (/(?:^|[/_\-.#?])JS(?:[/.#?]|$)/.test(target)) continue;
     total++;
     const r = existsTarget(f, target);
     if (!r.ok) {

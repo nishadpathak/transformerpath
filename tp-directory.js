@@ -28,16 +28,23 @@
   };
   function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 
+  var STATS = {};
+
   function load() {
-    fetch('data/directory-index.json').then(function (r) { return r.json(); })
-      .then(function (j) {
+    Promise.all([
+      fetch('data/directory-index.json').then(function (r) { return r.json(); }),
+      fetch('data/site-stats.json').then(function (r) { return r.json(); }).catch(function () { return {}; })
+    ]).then(function (pair) {
+        var j = pair[0];
+        STATS = pair[1] || {};
         DATA = j && j.companies || [];
-        // Read URL params if any
         var params = new URLSearchParams(window.location.search);
         if (params.get('q')) q = params.get('q');
         if (params.get('kind')) kind = params.get('kind');
         if (params.get('country')) country = params.get('country');
         if (params.get('minKv')) minKv = parseInt(params.get('minKv'), 10) || 0;
+        var landing = document.getElementById('dirLanding');
+        if (q && landing) landing.style.display = 'none';
         render();
       })
       .catch(function () {
@@ -119,8 +126,9 @@
   };
 
   function profileUrl(c) {
-    if (c.kind === 'manufacturer' && c.slug) return 'manufacturers/' + esc(c.slug) + '/';
-    if (c.kind === 'component_supplier') return 'components.html';
+    var slug = c.slug ? String(c.slug).replace(/^(acc|mach|lab|srv|log|asc|edu|buy|med):/, '') : '';
+    if (c.kind === 'manufacturer' && slug) return 'manufacturers/' + esc(slug) + '/';
+    if (c.kind === 'component_supplier') return slug ? 'accessories/' + esc(slug) + '/' : 'accessories.html';
     if (c.kind === 'machinery_manufacturer') return 'machinery.html';
     if (c.kind === 'testing_laboratory') return 'laboratories.html';
     if (c.kind === 'service_repair') return 'services.html';
@@ -284,15 +292,15 @@
     root.innerHTML =
       '<div class="kg-hero-banner">' +
         '<nav style="font-size:.82rem;color:var(--muted);margin-bottom:10px"><a href="index.html" style="color:var(--amber)">Home</a> › Transformer Industry Directory</nav>' +
-        '<h1 style="margin:0 0 6px;color:#fff;font-size:2rem;letter-spacing:-.02em">Transformer Industry <span style="color:var(--amber)">Knowledge Graph</span></h1>' +
-        '<p style="color:#b8c4d4;font-size:.95rem;margin:0;max-width:840px;line-height:1.5">An interconnected, verified database connecting power and distribution transformer OEMs, component &amp; material suppliers, service contractors, heavy transport, testing laboratories, associations, training academies, and buyers. <b>Factual evidence, verified sources, zero subjective rankings.</b></p>' +
+        '<p style="margin:0 0 6px;color:#fff;font-size:1.15rem;font-weight:700;letter-spacing:-.02em">Search the industry knowledge graph</p>' +
+        (q ? '<p style="color:#f5a623;font-size:.92rem;margin:0 0 10px">Showing directory matches for “' + esc(q) + '”. For companies, plants, projects, tenders and intel in one view, use <a href="search.html?q=' + encodeURIComponent(q) + '" style="color:#f5a623;font-weight:800">universal search →</a></p>' : '') +
+        '<p style="color:#b8c4d4;font-size:.95rem;margin:0;max-width:840px;line-height:1.5">An interconnected, sourced database connecting power and distribution transformer OEMs, component &amp; material suppliers, service contractors, heavy transport, testing laboratories, associations, training academies, and buyers. <b>Factual evidence, sourced records, zero subjective rankings.</b></p>' +
         '<div class="kg-kpi-grid">' +
-          '<div class="kg-kpi-box"><div class="kg-kpi-val">' + (facets.kinds.manufacturer || 546) + '</div><div class="kg-kpi-lbl">Manufacturers</div></div>' +
-          '<div class="kg-kpi-box"><div class="kg-kpi-val">812<span>+</span></div><div class="kg-kpi-lbl">Facilities</div></div>' +
-          '<div class="kg-kpi-box"><div class="kg-kpi-val">6,420<span>+</span></div><div class="kg-kpi-lbl">Capabilities</div></div>' +
-          '<div class="kg-kpi-box"><div class="kg-kpi-val">' + countries.length + '</div><div class="kg-kpi-lbl">Countries</div></div>' +
-          '<div class="kg-kpi-box"><div class="kg-kpi-val">12</div><div class="kg-kpi-lbl">Directories</div></div>' +
-          '<div class="kg-kpi-box"><div class="kg-kpi-val">' + DATA.length + '</div><div class="kg-kpi-lbl">Total Entities</div></div>' +
+          '<div class="kg-kpi-box"><div class="kg-kpi-val">' + (STATS.manufacturers || facets.kinds.manufacturer || DATA.length) + '</div><div class="kg-kpi-lbl">Manufacturers</div></div>' +
+          '<div class="kg-kpi-box"><div class="kg-kpi-val">' + (STATS.factories || '—') + '</div><div class="kg-kpi-lbl">Sourced plants</div></div>' +
+          '<div class="kg-kpi-box"><div class="kg-kpi-val">' + (STATS.capabilities || '—') + '</div><div class="kg-kpi-lbl">Capabilities</div></div>' +
+          '<div class="kg-kpi-box"><div class="kg-kpi-val">' + (STATS.manufacturingCountries || countries.length) + '</div><div class="kg-kpi-lbl">Countries</div></div>' +
+          '<div class="kg-kpi-box"><div class="kg-kpi-val">' + DATA.length + '</div><div class="kg-kpi-lbl">Indexed entities</div></div>' +
         '</div>' +
       '</div>' +
 

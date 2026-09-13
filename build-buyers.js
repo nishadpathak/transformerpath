@@ -108,7 +108,7 @@ ${HEAD}
     </div>
     <div class="stat-box">
       <div class="num">100%</div>
-      <div class="lbl">Website-Verified</div>
+      <div class="lbl">Website checked</div>
     </div>
   </div>
 

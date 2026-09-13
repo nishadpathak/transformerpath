@@ -14,7 +14,7 @@
 <meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="robots" content="index,follow">
-<link rel="stylesheet" href="style.css?v=13">
+<link rel="stylesheet" href="style.css?v=14">
 <link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is TransformerPath?", "acceptedAnswer": {"@type": "Answer", "text": "TransformerPath is the transformer industry platform \u2014 daily market intelligence, a worldwide manufacturer & supplier directory, an electrical-grid census, a transformer/electrical events & webinar directory, and hands-on engineering tools (the IEC 60076 design calculator, rating-plate and test-report generators)."}}, {"@type": "Question", "name": "Is it free?", "acceptedAnswer": {"@type": "Answer", "text": "Yes \u2014 the core is free forever: Daily Intel, the basic manufacturer & supplier directories, events, webinars, grids, industry news, knowledge articles, job browsing, RFQ submission and a selection of engineering calculators and book excerpts."}}, {"@type": "Question", "name": "What do the plans cost?", "acceptedAnswer": {"@type": "Answer", "text": "Learning $199, Professional $599 and Team $1,999. Each is a single payment for 12 months of access \u2014 there is currently no auto-renewal. If checkout is paused, email hello@transformerpath.com."}}, {"@type": "Question", "name": "What does the design calculator do?", "acceptedAnswer": {"@type": "Answer", "text": "A live IEC 60076 transformer design calculator for distribution, power and cast-resin modes: rating plate, core & winding sizing, turns, conductors, losses & efficiency, leakage reactance, short-circuit thermal withstand (IEC 60076-5), impulse / BIL levels, a to-scale cross-section drawing, and a downloadable PDF design report plus a BOM (Excel)."}}, {"@type": "Question", "name": "Do I get the books?", "acceptedAnswer": {"@type": "Answer", "text": "The TransformerPath Professional Engineering Series (V1, V2) is sold separately \u2014 digital Professional Edition and a Premium printed edition \u2014 and can be bundled with a membership. Book chapters link to the Academy lessons and the interactive 3D models."}}, {"@type": "Question", "name": "How is the manufacturer & supplier data sourced and structured?", "acceptedAnswer": {"@type": "Answer", "text": "TransformerPath maintains a strict 4-tier status architecture: Listed (public-source baseline profile), Claimed (authorized company representative controls and updates the profile), Verified (TransformerPath has independently verified company identity and profile data according to our published methodology), and Supplier Pro (commercial functionality such as RFQ management and analytics layered on top). Verification validates identity and published data; it is not a technical certification, factory audit, product guarantee, or utility endorsement."}}, {"@type": "Question", "name": "How fresh is Daily Intel?", "acceptedAnswer": {"@type": "Answer", "text": "The curated Daily Intel feed displays the date of the last successful data refresh. When the last refresh is within 36 hours, it is marked Data Current; 36 to 72 hours is Refresh Delayed; beyond 72 hours is Data Stale. Page build time and source data refresh time are strictly distinguished."}}, {"@type": "Question", "name": "Do I need an account?", "acceptedAnswer": {"@type": "Answer", "text": "Not to browse \u2014 the core is free without signing in. An account lets engineers keep saved designs, bookmarks, notes and follows in one workspace across devices. The account layer is in beta; sign up from your workspace to try it."}}, {"@type": "Question", "name": "How do I subscribe or pay?", "acceptedAnswer": {"@type": "Answer", "text": "Via the Learning/Professional/Team buttons on the pricing page (Stripe checkout). If payments are temporarily paused while links are refreshed, email hello@transformerpath.com and we'll send the checkout link."}}, {"@type": "Question", "name": "Do you issue a certificate of completion?", "acceptedAnswer": {"@type": "Answer", "text": "No \u2014 TransformerPath is not an accreditation body; it issues course completion records for its learning tracks. These are not accredited qualifications, professional certifications, licences, or authorisations to practise engineering. Academy courses and capstones are manually reviewed, and each completion record carries a unique verification page."}}, {"@type": "Question", "name": "Can my company be listed as a supplier?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Every profile begins as Listed. Authorized representatives can claim their profile for free, complete Profile Verification to confirm corporate identity, or upgrade to Supplier Pro for enhanced catalogue distribution, priority RFQ matching, and commercial market analytics."}}, {"@type": "Question", "name": "Which standards do you use?", "acceptedAnswer": {"@type": "Answer", "text": "Engineering content and tools follow IEC 60076 (and IEEE/ANSI C57 where relevant). Methodology, assumptions and limitations are documented on each calculator; results are a first-cut/tender-grade design, not a final factory production design."}}]}</script>
@@ -28,12 +28,12 @@
   details.faq div p { color: var(--text); line-height: 1.6; font-size: .95rem; margin: 10px 0 0; }
   .faq-cta { text-align:center; margin-top: 26px; }
 </style>
-    <link rel="stylesheet" href="tp-nav.css?v=13">
-  <link rel="stylesheet" href="tp-feedback.css?v=13">
+    <link rel="stylesheet" href="tp-nav.css?v=14">
+  <link rel="stylesheet" href="tp-feedback.css?v=14">
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
 <header>
-  <link rel="stylesheet" href="tp-nav.css?v=13">
   <div class="container nav">
     <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
     <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
@@ -43,6 +43,7 @@
         <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
         <div class="tpnav-dropdown-panel" role="menu">
           <a href="manufacturers.html">Manufacturers</a>
+          <a href="map.html">Industry Map</a>
           <a href="components.html">Components &amp; Materials</a>
           <a href="machinery.html">Machinery</a>
           <a href="laboratories.html">Testing Labs</a>
@@ -55,6 +56,7 @@
       <a href="projects.html">Projects</a>
       <a href="tenders.html">Tenders</a>
       <a href="grids.html" class="tpnav-opt">Grids</a>
+      <a href="map.html" class="tpnav-opt">Map</a>
       <a href="events.html">Events</a>
       <a href="tools.html" class="tpnav-opt">Engineering</a>
       <a href="learn.html">Learn</a>
@@ -62,23 +64,17 @@
       <div class="tpnav-more">
         <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
         <div class="tpnav-more-panel" role="menu">
-          <a href="directory.html" role="menuitem">Directory</a>
-          <a href="services.html" role="menuitem">Service & Repair</a>
-          <a href="logistics.html" role="menuitem">Transport & Logistics</a>
-          <a href="laboratories.html" role="menuitem">Testing Labs</a>
-          <a href="machinery.html" role="menuitem">Machinery</a>
+          <a href="map.html" role="menuitem">Industry Map</a>
+          <a href="logistics.html" role="menuitem">Transport &amp; Logistics</a>
           <a href="associations.html" role="menuitem">Industry Associations</a>
-          <a href="education.html" role="menuitem">Education & Training</a>
-          <a href="buyers.html" role="menuitem">Buyers & Procurement</a>
-          <a href="media.html" role="menuitem">Media & Publications</a>
+          <a href="education.html" role="menuitem">Education &amp; Training</a>
+          <a href="buyers.html" role="menuitem">Buyers &amp; Procurement</a>
+          <a href="media.html" role="menuitem">Media &amp; Publications</a>
           <a href="compare.html" role="menuitem">Compare</a>
           <a href="accessories.html" role="menuitem">Accessories</a>
-          <a href="markets.html" role="menuitem">Markets</a>
           <a href="utilities.html" role="menuitem">Utilities</a>
           <a href="webinars.html" role="menuitem">Webinars</a>
           <a href="awards.html" role="menuitem">Awards</a>
-          <a href="buyers-guide.html" role="menuitem">Buyer's Guide</a>
-          <a href="components.html" role="menuitem">Components</a>
           <a href="materials.html" role="menuitem">Materials</a>
           <a href="applications.html" role="menuitem">Applications</a>
           <a href="knowledge.html" role="menuitem">Knowledge</a>
@@ -130,10 +126,10 @@
       themeToggle.textContent = isDark ? '☀️' : '🌙';
     }
   </script>
-  <script src="tp-nav.js?v=6" defer></script>
+  <script src="tp-nav.js?v=7" defer></script>
+  <script src="tp-pwa.js?v=7" defer></script>
 </header>
-
-<main class="faq-wrap">
+<main id="main" tabindex="-1" class="faq-wrap">
   <h1>Frequently asked questions</h1>
   <p class="lead">What TransformerPath is, what's free, what the plans include, and how the tools and data are maintained.</p>
 <details class="faq"><summary>What is TransformerPath?</summary><div><p>TransformerPath is the transformer industry platform — daily market intelligence, a worldwide manufacturer & supplier directory, an electrical-grid census, a transformer/electrical events & webinar directory, and hands-on engineering tools (the IEC 60076 design calculator, rating-plate and test-report generators).</p></div></details>
@@ -160,13 +156,13 @@
         <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
         <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data. Built for utilities, transformer manufacturers, component suppliers, EPCs, consultants and engineers.</p>
       </div>
-      <div><h2>INTELLIGENCE</h2><a href="intel.html">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="intelligence.html">Intelligence</a><a href="projects.html">Projects</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="exhibitions.html">Exhibitions</a><a href="events.html">Events</a></div>
-      <div><h2>INDUSTRY</h2><a href="manufacturers.html">Manufacturers</a><a href="directory.html">Directory</a><a href="services.html">Service &amp; Repair</a><a href="logistics.html">Transport &amp; Logistics</a><a href="laboratories.html">Testing Labs</a><a href="buyers.html">Buyers &amp; Utilities</a><a href="buyers-guide.html">Buyer's Guide</a><a href="accessories.html">Accessories</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a></div>
-      <div><h2>ENGINEERING</h2><a href="knowledge.html">Knowledge</a><a href="standards.html">Standards &amp; Codes</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Models</a><a href="design.html">Design Duel</a><a href="resources.html">Resources</a></div>
-      <div><h2>LEARN</h2><a href="learn.html">Learn</a><a href="education.html">Education &amp; Training</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy</a><a href="books.html">Books</a></div>
-      <div><h2>BUSINESS</h2><a href="for-manufacturers.html">For Manufacturers</a><a href="associations.html">Industry Associations</a><a href="media.html">Media &amp; Publications</a><a href="pricing.html">Pricing</a><a href="verified.html">Verified</a><a href="sponsor.html">Sponsor</a><a href="webinars.html">Webinars</a></div>
-      <div><h2>COMPANY</h2><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
-      <div><h2>CONTACT</h2>
+      <div><p class="footer-col-label">INTELLIGENCE</p><a href="intel.html">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="intelligence.html">Intelligence</a><a href="projects.html">Projects</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="exhibitions.html">Exhibitions</a><a href="events.html">Events</a></div>
+      <div><p class="footer-col-label">INDUSTRY</p><a href="manufacturers.html">Manufacturers</a><a href="directory.html">Directory</a><a href="services.html">Service &amp; Repair</a><a href="logistics.html">Transport &amp; Logistics</a><a href="laboratories.html">Testing Labs</a><a href="buyers.html">Buyers &amp; Utilities</a><a href="buyers-guide.html">Buyer's Guide</a><a href="accessories.html">Accessories</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a></div>
+      <div><p class="footer-col-label">ENGINEERING</p><a href="knowledge.html">Knowledge</a><a href="standards.html">Standards &amp; Codes</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Models</a><a href="design.html">Design Duel</a><a href="resources.html">Resources</a></div>
+      <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learn</a><a href="education.html">Education &amp; Training</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy</a><a href="books.html">Books</a></div>
+      <div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="associations.html">Industry Associations</a><a href="media.html">Media &amp; Publications</a><a href="pricing.html">Pricing</a><a href="verified.html">Verified</a><a href="sponsor.html">Sponsor</a><a href="webinars.html">Webinars</a></div>
+      <div><p class="footer-col-label">COMPANY</p><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><p class="footer-col-label">CONTACT</p>
         <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
         <a class="tp-li-btn tp-li-follow" data-linkedin-follow href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>Follow us on LinkedIn</a>
         <a class="tp-li-btn tp-li-share" data-linkedin-share href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>LinkedIn</a>
@@ -176,9 +172,8 @@
   </div>
 </footer>
 
-<script src="analytics.js?v=6" defer></script>
-<script src="tp-nav.js?v=6" defer></script>
-<script src="tp-freshness.js?v=6" defer></script>
-<script src="tp-feedback.js?v=6" defer></script>
+<script src="analytics.js?v=7" defer></script>
+<script src="tp-freshness.js?v=7" defer></script>
+<script src="tp-feedback.js?v=7" defer></script>
 </body>
 </html>

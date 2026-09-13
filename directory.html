@@ -17,11 +17,15 @@
 <link rel="icon" type="image/svg+xml" href="brand/favicon.svg">
 <link rel="icon" href="brand/favicon.ico" sizes="any">
 <link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
-<link rel="stylesheet" href="style.css?v=13">
-<link rel="stylesheet" href="tp-nav.css?v=13">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TransformerPath">
+<link rel="stylesheet" href="style.css?v=14">
+<link rel="stylesheet" href="tp-nav.css?v=14">
 <style>
 .directory-wrap{max-width:1120px;margin:0 auto;padding:42px 20px 90px}
-.directory-wrap h1{font-size:1.9rem;color:var(--ink)}
+.directory-wrap h1{font-size:1.9rem;color:var(--ink);overflow-wrap:anywhere;line-height:1.2}
 .dir-controls{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 4px}
 .dir-controls input[type=search],.dir-controls select{background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font:inherit;font-size:.9rem;padding:9px 12px;min-width:150px}
 .dir-controls input[type=search]{flex:1;min-width:220px}
@@ -45,8 +49,8 @@
 </style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
 <header>
-  <link rel="stylesheet" href="tp-nav.css?v=13">
   <div class="container nav">
     <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
     <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
@@ -56,6 +60,7 @@
         <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
         <div class="tpnav-dropdown-panel" role="menu">
           <a href="manufacturers.html">Manufacturers</a>
+          <a href="map.html">Industry Map</a>
           <a href="components.html">Components &amp; Materials</a>
           <a href="machinery.html">Machinery</a>
           <a href="laboratories.html">Testing Labs</a>
@@ -68,6 +73,7 @@
       <a href="projects.html">Projects</a>
       <a href="tenders.html">Tenders</a>
       <a href="grids.html" class="tpnav-opt">Grids</a>
+      <a href="map.html" class="tpnav-opt">Map</a>
       <a href="events.html">Events</a>
       <a href="tools.html" class="tpnav-opt">Engineering</a>
       <a href="learn.html">Learn</a>
@@ -75,23 +81,17 @@
       <div class="tpnav-more">
         <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
         <div class="tpnav-more-panel" role="menu">
-          <a href="directory.html" role="menuitem">Directory</a>
-          <a href="services.html" role="menuitem">Service & Repair</a>
-          <a href="logistics.html" role="menuitem">Transport & Logistics</a>
-          <a href="laboratories.html" role="menuitem">Testing Labs</a>
-          <a href="machinery.html" role="menuitem">Machinery</a>
+          <a href="map.html" role="menuitem">Industry Map</a>
+          <a href="logistics.html" role="menuitem">Transport &amp; Logistics</a>
           <a href="associations.html" role="menuitem">Industry Associations</a>
-          <a href="education.html" role="menuitem">Education & Training</a>
-          <a href="buyers.html" role="menuitem">Buyers & Procurement</a>
-          <a href="media.html" role="menuitem">Media & Publications</a>
+          <a href="education.html" role="menuitem">Education &amp; Training</a>
+          <a href="buyers.html" role="menuitem">Buyers &amp; Procurement</a>
+          <a href="media.html" role="menuitem">Media &amp; Publications</a>
           <a href="compare.html" role="menuitem">Compare</a>
           <a href="accessories.html" role="menuitem">Accessories</a>
-          <a href="markets.html" role="menuitem">Markets</a>
           <a href="utilities.html" role="menuitem">Utilities</a>
           <a href="webinars.html" role="menuitem">Webinars</a>
           <a href="awards.html" role="menuitem">Awards</a>
-          <a href="buyers-guide.html" role="menuitem">Buyer's Guide</a>
-          <a href="components.html" role="menuitem">Components</a>
           <a href="materials.html" role="menuitem">Materials</a>
           <a href="applications.html" role="menuitem">Applications</a>
           <a href="knowledge.html" role="menuitem">Knowledge</a>
@@ -143,72 +143,77 @@
       themeToggle.textContent = isDark ? '☀️' : '🌙';
     }
   </script>
-  <script src="tp-nav.js?v=6" defer></script>
+  <script src="tp-nav.js?v=7" defer></script>
+  <script src="tp-pwa.js?v=7" defer></script>
 </header>
+<main id="main" tabindex="-1" class="directory-wrap">
+  <h1 style="font-size:2rem;color:var(--ink);margin-bottom:8px;overflow-wrap:anywhere">Transformer Industry Directory</h1>
+  <p class="sub" style="color:var(--muted);margin-bottom:24px">Sourced transformer-industry verticals — manufacturers, components, labs, services, logistics and buyers. Counts come from the live census, not invented totals.</p>
 
-<main class="directory-wrap">
-  <h1 style="font-size:2rem;color:var(--ink);margin-bottom:8px">Transformer Industry Directory</h1>
-  <p class="sub" style="color:var(--muted);margin-bottom:24px">Universal factual sourcing directory covering transformer OEMs, components, services, and supply-chain infrastructure.</p>
-
-  <!-- 12 Directories Master Architecture Section -->
-  <section class="dir-ecosystem-hub" style="margin-bottom:34px">
-    <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;box-shadow:0 8px 30px rgba(0,0,0,.15)">
-      <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;margin-bottom:18px;border-bottom:1px solid var(--border);padding-bottom:14px">
-        <div>
-          <span style="font-size:.76rem;text-transform:uppercase;letter-spacing:.06em;color:var(--amber);font-weight:700">Unified Global Architecture</span>
-          <h2 style="font-size:1.35rem;color:#fff;margin:4px 0 2px">The 12 TransformerPath Industry Directories</h2>
-          <p style="color:var(--muted);font-size:.88rem;margin:0">Verified, fact-based intelligence portals covering every segment of the global high-voltage transformer supply chain.</p>
-        </div>
-        <span style="font-size:.8rem;color:var(--muted);background:rgba(255,255,255,.05);padding:4px 10px;border-radius:6px;border:1px solid var(--border)">100% Website-Verified</span>
+  <section class="dir-ecosystem-hub" id="dirLanding" style="margin-bottom:34px">
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px">
+      <div style="margin-bottom:18px;border-bottom:1px solid var(--border);padding-bottom:14px">
+        <span style="font-size:.76rem;text-transform:uppercase;letter-spacing:.06em;color:var(--amber);font-weight:700">Directory verticals</span>
+        <h2 style="font-size:1.35rem;color:var(--ink);margin:4px 0 2px">Browse by industry role</h2>
+        <p style="color:var(--muted);font-size:.88rem;margin:0">Each card opens a dedicated listing. Figures are from <code>site-stats</code> and update with the census.</p>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px">
         <a href="manufacturers.html" class="card" style="text-decoration:none;padding:14px;border-radius:10px;display:flex;flex-direction:column;gap:4px">
-          <div style="font-weight:700;color:var(--text);font-size:.95rem">⚡ 1. Manufacturers</div>
-          <div style="font-size:.8rem;color:var(--muted);line-height:1.4">Power, distribution, dry-type, and specialty transformer OEMs across 195+ countries.</div>
+          <div style="font-weight:700;color:var(--text);font-size:.95rem">⚡ Manufacturers</div>
+          <div style="font-size:1.35rem;font-weight:800;color:var(--accent)" data-stat="manufacturers">701</div>
+          <div style="font-size:.8rem;color:var(--muted);line-height:1.4">Power, distribution and dry-type OEMs across <span data-stat="manufacturingCountries">85</span> manufacturing countries.</div>
+        </a>
+        <a href="map.html" class="card" style="text-decoration:none;padding:14px;border-radius:10px;display:flex;flex-direction:column;gap:4px">
+          <div style="font-weight:700;color:var(--text);font-size:.95rem">🗺️ Industry Map</div>
+          <div style="font-size:.8rem;color:var(--muted);line-height:1.4">Country-level pins for manufacturers, utilities and suppliers — no invented plant coordinates.</div>
+        </a>
+        <a href="accessories.html" class="card" style="text-decoration:none;padding:14px;border-radius:10px;display:flex;flex-direction:column;gap:4px">
+          <div style="font-weight:700;color:var(--text);font-size:.95rem">🧩 Accessories</div>
+          <div style="font-size:1.35rem;font-weight:800;color:var(--accent)" data-stat="suppliers">26</div>
+          <div style="font-size:.8rem;color:var(--muted);line-height:1.4">Bushings, OLTCs, relays, radiators, insulation and monitoring suppliers.</div>
         </a>
         <a href="components.html" class="card" style="text-decoration:none;padding:14px;border-radius:10px;display:flex;flex-direction:column;gap:4px">
-          <div style="font-weight:700;color:var(--text);font-size:.95rem">🧩 2. Accessories Suppliers</div>
-          <div style="font-size:.8rem;color:var(--muted);line-height:1.4">Bushings, tap changers, relays, breathers, radiators, valves, and monitoring instruments.</div>
+          <div style="font-weight:700;color:var(--text);font-size:.95rem">🔧 Component deep-dive</div>
+          <div style="font-size:.8rem;color:var(--muted);line-height:1.4">Category guides for bushings, tap-changers, cooling, insulation, conductors and oil.</div>
         </a>
-        <a href="events.html" class="card" style="text-decoration:none;padding:14px;border-radius:10px;display:flex;flex-direction:column;gap:4px">
-          <div style="font-weight:700;color:var(--text);font-size:.95rem">📅 3. Exhibitions &amp; Events</div>
-          <div style="font-size:.8rem;color:var(--muted);line-height:1.4">Global expos, CIGRE sessions, IEEE PES conferences, trade shows, and symposiums.</div>
-        </a>
-        <a href="standards.html" class="card" style="text-decoration:none;padding:14px;border-radius:10px;display:flex;flex-direction:column;gap:4px">
-          <div style="font-weight:700;color:var(--text);font-size:.95rem">📜 4. Standards &amp; Codes</div>
-          <div style="font-size:.8rem;color:var(--muted);line-height:1.4">IEC, IEEE, national grid codes, efficiency mandates, and compliance deadlines.</div>
+        <a href="machinery.html" class="card" style="text-decoration:none;padding:14px;border-radius:10px;display:flex;flex-direction:column;gap:4px">
+          <div style="font-weight:700;color:var(--text);font-size:.95rem">⚙️ Machinery</div>
+          <div style="font-size:1.35rem;font-weight:800;color:var(--accent)" data-stat="machinerySuppliers">14</div>
+          <div style="font-size:.8rem;color:var(--muted);line-height:1.4">Core-cutting, winding, VPD, oil plants and test-bay equipment builders.</div>
         </a>
         <a href="laboratories.html" class="card" style="text-decoration:none;padding:14px;border-radius:10px;display:flex;flex-direction:column;gap:4px">
-          <div style="font-weight:700;color:var(--text);font-size:.95rem">🔬 5. Testing Laboratories</div>
-          <div style="font-size:.8rem;color:var(--muted);line-height:1.4">High-voltage impulse, thermal, and short-circuit test facilities (KEMA, CESI, UL).</div>
-        </a>
-        <a href="components.html#categories" class="card" style="text-decoration:none;padding:14px;border-radius:10px;display:flex;flex-direction:column;gap:4px">
-          <div style="font-weight:700;color:var(--text);font-size:.95rem">⚙️ 6. Component Deep Dive</div>
-          <div style="font-size:.8rem;color:var(--muted);line-height:1.4">21 granular component categories from CRGO electrical steel to OLTCs and ester oils.</div>
+          <div style="font-weight:700;color:var(--text);font-size:.95rem">🔬 Testing laboratories</div>
+          <div style="font-size:1.35rem;font-weight:800;color:var(--accent)" data-stat="laboratories">10</div>
+          <div style="font-size:.8rem;color:var(--muted);line-height:1.4">Independent impulse, short-circuit and dielectric labs with ISO/IEC 17025 scope.</div>
         </a>
         <a href="services.html" class="card" style="text-decoration:none;padding:14px;border-radius:10px;display:flex;flex-direction:column;gap:4px">
-          <div style="font-weight:700;color:var(--text);font-size:.95rem">🛠️ 7. Service &amp; Repair</div>
-          <div style="font-size:.8rem;color:var(--muted);line-height:1.4">On-site winding repair, oil processing, degasification, and life-extension specialists.</div>
+          <div style="font-weight:700;color:var(--text);font-size:.95rem">🛠️ Service &amp; repair</div>
+          <div style="font-size:1.35rem;font-weight:800;color:var(--accent)" data-stat="services">12</div>
+          <div style="font-size:.8rem;color:var(--muted);line-height:1.4">Rewind, oil processing, field testing and life-extension specialists.</div>
         </a>
         <a href="logistics.html" class="card" style="text-decoration:none;padding:14px;border-radius:10px;display:flex;flex-direction:column;gap:4px">
-          <div style="font-weight:700;color:var(--text);font-size:.95rem">🚢 8. Transport &amp; Logistics</div>
-          <div style="font-size:.8rem;color:var(--muted);line-height:1.4">Heavy-haulage, Schnabel cars, multi-axle trailers, and marine barge logistics.</div>
+          <div style="font-weight:700;color:var(--text);font-size:.95rem">🚢 Transport &amp; logistics</div>
+          <div style="font-size:1.35rem;font-weight:800;color:var(--accent)" data-stat="logistics">8</div>
+          <div style="font-size:.8rem;color:var(--muted);line-height:1.4">Heavy haulage, Schnabel cars and marine barge specialists.</div>
+        </a>
+        <a href="utilities.html" class="card" style="text-decoration:none;padding:14px;border-radius:10px;display:flex;flex-direction:column;gap:4px">
+          <div style="font-weight:700;color:var(--text);font-size:.95rem">🏢 Utilities &amp; operators</div>
+          <div style="font-size:1.35rem;font-weight:800;color:var(--accent)" data-stat="gridOperators">166</div>
+          <div style="font-size:.8rem;color:var(--muted);line-height:1.4">TSOs and grid buyers that procure transformers, with grid profiles.</div>
+        </a>
+        <a href="buyers-guide.html" class="card" style="text-decoration:none;padding:14px;border-radius:10px;display:flex;flex-direction:column;gap:4px">
+          <div style="font-weight:700;color:var(--text);font-size:.95rem">📘 Buyer&rsquo;s Guide</div>
+          <div style="font-size:.8rem;color:var(--muted);line-height:1.4">How to specify, shortlist and RFQ transformer equipment without ranking.</div>
+        </a>
+        <a href="markets.html" class="card" style="text-decoration:none;padding:14px;border-radius:10px;display:flex;flex-direction:column;gap:4px">
+          <div style="font-weight:700;color:var(--text);font-size:.95rem">🌍 Markets</div>
+          <div style="font-size:1.35rem;font-weight:800;color:var(--accent)" data-stat="gridMarkets">151</div>
+          <div style="font-size:.8rem;color:var(--muted);line-height:1.4">Country dashboards: manufacturing base, grids, tenders and projects.</div>
         </a>
         <a href="associations.html" class="card" style="text-decoration:none;padding:14px;border-radius:10px;display:flex;flex-direction:column;gap:4px">
-          <div style="font-weight:700;color:var(--text);font-size:.95rem">🏛️ 9. Industry Associations</div>
-          <div style="font-size:.8rem;color:var(--muted);line-height:1.4">CIGRE, IEEE PES, IEC, NEMA, IEEMA, ZVEI, and national trade associations.</div>
-        </a>
-        <a href="education.html" class="card" style="text-decoration:none;padding:14px;border-radius:10px;display:flex;flex-direction:column;gap:4px">
-          <div style="font-weight:700;color:var(--text);font-size:.95rem">🎓 10. Education &amp; Training</div>
-          <div style="font-size:.8rem;color:var(--muted);line-height:1.4">University high-voltage faculties, short courses, and technical training academies.</div>
-        </a>
-        <a href="buyers.html" class="card" style="text-decoration:none;padding:14px;border-radius:10px;display:flex;flex-direction:column;gap:4px">
-          <div style="font-weight:700;color:var(--text);font-size:.95rem">🏢 11. Buyers &amp; Procurement</div>
-          <div style="font-size:.8rem;color:var(--muted);line-height:1.4">TSOs, DNOs, EPC contractors, renewable developers, and hyperscaler grid buyers.</div>
-        </a>
-        <a href="media.html" class="card" style="text-decoration:none;padding:14px;border-radius:10px;display:flex;flex-direction:column;gap:4px">
-          <div style="font-weight:700;color:var(--text);font-size:.95rem">📰 12. Media &amp; Publications</div>
-          <div style="font-size:.8rem;color:var(--muted);line-height:1.4">Trade journals, technical magazines, newsletters, and transformer industry press.</div>
+          <div style="font-weight:700;color:var(--text);font-size:.95rem">🏛️ Associations</div>
+          <div style="font-size:1.35rem;font-weight:800;color:var(--accent)" data-stat="associations">8</div>
+          <div style="font-size:.8rem;color:var(--muted);line-height:1.4">CIGRE, IEEE PES, IEC and national transformer-industry bodies.</div>
         </a>
       </div>
     </div>
@@ -226,13 +231,13 @@
         <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
         <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data. Built for utilities, transformer manufacturers, component suppliers, EPCs, consultants and engineers.</p>
       </div>
-      <div><h2>INTELLIGENCE</h2><a href="intel.html">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="intelligence.html">Intelligence</a><a href="projects.html">Projects</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="exhibitions.html">Exhibitions</a><a href="events.html">Events</a></div>
-      <div><h2>INDUSTRY</h2><a href="manufacturers.html">Manufacturers</a><a href="directory.html">Directory</a><a href="services.html">Service &amp; Repair</a><a href="logistics.html">Transport &amp; Logistics</a><a href="laboratories.html">Testing Labs</a><a href="buyers.html">Buyers &amp; Utilities</a><a href="buyers-guide.html">Buyer's Guide</a><a href="accessories.html">Accessories</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a></div>
-      <div><h2>ENGINEERING</h2><a href="knowledge.html">Knowledge</a><a href="standards.html">Standards &amp; Codes</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Models</a><a href="design.html">Design Duel</a><a href="resources.html">Resources</a></div>
-      <div><h2>LEARN</h2><a href="learn.html">Learn</a><a href="education.html">Education &amp; Training</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy</a><a href="books.html">Books</a></div>
-      <div><h2>BUSINESS</h2><a href="for-manufacturers.html">For Manufacturers</a><a href="associations.html">Industry Associations</a><a href="media.html">Media &amp; Publications</a><a href="pricing.html">Pricing</a><a href="verified.html">Verified</a><a href="sponsor.html">Sponsor</a><a href="webinars.html">Webinars</a></div>
-      <div><h2>COMPANY</h2><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
-      <div><h2>CONTACT</h2>
+      <div><p class="footer-col-label">INTELLIGENCE</p><a href="intel.html">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="intelligence.html">Intelligence</a><a href="projects.html">Projects</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="map.html">Industry Map</a><a href="exhibitions.html">Exhibitions</a><a href="events.html">Events</a></div>
+      <div><p class="footer-col-label">INDUSTRY</p><a href="manufacturers.html">Manufacturers</a><a href="directory.html">Directory</a><a href="map.html">Industry Map</a><a href="services.html">Service &amp; Repair</a><a href="logistics.html">Transport &amp; Logistics</a><a href="laboratories.html">Testing Labs</a><a href="buyers.html">Buyers &amp; Utilities</a><a href="buyers-guide.html">Buyer's Guide</a><a href="accessories.html">Accessories</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a></div>
+      <div><p class="footer-col-label">ENGINEERING</p><a href="knowledge.html">Knowledge</a><a href="standards.html">Standards &amp; Codes</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Models</a><a href="design.html">Design Duel</a><a href="resources.html">Resources</a></div>
+      <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learn</a><a href="education.html">Education &amp; Training</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy</a><a href="books.html">Books</a></div>
+      <div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="associations.html">Industry Associations</a><a href="media.html">Media &amp; Publications</a><a href="pricing.html">Pricing</a><a href="verified.html">Verified</a><a href="sponsor.html">Sponsor</a><a href="webinars.html">Webinars</a></div>
+      <div><p class="footer-col-label">COMPANY</p><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><p class="footer-col-label">CONTACT</p>
         <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
         <a class="tp-li-btn tp-li-follow" data-linkedin-follow href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>Follow us on LinkedIn</a>
         <a class="tp-li-btn tp-li-share" data-linkedin-share href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>LinkedIn</a>
@@ -242,10 +247,10 @@
   </div>
 </footer>
 
-<script src="analytics.js?v=6" defer></script>
+<script src="analytics.js?v=7" defer></script>
+<script src="site-stats.js" defer></script>
 <script src="tp-directory.js" defer></script>
-<script src="tp-nav.js?v=6" defer></script>
-<script src="tp-freshness.js?v=6" defer></script>
-<script src="tp-feedback.js?v=6" defer></script>
+<script src="tp-freshness.js?v=7" defer></script>
+<script src="tp-feedback.js?v=7" defer></script>
 </body>
 </html>

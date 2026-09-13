@@ -28,7 +28,13 @@
         var r = map[el.getAttribute('data-m-obs')];
         if (!r || !r.observation_date) return;
         var last = r.last_verified || r.observation_date;
-        el.textContent = (r.status === 'stale') ? ('Last verified ' + last) : r.observation_date;
+        function fmtObs(iso) {
+          if (!iso || !/^\d{4}-\d{2}-\d{2}/.test(iso)) return iso;
+          var d = new Date(iso + 'T00:00:00Z');
+          if (isNaN(d.getTime())) return iso;
+          return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+        }
+        el.textContent = (r.status === 'stale') ? ('Last verified ' + fmtObs(last)) : fmtObs(r.observation_date);
         if (r.status === 'stale') {
           el.style.color = 'var(--warn, #b5651d)';
         }

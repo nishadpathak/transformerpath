@@ -56,6 +56,21 @@ function call(body) { return fn.handler({ httpMethod: 'GET', queryStringParamete
   ok(html.indexOf('id="fundamentals"') >= 0, 'free chapter fundamentals is in the served page');
   ok(html.indexOf('id="classification"') >= 0, 'free chapter classification is in the served page');
 
+  console.log('\n5. ENGINEER TRACK GATE:');
+  const etHtml = fs.readFileSync('engineer-track.html', 'utf8');
+  ok(etHtml.indexOf('250 kVA') < 0 && etHtml.indexOf('63 MVA') < 0 && etHtml.indexOf('40 MVA') < 0, 'served engineer-track.html does not contain paid capstone briefs');
+  ok(etHtml.indexOf('data/engineer-track-paid.json') < 0, 'page does not fetch public paid JSON');
+  ok(etHtml.indexOf('/.netlify/functions/engineer-track-content') >= 0, 'page fetches the entitlement-gated function');
+  ok(etHtml.indexOf('1000 kVA') >= 0, 'free Level 1 Capstone F remains in the served page');
+  ok(!fs.existsSync('data/engineer-track-paid.json'), 'public data/engineer-track-paid.json is gone');
+  const ET = require('./functions/lib/engineer-track-levels.js');
+  ok(ET.level2.indexOf('250 kVA') >= 0 && ET.level3.indexOf('63 MVA') >= 0 && ET.level4.indexOf('40 MVA') >= 0, 'paid briefs live only in the server payload');
+  const etFn = require('./functions/engineer-track-content.js');
+  const etLock = JSON.parse((await etFn.handler({ httpMethod: 'GET', headers: {} })).body);
+  ok(etLock.locked === true && !etLock.level2, 'no token -> LOCKED, no briefs');
+  const etOpen = JSON.parse((await etFn.handler({ httpMethod: 'GET', headers: { authorization: 'Bearer ' + tok } })).body);
+  ok(etOpen.ok === true && (etOpen.level2 || '').indexOf('250 kVA') >= 0, 'valid token -> Level 2 brief delivered');
+
   console.log('\nPAYWALL QA: ' + (problems.length ? problems.length + ' problem(s)' : 'PASS'));
   process.exitCode = problems.length ? 1 : 0;
 })();

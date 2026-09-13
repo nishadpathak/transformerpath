@@ -13,7 +13,7 @@
 <meta property="og:url" content="https://transformerpath.com/components/protection-monitoring/">
 <meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
 <meta name="robots" content="index,follow">
-<link rel="stylesheet" href="../../style.css?v=13">
+<link rel="stylesheet" href="../../style.css?v=14">
 <link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">
 <link rel="apple-touch-icon" href="../../brand/apple-touch-icon.png">
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://transformerpath.com/"},{"@type":"ListItem","position":2,"name":"Components","item":"https://transformerpath.com/components.html"},{"@type":"ListItem","position":3,"name":"Protection & Online Monitoring Devices","item":"https://transformerpath.com/components/protection-monitoring/"}]},{"@type":"CollectionPage","name":"Protection & Online Monitoring Devices","description":"Transformer protection and condition monitoring directory. Buchholz relays, pressure relief valves, optical temperature sensors, multi-gas DGA and asset health monitors.","url":"https://transformerpath.com/components/protection-monitoring/"}]}</script>
@@ -30,10 +30,11 @@
   .hub-tbl th{text-align:left;color:var(--muted);font-size:.76rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;padding:10px 12px;border-bottom:2px solid var(--border)}
   .rfq-banner{background:linear-gradient(135deg, rgba(245,166,35,.12), rgba(13,27,46,.85));border:1px solid var(--accent);border-radius:12px;padding:24px;margin-top:36px;text-align:center}
 </style>
+<link rel="stylesheet" href="../../tp-nav.css?v=14">
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
 <header>
-  <link rel="stylesheet" href="/tp-nav.css?v=13">
   <div class="container nav">
     <a href="/index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
     <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
@@ -43,6 +44,7 @@
         <a href="/directory.html" class="tpnav-dropdown-btn">Directory</a>
         <div class="tpnav-dropdown-panel" role="menu">
           <a href="/manufacturers.html">Manufacturers</a>
+          <a href="/map.html">Industry Map</a>
           <a href="/components.html">Components &amp; Materials</a>
           <a href="/machinery.html">Machinery</a>
           <a href="/laboratories.html">Testing Labs</a>
@@ -55,6 +57,7 @@
       <a href="/projects.html">Projects</a>
       <a href="/tenders.html">Tenders</a>
       <a href="/grids.html" class="tpnav-opt">Grids</a>
+      <a href="/map.html" class="tpnav-opt">Map</a>
       <a href="/events.html">Events</a>
       <a href="/tools.html" class="tpnav-opt">Engineering</a>
       <a href="/learn.html">Learn</a>
@@ -62,23 +65,17 @@
       <div class="tpnav-more">
         <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
         <div class="tpnav-more-panel" role="menu">
-          <a href="/directory.html" role="menuitem">Directory</a>
-          <a href="/services.html" role="menuitem">Service & Repair</a>
-          <a href="/logistics.html" role="menuitem">Transport & Logistics</a>
-          <a href="/laboratories.html" role="menuitem">Testing Labs</a>
-          <a href="/machinery.html" role="menuitem">Machinery</a>
+          <a href="/map.html" role="menuitem">Industry Map</a>
+          <a href="/logistics.html" role="menuitem">Transport &amp; Logistics</a>
           <a href="/associations.html" role="menuitem">Industry Associations</a>
-          <a href="/education.html" role="menuitem">Education & Training</a>
-          <a href="/buyers.html" role="menuitem">Buyers & Procurement</a>
-          <a href="/media.html" role="menuitem">Media & Publications</a>
+          <a href="/education.html" role="menuitem">Education &amp; Training</a>
+          <a href="/buyers.html" role="menuitem">Buyers &amp; Procurement</a>
+          <a href="/media.html" role="menuitem">Media &amp; Publications</a>
           <a href="/compare.html" role="menuitem">Compare</a>
           <a href="/accessories.html" role="menuitem">Accessories</a>
-          <a href="/markets.html" role="menuitem">Markets</a>
           <a href="/utilities.html" role="menuitem">Utilities</a>
           <a href="/webinars.html" role="menuitem">Webinars</a>
           <a href="/awards.html" role="menuitem">Awards</a>
-          <a href="/buyers-guide.html" role="menuitem">Buyer's Guide</a>
-          <a href="/components.html" role="menuitem">Components</a>
           <a href="/materials.html" role="menuitem">Materials</a>
           <a href="/applications.html" role="menuitem">Applications</a>
           <a href="/knowledge.html" role="menuitem">Knowledge</a>
@@ -130,7 +127,8 @@
       themeToggle.textContent = isDark ? '☀️' : '🌙';
     }
   </script>
-  <script src="/tp-nav.js?v=6" defer></script>
+  <script src="/tp-nav.js?v=7" defer></script>
+  <script src="/tp-pwa.js?v=7" defer></script>
 </header>
 <main class="hub-wrap">
   <nav style="font-size:.82rem;color:var(--muted);margin-bottom:14px">
@@ -227,7 +225,7 @@
       </div>
     </div>
 
-  <h2>Verified Global Suppliers &amp; Manufacturers (19)</h2>
+  <h2>Verified Global Suppliers &amp; Manufacturers (33)</h2>
   <p style="font-size:.85rem;color:var(--muted)">Verified suppliers with independent factory documentation, technical capability certifications, and direct quotation channels.</p>
 
   <div class="tbl-responsive">
@@ -308,17 +306,289 @@
     
       <tr>
         <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
+          <a href="../../accessories/dynamic-ratings/" style="color:var(--text);font-weight:700">Dynamic Ratings</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">Melbourne, Australia</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
+          Monitoring / diagnostic devices
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
+          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
+          <a href="https://www.dynamicratings.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=Dynamic%20Ratings" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="Dynamic Ratings">RFQ</a>
+        </td>
+      </tr>
+    
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
+          <a href="../../accessories/omicron-electronics-gmbh/" style="color:var(--text);font-weight:700">OMICRON electronics GmbH</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">Klaus, Austria</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
+          Test equipment, Monitoring / diagnostic devices
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
+          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
+          <a href="https://www.omicronenergy.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=OMICRON%20electronics%20GmbH" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="OMICRON electronics GmbH">RFQ</a>
+        </td>
+      </tr>
+    
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
+          <a href="../../accessories/shanghai-huaming-power-equipment-co-ltd-huaming-hm/" style="color:var(--text);font-weight:700">Shanghai Huaming Power Equipment Co., Ltd. (Huaming / HM)</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">Shanghai, China</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
+          Tap changers (OLTC / DETC), Monitoring / diagnostic devices
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
+          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
+          <a href="https://www.huaming.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=Shanghai%20Huaming%20Power%20Equipment%20Co.%2C%20Ltd.%20(Huaming%20%2F%20HM)" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="Shanghai Huaming Power Equipment Co., Ltd. (Huaming / HM)">RFQ</a>
+        </td>
+      </tr>
+    
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
+          <a href="../../accessories/vaisala-oyj/" style="color:var(--text);font-weight:700">Vaisala Oyj</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">Vantaa, Finland</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
+          Monitoring / diagnostic devices
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
+          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
+          <a href="https://www.vaisala.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=Vaisala%20Oyj" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="Vaisala Oyj">RFQ</a>
+        </td>
+      </tr>
+    
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
+          <a href="../../accessories/albert-maier-gmbh/" style="color:var(--text);font-weight:700">Albert Maier GmbH</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">Weil der Stadt, Germany</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
+          Oil-level indicators, Breathers (silica gel), Pressure-relief devices, Conservator tanks
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
+          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
+          <a href="https://www.maier-accessories.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=Albert%20Maier%20GmbH" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="Albert Maier GmbH">RFQ</a>
+        </td>
+      </tr>
+    
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
+          <a href="../../accessories/emb-elektromotoren-und-geratebau-barleben/" style="color:var(--text);font-weight:700">EMB Elektromotoren und Gerätebau Barleben</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">Barleben, Germany</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
+          Buchholz relays
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
+          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
+          <a href="https://www.emb-online.de/" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=EMB%20Elektromotoren%20und%20Ger%C3%A4tebau%20Barleben" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="EMB Elektromotoren und Gerätebau Barleben">RFQ</a>
+        </td>
+      </tr>
+    
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
+          <a href="../../accessories/emb-gmbh-eberhard-mobius-elektrotechnische-bauelemente/" style="color:var(--text);font-weight:700">EMB GmbH (EBErhard Möbius Elektrotechnische Bauelemente)</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">Bad Königshofen, Germany</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
+          Buchholz relays, Monitoring / diagnostic devices, Pressure-relief devices
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
+          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
+          <a href="https://www.emb-online.net" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=EMB%20GmbH%20(EBErhard%20M%C3%B6bius%20Elektrotechnische%20Bauelemente)" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="EMB GmbH (EBErhard Möbius Elektrotechnische Bauelemente)">RFQ</a>
+        </td>
+      </tr>
+    
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
           <a href="../../accessories/maschinenfabrik-reinhausen-mr-reinhausen-group/" style="color:var(--text);font-weight:700">Maschinenfabrik Reinhausen (MR / Reinhausen Group)</a><br>
           <span style="font-size:.8rem;color:var(--muted)">Regensburg, Germany</span>
         </td>
         <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
-          Tap changers (OLTC / DETC), Monitoring / diagnostic devices, Breathers (silica gel), Pressure-relief devices
+          Tap changers (OLTC / DETC), Bushings (HV, LV), Buchholz relays, Monitoring / diagnostic devices, Breathers (silica gel), Pressure-relief devices
         </td>
         <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
           <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
         </td>
         <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
           <a href="https://www.reinhausen.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=Maschinenfabrik%20Reinhausen%20(MR%20%2F%20Reinhausen%20Group)" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="Maschinenfabrik Reinhausen (MR / Reinhausen Group)">RFQ</a>
+        </td>
+      </tr>
+    
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
+          <a href="../../accessories/messko-messko-gmbh/" style="color:var(--text);font-weight:700">MESSKO (MESSKO GmbH)</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">Oberursel, Germany</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
+          Monitoring / diagnostic devices, Oil-level indicators, Buchholz relays, Temperature indicators
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
+          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
+          <a href="https://messko.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=MESSKO%20(MESSKO%20GmbH)" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="MESSKO (MESSKO GmbH)">RFQ</a>
+        </td>
+      </tr>
+    
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
+          <a href="../../accessories/ctr-manufacturing-industries-ltd/" style="color:var(--text);font-weight:700">CTR Manufacturing Industries Ltd</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">Pune, India</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
+          Tap changers (OLTC / DETC), Pressure-relief devices, Monitoring / diagnostic devices
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
+          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
+          <a href="https://www.ctr.in" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=CTR%20Manufacturing%20Industries%20Ltd" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="CTR Manufacturing Industries Ltd">RFQ</a>
+        </td>
+      </tr>
+    
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
+          <a href="../../accessories/easun-reyrolle-ltd/" style="color:var(--text);font-weight:700">Easun Reyrolle Ltd</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">Chennai, India</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
+          Tap changers (OLTC / DETC), Buchholz relays, Monitoring / diagnostic devices
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
+          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
+          <a href="https://easunreyrolle.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=Easun%20Reyrolle%20Ltd" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="Easun Reyrolle Ltd">RFQ</a>
+        </td>
+      </tr>
+    
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
+          <b style="color:var(--text)">Mileen Engineers LLP</b><br>
+          <span style="font-size:.8rem;color:var(--muted)">Mumbai, India</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
+          Transformer Accessories, Pressure-relief devices
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
+          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
+          <span style="color:var(--muted)">—</span> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=Mileen%20Engineers%20LLP" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="Mileen Engineers LLP">RFQ</a>
+        </td>
+      </tr>
+    
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
+          <a href="../../accessories/press-n-forge-india/" style="color:var(--text);font-weight:700">PRESS-N-FORGE (India)</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">Mumbai, India</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
+          Breathers (silica gel), Bushings (HV, LV), Pressure-relief devices, Oil-level indicators, Monitoring / diagnostic devices
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
+          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
+          <a href="https://www.pressnforge.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=PRESS-N-FORGE%20(India)" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="PRESS-N-FORGE (India)">RFQ</a>
+        </td>
+      </tr>
+    
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
+          <a href="../../accessories/sukrut-electric-co-pvt-ltd/" style="color:var(--text);font-weight:700">Sukrut Electric Co. Pvt. Ltd.</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">Pune, India</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
+          Buchholz relays, Oil-level indicators, Pressure-relief devices
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
+          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
+          <a href="https://sukrutelectric.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=Sukrut%20Electric%20Co.%20Pvt.%20Ltd." class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="Sukrut Electric Co. Pvt. Ltd.">RFQ</a>
+        </td>
+      </tr>
+    
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
+          <a href="../../accessories/viat-instruments-pvt-ltd/" style="color:var(--text);font-weight:700">Viat Instruments Pvt. Ltd.</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">Kolkata, India</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
+          Oil-level indicators, Buchholz relays, Pressure-relief devices, Temperature indicators, Bushings (HV, LV)
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
+          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
+          <a href="https://www.viatin.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=Viat%20Instruments%20Pvt.%20Ltd." class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="Viat Instruments Pvt. Ltd.">RFQ</a>
+        </td>
+      </tr>
+    
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
+          <a href="../../accessories/comem-group/" style="color:var(--text);font-weight:700">COMEM Group</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">Montebello Vicentino, Italy</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
+          Bushings (HV, LV), Monitoring / diagnostic devices, Bushings (HV, LV)
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
+          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
+          <a href="https://www.comem.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=COMEM%20Group" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="COMEM Group">RFQ</a>
+        </td>
+      </tr>
+    
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
+          <a href="../../accessories/fuji-electric-co-ltd/" style="color:var(--text);font-weight:700">Fuji Electric Co., Ltd.</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">Tokyo, Japan</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
+          Radiators / cooling systems, Monitoring / diagnostic devices, Bushings (HV, LV)
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
+          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
+          <a href="https://www.fujielectric.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=Fuji%20Electric%20Co.%2C%20Ltd." class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="Fuji Electric Co., Ltd.">RFQ</a>
+        </td>
+      </tr>
+    
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
+          <a href="../../accessories/arteche/" style="color:var(--text);font-weight:700">Arteche</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">Mungia, Spain</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
+          Bushings (HV, LV), Monitoring / diagnostic devices
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
+          <span style="font-size:.72rem;color:var(--muted)">Listed</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
+          <a href="https://www.arteche.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=Arteche" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="Arteche">RFQ</a>
         </td>
       </tr>
     
@@ -356,65 +626,33 @@
     
       <tr>
         <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
-          <a href="../../accessories/fuji-electric-co-ltd/" style="color:var(--text);font-weight:700">Fuji Electric Co., Ltd.</a><br>
-          <span style="font-size:.8rem;color:var(--muted)">Tokyo, Japan</span>
+          <a href="../../accessories/ares-transformer-arestrafo/" style="color:var(--text);font-weight:700">ARES Transformer (Arestrafo)</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">Ankara, Türkiye</span>
         </td>
         <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
-          Radiators / cooling systems, Monitoring / diagnostic devices, Bushings (HV, LV)
+          Buchholz relays, Bushings (HV, LV), Conservator tanks, Monitoring / diagnostic devices
         </td>
         <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
           <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
         </td>
         <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
-          <a href="https://www.fujielectric.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=Fuji%20Electric%20Co.%2C%20Ltd." class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="Fuji Electric Co., Ltd.">RFQ</a>
+          <a href="https://arestrafo.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=ARES%20Transformer%20(Arestrafo)" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="ARES Transformer (Arestrafo)">RFQ</a>
         </td>
       </tr>
     
       <tr>
         <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
-          <a href="../../accessories/emb-gmbh-eberhard-mobius-elektrotechnische-bauelemente/" style="color:var(--text);font-weight:700">EMB GmbH (EBErhard Möbius Elektrotechnische Bauelemente)</a><br>
-          <span style="font-size:.8rem;color:var(--muted)">Bad Königshofen, Germany</span>
+          <a href="../../accessories/tek-makina-transformator/" style="color:var(--text);font-weight:700">TEK Makina Transformatör</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">Tuzla, Türkiye</span>
         </td>
         <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
-          Buchholz relays, Monitoring / diagnostic devices, Pressure-relief devices
+          Breathers (silica gel), Oil-level indicators, Pressure-relief devices
         </td>
         <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
-          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
+          <span style="font-size:.72rem;color:var(--muted)">Listed</span>
         </td>
         <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
-          <a href="https://www.emb-online.net" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=EMB%20GmbH%20(EBErhard%20M%C3%B6bius%20Elektrotechnische%20Bauelemente)" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="EMB GmbH (EBErhard Möbius Elektrotechnische Bauelemente)">RFQ</a>
-        </td>
-      </tr>
-    
-      <tr>
-        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
-          <a href="../../accessories/comem-group/" style="color:var(--text);font-weight:700">COMEM Group</a><br>
-          <span style="font-size:.8rem;color:var(--muted)">Montebello Vicentino, Italy</span>
-        </td>
-        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
-          Bushings (HV, LV), Monitoring / diagnostic devices, Bushings (HV, LV)
-        </td>
-        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
-          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
-        </td>
-        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
-          <a href="https://www.comem.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=COMEM%20Group" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="COMEM Group">RFQ</a>
-        </td>
-      </tr>
-    
-      <tr>
-        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
-          <a href="../../accessories/bicron-electronics-company/" style="color:var(--text);font-weight:700">Bicron Electronics Company</a><br>
-          <span style="font-size:.8rem;color:var(--muted)">Canaan, United States</span>
-        </td>
-        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
-          Bushings (HV, LV), Monitoring / diagnostic devices
-        </td>
-        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
-          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
-        </td>
-        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
-          <a href="https://www.bicronusa.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=Bicron%20Electronics%20Company" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="Bicron Electronics Company">RFQ</a>
+          <a href="https://www.tmtek.com.tr" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=TEK%20Makina%20Transformat%C3%B6r" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="TEK Makina Transformatör">RFQ</a>
         </td>
       </tr>
     
@@ -436,17 +674,81 @@
     
       <tr>
         <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
-          <a href="../../accessories/press-n-forge-india/" style="color:var(--text);font-weight:700">PRESS-N-FORGE (India)</a><br>
-          <span style="font-size:.8rem;color:var(--muted)">Mumbai, India</span>
+          <a href="../../accessories/camlin-energy-camlin-group/" style="color:var(--text);font-weight:700">Camlin Energy (Camlin Group)</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">Lisburn, United Kingdom</span>
         </td>
         <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
-          Breathers (silica gel), Bushings (HV, LV), Pressure-relief devices, Oil-level indicators, Monitoring / diagnostic devices
+          Monitoring / diagnostic devices
         </td>
         <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
           <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
         </td>
         <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
-          <a href="https://www.pressnforge.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=PRESS-N-FORGE%20(India)" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="PRESS-N-FORGE (India)">RFQ</a>
+          <a href="https://www.camlingroup.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=Camlin%20Energy%20(Camlin%20Group)" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="Camlin Energy (Camlin Group)">RFQ</a>
+        </td>
+      </tr>
+    
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
+          <a href="../../accessories/bicron-electronics-company/" style="color:var(--text);font-weight:700">Bicron Electronics Company</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">Canaan, United States</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
+          Bushings (HV, LV), Monitoring / diagnostic devices
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
+          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
+          <a href="https://www.bicronusa.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=Bicron%20Electronics%20Company" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="Bicron Electronics Company">RFQ</a>
+        </td>
+      </tr>
+    
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
+          <a href="../../accessories/doble-engineering-company-esco-technologies/" style="color:var(--text);font-weight:700">Doble Engineering Company (ESCO Technologies)</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">Watertown, United States</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
+          Test equipment, Monitoring / diagnostic devices
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
+          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
+          <a href="https://www.doble.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=Doble%20Engineering%20Company%20(ESCO%20Technologies)" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="Doble Engineering Company (ESCO Technologies)">RFQ</a>
+        </td>
+      </tr>
+    
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
+          <a href="../../accessories/h-j-enterprises-the-h-j-family-of-companies/" style="color:var(--text);font-weight:700">H-J Enterprises (The H-J Family of Companies)</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">High Ridge, United States</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
+          Bushings (HV, LV), Pressure-relief devices, Breathers (silica gel)
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
+          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
+          <a href="https://www.h-j.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=H-J%20Enterprises%20(The%20H-J%20Family%20of%20Companies)" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="H-J Enterprises (The H-J Family of Companies)">RFQ</a>
+        </td>
+      </tr>
+    
+      <tr>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
+          <a href="../../accessories/lumasense-technologies-advanced-energy/" style="color:var(--text);font-weight:700">LumaSense Technologies (Advanced Energy)</a><br>
+          <span style="font-size:.8rem;color:var(--muted)">Santa Clara, United States</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
+          Temperature indicators, Monitoring / diagnostic devices
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
+          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
+        </td>
+        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
+          <a href="https://www.advancedenergy.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=LumaSense%20Technologies%20(Advanced%20Energy)" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="LumaSense Technologies (Advanced Energy)">RFQ</a>
         </td>
       </tr>
     
@@ -463,86 +765,6 @@
         </td>
         <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
           <a href="https://www.waukeshatransformers.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=SPX%20Transformer%20Solutions%20(Prolec-GE%20Waukesha)" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="SPX Transformer Solutions (Prolec-GE Waukesha)">RFQ</a>
-        </td>
-      </tr>
-    
-      <tr>
-        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
-          <b style="color:var(--text)">Mileen Engineers LLP</b><br>
-          <span style="font-size:.8rem;color:var(--muted)">Mumbai, India</span>
-        </td>
-        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
-          Transformer Accessories, Pressure-relief devices
-        </td>
-        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
-          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
-        </td>
-        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
-          <span style="color:var(--muted)">—</span> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=Mileen%20Engineers%20LLP" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="Mileen Engineers LLP">RFQ</a>
-        </td>
-      </tr>
-    
-      <tr>
-        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
-          <a href="../../accessories/viat-instruments-pvt-ltd/" style="color:var(--text);font-weight:700">Viat Instruments Pvt. Ltd.</a><br>
-          <span style="font-size:.8rem;color:var(--muted)">Kolkata, India</span>
-        </td>
-        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
-          Oil-level indicators, Buchholz relays, Pressure-relief devices, Temperature indicators, Bushings (HV, LV)
-        </td>
-        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
-          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
-        </td>
-        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
-          <a href="https://www.viatin.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=Viat%20Instruments%20Pvt.%20Ltd." class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="Viat Instruments Pvt. Ltd.">RFQ</a>
-        </td>
-      </tr>
-    
-      <tr>
-        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
-          <a href="../../accessories/albert-maier-gmbh/" style="color:var(--text);font-weight:700">Albert Maier GmbH</a><br>
-          <span style="font-size:.8rem;color:var(--muted)">Weil der Stadt, Germany</span>
-        </td>
-        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
-          Oil-level indicators, Breathers (silica gel), Pressure-relief devices, Conservator tanks
-        </td>
-        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
-          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
-        </td>
-        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
-          <a href="https://www.maier-accessories.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=Albert%20Maier%20GmbH" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="Albert Maier GmbH">RFQ</a>
-        </td>
-      </tr>
-    
-      <tr>
-        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
-          <a href="../../accessories/ares-transformer-arestrafo/" style="color:var(--text);font-weight:700">ARES Transformer (Arestrafo)</a><br>
-          <span style="font-size:.8rem;color:var(--muted)">Ankara, Türkiye</span>
-        </td>
-        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
-          Buchholz relays, Bushings (HV, LV), Conservator tanks, Monitoring / diagnostic devices
-        </td>
-        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
-          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
-        </td>
-        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
-          <a href="https://arestrafo.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=ARES%20Transformer%20(Arestrafo)" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="ARES Transformer (Arestrafo)">RFQ</a>
-        </td>
-      </tr>
-    
-      <tr>
-        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top">
-          <a href="../../accessories/messko-messko-gmbh/" style="color:var(--text);font-weight:700">MESSKO (MESSKO GmbH)</a><br>
-          <span style="font-size:.8rem;color:var(--muted)">Oberursel, Germany</span>
-        </td>
-        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.84rem;color:var(--text)">
-          Monitoring / diagnostic devices, Oil-level indicators, Buchholz relays, Temperature indicators
-        </td>
-        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:center">
-          <span class="vbadge" style="font-size:.72rem">✓ Verified</span>
-        </td>
-        <td style="padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;text-align:right">
-          <a href="https://messko.com" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-size:.82rem" data-track="supplier_website_click">Website ↗</a> · <a href="../../rfq.html?spec=Protection%20%26%20Online%20Monitoring%20Devices&vendor=MESSKO%20(MESSKO%20GmbH)" class="btn btn-outline btn-sm" style="font-size:.72rem;padding:2px 8px;margin-left:4px" data-track="rfq_started" data-track-supplier="MESSKO (MESSKO GmbH)">RFQ</a>
         </td>
       </tr>
     
@@ -566,14 +788,15 @@
         <a href="/index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
         <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data. Built for utilities, transformer manufacturers, component suppliers, EPCs, consultants and engineers.</p>
       </div>
-      <div><h2>INTELLIGENCE</h2><a href="/intel.html">Daily Intel</a><a href="/archive.html">Intel Archive</a><a href="/intelligence.html">Intelligence</a><a href="/projects.html">Projects</a><a href="/markets.html">Markets</a><a href="/grids.html">Grids</a><a href="/exhibitions.html">Exhibitions</a><a href="/events.html">Events</a></div>
-      <div><h2>INDUSTRY</h2><a href="/manufacturers.html">Manufacturers</a><a href="/directory.html">Directory</a><a href="/services.html">Service &amp; Repair</a><a href="/logistics.html">Transport &amp; Logistics</a><a href="/laboratories.html">Testing Labs</a><a href="/buyers.html">Buyers &amp; Utilities</a><a href="/buyers-guide.html">Buyer's Guide</a><a href="/accessories.html">Accessories</a><a href="/components.html">Components</a><a href="/rfq.html">RFQ Board</a></div>
-      <div><h2>ENGINEERING</h2><a href="/knowledge.html">Knowledge</a><a href="/standards.html">Standards &amp; Codes</a><a href="/calculator.html">Design Calculator</a><a href="/explorer.html">3D Models</a><a href="/design.html">Design Duel</a><a href="/resources.html">Resources</a></div>
-      <div><h2>LEARN</h2><a href="/learn.html">Learn</a><a href="/education.html">Education &amp; Training</a><a href="/masterclass.html">Masterclass</a><a href="/engineer-track.html">Design Engineer Track</a><a href="/academy.html">Academy</a><a href="/books.html">Books</a></div>
-      <div><h2>BUSINESS</h2><a href="/for-manufacturers.html">For Manufacturers</a><a href="/associations.html">Industry Associations</a><a href="/media.html">Media &amp; Publications</a><a href="/pricing.html">Pricing</a><a href="/verified.html">Verified</a><a href="/sponsor.html">Sponsor</a><a href="/webinars.html">Webinars</a></div>
-      <div><h2>COMPANY</h2><a href="/about.html">About Us</a><a href="/workspace.html">Account</a><a href="/faq.html">FAQ</a><a href="/methodology.html">Methodology</a><a href="/contact.html">Contact</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a></div>
-      <div><h2>CONTACT</h2>
+      <div><p class="footer-col-label">INTELLIGENCE</p><a href="/intel.html">Daily Intel</a><a href="/archive.html">Intel Archive</a><a href="/intelligence.html">Intelligence</a><a href="/projects.html">Projects</a><a href="/markets.html">Markets</a><a href="/grids.html">Grids</a><a href="/map.html">Industry Map</a><a href="/exhibitions.html">Exhibitions</a><a href="/events.html">Events</a></div>
+      <div><p class="footer-col-label">INDUSTRY</p><a href="/manufacturers.html">Manufacturers</a><a href="/directory.html">Directory</a><a href="/map.html">Industry Map</a><a href="/services.html">Service &amp; Repair</a><a href="/logistics.html">Transport &amp; Logistics</a><a href="/laboratories.html">Testing Labs</a><a href="/buyers.html">Buyers &amp; Utilities</a><a href="/buyers-guide.html">Buyer's Guide</a><a href="/accessories.html">Accessories</a><a href="/components.html">Components</a><a href="/rfq.html">RFQ Board</a></div>
+      <div><p class="footer-col-label">ENGINEERING</p><a href="/knowledge.html">Knowledge</a><a href="/standards.html">Standards &amp; Codes</a><a href="/calculator.html">Design Calculator</a><a href="/explorer.html">3D Models</a><a href="/design.html">Design Duel</a><a href="/resources.html">Resources</a></div>
+      <div><p class="footer-col-label">LEARN</p><a href="/learn.html">Learn</a><a href="/education.html">Education &amp; Training</a><a href="/masterclass.html">Masterclass</a><a href="/engineer-track.html">Design Engineer Track</a><a href="/academy.html">Academy</a><a href="/books.html">Books</a></div>
+      <div><p class="footer-col-label">BUSINESS</p><a href="/for-manufacturers.html">For Manufacturers</a><a href="/associations.html">Industry Associations</a><a href="/media.html">Media &amp; Publications</a><a href="/pricing.html">Pricing</a><a href="/verified.html">Verified</a><a href="/sponsor.html">Sponsor</a><a href="/webinars.html">Webinars</a></div>
+      <div><p class="footer-col-label">COMPANY</p><a href="/about.html">About Us</a><a href="/workspace.html">Account</a><a href="/faq.html">FAQ</a><a href="/methodology.html">Methodology</a><a href="/contact.html">Contact</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a></div>
+      <div><p class="footer-col-label">CONTACT</p>
         <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
+        <a href="/privacy.html#cookies" onclick="if(window.tpResetConsent){window.tpResetConsent();return false}">Cookie settings</a>
         <a class="tp-li-btn tp-li-follow" data-linkedin-follow href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>Follow us on LinkedIn</a>
         <a class="tp-li-btn tp-li-share" data-linkedin-share href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>LinkedIn</a>
       </div>
@@ -581,6 +804,6 @@
     <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
   </div>
 </footer>
-<script src="../../analytics.js?v=2" defer></script>
+<script src="../../analytics.js?v=7" defer></script>
 </body>
 </html>

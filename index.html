@@ -17,7 +17,7 @@
 <meta name="twitter:title" content="TransformerPath — Global Transformer Industry Intelligence &amp; Network">
 <meta name="twitter:description" content="The global platform for transformer professionals — daily market intel, industry events, jobs, a world grid census and an interactive 3D transformer explorer.">
 <meta name="twitter:image" content="https://transformerpath.com/brand/og-image-hero.jpg">
-<link rel="stylesheet" href="style.css?v=13">
+<link rel="stylesheet" href="style.css?v=14">
 <link rel="preload" as="image" href="brand/hero.jpg">
 <link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
@@ -92,8 +92,8 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="TransformerPath">
 <script src="consent.js" defer></script>
-    <link rel="stylesheet" href="tp-nav.css?v=13">
-<link rel="stylesheet" href="tp-feedback.css?v=13">
+    <link rel="stylesheet" href="tp-nav.css?v=14">
+<link rel="stylesheet" href="tp-feedback.css?v=14">
 </head>
 <body>
 
@@ -191,9 +191,9 @@
       themeToggle.textContent = isDark ? '☀️' : '🌙';
     }
   </script>
-  <script src="tp-nav.js?v=6" defer></script>
+  <script src="tp-nav.js?v=7" defer></script>
+  <script src="tp-pwa.js?v=7" defer></script>
 </header>
-
 <div class="ticker" aria-label="Market and industry headlines">
   <div class="ticker-inner" id="ticker"></div>
 </div>
@@ -675,9 +675,9 @@
       <div class="hero-copy">
         <div class="hero-live-pill" id="hero-live-pill">
           <span class="live-dot" id="hero-live-dot" aria-hidden="true"></span>
-          <span class="live-badge-text" id="hero-live-status">Platform Data Current</span>
+          <span class="live-badge-text" id="hero-live-status">DATA CURRENT</span>
           <span class="live-sep">&middot;</span>
-          <span id="hero-live-date" data-tp-fresh="refreshed">Refreshed 11 Sep 2026</span>
+          <span id="hero-live-date" data-tp-fresh="refreshed">Canonical database refreshed 11 Sep 2026</span>
         </div>
         <h1>Where the world's <span>transformer industry</span> stays ahead.</h1>
         <p class="lead">Industry intelligence &middot; Engineering &middot; Manufacturers &middot; Markets &middot; Tools.</p>
@@ -769,8 +769,8 @@
 <section class="feat3d" id="explore3d">
   <div class="container wrap">
     <div class="reveal">
-      <h2>Take a transformer <span>apart in 3D</span></h2>
-      <p>Most of the industry has never seen one explained like this. Rotate, zoom and explode a complete unit — switch between oil-immersed and cast-resin, toggle components, and click any part to learn what it does.</p>
+      <h2>Optional: take a transformer <span>apart in 3D</span></h2>
+      <p>A visual explainer — secondary to the industry database above. Rotate and explode a unit, then return to Search, Directory and Daily Intel for sourced records.</p>
       <div class="chips"><span>Orbit · pan · zoom</span><span>Exploded view</span><span>Oil &amp; cast-resin</span><span>Click-to-identify</span></div>
       <a href="explorer.html" class="btn btn-amber">Open the full 3D explorer →</a>
     </div>
@@ -806,14 +806,14 @@
   <div class="container">
     <div class="section-head reveal">
       <h2>Transformer Intel — At a Glance</h2>
-      <p id="glanceSub">A daily briefing covering tenders & projects, supplier news and material prices worldwide.</p>
+      <p id="glanceSub">Sourced transformer posts — tenders, awards, capacity and materials, dated on the source.</p>
     </div>
     <div class="grid grid-3" id="glanceCards">
       <div class="card reveal"><span class="emoji" aria-hidden="true">📋</span><h3>Tenders & Projects</h3><p>SEC awards SPTC a $376M transformer & reactor deal; Hitachi Energy India wins a Rs 6.47B 765kV PGCIL order; KAHRAMAA 2026 expansion packages out.</p></div>
       <div class="card reveal"><span class="emoji" aria-hidden="true">🌍</span><h3>Supplier & Capacity News</h3><p>Weidmann commits $220M+ to a new China transformerboard plant; Voltamp and Virginia Transformer add new capacity; US LPT lead times run 30–36 months per the latest NLR report, insulation materials named a bottleneck.</p></div>
       <div class="card reveal"><span class="emoji" aria-hidden="true">📈</span><h3>Prices & Materials</h3><p>Copper <b data-m="copper" style="color:var(--accent)">≈$14,170/t</b> (LME 3-month reference); Aluminium <b data-m="aluminium" style="color:var(--accent)">≈$3,182/t</b> (LME reference). CRGO has <b>no public daily index</b> — it varies by market, grade, thickness and commercial basis, so it is shown as <b>GRADE NOT SPECIFIED</b> rather than a single comparable number. <span style="color:var(--muted);font-size:.82rem">Observed <span data-m-obs="copper">26 Aug 2026</span> · <a href="materials.html" style="color:var(--accent);font-weight:600">Materials &rarr;</a></span></p></div>
     </div>
-    <p style="text-align:center; margin-top:30px" class="reveal"><a href="intel.html" class="btn btn-amber">Read the Full Briefing →</a></p>
+    <p style="text-align:center; margin-top:30px" class="reveal"><a href="intel.html" class="btn btn-amber">Open the Intel feed →</a></p>
   </div>
 </section>
 
@@ -826,9 +826,9 @@
     <div class="grid grid-3">
       <a class="card reveal" href="intel.html"><span class="emoji" aria-hidden="true">📰</span><h3>Daily Intel →</h3><p>Daily global briefing — tenders, supplier moves, prices — ordered by your region.</p></a>
       <a class="card reveal" href="grids.html"><span class="emoji" aria-hidden="true">🌐</span><h3>World Grids →</h3><p><span data-stat="countries">151</span> countries, <span data-stat="gridOperators">166</span> operators — voltages, frequencies and official links.</p></a>
-      <a class="card reveal" href="map.html"><span class="emoji" aria-hidden="true">🗺️</span><h3>Industry Map →</h3><p>Zoom a world map of manufacturers, utilities and suppliers. Pins are country-level unless a site coordinate exists.</p></a>
+      <a class="card reveal" href="map.html"><span class="emoji" aria-hidden="true">🗺️</span><h3>Industry Map →</h3><p>Zoom a world map of manufacturers, utilities, suppliers and events. Pins are country-level unless a site coordinate exists.</p></a>
       <a class="card reveal" href="events.html"><span class="emoji" aria-hidden="true">📅</span><h3>Events →</h3><p>Every major power & transformer exhibition through 2028, with one-click hotel and flight booking.</p></a>
-      <a class="card reveal" href="manufacturers.html"><span class="emoji" aria-hidden="true">🏭</span><h3>Manufacturers →</h3><p>A worldwide census of 546 transformer makers — power, distribution and dry-type — country by country.</p></a>
+      <a class="card reveal" href="manufacturers.html"><span class="emoji" aria-hidden="true">🏭</span><h3>Manufacturers →</h3><p>A growing sourced directory of 709 transformer makers — power, distribution and dry-type — country by country.</p></a>
       <a class="card reveal" href="markets.html"><span class="emoji" aria-hidden="true">🌍</span><h3>Markets →</h3><p>Country intelligence hubs — grid operators, manufacturers, projects, events and technical context, market by market.</p></a>
       <a class="card reveal" href="learn.html"><span class="emoji" aria-hidden="true">🎓</span><h3>Learn →</h3><p>A 26-chapter design masterclass — 3D models and a live design calculator, included with 12 months access.</p></a>
       <a class="card reveal" href="knowledge.html"><span class="emoji" aria-hidden="true">💡</span><h3>Knowledge →</h3><p>Clear, source-referenced answers to transformer-engineering questions, from cooling codes to DGA and bushings.</p></a>
@@ -932,31 +932,22 @@ document.querySelectorAll('#mainNav a').forEach(a=>a.addEventListener('click',()
   }
 })();
 
-/* ── Latest "at a glance" headlines pulled from intel.html ─────────────
-   The cards are the latest curated items; the sub-line shows the canonical
-   data-refresh date from data/freshness.json. We do NOT label them "today's
-   live briefing" because that implies freshness the curated feed does not
-   guarantee — a new deployment is not new intelligence. */
+/* ── Latest "at a glance" from the compact Intel feed ─────────────
+   Cards are sourced posts with calendar dates. We do NOT label them
+   "today's live briefing" — a deploy is not a new edition. */
 (function(){
   const host=document.getElementById('glanceCards'), sub=document.getElementById('glanceSub');
   if(!host||!window.fetch) return;
-  fetch('intel.html',{cache:'no-cache'}).then(r=>r.text()).then(txt=>{
-    const nm=txt.match(/const NEWS = (\{[\s\S]*?\});\s*\n/);
-    if(!nm) return;
-    let NEWS; try{ NEWS=(new Function('return '+nm[1]))(); }catch(e){ return; }
-    const items=[];
-    Object.keys(NEWS).forEach(rk=>{
-      (NEWS[rk].items||[]).forEach(it=>items.push(Object.assign({region:rk},it)));
-    });
-    const fresh=items.filter(i=>i.isNew), rest=items.filter(i=>!i.isNew);
-    const pick=fresh.concat(rest).slice(0,3);
+  fetch('data/intel-feed-ui.json',{cache:'no-cache'}).then(r=>r.json()).then(feed=>{
+    const items=(feed.posts||[]).filter(function(p){ return p.desk==='news'||p.desk==='grid'||p.desk==='awards'; });
+    const pick=items.slice(0,3);
     if(pick.length<3) return;
     const esc=s=>String(s||'').replace(/</g,'&lt;');
     host.innerHTML=pick.map(it=>{
-      const snip=esc(it.snippet).length>170? esc(it.snippet).slice(0,167).replace(/\s+\S*$/,'')+'…' : esc(it.snippet);
-      return '<a class="card reveal in" href="intel.html"><span class="g-region">'+esc(it.region)+'</span>'+
-        '<h3 style="font-size:1rem">'+esc(it.title)+'</h3><p>'+snip+'</p>'+
-        (it.value?'<p class="g-val" style="margin-top:8px">'+esc(it.value)+'</p>':'')+'</a>';
+      const snip=esc(it.soWhat);
+      return '<a class="card reveal in" href="intel.html#p-'+esc(it.id)+'"><span class="g-region">'+esc(it.region)+'</span>'+
+        '<h3 style="font-size:1rem">'+esc(it.headline)+'</h3><p>'+snip+'</p>'+
+        '<p class="g-val" style="margin-top:8px">'+(it.date?esc(it.date):'Date not stated')+(it.value?' · '+esc(it.value):'')+'</p></a>';
     }).join('');
     // Canonical refresh date & 3-tier freshness calculation
     fetch('data/freshness.json',{cache:'no-cache'}).then(function(r){ return r.json().catch(function(){ return {}; }); }).then(function(d){
@@ -982,11 +973,12 @@ document.querySelectorAll('#mainNav a').forEach(a=>a.addEventListener('click',()
       const pillDate = document.getElementById('hero-live-date');
       const pillDot = document.getElementById('hero-live-dot');
       if (pillStatus) pillStatus.textContent = statusLabel;
-      if (pillDate) pillDate.textContent = 'Refreshed ' + dstr;
+      if (pillDate) pillDate.textContent = 'Canonical database refreshed ' + dstr;
       if (pillDot) pillDot.style.background = dotColor;
 
       if(sub){
-        sub.innerHTML='Latest briefing <b>'+dstr+'</b> ('+statusLabel+') — tenders, supplier news and material prices worldwide. Curated, refreshed at build. <a href="intel.html" style="color:var(--accent)">Read Daily Intel →</a>';
+        const latestSrc = feed.honesty && feed.honesty.latest_source_date;
+        sub.innerHTML=(latestSrc?'Latest sourced item <b>'+latestSrc+'</b> · ':'')+'desk refresh <b>'+dstr+'</b> ('+statusLabel+'). Dates are on the source, not this visit. <a href="intel.html" style="color:var(--accent)">Open Daily Intel →</a>';
       }
     }).catch(function(){});
   }).catch(()=>{});
@@ -1003,11 +995,6 @@ if('IntersectionObserver' in window){
 }
 
 
-</script>
-
-<script>
-if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
-(function(){var dp;window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();dp=e;if(document.getElementById('tpInstall'))return;var b=document.createElement('button');b.id='tpInstall';b.textContent='\u2913 Install TransformerPath';b.setAttribute('style','position:fixed;right:16px;bottom:16px;z-index:9999;background:#f5a623;color:#0d1b2e;border:0;border-radius:999px;padding:11px 18px;font-weight:800;font-size:.9rem;box-shadow:0 6px 20px rgba(0,0,0,.28);cursor:pointer;font-family:inherit');b.onclick=function(){b.remove();dp.prompt();dp.userChoice.finally(function(){dp=null;});};document.body.appendChild(b);});})();
 </script>
 
 <!-- TP-FEEDBACK-DECLARATION ————————————————————————————————————————————————
@@ -1031,11 +1018,10 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
   <input name="url">
   <input name="title">
 </form>
-<script src="analytics.js?v=6" defer></script>
-<script src="site-stats.js?v=6" defer></script>
-<script src="material-latest.js?v=6" defer></script>
-<script src="tp-nav.js?v=6" defer></script>
-<script src="tp-freshness.js?v=6" defer></script>
-<script src="tp-feedback.js?v=6" defer></script>
+<script src="analytics.js?v=7" defer></script>
+<script src="site-stats.js?v=7" defer></script>
+<script src="material-latest.js?v=7" defer></script>
+<script src="tp-freshness.js?v=7" defer></script>
+<script src="tp-feedback.js?v=7" defer></script>
 </body>
 </html>

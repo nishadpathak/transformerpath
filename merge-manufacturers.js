@@ -34,7 +34,7 @@ const ALIAS = {
   'oman': 'Oman', 'qatar': 'Qatar', 'bahrain': 'Bahrain', 'kuwait': 'Kuwait',
   'south korea': 'South Korea', 'korea': 'South Korea',
   'united kingdom': 'United Kingdom', 'uk': 'United Kingdom',
-  'usa': 'United States', 'united states': 'United States',
+  'usa': 'USA', 'united states': 'USA',
   'türkiye': 'Turkey', 'turkey': 'Turkey',
 };
 

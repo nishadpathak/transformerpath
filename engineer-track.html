@@ -13,7 +13,10 @@
 <meta property="og:url" content="https://transformerpath.com/engineer-track.html">
 <meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="style.css?v=13">
+<meta name="twitter:title" content="Design Engineer Track | TransformerPath">
+<meta name="twitter:description" content="Four levels, ~400 guided hours, five capstone design projects — a structured pathway covering transformer-design topics typically developed over several years of engineering practice.">
+<meta name="twitter:image" content="https://transformerpath.com/brand/og-image.png">
+<link rel="stylesheet" href="style.css?v=14">
 <link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
 <link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
@@ -46,20 +49,20 @@
 .progressbar { background:#e7edf3; border-radius:999px; height:10px; overflow:hidden; margin:6px 0 2px; }
 .progressbar>div { background:linear-gradient(90deg,var(--amber),#f5a623); height:100%; width:0; transition:width .4s; }
 .track-note { background:#eef4fb; border-left:4px solid #0b5fa5; border-radius:0 10px 10px 0; padding:14px 18px; font-size:.9rem; color:#33475c; margin:0 0 30px; }
-.level.locked { opacity:0.6; pointer-events:none; position:relative; }
-.level.locked::after { content:'🔒 Unlock to view'; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(13,27,46,.95); color:#fff; padding:20px 30px; border-radius:12px; font-weight:600; font-size:1rem; white-space:nowrap; z-index:10; }
-@media (max-width:760px){ .how { grid-template-columns:1fr; } .level-meta{ text-align:left; margin-left:58px; } .level.locked::after { font-size:.85rem; padding:14px 20px; } }
+.et-locked-panel { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:22px 20px; text-align:center; margin-top:4px; }
+.et-locked-panel p { color:var(--muted); margin:0 0 14px; font-size:.92rem; }
+@media (max-width:760px){ .how { grid-template-columns:1fr; } .level-meta{ text-align:left; margin-left:58px; } }
   .prereq{display:inline-block;background:rgba(245,166,35,.14);color:var(--accent);border:1px solid var(--accent);border-radius:999px;font-size:.68rem;font-weight:800;letter-spacing:.4px;text-transform:uppercase;padding:2px 10px;margin-left:10px;vertical-align:middle}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0d1b2e">
-    <link rel="stylesheet" href="tp-nav.css?v=13">
-  <link rel="stylesheet" href="tp-feedback.css?v=13">
+    <link rel="stylesheet" href="tp-nav.css?v=14">
+  <link rel="stylesheet" href="tp-feedback.css?v=14">
 </head>
 <body>
 
+<a class="skip-link" href="#main">Skip to content</a>
 <header>
-  <link rel="stylesheet" href="tp-nav.css?v=13">
   <div class="container nav">
     <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
     <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
@@ -69,6 +72,7 @@
         <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
         <div class="tpnav-dropdown-panel" role="menu">
           <a href="manufacturers.html">Manufacturers</a>
+          <a href="map.html">Industry Map</a>
           <a href="components.html">Components &amp; Materials</a>
           <a href="machinery.html">Machinery</a>
           <a href="laboratories.html">Testing Labs</a>
@@ -81,6 +85,7 @@
       <a href="projects.html">Projects</a>
       <a href="tenders.html">Tenders</a>
       <a href="grids.html" class="tpnav-opt">Grids</a>
+      <a href="map.html" class="tpnav-opt">Map</a>
       <a href="events.html">Events</a>
       <a href="tools.html" class="tpnav-opt">Engineering</a>
       <a href="learn.html">Learn</a>
@@ -88,23 +93,17 @@
       <div class="tpnav-more">
         <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
         <div class="tpnav-more-panel" role="menu">
-          <a href="directory.html" role="menuitem">Directory</a>
-          <a href="services.html" role="menuitem">Service & Repair</a>
-          <a href="logistics.html" role="menuitem">Transport & Logistics</a>
-          <a href="laboratories.html" role="menuitem">Testing Labs</a>
-          <a href="machinery.html" role="menuitem">Machinery</a>
+          <a href="map.html" role="menuitem">Industry Map</a>
+          <a href="logistics.html" role="menuitem">Transport &amp; Logistics</a>
           <a href="associations.html" role="menuitem">Industry Associations</a>
-          <a href="education.html" role="menuitem">Education & Training</a>
-          <a href="buyers.html" role="menuitem">Buyers & Procurement</a>
-          <a href="media.html" role="menuitem">Media & Publications</a>
+          <a href="education.html" role="menuitem">Education &amp; Training</a>
+          <a href="buyers.html" role="menuitem">Buyers &amp; Procurement</a>
+          <a href="media.html" role="menuitem">Media &amp; Publications</a>
           <a href="compare.html" role="menuitem">Compare</a>
           <a href="accessories.html" role="menuitem">Accessories</a>
-          <a href="markets.html" role="menuitem">Markets</a>
           <a href="utilities.html" role="menuitem">Utilities</a>
           <a href="webinars.html" role="menuitem">Webinars</a>
           <a href="awards.html" role="menuitem">Awards</a>
-          <a href="buyers-guide.html" role="menuitem">Buyer's Guide</a>
-          <a href="components.html" role="menuitem">Components</a>
           <a href="materials.html" role="menuitem">Materials</a>
           <a href="applications.html" role="menuitem">Applications</a>
           <a href="knowledge.html" role="menuitem">Knowledge</a>
@@ -156,13 +155,14 @@
       themeToggle.textContent = isDark ? '☀️' : '🌙';
     }
   </script>
-  <script src="tp-nav.js?v=6" defer></script>
+  <script src="tp-nav.js?v=7" defer></script>
+  <script src="tp-pwa.js?v=7" defer></script>
 </header>
-
+<main id="main" tabindex="-1">
 <section class="hero" style="padding:50px 0 40px">
   <div class="container">
-    <h1 style="font-size:2.2rem">Design Engineer <span>Track</span></h1>
-    <p>A structured pathway covering transformer-design topics typically developed over several years of engineering practice: four levels, ~400 guided hours, and five capstone design projects graded against real acceptance criteria — from your first 1000&nbsp;kVA hand calculation to power transformers and specials.</p>
+    <h1>Design Engineer <span>Track</span></h1>
+    <p>A structured pathway covering transformer-design topics typically developed over several years of engineering practice: four levels, ~400 guided hours, and five capstone design projects graded against real acceptance criteria — from your first 1000&nbsp;kVA hand calculation to power transformers and specials. Each level now points at the matching book volumes (0–19) as well as the Masterclass.</p>
   </div>
 </section>
 
@@ -189,17 +189,17 @@
         <span class="level-no">1</span>
         <h2>Foundations</h2>
         <div class="level-meta"><b>~80 hours</b>equiv. months 1–6 on the job</div>
-        <div class="sub">The physics and vocabulary of every transformer ever built — you can't design what you can't calculate.</div>
+        <div class="sub">The physics and vocabulary of every transformer ever built — Volumes 0, 1, 7, 8 and 9 sit beside the design-core chapters.</div>
       </div>
       <div class="level-body">
-        <div class="mod-row"><input type="checkbox" data-k="l1m1"><span class="what">How a transformer works</span><span class="with">— <a href="masterclass.html#fundamentals">Ch.1 Fundamentals</a> + <a href="explorer.html">3D Explorer</a></span><span class="hrs">8 h</span></div>
-        <div class="mod-row"><input type="checkbox" data-k="l1m2"><span class="what">Classification &amp; specification</span><span class="with">— <a href="masterclass.html#classification">Ch.2</a> + <a href="masterclass.html#standards">Ch.12 Standards</a></span><span class="hrs">8 h</span></div>
-        <div class="mod-row"><input type="checkbox" data-k="l1m3"><span class="what">Core design &amp; CRGO</span><span class="with">— <a href="masterclass.html#core">Ch.3</a> + <a href="coretopology.html">Core Topology 3D</a></span><span class="hrs">10 h</span></div>
-        <div class="mod-row"><input type="checkbox" data-k="l1m4"><span class="what">Windings &amp; current density</span><span class="with">— <a href="masterclass.html#windings">Ch.4</a> + <a href="coilassembly.html">Coil Assembly 3D</a></span><span class="hrs">10 h</span></div>
-        <div class="mod-row"><input type="checkbox" data-k="l1m5"><span class="what">Insulation system</span><span class="with">— <a href="masterclass.html#insulation">Ch.5</a></span><span class="hrs">8 h</span></div>
-        <div class="mod-row"><input type="checkbox" data-k="l1m6"><span class="what">Cooling &amp; temperature rise</span><span class="with">— <a href="masterclass.html#cooling">Ch.6</a></span><span class="hrs">6 h</span></div>
-        <div class="mod-row"><input type="checkbox" data-k="l1m7"><span class="what">Losses, impedance &amp; efficiency</span><span class="with">— <a href="masterclass.html#losses">Ch.10</a></span><span class="hrs">8 h</span></div>
-        <div class="mod-row"><input type="checkbox" data-k="l1m8"><span class="what">Tank &amp; accessories</span><span class="with">— <a href="masterclass.html#construction">Ch.7</a> + <a href="construction-guide.html">Construction Guide</a></span><span class="hrs">8 h</span></div>
+        <div class="mod-row"><input type="checkbox" data-k="l1m1"><span class="what">How a transformer works</span><span class="with">— <a href="masterclass.html#fundamentals">Ch.1 Fundamentals</a> + <a href="books/volume-0/">Vol. 0 (planned)</a> / <a href="books/volume-1/">Vol. 1 · Edition 1</a> + <a href="explorer.html">3D Explorer</a></span><span class="hrs">8 h</span></div>
+        <div class="mod-row"><input type="checkbox" data-k="l1m2"><span class="what">Classification &amp; specification</span><span class="with">— <a href="masterclass.html#classification">Ch.2</a> + <a href="masterclass.html#standards">Ch.12</a> + <a href="books/volume-1/">Vol. 1 · Edition 1</a> / <a href="books/volume-16/">Vol. 16</a></span><span class="hrs">8 h</span></div>
+        <div class="mod-row"><input type="checkbox" data-k="l1m3"><span class="what">Core design &amp; CRGO</span><span class="with">— <a href="masterclass.html#core">Ch.3</a> + <a href="books/volume-1/">Vol. 1 · Edition 1</a> + <a href="coretopology.html">Core Topology 3D</a></span><span class="hrs">10 h</span></div>
+        <div class="mod-row"><input type="checkbox" data-k="l1m4"><span class="what">Windings &amp; current density</span><span class="with">— <a href="masterclass.html#windings">Ch.4</a> + <a href="books/volume-6/">Vol. 6</a> + <a href="coilassembly.html">Coil Assembly 3D</a></span><span class="hrs">10 h</span></div>
+        <div class="mod-row"><input type="checkbox" data-k="l1m5"><span class="what">Insulation system</span><span class="with">— <a href="masterclass.html#insulation">Ch.5</a> + <a href="books/volume-7/">Vol. 7</a></span><span class="hrs">8 h</span></div>
+        <div class="mod-row"><input type="checkbox" data-k="l1m6"><span class="what">Cooling &amp; temperature rise</span><span class="with">— <a href="masterclass.html#cooling">Ch.6</a> + <a href="books/volume-8/">Vol. 8</a></span><span class="hrs">6 h</span></div>
+        <div class="mod-row"><input type="checkbox" data-k="l1m7"><span class="what">Losses, impedance &amp; efficiency</span><span class="with">— <a href="masterclass.html#losses">Ch.10</a> + <a href="books/volume-9/">Vol. 9</a></span><span class="hrs">8 h</span></div>
+        <div class="mod-row"><input type="checkbox" data-k="l1m8"><span class="what">Tank &amp; accessories</span><span class="with">— <a href="masterclass.html#construction">Ch.7</a> + <a href="books/volume-8/">Vol. 8</a> + <a href="construction-guide.html">Construction Guide</a></span><span class="hrs">8 h</span></div>
         <div class="capstone">
           <h3>🏁 Capstone F — Your first complete design <span class="paid-chip">Engineer review paid</span></h3>
           <p class="brief"><b>Spec:</b> 1000 kVA, 11/0.433 kV, Dyn11, ONAN, 50 Hz, Z = 5%, IEC 60076, outdoor 50°C ambient. Design it entirely by hand — core area and flux density, turns, conductor sizes, winding arrangement, window check — then verify against the <a href="calculator.html">design calculator</a> and explain every deviation over 5%.</p>
@@ -216,7 +216,7 @@
     </div>
 
     <!-- PAYWALL: Levels 2-4 locked -->
-    <div class="paywall-notice" id="paywall" style="background:linear-gradient(135deg,#f5a623,#f5a623);color:#0d1b2e;border-radius:14px;padding:30px 26px;margin:30px 0;text-align:center;display:none">
+    <div class="paywall-notice" id="paywall" style="background:linear-gradient(135deg,#f5a623,#f5a623);color:#0d1b2e;border-radius:14px;padding:30px 26px;margin:30px 0;text-align:center">
       <h2 style="margin:0 0 8px;font-size:1.4rem">Unlock Levels 2–4 + Capstone Reviews</h2>
       <p style="margin:0 0 18px;font-size:.95rem;opacity:.9">Distribution, Power Transformer, Specials — plus manually reviewed capstone grading and model answers.</p>
       <a class="btn" href="pricing.html" style="background:#0d1b2e;color:#f5a623;font-weight:800;padding:14px 32px;display:inline-block;border-radius:10px;text-decoration:none">See Plans — from $199 →</a>
@@ -230,30 +230,13 @@
         <h2>Distribution Transformer Designer</h2>
         <span class="prereq">Prereq: Level 1 Foundations</span>
         <div class="level-meta"><b>~120 hours</b>equiv. months 6–18 on the job</div>
-        <div class="sub">Fast, cheap iterations — where every designer earns their instincts. Oil-immersed and cast resin, plus the commercial reality of tenders.</div>
+        <div class="sub">Fast, cheap iterations — Volume 1 (Edition 1), Volume 3 (planned), and Volumes 9 and 12. Oil-immersed and cast resin, plus the commercial reality of tenders.</div>
       </div>
-      <div class="level-body">
-        <div class="mod-row"><input type="checkbox" data-k="l2m1"><span class="what">The worked design method</span><span class="with">— <a href="masterclass.html#design">Ch.9 Worked Example</a>, reproduce it independently</span><span class="hrs">12 h</span></div>
-        <div class="mod-row"><input type="checkbox" data-k="l2m2"><span class="what">Calculator mastery — all three modes</span><span class="with">— <a href="calculator.html">TX Calculator</a>: distribution / power / cast resin</span><span class="hrs">10 h</span></div>
-        <div class="mod-row"><input type="checkbox" data-k="l2m3"><span class="what">Dry-type &amp; cast resin design</span><span class="with">— <a href="masterclass.html#drytype">Ch.8</a></span><span class="hrs">10 h</span></div>
-        <div class="mod-row"><input type="checkbox" data-k="l2m4"><span class="what">Vector groups &amp; paralleling</span><span class="with">— <a href="masterclass.html#vectorgroups">Ch.13</a></span><span class="hrs">6 h</span></div>
-        <div class="mod-row"><input type="checkbox" data-k="l2m5"><span class="what">Testing — routine, type, special</span><span class="with">— <a href="masterclass.html#testing">Ch.11</a></span><span class="hrs">10 h</span></div>
-        <div class="mod-row"><input type="checkbox" data-k="l2m6"><span class="what">Country grids &amp; standards adaptation</span><span class="with">— <a href="country-designer.html">Country-Based Designer</a>, 5 countries</span><span class="hrs">8 h</span></div>
-        <div class="mod-row"><input type="checkbox" data-k="l2m7"><span class="what">Procurement &amp; tendering</span><span class="with">— <a href="masterclass.html#procurement">Ch.18</a></span><span class="hrs">8 h</span></div>
-        <div class="capstone">
-          <h3>🏁 Capstone D — Three designs, one tender <span class="paid-chip">Engineer review paid</span></h3>
-          <p class="brief">Three graded assignments simulating a year of design-office work:</p>
-          <ul>
-            <li><b>D1:</b> 250 kVA, 33/0.415 kV rural unit — optimize twice: once for lowest first cost, once with losses capitalized ($4,000/kW no-load, $1,200/kW load). Quantify the design shift.</li>
-            <li><b>D2:</b> 1600 kVA cast-resin, 11/0.4 kV for an urban high-rise basement — thermal class F, 45 °C ambient derating, PD considerations, dimensions to fit a 3.5 m substation room.</li>
-            <li><b>D3:</b> Tender response — a realistic utility spec with three deliberate traps (impossible loss/impedance combination, non-standard tapping range, contradictory cooling clause). Produce a compliant offer with a deviation schedule catching all three.</li>
-          </ul>
-          <span class="accept">Acceptance criteria</span>
-          <ul>
-            <li>All guaranteed figures within IEC 60076-1 tolerances and mutually consistent.</li>
-            <li>D1 shows ≥ one deliberate flux-density/current-density trade-off with cost math.</li>
-            <li>D3 identifies all three spec traps — missing any one fails the capstone (as it would in real life).</li>
-          </ul>
+      <div class="level-body" data-et-paid="level2">
+        <div class="et-locked-panel">
+          <p>The Level 2 module list and Capstone D brief are not on this public page. They unlock with 12-month access.</p>
+          <a class="btn btn-amber" href="pricing.html">See plans →</a>
+          <a href="masterclass.html" style="margin-left:12px;font-weight:600;color:var(--accent)">Start free chapters</a>
         </div>
       </div>
     </div>
@@ -265,27 +248,13 @@
         <h2>Power Transformer Designer</h2>
         <span class="prereq">Prereq: Level 2 Distribution</span>
         <div class="level-meta"><b>~120 hours</b>equiv. years 2–3 on the job</div>
-        <div class="sub">New physics enters: short-circuit forces, impulse voltage distribution, hot-spot control, OLTC integration. This is where designers are made.</div>
+        <div class="sub">New physics enters: Volume 2 (Edition 1) and Volumes 8, 10 and 11 — short-circuit forces, impulse, hot-spot control, OLTC. This is where designers are made.</div>
       </div>
-      <div class="level-body">
-        <div class="mod-row"><input type="checkbox" data-k="l3m1"><span class="what">Anatomy of a power transformer</span><span class="with">— <a href="power3d.html">100 MVA 3D</a> + <a href="power500.html">500 MVA 3D</a></span><span class="hrs">10 h</span></div>
-        <div class="mod-row"><input type="checkbox" data-k="l3m2"><span class="what">On-load tap-changers</span><span class="with">— <a href="oltc.html">OLTC 3D Cutaway</a></span><span class="hrs">8 h</span></div>
-        <div class="mod-row"><input type="checkbox" data-k="l3m3"><span class="what">Bushings &amp; insulation coordination</span><span class="with">— <a href="bushing.html">Condenser Bushing 3D</a></span><span class="hrs">8 h</span></div>
-        <div class="mod-row"><input type="checkbox" data-k="l3m4"><span class="what">Inrush &amp; energization</span><span class="with">— <a href="masterclass.html#inrush">Ch.14</a></span><span class="hrs">6 h</span></div>
-        <div class="mod-row"><input type="checkbox" data-k="l3m5"><span class="what">Protection — differential, REF, Buchholz</span><span class="with">— <a href="masterclass.html#protection">Ch.17</a></span><span class="hrs">10 h</span></div>
-        <div class="mod-row"><input type="checkbox" data-k="l3m6"><span class="what">Short-circuit withstand &amp; forces</span><span class="with">— study notes + IEC 60076-5 <i>(guided reading; numerical methods in review pack)</i></span><span class="hrs">14 h</span></div>
-        <div class="mod-row"><input type="checkbox" data-k="l3m7"><span class="what">Impulse voltage distribution</span><span class="with">— study notes + IEC 60076-3/-4 <i>(guided reading; α-factor method in review pack)</i></span><span class="hrs">12 h</span></div>
-        <div class="mod-row"><input type="checkbox" data-k="l3m8"><span class="what">Engineering data lab</span><span class="with">— <a href="masterclass.html#datalab">Masterclass Data Lab</a></span><span class="hrs">8 h</span></div>
-        <div class="capstone">
-          <h3>🏁 Capstone P — 63 MVA grid transformer <span class="paid-chip">Engineer review paid</span></h3>
-          <p class="brief"><b>Spec:</b> 63 MVA, 132/33 kV, YNd11, ONAN/ONAF 60/100%, Z = 12.5% at principal tap, OLTC ±10% in 17 steps on HV neutral end, LI 550/AC 230 kV, IEC 60076 family. Deliverables: full electrical sizing, cooling stage calculation, simplified radial/axial short-circuit force estimate, complete FAT test plan with pass criteria.</p>
-          <span class="accept">Acceptance criteria</span>
-          <ul>
-            <li>Impedance within guarantee tolerance across the full tap range, shown at three taps.</li>
-            <li>ONAN and ONAF ratings both verified thermally; hot-spot gradient stated per IEC 60076-2.</li>
-            <li>Force estimate uses the correct asymmetry factor and names the failure mode each force drives.</li>
-            <li>Test plan sequences dielectric tests correctly (a wrong order fails — as it would on a real test floor).</li>
-          </ul>
+      <div class="level-body" data-et-paid="level3">
+        <div class="et-locked-panel">
+          <p>The Level 3 module list and Capstone P brief are not on this public page. They unlock with 12-month access.</p>
+          <a class="btn btn-amber" href="pricing.html">See plans →</a>
+          <a href="masterclass.html" style="margin-left:12px;font-weight:600;color:var(--accent)">Start free chapters</a>
         </div>
       </div>
     </div>
@@ -297,27 +266,13 @@
         <h2>Specials &amp; Mastery</h2>
         <span class="prereq">Prereq: Level 3 Power</span>
         <div class="level-meta"><b>~80 hours</b>equiv. years 3–5 on the job</div>
-        <div class="sub">Every special type is a variation on discipline you now own — plus the judgment layer: failures, service, and lifetime economics.</div>
+        <div class="sub">Volumes 5 and 12–19 — failures, specials, site, loading, repair, asset management, the handbook and HVDC.</div>
       </div>
-      <div class="level-body">
-        <div class="mod-row"><input type="checkbox" data-k="l4m1"><span class="what">Special types — autos, converter, furnace, earthing</span><span class="with">— <a href="masterclass.html#special">Ch.15</a> + study briefs</span><span class="hrs">16 h</span></div>
-        <div class="mod-row"><input type="checkbox" data-k="l4m2"><span class="what">Site, commissioning &amp; life management</span><span class="with">— <a href="masterclass.html#sitelife">Ch.16</a></span><span class="hrs">10 h</span></div>
-        <div class="mod-row"><input type="checkbox" data-k="l4m3"><span class="what">After-sales, spares &amp; field service</span><span class="with">— <a href="masterclass.html#aftersales">Ch.20</a></span><span class="hrs">8 h</span></div>
-        <div class="mod-row"><input type="checkbox" data-k="l4m4"><span class="what">Full-course self-test</span><span class="with">— <a href="masterclass.html#glossary">Ch.19 Glossary &amp; Test</a></span><span class="hrs">6 h</span></div>
-        <div class="capstone">
-          <h3>🏁 Capstone S — Specials portfolio <span class="paid-chip">Engineer review paid</span></h3>
-          <p class="brief">Choose two of three, plus the mandatory failure investigation:</p>
-          <ul>
-            <li><b>S1:</b> 40 MVA autotransformer 220/132/11 kV — co-ratio benefit calculation, tertiary sizing, and why the impedance behaves differently.</li>
-            <li><b>S2:</b> 12-pulse rectifier transformer for a 25 kA electrolysis line — phase shifting, harmonic duty, and eddy-loss derating.</li>
-            <li><b>S3:</b> Furnace transformer, 30 MVA with 200% overload cycles — thermal design for cyclic duty and on-load voltage regulation strategy.</li>
-            <li><b>Mandatory:</b> a written failure investigation of a supplied case (test report + oil analysis + winding resistance data) — identify the root cause and the design or process change that prevents recurrence.</li>
-          </ul>
-          <span class="accept">Acceptance criteria</span>
-          <ul>
-            <li>Each design identifies what changes vs a standard two-winding unit and why — not just the numbers.</li>
-            <li>Failure investigation reaches the seeded root cause with evidence chain, not guesswork.</li>
-          </ul>
+      <div class="level-body" data-et-paid="level4">
+        <div class="et-locked-panel">
+          <p>The Level 4 module list and Capstone S brief are not on this public page. They unlock with 12-month access.</p>
+          <a class="btn btn-amber" href="pricing.html">See plans →</a>
+          <a href="masterclass.html" style="margin-left:12px;font-weight:600;color:var(--accent)">Start free chapters</a>
         </div>
       </div>
     </div>
@@ -331,6 +286,7 @@
 
   </div>
 </section>
+</main>
 
 <footer>
   <div class="container">
@@ -339,13 +295,13 @@
         <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
         <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data. Built for utilities, transformer manufacturers, component suppliers, EPCs, consultants and engineers.</p>
       </div>
-      <div><h2>INTELLIGENCE</h2><a href="intel.html">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="intelligence.html">Intelligence</a><a href="projects.html">Projects</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="exhibitions.html">Exhibitions</a><a href="events.html">Events</a></div>
-      <div><h2>INDUSTRY</h2><a href="manufacturers.html">Manufacturers</a><a href="directory.html">Directory</a><a href="services.html">Service &amp; Repair</a><a href="logistics.html">Transport &amp; Logistics</a><a href="laboratories.html">Testing Labs</a><a href="buyers.html">Buyers &amp; Utilities</a><a href="buyers-guide.html">Buyer's Guide</a><a href="accessories.html">Accessories</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a></div>
-      <div><h2>ENGINEERING</h2><a href="knowledge.html">Knowledge</a><a href="standards.html">Standards &amp; Codes</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Models</a><a href="design.html">Design Duel</a><a href="resources.html">Resources</a></div>
-      <div><h2>LEARN</h2><a href="learn.html">Learn</a><a href="education.html">Education &amp; Training</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy</a><a href="books.html">Books</a></div>
-      <div><h2>BUSINESS</h2><a href="for-manufacturers.html">For Manufacturers</a><a href="associations.html">Industry Associations</a><a href="media.html">Media &amp; Publications</a><a href="pricing.html">Pricing</a><a href="verified.html">Verified</a><a href="sponsor.html">Sponsor</a><a href="webinars.html">Webinars</a></div>
-      <div><h2>COMPANY</h2><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
-      <div><h2>CONTACT</h2>
+      <div><p class="footer-col-label">INTELLIGENCE</p><a href="intel.html">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="intelligence.html">Intelligence</a><a href="projects.html">Projects</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="exhibitions.html">Exhibitions</a><a href="events.html">Events</a></div>
+      <div><p class="footer-col-label">INDUSTRY</p><a href="manufacturers.html">Manufacturers</a><a href="directory.html">Directory</a><a href="services.html">Service &amp; Repair</a><a href="logistics.html">Transport &amp; Logistics</a><a href="laboratories.html">Testing Labs</a><a href="buyers.html">Buyers &amp; Utilities</a><a href="buyers-guide.html">Buyer's Guide</a><a href="accessories.html">Accessories</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a></div>
+      <div><p class="footer-col-label">ENGINEERING</p><a href="knowledge.html">Knowledge</a><a href="standards.html">Standards &amp; Codes</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Models</a><a href="design.html">Design Duel</a><a href="resources.html">Resources</a></div>
+      <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learn</a><a href="education.html">Education &amp; Training</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy</a><a href="books.html">Books</a></div>
+      <div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="associations.html">Industry Associations</a><a href="media.html">Media &amp; Publications</a><a href="pricing.html">Pricing</a><a href="verified.html">Verified</a><a href="sponsor.html">Sponsor</a><a href="webinars.html">Webinars</a></div>
+      <div><p class="footer-col-label">COMPANY</p><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><p class="footer-col-label">CONTACT</p>
         <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
         <a class="tp-li-btn tp-li-follow" data-linkedin-follow href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>Follow us on LinkedIn</a>
         <a class="tp-li-btn tp-li-share" data-linkedin-share href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>LinkedIn</a>
@@ -357,26 +313,30 @@
 
 <script>
 (function(){
-  var boxes = document.querySelectorAll('.mod-row input[type=checkbox]');
   var KEY = 'tp-track-progress';
   var state = {};
   try { state = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch(e) {}
-  function paint(){
+  function bind(){
+    var boxes = document.querySelectorAll('.mod-row input[type=checkbox]');
     var done = 0;
-    boxes.forEach(function(b){ if(b.checked) done++; });
-    var pct = Math.round(100 * done / boxes.length);
-    document.getElementById('bar').style.width = pct + '%';
-    document.getElementById('pct').textContent = pct + '%';
-  }
-  boxes.forEach(function(b){
-    b.checked = !!state[b.dataset.k];
-    b.addEventListener('change', function(){
-      state[b.dataset.k] = b.checked;
-      try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e) {}
-      paint();
+    boxes.forEach(function(b){
+      if(b.dataset.bound) { if(b.checked) done++; return; }
+      b.dataset.bound = '1';
+      b.checked = !!state[b.dataset.k];
+      if(b.checked) done++;
+      b.addEventListener('change', function(){
+        state[b.dataset.k] = b.checked;
+        try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e) {}
+        bind();
+      });
     });
-  });
-  paint();
+    var pct = boxes.length ? Math.round(100 * done / boxes.length) : 0;
+    var bar=document.getElementById('bar'), pctEl=document.getElementById('pct');
+    if(bar) bar.style.width = pct + '%';
+    if(pctEl) pctEl.textContent = pct + '%';
+  }
+  window.tpEtPaintProgress = bind;
+  bind();
 })();
 </script>
 
@@ -400,11 +360,23 @@
     try { localStorage.setItem(PAID_KEY, JSON.stringify({expiry:expiry, paid_at:(existing&&existing.paid_at)||new Date().toISOString(), tier:t})); } catch(e){}
   }
   function lockLevels(){
-    document.querySelectorAll('[data-paid="true"]').forEach(function(el){ el.classList.add('locked'); });
     var p=document.getElementById('paywall'); if(p) p.style.display='block';
   }
+  function fillPaid(){
+    fetch('/.netlify/functions/engineer-track-content', { credentials:'include', headers:{ Accept:'application/json' } })
+      .then(function(r){ return r.json(); })
+      .then(function(d){
+        if (!d || !d.ok) { lockLevels(); return; }
+        ['level2','level3','level4'].forEach(function(id){
+          var el=document.querySelector('[data-et-paid="'+id+'"]');
+          if(el && d[id]) el.innerHTML=d[id];
+        });
+        var p=document.getElementById('paywall'); if(p) p.style.display='none';
+        if(window.tpEtPaintProgress) window.tpEtPaintProgress();
+      }).catch(function(){ lockLevels(); });
+  }
 
-  if(checkAccess()){ return; }
+  if(checkAccess()){ fillPaid(); return; }
 
   if(SESSION){
     fetch('/.netlify/functions/verify-access',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session_id:SESSION})})
@@ -421,9 +393,9 @@
 })();
 </script>
 
-<script defer src="analytics.js?v=6"></script>
-<script src="tp-nav.js?v=6" defer></script>
-<script src="tp-freshness.js?v=6" defer></script>
-<script src="tp-feedback.js?v=6" defer></script>
+<script src="consent.js" defer></script>
+<script defer src="analytics.js?v=7"></script>
+<script src="tp-freshness.js?v=7" defer></script>
+<script src="tp-feedback.js?v=7" defer></script>
 </body>
 </html>

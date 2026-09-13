@@ -130,17 +130,22 @@ const MGF = JSON.parse(fs.readFileSync('data/manufacturers.json', 'utf8'));
 var CSMAP={}; try{ JSON.parse(fs.readFileSync('data/company-slugs.json','utf8')).forEach(function(c){ CSMAP[c.name.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()] = c.slug; }); }catch(e){}
 
 const vbadge2 = (m) => { const f = m.length > 4 ? m[4] : null; if (f === 'P') return ' <span class="v-badge pro">★ Supplier Pro</span>'; if (f === 'V') return ' <span class="v-badge">✓ Verified</span>'; return ''; };
-const tpills2 = (types) => { if (!types) return ''; const T = { PT: 'Power', DT: 'Distribution', DRY: 'Dry/Cast' }; return types.split(',').map((t) => t.trim()).filter(Boolean).map((t) => '<span class="tpill t-' + t + '">' + esc(T[t] || t) + '</span>').join(''); };
+const tpills2 = (types) => { if (!types) return ''; const T = { PT: 'Power', DT: 'Distribution', DRY: 'Dry/Cast', TX: 'Transformer', SR: 'Reactor', IT: 'Instrument' }; return types.split(',').map((t) => t.trim()).filter(Boolean).map((t) => '<span class="tpill t-' + t + '">' + esc(T[t] || t) + '</span>').join(''); };
 fs.mkdirSync('manufacturers', { recursive: true });
 let countryIndex = [];
 for (const c of MGF) {
   if (!c.makers.some(function(x){ return !/^Served by/i.test(x[0]); })) continue;
   const slug = slugify(c.country);
   const real = c.makers.filter((m) => !/^Served by/i.test(m[0]).valueOf() && !/^Served by/i.test(m[0]));
-  const rows = c.makers.map((m) => /^Served by/i.test(m[0])
-    ? '<div class="mk-row"><span class="note">' + esc(m[0]) + '</span></div>'
-    : '<div class="mk-row"><b>' + (CSMAP[esc(m[0]).toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()] ? '<a href="' + CSMAP[esc(m[0]).toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()] + '/" style="color:var(--accent)">' + esc(m[0]) + '</a>' : esc(m[0])) + vbadge2(m) + tpills2(m[3]) + '</b><span class="city">' + esc(m[1] || '') + (m[5] ? ' · est. ' + esc(m[5]) : '') + '</span><a class="prof" href="../manufacturers.html" style="font-size:.68rem">Directory</a>' + (m[2] ? '<a href="' + esc(m[2]) + '" target="_blank" rel="noopener" class="prof">Site</a>' : '') + '</div>').join('');
-  const html = '<!DOCTYPE html>\n<html lang="en" data-theme="dark">\n<head>\n<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">\n<title>' + esc(c.country) + ' Transformer Manufacturers | TransformerPath</title>\n<meta name="description" content="Power, distribution and dry-type transformer manufacturers and suppliers in ' + esc(c.country) + '. Reserve, compare and request quotes.">\n<link rel="canonical" href="https://transformerpath.com/manufacturers/' + slug + '.html">\n<meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath"><meta property="og:title" content="' + esc(c.country) + ' Transformer Manufacturers"><meta property="og:url" content="https://transformerpath.com/manufacturers/' + slug + '.html"><meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow">\n<link rel="stylesheet" href="../style.css?v=13"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin><link rel="preconnect" href="https://www.google-analytics.com"><link rel="icon" type="image/svg+xml" href="../brand/favicon.svg"><link rel="icon" href="../brand/favicon.ico" sizes="any"><link rel="apple-touch-icon" href="../brand/apple-touch-icon.png">\n<style>.c-wrap{max-width:900px;margin:0 auto;padding:44px 20px 80px}.c-wrap h1{font-size:1.9rem;color:var(--ink)}.c-wrap .lead{color:var(--muted);font-size:1rem}.c-wrap .mk-row{display:flex;align-items:baseline;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:.95rem}.c-wrap .mk-row b{color:var(--ink)}.c-wrap .mk-row .city{color:var(--muted);font-size:.85rem}.c-wrap .mk-row .prof{color:var(--accent);font-size:.8rem;font-weight:600;margin-left:auto}.c-wrap .tpill{display:inline-block;background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:1px 8px;font-size:.7rem;color:var(--text);margin-left:4px}.c-wrap .v-badge{color:var(--green);font-size:.7rem;font-weight:700}</style>\n</head>\n<body>\n' + HEAD + '\n<main class="c-wrap">\n<nav style="font-size:.8rem;color:var(--muted);margin-bottom:10px"><a href="../manufacturers.html" style="color:var(--accent)">Manufacturers</a> \u203a ' + esc(c.country) + '</nav>\n<h1>' + esc(c.flag) + ' Transformer Manufacturers in ' + esc(c.country) + '</h1>\n<p class="lead">' + real.length + ' manufacturer' + (real.length !== 1 ? 's' : '') + ' listed in ' + esc(c.country) + ' (' + esc(c.region) + '). Power, distribution and dry-type transformer suppliers.</p>\n<div>' + rows + '</div>\n<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:16px"><b style="color:var(--text)">Looking for a transformer supplier?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Submit a requirement and TransformerPath can match it against relevant manufacturers.</p><a class="btn btn-amber" href="../rfq.html" data-track="rfq_started" data-track-country="'+esc(c.country)+'">Submit an RFQ</a> <a class="btn btn-outline btn-sm" href="../list-company.html" data-track="supplier_claim_started" data-track-country="'+esc(c.country)+'">Listed here? Claim your company →</a></div>\n</main>\n' + FOOT + '\n<script src="../analytics.js?v=2" defer></script>\n</body>\n</html>';
+  const rows = c.makers.map((m) => {
+    if (/^Served by/i.test(m[0])) return '<div class="mk-row"><span class="note">' + esc(m[0]) + '</span></div>';
+    const cslug = CSMAP[String(m[0]).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()];
+    const nameHtml = cslug
+      ? '<a href="/manufacturers/' + cslug + '/" style="color:var(--accent);font-weight:700">' + esc(m[0]) + '</a>'
+      : '<b>' + esc(m[0]) + '</b>';
+    return '<div class="mk-row">' + nameHtml + vbadge2(m) + tpills2(m[3]) + '<span class="city">' + esc(m[1] || '') + (m[5] ? ' · est. ' + esc(m[5]) : '') + '</span>' + (m[2] ? '<a href="' + esc(m[2]) + '" target="_blank" rel="noopener" class="prof">Site</a>' : '') + '</div>';
+  }).join('');
+  const html = '<!DOCTYPE html>\n<html lang="en" data-theme="dark">\n<head>\n<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">\n<title>' + esc(c.country) + ' Transformer Manufacturers | TransformerPath</title>\n<meta name="description" content="Power, distribution and dry-type transformer manufacturers and suppliers in ' + esc(c.country) + '. Reserve, compare and request quotes.">\n<link rel="canonical" href="https://transformerpath.com/manufacturers/' + slug + '.html">\n<meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath"><meta property="og:title" content="' + esc(c.country) + ' Transformer Manufacturers"><meta property="og:url" content="https://transformerpath.com/manufacturers/' + slug + '.html"><meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow">\n<link rel="stylesheet" href="../style.css?v=13"><link rel="stylesheet" href="../tp-nav.css?v=13"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin><link rel="preconnect" href="https://www.google-analytics.com"><link rel="icon" type="image/svg+xml" href="../brand/favicon.svg"><link rel="icon" href="../brand/favicon.ico" sizes="any"><link rel="apple-touch-icon" href="../brand/apple-touch-icon.png">\n<style>.c-wrap{max-width:900px;margin:0 auto;padding:44px 20px 80px}.c-wrap h1{font-size:1.9rem;color:var(--ink);overflow-wrap:anywhere}.c-wrap .lead{color:var(--muted);font-size:1rem}.c-wrap .mk-row{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid var(--border);font-size:.95rem}.c-wrap .mk-row b{color:var(--ink)}.c-wrap .mk-row .city{color:var(--muted);font-size:.85rem}.c-wrap .mk-row .prof{color:var(--accent);font-size:.8rem;font-weight:600;margin-left:auto}.c-wrap .tpill{display:inline-block;background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:1px 8px;font-size:.7rem;color:var(--text);margin-left:4px}.c-wrap .v-badge{color:var(--green);font-size:.7rem;font-weight:700}</style>\n</head>\n<body>\n' + HEAD + '\n<main id="main" tabindex="-1" class="c-wrap">\n<nav style="font-size:.8rem;color:var(--muted);margin-bottom:10px"><a href="../manufacturers.html" style="color:var(--accent)">Manufacturers</a> \u203a ' + esc(c.country) + '</nav>\n<h1>' + esc(c.flag) + ' Transformer Manufacturers in ' + esc(c.country) + '</h1>\n<p class="lead">' + real.length + ' manufacturer' + (real.length !== 1 ? 's' : '') + ' listed in ' + esc(c.country) + ' (' + esc(c.region) + '). Power, distribution and dry-type transformer suppliers.</p>\n<div>' + rows + '</div>\n<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:16px"><b style="color:var(--text)">Looking for a transformer supplier?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Submit a requirement and TransformerPath can match it against relevant manufacturers.</p><a class="btn btn-amber" href="../rfq.html" data-track="rfq_started" data-track-country="'+esc(c.country)+'">Submit an RFQ</a> <a class="btn btn-outline btn-sm" href="../list-company.html" data-track="supplier_claim_started" data-track-country="'+esc(c.country)+'">Listed here? Claim your company →</a></div>\n</main>\n' + FOOT + '\n<script src="../analytics.js?v=2" defer></script>\n</body>\n</html>';
   fs.writeFileSync('manufacturers/' + slug + '.html', html);
   countryIndex.push('<a href="manufacturers/' + slug + '.html">' + esc(c.country) + '</a>');
   if (MGF.indexOf(c) < 5) console.log('OK manufacturers/' + slug + '.html');
@@ -178,7 +183,7 @@ TYPE_HUBS.forEach(function (th) {
     });
   });
 
-  function renderHub(title, lead, makersList, canonicalPath, breadcrumbs, isNoindex) {
+  function renderHub(title, lead, makersList, canonicalPath, breadcrumbs, isNoindex, extraHtml) {
     const rows = makersList.map(function (m) {
       const cslug = CSMAP[m.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()];
       const nameLink = cslug ? '<a href="/manufacturers/' + cslug + '/" style="color:var(--accent);font-weight:700">' + esc(m.name) + '</a>' : '<b style="color:var(--text)">' + esc(m.name) + '</b>';
@@ -203,12 +208,13 @@ TYPE_HUBS.forEach(function (th) {
       '<meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath">\n' +
       '<meta property="og:title" content="' + esc(title) + '"><meta property="og:url" content="https://transformerpath.com/' + canonicalPath + '">\n' +
       '<meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="' + (isNoindex ? 'noindex,follow' : 'index,follow') + '">\n' +
-      '<link rel="stylesheet" href="/style.css?v=13"><link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">\n' +
-      '<style>.c-wrap{max-width:920px;margin:0 auto;padding:44px 20px 90px}.c-wrap h1{font-size:2rem;color:var(--ink)}.c-wrap .lead{color:var(--muted);font-size:1.02rem;line-height:1.6}.c-wrap .v-badge{color:var(--green);font-size:.72rem;font-weight:700}.c-wrap .tpill{display:inline-block;background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:2px 10px;font-size:.74rem;color:var(--text);margin:3px 4px 3px 0}</style>\n' +
-      '</head>\n<body>\n' + HEAD + '\n<main class="c-wrap">\n' +
+      '<link rel="stylesheet" href="/style.css?v=13"><link rel="stylesheet" href="/tp-nav.css?v=13"><link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">\n' +
+      '<style>.c-wrap{max-width:920px;margin:0 auto;padding:44px 20px 90px}.c-wrap h1{font-size:2rem;color:var(--ink);overflow-wrap:anywhere}.c-wrap .lead{color:var(--muted);font-size:1.02rem;line-height:1.6}.c-wrap .v-badge{color:var(--green);font-size:.72rem;font-weight:700}.c-wrap .tpill{display:inline-block;background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:2px 10px;font-size:.74rem;color:var(--text);margin:3px 4px 3px 0}</style>\n' +
+      '</head>\n<body>\n' + HEAD + '\n<main id="main" tabindex="-1" class="c-wrap">\n' +
       '<nav style="font-size:.82rem;color:var(--muted);margin-bottom:12px">' + crumbs + '</nav>\n' +
       '<h1>' + esc(title) + '</h1>\n' +
       '<p class="lead">' + esc(lead) + ' Listing ' + makersList.length + ' verified manufacturers with technical capabilities, locations, comparison tools, and direct RFQ channels.</p>\n' +
+      (extraHtml || '') +
       '<div style="margin:20px 0">' + rows + '</div>\n' +
       '<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:18px 20px;text-align:center;margin-top:28px">' +
       '<b style="color:var(--text);font-size:1.1rem">Procuring ' + esc(title) + '?</b>' +
@@ -224,113 +230,56 @@ TYPE_HUBS.forEach(function (th) {
       '</main>\n' + FOOT + '\n<script src="/analytics.js?v=2" defer></script>\n</body>\n</html>';
   }
 
+  const comboCountries = Object.keys(byCountry).filter(function (countryName) {
+    return byCountry[countryName].length >= 3;
+  }).sort(function (a, b) { return a.localeCompare(b); });
+  const countryNav = comboCountries.length
+    ? '<p style="font-size:.88rem;color:var(--muted);margin:8px 0 4px;line-height:1.8">By country: ' +
+      comboCountries.map(function (countryName) {
+        return '<a href="/manufacturers/' + th.slug + '/' + slugify(countryName) + '/" style="color:var(--accent)">' + esc(countryName) + ' (' + byCountry[countryName].length + ')</a>';
+      }).join(' · ') + '</p>'
+    : '';
+
   // 1. Overall product-type page
   const globalHtml = renderHub(
     th.name + ' Manufacturers',
     th.desc,
     allMakersOfType,
     'manufacturers/' + th.slug + '/',
-    [{ name: 'Home', url: '/' }, { name: 'Manufacturers', url: '/manufacturers.html' }, { name: th.name, url: '/manufacturers/' + th.slug + '/' }]
+    [{ name: 'Home', url: '/' }, { name: 'Manufacturers', url: '/manufacturers.html' }, { name: th.name, url: '/manufacturers/' + th.slug + '/' }],
+    false,
+    countryNav
   );
   fs.writeFileSync(typeDir + '/index.html', globalHtml);
   typeHubCount++;
 
-  // 2. Combination pages: Type + Country (anti-thin content gate: makers >= 3)
-  Object.keys(byCountry).forEach(function (countryName) {
+  // 2. Combination pages: Type + Country (anti-thin content gate: makers >= 3).
+  // Indexed on purpose — they pass the thin-content gate and are linked from the type hub.
+  comboCountries.forEach(function (countryName) {
     const list = byCountry[countryName];
-    if (list.length >= 3) {
-      const cslug = slugify(countryName);
-      const comboDir = typeDir + '/' + cslug;
-      fs.mkdirSync(comboDir, { recursive: true });
-      const comboTitle = th.name + ' Manufacturers in ' + countryName;
-      const comboLead = 'Verified ' + th.name.toLowerCase() + ' manufacturers and suppliers based in ' + countryName + '.';
-      const comboHtml = renderHub(
-        comboTitle,
-        comboLead,
-        list,
-        'manufacturers/' + th.slug + '/' + cslug + '/',
-        [
-          { name: 'Home', url: '/' },
-          { name: 'Manufacturers', url: '/manufacturers.html' },
-          { name: th.name, url: '/manufacturers/' + th.slug + '/' },
-          { name: countryName, url: '/manufacturers/' + th.slug + '/' + cslug + '/' }
-        ],
-        true
-      );
-      fs.writeFileSync(comboDir + '/index.html', comboHtml);
-      comboHubCount++;
-    }
+    const cslug = slugify(countryName);
+    const comboDir = typeDir + '/' + cslug;
+    fs.mkdirSync(comboDir, { recursive: true });
+    const comboTitle = th.name + ' Manufacturers in ' + countryName;
+    const comboLead = 'Verified ' + th.name.toLowerCase() + ' manufacturers and suppliers based in ' + countryName + '.';
+    const comboHtml = renderHub(
+      comboTitle,
+      comboLead,
+      list,
+      'manufacturers/' + th.slug + '/' + cslug + '/',
+      [
+        { name: 'Home', url: '/' },
+        { name: 'Manufacturers', url: '/manufacturers.html' },
+        { name: th.name, url: '/manufacturers/' + th.slug + '/' },
+        { name: countryName, url: '/manufacturers/' + th.slug + '/' + cslug + '/' }
+      ],
+      false
+    );
+    fs.writeFileSync(comboDir + '/index.html', comboHtml);
+    comboHubCount++;
   });
 });
 console.log('generated', typeHubCount, 'type hubs and', comboHubCount, 'type-country combination hubs');
 
-/* ── Sitemap: one consistent sitemap, regenerated every build ────────────
-   Covers all indexable pages (main + generated + dated Intel editions) so it
-   never drifts from the pages actually on disk. */
-(function () {
-  var SITEMAP_SKIP = ['404.html', 'offline.html', 'admin.html', 'index.html'];
-  var MAIN = [''].concat(
-    fs.readdirSync('.')
-      .filter(function (f) { return /\.html$/.test(f); })
-      .filter(function (f) { return f.charAt(0) !== '_'; })
-      .filter(function (f) { return SITEMAP_SKIP.indexOf(f) < 0; })
-      .filter(function (f) { return !/^intel-2026-/.test(f); })
-      .filter(function (f) {
-        var html = '';
-        try { html = fs.readFileSync(f, 'utf8'); } catch (e) { return false; }
-        if (/<meta[^>]+name=["']robots["'][^>]*content=["'][^"']*noindex/i.test(html)) return false;
-        if (/http-equiv=["']refresh["']/i.test(html)) return false;
-        return true;
-      })
-      .sort()
-  );
-  var urls = [];
-  MAIN.forEach(function (u) { urls.push('https://transformerpath.com/' + (u || '')); });
-  ['manufacturers', 'components', 'applications', 'knowledge'].forEach(function (dir) {
-    try { fs.readdirSync(dir).filter(function (f) { return f.endsWith('.html'); }).sort().forEach(function (f) { urls.push('https://transformerpath.com/' + dir + '/' + f); }); } catch (e) {}
-  });
-
-  // Scan subdirectories with index.html
-  ['components', 'materials', 'grids', 'topics', 'markets', 'events', 'accessories', 'projects', 'tenders', 'utilities', 'case-studies', 'books'].forEach(function (dir) {
-    try {
-      fs.readdirSync(dir).forEach(function (d) {
-        if (fs.existsSync(dir + '/' + d + '/index.html')) urls.push('https://transformerpath.com/' + dir + '/' + d + '/');
-      });
-    } catch (e) {}
-  });
-
-  // Scan manufacturers company directories and type/combo hubs
-  try {
-    var IDX = {}; try { JSON.parse(fs.readFileSync('data/company-slugs.json', 'utf8')).forEach(function (c) { if (c.indexable) IDX[c.slug] = 1; }); } catch (e) {}
-    fs.readdirSync('manufacturers').forEach(function (d) {
-      if (fs.existsSync('manufacturers/' + d + '/index.html')) {
-        if (IDX[d] || TYPE_HUBS.some(th => th.slug === d)) {
-          urls.push('https://transformerpath.com/manufacturers/' + d + '/');
-          // check combinations under type hubs
-          if (TYPE_HUBS.some(th => th.slug === d)) {
-            try {
-              fs.readdirSync('manufacturers/' + d).forEach(function (sub) {
-                var subPath = 'manufacturers/' + d + '/' + sub + '/index.html';
-                if (fs.existsSync(subPath)) {
-                  try {
-                    var subHtml = fs.readFileSync(subPath, 'utf8');
-                    if (/<meta[^>]+name=["']robots["'][^>]*content=["'][^"']*noindex/i.test(subHtml)) return;
-                  } catch (e) { return; }
-                  urls.push('https://transformerpath.com/manufacturers/' + d + '/' + sub + '/');
-                }
-              });
-            } catch (e) {}
-          }
-        }
-      }
-    });
-  } catch (e) {}
-
-  try { fs.readdirSync('.').filter(function (f) { return /^intel-2026-.*\.html$/.test(f); }).sort().forEach(function (f) { urls.push('https://transformerpath.com/' + f); }); } catch (e) {}
-  var lastmod = new Date().toISOString().slice(0, 10);
-  var sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
-    urls.map(function (u) { return '  <url><loc>' + u + '</loc><lastmod>' + lastmod + '</lastmod></url>'; }).join('\n') +
-    '\n</urlset>\n';
-  fs.writeFileSync('sitemap.xml', sm);
-  console.log('sitemap.xml wrote', urls.length, 'URLs');
-})();
+/* Sitemap: walk published HTML (see build-sitemap.js). */
+require('./build-sitemap.js')();

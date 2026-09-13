@@ -47,7 +47,7 @@ exports.handler = async (event) => {
       objectives: ch ? ch.objectives : [],
       teaser: ch ? ch.teaser : '',
       plan: { name: 'Learning', price: '$199 / 12 months', note: 'Professional and Team include Learning.' },
-      unlock: 'masterclass.html?unlock=1',
+      unlock: 'pricing.html',
     }),
   };
 };

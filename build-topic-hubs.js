@@ -15,6 +15,7 @@
 'use strict';
 const fs = require('fs');
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
+const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 function slugify(s) { return String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/&/g, 'and').replace(/['’´]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, ''); }
 const normalize = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
@@ -88,15 +89,12 @@ function buildHub(topic) {
   const head = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>' + esc(topic.label) + ' — Transformer Industry Intelligence | TransformerPath</title>' +
     '<meta name="description" content="' + esc(topic.label) + ' — transformer-industry intelligence hub: manufacturers, latest intelligence, projects, tenders, knowledge and sourcing.">' +
     '<link rel="canonical" href="https://transformerpath.com/topics/' + esc(topic.key) + '/"><meta name="robots" content="index,follow"><meta name="theme-color" content="#0d1b2e">' +
-    '<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg"><link rel="stylesheet" href="/style.css?v=12"><link rel="stylesheet" href="/tp-nav.css?v=12">' +
+    '<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg"><link rel="stylesheet" href="/style.css?v=15"><link rel="stylesheet" href="/tp-nav.css?v=15">' +
     '<style>.t-wrap{max-width:980px;margin:0 auto;padding:42px 20px 90px}.t-wrap h1{font-size:2rem;color:var(--ink)}.t-wrap .lead{color:var(--muted);font-size:1rem;max-width:760px;margin:6px 0 20px}.t-wrap h2{font-size:1.18rem;color:var(--ink);margin-top:26px;border-bottom:1px solid var(--border);padding-bottom:6px}.t-wrap ul{padding-left:20px;line-height:1.7}</style>' +
-    '</head>\n<body>\n' + nav() + '\n<main class="t-wrap">' + bits.join('\n') + '</main>\n' + footer() + '\n<script src="/analytics.js?v=5" defer></script>\n<script src="/tp-nav.js?v=5" defer></script>\n</body>\n</html>';
+    '</head>\n<body>\n' + HEAD + '\n<main id="main" tabindex="-1" class="t-wrap">' + bits.join('\n') + '</main>\n' + footer() + '\n<script src="/analytics.js?v=7" defer></script>\n</body>\n</html>';
   return { html: head, aggreg: { topic: topic.key, label: topic.label, manufacturers: manufacturers.length, intel: intel.length, projects: projects.length, tenders: tenders.length, events: events.length, knowledge: knowledge.length, materials: materials.length, technology: tech.length } };
 }
 
-function nav() {
-  return '<header><link rel="stylesheet" href="/tp-nav.css?v=12"><div class="container nav"><a href="/index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a><button class="menu-toggle" aria-label="Menu">&#9776;</button><nav class="tpnav"><a href="/intel.html">Intel</a><a href="/manufacturers.html">Manufacturers</a><a href="/projects.html">Projects</a><a href="/tenders.html">Tenders</a><a href="/grids.html">Grids</a><a href="/events.html">Events</a><a href="/learn.html">Learn</a><a href="/tools.html">Tools</a><a href="/rfq.html">RFQ</a><span class="tpnav-utils"><a href="/search.html">&#128269;</a><a href="/workspace.html" data-tp-account>Account</a></span></nav></div></header>';
-}
 function footer() { return '<footer><div class="container"><p style="margin:0;color:var(--muted);font-size:.85rem">&#169; 2026 TransformerPath. All rights reserved.</p></div></footer>'; }
 
 fs.mkdirSync('topics', { recursive: true });

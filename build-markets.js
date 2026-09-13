@@ -481,11 +481,34 @@ function awardsFor(m) {
   }).slice(0, 6);
 }
 
+const FACILITIES = (() => {
+  try { return JSON.parse(fs.readFileSync('data/facilities.json', 'utf8')).facilities || []; } catch (e) { return []; }
+})();
+
 function factoriesFor(m) {
+  const matchCountry = function (c) {
+    return ci(c) === ci(m.gridsName) || ci(c) === ci(m.manufName) || ci(c) === ci(m.name)
+      || (m.gridsName === 'United Arab Emirates' && /united arab emirates|^uae$/.test(ci(c)))
+      || (m.name === 'UAE' && /united arab emirates|^uae$/.test(ci(c)));
+  };
+  const fromCanon = FACILITIES.filter(function (f) {
+    if (!f.public_count) return false;
+    return matchCountry(f.country);
+  }).map(function (f) {
+    return {
+      name: f.facility_name,
+      city: f.city,
+      country: f.country,
+      products: (f.capabilities && f.capabilities.transformer_types) || [],
+      facility_id: f.id,
+      produces: (f.capabilities && f.capabilities.produces) || f.produces || ''
+    };
+  });
+  if (fromCanon.length) return fromCanon;
   const facs = [];
   SITES.forEach(function (g) {
     (g.sites || []).forEach(function (s) {
-      if (ci(s.country) === ci(m.gridsName) || ci(s.country) === ci(m.manufName) || ci(s.country) === ci(m.name)) {
+      if (matchCountry(s.country) && (s.claim_type === 'INDEPENDENTLY_SOURCED' || s.produces || s.source_url)) {
         facs.push(s);
       }
     });
@@ -505,7 +528,6 @@ function marketPage(m) {
   const mk = makersFor(m); const g = gridsFor(m);
   const evs = eventsFor(m); const intel = intelFor(m);
   const utl = (g && g.grids) ? g.grids : [];
-  const typeCount = function (t) { return mk.filter(function (x) { return String(x.types || '').toUpperCase().indexOf(t) >= 0; }).length; };
   const mkHtml = mk.slice(0, 14).map(function (x) {
     const slug = csl(x.name);
     const name = slug ? '<a class="prof" href="../../manufacturers/' + slug + '/" style="color:var(--accent);font-weight:700">' + esc(x.name) + '</a>' : '<b>' + esc(x.name) + '</b>';
@@ -536,7 +558,7 @@ function marketPage(m) {
   const url = 'https://transformerpath.com/markets/' + m.slug + '/';
   const schema = '<script type="application/ld+json">' + JSON.stringify(faqSchema) + '</script>' +
     '<script type="application/ld+json">' + JSON.stringify({ '@context': 'https://schema.org', '@type': 'WebPage', name: 'Transformer Industry — ' + m.name, url: url, description: m.blurb.slice(0, 150) }) + '</script>';
-  const mkCount = typeCount('PT') + typeCount('DT') + typeCount('DRY');
+  const mkCount = mk.length;
 
   const facs = factoriesFor(m);
   const tenders = tendersFor(m);
@@ -550,7 +572,7 @@ function marketPage(m) {
       const fid = f.facility_id ? '<span style="font-family:monospace;font-size:.74rem;color:var(--muted)">' + esc(f.facility_id) + '</span>' : '—';
       return '<tr><td style="padding:8px 10px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text)">' + esc(f.name) + '</td><td style="padding:8px 10px;border-bottom:1px solid var(--border);color:var(--muted)">' + esc(f.city || '—') + '</td><td style="padding:8px 10px;border-bottom:1px solid var(--border)">' + esc(prods) + '</td><td style="padding:8px 10px;border-bottom:1px solid var(--border)">' + fid + '</td></tr>';
     }).join('') +
-    '</tbody></table></div>' + (facs.length > 10 ? '<p style="color:var(--muted);font-size:.8rem">+' + (facs.length - 10) + ' more verified facilities in this market.</p>' : '')
+    '</tbody></table></div>' + (facs.length > 10 ? '<p style="color:var(--muted);font-size:.8rem">+' + (facs.length - 10) + ' more sourced plant records in this market.</p>' : '')
   ) : '<p style="color:var(--muted);font-size:.85rem">No independent plant sites indexed yet.</p>';
 
   const tendersHtml = tenders.length ? (
@@ -599,7 +621,7 @@ function marketPage(m) {
     '</div>' +
     '<h2>Grid &amp; utilities</h2>' + (utlHtml || '<p style="color:var(--muted)">See the grid directory for operator details.</p>') +
     '<h2>Confirmed manufacturing plants &amp; facilities (' + facs.length + ')</h2>' + facsHtml +
-    '<h2>Transformer manufacturers</h2><p style="font-size:.85rem;color:var(--muted)">' + mkCount + ' maker records in the ' + esc(m.name) + ' census — power, distribution and dry-type. <a href="../../manufacturers/' + slugify(m.manufName) + '.html" style="color:var(--accent)">All ' + esc(m.name) + ' manufacturers →</a></p>' + (mkHtml || '<p style="color:var(--muted)">No manufacturers listed yet.</p>') +
+    '<h2>Transformer manufacturers</h2><p style="font-size:.85rem;color:var(--muted)">' + mkCount + ' manufacturers tracked in the ' + esc(m.name) + ' census — the same unique-company count as the figure above. <a href="../../manufacturers/' + slugify(m.manufName) + '.html" style="color:var(--accent)">All ' + esc(m.name) + ' manufacturers →</a></p>' + (mkHtml || '<p style="color:var(--muted)">No manufacturers listed yet.</p>') +
     '<h2>Current tenders &amp; procurement (' + tenders.length + ')</h2>' + tendersHtml +
     '<h2>Recent transformer contract awards (' + awards.length + ')</h2>' + awardsHtml +
     '<h2>Component &amp; material suppliers in this market</h2>' + localSupHtml +
@@ -660,7 +682,7 @@ const idxFoot = fs.readFileSync('_partials/footer.html', 'utf8').trim();
 const idx = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
   '<title>Transformer Markets Intelligence by Country | TransformerPath</title>' +
   '<meta name="description" content="Country transformer intelligence dashboards — grid operators, manufacturing bases, factories, components, live tenders, project pipelines and RFQ routing for key global markets.">' +
-  '<link rel="canonical" href="https://transformerpath.com/markets.html"><link rel="stylesheet" href="style.css?v=12"><link rel="icon" type="image/svg+xml" href="brand/favicon.svg">' +
+  '<link rel="canonical" href="https://transformerpath.com/markets.html"><link rel="stylesheet" href="style.css?v=13"><link rel="stylesheet" href="tp-nav.css?v=13"><link rel="icon" type="image/svg+xml" href="brand/favicon.svg">' +
   '<style>' +
   '.market-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px;margin-top:20px}' +
   '.m-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;display:flex;flex-direction:column;justify-content:space-between;transition:transform .15s ease,box-shadow .15s ease}' +

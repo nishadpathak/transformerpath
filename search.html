@@ -14,7 +14,7 @@
 <meta property="og:url" content="https://transformerpath.com/search.html">
 <meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="style.css?v=13">
+<link rel="stylesheet" href="style.css?v=14">
 <link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
 <link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
@@ -22,13 +22,13 @@
 <meta name="theme-color" content="#0d1b2e">
 <script src="consent.js" defer></script>
 <script src="lib/event-search.js" defer></script>
-    <link rel="stylesheet" href="tp-nav.css?v=13">
-  <link rel="stylesheet" href="tp-feedback.css?v=13">
+    <link rel="stylesheet" href="tp-nav.css?v=14">
+  <link rel="stylesheet" href="tp-feedback.css?v=14">
 </head>
 <body>
 
+<a class="skip-link" href="#main">Skip to content</a>
 <header>
-  <link rel="stylesheet" href="tp-nav.css?v=13">
   <div class="container nav">
     <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
     <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
@@ -38,6 +38,7 @@
         <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
         <div class="tpnav-dropdown-panel" role="menu">
           <a href="manufacturers.html">Manufacturers</a>
+          <a href="map.html">Industry Map</a>
           <a href="components.html">Components &amp; Materials</a>
           <a href="machinery.html">Machinery</a>
           <a href="laboratories.html">Testing Labs</a>
@@ -50,6 +51,7 @@
       <a href="projects.html">Projects</a>
       <a href="tenders.html">Tenders</a>
       <a href="grids.html" class="tpnav-opt">Grids</a>
+      <a href="map.html" class="tpnav-opt">Map</a>
       <a href="events.html">Events</a>
       <a href="tools.html" class="tpnav-opt">Engineering</a>
       <a href="learn.html">Learn</a>
@@ -57,23 +59,17 @@
       <div class="tpnav-more">
         <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
         <div class="tpnav-more-panel" role="menu">
-          <a href="directory.html" role="menuitem">Directory</a>
-          <a href="services.html" role="menuitem">Service & Repair</a>
-          <a href="logistics.html" role="menuitem">Transport & Logistics</a>
-          <a href="laboratories.html" role="menuitem">Testing Labs</a>
-          <a href="machinery.html" role="menuitem">Machinery</a>
+          <a href="map.html" role="menuitem">Industry Map</a>
+          <a href="logistics.html" role="menuitem">Transport &amp; Logistics</a>
           <a href="associations.html" role="menuitem">Industry Associations</a>
-          <a href="education.html" role="menuitem">Education & Training</a>
-          <a href="buyers.html" role="menuitem">Buyers & Procurement</a>
-          <a href="media.html" role="menuitem">Media & Publications</a>
+          <a href="education.html" role="menuitem">Education &amp; Training</a>
+          <a href="buyers.html" role="menuitem">Buyers &amp; Procurement</a>
+          <a href="media.html" role="menuitem">Media &amp; Publications</a>
           <a href="compare.html" role="menuitem">Compare</a>
           <a href="accessories.html" role="menuitem">Accessories</a>
-          <a href="markets.html" role="menuitem">Markets</a>
           <a href="utilities.html" role="menuitem">Utilities</a>
           <a href="webinars.html" role="menuitem">Webinars</a>
           <a href="awards.html" role="menuitem">Awards</a>
-          <a href="buyers-guide.html" role="menuitem">Buyer's Guide</a>
-          <a href="components.html" role="menuitem">Components</a>
           <a href="materials.html" role="menuitem">Materials</a>
           <a href="applications.html" role="menuitem">Applications</a>
           <a href="knowledge.html" role="menuitem">Knowledge</a>
@@ -125,7 +121,9 @@
       themeToggle.textContent = isDark ? '☀️' : '🌙';
     }
   </script>
-  <script src="tp-nav.js?v=6" defer></scr<div class="legal" style="max-width:920px">
+  <script src="tp-nav.js?v=7" defer></script>
+  <script src="tp-pwa.js?v=7" defer></script>
+</header><div class="legal" style="max-width:920px">
 <h1>Search The Global Transformer Industry</h1>
 <p class="sub">Structured universal search across companies, manufacturing facilities, components, projects, tenders, grids, and technical specifications.</p>
 
@@ -153,12 +151,14 @@
 <script>
 (function(){
   const SOURCES = {
-    companies: { label:"🏭 Companies & Plants", on:true, group:"COMPANIES & OEMS" },
-    projects:  { label:"🏗️ Projects & Tenders", on:true, group:"PROJECTS & TENDERS" },
+    companies: { label:"🏭 Companies", on:true, group:"COMPANIES" },
+    facilities:{ label:"🏭 Facilities", on:true, group:"FACILITIES" },
+    projects:  { label:"🏗️ Projects", on:true, group:"PROJECTS" },
+    tenders:   { label:"📋 Tenders", on:true, group:"TENDERS" },
     components:{ label:"🔩 Components & Materials", on:true, group:"COMPONENTS & MATERIALS" },
     labs:      { label:"🧪 Labs & Machinery", on:true, group:"MACHINERY & TESTING LABS" },
     grids:     { label:"🌐 Grids & Utilities", on:true, group:"NATIONAL GRIDS & UTILITIES" },
-    intel:     { label:"📰 Daily Intel", on:true, group:"INTELLIGENCE & BRIEFINGS" },
+    intel:     { label:"📰 Daily Intel", on:true, group:"INTELLIGENCE" },
     events:    { label:"📅 Events", on:true, group:"EVENTS & EXHIBITIONS" }
   };
   let INDEX = null, loading = false;
@@ -177,31 +177,75 @@
       get('data/laboratories.json'),
       get('data/machinery.json'),
       get('data/intel.json'),
-      get('data/events.json')
-    ]).then(([td, tp, tt, tc, tg, tl, tm, ti, te])=>{
+      get('data/events.json'),
+      get('data/facilities.json'),
+      get('data/accessories.json')
+    ]).then(([td, tp, tt, tc, tg, tl, tm, ti, te, tf, ta])=>{
       const ix = [];
 
-      // 1. Companies & Plants
       if(td && td.companies) {
         td.companies.forEach(c => {
           if(!c || !c.name) return;
-          const fac = (c.factories||[]).map(f=>(f.city||'')+' '+(f.country||'')).join(' ');
+          const fac = (c.factories||[]).map(f=>(f.city||'')+' '+(f.country||'')+' '+(f.produces||'')).join(' ');
           const types = (c.capability_labels||[]).join(' ');
-          const kv = c.voltage && c.voltage.value ? (c.voltage.value + ' kV') : '';
-          const mva = c.mva && c.mva.value ? (c.mva.value + ' MVA') : '';
-          const slug = c.slug || c.id.replace('cmp:', '');
+          const kv = c.voltage && c.voltage.value ? String(c.voltage.value) : '';
+          const mva = c.mva && c.mva.value ? String(c.mva.value) : '';
+          const slug = c.slug || String(c.id||'').replace('cmp:', '');
+          const kind = c.kind || 'manufacturer';
+          const href = kind === 'component_supplier' && slug
+            ? 'accessories/' + slug + '/'
+            : (kind === 'manufacturer' ? 'manufacturers/' + slug + '/' : (c.website || 'directory.html'));
+          const evidence = [];
+          if (kv) evidence.push('voltage evidence: ' + kv);
+          if (mva) evidence.push('capacity evidence: ' + mva);
+          (c.factories||[]).forEach(function(f){ if(f.produces) evidence.push(f.city + ': ' + f.produces); });
           ix.push({
             s: 'companies',
             t: c.name,
-            x: [c.country, c.region, types, kv, mva, fac, (c.certs||[]).join(' ')].join(' '),
-            href: 'manufacturers/' + slug + '/',
-            tag: c.country + (kv ? ' · ' + kv : ''),
-            desc: types || 'Transformer Manufacturer'
+            x: [c.country, c.region, types, kv, kv.replace(/\s+/g,''), mva, fac, (c.certs||[]).join(' '), evidence.join(' ')].join(' '),
+            href: href,
+            tag: (c.country || '') + (kv ? ' · evidence: ' + kv : ''),
+            desc: (evidence[0] || types || 'Listed company'),
+            evidence: evidence[0] || '',
+            kvNum: c.voltage && c.voltage.num
           });
         });
       }
 
-      // 2. Projects & Tenders
+      if(tf && tf.facilities) {
+        tf.facilities.forEach(f => {
+          if(!f) return;
+          const produces = (f.capabilities && f.capabilities.produces) || f.produces || '';
+          const ev = produces || (f.public_count ? 'Sourced plant record' : 'Listed plant city');
+          const slug = String(f.company_id||'').replace('cmp:','');
+          ix.push({
+            s: 'facilities',
+            t: (f.city || f.facility_name) + (f.company_name ? ' — ' + f.company_name : ''),
+            x: [f.facility_name, f.city, f.country, f.company_name, produces, f.id].join(' '),
+            href: slug ? 'manufacturers/' + slug + '/' : 'directory.html',
+            tag: (f.country || '') + (produces ? ' · ' + produces : ''),
+            desc: ev,
+            evidence: produces
+          });
+        });
+      }
+
+      if(ta && ta.suppliers) {
+        ta.suppliers.forEach(s => {
+          if(!s || !s.name) return;
+          if(/^(Inactive|Unverified)$/i.test(s.verification_status||'')) return;
+          const cats = (s.categories||[]).join(' ');
+          ix.push({
+            s: 'components',
+            t: s.name,
+            x: [s.country, s.city, cats, s.description].join(' '),
+            href: 'accessories/' + String(s.name||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'') + '/',
+            tag: (s.country||'') + ' · Accessory',
+            desc: cats || s.description || 'Component / material supplier'
+          });
+        });
+      }
+
       if(tp && tp.projects) {
         tp.projects.forEach(p => {
           ix.push({
@@ -209,20 +253,20 @@
             t: p.name || p.title,
             x: [p.country, p.utility, p.status, p.voltage, p.scope].join(' '),
             href: 'projects.html?q=' + encodeURIComponent(p.name || p.title),
-            tag: (p.country || '') + (p.status ? ' · ' + p.status.toUpperCase() : ''),
-            desc: (p.utility ? p.utility + ' · ' : '') + (p.scope || p.voltage || '')
+            tag: (p.country || '') + (p.status ? ' · ' + String(p.status).toUpperCase() : ''),
+            desc: (p.utility ? p.utility + ' · ' : '') + (p.voltage || p.scope || '')
           });
         });
       }
       if(tt && tt.tenders) {
         tt.tenders.forEach(t => {
           ix.push({
-            s: 'projects',
+            s: 'tenders',
             t: t.title || t.name,
-            x: [t.country, t.authority, t.status, t.scope].join(' '),
-            href: 'tenders.html',
+            x: [t.country, t.authority, t.utility, t.status, t.scope, t.voltage].join(' '),
+            href: 'tenders.html?q=' + encodeURIComponent(t.title || t.name || ''),
             tag: (t.country || '') + ' · TENDER ' + (t.status || '').toUpperCase(),
-            desc: (t.authority ? t.authority + ' · ' : '') + (t.scope || '')
+            desc: (t.authority || t.utility || '') + (t.scope ? ' · ' + t.scope : '')
           });
         });
       }
@@ -353,8 +397,20 @@
     if(q.length < 2) { host.innerHTML = ''; return; }
 
     buildIndex().then(ix => {
-      const words = q.split(/\s+/).filter(Boolean);
-      const hits = ix.filter(it => SOURCES[it.s].on && words.every(w => (it.t + ' ' + it.x).toLowerCase().includes(w)));
+      const nq = q.replace(/(\d+)\s*k\s*v/gi, '$1 kv').replace(/(\d+)kv/gi, '$1 kv');
+      const words = nq.split(/\s+/).filter(Boolean);
+      const kvWant = (nq.match(/(\d+)\s*kv/) || [])[1];
+      const hits = ix.filter(it => {
+        if (!SOURCES[it.s] || !SOURCES[it.s].on) return false;
+        const hay = (it.t + ' ' + it.x + ' ' + (it.evidence||'')).toLowerCase().replace(/(\d+)\s*k\s*v/g, '$1 kv').replace(/(\d+)kv/g, '$1 kv');
+        return words.every(w => hay.includes(w) || (w === 'kv' && /\d+\s*kv/.test(hay)));
+      }).sort((a, b) => {
+        const ae = ((a.evidence||'') + a.t).toLowerCase().includes(nq) ? 2 : 0;
+        const be = ((b.evidence||'') + b.t).toLowerCase().includes(nq) ? 2 : 0;
+        const ak = kvWant && a.kvNum ? (a.kvNum >= Number(kvWant) ? 3 : 0) : 0;
+        const bk = kvWant && b.kvNum ? (b.kvNum >= Number(kvWant) ? 3 : 0) : 0;
+        return (be + bk) - (ae + ak);
+      });
       document.getElementById('status').textContent = hits.length + ' record' + (hits.length === 1 ? '' : 's') + ' found for “' + q + '”';
 
       if(hits.length === 0) {
@@ -381,7 +437,7 @@
 
       let htmlOut = '';
       Object.keys(groups).forEach(gName => {
-        const items = groups[gName].slice(0, 8);
+        const items = groups[gName].slice(0, 16);
         htmlOut += `
           <div class="entity-group">
             <div class="entity-group-title">
@@ -394,7 +450,7 @@
                   <div>
                     <div class="sr-tag">${esc(it.tag)}</div>
                     <div class="sr-title">${esc(it.t)}</div>
-                    <div class="sr-snippet">${esc(String(it.desc).slice(0, 130))}${it.desc && it.desc.length > 130 ? '…' : ''}</div>
+                    <div class="sr-snippet">${esc(String(it.desc).slice(0, 160))}${it.desc && it.desc.length > 160 ? '…' : ''}</div>
                   </div>
                   <div style="font-size:.76rem;color:var(--accent);font-weight:700;margin-top:10px">View Record →</div>
                 </a>
@@ -449,13 +505,13 @@
         <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
         <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data. Built for utilities, transformer manufacturers, component suppliers, EPCs, consultants and engineers.</p>
       </div>
-      <div><h2>INTELLIGENCE</h2><a href="intel.html">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="intelligence.html">Intelligence</a><a href="projects.html">Projects</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="exhibitions.html">Exhibitions</a><a href="events.html">Events</a></div>
-      <div><h2>INDUSTRY</h2><a href="manufacturers.html">Manufacturers</a><a href="directory.html">Directory</a><a href="services.html">Service &amp; Repair</a><a href="logistics.html">Transport &amp; Logistics</a><a href="laboratories.html">Testing Labs</a><a href="buyers.html">Buyers &amp; Utilities</a><a href="buyers-guide.html">Buyer's Guide</a><a href="accessories.html">Accessories</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a></div>
-      <div><h2>ENGINEERING</h2><a href="knowledge.html">Knowledge</a><a href="standards.html">Standards &amp; Codes</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Models</a><a href="design.html">Design Duel</a><a href="resources.html">Resources</a></div>
-      <div><h2>LEARN</h2><a href="learn.html">Learn</a><a href="education.html">Education &amp; Training</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy</a><a href="books.html">Books</a></div>
-      <div><h2>BUSINESS</h2><a href="for-manufacturers.html">For Manufacturers</a><a href="associations.html">Industry Associations</a><a href="media.html">Media &amp; Publications</a><a href="pricing.html">Pricing</a><a href="verified.html">Verified</a><a href="sponsor.html">Sponsor</a><a href="webinars.html">Webinars</a></div>
-      <div><h2>COMPANY</h2><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
-      <div><h2>CONTACT</h2>
+      <div><p class="footer-col-label">INTELLIGENCE</p><a href="intel.html">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="intelligence.html">Intelligence</a><a href="projects.html">Projects</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="exhibitions.html">Exhibitions</a><a href="events.html">Events</a></div>
+      <div><p class="footer-col-label">INDUSTRY</p><a href="manufacturers.html">Manufacturers</a><a href="directory.html">Directory</a><a href="services.html">Service &amp; Repair</a><a href="logistics.html">Transport &amp; Logistics</a><a href="laboratories.html">Testing Labs</a><a href="buyers.html">Buyers &amp; Utilities</a><a href="buyers-guide.html">Buyer's Guide</a><a href="accessories.html">Accessories</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a></div>
+      <div><p class="footer-col-label">ENGINEERING</p><a href="knowledge.html">Knowledge</a><a href="standards.html">Standards &amp; Codes</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Models</a><a href="design.html">Design Duel</a><a href="resources.html">Resources</a></div>
+      <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learn</a><a href="education.html">Education &amp; Training</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy</a><a href="books.html">Books</a></div>
+      <div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="associations.html">Industry Associations</a><a href="media.html">Media &amp; Publications</a><a href="pricing.html">Pricing</a><a href="verified.html">Verified</a><a href="sponsor.html">Sponsor</a><a href="webinars.html">Webinars</a></div>
+      <div><p class="footer-col-label">COMPANY</p><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><p class="footer-col-label">CONTACT</p>
         <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
         <a class="tp-li-btn tp-li-follow" data-linkedin-follow href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>Follow us on LinkedIn</a>
         <a class="tp-li-btn tp-li-share" data-linkedin-share href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>LinkedIn</a>
@@ -465,12 +521,8 @@
   </div>
 </footer>
 
-<script>
-if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
-</script>
-<script src="analytics.js?v=6" defer></script>
-<script src="tp-nav.js?v=6" defer></script>
-<script src="tp-freshness.js?v=6" defer></script>
-<script src="tp-feedback.js?v=6" defer></script>
+<script src="analytics.js?v=7" defer></script>
+<script src="tp-freshness.js?v=7" defer></script>
+<script src="tp-feedback.js?v=7" defer></script>
 </body>
 </html>

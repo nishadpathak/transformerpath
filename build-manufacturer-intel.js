@@ -207,9 +207,19 @@ Object.keys(censusByName).forEach((name) => {
   }
   rec.last_verified = (rec.research_status === 'ACTIVE_CONFIRMED') ? '2026-08-28' : '2026-08-15';
 
-  // Commercial status is a separate axis (always LISTED here; CLAIMED/VERIFIED
-  // are set through the claim/verified workflow, never derived from research).
+  // Commercial status is a separate axis (always LISTED here unless a paid
+  // overlay in data/listing-tiers.json marks Verified / Supplier Pro).
+  // CLAIMED/VERIFIED are never derived from research or website-checked labels.
   rec.commercial_status = 'LISTED';
+  rec.featured = false;
+  rec.listing_tier = 'listed';
+  try {
+    const listingTier = require('./lib/listing-tier');
+    const overlay = listingTier.indexOverlay(listingTier.loadOverlay());
+    const hit = listingTier.resolveListing({ name: rec.name, slug: rec.slug }, overlay);
+    if (hit.tier === 'pro') { rec.commercial_status = 'SUPPLIER_PRO'; rec.featured = true; rec.listing_tier = 'pro'; rec.verified = true; }
+    else if (hit.tier === 'verified') { rec.commercial_status = 'VERIFIED'; rec.featured = true; rec.listing_tier = 'verified'; rec.verified = true; }
+  } catch (e) { /* overlay optional */ }
   out.push(rec);
 });
 

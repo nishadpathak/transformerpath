@@ -86,7 +86,8 @@
         "earthing": "Earthing / grounding",
         "mobile": "Mobile",
         "renewable": "Renewable / application-specific",
-        "reactor": "Shunt reactor / reactor"
+        "reactor": "Shunt reactor / reactor",
+        "instrument": "Instrument transformer"
       },
       "recorded_subtype_codes": [
         "FURNACE",
@@ -97,7 +98,10 @@
         "MOBILE",
         "RENEWABLE",
         "SHUNT_REACTOR",
-        "REACTOR"
+        "REACTOR",
+        "SR",
+        "IT",
+        "TX"
       ],
       "not_evidenced_subtypes": []
     }
@@ -242,6 +246,26 @@
         "special"
       ],
       "label": "Special transformer"
+    },
+    "TX": {
+      "categories": [
+        "special"
+      ],
+      "label": "Transformer"
+    },
+    "SR": {
+      "categories": [
+        "special",
+        "special.reactor"
+      ],
+      "label": "Shunt reactor"
+    },
+    "IT": {
+      "categories": [
+        "special",
+        "special.instrument"
+      ],
+      "label": "Instrument transformer"
     }
   },
   "components": {

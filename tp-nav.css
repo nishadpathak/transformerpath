@@ -16,6 +16,57 @@
    Loaded after style.css, so it overrides the older .nav-links rules.
    ========================================================================== */
 
+/* Skip-to-content — lives here so pages that skip style.css still hide it */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 16px;
+  background: var(--amber, #f5a623);
+  color: var(--navy, #0d1b2e);
+  padding: 8px 16px;
+  font-weight: 700;
+  font-size: .9rem;
+  border-radius: 4px;
+  z-index: 10000;
+  text-decoration: none;
+}
+.skip-link:focus { top: 16px; }
+
+/* Header chrome lives here so pages that skip style.css (masterclass) still
+   get a 64px navy bar, a white wordmark, and a visible hamburger.
+   Do not match in-page heroes that also use <header> (mc-hero, ac-hero). */
+body > header:not(.mc-hero):not(.ac-hero):not(.hero) {
+  background: var(--navy, #0d1b2e);
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,.25);
+}
+.container.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 64px;
+  height: 64px;
+  gap: 16px;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
+  box-sizing: border-box;
+}
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.6rem;
+  cursor: pointer;
+  padding: 8px 12px;
+  line-height: 1;
+}
+
 /* ── Uniform Logo ─────────────────────────────────────────────────────── */
 .logo {
   display: inline-flex !important;
@@ -29,7 +80,7 @@
   line-height: 1;
 }
 .logo .word {
-  color: var(--ink, #fff) !important;
+  color: #fff !important;
   font-weight: 800 !important;
   letter-spacing: -0.5px !important;
   display: inline !important;
@@ -301,4 +352,115 @@
 
 @media (prefers-reduced-motion: reduce) {
   .tpnav a, .tpnav .tpnav-more-btn { transition: none; }
+}
+
+/* Home-screen PWA only — do not change the mobile website chrome. */
+.tp-pwa-banner {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: 16px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  background: #0d1b2e;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: .88rem;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, .35);
+  font-family: inherit;
+}
+.tp-pwa-banner span { flex: 1 1 160px; line-height: 1.35; }
+.tp-pwa-banner button {
+  background: #f5a623;
+  color: #0d1b2e;
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-weight: 800;
+  font-size: .85rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+.tp-pwa-banner button.ghost {
+  background: transparent;
+  color: rgba(255, 255, 255, .8);
+  font-weight: 600;
+}
+#tp-pwa-nav { display: none; }
+
+html.tp-pwa-standalone {
+  padding-top: env(safe-area-inset-top);
+}
+html.tp-pwa-standalone header .container.nav {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+html.tp-pwa-standalone .tp-pwa-banner { display: none !important; }
+html.tp-pwa-standalone #tp-pwa-nav {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10000;
+  background: #0d1b2e;
+  border-top: 1px solid rgba(255, 255, 255, .12);
+  padding: 6px 0 calc(8px + env(safe-area-inset-bottom));
+}
+html.tp-pwa-standalone #tp-pwa-nav a {
+  text-align: center;
+  color: rgba(255, 255, 255, .72);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .02em;
+  text-decoration: none;
+  padding: 8px 4px;
+  font-family: inherit;
+}
+html.tp-pwa-standalone #tp-pwa-nav a[aria-current="page"] { color: #f5a623; }
+html.tp-pwa-standalone body {
+  padding-bottom: calc(56px + env(safe-area-inset-bottom));
+}
+
+@media (display-mode: standalone) {
+  html {
+    padding-top: env(safe-area-inset-top);
+  }
+  header .container.nav {
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+  .tp-pwa-banner { display: none !important; }
+  #tp-pwa-nav {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10000;
+    background: #0d1b2e;
+    border-top: 1px solid rgba(255, 255, 255, .12);
+    padding: 6px 0 calc(8px + env(safe-area-inset-bottom));
+  }
+  #tp-pwa-nav a {
+    text-align: center;
+    color: rgba(255, 255, 255, .72);
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .02em;
+    text-decoration: none;
+    padding: 8px 4px;
+    font-family: inherit;
+  }
+  #tp-pwa-nav a[aria-current="page"] { color: #f5a623; }
+  body {
+    padding-bottom: calc(56px + env(safe-area-inset-bottom));
+  }
 }

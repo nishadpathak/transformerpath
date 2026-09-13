@@ -39,12 +39,12 @@ function render() {
 <meta name="theme-color" content="#0d1b2e">
 <link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
 <link rel="stylesheet" href="style.css?v=12">
-<link rel="stylesheet" href="tp-nav.css?v=12">
+<link rel="stylesheet" href="tp-nav.css?v=15">
 <link rel="stylesheet" href="tp-feedback.css?v=12">
 <style>
 .srv-wrap { max-width: 1140px; margin: 0 auto; padding: 40px 20px 90px; }
 .srv-head { margin-bottom: 24px; }
-.srv-head h1 { font-size: 2.2rem; color: var(--ink); margin: 0 0 8px; }
+.srv-head h1 { font-size: 2.2rem; color: var(--ink); margin: 0 0 8px; overflow-wrap: anywhere; }
 .srv-head .lead { color: var(--muted); font-size: 1.05rem; max-width: 880px; line-height: 1.5; margin: 0 0 20px; }
 
 .stats-bar { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 24px; }
@@ -108,7 +108,7 @@ ${HEAD}
     </div>
     <div class="stat-box">
       <div class="num">100%</div>
-      <div class="lbl">Website-Verified</div>
+      <div class="lbl">Website checked</div>
     </div>
   </div>
 

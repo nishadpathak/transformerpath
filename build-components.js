@@ -10,11 +10,19 @@
  */
 'use strict';
 const fs = require('fs');
+const path = require('path');
 
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+function slugify(s) { return String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/&/g, 'and').replace(/['’´]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, ''); }
+const ACC_SLUGS = new Set();
+try {
+  fs.readdirSync('accessories').forEach(function (n) {
+    if (fs.existsSync(path.join('accessories', n, 'index.html'))) ACC_SLUGS.add(n);
+  });
+} catch (e) {}
 
 const DATA = JSON.parse(fs.readFileSync('data/components-deep-dive.json', 'utf8'));
 const CATEGORIES = DATA.categories || [];
@@ -41,7 +49,7 @@ const html = `<!DOCTYPE html>
 <meta name="theme-color" content="#0d1b2e">
 <link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
 <link rel="stylesheet" href="style.css?v=12">
-<link rel="stylesheet" href="tp-nav.css?v=12">
+<link rel="stylesheet" href="tp-nav.css?v=15">
 <link rel="stylesheet" href="tp-feedback.css?v=12">
 <style>
 .comp-wrap { max-width: 1160px; margin: 0 auto; padding: 40px 20px 90px; }
@@ -92,11 +100,11 @@ const html = `<!DOCTYPE html>
 <body>
 ${HEAD}
 
-<main class="comp-wrap">
+<main id="main" tabindex="-1" class="comp-wrap">
   <div class="comp-head">
     <nav style="font-size:.82rem;color:var(--muted);margin-bottom:12px"><a href="index.html" style="color:var(--accent)">Home</a> › <a href="directory.html" style="color:var(--accent)">Directory</a> › Component Manufacturers</nav>
     <h1>Transformer <span style="color:var(--accent)">Component Manufacturers</span> Directory</h1>
-    <p class="lead">Specialized sub-directory for all 21 key transformer component and accessory categories, organized by <b>Category → Country → State/Province</b>. Verified suppliers, certified product lines, and direct RFQ capability.</p>
+    <p class="lead">Specialized sub-directory for all 21 key transformer component and accessory categories, organized by <b>Category → Country → State/Province</b>. Listed specialist manufacturers with an official website recorded, and direct RFQ capability.</p>
   </div>
 
   <div class="stats-bar">
@@ -106,15 +114,15 @@ ${HEAD}
     </div>
     <div class="stat-box">
       <div class="num">${totalSuppliers}+</div>
-      <div class="lbl">Verified Specialist Makers</div>
+      <div class="lbl">Specialist Manufacturers</div>
     </div>
     <div class="stat-box">
       <div class="num">Category → Country</div>
       <div class="lbl">Deep-Dive Segregation</div>
     </div>
     <div class="stat-box">
-      <div class="num">100%</div>
-      <div class="lbl">Website-Verified</div>
+      <div class="num">Official site</div>
+      <div class="lbl">Website checked</div>
     </div>
   </div>
 
@@ -139,8 +147,11 @@ ${FOOT}
 
 <script>
 window.__TP_COMPONENTS_DEEP__ = ${deepDiveJson};
+window.__TP_ACC_SLUGS__ = ${JSON.stringify([...ACC_SLUGS])};
 (function(){
   const data = window.__TP_COMPONENTS_DEEP__ || [];
+  const ACC_SLUGS = new Set(window.__TP_ACC_SLUGS__ || []);
+  function slugify(s){ return String(s||'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim().replace(/&/g,'and').replace(/['’´]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,''); }
   const searchInput = document.getElementById('compSearch');
   const countrySelect = document.getElementById('compCountry');
   const resetBtn = document.getElementById('compReset');
@@ -210,17 +221,19 @@ window.__TP_COMPONENTS_DEEP__ = ${deepDiveJson};
 
       const cardsHtml = filteredSuppliers.map(s => {
         const loc = [s.city, s.state, s.country].filter(Boolean).join(', ');
+        const slug = slugify(s.name);
+        const profile = ACC_SLUGS.has(slug) ? '<a href="accessories/' + slug + '/" class="supp-name" style="color:var(--accent);text-decoration:none">' + esc(s.name) + '</a>' : '<h4 class="supp-name">' + esc(s.name) + '</h4>';
         return '<div class="supp-card">' +
           '<div>' +
             '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:6px;margin-bottom:4px">' +
-              '<h4 class="supp-name">' + esc(s.name) + '</h4>' +
+              profile +
               '<span class="ev-badge ev-confirmed">' + esc(s.verification_status || 'Verified') + '</span>' +
             '</div>' +
             '<div class="supp-loc">📍 ' + esc(loc) + '</div>' +
             '<div class="supp-desc">' + esc(s.description) + '</div>' +
           '</div>' +
           '<div class="supp-foot">' +
-            (s.website ? '<a href="' + esc(s.website) + '" target="_blank" rel="noopener" class="btn btn-outline btn-sm" style="font-size:.76rem">Official Website ↗</a>' : '<span></span>') +
+            (ACC_SLUGS.has(slug) ? '<a href="accessories/' + slug + '/" class="btn btn-outline btn-sm" style="font-size:.76rem">Profile →</a>' : (s.website ? '<a href="' + esc(s.website) + '" target="_blank" rel="noopener" class="btn btn-outline btn-sm" style="font-size:.76rem">Official Website ↗</a>' : '<span></span>')) +
             '<a href="rfq.html?company=' + encodeURIComponent(s.name) + '" class="btn btn-amber btn-sm" style="font-size:.76rem">Inquire / RFQ →</a>' +
           '</div>' +
         '</div>';

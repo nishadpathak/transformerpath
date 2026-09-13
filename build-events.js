@@ -150,7 +150,7 @@ const CURATED = [
     comps: ['transformer-bushings', 'protection-monitoring', 'insulation-materials'] },
 ];
 
-const GLOBAL_OEMS = ['SIEMENS ENERGY', 'HITACHI ENERGY', 'GE VERNAVA', 'TBEA', 'HYOSUNG HEAVY INDUSTRIES', 'WEIDMANN'];
+const GLOBAL_OEMS = ['SIEMENS ENERGY', 'HITACHI ENERGY', 'GE VERNOVA', 'TBEA', 'HYOSUNG HEAVY INDUSTRIES', 'WEIDMANN'];
 
 function makersForMarket(marketSlug) {
   const list = [];
@@ -171,7 +171,12 @@ function intelFor(rec) {
   let matches = items.filter(function (it) { return kw.some(function (k) { return ci(it.title).indexOf(k) >= 0; }); });
   return (matches.length ? matches : items.slice(0, 3)).slice(0, 4);
 }
-const fmt = function (d) { try { return new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }); } catch (e) { return ''; } };
+const fmt = function (d) {
+  if (!d || !/^\d{4}-\d{2}-\d{2}$/.test(d)) return '';
+  const dt = new Date(d + 'T12:00:00Z');
+  if (isNaN(dt.getTime())) return '';
+  return dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+};
 // Travelpayout-affiliated attendee buttons (Book Hotel / Flights / Things to Do /
 // calendar) for a curated event, matching the exhibitions + events.html pattern.
 const TP = { hotel: 'https://search.hotellook.com/?marker=736890&destination=', flights: 'https://kiwi.tpk.ro/dClaRHg1', activities: 'https://kkday.tpk.ro/VGC9WqGf' };
@@ -250,21 +255,24 @@ function eventPage(ev) {
     '<meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath">' +
     '<meta property="og:title" content="' + esc(ev.name) + ' — Transformer Exhibitors"><meta property="og:url" content="' + url + '">' +
     '<meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow">' +
-    '<link rel="stylesheet" href="../../style.css?v=' + CSSV + '"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin><link rel="preconnect" href="https://www.google-analytics.com"><link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">' +
+    '<link rel="stylesheet" href="../../style.css?v=' + CSSV + '"><link rel="stylesheet" href="../../tp-nav.css?v=' + CSSV + '"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin><link rel="preconnect" href="https://www.google-analytics.com"><link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">' +
     '<style>.c-wrap{max-width:900px;margin:0 auto;padding:44px 20px 90px}.c-wrap h1{font-size:1.8rem;color:var(--ink)}.c-wrap .lead{color:var(--muted);font-size:1rem;max-width:760px}.c-wrap h2{font-size:1.25rem;color:var(--ink);margin-top:26px}.c-wrap .evmeta{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:.9rem;color:var(--muted);margin:6px 0 16px}.c-wrap .evmeta b{color:var(--text)}.c-wrap .tpill{display:inline-block;background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:2px 10px;font-size:.74rem;color:var(--text);margin:3px 4px 3px 0}.c-wrap ul{padding-left:20px;line-height:1.7}</style>' + schema +
-    '</head>\n<body>\n' + HEAD + '\n<main class="c-wrap">' +
+    '</head>\n<body>\n' + HEAD + '\n<main id="main" tabindex="-1" class="c-wrap">' +
     '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="../../events.html" style="color:var(--accent)">Events</a> › ' + esc(ev.name) + '</nav>' +
     '<h1>' + esc(ev.name) + '</h1>' +
-    '<div style="margin:4px 0 12px">' + statusChip(st) + (confirmed ? '' : '<span style="font-size:.82rem;color:var(--muted)">Do not book travel on unconfirmed dates — verify with the organiser.</span>') + '</div>' +
+    '<div style="margin:4px 0 12px">' + statusChip(st) + (['DATE_TBC','VENUE_TBC','MONITORING','POSTPONED'].indexOf(st.key) >= 0 ? '<span style="font-size:.82rem;color:var(--muted)">Do not book travel on unconfirmed dates — verify with the organiser.</span>' : '') + '</div>' +
     '<div class="evmeta">' +
-    (st.key === 'DATE_TBC' || st.key === 'MONITORING'
-      ? '<span><b>Dates</b> To be confirmed</span>'
+    (!rec.s || st.key === 'DATE_TBC' || st.key === 'MONITORING' || st.key === 'REJECTED_NO_EVIDENCE' || st.key === 'RESEARCH_REQUIRED'
+      ? '<span><b>Dates</b> Not confirmed</span>'
       : '<span><b>Dates</b> ' + fmt(rec.s) + (rec.e !== rec.s ? ' – ' + fmt(rec.e) : '') + '</span>') +
     (st.key === 'VENUE_TBC'
       ? '<span><b>Venue</b> To be confirmed</span>'
       : '<span><b>Venue</b> ' + esc(rec.v || rec.c) + '</span>') +
     '<span><b>Location</b> ' + esc(rec.c + ', ' + rec.co) + '</span>' +
-    (rec.u !== '#' ? '<span><a href="' + esc(rec.u) + '" target="_blank" rel="noopener" style="color:var(--accent)">Official site ↗</a></span>' : '') + '</div>' +
+    (rec.u !== '#' ? '<span><a href="' + esc(rec.u) + '" target="_blank" rel="noopener" style="color:var(--accent)">Official site ↗</a></span>' : '') +
+    (st.key !== 'REJECTED_NO_EVIDENCE' && st.key !== 'CANCELLED' && st.key !== 'RESEARCH_REQUIRED'
+      ? '<span><a href="../../map.html?layer=events&amp;q=' + encodeURIComponent(ev.name) + '" style="color:var(--accent)">View on map</a></span>'
+      : '') + '</div>' +
     (confirmed && ev.register ? '<div style="margin:10px 0 4px"><a class="btn btn-amber" href="' + esc(ev.register) + '" target="_blank" rel="noopener" data-track="event_register" data-track-event="' + esc(ev.slug) + '">Register for ' + esc(ev.name) + ' →</a></div>' : '') +
     (confirmed ? travelButtons(ev.name, rec.c, rec.co, rec.s, rec.e) : '') +
     '<p class="lead">' + esc(ev.blurb) + '</p>' +
@@ -278,8 +286,8 @@ function eventPage(ev) {
     '<h2>Related events</h2><div style="margin:4px 0 8px">' + (relatedEvHtml || '<span style="color:var(--muted);font-size:.85rem">See the events calendar.</span>') + '</div>' +
     '<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:24px"><b style="color:var(--text)">Meet the industry at ' + esc(ev.name) + '</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Get your product or service in front of transformer buyers — or submit an RFQ to reach suppliers in this sector.</p>' +
     '<div style="font-size:.8rem;color:var(--muted);margin-bottom:12px">Exhibiting here? Feature your company on TransformerPath — from $399 per event.</div>' +
-    '<a class="btn btn-amber" href="../../events.html" data-track="event_feature_inquiry" data-track-event="' + esc(ev.slug) + '">Feature your company — $399 →</a> <a class="btn btn-outline btn-sm" href="../../rfq.html" data-track="rfq_started" data-track-component_category="' + esc(ev.slug) + '">Submit an RFQ</a> <a class="btn btn-outline btn-sm" href="../../list-company.html" data-track="supplier_claim_started" data-track-component_category="' + esc(ev.slug) + '">Get Verified</a></div>' +
-    '<div style="font-size:.85rem;color:var(--muted);text-align:center;margin-top:8px">Explore: <a href="../../markets.html" style="color:var(--accent);font-weight:600">Markets</a> · <a href="../../knowledge.html" style="color:var(--accent);font-weight:600">Knowledge</a> · <a href="../../applications.html" style="color:var(--accent);font-weight:600">Applications</a> · <a href="../../components.html" style="color:var(--accent);font-weight:600">Components</a> · <a href="../../books.html" style="color:var(--accent);font-weight:600">Books</a> · <a href="../../academy.html" style="color:var(--accent);font-weight:600">Academy</a></div>' +
+    '<a class="btn btn-amber" href="../../sponsor.html" data-track="event_feature_inquiry" data-track-event="' + esc(ev.slug) + '">Feature your company — $399 →</a> <a class="btn btn-outline btn-sm" href="../../rfq.html" data-track="rfq_started" data-track-component_category="' + esc(ev.slug) + '">Submit an RFQ</a> <a class="btn btn-outline btn-sm" href="../../list-company.html" data-track="supplier_claim_started" data-track-component_category="' + esc(ev.slug) + '">Get Verified</a></div>' +
+    '<div style="font-size:.85rem;color:var(--muted);text-align:center;margin-top:8px">Explore: <a href="../../events.html" style="color:var(--accent);font-weight:600">Events</a> · <a href="../../webinars.html" style="color:var(--accent);font-weight:600">Webinars</a> · <a href="../../learn.html" style="color:var(--accent);font-weight:600">Learn</a> · <a href="../../intel.html" style="color:var(--accent);font-weight:600">Intel</a> · <a href="../../map.html?layer=events" style="color:var(--accent);font-weight:600">Map</a> · <a href="../../markets.html" style="color:var(--accent);font-weight:600">Markets</a></div>' +
     '</main>\n' + FOOT + '\n<script src="../../analytics.js?v=2" defer></script>\n' +
     '<script>(function(){function ok(){try{return localStorage.getItem("tp-cookie-consent")==="accepted"}catch(e){return false}}function load(){var s=document.createElement("script");s.async=1;s.src="https://emrldtp.com/NTQ4OTM4.js?t=548938";s.setAttribute("data-cmp-ab","2");document.head.appendChild(s)}if(ok()){load()}else{var h=function(e){if(e.key==="tp-cookie-consent"&&e.newValue==="accepted"){load();document.removeEventListener("storage",h)}};document.addEventListener("storage",h)}})();<\/script>\n</body>\n</html>';
 }

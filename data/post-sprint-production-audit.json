@@ -1,6 +1,6 @@
 {
   "$schema": "https://transformerpath.com/production-audit.schema.json",
-  "generated": "2026-09-11T17:08:53.873Z",
+  "generated": "2026-09-13T06:47:40.900Z",
   "note": "POST-SPRINT PRODUCTION AUDIT. READ-ONLY verification of checked-in source + generated data + served HTML. Does not assert anything about an unobserved live runtime. UNKNOWN > INCORRECT.",
   "surfaces": [
     {
@@ -50,7 +50,7 @@
     {
       "surface": "learn.html",
       "kind": "learn",
-      "title": "Learn Transformer Design — Complete Course | TransformerPath",
+      "title": "Learn Transformer Design — Course Matched to the Books | TransformerPath",
       "source_present": true,
       "sitemap_indexed": true,
       "has_canonical": true,
@@ -138,12 +138,12 @@
     {
       "surface": "manufacturers.html",
       "kind": "manufacturers",
-      "title": "Transformer Manufacturers — Worldwide Census | TransformerPath",
+      "title": "Transformer Manufacturers Directory | TransformerPath",
       "source_present": true,
       "sitemap_indexed": true,
       "has_canonical": true,
       "has_h1": true,
-      "client_fetches_data": false,
+      "client_fetches_data": true,
       "freshness_contradictions": []
     },
     {

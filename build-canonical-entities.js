@@ -22,33 +22,21 @@
  */
 'use strict';
 const fs = require('fs');
+const aliases = require('./lib/company-aliases');
 
 function readJson(p, fb) {
   try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch (e) { return fb; }
 }
 
-function norm(s) {
-  return String(s || '').toLowerCase().normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '').replace(/&/g, ' and ')
-    .replace(/[^a-z0-9]+/g, ' ').trim().replace(/\s+/g, ' ');
-}
+const norm = aliases.norm;
+const slugify = aliases.slugify;
+const cleanBrandName = aliases.cleanBrandName;
+const resolveCompanyAlias = aliases.resolveCompanyAlias;
+const locSlug = aliases.locSlug;
 
 function normDom(u) {
   return String(u || '').replace(/^https?:\/\//, '').replace(/^www\./, '')
     .split('/')[0].toLowerCase().trim();
-}
-
-function slugify(s) {
-  return String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase().trim().replace(/&/g, 'and')
-    .replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
-}
-
-function cleanBrandName(name) {
-  let s = String(name || '').trim();
-  s = s.replace(/\s*\((global HQ|GE Vernova|Schneider|Grid Solutions|HVDC|T&D India|Changzhou|Wuhan|Transformers|Kingdom of Saudi Arabia)\)/gi, '');
-  s = s.replace(/\s+(USA|Canada|Brasil|Brazil|Colombia|Italy|Spain|Finland|Türkiye|Turkey|India|Malaysia|Vietnam|Japan|Thailand|China|SAE|Transformers SAE)$/i, '');
-  return s.trim();
 }
 
 // ── Load Input Datasets ──────────────────────────────────────────────────────
@@ -93,22 +81,23 @@ const companiesMap = new Map(); // key: domain or normName -> company object
 const companyList = [];
 
 function getOrCreateCompany(rawName, website, country, region) {
+  const resolved = resolveCompanyAlias(rawName);
   const dom = normDom(website);
-  const canonicalName = cleanBrandName(rawName);
+  const canonicalName = resolved.name;
   const nKey = norm(canonicalName);
   let co = null;
 
-  if (dom && companiesMap.has('dom:' + dom)) {
-    co = companiesMap.get('dom:' + dom);
-  } else if (companiesMap.has('name:' + nKey)) {
+  if (companiesMap.has('name:' + nKey)) {
     co = companiesMap.get('name:' + nKey);
+  } else if (companiesMap.has('name:' + norm(rawName))) {
+    co = companiesMap.get('name:' + norm(rawName));
   }
 
   if (!co) {
-    let slug = slugify(canonicalName);
+    let slug = resolved.slug || slugify(canonicalName);
     // Find pre-assigned canonical slug if exists (prioritize exact canonical name)
     const hitSlug = SLUGS.find((s) => norm(s.name) === nKey) || SLUGS.find((s) => norm(s.name) === norm(rawName));
-    if (hitSlug && hitSlug.slug) slug = hitSlug.slug;
+    if (hitSlug && hitSlug.slug && !resolved.aliased) slug = hitSlug.slug;
 
     co = {
       id: 'cmp:' + slug,
@@ -151,7 +140,8 @@ function getOrCreateCompany(rawName, website, country, region) {
         co.id = 'cmp:' + hitSlug.slug;
       }
     }
-    if (!co.website && website) co.website = website;
+    if (!resolved.aliased && website) co.website = website;
+    else if (!co.website && website) co.website = website;
     if (!co.headquarters.country && country) co.headquarters.country = country;
   }
 
@@ -243,97 +233,140 @@ BYR.forEach((b) => {
 });
 
 // ── 2. Create Decoupled Facility Entities (P0.2) ─────────────────────────────
+// Public facility count = explicit plant records only. Never clone a company HQ
+// into a facility just because the company exists (that produced the 1:1 artifact).
 const facilitiesList = [];
 const facIdSet = new Set();
 
-// Extract facilities from manufacturer-sites.json
-SITES.forEach((brandGroup) => {
-  const brandDom = normDom(brandGroup.url);
-  const brandNorm = norm(cleanBrandName(brandGroup.brand));
-  const co = (brandDom && companiesMap.get('dom:' + brandDom)) || companiesMap.get('name:' + brandNorm);
-  const coId = co ? co.id : ('cmp:' + brandGroup.slug);
-  const coName = co ? co.name : brandGroup.brand;
+function isSourcedPlant(s) {
+  if (!s) return false;
+  if (s.claim_type === 'INDEPENDENTLY_SOURCED') return true;
+  if (s.produces) return true;
+  if (s.source_url) return true;
+  return /independently sourced|deep-research/i.test(s.source || '');
+}
 
-  (brandGroup.sites || []).forEach((s, idx) => {
-    const locSlug = slugify(s.city || s.country || ('plant-' + (idx + 1)));
-    const facId = 'fac:' + (co ? co.slug : brandGroup.slug) + ':' + locSlug;
-    if (facIdSet.has(facId)) return;
-    facIdSet.add(facId);
-
-    // Controlled transformer types evidenced at this plant
-    const plantTypes = (s.products || []).map((p) => CODE_MAP[String(p).toUpperCase()] || String(p));
-
-    const facility = {
-      id: facId,
-      company_id: coId,
-      company_name: coName,
-      facility_name: s.name || (coName + ' — ' + (s.city || s.country)),
-      city: s.city || '',
-      country: s.country || '',
-      region: s.region || '',
-      status: s.status || 'UNCLEAR',
-      capabilities: {
-        transformer_types: plantTypes,
-        max_voltage_kv: null, // NOT automatically inherited from corporate maximum
-        max_mva: null,        // NOT automatically inherited from corporate maximum
-        annual_mva_capacity: null,
-        annual_capacity_note: 'Not publicly disclosed',
-        certifications: [],
-        test_capabilities: [],
-        produces: s.produces || ''
-      },
-      source: s.source || 'TransformerPath factory inventory',
-      source_tier: s.claim_type === 'INDEPENDENTLY_SOURCED' ? 'Tier A' : 'Tier C',
-      source_url: s.source_url || s.url || '',
-      last_checked: '2026-08-28',
-      confidence: s.status === 'OPERATIONAL' ? 'HIGH' : 'LIMITED'
-    };
-
-    facilitiesList.push(facility);
-    if (co) {
-      co.facility_ids.push(facId);
+function addFacility(opts) {
+  const city = opts.city || '';
+  const loc = locSlug(city) || slugify(opts.country || 'plant');
+  const coSlug = opts.co ? opts.co.slug : opts.fallbackSlug;
+  const facId = 'fac:' + coSlug + ':' + loc;
+  if (facIdSet.has(facId)) {
+    const existing = facilitiesList.find((f) => f.id === facId);
+    if (existing && opts.produces && !existing.capabilities.produces) {
+      existing.capabilities.produces = opts.produces;
     }
+    if (existing && opts.claim_type === 'INDEPENDENTLY_SOURCED') {
+      existing.claim_type = 'INDEPENDENTLY_SOURCED';
+      existing.public_count = true;
+    }
+    return existing;
+  }
+  facIdSet.add(facId);
+  const facility = {
+    id: facId,
+    company_id: opts.co ? opts.co.id : ('cmp:' + opts.fallbackSlug),
+    company_name: opts.co ? opts.co.name : opts.fallbackName,
+    facility_name: opts.facility_name || ((opts.co ? opts.co.name : opts.fallbackName) + ' — ' + (city || opts.country)),
+    city: city,
+    country: opts.country || '',
+    region: opts.region || '',
+    status: opts.status || 'UNCLEAR',
+    claim_type: opts.claim_type || '',
+    produces: opts.produces || '',
+    public_count: !!opts.public_count,
+    capabilities: {
+      transformer_types: opts.plantTypes || [],
+      max_voltage_kv: null,
+      max_mva: null,
+      annual_mva_capacity: null,
+      annual_capacity_note: 'Not publicly disclosed',
+      certifications: opts.certs || [],
+      test_capabilities: [],
+      produces: opts.produces || ''
+    },
+    source: opts.source || 'TransformerPath factory inventory',
+    source_tier: opts.claim_type === 'INDEPENDENTLY_SOURCED' ? 'Tier A' : 'Tier C',
+    source_url: opts.source_url || '',
+    last_checked: opts.last_checked || '2026-08-28',
+    confidence: opts.status === 'OPERATIONAL' ? 'HIGH' : 'LIMITED'
+  };
+  facilitiesList.push(facility);
+  if (opts.co) opts.co.facility_ids.push(facId);
+  return facility;
+}
+
+// Extract facilities from manufacturer-sites.json (explicit plant cities)
+SITES.forEach((brandGroup) => {
+  const resolved = resolveCompanyAlias(brandGroup.brand);
+  const brandDom = normDom(brandGroup.url);
+  const brandNorm = norm(resolved.name);
+  const co = companiesMap.get('name:' + brandNorm)
+    || (brandDom && companiesMap.get('dom:' + brandDom))
+    || companiesMap.get('name:' + norm(cleanBrandName(brandGroup.brand)));
+
+  (brandGroup.sites || []).forEach((s) => {
+    if (!s.city && !s.country) return;
+    const sourced = isSourcedPlant(s);
+    addFacility({
+      co: co,
+      fallbackSlug: resolved.slug || brandGroup.slug,
+      fallbackName: resolved.name || brandGroup.brand,
+      city: s.city,
+      country: s.country,
+      region: s.region,
+      status: s.status,
+      facility_name: s.name || (resolved.name + ' — ' + (s.city || s.country)),
+      plantTypes: (s.products || []).map((p) => CODE_MAP[String(p).toUpperCase()] || String(p)),
+      produces: s.produces || '',
+      claim_type: s.claim_type || '',
+      source: s.source || 'TransformerPath factory inventory',
+      source_url: s.source_url || s.url || '',
+      public_count: sourced
+    });
   });
 });
 
-// Also check single-site manufacturers in INTEL that might not have appeared in SITES
+// INTEL factory arrays are explicit plant records (city + optional produces/source).
+// Do NOT create an HQ placeholder when a company has no factory list.
 INTEL.forEach((c) => {
-  const co = companiesMap.get('name:' + norm(cleanBrandName(c.name)));
-  if (co && co.facility_ids.length === 0) {
-    const locSlug = slugify(c.headquarters || c.country || 'hq');
-    const facId = 'fac:' + co.slug + ':' + locSlug;
-    if (!facIdSet.has(facId)) {
-      facIdSet.add(facId);
-      const plantTypes = (c.products || []).map((p) => CODE_MAP[String(p).toUpperCase()] || String(p));
-      const facility = {
-        id: facId,
-        company_id: co.id,
-        company_name: co.name,
-        facility_name: co.name + ' — ' + (c.headquarters || c.country),
-        city: c.headquarters || '',
-        country: c.country || '',
-        region: c.region || '',
-        status: c.research_status === 'ACTIVE_CONFIRMED' ? 'OPERATIONAL' : 'UNCLEAR',
-        capabilities: {
-          transformer_types: plantTypes,
-          max_voltage_kv: null,
-          max_mva: null,
-          annual_mva_capacity: null,
-          annual_capacity_note: 'Not publicly disclosed',
-          certifications: c.reported_certs || [],
-          test_capabilities: [],
-          produces: ''
-        },
-        source: 'TransformerPath company intelligence store',
-        source_tier: 'Tier B',
-        source_url: c.website || '',
-        last_checked: c.last_verified || '2026-08-28',
-        confidence: c.research_status === 'ACTIVE_CONFIRMED' ? 'HIGH' : 'LIMITED'
-      };
-      facilitiesList.push(facility);
-      co.facility_ids.push(facId);
-    }
-  }
+  const resolved = resolveCompanyAlias(c.name);
+  const co = companiesMap.get('name:' + norm(resolved.name))
+    || companiesMap.get('name:' + norm(cleanBrandName(c.name)));
+  (c.factories || []).forEach((f) => {
+    if (!f || !f.city) return;
+    const sourced = isSourcedPlant(f);
+    addFacility({
+      co: co,
+      fallbackSlug: resolved.slug,
+      fallbackName: resolved.name,
+      city: f.city,
+      country: f.country || c.country,
+      region: c.region,
+      status: sourced ? 'OPERATIONAL' : 'UNCLEAR',
+      facility_name: resolved.name + ' — ' + f.city,
+      plantTypes: (c.products || []).map((p) => CODE_MAP[String(p).toUpperCase()] || String(p)),
+      produces: f.produces || '',
+      claim_type: f.claim_type || '',
+      source: f.source_url ? 'Company intelligence store (sourced plant)' : 'Company intelligence store (listed plant city)',
+      source_url: f.source_url || f.url || c.website || '',
+      last_checked: c.last_verified || '2026-08-28',
+      certs: c.reported_certs || [],
+      public_count: sourced
+    });
+  });
+});
+
+// A plant on a multi-site company is an explicit facility even if the census
+// row was only a city listing (Prolec Shreveport next to sourced Waukesha).
+const facByCompany = {};
+facilitiesList.forEach((f) => {
+  (facByCompany[f.company_id] = facByCompany[f.company_id] || []).push(f);
+});
+Object.keys(facByCompany).forEach((id) => {
+  const group = facByCompany[id];
+  if (group.length < 2) return;
+  group.forEach((f) => { if (f.city) f.public_count = true; });
 });
 
 // ── 3. Finalize Companies List ──────────────────────────────────────────────
@@ -358,10 +391,13 @@ const companiesPayload = {
   companies: distinctCompanies
 };
 
+const publicFacilities = facilitiesList.filter((f) => f.public_count);
 const facilitiesPayload = {
   $schema: 'https://transformerpath.com/facilities.schema.json',
   generated_at: new Date().toISOString(),
   count: facilitiesList.length,
+  public_count: publicFacilities.length,
+  note: 'count = every explicit plant record (census city or sourced). public_count = plants with sourced evidence or belonging to a multi-site company. HQ-clone facilities are not created.',
   facilities: facilitiesList
 };
 
@@ -370,6 +406,6 @@ fs.writeFileSync('data/facilities.json', JSON.stringify(facilitiesPayload, null,
 
 console.log('✅ Canonical entities built successfully:');
 console.log('   Companies: ' + distinctCompanies.length + ' entities in data/companies.json');
-console.log('   Facilities: ' + facilitiesList.length + ' factories in data/facilities.json');
+console.log('   Facilities: ' + facilitiesList.length + ' plant records (' + publicFacilities.length + ' counted publicly) in data/facilities.json');
 const multiRole = distinctCompanies.filter((c) => c.roles.length > 1);
 console.log('   Multi-role companies consolidated:', multiRole.length);

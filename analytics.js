@@ -37,7 +37,24 @@ var META_PIXEL_ID = "";            // Meta Pixel ID, e.g. "1234567890" (optional
   // gates AdSense; we gate GA4 on the SAME choice so no non-essential
   // measurement cookie is set until the visitor opts in).
   var PROD_HOST = /^transformerpath\.com$/i.test(location.hostname);
-  var CONSENT_OK = (function () { try { return localStorage.getItem('tp-cookie-consent') === 'accepted'; } catch (e) { return false; } })();
+  function consentOk() {
+    try { return localStorage.getItem('tp-cookie-consent') === 'accepted'; } catch (e) { return false; }
+  }
+
+  function startGa4() {
+    if (provider === 'ga4' || document.querySelector('script[data-tp-ga4]')) return;
+    if (!GA4_ID || !PROD_HOST || !consentOk()) return;
+    var g = document.createElement('script');
+    g.async = true;
+    g.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA4_ID;
+    g.setAttribute('data-tp-ga4', '1');
+    document.head.appendChild(g);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    window.gtag('js', new Date());
+    window.gtag('config', GA4_ID);
+    provider = 'ga4';
+  }
 
   if (PLAUSIBLE_DOMAIN) {
     var s = document.createElement('script');
@@ -50,16 +67,11 @@ var META_PIXEL_ID = "";            // Meta Pixel ID, e.g. "1234567890" (optional
     };
     window.plausible('pageview');
     provider = 'plausible';
-  } else if (GA4_ID && PROD_HOST && CONSENT_OK) {
-    var g = document.createElement('script');
-    g.async = true;
-    g.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA4_ID;
-    document.head.appendChild(g);
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function () { window.dataLayer.push(arguments); };
-    window.gtag('js', new Date());
-    window.gtag('config', GA4_ID);
-    provider = 'ga4';
+  } else {
+    startGa4();
+    window.addEventListener('tp-consent-changed', function (ev) {
+      if (ev && ev.detail && ev.detail.consent === 'accepted') startGa4();
+    });
   }
 
   /* ── Optional ad/platform tags (drop-in IDs, silent when blank) ─────────

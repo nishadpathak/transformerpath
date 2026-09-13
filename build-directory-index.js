@@ -5,7 +5,7 @@
  * searchable directory index:
  *   - data/manufacturer-intel.json  (542 transformer manufacturers, with a
  *     company→factory model, evidence fields and research completeness)
- *   - data/accessories.json         (26 component/material suppliers)
+ *   - data/accessories.json         (listed component/material suppliers)
  *
  * It does NOT add records. It reuses the canonical company entities, applies the
  * capability taxonomy (data/industry-taxonomy.json) to map recorded product codes
@@ -20,6 +20,11 @@
  */
 'use strict';
 const fs = require('fs');
+function slugify(s) {
+  return String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim()
+    .replace(/&/g, 'and').replace(/['’´]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+}
+const { resolveCompanyAlias } = require('./lib/company-aliases');
 const TAX = JSON.parse(fs.readFileSync('data/industry-taxonomy.json', 'utf8'));
 const MFG = JSON.parse(fs.readFileSync('data/manufacturer-intel.json', 'utf8')).companies || [];
 const ACC = JSON.parse(fs.readFileSync('data/accessories.json', 'utf8'));
@@ -173,6 +178,9 @@ function buildManufacturer(c) {
     research_completeness: c.research_completeness || 0,
     research_status: c.research_status || '',
     commercial_status: c.commercial_status || '',
+    featured: !!c.featured,
+    listing_tier: c.listing_tier || '',
+    verified: !!c.verified,
     sources: c.sources || {},
     factory_count: cp.factory_count,
   };
@@ -180,7 +188,8 @@ function buildManufacturer(c) {
 
 function buildSupplier(s) {
   const labels = (s.categories || []).slice();
-  const slug = (s.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const slug = slugify(s.name);
+  const hasPage = slug && fs.existsSync('accessories/' + slug + '/index.html');
   const cp = getCanonProps(slug, s.name, 'component_supplier', 0);
   return {
     id: cp.id,
@@ -188,7 +197,7 @@ function buildSupplier(s) {
     roles: cp.roles,
     kind: 'component_supplier',
     name: s.name,
-    slug: slug,
+    slug: hasPage ? slug : '',
     country: s.country,
     region: s.state || '',
     website: s.website,
@@ -551,7 +560,47 @@ function buildMedia(m) {
   };
 }
 
-const index = MFG.map(buildManufacturer)
+function mergeFactories(a, b) {
+  const out = [];
+  const seen = new Set();
+  (a || []).concat(b || []).forEach((f) => {
+    const k = String(f.city || '').toLowerCase().split(',')[0].trim() + '|' + String(f.country || '').toLowerCase();
+    if (!k || k === '|') return;
+    if (seen.has(k)) {
+      const dest = out.find((x) => String(x.city || '').toLowerCase().split(',')[0].trim() + '|' + String(x.country || '').toLowerCase() === k);
+      if (dest && f.produces && !dest.produces) dest.produces = f.produces;
+      return;
+    }
+    seen.add(k);
+    out.push(Object.assign({}, f));
+  });
+  return out;
+}
+
+const mfgRows = [];
+const mfgByCanon = new Map();
+MFG.forEach((c) => {
+  const row = buildManufacturer(c);
+  const alias = resolveCompanyAlias(c.name);
+  const key = alias.slug;
+  if (mfgByCanon.has(key)) {
+    const dest = mfgByCanon.get(key);
+    dest.factories = mergeFactories(dest.factories, row.factories);
+    dest.factory_count = dest.factories.length;
+    dest.facility_ids = Array.from(new Set((dest.facility_ids || []).concat(row.facility_ids || [])));
+    if ((row.voltage && row.voltage.num || 0) > (dest.voltage && dest.voltage.num || 0)) dest.voltage = row.voltage;
+    if ((row.mva && row.mva.num || 0) > (dest.mva && dest.mva.num || 0)) dest.mva = row.mva;
+    return;
+  }
+  row.name = alias.name;
+  row.slug = alias.slug;
+  row.id = 'cmp:' + alias.slug;
+  row.canonical_id = row.id;
+  mfgByCanon.set(key, row);
+  mfgRows.push(row);
+});
+
+const index = mfgRows
   .concat(ACC_SUPPLIERS.map(buildSupplier))
   .concat(MACH_DATA.map(buildMachinery))
   .concat(LAB_DATA.map(buildLaboratory))
@@ -561,6 +610,26 @@ const index = MFG.map(buildManufacturer)
   .concat(EDU_DATA.map(buildEducation))
   .concat(BYR_DATA.map(buildBuyer))
   .concat(MED_DATA.map(buildMedia));
+
+try {
+  const listingTier = require('./lib/listing-tier');
+  const overlay = listingTier.indexOverlay(listingTier.loadOverlay());
+  index.forEach((c) => {
+    const hit = listingTier.resolveListing({
+      name: c.name,
+      slug: c.slug,
+      commercial_status: c.commercial_status,
+      listing_tier: c.listing_tier,
+      featured: c.featured,
+      verified: c.verified
+    }, overlay);
+    c.featured = !!hit.featured;
+    c.verified = !!hit.verified;
+    c.listing_tier = hit.tier;
+    if (hit.tier === 'pro') c.commercial_status = c.commercial_status && /verified|pro|featured/i.test(c.commercial_status) ? c.commercial_status : 'SUPPLIER_PRO';
+    else if (hit.tier === 'verified') c.commercial_status = c.commercial_status && /verified|pro|featured/i.test(c.commercial_status) ? c.commercial_status : 'VERIFIED';
+  });
+} catch (e) { /* overlay optional */ }
 
 // Deterministic sort: manufacturers first, then suppliers, machinery, labs, services, etc.
 const KIND_ORDER = {
@@ -586,7 +655,7 @@ const summary = {
   generated: new Date().toISOString(),
   count: index.length,
   counts: {
-    manufacturers: MFG.length,
+    manufacturers: mfgRows.length,
     component_suppliers: ACC_SUPPLIERS.length,
     machinery_manufacturers: MACH_DATA.length,
     testing_laboratories: LAB_DATA.length,
@@ -602,5 +671,5 @@ const summary = {
 };
 
 fs.writeFileSync('data/directory-index.json', JSON.stringify(summary, null, 2));
-console.log('directory-index: ' + index.length + ' entities across 10 verticals (' + MFG.length + ' OEMs, ' + ACC_SUPPLIERS.length + ' suppliers, ' + MACH_DATA.length + ' machinery, ' + LAB_DATA.length + ' labs, ' + SRV_DATA.length + ' services, ' + LOG_DATA.length + ' logistics, ' + BYR_DATA.length + ' buyers, ' + ASC_DATA.length + ' associations, ' + EDU_DATA.length + ' education, ' + MED_DATA.length + ' media)');
+console.log('directory-index: ' + index.length + ' entities across 10 verticals (' + mfgRows.length + ' OEMs after alias merge, ' + ACC_SUPPLIERS.length + ' suppliers, ' + MACH_DATA.length + ' machinery, ' + LAB_DATA.length + ' labs, ' + SRV_DATA.length + ' services, ' + LOG_DATA.length + ' logistics, ' + BYR_DATA.length + ' buyers, ' + ASC_DATA.length + ' associations, ' + EDU_DATA.length + ' education, ' + MED_DATA.length + ' media)');
 
