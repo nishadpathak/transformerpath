@@ -477,6 +477,16 @@
         `;
       });
 
+      htmlOut += `
+        <div class="entity-group" style="margin-top:8px">
+          <div class="entity-group-title"><span>Next step</span></div>
+          <p style="color:var(--muted);font-size:.88rem;margin:0 0 12px">Search → Compare → Technical schedule → RFQ → matched suppliers.</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <a class="btn btn-outline btn-sm" href="compare.html">Compare shortlist →</a>
+            <a class="btn btn-amber btn-sm" href="rfq.html?q=${encodeURIComponent(q)}">Create Technical RFQ →</a>
+          </div>
+        </div>
+      `;
       host.innerHTML = htmlOut;
     });
   }

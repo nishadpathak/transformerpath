@@ -39,7 +39,10 @@
         STATS = pair[1] || {};
         DATA = j && j.companies || [];
         var params = new URLSearchParams(window.location.search);
-        if (params.get('q')) q = params.get('q');
+        if (params.get('q')) {
+          window.location.replace('search.html?q=' + encodeURIComponent(params.get('q')));
+          return;
+        }
         if (params.get('kind')) kind = params.get('kind');
         if (params.get('country')) country = params.get('country');
         if (params.get('minKv')) minKv = parseInt(params.get('minKv'), 10) || 0;
