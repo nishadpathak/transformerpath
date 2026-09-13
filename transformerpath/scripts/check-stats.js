@@ -38,29 +38,30 @@ try {
 const html = publicHtml();
 
 // 2) + 3) No raw hard-coded manufacturer count in any public template.
-const RAW_COUNT = /([\d,]{2,})\s*transformer makers/gi;
+// User-facing object is "companies"; "listings" is an internal/data-health concept.
+const RAW_COUNT = /([\d,]{2,})\s*transformer (makers|companies)/gi;
 const RAW_CENSUS = /census of\s+[\d,]+/gi;
 for (const { file, text } of html) {
   let m;
   while ((m = RAW_COUNT.exec(text))) {
-    errors.push(file + ': hard-coded manufacturer count "' + m[0].trim() + '" — bind via data-stat="manufacturerListings".');
+    errors.push(file + ': hard-coded manufacturer count "' + m[0].trim() + '" — bind via data-stat.');
   }
   if (RAW_CENSUS.test(text)) {
-    errors.push(file + ': hard-coded "census of <n>" — bind via data-stat="manufacturerListings".');
+    errors.push(file + ': hard-coded "census of <n>" — bind via data-stat.');
   }
 }
 
-// 4) Homepage must bind the count, and the fallback literal must match canonical.
+// 4) Homepage must bind the public company count; fallback must match canonical.
 const home = html.find((h) => h.file === 'index.html');
 if (home) {
-  const bind = /data-stat="manufacturerListings"[^>]*>\s*([\d,]+)\s*</.exec(home.text);
+  const bind = /data-stat="manufacturerCompanies"[^>]*>\s*([\d,]+)\s*</.exec(home.text);
   if (!bind) {
-    errors.push('index.html: manufacturer count is not bound via data-stat="manufacturerListings".');
+    errors.push('index.html: public count is not bound via data-stat="manufacturerCompanies".');
   } else {
     const fallback = parseInt(bind[1].replace(/,/g, ''), 10);
-    if (fallback !== canonical.manufacturerListings) {
+    if (fallback !== canonical.manufacturerCompanies) {
       errors.push(
-        'index.html: data-stat fallback ' + fallback + ' != canonical ' + canonical.manufacturerListings + '.'
+        'index.html: data-stat fallback ' + fallback + ' != canonical companies ' + canonical.manufacturerCompanies + '.'
       );
     }
   }

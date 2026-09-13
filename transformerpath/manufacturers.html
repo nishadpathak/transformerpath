@@ -246,7 +246,7 @@ function initCatTiles(){
 function stats(list){
   const makers=list.reduce((s,c)=>s+c.makers.filter(m=>!/^Served by/i.test(m[0])).length,0);
   document.getElementById('statRow').innerHTML=
-    `<div class="s"><b>${makers}</b><small>Manufacturers</small></div>
+    `<div class="s"><b>${makers}</b><small>Company listings</small></div>
      <div class="s"><b>${list.length}</b><small>Countries</small></div>
      <div class="s"><b>${new Set(list.map(c=>c.region)).size}</b><small>Regions</small></div>`;
 }
