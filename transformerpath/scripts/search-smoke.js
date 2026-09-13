@@ -19,20 +19,33 @@ const QUEUE = path.join(ROOT, 'data', 'research-demand.json');
 const HIGH_CONFIDENCE = 0.5;
 
 const QUERIES = [
-  '765 kV',
-  'transformerboard',
-  'OLTC',
-  'Saudi Arabia',
-  'testing laboratory',
-  '400 kV transformer Europe',
-  'transformer pressboard India'
+  '765 kV transformer manufacturer India',
+  '400 kV transformer manufacturer Europe',
+  'transformerboard manufacturer China',
+  'pressboard supplier India',
+  'RIP bushing 245 kV',
+  'vacuum OLTC manufacturer',
+  'radiator manufacturer UAE',
+  'vertical winding machine',
+  'VPD transformer equipment',
+  'CTC supplier Europe',
+  'short circuit transformer laboratory',
+  'transformer repair Saudi Arabia'
 ];
 
 function normalize(q) {
   return q.toLowerCase().replace(/\s+/g, ' ').trim();
 }
 
-function recordDemand(query, resultsReturned) {
+// §16: high-commercial-intent categories get a relevance boost for ranking gaps.
+const COMMERCIAL_TERMS = ['manufacturer', 'supplier', 'bushing', 'oltc', 'radiator', 'transformer', 'winding', 'ctc', 'pressboard', 'repair'];
+
+function commercialRelevance(query) {
+  const l = query.toLowerCase();
+  return COMMERCIAL_TERMS.reduce((n, t) => n + (l.includes(t) ? 1 : 0), 0);
+}
+
+function recordDemand(query, resultsReturned, parse) {
   let queue = { updatedAt: null, queries: {} };
   try {
     queue = JSON.parse(fs.readFileSync(QUEUE, 'utf8'));
@@ -48,12 +61,17 @@ function recordDemand(query, resultsReturned) {
     entity_type_intent: null,
     country_intent: null,
     technical_intent: null,
+    commercial_relevance: 0,
     results_returned: 0,
     research_status: 'open'
   };
   entry.search_count += 1;
   entry.last_searched = new Date().toISOString();
   entry.results_returned = resultsReturned;
+  entry.entity_type_intent = (parse && parse.intent) || entry.entity_type_intent;
+  entry.country_intent = (parse && parse.location && parse.location[0]) || entry.country_intent;
+  entry.technical_intent = (parse && parse.voltages && parse.voltages.join(',')) || entry.technical_intent;
+  entry.commercial_relevance = commercialRelevance(query);
   queue.queries[key] = entry;
   queue.updatedAt = new Date().toISOString();
   fs.writeFileSync(QUEUE, JSON.stringify(queue, null, 2) + '\n');
@@ -93,7 +111,7 @@ function main() {
         .join(', ');
       console.log('    ' + t + ': ' + top);
     });
-    if (zero || lowOnly) recordDemand(q, res.total);
+    if (zero || lowOnly) recordDemand(q, res.total, res.parse);
     summary.push({ query: q, total: res.total, byType: res.byType, highConfidence: high.length, zero });
   }
 

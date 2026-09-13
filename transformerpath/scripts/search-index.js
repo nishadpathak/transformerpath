@@ -26,9 +26,56 @@ const SYNONYMS = {
   transformerboard: ['pressboard', 'transformerboard', 'insulation board'],
   pressboard: ['pressboard', 'transformerboard'],
   oltc: ['oltc', 'on-load tap-changer', 'tap changer', 'tap-changer'],
+  detc: ['detc', 'de-energized tap changer', 'off-circuit tap'],
   ct: ['current transformer'],
-  crgo: ['crgo', 'core steel', 'grain oriented']
+  crgo: ['crgo', 'core steel', 'grain oriented'],
+  ctc: ['ctc', 'continuously transposed conductor', 'transposed conductor'],
+  rip: ['rip', 'resin impregnated', 'resin-impregnated'],
+  rbp: ['rbp', 'resin bonded paper'],
+  vpd: ['vpd', 'vacuum pressure drying', 'vapour phase'],
+  radiator: ['radiator', 'cooling', 'cooler'],
+  bushing: ['bushing', 'bushings'],
+  winding: ['winding', 'winding machine'],
+  repair: ['repair', 'service', 'reconditioning', 'rewinding'],
+  laboratory: ['laboratory', 'lab', 'testing', 'test lab']
 };
+
+// Intent keywords → the entity type a query is really asking for.
+const INTENT_TERMS = {
+  laboratory: 'utility_or_lab',
+  lab: 'utility_or_lab',
+  repair: 'service',
+  service: 'service',
+  machine: 'machinery',
+  machinery: 'machinery',
+  equipment: 'machinery',
+  line: 'machinery',
+  supplier: 'company_or_component',
+  manufacturer: 'company',
+  maker: 'company'
+};
+
+const KNOWN_LOCATIONS = [
+  'india', 'china', 'usa', 'united states', 'saudi', 'arabia', 'uae', 'emirates',
+  'oman', 'turkey', 'türkiye', 'germany', 'italy', 'france', 'uk', 'britain',
+  'brazil', 'mexico', 'indonesia', 'vietnam', 'malaysia', 'korea', 'japan',
+  'australia', 'africa', 'egypt', 'europe', 'asia', 'gulf', 'americas'
+];
+
+/** Parse a query into PRODUCT + CAPABILITY + LOCATION + INTENT (§15). */
+function parseQuery(q) {
+  const lower = String(q || '').toLowerCase();
+  const voltages = (lower.match(/\b(\d{2,4})\s*kv\b/g) || []).map((s) => s.replace(/\s*kv/, ''));
+  const location = KNOWN_LOCATIONS.filter((l) => lower.includes(l));
+  let intent = null;
+  for (const term of Object.keys(INTENT_TERMS)) {
+    if (new RegExp('\\b' + term + '\\b').test(lower)) {
+      intent = INTENT_TERMS[term];
+      break;
+    }
+  }
+  return { voltages, location, intent };
+}
 
 function loadJson(rel) {
   return JSON.parse(fs.readFileSync(path.join(ROOT, rel), 'utf8'));
@@ -117,19 +164,52 @@ function buildIndex() {
   return records;
 }
 
+// Words that express intent/category, not searchable content — they must not
+// match record metadata (e.g. the "manufacturers.json" source path).
+const STOPWORDS = new Set([
+  'kv', 'mva', 'transformer', 'transformers', 'manufacturer', 'manufacturers',
+  'maker', 'makers', 'supplier', 'suppliers', 'equipment', 'machine', 'machinery',
+  'and', 'for', 'the', 'in', 'of', 'a'
+]);
+
 function tokenize(q) {
   const base = String(q || '')
     .toLowerCase()
     .replace(/[^a-z0-9+.\s-]/g, ' ')
     .split(/\s+/)
-    .filter((t) => t && t !== 'kv' && t !== 'transformer' && t.length > 1);
+    .filter((t) => t && t.length > 1 && !STOPWORDS.has(t));
   const expanded = new Set(base);
   for (const t of base) (SYNONYMS[t] || []).forEach((s) => expanded.add(s));
   return [...expanded];
 }
 
+// Only meaningful content is searchable — never internal keys/paths/enums.
 function haystack(rec) {
-  return JSON.stringify(rec).toLowerCase();
+  const parts = [];
+  const push = (v) => {
+    if (!v) return;
+    if (Array.isArray(v)) v.forEach(push);
+    else parts.push(String(v));
+  };
+  if (rec.type === 'company') {
+    push(rec.displayName || rec.name);
+    push([rec.country, rec.region, rec.city]);
+    push(rec.highestSourcedVoltageEvidence);
+    push(rec.capabilities);
+    push(rec.certifications);
+    push(rec.componentCategories);
+    push(rec.plants);
+    push(rec.utilityApprovals);
+    // expand legacy type codes to words
+    push((rec.transformerTypes || '').replace(/PT/g, 'power').replace(/DT/g, 'distribution').replace(/DRY/g, 'dry-type cast-resin').replace(/CT/g, 'current'));
+  } else if (rec.type === 'component') {
+    push([rec.name, rec.category, rec.blurb]);
+  } else if (rec.type === 'utility') {
+    push([rec.name, rec.country, rec.blurb]);
+  } else {
+    push(rec.name);
+  }
+  return parts.join(' | ').toLowerCase();
 }
 
 /** Returns { total, groups: { company:[], component:[], utility:[] }, byType } */
@@ -154,10 +234,10 @@ function search(query, index) {
   }
   const byType = {};
   Object.keys(groups).forEach((t) => (byType[t] = groups[t].length));
-  return { query, tokens, total: scored.length, groups, byType };
+  return { query, tokens, parse: parseQuery(query), total: scored.length, groups, byType };
 }
 
-module.exports = { buildIndex, search, tokenize };
+module.exports = { buildIndex, search, tokenize, parseQuery };
 
 if (require.main === module) {
   const q = process.argv.slice(2).join(' ') || '765 kV';
