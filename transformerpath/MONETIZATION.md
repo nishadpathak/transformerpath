@@ -52,6 +52,35 @@ with `{ sku, successUrl, cancelUrl, customerEmail? }`.
 2. Set badge in manufacturer/vendor data (`Verified` or `Premium`)
 3. Reply confirming go-live date
 
+### Automatic fulfillment notifications (`functions/stripe-webhook.js`)
+
+Instead of watching the Stripe Dashboard, wire the webhook so every completed
+checkout pings your team instantly with the SKU, company, contact, amount, and
+Stripe session id (everything needed for steps 1–3 above).
+
+1. In [Stripe Dashboard → Developers → Webhooks](https://dashboard.stripe.com/webhooks),
+   add an endpoint: `https://transformerpath.com/.netlify/functions/stripe-webhook`,
+   subscribed to **`checkout.session.completed`**.
+2. Copy the endpoint's **Signing secret** and set it on Netlify:
+
+   ```
+   STRIPE_SECRET_KEY=sk_live_...        # already used by create-checkout
+   STRIPE_WEBHOOK_SECRET=whsec_...      # from the webhook endpoint
+   ```
+
+3. Add at least one delivery channel (both optional; the webhook is a no-op
+   without one):
+
+   ```
+   SLACK_WEBHOOK_URL=https://hooks.slack.com/services/...   # posts to Slack
+   SENDGRID_API_KEY=SG....                                  # emails ADMIN_EMAIL
+   ADMIN_EMAIL=admin@transformerpath.com
+   ```
+
+The webhook verifies Stripe's signature (rejects unsigned/forged calls with
+`400`), ignores unrelated event types, and returns `500` only if every
+configured notifier fails — so Stripe retries safely.
+
 ## Learning & academy
 
 | SKU | Product | Price |
