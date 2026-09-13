@@ -1,0 +1,57 @@
+{
+  "$comment": "Controlled vocabularies for the transformer supply chain (sprint §4–§8, §11). These are definitional taxonomies, NOT company claims. Used to normalize records, drive filters, and measure taxonomy mapping (§23).",
+  "version": 1,
+  "transformerTypes": [
+    "power", "distribution", "gsu", "autotransformer", "dry-type", "cast-resin",
+    "amorphous", "furnace", "rectifier", "traction", "phase-shifting",
+    "hvdc-converter", "renewable", "pad-mounted", "pole-mounted", "mobile", "special"
+  ],
+  "legacyTypeMap": {
+    "PT": "power",
+    "DT": "distribution",
+    "DRY": "dry-type",
+    "CT": "special"
+  },
+  "componentCategories": [
+    "bushings", "oltc", "detc", "pressure-relief-devices", "buchholz-relays",
+    "oil-level-indicators", "temperature-indicators", "cooling-fans", "oil-pumps",
+    "radiators", "coolers", "conservators", "breathers", "marshalling-boxes",
+    "valves", "gaskets", "transformer-monitoring", "online-dga",
+    "fibre-optic-temperature", "cts", "bushing-cts", "terminals-connectors"
+  ],
+  "materials": [
+    "transformerboard-pressboard", "presspaper", "dpp", "ddp", "dpe", "crepe-paper",
+    "crepe-tubes", "laminated-densified-wood", "angle-rings", "end-rings", "spacers",
+    "strips", "duct-sticks", "step-blocks", "moulded-insulation", "insulation-cylinders",
+    "kraft-paper", "aramid-paper", "enamelled-wire", "paper-covered-conductor", "ctc",
+    "copper-strip", "aluminium-strip", "crgo", "amorphous-metal", "transformer-oil",
+    "natural-ester", "synthetic-ester", "resins", "varnishes", "sealing-materials"
+  ],
+  "machinery": [
+    "core-cutting-lines", "step-lap-lines", "core-stacking-tables",
+    "horizontal-winding", "vertical-winding", "foil-winding", "lv-winding",
+    "hv-winding", "ctc-machines", "paper-covering", "conductor-enamelling",
+    "pressboard-cutting", "beam-saws", "panel-saws", "cnc-insulation-processing",
+    "edge-rounding", "milling", "moulded-component-equipment", "drying-ovens",
+    "vacuum-drying", "vpd", "oil-filtration", "oil-filling", "tank-fabrication",
+    "corrugated-fin-lines", "radiator-lines", "shot-blasting", "painting", "test-equipment"
+  ],
+  "labCapabilities": [
+    "lightning-impulse", "switching-impulse", "applied-voltage", "induced-voltage",
+    "partial-discharge", "temperature-rise", "sound-level", "loss-measurement",
+    "sfra", "short-circuit", "mechanical", "oil-testing", "dga", "material-testing",
+    "bushing-testing", "insulation-testing"
+  ],
+  "services": [
+    "installation", "commissioning", "oil-filtration", "oil-testing", "dga",
+    "preventive-maintenance", "condition-assessment", "on-site-repair",
+    "workshop-repair", "rewinding", "reconditioning", "oltc-service",
+    "bushing-replacement", "leak-repair", "drying", "vacuum-filling",
+    "relocation", "emergency-response", "testing", "life-assessment"
+  ],
+  "sourceTiers": {
+    "A": "Official manufacturer / catalogue / brochure / annual report / government / utility / accreditation / certification / official tender-award / regulator",
+    "B": "Credible technical/trade publication, major business publication, established industry publication",
+    "C": "Directories, aggregators, market-research snippets, SEO sites (discovery only — must not establish critical technical capability)"
+  }
+}

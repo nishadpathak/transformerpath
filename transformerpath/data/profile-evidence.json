@@ -1,0 +1,17 @@
+{
+  "$comment": "Field-level evidence overlay (sprint §14). Keyed by canonical company id (slug). This is intentionally EMPTY: no capability, facility, voltage, or MVA claim has been independently sourced yet, so nothing is asserted. Researchers add entries here as primary sources are captured; the completeness score (scripts/lib/profile-schema.js) only credits fields that carry a source + source_tier. Never add AI-generated text as a source.",
+  "$example": {
+    "hyosung-heavy-industries": {
+      "highest_sourced_voltage": { "value": "765 kV", "source": "https://official-domain/…", "source_tier": "A", "confidence": "HIGH", "last_checked": "2026-09-13" },
+      "highest_sourced_unit_rating": { "value": "500 MVA", "source": "https://official-domain/…", "source_tier": "A", "confidence": "HIGH", "last_checked": "2026-09-13" },
+      "facilities": [
+        { "facility_id": "hyosung-changwon", "parent_company_id": "hyosung-heavy-industries", "name": "Changwon Works", "country": "South Korea", "city": "Changwon", "facility_type": "power-transformer", "source": "https://official-domain/…", "source_tier": "A", "confidence": "HIGH", "last_checked": "2026-09-13" }
+      ],
+      "claim_status": "LISTED",
+      "verified_status": false,
+      "rfq_eligible": false,
+      "supplier_pro": false
+    }
+  },
+  "records": {}
+}
