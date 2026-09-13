@@ -13,6 +13,7 @@ const GATES = [
   { name: 'canonical stat consistency', script: 'check-stats.js', p0: true },
   { name: 'verification terminology', script: 'check-verification-terms.js', p0: true },
   { name: 'MVA semantic integrity', script: 'check-mva.js', p0: true },
+  { name: 'directory quality & evidence', script: 'check-directory-quality.js', p0: true },
   { name: 'part-coverage smoke', script: 'smoke-part-coverage.js', p0: true },
   { name: 'search smoke', script: 'search-smoke.js', p0: false }
 ];
