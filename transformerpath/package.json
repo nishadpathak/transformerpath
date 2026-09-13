@@ -6,8 +6,12 @@
   "scripts": {
     "dev": "node scripts/dev-server.js",
     "start": "node scripts/dev-server.js",
+    "build:stats": "node scripts/build-stats.js",
     "smoke": "node scripts/smoke-part-coverage.js",
-    "test": "node scripts/smoke-part-coverage.js"
+    "search": "node scripts/search-index.js",
+    "search:smoke": "node scripts/search-smoke.js",
+    "gates": "node scripts/gates.js",
+    "test": "node scripts/gates.js"
   },
   "dependencies": {
     "stripe": "^14.25.0"
