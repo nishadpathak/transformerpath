@@ -18,7 +18,7 @@ const CATALOG = {
   },
   directory_premium: {
     name: 'Directory — Premium',
-    description: 'Pro Verified badge, top placement, logo, monthly briefing mention — 12 months.',
+    description: 'Supplier Pro badge, top placement, logo, monthly briefing mention — 12 months.',
     amountCents: 149900,
     currency: 'usd',
     mode: 'payment'

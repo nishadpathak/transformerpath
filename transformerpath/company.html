@@ -146,7 +146,7 @@
 
 <script>
 const TNAME={PT:"Power Transformers",DT:"Distribution Transformers",DRY:"Dry-type / Cast Resin",CT:"Current Transformers"};
-const TIER={P:{c:"P",t:"★ Pro Verified"},V:{c:"V",t:"✓ Verified"}};
+const TIER={P:{c:"P",t:"★ Supplier Pro"},V:{c:"V",t:"✓ Verified"},C:{c:"C",t:"Claimed"}};
 function tierTag(m){ const f=m[4]; if(f==='P'||f==='V'){const x=TIER[f];return `<span class="tier tier-${x.c}">${x.t}</span>`;} return '<span class="tier tier-L">Listed</span>'; }
 function tpills(types){ return window.TPDirectory ? TPDirectory.typePills(types) : (types||'').split(',').map(t=>t.trim()).filter(Boolean).map(t=>`<span class="tpill t-${t}">${t}</span>`).join(''); }
 function param(n){ return new URLSearchParams(location.search).get(n); }
@@ -236,7 +236,7 @@ function render(m, c, DATA, intelNews, profile){
 
     <div class="trust-panel">
       <h2>Verification</h2>
-      <p>This is a <b>${m[4]==='P'?'Pro Verified':m[4]==='V'?'Verified':'Listed (directory)'}</b> entry. Listed entries are compiled from public sources; Verified and Pro Verified entries are confirmed by the company. <a href="verified-standards.html" style="color:var(--amber)">What the tiers mean →</a></p>
+      <p>This is a <b>${m[4]==='P'?'Supplier Pro':m[4]==='V'?'Verified':m[4]==='C'?'Claimed':'Listed (directory)'}</b> entry. Listed entries are compiled from public sources; Claimed entries are controlled by the company; Verified entries have company-confirmed identity and profile; Supplier Pro is a paid commercial plan, not a higher verification level. <a href="verified-standards.html" style="color:var(--amber)">What the tiers mean →</a></p>
       <div class="btn-row">
         <a href="list-company.html" class="btn btn-amber">${m[4]?'Update this listing':'Claim this company'} →</a>
         <a href="verified-standards.html" class="btn" style="background:rgba(255,255,255,.12);color:#fff">Verification standards</a>
