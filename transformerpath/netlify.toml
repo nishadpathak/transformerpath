@@ -1,0 +1,11 @@
+[build]
+  publish = "."
+  functions = "functions"
+
+[dev]
+  framework = "#static"
+  publish = "."
+  port = 8888
+
+[functions]
+  node_bundler = "esbuild"
