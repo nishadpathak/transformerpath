@@ -23,17 +23,31 @@
   status = 404
   force = true
 
-# The live "Intel Archive" page is archive.html. Map the pretty-URL "/archive"
-# to it so a nav that uses /archive (no .html) still resolves.
+# Pretty-URL mappings for top-level pages
 [[redirects]]
   from = "/archive"
   to = "/archive.html"
   status = 301
   force = true
 
-# The live "Grids" directory page is grids.html. Map the pretty-URL "/grids"
-# to it so an extensionless /grids link (or a stale bookmark) resolves instead
-# of falling through to the 404 page.
+[[redirects]]
+  from = "/events"
+  to = "/events.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/webinars"
+  to = "/webinars.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/intel"
+  to = "/intel.html"
+  status = 301
+  force = true
+
 [[redirects]]
   from = "/grids"
   to = "/grids.html"
