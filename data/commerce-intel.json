@@ -1,10 +1,10 @@
 {
   "$schema": "https://transformerpath.com/commerce-intel.schema.json",
-  "generated": "2026-09-13T12:24:28.997Z",
+  "generated": "2026-09-14T09:42:34.088Z",
   "honesty_note": "Revenue and conversion figures are NOT shown because live Stripe/Supabase transaction data is not available in this static build. No revenue, no conversion rate and no pipeline value are fabricated. The figures below are real platform-scale and prospect signals derived from the canonical datasets.",
   "metrics": {
     "platform_scale": {
-      "manufacturers": 936,
+      "manufacturers": 1002,
       "projects": 306,
       "tenders": 150,
       "open_tenders": 21,
@@ -12,7 +12,7 @@
       "events": 295
     },
     "prospect_signals": {
-      "supplier_prospects_with_website": 925,
+      "supplier_prospects_with_website": 991,
       "upcoming_events": 181
     }
   },
@@ -724,6 +724,18 @@
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
+      "name": "Electric & Magnetic Company",
+      "country": "Belgium",
+      "region": "Europe",
+      "city": "Leuven",
+      "categories": [
+        "PT",
+        "DT"
+      ],
+      "website": "https://www.emc-transformers.com/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
       "name": "EREA Energy Engineering",
       "country": "Belgium",
       "region": "Europe",
@@ -1345,6 +1357,29 @@
         "DRY"
       ],
       "website": "https://www.northerntransformer.com/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Partner Technologies",
+      "country": "Canada",
+      "region": "North America",
+      "city": "Regina, SK",
+      "categories": [
+        "DT"
+      ],
+      "website": "https://www.partnertechnologies.net/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Pioneer Transformers",
+      "country": "Canada",
+      "region": "North America",
+      "city": "Granby, QC",
+      "categories": [
+        "PT",
+        "DT"
+      ],
+      "website": "https://www.pioneertransformers.com/",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
@@ -2017,6 +2052,17 @@
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
+      "name": "Shandong Dachi Electric",
+      "country": "China",
+      "region": "East Asia",
+      "city": "Heze",
+      "categories": [
+        "PT"
+      ],
+      "website": "https://www.chinadachi.com/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
       "name": "Shandong Dahua (SD New Energy)",
       "country": "China",
       "region": "East Asia",
@@ -2336,54 +2382,6 @@
         "DRY"
       ],
       "website": "http://www.zmelec.com/en/",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Zhejiang Huada Transformer",
-      "country": "China",
-      "region": "East Asia",
-      "city": "Yueqing, Wenzhou, Zhejiang",
-      "categories": [
-        "DT",
-        "DRY"
-      ],
-      "website": "https://www.huadatransformer.com/",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Zhejiang Jiangshan Transformer",
-      "country": "China",
-      "region": "East Asia",
-      "city": "Jiangshan, Zhejiang",
-      "categories": [
-        "PT",
-        "DT"
-      ],
-      "website": "https://www.jsbtransformer.com/",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Zhejiang Xianghu Technology",
-      "country": "China",
-      "region": "East Asia",
-      "city": "Wenzhou, Zhejiang",
-      "categories": [
-        "PT",
-        "DT"
-      ],
-      "website": "https://www.xianghutech.com/",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Zhejiang Yongbang Electric",
-      "country": "China",
-      "region": "East Asia",
-      "city": "Zhejiang",
-      "categories": [
-        "DT",
-        "DRY"
-      ],
-      "website": "https://www.zjyb-electric.com/",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     }
   ],

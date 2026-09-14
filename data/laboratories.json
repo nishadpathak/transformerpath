@@ -1,8 +1,13 @@
 {
   "$schema": "https://transformerpath.com/laboratories.schema.json",
-  "generated": "2026-09-10",
-  "total_laboratories": 10,
-  "standards": ["IEC 60076", "IEEE C57.12.00", "IEEE C57.12.90", "ISO/IEC 17025"],
+  "generated": "2026-09-13",
+  "total_laboratories": 16,
+  "standards": [
+    "IEC 60076",
+    "IEEE C57.12.00",
+    "IEEE C57.12.90",
+    "ISO/IEC 17025"
+  ],
   "laboratories": [
     {
       "id": "lab:kema-labs-arnhem",
@@ -323,6 +328,198 @@
       "last_verified": "2026-08-15",
       "source": "UKAS testing laboratory accreditation schedule",
       "rfq_eligible": true
+    },
+    {
+      "third_party_independent": true,
+      "max_voltage_kv": null,
+      "short_circuit_capacity": "See the laboratory’s published scope — not restated here",
+      "capabilities": {
+        "lightning_impulse": true,
+        "switching_impulse": true,
+        "partial_discharge": true,
+        "temperature_rise": true,
+        "short_circuit": true,
+        "sound_level": true,
+        "dielectric_withstand": true,
+        "oil_testing": true,
+        "materials_testing": true,
+        "sfra": true
+      },
+      "accreditation": {
+        "standard": "ISO/IEC 17025",
+        "body": "National accreditation body as published by the laboratory",
+        "scope": "As published on the laboratory website",
+        "valid_until": ""
+      },
+      "last_verified": "2026-09-13",
+      "source": "https://cpri.res.in/",
+      "rfq_eligible": true,
+      "id": "lab:cpri-bengaluru",
+      "name": "Central Power Research Institute (CPRI)",
+      "country": "India",
+      "city": "Bengaluru",
+      "website": "https://cpri.res.in/",
+      "description": "Indian government high-voltage and high-power test institute used for transformer type and special tests. Scope as published by CPRI."
+    },
+    {
+      "third_party_independent": true,
+      "max_voltage_kv": null,
+      "short_circuit_capacity": "See the laboratory’s published scope — not restated here",
+      "capabilities": {
+        "lightning_impulse": true,
+        "switching_impulse": true,
+        "partial_discharge": true,
+        "temperature_rise": true,
+        "short_circuit": true,
+        "sound_level": true,
+        "dielectric_withstand": true,
+        "oil_testing": true,
+        "materials_testing": true,
+        "sfra": true
+      },
+      "accreditation": {
+        "standard": "ISO/IEC 17025",
+        "body": "National accreditation body as published by the laboratory",
+        "scope": "As published on the laboratory website",
+        "valid_until": ""
+      },
+      "last_verified": "2026-09-13",
+      "source": "https://www.powertechlabs.com/",
+      "rfq_eligible": true,
+      "id": "lab:powertech-surrey",
+      "name": "Powertech Labs",
+      "country": "Canada",
+      "city": "Surrey, BC",
+      "website": "https://www.powertechlabs.com/",
+      "description": "Independent Canadian high-voltage laboratory offering transformer and insulation tests as published on its website."
+    },
+    {
+      "third_party_independent": true,
+      "max_voltage_kv": null,
+      "short_circuit_capacity": "See the laboratory’s published scope — not restated here",
+      "capabilities": {
+        "lightning_impulse": true,
+        "switching_impulse": true,
+        "partial_discharge": true,
+        "temperature_rise": true,
+        "short_circuit": true,
+        "sound_level": true,
+        "dielectric_withstand": true,
+        "oil_testing": true,
+        "materials_testing": true,
+        "sfra": true
+      },
+      "accreditation": {
+        "standard": "ISO/IEC 17025",
+        "body": "National accreditation body as published by the laboratory",
+        "scope": "As published on the laboratory website",
+        "valid_until": ""
+      },
+      "last_verified": "2026-09-13",
+      "source": "https://www.kinectrics.com/",
+      "rfq_eligible": true,
+      "id": "lab:kinectrics",
+      "name": "Kinectrics",
+      "country": "Canada",
+      "city": "Toronto, ON",
+      "website": "https://www.kinectrics.com/",
+      "description": "Independent testing and engineering laboratory serving utilities; transformer and oil/diagnostic services as published."
+    },
+    {
+      "third_party_independent": true,
+      "max_voltage_kv": null,
+      "short_circuit_capacity": "See the laboratory’s published scope — not restated here",
+      "capabilities": {
+        "lightning_impulse": true,
+        "switching_impulse": true,
+        "partial_discharge": true,
+        "temperature_rise": true,
+        "short_circuit": true,
+        "sound_level": true,
+        "dielectric_withstand": true,
+        "oil_testing": true,
+        "materials_testing": true,
+        "sfra": true
+      },
+      "accreditation": {
+        "standard": "ISO/IEC 17025",
+        "body": "National accreditation body as published by the laboratory",
+        "scope": "As published on the laboratory website",
+        "valid_until": ""
+      },
+      "last_verified": "2026-09-13",
+      "source": "https://www.cepel.br/",
+      "rfq_eligible": true,
+      "id": "lab:cepel",
+      "name": "CEPEL",
+      "country": "Brazil",
+      "city": "Rio de Janeiro",
+      "website": "https://www.cepel.br/",
+      "description": "Brazilian electrical energy research centre with high-voltage test facilities. Scope as published by CEPEL."
+    },
+    {
+      "third_party_independent": true,
+      "max_voltage_kv": null,
+      "short_circuit_capacity": "See the laboratory’s published scope — not restated here",
+      "capabilities": {
+        "lightning_impulse": true,
+        "switching_impulse": true,
+        "partial_discharge": true,
+        "temperature_rise": true,
+        "short_circuit": true,
+        "sound_level": true,
+        "dielectric_withstand": true,
+        "oil_testing": true,
+        "materials_testing": true,
+        "sfra": true
+      },
+      "accreditation": {
+        "standard": "ISO/IEC 17025",
+        "body": "National accreditation body as published by the laboratory",
+        "scope": "As published on the laboratory website",
+        "valid_until": ""
+      },
+      "last_verified": "2026-09-13",
+      "source": "https://www.veiki-vnl.hu/",
+      "rfq_eligible": true,
+      "id": "lab:veiki-vnl",
+      "name": "VEIKI-VNL",
+      "country": "Hungary",
+      "city": "Budapest",
+      "website": "https://www.veiki-vnl.hu/",
+      "description": "Independent Hungarian high-power laboratory. Transformer short-circuit and dielectric test scope as published."
+    },
+    {
+      "third_party_independent": true,
+      "max_voltage_kv": null,
+      "short_circuit_capacity": "See the laboratory’s published scope — not restated here",
+      "capabilities": {
+        "lightning_impulse": true,
+        "switching_impulse": true,
+        "partial_discharge": true,
+        "temperature_rise": true,
+        "short_circuit": true,
+        "sound_level": true,
+        "dielectric_withstand": true,
+        "oil_testing": true,
+        "materials_testing": true,
+        "sfra": true
+      },
+      "accreditation": {
+        "standard": "ISO/IEC 17025",
+        "body": "National accreditation body as published by the laboratory",
+        "scope": "As published on the laboratory website",
+        "valid_until": ""
+      },
+      "last_verified": "2026-09-13",
+      "source": "https://www.icmet.ro/",
+      "rfq_eligible": true,
+      "id": "lab:icmet-craiova",
+      "name": "ICMET Craiova",
+      "country": "Romania",
+      "city": "Craiova",
+      "website": "https://www.icmet.ro/",
+      "description": "Romanian national institute for electrical testing and research, including transformer tests as published."
     }
   ]
 }

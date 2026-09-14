@@ -47,7 +47,7 @@ const DIST = 'dist';
 const DIRS = [
   'accessories', 'applications', 'admin', 'books', 'brand', 'case-studies',
   'components', 'data', 'events', 'grids', 'knowledge', 'manufacturers',
-  'markets', 'materials', 'projects', 'tenders', 'topics', 'utilities',
+  'markets', 'materials', 'media', 'projects', 'tenders', 'topics', 'utilities',
   'viz', 'vendor',
 ];
 
@@ -63,6 +63,9 @@ const ROOT_JS = [
   'site-stats.js', 'supabase-config.js', 'supabase.js', 'sw.js',
   'tp-directory.js', 'tp-feedback.js', 'tp-freshness.js', 'tp-nav.js', 'tp-pwa.js',
   'tp-theme.js', 'map.js',
+  'tp-3d-core.js', 'tp-power-assembly.js', 'tp-oil-assembly.js',
+  'tp-castresin-assembly.js', 'tp-ct-assembly.js',
+  'part-ecosystem.js', 'component-3d-bridge.js',
 ];
 
 // Everything else at the root that must ship.

@@ -1,15 +1,36 @@
 {
   "$schema": "https://transformerpath.com/machinery.schema.json",
-  "generated": "2026-09-10",
-  "total_machinery_records": 12,
+  "generated": "2026-09-13",
+  "total_machinery_records": 20,
   "categories": [
-    { "id": "MAC_CORE", "label": "Core Cutting & Processing Lines" },
-    { "id": "MAC_WINDING", "label": "Winding Machinery (HV, LV, Foil)" },
-    { "id": "MAC_DRYING", "label": "Vapour-Phase & Vacuum Drying Systems" },
-    { "id": "MAC_OIL_FILTRATION", "label": "Oil Purification & Filtration Plants" },
-    { "id": "MAC_FABRICATION", "label": "Tank, Fin & Radiator Manufacturing Lines" },
-    { "id": "MAC_INSULATION_CNC", "label": "CNC Pressboard & Insulation Processing" },
-    { "id": "MAC_TESTING", "label": "High-Voltage Test Bay Systems & Impulse Generators" }
+    {
+      "id": "MAC_CORE",
+      "label": "Core Cutting & Processing Lines"
+    },
+    {
+      "id": "MAC_WINDING",
+      "label": "Winding Machinery (HV, LV, Foil)"
+    },
+    {
+      "id": "MAC_DRYING",
+      "label": "Vapour-Phase & Vacuum Drying Systems"
+    },
+    {
+      "id": "MAC_OIL_FILTRATION",
+      "label": "Oil Purification & Filtration Plants"
+    },
+    {
+      "id": "MAC_FABRICATION",
+      "label": "Tank, Fin & Radiator Manufacturing Lines"
+    },
+    {
+      "id": "MAC_INSULATION_CNC",
+      "label": "CNC Pressboard & Insulation Processing"
+    },
+    {
+      "id": "MAC_TESTING",
+      "label": "High-Voltage Test Bay Systems & Impulse Generators"
+    }
   ],
   "machinery": [
     {
@@ -37,7 +58,13 @@
         "Automatic sheet thickness measurement and loop control"
       ],
       "installations_count": "500+ global transformer plants",
-      "service_regions": ["Europe", "North America", "Asia-Pacific", "Middle East", "Latin America"],
+      "service_regions": [
+        "Europe",
+        "North America",
+        "Asia-Pacific",
+        "Middle East",
+        "Latin America"
+      ],
       "last_verified": "2026-08-28",
       "source": "Manufacturer technical catalog & CIGRE exhibition record",
       "rfq_eligible": true
@@ -66,7 +93,9 @@
         "Direct CAD link for core geometry import"
       ],
       "installations_count": "350+ machines operating worldwide",
-      "service_regions": ["Global"],
+      "service_regions": [
+        "Global"
+      ],
       "last_verified": "2026-08-15",
       "source": "Official vendor technical specification",
       "rfq_eligible": true
@@ -96,7 +125,13 @@
         "High-precision busbar lead welding station"
       ],
       "installations_count": "400+ installed units",
-      "service_regions": ["Europe", "North America", "Middle East", "India", "East Asia"],
+      "service_regions": [
+        "Europe",
+        "North America",
+        "Middle East",
+        "India",
+        "East Asia"
+      ],
       "last_verified": "2026-08-19",
       "source": "Manufacturer documentation",
       "rfq_eligible": true
@@ -125,7 +160,9 @@
         "Low-tension recoil system to prevent edge distortion"
       ],
       "installations_count": "150+ operational lines worldwide",
-      "service_regions": ["Global"],
+      "service_regions": [
+        "Global"
+      ],
       "last_verified": "2026-07-22",
       "source": "Manufacturer documentation",
       "rfq_eligible": true
@@ -155,7 +192,9 @@
         "Real-time residual moisture and desorption monitoring"
       ],
       "installations_count": "300+ systems in tier-1 transformer factories globally",
-      "service_regions": ["Global"],
+      "service_regions": [
+        "Global"
+      ],
       "last_verified": "2026-08-30",
       "source": "Hedrich technical whitepaper & plant specifications",
       "rfq_eligible": true
@@ -185,7 +224,9 @@
         "Weatherproof containerized or trailer configuration for substation deployment"
       ],
       "installations_count": "1,200+ plants supplied in 80+ countries",
-      "service_regions": ["Global"],
+      "service_regions": [
+        "Global"
+      ],
       "last_verified": "2026-08-14",
       "source": "Manufacturer catalog and operational certificates",
       "rfq_eligible": true
@@ -214,7 +255,9 @@
         "Direct optical link to digital impulse analysis station with fault detection algorithms"
       ],
       "installations_count": "800+ test bays worldwide",
-      "service_regions": ["Global"],
+      "service_regions": [
+        "Global"
+      ],
       "last_verified": "2026-08-25",
       "source": "Haefely technical manual and laboratory references",
       "rfq_eligible": true
@@ -243,7 +286,9 @@
         "Automated report generation compliant with international utility standards"
       ],
       "installations_count": "450+ transformer manufacturer test bays",
-      "service_regions": ["Global"],
+      "service_regions": [
+        "Global"
+      ],
       "last_verified": "2026-08-20",
       "source": "Haefely TMS system specification",
       "rfq_eligible": true
@@ -272,7 +317,12 @@
         "Servo-driven folding motion for high cycle speed and energy efficiency"
       ],
       "installations_count": "200+ production lines worldwide",
-      "service_regions": ["Europe", "Middle East", "Americas", "Asia"],
+      "service_regions": [
+        "Europe",
+        "Middle East",
+        "Americas",
+        "Asia"
+      ],
       "last_verified": "2026-08-01",
       "source": "LAE corporate machinery catalog",
       "rfq_eligible": true
@@ -301,7 +351,9 @@
         "Eliminates coil sag during heavy power winding fabrication"
       ],
       "installations_count": "120+ power transformer plants",
-      "service_regions": ["Global"],
+      "service_regions": [
+        "Global"
+      ],
       "last_verified": "2026-07-28",
       "source": "LAE technical equipment index",
       "rfq_eligible": true
@@ -330,7 +382,9 @@
         "Maintains dielectric cleanliness standards required for EHV insulation kits"
       ],
       "installations_count": "Proprietary & licensed equipment in global insulation facilities",
-      "service_regions": ["Global"],
+      "service_regions": [
+        "Global"
+      ],
       "last_verified": "2026-08-11",
       "source": "Weidmann process engineering specifications",
       "rfq_eligible": true
@@ -359,7 +413,12 @@
         "Fully automated tuning to resonance and dwell timing"
       ],
       "installations_count": "300+ systems in North America, Europe and Asia",
-      "service_regions": ["Americas", "Europe", "Asia-Pacific", "Middle East"],
+      "service_regions": [
+        "Americas",
+        "Europe",
+        "Asia-Pacific",
+        "Middle East"
+      ],
       "last_verified": "2026-08-04",
       "source": "Phenix Technologies product catalog",
       "rfq_eligible": true
@@ -388,7 +447,11 @@
         "Online dimensional laser monitoring of finished cable bundle"
       ],
       "installations_count": "80+ global wire and transformer plants",
-      "service_regions": ["Europe", "Americas", "Asia"],
+      "service_regions": [
+        "Europe",
+        "Americas",
+        "Asia"
+      ],
       "last_verified": "2026-08-18",
       "source": "Manufacturer technical catalog",
       "rfq_eligible": true
@@ -416,10 +479,165 @@
         "Pre-treatment preparation for hot-dip galvanizing and C5-M marine epoxy coating"
       ],
       "installations_count": "100+ global radiator production facilities",
-      "service_regions": ["Europe", "North America", "Middle East", "Asia"],
+      "service_regions": [
+        "Europe",
+        "North America",
+        "Middle East",
+        "Asia"
+      ],
       "last_verified": "2026-08-12",
       "source": "Menk technical documentation",
       "rfq_eligible": true
+    },
+    {
+      "capacity_range": "As published by the manufacturer — not independently rated here",
+      "automation_level": "As published",
+      "specs": {},
+      "key_features": [
+        "Official product line listed on the manufacturer website"
+      ],
+      "installations_count": "Not independently counted",
+      "service_regions": [
+        "Global"
+      ],
+      "last_verified": "2026-09-13",
+      "rfq_eligible": true,
+      "id": "mach:highvolt-impulse",
+      "name": "HIGHVOLT impulse and AC test systems",
+      "category_id": "MAC_TESTING",
+      "category": "High-Voltage Test Bay Systems & Impulse Generators",
+      "manufacturer": "HIGHVOLT Prüftechnik Dresden",
+      "country": "Germany",
+      "city": "Dresden",
+      "website": "https://www.highvolt.com",
+      "machine_type": "Factory HV test systems",
+      "transformer_application": "Power and distribution transformer factory test bays",
+      "source": "https://www.highvolt.com"
+    },
+    {
+      "capacity_range": "As published by the manufacturer — not independently rated here",
+      "automation_level": "As published",
+      "specs": {},
+      "key_features": [
+        "Official product line listed on the manufacturer website"
+      ],
+      "installations_count": "Not independently counted",
+      "service_regions": [
+        "Global"
+      ],
+      "last_verified": "2026-09-13",
+      "rfq_eligible": true,
+      "id": "mach:hipotronics-hv",
+      "name": "Hipotronics high-voltage test systems",
+      "category_id": "MAC_TESTING",
+      "category": "High-Voltage Test Bay Systems & Impulse Generators",
+      "manufacturer": "Hipotronics (Hubbell)",
+      "country": "USA",
+      "city": "Brewster, NY",
+      "website": "https://www.hubbell.com/hipotronics/en",
+      "machine_type": "HV AC / DC / impulse test equipment",
+      "transformer_application": "Factory and field dielectric testing",
+      "source": "https://www.hubbell.com/hipotronics/en"
+    },
+    {
+      "capacity_range": "As published by the manufacturer — not independently rated here",
+      "automation_level": "As published",
+      "specs": {},
+      "key_features": [
+        "Official product line listed on the manufacturer website"
+      ],
+      "installations_count": "Not independently counted",
+      "service_regions": [
+        "Global"
+      ],
+      "last_verified": "2026-09-13",
+      "rfq_eligible": true,
+      "id": "mach:aumann-winding",
+      "name": "Aumann winding systems",
+      "category_id": "MAC_WINDING",
+      "category": "Winding Machinery (HV, LV, Foil)",
+      "manufacturer": "Aumann AG",
+      "country": "Germany",
+      "city": "Espelkamp",
+      "website": "https://www.aumann.com",
+      "machine_type": "Industrial winding machinery",
+      "transformer_application": "Coil and winding production",
+      "source": "https://www.aumann.com"
+    },
+    {
+      "capacity_range": "As published by the manufacturer — not independently rated here",
+      "automation_level": "As published",
+      "specs": {},
+      "key_features": [
+        "Official product line listed on the manufacturer website"
+      ],
+      "installations_count": "Not independently counted",
+      "service_regions": [
+        "Global"
+      ],
+      "last_verified": "2026-09-13",
+      "rfq_eligible": true,
+      "id": "mach:pink-vpd",
+      "name": "PINK vacuum drying plants",
+      "category_id": "MAC_DRYING",
+      "category": "Vapour-Phase & Vacuum Drying Systems",
+      "manufacturer": "PINK GmbH Vakuumtechnik",
+      "country": "Germany",
+      "city": "Wertheim",
+      "website": "https://www.pink.de",
+      "machine_type": "Vacuum drying and impregnation plants",
+      "transformer_application": "Active-part drying before tanking",
+      "source": "https://www.pink.de"
+    },
+    {
+      "capacity_range": "As published by the manufacturer — not independently rated here",
+      "automation_level": "As published",
+      "specs": {},
+      "key_features": [
+        "Official product line listed on the manufacturer website"
+      ],
+      "installations_count": "Not independently counted",
+      "service_regions": [
+        "Global"
+      ],
+      "last_verified": "2026-09-13",
+      "rfq_eligible": true,
+      "id": "mach:broomfield-winding",
+      "name": "Broomfield transformer winding machines",
+      "category_id": "MAC_WINDING",
+      "category": "Winding Machinery (HV, LV, Foil)",
+      "manufacturer": "Broomfield Laboratories",
+      "country": "USA",
+      "city": "Bolton, MA",
+      "website": "https://www.broomfieldusa.com",
+      "machine_type": "Coil winding machines",
+      "transformer_application": "Distribution and power winding shops",
+      "source": "https://www.broomfieldusa.com"
+    },
+    {
+      "capacity_range": "As published by the manufacturer — not independently rated here",
+      "automation_level": "As published",
+      "specs": {},
+      "key_features": [
+        "Official product line listed on the manufacturer website"
+      ],
+      "installations_count": "Not independently counted",
+      "service_regions": [
+        "Global"
+      ],
+      "last_verified": "2026-09-13",
+      "rfq_eligible": true,
+      "id": "mach:soutec-welding",
+      "name": "Soutec core and tank welding systems",
+      "category_id": "MAC_FABRICATION",
+      "category": "Tank, Fin & Radiator Manufacturing Lines",
+      "manufacturer": "Soutec AG",
+      "country": "Switzerland",
+      "city": "Neftenbach",
+      "website": "https://www.soutec.ch",
+      "machine_type": "Automated welding systems",
+      "transformer_application": "Core and tank fabrication",
+      "source": "https://www.soutec.ch"
     }
   ]
 }

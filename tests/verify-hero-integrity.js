@@ -51,6 +51,11 @@ check('Homepage tenders matches site-stats', homeTenders === STATS.tenders, home
 check('Homepage openTenders matches site-stats', homeOpenTenders === STATS.openTenders, homeOpenTenders + ' vs ' + STATS.openTenders);
 check('Homepage awards matches site-stats', homeAwards === STATS.awards, homeAwards + ' vs ' + STATS.awards);
 check('Homepage upcomingEvents matches site-stats', homeEvents === STATS.upcomingEvents, homeEvents + ' vs ' + STATS.upcomingEvents);
+check('Homepage uses the 3D hero stage', HOME.includes('class="hero-stage"') && HOME.includes('src="hero-3d.html"'));
+check('Hero 3D page is present', fs.existsSync('hero-3d.html'));
+check('Hero 3D core script is present', fs.existsSync('tp-3d-core.js'));
+check('Hero 3D power assembly is present', fs.existsSync('tp-power-assembly.js'));
+check('Hero tour video is present', fs.existsSync('media/power-transformer-3d-tour.mp4'));
 
 console.log('\n=== 2. FRESHNESS INTEGRITY ===');
 const FRESH = JSON.parse(fs.readFileSync('data/freshness.json', 'utf8'));
