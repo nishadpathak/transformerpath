@@ -248,7 +248,7 @@ function renderEvents(html) {
     return `<div class="intel-item event-card">
       <h3>${esc(ev.n)}${soon ? '<span class="badge-soon">Soon</span>' : ''}${badgeHTML(ev)}</h3>
       <div class="dates">${dateLbl}${relLabel(ev)}</div>
-      <div class="venue">📍 ${venueLbl}${st.key !== 'CONFIRMED' && st.key !== 'COMPLETED' ? ' · <span class="badge-unc">verify with organiser before booking travel</span>' : ''}${esc(ev.r) ? ' · ' + esc(ev.r) : ''}</div>
+      <div class="venue">📍 ${venueLbl}${esc(ev.r) ? ' · ' + esc(ev.r) : ''}</div>
       <p style="color:var(--muted); font-size:.92rem; margin-bottom:10px">${esc(ev.d)}</p>
       <div style="display:flex; gap:8px; flex-wrap:wrap">
         <a class="btn btn-amber btn-sm" href="${esc(ev.u)}" target="_blank" rel="noopener">Official site →</a>

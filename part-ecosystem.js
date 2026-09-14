@@ -370,10 +370,10 @@
         { name: 'CT ratio / polarity test', note: 'IEC 61869' }
       ],
       manufacturers: [
-        { name: 'IT / bushing-CT specialists', role: 'Ring CTs', url: 'ct3d.html' },
+        { name: 'IT / bushing-CT specialists', role: 'Ring CTs', url: 'bushing.html' },
         { name: 'Power OEMs', role: 'Turret design', url: 'manufacturers.html' }
       ],
-      detail3d: 'ct3d.html',
+      detail3d: 'bushing.html',
       sourceHint: 'Bushing CTs are a classic RFQ line — specify ratios, accuracy class and ID/OD.'
     }),
     entry({
@@ -821,7 +821,7 @@
         { name: 'Hitachi Energy (RESIBLOC)', role: 'CRT OEM', url: 'manufacturers.html' },
         { name: 'SGB-SMIT', role: 'Cast-resin OEM', url: 'manufacturers.html' }
       ],
-      detail3d: 'castresin3d.html',
+      detail3d: 'explorer.html',
       sourceHint: 'Source CRGO + coating, or buy the wound active part from CRT OEMs.'
     }),
     entry({
@@ -846,7 +846,7 @@
         { name: 'CRT OEMs (Siemens / Hitachi / SGB)', role: 'Wind in-house', url: 'manufacturers.html' },
         { name: 'Foil & prepreg mills', role: 'Materials', url: 'components.html' }
       ],
-      detail3d: 'castresin3d.html',
+      detail3d: 'explorer.html',
       sourceHint: 'RFQ foil alloy, width, prepreg class — or finished LV coils from the OEM tier.'
     }),
     entry({
@@ -874,7 +874,7 @@
         { name: 'SGB-SMIT / TMC / others', role: 'Cast-resin OEMs', url: 'manufacturers.html' },
         { name: 'Epoxy & filler suppliers', role: 'Resin systems', url: 'components.html' }
       ],
-      detail3d: 'castresin3d.html',
+      detail3d: 'explorer.html',
       sourceHint: 'HV cast coils are the premium sourced CRT BOM line — RFQ by kV, BIL, E/C/F class string.'
     }),
     entry({
@@ -979,7 +979,7 @@
         { name: 'Dry-type OEMs (Siemens, SGB, Hitachi…)', role: 'Package', url: 'manufacturers.html' },
         { name: 'Local sheet-metal shops', role: 'Local content', url: 'manufacturers.html' }
       ],
-      detail3d: 'castresin3d.html',
+      detail3d: 'explorer.html',
       sourceHint: 'Enclosures are often local-content fabrication — strong supplier opportunity.'
     }),
     entry({
@@ -1360,8 +1360,8 @@
         { name: 'Hitachi Energy', role: 'Instrument transformers', url: 'manufacturers.html' },
         { name: 'Siemens Energy', role: 'Instrument transformers', url: 'manufacturers.html' }
       ],
-      sourceHint: 'Often a separate RFQ line from the bushing itself — open the CT 3D explorer for detail.',
-      detail3d: 'ct3d.html'
+      sourceHint: 'Often a separate RFQ line from the bushing itself — open the Bushing 3D explorer for detail.',
+      detail3d: 'bushing.html'
     }),
     entry({
       id: 'oltc-drive', family: 'power',

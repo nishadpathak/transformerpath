@@ -162,9 +162,10 @@
       });
       if (eco.detail3d) {
         html +=
-          '<div class="tp-eco-block"><a class="tp-eco-link" href="' +
+          '<div class="tp-eco-block" style="margin:10px 0 6px">' +
+          '<a class="tp-eco-link" style="display:flex;align-items:center;justify-content:center;gap:6px;background:linear-gradient(135deg,rgba(245,166,35,.22),rgba(245,166,35,.1));border:1px solid var(--acc, #f5a623);color:var(--acc2, #fbbf24);padding:8px 12px;border-radius:8px;font-weight:700;font-size:12.5px;text-decoration:none" href="' +
           esc(eco.detail3d) +
-          '">Open detailed 3D model →</a></div>';
+          '">🔬 Launch Dedicated 3D Model (' + esc(eco.title || 'Assembly') + ') →</a></div>';
       }
       html += supplierCta(eco);
     } else {
