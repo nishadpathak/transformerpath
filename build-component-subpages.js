@@ -218,7 +218,7 @@ PAGES.forEach(cfg => {
   `).join('');
 
   const suppliersHtml = suppliers.length ? `
-    <h2 style="font-size:1.3rem;color:var(--ink);margin:34px 0 12px">Verified Sourced Suppliers (${suppliers.length})</h2>
+    <h2 style="font-size:1.3rem;color:var(--ink);margin:34px 0 12px">Sourced Component Suppliers (${suppliers.length})</h2>
     <p style="font-size:.88rem;color:var(--muted);margin-bottom:16px">Independent canonical supplier listings verified against manufacturer disclosures and official registries. Sourced for high-voltage and distribution transformer integration.</p>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-bottom:28px">
       ${suppliers.map(s => `
@@ -226,13 +226,13 @@ PAGES.forEach(cfg => {
           <div>
             <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:6px">
               <h3 style="font-size:1.08rem;font-weight:700;color:var(--ink);margin:0">${esc(s.name)}</h3>
-              <span style="display:inline-block;background:rgba(22,163,74,.14);color:#16a34a;border:1px solid #16a34a;border-radius:999px;padding:1px 7px;font-size:.68rem;font-weight:700">VERIFIED</span>
+              <span style="display:inline-block;background:rgba(22,163,74,.14);color:#16a34a;border:1px solid #16a34a;border-radius:999px;padding:1px 7px;font-size:.68rem;font-weight:700">LISTED</span>
             </div>
             <div style="font-size:.82rem;color:var(--muted);margin-bottom:8px">📍 ${esc(s.location)}</div>
             <p style="font-size:.85rem;color:var(--text);line-height:1.45;margin:0 0 12px">${esc(s.desc)}</p>
           </div>
           <div style="border-top:1px solid var(--border);padding-top:10px;display:flex;justify-content:space-between;align-items:center;font-size:.82rem">
-            ${s.website ? `<a href="${esc(s.website)}" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-weight:600">Official website ↗</a>` : '<span style="color:var(--muted)">Verified OEM</span>'}
+            ${s.website ? `<a href="${esc(s.website)}" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-weight:600">Official website ↗</a>` : '<span style="color:var(--muted)">Sourced Manufacturer</span>'}
             <a class="btn btn-outline btn-sm" href="../rfq.html?supplier=${encodeURIComponent(s.name)}&category=${encodeURIComponent(cfg.title)}" style="font-size:.74rem;padding:3px 10px">Request RFQ →</a>
           </div>
         </div>
@@ -253,7 +253,7 @@ PAGES.forEach(cfg => {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${esc(cfg.title)} — Technical Overview &amp; Sourced Suppliers | TransformerPath</title>
-<meta name="description" content="Technical guide and verified supplier directory for ${esc(cfg.title)}. Standards: ${esc(cfg.standards)}. Shortlist verified manufacturers and request quotations.">
+<meta name="description" content="Technical guide and sourced supplier directory for ${esc(cfg.title)}. Standards: ${esc(cfg.standards)}. Shortlist specialist manufacturers and request quotations.">
 <link rel="canonical" href="https://transformerpath.com/${cfg.file}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TransformerPath">

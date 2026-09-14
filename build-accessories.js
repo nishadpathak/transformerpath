@@ -85,11 +85,17 @@ function page(s) {
     '<h2>Product categories</h2><div style="margin:4px 0 8px">' + catPills(s.categories) + '</div>' +
     compLinks(s) +
     '<h2>Company record</h2><table>' +
-    '<tr><th>Company</th><td>' + esc(s.name) + '</td></tr>' +
+    '<tr><th>Company</th><td>' + esc(s.name) + (s.parent_group ? ' <span class="sub-l">(' + esc(s.parent_group) + ')</span>' : '') + '</td></tr>' +
+    '<tr><th>Role</th><td><b style="color:var(--accent)">' + esc(s.role || s.manufacturer_status || 'MANUFACTURER') + '</b></td></tr>' +
     '<tr><th>Location</th><td>' + esc(loc || '—') + '</td></tr>' +
     '<tr><th>Accessory categories</th><td>' + esc((s.categories || []).join(', ')) + '</td></tr>' +
+    (s.product_family ? '<tr><th>Product family</th><td>' + esc(s.product_family) + '</td></tr>' : '') +
+    (s.manufacturer_product_name ? '<tr><th>Product / Trade names</th><td>' + esc(s.manufacturer_product_name) + '</td></tr>' : '') +
+    (s.grades && s.grades.length ? '<tr><th>Documented grades</th><td>' + esc((Array.isArray(s.grades) ? s.grades.join(', ') : s.grades)) + '</td></tr>' : '') +
+    (s.thickness_range_mm ? '<tr><th>Thickness / dimensions</th><td>' + esc(s.thickness_range_mm) + '</td></tr>' : '') +
+    (s.standards && s.standards.length ? '<tr><th>Technical standards</th><td>' + esc((Array.isArray(s.standards) ? s.standards.join(', ') : s.standards)) + '</td></tr>' : '') +
     (s.founded_year ? '<tr><th>Founded</th><td>' + esc(String(s.founded_year)) + '</td></tr>' : '') +
-    (s.certifications && s.certifications.length ? '<tr><th>Certifications / standards</th><td>' + esc((s.certifications || []).join(', ')) + '</td></tr>' : '') +
+    (s.source_tier ? '<tr><th>Source tier</th><td>' + esc(s.source_tier) + '</td></tr>' : '') +
     '<tr><th>Verification</th><td>' + esc(s.verification_status) + ' · ' + esc(s.verification_date || '') + '</td></tr>' +
     '</table>' +
     '<p style="font-size:.78rem;color:var(--muted);margin-top:8px">Directory entries are informational supplier listings and do not imply verification, endorsement or commercial affiliation. Verification reflects a website check on the date recorded; always carry out your own due diligence before a commercial decision.</p>' +
@@ -110,7 +116,7 @@ SUPPLIERS.forEach((s) => {
     const slug = slugify(s.name);
     fs.mkdirSync('accessories/' + slug, { recursive: true });
     fs.writeFileSync('accessories/' + slug + '/index.html', page(s));
-    built++; if (/verified/i.test(s.verification_status || '')) indexable++;
+    built++; if (!/^(Inactive|Unverified)$/i.test(s.verification_status || '')) indexable++;
   } catch (e) { console.error('!! ' + s.name + ' failed: ' + e.message); }
 });
 console.log('accessory supplier entity pages:', built, '| verified (index,follow):', indexable);

@@ -316,7 +316,8 @@ CATEGORY_PAGES.forEach(function (cat) {
     const slug = slugify(s.name);
     const hasProfile = fs.existsSync(`accessories/${slug}/index.html`);
     const nameLink = hasProfile ? `<a href="../../accessories/${slug}/" style="color:var(--text);font-weight:700">${esc(s.name)}</a>` : `<b style="color:var(--text)">${esc(s.name)}</b>`;
-    const vBadge = s.verified.toLowerCase().includes('verif')
+    const isV = String(s.verified || '').toLowerCase().includes('verified') && !String(s.verified || '').toLowerCase().includes('website');
+    const vBadge = isV
       ? '<span class="vbadge" style="font-size:.72rem">✓ Verified</span>'
       : '<span style="font-size:.72rem;color:var(--muted)">Listed</span>';
 

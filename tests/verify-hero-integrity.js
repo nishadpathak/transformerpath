@@ -107,7 +107,10 @@ function runSearch(query) {
       (s.country || '') + ' ' +
       (s.categories || []).join(' ') + ' ' +
       (s.description || '') + ' ' +
-      (s.products || []).join(' ')
+      (s.products || []).join(' ') + ' ' +
+      (s.product_family || '') + ' ' +
+      (s.manufacturer_product_name || '') + ' ' +
+      (Array.isArray(s.grades) ? s.grades.join(' ') : (s.grades || ''))
     ).toLowerCase();
     return words.every(w => text.includes(w));
   });
