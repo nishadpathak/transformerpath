@@ -72,13 +72,21 @@ if (intelSurface) {
   check('Daily intel surface present in freshness.json', false);
 }
 
+const INTEL_HTML = fs.readFileSync('intel.html', 'utf8');
+check('Intel page pre-renders canonical freshness line (no Loading freshness)', !INTEL_HTML.includes('Loading freshness') && !INTEL_HTML.includes('id="freshnessLine">Loading'));
+check('Intel page displays explicit refresh status (current/delayed/stale)', INTEL_HTML.includes('Last successful refresh:') || INTEL_HTML.includes('Refresh delayed') || INTEL_HTML.includes('Data stale'));
+
 console.log('\n=== 3. SEARCH SMOKE TESTING ===');
 const DIR = JSON.parse(fs.readFileSync('data/directory-index.json', 'utf8'));
 const dirCompanies = DIR.companies || [];
 const ACCS = (() => { try { return JSON.parse(fs.readFileSync('data/accessories.json', 'utf8')).suppliers || []; } catch(e) { return []; } })();
+const MACHS = (() => { try { return JSON.parse(fs.readFileSync('data/machinery.json', 'utf8')).machinery || []; } catch(e) { return []; } })();
+const LABS = (() => { try { return JSON.parse(fs.readFileSync('data/laboratories.json', 'utf8')).laboratories || []; } catch(e) { return []; } })();
 
 function runSearch(query) {
   const q = String(query).toLowerCase().trim();
+  const words = q.split(/\s+/).filter(Boolean);
+  
   const matchedCompanies = dirCompanies.filter(e => {
     const text = (
       (e.name || '') + ' ' +
@@ -90,24 +98,62 @@ function runSearch(query) {
       (e.voltage && e.voltage.value ? e.voltage.value : '') + ' ' +
       ((e.factories || []).map(f => (f.city || '') + ' ' + (f.country || '')).join(' '))
     ).toLowerCase();
-    return text.indexOf(q) >= 0;
+    return words.every(w => text.includes(w));
   });
 
   const matchedSuppliers = ACCS.filter(s => {
     const text = (
       (s.name || '') + ' ' +
-      (s.category || '') + ' ' +
       (s.country || '') + ' ' +
-      (s.summary || '') + ' ' +
+      (s.categories || []).join(' ') + ' ' +
+      (s.description || '') + ' ' +
       (s.products || []).join(' ')
     ).toLowerCase();
-    return text.indexOf(q) >= 0;
+    return words.every(w => text.includes(w));
   });
 
-  return matchedCompanies.concat(matchedSuppliers);
+  const matchedMachinery = MACHS.filter(m => {
+    const text = (
+      (m.name || '') + ' ' +
+      (m.category || '') + ' ' +
+      (m.manufacturer || '') + ' ' +
+      (m.machine_type || '') + ' ' +
+      (m.transformer_application || '') + ' ' +
+      (m.country || '')
+    ).toLowerCase();
+    return words.every(w => text.includes(w));
+  });
+
+  const matchedLabs = LABS.filter(l => {
+    const caps = Array.isArray(l.capabilities) ? l.capabilities : Object.keys(l.capabilities || {});
+    const text = (
+      (l.name || '') + ' ' +
+      (l.country || '') + ' ' +
+      (l.city || '') + ' ' +
+      caps.join(' ') + ' ' +
+      (l.description || '') + ' ' +
+      (l.short_circuit_capacity || '')
+    ).toLowerCase();
+    return words.every(w => text.includes(w));
+  });
+
+  return matchedCompanies.concat(matchedSuppliers).concat(matchedMachinery).concat(matchedLabs);
 }
 
-const testQueries = ['765 kV', 'India', 'Transformerboard', 'Saudi Arabia', 'OLTC'];
+const testQueries = [
+  '765 kV',
+  'transformerboard',
+  'OLTC',
+  'Saudi Arabia',
+  'testing laboratory',
+  '400 kV transformer Europe',
+  'transformer pressboard India',
+  'RIP bushing 245 kV',
+  'radiator UAE',
+  'vertical winding machine',
+  'short circuit transformer laboratory'
+];
+
 testQueries.forEach(q => {
   const results = runSearch(q);
   check('Search for "' + q + '" returns matches', results.length > 0, results.length + ' matches found');

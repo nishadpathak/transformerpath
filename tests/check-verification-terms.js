@@ -25,6 +25,11 @@ const FORBIDDEN_PATTERNS = [
   { re: /\bVerified\s+Pro\b/i, name: 'Verified Pro' },
   { re: /\bPro\s*\/\s*Premium\b/i, name: 'Pro / Premium' },
   { re: /\bVerified\s*\/\s*Pro\s*\/\s*Premium\b/i, name: 'Verified / Pro / Premium' },
+  { re: /\b100%\s+Website[- ]Verified\b/i, name: '100% Website-Verified' },
+  { re: /\bVerified\s+Specialist\s+Makers\b/i, name: 'Verified Specialist Makers' },
+  { re: /\bcertified\s+product\s+lines\b/i, name: 'certified product lines' },
+  { re: /\bverified\s+listings\b/i, name: 'verified listings' },
+  { re: /\bPremium\s+verification\b/i, name: 'Premium verification' },
 ];
 
 const IGNORE_DIRS = new Set(['node_modules', '.git', '.gemini', 'brain', 'dist', 'scratch', 'tests']);
