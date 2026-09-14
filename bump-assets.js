@@ -22,7 +22,7 @@ const JS_V = A.js || 1;
 const THEME_V = A.theme || 1;
 const SW_CACHE = A.sw || 'transformerpath-v1';
 
-const SKIP = new Set(['archive', '_private', 'transformerpath-site', 'node_modules', '.git']);
+const SKIP = new Set(['archive', '_private', 'transformerpath-site', 'node_modules', '.git', 'Transformer Equipments', 'dist']);
 
 function walk(dir) {
   let out = [];

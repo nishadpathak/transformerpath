@@ -114,7 +114,7 @@ function dedupeChromeScripts(html) {
 function looksCanonical(html) {
   return /class="tpnav"/.test(html)
     && /Industry Map/.test(html)
-    && /class="tpnav-opt">Map</.test(html)
+    && /href="(?:\/)?pricing\.html"/.test(html)
     && /id="theme-toggle"/.test(html)
     && /data-tp-account/.test(html);
 }
