@@ -4,10 +4,10 @@ TransformerPath is deployed as a static site with one Netlify Function.
 
 ## Netlify settings
 
-- **Base directory:** repository root (leave blank)
+- **Base directory:** `transformerpath`
 - **Build command:** leave blank; the site has no compile step
-- **Publish directory:** `transformerpath`
-- **Functions directory:** `transformerpath/functions`
+- **Publish directory:** `.`
+- **Functions directory:** `functions`
 - **Node version:** 18 or newer
 
 These settings are checked in to [`netlify.toml`](netlify.toml). Netlify installs the

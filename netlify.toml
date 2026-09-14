@@ -1,6 +1,7 @@
 [build]
-  publish = "transformerpath"
-  functions = "transformerpath/functions"
+  base = "transformerpath"
+  publish = "."
+  functions = "functions"
 
 [functions]
   node_bundler = "esbuild"
