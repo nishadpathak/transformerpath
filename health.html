@@ -178,6 +178,56 @@
   </div>
 
   <div class="dh-section">
+    <h2>🎯 Release 1 — Research Command Center (Today's Priorities)</h2>
+    <p style="color:var(--muted);font-size:.9rem;margin-top:-6px;margin-bottom:14px">Algorithmic research prioritization: <code>Priority = Demand × RFQ Intent × Commercial Value × Data Weakness × Freshness</code>.</p>
+    <div class="tbl-wrap">
+      <table class="dh-table">
+        <thead>
+          <tr>
+            <th>Priority</th>
+            <th>Category</th>
+            <th>Priority Score</th>
+            <th>Confirmed Mfrs</th>
+            <th>Tech Completeness</th>
+            <th>Saturation Level</th>
+            <th>Action Directive</th>
+          </tr>
+        </thead>
+        <tbody id="command-center-tbody">
+          <tr><td colspan="7" style="text-align:center;color:var(--muted)">Loading Research Command Center directives...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="dh-section">
+    <h2>📊 Category Research Saturation Matrix (P0 / P1 / P2 Universe)</h2>
+    <p style="color:var(--muted);font-size:.9rem;margin-top:-6px;margin-bottom:14px">Deep category tracking separating Confirmed Manufacturers, Candidates, Processors/Converters, and Distributors.</p>
+    <div class="tbl-wrap" style="overflow-x:auto">
+      <table class="dh-table">
+        <thead>
+          <tr>
+            <th>Tier</th>
+            <th>Category</th>
+            <th>Group</th>
+            <th>Confirmed Mfrs</th>
+            <th>Candidates</th>
+            <th>Converters</th>
+            <th>Distributors</th>
+            <th>Countries</th>
+            <th>Tier-A %</th>
+            <th>Tech Depth %</th>
+            <th>Saturation Status</th>
+          </tr>
+        </thead>
+        <tbody id="saturation-tbody">
+          <tr><td colspan="11" style="text-align:center;color:var(--muted)">Loading category saturation metrics...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="dh-section">
     <h2>🔍 Data Remediation Queues (What to Fix Next)</h2>
     <div class="queue-list">
       <div class="queue-card">
@@ -286,6 +336,56 @@
             <td><code>${ref.slice(0, 19).replace('T', ' ')}</code></td>
             <td>${ageStr}</td>
             <td><span class="${badgeClass}">● ${badgeText}</span></td>
+          </tr>
+        `;
+      }).join('');
+    }
+  }).catch(()=>{});
+
+  fetch('data/category-saturation.json').then(r=>r.json()).then(cs=>{
+    // Command Center priorities
+    const ccTbody = document.getElementById('command-center-tbody');
+    const priorities = (cs.research_command_center && cs.research_command_center.top_research_priorities) || [];
+    if (priorities.length && ccTbody) {
+      ccTbody.innerHTML = priorities.map(p=>{
+        let badgeColor = p.priority_tier === 'P0' ? 'color:#ef4444;border-color:#ef4444' : (p.priority_tier === 'P1' ? 'color:var(--amber);border-color:var(--amber)' : 'color:var(--accent);border-color:var(--accent)');
+        let satBadge = p.saturation_level === 'HIGH' ? '<span class="badge-healthy">HIGH</span>' : (p.saturation_level === 'MEDIUM' ? '<span class="badge-warning">MEDIUM</span>' : '<span class="badge-stale">GROWING</span>');
+        return `
+          <tr>
+            <td><b style="border:1px solid;padding:2px 8px;border-radius:6px;font-size:.78rem;${badgeColor}">${p.priority_tier}</b></td>
+            <td><b>${p.category}</b></td>
+            <td><span style="font-family:monospace;font-weight:700;color:var(--ink)">${p.priority_score}</span></td>
+            <td>${p.confirmed_manufacturers} confirmed</td>
+            <td>${p.technical_completeness}</td>
+            <td>${satBadge}</td>
+            <td style="font-size:.84rem;color:var(--text)">${p.action_directive}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Category Saturation matrix
+    const satTbody = document.getElementById('saturation-tbody');
+    const categories = cs.categories || {};
+    const catKeys = Object.keys(categories);
+    if (catKeys.length && satTbody) {
+      satTbody.innerHTML = catKeys.map(k=>{
+        const c = categories[k];
+        let tierColor = c.priority_tier === 'P0' ? 'color:#ef4444;font-weight:800' : (c.priority_tier === 'P1' ? 'color:var(--amber);font-weight:700' : 'color:var(--muted)');
+        let satBadge = c.saturation_level === 'HIGH' ? '<span class="badge-healthy">HIGH</span>' : (c.saturation_level === 'MEDIUM' ? '<span class="badge-warning">MEDIUM</span>' : '<span class="badge-stale">GROWING</span>');
+        return `
+          <tr>
+            <td><span style="${tierColor}">${c.priority_tier}</span></td>
+            <td><b>${c.category_name}</b></td>
+            <td><span style="font-size:.8rem;color:var(--muted)">${c.group}</span></td>
+            <td><b style="color:var(--ink)">${c.confirmed_manufacturers_count}</b></td>
+            <td>${c.candidates_count}</td>
+            <td>${c.processors_converters_count}</td>
+            <td>${c.distributors_stockists_count}</td>
+            <td>${c.countries_covered_count}</td>
+            <td>${c.tier_a_evidence_pct}%</td>
+            <td>${c.technical_completeness_pct}%</td>
+            <td>${satBadge}</td>
           </tr>
         `;
       }).join('');

@@ -92,11 +92,20 @@ function page(s) {
     '<tr><th>Accessory categories</th><td>' + esc((s.categories || []).join(', ')) + '</td></tr>' +
     (s.product_family ? '<tr><th>Product family</th><td>' + esc(s.product_family) + '</td></tr>' : '') +
     (s.manufacturer_product_name ? '<tr><th>Product / Trade names</th><td>' + esc(s.manufacturer_product_name) + '</td></tr>' : '') +
+    (s.technology_subtypes && s.technology_subtypes.length ? '<tr><th>Technology subtypes</th><td><b style="color:var(--ink)">' + esc(s.technology_subtypes.join(', ')) + '</b></td></tr>' : '') +
+    (s.voltage_evidence_kv ? '<tr><th>Voltage class & evidence</th><td><b style="color:var(--accent)">' + esc(s.voltage_evidence_kv) + '</b></td></tr>' : '') +
+    (s.max_current_a ? '<tr><th>Rated through-current</th><td>' + esc(s.max_current_a.toLocaleString()) + ' A</td></tr>' : '') +
+    (s.mounting_type && s.mounting_type.length ? '<tr><th>Mounting configuration</th><td>' + esc(s.mounting_type.join(', ')) + '</td></tr>' : '') +
+    (s.thermal_class ? '<tr><th>Thermal insulation class</th><td>' + esc(s.thermal_class) + '</td></tr>' : '') +
+    (s.epoxy_coating_pattern ? '<tr><th>Epoxy dotting pattern</th><td>' + esc(s.epoxy_coating_pattern) + '</td></tr>' : '') +
+    (s.density_g_cm3 ? '<tr><th>Density</th><td>' + esc(s.density_g_cm3) + '</td></tr>' : '') +
+    (s.base_thickness_mm ? '<tr><th>Base thickness range</th><td>' + esc(s.base_thickness_mm) + '</td></tr>' : '') +
     (s.grades && s.grades.length ? '<tr><th>Documented grades</th><td>' + esc((Array.isArray(s.grades) ? s.grades.join(', ') : s.grades)) + '</td></tr>' : '') +
     (s.thickness_range_mm ? '<tr><th>Thickness / dimensions</th><td>' + esc(s.thickness_range_mm) + '</td></tr>' : '') +
     (s.standards && s.standards.length ? '<tr><th>Technical standards</th><td>' + esc((Array.isArray(s.standards) ? s.standards.join(', ') : s.standards)) + '</td></tr>' : '') +
     (s.founded_year ? '<tr><th>Founded</th><td>' + esc(String(s.founded_year)) + '</td></tr>' : '') +
-    (s.source_tier ? '<tr><th>Source tier</th><td>' + esc(s.source_tier) + '</td></tr>' : '') +
+    (s.evidence_source ? '<tr><th>Primary evidence citation</th><td><span style="font-size:.85rem;color:var(--muted)">' + esc(s.evidence_source) + '</span></td></tr>' : '') +
+    (s.source_tier ? '<tr><th>Source tier</th><td><span class="tpill" style="color:#10b981;border-color:rgba(16,185,129,.4)">' + esc(s.source_tier) + '</span></td></tr>' : '') +
     '<tr><th>Verification</th><td>' + esc(s.verification_status) + ' · ' + esc(s.verification_date || '') + '</td></tr>' +
     '</table>' +
     '<p style="font-size:.78rem;color:var(--muted);margin-top:8px">Directory entries are informational supplier listings and do not imply verification, endorsement or commercial affiliation. Verification reflects a website check on the date recorded; always carry out your own due diligence before a commercial decision.</p>' +

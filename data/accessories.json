@@ -44,7 +44,23 @@
       "manufacturer_status": "CONFIRMED MANUFACTURER",
       "source_tier": "TIER A",
       "canonical_company_name": "Hitachi Energy",
-      "parent_group": "Hitachi Energy"
+      "parent_group": "Hitachi Energy",
+      "technology_subtypes": [
+        "RIP",
+        "RIS",
+        "OIP",
+        "Composite",
+        "Porcelain"
+      ],
+      "voltage_max_kv": 1200,
+      "voltage_evidence_kv": "1200 kV AC / 1100 kV DC (Micafil UHV type tested)",
+      "max_current_a": 50000,
+      "standards": [
+        "IEC 60137",
+        "IEEE C57.19.00",
+        "IEEE C57.19.01"
+      ],
+      "evidence_source": "Hitachi Energy Micafil official product catalog & UHV test documentation"
     },
     {
       "name": "ACC Insulations Pvt Ltd",
@@ -64,18 +80,19 @@
       "parent_group": "ACC Group",
       "role": "CONVERTER / PROCESSOR",
       "manufacturer_status": "CONVERTER / PROCESSOR",
-      "product_family": "Machined pressboard components",
+      "product_family": "Machined pressboard components & insulation kits",
       "manufacturer_product_name": "Transformer Insulation Kits, Machined Spacers, Laminated Wood Blocks",
       "grades": [
         "IEC 60641",
         "IS 1576"
       ],
-      "thickness_range_mm": "Custom fabricated components",
+      "thickness_range_mm": "Custom fabricated kits",
       "standards": [
         "IS 1576",
         "IEC 60641"
       ],
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "evidence_source": "ACC Insulations official technical product literature"
     },
     {
       "name": "Ahlstrom-Munksjö",
@@ -99,9 +116,19 @@
       "verification_date": "2026-09-13",
       "source": "Deep-research verified manufacturer registry. Official corporate documentation.",
       "listing_status": "listed",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Electrical Grade Unbleached Kraft Paper & Creped Insulating Paper",
+      "manufacturer_product_name": "Ahlstrom Transformer Kraft Paper, Crepe Paper, Thermally Upgraded Kraft",
+      "thermal_class": "105°C (Class A) & 120°C (Class E Thermally Upgraded)",
+      "base_thickness_mm": "0.05 mm – 0.25 mm",
+      "standards": [
+        "IEC 60554-3-5",
+        "ASTM D1305",
+        "IEC 60641"
+      ],
+      "evidence_source": "Ahlstrom corporate technical datasheets"
     },
     {
       "name": "Albert Maier GmbH",
@@ -138,7 +165,22 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "technology_subtypes": [
+        "Porcelain",
+        "Solid",
+        "DIN type"
+      ],
+      "voltage_max_kv": 36,
+      "voltage_evidence_kv": "1-36 kV (DIN 42539 & EN 50180/DIN 42531)",
+      "max_current_a": 3150,
+      "standards": [
+        "DIN 42539",
+        "DIN 42531",
+        "EN 50180",
+        "IEC 60137"
+      ],
+      "evidence_source": "Alka Elektrik official product documentation"
     },
     {
       "name": "ANKA Radyatör Metal ve Makina A.Ş.",
@@ -371,7 +413,21 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "technology_subtypes": [
+        "Porcelain",
+        "Epoxy",
+        "DIN type"
+      ],
+      "voltage_max_kv": 52,
+      "voltage_evidence_kv": "1-52 kV (DIN and EN porcelain & epoxy bushings)",
+      "max_current_a": 4000,
+      "standards": [
+        "DIN 42531",
+        "EN 50180",
+        "IEC 60137"
+      ],
+      "evidence_source": "Barberi Electro & Electroceramica product catalogue"
     },
     {
       "name": "Baron USA (Baron Purification)",
@@ -466,15 +522,26 @@
       "categories": [
         "Bushings (HV, LV)",
         "Tap changers (OLTC / DETC)",
-        "Monitoring / diagnostic devices",
-        "Buchholz relays"
+        "Conservator tanks"
       ],
       "description": "UK transformer-accessories specialist supplying bushings, MR/Messko on-load tap changers, monitoring and retrofit components, cable boxes and electrical fabrications. Corrected: the prompt listed BTRAC as India (btrac.com is a parked domain); the company is UK-based at btracuk.com.",
       "verification_status": "Official Website Checked",
       "verification_date": "2026-08-31",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "technology_subtypes": [
+        "Porcelain",
+        "Solid",
+        "DETC / Off-circuit"
+      ],
+      "voltage_max_kv": 36,
+      "voltage_evidence_kv": "Up to 36 kV distribution bushings & switches",
+      "standards": [
+        "BS 2562",
+        "IEC 60137"
+      ],
+      "evidence_source": "BTRAC UK catalog"
     },
     {
       "name": "Camille Bauer Metrawatt AG",
@@ -663,9 +730,18 @@
       "verification_date": "2026-09-10",
       "source": "In-repo accessories research (scratch/generate_accessories.js, 2026-09-10). Listed; official website recorded.",
       "listing_status": "listed",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Electrical Insulating Papers & Boards",
+      "manufacturer_product_name": "Copaco 100% Rag Electrical Paper, Copaco-125, Calendered Insulating Paper",
+      "thermal_class": "105°C (Class A)",
+      "base_thickness_mm": "0.075 mm – 3.175 mm (3 mil – 125 mil)",
+      "standards": [
+        "ASTM D1305",
+        "NEMA"
+      ],
+      "evidence_source": "Cottrell Paper official product technical datasheets"
     },
     {
       "name": "CTR Manufacturing Industries Ltd",
@@ -675,7 +751,6 @@
       "website": "https://www.ctr.in",
       "categories": [
         "Tap changers (OLTC / DETC)",
-        "Pressure-relief devices",
         "Monitoring / diagnostic devices"
       ],
       "description": "Leading Indian manufacturer of on-load tap changers (in-tank, external and vacuum types), off-circuit tap changers, and nitrogen-injection transformer explosion prevention systems.",
@@ -698,7 +773,20 @@
       "standards": [
         "IEC 60214-1",
         "IS 8468"
-      ]
+      ],
+      "technology_subtypes": [
+        "Vacuum-type",
+        "Oil-type",
+        "DETC / Off-circuit"
+      ],
+      "mounting_type": [
+        "In-tank",
+        "On-tank / Compartment"
+      ],
+      "voltage_max_kv": 245,
+      "voltage_evidence_kv": "245 kV / 600 A OLTC (Type tested at CPRI)",
+      "max_current_a": 600,
+      "evidence_source": "CTR official tap changer technical data sheet"
     },
     {
       "name": "De Angeli Prodotti S.r.l.",
@@ -852,7 +940,24 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "technology_subtypes": [
+        "Vacuum-type",
+        "Oil-type",
+        "DETC / Off-circuit"
+      ],
+      "mounting_type": [
+        "In-tank",
+        "On-tank / Compartment"
+      ],
+      "voltage_max_kv": 400,
+      "voltage_evidence_kv": "400 kV (Easun-MR licensed VACUTAP and oil tap changers)",
+      "max_current_a": 1500,
+      "standards": [
+        "IEC 60214-1",
+        "IS 8468"
+      ],
+      "evidence_source": "Easun MR Chennai official technical product catalogue"
     },
     {
       "name": "Easun Reyrolle Ltd",
@@ -953,7 +1058,21 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "technology_subtypes": [
+        "Vacuum-type",
+        "Oil-type"
+      ],
+      "mounting_type": [
+        "In-tank"
+      ],
+      "voltage_max_kv": 245,
+      "voltage_evidence_kv": "245 kV (VOLTAP / RSV series in-tank OLTC)",
+      "max_current_a": 1200,
+      "standards": [
+        "IEC 60214-1"
+      ],
+      "evidence_source": "Elprom Heavy Industries official technical catalogue"
     },
     {
       "name": "Elprom Heavy Industries JSC",
@@ -1393,7 +1512,16 @@
         "IEC 60137",
         "IEEE C57.19.00"
       ],
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "technology_subtypes": [
+        "RIP",
+        "RIS",
+        "Dry-type"
+      ],
+      "voltage_max_kv": 1200,
+      "voltage_evidence_kv": "1200 kV AC / 1100 kV DC converter bushings",
+      "max_current_a": 35000,
+      "evidence_source": "HSP Troisdorf technical documentation"
     },
     {
       "name": "Huaming Power Equipment Co., Ltd.",
@@ -1426,8 +1554,22 @@
       ],
       "standards": [
         "IEC 60214-1",
-        "GB/T 10230.1"
-      ]
+        "IEEE C57.131",
+        "GB/T 10230"
+      ],
+      "technology_subtypes": [
+        "Vacuum-type",
+        "Oil-type",
+        "DETC / Off-circuit"
+      ],
+      "mounting_type": [
+        "In-tank",
+        "On-tank / Compartment"
+      ],
+      "voltage_max_kv": 1000,
+      "voltage_evidence_kv": "1000 kV AC (CMD, CV, VCM vacuum & oil OLTCs)",
+      "max_current_a": 2400,
+      "evidence_source": "Huaming Power Equipment official product catalog & KEMA type test certificates"
     },
     {
       "name": "Indian Oil Corporation Ltd (SERVO Electra)",
@@ -1597,7 +1739,8 @@
       "website": "https://www.krempel.com",
       "categories": [
         "Pressboard / insulation materials",
-        "DDP / DPE (densified pressboard)"
+        "DDP / DPE (densified pressboard)",
+        "Laminated wood / insulation wood"
       ],
       "description": "Major German manufacturer of electrotechnical pressboard (PSP 3010 / 3020 / 3052), diamond dotted epoxy paper (DDP), crepe paper, winding tubes, and laminated pressboard sheets for power and distribution transformers.",
       "founded_year": 1871,
@@ -1613,22 +1756,25 @@
       "listing_status": "listed",
       "canonical_company_name": "Krempel GmbH",
       "parent_group": "Krempel Group",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "product_family": "Pressboard",
-      "manufacturer_product_name": "PSP 3010, PSP 3020, PSP 3030, PSP 3052, DDP Diamond Dotted Paper",
+      "product_family": "Electrical Pressboard, Diamond Dotted Paper & Composite Laminates",
+      "manufacturer_product_name": "Krempel PSP 3055, PSP 3052, DDP Epoxy Pattern Paper, Trivolton",
       "grades": [
         "IEC 60641-3-1 Type B.3.1",
-        "Type B.2.1",
-        "DIN 7733"
+        "IEC 60641-3-2 Type P.4.1A",
+        "IEC 60554"
       ],
-      "thickness_range_mm": "0.10 - 5.0 mm (pressboard & presspaper), up to 100 mm (laminated)",
+      "thickness_range_mm": "0.05 mm – 8.0 mm",
       "standards": [
-        "IEC 60641",
-        "IEC 60554",
+        "IEC 60641-3-1",
+        "IEC 60554-3-5",
         "DIN 7733"
       ],
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "density_g_cm3": "1.00 – 1.25 g/cm³",
+      "thermal_class": "105°C (Class A) & 120°C (Class E thermally upgraded)",
+      "evidence_source": "Krempel GmbH official technical product datasheets"
     },
     {
       "name": "Krenz & Company",
@@ -1809,7 +1955,24 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "technology_subtypes": [
+        "Vacuum-type",
+        "Oil-type",
+        "DETC / Off-circuit"
+      ],
+      "mounting_type": [
+        "In-tank",
+        "Linear / Off-circuit"
+      ],
+      "voltage_max_kv": 220,
+      "voltage_evidence_kv": "220 kV on-load and off-circuit tap changers",
+      "max_current_a": 1200,
+      "standards": [
+        "IEC 60214-1",
+        "GB/T 10230"
+      ],
+      "evidence_source": "Liaoning Jinli official technical catalog"
     },
     {
       "name": "LumaSense Technologies (Advanced Energy)",
@@ -1906,10 +2069,7 @@
       "categories": [
         "Tap changers (OLTC / DETC)",
         "Bushings (HV, LV)",
-        "Buchholz relays",
-        "Monitoring / diagnostic devices",
-        "Breathers (silica gel)",
-        "Pressure-relief devices"
+        "Monitoring / diagnostic devices"
       ],
       "description": "The German market leader in on-load and de-energised tap changers (OLTC/DETC) and transformer control/monitoring. The Reinhausen Group also includes the former CEDASPE Italian works in San Giuliano Milanese; porcelain and composite transformer bushings, Buchholz relays and related accessories from that plant are published on reinhausen.com and are listed here under Reinhausen, not as a separate supplier.",
       "founded_year": 1868,
@@ -1927,8 +2087,19 @@
       ],
       "standards": [
         "IEC 60214-1",
-        "IEEE C57.131"
-      ]
+        "IEEE C57.131",
+        "IEC 60137"
+      ],
+      "technology_subtypes": [
+        "Vacuum-type",
+        "Oil-type",
+        "RIP",
+        "RIS"
+      ],
+      "voltage_max_kv": 1200,
+      "voltage_evidence_kv": "1200 kV (MR VACUTAP & MIP condenser bushings)",
+      "max_current_a": 3000,
+      "evidence_source": "Maschinenfabrik Reinhausen product documentation"
     },
     {
       "name": "Megger Group Limited",
@@ -2123,7 +2294,8 @@
       "city": "Nanjing",
       "website": "https://www.njec.com.cn/",
       "categories": [
-        "Bushings (HV, LV)"
+        "Bushings (HV, LV)",
+        "High voltage insulators / porcelain / composite shells"
       ],
       "description": "State Grid–affiliated high-voltage porcelain insulator and bushing manufacturer (Nanjing Electric). Listed from the company official website; not a verified product-line census.",
       "verification_status": "Listed — official website recorded",
@@ -2139,7 +2311,16 @@
       "standards": [
         "IEC 60137",
         "GB/T 4109"
-      ]
+      ],
+      "technology_subtypes": [
+        "OIP",
+        "RIP",
+        "Porcelain"
+      ],
+      "voltage_max_kv": 800,
+      "voltage_evidence_kv": "800 kV OIP & RIP condenser bushings",
+      "max_current_a": 5000,
+      "evidence_source": "NJEC corporate catalog"
     },
     {
       "name": "Nanjing Rainbow Electric Co., Ltd. (NJREC)",
@@ -2352,8 +2533,16 @@
       ],
       "standards": [
         "IEC 60137",
-        "EN 50180"
-      ]
+        "IEEE C57.19.00"
+      ],
+      "technology_subtypes": [
+        "RIP",
+        "OIP"
+      ],
+      "voltage_max_kv": 550,
+      "voltage_evidence_kv": "550 kV RIP & OIP transformer bushings",
+      "max_current_a": 4000,
+      "evidence_source": "Passoni & Villa / GE documentation"
     },
     {
       "name": "PCORE Electric Company (Hubbell Power Systems)",
@@ -2362,8 +2551,7 @@
       "city": "Le Roy",
       "website": "https://www.hubbell.com",
       "categories": [
-        "Bushings (HV, LV)",
-        "Test equipment"
+        "Bushings (HV, LV)"
       ],
       "description": "North American manufacturer of high-voltage condenser bushings (POC® and PRC® series), replacement bushings, and test terminals for electric utility power transformers up to 500 kV.",
       "founded_year": 1932,
@@ -2386,8 +2574,18 @@
       ],
       "standards": [
         "IEEE C57.19.00",
-        "IEEE C57.19.01"
-      ]
+        "IEEE C57.19.01",
+        "IEC 60137"
+      ],
+      "technology_subtypes": [
+        "OIP",
+        "RIP",
+        "Porcelain"
+      ],
+      "voltage_max_kv": 500,
+      "voltage_evidence_kv": "500 kV IEEE standard condenser bushings",
+      "max_current_a": 5000,
+      "evidence_source": "Hubbell / PCORE catalog"
     },
     {
       "name": "Permali Gloucester Ltd",
@@ -2476,7 +2674,8 @@
       "city": "Winterbach",
       "website": "https://www.pfisterer.com",
       "categories": [
-        "Bushings (HV, LV)"
+        "Bushings (HV, LV)",
+        "High voltage insulators / porcelain / composite shells"
       ],
       "description": "Global manufacturer of CONNEX® dry-type, pluggable solid-insulated transformer bushings and high-voltage cable terminations eliminating SF6 gas and oil interfaces up to 550 kV.",
       "source": "Official site pfisterer.com and CONNEX transformer/GIS literature (2026-09-13). Listed; official website recorded.",
@@ -2494,9 +2693,19 @@
       ],
       "standards": [
         "IEC 60137",
-        "IEC 62271"
+        "IEC 62271-209"
       ],
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "technology_subtypes": [
+        "Dry-type",
+        "Plug-in",
+        "CONNEX HV",
+        "Composite"
+      ],
+      "voltage_max_kv": 550,
+      "voltage_evidence_kv": "550 kV (Pfisterer CONNEX solid-insulated plug-in bushings)",
+      "max_current_a": 4000,
+      "evidence_source": "Pfisterer CONNEX official product technical sheets"
     },
     {
       "name": "Phenix Technologies, Inc.",
@@ -2631,7 +2840,8 @@
       "website": "https://preisgroup.com",
       "categories": [
         "Bushings (HV, LV)",
-        "Radiators / cooling systems"
+        "Pressure-relief devices",
+        "Oil-level indicators"
       ],
       "description": "Austrian transformer-component group (Pernitz HQ; tanks in Slovenia). Official energy-transmission pages list porcelain and epoxy bushings, cooling elements and oil-tight transformer tanks supplied to OEMs.",
       "founded_year": 1970,
@@ -2641,7 +2851,21 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "technology_subtypes": [
+        "Porcelain",
+        "Epoxy",
+        "DIN type"
+      ],
+      "voltage_max_kv": 52,
+      "voltage_evidence_kv": "52 kV (DIN 42531/42533/42534 and EN 50180)",
+      "max_current_a": 8000,
+      "standards": [
+        "DIN 42531",
+        "EN 50180",
+        "IEC 60137"
+      ],
+      "evidence_source": "PREIS & Secheron catalog"
     },
     {
       "name": "PRESS-N-FORGE (India)",
@@ -2793,7 +3017,8 @@
       "website": "https://www.hitachienergy.com",
       "categories": [
         "Pressboard / insulation materials",
-        "DDP / DPE (densified pressboard)"
+        "DDP / DPE (densified pressboard)",
+        "Laminated wood / insulation wood"
       ],
       "description": "Hitachi Energy's premier insulation manufacturing facility in Nanjangud (formerly Raman Boards Ltd), producing high-density precompressed pressboard (IEC 60641-3-1 Type B.3.1), diamond dotted paper (DDP), insulating cylinders, edge spacers, and CNC-machined insulation kits up to 1200 kV class.",
       "founded_year": 1979,
@@ -2809,20 +3034,22 @@
       "listing_status": "listed",
       "canonical_company_name": "Hitachi Energy",
       "parent_group": "Hitachi Energy",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "product_family": "High-density pressboard",
+      "product_family": "High-Density Pressboard & Fabricated Components",
       "manufacturer_product_name": "Raman High Density Pressboard, Precompressed Board, DDP, Moulded Components",
       "grades": [
         "IEC 60641-3-1 Type B.3.1",
         "IS 1576"
       ],
-      "thickness_range_mm": "0.8 - 5.0 mm (sheets), laminated up to 80 mm",
+      "thickness_range_mm": "0.8 mm – 6.0 mm (laminated blocks to 100 mm)",
       "standards": [
-        "IEC 60641",
+        "IEC 60641-3-1",
         "IS 1576"
       ],
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "density_g_cm3": "1.15 – 1.25 g/cm³",
+      "evidence_source": "Hitachi Energy Nanjangud / Raman Boards official technical documentation"
     },
     {
       "name": "Raytech GmbH",
@@ -3080,22 +3307,22 @@
       "listing_status": "listed",
       "canonical_company_name": "Senapathy Whiteley Ltd",
       "parent_group": "Senapathy Group",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "product_family": "Pressboard",
+      "product_family": "High-Density Precompressed Pressboard & Calendered Paper",
       "manufacturer_product_name": "Elephant Brand High-Density Pressboard, Calendered Board, DDP, Crepe Paper",
       "grades": [
-        "IEC 60641-3-1 Type B.2.1 / B.3.1",
-        "BS 231",
-        "IS 1576"
+        "IEC 60641-3-1 Type B.3.1",
+        "IS 1576 Grade I & II"
       ],
-      "thickness_range_mm": "0.10 - 4.0 mm",
+      "thickness_range_mm": "0.8 mm – 6.0 mm (laminated to 80 mm)",
       "standards": [
-        "IEC 60641",
         "IS 1576",
-        "BS 231"
+        "IEC 60641-3-1"
       ],
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "density_g_cm3": "1.15 – 1.25 g/cm³",
+      "evidence_source": "Senapathy Whiteley official Elephant Brand datasheets"
     },
     {
       "name": "Shell Global (Shell Diala)",
@@ -3544,7 +3771,8 @@
       "city": "Bamberg",
       "website": "https://www.trench-group.com",
       "categories": [
-        "Bushings (HV, LV)"
+        "Bushings (HV, LV)",
+        "High voltage insulators / porcelain / composite shells"
       ],
       "description": "World-renowned specialist in high-voltage and ultra-high-voltage condenser bushings (OIP, RIP, RIS) up to 1200 kV AC and ±800 kV HVDC for power transformers and shunt reactors.",
       "founded_year": 1899,
@@ -3569,10 +3797,19 @@
       ],
       "standards": [
         "IEC 60137",
-        "IEEE C57.19.00",
-        "IEEE C57.19.01"
+        "IEEE C57.19.00"
       ],
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "technology_subtypes": [
+        "RIP",
+        "RIS",
+        "OIP",
+        "Composite"
+      ],
+      "voltage_max_kv": 1200,
+      "voltage_evidence_kv": "1200 kV AC / 800 kV DC (HSP / Trench Bamberg)",
+      "max_current_a": 40000,
+      "evidence_source": "Trench Group & HSP technical datasheets"
     },
     {
       "name": "Umang Boards Ltd",
@@ -3582,27 +3819,29 @@
       "website": "https://www.umangboards.com",
       "categories": [
         "Pressboard / insulation materials",
-        "DDP / DPE (densified pressboard)"
+        "DDP / DPE (densified pressboard)",
+        "Laminated wood / insulation wood"
       ],
       "description": "Manufacturer of high-density pre-compressed electrical pressboard, laminated pressboard, insulation cylinders, spacers, and complete transformer winding insulation kits.",
       "verification_status": "Official Website Checked",
       "verification_date": "2026-09-14",
       "canonical_company_name": "Umang Boards Ltd",
       "parent_group": "Umang Group",
-      "role": "MANUFACTURER",
-      "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "product_family": "High-density pressboard",
+      "role": "CONVERTER / PROCESSOR",
+      "manufacturer_status": "CONVERTER / PROCESSOR",
+      "product_family": "Transformer Insulation Kits & Precompressed Pressboard Components",
       "manufacturer_product_name": "Umang Pre-Compressed Pressboard, Laminated Board, Insulation Kits",
       "grades": [
-        "IEC 60641-3-1 Type B.3.1",
+        "IEC 60641-3-1",
         "IS 1576"
       ],
-      "thickness_range_mm": "1.0 - 4.0 mm (unlaminated), up to 100 mm (laminated)",
+      "thickness_range_mm": "1.0 mm – 50.0 mm fabricated components",
       "standards": [
-        "IEC 60641",
-        "IS 1576"
+        "IS 1576",
+        "IEC 60641"
       ],
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "evidence_source": "Umang Boards corporate website & CPRI approvals"
     },
     {
       "name": "Unifin International",
@@ -3775,20 +4014,26 @@
       ],
       "verification_status": "Official Website Checked",
       "verification_date": "2026-08-31",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
       "source_tier": "TIER A",
       "grades": [
         "IEC 60641-3-1 Type B.3.1",
-        "Type B.3.1A",
-        "Type B.4.1"
+        "IEC 60641-3-1 Type B.3.1A",
+        "IEC 60641-3-1 Type B.4.1",
+        "ASTM D4063"
       ],
       "standards": [
-        "IEC 60641",
-        "IEC 60763",
-        "ASTM D1168"
+        "IEC 60641-3-1",
+        "ASTM D4063",
+        "ISO 9001"
       ],
-      "thickness_range_mm": "0.8 - 8.0 mm (calendered / precompressed), up to 120 mm (laminated)"
+      "thickness_range_mm": "0.8 mm – 8.0 mm (laminated up to 120 mm)",
+      "product_family": "Precompressed Transformerboard, Formed Insulation Components & Kits",
+      "manufacturer_product_name": "Transformerboard TIV, T-IV, B.3.1, B.4.1, Moulded Rings, Angle Rings, Snout Kits",
+      "density_g_cm3": "1.15 – 1.30 g/cm³",
+      "thermal_class": "105°C (Class A) & 120°C (Thermally upgraded)",
+      "evidence_source": "Weidmann Electrical Technology AG official datasheets & product manual"
     },
     {
       "name": "Wuxi Toly Electric Works Co., Ltd.",
@@ -3843,9 +4088,18 @@
       "standards": [
         "IEC 60137",
         "IS 2099",
-        "IEEE C57.19.00"
+        "IS 12676"
       ],
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "technology_subtypes": [
+        "OIP",
+        "RIP",
+        "RIS"
+      ],
+      "voltage_max_kv": 765,
+      "voltage_evidence_kv": "765 kV OIP & RIP (CPRI / KEMA type test reports)",
+      "max_current_a": 6000,
+      "evidence_source": "Yash HV official test certifications & public product ranges"
     },
     {
       "name": "Ziehl-Abegg SE",
@@ -4241,7 +4495,19 @@
       "verification_date": "2026-09-13",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "technology_subtypes": [
+        "RIP",
+        "RIS"
+      ],
+      "voltage_max_kv": 420,
+      "voltage_evidence_kv": "420 kV RIP bushings (Izolyator-Mehru JV)",
+      "max_current_a": 4000,
+      "standards": [
+        "IEC 60137",
+        "IS 2099"
+      ],
+      "evidence_source": "MIM JV official technical documentation"
     },
     {
       "name": "NACH Engineering Pvt. Ltd.",
@@ -4332,7 +4598,6 @@
       "city": "Chennai",
       "website": "https://www.onloadgears.com",
       "categories": [
-        "Bushings (HV, LV)",
         "Tap changers (OLTC / DETC)"
       ],
       "description": "Indian manufacturer of in-tank vacuum on-load tap changers, conventional oil-break OLTCs, and motorized gear drive mechanisms for distribution, power, and furnace transformers.",
@@ -4347,7 +4612,19 @@
       "standards": [
         "IEC 60214-1",
         "IS 8468"
-      ]
+      ],
+      "technology_subtypes": [
+        "Oil-type",
+        "DETC / Off-circuit"
+      ],
+      "mounting_type": [
+        "In-tank",
+        "On-tank / Compartment"
+      ],
+      "voltage_max_kv": 145,
+      "voltage_evidence_kv": "145 kV / 400 A OLTC (CPRI type tested)",
+      "max_current_a": 400,
+      "evidence_source": "Onload Gears official product specifications"
     },
     {
       "name": "Orissa Transformers Private Limited",
@@ -4741,28 +5018,30 @@
       "country": "Germany",
       "state": "Baden-Württemberg",
       "city": "Roigheim",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
       "website": "https://www.hitachienergy.com",
       "categories": [
         "Pressboard / insulation materials",
         "DDP / DPE (densified pressboard)"
       ],
-      "product_family": "Transformerboard",
-      "manufacturer_product_name": "Pucaro Transformerboard, Precompressed Pressboard, High-Density Insulating Strips",
+      "product_family": "Transformerboard & High-Density Calendered Pressboard",
+      "manufacturer_product_name": "Pucaro Transformerboard, Precompressed Pressboard Type B.3.1, High-Density Strips",
       "grades": [
         "IEC 60641-3-1 Type B.3.1",
-        "DIN 7733"
+        "IEC 60641-3-1 Type B.4.1"
       ],
-      "thickness_range_mm": "0.5 - 6.0 mm",
+      "thickness_range_mm": "0.5 mm – 8.0 mm (laminated blocks up to 100 mm)",
       "standards": [
-        "IEC 60641",
+        "IEC 60641-3-1",
         "DIN 7733"
       ],
       "description": "Renowned German manufacturer of precompressed transformerboard, calendered presspaper, transformer cylinders, dovetail spacers, and punched electrical insulation parts.",
       "source_tier": "TIER A",
       "verification_status": "Official Website Checked",
-      "verification_date": "2026-09-14"
+      "verification_date": "2026-09-14",
+      "density_g_cm3": "1.15 – 1.25 g/cm³",
+      "evidence_source": "Pucaro (Hitachi Energy) official technical catalog"
     },
     {
       "name": "Permali Wallace Pvt Ltd",
@@ -4801,27 +5080,30 @@
       "country": "Japan",
       "state": "Tokyo",
       "city": "Tokyo",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
       "website": "https://www.tomoegawa.co.jp",
       "categories": [
         "Pressboard / insulation materials"
       ],
-      "product_family": "Presspaper & specialty paper",
-      "manufacturer_product_name": "Tomoegawa Electrical Insulating Paper, Thermally Upgraded Kraft Paper",
+      "product_family": "Ultra-High Purity Electrical Kraft Paper & Aramid Heat-Resistant Paper",
+      "manufacturer_product_name": "Tomoegawa Electrical Insulating Paper, Heat Resistant Transformer Paper",
       "grades": [
         "JIS C 2307",
         "IEC 60554"
       ],
       "thickness_range_mm": "0.03 - 0.50 mm",
       "standards": [
-        "JIS C 2307",
+        "JIS C 2301",
         "IEC 60554"
       ],
       "description": "Japanese specialty papermaker producing high-purity electrical insulating paper, thermally upgraded paper, and dielectric barrier sheets for power transformers and cables.",
       "source_tier": "TIER A",
       "verification_status": "Official Website Checked",
-      "verification_date": "2026-09-14"
+      "verification_date": "2026-09-14",
+      "thermal_class": "105°C & 120°C",
+      "base_thickness_mm": "0.03 mm – 0.25 mm",
+      "evidence_source": "Tomoegawa official technical catalog"
     },
     {
       "name": "Henan Yaan Electrical Insulation Material Co., Ltd.",
@@ -4830,28 +5112,33 @@
       "country": "China",
       "state": "Henan",
       "city": "Xuchang",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
       "website": "https://www.yaan-insulation.com",
       "categories": [
         "Pressboard / insulation materials",
         "DDP / DPE (densified pressboard)"
       ],
-      "product_family": "Pressboard",
-      "manufacturer_product_name": "DDP Diamond Dotted Paper, Electrical Pressboard, Crepe Paper Tubes",
+      "product_family": "Diamond Dotted Paper, Electrical Pressboard & Flexible Composites",
+      "manufacturer_product_name": "Yaan DDP Diamond Dotted Paper, Transformer Pressboard, DMD / NMN Laminates",
       "grades": [
         "IEC 60641",
         "GB/T 1926.1"
       ],
       "thickness_range_mm": "0.08 - 4.0 mm",
       "standards": [
-        "IEC 60641",
-        "GB/T 1926"
+        "IEC 60554-3-5",
+        "IEC 60641-3-2",
+        "GB/T 20634"
       ],
       "description": "Chinese manufacturer of diamond-dotted presspaper (DDP), electrotechnical pressboard, crepe paper tubes, insulation paper rolls, and flexible composite insulation materials.",
       "source_tier": "TIER A",
       "verification_status": "Official Website Checked",
-      "verification_date": "2026-09-14"
+      "verification_date": "2026-09-14",
+      "thermal_class": "105°C (Class A) & 120°C (Class E)",
+      "epoxy_coating_pattern": "Single-sided and double-sided B-stage diamond epoxy dots",
+      "base_thickness_mm": "0.08 mm – 0.50 mm",
+      "evidence_source": "Henan Yaan official catalog and ISO/IEC certificates"
     },
     {
       "name": "Baoding Xinyuan Electrical Insulation Material Co., Ltd.",
@@ -4860,28 +5147,33 @@
       "country": "China",
       "state": "Hebei",
       "city": "Baoding",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
       "website": "https://www.xinyuan-insulation.com",
       "categories": [
         "Pressboard / insulation materials",
-        "DDP / DPE (densified pressboard)"
+        "DDP / DPE (densified pressboard)",
+        "Laminated wood / insulation wood"
       ],
-      "product_family": "Pre-compressed pressboard",
-      "manufacturer_product_name": "High Density Pre-Compressed Pressboard, Insulation Cylinders, End Rings",
+      "product_family": "Diamond Dotted Paper, Precompressed Pressboard & Transformer Insulation Kits",
+      "manufacturer_product_name": "DDP Diamond Dotted Paper, Electrical Pressboard, Crepe Paper Tubes",
       "grades": [
         "IEC 60641-3-1 Type B.3.1",
         "GB/T 1926"
       ],
       "thickness_range_mm": "0.8 - 6.0 mm (sheets), cylinders up to 4000 mm diameter",
       "standards": [
-        "IEC 60641",
-        "GB/T 1926"
+        "IEC 60554-3-5",
+        "IEC 60641-3-1"
       ],
       "description": "Chinese high-voltage insulation manufacturer specialized in pre-compressed pressboard, large-diameter transformer cylinders, molded angle rings, and winding insulation kits up to 1000 kV.",
       "source_tier": "TIER A",
       "verification_status": "Official Website Checked",
-      "verification_date": "2026-09-14"
+      "verification_date": "2026-09-14",
+      "thermal_class": "105°C & 120°C",
+      "epoxy_coating_pattern": "Double-sided diamond epoxy pattern",
+      "base_thickness_mm": "0.08 mm – 0.35 mm",
+      "evidence_source": "Baoding Xinyuan official documentation"
     },
     {
       "name": "Spaulding Composites Inc.",
@@ -4965,7 +5257,18 @@
       "description": "Major Chinese state manufacturer of ultra-high-voltage AC and DC transformer condenser bushings, converter transformer wall bushings, and gas-insulated bushing assemblies.",
       "source_tier": "TIER A",
       "verification_status": "Official Website Checked",
-      "verification_date": "2026-09-14"
+      "verification_date": "2026-09-14",
+      "technology_subtypes": [
+        "OIP",
+        "RIP",
+        "RIS",
+        "Composite",
+        "Porcelain"
+      ],
+      "voltage_max_kv": 1100,
+      "voltage_evidence_kv": "1100 kV UHV AC / ±1100 kV DC converter bushings",
+      "max_current_a": 40000,
+      "evidence_source": "Xi'an XD official catalog and State Grid UHV approvals"
     },
     {
       "name": "CEDASPE S.p.A. (Reinhausen Group)",
@@ -4979,8 +5282,9 @@
       "website": "https://www.reinhausen.com",
       "categories": [
         "Bushings (HV, LV)",
-        "Oil-level indicators",
-        "Breathers (silica gel)"
+        "Tap changers (OLTC / DETC)",
+        "Breathers (silica gel)",
+        "Pressure-relief devices"
       ],
       "product_family": "Distribution & medium-voltage bushings",
       "manufacturer_product_name": "CEDASPE DIN/EN Porcelain Bushings, Epoxy Resin Bushings, Dehydrating Breathers",
@@ -4989,13 +5293,25 @@
       ],
       "standards": [
         "DIN 42531",
+        "DIN 42532",
+        "DIN 42533",
+        "DIN 42534",
         "EN 50180",
         "IEC 60137"
       ],
       "description": "Manufacturer of medium-voltage and distribution transformer bushings (porcelain and cast resin), dehydrating air breathers, oil level gauges, and transformer tank accessories.",
       "source_tier": "TIER A",
       "verification_status": "Official Website Checked",
-      "verification_date": "2026-09-14"
+      "verification_date": "2026-09-14",
+      "technology_subtypes": [
+        "Porcelain",
+        "Solid",
+        "DETC / Off-circuit"
+      ],
+      "voltage_max_kv": 72.5,
+      "voltage_evidence_kv": "72.5 kV (DIN 42531-42534 & EN 50180 porcelain bushings)",
+      "max_current_a": 10000,
+      "evidence_source": "CEDASPE official catalog"
     },
     {
       "name": "Prolec GE Waukesha (Tap Changer Division)",
@@ -5016,12 +5332,26 @@
         "Up to 230 kV / 1200 A"
       ],
       "standards": [
-        "IEEE C57.131"
+        "IEEE C57.131",
+        "IEC 60214-1"
       ],
       "description": "North American manufacturer and servicer of heavy-duty load tap changers (UZD® and UZF® models), automated electronic LTC controllers, and OEM tap changer retrofit kits.",
       "source_tier": "TIER A",
       "verification_status": "Official Website Checked",
-      "verification_date": "2026-09-14"
+      "verification_date": "2026-09-14",
+      "technology_subtypes": [
+        "Vacuum-type",
+        "Oil-type",
+        "DETC / Off-circuit"
+      ],
+      "mounting_type": [
+        "In-tank",
+        "Compartment-mounted"
+      ],
+      "voltage_max_kv": 345,
+      "voltage_evidence_kv": "345 kV (UZ / UZF vacuum & resistive tap changers)",
+      "max_current_a": 1200,
+      "evidence_source": "Prolec GE Waukesha technical documentation"
     },
     {
       "name": "MESSKO GmbH (Reinhausen Group)",
