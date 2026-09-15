@@ -26,18 +26,36 @@ const PAGES = [
     file: 'components/transformer-bushings.html',
     title: 'Transformer Bushings & Terminations',
     standards: 'IEC 60137, IEEE C57.19, DIN 42530',
-    lead: 'Oil-impregnated paper (OIP), resin-impregnated paper (RIP), and resin-impregnated synthetics (RIS) condenser bushings for HV/LV line connections, terminal plates, and cable boxes up to 1,200 kV AC and 800 kV DC.',
+    lead: 'Active condenser electrical lead-through apparatus: Oil-impregnated paper (OIP), resin-impregnated paper (RIP), and resin-impregnated synthetics (RIS) condenser bushings for HV/LV line connections, terminal plates, and cable boxes up to 1,200 kV AC and 800 kV DC.',
     subcats: [
-      { title: 'HV RIP / RIS Bushings', desc: 'Dry-type resin-impregnated condenser bushings for 36 kV to 1200 kV AC and HVDC converter transformers with zero explosion risk.' },
+      { title: 'HV RIP / RIS Condenser Bushings', desc: 'Dry-type resin-impregnated paper and synthetic condenser bushings for 36 kV to 1200 kV AC and HVDC converter transformers with zero explosion risk.' },
       { title: 'OIP Condenser Bushings', desc: 'Oil-impregnated paper bushings with capacitive grading for high-voltage power transformers and substations.' },
-      { title: 'LV Porcelain / DIN Bushings', desc: 'DIN 42530 and standard porcelain/epoxy bushings, 1 kV to 36 kV, rated up to several kA for distribution transformers.' },
-      { title: 'Plug-in / Elbow Terminations', desc: 'Dead-break and load-break separable screened connectors for compact pad-mounted and RMU-fed transformers.' }
+      { title: 'LV High-Current DIN Bushings', desc: 'DIN 42530 and standard porcelain/epoxy bushings, 1 kV to 36 kV, rated up to several kA for distribution and furnace transformers.' },
+      { title: 'Plug-in GIS & Cable Terminations', desc: 'Dead-break and load-break separable screened connectors for compact pad-mounted, GIS, and RMU-fed transformers.' }
     ],
     deepCatIds: ['bushings'],
     accCats: ['Bushings (HV, LV)'],
     faq: [
       { q: 'What is the operational difference between OIP and RIP bushings?', a: 'OIP bushings contain liquid mineral oil with paper insulation requiring oil level monitoring. RIP/RIS bushings use solid cured resin without free oil, eliminating fire hazards, moisture ingress risks, and allowing horizontal mounting.' },
       { q: 'What parameters govern transformer bushing selection?', a: 'System highest voltage (Um), basic impulse level (BIL), rated continuous current, creepage distance / pollution severity class (IEC 60815), cantilever strength, and dielectric dissipation factor (tan delta).' }
+    ]
+  },
+  {
+    file: 'components/high-voltage-insulators.html',
+    title: 'High-Voltage Insulators & Bushing Shells',
+    standards: 'IEC 60672, IEC 61462, IEC 60273, IEC 60815, IEC 60383',
+    lead: 'External high-voltage insulation components: Electro-porcelain hollow and solid-core insulators, composite silicone rubber hollow-core insulator shells for transformer condenser bushings, substation station post insulators, and line terminations up to 1,200 kV AC and 1,100 kV DC.',
+    subcats: [
+      { title: 'Electro-Porcelain Hollow Core Shells', desc: 'High-strength C-120 and C-130 aluminous porcelain hollow insulators for RIP/OIP transformer bushings, instrument transformers, and surge arresters.' },
+      { title: 'Composite Silicone Rubber Insulators', desc: 'High-temperature vulcanized (HTV) and liquid silicone rubber (LSR) hollow core insulators on FRP tube according to IEC 61462 with hydrophobic performance in heavy pollution.' },
+      { title: 'Solid Core Station Post Insulators', desc: 'High cantilever-strength cylindrical porcelain and composite station post insulators (IEC 60273) for substation busbar supports and disconnector terminations.' },
+      { title: 'Cap & Pin / Long Rod Suspension Strings', desc: 'Toughened glass and porcelain disc insulator strings for high-voltage substation gantry take-offs and overhead grid connections.' }
+    ],
+    deepCatIds: ['high-voltage-insulators'],
+    accCats: ['High voltage insulators / porcelain / composite shells'],
+    faq: [
+      { q: 'What is the distinction between a Transformer Bushing and an Insulator?', a: 'A Transformer Bushing is an active, complete electrical lead-through assembly containing an internal condenser grading core (RIP, RIS, or OIP) designed to carry current at high voltage through the grounded tank. An Insulator is the external dielectric housing (porcelain or composite silicone shell) that provides external creepage distance and flashover withstand.' },
+      { q: 'Why choose composite silicone rubber hollow cores over porcelain for bushings?', a: 'Composite silicone insulators offer superior pollution performance via hydrophobicity transfer, lighter weight (saving up to 70% in structural load), shatter-proof explosion safety (no ceramic shrapnel during internal arc faults), and superior seismic resistance.' }
     ]
   },
   {
@@ -61,18 +79,19 @@ const PAGES = [
   {
     file: 'components/insulation-materials.html',
     title: 'Transformer Insulation Materials & Pressboard',
-    standards: 'IEC 60641, IEC 60763, IEC 60893, ASTM D2413',
-    lead: 'Pre-compressed high-density transformerboard, diamond dotted paper (DDP), crepe paper, laminated wood clamping beams, and high-temperature aramid insulation.',
+    standards: 'IEC 60641, IEC 60763, IEC 61061, IEC 60893, ASTM D2413',
+    lead: 'Internal transformer solid dielectric materials: Pre-compressed high-density transformerboard (Type B.3.1), diamond dotted paper (DDP), kraft insulating paper, crepe paper tubes, laminated densified wood clamping beams, and high-temperature aramid insulation.',
     subcats: [
-      { title: 'Transformerboard (High-Density Pressboard)', desc: 'Pure unbleached kraft cellulose board for cylinders, barriers, angle rings, and winding clamping plates.' },
-      { title: 'Diamond Dotted Paper (DDP / DPE)', desc: 'Epoxy resin dot-coated kraft insulation paper that cures during heat-run to bond windings into rigid blocks.' },
-      { title: 'Laminated Densified Wood', desc: 'Beechwood laminates bonded under extreme pressure for non-magnetic core clamping beams, rings, and pressure plates.' },
-      { title: 'Aramid Insulation (Nomex®)', desc: 'High-temperature thermal class H/C (180°C–220°C) aramid sheet and paper for dry-type, traction, and high-temperature liquid transformers.' }
+      { title: 'Transformerboard (High-Density Pressboard)', desc: 'Pure unbleached kraft cellulose precompressed board (IEC 60641-3-1 Type B.3.1) for barriers, cylinders, angle rings, snouts, and winding clamping plates.' },
+      { title: 'Diamond Dotted Paper (DDP / DPE)', desc: 'Epoxy resin dot-coated kraft insulation paper that cures during heat-run to bond windings into rigid blocks resisting short-circuit forces.' },
+      { title: 'Laminated Densified Wood (IEC 61061)', desc: 'Selected beechwood veneers bonded with thermosetting synthetic resins under high heat and pressure (Lignostone / Permali) for non-magnetic core clamping beams, rings, and pressure plates.' },
+      { title: 'Aramid High-Temperature Insulation (Nomex®)', desc: 'High-temperature thermal class H/C (180°C–220°C) synthetic aramid sheet and paper for dry-type, traction, mobile, and high-temperature liquid transformers.' }
     ],
-    deepCatIds: ['pressboard', 'insulation-wood', 'ddp-paper'],
+    deepCatIds: ['pressboard', 'laminated-wood', 'ddp-dpe'],
     accCats: ['Pressboard / insulation materials', 'DDP / DPE (densified pressboard)', 'Laminated wood / insulation wood'],
     faq: [
-      { q: 'What is the dielectric difference between Calendered Pressboard and Transformerboard?', a: 'Transformerboard (IEC 60641-3-1 Type B.3.1) is high-density, dimensionally stable, hot-press dried board with low compressibility (<5%) used for structural and high-voltage barriers. Calendered pressboard is softer and used for punching formed parts.' },
+      { q: 'What is the fundamental difference between Insulation Materials and Insulators?', a: 'Insulation Materials are internal dielectric solids (pressboard, cellulose paper, laminated wood, aramid) placed inside the oil-filled or dry-type transformer tank to isolate windings and core. Insulators are external structural ceramic/composite components mounted outside the tank to provide atmospheric creepage clearance for live terminals.' },
+      { q: 'What is the dielectric difference between Calendered Pressboard and Precompressed Transformerboard?', a: 'Precompressed Transformerboard (IEC 60641-3-1 Type B.3.1) is high-density (≥1.15 g/cm³), dimensionally stable, hot-press dried board with low compressibility (<5%) used for structural barriers and clamping. Calendered pressboard (Type B.2.1) is softer and more flexible, used for punching and forming shape components.' },
       { q: 'Why is Diamond Dotted Paper critical for short-circuit withstand?', a: 'During oven drying, the B-stage epoxy dots melt, flow, and polymerize, bonding adjacent turns and layers into a solid structural monolith capable of resisting severe radial and axial electromagnetic short-circuit forces.' }
     ]
   },

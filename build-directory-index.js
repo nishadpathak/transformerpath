@@ -610,7 +610,7 @@ MFG.forEach((c) => {
   mfgRows.push(row);
 });
 
-const index = mfgRows
+const nonMfgRows = []
   .concat(ACC_SUPPLIERS.map(buildSupplier))
   .concat(MACH_DATA.map(buildMachinery))
   .concat(LAB_DATA.map(buildLaboratory))
@@ -620,6 +620,48 @@ const index = mfgRows
   .concat(EDU_DATA.map(buildEducation))
   .concat(BYR_DATA.map(buildBuyer))
   .concat(MED_DATA.map(buildMedia));
+
+const index = mfgRows.slice();
+const indexByCanon = new Map();
+mfgRows.forEach(r => {
+  if (r.id) indexByCanon.set(r.id, r);
+  if (r.slug) indexByCanon.set(r.slug, r);
+  if (r.name) indexByCanon.set(r.name.toLowerCase().trim(), r);
+});
+
+nonMfgRows.forEach(row => {
+  const normName = row.name.toLowerCase().trim();
+  let existing = null;
+  if (row.id && indexByCanon.has(row.id)) existing = indexByCanon.get(row.id);
+  else if (row.slug && indexByCanon.has(row.slug)) existing = indexByCanon.get(row.slug);
+  else if (indexByCanon.has(normName)) existing = indexByCanon.get(normName);
+
+  if (existing) {
+    // Merge roles
+    existing.roles = Array.from(new Set((existing.roles || []).concat(row.roles || [])));
+    // Merge capability_labels
+    existing.capability_labels = Array.from(new Set((existing.capability_labels || []).concat(row.capability_labels || [])));
+    // Merge product codes
+    existing.product_codes = Array.from(new Set((existing.product_codes || []).concat(row.product_codes || [])));
+    // Merge certs
+    if (row.certs && row.certs.length) {
+      existing.certs = Array.from(new Set((existing.certs || []).concat(row.certs)));
+    }
+    // Update website if missing
+    if (!existing.website && row.website) existing.website = row.website;
+    // Upgrade completeness score
+    if (row.completeness_score > (existing.completeness_score || 0)) {
+      existing.completeness_score = row.completeness_score;
+    }
+    return;
+  }
+
+  // Register new distinct entry
+  if (row.id) indexByCanon.set(row.id, row);
+  if (row.slug) indexByCanon.set(row.slug, row);
+  indexByCanon.set(normName, row);
+  index.push(row);
+});
 
 try {
   const listingTier = require('./lib/listing-tier');

@@ -682,7 +682,7 @@ const idxFoot = fs.readFileSync('_partials/footer.html', 'utf8').trim();
 const idx = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
   '<title>Transformer Markets Intelligence by Country | TransformerPath</title>' +
   '<meta name="description" content="Country transformer intelligence dashboards — grid operators, manufacturing bases, factories, components, live tenders, project pipelines and RFQ routing for key global markets.">' +
-  '<link rel="canonical" href="https://transformerpath.com/markets.html"><link rel="stylesheet" href="style.css?v=13"><link rel="stylesheet" href="tp-nav.css?v=13"><link rel="icon" type="image/svg+xml" href="brand/favicon.svg">' +
+  '<link rel="canonical" href="https://transformerpath.com/markets.html"><link rel="stylesheet" href="style.css?v=14"><link rel="stylesheet" href="tp-nav.css?v=13"><link rel="icon" type="image/svg+xml" href="brand/favicon.svg">' +
   '<style>' +
   '.market-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px;margin-top:20px}' +
   '.m-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;display:flex;flex-direction:column;justify-content:space-between;transition:transform .15s ease,box-shadow .15s ease}' +

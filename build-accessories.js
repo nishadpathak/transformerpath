@@ -40,6 +40,7 @@ const CAT_TO_COMP = {
   'Oil-level indicators': 'protection-monitoring',
   'Pressure-relief devices': 'protection-monitoring',
   'Bushings (HV, LV)': 'transformer-bushings',
+  'High voltage insulators / porcelain / composite shells': 'high-voltage-insulators',
   'Tap changers (OLTC / DETC)': 'on-load-tap-changers',
   'Radiators / cooling systems': 'transformer-cooling',
   'Cooling fans': 'transformer-cooling',
@@ -59,7 +60,7 @@ function compLinks(s) {
   const slugs = [...new Set((s.categories || []).map((c) => CAT_TO_COMP[c]).filter(Boolean))];
   if (!slugs.length) return '';
   // Component directory labels for the pills' accessible text.
-  const LABEL = { 'protection-monitoring': 'Protection & Monitoring', 'transformer-bushings': 'Bushings & Terminations', 'on-load-tap-changers': 'Tap-Changers', 'transformer-cooling': 'Cooling', 'insulation-materials': 'Insulation Materials', 'conductors-and-core': 'Conductors & Core', 'oil-fluids-preservation': 'Oil, Fluids & Preservation', 'tank-and-mechanical': 'Tank & Mechanical' };
+  const LABEL = { 'protection-monitoring': 'Protection & Monitoring', 'transformer-bushings': 'Bushings & Terminations', 'high-voltage-insulators': 'High-Voltage Insulators', 'on-load-tap-changers': 'Tap-Changers', 'transformer-cooling': 'Cooling', 'insulation-materials': 'Insulation Materials', 'conductors-and-core': 'Conductors & Core', 'oil-fluids-preservation': 'Oil, Fluids & Preservation', 'tank-and-mechanical': 'Tank & Mechanical' };
   return '<h2>Related components</h2><div style="margin:4px 0 8px">' + slugs.map((c) => '<a class="tpill" href="../../components/' + c + '.html" data-track="component_crosslink" data-track-supplier="' + esc(s.name) + '">' + esc(LABEL[c] || c) + '</a>').join(' ') + '</div>';
 }
 

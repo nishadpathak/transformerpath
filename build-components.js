@@ -37,18 +37,18 @@ const html = `<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Transformer Component Manufacturers Directory (Deep Dive) | TransformerPath</title>
-<meta name="description" content="Global directory of verified transformer component and accessory manufacturers across 21 specialized categories: bushings, tap changers, Buchholz relays, radiators, breathers, pressboard, CTC, CRGO, and test equipment.">
+<meta name="description" content="Global directory of verified transformer component, insulator, and accessory manufacturers across 22 specialized categories: bushings, high-voltage insulators, tap changers, Buchholz relays, radiators, breathers, pressboard, CTC, CRGO, and test equipment.">
 <link rel="canonical" href="https://transformerpath.com/components.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TransformerPath">
 <meta property="og:title" content="Transformer Component Manufacturers Directory (Deep Dive) | TransformerPath">
-<meta property="og:description" content="Specialized directory of component manufacturers across 21 categories: Bushings, OLTCs, Relays, Radiators, Pressboard, CRGO, CTC, and Testing Equipment.">
+<meta property="og:description" content="Specialized directory of component and insulator manufacturers across 22 categories: Bushings, HV Insulators, OLTCs, Relays, Radiators, Pressboard, CRGO, CTC, and Testing Equipment.">
 <meta property="og:url" content="https://transformerpath.com/components.html">
 <meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
 <meta name="robots" content="index,follow">
 <meta name="theme-color" content="#0d1b2e">
 <link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
-<link rel="stylesheet" href="style.css?v=12">
+<link rel="stylesheet" href="style.css?v=14">
 <link rel="stylesheet" href="tp-nav.css?v=15">
 <link rel="stylesheet" href="tp-feedback.css?v=12">
 <style>
@@ -284,10 +284,15 @@ ${FOOT}
 <script>
 const COMPONENTS = {
  "Bushings & Terminations":[
-  ["HV Porcelain Bushings","Oil-impregnated paper or resin bushings for 36–550 kV line connections."],
-  ["LV Bushings","DIN-type porcelain or epoxy bushings, 1–3.6 kV, up to several kA."],
-  ["Plug-in / Elbow Bushings","Dead-break separable connectors for compact and RMU-fed transformers."],
-  ["Epoxy Monoblocks & Terminal Plates","Cast-resin multi-terminal blocks for distribution transformers."]],
+  ["HV RIP / RIS Condenser Bushings","Dry-type resin-impregnated paper and synthetic condenser bushings up to 1200 kV AC / 1100 kV DC."],
+  ["OIP Condenser Bushings","Oil-impregnated paper condenser bushings for high-voltage power transformers."],
+  ["LV High-Current DIN Bushings","DIN-type porcelain or epoxy bushings, 1–36 kV, up to several kA."],
+  ["Plug-in / Elbow Bushings","Dead-break and load-break separable screened connectors for pad-mounted and GIS transformers."]],
+ "High-Voltage Insulators":[
+  ["Electro-Porcelain Hollow Cores","Hollow porcelain insulator housings for transformer condenser bushings and instrument transformers."],
+  ["Composite Silicone Rubber Insulators","Hydrophobic silicone rubber hollow core insulators with FRP tube according to IEC 61462."],
+  ["Solid Core Station Post Insulators","High-strength cylindrical porcelain and composite station post insulators for substation terminations."],
+  ["Suspension & Disc Insulators","Toughened glass and porcelain disc insulator strings for overhead transformer take-offs."]],
  "Tap-Changers":[
   ["Vacuum OLTC","Low-maintenance on-load tap-changers with vacuum interrupters for power transformers."],
   ["Oil Diverter OLTC","Conventional high-capacity on-load tap-changers."],
@@ -310,12 +315,12 @@ const COMPONENTS = {
   ["Oil Pumps","Circulation pumps for OF/OD cooling stages."],
   ["Oil-to-Air / Oil-to-Water Coolers","Compact forced coolers for large or space-limited units."]],
  "Insulation Materials":[
-  ["Pressboard (Transformerboard)","High-density cellulose board — barriers, cylinders, angle rings."],
-  ["Diamond Dotted Paper (DDP)","Epoxy-dotted kraft paper bonding layer insulation."],
-  ["Crepe Paper & Tubes","Conformable covering for leads and connections."],
-  ["Laminated Wood","Clamping beams and support structures."],
-  ["Spacers, Wedges & Cylinders","Machined pressboard forming cooling ducts and coil support."],
-  ["Nomex® / Aramid Papers","High-temperature insulation for dry-type and hybrid systems."]],
+  ["Pressboard (Transformerboard)","High-density cellulose board (IEC 60641-3-1 Type B.3.1) — barriers, cylinders, angle rings, snouts."],
+  ["Diamond Dotted Paper (DDP)","Epoxy-dotted kraft paper bonding layer insulation for short-circuit strength."],
+  ["Crepe Paper & Tubes","Conformable insulation for leads, cable take-offs, and winding connections."],
+  ["Laminated Densified Wood","IEC 61061 densified beechwood clamping beams, rings, and pressure plates."],
+  ["Spacers, Wedges & Cylinders","Machined pressboard forming radial cooling ducts and winding support."],
+  ["Nomex® / Aramid Papers","High-temperature thermal class H/C (180°C–220°C) aramid insulation."]],
  "Conductors & Core":[
   ["CTC (Continuously Transposed Conductor)","Multi-strand transposed copper for low-loss large windings."],
   ["Paper-Covered Copper/Aluminium","Round and rectangular covered conductor for windings."],
