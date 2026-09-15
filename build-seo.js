@@ -213,7 +213,7 @@ TYPE_HUBS.forEach(function (th) {
       '</head>\n<body>\n' + HEAD + '\n<main id="main" tabindex="-1" class="c-wrap">\n' +
       '<nav style="font-size:.82rem;color:var(--muted);margin-bottom:12px">' + crumbs + '</nav>\n' +
       '<h1>' + esc(title) + '</h1>\n' +
-      '<p class="lead">' + esc(lead) + ' Listing ' + makersList.length + ' verified manufacturers with technical capabilities, locations, comparison tools, and direct RFQ channels.</p>\n' +
+      '<p class="lead">' + esc(lead) + ' Listing ' + makersList.length + ' listed manufacturers with technical capabilities, locations, comparison tools, and direct RFQ channels.</p>\n' +
       (extraHtml || '') +
       '<div style="margin:20px 0">' + rows + '</div>\n' +
       '<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:18px 20px;text-align:center;margin-top:28px">' +
@@ -224,7 +224,7 @@ TYPE_HUBS.forEach(function (th) {
       '</div>\n' +
       '<div class="card" style="background:var(--bg);border:1px solid var(--border);padding:14px 18px;text-align:center;margin-top:14px">' +
       '<b style="color:var(--text)">Find something inaccurate or missing?</b>' +
-      '<p style="color:var(--muted);font-size:.85rem;margin:4px 0 10px">Help keep the global transformer industry database clean and verified.</p>' +
+      '<p style="color:var(--muted);font-size:.85rem;margin:4px 0 10px">Help keep the global transformer industry database clean and up to date.</p>' +
       '<a class="btn btn-outline btn-sm" href="/correct-company.html" data-track="manufacturer_correction_started">Suggest a correction →</a>' +
       '</div>\n' +
       '</main>\n' + FOOT + '\n<script src="/analytics.js?v=2" defer></script>\n</body>\n</html>';

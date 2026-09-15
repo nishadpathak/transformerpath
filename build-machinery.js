@@ -183,6 +183,44 @@ ${HEAD}
     </div>
   </div>
 
+  <section class="factory-blueprint" style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px;margin-bottom:28px">
+    <div style="font-size:.76rem;text-transform:uppercase;letter-spacing:.06em;color:var(--amber);font-weight:700">Factory Engineering Blueprint</div>
+    <h2 style="font-size:1.35rem;color:var(--ink);margin:4px 0 10px">400 kV / EHV Power Transformer Plant: Process &amp; Machinery Roadmap</h2>
+    <p style="color:var(--muted);font-size:.9rem;line-height:1.6;margin-bottom:18px">Setting up an EHV (400 kV–765 kV) power transformer plant requires a coordinated chain of specialized manufacturing equipment across 6 core shop-floor processes:</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px">
+      <div class="bp-step" style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px">
+        <div style="font-weight:700;color:var(--text);font-size:.95rem;margin-bottom:4px">1. Core Slitting &amp; Step-Lap Cutting</div>
+        <div style="font-size:.82rem;color:var(--muted);line-height:1.5">CNC step-lap cut-to-length lines with robotic stacking for 0.23–0.30 mm Hi-B CRGO steel sheet.</div>
+        <div style="font-size:.78rem;color:var(--accent);margin-top:6px"><b>Key Builders:</b> Heinrich Georg, Tuboly-Astronic, Soenen</div>
+      </div>
+      <div class="bp-step" style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px">
+        <div style="font-weight:700;color:var(--text);font-size:.95rem;margin-bottom:4px">2. High-Precision Coil Winding</div>
+        <div style="font-size:.82rem;color:var(--muted);line-height:1.5">Vertical &amp; horizontal winding machines with continuous tension control for CTC and disk/helical windings.</div>
+        <div style="font-size:.78rem;color:var(--accent);margin-top:6px"><b>Key Builders:</b> Tuboly-Astronic, L&amp;F, Joyee, BR Technology</div>
+      </div>
+      <div class="bp-step" style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px">
+        <div style="font-weight:700;color:var(--text);font-size:.95rem;margin-bottom:4px">3. CNC Solid Insulation Fabrication</div>
+        <div style="font-size:.82rem;color:var(--muted);line-height:1.5">5-axis CNC machining centers for transformerboard cylinders, angle rings, snout exits, and lead supports.</div>
+        <div style="font-size:.78rem;color:var(--accent);margin-top:6px"><b>Key Builders:</b> Weidmann, Krempel, Hedrich CNC</div>
+      </div>
+      <div class="bp-step" style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px">
+        <div style="font-weight:700;color:var(--text);font-size:.95rem;margin-bottom:4px">4. Vapour-Phase Drying (VPD) Autoclaves</div>
+        <div style="font-size:.82rem;color:var(--muted);line-height:1.5">Kerosene vapor-phase drying chambers ensuring active-part cellulose moisture is reduced to &lt;0.5%.</div>
+        <div style="font-size:.78rem;color:var(--accent);margin-top:6px"><b>Key Builders:</b> Hedrich Group, Meier Prozesstechnik, Micafil</div>
+      </div>
+      <div class="bp-step" style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px">
+        <div style="font-weight:700;color:var(--text);font-size:.95rem;margin-bottom:4px">5. Vacuum Oil Degassing &amp; Tank Filling</div>
+        <div style="font-size:.82rem;color:var(--muted);line-height:1.5">Multi-stage high-vacuum oil dehydration, degasification (&lt;5 ppm moisture, &lt;0.1% gas), and automated filling.</div>
+        <div style="font-size:.78rem;color:var(--accent);margin-top:6px"><b>Key Builders:</b> Micafil, Enervac, Filtervac, GlobeCore, Baron USA</div>
+      </div>
+      <div class="bp-step" style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px">
+        <div style="font-weight:700;color:var(--text);font-size:.95rem;margin-bottom:4px">6. High-Voltage Test Bay Systems</div>
+        <div style="font-size:.82rem;color:var(--muted);line-height:1.5">Faraday-shielded test bay with lightning/switching impulse generators (&ge;2,400 kV), PD detectors, and loss measurement.</div>
+        <div style="font-size:.78rem;color:var(--accent);margin-top:6px"><b>Key Builders:</b> Haefely, HIGHVOLT Dresden, Phenix Technologies</div>
+      </div>
+    </div>
+  </section>
+
   <div class="mach-grid" id="machGrid">${initialCardsHtml}</div>
 
   <div class="rfq-banner">

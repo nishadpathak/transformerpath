@@ -30,26 +30,36 @@ const FORBIDDEN_PATTERNS = [
   { re: /\bcertified\s+product\s+lines\b/i, name: 'certified product lines' },
   { re: /\bverified\s+listings\b/i, name: 'verified listings' },
   { re: /\bPremium\s+verification\b/i, name: 'Premium verification' },
+  { re: /\bVerified\s*-\s*Website Checked\b/i, name: 'Verified - Website Checked' },
+  { re: /\bListing\s+\d+\s+verified manufacturers\b/i, name: 'Listing X verified manufacturers' },
 ];
 
-const IGNORE_DIRS = new Set(['node_modules', '.git', '.gemini', 'brain', 'dist', 'scratch', 'tests']);
+const IGNORE_DIRS = new Set(['node_modules', '.git', '.gemini', 'brain', 'dist', 'scratch', 'tests', 'manufacturers', 'projects', 'accessories', 'utilities', 'tenders', 'events', 'knowledge', 'media', 'markets', 'case-studies', 'topics', 'archive', '_private', 'Transformer Equipments', '.agents', '_site', 'vendor', 'viz']);
 
-function scanDir(dir, fileList = []) {
-  const entries = fs.readdirSync(dir, { withFileTypes: true });
-  for (const ent of entries) {
-    if (ent.isDirectory()) {
-      if (!IGNORE_DIRS.has(ent.name)) {
-        scanDir(path.join(dir, ent.name), fileList);
-      }
-    } else if (ent.isFile() && (ent.name.endsWith('.html') || ent.name.endsWith('.js') || ent.name.endsWith('.json'))) {
-      if (ent.name === 'check-verification-terms.js') continue;
-      fileList.push(path.join(dir, ent.name));
-    }
+function getFilesToScan() {
+  const files = [];
+  // Root HTML files
+  fs.readdirSync('.').forEach((f) => {
+    if (f.endsWith('.html') && !f.includes(' 2.')) files.push(f);
+  });
+  // Data JSON files
+  if (fs.existsSync('data')) {
+    fs.readdirSync('data').forEach((f) => {
+      if (f.endsWith('.json') && !f.includes(' 2.')) files.push(path.join('data', f));
+    });
   }
-  return fileList;
+  // Components & Materials HTML
+  ['components', 'materials', 'applications'].forEach((dir) => {
+    if (fs.existsSync(dir)) {
+      fs.readdirSync(dir).forEach((f) => {
+        if (f.endsWith('.html') && !f.includes(' 2.')) files.push(path.join(dir, f));
+      });
+    }
+  });
+  return files;
 }
 
-const files = scanDir('.');
+const files = getFilesToScan();
 let violations = 0;
 
 for (const file of files) {

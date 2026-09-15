@@ -22,18 +22,10 @@ const JS_V = A.js || 1;
 const THEME_V = A.theme || 1;
 const SW_CACHE = A.sw || 'transformerpath-v1';
 
-const SKIP = new Set(['archive', '_private', 'transformerpath-site', 'node_modules', '.git', 'Transformer Equipments', 'dist']);
+const SKIP_DIRS = new Set(['archive', '_private', 'transformerpath-site', 'node_modules', '.git', 'Transformer Equipments', 'dist', 'manufacturers', 'projects', 'accessories', 'utilities', 'tenders', 'events', 'knowledge', 'markets', 'case-studies', 'topics', 'functions', 'vendor', 'viz']);
 
 function walk(dir) {
-  let out = [];
-  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
-    if (e.name.startsWith('.')) continue;
-    if (SKIP.has(e.name)) continue;
-    const p = path.join(dir, e.name);
-    if (e.isDirectory()) out = out.concat(walk(p));
-    else if (e.name.endsWith('.html')) out.push(p);
-  }
-  return out;
+  return fs.readdirSync(dir).filter((f) => f.endsWith('.html') && !f.includes(' 2.'));
 }
 
 const files = walk('.');

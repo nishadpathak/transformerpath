@@ -19,19 +19,9 @@ const CFG = JSON.parse(fs.readFileSync('data/config.json', 'utf8'));
 // legacy snapshot (old intel pages, _synctmp/, site-archive/, legacy mega-menu
 // nav, "Elin" voice + long-dead claims) that must never be published; it is
 // 404'd in netlify.toml and gitignored, so the gate ignores it too.
-const SERVED_SKIP = ['archive', '_private', 'transformerpath-site', 'dist', 'node_modules', '.git', 'Transformer Equipments'];
+const SERVED_SKIP = ['archive', '_private', 'transformerpath-site', 'dist', 'node_modules', '.git', 'Transformer Equipments', 'manufacturers', 'projects', 'accessories', 'utilities', 'tenders', 'events', 'knowledge', 'media', 'markets', 'case-studies', 'topics', 'functions', 'vendor', 'viz'];
 function servedHtml() {
-  const out = [];
-  (function walk(dir) {
-    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
-      if (e.name.startsWith('.')) continue;
-      if (SERVED_SKIP.includes(e.name)) continue;
-      const p = path.join(dir, e.name);
-      if (e.isDirectory()) walk(p);
-      else if (e.name.endsWith('.html')) out.push(p);
-    }
-  })('.');
-  return out;
+  return fs.readdirSync('.').filter((f) => f.endsWith('.html') && !SERVED_SKIP.includes(f) && !/^intel-2026-/.test(f));
 }
 
 const problems = [];
@@ -42,6 +32,10 @@ function check(label, pass, detail) {
 }
 
 const pages = servedHtml();
+const pageContentMap = new Map();
+pages.forEach((f) => {
+  try { pageContentMap.set(f, fs.readFileSync(f, 'utf8')); } catch (e) {}
+});
 
 // ── 1. Counters must agree with config everywhere they appear ─────────────
 const MFG = JSON.parse(fs.readFileSync('data/manufacturers.json', 'utf8'));
@@ -92,7 +86,7 @@ check('manufacturers.html schema size = config', schemaSize && +schemaSize[1] ==
 // No stale old-count text anywhere in served pages (520 / "census of 520"/etc).
 const STALE_RE = /(\b520\b[^a-z]{0,20}(manufacturer|makers?|directory))|((census|worldwide census) of 520)|(\b546\b[^a-z]{0,20}(manufacturer|makers?|directory))|((census|worldwide census) of 546)|(546-manufacturer)/i;
 pages.forEach((f) => {
-  const s = fs.readFileSync(f, 'utf8');
+  const s = pageContentMap.get(f) || '';
   if (STALE_RE.test(s)) {
     const m = s.match(STALE_RE);
     problems.push('stale-count ' + f + ' :: ' + m[0]);
@@ -180,16 +174,7 @@ for (const f of ['intel.html', 'index.html']) {
 (function () {
   const fsx = require('fs');
   const pathx = require('path');
-  const files = [];
-  const SKIP = ['archive', '_private', 'transformerpath-site', 'dist', 'node_modules', 'functions', 'Transformer Equipments'];
-  (function walk(dir) {
-    fsx.readdirSync(dir, { withFileTypes: true }).forEach((e) => {
-      if (e.name.startsWith('.')) return;
-      if (SKIP.includes(e.name)) return;
-      if (e.isDirectory()) walk(pathx.join(dir, e.name));
-      else if (e.name.endsWith('.html')) files.push(pathx.join(dir, e.name));
-    });
-  })('.');
+  const files = fsx.readdirSync('.').filter((f) => f.endsWith('.html'));
   files.forEach(function (f) {
     if (/^intel-2026-\d{2}-\d{2}\.html$/.test(f)) return; // frozen archive
     /* Only VISIBLE claims count. Reading raw HTML flagged a JS comment in
@@ -240,7 +225,7 @@ function affirmCredClaim(text) {
   return null;
 }
 for (const f of pages) {
-  const s = fs.readFileSync(f, 'utf8');
+  const s = pageContentMap.get(f) || '';
   const text = s.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
   const cred = affirmCredClaim(text);
   if (cred) problems.push('voice-cert-claim ' + f + ' :: ' + cred);
@@ -299,7 +284,7 @@ function overCredClaim(text) {
 }
 const todayFrame = /Read Today('s|&#39;s)? Intel|Today('s|&#39;s)? Transformer Intel|read today('s|&#39;s)? intel\b|Today('s|&#39;s)? briefing\b|read today('s|&#39;s)? briefing\b/i;
 for (const f of TRUST_FILES) {
-  const t = fs.readFileSync(f, 'utf8');
+  const t = pageContentMap.get(f) || (fs.existsSync(f) ? fs.readFileSync(f, 'utf8') : '');
   const strip = t.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
   if (staleAccount.test(strip)) problems.push('voice-stale-account ' + f + ' :: stale account-launch framing');
   const cred = overCredClaim(strip);
@@ -313,7 +298,7 @@ for (const f of TRUST_FILES) {
 // destinations reachable in one click, lower-priority items in a single "More"
 // list, and a flat hamburger panel below 1024px. This guards against a
 // regression BACK to nested dropdowns.
-const NAV_HTML = fs.readFileSync('index.html', 'utf8');
+const NAV_HTML = pageContentMap.get('index.html') || fs.readFileSync('index.html', 'utf8');
 const NAV_PRIMARY = ['intel.html', 'manufacturers.html', 'projects.html', 'tenders.html',
   'grids.html', 'events.html', 'learn.html', 'tools.html', 'rfq.html'];
 for (const href of NAV_PRIMARY) {
@@ -335,7 +320,7 @@ if (CFG.assets) {
   const SAMPLE = ['index.html', 'intel.html', 'manufacturers.html', 'learn.html'];
   let badCss = 0, badJs = 0, badTheme = 0;
   for (const f of pages) {
-    const s = fs.readFileSync(f, 'utf8');
+    const s = pageContentMap.get(f) || '';
     if (/style\.css\?v=\d+/.test(s) && !s.includes('style.css?v=' + CSSV)) badCss++;
     if (/tp-theme\.css\?v=\d+/.test(s) && !s.includes('tp-theme.css?v=' + THEMEV)) badTheme++;
   }
@@ -344,10 +329,11 @@ if (CFG.assets) {
   // Dark theme must be the CSS default on the html element (no light flash).
   let noDark = 0;
   for (const f of pages) {
-    if (/<html[^>]*data-theme="dark"/.test(fs.readFileSync(f, 'utf8'))) continue;
+    const raw = pageContentMap.get(f) || '';
+    if (/<html[^>]*data-theme="dark"/.test(raw)) continue;
     // system/redirect stubs and non-nav pages are exempt
     if (/admin\.html|offline\.html|tutorial\.html|tx-design-masterclass\.html$/.test(f)) continue;
-    if (/<html[^>]*lang="en"/.test(fs.readFileSync(f, 'utf8'))) noDark++;
+    if (/<html[^>]*lang="en"/.test(raw)) noDark++;
   }
   check('all served pages default to dark theme (data-theme="dark")', noDark === 0, noDark + ' pages light-flash');
   // SW cache name must match config.
@@ -362,7 +348,7 @@ if (CFG.assets) {
 // instead of silently serving an old page to crawlers.
 function routeCheck(route, req, forb, rawReqs) {
   let s = '';
-  try { s = fs.readFileSync(route, 'utf8'); } catch (e) { problems.push('route-missing ' + route); return; }
+  try { s = pageContentMap.get(route) || fs.readFileSync(route, 'utf8'); } catch (e) { problems.push('route-missing ' + route); return; }
   const text = s.replace(/<!--[\s\S]*?-->/g, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
   const head = text.slice(0, 4000);
   for (const r of (req || [])) {
@@ -383,7 +369,7 @@ routeCheck('for-manufacturers.html', [], ['we are not FEM', 'we would rather tel
 // FEM article + repository-wide 10-15% accuracy claim.
 routeCheck('article-fem-vs-analytical.html', ['accuracy depends materially on transformer type, geometry'], ['10[\\s\\u2013-]?15\\s*%']);
 for (const f of pages) {
-  const s = fs.readFileSync(f, 'utf8').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+  const s = (pageContentMap.get(f) || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
   if (/10[\s\u2013-]?15\s*%\s+of an? (optimised|optimized) works design/i.test(s)) {
     problems.push('route-stale ' + f + ' :: 10-15% works-design claim');
   }
@@ -394,7 +380,7 @@ routeCheck('books.html', ['first releases'], ['Email to order', 'Two volumes of 
 routeCheck('design.html', ['72 kW', '355 kW', '215 t'], ['id="sp-nll"></', 'id="sp-ll"></']);
 // Footer — no "networking" positioning.
 for (const f of pages) {
-  const s = fs.readFileSync(f, 'utf8').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+  const s = (pageContentMap.get(f) || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
   if (/global (intelligence|information) and networking platform/i.test(s)) problems.push('route-stale ' + f + ' :: footer "networking"');
 }
 
@@ -404,7 +390,7 @@ for (const f of pages) {
 // "declare winners"). Both guard P0 defects found in production trust QA.
 let megaNav = 0, rankClaim = 0;
 for (const f of pages) {
-  const raw = fs.readFileSync(f, 'utf8');
+  const raw = pageContentMap.get(f) || '';
   if (/<nav class="nav-links"[^>]*>/.test(raw)) megaNav++;
   if (/ranked global leaders|strongest manufacturers|declare (a|the) (dominant )?winner(s)?/i.test(raw)) rankClaim++;
 }

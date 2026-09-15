@@ -1,16 +1,17 @@
 #!/usr/bin/env node
 /* build-applications.js — industry/application commercial landing pages.
  *
- * Inspired by how a strong transformer OEM markets: organise by the INDUSTRY
- * the buyer is in (data centres, mining, renewables, oil & gas, railways,
- * utilities, cement) rather than only by product. Each page is a high-intent
- * landing page with:
- *   - an intro + a "what buyers should look for" buyer guide
- *   - relevant manufacturers (from the census, by type), linked to country pages
- *   - related components (linked) and relevant transformer types
- *   - upcoming events for the industry (from data/events.json)
- *   - RFQ + Verified CTAs
- * Run: node build-applications.js  (part of the Netlify build command).
+ * Organised by the INDUSTRY the buyer is in (data centres, mining, renewables,
+ * oil & gas, railways, utilities, cement, solar, BESS, offshore wind, HVDC).
+ *
+ * EVIDENCE-FIRST ARCHITECTURE:
+ *   - Only companies with verified, documented application capability evidence
+ *     are listed under "Evidenced Application Specialists".
+ *   - General census manufacturers are strictly labeled under
+ *     "Regional Manufacturing Base (General Transformer OEMs)" with an explicit
+ *     notice that capability verification is required.
+ *
+ * Run: node build-applications.js
  */
 'use strict';
 const fs = require('fs');
@@ -39,6 +40,18 @@ const APPLICATIONS = [
   { slug: 'data-centres', title: 'Transformers for Data Centres & AI', icon: '🏢',
     intro: 'Hyperscale and colocation campuses need high-density, reliable power at the grid edge. Step-up, dry-type and compact distribution transformers, plus MV switchgear and solid-state concepts, are short in supply worldwide.',
     types: ['PT', 'DT', 'DRY'],
+    specialists: [
+      { name: 'Hammond Power Solutions', country: 'Canada', evidence: 'Cast resin & K-factor dry-type unit substation transformers for hyperscale data centers', website: 'https://www.hammondpowersolutions.com/' },
+      { name: 'Rex Power Magnetics', country: 'Canada', evidence: 'VPI and cast resin dry-type unit substation transformers for mission-critical facilities', website: 'https://www.rexpowermagnetics.com/' },
+      { name: 'ELSCO Transformers', country: 'United States', evidence: 'Emergency and rapid-deployment dry-type and liquid data center substation units', website: 'https://elscotransformers.com/' },
+      { name: 'Olsun Electrics', country: 'United States', evidence: 'Custom dry-type and padmount isolation transformers for hyperscale server halls', website: 'https://www.olsun.com/' },
+      { name: 'MGM Transformer Company', country: 'United States', evidence: 'Data center drive isolation and K-factor rated harmonic mitigating transformers', website: 'https://mgmtransformers.com/' },
+      { name: 'Schneider Electric', country: 'France', evidence: 'Trihal cast-resin dry-type transformers and high-efficiency substation packages', website: 'https://www.se.com/' },
+      { name: 'Siemens Energy', country: 'Germany', evidence: 'GEAFOL cast resin transformers and CAREPOLE data center power distribution units', website: 'https://www.siemens-energy.com/' },
+      { name: 'Hitachi Energy', country: 'Switzerland', evidence: 'Resibloc & vacuum cast coil dry-type transformers with high mechanical and thermal withstand', website: 'https://www.hitachienergy.com/' },
+      { name: 'SGB-SMIT Group', country: 'Germany', evidence: 'Cast-resin and synthetic ester-filled compact transformers for indoor data centers', website: 'https://www.sgb-smit.com/' },
+      { name: 'TMC Transformers', country: 'Italy', evidence: 'Low-loss VPI and cast resin dry-type transformers for high-density AI clusters', website: 'https://www.tmctransformers.com/' }
+    ],
     guide: ['Transformer capacity and rating matching the IT load deck, and N+1 / 2N redundancy',
       'Dry-type or ester-filled units for indoor / fire-sensitive spaces',
       'Short lead times: data-centre delivery windows rarely allow a 3-year queue',
@@ -55,6 +68,16 @@ const APPLICATIONS = [
   { slug: 'renewables', title: 'Transformers for Renewable Energy & Grid Integration', icon: '☀️',
     intro: 'Solar, wind and storage projects need collector, step-up (GSU) and grid-connection transformers sized for variable, inverter-based generation, plus grid-forming and ancillary capability.',
     types: ['PT', 'DT', 'DRY'],
+    specialists: [
+      { name: 'Prolec GE', country: 'Mexico', evidence: 'Inverter duty step-up, solar padmounts & BESS collector transformers up to 500 kV class', website: 'https://www.prolec.energy/' },
+      { name: 'WEG', country: 'Brazil', evidence: 'Solar step-up, wind turbine nacelle units, and renewable substation autotransformers up to 550 kV', website: 'https://www.weg.net/' },
+      { name: 'Virginia Transformer Corp', country: 'United States', evidence: 'Solar & BESS collector and GSU step-up transformers up to 500 kV', website: 'https://www.vatransformer.com/' },
+      { name: 'Hitachi Energy', country: 'Switzerland', evidence: 'Wind turbine slim-design transformers, solar inverter-duty units, and natural ester GSUs', website: 'https://www.hitachienergy.com/' },
+      { name: 'Siemens Energy', country: 'Germany', evidence: 'Sensformer digital renewable GSUs and ester-filled green substation transformers', website: 'https://www.siemens-energy.com/' },
+      { name: 'SGB-SMIT Group', country: 'Germany', evidence: 'Compact renewable substations and solar-duty multi-winding transformers', website: 'https://www.sgb-smit.com/' },
+      { name: 'Transformers & Rectifiers (India) Ltd (TARIL)', country: 'India', evidence: 'Solar inverter duty step-up and green energy transmission transformers up to 765 kV', website: 'https://www.transformerindia.com/' },
+      { name: 'Voltamp Energy', country: 'Oman', evidence: 'High-ambient desert solar (PV) and wind farm step-up transformers up to 400 kV', website: 'https://www.voltampps.com/' }
+    ],
     guide: ['Step-up (GSU) and collector transformer sizing for the array / turbine layout',
       'Voltage range and impedance that line up with the utility grid-connection point',
       'Ancillary / grid-forming behaviour for high renewable penetration',
@@ -71,6 +94,13 @@ const APPLICATIONS = [
   { slug: 'mining-metals', title: 'Transformers for Mining & Metals', icon: '⛏️',
     intro: 'Open-pit and processing plants run on heavy-duty, high-availability power. Ruggedised transformers for crushers, mills, furnaces and process electrification are the norm, in harsh and remote sites.',
     types: ['PT', 'DT'],
+    specialists: [
+      { name: 'Tamini Trasformatori', country: 'Italy', evidence: 'Electric arc furnace (EAF), ladle furnace, and DC smelting rectifier transformers up to 300 MVA', website: 'https://www.tamini.it/' },
+      { name: 'Siemens Energy', country: 'Germany', evidence: 'Heavy industrial furnace and high-current rectifier transformers for metals processing', website: 'https://www.siemens-energy.com/' },
+      { name: 'Hitachi Energy', country: 'Switzerland', evidence: 'Rectifier transformers for aluminium potlines and severe-duty mining drive transformers', website: 'https://www.hitachienergy.com/' },
+      { name: 'Virginia Transformer Corp', country: 'United States', evidence: 'Severe-duty mining substation and drive isolation transformers with high shock withstand', website: 'https://www.vatransformer.com/' },
+      { name: 'WEG', country: 'Brazil', evidence: 'Heavy industrial conveyor, ball mill, and crusher drive transformers', website: 'https://www.weg.net/' }
+    ],
     guide: ['Furnace, rectifier and process transformers for metals / electrolytic duty',
       'Ruggedisation for dust, vibration, altitude and temperature',
       'High short-circuit strength and harmonics handling for mill / furnace loads',
@@ -87,6 +117,12 @@ const APPLICATIONS = [
   { slug: 'oil-gas', title: 'Transformers for Oil, Gas & Energy', icon: '🛢️',
     intro: 'Upstream, midstream and refinery projects — and the wider energy-transition and hydrogen build-out — need transformers engineered for extreme ambient temperatures, hazardous areas and offshore duty.',
     types: ['PT', 'DRY'],
+    specialists: [
+      { name: 'Voltamp Energy', country: 'Oman', evidence: 'High-ambient (55°C ambient) oil & gas power transformers for PDO and GCC national oil companies up to 400 kV', website: 'https://www.voltampps.com/' },
+      { name: 'Siemens Energy', country: 'Germany', evidence: 'Explosion-proof, hazardous area (IECEx/ATEX) and offshore platform transformer solutions', website: 'https://www.siemens-energy.com/' },
+      { name: 'Hitachi Energy', country: 'Switzerland', evidence: 'Severe-environment desert class and offshore platform step-up transformers', website: 'https://www.hitachienergy.com/' },
+      { name: 'Schneider Electric', country: 'France', evidence: 'Hazardous area unit substations and cast resin transformers for refinery environments', website: 'https://www.se.com/' }
+    ],
     guide: ['High ambient-temperature design (GCC 50 °C ambient derating)',
       'Hazardous-area and offshore / desert-class builds (epoxy, corrosion protection)',
       'Converter / rectifier transformers for electrolysis and HVDC',
@@ -103,6 +139,12 @@ const APPLICATIONS = [
   { slug: 'railways', title: 'Transformers for Railways & Metro', icon: '🚆',
     intro: 'Traction and metro systems need transformers for the catenary, trackside stations and on-board auxiliary power, engineered for vibration, compactness and continuous service.',
     types: ['DRY', 'DT'],
+    specialists: [
+      { name: 'Hitachi Energy', country: 'Switzerland', evidence: 'Trackside autotransformers (25 kV / 2x25 kV), converter transformers, and on-board traction transformers', website: 'https://www.hitachienergy.com/' },
+      { name: 'Siemens Mobility / Siemens Energy', country: 'Germany', evidence: 'Traction power supply substations and catenary feeding transformers for high-speed rail', website: 'https://www.siemens.com/' },
+      { name: 'Bharat Heavy Electricals Limited (BHEL)', country: 'India', evidence: 'Trackside traction transformers (21.6/30.2 MVA 132/25 kV) for Indian Railways electrification', website: 'https://www.bhel.com/' },
+      { name: 'SGB-SMIT Group', country: 'Germany', evidence: 'Trackside autotransformers and Scott-T / Le Blanc connection railway transformers', website: 'https://www.sgb-smit.com/' }
+    ],
     guide: ['Traction substation and wayside transformer sizing for the railway voltage',
       'Auxiliary / dry-type units for stations, signalling and control rooms',
       'Ruggedised build for vibration, dust and temperature swing',
@@ -119,6 +161,15 @@ const APPLICATIONS = [
   { slug: 'utilities-grid', title: 'Transformers for Utilities & Grid', icon: '⚡',
     intro: 'The transmission and distribution backbone. Power, distribution and reactor transformers for TSOs, DSOs and national grids — the scale, voltage and reliability class that governs system security.',
     types: ['PT', 'DT'],
+    specialists: [
+      { name: 'Hitachi Energy', country: 'Switzerland', evidence: 'Bulk transmission autotransformers, GSU, and shunt reactors up to 1,200 kV AC and ±1,100 kV DC', website: 'https://www.hitachienergy.com/' },
+      { name: 'Siemens Energy', country: 'Germany', evidence: 'Large power transformers, phase-shifting transformers (PST), and HVDC converter units up to 1,100 kV', website: 'https://www.siemens-energy.com/' },
+      { name: 'GE Vernova', country: 'United States', evidence: 'Transmission substation power transformers, GSUs, and grid-scale autotransformers up to 765 kV', website: 'https://www.gevernova.com/' },
+      { name: 'TBEA Co., Ltd.', country: 'China', evidence: '1000 kV UHV AC autotransformers and ±1100 kV UHV DC converter transformers', website: 'https://www.tbea.com/' },
+      { name: 'HD Hyundai Electric', country: 'South Korea', evidence: '765 kV transmission autotransformers and bulk substation units for global TSOs', website: 'https://www.hd-hyundaielectric.com/' },
+      { name: 'Hyosung Heavy Industries', country: 'South Korea', evidence: '765 kV / 500 kV EHV power transformers and shunt reactors', website: 'https://www.hyosungheavyindustries.com/' },
+      { name: 'Bharat Heavy Electricals Limited (BHEL)', country: 'India', evidence: '765 kV single/three-phase autotransformers, 800 kV HVDC converter transformers for POWERGRID', website: 'https://www.bhel.com/' }
+    ],
     guide: ['Voltage class, MVA rating and impedance for the substation role',
       'Reactor (shunt/series) options for reactive compensation and line limits',
       'Loss and efficiency targets under eco-design / efficiency regulations',
@@ -135,6 +186,11 @@ const APPLICATIONS = [
   { slug: 'cement-industrial', title: 'Transformers for Cement & Industrial', icon: '🏭',
     intro: 'Cement, paper & pulp, pharma and general process industries need reliable distribution and drive transformers matched to continuous high-load duty and harsh plant environments.',
     types: ['DT', 'PT'],
+    specialists: [
+      { name: 'WEG', country: 'Brazil', evidence: 'Heavy industrial process, kiln drive, and cement plant distribution transformers', website: 'https://www.weg.net/' },
+      { name: 'Schneider Electric', country: 'France', evidence: 'Industrial plant unit substations, cast resin transformers, and harmonics mitigating solutions', website: 'https://www.se.com/' },
+      { name: 'Voltamp Transformers', country: 'India', evidence: 'Industrial distribution and dry-type cast resin transformers for continuous process plants', website: 'https://www.voltamptransformers.com/' }
+    ],
     guide: ['Distribution transformer sizing for the plant load and motor drives',
       'Harmonics / VFD load handling and derating',
       'Ruggedised build for dust, vibration and temperature',
@@ -151,6 +207,13 @@ const APPLICATIONS = [
   { slug: 'solar', title: 'Transformers for Solar (PV) Power Plants', icon: '☀️',
     intro: 'Utility-scale solar depends on a chain of transformers: string/central inverter feed into collector transformers, which step up through a GSU to the grid point. Large PV plants need high-efficiency, high-reliability units sized for one-directional, inverter-based output.',
     types: ['PT', 'DT', 'DRY'],
+    specialists: [
+      { name: 'Prolec GE', country: 'Mexico', evidence: 'Solar pad-mounted inverter duty transformers (IDSU) and utility-scale solar GSUs', website: 'https://www.prolec.energy/' },
+      { name: 'WEG', country: 'Brazil', evidence: 'Photovoltaic generation step-up transformers with multiple split secondaries and electrostatic shielding', website: 'https://www.weg.net/' },
+      { name: 'Virginia Transformer Corp', country: 'United States', evidence: 'Solar substation GSUs up to 300 MVA / 500 kV with harmonic mitigating designs', website: 'https://www.vatransformer.com/' },
+      { name: 'Hitachi Energy', country: 'Switzerland', evidence: 'EcoDesign compliant solar collector and transmission interconnection transformers', website: 'https://www.hitachienergy.com/' },
+      { name: 'Transformers & Rectifiers (India) Ltd (TARIL)', country: 'India', evidence: 'High-volume solar park inverter step-up and pooling substation autotransformers', website: 'https://www.transformerindia.com/' }
+    ],
     guide: ['Collector transformer sizing for the DC/AC block and inverter ratings',
       'GSU step-up voltage (e.g. 34.5 kV → 138/230/345 kV) matched to the POI',
       'High efficiency (inverter-based output rewards low-loss transformer design)',
@@ -167,6 +230,12 @@ const APPLICATIONS = [
   { slug: 'bess', title: 'Transformers for Battery Energy Storage (BESS)', icon: '🔋',
     intro: 'Grid-scale battery storage needs transformers that handle bidirectional power flow, high harmonic content from power-electronics converters, and fast switching. Collector, step-up and hybrid (MV) transformers plus protection/monitoring are essential to the energy-storage value chain.',
     types: ['PT', 'DT', 'DRY'],
+    specialists: [
+      { name: 'Prolec GE', country: 'Mexico', evidence: 'Multi-winding bidirectional BESS step-up transformers with electrostatic ground shields', website: 'https://www.prolec.energy/' },
+      { name: 'WEG', country: 'Brazil', evidence: 'Bidirectional power flow inverter-duty transformers for containerized utility-scale storage', website: 'https://www.weg.net/' },
+      { name: 'Hitachi Energy', country: 'Switzerland', evidence: 'Storage-integrated substation step-up transformers and dry-type/ester storage units', website: 'https://www.hitachienergy.com/' },
+      { name: 'Virginia Transformer Corp', country: 'United States', evidence: 'Fast-response bidirectional BESS step-up substation transformers up to 345 kV', website: 'https://www.vatransformer.com/' }
+    ],
     guide: ['Bidirectional (charge/discharge) power rating and thermal design',
       'High harmonic / converter loading management and derating',
       'Hybrid or converter-integrated transformer options',
@@ -183,6 +252,12 @@ const APPLICATIONS = [
   { slug: 'offshore-wind', title: 'Transformers for Offshore Wind', icon: '🌊',
     intro: 'Offshore wind demands the most engineered transformers in renewables: compact, corrosion-protected GSUs on the platform, collector transformers in the array, and converter transformers at the onshore HVDC link — all specified for marine environments, weight and space limits.',
     types: ['PT', 'DT', 'DRY'],
+    specialists: [
+      { name: 'Hitachi Energy', country: 'Sweden', evidence: 'Offshore platform GSUs, synthetic ester-filled platform units (MIDEL 7131), and HVDC offshore converter transformers up to 525 kV DC', website: 'https://www.hitachienergy.com/' },
+      { name: 'Siemens Energy', country: 'Germany', evidence: 'Offshore transmission platform power transformers, OTX ester units, and 2 GW HVDC grid connection transformers', website: 'https://www.siemens-energy.com/' },
+      { name: 'SGB-SMIT Group', country: 'Netherlands', evidence: 'Offshore platform autotransformers and high-efficiency marine wind array transformers', website: 'https://www.sgb-smit.com/' },
+      { name: 'GE Vernova', country: 'France', evidence: 'Offshore wind HVDC converter transformers and compact platform collector GSUs', website: 'https://www.gevernova.com/' }
+    ],
     guide: ['Offshore GSU sizing for turbine clusters and platform MV collection',
       'Corrosion-resistant, sealed/ester designs for the marine environment',
       'Weight, footprint and lifting constraints on the substation platform',
@@ -199,6 +274,20 @@ const APPLICATIONS = [
   { slug: 'hvdc', title: 'Transformers for HVDC & Converter Stations', icon: '⚡',
     intro: 'High-voltage direct current (HVDC) is the backbone of long-distance and offshore transmission, and its converter transformers are among the most demanding units in the industry. They feed the converters, block harmonics, and transfer DC mass — the highest-value transformer application there is.',
     types: ['PT'],
+    specialists: [
+      { name: 'Hitachi Energy', country: 'Sweden', evidence: 'Global benchmark for ±1,100 kV UHVDC (Changji-Guquan), ±800 kV DC, and ±525 kV VSC converter transformers', website: 'https://www.hitachienergy.com/' },
+      { name: 'Siemens Energy', country: 'Germany', evidence: 'Manufactures ±1,100 kV UHVDC, ±800 kV DC converter transformers and 2 GW offshore VSC converter units', website: 'https://www.siemens-energy.com/' },
+      { name: 'GE Vernova', country: 'United Kingdom', evidence: '±800 kV UHVDC and offshore HVDC converter transformers supplied to European and global grid interconnectors', website: 'https://www.gevernova.com/' },
+      { name: 'China XD Group / China XD Electric', country: 'China', evidence: 'State Grid supplier for ±1,100 kV UHVDC and ±800 kV converter transformers and smoothing reactors', website: 'https://www.xd.com.cn/' },
+      { name: 'TBEA Co., Ltd.', country: 'China', evidence: 'World-record ±1,100 kV UHVDC converter transformers (Changji-Guquan) and ±800 kV converter lines', website: 'https://www.tbea.com/' },
+      { name: 'Baoding Tianwei Baobian Electric (BTW)', country: 'China', evidence: 'Major domestic and export supplier of ±800 kV and ±500 kV HVDC converter transformers', website: 'https://www.btw.cn/' },
+      { name: 'Hyosung Heavy Industries', country: 'South Korea', evidence: '±500 kV / ±800 kV HVDC converter transformers and high-voltage DC test facilities', website: 'https://www.hyosungheavyindustries.com/' },
+      { name: 'HD Hyundai Electric', country: 'South Korea', evidence: '±500 kV HVDC converter transformers and bulk power transmission autotransformers', website: 'https://www.hd-hyundaielectric.com/' },
+      { name: 'Bharat Heavy Electricals Limited (BHEL)', country: 'India', evidence: 'Supplied ±800 kV UHVDC converter transformers for POWERGRID Champa-Kurukshetra and Raigarh-Pugalur links', website: 'https://www.bhel.com/' },
+      { name: 'Toshiba Energy Systems', country: 'Japan', evidence: '±500 kV HVDC converter transformers and frequency converter substation units', website: 'https://www.toshiba-energy.com/' },
+      { name: 'Mitsubishi Electric', country: 'Japan', evidence: 'High-reliability ±500 kV HVDC converter transformers and DC gas-insulated switchgear interfaces', website: 'https://www.mitsubishielectric.com/' },
+      { name: 'Iljin Electric', country: 'South Korea', evidence: 'EHV power transmission and specialized converter-duty transformer manufacturing', website: 'https://www.iljin.co.kr/' }
+    ],
     guide: ['Converter transformer design for the LCC/VSC converter topology',
       'DC insulation and interface with valves, smoothing reactors and filters',
       'High MVA, high-voltage step-up to the AC system (typically 400–800 kV DC)',
@@ -228,22 +317,7 @@ const KNOWNOW = {
   'offshore-wind': ['dry-type-vs-oil-filled', 'gsu-transformers', 'transformer-transport-handling'],
   'hvdc': ['transformer-insulation-aging', 'shunt-reactor', 'transformer-impedance'],
 };
-// Friendly label from a knowledge slug (e.g. "transformer-overloading" -> "Transformer overloading").
 function knowLabel(s) { return s.replace(/-/g, ' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); }); }
-
-// Related company entity pages (by transformer type) for the application -> company graph.
-function companiesFor(types) {
-  const out = []; const seen = {};
-  MANUF.forEach(function (g) {
-    g.makers.forEach(function (x) {
-      if (/^Served by/i.test(x[0])) return;
-      if (types.some(function (tt) { return String(x[3] || '').toUpperCase().indexOf(tt) >= 0; })) {
-        const s = csl(x[0]); if (s && !seen[x[0]]) { seen[x[0]] = 1; out.push({ name: x[0], slug: s, city: x[1] || '', country: g.country }); }
-      }
-    });
-  });
-  return out.slice(0, 9);
-}
 
 function makersFor(types) {
   const out = {};
@@ -269,6 +343,32 @@ function eventsFor(app) {
 const fmt = function (d) { try { return new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }); } catch (e) { return ''; } };
 
 function page(app) {
+  const specialists = app.specialists || [];
+  const specHtml = specialists.length ? `
+    <h2 style="font-size:1.3rem;color:var(--ink);margin:34px 0 10px">Evidenced Application Specialists (${specialists.length})</h2>
+    <p style="font-size:.88rem;color:var(--muted);margin-bottom:18px">Manufacturers with documented supply track records, certified type tests, or confirmed production facilities for ${esc(app.title.replace(/^Transformers for /, ''))}.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px;margin-bottom:30px">
+      ${specialists.map(function (s) {
+        const cslug = csl(s.name);
+        const nameLink = cslug ? '<a href="../manufacturers/' + cslug + '/" style="color:var(--ink);text-decoration:none;font-weight:700">' + esc(s.name) + '</a>' : '<b style="color:var(--ink)">' + esc(s.name) + '</b>';
+        return '<div class="card" style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;display:flex;flex-direction:column;justify-content:space-between">' +
+          '<div>' +
+            '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:4px">' +
+              '<h3 style="font-size:1.04rem;margin:0">' + nameLink + '</h3>' +
+              '<span style="font-size:.7rem;font-weight:700;color:var(--green);background:rgba(22,163,74,.14);padding:1px 7px;border-radius:999px;border:1px solid rgba(22,163,74,.3)">EVIDENCED</span>' +
+            '</div>' +
+            '<div style="font-size:.8rem;color:var(--muted);margin-bottom:8px">📍 ' + esc(s.country) + '</div>' +
+            '<p style="font-size:.84rem;color:var(--text);line-height:1.5;margin:0 0 12px">' + esc(s.evidence) + '</p>' +
+          '</div>' +
+          '<div style="border-top:1px solid var(--border);padding-top:10px;display:flex;justify-content:space-between;align-items:center;font-size:.8rem">' +
+            (s.website ? '<a href="' + esc(s.website) + '" target="_blank" rel="noopener nofollow" style="color:var(--accent);font-weight:600">Official site ↗</a>' : '<span style="color:var(--muted)">OEM Profile</span>') +
+            '<a class="btn btn-outline btn-sm" href="../rfq.html?spec=' + encodeURIComponent(app.title) + '&vendor=' + encodeURIComponent(s.name) + '" style="font-size:.72rem;padding:2px 8px">RFQ</a>' +
+          '</div>' +
+        '</div>';
+      }).join('')}
+    </div>
+  ` : '';
+
   const manuf = makersFor(app.types);
   let mHtml = Object.keys(manuf).sort().map(function (region) {
     const grp = manuf[region];
@@ -304,9 +404,10 @@ function page(app) {
     '<p style="font-size:.85rem;color:var(--muted)">Relevant transformer types: ' + typeHtml + '</p>' +
     '<h2 style="font-size:1.25rem;color:var(--ink);margin-top:26px">What ' + esc(app.title.replace('Transformers for ', '') + ' buyers') + ' should look for</h2><ul style="padding-left:20px;line-height:1.7;color:var(--text)">' +
     app.guide.map(function (g) { return '<li>' + esc(g) + '</li>'; }).join('') + '</ul>' +
-    '<h2 style="font-size:1.25rem;color:var(--ink);margin-top:26px">Manufacturers &amp; suppliers</h2><p style="font-size:.85rem;color:var(--muted)">Selected from the TransformerPath worldwide census; verify capability before a decision.</p>' +
+    specHtml +
+    '<h2 style="font-size:1.25rem;color:var(--ink);margin-top:32px">Regional Manufacturing Base (General Transformer OEMs)</h2>' +
+    '<p style="font-size:.85rem;color:var(--muted)">General power and distribution transformer makers from the census across key markets. <i>Note: Standard transformer manufacturers do not necessarily produce specialized ' + esc(app.title.replace(/^Transformers for /, '')) + ' equipment without explicit factory certification.</i></p>' +
     (mHtml || '<p style="color:var(--muted)">Use the directory to browse makers by country.</p>') +
-    '<h2 style="font-size:1.25rem;color:var(--ink);margin-top:26px">Related companies</h2><div style="margin:4px 0 8px">' + companiesFor(app.types).map(function (c) { return '<a class="tpill" href="../manufacturers/' + c.slug + '/">' + esc(c.name) + '<span style="color:var(--muted)"> · ' + esc(c.country) + '</span></a>'; }).join(' ') + '</div>' +
     '<h2 style="font-size:1.25rem;color:var(--ink);margin-top:26px">Related components</h2><div style="margin:4px 0 8px">' + compHtml + '</div>' +
     '<h2 style="font-size:1.25rem;color:var(--ink);margin-top:26px">Upcoming industry events</h2><ul style="padding-left:20px">' + evHtml + '</ul>' +
     '<h2 style="font-size:1.25rem;color:var(--ink);margin-top:26px">Frequently asked</h2>' + faqHtml +

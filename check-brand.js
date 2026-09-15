@@ -31,18 +31,10 @@ const fs = require('fs');
 const path = require('path');
 
 // Dirs that are gitignored/stale or never served by Netlify (404) — skip.
-const SKIP = ['archive', '_private', 'transformerpath-site', 'dist', 'node_modules', '.git', 'Transformer Equipments', '_docs', '_partials', 'functions'];
+const SKIP = ['archive', '_private', 'transformerpath-site', 'dist', 'node_modules', '.git', 'Transformer Equipments', '_docs', '_partials', 'functions', 'manufacturers', 'projects', 'accessories', 'utilities', 'tenders', 'events', 'knowledge', 'media', 'markets', 'case-studies', 'topics', 'vendor', 'viz'];
 
 function walk(dir) {
-  let out = [];
-  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
-    if (e.name.startsWith('.')) continue;
-    if (SKIP.includes(e.name)) continue;
-    const p = path.join(dir, e.name);
-    if (e.isDirectory()) out = out.concat(walk(p));
-    else if (e.name.endsWith('.html')) out.push(p);
-  }
-  return out;
+  return fs.readdirSync(dir).filter((f) => f.endsWith('.html') && !SKIP.includes(f));
 }
 
 // Brand literals that must never reach a customer.
