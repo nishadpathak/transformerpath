@@ -1,0 +1,51 @@
+{
+  "$schema": "https://transformerpath.com/design-engine.schema.json",
+  "registered": "2026-09-03",
+  "purpose": "TransformerPath Design Engine configuration. This is the ARCHITECTURE (class catalogue, workflow, module applicability, validation states, honest positioning). It documents what is structured for each transformer class. It does NOT assert that the physics for any class is complete or validated. Per-class engineering modules remain BETA / ENGINEERING REVIEW until they pass benchmark validation (see check-design.js). No module is released as IEC/IEEE compliant, certified, or FEM/CFD-validated.",
+  "workflow": [
+    { "key": "project", "label": "Project" },
+    { "key": "specification", "label": "Specification" },
+    { "key": "electrical_design", "label": "Electrical design" },
+    { "key": "magnetic_design", "label": "Magnetic design" },
+    { "key": "winding_design", "label": "Winding design" },
+    { "key": "insulation_design", "label": "Insulation design" },
+    { "key": "thermal_design", "label": "Thermal design" },
+    { "key": "mechanical_checks", "label": "Mechanical checks" },
+    { "key": "losses", "label": "Losses" },
+    { "key": "impedance", "label": "Impedance" },
+    { "key": "cooling", "label": "Cooling" },
+    { "key": "materials_bom", "label": "Materials / BOM" },
+    { "key": "performance", "label": "Performance" },
+    { "key": "test_requirements", "label": "Test requirements" },
+    { "key": "design_review", "label": "Design review" },
+    { "key": "report", "label": "Report" }
+  ],
+  "classes": [
+    { "key": "power_transformer", "label": "Power transformer", "two_winding": true, "modules_structured": ["magnetic", "winding", "impedance", "losses", "thermal", "insulation", "short_circuit", "bom"], "status": "BETA_REVIEW" },
+    { "key": "generator_step_up", "label": "Generator step-up (GSU)", "two_winding": true, "extra": ["high_mva_lv", "overflux", "tertiary"], "modules_structured": ["magnetic", "winding", "impedance", "losses", "thermal", "insulation", "short_circuit", "bom"], "status": "BETA_REVIEW" },
+    { "key": "autotransformer", "label": "Autotransformer", "two_winding": false, "topology_note": "Common + series winding; power transfer and impedance relationships differ from a two-winding transformer.", "modules_structured": ["magnetic", "winding", "impedance", "losses"], "status": "BETA_REVIEW" },
+    { "key": "distribution_transformer", "label": "Distribution transformer", "two_winding": true, "modules_structured": ["magnetic", "winding", "impedance", "losses", "thermal", "insulation", "short_circuit", "bom"], "status": "CURRENT" },
+    { "key": "shunt_reactor", "label": "Shunt reactor", "two_winding": false, "topology_note": "Gapped core / air-gap design; not a two-winding loaded transformer. Dedicated MVAr/inductance/reactance module.", "modules_structured": ["magnetic", "winding", "losses", "thermal"], "status": "SCAFFOLD" },
+    { "key": "series_reactor", "label": "Series reactor", "two_winding": false, "modules_structured": ["magnetic", "winding", "losses", "thermal"], "status": "SCAFFOLD" },
+    { "key": "arc_furnace_transformer", "label": "Arc-furnace transformer", "two_winding": false, "topology_note": "Very high secondary current, frequent cycling, harmonics — furnace-duty corrections required; power-transformer assumptions must not be reused without correction.", "modules_structured": ["winding", "impedance", "losses", "thermal"], "status": "SCAFFOLD" },
+    { "key": "rectifier_transformer", "label": "Rectifier transformer", "two_winding": false, "topology_note": "Pulse number, multi-secondary, phase displacement, harmonic/k-factor loss effects — not sinusoidal two-winding.", "modules_structured": ["winding", "impedance", "losses"], "status": "SCAFFOLD" },
+    { "key": "converter_transformer", "label": "Converter transformer", "two_winding": false, "topology_note": "HVDC / industrial, harmonics, phase shift, DC bias, insulation stress — not claimed until validated.", "modules_structured": ["winding", "impedance", "losses"], "status": "SCAFFOLD" },
+    { "key": "phase_shifting_transformer", "label": "Phase-shifting transformer", "two_winding": false, "topology_note": "Exciting + series transformer; an own topology.", "modules_structured": ["impedance", "winding"], "status": "SCAFFOLD" },
+    { "key": "traction_transformer", "label": "Traction transformer", "two_winding": false, "modules_structured": ["magnetic", "winding", "losses", "thermal"], "status": "SCAFFOLD" },
+    { "key": "earthing_transformer", "label": "Earthing / grounding transformer", "two_winding": false, "topology_note": "Zig-zag / neutral-earthing — dedicated topology.", "modules_structured": ["magnetic"], "status": "SCAFFOLD" },
+    { "key": "dry_type_cast_resin", "label": "Dry-type / cast-resin", "two_winding": true, "cooling_classes": ["AN", "AF"], "modules_structured": ["magnetic", "winding", "impedance", "losses", "thermal", "insulation", "bom"], "status": "CURRENT" },
+    { "key": "special_purpose", "label": "Special-purpose", "two_winding": null, "modules_structured": [], "status": "SCAFFOLD" }
+  ],
+  "validation_states": [
+    { "key": "PASS", "label": "Pass", "meaning": "Check performed and within the set limit / tolerance." },
+    { "key": "REVIEW", "label": "Review", "meaning": "Check performed; result is outside a soft limit or needs an engineering decision." },
+    { "key": "WARNING", "label": "Warning", "meaning": "Check performed; result is outside a hard limit or indicates a likely issue." },
+    { "key": "NOT_CALCULATED", "label": "Not calculated", "meaning": "This module/check has not been run for this class. It is NOT a pass." },
+    { "key": "INSUFFICIENT_DATA", "label": "Insufficient data", "meaning": "A required input is missing/unknown; no state is asserted." }
+  ],
+  "positioning_rules": {
+    "forbidden": ["certified", "approved", "IEC compliant", "IEEE compliant", "manufacturing-ready", "guaranteed", "FEA validated", "CFD validated", "optimal"],
+    "allowed": ["engineering design workspace", "analytical design", "preliminary design", "first-pass engineering", "requires qualified engineering review", "BETA / engineering review"]
+  },
+  "revision_model": "Preserve inputs, assumptions, calculation basis, revision and results per design. Each important output is traceable to its input/calculation."
+}

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Transformer Manufacturers — Design Tools, Training &amp; Test Lab Consulting | TransformerPath</title>
+<meta name="description" content="What TransformerPath offers a transformer manufacturer: an IEC 60076 first-cut design calculator, rating-plate and test-report generators, engineering training for your design and test teams, and vendor-neutral test lab consulting. Plus an honest guide to when you need FEM simulation instead.">
+<link rel="canonical" href="https://transformerpath.com/for-manufacturers.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TransformerPath">
+<meta property="og:title" content="For Transformer Manufacturers | TransformerPath">
+<meta property="og:description" content="Design tools, engineering training and vendor-neutral test lab consulting for transformer manufacturers — and a straight answer on where FEM simulation is the right tool instead.">
+<meta property="og:url" content="https://transformerpath.com/for-manufacturers.html">
+<meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="For Transformer Manufacturers | TransformerPath">
+<meta name="twitter:description" content="Design tools, engineering training and vendor-neutral test lab consulting for transformer manufacturers.">
+<meta name="twitter:image" content="https://transformerpath.com/brand/og-image.png">
+<link rel="stylesheet" href="style.css?v=14">
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
+<style>
+.honest { background:var(--card); border:1px solid var(--border); border-left:4px solid var(--amber);
+          border-radius:12px; padding:22px 26px; margin:0 0 34px; }
+.honest h2 { margin:0 0 10px; font-size:1.24rem; color:var(--ink); }
+.honest p { color:var(--text); font-size:.95rem; line-height:1.7; margin:0 0 12px; }
+.honest p:last-child { margin-bottom:0; }
+.honest a { color:var(--accent); font-weight:600; }
+
+.offer { display:grid; grid-template-columns:repeat(auto-fit,minmax(290px,1fr)); gap:18px; margin:0 0 40px; }
+.card2 { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:22px 22px 20px;
+         display:flex; flex-direction:column; }
+.card2 .kicker { font-size:.68rem; font-weight:800; letter-spacing:.6px; text-transform:uppercase;
+                 color:var(--accent); margin-bottom:8px; }
+.card2 h3 { margin:0 0 8px; font-size:1.06rem; color:var(--ink); }
+.card2 p { color:var(--muted); font-size:.89rem; line-height:1.62; margin:0 0 14px; }
+.card2 ul { list-style:none; margin:0 0 16px; padding:0; }
+.card2 ul li { font-size:.86rem; color:var(--text); padding:4px 0 4px 18px; position:relative; line-height:1.5; }
+.card2 ul li::before { content:"\2022"; color:var(--amber); position:absolute; left:4px; font-weight:800; }
+.card2 .go { margin-top:auto; color:var(--accent); font-weight:700; font-size:.87rem; text-decoration:none; }
+.card2 .go:hover { text-decoration:underline; }
+.card2 .badge-free { display:inline-block; background:rgba(30,158,90,.14); color:#1e9e5a; font-size:.63rem;
+                     font-weight:800; letter-spacing:.4px; text-transform:uppercase; padding:2px 8px;
+                     border-radius:999px; margin-left:6px; vertical-align:middle; }
+.card2 .badge-plan { display:inline-block; background:rgba(245,166,35,.16); color:var(--accent); font-size:.63rem;
+                     font-weight:800; letter-spacing:.4px; text-transform:uppercase; padding:2px 8px;
+                     border-radius:999px; margin-left:6px; vertical-align:middle; }
+
+.fitwrap { overflow-x:auto; margin:0 0 40px; }
+table.fit { width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--border);
+            border-radius:12px; overflow:hidden; font-size:.88rem; min-width:620px; }
+table.fit th, table.fit td { padding:12px 16px; text-align:left; border-bottom:1px solid var(--border);
+                             vertical-align:top; }
+table.fit th { background:var(--navy); color:#fff; font-weight:700; font-size:.79rem;
+               text-transform:uppercase; letter-spacing:.3px; }
+table.fit td:first-child { color:var(--ink); font-weight:600; }
+table.fit tr:last-child td { border-bottom:0; }
+table.fit .yes { color:#1e9e5a; font-weight:700; }
+table.fit .no  { color:var(--muted); }
+
+form label { display:block; font-size:.85rem; font-weight:600; color:var(--ink); margin:14px 0 5px; }
+form input, form select, form textarea { width:100%; padding:11px 13px; border:1px solid var(--border);
+    border-radius:9px; font-size:.93rem; font-family:inherit; background:var(--card); color:var(--text); }
+form textarea { min-height:112px; resize:vertical; }
+.formwrap { max-width:640px; margin:0 auto; background:var(--card); border:1px solid var(--border);
+            border-radius:16px; padding:26px 28px; }
+</style>
+    <link rel="stylesheet" href="tp-nav.css?v=14">
+  <link rel="stylesheet" href="tp-feedback.css?v=14">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
+    <nav class="tpnav" id="mainNav" aria-label="Primary">
+      <a href="intel.html">Intel</a>
+      <div class="tpnav-dropdown">
+        <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
+        <div class="tpnav-dropdown-panel" role="menu">
+          <a href="manufacturers.html">Manufacturers</a>
+          <a href="map.html">Industry Map</a>
+          <a href="grids.html">Global Grids</a>
+          <a href="components.html">Components &amp; Materials</a>
+          <a href="machinery.html">Machinery</a>
+          <a href="laboratories.html">Testing Labs</a>
+          <a href="services.html">Services &amp; Repair</a>
+          <a href="markets.html">Markets</a>
+          <a href="buyers-guide.html">Buyer's Guide</a>
+          <a href="directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
+        </div>
+      </div>
+      <a href="projects.html">Projects</a>
+      <a href="tenders.html">Tenders</a>
+      <a href="events.html">Events</a>
+      <a href="tools.html" class="tpnav-opt">Engineering</a>
+      <a href="learn.html">Learn</a>
+      <a href="rfq.html">RFQ</a>
+      <div class="tpnav-more">
+        <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
+        <div class="tpnav-more-panel" role="menu">
+          <a href="map.html" role="menuitem">Industry Map</a>
+          <a href="grids.html" role="menuitem">Global Grids</a>
+          <a href="webinars.html" role="menuitem">Webinars</a>
+          <a href="standards.html" role="menuitem">Standards &amp; Codes</a>
+          <a href="for-manufacturers.html" role="menuitem">For Manufacturers</a>
+          <a href="pricing.html" role="menuitem">Pricing Plans</a>
+          <a href="verified.html" role="menuitem">Verified Profiles</a>
+        </div>
+      </div>
+      <span class="tpnav-utils">
+        <a href="search.html" title="Search" aria-label="Search">&#128269;</a>
+        <a href="workspace.html" data-tp-account>Account</a>
+        <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">&#127769;</button>
+      </span>
+    </nav>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    // Night mode is the default; light is opt-in via the toggle.
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+
+    if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
+    updateThemeIcon();
+
+    themeToggle?.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      updateThemeIcon();
+    });
+
+    function updateThemeIcon() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+    }
+  </script>
+  <script src="tp-nav.js?v=7" defer></script>
+  <script src="tp-pwa.js?v=7" defer></script>
+</header>
+<section class="hero" style="padding:52px 0 40px">
+  <div class="container">
+    <h1 style="font-size:2.15rem">For transformer <span>manufacturers</span></h1>
+    <p>Design tools for live tenders, training that brings new hires up to one methodology,
+       and vendor-neutral consulting on a test bay — plus a straight answer on when
+       simulation software is required.</p>
+    <div style="margin-top:22px">
+      <a href="#enquire" style="display:inline-block;background:#f5a623;color:#0d1b2e;font-weight:800;padding:13px 28px;border-radius:10px;text-decoration:none">Send a brief &rarr;</a>
+      <a href="software.html" style="display:inline-block;margin-left:14px;color:var(--accent);font-weight:700">Browse the simulation-software directory &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<section class="block">
+  <div class="container" style="max-width:1080px">
+
+    <div class="honest">
+      <h2>What the analytical tools simulate &mdash; and when FEM is required</h2>
+      <p>TransformerPath engineering tools use analytical and closed-form methods for
+         preliminary design, tender sizing and engineering checks. They are not a substitute for
+         a general-purpose finite-element package &mdash; arbitrary 3D geometry, coupled
+         electromagnetic&ndash;thermal&ndash;structural physics, local eddy and stray loss in tank
+         and clamping steel, hot-spot prediction from a meshed model. Where that is required, a
+         package such as Ansys or COMSOL is the right tool.</p>
+
+      <p><strong>The calculator does solve one part of it properly.</strong> It carries a
+         2D axisymmetric magnetostatic solve of the leakage field in the core window.
+         It needs no
+         CAD import, because the winding geometry is already parametric &mdash; you get the flux
+         plot, the leakage reactance computed from stored energy rather than from an empirical
+         fringing factor, and the <strong>axial force distribution along the winding</strong>,
+         which is the quantity closed-form methods handle worst and the one that governs winding
+         collapse when ampere-turns are unbalanced by a tap.</p>
+      <p>Because the question comes up constantly, TransformerPath publishes a
+         <a href="software.html">vendor-neutral directory of the tools that do solve it</a>,
+         grouped by the job they do rather than by vendor. It covers the commercial packages
+         (Ansys Maxwell, COMSOL, Simcenter MAGNET and Flux, Opera/CST, JMAG, EMWorks) and the
+         free and open-source options &mdash; for 2D axisymmetric work, which covers most
+         leakage-field, short-circuit-force and electrostatic-stress problems, FEMM is genuinely
+         capable. TransformerPath sells none of them and takes no commission.</p>
+      <p>TransformerPath engineering tools sit <strong>upstream</strong> of that, at the sizing and documentation stages
+         where FEM is slow and overkill. Classical closed-form methods give useful preliminary
+         estimates for tender sizing and costing; accuracy depends materially on transformer
+         type, geometry, design assumptions and the quantity being calculated. They are not a
+         substitute for FEM where the failure mode is local rather than average.
+         <a href="article-fem-vs-analytical.html">TransformerPath explains exactly where that boundary sits &rarr;</a></p>
+    </div>
+
+    <div class="section-head" style="margin-bottom:18px">
+      <h2>What TransformerPath offers a manufacturer</h2>
+      <p><b>Engineering Tools</b> · <b>Technical Learning</b> · <b>Industry Intelligence</b> · <b>Technical Services</b> &mdash; useful in a different order depending on whether your
+         bottleneck is design capacity, engineer ramp-up, market visibility or test-bay reporting.</p>
+    </div>
+
+    <div class="offer">
+
+      <div class="card2">
+        <span class="kicker">Engineering Tools</span>
+        <h3>IEC 60076 design calculator <span class="badge-plan">In plans</span></h3>
+        <p>Rating, voltages, vector group and target impedance in; a first-cut design out, in
+           seconds. Distribution (oil), power (oil) and cast-resin (dry) modes.</p>
+        <ul>
+          <li>Core area, flux density, turns and conductor sizing</li>
+          <li>No-load and load losses, impedance, regulation, efficiency</li>
+          <li>Thermal and tank sizing, weights and materials</li>
+          <li>Impulse voltage distribution, short-circuit forces and adiabatic thermal withstand</li>
+          <li>2D leakage-field solve &mdash; flux plot, reactance from stored energy, axial force per winding section</li>
+          <li>Cross-section, efficiency, core-step and vector-group diagrams</li>
+        </ul>
+        <a class="go" href="calculator.html">See the calculator &rarr;</a>
+      </div>
+
+      <div class="card2">
+        <span class="kicker">Engineering Tools</span>
+        <h3>Rating plate &amp; test report generators <span class="badge-plan">In plans</span></h3>
+        <p>The fastest practical win for a factory: standardise what your test bay hands a
+           customer, with no new hardware.</p>
+        <ul>
+          <li>Rating plate to IEC 60076-1 &sect;7 layout, exported as PDF</li>
+          <li>Routine test results into a formatted, buyer-ready PDF</li>
+          <li>Templated to match your buyers' and tenders' requirements</li>
+        </ul>
+        <a class="go" href="test-report.html">See the test report generator &rarr;</a>
+      </div>
+
+      <div class="card2">
+        <span class="kicker">Technical Learning</span>
+        <h3>Engineering training <span class="badge-plan">In plans</span></h3>
+        <p>Bring new design and test engineers up to speed on one consistent methodology
+           instead of whoever happened to train them.</p>
+        <ul>
+          <li>26-chapter masterclass, from the EMF equation to tender economics</li>
+          <li>Ten interactive 3D models &mdash; core, windings, bushings, OLTC, GSU and more</li>
+          <li>Design Engineer Track, four levels, with manually reviewed capstones</li>
+          <li>Team rollout on one shared access link &mdash; see Enterprise below</li>
+        </ul>
+        <a class="go" href="teams.html">Corporate &amp; team training &rarr;</a>
+      </div>
+
+      <div class="card2">
+        <span class="kicker">Technical Services</span>
+        <h3>Test lab &amp; design services</h3>
+        <p>Scoped per project, quoted against your product range and target markets. TransformerPath is
+           vendor-neutral &mdash; it does not sell hardware; it specifies what you actually need.</p>
+        <ul>
+          <li>Test bay design and specification, routine vs. type test capability planning</li>
+          <li>Digitalization retrofit &mdash; reporting layer for an existing bay</li>
+          <li>Specialty test procedures documented and validated for your equipment</li>
+        </ul>
+        <a class="go" href="test-lab-consulting.html">Consulting detail &rarr;</a>
+      </div>
+
+      <div class="card2">
+        <span class="kicker">Industry Intelligence</span>
+        <h3>Daily Intel &amp; the transformer market data</h3>
+        <p>Track tenders, prices (copper, CRGO, esters), new factories and the grid build-out that
+           decides where your capacity sells next &mdash; region-filterable, with an RSS feed.</p>
+        <ul>
+          <li>Daily Intel &mdash; curated, refreshed at build, region-filterable, free</li>
+          <li>World grid census (151 countries, 166 operators) and Market hubs</li>
+          <li>Thousands of events &amp; webinars, plus the manufacturer &amp; supplier directory</li>
+          <li>Projects &amp; quotations look-up, and RFQ intake</li>
+        </ul>
+        <a class="go" href="intel.html">See Daily Intel &rarr;</a>
+      </div>
+
+    </div>
+
+    <div class="section-head" style="margin-bottom:18px">
+      <h2>Where the analytical tools apply, and where they don't</h2>
+      <p>The full comparison, with the reasoning behind each column, is in the table below.</p>
+    </div>
+    <div class="fitwrap">
+      <table class="fit">
+        <thead>
+          <tr><th>What you need to do</th><th>Right tool</th><th>Why</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Size a unit for a tender, fast</td><td class="yes">TransformerPath calculator</td>
+              <td>Seconds per iteration — a useful preliminary estimate; accuracy depends on type, geometry and assumptions. FEM is far too slow at this stage.</td></tr>
+          <tr><td>Sanity-check a supplier's or a junior engineer's numbers</td><td class="yes">TransformerPath calculator</td>
+              <td>Independent closed-form second opinion on losses, impedance and regulation.</td></tr>
+          <tr><td>Produce a buyer-ready routine test report</td><td class="yes">Test report generator</td>
+              <td>Formatting and consistency problem, not a physics problem.</td></tr>
+          <tr><td>Train new design or test engineers</td><td class="yes">Masterclass + Design Engineer Track</td>
+              <td>One methodology, manually reviewed capstones, written feedback per level.</td></tr>
+          <tr><td>Spec or digitalise a test bay</td><td class="yes">Consulting engagement</td>
+              <td>Vendor-neutral scoping against your product range and target standards.</td></tr>
+          <tr><td>Map leakage flux in concentric windings; get axial force per section</td><td class="yes">TransformerPath field solve</td>
+              <td>2D axisymmetric, built from the design you just entered. Runs in about a second.</td></tr>
+          <tr><td>Local stray loss in tank, clamps or flitch plates</td><td class="no">3D FEM &mdash; outside this scope</td>
+              <td>Genuinely 3D and outside an axisymmetric model. See the <a href="software.html">software directory</a>.</td></tr>
+          <tr><td>Predict a winding hot spot from geometry</td><td class="no">Coupled FEM/CFD &mdash; outside this scope</td>
+              <td>The tool's thermal output is a sizing estimate, not a local hot-spot solve.</td></tr>
+          <tr><td>Prove short-circuit withstand for a type test</td><td class="no">FEM + physical test &mdash; outside this scope</td>
+              <td>The force and thermal figures are analytical estimates, not certification evidence.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section-head" style="margin-bottom:18px">
+      <h2>What it costs</h2>
+      <p>Learning, Professional and Team are each a single payment for 12 months of access &mdash; not a recurring subscription. No per-seat setup on any of them.
+         Consulting is scoped and quoted per project.</p>
+    </div>
+    <div class="fitwrap">
+      <table class="fit">
+        <thead><tr><th>Plan</th><th>Price (USD/year)</th><th>Seats</th><th>Best for</th></tr></thead>
+        <tbody>
+          <tr><td>Engineer</td><td>$199</td><td>1</td><td>One engineer building their foundation</td></tr>
+          <tr><td>Professional</td><td>$599</td><td>1</td><td>Priority capstone review, early access to new tools</td></tr>
+          <tr><td><strong>Enterprise</strong></td><td><strong>$1,999</strong></td><td>up to 10</td>
+              <td><strong>An engineering department on one shared access link &mdash; the usual starting point for a manufacturer</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="color:var(--muted);font-size:.88rem;margin:-24px 0 40px">
+      Larger seat counts, multi-site rollouts, and invoicing in USD or EUR
+      are handled through <a href="teams.html" style="color:var(--accent);font-weight:600">corporate training</a>.
+      Access is stored in the browser it was purchased from, so a team plan is a shared link rather than
+      individual logins &mdash; if your IT policy requires per-user accounts and SSO, tell us and we'll be
+      straight about whether we're a fit. Full detail on <a href="pricing.html" style="color:var(--accent);font-weight:600">pricing</a>.
+    </p>
+
+    <div class="section-head" style="margin-bottom:18px" id="enquire">
+      <h2>Send a brief</h2>
+      <p>Describe your product range and the problem you're solving. TransformerPath returns
+         something concrete rather than a brochure &mdash; send a design you already know and it comes
+         back run through the engineering tools, in writing.</p>
+    </div>
+    <div class="formwrap">
+      <form name="manufacturer-enquiry" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" id="mfForm">
+        <input type="hidden" name="form-name" value="manufacturer-enquiry">
+        <p hidden><label>Leave empty: <input name="bot-field"></label></p>
+        <label for="mf-name">Your name</label>
+        <input id="mf-name" name="name" type="text" required autocomplete="name">
+        <label for="mf-company">Company</label>
+        <input id="mf-company" name="company" type="text" required autocomplete="organization">
+        <label for="mf-email">Work email</label>
+        <input id="mf-email" name="email" type="email" required autocomplete="email">
+        <label for="mf-range">Product range (MVA and voltage class)</label>
+        <input id="mf-range" name="range" type="text" placeholder="e.g. up to 100 MVA, 132 kV">
+        <label for="mf-interest">What are you looking for?</label>
+        <select id="mf-interest" name="interest">
+          <option>Design tools for our engineers</option>
+          <option>Training for our design / test team</option>
+          <option>Test bay specification or digitalization</option>
+          <option>Specialty test procedure</option>
+          <option>A worked example on one of our own designs</option>
+          <option>Not sure yet — advice welcome</option>
+        </select>
+        <label for="mf-seats">Engineering team size</label>
+        <select id="mf-seats" name="seats">
+          <option>Just me</option><option>2–5</option><option>6–10</option><option>11+ (department)</option>
+        </select>
+        <label for="mf-standards">Target standards</label>
+        <select id="mf-standards" name="standards">
+          <option>IEC 60076</option><option>IEEE / ANSI C57</option><option>Both IEC &amp; IEEE</option><option>Not sure yet</option>
+        </select>
+        <label>Which tools are you interested in?</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 14px;font-size:.9rem;margin:2px 0 12px">
+          <label><input type="checkbox" name="tools" value="calculator"> IEC design calculator</label>
+          <label><input type="checkbox" name="tools" value="test-report"> Test-report generator</label>
+          <label><input type="checkbox" name="tools" value="rating-plate"> Rating-plate generator</label>
+          <label><input type="checkbox" name="tools" value="3d-models"> 3D models / masterclass</label>
+          <label><input type="checkbox" name="tools" value="engineer-track"> Design Engineer Track</label>
+          <label><input type="checkbox" name="tools" value="consulting"> Test-lab / design consulting</label>
+        </div>
+        <label for="mf-msg">Anything else we should know</label>
+        <textarea id="mf-msg" name="message" placeholder="Target markets and standards, current toolchain, team size, timeline…"></textarea>
+        <button class="btn btn-amber" type="submit" style="width:100%;margin-top:18px">Send enquiry &rarr;</button>
+        <p style="color:var(--muted);font-size:.78rem;text-align:center;margin-top:12px">
+          Goes straight to the engineering team. No newsletter signup, no sales sequence.</p>
+      </form>
+      <div id="mfDone" style="display:none;text-align:center;padding:14px 0">
+        <p style="font-weight:700;color:#1e9e5a;font-size:1.05rem">Thank you — that's with us.</p>
+        <p style="color:var(--muted);font-size:.9rem;margin-top:6px">
+          We reply from hello@transformerpath.com, usually within one working day.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+        <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data. Built for utilities, transformer manufacturers, component suppliers, EPCs, consultants and engineers.</p>
+      </div>
+      <div><p class="footer-col-label">INTELLIGENCE</p><a href="intel.html">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="projects.html">Projects</a><a href="tenders.html">Tenders</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="map.html">Industry Map</a><a href="events.html">Events</a></div>
+      <div><p class="footer-col-label">DIRECTORY</p><a href="manufacturers.html">Manufacturers</a><a href="directory.html">Directory Index</a><a href="components.html">Components &amp; Materials</a><a href="machinery.html">Machinery</a><a href="laboratories.html">Testing Labs</a><a href="services.html">Service &amp; Repair</a><a href="logistics.html">Logistics</a><a href="buyers.html">Buyers &amp; Utilities</a><a href="rfq.html">RFQ Board</a></div>
+      <div><p class="footer-col-label">ENGINEERING</p><a href="tools.html">Engineering Hub</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Interactive Models</a><a href="standards.html">Standards &amp; Codes</a><a href="knowledge.html">Knowledge Base</a><a href="case-studies.html">Case Studies</a></div>
+      <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learning Hub</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy 3D Tools</a><a href="books.html">Books</a><a href="education.html">Education</a></div>
+      <div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="pricing.html">Pricing Plans</a><a href="verified.html">Verified Profiles</a><a href="webinars.html">Webinars</a><a href="sponsor.html">Sponsorship</a><a href="associations.html">Associations</a><a href="media.html">Media</a></div>
+      <div><p class="footer-col-label">COMPANY</p><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><p class="footer-col-label">CONTACT</p>
+        <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
+        <a href="privacy.html#cookies" onclick="if(window.tpResetConsent){window.tpResetConsent();return false}">Cookie settings</a>
+        <a class="tp-li-btn tp-li-follow" data-linkedin-follow href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>Follow us on LinkedIn</a>
+        <a class="tp-li-btn tp-li-share" data-linkedin-share href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>LinkedIn</a>
+      </div>
+    </div>
+    <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+/* Netlify Forms submit — same pattern as teams.html / test-lab-consulting.html. */
+(function(){
+  var f = document.getElementById('mfForm');
+  if (!f) return;
+  f.addEventListener('submit', function(e){
+    e.preventDefault();
+    // Notify the owner by email too (graceful if RESEND_API_KEY isn't set yet).
+    if (window.TP_NOTIFY) window.TP_NOTIFY(f);
+    var data = new URLSearchParams(new FormData(f)).toString();
+    fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:data })
+      .then(function(){
+        f.style.display = 'none';
+        document.getElementById('mfDone').style.display = 'block';
+      })
+      .catch(function(){
+        alert('Sorry — that didn\'t send. Please email hello@transformerpath.com directly.');
+      });
+  });
+})();
+</script>
+<script src="form-notify.js" defer></script>
+<script src="analytics.js?v=7" defer></script>
+<script src="tp-freshness.js?v=7" defer></script>
+<script src="tp-feedback.js?v=7" defer></script>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Source Health — TransformerPath</title>
+<meta name="description" content="TransformerPath source-health monitor — per-source freshness and status. Read-only; never asserts a live state it cannot verify.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="../style.css?v=14">
+<link rel="icon" type="image/svg+xml" href="../brand/favicon.svg">
+<meta name="theme-color" content="#0d1b2e">
+<script>if ((localStorage.getItem('theme') || 'dark') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');</script>
+<style>
+.admin-wrap { max-width: 1080px; margin: 30px auto; padding: 0 20px; }
+.gate { max-width: 380px; margin: 80px auto; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 32px; text-align: center; }
+.gate input { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; margin: 14px 0; background: var(--card); color: var(--text); }
+.gate button { width: 100%; padding: 11px; background: var(--amber); color: var(--navy); border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
+#panel { display: none; }
+.acard { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 22px; margin-bottom: 18px; }
+.acard h3 { margin: 0 0 6px; font-size: 1.02rem; color: var(--text); }
+.acard .sub { color: var(--muted); font-size: .84rem; margin-bottom: 14px; }
+.sh-table { width: 100%; border-collapse: collapse; font-size: .86rem; }
+.sh-table th { text-align: left; color: var(--muted); font-weight: 800; font-size: .7rem; text-transform: uppercase; letter-spacing: .04em; padding: 8px 10px; border-bottom: 2px solid var(--border); }
+.sh-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+.sh-pill { display: inline-block; font-size: .66rem; font-weight: 700; letter-spacing: .04em; padding: 1px 8px; border-radius: 999px; color: #fff; text-transform: uppercase; }
+.st-HEALTHY { background: #16a34a; } .st-DELAYED { background: #d97706; } .st-STALE { background: #b45309; } .st-FAILED { background: #b91c1c; } .st-MANUAL_REVIEW { background: #475569; }
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .82rem; }
+.surf { margin-bottom: 8px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; }
+</style>
+</head>
+<body>
+<div class="gate" id="gate">
+  <h2 style="margin:0 0 6px">🔐 Source Health</h2>
+  <p style="color:var(--muted);font-size:.88rem">TransformerPath source-health monitor</p>
+  <input type="password" id="pw" placeholder="Passphrase" onkeydown="if(event.key==='Enter')unlock()">
+  <button onclick="unlock()">Unlock</button>
+  <p style="color:var(--muted);font-size:.75rem;margin-top:14px">Client-side gate — keeps casual visitors out. Don't store secrets on this page.</p>
+</div>
+
+<div class="admin-wrap" id="panel">
+  <h1 style="margin:12px 0 4px">🩺 Source <span style="color:var(--accent)">Health</span></h1>
+  <p style="color:var(--muted);margin-bottom:18px">Canonical freshness &amp; source health · <a href="directory-health.html" style="color:var(--accent);font-weight:600">Directory Health ↗</a> · <a href="../admin.html" style="color:var(--accent)">← Admin</a> · <a href="../index.html" style="color:var(--accent)">Site</a></p>
+  <p class="sub" style="color:var(--muted);font-size:.8rem;margin-top:-8px">Read-only. A source status (HEALTHY / DELAYED / STALE / FAILED / MANUAL_REVIEW) is computed from observed dates in <code>data/freshness.json</code>; nothing is asserted as live until the system actually observes it.</p>
+
+  <div class="acard">
+    <h3>Sources</h3>
+    <p class="sub">Every source feeding an intelligence surface — last checked, last success, latest content date, failures and status.</p>
+    <div id="srcRows"><p style="color:var(--muted)">Loading…</p></div>
+  </div>
+
+  <div class="acard">
+    <h3>Surfaces</h3>
+    <p class="sub">Per-dataset refresh metadata — page-build date vs data-refresh date vs latest source observation are distinct.</p>
+    <div id="surfRows"><p style="color:var(--muted)">Loading…</p></div>
+  </div>
+
+  <p class="sub" style="color:var(--muted);font-size:.78rem">PAGE BUILD DATE = when this artifact was last regenerated. DATA REFRESH DATE = last successful source refresh. LATEST SOURCE OBSERVATION = newest observed date in the source data. These are not the same and are never conflated.</p>
+</div>
+
+<script>
+var PW_HASH = '941b8378581ccb8f06432b05180349fef279bd9c9356c25b9771d54c4d533039';
+var SRC = '../data/freshness.json';
+
+function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+async function sha256(s) {
+  var b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
+  return Array.from(new Uint8Array(b)).map(function (x) { return x.toString(16).padStart(2, '0'); }).join('');
+}
+async function unlock() {
+  var h = await sha256(document.getElementById('pw').value);
+  if (h === PW_HASH) { sessionStorage.setItem('tp-admin', '1'); show(); }
+  else { document.getElementById('pw').value = ''; document.getElementById('pw').placeholder = 'Wrong passphrase'; }
+}
+function show() { document.getElementById('gate').style.display = 'none'; document.getElementById('panel').style.display = 'block'; render(); }
+if (sessionStorage.getItem('tp-admin') === '1') show();
+
+function pill(st) { return '<span class="sh-pill st-' + esc(st || 'MANUAL_REVIEW') + '">' + esc(st || 'MANUAL_REVIEW') + '</span>'; }
+
+function render() {
+  fetch(SRC).then(function (r) { return r.json().catch(function () { return {}; }); }).then(function (d) {
+    var srcEl = document.getElementById('srcRows');
+    var surEl = document.getElementById('surfRows');
+    var sources = d.sources || [];
+    var surfs = d.surfaces || [];
+    if (srcEl) {
+      if (!sources.length) { srcEl.innerHTML = '<p style="color:var(--muted)">No source rows recorded.</p>'; }
+      else {
+        var t = '<table class="sh-table"><thead><tr><th>Source</th><th>Type</th><th>Region</th><th>Last checked</th><th>Last success</th><th>Latest content</th><th>Failures</th><th>Status</th></tr></thead><tbody>';
+        sources.forEach(function (s) {
+          t += '<tr><td><b style="color:var(--text)">' + esc(s.name) + '</b></td><td>' + esc(s.type) + '</td><td>' + esc(s.region) + '</td>'
+            + '<td class="mono">' + esc(s.last_checked || '—') + '</td><td class="mono">' + esc(s.last_success || '—') + '</td>'
+            + '<td class="mono">' + esc(s.latest_content_date || '—') + '</td><td class="mono">' + esc(s.failure_count == null ? '—' : s.failure_count) + '</td>'
+            + '<td>' + pill(s.status) + '</td></tr>';
+        });
+        t += '</tbody></table>';
+        srcEl.innerHTML = t;
+      }
+    }
+    if (surEl) {
+      if (!surfs.length) { surEl.innerHTML = '<p style="color:var(--muted)">No surface rows recorded.</p>'; }
+      else {
+        var h = '';
+        surfs.forEach(function (s) {
+          h += '<div class="surf">'
+            + '<div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">'
+            + '<b style="color:var(--text)">' + esc(s.name) + '</b>' + pill(s.status) + '</div>'
+            + '<div class="sub" style="font-size:.76rem;margin-top:4px">cadence: <b style="color:var(--text)">' + esc(s.cadence || '—') + '</b></div>'
+            + '<div class="sub" style="font-size:.76rem">last_build: <b style="color:var(--text)">' + esc(s.last_build || '—') + '</b> · last_data_refresh: <b style="color:var(--text)">' + esc(s.last_data_refresh || '—') + '</b> · latest_source_observation: <b style="color:var(--text)">' + esc(s.latest_source_observation || '—') + '</b></div>'
+            + (s.source_health ? '<div class="sub" style="font-size:.74rem;color:var(--muted);margin-top:3px">' + esc(s.source_health) + '</div>' : '')
+            + '</div>';
+        });
+        surEl.innerHTML = h;
+      }
+    }
+  }).catch(function () {
+    var e = document.getElementById('srcRows');
+    if (e) e.innerHTML = '<p style="color:var(--muted)">data/freshness.json unavailable. Run <code style="color:var(--accent)">node build-freshness.js</code>.</p>';
+  });
+}
+</script>
+</body>
+</html>

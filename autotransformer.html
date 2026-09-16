@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" class="tp-dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Autotransformer — Series + Common Winding (Interactive 3D, 400/220 kV)</title>
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
+<meta name="description" content="Interactive 3D autotransformer model — see how the shared series and common windings of a 400/220 kV autotransformer work, with exploded views and click-to-identify parts.">
+<link rel="canonical" href="https://transformerpath.com/autotransformer.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TransformerPath">
+<meta property="og:title" content="Autotransformer — Series + Common Winding (Interactive 3D, 400/220 kV)">
+<meta property="og:description" content="Interactive 3D autotransformer model — see how the shared series and common windings of a 400/220 kV autotransformer work, with exploded views and click-to-identify parts.">
+<meta property="og:url" content="https://transformerpath.com/autotransformer.html">
+<meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+:root{--panel:#14253d;--panel2:#0d1b2e;--ink:#e8edf4;--mut:#94a3b8;--acc:#f5a623;--acc2:#fbbf24;--line:#1e3a5c}
+*{box-sizing:border-box;margin:0;padding:0}html,body{height:100%;overflow:hidden}
+body{font-family:var(--font-sans);background:#0a1624;color:var(--ink)}
+#c3d{position:absolute;inset:0;cursor:grab}#c3d.dragging{cursor:grabbing}
+#topbar{position:absolute;top:0;left:0;right:0;height:52px;background:linear-gradient(180deg,rgba(10,22,36,.95),rgba(10,22,36,.78) 70%,transparent);display:flex;align-items:center;gap:12px;padding:0 18px;z-index:10;pointer-events:none}
+#topbar h1{font-size:1rem;font-weight:600;white-space:nowrap}
+#topbar a{pointer-events:auto;color:var(--acc);text-decoration:none;font-size:.8rem;border:1px solid var(--line);padding:4px 10px;border-radius:6px;background:rgba(20,37,61,.7);white-space:nowrap}
+#topbar a:hover{background:var(--panel);border-color:var(--acc)}
+#panel{position:absolute;top:60px;right:12px;width:300px;max-height:calc(100% - 80px);overflow-y:auto;background:rgba(20,37,61,.94);border:1px solid var(--line);border-radius:12px;padding:14px 16px;z-index:10;backdrop-filter:blur(8px)}
+#panel h2{font-size:.78rem;text-transform:uppercase;letter-spacing:1px;color:var(--acc);margin:12px 0 6px}#panel h2:first-child{margin-top:0}
+.spec{font-size:.74rem;color:var(--mut);line-height:1.5;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 10px}.spec b{color:var(--acc)}
+.tgl{display:flex;align-items:center;gap:8px;font-size:.83rem;padding:2.5px 0;cursor:pointer;user-select:none}.tgl input{accent-color:var(--acc)}
+.sw{width:11px;height:11px;border-radius:3px;display:inline-block;flex:none}
+#info{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin-top:6px;font-size:.83rem;line-height:1.5;min-height:90px}#info b{color:var(--acc)}#info .hint{color:var(--mut);font-size:.78rem}
+.btnrow{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.btnrow button{flex:1;background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:7px;padding:6px 4px;font-size:.77rem;cursor:pointer;white-space:nowrap}
+.btnrow button:hover{border-color:var(--acc)}.btnrow button.on{background:var(--acc);color:#0d1b2e;font-weight:700;border-color:var(--acc)}
+#help{position:absolute;left:14px;bottom:12px;z-index:10;font-size:.74rem;color:var(--mut);background:rgba(20,37,61,.85);border:1px solid var(--line);border-radius:8px;padding:7px 11px;line-height:1.6;pointer-events:none}
+.lbl{position:absolute;transform:translate(-50%,-130%);background:rgba(10,22,36,.92);border:1px solid var(--line);color:#e8edf4;font-size:11px;padding:2px 7px;border-radius:5px;pointer-events:auto;cursor:pointer;white-space:nowrap;z-index:5}
+.lbl::after{content:"";position:absolute;left:50%;top:100%;margin-left:-4px;border:4px solid transparent;border-top-color:var(--line)}
+@media(max-width:760px){#panel{width:248px}#topbar h1{font-size:.78rem}}
+</style>
+<script src="consent.js" defer></script>
+    <link rel="stylesheet" href="tp-theme.css?v=6">
+    <link rel="stylesheet" href="tp-nav.css?v=14">
+  <link rel="stylesheet" href="tp-feedback.css?v=14">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
+    <nav class="tpnav" id="mainNav" aria-label="Primary">
+      <a href="intel.html">Intel</a>
+      <div class="tpnav-dropdown">
+        <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
+        <div class="tpnav-dropdown-panel" role="menu">
+          <a href="manufacturers.html">Manufacturers</a>
+          <a href="map.html">Industry Map</a>
+          <a href="grids.html">Global Grids</a>
+          <a href="components.html">Components &amp; Materials</a>
+          <a href="machinery.html">Machinery</a>
+          <a href="laboratories.html">Testing Labs</a>
+          <a href="services.html">Services &amp; Repair</a>
+          <a href="markets.html">Markets</a>
+          <a href="buyers-guide.html">Buyer's Guide</a>
+          <a href="directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
+        </div>
+      </div>
+      <a href="projects.html">Projects</a>
+      <a href="tenders.html">Tenders</a>
+      <a href="events.html">Events</a>
+      <a href="tools.html" class="tpnav-opt">Engineering</a>
+      <a href="learn.html">Learn</a>
+      <a href="rfq.html">RFQ</a>
+      <div class="tpnav-more">
+        <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
+        <div class="tpnav-more-panel" role="menu">
+          <a href="map.html" role="menuitem">Industry Map</a>
+          <a href="grids.html" role="menuitem">Global Grids</a>
+          <a href="webinars.html" role="menuitem">Webinars</a>
+          <a href="standards.html" role="menuitem">Standards &amp; Codes</a>
+          <a href="for-manufacturers.html" role="menuitem">For Manufacturers</a>
+          <a href="pricing.html" role="menuitem">Pricing Plans</a>
+          <a href="verified.html" role="menuitem">Verified Profiles</a>
+        </div>
+      </div>
+      <span class="tpnav-utils">
+        <a href="search.html" title="Search" aria-label="Search">&#128269;</a>
+        <a href="workspace.html" data-tp-account>Account</a>
+        <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">&#127769;</button>
+      </span>
+    </nav>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    // Night mode is the default; light is opt-in via the toggle.
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+
+    if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
+    updateThemeIcon();
+
+    themeToggle?.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      updateThemeIcon();
+    });
+
+    function updateThemeIcon() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+    }
+  </script>
+  <script src="tp-nav.js?v=7" defer></script>
+  <script src="tp-pwa.js?v=7" defer></script>
+</header>
+<div id="c3d"></div>
+<div id="topbar">
+  <h1>🔗 Autotransformer</h1>
+  <a href="academy.html">🏠 Hub</a>
+  <a href="masterclass.html">← Masterclass</a>
+  <a href="gsu.html">GSU →</a>
+</div>
+<div id="panel">
+  <div class="spec"><b>Auto</b> · 400/220 kV interconnecting · YNa0(d) · series + common winding share one magnetic circuit · buried delta tertiary</div>
+  <h2>Current path</h2>
+  <div class="btnrow"><button id="bFlow" class="on">⚡ Animate current path</button></div>
+  <h2>Windings</h2>
+  <div id="toggles"></div>
+  <h2>View</h2>
+  <div class="btnrow">
+    <button id="bRotate">⟳ Rotate</button>
+    <button id="bLabels" class="on">🏷 Labels</button>
+    <button id="bReset">⌂ Reset</button>
+  </div>
+  <h2>Selected part</h2>
+  <div id="info"><span class="hint">Click any part to identify it. An autotransformer shares one winding between HV and IV — that is why it is smaller and cheaper than a two-winding unit at close ratios, but offers no galvanic isolation.</span></div>
+</div>
+<div id="help">🖱 drag = orbit · wheel = zoom · right-drag = pan · click = identify<br>The IV terminal taps the junction of the <b>common</b> and <b>series</b> windings — HV = series + common in series.</div>
+
+<script src="vendor/three.min.js"></script>
+<script>
+const container=document.getElementById('c3d');
+const renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.setSize(innerWidth,innerHeight);
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.outputEncoding=THREE.sRGBEncoding;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.14;
+container.appendChild(renderer.domElement);
+const scene=new THREE.Scene();
+(function(){const cv=document.createElement('canvas');cv.width=16;cv.height=512;const g=cv.getContext('2d');
+ const gr=g.createLinearGradient(0,0,0,512);gr.addColorStop(0,'#2b5a86');gr.addColorStop(.45,'#143049');gr.addColorStop(.78,'#0c1c30');gr.addColorStop(1,'#0a1624');
+ g.fillStyle=gr;g.fillRect(0,0,16,512);scene.background=new THREE.CanvasTexture(cv);})();
+scene.fog=new THREE.Fog(0x0d1f33,220,560);
+const camera=new THREE.PerspectiveCamera(46,innerWidth/innerHeight,0.4,900);
+scene.add(new THREE.HemisphereLight(0xbcd4ea,0x16202c,.92));
+const sun=new THREE.DirectionalLight(0xffffff,1);sun.position.set(90,140,90);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);
+const scam=sun.shadow.camera;scam.left=-110;scam.right=110;scam.top=140;scam.bottom=-30;scam.far=400;scene.add(sun);
+scene.add((function(){var d=new THREE.DirectionalLight(0x88aacc,.3);d.position.set(-80,50,-80);return d;})());
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(800,800),new THREE.MeshStandardMaterial({color:0x16314a,roughness:1}));
+ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
+
+const M={
+  core:new THREE.MeshStandardMaterial({color:0x47556a,metalness:.78,roughness:.34}),
+  common:new THREE.MeshStandardMaterial({color:0xc97a3d,metalness:.7,roughness:.45,side:THREE.DoubleSide}),
+  series:new THREE.MeshStandardMaterial({color:0x3da5f4,metalness:.6,roughness:.5,side:THREE.DoubleSide}),
+  tert:new THREE.MeshStandardMaterial({color:0x1d7a4f,metalness:.6,roughness:.5,side:THREE.DoubleSide}),
+  junc:new THREE.MeshStandardMaterial({color:0xffd36a,metalness:.8,roughness:.3}),
+  lead:new THREE.MeshStandardMaterial({color:0x9aa9bb,metalness:.85,roughness:.4}),
+  hv:new THREE.MeshStandardMaterial({color:0xe8732a,metalness:.6,roughness:.5}),
+  neu:new THREE.MeshStandardMaterial({color:0x8a9bb0,metalness:.7,roughness:.45})
+};
+const PARTS={};const pickables=[];
+function reg(obj,key,name,desc){obj.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;o.userData.key=key;pickables.push(o);}});PARTS[key]={root:obj,name,desc};return obj;}
+const root=new THREE.Group();scene.add(root);
+
+/* core: 5-limb */
+const LIMB_X=[-26,0,26], RET_X=[-50,50];
+const H=78, Y0=12;
+const coreGrp=new THREE.Group();
+LIMB_X.forEach(x=>{const l=new THREE.Mesh(new THREE.CylinderGeometry(5,5,H,28),M.core);l.position.set(x,Y0+H/2,0);coreGrp.add(l);});
+RET_X.forEach(x=>{const l=new THREE.Mesh(new THREE.CylinderGeometry(4.2,4.2,H,22),M.core);l.position.set(x,Y0+H/2,0);coreGrp.add(l);});
+[1,-1].forEach(s=>{const yk=new THREE.Mesh(new THREE.BoxGeometry(116,9,9),M.core);yk.position.set(0,Y0+H/2+s*H/2,0);coreGrp.add(yk);});
+root.add(coreGrp);reg(coreGrp,'core','5-limb core','The magnetic circuit shared by all the windings. Two return limbs keep the yoke low and give zero-sequence flux a path for the YNa connection.');
+
+/* windings per limb: tertiary (inner) → common (lower) → series (upper) */
+const COMMON_Y0=Y0+6, COMMON_H=40, SERIES_H=26, GAP=3;
+const wTert=new THREE.Group(),wCommon=new THREE.Group(),wSeries=new THREE.Group(),juncGrp=new THREE.Group();
+LIMB_X.forEach(x=>{
+  const ter=new THREE.Mesh(new THREE.CylinderGeometry(7,7,COMMON_H+SERIES_H,36,1,true),M.tert);ter.position.set(x,COMMON_Y0+(COMMON_H+SERIES_H)/2,0);wTert.add(ter);
+  const com=new THREE.Mesh(new THREE.CylinderGeometry(10,10,COMMON_H,40,1,true),M.common);com.position.set(x,COMMON_Y0+COMMON_H/2,0);wCommon.add(com);
+  const serY=COMMON_Y0+COMMON_H+GAP;
+  const ser=new THREE.Mesh(new THREE.CylinderGeometry(10,10,SERIES_H,40,1,true),M.series);ser.position.set(x,serY+SERIES_H/2,0);wSeries.add(ser);
+  // junction ring (auto point = IV terminal tap) between common top and series bottom
+  const j=new THREE.Mesh(new THREE.TorusGeometry(10.6,1.1,10,40),M.junc);j.rotation.x=Math.PI/2;j.position.set(x,COMMON_Y0+COMMON_H+GAP/2,0);juncGrp.add(j);
+});
+root.add(wTert,wCommon,wSeries,juncGrp);
+reg(wCommon,'common','Common winding','Carried by <b>both</b> circuits. It sits between the neutral and the junction (IV) tap; the current in it is the <b>difference</b> I<sub>IV</sub> − I<sub>HV</sub>, which is why an autotransformer uses less copper than a two-winding unit.');
+reg(wSeries,'series','Series winding','In series above the common. HV = series + common in series, so the HV terminal is the top of the series winding; the IV terminal is the junction below it.');
+reg(wTert,'tert','Delta tertiary','A buried delta close to the core. It carries third-harmonic magnetising current and stabilises the neutral (an auto with an earthed star pair needs it); it can also be loaded at MV.');
+reg(juncGrp,'junc','Auto junction (IV tap)','The electrical join between common and series windings — the <b>220 kV (IV) terminal</b> is tapped here. This shared point is what removes the galvanic isolation of a two-winding transformer.');
+
+/* terminals / leads */
+const HV_Y=COMMON_Y0+COMMON_H+GAP+SERIES_H+6;
+const termGrp=new THREE.Group();
+const leads=[]; // for flow animation: {mesh}
+LIMB_X.forEach(x=>{
+  // HV lead up from series top
+  const hv=new THREE.Mesh(new THREE.CylinderGeometry(1.1,1.1,14,12),M.hv);hv.position.set(x,HV_Y,0);termGrp.add(hv);
+  const hvb=new THREE.Mesh(new THREE.SphereGeometry(2,12,10),M.hv);hvb.position.set(x,HV_Y+8,0);termGrp.add(hvb);
+  // IV lead from junction out to the side
+  const iv=new THREE.Mesh(new THREE.CylinderGeometry(1.0,1.0,16,12),M.lead);iv.rotation.z=Math.PI/2;iv.position.set(x,COMMON_Y0+COMMON_H+GAP/2,16);termGrp.add(iv);
+});
+root.add(termGrp);
+reg(termGrp,'term','HV &amp; IV terminals','Orange = <b>400 kV HV</b> leads from the series-winding tops; grey = <b>220 kV IV</b> leads tapped from the junctions. Their star points share the neutral.');
+
+/* neutral bus joining all common bottoms */
+const neu=new THREE.Mesh(new THREE.BoxGeometry(88,1.6,1.6),M.neu);neu.position.set(0,COMMON_Y0-2,0);
+root.add(neu);reg(neu,'neu','Common neutral','The bottoms of the common windings join to one earthed neutral — brought out to a neutral bushing and solidly earthed.');
+
+/* current-path particles: HV(top) -> series -> junction -> common -> neutral, on centre limb */
+const flowGrp=new THREE.Group();root.add(flowGrp);
+const dots=[];for(let i=0;i<26;i++){const d=new THREE.Mesh(new THREE.SphereGeometry(.8,7,7),new THREE.MeshBasicMaterial({color:0xffe08a}));d.visible=false;flowGrp.add(d);dots.push({m:d,t:i/26});}
+const flowPath=new THREE.CatmullRomCurve3([
+  new THREE.Vector3(0,HV_Y+6,0),new THREE.Vector3(0,COMMON_Y0+COMMON_H+GAP+SERIES_H/2,10),
+  new THREE.Vector3(0,COMMON_Y0+COMMON_H+GAP/2,11),new THREE.Vector3(0,COMMON_Y0+COMMON_H/2,10),
+  new THREE.Vector3(0,COMMON_Y0-2,0)]);
+
+/* ===== toggles ===== */
+const swatch={core:'#47556a',common:'#c97a3d',series:'#3da5f4',tert:'#1d7a4f',junc:'#ffd36a',term:'#f5a623',neu:'#8a9bb0'};
+const togList=[['core','5-limb core'],['series','Series winding'],['common','Common winding'],['tert','Delta tertiary'],['junc','Auto junction (IV)'],['term','HV / IV terminals'],['neu','Neutral bus']];
+const togBox=document.getElementById('toggles');
+togList.forEach(([k,label])=>{const l=document.createElement('label');l.className='tgl';
+  l.innerHTML=`<input type="checkbox" data-k="${k}" checked><span class="sw" style="background:${swatch[k]}"></span>${label}`;togBox.appendChild(l);});
+togBox.addEventListener('change',e=>{const k=e.target.dataset.k;if(PARTS[k])PARTS[k].root.visible=e.target.checked;});
+
+/* ===== orbit / pick / labels ===== */
+const el=renderer.domElement;
+let sph={r:190,th:.75,ph:1.02};const target=new THREE.Vector3(0,Y0+H/2,0);
+function applyCam(){sph.ph=Math.max(.16,Math.min(1.5,sph.ph));sph.r=Math.max(60,Math.min(420,sph.r));
+  camera.position.set(target.x+sph.r*Math.sin(sph.ph)*Math.sin(sph.th),target.y+sph.r*Math.cos(sph.ph),target.z+sph.r*Math.sin(sph.ph)*Math.cos(sph.th));camera.lookAt(target);}
+applyCam();
+let dragging=false,panning=false,moved=0,px=0,py=0,pinchD=0;
+el.addEventListener('contextmenu',e=>e.preventDefault());
+el.addEventListener('pointerdown',e=>{dragging=true;moved=0;panning=(e.button===2||e.shiftKey);px=e.clientX;py=e.clientY;container.classList.add('dragging');});
+el.addEventListener('pointermove',e=>{if(!dragging)return;const dx=e.clientX-px,dy=e.clientY-py;px=e.clientX;py=e.clientY;moved+=Math.abs(dx)+Math.abs(dy);
+  if(panning){const s=sph.r*0.0016;const right=new THREE.Vector3().subVectors(camera.position,target).cross(camera.up).normalize();target.addScaledVector(right,-dx*s);target.y+=dy*s;}
+  else{sph.th-=dx*0.005;sph.ph-=dy*0.005;}applyCam();});
+el.addEventListener('pointerup',e=>{dragging=false;container.classList.remove('dragging');if(moved<6)pick(e);});
+el.addEventListener('wheel',e=>{e.preventDefault();sph.r*=(1+Math.sign(e.deltaY)*.09);applyCam();},{passive:false});
+el.addEventListener('touchstart',e=>{if(e.touches.length===2)pinchD=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);},{passive:true});
+el.addEventListener('touchmove',e=>{if(e.touches.length===2){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);sph.r*=pinchD/d;pinchD=d;applyCam();}},{passive:true});
+const ray=new THREE.Raycaster();const mouse=new THREE.Vector2();
+function pick(e){mouse.x=(e.clientX/innerWidth)*2-1;mouse.y=-(e.clientY/innerHeight)*2+1;ray.setFromCamera(mouse,camera);
+  const hits=ray.intersectObjects(pickables,true);for(const h of hits){if(h.object.visible&&h.object.userData.key){selectPart(h.object.userData.key);return;}}}
+const info=document.getElementById('info');
+function selectPart(k){const p=PARTS[k];if(!p)return;info.innerHTML=`<b>${p.name}</b><br>${p.desc}`;}
+const labels=[];
+function mkLabel(text,pos,key){const e=document.createElement('div');e.className='lbl';e.textContent=text;if(key)e.addEventListener('click',()=>selectPart(key));document.body.appendChild(e);labels.push({el:e,pos});}
+mkLabel('HV 400 kV',new THREE.Vector3(0,HV_Y+10,0),'term');
+mkLabel('Series',new THREE.Vector3(10,COMMON_Y0+COMMON_H+GAP+SERIES_H/2,0),'series');
+mkLabel('IV 220 kV (junction)',new THREE.Vector3(0,COMMON_Y0+COMMON_H+GAP/2,17),'junc');
+mkLabel('Common',new THREE.Vector3(10,COMMON_Y0+COMMON_H/2,0),'common');
+mkLabel('Tertiary Δ',new THREE.Vector3(-26,COMMON_Y0+8,0),'tert');
+mkLabel('Neutral',new THREE.Vector3(-40,COMMON_Y0-2,0),'neu');
+let labelsOn=true;document.getElementById('bLabels').onclick=function(){labelsOn=!labelsOn;this.classList.toggle('on',labelsOn);};
+let rotating=false;document.getElementById('bRotate').onclick=function(){rotating=!rotating;this.classList.toggle('on',rotating);};
+document.getElementById('bReset').onclick=()=>{sph={r:190,th:.75,ph:1.02};target.set(0,Y0+H/2,0);applyCam();};
+let flow=true;document.getElementById('bFlow').onclick=function(){flow=!flow;this.classList.toggle('on',flow);};
+
+function tick(){requestAnimationFrame(tick);
+  if(rotating){sph.th+=0.0038;applyCam();}
+  dots.forEach(o=>{o.m.visible=flow;if(!flow)return;o.t+=0.004;if(o.t>1)o.t-=1;o.m.position.copy(flowPath.getPoint(o.t));});
+  labels.forEach(L=>{if(!labelsOn){L.el.style.display='none';return;}const v=L.pos.clone();v.project(camera);
+    if(v.z>1){L.el.style.display='none';return;}L.el.style.display='block';L.el.style.left=((v.x*.5+.5)*innerWidth)+'px';L.el.style.top=((-v.y*.5+.5)*innerHeight)+'px';});
+  renderer.render(scene,camera);
+}
+tick();
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
+</script>
+<script src="tp-theme.js?v=1" defer></script>
+<script src="analytics.js?v=7" defer></script>
+<section class="autocalc" id="autocalc" style="max-width:960px;margin:0 auto;padding:30px 20px 50px">
+  <style>
+    .autocalc label{display:block;font-size:.78rem;font-weight:700;color:var(--muted);margin-bottom:4px}
+    .autocalc input{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--text);font-size:.95rem;font-family:inherit}
+    .autocalc .arow{display:flex;justify-content:space-between;gap:14px;border-bottom:1px solid var(--border);padding:8px 0;font-size:.92rem}
+    .autocalc .arow span{color:var(--muted)}
+    .autocalc .arow b{color:var(--ink);text-align:right}
+    @media print{ #topbar,#panel,#canvas,#help,header,footer{display:none!important} }
+  </style>
+  <h2 style="color:var(--ink);font-size:1.5rem;margin:0 0 4px">Autotransformer design check</h2>
+  <p style="color:var(--muted);font-size:.92rem;margin:0 0 16px">First-cut check for a two-winding autotransformer (series + common, no galvanic isolation). Tender / estimation grade — verify with the manufacturer.</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:0 0 16px">
+    <div><label for="avh">HV (kV)</label><input id="avh" type="number" value="400" step="1"></div>
+    <div><label for="avl">LV (kV)</label><input id="avl" type="number" value="220" step="1"></div>
+    <div><label for="as">Rating (MVA)</label><input id="as" type="number" value="400" step="10"></div>
+    <div><label for="az">Assumed %Z</label><input id="az" type="number" value="12" step="0.1"></div>
+  </div>
+  <button class="btn btn-amber" type="button" onclick="autoCalc()">Calculate</button>
+  <button class="btn btn-outline" type="button" onclick="window.print()" style="margin-left:8px">Print / PDF report</button>
+  <div id="autoOut" style="margin-top:16px"></div>
+  <p class="note" style="font-size:.8rem;color:var(--muted);margin-top:14px;line-height:1.5">Method (step-down autotransformer): series voltage = HV−LV, common = LV; series:common turns = (HV−LV):LV. Common-winding current I<sub>c</sub> = I<sub>LV</sub> − I<sub>HV</sub>. Self (transformer) rating = S·(HV−LV)/HV — the autotransformer only processes this fraction of throughput, which is why it is smaller. Short-circuit currents use the assumed %Z; the autotransformer's actual %Z is lower than an equivalent two-winding, and the exact IEC 60076-5 value needs the coupled-winding equivalent circuit — treat the impedance figures as first-cut.</p>
+</section>
+<script>
+function autoCalc(){
+  var Vh=+document.getElementById('avh').value, Vl=+document.getElementById('avl').value,
+      S=+document.getElementById('as').value, z=+document.getElementById('az').value;
+  var out=document.getElementById('autoOut');
+  if(!(Vh>Vl&&Vh>0&&Vl>0&&S>0)){ out.innerHTML='<p style="color:#b91c1c">Enter HV &gt; LV &gt; 0 and a rating.</p>'; return; }
+  var k=Vh/Vl, VS=Vh-Vl, VC=Vl, r=VS/VC;
+  var Ih=S*1000/(Math.sqrt(3)*Vh), Il=S*1000/(Math.sqrt(3)*Vl), Ic=Il-Ih;
+  var St=S*(Vh-Vl)/Vh, econ=(1-Vl/Vh)*100;
+  var IscH=Ih/(z/100), IscL=Il/(z/100);
+  function f(x,d){return (Math.round(x*Math.pow(10,d))/Math.pow(10,d)).toLocaleString('en-US',{maximumFractionDigits:d});}
+  function row(k,v){return '<div class="arow"><span>'+k+'</span><b>'+v+'</b></div>';}
+  out.innerHTML=
+    row('HV / LV voltage', f(Vh,1)+' / '+f(Vl,1)+' kV')+
+    row('Ratio (HV : LV)', k.toFixed(3)+' : 1')+
+    row('Series : common voltage', f(VS,1)+' / '+f(VC,1)+' kV')+
+    row('Series : common turns', r.toFixed(2)+' : 1')+
+    row('HV line current', f(Ih,1)+' A')+
+    row('LV line current', f(Il,1)+' A')+
+    row('Common-winding current', f(Ic,1)+' A (I<sub>LV</sub> &minus; I<sub>HV</sub>)')+
+    row('Throughput rating', f(S,1)+' MVA')+
+    row('Self (transformer) rating', f(St,1)+' MVA = S · (HV−LV)/HV')+
+    row('Material vs two-winding', '≈ '+f(econ,1)+' % smaller')+
+    row('Short-circuit — HV', f(IscH,0)+' A (at '+f(z,1)+'&nbsp;%Z)')+
+    row('Short-circuit — LV', f(IscL,0)+' A');
+}
+document.addEventListener('DOMContentLoaded', autoCalc);
+</script>
+<footer>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+        <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data. Built for utilities, transformer manufacturers, component suppliers, EPCs, consultants and engineers.</p>
+      </div>
+      <div><p class="footer-col-label">INTELLIGENCE</p><a href="intel.html">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="projects.html">Projects</a><a href="tenders.html">Tenders</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="map.html">Industry Map</a><a href="events.html">Events</a></div>
+      <div><p class="footer-col-label">DIRECTORY</p><a href="manufacturers.html">Manufacturers</a><a href="directory.html">Directory Index</a><a href="components.html">Components &amp; Materials</a><a href="machinery.html">Machinery</a><a href="laboratories.html">Testing Labs</a><a href="services.html">Service &amp; Repair</a><a href="logistics.html">Logistics</a><a href="buyers.html">Buyers &amp; Utilities</a><a href="rfq.html">RFQ Board</a></div>
+      <div><p class="footer-col-label">ENGINEERING</p><a href="tools.html">Engineering Hub</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Interactive Models</a><a href="standards.html">Standards &amp; Codes</a><a href="knowledge.html">Knowledge Base</a><a href="case-studies.html">Case Studies</a></div>
+      <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learning Hub</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy 3D Tools</a><a href="books.html">Books</a><a href="education.html">Education</a></div>
+      <div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="pricing.html">Pricing Plans</a><a href="verified.html">Verified Profiles</a><a href="webinars.html">Webinars</a><a href="sponsor.html">Sponsorship</a><a href="associations.html">Associations</a><a href="media.html">Media</a></div>
+      <div><p class="footer-col-label">COMPANY</p><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><p class="footer-col-label">CONTACT</p>
+        <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
+        <a href="privacy.html#cookies" onclick="if(window.tpResetConsent){window.tpResetConsent();return false}">Cookie settings</a>
+        <a class="tp-li-btn tp-li-follow" data-linkedin-follow href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>Follow us on LinkedIn</a>
+        <a class="tp-li-btn tp-li-share" data-linkedin-share href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>LinkedIn</a>
+      </div>
+    </div>
+    <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
+  </div>
+</footer>
+<script>
+(function(){var b=document.getElementById('theme-toggle');if(!b)return;var html=document.documentElement;
+function upd(){var d=html.getAttribute('data-theme')==='dark';b.textContent=d?'☀️':'🌙';}
+if((localStorage.getItem('theme')||'dark')==='dark')html.setAttribute('data-theme','dark');upd();
+b.addEventListener('click',function(){var d=html.getAttribute('data-theme')==='dark';
+if(d){html.removeAttribute('data-theme');localStorage.setItem('theme','light');}else{html.setAttribute('data-theme','dark');localStorage.setItem('theme','dark');}upd();});
+})();
+</script>
+<script src="tp-freshness.js?v=7" defer></script>
+<script src="tp-feedback.js?v=7" defer></script>
+</body>
+</html>

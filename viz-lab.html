@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TransformerPath Visual Engine — Interactive Labs | TransformerPath</title>
+<meta name="description" content="Interactive transformer learning labs — vector group simulator, inrush simulator and construction explorer. Analytical, educational models.">
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
+<link rel="stylesheet" href="/style.css?v=14"><link rel="stylesheet" href="/tp-nav.css?v=14">
+<style>
+.vz-wrap{max-width:1100px;margin:0 auto;padding:40px 20px 90px}
+.vz-wrap h1{font-size:1.8rem;color:var(--ink)}
+.vz-label{font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:22px 0 8px}
+.tp-viz{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 18px;margin:10px 0}
+.tp-viz-head{font-weight:800;color:var(--ink);font-size:1rem;margin-bottom:8px}
+.tp-viz-canvas{margin:8px 0;overflow-x:auto}
+.tp-viz-svg{max-width:100%;height:auto;background:#fff;border:1px solid var(--border);border-radius:8px}
+.tp-viz-controls{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0}
+.tp-viz-ctl{display:flex;align-items:center;gap:6px;font-size:.84rem;color:var(--muted)}
+.tp-viz-ctl select,.tp-viz-ctl input[type=range]{font:inherit;color:var(--text);background:var(--bg);border:1px solid var(--border);border-radius:6px}
+.tp-viz-val{min-width:46px;text-align:right;font-weight:700;color:var(--text)}
+.tp-viz-stat,.tp-viz-paraout{font-size:.9rem;color:var(--text);margin:6px 0}
+.tp-viz-paraout ul{margin:6px 0 0 18px}
+.tp-viz-note{font-size:.78rem;color:var(--muted);margin-top:8px}
+.tp-viz-info{font-size:.9rem;color:var(--text);background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin-top:8px}
+.tp-viz-locked{background:var(--card);border:1px solid var(--accent);border-radius:12px;padding:16px;text-align:center;font-size:.95rem}
+.tp-viz-comp{cursor:pointer}
+.tp-viz-comp:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tp-status{background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:10px 14px;margin:8px 0;font-size:.82rem}
+.tp-status-head{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.tp-status-items{display:flex;flex-wrap:wrap;gap:8px 12px;margin:6px 0;color:var(--muted)}
+.tp-status-note{color:var(--muted);font-size:.78rem;line-height:1.5;border-top:1px solid var(--border);padding-top:6px}
+.vz-disclaimer{font-size:.8rem;color:var(--muted);line-height:1.6;margin-top:14px}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
+    <nav class="tpnav" id="mainNav" aria-label="Primary">
+      <a href="intel.html">Intel</a>
+      <div class="tpnav-dropdown">
+        <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
+        <div class="tpnav-dropdown-panel" role="menu">
+          <a href="manufacturers.html">Manufacturers</a>
+          <a href="map.html">Industry Map</a>
+          <a href="grids.html">Global Grids</a>
+          <a href="components.html">Components &amp; Materials</a>
+          <a href="machinery.html">Machinery</a>
+          <a href="laboratories.html">Testing Labs</a>
+          <a href="services.html">Services &amp; Repair</a>
+          <a href="markets.html">Markets</a>
+          <a href="buyers-guide.html">Buyer's Guide</a>
+          <a href="directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
+        </div>
+      </div>
+      <a href="projects.html">Projects</a>
+      <a href="tenders.html">Tenders</a>
+      <a href="events.html">Events</a>
+      <a href="tools.html" class="tpnav-opt">Engineering</a>
+      <a href="learn.html">Learn</a>
+      <a href="rfq.html">RFQ</a>
+      <div class="tpnav-more">
+        <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
+        <div class="tpnav-more-panel" role="menu">
+          <a href="map.html" role="menuitem">Industry Map</a>
+          <a href="grids.html" role="menuitem">Global Grids</a>
+          <a href="webinars.html" role="menuitem">Webinars</a>
+          <a href="standards.html" role="menuitem">Standards &amp; Codes</a>
+          <a href="for-manufacturers.html" role="menuitem">For Manufacturers</a>
+          <a href="pricing.html" role="menuitem">Pricing Plans</a>
+          <a href="verified.html" role="menuitem">Verified Profiles</a>
+        </div>
+      </div>
+      <span class="tpnav-utils">
+        <a href="search.html" title="Search" aria-label="Search">&#128269;</a>
+        <a href="workspace.html" data-tp-account>Account</a>
+        <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">&#127769;</button>
+      </span>
+    </nav>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    // Night mode is the default; light is opt-in via the toggle.
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+
+    if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
+    updateThemeIcon();
+
+    themeToggle?.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      updateThemeIcon();
+    });
+
+    function updateThemeIcon() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+    }
+  </script>
+  <script src="tp-nav.js?v=7" defer></script>
+  <script src="tp-pwa.js?v=7" defer></script>
+</header>
+<main id="main" tabindex="-1" class="vz-wrap">
+  <h1>Interactive transformer learning labs</h1>
+  <p style="color:var(--muted);font-size:.95rem">Analytical, educational visualisations. Each is an <b>engineering model</b>, not an EMT/CFD simulation or a design calculation.</p>
+
+  <div class="vz-label">Vector Group Simulator</div>
+  <div data-viz="vector-group"></div>
+
+  <div class="vz-label">Inrush / Energisation Simulator</div>
+  <div data-viz="inrush"></div>
+
+  <div class="vz-label">Transformer Construction Explorer</div>
+  <div data-viz="construction"></div>
+
+  <div class="vz-label">Short-Circuit Forces Explorer</div>
+  <div data-viz="short-circuit"></div>
+
+  <div class="vz-label">Loading, Hot-Spot &amp; Life</div>
+  <div data-viz="loading"></div>
+
+  <div class="vz-label">Calculation Status (reusable component)</div>
+  <div id="vz-status-demo" class="tp-viz"></div>
+
+  <p class="vz-disclaimer"><b>Scope.</b> These are simplified analytical/educational models used to explain concepts. They are not EMT-type simulations, CFD, or validated design calculations, and they do not claim IEC/IEEE compliance. Each lab declares machine-readable model metadata (<code>model_type / model_version / validation_scope / assumptions / limitations / required_inputs / reference_basis / benchmark_status / engineering_review_status</code>) so the Masterclass and Workbench share the same model identity and validation status. The engineering math is unit-tested (see tests/viz-math.test.js); interactive rendering requires a modern browser and is gated for Learning subscribers where the lab is premium.</p>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+        <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data. Built for utilities, transformer manufacturers, component suppliers, EPCs, consultants and engineers.</p>
+      </div>
+      <div><p class="footer-col-label">INTELLIGENCE</p><a href="intel.html">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="projects.html">Projects</a><a href="tenders.html">Tenders</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="map.html">Industry Map</a><a href="events.html">Events</a></div>
+      <div><p class="footer-col-label">DIRECTORY</p><a href="manufacturers.html">Manufacturers</a><a href="directory.html">Directory Index</a><a href="components.html">Components &amp; Materials</a><a href="machinery.html">Machinery</a><a href="laboratories.html">Testing Labs</a><a href="services.html">Service &amp; Repair</a><a href="logistics.html">Logistics</a><a href="buyers.html">Buyers &amp; Utilities</a><a href="rfq.html">RFQ Board</a></div>
+      <div><p class="footer-col-label">ENGINEERING</p><a href="tools.html">Engineering Hub</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Interactive Models</a><a href="standards.html">Standards &amp; Codes</a><a href="knowledge.html">Knowledge Base</a><a href="case-studies.html">Case Studies</a></div>
+      <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learning Hub</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy 3D Tools</a><a href="books.html">Books</a><a href="education.html">Education</a></div>
+      <div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="pricing.html">Pricing Plans</a><a href="verified.html">Verified Profiles</a><a href="webinars.html">Webinars</a><a href="sponsor.html">Sponsorship</a><a href="associations.html">Associations</a><a href="media.html">Media</a></div>
+      <div><p class="footer-col-label">COMPANY</p><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><p class="footer-col-label">CONTACT</p>
+        <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
+        <a href="privacy.html#cookies" onclick="if(window.tpResetConsent){window.tpResetConsent();return false}">Cookie settings</a>
+        <a class="tp-li-btn tp-li-follow" data-linkedin-follow href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>Follow us on LinkedIn</a>
+        <a class="tp-li-btn tp-li-share" data-linkedin-share href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>LinkedIn</a>
+      </div>
+    </div>
+    <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
+  </div>
+</footer>
+
+<script src="/viz/viz-math.js" defer></script>
+<script src="/viz/tp-viz.js" defer></script>
+<script src="/viz/status.js" defer></script>
+<script src="/viz/vector-group.js" defer></script>
+<script src="/viz/inrush.js" defer></script>
+<script src="/viz/construction.js" defer></script>
+<script src="/viz/short-circuit.js" defer></script>
+<script src="/viz/loading.js" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){ if(window.TP_STATUS) window.TP_STATUS.render(document.getElementById('vz-status-demo'), { analytical:true, inputsComplete:true, benchmark:false, criterion:false }); });
+</script>
+<script src="/analytics.js?v=7" defer></script>
+</body>
+</html>

@@ -1,0 +1,466 @@
+/* ============================================================================
+   TransformerPath — flat primary navigation
+   ----------------------------------------------------------------------------
+   Replaces the five mega-menus (Intelligence / Industry / Engineering / Learn /
+   Business) with direct links. The nine primary destinations are one click, not
+   two. Only lower-priority items collapse into a single-column "More" menu, and
+   only when the row would not otherwise fit.
+
+   Breakpoints are driven by how much room the row actually needs, not by device
+   guesses:
+     >= 1400px   all nine primary links
+     1180-1399   Grids and Tools fold into More
+     1024-1179   Materials-class items already in More; Grids/Tools stay there
+     < 1024px    one flat hamburger panel, no nesting
+
+   Loaded after style.css, so it overrides the older .nav-links rules.
+   ========================================================================== */
+
+/* Skip-to-content — lives here so pages that skip style.css still hide it */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 16px;
+  background: var(--amber, #f5a623);
+  color: var(--navy, #0d1b2e);
+  padding: 8px 16px;
+  font-weight: 700;
+  font-size: .9rem;
+  border-radius: 4px;
+  z-index: 10000;
+  text-decoration: none;
+}
+.skip-link:focus { top: 16px; }
+
+/* Header chrome lives here so pages that skip style.css (masterclass) still
+   get a 64px navy bar, a white wordmark, and a visible hamburger.
+   Do not match in-page heroes that also use <header> (mc-hero, ac-hero). */
+body > header:not(.mc-hero):not(.ac-hero):not(.hero) {
+  background: var(--navy, #0d1b2e);
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,.25);
+}
+.container.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 64px;
+  height: 64px;
+  gap: 16px;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding-left: 20px;
+  padding-right: 20px;
+  box-sizing: border-box;
+}
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.6rem;
+  cursor: pointer;
+  padding: 8px 12px;
+  line-height: 1;
+}
+
+/* ── Uniform Logo ─────────────────────────────────────────────────────── */
+.logo {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 9px !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  font-family: inherit;
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1;
+}
+.logo .word {
+  color: #fff !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.5px !important;
+  display: inline !important;
+  white-space: nowrap !important;
+}
+.logo .accent {
+  color: var(--amber, #f5a623) !important;
+  display: inline !important;
+  letter-spacing: -0.5px !important;
+}
+
+/* ── Row ──────────────────────────────────────────────────────────────── */
+.tpnav {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: auto;
+  flex-wrap: nowrap;               /* the row must never wrap to two lines */
+}
+.tpnav a,
+.tpnav .tpnav-more-btn {
+  color: #cbd5e1;
+  font-size: .88rem;
+  font-weight: 500;
+  line-height: 1;
+  white-space: nowrap;
+  padding: 9px 10px;
+  border-radius: 7px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font-family: inherit;
+  transition: color .12s, background-color .12s;
+}
+.tpnav a:hover,
+.tpnav .tpnav-more-btn:hover {
+  color: var(--amber, #f5a623);
+  background: rgba(255, 255, 255, .06);
+}
+.tpnav a[aria-current="page"] {
+  color: var(--amber, #f5a623);
+  font-weight: 700;
+}
+.tpnav a:focus-visible,
+.tpnav .tpnav-more-btn:focus-visible,
+.tpnav-more-panel a:focus-visible {
+  outline: 2px solid var(--amber, #f5a623);
+  outline-offset: 2px;
+}
+
+/* Search / account / theme sit slightly apart from the link run. */
+.tpnav-utils {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: 8px;
+  padding-left: 8px;
+  border-left: 1px solid rgba(255, 255, 255, .14);
+  flex: none;
+}
+
+/* ── Dropdown: for DIRECTORY ────────────────────────────────────────── */
+.tpnav-dropdown { position: relative; display: inline-flex; align-items: center; }
+.tpnav-dropdown-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.tpnav-dropdown-btn::after { content: " \25BE"; opacity: .7; font-size: .8em; }
+.tpnav-dropdown-panel {
+  display: none;
+  position: absolute;
+  top: 100%;
+  margin-top: 4px;
+  left: 0;
+  min-width: 230px;
+  background: var(--navy-2, #14253d);
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 9px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .38);
+  padding: 6px;
+  z-index: 210;
+}
+/* Invisible hover bridge to eliminate gap and prevent mouseleave when moving from button to panel */
+.tpnav-dropdown-panel::before {
+  content: "";
+  position: absolute;
+  top: -14px;
+  left: -6px;
+  right: -6px;
+  height: 14px;
+}
+.tpnav-dropdown:hover .tpnav-dropdown-panel,
+.tpnav-dropdown:focus-within .tpnav-dropdown-panel,
+.tpnav-dropdown.open .tpnav-dropdown-panel { display: block; }
+.tpnav-dropdown-panel a {
+  display: block;
+  padding: 8px 12px;
+  font-size: .86rem;
+  border-radius: 6px;
+  color: #cbd5e1;
+  text-decoration: none;
+}
+.tpnav-dropdown-panel a:hover {
+  color: var(--amber, #f5a623);
+  background: rgba(255, 255, 255, .06);
+}
+
+/* ── More: a plain single-column list, never a panel ──────────────────── */
+.tpnav-more { position: relative; flex: none; }
+.tpnav-more-btn::after { content: " \25BE"; opacity: .7; font-size: .8em; }
+.tpnav-more-panel {
+  display: none;
+  position: absolute;
+  top: 100%;
+  margin-top: 4px;
+  right: 0;
+  min-width: 184px;
+  max-height: calc(100vh - 90px);
+  overflow-y: auto;
+  background: var(--navy-2, #14253d);
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 9px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .38);
+  padding: 5px;
+  z-index: 200;
+}
+.tpnav-more-panel::before {
+  content: "";
+  position: absolute;
+  top: -14px;
+  left: -6px;
+  right: -6px;
+  height: 14px;
+}
+.tpnav-more:hover .tpnav-more-panel,
+.tpnav-more:focus-within .tpnav-more-panel,
+.tpnav-more.open .tpnav-more-panel { display: block; }
+.tpnav-more-panel a {
+  display: block;
+  padding: 8px 12px;
+  font-size: .86rem;
+  border-radius: 6px;
+}
+
+/* Hidden by default; each width band decides what to reveal. */
+.tpnav-more { display: none; }
+.tpnav .tpnav-opt { display: inline-block; }
+
+/* ── Width bands ──────────────────────────────────────────────────────── */
+/* Below 1400 the full row starts to crowd the logo, so demote two items. */
+@media (max-width: 1399px) {
+  .tpnav-more { display: block; }
+  .tpnav .tpnav-opt { display: none; }
+  .tpnav a, .tpnav .tpnav-more-btn { padding: 9px 8px; font-size: .86rem; }
+}
+/* Tighter still: trim padding rather than dropping another destination. */
+@media (max-width: 1179px) {
+  .tpnav a, .tpnav .tpnav-more-btn { padding: 8px 6px; font-size: .84rem; }
+  .tpnav-utils { margin-left: 4px; padding-left: 4px; }
+}
+
+/* ── Mobile / tablet: one flat panel ──────────────────────────────────── */
+@media (max-width: 1023px) {
+  .tpnav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    background: var(--navy, #0d1b2e);
+    border-top: 1px solid rgba(255, 255, 255, .12);
+    box-shadow: 0 16px 26px rgba(0, 0, 0, .4);
+    padding: 6px 0 10px;
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
+  }
+  .tpnav.open { display: flex; }
+  .tpnav a {
+    padding: 13px 22px;             /* comfortable touch target */
+    border-radius: 0;
+    font-size: .98rem;
+    border-bottom: 1px solid rgba(255, 255, 255, .06);
+  }
+  /* Mobile dropdown handling for Directory */
+  .tpnav-dropdown {
+    display: block;
+    width: 100%;
+    position: static;
+  }
+  .tpnav-dropdown-btn {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 13px 22px;
+    font-size: .98rem;
+    border-radius: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, .06);
+  }
+  .tpnav-dropdown-panel {
+    display: none;
+    position: static;
+    background: rgba(0, 0, 0, .22);
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 4px 0 8px;
+    min-width: 0;
+    z-index: auto;
+  }
+  .tpnav-dropdown.open .tpnav-dropdown-panel {
+    display: block;
+  }
+  .tpnav-dropdown-panel a {
+    padding: 12px 22px 12px 36px;
+    font-size: .92rem;
+    border-radius: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, .04);
+  }
+  .tpnav-dropdown-panel::before {
+    display: none;
+  }
+
+  /* Everything is one flat list on mobile — no nested accordion. The More
+     wrapper stops being a menu and its links join the run, so a phone user
+     gets the full set in one scroll instead of a second level to open. */
+  .tpnav .tpnav-opt { display: block; }
+  .tpnav-more { display: contents; }
+  .tpnav-more-btn { display: none; }
+  .tpnav-more-panel {
+    display: block;
+    position: static;
+    background: none;
+    border: 0;
+    box-shadow: none;
+    padding: 0;
+    max-height: none;
+    min-width: 0;
+    overflow: visible;
+  }
+  .tpnav-more-panel a {
+    padding: 13px 22px;
+    font-size: .98rem;
+    border-radius: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, .06);
+  }
+  /* Grids and Tools are primary links on mobile, so drop the More copies. */
+  .tpnav-more-panel a[href="grids.html"],
+  .tpnav-more-panel a[href="tools.html"] { display: none; }
+  .tpnav-utils {
+    margin: 8px 22px 0;
+    padding: 10px 0 0;
+    border-left: 0;
+    border-top: 1px solid rgba(255, 255, 255, .12);
+    gap: 10px;
+  }
+  .tpnav-utils a,
+  .tpnav-utils button { border-bottom: 0; padding: 12px 10px; min-height: 44px;
+                        display: inline-flex; align-items: center; }
+  header .container.nav { position: relative; }
+  .menu-toggle { display: block; }
+}
+@media (min-width: 1024px) {
+  .menu-toggle { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tpnav a, .tpnav .tpnav-more-btn { transition: none; }
+}
+
+/* Home-screen PWA only — do not change the mobile website chrome. */
+.tp-pwa-banner {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: 16px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  background: #0d1b2e;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: .88rem;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, .35);
+  font-family: inherit;
+}
+.tp-pwa-banner span { flex: 1 1 160px; line-height: 1.35; }
+.tp-pwa-banner button {
+  background: #f5a623;
+  color: #0d1b2e;
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-weight: 800;
+  font-size: .85rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+.tp-pwa-banner button.ghost {
+  background: transparent;
+  color: rgba(255, 255, 255, .8);
+  font-weight: 600;
+}
+#tp-pwa-nav { display: none; }
+
+html.tp-pwa-standalone {
+  padding-top: env(safe-area-inset-top);
+}
+html.tp-pwa-standalone header .container.nav {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+html.tp-pwa-standalone .tp-pwa-banner { display: none !important; }
+html.tp-pwa-standalone #tp-pwa-nav {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10000;
+  background: #0d1b2e;
+  border-top: 1px solid rgba(255, 255, 255, .12);
+  padding: 6px 0 calc(8px + env(safe-area-inset-bottom));
+}
+html.tp-pwa-standalone #tp-pwa-nav a {
+  text-align: center;
+  color: rgba(255, 255, 255, .72);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .02em;
+  text-decoration: none;
+  padding: 8px 4px;
+  font-family: inherit;
+}
+html.tp-pwa-standalone #tp-pwa-nav a[aria-current="page"] { color: #f5a623; }
+html.tp-pwa-standalone body {
+  padding-bottom: calc(56px + env(safe-area-inset-bottom));
+}
+
+@media (display-mode: standalone) {
+  html {
+    padding-top: env(safe-area-inset-top);
+  }
+  header .container.nav {
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+  .tp-pwa-banner { display: none !important; }
+  #tp-pwa-nav {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10000;
+    background: #0d1b2e;
+    border-top: 1px solid rgba(255, 255, 255, .12);
+    padding: 6px 0 calc(8px + env(safe-area-inset-bottom));
+  }
+  #tp-pwa-nav a {
+    text-align: center;
+    color: rgba(255, 255, 255, .72);
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .02em;
+    text-decoration: none;
+    padding: 8px 4px;
+    font-family: inherit;
+  }
+  #tp-pwa-nav a[aria-current="page"] { color: #f5a623; }
+  body {
+    padding-bottom: calc(56px + env(safe-area-inset-bottom));
+  }
+}

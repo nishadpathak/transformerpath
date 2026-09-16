@@ -1,0 +1,50 @@
+{
+  "name": "TransformerPath — The global knowledge and intelligence platform for transformers",
+  "short_name": "TransformerPath",
+  "description": "Industry intelligence, engineering, manufacturers, markets and tools for the global transformer industry — daily transformer market intelligence, a worldwide manufacturer directory, world grids, events and engineering tools.",
+  "id": "https://transformerpath.com/",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone"],
+  "orientation": "portrait-primary",
+  "background_color": "#0d1b2e",
+  "theme_color": "#0d1b2e",
+  "categories": ["business", "news", "productivity"],
+  "icons": [
+    { "src": "/brand/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/brand/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/brand/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+    { "src": "/brand/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ],
+  "shortcuts": [
+    {
+      "name": "Intel",
+      "short_name": "Intel",
+      "description": "Daily transformer industry briefing",
+      "url": "/intel.html",
+      "icons": [{ "src": "/brand/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Map",
+      "short_name": "Map",
+      "description": "Industry map — manufacturers, utilities, suppliers, events",
+      "url": "/map.html",
+      "icons": [{ "src": "/brand/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Directory",
+      "short_name": "Directory",
+      "description": "Manufacturers and supplier directories",
+      "url": "/directory.html",
+      "icons": [{ "src": "/brand/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Learn",
+      "short_name": "Learn",
+      "description": "Masterclass, books and Engineer Track",
+      "url": "/learn.html",
+      "icons": [{ "src": "/brand/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

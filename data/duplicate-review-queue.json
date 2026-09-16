@@ -1,0 +1,946 @@
+{
+  "generated_at": "2026-09-11T06:20:08.780Z",
+  "total_potential_duplicates": 30,
+  "summary_by_reason": {
+    "domain_match": 0,
+    "name_similarity": 30,
+    "address_match": 0
+  },
+  "summary_by_action": {
+    "merge": 17,
+    "keep_separate_facility": 0,
+    "investigate": 13
+  },
+  "queue": [
+    {
+      "id": "dup_1",
+      "reason": "name_similarity",
+      "similarity_score": 0.88,
+      "recommended_action": "investigate",
+      "notes": "High name similarity (0.88) across different countries (Ethiopia vs India)",
+      "entities": [
+        {
+          "id": "cmp:abay-transformers",
+          "name": "Abay Transformers",
+          "slug": "abay-transformers",
+          "country": "Ethiopia",
+          "city": null,
+          "domain": "advertiseethiopianbusiness.com",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        },
+        {
+          "id": "cmp:abc-transformers",
+          "name": "ABC Transformers",
+          "slug": "abc-transformers",
+          "country": "India",
+          "city": null,
+          "domain": "abctransformers.in",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dup_2",
+      "reason": "name_similarity",
+      "similarity_score": 0.88,
+      "recommended_action": "merge",
+      "notes": "High name similarity (0.88) in same country (India)",
+      "entities": [
+        {
+          "id": "cmp:abc-transformers",
+          "name": "ABC Transformers",
+          "slug": "abc-transformers",
+          "country": "India",
+          "city": null,
+          "domain": "abctransformers.in",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        },
+        {
+          "id": "cmp:msc-transformers",
+          "name": "MSC Transformers",
+          "slug": "msc-transformers",
+          "country": "India",
+          "city": null,
+          "domain": "msctransformers.com",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dup_3",
+      "reason": "name_similarity",
+      "similarity_score": 0.88,
+      "recommended_action": "merge",
+      "notes": "High name similarity (0.88) in same country (India)",
+      "entities": [
+        {
+          "id": "cmp:abc-transformers",
+          "name": "ABC Transformers",
+          "slug": "abc-transformers",
+          "country": "India",
+          "city": null,
+          "domain": "abctransformers.in",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        },
+        {
+          "id": "cmp:tmc-transformers-india",
+          "name": "TMC Transformers",
+          "slug": "tmc-transformers-india",
+          "country": "India",
+          "city": null,
+          "domain": "tmc-india.com",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dup_4",
+      "reason": "name_similarity",
+      "similarity_score": 0.88,
+      "recommended_action": "investigate",
+      "notes": "High name similarity (0.88) across different countries (Canada vs USA)",
+      "entities": [
+        {
+          "id": "cmp:ces-transformers",
+          "name": "CES Transformers",
+          "slug": "ces-transformers",
+          "country": "Canada",
+          "city": null,
+          "domain": "cestransformers.com",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        },
+        {
+          "id": "cmp:weg-transformers-usa",
+          "name": "WEG Transformers",
+          "slug": "weg-transformers-usa",
+          "country": "USA",
+          "city": null,
+          "domain": "weg.us",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dup_5",
+      "reason": "name_similarity",
+      "similarity_score": 0.89,
+      "recommended_action": "merge",
+      "notes": "High name similarity (0.89) in same country (Türkiye)",
+      "entities": [
+        {
+          "id": "cmp:elsan-transformator",
+          "name": "Elsan Transformatör",
+          "slug": "elsan-transformator",
+          "country": "Türkiye",
+          "city": null,
+          "domain": "elsantrafo.com",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        },
+        {
+          "id": "cmp:eltas-transformator",
+          "name": "Eltaş Transformatör",
+          "slug": "eltas-transformator",
+          "country": "Türkiye",
+          "city": null,
+          "domain": "eltas.com.tr",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dup_6",
+      "reason": "name_similarity",
+      "similarity_score": 0.85,
+      "recommended_action": "merge",
+      "notes": "High name similarity (0.85) in same country (Türkiye)",
+      "entities": [
+        {
+          "id": "cmp:elsan-transformator",
+          "name": "Elsan Transformatör",
+          "slug": "elsan-transformator",
+          "country": "Türkiye",
+          "city": null,
+          "domain": "elsantrafo.com",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        },
+        {
+          "id": "cmp:maksan-transformator",
+          "name": "Maksan Transformatör",
+          "slug": "maksan-transformator",
+          "country": "Türkiye",
+          "city": null,
+          "domain": "maksan.com.tr",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dup_7",
+      "reason": "name_similarity",
+      "similarity_score": 0.85,
+      "recommended_action": "merge",
+      "notes": "High name similarity (0.85) in same country (Türkiye)",
+      "entities": [
+        {
+          "id": "cmp:elsan-transformator",
+          "name": "Elsan Transformatör",
+          "slug": "elsan-transformator",
+          "country": "Türkiye",
+          "city": null,
+          "domain": "elsantrafo.com",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        },
+        {
+          "id": "cmp:m-gsan-transformator",
+          "name": "Mıgsan Transformatör",
+          "slug": "m-gsan-transformator",
+          "country": "Türkiye",
+          "city": null,
+          "domain": "migsan.com.tr",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dup_8",
+      "reason": "name_similarity",
+      "similarity_score": 0.85,
+      "recommended_action": "investigate",
+      "notes": "High name similarity (0.85) across different countries (Türkiye vs India)",
+      "entities": [
+        {
+          "id": "cmp:getpower-transformer",
+          "name": "GETPOWER Transformer",
+          "slug": "getpower-transformer",
+          "country": "Türkiye",
+          "city": null,
+          "domain": "getpowertransformer.com",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        },
+        {
+          "id": "cmp:makpower-transformer",
+          "name": "Makpower Transformer",
+          "slug": "makpower-transformer",
+          "country": "India",
+          "city": null,
+          "domain": "makpowertransformer.com",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dup_9",
+      "reason": "name_similarity",
+      "similarity_score": 0.85,
+      "recommended_action": "investigate",
+      "notes": "High name similarity (0.85) across different countries (Mexico vs Brazil)",
+      "entities": [
+        {
+          "id": "cmp:imem-transformadores",
+          "name": "IMEM Transformadores",
+          "slug": "imem-transformadores",
+          "country": "Mexico",
+          "city": null,
+          "domain": "transformadorelectrico.com",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        },
+        {
+          "id": "cmp:itb-transformadores",
+          "name": "ITB Transformadores",
+          "slug": "itb-transformadores",
+          "country": "Brazil",
+          "city": null,
+          "domain": "itb.ind.br",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dup_10",
+      "reason": "name_similarity",
+      "similarity_score": 0.85,
+      "recommended_action": "investigate",
+      "notes": "High name similarity (0.85) across different countries (Mexico vs Argentina)",
+      "entities": [
+        {
+          "id": "cmp:imem-transformadores",
+          "name": "IMEM Transformadores",
+          "slug": "imem-transformadores",
+          "country": "Mexico",
+          "city": null,
+          "domain": "transformadorelectrico.com",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        },
+        {
+          "id": "cmp:mf-transformadores",
+          "name": "MF Transformadores",
+          "slug": "mf-transformadores",
+          "country": "Argentina",
+          "city": null,
+          "domain": "mftransformadores.com.ar",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dup_11",
+      "reason": "name_similarity",
+      "similarity_score": 0.85,
+      "recommended_action": "merge",
+      "notes": "High name similarity (0.85) in same country (Mexico)",
+      "entities": [
+        {
+          "id": "cmp:imem-transformadores",
+          "name": "IMEM Transformadores",
+          "slug": "imem-transformadores",
+          "country": "Mexico",
+          "city": null,
+          "domain": "transformadorelectrico.com",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        },
+        {
+          "id": "cmp:transformadores-rte",
+          "name": "Transformadores RTE",
+          "slug": "transformadores-rte",
+          "country": "Mexico",
+          "city": null,
+          "domain": "transformadoresrte.com",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dup_12",
+      "reason": "name_similarity",
+      "similarity_score": 0.85,
+      "recommended_action": "investigate",
+      "notes": "High name similarity (0.85) across different countries (Mexico vs Brazil)",
+      "entities": [
+        {
+          "id": "cmp:imem-transformadores",
+          "name": "IMEM Transformadores",
+          "slug": "imem-transformadores",
+          "country": "Mexico",
+          "city": null,
+          "domain": "transformadorelectrico.com",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        },
+        {
+          "id": "cmp:wise-transformadores",
+          "name": "WISE Transformadores",
+          "slug": "wise-transformadores",
+          "country": "Brazil",
+          "city": null,
+          "domain": "wisetransformadores.com.br",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dup_13",
+      "reason": "name_similarity",
+      "similarity_score": 0.89,
+      "recommended_action": "investigate",
+      "notes": "High name similarity (0.89) across different countries (Brazil vs Mexico)",
+      "entities": [
+        {
+          "id": "cmp:itb-transformadores",
+          "name": "ITB Transformadores",
+          "slug": "itb-transformadores",
+          "country": "Brazil",
+          "city": null,
+          "domain": "itb.ind.br",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        },
+        {
+          "id": "cmp:transformadores-rte",
+          "name": "Transformadores RTE",
+          "slug": "transformadores-rte",
+          "country": "Mexico",
+          "city": null,
+          "domain": "transformadoresrte.com",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dup_14",
+      "reason": "name_similarity",
+      "similarity_score": 0.89,
+      "recommended_action": "investigate",
+      "notes": "High name similarity (0.89) across different countries (Brazil vs Mexico)",
+      "entities": [
+        {
+          "id": "cmp:itb-transformadores",
+          "name": "ITB Transformadores",
+          "slug": "itb-transformadores",
+          "country": "Brazil",
+          "city": null,
+          "domain": "itb.ind.br",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        },
+        {
+          "id": "cmp:transformadores-tj",
+          "name": "Transformadores TJ",
+          "slug": "transformadores-tj",
+          "country": "Mexico",
+          "city": null,
+          "domain": "transformadorestj.com.mx",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dup_15",
+      "reason": "name_similarity",
+      "similarity_score": 0.85,
+      "recommended_action": "merge",
+      "notes": "High name similarity (0.85) in same country (Brazil)",
+      "entities": [
+        {
+          "id": "cmp:itb-transformadores",
+          "name": "ITB Transformadores",
+          "slug": "itb-transformadores",
+          "country": "Brazil",
+          "city": null,
+          "domain": "itb.ind.br",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        },
+        {
+          "id": "cmp:wise-transformadores",
+          "name": "WISE Transformadores",
+          "slug": "wise-transformadores",
+          "country": "Brazil",
+          "city": null,
+          "domain": "wisetransformadores.com.br",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dup_16",
+      "reason": "name_similarity",
+      "similarity_score": 0.89,
+      "recommended_action": "merge",
+      "notes": "High name similarity (0.89) in same country (China)",
+      "entities": [
+        {
+          "id": "cmp:jiangsu-tianwei-transformer",
+          "name": "Jiangsu Tianwei Transformer",
+          "slug": "jiangsu-tianwei-transformer",
+          "country": "China",
+          "city": null,
+          "domain": "tianweitransformer.com",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        },
+        {
+          "id": "cmp:jiangsu-yawei-transformer",
+          "name": "Jiangsu Yawei Transformer",
+          "slug": "jiangsu-yawei-transformer",
+          "country": "China",
+          "city": null,
+          "domain": "yaweitransformer.com",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dup_17",
+      "reason": "name_similarity",
+      "similarity_score": 0.88,
+      "recommended_action": "investigate",
+      "notes": "High name similarity (0.88) across different countries (Sri Lanka vs Canada)",
+      "entities": [
+        {
+          "id": "cmp:ltl-transformers",
+          "name": "LTL Transformers",
+          "slug": "ltl-transformers",
+          "country": "Sri Lanka",
+          "city": null,
+          "domain": "ltlt.lk",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        },
+        {
+          "id": "cmp:pti-transformers",
+          "name": "PTI Transformers",
+          "slug": "pti-transformers",
+          "country": "Canada",
+          "city": null,
+          "domain": "ptitransformers.com",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dup_18",
+      "reason": "name_similarity",
+      "similarity_score": 0.9,
+      "recommended_action": "merge",
+      "notes": "High name similarity (0.9) in same country (Türkiye)",
+      "entities": [
+        {
+          "id": "cmp:maksan-transformator",
+          "name": "Maksan Transformatör",
+          "slug": "maksan-transformator",
+          "country": "Türkiye",
+          "city": null,
+          "domain": "maksan.com.tr",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        },
+        {
+          "id": "cmp:m-gsan-transformator",
+          "name": "Mıgsan Transformatör",
+          "slug": "m-gsan-transformator",
+          "country": "Türkiye",
+          "city": null,
+          "domain": "migsan.com.tr",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dup_19",
+      "reason": "name_similarity",
+      "similarity_score": 0.87,
+      "recommended_action": "merge",
+      "notes": "High name similarity (0.87) in same country (USA)",
+      "entities": [
+        {
+          "id": "cmp:mci-transformer-corporation",
+          "name": "MCI Transformer Corporation",
+          "slug": "mci-transformer-corporation",
+          "country": "USA",
+          "city": null,
+          "domain": "mcitransformer.com",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        },
+        {
+          "id": "cmp:mgm-transformer-company",
+          "name": "MGM Transformer Company",
+          "slug": "mgm-transformer-company",
+          "country": "USA",
+          "city": null,
+          "domain": "mgmtransformers.com",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dup_20",
+      "reason": "name_similarity",
+      "similarity_score": 0.92,
+      "recommended_action": "merge",
+      "notes": "High name similarity (0.92) in same country (Türkiye)",
+      "entities": [
+        {
+          "id": "cmp:meksan-trafo",
+          "name": "Meksan Trafo",
+          "slug": "meksan-trafo",
+          "country": "Türkiye",
+          "city": null,
+          "domain": "meksantrafo.com.tr",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        },
+        {
+          "id": "cmp:metsan-trafo",
+          "name": "Metsan Trafo",
+          "slug": "metsan-trafo",
+          "country": "Türkiye",
+          "city": null,
+          "domain": "metsantrafo.com",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dup_21",
+      "reason": "name_similarity",
+      "similarity_score": 0.89,
+      "recommended_action": "investigate",
+      "notes": "High name similarity (0.89) across different countries (Argentina vs Chile)",
+      "entities": [
+        {
+          "id": "cmp:mf-transformadores",
+          "name": "MF Transformadores",
+          "slug": "mf-transformadores",
+          "country": "Argentina",
+          "city": null,
+          "domain": "mftransformadores.com.ar",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        },
+        {
+          "id": "cmp:transformadores-ch",
+          "name": "Transformadores CH",
+          "slug": "transformadores-ch",
+          "country": "Chile",
+          "city": null,
+          "domain": "transformadores.cl",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dup_22",
+      "reason": "name_similarity",
+      "similarity_score": 0.89,
+      "recommended_action": "investigate",
+      "notes": "High name similarity (0.89) across different countries (Argentina vs Mexico)",
+      "entities": [
+        {
+          "id": "cmp:mf-transformadores",
+          "name": "MF Transformadores",
+          "slug": "mf-transformadores",
+          "country": "Argentina",
+          "city": null,
+          "domain": "mftransformadores.com.ar",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        },
+        {
+          "id": "cmp:transformadores-tj",
+          "name": "Transformadores TJ",
+          "slug": "transformadores-tj",
+          "country": "Mexico",
+          "city": null,
+          "domain": "transformadorestj.com.mx",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dup_23",
+      "reason": "name_similarity",
+      "similarity_score": 0.88,
+      "recommended_action": "merge",
+      "notes": "High name similarity (0.88) in same country (India)",
+      "entities": [
+        {
+          "id": "cmp:msc-transformers",
+          "name": "MSC Transformers",
+          "slug": "msc-transformers",
+          "country": "India",
+          "city": null,
+          "domain": "msctransformers.com",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        },
+        {
+          "id": "cmp:tmc-transformers-india",
+          "name": "TMC Transformers",
+          "slug": "tmc-transformers-india",
+          "country": "India",
+          "city": null,
+          "domain": "tmc-india.com",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dup_24",
+      "reason": "name_similarity",
+      "similarity_score": 0.89,
+      "recommended_action": "investigate",
+      "notes": "High name similarity (0.89) across different countries (Ecuador vs Mexico)",
+      "entities": [
+        {
+          "id": "cmp:rvr-transformadores",
+          "name": "RVR Transformadores",
+          "slug": "rvr-transformadores",
+          "country": "Ecuador",
+          "city": null,
+          "domain": "rvrtransformadores.com",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        },
+        {
+          "id": "cmp:transformadores-rte",
+          "name": "Transformadores RTE",
+          "slug": "transformadores-rte",
+          "country": "Mexico",
+          "city": null,
+          "domain": "transformadoresrte.com",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dup_25",
+      "reason": "name_similarity",
+      "similarity_score": 0.88,
+      "recommended_action": "merge",
+      "notes": "High name similarity (0.88) in same country (Türkiye)",
+      "entities": [
+        {
+          "id": "cmp:sem-transformator",
+          "name": "Sem Transformatör",
+          "slug": "sem-transformator",
+          "country": "Türkiye",
+          "city": null,
+          "domain": "semtransformator.com.tr",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        },
+        {
+          "id": "cmp:std-transformator",
+          "name": "STD Transformatör",
+          "slug": "std-transformator",
+          "country": "Türkiye",
+          "city": null,
+          "domain": "stdtransformer.com",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dup_26",
+      "reason": "name_similarity",
+      "similarity_score": 0.88,
+      "recommended_action": "merge",
+      "notes": "High name similarity (0.88) in same country (Türkiye)",
+      "entities": [
+        {
+          "id": "cmp:sem-transformator",
+          "name": "Sem Transformatör",
+          "slug": "sem-transformator",
+          "country": "Türkiye",
+          "city": null,
+          "domain": "semtransformator.com.tr",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        },
+        {
+          "id": "cmp:tek-transformator",
+          "name": "TEK Transformatör",
+          "slug": "tek-transformator",
+          "country": "Türkiye",
+          "city": null,
+          "domain": "tektransformator.com",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dup_27",
+      "reason": "name_similarity",
+      "similarity_score": 0.89,
+      "recommended_action": "investigate",
+      "notes": "High name similarity (0.89) across different countries (Chile vs Mexico)",
+      "entities": [
+        {
+          "id": "cmp:transformadores-ch",
+          "name": "Transformadores CH",
+          "slug": "transformadores-ch",
+          "country": "Chile",
+          "city": null,
+          "domain": "transformadores.cl",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        },
+        {
+          "id": "cmp:transformadores-tj",
+          "name": "Transformadores TJ",
+          "slug": "transformadores-tj",
+          "country": "Mexico",
+          "city": null,
+          "domain": "transformadorestj.com.mx",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dup_28",
+      "reason": "name_similarity",
+      "similarity_score": 0.89,
+      "recommended_action": "merge",
+      "notes": "High name similarity (0.89) in same country (Mexico)",
+      "entities": [
+        {
+          "id": "cmp:transformadores-rte",
+          "name": "Transformadores RTE",
+          "slug": "transformadores-rte",
+          "country": "Mexico",
+          "city": null,
+          "domain": "transformadoresrte.com",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        },
+        {
+          "id": "cmp:transformadores-tj",
+          "name": "Transformadores TJ",
+          "slug": "transformadores-tj",
+          "country": "Mexico",
+          "city": null,
+          "domain": "transformadorestj.com.mx",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dup_29",
+      "reason": "name_similarity",
+      "similarity_score": 0.85,
+      "recommended_action": "merge",
+      "notes": "High name similarity (0.85) in same country (Brazil)",
+      "entities": [
+        {
+          "id": "cmp:vale-transformadores",
+          "name": "Vale Transformadores",
+          "slug": "vale-transformadores",
+          "country": "Brazil",
+          "city": null,
+          "domain": "valetransformadores.com.br",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        },
+        {
+          "id": "cmp:wise-transformadores",
+          "name": "WISE Transformadores",
+          "slug": "wise-transformadores",
+          "country": "Brazil",
+          "city": null,
+          "domain": "wisetransformadores.com.br",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dup_30",
+      "reason": "name_similarity",
+      "similarity_score": 0.85,
+      "recommended_action": "merge",
+      "notes": "High name similarity (0.85) in same country (India)",
+      "entities": [
+        {
+          "id": "cmp:voltamp-transformers",
+          "name": "Voltamp Transformers",
+          "slug": "voltamp-transformers",
+          "country": "India",
+          "city": null,
+          "domain": "voltamptransformers.com",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        },
+        {
+          "id": "cmp:voltek-transformers",
+          "name": "Voltek Transformers",
+          "slug": "voltek-transformers",
+          "country": "India",
+          "city": null,
+          "domain": "voltektransformers.com",
+          "roles": [
+            "Transformer Manufacturer"
+          ]
+        }
+      ]
+    }
+  ]
+}

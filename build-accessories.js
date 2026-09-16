@@ -1,0 +1,157 @@
+#!/usr/bin/env node
+/* build-accessories.js — TransformerPath Transformer Accessories Directory.
+ *
+ * Generates a verified, searchable directory of transformer accessories
+ * manufacturers/suppliers from data/accessories.json, plus a per-company entity
+ * page each. Every entry carries a verification_status and verification_date so
+ * the directory is honest about what was website-verified vs pending.
+ *
+ * Categories covered: Buchholz relays, bushings (HV/LV), tap changers (OLTC/DETC),
+ * conservator tanks, breathers, radiators/cooling, cooling fans, oil-level and
+ * temperature indicators, pressure-relief devices, oil treatment, oil-circulation
+ * pumps, monitoring/diagnostic devices, transformer oil/ester, pressboard/insulation,
+ * CRGO, copper/CTC, laminated wood, DDP/DPE, test equipment.
+ *
+ * Run: node build-accessories.js  (part of the Netlify build command).
+ */
+'use strict';
+const fs = require('fs');
+const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
+const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
+const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
+function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+function slugify(s) { return String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/&/g, 'and').replace(/['’´]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, ''); }
+
+const DATA = JSON.parse(fs.readFileSync('data/accessories.json', 'utf8'));
+const SUPPLIERS = DATA.suppliers || [];
+const CATEGORIES = DATA.categories || [];
+
+function catPills(list) { return (list || []).map((c) => '<span class="tpill">' + esc(c) + '</span>').join(' '); }
+
+// Map an accessory category to the relevant /components/<slug> page so each
+// supplier entity page cross-links to the Components guide (part of the site's
+// buyer/navigation loop). Only exact/high-confidence matches; unmatched
+// categories simply produce no component link (never an invented one).
+const CAT_TO_COMP = {
+  'Buchholz relays': 'protection-monitoring',
+  'Protection / monitoring': 'protection-monitoring',
+  'Monitoring / diagnostic devices': 'protection-monitoring',
+  'Temperature indicators': 'protection-monitoring',
+  'Oil-level indicators': 'protection-monitoring',
+  'Pressure-relief devices': 'protection-monitoring',
+  'Bushings (HV, LV)': 'transformer-bushings',
+  'High voltage insulators / porcelain / composite shells': 'high-voltage-insulators',
+  'Tap changers (OLTC / DETC)': 'on-load-tap-changers',
+  'Radiators / cooling systems': 'transformer-cooling',
+  'Cooling fans': 'transformer-cooling',
+  'Pressboard / insulation materials': 'insulation-materials',
+  'DDP / DPE (densified pressboard)': 'insulation-materials',
+  'Laminated wood / insulation wood': 'insulation-materials',
+  'Transformer oil / ester fluids': 'oil-fluids-preservation',
+  'CRGO (core steel)': 'conductors-and-core',
+  'Copper / CTC conductors': 'conductors-and-core',
+  'Conservator tanks': 'tank-and-mechanical',
+  'Breathers (silica gel)': 'tank-and-mechanical',
+  'Oil treatment devices': 'tank-and-mechanical',
+  'Oil-circulation pumps': 'tank-and-mechanical',
+  'Transformer Accessories': 'tank-and-mechanical'
+};
+function compLinks(s) {
+  const slugs = [...new Set((s.categories || []).map((c) => CAT_TO_COMP[c]).filter(Boolean))];
+  if (!slugs.length) return '';
+  // Component directory labels for the pills' accessible text.
+  const LABEL = { 'protection-monitoring': 'Protection & Monitoring', 'transformer-bushings': 'Bushings & Terminations', 'high-voltage-insulators': 'High-Voltage Insulators', 'on-load-tap-changers': 'Tap-Changers', 'transformer-cooling': 'Cooling', 'insulation-materials': 'Insulation Materials', 'conductors-and-core': 'Conductors & Core', 'oil-fluids-preservation': 'Oil, Fluids & Preservation', 'tank-and-mechanical': 'Tank & Mechanical' };
+  return '<h2>Related components</h2><div style="margin:4px 0 8px">' + slugs.map((c) => '<a class="tpill" href="../../components/' + c + '.html" data-track="component_crosslink" data-track-supplier="' + esc(s.name) + '">' + esc(LABEL[c] || c) + '</a>').join(' ') + '</div>';
+}
+
+function page(s) {
+  const slug = slugify(s.name);
+  const url = 'https://transformerpath.com/accessories/' + slug + '/';
+  const loc = [s.city, s.state, s.country].filter(Boolean).join(', ');
+  return '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
+    '<title>' + esc(s.name) + ' — Transformer Accessories Supplier | TransformerPath</title>' +
+    '<meta name="description" content="' + esc(s.name) + ' — ' + esc((s.categories || []).join(', ')) + ' transformer accessories/supplier (' + esc(loc) + '). ' + esc((s.description || '').slice(0, 140)) + '">' +
+    '<link rel="canonical" href="' + url + '">' +
+    '<meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath">' +
+    '<meta property="og:title" content="' + esc(s.name) + ' — Transformer Accessories Supplier"><meta property="og:url" content="' + url + '">' +
+    '<meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow">' +
+    '<link rel="stylesheet" href="../../style.css?v=5"><link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">' +
+    '<script type="application/ld+json">' + JSON.stringify({ '@context': 'https://schema.org', '@type': 'Organization', name: s.name, url: s.website || url, description: (s.description || '').slice(0, 200), address: { '@type': 'PostalAddress', addressLocality: s.city, addressRegion: s.state, addressCountry: s.country } }) + '</script>' +
+    '<style>.c-wrap{max-width:900px;margin:0 auto;padding:44px 20px 90px}.c-wrap h1{font-size:1.8rem;color:var(--ink)}.c-wrap .lead{color:var(--muted);font-size:1rem;max-width:760px}.c-wrap h2{font-size:1.25rem;color:var(--ink);margin-top:26px}.c-wrap .evmeta{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:.9rem;color:var(--muted);margin:6px 0 16px}.c-wrap .evmeta b{color:var(--text)}.c-wrap .tpill{display:inline-block;background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:2px 10px;font-size:.74rem;color:var(--text);margin:3px 4px 3px 0}.c-wrap ul{padding-left:20px;line-height:1.7}.c-wrap table{width:100%;border-collapse:collapse;margin:10px 0}.c-wrap table th{text-align:left;color:var(--muted);font-weight:600;padding:6px 10px;border-bottom:1px solid var(--border);width:38%}.c-wrap table td{padding:6px 10px;border-bottom:1px solid var(--border);color:var(--text)}</style>' +
+    '</head>\n<body>\n' + HEAD + '\n<main id="main" tabindex="-1" class="c-wrap">' +
+    '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="../../accessories.html" style="color:var(--accent)">Accessories</a> › ' + esc(s.name) + '</nav>' +
+    '<h1>' + esc(s.name) + '</h1>' +
+    '<div class="evmeta"><span><b>Country</b> ' + esc(s.country) + '</span>' + (s.state ? '<span><b>State</b> ' + esc(s.state) + '</span>' : '') + (s.city ? '<span><b>City</b> ' + esc(s.city) + '</span>' : '') + (s.website ? '<span><a href="' + esc(s.website) + '" target="_blank" rel="noopener" style="color:var(--accent)">Official website ↗</a></span>' : '') + (s.email ? '<span><b>Email</b> ' + esc(s.email) + '</span>' : '') + '</div>' +
+    '<p class="lead">' + esc(s.description) + '</p>' +
+    '<h2>Product categories</h2><div style="margin:4px 0 8px">' + catPills(s.categories) + '</div>' +
+    compLinks(s) +
+    '<h2>Company record</h2><table>' +
+    '<tr><th>Company</th><td>' + esc(s.name) + (s.parent_group ? ' <span class="sub-l">(' + esc(s.parent_group) + ')</span>' : '') + '</td></tr>' +
+    '<tr><th>Role</th><td><b style="color:var(--accent)">' + esc(s.role || s.manufacturer_status || 'MANUFACTURER') + '</b></td></tr>' +
+    '<tr><th>Location</th><td>' + esc(loc || '—') + '</td></tr>' +
+    '<tr><th>Accessory categories</th><td>' + esc((s.categories || []).join(', ')) + '</td></tr>' +
+    (s.product_family ? '<tr><th>Product family</th><td>' + esc(s.product_family) + '</td></tr>' : '') +
+    (s.manufacturer_product_name ? '<tr><th>Product / Trade names</th><td>' + esc(s.manufacturer_product_name) + '</td></tr>' : '') +
+    (s.technology_subtypes && s.technology_subtypes.length ? '<tr><th>Technology subtypes</th><td><b style="color:var(--ink)">' + esc(s.technology_subtypes.join(', ')) + '</b></td></tr>' : '') +
+    (s.voltage_evidence_kv ? '<tr><th>Voltage class & evidence</th><td><b style="color:var(--accent)">' + esc(s.voltage_evidence_kv) + '</b></td></tr>' : '') +
+    (s.max_current_a ? '<tr><th>Rated through-current</th><td>' + esc(s.max_current_a.toLocaleString()) + ' A</td></tr>' : '') +
+    (s.mounting_type && s.mounting_type.length ? '<tr><th>Mounting configuration</th><td>' + esc(s.mounting_type.join(', ')) + '</td></tr>' : '') +
+    (s.thermal_class ? '<tr><th>Thermal insulation class</th><td>' + esc(s.thermal_class) + '</td></tr>' : '') +
+    (s.epoxy_coating_pattern ? '<tr><th>Epoxy dotting pattern</th><td>' + esc(s.epoxy_coating_pattern) + '</td></tr>' : '') +
+    (s.density_g_cm3 ? '<tr><th>Density</th><td>' + esc(s.density_g_cm3) + '</td></tr>' : '') +
+    (s.base_thickness_mm ? '<tr><th>Base thickness range</th><td>' + esc(s.base_thickness_mm) + '</td></tr>' : '') +
+    (s.grades && s.grades.length ? '<tr><th>Documented grades</th><td>' + esc((Array.isArray(s.grades) ? s.grades.join(', ') : s.grades)) + '</td></tr>' : '') +
+    (s.thickness_range_mm ? '<tr><th>Thickness / dimensions</th><td>' + esc(s.thickness_range_mm) + '</td></tr>' : '') +
+    (s.standards && s.standards.length ? '<tr><th>Technical standards</th><td>' + esc((Array.isArray(s.standards) ? s.standards.join(', ') : s.standards)) + '</td></tr>' : '') +
+    (s.founded_year ? '<tr><th>Founded</th><td>' + esc(String(s.founded_year)) + '</td></tr>' : '') +
+    (s.evidence_source ? '<tr><th>Primary evidence citation</th><td><span style="font-size:.85rem;color:var(--muted)">' + esc(s.evidence_source) + '</span></td></tr>' : '') +
+    (s.source_tier ? '<tr><th>Source tier</th><td><span class="tpill" style="color:#10b981;border-color:rgba(16,185,129,.4)">' + esc(s.source_tier) + '</span></td></tr>' : '') +
+    '<tr><th>Verification</th><td>' + esc(s.verification_status) + ' · ' + esc(s.verification_date || '') + '</td></tr>' +
+    '</table>' +
+    '<p style="font-size:.78rem;color:var(--muted);margin-top:8px">Directory entries are informational supplier listings and do not imply verification, endorsement or commercial affiliation. Verification reflects a website check on the date recorded; always carry out your own due diligence before a commercial decision.</p>' +
+    '<div class="card" style="background:rgba(245,166,35,.06);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:24px"><b style="color:var(--text)">Supply transformer accessories?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Get your company listed in the directory, or post a requirement to reach accessory suppliers.</p>' +
+    '<a class="btn btn-amber" href="../../list-company.html" data-track="supplier_claim_started">Get listed</a> <a class="btn btn-outline btn-sm" href="../../rfq.html" data-track="rfq_started">Submit an RFQ</a></div>' +
+    '<p style="font-size:.85rem;color:var(--muted);text-align:center;margin-top:18px">Compare suppliers side by side in the <a href="../../buyers-guide.html" style="color:var(--accent);font-weight:600" data-track="buyers_guide_crosslink" data-track-supplier="' + esc(s.name) + '">Buyer\'s Guide</a>, or browse the <a href="../../components.html" style="color:var(--accent);font-weight:600">Components</a> library.</p>' +
+    '</main>\n' + FOOT + '\n<script src="../../analytics.js" defer></script>\n</body>\n</html>';
+}
+
+// Directory index page is generated by build-accessories.html (data-driven client-side).
+// This builder only generates the per-supplier entity pages.
+// Generate a small meta file for the index page to consume.
+fs.mkdirSync('accessories', { recursive: true });
+let built = 0, indexable = 0;
+SUPPLIERS.forEach((s) => {
+  try {
+    if (/^(Inactive|Unverified)$/i.test(s.verification_status || '')) return; // don't generate pages for inactive/unverified
+    const slug = slugify(s.name);
+    fs.mkdirSync('accessories/' + slug, { recursive: true });
+    fs.writeFileSync('accessories/' + slug + '/index.html', page(s));
+    built++; if (!/^(Inactive|Unverified)$/i.test(s.verification_status || '')) indexable++;
+  } catch (e) { console.error('!! ' + s.name + ' failed: ' + e.message); }
+});
+console.log('accessory supplier entity pages:', built, '| verified (index,follow):', indexable);
+
+fs.writeFileSync('data/accessories-meta.json', JSON.stringify({ total: indexable, categories: CATEGORIES }, null, 2));
+
+/* ── Embed accessories data inline in the /accessories index so it paints with
+ * no fetch round-trip (removes the empty-list flash). The interactive category
+ * filter + search still run, but as soon as the page loads, not after a JSON
+ * round-trip. Idempotent: re-injects every build.
+ */
+(function embedIndexData() {
+  try {
+    const json = fs.readFileSync('data/accessories.json', 'utf8').replace(/<\/script/gi, '<\\/script');
+    const marker = "<script src='data/accessories.json'";
+    let s = fs.readFileSync('accessories.html', 'utf8');
+    // Inject the inline data variable right before the app <script> that fetches it.
+    const inject = '<script>window.__TP_ACCESSORIES__=' + json + ';</script>\n';
+    // Remove any previously injected block (idempotent).
+    s = s.replace(/<script>window\.__TP_ACCESSORIES__=[\s\S]*?<\/script>\n/g, '');
+    // Replace the fetch with the inline data (guard against re-application).
+    s = s.replace(/fetch\('data\/accessories\.json'\)\.then\(function\(r\)\{return r\.json\(\);\}\)/, 'Promise.resolve(window.__TP_ACCESSORIES__)');
+    // Insert the data block immediately before the app IIFE.
+    s = s.replace(/(<script>\s*\(function\(\)\{[\s\S]*?document\.getElementById\('accSearch'\)\.addEventListener)/, inject + '$1');
+    fs.writeFileSync('accessories.html', s);
+    console.log('accessories.html wrote (inline data, no fetch round-trip)');
+  } catch (e) { console.warn('accessories.html inline-data skip: ' + e.message); }
+})();

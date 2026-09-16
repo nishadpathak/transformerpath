@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compare Transformer Manufacturers — Capability Comparison | TransformerPath</title>
+<meta name="description" content="Compare electrical transformer manufacturers side-by-side on reported capability — product categories, voltage, rating, factory countries, testing and research status. Fact-based comparison; no ranking, no 'best', no scores.">
+<link rel="canonical" href="https://transformerpath.com/compare.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TransformerPath">
+<meta property="og:title" content="Compare Transformer Manufacturers">
+<meta property="og:url" content="https://transformerpath.com/compare.html">
+<meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#0d1b2e">
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg">
+<link rel="icon" href="brand/favicon.ico" sizes="any">
+<link rel="stylesheet" href="style.css?v=14">
+<style>
+  .cmp-wrap { max-width: 1140px; margin: 0 auto; padding: 44px 20px 90px; }
+  .cmp-wrap h1 { font-size: 2.1rem; color: var(--ink); letter-spacing: -.02em; }
+  .cmp-wrap .lead { color: var(--muted); font-size: 1rem; max-width: 860px; margin: 8px 0 24px; line-height: 1.55; }
+  .picker { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px; margin-bottom: 24px; box-shadow: 0 4px 20px rgba(0,0,0,.08); }
+  .picker h2 { font-size: 1.12rem; color: var(--ink); margin: 0 0 6px; font-weight: 700; }
+  .picker .sub { color: var(--muted); font-size: .86rem; margin-bottom: 14px; }
+  .pick-input { width: 100%; padding: 11px 14px; border: 1px solid var(--border); border-radius: 10px; font-size: .95rem; background: var(--bg); color: var(--text); }
+  .pick-results { max-height: 280px; overflow: auto; margin-top: 8px; border: 1px solid var(--border); border-radius: 10px; background: var(--card); box-shadow: 0 10px 28px rgba(0,0,0,.25); }
+  .pick-res { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--border); font-size: .92rem; cursor: pointer; transition: background .12s; }
+  .pick-res:hover { background: rgba(245,166,35,.08); }
+  .pick-res .cn { color: var(--muted); font-size: .8rem; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 4px; }
+  .chip { display: inline-flex; align-items: center; gap: 8px; background: var(--bg); border: 1px solid var(--amber); border-radius: 999px; padding: 6px 14px; font-size: .84rem; color: var(--text); font-weight: 600; }
+  .chip .x { cursor: pointer; color: var(--muted); font-weight: 800; font-size: 1.1rem; line-height: 1; }
+  .chip .x:hover { color: var(--red); }
+  .presets-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 14px; }
+  .preset-btn { background: var(--bg); border: 1px solid var(--border); border-radius: 999px; padding: 5px 12px; font-size: .76rem; color: var(--muted); cursor: pointer; transition: all .14s; }
+  .preset-btn:hover { border-color: var(--amber); color: var(--amber); background: rgba(245,166,35,.06); }
+  .chart-note { color: var(--muted); font-size: .82rem; margin: 12px 0 18px; }
+  .cmp-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: .9rem; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: var(--card); }
+  .cmp-table thead tr th { position: sticky; top: 64px; z-index: 20; background: var(--navy); color: #fff; padding: 14px 16px; border-bottom: 2px solid var(--amber); }
+  .cmp-table th, .cmp-table td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .cmp-table th.rh { color: var(--muted); font-weight: 700; font-size: .76rem; text-transform: uppercase; letter-spacing: .05em; width: 200px; background: var(--bg); border-right: 1px solid var(--border); }
+  .cmp-table th.co { color: #fff; font-weight: 800; font-size: 1.05rem; letter-spacing: -.01em; }
+  .cmp-table td .sub-l { color: var(--muted); font-size: .8rem; }
+  .cmp-table a { color: var(--accent); font-weight: 700; text-decoration: none; }
+  .cmp-yes { display: inline-flex; align-items: center; gap: 4px; background: rgba(16,185,129,.12); color: #10b981; border: 1px solid rgba(16,185,129,.3); border-radius: 999px; padding: 2px 10px; font-size: .76rem; font-weight: 700; }
+  .empty { text-align: center; color: var(--muted); background: var(--card); border: 1px dashed var(--border); border-radius: 14px; padding: 44px 20px; }
+  .cta { background: linear-gradient(135deg, rgba(245,166,35,.10) 0%, rgba(20,37,61,.30) 100%); border: 1px solid var(--amber); border-radius: 14px; padding: 22px 24px; text-align: center; margin-top: 30px; }
+  .row-note { color: var(--muted); font-size: .78rem; margin-top: 16px; line-height: 1.6; }
+  .table-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
+  @media print {
+    header, footer, .picker, .cta, .tp-feedback-btn, .table-toolbar button, .presets-bar { display: none !important; }
+    .cmp-wrap { max-width: 100% !important; padding: 0 !important; }
+    body { background: #fff !important; color: #000 !important; }
+    .cmp-table { border: 1px solid #ccc !important; }
+    .cmp-table th, .cmp-table td { color: #000 !important; border-bottom: 1px solid #ccc !important; }
+    .cmp-table thead tr th { background: #f0f0f0 !important; color: #000 !important; }
+    .cmp-table th.rh { background: #f8f8f8 !important; color: #333 !important; }
+  }
+</style>
+    <link rel="stylesheet" href="tp-nav.css?v=14">
+  <link rel="stylesheet" href="tp-feedback.css?v=14">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
+    <nav class="tpnav" id="mainNav" aria-label="Primary">
+      <a href="intel.html">Intel</a>
+      <div class="tpnav-dropdown">
+        <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
+        <div class="tpnav-dropdown-panel" role="menu">
+          <a href="manufacturers.html">Manufacturers</a>
+          <a href="map.html">Industry Map</a>
+          <a href="grids.html">Global Grids</a>
+          <a href="components.html">Components &amp; Materials</a>
+          <a href="machinery.html">Machinery</a>
+          <a href="laboratories.html">Testing Labs</a>
+          <a href="services.html">Services &amp; Repair</a>
+          <a href="markets.html">Markets</a>
+          <a href="buyers-guide.html">Buyer's Guide</a>
+          <a href="directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
+        </div>
+      </div>
+      <a href="projects.html">Projects</a>
+      <a href="tenders.html">Tenders</a>
+      <a href="events.html">Events</a>
+      <a href="tools.html" class="tpnav-opt">Engineering</a>
+      <a href="learn.html">Learn</a>
+      <a href="rfq.html">RFQ</a>
+      <div class="tpnav-more">
+        <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
+        <div class="tpnav-more-panel" role="menu">
+          <a href="map.html" role="menuitem">Industry Map</a>
+          <a href="grids.html" role="menuitem">Global Grids</a>
+          <a href="webinars.html" role="menuitem">Webinars</a>
+          <a href="standards.html" role="menuitem">Standards &amp; Codes</a>
+          <a href="for-manufacturers.html" role="menuitem">For Manufacturers</a>
+          <a href="pricing.html" role="menuitem">Pricing Plans</a>
+          <a href="verified.html" role="menuitem">Verified Profiles</a>
+        </div>
+      </div>
+      <span class="tpnav-utils">
+        <a href="search.html" title="Search" aria-label="Search">&#128269;</a>
+        <a href="workspace.html" data-tp-account>Account</a>
+        <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">&#127769;</button>
+      </span>
+    </nav>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    // Night mode is the default; light is opt-in via the toggle.
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+
+    if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
+    updateThemeIcon();
+
+    themeToggle?.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      updateThemeIcon();
+    });
+
+    function updateThemeIcon() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+    }
+  </script>
+  <script src="tp-nav.js?v=7" defer></script>
+  <script src="tp-pwa.js?v=7" defer></script>
+</header>
+<main id="main" tabindex="-1" class="cmp-wrap">
+  <nav style="font-size:.82rem;color:var(--muted);margin-bottom:12px"><a href="directory.html" style="color:var(--accent)">Directory</a> › Capability Comparison</nav>
+  <h1>Technical Comparison of <span style="color:var(--accent)">Transformer Manufacturers</span></h1>
+  <p class="lead">Side-by-side technical comparison of transformer manufacturers across verified capability parameters: voltage classes, unit ratings, separated manufacturing facilities, compliance standards, and provenance. <b>Purely fact-based: no subjective scoring or commercial bias.</b></p>
+
+  <div class="picker">
+    <h2>Select Manufacturers to Compare (up to 5)</h2>
+    <p class="sub">Search by company name or country, or select a preset group. Shareable URL links: <code style="color:var(--accent)">/compare.html?m=slug1,slug2,slug3</code>.</p>
+    <input class="pick-input" id="pickInput" type="text" placeholder="Type company name or country (e.g. Hitachi, Siemens, India, Germany, TBEA)..." autocomplete="off">
+    <div class="pick-results" id="pickResults" style="display:none"></div>
+    <div class="chips" id="chips"></div>
+
+    <div class="presets-bar">
+      <span style="font-size:.76rem;color:var(--muted);font-weight:700;text-transform:uppercase">Quick Presets:</span>
+      <button class="preset-btn" onclick="applyPreset(['hitachi-energy','siemens-energy','ge-vernova'])">⚡ Tier-1 Global (Hitachi · Siemens · GE)</button>
+      <button class="preset-btn" onclick="applyPreset(['bhel-bharat-heavy-electricals','cg-power','transformers-rectifiers-india-taril'])">🇮🇳 India Power OEMs (BHEL · CG · TARIL)</button>
+      <button class="preset-btn" onclick="applyPreset(['tbea-co-ltd','china-xd-group','hd-hyundai-electric'])">⚡ UHV Specialists (TBEA · XD · Hyundai)</button>
+    </div>
+  </div>
+
+  <div id="cmp"></div>
+
+  <div class="cta">
+    <b style="color:var(--text);font-size:1.05rem">Technical Shortlisting to Qualified Procurement</b>
+    <p style="color:var(--muted);font-size:.92rem;margin:6px auto 14px;max-width:640px">Ready to evaluate pricing and lead-times? Submit an RFQ and TransformerPath will route your technical parameters directly to verified suppliers.</p>
+    <a class="btn btn-amber" href="rfq.html" data-track="rfq_started" data-track-utility="compare">Submit an RFQ →</a>
+  </div>
+  <p class="row-note">Capability figures are as reported to or independently verified for the TransformerPath Industry Knowledge Graph. A blank cell indicates the value is not documented in that field. Verify all technical requirements with the manufacturer before commercial award.</p>
+</main>
+<footer>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+        <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data. Built for utilities, transformer manufacturers, component suppliers, EPCs, consultants and engineers.</p>
+      </div>
+      <div><p class="footer-col-label">INTELLIGENCE</p><a href="intel.html">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="projects.html">Projects</a><a href="tenders.html">Tenders</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="map.html">Industry Map</a><a href="events.html">Events</a></div>
+      <div><p class="footer-col-label">DIRECTORY</p><a href="manufacturers.html">Manufacturers</a><a href="directory.html">Directory Index</a><a href="components.html">Components &amp; Materials</a><a href="machinery.html">Machinery</a><a href="laboratories.html">Testing Labs</a><a href="services.html">Service &amp; Repair</a><a href="logistics.html">Logistics</a><a href="buyers.html">Buyers &amp; Utilities</a><a href="rfq.html">RFQ Board</a></div>
+      <div><p class="footer-col-label">ENGINEERING</p><a href="tools.html">Engineering Hub</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Interactive Models</a><a href="standards.html">Standards &amp; Codes</a><a href="knowledge.html">Knowledge Base</a><a href="case-studies.html">Case Studies</a></div>
+      <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learning Hub</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy 3D Tools</a><a href="books.html">Books</a><a href="education.html">Education</a></div>
+      <div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="pricing.html">Pricing Plans</a><a href="verified.html">Verified Profiles</a><a href="webinars.html">Webinars</a><a href="sponsor.html">Sponsorship</a><a href="associations.html">Associations</a><a href="media.html">Media</a></div>
+      <div><p class="footer-col-label">COMPANY</p><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><p class="footer-col-label">CONTACT</p>
+        <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
+        <a href="privacy.html#cookies" onclick="if(window.tpResetConsent){window.tpResetConsent();return false}">Cookie settings</a>
+        <a class="tp-li-btn tp-li-follow" data-linkedin-follow href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>Follow us on LinkedIn</a>
+        <a class="tp-li-btn tp-li-share" data-linkedin-share href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>LinkedIn</a>
+      </div>
+    </div>
+    <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
+  </div>
+</footer>
+<script src="analytics.js" defer></script>
+<script>
+var DATA = null;
+var selected = [];  // array of {slug,name,country}
+
+var PRODUCT_LABEL = { PT:'Power', DT:'Distribution', POWER:'Power', DISTRIBUTION:'Distribution', GSU:'Generator step-up (GSU)', AUTOTRANSFORMER:'Auto-transformer', RENEWABLE:'Renewable', PAD_MOUNTED:'Pad-mounted', POLE_MOUNTED:'Pole-mounted', SPECIAL:'Special', HVDC_CONVERTER:'HVDC converter', DRY:'Dry-type', CAST_RESIN:'Cast resin', TRACTION:'Traction', FURNACE:'Furnace', MOBILE:'Mobile', DRY_TYPE:'Dry-type', RECTIFIER:'Rectifier', EARTHING:'Earthing' };
+
+function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function fmtVoltage(v){ if(!v) return ''; return String(v)+' kV'; }
+function fmtMva(v){ if(!v) return ''; return String(v)+' MVA'; }
+
+function sortByCountry(a,b){ return String(a.country).localeCompare(b.country) || String(a.name).localeCompare(b.name); }
+function allCompanies(){ return DATA ? DATA.slice().sort(sortByCountry) : []; }
+
+function companyBySlug(slug){ return DATA.find(function(c){ return c.slug===slug; }); }
+function findByName(q){ q=String(q||'').toLowerCase().replace(/[^a-z0-9]/g,' ').trim(); if(!q) return []; var n=q.replace(/\s+/g,' '); return allCompanies().filter(function(c){ return (c.name+' '+c.country+' '+c.slug).toLowerCase().indexOf(n)>=0; }).slice(0,12); }
+
+function productChips(c){
+  var ps=(c.products||[]).filter(Boolean);
+  if(!ps.length) return '';
+  return ps.map(function(p){ var l=PRODUCT_LABEL[p]||p; return '<span class="chip" style="font-size:.72rem">'+esc(l)+'</span>'; }).join(' ');
+}
+function factoryCountries(c){
+  return (c.factories||[]).map(function(f){ return f.country||''; }).filter(Boolean);
+}
+function factoryRows(c){
+  var facs = (c.factories||[]).filter(function(f){ return f.city || f.produces; });
+  if (!facs.length) return '<span class="sub-l">1 plant (headquarters)</span>';
+  return facs.map(function(f){
+    var lo=(f.city?esc(f.city):'')+(f.country?', '+esc(f.country):'');
+    return '<div style="margin:2px 0"><b style="color:var(--text)">'+(lo||'—')+'</b>'+(f.produces?' <span class="sub-l">'+esc(f.produces)+'</span>':'')+(f.source_url?' <a href="'+esc(f.source_url)+'" target="_blank" rel="noopener" style="font-size:.72rem">src</a>':'')+'</div>';
+  }).join('');
+}
+function researchBadge(c){
+  var st=c.research_status||'';
+  var map={ACTIVE_CONFIRMED:'Confirmed',ACTIVE_LIMITED_DATA:'Limited data',RESEARCH_REQUIRED:'Research required',NOT_TRANSFORMER_MANUFACTURER:'Not a maker'};
+  return '<span style="font-size:.8rem;color:'+(st==='ACTIVE_CONFIRMED'?'var(--ok)':'var(--muted)')+'">'+esc(map[st]||st)+'</span>';
+}
+
+function hasStd(c, std) {
+  var certs = (c.reported_certs || []).join(' ').toLowerCase();
+  var notes = ((c.sources && c.sources.capability_note) || '').toLowerCase();
+  var match = certs.indexOf(std) >= 0 || notes.indexOf(std) >= 0;
+  return match ? '<span class="cmp-yes">✓ Yes</span>' : '<span class="sub-l">—</span>';
+}
+
+function hasType(c, re) {
+  var prods = (c.products || []).join(' ');
+  return re.test(prods) ? '<span class="cmp-yes">✓ Yes</span>' : '<span class="sub-l">—</span>';
+}
+
+function renderTable(){
+  var el=document.getElementById('cmp');
+  if(!selected.length){ el.innerHTML='<div class="empty">Select 2–5 manufacturers to compare side-by-side. Use the search or quick presets above.</div>'; return; }
+  if(selected.length===1){ el.innerHTML='<div class="empty">Add at least one more manufacturer to compare. Search above and pick.</div>'; return; }
+  var cols=selected.map(function(sel){ return companyBySlug(sel.slug); }).filter(Boolean);
+
+  var rows=[];
+  function row(label, get){ var vals=cols.map(get); rows.push([label, cols, vals]); }
+
+  row('Company', function(c){ return '<a href="manufacturers/'+esc(c.slug)+'/" style="font-size:1.02rem"><b>'+esc(c.name)+'</b></a>'; });
+  row('Country / HQ', function(c){ return esc(c.country||'—') + (c.headquarters ? '<br><span class="sub-l">' + esc(c.headquarters) + '</span>' : ''); });
+  row('Max Reported Voltage', function(c){ return c.reported_voltage ? '<b style="color:var(--accent);font-size:1rem">' + fmtVoltage(c.reported_voltage) + '</b>' : '<span class="sub-l">—</span>'; });
+  row('Max Reported MVA / Rating', function(c){ return c.reported_mva ? '<b style="color:var(--text);font-size:1rem">' + fmtMva(c.reported_mva) + '</b>' : '<span class="sub-l">—</span>'; });
+  row('IEC Standards', function(c){ return hasStd(c, 'iec'); });
+  row('IEEE / ANSI Standards', function(c){ return hasStd(c, 'ieee') !== '<span class="sub-l">—</span>' ? hasStd(c, 'ieee') : hasStd(c, 'ansi'); });
+  row('Power Transformers', function(c){ return hasType(c, /pt|power|gsu|auto/i); });
+  row('Distribution Transformers', function(c){ return hasType(c, /dt|distribution|pad|pole/i); });
+  row('Dry-Type Transformers', function(c){ return hasType(c, /dry|cast/i); });
+  row('Special Transformers', function(c){ return hasType(c, /furnace|rectifier|traction|hvdc|reactor|special/i); });
+  row('Factory Locations', factoryRows);
+  row('Factory Countries', function(c){ return [...new Set(factoryCountries(c))].join(', ') || esc(c.country); });
+  row('Directory Completeness', function(c){
+    var score = c.completeness_score != null ? c.completeness_score : (c.research_completeness ? Math.min(100, c.research_completeness * 15) : 40);
+    var cls = score >= 70 ? 'kg-comp-high' : (score >= 45 ? 'kg-comp-mid' : 'kg-comp-low');
+    return '<div><b>' + score + '%</b> <span class="sub-l">(' + (c.provenance_type || 'Researched') + ')</span></div>' +
+      '<div class="kg-comp-bar" style="width:100px;margin-top:4px"><div class="kg-comp-fill ' + cls + '" style="width:' + score + '%"></div></div>';
+  });
+  row('Research Status', researchBadge);
+  row('Procurement RFQ', function(c){ return '<a class="btn btn-amber btn-sm" href="rfq.html?company=' + encodeURIComponent(c.name) + '">Request RFQ →</a>'; });
+
+  var thead='<tr><th class="rh">Specification</th>'+cols.map(function(c){ return '<th class="co">'+esc(c.name)+'</th>'; }).join('')+'</tr>';
+  var tbody=rows.map(function(r){
+    return '<tr><th class="rh">'+r[0]+'</th>'+r[2].map(function(v){ return '<td>'+(v||'<span class="sub-l">—</span>')+'</td>'; }).join('')+'</tr>';
+  }).join('');
+  el.innerHTML='<div class="table-toolbar">'+
+    '<div class="chart-note" style="margin:0">Comparing <b>'+cols.length+'</b> manufacturers side-by-side. Sourced from the TransformerPath Knowledge Graph.</div>'+
+    '<button type="button" class="btn btn-outline btn-sm" onclick="window.print()" style="font-size:.8rem;padding:5px 12px">🖨️ Print / Export PDF</button>'+
+    '</div>'+
+    '<div class="table-wrap" style="overflow-x:auto"><table class="cmp-table"><thead>'+thead+'</thead><tbody>'+tbody+'</tbody></table></div>';
+}
+
+function renderChips(){
+  var el=document.getElementById('chips');
+  el.innerHTML=selected.map(function(sel,i){
+    return '<span class="chip">'+esc(sel.name)+' <span class="x" onclick="removeSel('+i+')">×</span></span>';
+  }).join('');
+  renderTable();
+  // update URL
+  var qs=selected.map(function(s){return s.slug;}).join(',');
+  history.replaceState(null,'',qs?('?m='+qs):'compare.html');
+}
+function removeSel(i){ selected.splice(i,1); renderChips(); }
+function addSel(c){
+  if(selected.length>=5) { alert('You can compare up to 5 manufacturers side-by-side.'); return; }
+  if(selected.some(function(s){return s.slug===c.slug;})) return;
+  selected.push({slug:c.slug,name:c.name,country:c.country});
+  renderChips();
+}
+
+window.applyPreset = function(slugs){
+  selected = [];
+  slugs.forEach(function(sl){
+    var c=companyBySlug(sl);
+    if(c) selected.push({slug:c.slug,name:c.name,country:c.country});
+  });
+  renderChips();
+};
+
+// picker
+var pi=document.getElementById('pickInput'), pr=document.getElementById('pickResults');
+pi.addEventListener('input',function(){ var q=pi.value; var r=findByName(q); if(!q||!r.length){ pr.style.display='none'; return; } pr.style.display='block'; pr.innerHTML=r.map(function(c){ return '<div class="pick-res" onclick="addSel({slug:\''+esc(c.slug)+'\',name:\''+esc(c.name).replace(/'/g,"\\'")+'\',country:\''+esc(c.country).replace(/'/g,"\\'")+'\'});pi.value=\'\';pr.style.display=\'none\'"><b>'+esc(c.name)+'</b> <span class="cn">'+esc(c.country||'')+'</span></div>'; }).join(''); });
+document.addEventListener('click',function(e){ if(!pi.contains(e.target)&&!pr.contains(e.target)) pr.style.display='none'; });
+
+fetch('data/manufacturer-intel.json').then(function(r){ return r.json(); }).then(function(d){
+  DATA=d.companies||[];
+  var params=new URLSearchParams(location.search);
+  var m=params.get('m') || params.get('companies');
+  if(m){ m.split(',').filter(Boolean).forEach(function(sl){ var c=companyBySlug(sl); if(c) selected.push({slug:c.slug,name:c.name,country:c.country}); }); }
+  renderChips();
+}).catch(function(){ document.getElementById('cmp').innerHTML='<div class="empty">Manufacturer data unavailable.</div>'; });
+</script>
+<script src="tp-freshness.js?v=7" defer></script>
+<script src="tp-feedback.js?v=7" defer></script>
+</body>
+</html>

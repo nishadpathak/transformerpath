@@ -1,0 +1,1274 @@
+{
+  "$schema": "https://transformerpath.com/directory.schema.json",
+  "registered": "2026-09-03",
+  "purpose": "Canonical TransformerPath industry-directory capability taxonomy. Maps the existing coded transformer product types (manufacturer-intel.json) and component/material categories (accessories.json) to a single, sourced human taxonomy. Nothing is assigned here that is not already recorded in the canonical datasets. A finer subcategory (e.g. phase-shifting, VPE, compact/substation) that is NOT present in the recorded product codes is listed as 'not_evidenced' and must never be asserted. UNKNOWN stays UNKNOWN.",
+  "evidence_levels": [
+    {
+      "key": "CONFIRMED",
+      "label": "Confirmed",
+      "meaning": "Recorded from an independently sourced claim with an attributable source."
+    },
+    {
+      "key": "COMPANY_REPORTED",
+      "label": "Company reported",
+      "meaning": "Stated by the company itself (claim_type COMPANY_REPORTED) — not independently verified."
+    },
+    {
+      "key": "INFERRED",
+      "label": "Inferred",
+      "meaning": "Implied by related evidence (e.g. a factory's stated MVA/kV range) but not stated as a headline capability."
+    },
+    {
+      "key": "UNKNOWN",
+      "label": "Unknown",
+      "meaning": "Not recorded; retained as UNKNOWN rather than guessed."
+    }
+  ],
+  "transformer_types": {
+    "power": {
+      "label": "Power transformers",
+      "subtypes": {
+        "gsu": "Generator step-up",
+        "network": "Network transformer",
+        "autotransformer": "Autotransformer",
+        "phase_shifting": "Phase-shifting transformer",
+        "ehv_uhv": "EHV / UHV"
+      },
+      "recorded_subtype_codes": [
+        "GSU",
+        "AUTOTRANSFORMER"
+      ],
+      "not_evidenced_subtypes": [
+        "network",
+        "phase_shifting",
+        "ehv_uhv"
+      ]
+    },
+    "distribution": {
+      "label": "Distribution transformers",
+      "subtypes": {
+        "oil_immersed": "Oil-immersed",
+        "pole_mounted": "Pole-mounted",
+        "pad_mounted": "Pad-mounted",
+        "compact_substation": "Compact / substation"
+      },
+      "recorded_subtype_codes": [
+        "POLE_MOUNTED",
+        "PAD_MOUNTED"
+      ],
+      "not_evidenced_subtypes": [
+        "oil_immersed",
+        "compact_substation"
+      ]
+    },
+    "dry_type": {
+      "label": "Dry-type",
+      "subtypes": {
+        "cast_resin": "Cast resin",
+        "vpi": "VPI",
+        "vpe": "VPE"
+      },
+      "recorded_subtype_codes": [
+        "CAST_RESIN"
+      ],
+      "not_evidenced_subtypes": [
+        "vpi",
+        "vpe"
+      ]
+    },
+    "special": {
+      "label": "Special transformers",
+      "subtypes": {
+        "furnace": "Furnace",
+        "rectifier": "Rectifier",
+        "traction": "Traction",
+        "converter": "Converter (HVDC)",
+        "earthing": "Earthing / grounding",
+        "mobile": "Mobile",
+        "renewable": "Renewable / application-specific",
+        "reactor": "Shunt reactor / reactor",
+        "instrument": "Instrument transformer"
+      },
+      "recorded_subtype_codes": [
+        "FURNACE",
+        "RECTIFIER",
+        "TRACTION",
+        "HVDC_CONVERTER",
+        "EARTHING",
+        "MOBILE",
+        "RENEWABLE",
+        "SHUNT_REACTOR",
+        "REACTOR",
+        "SR",
+        "IT",
+        "TX"
+      ],
+      "not_evidenced_subtypes": []
+    }
+  },
+  "product_code_map": {
+    "PT": {
+      "categories": [
+        "power"
+      ],
+      "label": "Power transformer"
+    },
+    "POWER": {
+      "categories": [
+        "power"
+      ],
+      "label": "Power transformer"
+    },
+    "GSU": {
+      "categories": [
+        "power",
+        "power.gsu"
+      ],
+      "label": "Generator step-up"
+    },
+    "AUTOTRANSFORMER": {
+      "categories": [
+        "power",
+        "power.autotransformer"
+      ],
+      "label": "Autotransformer"
+    },
+    "DISTRIBUTION": {
+      "categories": [
+        "distribution"
+      ],
+      "label": "Distribution transformer"
+    },
+    "DT": {
+      "categories": [
+        "distribution"
+      ],
+      "label": "Distribution transformer"
+    },
+    "PAD_MOUNTED": {
+      "categories": [
+        "distribution",
+        "distribution.pad_mounted"
+      ],
+      "label": "Pad-mounted"
+    },
+    "POLE_MOUNTED": {
+      "categories": [
+        "distribution",
+        "distribution.pole_mounted"
+      ],
+      "label": "Pole-mounted"
+    },
+    "DRY": {
+      "categories": [
+        "dry_type"
+      ],
+      "label": "Dry-type"
+    },
+    "DRY_TYPE": {
+      "categories": [
+        "dry_type"
+      ],
+      "label": "Dry-type"
+    },
+    "CAST_RESIN": {
+      "categories": [
+        "dry_type",
+        "dry_type.cast_resin"
+      ],
+      "label": "Cast resin / dry-type"
+    },
+    "FURNACE": {
+      "categories": [
+        "special",
+        "special.furnace"
+      ],
+      "label": "Furnace transformer"
+    },
+    "RECTIFIER": {
+      "categories": [
+        "special",
+        "special.rectifier"
+      ],
+      "label": "Rectifier transformer"
+    },
+    "TRACTION": {
+      "categories": [
+        "special",
+        "special.traction"
+      ],
+      "label": "Traction transformer"
+    },
+    "HVDC_CONVERTER": {
+      "categories": [
+        "special",
+        "special.converter"
+      ],
+      "label": "Converter (HVDC) transformer"
+    },
+    "EARTHING": {
+      "categories": [
+        "special",
+        "special.earthing"
+      ],
+      "label": "Earthing / grounding transformer"
+    },
+    "MOBILE": {
+      "categories": [
+        "special",
+        "special.mobile"
+      ],
+      "label": "Mobile transformer"
+    },
+    "RENEWABLE": {
+      "categories": [
+        "special",
+        "special.renewable"
+      ],
+      "label": "Renewable / application-specific transformer"
+    },
+    "SHUNT_REACTOR": {
+      "categories": [
+        "special",
+        "special.reactor"
+      ],
+      "label": "Shunt reactor"
+    },
+    "REACTOR": {
+      "categories": [
+        "special",
+        "special.reactor"
+      ],
+      "label": "Shunt reactor"
+    },
+    "SPECIAL": {
+      "categories": [
+        "special"
+      ],
+      "label": "Special transformer"
+    },
+    "TX": {
+      "categories": [
+        "special"
+      ],
+      "label": "Transformer"
+    },
+    "SR": {
+      "categories": [
+        "special",
+        "special.reactor"
+      ],
+      "label": "Shunt reactor"
+    },
+    "IT": {
+      "categories": [
+        "special",
+        "special.instrument"
+      ],
+      "label": "Instrument transformer"
+    }
+  },
+  "components": {
+    "label": "Transformer components",
+    "categories": {
+      "bushings": {
+        "label": "Bushings",
+        "subtypes": [
+          "OIP",
+          "RIP",
+          "RIS"
+        ]
+      },
+      "oltc_detc": {
+        "label": "OLTC / DETC",
+        "subtypes": [
+          "Oil-type",
+          "Vacuum-type"
+        ]
+      },
+      "radiators": {
+        "label": "Radiators / cooling systems"
+      },
+      "coolers": {
+        "label": "Coolers"
+      },
+      "fans": {
+        "label": "Cooling fans"
+      },
+      "pumps": {
+        "label": "Oil-circulation pumps"
+      },
+      "buchholz": {
+        "label": "Buchholz relays"
+      },
+      "pressure_relief": {
+        "label": "Pressure-relief devices"
+      },
+      "temperature_indicators": {
+        "label": "Temperature indicators"
+      },
+      "oil_level_indicators": {
+        "label": "Oil-level indicators"
+      },
+      "monitoring": {
+        "label": "Monitoring / diagnostic systems"
+      },
+      "cts": {
+        "label": "Current transformers (CTs)"
+      },
+      "terminals": {
+        "label": "Terminals / connectors"
+      },
+      "gaskets_seals": {
+        "label": "Gaskets / seals"
+      },
+      "valves": {
+        "label": "Valves"
+      },
+      "conservators": {
+        "label": "Conservator tanks"
+      },
+      "breathers": {
+        "label": "Breathers (silica gel)"
+      },
+      "marshalling": {
+        "label": "Marshalling boxes"
+      },
+      "oil_treatment": {
+        "label": "Oil treatment devices"
+      },
+      "tap_changer_accessories": {
+        "label": "Tap-changer accessories"
+      }
+    }
+  },
+  "materials": {
+    "label": "Transformer materials",
+    "categories": {
+      "crgo": {
+        "label": "CRGO / grain-oriented electrical steel",
+        "roles": [
+          "material_processor",
+          "material_distributor"
+        ]
+      },
+      "copper": {
+        "label": "Copper",
+        "roles": [
+          "material_processor",
+          "material_distributor"
+        ]
+      },
+      "aluminium": {
+        "label": "Aluminium",
+        "roles": [
+          "material_processor",
+          "material_distributor"
+        ]
+      },
+      "ctc": {
+        "label": "CTC (continuously transposed conductor)",
+        "roles": [
+          "material_processor",
+          "material_distributor"
+        ]
+      },
+      "paper_covered_conductor": {
+        "label": "Paper-covered conductor",
+        "roles": [
+          "material_processor",
+          "material_distributor"
+        ]
+      },
+      "transformer_oil": {
+        "label": "Transformer oil",
+        "roles": [
+          "material_processor",
+          "material_distributor"
+        ]
+      },
+      "natural_ester": {
+        "label": "Natural ester",
+        "roles": [
+          "material_processor",
+          "material_distributor"
+        ]
+      },
+      "synthetic_ester": {
+        "label": "Synthetic ester",
+        "roles": [
+          "material_processor",
+          "material_distributor"
+        ]
+      },
+      "pressboard": {
+        "label": "Pressboard",
+        "roles": [
+          "material_processor",
+          "material_distributor"
+        ]
+      },
+      "insulation_paper": {
+        "label": "Insulation paper",
+        "roles": [
+          "material_processor",
+          "material_distributor"
+        ]
+      },
+      "ddp_dpe_dpp": {
+        "label": "DDP / DPE / DPP (densified pressboard)",
+        "roles": [
+          "material_processor",
+          "material_distributor"
+        ]
+      },
+      "laminated_wood": {
+        "label": "Laminated densified wood",
+        "roles": [
+          "material_processor",
+          "material_distributor"
+        ]
+      },
+      "crepe_paper": {
+        "label": "Crepe paper / tubes",
+        "roles": [
+          "material_processor",
+          "material_distributor"
+        ]
+      },
+      "insulation_components": {
+        "label": "Insulation components",
+        "roles": [
+          "material_processor",
+          "material_distributor"
+        ]
+      },
+      "tank_steel": {
+        "label": "Tank steel",
+        "roles": [
+          "material_processor",
+          "material_distributor"
+        ]
+      },
+      "gasket_sealing": {
+        "label": "Gaskets / sealing materials",
+        "roles": [
+          "material_processor",
+          "material_distributor"
+        ]
+      }
+    },
+    "role_labels": {
+      "material_producer": "Material producer",
+      "material_processor": "Processor / converter",
+      "material_distributor": "Distributor / stockist"
+    }
+  },
+  "manufacturing_equipment": {
+    "label": "Transformer manufacturing equipment",
+    "categories": {
+      "core": [
+        "Slitting",
+        "Cut-to-length",
+        "Step-lap",
+        "Core stacking",
+        "Core handling"
+      ],
+      "winding": [
+        "LV winding",
+        "HV winding",
+        "Foil winding",
+        "Vertical winding",
+        "CTC handling",
+        "Winding tensioning"
+      ],
+      "insulation": [
+        "Pressboard processing",
+        "CNC",
+        "Ring cutting",
+        "Bevelling",
+        "Creping",
+        "Slitting",
+        "Component machining"
+      ],
+      "tank_fabrication": [
+        "Corrugated fin",
+        "Radiator manufacturing",
+        "Welding",
+        "Shot blasting",
+        "Painting"
+      ],
+      "drying_processing": [
+        "Vacuum drying",
+        "Vapor-phase drying",
+        "Oil filtration",
+        "Oil filling"
+      ],
+      "testing_equipment": [
+        "Impulse generator",
+        "PD measurement",
+        "Loss measurement",
+        "Ratio",
+        "Resistance",
+        "Capacitance / tan delta",
+        "SFRA",
+        "Noise",
+        "Temperature measurement",
+        "HV testing"
+      ]
+    }
+  },
+  "testing_laboratories": {
+    "label": "Testing & laboratories",
+    "capabilities": [
+      "Lightning impulse",
+      "Switching impulse",
+      "Partial discharge",
+      "Temperature rise",
+      "Short-circuit testing",
+      "Sound / noise",
+      "SFRA",
+      "Dielectric testing",
+      "Oil testing",
+      "Materials testing"
+    ],
+    "accreditation_fields": [
+      "accreditation_body",
+      "scope",
+      "certificate_reference",
+      "valid_until",
+      "source"
+    ],
+    "note": "Never infer laboratory capability from marketing alone. Accreditation must be attributed with body, scope, certificate/reference, validity and source."
+  },
+  "software": {
+    "label": "Software (neutral)",
+    "categories": [
+      "Transformer design",
+      "Electromagnetic analysis",
+      "Thermal analysis",
+      "Mechanical analysis",
+      "Insulation coordination",
+      "Winding design",
+      "Core design",
+      "Costing / BOM",
+      "Test / reporting",
+      "Asset management",
+      "Diagnostics",
+      "Condition monitoring"
+    ],
+    "note": "Describe capabilities from vendor documentation; never rank one product over another."
+  },
+  "services": {
+    "label": "Services",
+    "categories": [
+      "Installation",
+      "Commissioning",
+      "Oil filtration",
+      "Oil processing",
+      "Diagnostics",
+      "SFRA",
+      "Partial discharge",
+      "OLTC service",
+      "Bushing diagnostics",
+      "Transformer relocation",
+      "Repair",
+      "Rewinding",
+      "Condition assessment",
+      "Testing",
+      "Engineering consultancy"
+    ],
+    "note": "Defer service-category growth until the core sourcing directories are strong."
+  },
+  "entity_id_schemes": {
+    "company": "co:<slug>",
+    "facility": "fac:<co_slug>:<site_slug>",
+    "component_supplier": "sup:<slug>",
+    "material_processor": "mat:<slug>",
+    "machinery_manufacturer": "mac:<slug>",
+    "testing_laboratory": "lab:<slug>",
+    "grid_operator": "grid:<slug>",
+    "market": "mkt:<slug>",
+    "project": "proj:<slug>",
+    "tender": "tnd:<slug>",
+    "event": "evt:<slug>"
+  },
+  "canonical_taxonomy": {
+    "TR_POWER": {
+      "id": "TR_POWER",
+      "domain": "transformer",
+      "label": "Power Transformer",
+      "landing": "/manufacturers/power-transformers/"
+    },
+    "TR_POWER_GSU": {
+      "id": "TR_POWER_GSU",
+      "domain": "transformer",
+      "parent": "TR_POWER",
+      "label": "Generator Step-Up (GSU) Transformer"
+    },
+    "TR_POWER_AUTO": {
+      "id": "TR_POWER_AUTO",
+      "domain": "transformer",
+      "parent": "TR_POWER",
+      "label": "Autotransformer"
+    },
+    "TR_POWER_PST": {
+      "id": "TR_POWER_PST",
+      "domain": "transformer",
+      "parent": "TR_POWER",
+      "label": "Phase-Shifting Transformer (PST)"
+    },
+    "TR_POWER_HVDC": {
+      "id": "TR_POWER_HVDC",
+      "domain": "transformer",
+      "parent": "TR_POWER",
+      "label": "HVDC Converter Transformer"
+    },
+    "TR_DISTRIBUTION": {
+      "id": "TR_DISTRIBUTION",
+      "domain": "transformer",
+      "label": "Distribution Transformer",
+      "landing": "/manufacturers/distribution-transformers/"
+    },
+    "TR_DIST_OIL": {
+      "id": "TR_DIST_OIL",
+      "domain": "transformer",
+      "parent": "TR_DISTRIBUTION",
+      "label": "Oil-Immersed Distribution Transformer"
+    },
+    "TR_DIST_PAD": {
+      "id": "TR_DIST_PAD",
+      "domain": "transformer",
+      "parent": "TR_DISTRIBUTION",
+      "label": "Pad-Mounted Distribution Transformer"
+    },
+    "TR_DIST_POLE": {
+      "id": "TR_DIST_POLE",
+      "domain": "transformer",
+      "parent": "TR_DISTRIBUTION",
+      "label": "Pole-Mounted Distribution Transformer"
+    },
+    "TR_DRY": {
+      "id": "TR_DRY",
+      "domain": "transformer",
+      "label": "Dry-Type Transformer",
+      "landing": "/manufacturers/dry-type-transformers/"
+    },
+    "TR_DRY_CAST": {
+      "id": "TR_DRY_CAST",
+      "domain": "transformer",
+      "parent": "TR_DRY",
+      "label": "Cast Resin Dry-Type Transformer"
+    },
+    "TR_DRY_VPI": {
+      "id": "TR_DRY_VPI",
+      "domain": "transformer",
+      "parent": "TR_DRY",
+      "label": "Vacuum Pressure Impregnated (VPI) Transformer"
+    },
+    "TR_SPEC_FURNACE": {
+      "id": "TR_SPEC_FURNACE",
+      "domain": "transformer",
+      "label": "Electric Arc Furnace (EAF) Transformer"
+    },
+    "TR_SPEC_RECTIFIER": {
+      "id": "TR_SPEC_RECTIFIER",
+      "domain": "transformer",
+      "label": "Rectifier Transformer"
+    },
+    "TR_SPEC_TRACTION": {
+      "id": "TR_SPEC_TRACTION",
+      "domain": "transformer",
+      "label": "Traction / Locomotive Transformer"
+    },
+    "TR_SPEC_REACTOR": {
+      "id": "TR_SPEC_REACTOR",
+      "domain": "transformer",
+      "label": "Shunt Reactor / Neutral Earthing Reactor"
+    },
+    "TR_SPEC_MOBILE": {
+      "id": "TR_SPEC_MOBILE",
+      "domain": "transformer",
+      "label": "Mobile Substation Transformer"
+    },
+    "TR_SPEC_EARTHING": {
+      "id": "TR_SPEC_EARTHING",
+      "domain": "transformer",
+      "label": "Earthing / Grounding Transformer"
+    },
+    "TR_SPEC_ISOLATION": {
+      "id": "TR_SPEC_ISOLATION",
+      "domain": "transformer",
+      "label": "Industrial Isolation Transformer"
+    },
+    "TR_SPEC_RENEWABLE": {
+      "id": "TR_SPEC_RENEWABLE",
+      "domain": "transformer",
+      "label": "Solar & Wind Application Transformer"
+    },
+    "CMP_BUSHING": {
+      "id": "CMP_BUSHING",
+      "domain": "component",
+      "label": "Transformer Bushings",
+      "landing": "/components/bushings/"
+    },
+    "CMP_BUSHING_OIP": {
+      "id": "CMP_BUSHING_OIP",
+      "domain": "component",
+      "parent": "CMP_BUSHING",
+      "label": "Oil-Impregnated Paper (OIP) Bushings"
+    },
+    "CMP_BUSHING_RIP": {
+      "id": "CMP_BUSHING_RIP",
+      "domain": "component",
+      "parent": "CMP_BUSHING",
+      "label": "Resin-Impregnated Paper (RIP) Bushings"
+    },
+    "CMP_BUSHING_RIS": {
+      "id": "CMP_BUSHING_RIS",
+      "domain": "component",
+      "parent": "CMP_BUSHING",
+      "label": "Resin-Impregnated Synthetic (RIS) Bushings"
+    },
+    "CMP_OLTC": {
+      "id": "CMP_OLTC",
+      "domain": "component",
+      "label": "On-Load Tap Changers (OLTC)",
+      "landing": "/components/oltc/"
+    },
+    "CMP_OLTC_VACUUM": {
+      "id": "CMP_OLTC_VACUUM",
+      "domain": "component",
+      "parent": "CMP_OLTC",
+      "label": "Vacuum Type OLTC"
+    },
+    "CMP_OLTC_OIL": {
+      "id": "CMP_OLTC_OIL",
+      "domain": "component",
+      "parent": "CMP_OLTC",
+      "label": "Oil Type OLTC"
+    },
+    "CMP_DETC": {
+      "id": "CMP_DETC",
+      "domain": "component",
+      "parent": "CMP_OLTC",
+      "label": "De-Energized Tap Changer (DETC)"
+    },
+    "CMP_COOLING": {
+      "id": "CMP_COOLING",
+      "domain": "component",
+      "label": "Cooling Systems & Radiators",
+      "landing": "/components/radiators/"
+    },
+    "CMP_RADIATOR": {
+      "id": "CMP_RADIATOR",
+      "domain": "component",
+      "parent": "CMP_COOLING",
+      "label": "Transformer Radiators"
+    },
+    "CMP_FAN": {
+      "id": "CMP_FAN",
+      "domain": "component",
+      "parent": "CMP_COOLING",
+      "label": "Cooling Fans"
+    },
+    "CMP_PUMP": {
+      "id": "CMP_PUMP",
+      "domain": "component",
+      "parent": "CMP_COOLING",
+      "label": "Oil-Circulation Pumps"
+    },
+    "CMP_PROTECTION": {
+      "id": "CMP_PROTECTION",
+      "domain": "component",
+      "label": "Protection & Monitoring",
+      "landing": "/components/protection-monitoring/"
+    },
+    "CMP_BUCHHOLZ": {
+      "id": "CMP_BUCHHOLZ",
+      "domain": "component",
+      "parent": "CMP_PROTECTION",
+      "label": "Buchholz Relays"
+    },
+    "CMP_PRD": {
+      "id": "CMP_PRD",
+      "domain": "component",
+      "parent": "CMP_PROTECTION",
+      "label": "Pressure Relief Devices"
+    },
+    "CMP_OLI": {
+      "id": "CMP_OLI",
+      "domain": "component",
+      "parent": "CMP_PROTECTION",
+      "label": "Oil Level Indicators"
+    },
+    "CMP_WTI_OTI": {
+      "id": "CMP_WTI_OTI",
+      "domain": "component",
+      "parent": "CMP_PROTECTION",
+      "label": "Winding & Oil Temperature Indicators"
+    },
+    "CMP_BREATHER": {
+      "id": "CMP_BREATHER",
+      "domain": "component",
+      "parent": "CMP_PROTECTION",
+      "label": "Dehydrating Breathers"
+    },
+    "CMP_VALVE": {
+      "id": "CMP_VALVE",
+      "domain": "component",
+      "parent": "CMP_PROTECTION",
+      "label": "Transformer Valves"
+    },
+    "CMP_DGA": {
+      "id": "CMP_DGA",
+      "domain": "component",
+      "parent": "CMP_PROTECTION",
+      "label": "Online DGA Gas Monitors"
+    },
+    "CMP_PD_MONITOR": {
+      "id": "CMP_PD_MONITOR",
+      "domain": "component",
+      "parent": "CMP_PROTECTION",
+      "label": "Online Partial Discharge Monitors"
+    },
+    "CMP_BUSHING_MONITOR": {
+      "id": "CMP_BUSHING_MONITOR",
+      "domain": "component",
+      "parent": "CMP_PROTECTION",
+      "label": "Online Bushing Monitors"
+    },
+    "CMP_MECHANICAL": {
+      "id": "CMP_MECHANICAL",
+      "domain": "component",
+      "label": "Tank & Mechanical Components",
+      "landing": "/components/tanks-mechanical/"
+    },
+    "CMP_CONSERVATOR": {
+      "id": "CMP_CONSERVATOR",
+      "domain": "component",
+      "parent": "CMP_MECHANICAL",
+      "label": "Conservator Tanks & Bladders"
+    },
+    "CMP_FINS": {
+      "id": "CMP_FINS",
+      "domain": "component",
+      "parent": "CMP_MECHANICAL",
+      "label": "Corrugated Fins & Tanks"
+    },
+    "CMP_GASKET": {
+      "id": "CMP_GASKET",
+      "domain": "component",
+      "parent": "CMP_MECHANICAL",
+      "label": "Gaskets & Sealing Systems"
+    },
+    "MAT_INSULATION": {
+      "id": "MAT_INSULATION",
+      "domain": "material",
+      "label": "Insulation Materials",
+      "landing": "/materials/transformerboard/"
+    },
+    "MAT_PRESSBOARD": {
+      "id": "MAT_PRESSBOARD",
+      "domain": "material",
+      "parent": "MAT_INSULATION",
+      "label": "Transformerboard / Precompressed Pressboard"
+    },
+    "MAT_PRESSPAPER": {
+      "id": "MAT_PRESSPAPER",
+      "domain": "material",
+      "parent": "MAT_INSULATION",
+      "label": "Presspaper & Calendered Paper"
+    },
+    "MAT_DDP": {
+      "id": "MAT_DDP",
+      "domain": "material",
+      "parent": "MAT_INSULATION",
+      "label": "Diamond Dotted Paper (DDP) / Epoxy Dotted Paper"
+    },
+    "MAT_CREPE": {
+      "id": "MAT_CREPE",
+      "domain": "material",
+      "parent": "MAT_INSULATION",
+      "label": "Crepe Paper & Crepe Paper Tubes"
+    },
+    "MAT_LAM_WOOD": {
+      "id": "MAT_LAM_WOOD",
+      "domain": "material",
+      "parent": "MAT_INSULATION",
+      "label": "Laminated Densified Wood"
+    },
+    "MAT_CONDUCTOR": {
+      "id": "MAT_CONDUCTOR",
+      "domain": "material",
+      "label": "Conductors & Winding Wire",
+      "landing": "/materials/ctc/"
+    },
+    "MAT_CTC": {
+      "id": "MAT_CTC",
+      "domain": "material",
+      "parent": "MAT_CONDUCTOR",
+      "label": "Continuously Transposed Conductor (CTC)"
+    },
+    "MAT_COPPER_COND": {
+      "id": "MAT_COPPER_COND",
+      "domain": "material",
+      "parent": "MAT_CONDUCTOR",
+      "label": "Paper-Covered Copper Conductor"
+    },
+    "MAT_ALU_COND": {
+      "id": "MAT_ALU_COND",
+      "domain": "material",
+      "parent": "MAT_CONDUCTOR",
+      "label": "Paper-Covered Aluminium Conductor"
+    },
+    "MAT_ENAMEL_WIRE": {
+      "id": "MAT_ENAMEL_WIRE",
+      "domain": "material",
+      "parent": "MAT_CONDUCTOR",
+      "label": "Enamelled Winding Wire"
+    },
+    "MAT_CORE_STEEL": {
+      "id": "MAT_CORE_STEEL",
+      "domain": "material",
+      "label": "Electrical Steel / Core Materials",
+      "landing": "/materials/crgo/"
+    },
+    "MAT_CRGO_CONV": {
+      "id": "MAT_CRGO_CONV",
+      "domain": "material",
+      "parent": "MAT_CORE_STEEL",
+      "label": "Conventional CRGO Electrical Steel"
+    },
+    "MAT_CRGO_HIB": {
+      "id": "MAT_CRGO_HIB",
+      "domain": "material",
+      "parent": "MAT_CORE_STEEL",
+      "label": "High-Permeability (Hi-B) CRGO Steel"
+    },
+    "MAT_CRGO_LASER": {
+      "id": "MAT_CRGO_LASER",
+      "domain": "material",
+      "parent": "MAT_CORE_STEEL",
+      "label": "Laser-Scribed / Domain-Refined CRGO"
+    },
+    "MAT_AMORPHOUS": {
+      "id": "MAT_AMORPHOUS",
+      "domain": "material",
+      "parent": "MAT_CORE_STEEL",
+      "label": "Amorphous Metal Ribbon"
+    },
+    "MAT_FLUID": {
+      "id": "MAT_FLUID",
+      "domain": "material",
+      "label": "Dielectric Fluids & Resins",
+      "landing": "/materials/fluids/"
+    },
+    "MAT_MINERAL_OIL": {
+      "id": "MAT_MINERAL_OIL",
+      "domain": "material",
+      "parent": "MAT_FLUID",
+      "label": "Mineral Insulating Oil (Inhibited/Uninhibited)"
+    },
+    "MAT_NAT_ESTER": {
+      "id": "MAT_NAT_ESTER",
+      "domain": "material",
+      "parent": "MAT_FLUID",
+      "label": "Natural Ester Fluid (Vegetable Oil)"
+    },
+    "MAT_SYNTH_ESTER": {
+      "id": "MAT_SYNTH_ESTER",
+      "domain": "material",
+      "parent": "MAT_FLUID",
+      "label": "Synthetic Ester Fluid"
+    },
+    "MAT_RESIN": {
+      "id": "MAT_RESIN",
+      "domain": "material",
+      "parent": "MAT_FLUID",
+      "label": "Epoxy Casting Resin"
+    },
+    "MAC_WINDING": {
+      "id": "MAC_WINDING",
+      "domain": "machinery",
+      "label": "Winding Machinery",
+      "landing": "/machinery/"
+    },
+    "MAC_WINDING_HV": {
+      "id": "MAC_WINDING_HV",
+      "domain": "machinery",
+      "parent": "MAC_WINDING",
+      "label": "Horizontal HV Winding Machine"
+    },
+    "MAC_WINDING_LV": {
+      "id": "MAC_WINDING_LV",
+      "domain": "machinery",
+      "parent": "MAC_WINDING",
+      "label": "LV / Foil Winding Machine"
+    },
+    "MAC_WINDING_VERT": {
+      "id": "MAC_WINDING_VERT",
+      "domain": "machinery",
+      "parent": "MAC_WINDING",
+      "label": "Vertical Winding Machine"
+    },
+    "MAC_CORE": {
+      "id": "MAC_CORE",
+      "domain": "machinery",
+      "label": "Core Processing Lines",
+      "landing": "/machinery/"
+    },
+    "MAC_CORE_SLITTING": {
+      "id": "MAC_CORE_SLITTING",
+      "domain": "machinery",
+      "parent": "MAC_CORE",
+      "label": "CRGO Slitting Line"
+    },
+    "MAC_CORE_CUT_TO_LENGTH": {
+      "id": "MAC_CORE_CUT_TO_LENGTH",
+      "domain": "machinery",
+      "parent": "MAC_CORE",
+      "label": "Cut-to-Length & Step-Lap Line"
+    },
+    "MAC_CORE_STACKING": {
+      "id": "MAC_CORE_STACKING",
+      "domain": "machinery",
+      "parent": "MAC_CORE",
+      "label": "Core Stacking & Tilting Table"
+    },
+    "MAC_DRYING": {
+      "id": "MAC_DRYING",
+      "domain": "machinery",
+      "label": "Drying & Oil Treatment Plants",
+      "landing": "/machinery/"
+    },
+    "MAC_VPD_DRYING": {
+      "id": "MAC_VPD_DRYING",
+      "domain": "machinery",
+      "parent": "MAC_DRYING",
+      "label": "Vapour-Phase Drying (VPD) Plant"
+    },
+    "MAC_VAC_DRYING": {
+      "id": "MAC_VAC_DRYING",
+      "domain": "machinery",
+      "parent": "MAC_DRYING",
+      "label": "Vacuum Drying Autoclave & Oven"
+    },
+    "MAC_OIL_FILTRATION": {
+      "id": "MAC_OIL_FILTRATION",
+      "domain": "machinery",
+      "parent": "MAC_DRYING",
+      "label": "High-Vacuum Oil Purification Plant"
+    },
+    "MAC_FABRICATION": {
+      "id": "MAC_FABRICATION",
+      "domain": "machinery",
+      "label": "Tank & Radiator Fabrication",
+      "landing": "/machinery/"
+    },
+    "MAC_FIN_CORRUGATION": {
+      "id": "MAC_FIN_CORRUGATION",
+      "domain": "machinery",
+      "parent": "MAC_FABRICATION",
+      "label": "Corrugated Fin Wall Forming Line"
+    },
+    "MAC_RADIATOR_LINE": {
+      "id": "MAC_RADIATOR_LINE",
+      "domain": "machinery",
+      "parent": "MAC_FABRICATION",
+      "label": "Transformer Radiator Line"
+    },
+    "MAC_TESTING": {
+      "id": "MAC_TESTING",
+      "domain": "machinery",
+      "label": "Test Bay Systems",
+      "landing": "/machinery/"
+    },
+    "MAC_TEST_IMPULSE": {
+      "id": "MAC_TEST_IMPULSE",
+      "domain": "machinery",
+      "parent": "MAC_TESTING",
+      "label": "Impulse Voltage Test System"
+    },
+    "MAC_TEST_PD": {
+      "id": "MAC_TEST_PD",
+      "domain": "machinery",
+      "parent": "MAC_TESTING",
+      "label": "Partial Discharge Measuring System"
+    },
+    "MAC_TEST_LOSS": {
+      "id": "MAC_TEST_LOSS",
+      "domain": "machinery",
+      "parent": "MAC_TESTING",
+      "label": "Precision Loss Measuring System"
+    },
+    "LAB_IMPULSE": {
+      "id": "LAB_IMPULSE",
+      "domain": "laboratory",
+      "label": "Impulse Testing",
+      "landing": "/laboratories/"
+    },
+    "LAB_LIGHTNING_IMPULSE": {
+      "id": "LAB_LIGHTNING_IMPULSE",
+      "domain": "laboratory",
+      "parent": "LAB_IMPULSE",
+      "label": "Lightning Impulse Test (1.2/50 μs)"
+    },
+    "LAB_SWITCHING_IMPULSE": {
+      "id": "LAB_SWITCHING_IMPULSE",
+      "domain": "laboratory",
+      "parent": "LAB_IMPULSE",
+      "label": "Switching Impulse Test (250/2500 μs)"
+    },
+    "LAB_PD": {
+      "id": "LAB_PD",
+      "domain": "laboratory",
+      "label": "Partial Discharge (PD) Testing",
+      "landing": "/laboratories/"
+    },
+    "LAB_TEMP_RISE": {
+      "id": "LAB_TEMP_RISE",
+      "domain": "laboratory",
+      "label": "Temperature Rise Testing",
+      "landing": "/laboratories/"
+    },
+    "LAB_SHORT_CIRCUIT": {
+      "id": "LAB_SHORT_CIRCUIT",
+      "domain": "laboratory",
+      "label": "Short-Circuit Withstand Testing",
+      "landing": "/laboratories/"
+    },
+    "LAB_SOUND": {
+      "id": "LAB_SOUND",
+      "domain": "laboratory",
+      "label": "Sound Level / Acoustic Testing",
+      "landing": "/laboratories/"
+    },
+    "LAB_DIELECTRIC": {
+      "id": "LAB_DIELECTRIC",
+      "domain": "laboratory",
+      "label": "Dielectric & Applied Voltage Testing",
+      "landing": "/laboratories/"
+    },
+    "LAB_OIL_ANALYSIS": {
+      "id": "LAB_OIL_ANALYSIS",
+      "domain": "laboratory",
+      "label": "Oil & DGA Laboratory Testing",
+      "landing": "/laboratories/"
+    },
+    "LAB_MATERIALS": {
+      "id": "LAB_MATERIALS",
+      "domain": "laboratory",
+      "label": "Materials, Tensile & DP Testing",
+      "landing": "/laboratories/"
+    },
+    "LAB_SFRA": {
+      "id": "LAB_SFRA",
+      "domain": "laboratory",
+      "label": "Sweep Frequency Response Analysis (SFRA)",
+      "landing": "/laboratories/"
+    },
+    "TR_GSU": {
+      "id": "TR_GSU",
+      "domain": "transformer",
+      "parent": "TR_POWER",
+      "label": "Generator Step-Up (GSU) Transformer"
+    },
+    "TR_AUTO": {
+      "id": "TR_AUTO",
+      "domain": "transformer",
+      "parent": "TR_POWER",
+      "label": "Autotransformer"
+    },
+    "TR_FURNACE": {
+      "id": "TR_FURNACE",
+      "domain": "transformer",
+      "parent": "TR_SPECIAL",
+      "label": "Electric Arc Furnace (EAF) Transformer"
+    },
+    "TR_RECTIFIER": {
+      "id": "TR_RECTIFIER",
+      "domain": "transformer",
+      "parent": "TR_SPECIAL",
+      "label": "Rectifier Transformer"
+    },
+    "TR_TRACTION": {
+      "id": "TR_TRACTION",
+      "domain": "transformer",
+      "parent": "TR_SPECIAL",
+      "label": "Traction Transformer"
+    },
+    "CMP_RELAY_BUCHHOLZ": {
+      "id": "CMP_RELAY_BUCHHOLZ",
+      "domain": "component",
+      "parent": "CMP_PROTECTION",
+      "label": "Buchholz Relays"
+    },
+    "MAT_CRGO": {
+      "id": "MAT_CRGO",
+      "domain": "material",
+      "parent": "MAT_CORE_STEEL",
+      "label": "CRGO Electrical Core Steel"
+    },
+    "MAT_OIL_MINERAL": {
+      "id": "MAT_OIL_MINERAL",
+      "domain": "material",
+      "parent": "MAT_FLUID",
+      "label": "Mineral Insulating Oil"
+    },
+    "MAT_OIL_ESTER": {
+      "id": "MAT_OIL_ESTER",
+      "domain": "material",
+      "parent": "MAT_FLUID",
+      "label": "Natural & Synthetic Ester Fluids"
+    },
+    "MAC_CORE_CUTTING": {
+      "id": "MAC_CORE_CUTTING",
+      "domain": "machinery",
+      "parent": "MAC_CORE",
+      "label": "Core Cutting & Step-Lap Lines"
+    },
+    "MAC_VPD": {
+      "id": "MAC_VPD",
+      "domain": "machinery",
+      "parent": "MAC_DRYING",
+      "label": "Vapour-Phase Drying (VPD) Plants"
+    },
+    "MAC_VACUUM_DRYING": {
+      "id": "MAC_VACUUM_DRYING",
+      "domain": "machinery",
+      "parent": "MAC_DRYING",
+      "label": "Vacuum Drying Ovens"
+    },
+    "MAC_OIL_PURIFICATION": {
+      "id": "MAC_OIL_PURIFICATION",
+      "domain": "machinery",
+      "parent": "MAC_OIL",
+      "label": "Oil Purification & Degassing Plants"
+    },
+    "MAC_TEST_SYSTEM": {
+      "id": "MAC_TEST_SYSTEM",
+      "domain": "machinery",
+      "parent": "MAC_TESTING",
+      "label": "Impulse Voltage & Test Bay Systems"
+    },
+    "LAB_HIGH_VOLTAGE": {
+      "id": "LAB_HIGH_VOLTAGE",
+      "domain": "laboratory",
+      "parent": "LAB_IMPULSE",
+      "label": "High Voltage & Impulse Testing"
+    },
+    "LAB_TEMPERATURE_RISE": {
+      "id": "LAB_TEMPERATURE_RISE",
+      "domain": "laboratory",
+      "parent": "LAB_TEST",
+      "label": "Temperature Rise / Heat Run Testing"
+    },
+    "LAB_OIL_MATERIALS": {
+      "id": "LAB_OIL_MATERIALS",
+      "domain": "laboratory",
+      "parent": "LAB_TEST",
+      "label": "Dielectric Oil & Materials Analysis"
+    }
+  }
+}

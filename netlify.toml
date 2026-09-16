@@ -1,0 +1,530 @@
+[build]
+  command = "node check-build-tracked.js && node build-factories.js && node build-company-developments.js && node build-provenance.js && node build-entity-graph.js && node build-census-audit.js && node build-manufacturer-intel.js && node build-services.js && node build-logistics.js && node build-associations.js && node build-education.js && node build-buyers.js && node build-media.js && node build-components.js && node build-canonical-entities.js && node build-directory-index.js && node build-company-pages.js && node build-data-quality.js && node build-directory-health.js && node build-intelligence.js && node build-intel-news.js && node build-intel-feed-ui.js && node build-intel-categories.js && node build-applications.js && node build-standards.js && node build-knowledge.js && node build-engineering-claims.js && node build-course-depth.js && node build-materials.js && node build-materials-pages.js && node build-markets.js && node build-utilities.js && node build-grids.js && node build-projects.js && node build-tenders.js && node build-awards.js && node build-case-studies.js && node build-accessories.js && node build-machinery.js && node build-laboratories.js && node build-category-landing-pages.js && node build-events.js && node build-post-event-intel.js && node build-event-summary-pages.js && node build-topic-hubs.js && node build-masterclass-paywall.js && node build-exhibitions.js && node build-books.js && node build-commerce.js && node build-commerce-intel.js && node build-freshness.js && node build-production-audit.js && node build-site-stats.js && node build-map.js && node build_ssr.js && node build-seo.js && node stamp-intel.js && node build-header-consistency.js && node bump-assets.js && node check-archives.js && node check-data-quality.js && node check-config.js && node check-brand.js && node check-links.js && node check-design.js && node tests/engine-sanity.js && node check-event-intel.js && node check-event-integrity.js && node check-topics.js && node check-data-graph.js && node check-masterclass-paywall.js && node tests/masterclass-live-qa.test.js && node tests/viz-math.test.js && node tests/verify-hero-integrity.js && node tests/check-verification-terms.js && node build-dist.js && echo 'Static site with serverless functions'"
+  # publish = "." shipped the whole working folder, so every internal file was on
+  # the CDN and "protected" only by case-sensitive 404 rules that Netlify's
+  # case-insensitive file serving defeated. dist/ is an allowlisted artifact:
+  # nothing is published unless build-dist.js names it.
+  publish = "dist"
+  functions = "functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+[functions."refresh-data"]
+  schedule = "0 * * * *"
+
+# ── Keep internal docs off the public site ──────────────────────────────
+# publish = "." deploys the whole folder, so the internal strategy/setup
+# markdown and the stale archive/ copies would otherwise be fetchable
+# directly (e.g. /PREMIUM-PRICING-STRATEGY.md). Serve 404 instead.
+[[redirects]]
+  from = "/_docs/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# Pretty-URL mappings for top-level pages
+[[redirects]]
+  from = "/archive"
+  to = "/archive.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/events"
+  to = "/events.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/webinars"
+  to = "/webinars.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/intel"
+  to = "/intel.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/grids"
+  to = "/grids.html"
+  status = 301
+  force = true
+
+# ...but keep the stale archive/ directory (if present) from being served.
+[[redirects]]
+  from = "/archive/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/_partials/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# The 26-chapter course is delivered as the interactive masterclass.
+# tutorial.html was a duplicate copy of the same text; send the old URL to the
+# single canonical page (see /masterclass.html).
+[[redirects]]
+  from = "/tutorial.html"
+  to = "/masterclass.html"
+  status = 301
+  force = true
+
+# tx-design-masterclass.html is a meta-refresh stub to the same page. A 301
+# passes link equity and saves the round trip; the stub stays as a fallback.
+[[redirects]]
+  from = "/tx-design-masterclass.html"
+  to = "/masterclass.html"
+  status = 301
+  force = true
+
+# Manuscripts, exports and raw data drops. publish = "." would otherwise
+# serve these straight off the site root — the two book release candidates
+# are 839 pages of saleable work and the SQL dump is the whole manufacturer
+# directory. Never reachable.
+[[redirects]]
+  from = "/_private/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# Commercial pipeline and supplier prospect lists. Internal CRM/pipeline only.
+[[redirects]]
+  from = "/data/commerce-intel.json"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/data/engineer-track-paid.json"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# Belt-and-suspenders: if any stale copy of the book RCs / SQL export is left
+# in the published root from an older deploy, never serve it.
+[[redirects]]
+  from = "/Power_Transformer_Design_V2_RC1.pdf"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/The_Transformer_Path_v3.0-RC11.pdf"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# Netlify only honours * as a TRAILING splat, so "/deepseek_sql_*.sql" would
+# never match and the file would stay downloadable. Use the exact path.
+[[redirects]]
+  from = "/deepseek_sql_20260825_ea08ed.sql"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# The certification offering was withdrawn — TransformerPath is not accredited
+# to issue credentials. Both pages moved to _private/; 404 any stale copy
+# left in a previous deploy.
+[[redirects]]
+  from = "/certificate.html"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/verify-certificate.html"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# Database schema. Gitignored, so a git deploy never carries it — but block
+# it at the edge too, since publish = "." would serve /supabase/schema.sql
+# verbatim from any deploy that did include it.
+[[redirects]]
+  from = "/supabase/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# Solver validation harness — version-controlled, but not site content.
+[[redirects]]
+  from = "/tests/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# Serverless function SOURCE must not be published as static files. Netlify
+# builds these into /.netlify/functions/* separately; without this redirect the
+# raw .js source (checkout-verification logic, email recipient, refresh internals)
+# is public at /functions/*.js. Serve 404 instead.
+[[redirects]]
+  from = "/functions/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# Türkiye's country-page slug was cleaned from a diacritic-mangled "t-rkiye"
+# to a proper "turkiye" (the ü no longer becomes a dash). 301 the old URL so
+# any previously-indexed or bookmarked link resolves to the canonical page.
+[[redirects]]
+  from = "/manufacturers/t-rkiye.html"
+  to = "/manufacturers/turkiye.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/czech-republic.html"
+  to = "/manufacturers/czechia.html"
+  status = 301
+  force = true
+
+
+
+# transformerpath-site/ is an early-August snapshot of ~25 pages that also
+# exist at the top level. Serving it would publish stale duplicates and split
+# SEO ranking between two copies of the same page.
+[[redirects]]
+  from = "/transformerpath-site/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# Transformer Equipments/ is a stale legacy snapshot of a previous iteration
+# (old intel pages with a "refreshed daily" cadence, _synctmp/, site-archive/,
+# the legacy mega-menu nav, an "Elin" voice and long-dead claims). publish = "."
+# would otherwise serve it verbatim alongside the current site. Block it at the
+# edge (exact path and everything under it); check-config.js skips it and it is
+# gitignored for the same reason.
+[[redirects]]
+  from = "/Transformer Equipments"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/Transformer Equipments/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# Transformer Radiators/ contains internal factory feasibility models and
+# commercial brochures. Block them from being served.
+[[redirects]]
+  from = "/Transformer Radiators"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/Transformer Radiators/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+
+# Security hardening headers — safe to set globally; chosen so nothing on the
+# JS-heavy site breaks. CSP is intentionally NOT set here (inline scripts +
+# AdSense/Stripe/geolocation callers make it easy to get wrong); add it in a
+# tested way if you want it.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+# Long-lived caching for static assets; HTML stays revalidated so daily intel is never stale.
+[[headers]]
+  for = "/vendor/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/brand/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Root-level CSS/JS had no cache policy, so browsers applied their own
+# heuristic and returning visitors could sit on a stale stylesheet. Revalidate
+# these; the ?v= query on the tag is what forces a fresh copy after a change.
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Manufacturer entity pages moved to nested /manufacturers/<company>/ (build-company-pages.js).
+[[redirects]]
+  from = "/manufacturers/hitachi-energy.html"
+  to = "/manufacturers/hitachi-energy/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/siemens-energy.html"
+  to = "/manufacturers/siemens-energy/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/ge-vernova.html"
+  to = "/manufacturers/ge-vernova/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/schneider-electric.html"
+  to = "/manufacturers/schneider-electric/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/mitsubishi-electric.html"
+  to = "/manufacturers/mitsubishi-electric/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/hd-hyundai-electric.html"
+  to = "/manufacturers/hd-hyundai-electric/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/toshiba-energy-systems.html"
+  to = "/manufacturers/toshiba-energy-systems/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/tbea-co-ltd.html"
+  to = "/manufacturers/tbea-co-ltd/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/cg-power.html"
+  to = "/manufacturers/cg-power/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/elsewedy-electric.html"
+  to = "/manufacturers/elsewedy-electric/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/sgb-smit-group.html"
+  to = "/manufacturers/sgb-smit-group/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/smit-transformers.html"
+  to = "/manufacturers/smit-transformers/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/efacec-power-solutions.html"
+  to = "/manufacturers/efacec-power-solutions/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/wilson-transformer-company.html"
+  to = "/manufacturers/wilson-transformer-company/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/tmc-transformers-spa.html"
+  to = "/manufacturers/tmc-transformers-spa/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/specialtrasfo-spa.html"
+  to = "/manufacturers/specialtrasfo-spa/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/hyosung-heavy-industries.html"
+  to = "/manufacturers/hyosung-heavy-industries/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/hico-technology.html"
+  to = "/manufacturers/hico-technology/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/china-xd-group.html"
+  to = "/manufacturers/china-xd-group/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/jshp-transformer-jiangsu.html"
+  to = "/manufacturers/jshp-transformer-jiangsu/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/transformers-and-rectifiers-india.html"
+  to = "/manufacturers/transformers-and-rectifiers-india/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/bhel-bharat-heavy-electricals.html"
+  to = "/manufacturers/bhel-bharat-heavy-electricals/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/prolec-ge.html"
+  to = "/manufacturers/prolec-ge/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/weg.html"
+  to = "/manufacturers/weg/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/hammond-power-solutions.html"
+  to = "/manufacturers/hammond-power-solutions/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/virginia-transformer-corp.html"
+  to = "/manufacturers/virginia-transformer-corp/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/vantran-industries.html"
+  to = "/manufacturers/vantran-industries/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/gangheng-electric.html"
+  to = "/manufacturers/gangheng-electric/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/altran-corporation.html"
+  to = "/manufacturers/altran-corporation/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/custom-transformers-ltd.html"
+  to = "/manufacturers/custom-transformers-ltd/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/emerald-transformer.html"
+  to = "/manufacturers/emerald-transformer/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/foster-transformer-company.html"
+  to = "/manufacturers/foster-transformer-company/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/jefferson-electric.html"
+  to = "/manufacturers/jefferson-electric/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/electronetics-llc.html"
+  to = "/manufacturers/electronetics-llc/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/bridgeport-magnetics.html"
+  to = "/manufacturers/bridgeport-magnetics/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/ctm-magnetics.html"
+  to = "/manufacturers/ctm-magnetics/"
+  status = 301
+  force = true
+
+# ETD Transformátory was collapsed into a single canonical company (the census had
+# the same Czech supplier under two accent variants, yielding two entity pages).
+# 301 the orphaned /manufacturers/etd-transformatory-3 URL to the canonical page.
+[[redirects]]
+  from = "/manufacturers/etd-transformatory-3/"
+  to = "/manufacturers/etd-transformatory/"
+  status = 301
+  force = true
+
+# Pretty URL for the component directory — /components is a folder of category
+# pages, so without this redirect it competes with /components.html.
+[[redirects]]
+  from = "/components"
+  to = "/components.html"
+  status = 301
+  force = true
+
+# Plant-level census rows collapsed into the parent OEM company page.
+[[redirects]]
+  from = "/manufacturers/prolec-ge-waukesha/"
+  to = "/manufacturers/prolec-ge/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/prolec-ge-ge-vernova/"
+  to = "/manufacturers/prolec-ge/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/prolec-ge-brasil/"
+  to = "/manufacturers/prolec-ge/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/hico-america-hyosung/"
+  to = "/manufacturers/hyosung-heavy-industries/"
+  status = 301
+  force = true

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Transformer Utilities &amp; Grid Operators — Global Index | TransformerPath</title><meta name="description" content="A worldwide index of transmission & distribution utilities, grid operators and TSOs that procure transformers — by region and country, with transformer procurement profiles and grid characteristics."><link rel="canonical" href="https://transformerpath.com/utilities.html"><meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath"><meta property="og:title" content="Transformer Utilities &amp; Grid Operators — Global Index"><meta property="og:url" content="https://transformerpath.com/utilities.html"><meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow"><meta name="theme-color" content="#0d1b2e"><link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any"><link rel="stylesheet" href="style.css?v=14"><link rel="stylesheet" href="tp-nav.css?v=14"><style>.u-wrap{max-width:1000px;margin:0 auto;padding:44px 20px 90px}.u-wrap h1{font-size:2rem;color:var(--ink)}.u-wrap .lead{color:var(--muted);font-size:1.02rem;max-width:820px;margin:8px 0 26px}.region-h{font-size:1.05rem;font-weight:800;color:var(--ink);text-transform:uppercase;letter-spacing:.05em;margin:26px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--border)}.u-country{margin:8px 0 16px}.u-cname{display:block;font-size:.92rem;font-weight:800;color:var(--accent);margin:10px 0 4px;text-transform:uppercase;letter-spacing:.03em}.u-row{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px}.u-row .u-name{color:var(--text);font-weight:700;font-size:.96rem;text-decoration:none}.u-row .u-name:hover{color:var(--accent)}.u-row .u-blurb{color:var(--muted);font-size:.82rem;margin-top:4px}</style></head><body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
+    <nav class="tpnav" id="mainNav" aria-label="Primary">
+      <a href="intel.html">Intel</a>
+      <div class="tpnav-dropdown">
+        <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
+        <div class="tpnav-dropdown-panel" role="menu">
+          <a href="manufacturers.html">Manufacturers</a>
+          <a href="map.html">Industry Map</a>
+          <a href="grids.html">Global Grids</a>
+          <a href="components.html">Components &amp; Materials</a>
+          <a href="machinery.html">Machinery</a>
+          <a href="laboratories.html">Testing Labs</a>
+          <a href="services.html">Services &amp; Repair</a>
+          <a href="markets.html">Markets</a>
+          <a href="buyers-guide.html">Buyer's Guide</a>
+          <a href="directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
+        </div>
+      </div>
+      <a href="projects.html">Projects</a>
+      <a href="tenders.html">Tenders</a>
+      <a href="events.html">Events</a>
+      <a href="tools.html" class="tpnav-opt">Engineering</a>
+      <a href="learn.html">Learn</a>
+      <a href="rfq.html">RFQ</a>
+      <div class="tpnav-more">
+        <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
+        <div class="tpnav-more-panel" role="menu">
+          <a href="map.html" role="menuitem">Industry Map</a>
+          <a href="grids.html" role="menuitem">Global Grids</a>
+          <a href="webinars.html" role="menuitem">Webinars</a>
+          <a href="standards.html" role="menuitem">Standards &amp; Codes</a>
+          <a href="for-manufacturers.html" role="menuitem">For Manufacturers</a>
+          <a href="pricing.html" role="menuitem">Pricing Plans</a>
+          <a href="verified.html" role="menuitem">Verified Profiles</a>
+        </div>
+      </div>
+      <span class="tpnav-utils">
+        <a href="search.html" title="Search" aria-label="Search">&#128269;</a>
+        <a href="workspace.html" data-tp-account>Account</a>
+        <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">&#127769;</button>
+      </span>
+    </nav>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    // Night mode is the default; light is opt-in via the toggle.
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+
+    if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
+    updateThemeIcon();
+
+    themeToggle?.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      updateThemeIcon();
+    });
+
+    function updateThemeIcon() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+    }
+  </script>
+  <script src="tp-nav.js?v=7" defer></script>
+  <script src="tp-pwa.js?v=7" defer></script>
+</header>
+<main id="main" tabindex="-1" class="u-wrap"><h1>Transformer <span style="color:var(--accent)">Utilities</span> &amp; Grid Operators</h1><p class="lead">A worldwide index of the transmission &amp; distribution utilities, TSOs and grid operators that procure transformers — grouped by region and country. Each profile covers the operator's grid characteristics, transformer &amp; substation profile, relevant manufacturers and related projects. Organised from the TransformerPath grid census; only distinguished operators with meaningful procurement data are profiled.</p><div class="u-counts" style="display:flex;flex-wrap:wrap;gap:14px;margin:0 0 8px"><div class="s" style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 18px;text-align:center;min-width:110px"><b style="color:var(--text);font-size:1.4rem;display:block">24</b><small style="color:var(--muted);font-size:.78rem;font-weight:600">Utility profiles</small></div><div class="s" style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 18px;text-align:center;min-width:110px"><b style="color:var(--text);font-size:1.4rem;display:block">6</b><small style="color:var(--muted);font-size:.78rem;font-weight:600">Regions</small></div><div class="s" style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 18px;text-align:center;min-width:110px"><b style="color:var(--text);font-size:1.4rem;display:block">21</b><small style="color:var(--muted);font-size:.78rem;font-weight:600">Countries</small></div></div><div class="region-h">Middle East</div><div class="u-country"><b class="u-cname">Bahrain</b><div class="u-row"><a class="u-name" href="utilities/ewa/">EWA</a><div class="u-blurb">Electricity &amp; Water Authority (Bahrain) — the island utility, a buyer of 220/66/11 kV transformers and reactors.</div></div></div><div class="u-country"><b class="u-cname">Egypt</b><div class="u-row"><a class="u-name" href="utilities/eetc/">EETC</a><div class="u-blurb">Egyptian Electricity Transmission Company (EETC) — the state transmission monopsonist, procuring 500/220/66 kV power tra</div></div></div><div class="u-country"><b class="u-cname">Kuwait</b><div class="u-row"><a class="u-name" href="utilities/mewre-ministry-of-electricity-and-water/">MEWRE (Ministry of Electricity &amp; Water)</a><div class="u-blurb">Kuwait Ministry of Electricity &amp; Water (and Renewable Energy) — the state buyer of 400/132/11 kV transformers and substa</div></div></div><div class="u-country"><b class="u-cname">Oman</b><div class="u-row"><a class="u-name" href="utilities/oetc-oman-grid/">OETC (Oman Grid)</a><div class="u-blurb">Oman Electricity Transmission Company (OETC) — the sole transmission owner-operator in Oman, running the 400/220/132 kV </div></div></div><div class="u-country"><b class="u-cname">Qatar</b><div class="u-row"><a class="u-name" href="utilities/kahramaa/">KAHRAMAA</a><div class="u-blurb">Qatar General Electricity &amp; Water Corporation — the monopolistic Qatari utility, procuring 400/132/66/11 kV transformers</div></div></div><div class="u-country"><b class="u-cname">Saudi Arabia</b><div class="u-row"><a class="u-name" href="utilities/saudi-electricity-co-national-grid-sa/">Saudi Electricity Co / National Grid SA</a><div class="u-blurb">The Saudi Electricity Company (SEC) and its National Grid operating arm — the dominant buyer of 380/110 kV power transfo</div></div></div><div class="u-country"><b class="u-cname">United Arab Emirates</b><div class="u-row"><a class="u-name" href="utilities/dewa/">DEWA</a><div class="u-blurb">Dubai Electricity &amp; Water Authority — vertically-integrated utility covering generation, transmission and distribution a</div></div><div class="u-row"><a class="u-name" href="utilities/taqa-transmission/">TAQA Transmission</a><div class="u-blurb">Abu Dhabi transmission owner-operator and the northern grid spine — the 400/220 kV backbone of the Abu Dhabi grid and a </div></div><div class="u-row"><a class="u-name" href="utilities/sewa/">SEWA</a><div class="u-blurb">Sharjah Electricity, Water &amp; Gas Authority — the Sharjah utility, a substantial buyer of 220 kV and below distribution a</div></div><div class="u-row"><a class="u-name" href="utilities/etihadwe/">EtihadWE</a><div class="u-blurb">Etihad Water &amp; Electricity — Northern Emirates utility, procuring 132/33/11 kV substation, transformer and switchgear pa</div></div></div><div class="region-h">Europe</div><div class="u-country"><b class="u-cname">France</b><div class="u-row"><a class="u-name" href="utilities/rte/">RTE</a><div class="u-blurb">Réseau de Transport d'Électricité (RTE) — the French TSO, a major buyer of 400/225 kV power transformers for grid reinfo</div></div></div><div class="u-country"><b class="u-cname">Netherlands</b><div class="u-row"><a class="u-name" href="utilities/tennet/">TenneT</a><div class="u-blurb">TenneT — the Dutch and German TSO, a leading buyer of 380 kV power transformers and offshore-grid converter equipment.</div></div></div><div class="u-country"><b class="u-cname">United Kingdom</b><div class="u-row"><a class="u-name" href="utilities/neso-national-grid-et/">NESO / National Grid ET</a><div class="u-blurb">National Energy System Operator and National Grid Electricity Transmission — the GB TSO, procuring 400/275 kV power tran</div></div></div><div class="region-h">East Asia</div><div class="u-country"><b class="u-cname">China</b><div class="u-row"><a class="u-name" href="utilities/state-grid-corp-of-china-sgcc/">State Grid Corp of China (SGCC)</a><div class="u-blurb">State Grid Corporation of China (SGCC) — the world's largest utility and transformer buyer, procuring UHV 1000 kV AC and</div></div></div><div class="u-country"><b class="u-cname">South Korea</b><div class="u-row"><a class="u-name" href="utilities/kepco-kpx/">KEPCO / KPX</a><div class="u-blurb">Korea Electric Power Corporation (KEPCO) and Korea Power Exchange — the Korean utility and market operator, procuring 76</div></div></div><div class="region-h">South Asia</div><div class="u-country"><b class="u-cname">India</b><div class="u-row"><a class="u-name" href="utilities/powergrid-grid-india-nldc/">POWERGRID + Grid-India (NLDC)</a><div class="u-blurb">Power Grid Corporation of India (POWERGRID) — the national transmission utility and one of the largest buyers of 765/400</div></div></div><div class="region-h">North America</div><div class="u-country"><b class="u-cname">Canada</b><div class="u-row"><a class="u-name" href="utilities/ieso-hydro-one-ontario/">IESO / Hydro One (Ontario)</a><div class="u-blurb">The Independent Electricity System Operator (IESO) and Hydro One — the Ontario market operator and transmission utility,</div></div></div><div class="region-h">Africa</div><div class="u-country"><b class="u-cname">Algeria</b><div class="u-row"><a class="u-name" href="utilities/sonelgaz-grte/">Sonelgaz / GRTE</a><div class="u-blurb">Sonelgaz and its transmission arm GRTE — the Algerian national utility, procuring 400/220/60 kV transformers and substat</div></div></div><div class="u-country"><b class="u-cname">Angola</b><div class="u-row"><a class="u-name" href="utilities/rnt-rede-nacional-de-transporte/">RNT (Rede Nacional de Transporte)</a><div class="u-blurb">Rede Nacional de Transporte de Electricidade (RNT) — the Angolan transmission utility, procuring 400/220/60 kV transform</div></div></div><div class="u-country"><b class="u-cname">Kenya</b><div class="u-row"><a class="u-name" href="utilities/ketraco-kenya-power/">KETRACO / Kenya Power</a><div class="u-blurb">Kenya Electricity Transmission Company (KETRACO) and Kenya Power — the Kenyan transmission developer and distributor, bu</div></div></div><div class="u-country"><b class="u-cname">Senegal</b><div class="u-row"><a class="u-name" href="utilities/senelec/">Senelec</a><div class="u-blurb">Société Nationale d'Électricité du Sénégal (Senelec) — the Senegalese utility, a buyer of 225/90/30 kV transformers.</div></div></div><div class="u-country"><b class="u-cname">South Africa</b><div class="u-row"><a class="u-name" href="utilities/eskom-ntcsa/">Eskom / NTCSA</a><div class="u-blurb">Eskom and the National Transmission Company South Africa — the dominant South African utility and a buyer of 765/400 kV </div></div></div><div class="u-country"><b class="u-cname">Tanzania</b><div class="u-row"><a class="u-name" href="utilities/tanesco/">TANESCO</a><div class="u-blurb">Tanzania Electric Supply Company (TANESCO) — the national utility, procuring 400/220/132 kV transformers and substation </div></div></div><div class="u-country"><b class="u-cname">Zambia</b><div class="u-row"><a class="u-name" href="utilities/zesco/">ZESCO</a><div class="u-blurb">Zambia Electricity Supply Corporation (ZESCO) — the national utility and a buyer of 330/220/66 kV power transformers.</div></div></div><p style="font-size:.8rem;color:var(--muted);margin-top:22px">Profiles are informational and compiled from public utility / operator filings and announcements; coverage grows with the grid census. Report a <a href="mailto:hello@transformerpath.com?subject=Utilities%20correction" style="color:var(--accent)">correction</a>.</p></main>
+<footer>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="/index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+        <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data. Built for utilities, transformer manufacturers, component suppliers, EPCs, consultants and engineers.</p>
+      </div>
+      <div><p class="footer-col-label">INTELLIGENCE</p><a href="/intel.html">Daily Intel</a><a href="/archive.html">Intel Archive</a><a href="/projects.html">Projects</a><a href="/tenders.html">Tenders</a><a href="/markets.html">Markets</a><a href="/grids.html">Grids</a><a href="/map.html">Industry Map</a><a href="/events.html">Events</a></div>
+      <div><p class="footer-col-label">DIRECTORY</p><a href="/manufacturers.html">Manufacturers</a><a href="/directory.html">Directory Index</a><a href="/components.html">Components &amp; Materials</a><a href="/machinery.html">Machinery</a><a href="/laboratories.html">Testing Labs</a><a href="/services.html">Service &amp; Repair</a><a href="/logistics.html">Logistics</a><a href="/buyers.html">Buyers &amp; Utilities</a><a href="/rfq.html">RFQ Board</a></div>
+      <div><p class="footer-col-label">ENGINEERING</p><a href="/tools.html">Engineering Hub</a><a href="/calculator.html">Design Calculator</a><a href="/explorer.html">3D Interactive Models</a><a href="/standards.html">Standards &amp; Codes</a><a href="/knowledge.html">Knowledge Base</a><a href="/case-studies.html">Case Studies</a></div>
+      <div><p class="footer-col-label">LEARN</p><a href="/learn.html">Learning Hub</a><a href="/masterclass.html">Masterclass</a><a href="/engineer-track.html">Design Engineer Track</a><a href="/academy.html">Academy 3D Tools</a><a href="/books.html">Books</a><a href="/education.html">Education</a></div>
+      <div><p class="footer-col-label">BUSINESS</p><a href="/for-manufacturers.html">For Manufacturers</a><a href="/pricing.html">Pricing Plans</a><a href="/verified.html">Verified Profiles</a><a href="/webinars.html">Webinars</a><a href="/sponsor.html">Sponsorship</a><a href="/associations.html">Associations</a><a href="/media.html">Media</a></div>
+      <div><p class="footer-col-label">COMPANY</p><a href="/about.html">About Us</a><a href="/workspace.html">Account</a><a href="/faq.html">FAQ</a><a href="/methodology.html">Methodology</a><a href="/contact.html">Contact</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a></div>
+      <div><p class="footer-col-label">CONTACT</p>
+        <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
+        <a href="/privacy.html#cookies" onclick="if(window.tpResetConsent){window.tpResetConsent();return false}">Cookie settings</a>
+        <a class="tp-li-btn tp-li-follow" data-linkedin-follow href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>Follow us on LinkedIn</a>
+        <a class="tp-li-btn tp-li-share" data-linkedin-share href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>LinkedIn</a>
+      </div>
+    </div>
+    <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
+  </div>
+</footer>
+<script src="analytics.js" defer></script>
+</body>
+</html>
