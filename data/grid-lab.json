@@ -22,6 +22,60 @@
         "France"
       ],
       "answer_hint": "60 Hz countries in this census include Saudi Arabia, South Korea, Taiwan, Philippines, USA, Canada, Mexico, Brazil….",
+      "census_readout": {
+        "label": "Census readout — 60 Hz countries (simulator, not a 3D model)",
+        "count": 19,
+        "rows": [
+          {
+            "country": "Saudi Arabia",
+            "freq": "60",
+            "sync": "GCCIA",
+            "kv": 380
+          },
+          {
+            "country": "South Korea",
+            "freq": "60",
+            "sync": "Isolated",
+            "kv": 765
+          },
+          {
+            "country": "Taiwan",
+            "freq": "60",
+            "sync": "Isolated",
+            "kv": 345
+          },
+          {
+            "country": "Philippines",
+            "freq": "60",
+            "sync": "National (HVDC-bridged)",
+            "kv": 500
+          },
+          {
+            "country": "USA",
+            "freq": "60",
+            "sync": "3 interconnections",
+            "kv": 765
+          },
+          {
+            "country": "Canada",
+            "freq": "60",
+            "sync": "Eastern / Western / Québec",
+            "kv": 735
+          },
+          {
+            "country": "Mexico",
+            "freq": "60",
+            "sync": "SIN Mexico",
+            "kv": 400
+          },
+          {
+            "country": "Brazil",
+            "freq": "60",
+            "sync": "SIN Brazil",
+            "kv": 750
+          }
+        ]
+      },
       "census_count": 19,
       "next": "uhv-765"
     },
@@ -42,6 +96,54 @@
         "USA"
       ],
       "answer_hint": "Census countries at ≥765 kV: Kazakhstan (1150 kV); South Africa (765 kV); India (765 kV); China (1000 kV); South Korea (765 kV); USA (765 kV); Venezuela (765 kV).",
+      "census_readout": {
+        "label": "Census readout — countries at ≥765 kV",
+        "count": 7,
+        "rows": [
+          {
+            "country": "Kazakhstan",
+            "freq": "",
+            "sync": "",
+            "kv": 1150
+          },
+          {
+            "country": "South Africa",
+            "freq": "",
+            "sync": "",
+            "kv": 765
+          },
+          {
+            "country": "India",
+            "freq": "",
+            "sync": "",
+            "kv": 765
+          },
+          {
+            "country": "China",
+            "freq": "",
+            "sync": "",
+            "kv": 1000
+          },
+          {
+            "country": "South Korea",
+            "freq": "",
+            "sync": "",
+            "kv": 765
+          },
+          {
+            "country": "USA",
+            "freq": "",
+            "sync": "",
+            "kv": 765
+          },
+          {
+            "country": "Venezuela",
+            "freq": "",
+            "sync": "",
+            "kv": 765
+          }
+        ]
+      },
       "census_count": 7,
       "directory_query": "765 kV",
       "next": "sync-areas"

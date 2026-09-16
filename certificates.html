@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learning records — TransformerPath</title>
+<meta name="description" content="TransformerPath learning records. Completions stay on your Learner Profile — these are not accredited credentials.">
+<link rel="canonical" href="https://transformerpath.com/certificates.html">
+<meta name="robots" content="noindex, follow">
+<link rel="stylesheet" href="style.css?v=14">
+<link rel="stylesheet" href="tp-nav.css?v=14">
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg">
+<link rel="icon" href="brand/favicon.ico" sizes="any">
+<style>
+.ws-wrap{max-width:720px;margin:0 auto;padding:42px 20px 90px}
+.ws-sec{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:18px}
+.ws-row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--border)}
+.ws-sub{color:var(--muted);font-size:.86rem}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><span class="word">Transformer<span class="accent">Path</span></span></a>
+    <nav class="tpnav" id="mainNav" aria-label="Primary">
+      <a href="learn.html">Learn</a>
+      <a href="grid-lab.html">Grid Lab</a>
+      <a href="workspace.html" data-tp-account>My TransformerPath</a>
+    </nav>
+  </div>
+  <script src="tp-nav.js?v=7" defer></script>
+</header>
+<main id="main" class="ws-wrap">
+  <p class="ws-sub"><a href="workspace.html">My TransformerPath</a> · learning records</p>
+  <h1>Certificates</h1>
+  <p class="ws-sub">TransformerPath is not an accredited certifier. Completions are learning records on your Learner Profile — not credentials you can present as a qualification.</p>
+  <div id="certRoot" class="ws-sec"><p class="ws-sub">Sign in to see records for this account.</p></div>
+</main>
+<script src="supabase-config.js"></script>
+<script src="supabase.js" defer></script>
+<script src="tp-learner.js" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  function slugFromPath(){
+    var p=location.pathname.replace(/\/+$/,'');
+    var m=p.match(/\/certificates\/([^/]+)$/);
+    if(m) return decodeURIComponent(m[1]);
+    return new URLSearchParams(location.search).get('slug')||'';
+  }
+  function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function wait(){
+    if(!window.TP || !TP.onAuth){ setTimeout(wait,80); return; }
+    TP.onAuth(function(user){
+      var root=document.getElementById('certRoot');
+      if(!user || !window.TP_LEARNER){ root.innerHTML='<p class="ws-sub"><a href="workspace.html?auth=in">Sign in</a> to load learning records.</p>'; return; }
+      TP_LEARNER.getSnap().then(function(snap){
+        var rows=(snap && snap.certificates)||[];
+        var slug=slugFromPath();
+        if(slug){
+          var hit=null;
+          rows.forEach(function(r){ if(r.slug===slug) hit=r; });
+          if(!hit){ root.innerHTML='<p>No learning record <code>'+esc(slug)+'</code> on this account.</p>'; return; }
+          document.title=hit.title+' — learning record';
+          root.innerHTML='<h2>'+esc(hit.title)+'</h2><p class="ws-sub">'+esc(hit.how_earned||'Learning record')+' · '+esc(String(hit.earned_at||'').slice(0,10))+'</p><p class="ws-sub">Not an accredited certificate.</p>';
+          return;
+        }
+        root.innerHTML = rows.length
+          ? rows.map(function(r){ return '<div class="ws-row"><a href="certificates/'+encodeURIComponent(r.slug)+'">'+esc(r.title)+'</a><span class="ws-sub">'+esc(r.how_earned||'')+'</span></div>'; }).join('')
+          : '<p class="ws-sub">No learning records yet. Complete a <a href="grid-lab.html">Grid Lab</a> scenario.</p>';
+      });
+    });
+  }
+  wait();
+});
+</script>
+</body>
+</html>

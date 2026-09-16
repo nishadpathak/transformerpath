@@ -97,7 +97,7 @@
         '<div><div class="gl-agg-label">Next recommendation</div>' +
           (nxt ? '<a href="#sc-' + nxt.id + '">' + nxt.title + '</a>' : '<span>All scenarios complete.</span>') +
         '</div>' +
-        '<p class="gl-note">Country Grid Lab (per-country engineering models) comes later — this lab is the global grid-systems track, not a new 3D model.</p>' +
+        '<p class="gl-note">Country Grid Lab (per-country engineering models) comes later — this lab is a census simulator, not a new 3D part model.</p>' +
       '</div>' +
       '<div class="gl-grid">' + cards + '</div>' +
       '<div id="glModal" hidden></div>';
@@ -111,11 +111,24 @@
     var opts = (s.options || []).map(function (o, i) {
       return '<label class="gl-opt"><input type="radio" name="glAns" value="' + i + '"> ' + o + '</label>';
     }).join('');
+    var readout = '';
+    if (s.census_readout && s.census_readout.rows && s.census_readout.rows.length) {
+      readout = '<div class="gl-hint" style="border:1px solid var(--border);border-radius:8px;padding:10px;margin:10px 0">' +
+        '<b>' + (s.census_readout.label || 'Census readout') + '</b> · n=' + (s.census_readout.count || s.census_readout.rows.length) +
+        '<ul style="margin:8px 0 0;padding-left:18px">' +
+        s.census_readout.rows.map(function (row) {
+          return '<li>' + row.country +
+            (row.freq ? ' · ' + row.freq + ' Hz' : '') +
+            (row.kv ? ' · ' + row.kv + ' kV' : '') +
+            (row.sync ? ' · ' + row.sync : '') + '</li>';
+        }).join('') + '</ul></div>';
+    }
     modal.hidden = false;
     modal.innerHTML =
       '<div class="gl-modal-card">' +
         '<h3>' + s.title + '</h3>' +
         '<p>' + s.summary + '</p>' +
+        readout +
         '<p><b>' + s.prompt + '</b></p>' +
         '<form id="glForm">' + opts +
           '<div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap">' +
@@ -129,6 +142,8 @@
     document.getElementById('glClose').onclick = function () { modal.hidden = true; };
     document.getElementById('glComplete').onclick = function () {
       setProgress(s.id, 100, s.skill);
+      postAccount({ action: 'certificate', slug: 'grid-lab-' + s.id, title: s.title, how_earned: 'Grid Lab scenario complete' });
+      postAccount({ action: 'path', path_id: 'grid-lab', percent: aggregate() });
       modal.hidden = true;
     };
     document.getElementById('glForm').onsubmit = function (e) {

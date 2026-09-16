@@ -57,6 +57,14 @@ const scenarios = [
     prompt: 'Which of these census countries is recorded as 60 Hz?',
     options: pickOptions(hz60, hz50, ['Saudi Arabia', 'United States', 'Canada', 'South Korea', 'Philippines'], ['Germany', 'India', 'France', 'United Kingdom', 'Egypt']),
     answer_hint: '60 Hz countries in this census include ' + hz60.slice(0, 8).join(', ') + (hz60.length > 8 ? '…' : '') + '.',
+    census_readout: {
+      label: 'Census readout — 60 Hz countries (simulator, not a 3D model)',
+      count: hz60.length,
+      rows: hz60.slice(0, 8).map((c) => {
+        const g = GRIDS.find((x) => x.country === c) || {};
+        return { country: c, freq: String(g.freq || '60'), sync: g.sync || '', kv: maxKv(g) };
+      }),
+    },
     census_count: hz60.length,
     next: 'uhv-765',
   },
@@ -72,6 +80,11 @@ const scenarios = [
     answer_hint: uhv.length
       ? ('Census countries at ≥765 kV: ' + uhv.map((u) => u.country + ' (' + u.kv + ' kV)').join('; ') + '.')
       : 'No country in the current census records ≥765 kV — treat that as a data gap, not a guess.',
+    census_readout: {
+      label: 'Census readout — countries at ≥765 kV',
+      count: uhv.length,
+      rows: uhv.slice(0, 8).map((u) => ({ country: u.country, freq: '', sync: '', kv: u.kv })),
+    },
     census_count: uhv.length,
     directory_query: '765 kV',
     next: 'sync-areas',

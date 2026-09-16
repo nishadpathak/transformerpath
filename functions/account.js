@@ -67,16 +67,41 @@ exports.handler = async (event) => {
         updated_at: new Date().toISOString(),
       };
       await supabase.from('learner_profiles').upsert(row, { onConflict: 'user_id' });
-      const roleMap = { engineer: 'LEARNER', student: 'LEARNER', buyer: 'BUYER', supplier: 'SUPPLIER', other: 'LEARNER' };
-      const role = roleMap[row.onboarding_role] || 'LEARNER';
-      await supabase.from('account_roles').upsert({ user_id: uid, role: role }, { onConflict: 'user_id,role' });
+      const extra = [];
+      extra.push('LEARNER');
+      if (row.onboarding_role === 'buyer') extra.push('BUYER');
+      if (row.onboarding_role === 'supplier') extra.push('SUPPLIER');
+      for (let i = 0; i < extra.length; i++) {
+        await supabase.from('account_roles').upsert({ user_id: uid, role: extra[i] }, { onConflict: 'user_id,role' });
+      }
+      await supabase.from('learner_profiles').upsert({
+        user_id: uid,
+        is_learner: true,
+        is_buyer: extra.indexOf('BUYER') >= 0,
+        is_supplier: extra.indexOf('SUPPLIER') >= 0,
+        updated_at: new Date().toISOString(),
+      }, { onConflict: 'user_id' });
+      await supabase.from('path_progress').upsert({
+        user_id: uid, path_id: 'transformer-path', status: 'IN PROGRESS', percent: 20,
+        updated_at: new Date().toISOString(),
+      }, { onConflict: 'user_id,path_id' });
     } else if (action === 'roles') {
       const roles = (body.roles || []).filter((r) => model.ROLES.indexOf(r) >= 0);
-      if (!roles.length) return respond(400, { error: 'roles required' });
+      const fromFlags = body.flags ? model.rolesFromFlags(body.flags) : null;
+      const next = fromFlags || roles;
+      if (!next.length) return respond(400, { error: 'roles required' });
       await supabase.from('account_roles').delete().eq('user_id', uid);
-      for (let i = 0; i < roles.length; i++) {
-        await supabase.from('account_roles').insert({ user_id: uid, role: roles[i] });
+      for (let i = 0; i < next.length; i++) {
+        await supabase.from('account_roles').insert({ user_id: uid, role: next[i] });
       }
+      const flags = model.flagsFromRoles(next);
+      await supabase.from('learner_profiles').upsert({
+        user_id: uid,
+        is_learner: flags.isLearner,
+        is_buyer: flags.isBuyer,
+        is_supplier: flags.isSupplier,
+        updated_at: new Date().toISOString(),
+      }, { onConflict: 'user_id' });
     } else if (action === 'public_name') {
       await supabase.from('learner_profiles').upsert({
         user_id: uid,
@@ -98,6 +123,18 @@ exports.handler = async (event) => {
           level: 'DEMONSTRATED', how_earned: 'Grid Lab scenario ' + scenario,
           updated_at: new Date().toISOString(),
         }, { onConflict: 'user_id,skill_id' });
+        await supabase.from('certificates').upsert({
+          user_id: uid,
+          slug: 'grid-lab-' + scenario,
+          title: String(body.title || scenario).slice(0, 120),
+          how_earned: 'Grid Lab scenario complete',
+          kind: 'learning_record',
+          earned_at: new Date().toISOString(),
+        }, { onConflict: 'user_id,slug' });
+        await supabase.from('path_progress').upsert({
+          user_id: uid, path_id: 'grid-lab', status: status, percent: percent,
+          updated_at: new Date().toISOString(),
+        }, { onConflict: 'user_id,path_id' });
       }
     } else if (action === 'skill') {
       await supabase.from('skill_records').upsert({
@@ -107,6 +144,26 @@ exports.handler = async (event) => {
         how_earned: String(body.how_earned || '').slice(0, 200),
         updated_at: new Date().toISOString(),
       }, { onConflict: 'user_id,skill_id' });
+    } else if (action === 'path') {
+      const pathId = String(body.path_id || '').slice(0, 64);
+      if (!pathId) return respond(400, { error: 'path_id required' });
+      const percent = Math.max(0, Math.min(100, parseInt(body.percent, 10) || 0));
+      const status = percent >= 100 ? 'COMPLETE' : (percent > 0 ? 'IN PROGRESS' : 'NOT STARTED');
+      await supabase.from('path_progress').upsert({
+        user_id: uid, path_id: pathId, status: status, percent: percent,
+        updated_at: new Date().toISOString(),
+      }, { onConflict: 'user_id,path_id' });
+    } else if (action === 'certificate') {
+      const slug = String(body.slug || '').slice(0, 80).replace(/[^a-z0-9-]/gi, '-');
+      if (!slug) return respond(400, { error: 'slug required' });
+      await supabase.from('certificates').upsert({
+        user_id: uid,
+        slug: slug,
+        title: String(body.title || slug).slice(0, 120),
+        how_earned: String(body.how_earned || '').slice(0, 200),
+        kind: 'learning_record',
+        earned_at: new Date().toISOString(),
+      }, { onConflict: 'user_id,slug' });
     } else {
       return respond(400, { error: 'unknown action' });
     }
@@ -128,7 +185,7 @@ async function snapshot(supabase, user) {
     } catch (e) { return []; }
   }
 
-  const [ents, roles, learnerRows, grid, skills, memberships, purchases] = await Promise.all([
+  const [ents, roles, learnerRows, grid, skills, memberships, purchases, paths, certs] = await Promise.all([
     sel('entitlements', 'user_id'),
     sel('account_roles', 'user_id'),
     sel('learner_profiles', 'user_id'),
@@ -136,6 +193,8 @@ async function snapshot(supabase, user) {
     sel('skill_records', 'user_id'),
     sel('memberships', 'user_id'),
     sel('purchases', 'user_id'),
+    sel('path_progress', 'user_id'),
+    sel('certificates', 'user_id'),
   ]);
 
   // Some installs keyed learner_profiles.user_id; others used id = auth uid.
@@ -150,6 +209,12 @@ async function snapshot(supabase, user) {
   const entitlement = model.bestEntitlement(ents);
   const roleList = roles.map((r) => r.role).filter(Boolean);
   if (!roleList.length) roleList.push('LEARNER');
+  const flags = model.flagsFromRoles(roleList);
+  if (learner) {
+    if (learner.is_learner != null) flags.isLearner = !!learner.is_learner;
+    if (learner.is_buyer != null) flags.isBuyer = !!learner.is_buyer;
+    if (learner.is_supplier != null) flags.isSupplier = !!learner.is_supplier;
+  }
 
   const gridAgg = aggregateGrid(grid);
 
@@ -158,6 +223,7 @@ async function snapshot(supabase, user) {
     configured: true,
     user: { id: uid, email: user.email },
     roles: roleList,
+    flags: flags,
     learner: learner,
     entitlement: entitlement ? {
       plan: entitlement.label,
@@ -169,7 +235,9 @@ async function snapshot(supabase, user) {
     purchases: (purchases || []).map((p) => ({ product: p.product, plan: p.plan, status: p.status, created_at: p.created_at })),
     memberships: memberships || [],
     grid_lab: { scenarios: grid, aggregate_percent: gridAgg },
+    path_progress: paths || [],
     skills: skills || [],
+    certificates: certs || [],
   };
 }
 

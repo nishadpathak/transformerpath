@@ -34,11 +34,17 @@ check('site-stats.manufacturers is a positive integer', typeof canonical === 'nu
   check(f + ' does not hard-code 709 manufacturers', !/\b709[\s-]*manufacturer/i.test(html) && !/Browse 709/i.test(html) && !/Explore 709/i.test(html));
   check(f + ' does not hard-code 1,002 / 1002 makers', !/1,?002 transformer makers/i.test(html) && !/\b1002\b[^a-z]{0,20}(maker|manufacturer)/i.test(html));
 });
-check('homepage manufacturers data-stat fallback matches site-stats',
-  (fs.readFileSync('index.html', 'utf8').match(/data-stat="manufacturers">\s*(\d+)/) || [])[1] === String(canonical),
-  'fallback vs ' + canonical);
-check('directory manufacturers data-stat fallback matches site-stats',
-  (fs.readFileSync('directory.html', 'utf8').match(/data-stat="manufacturers">\s*(\d+)/) || [])[1] === String(canonical));
+check('homepage manufacturers data-stat is live-filled (attribute present)',
+  /data-stat="manufacturers"/.test(fs.readFileSync('index.html', 'utf8')));
+check('directory manufacturers data-stat is live-filled (attribute present)',
+  /data-stat="manufacturers"/.test(fs.readFileSync('directory.html', 'utf8')));
+function withoutDataStat(html) {
+  return html.replace(/data-stat="[^"]*"\s*>[^<]*/g, 'data-stat');
+}
+['index.html', 'pricing.html', 'intel.html', 'directory.html'].forEach((f) => {
+  const prose = withoutDataStat(fs.readFileSync(f, 'utf8'));
+  check(f + ' does not hard-code 911 outside [data-stat]', !/\b911\b/.test(prose.replace(/https?:\/\/\S+/g, '')));
+});
 
 console.log('\n=== P0.2 FRESHNESS CLOCKS ===');
 const FRESH = JSON.parse(fs.readFileSync('data/freshness.json', 'utf8'));
@@ -64,6 +70,7 @@ check('data/grid-lab.json exists with scenarios', (function () {
 const pricing = fs.readFileSync('pricing.html', 'utf8');
 check('pricing does not say “11 models”', !/11 models/i.test(pricing));
 check('pricing mentions Grid Lab', /Grid Lab/i.test(pricing));
+check('grid-lab is a census simulator, not a 3D part model', /simulator/i.test(fs.readFileSync('grid-lab.html', 'utf8')) && /not another 3D|not a new 3D|not a 3D part/i.test(fs.readFileSync('grid-lab.html', 'utf8') + fs.readFileSync('tp-grid-lab.js', 'utf8')));
 
 console.log('\n=== P0.4 SSR / SEGMENTED DIRECTORY SEARCH ===');
 const idx = JSON.parse(fs.readFileSync('data/directory-index.json', 'utf8')).companies || [];
@@ -86,6 +93,9 @@ const best = model.bestEntitlement([
 ]);
 check('bestEntitlement prefers Professional over Learning', best && best.product === 'professional');
 check('expired entitlement is not active', !model.isActiveEntitlement({ product: 'professional', status: 'active', expires_at: '2000-01-01' }));
+const flags = model.flagsFromRoles(['LEARNER', 'BUYER']);
+check('flagsFromRoles exposes isLearner|isBuyer|isSupplier', flags.isLearner && flags.isBuyer && !flags.isSupplier);
+check('rolesFromFlags round-trips', model.rolesFromFlags({ isLearner: true, isBuyer: true, isSupplier: false }).indexOf('BUYER') >= 0);
 check('pricing does not sell a shared Team access link', !/shared (team )?access link/i.test(pricing) && !/How does the Team link work/i.test(pricing));
 check('pricing says Team is account seats', /seat|organisation|organization|account/i.test(pricing));
 check('course-gate no longer tells people access lives only in one browser as the product',
@@ -96,6 +106,9 @@ check('workspace.html is titled My TransformerPath or Learner hub', /My Transfor
 check('tp-learner.js exists', fs.existsSync('tp-learner.js'));
 check('skills passport catalog exists', fs.existsSync('data/skills-passport.json'));
 check('header Account label is My TransformerPath', /My TransformerPath/.test(fs.readFileSync('_partials/header.html', 'utf8')));
+check('onboarding.html exists (3-question Learner Profile)', fs.existsSync('onboarding.html') && /Three questions/i.test(fs.readFileSync('onboarding.html', 'utf8')));
+check('certificates.html exists as learning records, not credentials', fs.existsSync('certificates.html') && /not an accredited/i.test(fs.readFileSync('certificates.html', 'utf8')));
+check('netlify maps /me /sign-in /onboarding /certificates', /from = "\/me"/.test(toml) && /from = "\/sign-in"/.test(toml) && /from = "\/onboarding"/.test(toml) && /from = "\/certificates"/.test(toml));
 
 console.log('\n=== SUMMARY ===');
 if (failures.length) {

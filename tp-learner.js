@@ -72,6 +72,10 @@
       post(payload).then(function () {
         try { localStorage.setItem('tp-onboard', '1'); } catch (x) {}
         host.hidden = true;
+        if (document.body && document.body.getAttribute('data-tp-onboard-page')) {
+          location.replace('workspace.html');
+          return;
+        }
         if (window.TP_HUB && TP_HUB.refresh) TP_HUB.refresh();
       });
     };

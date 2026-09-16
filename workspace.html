@@ -196,11 +196,11 @@
           <input name="public_name" maxlength="80" placeholder="Update public name" style="flex:1;min-width:180px;padding:8px 10px;border:1px solid var(--border);border-radius:8px">
           <button class="btn btn-outline btn-sm" type="submit">Save name</button>
         </form>
-        <p class="ws-sub" style="margin-top:10px">Roles on this account (combinable):</p>
+        <p class="ws-sub" style="margin-top:10px">One account — combinable flags:</p>
         <form id="rolesForm" class="ws-tags" style="margin-top:6px">
-          <label class="ws-tag"><input type="checkbox" name="role" value="LEARNER"> LEARNER</label>
-          <label class="ws-tag"><input type="checkbox" name="role" value="BUYER"> BUYER</label>
-          <label class="ws-tag"><input type="checkbox" name="role" value="SUPPLIER"> SUPPLIER</label>
+          <label class="ws-tag"><input type="checkbox" name="role" value="LEARNER"> isLearner</label>
+          <label class="ws-tag"><input type="checkbox" name="role" value="BUYER"> isBuyer</label>
+          <label class="ws-tag"><input type="checkbox" name="role" value="SUPPLIER"> isSupplier</label>
           <button class="btn btn-outline btn-sm" type="submit">Save roles</button>
         </form>
       </div>
@@ -263,7 +263,10 @@
     </div>
 
     <div id="panel-certificates" class="hub-panel" hidden>
-      <div class="ws-sec"><h3>Certificates</h3><p class="ws-empty">TransformerPath is not an accredited certifier. Completions stay on this profile as learning records — not credentials.</p></div>
+      <div class="ws-sec"><h3>Certificates</h3>
+        <p class="ws-empty">Learning records — not accredited credentials. Open <a href="certificates.html">/certificates</a>.</p>
+        <div id="tpCertRecords"></div>
+      </div>
       <div class="ws-sec"><h3>My Books</h3><div id="tpBooks"></div></div>
       <div class="ws-sec"><h3>My Subscription</h3><div id="tpSub"></div></div>
       <div class="ws-sec"><h3>Email preferences</h3><div id="tpEmail"></div></div>
@@ -337,6 +340,10 @@ document.addEventListener('DOMContentLoaded', function(){
 
   tabIn.addEventListener('click',function(){ tabIn.classList.add('on'); tabUp.classList.remove('on'); show(si,true); show(su,false); });
   tabUp.addEventListener('click',function(){ tabUp.classList.add('on'); tabIn.classList.remove('on'); show(su,true); show(si,false); });
+  var authQ = new URLSearchParams(location.search).get('auth');
+  if (authQ === 'up') { tabUp.click(); }
+  if (authQ === 'in') { tabIn.click(); }
+  var viewQ = new URLSearchParams(location.search).get('view');
 
   si.addEventListener('submit',function(e){
     e.preventDefault();
@@ -351,8 +358,8 @@ document.addEventListener('DOMContentLoaded', function(){
     var passVal = (su.elements['pass'] ? su.elements['pass'].value : document.getElementById('suPass').value);
     var nameVal = (su.elements['name'] ? su.elements['name'].value : (document.getElementById('suName') ? document.getElementById('suName').value : '')).trim();
     TP.signUp(emailVal, passVal, {display_name: nameVal}).then(function(r){
-      if(r && r.data && r.data.session){ setMsg('',true); }
-      else { setMsg('Almost there — check your inbox to confirm your email.', true); }
+      if(r && r.data && r.data.session){ setMsg('',true); location.replace('onboarding.html'); }
+      else { setMsg('Almost there — check your inbox to confirm your email, then open /onboarding.', true); }
     }).catch(function(x){ setMsg((x&&x.message)||'Sign-up failed', false); });
   });
   document.getElementById('tpSignOut').addEventListener('click',function(){ TP.signOut(); });
@@ -378,6 +385,7 @@ document.addEventListener('DOMContentLoaded', function(){
     showHub((a.getAttribute('href')||'#overview').replace('#',''));
   });
   if(location.hash) showHub(location.hash.replace('#',''));
+  else if(viewQ === 'account') showHub('certificates');
 
   window.TP_HUB = { refresh: function(){ TP.getSession().then(function(r){ render(r && r.data && r.data.session ? r.data.session.user : (TP.user||null)); }); } };
 
@@ -432,8 +440,18 @@ document.addEventListener('DOMContentLoaded', function(){
         return;
       }
       var learner = snap.learner || {};
-      if(!learner.onboarding_done){ L.showOnboarding(user); }
-      else { var ob=document.getElementById('tpOnboard'); if(ob) ob.hidden=true; }
+      if(!(learner && learner.onboarding_done)){
+        try {
+          if(localStorage.getItem('tp-onboard') !== '1'){
+            location.replace('onboarding.html');
+            return;
+          }
+        } catch(e){
+          location.replace('onboarding.html');
+          return;
+        }
+      }
+      var ob=document.getElementById('tpOnboard'); if(ob) ob.hidden=true;
       var name = learner.public_name || (user && user.email) || '—';
       var elN=document.getElementById('idPublicName'); if(elN) elN.textContent=name;
       var elL=document.getElementById('idLevel'); if(elL) elL.textContent=learner.onboarding_experience || '—';
@@ -441,13 +459,21 @@ document.addEventListener('DOMContentLoaded', function(){
       var plan = (snap.entitlement && (snap.entitlement.plan || snap.entitlement.plan_key)) || 'free';
       var elP=document.getElementById('idPlan'); if(elP) elP.textContent=plan;
       var roles = snap.roles || ['LEARNER'];
-      var elR=document.getElementById('tpRoles'); if(elR) elR.textContent=roles.join(' · ');
+      var flags = snap.flags || {};
+      var elR=document.getElementById('tpRoles');
+      if(elR){
+        var bits=[];
+        if(flags.isLearner!==false) bits.push('Learner');
+        if(flags.isBuyer) bits.push('Buyer');
+        if(flags.isSupplier) bits.push('Supplier');
+        elR.textContent = bits.join(' · ') || roles.join(' · ');
+      }
       var boxes=document.querySelectorAll('#rolesForm input[name=role]');
       for(var i=0;i<boxes.length;i++) boxes[i].checked = roles.indexOf(boxes[i].value)>=0;
-      var tabRfqs=document.getElementById('tabRfqs');
+          var tabRfqs=document.getElementById('tabRfqs');
       var tabSup=document.getElementById('tabSupplier');
-      if(tabRfqs) tabRfqs.hidden = roles.indexOf('BUYER')<0;
-      if(tabSup) tabSup.hidden = roles.indexOf('SUPPLIER')<0;
+      if(tabRfqs) tabRfqs.hidden = !(flags.isBuyer || roles.indexOf('BUYER')>=0);
+      if(tabSup) tabSup.hidden = !(flags.isSupplier || roles.indexOf('SUPPLIER')>=0);
       var chk=[];
       chk.push(learner.onboarding_done?'<div class="ws-row"><span class="ws-note-title">Onboarding</span><span class="ws-sub">COMPLETE</span></div>':'<div class="ws-row"><span class="ws-note-title">Onboarding</span><span class="ws-sub">NOT STARTED</span></div>');
       chk.push('<div class="ws-row"><span class="ws-note-title">Grid Lab</span><span class="ws-sub"><a href="grid-lab.html">Open scenarios</a></span></div>');
@@ -472,6 +498,13 @@ document.addEventListener('DOMContentLoaded', function(){
         bits.push('Plan '+esc(plan));
         if(snap.entitlement && snap.entitlement.expires_at) bits.push('expires '+esc(String(snap.entitlement.expires_at).slice(0,10)));
         act.innerHTML='<p class="ws-sub">'+bits.join(' · ')+'</p>';
+      }
+      var cr=document.getElementById('tpCertRecords');
+      if(cr){
+        var recs=snap.certificates||[];
+        cr.innerHTML = recs.length
+          ? recs.map(function(r){ return '<div class="ws-row"><a href="certificates.html?slug='+encodeURIComponent(r.slug||'')+'">'+esc(r.title||r.slug)+'</a><span class="ws-sub">'+esc(r.how_earned||'')+'</span></div>'; }).join('')
+          : '';
       }
     });
   }

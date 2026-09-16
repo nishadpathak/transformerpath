@@ -1,8 +1,11 @@
-/* TransformerPath — account model (User → Organization → Membership →
- * Purchase → Entitlement → Plan → Expiry).
+/* TransformerPath — account model.
  *
- * Stripe is the payment processor only. Access is an account entitlement,
- * readable cross-device. Browser localStorage is a cache, never the grant.
+ * Spine: User → LearnerProfile → Org/Membership → Purchase → Entitlement
+ *      → Plan / expiresAt → PathProgress / GridLabProgress / Skills / Certificates
+ *
+ * One User; combinable flags isLearner | isBuyer | isSupplier (Learner Profile,
+ * never Student Profile). Stripe is the payment processor only. Access is an
+ * account entitlement, readable cross-device. Browser localStorage is a cache.
  * Team is organization seats — not a shared unlock link.
  *
  * APPLY_SQL is the DDL to run in the Supabase SQL editor. *.sql is gitignored
@@ -51,8 +54,15 @@ create table if not exists public.learner_profiles (
   onboarding_interest text,  -- design | grids | sourcing | operations | other
   onboarding_experience text,-- beginner | practicing | specialist
   onboarding_done boolean not null default false,
+  is_learner boolean not null default true,
+  is_buyer boolean not null default false,
+  is_supplier boolean not null default false,
   updated_at timestamptz not null default now()
 );
+alter table if exists public.learner_profiles
+  add column if not exists is_learner boolean not null default true,
+  add column if not exists is_buyer boolean not null default false,
+  add column if not exists is_supplier boolean not null default false;
 
 create table if not exists public.purchases (
   id uuid primary key default gen_random_uuid(),
@@ -94,6 +104,26 @@ create table if not exists public.skill_records (
   primary key (user_id, skill_id)
 );
 
+create table if not exists public.path_progress (
+  user_id uuid not null references auth.users(id) on delete cascade,
+  path_id text not null,
+  status text not null default 'NOT STARTED',
+  percent integer not null default 0,
+  updated_at timestamptz not null default now(),
+  primary key (user_id, path_id)
+);
+
+-- Learning records (NOT accredited credentials). Public URL /certificates/<slug>.
+create table if not exists public.certificates (
+  user_id uuid not null references auth.users(id) on delete cascade,
+  slug text not null,
+  title text not null,
+  how_earned text,
+  kind text not null default 'learning_record',
+  earned_at timestamptz not null default now(),
+  primary key (user_id, slug)
+);
+
 alter table public.organizations enable row level security;
 alter table public.memberships enable row level security;
 alter table public.account_roles enable row level security;
@@ -101,6 +131,8 @@ alter table public.learner_profiles enable row level security;
 alter table public.purchases enable row level security;
 alter table public.grid_lab_progress enable row level security;
 alter table public.skill_records enable row level security;
+alter table public.path_progress enable row level security;
+alter table public.certificates enable row level security;
 
 -- Owner-read policies (service role bypasses RLS for Stripe writes).
 do $$ begin
@@ -122,8 +154,33 @@ do $$ begin
   if not exists (select 1 from pg_policies where policyname = 'skills_own') then
     create policy skills_own on public.skill_records for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
   end if;
+  if not exists (select 1 from pg_policies where policyname = 'path_own') then
+    create policy path_own on public.path_progress for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  end if;
+  if not exists (select 1 from pg_policies where policyname = 'certs_own') then
+    create policy certs_own on public.certificates for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  end if;
 end $$;
 `;
+
+function flagsFromRoles(roles) {
+  const set = {};
+  (roles || []).forEach((r) => { set[String(r).toUpperCase()] = true; });
+  return {
+    isLearner: !!set.LEARNER || (!set.BUYER && !set.SUPPLIER),
+    isBuyer: !!set.BUYER,
+    isSupplier: !!set.SUPPLIER,
+  };
+}
+
+function rolesFromFlags(flags) {
+  const out = [];
+  if (!flags || flags.isLearner !== false) out.push('LEARNER');
+  if (flags && flags.isBuyer) out.push('BUYER');
+  if (flags && flags.isSupplier) out.push('SUPPLIER');
+  if (!out.length) out.push('LEARNER');
+  return out;
+}
 
 function normalizePlan(plan) {
   const k = String(plan || '').toLowerCase();
@@ -163,4 +220,5 @@ function hasMinPlan(entitlement, min) {
 
 module.exports = {
   ROLES, PLANS, APPLY_SQL, normalizePlan, isActiveEntitlement, bestEntitlement, hasMinPlan,
+  flagsFromRoles, rolesFromFlags,
 };

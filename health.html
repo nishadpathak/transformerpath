@@ -137,8 +137,8 @@
   <div class="dh-grid-4">
     <div class="dh-card">
       <div class="lbl">Manufacturers Census</div>
-      <div class="val" id="stat-mfg">911</div>
-      <div class="sub">Across <span id="stat-mfg-co">88</span> countries</div>
+      <div class="val" id="stat-mfg">—</div>
+      <div class="sub">Across <span id="stat-mfg-co">—</span> countries</div>
     </div>
     <div class="dh-card">
       <div class="lbl">Sourced Capabilities</div>
@@ -298,8 +298,8 @@
 <script>
 (function(){
   fetch('data/site-stats.json').then(r=>r.json()).then(s=>{
-    document.getElementById('stat-mfg').textContent = s.manufacturers || 911;
-    document.getElementById('stat-mfg-co').textContent = s.manufacturingCountries || 88;
+    document.getElementById('stat-mfg').textContent = s.manufacturers != null ? s.manufacturers : '—';
+    document.getElementById('stat-mfg-co').textContent = s.manufacturingCountries != null ? s.manufacturingCountries : '—';
     document.getElementById('stat-caps').textContent = (s.capabilities || 1962).toLocaleString();
     document.getElementById('stat-evidence').textContent = (s.sourcedDataPoints || 1877).toLocaleString();
     document.getElementById('stat-projects').textContent = ((s.projects||306) + (s.tenders||150)).toLocaleString();

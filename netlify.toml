@@ -82,6 +82,41 @@
   to = "/workspace.html"
   status = 200
 
+[[redirects]]
+  from = "/me"
+  to = "/workspace.html"
+  status = 200
+
+[[redirects]]
+  from = "/sign-in"
+  to = "/workspace.html?auth=in"
+  status = 200
+
+[[redirects]]
+  from = "/sign-up"
+  to = "/workspace.html?auth=up"
+  status = 200
+
+[[redirects]]
+  from = "/account"
+  to = "/workspace.html?view=account"
+  status = 200
+
+[[redirects]]
+  from = "/onboarding"
+  to = "/onboarding.html"
+  status = 200
+
+[[redirects]]
+  from = "/certificates"
+  to = "/certificates.html"
+  status = 200
+
+[[redirects]]
+  from = "/certificates/*"
+  to = "/certificates.html"
+  status = 200
+
 # ...but keep the stale archive/ directory (if present) from being served.
 [[redirects]]
   from = "/archive/*"
