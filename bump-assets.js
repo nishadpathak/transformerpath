@@ -41,7 +41,7 @@ for (const f of files) {
   /* Every versioned JS asset must be listed here or its ?v= never moves and
      returning visitors keep the old file. tp-nav, tp-feedback, tp-freshness and
      site-stats were shipping with a frozen ?v=1 for exactly that reason. */
-  s = s.replace(/(analytics\.js|course-gate\.js|sitemap\.js|material-latest\.js|site-stats\.js|tp-nav\.js|tp-pwa\.js|tp-freshness\.js|tp-feedback\.js)\?v=\d+/g, '$1?v=' + JS_V);
+  s = s.replace(/(analytics\.js|course-gate\.js|sitemap\.js|material-latest\.js|site-stats\.js|tp-nav\.js|tp-pwa\.js|tp-freshness\.js|tp-feedback\.js|tp-grid-lab\.js|tp-learner\.js|tp-entitlement\.js)\?v=\d+/g, '$1?v=' + JS_V);
   if (!s.includes('tp-pwa.js')) {
     s = s.replace(
       /<script src="((?:[^"]*\/)?)tp-nav\.js\?v=\d+"[^>]*><\/script>/,
