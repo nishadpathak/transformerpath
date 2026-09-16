@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up — TransformerPath</title>
+  <style>
+    :root {
+      --primary: #3da5f4;
+      --primary-dark: #0b5fa5;
+      --accent: #e8732a;
+      --text: #e8eef5;
+      --text-muted: #8fa6bc;
+      --bg-dark: #0a1624;
+      --bg-card: #0d1b2e;
+      --border: #23415e;
+      --success: #22c55e;
+      --warning: #eab308;
+      --error: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, #0a1624 0%, #0d1b2e 50%, #0a1624 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+    }
+
+    .logo-area {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 20px;
+    }
+
+    .logo svg {
+      width: 32px;
+      height: 32px;
+    }
+
+    .logo .name {
+      background: linear-gradient(90deg, #fff, #9fd4ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .logo .accent {
+      color: var(--accent);
+    }
+
+    .logo-area p {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .card {
+      background: rgba(13, 27, 46, 0.8);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 40px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-bottom: 32px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    input[type="email"],
+    input[type="text"],
+    input[type="password"],
+    input[type="tel"],
+    select {
+      width: 100%;
+      padding: 12px 16px;
+      background: rgba(23, 41, 63, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 14px;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      transition: all 0.3s;
+    }
+
+    input[type="email"]:focus,
+    input[type="text"]:focus,
+    input[type="password"]:focus,
+    input[type="tel"]:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: rgba(23, 41, 63, 0.8);
+      box-shadow: 0 0 0 3px rgba(61, 165, 244, 0.1);
+    }
+
+    input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .password-strength {
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .strength-bar {
+      height: 4px;
+      background: rgba(139, 166, 188, 0.2);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+
+    .strength-meter {
+      height: 100%;
+      width: 0%;
+      background: var(--error);
+      transition: width 0.3s, background-color 0.3s;
+      border-radius: 2px;
+    }
+
+    .strength-meter.weak {
+      width: 33%;
+      background: var(--error);
+    }
+
+    .strength-meter.fair {
+      width: 66%;
+      background: var(--warning);
+    }
+
+    .strength-meter.strong {
+      width: 100%;
+      background: var(--success);
+    }
+
+    .terms-checkbox {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      font-size: 13px;
+    }
+
+    .terms-checkbox input {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+      margin-top: 2px;
+    }
+
+    .terms-checkbox a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .terms-checkbox a:hover {
+      text-decoration: underline;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, var(--primary) 0%, #1e7fb8 100%);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-bottom: 16px;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(61, 165, 244, 0.4);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .error-message {
+      padding: 12px 16px;
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 8px;
+      color: #fca5a5;
+      font-size: 13px;
+      margin-bottom: 20px;
+      display: none;
+      animation: slideIn 0.3s ease-out;
+    }
+
+    .login-link {
+      text-align: center;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+
+    .login-link a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        padding: 32px 24px;
+      }
+
+      h1 {
+        font-size: 20px;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo-area">
+      <div class="logo">
+        <svg width="32" height="32" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="32" cy="32" r="27" fill="none" stroke="#fff" stroke-width="2"/>
+          <path d="M37 9 L23 35 L31 35 L26 55 L42 29 L34 29 L40 9 Z" fill="#f5a623"/>
+        </svg>
+        <span class="name">Trafo<span class="accent">Path</span></span>
+      </div>
+      <p>Transformer Industry Intelligence & Learning</p>
+    </div>
+
+    <div class="card">
+      <h1>Create your account</h1>
+      <p class="subtitle">Join TransformerPath and unlock premium courses, daily intelligence, and design tools</p>
+
+      <div class="error-message" id="errorMsg"></div>
+
+      <form id="registerForm" onsubmit="handleRegister(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input
+              type="text"
+              id="firstName"
+              name="firstName"
+              placeholder="John"
+              required
+            >
+          </div>
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input
+              type="text"
+              id="lastName"
+              name="lastName"
+              placeholder="Doe"
+              required
+            >
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="you@company.com"
+            required
+            autocomplete="email"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="company">Company</label>
+          <input
+            type="text"
+            id="company"
+            name="company"
+            placeholder="Your Company (optional)"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="••••••••"
+            required
+            oninput="checkPasswordStrength()"
+          >
+          <div class="password-strength">
+            <div>Strength: <span id="strengthText">Weak</span></div>
+            <div class="strength-bar">
+              <div class="strength-meter weak" id="strengthMeter"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            placeholder="••••••••"
+            required
+          >
+        </div>
+
+        <div class="terms-checkbox">
+          <input type="checkbox" id="terms" name="terms" required>
+          <span>
+            I agree to the <a href="/terms.html" target="_blank">Terms of Service</a> and
+            <a href="/privacy.html" target="_blank">Privacy Policy</a>
+          </span>
+        </div>
+
+        <button type="submit" class="btn" id="registerBtn">Create Account</button>
+      </form>
+
+      <div class="login-link">
+        Already have an account? <a href="login.html">Sign in</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_BASE = '/api';
+
+    function showError(message) {
+      const errorMsg = document.getElementById('errorMsg');
+      errorMsg.textContent = message;
+      errorMsg.style.display = 'block';
+    }
+
+    function hideError() {
+      const errorMsg = document.getElementById('errorMsg');
+      errorMsg.style.display = 'none';
+    }
+
+    function checkPasswordStrength() {
+      const password = document.getElementById('password').value;
+      const strengthMeter = document.getElementById('strengthMeter');
+      const strengthText = document.getElementById('strengthText');
+
+      let strength = 0;
+      if (password.length >= 8) strength++;
+      if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength++;
+      if (password.match(/[0-9]/)) strength++;
+      if (password.match(/[^a-zA-Z0-9]/)) strength++;
+
+      strengthMeter.classList.remove('weak', 'fair', 'strong');
+
+      if (strength <= 1) {
+        strengthMeter.classList.add('weak');
+        strengthText.textContent = 'Weak';
+      } else if (strength <= 2) {
+        strengthMeter.classList.add('fair');
+        strengthText.textContent = 'Fair';
+      } else {
+        strengthMeter.classList.add('strong');
+        strengthText.textContent = 'Strong';
+      }
+    }
+
+    async function handleRegister(event) {
+      event.preventDefault();
+      hideError();
+
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName = document.getElementById('lastName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const company = document.getElementById('company').value.trim();
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      const terms = document.getElementById('terms').checked;
+
+      // Validation
+      if (!firstName || !lastName) {
+        showError('Please enter your full name');
+        return;
+      }
+
+      if (!email) {
+        showError('Please enter your email');
+        return;
+      }
+
+      if (password.length < 8) {
+        showError('Password must be at least 8 characters');
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        showError('Passwords do not match');
+        return;
+      }
+
+      if (!terms) {
+        showError('Please accept the Terms of Service');
+        return;
+      }
+
+      const registerBtn = document.getElementById('registerBtn');
+      registerBtn.disabled = true;
+      registerBtn.textContent = 'Creating Account...';
+
+      try {
+        const response = await fetch(`${API_BASE}/auth/register`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            firstName,
+            lastName,
+            email,
+            company,
+            password
+          })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          showError(data.message || 'Registration failed. Please try again.');
+          registerBtn.disabled = false;
+          registerBtn.textContent = 'Create Account';
+          return;
+        }
+
+        // Store token
+        localStorage.setItem('tp-token', data.token);
+        localStorage.setItem('tp-user', JSON.stringify(data.user));
+
+        // Redirect to dashboard
+        window.location.href = '/dashboard.html';
+      } catch (error) {
+        showError('Network error. Please try again.');
+        console.error('Registration error:', error);
+        registerBtn.disabled = false;
+        registerBtn.textContent = 'Create Account';
+      }
+    }
+
+    // Check if already logged in
+    window.addEventListener('load', () => {
+      const token = localStorage.getItem('tp-token');
+      if (token) {
+        window.location.href = '/dashboard.html';
+      }
+    });
+  </script>
+</body>
+</html>

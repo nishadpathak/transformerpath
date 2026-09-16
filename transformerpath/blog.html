@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog — Transformer Industry Analysis | TransformerPath</title>
+<meta name="description" content="Analysis and perspective on the global transformer industry — lead times, materials, markets and the people building the grid.">
+<link rel="canonical" href="https://transformerpath.com/blog.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TransformerPath">
+<meta property="og:title" content="Blog — Transformer Industry Analysis">
+<meta property="og:description" content="Analysis and perspective on the global transformer industry — lead times, materials, markets and the people building the grid.">
+<meta property="og:url" content="https://transformerpath.com/blog.html">
+<meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
+<style>
+.legal { max-width:760px; margin:0 auto; padding:56px 20px 72px; }
+.legal h1 { color:var(--ink); font-size:2.1rem; letter-spacing:-.5px; margin-bottom:6px; }
+.legal .sub { color:var(--muted); margin-bottom:36px; font-size:.95rem; }
+.legal h2 { color:var(--ink); font-size:1.25rem; margin:32px 0 10px; }
+.legal p, .legal li { color:var(--text); font-size:.97rem; margin-bottom:12px; }
+.legal ul { padding-left:22px; margin-bottom:12px; }
+.legal a { color:var(--accent); font-weight:600; }
+</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5646978915498298" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg width="30" height="30" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span>Path</span></a>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav" onclick="var n=document.querySelector('.nav-links');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))">☰</button>
+    <nav class="nav-links" id="mainNav">
+      <a href="intel.html">Daily Intel</a>
+      <a href="events.html">Events</a>
+      <a href="webinars.html">Webinars</a>
+      <a href="manufacturers.html">Manufacturers</a>
+      <a href="learn.html">Learn</a>
+      <a href="grids.html">Grids</a>
+      <a href="resources.html">Knowledge</a>
+      <a href="blog.html" aria-current="page">Blog</a>
+      <a href="sponsor.html">Sponsor</a>
+      <a href="search.html" title="Search" aria-label="Search">🔍</a>
+      <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">🌙</button>
+    </nav>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    // Night mode is the default; light is opt-in via the toggle.
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+
+    if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
+    updateThemeIcon();
+
+    themeToggle?.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      updateThemeIcon();
+    });
+
+    function updateThemeIcon() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+    }
+  </script>
+</header>
+
+<div class="legal">
+<h1>The TransformerPath Blog</h1>
+<p class="sub">Analysis and perspective on the transformer industry — beyond the daily headlines. <a href="feed.xml">RSS feed</a></p>
+<div id="postList"></div>
+
+<script>
+/* ====== POSTS: newest first. To publish, add an entry here + the post file + a feed.xml item. ====== */
+const POSTS = [
+  { file:"article-lead-times.html", date:"2026-06-19", label:"19 June 2026",
+    title:"Why power-transformer lead times hit four years — and what buyers do about it",
+    excerpt:"Order books, CRGO supply, testing bottlenecks and the strategies real buyers use: framework agreements, slot reservations and spec flexibility.", tag:"Analysis" },
+  { file:"article-crgo-vs-amorphous.html", date:"2026-06-19", label:"19 June 2026",
+    title:"CRGO vs amorphous cores: the real trade-offs",
+    excerpt:"No-load losses, cost, noise, repairability — when an amorphous core pays for itself and when grain-oriented steel is still the right call.", tag:"Analysis" }
+];
+(function(){
+  document.getElementById('postList').innerHTML = POSTS.map(p =>
+    '<a class="post-item" href="'+p.file+'"><span class="post-tag">'+p.tag+'</span><span class="post-t">'+p.title+'</span><span class="post-x">'+p.excerpt+'</span><span class="post-d">'+p.label+' · Read →</span></a>'
+  ).join('');
+})();
+</script>
+<style>
+.post-item { display:block; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:24px 26px; margin-bottom:16px; transition:box-shadow .15s, transform .15s; }
+.post-item:hover { box-shadow:0 10px 26px rgba(13,27,46,.12); transform:translateY(-2px); }
+.post-tag { display:inline-block; font-size:.7rem; font-weight:800; text-transform:uppercase; letter-spacing:.6px; color:var(--accent); background:#fef3c7; padding:3px 10px; border-radius:999px; margin-bottom:10px; }
+.post-t { display:block; font-size:1.18rem; font-weight:800; color:var(--ink); line-height:1.3; margin-bottom:8px; }
+.post-x { display:block; color:var(--muted); font-size:.94rem; margin-bottom:10px; }
+.post-d { color:var(--accent); font-weight:700; font-size:.85rem; }
+</style>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span style="color:var(--amber)">Path</span></a>
+        <p style="margin-top:12px">The global intelligence and networking platform for transformer manufacturers, suppliers, engineers and utilities.</p>
+      </div>
+      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="vendors.html">Vendors</a><a href="learn.html">Learn</a><a href="teams.html">Corporate Training</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="sponsor.html">Sponsor</a></div>
+      <div><h4>COMPANY</h4><a href="about.html">About Us</a><a href="mailto:hello@transformerpath.com">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><h4>CONTACT</h4><a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a><a href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener">LinkedIn ↗</a></div>
+    </div>
+    <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
+</script>
+<script src="analytics.js" defer></script>
+</body>
+</html>

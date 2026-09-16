@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RFQ Board — Post Transformer Requirements | TransformerPath</title>
+<meta name="description" content="Post a request for quotation for transformers, components or services and reach manufacturers worldwide — free.">
+<link rel="canonical" href="https://transformerpath.com/rfq.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TransformerPath">
+<meta property="og:title" content="RFQ Board — Post Transformer Requirements">
+<meta property="og:description" content="Post a request for quotation for transformers, components or services and reach manufacturers worldwide — free.">
+<meta property="og:url" content="https://transformerpath.com/rfq.html">
+<meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
+<style>
+.legal { max-width:760px; margin:0 auto; padding:56px 20px 72px; }
+.legal h1 { color:var(--ink); font-size:2.1rem; letter-spacing:-.5px; margin-bottom:6px; }
+.legal .sub { color:var(--muted); margin-bottom:36px; font-size:.95rem; }
+.legal h2 { color:var(--ink); font-size:1.25rem; margin:32px 0 10px; }
+.legal p, .legal li { color:var(--text); font-size:.97rem; margin-bottom:12px; }
+.legal ul { padding-left:22px; margin-bottom:12px; }
+.legal a { color:var(--accent); font-weight:600; }
+</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5646978915498298" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg width="30" height="30" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span>Path</span></a>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav" onclick="var n=document.querySelector('.nav-links');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))">☰</button>
+    <nav class="nav-links" id="mainNav">
+      <a href="intel.html">Daily Intel</a>
+      <a href="events.html">Events</a>
+      <a href="webinars.html">Webinars</a>
+      <a href="manufacturers.html">Manufacturers</a>
+      <a href="learn.html">Learn</a>
+      <a href="grids.html">Grids</a>
+      <a href="resources.html">Knowledge</a>
+      <a href="blog.html">Blog</a>
+      <a href="sponsor.html">Sponsor</a>
+      <a href="search.html" title="Search" aria-label="Search">🔍</a>
+      <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">🌙</button>
+    </nav>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    // Night mode is the default; light is opt-in via the toggle.
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+
+    if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
+    updateThemeIcon();
+
+    themeToggle?.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      updateThemeIcon();
+    });
+
+    function updateThemeIcon() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+    }
+  </script>
+</header>
+
+<section class="block" style="padding-top:48px">
+  <div class="container" style="max-width:860px">
+    <div class="section-head" style="margin-bottom:28px">
+      <h2>RFQ Board — Buyers Meet Makers</h2>
+      <p>Post a requirement for transformers, accessories or services. We circulate it to relevant listed manufacturers and suppliers worldwide — free while in beta.</p>
+    </div>
+
+    <div id="liveRfqs"></div>
+    <script>
+    /* ====== LIVE RFQs: curated — add entries from email submissions. Newest first. ====== */
+    const RFQS = [];
+    (function(){
+      const host=document.getElementById('liveRfqs');
+      if(!RFQS.length){ host.innerHTML='<p style="text-align:center;color:var(--muted);background:var(--card);border:1px dashed var(--border);border-radius:12px;padding:22px;margin-bottom:34px">📭 No open RFQs yet — be the first to post one below. Posted RFQs appear here with buyer details kept private.</p>'; return; }
+      host.innerHTML = RFQS.map(r=>'<div class="card" style="margin-bottom:14px"><b style="color:var(--ink)">'+r.title+'</b><p style="color:var(--muted);font-size:.92rem;margin:6px 0">'+r.detail+'</p><span style="font-size:.8rem;color:var(--accent);font-weight:700">'+r.country+' · '+r.cat+' · closes '+r.close+'</span><p style="margin-top:8px"><a class="btn btn-amber" style="padding:7px 16px;font-size:.85rem" href="mailto:hello@transformerpath.com?subject=Quote for RFQ: '+encodeURIComponent(r.title)+'">Respond to this RFQ →</a></p></div>').join('');
+    })();
+    </script>
+
+    <div class="card">
+      <h3 style="color:var(--ink);margin-bottom:14px">Post your RFQ</h3>
+      <form name="rfq" method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="rfq">
+        <p style="display:none"><label>Do not fill: <input name="bot-field"></label></p>
+        <div class="row">
+          <div><label>Your Name *</label><input type="text" name="name" required placeholder="Full name"></div>
+          <div><label>Company *</label><input type="text" name="company" required placeholder="Company name"></div>
+        </div>
+        <div class="row">
+          <div><label>Email *</label><input type="email" name="email" required placeholder="you@company.com"></div>
+          <div><label>Phone / WhatsApp</label><input type="tel" name="phone" placeholder="+971 …"></div>
+        </div>
+        <div class="row">
+          <div><label>Country *</label><input type="text" name="country" required placeholder="Delivery country"></div>
+          <div><label>Category *</label>
+            <select name="category" required>
+              <option value="">Select…</option>
+              <option>Power Transformer</option><option>Distribution Transformer</option><option>Dry-Type / Cast Resin</option>
+              <option>Bushings</option><option>Tap-Changers (OLTC/DETC)</option>
+              <option>Insulation Materials</option><option>Transformer Oil & Fluids</option>
+              <option>Radiators / Cooling</option><option>Monitoring & Protection</option>
+              <option>Testing / Site Services</option><option>Other Components</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-bottom:16px"><label>Requirement Details *</label>
+          <textarea rows="5" name="details" required placeholder="Specs, quantity, standards (IEC/ANSI), delivery location, timeline…"></textarea>
+        </div>
+        <div class="row">
+          <div><label>Target Delivery</label><input type="text" name="delivery" placeholder="e.g. Q2 2027"></div>
+          <div><label>Budget (optional)</label><input type="text" name="budget" placeholder="USD / AED / EUR"></div>
+        </div>
+        <button class="btn btn-amber" type="submit" style="width:100%">Submit RFQ →</button>
+        <p style="text-align:center; color:var(--muted); font-size:.85rem; margin-top:12px">Reviewed before publication. Your contact details are never shown publicly — responses are forwarded to you.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span style="color:var(--amber)">Path</span></a>
+        <p style="margin-top:12px">The global intelligence and networking platform for transformer manufacturers, suppliers, engineers and utilities.</p>
+      </div>
+      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="vendors.html">Vendors</a><a href="learn.html">Learn</a><a href="teams.html">Corporate Training</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="sponsor.html">Sponsor</a></div>
+      <div><h4>COMPANY</h4><a href="about.html">About Us</a><a href="mailto:hello@transformerpath.com">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><h4>CONTACT</h4><a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a><a href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener">LinkedIn ↗</a></div>
+    </div>
+    <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
+</script>
+<script src="analytics.js" defer></script>
+</body>
+</html>

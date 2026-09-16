@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design Engineer Track — 3–5 Years of Transformer Design Experience, Structured | TransformerPath</title>
+<meta name="description" content="A four-level professional program that compresses the knowledge of 3–5 years as a transformer design engineer: Foundations, Distribution, Power and Specials — with graded capstone design projects, acceptance criteria and a certificate track.">
+<link rel="canonical" href="https://transformerpath.com/engineer-track.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TransformerPath">
+<meta property="og:title" content="Design Engineer Track | TransformerPath">
+<meta property="og:description" content="Four levels, ~400 guided hours, five capstone design projects — the knowledge of 3–5 years in transformer design, structured the way engineers are actually trained in industry.">
+<meta property="og:url" content="https://transformerpath.com/engineer-track.html">
+<meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<style>
+.level { background:var(--card); border:1px solid var(--border); border-radius:14px; margin-bottom:26px; overflow:hidden; }
+.level-head { display:flex; align-items:center; gap:14px; padding:20px 24px; background:linear-gradient(135deg,var(--navy),#1b3a5c); color:#fff; flex-wrap:wrap; }
+.level-no { display:inline-flex; align-items:center; justify-content:center; width:44px; height:44px; border-radius:50%; background:var(--amber); color:var(--navy); font-weight:800; font-size:1.25rem; flex-shrink:0; }
+.level-head h2 { margin:0; font-size:1.25rem; color:#fff; }
+.level-head .sub { color:#b8c4d4; font-size:.85rem; width:100%; margin:2px 0 0 58px; }
+.level-meta { margin-left:auto; text-align:right; font-size:.78rem; color:#b8c4d4; }
+.level-meta b { color:var(--amber); display:block; font-size:.95rem; }
+.level-body { padding:20px 24px; }
+.mod-row { display:flex; align-items:baseline; gap:10px; padding:9px 0; border-bottom:1px solid var(--border); font-size:.92rem; }
+.mod-row:last-child { border-bottom:0; }
+.mod-row input[type=checkbox] { transform:translateY(2px); accent-color:#f5a623; flex-shrink:0; }
+.mod-row .what { color:var(--ink); font-weight:600; }
+.mod-row .with { color:var(--muted); font-size:.84rem; }
+.mod-row .with a { color:var(--accent); font-weight:600; }
+.mod-row .hrs { margin-left:auto; color:var(--muted); font-size:.78rem; white-space:nowrap; }
+.capstone { background:#fdf7ec; border:1px solid #f0dcb4; border-left:5px solid var(--amber); border-radius:10px; padding:18px 20px; margin-top:18px; }
+.capstone h3 { color:var(--ink); font-size:1rem; margin:0 0 8px; }
+.capstone .brief { font-size:.9rem; color:#4a5568; margin:0 0 10px; }
+.capstone ul { margin:0 0 4px; padding-left:20px; font-size:.86rem; color:#4a5568; }
+.capstone ul li { margin-bottom:4px; }
+.capstone .accept { font-size:.78rem; font-weight:800; text-transform:uppercase; letter-spacing:.5px; color:var(--accent); display:block; margin:10px 0 6px; }
+.paid-chip { display:inline-block; background:var(--navy); color:var(--amber); font-size:.68rem; font-weight:800; text-transform:uppercase; letter-spacing:.5px; padding:3px 10px; border-radius:999px; margin-left:8px; vertical-align:middle; }
+.free-chip { display:inline-block; background:#e6f4ea; color:#1e7a3c; font-size:.68rem; font-weight:800; text-transform:uppercase; letter-spacing:.5px; padding:3px 10px; border-radius:999px; margin-left:8px; vertical-align:middle; }
+.how { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin:0 0 36px; }
+.how .card h3 { font-size:.98rem; }
+.progressbar { background:#e7edf3; border-radius:999px; height:10px; overflow:hidden; margin:6px 0 2px; }
+.progressbar>div { background:linear-gradient(90deg,var(--amber),#e8732a); height:100%; width:0; transition:width .4s; }
+.track-note { background:#eef4fb; border-left:4px solid #0b5fa5; border-radius:0 10px 10px 0; padding:14px 18px; font-size:.9rem; color:#33475c; margin:0 0 30px; }
+.level.locked { opacity:0.6; pointer-events:none; position:relative; }
+.level.locked::after { content:'🔒 Unlock to view'; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); background:rgba(13,27,46,.95); color:#fff; padding:20px 30px; border-radius:12px; font-weight:600; font-size:1rem; white-space:nowrap; z-index:10; }
+@media (max-width:760px){ .how { grid-template-columns:1fr; } .level-meta{ text-align:left; margin-left:58px; } .level.locked::after { font-size:.85rem; padding:14px 20px; } }
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg width="30" height="30" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span>Path</span></a>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav" onclick="var n=document.querySelector('.nav-links');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))">☰</button>
+    <nav class="nav-links" id="mainNav">
+      <a href="intel.html">Daily Intel</a>
+      <a href="events.html">Events</a>
+      <a href="webinars.html">Webinars</a>
+      <a href="manufacturers.html">Manufacturers</a>
+      <a href="learn.html">Learn</a>
+      <a href="grids.html">Grids</a>
+      <a href="resources.html">Knowledge</a>
+      <a href="blog.html">Blog</a>
+      <a href="sponsor.html">Sponsor</a>
+      <a href="search.html" title="Search" aria-label="Search">🔍</a>
+      <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">🌙</button>
+    </nav>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    // Night mode is the default; light is opt-in via the toggle.
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+
+    if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
+    updateThemeIcon();
+
+    themeToggle?.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      updateThemeIcon();
+    });
+
+    function updateThemeIcon() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+    }
+  </script>
+</header>
+
+<section class="hero" style="padding:50px 0 40px">
+  <div class="container">
+    <h1 style="font-size:2.2rem">Design Engineer <span>Track</span></h1>
+    <p>The knowledge of 3–5 years as a transformer design engineer, structured the way industry actually trains one: four levels, ~400 guided hours, and five capstone design projects graded against real acceptance criteria — from your first 1000&nbsp;kVA hand calculation to power transformers and specials.</p>
+  </div>
+</section>
+
+<section class="block">
+  <div class="container" style="max-width:900px">
+
+    <div class="how">
+      <div class="card"><span class="emoji" aria-hidden="true">📚</span><h3>Learn <span class="paid-chip">Paid</span></h3><p>Every lesson, 3D model and calculator on this track — mapped from the TransformerPath masterclass, tutorial and tools in the exact order a design office would teach them. Included with Yearly Access.</p></div>
+      <div class="card"><span class="emoji" aria-hidden="true">📐</span><h3>Design</h3><p>Each level gates on a capstone: a realistic customer specification you must design to, by hand and with the calculator, exactly like a work assignment.</p></div>
+      <div class="card"><span class="emoji" aria-hidden="true">🎓</span><h3>Get Certified <span class="paid-chip">Paid</span></h3><p>Submit your capstone for engineer review, receive the model answer and a marked-up critique, and earn the TransformerPath Design Engineer certificate per level.</p></div>
+    </div>
+
+    <div class="track-note"><b>Honest note:</b> a course compresses the <i>knowledge</i> of 3–5 years — the judgment still comes from doing. That's why every level here ends in design work, not a quiz. Pair this track with time on a factory floor and a test bay whenever you can get it.</div>
+
+    <div style="margin:0 0 26px">
+      <div style="display:flex;justify-content:space-between;font-size:.8rem;color:var(--muted)"><span>Your progress (saved on this device)</span><span id="pct">0%</span></div>
+      <div class="progressbar"><div id="bar"></div></div>
+      <div style="text-align:right;margin-top:8px;font-size:.85rem"><a href="certificate.html" style="color:var(--accent);font-weight:600">📜 Completed a level? Generate your certificate →</a></div>
+    </div>
+
+    <!-- LEVEL 1 -->
+    <div class="level" id="level1">
+      <div class="level-head">
+        <span class="level-no">1</span>
+        <h2>Foundations</h2>
+        <div class="level-meta"><b>~80 hours</b>equiv. months 1–6 on the job</div>
+        <div class="sub">The physics and vocabulary of every transformer ever built — you can't design what you can't calculate.</div>
+      </div>
+      <div class="level-body">
+        <div class="mod-row"><input type="checkbox" data-k="l1m1"><span class="what">How a transformer works</span><span class="with">— <a href="tutorial.html#fundamentals">Ch.1 Fundamentals</a> + <a href="explorer.html">3D Explorer</a></span><span class="hrs">8 h</span></div>
+        <div class="mod-row"><input type="checkbox" data-k="l1m2"><span class="what">Classification &amp; specification</span><span class="with">— <a href="tutorial.html#classification">Ch.2</a> + <a href="tutorial.html#standards">Ch.12 Standards</a></span><span class="hrs">8 h</span></div>
+        <div class="mod-row"><input type="checkbox" data-k="l1m3"><span class="what">Core design &amp; CRGO</span><span class="with">— <a href="tutorial.html#core">Ch.3</a> + <a href="coretopology.html">Core Topology 3D</a></span><span class="hrs">10 h</span></div>
+        <div class="mod-row"><input type="checkbox" data-k="l1m4"><span class="what">Windings &amp; current density</span><span class="with">— <a href="tutorial.html#windings">Ch.4</a> + <a href="coilassembly.html">Coil Assembly 3D</a></span><span class="hrs">10 h</span></div>
+        <div class="mod-row"><input type="checkbox" data-k="l1m5"><span class="what">Insulation system</span><span class="with">— <a href="tutorial.html#insulation">Ch.5</a></span><span class="hrs">8 h</span></div>
+        <div class="mod-row"><input type="checkbox" data-k="l1m6"><span class="what">Cooling &amp; temperature rise</span><span class="with">— <a href="tutorial.html#cooling">Ch.6</a></span><span class="hrs">6 h</span></div>
+        <div class="mod-row"><input type="checkbox" data-k="l1m7"><span class="what">Losses, impedance &amp; efficiency</span><span class="with">— <a href="tutorial.html#losses">Ch.10</a></span><span class="hrs">8 h</span></div>
+        <div class="mod-row"><input type="checkbox" data-k="l1m8"><span class="what">Tank &amp; accessories</span><span class="with">— <a href="tutorial.html#construction">Ch.7</a> + <a href="construction-guide.html">Construction Guide</a></span><span class="hrs">8 h</span></div>
+        <div class="capstone">
+          <h3>🏁 Capstone F — Your first complete design <span class="paid-chip">Review &amp; certificate paid</span></h3>
+          <p class="brief"><b>Spec:</b> 1000 kVA, 11/0.433 kV, Dyn11, ONAN, 50 Hz, Z = 5%, IEC 60076, outdoor 50°C ambient. Design it entirely by hand — core area and flux density, turns, conductor sizes, winding arrangement, window check — then verify against the <a href="calculator.html">design calculator</a> and explain every deviation over 5%.</p>
+          <span class="accept">Acceptance criteria</span>
+          <ul>
+            <li>EMF equation applied correctly; V/turn justified against the 0.4–0.5·√kVA rule.</li>
+            <li>Flux density 1.55–1.70 T with the chosen CRGO grade named and its loss curve cited.</li>
+            <li>Current density within 2.5–3.5 A/mm² (Cu) and window space factor demonstrated ≥ fit.</li>
+            <li>Estimated no-load and load losses within IEC tolerance of the calculator result.</li>
+            <li>One page explaining what you would change if the customer capitalized losses at $5,000/kW.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAYWALL: Levels 2-4 locked -->
+    <div class="paywall-notice" id="paywall" style="background:linear-gradient(135deg,#f5a623,#e8732a);color:#0d1b2e;border-radius:14px;padding:30px 26px;margin:30px 0;text-align:center;display:none">
+      <h2 style="margin:0 0 8px;font-size:1.4rem">Unlock Levels 2–4 + Capstone Reviews</h2>
+      <p style="margin:0 0 18px;font-size:.95rem;opacity:.9">Distribution, Power Transformer, Specials — plus engineer-reviewed capstone grading, model answers, and certificates.</p>
+      <a class="btn" href="https://buy.stripe.com/5kQ00c3pS8tv9g4fdMfYY00" target="_blank" rel="noopener" style="background:#0d1b2e;color:#f5a623;font-weight:800;padding:14px 32px;display:inline-block;border-radius:10px;text-decoration:none">Yearly Access — $199 →</a>
+      <p style="margin:14px 0 0;font-size:.78rem;opacity:.8">One-time payment. Access for 12 months.</p>
+    </div>
+
+    <!-- LEVEL 2 -->
+    <div class="level" id="level2" data-paid="true">
+      <div class="level-head">
+        <span class="level-no">2</span>
+        <h2>Distribution Transformer Designer</h2>
+        <div class="level-meta"><b>~120 hours</b>equiv. months 6–18 on the job</div>
+        <div class="sub">Fast, cheap iterations — where every designer earns their instincts. Oil-immersed and cast resin, plus the commercial reality of tenders.</div>
+      </div>
+      <div class="level-body">
+        <div class="mod-row"><input type="checkbox" data-k="l2m1"><span class="what">The worked design method</span><span class="with">— <a href="tutorial.html#design">Ch.9 Worked Example</a>, reproduce it independently</span><span class="hrs">12 h</span></div>
+        <div class="mod-row"><input type="checkbox" data-k="l2m2"><span class="what">Calculator mastery — all three modes</span><span class="with">— <a href="calculator.html">TX Calculator</a>: distribution / power / cast resin</span><span class="hrs">10 h</span></div>
+        <div class="mod-row"><input type="checkbox" data-k="l2m3"><span class="what">Dry-type &amp; cast resin design</span><span class="with">— <a href="tutorial.html#drytype">Ch.8</a></span><span class="hrs">10 h</span></div>
+        <div class="mod-row"><input type="checkbox" data-k="l2m4"><span class="what">Vector groups &amp; paralleling</span><span class="with">— <a href="tutorial.html#vectorgroups">Ch.13</a></span><span class="hrs">6 h</span></div>
+        <div class="mod-row"><input type="checkbox" data-k="l2m5"><span class="what">Testing — routine, type, special</span><span class="with">— <a href="tutorial.html#testing">Ch.11</a></span><span class="hrs">10 h</span></div>
+        <div class="mod-row"><input type="checkbox" data-k="l2m6"><span class="what">Country grids &amp; standards adaptation</span><span class="with">— <a href="country-designer.html">Country-Based Designer</a>, 5 countries</span><span class="hrs">8 h</span></div>
+        <div class="mod-row"><input type="checkbox" data-k="l2m7"><span class="what">Procurement &amp; tendering</span><span class="with">— <a href="tutorial.html#procurement">Ch.18</a></span><span class="hrs">8 h</span></div>
+        <div class="capstone">
+          <h3>🏁 Capstone D — Three designs, one tender <span class="paid-chip">Review &amp; certificate paid</span></h3>
+          <p class="brief">Three graded assignments simulating a year of design-office work:</p>
+          <ul>
+            <li><b>D1:</b> 250 kVA, 33/0.415 kV rural unit — optimize twice: once for lowest first cost, once with losses capitalized ($4,000/kW no-load, $1,200/kW load). Quantify the design shift.</li>
+            <li><b>D2:</b> 1600 kVA cast-resin, 11/0.4 kV for an urban high-rise basement — thermal class F, 45 °C ambient derating, PD considerations, dimensions to fit a 3.5 m substation room.</li>
+            <li><b>D3:</b> Tender response — a realistic utility spec with three deliberate traps (impossible loss/impedance combination, non-standard tapping range, contradictory cooling clause). Produce a compliant offer with a deviation schedule catching all three.</li>
+          </ul>
+          <span class="accept">Acceptance criteria</span>
+          <ul>
+            <li>All guaranteed figures within IEC 60076-1 tolerances and mutually consistent.</li>
+            <li>D1 shows ≥ one deliberate flux-density/current-density trade-off with cost math.</li>
+            <li>D3 identifies all three spec traps — missing any one fails the capstone (as it would in real life).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEVEL 3 -->
+    <div class="level" id="level3" data-paid="true">
+      <div class="level-head">
+        <span class="level-no">3</span>
+        <h2>Power Transformer Designer</h2>
+        <div class="level-meta"><b>~120 hours</b>equiv. years 2–3 on the job</div>
+        <div class="sub">New physics enters: short-circuit forces, impulse voltage distribution, hot-spot control, OLTC integration. This is where designers are made.</div>
+      </div>
+      <div class="level-body">
+        <div class="mod-row"><input type="checkbox" data-k="l3m1"><span class="what">Anatomy of a power transformer</span><span class="with">— <a href="power3d.html">100 MVA 3D</a> + <a href="power500.html">500 MVA 3D</a></span><span class="hrs">10 h</span></div>
+        <div class="mod-row"><input type="checkbox" data-k="l3m2"><span class="what">On-load tap-changers</span><span class="with">— <a href="oltc.html">OLTC 3D Cutaway</a></span><span class="hrs">8 h</span></div>
+        <div class="mod-row"><input type="checkbox" data-k="l3m3"><span class="what">Bushings &amp; insulation coordination</span><span class="with">— <a href="bushing.html">Condenser Bushing 3D</a></span><span class="hrs">8 h</span></div>
+        <div class="mod-row"><input type="checkbox" data-k="l3m4"><span class="what">Inrush &amp; energization</span><span class="with">— <a href="tutorial.html#inrush">Ch.14</a></span><span class="hrs">6 h</span></div>
+        <div class="mod-row"><input type="checkbox" data-k="l3m5"><span class="what">Protection — differential, REF, Buchholz</span><span class="with">— <a href="tutorial.html#protection">Ch.17</a></span><span class="hrs">10 h</span></div>
+        <div class="mod-row"><input type="checkbox" data-k="l3m6"><span class="what">Short-circuit withstand &amp; forces</span><span class="with">— study notes + IEC 60076-5 <i>(guided reading; numerical methods in review pack)</i></span><span class="hrs">14 h</span></div>
+        <div class="mod-row"><input type="checkbox" data-k="l3m7"><span class="what">Impulse voltage distribution</span><span class="with">— study notes + IEC 60076-3/-4 <i>(guided reading; α-factor method in review pack)</i></span><span class="hrs">12 h</span></div>
+        <div class="mod-row"><input type="checkbox" data-k="l3m8"><span class="what">Engineering data lab</span><span class="with">— <a href="masterclass.html#datalab">Masterclass Data Lab</a></span><span class="hrs">8 h</span></div>
+        <div class="capstone">
+          <h3>🏁 Capstone P — 63 MVA grid transformer <span class="paid-chip">Review &amp; certificate paid</span></h3>
+          <p class="brief"><b>Spec:</b> 63 MVA, 132/33 kV, YNd11, ONAN/ONAF 60/100%, Z = 12.5% at principal tap, OLTC ±10% in 17 steps on HV neutral end, LI 550/AC 230 kV, IEC 60076 family. Deliverables: full electrical sizing, cooling stage calculation, simplified radial/axial short-circuit force estimate, complete FAT test plan with pass criteria.</p>
+          <span class="accept">Acceptance criteria</span>
+          <ul>
+            <li>Impedance within guarantee tolerance across the full tap range, shown at three taps.</li>
+            <li>ONAN and ONAF ratings both verified thermally; hot-spot gradient stated per IEC 60076-2.</li>
+            <li>Force estimate uses the correct asymmetry factor and names the failure mode each force drives.</li>
+            <li>Test plan sequences dielectric tests correctly (a wrong order fails — as it would on a real test floor).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEVEL 4 -->
+    <div class="level" id="level4" data-paid="true">
+      <div class="level-head">
+        <span class="level-no">4</span>
+        <h2>Specials &amp; Mastery</h2>
+        <div class="level-meta"><b>~80 hours</b>equiv. years 3–5 on the job</div>
+        <div class="sub">Every special type is a variation on discipline you now own — plus the judgment layer: failures, service, and lifetime economics.</div>
+      </div>
+      <div class="level-body">
+        <div class="mod-row"><input type="checkbox" data-k="l4m1"><span class="what">Special types — autos, converter, furnace, earthing</span><span class="with">— <a href="tutorial.html#special">Ch.15</a> + study briefs</span><span class="hrs">16 h</span></div>
+        <div class="mod-row"><input type="checkbox" data-k="l4m2"><span class="what">Site, commissioning &amp; life management</span><span class="with">— <a href="tutorial.html#sitelife">Ch.16</a></span><span class="hrs">10 h</span></div>
+        <div class="mod-row"><input type="checkbox" data-k="l4m3"><span class="what">After-sales, spares &amp; field service</span><span class="with">— <a href="tutorial.html#aftersales">Ch.20</a></span><span class="hrs">8 h</span></div>
+        <div class="mod-row"><input type="checkbox" data-k="l4m4"><span class="what">Full-course self-test</span><span class="with">— <a href="tutorial.html#glossary">Ch.19 Glossary &amp; Test</a></span><span class="hrs">6 h</span></div>
+        <div class="capstone">
+          <h3>🏁 Capstone S — Specials portfolio <span class="paid-chip">Review &amp; certificate paid</span></h3>
+          <p class="brief">Choose two of three, plus the mandatory failure investigation:</p>
+          <ul>
+            <li><b>S1:</b> 40 MVA autotransformer 220/132/11 kV — co-ratio benefit calculation, tertiary sizing, and why the impedance behaves differently.</li>
+            <li><b>S2:</b> 12-pulse rectifier transformer for a 25 kA electrolysis line — phase shifting, harmonic duty, and eddy-loss derating.</li>
+            <li><b>S3:</b> Furnace transformer, 30 MVA with 200% overload cycles — thermal design for cyclic duty and on-load voltage regulation strategy.</li>
+            <li><b>Mandatory:</b> a written failure investigation of a supplied case (test report + oil analysis + winding resistance data) — identify the root cause and the design or process change that prevents recurrence.</li>
+          </ul>
+          <span class="accept">Acceptance criteria</span>
+          <ul>
+            <li>Each design identifies what changes vs a standard two-winding unit and why — not just the numbers.</li>
+            <li>Failure investigation reaches the seeded root cause with evidence chain, not guesswork.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="featured" style="background:linear-gradient(135deg,#0d1b2e,#1b3a5c);color:#fff;border-radius:14px;padding:24px 26px;margin-top:6px">
+      <span style="display:inline-block;background:#f5a623;color:#0d1b2e;font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.6px;padding:3px 10px;border-radius:999px;margin-bottom:10px">Unlock Levels 2–4</span>
+      <h3 style="margin:0 0 6px;font-size:1.2rem">Capstone review, model answers &amp; certificates</h3>
+      <p style="color:#b8c4d4;font-size:.92rem;margin:0 0 14px">Level 1 (Foundations) is free forever. The paid tier ($199/year) unlocks Levels 2–4 plus engineer-reviewed capstone grading with detailed critiques, full model answers for every project, the Level-3 review pack, and verifiable TransformerPath Design Engineer certificates.</p>
+      <a class="btn btn-amber" href="https://buy.stripe.com/5kQ00c3pS8tv9g4fdMfYY00" target="_blank" rel="noopener">Yearly Access — $199 →</a>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span style="color:var(--amber)">Path</span></a>
+        <p style="margin-top:12px">The global intelligence and networking platform for transformer manufacturers, suppliers, engineers and utilities.</p>
+      </div>
+      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="vendors.html">Vendors</a><a href="learn.html">Learn</a><a href="teams.html">Corporate Training</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="sponsor.html">Sponsor</a></div>
+      <div><h4>COMPANY</h4><a href="about.html">About Us</a><a href="mailto:hello@transformerpath.com">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><h4>CONTACT</h4><a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a><a href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener">LinkedIn ↗</a></div>
+    </div>
+    <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var boxes = document.querySelectorAll('.mod-row input[type=checkbox]');
+  var KEY = 'tp-track-progress';
+  var state = {};
+  try { state = JSON.parse(localStorage.getItem(KEY) || '{}'); } catch(e) {}
+  function paint(){
+    var done = 0;
+    boxes.forEach(function(b){ if(b.checked) done++; });
+    var pct = Math.round(100 * done / boxes.length);
+    document.getElementById('bar').style.width = pct + '%';
+    document.getElementById('pct').textContent = pct + '%';
+  }
+  boxes.forEach(function(b){
+    b.checked = !!state[b.dataset.k];
+    b.addEventListener('change', function(){
+      state[b.dataset.k] = b.checked;
+      try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e) {}
+      paint();
+    });
+  });
+  paint();
+})();
+</script>
+
+<script>
+(function(){
+  var PAID_KEY = 'tp-course-access';
+  var CREATOR_KEY = 'tp-creator-unlock-2024'; // Master key for course creator
+  var STRIPE_RETURN = new URLSearchParams(window.location.search).get('session_id');
+  var URL_KEY = new URLSearchParams(window.location.search).get('key');
+
+  function checkAccess(){
+    var now = new Date().getTime();
+    try {
+      var access = JSON.parse(localStorage.getItem(PAID_KEY) || '{}');
+      // Check if access is still valid (expires after 12 months)
+      if(access.expiry && access.expiry > now) return true;
+    } catch(e) {}
+    return false;
+  }
+
+  function checkCreatorKey(){
+    // Check if URL has the master key
+    if(URL_KEY && URL_KEY === CREATOR_KEY){
+      grantAccess();
+      return true;
+    }
+    return false;
+  }
+
+  function grantAccess(){
+    var expiry = new Date().getTime() + (365 * 24 * 60 * 60 * 1000); // 12 months
+    try {
+      localStorage.setItem(PAID_KEY, JSON.stringify({expiry: expiry, paid_at: new Date().toISOString(), isCreator: true}));
+    } catch(e) {}
+    location.href = location.pathname; // reload without query params
+  }
+
+  function lockLevels(){
+    var levels = document.querySelectorAll('[data-paid="true"]');
+    levels.forEach(function(el){ el.classList.add('locked'); });
+    var paywall = document.getElementById('paywall');
+    if(paywall) paywall.style.display = 'block';
+  }
+
+  // Check for creator key first
+  if(checkCreatorKey()){
+    return;
+  }
+
+  // If returning from Stripe, grant access
+  if(STRIPE_RETURN){
+    grantAccess();
+  }
+
+  // Check access on load
+  if(!checkAccess()){
+    lockLevels();
+  }
+})();
+</script>
+
+<script defer src="analytics.js"></script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact — TransformerPath</title>
+<meta name="description" content="Contact TransformerPath — questions, corrections, listings, sponsorships and partnerships.">
+<link rel="canonical" href="https://transformerpath.com/contact.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TransformerPath">
+<meta property="og:title" content="Contact — TransformerPath">
+<meta property="og:description" content="Contact TransformerPath — questions, corrections, listings, sponsorships and partnerships.">
+<meta property="og:url" content="https://transformerpath.com/contact.html">
+<meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="TransformerPath">
+<style>.legal-body h2{color:var(--ink);font-size:1.15rem;margin:26px 0 8px} .legal-body p,.legal-body li{color:var(--text);font-size:.94rem;line-height:1.6} .legal-body ul{margin:6px 0 6px 20px} .legal-body a{color:var(--accent);font-weight:600} .legal-body .muted{color:var(--muted);font-size:.85rem}</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5646978915498298" crossorigin="anonymous"></script>
+</head>
+<body>
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg width="30" height="30" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span>Path</span></a>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav" onclick="var n=document.querySelector('.nav-links');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))">☰</button>
+    <nav class="nav-links" id="mainNav">
+      <a href="intel.html">Daily Intel</a>
+      <a href="events.html">Events</a>
+      <a href="webinars.html">Webinars</a>
+      <a href="manufacturers.html">Manufacturers</a>
+      <a href="learn.html">Learn</a>
+      <a href="grids.html">Grids</a>
+      <a href="resources.html">Knowledge</a>
+      <a href="blog.html">Blog</a>
+      <a href="sponsor.html">Sponsor</a>
+      <a href="search.html" title="Search" aria-label="Search">🔍</a>
+      <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">🌙</button>
+    </nav>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    // Night mode is the default; light is opt-in via the toggle.
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+
+    if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
+    updateThemeIcon();
+
+    themeToggle?.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      updateThemeIcon();
+    });
+
+    function updateThemeIcon() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+    }
+  </script>
+</header><section class="hero" style="padding:48px 0 34px"><div class="container" style="max-width:840px"><h1 style="font-size:2.1rem">Contact <span>TransformerPath</span></h1><p>We read every message. Tell us what you need.</p></div></section><section class="block"><div class="container legal-body" style="max-width:840px"><p>Whether it is a correction to a listing, a Verified/Pro application, a sponsorship enquiry, or a partnership idea — send it here and we will reply by email.</p>
+ <form name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" id="cForm" style="margin-top:18px;max-width:560px">
+   <input type="hidden" name="form-name" value="contact"><p hidden><label>Leave empty: <input name="bot-field"></label></p>
+   <div class="row"><div><label>Name *</label><input type="text" name="name" required></div><div><label>Email *</label><input type="email" name="email" required></div></div>
+   <div style="margin:6px 0"><label>Topic</label><select name="topic"><option>General enquiry</option><option>Correct / update a listing</option><option>Verified / Pro application</option><option>Sponsorship / advertising</option><option>Partnership</option><option>Press</option></select></div>
+   <div style="margin-bottom:14px"><label>Message *</label><textarea name="message" rows="5" required></textarea></div>
+   <button class="btn btn-amber" type="submit" style="width:100%">Send message →</button>
+ </form>
+ <div id="cThanks" style="display:none;text-align:center;padding:22px"><div style="font-size:2.2rem">✅</div><h2>Thanks — message received</h2><p class="muted">We will reply by email shortly.</p></div>
+ <p class="muted" style="margin-top:16px">Prefer email? Reach us at <b>hello@transformerpath.com</b>. This form activates once the site is live on its host.</p>
+ <script>(function(){var f=document.getElementById('cForm');if(!f)return;f.addEventListener('submit',function(e){e.preventDefault();if(!f.checkValidity()){f.reportValidity();return;}fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(f)).toString()}).then(d).catch(d);function d(){f.style.display='none';document.getElementById('cThanks').style.display='block';}});})();</script></div></section><footer>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span style="color:var(--amber)">Path</span></a>
+        <p style="margin-top:12px">The global intelligence and networking platform for transformer manufacturers, suppliers, engineers and utilities.</p>
+      </div>
+      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="vendors.html">Vendors</a><a href="learn.html">Learn</a><a href="teams.html">Corporate Training</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="sponsor.html">Sponsor</a></div>
+      <div><h4>COMPANY</h4><a href="about.html">About Us</a><a href="mailto:hello@transformerpath.com">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><h4>CONTACT</h4><a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a><a href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener">LinkedIn ↗</a></div>
+    </div>
+    <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
+  </div>
+</footer>
+</body>
+</html>

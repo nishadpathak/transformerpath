@@ -1,0 +1,83 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: transformerpath-db
+    environment:
+      POSTGRES_DB: transformerpath
+      POSTGRES_USER: app_user
+      POSTGRES_PASSWORD: secure_password_here
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database-schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app_user -d transformerpath"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - transformerpath-network
+
+  # Node.js Backend API
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: transformerpath-api
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: postgresql://app_user:secure_password_here@postgres:5432/transformerpath
+      JWT_SECRET: your_jwt_secret_key_change_this
+      STRIPE_SECRET_KEY: sk_live_your_stripe_key
+      STRIPE_PUBLISHABLE_KEY: pk_live_your_stripe_key
+      SENDGRID_API_KEY: your_sendgrid_key
+      PORT: 3001
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    networks:
+      - transformerpath-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Nginx Reverse Proxy & Frontend
+  nginx:
+    image: nginx:alpine
+    container_name: transformerpath-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    depends_on:
+      - backend
+    networks:
+      - transformerpath-network
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  transformerpath-network:
+    driver: bridge

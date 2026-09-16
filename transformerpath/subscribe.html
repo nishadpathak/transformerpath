@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Brief — TransformerPath</title>
+<meta name="description" content="Subscribe to TransformerPath's daily transformer industry briefing. Market intelligence, tenders, grid updates, and equipment news delivered daily.">
+<link rel="canonical" href="https://transformerpath.com/subscribe.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TransformerPath">
+<meta property="og:title" content="Daily Brief — TransformerPath">
+<meta property="og:description" content="Subscribe to daily transformer industry market intelligence and updates.">
+<meta property="og:url" content="https://transformerpath.com/subscribe.html">
+<meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
+<style>
+.form-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 40px; max-width: 500px; margin: 40px auto; }
+.form-card h2 { margin: 0 0 12px; font-size: 1.5rem; }
+.form-card .desc { color: var(--muted); margin-bottom: 24px; font-size: 0.95rem; }
+.form-group { margin-bottom: 16px; }
+.form-group label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 0.9rem; }
+.form-group input { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; font-family: inherit; }
+.form-group input:focus { outline: none; border-color: var(--amber); box-shadow: 0 0 0 3px rgba(245,166,35,0.1); }
+.form-group select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; font-family: inherit; }
+.submit-btn { width: 100%; padding: 12px 16px; background: var(--amber); color:var(--navy); border: none; border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.2s; }
+.submit-btn:hover { background: var(--amber-dark); }
+.form-card .notice { font-size: 0.85rem; color: var(--muted); margin-top: 20px; }
+.success-msg { display: none; background: #dcfce7; border: 1px solid #86efac; color: #15803d; padding: 16px; border-radius: 8px; margin-top: 16px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg width="30" height="30" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span>Path</span></a>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav" onclick="var n=document.querySelector('.nav-links');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))">☰</button>
+    <nav class="nav-links" id="mainNav">
+      <a href="intel.html">Daily Intel</a>
+      <a href="events.html">Events</a>
+      <a href="webinars.html">Webinars</a>
+      <a href="manufacturers.html">Manufacturers</a>
+      <a href="learn.html">Learn</a>
+      <a href="grids.html">Grids</a>
+      <a href="resources.html">Knowledge</a>
+      <a href="blog.html">Blog</a>
+      <a href="sponsor.html">Sponsor</a>
+      <a href="search.html" title="Search" aria-label="Search">🔍</a>
+      <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">🌙</button>
+    </nav>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    // Night mode is the default; light is opt-in via the toggle.
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+
+    if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
+    updateThemeIcon();
+
+    themeToggle?.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      updateThemeIcon();
+    });
+
+    function updateThemeIcon() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+    }
+  </script>
+</header>
+
+<section class="hero" style="padding:50px 0 40px">
+  <div class="container">
+    <h1 style="font-size:2.2rem">Daily <span>Brief</span></h1>
+    <p>Transformer industry market intelligence delivered to your inbox every morning.</p>
+  </div>
+</section>
+
+<section class="block">
+  <div class="container">
+    <div class="form-card">
+      <h2>Subscribe to Daily Brief</h2>
+      <p class="desc">Get daily market intelligence, tenders, grid updates, and equipment news from the global transformer industry. No spam, one email per day.</p>
+
+      <form name="subscribe" method="POST" netlify>
+        <div class="form-group">
+          <label for="email">Email Address *</label>
+          <input type="email" id="email" name="email" required placeholder="you@company.com">
+        </div>
+
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" placeholder="Your name">
+        </div>
+
+        <div class="form-group">
+          <label for="company">Company</label>
+          <input type="text" id="company" name="company" placeholder="Your company">
+        </div>
+
+        <div class="form-group">
+          <label for="interest">Interest Area</label>
+          <select id="interest" name="interest">
+            <option value="">Select an area...</option>
+            <option value="Manufacturing">Manufacturing & OEMs</option>
+            <option value="Utilities">Utilities & Grid</option>
+            <option value="EPC">EPC & Engineering</option>
+            <option value="Supply">Supply Chain & Materials</option>
+            <option value="Market">Market Intelligence</option>
+            <option value="Events">Events & Webinars</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <button type="submit" class="submit-btn">Subscribe to Daily Brief</button>
+
+        <p class="notice">✓ We respect your inbox. Unsubscribe anytime. Your data is private.</p>
+
+        <div class="success-msg" id="success">
+          ✓ Thank you! Check your email to confirm your subscription.
+        </div>
+      </form>
+    </div>
+
+    <div style="text-align: center; margin-top: 60px; color: var(--muted);">
+      <p><strong>What you'll receive:</strong></p>
+      <p style="max-width: 600px; margin: 16px auto;">Each morning: Market news by region • Tender announcements • Grid infrastructure updates • Equipment pricing • Industry events • Technology watch • Curated for transformers, substations, and grid equipment</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span style="color:var(--amber)">Path</span></a>
+        <p style="margin-top:12px">The global intelligence and networking platform for transformer manufacturers, suppliers, engineers and utilities.</p>
+      </div>
+      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="vendors.html">Vendors</a><a href="learn.html">Learn</a><a href="teams.html">Corporate Training</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="sponsor.html">Sponsor</a></div>
+      <div><h4>COMPANY</h4><a href="about.html">About Us</a><a href="mailto:hello@transformerpath.com">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><h4>CONTACT</h4><a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a><a href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener">LinkedIn ↗</a></div>
+    </div>
+    <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
+  </div>
+</footer>
+
+<script defer src="analytics.js"></script>
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Search — TransformerPath</title>
+<meta name="description" content="Search everything on TransformerPath — daily intel, events, webinars, 500+ manufacturers, world grids and blog posts.">
+<link rel="canonical" href="https://transformerpath.com/search.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TransformerPath">
+<meta property="og:title" content="Search — TransformerPath">
+<meta property="og:description" content="Search the entire TransformerPath platform.">
+<meta property="og:url" content="https://transformerpath.com/search.html">
+<meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
+<style>
+.legal { max-width:760px; margin:0 auto; padding:56px 20px 72px; }
+.legal h1 { color:var(--ink); font-size:2.1rem; letter-spacing:-.5px; margin-bottom:6px; }
+.legal .sub { color:var(--muted); margin-bottom:36px; font-size:.95rem; }
+.legal h2 { color:var(--ink); font-size:1.25rem; margin:32px 0 10px; }
+.legal p, .legal li { color:var(--text); font-size:.97rem; margin-bottom:12px; }
+.legal ul { padding-left:22px; margin-bottom:12px; }
+.legal a { color:var(--accent); font-weight:600; }
+</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5646978915498298" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg width="30" height="30" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span>Path</span></a>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav" onclick="var n=document.querySelector('.nav-links');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))">☰</button>
+    <nav class="nav-links" id="mainNav">
+      <a href="intel.html">Daily Intel</a>
+      <a href="events.html">Events</a>
+      <a href="webinars.html">Webinars</a>
+      <a href="manufacturers.html">Manufacturers</a>
+      <a href="learn.html">Learn</a>
+      <a href="grids.html">Grids</a>
+      <a href="resources.html">Knowledge</a>
+      <a href="blog.html">Blog</a>
+      <a href="sponsor.html">Sponsor</a>
+      <a href="search.html" title="Search" aria-label="Search">🔍</a>
+      <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">🌙</button>
+    </nav>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    // Night mode is the default; light is opt-in via the toggle.
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+
+    if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
+    updateThemeIcon();
+
+    themeToggle?.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      updateThemeIcon();
+    });
+
+    function updateThemeIcon() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+    }
+  </script>
+</header>
+
+<div class="legal" style="max-width:820px">
+<h1>Search TransformerPath</h1>
+<p class="sub">One box for everything — news, events, webinars, manufacturers, grids and articles.</p>
+
+<div style="display:flex;gap:10px;margin-bottom:14px">
+  <input id="q" type="search" placeholder="Try: Hitachi, Saudi tender, CIGRE, cast resin, Türkiye…" style="flex:1;padding:14px 18px;border:2px solid var(--border);border-radius:10px;font-size:1.05rem;font-family:inherit" autofocus>
+</div>
+<div class="filters" id="srcFilters" style="justify-content:flex-start"></div>
+<p id="status" style="color:var(--muted);font-size:.9rem;margin-bottom:18px"></p>
+<div id="results"></div>
+
+<script>
+(function(){
+  const SOURCES = {
+    intel:   { label:"📰 Intel",         on:true },
+    events:  { label:"📅 Events",        on:true },
+    webinars:{ label:"🎥 Webinars",      on:true },
+    makers:  { label:"🏭 Manufacturers", on:true },
+    grids:   { label:"🌐 Grids",         on:true },
+    blog:    { label:"✍️ Blog",          on:true }
+  };
+  let INDEX = null, loading = false;
+
+  function grab(txt, name){
+    const m = txt.match(new RegExp('const '+name+' = ([\\[{][\\s\\S]*?[\\]}]);\\s*\\n'));
+    if(!m) return null;
+    try { return (new Function('return '+m[1]))(); } catch(e){ return null; }
+  }
+
+  function buildIndex(){
+    if(INDEX || loading) return Promise.resolve(INDEX);
+    loading = true;
+    document.getElementById('status').textContent = 'Loading the live index…';
+    const get = f => fetch(f,{cache:'no-cache'}).then(r=>r.text()).catch(()=>'');
+    return Promise.all([get('intel.html'),get('events.html'),get('webinars.html'),get('manufacturers.html'),get('grids.html'),get('blog.html')]).then(([ti,te,tw,tm,tg,tb])=>{
+      const ix = [];
+      const NEWS = grab(ti,'NEWS');
+      if(NEWS) Object.keys(NEWS).forEach(rk=> (NEWS[rk].items||[]).forEach(it=>
+        ix.push({s:'intel', t:it.title, x:(it.snippet||'')+' '+(it.value||''), href:'intel.html', tag:rk})));
+      const EVENTS = grab(te,'EVENTS');
+      if(EVENTS) EVENTS.forEach(e=> ix.push({s:'events', t:e.n, x:[e.c,e.co,e.r,e.v,e.d,e.s].join(' '), href:'events.html', tag:(e.s||'').slice(0,7)}));
+      const WEBINARS = grab(tw,'WEBINARS');
+      if(WEBINARS) WEBINARS.forEach(w=> ix.push({s:'webinars', t:w.n, x:[w.d,w.r,w.fmt,(w.lang||[]).join(' ')].join(' '), href:'webinars.html', tag:w.t}));
+      const MAKERS = grab(tm,'DATA');
+      if(MAKERS && MAKERS[0] && MAKERS[0].makers) MAKERS.forEach(c=> (c.makers||[]).forEach(mk=>
+        ix.push({s:'makers', t:mk[0], x:[mk[1],c.country,c.region,mk[3]].join(' '), href:'manufacturers.html', tag:c.country})));
+      const GRIDS = grab(tg,'DATA');
+      if(GRIDS && GRIDS[0] && GRIDS[0].grids) GRIDS.forEach(c=>{
+        const names = (c.grids||[]).map(g=> typeof g==='object' ? Object.values(g).filter(v=>typeof v==='string').join(' ') : String(g)).join(' ');
+        ix.push({s:'grids', t:c.country+' — grid & operators', x:[names,c.region,c.freq+' Hz',c.sync].join(' '), href:'grids.html', tag:(c.freq||'')+' Hz'});
+      });
+      const POSTS = grab(tb,'POSTS');
+      if(POSTS) POSTS.forEach(p=> ix.push({s:'blog', t:p.title, x:p.excerpt||'', href:p.file, tag:p.label}));
+      INDEX = ix; loading = false;
+      document.getElementById('status').textContent = ix.length + ' items indexed, live from today’s site.';
+      return ix;
+    });
+  }
+
+  const fh = document.getElementById('srcFilters');
+  Object.keys(SOURCES).forEach(k=>{
+    const b=document.createElement('button'); b.textContent=SOURCES[k].label; b.className='on';
+    b.onclick=()=>{ SOURCES[k].on=!SOURCES[k].on; b.classList.toggle('on'); run(); };
+    fh.appendChild(b);
+  });
+
+  const esc=s=>String(s||'').replace(/</g,'&lt;');
+  function run(){
+    const q = document.getElementById('q').value.trim().toLowerCase();
+    const host = document.getElementById('results');
+    if(q.length<2){ host.innerHTML=''; return; }
+    buildIndex().then(ix=>{
+      const words = q.split(/\s+/);
+      const hits = ix.filter(it=> SOURCES[it.s].on && words.every(w=> (it.t+' '+it.x).toLowerCase().includes(w)));
+      document.getElementById('status').textContent = hits.length + ' result' + (hits.length===1?'':'s') + ' for “' + q + '”';
+      host.innerHTML = hits.slice(0,60).map(it=>
+        '<a class="sr-item" href="'+it.href+'"><span class="sr-src">'+SOURCES[it.s].label+(it.tag?' · '+esc(it.tag):'')+'</span><span class="sr-t">'+esc(it.t)+'</span><span class="sr-x">'+esc(String(it.x).slice(0,160))+'</span></a>'
+      ).join('') + (hits.length>60 ? '<p style="color:var(--muted)">Showing first 60 — refine your search.</p>' : '');
+    });
+  }
+  let deb; document.getElementById('q').addEventListener('input',()=>{ clearTimeout(deb); deb=setTimeout(run,250); });
+  document.getElementById('q').addEventListener('focus',buildIndex,{once:true});
+})();
+</script>
+<style>
+.sr-item { display:block; background:var(--card); border:1px solid var(--border); border-radius:10px; padding:14px 18px; margin-bottom:10px; }
+.sr-item:hover { border-color:var(--amber); box-shadow:0 6px 18px rgba(13,27,46,.1); }
+.sr-src { display:block; font-size:.72rem; font-weight:800; color:var(--accent); text-transform:uppercase; letter-spacing:.5px; margin-bottom:4px; }
+.sr-t { display:block; font-weight:700; color:var(--ink); margin-bottom:3px; }
+.sr-x { display:block; color:var(--muted); font-size:.88rem; }
+</style>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span style="color:var(--amber)">Path</span></a>
+        <p style="margin-top:12px">The global intelligence and networking platform for transformer manufacturers, suppliers, engineers and utilities.</p>
+      </div>
+      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="vendors.html">Vendors</a><a href="learn.html">Learn</a><a href="teams.html">Corporate Training</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="sponsor.html">Sponsor</a></div>
+      <div><h4>COMPANY</h4><a href="about.html">About Us</a><a href="mailto:hello@transformerpath.com">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><h4>CONTACT</h4><a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a><a href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener">LinkedIn ↗</a></div>
+    </div>
+    <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
+</script>
+<script src="analytics.js" defer></script>
+</body>
+</html>

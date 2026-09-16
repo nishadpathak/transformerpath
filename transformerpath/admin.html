@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — TransformerPath</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg">
+<meta name="theme-color" content="#0d1b2e">
+<script>if ((localStorage.getItem('theme') || 'dark') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');</script>
+<style>
+.admin-wrap { max-width: 960px; margin: 30px auto; padding: 0 20px; }
+.gate { max-width: 380px; margin: 80px auto; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 32px; text-align: center; }
+.gate input { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; margin: 14px 0; background: var(--card); color: var(--text); }
+.gate button { width: 100%; padding: 11px; background: var(--amber); color:var(--navy); border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
+#panel { display: none; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+@media (max-width: 700px) { .grid2 { grid-template-columns: 1fr; } }
+.acard { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 22px; }
+.acard h3 { margin: 0 0 6px; font-size: 1.02rem; color: var(--text); }
+.acard .sub { color: var(--muted); font-size: .84rem; margin-bottom: 14px; }
+.acard .big { font-size: 2rem; font-weight: 800; color:var(--accent); }
+.abtn { display: inline-block; padding: 8px 16px; background: var(--navy); color: #fff; border: none; border-radius: 8px; font-weight: 600; font-size: .88rem; cursor: pointer; text-decoration: none; margin: 4px 6px 4px 0; }
+.abtn.amber { background: var(--amber); color:var(--navy); }
+.abtn.danger { background: #b91c1c; }
+.mono { font-family: monospace; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font-size: .82rem; word-break: break-all; display: block; margin: 8px 0; color: var(--text); }
+.out { font-size: .82rem; color: var(--muted); margin-top: 10px; white-space: pre-wrap; }
+table.aff { width: 100%; border-collapse: collapse; font-size: .86rem; margin-top: 10px; }
+table.aff th, table.aff td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<div class="gate" id="gate">
+  <h2 style="margin:0 0 6px">🔐 Admin</h2>
+  <p style="color:var(--muted);font-size:.88rem">TransformerPath control panel</p>
+  <input type="password" id="pw" placeholder="Passphrase" onkeydown="if(event.key==='Enter')unlock()">
+  <button onclick="unlock()">Unlock</button>
+  <p style="color:var(--muted);font-size:.75rem;margin-top:14px">Client-side gate — keeps casual visitors out. Don't store secrets on this page.</p>
+</div>
+
+<div class="admin-wrap" id="panel">
+  <h1 style="margin:20px 0 4px">TransformerPath <span style="color:var(--accent)">Admin</span></h1>
+  <p style="color:var(--muted);margin-bottom:24px">Local control panel · <a href="index.html" style="color:var(--accent)">← back to site</a></p>
+
+  <div class="grid2">
+
+    <div class="acard">
+      <h3>📡 Data Refresh</h3>
+      <p class="sub">EventRegistry daily job (scheduled 06:00 UTC on Netlify). Trigger a manual run:</p>
+      <button class="abtn amber" onclick="triggerRefresh()">Run refresh-data now</button>
+      <div class="out" id="refresh-out">Requires the site to be deployed on Netlify (function endpoint).</div>
+    </div>
+
+    <div class="acard">
+      <h3>✈️ Affiliate Clicks (this device)</h3>
+      <p class="sub">Outbound clicks tracked locally on events.html. Real conversions & revenue: <a href="https://tp.media/en/dashboard" target="_blank" rel="noopener" style="color:var(--accent)">Travelpayouts dashboard ↗</a></p>
+      <div class="big" id="aff-total">0</div>
+      <div id="aff-breakdown"></div>
+      <button class="abtn danger" onclick="if(confirm('Clear local click log?')){localStorage.removeItem('tp-aff-clicks');renderAff()}">Clear log</button>
+    </div>
+
+    <div class="acard">
+      <h3>📬 Subscribers</h3>
+      <p class="sub">Newsletter signups are collected by Netlify Forms (form name: <b>subscribe</b>).</p>
+      <a class="abtn" href="https://app.netlify.com/" target="_blank" rel="noopener">Netlify Forms ↗</a>
+    </div>
+
+    <div class="acard">
+      <h3>💳 Course & Payments</h3>
+      <p class="sub">$199/year via Stripe Payment Link.</p>
+      <a class="abtn" href="https://dashboard.stripe.com/payments" target="_blank" rel="noopener">Stripe Dashboard ↗</a>
+      <p class="sub" style="margin-top:14px">Creator unlock link (bookmark, don't share):</p>
+      <span class="mono">https://transformerpath.com/engineer-track.html?key=tp-creator-unlock-2024</span>
+    </div>
+
+    <div class="acard">
+      <h3>🧹 Local State Tools</h3>
+      <p class="sub">Reset browser-stored state on this device for testing:</p>
+      <button class="abtn" onclick="localStorage.removeItem('tp-user-region');say('Region preference cleared')">Clear region pref</button>
+      <button class="abtn" onclick="localStorage.removeItem('theme');say('Theme pref cleared')">Clear theme</button>
+      <button class="abtn danger" onclick="if(confirm('Remove course access on this device?')){localStorage.removeItem('tp-course-access');say('Course access cleared')}">Clear course access</button>
+      <div class="out" id="tools-out"></div>
+    </div>
+
+    <div class="acard">
+      <h3>🔗 Quick Links</h3>
+      <a class="abtn" href="certificate.html">Certificate generator</a>
+      <a class="abtn" href="verify-certificate.html">Verify certificate</a>
+      <a class="abtn" href="subscribe.html">Subscribe page</a>
+      <a class="abtn" href="intel.html">Daily Intel</a>
+      <a class="abtn" href="https://app.netlify.com/" target="_blank" rel="noopener">Netlify ↗</a>
+      <a class="abtn" href="https://eventregistry.org/" target="_blank" rel="noopener">EventRegistry ↗</a>
+    </div>
+
+  </div>
+
+  <div class="acard" style="margin-top:18px">
+    <h3>Recent affiliate clicks</h3>
+    <table class="aff"><thead><tr><th>When</th><th>Type</th><th>Event</th></tr></thead><tbody id="aff-rows"></tbody></table>
+  </div>
+</div>
+
+<script>
+// Client-side gate: SHA-256 of the passphrase (not stored in plain text).
+// Passphrase: set on first unlock below. Default passphrase is "transformer-admin-2026".
+const PW_HASH = '941b8378581ccb8f06432b05180349fef279bd9c9356c25b9771d54c4d533039';
+
+async function sha256(s) {
+  const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
+  return Array.from(new Uint8Array(b)).map(x => x.toString(16).padStart(2, '0')).join('');
+}
+
+async function unlock() {
+  const h = await sha256(document.getElementById('pw').value);
+  if (h === PW_HASH) {
+    sessionStorage.setItem('tp-admin', '1');
+    show();
+  } else {
+    document.getElementById('pw').value = '';
+    document.getElementById('pw').placeholder = 'Wrong passphrase';
+  }
+}
+
+function show() {
+  document.getElementById('gate').style.display = 'none';
+  document.getElementById('panel').style.display = 'block';
+  renderAff();
+}
+if (sessionStorage.getItem('tp-admin') === '1') show();
+
+function say(msg) { document.getElementById('tools-out').textContent = '✓ ' + msg; }
+
+function renderAff() {
+  let clicks = [];
+  try { clicks = JSON.parse(localStorage.getItem('tp-aff-clicks') || '[]'); } catch {}
+  document.getElementById('aff-total').textContent = clicks.length;
+  const by = {};
+  clicks.forEach(c => by[c.aff] = (by[c.aff] || 0) + 1);
+  document.getElementById('aff-breakdown').innerHTML = Object.entries(by)
+    .map(([k, v]) => `<span style="display:inline-block;margin:2px 10px 2px 0;font-size:.86rem;color:var(--muted)"><b style="color:var(--text)">${v}</b> ${k}</span>`).join('') || '<span style="font-size:.86rem;color:var(--muted)">No clicks recorded yet.</span>';
+  document.getElementById('aff-rows').innerHTML = clicks.slice(-15).reverse()
+    .map(c => `<tr><td>${c.t.slice(0, 16).replace('T', ' ')}</td><td>${c.aff}</td><td>${c.ev}</td></tr>`).join('') || '<tr><td colspan="3" style="color:var(--muted)">—</td></tr>';
+}
+
+async function triggerRefresh() {
+  const out = document.getElementById('refresh-out');
+  out.textContent = 'Invoking /.netlify/functions/refresh-data …';
+  try {
+    const r = await fetch('/.netlify/functions/refresh-data');
+    const body = await r.text();
+    out.textContent = 'HTTP ' + r.status + '\n' + body.slice(0, 400);
+  } catch (e) {
+    out.textContent = '✗ ' + e.message + ' — only works on the deployed Netlify site, not localhost.';
+  }
+}
+</script>
+
+</body>
+</html>

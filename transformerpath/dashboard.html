@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — TransformerPath</title>
+  <style>
+    :root {
+      --primary: #3da5f4;
+      --primary-dark: #0b5fa5;
+      --accent: #e8732a;
+      --text: #e8eef5;
+      --text-muted: #8fa6bc;
+      --bg-dark: #0a1624;
+      --bg-card: #0d1b2e;
+      --border: #23415e;
+      --success: #22c55e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(180deg, #27557f 0%, #143049 38%, #0c1c30 70%, #0a1624 100%);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    header {
+      background: rgba(13, 27, 46, 0.9);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(8px);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .logo svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .logo .name {
+      background: linear-gradient(90deg, #fff, #9fd4ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .logo .accent {
+      color: var(--accent);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .user-menu {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 24px;
+    }
+
+    .page-header {
+      margin-bottom: 40px;
+    }
+
+    .page-title {
+      font-size: 32px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .page-subtitle {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+
+    .card {
+      background: rgba(13, 27, 46, 0.7);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      backdrop-filter: blur(8px);
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    .card-stat {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-stat:last-child {
+      margin-bottom: 0;
+      border-bottom: none;
+    }
+
+    .stat-label {
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .stat-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .subscription-status {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px;
+      background: rgba(34, 197, 94, 0.1);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 8px;
+      margin-top: 16px;
+    }
+
+    .subscription-status.inactive {
+      background: rgba(59, 130, 246, 0.1);
+      border-color: rgba(59, 130, 246, 0.3);
+    }
+
+    .subscription-badge {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--success);
+    }
+
+    .subscription-badge.inactive {
+      background: var(--primary);
+    }
+
+    .subscription-info {
+      font-size: 13px;
+      flex: 1;
+    }
+
+    .subscription-info strong {
+      display: block;
+      color: var(--text);
+    }
+
+    .btn {
+      padding: 10px 20px;
+      background: var(--primary);
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn:hover {
+      background: #2e8dd4;
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(61, 165, 244, 0.1);
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 6px;
+      background: rgba(139, 166, 188, 0.2);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      border-radius: 3px;
+      transition: width 0.3s;
+    }
+
+    .recent-activity {
+      background: rgba(13, 27, 46, 0.7);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      backdrop-filter: blur(8px);
+    }
+
+    .activity-item {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+    }
+
+    .activity-item:last-child {
+      border-bottom: none;
+    }
+
+    .activity-title {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .activity-date {
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: var(--text-muted);
+    }
+
+    .error-message {
+      padding: 16px;
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 8px;
+      color: #fca5a5;
+      font-size: 13px;
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .page-title {
+        font-size: 24px;
+      }
+
+      main {
+        padding: 20px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-left">
+      <a href="/" class="logo">
+        <svg width="24" height="24" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="32" cy="32" r="27" fill="none" stroke="#fff" stroke-width="2"/>
+          <path d="M37 9 L23 35 L31 35 L26 55 L42 29 L34 29 L40 9 Z" fill="#f5a623"/>
+        </svg>
+        <span class="name">Trafo<span class="accent">Path</span></span>
+      </a>
+    </div>
+    <div class="header-right">
+      <div class="nav-links">
+        <a href="/learn.html">Learn</a>
+        <a href="/tools.html">Tools</a>
+        <a href="/events.html">Events</a>
+        <a href="/manufacturers.html">Manufacturers</a>
+      </div>
+      <div class="user-menu" onclick="toggleUserMenu()">
+        <div class="avatar" id="userAvatar">U</div>
+        <div style="font-size: 13px;">
+          <div id="userName" style="font-weight: 600;">User</div>
+          <div id="userPlan" style="color: var(--text-muted); font-size: 12px;">Free Plan</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="error-message" id="errorMsg"></div>
+
+    <div class="page-header">
+      <h1 class="page-title">Welcome back, <span id="userName2">User</span></h1>
+      <p class="page-subtitle">Manage your account, courses, and subscription</p>
+    </div>
+
+    <div class="grid">
+      <!-- Subscription Card -->
+      <div class="card">
+        <h3 class="card-title">📊 Subscription</h3>
+        <div class="card-stat">
+          <span class="stat-label">Current Plan</span>
+          <span class="stat-value" id="planName">Free</span>
+        </div>
+        <div class="card-stat">
+          <span class="stat-label">Renewal Date</span>
+          <span class="stat-value" style="font-size: 14px;" id="renewalDate">N/A</span>
+        </div>
+        <div class="subscription-status" id="subStatus">
+          <div class="subscription-badge"></div>
+          <div class="subscription-info">
+            <strong>Active</strong>
+            <span id="subStatusText">Your subscription is active</span>
+          </div>
+        </div>
+        <button class="btn" style="width: 100%; margin-top: 16px;" onclick="goToPricing()">Upgrade to Pro</button>
+      </div>
+
+      <!-- Course Progress Card -->
+      <div class="card">
+        <h3 class="card-title">📚 Course Progress</h3>
+        <div class="card-stat">
+          <span class="stat-label">Chapters Completed</span>
+          <span class="stat-value" id="chaptersCompleted">0/26</span>
+        </div>
+        <div class="card-stat">
+          <span class="stat-label">Progress</span>
+          <span class="stat-value" id="progressPercent">0%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+        </div>
+        <button class="btn" style="width: 100%; margin-top: 16px;" onclick="goToCourses()">Continue Learning</button>
+      </div>
+
+      <!-- Account Card -->
+      <div class="card">
+        <h3 class="card-title">👤 Account</h3>
+        <div class="card-stat">
+          <span class="stat-label">Email</span>
+          <span class="stat-value" style="font-size: 14px;" id="userEmail">Loading...</span>
+        </div>
+        <div class="card-stat">
+          <span class="stat-label">Company</span>
+          <span class="stat-value" style="font-size: 14px;" id="userCompany">Not specified</span>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn btn-secondary" style="flex: 1;" onclick="goToSettings()">Settings</button>
+          <button class="btn btn-secondary" style="flex: 1;" onclick="handleLogout()">Logout</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="recent-activity">
+      <h3 class="card-title">📈 Recent Activity</h3>
+      <div id="activityList" class="loading">Loading activity...</div>
+    </div>
+  </main>
+
+  <script>
+    const API_BASE = '/api';
+
+    function showError(message) {
+      const errorMsg = document.getElementById('errorMsg');
+      errorMsg.textContent = message;
+      errorMsg.style.display = 'block';
+    }
+
+    function checkAuth() {
+      const token = localStorage.getItem('tp-token');
+      if (!token) {
+        window.location.href = '/login.html';
+        return false;
+      }
+      return true;
+    }
+
+    async function loadDashboard() {
+      if (!checkAuth()) return;
+
+      try {
+        const token = localStorage.getItem('tp-token');
+        const response = await fetch(`${API_BASE}/user`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) {
+          if (response.status === 401) {
+            localStorage.removeItem('tp-token');
+            window.location.href = '/login.html';
+          }
+          throw new Error('Failed to load dashboard');
+        }
+
+        const user = await response.json();
+        updateDashboard(user);
+      } catch (error) {
+        showError('Failed to load dashboard data');
+        console.error('Error:', error);
+      }
+    }
+
+    function updateDashboard(user) {
+      // Update user info
+      document.getElementById('userName').textContent = user.firstName || 'User';
+      document.getElementById('userName2').textContent = user.firstName || 'User';
+      document.getElementById('userEmail').textContent = user.email;
+      document.getElementById('userCompany').textContent = user.company || 'Not specified';
+
+      // Update avatar
+      const initials = ((user.firstName || 'U')[0] + (user.lastName || '')[0]).toUpperCase();
+      document.getElementById('userAvatar').textContent = initials;
+
+      // Update subscription
+      const plan = user.subscription_tier || 'free';
+      document.getElementById('planName').textContent = plan.charAt(0).toUpperCase() + plan.slice(1);
+      document.getElementById('userPlan').textContent = plan.charAt(0).toUpperCase() + plan.slice(1) + ' Plan';
+
+      if (user.subscription_tier === 'pro') {
+        const renewalDate = new Date(user.subscription_expires);
+        document.getElementById('renewalDate').textContent = renewalDate.toLocaleDateString();
+        document.getElementById('subStatus').classList.remove('inactive');
+        document.getElementById('subStatusText').textContent = 'Your Pro subscription is active';
+      } else {
+        document.getElementById('subStatus').classList.add('inactive');
+        document.getElementById('subStatusText').textContent = 'Upgrade to access full content';
+      }
+
+      // Update course progress (placeholder)
+      document.getElementById('chaptersCompleted').textContent = '0/26';
+      document.getElementById('progressPercent').textContent = '0%';
+      document.getElementById('progressBar').style.width = '0%';
+
+      // Load activity
+      loadActivity();
+    }
+
+    async function loadActivity() {
+      try {
+        const token = localStorage.getItem('tp-token');
+        const response = await fetch(`${API_BASE}/user/activity`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) throw new Error('Failed to load activity');
+
+        const activities = await response.json();
+        displayActivity(activities);
+      } catch (error) {
+        document.getElementById('activityList').innerHTML = '<p style="color: var(--text-muted);">No recent activity</p>';
+      }
+    }
+
+    function displayActivity(activities) {
+      if (!activities || activities.length === 0) {
+        document.getElementById('activityList').innerHTML = '<p style="color: var(--text-muted);">No recent activity</p>';
+        return;
+      }
+
+      const html = activities.slice(0, 5).map(activity => `
+        <div class="activity-item">
+          <div>
+            <div class="activity-title">${activity.title}</div>
+            <div class="activity-date">${new Date(activity.date).toLocaleDateString()}</div>
+          </div>
+        </div>
+      `).join('');
+
+      document.getElementById('activityList').innerHTML = html;
+    }
+
+    function goToPricing() {
+      window.location.href = '/pricing.html';
+    }
+
+    function goToCourses() {
+      window.location.href = '/learn.html';
+    }
+
+    function goToSettings() {
+      window.location.href = '/settings.html';
+    }
+
+    function toggleUserMenu() {
+      // TODO: Implement dropdown menu
+    }
+
+    async function handleLogout() {
+      if (confirm('Are you sure you want to logout?')) {
+        localStorage.removeItem('tp-token');
+        localStorage.removeItem('tp-user');
+        window.location.href = '/login.html';
+      }
+    }
+
+    // Load dashboard on page load
+    window.addEventListener('load', loadDashboard);
+  </script>
+</body>
+</html>
