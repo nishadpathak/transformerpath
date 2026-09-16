@@ -167,10 +167,23 @@ async function writeEntitlement(e) {
     user_id: e.user_id,
     product: e.plan_id || 'learning',
     plan: e.plan_id || 'Learning',
+    plan_key: e.plan_id || 'learning',
     access_start: e.starts_at || isoNow(),
     access_end: e.expires_at || null,
+    expires_at: e.expires_at || null,
     status: e.status ? e.status.toLowerCase() : 'active'
   }, { onConflict: 'user_id,product' });
+  try {
+    if (e.stripe_checkout_session_id) {
+      await supabase.from('purchases').upsert({
+        stripe_session_id: e.stripe_checkout_session_id,
+        user_id: e.user_id,
+        product: e.plan_id || 'learning',
+        plan: e.plan_id || 'Learning',
+        status: 'paid',
+      }, { onConflict: 'stripe_session_id' });
+    }
+  } catch (pe) { /* purchases table may not exist yet */ }
 }
 
 async function eventProcessed(id) {
