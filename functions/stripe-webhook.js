@@ -46,10 +46,22 @@ const PRICE_TO_PLAN = {
   price_professional_599: 'professional',
   price_enterprise_1999: 'enterprise',
 };
+function planFromAmount(cents) {
+  if (cents === 19900) return 'learning';
+  if (cents === 59900) return 'professional';
+  if (cents === 199900) return 'team';
+  return null;
+}
 function planFromCheckout(session) {
-  if (session.metadata && session.metadata.plan) return session.metadata.plan;
-  const pi = session.payment_intent || (typeof session.payment_intent === 'string' ? session.payment_intent : '');
-  // Intentionally conservative: don't invent a plan without a confirmed mapping.
+  if (session.metadata && (session.metadata.plan || session.metadata.product)) {
+    const raw = String(session.metadata.plan || session.metadata.product).toLowerCase();
+    if (raw === 'learner' || raw === 'learning') return 'learning';
+    if (raw === 'professional') return 'professional';
+    if (raw === 'team' || raw === 'enterprise') return 'team';
+    return raw;
+  }
+  const cents = typeof session.amount_total === 'number' ? session.amount_total : null;
+  if (cents != null) return planFromAmount(cents);
   return PRICE_TO_PLAN[session.metadata && session.metadata.price_id] || null;
 }
 
@@ -128,7 +140,10 @@ async function handle(ev) {
   else if (type === 'charge.refunded') entitlement = fromCharge(ev.data.object);
   else return respond(400, { error: 'unsupported event ' + type }); // unhandled event -> not an entitlement write
 
-  if (!entitlement || !entitlement.user_id) return respond(400, { error: 'no linked user' });
+  if (!entitlement || (!entitlement.user_id && !entitlement.email)) {
+    await markProcessed(ev.id);
+    return respond(200, { received: true, skipped: 'no identity' });
+  }
   await writeEntitlement(entitlement);
   await markProcessed(ev.id);
   return respond(200, { received: true });
@@ -137,10 +152,16 @@ async function handle(ev) {
 // ── Event → entitlement mapping (server-side, verified data only) ───────────
 function fromCheckout(session) {
   const plan = planFromCheckout(session);
+  const meta = session.metadata || {};
+  const userId = meta.user_id || session.client_reference_id || null;
+  const email = (session.customer_details && session.customer_details.email) || session.customer_email || null;
+  const starts = isoNow();
+  const ends = new Date(Date.now() + 365 * 24 * 3600 * 1000).toISOString();
   return {
-    user_id: session.metadata && session.metadata.user_id, // set on the checkout link when logged in
+    user_id: userId,
+    email: email,
     plan_id: plan, status: 'ACTIVE',
-    starts_at: isoNow(), expires_at: null,
+    starts_at: starts, expires_at: ends,
     stripe_customer_id: session.customer || null,
     stripe_checkout_session_id: session.id,
     source: 'checkout.session.completed'
@@ -163,23 +184,59 @@ async function writeEntitlement(e) {
     return;
   }
   const supabase = client();
-  await supabase.from('entitlements').upsert({
-    user_id: e.user_id,
-    product: e.plan_id || 'learning',
-    plan: e.plan_id || 'Learning',
-    plan_key: e.plan_id || 'learning',
+  const model = require('./lib/account-model');
+  const plan = model.normalizePlan(e.plan_id) || model.normalizePlan('learning');
+  let orgId = null;
+  if (plan.product === 'team' && e.user_id) {
+    try {
+      const { data: existing } = await supabase.from('organization_members').select('org_id').eq('user_id', e.user_id).limit(1);
+      if (existing && existing[0]) {
+        orgId = existing[0].org_id;
+        await supabase.from('organizations').update({ max_members: 10 }).eq('id', orgId);
+      } else {
+        const { data: org } = await supabase.from('organizations').insert({
+          name: 'Team', kind: 'company', max_members: 10,
+        }).select('id').maybeSingle();
+        orgId = org && org.id;
+        if (orgId) {
+          await supabase.from('organization_members').upsert({
+            user_id: e.user_id, org_id: orgId, org_role: 'owner',
+          }, { onConflict: 'user_id,org_id' });
+          await supabase.from('memberships').upsert({
+            user_id: e.user_id, org_id: orgId, org_role: 'owner',
+          }, { onConflict: 'user_id,org_id' });
+        }
+      }
+    } catch (oe) { /* org tables may not exist until APPLY_SQL */ }
+  }
+  const row = {
+    user_id: e.user_id || null,
+    org_id: orgId,
+    email: e.email || null,
+    product: plan.product,
+    plan: plan.label,
+    plan_key: plan.product,
     access_start: e.starts_at || isoNow(),
     access_end: e.expires_at || null,
     expires_at: e.expires_at || null,
-    status: e.status ? e.status.toLowerCase() : 'active'
-  }, { onConflict: 'user_id,product' });
+    status: e.status ? String(e.status).toLowerCase() : 'active'
+  };
+  const conflict = e.user_id ? 'user_id,product' : (e.email ? 'email,product' : undefined);
+  try {
+    if (conflict) await supabase.from('entitlements').upsert(row, { onConflict: conflict });
+    else await supabase.from('entitlements').insert(row);
+  } catch (ue) {
+    try { await supabase.from('entitlements').insert(row); } catch (ie) { console.warn('entitlement write', ie.message); }
+  }
   try {
     if (e.stripe_checkout_session_id) {
       await supabase.from('purchases').upsert({
         stripe_session_id: e.stripe_checkout_session_id,
-        user_id: e.user_id,
-        product: e.plan_id || 'learning',
-        plan: e.plan_id || 'Learning',
+        user_id: e.user_id || null,
+        org_id: orgId,
+        email: e.email || null,
+        product: plan.product,
+        plan: plan.label,
         status: 'paid',
       }, { onConflict: 'stripe_session_id' });
     }

@@ -1,0 +1,62 @@
+{
+  "_comment": "Assessment spine — engineering reasoning, not trivia. Quality over quantity. Answers live in functions/lib/assessment-answers.js, not here.",
+  "spine": [
+    "Chapter",
+    "Knowledge Check",
+    "Practical Exercise",
+    "3D / Grid Lab Exercise",
+    "Module Assessment",
+    "Capstone"
+  ],
+  "disclaimer": "Course completion record, not a qualification. TransformerPath is not an accreditation body.",
+  "items": [
+    {
+      "id": "line-current-100mva-132kv",
+      "kind": "calculation",
+      "spine": "Knowledge Check",
+      "module": "fnd-iec-rating",
+      "skill": "iec-rating",
+      "title": "Line current — 100 MVA at 132 kV, 0.9 pf",
+      "stem": "A three-phase transformer is rated 100 MVA, 132 kV. The specification also states 0.9 power factor. What is the HV line current to use for winding and bushing checks?",
+      "why": "Line current follows apparent power: I = S / (√3 × U). Power factor scales watts, not the ampere rating at a given MVA.",
+      "options": [
+        { "id": "s-based-437a", "label": "437 A — I = 100 MVA / (√3 × 132 kV). The 0.9 pf does not change line current at this MVA." },
+        { "id": "p-based-393a", "label": "393 A — use P = 90 MW so I = 90 MW / (√3 × 132 kV)." },
+        { "id": "single-phase-758a", "label": "758 A — I = 100 MVA / 132 kV (treat as single-phase)." },
+        { "id": "phase-218a", "label": "218 A — divide the three-phase current by 2." }
+      ]
+    },
+    {
+      "id": "oltc-avr-limitation",
+      "kind": "reasoning",
+      "spine": "Practical Exercise",
+      "module": "pwr-oltc",
+      "skill": "oltc-avr",
+      "title": "OLTC / AVR limitation on a weak 132 kV bus",
+      "stem": "An automatic voltage regulator is hunting on a weakly interconnected 132 kV bus. The on-load tap-changer is already on the last raise tap, yet the bus is still below target. What is the correct engineering limitation?",
+      "why": "An OLTC only relocates voltage within its tap range. It is slow mechanical regulation, not a reactive-power source. Once the raise end-stop is reached the AVR must stop stepping; further voltage support is a system (VAR / tap of another unit / operator) problem.",
+      "options": [
+        { "id": "tap-range-stop", "label": "Refuse further raise commands. The OLTC cannot create voltage beyond the tap range; leave the AVR from hunting and call for reactive support." },
+        { "id": "keep-stepping", "label": "Keep the AVR in auto — it will find a tap beyond the nameplate range if the bus stays low." },
+        { "id": "block-avr-only", "label": "Block the AVR but run the tap-changer in manual raise past the last tap, because mechanical stops are conservative." },
+        { "id": "use-oltc-as-statcom", "label": "Treat the OLTC as a STATCOM analogue: tap faster to supply VArs into the weak bus." }
+      ]
+    },
+    {
+      "id": "vector-group-ynd11",
+      "kind": "reasoning",
+      "spine": "Knowledge Check",
+      "module": "fnd-vector",
+      "skill": "vector-group",
+      "title": "YNd11 — what the clock number actually fixes",
+      "stem": "A specification calls for YNd11. Which statement is the engineering meaning, not a slogan?",
+      "why": "YNd11 is HV star, LV delta, LV leading HV by 30°. The clock number is a phase-displacement constraint for paralleling and earth-fault behaviour — not a loss or impedance class.",
+      "options": [
+        { "id": "dyn-delta-star", "label": "HV star, LV delta, LV phasor at 11 o'clock relative to HV (LV leads HV by 30°)." },
+        { "id": "both-delta", "label": "Both windings delta; the '11' is an impedance code." },
+        { "id": "ynyn0", "label": "It is interchangeable with YNyn0 for paralleling because both are star." },
+        { "id": "clock-is-taps", "label": "The 11 is the number of OLTC steps." }
+      ]
+    }
+  ]
+}

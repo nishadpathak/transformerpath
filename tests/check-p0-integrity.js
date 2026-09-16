@@ -81,7 +81,16 @@ check('765 kV hits carry voltage match_reasons', r.hits.some((h) => (h.match_rea
 check('functions/directory-search.js exists', fs.existsSync('functions/directory-search.js'));
 const toml = fs.readFileSync('netlify.toml', 'utf8');
 check('netlify rewrites /directory?q= to the search function', /directory-search/.test(toml) && /from = "\/directory"/.test(toml));
-check('directory.html no longer JS-redirects ?q= to search.html', !/location\.replace\('search\.html\?q=/.test(fs.readFileSync('directory.html', 'utf8')));
+check('search("Special") returns name matches (SSR /directory?q=Special)', (function () {
+  const spec = search(idx, 'Special', { limit: 20 });
+  return spec.total > 0 && spec.hits.some((h) => /special/i.test(h.name || '') || (h.match_reasons || []).length);
+})(), 'no Special hits');
+check('directory.html does not present ?q= results as a loading-only shell',
+  !/Loading the directory index/.test(fs.readFileSync('directory.html', 'utf8')));
+check('SSR search page for Special would not emit the directory loading shell', (function () {
+  const fn = fs.readFileSync('functions/directory-search.js', 'utf8');
+  return fn.indexOf('Loading the directory index') < 0 && /Results for/.test(fn);
+})());
 
 console.log('\n=== P0.5–6 IDENTITY + PRICING HONESTY ===');
 check('account model module exists', fs.existsSync('functions/lib/account-model.js'));
@@ -106,7 +115,12 @@ check('workspace.html is titled My TransformerPath or Learner hub', /My Transfor
 check('tp-learner.js exists', fs.existsSync('tp-learner.js'));
 check('skills passport catalog exists', fs.existsSync('data/skills-passport.json'));
 check('header Account label is My TransformerPath', /My TransformerPath/.test(fs.readFileSync('_partials/header.html', 'utf8')));
-check('onboarding.html exists (3-question Learner Profile)', fs.existsSync('onboarding.html') && /Three questions/i.test(fs.readFileSync('onboarding.html', 'utf8')));
+check('onboarding.html exists (short Learner Profile onboarding)', fs.existsSync('onboarding.html') && /Learner Profile/i.test(fs.readFileSync('onboarding.html', 'utf8')) && /No address/i.test(fs.readFileSync('onboarding.html', 'utf8')));
+check('assessments.html exists with calculation spine', fs.existsSync('assessments.html') && /line current|100 MVA/i.test(fs.readFileSync('data/assessments.json', 'utf8')));
+check('create-checkout function is account-first', /sign_in_required/.test(fs.readFileSync('functions/create-checkout.js', 'utf8')));
+check('APPLY_SQL runner exists', fs.existsSync('apply-sql.js') && /organization_members/.test(require('../functions/lib/account-model').APPLY_SQL));
+check('grid-lab.html is independently stamped with named scenarios', /50 Hz and 60 Hz/.test(fs.readFileSync('grid-lab.html', 'utf8')));
+check('pricing CTAs require an account (not a raw Payment Link as the primary href)', /Create account|Choose /.test(fs.readFileSync('pricing.html', 'utf8')) && /create-checkout/.test(fs.readFileSync('pricing.html', 'utf8')));
 check('certificates.html exists as learning records, not credentials', fs.existsSync('certificates.html') && /not an accredited/i.test(fs.readFileSync('certificates.html', 'utf8')));
 check('netlify maps /me /sign-in /onboarding /certificates', /from = "\/me"/.test(toml) && /from = "\/sign-in"/.test(toml) && /from = "\/onboarding"/.test(toml) && /from = "\/certificates"/.test(toml));
 

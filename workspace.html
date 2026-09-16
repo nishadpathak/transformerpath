@@ -219,7 +219,21 @@
     </div>
 
     <div id="panel-learning" class="hub-panel" hidden>
-      <div class="ws-sec"><h3>My Learning</h3><div id="tpProgress"></div></div>
+      <div class="ws-sec">
+        <h3>My Learning</h3>
+        <div class="ws-idgrid">
+          <div class="ws-idbox"><div class="lbl">Name</div><div id="learnName">—</div></div>
+          <div class="ws-idbox"><div class="lbl">Design Engineer Track</div><div id="learnTrack">—</div></div>
+          <div class="ws-idbox"><div class="lbl">Overall</div><div id="learnOverall">0%</div></div>
+        </div>
+      </div>
+      <div class="ws-sec"><h3>Continue Learning</h3><div id="learnContinue"></div></div>
+      <div class="ws-sec"><h3>My Learning Path</h3><div id="learnPath"></div></div>
+      <div class="ws-sec"><h3>Assessments</h3>
+        <p class="ws-sub">Chapter → Knowledge Check → Practical Exercise → 3D/Grid Lab → Module Assessment → Capstone. Engineering reasoning, not trivia.</p>
+        <a class="btn btn-outline btn-sm" href="assessments.html">Open assessments →</a>
+      </div>
+      <div class="ws-sec"><h3>Chapter progress</h3><div id="tpProgress"></div></div>
       <div class="ws-sec"><h3>3D Labs</h3><p class="ws-sub">Interactive 3D is a working demo under the industry platform — not Country Grid Lab.</p><a class="btn btn-outline btn-sm" href="explorer.html">Open 3D explorer →</a></div>
       <div class="ws-sec"><h3>Knowledge</h3><p class="ws-sub">Masterclass, Design Engineer Track, knowledge library.</p><a class="btn btn-outline btn-sm" href="learn.html">Open Learn →</a></div>
       <div class="ws-sec">
@@ -246,14 +260,14 @@
     <div id="panel-skills" class="hub-panel" hidden>
       <div class="ws-sec">
         <h3>Skills Passport</h3>
-        <p class="ws-sub">Competencies with a level and how they were earned. No XP, coins, badges or leaderboards.</p>
+        <p class="ws-sub">Evidence-based competencies (lesson, assessment, calculation, Grid Lab, capstone). Levels Developing / Intermediate / Advanced. Course completion record, not a qualification. No XP, coins, badges or leaderboards.</p>
         <div id="tpSkills"></div>
       </div>
     </div>
 
     <div id="panel-saved" class="hub-panel" hidden>
       <div class="ws-sec"><h3>Saved content</h3><div id="tpSaved" class="ws-tags"></div></div>
-      <div class="ws-sec"><h3>Saved designs &amp; Projects</h3><div id="tpDesigns"></div></div>
+      <div class="ws-sec"><h3>My Designs</h3><p class="ws-sub">Professional entitlement. Schema is live for Sprint 4 calculator persistence — this list is the account stub.</p><div id="tpDesigns"></div></div>
       <div class="ws-sec"><h3>Notes &amp; Engineering Memoranda</h3><div id="tpNotes"></div></div>
       <div class="ws-sec"><h3>Following</h3><div id="tpFollows" class="ws-tags"></div></div>
       <div class="ws-sec"><h3>My Market</h3>
@@ -264,7 +278,7 @@
 
     <div id="panel-certificates" class="hub-panel" hidden>
       <div class="ws-sec"><h3>Certificates</h3>
-        <p class="ws-empty">Learning records — not accredited credentials. Open <a href="certificates.html">/certificates</a>.</p>
+        <p class="ws-empty">Learning records — a course completion record, not a qualification. Open <a href="certificates.html">/certificates</a>.</p>
         <div id="tpCertRecords"></div>
       </div>
       <div class="ws-sec"><h3>My Books</h3><div id="tpBooks"></div></div>
@@ -358,6 +372,8 @@ document.addEventListener('DOMContentLoaded', function(){
     var passVal = (su.elements['pass'] ? su.elements['pass'].value : document.getElementById('suPass').value);
     var nameVal = (su.elements['name'] ? su.elements['name'].value : (document.getElementById('suName') ? document.getElementById('suName').value : '')).trim();
     TP.signUp(emailVal, passVal, {display_name: nameVal}).then(function(r){
+      var nxt = safeNext();
+      try { if(nxt) localStorage.setItem('tp-next', nxt); } catch(e){}
       if(r && r.data && r.data.session){ setMsg('',true); location.replace('onboarding.html'); }
       else { setMsg('Almost there — check your inbox to confirm your email, then open /onboarding.', true); }
     }).catch(function(x){ setMsg((x&&x.message)||'Sign-up failed', false); });
@@ -365,9 +381,24 @@ document.addEventListener('DOMContentLoaded', function(){
   document.getElementById('tpSignOut').addEventListener('click',function(){ TP.signOut(); });
 
   TP.onAuth(function(user){
-    if(user){ show(ws,true); show(auth,false); render(user); }
+    if(user){
+      show(ws,true); show(auth,false); render(user);
+      var n = safeNext();
+      try { if(!n) n = localStorage.getItem('tp-next') || ''; } catch(e){}
+      if(n && /pricing\.html/.test(n)){
+        try { localStorage.removeItem('tp-next'); } catch(e){}
+        location.replace(n);
+      }
+    }
     else { show(auth,true); show(ws,false); }
   });
+
+  function safeNext(){
+    var n = new URLSearchParams(location.search).get('next') || '';
+    if(!n || n.charAt(0)==='/' || n.indexOf('://')>=0) return '';
+    if(!/^[a-z0-9._~/?%=&#-]+\.html(\?.*)?$/i.test(n) && n.indexOf('pricing.html')!==0) return '';
+    return n;
+  }
 
   function showHub(id){
     var panels = document.querySelectorAll('.hub-panel');
@@ -398,11 +429,7 @@ document.addEventListener('DOMContentLoaded', function(){
         return '<span class="ws-tag"><a href="'+esc(i.url||'#')+'" style="color:var(--text);text-decoration:none">'+esc(i.title||i.item_id)+'</a> <button class="ws-x" data-unsave="'+esc(i.item_type)+'|'+esc(i.item_id)+'" aria-label="Remove">✕</button></span>';
       }).join('') : '<span class="ws-empty">Nothing saved yet — use “Save” on manufacturers, events, webinars.</span>';
     });
-    TP.listDesigns().then(function(ds){
-      document.getElementById('tpDesigns').innerHTML = ds.length ? ds.map(function(d){
-        return '<div class="ws-row"><span class="ws-note-title">'+esc(d.name||'Untitled')+'</span><span class="ws-sub">'+(d.kind||'design')+'</span><button class="ws-x" data-deldesign="'+esc(d.id)+'" aria-label="Delete">✕</button></div>';
-      }).join('') : '<p class="ws-empty">No saved designs yet. Save results from the Design Calculator.</p>';
-    });
+    /* My Designs is filled from the account snapshot (Professional stub). */
     TP.listNotes().then(function(ns){
       document.getElementById('tpNotes').innerHTML = ns.length ? ns.map(function(n){
         return '<div class="ws-row"><span class="ws-note-title">'+esc(n.title||'Note')+'</span><span class="ws-sub">'+esc((n.body||'').slice(0,80))+'</span><button class="ws-x" data-delnote="'+esc(n.id)+'" aria-label="Delete">✕</button></div>';
@@ -491,7 +518,15 @@ document.addEventListener('DOMContentLoaded', function(){
           ? '<p>Next Grid Lab scenario: <a href="grid-lab.html#sc-'+esc(nxt.id)+'">'+esc(nxt.title)+'</a></p>'
           : '<p>Grid Lab catalog complete. Open <a href="learn.html">Learn</a> for the masterclass.</p>';
       }).catch(function(){});
-      L.renderSkills(document.getElementById('tpSkills'), snap.skills||[]);
+      L.renderSkills(document.getElementById('tpSkills'), snap.skills||[], snap.skill_evidence||[]);
+      L.renderLearning({
+        name: document.getElementById('learnName'),
+        track: document.getElementById('learnTrack'),
+        overall: document.getElementById('learnOverall'),
+        continue: document.getElementById('learnContinue'),
+        path: document.getElementById('learnPath')
+      }, snap);
+      L.renderDesigns(document.getElementById('tpDesigns'), snap.saved_designs||[], snap.entitlement);
       var act=document.getElementById('tpActivity');
       if(act){
         var bits=[];
@@ -503,7 +538,7 @@ document.addEventListener('DOMContentLoaded', function(){
       if(cr){
         var recs=snap.certificates||[];
         cr.innerHTML = recs.length
-          ? recs.map(function(r){ return '<div class="ws-row"><a href="certificates.html?slug='+encodeURIComponent(r.slug||'')+'">'+esc(r.title||r.slug)+'</a><span class="ws-sub">'+esc(r.how_earned||'')+'</span></div>'; }).join('')
+          ? recs.map(function(r){ return '<div class="ws-row"><a href="/certificates/'+encodeURIComponent(r.slug||'')+'">'+esc(r.title||r.slug)+'</a><span class="ws-sub">'+esc(r.how_earned||'')+'</span></div>'; }).join('')
           : '';
       }
     });

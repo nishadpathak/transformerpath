@@ -152,7 +152,7 @@ table.cmp .n { color:var(--border); }
 <section class="hero" style="padding:50px 0 40px">
   <div class="container">
     <h1 style="font-size:2.2rem">Plans &amp; <span>Pricing</span></h1>
-    <p>Twelve months of everything on that plan — the full masterclass, every 3D model, the design calculator, and the Design Engineer Track. No per-chapter paywalls. Learning, Professional and Team are each a single payment for 12 months of access — no auto-renewal. All prices in US dollars (USD).</p>
+    <p>Create an account, choose a plan, pay with Stripe. Access is an entitlement on that account — sign in on any device. Learning $199 (entitlement.learning), Professional $599 (learning + professional), Team $1,999 (organization, max 10 seats — not a shared link). Twelve months, no auto-renewal. USD.</p>
   </div>
 </section>
 
@@ -191,8 +191,8 @@ table.cmp .n { color:var(--border); }
           <li><span class="ok">✓</span> Course completion record for the Design Engineer Track (a record of completion — not a qualification)</li>
           <li><span class="ok">✓</span> 1 person, standard review queue</li>
         </ul>
-        <a class="cta primary" id="ctaLearner" href="#" target="_blank" rel="noopener" data-track="learning_checkout_started" data-track-plan="Learning">Unlock Learning — $199 →</a>
-        <div class="fine">Single payment · 12 months access · no auto-renewal</div>
+        <a class="cta primary" id="ctaLearner" href="workspace.html?auth=up&amp;next=pricing.html%3Fplan%3Dlearning" rel="noopener" data-plan="learning" data-track="learning_checkout_started" data-track-plan="Learning">Create account — Learning $199 →</a>
+        <div class="fine">Create account → Stripe → entitlement.learning · 12 months · no auto-renewal</div>
       </div>
 
       <!-- PROFESSIONAL -->
@@ -213,8 +213,8 @@ table.cmp .n { color:var(--border); }
           <li><span class="plus">+</span> <b>Country Design Adapter</b> (auto-tune designs for 50/60 Hz, local standards &amp; grid codes)</li>
           <li><span class="plus">+</span> Priority capstone review &amp; direct engineering support</li>
         </ul>
-        <a class="cta primary" id="ctaProfessional" href="#" target="_blank" rel="noopener" data-track="learning_checkout_started" data-track-plan="Professional">Unlock Professional — $599 →</a>
-        <div class="fine">Single payment · 12 months access · no auto-renewal · 1 engineer seat</div>
+        <a class="cta primary" id="ctaProfessional" href="workspace.html?auth=up&amp;next=pricing.html%3Fplan%3Dprofessional" rel="noopener" data-plan="professional" data-track="learning_checkout_started" data-track-plan="Professional">Create account — Professional $599 →</a>
+        <div class="fine">Create account → Stripe → learning + professional · 12 months · 1 engineer seat</div>
       </div>
 
       <!-- Team -->
@@ -225,13 +225,13 @@ table.cmp .n { color:var(--border); }
         <div class="save">Everything in Professional, plus:</div>
         <ul>
           <li><span class="ok">✓</span> Everything in Professional engineering workspace</li>
-          <li><span class="plus">+</span> Up to 10 seats on one organization — each person signs in with their own account</li>
+          <li><span class="plus">+</span> Up to 10 seats on one organization — each person signs in with their own account (max_members=10). Not a shared magic link.</li>
           <li><span class="plus">+</span> Shared team project workspace &amp; design library (account-backed)</li>
           <li><span class="plus">+</span> Written team rollout guide &amp; onboarding session</li>
           <li><span class="plus">+</span> Priority capstone review for the whole team</li>
         </ul>
-        <a class="cta primary" id="ctaEnterprise" href="#" target="_blank" rel="noopener" data-track="learning_checkout_started" data-track-plan="Team">Unlock Team — $1,999 →</a>
-        <div class="fine">Single payment · 12 months access · no auto-renewal · up to 10 people</div>
+        <a class="cta primary" id="ctaEnterprise" href="workspace.html?auth=up&amp;next=pricing.html%3Fplan%3Dteam" rel="noopener" data-plan="team" data-track="learning_checkout_started" data-track-plan="Team">Create account — Team $1,999 →</a>
+        <div class="fine">Create account → Stripe → organization entitlement · 12 months · max 10 seats</div>
       </div>
 
     </div>
@@ -278,7 +278,6 @@ table.cmp .n { color:var(--border); }
           <tr><td>Rating Plate Generator (IEC/IEEE)</td><td class="n">—</td><td class="y">✓</td><td class="y">✓</td></tr>
           <tr><td>Factory Test Report Generator</td><td class="n">—</td><td class="y">✓</td><td class="y">✓</td></tr>
           <tr><td>Country Design Adapter (50/60 Hz, grid codes)</td><td class="n">—</td><td class="y">✓</td><td class="y">✓</td></tr>
-          <tr><td>Side-by-side design comparison</td><td class="n">—</td><td class="y">✓</td><td class="y">✓</td></tr>
           <tr><td>Capstone review + written feedback</td><td class="y">✓ Standard</td><td class="y">✓ Priority</td><td class="y">✓ Priority</td></tr>
           <tr><td>Early access to new content &amp; tools</td><td class="n">—</td><td class="y">✓</td><td class="y">✓</td></tr>
           <tr><td>Priority engineering support</td><td class="n">—</td><td class="y">✓</td><td class="y">✓</td></tr>
@@ -301,7 +300,7 @@ table.cmp .n { color:var(--border); }
       </details>
       <details>
         <summary>How do I access my plan after paying?</summary>
-        <p>Create or sign in to a TransformerPath account (My TransformerPath). Checkout runs through Stripe; the webhook writes a Purchase and an Entitlement against that account. Sign in on any device to keep access — it is not a browser-only unlock.</p>
+        <p>Create or sign in to a TransformerPath account first (My TransformerPath /sign-up). Then choose a plan. Stripe Checkout writes a Purchase and an Entitlement against that user (Team: against the organization, max_members=10). Sign in on any device — this is not a browser-only unlock and not a shared magic link.</p>
       </details>
       <details>
         <summary>How do Team seats work?</summary>
@@ -344,70 +343,112 @@ table.cmp .n { color:var(--border); }
   </div>
 </footer>
 
+<script src="supabase-config.js"></script>
+<script src="supabase.js" defer></script>
+<script src="tp-entitlement.js" defer></script>
 <script>
 (function(){
   var KEY = 'tp-course-access';
-  var RANK = { learner:1, professional:2, enterprise:3 };
+  var RANK = { learner:1, professional:2, enterprise:3, learning:1, team:3 };
   var TWELVE_MONTHS = 365*24*3600*1000;
-
-  // ── Plan checkout links ──────────────────────────────────────────────
-  // Professional and Team are LIVE Stripe Payment Links. Each "after
-  // payment" redirect must point at
-  //   pricing.html?session_id={CHECKOUT_SESSION_ID}
-  // so course-gate.js can verify the payment server-side (verify-access.js)
-  // and grant the right tier on return. Never add ?unlocked= as the grant
-  // source — it is forgeable.
-  //
-  // NOTE (Learning): the old link that charged $100 was replaced. The link
-  // below was checked live on the Stripe checkout page and renders
-  // "Subscribe to Transformerpath Learning - $199.00 per year", i.e. the
-  // advertised price, billed as a one-time 12-month payment (not a subscription). Professional and
-  // Team remain one-off payments; the pricing copy states that
-  // difference per tier.
-  var PRICE = { learner: 199, professional: 599, enterprise: 1999 };
+  var PRICE = { learner: 199, professional: 599, enterprise: 1999, learning: 199, team: 1999 };
   var LINKS = {
     learner:      'https://buy.stripe.com/4gMbIU2lO5hj1NC5DcfYY03',
     professional: 'https://buy.stripe.com/fZu00c3pScJL1NC3v4fYY01',
-    enterprise:   'https://buy.stripe.com/aFacMY6C4aBD2RG2r0fYY02'
+    enterprise:   'https://buy.stripe.com/aFacMY6C4aBD2RG2r0fYY02',
+    learning:     'https://buy.stripe.com/4gMbIU2lO5hj1NC5DcfYY03',
+    team:         'https://buy.stripe.com/aFacMY6C4aBD2RG2r0fYY02'
   };
+  var TIER_NAME = { learner: 'Learning', learning: 'Learning', professional: 'Professional', enterprise: 'Team', team: 'Team' };
+  var PLAN_ALIAS = { learner: 'learning', enterprise: 'team' };
 
-  var TIER_NAME = { learner: 'Learning', professional: 'Professional', enterprise: 'Team' };
-  function renderBuyCtas(configured){
-    Object.keys(LINKS).forEach(function(tier){
-      var a = document.getElementById('cta' + tier.charAt(0).toUpperCase() + tier.slice(1));
+  function canonicalPlan(p) {
+    p = String(p || 'learning').toLowerCase();
+    return PLAN_ALIAS[p] || p;
+  }
+
+  function sessionPromise() {
+    if (!window.TP || !TP.getSession) return Promise.resolve(null);
+    return TP.getSession().then(function (r) { return r && r.data && r.data.session; }).catch(function () { return null; });
+  }
+
+  function startCheckout(plan, el) {
+    plan = canonicalPlan(plan);
+    sessionPromise().then(function (sess) {
+      if (!sess) {
+        location.href = 'workspace.html?auth=up&next=' + encodeURIComponent('pricing.html?plan=' + plan);
+        return;
+      }
+      if (el) { el.textContent = 'Opening Stripe…'; }
+      fetch('/.netlify/functions/create-checkout', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', authorization: 'Bearer ' + sess.access_token },
+        body: JSON.stringify({ plan: plan })
+      }).then(function (r) { return r.json().catch(function () { return {}; }); })
+        .then(function (j) {
+          if (j && j.url) { location.href = j.url; return; }
+          // Fallback: Payment Link with client_reference_id so the webhook can attach the user.
+          var link = LINKS[plan] || LINKS.learning;
+          var url = link + (link.indexOf('?') >= 0 ? '&' : '?') +
+            'client_reference_id=' + encodeURIComponent(sess.user && sess.user.id || '') +
+            '&prefilled_email=' + encodeURIComponent(sess.user && sess.user.email || '');
+          location.href = url;
+        }).catch(function () {
+          location.href = 'mailto:hello@transformerpath.com?subject=' + encodeURIComponent('TransformerPath ' + (TIER_NAME[plan] || plan));
+        });
+    });
+  }
+
+  function labelCtas(signedIn, configured) {
+    ['learning', 'professional', 'team'].forEach(function (plan) {
+      var id = plan === 'learning' ? 'ctaLearner' : plan === 'professional' ? 'ctaProfessional' : 'ctaEnterprise';
+      var a = document.getElementById(id);
       if (!a) return;
-      var url = LINKS[tier];
-      var name = TIER_NAME[tier] || tier;
-      var ok = configured && url && url.indexOf('REPLACE_WITH') !== 0;
-      if (ok) {
-        a.href = url;
-        a.textContent = 'Unlock ' + name + ' — $' + PRICE[tier] + ' →';
-        a.classList.remove('soon');
-        a.setAttribute('target', '_blank');
-        a.setAttribute('rel', 'noopener');
-      } else {
+      a.setAttribute('data-plan', plan);
+      a.removeAttribute('target');
+      a.setAttribute('rel', 'noopener');
+      if (!configured) {
         a.classList.add('soon');
-        a.href = 'mailto:hello@transformerpath.com?subject=' + encodeURIComponent('TransformerPath ' + name + ' plan');
+        a.href = 'mailto:hello@transformerpath.com?subject=' + encodeURIComponent('TransformerPath ' + TIER_NAME[plan]);
         a.textContent = 'Unavailable — email us to unlock →';
-        a.removeAttribute('target');
-        a.removeAttribute('rel');
+        return;
+      }
+      a.classList.remove('soon');
+      if (signedIn) {
+        a.href = '#checkout-' + plan;
+        a.textContent = 'Choose ' + TIER_NAME[plan] + ' — $' + PRICE[plan] + ' →';
+      } else {
+        a.href = 'workspace.html?auth=up&next=' + encodeURIComponent('pricing.html?plan=' + plan);
+        a.textContent = 'Create account — ' + TIER_NAME[plan] + ' $' + PRICE[plan] + ' →';
       }
     });
   }
-  // Start non-clickable so a click can never open a payment link before we know
-  // the backend can verify it. Enable only once /.netlify/functions/verify-access
-  // (a GET config probe — never a grant) reports configured:true; otherwise stay
-  // on the "email us" state so nobody is charged into a locked-out account.
-  Object.keys(LINKS).forEach(function(tier){
-    var a = document.getElementById('cta' + tier.charAt(0).toUpperCase() + tier.slice(1));
-    if (a) a.classList.add('soon');
-  });
-  fetch('/.netlify/functions/verify-access', { method: 'GET' })
-    .then(function(r){ return r.json().catch(function(){ return {}; }); })
-    .then(function(res){ renderBuyCtas(!!(res && res.configured)); })
-    .catch(function(){ renderBuyCtas(false); });
 
-  // ── Grant detection (mirrors course-gate.js) ────────────────────────
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('[data-plan]');
+    if (!a) return;
+    var plan = a.getAttribute('data-plan');
+    if (!plan) return;
+    e.preventDefault();
+    startCheckout(plan, a);
+  });
+
+  function ready() {
+    var configured = false;
+    Promise.all([
+      fetch('/.netlify/functions/create-checkout', { method: 'GET' }).then(function (r) { return r.json().catch(function () { return {}; }); }).catch(function () { return {}; }),
+      fetch('/.netlify/functions/verify-access', { method: 'GET' }).then(function (r) { return r.json().catch(function () { return {}; }); }).catch(function () { return {}; }),
+      sessionPromise()
+    ]).then(function (pair) {
+      configured = !!(pair[0] && pair[0].configured) || !!(pair[1] && pair[1].configured);
+      labelCtas(!!pair[2], configured);
+      var want = canonicalPlan(new URLSearchParams(location.search).get('plan'));
+      if (want && pair[2] && configured) startCheckout(want, null);
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { setTimeout(ready, 50); });
+  else setTimeout(ready, 50);
+
   function readAccess(){ try { return JSON.parse(localStorage.getItem(KEY) || 'null'); } catch(e){ return null; } }
   function grant(tier){
     var now = Date.now();
@@ -428,46 +469,39 @@ table.cmp .n { color:var(--border); }
   var stripeReturn = params.get('session_id');
   var justGranted = null;
 
-  // Access is granted ONLY after the server verifies a paid Stripe session
-  // (functions/verify-access.js). ?unlocked= and a bare ?session_id= are no
-  // longer trusted to grant access — both were forgeable in the browser.
   function renderBanner() {
     params.delete('unlocked'); params.delete('session_id');
     history.replaceState({}, '', location.pathname + (params.toString() ? '?' + params.toString() : ''));
-
     var current = readAccess();
     if (!(current && current.expiry > Date.now())) return;
-    var label = current.tier === 'enterprise' ? 'Team' : current.tier === 'professional' ? 'Professional' : 'Learning';
+    var label = current.tier === 'enterprise' || current.tier === 'team' ? 'Team' : current.tier === 'professional' ? 'Professional' : 'Learning';
     var b = document.getElementById('unlockBanner');
     if (!b) return;
-    if (justGranted) {
-      b.innerHTML = '✅ You\'re unlocked — ' + label + ' plan is active on this device. <a href="learn.html" style="color:#fff;text-decoration:underline">Start learning →</a>';
-    } else {
-      b.innerHTML = '✅ ' + label + ' plan active on this device, until ' + new Date(current.expiry).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' }) + '. <a href="learn.html" style="color:#fff;text-decoration:underline">Go to Learn →</a>';
-    }
+    b.innerHTML = '✅ ' + label + ' entitlement is on your account. <a href="workspace.html" style="color:#fff;text-decoration:underline">Open My TransformerPath →</a>';
     b.style.display = 'block';
   }
 
   if (stripeReturn) {
-    fetch('/.netlify/functions/verify-access', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ session_id: stripeReturn }) })
-      .then(function (r) { return r.json(); })
-      .then(function (res) {
-        if (res && res.valid) {
-          justGranted = grant(res.tier || 'learner');
-          // Persist the server-issued entitlement token as a cookie so gated
-          // content delivery (/.netlify/functions/masterclass-content) can be
-          // verified server-side. SameSite=Lax + Secure + Path=/ + 12-month
-          // expiry. Not HttpOnly (the client entitlement gate reads it), but
-          // the token is HMAC-signed server-side and cannot be forged; expiry
-          // is enforced server-side. Never logs the token.
-          if (res.entitlement_token) {
-            var e = new Date(); e.setFullYear(e.getFullYear() + 1);
-            document.cookie = 'tp_ent=' + encodeURIComponent(res.entitlement_token) + '; expires=' + e.toUTCString() + '; path=/; SameSite=Lax' + (location.protocol === 'https:' ? '; Secure' : '');
-          }
+    sessionPromise().then(function (sess) {
+      var headers = { 'Content-Type': 'application/json' };
+      if (sess && sess.access_token) headers.authorization = 'Bearer ' + sess.access_token;
+      return fetch('/.netlify/functions/entitle', { method:'POST', headers: headers, body: JSON.stringify({ session_id: stripeReturn }) })
+        .then(function (r) { return r.json(); })
+        .catch(function () {
+          return fetch('/.netlify/functions/verify-access', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ session_id: stripeReturn }) }).then(function (r) { return r.json(); });
+        });
+    }).then(function (res) {
+      if (res && (res.valid || res.stored || res.paid)) {
+        justGranted = grant(res.tier || res.product || res.plan || 'learner');
+        if (res.entitlement_token) {
+          var e = new Date(); e.setFullYear(e.getFullYear() + 1);
+          document.cookie = 'tp_ent=' + encodeURIComponent(res.entitlement_token) + '; expires=' + e.toUTCString() + '; path=/; SameSite=Lax' + (location.protocol === 'https:' ? '; Secure' : '');
         }
-        renderBanner();
-      })
-      .catch(function () { renderBanner(); });
+        location.replace('workspace.html?view=account');
+        return;
+      }
+      renderBanner();
+    }).catch(function () { renderBanner(); });
     return;
   }
 

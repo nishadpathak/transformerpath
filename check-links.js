@@ -17,34 +17,63 @@ function walk(dir, skip = []) {
 const SKIP = ['archive', '_private', 'transformerpath-site', 'dist', 'node_modules', 'functions', '_partials', 'Transformer Equipments'];
 const files = walk('.', SKIP);
 
-// Link target existence: resolve relative to the file's directory.
 // Netlify pretty URLs map /directory → directory.html and /certificates/x →
-// certificates.html (rewrite), so extensionless / trailing-slash targets count
-// as OK when the corresponding .html page exists.
+// certificates.html (rewrite). Extensionless / trailing-slash targets count
+// as OK when the corresponding .html page exists. Also honour explicit aliases
+// from netlify.toml (/me, /grid-lab, /assessments, …).
+const PRETTY = {
+  '/me': 'workspace.html',
+  '/my': 'workspace.html',
+  '/sign-in': 'workspace.html',
+  '/sign-up': 'workspace.html',
+  '/account': 'workspace.html',
+  '/onboarding': 'onboarding.html',
+  '/grid-lab': 'grid-lab.html',
+  '/certificates': 'certificates.html',
+  '/directory': 'directory.html',
+  '/assessments': 'assessments.html',
+  '/pricing': 'pricing.html',
+};
+
 const siteRoot = process.cwd();
-function candidatePaths(resolved) {
-  const out = [resolved];
-  if (resolved.endsWith(path.sep) || resolved.endsWith('/')) {
-    const base = resolved.replace(/[/\\]+$/, '');
-    out.push(base, base + '.html', path.join(base, 'index.html'));
-  } else if (!path.extname(resolved)) {
-    out.push(resolved + '.html', path.join(resolved, 'index.html'));
-  }
-  return out;
-}
+
 function existsTarget(fromFile, target) {
   const clean = target.split('#')[0].split('?')[0].trim();
   if (!clean) return { ok: true };
   if (/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(clean)) return { ok: true }; // protocol (http, mailto, tel, data)
   if (clean.startsWith('//')) return { ok: true };
-  if (clean === '') return { ok: true };
+
   const resolved = clean.startsWith('/')
-    ? path.resolve(siteRoot, clean.slice(1))          // site-absolute (Netlify serves from publish root)
+    ? path.resolve(siteRoot, clean.slice(1))
     : path.resolve(path.dirname(fromFile), clean);
-  for (const cand of candidatePaths(resolved)) {
-    if (fs.existsSync(cand)) return { ok: true, resolved: cand };
+
+  const candidates = [resolved];
+  const trimmed = resolved.replace(/[/\\]+$/, '');
+  if (trimmed !== resolved) candidates.push(trimmed);
+  candidates.push(trimmed + '.html');
+  candidates.push(path.join(trimmed, 'index.html'));
+
+  const relFromRoot = path.posix.normalize(
+    '/' + path.relative(siteRoot, trimmed).split(path.sep).join('/')
+  );
+  if (PRETTY[relFromRoot]) candidates.push(path.resolve(siteRoot, PRETTY[relFromRoot]));
+  if (relFromRoot === '/certificates' || relFromRoot.indexOf('/certificates/') === 0) {
+    candidates.push(path.resolve(siteRoot, 'certificates.html'));
   }
-  return { ok: false, resolved };
+
+  // Walk up: certificates/slug → certificates.html; directory → directory.html
+  let probe = trimmed;
+  while (probe.startsWith(siteRoot) && probe !== siteRoot) {
+    candidates.push(probe);
+    candidates.push(probe + '.html');
+    candidates.push(path.join(probe, 'index.html'));
+    probe = path.dirname(probe);
+  }
+
+  for (let i = 0; i < candidates.length; i++) {
+    if (candidates[i] && fs.existsSync(candidates[i])) return { ok: true, resolved: candidates[i] };
+  }
+  return { ok: false, resolved: resolved };
 }
 
 // Strip JS template literals and string-concat expressions so ${...} and '+...+'
@@ -88,3 +117,5 @@ if (broken) {
      link could never stop a deploy. */
   process.exitCode = 1;
 }
+
+module.exports = { existsTarget };

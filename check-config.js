@@ -91,7 +91,7 @@ check('manufacturers.html schema size = config', schemaSize && +schemaSize[1] ==
   'schema says ' + (schemaSize && schemaSize[1]));
 
 // No stale old-count text anywhere in served pages (520 / "census of 520"/etc).
-const STALE_RE = /(\b520\b[^a-z]{0,20}(manufacturer|makers?|directory))|((census|worldwide census) of 520)|(\b546\b[^a-z]{0,20}(manufacturer|makers?|directory))|((census|worldwide census) of 546)|(546-manufacturer)|(\b709\b[\s-]*manufacturer)|((census|worldwide census) of 709)|(1,?002 transformer makers)/i;
+const STALE_RE = /(\b520\b[^a-z]{0,20}(manufacturer|makers?|directory))|((census|worldwide census) of 520)|(\b546\b[^a-z]{0,20}(manufacturer|makers?|directory))|((census|worldwide census) of 546)|(546-manufacturer)|(\b701\b[\s-]*manufacturer)|(\b709\b[\s-]*manufacturer)|((census|worldwide census) of 709)|(1,?002 transformer makers)/i;
 pages.forEach((f) => {
   const s = pageContentMap.get(f) || '';
   if (STALE_RE.test(s)) {

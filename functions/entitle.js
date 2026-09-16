@@ -86,9 +86,15 @@ exports.handler = async (event) => {
     const email = (session.customer_details && session.customer_details.email) || session.customer_email || null;
     const supabase = client();
 
-    // Link to an existing account if the Stripe customer email already signed up.
-    let userId = null;
-    if (email) {
+    // Prefer the logged-in account (Bearer), then Checkout metadata / client_reference_id, then email match.
+    let userId = (session.metadata && session.metadata.user_id) || session.client_reference_id || null;
+    const authHeader = (event.headers && (event.headers.authorization || event.headers.Authorization)) || '';
+    if (authHeader.toLowerCase().indexOf('bearer ') === 0) {
+      const tok = authHeader.slice(7).trim();
+      const { data: authData } = await supabase.auth.getUser(tok);
+      if (authData && authData.user) userId = authData.user.id;
+    }
+    if (!userId && email) {
       const { data: prof } = await supabase.from('profiles').select('id').eq('email', email).maybeSingle();
       userId = prof ? prof.id : null;
     }

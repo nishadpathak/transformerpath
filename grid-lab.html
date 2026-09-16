@@ -63,8 +63,20 @@
 <main id="main" class="gl-wrap">
   <p style="font-size:.8rem;color:var(--muted)"><a href="learn.html" style="color:var(--accent)">Learn</a> · Grid Lab</p>
   <h1>TransformerPath <span style="color:var(--accent)">Grid Lab</span></h1>
-  <p class="gl-lead">A <b>census simulator</b> — frequency, UHV / 765 kV class, synchronous-area labels, isolated systems — run against the live grid records. Each scenario is COMPLETE, a percent, or NOT STARTED. This is not another 3D part model. Country Grid Lab is later.</p>
-  <div id="gridLabRoot"><p style="color:var(--muted)">Loading scenarios from the census…</p></div>
+  <p class="gl-lead">A <b>census simulator</b> — frequency, UHV / 765 kV class, synchronous-area labels, isolated systems — run against the live grid records. Each scenario is COMPLETE, a percent, or NOT STARTED. This is not another 3D part model. Country Grid Lab is later. Independently live at <code>/grid-lab</code>.</p>
+  <div id="gridLabRoot">
+<!-- GRID_LAB_STATIC_BEGIN -->
+    <noscript><p>JavaScript is off — scenario titles below are still the live catalog.</p></noscript>
+    <div class="gl-grid">
+      <article class="gl-card"><h3>50 Hz and 60 Hz worlds</h3><p class="gl-meta">Grid systems · NOT STARTED</p></article>
+      <article class="gl-card"><h3>UHV and 765 kV class</h3><p class="gl-meta">Grid systems · NOT STARTED</p></article>
+      <article class="gl-card"><h3>Synchronous areas</h3><p class="gl-meta">Grid systems · NOT STARTED</p></article>
+      <article class="gl-card"><h3>400 kV class grids</h3><p class="gl-meta">Grid systems · NOT STARTED</p></article>
+      <article class="gl-card"><h3>Isolated systems</h3><p class="gl-meta">Grid systems · NOT STARTED</p></article>
+      <article class="gl-card"><h3>Highest voltage in the census</h3><p class="gl-meta">Grid systems · NOT STARTED</p></article>
+    </div>
+<!-- GRID_LAB_STATIC_END -->
+  </div>
 </main>
 <script src="supabase-config.js"></script>
 <script src="supabase.js" defer></script>

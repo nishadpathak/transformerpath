@@ -168,3 +168,25 @@ const out = {
 };
 fs.writeFileSync('data/grid-lab.json', JSON.stringify(out, null, 2) + '\n');
 console.log('grid-lab.json: ' + scenarios.length + ' scenarios from ' + GRIDS.length + ' census countries');
+
+function stampHtml(sc) {
+  const cards = sc.map((s) =>
+    '      <article class="gl-card" id="sc-' + s.id + '"><h3>' + s.title + '</h3>' +
+    '<p>' + s.summary + '</p><p class="gl-meta">' + s.minutes + ' min · ' + s.family +
+    ' · NOT STARTED</p></article>'
+  ).join('\n');
+  const block =
+    '    <noscript><p>JavaScript is off — scenario titles below are still the live catalog.</p></noscript>\n' +
+    '    <div class="gl-grid">\n' + cards + '\n    </div>\n';
+  const page = fs.readFileSync('grid-lab.html', 'utf8');
+  const next = page.replace(
+    /<!-- GRID_LAB_STATIC_BEGIN -->[\s\S]*?<!-- GRID_LAB_STATIC_END -->/,
+    '<!-- GRID_LAB_STATIC_BEGIN -->\n' + block + '<!-- GRID_LAB_STATIC_END -->'
+  );
+  if (next === page) console.warn('grid-lab.html: static markers missing; skip stamp');
+  else {
+    fs.writeFileSync('grid-lab.html', next);
+    console.log('grid-lab.html: stamped ' + sc.length + ' scenario cards');
+  }
+}
+stampHtml(scenarios);
