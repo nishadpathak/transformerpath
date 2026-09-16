@@ -66,8 +66,8 @@ document.addEventListener('DOMContentLoaded', function(){
           return;
         }
         root.innerHTML = rows.length
-          ? rows.map(function(r){ return '<div class="ws-row"><a href="certificates/'+encodeURIComponent(r.slug)+'">'+esc(r.title)+'</a><span class="ws-sub">'+esc(r.how_earned||'')+'</span></div>'; }).join('')
-          : '<p class="ws-sub">No learning records yet. Complete a <a href="grid-lab.html">Grid Lab</a> scenario.</p>';
+          ? rows.map(function(r){ return '<div class="ws-row"><a href="/certificates/'+encodeURIComponent(r.slug)+'">'+esc(r.title)+'</a><span class="ws-sub">'+esc(r.how_earned||'')+'</span></div>'; }).join('')
+          : '<p class="ws-sub">No learning records yet. Complete a <a href="/grid-lab.html">Grid Lab</a> scenario.</p>';
       });
     });
   }
