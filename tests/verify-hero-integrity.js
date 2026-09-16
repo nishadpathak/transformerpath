@@ -55,7 +55,9 @@ check('Homepage uses the 3D hero stage', HOME.includes('class="hero-stage"') && 
 check('Hero 3D page is present', fs.existsSync('hero-3d.html'));
 check('Hero 3D core script is present', fs.existsSync('tp-3d-core.js'));
 check('Hero 3D power assembly is present', fs.existsSync('tp-power-assembly.js'));
-check('Hero tour video is present', fs.existsSync('media/power-transformer-3d-tour.mp4'));
+check('Hero tour video is present', fs.existsSync('media/platform-features-tour.mp4'));
+check('Hero tour poster is present', fs.existsSync('media/platform-features-poster.jpg'));
+check('Hero CTA opens the platform tour', HOME.includes('Watch the platform tour') && HOME.includes('media/platform-features-tour.mp4'));
 
 console.log('\n=== 2. FRESHNESS INTEGRITY ===');
 const FRESH = JSON.parse(fs.readFileSync('data/freshness.json', 'utf8'));
