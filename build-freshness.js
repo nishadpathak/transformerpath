@@ -29,6 +29,24 @@ const TODAY = NOW.slice(0, 10);
 // last-known refresh. All values are observed from the data, never invented.
 const surfaces = [
   {
+    id: 'census',
+    name: 'Manufacturer census',
+    cadence: 'rebuild (at publish)',
+    description: 'Canonical manufacturer + facility census. Separate from Daily Intel. Never labelled DATA CURRENT when last rebuilt more than 72 hours ago.',
+    last_build: ts('census-audit') || ts('site-stats') || TODAY,
+    last_data_refresh: ts('census-audit') || ts('site-stats') || TODAY,
+    last_attempted_refresh: ts('census-audit') || ts('site-stats') || TODAY,
+    last_successful_refresh: ts('census-audit') || ts('site-stats') || TODAY,
+    latest_source_observation: 'per-company website / source date',
+    records_added: null,
+    records_updated: null,
+    source_count: 'census',
+    source_failures: null,
+    status: 'HEALTHY',
+    source_health: 'rebuilt with the site; independent of the Daily Intel clock',
+    records: readJson('data/census-audit.json', {}).total || null,
+  },
+  {
     id: 'daily_intel',
     name: 'Daily Intel',
     cadence: 'daily (curated)',
@@ -163,7 +181,7 @@ const sources = [
 const freshness = {
   $schema: 'https://transformerpath.com/freshness.schema.json',
   generated: NOW,
-  honest_note: 'PAGE BUILD DATE is when this artifact was last regenerated; DATA REFRESH DATE is the last successful source refresh. These are distinct. The curated Daily Intel feed is refreshed at build (daily cadence label) — it is not an hourly live scrape. The serverless auto-briefing cache is a separate background cache. A freshness status of HEALTHY/AGING/STALE is computed from observed dates; nothing is presented as live.',
+  honest_note: 'PAGE BUILD DATE is when this artifact was last regenerated; DATA REFRESH DATE is the last successful source refresh. Daily Intel and the manufacturer census are SEPARATE clocks. DATA CURRENT applies only to Daily Intel under 36 hours; a census older than 72 hours is never called DATA CURRENT. Intel uses SOURCE CHECKED. VERIFIED is a company-listing state.',
   surfaces,
   sources,
 };

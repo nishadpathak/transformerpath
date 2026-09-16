@@ -232,7 +232,7 @@ a.plain:hover { text-decoration:underline; }
           statusLabel = 'REFRESH DELAYED';
           badgeColor = 'var(--amber)';
         }
-        el.innerHTML = '<span style="color:' + badgeColor + ';font-weight:800;letter-spacing:.5px">● ' + statusLabel + '</span> &middot; Last Refreshed: <b style="color:var(--text)">' + dstr + '</b>';
+        el.innerHTML = '<span style="color:' + badgeColor + ';font-weight:800;letter-spacing:.5px">● ' + statusLabel + '</span> &middot; SOURCE CHECKED &middot; Daily Intel refreshed: <b style="color:var(--text)">' + dstr + '</b>';
       }).catch(function () { el.textContent = 'Status: Refreshed at build'; });
     })();
   </script>
@@ -351,7 +351,7 @@ a.plain:hover { text-decoration:underline; }
   <div style="max-width:860px;margin:0 auto 22px;display:flex;flex-wrap:wrap;gap:10px">
     <a class="btn btn-amber btn-sm" href="subscribe.html" data-track="newsletter_signup" data-track-context="intel">Receive the Daily Brief →</a>
     <a class="btn btn-outline btn-sm" href="rfq.html" data-track="rfq_started" data-track-context="intel">Looking for suppliers? Submit an RFQ →</a>
-    <a class="btn btn-outline btn-sm" href="manufacturers.html" data-track="explore_manufacturers" data-track-context="intel">Explore 709 transformer manufacturers →</a>
+    <a class="btn btn-outline btn-sm" href="manufacturers.html" data-track="explore_manufacturers" data-track-context="intel">Explore <span data-stat="manufacturers">911</span> transformer manufacturers →</a>
     <a class="btn btn-outline btn-sm" href="workspace.html" data-track="account_created" data-track-context="intel">Create a free account →</a>
     <a class="btn btn-outline btn-sm" href="events.html">Events calendar →</a>
     <a class="btn btn-outline btn-sm" href="webinars.html">Webinars →</a>
@@ -2076,6 +2076,7 @@ tabList.forEach((t, idx) => {
 </footer>
 <script src="intel-feed-ui.js?v=1" defer></script>
 <script src="follow-button.js" defer></script>
+<script src="site-stats.js?v=7" defer></script>
 <script src="analytics.js?v=7" defer></script>
 <script src="tp-freshness.js?v=7" defer></script>
 <script src="tp-feedback.js?v=7" defer></script>

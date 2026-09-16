@@ -33,7 +33,7 @@ function dataStat(html, key) {
 }
 
 const homeMakers = dataStat(HOME, 'manufacturers');
-const homeMkgCountries = dataStat(HOME, 'manufacturingCountries');
+const homeMarkets = dataStat(HOME, 'gridMarkets');
 const homeGrids = dataStat(HOME, 'countries');
 const homeProjects = dataStat(HOME, 'projects');
 const homeTenders = dataStat(HOME, 'tenders');
@@ -43,8 +43,11 @@ const homeEvents = dataStat(HOME, 'upcomingEvents');
 
 check('Homepage manufacturers matches site-stats', homeMakers === STATS.manufacturers, homeMakers + ' vs ' + STATS.manufacturers);
 check('Homepage manufacturers matches config', homeMakers === CFG.counters.manufacturers, homeMakers + ' vs ' + CFG.counters.manufacturers);
-check('Homepage manufacturingCountries matches site-stats', homeMkgCountries === STATS.manufacturingCountries, homeMkgCountries + ' vs ' + STATS.manufacturingCountries);
-check('Homepage manufacturingCountries matches config', homeMkgCountries === CFG.counters.manufacturingCountries, homeMkgCountries + ' vs ' + CFG.counters.manufacturingCountries);
+check('Homepage hero Markets tile uses gridMarkets', homeMarkets === STATS.gridMarkets, homeMarkets + ' vs ' + STATS.gridMarkets);
+const homeMkgCountries = dataStat(HOME, 'manufacturingCountries');
+if (homeMkgCountries != null) {
+  check('Homepage manufacturingCountries (if present) matches site-stats', homeMkgCountries === STATS.manufacturingCountries, homeMkgCountries + ' vs ' + STATS.manufacturingCountries);
+}
 check('Homepage grids matches site-stats', homeGrids === STATS.countries, homeGrids + ' vs ' + STATS.countries);
 check('Homepage projects matches site-stats', homeProjects === STATS.projects, homeProjects + ' vs ' + STATS.projects);
 check('Homepage tenders matches site-stats', homeTenders === STATS.tenders, homeTenders + ' vs ' + STATS.tenders);

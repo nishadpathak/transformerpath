@@ -145,4 +145,23 @@ const current = {
     ' operators — voltages, frequencies and official links.',
 };
 fs.writeFileSync('data/site-stats.json', JSON.stringify(current, null, 2) + '\n');
+
+// Keep config.counters in lockstep so check-config / hero gates cannot drift.
+try {
+  const cfgPath = 'data/config.json';
+  const cfg = JSON.parse(fs.readFileSync(cfgPath, 'utf8'));
+  cfg.counters = Object.assign({}, cfg.counters, {
+    manufacturers: current.manufacturers,
+    manufacturingCountries: current.manufacturingCountries,
+    gridCountries: current.countries,
+    gridMarkets: current.gridMarkets,
+    gridOperators: current.gridOperators,
+    events: current.events,
+    upcomingEvents: current.upcomingEvents,
+    projects: current.projects,
+    tenders: current.tenders,
+  });
+  fs.writeFileSync(cfgPath, JSON.stringify(cfg, null, 2) + '\n');
+} catch (e) { console.warn('site-stats: could not sync config.counters:', e.message); }
+
 console.log('site-stats.json wrote: ' + makers + ' manufacturers / ' + factoryCount + ' sourced plants / ' + CANON_FACILITIES.length + ' facility records / ' + totalCapabilities + ' capabilities / ' + mkgCountries + ' countries / ' + avgCompleteness + '% completeness / ' + totalSourcedPoints + ' sourced points');

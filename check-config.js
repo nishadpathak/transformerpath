@@ -65,8 +65,15 @@ function dataStatFallback(html, key) {
 }
 check('index data-stat="manufacturers" fallback = config',
   dataStatFallback(HOME, 'manufacturers') === CFG.counters.manufacturers);
-check('index data-stat="manufacturingCountries" fallback = config',
-  dataStatFallback(HOME, 'manufacturingCountries') === CFG.counters.manufacturingCountries);
+// Hero is capped to Companies, Markets, Projects, Tenders. manufacturingCountries
+// stays canonical in site-stats / directory — not a homepage hero tile.
+const homeMfgCountries = dataStatFallback(HOME, 'manufacturingCountries');
+if (homeMfgCountries != null) {
+  check('index data-stat="manufacturingCountries" fallback = config (if present)',
+    homeMfgCountries === CFG.counters.manufacturingCountries);
+}
+check('index data-stat="gridMarkets" fallback = site-stats',
+  dataStatFallback(HOME, 'gridMarkets') === STATS.gridMarkets);
 check('index data-stat="countries" fallback = config',
   dataStatFallback(HOME, 'countries') === CFG.counters.gridCountries);
 // Homepage "Industry pulse" metrics must show the canonical project/tender/award
@@ -84,7 +91,7 @@ check('manufacturers.html schema size = config', schemaSize && +schemaSize[1] ==
   'schema says ' + (schemaSize && schemaSize[1]));
 
 // No stale old-count text anywhere in served pages (520 / "census of 520"/etc).
-const STALE_RE = /(\b520\b[^a-z]{0,20}(manufacturer|makers?|directory))|((census|worldwide census) of 520)|(\b546\b[^a-z]{0,20}(manufacturer|makers?|directory))|((census|worldwide census) of 546)|(546-manufacturer)/i;
+const STALE_RE = /(\b520\b[^a-z]{0,20}(manufacturer|makers?|directory))|((census|worldwide census) of 520)|(\b546\b[^a-z]{0,20}(manufacturer|makers?|directory))|((census|worldwide census) of 546)|(546-manufacturer)|(\b709\b[\s-]*manufacturer)|((census|worldwide census) of 709)|(1,?002 transformer makers)/i;
 pages.forEach((f) => {
   const s = pageContentMap.get(f) || '';
   if (STALE_RE.test(s)) {

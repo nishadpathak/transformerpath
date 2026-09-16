@@ -807,12 +807,15 @@
       <div class="hero-copy">
         <div class="hero-live-pill" id="hero-live-pill">
           <span class="live-dot" id="hero-live-dot" aria-hidden="true"></span>
-          <span class="live-badge-text" id="hero-live-status">DATA CURRENT</span>
+          <span class="live-badge-text" id="hero-intel" data-tp-clock="intel">Daily Intel · SOURCE CHECKED</span>
           <span class="live-sep">&middot;</span>
-          <span id="hero-live-date" data-tp-fresh="refreshed">Canonical database refreshed 13 Sep 2026</span>
+          <span id="hero-live-date" data-tp-clock="intel-date">Intel refresh date on load</span>
+        </div>
+        <div class="hero-live-pill" id="hero-census-pill" style="margin-top:8px">
+          <span class="live-badge-text" id="hero-census" data-tp-clock="census">Census rebuilt — date on load</span>
         </div>
         <h2>Where the world's <span>transformer industry</span> stays ahead.</h2>
-        <p class="lead">Industry intelligence &middot; Engineering &middot; Manufacturers &middot; Markets &middot; Tools.</p>
+        <p class="lead">Industry intelligence, the manufacturer census, grid markets and engineering tools — 3D is a working demo beneath this briefing, not the product.</p>
         <div class="hero-ctas">
           <a href="intel.html" class="btn btn-amber">Read today’s briefing →</a>
           <a href="manufacturers.html" class="hero-secondary">or browse the manufacturer census</a>
@@ -826,7 +829,7 @@
           </form>
           <div class="hero-search-pills">
             <span class="pill-tag">Suggested:</span>
-            <a href="search.html?q=765+kV" class="pill">765 kV manufacturers</a>
+            <a href="directory?q=765+kV" class="pill">765 kV manufacturers</a>
             <a href="search.html?q=Transformerboard" class="pill">Transformerboard suppliers</a>
             <a href="search.html?q=OLTC" class="pill">OLTC manufacturers</a>
             <a href="search.html?q=Saudi+Arabia" class="pill">Saudi Arabia</a>
@@ -857,19 +860,19 @@
         <div class="stat-grid-primary">
           <a href="manufacturers.html" class="stat-card" title="Browse all 911 transformer companies">
             <div class="stat-card-top"><b data-stat="manufacturers">911</b><span class="stat-card-arrow" aria-hidden="true">&rarr;</span></div>
-            <span class="stat-label">Transformer Companies</span>
+            <span class="stat-label">Companies</span>
           </a>
-          <a href="manufacturers.html?view=countries" class="stat-card" title="Explore manufacturing across 88 countries">
-            <div class="stat-card-top"><b data-stat="manufacturingCountries">88</b><span class="stat-card-arrow" aria-hidden="true">&rarr;</span></div>
-            <span class="stat-label">Manufacturing Countries</span>
+          <a href="markets.html" class="stat-card" title="Open country market hubs">
+            <div class="stat-card-top"><b data-stat="gridMarkets">151</b><span class="stat-card-arrow" aria-hidden="true">&rarr;</span></div>
+            <span class="stat-label">Markets</span>
           </a>
-          <a href="projects.html" class="stat-card" title="Track 306 global grid and substation projects">
+          <a href="projects.html" class="stat-card" title="Track global grid and substation projects">
             <div class="stat-card-top"><b data-stat="projects">306</b><span class="stat-card-arrow" aria-hidden="true">&rarr;</span></div>
-            <span class="stat-label">Global Projects Tracked</span>
+            <span class="stat-label">Projects</span>
           </a>
-          <a href="grids.html" class="stat-card" title="Survey 151 national grid systems">
-            <div class="stat-card-top"><b data-stat="countries">151</b><span class="stat-card-arrow" aria-hidden="true">&rarr;</span></div>
-            <span class="stat-label">National Grids Mapped</span>
+          <a href="tenders.html" class="stat-card" title="Transformer-relevant tenders">
+            <div class="stat-card-top"><b data-stat="tenders">150</b><span class="stat-card-arrow" aria-hidden="true">&rarr;</span></div>
+            <span class="stat-label">Tenders</span>
           </a>
         </div>
         <div class="stat-strip">
@@ -960,7 +963,7 @@
       <a class="card reveal" href="grids.html"><span class="emoji" aria-hidden="true">🌐</span><h3>World Grids →</h3><p><span data-stat="countries">151</span> countries, <span data-stat="gridOperators">166</span> operators — voltages, frequencies and official links.</p></a>
       <a class="card reveal" href="map.html"><span class="emoji" aria-hidden="true">🗺️</span><h3>Industry Map →</h3><p>Zoom a world map of manufacturers, utilities, suppliers and events. Pins are country-level unless a site coordinate exists.</p></a>
       <a class="card reveal" href="events.html"><span class="emoji" aria-hidden="true">📅</span><h3>Events →</h3><p>Every major power & transformer exhibition through 2028, with one-click hotel and flight booking.</p></a>
-      <a class="card reveal" href="manufacturers.html"><span class="emoji" aria-hidden="true">🏭</span><h3>Manufacturers →</h3><p>A growing sourced directory of 1,002 transformer makers — power, distribution and dry-type — country by country.</p></a>
+      <a class="card reveal" href="manufacturers.html"><span class="emoji" aria-hidden="true">🏭</span><h3>Manufacturers →</h3><p>A growing sourced directory of <span data-stat="manufacturers">911</span> transformer makers — power, distribution and dry-type — country by country.</p></a>
       <a class="card reveal" href="markets.html"><span class="emoji" aria-hidden="true">🌍</span><h3>Markets →</h3><p>Country intelligence hubs — grid operators, manufacturers, projects, events and technical context, market by market.</p></a>
       <a class="card reveal" href="learn.html"><span class="emoji" aria-hidden="true">🎓</span><h3>Learn →</h3><p>A 26-chapter design masterclass — 3D models and a live design calculator, included with 12 months access.</p></a>
       <a class="card reveal" href="knowledge.html"><span class="emoji" aria-hidden="true">💡</span><h3>Knowledge →</h3><p>Clear, source-referenced answers to transformer-engineering questions, from cooling codes to DGA and bushings.</p></a>
@@ -1083,34 +1086,45 @@ document.querySelectorAll('#mainNav a').forEach(a=>a.addEventListener('click',()
     }).join('');
     // Canonical refresh date & 3-tier freshness calculation
     fetch('data/freshness.json',{cache:'no-cache'}).then(function(r){ return r.json().catch(function(){ return {}; }); }).then(function(d){
-      const di=(d.surfaces||[]).find(function(s){ return s.id==='daily_intel'; })||{};
-      const date=di.last_successful_refresh||di.last_data_refresh||di.last_build;
-      if(!date) return;
-      const dt=new Date(date);
-      const dstr=isNaN(dt)?date:dt.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
-      
-      // Calculate freshness tier: <36h: CURRENT, 36-72h: DELAYED, >72h: STALE
-      const ageHours = !isNaN(dt) ? (Date.now() - dt.getTime()) / (1000 * 60 * 60) : 0;
-      let statusLabel = 'DATA CURRENT';
-      let dotColor = '#1a9d4a';
-      if (ageHours > 72) {
-        statusLabel = 'DATA STALE';
-        dotColor = '#94a3b8';
-      } else if (ageHours > 36) {
-        statusLabel = 'REFRESH DELAYED';
-        dotColor = '#e0a800';
+      function ageH(iso){
+        if(!iso) return null;
+        var t = Date.parse(iso);
+        if(isNaN(t) && /^\d{4}-\d{2}-\d{2}$/.test(String(iso))) t = Date.parse(iso+'T12:00:00Z');
+        if(isNaN(t)) return null;
+        return (Date.now()-t)/3600000;
       }
+      function fmt(iso){
+        if(!iso) return '';
+        var dt=new Date(/^\d{4}-\d{2}-\d{2}$/.test(String(iso))?iso+'T12:00:00Z':iso);
+        return isNaN(dt)?iso:dt.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+      }
+      const di=(d.surfaces||[]).find(function(s){ return s.id==='daily_intel'; })||{};
+      const ce=(d.surfaces||[]).find(function(s){ return s.id==='census'; })||{};
+      const intelIso=di.last_successful_refresh||di.last_data_refresh||di.last_build;
+      const censusIso=ce.last_successful_refresh||ce.last_data_refresh||ce.last_build;
+      const ih=ageH(intelIso);
+      let intelLabel='Daily Intel · SOURCE CHECKED';
+      let dotColor='#1a9d4a';
+      if(ih==null){ intelLabel='Daily Intel · refresh unknown'; dotColor='#94a3b8'; }
+      else if(ih>72){ intelLabel='Daily Intel · DATA STALE'; dotColor='#94a3b8'; }
+      else if(ih>36){ intelLabel='Daily Intel · REFRESH DELAYED'; dotColor='#e0a800'; }
+      else { intelLabel='Daily Intel · DATA CURRENT · SOURCE CHECKED'; }
+      const ch=ageH(censusIso);
+      let censusLabel='Census rebuilt '+(fmt(censusIso)||'date unknown');
+      if(ch!=null && ch>72) censusLabel='Census rebuilt '+fmt(censusIso)+' · not labelled current (>'+Math.round(ch)+'h)';
 
-      const pillStatus = document.getElementById('hero-live-status');
-      const pillDate = document.getElementById('hero-live-date');
-      const pillDot = document.getElementById('hero-live-dot');
-      if (pillStatus) pillStatus.textContent = statusLabel;
-      if (pillDate) pillDate.textContent = 'Canonical database refreshed ' + dstr;
-      if (pillDot) pillDot.style.background = dotColor;
+      const pillStatus=document.getElementById('hero-intel');
+      const pillDate=document.getElementById('hero-live-date');
+      const pillDot=document.getElementById('hero-live-dot');
+      const censusEl=document.getElementById('hero-census');
+      if(pillStatus) pillStatus.textContent=intelLabel;
+      if(pillDate) pillDate.textContent=intelIso?('Intel refreshed '+fmt(intelIso)):'';
+      if(pillDot) pillDot.style.background=dotColor;
+      if(censusEl) censusEl.textContent=censusLabel;
 
       if(sub){
         const latestSrc = feed.honesty && feed.honesty.latest_source_date;
-        sub.innerHTML=(latestSrc?'Latest sourced item <b>'+latestSrc+'</b> · ':'')+'desk refresh <b>'+dstr+'</b> ('+statusLabel+'). Dates are on the source, not this visit. <a href="intel.html" style="color:var(--accent)">Open Daily Intel →</a>';
+        sub.innerHTML=(latestSrc?'Latest sourced item <b>'+latestSrc+'</b> · ':'')+'Daily Intel <b>'+(fmt(intelIso)||'—')+'</b> · census rebuilt <b>'+(fmt(censusIso)||'—')+'</b>. These clocks are separate. <a href="intel.html" style="color:var(--accent)">Open Daily Intel →</a>';
       }
     }).catch(function(){});
   }).catch(()=>{});
