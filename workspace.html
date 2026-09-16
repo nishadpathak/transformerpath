@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Your Workspace — TransformerPath</title>
-<meta name="description" content="Sign in to TransformerPath to keep your transformer designs, saved content, notes, follows and learning progress — on any device.">
+<title>My TransformerPath — Learner Profile | TransformerPath</title>
+<meta name="description" content="My TransformerPath: your Learner Profile — public name, Grid Lab progress, Skills Passport, saved work and account entitlement. One account, combinable roles: Learner, Buyer, Supplier.">
 <link rel="canonical" href="https://transformerpath.com/workspace.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TransformerPath">
-<meta property="og:title" content="Your Workspace — TransformerPath">
-<meta property="og:description" content="Sign in to TransformerPath to keep your transformer designs, saved content, notes, follows and learning progress.">
+<meta property="og:title" content="My TransformerPath — Learner Profile">
+<meta property="og:description" content="Sign in to TransformerPath to keep your learning identity, Grid Lab progress and entitlements on any device.">
 <meta property="og:url" content="https://transformerpath.com/workspace.html">
 <meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -44,6 +44,14 @@
   .ws-tag { background: var(--bg); border: 1px solid var(--border); border-radius: 999px; padding: 4px 12px; font-size: .8rem; color: var(--text); }
   .ws-note-title { font-weight: 700; color: var(--ink); }
   .ws-plus { color: var(--bg); }
+  .hub-tabs { display:flex; flex-wrap:wrap; gap:6px; margin:0 0 18px; border-bottom:1px solid var(--border); padding-bottom:10px; }
+  .hub-tabs a { padding:7px 12px; border-radius:8px; font-size:.84rem; font-weight:700; color:var(--muted); text-decoration:none; }
+  .hub-tabs a.on, .hub-tabs a:hover { background:var(--navy); color:#fff; }
+  .hub-panel[hidden] { display:none; }
+  .ws-idgrid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:10px; }
+  .ws-idbox { background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:12px; }
+  .ws-idbox .lbl { font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); font-weight:700; }
+  .auth-card select { width:100%; padding:12px 14px; border:1px solid var(--border); border-radius:8px; font-size:.95rem; font-family:inherit; background:var(--bg); color:var(--text); }
 </style>
     <link rel="stylesheet" href="tp-nav.css?v=14">
   <link rel="stylesheet" href="tp-feedback.css?v=14">
@@ -126,8 +134,10 @@
   <script src="tp-pwa.js?v=7" defer></script>
 </header>
 <main id="main" tabindex="-1" class="ws-wrap">
-  <h1>Engineering Workspace &amp; Account</h1>
-  <p class="ws-lead">Your professional engineering hub: manage saved transformer designs, project workspaces, BOM &amp; costing, PDF reports, client files, and followed market intelligence.</p>
+  <h1>My TransformerPath</h1>
+  <p class="ws-lead">Your Learner Profile — a public name, not a student scoreboard. One account with combinable roles: Learner, Buyer, Supplier. Progress and entitlements follow the account, not one browser.</p>
+
+  <div id="tpOnboard" hidden></div>
 
   <div class="auth-card" id="tpAuth">
     <div class="auth-tabs">
@@ -148,7 +158,6 @@
       <input id="suEmail" name="email" type="email" autocomplete="email" required>
       <label for="suPass">Password</label>
       <input id="suPass" name="pass" type="password" autocomplete="new-password" minlength="8" required>
-      <input id="suPass" name="pass" type="password" autocomplete="new-password" minlength="8" required>
       <button class="btn btn-amber" type="submit">Create account</button>
       <p class="auth-note">Use 8+ characters. Your password is hashed and stored securely.</p>
     </form>
@@ -161,61 +170,120 @@
       <h2>Signed in as <span id="tpName">—</span></h2>
       <button class="btn btn-outline btn-sm" id="tpSignOut" type="button">Sign out</button>
     </div>
+    <p class="ws-sub" style="margin:0 0 12px">Plan: <b data-tp-plan-label>Free</b> · Roles: <span id="tpRoles">LEARNER</span></p>
 
-    <!-- Professional Engineering Suite -->
-    <div class="ws-sec">
-      <h3>⚡ Professional Engineering Suite</h3>
-      <p class="ws-sub" style="font-size:.82rem;color:var(--muted);margin:0 0 12px">Integrated calculation, costing, testing and adaptation tools for practicing electrical and transformer design engineers.</p>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:12px">
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px">
-          <div style="font-weight:700;font-size:.9rem;color:var(--ink);margin-bottom:4px">Design Calculator &amp; Revisions</div>
-          <div style="font-size:.78rem;color:var(--muted);margin-bottom:10px">IEC 60076 electromagnetic core &amp; winding sizing with parameter histories.</div>
-          <a href="calculator.html" class="btn btn-amber btn-sm" style="font-size:.75rem">Open Calculator →</a>
+    <nav class="hub-tabs" id="hubTabs" aria-label="My TransformerPath">
+      <a href="#overview" class="on">Overview</a>
+      <a href="#learning">Learning</a>
+      <a href="#grid-lab">Grid Lab</a>
+      <a href="#skills">Skills</a>
+      <a href="#saved">Saved</a>
+      <a href="#certificates">Certificates</a>
+      <a href="#rfqs" id="tabRfqs" hidden>RFQs</a>
+      <a href="#supplier" id="tabSupplier" hidden>Supplier Dashboard</a>
+    </nav>
+
+    <div id="panel-overview" class="hub-panel">
+      <div class="ws-sec">
+        <h3>Identity</h3>
+        <div class="ws-idgrid">
+          <div class="ws-idbox"><div class="lbl">Public name</div><div id="idPublicName">—</div></div>
+          <div class="ws-idbox"><div class="lbl">Learning level</div><div id="idLevel">—</div></div>
+          <div class="ws-idbox"><div class="lbl">Interests</div><div id="idInterest">—</div></div>
+          <div class="ws-idbox"><div class="lbl">Entitlement</div><div id="idPlan">Free</div></div>
         </div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px">
-          <div style="font-weight:700;font-size:.9rem;color:var(--ink);margin-bottom:4px">BOM &amp; Active Material Costing</div>
-          <div style="font-size:.78rem;color:var(--muted);margin-bottom:10px">Active weight models: CRGO steel, copper, oil, tank steel &amp; total active cost.</div>
-          <a href="calculator.html#costing" class="btn btn-outline btn-sm" style="font-size:.75rem">Costing Engine →</a>
-        </div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px">
-          <div style="font-weight:700;font-size:.9rem;color:var(--ink);margin-bottom:4px">Factory Test Report Builder</div>
-          <div style="font-size:.78rem;color:var(--muted);margin-bottom:10px">Generate routine &amp; type test certificates with IEC/IEEE tolerance validation.</div>
-          <a href="test-report.html" class="btn btn-outline btn-sm" style="font-size:.75rem">Test Bay Report →</a>
-        </div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px">
-          <div style="font-weight:700;font-size:.9rem;color:var(--ink);margin-bottom:4px">Country Design Adapter</div>
-          <div style="font-size:.78rem;color:var(--muted);margin-bottom:10px">Auto-adapt designs for 196 countries: 50/60 Hz, vector groups, grid codes.</div>
-          <a href="country-designer.html" class="btn btn-outline btn-sm" style="font-size:.75rem">Country Adapter →</a>
-        </div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px">
-          <div style="font-weight:700;font-size:.9rem;color:var(--ink);margin-bottom:4px">Side-by-Side Design Comparison</div>
-          <div style="font-size:.78rem;color:var(--muted);margin-bottom:10px">Evaluate competing designs: losses, capital cost, efficiency &amp; total cost of ownership.</div>
-          <a href="compare.html" class="btn btn-outline btn-sm" style="font-size:.75rem">Compare Designs →</a>
-        </div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px">
-          <div style="font-weight:700;font-size:.9rem;color:var(--ink);margin-bottom:4px">3D Explorer &amp; Core Topology</div>
-          <div style="font-size:.78rem;color:var(--muted);margin-bottom:10px">Interactive spatial 3D inspection of core limbs, windings, tap changers and bushings.</div>
-          <a href="explorer.html" class="btn btn-outline btn-sm" style="font-size:.75rem">3D Explorer →</a>
+        <form id="nameForm" style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+          <input name="public_name" maxlength="80" placeholder="Update public name" style="flex:1;min-width:180px;padding:8px 10px;border:1px solid var(--border);border-radius:8px">
+          <button class="btn btn-outline btn-sm" type="submit">Save name</button>
+        </form>
+        <p class="ws-sub" style="margin-top:10px">One account — combinable flags:</p>
+        <form id="rolesForm" class="ws-tags" style="margin-top:6px">
+          <label class="ws-tag"><input type="checkbox" name="role" value="LEARNER"> isLearner</label>
+          <label class="ws-tag"><input type="checkbox" name="role" value="BUYER"> isBuyer</label>
+          <label class="ws-tag"><input type="checkbox" name="role" value="SUPPLIER"> isSupplier</label>
+          <button class="btn btn-outline btn-sm" type="submit">Save roles</button>
+        </form>
+      </div>
+      <div class="ws-sec">
+        <h3>Your Transformer Path</h3>
+        <div id="tpChecklist"></div>
+      </div>
+      <div class="ws-sec">
+        <h3>Recommendations</h3>
+        <div id="tpRecs"></div>
+      </div>
+      <div class="ws-sec">
+        <h3>Activity</h3>
+        <div id="tpActivity"></div>
+      </div>
+    </div>
+
+    <div id="panel-learning" class="hub-panel" hidden>
+      <div class="ws-sec"><h3>My Learning</h3><div id="tpProgress"></div></div>
+      <div class="ws-sec"><h3>3D Labs</h3><p class="ws-sub">Interactive 3D is a working demo under the industry platform — not Country Grid Lab.</p><a class="btn btn-outline btn-sm" href="explorer.html">Open 3D explorer →</a></div>
+      <div class="ws-sec"><h3>Knowledge</h3><p class="ws-sub">Masterclass, Design Engineer Track, knowledge library.</p><a class="btn btn-outline btn-sm" href="learn.html">Open Learn →</a></div>
+      <div class="ws-sec">
+        <h3>Professional engineering suite</h3>
+        <p class="ws-sub">Entitlement-gated: BOM, PDF reports, rating plate, test report, country adapter. Calculate remains on the Learning plan.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px">
+          <a href="calculator.html" class="btn btn-amber btn-sm">Design calculator</a>
+          <a href="calculator.html#costing" class="btn btn-outline btn-sm" data-tp-need="professional">BOM &amp; costing</a>
+          <a href="test-report.html" class="btn btn-outline btn-sm" data-tp-need="professional">Test report</a>
+          <a href="country-designer.html" class="btn btn-outline btn-sm" data-tp-need="professional">Country adapter</a>
         </div>
       </div>
     </div>
 
-    <div class="ws-sec"><h3>Saved content</h3><div id="tpSaved" class="ws-tags"></div></div>
-    <div class="ws-sec"><h3>Saved designs &amp; Projects</h3><div id="tpDesigns"></div></div>
-    <div class="ws-sec"><h3>Notes &amp; Engineering Memoranda</h3><div id="tpNotes"></div></div>
-    <div class="ws-sec"><h3>Following</h3><div id="tpFollows" class="ws-tags"></div></div>
-
-    <div class="ws-sec"><h3>My Market</h3>
-      <p class="ws-sub" style="font-size:.82rem;color:var(--muted);margin:0 0 8px">Live aggregation across what you follow — projects, tenders, intel, manufacturers, utilities and markets. Counts are computed from canonical platform data at page load.</p>
-      <div id="tpMarket" class="ws-tags"><span class="ws-empty">Sign in and follow companies, projects, tenders or markets to populate this dashboard.</span></div>
+    <div id="panel-grid-lab" class="hub-panel" hidden>
+      <div class="ws-sec">
+        <h3>Grid Lab scenarios</h3>
+        <p class="ws-sub">COMPLETE / percent / NOT STARTED. Aggregate is Grid Systems %. Country Grid Lab is later.</p>
+        <div id="tpGridLab"></div>
+        <p style="margin-top:10px"><a class="btn btn-amber btn-sm" href="grid-lab.html">Open Grid Lab →</a></p>
+      </div>
     </div>
 
-    <div class="ws-sec"><h3>Learning progress</h3><div id="tpProgress"></div></div>
-    <div class="ws-sec"><h3>My Subscription</h3><div id="tpSub"></div></div>
-    <div class="ws-sec"><h3>My Books</h3><div id="tpBooks"></div></div>
-    <div class="ws-sec"><h3>My RFQs</h3><div id="tpRfqs"></div></div>
-    <div class="ws-sec"><h3>My Companies</h3><div id="tpClaims"></div></div>
-    <div class="ws-sec"><h3>Email preferences</h3><div id="tpEmail"></div></div>
+    <div id="panel-skills" class="hub-panel" hidden>
+      <div class="ws-sec">
+        <h3>Skills Passport</h3>
+        <p class="ws-sub">Competencies with a level and how they were earned. No XP, coins, badges or leaderboards.</p>
+        <div id="tpSkills"></div>
+      </div>
+    </div>
+
+    <div id="panel-saved" class="hub-panel" hidden>
+      <div class="ws-sec"><h3>Saved content</h3><div id="tpSaved" class="ws-tags"></div></div>
+      <div class="ws-sec"><h3>Saved designs &amp; Projects</h3><div id="tpDesigns"></div></div>
+      <div class="ws-sec"><h3>Notes &amp; Engineering Memoranda</h3><div id="tpNotes"></div></div>
+      <div class="ws-sec"><h3>Following</h3><div id="tpFollows" class="ws-tags"></div></div>
+      <div class="ws-sec"><h3>My Market</h3>
+        <p class="ws-sub" style="font-size:.82rem;color:var(--muted);margin:0 0 8px">Live aggregation across what you follow — projects, tenders, intel, manufacturers, utilities and markets. Counts are computed from canonical platform data at page load.</p>
+        <div id="tpMarket" class="ws-tags"><span class="ws-empty">Sign in and follow companies, projects, tenders or markets to populate this dashboard.</span></div>
+      </div>
+    </div>
+
+    <div id="panel-certificates" class="hub-panel" hidden>
+      <div class="ws-sec"><h3>Certificates</h3>
+        <p class="ws-empty">Learning records — not accredited credentials. Open <a href="certificates.html">/certificates</a>.</p>
+        <div id="tpCertRecords"></div>
+      </div>
+      <div class="ws-sec"><h3>My Books</h3><div id="tpBooks"></div></div>
+      <div class="ws-sec"><h3>My Subscription</h3><div id="tpSub"></div></div>
+      <div class="ws-sec"><h3>Email preferences</h3><div id="tpEmail"></div></div>
+    </div>
+
+    <div id="panel-rfqs" class="hub-panel" hidden>
+      <div class="ws-sec"><h3>Buyer · RFQs</h3><div id="tpRfqs"></div>
+        <p style="margin-top:10px"><a class="btn btn-outline btn-sm" href="rfq.html">RFQ Board →</a> <a class="btn btn-outline btn-sm" href="directory.html">Directory shortlist →</a></p>
+      </div>
+    </div>
+
+    <div id="panel-supplier" class="hub-panel" hidden>
+      <div class="ws-sec"><h3>Supplier Dashboard</h3>
+        <p class="ws-sub">RFQ inbox and company claims. Full supplier profile / RFQ inbox is the next sequence after this Learner foundation.</p>
+        <div id="tpClaims"></div>
+      </div>
+    </div>
   </div>
 </main>
 <footer>
@@ -243,6 +311,8 @@
 </footer>
 <script src="supabase-config.js"></script>
 <script src="supabase.js" defer></script>
+<script src="tp-learner.js" defer></script>
+<script src="tp-entitlement.js" defer></script>
 <script src="rfq-engine.js" defer></script>
 <script src="analytics.js?v=7" defer></script>
 <script>
@@ -270,6 +340,10 @@ document.addEventListener('DOMContentLoaded', function(){
 
   tabIn.addEventListener('click',function(){ tabIn.classList.add('on'); tabUp.classList.remove('on'); show(si,true); show(su,false); });
   tabUp.addEventListener('click',function(){ tabUp.classList.add('on'); tabIn.classList.remove('on'); show(su,true); show(si,false); });
+  var authQ = new URLSearchParams(location.search).get('auth');
+  if (authQ === 'up') { tabUp.click(); }
+  if (authQ === 'in') { tabIn.click(); }
+  var viewQ = new URLSearchParams(location.search).get('view');
 
   si.addEventListener('submit',function(e){
     e.preventDefault();
@@ -284,8 +358,8 @@ document.addEventListener('DOMContentLoaded', function(){
     var passVal = (su.elements['pass'] ? su.elements['pass'].value : document.getElementById('suPass').value);
     var nameVal = (su.elements['name'] ? su.elements['name'].value : (document.getElementById('suName') ? document.getElementById('suName').value : '')).trim();
     TP.signUp(emailVal, passVal, {display_name: nameVal}).then(function(r){
-      if(r && r.data && r.data.session){ setMsg('',true); }
-      else { setMsg('Almost there — check your inbox to confirm your email.', true); }
+      if(r && r.data && r.data.session){ setMsg('',true); location.replace('onboarding.html'); }
+      else { setMsg('Almost there — check your inbox to confirm your email, then open /onboarding.', true); }
     }).catch(function(x){ setMsg((x&&x.message)||'Sign-up failed', false); });
   });
   document.getElementById('tpSignOut').addEventListener('click',function(){ TP.signOut(); });
@@ -295,8 +369,29 @@ document.addEventListener('DOMContentLoaded', function(){
     else { show(auth,true); show(ws,false); }
   });
 
+  function showHub(id){
+    var panels = document.querySelectorAll('.hub-panel');
+    for(var i=0;i<panels.length;i++) panels[i].hidden = panels[i].id !== 'panel-'+id;
+    var tabs = document.querySelectorAll('#hubTabs a');
+    for(var j=0;j<tabs.length;j++){
+      var href = (tabs[j].getAttribute('href')||'').replace('#','');
+      tabs[j].classList.toggle('on', href===id);
+    }
+  }
+  document.getElementById('hubTabs').addEventListener('click', function(e){
+    var a = e.target.closest('a');
+    if(!a) return;
+    e.preventDefault();
+    showHub((a.getAttribute('href')||'#overview').replace('#',''));
+  });
+  if(location.hash) showHub(location.hash.replace('#',''));
+  else if(viewQ === 'account') showHub('certificates');
+
+  window.TP_HUB = { refresh: function(){ TP.getSession().then(function(r){ render(r && r.data && r.data.session ? r.data.session.user : (TP.user||null)); }); } };
+
   function render(user){
     document.getElementById('tpName').textContent = (user && user.email) || 'engineer';
+    fillHub(user);
     TP.listSaved().then(function(it){
       var el=document.getElementById('tpSaved');
       el.innerHTML = it.length ? it.map(function(i){
@@ -335,6 +430,98 @@ document.addEventListener('DOMContentLoaded', function(){
     TP.getEmailPrefs().then(function(pr){ document.getElementById('tpEmail').innerHTML = '<div class=\"ws-row\"><span class=\"ws-note-title\">Preferences</span><span class=\"ws-sub\">Daily Brief '+(pr&&pr.daily_brief?'on':'off')+' · Alerts '+(pr&&pr.alerts?'on':'off')+'</span></div>'; });
     TP.listFollows().then(function(fl){ TP.getSession().then(function(r){ renderMyMarket(fl || []); }); });
   }
+
+  function fillHub(user){
+    var L = window.TP_LEARNER;
+    if(!L) return;
+    L.getSnap().then(function(snap){
+      if(!snap || !snap.ok){
+        try { if(!localStorage.getItem('tp-onboard')) L.showOnboarding(user); } catch(e){}
+        return;
+      }
+      var learner = snap.learner || {};
+      if(!(learner && learner.onboarding_done)){
+        try {
+          if(localStorage.getItem('tp-onboard') !== '1'){
+            location.replace('onboarding.html');
+            return;
+          }
+        } catch(e){
+          location.replace('onboarding.html');
+          return;
+        }
+      }
+      var ob=document.getElementById('tpOnboard'); if(ob) ob.hidden=true;
+      var name = learner.public_name || (user && user.email) || '—';
+      var elN=document.getElementById('idPublicName'); if(elN) elN.textContent=name;
+      var elL=document.getElementById('idLevel'); if(elL) elL.textContent=learner.onboarding_experience || '—';
+      var elI=document.getElementById('idInterest'); if(elI) elI.textContent=learner.onboarding_interest || '—';
+      var plan = (snap.entitlement && (snap.entitlement.plan || snap.entitlement.plan_key)) || 'free';
+      var elP=document.getElementById('idPlan'); if(elP) elP.textContent=plan;
+      var roles = snap.roles || ['LEARNER'];
+      var flags = snap.flags || {};
+      var elR=document.getElementById('tpRoles');
+      if(elR){
+        var bits=[];
+        if(flags.isLearner!==false) bits.push('Learner');
+        if(flags.isBuyer) bits.push('Buyer');
+        if(flags.isSupplier) bits.push('Supplier');
+        elR.textContent = bits.join(' · ') || roles.join(' · ');
+      }
+      var boxes=document.querySelectorAll('#rolesForm input[name=role]');
+      for(var i=0;i<boxes.length;i++) boxes[i].checked = roles.indexOf(boxes[i].value)>=0;
+          var tabRfqs=document.getElementById('tabRfqs');
+      var tabSup=document.getElementById('tabSupplier');
+      if(tabRfqs) tabRfqs.hidden = !(flags.isBuyer || roles.indexOf('BUYER')>=0);
+      if(tabSup) tabSup.hidden = !(flags.isSupplier || roles.indexOf('SUPPLIER')>=0);
+      var chk=[];
+      chk.push(learner.onboarding_done?'<div class="ws-row"><span class="ws-note-title">Onboarding</span><span class="ws-sub">COMPLETE</span></div>':'<div class="ws-row"><span class="ws-note-title">Onboarding</span><span class="ws-sub">NOT STARTED</span></div>');
+      chk.push('<div class="ws-row"><span class="ws-note-title">Grid Lab</span><span class="ws-sub"><a href="grid-lab.html">Open scenarios</a></span></div>');
+      chk.push('<div class="ws-row"><span class="ws-note-title">Masterclass</span><span class="ws-sub"><a href="learn.html">Continue learning</a></span></div>');
+      var elC=document.getElementById('tpChecklist'); if(elC) elC.innerHTML=chk.join('');
+      fetch('data/grid-lab.json',{cache:'no-cache'}).then(function(r){return r.json();}).then(function(g){
+        L.renderGrid(document.getElementById('tpGridLab'), g.scenarios||[], (snap.grid_lab&&snap.grid_lab.scenarios)||[]);
+        var nxt = (g.scenarios||[]).find(function(s){
+          var rows=(snap.grid_lab&&snap.grid_lab.scenarios)||[];
+          var rec=rows.find(function(x){return x.scenario_id===s.id;});
+          return !rec || (parseInt(rec.percent,10)||0)<100;
+        });
+        var recEl=document.getElementById('tpRecs');
+        if(recEl) recEl.innerHTML = nxt
+          ? '<p>Next Grid Lab scenario: <a href="grid-lab.html#sc-'+esc(nxt.id)+'">'+esc(nxt.title)+'</a></p>'
+          : '<p>Grid Lab catalog complete. Open <a href="learn.html">Learn</a> for the masterclass.</p>';
+      }).catch(function(){});
+      L.renderSkills(document.getElementById('tpSkills'), snap.skills||[]);
+      var act=document.getElementById('tpActivity');
+      if(act){
+        var bits=[];
+        bits.push('Plan '+esc(plan));
+        if(snap.entitlement && snap.entitlement.expires_at) bits.push('expires '+esc(String(snap.entitlement.expires_at).slice(0,10)));
+        act.innerHTML='<p class="ws-sub">'+bits.join(' · ')+'</p>';
+      }
+      var cr=document.getElementById('tpCertRecords');
+      if(cr){
+        var recs=snap.certificates||[];
+        cr.innerHTML = recs.length
+          ? recs.map(function(r){ return '<div class="ws-row"><a href="certificates.html?slug='+encodeURIComponent(r.slug||'')+'">'+esc(r.title||r.slug)+'</a><span class="ws-sub">'+esc(r.how_earned||'')+'</span></div>'; }).join('')
+          : '';
+      }
+    });
+  }
+
+  var nf=document.getElementById('nameForm');
+  if(nf) nf.addEventListener('submit', function(e){
+    e.preventDefault();
+    var v=(e.target.public_name && e.target.public_name.value||'').trim();
+    if(window.TP_LEARNER) TP_LEARNER.post({action:'public_name', public_name:v}).then(function(){ if(window.TP_HUB) TP_HUB.refresh(); });
+  });
+  var rf=document.getElementById('rolesForm');
+  if(rf) rf.addEventListener('submit', function(e){
+    e.preventDefault();
+    var roles=[]; var boxes=e.target.querySelectorAll('input[name=role]:checked');
+    for(var i=0;i<boxes.length;i++) roles.push(boxes[i].value);
+    if(window.TP_LEARNER) TP_LEARNER.post({action:'roles', roles:roles}).then(function(){ if(window.TP_HUB) TP_HUB.refresh(); });
+  });
 
   // ── My Market: aggregate followed subjects against canonical platform data ──
   function renderMyMarket(follows){

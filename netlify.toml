@@ -1,5 +1,5 @@
 [build]
-  command = "node check-build-tracked.js && node build-factories.js && node build-company-developments.js && node build-provenance.js && node build-entity-graph.js && node build-census-audit.js && node build-manufacturer-intel.js && node build-services.js && node build-logistics.js && node build-associations.js && node build-education.js && node build-buyers.js && node build-media.js && node build-components.js && node build-canonical-entities.js && node build-directory-index.js && node build-company-pages.js && node build-data-quality.js && node build-directory-health.js && node build-intelligence.js && node build-intel-news.js && node build-intel-feed-ui.js && node build-intel-categories.js && node build-applications.js && node build-standards.js && node build-knowledge.js && node build-engineering-claims.js && node build-course-depth.js && node build-materials.js && node build-materials-pages.js && node build-markets.js && node build-utilities.js && node build-grids.js && node build-projects.js && node build-tenders.js && node build-awards.js && node build-case-studies.js && node build-accessories.js && node build-machinery.js && node build-laboratories.js && node build-category-landing-pages.js && node build-events.js && node build-post-event-intel.js && node build-event-summary-pages.js && node build-topic-hubs.js && node build-masterclass-paywall.js && node build-exhibitions.js && node build-books.js && node build-commerce.js && node build-commerce-intel.js && node build-freshness.js && node build-production-audit.js && node build-site-stats.js && node build-map.js && node build_ssr.js && node build-seo.js && node stamp-intel.js && node build-header-consistency.js && node bump-assets.js && node check-archives.js && node check-data-quality.js && node check-config.js && node check-brand.js && node check-links.js && node check-design.js && node tests/engine-sanity.js && node check-event-intel.js && node check-event-integrity.js && node check-topics.js && node check-data-graph.js && node check-masterclass-paywall.js && node tests/masterclass-live-qa.test.js && node tests/viz-math.test.js && node tests/verify-hero-integrity.js && node tests/check-verification-terms.js && node build-dist.js && echo 'Static site with serverless functions'"
+  command = "node check-build-tracked.js && node build-factories.js && node build-company-developments.js && node build-provenance.js && node build-entity-graph.js && node build-census-audit.js && node build-manufacturer-intel.js && node build-services.js && node build-logistics.js && node build-associations.js && node build-education.js && node build-buyers.js && node build-media.js && node build-components.js && node build-canonical-entities.js && node build-directory-index.js && node build-company-pages.js && node build-data-quality.js && node build-directory-health.js && node build-intelligence.js && node build-intel-news.js && node build-intel-feed-ui.js && node build-intel-categories.js && node build-applications.js && node build-standards.js && node build-knowledge.js && node build-engineering-claims.js && node build-course-depth.js && node build-materials.js && node build-materials-pages.js && node build-markets.js && node build-utilities.js && node build-grids.js && node build-grid-lab.js && node build-projects.js && node build-tenders.js && node build-awards.js && node build-case-studies.js && node build-accessories.js && node build-machinery.js && node build-laboratories.js && node build-category-landing-pages.js && node build-events.js && node build-post-event-intel.js && node build-event-summary-pages.js && node build-topic-hubs.js && node build-masterclass-paywall.js && node build-exhibitions.js && node build-books.js && node build-commerce.js && node build-commerce-intel.js && node build-freshness.js && node build-production-audit.js && node build-site-stats.js && node build-map.js && node build_ssr.js && node build-seo.js && node stamp-intel.js && node build-header-consistency.js && node bump-assets.js && node check-archives.js && node check-data-quality.js && node check-config.js && node check-brand.js && node check-links.js && node check-design.js && node tests/engine-sanity.js && node check-event-intel.js && node check-event-integrity.js && node check-topics.js && node check-data-graph.js && node check-masterclass-paywall.js && node tests/masterclass-live-qa.test.js && node tests/viz-math.test.js && node tests/verify-hero-integrity.js && node tests/check-p0-integrity.js && node tests/check-verification-terms.js && node build-dist.js && echo 'Static site with serverless functions'"
   # publish = "." shipped the whole working folder, so every internal file was on
   # the CDN and "protected" only by case-sensitive 404 rules that Netlify's
   # case-insensitive file serving defeated. dist/ is an allowlisted artifact:
@@ -9,6 +9,9 @@
 
 [functions]
   node_bundler = "esbuild"
+
+[functions."directory-search"]
+  included_files = ["data/directory-search-index.json", "data/directory-index.json", "lib/directory-search.js"]
 
 [functions."refresh-data"]
   schedule = "0 * * * *"
@@ -53,6 +56,66 @@
   to = "/grids.html"
   status = 301
   force = true
+
+# SSR segmented directory search. directory.html exists, so force past the file.
+[[redirects]]
+  from = "/directory"
+  query = {q = ":q"}
+  to = "/.netlify/functions/directory-search"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/directory.html"
+  query = {q = ":q"}
+  to = "/.netlify/functions/directory-search"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/grid-lab"
+  to = "/grid-lab.html"
+  status = 200
+
+[[redirects]]
+  from = "/my"
+  to = "/workspace.html"
+  status = 200
+
+[[redirects]]
+  from = "/me"
+  to = "/workspace.html"
+  status = 200
+
+[[redirects]]
+  from = "/sign-in"
+  to = "/workspace.html?auth=in"
+  status = 200
+
+[[redirects]]
+  from = "/sign-up"
+  to = "/workspace.html?auth=up"
+  status = 200
+
+[[redirects]]
+  from = "/account"
+  to = "/workspace.html?view=account"
+  status = 200
+
+[[redirects]]
+  from = "/onboarding"
+  to = "/onboarding.html"
+  status = 200
+
+[[redirects]]
+  from = "/certificates"
+  to = "/certificates.html"
+  status = 200
+
+[[redirects]]
+  from = "/certificates/*"
+  to = "/certificates.html"
+  status = 200
 
 # ...but keep the stale archive/ directory (if present) from being served.
 [[redirects]]

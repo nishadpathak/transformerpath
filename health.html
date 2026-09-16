@@ -137,8 +137,8 @@
   <div class="dh-grid-4">
     <div class="dh-card">
       <div class="lbl">Manufacturers Census</div>
-      <div class="val" id="stat-mfg">701</div>
-      <div class="sub">Across <span id="stat-mfg-co">85</span> countries</div>
+      <div class="val" id="stat-mfg">—</div>
+      <div class="sub">Across <span id="stat-mfg-co">—</span> countries</div>
     </div>
     <div class="dh-card">
       <div class="lbl">Sourced Capabilities</div>
@@ -152,8 +152,13 @@
     </div>
     <div class="dh-card">
       <div class="lbl">Daily Intel Freshness</div>
-      <div class="val" id="stat-freshness-age">0.2h</div>
-      <div class="sub" id="stat-freshness-status">Status: DATA CURRENT</div>
+      <div class="val" id="stat-freshness-age">—</div>
+      <div class="sub" id="stat-freshness-status">Status: on load</div>
+    </div>
+    <div class="dh-card">
+      <div class="lbl">Census clock</div>
+      <div class="val" id="stat-census-age">—</div>
+      <div class="sub" id="stat-census-status">Independent of Daily Intel</div>
     </div>
   </div>
 
@@ -293,8 +298,8 @@
 <script>
 (function(){
   fetch('data/site-stats.json').then(r=>r.json()).then(s=>{
-    document.getElementById('stat-mfg').textContent = s.manufacturers || 701;
-    document.getElementById('stat-mfg-co').textContent = s.manufacturingCountries || 85;
+    document.getElementById('stat-mfg').textContent = s.manufacturers != null ? s.manufacturers : '—';
+    document.getElementById('stat-mfg-co').textContent = s.manufacturingCountries != null ? s.manufacturingCountries : '—';
     document.getElementById('stat-caps').textContent = (s.capabilities || 1962).toLocaleString();
     document.getElementById('stat-evidence').textContent = (s.sourcedDataPoints || 1877).toLocaleString();
     document.getElementById('stat-projects').textContent = ((s.projects||306) + (s.tenders||150)).toLocaleString();
@@ -303,6 +308,7 @@
   fetch('data/freshness.json').then(r=>r.json()).then(f=>{
     const tbody = document.getElementById('surfaces-tbody');
     const di = (f.surfaces||[]).find(s=>s.id==='daily_intel') || {};
+    const census = (f.surfaces||[]).find(s=>s.id==='census') || {};
     const refIso = di.last_successful_refresh || di.last_data_refresh;
     if (refIso) {
       const dt = new Date(refIso);
@@ -312,6 +318,17 @@
       if (ageHours > 72) statText = 'Status: DATA STALE';
       else if (ageHours > 36) statText = 'Status: REFRESH DELAYED';
       document.getElementById('stat-freshness-status').textContent = statText;
+    }
+    const cIso = census.last_successful_refresh || census.last_data_refresh || census.last_build;
+    if (cIso) {
+      const cdt = new Date(/^\d{4}-\d{2}-\d{2}$/.test(String(cIso)) ? cIso+'T12:00:00Z' : cIso);
+      if (!isNaN(cdt.getTime())) {
+        const ch = (Date.now() - cdt.getTime()) / (1000 * 60 * 60);
+        document.getElementById('stat-census-age').textContent = ch.toFixed(1) + 'h';
+        document.getElementById('stat-census-status').textContent = ch > 72
+          ? 'CENSUS AGING — never labelled DATA CURRENT'
+          : 'CENSUS REBUILT — separate from Daily Intel';
+      }
     }
 
     if (f.surfaces && f.surfaces.length) {
@@ -325,8 +342,9 @@
           if (!isNaN(dt.getTime())) {
             const h = (Date.now() - dt.getTime()) / (1000 * 60 * 60);
             ageStr = h < 1 ? '< 1 hour' : h.toFixed(1) + ' hours ago';
-            if (h > 72) { badgeClass = 'badge-stale'; badgeText = 'DATA STALE'; }
-            else if (h > 36) { badgeClass = 'badge-warning'; badgeText = 'DELAYED'; }
+            if (h > 72) { badgeClass = 'badge-stale'; badgeText = s.id === 'census' ? 'CENSUS AGING' : 'DATA STALE'; }
+            else if (h > 36) { badgeClass = 'badge-warning'; badgeText = s.id === 'census' ? 'CENSUS REBUILT' : 'DELAYED'; }
+            else { badgeText = s.id === 'census' ? 'CENSUS REBUILT' : (s.status || 'HEALTHY'); }
           }
         }
         return `

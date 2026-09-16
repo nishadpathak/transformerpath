@@ -22,7 +22,10 @@
    Tiers: 'learner' < 'professional' < 'enterprise'. Any paid tier unlocks
    everything this script gates; tier only matters for sections that check a
    minimum via TP_ACCESS.hasTier(). A grant never downgrades or shortens an
-   existing higher/longer one. */
+   existing higher/longer one.
+
+   localStorage is a CACHE. The grant lives on the account (/.netlify/functions/account)
+   so the same login works on another device. Stripe is the payment processor only. */
 (function () {
   var KEY = 'tp-course-access';
   var RANK = { learner: 1, professional: 2, enterprise: 3 };
@@ -98,6 +101,41 @@
   var params = new URLSearchParams(location.search);
   var sessionId = params.get('session_id');
 
+  function mapPlan(key) {
+    key = String(key || 'learner').toLowerCase();
+    if (key === 'learning') return 'learner';
+    if (key === 'team') return 'enterprise';
+    return RANK[key] ? key : 'learner';
+  }
+
+  function tryAccountThen(cb) {
+    var n = 0;
+    function tick() {
+      if (window.TP && TP.getSession) {
+        TP.getSession().then(function (r) {
+          var sess = r && r.data && r.data.session;
+          if (!sess) { cb(); return; }
+          fetch('/.netlify/functions/account', {
+            headers: { authorization: 'Bearer ' + sess.access_token },
+          }).then(function (x) { return x.json(); }).then(function (snap) {
+            var ent = snap && snap.entitlement;
+            if (ent && (ent.rank > 0 || (ent.plan_key && ent.plan_key !== 'free'))) {
+              grant(mapPlan(ent.plan_key || ent.plan), false);
+              cb(true);
+              return;
+            }
+            cb();
+          }).catch(function () { cb(); });
+        }).catch(function () { cb(); });
+        return;
+      }
+      n += 1;
+      if (n > 15) { cb(); return; }
+      setTimeout(tick, 150);
+    }
+    tick();
+  }
+
   // If we already have valid access, the page stays open immediately.
   if (currentAccess()) return;
 
@@ -108,18 +146,22 @@
     verifySession(sessionId).then(function (res) {
       if (res && res.valid) {
         grant(res.tier || 'learner', false);
-        // Clean the query string so refresh doesn't re-verify, then reload.
+        if (res.entitlement_token) {
+          try {
+            var e = new Date(); e.setFullYear(e.getFullYear() + 1);
+            document.cookie = 'tp_ent=' + encodeURIComponent(res.entitlement_token) + '; expires=' + e.toUTCString() + '; path=/; SameSite=Lax' + (location.protocol === 'https:' ? '; Secure' : '');
+          } catch (x) {}
+        }
         history.replaceState({}, '', location.pathname + '#' + (location.hash || ''));
         location.reload();
       } else {
-        showGate();
+        tryAccountThen(function (ok) { if (!ok) showGate(); });
       }
     });
     return;
   }
 
-  // No stored access and no verifiable session -> gate the page.
-  showGate();
+  tryAccountThen(function (ok) { if (!ok) showGate(); });
 
   function showGate() {
     if (document.readyState === 'loading') {
@@ -147,8 +189,7 @@
       '<b style="color:#fff">Yearly Access</b> — three plans from $199/year, everything included.</p>' +
       '<a href="pricing.html" style="display:inline-block;background:#f5a623;color:#0d1b2e;' +
       'font-weight:800;padding:14px 34px;border-radius:10px;text-decoration:none;font-size:1.05rem">See Plans — from $199/year →</a>' +
-      '<p style="color:#7c8aa0;font-size:.82rem;margin:18px 0 0">Already paid? Access is stored in the browser you used at checkout — ' +
-      'open this page there, or complete checkout again from that device.</p>' +
+      '<p style="color:#7c8aa0;font-size:.82rem;margin:18px 0 0">Already paid? Sign in to <a href="workspace.html" style="color:#f5a623">My TransformerPath</a> — access follows your account, not one browser.</p>' +
       '<p style="margin:22px 0 0"><a href="learn.html" style="color:#f5a623;text-decoration:none;font-weight:600">← Back to Learn</a>' +
       '<span style="color:#44536b"> · </span>' +
       '<a href="engineer-track.html" style="color:#f5a623;text-decoration:none;font-weight:600">See the full program →</a></p>' +

@@ -280,11 +280,41 @@
         { onConflict: 'user_id' }).then(function (r) { if (r.error) throw r.error; return true; });
     };
 
-    /* entitlements for the current plan (free / engineer / professional / enterprise) */
+    /* entitlements for the current plan — account snapshot is authoritative;
+     * profiles.plan is a fallback; localStorage is a cache only. */
     TP.getEntitlements = function () {
       if (!guard()) return Promise.resolve({ plan: 'free', features: [] });
-      return supabase.from('profiles').select('plan').eq('id', uid()).maybeSingle()
-        .then(function (r) { return { plan: (r.data && r.data.plan) || 'free' }; });
+      return TP.getSession().then(function (r) {
+        var sess = r && r.data && r.data.session;
+        if (!sess) return { plan: 'free' };
+        return fetch('/.netlify/functions/account', {
+          headers: { authorization: 'Bearer ' + sess.access_token },
+        }).then(function (x) { return x.json(); }).then(function (snap) {
+          if (snap && snap.entitlement) {
+            return {
+              plan: snap.entitlement.plan_key || snap.entitlement.plan || 'free',
+              expires_at: snap.entitlement.expires_at || null,
+              source: 'account',
+            };
+          }
+          return supabase.from('profiles').select('plan').eq('id', uid()).maybeSingle()
+            .then(function (pr) { return { plan: (pr.data && pr.data.plan) || 'free' }; });
+        }).catch(function () {
+          return supabase.from('profiles').select('plan').eq('id', uid()).maybeSingle()
+            .then(function (pr) { return { plan: (pr.data && pr.data.plan) || 'free' }; });
+        });
+      });
+    };
+
+    TP.getAccountSnapshot = function () {
+      if (!guard()) return Promise.resolve(null);
+      return TP.getSession().then(function (r) {
+        var sess = r && r.data && r.data.session;
+        if (!sess) return null;
+        return fetch('/.netlify/functions/account', {
+          headers: { authorization: 'Bearer ' + sess.access_token },
+        }).then(function (x) { return x.json(); }).catch(function () { return null; });
+      });
     };
 
     /* inject an "Account" link into the main + tool navs so the workspace page
@@ -296,7 +326,7 @@
         var nav = document.querySelector('.' + cls);
         if (!nav || nav.querySelector('[data-tp-account]')) return;
         var a = document.createElement('a');
-        a.href = href; a.textContent = 'Account'; a.setAttribute('data-tp-account', '1');
+        a.href = href; a.textContent = 'My TransformerPath'; a.setAttribute('data-tp-account', '1');
         nav.appendChild(a);
       });
     }

@@ -18,7 +18,20 @@ const SKIP = ['archive', '_private', 'transformerpath-site', 'dist', 'node_modul
 const files = walk('.', SKIP);
 
 // Link target existence: resolve relative to the file's directory.
+// Netlify pretty URLs map /directory → directory.html and /certificates/x →
+// certificates.html (rewrite), so extensionless / trailing-slash targets count
+// as OK when the corresponding .html page exists.
 const siteRoot = process.cwd();
+function candidatePaths(resolved) {
+  const out = [resolved];
+  if (resolved.endsWith(path.sep) || resolved.endsWith('/')) {
+    const base = resolved.replace(/[/\\]+$/, '');
+    out.push(base, base + '.html', path.join(base, 'index.html'));
+  } else if (!path.extname(resolved)) {
+    out.push(resolved + '.html', path.join(resolved, 'index.html'));
+  }
+  return out;
+}
 function existsTarget(fromFile, target) {
   const clean = target.split('#')[0].split('?')[0].trim();
   if (!clean) return { ok: true };
@@ -28,7 +41,10 @@ function existsTarget(fromFile, target) {
   const resolved = clean.startsWith('/')
     ? path.resolve(siteRoot, clean.slice(1))          // site-absolute (Netlify serves from publish root)
     : path.resolve(path.dirname(fromFile), clean);
-  return { ok: fs.existsSync(resolved), resolved };
+  for (const cand of candidatePaths(resolved)) {
+    if (fs.existsSync(cand)) return { ok: true, resolved: cand };
+  }
+  return { ok: false, resolved };
 }
 
 // Strip JS template literals and string-concat expressions so ${...} and '+...+'
