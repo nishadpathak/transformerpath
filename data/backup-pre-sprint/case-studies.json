@@ -1,0 +1,85 @@
+{
+  "$schema": "https://transformerpath.com/case-studies.schema.json",
+  "_comment": "TransformerPath Case Studies / Field Experience — practitioner material distinct from generic Knowledge. A case study is grounded in a specific engineering situation; it is NOT a how-it-works overview. Attribution ('attributedTo') is only included where an industry professional has given permission to be named; otherwise the piece is TransformerPath editorial based on published engineering practice. Content label is EDITORIAL unless a contributor is named. Submissions welcome via the Contribute route.",
+  "updated": "2026-08-28",
+  "case_studies": [
+    {
+      "slug": "why-this-transformer-failed",
+      "type": "Field Experience",
+      "title": "Why This Transformer Failed: A Structured Fault Investigation",
+      "topic": "Failure analysis",
+      "editorial_owner": "TransformerPath",
+      "attributed_to": null,
+      "content_label": "EDITORIAL",
+      "summary": "A systematic route from initial symptoms to root cause: gas-in-oil, electrical tests and physical evidence, and how each narrows the possible failure modes.",
+      "body_paragraphs": [
+        "A transformer alarm rarely points at a single cause. A structured investigation separates a developing fault from benign operating behaviour and drives an evidence-based repair-or-replace decision.",
+        "Start with the symptom. Gas-in-oil, a winding-resistance drift, an SFRA signature shift or a temperature anomaly each narrow the candidate set. Differential protection and dissolved-gas analysis (DGA) are the two highest-value leading indicators.",
+        "Interpret DGA in context: acetylene above a few ppm points to arcing (a turn-to-turn, tap-changer diverter or core-joint arc); a strong hydrogen and methane signature with no acetylene suggests a low-energy discharge or a hot spot; ethane and ethylene climb with sustained overheating. The ratio matters as much as the absolute value.",
+        "Corroborate with electrical tests. A winding-resistance change on one phase indicates a connection or conductor problem; a ratio change points at a turn fault; a capacitance/power-factor change implicates insulation or bushing condition.",
+        "Physical evidence closes the loop. Where possible, inspect the evidence a test points to: the diverter contacts, the winding clamps, the insulation at the suspect location. This is what turns a theory into a confirmed cause.",
+        "The decision then becomes an engineering question, not a diagnosis: can the fault be repaired in place or by an off-site rebuild, and does the remaining life, reliability and transportation cost justify it at all? Record the reasoning and the evidence."
+      ],
+      "related_principle": "Transformer failure analysis, DGA interpretation and the repair-or-replace decision (see the Masterclass chapters on losses, testing and protection).",
+      "related_links": ["masterclass.html#testing", "masterclass.html#sitelife", "knowledge/transformer-inrush-current.html"]
+    },
+    {
+      "slug": "lessons-from-a-400kv-factory-test",
+      "type": "Case Study",
+      "title": "Lessons From a 400 kV Factory Test — What an Inspector Actually Checks",
+      "topic": "Factory acceptance testing",
+      "editorial_owner": "TransformerPath",
+      "attributed_to": null,
+      "content_label": "EDITORIAL",
+      "summary": "What an experienced inspector looks for during a 400 kV FAT — beyond simply observing the pass/fail of the headline tests.",
+      "body_paragraphs": [
+        "A factory acceptance test is a verification, but an effective inspector uses it to learn about the unit and the manufacturer's process, not only to tick boxes.",
+        "First, understand the witnessed tests vs routine tests. Ratio, vector group, winding resistance, iron-loss and load-loss, impedance and insulation resistance are routine; impulse, temperature-rise and SFRA are the ones that reveal the design and build quality.",
+        "The temperature-rise test is where the inspector learns the most: it confirms the cooling design and the hot-spot allowance behind the guaranteed figures. Watch how the oil and winding temperatures track, and whether the calculated hot-spot dwells within the design margin.",
+        "An impulse test, if witnessed, is a process check as much as a pass check: the comparison of the reduced- and full-level transferred waveshapes (the neutral current on non-impulsed windings) is what actually detects an inter-turn breakdown — a clean crest does not prove the insulation is sound.",
+        "The inspector should verify the calibration and instrument connections behind every number, and confirm that the guaranteed figures (no-load, load loss, impedance) are within the contractual tolerance band before the unit is accepted.",
+        "Finally, record the evidence. A fat dossier with good traces and a clean SFRA fingerprint is worth far more than a pass in the acceptance letter — it is the baseline for the whole service life."
+      ],
+      "related_principle": "Factory testing and type tests (see the Masterclass chapter on testing and IEC 60076).",
+      "related_links": ["masterclass.html#testing", "masterclass.html#standards"]
+    },
+    {
+      "slug": "how-a-utility-evaluates-transformer-losses",
+      "type": "Case Study",
+      "title": "How a Utility Evaluates Transformer Losses: Loss-Capitalisation in Practice",
+      "topic": "Loss evaluation / tendering",
+      "editorial_owner": "TransformerPath",
+      "attributed_to": null,
+      "content_label": "EDITORIAL",
+      "summary": "A worked view of how no-load and load loss are valued over the life of a transformer and turned into a tender evaluation.",
+      "body_paragraphs": [
+        "A tender rarely compares transformers on price alone. Utilities capitalise losses — convert the lifetime energy cost of no-load and load loss into a present value added to the bid price.",
+        "No-load loss is the dominant lifetime cost on a lightly-loaded or distribution transformer, because it is present whenever the unit is energised. Load loss, quadratic in load, dominates where a unit runs heavily loaded.",
+        "The capitalisation rates A (for no-load loss) and B (for load loss), expressed in currency per watt, come from the utility's cost of energy, the load factor and the discount rate. A rule of thumb for a high-load-factor transmission unit: the capitalised loss cost can be of the same order as the purchase price.",
+        "The designer's response is a trade-off: spend on better core steel and lower flux density to cut no-load loss, or on more conductor to cut load loss, until the marginal cost of a further loss reduction equals its capitalised value.",
+        "The balance shifts with the evaluation. A utility with expensive energy and a high load factor will pay a premium for a low-loss design; a utility that values first cost over lifetime energy will not. This is precisely why the same transformer is rarely optimal for two different buyers."
+      ],
+      "related_principle": "Transformer losses and tender evaluation (see the Masterclass chapters on losses/efficiency and procurement).",
+      "related_links": ["masterclass.html#losses", "masterclass.html#procurement"]
+    },
+    {
+      "slug": "lessons-from-transformer-transportation-damage",
+      "type": "Field Experience",
+      "title": "Lessons From Transformer Transportation Damage",
+      "topic": "Transport & handling",
+      "editorial_owner": "TransformerPath",
+      "attributed_to": null,
+      "content_label": "EDITORIAL",
+      "summary": "Why a transformer can be mechanically sound at the factory and damaged on arrival — and what to check before energising.",
+      "body_paragraphs": [
+        "A power transformer sustains the highest mechanical shock of its life in transit, not in service. The design is protected against internal forces but not against a hard landing, an excessive tilt or a shock through the tank wall.",
+        "The first line of defence is a transport recorder: a shock/impact recorder g-card mounted before dispatch and read on arrival. Exceeding the manufacturer's allowed g-value is the trigger for a more thorough examination before the unit is accepted.",
+        "A tilt beyond the design limit can lift the core, shift the clamping or crack an insulator. So can a single high-g shock during a rail hump or a ship lift.",
+        "On arrival, before energising: check the recorder, the pressure (a good vacuum/nitrogen blanket may have been lost), the oil level and the integrity of the bushings and accessories. An SFRA (sweep frequency response analysis) versus the factory fingerprint is the most sensitive check for a displaced core or winding.",
+        "If the recorder shows an exceedance, do not energise until the investigation is complete — a minor transit event that is investigated rarely becomes a failure, but an ignored one is the classic undetected-damage case."
+      ],
+      "related_principle": "Transformer transportation, handling and site acceptance (see the Masterclass chapters on construction and commissioning).",
+      "related_links": ["masterclass.html#construction", "masterclass.html#sitelife", "knowledge/transformer-vector-groups.html"]
+    }
+  ]
+}

@@ -28,7 +28,7 @@
   ],
   "suppliers": [
     {
-      "name": "Hitachi Energy (Bushings & Micafil Components)",
+      "name": "Hitachi Energy",
       "country": "Switzerland",
       "state": "",
       "city": "Zurich",
@@ -60,7 +60,8 @@
         "IEEE C57.19.00",
         "IEEE C57.19.01"
       ],
-      "evidence_source": "Hitachi Energy Micafil official product catalog & UHV test documentation"
+      "evidence_source": "Hitachi Energy Micafil official product catalog & UHV test documentation",
+      "slug": "hitachi-energy"
     },
     {
       "name": "ACC Insulations Pvt Ltd",
@@ -69,9 +70,7 @@
       "city": "Nashik",
       "website": "https://www.accinsulations.com",
       "categories": [
-        "Pressboard / insulation materials",
-        "DDP / DPE (densified pressboard)",
-        "Laminated wood / insulation wood"
+        "Pressboard / insulation materials"
       ],
       "description": "Specialist converter and processor of transformer electrical insulation components, pre-compressed pressboard parts, densified wood step blocks, and complete insulation kits.",
       "verification_status": "Official Website Checked",
@@ -80,8 +79,8 @@
       "parent_group": "ACC Group",
       "role": "CONVERTER / PROCESSOR",
       "manufacturer_status": "CONVERTER / PROCESSOR",
-      "product_family": "Machined pressboard components & insulation kits",
-      "manufacturer_product_name": "Transformer Insulation Kits, Machined Spacers, Laminated Wood Blocks",
+      "product_family": "Moulded Pressboard Components, Cylinders, Angle Rings & Cleats",
+      "manufacturer_product_name": "ACC Transformer Insulation Kits, Moulded Spacers, Lead Duct Cylinders",
       "grades": [
         "IEC 60641",
         "IS 1576"
@@ -92,7 +91,8 @@
         "IEC 60641"
       ],
       "source_tier": "TIER A",
-      "evidence_source": "ACC Insulations official technical product literature"
+      "evidence_source": "ACC Insulations company profile and certifications",
+      "slug": "acc-insulations-pvt-ltd"
     },
     {
       "name": "Ahlstrom-Munksjö",
@@ -128,7 +128,8 @@
         "ASTM D1305",
         "IEC 60641"
       ],
-      "evidence_source": "Ahlstrom corporate technical datasheets"
+      "evidence_source": "Ahlstrom corporate technical datasheets",
+      "slug": "ahlstrom-munksjo"
     },
     {
       "name": "Albert Maier GmbH",
@@ -147,7 +148,8 @@
       "verification_date": "2026-08-31",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "slug": "albert-maier-gmbh"
     },
     {
       "name": "Alka Elektrik",
@@ -180,7 +182,8 @@
         "EN 50180",
         "IEC 60137"
       ],
-      "evidence_source": "Alka Elektrik official product documentation"
+      "evidence_source": "Alka Elektrik official product documentation",
+      "slug": "alka-elektrik"
     },
     {
       "name": "ANKA Radyatör Metal ve Makina A.Ş.",
@@ -199,7 +202,21 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Transformer Panel Radiators & Cooling Banks",
+      "technology_subtypes": [
+        "Panel radiator",
+        "Flanged header",
+        "Hot-dip galvanized"
+      ],
+      "thickness_range_mm": "Fin width 520 mm & 300 mm (center distance 500-3500 mm)",
+      "standards": [
+        "DIN 42559",
+        "EN 50216-6",
+        "ISO 12944 C5-M"
+      ],
+      "evidence_source": "ANKA Radyatör official product catalog and export certificates",
+      "slug": "anka-radyator-metal-ve-makina-a-s"
     },
     {
       "name": "Ankara Seramik",
@@ -217,7 +234,8 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "slug": "ankara-seramik"
     },
     {
       "name": "Apar Industries Ltd (POWEROIL)",
@@ -242,9 +260,20 @@
       "verification_date": "2026-09-10",
       "source": "In-repo accessories research (scratch/generate_accessories.js, 2026-09-10). Listed; official website recorded.",
       "listing_status": "listed",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Transformer Oils & Bio-Based Natural Esters",
+      "manufacturer_product_name": "POWEROIL TO 335, TO 420, NYSTRO Bio-Ester",
+      "thermal_class": "Inhibited & uninhibited mineral oils + natural bio-esters",
+      "standards": [
+        "IEC 60296",
+        "IS 335",
+        "ASTM D3487",
+        "IEC 62770"
+      ],
+      "evidence_source": "Apar Industries official technical specifications and global export approvals",
+      "slug": "apar-industries-ltd-poweroil"
     },
     {
       "name": "Aperam (Aperam South America)",
@@ -266,9 +295,17 @@
       "verification_date": "2026-09-10",
       "source": "In-repo accessories research (scratch/generate_accessories.js, 2026-09-10). Listed; official website recorded.",
       "listing_status": "listed",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Cold Rolled Grain Oriented Electrical Steel",
+      "manufacturer_product_name": "Aperam CRGO Electrical Steel",
+      "standards": [
+        "IEC 60404-8-7",
+        "NBR 9089"
+      ],
+      "evidence_source": "Aperam South America technical datasheets",
+      "slug": "aperam-aperam-south-america"
     },
     {
       "name": "ARASIS (Micafluid AG)",
@@ -286,7 +323,8 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "slug": "arasis-micafluid-ag"
     },
     {
       "name": "ARES Transformer (Arestrafo)",
@@ -305,7 +343,21 @@
       "verification_date": "2026-08-31",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Buchholz Relays, Dehydrating Breathers, Oil Level Gauges & Bushings",
+      "technology_subtypes": [
+        "Buchholz relay",
+        "Dehydrating breather",
+        "Magnetic oil level gauge",
+        "Porcelain bushing"
+      ],
+      "standards": [
+        "EN 50216 series",
+        "DIN 42531",
+        "ISO 9001"
+      ],
+      "evidence_source": "ARES Transformer official components catalog",
+      "slug": "ares-transformer-arestrafo"
     },
     {
       "name": "Arteche",
@@ -324,7 +376,18 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Instrument Transformers & Substation Measurement Systems",
+      "technology_subtypes": [
+        "Optical CT/PT",
+        "Substation monitoring transducers"
+      ],
+      "standards": [
+        "IEC 61869",
+        "IEEE C57.13"
+      ],
+      "evidence_source": "Arteche corporate product catalog",
+      "slug": "arteche"
     },
     {
       "name": "ASTA Energy Transmission Components GmbH",
@@ -355,8 +418,19 @@
       ],
       "standards": [
         "IEC 60317-29",
-        "IEC 60851"
-      ]
+        "IEC 60317-0-2",
+        "DIN EN 13601"
+      ],
+      "product_family": "Continuously Transposed Conductors (CTC) & Paper-Insulated Copper Strips",
+      "technology_subtypes": [
+        "CTC (Continuously Transposed Conductor)",
+        "Epoxy-bonded CTC (hardened)",
+        "Nomex / Kraft wrapped",
+        "PVF enamelled"
+      ],
+      "thickness_range_mm": "5 to 83 strands (strip thickness 0.8–3.5 mm)",
+      "evidence_source": "ASTA Group official technical catalog & factory capabilities in Austria/China/India/Brazil",
+      "slug": "asta-energy-transmission-components-gmbh"
     },
     {
       "name": "Baoshan Iron & Steel Co., Ltd. (Baosteel)",
@@ -381,20 +455,22 @@
       "listing_status": "listed",
       "canonical_company_name": "Baoshan Iron & Steel Co., Ltd.",
       "parent_group": "China Baowu Steel Group",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "product_family": "Domain-refined CRGO",
-      "manufacturer_product_name": "B20R070, B23R080, B27R090 High-Permeability Laser-Treated CRGO",
+      "product_family": "High-Permeability (Hi-B) & Laser-Domain Refined CRGO Steel",
+      "manufacturer_product_name": "Baosteel B23R080, B20R070, B18R065 Laser-Scribed CRGO",
       "grades": [
         "0.20 mm, 0.23 mm, 0.27 mm high-grade oriented steel",
         "GB/T 2521"
       ],
-      "thickness_range_mm": "0.18 mm - 0.30 mm",
+      "thickness_range_mm": "0.18 mm – 0.30 mm (B800 ≥ 1.90 T)",
       "standards": [
-        "GB/T 2521",
-        "IEC 60404-8-7"
+        "IEC 60404-8-7",
+        "GB/T 2521.2"
       ],
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "evidence_source": "Baosteel Grain-Oriented Electrical Steel product manual",
+      "slug": "baoshan-iron-and-steel-co-ltd-baosteel"
     },
     {
       "name": "Barberi Electro",
@@ -427,7 +503,8 @@
         "EN 50180",
         "IEC 60137"
       ],
-      "evidence_source": "Barberi Electro & Electroceramica product catalogue"
+      "evidence_source": "Barberi Electro & Electroceramica product catalogue",
+      "slug": "barberi-electro"
     },
     {
       "name": "Baron USA (Baron Purification)",
@@ -450,7 +527,8 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "slug": "baron-usa-baron-purification"
     },
     {
       "name": "BASF SE",
@@ -468,7 +546,8 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "slug": "basf-se"
     },
     {
       "name": "Baur GmbH",
@@ -494,7 +573,8 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "slug": "baur-gmbh"
     },
     {
       "name": "Bicron Electronics Company",
@@ -511,7 +591,18 @@
       "verification_date": "2026-08-31",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Custom Current Transformers & High-Precision Sensing Coils",
+      "technology_subtypes": [
+        "Bushing CTs",
+        "Toroidal current transformers"
+      ],
+      "standards": [
+        "IEEE C57.13",
+        "UL 506"
+      ],
+      "evidence_source": "Bicron Electronics product literature",
+      "slug": "bicron-electronics-company"
     },
     {
       "name": "BTRAC Ltd",
@@ -541,7 +632,8 @@
         "BS 2562",
         "IEC 60137"
       ],
-      "evidence_source": "BTRAC UK catalog"
+      "evidence_source": "BTRAC UK catalog",
+      "slug": "btrac-ltd"
     },
     {
       "name": "Camille Bauer Metrawatt AG",
@@ -559,7 +651,18 @@
       "verification_date": "2026-08-31",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Substation Transducers, Temperature Controllers & Digital Power Meters",
+      "technology_subtypes": [
+        "Precision signal transducers",
+        "Digital multi-parameter monitoring"
+      ],
+      "standards": [
+        "IEC 60076",
+        "IEC 61010"
+      ],
+      "evidence_source": "Camille Bauer Metrawatt technical documentation",
+      "slug": "camille-bauer-metrawatt-ag"
     },
     {
       "name": "Camlin Energy (Camlin Group)",
@@ -584,7 +687,20 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Online Multi-Gas DGA, Bushing & Partial Discharge Monitors",
+      "technology_subtypes": [
+        "Photoacoustic spectroscopy (PAS)",
+        "Online 9-gas DGA",
+        "Bushing monitoring (PF/Tan Delta)",
+        "Online PD"
+      ],
+      "standards": [
+        "IEC 60599",
+        "IEEE C57.104"
+      ],
+      "evidence_source": "Camlin Energy TOTUS product documentation",
+      "slug": "camlin-energy-camlin-group"
     },
     {
       "name": "Cargill Inc. (Envirotemp FR3)",
@@ -610,7 +726,7 @@
       "verification_date": "2026-09-13",
       "source": "Deep-research verified manufacturer registry. Official corporate documentation.",
       "listing_status": "listed",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
       "source_tier": "TIER A",
       "grades": [
@@ -620,7 +736,12 @@
         "IEC 62770",
         "IEEE C57.147",
         "ASTM D6871"
-      ]
+      ],
+      "product_family": "Bio-Based Natural Ester Dielectric Fluids",
+      "manufacturer_product_name": "Envirotemp FR3 Vegetable Oil Dielectric Fluid",
+      "thermal_class": "Natural ester dielectric fluid (Fire point >330°C / Flash point >300°C, Class K)",
+      "evidence_source": "Cargill Envirotemp FR3 official technical documentation & FM Global certification",
+      "slug": "cargill-inc-envirotemp-fr3"
     },
     {
       "name": "Changzhou Apex Machinery Co., Ltd.",
@@ -638,7 +759,18 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Transformer Radiators & Corrugated Tanks",
+      "technology_subtypes": [
+        "Panel radiator",
+        "Corrugated fin walls"
+      ],
+      "standards": [
+        "JB/T 5347",
+        "ISO 9001"
+      ],
+      "evidence_source": "Changzhou Apex official technical datasheets",
+      "slug": "changzhou-apex-machinery-co-ltd"
     },
     {
       "name": "China XD Electric Co., Ltd. (XD bushings)",
@@ -656,7 +788,23 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "technology_subtypes": [
+        "RIP",
+        "RIS",
+        "OIP",
+        "UHV DC"
+      ],
+      "voltage_max_kv": 1100,
+      "voltage_evidence_kv": "1100 kV DC / 1000 kV AC (Xi'an XD UHV type-tested)",
+      "max_current_a": 30000,
+      "standards": [
+        "IEC 60137",
+        "GB/T 4109",
+        "IEEE C57.19.00"
+      ],
+      "evidence_source": "China XD Group / Xi'an XD High Voltage Bushing official catalog",
+      "slug": "china-xd-electric-co-ltd-xd-bushings"
     },
     {
       "name": "Cleveland-Cliffs Inc.",
@@ -678,9 +826,18 @@
       "verification_date": "2026-09-10",
       "source": "In-repo accessories research (scratch/generate_accessories.js, 2026-09-10). Listed; official website recorded.",
       "listing_status": "listed",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Grain-Oriented Electrical Steel (GOES)",
+      "manufacturer_product_name": "TRAN-COR H, TRAN-COR, CARLITE coating",
+      "thickness_range_mm": "0.23 mm – 0.35 mm",
+      "standards": [
+        "ASTM A876",
+        "IEC 60404-8-7"
+      ],
+      "evidence_source": "Cleveland-Cliffs Grain-Oriented Electrical Steel catalog",
+      "slug": "cleveland-cliffs-inc"
     },
     {
       "name": "COMEM Group",
@@ -689,13 +846,9 @@
       "city": "Montebello Vicentino",
       "website": "https://www.comem.com",
       "categories": [
-        "Bushings (HV, LV)",
-        "Monitoring / diagnostic devices",
         "Buchholz relays",
-        "Pressure-relief devices",
-        "Oil-level indicators",
-        "Temperature indicators",
-        "Breathers (silica gel)"
+        "Monitoring / diagnostic devices",
+        "Bushings (HV, LV)"
       ],
       "description": "Italian manufacturer of traditional and digital smart transformer accessories including Buchholz relays, pressure relief valves, oil level indicators, winding thermometers, and e-Breathers.",
       "verification_status": "Official Website Checked",
@@ -707,9 +860,18 @@
         "EN 50216 series, IEC 60076-22"
       ],
       "standards": [
-        "EN 50216",
+        "EN 50216-2",
+        "IEC 60137",
         "IEC 60076-22"
-      ]
+      ],
+      "product_family": "Buchholz Relays, e-Devices Digital Sensors & Transformer Accessories",
+      "technology_subtypes": [
+        "Buchholz relay (EN 50216-2)",
+        "Integrated digital sensors (e-Device)",
+        "Porcelain / solid bushings"
+      ],
+      "evidence_source": "COMEM Group product catalog and type test reports",
+      "slug": "comem-group"
     },
     {
       "name": "Cottrell Paper Company",
@@ -741,7 +903,8 @@
         "ASTM D1305",
         "NEMA"
       ],
-      "evidence_source": "Cottrell Paper official product technical datasheets"
+      "evidence_source": "Cottrell Paper official product technical datasheets",
+      "slug": "cottrell-paper-company"
     },
     {
       "name": "CTR Manufacturing Industries Ltd",
@@ -786,7 +949,8 @@
       "voltage_max_kv": 245,
       "voltage_evidence_kv": "245 kV / 600 A OLTC (Type tested at CPRI)",
       "max_current_a": 600,
-      "evidence_source": "CTR official tap changer technical data sheet"
+      "evidence_source": "CTR official tap changer technical data sheet",
+      "slug": "ctr-manufacturing-industries-ltd"
     },
     {
       "name": "De Angeli Prodotti S.r.l.",
@@ -811,7 +975,21 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "CTC & Enamelled Conductors for EHV Power Transformers",
+      "technology_subtypes": [
+        "CTC (Continuously Transposed Conductor)",
+        "PVF enamelled strip",
+        "Bunched conductor",
+        "Epoxy-hardened"
+      ],
+      "thickness_range_mm": "5 to 75 strands",
+      "standards": [
+        "IEC 60317-29",
+        "EN 13601"
+      ],
+      "evidence_source": "De Angeli Prodotti official technical documentation",
+      "slug": "de-angeli-prodotti-s-r-l"
     },
     {
       "name": "Dehonit (Deutsche Holzveredelung)",
@@ -827,9 +1005,18 @@
       "verification_date": "2026-09-11",
       "source": "data/components-deep-dive.json (2026-09-11). Listed; official website recorded.",
       "listing_status": "listed",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Compressed Laminated Wood for Transformer Insulation",
+      "manufacturer_product_name": "Dehonit Compressed Laminated Wood Type KP 2012 / KP 2016, Pressure Rings, Step Blocks",
+      "density_g_cm3": "1.15 – 1.30 g/cm³",
+      "standards": [
+        "IEC 61061",
+        "DIN 7707"
+      ],
+      "evidence_source": "Dehonit official technical manual",
+      "slug": "dehonit-deutsche-holzveredelung"
     },
     {
       "name": "Doble Engineering Company (ESCO Technologies)",
@@ -838,8 +1025,8 @@
       "city": "Watertown",
       "website": "https://www.doble.com",
       "categories": [
-        "Test equipment",
-        "Monitoring / diagnostic devices"
+        "Monitoring / diagnostic devices",
+        "Test equipment"
       ],
       "description": "Industry benchmark for high-voltage apparatus diagnostic instruments, insulation power factor analyzers, laboratory fluid testing, and transformer asset health data.",
       "founded_year": 1920,
@@ -855,7 +1042,21 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Calisto Online DGA Monitors & Doble DOMS Asset Management",
+      "technology_subtypes": [
+        "Gas chromatography (GC)",
+        "9-gas online DGA",
+        "Capacitance & Tan Delta monitoring",
+        "SFRA"
+      ],
+      "standards": [
+        "IEC 60599",
+        "IEEE C57.104",
+        "IEEE C57.152"
+      ],
+      "evidence_source": "Doble Engineering / Morgan Schaffer official technical datasheets",
+      "slug": "doble-engineering-company-esco-technologies"
     },
     {
       "name": "DuPont (Nomex)",
@@ -892,7 +1093,8 @@
         "ASTM D374",
         "IEEE C57.154"
       ],
-      "thickness_range_mm": "0.05 - 0.76 mm (paper), laminates up to 6.0 mm"
+      "thickness_range_mm": "0.05 - 0.76 mm (paper), laminates up to 6.0 mm",
+      "slug": "dupont-nomex"
     },
     {
       "name": "Dynamic Ratings",
@@ -916,7 +1118,20 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Online Bushing Monitoring & Transformer Comprehensive Diagnostic Systems",
+      "technology_subtypes": [
+        "Bushing monitoring (Capacitance & Tan Delta/PF)",
+        "Thermal model monitoring",
+        "Multi-sensor substation platform"
+      ],
+      "standards": [
+        "IEEE C57.104",
+        "IEC 60076-7",
+        "IEEE C57.91"
+      ],
+      "evidence_source": "Dynamic Ratings E100 technical documentation",
+      "slug": "dynamic-ratings"
     },
     {
       "name": "Easun MR Tap Changers",
@@ -957,7 +1172,8 @@
         "IEC 60214-1",
         "IS 8468"
       ],
-      "evidence_source": "Easun MR Chennai official technical product catalogue"
+      "evidence_source": "Easun MR Chennai official technical product catalogue",
+      "slug": "easun-mr-tap-changers"
     },
     {
       "name": "Easun Reyrolle Ltd",
@@ -982,7 +1198,20 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Buchholz Relays & Transformer Protection Relays",
+      "technology_subtypes": [
+        "Buchholz relay",
+        "Numeric protection relay",
+        "Tap changer controls"
+      ],
+      "standards": [
+        "IS 3637",
+        "EN 50216-2",
+        "IEC 60255"
+      ],
+      "evidence_source": "Easun Reyrolle official technical specifications",
+      "slug": "easun-reyrolle-ltd"
     },
     {
       "name": "ebm-papst Group",
@@ -1007,7 +1236,20 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Low-Noise Axial Fans for Transformer Radiators",
+      "technology_subtypes": [
+        "Axial cooling fan",
+        "EC green tech motor",
+        "Low-noise serrated blades"
+      ],
+      "standards": [
+        "EN 50216-12",
+        "IP66",
+        "ISO 9001"
+      ],
+      "evidence_source": "ebm-papst official transformer cooling applications catalog",
+      "slug": "ebm-papst-group"
     },
     {
       "name": "Elektromotoren und Gerätebau Barleben GmbH (EMB)",
@@ -1016,8 +1258,7 @@
       "city": "Barleben",
       "website": "https://www.emb-online.de",
       "categories": [
-        "Buchholz relays",
-        "Monitoring / diagnostic devices"
+        "Buchholz relays"
       ],
       "description": "World-leading German manufacturer of precision Buchholz protective relays, gas sampling instruments, oil surge relays for tap-changers, and liquid flow monitors for transformers.",
       "founded_year": 1863,
@@ -1038,9 +1279,18 @@
         "Pipe diameter DN 25 to DN 80 (DIN EN 50216-2)"
       ],
       "standards": [
-        "DIN EN 50216-2",
+        "EN 50216-2",
+        "DIN 42566",
         "IEC 60076-22-1"
-      ]
+      ],
+      "product_family": "Buchholz Relays & Gas Actuated Protective Devices",
+      "technology_subtypes": [
+        "Buchholz relay (single & double float, DN 25–80)",
+        "Reed contact / microswitch",
+        "Gas sampling device"
+      ],
+      "evidence_source": "EMB Barleben official Buchholz relay catalog and VDE certificates",
+      "slug": "elektromotoren-und-geratebau-barleben-gmbh-emb"
     },
     {
       "name": "Elprom Heavy Industries (VOLTAP)",
@@ -1072,7 +1322,8 @@
       "standards": [
         "IEC 60214-1"
       ],
-      "evidence_source": "Elprom Heavy Industries official technical catalogue"
+      "evidence_source": "Elprom Heavy Industries official technical catalogue",
+      "slug": "elprom-heavy-industries-voltap"
     },
     {
       "name": "Elprom Heavy Industries JSC",
@@ -1096,7 +1347,24 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "technology_subtypes": [
+        "Vacuum-type",
+        "Oil-type",
+        "RS series motor drive"
+      ],
+      "mounting_type": [
+        "In-tank"
+      ],
+      "voltage_max_kv": 245,
+      "voltage_evidence_kv": "245 kV (RS series in-tank on-load tap changers)",
+      "max_current_a": 1200,
+      "standards": [
+        "IEC 60214-1",
+        "ISO 9001"
+      ],
+      "evidence_source": "Elprom Heavy Industries technical documentation",
+      "slug": "elprom-heavy-industries-jsc"
     },
     {
       "name": "EMB GmbH (EBErhard Möbius Elektrotechnische Bauelemente)",
@@ -1117,7 +1385,18 @@
       "verification_date": "2026-08-31",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Protective Relays & Auxiliary Substation Components",
+      "technology_subtypes": [
+        "Protective relay",
+        "Gas sampling device"
+      ],
+      "standards": [
+        "DIN EN 50216",
+        "ISO 9001"
+      ],
+      "evidence_source": "EMB GmbH product documentation",
+      "slug": "emb-gmbh-eberhard-mobius-elektrotechnische-bauelemente"
     },
     {
       "name": "EMH Energie-Messtechnik GmbH",
@@ -1141,7 +1420,18 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Precision Energy Meters & Substation Power Quality Analyzers",
+      "technology_subtypes": [
+        "Power quality analyzer",
+        "Digital transducer"
+      ],
+      "standards": [
+        "IEC 62053",
+        "ISO 9001"
+      ],
+      "evidence_source": "EMH Energie-Messtechnik product datasheets",
+      "slug": "emh-energie-messtechnik-gmbh"
     },
     {
       "name": "ENPAY Endüstriyel Pazarlama ve Yatırım A.Ş.",
@@ -1150,9 +1440,9 @@
       "city": "Başiskele",
       "website": "https://www.enpay.com",
       "categories": [
-        "CRGO (core steel)",
         "Pressboard / insulation materials",
-        "Laminated wood / insulation wood"
+        "Laminated wood / insulation wood",
+        "CRGO (core steel)"
       ],
       "description": "Turkish transformer-component group founded in 1978, with plants in Türkiye, India, Slovakia and Bulgaria. Official site lists cut-to-length and stacked magnetic cores, Enpayboard / laminated board and HV insulation components — not a finished-transformer OEM listing.",
       "founded_year": 1978,
@@ -1160,9 +1450,19 @@
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
       "listing_status": "listed",
-      "role": "MANUFACTURER",
-      "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "role": "CONVERTER / PROCESSOR",
+      "manufacturer_status": "CONVERTER / PROCESSOR",
+      "source_tier": "TIER A",
+      "product_family": "Moulded Insulation Components, Insulation Kits, Laminated Wood & Cut Cores",
+      "manufacturer_product_name": "ENPAY Transformer Insulation Kits, Angle Rings, Snouts, Densified Wood Rings",
+      "thickness_range_mm": "Custom CNC machined kits to transformer OEM designs",
+      "standards": [
+        "IEC 60641",
+        "IEC 61061",
+        "ISO 9001"
+      ],
+      "evidence_source": "ENPAY corporate capabilities and global plant documentation (Türkiye, Slovakia, India)",
+      "slug": "enpay-endustriyel-pazarlama-ve-yat-r-m-a-s"
     },
     {
       "name": "Ergon, Inc. (Ergon Refining)",
@@ -1187,19 +1487,22 @@
       "listing_status": "listed",
       "canonical_company_name": "Ergon, Inc.",
       "parent_group": "Ergon Group",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "product_family": "Naphthenic insulating oil",
-      "manufacturer_product_name": "HyVolt™ I, HyVolt™ II, HyVolt™ C50A Naphthenic Dielectric Fluids",
+      "product_family": "Severe Hydrotreated Naphthenic Transformer Insulating Oils",
+      "manufacturer_product_name": "HyVolt I, HyVolt II, HyVolt C50",
       "grades": [
         "ASTM D3487 Type I & II, IEC 60296"
       ],
       "standards": [
-        "ASTM D3487",
+        "ASTM D3487 Type I & II",
         "IEC 60296",
         "CSA C50"
       ],
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "thermal_class": "Inhibited & Uninhibited naphthenic oil",
+      "evidence_source": "Ergon Refining technical product manual",
+      "slug": "ergon-inc-ergon-refining"
     },
     {
       "name": "Essex Furukawa Magnet Wire LLC",
@@ -1232,7 +1535,15 @@
       "standards": [
         "NEMA MW 1000",
         "IEC 60317"
-      ]
+      ],
+      "product_family": "Continuously Transposed Cable (CTC) & High-Thermal Magnet Wire",
+      "technology_subtypes": [
+        "CTC (Continuously Transposed Cable)",
+        "Enamelled rectangular copper",
+        "Epoxy-bonded CTC"
+      ],
+      "evidence_source": "Essex Furukawa corporate engineering catalog & global plants",
+      "slug": "essex-furukawa-magnet-wire-llc"
     },
     {
       "name": "Fuji Electric Co., Ltd.",
@@ -1250,7 +1561,20 @@
       "verification_date": "2026-08-31",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Substation Diagnostic Monitoring, Bushings & Radiator Coolers",
+      "technology_subtypes": [
+        "Substation monitoring",
+        "Condenser bushings",
+        "Transformer cooling"
+      ],
+      "standards": [
+        "IEC 60076",
+        "IEC 60137",
+        "JEC"
+      ],
+      "evidence_source": "Fuji Electric Power Transmission & Distribution technical catalog",
+      "slug": "fuji-electric-co-ltd"
     },
     {
       "name": "Gandhar Oil Refinery (India) Ltd (Divyol)",
@@ -1266,9 +1590,18 @@
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
       "listing_status": "listed",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Transformer Oils & Naphthenic Dielectric Fluids",
+      "manufacturer_product_name": "Divyol Transformer Oil Type I & II",
+      "standards": [
+        "IS 335",
+        "IEC 60296",
+        "ASTM D3487"
+      ],
+      "evidence_source": "Gandhar Oil Refinery technical product portfolio",
+      "slug": "gandhar-oil-refinery-india-ltd-divyol"
     },
     {
       "name": "Globe Core GmbH",
@@ -1291,7 +1624,8 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "slug": "globe-core-gmbh"
     },
     {
       "name": "Gumasol",
@@ -1309,7 +1643,8 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "slug": "gumasol"
     },
     {
       "name": "H-J Enterprises (The H-J Family of Companies)",
@@ -1335,7 +1670,22 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "technology_subtypes": [
+        "Porcelain",
+        "Epoxy",
+        "Solid dielectric",
+        "Spade terminals"
+      ],
+      "voltage_max_kv": 69,
+      "voltage_evidence_kv": "1.2 kV – 69 kV IEEE/ANSI distribution & sub-transmission bushings",
+      "standards": [
+        "IEEE C57.19.00",
+        "IEEE C57.19.01",
+        "NEMA"
+      ],
+      "evidence_source": "The H-J Family of Companies transformer components catalog",
+      "slug": "h-j-enterprises-the-h-j-family-of-companies"
     },
     {
       "name": "Haefely AG (Haefely Hipotronics)",
@@ -1360,7 +1710,8 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "slug": "haefely-ag-haefely-hipotronics"
     },
     {
       "name": "Hayward Tyler Group",
@@ -1392,9 +1743,18 @@
         "Flow rates up to 450 m³/h"
       ],
       "standards": [
-        "IEC 60076",
-        "EN 50216-7"
-      ]
+        "EN 50216-7",
+        "IEC 60076"
+      ],
+      "product_family": "Glandless Canned Motor Transformer Oil Circulation Pumps",
+      "technology_subtypes": [
+        "Canned motor pump",
+        "Glandless sealless pump",
+        "Submerged motor"
+      ],
+      "thickness_range_mm": "Flow rates 20–250 m³/h",
+      "evidence_source": "Hayward Tyler official transformer oil pump engineering manual",
+      "slug": "hayward-tyler-group"
     },
     {
       "name": "Hedrich Group (HEDRICH GmbH)",
@@ -1419,7 +1779,8 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "slug": "hedrich-group-hedrich-gmbh"
     },
     {
       "name": "HIGHVOLT Prüftechnik Dresden",
@@ -1437,7 +1798,8 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "slug": "highvolt-pruftechnik-dresden"
     },
     {
       "name": "Hilliard Corporation (HILCO)",
@@ -1456,9 +1818,21 @@
       ],
       "verification_status": "Official Website Checked",
       "verification_date": "2026-08-31",
-      "role": "MANUFACTURER",
-      "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "role": "SERVICE / EQUIPMENT",
+      "manufacturer_status": "SERVICE / EQUIPMENT",
+      "source_tier": "TIER A",
+      "product_family": "HILCO Transformer Oil Filtration, Degasification & Purification Equipment",
+      "technology_subtypes": [
+        "Oil filtration system",
+        "Vacuum dehydrator",
+        "Oil reclaimer"
+      ],
+      "standards": [
+        "IEEE C57.106",
+        "ISO 9001"
+      ],
+      "evidence_source": "HILCO official product engineering catalog",
+      "slug": "hilliard-corporation-hilco"
     },
     {
       "name": "Hindustan Petroleum Corporation Ltd (HP Lubricants)",
@@ -1474,9 +1848,17 @@
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
       "listing_status": "listed",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Transformer Dielectric Oils",
+      "manufacturer_product_name": "HP Transformer Oil H-Volt",
+      "standards": [
+        "IS 335",
+        "IEC 60296"
+      ],
+      "evidence_source": "HPCL technical product manual",
+      "slug": "hindustan-petroleum-corporation-ltd-hp-lubricants"
     },
     {
       "name": "HSP Hochspannungsgeräte GmbH",
@@ -1521,7 +1903,8 @@
       "voltage_max_kv": 1200,
       "voltage_evidence_kv": "1200 kV AC / 1100 kV DC converter bushings",
       "max_current_a": 35000,
-      "evidence_source": "HSP Troisdorf technical documentation"
+      "evidence_source": "HSP Troisdorf technical documentation",
+      "slug": "hsp-hochspannungsgerate-gmbh"
     },
     {
       "name": "Huaming Power Equipment Co., Ltd.",
@@ -1569,7 +1952,8 @@
       "voltage_max_kv": 1000,
       "voltage_evidence_kv": "1000 kV AC (CMD, CV, VCM vacuum & oil OLTCs)",
       "max_current_a": 2400,
-      "evidence_source": "Huaming Power Equipment official product catalog & KEMA type test certificates"
+      "evidence_source": "Huaming Power Equipment official product catalog & KEMA type test certificates",
+      "slug": "huaming-power-equipment-co-ltd"
     },
     {
       "name": "Indian Oil Corporation Ltd (SERVO Electra)",
@@ -1585,9 +1969,17 @@
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
       "listing_status": "listed",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Mineral Transformer Insulating Oils",
+      "manufacturer_product_name": "SERVO Electra, SERVO Electra Super (Inhibited)",
+      "standards": [
+        "IS 335",
+        "IEC 60296"
+      ],
+      "evidence_source": "Indian Oil Corporation official SERVO product datasheet",
+      "slug": "indian-oil-corporation-ltd-servo-electra"
     },
     {
       "name": "Isovolta AG",
@@ -1609,9 +2001,19 @@
       "verification_date": "2026-09-10",
       "source": "In-repo accessories research (scratch/generate_accessories.js, 2026-09-10). Listed; official website recorded.",
       "listing_status": "listed",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Flexible Electrical Insulation Laminates & Transformer Composites",
+      "manufacturer_product_name": "VOLTAFLEX, NOMEX® Composites, DMD, NMN, Prepreg Laminates",
+      "thermal_class": "130°C (Class B) to 200°C (Class N/R)",
+      "standards": [
+        "IEC 60626",
+        "IEC 60641",
+        "ISO 9001"
+      ],
+      "evidence_source": "Isovolta AG technical datasheets and product manual",
+      "slug": "isovolta-ag"
     },
     {
       "name": "JFE Steel Corporation",
@@ -1634,9 +2036,18 @@
       "verification_date": "2026-09-10",
       "source": "In-repo accessories research (scratch/generate_accessories.js, 2026-09-10). Listed; official website recorded.",
       "listing_status": "listed",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Super Core & High-Permeability Grain Oriented Steel",
+      "manufacturer_product_name": "JFE Super Core, 23JG085, 27JG090",
+      "thickness_range_mm": "0.23 mm – 0.35 mm",
+      "standards": [
+        "IEC 60404-8-7",
+        "JIS C 2553"
+      ],
+      "evidence_source": "JFE Steel Electrical Steel Sheets catalog",
+      "slug": "jfe-steel-corporation"
     },
     {
       "name": "Jiangsu Shemar Electric Co., Ltd.",
@@ -1645,7 +2056,8 @@
       "city": "Nantong",
       "website": "https://www.shemar.com.cn",
       "categories": [
-        "Bushings (HV, LV)"
+        "Bushings (HV, LV)",
+        "High voltage insulators / porcelain / composite shells"
       ],
       "description": "Global high-tech manufacturer specializing in composite hollow insulators, dry-type silicone composite transformer bushings up to 1100 kV UHV, and line surge arresters.",
       "founded_year": 1996,
@@ -1661,7 +2073,21 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "technology_subtypes": [
+        "Composite",
+        "RIP",
+        "RIS",
+        "Hollow core"
+      ],
+      "voltage_max_kv": 1100,
+      "voltage_evidence_kv": "1100 kV AC / 800 kV DC composite hollow core bushings",
+      "standards": [
+        "IEC 61462",
+        "IEC 60137"
+      ],
+      "evidence_source": "Jiangsu Shemar Electric technical product documentation",
+      "slug": "jiangsu-shemar-electric-co-ltd"
     },
     {
       "name": "JSW JFE Electrical Steel Pvt Ltd",
@@ -1677,9 +2103,17 @@
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
       "listing_status": "listed",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "High-Permeability Grain-Oriented Electrical Steel (Bellary Plant)",
+      "manufacturer_product_name": "JSW-JFE Hi-B CRGO Coils & Sheets",
+      "standards": [
+        "IS 3024",
+        "IEC 60404-8-7"
+      ],
+      "evidence_source": "JSW Steel official manufacturing plant announcements and technical literature",
+      "slug": "jsw-jfe-electrical-steel-pvt-ltd"
     },
     {
       "name": "Kelvion Holding GmbH",
@@ -1704,7 +2138,20 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Transformer Oil Coolers & Safety Heat Exchangers",
+      "technology_subtypes": [
+        "OFAF forced oil cooler",
+        "ODWF double-tube safety cooler",
+        "Compact finned-tube cooler"
+      ],
+      "standards": [
+        "EN 1048",
+        "ISO 9001",
+        "ASME"
+      ],
+      "evidence_source": "Kelvion transformer heat exchanger engineering manual",
+      "slug": "kelvion-holding-gmbh"
     },
     {
       "name": "Kirloskar Brothers Limited",
@@ -1729,7 +2176,19 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Centrifugal & Canned Motor Transformer Oil Pumps",
+      "technology_subtypes": [
+        "Canned motor pump",
+        "Centrifugal oil pump"
+      ],
+      "standards": [
+        "IS 5120",
+        "EN 50216-7",
+        "ISO 9001"
+      ],
+      "evidence_source": "Kirloskar corporate product catalog",
+      "slug": "kirloskar-brothers-limited"
     },
     {
       "name": "Krempel GmbH",
@@ -1774,7 +2233,8 @@
       "source_tier": "TIER A",
       "density_g_cm3": "1.00 – 1.25 g/cm³",
       "thermal_class": "105°C (Class A) & 120°C (Class E thermally upgraded)",
-      "evidence_source": "Krempel GmbH official technical product datasheets"
+      "evidence_source": "Krempel GmbH official technical product datasheets",
+      "slug": "krempel-gmbh"
     },
     {
       "name": "Krenz & Company",
@@ -1792,7 +2252,19 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Heavy-Duty Transformer Cooling Fans",
+      "technology_subtypes": [
+        "Axial cooling fan",
+        "TEAO motor",
+        "50/60 Hz dual frequency"
+      ],
+      "standards": [
+        "IEEE C57.12.00",
+        "NEMA MG 1"
+      ],
+      "evidence_source": "Krenz & Company transformer fan engineering datasheets",
+      "slug": "krenz-and-company"
     },
     {
       "name": "KRYFS Power Components Ltd",
@@ -1814,9 +2286,18 @@
       "verification_date": "2026-09-10",
       "source": "In-repo accessories research (scratch/generate_accessories.js, 2026-09-10). Listed; official website recorded.",
       "listing_status": "listed",
-      "role": "MANUFACTURER",
-      "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "role": "CONVERTER / PROCESSOR",
+      "manufacturer_status": "CONVERTER / PROCESSOR",
+      "source_tier": "TIER A",
+      "product_family": "CRGO Built-Up Cores, Cut Laminations & Slit Coils (Step-Lap)",
+      "manufacturer_product_name": "KRYFS Step-Lap Mitered Transformer Cores, Slit Coils, Toroids",
+      "standards": [
+        "IS 3024",
+        "IEC 60404",
+        "ISO 9001"
+      ],
+      "evidence_source": "KRYFS Power Components corporate technical capabilities brochure",
+      "slug": "kryfs-power-components-ltd"
     },
     {
       "name": "KSB SE & Co. KGaA",
@@ -1840,7 +2321,19 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Submersible Glandless Transformer Oil Circulation Pumps",
+      "technology_subtypes": [
+        "Glandless pump",
+        "Submersible motor",
+        "Flanged casing"
+      ],
+      "standards": [
+        "EN 50216-7",
+        "ISO 9906"
+      ],
+      "evidence_source": "KSB technical product documentation",
+      "slug": "ksb-se-and-co-kgaa"
     },
     {
       "name": "KTR Radiatoren GmbH / Trantech Radiators",
@@ -1871,7 +2364,8 @@
       "standards": [
         "IEEE C57.12.00",
         "ANSI C57"
-      ]
+      ],
+      "slug": "ktr-radiatoren-gmbh-trantech-radiators"
     },
     {
       "name": "LAE S.r.l.",
@@ -1894,10 +2388,11 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "slug": "lae-s-r-l"
     },
     {
-      "name": "Lapp Insulators GmbH",
+      "name": "LAPP Insulators GmbH",
       "country": "Germany",
       "state": "Bavaria",
       "city": "Wunsiedel",
@@ -1918,7 +2413,8 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "slug": "lapp-insulators-gmbh"
     },
     {
       "name": "Lee Vedla Industrial Corporation",
@@ -1927,9 +2423,9 @@
       "city": "Bhopal",
       "website": "https://leevedla.com",
       "categories": [
+        "Copper / CTC conductors",
         "Pressboard / insulation materials",
         "CRGO (core steel)",
-        "Copper / CTC conductors",
         "Transformer oil / ester fluids"
       ],
       "description": "Bhopal supplier of insulating papers (kraft, crepe, thermally upgraded), CRGO laminations/slit coils and transformer core materials for power and distribution transformer manufacturing.",
@@ -1937,7 +2433,19 @@
       "verification_date": "2026-08-31",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Paper Covered Copper Strips, Bunched Conductors & CTC",
+      "technology_subtypes": [
+        "Paper-covered copper",
+        "Bunched strip",
+        "CTC"
+      ],
+      "standards": [
+        "IS 13730",
+        "IEC 60317"
+      ],
+      "evidence_source": "Lee Vedla official product specifications",
+      "slug": "lee-vedla-industrial-corporation"
     },
     {
       "name": "Liaoning Jinli Electric Power Electrical Appliance Co., Ltd. (JINLI)",
@@ -1972,7 +2480,8 @@
         "IEC 60214-1",
         "GB/T 10230"
       ],
-      "evidence_source": "Liaoning Jinli official technical catalog"
+      "evidence_source": "Liaoning Jinli official technical catalog",
+      "slug": "liaoning-jinli-electric-power-electrical-appliance-co-ltd-jinli"
     },
     {
       "name": "LumaSense Technologies (Advanced Energy)",
@@ -1996,7 +2505,18 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Luxtron Fiber-Optic Winding Temperature Measurement Systems",
+      "technology_subtypes": [
+        "Luxtron fluoroptic temperature probe",
+        "Direct winding hot-spot monitor"
+      ],
+      "standards": [
+        "IEEE C57.91",
+        "IEC 60076-2"
+      ],
+      "evidence_source": "Advanced Energy / LumaSense technical datasheets",
+      "slug": "lumasense-technologies-advanced-energy"
     },
     {
       "name": "Luvata (Mitsubishi Materials Group)",
@@ -2018,9 +2538,21 @@
       "verification_date": "2026-09-10",
       "source": "In-repo accessories research (scratch/generate_accessories.js, 2026-09-10). Listed; official website recorded.",
       "listing_status": "listed",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Oxygen-Free High Conductivity Copper Strip (OF-OK®) for Transformer Windings",
+      "technology_subtypes": [
+        "Oxygen-free copper strip",
+        "High-conductivity flat conductor",
+        "CTC feedstock"
+      ],
+      "standards": [
+        "EN 13601",
+        "ASTM B170"
+      ],
+      "evidence_source": "Luvata official OF-OK copper product brochure",
+      "slug": "luvata-mitsubishi-materials-group"
     },
     {
       "name": "M&I Materials Ltd (MIDEL)",
@@ -2046,19 +2578,22 @@
       "listing_status": "listed",
       "canonical_company_name": "M&I Materials Ltd",
       "parent_group": "M&I Materials",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "product_family": "Synthetic & natural ester fluids",
-      "manufacturer_product_name": "MIDEL® 7131 (Synthetic Ester), MIDEL® eN 1204 (Rapeseed Ester), MIDEL® eN 1215 (Soy Ester)",
+      "product_family": "Synthetic & Natural Ester Dielectric Fluids",
+      "manufacturer_product_name": "MIDEL 7131 (Synthetic Ester), MIDEL eN 1204 / 1215 (Natural Ester)",
       "grades": [
         "Synthetic ester: IEC 61099; Natural ester: IEC 62770"
       ],
       "standards": [
-        "IEC 61099",
-        "IEC 62770",
+        "IEC 61099 (Synthetic)",
+        "IEC 62770 (Natural)",
         "IEEE C57.147"
       ],
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "thermal_class": "Synthetic & Natural ester dielectric fluids (Fire point >300°C / Class K)",
+      "evidence_source": "M&I Materials MIDEL technical manual & UL / FM approvals",
+      "slug": "mandi-materials-ltd-midel"
     },
     {
       "name": "Maschinenfabrik Reinhausen (MR / Reinhausen Group)",
@@ -2069,7 +2604,9 @@
       "categories": [
         "Tap changers (OLTC / DETC)",
         "Bushings (HV, LV)",
-        "Monitoring / diagnostic devices"
+        "Monitoring / diagnostic devices",
+        "Breathers (silica gel)",
+        "Pressure-relief devices"
       ],
       "description": "The German market leader in on-load and de-energised tap changers (OLTC/DETC) and transformer control/monitoring. The Reinhausen Group also includes the former CEDASPE Italian works in San Giuliano Milanese; porcelain and composite transformer bushings, Buchholz relays and related accessories from that plant are published on reinhausen.com and are listed here under Reinhausen, not as a separate supplier.",
       "founded_year": 1868,
@@ -2099,7 +2636,8 @@
       "voltage_max_kv": 1200,
       "voltage_evidence_kv": "1200 kV (MR VACUTAP & MIP condenser bushings)",
       "max_current_a": 3000,
-      "evidence_source": "Maschinenfabrik Reinhausen product documentation"
+      "evidence_source": "Maschinenfabrik Reinhausen product documentation",
+      "slug": "maschinenfabrik-reinhausen-mr-reinhausen-group"
     },
     {
       "name": "Megger Group Limited",
@@ -2124,7 +2662,8 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "slug": "megger-group-limited"
     },
     {
       "name": "Mehru Electrical & Mechanical Engineers Pvt. Ltd.",
@@ -2143,7 +2682,21 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "technology_subtypes": [
+        "OIP",
+        "RIP",
+        "Instrument transformers"
+      ],
+      "voltage_max_kv": 420,
+      "voltage_evidence_kv": "420 kV OIP & RIP bushings / CT-PT units (CPRI type tested)",
+      "standards": [
+        "IS 2099",
+        "IEC 60137",
+        "IS 2705"
+      ],
+      "evidence_source": "Mehru Electrical official product technical catalog",
+      "slug": "mehru-electrical-and-mechanical-engineers-pvt-ltd"
     },
     {
       "name": "Menk Apparatebau GmbH",
@@ -2170,17 +2723,24 @@
       "parent_group": "Menk Group",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "product_family": "Transformer radiators",
+      "product_family": "Heavy-Duty Transformer Radiators & Heat Dissipation Systems",
       "manufacturer_product_name": "Pressed-Steel Panel Radiators (DIN 42559 / EN 50216-6), Galvanized Radiator Banks",
       "grades": [
         "Widths 520 mm / 380 mm / 300 mm, lengths up to 4000 mm"
       ],
       "standards": [
         "DIN 42559",
-        "EN 50216-6",
-        "ISO 12944 C5-M"
+        "EN 50216-6"
       ],
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "technology_subtypes": [
+        "Panel radiator",
+        "Flanged header",
+        "C5-M marine coating"
+      ],
+      "thickness_range_mm": "Element width 520 mm & 380 mm",
+      "evidence_source": "Menk Apparatebau technical product portfolio",
+      "slug": "menk-apparatebau-gmbh"
     },
     {
       "name": "MESSKO (MESSKO GmbH)",
@@ -2199,7 +2759,19 @@
       "verification_date": "2026-08-31",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "MESSKO Pointer Thermometers, Oil Level Indicators & Protective Instruments",
+      "technology_subtypes": [
+        "Oil and winding temperature indicators",
+        "Magnetic oil level gauges",
+        "Pressure relief devices"
+      ],
+      "standards": [
+        "DIN EN 50216 series",
+        "IEC 60076-22"
+      ],
+      "evidence_source": "MESSKO Reinhausen product documentation",
+      "slug": "messko-messko-gmbh"
     },
     {
       "name": "MGC Moser-Glaser AG",
@@ -2229,7 +2801,8 @@
         "IEC 60137",
         "IEEE C57.19.00"
       ],
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "slug": "mgc-moser-glaser-ag"
     },
     {
       "name": "Mileen Engineers LLP",
@@ -2246,7 +2819,8 @@
       "verification_date": "2026-08-31",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "slug": "mileen-engineers-llp"
     },
     {
       "name": "Modern Insulators Ltd",
@@ -2262,7 +2836,8 @@
       "verification_date": "2026-08-31",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "slug": "modern-insulators-ltd"
     },
     {
       "name": "Multi-Wing Group",
@@ -2285,7 +2860,19 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Custom Axial Fan Impellers for Power Transformer Radiators",
+      "technology_subtypes": [
+        "Axial fan impeller",
+        "High-efficiency airfoil blade",
+        "PAG/ALU construction"
+      ],
+      "standards": [
+        "ISO 9001",
+        "AMCA 210"
+      ],
+      "evidence_source": "Multi-Wing technical engineering documentation",
+      "slug": "multi-wing-group"
     },
     {
       "name": "Nanjing Electric Co., Ltd. (NJEC)",
@@ -2320,7 +2907,8 @@
       "voltage_max_kv": 800,
       "voltage_evidence_kv": "800 kV OIP & RIP condenser bushings",
       "max_current_a": 5000,
-      "evidence_source": "NJEC corporate catalog"
+      "evidence_source": "NJEC corporate catalog",
+      "slug": "nanjing-electric-co-ltd-njec"
     },
     {
       "name": "Nanjing Rainbow Electric Co., Ltd. (NJREC)",
@@ -2342,7 +2930,22 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "technology_subtypes": [
+        "RIP",
+        "RIS",
+        "Composite",
+        "OIP"
+      ],
+      "voltage_max_kv": 550,
+      "voltage_evidence_kv": "550 kV RIP & composite condenser bushings (KEMA tested)",
+      "max_current_a": 5000,
+      "standards": [
+        "IEC 60137",
+        "GB/T 4109"
+      ],
+      "evidence_source": "Nanjing Rainbow Electric official technical catalog",
+      "slug": "nanjing-rainbow-electric-co-ltd-njrec"
     },
     {
       "name": "Nippon Steel Corporation",
@@ -2367,20 +2970,22 @@
       "listing_status": "listed",
       "canonical_company_name": "Nippon Steel Corporation",
       "parent_group": "Nippon Steel",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "product_family": "Laser-scribed domain-refined CRGO",
-      "manufacturer_product_name": "Orientcore® Hi-B, Laser-Refined ZDKH Electrical Steel Sheets",
+      "product_family": "Laser-Refined Domain Oriented Electrical Steel (ORIENTCORE-HI-B)",
+      "manufacturer_product_name": "20ZDKH, 23ZDKH, 27ZDKH (0.20 mm, 0.23 mm, 0.27 mm)",
       "grades": [
         "20ZDKH, 23ZDKH, 27ZDKH (0.20 mm, 0.23 mm, 0.27 mm)",
         "IEC 60404-8-7"
       ],
-      "thickness_range_mm": "0.20 mm - 0.35 mm",
+      "thickness_range_mm": "0.20 mm – 0.27 mm (B800 ≥ 1.92 T)",
       "standards": [
         "IEC 60404-8-7",
         "JIS C 2553"
       ],
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "evidence_source": "Nippon Steel ORIENTCORE-HI-B technical handbook",
+      "slug": "nippon-steel-corporation"
     },
     {
       "name": "Nynas AB",
@@ -2406,20 +3011,23 @@
       "listing_status": "listed",
       "canonical_company_name": "Nynas AB",
       "parent_group": "Nynas",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "product_family": "Naphthenic mineral oil & bio-liquids",
-      "manufacturer_product_name": "NYTRO® 4000X, NYTRO® Taurus, NYTRO® Polaris, NYTRO® BIO 300X",
+      "product_family": "Naphthenic Mineral Insulating Oils",
+      "manufacturer_product_name": "Nytro Taurus, Nytro Polaris, Nytro 4000X, Nytro Bio 300X",
       "grades": [
         "IEC 60296 Type A / Type B",
         "ASTM D3487 Type I / II"
       ],
       "standards": [
-        "IEC 60296",
-        "ASTM D3487",
+        "IEC 60296 Type A & B",
+        "ASTM D3487 Type I & II",
         "IEEE C57.106"
       ],
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "thermal_class": "Inhibited & Uninhibited naphthenic dielectric fluid (Flash point >140°C)",
+      "evidence_source": "Nynas AB official technical datasheets & refinery documentation",
+      "slug": "nynas-ab"
     },
     {
       "name": "OMICRON electronics GmbH",
@@ -2446,7 +3054,21 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Online Transformer Monitoring (MONTEVERO) & Advanced Testing Systems",
+      "technology_subtypes": [
+        "Online partial discharge (PD)",
+        "Sweep Frequency Response Analysis (SFRA)",
+        "Dielectric frequency response (DIRANA)",
+        "TESTRANO 600"
+      ],
+      "standards": [
+        "IEC 60270",
+        "IEEE C57.152",
+        "IEC 60076-18"
+      ],
+      "evidence_source": "OMICRON electronics official test & monitoring engineering documentation",
+      "slug": "omicron-electronics-gmbh"
     },
     {
       "name": "Opsens Solutions",
@@ -2473,16 +3095,23 @@
       "parent_group": "Opsens",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "product_family": "Fiber-optic winding temperature",
+      "product_family": "Fiber-Optic Hot Spot Temperature Monitoring for Power Transformer Windings",
       "manufacturer_product_name": "OTP-T Fiber-Optic Temperature Sensors, ProSens Signal Conditioners",
       "grades": [
         "Direct hot-spot measurement in windings up to 250°C"
       ],
       "standards": [
         "IEC 60076-2",
-        "IEEE C57.12.00"
+        "IEEE C57.12.00",
+        "IEEE C57.91"
       ],
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "technology_subtypes": [
+        "Fiber-optic GaAs temperature probe",
+        "Direct hot-spot measurement up to 250°C"
+      ],
+      "evidence_source": "Opsens Solutions transformer engineering specifications",
+      "slug": "opsens-solutions"
     },
     {
       "name": "Panama Petrochem Ltd",
@@ -2499,9 +3128,17 @@
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
       "listing_status": "listed",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Transformer Oils & Petroleum Specialty Products",
+      "manufacturer_product_name": "Panol Transformer Oil",
+      "standards": [
+        "IS 335",
+        "IEC 60296"
+      ],
+      "evidence_source": "Panama Petrochem corporate technical specifications",
+      "slug": "panama-petrochem-ltd"
     },
     {
       "name": "Passoni & Villa",
@@ -2542,7 +3179,8 @@
       "voltage_max_kv": 550,
       "voltage_evidence_kv": "550 kV RIP & OIP transformer bushings",
       "max_current_a": 4000,
-      "evidence_source": "Passoni & Villa / GE documentation"
+      "evidence_source": "Passoni & Villa / GE documentation",
+      "slug": "passoni-and-villa"
     },
     {
       "name": "PCORE Electric Company (Hubbell Power Systems)",
@@ -2585,7 +3223,8 @@
       "voltage_max_kv": 500,
       "voltage_evidence_kv": "500 kV IEEE standard condenser bushings",
       "max_current_a": 5000,
-      "evidence_source": "Hubbell / PCORE catalog"
+      "evidence_source": "Hubbell / PCORE catalog",
+      "slug": "pcore-electric-company-hubbell-power-systems"
     },
     {
       "name": "Permali Gloucester Ltd",
@@ -2609,20 +3248,23 @@
       "listing_status": "listed",
       "canonical_company_name": "Permali Gloucester Ltd",
       "parent_group": "Diamorph Group",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "product_family": "Laminated densified wood",
-      "manufacturer_product_name": "Permali Densified Wood Insulation, Clamping Rings, Coil Supports",
+      "product_family": "Densified Laminated Wood & High-Voltage Composite Structural Components",
+      "manufacturer_product_name": "Permali Transformer Wood, Insulating Fasteners, Clamping Plates",
       "grades": [
         "IEC 61061",
         "BS 5618"
       ],
       "thickness_range_mm": "10 - 150 mm",
       "standards": [
-        "IEC 61061",
-        "BS 5618"
+        "BS EN 61061",
+        "ISO 9001"
       ],
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "density_g_cm3": "1.15 – 1.30 g/cm³",
+      "evidence_source": "Permali Gloucester official technical product documentation",
+      "slug": "permali-gloucester-ltd"
     },
     {
       "name": "Petro-Canada Lubricants (Luminol)",
@@ -2645,9 +3287,19 @@
       "verification_date": "2026-09-13",
       "source": "Deep-research verified manufacturer registry. Official corporate documentation.",
       "listing_status": "listed",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Isoparaffinic Severely Hydrotreated Transformer Dielectric Fluids",
+      "manufacturer_product_name": "Luminol TR (Inhibited), Luminol TRi (Inhibited High-Oxidation), Luminol Bi-Inhibited",
+      "thermal_class": "Isoparaffinic pure synthetic hydrocarbon dielectric fluid",
+      "standards": [
+        "IEC 60296 Type A",
+        "ASTM D3487 Type II",
+        "CSA C50 Class A"
+      ],
+      "evidence_source": "Petro-Canada Lubricants official Luminol technical data",
+      "slug": "petro-canada-lubricants-luminol"
     },
     {
       "name": "PetroChina Lubricant Company (Kunlun)",
@@ -2663,9 +3315,17 @@
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
       "listing_status": "listed",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Naphthenic Transformer Oils for UHV AC/DC Transformers",
+      "manufacturer_product_name": "Kunlun KI25X, KI45X, KI50AX",
+      "standards": [
+        "GB 2536",
+        "IEC 60296"
+      ],
+      "evidence_source": "PetroChina Kunlun official technical documentation",
+      "slug": "petrochina-lubricant-company-kunlun"
     },
     {
       "name": "Pfisterer Holding SE",
@@ -2705,7 +3365,8 @@
       "voltage_max_kv": 550,
       "voltage_evidence_kv": "550 kV (Pfisterer CONNEX solid-insulated plug-in bushings)",
       "max_current_a": 4000,
-      "evidence_source": "Pfisterer CONNEX official product technical sheets"
+      "evidence_source": "Pfisterer CONNEX official product technical sheets",
+      "slug": "pfisterer-holding-se"
     },
     {
       "name": "Phenix Technologies, Inc.",
@@ -2730,7 +3391,8 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "slug": "phenix-technologies-inc"
     },
     {
       "name": "POSCO",
@@ -2755,20 +3417,22 @@
       "listing_status": "listed",
       "canonical_company_name": "POSCO Holdings Inc.",
       "parent_group": "POSCO Group",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "product_family": "High-permeability CRGO",
-      "manufacturer_product_name": "POSCO Grain-Oriented Electrical Steel (CGO / Hi-B), Hyper NO Steel",
+      "product_family": "Laser-Scribed Grain-Oriented Electrical Steel (Posamine / Hi-B)",
+      "manufacturer_product_name": "23PHD080, 23PHD085, 27PHD090",
       "grades": [
         "23PHD080, 23PHD085, 27PHD090 (0.23 - 0.27 mm)",
         "IEC 60404-8-7"
       ],
-      "thickness_range_mm": "0.23 mm - 0.35 mm",
+      "thickness_range_mm": "0.23 mm – 0.27 mm",
       "standards": [
         "IEC 60404-8-7",
         "KS D 3530"
       ],
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "evidence_source": "POSCO Electrical Steel technical product brochure",
+      "slug": "posco"
     },
     {
       "name": "PPC Insulators",
@@ -2793,7 +3457,8 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "slug": "ppc-insulators"
     },
     {
       "name": "Precision Wires India Ltd (PWIL)",
@@ -2820,17 +3485,25 @@
       "parent_group": "PWIL",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "product_family": "CTC and paper-covered conductors",
+      "product_family": "Continuously Transposed Conductors (CTC) & Paper-Covered Copper Strips",
       "manufacturer_product_name": "PWIL Continuously Transposed Conductor (CTC), Paper Insulated Copper Strips (PICS)",
       "grades": [
         "Cu-ETP / OFC, 5 to 73 strands"
       ],
       "standards": [
-        "IEC 60317",
-        "IS 13778",
-        "IS 7404"
+        "IS 13730",
+        "IEC 60317-29",
+        "IEC 60317-0-2"
       ],
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "technology_subtypes": [
+        "CTC (Continuously Transposed Conductor)",
+        "Paper-insulated copper strip",
+        "Enamelled rectangular wire"
+      ],
+      "thickness_range_mm": "5 to 73 strands",
+      "evidence_source": "Precision Wires India official technical catalog and annual filings",
+      "slug": "precision-wires-india-ltd-pwil"
     },
     {
       "name": "PREIS Group",
@@ -2865,7 +3538,8 @@
         "EN 50180",
         "IEC 60137"
       ],
-      "evidence_source": "PREIS & Secheron catalog"
+      "evidence_source": "PREIS & Secheron catalog",
+      "slug": "preis-group"
     },
     {
       "name": "PRESS-N-FORGE (India)",
@@ -2885,7 +3559,21 @@
       "verification_date": "2026-08-31",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Transformer Bushing Assemblies, Breathers & Protective Hardware",
+      "technology_subtypes": [
+        "Porcelain bushing assembly up to 36 kV",
+        "Silica gel breather",
+        "Pressure relief device"
+      ],
+      "voltage_max_kv": 36,
+      "standards": [
+        "IS 3347",
+        "IS 2099",
+        "IS 3638"
+      ],
+      "evidence_source": "PRESS-N-FORGE official product specifications",
+      "slug": "press-n-forge-india"
     },
     {
       "name": "Pronal",
@@ -2903,7 +3591,8 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "slug": "pronal"
     },
     {
       "name": "Qualitrol Company",
@@ -2934,8 +3623,19 @@
       ],
       "standards": [
         "IEEE C57.12.00",
-        "IEC 60076-22"
-      ]
+        "IEC 60076-22",
+        "EN 50216"
+      ],
+      "product_family": "Online DGA (Serveron), Direct Winding Temperature (AKM), Buchholz Relays & Smart PRVs",
+      "technology_subtypes": [
+        "Serveron online GC DGA",
+        "Direct fiber optic temperature",
+        "Smart PRV with current switch",
+        "Buchholz relay",
+        "Electronic dehydrating breather"
+      ],
+      "evidence_source": "Qualitrol corporate product catalog and utility technical certifications",
+      "slug": "qualitrol-company"
     },
     {
       "name": "Rad-Tek Radyatör Metal Sanayi ve Ticaret A.Ş.",
@@ -2955,7 +3655,7 @@
       "parent_group": "Rad-Tek Group",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "product_family": "Pressed steel radiators",
+      "product_family": "Transformer Radiators & Corrugated Tanks",
       "manufacturer_product_name": "Rad-Tek DIN 42559 Transformer Panel Radiators, Corrugated Walls",
       "grades": [
         "DIN 42559 / EN 50216-6"
@@ -2964,7 +3664,13 @@
         "DIN 42559",
         "EN 50216-6"
       ],
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "technology_subtypes": [
+        "Panel radiator",
+        "Galvanized / painted fins"
+      ],
+      "evidence_source": "Rad-Tek corporate technical catalog",
+      "slug": "rad-tek-radyator-metal-sanayi-ve-ticaret-a-s"
     },
     {
       "name": "Raj Petro Specialties Pvt Ltd (Brenntag)",
@@ -2987,9 +3693,17 @@
       "verification_date": "2026-09-10",
       "source": "In-repo accessories research (scratch/generate_accessories.js, 2026-09-10). Listed; official website recorded.",
       "listing_status": "listed",
-      "role": "MANUFACTURER",
-      "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "role": "DISTRIBUTOR / BLENDER",
+      "manufacturer_status": "DISTRIBUTOR / BLENDER",
+      "source_tier": "TIER A",
+      "product_family": "Transformer Oils & Specialty Dielectric Fluids",
+      "manufacturer_product_name": "Electrol Transformer Oil",
+      "standards": [
+        "IS 335",
+        "IEC 60296"
+      ],
+      "evidence_source": "Raj Petro Specialties / Brenntag documentation",
+      "slug": "raj-petro-specialties-pvt-ltd-brenntag"
     },
     {
       "name": "Ram Ratna Wires Ltd (RR Shramik)",
@@ -3007,7 +3721,21 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Continuously Transposed Conductors (CTC) & Paper Covered Strips",
+      "technology_subtypes": [
+        "CTC",
+        "Bunched copper conductor",
+        "Nomex / Kraft wrapped",
+        "Epoxy bonded"
+      ],
+      "thickness_range_mm": "5 to 65 strands",
+      "standards": [
+        "IS 13730",
+        "IEC 60317-29"
+      ],
+      "evidence_source": "RR Shramik official product specifications",
+      "slug": "ram-ratna-wires-ltd-rr-shramik"
     },
     {
       "name": "Hitachi Energy (Insulation & Components, Nanjangud — formerly Raman Boards)",
@@ -3049,7 +3777,8 @@
       ],
       "source_tier": "TIER A",
       "density_g_cm3": "1.15 – 1.25 g/cm³",
-      "evidence_source": "Hitachi Energy Nanjangud / Raman Boards official technical documentation"
+      "evidence_source": "Hitachi Energy Nanjangud / Raman Boards official technical documentation",
+      "slug": "hitachi-energy-insulation-and-components-nanjangud-formerly-raman-boards"
     },
     {
       "name": "Raytech GmbH",
@@ -3073,7 +3802,8 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "slug": "raytech-gmbh"
     },
     {
       "name": "Rea Magnet Wire Company, Inc.",
@@ -3100,7 +3830,7 @@
       "parent_group": "Rea Magnet Wire",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "product_family": "CTC and paper-insulated wire",
+      "product_family": "Continuously Transposed Cable & Shaped Magnet Wire",
       "manufacturer_product_name": "Rea CTC Conductor, Nomex® and Kraft Paper Covered Copper and Aluminium Rectangular Wire",
       "grades": [
         "NEMA MW 1000",
@@ -3108,9 +3838,17 @@
       ],
       "standards": [
         "NEMA MW 1000",
+        "IEC 60317",
         "ASTM B48"
       ],
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "technology_subtypes": [
+        "CTC",
+        "Epoxy-bondable CTC",
+        "Paper-wrapped rectangular copper"
+      ],
+      "evidence_source": "Rea Magnet Wire technical engineering catalog",
+      "slug": "rea-magnet-wire-company-inc"
     },
     {
       "name": "Röchling Industrial (Lignostone)",
@@ -3134,7 +3872,7 @@
       "verification_date": "2026-09-10",
       "source": "In-repo accessories research (scratch/generate_accessories.js, 2026-09-10). Listed; official website recorded.",
       "listing_status": "listed",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
       "source_tier": "TIER A",
       "grades": [
@@ -3146,7 +3884,13 @@
         "IEC 61061",
         "DIN 7707"
       ],
-      "thickness_range_mm": "10 - 140 mm (plates / rings / pressure beams)"
+      "thickness_range_mm": "Plates up to 140 mm (machined components to drawing)",
+      "product_family": "Lignostone Transformerwood Laminated Densified Wood",
+      "manufacturer_product_name": "Lignostone Transformerwood KP 2012, KP 2014, KP 2016, Clamping Rings, Beams",
+      "density_g_cm3": "1.15 – 1.35 g/cm³",
+      "thermal_class": "105°C (Class A) & 120°C (Class E)",
+      "evidence_source": "Röchling Industrial Lignostone engineering handbook & type approvals",
+      "slug": "rochling-industrial-lignostone"
     },
     {
       "name": "Rugged Monitoring Inc.",
@@ -3173,16 +3917,24 @@
       "parent_group": "Rugged Monitoring",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "product_family": "Asset monitoring & fiber optics",
+      "product_family": "Fiber-Optic Direct Hot Spot Temperature & Comprehensive Substation Monitoring",
       "manufacturer_product_name": "R501 / T-301 Multi-Channel Fiber-Optic Monitors, SensCore Asset Health Platform",
       "grades": [
         "Comprehensive multi-sensor substation platforms"
       ],
       "standards": [
         "IEC 61850",
-        "IEEE C57.104"
+        "IEEE C57.104",
+        "IEEE C57.12.00"
       ],
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "technology_subtypes": [
+        "Fiber-optic temperature sensors",
+        "Multi-channel condition monitoring",
+        "Substation IoT gateway"
+      ],
+      "evidence_source": "Rugged Monitoring Inc. technical product datasheets",
+      "slug": "rugged-monitoring-inc"
     },
     {
       "name": "Sam Dong Co., Ltd. / Sam Dong America",
@@ -3210,17 +3962,26 @@
       "parent_group": "Sam Dong Group",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "product_family": "Continuously transposed cable",
+      "product_family": "Continuously Transposed Cables (CTC) & Oxygen-Free Copper Magnet Wire",
       "manufacturer_product_name": "Sam Dong OFHC Continuously Transposed Cable (CTC), Paper-Covered Copper Strip, Enamelled Flat Wire",
       "grades": [
         "OFHC Copper 99.99%, 5 to 73 strands"
       ],
       "standards": [
-        "IEC 60317",
-        "NEMA MW 1000",
-        "JIS C 3215"
+        "IEC 60317-29",
+        "ASTM B187",
+        "KS C 3107"
       ],
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "technology_subtypes": [
+        "CTC (5 to 85 strands)",
+        "Epoxy-hardened CTC",
+        "OFHC copper strip",
+        "Paper covered rectangular wire"
+      ],
+      "thickness_range_mm": "5 to 85 strands",
+      "evidence_source": "Sam Dong corporate capabilities & plants in Korea and USA (Tennessee/Ohio)",
+      "slug": "sam-dong-co-ltd-sam-dong-america"
     },
     {
       "name": "Savita Oil Technologies Ltd (Savsol)",
@@ -3245,10 +4006,10 @@
       "listing_status": "listed",
       "canonical_company_name": "Savita Oil Technologies Ltd",
       "parent_group": "Savita Group",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "product_family": "Mineral oil & bio-esters",
-      "manufacturer_product_name": "Transol® Mineral Transformer Oil, Savsol Biolube Natural Ester Fluid",
+      "product_family": "Mineral Transformer Oils & Natural Bio-Esters",
+      "manufacturer_product_name": "Transol Transformer Oil, Savol Bio-Ester",
       "grades": [
         "IEC 60296, IS 335, IEC 62770"
       ],
@@ -3257,7 +4018,10 @@
         "IS 335",
         "IEC 62770"
       ],
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "thermal_class": "Mineral oil & natural ester fluids",
+      "evidence_source": "Savita Oil Technologies technical catalog & CPRI test reports",
+      "slug": "savita-oil-technologies-ltd-savsol"
     },
     {
       "name": "Schwering & Hasse Elektrodraht GmbH",
@@ -3282,7 +4046,19 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Enamelled Rectangular Copper Wire & CTC Conductors",
+      "technology_subtypes": [
+        "Enamelled copper flat wire",
+        "CTC precursor wire",
+        "THEIC / PVF coated"
+      ],
+      "standards": [
+        "DIN EN 60317",
+        "ISO 9001"
+      ],
+      "evidence_source": "Schwering & Hasse technical data sheets",
+      "slug": "schwering-and-hasse-elektrodraht-gmbh"
     },
     {
       "name": "Senapathy Whiteley Ltd",
@@ -3322,7 +4098,8 @@
       ],
       "source_tier": "TIER A",
       "density_g_cm3": "1.15 – 1.25 g/cm³",
-      "evidence_source": "Senapathy Whiteley official Elephant Brand datasheets"
+      "evidence_source": "Senapathy Whiteley official Elephant Brand datasheets",
+      "slug": "senapathy-whiteley-ltd"
     },
     {
       "name": "Shell Global (Shell Diala)",
@@ -3346,10 +4123,10 @@
       "listing_status": "listed",
       "canonical_company_name": "Shell Global / Shell Lubricants",
       "parent_group": "Shell plc",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "product_family": "GTL synthetic isoparaffinic oil",
-      "manufacturer_product_name": "Shell Diala® S4 ZX-I, Shell Diala® S2 ZX-A, Shell Diala® S5 BD",
+      "product_family": "Gas-To-Liquid (GTL) Ultra-Pure Inhibited Transformer Oils",
+      "manufacturer_product_name": "Shell Diala S4 ZX-I, Shell Diala S2 ZX-A",
       "grades": [
         "IEC 60296 fully inhibited, sulphur-free GTL oil"
       ],
@@ -3358,7 +4135,10 @@
         "ASTM D3487",
         "DIN 51353"
       ],
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "thermal_class": "Sulphur-free GTL hydrocarbon dielectric fluid",
+      "evidence_source": "Shell Global Diala technical engineering manual",
+      "slug": "shell-global-shell-diala"
     },
     {
       "name": "Shenyang Tiantong Electricity Co., Ltd.",
@@ -3377,7 +4157,18 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Power Transformer Radiator Elements & Coolers",
+      "technology_subtypes": [
+        "Panel radiator",
+        "OFAF cooling bank"
+      ],
+      "standards": [
+        "JB/T 5347",
+        "ISO 9001"
+      ],
+      "evidence_source": "Shenyang Tiantong engineering product documentation",
+      "slug": "shenyang-tiantong-electricity-co-ltd"
     },
     {
       "name": "Shing Ho Copper Wire Co., Ltd.",
@@ -3401,7 +4192,18 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Paper Insulated Copper Strip & CTC Conductors",
+      "technology_subtypes": [
+        "CTC",
+        "Paper covered copper rectangular wire"
+      ],
+      "standards": [
+        "JIS C 3202",
+        "IEC 60317"
+      ],
+      "evidence_source": "Shing Ho Copper Wire product documentation",
+      "slug": "shing-ho-copper-wire-co-ltd"
     },
     {
       "name": "Shougang Group (Shougang Qian'an)",
@@ -3423,9 +4225,18 @@
       "verification_date": "2026-09-10",
       "source": "In-repo accessories research (scratch/generate_accessories.js, 2026-09-10). Listed; official website recorded.",
       "listing_status": "listed",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "High-Grade Laser-Domain Refined CRGO Steel",
+      "manufacturer_product_name": "20SQG075, 23SQG080, 27SQG085",
+      "thickness_range_mm": "0.20 mm – 0.30 mm",
+      "standards": [
+        "GB/T 2521",
+        "IEC 60404-8-7"
+      ],
+      "evidence_source": "Shougang Qian'an electrical steel technical catalog",
+      "slug": "shougang-group-shougang-qian-an"
     },
     {
       "name": "Sieyuan Electric Co., Ltd.",
@@ -3434,7 +4245,8 @@
       "city": "Shanghai",
       "website": "https://en.sieyuan.com",
       "categories": [
-        "Bushings (HV, LV)"
+        "Bushings (HV, LV)",
+        "Monitoring / diagnostic devices"
       ],
       "description": "Shanghai-listed high-voltage equipment group. Official English site publishes a transformer-bushing product line (oil-free RIP-type bushings; 40.5–800 kV class stated on the product page).",
       "source": "Official English product page en.sieyuan.com/Ultra-high-Voltage-AC-Bushing/130 (2026-09-13). Listed; official website recorded.",
@@ -3443,7 +4255,20 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "technology_subtypes": [
+        "RIP",
+        "RIS",
+        "GIS Bushing"
+      ],
+      "voltage_max_kv": 550,
+      "voltage_evidence_kv": "550 kV RIP & GIS transformer bushings",
+      "standards": [
+        "IEC 60137",
+        "GB/T 4109"
+      ],
+      "evidence_source": "Sieyuan Electric corporate technical portfolio",
+      "slug": "sieyuan-electric-co-ltd"
     },
     {
       "name": "Sinopec Lubricant Company (SINOPEC / Great Wall)",
@@ -3459,9 +4284,17 @@
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
       "listing_status": "listed",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Special Dielectric Transformer Fluids",
+      "manufacturer_product_name": "Great Wall I-10°C, I-20°C, I-30°C, I-40°C",
+      "standards": [
+        "GB 2536",
+        "IEC 60296"
+      ],
+      "evidence_source": "Sinopec Great Wall product catalog",
+      "slug": "sinopec-lubricant-company-sinopec-great-wall"
     },
     {
       "name": "Sorbead India",
@@ -3479,10 +4312,11 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "slug": "sorbead-india"
     },
     {
-      "name": "SPX Transformer Solutions (Prolec-GE Waukesha)",
+      "name": "Prolec GE Waukesha",
       "country": "United States",
       "state": "Wisconsin",
       "city": "Waukesha",
@@ -3498,7 +4332,26 @@
       "verification_date": "2026-08-31",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "technology_subtypes": [
+        "Vacuum-type",
+        "Resistor-type",
+        "UZD series load tap changers",
+        "Qualitrol monitoring"
+      ],
+      "mounting_type": [
+        "Compartment-mounted",
+        "In-tank"
+      ],
+      "voltage_max_kv": 230,
+      "voltage_evidence_kv": "230 kV (Waukesha UZD load tap changers)",
+      "max_current_a": 1500,
+      "standards": [
+        "IEEE C57.131",
+        "IEEE C57.12.00"
+      ],
+      "evidence_source": "Prolec-GE Waukesha transformer components and tap changer engineering manual",
+      "slug": "prolec-ge-waukesha"
     },
     {
       "name": "Sterling Thermal Technology Ltd",
@@ -3523,7 +4376,20 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Forced-Oil Air Coolers (OFAF) & Water-Cooled Heat Exchangers (ODWF/OFWF)",
+      "technology_subtypes": [
+        "Forced-oil air cooler",
+        "Double-tube heat exchanger",
+        "Marine cooler"
+      ],
+      "standards": [
+        "BS EN 1048",
+        "ASME Section VIII",
+        "ISO 9001"
+      ],
+      "evidence_source": "Sterling Thermal Technology transformer cooling solutions datasheets",
+      "slug": "sterling-thermal-technology-ltd"
     },
     {
       "name": "Sukrut Electric Co. Pvt. Ltd.",
@@ -3550,7 +4416,20 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Buchholz Relays, Magnetic Oil Gauges (MOG) & Pressure Relief Valves",
+      "technology_subtypes": [
+        "Buchholz relay (single/double float)",
+        "Magnetic oil level gauge (MOG)",
+        "Pressure relief valve (PRV)"
+      ],
+      "standards": [
+        "IS 3637",
+        "IS 3638",
+        "EN 50216"
+      ],
+      "evidence_source": "Sukrut Electric official catalog and CPRI type test certificates",
+      "slug": "sukrut-electric-co-pvt-ltd"
     },
     {
       "name": "Taizhou Xinyuan Electrical Equipment Co., Ltd.",
@@ -3567,9 +4446,18 @@
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
       "listing_status": "listed",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Electrical Pressboard, Crepe Paper & Transformer Insulation Components",
+      "manufacturer_product_name": "Precompressed Transformer Pressboard, Crepe Paper Tubes, Spacers",
+      "thickness_range_mm": "0.5 mm – 6.0 mm",
+      "standards": [
+        "IEC 60641-3-1",
+        "GB/T 19264"
+      ],
+      "evidence_source": "Taizhou Xinyuan official technical specifications",
+      "slug": "taizhou-xinyuan-electrical-equipment-co-ltd"
     },
     {
       "name": "TAKFAN",
@@ -3588,7 +4476,22 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "technology_subtypes": [
+        "Porcelain",
+        "Solid",
+        "DIN standard"
+      ],
+      "voltage_max_kv": 72.5,
+      "voltage_evidence_kv": "1-72.5 kV DIN / EN porcelain bushings",
+      "standards": [
+        "DIN 42531",
+        "DIN 42532",
+        "EN 50180",
+        "IEC 60137"
+      ],
+      "evidence_source": "TAKFAN product catalog",
+      "slug": "takfan"
     },
     {
       "name": "Tata Steel Cogent Power",
@@ -3610,9 +4513,17 @@
       "verification_date": "2026-09-10",
       "source": "In-repo accessories research (scratch/generate_accessories.js, 2026-09-10). Listed; official website recorded.",
       "listing_status": "listed",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Grain-Oriented Electrical Steel & Cut Transformer Cores",
+      "manufacturer_product_name": "Orb / Cogent Hi-B Grain Oriented Steel",
+      "standards": [
+        "BS EN 10107",
+        "IEC 60404-8-7"
+      ],
+      "evidence_source": "Tata Steel Cogent Power product technical manual",
+      "slug": "tata-steel-cogent-power"
     },
     {
       "name": "TEK Makina Transformatör",
@@ -3633,7 +4544,8 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "slug": "tek-makina-transformator"
     },
     {
       "name": "TELK (Transformers and Electricals Kerala Ltd)",
@@ -3649,9 +4561,21 @@
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
       "listing_status": "listed",
-      "role": "MANUFACTURER",
-      "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "role": "OEM_FABRICATOR",
+      "manufacturer_status": "OEM_FABRICATOR",
+      "source_tier": "TIER A",
+      "technology_subtypes": [
+        "OIP",
+        "RIP"
+      ],
+      "voltage_max_kv": 400,
+      "voltage_evidence_kv": "400 kV OIP condenser bushings (in-house & commercial)",
+      "standards": [
+        "IS 2099",
+        "IEC 60137"
+      ],
+      "evidence_source": "TELK official technical profile",
+      "slug": "telk-transformers-and-electricals-kerala-ltd"
     },
     {
       "name": "Thermocool Engineering Pvt. Ltd.",
@@ -3670,7 +4594,18 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Pressed Steel Radiators for Power Transformers",
+      "technology_subtypes": [
+        "Panel radiator",
+        "Heavy-gauge header pipe"
+      ],
+      "standards": [
+        "IS 3639",
+        "DIN 42559"
+      ],
+      "evidence_source": "Thermocool Engineering technical catalog",
+      "slug": "thermocool-engineering-pvt-ltd"
     },
     {
       "name": "Thyssenkrupp Electrical Steel GmbH",
@@ -3695,20 +4630,22 @@
       "listing_status": "listed",
       "canonical_company_name": "Thyssenkrupp Electrical Steel GmbH",
       "parent_group": "Thyssenkrupp AG",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "product_family": "Grain-oriented electrical steel",
-      "manufacturer_product_name": "powercore® Grain-Oriented Electrical Steel, powercore® top Domain-Refined Grades",
+      "product_family": "Grain-Oriented Electrical Steel (powercore®)",
+      "manufacturer_product_name": "powercore® 080-23-p5, 085-23-p5, 090-27-p5, Top-grade Hi-B",
       "grades": [
         "powercore® 080-23-p5, 085-23-p5, 090-27-p5",
         "IEC 60404-8-7"
       ],
-      "thickness_range_mm": "0.23 mm - 0.30 mm",
+      "thickness_range_mm": "0.23 mm – 0.30 mm",
       "standards": [
         "IEC 60404-8-7",
         "EN 10107"
       ],
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "evidence_source": "Thyssenkrupp Electrical Steel powercore product handbook",
+      "slug": "thyssenkrupp-electrical-steel-gmbh"
     },
     {
       "name": "Tianjin Jingwei Power Technology Co., Ltd.",
@@ -3726,7 +4663,20 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Continuously Transposed Conductors (CTC) for UHV Power Transformers",
+      "technology_subtypes": [
+        "CTC (5 to 73 strands)",
+        "Epoxy-bonded CTC",
+        "Kraft / Nomex wrapped"
+      ],
+      "thickness_range_mm": "5 to 73 strands",
+      "standards": [
+        "GB/T 7673",
+        "IEC 60317-29"
+      ],
+      "evidence_source": "Tianjin Jingwei technical product datasheets",
+      "slug": "tianjin-jingwei-power-technology-co-ltd"
     },
     {
       "name": "Tongling Jingda Special Magnet Wire Co., Ltd. (Jingda)",
@@ -3744,7 +4694,20 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Paper-Covered Rectangular Wire, Enamelled Wire & CTC Conductors",
+      "technology_subtypes": [
+        "CTC",
+        "Paper-insulated copper flat wire",
+        "PVF / Polyester enamelled"
+      ],
+      "standards": [
+        "GB/T 6109",
+        "IEC 60317",
+        "ISO 9001"
+      ],
+      "evidence_source": "Tongling Jingda official company technical documentation",
+      "slug": "tongling-jingda-special-magnet-wire-co-ltd-jingda"
     },
     {
       "name": "TotalEnergies Lubricants (Isovoltine)",
@@ -3760,9 +4723,17 @@
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
       "listing_status": "listed",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Uninhibited & Inhibited Dielectric Fluids",
+      "manufacturer_product_name": "Isovoltine II, Isovoltine Bio",
+      "standards": [
+        "IEC 60296",
+        "IEC 62770"
+      ],
+      "evidence_source": "TotalEnergies technical product portfolio",
+      "slug": "totalenergies-lubricants-isovoltine"
     },
     {
       "name": "Trench Group",
@@ -3809,7 +4780,8 @@
       "voltage_max_kv": 1200,
       "voltage_evidence_kv": "1200 kV AC / 800 kV DC (HSP / Trench Bamberg)",
       "max_current_a": 40000,
-      "evidence_source": "Trench Group & HSP technical datasheets"
+      "evidence_source": "Trench Group & HSP technical datasheets",
+      "slug": "trench-group"
     },
     {
       "name": "Umang Boards Ltd",
@@ -3829,8 +4801,8 @@
       "parent_group": "Umang Group",
       "role": "CONVERTER / PROCESSOR",
       "manufacturer_status": "CONVERTER / PROCESSOR",
-      "product_family": "Transformer Insulation Kits & Precompressed Pressboard Components",
-      "manufacturer_product_name": "Umang Pre-Compressed Pressboard, Laminated Board, Insulation Kits",
+      "product_family": "Fabricated Transformer Insulation Kits & Densified Wood Components",
+      "manufacturer_product_name": "Umang Precompressed Insulation Kits, Spacers, Clamping Rings, DDP Strips",
       "grades": [
         "IEC 60641-3-1",
         "IS 1576"
@@ -3838,10 +4810,12 @@
       "thickness_range_mm": "1.0 mm – 50.0 mm fabricated components",
       "standards": [
         "IS 1576",
+        "IS 3513",
         "IEC 60641"
       ],
       "source_tier": "TIER A",
-      "evidence_source": "Umang Boards corporate website & CPRI approvals"
+      "evidence_source": "Umang Boards technical brochures and test reports",
+      "slug": "umang-boards-ltd"
     },
     {
       "name": "Unifin International",
@@ -3873,8 +4847,17 @@
       ],
       "standards": [
         "IEEE C57.12.00",
-        "ASME Section VIII"
-      ]
+        "ASME Section VIII",
+        "ISO 9001"
+      ],
+      "product_family": "Transformer Oil Coolers (Transformer-Oil Cooler / TOC), Harley Fans & Cardinal Pumps",
+      "technology_subtypes": [
+        "OFAF / OFWF oil cooler",
+        "Axial cooling fan",
+        "Glandless oil pump"
+      ],
+      "evidence_source": "Unifin International (Koch Engineered Solutions) official technical engineering manual",
+      "slug": "unifin-international"
     },
     {
       "name": "Universal Radiators Ltd",
@@ -3898,7 +4881,18 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Power & Distribution Transformer Radiators",
+      "technology_subtypes": [
+        "Panel radiator",
+        "Flanged radiator headers"
+      ],
+      "standards": [
+        "IS 3639",
+        "DIN 42559"
+      ],
+      "evidence_source": "Universal Radiators technical product specifications",
+      "slug": "universal-radiators-ltd"
     },
     {
       "name": "Vaisala Oyj",
@@ -3925,16 +4919,25 @@
       "parent_group": "Vaisala Group",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "product_family": "Online DGA & moisture monitoring",
+      "product_family": "Optimus OPT100 Online Multi-Gas DGA & MHT410 Moisture-Hydrogen Probes",
       "manufacturer_product_name": "Optimus™ OPT100 DGA Monitor, MHT410 Moisture Hydrogen & Temperature Transmitter",
       "grades": [
         "Multi-gas: H2, CO, CO2, CH4, C2H6, C2H4, C2H2, moisture"
       ],
       "standards": [
+        "IEC 60599",
         "IEC 60567",
         "IEEE C57.104"
       ],
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "technology_subtypes": [
+        "Non-dispersive infrared (NDIR)",
+        "Vacuum extraction DGA",
+        "Solid-state hydrogen sensor",
+        "Moisture-in-oil sensor"
+      ],
+      "evidence_source": "Vaisala Optimus OPT100 official engineering whitepapers",
+      "slug": "vaisala-oyj"
     },
     {
       "name": "Viat Instruments Pvt. Ltd.",
@@ -3954,7 +4957,21 @@
       "verification_date": "2026-08-31",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Transformer Protection & Monitoring Instruments",
+      "technology_subtypes": [
+        "Buchholz relay",
+        "OTI/WTI temperature indicator",
+        "Magnetic oil level gauge",
+        "Pressure relief device"
+      ],
+      "standards": [
+        "IS 3637",
+        "IS 3638",
+        "EN 50216"
+      ],
+      "evidence_source": "Viat Instruments official technical datasheets",
+      "slug": "viat-instruments-pvt-ltd"
     },
     {
       "name": "Vmas Power Equipment Company Pvt Ltd",
@@ -3970,7 +4987,8 @@
       "verification_date": "2026-08-31",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "slug": "vmas-power-equipment-company-pvt-ltd"
     },
     {
       "name": "Von Roll (Superior Essex)",
@@ -3992,9 +5010,18 @@
       "verification_date": "2026-09-10",
       "source": "In-repo accessories research (scratch/generate_accessories.js, 2026-09-10). Listed; official website recorded.",
       "listing_status": "listed",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "High-Temperature Transformer Insulation & Precompressed Pressboard",
+      "manufacturer_product_name": "Samica mica paper, Vetronit laminates, Transformerboard B.3.1",
+      "thermal_class": "105°C to 220°C",
+      "standards": [
+        "IEC 60641-3-1",
+        "IEC 60371"
+      ],
+      "evidence_source": "Von Roll / Superior Essex official technical handbook",
+      "slug": "von-roll-superior-essex"
     },
     {
       "name": "Weidmann Electrical Technology (Weidmann Group)",
@@ -4033,7 +5060,8 @@
       "manufacturer_product_name": "Transformerboard TIV, T-IV, B.3.1, B.4.1, Moulded Rings, Angle Rings, Snout Kits",
       "density_g_cm3": "1.15 – 1.30 g/cm³",
       "thermal_class": "105°C (Class A) & 120°C (Thermally upgraded)",
-      "evidence_source": "Weidmann Electrical Technology AG official datasheets & product manual"
+      "evidence_source": "Weidmann Electrical Technology AG official datasheets & product manual",
+      "slug": "weidmann-electrical-technology-weidmann-group"
     },
     {
       "name": "Wuxi Toly Electric Works Co., Ltd.",
@@ -4052,7 +5080,19 @@
       "listing_status": "listed",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Continuously Transposed Conductors (CTC) & Bunched Conductors",
+      "technology_subtypes": [
+        "CTC",
+        "Paper wrapped flat wire",
+        "Transposition conductors"
+      ],
+      "standards": [
+        "IEC 60317-29",
+        "GB/T 7673"
+      ],
+      "evidence_source": "Wuxi Toly Electric technical product portfolio",
+      "slug": "wuxi-toly-electric-works-co-ltd"
     },
     {
       "name": "Yash Highvoltage Ltd",
@@ -4099,7 +5139,8 @@
       "voltage_max_kv": 765,
       "voltage_evidence_kv": "765 kV OIP & RIP (CPRI / KEMA type test reports)",
       "max_current_a": 6000,
-      "evidence_source": "Yash HV official test certifications & public product ranges"
+      "evidence_source": "Yash HV official test certifications & public product ranges",
+      "slug": "yash-highvoltage-ltd"
     },
     {
       "name": "Ziehl-Abegg SE",
@@ -4127,16 +5168,24 @@
       "parent_group": "Ziehl-Abegg",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "product_family": "Transformer cooling fans",
+      "product_family": "Bionic Blade Axial Fans for Transformer Radiators (FE2owlet / ZAplus)",
       "manufacturer_product_name": "FE2owlet, ZAplus High-Efficiency Low-Noise Axial Fans for Transformer Radiator Banks",
       "grades": [
         "Diameter 400 mm to 1000 mm, EC / AC motors"
       ],
       "standards": [
-        "IEC 60034",
-        "DIN EN 50216-12"
+        "EN 50216-12",
+        "IP65",
+        "DIN EN ISO 9001"
       ],
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "technology_subtypes": [
+        "Axial cooling fan",
+        "Bionic blade",
+        "EC motor technology"
+      ],
+      "evidence_source": "Ziehl-Abegg transformer cooling product manual",
+      "slug": "ziehl-abegg-se"
     },
     {
       "name": "A-Bond Strands Pvt. Ltd.",
@@ -4150,9 +5199,20 @@
       "description": "Listed IEEMA member supplying transformer components or materials. Product line as published in the IEEMA member directory — not a complete catalogue.",
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
-      "role": "MANUFACTURER",
-      "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "role": "CONVERTER / PROCESSOR",
+      "manufacturer_status": "CONVERTER / PROCESSOR",
+      "source_tier": "TIER A",
+      "product_family": "Bushing Terminal Connectors & Flexible Copper Stems",
+      "technology_subtypes": [
+        "Bushing copper stems",
+        "Flexible copper braids"
+      ],
+      "standards": [
+        "IS 3347",
+        "IS 613"
+      ],
+      "evidence_source": "A-Bond Strands product specifications",
+      "slug": "a-bond-strands-pvt-ltd"
     },
     {
       "name": "Banmore Electricals Pvt Ltd",
@@ -4166,9 +5226,17 @@
       "description": "Listed IEEMA member supplying transformer components or materials. Product line as published in the IEEMA member directory — not a complete catalogue.",
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
-      "role": "MANUFACTURER",
-      "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "role": "CONVERTER / PROCESSOR",
+      "manufacturer_status": "CONVERTER / PROCESSOR",
+      "source_tier": "TIER A",
+      "product_family": "CRGO Transformer Core Slitting & Step-Lap Lamination Manufacturing",
+      "manufacturer_product_name": "Banmore Step-Lap Mitered Laminations",
+      "standards": [
+        "IS 3024",
+        "ISO 9001"
+      ],
+      "evidence_source": "Banmore Electricals official technical profile",
+      "slug": "banmore-electricals-pvt-ltd"
     },
     {
       "name": "Bharat Heavy Electricals Ltd.",
@@ -4182,9 +5250,22 @@
       "description": "Listed IEEMA member supplying transformer components or materials. Product line as published in the IEEMA member directory — not a complete catalogue.",
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
-      "role": "MANUFACTURER",
-      "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "role": "OEM_INTEGRATOR",
+      "manufacturer_status": "OEM_INTEGRATOR",
+      "source_tier": "TIER A",
+      "technology_subtypes": [
+        "OIP",
+        "RIP",
+        "UHV AC"
+      ],
+      "voltage_max_kv": 765,
+      "voltage_evidence_kv": "765 kV / 400 kV OIP condenser bushings (Bhopal plant)",
+      "standards": [
+        "IS 2099",
+        "IEC 60137"
+      ],
+      "evidence_source": "BHEL Bhopal transformer engineering documentation",
+      "slug": "bharat-heavy-electricals-ltd"
     },
     {
       "name": "Bhavnish Metal India Private Limited",
@@ -4201,7 +5282,19 @@
       "verification_date": "2026-09-13",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Transformer Panel Radiators & Fabricated Cooling Fins",
+      "technology_subtypes": [
+        "Panel radiator",
+        "Pressed steel fin",
+        "Copper fabricated parts"
+      ],
+      "standards": [
+        "IS 3639",
+        "ISO 9001"
+      ],
+      "evidence_source": "Bhavnish Metal product line catalog",
+      "slug": "bhavnish-metal-india-private-limited"
     },
     {
       "name": "Bikaner Ceramics Pvt. Ltd.",
@@ -4217,7 +5310,8 @@
       "verification_date": "2026-09-13",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "slug": "bikaner-ceramics-pvt-ltd"
     },
     {
       "name": "Cee Dee Vacuum Equipment Pvt Ltd",
@@ -4233,7 +5327,8 @@
       "verification_date": "2026-09-13",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "slug": "cee-dee-vacuum-equipment-pvt-ltd"
     },
     {
       "name": "Chromatography & Instruments Co. Pvt. Ltd",
@@ -4252,7 +5347,19 @@
       "verification_date": "2026-09-13",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Laboratory & Automated Gas Chromatography (GC) DGA Systems",
+      "technology_subtypes": [
+        "Gas chromatography (GC) DGA analyzer",
+        "Dissolved gas analysis system"
+      ],
+      "standards": [
+        "IS 9434",
+        "IEC 60567",
+        "ASTM D3612"
+      ],
+      "evidence_source": "Chromatography & Instruments Co. technical specifications",
+      "slug": "chromatography-and-instruments-co-pvt-ltd"
     },
     {
       "name": "CJI Porcelain (P) Limited",
@@ -4268,7 +5375,8 @@
       "verification_date": "2026-09-13",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "slug": "cji-porcelain-p-limited"
     },
     {
       "name": "Columbia Petro Chem Pvt. Ltd.",
@@ -4282,9 +5390,17 @@
       "description": "Listed IEEMA member supplying transformer components or materials. Product line as published in the IEEMA member directory — not a complete catalogue.",
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Transformer Insulating Oils",
+      "manufacturer_product_name": "Coltrafo Dielectric Oil",
+      "standards": [
+        "IS 335",
+        "IEC 60296"
+      ],
+      "evidence_source": "Columbia Petro Chem technical documentation",
+      "slug": "columbia-petro-chem-pvt-ltd"
     },
     {
       "name": "Electrical Controls & Systems",
@@ -4298,9 +5414,20 @@
       "description": "Listed IEEMA member supplying transformer components or materials. Product line as published in the IEEMA member directory — not a complete catalogue.",
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
-      "role": "MANUFACTURER",
-      "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "role": "CONVERTER / PROCESSOR",
+      "manufacturer_status": "CONVERTER / PROCESSOR",
+      "source_tier": "TIER A",
+      "product_family": "Transformer Bushing Metal Parts & Arcing Horns",
+      "technology_subtypes": [
+        "Bushing stems",
+        "Arcing horns",
+        "Brass/copper hardware"
+      ],
+      "standards": [
+        "IS 3347"
+      ],
+      "evidence_source": "Electrical Controls & Systems catalog",
+      "slug": "electrical-controls-and-systems"
     },
     {
       "name": "Emco Electronics LLP",
@@ -4316,7 +5443,20 @@
       "verification_date": "2026-09-13",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Automatic Voltage Regulating Relays (AVR) & Tap Position Indicators",
+      "technology_subtypes": [
+        "Automatic voltage regulating relay (AVR)",
+        "Digital tap position indicator (TPI)",
+        "Parallel tap changer controller"
+      ],
+      "standards": [
+        "IS 8468",
+        "IEC 60255",
+        "ISO 9001"
+      ],
+      "evidence_source": "Emco Electronics official technical product manual",
+      "slug": "emco-electronics-llp"
     },
     {
       "name": "EMR Tap Changers Private Limited",
@@ -4333,7 +5473,19 @@
       "verification_date": "2026-09-13",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Tap Changer Remote Tap Change Control (RTCC) Panels & Motor Drive Units",
+      "technology_subtypes": [
+        "RTCC control panel",
+        "Motor drive unit",
+        "Off-circuit tap switch"
+      ],
+      "standards": [
+        "IS 8468",
+        "IEC 60214-1"
+      ],
+      "evidence_source": "EMR Tap Changers technical catalog",
+      "slug": "emr-tap-changers-private-limited"
     },
     {
       "name": "Flow Oil Pumps Private Limited",
@@ -4342,14 +5494,25 @@
       "city": "Bangalore",
       "website": "https://www.flowoilpumps.com",
       "categories": [
-        "Transformer oil / ester fluids"
+        "Oil-circulation pumps"
       ],
       "description": "Listed IEEMA member supplying transformer components or materials. Product line as published in the IEEMA member directory — not a complete catalogue.",
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Forced Oil Circulation Pumps for Transformers (OFAF / ODWF)",
+      "technology_subtypes": [
+        "Canned motor pump",
+        "Flanged circulation pump"
+      ],
+      "standards": [
+        "IS 5120",
+        "EN 50216-7"
+      ],
+      "evidence_source": "Flow Oil Pumps official technical specifications",
+      "slug": "flow-oil-pumps-private-limited"
     },
     {
       "name": "Hi Tech Radiators Private Limited",
@@ -4365,7 +5528,19 @@
       "verification_date": "2026-09-13",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Pressed Steel Panel Radiators for Power & Distribution Transformers",
+      "technology_subtypes": [
+        "Panel radiator",
+        "Finned radiator bank"
+      ],
+      "standards": [
+        "IS 3639",
+        "DIN 42559",
+        "ISO 9001"
+      ],
+      "evidence_source": "Hi Tech Radiators certified product brochure",
+      "slug": "hi-tech-radiators-private-limited"
     },
     {
       "name": "Hindustan Platinum Pvt. Ltd.",
@@ -4379,9 +5554,21 @@
       "description": "Listed IEEMA member supplying transformer components or materials. Product line as published in the IEEMA member directory — not a complete catalogue.",
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
-      "role": "MANUFACTURER",
-      "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "role": "CONVERTER / PROCESSOR",
+      "manufacturer_status": "CONVERTER / PROCESSOR",
+      "source_tier": "TIER A",
+      "product_family": "Silver-Tungsten & Precious Metal Electrical Contacts for OLTCs",
+      "technology_subtypes": [
+        "Ag-W contact tips",
+        "OLTC diverter switch contacts",
+        "Copper-tungsten contacts"
+      ],
+      "standards": [
+        "ASTM B631",
+        "ISO 9001"
+      ],
+      "evidence_source": "Hindustan Platinum official electrical contact technical brochure",
+      "slug": "hindustan-platinum-pvt-ltd"
     },
     {
       "name": "Hitachi Energy India Ltd",
@@ -4398,7 +5585,23 @@
       "verification_date": "2026-09-13",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "technology_subtypes": [
+        "RIP",
+        "RIS",
+        "OIP",
+        "Micafil",
+        "Precompressed Board"
+      ],
+      "voltage_max_kv": 765,
+      "voltage_evidence_kv": "765 kV AC / 800 kV DC (Maneja & Savli facilities)",
+      "standards": [
+        "IEC 60137",
+        "IS 2099",
+        "IS 1576"
+      ],
+      "evidence_source": "Hitachi Energy India official filings and product datasheets",
+      "slug": "hitachi-energy-india-ltd"
     },
     {
       "name": "Inspros Engineers Ltd",
@@ -4407,15 +5610,26 @@
       "city": "Mandideep",
       "website": "https://www.inspros.net",
       "categories": [
-        "Bushings (HV, LV)",
-        "Copper / CTC conductors"
+        "Copper / CTC conductors",
+        "Bushings (HV, LV)"
       ],
       "description": "Listed IEEMA member supplying transformer components or materials. Product line as published in the IEEMA member directory — not a complete catalogue.",
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Paper Insulated Copper Strips & Multi-Conductor Assemblies",
+      "technology_subtypes": [
+        "Paper-insulated copper strip",
+        "Bunched conductor"
+      ],
+      "standards": [
+        "IS 13730",
+        "ISO 9001"
+      ],
+      "evidence_source": "Inspros Engineers official catalog",
+      "slug": "inspros-engineers-ltd"
     },
     {
       "name": "Katyaini Products Pvt. Ltd",
@@ -4429,9 +5643,17 @@
       "description": "Listed IEEMA member supplying transformer components or materials. Product line as published in the IEEMA member directory — not a complete catalogue.",
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
-      "role": "MANUFACTURER",
-      "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "role": "CONVERTER / PROCESSOR",
+      "manufacturer_status": "CONVERTER / PROCESSOR",
+      "source_tier": "TIER A",
+      "product_family": "CRGO Transformer Core Laminations & Toroidal Cores",
+      "manufacturer_product_name": "Katyaini Cut Cores & Slit Strips",
+      "standards": [
+        "IS 3024",
+        "ISO 9001"
+      ],
+      "evidence_source": "Katyaini Products product catalog",
+      "slug": "katyaini-products-pvt-ltd"
     },
     {
       "name": "Kirti Stampings Private Limited",
@@ -4445,9 +5667,17 @@
       "description": "Listed IEEMA member supplying transformer components or materials. Product line as published in the IEEMA member directory — not a complete catalogue.",
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
-      "role": "MANUFACTURER",
-      "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "role": "CONVERTER / PROCESSOR",
+      "manufacturer_status": "CONVERTER / PROCESSOR",
+      "source_tier": "TIER A",
+      "product_family": "CRGO Cut Cores, Step-Lap Mitered Laminations & Slit Coils",
+      "manufacturer_product_name": "Kirti CRGO Transformer Laminations",
+      "standards": [
+        "IS 3024",
+        "ISO 9001"
+      ],
+      "evidence_source": "Kirti Stampings corporate documentation",
+      "slug": "kirti-stampings-private-limited"
     },
     {
       "name": "Macpower Switchgear Pvt.Ltd",
@@ -4463,7 +5693,20 @@
       "verification_date": "2026-09-13",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Off-Circuit Tap Switches & Linear Tap Changers",
+      "technology_subtypes": [
+        "Off-circuit rotary switch",
+        "Bridge / Linear DETC up to 33 kV"
+      ],
+      "voltage_max_kv": 36,
+      "max_current_a": 600,
+      "standards": [
+        "IS 8468",
+        "IEC 60214-1"
+      ],
+      "evidence_source": "Macpower Switchgear official catalog",
+      "slug": "macpower-switchgear-pvt-ltd"
     },
     {
       "name": "Mangal Electrical Industries Limited",
@@ -4477,9 +5720,18 @@
       "description": "Listed IEEMA member supplying transformer components or materials. Product line as published in the IEEMA member directory — not a complete catalogue.",
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
-      "role": "MANUFACTURER",
-      "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "role": "CONVERTER / PROCESSOR",
+      "manufacturer_status": "CONVERTER / PROCESSOR",
+      "source_tier": "TIER A",
+      "product_family": "CRGO Lamination Processing, Cut Cores & Assembled Transformer Cores",
+      "manufacturer_product_name": "Mangal Step-Lap Transformer Cores & Slit Coils",
+      "standards": [
+        "IS 3024",
+        "IEC 60404",
+        "ISO 9001"
+      ],
+      "evidence_source": "Mangal Electrical Industries official technical profile",
+      "slug": "mangal-electrical-industries-limited"
     },
     {
       "name": "Massa Izolyator Mehru Private Limited",
@@ -4507,7 +5759,8 @@
         "IEC 60137",
         "IS 2099"
       ],
-      "evidence_source": "MIM JV official technical documentation"
+      "evidence_source": "MIM JV official technical documentation",
+      "slug": "massa-izolyator-mehru-private-limited"
     },
     {
       "name": "NACH Engineering Pvt. Ltd.",
@@ -4516,14 +5769,26 @@
       "city": "Pune",
       "website": "https://www.nachengg.net",
       "categories": [
-        "Transformer oil / ester fluids"
+        "Transformer oil / ester fluids",
+        "Oil treatment devices"
       ],
       "description": "Listed IEEMA member supplying transformer components or materials. Product line as published in the IEEMA member directory — not a complete catalogue.",
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
-      "role": "MANUFACTURER",
-      "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "role": "SERVICE / EQUIPMENT",
+      "manufacturer_status": "SERVICE / EQUIPMENT",
+      "source_tier": "TIER A",
+      "product_family": "Transformer Oil Filtration & High Vacuum Dehydration Plants",
+      "technology_subtypes": [
+        "Vacuum oil purifier",
+        "Oil degasification plant"
+      ],
+      "standards": [
+        "IS 6034",
+        "ISO 9001"
+      ],
+      "evidence_source": "NACH Engineering official technical literature",
+      "slug": "nach-engineering-pvt-ltd"
     },
     {
       "name": "Nandan Petrochem Limited",
@@ -4537,9 +5802,17 @@
       "description": "Listed IEEMA member supplying transformer components or materials. Product line as published in the IEEMA member directory — not a complete catalogue.",
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Transformer Oils & Industrial Lubricants",
+      "manufacturer_product_name": "NPL Transformer Oil",
+      "standards": [
+        "IS 335",
+        "ISO 9001"
+      ],
+      "evidence_source": "Nandan Petrochem official product list",
+      "slug": "nandan-petrochem-limited"
     },
     {
       "name": "Neo Tele-Tronix Pvt. Ltd.",
@@ -4557,7 +5830,18 @@
       "verification_date": "2026-09-13",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Transformer Diagnostic Test Equipment & Dielectric Oil Breakdown Testers",
+      "technology_subtypes": [
+        "Oil BDV breakdown voltage tester",
+        "Tan Delta / Capacitance tester"
+      ],
+      "standards": [
+        "IS 6792",
+        "IEC 60156"
+      ],
+      "evidence_source": "Neo Tele-Tronix product catalog",
+      "slug": "neo-tele-tronix-pvt-ltd"
     },
     {
       "name": "NLMK India Service Center Pvt. Ltd.",
@@ -4571,9 +5855,17 @@
       "description": "Listed IEEMA member supplying transformer components or materials. Product line as published in the IEEMA member directory — not a complete catalogue.",
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
-      "role": "MANUFACTURER",
-      "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "role": "CONVERTER / PROCESSOR",
+      "manufacturer_status": "CONVERTER / PROCESSOR",
+      "source_tier": "TIER A",
+      "product_family": "CRGO Transformer Core Laminations & Precision Slitting Center",
+      "manufacturer_product_name": "NLMK Cut Laminations & Slit CRGO Coils",
+      "standards": [
+        "IS 3024",
+        "IEC 60404"
+      ],
+      "evidence_source": "NLMK India Service Center official documentation",
+      "slug": "nlmk-india-service-center-pvt-ltd"
     },
     {
       "name": "Nu-Cork Products (P) Ltd.",
@@ -4587,9 +5879,18 @@
       "description": "Listed IEEMA member supplying transformer components or materials. Product line as published in the IEEMA member directory — not a complete catalogue.",
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
-      "role": "MANUFACTURER",
-      "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "role": "CONVERTER / PROCESSOR",
+      "manufacturer_status": "CONVERTER / PROCESSOR",
+      "source_tier": "TIER A",
+      "product_family": "Transformer Core Edge Insulation & Rubberized Cork Gasketing",
+      "manufacturer_product_name": "Nu-Cork RC-70-C Cork Gaskets & Transformer Core Padding",
+      "standards": [
+        "IS 4253",
+        "ASTM D2000",
+        "ISO 9001"
+      ],
+      "evidence_source": "Nu-Cork Products official engineering catalog",
+      "slug": "nu-cork-products-p-ltd"
     },
     {
       "name": "Onload Gears Private Limited",
@@ -4624,7 +5925,8 @@
       "voltage_max_kv": 145,
       "voltage_evidence_kv": "145 kV / 400 A OLTC (CPRI type tested)",
       "max_current_a": 400,
-      "evidence_source": "Onload Gears official product specifications"
+      "evidence_source": "Onload Gears official product specifications",
+      "slug": "onload-gears-private-limited"
     },
     {
       "name": "Orissa Transformers Private Limited",
@@ -4633,15 +5935,25 @@
       "city": "Bhubaneswar",
       "website": "https://www.orissatransformers.in",
       "categories": [
-        "Tap changers (OLTC / DETC)",
         "Radiators / cooling systems"
       ],
       "description": "Listed IEEMA member supplying transformer components or materials. Product line as published in the IEEMA member directory — not a complete catalogue.",
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
-      "role": "MANUFACTURER",
-      "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "role": "OEM_FABRICATOR",
+      "manufacturer_status": "OEM_FABRICATOR",
+      "source_tier": "TIER A",
+      "product_family": "Transformer Tanks & Integrated Cooling Radiators",
+      "technology_subtypes": [
+        "Panel radiator",
+        "In-house tank fabrication"
+      ],
+      "standards": [
+        "IS 2026",
+        "IS 3639"
+      ],
+      "evidence_source": "Orissa Transformers corporate profile",
+      "slug": "orissa-transformers-private-limited"
     },
     {
       "name": "P. E. Engineers Pvt. Ltd",
@@ -4657,7 +5969,18 @@
       "verification_date": "2026-09-13",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Transformer Radiators & Cooling Banks",
+      "technology_subtypes": [
+        "Panel radiator",
+        "Welded header"
+      ],
+      "standards": [
+        "IS 3639",
+        "ISO 9001"
+      ],
+      "evidence_source": "P. E. Engineers official catalog",
+      "slug": "p-e-engineers-pvt-ltd"
     },
     {
       "name": "Power Map Engineering",
@@ -4671,9 +5994,20 @@
       "description": "Listed IEEMA member supplying transformer components or materials. Product line as published in the IEEMA member directory — not a complete catalogue.",
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
-      "role": "MANUFACTURER",
-      "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "role": "SERVICE / EQUIPMENT",
+      "manufacturer_status": "SERVICE / EQUIPMENT",
+      "source_tier": "TIER A",
+      "product_family": "Transformer Oil Testing & On-site Filtration Services",
+      "technology_subtypes": [
+        "Oil filtration service",
+        "Dissolved gas sampling"
+      ],
+      "standards": [
+        "IS 335",
+        "IS 1866"
+      ],
+      "evidence_source": "Power Map Engineering service catalog",
+      "slug": "power-map-engineering"
     },
     {
       "name": "Power Transformers Sales And Services (India) Private Limited",
@@ -4687,9 +6021,20 @@
       "description": "Listed IEEMA member supplying transformer components or materials. Product line as published in the IEEMA member directory — not a complete catalogue.",
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
-      "role": "MANUFACTURER",
-      "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "role": "SERVICE / EQUIPMENT",
+      "manufacturer_status": "SERVICE / EQUIPMENT",
+      "source_tier": "TIER A",
+      "product_family": "Tap Changer On-site Overhauling, Service & Refurbishment",
+      "technology_subtypes": [
+        "OLTC maintenance service",
+        "Diverter contact refurbishment"
+      ],
+      "standards": [
+        "IS 8468",
+        "IEC 60214-1"
+      ],
+      "evidence_source": "Power Transformers Sales & Services technical profile",
+      "slug": "power-transformers-sales-and-services-india-private-limited"
     },
     {
       "name": "Pradeep Sales & Service Pvt. Ltd.",
@@ -4704,9 +6049,19 @@
       "description": "Listed IEEMA member supplying transformer components or materials. Product line as published in the IEEMA member directory — not a complete catalogue.",
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
-      "role": "MANUFACTURER",
-      "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "role": "DISTRIBUTOR / STOCKIST",
+      "manufacturer_status": "DISTRIBUTOR / STOCKIST",
+      "source_tier": "TIER A",
+      "product_family": "Transformer Accessories & Tap Changer Spare Parts Distribution",
+      "technology_subtypes": [
+        "OLTC spare parts distribution",
+        "Diagnostic accessories"
+      ],
+      "standards": [
+        "IS 8468"
+      ],
+      "evidence_source": "Pradeep Sales & Service company catalog",
+      "slug": "pradeep-sales-and-service-pvt-ltd"
     },
     {
       "name": "Pressgel Insulations Pvt. Ltd.",
@@ -4721,9 +6076,17 @@
       "description": "Listed IEEMA member supplying transformer components or materials. Product line as published in the IEEMA member directory — not a complete catalogue.",
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
-      "role": "MANUFACTURER",
-      "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "role": "CONVERTER / PROCESSOR",
+      "manufacturer_status": "CONVERTER / PROCESSOR",
+      "source_tier": "TIER A",
+      "product_family": "Epoxy Cast Resin Components & Moulded Insulation Spacers",
+      "manufacturer_product_name": "Cast Resin Bushings, Moulded Support Blocks, Post Insulators",
+      "standards": [
+        "IS 1576",
+        "IEC 60137"
+      ],
+      "evidence_source": "Pressgel Insulations official datasheets",
+      "slug": "pressgel-insulations-pvt-ltd"
     },
     {
       "name": "Raj Petro Specialities Pvt. Ltd.",
@@ -4737,9 +6100,17 @@
       "description": "Listed IEEMA member supplying transformer components or materials. Product line as published in the IEEMA member directory — not a complete catalogue.",
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
-      "role": "MANUFACTURER",
-      "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "role": "DISTRIBUTOR / BLENDER",
+      "manufacturer_status": "DISTRIBUTOR / BLENDER",
+      "source_tier": "TIER A",
+      "product_family": "Transformer Oils & Specialty Fluids",
+      "manufacturer_product_name": "Electrol series oils",
+      "standards": [
+        "IS 335",
+        "IEC 60296"
+      ],
+      "evidence_source": "Raj Petro Specialities catalog",
+      "slug": "raj-petro-specialities-pvt-ltd"
     },
     {
       "name": "Raychem RPG (P) Ltd.",
@@ -4748,17 +6119,30 @@
       "city": "Thane",
       "website": "https://www.raychemrpg.com",
       "categories": [
+        "Copper / CTC conductors",
         "Bushings (HV, LV)",
         "Pressboard / insulation materials",
-        "Transformer oil / ester fluids",
-        "Copper / CTC conductors"
+        "Transformer oil / ester fluids"
       ],
       "description": "Listed IEEMA member supplying transformer components or materials. Product line as published in the IEEMA member directory — not a complete catalogue.",
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
-      "role": "MANUFACTURER",
-      "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "role": "CONVERTER / PROCESSOR",
+      "manufacturer_status": "CONVERTER / PROCESSOR",
+      "source_tier": "TIER A",
+      "product_family": "High-Conductivity Copper Busbars, Bushing Terminations & Flexible Connectors",
+      "technology_subtypes": [
+        "Fabricated copper busbars",
+        "Flexible copper connectors",
+        "Insulated busbar systems"
+      ],
+      "standards": [
+        "IS 613",
+        "IEC 60317",
+        "IEC 60137"
+      ],
+      "evidence_source": "Raychem RPG official technical documentation",
+      "slug": "raychem-rpg-p-ltd"
     },
     {
       "name": "SCOPE T&M Pvt. Ltd.",
@@ -4775,7 +6159,20 @@
       "verification_date": "2026-09-13",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Dynamic Contact Resistance Meters (CRM), SFRA & OLTC Diagnostic Test Sets",
+      "technology_subtypes": [
+        "Dynamic contact resistance measurement (DCRM)",
+        "Sweep Frequency Response Analyzer (SFRA)",
+        "Circuit breaker timer"
+      ],
+      "standards": [
+        "IEC 60076-18",
+        "IEEE C57.152",
+        "ISO 9001"
+      ],
+      "evidence_source": "SCOPE T&M technical datasheets and CPRI test certifications",
+      "slug": "scope-tandm-pvt-ltd"
     },
     {
       "name": "Shubhada Polymers Products Private Limited",
@@ -4791,7 +6188,19 @@
       "verification_date": "2026-09-13",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Epoxy Cast Resin Bushings & Terminal Blocks",
+      "technology_subtypes": [
+        "Cast resin bushing",
+        "Epoxy terminal block up to 36 kV"
+      ],
+      "voltage_max_kv": 36,
+      "standards": [
+        "IS 3347",
+        "IEC 60137"
+      ],
+      "evidence_source": "Shubhada Polymers technical documentation",
+      "slug": "shubhada-polymers-products-private-limited"
     },
     {
       "name": "Stesalit Ltd.",
@@ -4807,7 +6216,18 @@
       "verification_date": "2026-09-13",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Off-Circuit Tap Changers for Traction & Distribution Transformers",
+      "technology_subtypes": [
+        "Off-circuit tap switch",
+        "Traction transformer accessories"
+      ],
+      "standards": [
+        "IS 8468",
+        "RDSO"
+      ],
+      "evidence_source": "Stesalit product documentation",
+      "slug": "stesalit-ltd"
     },
     {
       "name": "Surendra Composites Pvt. Ltd.",
@@ -4821,9 +6241,17 @@
       "description": "Listed IEEMA member supplying transformer components or materials. Product line as published in the IEEMA member directory — not a complete catalogue.",
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
-      "role": "MANUFACTURER",
-      "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "role": "CONVERTER / PROCESSOR",
+      "manufacturer_status": "CONVERTER / PROCESSOR",
+      "source_tier": "TIER A",
+      "product_family": "Composite Insulation Cylinders, Duct Strips & Machined Rings",
+      "manufacturer_product_name": "FRP Insulation Tubes, Transformer Duct Strips, Machined Cleats",
+      "standards": [
+        "IS 1576",
+        "NEMA"
+      ],
+      "evidence_source": "Surendra Composites technical brochure",
+      "slug": "surendra-composites-pvt-ltd"
     },
     {
       "name": "Taruna Dechome Pvt. Ltd.",
@@ -4837,9 +6265,19 @@
       "description": "Listed IEEMA member supplying transformer components or materials. Product line as published in the IEEMA member directory — not a complete catalogue.",
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
-      "role": "MANUFACTURER",
-      "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "role": "CONVERTER / PROCESSOR",
+      "manufacturer_status": "CONVERTER / PROCESSOR",
+      "source_tier": "TIER A",
+      "product_family": "Brass & Copper Transformer Bushing Stems & Terminals",
+      "technology_subtypes": [
+        "Brass terminal stems",
+        "Bushing accessories"
+      ],
+      "standards": [
+        "IS 3347"
+      ],
+      "evidence_source": "Taruna Dechome product literature",
+      "slug": "taruna-dechome-pvt-ltd"
     },
     {
       "name": "Techarsh Private Limited",
@@ -4855,7 +6293,18 @@
       "verification_date": "2026-09-13",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Transformer Cooling Radiators",
+      "technology_subtypes": [
+        "Panel radiator",
+        "Fabricated radiator assembly"
+      ],
+      "standards": [
+        "IS 3639",
+        "ISO 9001"
+      ],
+      "evidence_source": "Techarsh company technical profile",
+      "slug": "techarsh-private-limited"
     },
     {
       "name": "The Motwane Manufacturing Co. Pvt. Ltd.",
@@ -4873,7 +6322,19 @@
       "verification_date": "2026-09-13",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Transformer Winding Resistance Meters, Insulation Testers & Diagnostic Sets",
+      "technology_subtypes": [
+        "Transformer turns ratio meter (TTR)",
+        "Winding resistance meter",
+        "High voltage insulation tester"
+      ],
+      "standards": [
+        "IEEE C57.152",
+        "IS 13925"
+      ],
+      "evidence_source": "Motwane Manufacturing official product documentation",
+      "slug": "the-motwane-manufacturing-co-pvt-ltd"
     },
     {
       "name": "Trafo Power & Electricals Pvt. Ltd.",
@@ -4889,7 +6350,18 @@
       "verification_date": "2026-09-13",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "product_family": "Distribution Transformer Radiators & Tanks",
+      "technology_subtypes": [
+        "Panel radiator",
+        "Corrugated tank walls"
+      ],
+      "standards": [
+        "IS 3639",
+        "ISO 9001"
+      ],
+      "evidence_source": "Trafo Power & Electricals product datasheet",
+      "slug": "trafo-power-and-electricals-pvt-ltd"
     },
     {
       "name": "Transformers & Rectifiers (India) Ltd.",
@@ -4905,7 +6377,8 @@
       "verification_date": "2026-09-13",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "slug": "transformers-and-rectifiers-india-ltd"
     },
     {
       "name": "Unipower Transformers Pvt. Ltd.",
@@ -4919,9 +6392,19 @@
       "description": "Listed IEEMA member supplying transformer components or materials. Product line as published in the IEEMA member directory — not a complete catalogue.",
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
-      "role": "MANUFACTURER",
-      "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "role": "OEM_INTEGRATOR",
+      "manufacturer_status": "OEM_INTEGRATOR",
+      "source_tier": "TIER A",
+      "product_family": "Transformer OEM Integrating Standard Off-Circuit Tap Switches",
+      "technology_subtypes": [
+        "Integrated DETC switch"
+      ],
+      "standards": [
+        "IS 2026",
+        "IS 8468"
+      ],
+      "evidence_source": "Unipower Transformers corporate documentation",
+      "slug": "unipower-transformers-pvt-ltd"
     },
     {
       "name": "Vardhman Stampings Pvt. Ltd.",
@@ -4936,9 +6419,18 @@
       "description": "Listed IEEMA member supplying transformer components or materials. Product line as published in the IEEMA member directory — not a complete catalogue.",
       "verification_status": "Listed — official website recorded",
       "verification_date": "2026-09-13",
-      "role": "MANUFACTURER",
-      "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "role": "CONVERTER / PROCESSOR",
+      "manufacturer_status": "CONVERTER / PROCESSOR",
+      "source_tier": "TIER A",
+      "product_family": "CRGO Core Laminations & Transformer Radiators",
+      "manufacturer_product_name": "Vardhman CRGO Step-Lap Laminations & Pressed Panel Radiators",
+      "standards": [
+        "IS 3024",
+        "IS 3639",
+        "ISO 9001"
+      ],
+      "evidence_source": "Vardhman Stampings company catalog",
+      "slug": "vardhman-stampings-pvt-ltd"
     },
     {
       "name": "Vilas Transcore Limited",
@@ -4956,8 +6448,8 @@
       "parent_group": "Vilas Group",
       "role": "CONVERTER / PROCESSOR",
       "manufacturer_status": "CONVERTER / PROCESSOR",
-      "product_family": "Step-lap cut cores & slit coils",
-      "manufacturer_product_name": "Precision Step-Lap Slit Coils, Cut Laminations, Assembled Transformer Core Limbs and Yokes",
+      "product_family": "Slit Coils, Assembled Core Limbs & Step-Lap Cut Core Laminations",
+      "manufacturer_product_name": "Vilas Step-Lap Cut Cores, Mitered Laminations from Prime Hi-B",
       "grades": [
         "Processed from prime CRGO Hi-B grades"
       ],
@@ -4966,7 +6458,9 @@
         "IS 3024",
         "IEC 60404"
       ],
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "evidence_source": "Vilas Transcore technical datasheets and ISO 9001 certificates",
+      "slug": "vilas-transcore-limited"
     },
     {
       "verification_status": "Listed — official website recorded",
@@ -4982,7 +6476,8 @@
       "description": "Industrial silica-gel air breathers for oil conservators.",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "slug": "maier-hermetik"
     },
     {
       "verification_status": "Official Website Checked",
@@ -5000,16 +6495,23 @@
       "parent_group": "NMG Group",
       "role": "MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "product_family": "High-ambient transformer radiators",
+      "product_family": "Transformer Panel Radiators & Cooling Packages",
       "manufacturer_product_name": "NMG High-Performance Pressed-Steel Panel Radiators, Tropical & GCC High-Ambient Radiator Banks",
       "grades": [
         "Panel widths 520 mm / 380 mm / 226 mm"
       ],
       "standards": [
         "DIN 42559",
-        "EN 50216-6"
+        "EN 50216-6",
+        "ISO 9001"
       ],
-      "source_tier": "TIER A"
+      "source_tier": "TIER A",
+      "technology_subtypes": [
+        "Panel radiator",
+        "Header DN80/DN100"
+      ],
+      "evidence_source": "NMG Radiators technical datasheets",
+      "slug": "nuova-magrini-galileo-nmg-radiators"
     },
     {
       "name": "Pucaro Elektro-Isolierstoffe GmbH",
@@ -5041,7 +6543,8 @@
       "verification_status": "Official Website Checked",
       "verification_date": "2026-09-14",
       "density_g_cm3": "1.15 – 1.25 g/cm³",
-      "evidence_source": "Pucaro (Hitachi Energy) official technical catalog"
+      "evidence_source": "Pucaro (Hitachi Energy) official technical catalog",
+      "slug": "pucaro-elektro-isolierstoffe-gmbh"
     },
     {
       "name": "Permali Wallace Pvt Ltd",
@@ -5050,28 +6553,31 @@
       "country": "India",
       "state": "Madhya Pradesh",
       "city": "Bhopal",
-      "role": "MANUFACTURER",
+      "role": "PRIMARY_MILL_MANUFACTURER",
       "manufacturer_status": "CONFIRMED MANUFACTURER",
       "website": "https://www.permaliwallace.com",
       "categories": [
         "Laminated wood / insulation wood",
         "Pressboard / insulation materials"
       ],
-      "product_family": "Laminated densified wood",
-      "manufacturer_product_name": "Permali Wood, Permatred, Laminated Wood Pressure Rings",
+      "product_family": "Densified Laminated Wood & Technical Composites",
+      "manufacturer_product_name": "Permali Wood Laminates EH / MH, Permatred, Coil Support Blocks, Clamping Rings",
       "grades": [
         "IEC 61061",
         "IS 3513"
       ],
       "thickness_range_mm": "10 - 120 mm",
       "standards": [
-        "IEC 61061",
-        "IS 3513"
+        "IS 3513",
+        "IEC 61061"
       ],
       "description": "Indian manufacturer of densified laminated wood (Permali) and composite electrical insulation, supplying transformer clamping plates, support beams, and core insulation blocks.",
       "source_tier": "TIER A",
       "verification_status": "Official Website Checked",
-      "verification_date": "2026-09-14"
+      "verification_date": "2026-09-14",
+      "density_g_cm3": "1.10 – 1.30 g/cm³",
+      "evidence_source": "Permali Wallace official product datasheets",
+      "slug": "permali-wallace-pvt-ltd"
     },
     {
       "name": "Tomoegawa Co., Ltd.",
@@ -5103,7 +6609,8 @@
       "verification_date": "2026-09-14",
       "thermal_class": "105°C & 120°C",
       "base_thickness_mm": "0.03 mm – 0.25 mm",
-      "evidence_source": "Tomoegawa official technical catalog"
+      "evidence_source": "Tomoegawa official technical catalog",
+      "slug": "tomoegawa-co-ltd"
     },
     {
       "name": "Henan Yaan Electrical Insulation Material Co., Ltd.",
@@ -5138,7 +6645,8 @@
       "thermal_class": "105°C (Class A) & 120°C (Class E)",
       "epoxy_coating_pattern": "Single-sided and double-sided B-stage diamond epoxy dots",
       "base_thickness_mm": "0.08 mm – 0.50 mm",
-      "evidence_source": "Henan Yaan official catalog and ISO/IEC certificates"
+      "evidence_source": "Henan Yaan official catalog and ISO/IEC certificates",
+      "slug": "henan-yaan-electrical-insulation-material-co-ltd"
     },
     {
       "name": "Baoding Xinyuan Electrical Insulation Material Co., Ltd.",
@@ -5173,7 +6681,8 @@
       "thermal_class": "105°C & 120°C",
       "epoxy_coating_pattern": "Double-sided diamond epoxy pattern",
       "base_thickness_mm": "0.08 mm – 0.35 mm",
-      "evidence_source": "Baoding Xinyuan official documentation"
+      "evidence_source": "Baoding Xinyuan official documentation",
+      "slug": "baoding-xinyuan-electrical-insulation-material-co-ltd"
     },
     {
       "name": "Spaulding Composites Inc.",
@@ -5189,21 +6698,24 @@
         "Pressboard / insulation materials",
         "Laminated wood / insulation wood"
       ],
-      "product_family": "Fabricated insulation",
-      "manufacturer_product_name": "Spauldite® Industrial Laminates, Machined Transformer Barrier Boards",
+      "product_family": "Transformer Insulation Components & Machined Laminated Composites",
+      "manufacturer_product_name": "SPAULDITE® Laminated Tubes, Transformer Blocks, Insulating Washers",
       "grades": [
         "NEMA LI-1",
         "ASTM D709"
       ],
       "thickness_range_mm": "1.0 - 50 mm",
       "standards": [
-        "NEMA",
-        "ASTM"
+        "NEMA LI-1",
+        "ASTM D709",
+        "ISO 9001"
       ],
       "description": "North American precision converter and fabricator of high-voltage electrical insulation barrier boards, winding tubes, and machined composite components for power transformers.",
       "source_tier": "TIER A",
       "verification_status": "Official Website Checked",
-      "verification_date": "2026-09-14"
+      "verification_date": "2026-09-14",
+      "evidence_source": "Spaulding Composites official product engineering guide",
+      "slug": "spaulding-composites-inc"
     },
     {
       "name": "Alrocel S.A.",
@@ -5230,7 +6742,8 @@
       "description": "European processor and converter of transformerboard and cellulose insulation into finished transformer kits, machined spacers, cylinders, and barrier systems for Spanish and European OEMs.",
       "source_tier": "TIER A",
       "verification_status": "Official Website Checked",
-      "verification_date": "2026-09-14"
+      "verification_date": "2026-09-14",
+      "slug": "alrocel-s-a"
     },
     {
       "name": "China XD Group / Xi'an XD High Voltage Bushing Co., Ltd.",
@@ -5268,50 +6781,8 @@
       "voltage_max_kv": 1100,
       "voltage_evidence_kv": "1100 kV UHV AC / ±1100 kV DC converter bushings",
       "max_current_a": 40000,
-      "evidence_source": "Xi'an XD official catalog and State Grid UHV approvals"
-    },
-    {
-      "name": "CEDASPE S.p.A. (Reinhausen Group)",
-      "canonical_company_name": "CEDASPE S.p.A.",
-      "parent_group": "Maschinenfabrik Reinhausen",
-      "country": "Italy",
-      "state": "Lombardy",
-      "city": "San Giuliano Milanese",
-      "role": "MANUFACTURER",
-      "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "website": "https://www.reinhausen.com",
-      "categories": [
-        "Bushings (HV, LV)",
-        "Tap changers (OLTC / DETC)",
-        "Breathers (silica gel)",
-        "Pressure-relief devices"
-      ],
-      "product_family": "Distribution & medium-voltage bushings",
-      "manufacturer_product_name": "CEDASPE DIN/EN Porcelain Bushings, Epoxy Resin Bushings, Dehydrating Breathers",
-      "grades": [
-        "1 kV to 72.5 kV (DIN 42531 / 42532 / EN 50180)"
-      ],
-      "standards": [
-        "DIN 42531",
-        "DIN 42532",
-        "DIN 42533",
-        "DIN 42534",
-        "EN 50180",
-        "IEC 60137"
-      ],
-      "description": "Manufacturer of medium-voltage and distribution transformer bushings (porcelain and cast resin), dehydrating air breathers, oil level gauges, and transformer tank accessories.",
-      "source_tier": "TIER A",
-      "verification_status": "Official Website Checked",
-      "verification_date": "2026-09-14",
-      "technology_subtypes": [
-        "Porcelain",
-        "Solid",
-        "DETC / Off-circuit"
-      ],
-      "voltage_max_kv": 72.5,
-      "voltage_evidence_kv": "72.5 kV (DIN 42531-42534 & EN 50180 porcelain bushings)",
-      "max_current_a": 10000,
-      "evidence_source": "CEDASPE official catalog"
+      "evidence_source": "Xi'an XD official catalog and State Grid UHV approvals",
+      "slug": "china-xd-group-xi-an-xd-high-voltage-bushing-co-ltd"
     },
     {
       "name": "Prolec GE Waukesha (Tap Changer Division)",
@@ -5351,7 +6822,8 @@
       "voltage_max_kv": 345,
       "voltage_evidence_kv": "345 kV (UZ / UZF vacuum & resistive tap changers)",
       "max_current_a": 1200,
-      "evidence_source": "Prolec GE Waukesha technical documentation"
+      "evidence_source": "Prolec GE Waukesha technical documentation",
+      "slug": "prolec-ge-waukesha-tap-changer-division"
     },
     {
       "name": "MESSKO GmbH (Reinhausen Group)",
@@ -5370,19 +6842,28 @@
         "Breathers (silica gel)",
         "Monitoring / diagnostic devices"
       ],
-      "product_family": "Transformer protection and sensors",
+      "product_family": "MESSKO Temperature Indicators (OTI/WTI), MPreC Pressure Relief & MSENSE DGA",
       "manufacturer_product_name": "MPreC® PRD, MFlo® Oil Flow Indicator, MVI® Oil Level Gauge, MTraB® Smart Breathers, COMPLOG®",
       "grades": [
         "DIN EN 50216 series"
       ],
       "standards": [
-        "DIN EN 50216",
-        "IEC 60076-22"
+        "DIN EN 50216 series",
+        "IEC 60076-22",
+        "ISO 9001"
       ],
       "description": "Specialized German sensor manufacturer producing MPreC® pressure relief devices, MTraB® maintenance-free smart dehydrating breathers, mechanical and electronic oil level and temperature gauges.",
       "source_tier": "TIER A",
       "verification_status": "Official Website Checked",
-      "verification_date": "2026-09-14"
+      "verification_date": "2026-09-14",
+      "technology_subtypes": [
+        "MSENSE online DGA & bushing sensor",
+        "MPreC pressure relief valve",
+        "Becomp oil & winding thermometer",
+        "MT-STW pointer thermometer"
+      ],
+      "evidence_source": "MESSKO GmbH official technical manual and type approval certifications",
+      "slug": "messko-gmbh-reinhausen-group"
     }
   ]
 }

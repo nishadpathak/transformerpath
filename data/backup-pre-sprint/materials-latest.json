@@ -1,0 +1,40 @@
+{
+  "$schema": "https://transformerpath.com/material-index.schema.json",
+  "updated": "2026-09-15",
+  "currency": "USD",
+  "note": "Copper and aluminium are the LME 3-month official ring settlement as latest REFERENCE (dated, sourced, not a live feed). CRGO, oil, ester, pressboard and tank steel have no established public daily index and are shown as unavailable/GRADE NOT SPECIFIED rather than invented. Unknown > incorrect.",
+  "rows": [
+    {
+      "id": "aluminium",
+      "name": "Aluminium",
+      "unit": "USD / t",
+      "value": 3182,
+      "value_display": "≈ 3,182",
+      "currency": "USD",
+      "market": "LME",
+      "source": "LME official price",
+      "observation_date": "2026-08-20",
+      "last_verified": "2026-08-26",
+      "status": "aging",
+      "freshness_status": "AGING",
+      "basis": "3-month official ring settlement (reference)",
+      "note": "LME 3-month official ring settlement as a latest reference. Varies by day; verify against the LME official price before commercial use. Not a live feed."
+    },
+    {
+      "id": "copper",
+      "name": "Copper",
+      "unit": "USD / t",
+      "value": 14170,
+      "value_display": "≈ 14,170",
+      "currency": "USD",
+      "market": "LME",
+      "source": "LME official price",
+      "observation_date": "2026-08-20",
+      "last_verified": "2026-08-26",
+      "status": "aging",
+      "freshness_status": "AGING",
+      "basis": "3-month official ring settlement (reference)",
+      "note": "LME 3-month official ring settlement as a latest reference. Varies by day; verify against the LME official price before commercial use. Not a live feed."
+    }
+  ]
+}
