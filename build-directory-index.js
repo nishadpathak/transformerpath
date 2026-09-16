@@ -723,5 +723,15 @@ const summary = {
 };
 
 fs.writeFileSync('data/directory-index.json', JSON.stringify(summary, null, 2));
+const slim = index.map((c) => ({
+  id: c.id, kind: c.kind, name: c.name, slug: c.slug, country: c.country, region: c.region,
+  website: c.website, evidence: c.evidence, voltage: c.voltage, mva: c.mva,
+  capability_labels: (c.capability_labels || []).slice(0, 10),
+  product_codes: c.product_codes || [],
+  transformer_types: c.transformer_types,
+  factories: (c.factories || []).map((f) => ({ city: f.city, country: f.country, produces: f.produces })),
+  certs: c.certs || [],
+}));
+fs.writeFileSync('data/directory-search-index.json', JSON.stringify({ generated: summary.generated, count: slim.length, companies: slim }));
 console.log('directory-index: ' + index.length + ' entities across 10 verticals (' + mfgRows.length + ' OEMs after alias merge, ' + ACC_SUPPLIERS.length + ' suppliers, ' + MACH_DATA.length + ' machinery, ' + LAB_DATA.length + ' labs, ' + SRV_DATA.length + ' services, ' + LOG_DATA.length + ' logistics, ' + BYR_DATA.length + ' buyers, ' + ASC_DATA.length + ' associations, ' + EDU_DATA.length + ' education, ' + MED_DATA.length + ' media)');
 
