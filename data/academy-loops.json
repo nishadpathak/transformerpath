@@ -1,0 +1,235 @@
+{
+  "_comment": "TransformerPath Academy — videos complement 3D Labs, they do not replace them. Spine: READ → WATCH → EXPLORE IN 3D → CALCULATE → SIMULATE → TEST. A watch records progress; assessment/calculation/Grid Lab/capstone record Skills Passport evidence. Never a professional qualification. No XP, coins, badges or leaderboards. YouTube holds Foundation layer (when published); Engineering and Field stay on TransformerPath. Factory footage is permission-gated and listed as coming — do not invent clips.",
+  "spine": ["READ", "WATCH", "EXPLORE", "CALCULATE", "SIMULATE", "TEST"],
+  "levels": [
+    { "id": "FOUNDATIONS", "title": "Foundations", "audience": "Students and new engineers. Public YouTube layer when published." },
+    { "id": "ENGINEERING", "title": "Engineering", "audience": "Calculations, design choices, standards, testing and manufacturing — inside TransformerPath." },
+    { "id": "FIELD", "title": "Field / Professional", "audience": "Commissioning, diagnostics, failures, maintenance, factory processes and case studies." }
+  ],
+  "youtube": {
+    "strategy": "Keep the Foundation layer public on YouTube. Description drives Continue interactively on TransformerPath. Professional/deeper training remains inside the account. Do not paywall Daily Intel headlines.",
+    "channel": null,
+    "status": "scripts-ready"
+  },
+  "target_minutes": { "min": 4, "max": 10, "note": "4–10 minutes per concept. A hard topic becomes a short sequence, not a 30–60 minute lecture." },
+  "series": [
+    { "id": "fundamentals", "title": "Transformer Fundamentals", "priority": 5, "level": "FOUNDATIONS", "topics": ["How a transformer works", "Flux", "Turns ratio", "Losses", "Impedance", "Vector groups"] },
+    { "id": "construction", "title": "Transformer Construction", "priority": 5, "level": "FOUNDATIONS", "topics": ["Core", "Windings", "Insulation", "Tank", "Bushings", "OLTC", "Cooling"] },
+    { "id": "grid-journey", "title": "Grid Journey", "priority": 5, "level": "FOUNDATIONS", "topics": ["Generator", "GSU", "Transmission", "Substations", "Distribution", "Consumer"] },
+    { "id": "manufacturing", "title": "Manufacturing", "priority": 5, "level": "ENGINEERING", "topics": ["Core cutting", "Winding", "Insulation", "Active-part assembly", "Drying", "Tanking", "Oil filling"] },
+    { "id": "testing", "title": "Testing", "priority": 5, "level": "ENGINEERING", "topics": ["Ratio", "Winding resistance", "Impedance", "Losses", "Applied/induced voltage", "Impulse", "PD", "Temperature rise"] },
+    { "id": "operations", "title": "Operations", "priority": 4, "level": "FIELD", "topics": ["Energization", "Loading", "OLTC operation", "Parallel operation", "Cooling stages"] },
+    { "id": "faults", "title": "Faults & Protection", "priority": 5, "level": "FIELD", "topics": ["Differential", "REF", "Buchholz", "PRD", "Overfluxing", "Thermal protection"] },
+    { "id": "insulation", "title": "Insulation", "priority": 5, "level": "ENGINEERING", "topics": ["Pressboard", "Paper", "DDP", "Spacers", "Barriers", "End rings", "Oil ducts", "Dielectric stresses"] },
+    { "id": "failure", "title": "Failure Analysis", "priority": 4, "level": "FIELD", "topics": ["Winding deformation", "Bushing failure", "Moisture", "Overheating", "PD", "Insulation ageing"] },
+    { "id": "maintenance", "title": "Maintenance", "priority": 4, "level": "FIELD", "topics": ["DGA", "Oil sampling", "Filtration", "Bushing tests", "OLTC maintenance", "Condition monitoring"] },
+    { "id": "design", "title": "Design Engineering", "priority": 5, "level": "ENGINEERING", "topics": ["Rating", "Core", "Winding", "Impedance", "Losses", "Cooling", "Insulation", "Final design"] },
+    { "id": "factory", "title": "Factory / Industry", "priority": 4, "level": "FIELD", "topics": ["How transformer factories operate", "Machinery", "Process flow"] }
+  ],
+  "factory_footage": {
+    "status": "permission-needed",
+    "note": "Real factory video sits next to the 3D explanation once a manufacturer grants permission. Until then the 3D lab and the why-it-matters brief are live.",
+    "shots": [
+      "CRGO slitting/cutting", "Step-lap core stacking", "Disc winding", "Helical winding", "CTC winding",
+      "Pressboard machining", "Static/end-ring manufacturing", "Active-part assembly", "VPD drying",
+      "Tanking", "Vacuum oil filling", "Impulse testing", "Routine testing"
+    ]
+  },
+  "testing_series": {
+    "note": "Each item answers: What are we testing? → Why? → Setup → Procedure concept → Result → What can go wrong? Younger engineers often know the names without having seen the tests.",
+    "items": [
+      "Routine tests", "Winding resistance", "Voltage ratio", "Vector group", "No-load loss/current",
+      "Load loss/impedance", "Separate-source withstand", "Induced-voltage test", "Partial discharge",
+      "Lightning impulse", "Switching impulse", "Temperature-rise test", "Sound-level measurement",
+      "Capacitance/tan δ", "Oil tests", "SFRA", "DGA", "Bushing testing"
+    ]
+  },
+  "loops": [
+    {
+      "id": "grid-journey",
+      "title": "How electricity travels through transformers",
+      "subtitle": "From the power station to your home",
+      "series": "grid-journey",
+      "level": "FOUNDATIONS",
+      "public_youtube": true,
+      "skill": "transmission-class",
+      "flagship": true,
+      "seo": "TransformerPath — How Transformers Work · Grid Journey",
+      "steps": [
+        { "kind": "READ", "title": "The path of power", "href": "knowledge/gsu-transformers.html", "minutes": 4 },
+        {
+          "kind": "WATCH", "id": "vid-grid-journey", "title": "Generator → GSU → transmission → autotransformer → distribution → 415/230 V",
+          "minutes": 8, "youtube": null, "status": "script",
+          "outline": [
+            "Generator at ~21 kV",
+            "GSU steps to 400 kV",
+            "Transmission corridors",
+            "Autotransformer into the regional network",
+            "Step-down at the substation",
+            "MV feeders",
+            "Distribution transformer to 415/230 V",
+            "Then operate it yourself in Grid Lab"
+          ]
+        },
+        { "kind": "EXPLORE", "title": "Open GSU in 3D", "href": "gsu.html", "minutes": 6 },
+        { "kind": "SIMULATE", "title": "21 kV → 400 kV in Grid Lab", "href": "grid-lab.html", "minutes": 8, "scenario": "kv-400" },
+        { "kind": "CALCULATE", "title": "HV/LV current at 1,000 MVA", "href": "calculator.html", "minutes": 6, "assessment": "gsu-current-1000mva" },
+        { "kind": "TEST", "title": "Knowledge check", "href": "assessments.html", "minutes": 5, "assessment": "gsu-current-1000mva" }
+      ]
+    },
+    {
+      "id": "gsu",
+      "title": "GSU Transformer",
+      "subtitle": "What a generator step-up transformer does",
+      "series": "grid-journey",
+      "level": "FOUNDATIONS",
+      "skill": "3d-anatomy",
+      "steps": [
+        { "kind": "READ", "title": "GSU role on the machine bus", "href": "knowledge/gsu-transformers.html", "minutes": 4 },
+        {
+          "kind": "WATCH", "id": "vid-gsu-what", "title": "What a Generator Step-Up Transformer Does",
+          "minutes": 6, "youtube": null, "status": "script",
+          "outline": ["Delta LV to the generator", "Star HV to the line, earthed neutral", "YNd1 displacement", "Why the GSU is not a distribution transformer"]
+        },
+        { "kind": "EXPLORE", "title": "Open GSU in 3D", "href": "gsu.html", "minutes": 8 },
+        { "kind": "SIMULATE", "title": "21 kV → 400 kV in Grid Lab", "href": "grid-lab.html", "minutes": 6, "scenario": "kv-400" },
+        { "kind": "CALCULATE", "title": "Calculate HV/LV current at 1,000 MVA", "href": "calculator.html", "minutes": 6, "assessment": "gsu-current-1000mva" },
+        { "kind": "TEST", "title": "5-question knowledge check", "href": "assessments.html", "minutes": 5, "assessment": "gsu-current-1000mva" }
+      ]
+    },
+    {
+      "id": "impedance",
+      "title": "Transformer Impedance",
+      "subtitle": "A hard topic as a short sequence — not a lecture",
+      "series": "fundamentals",
+      "level": "ENGINEERING",
+      "skill": "iec-rating",
+      "steps": [
+        { "kind": "READ", "title": "Leakage flux and percent impedance", "href": "masterclass.html#fundamentals", "minutes": 4 },
+        { "kind": "WATCH", "id": "vid-z-means", "title": "What impedance means", "minutes": 5, "status": "script", "youtube": null, "outline": ["Uk as a voltage drop at rated current", "Why it is not a resistance slogan"] },
+        { "kind": "WATCH", "id": "vid-z-leakage", "title": "Where leakage reactance comes from", "minutes": 7, "status": "script", "youtube": null, "outline": ["Flux that does not link both windings", "Energy stored in the duct"] },
+        { "kind": "WATCH", "id": "vid-z-geometry", "title": "Winding geometry effect", "minutes": 8, "status": "script", "youtube": null, "outline": ["Radial build", "Axial height", "Why interleaving changes impulse more than Uk"] },
+        { "kind": "WATCH", "id": "vid-z-isc", "title": "Short-circuit current", "minutes": 6, "status": "script", "youtube": null, "outline": ["Isc ≈ Irated / uk", "Asymmetry", "Mechanical force follows I²"] },
+        { "kind": "EXPLORE", "title": "Explore leakage geometry in 3D", "href": "windings.html", "minutes": 8 },
+        { "kind": "CALCULATE", "title": "Line current at 100 MVA, 132 kV", "href": "calculator.html", "minutes": 6, "assessment": "line-current-100mva-132kv" },
+        { "kind": "TEST", "title": "Knowledge check", "href": "assessments.html", "minutes": 5, "assessment": "line-current-100mva-132kv" }
+      ]
+    },
+    {
+      "id": "disc-winding",
+      "title": "Disc Winding",
+      "subtitle": "Watch the process (when permitted) · explore in 3D · why it matters · calculate",
+      "series": "manufacturing",
+      "level": "ENGINEERING",
+      "skill": "3d-anatomy",
+      "factory": true,
+      "steps": [
+        { "kind": "READ", "title": "Disc vs helical vs layer", "href": "knowledge/concentric-vs-disc-windings.html", "minutes": 4 },
+        { "kind": "WATCH", "id": "vid-disc-factory", "title": "WATCH REAL PROCESS", "minutes": 5, "status": "factory-permission", "youtube": null, "outline": ["Placeholder until a manufacturer grants footage of disc winding (target ~4:32).", "The 3D lab is live today."] },
+        { "kind": "EXPLORE", "title": "EXPLORE IN 3D — rotate, isolate conductors, spacers, axial ducts", "href": "windings.html", "minutes": 8 },
+        { "kind": "READ", "title": "WHY IT MATTERS — mechanical withstand, cooling, impulse distribution", "href": "knowledge/transformer-winding-manufacturing.html", "minutes": 4 },
+        { "kind": "CALCULATE", "title": "Current density / conductor area / turns", "href": "calculator.html", "minutes": 6 }
+      ]
+    },
+    {
+      "id": "short-circuit",
+      "title": "What happens during a transformer short circuit",
+      "subtitle": "Engineering failure analysis — not a sensational clip",
+      "series": "failure",
+      "level": "FIELD",
+      "skill": "oltc-avr",
+      "steps": [
+        { "kind": "READ", "title": "Forces scale with current squared", "href": "knowledge/transformer-winding-failure.html", "minutes": 4 },
+        {
+          "kind": "WATCH", "id": "vid-sc-forces", "title": "FAULT → current → leakage field → radial/axial forces",
+          "minutes": 8, "status": "script", "youtube": null,
+          "outline": ["Start from a normal transformer", "FAULT", "Current rises dramatically", "Leakage field increases", "Radial forces", "Axial forces", "Winding deformation risk", "Spacer and clamping stresses"]
+        },
+        { "kind": "EXPLORE", "title": "Open the short-circuit / fault simulator in Power 3D", "href": "power3d.html", "minutes": 8 },
+        { "kind": "SIMULATE", "title": "Grid Lab under faulted transmission class", "href": "grid-lab.html", "minutes": 6 },
+        { "kind": "TEST", "title": "OLTC / AVR limitation (system, not slogan)", "href": "assessments.html", "minutes": 5, "assessment": "oltc-avr-limitation" }
+      ]
+    },
+    {
+      "id": "moisture",
+      "title": "How moisture damages transformer insulation",
+      "subtitle": "Water in cellulose → dielectric, ageing, mechanical life",
+      "series": "insulation",
+      "level": "FIELD",
+      "skill": "iec-rating",
+      "steps": [
+        { "kind": "READ", "title": "Paper-oil insulation system", "href": "knowledge/transformer-paper-oil-insulation-system.html", "minutes": 5 },
+        {
+          "kind": "WATCH", "id": "vid-moisture", "title": "Water enters cellulose",
+          "minutes": 7, "status": "script", "youtube": null,
+          "outline": ["Water enters cellulose", "Dielectric strength changes", "Ageing accelerates", "Mechanical strength deteriorates", "Implications for transformer life"]
+        },
+        { "kind": "EXPLORE", "title": "Active part / insulation geometry in 3D", "href": "coilassembly.html", "minutes": 6 },
+        { "kind": "CALCULATE", "title": "Design calculator — insulation class inputs", "href": "calculator.html", "minutes": 5 }
+      ]
+    },
+    {
+      "id": "oltc",
+      "title": "OLTC operation",
+      "subtitle": "Watch a tap, then open the cutaway",
+      "series": "operations",
+      "level": "ENGINEERING",
+      "skill": "oltc-avr",
+      "steps": [
+        { "kind": "READ", "title": "Tap-changer types", "href": "masterclass.html#tapchangers", "minutes": 4 },
+        { "kind": "WATCH", "id": "vid-oltc-raise", "title": "A raise operation — selector then diverter", "minutes": 6, "status": "script", "youtube": null, "outline": ["Off-load pre-select", "Diverter through the transition resistor or vacuum bottle", "AVR must stop at the end-stop"] },
+        { "kind": "EXPLORE", "title": "On-load tap-changer cutaway", "href": "oltc.html", "minutes": 8 },
+        { "kind": "TEST", "title": "Practical exercise — tap-range limitation", "href": "assessments.html", "minutes": 5, "assessment": "oltc-avr-limitation" }
+      ]
+    },
+    {
+      "id": "testing-ratio",
+      "title": "Voltage ratio test",
+      "subtitle": "What · why · setup · procedure concept · result · what can go wrong",
+      "series": "testing",
+      "level": "ENGINEERING",
+      "skill": "iec-rating",
+      "steps": [
+        { "kind": "READ", "title": "Routine, type and special tests", "href": "masterclass.html#testing", "minutes": 5 },
+        {
+          "kind": "WATCH", "id": "vid-ratio", "title": "Voltage ratio — what we are testing and why",
+          "minutes": 6, "status": "script", "youtube": null,
+          "outline": ["What: turns ratio / voltage ratio", "Why: wrong ratio is a winding or tap error", "Setup: applied LV or HV per procedure", "Result: ratio error vs nameplate and taps", "What can go wrong: wrong tap, floating tertiary, instrument burden"]
+        },
+        { "kind": "EXPLORE", "title": "Power transformer 3D — winding circuit", "href": "power3d.html", "minutes": 6 },
+        { "kind": "TEST", "title": "YNd11 meaning (phase displacement, not an impedance code)", "href": "assessments.html", "minutes": 5, "assessment": "vector-group-ynd11" }
+      ]
+    },
+    {
+      "id": "design-loop",
+      "title": "Design engineering loop",
+      "subtitle": "Rating → core → winding → impedance → losses → cooling → insulation → final design",
+      "series": "design",
+      "level": "ENGINEERING",
+      "skill": "iec-rating",
+      "steps": [
+        { "kind": "READ", "title": "IEC 60076 rating fundamentals", "href": "masterclass.html#fundamentals", "minutes": 8 },
+        { "kind": "WATCH", "id": "vid-design-loop", "title": "The design loop in eight minutes", "minutes": 8, "status": "script", "youtube": null, "outline": ["Rating sets current and flux", "Core", "Winding", "Impedance", "Losses", "Cooling", "Insulation", "Close the loop"] },
+        { "kind": "EXPLORE", "title": "Core topology explorer", "href": "coretopology.html", "minutes": 6 },
+        { "kind": "CALCULATE", "title": "IEC calculator — save the blob to My Designs", "href": "calculator.html", "minutes": 10 },
+        { "kind": "TEST", "title": "Line current knowledge check", "href": "assessments.html", "minutes": 5, "assessment": "line-current-100mva-132kv" }
+      ]
+    },
+    {
+      "id": "how-transformers-work",
+      "title": "How a transformer works",
+      "subtitle": "Foundation layer — public YouTube when published",
+      "series": "fundamentals",
+      "level": "FOUNDATIONS",
+      "public_youtube": true,
+      "skill": "iec-rating",
+      "steps": [
+        { "kind": "READ", "title": "EMF, flux and turns", "href": "masterclass.html#fundamentals", "minutes": 6 },
+        { "kind": "WATCH", "id": "vid-how-it-works", "title": "TransformerPath — How Transformers Work", "minutes": 8, "status": "script", "youtube": null, "outline": ["Mutual flux", "Turns ratio", "Ideal vs leakage", "Why YouTube stops here and TransformerPath continues"] },
+        { "kind": "EXPLORE", "title": "Distribution & dry-type 3D", "href": "explorer.html", "minutes": 8 },
+        { "kind": "CALCULATE", "title": "First-pass calculator", "href": "calculator.html", "minutes": 6 },
+        { "kind": "TEST", "title": "Knowledge check", "href": "assessments.html", "minutes": 5, "assessment": "line-current-100mva-132kv" }
+      ]
+    }
+  ]
+}

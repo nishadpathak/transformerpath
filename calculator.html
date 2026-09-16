@@ -18,6 +18,8 @@
 <script src="analytics.js?v=7" defer></script>
 <script src="supabase-config.js"></script>
 <script src="supabase.js" defer></script>
+<script src="tp-learner.js" defer></script>
+<script src="tp-hub.js" defer></script>
 <script src="tp-entitlement.js" defer></script>
 <script src="course-gate.js?v=7"></script>
 <meta property="og:title" content="Transformer Design Calculator — Distribution | Power | Cast Resin">
@@ -198,6 +200,7 @@
         <h2 style="color:var(--amber);border-bottom:1px solid rgba(255,255,255,.1)">⚡ Design Actions &amp; Portability <span class="tag">JSON / RFQ / MD</span></h2>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px">
           <button class="b2" id="btn_save_json" onclick="exportDesignJSON()" style="font-size:12px;padding:8px 6px">💾 Save (.json)</button>
+          <button class="b2" id="btn_save_account" onclick="saveToMyDesigns()" style="font-size:12px;padding:8px 6px">Save to My Designs</button>
           <button class="b2" id="btn_load_json" onclick="document.getElementById('file_import_json').click()" style="font-size:12px;padding:8px 6px">📂 Load (.json)</button>
           <input type="file" id="file_import_json" style="display:none" accept=".json" onchange="importDesignJSON(event)">
           <button class="b1" id="btn_push_rfq" onclick="pushToRFQ()" style="font-size:12px;padding:8px 6px;grid-column:span 2;background:#f5a623;color:#0d1b2e;font-weight:800">⚡ Push to RFQ Schedule →</button>
@@ -2539,6 +2542,49 @@ function exportDesignJSON() {
   document.body.appendChild(a);
   a.click();
   setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+}
+
+function collectDesignBlob() {
+  const spec = {
+    type: typeof TTYPE !== 'undefined' ? TTYPE : '',
+    standard: $('std') ? $('std').value : '',
+    rating_kVA: parseFloat($('skva') && $('skva').value),
+    freq_hz: parseFloat($('freq') && $('freq').value),
+    hv_v: parseFloat($('hv') && $('hv').value),
+    lv_v: parseFloat($('lv') && $('lv').value),
+    vector_group: $('vec') ? $('vec').value : '',
+    tap_range_pct: parseFloat($('tap') && $('tap').value),
+    cooling: $('cool') ? $('cool').value : '',
+    flux_t: parseFloat($('bm') && $('bm').value)
+  };
+  return {
+    app: 'TransformerPath Calculator',
+    timestamp: new Date().toISOString(),
+    spec: spec,
+    results: (typeof LAST !== 'undefined' && LAST) ? { volts_per_turn: LAST.Et, z_pct: LAST.z, p0_w: LAST.P0, pk_w: LAST.Pk } : null
+  };
+}
+
+function saveToMyDesigns() {
+  const blob = collectDesignBlob();
+  const hvKv = blob.spec.hv_v ? (blob.spec.hv_v >= 1000 ? (blob.spec.hv_v / 1000) : blob.spec.hv_v) : '';
+  const name = (blob.spec.type || 'design') + ' ' + (blob.spec.rating_kVA || '') + ' kVA';
+  const fields = {
+    name: name,
+    kind: 'iec-calculator',
+    rating: (blob.spec.rating_kVA || '') + (blob.spec.rating_kVA ? ' kVA' : ''),
+    voltages: hvKv + (blob.spec.lv_v ? '/' + blob.spec.lv_v + ' V' : ''),
+    notes: '',
+    data: blob
+  };
+  if (window.TP_HUB && TP_HUB.createDesign) {
+    TP_HUB.createDesign(fields).then(function (r) {
+      if (r && r.gated) alert('My Designs saves to your account on Professional or Team. A draft stays on this device. Upgrade at Pricing.');
+      else alert('Saved to My Designs. Open My TransformerPath → Engineering.');
+    });
+    return;
+  }
+  alert('Sign in on My TransformerPath to save this design to your account. A .json download is still available.');
 }
 
 function importDesignJSON(event) {

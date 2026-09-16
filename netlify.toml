@@ -88,6 +88,36 @@
   status = 200
 
 [[redirects]]
+  from = "/me/designs"
+  to = "/workspace.html"
+  status = 200
+
+[[redirects]]
+  from = "/me/shortlist"
+  to = "/workspace.html"
+  status = 200
+
+[[redirects]]
+  from = "/me/rfqs"
+  to = "/workspace.html"
+  status = 200
+
+[[redirects]]
+  from = "/me/supplier"
+  to = "/workspace.html"
+  status = 200
+
+[[redirects]]
+  from = "/academy"
+  to = "/academy.html"
+  status = 200
+
+[[redirects]]
+  from = "/academy/*"
+  to = "/academy-loop.html"
+  status = 200
+
+[[redirects]]
   from = "/sign-in"
   to = "/workspace.html?auth=in"
   status = 200

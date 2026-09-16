@@ -52,6 +52,17 @@
   .ws-idbox { background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:12px; }
   .ws-idbox .lbl { font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); font-weight:700; }
   .auth-card select { width:100%; padding:12px 14px; border:1px solid var(--border); border-radius:8px; font-size:.95rem; font-family:inherit; background:var(--bg); color:var(--text); }
+  .ws-dash { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin-bottom:18px; }
+  .ws-tile { display:block; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px 16px; text-decoration:none; color:var(--text); }
+  .ws-tile .n { font-size:1.25rem; font-weight:800; color:var(--ink); }
+  .ws-tile .l { font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); font-weight:700; }
+  .ws-kanban { display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:10px; }
+  .ws-col { background:var(--bg); border:1px solid var(--border); border-radius:10px; padding:10px; min-height:80px; }
+  .ws-col h4 { margin:0 0 8px; font-size:.75rem; letter-spacing:.06em; color:var(--muted); }
+  .ws-formgrid { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:8px; margin-bottom:10px; }
+  .ws-formgrid input, .ws-formgrid select, .ws-formgrid textarea { width:100%; padding:8px 10px; border:1px solid var(--border); border-radius:8px; background:var(--bg); color:var(--text); font-family:inherit; }
+  .ac-spine { display:flex; flex-wrap:wrap; gap:6px; margin:8px 0 0; }
+  .ac-spine span { font-size:.7rem; font-weight:800; letter-spacing:.04em; text-transform:uppercase; border:1px solid var(--border); border-radius:999px; padding:3px 8px; color:var(--muted); }
 </style>
     <link rel="stylesheet" href="tp-nav.css?v=14">
   <link rel="stylesheet" href="tp-feedback.css?v=14">
@@ -177,13 +188,29 @@
       <a href="#learning">Learning</a>
       <a href="#grid-lab">Grid Lab</a>
       <a href="#skills">Skills</a>
+      <a href="#designs">Engineering</a>
       <a href="#saved">Saved</a>
       <a href="#certificates">Certificates</a>
+      <a href="#shortlist" id="tabShortlist" hidden>Shortlist</a>
       <a href="#rfqs" id="tabRfqs" hidden>RFQs</a>
       <a href="#supplier" id="tabSupplier" hidden>Supplier Dashboard</a>
     </nav>
 
     <div id="panel-overview" class="hub-panel">
+      <div class="ws-dash" id="hubDash"></div>
+      <div class="ws-sec">
+        <h3>Continue</h3>
+        <p class="ws-sub">Academy spine: READ → WATCH → EXPLORE IN 3D → CALCULATE → SIMULATE → TEST. Videos complement 3D Labs.</p>
+        <p class="ac-spine"><span>Read</span><span>Watch</span><span>Explore</span><span>Calculate</span><span>Simulate</span><span>Test</span></p>
+        <p style="margin-top:10px"><a class="btn btn-amber btn-sm" href="academy-loop.html?id=grid-journey">Grid Journey loop →</a>
+        <a class="btn btn-outline btn-sm" href="grid-lab.html">Grid Lab →</a>
+        <a class="btn btn-outline btn-sm" href="learn.html">Learning →</a></p>
+      </div>
+      <div class="ws-sec">
+        <h3>Intel matching what you follow</h3>
+        <p class="ws-sub">Daily Intel headlines stay free on <a href="intel.html">/intel</a>. This strip is personalised from follows, watchlists and saved searches.</p>
+        <div id="tpIntelStrip"></div>
+      </div>
       <div class="ws-sec">
         <h3>Identity</h3>
         <div class="ws-idgrid">
@@ -232,6 +259,7 @@
       <div class="ws-sec"><h3>Assessments</h3>
         <p class="ws-sub">Chapter → Knowledge Check → Practical Exercise → 3D/Grid Lab → Module Assessment → Capstone. Engineering reasoning, not trivia.</p>
         <a class="btn btn-outline btn-sm" href="assessments.html">Open assessments →</a>
+        <a class="btn btn-outline btn-sm" href="academy.html">Academy loops →</a>
       </div>
       <div class="ws-sec"><h3>Chapter progress</h3><div id="tpProgress"></div></div>
       <div class="ws-sec"><h3>3D Labs</h3><p class="ws-sub">Interactive 3D is a working demo under the industry platform — not Country Grid Lab.</p><a class="btn btn-outline btn-sm" href="explorer.html">Open 3D explorer →</a></div>
@@ -265,14 +293,92 @@
       </div>
     </div>
 
+    <div id="panel-designs" class="hub-panel" hidden>
+      <div class="ws-sec">
+        <h3>My Designs</h3>
+        <div id="tpDesigns"></div>
+        <form id="designForm" class="ws-formgrid" style="margin-top:12px">
+          <input name="name" required placeholder="Name" maxlength="120">
+          <input name="rating" placeholder="Rating (e.g. 100 MVA)">
+          <input name="voltages" placeholder="Voltages (e.g. 132/33 kV)">
+          <input name="notes" placeholder="Notes">
+          <button class="btn btn-amber btn-sm" type="submit">Create design</button>
+        </form>
+        <p class="ws-sub">Professional / Team save to the account. Learning users see an upgrade CTA; drafts stay on this device. Wire the IEC calculator with Save to My Designs.</p>
+        <p><a class="btn btn-outline btn-sm" href="calculator.html">Open calculator →</a></p>
+      </div>
+      <div class="ws-sec">
+        <h3>Projects</h3>
+        <div id="tpProjects"></div>
+        <form id="projectForm" class="ws-formgrid" style="margin-top:10px">
+          <input name="name" required placeholder="Project name">
+          <input name="notes" placeholder="Notes">
+          <button class="btn btn-outline btn-sm" type="submit">Add project</button>
+        </form>
+      </div>
+      <div class="ws-sec">
+        <h3>Notes</h3>
+        <div id="tpNotes"></div>
+        <form id="noteForm" class="ws-formgrid" style="margin-top:10px">
+          <input name="title" placeholder="Title">
+          <input name="body" placeholder="Memorandum">
+          <button class="btn btn-outline btn-sm" type="submit">Add note</button>
+        </form>
+      </div>
+    </div>
+
     <div id="panel-saved" class="hub-panel" hidden>
       <div class="ws-sec"><h3>Saved content</h3><div id="tpSaved" class="ws-tags"></div></div>
-      <div class="ws-sec"><h3>My Designs</h3><p class="ws-sub">Professional entitlement. Schema is live for Sprint 4 calculator persistence — this list is the account stub.</p><div id="tpDesigns"></div></div>
-      <div class="ws-sec"><h3>Notes &amp; Engineering Memoranda</h3><div id="tpNotes"></div></div>
-      <div class="ws-sec"><h3>Following</h3><div id="tpFollows" class="ws-tags"></div></div>
+      <div class="ws-sec"><h3>My Designs</h3><p class="ws-sub">Full workspace on the <a href="#designs">Engineering</a> tab. Professional entitlement to persist on the account.</p><div id="tpDesignsSavedHint"></div></div>
+      <div class="ws-sec">
+        <h3>Following</h3>
+        <div id="tpFollows" class="ws-tags"></div>
+        <form id="followForm" class="ws-formgrid" style="margin-top:10px">
+          <select name="type"><option value="company">Company</option><option value="project">Project</option><option value="market">Market</option></select>
+          <input name="subject" required placeholder="e.g. Hitachi Energy, GCC">
+          <button class="btn btn-outline btn-sm" type="submit">Follow</button>
+        </form>
+      </div>
+      <div class="ws-sec">
+        <h3>Watchlists</h3>
+        <div id="tpWatchlists"></div>
+        <form id="watchlistForm" class="ws-formgrid" style="margin-top:10px">
+          <input name="name" required placeholder="Watchlist name">
+          <input name="subjects" placeholder="Subjects, comma-separated">
+          <button class="btn btn-outline btn-sm" type="submit">Add watchlist</button>
+        </form>
+      </div>
+      <div class="ws-sec">
+        <h3>Saved searches</h3>
+        <div id="tpSavedSearches"></div>
+        <form id="searchForm" class="ws-formgrid" style="margin-top:10px">
+          <input name="name" placeholder="Label">
+          <input name="query" required placeholder="e.g. 765 kV">
+          <button class="btn btn-outline btn-sm" type="submit">Save search</button>
+        </form>
+      </div>
       <div class="ws-sec"><h3>My Market</h3>
-        <p class="ws-sub" style="font-size:.82rem;color:var(--muted);margin:0 0 8px">Live aggregation across what you follow — projects, tenders, intel, manufacturers, utilities and markets. Counts are computed from canonical platform data at page load.</p>
+        <p class="ws-sub" style="font-size:.82rem;color:var(--muted);margin:0 0 8px">Live aggregation across what you follow — projects, tenders, intel, manufacturers, utilities and markets.</p>
         <div id="tpMarket" class="ws-tags"><span class="ws-empty">Sign in and follow companies, projects, tenders or markets to populate this dashboard.</span></div>
+      </div>
+    </div>
+
+    <div id="panel-shortlist" class="hub-panel" hidden>
+      <div class="ws-sec">
+        <h3>My Shortlist</h3>
+        <p class="ws-sub">Companies, facilities, components and labs. Public directory remains free — shortlist is an account convenience.</p>
+        <div id="tpShortlist"></div>
+        <p style="margin-top:10px"><a class="btn btn-outline btn-sm" href="directory.html">Directory →</a></p>
+      </div>
+      <div class="ws-sec">
+        <h3>My Comparisons</h3>
+        <p class="ws-sub">Uses the existing <a href="compare.html">compare.html?m=slug,slug</a> workspace.</p>
+        <div id="tpComparisons"></div>
+        <form id="compareSaveForm" class="ws-formgrid" style="margin-top:10px">
+          <input name="name" placeholder="Name" value="Comparison">
+          <input name="slugs" required placeholder="slug-one,slug-two">
+          <button class="btn btn-outline btn-sm" type="submit">Save comparison</button>
+        </form>
       </div>
     </div>
 
@@ -287,16 +393,85 @@
     </div>
 
     <div id="panel-rfqs" class="hub-panel" hidden>
-      <div class="ws-sec"><h3>Buyer · RFQs</h3><div id="tpRfqs"></div>
-        <p style="margin-top:10px"><a class="btn btn-outline btn-sm" href="rfq.html">RFQ Board →</a> <a class="btn btn-outline btn-sm" href="directory.html">Directory shortlist →</a></p>
+      <div class="ws-sec">
+        <h3>My RFQs</h3>
+        <p class="ws-sub">Draft → Sent → Responses → Closed. Public RFQ board stays free to post.</p>
+        <div id="tpRfqBoard"></div>
+        <div id="tpRfqs" hidden></div>
+      </div>
+      <div class="ws-sec">
+        <h3>Post RFQ</h3>
+        <form id="rfqHubForm">
+          <div class="ws-formgrid">
+            <input name="title" required placeholder="Title">
+            <input name="kv" placeholder="kV (e.g. 132/33)">
+            <input name="mva" placeholder="MVA">
+            <input name="quantity" placeholder="Quantity">
+            <input name="deadline" placeholder="Deadline">
+            <input name="country" placeholder="Country">
+          </div>
+          <textarea name="notes" placeholder="Notes" style="width:100%;min-height:70px;margin:8px 0;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);font-family:inherit"></textarea>
+          <button class="btn btn-amber btn-sm" type="submit">Save draft RFQ</button>
+        </form>
+        <p style="margin-top:10px"><a class="btn btn-outline btn-sm" href="rfq.html">Public RFQ Board →</a></p>
+      </div>
+      <div class="ws-sec">
+        <h3>Saved requirements</h3>
+        <p class="ws-sub">Example: 100 MVA 132/33 kV.</p>
+        <div id="tpRequirements"></div>
+        <form id="reqForm" class="ws-formgrid" style="margin-top:10px">
+          <input name="title" required placeholder="Title">
+          <input name="mva" placeholder="MVA">
+          <input name="kv" placeholder="kV">
+          <input name="notes" placeholder="Notes">
+          <button class="btn btn-outline btn-sm" type="submit">Save requirement</button>
+        </form>
       </div>
     </div>
 
     <div id="panel-supplier" class="hub-panel" hidden>
-      <div class="ws-sec"><h3>Supplier Dashboard</h3>
-        <p class="ws-sub">RFQ inbox and company claims. Full supplier profile / RFQ inbox is the next sequence after this Learner foundation.</p>
+      <div class="ws-sec">
+        <h3>Company claim</h3>
+        <p class="ws-sub">Request a claim. Verified Manufacturer is identity and contact verification — never a technical approval.</p>
         <div id="tpClaims"></div>
+        <form id="claimHubForm" class="ws-formgrid" style="margin-top:10px">
+          <input name="company" required placeholder="Company name">
+          <input name="country" placeholder="Country">
+          <input name="company_id" placeholder="Directory id / slug">
+          <button class="btn btn-amber btn-sm" type="submit">Request claim</button>
+        </form>
+        <p><a class="btn btn-outline btn-sm" href="claim-profile.html">Full claim form →</a></p>
       </div>
+      <div class="ws-sec">
+        <h3>Supplier profile</h3>
+        <div id="tpSupplierAbout"></div>
+        <form id="supplierForm" style="margin-top:10px">
+          <div class="ws-formgrid">
+            <input name="company_name" placeholder="Company name">
+            <input name="country" placeholder="Country">
+            <input name="categories" placeholder="Categories (comma-separated)">
+          </div>
+          <textarea name="about" placeholder="About" style="width:100%;min-height:60px;margin:8px 0;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);font-family:inherit"></textarea>
+          <textarea name="capabilities" placeholder="Capabilities" style="width:100%;min-height:60px;margin:8px 0;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);font-family:inherit"></textarea>
+          <button class="btn btn-outline btn-sm" type="submit">Save profile</button>
+        </form>
+      </div>
+      <div class="ws-sec"><h3>Facilities</h3><div id="tpFacilities"></div>
+        <form id="facilityForm" class="ws-formgrid" style="margin-top:10px">
+          <input name="name" required placeholder="Plant / facility">
+          <input name="country" placeholder="Country">
+          <button class="btn btn-outline btn-sm" type="submit">Add facility</button>
+        </form>
+      </div>
+      <div class="ws-sec"><h3>Products / capabilities</h3><div id="tpProducts"></div>
+        <form id="productForm" class="ws-formgrid" style="margin-top:10px">
+          <input name="name" required placeholder="Product or capability">
+          <input name="category" placeholder="Category">
+          <button class="btn btn-outline btn-sm" type="submit">Add</button>
+        </form>
+      </div>
+      <div class="ws-sec"><h3>RFQ inbox</h3><p class="ws-sub">Simple match: buyer country and category against the claimed company.</p><div id="tpRfqInbox"></div></div>
+      <div class="ws-sec"><h3>Analytics stub</h3><div id="tpSupplierAnalytics"></div></div>
     </div>
   </div>
 </main>
@@ -326,6 +501,8 @@
 <script src="supabase-config.js"></script>
 <script src="supabase.js" defer></script>
 <script src="tp-learner.js" defer></script>
+<script src="tp-hub.js" defer></script>
+<script src="tp-academy.js" defer></script>
 <script src="tp-entitlement.js" defer></script>
 <script src="rfq-engine.js" defer></script>
 <script src="analytics.js?v=7" defer></script>
@@ -401,6 +578,8 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   function showHub(id){
+    var aliases = { engineering: 'designs', buyer: 'shortlist', intel: 'overview' };
+    id = aliases[id] || id;
     var panels = document.querySelectorAll('.hub-panel');
     for(var i=0;i<panels.length;i++) panels[i].hidden = panels[i].id !== 'panel-'+id;
     var tabs = document.querySelectorAll('#hubTabs a');
@@ -408,6 +587,18 @@ document.addEventListener('DOMContentLoaded', function(){
       var href = (tabs[j].getAttribute('href')||'').replace('#','');
       tabs[j].classList.toggle('on', href===id);
     }
+    try { history.replaceState(null, '', '#'+id); } catch(e){}
+  }
+  function hubFromLocation(){
+    var p = (location.pathname||'').replace(/\/$/,'');
+    if (/\/me\/designs$/.test(p) || /\/designs$/.test(p)) return 'designs';
+    if (/\/me\/shortlist$/.test(p)) return 'shortlist';
+    if (/\/me\/rfqs$/.test(p)) return 'rfqs';
+    if (/\/me\/supplier$/.test(p)) return 'supplier';
+    if (location.hash) return location.hash.replace('#','');
+    if (viewQ === 'account') return 'certificates';
+    if (viewQ) return viewQ;
+    return 'overview';
   }
   document.getElementById('hubTabs').addEventListener('click', function(e){
     var a = e.target.closest('a');
@@ -415,8 +606,8 @@ document.addEventListener('DOMContentLoaded', function(){
     e.preventDefault();
     showHub((a.getAttribute('href')||'#overview').replace('#',''));
   });
-  if(location.hash) showHub(location.hash.replace('#',''));
-  else if(viewQ === 'account') showHub('certificates');
+  if(location.hash || viewQ) showHub(hubFromLocation());
+  else showHub(hubFromLocation());
 
   window.TP_HUB = { refresh: function(){ TP.getSession().then(function(r){ render(r && r.data && r.data.session ? r.data.session.user : (TP.user||null)); }); } };
 
@@ -499,7 +690,9 @@ document.addEventListener('DOMContentLoaded', function(){
       for(var i=0;i<boxes.length;i++) boxes[i].checked = roles.indexOf(boxes[i].value)>=0;
           var tabRfqs=document.getElementById('tabRfqs');
       var tabSup=document.getElementById('tabSupplier');
+      var tabSl=document.getElementById('tabShortlist');
       if(tabRfqs) tabRfqs.hidden = !(flags.isBuyer || roles.indexOf('BUYER')>=0);
+      if(tabSl) tabSl.hidden = !(flags.isBuyer || roles.indexOf('BUYER')>=0);
       if(tabSup) tabSup.hidden = !(flags.isSupplier || roles.indexOf('SUPPLIER')>=0);
       var chk=[];
       chk.push(learner.onboarding_done?'<div class="ws-row"><span class="ws-note-title">Onboarding</span><span class="ws-sub">COMPLETE</span></div>':'<div class="ws-row"><span class="ws-note-title">Onboarding</span><span class="ws-sub">NOT STARTED</span></div>');
@@ -526,7 +719,14 @@ document.addEventListener('DOMContentLoaded', function(){
         continue: document.getElementById('learnContinue'),
         path: document.getElementById('learnPath')
       }, snap);
-      L.renderDesigns(document.getElementById('tpDesigns'), snap.saved_designs||[], snap.entitlement);
+      if (window.TP_HUB) {
+        var merged = TP_HUB.mergeSnap(snap);
+        TP_HUB.renderAll(merged);
+        TP_HUB.bindForms();
+        if (flags.isSupplier) TP_HUB.bumpAnalytics('profile_views');
+      } else {
+        L.renderDesigns(document.getElementById('tpDesigns'), snap.saved_designs||[], snap.entitlement);
+      }
       var act=document.getElementById('tpActivity');
       if(act){
         var bits=[];

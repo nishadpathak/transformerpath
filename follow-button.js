@@ -68,6 +68,10 @@
         var label = b.getAttribute('data-follow-label') || subject;
         var was = b.classList.contains('following');
         var done = was ? TP.unfollow(type, subject) : TP.follow({ type: type, subject: subject, label: label });
+        if (window.TP_HUB) {
+          if (was) TP_HUB.unfollow(type, subject);
+          else TP_HUB.follow({ type: type, subject: subject, label: label });
+        }
         done.then(function (ok) {
           if (ok) { b.classList.toggle('following', !was); b.innerHTML = was ? 'Follow' : 'Following ✓'; b.setAttribute('aria-pressed', was ? 'false' : 'true'); }
         });

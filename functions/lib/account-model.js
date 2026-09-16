@@ -409,6 +409,168 @@ create table if not exists public.webhook_events (
   created_at timestamptz not null default now()
 );
 
+-- Sprint 4 — design workspace columns (JSON blob remains in data).
+alter table if exists public.saved_designs
+  add column if not exists rating text,
+  add column if not exists voltages text,
+  add column if not exists notes text;
+alter table if exists public.projects
+  add column if not exists notes text,
+  add column if not exists updated_at timestamptz not null default now();
+
+-- Sprint 5 — buyer procurement (shortlist reuses saved_items).
+create table if not exists public.rfqs (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  title text,
+  reference text,
+  status text not null default 'Draft', -- Draft | Sent | Responses | Closed
+  kv text,
+  mva text,
+  quantity text,
+  deadline text,
+  country text,
+  category text,
+  notes text,
+  data jsonb not null default '{}'::jsonb,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+create table if not exists public.user_rfqs (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  reference text,
+  category text,
+  quantity text,
+  rating text,
+  voltage text,
+  standard text,
+  destination text,
+  title text,
+  status text not null default 'open',
+  deadline text,
+  country text,
+  notes text,
+  created_at timestamptz not null default now()
+);
+create table if not exists public.rfq_responses (
+  id uuid primary key default gen_random_uuid(),
+  rfq_id uuid,
+  user_id uuid not null references auth.users(id) on delete cascade,
+  company text,
+  note text,
+  created_at timestamptz not null default now()
+);
+create table if not exists public.comparisons (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  name text,
+  slugs text,
+  url text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+create table if not exists public.saved_requirements (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  title text,
+  mva text,
+  kv text,
+  notes text,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+-- Sprint 6 — supplier claim + dashboard (Verified Manufacturer = identity/contact, never technical approval).
+alter table if exists public.learner_profiles
+  add column if not exists claimed_company_id text,
+  add column if not exists claimed_company_name text,
+  add column if not exists claimed_country text;
+create table if not exists public.company_claims (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  company text not null,
+  country text,
+  company_id text,
+  status text not null default 'requested',
+  created_at timestamptz not null default now(),
+  unique (user_id, company)
+);
+create table if not exists public.supplier_profiles (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  company_name text,
+  company_id text,
+  country text,
+  categories text,
+  about text,
+  capabilities text,
+  updated_at timestamptz not null default now()
+);
+create table if not exists public.supplier_facilities (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  name text,
+  country text,
+  notes text,
+  created_at timestamptz not null default now()
+);
+create table if not exists public.supplier_products (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  name text,
+  category text,
+  notes text,
+  created_at timestamptz not null default now()
+);
+create table if not exists public.analytics_counters (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  profile_views integer not null default 0,
+  rfq_matches integer not null default 0,
+  updated_at timestamptz not null default now()
+);
+
+-- Sprint 7 — Intel personalization (headlines stay free; this is follow/watchlist state).
+create table if not exists public.follows (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  subject_type text not null,
+  subject text not null,
+  label text,
+  created_at timestamptz not null default now(),
+  unique (user_id, subject_type, subject)
+);
+create table if not exists public.watchlists (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  name text not null,
+  subjects jsonb not null default '[]'::jsonb,
+  created_at timestamptz not null default now()
+);
+create table if not exists public.saved_searches (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  name text,
+  query text,
+  href text,
+  created_at timestamptz not null default now()
+);
+create table if not exists public.email_prefs (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  daily_brief boolean not null default true,
+  alerts boolean not null default true,
+  newsletters boolean not null default false
+);
+
+-- Academy: watch = progress, not a Skills Passport level.
+create table if not exists public.video_progress (
+  user_id uuid not null references auth.users(id) on delete cascade,
+  video_id text not null,
+  loop_id text,
+  percent integer not null default 0,
+  updated_at timestamptz not null default now(),
+  primary key (user_id, video_id)
+);
+
 alter table public.profiles enable row level security;
 alter table public.organizations enable row level security;
 alter table public.organization_members enable row level security;
@@ -501,6 +663,70 @@ do $$ begin
     create policy completion_own on public.completion_records for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
   end if;
 end $$;
+
+alter table public.rfqs enable row level security;
+alter table public.user_rfqs enable row level security;
+alter table public.rfq_responses enable row level security;
+alter table public.comparisons enable row level security;
+alter table public.saved_requirements enable row level security;
+alter table public.company_claims enable row level security;
+alter table public.supplier_profiles enable row level security;
+alter table public.supplier_facilities enable row level security;
+alter table public.supplier_products enable row level security;
+alter table public.analytics_counters enable row level security;
+alter table public.follows enable row level security;
+alter table public.watchlists enable row level security;
+alter table public.saved_searches enable row level security;
+alter table public.email_prefs enable row level security;
+alter table public.video_progress enable row level security;
+
+do $$ begin
+  if not exists (select 1 from pg_policies where policyname = 'rfqs_own') then
+    create policy rfqs_own on public.rfqs for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  end if;
+  if not exists (select 1 from pg_policies where policyname = 'user_rfqs_own') then
+    create policy user_rfqs_own on public.user_rfqs for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  end if;
+  if not exists (select 1 from pg_policies where policyname = 'rfq_resp_own') then
+    create policy rfq_resp_own on public.rfq_responses for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  end if;
+  if not exists (select 1 from pg_policies where policyname = 'comparisons_own') then
+    create policy comparisons_own on public.comparisons for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  end if;
+  if not exists (select 1 from pg_policies where policyname = 'requirements_own') then
+    create policy requirements_own on public.saved_requirements for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  end if;
+  if not exists (select 1 from pg_policies where policyname = 'claims_own') then
+    create policy claims_own on public.company_claims for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  end if;
+  if not exists (select 1 from pg_policies where policyname = 'supplier_own') then
+    create policy supplier_own on public.supplier_profiles for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  end if;
+  if not exists (select 1 from pg_policies where policyname = 'supfac_own') then
+    create policy supfac_own on public.supplier_facilities for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  end if;
+  if not exists (select 1 from pg_policies where policyname = 'supprod_own') then
+    create policy supprod_own on public.supplier_products for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  end if;
+  if not exists (select 1 from pg_policies where policyname = 'analytics_own') then
+    create policy analytics_own on public.analytics_counters for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  end if;
+  if not exists (select 1 from pg_policies where policyname = 'follows_own') then
+    create policy follows_own on public.follows for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  end if;
+  if not exists (select 1 from pg_policies where policyname = 'watchlists_own') then
+    create policy watchlists_own on public.watchlists for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  end if;
+  if not exists (select 1 from pg_policies where policyname = 'searches_own') then
+    create policy searches_own on public.saved_searches for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  end if;
+  if not exists (select 1 from pg_policies where policyname = 'email_own') then
+    create policy email_own on public.email_prefs for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  end if;
+  if not exists (select 1 from pg_policies where policyname = 'video_own') then
+    create policy video_own on public.video_progress for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  end if;
+end $$;
 `;
 
 function flagsFromRoles(roles) {
@@ -564,6 +790,60 @@ function hasMinPlan(entitlement, min) {
   return (entitlement.rank || 0) >= need.rank;
 }
 
+function canSaveDesigns(entitlement) {
+  if (!entitlement) return false;
+  if (entitlement.professional) return true;
+  if (entitlement.team) return true;
+  return (entitlement.rank || 0) >= 2;
+}
+
+const RFQ_STATUSES = ['Draft', 'Sent', 'Responses', 'Closed'];
+
+function matchRfqsForSupplier(rfqs, profile) {
+  const country = String((profile && (profile.country || profile.claimed_country)) || '').trim().toLowerCase();
+  const cats = String((profile && profile.categories) || '')
+    .toLowerCase().split(/[,;|]/).map((s) => s.trim()).filter(Boolean);
+  return (rfqs || []).filter((r) => {
+    const st = String(r.status || '');
+    if (st === 'Draft') return false;
+    const rc = String(r.country || r.destination || '').toLowerCase();
+    const rcat = String(r.category || '').toLowerCase();
+    const countryOk = !country || !rc || rc.indexOf(country) >= 0 || country.indexOf(rc) >= 0;
+    const catOk = !cats.length || !rcat || cats.some((c) => rcat.indexOf(c) >= 0 || c.indexOf(rcat) >= 0);
+    return countryOk && catOk;
+  });
+}
+
+function flattenIntel(doc) {
+  const out = [];
+  if (!doc || typeof doc !== 'object') return out;
+  Object.keys(doc).forEach((k) => {
+    const block = doc[k];
+    if (!block || typeof block !== 'object') return;
+    ((block.items) || []).forEach((it) => {
+      out.push(Object.assign({ market: k, market_label: block.label || k }, it));
+    });
+  });
+  return out;
+}
+
+function matchIntelItems(items, follows) {
+  const needles = [];
+  function add(v) {
+    const s = String(v || '').trim().toLowerCase();
+    if (s.length >= 3 && needles.indexOf(s) < 0) needles.push(s);
+  }
+  (follows || []).forEach((f) => {
+    add(f.subject); add(f.label); add(f.name); add(f.query);
+    add(f.subject_type);
+  });
+  if (!needles.length) return [];
+  return (items || []).filter((it) => {
+    const blob = ((it.title || '') + ' ' + (it.snippet || '') + ' ' + (it.market || '') + ' ' + (it.market_label || '')).toLowerCase();
+    return needles.some((n) => blob.indexOf(n) >= 0);
+  });
+}
+
 function twelveMonthsFrom(iso) {
   const d = iso ? new Date(iso) : new Date();
   d.setFullYear(d.getFullYear() + 1);
@@ -577,11 +857,15 @@ const REQUIRED_TABLES = [
   'skill_evidence', 'grid_lab_sessions', 'grid_lab_scenarios', 'saved_designs',
   'design_versions', 'projects', 'saved_items', 'notes', 'certificates',
   'completion_records',
+  'rfqs', 'user_rfqs', 'rfq_responses', 'comparisons', 'saved_requirements',
+  'company_claims', 'supplier_profiles', 'supplier_facilities', 'supplier_products',
+  'analytics_counters', 'follows', 'watchlists', 'saved_searches', 'video_progress',
 ];
 
 module.exports = {
-  ROLES, PLANS, APPLY_SQL, REQUIRED_TABLES, SKILL_LEVELS,
+  ROLES, PLANS, APPLY_SQL, REQUIRED_TABLES, SKILL_LEVELS, RFQ_STATUSES,
   ONBOARDING_ROLES, ONBOARDING_EXPERIENCE, ONBOARDING_INTERESTS,
-  normalizePlan, isActiveEntitlement, bestEntitlement, hasMinPlan,
+  normalizePlan, isActiveEntitlement, bestEntitlement, hasMinPlan, canSaveDesigns,
   flagsFromRoles, rolesFromFlags, grantsFromPlan, twelveMonthsFrom,
+  matchRfqsForSupplier, flattenIntel, matchIntelItems,
 };

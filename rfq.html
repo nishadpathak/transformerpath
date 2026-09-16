@@ -502,12 +502,28 @@
     if(window.TP && window.TP.saveRfq){
       window.TP.saveRfq({reference:reference, category:val("fld_category"), quantity:val("fld_qty"), rating:val("fld_rating"), voltage:val("fld_voltage"), standard:val("fld_standard"), destination:val("fld_dest")});
     }
+    if(window.TP_HUB && TP_HUB.createRfq){
+      TP_HUB.createRfq({
+        title: val("fld_category") || 'RFQ',
+        reference: reference,
+        kv: val("fld_voltage"),
+        mva: val("fld_rating"),
+        quantity: val("fld_qty"),
+        deadline: val("fld_delivery"),
+        country: val("fld_country") || val("fld_dest"),
+        category: val("fld_category"),
+        notes: val("fld_details"),
+        status: 'Sent'
+      });
+    }
     setTimeout(runMatching, 60);
   });
 })();
 </script>
 <script src="supabase-config.js" defer></script>
 <script src="supabase.js" defer></script>
+<script src="tp-learner.js" defer></script>
+<script src="tp-hub.js" defer></script>
 <script src="rfq-engine.js" defer></script>
 <script src="tp-freshness.js?v=7" defer></script>
 <script src="tp-feedback.js?v=7" defer></script>

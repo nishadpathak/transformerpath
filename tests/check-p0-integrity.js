@@ -123,6 +123,13 @@ check('grid-lab.html is independently stamped with named scenarios', /50 Hz and 
 check('pricing CTAs require an account (not a raw Payment Link as the primary href)', /Create account|Choose /.test(fs.readFileSync('pricing.html', 'utf8')) && /create-checkout/.test(fs.readFileSync('pricing.html', 'utf8')));
 check('certificates.html exists as learning records, not credentials', fs.existsSync('certificates.html') && /not an accredited/i.test(fs.readFileSync('certificates.html', 'utf8')));
 check('netlify maps /me /sign-in /onboarding /certificates', /from = "\/me"/.test(toml) && /from = "\/sign-in"/.test(toml) && /from = "\/onboarding"/.test(toml) && /from = "\/certificates"/.test(toml));
+check('netlify maps /me/designs /me/shortlist /me/rfqs', /from = "\/me\/designs"/.test(toml) && /from = "\/me\/shortlist"/.test(toml) && /from = "\/me\/rfqs"/.test(toml));
+check('netlify maps /academy and /academy/*', /from = "\/academy"/.test(toml) && /from = "\/academy\/\*"/.test(toml));
+check('workspace hub has Engineering / Shortlist / RFQ board', /id="panel-designs"/.test(fs.readFileSync('workspace.html', 'utf8')) && /id="panel-shortlist"/.test(fs.readFileSync('workspace.html', 'utf8')) && /id="tpRfqBoard"/.test(fs.readFileSync('workspace.html', 'utf8')));
+check('Skills Passport still not a professional qualification', /not a qualification/i.test(fs.readFileSync('data/skills-passport.json', 'utf8')));
+check('academy.html is loops + 3D, not a separate video library slogan', /Videos complement/i.test(fs.readFileSync('academy.html', 'utf8')) && /not a Video Library beside a 3D Library/i.test(fs.readFileSync('academy.html', 'utf8')));
+check('watch is progress only in account.js', /do not writeSkill/i.test(fs.readFileSync('functions/account.js', 'utf8')));
+check('no hard-coded 701/709/911/1002/546 in academy-loops.json', !/\b(701|709|911|1002|546)\b/.test(fs.readFileSync('data/academy-loops.json', 'utf8')));
 
 console.log('\n=== SUMMARY ===');
 if (failures.length) {

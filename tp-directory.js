@@ -184,6 +184,7 @@
         '</div>' +
       '</div>' +
       '<div class="kg-card-actions">' +
+        '<button type="button" class="btn btn-outline btn-sm" data-shortlist="' + esc(c.id) + '" data-short-name="' + esc(c.name) + '" data-short-kind="' + esc(c.kind || 'company') + '" data-short-url="' + esc(profileUrl(c)) + '">Shortlist</button>' +
         '<a class="btn btn-amber btn-sm" href="rfq.html?company=' + encodeURIComponent(c.name) + '" data-track="rfq_started_directory" data-track-entity="' + esc(c.name) + '">RFQ</a>' +
         '<a class="btn btn-outline btn-sm" href="' + profileUrl(c) + '" data-track="directory_profile_click" data-track-entity="' + esc(c.name) + '">Profile →</a>' +
         (c.website ? '<a class="btn btn-outline btn-sm" href="' + esc(c.website) + '" target="_blank" rel="noopener" style="font-size:.72rem" data-track="official_website_click" data-track-entity="' + esc(c.name) + '">Site ↗</a>' : '') +
@@ -508,6 +509,25 @@
     });
 
     root.addEventListener('click', function (e) {
+      var sl = e.target.closest ? e.target.closest('[data-shortlist]') : null;
+      if (sl) {
+        e.preventDefault();
+        var item = {
+          type: sl.getAttribute('data-short-kind') || 'company',
+          id: sl.getAttribute('data-shortlist'),
+          title: sl.getAttribute('data-short-name') || '',
+          url: sl.getAttribute('data-short-url') || ''
+        };
+        if (window.TP_HUB && TP_HUB.shortlistAdd) {
+          TP_HUB.shortlistAdd(item).then(function () {
+            sl.textContent = 'Shortlisted';
+            sl.disabled = true;
+          });
+        } else {
+          window.location.href = 'workspace.html?auth=in#shortlist';
+        }
+        return;
+      }
       var a = e.target.closest ? e.target.closest('a[data-track]') : null;
       if (a) {
         var trk = a.getAttribute('data-track');

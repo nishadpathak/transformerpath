@@ -23,6 +23,10 @@ const files = walk('.', SKIP);
 // from netlify.toml (/me, /grid-lab, /assessments, …).
 const PRETTY = {
   '/me': 'workspace.html',
+  '/me/designs': 'workspace.html',
+  '/me/shortlist': 'workspace.html',
+  '/me/rfqs': 'workspace.html',
+  '/me/supplier': 'workspace.html',
   '/my': 'workspace.html',
   '/sign-in': 'workspace.html',
   '/sign-up': 'workspace.html',
@@ -33,6 +37,7 @@ const PRETTY = {
   '/directory': 'directory.html',
   '/assessments': 'assessments.html',
   '/pricing': 'pricing.html',
+  '/academy': 'academy.html',
 };
 
 const siteRoot = process.cwd();
@@ -59,6 +64,10 @@ function existsTarget(fromFile, target) {
   if (PRETTY[relFromRoot]) candidates.push(path.resolve(siteRoot, PRETTY[relFromRoot]));
   if (relFromRoot === '/certificates' || relFromRoot.indexOf('/certificates/') === 0) {
     candidates.push(path.resolve(siteRoot, 'certificates.html'));
+  }
+  if (relFromRoot === '/academy' || relFromRoot.indexOf('/academy/') === 0) {
+    candidates.push(path.resolve(siteRoot, 'academy.html'));
+    candidates.push(path.resolve(siteRoot, 'academy-loop.html'));
   }
 
   // Walk up: certificates/slug → certificates.html; directory → directory.html

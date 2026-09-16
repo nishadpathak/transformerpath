@@ -57,6 +57,22 @@
         { "id": "ynyn0", "label": "It is interchangeable with YNyn0 for paralleling because both are star." },
         { "id": "clock-is-taps", "label": "The 11 is the number of OLTC steps." }
       ]
+    },
+    {
+      "id": "gsu-current-1000mva",
+      "kind": "calculation",
+      "spine": "Knowledge Check",
+      "module": "gsu",
+      "skill": "iec-rating",
+      "title": "GSU line current — 1,000 MVA at 400 / 21 kV",
+      "stem": "A generator step-up transformer is rated 1,000 MVA, 400 kV HV / 21 kV LV. What HV and LV line currents do you use for bushing and winding checks? (Three-phase, line-to-line voltages.)",
+      "why": "I = S / (√3 × U). At 1,000 MVA: HV ≈ 1.44 kA on 400 kV, LV ≈ 27.5 kA on 21 kV. Power factor does not change the ampere rating at a given MVA.",
+      "options": [
+        { "id": "hv-1443-lv-27500", "label": "≈ 1.44 kA HV and 27.5 kA LV — I = 1000 MVA / (√3 × U) on each winding." },
+        { "id": "swap-sides", "label": "≈ 27.5 kA HV and 1.44 kA LV — the generator side is always the smaller current." },
+        { "id": "pf-scale", "label": "Scale both currents by 0.9 pf because machines are specified at lagging pf." },
+        { "id": "single-phase", "label": "I = S / U so HV is 2.5 kA and LV is 47.6 kA (omit √3)." }
+      ]
     }
   ]
 }

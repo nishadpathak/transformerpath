@@ -8,6 +8,7 @@ const ANSWERS = {
   'line-current-100mva-132kv': 's-based-437a',
   'oltc-avr-limitation': 'tap-range-stop',
   'vector-group-ynd11': 'dyn-delta-star',
+  'gsu-current-1000mva': 'hv-1443-lv-27500',
 };
 
 function grade(assessmentId, answerId) {

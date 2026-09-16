@@ -188,6 +188,10 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
         <a href="directory.html" class="btn btn-amber" style="display:inline-block">Return to Directory &rarr;</a>
       </div>
 
+      <script src="supabase-config.js"></script>
+      <script src="supabase.js" defer></script>
+      <script src="tp-learner.js" defer></script>
+      <script src="tp-hub.js" defer></script>
       <script>
       (function(){
         try {
@@ -204,6 +208,13 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
           if (typeof f.checkValidity === 'function' && !f.checkValidity()){ f.reportValidity(); return; }
           var body = new URLSearchParams(new FormData(f)).toString();
           fetch('/', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:body}).then(done).catch(done);
+          if (window.TP_HUB && TP_HUB.claimCompany) {
+            TP_HUB.claimCompany({
+              company: (document.getElementById('fld_company')||{}).value,
+              country: (document.getElementById('fld_country')||{}).value || '',
+              company_id: ''
+            });
+          }
         });
         function done(){
           f.style.display = 'none';

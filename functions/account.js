@@ -8,6 +8,10 @@
  * POST /.netlify/functions/account
  *   body.action = onboard | roles | grid_lab | skill | public_name
  *                | path | certificate | lesson | assessment | saved_design
+ *                | design_rename | design_duplicate | design_delete
+ *                | project | note | shortlist | comparison | rfq | requirement
+ *                | company_claim | supplier_profile | supplier_facility
+ *                | supplier_product | analytics | follow | watchlist | saved_search
  *
  * Stripe never grants in the browser. This function reads entitlements written
  * by entitle.js / stripe-webhook.js (service role) and returns the active plan.
@@ -44,6 +48,26 @@ function buyerSupplierFromRole(role) {
     isBuyer: r === 'procurement' || r === 'buyer',
     isSupplier: r === 'sales_bd' || r === 'supplier',
   };
+}
+
+function isMissingTable(error) {
+  if (!error) return false;
+  const msg = String(error.message || error.code || error.details || '');
+  return /does not exist|42P01|schema cache|PGRST205|relation .* does not exist/i.test(msg);
+}
+
+async function exec(promise) {
+  const res = await promise;
+  if (res && res.error) {
+    if (isMissingTable(res.error)) {
+      const e = new Error('table_missing');
+      e.reason = 'table_missing';
+      e.detail = String(res.error.message || res.error.code || '');
+      throw e;
+    }
+    throw res.error;
+  }
+  return res && res.data;
 }
 
 exports.handler = async (event) => {
@@ -209,13 +233,294 @@ exports.handler = async (event) => {
           await writeSkill(supabase, uid, skillGuess, 'Intermediate', 'Assessment ' + assessmentId, kind, assessmentId);
         }
       }
-    } else if (action === 'saved_design') {
-      await supabase.from('saved_designs').insert({
+    } else if (action === 'saved_design' || action === 'design_create') {
+      const entSnap = await snapshot(supabase, user);
+      if (!model.canSaveDesigns(entSnap.entitlement)) {
+        return respond(200, Object.assign(entSnap, { ok: false, gated: true, stored: false }));
+      }
+      const payload = {
         user_id: uid,
         name: String(body.name || 'Untitled').slice(0, 120),
         kind: String(body.kind || 'design').slice(0, 40),
+        rating: String(body.rating || '').slice(0, 40) || null,
+        voltages: String(body.voltages || '').slice(0, 80) || null,
+        notes: String(body.notes || '').slice(0, 2000) || null,
         data: body.data && typeof body.data === 'object' ? body.data : {},
-      });
+        updated_at: new Date().toISOString(),
+      };
+      const inserted = await exec(supabase.from('saved_designs').insert(payload).select('id').maybeSingle());
+      const designId = inserted && inserted.id;
+      if (designId) {
+        await exec(supabase.from('design_versions').insert({
+          design_id: designId, user_id: uid, data: payload.data,
+        }));
+      }
+    } else if (action === 'design_rename') {
+      const entSnap = await snapshot(supabase, user);
+      if (!model.canSaveDesigns(entSnap.entitlement)) {
+        return respond(200, Object.assign(entSnap, { ok: false, gated: true, stored: false }));
+      }
+      const id = String(body.id || '').slice(0, 80);
+      if (!id) return respond(400, { error: 'id required' });
+      const patch = { updated_at: new Date().toISOString() };
+      if (body.name != null) patch.name = String(body.name).slice(0, 120);
+      if (body.rating != null) patch.rating = String(body.rating).slice(0, 40);
+      if (body.voltages != null) patch.voltages = String(body.voltages).slice(0, 80);
+      if (body.notes != null) patch.notes = String(body.notes).slice(0, 2000);
+      if (body.data && typeof body.data === 'object') patch.data = body.data;
+      await exec(supabase.from('saved_designs').update(patch).eq('id', id).eq('user_id', uid));
+      if (patch.data) {
+        await exec(supabase.from('design_versions').insert({ design_id: id, user_id: uid, data: patch.data }));
+      }
+    } else if (action === 'design_duplicate') {
+      const entSnap = await snapshot(supabase, user);
+      if (!model.canSaveDesigns(entSnap.entitlement)) {
+        return respond(200, Object.assign(entSnap, { ok: false, gated: true, stored: false }));
+      }
+      const id = String(body.id || '').slice(0, 80);
+      const { data: src, error: srcErr } = await supabase.from('saved_designs').select('*').eq('id', id).eq('user_id', uid).maybeSingle();
+      if (srcErr && isMissingTable(srcErr)) throw Object.assign(new Error('table_missing'), { reason: 'table_missing' });
+      if (!src) return respond(404, { error: 'design not found' });
+      const copy = {
+        user_id: uid,
+        name: String(src.name || 'Untitled').slice(0, 100) + ' copy',
+        kind: src.kind || 'design',
+        rating: src.rating || null,
+        voltages: src.voltages || null,
+        notes: src.notes || null,
+        data: src.data || {},
+        updated_at: new Date().toISOString(),
+      };
+      const inserted = await exec(supabase.from('saved_designs').insert(copy).select('id').maybeSingle());
+      if (inserted && inserted.id) {
+        await exec(supabase.from('design_versions').insert({ design_id: inserted.id, user_id: uid, data: copy.data }));
+      }
+    } else if (action === 'design_delete') {
+      const id = String(body.id || '').slice(0, 80);
+      if (!id) return respond(400, { error: 'id required' });
+      await exec(supabase.from('design_versions').delete().eq('design_id', id).eq('user_id', uid));
+      await exec(supabase.from('saved_designs').delete().eq('id', id).eq('user_id', uid));
+    } else if (action === 'project') {
+      if (body.op === 'delete') {
+        await exec(supabase.from('projects').delete().eq('id', String(body.id || '')).eq('user_id', uid));
+      } else {
+        await exec(supabase.from('projects').insert({
+          user_id: uid,
+          name: String(body.name || 'Untitled project').slice(0, 120),
+          notes: String(body.notes || '').slice(0, 2000) || null,
+        }));
+      }
+    } else if (action === 'note') {
+      if (body.op === 'delete') {
+        await exec(supabase.from('notes').delete().eq('id', String(body.id || '')).eq('user_id', uid));
+      } else {
+        await exec(supabase.from('notes').insert({
+          user_id: uid,
+          title: String(body.title || 'Note').slice(0, 120),
+          body: String(body.body || '').slice(0, 4000),
+          item_type: String(body.item_type || body.itemType || '').slice(0, 40) || null,
+          item_id: String(body.item_id || body.itemId || '').slice(0, 80) || null,
+          updated_at: new Date().toISOString(),
+        }));
+      }
+    } else if (action === 'shortlist') {
+      if (body.op === 'remove') {
+        await exec(supabase.from('saved_items').delete().eq('user_id', uid)
+          .eq('item_type', String(body.item_type || body.type || 'company'))
+          .eq('item_id', String(body.item_id || body.id || '')));
+      } else {
+        await exec(supabase.from('saved_items').upsert({
+          user_id: uid,
+          item_type: String(body.item_type || body.type || 'company').slice(0, 40),
+          item_id: String(body.item_id || body.id || '').slice(0, 120),
+          title: String(body.title || '').slice(0, 160) || null,
+          url: String(body.url || '').slice(0, 240) || null,
+        }, { onConflict: 'user_id,item_type,item_id' }));
+      }
+    } else if (action === 'comparison') {
+      if (body.op === 'delete') {
+        await exec(supabase.from('comparisons').delete().eq('id', String(body.id || '')).eq('user_id', uid));
+      } else {
+        await exec(supabase.from('comparisons').insert({
+          user_id: uid,
+          name: String(body.name || 'Comparison').slice(0, 120),
+          slugs: String(body.slugs || '').slice(0, 400),
+          url: String(body.url || '').slice(0, 400),
+          updated_at: new Date().toISOString(),
+        }));
+      }
+    } else if (action === 'rfq') {
+      const status = model.RFQ_STATUSES.indexOf(body.status) >= 0 ? body.status : 'Draft';
+      if (body.op === 'delete') {
+        await exec(supabase.from('rfqs').delete().eq('id', String(body.id || '')).eq('user_id', uid));
+      } else if (body.op === 'status' || body.id) {
+        const id = String(body.id || '').slice(0, 80);
+        const patch = { updated_at: new Date().toISOString() };
+        if (body.status) patch.status = status;
+        if (body.title != null) patch.title = String(body.title).slice(0, 160);
+        await exec(supabase.from('rfqs').update(patch).eq('id', id).eq('user_id', uid));
+        await exec(supabase.from('user_rfqs').update({ status: status }).eq('id', id).eq('user_id', uid));
+      } else {
+        const row = {
+          user_id: uid,
+          title: String(body.title || 'RFQ').slice(0, 160),
+          reference: String(body.reference || '').slice(0, 80) || null,
+          status: status,
+          kv: String(body.kv || body.voltage || '').slice(0, 80) || null,
+          mva: String(body.mva || body.rating || '').slice(0, 40) || null,
+          quantity: String(body.quantity || '').slice(0, 40) || null,
+          deadline: String(body.deadline || '').slice(0, 40) || null,
+          country: String(body.country || body.destination || '').slice(0, 80) || null,
+          category: String(body.category || '').slice(0, 80) || null,
+          notes: String(body.notes || body.details || '').slice(0, 4000) || null,
+          data: body.data && typeof body.data === 'object' ? body.data : {},
+          updated_at: new Date().toISOString(),
+        };
+        await exec(supabase.from('rfqs').insert(row));
+        await exec(supabase.from('user_rfqs').insert({
+          user_id: uid,
+          reference: row.reference,
+          category: row.category,
+          quantity: row.quantity,
+          rating: row.mva,
+          voltage: row.kv,
+          destination: row.country,
+          title: row.title,
+          status: row.status === 'Draft' ? 'draft' : 'open',
+          deadline: row.deadline,
+          country: row.country,
+          notes: row.notes,
+        }));
+      }
+    } else if (action === 'requirement') {
+      if (body.op === 'delete') {
+        await exec(supabase.from('saved_requirements').delete().eq('id', String(body.id || '')).eq('user_id', uid));
+      } else {
+        await exec(supabase.from('saved_requirements').insert({
+          user_id: uid,
+          title: String(body.title || 'Requirement').slice(0, 160),
+          mva: String(body.mva || body.rating || '').slice(0, 40) || null,
+          kv: String(body.kv || body.voltage || '').slice(0, 80) || null,
+          notes: String(body.notes || '').slice(0, 2000) || null,
+          updated_at: new Date().toISOString(),
+        }));
+      }
+    } else if (action === 'company_claim') {
+      const company = String(body.company || body.name || '').slice(0, 160);
+      if (!company) return respond(400, { error: 'company required' });
+      const country = String(body.country || '').slice(0, 80);
+      const companyId = String(body.company_id || body.claimed_company_id || '').slice(0, 120);
+      await exec(supabase.from('company_claims').upsert({
+        user_id: uid, company: company, country: country || null,
+        company_id: companyId || null, status: 'requested',
+      }, { onConflict: 'user_id,company' }));
+      await exec(supabase.from('learner_profiles').upsert({
+        user_id: uid,
+        claimed_company_id: companyId || company,
+        claimed_company_name: company,
+        claimed_country: country || null,
+        is_supplier: true,
+        updated_at: new Date().toISOString(),
+      }, { onConflict: 'user_id' }));
+      await exec(supabase.from('account_roles').upsert({ user_id: uid, role: 'SUPPLIER' }, { onConflict: 'user_id,role' }));
+      await exec(supabase.from('supplier_profiles').upsert({
+        user_id: uid, company_name: company, company_id: companyId || company,
+        country: country || null, updated_at: new Date().toISOString(),
+      }, { onConflict: 'user_id' }));
+    } else if (action === 'supplier_profile') {
+      await exec(supabase.from('supplier_profiles').upsert({
+        user_id: uid,
+        company_name: String(body.company_name || body.company || '').slice(0, 160) || null,
+        company_id: String(body.company_id || '').slice(0, 120) || null,
+        country: String(body.country || '').slice(0, 80) || null,
+        categories: String(body.categories || '').slice(0, 240) || null,
+        about: String(body.about || '').slice(0, 2000) || null,
+        capabilities: String(body.capabilities || '').slice(0, 2000) || null,
+        updated_at: new Date().toISOString(),
+      }, { onConflict: 'user_id' }));
+    } else if (action === 'supplier_facility') {
+      if (body.op === 'delete') {
+        await exec(supabase.from('supplier_facilities').delete().eq('id', String(body.id || '')).eq('user_id', uid));
+      } else {
+        await exec(supabase.from('supplier_facilities').insert({
+          user_id: uid,
+          name: String(body.name || 'Facility').slice(0, 120),
+          country: String(body.country || '').slice(0, 80) || null,
+          notes: String(body.notes || '').slice(0, 400) || null,
+        }));
+      }
+    } else if (action === 'supplier_product') {
+      if (body.op === 'delete') {
+        await exec(supabase.from('supplier_products').delete().eq('id', String(body.id || '')).eq('user_id', uid));
+      } else {
+        await exec(supabase.from('supplier_products').insert({
+          user_id: uid,
+          name: String(body.name || 'Capability').slice(0, 120),
+          category: String(body.category || '').slice(0, 80) || null,
+          notes: String(body.notes || '').slice(0, 400) || null,
+        }));
+      }
+    } else if (action === 'analytics') {
+      const { data: cur } = await supabase.from('analytics_counters').select('*').eq('user_id', uid).maybeSingle();
+      const views = (cur && cur.profile_views || 0) + (parseInt(body.profile_views, 10) || (body.bump === 'profile_views' ? 1 : 0));
+      const matches = (cur && cur.rfq_matches || 0) + (parseInt(body.rfq_matches, 10) || (body.bump === 'rfq_matches' ? 1 : 0));
+      await exec(supabase.from('analytics_counters').upsert({
+        user_id: uid, profile_views: views, rfq_matches: matches, updated_at: new Date().toISOString(),
+      }, { onConflict: 'user_id' }));
+    } else if (action === 'follow') {
+      if (body.op === 'remove' || body.unfollow) {
+        await exec(supabase.from('follows').delete().eq('user_id', uid)
+          .eq('subject_type', String(body.subject_type || body.type || ''))
+          .eq('subject', String(body.subject || '')));
+      } else {
+        await exec(supabase.from('follows').upsert({
+          user_id: uid,
+          subject_type: String(body.subject_type || body.type || 'market').slice(0, 40),
+          subject: String(body.subject || '').slice(0, 160),
+          label: String(body.label || body.subject || '').slice(0, 160),
+        }, { onConflict: 'user_id,subject_type,subject' }));
+      }
+    } else if (action === 'watchlist') {
+      if (body.op === 'delete') {
+        await exec(supabase.from('watchlists').delete().eq('id', String(body.id || '')).eq('user_id', uid));
+      } else {
+        await exec(supabase.from('watchlists').insert({
+          user_id: uid,
+          name: String(body.name || 'Watchlist').slice(0, 120),
+          subjects: Array.isArray(body.subjects) ? body.subjects : [],
+        }));
+      }
+    } else if (action === 'saved_search') {
+      if (body.op === 'delete') {
+        await exec(supabase.from('saved_searches').delete().eq('id', String(body.id || '')).eq('user_id', uid));
+      } else {
+        await exec(supabase.from('saved_searches').insert({
+          user_id: uid,
+          name: String(body.name || 'Search').slice(0, 120),
+          query: String(body.query || '').slice(0, 200),
+          href: String(body.href || '').slice(0, 240) || null,
+        }));
+      }
+    } else if (action === 'video_watch') {
+      const videoId = String(body.video_id || '').slice(0, 80);
+      if (!videoId) return respond(400, { error: 'video_id required' });
+      const percent = Math.max(0, Math.min(100, parseInt(body.percent, 10) || 100));
+      const loopId = String(body.loop_id || 'academy').slice(0, 64);
+      await exec(supabase.from('video_progress').upsert({
+        user_id: uid, video_id: videoId, loop_id: loopId, percent: percent,
+        updated_at: new Date().toISOString(),
+      }, { onConflict: 'user_id,video_id' }));
+      await exec(supabase.from('lesson_progress').upsert({
+        user_id: uid, lesson_id: 'video-' + videoId, module_id: loopId,
+        status: percent >= 100 ? 'COMPLETE' : 'IN PROGRESS', percent: percent,
+        updated_at: new Date().toISOString(),
+      }, { onConflict: 'user_id,lesson_id' }));
+      /* Watch is progress only — do not writeSkill / do not raise a Passport level. */
+      if (body.skill_id) {
+        await supabase.from('skill_evidence').insert({
+          user_id: uid, skill_id: String(body.skill_id).slice(0, 64), kind: 'watch', ref: videoId,
+        });
+      }
     } else if (action === 'certificate') {
       const slug = String(body.slug || '').slice(0, 80).replace(/[^a-z0-9-]/gi, '-');
       if (!slug) return respond(400, { error: 'slug required' });
@@ -276,6 +581,9 @@ async function snapshot(supabase, user) {
   const [
     ents, roles, learnerRows, grid, skills, memberships, orgMembers, purchases,
     paths, certs, lessons, attempts, results, evidence, designs, userSkills,
+    versions, projects, notes, savedItems, rfqs, userRfqs, comparisons,
+    requirements, claims, supplierRows, facilities, products, analyticsRows,
+    follows, watchlists, searches, videos,
   ] = await Promise.all([
     sel('entitlements', 'user_id'),
     sel('account_roles', 'user_id'),
@@ -293,6 +601,23 @@ async function snapshot(supabase, user) {
     sel('skill_evidence', 'user_id'),
     sel('saved_designs', 'user_id'),
     sel('user_skills', 'user_id'),
+    sel('design_versions', 'user_id'),
+    sel('projects', 'user_id'),
+    sel('notes', 'user_id'),
+    sel('saved_items', 'user_id'),
+    sel('rfqs', 'user_id'),
+    sel('user_rfqs', 'user_id'),
+    sel('comparisons', 'user_id'),
+    sel('saved_requirements', 'user_id'),
+    sel('company_claims', 'user_id'),
+    sel('supplier_profiles', 'user_id'),
+    sel('supplier_facilities', 'user_id'),
+    sel('supplier_products', 'user_id'),
+    sel('analytics_counters', 'user_id'),
+    sel('follows', 'user_id'),
+    sel('watchlists', 'user_id'),
+    sel('saved_searches', 'user_id'),
+    sel('video_progress', 'user_id'),
   ]);
 
   let learner = learnerRows[0] || null;
@@ -328,6 +653,16 @@ async function snapshot(supabase, user) {
 
   const gridAgg = aggregateGrid(grid);
   const org = seats[0] || null;
+  const ownRfqs = (rfqs && rfqs.length) ? rfqs : (userRfqs || []);
+  let inboxSource = ownRfqs;
+  if (flags.isSupplier) {
+    try {
+      const { data: all, error } = await supabase.from('rfqs').select('*').neq('status', 'Draft');
+      if (!error && all && all.length) inboxSource = all;
+    } catch (e) { /* table_missing — fall back to own RFQs (demo dual-role) */ }
+  }
+  const supplierProfile = (supplierRows && supplierRows[0]) || learner || {};
+  const rfqInbox = model.matchRfqsForSupplier(inboxSource, supplierProfile);
 
   return {
     ok: true,
@@ -357,7 +692,28 @@ async function snapshot(supabase, user) {
     assessment_attempts: (attempts || []).slice(0, 40),
     skills: (userSkills && userSkills.length) ? userSkills : (skills || []),
     skill_evidence: evidence || [],
-    saved_designs: (designs || []).map((d) => ({ id: d.id, name: d.name, kind: d.kind, updated_at: d.updated_at })),
+    saved_designs: (designs || []).map((d) => ({
+      id: d.id, name: d.name, kind: d.kind, rating: d.rating, voltages: d.voltages,
+      notes: d.notes, data: d.data, created_at: d.created_at, updated_at: d.updated_at,
+    })),
+    design_versions: (versions || []).map((v) => ({ id: v.id, design_id: v.design_id, created_at: v.created_at })),
+    projects: projects || [],
+    notes: notes || [],
+    saved_items: savedItems || [],
+    shortlist: (savedItems || []).filter((i) => /company|facility|component|lab|manufacturer/i.test(i.item_type || '')),
+    rfqs: ownRfqs,
+    comparisons: comparisons || [],
+    requirements: requirements || [],
+    company_claims: claims || [],
+    supplier_profile: (supplierRows && supplierRows[0]) || null,
+    supplier_facilities: facilities || [],
+    supplier_products: products || [],
+    analytics: (analyticsRows && analyticsRows[0]) || { profile_views: 0, rfq_matches: rfqInbox.length },
+    follows: follows || [],
+    watchlists: watchlists || [],
+    saved_searches: searches || [],
+    video_progress: videos || [],
+    rfq_inbox: rfqInbox,
     certificates: certs || [],
   };
 }

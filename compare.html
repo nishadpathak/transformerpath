@@ -145,7 +145,7 @@
 
   <div class="picker">
     <h2>Select Manufacturers to Compare (up to 5)</h2>
-    <p class="sub">Search by company name or country, or select a preset group. Shareable URL links: <code style="color:var(--accent)">/compare.html?m=slug1,slug2,slug3</code>.</p>
+    <p class="sub">Search by company name or country, or select a preset group. Shareable URL links: <code style="color:var(--accent)">/compare.html?m=slug1,slug2,slug3</code>. Save a workspace to <a href="workspace.html#shortlist">My Comparisons</a>.</p>
     <input class="pick-input" id="pickInput" type="text" placeholder="Type company name or country (e.g. Hitachi, Siemens, India, Germany, TBEA)..." autocomplete="off">
     <div class="pick-results" id="pickResults" style="display:none"></div>
     <div class="chips" id="chips"></div>
@@ -156,6 +156,7 @@
       <button class="preset-btn" onclick="applyPreset(['bhel-bharat-heavy-electricals','cg-power','transformers-rectifiers-india-taril'])">🇮🇳 India Power OEMs (BHEL · CG · TARIL)</button>
       <button class="preset-btn" onclick="applyPreset(['tbea-co-ltd','china-xd-group','hd-hyundai-electric'])">⚡ UHV Specialists (TBEA · XD · Hyundai)</button>
     </div>
+    <p style="margin-top:12px"><button type="button" class="btn btn-outline btn-sm" id="btnSaveComparison">Save this comparison to My TransformerPath</button></p>
   </div>
 
   <div id="cmp"></div>
@@ -190,6 +191,10 @@
     <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
   </div>
 </footer>
+<script src="supabase-config.js"></script>
+<script src="supabase.js" defer></script>
+<script src="tp-learner.js" defer></script>
+<script src="tp-hub.js" defer></script>
 <script src="analytics.js" defer></script>
 <script>
 var DATA = null;
@@ -321,6 +326,20 @@ fetch('data/manufacturer-intel.json').then(function(r){ return r.json(); }).then
   if(m){ m.split(',').filter(Boolean).forEach(function(sl){ var c=companyBySlug(sl); if(c) selected.push({slug:c.slug,name:c.name,country:c.country}); }); }
   renderChips();
 }).catch(function(){ document.getElementById('cmp').innerHTML='<div class="empty">Manufacturer data unavailable.</div>'; });
+
+document.addEventListener('click', function(e){
+  if (e.target && e.target.id === 'btnSaveComparison') {
+    var slugs = selected.map(function(s){ return s.slug; }).filter(Boolean).join(',');
+    if (!slugs) { alert('Select at least one manufacturer.'); return; }
+    if (window.TP_HUB && TP_HUB.saveComparison) {
+      TP_HUB.saveComparison({ name: 'Comparison', slugs: slugs, url: 'compare.html?m=' + slugs }).then(function(){
+        alert('Saved to My Comparisons.');
+      });
+    } else {
+      location.href = 'workspace.html?auth=in#shortlist';
+    }
+  }
+});
 </script>
 <script src="tp-freshness.js?v=7" defer></script>
 <script src="tp-feedback.js?v=7" defer></script>
