@@ -1,0 +1,222 @@
+{
+  "$schema": "https://transformerpath.com/event-series.schema.json",
+  "purpose": "TransformerPath canonical EVENT SERIES -> EVENT EDITION model + duplicate resolution + event-search intent data. This is the authoritative series/edition source used by lib/event-search.js (search resolution + result cards) and by lib/event-status.js (status). The raw feed data/events.json is a flat, occasionally-duplicated feed; this map defines which feed entries are editions of which series, which are DUPLICATES to collapse, and the canonical facts of each edition. lifecycle_status/date_status here are best-known near-term values; the build normalizer recomputes them through lib/event-status.js so a single canonical status is used everywhere. Nothing here invents dates/venue/categories: confirmed only where the feed gives no conflicting or 'Date est.' signal.",
+  "note": "Alias keys are lower-cased, non-alphanumeric-collapsed feed names. Host-city/venue-conflict duplicates are merged but NEVER promoted to CONFIRMED where the two records disagree.",
+  "series": [
+    {
+      "key": "middle-east-energy",
+      "name": "Middle East Energy",
+      "seriesSlug": "middle-east-energy",
+      "organizer": "Informa / Dubai World Trade Centre",
+      "recurrence": "annual",
+      "href": "/events/middle-east-energy/",
+      "editions": [
+        { "year": 2026, "slug": "middle-east-energy-2026", "name": "Middle East Energy 2026",
+          "city": "Dubai", "country": "United Arab Emirates", "venue": "Dubai World Trade Centre", "venue_verified": true,
+          "dates": { "start": "2026-09-01", "end": "2026-09-03" }, "dates_confirmed": true,
+          "lifecycle_status": "COMPLETED", "date_status": "CONFIRMED",
+          "categories": ["Power Transformers", "Substations", "Distribution"], "has_published_summary": false, "has_exhibitors": true,
+          "post_event": {
+            "verified": true,
+            "verified_facts": "50th edition confirmed; ran to 3 Sep 2026 (Technical Review Middle East, 3 Sep 2026 — event final-day coverage).",
+            "source_url": "https://technicalreviewmiddleeast.com/events/eventnews/middle-east-energy-2026-drives-the-global-energy-dialogue",
+            "source_type": "credible_industry_media",
+            "source_verified_at": "2026-09-04",
+            "verified_exhibitors": [
+              { "name": "Shandong Taikai", "category": "transformer_manufacturer", "note": "High-voltage power transmission & transformation equipment.", "source_type": "credible_industry_media" },
+              { "name": "Hunan Guochuang Electric", "category": "transformer_components", "note": "Precision-engineered transformer components, UHV segment.", "source_type": "credible_industry_media" }
+            ]
+          } },
+        { "year": 2027, "slug": "middle-east-energy-2027", "name": "Middle East Energy 2027",
+          "city": "Dubai", "country": "United Arab Emirates", "venue": "Dubai World Trade Centre", "venue_verified": true,
+          "dates": { "start": "2027-09-07", "end": "2027-09-09" }, "dates_confirmed": false,
+          "lifecycle_status": "UPCOMING", "date_status": "TBC",
+          "categories": ["Power Transformers", "Substations", "Distribution"], "has_published_summary": false, "has_exhibitors": true,
+          "note": "Raw 'Middle East Energy 2027' (dates 2027-05-11..13, Expo City Dubai) and 'Middle East Energy Sept 2027' (2027-09-07..09, DWTC) are the same 2027 edition. Both say 'Date est. (recurring early September)'; 2026 was Sept 1-3. Status UPCOMING but dates TBC (Rule 4)." },
+        { "year": 2028, "slug": "middle-east-energy-2028", "name": "Middle East Energy 2028",
+          "city": "Dubai", "country": "United Arab Emirates", "venue": "Dubai World Trade Centre", "venue_verified": true,
+          "dates": { "start": "2028-09-05", "end": "2028-09-07" }, "dates_confirmed": false,
+          "lifecycle_status": "UPCOMING", "date_status": "TBC",
+          "categories": ["Power Transformers", "Substations", "Distribution"], "has_published_summary": false, "has_exhibitors": true,
+          "note": "Raw 'Middle East Energy Sept 2028' and a sibling 2028 record are the same edition; 'Date est.' -> TBC." }
+      ],
+      "aliases": [
+        "middle east energy 2027", "middle east energy sept 2027",
+        "middle east energy sept 2028", "middle east energy 2028"
+      ]
+    },
+    {
+      "key": "elektro-moscow",
+      "name": "ELEKTRO (Moscow)",
+      "seriesSlug": "elektro-2027",
+      "organizer": "Expocentre / Restec",
+      "recurrence": "annual",
+      "href": "/events/elektro-2027/",
+      "editions": [
+        { "year": 2027, "slug": "elektro-2027", "name": "ELEKTRO 2027",
+          "city": "Moscow", "country": "Russia", "venue": "Crocus Expo Moscow", "venue_verified": false,
+          "dates": { "start": "2027-06-07", "end": "2027-06-09" }, "dates_confirmed": false,
+          "lifecycle_status": "UPCOMING", "date_status": "TBC",
+          "categories": ["Distribution", "Components"], "has_published_summary": false, "has_exhibitors": false,
+          "note": "Raw 'ELEKTRO 2027' (Crocus Expo, Europe) and 'ELEKTRO 2027 (35th Anniversary)' (Sokolniki, Eurasia) are the same edition; conflicting venue/region -> venue + dates unconfirmed." }
+      ],
+      "aliases": ["elektro 2027", "elektro 2027 (35th anniversary)"]
+    },
+    {
+      "key": "wire-south-america",
+      "name": "wire South America / wire Brasil",
+      "seriesSlug": "wire-brasil-2027",
+      "organizer": "Messe Düsseldorf",
+      "recurrence": "biennial",
+      "href": "/events/wire-brasil-2027/",
+      "editions": [
+        { "year": 2027, "slug": "wire-brasil-2027", "name": "wire Brasil 2027 (formerly wire South America)",
+          "city": "São Paulo", "country": "Brazil", "venue": "São Paulo Expo", "venue_verified": true,
+          "dates": { "start": "2027-10-27", "end": "2027-10-29" }, "dates_confirmed": false,
+          "lifecycle_status": "UPCOMING", "date_status": "TBC",
+          "categories": ["Materials", "Conductors", "CRGO"], "has_published_summary": false, "has_exhibitors": false,
+          "note": "Raw 'Wire South America 2027' and 'wire Brasil 2027 (8th edition, formerly Wire South America)' are the same renamed edition; 'Date est.' -> TBC." }
+      ],
+      "aliases": ["wire south america 2027", "wire brasil 2027 (8th edition, formerly wire south america)"]
+    },
+    {
+      "key": "western-energy-institute",
+      "name": "Western Energy Institute Annual Meeting",
+      "seriesSlug": "western-energy-institute-2026",
+      "organizer": "Western Energy Institute",
+      "recurrence": "annual",
+      "href": "/events/western-energy-institute-2026/",
+      "editions": [
+        { "year": 2026, "slug": "western-energy-institute-2026", "name": "Western Energy Institute Annual Meeting 2026",
+          "city": "Phoenix", "country": "USA", "venue": "Sheraton Phoenix Downtown", "venue_verified": true,
+          "dates": { "start": "2026-11-03", "end": "2026-11-05" }, "dates_confirmed": false,
+          "lifecycle_status": "UPCOMING", "date_status": "TBC",
+          "categories": ["Utilities", "Distribution"], "has_published_summary": false, "has_exhibitors": false,
+          "note": "Raw 'Western Energy Institute Annual Meeting 2026' (Sep 13-15) and '...2026 (Phoenix)' (Nov 3-5) are the same edition with conflicting estimated dates -> TBC." }
+      ],
+      "aliases": ["western energy institute annual meeting 2026", "western energy institute annual meeting 2026 (phoenix)"]
+    },
+    {
+      "key": "nema-annual-meeting",
+      "name": "NEMA Annual Meeting",
+      "seriesSlug": "nema-annual-meeting-2026",
+      "organizer": "National Electrical Manufacturers Association",
+      "recurrence": "annual",
+      "href": "/events/nema-annual-meeting-2026/",
+      "editions": [
+        { "year": 2026, "slug": "nema-annual-meeting-2026", "name": "NEMA Annual Meeting 2026",
+          "city": "St. Petersburg", "country": "USA", "venue": "The Vinoy Resort & Golf Club", "venue_verified": false,
+          "dates": { "start": "2026-11-10", "end": "2026-11-12" }, "dates_confirmed": false,
+          "lifecycle_status": "UPCOMING", "date_status": "TBC",
+          "categories": ["Power Transformers", "Distribution"], "has_published_summary": false, "has_exhibitors": false,
+          "note": "Raw 'NEMA Annual Meeting 2026 (Denver)' (Sep 29-Oct 1) and 'NEMA Annual Meeting 2026' (St. Petersburg, Nov 10-12) are the same edition; conflicting venue/date -> TBC." }
+      ],
+      "aliases": ["nema annual meeting 2026 (denver)", "nema annual meeting 2026"]
+    },
+    {
+      "key": "gcc-power",
+      "name": "GCC POWER / CIGRE GCC Conference",
+      "seriesSlug": "gcc-power-2026",
+      "organizer": "CIGRE GCC",
+      "recurrence": "annual",
+      "href": "/events/gcc-power-2026/",
+      "editions": [
+        { "year": 2026, "slug": "gcc-power-2026", "name": "GCC POWER 2026 / CIGRE 22nd Conference",
+          "city": "Muscat", "country": "Oman", "venue": "JW Marriott Hotel Muscat", "venue_verified": false,
+          "dates": { "start": "2026-11-02", "end": "2026-11-04" }, "dates_confirmed": false,
+          "lifecycle_status": "UPCOMING", "date_status": "TBC",
+          "categories": ["Power Transformers", "Substations", "HV"], "has_published_summary": false, "has_exhibitors": false,
+          "note": "Raw 'GCC POWER 2026' (Dubai, venue TBC, Oct 15-17) and 'GCC POWER 2026 / CIGRE 22nd Conference (Muscat)' (Nov 2-4) are likely the same GCC CIGRE conference with conflicting host city/date -> verify with organiser; not confirmed." }
+      ],
+      "aliases": ["gcc power 2026", "gcc power 2026 / cigre 22nd conference (muscat)"]
+    },
+    {
+      "key": "neecon",
+      "name": "International Near East Conference on Electrical & Energy Systems (NEECON)",
+      "seriesSlug": "neecon",
+      "organizer": "University of Dubai + Dubai Electricity & Water Authority (DEWA); IEEE co-sponsored",
+      "recurrence": "annual",
+      "href": "/events/neecon/",
+      "event_type": ["ACADEMIC_CONFERENCE", "CALL_FOR_PAPERS"],
+      "relevance": "MEDIUM_TRANSFORMER_RELEVANCE",
+      "topics": ["Power Systems", "Smart Grids", "Renewable Integration", "AI in Power Engineering"],
+      "editions": [
+        { "year": 2026, "slug": "neecon-2026", "name": "NEECON 2026",
+          "city": "Dubai", "country": "United Arab Emirates", "venue": null, "venue_verified": false,
+          "dates": { "start": "2026-10-21", "end": "2026-10-23" }, "dates_confirmed": true,
+          "lifecycle_status": "UPCOMING", "date_status": "CONFIRMED",
+          "event_type": ["ACADEMIC_CONFERENCE", "CALL_FOR_PAPERS"],
+          "categories": ["Power Systems", "Smart Grid", "Power Transformers", "High Voltage"],
+          "has_published_summary": false, "has_exhibitors": false,
+          "cfp": { "status": "OPEN", "official_url": "https://neecon.org/", "submission_deadline": null,
+                   "deadline_source": "UNVERIFIED — IEEE vTools listing invites submission but does not state a deadline; verify on neecon.org" },
+          "research_status": "VERIFIED",
+          "source": { "url": "https://events.vtools.ieee.org/m/557058", "type": "professional_body", "verified_at": "2026-09-04" },
+          "note": "IEEE vTools listing (authoritative professional-body source): edition, 21-23 Oct 2026, Dubai, organizer University of Dubai + DEWA, IEEE co-sponsored, topics: power systems / smart grids / renewable / AI & IoT." }
+      ],
+      "aliases": ["neecon", "neecon 2026", "international near east conference on electrical & energy systems"]
+    },
+    {
+      "key": "ictram",
+      "name": "International Colloquium on Transformer Research and Asset Management (ICTRAM)",
+      "seriesSlug": "ictram",
+      "organizer": "Croatian National Committee of CIGRE, with University of Zagreb (FER) and Centre of Excellence for Transformers",
+      "recurrence": "two-year-ish (2023 Split, 2026 Cavtat)",
+      "href": "/events/ictram/",
+      "event_type": ["TECHNICAL_CONFERENCE", "CALL_FOR_PAPERS"],
+      "relevance": "HIGH_TRANSFORMER_RELEVANCE",
+      "topics": ["Power Transformers", "Transformer Diagnostics", "Asset Management", "Instrument Transformers"],
+      "editions": [
+        { "year": 2026, "slug": "ictram-2026", "name": "7th ICTRAM 2026",
+          "city": "Cavtat", "country": "Croatia", "venue": "hotel Croatia, Cavtat", "venue_verified": false,
+          "dates": { "start": "2026-05-06", "end": "2026-05-09" }, "dates_confirmed": true,
+          "lifecycle_status": "COMPLETED", "date_status": "CONFIRMED",
+          "event_type": ["TECHNICAL_CONFERENCE", "CALL_FOR_PAPERS"],
+          "categories": ["Power Transformers", "Distribution Transformers", "Instrument Transformers"],
+          "has_published_summary": false, "has_exhibitors": false,
+          "cfp": { "status": "CLOSED", "official_url": "https://ictram.org/",
+                   "abstract_deadline": "2025-10-01", "acceptance_date": "2025-11-01",
+                   "full_paper_deadline": "2026-02-01",
+                   "deadline_source": "official CIGRE event page (important dates)" },
+          "prior_edition": { "year": 2023, "location": "Split, Croatia", "attendance": "315 participants / 29 countries / 104 papers — PRIOR EDITION (2023), not 2026; do not infer 2026 figures" },
+          "research_status": "VERIFIED",
+          "source": { "url": "https://www.cigre.org/include/ops_event.asp?type=colloquium&year=2026&country=HR&city=cavtat&event=7th-international-colloquium-transformer-research-and-asset-management", "type": "professional_body", "verified_at": "2026-09-04" },
+          "note": "Official CIGRE page: 7th ICTRAM, 6-9 May 2026, hotel Croatia Cavtat; organizers CIGRE Croatia NC + Univ Zagreb FER + Centre of Excellence for Transformers; covers power/special/distribution/instrument transformers (HIGH transformer relevance). CFP dates are historical (event completed)." }
+      ],
+      "aliases": ["ictram", "7th ictram", "ictram 2026", "international colloquium transformer research asset management", "cigre croatia transformer colloquium"]
+    },
+    {
+      "key": "cwieme-berlin",
+      "name": "CWIEME Berlin",
+      "seriesSlug": "cwieme-berlin",
+      "organizer": "CWIEME / Easyfairs",
+      "recurrence": "annual",
+      "href": "/events/cwieme-berlin/",
+      "event_type": ["EXHIBITION_CONFERENCE"],
+      "relevance": "HIGH_TRANSFORMER_RELEVANCE",
+      "topics": ["Transformer Manufacturing", "Insulation", "Bushings", "Winding/Coil", "Monitoring"],
+      "editions": [
+        { "year": 2026, "slug": "cwieme-berlin-2026", "name": "CWIEME Berlin 2026",
+          "city": "Berlin", "country": "Germany", "venue": "Messe Berlin", "venue_verified": true,
+          "dates": { "start": "2026-05-19", "end": "2026-05-21" }, "dates_confirmed": true,
+          "lifecycle_status": "COMPLETED", "date_status": "CONFIRMED",
+          "event_type": ["EXHIBITION_CONFERENCE"],
+          "categories": ["Transformer Manufacturing", "Insulation", "Bushings", "Winding"], "has_published_summary": false, "has_exhibitors": true,
+          "post_event": {
+            "verified": true,
+            "verified_facts": "30th-anniversary edition, 19-21 May 2026, Messe Berlin; concluded. Confirmed by official CWIEME Berlin site + news wire.",
+            "source_url": "https://berlin.cwiemeevents.com/articles/celebrating-30-years",
+            "source_type": "official_organizer",
+            "source_verified_at": "2026-09-04",
+            "verified_exhibitors": [
+              { "name": "Qualitrol", "category": "transformer_monitoring_diagnostics", "booth": "27F40", "confidence": "COMPANY_REPORTED", "source_url": "https://www.qualitrolcorp.com/news-events/events-and-tradeshows/cwieme-2026", "source_type": "company_press_release" },
+              { "name": "Anmei", "category": "bushings", "confidence": "COMPANY_REPORTED", "source_url": "https://fr.anmeibushings.com/news/", "source_type": "company_press_release" },
+              { "name": "Xujue Electrical", "category": "transformer_components", "confidence": "COMPANY_REPORTED", "source_url": "https://www.ztaero.com/new/company-news/xujue-electrical-showcases-at-cwieme-berlin-2026.html", "source_type": "company_press_release" }
+            ]
+          },
+          "note": "30th-anniversary edition verified (official organizer site + concluded via news wire). Exhibitors are COMPANY_REPORTED (self-declared), labelled as such, not independent confirmation." }
+      ],
+      "aliases": ["cwieme berlin", "cwieme berlin 2026", "berlin coil winding exhibition"]
+    }
+  ]
+}

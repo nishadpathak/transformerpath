@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pricing — Learning, Professional &amp; Team Plans | TransformerPath</title>
+<meta name="description" content="Three yearly-access plans for the TransformerPath learning platform: Learning ($199), Professional ($599) and Team ($1,999) — the full 26-chapter masterclass, 10 interactive 3D component models + TransformerPath Grid Lab, the design calculator and the Design Engineer Track.">
+<link rel="canonical" href="https://transformerpath.com/pricing.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TransformerPath">
+<meta property="og:title" content="Pricing | TransformerPath">
+<meta property="og:description" content="Learning, Professional and Team yearly-access plans for the TransformerPath learning platform.">
+<meta property="og:url" content="https://transformerpath.com/pricing.html">
+<meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="style.css?v=14">
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<style>
+.plans { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin:0 0 40px; align-items:stretch; }
+.plan { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:28px 24px; display:flex; flex-direction:column; }
+.plan.feat { border:2px solid var(--amber); position:relative; box-shadow:0 8px 28px rgba(245,166,35,.16); }
+.plan .badge { display:inline-block; background:var(--amber); color:var(--navy); font-size:.68rem; font-weight:800; text-transform:uppercase; letter-spacing:.5px; padding:3px 10px; border-radius:999px; position:absolute; top:-12px; left:24px; }
+.plan h3 { margin:0 0 4px; font-size:1.15rem; color:var(--ink); }
+.plan .tag { color:var(--muted); font-size:.84rem; margin:0 0 16px; }
+.plan .price { font-size:2.2rem; font-weight:800; color:var(--ink); }
+.plan .price small { font-size:.9rem; color:var(--muted); font-weight:600; }
+.plan .save { font-size:.78rem; color:var(--accent); font-weight:700; margin:2px 0 18px; min-height:1.2em; }
+.plan ul { list-style:none; margin:0 0 22px; padding:0; flex:1; }
+.plan ul li { padding:7px 0; border-bottom:1px solid var(--border); font-size:.88rem; color:var(--text); display:flex; gap:8px; align-items:flex-start; }
+.plan ul li:last-child { border-bottom:0; }
+.plan ul li .ok { color:#1e9e5a; flex-shrink:0; font-weight:800; }
+.plan ul li .plus { color:var(--accent); flex-shrink:0; font-weight:800; }
+.plan .cta { text-align:center; padding:14px 20px; border-radius:10px; font-weight:800; text-decoration:none; display:block; }
+.plan .cta.primary { background:var(--amber); color:var(--navy); }
+.plan .cta.soon { background:var(--border); color:var(--muted); cursor:default; pointer-events:none; }
+.plan .fine { text-align:center; font-size:.74rem; color:var(--muted); margin-top:10px; }
+@media (max-width:860px){ .plans { grid-template-columns:1fr; } .plan.feat { order:-1; } }
+
+.free-strip { display:flex; gap:24px; align-items:center; justify-content:space-between; flex-wrap:wrap; background:var(--card); border:1px dashed var(--amber); border-radius:16px; padding:22px 26px; margin:0 0 28px; }
+.free-strip .free-badge { display:inline-block; background:rgba(30,158,90,.14); color:#1e9e5a; font-size:.7rem; font-weight:800; text-transform:uppercase; letter-spacing:.5px; padding:3px 10px; border-radius:999px; margin-bottom:10px; }
+.free-strip h2 { margin:0 0 8px; font-size:1.28rem; color:var(--ink); }
+.free-strip p { margin:0; color:var(--muted); font-size:.9rem; max-width:560px; line-height:1.55; }
+.free-strip .free-ctas { display:flex; gap:10px; flex-wrap:wrap; flex-shrink:0; }
+.free-strip .free-ctas a { padding:11px 18px; border-radius:9px; font-weight:700; font-size:.86rem; text-decoration:none; white-space:nowrap; }
+.free-strip .free-ctas a.p { background:var(--amber); color:var(--navy); }
+.free-strip .free-ctas a.s { background:transparent; border:1px solid var(--border); color:var(--text); }
+@media (max-width:700px){ .free-strip{ flex-direction:column; align-items:flex-start; } }
+
+.cmp-wrap { overflow-x:auto; margin:0 0 44px; }
+table.cmp { width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--border); border-radius:12px; overflow:hidden; font-size:.88rem; min-width:640px; }
+table.cmp th, table.cmp td { padding:12px 16px; text-align:left; border-bottom:1px solid var(--border); }
+table.cmp th { background:var(--navy); color:#fff; font-weight:700; font-size:.82rem; text-transform:uppercase; letter-spacing:.3px; }
+table.cmp th:not(:first-child), table.cmp td:not(:first-child) { text-align:center; }
+table.cmp td:first-child { color:var(--text); font-weight:600; }
+table.cmp tr:last-child td { border-bottom:0; }
+table.cmp .y { color:#1e9e5a; font-weight:800; }
+table.cmp .n { color:var(--border); }
+
+.faq { max-width:760px; margin:0 auto 40px; }
+.faq details { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:14px 18px; margin-bottom:10px; }
+.faq summary { cursor:pointer; font-weight:700; color:var(--ink); font-size:.95rem; }
+.faq p { color:var(--muted); font-size:.88rem; margin:10px 0 0; line-height:1.6; }
+#unlockBanner { display:none; background:linear-gradient(135deg,#1e9e5a,#167a45); color:#fff; border-radius:12px; padding:18px 22px; margin:0 0 30px; text-align:center; font-weight:700; }
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
+
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "TransformerPath Yearly Access", "description": "Annual access to the TransformerPath transformer-design masterclass, interactive 3D models, IEC 60076 design calculator, test-report and rating-plate generators and the Design Engineer Track.", "brand": {"@type": "Organization", "name": "TransformerPath"}, "offers": {"@type": "AggregateOffer", "priceCurrency": "USD", "lowPrice": "199", "highPrice": "1999", "offerCount": "3", "offers": [{"@type": "Offer", "name": "Learning", "price": "199", "priceCurrency": "USD", "description": "Individual learner — 1 seat"}, {"@type": "Offer", "name": "Professional", "price": "599", "priceCurrency": "USD", "description": "Professional tier — 1 seat"}, {"@type": "Offer", "name": "Team", "price": "1999", "priceCurrency": "USD", "description": "Team — up to 10 seats"}]}}</script>
+    <link rel="stylesheet" href="tp-nav.css?v=14">
+  <link rel="stylesheet" href="tp-feedback.css?v=14">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
+    <nav class="tpnav" id="mainNav" aria-label="Primary">
+      <a href="intel.html">Intel</a>
+      <div class="tpnav-dropdown">
+        <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
+        <div class="tpnav-dropdown-panel" role="menu">
+          <a href="manufacturers.html">Manufacturers</a>
+          <a href="map.html">Industry Map</a>
+          <a href="grids.html">Global Grids</a>
+          <a href="components.html">Components &amp; Materials</a>
+          <a href="machinery.html">Machinery</a>
+          <a href="laboratories.html">Testing Labs</a>
+          <a href="services.html">Services &amp; Repair</a>
+          <a href="markets.html">Markets</a>
+          <a href="buyers-guide.html">Buyer's Guide</a>
+          <a href="directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
+        </div>
+      </div>
+      <a href="projects.html">Projects</a>
+      <a href="tenders.html">Tenders</a>
+      <a href="events.html">Events</a>
+      <a href="tools.html" class="tpnav-opt">Engineering</a>
+      <a href="learn.html">Learn</a>
+      <a href="rfq.html">RFQ</a>
+      <div class="tpnav-more">
+        <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
+        <div class="tpnav-more-panel" role="menu">
+          <a href="map.html" role="menuitem">Industry Map</a>
+          <a href="grids.html" role="menuitem">Global Grids</a>
+          <a href="webinars.html" role="menuitem">Webinars</a>
+          <a href="standards.html" role="menuitem">Standards &amp; Codes</a>
+          <a href="for-manufacturers.html" role="menuitem">For Manufacturers</a>
+          <a href="pricing.html" role="menuitem">Pricing Plans</a>
+          <a href="verified.html" role="menuitem">Verified Profiles</a>
+        </div>
+      </div>
+      <span class="tpnav-utils">
+        <a href="search.html" title="Search" aria-label="Search">&#128269;</a>
+        <a href="workspace.html" data-tp-account>Account</a>
+        <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">&#127769;</button>
+      </span>
+    </nav>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    // Night mode is the default; light is opt-in via the toggle.
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+
+    if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
+    updateThemeIcon();
+
+    themeToggle?.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      updateThemeIcon();
+    });
+
+    function updateThemeIcon() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+    }
+  </script>
+  <script src="tp-nav.js?v=7" defer></script>
+  <script src="tp-pwa.js?v=7" defer></script>
+</header>
+<section class="hero" style="padding:50px 0 40px">
+  <div class="container">
+    <h1 style="font-size:2.2rem">Platform <span>Plans &amp; Pricing</span></h1>
+    <p>TransformerPath provides specialized operating plans tailored to the industry's three core commercial audiences: <b>Engineers &amp; Designers</b>, <b>Suppliers &amp; Component Makers</b>, and <b>Market &amp; Procurement Teams</b>. Factual industry data is free to all; operating workflows, workspaces, inboxes, and intelligence tools unlock with a plan.</p>
+  </div>
+</section>
+
+<section class="block">
+  <div class="container" style="max-width:1080px">
+
+    <div id="unlockBanner"></div>
+
+    <!-- Audience Selection Tabs / Bar -->
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:28px">
+      <a href="#engineers" class="btn btn-outline btn-sm" style="font-weight:700;padding:8px 16px;border-radius:999px;color:var(--ink)">📐 For Engineers &amp; Technical Teams</a>
+      <a href="#suppliers" class="btn btn-outline btn-sm" style="font-weight:700;padding:8px 16px;border-radius:999px;color:var(--accent);border-color:var(--amber)">⚡ For Suppliers (Supplier Pro)</a>
+      <a href="#procurement" class="btn btn-outline btn-sm" style="font-weight:700;padding:8px 16px;border-radius:999px;color:var(--ink)">📈 For Procurement &amp; Market Teams</a>
+    </div>
+
+    <div class="free-strip">
+      <div>
+        <span class="free-badge">Free · Forever</span>
+        <h2>Factual data is open and free. Plans unlock technical &amp; commercial workflows.</h2>
+        <p>Daily Intel and its archive, the 911-manufacturer directory, 151-country grid census, events calendar, and neutral simulation guides are completely free to read — no credit card, no signup. The paid plans below unlock specialized operating capabilities: Engineering Design Workspaces, Supplier RFQ Inboxes &amp; Analytics, and Intel Pro custom watchlists &amp; tender filters.</p>
+      </div>
+      <div class="free-ctas">
+        <a href="intel.html" class="p">Read Daily Intel — free →</a>
+        <a href="manufacturers.html" class="s">Browse 911 manufacturers →</a>
+      </div>
+    </div>
+
+    <div id="engineers" class="section-head" style="margin:24px 0 16px">
+      <h2 style="font-size:1.45rem">1. For Engineers &amp; Design Teams</h2>
+      <p>Interactive IEC 60076 design calculators, 3D internal models, automated PDF calculation reports, active material costing, and the 4-level Design Engineer Track.</p>
+    </div>
+
+    <div class="plans">
+
+      <!-- Learning -->
+      <div class="plan">
+        <h3>Learning</h3>
+        <p class="tag">Learn transformer engineering — structured learning, 3D models, exercises and capstones</p>
+        <div class="price">$199<small> / 12 months</small></div>
+        <div class="save">&nbsp;</div>
+        <ul>
+          <li><span class="ok">✓</span> Full 26-chapter masterclass, tutorial &amp; academy</li>
+          <li><span class="ok">✓</span> 10 interactive 3D component models + Grid Lab</li>
+          <li><span class="ok">✓</span> Live IEC 60076 design calculator</li>
+          <li><span class="ok">✓</span> Design Engineer Track — all 4 levels</li>
+          <li><span class="ok">✓</span> Manually reviewed capstones + model answers</li>
+          <li><span class="ok">✓</span> Course completion record for the Design Engineer Track</li>
+          <li><span class="ok">✓</span> 1 engineer seat, standard review queue</li>
+        </ul>
+        <a class="cta primary" id="ctaLearner" href="#" target="_blank" rel="noopener" data-track="learning_checkout_started" data-track-plan="Learning">Unlock Learning — $199 →</a>
+        <div class="fine">Single payment · 12 months access · no auto-renewal</div>
+      </div>
+
+      <!-- PROFESSIONAL -->
+      <div class="plan feat">
+        <span class="badge">Engineering Workspace</span>
+        <h3>Engineering Pro</h3>
+        <p class="tag">Engineering workspace — saved designs, BOM, costing, reports &amp; tools</p>
+        <div class="price">$599<small> / 12 months</small></div>
+        <div class="save">Everything in Learning, plus full engineering workspace:</div>
+        <ul>
+          <li><span class="ok">✓</span> Everything in Learning ($199 tier)</li>
+          <li><span class="plus">+</span> <b>Saved Designs &amp; Design History</b> (store &amp; revise active transformer designs)</li>
+          <li><span class="plus">+</span> <b>Project Workspace</b> (organise client, grid &amp; tender transformer jobs)</li>
+          <li><span class="plus">+</span> <b>BOM &amp; Active Material Costing</b> (copper, core steel, oil &amp; tank cost models)</li>
+          <li><span class="plus">+</span> <b>Automated PDF Engineering Reports</b> (formal calculation sheets &amp; client submittals)</li>
+          <li><span class="plus">+</span> <b>Rating Plate Generator</b> (IEC 60076 &amp; IEEE C57 compliant nameplates)</li>
+          <li><span class="plus">+</span> <b>Factory Test Report Generator</b> (routine &amp; type test certificate builder)</li>
+          <li><span class="plus">+</span> <b>Country Design Adapter</b> (auto-tune designs for 50/60 Hz, local standards &amp; grid codes)</li>
+          <li><span class="plus">+</span> <b>Side-by-Side Design Comparison Engine</b> (compare losses, weight, dimensions &amp; cost)</li>
+          <li><span class="plus">+</span> Priority capstone review &amp; direct engineering support</li>
+        </ul>
+        <a class="cta primary" id="ctaProfessional" href="#" target="_blank" rel="noopener" data-track="learning_checkout_started" data-track-plan="Professional">Unlock Engineering Pro — $599 →</a>
+        <div class="fine">Single payment · 12 months access · no auto-renewal · 1 engineer seat</div>
+      </div>
+
+      <!-- Team -->
+      <div class="plan">
+        <h3>Engineering Team</h3>
+        <p class="tag">Team tools &amp; engineering workspace for manufacturers, EPCs and utilities</p>
+        <div class="price">$1,999<small> / 12 months</small></div>
+        <div class="save">Everything in Engineering Pro, plus:</div>
+        <ul>
+          <li><span class="ok">✓</span> Everything in Engineering Pro workspace</li>
+          <li><span class="plus">+</span> Up to 10 team members on one plan</li>
+          <li><span class="plus">+</span> Shared team project workspace &amp; design library</li>
+          <li><span class="plus">+</span> A shared team access link — no per-seat setup</li>
+          <li><span class="plus">+</span> Written team rollout guide &amp; onboarding session</li>
+          <li><span class="plus">+</span> Priority capstone review for the whole team</li>
+        </ul>
+        <a class="cta primary" id="ctaEnterprise" href="#" target="_blank" rel="noopener" data-track="learning_checkout_started" data-track-plan="Team">Unlock Engineering Team — $1,999 →</a>
+        <div class="fine">Single payment · 12 months access · no auto-renewal · up to 10 seats</div>
+      </div>
+
+    </div>
+
+    <!-- SUPPLIER PRO -->
+    <div id="suppliers" class="section-head" style="margin:36px 0 16px">
+      <h2 style="font-size:1.45rem;color:var(--accent)">2. For Transformer &amp; Component Suppliers (Supplier Pro)</h2>
+      <p>Transform your directory presence into an operating lead pipeline: RFQ inbox, response tracking, search impressions, verified badges, and category visibility. <i>Buying never changes organic search ranking or technical match evaluation.</i></p>
+    </div>
+
+    <div class="grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:34px">
+      <div class="card" style="padding:22px;border-radius:14px;background:var(--card);border:1px solid var(--border);display:flex;flex-direction:column;justify-content:space-between">
+        <div>
+          <h3 style="margin:0 0 4px;font-size:1.15rem;color:var(--ink)">Listed Supplier</h3>
+          <div style="color:var(--muted);font-weight:700;font-size:1.2rem;margin:6px 0">Free</div>
+          <p style="color:var(--muted);font-size:.85rem;line-height:1.5;margin:0 0 14px">Standard factual directory listing based on public industry data — company name, country, plant location, and official website.</p>
+          <ul style="font-size:.84rem;color:var(--text);padding-left:16px;margin:0 0 14px;line-height:1.6">
+            <li>Public directory listing</li>
+            <li>Basic category classification</li>
+            <li>Standard search presence</li>
+          </ul>
+        </div>
+        <a href="manufacturers.html" class="btn btn-outline btn-sm" style="text-align:center">Browse Directory →</a>
+      </div>
+
+      <div class="card" style="padding:22px;border-radius:14px;background:var(--card);border:1px solid var(--border);display:flex;flex-direction:column;justify-content:space-between">
+        <div>
+          <h3 style="margin:0 0 4px;font-size:1.15rem;color:var(--ink)">Verified Supplier</h3>
+          <div style="color:var(--accent);font-weight:800;font-size:1.4rem;margin:6px 0">$499 <small style="font-size:.8rem;color:var(--muted);font-weight:600">/ 12 months</small></div>
+          <p style="color:var(--muted);font-size:.85rem;line-height:1.5;margin:0 0 14px">Direct identity and corporate contact verification confirming official company representation and contact routing.</p>
+          <ul style="font-size:.84rem;color:var(--text);padding-left:16px;margin:0 0 14px;line-height:1.6">
+            <li><b style="color:#16a34a">VERIFIED</b> trust badge on profile</li>
+            <li>Enhanced profile with corporate logo &amp; brochures</li>
+            <li>Direct procurement contact routing</li>
+            <li>Eligibility to receive direct buyer inquiries</li>
+          </ul>
+        </div>
+        <a href="verified.html" class="btn btn-outline btn-sm" style="text-align:center">Get Verified →</a>
+      </div>
+
+      <div class="card" style="padding:22px;border-radius:14px;background:var(--card);border:2px solid var(--amber);box-shadow:0 8px 24px rgba(245,166,35,.15);display:flex;flex-direction:column;justify-content:space-between;position:relative">
+        <span style="position:absolute;top:-11px;left:20px;background:var(--amber);color:var(--navy);font-size:.66rem;font-weight:800;text-transform:uppercase;padding:2px 10px;border-radius:999px">Full Operating Suite</span>
+        <div>
+          <h3 style="margin:0 0 4px;font-size:1.15rem;color:var(--ink)">Supplier Pro</h3>
+          <div style="color:var(--accent);font-weight:800;font-size:1.4rem;margin:6px 0">$1,499 <small style="font-size:.8rem;color:var(--muted);font-weight:600">/ 12 months</small></div>
+          <p style="color:var(--muted);font-size:.85rem;line-height:1.5;margin:0 0 14px">Complete commercial operating workspace for sales, tender response, and global procurement lead management.</p>
+          <ul style="font-size:.84rem;color:var(--text);padding-left:16px;margin:0 0 14px;line-height:1.6">
+            <li><b>Everything in Verified Supplier</b></li>
+            <li><b>Dedicated RFQ Inbox &amp; Lead Status Tracking</b></li>
+            <li><b>Search Impressions &amp; Profile Analytics Dashboard</b></li>
+            <li><b>Target Market &amp; Sourcing Interest Alerts</b></li>
+            <li><b>Direct CRM &amp; Lead Exporting (CSV/JSON)</b></li>
+            <li><b>Intel Pro access included for up to 3 sales reps</b></li>
+          </ul>
+        </div>
+        <a href="for-manufacturers.html" class="btn btn-amber btn-sm" style="text-align:center;font-weight:800">Explore Supplier Pro →</a>
+      </div>
+    </div>
+
+    <!-- INTEL & PROCUREMENT PRO -->
+    <div id="procurement" class="section-head" style="margin:36px 0 16px">
+      <h2 style="font-size:1.45rem">3. For Market &amp; Procurement Teams (Intel Pro)</h2>
+      <p>Custom project watchlists, global tender tracking, company expansion timelines, raw data exports, and the evidence-based requirement matcher.</p>
+    </div>
+
+    <div class="grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:40px">
+      <div class="card" style="padding:22px;border-radius:14px;background:var(--card);border:1px solid var(--border);display:flex;flex-direction:column;justify-content:space-between">
+        <div>
+          <h3 style="margin:0 0 4px;font-size:1.15rem;color:var(--ink)">Intel Free</h3>
+          <div style="color:var(--muted);font-weight:700;font-size:1.2rem;margin:6px 0">Free</div>
+          <p style="color:var(--muted);font-size:.85rem;line-height:1.5;margin:0 0 14px">Access to the Daily Intel briefing, headline announcements, public tenders, and manufacturer listings.</p>
+          <ul style="font-size:.84rem;color:var(--text);padding-left:16px;margin:0 0 14px;line-height:1.6">
+            <li>Daily news &amp; market intelligence feed</li>
+            <li>Public tender announcements</li>
+            <li>Basic company following</li>
+          </ul>
+        </div>
+        <a href="intel.html" class="btn btn-outline btn-sm" style="text-align:center">Read Daily Intel →</a>
+      </div>
+
+      <div class="card" style="padding:22px;border-radius:14px;background:var(--card);border:1px solid var(--border);display:flex;flex-direction:column;justify-content:space-between">
+        <div>
+          <h3 style="margin:0 0 4px;font-size:1.15rem;color:var(--ink)">Intel Pro</h3>
+          <div style="color:var(--accent);font-weight:800;font-size:1.4rem;margin:6px 0">$499 <small style="font-size:.8rem;color:var(--muted);font-weight:600">/ 12 months ($49/mo)</small></div>
+          <p style="color:var(--muted);font-size:.85rem;line-height:1.5;margin:0 0 14px">Advanced intelligence filters, company expansion trackers, customized email signals, and deep tender evaluation.</p>
+          <ul style="font-size:.84rem;color:var(--text);padding-left:16px;margin:0 0 14px;line-height:1.6">
+            <li><b>Custom Follow Watchlists</b> (Companies, Markets, Materials)</li>
+            <li><b>Real-time Tender &amp; Project Award Alerts</b></li>
+            <li><b>Evidence-based Match for Me Tool</b></li>
+            <li><b>Historical Project &amp; Award Timelines</b></li>
+            <li><b>Country Grid &amp; Substation Dashboards</b></li>
+          </ul>
+        </div>
+        <a href="intel.html" class="btn btn-outline btn-sm" style="text-align:center">Explore Intel Pro →</a>
+      </div>
+
+      <div class="card" style="padding:22px;border-radius:14px;background:var(--card);border:1px solid var(--border);display:flex;flex-direction:column;justify-content:space-between">
+        <div>
+          <h3 style="margin:0 0 4px;font-size:1.15rem;color:var(--ink)">Enterprise / Procurement Team</h3>
+          <div style="color:var(--accent);font-weight:800;font-size:1.4rem;margin:6px 0">$1,999 <small style="font-size:.8rem;color:var(--muted);font-weight:600">/ 12 months</small></div>
+          <p style="color:var(--muted);font-size:.85rem;line-height:1.5;margin:0 0 14px">Multi-seat intelligence suite for utility procurement departments, EPC estimators, and investment research desks.</p>
+          <ul style="font-size:.84rem;color:var(--text);padding-left:16px;margin:0 0 14px;line-height:1.6">
+            <li><b>Up to 10 shared team seats</b></li>
+            <li><b>Shared procurement watchlists &amp; shortlisted suppliers</b></li>
+            <li><b>Raw CSV / JSON dataset exports</b></li>
+            <li><b>Bespoke market research briefings &amp; inquiry support</b></li>
+          </ul>
+        </div>
+        <a href="contact.html" class="btn btn-outline btn-sm" style="text-align:center">Contact Procurement Sales →</a>
+      </div>
+    </div>
+
+    <div class="section-head" style="margin:22px 0 10px"><h3 style="font-size:1.02rem;color:var(--accent);margin:0">For Events &amp; Marketing</h3></div>
+    <div class="grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px">
+      <div class="card" style="padding:16px;border-radius:12px"><b>Featured Event</b><div style="color:var(--accent);font-weight:700;margin:4px 0">$299 / event</div><p style="color:var(--muted);font-size:.82rem;margin:0">Prominent, clearly-labelled placement, logo/banner, enhanced event page, registration CTA. FEATURED is promotional placement, not an editorial recommendation.</p><a href="events.html" style="font-size:.8rem;font-weight:700;color:var(--accent)">Feature an event &rarr;</a></div>
+      <div class="card" style="padding:16px;border-radius:12px"><b>Featured Exhibitor</b><div style="color:var(--accent);font-weight:700;margin:4px 0">$399 / event</div><p style="color:var(--muted);font-size:.82rem;margin:0">FEATURED label, logo, booth number, products, brochure, manufacturer profile, meeting CTA. FEATURED never implies a recommendation.</p><a href="events.html" style="font-size:.8rem;font-weight:700;color:var(--accent)">Feature an exhibitor &rarr;</a></div>
+      <div class="card" style="padding:16px;border-radius:12px"><b>Hosted Webinar</b><div style="color:var(--accent);font-weight:700;margin:4px 0">from $1,500</div><p style="color:var(--muted);font-size:.82rem;margin:0">Event page, registration, promotion, hosting, recording where supported, post-event replay. Attendee reporting subject to privacy/consent. Inquiry via email — not a live Stripe checkout.</p><a href="sponsor.html#hosted-webinar" style="font-size:.8rem;font-weight:700;color:var(--accent)">Host a webinar &rarr;</a></div>
+      <div class="card" style="padding:16px;border-radius:12px"><b>Sponsorship</b><div style="color:var(--accent);font-weight:700;margin:4px 0">from $299</div><p style="color:var(--muted);font-size:.82rem;margin:0">Daily Intel sponsor, event spotlight, category/market sponsor, newsletter sponsor, annual knowledge partner. Every placement is visibly SPONSORED — we never sell editorial conclusions.</p><a href="sponsor.html" style="font-size:.8rem;font-weight:700;color:var(--accent)">Sponsor &rarr;</a></div>
+    </div>
+
+    <div class="section-head" style="margin:30px 0 18px"><h2>Compare plans</h2><p>Every plan includes the full course. The difference is turnaround, team size and support.</p></div>
+    <div class="cmp-wrap">
+      <table class="cmp">
+        <thead><tr><th>Feature</th><th>Learning<br>$199</th><th>Professional<br>$599</th><th>Team<br>$1,999</th></tr></thead>
+        <tbody>
+          <tr><td>26-chapter masterclass, tutorial &amp; academy</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
+          <tr><td>10 interactive 3D component models + Grid Lab</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
+          <tr><td>Live design calculator</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
+          <tr><td>Design Engineer Track — Levels 1–4</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
+          <tr><td>Saved Designs &amp; Design History</td><td class="n">—</td><td class="y">✓ Unlimited</td><td class="y">✓ Unlimited</td></tr>
+          <tr><td>Project Workspace &amp; Client Files</td><td class="n">—</td><td class="y">✓</td><td class="y">✓ Shared team library</td></tr>
+          <tr><td>BOM &amp; Active Material Costing</td><td class="n">—</td><td class="y">✓</td><td class="y">✓</td></tr>
+          <tr><td>Automated PDF Engineering Reports</td><td class="n">—</td><td class="y">✓</td><td class="y">✓</td></tr>
+          <tr><td>Rating Plate Generator (IEC/IEEE)</td><td class="n">—</td><td class="y">✓</td><td class="y">✓</td></tr>
+          <tr><td>Factory Test Report Generator</td><td class="n">—</td><td class="y">✓</td><td class="y">✓</td></tr>
+          <tr><td>Country Design Adapter (50/60 Hz, grid codes)</td><td class="n">—</td><td class="y">✓</td><td class="y">✓</td></tr>
+          <tr><td>Side-by-side design comparison</td><td class="n">—</td><td class="y">✓</td><td class="y">✓</td></tr>
+          <tr><td>Capstone review + written feedback</td><td class="y">✓ Standard</td><td class="y">✓ Priority</td><td class="y">✓ Priority</td></tr>
+          <tr><td>Early access to new content &amp; tools</td><td class="n">—</td><td class="y">✓</td><td class="y">✓</td></tr>
+          <tr><td>Priority engineering support</td><td class="n">—</td><td class="y">✓</td><td class="y">✓</td></tr>
+          <tr><td>Seats included</td><td>1</td><td>1</td><td>Up to 10</td></tr>
+          <tr><td>Team rollout guide</td><td class="n">—</td><td class="n">—</td><td class="y">✓</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="faq">
+      <div class="section-head" style="margin-bottom:18px"><h2>Questions</h2></div>
+      <details>
+        <summary>Is this a subscription?</summary>
+        <p><strong>Learning</strong> is a single $199 payment for 12 months of access. Checkout runs through Stripe; on return your access unlocks automatically in the browser you paid from, verified server-side. (If the checkout is temporarily unavailable the button safely falls back to an email request rather than charging you without a confirmable access path.)</p>
+        <p><strong>Professional</strong> and <strong>Team</strong> are single payments. They unlock everything on that plan for 12 months with no auto-renewal — if you want to continue afterwards, you purchase again.</p>
+      </details>
+      <details>
+        <summary>Which plan should I pick?</summary>
+        <p>If you're learning on your own, Learning covers the entire course, every 3D model, the calculator and the full Design Engineer Track — most people never need more than that. Professional is for anyone who wants faster capstone turnaround and first access to new material. Team is for a team of up to 10 sharing one plan.</p>
+      </details>
+      <details>
+        <summary>How do I access my plan after paying?</summary>
+        <p>Checkout runs through Stripe. When you return to TransformerPath, your access is unlocked automatically in the browser you paid from — no account or password needed. If you switch devices or clear your browser data, open this page from the device you checked out on, or contact us and we'll help you recover access.</p>
+      </details>
+      <details>
+        <summary>How does the Team link work?</summary>
+        <p>After purchase you'll receive one shared link — send it to up to 10 teammates and each of them unlocks the course in their own browser by opening it once. There's no per-seat account setup on our side.</p>
+      </details>
+      <details>
+        <summary>Can I upgrade later?</summary>
+        <p>Yes — purchase the higher plan any time and your access is extended and upgraded automatically; you keep whichever expiry date is later, you never lose time you've already paid for.</p>
+      </details>
+      <details>
+        <summary>Does the design calculator send my inputs anywhere?</summary>
+        <p>No. The IEC 60076 calculator runs entirely in your browser — there's no server call, no AI model in the loop, nothing logged on our side. Your inputs and your PDF exports never leave your device. You can verify this yourself: open your browser's network tab while you run a design and watch nothing go out.</p>
+      </details>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+        <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data. Built for utilities, transformer manufacturers, component suppliers, EPCs, consultants and engineers.</p>
+      </div>
+      <div><p class="footer-col-label">INTELLIGENCE</p><a href="intel.html">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="projects.html">Projects</a><a href="tenders.html">Tenders</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="map.html">Industry Map</a><a href="events.html">Events</a></div>
+      <div><p class="footer-col-label">DIRECTORY</p><a href="manufacturers.html">Manufacturers</a><a href="directory.html">Directory Index</a><a href="components.html">Components &amp; Materials</a><a href="machinery.html">Machinery</a><a href="laboratories.html">Testing Labs</a><a href="services.html">Service &amp; Repair</a><a href="logistics.html">Logistics</a><a href="buyers.html">Buyers &amp; Utilities</a><a href="rfq.html">RFQ Board</a></div>
+      <div><p class="footer-col-label">ENGINEERING</p><a href="tools.html">Engineering Hub</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Interactive Models</a><a href="standards.html">Standards &amp; Codes</a><a href="knowledge.html">Knowledge Base</a><a href="case-studies.html">Case Studies</a></div>
+      <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learning Hub</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy 3D Tools</a><a href="books.html">Books</a><a href="education.html">Education</a></div>
+      <div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="pricing.html">Pricing Plans</a><a href="verified.html">Verified Profiles</a><a href="webinars.html">Webinars</a><a href="sponsor.html">Sponsorship</a><a href="associations.html">Associations</a><a href="media.html">Media</a></div>
+      <div><p class="footer-col-label">COMPANY</p><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><p class="footer-col-label">CONTACT</p>
+        <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
+        <a href="privacy.html#cookies" onclick="if(window.tpResetConsent){window.tpResetConsent();return false}">Cookie settings</a>
+        <a class="tp-li-btn tp-li-follow" data-linkedin-follow href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>Follow us on LinkedIn</a>
+        <a class="tp-li-btn tp-li-share" data-linkedin-share href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>LinkedIn</a>
+      </div>
+    </div>
+    <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var KEY = 'tp-course-access';
+  var RANK = { learner:1, professional:2, enterprise:3 };
+  var TWELVE_MONTHS = 365*24*3600*1000;
+
+  // ── Plan checkout links ──────────────────────────────────────────────
+  // Professional and Team are LIVE Stripe Payment Links. Each "after
+  // payment" redirect must point at
+  //   pricing.html?session_id={CHECKOUT_SESSION_ID}
+  // so course-gate.js can verify the payment server-side (verify-access.js)
+  // and grant the right tier on return. Never add ?unlocked= as the grant
+  // source — it is forgeable.
+  //
+  // NOTE (Learning): the old link that charged $100 was replaced. The link
+  // below was checked live on the Stripe checkout page and renders
+  // "Subscribe to Transformerpath Learning - $199.00 per year", i.e. the
+  // advertised price, billed as a one-time 12-month payment (not a subscription). Professional and
+  // Team remain one-off payments; the pricing copy states that
+  // difference per tier.
+  var PRICE = { learner: 199, professional: 599, enterprise: 1999 };
+  var LINKS = {
+    learner:      'https://buy.stripe.com/4gMbIU2lO5hj1NC5DcfYY03',
+    professional: 'https://buy.stripe.com/fZu00c3pScJL1NC3v4fYY01',
+    enterprise:   'https://buy.stripe.com/aFacMY6C4aBD2RG2r0fYY02'
+  };
+
+  var TIER_NAME = { learner: 'Learning', professional: 'Professional', enterprise: 'Team' };
+  function renderBuyCtas(configured){
+    Object.keys(LINKS).forEach(function(tier){
+      var a = document.getElementById('cta' + tier.charAt(0).toUpperCase() + tier.slice(1));
+      if (!a) return;
+      var url = LINKS[tier];
+      var name = TIER_NAME[tier] || tier;
+      var ok = configured && url && url.indexOf('REPLACE_WITH') !== 0;
+      if (ok) {
+        a.href = url;
+        a.textContent = 'Unlock ' + name + ' — $' + PRICE[tier] + ' →';
+        a.classList.remove('soon');
+        a.setAttribute('target', '_blank');
+        a.setAttribute('rel', 'noopener');
+      } else {
+        a.classList.add('soon');
+        a.href = 'mailto:hello@transformerpath.com?subject=' + encodeURIComponent('TransformerPath ' + name + ' plan');
+        a.textContent = 'Unavailable — email us to unlock →';
+        a.removeAttribute('target');
+        a.removeAttribute('rel');
+      }
+    });
+  }
+  // Start non-clickable so a click can never open a payment link before we know
+  // the backend can verify it. Enable only once /.netlify/functions/verify-access
+  // (a GET config probe — never a grant) reports configured:true; otherwise stay
+  // on the "email us" state so nobody is charged into a locked-out account.
+  Object.keys(LINKS).forEach(function(tier){
+    var a = document.getElementById('cta' + tier.charAt(0).toUpperCase() + tier.slice(1));
+    if (a) a.classList.add('soon');
+  });
+  fetch('/.netlify/functions/verify-access', { method: 'GET' })
+    .then(function(r){ return r.json().catch(function(){ return {}; }); })
+    .then(function(res){ renderBuyCtas(!!(res && res.configured)); })
+    .catch(function(){ renderBuyCtas(false); });
+
+  // ── Grant detection (mirrors course-gate.js) ────────────────────────
+  function readAccess(){ try { return JSON.parse(localStorage.getItem(KEY) || 'null'); } catch(e){ return null; } }
+  function grant(tier){
+    var now = Date.now();
+    var existing = readAccess();
+    var newExpiry = now + TWELVE_MONTHS;
+    var t = RANK[tier] ? tier : 'learner';
+    if (existing && existing.expiry > now) {
+      if (RANK[existing.tier] > RANK[t]) t = existing.tier;
+      if (existing.expiry > newExpiry) newExpiry = existing.expiry;
+    }
+    var record = { expiry:newExpiry, paid_at:(existing && existing.paid_at) || new Date().toISOString(), tier:t };
+    if (existing && existing.isCreator) record.isCreator = true;
+    try { localStorage.setItem(KEY, JSON.stringify(record)); } catch(e){}
+    return record;
+  }
+
+  var params = new URLSearchParams(location.search);
+  var stripeReturn = params.get('session_id');
+  var justGranted = null;
+
+  // Access is granted ONLY after the server verifies a paid Stripe session
+  // (functions/verify-access.js). ?unlocked= and a bare ?session_id= are no
+  // longer trusted to grant access — both were forgeable in the browser.
+  function renderBanner() {
+    params.delete('unlocked'); params.delete('session_id');
+    history.replaceState({}, '', location.pathname + (params.toString() ? '?' + params.toString() : ''));
+
+    var current = readAccess();
+    if (!(current && current.expiry > Date.now())) return;
+    var label = current.tier === 'enterprise' ? 'Team' : current.tier === 'professional' ? 'Professional' : 'Learning';
+    var b = document.getElementById('unlockBanner');
+    if (!b) return;
+    if (justGranted) {
+      b.innerHTML = '✅ You\'re unlocked — ' + label + ' plan is active on this device. <a href="learn.html" style="color:#fff;text-decoration:underline">Start learning →</a>';
+    } else {
+      b.innerHTML = '✅ ' + label + ' plan active on this device, until ' + new Date(current.expiry).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' }) + '. <a href="learn.html" style="color:#fff;text-decoration:underline">Go to Learn →</a>';
+    }
+    b.style.display = 'block';
+  }
+
+  if (stripeReturn) {
+    fetch('/.netlify/functions/verify-access', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ session_id: stripeReturn }) })
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (res && res.valid) {
+          justGranted = grant(res.tier || 'learner');
+          // Persist the server-issued entitlement token as a cookie so gated
+          // content delivery (/.netlify/functions/masterclass-content) can be
+          // verified server-side. SameSite=Lax + Secure + Path=/ + 12-month
+          // expiry. Not HttpOnly (the client entitlement gate reads it), but
+          // the token is HMAC-signed server-side and cannot be forged; expiry
+          // is enforced server-side. Never logs the token.
+          if (res.entitlement_token) {
+            var e = new Date(); e.setFullYear(e.getFullYear() + 1);
+            document.cookie = 'tp_ent=' + encodeURIComponent(res.entitlement_token) + '; expires=' + e.toUTCString() + '; path=/; SameSite=Lax' + (location.protocol === 'https:' ? '; Secure' : '');
+          }
+        }
+        renderBanner();
+      })
+      .catch(function () { renderBanner(); });
+    return;
+  }
+
+  renderBanner();
+})();
+</script>
+
+<script defer src="analytics.js?v=7"></script>
+<script src="tp-freshness.js?v=7" defer></script>
+<script src="tp-feedback.js?v=7" defer></script>
+</body>
+</html>

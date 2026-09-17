@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TX Design Masterclass — Transformer Design, Construction, 3D &amp; Calculator | TransformerPath</title>
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
+<meta name="description" content="Transformer design masterclass: 26 design chapters plus a book-matched path through operations, diagnostics, manufacturing, components, protection, specials, site, loading, repair, standards, asset management, the handbook and HVDC.">
+<style>
+
+:root{
+  --bg:#f5f7fa; --card:#ffffff; --ink:#1a2332; --muted:#5a6a7e;
+  --accent:#0b5fa5; --accent2:#f5a623; --line:#d8e0ea;
+  --cu:#c97a3d; --steel:#8a9bb0; --oil:#e8c46a; --resin:#b85c4a;
+  --good:#1d7a4f; --warn:#b5651d;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6}
+header.hero{background:linear-gradient(135deg,#0b3a63 0%,#0b5fa5 60%,#1278c8 100%);color:#fff;padding:56px 24px 48px;text-align:center}
+header.hero h1{font-size:2.1rem;font-weight:700;max-width:900px;margin:0 auto 12px}
+header.hero p{max-width:760px;margin:0 auto;opacity:.92;font-size:1.05rem}
+nav#topnav{position:sticky;top:64px;background:#0b3a63;z-index:50;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+nav#topnav .wrap{max-width:1100px;margin:0 auto;display:flex;align-items:center;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin;padding:0 4px}
+nav#topnav a{color:#cfe2f5;text-decoration:none;padding:10px 12px;font-size:.82rem;font-weight:600;white-space:nowrap;flex:none;border-bottom:2px solid transparent}
+nav#topnav a:hover{background:#0b5fa5;color:#fff}
+nav#topnav a.topnav-active{color:#fff;border-bottom-color:var(--amber,#f5a623);background:rgba(255,255,255,.08)}
+nav#topnav a:focus-visible{outline:2px solid var(--amber,#f5a623);outline-offset:-2px}
+main{max-width:1100px;margin:0 auto;padding:32px 20px 80px;overflow-x:hidden}
+section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:34px 38px;margin:28px 0;box-shadow:0 1px 4px rgba(20,40,70,.06);scroll-margin-top:112px}
+section h2{font-size:1.55rem;color:var(--accent);border-bottom:3px solid var(--accent2);padding-bottom:8px;margin-bottom:20px}
+section h3{font-size:1.18rem;margin:26px 0 10px;color:#0b3a63}
+section h4{font-size:1.02rem;margin:18px 0 8px;color:#34516e}
+p{margin:10px 0}
+ul,ol{margin:10px 0 10px 26px}
+li{margin:5px 0}
+table{border-collapse:collapse;width:100%;margin:16px 0;font-size:.92rem}
+th{background:#0b3a63;color:#fff;padding:9px 11px;text-align:left}
+td{border:1px solid var(--line);padding:8px 11px;vertical-align:top}
+tr:nth-child(even) td{background:#f2f6fa}
+.fig{margin:22px auto;text-align:center;max-width:980px}
+.fig svg{max-width:100%;height:auto;background:#fdfefe;border:1px solid var(--line);border-radius:8px}
+.fig .cap{font-size:.86rem;color:var(--muted);margin-top:8px;font-style:italic}
+.eq{background:#eef4fb;border-left:4px solid var(--accent);padding:14px 18px;margin:14px 0;font-family:Georgia,'Times New Roman',serif;font-size:1.06rem;border-radius:0 8px 8px 0;overflow-x:auto}
+.note{background:#fff7ec;border-left:4px solid var(--accent2);padding:12px 16px;margin:14px 0;border-radius:0 8px 8px 0;font-size:.94rem}
+.note b:first-child{color:var(--warn)}
+.keypoint{background:#edf7f1;border-left:4px solid var(--good);padding:12px 16px;margin:14px 0;border-radius:0 8px 8px 0;font-size:.94rem}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:820px){.grid2{grid-template-columns:1fr}section{padding:24px 18px}}
+.tag{display:inline-block;background:#e3eefa;color:var(--accent);font-size:.74rem;font-weight:700;padding:2px 9px;border-radius:10px;margin-right:6px;vertical-align:middle}
+details{border:1px solid var(--line);border-radius:8px;padding:12px 16px;margin:12px 0;background:#fafcfe}
+details summary{cursor:pointer;font-weight:600;color:var(--accent)}
+footer{background:#0b3a63;color:#bcd3e8;text-align:center;padding:26px;font-size:.85rem}
+sub,sup{font-size:.72em}
+code{background:#eef2f7;padding:1px 6px;border-radius:4px;font-size:.9em}
+.toc-card{background:#f0f6fc;border:1px solid var(--line);border-radius:10px;padding:18px 24px;margin:0 0 6px}
+.toc-card ol{columns:2;column-gap:40px;margin-left:20px}
+@media(max-width:700px){.toc-card ol{columns:1}}
+.toc-card a{color:var(--accent);text-decoration:none;font-weight:600}
+.toc-card a:hover{text-decoration:underline}
+
+
+/* ---- Masterclass shell additions ---- */
+.mc-hero{background:linear-gradient(135deg,#071f38 0%,#0b3a63 45%,#0b5fa5 100%);color:#fff;padding:38px 24px 30px;text-align:center;position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+.mc-hero .eyebrow{letter-spacing:.16em;text-transform:uppercase;font-size:.72rem;font-weight:700;color:#ffd9b8;margin-bottom:10px}
+.mc-hero h1{font-size:1.8rem;font-weight:800;max-width:900px;margin:0 auto 10px;line-height:1.18}
+.mc-hero p.lead{max-width:720px;margin:0 auto 16px;opacity:.92;font-size:.98rem}
+.mc-badges{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:18px}
+.mc-badge{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:30px;padding:7px 16px;font-size:.84rem;font-weight:600}
+.mc-badge b{color:#ffd9b8}
+.mc-cta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:26px}
+.mc-cta a{display:inline-block;padding:12px 22px;border-radius:8px;font-weight:700;text-decoration:none;font-size:.95rem}
+.mc-cta a.primary{background:#f5a623;color:#0d1b2e}
+.mc-cta a.ghost{background:rgba(255,255,255,.10);color:#fff;border:1px solid rgba(255,255,255,.3)}
+.mc-cta a:hover{transform:translateY(-1px)}
+#mc-progress{position:fixed;top:0;left:0;height:4px;background:linear-gradient(90deg,#f5a623,#ffe0a3);width:0;z-index:250;transition:width .1s}
+.mc-crumb{max-width:1100px;margin:14px auto 0;padding:0 20px;font-size:.82rem;color:var(--muted)}
+.mc-crumb a{color:var(--accent);text-decoration:none}
+.mc-crumb a:hover{text-decoration:underline}
+.mc-chapter-tag{font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;font-weight:700}
+.mc-chapter-nav{display:flex;justify-content:space-between;gap:12px;margin-top:22px;padding-top:14px;border-top:1px solid var(--line);flex-wrap:wrap}
+.mc-chapter-nav a{color:var(--accent);text-decoration:none;font-weight:600;padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:.88rem}
+.mc-chapter-nav a:hover{background:var(--card);border-color:var(--accent)}
+.mc-chapter-nav .mc-disabled{color:var(--muted);border-color:var(--border);opacity:.5}
+.mc-go-deeper{background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:10px 14px;margin-top:16px;font-size:.86rem;color:var(--muted)}
+.mc-go-deeper b{color:var(--ink)}
+.mc-go-deeper a{color:var(--accent);text-decoration:none;font-weight:600}
+.mc-go-deeper a:hover{text-decoration:underline}
+.mc-shell{background:var(--card);border:1px dashed var(--border);border-radius:12px;padding:22px 24px;margin:22px 0}
+.mc-shell h2{margin-top:8px}
+.embed-panel{border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:26px 0;background:#fff;box-shadow:0 4px 18px rgba(20,40,70,.10)}
+.embed-head{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 18px;background:#f4f8fc;flex-wrap:wrap}
+.embed-title{font-weight:800;color:#0b3a63;font-size:1.05rem;margin-right:10px}
+.embed-sub{color:var(--muted);font-size:.86rem}
+.embed-open{background:#0b3a63;color:#fff !important;padding:8px 14px;border-radius:7px;text-decoration:none;font-size:.82rem;font-weight:700;white-space:nowrap}
+.embed-open:hover{background:#0b5fa5}
+.embed-frame{position:relative;width:100%;background:#0a1622}
+.embed-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#0a1622}
+.embed-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#9fb4cc;font-size:.92rem;padding:24px;text-align:center;z-index:-1}
+.embed-fallback a{color:#ffd9b8}
+.embed-intro{background:#fff7ec;border-left:4px solid var(--accent2);padding:14px 18px;margin:18px 0 0;border-radius:0 8px 8px 0;font-size:.96rem}
+.mc-labstrip{background:#071f38;color:#cfe2f5;padding:30px 20px;text-align:center}
+.mc-labstrip h2{color:#fff;border:0;font-size:1.5rem;margin-bottom:6px}
+.mc-labstrip p{max-width:720px;margin:0 auto 18px;opacity:.85;font-size:.95rem}
+.mc-labgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;max-width:1000px;margin:0 auto}
+.mc-labgrid a{display:block;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:18px 16px;text-decoration:none;color:#fff;transition:.15s}
+.mc-labgrid a:hover{background:rgba(245,166,35,.20);border-color:#f5a623;transform:translateY(-2px)}
+.mc-labgrid .ic{font-size:1.7rem;display:block;margin-bottom:8px}
+.mc-labgrid .t{font-weight:700;font-size:.95rem}
+.mc-labgrid .d{font-size:.78rem;opacity:.8;margin-top:4px}
+nav#topnav a.toolnav{border-radius:6px;margin-left:5px}
+@media(max-width:820px){.mc-hero h1{font-size:1.55rem}}
+@media(max-width:480px){.mc-hero{padding:28px 16px 24px}.mc-hero h1{font-size:1.28rem;padding:0 4px}}
+
+</style>
+    <!-- 26-chapter course. Learn + Engineer Track deep-link here (chapter 26 = #datalab).
+         The 3D lab strip is #lab, immediately after the data appendix. -->
+    <link rel="canonical" href="https://transformerpath.com/masterclass.html">
+    <script src="analytics.js?v=7" defer></script>
+    <link rel="stylesheet" href="tp-theme.css?v=6">
+<meta property="og:title" content="TX Design Masterclass — Transformer Design, Construction, 3D &amp; Calculator | TransformerPath">
+<meta property="og:description" content="26 design chapters plus a book-matched path through operations, diagnostics, manufacturing, protection, specials, site, loading, repair, standards, asset management, the handbook and HVDC.">
+<meta property="og:url" content="https://transformerpath.com/masterclass.html">
+<meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TransformerPath">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="TX Design Masterclass — Transformer Design, Construction, 3D &amp; Calculator | TransformerPath">
+<meta name="twitter:description" content="26 design chapters plus a book-matched path through operations, diagnostics, manufacturing, protection, specials, site, loading, repair, standards, asset management, the handbook and HVDC.">
+<meta name="twitter:image" content="https://transformerpath.com/brand/og-image.png">
+
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Course", "name": "TX Design Masterclass — Transformer Design", "description": "A 26-chapter transformer engineering masterclass plus a book-matched path through operations, diagnostics, manufacturing, components, protection, specials, site, loading, repair, standards, asset management, the handbook and HVDC.", "provider": {"@type": "Organization", "name": "TransformerPath", "url": "https://transformerpath.com/"}}</script>
+    <link rel="stylesheet" href="tp-nav.css?v=14">
+  <link rel="stylesheet" href="tp-feedback.css?v=14">
+<style>
+/* In-flow site chrome — explicit so the * reset cannot wash out the wordmark. */
+.tp-site-chrome{
+  position:relative !important;
+  display:block !important;
+  height:64px !important;
+  background:#0d1b2e !important;
+  color:#fff !important;
+  z-index:200;
+  box-shadow:0 2px 8px rgba(0,0,0,.25);
+  font-family:Inter,system-ui,-apple-system,sans-serif;
+}
+.tp-site-chrome .container.nav{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  height:64px !important;
+  max-width:1320px;
+  margin:0 auto;
+  padding:0 16px !important;
+  box-sizing:border-box;
+}
+.tp-site-chrome .logo{
+  display:inline-flex !important;
+  align-items:center !important;
+  gap:8px !important;
+  flex:0 0 auto !important;
+  color:#fff !important;
+  text-decoration:none !important;
+}
+.tp-site-chrome .logo .word{
+  color:#fff !important;
+  font-size:1.2rem !important;
+  font-weight:800 !important;
+  opacity:1 !important;
+  visibility:visible !important;
+  -webkit-text-fill-color:#fff;
+}
+.tp-site-chrome .logo .accent{color:#f5a623 !important;-webkit-text-fill-color:#f5a623}
+.tp-site-chrome .menu-toggle{display:none;color:#fff !important;font-size:1.6rem;background:none;border:0;padding:8px 12px;cursor:pointer;flex:0 0 auto}
+@media(max-width:1023px){
+  .tp-site-chrome .menu-toggle{display:block !important}
+  .tp-site-chrome .tpnav{display:none !important}
+  .tp-site-chrome .tpnav.open{display:flex !important}
+}
+nav#topnav{top:0}
+</style>
+<script src="consent.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
+    <nav class="tpnav" id="mainNav" aria-label="Primary">
+      <a href="intel.html">Intel</a>
+      <div class="tpnav-dropdown">
+        <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
+        <div class="tpnav-dropdown-panel" role="menu">
+          <a href="manufacturers.html">Manufacturers</a>
+          <a href="map.html">Industry Map</a>
+          <a href="grids.html">Global Grids</a>
+          <a href="components.html">Components &amp; Materials</a>
+          <a href="machinery.html">Machinery</a>
+          <a href="laboratories.html">Testing Labs</a>
+          <a href="services.html">Services &amp; Repair</a>
+          <a href="markets.html">Markets</a>
+          <a href="buyers-guide.html">Buyer's Guide</a>
+          <a href="directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
+        </div>
+      </div>
+      <a href="projects.html">Projects</a>
+      <a href="tenders.html">Tenders</a>
+      <a href="events.html">Events</a>
+      <a href="tools.html" class="tpnav-opt">Engineering</a>
+      <a href="learn.html">Learn</a>
+      <a href="rfq.html">RFQ</a>
+      <div class="tpnav-more">
+        <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
+        <div class="tpnav-more-panel" role="menu">
+          <a href="map.html" role="menuitem">Industry Map</a>
+          <a href="grids.html" role="menuitem">Global Grids</a>
+          <a href="webinars.html" role="menuitem">Webinars</a>
+          <a href="standards.html" role="menuitem">Standards &amp; Codes</a>
+          <a href="for-manufacturers.html" role="menuitem">For Manufacturers</a>
+          <a href="pricing.html" role="menuitem">Pricing Plans</a>
+          <a href="verified.html" role="menuitem">Verified Profiles</a>
+        </div>
+      </div>
+      <span class="tpnav-utils">
+        <a href="search.html" title="Search" aria-label="Search">&#128269;</a>
+        <a href="workspace.html" data-tp-account>Account</a>
+        <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">&#127769;</button>
+      </span>
+    </nav>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    // Night mode is the default; light is opt-in via the toggle.
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+
+    if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
+    updateThemeIcon();
+
+    themeToggle?.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      updateThemeIcon();
+    });
+
+    function updateThemeIcon() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+    }
+  </script>
+  <script src="tp-nav.js?v=7" defer></script>
+  <script src="tp-pwa.js?v=7" defer></script>
+</header>
+<header class="mc-hero">
+  <div class="eyebrow">TransformerPath · TX Design Masterclass</div>
+  <h1>Electrical Transformer Design &amp; Construction — the complete, interactive masterclass</h1>
+  <p class="lead">Twenty-six design chapters, then a book-matched path through operations, diagnostics, manufacturing, components, protection, specials, site work, loading, repair, standards, asset management, the handbook and HVDC. Ten interactive 3D component models, TransformerPath Grid Lab, and an IEC&nbsp;60076 design calculator sit beside the course. Each module points to its matching volume — the course teaches; the book is the reference.</p>
+  <p style="margin:14px 0 0;font-size:.9rem;color:var(--muted)"><b>Last updated:</b> 25 August 2026 &nbsp;&middot;&nbsp; <b>Engineering review:</b> methods follow the IEC 60076 and IEEE/ANSI C57 families and are cross-checked against the worked designs and the online calculator. Calculations are analytical first-pass values — check them against the current published edition of the invoked standard before reliance.</p>
+  <div class="mc-badges">
+    <span class="mc-badge"><b>26</b> design chapters</span>
+    <span class="mc-badge"><b>0–19</b> book path</span>
+    <span class="mc-badge"><b>17</b> engineering figures</span>
+    <span class="mc-badge"><b>10+1</b> 3D models &amp; Grid Lab</span>
+    <span class="mc-badge"><b>1</b> design calculator (3 modes)</span>
+    <span class="mc-badge"><b>196</b>-country adapter</span>
+    <span class="mc-badge"><b>IEC 60076</b> &amp; IEEE C57</span>
+  </div>
+  <div class="mc-cta">
+    <a class="primary" href="#fundamentals">Start the course →</a>
+    <a class="ghost" href="#txcalc">Open TX Calculation</a>
+    <a class="ghost" href="#lab">Jump to the 3D lab</a>
+  </div>
+</header>
+
+
+<nav id="topnav"><div class="wrap">
+<a href="#fundamentals">1 Fundamentals</a>
+<a href="#classification">2 Classification</a>
+<a href="#core">3 Core</a>
+<a href="#windings">4 Windings</a>
+<a href="#insulation">5 Insulation</a>
+<a href="#cooling">6 Cooling</a>
+<a href="#construction">7 Tank</a>
+<a href="#drytype">8 Dry-Type</a>
+<a href="#design">9 Design</a>
+<a href="#losses">10 Losses</a>
+<a href="#testing">11 Testing</a>
+<a href="#standards">12 Standards</a>
+<a href="#vectorgroups">13 Vector Grp</a>
+<a href="#inrush">14 Inrush</a>
+<a href="#special">15 Special</a>
+<a href="#sitelife">16 Site &amp; Life</a>
+<a href="#protection">17 Protection</a>
+<a href="#procurement">18 Procurement</a>
+<a href="#glossary">19 Glossary</a>
+<a href="#aftersales">20 After-Sales</a>
+<a href="#bushings">21 Bushings</a>
+<a href="#tapchangers">22 Tap-Changers</a>
+<a href="#stresscontrol">23 Impulse</a>
+<a href="#fireenv">24 Fire &amp; Env</a>
+<a href="#powerdesign">25 500 MVA</a>
+<a href="#datalab">26 Data</a>
+<a href="#diagnostics">V4 Diagnostics</a>
+<a href="#failures">V5 Failures</a>
+<a href="#manufacturing">V6 Manufacturing</a>
+<a href="#shortcircuit">V10 Short-circuit</a>
+<a href="#loading">V14 Loading</a>
+<a href="#repair">V15 Repair</a>
+<a href="#assetmgmt">V17 Asset mgmt</a>
+<a href="#handbook">V18 Handbook</a>
+<a href="#hvdc">V19 HVDC</a>
+<a href="#txcalc" class="toolnav" style="background:#1d7a4f;color:#fff">🧮 TX Calculation</a>
+<a href="#lab" class="toolnav" style="background:#f5a623;color:#0d1b2e">🧊 3D Lab</a>
+</div></nav>
+
+<div class="mc-crumb" aria-label="Breadcrumb"><a href="learn.html">Learn</a> › <a href="masterclass.html">Transformer Design Masterclass</a> › <span id="mcCrumbChapter">Chapter 1</span> — <span id="mcCrumbLabel">Fundamentals</span></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  var nav = document.getElementById('topnav');
+  if(!nav) return;
+  var links = Array.prototype.slice.call(nav.querySelectorAll('a[href^="#"]')).filter(function(a){
+    return a.getAttribute('href').length > 1;
+  });
+  var slots = links.map(function(a){ return { id: a.getAttribute('href').slice(1), label: a.textContent.replace(/^\d+\s*/, '').trim(), num: parseInt(String(a.textContent).trim(), 10) || 0 }; });
+  // Dedupe trailing number (e.g. '1 Fundamentals' -> num 1, label 'Fundamentals')
+  function current(){
+    var h = location.hash ? location.hash.slice(1) : (links[0] ? links[0].href.slice(1) : '');
+    var i = slots.findIndex(function(s){ return s.id === h; });
+    return i >= 0 ? i : 0;
+  }
+  function apply(idx){
+    var s = slots[idx];
+    if(!s) return;
+    links.forEach(function(l, i){ if(l.classList) l.classList.toggle('topnav-active', i === idx); });
+    // breadcrumb
+    var cB = document.getElementById('mcCrumbChapter'); if(cB) cB.textContent = (s.num ? 'Chapter ' + s.num : 'Chapter');
+    var cL = document.getElementById('mcCrumbLabel'); if(cL) cL.textContent = s.label;
+    // scroll the active tab into view within the bar (no page scroll)
+    if(links[idx] && links[idx].scrollIntoView) { try { links[idx].scrollIntoView({inline:'center', block:'nearest'}); } catch(e){} }
+    // inject per-chapter header + prev/next footer
+    var sec = document.getElementById(s.id);
+    if(sec){
+      var chap = sec.querySelector('.mc-chapter-tag'); if(!chap){
+        var tag = document.createElement('div'); tag.className='mc-chapter-tag'; tag.setAttribute('aria-hidden','true');
+        tag.textContent = 'Chapter ' + (s.num || (idx+1)) + ' of ' + slots.length + ' — ' + s.label; sec.insertBefore(tag, sec.firstChild);
+      }
+      var foot = sec.querySelector('.mc-chapter-nav'); if(!foot){
+        foot = document.createElement('div'); foot.className='mc-chapter-nav';
+        var prev = slots[idx-1], next = slots[idx+1];
+        foot.innerHTML =
+          (prev ? '<a class="mc-prev" href="#'+prev.id+'">← Previous: '+prev.label+'</a>' : '<span class="mc-prev mc-disabled">← Previous</span>') +
+          (next ? '<a class="mc-next" href="#'+next.id+'">Next: '+next.label+' →</a>' : '<span class="mc-next mc-disabled">Next →</span>');
+        sec.appendChild(foot);
+      }
+    }
+  }
+  // Set active from hash on load
+  apply(current());
+  // Update on scroll via IntersectionObserver (highlight the visible chapter)
+  if('IntersectionObserver' in window){
+    var obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ if(en.isIntersecting){ var id = en.target.id; var i = slots.findIndex(function(s){ return s.id===id; }); if(i>=0){ apply(i); if(history.replaceState) history.replaceState(null,'','#'+id); } } });
+    }, { rootMargin:'-40% 0px -50% 0px', threshold:0 });
+    slots.forEach(function(s){ var el = document.getElementById(s.id); if(el) obs.observe(el); });
+  }
+  // Update hash without jump when a nav link is clicked (jump to section, keep active)
+  document.addEventListener('click', function(e){
+    var a = e.target.closest && e.target.closest('#topnav a[href^="#"]');
+    if(a){ var id = a.getAttribute('href').slice(1); var i = slots.findIndex(function(s){ return s.id===id; }); if(i>=0) apply(i); }
+  });
+});
+</script>
+
+<main id="main" tabindex="-1">
+
+
+<section class="toc-card">
+<h3 style="margin-top:0">How to use this tutorial</h3>
+<p>Sections 1–2 establish theory and terminology — including the per-unit system and the open/short-circuit tests that measure the equivalent circuit. Sections 3–7 walk through the construction of an oil-immersed transformer from core outward, down to building factors, core noise and how windings are physically made. Section 8 covers dry-type and cast-resin technology. Section 9 is a complete worked design of a 1000 kVA distribution transformer, and §6.4 adds the matching thermal ladder. Sections 10–12 cover losses, factory testing (with impulse, heat-run and SFRA explained in detail) and the standards map. Sections 13–16 go deeper: vector groups and parallel operation, inrush and overfluxing, special transformer types, and site installation, commissioning and life management. Sections 17–20 cover protection schemes, procurement and tender economics, a glossary plus a sixteen-question self-test, and the after-sales service business. Sections 21–25 add dedicated chapters on <b>bushings</b>, <b>tap-changers</b>, <b>impulse response &amp; electrostatic stress control</b>, <b>fire, oil-containment &amp; environmental protection</b>, and a <b>worked 500 MVA EHV design</b> — each linked to its interactive 3D model.</p>
+<p style="margin-top:12px">After the design core, the <b>book-matched path</b> adds original course shells for diagnostics (Vol. 4), failures and forensics (Vol. 5), manufacturing (Vol. 6), short-circuit withstand (Vol. 10), loading (Vol. 14), repair (Vol. 15), asset management (Vol. 17), the engineer’s handbook (Vol. 18) and HVDC / grid integration (Vol. 19). Every module links to <code>/books/volume-N/</code>. The course does not reprint the books.</p>
+<p style="margin-top:12px">
+<a href="explorer.html" style="display:inline-block;background:linear-gradient(135deg,#0b5fa5,#1278c8);color:#fff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;box-shadow:0 2px 8px rgba(11,95,165,.35);margin-right:10px">🧊 3D: Distribution &amp; Cast-Resin →</a>
+<a href="power3d.html" style="display:inline-block;background:linear-gradient(135deg,#a86a05,#f5a623);color:#fff;text-decoration:none;font-weight:700;padding:12px 22px;border-radius:10px;box-shadow:0 2px 8px rgba(245,166,35,.35)">🏗 3D: Power Transformer (100 MVA) →</a><br>
+<span style="font-size:.85rem;color:var(--muted)">Rotate, explode and dissect the transformers in 3D — exploded-view slider, winding cutaway, animated oil flow, click any part for its engineering role. (Companion files in this folder; need an internet connection once to load the 3D engine.)</span></p>
+</section>
+
+<section id="fundamentals">
+<h2>1. Fundamentals of Transformer Operation</h2>
+<p>A transformer transfers electrical energy between two or more circuits through electromagnetic induction, with no moving parts and no electrical connection between windings (autotransformers excepted). An alternating voltage applied to the primary winding drives a magnetising current that establishes an alternating flux Φ in the laminated steel core. This mutual flux links the secondary winding and induces a voltage in it proportional to its number of turns.</p>
+
+<div class="fig">
+<svg viewBox="0 0 760 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Basic two-winding transformer on a core">
+  <defs>
+    <marker id="arrF" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L8,4.5 L0,9 z" fill="#0b5fa5"/></marker>
+  </defs>
+  <!-- core -->
+  <rect x="220" y="50" width="320" height="260" fill="none" stroke="#8a9bb0" stroke-width="44"/>
+  <rect x="220" y="50" width="320" height="260" fill="none" stroke="#5a6a7e" stroke-width="2" stroke-dasharray="4 3"/>
+  <!-- flux path -->
+  <rect x="220" y="50" width="320" height="260" fill="none" stroke="#0b5fa5" stroke-width="2.5" stroke-dasharray="8 6" marker-mid="url(#arrF)"/>
+  <path d="M380 50 l14 0" stroke="#0b5fa5" stroke-width="2.5" marker-end="url(#arrF)"/>
+  <path d="M380 310 l-14 0" stroke="#0b5fa5" stroke-width="2.5" marker-end="url(#arrF)"/>
+  <text x="380" y="36" font-size="15" fill="#0b5fa5" text-anchor="middle" font-style="italic">mutual flux Φ<tspan dy="3" font-size="11">m</tspan></text>
+  <!-- primary winding -->
+  <g stroke="#c97a3d" stroke-width="6" fill="none">
+    <path d="M198 110 a22 14 0 1 0 0 28"/><path d="M198 140 a22 14 0 1 0 0 28"/>
+    <path d="M198 170 a22 14 0 1 0 0 28"/><path d="M198 200 a22 14 0 1 0 0 28"/>
+  </g>
+  <line x1="176" y1="110" x2="120" y2="110" stroke="#1a2332" stroke-width="2.5"/>
+  <line x1="176" y1="228" x2="120" y2="228" stroke="#1a2332" stroke-width="2.5"/>
+  <circle cx="116" cy="110" r="4" fill="#1a2332"/><circle cx="116" cy="228" r="4" fill="#1a2332"/>
+  <text x="86" y="160" font-size="16" fill="#1a2332">V₁</text>
+  <text x="64" y="183" font-size="13" fill="#5a6a7e">N₁ turns</text>
+  <text x="150" y="100" font-size="14" fill="#c97a3d" font-weight="bold">Primary</text>
+  <!-- secondary winding -->
+  <g stroke="#b85c4a" stroke-width="6" fill="none">
+    <path d="M562 118 a22 14 0 1 1 0 28"/><path d="M562 148 a22 14 0 1 1 0 28"/>
+    <path d="M562 178 a22 14 0 1 1 0 28"/>
+  </g>
+  <line x1="584" y1="118" x2="648" y2="118" stroke="#1a2332" stroke-width="2.5"/>
+  <line x1="584" y1="206" x2="648" y2="206" stroke="#1a2332" stroke-width="2.5"/>
+  <circle cx="652" cy="118" r="4" fill="#1a2332"/><circle cx="652" cy="206" r="4" fill="#1a2332"/>
+  <text x="668" y="156" font-size="16" fill="#1a2332">V₂</text>
+  <text x="664" y="180" font-size="13" fill="#5a6a7e">N₂ turns</text>
+  <text x="560" y="100" font-size="14" fill="#b85c4a" font-weight="bold">Secondary</text>
+  <!-- core label -->
+  <text x="380" y="190" font-size="14" fill="#5a6a7e" text-anchor="middle">Laminated CRGO</text>
+  <text x="380" y="208" font-size="14" fill="#5a6a7e" text-anchor="middle">steel core</text>
+</svg>
+<div class="cap">Fig. 1.1 — Elementary two-winding transformer. Alternating flux Φ<sub>m</sub> (dashed) links both windings through the laminated core.</div>
+</div>
+
+<h3>1.1 The EMF equation</h3>
+<p>For sinusoidal excitation at frequency <i>f</i>, with peak core flux Φ<sub>m</sub> (Wb), the RMS voltage induced in a winding of N turns is:</p>
+<div class="eq">E = 4.44 · f · N · Φ<sub>m</sub> = 4.44 · f · N · B<sub>m</sub> · A<sub>c</sub> &nbsp;&nbsp;(volts)</div>
+<p>where B<sub>m</sub> is the peak flux density (T) and A<sub>c</sub> the net core cross-section (m²). This single equation drives the entire design: it ties the voltage rating to the product of turns, core area and flux density. The designer trades copper (turns) against iron (core area) — the classic <b>volts-per-turn</b> decision.</p>
+<div class="eq">Volts per turn:&nbsp; E<sub>t</sub> = 4.44 · f · B<sub>m</sub> · A<sub>c</sub> = K·√S&nbsp;&nbsp; (empirically, K ≈ 0.3–0.45 for distribution, 0.6–1.1 for power transformers; S in kVA)</div>
+
+<h3>1.2 Ideal vs. real transformer — the equivalent circuit</h3>
+<p>An ideal transformer has V₁/V₂ = N₁/N₂ = I₂/I₁ and no losses. A real transformer adds four imperfections, each with a physical origin in the construction:</p>
+<div class="table-wrap"><table>
+<tr><th>Element</th><th>Symbol</th><th>Physical origin</th><th>Design lever</th></tr>
+<tr><td>Winding resistance</td><td>R₁, R₂</td><td>Resistivity of copper/aluminium conductor</td><td>Conductor cross-section, mean turn length</td></tr>
+<tr><td>Leakage reactance</td><td>X₁, X₂</td><td>Flux that links one winding only, in the duct between windings</td><td>Winding geometry, HV–LV gap, winding height</td></tr>
+<tr><td>Core (iron) loss</td><td>R<sub>c</sub></td><td>Hysteresis + eddy currents in core steel</td><td>Steel grade, lamination thickness, B<sub>m</sub></td></tr>
+<tr><td>Magnetising reactance</td><td>X<sub>m</sub></td><td>Finite permeability of core → magnetising current</td><td>Core material, joint quality, B<sub>m</sub></td></tr>
+</table></div>
+
+<div class="fig">
+<svg viewBox="0 0 820 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Transformer equivalent circuit referred to primary">
+  <g stroke="#1a2332" stroke-width="2" fill="none">
+    <line x1="40" y1="60" x2="130" y2="60"/>
+    <rect x="130" y="48" width="70" height="24" fill="#fff"/>
+    <line x1="200" y1="60" x2="240" y2="60"/>
+    <path d="M240 60 q10 -18 20 0 q10 -18 20 0 q10 -18 20 0 q10 -18 20 0"/>
+    <line x1="320" y1="60" x2="420" y2="60"/>
+    <line x1="420" y1="60" x2="500" y2="60"/>
+    <rect x="500" y="48" width="70" height="24" fill="#fff"/>
+    <line x1="570" y1="60" x2="610" y2="60"/>
+    <path d="M610 60 q10 -18 20 0 q10 -18 20 0 q10 -18 20 0 q10 -18 20 0"/>
+    <line x1="690" y1="60" x2="780" y2="60"/>
+    <line x1="40" y1="200" x2="780" y2="200"/>
+    <!-- shunt branch -->
+    <line x1="420" y1="60" x2="420" y2="92"/>
+    <line x1="385" y1="92" x2="455" y2="92"/>
+    <rect x="370" y="92" width="30" height="70" fill="#fff"/>
+    <path d="M440 100 q-14 8 0 16 q-14 8 0 16 q-14 8 0 16 q-14 8 0 16" />
+    <line x1="385" y1="162" x2="385" y2="178"/><line x1="440" y1="164" x2="440" y2="178"/>
+    <line x1="385" y1="178" x2="440" y2="178"/>
+    <line x1="420" y1="178" x2="420" y2="200"/>
+    <line x1="385" y1="92" x2="385" y2="92"/>
+    <line x1="440" y1="92" x2="440" y2="100"/>
+    <line x1="385" y1="92" x2="385" y2="92"/>
+  </g>
+  <circle cx="40" cy="60" r="4" fill="#1a2332"/><circle cx="40" cy="200" r="4" fill="#1a2332"/>
+  <circle cx="780" cy="60" r="4" fill="#1a2332"/><circle cx="780" cy="200" r="4" fill="#1a2332"/>
+  <text x="158" y="40" font-size="15" text-anchor="middle" fill="#0b5fa5" font-weight="bold">R₁</text>
+  <text x="280" y="32" font-size="15" text-anchor="middle" fill="#0b5fa5" font-weight="bold">X₁</text>
+  <text x="528" y="40" font-size="15" text-anchor="middle" fill="#0b5fa5" font-weight="bold">R₂′</text>
+  <text x="650" y="32" font-size="15" text-anchor="middle" fill="#0b5fa5" font-weight="bold">X₂′</text>
+  <text x="350" y="132" font-size="15" fill="#b85c4a" font-weight="bold" text-anchor="end">R<tspan dy="3" font-size="11">c</tspan></text>
+  <text x="462" y="132" font-size="15" fill="#b85c4a" font-weight="bold">X<tspan dy="3" font-size="11">m</tspan></text>
+  <text x="20" y="136" font-size="16" fill="#1a2332">V₁</text>
+  <text x="792" y="136" font-size="16" fill="#1a2332">V₂′</text>
+  <text x="410" y="228" font-size="13" fill="#5a6a7e" text-anchor="middle">All secondary quantities referred to primary by (N₁/N₂)²</text>
+</svg>
+<div class="cap">Fig. 1.2 — Exact equivalent circuit referred to the primary. The series elements (R, X) set the impedance voltage and load loss; the shunt branch sets no-load current and core loss.</div>
+</div>
+
+<div class="keypoint"><b>Why this matters for design:</b> the guaranteed values on every transformer nameplate — no-load loss, load loss, impedance voltage — map one-to-one onto this circuit. Core design (Section 3) controls the shunt branch; winding design (Section 4) controls the series branch.</div>
+
+<h3>1.3 Key rating definitions</h3>
+<ul>
+<li><b>Rated power (kVA/MVA):</b> apparent power the transformer can deliver continuously at rated voltage and frequency without exceeding temperature-rise limits.</li>
+<li><b>Impedance voltage (u<sub>k</sub>%):</b> primary voltage, in % of rated, needed to circulate rated current with the secondary short-circuited. Typical: 4–6% (distribution), 8–20% (power). It governs fault current, voltage regulation and parallel operation.</li>
+<li><b>Vector group (e.g. Dyn11):</b> the winding connections (D = delta, y = star, n = neutral brought out) and phase displacement in clock notation (11 = 330° lead of LV over HV).</li>
+<li><b>Tapping range:</b> turns adjustment on (usually) the HV winding to regulate output voltage, e.g. ±2 × 2.5% off-circuit, or ±10% in 17 steps with an on-load tap-changer (OLTC).</li>
+</ul>
+
+<h3>1.4 The B–H curve and what it costs you</h3>
+<div class="fig">
+<svg viewBox="0 0 900 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="B-H magnetisation curve and resulting magnetising current">
+  <g transform="translate(70,30)">
+    <line x1="0" y1="240" x2="340" y2="240" stroke="#5a6a7e" stroke-width="1.5"/>
+    <line x1="0" y1="240" x2="0" y2="0" stroke="#5a6a7e" stroke-width="1.5"/>
+    <text x="345" y="244" font-size="13" fill="#5a6a7e">H (A/m)</text>
+    <text x="-8" y="-8" font-size="13" fill="#5a6a7e">B (T)</text>
+    <path d="M0 240 C 18 150, 30 86, 60 60 C 110 22, 220 14, 330 10" fill="none" stroke="#0b5fa5" stroke-width="3"/>
+    <line x1="0" y1="60" x2="60" y2="60" stroke="#b5651d" stroke-width="1.4" stroke-dasharray="5 4"/>
+    <line x1="60" y1="60" x2="60" y2="240" stroke="#b5651d" stroke-width="1.4" stroke-dasharray="5 4"/>
+    <text x="6" y="54" font-size="12.5" fill="#b5651d">knee ≈ 1.8–1.9 T (CRGO)</text>
+    <line x1="0" y1="98" x2="36" y2="98" stroke="#1d7a4f" stroke-width="1.4" stroke-dasharray="5 4"/>
+    <text x="40" y="102" font-size="12.5" fill="#1d7a4f">design B<tspan dy="3" font-size="10">m</tspan><tspan dy="-3"> 1.6–1.75 T</tspan></text>
+    <text x="170" y="285" font-size="13.5" fill="#0b3a63" text-anchor="middle" font-weight="bold">Magnetisation characteristic</text>
+  </g>
+  <g transform="translate(500,30)">
+    <line x1="0" y1="120" x2="340" y2="120" stroke="#5a6a7e" stroke-width="1.5"/>
+    <line x1="0" y1="240" x2="0" y2="0" stroke="#5a6a7e" stroke-width="1.5"/>
+    <text x="345" y="124" font-size="13" fill="#5a6a7e">t</text>
+    <path d="M0 120 C 20 30, 50 30, 70 120 C 90 210, 120 210, 140 120 C 160 30, 190 30, 210 120 C 230 210, 260 210, 280 120" fill="none" stroke="#8fa6bc" stroke-width="2" stroke-dasharray="6 4"/>
+    <path d="M0 120 q 22 -16 30 -22 q 8 -52 10 -58 q 2 6 10 58 q 12 10 30 22 q 22 16 30 22 q 8 52 10 58 q 2 -6 10 -58 q 12 -10 30 -22 q 22 -16 30 -22 q 8 -52 10 -58 q 2 6 10 58 q 12 10 30 22" fill="none" stroke="#b5651d" stroke-width="2.6"/>
+    <text x="120" y="20" font-size="12.5" fill="#8fa6bc">flux (sinusoidal — it must be)</text>
+    <text x="120" y="262" font-size="12.5" fill="#b5651d">magnetising current (peaky, 3rd-harmonic rich)</text>
+    <text x="170" y="285" font-size="13.5" fill="#0b3a63" text-anchor="middle" font-weight="bold">Consequence at the terminals</text>
+  </g>
+</svg>
+<div class="cap">Fig. 1.3 — The voltage forces a sinusoidal flux; the saturating B–H curve then dictates a distorted magnetising current. Design B<sub>m</sub> sits below the knee with margin for overvoltage and overfluxing (§14).</div>
+</div>
+<p>Choosing B<sub>m</sub> is a three-way bargain: higher B<sub>m</sub> → smaller core, less copper (shorter mean turn), cheaper — but more no-load loss and noise, less V/f headroom. The knee at ≈1.9 T is a hard ceiling; the 0.1–0.3 T below it is the designer's working room.</p>
+
+<h3>1.5 The per-unit system — the designer's native language</h3>
+<p>All transformer engineering is done in per-unit (pu): every quantity is expressed as a fraction of its own rated base. Base impedance Z<sub>b</sub> = V<sub>b</sub>²/S<sub>b</sub>. The same physical transformer then has the <i>same</i> pu impedance seen from either side — the turns ratio disappears.</p>
+<div class="eq">u<sub>k</sub> = 5% ⇔ Z = 0.05 pu ⇔ Z(Ω, LV side) = 0.05 × V<sub>LV</sub>²/S = 0.05 × 433²/1 000 000 ≈ 9.4 mΩ</div>
+<ul>
+<li>Fault current through the transformer (stiff source): I<sub>sc</sub> = 1/u<sub>k</sub> pu = 20 × rated for u<sub>k</sub> = 5%.</li>
+<li>Two transformers in parallel share load as S₁ⁿ/u<sub>k1</sub> : S₂ⁿ/u<sub>k2</sub> (see §13.3) — a one-line pu calculation.</li>
+<li>Converting between MVA bases: Z<sub>pu,new</sub> = Z<sub>pu,old</sub> × (S<sub>new</sub>/S<sub>old</sub>).</li>
+</ul>
+
+<h3>1.6 Measuring the equivalent circuit: open-circuit &amp; short-circuit tests</h3>
+<div class="table-wrap"><table>
+<tr><th></th><th>Open-circuit (no-load) test</th><th>Short-circuit (load-loss) test</th></tr>
+<tr><td>Setup</td><td>Rated voltage on LV, HV open</td><td>HV energised at reduced voltage, LV bolted short</td></tr>
+<tr><td>Applied voltage</td><td>100% rated</td><td>only u<sub>k</sub> (≈5–15%) needed to drive rated current</td></tr>
+<tr><td>What flows</td><td>Magnetising current only (0.2–2%)</td><td>Rated current; magnetising branch negligible (flux is tiny)</td></tr>
+<tr><td>Wattmeter reads</td><td>Core loss P₀ (I²R negligible)</td><td>Load loss P<sub>k</sub> (core loss negligible)</td></tr>
+<tr><td>Yields</td><td>R<sub>c</sub>, X<sub>m</sub> (shunt branch)</td><td>R₁+R₂′, X₁+X₂′ (series branch), u<sub>k</sub></td></tr>
+</table></div>
+<p>The elegance: each test isolates one branch of the equivalent circuit because the other branch carries almost nothing. These are exactly the routine tests of §11 — the equivalent circuit is not an abstraction, it is what the test bay measures on every unit shipped.</p>
+<div class="keypoint"><b>Worked check (1000 kVA example of §9):</b> P₀ = 970 W at 433 V ⇒ R<sub>c</sub> ≈ V²/P₀ ≈ 193 Ω (LV ref). I₀ ≈ 0.7% = 9.3 A ⇒ Z<sub>m</sub> ≈ 26.8 Ω, X<sub>m</sub> ≈ 27 Ω. SC test: 10.2 kW at 1333 A ⇒ R<sub>series</sub> ≈ 1.9 mΩ; u<sub>k</sub>=4.9% ⇒ Z ≈ 9.2 mΩ, X ≈ 9.0 mΩ. Numbers an engineer can sanity-check on any test certificate.</div>
+
+<h3>1.7 The loaded transformer — phasors and the third winding</h3>
+<div class="fig">
+<svg viewBox="0 0 860 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Phasor diagram of a loaded transformer">
+  <defs><marker id="pharr" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L7,4 L0,8 z" fill="#1a2332"/></marker>
+        <marker id="pharrB" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L7,4 L0,8 z" fill="#0b5fa5"/></marker>
+        <marker id="pharrO" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L7,4 L0,8 z" fill="#b5651d"/></marker></defs>
+  <g transform="translate(110,230)">
+    <line x1="0" y1="0" x2="320" y2="0" stroke="#0b5fa5" stroke-width="3" marker-end="url(#pharrB)"/>
+    <text x="330" y="6" font-size="14" fill="#0b5fa5" font-weight="bold">V₂′ (reference)</text>
+    <line x1="0" y1="0" x2="248" y2="86" stroke="#b5651d" stroke-width="3" marker-end="url(#pharrO)"/>
+    <text x="258" y="100" font-size="14" fill="#b5651d" font-weight="bold">I (lagging φ)</text>
+    <path d="M58 0 A 58 58 0 0 0 50 18" fill="none" stroke="#5a6a7e" stroke-width="1.4"/>
+    <text x="68" y="20" font-size="12.5" fill="#5a6a7e">φ</text>
+    <line x1="320" y1="0" x2="368" y2="16" stroke="#1a2332" stroke-width="2.6" marker-end="url(#pharr)"/>
+    <text x="330" y="32" font-size="12.5" fill="#1a2332">I·R</text>
+    <line x1="368" y1="16" x2="340" y2="-66" stroke="#1a2332" stroke-width="2.6" marker-end="url(#pharr)"/>
+    <text x="376" y="-26" font-size="12.5" fill="#1a2332">I·X (⊥ to I)</text>
+    <line x1="0" y1="0" x2="340" y2="-66" stroke="#1d7a4f" stroke-width="3" marker-end="url(#pharr)"/>
+    <text x="290" y="-80" font-size="14" fill="#1d7a4f" font-weight="bold">V₁</text>
+    <text x="120" y="60" font-size="12.5" fill="#5a6a7e">|V₁| &gt; |V₂′| by the regulation of §10.2 —</text>
+    <text x="120" y="78" font-size="12.5" fill="#5a6a7e">the I·X drop dominates at lagging power factor</text>
+  </g>
+</svg>
+<div class="cap">Fig. 1.4 — Loaded-transformer phasor diagram (magnetising current omitted). The series drops I·R and I·X tilt and stretch V₁ away from V₂′; at lagging φ the reactive drop adds almost directly to the magnitude difference — the geometric origin of voltage regulation.</div>
+</div>
+<p><b>Three-winding transformers</b> (HV + LV + tertiary) extend the model to a star of three impedances Z<sub>H</sub>, Z<sub>L</sub>, Z<sub>T</sub> meeting at a fictitious common node, derived from the three pairwise short-circuit tests: Z<sub>H</sub> = ½(Z<sub>HL</sub> + Z<sub>HT</sub> − Z<sub>LT</sub>), and cyclically. A practical quirk worth knowing: one branch (often the middle winding's) can legitimately come out <i>negative</i> — it is a mathematical element, not a physical winding impedance. Power flowing H→L, H→T and L→T each see the sum of two branches, which is why tertiary loading affects the main-path voltage drop.</p>
+<div class="mc-go-deeper"><b>Go deeper in the TransformerPath series</b> — <a href="/books/volume-1/">Volume 1 · The Transformer Path — A Practical Guide: From Specification to Service · Edition 1</a></div></section>
+
+<section id="classification">
+<h2>2. Classification: Power, Distribution, Dry-Type &amp; Cast Resin</h2>
+<p>Transformers are classified by function in the network, insulation/cooling medium, and construction. The four families covered in this tutorial share identical electromagnetic theory but differ sharply in materials, manufacturing and accessories.</p>
+
+<div class="table-wrap"><table>
+<tr><th></th><th>Distribution transformer</th><th>Power transformer</th><th>Dry-type (VPI/VPE)</th><th>Cast resin (CRT)</th></tr>
+<tr><td><b>Typical rating</b></td><td>25 kVA – 2.5 MVA</td><td>2.5 MVA – 1000+ MVA</td><td>100 kVA – 5 MVA</td><td>100 kVA – 25 MVA</td></tr>
+<tr><td><b>Voltage class</b></td><td>≤ 36 kV</td><td>36 kV – 765 kV+</td><td>≤ 12 kV (typ.)</td><td>≤ 36 kV (52 kV special)</td></tr>
+<tr><td><b>Insulation/cooling</b></td><td>Mineral oil / ester + cellulose</td><td>Mineral oil / ester + cellulose</td><td>Impregnated polyester/epoxy + air</td><td>Vacuum-cast epoxy + air</td></tr>
+<tr><td><b>Flux density B<sub>m</sub></b></td><td>1.5 – 1.7 T</td><td>1.6 – 1.75 T</td><td>1.4 – 1.6 T</td><td>1.4 – 1.6 T</td></tr>
+<tr><td><b>Loading regime</b></td><td>Designed for max efficiency at ~50–60% load</td><td>Max efficiency near full load</td><td colspan="2">Sized for installed load; overload via AF fans (+~40–50%)</td></tr>
+<tr><td><b>Tap changing</b></td><td>Off-circuit links (DETC)</td><td>OLTC standard</td><td colspan="2">Off-circuit links on HV</td></tr>
+<tr><td><b>Typical locations</b></td><td>Pole/pad-mounted, substations, packaged substations</td><td>Generation step-up, transmission substations, interconnectors</td><td colspan="2">Buildings, tunnels, marine/offshore, metros, data centres — anywhere fire risk rules out oil</td></tr>
+<tr><td><b>Governing standards</b></td><td colspan="2">IEC 60076-1/-2/-3/-5; IEEE C57.12.00</td><td colspan="2">IEC 60076-11; IEEE C57.12.01</td></tr>
+</table></div>
+
+<div class="fig">
+<svg viewBox="0 0 960 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four transformer families side by side">
+  <!-- Distribution -->
+  <g transform="translate(15,20)">
+    <rect x="20" y="60" width="170" height="150" rx="8" fill="#cfd9e4" stroke="#5a6a7e" stroke-width="2"/>
+    <rect x="35" y="40" width="140" height="20" rx="4" fill="#aebccb" stroke="#5a6a7e" stroke-width="1.5"/>
+    <g fill="#8a9bb0" stroke="#5a6a7e">
+      <rect x="6" y="70" width="14" height="130"/><rect x="190" y="70" width="14" height="130"/>
+    </g>
+    <g stroke="#5a6a7e" stroke-width="1"><line x1="9" y1="80" x2="17" y2="80"/><line x1="9" y1="95" x2="17" y2="95"/><line x1="9" y1="110" x2="17" y2="110"/><line x1="193" y1="80" x2="201" y2="80"/><line x1="193" y1="95" x2="201" y2="95"/><line x1="193" y1="110" x2="201" y2="110"/></g>
+    <g fill="#b8a268" stroke="#7a6a3e" stroke-width="1.5">
+      <path d="M60 40 l0 -22 m-6 0 a6 6 0 0 1 12 0 z" fill="none"/><circle cx="60" cy="14" r="5"/>
+      <path d="M105 40 l0 -22" fill="none"/><circle cx="105" cy="14" r="5"/>
+      <path d="M150 40 l0 -22" fill="none"/><circle cx="150" cy="14" r="5"/>
+    </g>
+    <text x="105" y="140" font-size="12" fill="#34516e" text-anchor="middle">Oil-filled tank</text>
+    <text x="105" y="156" font-size="12" fill="#34516e" text-anchor="middle">+ cooling fins</text>
+    <text x="105" y="248" font-size="14" font-weight="bold" fill="#0b5fa5" text-anchor="middle">Distribution</text>
+    <text x="105" y="266" font-size="11" fill="#5a6a7e" text-anchor="middle">25 kVA – 2.5 MVA, ≤36 kV</text>
+  </g>
+  <!-- Power -->
+  <g transform="translate(250,20)">
+    <rect x="15" y="80" width="190" height="130" rx="8" fill="#cfd9e4" stroke="#5a6a7e" stroke-width="2"/>
+    <rect x="40" y="56" width="60" height="24" rx="10" fill="#aebccb" stroke="#5a6a7e" stroke-width="1.5"/>
+    <text x="70" y="72" font-size="9" fill="#34516e" text-anchor="middle">conservator</text>
+    <line x1="70" y1="80" x2="70" y2="92" stroke="#5a6a7e" stroke-width="3"/>
+    <g fill="#b8a268" stroke="#7a6a3e" stroke-width="1.5">
+      <path d="M125 80 l0 -34" fill="none"/><circle cx="125" cy="42" r="6"/>
+      <path d="M155 80 l0 -44" fill="none"/><circle cx="155" cy="32" r="6"/>
+      <path d="M185 80 l0 -34" fill="none"/><circle cx="185" cy="42" r="6"/>
+    </g>
+    <g fill="#9fb0c2" stroke="#5a6a7e" stroke-width="1.5">
+      <rect x="-6" y="95" width="18" height="105"/>
+    </g>
+    <g stroke="#5a6a7e" stroke-width="1"><line x1="-3" y1="105" x2="9" y2="105"/><line x1="-3" y1="120" x2="9" y2="120"/><line x1="-3" y1="135" x2="9" y2="135"/><line x1="-3" y1="150" x2="9" y2="150"/></g>
+    <circle cx="3" cy="215" r="9" fill="none" stroke="#5a6a7e" stroke-width="1.5"/>
+    <path d="M-3 209 l12 12 m0 -12 l-12 12" stroke="#5a6a7e" stroke-width="1.2"/>
+    <text x="110" y="140" font-size="12" fill="#34516e" text-anchor="middle">Radiator banks,</text>
+    <text x="110" y="156" font-size="12" fill="#34516e" text-anchor="middle">OLTC, fans</text>
+    <text x="110" y="248" font-size="14" font-weight="bold" fill="#0b5fa5" text-anchor="middle">Power</text>
+    <text x="110" y="266" font-size="11" fill="#5a6a7e" text-anchor="middle">2.5 MVA – 1000 MVA, to 765 kV</text>
+  </g>
+  <!-- Dry type -->
+  <g transform="translate(495,20)">
+    <rect x="20" y="50" width="180" height="160" rx="6" fill="none" stroke="#5a6a7e" stroke-width="2" stroke-dasharray="6 4"/>
+    <g>
+      <rect x="38" y="70" width="38" height="120" rx="4" fill="#d9b65c" stroke="#a8853a" stroke-width="2"/>
+      <rect x="91" y="70" width="38" height="120" rx="4" fill="#d9b65c" stroke="#a8853a" stroke-width="2"/>
+      <rect x="144" y="70" width="38" height="120" rx="4" fill="#d9b65c" stroke="#a8853a" stroke-width="2"/>
+      <g stroke="#a8853a" stroke-width="1"><line x1="44" y1="80" x2="70" y2="80"/><line x1="44" y1="92" x2="70" y2="92"/><line x1="44" y1="104" x2="70" y2="104"/><line x1="97" y1="80" x2="123" y2="80"/><line x1="97" y1="92" x2="123" y2="92"/><line x1="97" y1="104" x2="123" y2="104"/><line x1="150" y1="80" x2="176" y2="80"/><line x1="150" y1="92" x2="176" y2="92"/><line x1="150" y1="104" x2="176" y2="104"/></g>
+    </g>
+    <rect x="28" y="40" width="164" height="12" fill="#8a9bb0" stroke="#5a6a7e"/>
+    <rect x="28" y="208" width="164" height="12" fill="#8a9bb0" stroke="#5a6a7e"/>
+    <text x="110" y="146" font-size="11" fill="#6e5a28" text-anchor="middle">VPI windings</text>
+    <text x="110" y="160" font-size="11" fill="#6e5a28" text-anchor="middle">open to air</text>
+    <text x="110" y="248" font-size="14" font-weight="bold" fill="#0b5fa5" text-anchor="middle">Dry-type (VPI)</text>
+    <text x="110" y="266" font-size="11" fill="#5a6a7e" text-anchor="middle">to ~5 MVA, ≤12 kV typ.</text>
+  </g>
+  <!-- Cast resin -->
+  <g transform="translate(735,20)">
+    <g>
+      <rect x="30" y="58" width="44" height="138" rx="14" fill="#c46a55" stroke="#8f4636" stroke-width="2.5"/>
+      <rect x="88" y="58" width="44" height="138" rx="14" fill="#c46a55" stroke="#8f4636" stroke-width="2.5"/>
+      <rect x="146" y="58" width="44" height="138" rx="14" fill="#c46a55" stroke="#8f4636" stroke-width="2.5"/>
+      <rect x="38" y="70" width="28" height="114" rx="8" fill="#d98a72"/>
+      <rect x="96" y="70" width="28" height="114" rx="8" fill="#d98a72"/>
+      <rect x="154" y="70" width="28" height="114" rx="8" fill="#d98a72"/>
+    </g>
+    <rect x="20" y="44" width="180" height="14" fill="#8a9bb0" stroke="#5a6a7e"/>
+    <rect x="20" y="196" width="180" height="14" fill="#8a9bb0" stroke="#5a6a7e"/>
+    <text x="110" y="232" font-size="11" fill="#8f4636" text-anchor="middle">epoxy-encapsulated HV coils</text>
+    <text x="110" y="252" font-size="14" font-weight="bold" fill="#0b5fa5" text-anchor="middle">Cast resin</text>
+    <text x="110" y="270" font-size="11" fill="#5a6a7e" text-anchor="middle">to ~25 MVA, ≤36 kV</text>
+  </g>
+</svg>
+<div class="cap">Fig. 2.1 — The four construction families. Left to right: hermetically sealed/finned distribution unit; conservator-type power transformer with radiators and OLTC; open-wound VPI dry-type; cast-resin with epoxy-encapsulated HV coils.</div>
+</div>
+
+<h3>2.1 Choosing between oil and dry insulation</h3>
+<div class="grid2">
+<div>
+<h4>Oil-immersed — strengths</h4>
+<ul>
+<li>Oil is both insulant and coolant: highest dielectric strength per mm → most compact and cheapest per kVA above ~2 MVA.</li>
+<li>Best overload and short-circuit thermal capacity (large thermal mass).</li>
+<li>Condition monitoring via oil sampling (DGA) is mature and cheap.</li>
+<li>Only practical choice above 36 kV and for large power ratings.</li>
+</ul>
+</div>
+<div>
+<h4>Dry / cast resin — strengths</h4>
+<ul>
+<li>No liquid: no fire load (F1 class), no bunding, no oil maintenance, no leakage risk → indoor and rooftop installation.</li>
+<li>Cast resin coils are humidity-proof (E2/E3) and tolerate condensation, pollution, marine atmospheres.</li>
+<li>Lower routine maintenance; faster installation.</li>
+<li>Preferred for high-rise buildings, hospitals, metros, tunnels, offshore platforms and data centres.</li>
+</ul>
+</div>
+</div>
+<div class="note"><b>Note:</b> natural and synthetic ester liquids (IEC 61099 / IEC 62770) with fire points &gt; 300 °C increasingly bridge the gap — fire-safer than mineral oil while keeping liquid-immersed compactness. K-class liquid transformers compete directly with cast resin in many GCC building projects.</div>
+
+<h3>2.2 Oil preservation systems compared</h3>
+<div class="table-wrap"><table>
+<tr><th>System</th><th>How it works</th><th>Strengths</th><th>Weaknesses</th><th>Typical use</th></tr>
+<tr><td>Free-breathing conservator</td><td>Air drawn through silica-gel breather as oil level swings</td><td>Simple, serviceable, full visual level</td><td>Oil slowly absorbs moisture/oxygen; breather upkeep</td><td>Older fleets, large power tx</td></tr>
+<tr><td>Conservator + rubber bag (COPS)</td><td>Flexible bag inside conservator; air side breathes, oil never touches air</td><td>Near-hermetic oil chemistry with conservator serviceability</td><td>Bag integrity must be checked (DGA shows O₂/N₂ trend)</td><td>Modern power transformers — default</td></tr>
+<tr><td>Hermetic, flexible fin walls</td><td>Completely sealed; corrugated walls flex to absorb expansion</td><td>Zero maintenance, no breather, dry oil for life</td><td>No level gauge margin; oil sampling less convenient; size-limited</td><td>Distribution &lt; ~3–4 MVA, pad-mounts</td></tr>
+<tr><td>Hermetic with gas cushion</td><td>Sealed tank with N₂ blanket above oil</td><td>Simple sealing for medium sizes</td><td>Gas can supersaturate oil on cooling (bubble risk under sudden load)</td><td>Some US-practice and pad-mount designs</td></tr>
+</table></div>
+<p>The preservation system decides the unit's moisture destiny (§5, §16): a free-breathing 30-year-old transformer typically carries 2–3% moisture in paper; a healthy hermetic unit of the same age stays under 1% — half a lifetime of difference from one constructional choice.</p>
+<div class="mc-go-deeper"><b>Go deeper in the TransformerPath series</b> — <a href="/books/volume-1/">Volume 1 · The Transformer Path — A Practical Guide · Edition 1</a></div></section>
+
+<section id="core">
+<h2>3. Magnetic Core — Design &amp; Construction</h2>
+<p>The core provides a low-reluctance path for the mutual flux. Its design fixes the no-load loss, no-load current and sound level for the life of the transformer — none of these can be improved after manufacture. Core cost is typically 20–25% of total material cost.</p>
+
+<h3>3.1 Core steel</h3>
+<div class="table-wrap"><table>
+<tr><th>Material</th><th>Thickness</th><th>Specific loss @1.7 T, 50 Hz</th><th>Use</th></tr>
+<tr><td>CRGO M5 (conventional grain-oriented)</td><td>0.30 mm</td><td>~1.30 W/kg</td><td>Economy distribution units</td></tr>
+<tr><td>CRGO M4 / M3</td><td>0.27 / 0.23 mm</td><td>~1.17 / 1.03 W/kg</td><td>Standard distribution &amp; power</td></tr>
+<tr><td>Hi-B (e.g. 23ZH90 / MOH)</td><td>0.23 mm</td><td>~0.90 W/kg</td><td>Low-loss designs, power transformers</td></tr>
+<tr><td>Laser/mechanically domain-refined Hi-B (23ZDKH)</td><td>0.23–0.18 mm</td><td>~0.75–0.85 W/kg</td><td>Premium low-loss, EU Ecodesign Tier 2</td></tr>
+<tr><td>Amorphous metal (Fe-B-Si ribbon)</td><td>~0.025 mm</td><td>~0.25–0.30 W/kg @1.4 T</td><td>Ultra-low no-load loss distribution; lower B<sub>m</sub>, bulkier core</td></tr>
+</table></div>
+<p>Grain-oriented silicon steel (~3% Si) has its magnetic domains aligned with the rolling direction; flux must follow that direction, which dictates the mitred joint geometry below. Laminations are coated with an inorganic insulation (C5/C6 “carlite”) ~2–4 µm thick to suppress inter-laminar eddy currents.</p>
+
+<h3>3.2 Core-form vs shell-form</h3>
+<div class="fig">
+<svg viewBox="0 0 940 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Core form versus shell form construction">
+  <!-- CORE FORM: 3 limb -->
+  <g transform="translate(20,30)">
+    <text x="210" y="0" font-size="16" font-weight="bold" fill="#0b3a63" text-anchor="middle">CORE-FORM (3-limb)</text>
+    <!-- yokes -->
+    <rect x="20" y="20" width="380" height="46" fill="#9fb0c2" stroke="#5a6a7e" stroke-width="2"/>
+    <rect x="20" y="274" width="380" height="46" fill="#9fb0c2" stroke="#5a6a7e" stroke-width="2"/>
+    <!-- limbs -->
+    <rect x="20" y="66" width="56" height="208" fill="#8a9bb0" stroke="#5a6a7e" stroke-width="2"/>
+    <rect x="182" y="66" width="56" height="208" fill="#8a9bb0" stroke="#5a6a7e" stroke-width="2"/>
+    <rect x="344" y="66" width="56" height="208" fill="#8a9bb0" stroke="#5a6a7e" stroke-width="2"/>
+    <!-- windings concentric on each limb -->
+    <g>
+      <rect x="6" y="86" width="84" height="168" rx="10" fill="none" stroke="#c97a3d" stroke-width="9"/>
+      <rect x="168" y="86" width="84" height="168" rx="10" fill="none" stroke="#c97a3d" stroke-width="9"/>
+      <rect x="330" y="86" width="84" height="168" rx="10" fill="none" stroke="#c97a3d" stroke-width="9"/>
+      <rect x="-6" y="98" width="108" height="144" rx="12" fill="none" stroke="#b85c4a" stroke-width="9"/>
+      <rect x="156" y="98" width="108" height="144" rx="12" fill="none" stroke="#b85c4a" stroke-width="9"/>
+      <rect x="318" y="98" width="108" height="144" rx="12" fill="none" stroke="#b85c4a" stroke-width="9"/>
+    </g>
+    <text x="48" y="175" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">A</text>
+    <text x="210" y="175" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">B</text>
+    <text x="372" y="175" font-size="12" fill="#fff" text-anchor="middle" font-weight="bold">C</text>
+    <text x="210" y="46" font-size="12" fill="#34516e" text-anchor="middle">top yoke</text>
+    <text x="210" y="300" font-size="12" fill="#34516e" text-anchor="middle">bottom yoke</text>
+    <text x="210" y="345" font-size="12.5" fill="#5a6a7e" text-anchor="middle">Windings (LV inner ▮, HV outer ▮) surround the core limbs</text>
+  </g>
+  <!-- SHELL FORM -->
+  <g transform="translate(500,30)">
+    <text x="210" y="0" font-size="16" font-weight="bold" fill="#0b3a63" text-anchor="middle">SHELL-FORM (single phase shown)</text>
+    <rect x="20" y="20" width="380" height="300" fill="#9fb0c2" stroke="#5a6a7e" stroke-width="2"/>
+    <rect x="78" y="78" width="100" height="184" fill="#fdfefe" stroke="#5a6a7e" stroke-width="2"/>
+    <rect x="242" y="78" width="100" height="184" fill="#fdfefe" stroke="#5a6a7e" stroke-width="2"/>
+    <!-- central limb carries winding: pancake coils -->
+    <g fill="#c97a3d" stroke="#8f5a28" stroke-width="1.5">
+      <rect x="160" y="92" width="100" height="18" rx="4"/>
+      <rect x="160" y="142" width="100" height="18" rx="4"/>
+      <rect x="160" y="192" width="100" height="18" rx="4"/>
+      <rect x="160" y="232" width="100" height="18" rx="4"/>
+    </g>
+    <g fill="#b85c4a" stroke="#7e3c2e" stroke-width="1.5">
+      <rect x="160" y="117" width="100" height="18" rx="4"/>
+      <rect x="160" y="167" width="100" height="18" rx="4"/>
+    </g>
+    <text x="210" y="290" font-size="12" fill="#34516e" text-anchor="middle">core surrounds winding</text>
+    <text x="210" y="345" font-size="12.5" fill="#5a6a7e" text-anchor="middle">Interleaved HV/LV “pancake” coils; flux returns through outer legs</text>
+  </g>
+</svg>
+<div class="cap">Fig. 3.1 — Core-form: windings encircle the limbs (universal for distribution and most power transformers). Shell-form: core encircles interleaved pancake windings (very large GSU and HVDC units, high short-circuit strength).</div>
+</div>
+<p>Three-phase core-form transformers normally use a <b>three-limb</b> core; <b>five-limb</b> cores (two unwound return limbs) reduce yoke height for rail/road transport clearance on large power transformers and provide a return path for zero-sequence flux.</p>
+
+<h3>3.3 Stepped (cruciform) cross-section</h3>
+<div class="fig">
+<svg viewBox="0 0 900 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Stepped core cross section inside circular winding">
+  <g transform="translate(180,160)">
+    <circle cx="0" cy="0" r="140" fill="none" stroke="#c97a3d" stroke-width="12"/>
+    <circle cx="0" cy="0" r="124" fill="none" stroke="#5a6a7e" stroke-width="1.5" stroke-dasharray="5 4"/>
+    <!-- stepped packets symmetric -->
+    <g fill="#8a9bb0" stroke="#46586d" stroke-width="1.5">
+      <rect x="-118" y="-30" width="20" height="60"/>
+      <rect x="-98"  y="-58" width="22" height="116"/>
+      <rect x="-76"  y="-80" width="24" height="160"/>
+      <rect x="-52"  y="-98" width="26" height="196"/>
+      <rect x="-26"  y="-108" width="52" height="216"/>
+      <rect x="26"   y="-98" width="26" height="196"/>
+      <rect x="52"   y="-80" width="24" height="160"/>
+      <rect x="76"   y="-58" width="22" height="116"/>
+      <rect x="98"   y="-30" width="20" height="60"/>
+    </g>
+    <text x="0" y="4" font-size="13" fill="#fff" text-anchor="middle" font-weight="bold">core packets</text>
+    <text x="0" y="160" font-size="13" fill="#c97a3d" text-anchor="middle" font-weight="bold">circular winding</text>
+    <text x="0" y="-152" font-size="12.5" fill="#5a6a7e" text-anchor="middle">circumscribing circle, dia. d</text>
+  </g>
+  <g transform="translate(420,40)">
+    <text x="0" y="10" font-size="15" font-weight="bold" fill="#0b3a63">Why stepped?</text>
+    <text x="0" y="40" font-size="13.5" fill="#1a2332">Windings are wound circular for short-circuit strength.</text>
+    <text x="0" y="64" font-size="13.5" fill="#1a2332">Stacking laminations in stepped packets fills the circle:</text>
+    <text x="0" y="96" font-size="13.5" fill="#1a2332">• 3 steps → fill factor ≈ 0.84 (small distribution)</text>
+    <text x="0" y="122" font-size="13.5" fill="#1a2332">• 7–9 steps → ≈ 0.93–0.95 (medium power)</text>
+    <text x="0" y="148" font-size="13.5" fill="#1a2332">• 13+ steps + cooling ducts → large power cores</text>
+    <text x="0" y="186" font-size="13.5" fill="#1a2332">Net core area:  A<tspan dy="3" font-size="10">c</tspan><tspan dy="-3"> = K</tspan><tspan dy="3" font-size="10">f</tspan><tspan dy="-3"> · K</tspan><tspan dy="3" font-size="10">s</tspan><tspan dy="-3"> · π d²/4</tspan></text>
+    <text x="0" y="212" font-size="12.5" fill="#5a6a7e">K_f = lamination stacking factor ≈ 0.96–0.97</text>
+    <text x="0" y="234" font-size="12.5" fill="#5a6a7e">K_s = step (circle-fill) factor from table above</text>
+  </g>
+</svg>
+<div class="cap">Fig. 3.2 — Cruciform/stepped core section. More steps fill the winding circle better, shortening the mean turn and saving copper, at the cost of more lamination widths to slit and stack.</div>
+</div>
+
+<h3>3.4 Mitred step-lap joints</h3>
+<p>Where limb meets yoke, flux must turn 90°. With grain-oriented steel, laminations are cut at 45° (mitred) so flux stays in the rolling direction. In a <b>step-lap</b> joint, successive lamination layers shift the joint position in 5–7 steps, so flux passing the air gap of one layer is carried by its neighbours:</p>
+<div class="fig">
+<svg viewBox="0 0 920 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Conventional lap versus step lap joint">
+  <g transform="translate(30,40)">
+    <text x="190" y="-8" font-size="15" font-weight="bold" fill="#0b3a63" text-anchor="middle">Conventional overlap (2-position)</text>
+    <g stroke="#46586d" stroke-width="1">
+      <rect x="0"  y="20"  width="190" height="22" fill="#9fb0c2"/><rect x="196" y="20"  width="190" height="22" fill="#9fb0c2"/>
+      <rect x="0"  y="46"  width="120" height="22" fill="#8a9bb0"/><rect x="126" y="46"  width="260" height="22" fill="#8a9bb0"/>
+      <rect x="0"  y="72"  width="190" height="22" fill="#9fb0c2"/><rect x="196" y="72"  width="190" height="22" fill="#9fb0c2"/>
+      <rect x="0"  y="98"  width="120" height="22" fill="#8a9bb0"/><rect x="126" y="98"  width="260" height="22" fill="#8a9bb0"/>
+      <rect x="0"  y="124" width="190" height="22" fill="#9fb0c2"/><rect x="196" y="124" width="190" height="22" fill="#9fb0c2"/>
+    </g>
+    <line x1="193" y1="14" x2="193" y2="152" stroke="#b5651d" stroke-width="2" stroke-dasharray="4 3"/>
+    <line x1="123" y1="14" x2="123" y2="152" stroke="#b5651d" stroke-width="2" stroke-dasharray="4 3"/>
+    <text x="190" y="180" font-size="12.5" fill="#5a6a7e" text-anchor="middle">gaps align every 2nd layer → high joint reluctance,</text>
+    <text x="190" y="198" font-size="12.5" fill="#5a6a7e" text-anchor="middle">more no-load loss, current and noise</text>
+  </g>
+  <g transform="translate(490,40)">
+    <text x="190" y="-8" font-size="15" font-weight="bold" fill="#0b3a63" text-anchor="middle">Step-lap (5–7 positions)</text>
+    <g stroke="#46586d" stroke-width="1">
+      <rect x="0" y="20"  width="150" height="22" fill="#9fb0c2"/><rect x="156" y="20"  width="230" height="22" fill="#9fb0c2"/>
+      <rect x="0" y="46"  width="170" height="22" fill="#8a9bb0"/><rect x="176" y="46"  width="210" height="22" fill="#8a9bb0"/>
+      <rect x="0" y="72"  width="190" height="22" fill="#9fb0c2"/><rect x="196" y="72"  width="190" height="22" fill="#9fb0c2"/>
+      <rect x="0" y="98"  width="210" height="22" fill="#8a9bb0"/><rect x="216" y="98"  width="170" height="22" fill="#8a9bb0"/>
+      <rect x="0" y="124" width="230" height="22" fill="#9fb0c2"/><rect x="236" y="124" width="150" height="22" fill="#9fb0c2"/>
+    </g>
+    <g stroke="#1d7a4f" stroke-width="2" stroke-dasharray="4 3">
+      <line x1="153" y1="14" x2="153" y2="48"/><line x1="173" y1="40" x2="173" y2="74"/><line x1="193" y1="66" x2="193" y2="100"/><line x1="213" y1="92" x2="213" y2="126"/><line x1="233" y1="118" x2="233" y2="152"/>
+    </g>
+    <text x="190" y="180" font-size="12.5" fill="#5a6a7e" text-anchor="middle">each gap bridged by 4–6 neighbouring layers →</text>
+    <text x="190" y="198" font-size="12.5" fill="#5a6a7e" text-anchor="middle">~3–4 dB lower noise, lower loss &amp; magnetising current</text>
+  </g>
+</svg>
+<div class="cap">Fig. 3.3 — Joint construction seen edge-on. Step-lap staggering (right) is standard on all modern cores; gaps (dashed lines) never align in adjacent layers.</div>
+</div>
+
+<h3>3.5 Core building, clamping and earthing</h3>
+<p><a href="coilassembly.html" style="color:var(--accent);font-weight:700">🧱 Open the interactive 3D: build the core yourself — stack the step-lap top yoke, inspect the wooden clamps and insulation, then explore the complete core &amp; coil assembly →</a></p>
+<ol>
+<li><b>Slitting &amp; cropping:</b> coil steel is slit to the packet widths, then cut to length with 45° mitres on automatic cut-to-length lines (e.g. Georg, AEM); burr ≤ 20 µm to avoid inter-laminar shorts.</li>
+<li><b>Stacking:</b> laminations are stacked horizontally on a building frame, usually 2 laminations per layer, with step-lap offsets; modern lines auto-stack.</li>
+<li><b>Clamping:</b> yokes are clamped by steel frames with insulated tie-rods or bands (no bolts through modern limb laminations — banded with resin-impregnated glass tape to avoid holes that concentrate flux).</li>
+<li><b>Raising:</b> the core is raised upright; top yoke is removed for winding assembly and re-laid ("re-yoking") after the windings are lowered on.</li>
+<li><b>Earthing:</b> the core and clamping frame must each be earthed at exactly <b>one point</b> (usually via a copper strap to a tank-cover bushing or the clamp). One point only — two would create a closed loop for circulating current. A floating core partially discharges and shows up as gas in DGA.</li>
+</ol>
+<div class="keypoint"><b>Design check — no-load performance:</b> no-load loss P₀ ≈ core mass × specific loss (W/kg at chosen B<sub>m</sub>) × building factor (1.1–1.25 accounting for joints, burrs, stresses). Sound power rises ~5 dB per 0.1 T increase in B<sub>m</sub>; magnetostriction of the steel, not the windings, dominates the hum.</div>
+
+<h3>3.6 Core noise — where the hum comes from</h3>
+<p>CRGO laminations physically stretch and shrink ~10⁻⁶ of their length twice per cycle (<b>magnetostriction</b>), so a 50 Hz transformer hums at 100 Hz plus harmonics (200, 300, 400 Hz — the harmonics carry most of the annoyance). Load current adds a smaller winding-force component at 100 Hz. Design levers, in order of effectiveness:</p>
+<ul>
+<li><b>Lower B<sub>m</sub></b> — roughly −5 dB per −0.1 T, but directly trades against core size/cost.</li>
+<li><b>Better steel</b> — Hi-B and domain-refined grades have inherently lower magnetostriction; step-lap joints alone are worth ~3–4 dB over conventional lap.</li>
+<li><b>Decoupling</b> — anti-vibration pads between core feet and tank, flexible yoke-clamp pads, sound panels or double tank walls for city substations.</li>
+<li><b>Verification</b> — sound power L<sub>WA</sub> measured per IEC 60076-10 (sound-pressure walk-around or sound-intensity method); typical guarantees: 1000 kVA ONAN ≈ 58–62 dB(A), 100 MVA ONAF ≈ 75–85 dB(A). Fans add their own broadband noise — at low core levels the cooling, not the core, dominates.</li>
+</ul>
+
+<h3>3.7 The building factor — why a real core loses more than the steel datasheet</h3>
+<p>Epstein-frame datasheet loss (W/kg) is measured on perfect strips magnetised along the rolling direction. A built core adds: flux turning 90° at joints (local off-grain magnetisation), normal-flux eddy currents where laminations cross, burr-induced inter-laminar shorts, stacking stresses, and slitting-edge damage. The ratio of real to datasheet loss is the <b>building factor</b>:</p>
+<div class="table-wrap"><table>
+<tr><th>Construction quality</th><th>Building factor</th></tr>
+<tr><td>Large power core, wide multi-step-lap laminations, laser-scribed Hi-B, careful stacking</td><td>1.08 – 1.15</td></tr>
+<tr><td>Good distribution core, step-lap, M3/M4</td><td>1.15 – 1.25</td></tr>
+<tr><td>Conventional-lap, narrow laminations, high burr</td><td>1.3 – 1.5+</td></tr>
+</table></div>
+<p>A guaranteed P₀ missed at test means penalty or rejection — which is why core-cutting line condition (burr!) and stacking discipline are checked in any factory audit.</p>
+
+<h3>3.8 Amorphous and wound-core construction</h3>
+<p>Amorphous ribbon (Fe₈₀B₁₁Si₉, ~25 µm, no crystal structure) cuts no-load loss ~65–70% versus CRGO — but it saturates at ~1.56 T (design B<sub>m</sub> ≈ 1.3–1.4 T), is brittle, and has a poor stacking factor (~0.86), so the core is bigger and the copper path longer. It is used almost exclusively in <b>wound cores</b> (ribbon wound into rectangular loops, then cut and re-lapped) for distribution transformers up to ~2500 kVA, where energy-efficiency regulation or loss capitalisation justifies the premium. Wound-core construction with CRGO ("unicore") is likewise common for small distribution units: lower building factor and cheaper automation, at the cost of repairability.</p>
+
+<h3>3.9 Core quality control — factory and field</h3>
+<div class="table-wrap"><table>
+<tr><th>Check</th><th>Method / limit</th><th>What failure looks like</th></tr>
+<tr><td>Burr height</td><td>Measured per slitting campaign; ≤ 20 µm target</td><td>Inter-laminar shorts → local eddy heating, raised P₀</td></tr>
+<tr><td>Coating integrity</td><td>Franklin tester (surface insulation resistance per ASTM A717)</td><td>Lamination-to-lamination conduction paths</td></tr>
+<tr><td>Stack dimensions &amp; pressure</td><td>Packet widths, limb circularity, clamp pressure record</td><td>Loose laminations → noise, vibration fretting</td></tr>
+<tr><td>Core insulation test</td><td>1–2 kV DC core-to-clamp and core-to-earth via test link, ≥ 500 MΩ new</td><td>Unintended second earth → circulating-current heating</td></tr>
+<tr><td>No-load current pattern</td><td>Three-phase excitation test: I₀ pattern should read high–low–high (centre limb has the shortest magnetic path)</td><td>Asymmetry beyond pattern → shorted turn or joint defect</td></tr>
+<tr><td>In service: DGA signature</td><td>CH₄ + C₂H₆ rising <i>without</i> CO/CO₂</td><td>Hot metal, not hot paper — classic core circulating-current fault; confirm with core-ground current measurement (&lt; ~100 mA expected)</td></tr>
+</table></div>
+<div class="note"><b>Field tip:</b> an unintended core earth (dropped washer, shifted shield, varnish failure) is one of the few faults you can sometimes fix without untanking — locate it by injecting current through the test link, then burn it off or live with a managed resistor. It shows up as gassing with a clean furan/CO picture: metal heat, paper untouched.</div>
+<div class="mc-go-deeper"><b>Go deeper in the TransformerPath series</b> — <a href="/books/volume-6/">Volume 6 · Transformer Manufacturing & Quality</a></div></section>
+<div class="embed-panel" id="embed-coretop">
+  <div class="embed-head" style="border-left:5px solid #47556a">
+    <div><span class="embed-title">🧲 Core Topology Explorer</span><span class="embed-sub">3-limb vs 5-limb vs shell-form — flux paths animated</span></div>
+    <a class="embed-open" href="coretopology.html" target="_blank" rel="noopener">Open full-screen ↗</a>
+  </div>
+  <div class="embed-frame" style="height:600px">
+    <iframe src="coretopology.html" loading="lazy" title="🧲 Core Topology Explorer"></iframe>
+    <div class="embed-fallback">Interactive model. If it does not appear here, <a href="coretopology.html" target="_blank" rel="noopener">open it in a new tab ↗</a>.</div>
+  </div>
+</div>
+<div class="embed-panel" id="embed-cca">
+  <div class="embed-head" style="border-left:5px solid #7a5230">
+    <div><span class="embed-title">🧱 3D Core &amp; Coil Assembly</span><span class="embed-sub">Core building · step-lap yokes · clamps · CCA out of tank</span></div>
+    <a class="embed-open" href="coilassembly.html" target="_blank" rel="noopener">Open full-screen ↗</a>
+  </div>
+  <div class="embed-frame" style="height:640px">
+    <iframe src="coilassembly.html" loading="lazy" title="🧱 3D Core &amp; Coil Assembly"></iframe>
+    <div class="embed-fallback">Interactive model. If it does not appear here, <a href="coilassembly.html" target="_blank" rel="noopener">open it in a new tab ↗</a>.</div>
+  </div>
+</div>
+
+<section id="windings" class="mc-locked" data-chapter="windings"><div class="mc-lock-tag">🔒 Learning content</div><h2>4. Windings — Design &amp; Construction</h2><p class="mc-lock-preview">The windings carry load current and must survive three simultaneous demands: dielectric (rated + impulse voltage), thermal (I²R heating under load), and mechanical (electromagnetic forces during through-faults, proportional to I²). Winding design selects conductor type, winding type, insulation grading and cooling ducts to satisfy all three at minimum cost.</p><ul class="mc-lock-obj"><li>4.1 Conductors</li><li>4.2 Winding types</li><li>4.3 Concentric arrangement and leakage duct</li><li>4.4 Transposition</li><li>4.5 Short-circuit forces</li></ul><div class="mc-lock-cta"><b>Unlock full Masterclass</b><span>Learning · $199 / 12 months · Professional and Team include Learning.</span><br><a class="btn btn-amber" href="pricing.html">Unlock →</a> <a class="btn btn-outline btn-sm" href="pricing.html">View plans</a></div><div class="mc-go-deeper"><b>Matching volume</b> — <a href="/books/volume-6/">Volume 6 · Transformer Manufacturing</a></div></section>
+<div class="embed-panel" id="embed-wind">
+  <div class="embed-head" style="border-left:5px solid #c97a3d">
+    <div><span class="embed-title">🧵 Winding Types Explorer</span><span class="embed-sub">Helical · layer · disc · interleaved + static ring + surge-stress compare</span></div>
+    <a class="embed-open" href="windings.html" target="_blank" rel="noopener">Open full-screen ↗</a>
+  </div>
+  <div class="embed-frame" style="height:620px">
+    <iframe src="windings.html" loading="lazy" title="🧵 Winding Types Explorer"></iframe>
+    <div class="embed-fallback">Interactive model. If it does not appear here, <a href="windings.html" target="_blank" rel="noopener">open it in a new tab ↗</a>.</div>
+  </div>
+</div>
+
+<section id="insulation" class="mc-locked" data-chapter="insulation"><div class="mc-lock-tag">🔒 Learning content</div><h2>5. Insulation System</h2><p class="mc-lock-preview">The insulation system is what actually ages and dies in a transformer — “the life of the transformer is the life of its insulation.” Oil-immersed designs use an oil–cellulose composite ; dry types use polymer films, Nomex® aramid and epoxy.</p><ul class="mc-lock-obj"><li>5.1 Oil–cellulose system (liquid-immersed)</li><li>5.2 Insulation grading and impulse design</li><li>5.3 Thermal classes and life</li><li>5.4 Processing: drying and impregnation</li><li>5.5 Insulation levels and the stress numbers designers carry in their heads</li></ul><div class="mc-lock-cta"><b>Unlock full Masterclass</b><span>Learning · $199 / 12 months · Professional and Team include Learning.</span><br><a class="btn btn-amber" href="pricing.html">Unlock →</a> <a class="btn btn-outline btn-sm" href="pricing.html">View plans</a></div><div class="mc-go-deeper"><b>Matching volume</b> — <a href="/books/volume-7/">Volume 7 · Transformer Insulation and Materials</a></div></section>
+
+<section id="cooling" class="mc-locked" data-chapter="cooling"><div class="mc-lock-tag">🔒 Learning content</div><h2>6. Cooling Systems</h2><p class="mc-lock-preview">Losses (Section 10) appear as heat in core and windings and must be moved to ambient air (or water). IEC 60076-2 designates liquid-immersed cooling with four letters; dry types use two (IEC 60076-11).</p><ul class="mc-lock-obj"><li>6.1 How the heat actually flows (ONAN)</li><li>6.2 Cooling stages and uprating</li><li>6.3 Temperature-rise limits (IEC 60076-2, mineral oil)</li><li>6.4 Worked thermal ladder — 1000 kVA ONAN at full load</li><li>6.5 How far can you load it? (IEC 60076-7 framework)</li></ul><div class="mc-lock-cta"><b>Unlock full Masterclass</b><span>Learning · $199 / 12 months · Professional and Team include Learning.</span><br><a class="btn btn-amber" href="pricing.html">Unlock →</a> <a class="btn btn-outline btn-sm" href="pricing.html">View plans</a></div><div class="mc-go-deeper"><b>Matching volume</b> — <a href="/books/volume-8/">Volume 8 · Transformer Components</a></div></section>
+
+<section id="construction" class="mc-locked" data-chapter="construction"><div class="mc-lock-tag">🔒 Learning content</div><h2>7. Active Part, Tank &amp; Accessories</h2><p class="mc-lock-preview">The active part (core + windings + cleating + leads + tap-changer) is assembled, dried, and lowered into the tank. Everything bolted onto the tank afterwards — bushings, conservator, protective devices, cooling — is the accessory ecosystem that keeps the active part alive and observable.</p><ul class="mc-lock-obj"><li>7.1 Tank</li><li>7.2 Bushings</li><li>7.3 Tap-changers</li><li>7.4 Protection &amp; monitoring devices</li><li>7.5 Assembly sequence (factory)</li></ul><div class="mc-lock-cta"><b>Unlock full Masterclass</b><span>Learning · $199 / 12 months · Professional and Team include Learning.</span><br><a class="btn btn-amber" href="pricing.html">Unlock →</a> <a class="btn btn-outline btn-sm" href="pricing.html">View plans</a></div><div class="mc-go-deeper"><b>Matching volume</b> — <a href="/books/volume-8/">Volume 8 · Transformer Components</a></div></section>
+<div class="embed-panel" id="embed-dist">
+  <div class="embed-head" style="border-left:5px solid #0b5fa5">
+    <div><span class="embed-title">🧊 3D Distribution / Cast-Resin Explorer</span><span class="embed-sub">Exploded view · tank opacity · click-to-identify · find-the-part quiz</span></div>
+    <a class="embed-open" href="explorer.html" target="_blank" rel="noopener">Open full-screen ↗</a>
+  </div>
+  <div class="embed-frame" style="height:640px">
+    <iframe src="explorer.html" loading="lazy" title="🧊 3D Distribution / Cast-Resin Explorer"></iframe>
+    <div class="embed-fallback">Interactive model. If it does not appear here, <a href="explorer.html" target="_blank" rel="noopener">open it in a new tab ↗</a>.</div>
+  </div>
+</div>
+
+<section id="drytype" class="mc-locked" data-chapter="drytype"><div class="mc-lock-tag">🔒 Learning content</div><h2>8. Dry-Type &amp; Cast Resin Construction</h2><p class="mc-lock-preview">Dry-type transformers replace the oil–cellulose system with solid polymer insulation cooled directly by air. Two technologies dominate the MV market: VPI (vacuum pressure impregnation) open-wound coils, and cast resin (CRT), in which the complete HV coil is vacuum-cast in filled epoxy — but they sit inside a wider family.</p><ul class="mc-lock-obj"><li>8.0 The dry-type family at a glance</li><li>8.1 VPI (open-wound, impregnated)</li><li>8.2 Cast resin (CRT)</li><li>8.3 Classification per IEC 60076-11</li><li>8.4 Enclosures, ventilation and installation</li></ul><div class="mc-lock-cta"><b>Unlock full Masterclass</b><span>Learning · $199 / 12 months · Professional and Team include Learning.</span><br><a class="btn btn-amber" href="pricing.html">Unlock →</a> <a class="btn btn-outline btn-sm" href="pricing.html">View plans</a></div><div class="mc-go-deeper"><b>Matching volume</b> — <a href="/books/volume-12/">Volume 12 · Special Transformers</a></div></section>
+
+<section id="design" class="mc-locked" data-chapter="design"><div class="mc-lock-tag">🔒 Learning content</div><h2>9. Worked Design Example — 1000 kVA, 11/0.433 kV, Dyn11, ONAN</h2><p class="mc-lock-preview">This section walks the classical hand-calculation sequence a design engineer follows before optimisation software refines it. Numbers are rounded for clarity but self-consistent. Note: this hand design fixes a specific point (low-loss Hi-B at 1.65&nbsp;T, a chosen copper fill); the online calculator defaults to a different core grade and current density, so for the same rating it returns different no-load loss and copper mass. Both are valid design points, not errors — only the assumptions differ.</p><ul class="mc-lock-obj"><li>Step 1 — Ratings and currents</li><li>Step 2 — Volts per turn and turns</li><li>Step 3 — Core sizing</li><li>Step 4 — Windings</li><li>Step 5 — Impedance check</li></ul><div class="mc-lock-cta"><b>Unlock full Masterclass</b><span>Learning · $199 / 12 months · Professional and Team include Learning.</span><br><a class="btn btn-amber" href="pricing.html">Unlock →</a> <a class="btn btn-outline btn-sm" href="pricing.html">View plans</a></div><div class="mc-go-deeper"><b>Matching volume</b> — <a href="/books/volume-1/">Volume 1 · The Transformer Path — A Practical Guide: From Specification to Service · Edition 1</a></div></section>
+<section id="txcalc" class="mc-locked" data-chapter="txcalc"><div class="mc-lock-tag">🔒 Learning content</div><h2>🧮 TX Calculation — Interactive Design Suite</h2><p class="mc-lock-preview">This is the calculation half of the masterclass: the same physics from Chapters 1–10 turned into a live IEC&nbsp;60076 sizing engine. Everything you hand-computed in the §9 worked example is here as sliders and fields — change a rating, voltage, flux density or current density and watch volts-per-turn, core area, turns, currents and conductor sizes resolve in real time. Three modes cover distribution, power and cast-resin units.</p><ul class="mc-lock-obj"><li>Adapt the calculation to any market</li></ul><div class="mc-lock-cta"><b>Unlock full Masterclass</b><span>Learning · $199 / 12 months · Professional and Team include Learning.</span><br><a class="btn btn-amber" href="pricing.html">Unlock →</a> <a class="btn btn-outline btn-sm" href="pricing.html">View plans</a></div><div class="mc-go-deeper"><b>Matching volume</b> — <a href="/books/volume-1/">Volume 1 · The Transformer Path — A Practical Guide: From Specification to Service · Edition 1</a></div></section>
+
+
+<section id="losses" class="mc-locked" data-chapter="losses"><div class="mc-lock-tag">🔒 Learning content</div><h2>10. Losses, Efficiency, Regulation</h2><p class="mc-lock-preview">Because P₀ flows 8760 h/year regardless of load, utilities capitalise it heavily (typical evaluation 5–10 €/W for P₀ vs 1–2 €/W for P k ). Distribution transformers are therefore designed with √(P₀/P k ) ≈ 0.3–0.45, putting peak efficiency at 30–45% load — matching real feeder load profiles. Minimum-efficiency regulations (EU Ecodesign Tier 2, DOE 2016/2024, GSO equivalents in the GCC) now set the floor.</p><ul class="mc-lock-obj"><li>10.1 Loss inventory</li><li>10.2 Voltage regulation</li><li>10.3 Harmonics and K-factor</li><li>10.4 Measuring losses honestly — corrections and uncertainty</li></ul><div class="mc-lock-cta"><b>Unlock full Masterclass</b><span>Learning · $199 / 12 months · Professional and Team include Learning.</span><br><a class="btn btn-amber" href="pricing.html">Unlock →</a> <a class="btn btn-outline btn-sm" href="pricing.html">View plans</a></div><div class="mc-go-deeper"><b>Matching volume</b> — <a href="/books/volume-9/">Volume 9 · Losses, Efficiency and Economics</a></div></section>
+
+<section id="testing" class="mc-locked" data-chapter="testing"><div class="mc-lock-tag">🔒 Learning content</div><h2>11. Factory Testing</h2><p class="mc-lock-preview">IEC 60076-1 divides tests into routine (every unit), type (one unit of a design), and special (by agreement). The test sequence matters: dielectric tests come after loss measurement, and PD/repeat tests follow any dielectric test that could have aged the insulation.</p><ul class="mc-lock-obj"><li>11.1 Three tests in detail</li><li>11.2 Site testing &amp; diagnostics through life</li><li>11.3 Partial-discharge measurement in practice</li><li>(a) Lightning impulse — reading the records</li><li>(b) Temperature-rise (heat run) — how you heat a 100 MVA unit without 100 MW</li></ul><div class="mc-lock-cta"><b>Unlock full Masterclass</b><span>Learning · $199 / 12 months · Professional and Team include Learning.</span><br><a class="btn btn-amber" href="pricing.html">Unlock →</a> <a class="btn btn-outline btn-sm" href="pricing.html">View plans</a></div><div class="mc-go-deeper"><b>Matching volume</b> — <a href="/books/volume-3/">Volume 3 · Transformer Testing (planned)</a></div></section>
+
+<section id="standards" class="mc-locked" data-chapter="standards"><div class="mc-lock-tag">🔒 Learning content</div><h2>12. Standards Map</h2><p class="mc-lock-preview">Standards say what ; CIGRÉ technical brochures (study committee A2) explain why and how . The ones every transformer engineer ends up reading: TB 642 (transformer reliability survey — the failure statistics quoted in §16.5), TB 445 (maintenance guide), TB 761 (condition assessment), TB 343/glossy guides on SFRA interpretation, TB 296 (DGA interpretation refinements), TB 659/779 (bushing reliability), TB 575 (OLTC reliability), and the A2 brochures on GIC, short-circuit design review and dynamic loading. They are purchasable references — for a service business (§20), the reliability and condition-assessment brochures are the technical backbone of the Green/Amber/Red report.</p><ul class="mc-lock-obj"><li>12.1 The IEC 60076 series, part by part</li><li>12.2 The IEEE C57 family, grouped the way it's used</li><li>12.3 Liquids, materials and oil-laboratory standards</li><li>12.4 Efficiency regulation &amp; regional frameworks</li><li>12.5 CIGRÉ — the working literature between standards</li></ul><div class="mc-lock-cta"><b>Unlock full Masterclass</b><span>Learning · $199 / 12 months · Professional and Team include Learning.</span><br><a class="btn btn-amber" href="pricing.html">Unlock →</a> <a class="btn btn-outline btn-sm" href="pricing.html">View plans</a></div><div class="mc-go-deeper"><b>Matching volume</b> — <a href="/books/volume-16/">Volume 16 · Standards, Quality and Assurance</a></div></section>
+
+<section id="vectorgroups" class="mc-locked" data-chapter="vectorgroups"><div class="mc-lock-tag">🔒 Learning content</div><h2>13. Vector Groups, Connections &amp; Parallel Operation</h2><p class="mc-lock-preview">The vector group symbol — e.g. Dyn11 — reads: HV delta (D), LV star (y), neutral brought out (n), LV phasor at clock position 11, i.e. the LV leads the HV by 30° (each clock hour = 30°). Standard groups: 0 (Yy0, Dd0), 6, 1 (Dyn1, Yd1) and 11 (Dyn11, Yd11). Dyn11 is the IEC/GCC default for distribution.</p><ul class="mc-lock-obj"><li>13.1 Why connection choice matters</li><li>13.2 Clock notation</li><li>13.3 Conditions for parallel operation</li><li>13.4 Unbalanced load behaviour</li><li>13.5 Zero-sequence impedance — the connection's hidden fingerprint</li></ul><div class="mc-lock-cta"><b>Unlock full Masterclass</b><span>Learning · $199 / 12 months · Professional and Team include Learning.</span><br><a class="btn btn-amber" href="pricing.html">Unlock →</a> <a class="btn btn-outline btn-sm" href="pricing.html">View plans</a></div><div class="mc-go-deeper"><b>Matching volume</b> — <a href="/books/volume-1/">Volume 1 · The Transformer Path — A Practical Guide: From Specification to Service · Edition 1</a></div></section>
+
+<section id="inrush" class="mc-locked" data-chapter="inrush"><div class="mc-lock-tag">🔒 Learning content</div><h2>14. Magnetising Behaviour, Inrush &amp; Overfluxing</h2><p class="mc-lock-preview">Because the B–H curve saturates, a sinusoidal flux demands a peaky, harmonic-rich magnetising current (dominant 3rd harmonic). At rated voltage it is only 0.2–2% of rated current, but its waveshape matters: differential relays use harmonic signatures to distinguish magnetising events from internal faults.</p><ul class="mc-lock-obj"><li>14.1 The magnetising current is not sinusoidal</li><li>14.2 Energisation inrush</li><li>14.3 Overfluxing (V/f)</li><li>14.4 DC bias and GIC</li><li>14.5 Sympathetic inrush and energisation practice</li></ul><div class="mc-lock-cta"><b>Unlock full Masterclass</b><span>Learning · $199 / 12 months · Professional and Team include Learning.</span><br><a class="btn btn-amber" href="pricing.html">Unlock →</a> <a class="btn btn-outline btn-sm" href="pricing.html">View plans</a></div><div class="mc-go-deeper"><b>Matching volume</b> — <a href="/books/volume-11/">Volume 11 · Protection, Control and the Network</a></div></section>
+
+<section id="special" class="mc-locked" data-chapter="special"><div class="mc-lock-tag">🔒 Learning content</div><h2>15. Special Transformer Types</h2><p class="mc-lock-preview">Series + common winding share one electrical circuit. The built (frame) size shrinks by the co-ratio (1 − V₂/V₁): a 400/220 kV interconnector (co-ratio 0.45) needs only ~45% of the equivalent two-winding frame — cheaper, smaller, lower losses. The costs: no galvanic separation, lower natural impedance (higher fault duty), direct surge transfer, and the neutral must be solidly earthed. Universal at 400/220/132 kV; the delta tertiary stabilises the star point and feeds reactive compensation or station supply.</p><ul class="mc-lock-obj"><li>15.1 Autotransformers</li><li>15.2 Earthing (grounding) transformers</li><li>15.3 Converter / rectifier transformers (IEC 61378)</li><li>15.4 Furnace transformers</li><li>15.5 Generator step-up (GSU)</li></ul><div class="mc-lock-cta"><b>Unlock full Masterclass</b><span>Learning · $199 / 12 months · Professional and Team include Learning.</span><br><a class="btn btn-amber" href="pricing.html">Unlock →</a> <a class="btn btn-outline btn-sm" href="pricing.html">View plans</a></div><div class="mc-go-deeper"><b>Matching volume</b> — <a href="/books/volume-12/">Volume 12 · Special Transformers</a></div></section>
+<div class="embed-panel" id="embed-power">
+  <div class="embed-head" style="border-left:5px solid #f5a623">
+    <div><span class="embed-title">🏗 3D Power Transformer — 100 MVA, 132/33 kV</span><span class="embed-sub">Cinematic tour · energise · fault simulator · OLTC · radiators</span></div>
+    <a class="embed-open" href="power3d.html" target="_blank" rel="noopener">Open full-screen ↗</a>
+  </div>
+  <div class="embed-frame" style="height:660px">
+    <iframe src="power3d.html" loading="lazy" title="🏗 3D Power Transformer — 100 MVA, 132/33 kV"></iframe>
+    <div class="embed-fallback">Interactive model. If it does not appear here, <a href="power3d.html" target="_blank" rel="noopener">open it in a new tab ↗</a>.</div>
+  </div>
+</div>
+<div class="embed-panel" id="embed-auto">
+  <div class="embed-head" style="border-left:5px solid #f5a623">
+    <div><span class="embed-title">🔗 Autotransformer — 400/220 kV</span><span class="embed-sub">Series + common winding + delta tertiary · animated current path</span></div>
+    <a class="embed-open" href="autotransformer.html" target="_blank" rel="noopener">Open full-screen ↗</a>
+  </div>
+  <div class="embed-frame" style="height:640px">
+    <iframe src="autotransformer.html" loading="lazy" title="🔗 Autotransformer — 400/220 kV"></iframe>
+    <div class="embed-fallback">Interactive model. If it does not appear here, <a href="autotransformer.html" target="_blank" rel="noopener">open it in a new tab ↗</a>.</div>
+  </div>
+</div>
+<div class="embed-panel" id="embed-gsu">
+  <div class="embed-head" style="border-left:5px solid #f5a623">
+    <div><span class="embed-title">⚙️ Generator Step-Up (GSU) — 420/21 kV</span><span class="embed-sub">Delta LV (generator) · star HV (line) · YNd1</span></div>
+    <a class="embed-open" href="gsu.html" target="_blank" rel="noopener">Open full-screen ↗</a>
+  </div>
+  <div class="embed-frame" style="height:640px">
+    <iframe src="gsu.html" loading="lazy" title="⚙️ Generator Step-Up (GSU) — 420/21 kV"></iframe>
+    <div class="embed-fallback">Interactive model. If it does not appear here, <a href="gsu.html" target="_blank" rel="noopener">open it in a new tab ↗</a>.</div>
+  </div>
+</div>
+
+<section id="sitelife" class="mc-locked" data-chapter="sitelife"><div class="mc-lock-tag">🔒 Learning content</div><h2>16. Installation, Commissioning &amp; Life Management</h2><p class="mc-lock-preview">CIGRÉ surveys put major-failure rates around 0.4–1% per transformer-year, led by OLTC mechanisms, bushings and winding insulation . Practical life is 30–50 years for well-loaded, dry, cool units — thermal history is destiny (recall the ~6 K doubling rule, §5.3). Repair-vs-replace usually pivots on capitalised losses: a 1980s unit can pay for its modern replacement from saved load loss alone.</p><ul class="mc-lock-obj"><li>16.1 Transport and receipt</li><li>16.2 Site erection and oil work</li><li>16.3 Commissioning test set (typical)</li><li>16.4 Condition monitoring through life</li><li>16.5 Failure statistics and end of life</li></ul><div class="mc-lock-cta"><b>Unlock full Masterclass</b><span>Learning · $199 / 12 months · Professional and Team include Learning.</span><br><a class="btn btn-amber" href="pricing.html">Unlock →</a> <a class="btn btn-outline btn-sm" href="pricing.html">View plans</a></div><div class="mc-go-deeper"><b>Matching volume</b> — <a href="/books/volume-13/">Volume 13 · Installation, Commissioning and Site Work</a></div></section>
+
+<section id="protection" class="mc-locked" data-chapter="protection"><div class="mc-lock-tag">🔒 Learning content</div><h2>17. Transformer Protection Schemes</h2><p class="mc-lock-preview">A transformer is protected by layered electrical relays plus its own mechanical devices (§7.4). The aim: clear internal faults in &lt; 100 ms (every extra cycle of arcing multiplies the damage and the oil-fire risk) while never tripping on inrush, OLTC operation or through-faults.</p><ul class="mc-lock-obj"><li>17.2 Putting numbers on the schemes</li></ul><div class="mc-lock-cta"><b>Unlock full Masterclass</b><span>Learning · $199 / 12 months · Professional and Team include Learning.</span><br><a class="btn btn-amber" href="pricing.html">Unlock →</a> <a class="btn btn-outline btn-sm" href="pricing.html">View plans</a></div><div class="mc-go-deeper"><b>Matching volume</b> — <a href="/books/volume-11/">Volume 11 · Protection, Control and the Network</a></div></section>
+
+<section id="procurement" class="mc-locked" data-chapter="procurement"><div class="mc-lock-tag">🔒 Learning content</div><h2>18. Procurement, Tender Evaluation &amp; Economics</h2><p class="mc-lock-preview">Transformers are bought on evaluated price, not purchase price. Losses are converted to present-value money:</p><ul class="mc-lock-obj"><li>18.1 Total ownership cost — the capitalisation formula</li><li>18.2 What a complete technical tender schedule contains</li><li>18.3 Factory assessment — what to look at in an audit</li><li>18.4 Commercial life cycle</li><li>18.5 Deriving A and B — one worked capitalisation</li></ul><div class="mc-lock-cta"><b>Unlock full Masterclass</b><span>Learning · $199 / 12 months · Professional and Team include Learning.</span><br><a class="btn btn-amber" href="pricing.html">Unlock →</a> <a class="btn btn-outline btn-sm" href="pricing.html">View plans</a></div><div class="mc-go-deeper"><b>Matching volume</b> — <a href="/books/volume-9/">Volume 9 · Losses, Efficiency and Economics</a></div></section>
+
+<section id="glossary" class="mc-locked" data-chapter="glossary"><div class="mc-lock-tag">🔒 Learning content</div><h2>19. Glossary &amp; Self-Test</h2><p class="mc-lock-preview">Answers are hidden under each question. Do them after reading the linked sections.</p><ul class="mc-lock-obj"><li>19.1 Quick glossary</li><li>19.2 Self-test — sixteen questions</li></ul><div class="mc-lock-cta"><b>Unlock full Masterclass</b><span>Learning · $199 / 12 months · Professional and Team include Learning.</span><br><a class="btn btn-amber" href="pricing.html">Unlock →</a> <a class="btn btn-outline btn-sm" href="pricing.html">View plans</a></div><div class="mc-go-deeper"><b>Matching volume</b> — <a href="/books/volume-18/">Volume 18 · The Transformer Engineer's Handbook</a></div></section>
+
+<section id="aftersales" class="mc-locked" data-chapter="aftersales"><div class="mc-lock-tag">🔒 Learning content</div><h2>20. After-Sales &amp; Service — The Second Life of Every Transformer</h2><p class="mc-lock-preview">A transformer earns its price over 30–50 years, and everything after FAT is the after-sales domain: warranty management, preventive maintenance, condition assessment, oil and component services, repair, retrofit and end-of-life. For owners this is where reliability is won; for service providers it is a business larger and steadier than the new-build market.</p><ul class="mc-lock-obj"><li>20.1 The warranty phase — protect the claim</li><li>20.2 Preventive maintenance schedule (oil-immersed, typical)</li><li>20.3 Condition-based services — reading the asset</li><li>20.4 Corrective services — the heavy end</li><li>20.5 Spares strategy</li></ul><div class="mc-lock-cta"><b>Unlock full Masterclass</b><span>Learning · $199 / 12 months · Professional and Team include Learning.</span><br><a class="btn btn-amber" href="pricing.html">Unlock →</a> <a class="btn btn-outline btn-sm" href="pricing.html">View plans</a></div><div class="mc-go-deeper"><b>Matching volume</b> — <a href="/books/volume-15/">Volume 15 · Maintenance, Repair and Refurbishment</a></div></section>
+
+
+
+<section id="bushings" class="mc-locked" data-chapter="bushings"><div class="mc-lock-tag">🔒 Learning content</div><h2>21. Bushings — Getting the Conductor Through the Tank</h2><p class="mc-lock-preview">A bushing carries a live conductor through the earthed tank wall while holding off the full phase-to-earth voltage across a few hundred millimetres. It is deceptively critical: industry failure surveys (CIGRÉ TB&nbsp;642) attribute roughly 30–40 % of catastrophic, fire-causing transformer failures to bushings — more than any other single component. For a 400&nbsp;kV unit the bushing is also one of the most expensive bought-in parts. It deserves its own chapter. interactive Rotate and section a 400&nbsp;kV bushing in the 🔌 3D Condenser-Bushing Cutaway .</p><ul class="mc-lock-obj"><li>21.1 Why a plain insulator will not do — condenser grading</li><li>21.2 Types — the family tree</li><li>21.3 Construction &amp; ratings</li><li>21.4 Failure modes &amp; monitoring — why bushings burn transformers</li></ul><div class="mc-lock-cta"><b>Unlock full Masterclass</b><span>Learning · $199 / 12 months · Professional and Team include Learning.</span><br><a class="btn btn-amber" href="pricing.html">Unlock →</a> <a class="btn btn-outline btn-sm" href="pricing.html">View plans</a></div><div class="mc-go-deeper"><b>Matching volume</b> — <a href="/books/volume-8/">Volume 8 · Transformer Components</a></div></section>
+<div class="embed-panel" id="embed-bushing">
+  <div class="embed-head" style="border-left:5px solid #b9c2cb">
+    <div><span class="embed-title">🔌 Condenser Bushing — Cutaway</span><span class="embed-sub">Capacitor grading foils · test tap · RIP/OIP · field-grading overlay</span></div>
+    <a class="embed-open" href="bushing.html" target="_blank" rel="noopener">Open full-screen ↗</a>
+  </div>
+  <div class="embed-frame" style="height:640px">
+    <iframe src="bushing.html" loading="lazy" title="🔌 Condenser Bushing — Cutaway"></iframe>
+    <div class="embed-fallback">Interactive model. If it does not appear here, <a href="bushing.html" target="_blank" rel="noopener">open it in a new tab ↗</a>.</div>
+  </div>
+</div>
+
+<section id="tapchangers" class="mc-locked" data-chapter="tapchangers"><div class="mc-lock-tag">🔒 Learning content</div><h2>22. Tap-Changers — Regulating Voltage Under Load</h2><p class="mc-lock-preview">The tap-changer is the transformer's only moving power part, and after bushings it is the second-largest contributor to failures (CIGRÉ) — precisely because it moves, arcs and wears. It is also core to your accessory business, so it gets its own chapter. interactive Watch a tap operation, snap the diverter and swap resistor↔vacuum in the 🔀 3D OLTC Cutaway .</p><ul class="mc-lock-obj"><li>22.1 On-load vs de-energised</li><li>22.2 How an OLTC transfers current without interrupting it</li><li>22.3 Control — holding the setpoint</li><li>22.4 Maintenance &amp; diagnostics</li></ul><div class="mc-lock-cta"><b>Unlock full Masterclass</b><span>Learning · $199 / 12 months · Professional and Team include Learning.</span><br><a class="btn btn-amber" href="pricing.html">Unlock →</a> <a class="btn btn-outline btn-sm" href="pricing.html">View plans</a></div><div class="mc-go-deeper"><b>Matching volume</b> — <a href="/books/volume-8/">Volume 8 · Transformer Components</a></div></section>
+<div class="embed-panel" id="embed-oltc">
+  <div class="embed-head" style="border-left:5px solid #f5a623">
+    <div><span class="embed-title">🔀 On-Load Tap-Changer — Cutaway</span><span class="embed-sub">Diverter · tap selector · change-over · transition resistor / vacuum · tap-operation animation</span></div>
+    <a class="embed-open" href="oltc.html" target="_blank" rel="noopener">Open full-screen ↗</a>
+  </div>
+  <div class="embed-frame" style="height:640px">
+    <iframe src="oltc.html" loading="lazy" title="🔀 On-Load Tap-Changer — Cutaway"></iframe>
+    <div class="embed-fallback">Interactive model. If it does not appear here, <a href="oltc.html" target="_blank" rel="noopener">open it in a new tab ↗</a>.</div>
+  </div>
+</div>
+
+<section id="stresscontrol" class="mc-locked" data-chapter="stresscontrol"><div class="mc-lock-tag">🔒 Learning content</div><h2>23. Impulse Response &amp; Electrostatic Stress Control</h2><p class="mc-lock-preview">Chapters 5 and 11 size the insulation for the BIL and test it. This chapter explains the missing physics in between: how a winding actually sees a lightning surge , and the hardware — static rings, end shields and interleaving — that keeps the line-end turns from being destroyed. This is the design detail that separates an EHV transformer engineer from a hobbyist.</p><ul class="mc-lock-obj"><li>23.1 A steep front is a capacitive problem, not a resistive one</li><li>23.2 The remedies — raise C s , intercept C g</li><li>23.3 After the front — the oscillation</li></ul><div class="mc-lock-cta"><b>Unlock full Masterclass</b><span>Learning · $199 / 12 months · Professional and Team include Learning.</span><br><a class="btn btn-amber" href="pricing.html">Unlock →</a> <a class="btn btn-outline btn-sm" href="pricing.html">View plans</a></div><div class="mc-go-deeper"><b>Matching volume</b> — <a href="/books/volume-7/">Volume 7 · Transformer Insulation and Materials</a></div></section>
+
+<section id="fireenv" class="mc-locked" data-chapter="fireenv"><div class="mc-lock-tag">🔒 Learning content</div><h2>24. Fire, Oil Containment &amp; Environmental Protection</h2><p class="mc-lock-preview">A 500&nbsp;MVA unit holds ~95,000&nbsp;litres of flammable oil beside 400&nbsp;kV. When a bushing or OLTC fails, the arc can rupture the tank and ignite a pool fire that threatens the whole substation. Designing the envelope around the transformer — fire prevention, containment and environmental protection — is as much a part of the job as the active part, and is mandated by substation codes. This chapter pulls together what §16 and §7 only touched.</p><ul class="mc-lock-obj"><li>24.1 Pressure &amp; arc protection (stop the rupture)</li><li>24.2 Fire suppression &amp; separation (contain the fire)</li><li>24.3 Oil containment &amp; the environment (contain the spill)</li><li>24.4 Sustainability — the losses are the footprint</li></ul><div class="mc-lock-cta"><b>Unlock full Masterclass</b><span>Learning · $199 / 12 months · Professional and Team include Learning.</span><br><a class="btn btn-amber" href="pricing.html">Unlock →</a> <a class="btn btn-outline btn-sm" href="pricing.html">View plans</a></div><div class="mc-go-deeper"><b>Matching volume</b> — <a href="/books/volume-15/">Volume 15 · Maintenance, Repair and Refurbishment</a></div></section>
+
+<section id="powerdesign" class="mc-locked" data-chapter="powerdesign"><div class="mc-lock-tag">🔒 Learning content</div><h2>25. Worked Design — 500 MVA, 400/220 kV Power Transformer</h2><p class="mc-lock-preview">Section 9 sized a 1000&nbsp;kVA distribution unit. Here is the EHV counterpart that sits behind the 🏭 500&nbsp;MVA 3D model and the calculator's Power mode — a two-winding 400/220&nbsp;kV grid transformer, YNyn0+d, 5-limb, ONAN/ONAF/ODAF. The method is identical; only the scale, the impulse grading and the cooling stages change.</p><ul class="mc-lock-obj"><li>Step 1 — Ratings &amp; line currents</li><li>Step 2 — Volts-per-turn, flux &amp; core</li><li>Step 3 — Impedance &amp; short-circuit</li><li>Step 4 — Insulation &amp; impulse grading</li><li>Step 5 — Cooling stages</li></ul><div class="mc-lock-cta"><b>Unlock full Masterclass</b><span>Learning · $199 / 12 months · Professional and Team include Learning.</span><br><a class="btn btn-amber" href="pricing.html">Unlock →</a> <a class="btn btn-outline btn-sm" href="pricing.html">View plans</a></div><div class="mc-go-deeper"><b>Matching volume</b> — <a href="/books/volume-2/">Volume 2 · Power Transformer Design · Edition 1</a></div></section>
+<div class="embed-panel" id="embed-p500">
+  <div class="embed-head" style="border-left:5px solid #f5a623">
+    <div><span class="embed-title">🏭 500 MVA Power Transformer — 400/220 kV</span><span class="embed-sub">5-limb core · separate ODAF coolers · 400 kV condenser bushings · tank shunts</span></div>
+    <a class="embed-open" href="power500.html" target="_blank" rel="noopener">Open full-screen ↗</a>
+  </div>
+  <div class="embed-frame" style="height:680px">
+    <iframe src="power500.html" loading="lazy" title="🏭 500 MVA Power Transformer — 400/220 kV"></iframe>
+    <div class="embed-fallback">Interactive model. If it does not appear here, <a href="power500.html" target="_blank" rel="noopener">open it in a new tab ↗</a>.</div>
+  </div>
+</div>
+
+
+
+<section id="datalab" class="mc-locked" data-chapter="datalab"><div class="mc-lock-tag">🔒 Learning content</div><h2>26. Engineering Data Appendix — the numbers designers carry</h2><p class="mc-lock-preview">This appendix collects the reference data the working sections refer to, in one place you can keep open beside the calculator and the 3D models. Every table is consistent with the IEC&nbsp;60076 series and ordinary GCC utility practice; treat the ranges as engineering norms, not contractual values — always confirm against the governing standard and the customer specification.</p><ul class="mc-lock-obj"><li>26.1 Standard ratings — the R10 ladder</li><li>26.2 Insulation levels — rated withstand voltages (IEC 60076-3)</li><li>26.3 Typical short-circuit impedance by size</li><li>26.4 Temperature-rise limits</li><li>26.5 Insulating liquids compared</li></ul><div class="mc-lock-cta"><b>Unlock full Masterclass</b><span>Learning · $199 / 12 months · Professional and Team include Learning.</span><br><a class="btn btn-amber" href="pricing.html">Unlock →</a> <a class="btn btn-outline btn-sm" href="pricing.html">View plans</a></div><div class="mc-go-deeper"><b>Matching volume</b> — <a href="/books/volume-18/">Volume 18 · The Transformer Engineer's Handbook</a></div></section>
+
+
+<section id="diagnostics" class="mc-shell">
+<div class="mc-lock-tag">Book-matched course shell</div><h2>Diagnostics &amp; Condition Assessment</h2>
+<p>This module is an original course shell, not a reprint of the book. The outcome is that you can say what a condition-assessment programme is for: turning monitor data into a call a utility can act on — without treating two instruments that share an input as independent corroboration.</p><p><b>What you will be able to do:</b> name the jobs of DGA, moisture, temperature, bushing and cooler monitoring; say why a sensor reading is not the same as a condition; and know when to stop and open the matching volume instead of improvising a method.</p><p>Volume 4 is planned and being prepared; no manuscript PDF is available yet. The course maps intended outcomes of the volume. It does not dump chapter text here.</p><ul><li>Condition assessment is a decision, not a dashboard</li><li>Online monitors need a validity check before they change a call</li><li>Factory tests (Ch.11) are the baseline this module reads against</li></ul><div class="mc-go-deeper"><b>Matching volume</b> — <a href="/books/volume-4/">Volume 4 · Transformer Diagnostics &amp; Condition Assessment (planned)</a></div><p class="mc-lock-cta" style="margin-top:14px"><a class="btn btn-amber" href="/books/volume-4/">Open Volume 4 →</a> <a class="btn btn-outline btn-sm" href="learn.html#series-path">Series path on Learn</a></p>
+</section>
+
+<section id="failures" class="mc-shell">
+<div class="mc-lock-tag">Book-matched course shell</div><h2>Failures &amp; Forensics</h2>
+<p>This module is an original course shell, not a reprint of the book. The outcome is that you can say what a failure investigation is for: turning wreckage and records into a cause you can defend — without treating the last event as the cause, or a neighbouring volume as a forensic method.</p><p><b>What you will be able to do:</b> separate defect, degradation, precursor, stress, failure and consequence; say why a location in a survey is not a cause; and know when to stop and open the matching volume instead of improvising a report.</p><p>Volume 5 is the reference. Factory tests (Ch.11) and diagnostics (Vol. 4) feed the evidence; they do not replace the investigation. Repair (Vol. 15) is what you do after the cause is named.</p><ul><li>A failure has a chain, not a single cause</li><li>The first hour and the evidence hierarchy decide what you can still prove</li><li>Dielectric, thermal and mechanical wreckage are read differently</li></ul><div class="mc-go-deeper"><b>Matching volume</b> — <a href="/books/volume-5/">Volume 5 · Transformer Failures and Forensics</a></div><p class="mc-lock-cta" style="margin-top:14px"><a class="btn btn-amber" href="/books/volume-5/">Open Volume 5 →</a> <a class="btn btn-outline btn-sm" href="learn.html#series-path">Series path on Learn</a></p>
+</section>
+
+<section id="manufacturing" class="mc-shell">
+<div class="mc-lock-tag">Book-matched course shell</div><h2>Transformer Manufacturing</h2>
+<p>Design drawings are not a transformer. This original shell covers what the works decides and what cannot be inspected afterwards: the order that arrives, the process that builds the active part, and the quality gates that either catch a defect or pass it into decades of service.</p><p><b>What you will be able to do:</b> walk a factory sequence in the right order; say which decisions are frozen once the winding is pressed; and write a drawing a winding shop can actually use.</p><p>Ch.3–4 and Ch.7 already teach core, windings and tank from the designer’s side. Volume 6 is the works-side companion. The course does not reproduce its chapters.</p><ul><li>What a transformer factory is, and what it is not</li><li>What can and cannot be inspected afterwards</li><li>The order, the specification and the works</li></ul><div class="mc-go-deeper"><b>Matching volume</b> — <a href="/books/volume-6/">Volume 6 · Transformer Manufacturing</a></div><p class="mc-lock-cta" style="margin-top:14px"><a class="btn btn-amber" href="/books/volume-6/">Open Volume 6 →</a> <a class="btn btn-outline btn-sm" href="learn.html#series-path">Series path on Learn</a></p>
+</section>
+
+<section id="shortcircuit" class="mc-shell">
+<div class="mc-lock-tag">Book-matched course shell</div><h2>Short-Circuit &amp; Mechanical Withstand</h2>
+<p>Ch.4 notes that through-fault force scales with current squared. This original shell is the rest of the job: calculating the current the network actually delivers, the asymmetry that sets the peak, and the buckling, hoop and clamping checks that decide whether the winding survives the first through-fault.</p><p><b>What you will be able to do:</b> state the difference between a nameplate impedance and a withstand demonstration; name the force modes that fail an LV winding inward and an HV winding outward; and know that IEC 60076-5 is read, not paraphrased.</p><p>Volume 10 is the reference. The Engineer Track Level 3 module points here for guided reading.</p><ul><li>What a short circuit does to a transformer</li><li>Fault current, X/R and the peak factor</li><li>Clamping and verification of strength</li></ul><div class="mc-go-deeper"><b>Matching volume</b> — <a href="/books/volume-10/">Volume 10 · Short Circuit and Mechanical Withstand</a></div><p class="mc-lock-cta" style="margin-top:14px"><a class="btn btn-amber" href="/books/volume-10/">Open Volume 10 →</a> <a class="btn btn-outline btn-sm" href="learn.html#series-path">Series path on Learn</a></p>
+</section>
+
+<section id="loading" class="mc-shell">
+<div class="mc-lock-tag">Book-matched course shell</div><h2>Operation, Loading &amp; Overload</h2>
+<p>Ch.6 sizes cooling for a nameplate rating. This original shell is the operator’s problem: the nameplate assumes five things that are rarely all true at once, and the loading guide offers rated, cyclic, emergency and short-time ratings that are different decisions, not four names for the same number.</p><p><b>What you will be able to do:</b> say what the nameplate assumes; distinguish a cyclic rating from an emergency rating; and refuse an overload the thermal arithmetic permits if another constraint (ambient, cooler state, dissolved gas) vetoes it.</p><p>Volume 14 is the reference. Read the current loading guide; do not treat this page as the guide.</p><ul><li>What the nameplate rating assumes</li><li>Four ratings, four decisions</li><li>Reference ambient is a clause, not a climate</li></ul><div class="mc-go-deeper"><b>Matching volume</b> — <a href="/books/volume-14/">Volume 14 · Operation, Loading and Overload</a></div><p class="mc-lock-cta" style="margin-top:14px"><a class="btn btn-amber" href="/books/volume-14/">Open Volume 14 →</a> <a class="btn btn-outline btn-sm" href="learn.html#series-path">Series path on Learn</a></p>
+</section>
+
+<section id="repair" class="mc-shell">
+<div class="mc-lock-tag">Book-matched course shell</div><h2>Maintenance, Repair &amp; Refurbishment</h2>
+<p>Ch.20 covers after-sales as a business. This original shell is the engineering of a programme: every inspection interval and every workshop decision is a bet about which failure mechanism you think you are buying down.</p><p><b>What you will be able to do:</b> separate a time-based round from a condition-based intervention; say what a repair shop can restore and what it cannot; and write a life-extension case that names the mechanism, not just the age.</p><p>Volume 15 is the reference. The forensic method lives in Volume 5 — do not use this module as a substitute investigation.</p><ul><li>A programme is a set of bets about failure mechanisms</li><li>Repair, refurbish and replace are different decisions</li><li>Spares and workshop capability constrain the bet</li></ul><div class="mc-go-deeper"><b>Matching volume</b> — <a href="/books/volume-15/">Volume 15 · Maintenance, Repair and Refurbishment</a></div><p class="mc-lock-cta" style="margin-top:14px"><a class="btn btn-amber" href="/books/volume-15/">Open Volume 15 →</a> <a class="btn btn-outline btn-sm" href="learn.html#series-path">Series path on Learn</a></p>
+</section>
+
+<section id="assetmgmt" class="mc-shell">
+<div class="mc-lock-tag">Book-matched course shell</div><h2>Utility Asset Management</h2>
+<p>A single-machine design calculation does not answer a fleet question. This original shell is for the utility engineer who must know five things about every unit, keep an asset register that is always missing fields, and still make a replacement or intervention call from data that is incomplete.</p><p><b>What you will be able to do:</b> say what a fleet is; name the register fields that are usually missing; and separate an engineering recommendation from the risk decision a utility still has to take.</p><p>Volume 17 is the reference. Diagnostics (Vol. 4) feeds it; it does not replace it.</p><ul><li>What a fleet is, and what you must know about every unit</li><li>The asset register and the fields it is always missing</li><li>What to do when the data is bad</li></ul><div class="mc-go-deeper"><b>Matching volume</b> — <a href="/books/volume-17/">Volume 17 · Utility Asset Management</a></div><p class="mc-lock-cta" style="margin-top:14px"><a class="btn btn-amber" href="/books/volume-17/">Open Volume 17 →</a> <a class="btn btn-outline btn-sm" href="learn.html#series-path">Series path on Learn</a></p>
+</section>
+
+<section id="handbook" class="mc-shell">
+<div class="mc-lock-tag">Book-matched course shell</div><h2>The Transformer Engineer&rsquo;s Handbook</h2>
+<p>The other volumes are written in teaching order. The handbook inverts the series: it is indexed by the question the engineer is actually asking at the desk, and it points back into the volume that owns the method.</p><p><b>What you will be able to do:</b> treat this course’s data appendix (Ch.26) as a pocket list, then open Volume 18 when the question is “where in the series is this answered?” rather than “teach me the topic again.”</p><p>Original course copy only. The handbook’s worked machines stay in the book.</p><ul><li>Question-first entry to the series</li><li>Pairs with Ch.19 (glossary) and Ch.26 (data appendix)</li><li>Does not replace Volumes 1–17 or 19</li></ul><div class="mc-go-deeper"><b>Matching volume</b> — <a href="/books/volume-18/">Volume 18 · The Transformer Engineer's Handbook</a></div><p class="mc-lock-cta" style="margin-top:14px"><a class="btn btn-amber" href="/books/volume-18/">Open Volume 18 →</a> <a class="btn btn-outline btn-sm" href="learn.html#series-path">Series path on Learn</a></p>
+</section>
+
+<section id="hvdc" class="mc-shell">
+<div class="mc-lock-tag">Book-matched course shell</div><h2>Power Electronics, HVDC &amp; Grid Integration</h2>
+<p>Most of the installed fleet was specified for a synchronous grid. This original shell is the course entry to the grid that fleet was not specified for: what a converter removes when it displaces a synchronous machine, why system strength and short-circuit ratio decide what may connect, and why inertia and the first seconds after a trip are now a transformer-application problem.</p><p><b>What you will be able to do:</b> say why a converter transformer is not “just a special” from Ch.15; name system strength as a connection constraint; and know when to open Volume 19 instead of stretching an AC design note.</p><p>Volume 19 is the reference. Special transformers (Vol. 12 / Ch.15) remain the AC-specials module.</p><ul><li>What displacing a synchronous machine actually removes</li><li>System strength, short-circuit ratio and what may connect</li><li>Inertia, rate of change of frequency, and converter-transformer duty</li></ul><div class="mc-go-deeper"><b>Matching volume</b> — <a href="/books/volume-19/">Volume 19 · Power Electronics, HVDC and Grid Integration</a></div><p class="mc-lock-cta" style="margin-top:14px"><a class="btn btn-amber" href="/books/volume-19/">Open Volume 19 →</a> <a class="btn btn-outline btn-sm" href="learn.html#series-path">Series path on Learn</a></p>
+</section>
+
+</main>
+
+<div class="mc-labstrip" id="lab">
+  <h2>🧊 Interactive 3D &amp; Tools Lab</h2>
+  <p>Every model and tool referenced in the course, in one place. They open full-screen in their own tab and are embedded inline at the relevant chapters above.</p>
+  <div class="mc-labgrid">
+    <a href="power500.html" target="_blank" rel="noopener"><span class="ic">🏭</span><span class="t">500 MVA Power Transformer</span><span class="d">5-limb · ODAF coolers · 400 kV bushings</span></a>
+    <a href="power3d.html" target="_blank" rel="noopener"><span class="ic">🏗</span><span class="t">3D Power 100 MVA</span><span class="d">Tour · energise · fault sim · OLTC</span></a>
+    <a href="explorer.html" target="_blank" rel="noopener"><span class="ic">🧊</span><span class="t">3D Distribution Explorer</span><span class="d">Oil &amp; cast-resin · exploded view · quiz</span></a>
+    <a href="coilassembly.html" target="_blank" rel="noopener"><span class="ic">🧱</span><span class="t">Core &amp; Coil Assembly</span><span class="d">Core building · step-lap · clamps</span></a>
+    <a href="coretopology.html" target="_blank" rel="noopener"><span class="ic">🧲</span><span class="t">Core Topology</span><span class="d">3-limb · 5-limb · shell-form + flux</span></a>
+    <a href="oltc.html" target="_blank" rel="noopener"><span class="ic">🔀</span><span class="t">OLTC Cutaway</span><span class="d">Diverter · selector · tap operation</span></a>
+    <a href="bushing.html" target="_blank" rel="noopener"><span class="ic">🔌</span><span class="t">Condenser Bushing</span><span class="d">Grading foils · test tap · RIP/OIP</span></a>
+    <a href="calculator.html" target="_blank" rel="noopener"><span class="ic">🧮</span><span class="t">Design Calculator</span><span class="d">IEC sizing — dist · power · resin</span></a>
+    <a href="country-designer.html" target="_blank" rel="noopener"><span class="ic">🌍</span><span class="t">Country Design Adapter</span><span class="d">196 countries · loss regimes</span></a>
+    <a href="windings.html" target="_blank" rel="noopener"><span class="ic">🧵</span><span class="t">Winding Types</span><span class="d">Helical · layer · disc · interleaved</span></a>
+    <a href="autotransformer.html" target="_blank" rel="noopener"><span class="ic">🔗</span><span class="t">Autotransformer</span><span class="d">Series + common + tertiary</span></a>
+    <a href="gsu.html" target="_blank" rel="noopener"><span class="ic">⚙️</span><span class="t">Generator Step-Up</span><span class="d">Delta LV · star HV · YNd1</span></a>
+    <a href="construction-guide.html" target="_blank" rel="noopener"><span class="ic">📖</span><span class="t">Construction Guide</span><span class="d">Step-by-step build reference</span></a>
+  </div>
+</div>
+
+
+<footer>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+        <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data. Built for utilities, transformer manufacturers, component suppliers, EPCs, consultants and engineers.</p>
+      </div>
+      <div><p class="footer-col-label">INTELLIGENCE</p><a href="intel.html">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="projects.html">Projects</a><a href="tenders.html">Tenders</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="map.html">Industry Map</a><a href="events.html">Events</a></div>
+      <div><p class="footer-col-label">DIRECTORY</p><a href="manufacturers.html">Manufacturers</a><a href="directory.html">Directory Index</a><a href="components.html">Components &amp; Materials</a><a href="machinery.html">Machinery</a><a href="laboratories.html">Testing Labs</a><a href="services.html">Service &amp; Repair</a><a href="logistics.html">Logistics</a><a href="buyers.html">Buyers &amp; Utilities</a><a href="rfq.html">RFQ Board</a></div>
+      <div><p class="footer-col-label">ENGINEERING</p><a href="tools.html">Engineering Hub</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Interactive Models</a><a href="standards.html">Standards &amp; Codes</a><a href="knowledge.html">Knowledge Base</a><a href="case-studies.html">Case Studies</a></div>
+      <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learning Hub</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy 3D Tools</a><a href="books.html">Books</a><a href="education.html">Education</a></div>
+      <div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="pricing.html">Pricing Plans</a><a href="verified.html">Verified Profiles</a><a href="webinars.html">Webinars</a><a href="sponsor.html">Sponsorship</a><a href="associations.html">Associations</a><a href="media.html">Media</a></div>
+      <div><p class="footer-col-label">COMPANY</p><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><p class="footer-col-label">CONTACT</p>
+        <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
+        <a href="privacy.html#cookies" onclick="if(window.tpResetConsent){window.tpResetConsent();return false}">Cookie settings</a>
+        <a class="tp-li-btn tp-li-follow" data-linkedin-follow href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>Follow us on LinkedIn</a>
+        <a class="tp-li-btn tp-li-share" data-linkedin-share href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>LinkedIn</a>
+      </div>
+    </div>
+    <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
+  </div>
+</footer>
+<div id="mc-progress"></div>
+<script>
+(function(){
+  var bar=document.getElementById('mc-progress');
+  function upd(){var h=document.documentElement;var sc=h.scrollTop||document.body.scrollTop;var mx=(h.scrollHeight-h.clientHeight)||1;bar.style.width=(sc/mx*100)+'%';}
+  document.addEventListener('scroll',upd,{passive:true});upd();
+})();
+</script>
+
+<script src="tp-theme.js?v=1" defer></script>
+
+<script>
+(function(){var b=document.getElementById('theme-toggle');if(!b)return;var html=document.documentElement;
+function upd(){var d=html.getAttribute('data-theme')==='dark';b.textContent=d?'☀️':'🌙';}
+if((localStorage.getItem('theme')||'dark')==='dark')html.setAttribute('data-theme','dark');upd();
+b.addEventListener('click',function(){var d=html.getAttribute('data-theme')==='dark';
+if(d){html.removeAttribute('data-theme');localStorage.setItem('theme','light');}else{html.setAttribute('data-theme','dark');localStorage.setItem('theme','dark');}upd();});
+})();
+</script>
+<script src="tp-freshness.js?v=7" defer></script>
+<script src="tp-feedback.js?v=7" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  var secs = document.querySelectorAll('.mc-locked[data-chapter]');
+  if(!window.fetch) return;
+  // Present the entitlement token to the gated function (same-origin cookie).
+  function loadChapter(id, sec){
+    fetch('/.netlify/functions/masterclass-content?chapter='+encodeURIComponent(id), { credentials:'include', headers:{ Accept:'application/json' } })
+      .then(function(r){ return r.json(); }).catch(function(){ return {locked:true}; })
+      .then(function(res){
+        if(res && res.ok && res.html){ sec.innerHTML = res.html; sec.classList.remove('mc-locked'); } 
+        else if(res && res.locked){ /* keep the locked preview */ }
+      });
+  }
+  secs.forEach(function(sec){ loadChapter(sec.getAttribute('data-chapter'), sec); });
+});
+</script>
+</body>
+</html>

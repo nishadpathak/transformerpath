@@ -1,0 +1,97 @@
+{
+  "$schema": "https://transformerpath.com/paper-claim-map.schema.json",
+  "purpose": "Machine-readable PAPER CLAIM -> CODE SYMBOL map for the TransformerPath analytical credibility paper. Every central methodological claim the paper makes is mapped to a real implementation object, test, or runtime path, and classified so any claim WITHOUT an implementation is removed or qualified. Only claims verified against source in this session are listed; nothing is asserted beyond what the code actually does.",
+  "generated": "2026-09-04",
+  "generator": "read-only audit of viz/viz-math.js, tests/viz-math.test.js, engine/design-core.js, design-engine.js, viz/short-circuit.js",
+  "classification_keys": ["IMPLEMENTED", "TESTED", "BENCHMARKED", "DISCUSSION_ONLY", "FUTURE_WORK"],
+  "claims": [
+    {
+      "paper_claim": "Missing required input prevents engineering evaluation (no invented value).",
+      "implementation": "calcStatus input_sufficiency + INSUFFICIENT_DATA state",
+      "symbol_or_path": "viz/viz-math.js -> calcStatus; engine/design-core.js -> null results on missing inputs",
+      "classification": "TESTED",
+      "verdict": "KEEP",
+      "note": "calcStatus({}).state === 'INSUFFICIENT_DATA' and input_sufficiency === 'INSUFFICIENT_DATA' asserted in tests/viz-math.test.js; design-core returns null volts/turn on missing core area."
+    },
+    {
+      "paper_claim": "Independent benchmark evidence increases credibility; benchmarked is NOT validated.",
+      "implementation": "calcStatus benchmark flag -> BENCHMARKED state (above CALCULATED, below CRITERION_CHECKED)",
+      "symbol_or_path": "viz/viz-math.js -> calcStatus (benchmark_status)",
+      "classification": "IMPLEMENTED",
+      "verdict": "QUALIFY",
+      "note": "The ladder supports a BENCHMARKED state, but NO true independent numerical benchmark exists in tests/viz-math.test.js — the force test is F~I^2 identity, and viz/short-circuit.js metadata says benchmarkStatus:'not-benchmarked'. The paper must qualify: 'benchmark evidence is a scaffolded state, not yet populated by an independent benchmark.'"
+    },
+    {
+      "paper_claim": "Missing acceptance criterion prevents a PASS / prevents 'accepted'.",
+      "implementation": "calcStatus criterion flag -> CRITERION_CHECKED requires criterion; criterion:false never VALIDATED",
+      "symbol_or_path": "viz/viz-math.js -> calcStatus (criterion_status)",
+      "classification": "TESTED",
+      "verdict": "KEEP",
+      "note": "calcStatus({...criterion:false}).state !== 'VALIDATED' and criterion_status === 'CRITERION_MISSING' asserted in tests/viz-math.test.js."
+    },
+    {
+      "paper_claim": "Credibility propagates by the weakest link (conservative; a review alone cannot reach top).",
+      "implementation": "calcStatus weakest-link propagation (refactored)",
+      "symbol_or_path": "viz/viz-math.js -> calcStatus (overall_runtime_status = state; requires benchmark+criterion+review for ENGINEERING_REVIEWED)",
+      "classification": "TESTED",
+      "verdict": "KEEP",
+      "note": "NEW (this session): qualified-alone is no longer ENGINEERING_REVIEWED; modelScope:false caps at PRELIMINARY_ENGINEERING; propagation-path tests added in tests/viz-math.test.js. This is the honest framing the paper should adopt."
+    },
+    {
+      "paper_claim": "Six-state credibility hierarchy: INSUFFICIENT_DATA -> CALCULATED -> BENCHMARKED -> CRITERION_CHECKED -> PRELIMINARY_ENGINEERING -> ENGINEERING_REVIEWED.",
+      "implementation": "calcStatus state ladder (exact six keys)",
+      "symbol_or_path": "viz/viz-math.js -> calcStatus",
+      "classification": "IMPLEMENTED",
+      "verdict": "KEEP",
+      "note": "The paper MUST use these exact six state names (and the derived machine-readable fields), matching code terminology 1:1. No invented seven/eight-state taxonomy."
+    },
+    {
+      "paper_claim": "Winding-by-winding thermal verification (independent per-winding current/area/material/duration/criterion).",
+      "implementation": "thermalEngine -> SINGLE-AGGREGATE hot-spot + life (one global load/loss)",
+      "symbol_or_path": "viz/viz-math.js -> thermalEngine",
+      "classification": "IMPLEMENTED",
+      "verdict": "REMOVE / QUALIFY",
+      "note": "thermalEngine is a single-lump IEC-60076-7-style hot-spot/life model, NOT winding-by-winding (no per-winding current/area/material/duration/criterion). Any 'winding-by-winding thermal verification' claim must be removed or renamed to 'aggregate hot-spot rate/life screening'. It also returns bare state:'CALCULATED' with no acceptance-criterion step."
+    },
+    {
+      "paper_claim": "Connection topology produces materially different winding quantities; sqrt(3) turns relationship.",
+      "implementation": "vecGroup (clock+phase volt: star V/sqrt(3), delta V_line) ; design-core turns ratio",
+      "symbol_or_path": "viz/viz-math.js -> vecGroup; engine/design-core.js -> turns_ratio (V_hv/V_lv, ignores vector-group)",
+      "classification": "IMPLEMENTED",
+      "verdict": "QUALIFY",
+      "note": "vecGroup does clock-angle + phase-voltage (star=1/sqrt(3)) only; it does NOT compute ampere-turns balance, zero-sequence (Z0/ZN), or winding currents. design-core turns_ratio ignores vector-group phase shift. So 'topology explicitness' is partial: phase-voltage per connection is implemented, but the full winding-quantity/AT and ZN cases are NOT. The paper must not claim a completed topology case that the code cannot produce."
+    },
+    {
+      "paper_claim": "Short-circuit mechanical force ~11.3 MN (with explicitly matched basis).",
+      "implementation": "shortCircuitForces -> F~I^2 MULTIPLIER (no absolute force); viz/short-circuit.js benchmarkStatus 'not-benchmarked'",
+      "symbol_or_path": "viz/viz-math.js -> shortCircuitForces; viz/short-circuit.js (metadata)",
+      "classification": "DISCUSSION_ONLY",
+      "verdict": "REMOVE / UNLOCATED",
+      "note": "No ~11.3 MN value or independent benchmark exists in any file read this session (viz-math.js, viz-math.test.js, short-circuit.js all confirm F~I^2 scaling, not-benchmarked). The ~11.3 MN benchmark is UNLOCATED — it must be found (a file not yet reached) or the claim removed. The paper must never present two different bases as the same case."
+    },
+    {
+      "paper_claim": "IEC TS 60815 creepage/insulation criterion ladder is implemented.",
+      "implementation": "NOT FOUND in any file read this session",
+      "symbol_or_path": "unlocated (likely data/design-engine-classes.json or a materials/insulation module)",
+      "classification": "DISCUSSION_ONLY",
+      "verdict": "REMOVE / REVIEW",
+      "note": "The IEC TS 60815 creepage/insulation data was NOT found in viz/viz-math.js, design-core.js, design-engine.js, short-circuit.js. It must be located and audited for the copyright rule (no standard-derived tables as executable data under misleading labels). If it is standard-derived discrete values, refactor to a user-supplied criterion / license path / independently derived relationship; do not label standard-derived values as an original fitted series."
+    },
+    {
+      "paper_claim": "The unit tests constitute independent validation of the model.",
+      "implementation": "tests/viz-math.test.js + tests/engine-sanity.js",
+      "symbol_or_path": "tests/viz-math.test.js (identity/regression); tests/engine-sanity.js (dimensional regression)",
+      "classification": "TESTED",
+      "verdict": "QUALIFY / REMOVE",
+      "note": "These are SOFTWARE IDENTITY + REGRESSION tests (verify the math/logic), NOT independent numerical benchmarks. The paper must label them 'identity/regression', never 'independent validation'. There is currently no independent-benchmark test class for the analytical core."
+    },
+    {
+      "paper_claim": "The credibility/validation framework and the physics are one unified system.",
+      "implementation": "design-engine.js (validation gate over data/design-engine-classes.json) vs viz/viz-math.js (physics)",
+      "symbol_or_path": "design-engine.js (validate/checksFor) + viz/viz-math.js (calcStatus/thermalEngine)",
+      "classification": "IMPLEMENTED",
+      "verdict": "QUALIFY",
+      "note": "The validation/credibility gate (design-engine.js -> PASS/REVIEW/WARNING/NOT_CALCULATED/INSUFFICIENT_DATA) and the credibility painter (viz-math.js -> calcStatus) are SEPARATE code paths with DIFFERENT status vocabularies. 'One system' is conceptual, not literal. The paper should reconcile these two status vocabularies or explicitly describe the separation, and tie the design-engine validation statuses to the calcStatus ladder."
+    }
+  ]
+}

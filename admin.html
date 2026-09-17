@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — TransformerPath</title>
+<meta name="description" content="TransformerPath admin control panel — data refresh, affiliate click stats and course access tools.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="style.css?v=14">
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg">
+<meta name="theme-color" content="#0d1b2e">
+<script>if ((localStorage.getItem('theme') || 'dark') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');</script>
+<style>
+.admin-wrap { max-width: 960px; margin: 30px auto; padding: 0 20px; }
+.gate { max-width: 380px; margin: 80px auto; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 32px; text-align: center; }
+.gate input { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; margin: 14px 0; background: var(--card); color: var(--text); }
+.gate button { width: 100%; padding: 11px; background: var(--amber); color:var(--navy); border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
+#panel { display: none; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+@media (max-width: 700px) { .grid2 { grid-template-columns: 1fr; } }
+.acard { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 22px; }
+.acard h3 { margin: 0 0 6px; font-size: 1.02rem; color: var(--text); }
+.acard .sub { color: var(--muted); font-size: .84rem; margin-bottom: 14px; }
+.acard .big { font-size: 2rem; font-weight: 800; color:var(--accent); }
+.abtn { display: inline-block; padding: 8px 16px; background: var(--navy); color: #fff; border: none; border-radius: 8px; font-weight: 600; font-size: .88rem; cursor: pointer; text-decoration: none; margin: 4px 6px 4px 0; }
+.abtn.amber { background: var(--amber); color:var(--navy); }
+.abtn.danger { background: #b91c1c; }
+.mono { font-family: monospace; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; font-size: .82rem; word-break: break-all; display: block; margin: 8px 0; color: var(--text); }
+.out { font-size: .82rem; color: var(--muted); margin-top: 10px; white-space: pre-wrap; }
+table.aff { width: 100%; border-collapse: collapse; font-size: .86rem; margin-top: 10px; }
+table.aff th, table.aff td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); }
+</style>
+    <link rel="stylesheet" href="tp-nav.css?v=14">
+</head>
+<body>
+
+<div class="gate" id="gate">
+  <h2 style="margin:0 0 6px">🔐 Admin</h2>
+  <p style="color:var(--muted);font-size:.88rem">TransformerPath control panel</p>
+  <input type="password" id="pw" placeholder="Passphrase" onkeydown="if(event.key==='Enter')unlock()">
+  <button onclick="unlock()">Unlock</button>
+  <p style="color:var(--muted);font-size:.75rem;margin-top:14px">Client-side gate — keeps casual visitors out. Don't store secrets on this page.</p>
+</div>
+
+<div class="admin-wrap" id="panel">
+  <h1 style="margin:20px 0 4px">TransformerPath <span style="color:var(--accent)">Admin</span></h1>
+  <p style="color:var(--muted);margin-bottom:24px">Local control panel · <a href="index.html" style="color:var(--accent)">← back to site</a></p>
+
+  <div class="grid2">
+
+    <div class="acard">
+      <h3>📡 Data Refresh</h3>
+      <p class="sub">EventRegistry daily job (scheduled 06:00 UTC on Netlify). Trigger a manual run:</p>
+      <button class="abtn amber" onclick="triggerRefresh()">Run refresh-data now</button>
+      <div class="out" id="refresh-out">Requires the site to be deployed on Netlify (function endpoint).</div>
+    </div>
+
+    <div class="acard">
+      <h3>🔎 Data Quality</h3>
+      <p class="sub">Integrity engine findings (data/data-quality.json). Detection-only — nothing is auto-corrected.</p>
+      <div id="dq-summary"><p style="color:var(--muted)">Loading…</p></div>
+      <div id="dq-severity" style="display:flex;gap:10px;flex-wrap:wrap;margin:4px 0 10px"></div>
+      <div id="dq-queues"></div>
+    </div>
+
+    <div class="acard">
+      <h3>🩺 Source Health</h3>
+      <p class="sub">Canonical freshness (data/freshness.json) — page-build vs data-refresh dates are distinct; broken/unhealthy sources are called out honestly.</p>
+      <div id="healthSummary"><p style="color:var(--muted)" class="sub">Loading…</p></div>
+      <div id="healthRows"></div>
+    </div>
+
+    <div class="acard">
+      <h3>✈️ Affiliate Clicks (this device)</h3>
+      <p class="sub">Outbound clicks tracked locally on events.html. Real conversions & revenue: <a href="https://tp.media/en/dashboard" target="_blank" rel="noopener" style="color:var(--accent)">Travelpayouts dashboard ↗</a></p>
+      <div class="big" id="aff-total">0</div>
+      <div id="aff-breakdown"></div>
+      <button class="abtn danger" onclick="if(confirm('Clear local click log?')){localStorage.removeItem('tp-aff-clicks');renderAff()}">Clear log</button>
+    </div>
+
+    <div class="acard">
+      <h3>📬 Subscribers</h3>
+      <p class="sub">Newsletter signups are collected by Netlify Forms (form name: <b>subscribe</b>).</p>
+      <a class="abtn" href="https://app.netlify.com/" target="_blank" rel="noopener">Netlify Forms ↗</a>
+    </div>
+
+    <div class="acard">
+      <h3>💳 Course & Payments</h3>
+      <p class="sub">Three plans via Stripe Payment Links — Learning $199/yr, Professional $599/yr, Team $1,999/yr. See <a href="pricing.html">pricing.html</a> for the live CTAs and STRIPE-SETUP-TODO.md for the link IDs.</p>
+      <a class="abtn" href="https://dashboard.stripe.com/payments" target="_blank" rel="noopener">Stripe Dashboard ↗</a>
+      <p class="sub" style="margin-top:14px">Course access is granted only after <code>functions/verify-access.js</code> confirms a paid Stripe session. Set the <b>STRIPE_SECRET_KEY</b> env var and update each Payment Link's after-payment redirect to include <code>session_id={CHECKOUT_SESSION_ID}</code>.</p>
+    </div>
+
+    <div class="acard">
+      <h3>💰 Revenue</h3>
+      <p class="sub">Honest view — revenue is NOT estimated or fabricated. Live revenue requires the Stripe checkout + Supabase entitlement integration to be wired and verified.</p>
+      <div id="revStatus"><p style="color:var(--muted)" class="sub">Loading…</p></div>
+      <div class="out" id="revMetrics" style="margin-top:8px"></div>
+      <div id="revProducts" class="out" style="margin-top:8px"></div>
+    </div>
+
+    <div class="acard">
+      <h3>🎯 Commercial Opportunities</h3>
+      <p class="sub">Real prospect queues derived from canonical platform data (supplier claims + event promotion). Not a ranking, not a sales score.</p>
+      <div class="out" id="oppSummary"></div>
+      <div class="out" id="oppQueues"></div>
+    </div>
+
+    <div class="acard">
+      <h3>🧹 Local State Tools</h3>
+      <p class="sub">Reset browser-stored state on this device for testing:</p>
+      <button class="abtn" onclick="localStorage.removeItem('tp-user-region');say('Region preference cleared')">Clear region pref</button>
+      <button class="abtn" onclick="localStorage.removeItem('theme');say('Theme pref cleared')">Clear theme</button>
+      <button class="abtn danger" onclick="if(confirm('Remove course access on this device?')){localStorage.removeItem('tp-course-access');say('Course access cleared')}">Clear course access</button>
+      <div class="out" id="tools-out"></div>
+    </div>
+
+    <div class="acard">
+      <h3>🔗 Quick Links</h3>
+      <a class="abtn" href="subscribe.html">Subscribe page</a>
+      <a class="abtn" href="intel.html">Daily Intel</a>
+      <a class="abtn" href="admin/directory-health.html" style="background:var(--accent);color:var(--navy);font-weight:700">Directory Health ↗</a>
+      <a class="abtn" href="admin/source-health.html">Source Health ↗</a>
+      <a class="abtn" href="https://app.netlify.com/" target="_blank" rel="noopener">Netlify ↗</a>
+      <a class="abtn" href="https://eventregistry.org/" target="_blank" rel="noopener">EventRegistry ↗</a>
+    </div>
+
+  </div>
+
+  <div class="acard" style="margin-top:18px">
+    <h3>Recent affiliate clicks</h3>
+    <table class="aff"><thead><tr><th>When</th><th>Type</th><th>Event</th></tr></thead><tbody id="aff-rows"></tbody></table>
+  </div>
+</div>
+
+<script>
+// Client-side gate: SHA-256 of the passphrase. NOTE — this is a deterrent, not real
+// security: this is a static page (no server-side check), so the hash and the logic
+// that compares against it are both readable by anyone who views source. Do not rely
+// on this to gate anything more sensitive than "keep casual visitors out."
+const PW_HASH = '941b8378581ccb8f06432b05180349fef279bd9c9356c25b9771d54c4d533039';
+
+async function sha256(s) {
+  const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
+  return Array.from(new Uint8Array(b)).map(x => x.toString(16).padStart(2, '0')).join('');
+}
+
+function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+
+async function unlock() {
+  const h = await sha256(document.getElementById('pw').value);
+  if (h === PW_HASH) {
+    sessionStorage.setItem('tp-admin', '1');
+    show();
+  } else {
+    document.getElementById('pw').value = '';
+    document.getElementById('pw').placeholder = 'Wrong passphrase';
+  }
+}
+
+function show() {
+  document.getElementById('gate').style.display = 'none';
+  document.getElementById('panel').style.display = 'block';
+  renderAff();
+  renderDataQuality();
+  renderSourceHealth();
+  renderRevenue();
+  renderOpportunities();
+}
+if (sessionStorage.getItem('tp-admin') === '1') show();
+
+function say(msg) { document.getElementById('tools-out').textContent = '✓ ' + msg; }
+
+// ── Data Quality triage (reads data/data-quality.json) ─────────────────────
+function renderDataQuality() {
+  fetch('data/data-quality.json').then(function (r) { return r.json(); }).then(function (d) {
+    var sev = d.counts.by_severity || {};
+    var sevEl = document.getElementById('dq-severity');
+    if (sevEl) {
+      sevEl.innerHTML = ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'].map(function (s) {
+        return '<span class="dq-pill dq-' + s.toLowerCase() + '" style="padding:3px 10px;border-radius:999px;font-weight:700;font-size:.72rem;letter-spacing:.04em;color:#fff;background:' +
+          (s === 'CRITICAL' ? '#b91c1c' : s === 'HIGH' ? '#d97706' : s === 'MEDIUM' ? '#2563eb' : '#475569') + '">' + s + ' ' + (sev[s] || 0) + '</span>';
+      }).join('');
+    }
+    var sum = document.getElementById('dq-summary');
+    if (sum) sum.innerHTML = '<div class="big" style="display:inline-block;margin-right:12px">' + (d.counts.issues || 0) + '</div><span style="color:var(--muted);font-size:.84rem">issues · ' +
+      (d.counts.manufacturers || 0) + ' manufacturers · ' + (d.counts.projects || 0) + ' projects · ' + (d.counts.intel_items || 0) + ' intel items</span>';
+    var q = document.getElementById('dq-queues');
+    if (!q) return;
+    var rows = (d.issues || []).slice().sort(function (a, b) {
+      var o = { CRITICAL: 0, HIGH: 1, MEDIUM: 2, LOW: 3 }; return (o[a.severity] - o[b.severity]) || String(a.entity).localeCompare(b.entity);
+    });
+    var maxShow = 60;
+    q.innerHTML = '<div style="font-size:.8rem;color:var(--muted);margin-bottom:8px">Queues: CRITICAL → HIGH → MEDIUM → LOW (detected ' + (d.updated || '') + '). Detection only — review before acting.</div>' +
+      rows.slice(0, maxShow).map(function (i) {
+        var bg = i.severity === 'CRITICAL' ? '#fef2f2' : i.severity === 'HIGH' ? '#fffbeb' : i.severity === 'MEDIUM' ? '#eff6ff' : '#f8fafc';
+        return '<div style="background:' + bg + ';border:1px solid var(--border);border-radius:8px;padding:9px 12px;margin:6px 0;font-size:.82rem">' +
+          '<b style="color:var(--text)">' + i.issue + '</b> <span style="color:var(--muted)">· ' + i.severity + '</span><br>' +
+          '<span style="color:var(--accent);font-weight:600">' + (i.entity || '') + '</span>' + (i.field ? ' <span style="color:var(--muted)">→ ' + i.field + '</span>' : '') + '<br>' +
+          '<span style="color:var(--muted)">' + (i.reason || '') + '</span>' +
+          (i.source ? '<br><span style="color:var(--muted);font-size:.74rem">source: ' + i.source + '</span>' : '') +
+          (i.recommended_action ? '<br><span style="color:var(--text);font-size:.74rem">action: ' + i.recommended_action + '</span>' : '') +
+          '</div>';
+      }).join('') + (rows.length > maxShow ? '<p style="color:var(--muted);font-size:.76rem;margin-top:8px">' + (rows.length - maxShow) + ' more not shown (LOW advisories).</p>' : '');
+  }).catch(function () {
+    var sum = document.getElementById('dq-summary');
+    if (sum) sum.innerHTML = '<p style="color:var(--muted)">Data-quality report not available. Run <code style="color:var(--accent)">node build-data-quality.js</code>.</p>';
+  });
+}
+
+// ── Revenue (honest) — never estimates revenue; shows real platform scale ──
+function renderRevenue() {
+  fetch('data/commerce-intel.json').then(function (r) { return r.json().catch(function () { return {}; }); }).then(function (d) {
+    var st = d.revenue ? d.revenue.status : 'unknown';
+    var stEl = document.getElementById('revStatus');
+    if (stEl) stEl.innerHTML = '<span style="font-size:.82rem;color:var(--muted)">Revenue status: <b style="color:' + (st === 'collection-in-progress' ? 'var(--accent)' : 'var(--text)') + '">' + esc(st) + '</b> — ' + esc((d.revenue && d.revenue.note) || 'Live revenue requires the Stripe + Supabase integration to be wired.') + '</span>';
+    var m = d.metrics ? d.metrics.platform_scale : {};
+    var mEl = document.getElementById('revMetrics');
+    if (mEl) mEl.innerHTML = '<b style="color:var(--text)">Real platform scale</b><br>' +
+      'Manufacturers ' + (m.manufacturers || '—') + ' · Projects ' + (m.projects || '—') + ' · Tenders ' + (m.tenders || '—') +
+      ' · Open tenders ' + (m.open_tenders || '—') + ' · Awards ' + (m.awards || '—') + ' · Events ' + (m.events || '—');
+    var pEl = document.getElementById('revProducts');
+    if (pEl) {
+      var cats = (d.products || []).map(function (s) { return '<b style="color:var(--text)">' + esc(s.label || s.id) + '</b>: ' + s.products.map(function (p) { return esc(p.name) + (p.price ? ' ($' + p.price + ')' : ''); }).join(', '); }).join(' · ');
+      pEl.innerHTML = '<b style="color:var(--text)">Commercial catalog (from data/commerce.json)</b><br><span style="font-size:.78rem">' + cats + '</span>';
+    }
+  }).catch(function () { var e = document.getElementById('revStatus'); if (e) e.innerHTML = '<p class="sub" style="color:var(--muted)">commerce-intel not available.</p>'; });
+}
+
+// ── Source Health (reads data/freshness.json — canonical freshness) ───────
+function renderSourceHealth() {
+  fetch('data/freshness.json').then(function (r) { return r.json().catch(function () { return {}; }); }).then(function (d) {
+    var noteEl = document.getElementById('healthSummary');
+    if (noteEl) noteEl.innerHTML = '<span class="sub" style="color:var(--muted)">' + esc((d.honest_note) || 'Freshness is tracked per surface; build vs data-refresh dates are distinct.') + '</span>';
+    var rowsEl = document.getElementById('healthRows');
+    if (!rowsEl) return;
+    var order = ['daily_intel', 'auto_briefing', 'projects', 'tenders', 'awards', 'materials'];
+    var byId = {};
+    (d.surfaces || []).forEach(function (s) { byId[s.id] = s; });
+    var pill = function (st) { var c = (st === 'HEALTHY' ? '#16a34a' : st === 'MANUAL_REVIEW' ? '#475569' : st === 'STALE' ? '#b45309' : '#d97706'); return '<span style="font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:999px;color:#fff;background:' + c + '">' + esc(st || '—') + '</span>'; };
+    var grid = order.filter(function (k) { return byId[k]; })
+      .map(function (k) {
+        var s = byId[k];
+        var st = s.status || (s.source_health === 'unhealthy' ? 'MANUAL_REVIEW' : 'HEALTHY');
+        var bg = st === 'HEALTHY' ? 'var(--card)' : '#fef2f2';
+        return '<div style="background:' + bg + ';border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin:6px 0;font-size:.8rem">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center">' +
+          '<b style="color:var(--text)">' + esc(s.name || k) + '</b>' + pill(st) +
+          '</div>' +
+          '<div style="color:var(--muted);margin-top:4px">cadence: <b style="color:var(--text)">' + esc(s.cadence || '—') + '</b> · last_build: <b style="color:var(--text)">' + esc(s.last_build || '—') + '</b> · last_data_refresh: <b style="color:var(--text)">' + esc(s.last_data_refresh || '—') + '</b></div>' +
+          (s.latest_source_observation ? '<div style="color:var(--muted);margin-top:3px">latest_source_observation: <b style="color:var(--text)">' + esc(s.latest_source_observation) + '</b></div>' : '') +
+          (s.records != null ? '<div style="color:var(--muted);margin-top:3px">records: <b style="color:var(--text)">' + esc(s.records) + '</b></div>' : '') +
+          '<a href="admin/source-health.html" style="color:var(--accent);font-size:.76rem;display:inline-block;margin-top:5px">Open per-source health →</a>' +
+          '</div>';
+      }).join('');
+    rowsEl.innerHTML = grid || '<p class="sub" style="color:var(--muted)">No freshness surfaces recorded.</p>';
+  }).catch(function () {
+    var e = document.getElementById('healthSummary');
+    if (e) e.innerHTML = '<span class="sub" style="color:var(--muted)">data/freshness.json not available. Run <code style="color:var(--accent)">node build-freshness.js</code>.</span>';
+  });
+}
+
+// ── Commercial opportunities (honest, derived prospect queues) ──────────────
+function renderOpportunities() {
+  fetch('data/commerce-intel.json').then(function (r) { return r.json().catch(function () { return {}; }); }).then(function (d) {
+    var sum = d.metrics ? d.metrics.prospect_signals : {};
+    var sEl = document.getElementById('oppSummary');
+    if (sEl) sEl.innerHTML = '<b style="color:var(--text)">Prospect signals</b><br>' +
+      'Supplier prospects with a website: <b style="color:var(--accent)">' + (sum.supplier_prospects_with_website || 0) + '</b> · Upcoming events: <b style="color:var(--accent)">' + (sum.upcoming_events || 0) + '</b>' +
+      '<div style="color:var(--muted);font-size:.72rem;margin-top:4px">Prospects are derived from canonical data (website-present companies; upcoming events). Live claim/verified order state lives in Supabase — shown separately.</div>';
+    var qEl = document.getElementById('oppQueues');
+    if (!qEl) return;
+    var sp = (d.supplier_prospects || []).slice(0, 20);
+    var ev = (d.event_prospects || []).slice(0, 10);
+    var h = '<div style="font-size:.8rem;color:var(--muted);margin:6px 0 4px"><b style="color:var(--text)">Supplier claim pipeline (top by country)</b></div>' +
+      sp.map(function (p) { return '<div style="padding:3px 0;font-size:.78rem"><b style="color:var(--text)">' + esc(p.name) + '</b> <span style="color:var(--muted)">· ' + esc(p.country) + ' · ' + esc((p.categories || []).join('/')) + '</span></div>'; }).join('') +
+      '<div style="font-size:.8rem;color:var(--muted);margin:10px 0 4px"><b style="color:var(--text)">Event promotion prospects (next up)</b></div>' +
+      ev.map(function (e) { return '<div style="padding:3px 0;font-size:.78rem"><b style="color:var(--text)">' + esc(e.name) + '</b> <span style="color:var(--muted)">· ' + esc(e.date) + ' · ' + esc(e.city || e.country) + '</span></div>'; }).join('');
+    qEl.innerHTML = h;
+  }).catch(function () {});
+}
+
+function renderAff() {
+  let clicks = [];
+  try { clicks = JSON.parse(localStorage.getItem('tp-aff-clicks') || '[]'); } catch {}
+  document.getElementById('aff-total').textContent = clicks.length;
+  const by = {};
+  clicks.forEach(c => by[c.aff] = (by[c.aff] || 0) + 1);
+  document.getElementById('aff-breakdown').innerHTML = Object.entries(by)
+    .map(([k, v]) => `<span style="display:inline-block;margin:2px 10px 2px 0;font-size:.86rem;color:var(--muted)"><b style="color:var(--text)">${v}</b> ${k}</span>`).join('') || '<span style="font-size:.86rem;color:var(--muted)">No clicks recorded yet.</span>';
+  document.getElementById('aff-rows').innerHTML = clicks.slice(-15).reverse()
+    .map(c => `<tr><td>${c.t.slice(0, 16).replace('T', ' ')}</td><td>${c.aff}</td><td>${c.ev}</td></tr>`).join('') || '<tr><td colspan="3" style="color:var(--muted)">—</td></tr>';
+}
+
+async function triggerRefresh() {
+  const out = document.getElementById('refresh-out');
+  /* refresh-data is a SCHEDULED function, and Netlify answers 403 to any HTTP
+     invocation of one — so this button cannot call it. intel-feed is the
+     unscheduled endpoint; hitting it with a cache-buster bypasses the CDN copy
+     and forces a fresh pull from the source, which is what "refresh now" means
+     here. The hourly cron still runs refresh-data on its own. */
+  out.textContent = 'Fetching a fresh feed via /.netlify/functions/intel-feed …';
+  try {
+    const r = await fetch('/.netlify/functions/intel-feed?cb=' + Date.now(), { cache: 'no-store' });
+    const body = await r.text();
+    let summary = body.slice(0, 400);
+    try {
+      const j = JSON.parse(body);
+      const n = (j.articles || []).reduce((s, g) => s + ((g.items || []).length), 0);
+      summary = (j.configured ? '' : 'EVENTREGISTRY_KEY is not set — no source configured.\n')
+        + n + ' article(s) across ' + (j.articles || []).length + ' region(s)\n'
+        + (j.briefing || '');
+    } catch (e) {}
+    out.textContent = 'HTTP ' + r.status + '\n' + summary;
+  } catch (e) {
+    out.textContent = '✗ ' + e.message + ' — only works on the deployed Netlify site, not localhost.';
+  }
+}
+</script>
+
+<script src="tp-nav.js?v=7" defer></script>
+  <script src="tp-pwa.js?v=7" defer></script>
+<script src="tp-freshness.js?v=7" defer></script>
+</body>
+</html>

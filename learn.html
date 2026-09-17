@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learn Transformer Design — Course Matched to the Books | TransformerPath</title>
+<meta name="description" content="Learn transformer design, operations, diagnostics, manufacturing and HVDC — the 26-chapter design masterclass plus a book-matched series path (Volumes 0–19). Chapters 1–2 are free. A fresh lesson is spotlighted each week.">
+<link rel="canonical" href="https://transformerpath.com/learn.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TransformerPath">
+<meta property="og:title" content="Learn Transformer Design — Course Matched to the Books | TransformerPath">
+<meta property="og:description" content="Learn transformer design, operations, diagnostics, manufacturing and HVDC — the 26-chapter design masterclass plus a book-matched series path (Volumes 0–19).">
+<meta property="og:url" content="https://transformerpath.com/learn.html">
+<meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Learn Transformer Design — Course Matched to the Books | TransformerPath">
+<meta name="twitter:description" content="Learn transformer design, operations, diagnostics, manufacturing and HVDC — the 26-chapter design masterclass plus a book-matched series path (Volumes 0–19).">
+<meta name="twitter:image" content="https://transformerpath.com/brand/og-image.png">
+<link rel="stylesheet" href="style.css?v=14">
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<style>
+.module { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:18px 22px; margin-bottom:12px; transition:box-shadow .2s; }
+.module.spotlight { border-color:var(--amber); box-shadow:0 4px 18px rgba(245,166,35,.18); }
+.module h3 { color:var(--ink); font-size:1.02rem; margin:0; display:flex; align-items:center; }
+.module .mod-no { display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:50%; background:var(--navy); color:var(--amber); font-weight:800; font-size:.88rem; margin-right:10px; flex-shrink:0; }
+.module.spotlight .mod-no { background:var(--amber); color:var(--navy); }
+.module p { color:var(--muted); font-size:.9rem; margin:8px 0 10px; }
+.module .links a { font-size:.83rem; font-weight:600; color:var(--accent); margin-right:16px; }
+.wk-pill { display:inline-block; background:var(--amber); color:var(--navy); font-size:.66rem; font-weight:800; text-transform:uppercase; letter-spacing:.5px; padding:2px 9px; border-radius:999px; margin-left:auto; }
+.formula-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.formula { background:var(--card); border:1px solid var(--border); border-left:4px solid var(--amber); border-radius:10px; padding:14px 18px; }
+.formula h4 { color:var(--ink); font-size:.92rem; margin:0 0 6px; }
+.formula h3 { color:var(--ink); font-size:.92rem; margin:0 0 6px; }
+.formula code { display:block; background:#0d1b2e; color:#f5a623; padding:9px 12px; border-radius:6px; font-size:.86rem; overflow-x:auto; }
+.formula small { color:var(--muted); font-size:.78rem; display:block; margin-top:6px; }
+.featured { background:linear-gradient(135deg,var(--navy),#1b3a5c); color:#fff; border-radius:14px; padding:24px 26px; margin-bottom:24px; }
+.featured .kick { display:inline-block; background:var(--amber); color:var(--navy); font-size:.7rem; font-weight:800; text-transform:uppercase; letter-spacing:.6px; padding:3px 10px; border-radius:999px; margin-bottom:10px; }
+.featured h3 { margin:0 0 6px; font-size:1.2rem; }
+.featured h2 { margin:0 0 6px; font-size:1.2rem; }
+.featured p { color:#b8c4d4; font-size:.92rem; margin:0 0 14px; }
+.hero-cards { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:36px; }
+.hero-card { border-radius:14px; padding:26px; color:#fff; display:flex; flex-direction:column; }
+.hero-card.tut { background:linear-gradient(135deg,#0b3a63,#0b5fa5); }
+.hero-card.exp { background:linear-gradient(135deg,#13263a,#0e1c2c); border:1px solid #23415e; }
+.hero-card h3 { font-size:1.25rem; margin:0 0 8px; }
+.hero-card h2 { font-size:1.25rem; margin:0 0 8px; }
+.hero-card p { font-size:.92rem; opacity:.9; margin:0 0 18px; flex:1; }
+@media (max-width:640px){ .formula-grid, .hero-cards { grid-template-columns:1fr; } }
+.calc { display:grid; grid-template-columns:1fr 1fr; gap:18px; background:var(--card); border:1px solid var(--border); border-radius:14px; padding:22px; }
+.calc-inputs { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.calc-inputs label { display:flex; flex-direction:column; font-size:.78rem; font-weight:700; color:var(--ink); gap:5px; }
+.calc-inputs input, .calc-inputs select { padding:9px 11px; border:1px solid var(--border); border-radius:8px; font-size:.92rem; font-family:inherit; font-weight:400; }
+.calc-out { background:#0d1b2e; border-radius:12px; padding:18px 20px; color:#fff; align-self:start; }
+.calc-out .or { display:flex; justify-content:space-between; align-items:baseline; padding:7px 0; border-bottom:1px solid rgba(255,255,255,.08); font-size:.9rem; }
+.calc-out .or:last-child { border-bottom:0; }
+.calc-out .or span { color:#9fb0c4; }
+.calc-out .or b { color:var(--amber); font-size:1.02rem; font-variant-numeric:tabular-nums; }
+.calc-out h4 { margin:0 0 8px; font-size:.74rem; text-transform:uppercase; letter-spacing:.6px; color:#9fb0c4; }
+@media (max-width:700px){ .calc { grid-template-columns:1fr; } }
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TransformerPath">
+
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Course", "name": "Transformer Design & Construction — Complete Engineering Course", "description": "The TransformerPath course: a 26-chapter design masterclass plus a book-matched path through operations, diagnostics, manufacturing, components, protection, specials, site work, loading, repair, standards, asset management, the engineer handbook and HVDC.", "provider": {"@type": "Organization", "name": "TransformerPath", "url": "https://transformerpath.com/"}, "hasCourseInstance": {"@type": "CourseInstance", "courseMode": "online"}}</script>
+<script src="consent.js" defer></script>
+    <link rel="stylesheet" href="tp-nav.css?v=14">
+  <link rel="stylesheet" href="tp-feedback.css?v=14">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
+    <nav class="tpnav" id="mainNav" aria-label="Primary">
+      <a href="intel.html">Intel</a>
+      <div class="tpnav-dropdown">
+        <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
+        <div class="tpnav-dropdown-panel" role="menu">
+          <a href="manufacturers.html">Manufacturers</a>
+          <a href="map.html">Industry Map</a>
+          <a href="grids.html">Global Grids</a>
+          <a href="components.html">Components &amp; Materials</a>
+          <a href="machinery.html">Machinery</a>
+          <a href="laboratories.html">Testing Labs</a>
+          <a href="services.html">Services &amp; Repair</a>
+          <a href="markets.html">Markets</a>
+          <a href="buyers-guide.html">Buyer's Guide</a>
+          <a href="directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
+        </div>
+      </div>
+      <a href="projects.html">Projects</a>
+      <a href="tenders.html">Tenders</a>
+      <a href="events.html">Events</a>
+      <a href="tools.html" class="tpnav-opt">Engineering</a>
+      <a href="learn.html">Learn</a>
+      <a href="rfq.html">RFQ</a>
+      <div class="tpnav-more">
+        <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
+        <div class="tpnav-more-panel" role="menu">
+          <a href="map.html" role="menuitem">Industry Map</a>
+          <a href="grids.html" role="menuitem">Global Grids</a>
+          <a href="webinars.html" role="menuitem">Webinars</a>
+          <a href="standards.html" role="menuitem">Standards &amp; Codes</a>
+          <a href="for-manufacturers.html" role="menuitem">For Manufacturers</a>
+          <a href="pricing.html" role="menuitem">Pricing Plans</a>
+          <a href="verified.html" role="menuitem">Verified Profiles</a>
+        </div>
+      </div>
+      <span class="tpnav-utils">
+        <a href="search.html" title="Search" aria-label="Search">&#128269;</a>
+        <a href="workspace.html" data-tp-account>Account</a>
+        <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">&#127769;</button>
+      </span>
+    </nav>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    // Night mode is the default; light is opt-in via the toggle.
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+
+    if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
+    updateThemeIcon();
+
+    themeToggle?.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      updateThemeIcon();
+    });
+
+    function updateThemeIcon() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+    }
+  </script>
+  <script src="tp-nav.js?v=7" defer></script>
+  <script src="tp-pwa.js?v=7" defer></script>
+</header>
+<main id="main" tabindex="-1">
+<section class="hero" style="padding:50px 0 40px">
+  <div class="container">
+    <h1>Learn Transformer <span>Design</span></h1>
+    <p>Start with the 26-chapter design masterclass — chapters 1–2 are free — then follow the book-matched path through operations, diagnostics, manufacturing, components, protection, specials, site work, loading, repair, standards, asset management, the handbook and HVDC.</p>
+    <p class="hero-ctas" style="margin-top:18px"><a class="btn btn-amber" href="masterclass.html">Open the Masterclass →</a>
+    <a href="engineer-track.html" style="font-weight:600;color:var(--accent);display:inline-block;max-width:100%">or follow the Design Engineer Track</a></p>
+  </div>
+</section>
+
+<section class="block">
+  <div class="container" style="max-width:860px">
+
+    <!-- Design Engineer Track banner -->
+    <div class="featured" style="margin-bottom:24px">
+      <span class="kick">Structured pathway</span>
+      <h2>Design Engineer Track</h2>
+      <p>Four levels, ~400 guided hours and five capstone projects. Level 1 is free to start. Full Levels 1–4 and capstone review need 12 months access.</p>
+      <a class="btn btn-amber" href="engineer-track.html">Start the track →</a>
+    </div>
+
+    <!-- Premium: what the paid tiers unlock (Stripe) -->
+    <div class="card" style="margin-bottom:24px;padding:26px 28px;border:2px solid var(--amber)">
+      <div style="display:flex;gap:20px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap">
+        <div style="max-width:60ch">
+          <span style="display:inline-block;background:var(--amber);color:var(--navy);font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;padding:3px 10px;border-radius:999px;margin-bottom:10px">Premium</span>
+          <h3 style="margin:0 0 6px">Design Engineer Track — 12 months access</h3>
+          <p style="color:var(--muted);margin:0 0 12px">One payment unlocks the entire learning platform:</p>
+          <ul style="margin:0 0 6px 20px;padding:0;color:var(--text);font-size:.92rem;line-height:1.7">
+            <li><b>All four levels</b> — Foundations, Distribution, Power Transformer and Specials &amp; Mastery</li>
+            <li><b>All courses &amp; tools</b> — masterclass, tutorial, academy, 3D models, formulas and design calculators</li>
+            <li><b>Manually reviewed capstones</b> — marked-up critique + model answer for all five design projects</li>
+            <li><b>Written record</b> — a record of every capstone you complete (currently stored on your device; account-synced progress is being added)</li>
+          </ul>
+        </div>
+        <div style="flex:none;text-align:center;padding:10px 6px">
+          <div style="font-size:2rem;font-weight:800;color:var(--accent)">$199<span style="font-size:.9rem;color:var(--muted);font-weight:600"> / 12 months</span></div>
+          <a class="btn btn-amber" href="pricing.html" style="margin-top:10px;display:inline-block">Compare 3 plans →</a>
+          <div style="font-size:.75rem;color:var(--muted);margin-top:8px">Learning $199 · Professional $599 · Team $1,999</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Corporate / team training CTA -->
+    <div class="card" style="margin-bottom:24px;display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:linear-gradient(135deg,var(--navy),#1b3a5c);color:#fff">
+      <div style="max-width:58ch">
+        <h3 style="color:#fff;margin:0 0 4px">🏢 Training a whole team?</h3>
+        <p style="color:#c4d2e4;margin:0">Bulk seats, manually reviewed capstones and priority review for your manufacturer, utility or EPC — with volume pricing.</p>
+      </div>
+      <a class="btn btn-amber" href="teams.html" style="flex:none">Corporate training →</a>
+    </div>
+
+    <!-- Flagship entry points: Grid Lab + 3D explorer + Tools Hub -->
+    <div class="hero-cards" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr))">
+      <div class="hero-card exp" style="background:linear-gradient(135deg,rgba(20,37,61,.95),rgba(245,166,35,.18)),rgba(20,37,61,.85);border-color:var(--amber)">
+        <h2 style="color:var(--amber)">⚡ Transformer Grid Lab</h2>
+        <p>Interactive 3D power system journey from 21 kV generator → 400 kV GSU → 220 kV autotransformer → 33/11 kV substations → 415 V consumer loads with live I²R loss calculations &amp; OLTC regulation.</p>
+        <a class="btn btn-amber" href="grid-lab.html">Launch Grid Lab →</a>
+      </div>
+      <div class="hero-card exp">
+        <h2>🧩 Component 3D Explorer</h2>
+        <p>Rotate, zoom and explode a transformer in 3D — oil-immersed and cast-resin modes, toggle components, and click any part to learn what it does.</p>
+        <a class="btn btn-outline" href="explorer.html">Explore 3D models →</a>
+      </div>
+      <div class="hero-card tut">
+        <h2>🧰 Course Tools Hub</h2>
+        <p>One map of every interactive model and calculator that belongs with the masterclass — open a tool, then come back to the chapter that uses it.</p>
+        <a class="btn btn-outline" href="academy.html">Open tools hub →</a>
+      </div>
+    </div>
+
+    <!-- More courses & tools hub -->
+    <div class="section-head" style="margin-bottom:14px"><h2>More Courses & Tools</h2><p>Interactive learning and engineering tools — included with 12 months access.</p></div>
+    <div class="grid grid-3" style="margin-bottom:36px">
+      <a class="card" href="power3d.html"><span class="emoji" aria-hidden="true">🔌</span><h3>Power Transformer 3D</h3><p>Explore a 100 MVA 132/33 kV power transformer in interactive 3D.</p></a>
+      <a class="card" href="coilassembly.html"><span class="emoji" aria-hidden="true">🧵</span><h3>Core & Coil Assembly 3D</h3><p>See how the core is built and the coils are assembled, step by step.</p></a>
+      <a class="card" href="calculator.html"><span class="emoji" aria-hidden="true">🧮</span><h3>TX Calculation</h3><p>Live IEC 60076 sizing suite — distribution / power / cast-resin, three modes.</p></a>
+      <a class="card" href="construction-guide.html"><span class="emoji" aria-hidden="true">📐</span><h3>Construction Guide</h3><p>From core to customer — a complete construction walkthrough.</p></a>
+      <a class="card" href="country-designer.html"><span class="emoji" aria-hidden="true">🌍</span><h3>Country-Based Designer</h3><p>Design a transformer to a chosen country's grid and standards.</p></a>
+      <a class="card" href="power500.html"><span class="emoji" aria-hidden="true">⚡</span><h3>500 MVA Transformer 3D</h3><p>A 400/220 kV giant in interactive 3D — radiators, conservator and OLTC.</p></a>
+      <a class="card" href="oltc.html"><span class="emoji" aria-hidden="true">⚙️</span><h3>OLTC 3D Cutaway</h3><p>See inside an on-load tap-changer — diverter, selector and drive in 3D.</p></a>
+      <a class="card" href="bushing.html"><span class="emoji" aria-hidden="true">🔩</span><h3>Condenser Bushing 3D</h3><p>RIP and OIP bushings in an interactive 3D cutaway.</p></a>
+      <a class="card" href="coretopology.html"><span class="emoji" aria-hidden="true">🧲</span><h3>Core Topology 3D</h3><p>3-limb vs 5-limb vs shell-form cores, compared in interactive 3D.</p></a>
+      <a class="card" href="webinars.html"><span class="emoji" aria-hidden="true">🎥</span><h3>Industry webinars</h3><p>OEM, supplier and institute webinars — live sessions, recurring series and on-demand replays.</p></a>
+      <a class="card" href="events.html"><span class="emoji" aria-hidden="true">📅</span><h3>Events calendar</h3><p>In-person exhibitions and conferences worldwide, with map pins for upcoming editions.</p></a>
+    </div>
+
+    <!-- Lesson of the week (auto-rotates by ISO week) -->
+    <div class="featured" id="featured"></div>
+
+    <!-- Series path (volumes in order) -->
+    <div class="section-head" id="series-path" style="margin-bottom:14px"><h2>The book-matched path</h2><p>Volumes 0–19 in series order. Each card is original course copy that points to the matching volume — not a reprint of the book.</p></div>
+    <div id="seriespath" style="margin-bottom:36px">
+      <div class="module"><h3><span class="mod-no" style="width:auto;padding:0 8px;border-radius:8px">V0–V2</span> Design</h3><p>Fundamentals (planned), Volume 1 Edition 1, and Volume 2 Edition 1 — beside the 26-chapter design core.</p><div class="links"><a href="masterclass.html#fundamentals">📖 Course</a><a href="books/volume-0/">📘 Volume 0</a><a href="books/volume-1/">📘 Volume 1</a><a href="books/volume-2/">📘 Volume 2</a></div></div>
+      <div class="module"><h3><span class="mod-no" style="width:auto;padding:0 8px;border-radius:8px">V3–V5</span> Test, diagnostics, failures</h3><p>Factory testing and diagnostics (both planned / being prepared) plus forensic investigation of a failed unit.</p><div class="links"><a href="masterclass.html#testing">📖 Course</a><a href="books/volume-3/">📘 Volume 3</a><a href="books/volume-4/">📘 Volume 4</a><a href="books/volume-5/">📘 Volume 5</a></div></div>
+      <div class="module"><h3><span class="mod-no" style="width:auto;padding:0 8px;border-radius:8px">V6–V10</span> Works, materials, losses, withstand</h3><p>Manufacturing, insulation, components, loss economics and short-circuit strength.</p><div class="links"><a href="masterclass.html#manufacturing">📖 Course</a><a href="books/volume-6/">📘 Volume 6</a></div></div>
+      <div class="module"><h3><span class="mod-no" style="width:auto;padding:0 8px;border-radius:8px">V11–V16</span> Network, specials, site, loading, repair, standards</h3><p>Protection, special transformers, site work, loading, repair and quality assurance.</p><div class="links"><a href="masterclass.html#protection">📖 Course</a><a href="books/volume-11/">📘 Volume 11</a></div></div>
+      <div class="module"><h3><span class="mod-no" style="width:auto;padding:0 8px;border-radius:8px">V17–V19</span> Fleet, handbook, HVDC</h3><p>Utility asset management, the question-indexed handbook, and the converter grid the installed fleet was not specified for.</p><div class="links"><a href="masterclass.html#hvdc">📖 Course</a><a href="books/volume-19/">📘 Volume 19</a></div></div>
+    </div>
+
+    <!-- Curriculum -->
+    <div class="section-head" style="margin-bottom:18px"><h2>The Design Curriculum</h2><p>The 26-chapter design core, in the order a real design is built. Each lesson links to its matching volume. This week's spotlight is highlighted.</p></div>
+
+    <div id="curriculum">
+      <!-- Static curriculum baseline (crawlable, no-JS). JS refreshes this with the spotlight highlight. -->
+      <div class="module"><h3><span class="mod-no">1</span> Fundamentals</h3><p>How a transformer works — mutual induction, the EMF equation, ideal vs real behaviour, and the rating inputs (kVA, voltage ratio, frequency, phases) that drive everything downstream.</p><div class="links"><a href="masterclass.html#fundamentals">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">2</span> Classification &amp; Specification</h3><p>Power vs distribution, core-type vs shell-type, cooling classes (ONAN/ONAF), vector group, impedance, tap range and the standards (IEC 60076 / ANSI C57) the customer specifies.</p><div class="links"><a href="masterclass.html#classification">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">3</span> Core Design &amp; CRGO</h3><p>Choosing core area and flux density, CRGO grades and stacking factor, and how silicon steel cuts hysteresis and eddy losses — setting iron weight and no-load loss.</p><div class="links"><a href="masterclass.html#core">📖 Read this section</a><a href="explorer.html">🧩 3D model</a><a href="calculator.html">🧮 Try the design calc</a></div></div>
+      <div class="module"><h3><span class="mod-no">4</span> Windings &amp; Current Density</h3><p>Conductor sizing from current density, LV-over-core then HV arrangement, layer/disc/helical windings, and the window-area check that confirms it all fits.</p><div class="links"><a href="masterclass.html#windings">📖 Read this section</a><a href="explorer.html">🧩 3D model</a><a href="calculator.html">🧮 Try the design calc</a></div></div>
+      <div class="module"><h3><span class="mod-no">5</span> Insulation System</h3><p>Turn, layer and major insulation; pressboard and paper (IEC 60641); clearances and creepage; oil as a dielectric — the discipline that decides reliability and life.</p><div class="links"><a href="masterclass.html#insulation">📖 Read this section</a><a href="explorer.html">🧩 3D model</a><a href="calculator.html">🧮 Try the design calc</a></div></div>
+      <div class="module"><h3><span class="mod-no">6</span> Thermal &amp; Cooling Design</h3><p>Temperature rise, radiators and fans, ONAN/ONAF/OFAF classes, oil flow and hot-spot control — turning loss watts into a safe operating temperature.</p><div class="links"><a href="masterclass.html#cooling">📖 Read this section</a><a href="explorer.html">🧩 3D model</a><a href="calculator.html">🧮 Try the design calc</a></div></div>
+      <div class="module"><h3><span class="mod-no">7</span> Tank &amp; Accessories</h3><p>Tank, conservator, bushings, tap-changer (OLTC/DETC), Buchholz, breather, protection and monitoring — the hardware around the active part.</p><div class="links"><a href="masterclass.html#construction">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">8</span> Dry-Type &amp; Cast Resin</h3><p>Cast-resin and VPI dry-type transformers — where they win, their thermal classes, and design differences from oil-immersed units.</p><div class="links"><a href="masterclass.html#drytype">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">9</span> Worked Design Example</h3><p>A complete 1000 kVA design worked end-to-end — from spec through core, turns, windings and window check to losses, the way a real designer builds it.</p><div class="links"><a href="masterclass.html#design">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">10</span> Losses, Impedance &amp; Efficiency</h3><p>No-load and load loss, leakage reactance and percent impedance, efficiency and voltage regulation — the numbers the customer guarantees.</p><div class="links"><a href="masterclass.html#losses">📖 Read this section</a><a href="explorer.html">🧩 3D model</a><a href="calculator.html">🧮 Try the design calc</a></div></div>
+      <div class="module"><h3><span class="mod-no">11</span> Testing &amp; Type Tests</h3><p>Routine, type and special tests — ratio, winding resistance, no-load and load loss, impedance, insulation, impulse and temperature-rise — verifying against IEC 60076.</p><div class="links"><a href="masterclass.html#testing">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">12</span> Standards</h3><p>The IEC 60076 family, ANSI/IEEE C57, and the component standards for bushings, tap-changers, oil and pressboard you design to.</p><div class="links"><a href="masterclass.html#standards">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">13</span> Vector Groups</h3><p>Dyn11, Ynd1 and the rest — phase displacement, why it matters for paralleling, and how the connection is built in the windings.</p><div class="links"><a href="masterclass.html#vectorgroups">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">14</span> Inrush</h3><p>Magnetising inrush current — why it happens at switch-on, how large it gets, and how protection is set so it doesn't false-trip.</p><div class="links"><a href="masterclass.html#inrush">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">15</span> Special Types</h3><p>Autotransformers, converter and furnace transformers, earthing transformers and other specials — what changes in the design.</p><div class="links"><a href="masterclass.html#special">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">16</span> Site &amp; Life</h3><p>Installation, commissioning, oil management, condition monitoring and end-of-life — getting the full service life out of the unit.</p><div class="links"><a href="masterclass.html#sitelife">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">17</span> Protection</h3><p>Differential, REF, overcurrent, Buchholz and pressure-relief protection — the relays and devices that keep a transformer (and the grid) safe.</p><div class="links"><a href="masterclass.html#protection">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">18</span> Procurement &amp; Tendering</h3><p>Reading a tender spec, building a compliant offer, guarantees and penalties, FAT/SAT and how buyers actually evaluate transformer bids.</p><div class="links"><a href="masterclass.html#procurement">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">19</span> Glossary &amp; Self-Test</h3><p>Key terms in one place plus a quick self-test to check your understanding of the whole course.</p><div class="links"><a href="masterclass.html#glossary">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">20</span> After-Sales &amp; Service</h3><p>Warranty, spares, retrofits, oil treatment and field service — the support a transformer needs across decades in operation.</p><div class="links"><a href="masterclass.html#aftersales">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">21</span> Bushings</h3><p>OIP/RIP/RIS types, condenser grading, test taps, creepage &amp; pollution class, and why bushings cause most transformer fires — with the 3D condenser-bushing cutaway.</p><div class="links"><a href="masterclass.html#bushings">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">22</span> Tap-Changers</h3><p>OLTC vs DETC, diverter/selector/change-over, resistor vs vacuum switching, AVR control and DGA of the diverter — with the 3D OLTC cutaway.</p><div class="links"><a href="masterclass.html#tapchangers">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">23</span> Impulse &amp; Stress Control</h3><p>How a winding sees a steep surge: initial vs final distribution, the α constant, and static rings, shields &amp; interleaving that protect the line-end turns.</p><div class="links"><a href="masterclass.html#stresscontrol">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">24</span> Fire, Containment &amp; Environment</h3><p>Pressure/arc protection, nitrogen-injection &amp; deluge, bunds and oil-water separation, ester fire safety and sustainability — the envelope around the transformer.</p><div class="links"><a href="masterclass.html#fireenv">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">25</span> Worked 500 MVA Design</h3><p>An EHV 400/220 kV worked design — currents, volts-per-turn, 5-limb core, impedance, impulse grading and ONAN/ONAF/ODAF cooling — behind the 500 MVA 3D model.</p><div class="links"><a href="masterclass.html#powerdesign">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">26</span> Engineering Data Appendix</h3><p>Reference tables designers keep open beside the calculator — ratings, insulation levels, impedance bands, temperature-rise limits and insulating liquids.</p><div class="links"><a href="masterclass.html#datalab">📖 Read this section</a></div></div>
+    </div>
+
+    <div id="paid-tools" class="card" style="margin:44px 0 18px;padding:28px 26px;text-align:center;border:1px solid var(--border)">
+      <h2 style="margin:0 0 8px">Key formulas &amp; sizing calculator</h2>
+      <p style="color:var(--muted);margin:0 0 16px">The design formulas and live first-pass calculator ship with 12-month access — they are not embedded on this public page.</p>
+      <a class="btn btn-amber" href="masterclass.html">Start free chapters →</a>
+      <a href="pricing.html" style="margin-left:14px;font-weight:600;color:var(--accent)">See plans</a>
+    </div>
+
+    <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:22px">
+      Engineering course authored for TransformerPath. The calculator gives a first-pass estimate using simplified formulas — always design to the applicable IEC 60076 / ANSI C57 standard.
+    </p>
+  </div>
+</section>
+<!-- Was this useful? — unobtrusive feedback capture (Netlify Forms) -->
+<div class="feedback-inline" style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:26px 0 6px;max-width:720px">
+  <b style="color:var(--text);font-size:.92rem">Was this useful?</b>
+  <p style="color:var(--muted);font-size:.82rem;margin:3px 0 10px">One tap tells us what to improve. Optional email for a follow-up.</p>
+  <form name="page-feedback" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" id="pageFeedback">
+    <input type="hidden" name="form-name" value="page-feedback">
+    <input type="hidden" name="page" value="">
+    <p hidden><label>Leave empty: <input name="bot-field"></label></p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <label style="display:inline-flex;align-items:center;gap:6px;font-size:.86rem;color:var(--text)"><input type="radio" name="useful" value="yes" required> Yes</label>
+      <label style="display:inline-flex;align-items:center;gap:6px;font-size:.86rem;color:var(--text)"><input type="radio" name="useful" value="no"> Not quite</label>
+    </div>
+    <input style="width:100%;margin-top:10px;padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:.86rem;background:var(--bg);color:var(--text)" type="text" name="note" placeholder="What did you expect? (optional)" maxlength="300">
+    <button class="btn btn-amber btn-sm" type="submit" style="margin-top:10px">Send feedback →</button>
+  </form>
+  <p id="feedbackThanks" style="display:none;color:var(--text);font-size:.86rem;margin:8px 0 0">✓ Thanks — that helps us prioritise.</p>
+</div>
+<script>(function(){var f=document.getElementById('pageFeedback');if(!f)return;var page=f.querySelector('input[name="page"]');if(page)page.value=location.pathname;f.addEventListener('submit',function(e){e.preventDefault();if(!f.checkValidity()){f.reportValidity();return;}fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(f)).toString()}).then(ok).catch(function(){location.href='mailto:hello@transformerpath.com?subject=Feedback: '+encodeURIComponent(location.pathname)+'&body='+encodeURIComponent((f.querySelector('input[name=useful]:checked')||{}).value||'')+'%0A'+encodeURIComponent((f.querySelector('input[name=note]')||{}).value||'');});function ok(){f.style.display='none';var t=document.getElementById('feedbackThanks');if(t)t.style.display='block';}});})();</script>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+        <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data. Built for utilities, transformer manufacturers, component suppliers, EPCs, consultants and engineers.</p>
+      </div>
+      <div><p class="footer-col-label">INTELLIGENCE</p><a href="intel.html">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="projects.html">Projects</a><a href="tenders.html">Tenders</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="map.html">Industry Map</a><a href="events.html">Events</a></div>
+      <div><p class="footer-col-label">DIRECTORY</p><a href="manufacturers.html">Manufacturers</a><a href="directory.html">Directory Index</a><a href="components.html">Components &amp; Materials</a><a href="machinery.html">Machinery</a><a href="laboratories.html">Testing Labs</a><a href="services.html">Service &amp; Repair</a><a href="logistics.html">Logistics</a><a href="buyers.html">Buyers &amp; Utilities</a><a href="rfq.html">RFQ Board</a></div>
+      <div><p class="footer-col-label">ENGINEERING</p><a href="tools.html">Engineering Hub</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Interactive Models</a><a href="standards.html">Standards &amp; Codes</a><a href="knowledge.html">Knowledge Base</a><a href="case-studies.html">Case Studies</a></div>
+      <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learning Hub</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy 3D Tools</a><a href="books.html">Books</a><a href="education.html">Education</a></div>
+      <div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="pricing.html">Pricing Plans</a><a href="verified.html">Verified Profiles</a><a href="webinars.html">Webinars</a><a href="sponsor.html">Sponsorship</a><a href="associations.html">Associations</a><a href="media.html">Media</a></div>
+      <div><p class="footer-col-label">COMPANY</p><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><p class="footer-col-label">CONTACT</p>
+        <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
+        <a href="privacy.html#cookies" onclick="if(window.tpResetConsent){window.tpResetConsent();return false}">Cookie settings</a>
+        <a class="tp-li-btn tp-li-follow" data-linkedin-follow href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>Follow us on LinkedIn</a>
+        <a class="tp-li-btn tp-li-share" data-linkedin-share href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>LinkedIn</a>
+      </div>
+    </div>
+    <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+// Design curriculum — each deep-links into the full course (masterclass.html#<section>); chapter 26 is the data appendix.
+const MODULES = [
+ { n:1,  t:"Fundamentals", a:"fundamentals", v:1, d:"How a transformer works — mutual induction, the EMF equation, ideal vs real behaviour, and the rating inputs (kVA, voltage ratio, frequency, phases) that drive everything downstream." },
+ { n:2,  t:"Classification & Specification", a:"classification", v:1, d:"Power vs distribution, core-type vs shell-type, cooling classes (ONAN/ONAF), vector group, impedance, tap range and the standards (IEC 60076 / ANSI C57) the customer specifies." },
+ { n:3,  t:"Core Design & CRGO", a:"core", v:1, c:1, d:"Choosing core area and flux density, CRGO grades and stacking factor, and how silicon steel cuts hysteresis and eddy losses — setting iron weight and no-load loss." },
+ { n:4,  t:"Windings & Current Density", a:"windings", v:6, c:1, d:"Conductor sizing from current density, LV-over-core then HV arrangement, layer/disc/helical windings, and the window-area check that confirms it all fits." },
+ { n:5,  t:"Insulation System", a:"insulation", v:7, c:1, d:"Turn, layer and major insulation; pressboard and paper (IEC 60641); clearances and creepage; oil as a dielectric — the discipline that decides reliability and life." },
+ { n:6,  t:"Thermal & Cooling Design", a:"cooling", v:8, c:1, d:"Temperature rise, radiators and fans, ONAN/ONAF/OFAF classes, oil flow and hot-spot control — turning loss watts into a safe operating temperature." },
+ { n:7,  t:"Tank & Accessories", a:"construction", v:8, d:"Tank, conservator, bushings, tap-changer (OLTC/DETC), Buchholz, breather, protection and monitoring — the hardware around the active part." },
+ { n:8,  t:"Dry-Type & Cast Resin", a:"drytype", v:12, d:"Cast-resin and VPI dry-type transformers — where they win, their thermal classes, and design differences from oil-immersed units." },
+ { n:9,  t:"Worked Design Example", a:"design", v:1, c:1, d:"A complete 1000 kVA design worked end-to-end — from spec through core, turns, windings and window check to losses, the way a real designer builds it." },
+ { n:10, t:"Losses, Impedance & Efficiency", a:"losses", v:9, c:1, d:"No-load and load loss, leakage reactance and percent impedance, efficiency and voltage regulation — the numbers the customer guarantees." },
+ { n:11, t:"Testing & Type Tests", a:"testing", v:3, d:"Routine, type and special tests — ratio, winding resistance, no-load and load loss, impedance, insulation, impulse and temperature-rise — verifying against IEC 60076." },
+ { n:12, t:"Standards", a:"standards", v:16, d:"The IEC 60076 family, ANSI/IEEE C57, and the component standards for bushings, tap-changers, oil and pressboard you design to." },
+ { n:13, t:"Vector Groups", a:"vectorgroups", v:1, d:"Dyn11, Ynd1 and the rest — phase displacement, why it matters for paralleling, and how the connection is built in the windings." },
+ { n:14, t:"Inrush", a:"inrush", v:11, d:"Magnetising inrush current — why it happens at switch-on, how large it gets, and how protection is set so it doesn't false-trip." },
+ { n:15, t:"Special Types", a:"special", v:12, d:"Autotransformers, converter and furnace transformers, earthing transformers and other specials — what changes in the design." },
+ { n:16, t:"Site & Life", a:"sitelife", v:13, d:"Installation, commissioning, oil management, condition monitoring and end-of-life — getting the full service life out of the unit." },
+ { n:17, t:"Protection", a:"protection", v:11, d:"Differential, REF, overcurrent, Buchholz and pressure-relief protection — the relays and devices that keep a transformer (and the grid) safe." },
+ { n:18, t:"Procurement & Tendering", a:"procurement", v:9, d:"Reading a tender spec, building a compliant offer, guarantees and penalties, FAT/SAT and how buyers actually evaluate transformer bids." },
+ { n:19, t:"Glossary & Self-Test", a:"glossary", v:18, d:"Key terms in one place plus a quick self-test to check your understanding of the whole course." },
+ { n:20, t:"After-Sales & Service", a:"aftersales", v:15, d:"Warranty, spares, retrofits, oil treatment and field service — the support a transformer needs across decades in operation." },
+ { n:21, t:"Bushings", a:"bushings", v:8, d:"OIP/RIP/RIS types, condenser grading, test taps, creepage & pollution class, and why bushings cause most transformer fires — with the 3D condenser-bushing cutaway." },
+ { n:22, t:"Tap-Changers", a:"tapchangers", v:8, d:"OLTC vs DETC, diverter/selector/change-over, resistor vs vacuum switching, AVR control and DGA of the diverter — with the 3D OLTC cutaway." },
+ { n:23, t:"Impulse & Stress Control", a:"stresscontrol", v:7, d:"How a winding sees a steep surge: initial vs final distribution, the α constant, and static rings, shields & interleaving that protect the line-end turns." },
+ { n:24, t:"Fire, Containment & Environment", a:"fireenv", v:15, d:"Pressure/arc protection, nitrogen-injection & deluge, bunds and oil-water separation, ester fire safety and sustainability — the envelope around the transformer." },
+ { n:25, t:"Worked 500 MVA Design", a:"powerdesign", v:2, d:"An EHV 400/220 kV worked design — currents, volts-per-turn, 5-limb core, impedance, impulse grading and ONAN/ONAF/ODAF cooling — behind the 500 MVA 3D model." },
+ { n:26, t:"Engineering Data Appendix", a:"datalab", v:18, d:"Reference tables designers keep open beside the calculator — ratings, insulation levels, impedance bands, temperature-rise limits and insulating liquids." }
+];
+
+const SERIES = [
+ { n:"V0", t:"Fundamentals of Transformer Engineering", a:"fundamentals", v:0, gap:true, d:"Magnetic circuits and the physics of transformation — the vocabulary every later volume assumes. Planned: being prepared; no PDF yet." },
+ { n:"V1", t:"The Transformer Path — A Practical Guide", a:"fundamentals", v:1, d:"Edition 1. Distribution design from specification to service. The design-core lessons (Ch.1–2, 9, 13) live here." },
+ { n:"V2", t:"Power Transformer Design", a:"powerdesign", v:2, d:"Edition 1. Large two-winding and GSU practice — the 500 MVA worked example and power-mode calculator." },
+ { n:"V3", t:"Transformer Testing", a:"testing", v:3, gap:true, d:"Routine, type and special tests — what the factory must prove before a unit ships. Planned: being prepared; no PDF yet." },
+ { n:"V4", t:"Diagnostics & Condition Assessment", a:"diagnostics", v:4, gap:true, d:"How monitor data becomes a condition call. Planned: being prepared; no PDF yet. Course shell maps outcomes, not published chapter text." },
+ { n:"V5", t:"Failures and Forensics", a:"failures", v:5, d:"How a failed unit is investigated: evidence, mechanism and a cause you can defend. Course shell — the volume is the full reference." },
+ { n:"V6", t:"Transformer Manufacturing", a:"manufacturing", v:6, d:"What is decided in the works and cannot be undone — process, inspection and manufacturable drawings." },
+ { n:"V7", t:"Insulation and Materials", a:"insulation", v:7, d:"Dielectrics, cellulose, oil and the clocks they keep — paired with Ch.5 and impulse stress control." },
+ { n:"V8", t:"Transformer Components", a:"construction", v:8, d:"Bushings, tap-changers, cooling and the interfaces between them — Ch.7, 21 and 22." },
+ { n:"V9", t:"Losses, Efficiency and Economics", a:"losses", v:9, d:"Measurement, capitalisation and the money in a loss figure — Ch.10 and procurement." },
+ { n:"V10", t:"Short Circuit and Mechanical Withstand", a:"shortcircuit", v:10, d:"Forces, buckling, clamping and how strength is verified — beyond the design-core note in Ch.4." },
+ { n:"V11", t:"Protection, Control and the Network", a:"protection", v:11, d:"Relays, settings and the machine in a system — Ch.14 and Ch.17." },
+ { n:"V12", t:"Special Transformers", a:"special", v:12, d:"Converter, phase-shifting, furnace, traction and rectifier duty — Ch.8 and Ch.15." },
+ { n:"V13", t:"Installation, Commissioning and Site Work", a:"sitelife", v:13, d:"Site work as manufacturing performed by people who are not manufacturers — Ch.16." },
+ { n:"V14", t:"Operation, Loading and Overload", a:"loading", v:14, d:"The thermal model, the loading guide and the hourly operating decision." },
+ { n:"V15", t:"Maintenance, Repair and Refurbishment", a:"repair", v:15, d:"A maintenance programme as a set of bets about failure mechanisms — Ch.20 and the repair shell." },
+ { n:"V16", t:"Standards, Quality and Assurance", a:"standards", v:16, d:"Why compliance and quality are different things — Ch.12." },
+ { n:"V17", t:"Utility Asset Management", a:"assetmgmt", v:17, d:"Fleet decisions and the questions a single-machine design calculation does not answer." },
+ { n:"V18", t:"The Transformer Engineer's Handbook", a:"handbook", v:18, d:"The series inverted — indexed by the question the engineer is actually asking." },
+ { n:"V19", t:"Power Electronics, HVDC and Grid Integration", a:"hvdc", v:19, d:"The grid the installed fleet was not specified for — converters, HVDC and integration." }
+];
+
+function isoWeek(d){
+  const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  const day = (t.getUTCDay() + 6) % 7;
+  t.setUTCDate(t.getUTCDate() - day + 3);
+  const first = new Date(Date.UTC(t.getUTCFullYear(),0,4));
+  return 1 + Math.round(((t - first)/86400000 - 3 + ((first.getUTCDay()+6)%7))/7);
+}
+const wk = isoWeek(new Date());
+const spotIdx = wk % MODULES.length;
+
+const fm = MODULES[spotIdx];
+document.getElementById('featured').innerHTML =
+  `<span class="kick">Lesson of the Week · Section ${fm.n}</span>
+   <h3>${fm.t}</h3>
+   <p>${fm.d}</p>
+   <a class="btn btn-amber" href="masterclass.html#${fm.a}">Open this week's lesson →</a>`;
+
+document.getElementById('curriculum').innerHTML = MODULES.map((m,i)=>
+  `<div class="module${i===spotIdx?' spotlight':''}">
+     <h3><span class="mod-no">${m.n}</span> ${m.t}${i===spotIdx?'<span class="wk-pill">This week</span>':''}</h3>
+     <p>${m.d}</p>
+     <div class="links">
+       <a href="masterclass.html#${m.a}">📖 Read this section</a>
+       <a href="books/volume-${m.v}/">📘 Volume ${m.v}</a>
+       <a href="explorer.html">🧩 3D model</a>
+        ${m.c?'<a href="calculator.html">🧮 Try the design calc</a>':''}
+     </div>
+   </div>`).join('');
+
+const seriesEl = document.getElementById('seriespath');
+if (seriesEl) {
+  seriesEl.innerHTML = SERIES.map((m)=>
+    `<div class="module${m.gap?'':' '}" style="${m.gap?'border-style:dashed':''}">
+       <h3><span class="mod-no" style="width:auto;padding:0 8px;border-radius:8px">${m.n}</span> ${m.t}${m.gap?'<span class="wk-pill">No PDF yet</span>':''}</h3>
+       <p>${m.d}</p>
+       <div class="links">
+         <a href="masterclass.html#${m.a}">📖 Course module</a>
+         <a href="books/volume-${m.v}/">📘 Volume ${m.v}</a>
+       </div>
+     </div>`).join('');
+}
+</script>
+
+<!-- ── INTERACTIVE ENGINEERING SELF-TEST QUIZ (TRACK 3) ── -->
+<div class="card" style="margin:36px 0 24px; border:1px solid rgba(245,166,35,.35); background:linear-gradient(180deg, rgba(13,27,46,.95) 0%, rgba(13,27,46,.8) 100%); padding:24px;">
+  <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
+    <div>
+      <span style="font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.06em; color:var(--amber); background:rgba(245,166,35,.15); padding:3px 8px; border-radius:6px; border:1px solid rgba(245,166,35,.3);">🎓 Knowledge Check</span>
+      <h3 style="font-size:1.35rem; color:var(--ink); margin:8px 0 4px">Transformer Engineering Self-Test</h3>
+      <p style="font-size:.88rem; color:var(--muted); margin:0">Test your mastery of core electromagnetics, vector groups, thermal aging, and short-circuit forces.</p>
+    </div>
+    <div id="quizScoreBox" style="font-size:.85rem; font-weight:700; color:var(--amber); background:var(--bg); border:1px solid var(--border); padding:6px 14px; border-radius:8px;">Score: 0 / 4</div>
+  </div>
+
+  <div id="quizContainer" style="display:flex; flex-direction:column; gap:16px;">
+    <!-- Rendered by JS -->
+  </div>
+</div>
+
+<!-- ── Quick sizing calculator ── -->
+<div class="calc">
+  <div>
+    <h3 style="color:var(--ink);margin:0 0 4px">⚡ Sizing Engine</h3>
+    <p style="font-size:.84rem;color:var(--muted);margin:0 0 14px">Compute volts-per-turn, net core cross-section, turn counts, and line current densities.</p>
+    <div class="calc-inputs">
+      <label>Phases <select id="cPh"><option value="3" selected>3-Phase</option><option value="1">1-Phase</option></select></label>
+      <label>Rating (kVA) <input id="cKva" type="number" value="1000" step="50"></label>
+      <label>HV Line kV <input id="cHv" type="number" value="11" step="0.5"></label>
+      <label>LV Line kV <input id="cLv" type="number" value="0.433" step="0.01"></label>
+      <label>Frequency (Hz) <select id="cF"><option value="50" selected>50 Hz</option><option value="60">60 Hz</option></select></label>
+      <label>Peak Flux B (T) <input id="cB" type="number" value="1.65" step="0.05"></label>
+      <label>Current Density (A/mm²) <input id="cD" type="number" value="2.8" step="0.1"></label>
+      <label>K Factor (Et = K√kVA) <input id="cK" type="number" value="0.45" step="0.01"></label>
+    </div>
+  </div>
+  <div style="display:flex; flex-direction:column; justify-content:space-between; gap:12px;">
+    <div class="calc-out" id="calcOut">
+      <!-- Sizing output -->
+    </div>
+    <div style="display:flex; justify-content:flex-end; gap:8px;">
+      <button type="button" id="btnCopyDesignSheet" class="btn btn-outline btn-sm" style="font-size:.78rem">📋 Copy Design Sheet (MD)</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Interactive Self-Test Quiz Logic ──
+(function(){
+  const questions = [
+    {
+      q: "1. Under sinusoidal flux excitation, what fundamental constant links Induced EMF (E) to frequency (f), turns (N), flux density (B_m), and core area (A_c)?",
+      opts: ["2.22 (π / √2)", "4.44 (√2 · π)", "6.28 (2π)", "1.414 (√2)"],
+      ans: 1,
+      exp: "E = 4.44 · f · N · B_m · A_c. The constant 4.44 derives from the RMS value of a sinusoidal derivative (2π / √2 = √2 · π ≈ 4.44288)."
+    },
+    {
+      q: "2. If a power transformer experiences a through-fault with twice (2×) the rated short-circuit current, how do the radial electromagnetic forces change?",
+      opts: ["Doubled (2×)", "Halved (0.5×)", "Quadrupled (4×, proportional to I²)", "Octupled (8×)"],
+      ans: 2,
+      exp: "Electromagnetic force is proportional to the square of current (F ∝ I²). Doubling the current quadruples (4×) the radial hoop and buckling stresses."
+    },
+    {
+      q: "3. For a standard distribution transformer designated Dyn11, what is the exact angular phase displacement?",
+      opts: ["LV leads HV by +30° (11 o'clock)", "LV lags HV by 30° (1 o'clock)", "Zero phase shift (12 o'clock)", "180° phase inversion (6 o'clock)"],
+      ans: 0,
+      exp: "In clock notation, 11 means the LV phasor points to 11 o'clock, which is +30° ahead (leading) of the HV reference at 12 o'clock."
+    },
+    {
+      q: "4. Under the Arrhenius thermal degradation model in IEC 60076-7, roughly what temperature increment halves the expected life of standard cellulose insulation?",
+      opts: ["~1 K", "~6 K", "~25 K", "~50 K"],
+      ans: 1,
+      exp: "The 6 K doubling rule (IEC 60076-7 / Montsinger law): every ~6 K sustained temperature increase approximately doubles the rate of cellulose insulation aging (halves thermal life)."
+    }
+  ];
+
+  let userAnswers = {};
+
+  function renderQuiz(){
+    const container = document.getElementById('quizContainer');
+    if(!container) return;
+
+    container.innerHTML = questions.map((q, qIdx) => {
+      const selected = userAnswers[qIdx];
+      const isAnswered = selected !== undefined;
+      const isCorrect = selected === q.ans;
+
+      const optsHtml = q.opts.map((opt, oIdx) => {
+        let btnStyle = 'background:var(--bg); border:1px solid var(--border); color:var(--text); padding:8px 12px; border-radius:8px; font-size:.86rem; text-align:left; cursor:pointer; width:100%; transition:all .15s;';
+        if(isAnswered){
+          if(oIdx === q.ans){
+            btnStyle = 'background:rgba(22,163,74,.18); border:1px solid #16a34a; color:#4ade80; font-weight:700; padding:8px 12px; border-radius:8px; font-size:.86rem; text-align:left; width:100%;';
+          } else if(selected === oIdx){
+            btnStyle = 'background:rgba(220,38,38,.18); border:1px solid #dc2626; color:#f87171; padding:8px 12px; border-radius:8px; font-size:.86rem; text-align:left; width:100%;';
+          } else {
+            btnStyle += ' opacity:.6; cursor:default;';
+          }
+        }
+        return `<button type="button" class="quiz-opt" data-qid="${qIdx}" data-oid="${oIdx}" style="${btnStyle}">${opt}</button>`;
+      }).join('');
+
+      let feedbackHtml = '';
+      if(isAnswered){
+        feedbackHtml = `<div style="margin-top:8px; padding:8px 12px; background:rgba(0,0,0,.2); border-radius:6px; font-size:.82rem; color:${isCorrect ? '#4ade80' : '#f87171'}">
+          ${isCorrect ? '✅ <b>Correct!</b> ' : '❌ <b>Incorrect.</b> '}${q.exp}
+        </div>`;
+      }
+
+      return `<div style="background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px;">
+        <div style="font-weight:700; font-size:.92rem; color:var(--ink); margin-bottom:10px">${q.q}</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">${optsHtml}</div>
+        ${feedbackHtml}
+      </div>`;
+    }).join('');
+
+    // Update score
+    let score = 0;
+    Object.keys(userAnswers).forEach(k => {
+      if(userAnswers[k] === questions[k].ans) score++;
+    });
+    const sBox = document.getElementById('quizScoreBox');
+    if(sBox) sBox.textContent = `Score: ${score} / ${questions.length}`;
+
+    // Attach click listeners
+    container.querySelectorAll('.quiz-opt').forEach(btn => {
+      btn.addEventListener('click', function(){
+        const qid = parseInt(this.getAttribute('data-qid'));
+        const oid = parseInt(this.getAttribute('data-oid'));
+        if(userAnswers[qid] !== undefined) return; // already answered
+        userAnswers[qid] = oid;
+        renderQuiz();
+      });
+    });
+  }
+
+  renderQuiz();
+})();
+</script>
+
+<script>
+// ── Quick sizing calculator ──
+(function(){
+  const ids=['cPh','cKva','cHv','cLv','cF','cB','cD','cK'];
+  const el=Object.fromEntries(ids.map(i=>[i,document.getElementById(i)]));
+  const out=document.getElementById('calcOut');
+  if(!out) return;
+  const fmt=(n,d=0)=>isFinite(n)?n.toLocaleString("en",{maximumFractionDigits:d,minimumFractionDigits:d}):'—';
+  
+  let currentDesign = {};
+
+  function calc(){
+    const ph=+el.cPh.value, S=+el.cKva.value*1000, HV=+el.cHv.value, LV=+el.cLv.value;
+    const f=+el.cF.value, B=+el.cB.value, dens=+el.cD.value, K=+el.cK.value;
+    // volts per turn (empirical): Et = K*sqrt(kVA per phase-ish). Use total kVA for K calibration.
+    const Et = K*Math.sqrt(+el.cKva.value);
+    // core area from Et = 4.44 f B Ac  -> Ac (m2) -> cm2
+    const Ac = Et/(4.44*f*B); // m^2
+    const AcCm = Ac*1e4;
+    // phase voltages
+    const Vp_hv = ph===3 ? HV/Math.sqrt(3) : HV;   // assume star HV for 3ph (typical)
+    const Vp_lv = ph===3 ? LV/Math.sqrt(3) : LV;
+    const Nhv = Vp_hv/Et, Nlv = Vp_lv/Et;
+    // currents (line)
+    const Ihv = ph===3 ? S/(Math.sqrt(3)*HV) : S/HV;
+    const Ilv = ph===3 ? S/(Math.sqrt(3)*LV) : S/LV;
+    const aHv = Ihv/dens, aLv = Ilv/dens; // mm^2 (line current ~ phase for star)
+    
+    currentDesign = {
+      ph, kva:+el.cKva.value, HV, LV, f, B, dens, K,
+      Et, AcCm, Nhv, Nlv, Ihv, Ilv, aHv, aLv
+    };
+
+    out.innerHTML =
+      `<h4>First-pass design</h4>
+       <div class="or"><span>Volts per turn (Eₜ)</span><b>${fmt(Et,2)} V</b></div>
+       <div class="or"><span>Net core area</span><b>${fmt(AcCm,0)} cm²</b></div>
+       <div class="or"><span>HV turns / phase</span><b>${fmt(Nhv,0)}</b></div>
+       <div class="or"><span>LV turns / phase</span><b>${fmt(Nlv,0)}</b></div>
+       <div class="or"><span>HV line current</span><b>${fmt(Ihv,1)} A</b></div>
+       <div class="or"><span>LV line current</span><b>${fmt(Ilv,0)} A</b></div>
+       <div class="or"><span>HV conductor area</span><b>${fmt(aHv,1)} mm²</b></div>
+       <div class="or"><span>LV conductor area</span><b>${fmt(aLv,0)} mm²</b></div>`;
+  }
+  ids.forEach(i=>{ el[i]?.addEventListener('input',calc); el[i]?.addEventListener('change',calc); });
+  calc();
+
+  document.getElementById('btnCopyDesignSheet')?.addEventListener('click', function(){
+    const d = currentDesign;
+    const md = `### Transformer Sizing Calculation Sheet (${d.kva} kVA, ${d.HV}/${d.LV} kV)
+- **Configuration:** ${d.ph}-Phase, ${d.f} Hz
+- **Volts Per Turn (Eₜ):** ${d.Et.toFixed(2)} V (K = ${d.K})
+- **Net Core Cross-Section (Ac):** ${d.AcCm.toFixed(0)} cm² at B = ${d.B} T
+- **HV Winding:** ${d.Nhv.toFixed(0)} turns/phase | Line Current: ${d.Ihv.toFixed(1)} A | Conductor: ${d.aHv.toFixed(1)} mm²
+- **LV Winding:** ${d.Nlv.toFixed(0)} turns/phase | Line Current: ${d.Ilv.toFixed(0)} A | Conductor: ${d.aLv.toFixed(0)} mm²
+- **Current Density:** ${d.dens} A/mm²
+- **Standard Reference:** IEC 60076-1 / Faraday EMF Law E = 4.44·f·N·B·Ac
+`;
+    navigator.clipboard.writeText(md).then(()=>{
+      const btn = document.getElementById('btnCopyDesignSheet');
+      const orig = btn.textContent;
+      btn.textContent = '✅ Copied!';
+      setTimeout(()=>{ btn.textContent = orig; }, 2000);
+    });
+  });
+})();
+</script>
+
+<script src="analytics.js?v=7" defer></script>
+<script src="tp-freshness.js?v=7" defer></script>
+<script src="tp-feedback.js?v=7" defer></script>
+</body>
+</html>

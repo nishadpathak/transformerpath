@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" class="tp-dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Core Topology — 3-Limb vs 5-Limb vs Shell-Form (Interactive 3D)</title>
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
+<meta name="description" content="Transformer core topology explorer — core-form vs shell-form, 3-limb vs 5-limb designs compared in interactive 3D.">
+<link rel="canonical" href="https://transformerpath.com/coretopology.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TransformerPath">
+<meta property="og:title" content="Core Topology — 3-Limb vs 5-Limb vs Shell-Form (Interactive 3D)">
+<meta property="og:description" content="Transformer core topology explorer — core-form vs shell-form, 3-limb vs 5-limb designs compared in interactive 3D.">
+<meta property="og:url" content="https://transformerpath.com/coretopology.html">
+<meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+:root{--panel:#14253d;--panel2:#0d1b2e;--ink:#e8edf4;--mut:#94a3b8;--acc:#f5a623;--acc2:#fbbf24;--line:#1e3a5c}
+*{box-sizing:border-box;margin:0;padding:0}html,body{height:100%;overflow:hidden}
+body{font-family:var(--font-sans);background:#0a1624;color:var(--ink)}
+#c3d{position:absolute;inset:0;cursor:grab}#c3d.dragging{cursor:grabbing}
+#topbar{position:absolute;top:0;left:0;right:0;height:52px;background:linear-gradient(180deg,rgba(10,22,36,.95),rgba(10,22,36,.78) 70%,transparent);display:flex;align-items:center;gap:12px;padding:0 18px;z-index:10;pointer-events:none}
+#topbar h1{font-size:1rem;font-weight:600;white-space:nowrap}
+#topbar a{pointer-events:auto;color:var(--acc);text-decoration:none;font-size:.8rem;border:1px solid var(--line);padding:4px 10px;border-radius:6px;background:rgba(20,37,61,.7);white-space:nowrap}
+#topbar a:hover{background:var(--panel);border-color:var(--acc)}
+#modeswitch{pointer-events:auto;margin-left:auto;display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+#modeswitch button{background:rgba(20,37,61,.8);color:var(--mut);border:0;padding:7px 12px;font-size:.8rem;font-weight:600;cursor:pointer}
+#modeswitch button.active{background:var(--acc);color:#0d1b2e;font-weight:700}
+#panel{position:absolute;top:60px;right:12px;width:300px;max-height:calc(100% - 80px);overflow-y:auto;background:rgba(20,37,61,.94);border:1px solid var(--line);border-radius:12px;padding:14px 16px;z-index:10;backdrop-filter:blur(8px)}
+#panel h2{font-size:.78rem;text-transform:uppercase;letter-spacing:1px;color:var(--acc);margin:12px 0 6px}#panel h2:first-child{margin-top:0}
+.sl{width:100%;margin:4px 0 2px;accent-color:var(--acc)}.slrow{display:flex;justify-content:space-between;font-size:.72rem;color:var(--mut)}
+.tgl{display:flex;align-items:center;gap:8px;font-size:.83rem;padding:2.5px 0;cursor:pointer;user-select:none}.tgl input{accent-color:var(--acc)}
+.sw{width:11px;height:11px;border-radius:3px;display:inline-block;flex:none}
+#info{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin-top:6px;font-size:.83rem;line-height:1.5;min-height:96px}#info b{color:var(--acc)}#info .hint{color:var(--mut);font-size:.78rem}
+.btnrow{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.btnrow button{flex:1;background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:7px;padding:6px 4px;font-size:.77rem;cursor:pointer;white-space:nowrap}
+.btnrow button:hover{border-color:var(--acc)}.btnrow button.on{background:var(--acc);color:#0d1b2e;font-weight:700;border-color:var(--acc)}
+#help{position:absolute;left:14px;bottom:12px;z-index:10;font-size:.74rem;color:var(--mut);background:rgba(20,37,61,.85);border:1px solid var(--line);border-radius:8px;padding:7px 11px;line-height:1.6;pointer-events:none}
+.lbl{position:absolute;transform:translate(-50%,-130%);background:rgba(10,22,36,.92);border:1px solid var(--line);color:#e8edf4;font-size:11px;padding:2px 7px;border-radius:5px;pointer-events:auto;cursor:pointer;white-space:nowrap;z-index:5}
+.lbl::after{content:"";position:absolute;left:50%;top:100%;margin-left:-4px;border:4px solid transparent;border-top-color:var(--line)}
+@media(max-width:760px){#panel{width:248px}#topbar h1{font-size:.78rem}#modeswitch button{padding:6px 8px;font-size:.72rem}}
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TransformerPath">
+<script src="course-gate.js?v=7"></script>
+    <link rel="stylesheet" href="tp-theme.css?v=6">
+    <link rel="stylesheet" href="tp-nav.css?v=14">
+  <link rel="stylesheet" href="tp-feedback.css?v=14">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
+    <nav class="tpnav" id="mainNav" aria-label="Primary">
+      <a href="intel.html">Intel</a>
+      <div class="tpnav-dropdown">
+        <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
+        <div class="tpnav-dropdown-panel" role="menu">
+          <a href="manufacturers.html">Manufacturers</a>
+          <a href="map.html">Industry Map</a>
+          <a href="grids.html">Global Grids</a>
+          <a href="components.html">Components &amp; Materials</a>
+          <a href="machinery.html">Machinery</a>
+          <a href="laboratories.html">Testing Labs</a>
+          <a href="services.html">Services &amp; Repair</a>
+          <a href="markets.html">Markets</a>
+          <a href="buyers-guide.html">Buyer's Guide</a>
+          <a href="directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
+        </div>
+      </div>
+      <a href="projects.html">Projects</a>
+      <a href="tenders.html">Tenders</a>
+      <a href="events.html">Events</a>
+      <a href="tools.html" class="tpnav-opt">Engineering</a>
+      <a href="learn.html">Learn</a>
+      <a href="rfq.html">RFQ</a>
+      <div class="tpnav-more">
+        <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
+        <div class="tpnav-more-panel" role="menu">
+          <a href="map.html" role="menuitem">Industry Map</a>
+          <a href="grids.html" role="menuitem">Global Grids</a>
+          <a href="webinars.html" role="menuitem">Webinars</a>
+          <a href="standards.html" role="menuitem">Standards &amp; Codes</a>
+          <a href="for-manufacturers.html" role="menuitem">For Manufacturers</a>
+          <a href="pricing.html" role="menuitem">Pricing Plans</a>
+          <a href="verified.html" role="menuitem">Verified Profiles</a>
+        </div>
+      </div>
+      <span class="tpnav-utils">
+        <a href="search.html" title="Search" aria-label="Search">&#128269;</a>
+        <a href="workspace.html" data-tp-account>Account</a>
+        <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">&#127769;</button>
+      </span>
+    </nav>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    // Night mode is the default; light is opt-in via the toggle.
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+
+    if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
+    updateThemeIcon();
+
+    themeToggle?.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      updateThemeIcon();
+    });
+
+    function updateThemeIcon() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+    }
+  </script>
+  <script src="tp-nav.js?v=7" defer></script>
+  <script src="tp-pwa.js?v=7" defer></script>
+</header>
+<div id="c3d"></div>
+<div id="topbar">
+  <h1>🧲 Core Topology</h1>
+  <a href="academy.html">🏠 Hub</a>
+  <a href="masterclass.html">← Masterclass</a>
+  <div id="modeswitch">
+    <button id="m3" class="active">3-limb</button>
+    <button id="m5">5-limb</button>
+    <button id="mShell">Shell</button>
+  </div>
+</div>
+<div id="panel">
+  <h2>Flux</h2>
+  <div class="btnrow"><button id="bFlux" class="on">🌀 Animate flux</button></div>
+  <h2>Windings</h2>
+  <label class="tgl"><input type="checkbox" id="tWind" checked><span class="sw" style="background:#c97a3d"></span>Show windings</label>
+  <label class="tgl"><input type="checkbox" id="tYoke" checked><span class="sw" style="background:#47556a"></span>Show yokes</label>
+  <h2>View</h2>
+  <div class="btnrow">
+    <button id="bRotate">⟳ Rotate</button>
+    <button id="bLabels" class="on">🏷 Labels</button>
+    <button id="bReset">⌂ Reset</button>
+  </div>
+  <h2>About this topology</h2>
+  <div id="info"></div>
+</div>
+<div id="help">🖱 drag = orbit · wheel = zoom · right-drag = pan · hover a mode above<br>Switch topology top-right and watch how the flux finds its return path.</div>
+
+<script src="vendor/three.min.js"></script>
+<script>
+const container=document.getElementById('c3d');
+const renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.setSize(innerWidth,innerHeight);
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.outputEncoding=THREE.sRGBEncoding;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;
+container.appendChild(renderer.domElement);
+const scene=new THREE.Scene();
+(function(){const cv=document.createElement('canvas');cv.width=16;cv.height=512;const g=cv.getContext('2d');
+ const gr=g.createLinearGradient(0,0,0,512);gr.addColorStop(0,'#27557f');gr.addColorStop(.45,'#143049');gr.addColorStop(.78,'#0c1c30');gr.addColorStop(1,'#0a1624');
+ g.fillStyle=gr;g.fillRect(0,0,16,512);scene.background=new THREE.CanvasTexture(cv);})();
+scene.fog=new THREE.Fog(0x0d1f33,200,520);
+const camera=new THREE.PerspectiveCamera(46,innerWidth/innerHeight,0.4,800);
+scene.add(new THREE.HemisphereLight(0xbcd4ea,0x16202c,.9));
+const sun=new THREE.DirectionalLight(0xffffff,1);sun.position.set(70,120,80);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);
+const scam=sun.shadow.camera;scam.left=-100;scam.right=100;scam.top=110;scam.bottom=-30;scam.far=340;scene.add(sun);
+const fill=new THREE.DirectionalLight(0x88aacc,.32);fill.position.set(-70,40,-70);scene.add(fill);
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(700,700),new THREE.MeshStandardMaterial({color:0x16314a,roughness:1}));
+ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
+
+const M={
+  core:new THREE.MeshStandardMaterial({color:0x47556a,metalness:.78,roughness:.34}),
+  lv:new THREE.MeshStandardMaterial({color:0xc97a3d,metalness:.7,roughness:.45,transparent:true,opacity:.92}),
+  hv:new THREE.MeshStandardMaterial({color:0xb5651d,metalness:.65,roughness:.5,transparent:true,opacity:.92})
+};
+const PARTS={};const pickables=[];
+function reg(obj,key,name,desc){obj.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;o.userData.key=key;pickables.push(o);}});PARTS[key]={root:obj,name,desc};return obj;}
+const root=new THREE.Group();scene.add(root);
+
+/* ===== builders ===== */
+const G={3:new THREE.Group(),5:new THREE.Group(),shell:new THREE.Group()};
+root.add(G[3],G[5],G.shell);
+const fluxPaths={3:[],5:[],shell:[]};   // arrays of THREE.Curve for particle motion
+const windingGroups={3:[],5:[],shell:[]};
+const yokeGroups={3:[],5:[],shell:[]};
+
+const CH=64,LR=5.5,YK=9;
+function limbMesh(x,h,r){const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r,h,26),M.core);m.position.set(x,h/2+10,0);return m;}
+function yokeMesh(w,y){const m=new THREE.Mesh(new THREE.BoxGeometry(w,YK,YK),M.core);m.position.set(0,y,0);return m;}
+function windingPair(x){const g=new THREE.Group();
+  const lv=new THREE.Mesh(new THREE.CylinderGeometry(8,8,46,36,1,true),M.lv);lv.position.set(x,42,0);
+  const hv=new THREE.Mesh(new THREE.CylinderGeometry(10.5,10.5,46,36,1,true),M.hv);hv.position.set(x,42,0);
+  g.add(lv,hv);return g;}
+
+/* --- 3-limb --- */
+(function(){const xs=[-24,0,24];xs.forEach(x=>G[3].add(limbMesh(x,CH,LR)));
+  const yt=yokeMesh(72,CH+10+YK/2-1),yb=yokeMesh(72,10+YK/2-1);G[3].add(yt,yb);yokeGroups[3].push(yt,yb);
+  xs.forEach(x=>{const w=windingPair(x);G[3].add(w);windingGroups[3].push(w);});
+  // flux: phase A up centre, returns split through outer limbs
+  fluxPaths[3]=[
+    new THREE.CatmullRomCurve3([new THREE.Vector3(0,16,0),new THREE.Vector3(0,74,0),new THREE.Vector3(24,80,0),new THREE.Vector3(24,16,0),new THREE.Vector3(0,10,0)]),
+    new THREE.CatmullRomCurve3([new THREE.Vector3(0,16,0),new THREE.Vector3(0,74,0),new THREE.Vector3(-24,80,0),new THREE.Vector3(-24,16,0),new THREE.Vector3(0,10,0)])
+  ];
+})();
+/* --- 5-limb --- */
+(function(){const xs=[-24,0,24];xs.forEach(x=>G[5].add(limbMesh(x,CH,LR)));
+  const rx=[-48,48];rx.forEach(x=>G[5].add(limbMesh(x,CH,4.4)));
+  const yt=yokeMesh(116,CH+10+YK/2-1),yb=yokeMesh(116,10+YK/2-1);G[5].add(yt,yb);yokeGroups[5].push(yt,yb);
+  xs.forEach(x=>{const w=windingPair(x);G[5].add(w);windingGroups[5].push(w);});
+  fluxPaths[5]=[
+    new THREE.CatmullRomCurve3([new THREE.Vector3(24,16,0),new THREE.Vector3(24,74,0),new THREE.Vector3(48,80,0),new THREE.Vector3(48,16,0),new THREE.Vector3(24,10,0)]),
+    new THREE.CatmullRomCurve3([new THREE.Vector3(-24,16,0),new THREE.Vector3(-24,74,0),new THREE.Vector3(-48,80,0),new THREE.Vector3(-48,16,0),new THREE.Vector3(-24,10,0)])
+  ];
+})();
+/* --- shell-form --- */
+(function(){
+  // central wound limb, windings as flat 'pancakes', flux returns through both side windows (outer legs)
+  G.shell.add(limbMesh(0,CH,7));
+  const yt=yokeMesh(96,CH+10+YK/2-1),yb=yokeMesh(96,10+YK/2-1);G.shell.add(yt,yb);yokeGroups.shell.push(yt,yb);
+  // outer return legs (form the two windows around the centre stack)
+  G.shell.add(limbMesh(-40,CH,7),limbMesh(40,CH,7));
+  // pancake (disc) windings stacked on the central limb
+  const wg=new THREE.Group();
+  for(let i=0;i<8;i++){const mat=(i%2===0)?M.lv:M.hv;const d=new THREE.Mesh(new THREE.BoxGeometry(22,4.6,22),mat);d.position.set(0,20+i*5.4,0);wg.add(d);}
+  G.shell.add(wg);windingGroups.shell.push(wg);
+  fluxPaths.shell=[
+    new THREE.CatmullRomCurve3([new THREE.Vector3(0,16,0),new THREE.Vector3(0,74,0),new THREE.Vector3(40,80,0),new THREE.Vector3(40,16,0),new THREE.Vector3(0,10,0)]),
+    new THREE.CatmullRomCurve3([new THREE.Vector3(0,16,0),new THREE.Vector3(0,74,0),new THREE.Vector3(-40,80,0),new THREE.Vector3(-40,16,0),new THREE.Vector3(0,10,0)])
+  ];
+})();
+
+reg(G[3],'core','Core (3-limb)','');reg(G[5],'core','Core (5-limb)','');reg(G.shell,'core','Core (shell-form)','');
+
+/* flux particles */
+const fluxGrp=new THREE.Group();root.add(fluxGrp);
+const fluxDots=[];for(let i=0;i<40;i++){const d=new THREE.Mesh(new THREE.SphereGeometry(1.1,7,7),new THREE.MeshBasicMaterial({color:0x6cc0ff}));d.visible=false;fluxGrp.add(d);fluxDots.push({m:d,t:Math.random(),path:0});}
+
+/* ===== mode ===== */
+let mode='3';
+const DESC={
+ '3':"<b>3-limb core-form.</b> The most common three-phase core. Each limb carries one phase; the three fluxes sum to zero, so they return through each other — no separate return path is needed. Drawback: zero-sequence (unbalanced) flux has <b>no easy path</b>, so it crosses to the tank, and the yoke must be tall.",
+ '5':"<b>5-limb core-form.</b> Two extra <b>unwound return limbs</b> give flux a low-reluctance path outside the wound limbs. This <b>shortens the yoke</b> (vital for transport height on large units) and provides a return for zero-sequence flux, so YNyn units behave better. Standard above ~100–150 MVA and on transport-limited designs.",
+ 'shell':"<b>Shell-form.</b> The windings are flat 'pancake' discs and the core wraps <i>around</i> them on both sides (two windows). Gives excellent mechanical bracing against short-circuit forces and short leads — favoured for large GSUs, furnace and HVDC duty. More complex/costly to build than core-form."
+};
+function setMode(m){mode=m;['3','5','shell'].forEach(k=>G[k].visible=(k===m));
+  document.getElementById('m3').classList.toggle('active',m==='3');
+  document.getElementById('m5').classList.toggle('active',m==='5');
+  document.getElementById('mShell').classList.toggle('active',m==='shell');
+  document.getElementById('info').innerHTML=DESC[m];
+  applyToggles();}
+document.getElementById('m3').onclick=()=>setMode('3');
+document.getElementById('m5').onclick=()=>setMode('5');
+document.getElementById('mShell').onclick=()=>setMode('shell');
+
+/* toggles */
+function applyToggles(){const w=document.getElementById('tWind').checked,y=document.getElementById('tYoke').checked;
+  ['3','5','shell'].forEach(k=>{windingGroups[k].forEach(g=>g.visible=w);yokeGroups[k].forEach(g=>g.visible=y);});}
+document.getElementById('tWind').onchange=applyToggles;document.getElementById('tYoke').onchange=applyToggles;
+
+/* ===== orbit / pick / labels ===== */
+const el=renderer.domElement;
+let sph={r:190,th:.7,ph:1.02};const target=new THREE.Vector3(0,46,0);
+function applyCam(){sph.ph=Math.max(.15,Math.min(1.5,sph.ph));sph.r=Math.max(55,Math.min(420,sph.r));
+  camera.position.set(target.x+sph.r*Math.sin(sph.ph)*Math.sin(sph.th),target.y+sph.r*Math.cos(sph.ph),target.z+sph.r*Math.sin(sph.ph)*Math.cos(sph.th));camera.lookAt(target);}
+applyCam();
+let dragging=false,panning=false,moved=0,px=0,py=0,pinchD=0;
+el.addEventListener('contextmenu',e=>e.preventDefault());
+el.addEventListener('pointerdown',e=>{dragging=true;moved=0;panning=(e.button===2||e.shiftKey);px=e.clientX;py=e.clientY;container.classList.add('dragging');});
+el.addEventListener('pointermove',e=>{if(!dragging)return;const dx=e.clientX-px,dy=e.clientY-py;px=e.clientX;py=e.clientY;moved+=Math.abs(dx)+Math.abs(dy);
+  if(panning){const s=sph.r*0.0016;const right=new THREE.Vector3().subVectors(camera.position,target).cross(camera.up).normalize();target.addScaledVector(right,-dx*s);target.y+=dy*s;}
+  else{sph.th-=dx*0.005;sph.ph-=dy*0.005;}applyCam();});
+el.addEventListener('pointerup',e=>{dragging=false;container.classList.remove('dragging');});
+el.addEventListener('wheel',e=>{e.preventDefault();sph.r*=(1+Math.sign(e.deltaY)*.09);applyCam();},{passive:false});
+el.addEventListener('touchstart',e=>{if(e.touches.length===2)pinchD=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);},{passive:true});
+el.addEventListener('touchmove',e=>{if(e.touches.length===2){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);sph.r*=pinchD/d;pinchD=d;applyCam();}},{passive:true});
+
+/* labels (limb / yoke / return) update per mode */
+const labels=[];
+function mkLabel(text,pos){const e=document.createElement('div');e.className='lbl';e.textContent=text;document.body.appendChild(e);labels.push({el:e,pos});}
+function rebuildLabels(){labels.forEach(L=>L.el.remove());labels.length=0;
+  if(mode==='3'){mkLabel('Wound limb (phase)',new THREE.Vector3(0,42,0));mkLabel('Yoke',new THREE.Vector3(0,80,0));}
+  if(mode==='5'){mkLabel('Wound limbs',new THREE.Vector3(0,42,0));mkLabel('Return limb',new THREE.Vector3(48,42,0));mkLabel('Shorter yoke',new THREE.Vector3(0,80,0));}
+  if(mode==='shell'){mkLabel('Pancake windings',new THREE.Vector3(0,44,0));mkLabel('Core wraps both sides',new THREE.Vector3(40,42,0));}}
+let labelsOn=true;document.getElementById('bLabels').onclick=function(){labelsOn=!labelsOn;this.classList.toggle('on',labelsOn);};
+
+let rotating=false;document.getElementById('bRotate').onclick=function(){rotating=!rotating;this.classList.toggle('on',rotating);};
+document.getElementById('bReset').onclick=()=>{sph={r:190,th:.7,ph:1.02};target.set(0,46,0);applyCam();};
+let fluxOn=true;document.getElementById('bFlux').onclick=function(){fluxOn=!fluxOn;this.classList.toggle('on',fluxOn);};
+
+setMode('3');rebuildLabels();
+const _setMode=setMode;setMode=function(m){_setMode(m);rebuildLabels();};
+document.getElementById('m3').onclick=()=>setMode('3');
+document.getElementById('m5').onclick=()=>setMode('5');
+document.getElementById('mShell').onclick=()=>setMode('shell');
+
+/* ===== animate ===== */
+function tick(){requestAnimationFrame(tick);
+  if(rotating){sph.th+=0.004;applyCam();}
+  const paths=fluxPaths[mode];
+  fluxDots.forEach((o,i)=>{if(!fluxOn||!paths||!paths.length){o.m.visible=false;return;}
+    o.m.visible=true;o.t+=0.004;if(o.t>1)o.t-=1;const pth=paths[i%paths.length];const p=pth.getPoint(o.t);o.m.position.copy(p);});
+  labels.forEach(L=>{if(!labelsOn){L.el.style.display='none';return;}const v=L.pos.clone();v.project(camera);
+    if(v.z>1){L.el.style.display='none';return;}L.el.style.display='block';L.el.style.left=((v.x*.5+.5)*innerWidth)+'px';L.el.style.top=((-v.y*.5+.5)*innerHeight)+'px';});
+  renderer.render(scene,camera);
+}
+tick();
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
+</script>
+<script src="analytics.js?v=7" defer></script>
+<script src="tp-theme.js?v=1" defer></script>
+<footer>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+        <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data. Built for utilities, transformer manufacturers, component suppliers, EPCs, consultants and engineers.</p>
+      </div>
+      <div><p class="footer-col-label">INTELLIGENCE</p><a href="intel.html">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="projects.html">Projects</a><a href="tenders.html">Tenders</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="map.html">Industry Map</a><a href="events.html">Events</a></div>
+      <div><p class="footer-col-label">DIRECTORY</p><a href="manufacturers.html">Manufacturers</a><a href="directory.html">Directory Index</a><a href="components.html">Components &amp; Materials</a><a href="machinery.html">Machinery</a><a href="laboratories.html">Testing Labs</a><a href="services.html">Service &amp; Repair</a><a href="logistics.html">Logistics</a><a href="buyers.html">Buyers &amp; Utilities</a><a href="rfq.html">RFQ Board</a></div>
+      <div><p class="footer-col-label">ENGINEERING</p><a href="tools.html">Engineering Hub</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Interactive Models</a><a href="standards.html">Standards &amp; Codes</a><a href="knowledge.html">Knowledge Base</a><a href="case-studies.html">Case Studies</a></div>
+      <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learning Hub</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy 3D Tools</a><a href="books.html">Books</a><a href="education.html">Education</a></div>
+      <div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="pricing.html">Pricing Plans</a><a href="verified.html">Verified Profiles</a><a href="webinars.html">Webinars</a><a href="sponsor.html">Sponsorship</a><a href="associations.html">Associations</a><a href="media.html">Media</a></div>
+      <div><p class="footer-col-label">COMPANY</p><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><p class="footer-col-label">CONTACT</p>
+        <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
+        <a href="privacy.html#cookies" onclick="if(window.tpResetConsent){window.tpResetConsent();return false}">Cookie settings</a>
+        <a class="tp-li-btn tp-li-follow" data-linkedin-follow href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>Follow us on LinkedIn</a>
+        <a class="tp-li-btn tp-li-share" data-linkedin-share href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>LinkedIn</a>
+      </div>
+    </div>
+    <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
+  </div>
+</footer>
+<script>
+(function(){var b=document.getElementById('theme-toggle');if(!b)return;var html=document.documentElement;
+function upd(){var d=html.getAttribute('data-theme')==='dark';b.textContent=d?'☀️':'🌙';}
+if((localStorage.getItem('theme')||'dark')==='dark')html.setAttribute('data-theme','dark');upd();
+b.addEventListener('click',function(){var d=html.getAttribute('data-theme')==='dark';
+if(d){html.removeAttribute('data-theme');localStorage.setItem('theme','light');}else{html.setAttribute('data-theme','dark');localStorage.setItem('theme','dark');}upd();});
+})();
+</script>
+<script src="tp-freshness.js?v=7" defer></script>
+<script src="tp-feedback.js?v=7" defer></script>
+</body>
+</html>

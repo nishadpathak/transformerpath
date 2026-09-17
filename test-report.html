@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, follow">
+<title>Transformer Test Report Generator — Routine Test Results to PDF | TransformerPath</title>
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
+<meta name="description" content="Enter routine transformer test results — resistance, ratio, no-load and load loss, insulation resistance, dielectric tests — and generate a formatted, IEC 60076-1 referenced PDF test report.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TransformerPath">
+<meta property="og:title" content="Transformer Test Report Generator | TransformerPath">
+<meta property="og:description" content="Enter routine test results and generate a formatted, standards-referenced PDF transformer test report.">
+<meta property="og:url" content="https://transformerpath.com/test-report.html">
+<meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://transformerpath.com/test-report.html">
+<style>
+  :root {
+        --bg: #f4f6f9; --card: #ffffff; --ink: #1a2332; --muted: #5b6b7f;
+    --accent: #0e5fa8; --accent2: #0a8f6c; --warn: #b4500a; --bad: #c0262d;
+    --line: #dde4ec; --chip: #eaf1f8; --mono: "SF Mono", Consolas, Menlo, monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:1rem/1.6 var(--font-sans)}
+  .pagehead{background:linear-gradient(135deg,#0d2c4f 0%,#0e5fa8 100%);color:#fff;padding:26px 28px}
+  .pagehead h1{margin:0;font-size:22px;font-weight:700}
+  .pagehead p{margin:6px 0 0;opacity:.9;font-size:13.5px;max-width:70ch}
+  .wrap{max-width:980px;margin:0 auto;padding:22px 22px 70px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 20px;margin-bottom:16px;box-shadow:0 1px 3px rgba(20,40,70,.06)}
+  .card h2{margin:0 0 12px;font-size:15px;color:var(--accent);border-bottom:2px solid var(--chip);padding-bottom:7px;display:flex;align-items:center;gap:8px}
+  .card h2 .tag{margin-left:auto;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);background:var(--chip);padding:3px 9px;border-radius:999px}
+  label{display:block;font-size:11.5px;color:var(--muted);margin:9px 0 2px;font-weight:600}
+  input,select{width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:6px;font-size:13.5px;background:#fff;color:var(--ink);font-family:inherit}
+  input:focus,select:focus{outline:2px solid #9cc3e8;border-color:var(--accent)}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+  .row4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px}
+  @media (max-width:640px){ .row2,.row3,.row4{grid-template-columns:1fr 1fr} }
+  .phlabel{font-size:10.5px;font-weight:800;color:var(--accent2);text-transform:uppercase;letter-spacing:.4px;margin:12px 0 2px}
+  .note{font-size:12px;color:var(--muted);background:var(--chip);border-radius:8px;padding:10px 12px;margin-top:12px}
+  .btnrow{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+  .btn{padding:11px 22px;border:0;border-radius:8px;cursor:pointer;font-weight:700;font-size:14px;font-family:inherit}
+  .btn.primary{background:var(--accent);color:#fff}
+  .btn.primary:hover{background:#0a4c8a}
+  .hint{font-size:11px;color:var(--muted);margin-top:2px}
+</style>
+    <link rel="stylesheet" href="tp-theme.css?v=6">
+  <link rel="stylesheet" href="style.css?v=14">
+    <link rel="stylesheet" href="tp-nav.css?v=14">
+  <link rel="stylesheet" href="tp-feedback.css?v=14">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
+    <nav class="tpnav" id="mainNav" aria-label="Primary">
+      <a href="intel.html">Intel</a>
+      <div class="tpnav-dropdown">
+        <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
+        <div class="tpnav-dropdown-panel" role="menu">
+          <a href="manufacturers.html">Manufacturers</a>
+          <a href="map.html">Industry Map</a>
+          <a href="grids.html">Global Grids</a>
+          <a href="components.html">Components &amp; Materials</a>
+          <a href="machinery.html">Machinery</a>
+          <a href="laboratories.html">Testing Labs</a>
+          <a href="services.html">Services &amp; Repair</a>
+          <a href="markets.html">Markets</a>
+          <a href="buyers-guide.html">Buyer's Guide</a>
+          <a href="directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
+        </div>
+      </div>
+      <a href="projects.html">Projects</a>
+      <a href="tenders.html">Tenders</a>
+      <a href="events.html">Events</a>
+      <a href="tools.html" class="tpnav-opt">Engineering</a>
+      <a href="learn.html">Learn</a>
+      <a href="rfq.html">RFQ</a>
+      <div class="tpnav-more">
+        <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
+        <div class="tpnav-more-panel" role="menu">
+          <a href="map.html" role="menuitem">Industry Map</a>
+          <a href="grids.html" role="menuitem">Global Grids</a>
+          <a href="webinars.html" role="menuitem">Webinars</a>
+          <a href="standards.html" role="menuitem">Standards &amp; Codes</a>
+          <a href="for-manufacturers.html" role="menuitem">For Manufacturers</a>
+          <a href="pricing.html" role="menuitem">Pricing Plans</a>
+          <a href="verified.html" role="menuitem">Verified Profiles</a>
+        </div>
+      </div>
+      <span class="tpnav-utils">
+        <a href="search.html" title="Search" aria-label="Search">&#128269;</a>
+        <a href="workspace.html" data-tp-account>Account</a>
+        <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">&#127769;</button>
+      </span>
+    </nav>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    // Night mode is the default; light is opt-in via the toggle.
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+
+    if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
+    updateThemeIcon();
+
+    themeToggle?.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      updateThemeIcon();
+    });
+
+    function updateThemeIcon() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+    }
+  </script>
+  <script src="tp-nav.js?v=7" defer></script>
+  <script src="tp-pwa.js?v=7" defer></script>
+</header>
+<div class="pagehead">
+  <div class="wrap" style="padding-top:0;padding-bottom:0">
+    <h1>Transformer Test Report Generator</h1>
+    <p>Enter routine test results from your test bay and generate a formatted, standards-referenced PDF report — ratio, resistance, no-load loss, load loss &amp; impedance, insulation resistance and dielectric tests, per IEC 60076-1 §11. This tool formats the report from values you enter; it does not connect to test equipment.</p>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="card">
+    <h2>1 · Test object &amp; reference<span class="tag">nameplate data</span></h2>
+    <div class="row3">
+      <div><label>Manufacturer</label><input id="tManuf" type="text" placeholder="e.g. Acme Transformers Ltd"></div>
+      <div><label>Serial No.</label><input id="tSerial" type="text" placeholder="e.g. 26-04521"></div>
+      <div><label>Customer / project</label><input id="tCust" type="text" placeholder="e.g. City Substation 4"></div>
+    </div>
+    <div class="row4">
+      <div><label>Rated power</label><input id="tRating" type="text" value="1000 kVA"></div>
+      <div><label>Rated voltage HV (kV)</label><input id="tHv" type="number" value="11" step="0.1"></div>
+      <div><label>Rated voltage LV (kV)</label><input id="tLv" type="number" value="0.433" step="0.001"></div>
+      <div><label>Vector group</label><input id="tVec" type="text" value="Dyn11"></div>
+    </div>
+    <div class="row3">
+      <div><label>Frequency (Hz)</label><input id="tFreq" type="number" value="50"></div>
+      <div><label>Standard</label>
+        <select id="tStd">
+          <option>IEC 60076</option><option>IEEE C57.12.00/.90</option><option>IS 2026 / IS 1180</option><option>GSO / SASO</option>
+        </select>
+      </div>
+      <div><label>Test date</label><input id="tDate" type="date"></div>
+    </div>
+    <div class="row2">
+      <div><label>Tested by</label><input id="tBy" type="text" placeholder="Engineer name"></div>
+      <div><label>Witnessed by (optional)</label><input id="tWitness" type="text" placeholder="Buyer's inspector / third party"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>2 · Winding resistance<span class="tag">routine — IEC 60076-1 §11.1.1</span></h2>
+    <div class="row2">
+      <div><label>Ambient / oil temperature at test (°C)</label><input id="rTemp" type="number" value="25"></div>
+      <div><label>Reference temperature for correction (°C)</label><input id="rRefT" type="number" value="75"></div>
+    </div>
+    <div class="phlabel">HV winding resistance, line-to-line (Ω)</div>
+    <div class="row3">
+      <div><label>U–V</label><input id="rHvUV" type="number" step="0.0001" placeholder="e.g. 4.520"></div>
+      <div><label>V–W</label><input id="rHvVW" type="number" step="0.0001" placeholder="e.g. 4.518"></div>
+      <div><label>W–U</label><input id="rHvWU" type="number" step="0.0001" placeholder="e.g. 4.521"></div>
+    </div>
+    <div class="phlabel">LV winding resistance, line-to-line (Ω)</div>
+    <div class="row3">
+      <div><label>u–v</label><input id="rLvUV" type="number" step="0.00001" placeholder="e.g. 0.00612"></div>
+      <div><label>v–w</label><input id="rLvVW" type="number" step="0.00001" placeholder="e.g. 0.00614"></div>
+      <div><label>w–u</label><input id="rLvWU" type="number" step="0.00001" placeholder="e.g. 0.00611"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>3 · Voltage ratio &amp; phase displacement<span class="tag">routine — §11.1.2</span></h2>
+    <div class="row4">
+      <div><label>Tap position tested</label><input id="vTap" type="text" value="Principal (nominal)"></div>
+      <div><label>Declared ratio</label><input id="vDeclared" type="text" placeholder="e.g. 11000/433"></div>
+      <div><label>Measured ratio</label><input id="vMeasured" type="text" placeholder="e.g. 11002/433"></div>
+      <div><label>Deviation (%)</label><input id="vDev" type="number" step="0.01" placeholder="e.g. 0.02"></div>
+    </div>
+    <div class="row2">
+      <div><label>Phase displacement check</label>
+        <select id="vPhase"><option>Confirmed — matches nameplate vector group</option><option>Not confirmed / deviation observed</option></select>
+      </div>
+      <div><label>Tolerance reference</label><input id="vTol" type="text" value="±0.5% of declared ratio (IEC 60076-1)"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>4 · No-load loss &amp; current<span class="tag">routine — §11.1.4</span></h2>
+    <div class="row4">
+      <div><label>Test voltage (% of rated)</label><input id="nlVpct" type="number" value="100"></div>
+      <div><label>No-load loss, measured (kW)</label><input id="nlLoss" type="number" step="0.001" placeholder="e.g. 1.35"></div>
+      <div><label>No-load loss, guaranteed (kW)</label><input id="nlGtee" type="number" step="0.001" placeholder="e.g. 1.40"></div>
+      <div><label>Excitation current (% of rated)</label><input id="nlI0" type="number" step="0.01" placeholder="e.g. 0.9"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>5 · Load loss &amp; short-circuit impedance<span class="tag">routine — §11.1.3</span></h2>
+    <div class="row4">
+      <div><label>Test current (% of rated)</label><input id="llIpct" type="number" value="100"></div>
+      <div><label>Load loss at ref. temp (kW)</label><input id="llLoss" type="number" step="0.001" placeholder="e.g. 10.8"></div>
+      <div><label>Load loss, guaranteed (kW)</label><input id="llGtee" type="number" step="0.001" placeholder="e.g. 11.5"></div>
+      <div><label>Impedance voltage, measured (%)</label><input id="llZ" type="number" step="0.01" placeholder="e.g. 5.02"></div>
+    </div>
+    <div class="row2">
+      <div><label>Impedance voltage, declared (%)</label><input id="llZd" type="number" step="0.01" placeholder="e.g. 5.00"></div>
+      <div><label>Tolerance reference</label><input id="llTol" type="text" value="±10% of declared Z (IEC 60076-1 Table 4)"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>6 · Insulation resistance<span class="tag">routine</span></h2>
+    <div class="row3">
+      <div><label>HV–Earth (MΩ)</label><input id="irHvE" type="number" placeholder="e.g. 8500"></div>
+      <div><label>LV–Earth (MΩ)</label><input id="irLvE" type="number" placeholder="e.g. 6200"></div>
+      <div><label>HV–LV (MΩ)</label><input id="irHvLv" type="number" placeholder="e.g. 7800"></div>
+    </div>
+    <div class="row2">
+      <div><label>Test voltage (V DC)</label><input id="irVdc" type="number" value="2500"></div>
+      <div><label>Test instrument</label><input id="irInst" type="text" placeholder="e.g. Megger MIT525"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>7 · Dielectric tests<span class="tag">routine — §11.1.5</span></h2>
+    <div class="row3">
+      <div><label>Separate-source AC withstand</label><input id="dSep" type="text" placeholder="e.g. 28 kV / 1 min"></div>
+      <div><label>Induced AC withstand</label><input id="dInd" type="text" placeholder="e.g. 2× rated V / 1 min"></div>
+      <div><label>Result</label>
+        <select id="dResult"><option>PASS — no breakdown or flashover</option><option>FAIL — see remarks</option></select>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>8 · Overall result &amp; remarks</h2>
+    <div class="row2">
+      <div><label>Overall test result</label>
+        <select id="ovResult"><option>PASS — all routine tests within guarantee/tolerance</option><option>CONDITIONAL PASS — see remarks</option><option>FAIL — see remarks</option></select>
+      </div>
+      <div><label>Report reference no.</label><input id="ovRef" type="text" placeholder="e.g. TR-2026-0142"></div>
+    </div>
+    <label>Remarks</label>
+    <input id="ovRemarks" type="text" placeholder="Optional — any deviation, retest, or observation notes">
+    <div class="btnrow">
+      <button class="btn primary" onclick="downloadTestReportPDF()">Generate Test Report (PDF) →</button>
+    </div>
+    <div class="note">This tool formats a report from the values you enter — it does not verify measurement accuracy or connect to test equipment. Compare all results against the applicable IEC 60076-1 / IEEE C57.12.90 tolerance tables before issuing to a customer.</div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+        <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data. Built for utilities, transformer manufacturers, component suppliers, EPCs, consultants and engineers.</p>
+      </div>
+      <div><p class="footer-col-label">INTELLIGENCE</p><a href="intel.html">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="projects.html">Projects</a><a href="tenders.html">Tenders</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="map.html">Industry Map</a><a href="events.html">Events</a></div>
+      <div><p class="footer-col-label">DIRECTORY</p><a href="manufacturers.html">Manufacturers</a><a href="directory.html">Directory Index</a><a href="components.html">Components &amp; Materials</a><a href="machinery.html">Machinery</a><a href="laboratories.html">Testing Labs</a><a href="services.html">Service &amp; Repair</a><a href="logistics.html">Logistics</a><a href="buyers.html">Buyers &amp; Utilities</a><a href="rfq.html">RFQ Board</a></div>
+      <div><p class="footer-col-label">ENGINEERING</p><a href="tools.html">Engineering Hub</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Interactive Models</a><a href="standards.html">Standards &amp; Codes</a><a href="knowledge.html">Knowledge Base</a><a href="case-studies.html">Case Studies</a></div>
+      <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learning Hub</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy 3D Tools</a><a href="books.html">Books</a><a href="education.html">Education</a></div>
+      <div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="pricing.html">Pricing Plans</a><a href="verified.html">Verified Profiles</a><a href="webinars.html">Webinars</a><a href="sponsor.html">Sponsorship</a><a href="associations.html">Associations</a><a href="media.html">Media</a></div>
+      <div><p class="footer-col-label">COMPANY</p><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><p class="footer-col-label">CONTACT</p>
+        <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
+        <a href="privacy.html#cookies" onclick="if(window.tpResetConsent){window.tpResetConsent();return false}">Cookie settings</a>
+        <a class="tp-li-btn tp-li-follow" data-linkedin-follow href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>Follow us on LinkedIn</a>
+        <a class="tp-li-btn tp-li-share" data-linkedin-share href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>LinkedIn</a>
+      </div>
+    </div>
+    <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
+  </div>
+</footer>
+
+<script src="analytics.js?v=7" defer></script>
+<script src="course-gate.js?v=7"></script>
+<script>
+/* ---------- PDF helpers (same hand-rolled pattern as calculator.html) ---------- */
+function pdfSan(s){
+  const M={"²":"2","³":"3","·":"-","×":"x","Ø":"dia ","η":"eta","±":"+/-","≈":"~","–":"-","—":"-",
+    "√":"sqrt","μ":"u","Φ":"Phi","φ":"phi","ε":"e","≤":"<=","≥":">=","Δ":"d","°":" deg",
+    "’":"'","‘":"'","“":"\"","”":"\"","…":"...","→":"->"};
+  return String(s).split("").map(c=>{
+    if(c.charCodeAt(0)<128)return c;
+    return M[c]!==undefined?M[c]:"";
+  }).join("").replace(/\\/g,"\\\\").replace(/\(/g,"\\(").replace(/\)/g,"\\)");
+}
+const V=id=>{const el=document.getElementById(id);return el?el.value:"";};
+
+function downloadTestReportPDF(){
+  const NAVY="0.05 0.17 0.31",BLUE="0.05 0.37 0.66",GREY="0.36 0.42 0.50",BLACK="0 0 0",GREEN="0.04 0.47 0.29",RED="0.75 0.15 0.18";
+  const pages=[];let cur="",y=0;
+  const newPage=()=>{if(cur)pages.push(cur);cur="";y=792;};
+  const T=(x,yy,s,f,sz,col)=>{cur+=`BT /${f} ${sz} Tf ${col||BLACK} rg 1 0 0 1 ${x} ${yy} Tm (${pdfSan(s)}) Tj ET\n`;};
+  const L=(x1,y1,x2,y2,w,col)=>{cur+=`${col||"0.72 0.78 0.84"} RG ${w||0.7} w ${x1} ${y1} m ${x2} ${y2} l S\n`;};
+  newPage();
+  T(60,y,"TRANSFORMER TEST REPORT","F2",16,NAVY);y-=16;
+  T(60,y,"Routine test results — "+V('tStd'),"F1",9.5,GREY);y-=13;
+  T(60,y,"Generated "+new Date().toISOString().slice(0,10)+"  -  transformerpath.com/test-report.html","F1",8.5,GREY);y-=8;
+  L(60,y,535,y,1.2,"0.05 0.37 0.66");y-=20;
+
+  const section=(title)=>{ if(y<90)newPage(); y-=4; T(60,y,title,"F2",11,BLUE);y-=4;L(60,y,535,y,0.7);y-=15; };
+  const kv=(k,v)=>{ if(y<50){newPage();y-=10;} T(66,y,k,"F1",9,GREY);T(300,y,v||"—","F2",9,BLACK);y-=13; };
+
+  section("1 · Test Object");
+  kv("Manufacturer",V('tManuf')); kv("Serial No.",V('tSerial')); kv("Customer / project",V('tCust'));
+  kv("Rated power",V('tRating')); kv("Rated voltage HV / LV",V('tHv')+" kV / "+V('tLv')+" kV");
+  kv("Vector group",V('tVec')); kv("Frequency",V('tFreq')+" Hz"); kv("Standard",V('tStd'));
+  kv("Test date",V('tDate')); kv("Tested by",V('tBy')); kv("Witnessed by",V('tWitness'));
+
+  section("2 · Winding Resistance (IEC 60076-1 §11.1.1)");
+  kv("Test / reference temperature",V('rTemp')+" degC / "+V('rRefT')+" degC");
+  kv("HV resistance U-V / V-W / W-U (ohm)",V('rHvUV')+" / "+V('rHvVW')+" / "+V('rHvWU'));
+  kv("LV resistance u-v / v-w / w-u (ohm)",V('rLvUV')+" / "+V('rLvVW')+" / "+V('rLvWU'));
+
+  section("3 · Voltage Ratio & Phase Displacement (§11.1.2)");
+  kv("Tap position tested",V('vTap')); kv("Declared ratio",V('vDeclared')); kv("Measured ratio",V('vMeasured'));
+  kv("Deviation",V('vDev')+" %"); kv("Phase displacement",V('vPhase')); kv("Tolerance",V('vTol'));
+
+  section("4 · No-load Loss & Current (§11.1.4)");
+  kv("Test voltage",V('nlVpct')+" % of rated"); kv("No-load loss — measured / guaranteed",V('nlLoss')+" kW / "+V('nlGtee')+" kW");
+  kv("Excitation current",V('nlI0')+" % of rated");
+
+  section("5 · Load Loss & Short-circuit Impedance (§11.1.3)");
+  kv("Test current",V('llIpct')+" % of rated"); kv("Load loss — measured / guaranteed",V('llLoss')+" kW / "+V('llGtee')+" kW");
+  kv("Impedance voltage — measured / declared",V('llZ')+" % / "+V('llZd')+" %"); kv("Tolerance",V('llTol'));
+
+  section("6 · Insulation Resistance");
+  kv("HV-Earth / LV-Earth / HV-LV",V('irHvE')+" / "+V('irLvE')+" / "+V('irHvLv')+" Mohm");
+  kv("Test voltage",V('irVdc')+" V DC"); kv("Instrument",V('irInst'));
+
+  section("7 · Dielectric Tests (§11.1.5)");
+  kv("Separate-source AC withstand",V('dSep')); kv("Induced AC withstand",V('dInd')); kv("Result",V('dResult'));
+
+  if(y<100)newPage();
+  y-=6; T(60,y,"Overall Result","F2",12,BLUE);y-=18;
+  const ov=V('ovResult'); const col=ov.startsWith("PASS")?GREEN:(ov.startsWith("FAIL")?RED:"0.65 0.42 0.05");
+  T(60,y,ov,"F2",12.5,col);y-=16;
+  kv("Report reference no.",V('ovRef'));
+  if(V('ovRemarks')){ y-=2; T(60,y,"Remarks:","F1",9,GREY);y-=12; T(66,y,V('ovRemarks'),"F1",9,BLACK);y-=14; }
+
+  y-=14;
+  T(60,y,"This report was formatted from operator-entered values via transformerpath.com — it does not itself verify","F1",7.6,GREY);y-=9;
+  T(60,y,"measurement accuracy. Compare against the applicable IEC 60076-1 / IEEE C57.12.90 tolerance tables before issue.","F1",7.6,GREY);
+
+  if(cur)pages.push(cur);
+  const pgs=pages.filter(Boolean);
+  const objs=[];
+  objs[1]="<< /Type /Catalog /Pages 2 0 R >>";
+  const kids=pgs.map((_,i)=>`${5+2*i} 0 R`).join(" ");
+  objs[2]=`<< /Type /Pages /Kids [${kids}] /Count ${pgs.length} >>`;
+  objs[3]="<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>";
+  objs[4]="<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>";
+  pgs.forEach((st,i)=>{
+    objs[5+2*i]=`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents ${6+2*i} 0 R >>`;
+    objs[6+2*i]=`<< /Length ${st.length} >>\nstream\n${st}\nendstream`;
+  });
+  let pdf="%PDF-1.4\n";const xref=[0];
+  for(let i=1;i<objs.length;i++){xref[i]=pdf.length;pdf+=`${i} 0 obj\n${objs[i]}\nendobj\n`;}
+  const xs=pdf.length;
+  pdf+=`xref\n0 ${objs.length}\n0000000000 65535 f \n`;
+  for(let i=1;i<objs.length;i++)pdf+=String(xref[i]).padStart(10,"0")+" 00000 n \n";
+  pdf+=`trailer\n<< /Size ${objs.length} /Root 1 0 R >>\nstartxref\n${xs}\n%%EOF`;
+  const blob=new Blob([pdf],{type:"application/pdf"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download=`Test_Report_${(V('tSerial')||'transformer').replace(/[^a-zA-Z0-9-]/g,'_')}.pdf`;
+  document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},2000);
+}
+</script>
+<script src="tp-theme.js?v=1" defer></script>
+<footer>
+  <div class="container">
+    <div class="cols"><div>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+        <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data. Built for utilities, transformer manufacturers, component suppliers, EPCs, consultants and engineers.</p>
+      </div>
+      <div><p class="footer-col-label">INTELLIGENCE</p><a href="intel.html">Intel</a><a href="projects.html">Projects</a><a href="tenders.html">Tenders</a><a href="awards.html">Awards</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="utilities.html">Utilities</a><a href="archive.html">Intel Archive</a></div><div><p class="footer-col-label">INDUSTRY</p><a href="manufacturers.html">Manufacturers</a><a href="buyers-guide.html">Buyer's Guide</a><a href="components.html">Components</a><a href="materials.html">Materials</a><a href="applications.html">Applications</a><a href="directory.html">Directory</a><a href="rfq.html">RFQ Board</a></div><div><p class="footer-col-label">ENGINEERING</p><a href="tools.html">Tools</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Models</a><a href="test-report.html">Test Report</a><a href="knowledge.html">Knowledge</a><a href="standards.html">Standards</a><a href="software.html">Software Directory</a></div><div><p class="footer-col-label">LEARN</p><a href="learn.html">Learn</a><a href="masterclass.html">Masterclass</a><a href="books.html">Books</a><a href="case-studies.html">Case Studies</a><a href="engineer-track.html">Design Engineer Track</a></div><div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="verified.html">Verified Profiles</a><a href="sponsor.html">Sponsor</a><a href="webinars.html">Webinars</a><a href="events.html">Events</a><a href="jobs.html">Jobs</a><a href="pricing.html">Pricing</a></div><div><h2>ABOUT</h2><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="search.html">Search</a></div></div>
+    </div>
+    <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
+  </div>
+</footer>
+<script>
+(function(){var b=document.getElementById('theme-toggle');if(!b)return;var html=document.documentElement;
+function upd(){var d=html.getAttribute('data-theme')==='dark';b.textContent=d?'☀️':'🌙';}
+if((localStorage.getItem('theme')||'dark')==='dark')html.setAttribute('data-theme','dark');upd();
+b.addEventListener('click',function(){var d=html.getAttribute('data-theme')==='dark';
+if(d){html.removeAttribute('data-theme');localStorage.setItem('theme','light');}else{html.setAttribute('data-theme','dark');localStorage.setItem('theme','dark');}upd();});
+})();
+</script>
+<script src="tp-freshness.js?v=7" defer></script>
+<script src="tp-feedback.js?v=7" defer></script>
+</body>
+</html>
