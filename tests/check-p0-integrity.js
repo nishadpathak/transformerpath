@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /* tests/check-p0-integrity.js — 16 Sep 2026 audit P0 gates.
  *
- * 1. Canonical manufacturer count (no 709 / 1002 drift on homepage, pricing, intel, directory)
+ * 1. Canonical manufacturer count (no historical-count drift on public sales/content surfaces)
  * 2. Separate freshness clocks (census vs Daily Intel; no DATA CURRENT on >72h census)
  * 3. Grid Lab page exists
  * 4. Segmented directory search for "765 kV"
@@ -29,10 +29,22 @@ const canonical = STATS.manufacturers;
 console.log('=== P0.1 CANONICAL SITE STATS ===');
 check('site-stats.manufacturers is a positive integer', typeof canonical === 'number' && canonical > 0, String(canonical));
 
-['index.html', 'pricing.html', 'intel.html', 'directory.html'].forEach((f) => {
+const COUNT_SURFACES = [
+  'index.html',
+  'pricing.html',
+  'intel.html',
+  'directory.html',
+  'markets.html',
+  'for-manufacturers.html',
+  'teams.html',
+  'faq.html',
+];
+COUNT_SURFACES.forEach((f) => {
+  if (!fs.existsSync(f)) return;
   const html = fs.readFileSync(f, 'utf8');
-  check(f + ' does not hard-code 709 manufacturers', !/\b709[\s-]*manufacturer/i.test(html) && !/Browse 709/i.test(html) && !/Explore 709/i.test(html));
-  check(f + ' does not hard-code 1,002 / 1002 makers', !/1,?002 transformer makers/i.test(html) && !/\b1002\b[^a-z]{0,20}(maker|manufacturer)/i.test(html));
+  const prose = withoutDataStat(html);
+  const historicalCount = /\b(?:519|709|911|1002|1,002)\b[^a-z]{0,24}(?:maker|makers|manufacturer|manufacturers|company|companies|directory|census)/i;
+  check(f + ' has no historical manufacturer count outside [data-stat]', !historicalCount.test(prose));
 });
 check('homepage manufacturers data-stat is live-filled (attribute present)',
   /data-stat="manufacturers"/.test(fs.readFileSync('index.html', 'utf8')));
