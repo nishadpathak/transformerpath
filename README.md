@@ -138,3 +138,67 @@ Before tagging or releasing a new version:
 - [ ] `node check-config.js` and `node check-links.js` pass.
 - [ ] `build-dist.js` creates `dist/` without `admin.html` or `admin/`.
 - [ ] No `.DS_Store` or OS files tracked in git.
+
+---
+
+## 9. What Is Published, and What Must Never Be
+
+### The deploy artifact is an allowlist, not the folder
+
+`netlify.toml` sets `publish = "dist"`. `build-dist.js` runs last and **copies only what it
+names** — a fixed list of directories, the runtime JavaScript at the root, and the served
+HTML. Anything not named is excluded by default.
+
+This replaced `publish = "."`, which shipped the whole working folder and relied on 404
+redirect rules to hide internal files. That approach could not hold: Netlify matches
+redirect rules case-sensitively but serves files case-insensitively, so `/_docs/x.md`
+returned 404 while `/_Docs/x.md` returned 200.
+
+**When you add a new asset class, add it to the allowlist in `build-dist.js`.** A page
+referencing a file that was never allowlisted will 404 in production while working locally.
+
+### Files that must never be published
+
+| File | Why |
+| --- | --- |
+| `_private/**` | Book manuscripts and the full Masterclass source. Gitignored, never deployed. |
+| `functions/lib/masterclass-chapters.js` | The paid chapter payload. Bundled into the gated function; never served as a static file. |
+| `data/commerce-intel.json` | Internal commercial intelligence, not a public dataset. |
+| `data/engineer-track-paid.json` | Paid learning content. |
+| `_docs/**`, `*.md` (except this file), `*.pdf`, `*.sql`, `*.xlsx` | Internal working material. |
+
+`build-dist.js` enforces this twice: it skips these paths while copying, and a final gate
+fails the build if any of them appear in `dist/` anyway.
+
+> The two `functions/` and `data/` entries above are **committed** — the build needs them
+> when `_private/` is absent, which is the case on any clone. That is only safe while the
+> **repository is private**. CI enforces this in the `visibility` job.
+
+### The guard chain
+
+| Gate | Catches |
+| --- | --- |
+| `check-build-tracked.js` (build step 1) | A build script, or a module it requires, that is not committed — so a clone cannot build the site. This has happened twice. |
+| `build-dist.js` gate (build step last) | Internal or paid files reaching the public artifact. |
+| `check-config.js` | Counters and cadence claims drifting from the canonical datasets. |
+| `check-links.js` | Broken internal links across every generated page. |
+| `check-data-quality.js` | Record-count drift between datasets that describe the same thing. |
+
+Run the whole chain exactly as Netlify does, rather than gate by gate:
+
+```bash
+node -e "const m=require('fs').readFileSync('netlify.toml','utf8').match(/command = \"([^\"]+)\"/);require('fs').writeFileSync('/tmp/b.sh',m[1])" && bash -e /tmp/b.sh
+```
+
+### Working copy caveat
+
+The working folder lives in iCloud Drive. When two sessions edit it at once, iCloud creates
+conflict copies — `index 2.html`, `usa 2/`, even `check-build-tracked 2.js`. 212 appeared in
+one day. They are gitignored, skipped by `build-dist.js` and rejected by CI, but the durable
+fix is to work from a clone outside iCloud Drive.
+
+### Runtime version
+
+`.nvmrc` pins Node for both CI and Netlify (Netlify reads `.nvmrc` when `NODE_VERSION` is
+not set). Keep it matching the version you develop against, so a green CI run means a green
+deploy.

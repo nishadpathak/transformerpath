@@ -25,9 +25,9 @@
 (function () {
   'use strict';
 
-  /* Mirrors netlify.toml: schedule = "0 * * * *" */
-  var CADENCE = 'hourly';
-  var CADENCE_LONG = 'refreshed hourly, on the hour (UTC)';
+  /* Curated Daily Intel is refreshed with each publication cycle */
+  var CADENCE = 'daily';
+  var CADENCE_LONG = 'refreshed daily with each publication cycle';
 
   var FEED = '/.netlify/functions/intel-feed';
 

@@ -119,9 +119,7 @@
           <a href="services.html">Services &amp; Repair</a>
           <a href="markets.html">Markets</a>
           <a href="buyers-guide.html">Buyer's Guide</a>
-          <a href="match.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">🎯 Match for Me →</a>
-          <a href="compare.html" style="font-weight:700;color:var(--accent)">⚖️ Compare Shortlist →</a>
-          <a href="directory.html" style="font-size:.82rem;color:var(--muted)">All Directory Verticals →</a>
+          <a href="directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
         </div>
       </div>
       <a href="projects.html">Projects</a>
@@ -129,6 +127,7 @@
       <a href="events.html">Events</a>
       <a href="tools.html" class="tpnav-opt">Engineering</a>
       <a href="learn.html">Learn</a>
+      <a href="grid-lab.html" class="tpnav-opt">Grid Lab</a>
       <a href="rfq.html">RFQ</a>
       <div class="tpnav-more">
         <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
@@ -144,7 +143,7 @@
       </div>
       <span class="tpnav-utils">
         <a href="search.html" title="Search" aria-label="Search">&#128269;</a>
-        <a href="workspace.html" data-tp-account>Account</a>
+        <a href="workspace.html" data-tp-account>My TransformerPath</a>
         <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">&#127769;</button>
       </span>
     </nav>
@@ -854,18 +853,18 @@
             <span class="stat-label">Projects</span>
           </a>
           <a href="tenders.html" class="stat-card" title="Transformer-relevant tenders">
-            <div class="stat-card-top"><b data-stat="tenders">150</b><span class="stat-card-arrow" aria-hidden="true">&rarr;</span></div>
+            <div class="stat-card-top"><b data-stat="tenders">151</b><span class="stat-card-arrow" aria-hidden="true">&rarr;</span></div>
             <span class="stat-label">Tenders</span>
           </a>
         </div>
         <div class="stat-strip">
           <a href="tenders.html" class="strip-item" title="View 150 procurement tenders worldwide">
-            <b data-stat="tenders">150</b>
+            <b data-stat="tenders">151</b>
             <span>Tenders Tracked</span>
           </a>
           <a href="tenders.html?status=open" class="strip-item is-live" title="21 open tenders accepting bids right now">
             <span class="strip-live-dot" aria-hidden="true"></span>
-            <b class="is-amber" data-stat="openTenders">21</b>
+            <b class="is-amber" data-stat="openTenders">22</b>
             <span>Open Tenders</span>
           </a>
           <a href="intel.html?type=awards" class="strip-item" title="Review 56 confirmed contract awards">
@@ -1128,11 +1127,11 @@ if('IntersectionObserver' in window){
 
 <!-- TP-FEEDBACK-DECLARATION ————————————————————————————————————————————————
      Netlify registers form names by parsing STATIC HTML at deploy time. The
-     site-wide feedback widget (tp-feedback.js) builds its form in JavaScript,
+     site-wide feedback widget (tp-feedback.js?v=7) builds its form in JavaScript,
      which the deploy-time parser never sees — so without this hidden twin,
      every submission would POST into a 404.
 
-     Field list must stay in step with the data appended in tp-feedback.js.
+     Field list must stay in step with the data appended in tp-feedback.js?v=7.
      Not for humans: hidden, and skipped by assistive tech.
 ———————————————————————————————————————————————————————————————————————— -->
 <form name="site-feedback" method="POST" data-netlify="true"

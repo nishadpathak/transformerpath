@@ -1,10 +1,10 @@
 {
   "$schema": "https://transformerpath.com/commerce-intel.schema.json",
-  "generated": "2026-09-14T17:27:01.037Z",
+  "generated": "2026-09-18T10:47:04.685Z",
   "honesty_note": "Revenue and conversion figures are NOT shown because live Stripe/Supabase transaction data is not available in this static build. No revenue, no conversion rate and no pipeline value are fabricated. The figures below are real platform-scale and prospect signals derived from the canonical datasets.",
   "metrics": {
     "platform_scale": {
-      "manufacturers": 911,
+      "manufacturers": 906,
       "projects": 306,
       "tenders": 150,
       "open_tenders": 21,
@@ -12,8 +12,8 @@
       "events": 295
     },
     "prospect_signals": {
-      "supplier_prospects_with_website": 900,
-      "upcoming_events": 181
+      "supplier_prospects_with_website": 894,
+      "upcoming_events": 176
     }
   },
   "supplier_prospects": [
@@ -1235,17 +1235,6 @@
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
-      "name": "Hammond Power Solutions",
-      "country": "Canada",
-      "region": "North America",
-      "city": "Guelph, ON",
-      "categories": [
-        "DRY"
-      ],
-      "website": "https://www.hammondpowersolutions.com/",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
       "name": "Hitachi Energy Canada",
       "country": "Canada",
       "region": "North America",
@@ -2090,7 +2079,7 @@
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
-      "name": "Sunten Electric",
+      "name": "Sunten Electric Co., Ltd.",
       "country": "China",
       "region": "East Asia",
       "city": "Foshan, Guangdong",
@@ -2391,49 +2380,20 @@
       ],
       "website": "http://www.transformatori.hr/",
       "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Elpro-Energo",
+      "country": "Czechia",
+      "region": "Europe",
+      "city": "Hnojník",
+      "categories": [
+        "DT"
+      ],
+      "website": "https://www.czechtrafo.cz",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
     }
   ],
   "event_prospects": [
-    {
-      "name": "ECCE Europe 2026 (EPE Conference)",
-      "city": "Valencia",
-      "country": "Spain",
-      "region": "Europe",
-      "date": "2026-09-14",
-      "url": "https://www.ecce-europe.org/2026/"
-    },
-    {
-      "name": "ENERGETAB 2026 (Bielsko-Biała) — Poland's flagship power fair",
-      "city": "Bielsko-Biała",
-      "country": "Poland",
-      "region": "Europe",
-      "date": "2026-09-15",
-      "url": "https://energetab.pl/"
-    },
-    {
-      "name": "Electricity Eurasia 2026",
-      "city": "Istanbul",
-      "country": "Turkey",
-      "region": "Eurasia",
-      "date": "2026-09-16",
-      "url": "https://electricityeurasia.com/en/"
-    },
-    {
-      "name": "ICCI 2026 + Electricity Eurasia",
-      "city": "Istanbul",
-      "country": "Turkey",
-      "region": "Europe",
-      "date": "2026-09-16",
-      "url": "https://icci.com.tr/en/icci-home/"
-    },
-    {
-      "name": "World Power Industry Expo 2026 (Guangzhou)",
-      "city": "Guangzhou",
-      "country": "China",
-      "region": "Asia",
-      "date": "2026-09-16",
-      "url": "https://www.eventseye.com/fairs/f-power-expo-27954-1.html"
-    },
     {
       "name": "ICHVE 2026 — IEEE Int'l Conf. on High Voltage Engineering",
       "city": "São Paulo",

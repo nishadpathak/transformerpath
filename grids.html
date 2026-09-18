@@ -70,7 +70,7 @@
 .map-hint { text-align:center; color:var(--muted); font-size:.82rem; margin:6px 0 30px; }
 </style>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Dataset","name":"TransformerPath World Electrical Grids Census","description":"Country-by-country census of transmission system operators and utilities worldwide with synchronous areas, cross-border interconnector projects, offshore HVDC programs, green hydrogen giga-projects and grid investment plans.","url":"https://transformerpath.com/grids.html","creator":{"@type":"Organization","name":"TransformerPath","url":"https://transformerpath.com"},"license":"https://transformerpath.com/terms.html","dateModified":"2026-07-07","keywords":["electrical grid","TSO","transformer","HVDC","interconnector","green hydrogen","transmission"]}
+{"@context":"https://schema.org","@type":"Dataset","name":"TransformerPath World Electrical Grids Census","description":"Country-by-country census of transmission system operators and utilities worldwide with synchronous areas, cross-border interconnector projects, offshore HVDC programs, green hydrogen giga-projects and grid investment plans.","url":"https://transformerpath.com/grids.html","creator":{"@type":"Organization","name":"TransformerPath","url":"https://transformerpath.com"},"license":"https://transformerpath.com/terms.html","dateModified":"2026-09-18","keywords":["electrical grid","TSO","transformer","HVDC","interconnector","green hydrogen","transmission"]}
 </script>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0d1b2e">
@@ -110,6 +110,7 @@
       <a href="events.html">Events</a>
       <a href="tools.html" class="tpnav-opt">Engineering</a>
       <a href="learn.html">Learn</a>
+      <a href="grid-lab.html" class="tpnav-opt">Grid Lab</a>
       <a href="rfq.html">RFQ</a>
       <div class="tpnav-more">
         <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
@@ -125,7 +126,7 @@
       </div>
       <span class="tpnav-utils">
         <a href="search.html" title="Search" aria-label="Search">&#128269;</a>
-        <a href="workspace.html" data-tp-account>Account</a>
+        <a href="workspace.html" data-tp-account>My TransformerPath</a>
         <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">&#127769;</button>
       </span>
     </nav>
@@ -176,7 +177,7 @@
 <div class="s"><b>151</b><small>Countries</small></div>
      <div class="s"><b>166</b><small>Operators &amp; utilities</small></div>
      <div class="s"><b>10</b><small>Regions</small></div>
-     <div class="s"><b>16</b><small>Synchronous areas</small></div>
+     <div class="s"><b>29</b><small>Synchronous areas</small></div>
      <div class="s"><b>23</b><small>Interconnector projects</small></div>
      <div class="s"><b>15</b><small>Green H₂ projects</small></div>
      <div class="s"><b>6</b><small>Offshore HVDC programs</small></div>
@@ -185,7 +186,7 @@
 </div>
     <p style="text-align:center;color:var(--muted);font-size:.8rem;margin:-12px 0 24px" id="lvLine">
 <!--SSR:grids-lv-->
-Data last verified 2026-07-07 &middot; sources: official utility, operator &amp; regulator filings &middot; maintained encyclopedia-style from the TransformerPath grid census. Report a <a href="mailto:hello@transformerpath.com?subject=Grid%20census%20correction" style="color:var(--accent);font-weight:600">correction</a>.
+Data last verified 2026-09-18 &middot; sources: official utility, operator &amp; regulator filings &middot; maintained encyclopedia-style from the TransformerPath grid census. Report a <a href="mailto:hello@transformerpath.com?subject=Grid%20census%20correction" style="color:var(--accent);font-weight:600">correction</a>.
 <!--/SSR:grids-lv-->
 </p>
 
@@ -209,22 +210,35 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
       <thead><tr><th scope="col">Synchronous area</th><th scope="col">Coverage</th><th scope="col">Frequency</th></tr></thead>
       <tbody id="syncBody">
 <!--SSR:grids-sync-->
-<tr><td>GCCIA Interconnection</td><td style="color:var(--muted)">KSA · UAE · Kuwait · Qatar · Bahrain · Oman (+Iraq link 2024)</td><td>50 Hz (KSA 60 Hz via HVDC B2B)</td></tr>
-<tr><td>Continental Europe (ENTSO-E)</td><td style="color:var(--muted)">~30 countries incl. Türkiye, Ukraine, Baltics (2025) — world's largest</td><td>50 Hz · 400 kV backbone</td></tr>
+<tr><td>Continental Europe (ENTSO-E)</td><td style="color:var(--muted)">~30 countries incl. Türkiye, Ukraine, Baltics — world's largest synchronous grid</td><td>50 Hz · 400 kV backbone</td></tr>
 <tr><td>Nordic</td><td style="color:var(--muted)">Norway · Sweden · Finland · East Denmark</td><td>50 Hz</td></tr>
-<tr><td>Great Britain</td><td style="color:var(--muted)">England · Scotland · Wales (HVDC to EU, Nordics)</td><td>50 Hz</td></tr>
+<tr><td>Great Britain</td><td style="color:var(--muted)">England · Scotland · Wales (HVDC ties to EU, Nordics)</td><td>50 Hz</td></tr>
 <tr><td>Ireland (all-island)</td><td style="color:var(--muted)">Republic of Ireland + Northern Ireland</td><td>50 Hz</td></tr>
 <tr><td>IPS/UPS</td><td style="color:var(--muted)">Russia · Belarus · Kazakhstan · Caucasus · Central Asia · Mongolia</td><td>50 Hz</td></tr>
-<tr><td>Eastern Interconnection</td><td style="color:var(--muted)">Eastern US + Central/East Canada</td><td>60 Hz</td></tr>
-<tr><td>Western Interconnection</td><td style="color:var(--muted)">Western US + BC/Alberta + Baja Mexico</td><td>60 Hz</td></tr>
-<tr><td>ERCOT</td><td style="color:var(--muted)">Texas — standalone, DC-tied to neighbours</td><td>60 Hz</td></tr>
-<tr><td>India National Grid</td><td style="color:var(--muted)">One nation, one grid since 2013 — largest single synchronous national grid</td><td>50 Hz · 765 kV / ±800 kV DC</td></tr>
-<tr><td>China SGCC + CSG</td><td style="color:var(--muted)">Multiple sync regions tied by UHV DC — world's biggest system overall</td><td>50 Hz · 1000 kV AC / ±1100 kV DC</td></tr>
-<tr><td>SAPP (Southern Africa)</td><td style="color:var(--muted)">12 countries anchored by South Africa</td><td>50 Hz</td></tr>
-<tr><td>WAPP (West Africa)</td><td style="color:var(--muted)">14 ECOWAS countries</td><td>50 Hz</td></tr>
-<tr><td>SIN Brazil</td><td style="color:var(--muted)">Single national interconnected system (ONS)</td><td>60 Hz</td></tr>
-<tr><td>SIEPAC (Central America)</td><td style="color:var(--muted)">Guatemala→Panama 230 kV regional backbone</td><td>60 Hz</td></tr>
-<tr><td>NEM Australia</td><td style="color:var(--muted)">QLD · NSW · VIC · SA · TAS east-coast market</td><td>50 Hz</td></tr>
+<tr><td>GCCIA Interconnection</td><td style="color:var(--muted)">KSA · UAE · Kuwait · Qatar · Bahrain · Oman (+Iraq link)</td><td>50/60 Hz (KSA 60 Hz via B2B HVDC)</td></tr>
+<tr><td>WAPP (West African Power Pool)</td><td style="color:var(--muted)">14 ECOWAS countries (main synchronized grid + sub-blocks)</td><td>50 Hz</td></tr>
+<tr><td>SAPP (Southern African Power Pool)</td><td style="color:var(--muted)">12 countries anchored by South Africa (Eskom)</td><td>50 Hz</td></tr>
+<tr><td>EAPP (Eastern African Power Pool)</td><td style="color:var(--muted)">East Africa regional power grid (Ethiopia, Kenya, Uganda, Tanzania, Rwanda)</td><td>50 Hz</td></tr>
+<tr><td>Maghreb / CE-linked</td><td style="color:var(--muted)">Morocco · Algeria · Tunisia (synced with Continental Europe via Spain–Morocco AC)</td><td>50 Hz</td></tr>
+<tr><td>Eight Country IC (Arab Interconnection)</td><td style="color:var(--muted)">Egypt · Jordan · Syria · Lebanon · Iraq · Palestine · Libya · Turkey ties</td><td>50 Hz</td></tr>
+<tr><td>Central Asia (CAPS)</td><td style="color:var(--muted)">Central Asian Power System (Uzbekistan, Kazakhstan, Kyrgyzstan, Tajikistan)</td><td>50 Hz</td></tr>
+<tr><td>India (NEW/ISGS grid)</td><td style="color:var(--muted)">One nation, one grid since 2013 — world's largest single synchronous national network</td><td>50 Hz · 765 kV / ±800 kV DC</td></tr>
+<tr><td>China (SGCC / CSG)</td><td style="color:var(--muted)">Multiple synchronized regional grids interconnected by extensive UHV AC/DC corridors</td><td>50 Hz · 1000 kV AC / ±1100 kV DC</td></tr>
+<tr><td>SIN Mexico</td><td style="color:var(--muted)">Sistema Interconectado Nacional (excludes Baja California isolated subsystems)</td><td>60 Hz · 400 kV</td></tr>
+<tr><td>SIN Brazil</td><td style="color:var(--muted)">Sistema Interligado Nacional (ONS) — covers &gt;99% of Brazilian electricity demand</td><td>60 Hz · 500/765 kV</td></tr>
+<tr><td>SADI (Argentina-South)</td><td style="color:var(--muted)">Sistema Argentino de Interconexión (+ Uruguay bilateral synchronous tie at Salto Grande)</td><td>50 Hz · 500 kV</td></tr>
+<tr><td>SEN Chile</td><td style="color:var(--muted)">Sistema Eléctrico Nacional (unified SIC + SING since 2017)</td><td>50 Hz · 500 kV</td></tr>
+<tr><td>SIN Colombia</td><td style="color:var(--muted)">Sistema Interconectado Nacional (+ Andean synchronous ties to Ecuador)</td><td>60 Hz · 500/230 kV</td></tr>
+<tr><td>SEIN Peru</td><td style="color:var(--muted)">Sistema Eléctrico Interconectado Nacional (+ Andean interconnections)</td><td>60 Hz · 500/220 kV</td></tr>
+<tr><td>SNI Ecuador</td><td style="color:var(--muted)">Sistema Nacional Interconectado (+ Andean synchronous ties to Colombia)</td><td>60 Hz · 500/230 kV</td></tr>
+<tr><td>SEN Venezuela</td><td style="color:var(--muted)">Sistema Eléctrico Nacional (Guri hydro 765 kV transmission backbone)</td><td>60 Hz · 765 kV</td></tr>
+<tr><td>SIN Bolivia</td><td style="color:var(--muted)">Sistema Interconectado Nacional</td><td>50 Hz · 230/115 kV</td></tr>
+<tr><td>SIEPAC (Central America)</td><td style="color:var(--muted)">Sistema de Interconexión Eléctrica para América Central (Guatemala→Panama 230 kV backbone)</td><td>60 Hz · 230 kV</td></tr>
+<tr><td>Eastern Interconnection</td><td style="color:var(--muted)">Eastern US + Central &amp; Eastern Canada — largest North American AC grid</td><td>60 Hz · 765/500 kV</td></tr>
+<tr><td>Western Interconnection (WECC)</td><td style="color:var(--muted)">Western US + British Columbia, Alberta &amp; Baja California (Mexico)</td><td>60 Hz · 500 kV</td></tr>
+<tr><td>ERCOT</td><td style="color:var(--muted)">Texas Interconnection — standalone synchronous grid with asynchronous DC ties</td><td>60 Hz · 345 kV</td></tr>
+<tr><td>NEM + SWIS + NT (Australia)</td><td style="color:var(--muted)">National Electricity Market (east coast) + South West IS (WA) + Northern Territory</td><td>50 Hz · 500/330 kV</td></tr>
+<tr><td>Two synchronous areas (Japan)</td><td style="color:var(--muted)">East Japan (50 Hz, TEPCO) and West Japan (60 Hz, KEPCO/Chubu) linked by HVDC frequency converters</td><td>50/60 Hz · 500 kV</td></tr>
 <!--/SSR:grids-sync-->
 </tbody>
     </table>
@@ -268,7 +282,25 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
     <div class="table-wrap">
     <table class="sync-table ic-table">
       <thead><tr><th scope="col">Project</th><th scope="col">Electrolyzer</th><th scope="col">Output</th><th scope="col">Status</th></tr></thead>
-      <tbody id="h2Body"></tbody>
+      <tbody id="h2Body">
+<!--SSR:grids-h2-->
+<tr><td>NEOM Green Hydrogen (NGHC)<span class="rt">🇸🇦 NEOM, Saudi Arabia — World's largest; ~90% complete; Air Products 30-yr exclusive offtake</span></td><td style="color:var(--muted)">2.2 GW electrolysis + 4 GW wind/solar</td><td class="kv">1.2 Mtpa green NH₃ (600 t/d H₂)</td><td><span class="badge st-con">Commissioning · power mid-2026, product 2027</span></td></tr>
+<tr><td>Sinopec Kuqa<span class="rt">🇨🇳 Xinjiang, China — World's largest operating plant; still ramping electrolyzer utilization</span></td><td style="color:var(--muted)">260 MW</td><td class="kv">20 ktpa H₂ → Tahe refinery</td><td><span class="badge st-op">Operational since 2023</span></td></tr>
+<tr><td>Egypt Green (Scatec / Fertiglobe)<span class="rt">🇪🇬 Ain Sokhna, SCZone — Egypt's proof-of-concept against an $83 bn MoU pipeline</span></td><td style="color:var(--muted)">100 MW</td><td class="kv">green NH₃ feed for Fertiglobe</td><td><span class="badge st-op">Operational · first exports Jan 2026</span></td></tr>
+<tr><td>Hyport Duqm<span class="rt">🇴🇲 Duqm, Oman — bp / OQ / DEME — likely first of Oman's eight land-block projects</span></td><td style="color:var(--muted)">500 MW Phase-1 (1.4 GW RE)</td><td class="kv">green NH₃</td><td><span class="badge st-plan">FID expected 2026–27</span></td></tr>
+<tr><td>EDF–J-POWER–Yamna (Duqm Z1-02)<span class="rt">🇴🇲 Duqm, Oman — Part of Oman's 1 Mtpa-by-2030 national hydrogen target</span></td><td style="color:var(--muted)">2.5 GW (4.5 GW RE + storage)</td><td class="kv">~178 ktpa H₂ by 2030</td><td><span class="badge st-plan">Development</span></td></tr>
+<tr><td>Hyphen Hydrogen Energy<span class="rt">🇳🇦 Lüderitz, Namibia — US$10 bn flagship; German offtake backing</span></td><td style="color:var(--muted)">3 GW planned (Phase-1 2 GW)</td><td class="kv">~2 Mtpa NH₃</td><td><span class="badge st-plan">Feasibility to end-2026</span></td></tr>
+<tr><td>DEWA Green Hydrogen<span class="rt">🇦🇪 MBR Solar Park, Dubai — The region's first solar-driven green hydrogen plant</span></td><td style="color:var(--muted)">1.25 MW pilot</td><td class="kv">H₂ for mobility &amp; re-electrification</td><td><span class="badge st-op">Operational since 2021</span></td></tr>
+<tr><td>Adani ANIL Mundra Hub<span class="rt">🇮🇳 Mundra, Gujarat — India's first off-grid green H₂ plant</span></td><td style="color:var(--muted)">5 MW off-grid pilot live; GW-scale hub next</td><td class="kv">H₂ → NH₃ &amp; derivatives</td><td><span class="badge st-op">Pilot operational · hub in development</span></td></tr>
+<tr><td>Kandla Green H₂ Hub (RIL + L&amp;T / DPA)<span class="rt">🇮🇳 Kandla, Gujarat — Anchor project of India's National Green Hydrogen Mission hubs</span></td><td style="color:var(--muted)">targets 1.4 Mtpa H₂ / 7 Mtpa NH₃</td><td class="kv">export hub</td><td><span class="badge st-plan">Development</span></td></tr>
+<tr><td>SECI NGHM Programme<span class="rt">🇮🇳 India-wide — National mission: 5 Mtpa green H₂ per year by 2030</span></td><td style="color:var(--muted)">3 GW/yr electrolyzer PLI awarded to 15 manufacturers</td><td class="kv">370 ktpa NH₃ to ACME (Nov 2025 auctions)</td><td><span class="badge st-plan">Under way</span></td></tr>
+<tr><td>RWE GET H2 Nukleus<span class="rt">🇩🇪 Lingen, Germany — Europe's largest plant as it comes online</span></td><td style="color:var(--muted)">300 MW (first 100 MW phases)</td><td class="kv">H₂ into national core network</td><td><span class="badge st-con">Commissioning 2026</span></td></tr>
+<tr><td>Galp Sines<span class="rt">🇵🇹 Sines refinery, Portugal — Europe's largest operating unit at start-up</span></td><td style="color:var(--muted)">100 MW</td><td class="kv">refinery decarbonization</td><td><span class="badge st-op">Operational 2026</span></td></tr>
+<tr><td>Iberdrola Puertollano<span class="rt">🇪🇸 Puertollano, Spain — Europe's pioneer industrial-scale plant</span></td><td style="color:var(--muted)">20 MW (+100 MW PV + 20 MWh BESS)</td><td class="kv">green NH₃ (Fertiberia)</td><td><span class="badge st-op">Operational since 2022</span></td></tr>
+<tr><td>Stegra Boden (ex-H2 Green Steel)<span class="rt">🇸🇪 Boden, Sweden — World's first large-scale green-steel plant with integrated H₂</span></td><td style="color:var(--muted)">~700 MW</td><td class="kv">green steel (H₂-DRI)</td><td><span class="badge st-con">Under construction</span></td></tr>
+<tr><td>Inner Mongolia / Ordos Cluster<span class="rt">🇨🇳 Ordos – Ulanqab, China — Giga-scale ground-breakings incl. world's biggest solid-oxide plant (2026)</span></td><td style="color:var(--muted)">multi-GW wind-solar-H₂ cluster</td><td class="kv">H₂ pipelines toward Beijing region</td><td><span class="badge st-con">Under construction</span></td></tr>
+<!--/SSR:grids-h2-->
+</tbody>
     </table>
     </div>
 
@@ -399,7 +431,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Eight Country IC</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>PEEGT</b><span style="color:var(--muted)">Public Establishment for Generation &amp; Transmission — war-damaged, partial operation</span><span class="kv">400 kV</span><span></span></div>
+        <div class="grid-row"><b>PEEGT</b><span style="color:var(--muted)">Public Establishment for Generation &amp; Transmission — war-damaged, partial operation</span><span class="kv">400 kV</span><a href="http://www.peegt.gov.sy/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇾🇪</span><h3><a href="/grids/yemen/" style="color:inherit;text-decoration:none">Yemen</a></h3>
@@ -407,7 +439,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Isolated</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>PEC (Public Electricity Corp)</b><span style="color:var(--muted)">Fragmented grid; reconstruction phase</span><span class="kv">132 kV</span><span></span></div>
+        <div class="grid-row"><b>PEC (Public Electricity Corp)</b><span style="color:var(--muted)">Fragmented grid; reconstruction phase</span><span class="kv">132 kV</span><a href="http://www.pec.gov.ye/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇮🇷</span><h3><a href="/grids/iran/" style="color:inherit;text-decoration:none">Iran</a></h3>
@@ -785,7 +817,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Central Asia (CAPS)</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>NEGU (National Electric Grid)</b><span style="color:var(--muted)">Hub of Central Asian Power System</span><span class="kv">500 kV</span><a href="https://www.uzbekenergo.uz/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>NEGU (National Electric Grid)</b><span style="color:var(--muted)">Hub of Central Asian Power System</span><span class="kv">500 kV</span><a href="https://www.uzbekistonmet.uz/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇰🇬</span><h3><a href="/grids/kyrgyzstan/" style="color:inherit;text-decoration:none">Kyrgyzstan</a></h3>
@@ -793,7 +825,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Central Asia (CAPS)</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>NESK</b><span style="color:var(--muted)">National grid company</span><span class="kv">500 kV</span><span></span></div><div class="proj-links">⚡ 1 interconnector project</div>
+        <div class="grid-row"><b>NESK</b><span style="color:var(--muted)">National grid company</span><span class="kv">500 kV</span><a href="https://www.nesk.kg/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇹🇯</span><h3><a href="/grids/tajikistan/" style="color:inherit;text-decoration:none">Tajikistan</a></h3>
@@ -809,7 +841,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Regional ties</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>Türkmenenergo</b><span style="color:var(--muted)">State utility — ties to Iran, Afghanistan, Uzbekistan</span><span class="kv">500 kV</span><span></span></div>
+        <div class="grid-row"><b>Türkmenenergo</b><span style="color:var(--muted)">State utility — ties to Iran, Afghanistan, Uzbekistan</span><span class="kv">500 kV</span><a href="https://minenergo.gov.tm/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇦🇿</span><h3><a href="/grids/azerbaijan/" style="color:inherit;text-decoration:none">Azerbaijan</a></h3>
@@ -833,7 +865,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Regional ties</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>HVEN (High Voltage Electric Networks)</b><span style="color:var(--muted)">Ties to Iran &amp; Georgia</span><span class="kv">220 kV</span><span></span></div>
+        <div class="grid-row"><b>HVEN (High Voltage Electric Networks)</b><span style="color:var(--muted)">Ties to Iran &amp; Georgia</span><span class="kv">220 kV</span><a href="https://www.hven.am/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇲🇳</span><h3><a href="/grids/mongolia/" style="color:inherit;text-decoration:none">Mongolia</a></h3>
@@ -841,7 +873,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">IPS/UPS-linked</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>NPTG (National Power Transmission Grid)</b><span style="color:var(--muted)">Central system synced with Russia</span><span class="kv">220 kV</span><span></span></div>
+        <div class="grid-row"><b>NPTG (National Power Transmission Grid)</b><span style="color:var(--muted)">Central system synced with Russia</span><span class="kv">220 kV</span><a href="https://www.nptg.mn/" target="_blank" rel="noopener">Site →</a></div>
       </div>
 <div class="region-h">Africa</div><div class="country-card">
         <div class="country-head">
@@ -882,7 +914,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">EAPP</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>SETCO / STPG</b><span style="color:var(--muted)">National grid — tie to Egypt &amp; Ethiopia</span><span class="kv">500 kV</span><span></span></div>
+        <div class="grid-row"><b>SETCO / STPG</b><span style="color:var(--muted)">National grid — tie to Egypt &amp; Ethiopia</span><span class="kv">500 kV</span><a href="http://www.setco.sd/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇳🇬</span><h3><a href="/grids/nigeria/" style="color:inherit;text-decoration:none">Nigeria</a></h3>
@@ -970,7 +1002,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">SAPP</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>ZETDC</b><span style="color:var(--muted)">National utility — SAPP coordination centre in Harare</span><span class="kv">330 kV</span><span></span></div>
+        <div class="grid-row"><b>ZETDC</b><span style="color:var(--muted)">National utility — SAPP coordination centre in Harare</span><span class="kv">330 kV</span><a href="https://www.zetdc.co.zw/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇧🇼</span><h3><a href="/grids/botswana/" style="color:inherit;text-decoration:none">Botswana</a></h3>
@@ -1018,7 +1050,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Isolated (CAPP)</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>SONATREL</b><span style="color:var(--muted)">TSO since 2015 (ENEO handles generation &amp; distribution); Southern + Northern interconnected grids</span><span class="kv">225 kV</span><span></span></div>
+        <div class="grid-row"><b>SONATREL</b><span style="color:var(--muted)">TSO since 2015 (ENEO handles generation &amp; distribution); Southern + Northern interconnected grids</span><span class="kv">225 kV</span><a href="https://www.sonatrel-cameroon.cm/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇷🇼</span><h3><a href="/grids/rwanda/" style="color:inherit;text-decoration:none">Rwanda</a></h3>
@@ -1042,7 +1074,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Isolated</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>JIRAMA</b><span style="color:var(--muted)">National utility — separate Antananarivo, Toamasina &amp; regional island grids</span><span class="kv">138 kV</span><span></span></div>
+        <div class="grid-row"><b>JIRAMA</b><span style="color:var(--muted)">National utility — separate Antananarivo, Toamasina &amp; regional island grids</span><span class="kv">138 kV</span><a href="https://www.jirama.mg/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇲🇺</span><h3><a href="/grids/mauritius/" style="color:inherit;text-decoration:none">Mauritius</a></h3>
@@ -1066,7 +1098,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">SAPP</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>LEC (Lesotho Electricity Company)</b><span style="color:var(--muted)">Muela hydro + Eskom imports</span><span class="kv">132 kV</span><span></span></div>
+        <div class="grid-row"><b>LEC (Lesotho Electricity Company)</b><span style="color:var(--muted)">Muela hydro + Eskom imports</span><span class="kv">132 kV</span><a href="https://www.lec.co.ls/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇲🇱</span><h3><a href="/grids/mali/" style="color:inherit;text-decoration:none">Mali</a></h3>
@@ -1074,7 +1106,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">WAPP</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>EDM-SA</b><span style="color:var(--muted)">National utility — ties to Côte d'Ivoire and OMVS hydro shared with Senegal &amp; Mauritania</span><span class="kv">225 kV</span><span></span></div>
+        <div class="grid-row"><b>EDM-SA</b><span style="color:var(--muted)">National utility — ties to Côte d'Ivoire and OMVS hydro shared with Senegal &amp; Mauritania</span><span class="kv">225 kV</span><a href="https://www.edm-sa.com.ml/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇧🇫</span><h3><a href="/grids/burkina-faso/" style="color:inherit;text-decoration:none">Burkina Faso</a></h3>
@@ -1090,7 +1122,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">WAPP</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>NIGELEC</b><span style="color:var(--muted)">National utility — heavily dependent on imports from Nigeria</span><span class="kv">132 kV</span><span></span></div>
+        <div class="grid-row"><b>NIGELEC</b><span style="color:var(--muted)">National utility — heavily dependent on imports from Nigeria</span><span class="kv">132 kV</span><a href="https://www.nigelec.ne/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇧🇯</span><h3><a href="/grids/benin/" style="color:inherit;text-decoration:none">Benin</a></h3>
@@ -1098,7 +1130,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">WAPP</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>CEB + SBEE</b><span style="color:var(--muted)">CEB — transmission operator shared with Togo (a WAPP rarity); SBEE national distributor</span><span class="kv">161 kV</span><span></span></div>
+        <div class="grid-row"><b>CEB + SBEE</b><span style="color:var(--muted)">CEB — transmission operator shared with Togo (a WAPP rarity); SBEE national distributor</span><span class="kv">161 kV</span><a href="https://www.sbee.bj/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇹🇬</span><h3><a href="/grids/togo/" style="color:inherit;text-decoration:none">Togo</a></h3>
@@ -1106,7 +1138,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">WAPP</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>CEB + CEET</b><span style="color:var(--muted)">CEB — transmission operator shared with Benin; CEET national distributor</span><span class="kv">161 kV</span><span></span></div>
+        <div class="grid-row"><b>CEB + CEET</b><span style="color:var(--muted)">CEB — transmission operator shared with Benin; CEET national distributor</span><span class="kv">161 kV</span><a href="https://ceet.tg/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇬🇳</span><h3><a href="/grids/guinea/" style="color:inherit;text-decoration:none">Guinea</a></h3>
@@ -1114,7 +1146,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">WAPP</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>EDG (Électricité de Guinée)</b><span style="color:var(--muted)">Kaleta &amp; Souapiti hydro; CLSG 225 kV corridor to Liberia–Sierra Leone–Côte d'Ivoire</span><span class="kv">225 kV</span><span></span></div>
+        <div class="grid-row"><b>EDG (Électricité de Guinée)</b><span style="color:var(--muted)">Kaleta &amp; Souapiti hydro; CLSG 225 kV corridor to Liberia–Sierra Leone–Côte d'Ivoire</span><span class="kv">225 kV</span><a href="https://www.edg.com.gn/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇲🇷</span><h3><a href="/grids/mauritania/" style="color:inherit;text-decoration:none">Mauritania</a></h3>
@@ -1122,7 +1154,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">OMVS-linked</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>SOMELEC</b><span style="color:var(--muted)">National utility — OMVS hydro shared with Senegal &amp; Mali</span><span class="kv">225 kV</span><span></span></div>
+        <div class="grid-row"><b>SOMELEC</b><span style="color:var(--muted)">National utility — OMVS hydro shared with Senegal &amp; Mali</span><span class="kv">225 kV</span><a href="https://www.somelec.mr/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇩🇯</span><h3><a href="/grids/djibouti/" style="color:inherit;text-decoration:none">Djibouti</a></h3>
@@ -1130,7 +1162,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">EAPP-linked</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>EDD (Électricité de Djibouti)</b><span style="color:var(--muted)">Interconnected with Ethiopia — majority of supply imported</span><span class="kv">230 kV</span><span></span></div>
+        <div class="grid-row"><b>EDD (Électricité de Djibouti)</b><span style="color:var(--muted)">Interconnected with Ethiopia — majority of supply imported</span><span class="kv">230 kV</span><a href="https://www.edd.dj/" target="_blank" rel="noopener">Site →</a></div>
       </div>
 <div class="region-h">South Asia</div><div class="country-card">
         <div class="country-head">
@@ -1187,7 +1219,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Import islands</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>DABS</b><span style="color:var(--muted)">Asynchronous import islands fed from Uzbekistan, Turkmenistan, Tajikistan, Iran</span><span class="kv">220 kV</span><span></span></div><div class="proj-links">⚡ 1 interconnector project</div>
+        <div class="grid-row"><b>DABS</b><span style="color:var(--muted)">Asynchronous import islands fed from Uzbekistan, Turkmenistan, Tajikistan, Iran</span><span class="kv">220 kV</span><a href="https://www.dabs.af/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇲🇻</span><h3><a href="/grids/maldives/" style="color:inherit;text-decoration:none">Maldives</a></h3>
@@ -1285,7 +1317,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Island grids</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>PLN</b><span style="color:var(--muted)">Java-Bali 500 kV system + Sumatra + hundreds of island grids</span><span class="kv">500 kV</span><a href="https://web.pln.co.id/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
+        <div class="grid-row"><b>PLN</b><span style="color:var(--muted)">Java-Bali 500 kV system + Sumatra + hundreds of island grids</span><span class="kv">500 kV</span><a href="https://www.pln.co.id/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇵🇭</span><h3><a href="/grids/philippines/" style="color:inherit;text-decoration:none">Philippines</a></h3>
@@ -1301,7 +1333,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Export hub</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>EDL-Transmission</b><span style="color:var(--muted)">'Battery of Southeast Asia' — exports to TH, VN, KH, MY/SG</span><span class="kv">500 kV</span><a href="https://www.edltrans.com/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>EDL-Transmission</b><span style="color:var(--muted)">'Battery of Southeast Asia' — exports to TH, VN, KH, MY/SG</span><span class="kv">500 kV</span><a href="https://www.edl.com.la/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇰🇭</span><h3><a href="/grids/cambodia/" style="color:inherit;text-decoration:none">Cambodia</a></h3>
@@ -1317,7 +1349,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">National</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>MOEP / ESE</b><span style="color:var(--muted)">National grid — constrained, partial coverage</span><span class="kv">500 kV</span><span></span></div>
+        <div class="grid-row"><b>MOEP / ESE</b><span style="color:var(--muted)">National grid — constrained, partial coverage</span><span class="kv">500 kV</span><a href="https://www.moep.gov.mm/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇧🇳</span><h3><a href="/grids/brunei/" style="color:inherit;text-decoration:none">Brunei</a></h3>
@@ -1325,7 +1357,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Isolated</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>DES + Berakas Power</b><span style="color:var(--muted)">Two interconnected national systems; Borneo grid link under ASEAN study</span><span class="kv">66 kV</span><span></span></div><div class="proj-links">🌊 1 offshore HVDC programme</div>
+        <div class="grid-row"><b>DES + Berakas Power</b><span style="color:var(--muted)">Two interconnected national systems; Borneo grid link under ASEAN study</span><span class="kv">66 kV</span><a href="http://www.des.gov.bn/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">🌊 1 offshore HVDC programme</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇹🇱</span><h3><a href="/grids/timor-leste/" style="color:inherit;text-decoration:none">Timor-Leste</a></h3>
@@ -1333,7 +1365,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Isolated</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>EDTL</b><span style="color:var(--muted)">National utility — 150 kV north–south backbone</span><span class="kv">150 kV</span><span></span></div>
+        <div class="grid-row"><b>EDTL</b><span style="color:var(--muted)">National utility — 150 kV north–south backbone</span><span class="kv">150 kV</span><a href="https://www.edtl.tl/" target="_blank" rel="noopener">Site →</a></div>
       </div>
 <div class="region-h">North America</div><div class="country-card">
         <div class="country-head">
@@ -1415,7 +1447,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">SEN Venezuela</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>Corpoelec</b><span style="color:var(--muted)">Guri hydro backbone — 765 kV system</span><span class="kv">765 kV</span><span></span></div>
+        <div class="grid-row"><b>Corpoelec</b><span style="color:var(--muted)">Guri hydro backbone — 765 kV system</span><span class="kv">765 kV</span><a href="http://www.corpoelec.gob.ve/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇧🇴</span><h3><a href="/grids/bolivia/" style="color:inherit;text-decoration:none">Bolivia</a></h3>
@@ -1463,7 +1495,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Isolated</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>UNE (Unión Eléctrica)</b><span style="color:var(--muted)">Island grid — severe generation crisis</span><span class="kv">220 kV</span><span></span></div>
+        <div class="grid-row"><b>UNE (Unión Eléctrica)</b><span style="color:var(--muted)">Island grid — severe generation crisis</span><span class="kv">220 kV</span><a href="https://www.unionelectrica.cu/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇯🇲</span><h3><a href="/grids/jamaica/" style="color:inherit;text-decoration:none">Jamaica</a></h3>
@@ -1479,7 +1511,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Isolated</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>T&amp;TEC</b><span style="color:var(--muted)">Trinidad grid + subsea link to Tobago</span><span class="kv">220 kV</span><span></span></div><div class="proj-links">⚡ 1 interconnector project</div>
+        <div class="grid-row"><b>T&amp;TEC</b><span style="color:var(--muted)">Trinidad grid + subsea link to Tobago</span><span class="kv">220 kV</span><a href="https://www.ttec.co.tt/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇬🇾</span><h3><a href="/grids/guyana/" style="color:inherit;text-decoration:none">Guyana</a></h3>
@@ -1487,7 +1519,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Isolated</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>GPL (Guyana Power &amp; Light)</b><span style="color:var(--muted)">DBIS coastal grid — oil-boom gas-to-energy 300 MW expansion under way</span><span class="kv">69 kV</span><span></span></div>
+        <div class="grid-row"><b>GPL (Guyana Power &amp; Light)</b><span style="color:var(--muted)">DBIS coastal grid — oil-boom gas-to-energy 300 MW expansion under way</span><span class="kv">69 kV</span><a href="https://gplinc.com/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇸🇷</span><h3><a href="/grids/suriname/" style="color:inherit;text-decoration:none">Suriname</a></h3>
@@ -1495,7 +1527,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Isolated</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>EBS</b><span style="color:var(--muted)">EPAR coastal grid + Afobaka hydro</span><span class="kv">161 kV</span><span></span></div>
+        <div class="grid-row"><b>EBS</b><span style="color:var(--muted)">EPAR coastal grid + Afobaka hydro</span><span class="kv">161 kV</span><a href="https://www.ebs.sr/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇧🇸</span><h3><a href="/grids/bahamas/" style="color:inherit;text-decoration:none">Bahamas</a></h3>
@@ -1503,7 +1535,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Isolated</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>BPL (Bahamas Power &amp; Light)</b><span style="color:var(--muted)">New Providence grid + separate Family Islands systems</span><span class="kv">66 kV</span><span></span></div>
+        <div class="grid-row"><b>BPL (Bahamas Power &amp; Light)</b><span style="color:var(--muted)">New Providence grid + separate Family Islands systems</span><span class="kv">66 kV</span><a href="https://www.bplco.com/" target="_blank" rel="noopener">Site →</a></div>
       </div>
 <div class="region-h">Oceania</div><div class="country-card">
         <div class="country-head">
@@ -1570,22 +1602,151 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
 
 <script>
 const SYNC_AREAS = [
- ["GCCIA Interconnection","KSA · UAE · Kuwait · Qatar · Bahrain · Oman (+Iraq link 2024)","50 Hz (KSA 60 Hz via HVDC B2B)"],
- ["Continental Europe (ENTSO-E)","~30 countries incl. Türkiye, Ukraine, Baltics (2025) — world's largest","50 Hz · 400 kV backbone"],
- ["Nordic","Norway · Sweden · Finland · East Denmark","50 Hz"],
- ["Great Britain","England · Scotland · Wales (HVDC to EU, Nordics)","50 Hz"],
- ["Ireland (all-island)","Republic of Ireland + Northern Ireland","50 Hz"],
- ["IPS/UPS","Russia · Belarus · Kazakhstan · Caucasus · Central Asia · Mongolia","50 Hz"],
- ["Eastern Interconnection","Eastern US + Central/East Canada","60 Hz"],
- ["Western Interconnection","Western US + BC/Alberta + Baja Mexico","60 Hz"],
- ["ERCOT","Texas — standalone, DC-tied to neighbours","60 Hz"],
- ["India National Grid","One nation, one grid since 2013 — largest single synchronous national grid","50 Hz · 765 kV / ±800 kV DC"],
- ["China SGCC + CSG","Multiple sync regions tied by UHV DC — world's biggest system overall","50 Hz · 1000 kV AC / ±1100 kV DC"],
- ["SAPP (Southern Africa)","12 countries anchored by South Africa","50 Hz"],
- ["WAPP (West Africa)","14 ECOWAS countries","50 Hz"],
- ["SIN Brazil","Single national interconnected system (ONS)","60 Hz"],
- ["SIEPAC (Central America)","Guatemala→Panama 230 kV regional backbone","60 Hz"],
- ["NEM Australia","QLD · NSW · VIC · SA · TAS east-coast market","50 Hz"]
+ [
+  "Continental Europe (ENTSO-E)",
+  "~30 countries incl. Türkiye, Ukraine, Baltics — world's largest synchronous grid",
+  "50 Hz · 400 kV backbone"
+ ],
+ [
+  "Nordic",
+  "Norway · Sweden · Finland · East Denmark",
+  "50 Hz"
+ ],
+ [
+  "Great Britain",
+  "England · Scotland · Wales (HVDC ties to EU, Nordics)",
+  "50 Hz"
+ ],
+ [
+  "Ireland (all-island)",
+  "Republic of Ireland + Northern Ireland",
+  "50 Hz"
+ ],
+ [
+  "IPS/UPS",
+  "Russia · Belarus · Kazakhstan · Caucasus · Central Asia · Mongolia",
+  "50 Hz"
+ ],
+ [
+  "GCCIA Interconnection",
+  "KSA · UAE · Kuwait · Qatar · Bahrain · Oman (+Iraq link)",
+  "50/60 Hz (KSA 60 Hz via B2B HVDC)"
+ ],
+ [
+  "WAPP (West African Power Pool)",
+  "14 ECOWAS countries (main synchronized grid + sub-blocks)",
+  "50 Hz"
+ ],
+ [
+  "SAPP (Southern African Power Pool)",
+  "12 countries anchored by South Africa (Eskom)",
+  "50 Hz"
+ ],
+ [
+  "EAPP (Eastern African Power Pool)",
+  "East Africa regional power grid (Ethiopia, Kenya, Uganda, Tanzania, Rwanda)",
+  "50 Hz"
+ ],
+ [
+  "Maghreb / CE-linked",
+  "Morocco · Algeria · Tunisia (synced with Continental Europe via Spain–Morocco AC)",
+  "50 Hz"
+ ],
+ [
+  "Eight Country IC (Arab Interconnection)",
+  "Egypt · Jordan · Syria · Lebanon · Iraq · Palestine · Libya · Turkey ties",
+  "50 Hz"
+ ],
+ [
+  "Central Asia (CAPS)",
+  "Central Asian Power System (Uzbekistan, Kazakhstan, Kyrgyzstan, Tajikistan)",
+  "50 Hz"
+ ],
+ [
+  "India (NEW/ISGS grid)",
+  "One nation, one grid since 2013 — world's largest single synchronous national network",
+  "50 Hz · 765 kV / ±800 kV DC"
+ ],
+ [
+  "China (SGCC / CSG)",
+  "Multiple synchronized regional grids interconnected by extensive UHV AC/DC corridors",
+  "50 Hz · 1000 kV AC / ±1100 kV DC"
+ ],
+ [
+  "SIN Mexico",
+  "Sistema Interconectado Nacional (excludes Baja California isolated subsystems)",
+  "60 Hz · 400 kV"
+ ],
+ [
+  "SIN Brazil",
+  "Sistema Interligado Nacional (ONS) — covers >99% of Brazilian electricity demand",
+  "60 Hz · 500/765 kV"
+ ],
+ [
+  "SADI (Argentina-South)",
+  "Sistema Argentino de Interconexión (+ Uruguay bilateral synchronous tie at Salto Grande)",
+  "50 Hz · 500 kV"
+ ],
+ [
+  "SEN Chile",
+  "Sistema Eléctrico Nacional (unified SIC + SING since 2017)",
+  "50 Hz · 500 kV"
+ ],
+ [
+  "SIN Colombia",
+  "Sistema Interconectado Nacional (+ Andean synchronous ties to Ecuador)",
+  "60 Hz · 500/230 kV"
+ ],
+ [
+  "SEIN Peru",
+  "Sistema Eléctrico Interconectado Nacional (+ Andean interconnections)",
+  "60 Hz · 500/220 kV"
+ ],
+ [
+  "SNI Ecuador",
+  "Sistema Nacional Interconectado (+ Andean synchronous ties to Colombia)",
+  "60 Hz · 500/230 kV"
+ ],
+ [
+  "SEN Venezuela",
+  "Sistema Eléctrico Nacional (Guri hydro 765 kV transmission backbone)",
+  "60 Hz · 765 kV"
+ ],
+ [
+  "SIN Bolivia",
+  "Sistema Interconectado Nacional",
+  "50 Hz · 230/115 kV"
+ ],
+ [
+  "SIEPAC (Central America)",
+  "Sistema de Interconexión Eléctrica para América Central (Guatemala→Panama 230 kV backbone)",
+  "60 Hz · 230 kV"
+ ],
+ [
+  "Eastern Interconnection",
+  "Eastern US + Central & Eastern Canada — largest North American AC grid",
+  "60 Hz · 765/500 kV"
+ ],
+ [
+  "Western Interconnection (WECC)",
+  "Western US + British Columbia, Alberta & Baja California (Mexico)",
+  "60 Hz · 500 kV"
+ ],
+ [
+  "ERCOT",
+  "Texas Interconnection — standalone synchronous grid with asynchronous DC ties",
+  "60 Hz · 345 kV"
+ ],
+ [
+  "NEM + SWIS + NT (Australia)",
+  "National Electricity Market (east coast) + South West IS (WA) + Northern Territory",
+  "50 Hz · 500/330 kV"
+ ],
+ [
+  "Two synchronous areas (Japan)",
+  "East Japan (50 Hz, TEPCO) and West Japan (60 Hz, KEPCO/Chubu) linked by HVDC frequency converters",
+  "50/60 Hz · 500 kV"
+ ]
 ];
 const INTERCONNECTORS = [
  ["Egypt–Saudi Arabia HVDC","🇪🇬🇸🇦 Badr – Tabuk – Madinah","±500 kV HVDC multi-terminal","3,000 MW","Commissioning delayed · past Apr 2026 target","First large HVDC bridge between Africa & Asia; pole 1 = 1,500 MW, was in final testing as of Feb 2026 — confirm current status with the operator"],
@@ -1652,503 +1813,2364 @@ const GRID_CAPEX = [
  ["State Grid Corp of China","🇨🇳 China","record ≈US$85 bn in 2024 alone","UHV AC/DC corridors + distribution modernisation","annual","World's largest single grid investor"]
 ];
 
-const LAST_VERIFIED = "2026-07-07";
+const LAST_VERIFIED = "2026-09-18";
 
 const DATA = [
-
-// ───────── MIDDLE EAST ─────────
-{country:"United Arab Emirates",region:"Middle East",flag:"🇦🇪",freq:"50",sync:"GCCIA",grids:[
- ["TAQA Transmission","Abu Dhabi transmission owner-operator & northern grid spine","400 kV","https://taqatransmission.com/"],
- ["DEWA","Dubai vertically-integrated utility — gen, transmission, distribution","400 kV","https://www.dewa.gov.ae/"],
- ["SEWA","Sharjah utility","220 kV","https://www.sewa.gov.ae/"],
- ["EtihadWE","Northern Emirates utility","220 kV","https://www.etihadwe.ae/"]
-]},
-{country:"Saudi Arabia",region:"Middle East",flag:"🇸🇦",freq:"60",sync:"GCCIA",grids:[
- ["Saudi Electricity Co / National Grid SA","Single national grid — only 60 Hz system in GCC, tied to GCCIA via HVDC back-to-back at Al-Fadhili","380 kV","https://www.se.com.sa/"]
-]},
-{country:"Kuwait",region:"Middle East",flag:"🇰🇼",freq:"50",sync:"GCCIA",grids:[
- ["MEWRE (Ministry of Electricity & Water)","State grid operator — GCCIA northern terminus","400 kV","https://www.mew.gov.kw/"]
-]},
-{country:"Qatar",region:"Middle East",flag:"🇶🇦",freq:"50",sync:"GCCIA",grids:[
- ["KAHRAMAA","Qatar General Electricity & Water Corp","400 kV","https://www.km.qa/"]
-]},
-{country:"Bahrain",region:"Middle East",flag:"🇧🇭",freq:"50",sync:"GCCIA",grids:[
- ["EWA","Electricity & Water Authority — GCCIA link via Saudi","220 kV","https://www.ewa.bh/"]
-]},
-{country:"Oman",region:"Middle East",flag:"🇴🇲",freq:"50",sync:"GCCIA",grids:[
- ["OETC (Oman Grid)","Main interconnected system + Dhofar grid; synced to GCCIA via UAE","400 kV","https://www.omangrid.com/"]
-]},
-{country:"Iraq",region:"Middle East",flag:"🇮🇶",freq:"50",sync:"GCCIA-linked",grids:[
- ["Ministry of Electricity","National grid; 400 kV GCCIA link to Kuwait energized 2024, also tied to Iran & Jordan","400 kV","https://moelc.gov.iq/"]
-]},
-{country:"Jordan",region:"Middle East",flag:"🇯🇴",freq:"50",sync:"Eight Country IC",grids:[
- ["NEPCO","National Electric Power Co — interconnected with Egypt (submarine) & Iraq","400 kV","https://www.nepco.com.jo/"]
-]},
-{country:"Lebanon",region:"Middle East",flag:"🇱🇧",freq:"50",sync:"Eight Country IC",grids:[
- ["EDL (Électricité du Liban)","National utility — chronic capacity deficit; Syria tie","220 kV","https://www.edl.gov.lb/"]
-]},
-{country:"Syria",region:"Middle East",flag:"🇸🇾",freq:"50",sync:"Eight Country IC",grids:[
- ["PEEGT","Public Establishment for Generation & Transmission — war-damaged, partial operation","400 kV",""]
-]},
-{country:"Yemen",region:"Middle East",flag:"🇾🇪",freq:"50",sync:"Isolated",grids:[
- ["PEC (Public Electricity Corp)","Fragmented grid; reconstruction phase","132 kV",""]
-]},
-{country:"Iran",region:"Middle East",flag:"🇮🇷",freq:"50",sync:"Isolated (regional ties)",grids:[
- ["TAVANIR / IGMC","National grid — async ties to Iraq, Armenia, Turkmenistan, Pakistan","400 kV","https://www.tavanir.org.ir/"]
-]},
-{country:"Israel",region:"Middle East",flag:"🇮🇱",freq:"50",sync:"Isolated",grids:[
- ["IEC / Noga ISO","Island grid — no international AC ties","400 kV","https://www.iec.co.il/"]
-]},
-{country:"Egypt",region:"Middle East",flag:"🇪🇬",freq:"50",sync:"Eight Country IC",grids:[
- ["EETC","Egyptian Electricity Transmission Co — hub to Jordan, Libya, Sudan; ±500 kV HVDC to Saudi commissioning","500 kV","https://www.eetc.net.eg/"]
-]},
-
-// ───────── EUROPE ─────────
-{country:"Germany",region:"Europe",flag:"🇩🇪",freq:"50",sync:"Continental Europe",grids:[
- ["Amprion","TSO — west (Rhine-Ruhr)","380 kV","https://www.amprion.net/"],
- ["TenneT Germany","TSO — north-south corridor","380 kV","https://www.tennet.eu/"],
- ["50Hertz","TSO — east","380 kV","https://www.50hertz.com/"],
- ["TransnetBW","TSO — Baden-Württemberg","380 kV","https://www.transnetbw.de/"]
-]},
-{country:"France",region:"Europe",flag:"🇫🇷",freq:"50",sync:"Continental Europe",grids:[
- ["RTE","Largest single TSO in Europe","400 kV","https://www.rte-france.com/"]
-]},
-{country:"United Kingdom",region:"Europe",flag:"🇬🇧",freq:"50",sync:"Great Britain",grids:[
- ["NESO / National Grid ET","GB system operator + England-Wales transmission owner","400 kV","https://www.neso.energy/"],
- ["SP Energy Networks / SSEN","Scottish transmission owners","400 kV","https://www.spenergynetworks.co.uk/"]
-]},
-{country:"Ireland",region:"Europe",flag:"🇮🇪",freq:"50",sync:"Ireland (all-island)",grids:[
- ["EirGrid + SONI","All-island single electricity market (IE + NI)","400 kV","https://www.eirgrid.ie/"]
-]},
-{country:"Italy",region:"Europe",flag:"🇮🇹",freq:"50",sync:"Continental Europe",grids:[
- ["Terna","National TSO — HVDC links to Sardinia, Montenegro, Greece, Tunisia (planned)","380 kV","https://www.terna.it/"]
-]},
-{country:"Spain",region:"Europe",flag:"🇪🇸",freq:"50",sync:"Continental Europe",grids:[
- ["Red Eléctrica (Redeia)","National TSO — gateway for Morocco sync link","400 kV","https://www.ree.es/"]
-]},
-{country:"Portugal",region:"Europe",flag:"🇵🇹",freq:"50",sync:"Continental Europe",grids:[
- ["REN","National TSO","400 kV","https://www.ren.pt/"]
-]},
-{country:"Netherlands",region:"Europe",flag:"🇳🇱",freq:"50",sync:"Continental Europe",grids:[
- ["TenneT","Dutch-German TSO; major offshore wind grid builder","380 kV","https://www.tennet.eu/"]
-]},
-{country:"Belgium",region:"Europe",flag:"🇧🇪",freq:"50",sync:"Continental Europe",grids:[
- ["Elia","National TSO (also owns 50Hertz DE)","380 kV","https://www.elia.be/"]
-]},
-{country:"Switzerland",region:"Europe",flag:"🇨🇭",freq:"50",sync:"Continental Europe",grids:[
- ["Swissgrid","National TSO — Europe's transit hub","380 kV","https://www.swissgrid.ch/"]
-]},
-{country:"Austria",region:"Europe",flag:"🇦🇹",freq:"50",sync:"Continental Europe",grids:[
- ["APG (Austrian Power Grid)","National TSO","380 kV","https://www.apg.at/"]
-]},
-{country:"Poland",region:"Europe",flag:"🇵🇱",freq:"50",sync:"Continental Europe",grids:[
- ["PSE","Polskie Sieci Elektroenergetyczne","400 kV","https://www.pse.pl/"]
-]},
-{country:"Czechia",region:"Europe",flag:"🇨🇿",freq:"50",sync:"Continental Europe",grids:[
- ["ČEPS","National TSO","400 kV","https://www.ceps.cz/"]
-]},
-{country:"Slovakia",region:"Europe",flag:"🇸🇰",freq:"50",sync:"Continental Europe",grids:[
- ["SEPS","National TSO","400 kV","https://www.sepsas.sk/"]
-]},
-{country:"Hungary",region:"Europe",flag:"🇭🇺",freq:"50",sync:"Continental Europe",grids:[
- ["MAVIR","National TSO","400 kV","https://www.mavir.hu/"]
-]},
-{country:"Romania",region:"Europe",flag:"🇷🇴",freq:"50",sync:"Continental Europe",grids:[
- ["Transelectrica","National TSO","400 kV","https://www.transelectrica.ro/"]
-]},
-{country:"Bulgaria",region:"Europe",flag:"🇧🇬",freq:"50",sync:"Continental Europe",grids:[
- ["ESO EAD","National TSO","400 kV","https://www.eso.bg/"]
-]},
-{country:"Greece",region:"Europe",flag:"🇬🇷",freq:"50",sync:"Continental Europe",grids:[
- ["IPTO / ADMIE","National TSO — island interconnection programme ongoing","400 kV","https://www.admie.gr/"]
-]},
-{country:"Serbia",region:"Europe",flag:"🇷🇸",freq:"50",sync:"Continental Europe",grids:[
- ["EMS","Elektromreža Srbije","400 kV","https://www.ems.rs/"]
-]},
-{country:"Croatia",region:"Europe",flag:"🇭🇷",freq:"50",sync:"Continental Europe",grids:[
- ["HOPS","National TSO","400 kV","https://www.hops.hr/"]
-]},
-{country:"Slovenia",region:"Europe",flag:"🇸🇮",freq:"50",sync:"Continental Europe",grids:[
- ["ELES","National TSO","400 kV","https://www.eles.si/"]
-]},
-{country:"Bosnia & Herzegovina",region:"Europe",flag:"🇧🇦",freq:"50",sync:"Continental Europe",grids:[
- ["NOSBiH / Elektroprijenos BiH","ISO + transmission company","400 kV","https://www.nosbih.ba/"]
-]},
-{country:"North Macedonia",region:"Europe",flag:"🇲🇰",freq:"50",sync:"Continental Europe",grids:[
- ["MEPSO","National TSO","400 kV","https://www.mepso.com.mk/"]
-]},
-{country:"Albania",region:"Europe",flag:"🇦🇱",freq:"50",sync:"Continental Europe",grids:[
- ["OST","Operatori i Sistemit të Transmetimit","400 kV","https://www.ost.al/"]
-]},
-{country:"Montenegro",region:"Europe",flag:"🇲🇪",freq:"50",sync:"Continental Europe",grids:[
- ["CGES","TSO — HVDC submarine link to Italy","400 kV","https://www.cges.me/"]
-]},
-{country:"Denmark",region:"Europe",flag:"🇩🇰",freq:"50",sync:"CE (west) + Nordic (east)",grids:[
- ["Energinet","Unique split: Jutland in Continental Europe, Zealand in Nordic — bridged by HVDC","400 kV","https://www.energinet.dk/"]
-]},
-{country:"Norway",region:"Europe",flag:"🇳🇴",freq:"50",sync:"Nordic",grids:[
- ["Statnett","National TSO — HVDC to GB, DE, NL, DK","420 kV","https://www.statnett.no/"]
-]},
-{country:"Sweden",region:"Europe",flag:"🇸🇪",freq:"50",sync:"Nordic",grids:[
- ["Svenska kraftnät","National TSO","400 kV","https://www.svk.se/"]
-]},
-{country:"Finland",region:"Europe",flag:"🇫🇮",freq:"50",sync:"Nordic",grids:[
- ["Fingrid","National TSO — Russia ties severed 2022","400 kV","https://www.fingrid.fi/"]
-]},
-{country:"Estonia",region:"Europe",flag:"🇪🇪",freq:"50",sync:"Continental Europe",grids:[
- ["Elering","Desynced from IPS/UPS, joined CE Feb 2025","330 kV","https://www.elering.ee/"]
-]},
-{country:"Latvia",region:"Europe",flag:"🇱🇻",freq:"50",sync:"Continental Europe",grids:[
- ["AST (Augstsprieguma tīkls)","Joined CE Feb 2025","330 kV","https://www.ast.lv/"]
-]},
-{country:"Lithuania",region:"Europe",flag:"🇱🇹",freq:"50",sync:"Continental Europe",grids:[
- ["Litgrid","Joined CE Feb 2025 via LitPol link","330 kV","https://www.litgrid.eu/"]
-]},
-{country:"Ukraine",region:"Europe",flag:"🇺🇦",freq:"50",sync:"Continental Europe",grids:[
- ["Ukrenergo","Emergency-synced to CE March 2022; grid under wartime reconstruction","750 kV","https://ua.energy/"]
-]},
-{country:"Moldova",region:"Europe",flag:"🇲🇩",freq:"50",sync:"Continental Europe",grids:[
- ["Moldelectrica","Synced to CE with Ukraine 2022","400 kV","https://www.moldelectrica.md/"]
-]},
-{country:"Türkiye",region:"Europe",flag:"🇹🇷",freq:"50",sync:"Continental Europe",grids:[
- ["TEİAŞ","National TSO — synchronized with ENTSO-E CE since 2010; ties to Georgia, Iran, Iraq, Syria","400 kV","https://www.teias.gov.tr/"]
-]},
-{country:"Iceland",region:"Europe",flag:"🇮🇸",freq:"50",sync:"Isolated",grids:[
- ["Landsnet","Island grid — ~100% renewable (hydro/geothermal)","220 kV","https://www.landsnet.is/"]
-]},
-{country:"Cyprus",region:"Europe",flag:"🇨🇾",freq:"50",sync:"Isolated",grids:[
- ["TSOC / EAC","Island grid; Great Sea Interconnector to Greece under construction","132 kV","https://tsoc.org.cy/"]
-]},
-
-{country:"Kosovo",region:"Europe",flag:"🇽🇰",freq:"50",sync:"Continental Europe",grids:[
- ["KOSTT","TSO — operates the AK (Albania–Kosovo) control block within ENTSO-E CE","400 kV","https://www.kostt.com/"]
-]},
-{country:"Luxembourg",region:"Europe",flag:"🇱🇺",freq:"50",sync:"Continental Europe",grids:[
- ["Creos Luxembourg","TSO/DSO — embedded in the German (Amprion) control area","220 kV","https://www.creos.net/"]
-]},
-{country:"Malta",region:"Europe",flag:"🇲🇹",freq:"50",sync:"Continental Europe (via Sicily)",grids:[
- ["Enemalta","Island utility — 200 MW HVAC interconnector to Sicily; second link planned","132 kV","https://www.enemalta.com.mt/"]
-]},
-
-// ───────── CIS / EURASIA ─────────
-{country:"Russia",region:"CIS / Eurasia",flag:"🇷🇺",freq:"50",sync:"IPS/UPS",grids:[
- ["SO UPS (System Operator) / Rosseti","Unified Power System — 7 interconnected regional IPSs","750 kV","https://www.so-ups.ru/"]
-]},
-{country:"Belarus",region:"CIS / Eurasia",flag:"🇧🇾",freq:"50",sync:"IPS/UPS",grids:[
- ["Belenergo","State power association","750 kV","https://www.energo.by/"]
-]},
-{country:"Kazakhstan",region:"CIS / Eurasia",flag:"🇰🇿",freq:"50",sync:"IPS/UPS",grids:[
- ["KEGOC","National grid — hosts world's only 1150 kV-built lines (operated at 500 kV)","1150 kV (built)","https://www.kegoc.kz/"]
-]},
-{country:"Uzbekistan",region:"CIS / Eurasia",flag:"🇺🇿",freq:"50",sync:"Central Asia (CAPS)",grids:[
- ["NEGU (National Electric Grid)","Hub of Central Asian Power System","500 kV","https://www.uzbekenergo.uz/"]
-]},
-{country:"Kyrgyzstan",region:"CIS / Eurasia",flag:"🇰🇬",freq:"50",sync:"Central Asia (CAPS)",grids:[
- ["NESK","National grid company","500 kV",""]
-]},
-{country:"Tajikistan",region:"CIS / Eurasia",flag:"🇹🇯",freq:"50",sync:"Central Asia (CAPS)",grids:[
- ["Barqi Tojik","National utility — CASA-1000 HVDC to Pakistan","500 kV","https://www.barqitojik.tj/"]
-]},
-{country:"Turkmenistan",region:"CIS / Eurasia",flag:"🇹🇲",freq:"50",sync:"Regional ties",grids:[
- ["Türkmenenergo","State utility — ties to Iran, Afghanistan, Uzbekistan","500 kV",""]
-]},
-{country:"Azerbaijan",region:"CIS / Eurasia",flag:"🇦🇿",freq:"50",sync:"IPS/UPS-linked",grids:[
- ["Azerenerji / AzerEnergy","National utility — ties to Russia, Georgia, Iran","500 kV","https://www.azerenerji.gov.az/"]
-]},
-{country:"Georgia",region:"CIS / Eurasia",flag:"🇬🇪",freq:"50",sync:"Regional ties",grids:[
- ["GSE (Georgian State Electrosystem)","TSO — HVDC back-to-back to Türkiye","500 kV","https://www.gse.com.ge/"]
-]},
-{country:"Armenia",region:"CIS / Eurasia",flag:"🇦🇲",freq:"50",sync:"Regional ties",grids:[
- ["HVEN (High Voltage Electric Networks)","Ties to Iran & Georgia","220 kV",""]
-]},
-{country:"Mongolia",region:"CIS / Eurasia",flag:"🇲🇳",freq:"50",sync:"IPS/UPS-linked",grids:[
- ["NPTG (National Power Transmission Grid)","Central system synced with Russia","220 kV",""]
-]},
-
-// ───────── AFRICA ─────────
-{country:"Morocco",region:"Africa",flag:"🇲🇦",freq:"50",sync:"Continental Europe (via Spain)",grids:[
- ["ONEE","Only African grid synchronized with Europe — 2 AC submarine links to Spain","400 kV","https://www.one.org.ma/"]
-]},
-{country:"Algeria",region:"Africa",flag:"🇩🇿",freq:"50",sync:"Maghreb / CE-linked",grids:[
- ["Sonelgaz / GRTE","National TSO — synced with Morocco & Tunisia","400 kV","https://www.sonelgaz.dz/"]
-]},
-{country:"Tunisia",region:"Africa",flag:"🇹🇳",freq:"50",sync:"Maghreb / CE-linked",grids:[
- ["STEG","National utility — ELMED HVDC to Italy under construction","400 kV","https://www.steg.com.tn/"]
-]},
-{country:"Libya",region:"Africa",flag:"🇱🇾",freq:"50",sync:"Eight Country IC",grids:[
- ["GECOL","National utility — tie to Egypt","400 kV","https://www.gecol.ly/"]
-]},
-{country:"Sudan",region:"Africa",flag:"🇸🇩",freq:"50",sync:"EAPP",grids:[
- ["SETCO / STPG","National grid — tie to Egypt & Ethiopia","500 kV",""]
-]},
-{country:"Nigeria",region:"Africa",flag:"🇳🇬",freq:"50",sync:"WAPP",grids:[
- ["TCN (Transmission Company of Nigeria)","National grid — largest WAPP member","330 kV","https://www.tcn.org.ng/"]
-]},
-{country:"Ghana",region:"Africa",flag:"🇬🇭",freq:"50",sync:"WAPP",grids:[
- ["GRIDCo","National TSO","330 kV","https://www.gridcogh.com/"]
-]},
-{country:"Côte d'Ivoire",region:"Africa",flag:"🇨🇮",freq:"50",sync:"WAPP",grids:[
- ["CI-ENERGIES","National grid — regional exporter","225 kV","https://www.cinergies.ci/"]
-]},
-{country:"Senegal",region:"Africa",flag:"🇸🇳",freq:"50",sync:"WAPP",grids:[
- ["Senelec","National utility — OMVS regional system","225 kV","https://www.senelec.sn/"]
-]},
-{country:"Kenya",region:"Africa",flag:"🇰🇪",freq:"50",sync:"EAPP",grids:[
- ["KETRACO / Kenya Power","TSO — ±500 kV HVDC from Ethiopia operational","400 kV","https://www.ketraco.co.ke/"]
-]},
-{country:"Ethiopia",region:"Africa",flag:"🇪🇹",freq:"50",sync:"EAPP",grids:[
- ["EEP (Ethiopian Electric Power)","GERD hub — exports to Kenya, Sudan, Djibouti","500 kV","https://www.eep.com.et/"]
-]},
-{country:"Tanzania",region:"Africa",flag:"🇹🇿",freq:"50",sync:"EAPP/SAPP-linked",grids:[
- ["TANESCO","400 kV backbone complete; Kenya & Zambia interconnectors","400 kV","https://www.tanesco.co.tz/"]
-]},
-{country:"Uganda",region:"Africa",flag:"🇺🇬",freq:"50",sync:"EAPP",grids:[
- ["UETCL","National TSO","220 kV","https://www.uetcl.com/"]
-]},
-{country:"South Africa",region:"Africa",flag:"🇿🇦",freq:"50",sync:"SAPP",grids:[
- ["Eskom / NTCSA","Africa's largest grid — anchor of Southern African Power Pool","765 kV","https://www.eskom.co.za/"]
-]},
-{country:"Zambia",region:"Africa",flag:"🇿🇲",freq:"50",sync:"SAPP",grids:[
- ["ZESCO","National utility","330 kV","https://www.zesco.co.zm/"]
-]},
-{country:"Zimbabwe",region:"Africa",flag:"🇿🇼",freq:"50",sync:"SAPP",grids:[
- ["ZETDC","National utility — SAPP coordination centre in Harare","330 kV",""]
-]},
-{country:"Botswana",region:"Africa",flag:"🇧🇼",freq:"50",sync:"SAPP",grids:[
- ["BPC (Botswana Power Corp)","National utility","400 kV","https://www.bpc.bw/"]
-]},
-{country:"Namibia",region:"Africa",flag:"🇳🇦",freq:"50",sync:"SAPP",grids:[
- ["NamPower","National utility — Caprivi ±350 kV HVDC link","400 kV","https://www.nampower.com.na/"]
-]},
-{country:"Mozambique",region:"Africa",flag:"🇲🇿",freq:"50",sync:"SAPP",grids:[
- ["EDM + HCB","Cahora Bassa ±533 kV HVDC to South Africa","533 kV DC","https://www.edm.co.mz/"]
-]},
-{country:"DR Congo",region:"Africa",flag:"🇨🇩",freq:"50",sync:"SAPP",grids:[
- ["SNEL","Inga–Kolwezi ±500 kV HVDC — one of world's longest","500 kV DC","https://www.snel.cd/"]
-]},
-{country:"Angola",region:"Africa",flag:"🇦🇴",freq:"50",sync:"SAPP (joining)",grids:[
- ["RNT (Rede Nacional de Transporte)","National TSO","400 kV","https://www.rnt.co.ao/"]
-]},
-
-{country:"Cameroon",region:"Africa",flag:"🇨🇲",freq:"50",sync:"Isolated (CAPP)",grids:[
- ["SONATREL","TSO since 2015 (ENEO handles generation & distribution); Southern + Northern interconnected grids","225 kV",""]
-]},
-{country:"Rwanda",region:"Africa",flag:"🇷🇼",freq:"50",sync:"EAPP",grids:[
- ["REG (Rwanda Energy Group)","National utility — EUCL operations + EDCL development","220 kV","https://www.reg.rw/"]
-]},
-{country:"Malawi",region:"Africa",flag:"🇲🇼",freq:"50",sync:"Isolated → SAPP (2026)",grids:[
- ["ESCOM","National utility — 400 kV Mozambique interconnector under construction ends grid isolation","132 kV","https://www.escom.mw/"]
-]},
-{country:"Madagascar",region:"Africa",flag:"🇲🇬",freq:"50",sync:"Isolated",grids:[
- ["JIRAMA","National utility — separate Antananarivo, Toamasina & regional island grids","138 kV",""]
-]},
-{country:"Mauritius",region:"Africa",flag:"🇲🇺",freq:"50",sync:"Isolated",grids:[
- ["CEB (Central Electricity Board)","Island grid","66 kV","https://ceb.mu/"]
-]},
-{country:"Eswatini",region:"Africa",flag:"🇸🇿",freq:"50",sync:"SAPP",grids:[
- ["EEC (Eswatini Electricity Company)","Majority imports from Eskom; MOTRACO 400 kV transit corridor","400 kV (MOTRACO transit)","https://www.eec.co.sz/"]
-]},
-{country:"Lesotho",region:"Africa",flag:"🇱🇸",freq:"50",sync:"SAPP",grids:[
- ["LEC (Lesotho Electricity Company)","Muela hydro + Eskom imports","132 kV",""]
-]},
-{country:"Mali",region:"Africa",flag:"🇲🇱",freq:"50",sync:"WAPP",grids:[
- ["EDM-SA","National utility — ties to Côte d'Ivoire and OMVS hydro shared with Senegal & Mauritania","225 kV",""]
-]},
-{country:"Burkina Faso",region:"Africa",flag:"🇧🇫",freq:"50",sync:"WAPP",grids:[
- ["SONABEL","National utility — imports via Côte d'Ivoire & Ghana interconnectors","225 kV","https://www.sonabel.bf/"]
-]},
-{country:"Niger",region:"Africa",flag:"🇳🇪",freq:"50",sync:"WAPP",grids:[
- ["NIGELEC","National utility — heavily dependent on imports from Nigeria","132 kV",""]
-]},
-{country:"Benin",region:"Africa",flag:"🇧🇯",freq:"50",sync:"WAPP",grids:[
- ["CEB + SBEE","CEB — transmission operator shared with Togo (a WAPP rarity); SBEE national distributor","161 kV",""]
-]},
-{country:"Togo",region:"Africa",flag:"🇹🇬",freq:"50",sync:"WAPP",grids:[
- ["CEB + CEET","CEB — transmission operator shared with Benin; CEET national distributor","161 kV",""]
-]},
-{country:"Guinea",region:"Africa",flag:"🇬🇳",freq:"50",sync:"WAPP",grids:[
- ["EDG (Électricité de Guinée)","Kaleta & Souapiti hydro; CLSG 225 kV corridor to Liberia–Sierra Leone–Côte d'Ivoire","225 kV",""]
-]},
-{country:"Mauritania",region:"Africa",flag:"🇲🇷",freq:"50",sync:"OMVS-linked",grids:[
- ["SOMELEC","National utility — OMVS hydro shared with Senegal & Mali","225 kV",""]
-]},
-{country:"Djibouti",region:"Africa",flag:"🇩🇯",freq:"50",sync:"EAPP-linked",grids:[
- ["EDD (Électricité de Djibouti)","Interconnected with Ethiopia — majority of supply imported","230 kV",""]
-]},
-
-// ───────── SOUTH ASIA ─────────
-{country:"India",region:"South Asia",flag:"🇮🇳",freq:"50",sync:"India National Grid",grids:[
- ["POWERGRID + Grid-India (NLDC)","One Nation One Grid since 2013 — largest single synchronous national grid; 5 regions","765 kV / ±800 kV DC","https://www.powergrid.in/"]
-]},
-{country:"Pakistan",region:"South Asia",flag:"🇵🇰",freq:"50",sync:"Isolated (CASA-1000)",grids:[
- ["NTDC + K-Electric","National grid + Karachi system; ±660 kV Matiari–Lahore HVDC","500 kV","https://www.ntdc.gov.pk/"]
-]},
-{country:"Bangladesh",region:"South Asia",flag:"🇧🇩",freq:"50",sync:"India-linked (HVDC)",grids:[
- ["PGCB","National TSO — HVDC back-to-back at Bheramara to India","400 kV","https://www.pgcb.gov.bd/"]
-]},
-{country:"Sri Lanka",region:"South Asia",flag:"🇱🇰",freq:"50",sync:"Isolated",grids:[
- ["CEB (Ceylon Electricity Board)","Island grid; India interconnection under study","220 kV","https://www.ceb.lk/"]
-]},
-{country:"Nepal",region:"South Asia",flag:"🇳🇵",freq:"50",sync:"India-synced",grids:[
- ["NEA","Synchronous ties to India; hydro exporter","400 kV","https://www.nea.org.np/"]
-]},
-{country:"Bhutan",region:"South Asia",flag:"🇧🇹",freq:"50",sync:"India-synced",grids:[
- ["BPSO / Druk Green","Hydro exporter fully synced with India","400 kV","https://www.bpc.bt/"]
-]},
-{country:"Afghanistan",region:"South Asia",flag:"🇦🇫",freq:"50",sync:"Import islands",grids:[
- ["DABS","Asynchronous import islands fed from Uzbekistan, Turkmenistan, Tajikistan, Iran","220 kV",""]
-]},
-
-{country:"Maldives",region:"South Asia",flag:"🇲🇻",freq:"50",sync:"Isolated",grids:[
- ["STELCO / FENAKA","Greater Malé grid + separate atoll island systems","33 kV","https://www.stelco.com.mv/"]
-]},
-
-// ───────── EAST ASIA ─────────
-{country:"China",region:"East Asia",flag:"🇨🇳",freq:"50",sync:"SGCC + CSG regions",grids:[
- ["State Grid Corp of China (SGCC)","World's largest utility — 5+ sync regions tied by UHV DC; 1000 kV UHV AC","1000 kV / ±1100 kV DC","https://www.sgcc.com.cn/"],
- ["China Southern Power Grid (CSG)","Guangdong, Guangxi, Yunnan, Guizhou, Hainan","500 kV / ±800 kV DC","https://www.csg.cn/"]
-]},
-{country:"Japan",region:"East Asia",flag:"🇯🇵",freq:"50/60",sync:"Two sync areas",grids:[
- ["OCCTO + 10 regional TSOs","East 50 Hz / West 60 Hz, bridged by frequency-converter stations (~2.1 GW)","500 kV","https://www.occto.or.jp/"],
- ["TEPCO Power Grid","Largest regional TSO (Tokyo, 50 Hz)","500 kV","https://www.tepco.co.jp/pg/"]
-]},
-{country:"South Korea",region:"East Asia",flag:"🇰🇷",freq:"60",sync:"Isolated",grids:[
- ["KEPCO / KPX","Island grid — no international ties","765 kV","https://home.kepco.co.kr/"]
-]},
-{country:"Taiwan",region:"East Asia",flag:"🇹🇼",freq:"60",sync:"Isolated",grids:[
- ["Taipower","Island grid","345 kV","https://www.taipower.com.tw/"]
-]},
-{country:"Hong Kong",region:"East Asia",flag:"🇭🇰",freq:"50",sync:"CSG-linked",grids:[
- ["CLP Power + HK Electric","Two utilities; CLP interconnected with China Southern Grid","400 kV","https://www.clp.com.hk/"]
-]},
-
-{country:"Macau",region:"East Asia",flag:"🇲🇴",freq:"50",sync:"CSG-linked",grids:[
- ["CEM","~90% of supply imported from China Southern Power Grid","220 kV","https://www.cem-macau.com/"]
-]},
-
-// ───────── SOUTHEAST ASIA ─────────
-{country:"Thailand",region:"Southeast Asia",flag:"🇹🇭",freq:"50",sync:"National + Laos ties",grids:[
- ["EGAT","National grid — major importer of Lao hydro; LTMS corridor","500 kV","https://www.egat.co.th/"]
-]},
-{country:"Vietnam",region:"Southeast Asia",flag:"🇻🇳",freq:"50",sync:"National",grids:[
- ["EVN / NPT","North-south 500 kV backbone","500 kV","https://www.npt.com.vn/"]
-]},
-{country:"Malaysia",region:"Southeast Asia",flag:"🇲🇾",freq:"50",sync:"3 separate grids",grids:[
- ["TNB (Peninsular Grid)","Main grid — ties to Thailand & Singapore","500 kV","https://www.tnb.com.my/"],
- ["Sarawak Energy + SESB Sabah","Two separate Borneo grids","275 kV","https://www.sarawakenergy.com/"]
-]},
-{country:"Singapore",region:"Southeast Asia",flag:"🇸🇬",freq:"50",sync:"Malaysia-linked",grids:[
- ["SP Group","City grid — LTMS import (Laos hydro via TH/MY); Australia–Asia HVDC proposed","400 kV","https://www.spgroup.com.sg/"]
-]},
-{country:"Indonesia",region:"Southeast Asia",flag:"🇮🇩",freq:"50",sync:"Island grids",grids:[
- ["PLN","Java-Bali 500 kV system + Sumatra + hundreds of island grids","500 kV","https://web.pln.co.id/"]
-]},
-{country:"Philippines",region:"Southeast Asia",flag:"🇵🇭",freq:"60",sync:"National (HVDC-bridged)",grids:[
- ["NGCP","Luzon–Visayas AC; Mindanao joined via ±350 kV HVDC (MVIP) — one national market since 2024","500 kV","https://www.ngcp.ph/"]
-]},
-{country:"Laos",region:"Southeast Asia",flag:"🇱🇦",freq:"50",sync:"Export hub",grids:[
- ["EDL-Transmission","'Battery of Southeast Asia' — exports to TH, VN, KH, MY/SG","500 kV","https://www.edltrans.com/"]
-]},
-{country:"Cambodia",region:"Southeast Asia",flag:"🇰🇭",freq:"50",sync:"Regional ties",grids:[
- ["EDC","Imports from Laos, Thailand, Vietnam","500 kV","https://www.edc.com.kh/"]
-]},
-{country:"Myanmar",region:"Southeast Asia",flag:"🇲🇲",freq:"50",sync:"National",grids:[
- ["MOEP / ESE","National grid — constrained, partial coverage","500 kV",""]
-]},
-
-{country:"Brunei",region:"Southeast Asia",flag:"🇧🇳",freq:"50",sync:"Isolated",grids:[
- ["DES + Berakas Power","Two interconnected national systems; Borneo grid link under ASEAN study","66 kV",""]
-]},
-{country:"Timor-Leste",region:"Southeast Asia",flag:"🇹🇱",freq:"50",sync:"Isolated",grids:[
- ["EDTL","National utility — 150 kV north–south backbone","150 kV",""]
-]},
-
-// ───────── NORTH AMERICA ─────────
-{country:"USA",region:"North America",flag:"🇺🇸",freq:"60",sync:"3 interconnections",grids:[
- ["Eastern Interconnection","PJM, MISO, SPP, NYISO, ISO-NE, SERC — world's 2nd-largest sync area","765 kV","https://www.nerc.com/"],
- ["Western Interconnection (WECC)","CAISO + western utilities, 14 states + BC/AB + Baja","500 kV","https://www.wecc.org/"],
- ["ERCOT (Texas)","Standalone sync grid — DC ties only to East/Mexico","345 kV","https://www.ercot.com/"]
-]},
-{country:"Canada",region:"North America",flag:"🇨🇦",freq:"60",sync:"Eastern / Western / Québec",grids:[
- ["Hydro-Québec TransÉnergie","Own synchronous area — pioneered 735 kV (1965)","735 kV","https://www.hydroquebec.com/"],
- ["IESO / Hydro One (Ontario)","Eastern Interconnection","500 kV","https://www.ieso.ca/"],
- ["AESO (Alberta) + BC Hydro","Western Interconnection","500 kV","https://www.aeso.ca/"]
-]},
-{country:"Mexico",region:"North America",flag:"🇲🇽",freq:"60",sync:"SIN Mexico",grids:[
- ["CENACE / CFE","Sistema Interconectado Nacional + Baja grids (Baja Norte in WECC)","400 kV","https://www.cenace.gob.mx/"]
-]},
-
-// ───────── LATIN AMERICA ─────────
-{country:"Brazil",region:"Latin America",flag:"🇧🇷",freq:"60",sync:"SIN Brazil",grids:[
- ["ONS","Sistema Interligado Nacional — 99%+ of load; Itaipu & Belo Monte HVDC","750 kV / ±800 kV DC","https://www.ons.org.br/"]
-]},
-{country:"Argentina",region:"Latin America",flag:"🇦🇷",freq:"50",sync:"SADI (+Uruguay)",grids:[
- ["CAMMESA / Transener","Sistema Argentino de Interconexión","500 kV","https://www.cammesa.com/"]
-]},
-{country:"Chile",region:"Latin America",flag:"🇨🇱",freq:"50",sync:"SEN Chile",grids:[
- ["Coordinador Eléctrico Nacional","SEN — SIC+SING unified 2017; 3,100 km longitudinal grid","500 kV","https://www.coordinador.cl/"]
-]},
-{country:"Colombia",region:"Latin America",flag:"🇨🇴",freq:"60",sync:"SIN Colombia (Andean ties)",grids:[
- ["XM / ISA Intercolombia","SIN — tie to Ecuador (and Panama link under construction)","500 kV","https://www.xm.com.co/"]
-]},
-{country:"Peru",region:"Latin America",flag:"🇵🇪",freq:"60",sync:"SEIN (Andean ties)",grids:[
- ["COES / Red de Energía del Perú","Sistema Eléctrico Interconectado Nacional","500 kV","https://www.coes.org.pe/"]
-]},
-{country:"Ecuador",region:"Latin America",flag:"🇪🇨",freq:"60",sync:"SNI (Andean ties)",grids:[
- ["CENACE / CELEC Transelectric","SNI — synced with Colombia","500 kV","https://www.cenace.gob.ec/"]
-]},
-{country:"Venezuela",region:"Latin America",flag:"🇻🇪",freq:"60",sync:"SEN Venezuela",grids:[
- ["Corpoelec","Guri hydro backbone — 765 kV system","765 kV",""]
-]},
-{country:"Bolivia",region:"Latin America",flag:"🇧🇴",freq:"50",sync:"SIN Bolivia",grids:[
- ["ENDE / CNDC","Sistema Interconectado Nacional","230 kV","https://www.ende.bo/"]
-]},
-{country:"Uruguay",region:"Latin America",flag:"🇺🇾",freq:"50",sync:"SADI-synced",grids:[
- ["UTE","Synced with Argentina; HVDC converter (Melo) to Brazil","500 kV","https://www.ute.com.uy/"]
-]},
-{country:"Paraguay",region:"Latin America",flag:"🇵🇾",freq:"50",sync:"SADI-linked",grids:[
- ["ANDE","Itaipu (50 Hz half) & Yacyretá exporter","500 kV","https://www.ande.gov.py/"]
-]},
-{country:"Central America (SIEPAC)",region:"Latin America",flag:"🌎",freq:"60",sync:"SIEPAC",grids:[
- ["EOR / EPR","Regional 230 kV backbone: Guatemala, El Salvador, Honduras, Nicaragua, Costa Rica, Panama","230 kV","https://www.enteoperador.org/"]
-]},
-{country:"Dominican Republic",region:"Latin America",flag:"🇩🇴",freq:"60",sync:"Isolated",grids:[
- ["ETED","Island grid","345 kV","https://www.eted.gob.do/"]
-]},
-{country:"Cuba",region:"Latin America",flag:"🇨🇺",freq:"60",sync:"Isolated",grids:[
- ["UNE (Unión Eléctrica)","Island grid — severe generation crisis","220 kV",""]
-]},
-
-{country:"Jamaica",region:"Latin America",flag:"🇯🇲",freq:"50",sync:"Isolated",grids:[
- ["JPS (Jamaica Public Service)","Island grid — one of the few 50 Hz systems in the Americas","138 kV","https://www.jpsco.com/"]
-]},
-{country:"Trinidad & Tobago",region:"Latin America",flag:"🇹🇹",freq:"60",sync:"Isolated",grids:[
- ["T&TEC","Trinidad grid + subsea link to Tobago","220 kV",""]
-]},
-{country:"Guyana",region:"Latin America",flag:"🇬🇾",freq:"60",sync:"Isolated",grids:[
- ["GPL (Guyana Power & Light)","DBIS coastal grid — oil-boom gas-to-energy 300 MW expansion under way","69 kV",""]
-]},
-{country:"Suriname",region:"Latin America",flag:"🇸🇷",freq:"60",sync:"Isolated",grids:[
- ["EBS","EPAR coastal grid + Afobaka hydro","161 kV",""]
-]},
-{country:"Bahamas",region:"Latin America",flag:"🇧🇸",freq:"60",sync:"Isolated",grids:[
- ["BPL (Bahamas Power & Light)","New Providence grid + separate Family Islands systems","66 kV",""]
-]},
-
-// ───────── OCEANIA ─────────
-{country:"Australia",region:"Oceania",flag:"🇦🇺",freq:"50",sync:"NEM + SWIS + NT",grids:[
- ["AEMO — NEM","East-coast National Electricity Market: QLD-NSW-VIC-SA-TAS (TAS via Basslink HVDC)","500 kV","https://www.aemo.com.au/"],
- ["Western Power — SWIS","South West Interconnected System (Perth) — separate grid","330 kV","https://www.westernpower.com.au/"]
-]},
-{country:"New Zealand",region:"Oceania",flag:"🇳🇿",freq:"50",sync:"National (HVDC-bridged)",grids:[
- ["Transpower","North & South Island grids bridged by ±350 kV HVDC Inter-Island link","220 kV","https://www.transpower.co.nz/"]
-]},
-{country:"Papua New Guinea",region:"Oceania",flag:"🇵🇬",freq:"50",sync:"Isolated",grids:[
- ["PNG Power","Port Moresby + Ramu separate systems","132 kV","https://www.pngpower.com.pg/"]
-]},
-{country:"Fiji",region:"Oceania",flag:"🇫🇯",freq:"50",sync:"Isolated",grids:[
- ["EFL (Energy Fiji Limited)","Viti Levu island grid","132 kV","https://efl.com.fj/"]
-]}
+ {
+  "country": "United Arab Emirates",
+  "region": "Middle East",
+  "flag": "🇦🇪",
+  "freq": "50",
+  "sync": "GCCIA",
+  "grids": [
+   [
+    "TAQA Transmission",
+    "Abu Dhabi transmission owner-operator & northern grid spine",
+    "400 kV",
+    "https://taqatransmission.com/"
+   ],
+   [
+    "DEWA",
+    "Dubai vertically-integrated utility — gen, transmission, distribution",
+    "400 kV",
+    "https://www.dewa.gov.ae/"
+   ],
+   [
+    "SEWA",
+    "Sharjah utility",
+    "220 kV",
+    "https://www.sewa.gov.ae/"
+   ],
+   [
+    "EtihadWE",
+    "Northern Emirates utility",
+    "220 kV",
+    "https://www.etihadwe.ae/"
+   ]
+  ]
+ },
+ {
+  "country": "Saudi Arabia",
+  "region": "Middle East",
+  "flag": "🇸🇦",
+  "freq": "60",
+  "sync": "GCCIA",
+  "grids": [
+   [
+    "Saudi Electricity Co / National Grid SA",
+    "Single national grid — only 60 Hz system in GCC, tied to GCCIA via HVDC back-to-back at Al-Fadhili",
+    "380 kV",
+    "https://www.se.com.sa/"
+   ]
+  ]
+ },
+ {
+  "country": "Kuwait",
+  "region": "Middle East",
+  "flag": "🇰🇼",
+  "freq": "50",
+  "sync": "GCCIA",
+  "grids": [
+   [
+    "MEWRE (Ministry of Electricity & Water)",
+    "State grid operator — GCCIA northern terminus",
+    "400 kV",
+    "https://www.mew.gov.kw/"
+   ]
+  ]
+ },
+ {
+  "country": "Qatar",
+  "region": "Middle East",
+  "flag": "🇶🇦",
+  "freq": "50",
+  "sync": "GCCIA",
+  "grids": [
+   [
+    "KAHRAMAA",
+    "Qatar General Electricity & Water Corp",
+    "400 kV",
+    "https://www.km.qa/"
+   ]
+  ]
+ },
+ {
+  "country": "Bahrain",
+  "region": "Middle East",
+  "flag": "🇧🇭",
+  "freq": "50",
+  "sync": "GCCIA",
+  "grids": [
+   [
+    "EWA",
+    "Electricity & Water Authority — GCCIA link via Saudi",
+    "220 kV",
+    "https://www.ewa.bh/"
+   ]
+  ]
+ },
+ {
+  "country": "Oman",
+  "region": "Middle East",
+  "flag": "🇴🇲",
+  "freq": "50",
+  "sync": "GCCIA",
+  "grids": [
+   [
+    "OETC (Oman Grid)",
+    "Main interconnected system + Dhofar grid; synced to GCCIA via UAE",
+    "400 kV",
+    "https://www.omangrid.com/"
+   ]
+  ]
+ },
+ {
+  "country": "Iraq",
+  "region": "Middle East",
+  "flag": "🇮🇶",
+  "freq": "50",
+  "sync": "GCCIA-linked",
+  "grids": [
+   [
+    "Ministry of Electricity",
+    "National grid; 400 kV GCCIA link to Kuwait energized 2024, also tied to Iran & Jordan",
+    "400 kV",
+    "https://moelc.gov.iq/"
+   ]
+  ]
+ },
+ {
+  "country": "Jordan",
+  "region": "Middle East",
+  "flag": "🇯🇴",
+  "freq": "50",
+  "sync": "Eight Country IC",
+  "grids": [
+   [
+    "NEPCO",
+    "National Electric Power Co — interconnected with Egypt (submarine) & Iraq",
+    "400 kV",
+    "https://www.nepco.com.jo/"
+   ]
+  ]
+ },
+ {
+  "country": "Lebanon",
+  "region": "Middle East",
+  "flag": "🇱🇧",
+  "freq": "50",
+  "sync": "Eight Country IC",
+  "grids": [
+   [
+    "EDL (Électricité du Liban)",
+    "National utility — chronic capacity deficit; Syria tie",
+    "220 kV",
+    "https://www.edl.gov.lb/"
+   ]
+  ]
+ },
+ {
+  "country": "Syria",
+  "region": "Middle East",
+  "flag": "🇸🇾",
+  "freq": "50",
+  "sync": "Eight Country IC",
+  "grids": [
+   [
+    "PEEGT",
+    "Public Establishment for Generation & Transmission — war-damaged, partial operation",
+    "400 kV",
+    "http://www.peegt.gov.sy/"
+   ]
+  ]
+ },
+ {
+  "country": "Yemen",
+  "region": "Middle East",
+  "flag": "🇾🇪",
+  "freq": "50",
+  "sync": "Isolated",
+  "grids": [
+   [
+    "PEC (Public Electricity Corp)",
+    "Fragmented grid; reconstruction phase",
+    "132 kV",
+    "http://www.pec.gov.ye/"
+   ]
+  ]
+ },
+ {
+  "country": "Iran",
+  "region": "Middle East",
+  "flag": "🇮🇷",
+  "freq": "50",
+  "sync": "Isolated (regional ties)",
+  "grids": [
+   [
+    "TAVANIR / IGMC",
+    "National grid — async ties to Iraq, Armenia, Turkmenistan, Pakistan",
+    "400 kV",
+    "https://www.tavanir.org.ir/"
+   ]
+  ]
+ },
+ {
+  "country": "Israel",
+  "region": "Middle East",
+  "flag": "🇮🇱",
+  "freq": "50",
+  "sync": "Isolated",
+  "grids": [
+   [
+    "IEC / Noga ISO",
+    "Island grid — no international AC ties",
+    "400 kV",
+    "https://www.iec.co.il/"
+   ]
+  ]
+ },
+ {
+  "country": "Egypt",
+  "region": "Middle East",
+  "flag": "🇪🇬",
+  "freq": "50",
+  "sync": "Eight Country IC",
+  "grids": [
+   [
+    "EETC",
+    "Egyptian Electricity Transmission Co — hub to Jordan, Libya, Sudan; ±500 kV HVDC to Saudi commissioning",
+    "500 kV",
+    "https://www.eetc.net.eg/"
+   ]
+  ]
+ },
+ {
+  "country": "Germany",
+  "region": "Europe",
+  "flag": "🇩🇪",
+  "freq": "50",
+  "sync": "Continental Europe",
+  "grids": [
+   [
+    "Amprion",
+    "TSO — west (Rhine-Ruhr)",
+    "380 kV",
+    "https://www.amprion.net/"
+   ],
+   [
+    "TenneT Germany",
+    "TSO — north-south corridor",
+    "380 kV",
+    "https://www.tennet.eu/"
+   ],
+   [
+    "50Hertz",
+    "TSO — east",
+    "380 kV",
+    "https://www.50hertz.com/"
+   ],
+   [
+    "TransnetBW",
+    "TSO — Baden-Württemberg",
+    "380 kV",
+    "https://www.transnetbw.de/"
+   ]
+  ]
+ },
+ {
+  "country": "France",
+  "region": "Europe",
+  "flag": "🇫🇷",
+  "freq": "50",
+  "sync": "Continental Europe",
+  "grids": [
+   [
+    "RTE",
+    "Largest single TSO in Europe",
+    "400 kV",
+    "https://www.rte-france.com/"
+   ]
+  ]
+ },
+ {
+  "country": "United Kingdom",
+  "region": "Europe",
+  "flag": "🇬🇧",
+  "freq": "50",
+  "sync": "Great Britain",
+  "grids": [
+   [
+    "NESO / National Grid ET",
+    "GB system operator + England-Wales transmission owner",
+    "400 kV",
+    "https://www.neso.energy/"
+   ],
+   [
+    "SP Energy Networks / SSEN",
+    "Scottish transmission owners",
+    "400 kV",
+    "https://www.spenergynetworks.co.uk/"
+   ]
+  ]
+ },
+ {
+  "country": "Ireland",
+  "region": "Europe",
+  "flag": "🇮🇪",
+  "freq": "50",
+  "sync": "Ireland (all-island)",
+  "grids": [
+   [
+    "EirGrid + SONI",
+    "All-island single electricity market (IE + NI)",
+    "400 kV",
+    "https://www.eirgrid.ie/"
+   ]
+  ]
+ },
+ {
+  "country": "Italy",
+  "region": "Europe",
+  "flag": "🇮🇹",
+  "freq": "50",
+  "sync": "Continental Europe",
+  "grids": [
+   [
+    "Terna",
+    "National TSO — HVDC links to Sardinia, Montenegro, Greece, Tunisia (planned)",
+    "380 kV",
+    "https://www.terna.it/"
+   ]
+  ]
+ },
+ {
+  "country": "Spain",
+  "region": "Europe",
+  "flag": "🇪🇸",
+  "freq": "50",
+  "sync": "Continental Europe",
+  "grids": [
+   [
+    "Red Eléctrica (Redeia)",
+    "National TSO — gateway for Morocco sync link",
+    "400 kV",
+    "https://www.ree.es/"
+   ]
+  ]
+ },
+ {
+  "country": "Portugal",
+  "region": "Europe",
+  "flag": "🇵🇹",
+  "freq": "50",
+  "sync": "Continental Europe",
+  "grids": [
+   [
+    "REN",
+    "National TSO",
+    "400 kV",
+    "https://www.ren.pt/"
+   ]
+  ]
+ },
+ {
+  "country": "Netherlands",
+  "region": "Europe",
+  "flag": "🇳🇱",
+  "freq": "50",
+  "sync": "Continental Europe",
+  "grids": [
+   [
+    "TenneT",
+    "Dutch-German TSO; major offshore wind grid builder",
+    "380 kV",
+    "https://www.tennet.eu/"
+   ]
+  ]
+ },
+ {
+  "country": "Belgium",
+  "region": "Europe",
+  "flag": "🇧🇪",
+  "freq": "50",
+  "sync": "Continental Europe",
+  "grids": [
+   [
+    "Elia",
+    "National TSO (also owns 50Hertz DE)",
+    "380 kV",
+    "https://www.elia.be/"
+   ]
+  ]
+ },
+ {
+  "country": "Switzerland",
+  "region": "Europe",
+  "flag": "🇨🇭",
+  "freq": "50",
+  "sync": "Continental Europe",
+  "grids": [
+   [
+    "Swissgrid",
+    "National TSO — Europe's transit hub",
+    "380 kV",
+    "https://www.swissgrid.ch/"
+   ]
+  ]
+ },
+ {
+  "country": "Austria",
+  "region": "Europe",
+  "flag": "🇦🇹",
+  "freq": "50",
+  "sync": "Continental Europe",
+  "grids": [
+   [
+    "APG (Austrian Power Grid)",
+    "National TSO",
+    "380 kV",
+    "https://www.apg.at/"
+   ]
+  ]
+ },
+ {
+  "country": "Poland",
+  "region": "Europe",
+  "flag": "🇵🇱",
+  "freq": "50",
+  "sync": "Continental Europe",
+  "grids": [
+   [
+    "PSE",
+    "Polskie Sieci Elektroenergetyczne",
+    "400 kV",
+    "https://www.pse.pl/"
+   ]
+  ]
+ },
+ {
+  "country": "Czechia",
+  "region": "Europe",
+  "flag": "🇨🇿",
+  "freq": "50",
+  "sync": "Continental Europe",
+  "grids": [
+   [
+    "ČEPS",
+    "National TSO",
+    "400 kV",
+    "https://www.ceps.cz/"
+   ]
+  ]
+ },
+ {
+  "country": "Slovakia",
+  "region": "Europe",
+  "flag": "🇸🇰",
+  "freq": "50",
+  "sync": "Continental Europe",
+  "grids": [
+   [
+    "SEPS",
+    "National TSO",
+    "400 kV",
+    "https://www.sepsas.sk/"
+   ]
+  ]
+ },
+ {
+  "country": "Hungary",
+  "region": "Europe",
+  "flag": "🇭🇺",
+  "freq": "50",
+  "sync": "Continental Europe",
+  "grids": [
+   [
+    "MAVIR",
+    "National TSO",
+    "400 kV",
+    "https://www.mavir.hu/"
+   ]
+  ]
+ },
+ {
+  "country": "Romania",
+  "region": "Europe",
+  "flag": "🇷🇴",
+  "freq": "50",
+  "sync": "Continental Europe",
+  "grids": [
+   [
+    "Transelectrica",
+    "National TSO",
+    "400 kV",
+    "https://www.transelectrica.ro/"
+   ]
+  ]
+ },
+ {
+  "country": "Bulgaria",
+  "region": "Europe",
+  "flag": "🇧🇬",
+  "freq": "50",
+  "sync": "Continental Europe",
+  "grids": [
+   [
+    "ESO EAD",
+    "National TSO",
+    "400 kV",
+    "https://www.eso.bg/"
+   ]
+  ]
+ },
+ {
+  "country": "Greece",
+  "region": "Europe",
+  "flag": "🇬🇷",
+  "freq": "50",
+  "sync": "Continental Europe",
+  "grids": [
+   [
+    "IPTO / ADMIE",
+    "National TSO — island interconnection programme ongoing",
+    "400 kV",
+    "https://www.admie.gr/"
+   ]
+  ]
+ },
+ {
+  "country": "Serbia",
+  "region": "Europe",
+  "flag": "🇷🇸",
+  "freq": "50",
+  "sync": "Continental Europe",
+  "grids": [
+   [
+    "EMS",
+    "Elektromreža Srbije",
+    "400 kV",
+    "https://www.ems.rs/"
+   ]
+  ]
+ },
+ {
+  "country": "Croatia",
+  "region": "Europe",
+  "flag": "🇭🇷",
+  "freq": "50",
+  "sync": "Continental Europe",
+  "grids": [
+   [
+    "HOPS",
+    "National TSO",
+    "400 kV",
+    "https://www.hops.hr/"
+   ]
+  ]
+ },
+ {
+  "country": "Slovenia",
+  "region": "Europe",
+  "flag": "🇸🇮",
+  "freq": "50",
+  "sync": "Continental Europe",
+  "grids": [
+   [
+    "ELES",
+    "National TSO",
+    "400 kV",
+    "https://www.eles.si/"
+   ]
+  ]
+ },
+ {
+  "country": "Bosnia & Herzegovina",
+  "region": "Europe",
+  "flag": "🇧🇦",
+  "freq": "50",
+  "sync": "Continental Europe",
+  "grids": [
+   [
+    "NOSBiH / Elektroprijenos BiH",
+    "ISO + transmission company",
+    "400 kV",
+    "https://www.nosbih.ba/"
+   ]
+  ]
+ },
+ {
+  "country": "North Macedonia",
+  "region": "Europe",
+  "flag": "🇲🇰",
+  "freq": "50",
+  "sync": "Continental Europe",
+  "grids": [
+   [
+    "MEPSO",
+    "National TSO",
+    "400 kV",
+    "https://www.mepso.com.mk/"
+   ]
+  ]
+ },
+ {
+  "country": "Albania",
+  "region": "Europe",
+  "flag": "🇦🇱",
+  "freq": "50",
+  "sync": "Continental Europe",
+  "grids": [
+   [
+    "OST",
+    "Operatori i Sistemit të Transmetimit",
+    "400 kV",
+    "https://www.ost.al/"
+   ]
+  ]
+ },
+ {
+  "country": "Montenegro",
+  "region": "Europe",
+  "flag": "🇲🇪",
+  "freq": "50",
+  "sync": "Continental Europe",
+  "grids": [
+   [
+    "CGES",
+    "TSO — HVDC submarine link to Italy",
+    "400 kV",
+    "https://www.cges.me/"
+   ]
+  ]
+ },
+ {
+  "country": "Denmark",
+  "region": "Europe",
+  "flag": "🇩🇰",
+  "freq": "50",
+  "sync": "CE (west) + Nordic (east)",
+  "grids": [
+   [
+    "Energinet",
+    "Unique split: Jutland in Continental Europe, Zealand in Nordic — bridged by HVDC",
+    "400 kV",
+    "https://www.energinet.dk/"
+   ]
+  ]
+ },
+ {
+  "country": "Norway",
+  "region": "Europe",
+  "flag": "🇳🇴",
+  "freq": "50",
+  "sync": "Nordic",
+  "grids": [
+   [
+    "Statnett",
+    "National TSO — HVDC to GB, DE, NL, DK",
+    "420 kV",
+    "https://www.statnett.no/"
+   ]
+  ]
+ },
+ {
+  "country": "Sweden",
+  "region": "Europe",
+  "flag": "🇸🇪",
+  "freq": "50",
+  "sync": "Nordic",
+  "grids": [
+   [
+    "Svenska kraftnät",
+    "National TSO",
+    "400 kV",
+    "https://www.svk.se/"
+   ]
+  ]
+ },
+ {
+  "country": "Finland",
+  "region": "Europe",
+  "flag": "🇫🇮",
+  "freq": "50",
+  "sync": "Nordic",
+  "grids": [
+   [
+    "Fingrid",
+    "National TSO — Russia ties severed 2022",
+    "400 kV",
+    "https://www.fingrid.fi/"
+   ]
+  ]
+ },
+ {
+  "country": "Estonia",
+  "region": "Europe",
+  "flag": "🇪🇪",
+  "freq": "50",
+  "sync": "Continental Europe",
+  "grids": [
+   [
+    "Elering",
+    "Desynced from IPS/UPS, joined CE Feb 2025",
+    "330 kV",
+    "https://www.elering.ee/"
+   ]
+  ]
+ },
+ {
+  "country": "Latvia",
+  "region": "Europe",
+  "flag": "🇱🇻",
+  "freq": "50",
+  "sync": "Continental Europe",
+  "grids": [
+   [
+    "AST (Augstsprieguma tīkls)",
+    "Joined CE Feb 2025",
+    "330 kV",
+    "https://www.ast.lv/"
+   ]
+  ]
+ },
+ {
+  "country": "Lithuania",
+  "region": "Europe",
+  "flag": "🇱🇹",
+  "freq": "50",
+  "sync": "Continental Europe",
+  "grids": [
+   [
+    "Litgrid",
+    "Joined CE Feb 2025 via LitPol link",
+    "330 kV",
+    "https://www.litgrid.eu/"
+   ]
+  ]
+ },
+ {
+  "country": "Ukraine",
+  "region": "Europe",
+  "flag": "🇺🇦",
+  "freq": "50",
+  "sync": "Continental Europe",
+  "grids": [
+   [
+    "Ukrenergo",
+    "Emergency-synced to CE March 2022; grid under wartime reconstruction",
+    "750 kV",
+    "https://ua.energy/"
+   ]
+  ]
+ },
+ {
+  "country": "Moldova",
+  "region": "Europe",
+  "flag": "🇲🇩",
+  "freq": "50",
+  "sync": "Continental Europe",
+  "grids": [
+   [
+    "Moldelectrica",
+    "Synced to CE with Ukraine 2022",
+    "400 kV",
+    "https://www.moldelectrica.md/"
+   ]
+  ]
+ },
+ {
+  "country": "Türkiye",
+  "region": "Europe",
+  "flag": "🇹🇷",
+  "freq": "50",
+  "sync": "Continental Europe",
+  "grids": [
+   [
+    "TEİAŞ",
+    "National TSO — synchronized with ENTSO-E CE since 2010; ties to Georgia, Iran, Iraq, Syria",
+    "400 kV",
+    "https://www.teias.gov.tr/"
+   ]
+  ]
+ },
+ {
+  "country": "Iceland",
+  "region": "Europe",
+  "flag": "🇮🇸",
+  "freq": "50",
+  "sync": "Isolated",
+  "grids": [
+   [
+    "Landsnet",
+    "Island grid — ~100% renewable (hydro/geothermal)",
+    "220 kV",
+    "https://www.landsnet.is/"
+   ]
+  ]
+ },
+ {
+  "country": "Cyprus",
+  "region": "Europe",
+  "flag": "🇨🇾",
+  "freq": "50",
+  "sync": "Isolated",
+  "grids": [
+   [
+    "TSOC / EAC",
+    "Island grid; Great Sea Interconnector to Greece under construction",
+    "132 kV",
+    "https://tsoc.org.cy/"
+   ]
+  ]
+ },
+ {
+  "country": "Kosovo",
+  "region": "Europe",
+  "flag": "🇽🇰",
+  "freq": "50",
+  "sync": "Continental Europe",
+  "grids": [
+   [
+    "KOSTT",
+    "TSO — operates the AK (Albania–Kosovo) control block within ENTSO-E CE",
+    "400 kV",
+    "https://www.kostt.com/"
+   ]
+  ]
+ },
+ {
+  "country": "Luxembourg",
+  "region": "Europe",
+  "flag": "🇱🇺",
+  "freq": "50",
+  "sync": "Continental Europe",
+  "grids": [
+   [
+    "Creos Luxembourg",
+    "TSO/DSO — embedded in the German (Amprion) control area",
+    "220 kV",
+    "https://www.creos.net/"
+   ]
+  ]
+ },
+ {
+  "country": "Malta",
+  "region": "Europe",
+  "flag": "🇲🇹",
+  "freq": "50",
+  "sync": "Continental Europe (via Sicily)",
+  "grids": [
+   [
+    "Enemalta",
+    "Island utility — 200 MW HVAC interconnector to Sicily; second link planned",
+    "132 kV",
+    "https://www.enemalta.com.mt/"
+   ]
+  ]
+ },
+ {
+  "country": "Russia",
+  "region": "CIS / Eurasia",
+  "flag": "🇷🇺",
+  "freq": "50",
+  "sync": "IPS/UPS",
+  "grids": [
+   [
+    "SO UPS (System Operator) / Rosseti",
+    "Unified Power System — 7 interconnected regional IPSs",
+    "750 kV",
+    "https://www.so-ups.ru/"
+   ]
+  ]
+ },
+ {
+  "country": "Belarus",
+  "region": "CIS / Eurasia",
+  "flag": "🇧🇾",
+  "freq": "50",
+  "sync": "IPS/UPS",
+  "grids": [
+   [
+    "Belenergo",
+    "State power association",
+    "750 kV",
+    "https://www.energo.by/"
+   ]
+  ]
+ },
+ {
+  "country": "Kazakhstan",
+  "region": "CIS / Eurasia",
+  "flag": "🇰🇿",
+  "freq": "50",
+  "sync": "IPS/UPS",
+  "grids": [
+   [
+    "KEGOC",
+    "National grid — hosts world's only 1150 kV-built lines (operated at 500 kV)",
+    "1150 kV (built)",
+    "https://www.kegoc.kz/"
+   ]
+  ]
+ },
+ {
+  "country": "Uzbekistan",
+  "region": "CIS / Eurasia",
+  "flag": "🇺🇿",
+  "freq": "50",
+  "sync": "Central Asia (CAPS)",
+  "grids": [
+   [
+    "NEGU (National Electric Grid)",
+    "Hub of Central Asian Power System",
+    "500 kV",
+    "https://www.uzbekistonmet.uz/"
+   ]
+  ]
+ },
+ {
+  "country": "Kyrgyzstan",
+  "region": "CIS / Eurasia",
+  "flag": "🇰🇬",
+  "freq": "50",
+  "sync": "Central Asia (CAPS)",
+  "grids": [
+   [
+    "NESK",
+    "National grid company",
+    "500 kV",
+    "https://www.nesk.kg/"
+   ]
+  ]
+ },
+ {
+  "country": "Tajikistan",
+  "region": "CIS / Eurasia",
+  "flag": "🇹🇯",
+  "freq": "50",
+  "sync": "Central Asia (CAPS)",
+  "grids": [
+   [
+    "Barqi Tojik",
+    "National utility — CASA-1000 HVDC to Pakistan",
+    "500 kV",
+    "https://www.barqitojik.tj/"
+   ]
+  ]
+ },
+ {
+  "country": "Turkmenistan",
+  "region": "CIS / Eurasia",
+  "flag": "🇹🇲",
+  "freq": "50",
+  "sync": "Regional ties",
+  "grids": [
+   [
+    "Türkmenenergo",
+    "State utility — ties to Iran, Afghanistan, Uzbekistan",
+    "500 kV",
+    "https://minenergo.gov.tm/"
+   ]
+  ]
+ },
+ {
+  "country": "Azerbaijan",
+  "region": "CIS / Eurasia",
+  "flag": "🇦🇿",
+  "freq": "50",
+  "sync": "IPS/UPS-linked",
+  "grids": [
+   [
+    "Azerenerji / AzerEnergy",
+    "National utility — ties to Russia, Georgia, Iran",
+    "500 kV",
+    "https://www.azerenerji.gov.az/"
+   ]
+  ]
+ },
+ {
+  "country": "Georgia",
+  "region": "CIS / Eurasia",
+  "flag": "🇬🇪",
+  "freq": "50",
+  "sync": "Regional ties",
+  "grids": [
+   [
+    "GSE (Georgian State Electrosystem)",
+    "TSO — HVDC back-to-back to Türkiye",
+    "500 kV",
+    "https://www.gse.com.ge/"
+   ]
+  ]
+ },
+ {
+  "country": "Armenia",
+  "region": "CIS / Eurasia",
+  "flag": "🇦🇲",
+  "freq": "50",
+  "sync": "Regional ties",
+  "grids": [
+   [
+    "HVEN (High Voltage Electric Networks)",
+    "Ties to Iran & Georgia",
+    "220 kV",
+    "https://www.hven.am/"
+   ]
+  ]
+ },
+ {
+  "country": "Mongolia",
+  "region": "CIS / Eurasia",
+  "flag": "🇲🇳",
+  "freq": "50",
+  "sync": "IPS/UPS-linked",
+  "grids": [
+   [
+    "NPTG (National Power Transmission Grid)",
+    "Central system synced with Russia",
+    "220 kV",
+    "https://www.nptg.mn/"
+   ]
+  ]
+ },
+ {
+  "country": "Morocco",
+  "region": "Africa",
+  "flag": "🇲🇦",
+  "freq": "50",
+  "sync": "Continental Europe (via Spain)",
+  "grids": [
+   [
+    "ONEE",
+    "Only African grid synchronized with Europe — 2 AC submarine links to Spain",
+    "400 kV",
+    "https://www.one.org.ma/"
+   ]
+  ]
+ },
+ {
+  "country": "Algeria",
+  "region": "Africa",
+  "flag": "🇩🇿",
+  "freq": "50",
+  "sync": "Maghreb / CE-linked",
+  "grids": [
+   [
+    "Sonelgaz / GRTE",
+    "National TSO — synced with Morocco & Tunisia",
+    "400 kV",
+    "https://www.sonelgaz.dz/"
+   ]
+  ]
+ },
+ {
+  "country": "Tunisia",
+  "region": "Africa",
+  "flag": "🇹🇳",
+  "freq": "50",
+  "sync": "Maghreb / CE-linked",
+  "grids": [
+   [
+    "STEG",
+    "National utility — ELMED HVDC to Italy under construction",
+    "400 kV",
+    "https://www.steg.com.tn/"
+   ]
+  ]
+ },
+ {
+  "country": "Libya",
+  "region": "Africa",
+  "flag": "🇱🇾",
+  "freq": "50",
+  "sync": "Eight Country IC",
+  "grids": [
+   [
+    "GECOL",
+    "National utility — tie to Egypt",
+    "400 kV",
+    "https://www.gecol.ly/"
+   ]
+  ]
+ },
+ {
+  "country": "Sudan",
+  "region": "Africa",
+  "flag": "🇸🇩",
+  "freq": "50",
+  "sync": "EAPP",
+  "grids": [
+   [
+    "SETCO / STPG",
+    "National grid — tie to Egypt & Ethiopia",
+    "500 kV",
+    "http://www.setco.sd/"
+   ]
+  ]
+ },
+ {
+  "country": "Nigeria",
+  "region": "Africa",
+  "flag": "🇳🇬",
+  "freq": "50",
+  "sync": "WAPP",
+  "grids": [
+   [
+    "TCN (Transmission Company of Nigeria)",
+    "National grid — largest WAPP member",
+    "330 kV",
+    "https://www.tcn.org.ng/"
+   ]
+  ]
+ },
+ {
+  "country": "Ghana",
+  "region": "Africa",
+  "flag": "🇬🇭",
+  "freq": "50",
+  "sync": "WAPP",
+  "grids": [
+   [
+    "GRIDCo",
+    "National TSO",
+    "330 kV",
+    "https://www.gridcogh.com/"
+   ]
+  ]
+ },
+ {
+  "country": "Côte d'Ivoire",
+  "region": "Africa",
+  "flag": "🇨🇮",
+  "freq": "50",
+  "sync": "WAPP",
+  "grids": [
+   [
+    "CI-ENERGIES",
+    "National grid — regional exporter",
+    "225 kV",
+    "https://www.cinergies.ci/"
+   ]
+  ]
+ },
+ {
+  "country": "Senegal",
+  "region": "Africa",
+  "flag": "🇸🇳",
+  "freq": "50",
+  "sync": "WAPP",
+  "grids": [
+   [
+    "Senelec",
+    "National utility — OMVS regional system",
+    "225 kV",
+    "https://www.senelec.sn/"
+   ]
+  ]
+ },
+ {
+  "country": "Kenya",
+  "region": "Africa",
+  "flag": "🇰🇪",
+  "freq": "50",
+  "sync": "EAPP",
+  "grids": [
+   [
+    "KETRACO / Kenya Power",
+    "TSO — ±500 kV HVDC from Ethiopia operational",
+    "400 kV",
+    "https://www.ketraco.co.ke/"
+   ]
+  ]
+ },
+ {
+  "country": "Ethiopia",
+  "region": "Africa",
+  "flag": "🇪🇹",
+  "freq": "50",
+  "sync": "EAPP",
+  "grids": [
+   [
+    "EEP (Ethiopian Electric Power)",
+    "GERD hub — exports to Kenya, Sudan, Djibouti",
+    "500 kV",
+    "https://www.eep.com.et/"
+   ]
+  ]
+ },
+ {
+  "country": "Tanzania",
+  "region": "Africa",
+  "flag": "🇹🇿",
+  "freq": "50",
+  "sync": "EAPP/SAPP-linked",
+  "grids": [
+   [
+    "TANESCO",
+    "400 kV backbone complete; Kenya & Zambia interconnectors",
+    "400 kV",
+    "https://www.tanesco.co.tz/"
+   ]
+  ]
+ },
+ {
+  "country": "Uganda",
+  "region": "Africa",
+  "flag": "🇺🇬",
+  "freq": "50",
+  "sync": "EAPP",
+  "grids": [
+   [
+    "UETCL",
+    "National TSO",
+    "220 kV",
+    "https://www.uetcl.com/"
+   ]
+  ]
+ },
+ {
+  "country": "South Africa",
+  "region": "Africa",
+  "flag": "🇿🇦",
+  "freq": "50",
+  "sync": "SAPP",
+  "grids": [
+   [
+    "Eskom / NTCSA",
+    "Africa's largest grid — anchor of Southern African Power Pool",
+    "765 kV",
+    "https://www.eskom.co.za/"
+   ]
+  ]
+ },
+ {
+  "country": "Zambia",
+  "region": "Africa",
+  "flag": "🇿🇲",
+  "freq": "50",
+  "sync": "SAPP",
+  "grids": [
+   [
+    "ZESCO",
+    "National utility",
+    "330 kV",
+    "https://www.zesco.co.zm/"
+   ]
+  ]
+ },
+ {
+  "country": "Zimbabwe",
+  "region": "Africa",
+  "flag": "🇿🇼",
+  "freq": "50",
+  "sync": "SAPP",
+  "grids": [
+   [
+    "ZETDC",
+    "National utility — SAPP coordination centre in Harare",
+    "330 kV",
+    "https://www.zetdc.co.zw/"
+   ]
+  ]
+ },
+ {
+  "country": "Botswana",
+  "region": "Africa",
+  "flag": "🇧🇼",
+  "freq": "50",
+  "sync": "SAPP",
+  "grids": [
+   [
+    "BPC (Botswana Power Corp)",
+    "National utility",
+    "400 kV",
+    "https://www.bpc.bw/"
+   ]
+  ]
+ },
+ {
+  "country": "Namibia",
+  "region": "Africa",
+  "flag": "🇳🇦",
+  "freq": "50",
+  "sync": "SAPP",
+  "grids": [
+   [
+    "NamPower",
+    "National utility — Caprivi ±350 kV HVDC link",
+    "400 kV",
+    "https://www.nampower.com.na/"
+   ]
+  ]
+ },
+ {
+  "country": "Mozambique",
+  "region": "Africa",
+  "flag": "🇲🇿",
+  "freq": "50",
+  "sync": "SAPP",
+  "grids": [
+   [
+    "EDM + HCB",
+    "Cahora Bassa ±533 kV HVDC to South Africa",
+    "533 kV DC",
+    "https://www.edm.co.mz/"
+   ]
+  ]
+ },
+ {
+  "country": "DR Congo",
+  "region": "Africa",
+  "flag": "🇨🇩",
+  "freq": "50",
+  "sync": "SAPP",
+  "grids": [
+   [
+    "SNEL",
+    "Inga–Kolwezi ±500 kV HVDC — one of world's longest",
+    "500 kV DC",
+    "https://www.snel.cd/"
+   ]
+  ]
+ },
+ {
+  "country": "Angola",
+  "region": "Africa",
+  "flag": "🇦🇴",
+  "freq": "50",
+  "sync": "SAPP (joining)",
+  "grids": [
+   [
+    "RNT (Rede Nacional de Transporte)",
+    "National TSO",
+    "400 kV",
+    "https://www.rnt.co.ao/"
+   ]
+  ]
+ },
+ {
+  "country": "Cameroon",
+  "region": "Africa",
+  "flag": "🇨🇲",
+  "freq": "50",
+  "sync": "Isolated (CAPP)",
+  "grids": [
+   [
+    "SONATREL",
+    "TSO since 2015 (ENEO handles generation & distribution); Southern + Northern interconnected grids",
+    "225 kV",
+    "https://www.sonatrel-cameroon.cm/"
+   ]
+  ]
+ },
+ {
+  "country": "Rwanda",
+  "region": "Africa",
+  "flag": "🇷🇼",
+  "freq": "50",
+  "sync": "EAPP",
+  "grids": [
+   [
+    "REG (Rwanda Energy Group)",
+    "National utility — EUCL operations + EDCL development",
+    "220 kV",
+    "https://www.reg.rw/"
+   ]
+  ]
+ },
+ {
+  "country": "Malawi",
+  "region": "Africa",
+  "flag": "🇲🇼",
+  "freq": "50",
+  "sync": "Isolated → SAPP (2026)",
+  "grids": [
+   [
+    "ESCOM",
+    "National utility — 400 kV Mozambique interconnector under construction ends grid isolation",
+    "132 kV",
+    "https://www.escom.mw/"
+   ]
+  ]
+ },
+ {
+  "country": "Madagascar",
+  "region": "Africa",
+  "flag": "🇲🇬",
+  "freq": "50",
+  "sync": "Isolated",
+  "grids": [
+   [
+    "JIRAMA",
+    "National utility — separate Antananarivo, Toamasina & regional island grids",
+    "138 kV",
+    "https://www.jirama.mg/"
+   ]
+  ]
+ },
+ {
+  "country": "Mauritius",
+  "region": "Africa",
+  "flag": "🇲🇺",
+  "freq": "50",
+  "sync": "Isolated",
+  "grids": [
+   [
+    "CEB (Central Electricity Board)",
+    "Island grid",
+    "66 kV",
+    "https://ceb.mu/"
+   ]
+  ]
+ },
+ {
+  "country": "Eswatini",
+  "region": "Africa",
+  "flag": "🇸🇿",
+  "freq": "50",
+  "sync": "SAPP",
+  "grids": [
+   [
+    "EEC (Eswatini Electricity Company)",
+    "Majority imports from Eskom; MOTRACO 400 kV transit corridor",
+    "400 kV (MOTRACO transit)",
+    "https://www.eec.co.sz/"
+   ]
+  ]
+ },
+ {
+  "country": "Lesotho",
+  "region": "Africa",
+  "flag": "🇱🇸",
+  "freq": "50",
+  "sync": "SAPP",
+  "grids": [
+   [
+    "LEC (Lesotho Electricity Company)",
+    "Muela hydro + Eskom imports",
+    "132 kV",
+    "https://www.lec.co.ls/"
+   ]
+  ]
+ },
+ {
+  "country": "Mali",
+  "region": "Africa",
+  "flag": "🇲🇱",
+  "freq": "50",
+  "sync": "WAPP",
+  "grids": [
+   [
+    "EDM-SA",
+    "National utility — ties to Côte d'Ivoire and OMVS hydro shared with Senegal & Mauritania",
+    "225 kV",
+    "https://www.edm-sa.com.ml/"
+   ]
+  ]
+ },
+ {
+  "country": "Burkina Faso",
+  "region": "Africa",
+  "flag": "🇧🇫",
+  "freq": "50",
+  "sync": "WAPP",
+  "grids": [
+   [
+    "SONABEL",
+    "National utility — imports via Côte d'Ivoire & Ghana interconnectors",
+    "225 kV",
+    "https://www.sonabel.bf/"
+   ]
+  ]
+ },
+ {
+  "country": "Niger",
+  "region": "Africa",
+  "flag": "🇳🇪",
+  "freq": "50",
+  "sync": "WAPP",
+  "grids": [
+   [
+    "NIGELEC",
+    "National utility — heavily dependent on imports from Nigeria",
+    "132 kV",
+    "https://www.nigelec.ne/"
+   ]
+  ]
+ },
+ {
+  "country": "Benin",
+  "region": "Africa",
+  "flag": "🇧🇯",
+  "freq": "50",
+  "sync": "WAPP",
+  "grids": [
+   [
+    "CEB + SBEE",
+    "CEB — transmission operator shared with Togo (a WAPP rarity); SBEE national distributor",
+    "161 kV",
+    "https://www.sbee.bj/"
+   ]
+  ]
+ },
+ {
+  "country": "Togo",
+  "region": "Africa",
+  "flag": "🇹🇬",
+  "freq": "50",
+  "sync": "WAPP",
+  "grids": [
+   [
+    "CEB + CEET",
+    "CEB — transmission operator shared with Benin; CEET national distributor",
+    "161 kV",
+    "https://ceet.tg/"
+   ]
+  ]
+ },
+ {
+  "country": "Guinea",
+  "region": "Africa",
+  "flag": "🇬🇳",
+  "freq": "50",
+  "sync": "WAPP",
+  "grids": [
+   [
+    "EDG (Électricité de Guinée)",
+    "Kaleta & Souapiti hydro; CLSG 225 kV corridor to Liberia–Sierra Leone–Côte d'Ivoire",
+    "225 kV",
+    "https://www.edg.com.gn/"
+   ]
+  ]
+ },
+ {
+  "country": "Mauritania",
+  "region": "Africa",
+  "flag": "🇲🇷",
+  "freq": "50",
+  "sync": "OMVS-linked",
+  "grids": [
+   [
+    "SOMELEC",
+    "National utility — OMVS hydro shared with Senegal & Mali",
+    "225 kV",
+    "https://www.somelec.mr/"
+   ]
+  ]
+ },
+ {
+  "country": "Djibouti",
+  "region": "Africa",
+  "flag": "🇩🇯",
+  "freq": "50",
+  "sync": "EAPP-linked",
+  "grids": [
+   [
+    "EDD (Électricité de Djibouti)",
+    "Interconnected with Ethiopia — majority of supply imported",
+    "230 kV",
+    "https://www.edd.dj/"
+   ]
+  ]
+ },
+ {
+  "country": "India",
+  "region": "South Asia",
+  "flag": "🇮🇳",
+  "freq": "50",
+  "sync": "India National Grid",
+  "grids": [
+   [
+    "POWERGRID + Grid-India (NLDC)",
+    "One Nation One Grid since 2013 — largest single synchronous national grid; 5 regions",
+    "765 kV / ±800 kV DC",
+    "https://www.powergrid.in/"
+   ]
+  ]
+ },
+ {
+  "country": "Pakistan",
+  "region": "South Asia",
+  "flag": "🇵🇰",
+  "freq": "50",
+  "sync": "Isolated (CASA-1000)",
+  "grids": [
+   [
+    "NTDC + K-Electric",
+    "National grid + Karachi system; ±660 kV Matiari–Lahore HVDC",
+    "500 kV",
+    "https://www.ntdc.gov.pk/"
+   ]
+  ]
+ },
+ {
+  "country": "Bangladesh",
+  "region": "South Asia",
+  "flag": "🇧🇩",
+  "freq": "50",
+  "sync": "India-linked (HVDC)",
+  "grids": [
+   [
+    "PGCB",
+    "National TSO — HVDC back-to-back at Bheramara to India",
+    "400 kV",
+    "https://www.pgcb.gov.bd/"
+   ]
+  ]
+ },
+ {
+  "country": "Sri Lanka",
+  "region": "South Asia",
+  "flag": "🇱🇰",
+  "freq": "50",
+  "sync": "Isolated",
+  "grids": [
+   [
+    "CEB (Ceylon Electricity Board)",
+    "Island grid; India interconnection under study",
+    "220 kV",
+    "https://www.ceb.lk/"
+   ]
+  ]
+ },
+ {
+  "country": "Nepal",
+  "region": "South Asia",
+  "flag": "🇳🇵",
+  "freq": "50",
+  "sync": "India-synced",
+  "grids": [
+   [
+    "NEA",
+    "Synchronous ties to India; hydro exporter",
+    "400 kV",
+    "https://www.nea.org.np/"
+   ]
+  ]
+ },
+ {
+  "country": "Bhutan",
+  "region": "South Asia",
+  "flag": "🇧🇹",
+  "freq": "50",
+  "sync": "India-synced",
+  "grids": [
+   [
+    "BPSO / Druk Green",
+    "Hydro exporter fully synced with India",
+    "400 kV",
+    "https://www.bpc.bt/"
+   ]
+  ]
+ },
+ {
+  "country": "Afghanistan",
+  "region": "South Asia",
+  "flag": "🇦🇫",
+  "freq": "50",
+  "sync": "Import islands",
+  "grids": [
+   [
+    "DABS",
+    "Asynchronous import islands fed from Uzbekistan, Turkmenistan, Tajikistan, Iran",
+    "220 kV",
+    "https://www.dabs.af/"
+   ]
+  ]
+ },
+ {
+  "country": "Maldives",
+  "region": "South Asia",
+  "flag": "🇲🇻",
+  "freq": "50",
+  "sync": "Isolated",
+  "grids": [
+   [
+    "STELCO / FENAKA",
+    "Greater Malé grid + separate atoll island systems",
+    "33 kV",
+    "https://www.stelco.com.mv/"
+   ]
+  ]
+ },
+ {
+  "country": "China",
+  "region": "East Asia",
+  "flag": "🇨🇳",
+  "freq": "50",
+  "sync": "SGCC + CSG regions",
+  "grids": [
+   [
+    "State Grid Corp of China (SGCC)",
+    "World's largest utility — 5+ sync regions tied by UHV DC; 1000 kV UHV AC",
+    "1000 kV / ±1100 kV DC",
+    "https://www.sgcc.com.cn/"
+   ],
+   [
+    "China Southern Power Grid (CSG)",
+    "Guangdong, Guangxi, Yunnan, Guizhou, Hainan",
+    "500 kV / ±800 kV DC",
+    "https://www.csg.cn/"
+   ]
+  ]
+ },
+ {
+  "country": "Japan",
+  "region": "East Asia",
+  "flag": "🇯🇵",
+  "freq": "50/60",
+  "sync": "Two sync areas",
+  "grids": [
+   [
+    "OCCTO + 10 regional TSOs",
+    "East 50 Hz / West 60 Hz, bridged by frequency-converter stations (~2.1 GW)",
+    "500 kV",
+    "https://www.occto.or.jp/"
+   ],
+   [
+    "TEPCO Power Grid",
+    "Largest regional TSO (Tokyo, 50 Hz)",
+    "500 kV",
+    "https://www.tepco.co.jp/pg/"
+   ]
+  ]
+ },
+ {
+  "country": "South Korea",
+  "region": "East Asia",
+  "flag": "🇰🇷",
+  "freq": "60",
+  "sync": "Isolated",
+  "grids": [
+   [
+    "KEPCO / KPX",
+    "Island grid — no international ties",
+    "765 kV",
+    "https://home.kepco.co.kr/"
+   ]
+  ]
+ },
+ {
+  "country": "Taiwan",
+  "region": "East Asia",
+  "flag": "🇹🇼",
+  "freq": "60",
+  "sync": "Isolated",
+  "grids": [
+   [
+    "Taipower",
+    "Island grid",
+    "345 kV",
+    "https://www.taipower.com.tw/"
+   ]
+  ]
+ },
+ {
+  "country": "Hong Kong",
+  "region": "East Asia",
+  "flag": "🇭🇰",
+  "freq": "50",
+  "sync": "CSG-linked",
+  "grids": [
+   [
+    "CLP Power + HK Electric",
+    "Two utilities; CLP interconnected with China Southern Grid",
+    "400 kV",
+    "https://www.clp.com.hk/"
+   ]
+  ]
+ },
+ {
+  "country": "Macau",
+  "region": "East Asia",
+  "flag": "🇲🇴",
+  "freq": "50",
+  "sync": "CSG-linked",
+  "grids": [
+   [
+    "CEM",
+    "~90% of supply imported from China Southern Power Grid",
+    "220 kV",
+    "https://www.cem-macau.com/"
+   ]
+  ]
+ },
+ {
+  "country": "Thailand",
+  "region": "Southeast Asia",
+  "flag": "🇹🇭",
+  "freq": "50",
+  "sync": "National + Laos ties",
+  "grids": [
+   [
+    "EGAT",
+    "National grid — major importer of Lao hydro; LTMS corridor",
+    "500 kV",
+    "https://www.egat.co.th/"
+   ]
+  ]
+ },
+ {
+  "country": "Vietnam",
+  "region": "Southeast Asia",
+  "flag": "🇻🇳",
+  "freq": "50",
+  "sync": "National",
+  "grids": [
+   [
+    "EVN / NPT",
+    "North-south 500 kV backbone",
+    "500 kV",
+    "https://www.npt.com.vn/"
+   ]
+  ]
+ },
+ {
+  "country": "Malaysia",
+  "region": "Southeast Asia",
+  "flag": "🇲🇾",
+  "freq": "50",
+  "sync": "3 separate grids",
+  "grids": [
+   [
+    "TNB (Peninsular Grid)",
+    "Main grid — ties to Thailand & Singapore",
+    "500 kV",
+    "https://www.tnb.com.my/"
+   ],
+   [
+    "Sarawak Energy + SESB Sabah",
+    "Two separate Borneo grids",
+    "275 kV",
+    "https://www.sarawakenergy.com/"
+   ]
+  ]
+ },
+ {
+  "country": "Singapore",
+  "region": "Southeast Asia",
+  "flag": "🇸🇬",
+  "freq": "50",
+  "sync": "Malaysia-linked",
+  "grids": [
+   [
+    "SP Group",
+    "City grid — LTMS import (Laos hydro via TH/MY); Australia–Asia HVDC proposed",
+    "400 kV",
+    "https://www.spgroup.com.sg/"
+   ]
+  ]
+ },
+ {
+  "country": "Indonesia",
+  "region": "Southeast Asia",
+  "flag": "🇮🇩",
+  "freq": "50",
+  "sync": "Island grids",
+  "grids": [
+   [
+    "PLN",
+    "Java-Bali 500 kV system + Sumatra + hundreds of island grids",
+    "500 kV",
+    "https://www.pln.co.id/"
+   ]
+  ]
+ },
+ {
+  "country": "Philippines",
+  "region": "Southeast Asia",
+  "flag": "🇵🇭",
+  "freq": "60",
+  "sync": "National (HVDC-bridged)",
+  "grids": [
+   [
+    "NGCP",
+    "Luzon–Visayas AC; Mindanao joined via ±350 kV HVDC (MVIP) — one national market since 2024",
+    "500 kV",
+    "https://www.ngcp.ph/"
+   ]
+  ]
+ },
+ {
+  "country": "Laos",
+  "region": "Southeast Asia",
+  "flag": "🇱🇦",
+  "freq": "50",
+  "sync": "Export hub",
+  "grids": [
+   [
+    "EDL-Transmission",
+    "'Battery of Southeast Asia' — exports to TH, VN, KH, MY/SG",
+    "500 kV",
+    "https://www.edl.com.la/"
+   ]
+  ]
+ },
+ {
+  "country": "Cambodia",
+  "region": "Southeast Asia",
+  "flag": "🇰🇭",
+  "freq": "50",
+  "sync": "Regional ties",
+  "grids": [
+   [
+    "EDC",
+    "Imports from Laos, Thailand, Vietnam",
+    "500 kV",
+    "https://www.edc.com.kh/"
+   ]
+  ]
+ },
+ {
+  "country": "Myanmar",
+  "region": "Southeast Asia",
+  "flag": "🇲🇲",
+  "freq": "50",
+  "sync": "National",
+  "grids": [
+   [
+    "MOEP / ESE",
+    "National grid — constrained, partial coverage",
+    "500 kV",
+    "https://www.moep.gov.mm/"
+   ]
+  ]
+ },
+ {
+  "country": "Brunei",
+  "region": "Southeast Asia",
+  "flag": "🇧🇳",
+  "freq": "50",
+  "sync": "Isolated",
+  "grids": [
+   [
+    "DES + Berakas Power",
+    "Two interconnected national systems; Borneo grid link under ASEAN study",
+    "66 kV",
+    "http://www.des.gov.bn/"
+   ]
+  ]
+ },
+ {
+  "country": "Timor-Leste",
+  "region": "Southeast Asia",
+  "flag": "🇹🇱",
+  "freq": "50",
+  "sync": "Isolated",
+  "grids": [
+   [
+    "EDTL",
+    "National utility — 150 kV north–south backbone",
+    "150 kV",
+    "https://www.edtl.tl/"
+   ]
+  ]
+ },
+ {
+  "country": "USA",
+  "region": "North America",
+  "flag": "🇺🇸",
+  "freq": "60",
+  "sync": "3 interconnections",
+  "grids": [
+   [
+    "Eastern Interconnection",
+    "PJM, MISO, SPP, NYISO, ISO-NE, SERC — world's 2nd-largest sync area",
+    "765 kV",
+    "https://www.nerc.com/"
+   ],
+   [
+    "Western Interconnection (WECC)",
+    "CAISO + western utilities, 14 states + BC/AB + Baja",
+    "500 kV",
+    "https://www.wecc.org/"
+   ],
+   [
+    "ERCOT (Texas)",
+    "Standalone sync grid — DC ties only to East/Mexico",
+    "345 kV",
+    "https://www.ercot.com/"
+   ]
+  ]
+ },
+ {
+  "country": "Canada",
+  "region": "North America",
+  "flag": "🇨🇦",
+  "freq": "60",
+  "sync": "Eastern / Western / Québec",
+  "grids": [
+   [
+    "Hydro-Québec TransÉnergie",
+    "Own synchronous area — pioneered 735 kV (1965)",
+    "735 kV",
+    "https://www.hydroquebec.com/"
+   ],
+   [
+    "IESO / Hydro One (Ontario)",
+    "Eastern Interconnection",
+    "500 kV",
+    "https://www.ieso.ca/"
+   ],
+   [
+    "AESO (Alberta) + BC Hydro",
+    "Western Interconnection",
+    "500 kV",
+    "https://www.aeso.ca/"
+   ]
+  ]
+ },
+ {
+  "country": "Mexico",
+  "region": "North America",
+  "flag": "🇲🇽",
+  "freq": "60",
+  "sync": "SIN Mexico",
+  "grids": [
+   [
+    "CENACE / CFE",
+    "Sistema Interconectado Nacional + Baja grids (Baja Norte in WECC)",
+    "400 kV",
+    "https://www.cenace.gob.mx/"
+   ]
+  ]
+ },
+ {
+  "country": "Brazil",
+  "region": "Latin America",
+  "flag": "🇧🇷",
+  "freq": "60",
+  "sync": "SIN Brazil",
+  "grids": [
+   [
+    "ONS",
+    "Sistema Interligado Nacional — 99%+ of load; Itaipu & Belo Monte HVDC",
+    "750 kV / ±800 kV DC",
+    "https://www.ons.org.br/"
+   ]
+  ]
+ },
+ {
+  "country": "Argentina",
+  "region": "Latin America",
+  "flag": "🇦🇷",
+  "freq": "50",
+  "sync": "SADI (+Uruguay)",
+  "grids": [
+   [
+    "CAMMESA / Transener",
+    "Sistema Argentino de Interconexión",
+    "500 kV",
+    "https://www.cammesa.com/"
+   ]
+  ]
+ },
+ {
+  "country": "Chile",
+  "region": "Latin America",
+  "flag": "🇨🇱",
+  "freq": "50",
+  "sync": "SEN Chile",
+  "grids": [
+   [
+    "Coordinador Eléctrico Nacional",
+    "SEN — SIC+SING unified 2017; 3,100 km longitudinal grid",
+    "500 kV",
+    "https://www.coordinador.cl/"
+   ]
+  ]
+ },
+ {
+  "country": "Colombia",
+  "region": "Latin America",
+  "flag": "🇨🇴",
+  "freq": "60",
+  "sync": "SIN Colombia (Andean ties)",
+  "grids": [
+   [
+    "XM / ISA Intercolombia",
+    "SIN — tie to Ecuador (and Panama link under construction)",
+    "500 kV",
+    "https://www.xm.com.co/"
+   ]
+  ]
+ },
+ {
+  "country": "Peru",
+  "region": "Latin America",
+  "flag": "🇵🇪",
+  "freq": "60",
+  "sync": "SEIN (Andean ties)",
+  "grids": [
+   [
+    "COES / Red de Energía del Perú",
+    "Sistema Eléctrico Interconectado Nacional",
+    "500 kV",
+    "https://www.coes.org.pe/"
+   ]
+  ]
+ },
+ {
+  "country": "Ecuador",
+  "region": "Latin America",
+  "flag": "🇪🇨",
+  "freq": "60",
+  "sync": "SNI (Andean ties)",
+  "grids": [
+   [
+    "CENACE / CELEC Transelectric",
+    "SNI — synced with Colombia",
+    "500 kV",
+    "https://www.cenace.gob.ec/"
+   ]
+  ]
+ },
+ {
+  "country": "Venezuela",
+  "region": "Latin America",
+  "flag": "🇻🇪",
+  "freq": "60",
+  "sync": "SEN Venezuela",
+  "grids": [
+   [
+    "Corpoelec",
+    "Guri hydro backbone — 765 kV system",
+    "765 kV",
+    "http://www.corpoelec.gob.ve/"
+   ]
+  ]
+ },
+ {
+  "country": "Bolivia",
+  "region": "Latin America",
+  "flag": "🇧🇴",
+  "freq": "50",
+  "sync": "SIN Bolivia",
+  "grids": [
+   [
+    "ENDE / CNDC",
+    "Sistema Interconectado Nacional",
+    "230 kV",
+    "https://www.ende.bo/"
+   ]
+  ]
+ },
+ {
+  "country": "Uruguay",
+  "region": "Latin America",
+  "flag": "🇺🇾",
+  "freq": "50",
+  "sync": "SADI-synced",
+  "grids": [
+   [
+    "UTE",
+    "Synced with Argentina; HVDC converter (Melo) to Brazil",
+    "500 kV",
+    "https://www.ute.com.uy/"
+   ]
+  ]
+ },
+ {
+  "country": "Paraguay",
+  "region": "Latin America",
+  "flag": "🇵🇾",
+  "freq": "50",
+  "sync": "SADI-linked",
+  "grids": [
+   [
+    "ANDE",
+    "Itaipu (50 Hz half) & Yacyretá exporter",
+    "500 kV",
+    "https://www.ande.gov.py/"
+   ]
+  ]
+ },
+ {
+  "country": "Central America (SIEPAC)",
+  "region": "Latin America",
+  "flag": "🌎",
+  "freq": "60",
+  "sync": "SIEPAC",
+  "grids": [
+   [
+    "EOR / EPR",
+    "Regional 230 kV backbone: Guatemala, El Salvador, Honduras, Nicaragua, Costa Rica, Panama",
+    "230 kV",
+    "https://www.enteoperador.org/"
+   ]
+  ]
+ },
+ {
+  "country": "Dominican Republic",
+  "region": "Latin America",
+  "flag": "🇩🇴",
+  "freq": "60",
+  "sync": "Isolated",
+  "grids": [
+   [
+    "ETED",
+    "Island grid",
+    "345 kV",
+    "https://www.eted.gob.do/"
+   ]
+  ]
+ },
+ {
+  "country": "Cuba",
+  "region": "Latin America",
+  "flag": "🇨🇺",
+  "freq": "60",
+  "sync": "Isolated",
+  "grids": [
+   [
+    "UNE (Unión Eléctrica)",
+    "Island grid — severe generation crisis",
+    "220 kV",
+    "https://www.unionelectrica.cu/"
+   ]
+  ]
+ },
+ {
+  "country": "Jamaica",
+  "region": "Latin America",
+  "flag": "🇯🇲",
+  "freq": "50",
+  "sync": "Isolated",
+  "grids": [
+   [
+    "JPS (Jamaica Public Service)",
+    "Island grid — one of the few 50 Hz systems in the Americas",
+    "138 kV",
+    "https://www.jpsco.com/"
+   ]
+  ]
+ },
+ {
+  "country": "Trinidad & Tobago",
+  "region": "Latin America",
+  "flag": "🇹🇹",
+  "freq": "60",
+  "sync": "Isolated",
+  "grids": [
+   [
+    "T&TEC",
+    "Trinidad grid + subsea link to Tobago",
+    "220 kV",
+    "https://www.ttec.co.tt/"
+   ]
+  ]
+ },
+ {
+  "country": "Guyana",
+  "region": "Latin America",
+  "flag": "🇬🇾",
+  "freq": "60",
+  "sync": "Isolated",
+  "grids": [
+   [
+    "GPL (Guyana Power & Light)",
+    "DBIS coastal grid — oil-boom gas-to-energy 300 MW expansion under way",
+    "69 kV",
+    "https://gplinc.com/"
+   ]
+  ]
+ },
+ {
+  "country": "Suriname",
+  "region": "Latin America",
+  "flag": "🇸🇷",
+  "freq": "60",
+  "sync": "Isolated",
+  "grids": [
+   [
+    "EBS",
+    "EPAR coastal grid + Afobaka hydro",
+    "161 kV",
+    "https://www.ebs.sr/"
+   ]
+  ]
+ },
+ {
+  "country": "Bahamas",
+  "region": "Latin America",
+  "flag": "🇧🇸",
+  "freq": "60",
+  "sync": "Isolated",
+  "grids": [
+   [
+    "BPL (Bahamas Power & Light)",
+    "New Providence grid + separate Family Islands systems",
+    "66 kV",
+    "https://www.bplco.com/"
+   ]
+  ]
+ },
+ {
+  "country": "Australia",
+  "region": "Oceania",
+  "flag": "🇦🇺",
+  "freq": "50",
+  "sync": "NEM + SWIS + NT",
+  "grids": [
+   [
+    "AEMO — NEM",
+    "East-coast National Electricity Market: QLD-NSW-VIC-SA-TAS (TAS via Basslink HVDC)",
+    "500 kV",
+    "https://www.aemo.com.au/"
+   ],
+   [
+    "Western Power — SWIS",
+    "South West Interconnected System (Perth) — separate grid",
+    "330 kV",
+    "https://www.westernpower.com.au/"
+   ]
+  ]
+ },
+ {
+  "country": "New Zealand",
+  "region": "Oceania",
+  "flag": "🇳🇿",
+  "freq": "50",
+  "sync": "National (HVDC-bridged)",
+  "grids": [
+   [
+    "Transpower",
+    "North & South Island grids bridged by ±350 kV HVDC Inter-Island link",
+    "220 kV",
+    "https://www.transpower.co.nz/"
+   ]
+  ]
+ },
+ {
+  "country": "Papua New Guinea",
+  "region": "Oceania",
+  "flag": "🇵🇬",
+  "freq": "50",
+  "sync": "Isolated",
+  "grids": [
+   [
+    "PNG Power",
+    "Port Moresby + Ramu separate systems",
+    "132 kV",
+    "https://www.pngpower.com.pg/"
+   ]
+  ]
+ },
+ {
+  "country": "Fiji",
+  "region": "Oceania",
+  "flag": "🇫🇯",
+  "freq": "50",
+  "sync": "Isolated",
+  "grids": [
+   [
+    "EFL (Energy Fiji Limited)",
+    "Viti Levu island grid",
+    "132 kV",
+    "https://efl.com.fj/"
+   ]
+  ]
+ }
 ];
 
 

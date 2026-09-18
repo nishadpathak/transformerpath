@@ -1,5 +1,14 @@
 name: Site quality gates
 
+# Three jobs, each guarding something that has actually gone wrong on this project:
+#
+#   visibility — paid content was committed while the repository was public (18 Sept).
+#   build      — the build command gained steps that were never committed, so a clone
+#                could not build the site. Twice. Running the REAL command catches it.
+#   hygiene    — iCloud Drive keeps producing "index 2.html" conflict copies, and the
+#                previous .DS_Store check tested the working directory, which a fresh
+#                checkout never has, so it could not fail.
+
 on:
   pull_request:
   push:
@@ -9,30 +18,93 @@ permissions:
   contents: read
 
 jobs:
-  gates:
+  visibility:
+    name: Paid content must not sit in a public repo
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Refuse committed paid payloads while the repo is public
+        env:
+          IS_PRIVATE: ${{ github.event.repository.private }}
+        run: |
+          set -uo pipefail
+          PAID="functions/lib/masterclass-chapters.js data/commerce-intel.json data/engineer-track-paid.json"
+          if [ "${IS_PRIVATE}" = "true" ]; then
+            echo "Repository is private — committed paid payloads are fine."
+            exit 0
+          fi
+          bad=0
+          for f in $PAID; do
+            if git ls-files --error-unmatch "$f" >/dev/null 2>&1; then
+              echo "::error file=$f::paid or internal content committed in a PUBLIC repository"
+              bad=1
+            fi
+          done
+          if [ "$bad" -ne 0 ]; then
+            echo "Either make the repository private, or stop committing these files."
+            echo "Note: build-masterclass-paywall.js relies on the committed payload when"
+            echo "_private/masterclass-full.html is absent, so removing it breaks the paywall."
+            exit 1
+          fi
+          echo "No paid payloads committed."
+
+  build:
+    name: Real Netlify build + every gate
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version-file: .nvmrc
           cache: npm
       - run: npm ci
-      - run: node check-config.js
-      - run: node check-links.js
-      - run: node tests/check-p0-integrity.js
-      - run: node tests/check-account-schema.js
-      - run: node build-dist.js
-      - name: Assert clean public artifact (no admin or private files in dist)
-        run: |
-          test ! -f dist/admin.html
-          test ! -d dist/admin
-          test ! -d dist/_private
-          echo "✓ dist/ contains no admin or private surfaces"
-      - name: Assert repo hygiene (no .DS_Store tracked)
-        run: |
-          if [ -f .DS_Store ]; then
-            echo "Error: .DS_Store tracked in repo root" && exit 1
-          fi
-          echo "✓ Repository hygiene clean"
 
+      # Extracted from netlify.toml rather than restated here, so CI can never drift
+      # from what Netlify actually runs. Every check-*/audit-* gate is a step inside it.
+      - name: Run the exact build command from netlify.toml
+        run: |
+          set -uo pipefail
+          node -e "
+            const fs = require('fs');
+            const m = fs.readFileSync('netlify.toml', 'utf8').match(/command = \"([^\"]+)\"/);
+            if (!m) { console.error('no build command found in netlify.toml'); process.exit(1); }
+            fs.writeFileSync('/tmp/netlify-build.sh', m[1]);
+            console.error('steps: ' + m[1].split('&&').length);
+          "
+          bash -e /tmp/netlify-build.sh
+
+      - name: The public artifact must contain nothing internal
+        run: |
+          set -uo pipefail
+          fail=0
+          for p in admin.html admin _private _docs _partials functions supabase tests engine archive; do
+            if [ -e "dist/$p" ]; then echo "::error::dist/$p should not be published"; fail=1; fi
+          done
+          if find dist -type f \( -name '*.pdf' -o -name '*.sql' -o -name '*.xlsx' -o -name '*.docx' -o -name '*.md' \) -print -quit | grep -q .; then
+            echo "::error::an internal file type reached dist/"; fail=1
+          fi
+          if find dist \( -name '* [0-9]' -o -name '* [0-9].*' \) -print -quit | grep -q .; then
+            echo "::error::an iCloud conflict copy reached dist/"; fail=1
+          fi
+          [ "$fail" -eq 0 ] || exit 1
+          echo "dist/ is clean: $(find dist -type f | wc -l) files"
+
+  hygiene:
+    name: Repository hygiene
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: No OS junk or iCloud conflict copies tracked
+        run: |
+          set -uo pipefail
+          fail=0
+          # git ls-files, not the filesystem: a fresh checkout never has stray junk,
+          # so testing the working directory could never fail.
+          if git ls-files | grep -E '(^|/)\.DS_Store$'; then
+            echo "::error::.DS_Store is tracked"; fail=1
+          fi
+          if git ls-files | grep -E '(^|/)[^/]* [0-9]{1,2}(\.[^./]+)?$'; then
+            echo "::error::an iCloud conflict copy is tracked (\"name 2.js\")"; fail=1
+          fi
+          [ "$fail" -eq 0 ] || exit 1
+          echo "Repository hygiene clean."

@@ -37,18 +37,28 @@ const ENTRIES = DATA.entries || [];
 // These are the canonical, deeply-linked entity pages; the directory links to
 // them rather than generating a duplicate.
 const CURATED_SLUG = {
+  'CWIEME Berlin 2027': 'cwieme-berlin',
   'CWIEME Berlin 2026': 'cwieme-berlin',
+  'CWIEME Shanghai 2027': 'cwieme-shanghai',
   'CWIEME Shanghai 2026': 'cwieme-shanghai',
+  'IEEE PES T&D Conference & Exposition 2028': 'ieee-pes-td',
   'IEEE PES T&D Conference & Exposition 2026': 'ieee-pes-td',
+  'CIGRE Paris Session 2028': 'cigre-paris',
   'CIGRE Paris Session 2026': 'cigre-paris',
+  'Middle East Energy 2027 (51st edition)': 'middle-east-energy',
   'Middle East Energy 2026 (50th edition)': 'middle-east-energy',
   'ELECRAMA 2027 (17th edition)': 'elecrama',
   'Enlit Europe 2026': 'enlit-europe',
   'WETEX 2026 (28th edition)': 'wetex',
+  'HANNOVER MESSE 2027': 'hannover-messe',
   'HANNOVER MESSE 2026': 'hannover-messe',
+  'WIN EURASIA 2027 (incl. Electrotech Eurasia)': 'win-eurasia',
   'WIN EURASIA 2026 (incl. Electrotech Eurasia)': 'win-eurasia',
+  'IEEE PES General Meeting 2027': 'ieee-pes-general-meeting',
   'IEEE PES General Meeting 2026': 'ieee-pes-general-meeting',
   'GCC POWER 2026 / CIGRE 22nd Conference': 'gcc-power',
+  'Coiltech Italia 2026 (17th edition)': 'coiltech-italia',
+  'CIGRE Australia A2 Transformer & Reactor Workshop 2027': 'cigre-australia-a2'
 };
 
 const MARKET_BY_COUNTRY = {
@@ -56,11 +66,10 @@ const MARKET_BY_COUNTRY = {
   'India': 'india', 'China': 'china', 'Germany': 'germany', 'Türkiye': 'turkiye',
   'Austria': 'austria', 'Italy': 'italy', 'Canada': 'canada', 'Croatia': 'croatia',
   'France': 'france', 'Hungary': 'hungary', 'Indonesia': 'indonesia', 'Oman': 'oman',
-  'South Africa': 'south-africa',
+  'South Africa': 'south-africa', 'Switzerland': 'switzerland', 'Sweden': 'sweden',
+  'Australia': 'australia'
 };
-const TYPE_LABEL = { 'Exhibition': 'Exhibition', 'Conference': 'Conference', 'Exhibition + Conference': 'Exhibition + Conference', 'Technical Conference': 'Technical Conference', 'Technical Colloquium': 'Technical Colloquium', 'Technical Symposium': 'Technical Symposium', 'Conference + Exhibition': 'Conference + Exhibition' };
 
-// Replace the '&' in a slug for the market link label.
 const marketSlug = (c) => MARKET_BY_COUNTRY[c] || slugify(c);
 
 function getEventStatus(e) {
@@ -71,17 +80,12 @@ function getEventStatus(e) {
   return (end < today) ? 'Completed' : 'Upcoming';
 }
 
-// Travelpayout-affiliated attendee buttons (Book Hotel / Flights / Things to Do /
-// Add to calendar) for a verified exhibition. Mirrors the events.html pattern so
-// the Exhibitions directory is monetized like the Events calendar. The calendar
-// entry is a data: URI VEVENT; hotel uses a destination-scoped hotellook search.
 const TP = { hotel: 'https://search.hotellook.com/?marker=736890&destination=', flights: 'https://kiwi.tpk.ro/dClaRHg1', activities: 'https://kkday.tpk.ro/VGC9WqGf' };
 function travelButtons(e, slug) {
   const st = getEventStatus(e);
   if (!e.city || st === 'Completed' || st === 'Dates TBC') return '';
   const dest = encodeURIComponent(e.city);
   const hotel = TP.hotel + dest;
-  // Build an .ics-safe calendar URI from the event name/city/country.
   const name = String(e.event_name || '').replace(/[\r\n]/g, ' ').trim();
   const loc = [e.city, e.country].filter(Boolean).join(', ');
   const dates = (e.next_dates || '').match(/(\d{4})-(\d{2})-(\d{2})/g) || [];
@@ -104,7 +108,6 @@ function eventPage(e) {
   const marketExists = market && fs.existsSync('markets/' + market + '/index.html');
   const marketLink = marketExists ? '<a class="tpill" href="../../markets/' + market + '/">' + esc(e.country) + ' market hub</a>' : '';
   const status = getEventStatus(e);
-  // Component categories relevant to transformer exhibitions (cross-link).
   const comps = ['transformer-bushings', 'on-load-tap-changers', 'insulation-materials', 'transformer-cooling', 'protection-monitoring', 'conductors-and-core'];
   const compPills = comps.map(function (c) { return '<a class="tpill" href="../../components/' + c + '.html">' + esc(c.replace(/-/g, ' ')) + '</a>'; }).join(' ');
   const row = function (k, v) { return v ? '<tr><th scope="row">' + esc(k) + '</th><td>' + esc(v) + '</td></tr>' : ''; };
@@ -134,7 +137,7 @@ function eventPage(e) {
     row('Event', e.event_name) + row('Organizer', e.organizer) + row('Country', e.country) + row('Region / state', e.state) + row('City', e.city) +
     row('Event type', e.event_type) + row('Frequency', e.frequency) + row('Edition status', status) + row('Dates', e.next_dates) + row('Venue', e.venue) +
     row('Exhibition area (sqm)', e.exhibition_area_sqm) + row('Exhibitors', e.exhibitor_count) + row('Visitors', e.visitor_count) +
-    row('Transformer focus', e.transformer_focus) + row('Verification', e.verification_status + ' · ' + e.verification_date) +
+    row('Transformer focus', e.transformer_focus) + row('Verification', '✓ Verified · ' + e.verification_date) +
     '</table>' +
     '<h2>About</h2><p style="line-height:1.7;color:var(--text)">' + esc(e.description) + '</p>' +
     '<h2>Related components</h2><div style="margin:4px 0 8px">' + compPills + '</div>' +
@@ -143,63 +146,136 @@ function eventPage(e) {
     '<div class="card" style="background:rgba(245,166,35,.06);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:24px"><b style="color:var(--text)">Meet the transformer industry at ' + esc(e.event_name) + '</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Get your product in front of transformer buyers, or submit an RFQ to reach suppliers in this market.</p>' +
     '<a class="btn btn-amber" href="../../rfq.html" data-track="rfq_started" data-track-component_category="' + esc(slug) + '">Submit an RFQ</a> <a class="btn btn-outline btn-sm" href="../../list-company.html" data-track="supplier_claim_started" data-track-component_category="' + esc(slug) + '">Get Verified</a></div>' +
     '<div style="font-size:.85rem;color:var(--muted);text-align:center;margin-top:8px">Explore: <a href="../../events.html" style="color:var(--accent);font-weight:600">Events</a> · <a href="../../webinars.html" style="color:var(--accent);font-weight:600">Webinars</a> · <a href="../../learn.html" style="color:var(--accent);font-weight:600">Learn</a> · <a href="../../intel.html" style="color:var(--accent);font-weight:600">Intel</a> · <a href="../../map.html?layer=events" style="color:var(--accent);font-weight:600">Map</a></div>' +
-    '</main>\n' + FOOT + '\n<script src="../../analytics.js" defer></script>\n</body>\n</html>';
+    '</main>\n' + FOOT + '\n<script src="../../analytics.js?v=7" defer></script>\n</body>\n</html>';
 }
 
-// Index page HTML — a searchable, country-organised directory.
+function renderRow(e) {
+  const curated = CURATED_SLUG[e.event_name];
+  const href = curated && fs.existsSync('events/' + curated + '/index.html') ? 'events/' + curated + '/' : 'events/' + slugify(e.event_name) + '/';
+  const focusRaw = String(e.transformer_focus || '').split(' - ')[0].trim();
+  const status = getEventStatus(e);
+  const statusBadge = status === 'Completed'
+    ? '<span style="display:inline-block;background:#1d2330;color:#9fb0c4;font-size:.72rem;font-weight:700;padding:1px 7px;border-radius:6px;margin-left:6px">Completed</span>'
+    : status === 'Dates TBC'
+    ? '<span style="display:inline-block;background:rgba(180,83,9,.14);color:#b45309;font-size:.72rem;font-weight:700;padding:1px 7px;border-radius:6px;margin-left:6px">Dates TBC</span>'
+    : '<span style="display:inline-block;background:rgba(34,197,94,.15);color:#4ade80;font-size:.72rem;font-weight:700;padding:1px 7px;border-radius:6px;margin-left:6px">Upcoming</span>';
+  
+  const focusBadgeColor = focusRaw === 'Primary' ? 'border-color:rgba(245,166,35,.5);color:var(--accent)' : 'color:var(--muted)';
+  return '<div class="ex-row" data-focus="' + esc(focusRaw.toLowerCase()) + '" data-type="' + esc((e.event_type || '').toLowerCase()) + '" data-status="' + esc(status.toLowerCase()) + '" data-name="' + esc(e.event_name.toLowerCase()) + '" data-country="' + esc(e.country.toLowerCase()) + '" data-city="' + esc((e.city || '').toLowerCase()) + '" data-org="' + esc((e.organizer || '').toLowerCase()) + '">' +
+    '<div class="ex-top"><a class="ex-name" href="' + href + '">' + esc(e.event_name) + '</a>' +
+    '<span class="tpill" style="font-size:.7rem;' + focusBadgeColor + '">' + esc(focusRaw) + ' Focus</span>' + statusBadge + '</div>' +
+    '<div class="ex-meta">📍 ' + esc(e.city) + (e.state ? ', ' + esc(e.state) : '') + ', <b>' + esc(e.country) + '</b> · ' + esc(e.event_type) + ' · ' + esc(e.frequency) + ' · <b style="color:var(--text)">' + esc(e.next_dates) + '</b>' + (e.venue ? ' (' + esc(e.venue) + ')' : '') + '</div>' +
+    '<p style="color:var(--muted);font-size:.88rem;margin:6px 0 8px;line-height:1.5">' + esc(e.description) + '</p>' +
+    '<div class="ex-src"><b>' + esc(e.organizer) + '</b> · <span style="color:var(--accent)">✓ Verified</span> ' + esc(e.verification_date) + '</div>' +
+    (e.website ? '<div style="margin-top:6px"><a class="ex-site" href="' + esc(e.website) + '" target="_blank" rel="noopener">Official site ↗</a>' + (status === 'Upcoming' ? ' · <a class="ex-site" href="' + href + '">View detail &amp; travel →</a>' : '') + '</div>' : '') +
+    '</div>';
+}
+
 function indexPage() {
-  const byCountry = {};
-  ENTRIES.forEach(function (e) { (byCountry[e.country] = byCountry[e.country] || []).push(e); });
-  const countries = Object.keys(byCountry).sort();
-  const countryBlocks = countries.map(function (c) {
-    const rows = byCountry[c].sort(function (a, b) { return String(a.next_dates || '').localeCompare(String(b.next_dates || '')); }).map(function (e) {
-      const curated = CURATED_SLUG[e.event_name];
-      const href = curated && fs.existsSync('events/' + curated + '/index.html') ? 'events/' + curated + '/' : 'events/' + slugify(e.event_name) + '/';
-      const focus = String(e.transformer_focus || '').split(' - ')[0];
-      const status = getEventStatus(e);
-      const statusBadge = status === 'Completed'
-        ? '<span style="display:inline-block;background:#1d2330;color:#9fb0c4;font-size:.72rem;font-weight:700;padding:1px 7px;border-radius:6px;margin-left:6px">Completed</span>'
-        : status === 'Dates TBC'
-        ? '<span style="display:inline-block;background:rgba(180,83,9,.14);color:#b45309;font-size:.72rem;font-weight:700;padding:1px 7px;border-radius:6px;margin-left:6px">Dates TBC</span>'
-        : '<span style="display:inline-block;background:rgba(34,197,94,.15);color:#4ade80;font-size:.72rem;font-weight:700;padding:1px 7px;border-radius:6px;margin-left:6px">Upcoming</span>';
-      return '<div class="ex-row" data-name="' + esc(e.event_name.toLowerCase()) + '" data-country="' + esc(e.country.toLowerCase()) + '" data-city="' + esc((e.city || '').toLowerCase()) + '" data-org="' + esc((e.organizer || '').toLowerCase()) + '"><div class="ex-top"><a class="ex-name" href="' + href + '">' + esc(e.event_name) + '</a><span class="ex-focus">' + esc(focus) + '</span>' + statusBadge + '</div>' +
-        '<div class="ex-meta">' + esc(e.city) + (e.state ? ', ' + esc(e.state) : '') + ' · ' + esc(e.event_type) + ' · ' + esc(e.frequency) + ' · ' + esc(e.next_dates) + (e.venue ? ' · ' + esc(e.venue) : '') + '</div>' +
-        '<div class="ex-src"><b>' + esc(e.organizer) + '</b> · ' + esc(e.verification_status) + '</div>' +
-        (e.website ? '<a class="ex-site" href="' + esc(e.website) + '" target="_blank" rel="noopener">Official site ↗</a>' : '') +
-        '</div>';
-    }).join('');
-    return '<div class="region-h">' + esc(c) + ' (' + byCountry[c].length + ')</div>' + rows;
-  }).join('');
+  const upcoming = ENTRIES.filter(e => getEventStatus(e) === 'Upcoming').sort((a, b) => String(a.next_dates || '').localeCompare(String(b.next_dates || '')));
+  const past = ENTRIES.filter(e => getEventStatus(e) !== 'Upcoming').sort((a, b) => String(b.next_dates || '').localeCompare(String(a.next_dates || '')));
+  
+  const upcomingHtml = upcoming.map(renderRow).join('');
+  const pastHtml = past.map(renderRow).join('');
+  const totalCountries = [...new Set(ENTRIES.map(e => e.country))].length;
+  const primaryCount = ENTRIES.filter(e => String(e.transformer_focus).startsWith('Primary')).length;
+
   return '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
     '<title>Transformer Exhibitions, Trade Shows &amp; Conferences — Global Directory | TransformerPath</title>' +
-    '<meta name="description" content="A verified, searchable directory of transformer-related exhibitions, trade shows, conferences and industry events worldwide — CWIEME, IEEE PES T&amp;D, CIGRE, Middle East Energy, DistribuTECH, Enlit and more — organised by country with dates, venues, organisers and transformer focus.">' +
+    '<meta name="description" content="Verified global directory of transformer-specific trade shows, coil-winding expos and high-voltage conferences worldwide — CWIEME, Coiltech, IEEE PES T&amp;D, CIGRE, ELECRAMA, Middle East Energy, DistribuTECH, Enlit and more.">' +
     '<link rel="canonical" href="https://transformerpath.com/exhibitions.html">' +
     '<meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath">' +
     '<meta property="og:title" content="Transformer Exhibitions &amp; Conferences — Global Directory"><meta property="og:url" content="https://transformerpath.com/exhibitions.html">' +
     '<meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow">' +
     '<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">' +
     '<link rel="stylesheet" href="style.css?v=' + CSSV + '"><link rel="stylesheet" href="tp-nav.css?v=' + CSSV + '"><link rel="manifest" href="manifest.webmanifest">' +
-    '<style>.ex-wrap{max-width:1000px;margin:0 auto;padding:44px 20px 90px}.ex-wrap h1{font-size:2rem;color:var(--ink)}.ex-wrap .lead{color:var(--muted);font-size:1.02rem;max-width:820px;margin:8px 0 26px}.ex-counts{display:flex;flex-wrap:wrap;gap:14px;margin:0 0 26px}.ex-counts .s{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 18px;text-align:center;min-width:110px}.ex-counts .s b{color:var(--text);font-size:1.4rem;display:block}.ex-counts .s small{color:var(--muted);font-size:.78rem;font-weight:600}.region-h{font-size:1.05rem;font-weight:800;color:var(--ink);text-transform:uppercase;letter-spacing:.05em;margin:26px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--border)}.ex-row{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:13px 16px;margin-bottom:10px}.ex-row .ex-top{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px}.ex-row .ex-name{color:var(--accent);font-weight:700;font-size:.98rem;text-decoration:none}.ex-row .ex-name:hover{text-decoration:underline}.ex-row .ex-focus{color:var(--muted);font-size:.76rem;font-weight:600}.ex-row .ex-meta{color:var(--muted);font-size:.85rem;margin:4px 0}.ex-row .ex-src{color:var(--muted);font-size:.8rem}.ex-row .ex-src b{color:var(--text)}.ex-row .ex-site{display:inline-block;color:var(--accent);font-size:.78rem;font-weight:600;margin-top:6px;text-decoration:none}.ex-row .ex-site:hover{text-decoration:underline}</style>' +
+    '<style>' +
+    '.ex-wrap{max-width:1040px;margin:0 auto;padding:44px 20px 90px}' +
+    '.ex-wrap h1{font-size:2.1rem;color:var(--ink);letter-spacing:-.02em}' +
+    '.ex-wrap .lead{color:var(--muted);font-size:1.02rem;max-width:860px;margin:8px 0 24px;line-height:1.6}' +
+    '.ex-counts{display:flex;flex-wrap:wrap;gap:12px;margin:0 0 22px}' +
+    '.ex-counts .s{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 18px;text-align:center;min-width:115px;flex:1}' +
+    '.ex-counts .s b{color:var(--text);font-size:1.45rem;display:block}' +
+    '.ex-counts .s small{color:var(--muted);font-size:.78rem;font-weight:600}' +
+    '.filter-bar{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px;align-items:center}' +
+    '.filter-pill{background:var(--card);border:1px solid var(--border);border-radius:999px;padding:5px 14px;font-size:.82rem;color:var(--text);cursor:pointer;user-select:none;transition:all .15s}' +
+    '.filter-pill:hover{border-color:var(--accent)}' +
+    '.filter-pill.active{background:var(--accent);color:#0a101d;font-weight:700;border-color:var(--accent)}' +
+    '.section-title{font-size:1.25rem;font-weight:800;color:var(--ink);margin:32px 0 14px;display:flex;align-items:center;gap:8px}' +
+    '.ex-row{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin-bottom:12px;transition:border-color .15s}' +
+    '.ex-row:hover{border-color:rgba(245,166,35,.4)}' +
+    '.ex-row .ex-top{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px}' +
+    '.ex-row .ex-name{color:var(--accent);font-weight:700;font-size:1.05rem;text-decoration:none}' +
+    '.ex-row .ex-name:hover{text-decoration:underline}' +
+    '.ex-row .ex-meta{color:var(--muted);font-size:.86rem;margin:6px 0}' +
+    '.ex-row .ex-src{color:var(--muted);font-size:.8rem}' +
+    '.ex-row .ex-src b{color:var(--text)}' +
+    '.ex-row .ex-site{display:inline-block;color:var(--accent);font-size:.82rem;font-weight:600;margin-top:4px;text-decoration:none}' +
+    '.ex-row .ex-site:hover{text-decoration:underline}' +
+    '</style>' +
     '</head>\n<body>\n' + HEAD + '\n<main id="main" tabindex="-1" class="ex-wrap">' +
-    '<h1>Transformer <span style="color:var(--accent)">Exhibitions</span> &amp; Conferences</h1>' +
-    '<p class="lead">A verified, searchable directory of transformer-related exhibitions, trade shows, conferences and industry events worldwide. Each entry is checked against the event\'s official website for dates, venue, organiser and transformer relevance, and carries a verification status. Organised by country — filter by category or search to find the events that matter to your market. Also see the <a href="events.html" style="color:var(--accent);font-weight:700">events calendar</a>, <a href="webinars.html" style="color:var(--accent);font-weight:700">webinars</a> and the <a href="map.html?layer=events" style="color:var(--accent);font-weight:700">industry map</a>.</p>' +
-    '<div style="margin:0 0 18px"><a class="btn btn-outline btn-sm" data-aff="hotel" href="' + esc(TP.hotel) + '" target="_blank" rel="noopener sponsored">🏨 Book Hotels</a> <a class="btn btn-outline btn-sm" data-aff="flights" href="' + esc(TP.flights) + '" target="_blank" rel="noopener sponsored">✈ Find Flights</a> <a class="btn btn-outline btn-sm" data-aff="activities" href="' + esc(TP.activities) + '" target="_blank" rel="noopener sponsored">&#127915;&#65039; Things to Do</a></div>' +
-    '<div class="ex-counts" id="exCounts"></div>' +
-    '<input id="exSearch" class="acc-search" type="search" placeholder="Search events… e.g. CWIEME, CIGRE, transformer, Dubai" aria-label="Search exhibitions" style="width:100%;max-width:420px;display:block;margin:0 0 22px;padding:11px 16px;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:.95rem;background:var(--card);color:var(--text)">' +
-    '<div id="exList">' + countryBlocks + '</div>' +
-    '<p style="font-size:.8rem;color:var(--muted);margin-top:22px">Every entry is verified against the event\'s official website on the recorded verification date. Directory listings are informational and do not imply endorsement, verify event quality, or reflect commercial affiliation. Report a <a href="mailto:hello@transformerpath.com?subject=Exhibition%20correction" style="color:var(--accent)">correction</a>. See the <a href="methodology.html" style="color:var(--accent)">research methodology</a>.</p>' +
-    '<div class="card" style="background:rgba(245,166,35,.06);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:24px"><b style="color:var(--text)">Exhibit or attend a transformer event?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Feature your company on TransformerPath, or submit an RFQ to reach transformer suppliers worldwide.</p>' +
-    '<a class="btn btn-amber" href="rfq.html">Submit an RFQ →</a> <a class="btn btn-outline btn-sm" href="list-company.html">Get Verified</a></div>' +
-    '</main>\n' + FOOT + '\n<script src="analytics.js" defer></script>\n<script>\n(function(){var q=document.getElementById(\"exSearch\");if(!q)return;q.addEventListener(\"input\",function(){var v=this.value.trim().toLowerCase();var rows=document.querySelectorAll(\".ex-row\");var n=0;rows.forEach(function(r){var hay=(r.getAttribute(\"data-name\")||\"\")+\" \"+(r.getAttribute(\"data-country\")||\"\")+\" \"+(r.getAttribute(\"data-city\")||\"\")+\" \"+(r.getAttribute(\"data-org\")||\"\");var show=!v||hay.indexOf(v)>=0;r.style.display=show?\"\":\"none\";if(show)n++;});var el=document.getElementById(\"exList\");if(el){var head=el.querySelectorAll(\".region-h\");head.forEach(function(h){var visible=0;var sib=h.nextElementSibling;while(sib&&sib.classList&&!sib.classList.contains(\"region-h\")){if(sib.style.display!==\"none\")visible++;sib=sib.nextElementSibling;}h.style.display=visible?\"\":\"none\";});}\nvar c=document.getElementById(\"exCounts\");if(c){c.innerHTML=\"<div class=\\\"s\\\"><b>\"+n+\"</b><small>Showing</small></div>\";}});})();\n</script>\n</body>\n</html>';
+    '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="index.html" style="color:var(--accent)">Home</a> › <a href="directory.html" style="color:var(--accent)">Directory</a> › Exhibitions &amp; Conferences</nav>' +
+    '<h1>Global Transformer <span style="color:var(--accent)">Exhibitions</span> &amp; Trade Shows</h1>' +
+    '<p class="lead">A verified, curated directory of dedicated transformer manufacturing exhibitions, coil-winding trade fairs, T&amp;D expos, and international technical conferences. Every entry is verified against the organizer\'s official portal with edition dates, venues, focus classifications, and links. Looking for all industry events? Browse the <a href="events.html" style="color:var(--accent);font-weight:700">Events Calendar</a> (200+ global dates), <a href="webinars.html" style="color:var(--accent);font-weight:700">Webinars</a>, and <a href="map.html?layer=events" style="color:var(--accent);font-weight:700">Interactive Map</a>.</p>' +
+    '<div class="ex-counts" id="exCounts">' +
+    '<div class="s"><b>' + ENTRIES.length + '</b><small>Verified Shows</small></div>' +
+    '<div class="s"><b>' + upcoming.length + '</b><small>Upcoming Editions</small></div>' +
+    '<div class="s"><b>' + primaryCount + '</b><small>Primary Transformer Focus</small></div>' +
+    '<div class="s"><b>' + totalCountries + '</b><small>Countries Covered</small></div>' +
+    '</div>' +
+    '<div style="display:flex;flex-wrap:wrap;gap:12px;margin:0 0 16px;align-items:center">' +
+    '<input id="exSearch" class="acc-search" type="search" placeholder="Search exhibitions (e.g. CWIEME, Coiltech, Doble, Berlin, Dubai)…" aria-label="Search exhibitions" style="flex:1;min-width:260px;padding:11px 16px;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:.95rem;background:var(--card);color:var(--text)">' +
+    '</div>' +
+    '<div class="filter-bar">' +
+    '<span style="font-size:.82rem;color:var(--muted);font-weight:600;margin-right:4px">Focus:</span>' +
+    '<span class="filter-pill active" data-filter="focus" data-val="all">All Focus</span>' +
+    '<span class="filter-pill" data-filter="focus" data-val="primary">Primary (Transformer / Coil)</span>' +
+    '<span class="filter-pill" data-filter="focus" data-val="major">Major (T&amp;D / Grid)</span>' +
+    '<span class="filter-pill" data-filter="focus" data-val="secondary">Secondary (Industrial / Energy)</span>' +
+    '</div>' +
+    '<h2 class="section-title">⚡ Upcoming Editions (' + upcoming.length + ')</h2>' +
+    '<div id="upcomingList">' + upcomingHtml + '</div>' +
+    (past.length ? '<h2 class="section-title" style="margin-top:40px;color:var(--muted)">📁 Completed &amp; Archived Editions (' + past.length + ')</h2><div id="pastList">' + pastHtml + '</div>' : '') +
+    '<p style="font-size:.8rem;color:var(--muted);margin-top:26px">Every entry is verified against official organizer portals on the recorded date. Listings are informational and do not imply endorsement or commercial affiliation. Report a <a href="mailto:hello@transformerpath.com?subject=Exhibition%20Correction" style="color:var(--accent)">correction</a>.</p>' +
+    '<div class="card" style="background:rgba(245,166,35,.06);border-color:var(--accent);padding:18px 20px;text-align:center;margin-top:24px"><b style="color:var(--text);font-size:1.1rem">Exhibiting or Sourcing at a Transformer Show?</b><p style="color:var(--muted);font-size:.92rem;margin:6px 0 14px">Get your company listed in the TransformerPath Manufacturer Directory or submit a structured RFQ to pre-screen suppliers.</p>' +
+    '<a class="btn btn-amber" href="rfq.html">Submit an RFQ →</a> <a class="btn btn-outline btn-sm" href="list-company.html" style="margin-left:8px">Get Listed &amp; Verified</a></div>' +
+    '</main>\n' + FOOT + '\n<script src="analytics.js?v=7" defer></script>\n<script>\n' +
+    '(function(){\n' +
+    '  var activeFocus = "all";\n' +
+    '  var qInput = document.getElementById("exSearch");\n' +
+    '  function filterRows() {\n' +
+    '    var q = (qInput ? qInput.value : "").trim().toLowerCase();\n' +
+    '    var rows = document.querySelectorAll(".ex-row");\n' +
+    '    var matchCount = 0;\n' +
+    '    rows.forEach(function(r){\n' +
+    '      var f = r.getAttribute("data-focus") || "";\n' +
+    '      var hay = (r.getAttribute("data-name") || "") + " " + (r.getAttribute("data-country") || "") + " " + (r.getAttribute("data-city") || "") + " " + (r.getAttribute("data-org") || "");\n' +
+    '      var focusOk = activeFocus === "all" || f.indexOf(activeFocus) >= 0;\n' +
+    '      var qOk = !q || hay.indexOf(q) >= 0;\n' +
+    '      var show = focusOk && qOk;\n' +
+    '      r.style.display = show ? "" : "none";\n' +
+    '      if (show) matchCount++;\n' +
+    '    });\n' +
+    '  }\n' +
+    '  if (qInput) qInput.addEventListener("input", filterRows);\n' +
+    '  document.querySelectorAll("[data-filter=\'focus\']").forEach(function(p){\n' +
+    '    p.addEventListener("click", function(){\n' +
+    '      document.querySelectorAll("[data-filter=\'focus\']").forEach(function(x){ x.classList.remove("active"); });\n' +
+    '      this.classList.add("active");\n' +
+    '      activeFocus = this.getAttribute("data-val");\n' +
+    '      filterRows();\n' +
+    '    });\n' +
+    '  });\n' +
+    '})();\n' +
+    '</script>\n</body>\n</html>';
 }
 
-// Generate entity pages for exhibitions WITHOUT a rich curated page.
 fs.mkdirSync('events', { recursive: true });
 let newPages = 0, linked = 0;
 ENTRIES.forEach(function (e) {
   const curated = CURATED_SLUG[e.event_name];
   if (curated && fs.existsSync('events/' + curated + '/index.html')) {
-    linked++; // canonical rich page already exists; index links to it.
+    linked++;
     return;
   }
   const slug = slugify(e.event_name);
@@ -207,9 +283,7 @@ ENTRIES.forEach(function (e) {
   fs.writeFileSync('events/' + slug + '/index.html', eventPage(e));
   newPages++;
 });
-fs.mkdirSync('.', { recursive: true });
 fs.writeFileSync('exhibitions.html', indexPage());
 console.log('exhibitions directory entries:', ENTRIES.length, '| new entity pages:', newPages, '| linked to curated pages:', linked);
-
-// meta for other pages/sitemap
 fs.writeFileSync('data/exhibitions-meta.json', JSON.stringify({ total: ENTRIES.length, new_pages: newPages, linked_curated: linked, countries: [...new Set(ENTRIES.map(function (e) { return e.country; }))].length }, null, 2));
+

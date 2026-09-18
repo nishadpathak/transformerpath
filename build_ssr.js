@@ -198,12 +198,12 @@ function renderEvents(html) {
      can never say "Live now" — that combination was reaching production. */
   const relLabel = (ev) => {
     const key = evState(ev).key;
-    if (key === 'LIVE') return '<span class="rel-today">Live now</span>';
+    if (key === 'LIVE') return `<span class="rel-today" data-rel="${esc(ev.s)}" data-rel-end="${esc(ev.e)}">Live now</span>`;
     if (key !== 'CONFIRMED_UPCOMING') return '';
     const d = relDays(ev.s);
     if (d <= 0) return '';
-    if (d === 1) return '<span class="rel-soon">In 1 day</span>';
-    if (d <= 31) return `<span class="rel-soon">In ${d} days</span>`;
+    if (d === 1) return `<span class="rel-soon" data-rel="${esc(ev.s)}" data-rel-end="${esc(ev.e)}">In 1 day</span>`;
+    if (d <= 31) return `<span class="rel-soon" data-rel="${esc(ev.s)}" data-rel-end="${esc(ev.e)}">In ${d} days</span>`;
     return '';
   };
   const icsHref = (ev) => {
@@ -487,6 +487,7 @@ function renderGrids(html) {
 
   html = inject(html, '<tbody id="syncBody">', 'grids-sync', syncRows);
   html = inject(html, '<tbody id="icBody">', 'grids-ic', projRows(INTERCONNECTORS));
+  html = inject(html, '<tbody id="h2Body">', 'grids-h2', projRows(GREEN_H2));
   html = inject(html, '<tbody id="offBody">', 'grids-off', projRows(OFFSHORE_HVDC));
   html = inject(html, '<tbody id="capexBody">', 'grids-capex', capexRows);
   html = inject(html, '<div id="board">', 'grids-board', board);

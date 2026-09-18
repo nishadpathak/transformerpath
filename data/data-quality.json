@@ -1,22 +1,22 @@
 {
-  "generated": "2026-09-14T17:26:59.430Z",
-  "generated_at": "2026-09-14T17:26:59.430Z",
-  "updated": "2026-09-14",
+  "generated": "2026-09-18T10:47:02.759Z",
+  "generated_at": "2026-09-18T10:47:02.759Z",
+  "updated": "2026-09-18",
   "schema": "https://transformerpath.com/data-quality.schema.json",
   "counts": {
-    "manufacturers": 907,
+    "manufacturers": 902,
     "projects": 306,
     "tenders": 150,
     "awards": 56,
-    "intel_items": 183,
-    "issues": 42,
+    "intel_items": 192,
+    "issues": 256,
     "by_severity": {
       "CRITICAL": 0,
       "HIGH": 0,
       "MEDIUM": 3,
-      "LOW": 39
+      "LOW": 253
     },
-    "duplicates": 0,
+    "duplicates": 1,
     "capability_without_source": 0,
     "factory_without_source": 0,
     "manufacturers_without_evidence": 0,
@@ -24,6 +24,18 @@
     "award_without_source": 0
   },
   "issues": [
+    {
+      "issue": "duplicate_intel",
+      "entity": "AEP Ohio files $840m transmission filing with PUCO for New Albany AI data centre cluster (4× 765/345 kV autotransformers)",
+      "field": "url",
+      "current": "https://www.utilitydive.com/news/aep-ohio-puco-transmission-filing-data-centers/829104/",
+      "reason": "Two intel items share a source URL and near-identical headline — possible duplicate.",
+      "source": "Utility Dive · 8 Sep 2026 [en]",
+      "recommended_action": "Keep one; review the other.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
     {
       "issue": "tender_without_source",
       "entity": "GCCIA Saudi-Kuwait interconnection",
@@ -34,7 +46,7 @@
       "recommended_action": "Attach the official procurement/source URL, or mark the record for review.",
       "severity": "MEDIUM",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tender_duplicated_from_project",
@@ -46,7 +58,7 @@
       "recommended_action": "Add an independent tender/procurement source so it is not a mirror of the project.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tender_without_source",
@@ -58,7 +70,7 @@
       "recommended_action": "Attach the official procurement/source URL, or mark the record for review.",
       "severity": "MEDIUM",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tender_duplicated_from_project",
@@ -70,7 +82,7 @@
       "recommended_action": "Add an independent tender/procurement source so it is not a mirror of the project.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "award_missing_country",
@@ -82,7 +94,7 @@
       "recommended_action": "Populate the country from the source, or mark for review.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "placeholder_source_url",
@@ -94,7 +106,7 @@
       "recommended_action": "Replace with the real published source URL, or mark the record pending verification.",
       "severity": "MEDIUM",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -106,7 +118,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -118,7 +130,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -130,7 +142,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -142,7 +154,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -154,7 +166,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -166,7 +178,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -178,7 +190,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -190,7 +202,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -202,7 +214,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -214,7 +226,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -226,7 +238,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -238,7 +250,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -250,7 +262,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -262,7 +274,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -274,7 +286,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -286,7 +298,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -298,7 +310,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -310,7 +322,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -322,7 +334,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -334,7 +346,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -346,7 +358,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -358,7 +370,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -370,7 +382,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -382,7 +394,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -394,7 +406,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -406,7 +418,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -418,7 +430,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -430,7 +442,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -442,7 +454,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -454,7 +466,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -466,7 +478,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -478,7 +490,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -490,7 +502,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -502,7 +514,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -514,7 +526,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
     },
     {
       "issue": "tier_classification_methodology",
@@ -526,7 +538,2563 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-09-14"
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Eaton",
+      "field": "tier",
+      "current": "1",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Eaton Power Systems / Cooper Power Systems Product Catalogs & SEC 10-K",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Howard Industries (Howard Power Solutions)",
+      "field": "tier",
+      "current": "1",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Howard Industries Substation & Distribution Product Specifications & Laurel MS Plant Records",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Delta Star",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Delta Star Technical Disclosures (Lynchburg VA & San Carlos CA Plants)",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Central Moloney",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Central Moloney Factory Technical Specifications & Pine Bluff AR Disclosures",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "ERMCO",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "ERMCO Engineering Specifications & Dyersburg TN Production Records",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Pennsylvania Transformer Technology",
+      "field": "tier",
+      "current": "1",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Pennsylvania Transformer Technology (PTTI) Canonsburg Facility Technical Data",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Niagara Power Transformer",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Niagara Transformer Corp Buffalo NY Engineering Catalog",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "MGM Transformer Company",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "MGM Transformer Engineering Catalog (Commerce, CA)",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Pacific Crest Transformers",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Pacific Crest Transformers Medford OR Facility Disclosures",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Olsun Electrics",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Olsun Electrics Corp Technical Catalog (Richmond, IL)",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Acme Electric (Hubbell)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Hubbell / Acme Electric Technical Specification Guides",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Carte International",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Carte International Winnipeg MB Technical Specs & Facility Data",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Cam Tran (Central Moloney)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Cam Tran Colborne ON Disclosures & Product Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Bemag Transformer",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Bemag Transformer Saint-Hyacinthe QC Technical Catalog",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Pioneer Power Solutions",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Pioneer Power Solutions SEC Disclosures & Granby QC Facility",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Končar - Power Transformers Ltd.",
+      "field": "tier",
+      "current": "1",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Končar Power Transformers Zagreb Factory Capability Disclosures & Corporate Filings",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Ganz Transformers and Switchgear",
+      "field": "tier",
+      "current": "1",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Ganz Tápiószele Facility Technical Portfolio & Intelligent Solutions (Ganz Intelligent Solutions)",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "SEA SpA",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "SEA S.p.A. Tezze sul Brenta Technical Portfolio & Factory Test Bay Records",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Tamini Trasformatori",
+      "field": "tier",
+      "current": "1",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Tamini Trasformatori (Terna Group) Technical Disclosures & Legnano Plant Portfolio",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "IMEFY Group",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "IMEFY Los Yébenes (Toledo) Factory Specifications & Product Catalogs",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Ormazabal",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Ormazabal (Velatia Group) Medium Voltage Distribution Transformer Disclosures",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "BEST Transformers (Balıkesir Elektromekanik)",
+      "field": "tier",
+      "current": "1",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Balıkesir Elektromekanik Sanayi Tesisleri A.Ş. Technical Specifications & Test Bay Disclosures",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Astor Enerji",
+      "field": "tier",
+      "current": "1",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Astor Enerji Ankara ASO 2. OSB Plant Specifications & Public Market Filings",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Eltaş Transformatör",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Eltaş Transformatör Sanayi İzmir Aliağa Plant Data & Technical Portfolio",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Kolektor Etra",
+      "field": "tier",
+      "current": "1",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Kolektor Etra Ljubljana Technical Disclosures & Testing Certifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Tesar S.r.l.",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Tesar S.r.l. (Azzurro Group) Cast Resin Transformer Catalog (Arezzo, Italy)",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "GBE S.p.A.",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "GBE S.p.A. Costabissara (Vicenza) Technical Catalog",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "BRUSH Transformers",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "BRUSH Group Loughborough UK Technical Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Winder Power",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Winder Power Leeds UK Engineering Portfolio",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Wilson Power Solutions",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Wilson Power Solutions Leeds UK Super Low Loss Transformer Catalog",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Bowers Electricals",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Bowers Electricals Heanor Derbyshire Technical Portfolio",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Baoding Tianwei Baobian Electric (BTW)",
+      "field": "tier",
+      "current": "1",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Baoding Tianwei Baobian Electric Co., Ltd. Ultra-High Voltage Technical Disclosures & Corporate Filings",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "CHINT Transformers (CHINT Group)",
+      "field": "tier",
+      "current": "1",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "CHINT Electrics Power Transmission & Distribution Division Technical Catalog (Shanghai)",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "China Electric Equipment Group (CEEG)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "CEEG (China Electric Equipment Group) Nanjing Disclosures & DuPont Nomex Partnership Data",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Daqo Group (Nanjing / Zhenjiang Daqo)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Daqo Group Zhenjiang & Nanjing Transformer Division Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Guangdong Haihong Transformer",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Guangdong Haihong Transformer Co. 3D Wound Core Technical Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Fuji Electric",
+      "field": "tier",
+      "current": "1",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Fuji Electric Power Transformer Technical Portfolio & Chiba Factory Disclosures",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Meidensha",
+      "field": "tier",
+      "current": "1",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Meidensha Corporation Numazu Plant Technical Disclosures & Corporate Filings",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "DAIHEN",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "DAIHEN Corporation Power Products Division Specifications (Osaka)",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Takaoka Toko",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Takaoka Toko Co., Ltd. Transformer Engineering Division Portfolio",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Aichi Electric Co., Ltd.",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Aichi Electric Co., Ltd. Kasugai Plant Specifications (Aichi, Japan)",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Iljin Electric",
+      "field": "tier",
+      "current": "1",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Iljin Electric Banwol & Hwaseong Factory Disclosures & KEPCO Approvals",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "KP Electric Co., Ltd.",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "KP Electric Chungju Factory Technical Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Fortune Electric",
+      "field": "tier",
+      "current": "1",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Fortune Electric Co., Ltd. Taoyuan Plant Technical Disclosures & US Utility Deliveries",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Shihlin Electric & Engineering",
+      "field": "tier",
+      "current": "1",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Shihlin Electric Hsinchu Heavy Electric Plant Technical Data",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Tatung Company",
+      "field": "tier",
+      "current": "1",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Tatung Heavy Electric Business Unit Portfolio & Taipower Delivery Records",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Trafoindo Prima Perkasa",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "PT Trafoindo Prima Perkasa Tangerang Plant Specifications & PLN Approvals",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "PT Bambang Djaja (B&D Transformers)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "PT Bambang Djaja Surabaya Facility Technical Portfolio",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "QTC Energy",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "QTC Energy PCL Rayong Plant Technical Portfolio & Stock Exchange of Thailand Filings",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Ekarat Engineering",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Ekarat Engineering PCL Chonburi Plant Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Dong Anh Electrical Equipment Corp (EEMC)",
+      "field": "tier",
+      "current": "1",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "EEMC Dong Anh (Hanoi) 500 kV Transformer Manufacturing Facility Disclosures",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Hanoi Transformer Manufacturing (HBT)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "HBT Hanoi Facility Specifications & EVN (Electricity Vietnam) Approvals",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "First Philec (Philec)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "First Philec Batangas Plant Technical Specifications (FPH Group)",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Malaysia Transformer Mfg (MTM)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Malaysia Transformer Mfg Sdn Bhd Bangi Plant Data & Tenaga Nasional Berhad (TNB) Approvals",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Voltamp Transformers Ltd",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Voltamp Transformers Ltd Vadodara Plant Specifications & BSE/NSE Disclosures",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "EMCO Limited",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "EMCO Limited Thane & Jalgaon Manufacturing Records",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Kanohar Electricals",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Kanohar Electricals Ltd Meerut UP Plant Disclosures",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Shilchar Technologies",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Shilchar Technologies Ltd Vadodara Plant Specifications & Export Filings",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Vijai Electricals",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Vijai Electricals Hyderabad Plant Technical Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Pak Elektron Limited (PEL)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Pak Elektron Limited (PEL) Lahore Plant Disclosures & NTDC Approvals",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Energypac Engineering Ltd",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Energypac Engineering Savar Plant Technical Data & BPDB Approvals",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Tyree Transformers",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Tyree Transformers Mittagong NSW Technical Catalog & Utility References",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Ampcontrol Transformers",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Ampcontrol Group Tomago NSW Technical Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "ETEL Limited",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "ETEL Limited Auckland Plant Specifications (Unison Group)",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Saudi Power Transformer Company (SPTC)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "SPTC Dammam 2nd Industrial City Plant Disclosures (JV with CG Power)",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Wahah Electric Supply Company of Saudi Arabia (WESCOSA)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "WESCOSA Dammam Facility Portfolio & Saudi Aramco 9COM Approvals",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Alfanar Electric",
+      "field": "tier",
+      "current": "1",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Alfanar Industrial City Riyadh Technical Disclosures & SEC Approvals",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Arabian Transformers Co. (ATC)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Arabian Transformers Co. Riyadh Industrial Area Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Emirates Transformers & Switchgear (ETS)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "ETS Dubai Technical Catalog & DEWA / ADDC Qualification Records",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Federal Transformers LLC (FTL)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Federal Transformers ICAD 1 Abu Dhabi Factory Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Voltamp Energy SAOG",
+      "field": "tier",
+      "current": "1",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Voltamp Power SAOG Sohar Factory Disclosures & OETC Approvals",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "El-Maco (El Nasr Transformers)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "El-Maco Helwan Cairo Factory Disclosures & Egyptian Electricity Holding Co.",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "EGEMAC",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "EGEMAC Cairo Plant Specifications & EEHC Approvals",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "WEG Equipamentos Elétricos",
+      "field": "tier",
+      "current": "1",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "WEG S.A. Blumenau & Itajaí Plant Technical Disclosures & Corporate Filings",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Magnetron S.A.S.",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Magnetron S.A.S. Pereira Plant Technical Portfolio & Export Records",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Transformadores RyMEL",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "RyMEL Medellín Facility Specifications & RETIE Certifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "IEM (Industrias IEM)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Industrias IEM Tlalnepantla Plant Technical Catalog & CFE LAPEM Certifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Voltran (WEG Mexico)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Voltran WEG Tizayuca Hidalgo Plant Disclosures",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Transformadores Tadeo",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Tadeo Czerweny S.A. Gálvez (Santa Fe) Technical Portfolio",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Tubos y Transformadores TTE",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "TTE Córdoba Plant Technical Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Rhona S.A.",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Rhona S.A. Viña del Mar Plant Technical Catalog & SEC Chile Approvals",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "ACTOM (Pty) Ltd (Power Transformers)",
+      "field": "tier",
+      "current": "1",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "ACTOM Power Transformers Wadeville Plant Disclosures & Eskom Approvals",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "DCD Heavy Engineering / Powertech Transformers",
+      "field": "tier",
+      "current": "1",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Powertech Transformers Pretoria West Facility Records & Eskom Reference List",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "TANELEC Limited",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "TANELEC Arusha Plant Technical Catalog & TANESCO Approvals",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Northern Transformer",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Northern Transformer Maple ON Plant Technical Portfolio & Hydro One Approvals",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "PTI Transformers",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "PTI Transformers Winnipeg MB & Regina SK Technical Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Rex Power Magnetics",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Rex Power Magnetics Concord ON Technical Catalog",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Moloney Electric Canada",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Moloney Electric Canada Toronto & Calgary Plant Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Pioneer Transformers",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Pioneer Transformers Granby QC Technical Catalog",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Sunbelt Solomon",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Sunbelt Solomon Technical Services & Manufacturing Portfolio (Solomon KS & Temple TX)",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "T&R Electric Supply",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "T&R Electric Supply Colman SD Engineering Catalog",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Southwest Electric Co.",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Southwest Electric Co. Oklahoma City Technical Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "R.E. Uptegraff Mfg",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "R.E. Uptegraff Manufacturing Co. Scottdale PA Product Catalog",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Power Partners",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Power Partners Athens GA Plant Technical Portfolio (Pioneer Group)",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Maddox Transformer",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Maddox Industrial Transformer Engineering Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "MCI Transformer Corporation",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "MCI Transformer Corp Orange CA Technical Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Meta Power Solutions",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Meta Power Solutions Greensboro NC Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "LS Electric America",
+      "field": "tier",
+      "current": "1",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "LS Electric America Technical Specifications & Utility Substation Deliveries",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "JST Power Equipment",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "JST Power Equipment Lake Mary FL Technical Portfolio",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Hevi-Duty / SolaHD",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Appleton Group / SolaHD Technical Catalog",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "CORE Transformers",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "CORE Transformers St. Louis MO Technical Portfolio",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Federal Pacific",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Federal Pacific (Line Power) Bristol VA Technical Catalog",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "ELSCO Transformers",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "ELSCO Transformers Cincinnati OH Technical Catalog",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Dongan Electric Manufacturing Co.",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Dongan Electric Fraser MI Technical Catalog",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Controlled Magnetics, Inc.",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Controlled Magnetics Los Alamitos CA Catalog",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Daelim Transformer (US)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Daelim Transformer North America Product Catalogs & IEEE Test Reports",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "SGB-SMIT Power Matla (ex-Powertech)",
+      "field": "tier",
+      "current": "1",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "SGB-SMIT Power Matla Pretoria West Plant Disclosures & Eskom Master Vendor List",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Revive Electrical Transformers (RET)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Revive Electrical Transformers Germiston Plant Technical Portfolio",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Transfix Transformers SA",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Transfix Transformers (Cahors Group) South Africa Technical Specs",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Elprom Heavy Industries",
+      "field": "tier",
+      "current": "1",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Elprom Heavy Industries Sofia Plant Technical Disclosures",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "HD Hyundai Electro Bulgaria (formerly Hyundai Heavy Sofia)",
+      "field": "tier",
+      "current": "1",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "HD Hyundai Electro Bulgaria Sofia Facility Portfolio",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Celme Transformers",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Celme Transformers Montebello Vicentino Plant Technical Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Newton Trasformatori",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Newton Trasformatori Poggibonsi (Siena) Technical Catalog",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Altrafo Trasformatori",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Altrafo Trasformatori Matera Technical Portfolio",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "FDUEG",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "FDUEG Padova Technical Catalog",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Block Transformatoren-Elektronik",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Block Transformatoren Verden Technical Catalog",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "J. Schneider Elektrotechnik",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "J. Schneider Elektrotechnik Offenburg Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Ismet GmbH",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Ismet GmbH Villingen-Schwenningen Catalog",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "ECUATRAN S.A. (Transformadores Ecuatorianos)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "ECUATRAN S.A. Ambato Plant Technical Specifications & CELEC Approvals",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Transformadores Delicias",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Transformadores Delicias S.A. de C.V. Technical Catalog & CFE LAPEM Certification",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Transformadores IG",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Transformadores IG Guadalajara Plant Technical Portfolio & CFE LAPEM",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "IMEM Transformadores",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "IMEM Transformadores Guadalajara Technical Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "DEEMSA",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "DEEMSA Monterrey NL Plant Disclosures & CFE LAPEM",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Transformadores RTE",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Transformadores RTE Zapopan Jalisco Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Blutrafos",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Blutrafos Blumenau SC Technical Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Comtrafo",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Comtrafo Cornélio Procópio PR Plant Disclosures",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "ITB Transformadores",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "ITB Transformadores Itápolis SP Technical Catalog",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Itaipu Transformadores",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Itaipu Transformadores Mococa SP Catalog",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Ilumatic Transformadores",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Ilumatic São Paulo Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Inepar Triel-HT",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Inepar Triel-HT Araraquara SP Technical Data",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Artrans",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Artrans S.A. Mendoza Plant Technical Portfolio",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Faraday Transformadores",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Faraday Transformadores Buenos Aires Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Fohama Electromecánica",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Fohama Rosario Santa Fe Technical Catalog",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "INELPA Transformadores",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "INELPA Córdoba Plant Data",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "MF Transformadores",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "MF Transformadores Santa Fe Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Electro-Industries (ENEL — Sonelgaz group)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Electro-Industries Azazga (Tizi Ouzou) Plant Disclosures & Sonelgaz",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "SARL Transfo Ouest (Transfo-Ouest)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Transfo-Ouest Oran Plant Technical Portfolio",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "EGYTRAFO Group",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "EGYTRAFO Group Badr City Plant Technical Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Arab Transformers Co. (ArabTrans)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "ArabTrans 6th of October City Plant Technical Catalog",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Federal Power Transformers LLC",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Federal Power Transformers Abu Dhabi ICAD Facility Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Crux Transformers",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Crux Transformers Dubai Technical Portfolio",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Beta Transformers FZCO",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Beta Transformers JAFZA Dubai Technical Catalog",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Thai Maxwell Electric",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Thai Maxwell Electric Samut Sakhon Plant Technical Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Sahabhant Electric",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Sahabhant Electric Bangkok Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Sintra Sinarindo Elektrik (SSE)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "PT Sintra Sinarindo Elektrik Cikarang Plant Specifications & PLN Approvals",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Unindo (Unelec Indonesia)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "PT Unindo Jakarta Plant Technical Portfolio & PLN Reference List",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Trafindo Power Indonesia",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "PT Trafindo Power Indonesia Tangerang Plant Data",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Beijing Power Equipment Group (BPEG)",
+      "field": "tier",
+      "current": "1",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Beijing Power Equipment Group Technical Disclosures & State Grid Corp Approvals",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "CRRC Yongji Electric (CRRC Group)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "CRRC Yongji Electric Co. Technical Portfolio & High-Speed Rail Deliveries",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Guangdong Mingyang Electric",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Guangdong Mingyang Electric Co. Zhongshan Plant Specifications & Shenzhen Stock Exchange Filings",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Guangzhou Zhiguang Electric",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Guangzhou Zhiguang Electric Co. Technical Portfolio",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Daelim Belefic / Daelim Transformer",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Daelim Belefic Technical Specifications & International Project Deliveries",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "CNC Electric Group",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "CNC Electric Group Wenzhou Technical Catalog",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Alfa Transformers",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Alfa Transformers Ltd Bhubaneswar & Vadodara Plant Specifications (BSE Listed)",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "ABC Transformers",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "ABC Transformers Pvt Ltd Noida UP Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Andrew Yule & Co.",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Andrew Yule & Co. Ltd Electrical Division Kolkata (Govt of India Enterprise)",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Aditya Powers",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Aditya Powers Hyderabad Plant Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "AMCO Electrical & Engineering",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "AMCO Electrical Mumbai Technical Catalog",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Amptech Power Transformers",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Amptech Power Transformers Coimbatore Tamil Nadu Portfolio",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "BTH – Hanoi Transformer Mfg.",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "BTH Hanoi Transformer Mfg Joint Stock Co. Technical Catalog",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "CTC Group",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "CTC Group Ho Chi Minh City Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "EMC – Thu Duc Electro-Mechanical",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "EMC Thu Duc Electro-Mechanical Joint Stock Co. Technical Portfolio & EVN Approvals",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "EMIC (Gelex group)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "EMIC Electrical Equipment JSC (Gelex Group) Hanoi Catalog",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "HAVEC – Vietnam Electrical Equipment Mfg.",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "HAVEC Hanoi Facility Technical Data & EVN Qualification",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Dongmi Electric Ind.",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Dongmi Electric Ind. Incheon Plant Technical Catalog",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Dongsung Heavy Industries",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Dongsung Heavy Industries Changwon Plant Data & KEPCO Approvals",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "EL Power Tech",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "EL Power Tech Cheonan Plant Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "IEN Hanchang (HC Transformer)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "IEN Hanchang Gyeonggi-do Plant Specifications & KEPCO Deliveries",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Daeywon Electric Co., Ltd.",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Daeywon Electric Gwangju Plant Technical Catalog",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Dongnam Electric Co., Ltd.",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Dongnam Electric Busan Plant Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Aktif Elektroteknik (Transformatör)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Aktif Group Ankara Facility Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Altınsoy Enerji",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Altınsoy Enerji Ankara Plant Technical Catalog",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "ATAŞ Trafo",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "ATAŞ Trafo Ankara Manufacturing Data",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Bharat Bijlee",
+      "field": "tier",
+      "current": "1",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Bharat Bijlee Ltd Airoli (Navi Mumbai) Plant Disclosures & Corporate Filings",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Atlanta Electricals",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Atlanta Electricals Pvt Ltd Anand Gujarat Plant Technical Portfolio",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Hainan Jinpan (Jinpan Group; Guilin, Yangzhou)",
+      "field": "tier",
+      "current": "1",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Jinpan Smart Power Technology Co. Haikou/Guilin/Wuhan Plant Disclosures & STAR Market Filings",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Hangzhou Qiantang River Electric (QRE)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Hangzhou Qiantang River Electric Group Xiaoshan Plant Technical Data",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Hebei Tianwei Huarui Electric",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Hebei Tianwei Huarui Electric Co. Baoding Plant Portfolio",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Beta Enerji",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Beta Trafo Enerji Adana Hacı Sabancı OSB Plant Technical Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Atlas Trafo",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Atlas Trafo Gaziantep Plant Technical Catalog",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "ITEL Transformadores",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "ITEL Transformadores São Paulo Facility Technical Portfolio",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Jund-Trafo",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Jund-Trafo Jundiaí SP Technical Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "LS Power Solution (KOC Electric)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "KOC Electric (LS Power Solution) Busan Plant Specifications & KEPCO Deliveries",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "International Electric (IEC)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "International Electric Co. Incheon Plant Technical Data",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Kumkang Transformer",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Kumkang Transformer Gyeonggi Plant Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Delcrosa",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Delcrosa Lima Peru Plant Technical Portfolio & National Utility Deliveries",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Promelsa",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Promelsa Lima Technical Catalog",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Manelsa",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Manelsa Lima Facility Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "EPLI",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "EPLI SAC Lima Technical Portfolio",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Alkargo Transformadores",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Alkargo Transformadores Biscay Plant Technical Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Arteche",
+      "field": "tier",
+      "current": "1",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Arteche Group Mungia (Bizkaia) Technical Disclosures & Public Market Filings",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Electroputere S.A. (Transformers Division)",
+      "field": "tier",
+      "current": "1",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Electroputere Craiova Technical Disclosures & Transelectrica Reference List",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Energobit",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Energobit Cluj-Napoca Plant Technical Portfolio",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "TES Transformer Electroservice",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "TES Transformer Electroservice Ospitaletto (Brescia) Plant Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Trafo Elettro",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Trafo Elettro Vicenza Plant Technical Catalog",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "MBT Electrical Equipment",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "MBT Hanoi Facility Technical Data & EVN Approvals",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "LIOA (Nhật Linh)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "LiOA Nhat Linh Hanoi Technical Catalog",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "HEM (Hanoi Electro-Mechanical)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "HEM Hanoi Technical Data & EVN Approvals",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Elprom Trafo",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Elprom Trafo Kyustendil Plant Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Lemi Trafo",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Lemi Trafo Pernik Technical Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Grupo TEMI",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Grupo TEMI Caracas Facility Specifications & CORPOELEC References",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "CADETRA",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "CADETRA Barquisimeto Plant Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Transformadores Industriales C.A. (TRINCA)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "TRINCA Valencia Plant Technical Portfolio",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "INATRA",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "INATRA Quito Plant Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Transformadores Ecuatorianos S.A. (TRANSELEC Ecuador)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "TRANSELEC Guayaquil Plant Technical Data",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "MEI — Maintenance des Equipements Industriels (Sonelgaz)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "MEI Blida Plant Disclosures (Sonelgaz)",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Kahrif (Sonelgaz Group)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Kahrif Algiers Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Kahrakib (Sonelgaz Group)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Kahrakib Algiers Plant Portfolio",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Century Transformers",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Century Transformers Indore MP Technical Data",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "Classic Transformers",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Classic Transformers Bareilly UP Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "BSR Power Constructions",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "BSR Power Chennai Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "New Korea Electric",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "New Korea Electric Gyeonggi Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
+    },
+    {
+      "issue": "tier_classification_methodology",
+      "entity": "SARL Belfar (Belfar Transfo)",
+      "field": "tier",
+      "current": "2",
+      "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
+      "source": "Belfar Transfo Setif Plant Specifications",
+      "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
+      "severity": "LOW",
+      "status": "OPEN",
+      "detected": "2026-09-18"
     }
   ]
 }

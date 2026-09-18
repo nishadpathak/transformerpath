@@ -51,14 +51,75 @@
     <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
     <nav class="tpnav" id="mainNav" aria-label="Primary">
       <a href="intel.html">Intel</a>
-      <a href="directory.html">Directory</a>
+      <div class="tpnav-dropdown">
+        <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
+        <div class="tpnav-dropdown-panel" role="menu">
+          <a href="manufacturers.html">Manufacturers</a>
+          <a href="map.html">Industry Map</a>
+          <a href="grids.html">Global Grids</a>
+          <a href="components.html">Components &amp; Materials</a>
+          <a href="machinery.html">Machinery</a>
+          <a href="laboratories.html">Testing Labs</a>
+          <a href="services.html">Services &amp; Repair</a>
+          <a href="markets.html">Markets</a>
+          <a href="buyers-guide.html">Buyer's Guide</a>
+          <a href="directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
+        </div>
+      </div>
       <a href="projects.html">Projects</a>
+      <a href="tenders.html">Tenders</a>
+      <a href="events.html">Events</a>
+      <a href="tools.html" class="tpnav-opt">Engineering</a>
       <a href="learn.html">Learn</a>
-      <a href="grid-lab.html">Grid Lab</a>
-      <a href="workspace.html" data-tp-account>My TransformerPath</a>
+      <a href="grid-lab.html" class="tpnav-opt">Grid Lab</a>
+      <a href="rfq.html">RFQ</a>
+      <div class="tpnav-more">
+        <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
+        <div class="tpnav-more-panel" role="menu">
+          <a href="map.html" role="menuitem">Industry Map</a>
+          <a href="grids.html" role="menuitem">Global Grids</a>
+          <a href="webinars.html" role="menuitem">Webinars</a>
+          <a href="standards.html" role="menuitem">Standards &amp; Codes</a>
+          <a href="for-manufacturers.html" role="menuitem">For Manufacturers</a>
+          <a href="pricing.html" role="menuitem">Pricing Plans</a>
+          <a href="verified.html" role="menuitem">Verified Profiles</a>
+        </div>
+      </div>
+      <span class="tpnav-utils">
+        <a href="search.html" title="Search" aria-label="Search">&#128269;</a>
+        <a href="workspace.html" data-tp-account>My TransformerPath</a>
+        <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">&#127769;</button>
+      </span>
     </nav>
   </div>
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    // Night mode is the default; light is opt-in via the toggle.
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+
+    if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
+    updateThemeIcon();
+
+    themeToggle?.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      updateThemeIcon();
+    });
+
+    function updateThemeIcon() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+    }
+  </script>
   <script src="tp-nav.js?v=7" defer></script>
+  <script src="tp-pwa.js?v=7" defer></script>
 </header>
 <main id="main" class="gl-wrap">
   <p style="font-size:.8rem;color:var(--muted)"><a href="learn.html" style="color:var(--accent)">Learn</a> · Grid Lab</p>
@@ -68,19 +129,19 @@
 <!-- GRID_LAB_STATIC_BEGIN -->
     <noscript><p>JavaScript is off — scenario titles below are still the live catalog.</p></noscript>
     <div class="gl-grid">
-      <article class="gl-card"><h3>50 Hz and 60 Hz worlds</h3><p class="gl-meta">Grid systems · NOT STARTED</p></article>
-      <article class="gl-card"><h3>UHV and 765 kV class</h3><p class="gl-meta">Grid systems · NOT STARTED</p></article>
-      <article class="gl-card"><h3>Synchronous areas</h3><p class="gl-meta">Grid systems · NOT STARTED</p></article>
-      <article class="gl-card"><h3>400 kV class grids</h3><p class="gl-meta">Grid systems · NOT STARTED</p></article>
-      <article class="gl-card"><h3>Isolated systems</h3><p class="gl-meta">Grid systems · NOT STARTED</p></article>
-      <article class="gl-card"><h3>Highest voltage in the census</h3><p class="gl-meta">Grid systems · NOT STARTED</p></article>
+      <article class="gl-card" id="sc-freq-50-60"><h3>50 Hz and 60 Hz worlds</h3><p>The census records national frequency. Most of the world is 50 Hz; a smaller set — including North America, parts of the Americas, Saudi Arabia, Japan (split), South Korea and the Philippines — is 60 Hz.</p><p class="gl-meta">6 min · Grid systems · NOT STARTED</p></article>
+      <article class="gl-card" id="sc-uhv-765"><h3>UHV and 765 kV class</h3><p>A 765 kV class grid is uncommon. The census records transmission voltage per operator — UHV / 765 kV is a structured voltage match, not a marketing label.</p><p class="gl-meta">8 min · Grid systems · NOT STARTED</p></article>
+      <article class="gl-card" id="sc-sync-areas"><h3>Synchronous areas</h3><p>grids.json records a free-text `sync` label (Continental Europe, GCCIA, Isolated, …). It is not yet a controlled vocabulary — Grid Lab therefore asks you to read the label, not to invent a “synchronous-area total”.</p><p class="gl-meta">6 min · Grid systems · NOT STARTED</p></article>
+      <article class="gl-card" id="sc-kv-400"><h3>400 kV class grids</h3><p>400 kV (and nearby 380 / 400 / 420 kV) is the common extra-high-voltage transmission class outside UHV systems.</p><p class="gl-meta">6 min · Grid systems · NOT STARTED</p></article>
+      <article class="gl-card" id="sc-isolated"><h3>Isolated systems</h3><p>An Isolated sync label means the census does not record a continental synchronous tie — islands, remote systems, or unlinked national grids.</p><p class="gl-meta">5 min · Grid systems · NOT STARTED</p></article>
+      <article class="gl-card" id="sc-highest-voltage"><h3>Highest voltage in the census</h3><p>The highest transmission voltage in this census is derived from operator voltage strings — never invented.</p><p class="gl-meta">4 min · Grid systems · NOT STARTED</p></article>
     </div>
 <!-- GRID_LAB_STATIC_END -->
   </div>
 </main>
 <script src="supabase-config.js"></script>
 <script src="supabase.js" defer></script>
-<script src="tp-grid-lab.js" defer></script>
+<script src="tp-grid-lab.js?v=7" defer></script>
 <script src="analytics.js?v=7" defer></script>
 <script src="tp-freshness.js?v=7" defer></script>
 <script src="tp-feedback.js?v=7" defer></script>

@@ -22,10 +22,18 @@ const JS_V = A.js || 1;
 const THEME_V = A.theme || 1;
 const SW_CACHE = A.sw || 'transformerpath-v1';
 
-const SKIP_DIRS = new Set(['archive', '_private', 'transformerpath-site', 'node_modules', '.git', 'Transformer Equipments', 'dist', 'manufacturers', 'projects', 'accessories', 'utilities', 'tenders', 'events', 'knowledge', 'markets', 'case-studies', 'topics', 'functions', 'vendor', 'viz']);
+const SKIP_DIRS = new Set(['archive', '_private', 'transformerpath-site', 'node_modules', '.git', 'Transformer Equipments', 'dist', 'functions', 'vendor', 'viz', '_partials']);
 
 function walk(dir) {
-  return fs.readdirSync(dir).filter((f) => f.endsWith('.html') && !f.includes(' 2.'));
+  let out = [];
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (e.name.startsWith('.')) continue;
+    if (SKIP_DIRS.has(e.name)) continue;
+    const p = path.join(dir, e.name);
+    if (e.isDirectory()) out = out.concat(walk(p));
+    else if (e.name.endsWith('.html') && !e.name.includes(' 2.')) out.push(p);
+  }
+  return out;
 }
 
 const files = walk('.');
@@ -34,15 +42,12 @@ for (const f of files) {
   let s = fs.readFileSync(f, 'utf8');
   const before = s;
   // style.css?v=N, style.css (no query) on generated pages
-  s = s.replace(/style\.css\?v=\d+/g, 'style.css?v=' + CSS_V);
+  s = s.replace(/style\.css(?:\?v=\d+)?/g, 'style.css?v=' + CSS_V);
   // tp-theme.css?v=N
-  s = s.replace(/tp-theme\.css\?v=\d+/g, 'tp-theme.css?v=' + THEME_V);
+  s = s.replace(/tp-theme\.css(?:\?v=\d+)?/g, 'tp-theme.css?v=' + THEME_V);
   // JS assets: analytics.js, course-gate.js, supabase.js, etc.
-  /* Every versioned JS asset must be listed here or its ?v= never moves and
-     returning visitors keep the old file. tp-nav, tp-feedback, tp-freshness and
-     site-stats were shipping with a frozen ?v=1 for exactly that reason. */
-  s = s.replace(/(analytics\.js|course-gate\.js|sitemap\.js|material-latest\.js|site-stats\.js|tp-nav\.js|tp-pwa\.js|tp-freshness\.js|tp-feedback\.js|tp-grid-lab\.js|tp-learner\.js|tp-entitlement\.js)\?v=\d+/g, '$1?v=' + JS_V);
-  if (!s.includes('tp-pwa.js')) {
+  s = s.replace(/(analytics\.js|course-gate\.js|sitemap\.js|material-latest\.js|site-stats\.js|tp-nav\.js|tp-pwa\.js|tp-freshness\.js|tp-feedback\.js|tp-grid-lab\.js|tp-learner\.js|tp-entitlement\.js)(?:\?v=\d+)?/g, '$1?v=' + JS_V);
+  if (!s.includes('tp-pwa.js') && !f.includes('/')) {
     s = s.replace(
       /<script src="((?:[^"]*\/)?)tp-nav\.js\?v=\d+"[^>]*><\/script>/,
       function (m, prefix) {
@@ -51,7 +56,7 @@ for (const f of files) {
     );
   }
   /* Same for the stylesheets that arrived after style.css/tp-theme.css. */
-  s = s.replace(/(tp-nav\.css|tp-feedback\.css)\?v=\d+/g, '$1?v=' + CSS_V);
+  s = s.replace(/(tp-nav\.css|tp-feedback\.css)(?:\?v=\d+)?/g, '$1?v=' + CSS_V);
   s = s.replace(/(<script src="material-latest\.js)([">])/g, '$1?v=' + JS_V + '$2');
   if (s !== before) {
     fs.writeFileSync(f, s);

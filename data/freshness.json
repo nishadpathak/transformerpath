@@ -1,6 +1,6 @@
 {
   "$schema": "https://transformerpath.com/freshness.schema.json",
-  "generated": "2026-09-18T06:05:47.168Z",
+  "generated": "2026-09-18T10:47:04.716Z",
   "honest_note": "PAGE BUILD DATE is when this artifact was last regenerated; DATA REFRESH DATE is the last successful source refresh. Daily Intel and the manufacturer census are SEPARATE clocks. DATA CURRENT applies only to Daily Intel under 36 hours; a census older than 72 hours is never called DATA CURRENT. Intel uses SOURCE CHECKED. VERIFIED is a company-listing state.",
   "surfaces": [
     {
@@ -8,10 +8,10 @@
       "name": "Manufacturer census",
       "cadence": "rebuild (at publish)",
       "description": "Canonical manufacturer + facility census. Separate from Daily Intel. Never labelled DATA CURRENT when last rebuilt more than 72 hours ago.",
-      "last_build": "2026-09-14",
-      "last_data_refresh": "2026-09-14",
-      "last_attempted_refresh": "2026-09-14",
-      "last_successful_refresh": "2026-09-14",
+      "last_build": "2026-09-18",
+      "last_data_refresh": "2026-09-18",
+      "last_attempted_refresh": "2026-09-18",
+      "last_successful_refresh": "2026-09-18",
       "latest_source_observation": "per-company website / source date",
       "records_added": null,
       "records_updated": null,
@@ -19,17 +19,17 @@
       "source_failures": null,
       "status": "HEALTHY",
       "source_health": "rebuilt with the site; independent of the Daily Intel clock",
-      "records": 911
+      "records": 906
     },
     {
       "id": "daily_intel",
       "name": "Daily Intel",
       "cadence": "daily (curated)",
       "description": "Curated transformer-industry intelligence feed. Data is compiled and regenerated at each build; it is not an automatic live scrape.",
-      "last_build": "2026-09-14",
-      "last_data_refresh": "2026-09-15T14:31:23.374Z",
-      "last_attempted_refresh": "2026-09-15T14:31:23.374Z",
-      "last_successful_refresh": "2026-09-15T14:31:23.374Z",
+      "last_build": "2026-09-18",
+      "last_data_refresh": "2026-09-18T10:47:02.922Z",
+      "last_attempted_refresh": "2026-09-18T10:47:02.922Z",
+      "last_successful_refresh": "2026-09-18T10:47:02.922Z",
       "latest_source_observation": "curated items carry their own per-item source date",
       "records_added": null,
       "records_updated": null,
@@ -41,6 +41,28 @@
         "GCC": {
           "label": "GCC (UAE · Saudi · Qatar · Oman · Kuwait · Bahrain)",
           "items": [
+            {
+              "title": "Saudi Electricity Company (SEC) energizes 380/110 kV Al-Kharj South BSP with 3× 500 MVA power transformers",
+              "snippet": "Saudi Electricity Company successfully energized the Al-Kharj South 380/110 kV bulk supply point substation, integrating 1,500 MVA of transformation capacity and 380 kV GIS to support expanding agricultural and industrial load in Central Province.",
+              "value": "1,500 MVA",
+              "src": "SaudiGulf Projects · 17 Sep 2026 [en]",
+              "url": "https://www.saudigulfprojects.com/2026/09/sec-energizes-al-kharj-south-bsp/",
+              "isNew": true,
+              "age_tier": "FUTURE_PLANNED",
+              "date_iso": "2026-09-17",
+              "date_label": "17 Sep 2026"
+            },
+            {
+              "title": "DEWA commissions three 132/11 kV substations in Dubailand with 450 MVA total capacity",
+              "snippet": "Dubai Electricity and Water Authority commissioned three new 132/11 kV substations with a total conversion capacity of 450 MVA and 14.2 km of 132 kV ground cable networks to serve residential and commercial expansions.",
+              "value": "450 MVA",
+              "src": "WAM (Emirates News Agency) · 16 Sep 2026 [en]",
+              "url": "https://www.wam.ae/en/details/1395303254101",
+              "isNew": true,
+              "age_tier": "FUTURE_PLANNED",
+              "date_iso": "2026-09-16",
+              "date_label": "16 Sep 2026"
+            },
             {
               "title": "DEWA floats EPC tender for twelve 132/11 kV substations in Dubai South and Expo Valley development zones",
               "snippet": "Dubai Electricity and Water Authority invited commercial bids for 12 new 132/11 kV primary substations plus 48 km of underground 132 kV cabling, supporting aviation and logistics district load growth. Bid closing 28 Oct 2026.",
@@ -2183,7 +2205,7 @@
             }
           ]
         },
-        "updated": "2026-09-15T14:31:23.374Z",
+        "updated": "2026-09-18T10:47:02.922Z",
         "refresh_meta": {
           "cadence": "daily (curated)",
           "refreshed_at_build": true,
@@ -2211,7 +2233,7 @@
     {
       "id": "auto_briefing",
       "name": "Auto-briefing cache",
-      "cadence": "scheduled (hourly when deployed)",
+      "cadence": "scheduled (background cache)",
       "description": "A serverless refresh function (functions/refresh-data.js) pulls transformer-industry headlines into a cache to populate the changelog/briefing. This is a background cache, distinct from the curated Daily Intel feed.",
       "last_build": null,
       "last_data_refresh": null,
@@ -2223,7 +2245,7 @@
       "source_count": null,
       "source_failures": null,
       "status": "MANUAL_REVIEW",
-      "source_health": "depends on the Netlify runtime schedule and EventRegistry availability; not verified in this static build",
+      "source_health": "background cache; distinct from the curated Daily Intel feed",
       "records": null
     },
     {
@@ -2239,7 +2261,7 @@
       "records_updated": null,
       "source_count": null,
       "source_failures": null,
-      "status": "HEALTHY",
+      "status": "STALE",
       "source_health": "curated, source-tracked",
       "records": 306
     },
@@ -2247,28 +2269,28 @@
       "id": "tenders",
       "name": "Tender Watch",
       "cadence": "maintained",
-      "last_build": "2026-09-14",
-      "last_data_refresh": "2026-09-14",
-      "last_attempted_refresh": "2026-09-14",
-      "last_successful_refresh": "2026-09-14",
-      "latest_source_observation": "2026-09-14",
+      "last_build": "2026-09-18",
+      "last_data_refresh": "2026-09-18",
+      "last_attempted_refresh": "2026-09-18",
+      "last_successful_refresh": "2026-09-18",
+      "latest_source_observation": "2026-09-18",
       "records_added": null,
       "records_updated": null,
       "source_count": null,
       "source_failures": null,
       "status": "HEALTHY",
       "source_health": "derived from source-backed projects + intel; never fabricated",
-      "records": 150
+      "records": 151
     },
     {
       "id": "awards",
       "name": "Awards",
       "cadence": "maintained",
-      "last_build": "2026-09-14",
-      "last_data_refresh": "2026-09-14",
-      "last_attempted_refresh": "2026-09-14",
-      "last_successful_refresh": "2026-09-14",
-      "latest_source_observation": "2026-09-14",
+      "last_build": "2026-09-18",
+      "last_data_refresh": "2026-09-18",
+      "last_attempted_refresh": "2026-09-18",
+      "last_successful_refresh": "2026-09-18",
+      "latest_source_observation": "2026-09-18",
       "records_added": null,
       "records_updated": null,
       "source_count": null,
@@ -2282,10 +2304,10 @@
       "name": "Materials Intelligence",
       "cadence": "reference",
       "description": "Copper/aluminium are the LME reference (dated, sourced, freshness_status). CRGO and others are shown as unavailable (no public daily index).",
-      "last_build": "2026-09-15",
-      "last_data_refresh": "2026-09-15",
-      "last_attempted_refresh": "2026-09-15",
-      "last_successful_refresh": "2026-09-15",
+      "last_build": "2026-09-18",
+      "last_data_refresh": "2026-09-18",
+      "last_attempted_refresh": "2026-09-18",
+      "last_successful_refresh": "2026-09-18",
       "latest_source_observation": "LME reference observed 2026-08-20 (per record); others have no verified reference",
       "records_added": null,
       "records_updated": null,
@@ -2304,8 +2326,8 @@
       "works_for": [
         "materials"
       ],
-      "last_checked": "2026-09-15",
-      "last_success": "2026-09-15",
+      "last_checked": "2026-09-18",
+      "last_success": "2026-09-18",
       "latest_content_date": "2026-08-20",
       "failure_count": 0,
       "status": "HEALTHY"
@@ -2317,8 +2339,8 @@
       "works_for": [
         "daily_intel"
       ],
-      "last_checked": "2026-09-14",
-      "last_success": "2026-09-15T14:31:23.374Z",
+      "last_checked": "2026-09-18",
+      "last_success": "2026-09-18T10:47:02.922Z",
       "latest_content_date": "per-item source date",
       "failure_count": 0,
       "status": "HEALTHY"

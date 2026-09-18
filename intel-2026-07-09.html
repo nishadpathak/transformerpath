@@ -63,6 +63,7 @@
       <a href="events.html">Events</a>
       <a href="tools.html" class="tpnav-opt">Engineering</a>
       <a href="learn.html">Learn</a>
+      <a href="grid-lab.html" class="tpnav-opt">Grid Lab</a>
       <a href="rfq.html">RFQ</a>
       <div class="tpnav-more">
         <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
@@ -78,7 +79,7 @@
       </div>
       <span class="tpnav-utils">
         <a href="search.html" title="Search" aria-label="Search">&#128269;</a>
-        <a href="workspace.html" data-tp-account>Account</a>
+        <a href="workspace.html" data-tp-account>My TransformerPath</a>
         <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">&#127769;</button>
       </span>
     </nav>
@@ -521,7 +522,7 @@ const BRIEFING_DATE = "Thursday, 9 July 2026";
   fetch('https://ipapi.co/json/').then(function(r){return r.ok?r.json():Promise.reject();}).then(function(d){
     var rk=d&&REGMAP[d.country_code];
     if(rk && order.indexOf(rk)>0){ order=[rk].concat(order.filter(function(x){return x!==rk;})); buildRegions(); render();
-      var dl=document.getElementById('intelDate'); if(dl&&!document.getElementById('geo-note')){var sp=document.createElement('span');sp.id='geo-note';sp.style.cssText='display:block;margin-top:4px;color:var(--accent);font-size:.82rem;font-weight:600';sp.textContent='Showing '+rk+' first';dl.appendChild(sp);} }
+      var dl=document.getElementById('intelDate'); if(dl&&!document.getElementById('geo-note')){var sp=document.createElement('span');sp.id='geo-note';sp.style.css?v=14Text='display:block;margin-top:4px;color:var(--accent);font-size:.82rem;font-weight:600';sp.textContent='Showing '+rk+' first';dl.appendChild(sp);} }
   }).catch(function(){});
 })();
 </script>

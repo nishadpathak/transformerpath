@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Match Suppliers to My Requirement — Evidence-Based Sourcing Engine | TransformerPath</title>
-<meta name="description" content="Match your technical transformer or component requirements against 709+ manufacturers and 300+ specialist suppliers with transparent evidence classification: CONFIRMED, SUPPORTED, UNKNOWN.">
+<meta name="description" content="Match your technical transformer or component requirements against 906 manufacturers and 300+ specialist suppliers with transparent evidence classification: CONFIRMED, SUPPORTED, UNKNOWN.">
 <link rel="canonical" href="https://transformerpath.com/match.html">
 <link rel="stylesheet" href="style.css?v=14">
 <link rel="stylesheet" href="tp-nav.css?v=14">
@@ -42,20 +42,76 @@
     <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
     <nav class="tpnav" id="mainNav" aria-label="Primary">
       <a href="intel.html">Intel</a>
-      <a href="directory.html">Directory</a>
+      <div class="tpnav-dropdown">
+        <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
+        <div class="tpnav-dropdown-panel" role="menu">
+          <a href="manufacturers.html">Manufacturers</a>
+          <a href="map.html">Industry Map</a>
+          <a href="grids.html">Global Grids</a>
+          <a href="components.html">Components &amp; Materials</a>
+          <a href="machinery.html">Machinery</a>
+          <a href="laboratories.html">Testing Labs</a>
+          <a href="services.html">Services &amp; Repair</a>
+          <a href="markets.html">Markets</a>
+          <a href="buyers-guide.html">Buyer's Guide</a>
+          <a href="directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
+        </div>
+      </div>
       <a href="projects.html">Projects</a>
       <a href="tenders.html">Tenders</a>
-      <a href="compare.html">Compare</a>
-      <a href="match.html" style="color:var(--amber);font-weight:700">Match for Me</a>
+      <a href="events.html">Events</a>
+      <a href="tools.html" class="tpnav-opt">Engineering</a>
+      <a href="learn.html">Learn</a>
+      <a href="grid-lab.html" class="tpnav-opt">Grid Lab</a>
       <a href="rfq.html">RFQ</a>
+      <div class="tpnav-more">
+        <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
+        <div class="tpnav-more-panel" role="menu">
+          <a href="map.html" role="menuitem">Industry Map</a>
+          <a href="grids.html" role="menuitem">Global Grids</a>
+          <a href="webinars.html" role="menuitem">Webinars</a>
+          <a href="standards.html" role="menuitem">Standards &amp; Codes</a>
+          <a href="for-manufacturers.html" role="menuitem">For Manufacturers</a>
+          <a href="pricing.html" role="menuitem">Pricing Plans</a>
+          <a href="verified.html" role="menuitem">Verified Profiles</a>
+        </div>
+      </div>
       <span class="tpnav-utils">
         <a href="search.html" title="Search" aria-label="Search">&#128269;</a>
-        <a href="workspace.html" data-tp-account>Account</a>
+        <a href="workspace.html" data-tp-account>My TransformerPath</a>
+        <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">&#127769;</button>
       </span>
     </nav>
   </div>
-</header>
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    // Night mode is the default; light is opt-in via the toggle.
+    const savedTheme = localStorage.getItem('theme') || 'dark';
 
+    if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
+    updateThemeIcon();
+
+    themeToggle?.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      updateThemeIcon();
+    });
+
+    function updateThemeIcon() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+    }
+  </script>
+  <script src="tp-nav.js?v=7" defer></script>
+  <script src="tp-pwa.js?v=7" defer></script>
+</header>
 <main id="main" tabindex="-1" class="match-wrap">
   <div class="match-hero">
     <div style="font-size:.78rem; font-weight:800; text-transform:uppercase; color:var(--amber); letter-spacing:.08em; margin-bottom:4px">TransformerPath Sourcing Intelligence</div>
@@ -267,5 +323,6 @@ function runMatch() {
   `;
 }
 </script>
+<script src="analytics.js?v=7" defer></script>
 </body>
 </html>

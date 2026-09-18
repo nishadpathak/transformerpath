@@ -34,8 +34,8 @@ const ANALYTICS_V = 'v=' + JSV;
 
 // Dirs gitignored/stale or never served (404) — skip.
 const SKIP = ['archive', '_private', 'transformerpath-site', 'dist', 'node_modules', '.git', 'Transformer Equipments', '_docs', '_partials', 'functions', 'admin'];
-// Routes that are NOT normal public pages (system/redirect stubs) — exempt.
-const EXEMPT = /^(404|offline|admin|tutorial|tx-design-masterclass|claim)\.html$/;
+// Routes that are NOT normal public pages (system/redirect stubs/iframes) — exempt.
+const EXEMPT = /^(404|offline|admin|tutorial|tx-design-masterclass|claim|hero-3d)\.html$/;
 
 function walk(dir) {
   let out = [];

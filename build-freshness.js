@@ -25,6 +25,16 @@ function ts(f) { const d = readJson('data/' + f + '.json', {}); return d.updated
 const NOW = new Date().toISOString();
 const TODAY = NOW.slice(0, 10);
 
+function computeStatus(dateStr) {
+  if (!dateStr) return 'MANUAL_REVIEW';
+  const parsed = new Date(dateStr).getTime();
+  if (isNaN(parsed)) return 'MANUAL_REVIEW';
+  const ageHours = (Date.now() - parsed) / 3600000;
+  if (ageHours <= 36) return 'HEALTHY';
+  if (ageHours <= 72) return 'AGING';
+  return 'STALE';
+}
+
 // Source body: cite what each intelligence surface is actually fed by, and its
 // last-known refresh. All values are observed from the data, never invented.
 const surfaces = [
@@ -42,7 +52,7 @@ const surfaces = [
     records_updated: null,
     source_count: 'census',
     source_failures: null,
-    status: 'HEALTHY',
+    status: computeStatus(ts('census-audit') || ts('site-stats') || TODAY),
     source_health: 'rebuilt with the site; independent of the Daily Intel clock',
     records: readJson('data/census-audit.json', {}).total || null,
   },
@@ -62,14 +72,14 @@ const surfaces = [
     records_updated: null,
     source_count: 'per-item',
     source_failures: null,
-    status: 'HEALTHY',
+    status: computeStatus(ts('intel')),
     source_health: 'curated — refreshed at build; next refresh depends on the publishing cycle',
     records: readJson('data/intel.json', {}),
   },
   {
     id: 'auto_briefing',
     name: 'Auto-briefing cache',
-    cadence: 'scheduled (hourly when deployed)',
+    cadence: 'scheduled (background cache)',
     description: 'A serverless refresh function (functions/refresh-data.js) pulls transformer-industry headlines into a cache to populate the changelog/briefing. This is a background cache, distinct from the curated Daily Intel feed.',
     last_build: null,
     last_data_refresh: null,
@@ -81,7 +91,7 @@ const surfaces = [
     source_count: null,
     source_failures: null,
     status: 'MANUAL_REVIEW',
-    source_health: 'depends on the Netlify runtime schedule and EventRegistry availability; not verified in this static build',
+    source_health: 'background cache; distinct from the curated Daily Intel feed',
     records: null,
   },
   {
@@ -97,7 +107,7 @@ const surfaces = [
     records_updated: null,
     source_count: null,
     source_failures: null,
-    status: 'HEALTHY',
+    status: computeStatus(ts('projects')),
     source_health: 'curated, source-tracked',
     records: readJson('data/projects.json', {}).projects ? readJson('data/projects.json', {}).projects.length : null,
   },
@@ -114,7 +124,7 @@ const surfaces = [
     records_updated: null,
     source_count: null,
     source_failures: null,
-    status: 'HEALTHY',
+    status: computeStatus(ts('tenders')),
     source_health: 'derived from source-backed projects + intel; never fabricated',
     records: readJson('data/tenders.json', {}).tenders ? readJson('data/tenders.json', {}).tenders.length : null,
   },
@@ -131,7 +141,7 @@ const surfaces = [
     records_updated: null,
     source_count: null,
     source_failures: null,
-    status: 'HEALTHY',
+    status: computeStatus(ts('awards')),
     source_health: 'source-confirmed only',
     records: readJson('data/awards.json', {}).awards ? readJson('data/awards.json', {}).awards.length : null,
   },
@@ -149,7 +159,7 @@ const surfaces = [
     records_updated: null,
     source_count: 1,
     source_failures: null,
-    status: 'HEALTHY',
+    status: computeStatus(ts('materials')),
     source_health: 'reference only — not a live feed',
     records: readJson('data/materials.json', {}).materials ? readJson('data/materials.json', {}).materials.length : null,
   },

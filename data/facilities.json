@@ -1,8 +1,8 @@
 {
   "$schema": "https://transformerpath.com/facilities.schema.json",
-  "generated_at": "2026-09-14T17:26:58.956Z",
-  "count": 1123,
-  "public_count": 191,
+  "generated_at": "2026-09-18T10:47:02.050Z",
+  "count": 1105,
+  "public_count": 177,
   "note": "count = every explicit plant record (census city or sourced). public_count = plants with sourced evidence (produces, source_url, or INDEPENDENTLY_SOURCED). HQ-clone facilities are not created.",
   "facilities": [
     {
@@ -1132,7 +1132,13 @@
         "max_mva": null,
         "annual_mva_capacity": null,
         "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [],
+        "certifications": [
+          "IEC",
+          "SASO",
+          "ISO 9001",
+          "ISO 14001",
+          "KEMA"
+        ],
         "test_capabilities": [],
         "produces": ""
       },
@@ -2123,38 +2129,6 @@
       "confidence": "LIMITED"
     },
     {
-      "id": "fac:astor-enerji:ankara",
-      "company_id": "cmp:astor-enerji",
-      "company_name": "Astor Enerji",
-      "facility_name": "Astor Enerji",
-      "city": "Ankara",
-      "country": "Türkiye",
-      "region": "Eurasia",
-      "status": "UNCLEAR",
-      "claim_type": "",
-      "produces": "",
-      "public_count": false,
-      "capabilities": {
-        "transformer_types": [
-          "TR_POWER",
-          "TR_DISTRIBUTION",
-          "TR_DRY_CAST"
-        ],
-        "max_voltage_kv": null,
-        "max_mva": null,
-        "annual_mva_capacity": null,
-        "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [],
-        "test_capabilities": [],
-        "produces": ""
-      },
-      "source": "TransformerPath census (site list; status unclassified)",
-      "source_tier": "Tier C",
-      "source_url": "https://astoras.com.tr",
-      "last_checked": "2026-08-28",
-      "confidence": "LIMITED"
-    },
-    {
       "id": "fac:astor-enerji-a-s:ankara",
       "company_id": "cmp:astor-enerji-a-s",
       "company_name": "Astor Enerji A.Ş.",
@@ -2183,7 +2157,7 @@
       },
       "source": "TransformerPath census (site list; status unclassified)",
       "source_tier": "Tier C",
-      "source_url": "https://www.astorenerji.com.tr/",
+      "source_url": "https://astoras.com.tr",
       "last_checked": "2026-08-28",
       "confidence": "LIMITED"
     },
@@ -2489,38 +2463,6 @@
       "source": "TransformerPath census (site list; status unclassified)",
       "source_tier": "Tier C",
       "source_url": "https://www.atef.az",
-      "last_checked": "2026-08-28",
-      "confidence": "LIMITED"
-    },
-    {
-      "id": "fac:bambang-djaja-bandd-transformer:surabaya",
-      "company_id": "cmp:bambang-djaja-bandd-transformer",
-      "company_name": "Bambang Djaja (B&D Transformer)",
-      "facility_name": "Bambang Djaja (B&D Transformer)",
-      "city": "Surabaya, East Java",
-      "country": "Indonesia",
-      "region": "Southeast Asia",
-      "status": "UNCLEAR",
-      "claim_type": "",
-      "produces": "",
-      "public_count": false,
-      "capabilities": {
-        "transformer_types": [
-          "TR_POWER",
-          "TR_DISTRIBUTION",
-          "TR_DRY_CAST"
-        ],
-        "max_voltage_kv": null,
-        "max_mva": null,
-        "annual_mva_capacity": null,
-        "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [],
-        "test_capabilities": [],
-        "produces": ""
-      },
-      "source": "TransformerPath census (site list; status unclassified)",
-      "source_tier": "Tier C",
-      "source_url": "https://bambangdjaja.com",
       "last_checked": "2026-08-28",
       "confidence": "LIMITED"
     },
@@ -3496,37 +3438,6 @@
       "source": "TransformerPath census (site list; status unclassified)",
       "source_tier": "Tier C",
       "source_url": "https://www.camtran.com/",
-      "last_checked": "2026-08-28",
-      "confidence": "LIMITED"
-    },
-    {
-      "id": "fac:camille-bauer-metrawatt:wohlen",
-      "company_id": "cmp:camille-bauer-metrawatt",
-      "company_name": "Camille Bauer Metrawatt",
-      "facility_name": "Camille Bauer Metrawatt",
-      "city": "Wohlen, Aargau",
-      "country": "Switzerland",
-      "region": "Europe",
-      "status": "UNCLEAR",
-      "claim_type": "",
-      "produces": "",
-      "public_count": false,
-      "capabilities": {
-        "transformer_types": [
-          "IT",
-          "TR_DRY_CAST"
-        ],
-        "max_voltage_kv": null,
-        "max_mva": null,
-        "annual_mva_capacity": null,
-        "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [],
-        "test_capabilities": [],
-        "produces": ""
-      },
-      "source": "TransformerPath census (site list; status unclassified)",
-      "source_tier": "Tier C",
-      "source_url": "https://www.camillebauer.com/",
       "last_checked": "2026-08-28",
       "confidence": "LIMITED"
     },
@@ -4637,7 +4548,13 @@
         "max_mva": null,
         "annual_mva_capacity": null,
         "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [],
+        "certifications": [
+          "IEC",
+          "IEEE",
+          "UL",
+          "CSA",
+          "ISO 9001"
+        ],
         "test_capabilities": [],
         "produces": ""
       },
@@ -5071,7 +4988,10 @@
         "max_mva": null,
         "annual_mva_capacity": null,
         "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [],
+        "certifications": [
+          "IEEE",
+          "ISO 9001"
+        ],
         "test_capabilities": [],
         "produces": ""
       },
@@ -5974,11 +5894,11 @@
       "confidence": "LIMITED"
     },
     {
-      "id": "fac:el-power-tech:south-korea",
+      "id": "fac:el-power-tech:gyeonggi-do-seoul",
       "company_id": "cmp:el-power-tech",
       "company_name": "EL Power Tech",
       "facility_name": "EL Power Tech",
-      "city": "South Korea",
+      "city": "Gyeonggi-do / Seoul",
       "country": "South Korea",
       "region": "East Asia",
       "status": "UNCLEAR",
@@ -9553,7 +9473,8 @@
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
-          "TR_DISTRIBUTION"
+          "TR_DISTRIBUTION",
+          "SR"
         ],
         "max_voltage_kv": null,
         "max_mva": null,
@@ -9566,38 +9487,6 @@
       "source": "TransformerPath census (site list; status unclassified)",
       "source_tier": "Tier C",
       "source_url": "https://www.ganzelectric.com",
-      "last_checked": "2026-08-28",
-      "confidence": "LIMITED"
-    },
-    {
-      "id": "fac:ganz-transformers-and-electric-rotating-machines:budapest-tapioszele",
-      "company_id": "cmp:ganz-transformers-and-electric-rotating-machines",
-      "company_name": "Ganz Transformers & Electric Rotating Machines",
-      "facility_name": "Ganz Transformers and Electric Rotating Machines",
-      "city": "Budapest / Tápiószele",
-      "country": "Hungary",
-      "region": "Europe",
-      "status": "UNCLEAR",
-      "claim_type": "",
-      "produces": "",
-      "public_count": false,
-      "capabilities": {
-        "transformer_types": [
-          "TR_POWER",
-          "SR",
-          "TR_DISTRIBUTION"
-        ],
-        "max_voltage_kv": null,
-        "max_mva": null,
-        "annual_mva_capacity": null,
-        "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [],
-        "test_capabilities": [],
-        "produces": ""
-      },
-      "source": "TransformerPath census (site list; status unclassified)",
-      "source_tier": "Tier C",
-      "source_url": "https://www.ganztranszformator.hu/",
       "last_checked": "2026-08-28",
       "confidence": "LIMITED"
     },
@@ -10764,6 +10653,38 @@
       "confidence": "LIMITED"
     },
     {
+      "id": "fac:hammond-power-solutions:baraboo",
+      "company_id": "cmp:hammond-power-solutions",
+      "company_name": "Hammond Power Solutions",
+      "facility_name": "Hammond Power Solutions",
+      "city": "Baraboo, WI",
+      "country": "USA",
+      "region": "North America",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DRY_CAST",
+          "TR_DISTRIBUTION",
+          "TR_POWER"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "https://americas.hammondpowersolutions.com/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
       "id": "fac:hammond-power-solutions:guelph",
       "company_id": "cmp:hammond-power-solutions",
       "company_name": "Hammond Power Solutions",
@@ -10790,38 +10711,6 @@
       "source": "TransformerPath census (site list; status unclassified)",
       "source_tier": "Tier C",
       "source_url": "https://www.hammondpowersolutions.com/",
-      "last_checked": "2026-08-28",
-      "confidence": "LIMITED"
-    },
-    {
-      "id": "fac:hammond-power-solutions-americas:baraboo",
-      "company_id": "cmp:hammond-power-solutions-americas",
-      "company_name": "Hammond Power Solutions (Americas)",
-      "facility_name": "Hammond Power Solutions (Americas)",
-      "city": "Baraboo, WI",
-      "country": "USA",
-      "region": "North America",
-      "status": "UNCLEAR",
-      "claim_type": "",
-      "produces": "",
-      "public_count": false,
-      "capabilities": {
-        "transformer_types": [
-          "TR_DRY_CAST",
-          "TR_DISTRIBUTION",
-          "TR_POWER"
-        ],
-        "max_voltage_kv": null,
-        "max_mva": null,
-        "annual_mva_capacity": null,
-        "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [],
-        "test_capabilities": [],
-        "produces": ""
-      },
-      "source": "TransformerPath census (site list; status unclassified)",
-      "source_tier": "Tier C",
-      "source_url": "https://americas.hammondpowersolutions.com/",
       "last_checked": "2026-08-28",
       "confidence": "LIMITED"
     },
@@ -16384,10 +16273,10 @@
       "confidence": "LIMITED"
     },
     {
-      "id": "fac:imefy:los-yebenes-toledo",
-      "company_id": "cmp:imefy",
-      "company_name": "IMEFY",
-      "facility_name": "IMEFY",
+      "id": "fac:imefy-group:los-yebenes-toledo",
+      "company_id": "cmp:imefy-group",
+      "company_name": "IMEFY Group",
+      "facility_name": "IMEFY Group",
       "city": "Los Yébenes (Toledo)",
       "country": "Spain",
       "region": "Europe",
@@ -18599,10 +18488,10 @@
       "confidence": "LIMITED"
     },
     {
-      "id": "fac:kp-electric:gimhae",
-      "company_id": "cmp:kp-electric",
-      "company_name": "KP Electric",
-      "facility_name": "KP Electric",
+      "id": "fac:kp-electric-co-ltd:gimhae",
+      "company_id": "cmp:kp-electric-co-ltd",
+      "company_name": "KP Electric Co., Ltd.",
+      "facility_name": "KP Electric Co., Ltd.",
       "city": "Gimhae",
       "country": "South Korea",
       "region": "East Asia",
@@ -18627,38 +18516,6 @@
       "source": "TransformerPath census (site list; status unclassified)",
       "source_tier": "Tier C",
       "source_url": "http://www.kpelec.com",
-      "last_checked": "2026-08-28",
-      "confidence": "LIMITED"
-    },
-    {
-      "id": "fac:kp-electric-co-ltd:gyeonggi-do",
-      "company_id": "cmp:kp-electric-co-ltd",
-      "company_name": "KP Electric Co., Ltd.",
-      "facility_name": "KP Electric Co., Ltd.",
-      "city": "Gyeonggi-do",
-      "country": "South Korea",
-      "region": "East Asia",
-      "status": "UNCLEAR",
-      "claim_type": "",
-      "produces": "",
-      "public_count": false,
-      "capabilities": {
-        "transformer_types": [
-          "TR_DISTRIBUTION",
-          "TR_DRY_CAST",
-          "TR_POWER"
-        ],
-        "max_voltage_kv": null,
-        "max_mva": null,
-        "annual_mva_capacity": null,
-        "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [],
-        "test_capabilities": [],
-        "produces": ""
-      },
-      "source": "TransformerPath census (site list; status unclassified)",
-      "source_tier": "Tier C",
-      "source_url": "https://www.kpelectric.co.kr/",
       "last_checked": "2026-08-28",
       "confidence": "LIMITED"
     },
@@ -18754,11 +18611,11 @@
       "confidence": "LIMITED"
     },
     {
-      "id": "fac:kumkang-transformer:south-korea",
+      "id": "fac:kumkang-transformer:gyeonggi-do-seoul",
       "company_id": "cmp:kumkang-transformer",
       "company_name": "Kumkang Transformer",
       "facility_name": "Kumkang Transformer",
-      "city": "South Korea",
+      "city": "Gyeonggi-do / Seoul",
       "country": "South Korea",
       "region": "East Asia",
       "status": "UNCLEAR",
@@ -18872,37 +18729,6 @@
       "source": "TransformerPath census (site list; status unclassified)",
       "source_tier": "Tier C",
       "source_url": "https://www.ltl.lk/",
-      "last_checked": "2026-08-28",
-      "confidence": "LIMITED"
-    },
-    {
-      "id": "fac:larson-electronics:kemp",
-      "company_id": "cmp:larson-electronics",
-      "company_name": "Larson Electronics",
-      "facility_name": "Larson Electronics",
-      "city": "Kemp, TX",
-      "country": "USA",
-      "region": "North America",
-      "status": "UNCLEAR",
-      "claim_type": "",
-      "produces": "",
-      "public_count": false,
-      "capabilities": {
-        "transformer_types": [
-          "TR_DISTRIBUTION",
-          "TR_DRY_CAST"
-        ],
-        "max_voltage_kv": null,
-        "max_mva": null,
-        "annual_mva_capacity": null,
-        "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [],
-        "test_capabilities": [],
-        "produces": ""
-      },
-      "source": "TransformerPath census (site list; status unclassified)",
-      "source_tier": "Tier C",
-      "source_url": "https://www.larsonelectronics.com/",
       "last_checked": "2026-08-28",
       "confidence": "LIMITED"
     },
@@ -22097,7 +21923,12 @@
         "max_mva": null,
         "annual_mva_capacity": null,
         "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [],
+        "certifications": [
+          "IEC",
+          "ISO 9001",
+          "ISO 14001",
+          "CE"
+        ],
         "test_capabilities": [],
         "produces": ""
       },
@@ -22127,7 +21958,12 @@
         "max_mva": null,
         "annual_mva_capacity": null,
         "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [],
+        "certifications": [
+          "IEC",
+          "ISO 9001",
+          "ISO 14001",
+          "CE"
+        ],
         "test_capabilities": [],
         "produces": ""
       },
@@ -23407,6 +23243,38 @@
       "source": "TransformerPath census (site list; status unclassified)",
       "source_tier": "Tier C",
       "source_url": "https://prominsa.com.do/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:pt-bambang-djaja-bandd-transformers:surabaya",
+      "company_id": "cmp:pt-bambang-djaja-bandd-transformers",
+      "company_name": "PT Bambang Djaja (B&D Transformers)",
+      "facility_name": "PT Bambang Djaja (B&D Transformers)",
+      "city": "Surabaya, East Java",
+      "country": "Indonesia",
+      "region": "Southeast Asia",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_POWER",
+          "TR_DISTRIBUTION",
+          "TR_DRY_CAST"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "https://bambangdjaja.com",
       "last_checked": "2026-08-28",
       "confidence": "LIMITED"
     },
@@ -28779,10 +28647,10 @@
       "confidence": "LIMITED"
     },
     {
-      "id": "fac:sunten-electric:foshan",
-      "company_id": "cmp:sunten-electric",
-      "company_name": "Sunten Electric",
-      "facility_name": "Sunten Electric",
+      "id": "fac:sunten-electric-co-ltd:foshan",
+      "company_id": "cmp:sunten-electric-co-ltd",
+      "company_name": "Sunten Electric Co., Ltd.",
+      "facility_name": "Sunten Electric Co., Ltd.",
       "city": "Foshan, Guangdong",
       "country": "China",
       "region": "East Asia",
@@ -29262,7 +29130,12 @@
         "max_mva": null,
         "annual_mva_capacity": null,
         "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [],
+        "certifications": [
+          "TBS",
+          "IEC",
+          "ISO 9001",
+          "ISO 14001"
+        ],
         "test_capabilities": [],
         "produces": ""
       },
@@ -29293,7 +29166,12 @@
         "max_mva": null,
         "annual_mva_capacity": null,
         "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [],
+        "certifications": [
+          "TBS",
+          "IEC",
+          "ISO 9001",
+          "ISO 14001"
+        ],
         "test_capabilities": [],
         "produces": ""
       },
@@ -34106,7 +33984,13 @@
         "max_mva": null,
         "annual_mva_capacity": null,
         "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [],
+        "certifications": [
+          "IEC",
+          "ISO 9001",
+          "ISO 14001",
+          "CESI",
+          "KEMA"
+        ],
         "test_capabilities": [],
         "produces": ""
       },
@@ -34281,9 +34165,9 @@
       "country": "Mexico",
       "region": "North America",
       "status": "UNCLEAR",
-      "claim_type": "INDEPENDENTLY_SOURCED",
-      "produces": "transformers (138-230 kV)",
-      "public_count": true,
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_DISTRIBUTION"
@@ -34294,247 +34178,13 @@
         "annual_capacity_note": "Not publicly disclosed",
         "certifications": [],
         "test_capabilities": [],
-        "produces": "transformers (138-230 kV)"
+        "produces": ""
       },
       "source": "TransformerPath census (site list; status unclassified)",
       "source_tier": "Tier C",
       "source_url": "https://www.voltran.com.mx/",
       "last_checked": "2026-08-28",
       "confidence": "LIMITED"
-    },
-    {
-      "id": "fac:voltran-weg:atotonilco-de-tula",
-      "company_id": "cmp:voltran-weg",
-      "company_name": "Voltran (WEG)",
-      "facility_name": "Voltran (WEG) — Atotonilco de Tula",
-      "city": "Atotonilco de Tula",
-      "country": "Mexico",
-      "region": "North America",
-      "status": "OPERATIONAL",
-      "claim_type": "COMPANY_REPORTED",
-      "produces": "transformers (announced up to 550 kV)",
-      "public_count": true,
-      "capabilities": {
-        "transformer_types": [
-          "TR_DISTRIBUTION",
-          "TR_POWER",
-          "TR_DISTRIBUTION",
-          "TR_DRY_CAST",
-          "PAD_MOUNTED",
-          "TR_GSU",
-          "TR_SPEC_RENEWABLE"
-        ],
-        "max_voltage_kv": null,
-        "max_mva": null,
-        "annual_mva_capacity": null,
-        "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [
-          "IEEE",
-          "IEC"
-        ],
-        "test_capabilities": [],
-        "produces": "transformers (announced up to 550 kV)"
-      },
-      "source": "Company intelligence store (sourced plant)",
-      "source_tier": "Tier C",
-      "source_url": "https://www.weg.net",
-      "last_checked": "2026-08-28",
-      "confidence": "HIGH"
-    },
-    {
-      "id": "fac:voltran-weg:betim",
-      "company_id": "cmp:voltran-weg",
-      "company_name": "Voltran (WEG)",
-      "facility_name": "Voltran (WEG) — Betim",
-      "city": "Betim",
-      "country": "Brazil",
-      "region": "North America",
-      "status": "OPERATIONAL",
-      "claim_type": "INDEPENDENTLY_SOURCED",
-      "produces": "power transformers (3x 500 MVA / 525 kV)",
-      "public_count": true,
-      "capabilities": {
-        "transformer_types": [
-          "TR_DISTRIBUTION",
-          "TR_POWER",
-          "TR_DISTRIBUTION",
-          "TR_DRY_CAST",
-          "PAD_MOUNTED",
-          "TR_GSU",
-          "TR_SPEC_RENEWABLE"
-        ],
-        "max_voltage_kv": null,
-        "max_mva": null,
-        "annual_mva_capacity": null,
-        "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [
-          "IEEE",
-          "IEC"
-        ],
-        "test_capabilities": [],
-        "produces": "power transformers (3x 500 MVA / 525 kV)"
-      },
-      "source": "Company intelligence store (sourced plant)",
-      "source_tier": "Tier A",
-      "source_url": "https://www.weg.net",
-      "last_checked": "2026-08-28",
-      "confidence": "HIGH"
-    },
-    {
-      "id": "fac:voltran-weg:blumenau",
-      "company_id": "cmp:voltran-weg",
-      "company_name": "Voltran (WEG)",
-      "facility_name": "Voltran (WEG) — Blumenau",
-      "city": "Blumenau",
-      "country": "Brazil",
-      "region": "North America",
-      "status": "OPERATIONAL",
-      "claim_type": "INDEPENDENTLY_SOURCED",
-      "produces": "power transformers (incl. 550 kV)",
-      "public_count": true,
-      "capabilities": {
-        "transformer_types": [
-          "TR_DISTRIBUTION",
-          "TR_POWER",
-          "TR_DISTRIBUTION",
-          "TR_DRY_CAST",
-          "PAD_MOUNTED",
-          "TR_GSU",
-          "TR_SPEC_RENEWABLE"
-        ],
-        "max_voltage_kv": null,
-        "max_mva": null,
-        "annual_mva_capacity": null,
-        "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [
-          "IEEE",
-          "IEC"
-        ],
-        "test_capabilities": [],
-        "produces": "power transformers (incl. 550 kV)"
-      },
-      "source": "Company intelligence store (sourced plant)",
-      "source_tier": "Tier A",
-      "source_url": "https://www.weg.net",
-      "last_checked": "2026-08-28",
-      "confidence": "HIGH"
-    },
-    {
-      "id": "fac:voltran-weg:itajuba",
-      "company_id": "cmp:voltran-weg",
-      "company_name": "Voltran (WEG)",
-      "facility_name": "Voltran (WEG) — Itajubá",
-      "city": "Itajubá",
-      "country": "Brazil",
-      "region": "North America",
-      "status": "OPERATIONAL",
-      "claim_type": "INDEPENDENTLY_SOURCED",
-      "produces": "instrument transformers",
-      "public_count": true,
-      "capabilities": {
-        "transformer_types": [
-          "TR_DISTRIBUTION",
-          "TR_POWER",
-          "TR_DISTRIBUTION",
-          "TR_DRY_CAST",
-          "PAD_MOUNTED",
-          "TR_GSU",
-          "TR_SPEC_RENEWABLE"
-        ],
-        "max_voltage_kv": null,
-        "max_mva": null,
-        "annual_mva_capacity": null,
-        "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [
-          "IEEE",
-          "IEC"
-        ],
-        "test_capabilities": [],
-        "produces": "instrument transformers"
-      },
-      "source": "Company intelligence store (sourced plant)",
-      "source_tier": "Tier A",
-      "source_url": "https://www.weg.net",
-      "last_checked": "2026-08-28",
-      "confidence": "HIGH"
-    },
-    {
-      "id": "fac:voltran-weg:rionegro",
-      "company_id": "cmp:voltran-weg",
-      "company_name": "Voltran (WEG)",
-      "facility_name": "Voltran (WEG) — Rionegro",
-      "city": "Rionegro",
-      "country": "Colombia",
-      "region": "North America",
-      "status": "OPERATIONAL",
-      "claim_type": "COMPANY_REPORTED",
-      "produces": "transformers (announced up to 60 MVA)",
-      "public_count": true,
-      "capabilities": {
-        "transformer_types": [
-          "TR_DISTRIBUTION",
-          "TR_POWER",
-          "TR_DISTRIBUTION",
-          "TR_DRY_CAST",
-          "PAD_MOUNTED",
-          "TR_GSU",
-          "TR_SPEC_RENEWABLE"
-        ],
-        "max_voltage_kv": null,
-        "max_mva": null,
-        "annual_mva_capacity": null,
-        "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [
-          "IEEE",
-          "IEC"
-        ],
-        "test_capabilities": [],
-        "produces": "transformers (announced up to 60 MVA)"
-      },
-      "source": "Company intelligence store (sourced plant)",
-      "source_tier": "Tier C",
-      "source_url": "https://www.weg.net",
-      "last_checked": "2026-08-28",
-      "confidence": "HIGH"
-    },
-    {
-      "id": "fac:voltran-weg:washington",
-      "company_id": "cmp:voltran-weg",
-      "company_name": "Voltran (WEG)",
-      "facility_name": "Voltran (WEG) — Washington, Missouri",
-      "city": "Washington, Missouri",
-      "country": "United States",
-      "region": "North America",
-      "status": "OPERATIONAL",
-      "claim_type": "INDEPENDENTLY_SOURCED",
-      "produces": "transformers up to 10 MVA / 46 kV",
-      "public_count": true,
-      "capabilities": {
-        "transformer_types": [
-          "TR_DISTRIBUTION",
-          "TR_POWER",
-          "TR_DISTRIBUTION",
-          "TR_DRY_CAST",
-          "PAD_MOUNTED",
-          "TR_GSU",
-          "TR_SPEC_RENEWABLE"
-        ],
-        "max_voltage_kv": null,
-        "max_mva": null,
-        "annual_mva_capacity": null,
-        "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [
-          "IEEE",
-          "IEC"
-        ],
-        "test_capabilities": [],
-        "produces": "transformers up to 10 MVA / 46 kV"
-      },
-      "source": "Company intelligence store (sourced plant)",
-      "source_tier": "Tier A",
-      "source_url": "https://www.weg.net",
-      "last_checked": "2026-08-28",
-      "confidence": "HIGH"
     },
     {
       "id": "fac:vuki-a-s-transformers-and-insulation:bratislava",
@@ -34938,293 +34588,6 @@
       "source_url": "https://www.weg.net",
       "last_checked": "2026-08-28",
       "confidence": "LIMITED"
-    },
-    {
-      "id": "fac:weg-equipamentos-eletricos:atotonilco-de-tula",
-      "company_id": "cmp:weg-equipamentos-eletricos",
-      "company_name": "WEG Equipamentos Elétricos",
-      "facility_name": "WEG Equipamentos Elétricos — Atotonilco de Tula",
-      "city": "Atotonilco de Tula",
-      "country": "Mexico",
-      "region": "Latin America",
-      "status": "OPERATIONAL",
-      "claim_type": "COMPANY_REPORTED",
-      "produces": "transformers (announced up to 550 kV)",
-      "public_count": true,
-      "capabilities": {
-        "transformer_types": [
-          "TR_POWER",
-          "TR_DISTRIBUTION",
-          "TR_DRY_CAST",
-          "TR_POWER",
-          "TR_DISTRIBUTION",
-          "TR_DRY_CAST",
-          "PAD_MOUNTED",
-          "TR_GSU",
-          "TR_SPEC_RENEWABLE"
-        ],
-        "max_voltage_kv": null,
-        "max_mva": null,
-        "annual_mva_capacity": null,
-        "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [
-          "IEEE",
-          "IEC"
-        ],
-        "test_capabilities": [],
-        "produces": "transformers (announced up to 550 kV)"
-      },
-      "source": "Company intelligence store (sourced plant)",
-      "source_tier": "Tier C",
-      "source_url": "https://www.weg.net",
-      "last_checked": "2026-08-28",
-      "confidence": "HIGH"
-    },
-    {
-      "id": "fac:weg-equipamentos-eletricos:betim",
-      "company_id": "cmp:weg-equipamentos-eletricos",
-      "company_name": "WEG Equipamentos Elétricos",
-      "facility_name": "WEG Equipamentos Elétricos — Betim",
-      "city": "Betim",
-      "country": "Brazil",
-      "region": "Latin America",
-      "status": "OPERATIONAL",
-      "claim_type": "INDEPENDENTLY_SOURCED",
-      "produces": "power transformers (3x 500 MVA / 525 kV)",
-      "public_count": true,
-      "capabilities": {
-        "transformer_types": [
-          "TR_POWER",
-          "TR_DISTRIBUTION",
-          "TR_DRY_CAST",
-          "TR_POWER",
-          "TR_DISTRIBUTION",
-          "TR_DRY_CAST",
-          "PAD_MOUNTED",
-          "TR_GSU",
-          "TR_SPEC_RENEWABLE"
-        ],
-        "max_voltage_kv": null,
-        "max_mva": null,
-        "annual_mva_capacity": null,
-        "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [
-          "IEEE",
-          "IEC"
-        ],
-        "test_capabilities": [],
-        "produces": "power transformers (3x 500 MVA / 525 kV)"
-      },
-      "source": "Company intelligence store (sourced plant)",
-      "source_tier": "Tier A",
-      "source_url": "https://www.weg.net",
-      "last_checked": "2026-08-28",
-      "confidence": "HIGH"
-    },
-    {
-      "id": "fac:weg-equipamentos-eletricos:blumenau",
-      "company_id": "cmp:weg-equipamentos-eletricos",
-      "company_name": "WEG Equipamentos Elétricos",
-      "facility_name": "WEG Equipamentos Elétricos — Blumenau",
-      "city": "Blumenau",
-      "country": "Brazil",
-      "region": "Latin America",
-      "status": "OPERATIONAL",
-      "claim_type": "INDEPENDENTLY_SOURCED",
-      "produces": "power transformers (incl. 550 kV)",
-      "public_count": true,
-      "capabilities": {
-        "transformer_types": [
-          "TR_POWER",
-          "TR_DISTRIBUTION",
-          "TR_DRY_CAST",
-          "TR_POWER",
-          "TR_DISTRIBUTION",
-          "TR_DRY_CAST",
-          "PAD_MOUNTED",
-          "TR_GSU",
-          "TR_SPEC_RENEWABLE"
-        ],
-        "max_voltage_kv": null,
-        "max_mva": null,
-        "annual_mva_capacity": null,
-        "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [
-          "IEEE",
-          "IEC"
-        ],
-        "test_capabilities": [],
-        "produces": "power transformers (incl. 550 kV)"
-      },
-      "source": "Company intelligence store (sourced plant)",
-      "source_tier": "Tier A",
-      "source_url": "https://www.weg.net",
-      "last_checked": "2026-08-28",
-      "confidence": "HIGH"
-    },
-    {
-      "id": "fac:weg-equipamentos-eletricos:huehuetoca",
-      "company_id": "cmp:weg-equipamentos-eletricos",
-      "company_name": "WEG Equipamentos Elétricos",
-      "facility_name": "WEG Equipamentos Elétricos — Huehuetoca",
-      "city": "Huehuetoca",
-      "country": "Mexico",
-      "region": "Latin America",
-      "status": "OPERATIONAL",
-      "claim_type": "INDEPENDENTLY_SOURCED",
-      "produces": "transformers (138-230 kV)",
-      "public_count": true,
-      "capabilities": {
-        "transformer_types": [
-          "TR_POWER",
-          "TR_DISTRIBUTION",
-          "TR_DRY_CAST",
-          "TR_POWER",
-          "TR_DISTRIBUTION",
-          "TR_DRY_CAST",
-          "PAD_MOUNTED",
-          "TR_GSU",
-          "TR_SPEC_RENEWABLE"
-        ],
-        "max_voltage_kv": null,
-        "max_mva": null,
-        "annual_mva_capacity": null,
-        "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [
-          "IEEE",
-          "IEC"
-        ],
-        "test_capabilities": [],
-        "produces": "transformers (138-230 kV)"
-      },
-      "source": "Company intelligence store (sourced plant)",
-      "source_tier": "Tier A",
-      "source_url": "https://www.weg.net",
-      "last_checked": "2026-08-28",
-      "confidence": "HIGH"
-    },
-    {
-      "id": "fac:weg-equipamentos-eletricos:itajuba",
-      "company_id": "cmp:weg-equipamentos-eletricos",
-      "company_name": "WEG Equipamentos Elétricos",
-      "facility_name": "WEG Equipamentos Elétricos — Itajubá",
-      "city": "Itajubá",
-      "country": "Brazil",
-      "region": "Latin America",
-      "status": "OPERATIONAL",
-      "claim_type": "INDEPENDENTLY_SOURCED",
-      "produces": "instrument transformers",
-      "public_count": true,
-      "capabilities": {
-        "transformer_types": [
-          "TR_POWER",
-          "TR_DISTRIBUTION",
-          "TR_DRY_CAST",
-          "TR_POWER",
-          "TR_DISTRIBUTION",
-          "TR_DRY_CAST",
-          "PAD_MOUNTED",
-          "TR_GSU",
-          "TR_SPEC_RENEWABLE"
-        ],
-        "max_voltage_kv": null,
-        "max_mva": null,
-        "annual_mva_capacity": null,
-        "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [
-          "IEEE",
-          "IEC"
-        ],
-        "test_capabilities": [],
-        "produces": "instrument transformers"
-      },
-      "source": "Company intelligence store (sourced plant)",
-      "source_tier": "Tier A",
-      "source_url": "https://www.weg.net",
-      "last_checked": "2026-08-28",
-      "confidence": "HIGH"
-    },
-    {
-      "id": "fac:weg-equipamentos-eletricos:rionegro",
-      "company_id": "cmp:weg-equipamentos-eletricos",
-      "company_name": "WEG Equipamentos Elétricos",
-      "facility_name": "WEG Equipamentos Elétricos — Rionegro",
-      "city": "Rionegro",
-      "country": "Colombia",
-      "region": "Latin America",
-      "status": "OPERATIONAL",
-      "claim_type": "COMPANY_REPORTED",
-      "produces": "transformers (announced up to 60 MVA)",
-      "public_count": true,
-      "capabilities": {
-        "transformer_types": [
-          "TR_POWER",
-          "TR_DISTRIBUTION",
-          "TR_DRY_CAST",
-          "TR_POWER",
-          "TR_DISTRIBUTION",
-          "TR_DRY_CAST",
-          "PAD_MOUNTED",
-          "TR_GSU",
-          "TR_SPEC_RENEWABLE"
-        ],
-        "max_voltage_kv": null,
-        "max_mva": null,
-        "annual_mva_capacity": null,
-        "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [
-          "IEEE",
-          "IEC"
-        ],
-        "test_capabilities": [],
-        "produces": "transformers (announced up to 60 MVA)"
-      },
-      "source": "Company intelligence store (sourced plant)",
-      "source_tier": "Tier C",
-      "source_url": "https://www.weg.net",
-      "last_checked": "2026-08-28",
-      "confidence": "HIGH"
-    },
-    {
-      "id": "fac:weg-equipamentos-eletricos:washington",
-      "company_id": "cmp:weg-equipamentos-eletricos",
-      "company_name": "WEG Equipamentos Elétricos",
-      "facility_name": "WEG Equipamentos Elétricos — Washington, Missouri",
-      "city": "Washington, Missouri",
-      "country": "United States",
-      "region": "Latin America",
-      "status": "OPERATIONAL",
-      "claim_type": "INDEPENDENTLY_SOURCED",
-      "produces": "transformers up to 10 MVA / 46 kV",
-      "public_count": true,
-      "capabilities": {
-        "transformer_types": [
-          "TR_POWER",
-          "TR_DISTRIBUTION",
-          "TR_DRY_CAST",
-          "TR_POWER",
-          "TR_DISTRIBUTION",
-          "TR_DRY_CAST",
-          "PAD_MOUNTED",
-          "TR_GSU",
-          "TR_SPEC_RENEWABLE"
-        ],
-        "max_voltage_kv": null,
-        "max_mva": null,
-        "annual_mva_capacity": null,
-        "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [
-          "IEEE",
-          "IEC"
-        ],
-        "test_capabilities": [],
-        "produces": "transformers up to 10 MVA / 46 kV"
-      },
-      "source": "Company intelligence store (sourced plant)",
-      "source_tier": "Tier A",
-      "source_url": "https://www.weg.net",
-      "last_checked": "2026-08-28",
-      "confidence": "HIGH"
     },
     {
       "id": "fac:weg-transformers-usa:washington",
@@ -35783,11 +35146,11 @@
       "confidence": "LIMITED"
     },
     {
-      "id": "fac:yuseong-kandn:south-korea",
+      "id": "fac:yuseong-kandn:gyeonggi-do-seoul",
       "company_id": "cmp:yuseong-kandn",
       "company_name": "Yuseong K&N",
       "facility_name": "Yuseong K&N",
-      "city": "South Korea",
+      "city": "Gyeonggi-do / Seoul",
       "country": "South Korea",
       "region": "East Asia",
       "status": "UNCLEAR",
