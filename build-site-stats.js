@@ -96,7 +96,7 @@ LABS.forEach(l => {
 });
 
 const companiesCount = (INTEL.companies || []).length || makers;
-const avgCompleteness = companiesCount ? Math.min(95, Math.max(54, Math.round(intelCompletenessTotal / companiesCount))) : 73;
+const avgCompleteness = companiesCount ? Math.min(100, Math.round(intelCompletenessTotal / companiesCount)) : 73;
 
 // Canonical entities and facilities
 const CANON_COMPANIES = readJson('data/companies.json', {}).companies || [];

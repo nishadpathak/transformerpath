@@ -198,19 +198,33 @@ let count40to80 = 0;
 let countBelow40 = 0;
 let totalScore = 0;
 
+const missingFieldCounts = {};
 const companyCompletenessList = INTEL.map(c => {
   const s = c.completeness_score || 0;
   totalScore += s;
   if (s >= 80) countAbove80++;
   else if (s >= 40) count40to80++;
   else countBelow40++;
+  const missing = c.missing_fields || c.completeness_missing || [];
+  missing.forEach(f => {
+    missingFieldCounts[f] = (missingFieldCounts[f] || 0) + 1;
+  });
   return {
     name: c.name,
     country: c.country,
     score: s,
-    missing: c.completeness_missing || []
+    missing: missing
   };
 });
+
+const rankedMissingFields = Object.keys(missingFieldCounts)
+  .map(f => ({
+    field: f,
+    missing_count: missingFieldCounts[f],
+    missing_pct: Math.round((missingFieldCounts[f] / (INTEL.length || 1)) * 100),
+    coverage_pct: Math.round((1 - missingFieldCounts[f] / (INTEL.length || 1)) * 100)
+  }))
+  .sort((a, b) => b.missing_count - a.missing_count);
 
 const overallCompleteness = companyCompletenessList.length ? Math.round((totalScore / companyCompletenessList.length) * 10) / 10 : 0;
 
@@ -358,6 +372,9 @@ const directoryHealthReport = {
   p0_saturation: CATEGORY_SATURATION.p0_universe_mapped || {},
   research_command_center: CATEGORY_SATURATION.research_command_center || {},
   category_saturation: CATEGORY_SATURATION.categories || {},
+  gap_analysis: {
+    ranked_missing_fields: rankedMissingFields
+  },
   suspected_duplicates: suspectedDuplicates,
   records_missing_sources: missingSources.slice(0, 50),
   records_not_reviewed_12m: staleRecords.slice(0, 50),
