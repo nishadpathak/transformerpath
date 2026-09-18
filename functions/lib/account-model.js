@@ -409,6 +409,83 @@ create table if not exists public.webhook_events (
   created_at timestamptz not null default now()
 );
 
+create table if not exists public.payments (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users(id) on delete set null,
+  amount integer,
+  currency text default 'usd',
+  status text not null default 'paid',
+  created_at timestamptz not null default now()
+);
+
+create table if not exists public.follows (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  subject_type text not null,
+  subject text not null,
+  label text,
+  created_at timestamptz not null default now(),
+  unique (user_id, subject_type, subject)
+);
+
+create table if not exists public.user_books (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  book_id text not null,
+  edition text default 'digital',
+  activated boolean not null default true,
+  activated_at timestamptz not null default now(),
+  unique (user_id, book_id)
+);
+
+create table if not exists public.user_rfqs (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  reference text,
+  category text,
+  quantity text,
+  rating text,
+  voltage text,
+  standard text,
+  destination text,
+  status text not null default 'open',
+  created_at timestamptz not null default now()
+);
+
+create table if not exists public.company_claims (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  company text not null,
+  country text default '',
+  status text not null default 'claimed',
+  created_at timestamptz not null default now(),
+  unique (user_id, company, country)
+);
+
+create table if not exists public.email_prefs (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  daily_brief boolean not null default true,
+  alerts boolean not null default true,
+  newsletters boolean not null default false,
+  updated_at timestamptz not null default now()
+);
+
+create table if not exists public.buyer_profiles (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  company_name text,
+  country text,
+  rfq_count integer not null default 0,
+  updated_at timestamptz not null default now()
+);
+
+create table if not exists public.supplier_profiles (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  company_name text,
+  country text,
+  verified boolean not null default false,
+  updated_at timestamptz not null default now()
+);
+
 alter table public.profiles enable row level security;
 alter table public.organizations enable row level security;
 alter table public.organization_members enable row level security;
@@ -416,7 +493,10 @@ alter table public.memberships enable row level security;
 alter table public.account_roles enable row level security;
 alter table public.learner_profiles enable row level security;
 alter table public.purchases enable row level security;
+alter table public.payments enable row level security;
+alter table public.entitlements enable row level security;
 alter table public.lesson_progress enable row level security;
+alter table public.learning_progress enable row level security;
 alter table public.assessment_attempts enable row level security;
 alter table public.assessment_results enable row level security;
 alter table public.user_skills enable row level security;
@@ -432,6 +512,14 @@ alter table public.saved_items enable row level security;
 alter table public.notes enable row level security;
 alter table public.certificates enable row level security;
 alter table public.completion_records enable row level security;
+alter table public.webhook_events enable row level security;
+alter table public.follows enable row level security;
+alter table public.user_books enable row level security;
+alter table public.user_rfqs enable row level security;
+alter table public.company_claims enable row level security;
+alter table public.email_prefs enable row level security;
+alter table public.buyer_profiles enable row level security;
+alter table public.supplier_profiles enable row level security;
 
 do $$ begin
   if not exists (select 1 from pg_policies where policyname = 'profiles_own') then
@@ -452,14 +540,29 @@ do $$ begin
   if not exists (select 1 from pg_policies where policyname = 'purchases_own') then
     create policy purchases_own on public.purchases for select using (auth.uid() = user_id);
   end if;
+  if not exists (select 1 from pg_policies where policyname = 'payments_own') then
+    create policy payments_own on public.payments for select using (auth.uid() = user_id);
+  end if;
+  if not exists (select 1 from pg_policies where policyname = 'entitlements_own') then
+    create policy entitlements_own on public.entitlements for select using (auth.uid() = user_id);
+  end if;
   if not exists (select 1 from pg_policies where policyname = 'lesson_own') then
     create policy lesson_own on public.lesson_progress for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  end if;
+  if not exists (select 1 from pg_policies where policyname = 'lesson_prog_own') then
+    create policy lesson_prog_own on public.lesson_progress for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  end if;
+  if not exists (select 1 from pg_policies where policyname = 'learning_prog_own') then
+    create policy learning_prog_own on public.learning_progress for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
   end if;
   if not exists (select 1 from pg_policies where policyname = 'attempt_own') then
     create policy attempt_own on public.assessment_attempts for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
   end if;
   if not exists (select 1 from pg_policies where policyname = 'result_own') then
     create policy result_own on public.assessment_results for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  end if;
+  if not exists (select 1 from pg_policies where policyname = 'results_own') then
+    create policy results_own on public.assessment_results for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
   end if;
   if not exists (select 1 from pg_policies where policyname = 'user_skills_own') then
     create policy user_skills_own on public.user_skills for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
@@ -470,20 +573,32 @@ do $$ begin
   if not exists (select 1 from pg_policies where policyname = 'skills_own') then
     create policy skills_own on public.skill_records for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
   end if;
+  if not exists (select 1 from pg_policies where policyname = 'skill_records_own') then
+    create policy skill_records_own on public.skill_records for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  end if;
   if not exists (select 1 from pg_policies where policyname = 'gridlab_own') then
     create policy gridlab_own on public.grid_lab_progress for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
   end if;
-  if not exists (select 1 from pg_policies where policyname = 'glsess_own') then
-    create policy glsess_own on public.grid_lab_sessions for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  if not exists (select 1 from pg_policies where policyname = 'grid_lab_own') then
+    create policy grid_lab_own on public.grid_lab_progress for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  end if;
+  if not exists (select 1 from pg_policies where policyname = 'grid_sess_own') then
+    create policy grid_sess_own on public.grid_lab_sessions for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
   end if;
   if not exists (select 1 from pg_policies where policyname = 'path_own') then
     create policy path_own on public.path_progress for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  end if;
+  if not exists (select 1 from pg_policies where policyname = 'path_prog_own') then
+    create policy path_prog_own on public.path_progress for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
   end if;
   if not exists (select 1 from pg_policies where policyname = 'designs_own') then
     create policy designs_own on public.saved_designs for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
   end if;
   if not exists (select 1 from pg_policies where policyname = 'dver_own') then
     create policy dver_own on public.design_versions for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  end if;
+  if not exists (select 1 from pg_policies where policyname = 'versions_own') then
+    create policy versions_own on public.design_versions for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
   end if;
   if not exists (select 1 from pg_policies where policyname = 'projects_own') then
     create policy projects_own on public.projects for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
@@ -500,7 +615,42 @@ do $$ begin
   if not exists (select 1 from pg_policies where policyname = 'completion_own') then
     create policy completion_own on public.completion_records for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
   end if;
+  if not exists (select 1 from pg_policies where policyname = 'follows_own') then
+    create policy follows_own on public.follows for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  end if;
+  if not exists (select 1 from pg_policies where policyname = 'books_own') then
+    create policy books_own on public.user_books for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  end if;
+  if not exists (select 1 from pg_policies where policyname = 'rfqs_own') then
+    create policy rfqs_own on public.user_rfqs for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  end if;
+  if not exists (select 1 from pg_policies where policyname = 'claims_own') then
+    create policy claims_own on public.company_claims for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  end if;
+  if not exists (select 1 from pg_policies where policyname = 'email_prefs_own') then
+    create policy email_prefs_own on public.email_prefs for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  end if;
+  if not exists (select 1 from pg_policies where policyname = 'buyer_own') then
+    create policy buyer_own on public.buyer_profiles for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  end if;
+  if not exists (select 1 from pg_policies where policyname = 'supplier_own') then
+    create policy supplier_own on public.supplier_profiles for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
+  end if;
 end $$;
+  rfq_count integer not null default 0,
+  updated_at timestamptz not null default now()
+);
+
+create table if not exists public.supplier_profiles (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  company_name text,
+  country text,
+  verified boolean not null default false,
+  updated_at timestamptz not null default now()
+);
+
+alter table public.buyer_profiles enable row level security;
+alter table public.supplier_profiles enable row level security;
 `;
 
 function flagsFromRoles(roles) {
@@ -571,12 +721,14 @@ function twelveMonthsFrom(iso) {
 }
 
 const REQUIRED_TABLES = [
-  'profiles', 'organizations', 'organization_members', 'plans', 'purchases',
-  'entitlements', 'courses', 'modules', 'lessons', 'lesson_progress',
+  'profiles', 'organizations', 'organization_members', 'account_roles',
+  'learner_profiles', 'plans', 'purchases', 'entitlements', 'courses',
+  'modules', 'lessons', 'lesson_progress', 'learning_progress',
   'assessment_attempts', 'assessment_results', 'skills', 'user_skills',
-  'skill_evidence', 'grid_lab_sessions', 'grid_lab_scenarios', 'saved_designs',
-  'design_versions', 'projects', 'saved_items', 'notes', 'certificates',
-  'completion_records',
+  'skill_evidence', 'skill_records', 'grid_lab_sessions', 'grid_lab_scenarios',
+  'grid_lab_progress', 'path_progress', 'saved_designs', 'design_versions',
+  'projects', 'saved_items', 'notes', 'certificates', 'completion_records',
+  'webhook_events', 'buyer_profiles', 'supplier_profiles',
 ];
 
 module.exports = {

@@ -1,9 +1,11 @@
 #!/usr/bin/env node
-/* tests/check-account-schema.js — APPLY_SQL must name the Sprint 1–3 spine
+/* tests/check-account-schema.js — APPLY_SQL must name the Sprint 1–3 spine,
+ * dynamically match all supabase.from('table') calls in application code,
  * and remain printable via `node apply-sql.js`.
  */
 'use strict';
 const fs = require('fs');
+const path = require('path');
 const model = require('../functions/lib/account-model');
 
 let failures = [];
@@ -35,6 +37,41 @@ check('onboarding roles include Design Engineer and Procurement',
   model.ONBOARDING_ROLES.some((r) => r.value === 'procurement'));
 check('skill levels are Developing/Intermediate/Advanced',
   model.SKILL_LEVELS.indexOf('Developing') >= 0 && model.SKILL_LEVELS.indexOf('Advanced') >= 0);
+
+console.log('\n=== DYNAMIC CODE & RLS VERIFICATION ===');
+// Scan functions and client scripts for all supabase.from('<table>') references
+const searchDirs = ['functions', 'functions/lib', '.'];
+const discoveredTables = new Set();
+
+function scanDir(dir) {
+  if (!fs.existsSync(dir)) return;
+  const files = fs.readdirSync(dir);
+  for (const f of files) {
+    const full = path.join(dir, f);
+    const stat = fs.statSync(full);
+    if (stat.isDirectory() && dir !== '.' && f !== 'node_modules' && f !== '.git' && f !== 'dist') {
+      scanDir(full);
+    } else if (stat.isFile() && (f.endsWith('.js') || f.endsWith('.html'))) {
+      const content = fs.readFileSync(full, 'utf8');
+      const matches = content.matchAll(/\b(?:supabase|client)\.from\(\s*['"]([a-zA-Z0-9_]+)['"]\s*\)/g);
+      for (const m of matches) {
+        discoveredTables.add(m[1]);
+      }
+    }
+  }
+}
+
+searchDirs.forEach(scanDir);
+console.log('  Discovered tables in code:', Array.from(discoveredTables).join(', '));
+
+discoveredTables.forEach((table) => {
+  const createsTable = new RegExp('create table if not exists public\\.' + table + '\\b', 'i').test(model.APPLY_SQL);
+  check(`Discovered table "${table}" exists in APPLY_SQL`, createsTable);
+  
+  const enablesRls = new RegExp('alter table public\\.' + table + ' enable row level security', 'i').test(model.APPLY_SQL);
+  const hasPolicy = new RegExp('create policy [a-zA-Z0-9_]+ on public\\.' + table + '\\b', 'i').test(model.APPLY_SQL);
+  check(`Discovered table "${table}" has RLS enabled or policy in APPLY_SQL`, enablesRls || hasPolicy);
+});
 
 const pathCat = JSON.parse(fs.readFileSync('data/learning-path.json', 'utf8'));
 check('learning path has FOUNDATIONS / DISTRIBUTION / POWER',

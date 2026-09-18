@@ -23,3 +23,16 @@ jobs:
       - run: node tests/check-p0-integrity.js
       - run: node tests/check-account-schema.js
       - run: node build-dist.js
+      - name: Assert clean public artifact (no admin or private files in dist)
+        run: |
+          test ! -f dist/admin.html
+          test ! -d dist/admin
+          test ! -d dist/_private
+          echo "✓ dist/ contains no admin or private surfaces"
+      - name: Assert repo hygiene (no .DS_Store tracked)
+        run: |
+          if [ -f .DS_Store ]; then
+            echo "Error: .DS_Store tracked in repo root" && exit 1
+          fi
+          echo "✓ Repository hygiene clean"
+

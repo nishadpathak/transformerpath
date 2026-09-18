@@ -13,9 +13,9 @@ secrets.txt
 archive/
 # Internal strategy / setup notes — kept local, never published or pushed.
 # (netlify.toml also 404s /_docs/* in case the folder is deployed directly.)
-_docs/
 *.md
 !README.md
+!SECURITY.md
 
 # Stale early-August snapshot of the site — superseded by the top-level pages.
 transformerpath-site/
