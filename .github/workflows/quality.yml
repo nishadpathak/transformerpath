@@ -9,17 +9,83 @@ permissions:
   contents: read
 
 jobs:
-  gates:
+  visibility:
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Keep the repository private and protect the public artifact
+        shell: bash
+        run: |
+          if [ "${{ github.event.repository.private }}" != "true" ]; then
+            echo "Repository must be private while internal files remain in the repo."
+            exit 1
+          fi
+
+          for path in \
+            masterclass-chapters.js \
+            commerce-intel.json \
+            engineer-track-paid.json; do
+            if git ls-files --error-unmatch "$path" >/dev/null 2>&1; then
+              echo "Forbidden tracked file: $path"
+              exit 1
+            fi
+          done
+
+  build:
+    runs-on: ubuntu-latest
+    needs: visibility
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version-file: .nvmrc
           cache: npm
       - run: npm ci
-      - run: node check-config.js
-      - run: node check-links.js
-      - run: node tests/check-p0-integrity.js
-      - run: node tests/check-account-schema.js
-      - run: node build-dist.js
+      - name: Read the real Netlify build command
+        shell: bash
+        run: |
+          python - <<'PY'
+          import os, re
+          from pathlib import Path
+
+          text = Path('netlify.toml').read_text(encoding='utf-8')
+          match = re.search(r'(?ms)\[build\]\s*command\s*=\s*"([^"]+)"', text)
+          if not match:
+              raise SystemExit('Could not find [build].command in netlify.toml')
+
+          with open(os.environ['GITHUB_ENV'], 'a', encoding='utf-8') as fh:
+              fh.write(f"NETLIFY_BUILD_COMMAND={match.group(1)}\n")
+          PY
+      - name: Run the actual production build
+        shell: bash
+        run: bash -lc "$NETLIFY_BUILD_COMMAND"
+
+  hygiene:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Keep the repo clean and publicly safe
+        shell: bash
+        run: |
+          python - <<'PY'
+          import subprocess
+          from pathlib import Path
+
+          tracked = subprocess.check_output(['git', 'ls-files'], text=True).splitlines()
+
+          forbidden_suffixes = (
+              '.pdf', '.sql', '.xlsx', '.docx', '.doc', '.zip', '.pem', '.key'
+          )
+          forbidden_paths = ('_private', '_docs', '/archive', 'archive/', 'dist/')
+
+          for path in tracked:
+              if path.endswith(forbidden_suffixes):
+                  raise SystemExit(f'Forbidden tracked file type: {path}')
+              if any(token in path for token in forbidden_paths):
+                  raise SystemExit(f'Forbidden tracked path: {path}')
+
+          if 'README.md' not in tracked:
+              raise SystemExit('README.md must stay tracked.')
+
+          print('Hygiene checks passed.')
+          PY
