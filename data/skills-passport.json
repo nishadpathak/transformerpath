@@ -1,0 +1,78 @@
+{
+  "_comment": "Skills Passport — evidence-based competencies. Levels: Developing / Intermediate / Advanced. Never a professional qualification. No XP, coins, badges or leaderboards.",
+  "levels": ["NOT STARTED", "Developing", "Intermediate", "Advanced"],
+  "disclaimer": "Course completion record, not a qualification. TransformerPath is not an accreditation body and does not licence engineers.",
+  "evidence_kinds": ["lesson", "assessment", "calculation", "grid_lab", "capstone"],
+  "competencies": [
+    {
+      "id": "grid-frequency",
+      "name": "Grid frequency regimes",
+      "family": "Grid systems",
+      "how": "Grid Lab scenario “50 Hz and 60 Hz worlds” (grid_lab evidence).",
+      "scenario": "freq-50-60"
+    },
+    {
+      "id": "uhv-systems",
+      "name": "UHV / 765 kV class systems",
+      "family": "Grid systems",
+      "how": "Grid Lab scenario “UHV and 765 kV class” (grid_lab evidence).",
+      "scenario": "uhv-765"
+    },
+    {
+      "id": "sync-areas",
+      "name": "Synchronous areas",
+      "family": "Grid systems",
+      "how": "Grid Lab scenario “Synchronous areas” (grid_lab evidence).",
+      "scenario": "sync-areas"
+    },
+    {
+      "id": "transmission-class",
+      "name": "Transmission voltage class",
+      "family": "Grid systems",
+      "how": "Grid Lab scenario “400 kV class grids” (grid_lab evidence).",
+      "scenario": "kv-400"
+    },
+    {
+      "id": "isolated-grids",
+      "name": "Isolated and islanded grids",
+      "family": "Grid systems",
+      "how": "Grid Lab scenario “Isolated systems” (grid_lab evidence).",
+      "scenario": "isolated"
+    },
+    {
+      "id": "highest-voltage",
+      "name": "Highest recorded transmission voltage",
+      "family": "Grid systems",
+      "how": "Grid Lab scenario “Highest voltage in the census” (grid_lab evidence).",
+      "scenario": "highest-voltage"
+    },
+    {
+      "id": "iec-rating",
+      "name": "IEC 60076 rating fundamentals",
+      "family": "Knowledge",
+      "how": "Lesson completion plus the 100 MVA / 132 kV line-current calculation (lesson + assessment + calculation).",
+      "scenario": null
+    },
+    {
+      "id": "vector-group",
+      "name": "Vector group and clock number",
+      "family": "Knowledge",
+      "how": "Lesson completion plus the YNd11 reasoning item (lesson + assessment).",
+      "scenario": null
+    },
+    {
+      "id": "oltc-avr",
+      "name": "OLTC and AVR limitation",
+      "family": "Power transformers",
+      "how": "Practical exercise: tap-range end-stop vs AVR hunting (assessment). Capstone when submitted.",
+      "scenario": null
+    },
+    {
+      "id": "3d-anatomy",
+      "name": "Transformer anatomy (3D labs)",
+      "family": "3D Labs",
+      "how": "Open the interactive 3D explorer (lesson). Not a professional competence claim.",
+      "scenario": null
+    }
+  ]
+}

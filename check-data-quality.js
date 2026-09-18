@@ -184,7 +184,8 @@ if (intelStore && intelStore.companies) {
 }
 if (auditStore) {
   const CFG = (() => { try { return JSON.parse(fs.readFileSync('data/config.json', 'utf8')); } catch(e) { return {}; } })();
-  const expectedCount = (CFG.counters && CFG.counters.manufacturers) || 701;
+  const STATS = (() => { try { return JSON.parse(fs.readFileSync('data/site-stats.json', 'utf8')); } catch(e) { return {}; } })();
+  const expectedCount = (CFG.counters && CFG.counters.manufacturers) || STATS.manufacturers;
   console.log('R9 census-audit: records ' + auditStore.total + ' | no-website: ' + auditStore.no_website_count + ' | review queue: ' + auditStore.review_queue_count + ' | status: ' + JSON.stringify(auditStore.status_counts));
   if (auditStore.total !== expectedCount && auditStore.total !== intelStoreCount()) problems.push('R9 census-audit record count drift :: ' + auditStore.total);
 }

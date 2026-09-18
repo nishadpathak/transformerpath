@@ -16,6 +16,9 @@
 <link rel="stylesheet" href="tp-feedback.css?v=14">
 <script src="fem-leakage.js?v=1" defer></script>
 <script src="analytics.js?v=7" defer></script>
+<script src="supabase-config.js"></script>
+<script src="supabase.js" defer></script>
+<script src="tp-entitlement.js" defer></script>
 <script src="course-gate.js?v=7"></script>
 <meta property="og:title" content="Transformer Design Calculator — Distribution | Power | Cast Resin">
 <meta property="og:description" content="Analytical transformer design workspace (BETA / engineering review) with a leakage-field solver; first-pass core, turns and conductor sizing runs analytically. Outputs are analytical estimates — verify before use.">
@@ -328,7 +331,7 @@
         </details>
         <div class="btnrow">
           <button class="b1" onclick="calc()">Calculate</button>
-          <button class="b2" onclick="downloadPDF()">Download PDF</button>
+          <button class="b2" data-tp-need="professional" onclick="downloadPDF()">Download PDF</button>
         </div>
       </div>
 
@@ -360,7 +363,7 @@
         <h2>9 · Bill of Materials <span class="tag">quantities from design · prices editable</span></h2>
         <div id="bombox"></div>
         <div class="btnrow" style="max-width:420px">
-          <button class="b2" onclick="bomXLSX()">Download BOM (Excel .xlsx)</button>
+          <button class="b2" data-tp-need="professional" onclick="bomXLSX()">Download BOM (Excel .xlsx)</button>
         </div>
         <div class="note">Quantities are derived from the calculated design (incl. ~5 % core cutting allowance). Unit prices are <b>indicative supply-only USD values — edit them to your actual quotes</b>; edited prices are kept when the design recalculates. The Excel file contains live formulas (Amount = Qty × Price, auto-summing total) plus a second sheet with the full design data. The BOM is issued in Excel only — not in the PDF report.</div>
       </div>
@@ -389,7 +392,7 @@
         <h2>12 · Rating plate &amp; terminal marking <span class="tag">IEC 60076-1 §7 layout</span></h2>
         <div id="ratingplate"></div>
         <div class="btnrow" style="max-width:420px">
-          <button class="b2" onclick="downloadRatingPlatePDF()">Download Rating Plate (PDF)</button>
+          <button class="b2" data-tp-need="professional" onclick="downloadRatingPlatePDF()">Download Rating Plate (PDF)</button>
         </div>
         <div class="note">Plate values are populated straight from this design — enter your own manufacturer name, serial number and year of manufacture before fitting to a real unit. Tapping voltages shown for the maximum HV tap; a full design includes every tap. Once the unit is built and tested, log the results in the <a href="test-report.html" style="color:var(--accent);font-weight:700">test report generator</a> to produce a matching test report.</div>
       </div>
@@ -1763,6 +1766,7 @@ function drawRatingPlate(r){
   g+="</svg>"; $("ratingplate").innerHTML=g;
 }
 function downloadRatingPlatePDF(){
+  if(window.TP_ENTITLEMENT && !TP_ENTITLEMENT.has('professional')){ location.href='pricing.html#professional'; return; }
   if(!LAST)calc();
   const r=LAST;
   const NAVY="0.05 0.17 0.31",GREY="0.29 0.34 0.40",BLACK="0 0 0";
@@ -1975,6 +1979,7 @@ function zipStore(files){
   return out;
 }
 function bomXLSX(){
+  if(window.TP_ENTITLEMENT && !TP_ENTITLEMENT.has('professional')){ location.href='pricing.html#professional'; return; }
   if(!LAST)calc();
   const r=LAST;
   const esx=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
@@ -2200,6 +2205,7 @@ function pdfWrap(s,n){
   if(line.trim())out.push(line.trim());return out;
 }
 function downloadPDF(){
+  if(window.TP_ENTITLEMENT && !TP_ENTITLEMENT.has('professional')){ location.href='pricing.html#professional'; return; }
   if(!LAST)calc();
   const r=LAST;
   const NAVY="0.05 0.17 0.31",BLUE="0.05 0.37 0.66",GREY="0.36 0.42 0.50",BLACK="0 0 0";

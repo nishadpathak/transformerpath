@@ -45,7 +45,7 @@ const DIST = 'dist';
 
 // Whole directories copied verbatim — served content only.
 const DIRS = [
-  'accessories', 'applications', 'admin', 'books', 'brand', 'case-studies',
+  'accessories', 'applications', 'books', 'brand', 'case-studies',
   'components', 'data', 'events', 'grids', 'knowledge', 'manufacturers',
   'markets', 'materials', 'media', 'projects', 'tenders', 'topics', 'utilities',
   'viz', 'vendor',
@@ -62,6 +62,7 @@ const ROOT_JS = [
   'follow-button.js', 'form-notify.js', 'intel-feed-ui.js', 'material-latest.js', 'rfq-engine.js',
   'site-stats.js', 'supabase-config.js', 'supabase.js', 'sw.js',
   'tp-directory.js', 'tp-feedback.js', 'tp-freshness.js', 'tp-nav.js', 'tp-pwa.js',
+  'tp-grid-lab.js', 'tp-learner.js', 'tp-entitlement.js',
   'tp-theme.js', 'map.js',
   'tp-3d-core.js', 'tp-power-assembly.js', 'tp-oil-assembly.js',
   'tp-castresin-assembly.js', 'tp-ct-assembly.js',
@@ -84,6 +85,7 @@ const FORBIDDEN_PATTERNS = [
   /\.pdf$/i, /\.sql$/i, /\.xlsx?$/i, /\.docx?$/i, /\.md$/i, /\.py$/i,
   /(^|\/)[^/]* \d{1,2}(\.[^./]+)?$/,   // conflict copies — backstop for the skip above
   /^_private\//, /^_docs\//, /^_partials\//, /^tests\//, /^supabase\//,
+  /^admin(?:\/|\.html$)/,
   /^functions\//, /^engine\//, /^archive\//, /^transformerpath-site\//,
   /^Transformer Equipments\//, /^Transformer Radiators\//,
   /^build-.*\.js$/, /^check-.*\.js$/, /^audit-.*\.js$/, /^merge-.*\.js$/,
@@ -133,6 +135,7 @@ let count = 0;
 // 1. Every served HTML page at the root.
 for (const f of fs.readdirSync('.')) {
   if (CONFLICT_COPY.test(f)) { skippedConflicts.push(f); continue; }
+  if (f === 'admin.html') continue;
   if (f.endsWith('.html')) { copyFile(f, f); count++; }
   else if (ROOT_CSS_RE.test(f)) { copyFile(f, f); count++; }
 }

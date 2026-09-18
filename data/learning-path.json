@@ -1,0 +1,98 @@
+{
+  "_comment": "My Learning Path catalog. Progress is per-account (lesson_progress / path_progress). Groups: FOUNDATIONS / DISTRIBUTION / POWER TRANSFORMERS.",
+  "track": {
+    "id": "design-engineer-track",
+    "title": "Design Engineer Track",
+    "levels": ["Level 1 — Foundations", "Level 2 — Distribution", "Level 3 — Power transformers", "Level 4 — Specials"]
+  },
+  "groups": [
+    {
+      "id": "FOUNDATIONS",
+      "title": "FOUNDATIONS",
+      "modules": [
+        {
+          "id": "fnd-iec-rating",
+          "title": "IEC 60076 rating fundamentals",
+          "href": "masterclass.html#fundamentals",
+          "assessment": "line-current-100mva-132kv",
+          "skill": "iec-rating"
+        },
+        {
+          "id": "fnd-vector",
+          "title": "Vector group and clock number",
+          "href": "masterclass.html#vectorgroups",
+          "assessment": "vector-group-ynd11",
+          "skill": "vector-group"
+        },
+        {
+          "id": "fnd-anatomy",
+          "title": "Transformer anatomy (3D lab)",
+          "href": "explorer.html",
+          "assessment": null,
+          "skill": "3d-anatomy"
+        },
+        {
+          "id": "fnd-testing",
+          "title": "Routine, type and special tests",
+          "href": "masterclass.html#testing",
+          "assessment": null,
+          "skill": "iec-rating"
+        }
+      ]
+    },
+    {
+      "id": "DISTRIBUTION",
+      "title": "DISTRIBUTION",
+      "modules": [
+        {
+          "id": "dist-dt-design",
+          "title": "Distribution transformer design",
+          "href": "masterclass.html#design",
+          "assessment": null,
+          "skill": "iec-rating"
+        },
+        {
+          "id": "dist-dry",
+          "title": "Dry-type and cast resin",
+          "href": "masterclass.html#drytype",
+          "assessment": null,
+          "skill": "3d-anatomy"
+        },
+        {
+          "id": "dist-grids",
+          "title": "Distribution on the census grid",
+          "href": "grid-lab.html",
+          "assessment": null,
+          "skill": "transmission-class"
+        }
+      ]
+    },
+    {
+      "id": "POWER",
+      "title": "POWER TRANSFORMERS",
+      "modules": [
+        {
+          "id": "pwr-anatomy",
+          "title": "Power transformer anatomy",
+          "href": "masterclass.html#power",
+          "assessment": null,
+          "skill": "3d-anatomy"
+        },
+        {
+          "id": "pwr-oltc",
+          "title": "OLTC, AVR and tap-range limits",
+          "href": "oltc.html",
+          "assessment": "oltc-avr-limitation",
+          "skill": "oltc-avr"
+        },
+        {
+          "id": "pwr-gridlab",
+          "title": "Grid Lab — census scenarios",
+          "href": "grid-lab.html",
+          "assessment": null,
+          "skill": "uhv-systems"
+        }
+      ]
+    }
+  ]
+}

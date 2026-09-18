@@ -86,9 +86,15 @@ exports.handler = async (event) => {
     const email = (session.customer_details && session.customer_details.email) || session.customer_email || null;
     const supabase = client();
 
-    // Link to an existing account if the Stripe customer email already signed up.
-    let userId = null;
-    if (email) {
+    // Prefer the logged-in account (Bearer), then Checkout metadata / client_reference_id, then email match.
+    let userId = (session.metadata && session.metadata.user_id) || session.client_reference_id || null;
+    const authHeader = (event.headers && (event.headers.authorization || event.headers.Authorization)) || '';
+    if (authHeader.toLowerCase().indexOf('bearer ') === 0) {
+      const tok = authHeader.slice(7).trim();
+      const { data: authData } = await supabase.auth.getUser(tok);
+      if (authData && authData.user) userId = authData.user.id;
+    }
+    if (!userId && email) {
       const { data: prof } = await supabase.from('profiles').select('id').eq('email', email).maybeSingle();
       userId = prof ? prof.id : null;
     }
@@ -104,6 +110,8 @@ exports.handler = async (event) => {
     const accessEnd = new Date(accessStart.getTime() + 365 * 24 * 3600 * 1000); // 12 months
     const entitlement = {
       email: email, user_id: userId, product: product, plan: plan,
+      plan_key: product,
+      expires_at: iso(accessEnd),
       access_start: iso(accessStart), access_end: iso(accessEnd), status: 'active',
     };
     // One active entitlement per (email, product); updates if the buyer renews.
@@ -112,6 +120,19 @@ exports.handler = async (event) => {
       ? supabase.from('entitlements').upsert(entitlement, { onConflict: conflict }).select().maybeSingle()
       : supabase.from('entitlements').insert(entitlement).select().maybeSingle();
     const { error } = await write;
+
+    try {
+      await supabase.from('purchases').upsert({
+        stripe_session_id: sessionId,
+        email: email,
+        user_id: userId,
+        product: product,
+        plan: plan,
+        amount: (typeof session.amount_total === 'number') ? session.amount_total : null,
+        currency: session.currency || 'usd',
+        status: 'paid',
+      }, { onConflict: 'stripe_session_id' });
+    } catch (pe) { /* purchases table may not exist yet */ }
 
     return {
       statusCode: 200,
