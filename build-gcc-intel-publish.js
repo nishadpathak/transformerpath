@@ -225,7 +225,12 @@ publishableAll.forEach(function (it) {
 });
 dateCandidates.sort();
 const newest = dateCandidates.length ? dateCandidates[dateCandidates.length - 1] : null;
-intel.updated = newest ? newest + 'T12:00:00.000Z' : intel.updated;
+if (newest) {
+  const noon = newest + 'T12:00:00.000Z';
+  const nowIso = new Date().toISOString();
+  // Cap at now so morning UTC builds never stamp a future refresh time.
+  intel.updated = noon > nowIso ? nowIso : noon;
+}
 intel.refresh_meta = {
   cadence: 'daily (curated)',
   refreshed_at_build: true,

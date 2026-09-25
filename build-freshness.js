@@ -52,8 +52,11 @@ function newestIntelObservation() {
   dates.sort();
   const newest = dates.length ? dates[dates.length - 1] : null;
   if (!newest) return ts('intel');
-  // If newest observation is a calendar day, stamp noon UTC so ageHours is stable.
-  return newest + 'T12:00:00.000Z';
+  // Calendar-day observations stamp at noon UTC for stable ageHours — but never
+  // in the future (morning UTC builds fail verify-hero "not newer than now").
+  const noon = newest + 'T12:00:00.000Z';
+  const nowIso = new Date().toISOString();
+  return noon > nowIso ? nowIso : noon;
 }
 const NOW = new Date().toISOString();
 const TODAY = NOW.slice(0, 10);
