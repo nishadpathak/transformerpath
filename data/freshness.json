@@ -1,6 +1,6 @@
 {
   "$schema": "https://transformerpath.com/freshness.schema.json",
-  "generated": "2026-09-15T01:51:00.935Z",
+  "generated": "2026-09-25T08:37:32.525Z",
   "honest_note": "PAGE BUILD DATE is when this artifact was last regenerated; DATA REFRESH DATE is the last successful source refresh. These are distinct. The curated Daily Intel feed is refreshed at build (daily cadence label) — it is not an hourly live scrape. The serverless auto-briefing cache is a separate background cache. A freshness status of HEALTHY/AGING/STALE is computed from observed dates; nothing is presented as live.",
   "surfaces": [
     {
@@ -1526,6 +1526,24 @@
       "status": "HEALTHY",
       "source_health": "reference only — not a live feed",
       "records": 7
+    },
+    {
+      "id": "gcc_discovery",
+      "name": "GCC Intel discovery",
+      "cadence": "daily (when adapters live)",
+      "description": "GCC utility/tender-board/water-authority discovery layer. Distinct from curated Daily Intel. Discovery does not equal publication.",
+      "last_build": "2026-09-25T08:37:32.525Z",
+      "last_data_refresh": null,
+      "last_attempted_refresh": "2026-09-25",
+      "last_successful_refresh": null,
+      "latest_source_observation": "2026-09-25",
+      "records_added": 12,
+      "records_updated": null,
+      "source_count": 23,
+      "source_failures": null,
+      "status": "MANUAL_REVIEW",
+      "source_health": "0/6 GCC market adapters live — registry covers 6/6; discovery-input validation does not equal live portal crawl",
+      "records": 12
     }
   ],
   "sources": [
@@ -1567,6 +1585,33 @@
       "latest_content_date": null,
       "failure_count": null,
       "status": "MANUAL_REVIEW"
+    },
+    {
+      "name": "GCC procurement & authority registry",
+      "type": "gcc-source-registry",
+      "region": "GCC",
+      "works_for": [
+        "gcc_discovery",
+        "daily_intel",
+        "tenders"
+      ],
+      "last_checked": null,
+      "last_success": null,
+      "latest_content_date": "2026-09-25",
+      "failure_count": null,
+      "status": "MANUAL_REVIEW"
     }
-  ]
+  ],
+  "gcc_market_watch": {
+    "generated": "2026-09-25T08:37:32.525Z",
+    "statement": "0/6 GCC market adapters live — registry covers 6/6; discovery-input validation does not equal live portal crawl",
+    "markets_registered": 6,
+    "markets_adapter_live": 0,
+    "latest_confirmed_event_date": "2026-09-25",
+    "data_current_claim_allowed": false,
+    "honesty": "Do NOT declare DATA CURRENT because the build ran today. Freshness depends on source coverage + source_checked_at + validated newest record.",
+    "surface_id": "gcc_discovery",
+    "status": "MANUAL_REVIEW",
+    "source_health": "GCC source registry populated; portal adapters NEEDS_ADAPTER until live crawl stamps last_checked"
+  }
 }

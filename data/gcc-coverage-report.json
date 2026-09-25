@@ -1,0 +1,775 @@
+{
+  "$schema": "https://transformerpath.com/gcc-coverage-report.schema.json",
+  "generated": "2026-09-25T08:37:32.525Z",
+  "title": "INTEL P0 — GCC TRANSFORMER ACTIVITY COVERAGE",
+  "gcc_coverage": {
+    "UAE": {
+      "candidates": [
+        "uae-dewa-2122600155"
+      ],
+      "status": "DEWA portal registered; Sep distribution-substation/kiosk tender SUPPORTED pending live adapter",
+      "sources_registered": 4
+    },
+    "Saudi": {
+      "candidates": [
+        "sa-swa-rabigh-2p5mva",
+        "sa-swa-jubail-grounding",
+        "sa-al-aflaj-33kv-replacement",
+        "sa-dhahran-1500kva-standby",
+        "sa-swa-yanbu-t803-supervision"
+      ],
+      "status": "Etimad + SWA registered; multiple Sep transformer procurements SUPPORTED/CONFIRMED from portal mirrors",
+      "sources_registered": 4
+    },
+    "Kuwait": {
+      "candidates": [
+        "kw-mewre-75mva-stage1",
+        "kw-mewre-75mva-relocation",
+        "kw-mewre-75mva-stage2"
+      ],
+      "status": "MEWRE + CAPT registered; 75 MVA replacement/relocation/stage-2 programme SUPPORTED",
+      "sources_registered": 2
+    },
+    "Oman": {
+      "candidates": [
+        "om-localisation-aug12"
+      ],
+      "status": "CONFIRMED localisation/manufacturing investment with event_date 2026-08-12 and update_date 2026-09-19",
+      "sources_registered": 8
+    },
+    "Bahrain": {
+      "candidates": [
+        "bh-ewa-389-2026-1000kva",
+        "bh-ewa-aml-sep-review"
+      ],
+      "status": "Tender Board + EWA registered; 1000 kVA package-substation CONFIRMED; AML follow-ups REVIEW_REQUIRED",
+      "sources_registered": 2
+    },
+    "Qatar": {
+      "candidates": [],
+      "status": "NO_QUALIFYING_ACTIVITY_FOUND for September under defined scope — zero is valid",
+      "sources_registered": 2
+    }
+  },
+  "backfill": {
+    "candidates": 12,
+    "confirmed": 3,
+    "supported": 8,
+    "review_required": 1,
+    "rejected": 0,
+    "internal_coverage_facts": 1
+  },
+  "missed_record_analysis": [
+    {
+      "candidate_id": "uae-dewa-2122600155",
+      "country": "United Arab Emirates",
+      "title": "DEWA — Installation, testing and commissioning of distribution substations and kiosks (incl. disconnection/recovery/replacement of equipment)",
+      "found": true,
+      "source": [
+        "https://www.dewa.gov.ae/en/supplier/services/list-of-tender-documents"
+      ],
+      "source_types": [
+        "UTILITY"
+      ],
+      "why_previously_missed": "Intel discovery had no DEWA procurement-portal adapter. Pipeline over-relied on English trade press / MEED / curated RSS (no GCC utility portals). Tender 2122600155 never entered discovery.",
+      "classification": [
+        "TENDER",
+        "UTILITY_PROCUREMENT",
+        "MAINTENANCE",
+        "TRANSFORMER_REPLACEMENT"
+      ],
+      "evidence_grade": "SUPPORTED",
+      "published": false,
+      "publish_decision": "HOLD_FOR_REVIEW",
+      "dates": {
+        "publication_date": "2026-09-24",
+        "event_date": "2026-09-24",
+        "tender_float_date": "2026-09-24",
+        "tender_close_date": "2026-10-27",
+        "bid_opening_date": null,
+        "expected_award_date": null,
+        "award_date": null,
+        "project_start_date": null,
+        "commissioning_date": null,
+        "source_checked_at": "2026-09-25",
+        "update_date": null
+      },
+      "date_correction": null
+    },
+    {
+      "candidate_id": "sa-swa-rabigh-2p5mva",
+      "country": "Saudi Arabia",
+      "title": "Saudi Water Authority — 2.5 MVA 6.6/0.4 kV oil-filled transformer for Rabigh Production System",
+      "found": true,
+      "source": [
+        "https://tenders.etimad.sa/Tender/DetailsForVisitor?STenderId=YYulueYsiIAkLL3QtkpaYQ==",
+        "https://www.tenderdetail.com/Global-Tenders/TenderNotice/117055177/17B9D72B-E5DC-44E1-9FC4-5FF68C761BAD"
+      ],
+      "source_types": [
+        "PROCUREMENT_PORTAL",
+        "CREDIBLE_TRADE_PRESS"
+      ],
+      "why_previously_missed": "No Etimad / Saudi Water Authority adapter; Arabic مناقسة vocabulary not in discovery dictionary; water-authority transformers outside English news feeds.",
+      "classification": [
+        "TENDER",
+        "UTILITY_PROCUREMENT"
+      ],
+      "evidence_grade": "CONFIRMED",
+      "published": false,
+      "publish_decision": "REVIEW_QUEUE",
+      "dates": {
+        "publication_date": "2026-08-18",
+        "event_date": "2026-09-02",
+        "tender_float_date": "2026-08-18",
+        "tender_close_date": "2026-09-02",
+        "bid_opening_date": "2026-09-02",
+        "expected_award_date": null,
+        "award_date": null,
+        "project_start_date": null,
+        "commissioning_date": null,
+        "source_checked_at": "2026-09-25",
+        "update_date": null
+      },
+      "date_correction": {
+        "event_date": "2026-09-02",
+        "publication_date": "2026-08-18"
+      }
+    },
+    {
+      "candidate_id": "sa-swa-jubail-grounding",
+      "country": "Saudi Arabia",
+      "title": "Saudi Water Authority — 33/0.4 kV grounding (earthing) transformer, Jubail Phase 4",
+      "found": true,
+      "source": [
+        "https://bidsfactory.com/en/tenders/3304-4-saudi_etimad-40d892d6879b8761"
+      ],
+      "source_types": [
+        "PROCUREMENT_PORTAL"
+      ],
+      "why_previously_missed": "Arabic term محول التأريض absent from discovery dictionary; no Etimad crawl; grounding transformers under-covered vs power/distribution headlines.",
+      "classification": [
+        "TENDER",
+        "UTILITY_PROCUREMENT"
+      ],
+      "evidence_grade": "SUPPORTED",
+      "published": false,
+      "publish_decision": "HOLD_FOR_REVIEW",
+      "dates": {
+        "publication_date": "2026-09-03",
+        "event_date": "2026-09-03",
+        "tender_float_date": "2026-09-03",
+        "tender_close_date": "2026-09-19",
+        "bid_opening_date": null,
+        "expected_award_date": null,
+        "award_date": null,
+        "project_start_date": null,
+        "commissioning_date": null,
+        "source_checked_at": "2026-09-25",
+        "update_date": null
+      },
+      "date_correction": null
+    },
+    {
+      "candidate_id": "sa-al-aflaj-33kv-replacement",
+      "country": "Saudi Arabia",
+      "title": "33 kV transformer replacement — Substation No. 6, Technical College for Girls, Al-Aflaj",
+      "found": true,
+      "source": [
+        "https://tenderimpulse.com/government-tenders/saudi-arab/replacement-of-the-33-kv-transformer-for-station-no-6-with-the-technical-college-14893514"
+      ],
+      "source_types": [
+        "PROCUREMENT_PORTAL"
+      ],
+      "why_previously_missed": "Non-utility institutional buyer; Etimad-only; English news feeds ignore college/campus transformer replacements.",
+      "classification": [
+        "TENDER",
+        "TRANSFORMER_REPLACEMENT",
+        "UTILITY_PROCUREMENT"
+      ],
+      "evidence_grade": "SUPPORTED",
+      "published": false,
+      "publish_decision": "HOLD_FOR_REVIEW",
+      "dates": {
+        "publication_date": "2026-09-08",
+        "event_date": "2026-09-08",
+        "tender_float_date": "2026-09-08",
+        "tender_close_date": null,
+        "bid_opening_date": null,
+        "expected_award_date": null,
+        "award_date": null,
+        "project_start_date": null,
+        "commissioning_date": null,
+        "source_checked_at": "2026-09-25",
+        "update_date": null
+      },
+      "date_correction": null
+    },
+    {
+      "candidate_id": "sa-dhahran-1500kva-standby",
+      "country": "Saudi Arabia",
+      "title": "King Abdulaziz Air Base Hospital — 1,500 kVA standby transformer, Dhahran",
+      "found": true,
+      "source": [
+        "https://bidsfactory.com/en/tenders/1500-saudi_etimad-8a384ba1b679c3e3"
+      ],
+      "source_types": [
+        "PROCUREMENT_PORTAL"
+      ],
+      "why_previously_missed": "Hospital/military-campus procurement on Etimad; not covered by manufacturer press or English GCC project media.",
+      "classification": [
+        "TENDER",
+        "UTILITY_PROCUREMENT"
+      ],
+      "evidence_grade": "SUPPORTED",
+      "published": false,
+      "publish_decision": "HOLD_FOR_REVIEW",
+      "dates": {
+        "publication_date": "2026-09-14",
+        "event_date": "2026-09-14",
+        "tender_float_date": "2026-09-14",
+        "tender_close_date": "2026-09-30",
+        "bid_opening_date": null,
+        "expected_award_date": null,
+        "award_date": null,
+        "project_start_date": null,
+        "commissioning_date": null,
+        "source_checked_at": "2026-09-25",
+        "update_date": null
+      },
+      "date_correction": null
+    },
+    {
+      "candidate_id": "sa-swa-yanbu-t803-supervision",
+      "country": "Saudi Arabia",
+      "title": "Saudi Water Authority — supervision of Transformer T803 replacement (502 MVA, 380/110/13.8 kV) PST1 Yanbu Phase 3",
+      "found": true,
+      "source": [
+        "https://tenderimpulse.com/government-tenders/saudi-arab/project-for-the-supervision-of-the-replacement-of-major-gas-solving-bars-gib-and-14656272"
+      ],
+      "source_types": [
+        "PROCUREMENT_PORTAL"
+      ],
+      "why_previously_missed": "Date/semantics: unit replacement announced 2025; Sep 2026 is supervision. No Etimad adapter; water-authority HV transformers outside curated GCC news.",
+      "classification": [
+        "TENDER",
+        "TRANSFORMER_REPLACEMENT",
+        "UTILITY_PROCUREMENT",
+        "MAINTENANCE"
+      ],
+      "evidence_grade": "SUPPORTED",
+      "published": false,
+      "publish_decision": "HOLD_FOR_REVIEW",
+      "dates": {
+        "publication_date": "2026-09-03",
+        "event_date": "2026-09-03",
+        "tender_float_date": "2026-09-03",
+        "tender_close_date": "2026-09-10",
+        "bid_opening_date": null,
+        "expected_award_date": null,
+        "award_date": null,
+        "project_start_date": null,
+        "commissioning_date": null,
+        "source_checked_at": "2026-09-25",
+        "update_date": null
+      },
+      "date_correction": null
+    },
+    {
+      "candidate_id": "kw-mewre-75mva-stage1",
+      "country": "Kuwait",
+      "title": "MEWRE — replacement of damaged transformers up to 75 MVA and parallel reactors up to 50 MVA (first stage)",
+      "found": true,
+      "source": [
+        "https://tenderimpulse.com/government-tenders/kuwait/replacement-and-substitution-of-damaged-transformers-up-to-a-capacity-of-75-mva-14709840"
+      ],
+      "source_types": [
+        "TENDER_BOARD"
+      ],
+      "why_previously_missed": "No MEWRE / CAPT Arabic tender-board adapter; parallel-reactor + transformer maintenance programmes not in English RSS set.",
+      "classification": [
+        "TENDER",
+        "TRANSFORMER_REPLACEMENT",
+        "MAINTENANCE",
+        "UTILITY_PROCUREMENT"
+      ],
+      "evidence_grade": "SUPPORTED",
+      "published": false,
+      "publish_decision": "HOLD_FOR_REVIEW",
+      "dates": {
+        "publication_date": "2026-09-07",
+        "event_date": "2026-09-12",
+        "tender_float_date": "2026-09-07",
+        "tender_close_date": "2026-10-06",
+        "bid_opening_date": null,
+        "expected_award_date": null,
+        "award_date": null,
+        "project_start_date": null,
+        "commissioning_date": null,
+        "source_checked_at": "2026-09-25",
+        "update_date": null
+      },
+      "date_correction": {
+        "event_date": "2026-09-12",
+        "publication_date": "2026-09-07"
+      }
+    },
+    {
+      "candidate_id": "kw-mewre-75mva-relocation",
+      "country": "Kuwait",
+      "title": "MEWRE — dismantling, relocation and installation of one 75 MVA power transformer",
+      "found": true,
+      "source": [
+        "http://www.biddetail.com/latest-tenders/117573786$d84ae31a-0b12-4035-93f7-f0d7cdc01f0d"
+      ],
+      "source_types": [
+        "ENERGY_MINISTRY"
+      ],
+      "why_previously_missed": "Same root cause: no Kuwait procurement portal watch; single-unit relocation not covered by project mega-award journalism.",
+      "classification": [
+        "TENDER",
+        "TRANSFORMER_REPLACEMENT",
+        "MAINTENANCE",
+        "UTILITY_PROCUREMENT"
+      ],
+      "evidence_grade": "SUPPORTED",
+      "published": false,
+      "publish_decision": "HOLD_FOR_REVIEW",
+      "dates": {
+        "publication_date": "2026-09-24",
+        "event_date": "2026-09-24",
+        "tender_float_date": null,
+        "tender_close_date": "2026-11-30",
+        "bid_opening_date": null,
+        "expected_award_date": null,
+        "award_date": null,
+        "project_start_date": null,
+        "commissioning_date": null,
+        "source_checked_at": "2026-09-25",
+        "update_date": null
+      },
+      "date_correction": null
+    },
+    {
+      "candidate_id": "kw-mewre-75mva-stage2",
+      "country": "Kuwait",
+      "title": "MEWRE — second-stage maintenance/replacement programme (transformers up to 75 MVA; parallel reactors up to 50 MVA)",
+      "found": true,
+      "source": [
+        "https://tenderimpulse.com/government-tenders/kuwait/maintenance-and-replacement-of-damaged-parts-and-civil-works-related-to-a-number-14608275"
+      ],
+      "source_types": [
+        "TENDER_BOARD"
+      ],
+      "why_previously_missed": "Stage-2 of same MEWRE programme — needs canonical procurement linking, not a separate news card. No CAPT adapter.",
+      "classification": [
+        "TENDER",
+        "MAINTENANCE",
+        "TRANSFORMER_REPLACEMENT",
+        "UTILITY_PROCUREMENT"
+      ],
+      "evidence_grade": "SUPPORTED",
+      "published": false,
+      "publish_decision": "HOLD_FOR_REVIEW",
+      "dates": {
+        "publication_date": "2026-08-31",
+        "event_date": "2026-09-24",
+        "tender_float_date": "2026-08-31",
+        "tender_close_date": "2026-09-29",
+        "bid_opening_date": null,
+        "expected_award_date": null,
+        "award_date": null,
+        "project_start_date": null,
+        "commissioning_date": null,
+        "source_checked_at": "2026-09-25",
+        "update_date": null
+      },
+      "date_correction": {
+        "event_date": "2026-09-24",
+        "publication_date": "2026-08-31"
+      }
+    },
+    {
+      "candidate_id": "om-localisation-aug12",
+      "country": "Oman",
+      "title": "Oman — 10 agreements to localise electrical transformer-component manufacturing (RO15m; 7 new factories)",
+      "found": true,
+      "source": [
+        "https://www.omanobserver.om/article/1194395/business/ro-15m-pacts-signed-to-drive-local-production-of-transformer-components",
+        "https://www.omanobserver.om/article/1196433/business/oman-localises-transformer-production",
+        "https://www.thearabianstories.com/2026/09/19/oman-localises-transformer-production-with-ro-15-million-investment/",
+        "https://timesofoman.com/article/175526-ten-agreements-signed-to-localise-electrical-transformer-component-manufacturing-in-oman"
+      ],
+      "source_types": [
+        "CREDIBLE_TRADE_PRESS",
+        "CREDIBLE_TRADE_PRESS",
+        "BUSINESS_MEDIA",
+        "BUSINESS_MEDIA"
+      ],
+      "why_previously_missed": "Item existed in curated intel.html (MEED 13 Aug) but (1) collapsed dates — no separate event_date vs update_date for 19 Sep resurfacing; (2) not classified as FACTORY_INVESTMENT + LOCALISATION for knowledge-graph fan-out; (3) absent from data/intel.json GCC region used by some builders; (4) no systematic APSR/Invest Oman/ONA discovery watch.",
+      "classification": [
+        "FACTORY_INVESTMENT",
+        "LOCALISATION",
+        "NEW_FACTORY",
+        "SUPPLY_CHAIN",
+        "CAPACITY_EXPANSION",
+        "REGULATORY"
+      ],
+      "evidence_grade": "CONFIRMED",
+      "published": true,
+      "publish_decision": "REVIEW_QUEUE",
+      "dates": {
+        "publication_date": "2026-08-12",
+        "event_date": "2026-08-12",
+        "tender_float_date": null,
+        "tender_close_date": null,
+        "bid_opening_date": null,
+        "expected_award_date": null,
+        "award_date": null,
+        "project_start_date": null,
+        "commissioning_date": null,
+        "source_checked_at": "2026-09-25",
+        "update_date": "2026-09-19"
+      },
+      "date_correction": {
+        "event_date": "2026-08-12",
+        "update_date": "2026-09-19",
+        "publication_date": "2026-08-12"
+      }
+    },
+    {
+      "candidate_id": "bh-ewa-389-2026-1000kva",
+      "country": "Bahrain",
+      "title": "EWA Central Stores — 11/0.415 kV 1,000 kVA mineral-oil-filled package substation with distribution board",
+      "found": true,
+      "source": [
+        "https://www.tenderboard.gov.bh/",
+        "https://tenderimpulse.com/government-tenders/bahrain/supply-of-substation-oil-1000kva-with-board-14577184"
+      ],
+      "source_types": [
+        "TENDER_BOARD",
+        "UTILITY"
+      ],
+      "why_previously_missed": "No Bahrain Tender Board adapter; package-substation / kiosk supply not in RSS_FEEDS; EWA Central Stores procurements invisible to MEED-centric curation.",
+      "classification": [
+        "TENDER",
+        "UTILITY_PROCUREMENT"
+      ],
+      "evidence_grade": "CONFIRMED",
+      "published": false,
+      "publish_decision": "REVIEW_QUEUE",
+      "dates": {
+        "publication_date": "2026-08-28",
+        "event_date": "2026-08-28",
+        "tender_float_date": "2026-08-27",
+        "tender_close_date": "2026-09-20",
+        "bid_opening_date": null,
+        "expected_award_date": null,
+        "award_date": null,
+        "project_start_date": null,
+        "commissioning_date": null,
+        "source_checked_at": "2026-09-25",
+        "update_date": null
+      },
+      "date_correction": null
+    },
+    {
+      "candidate_id": "bh-ewa-aml-sep-review",
+      "country": "Bahrain",
+      "title": "EWA approved-manufacturer list / additional 500–1,500 kVA September opportunities — investigate separately",
+      "found": true,
+      "source": [],
+      "source_types": [],
+      "why_previously_missed": "No AML crawl; approval lists not treated as discovery objects.",
+      "classification": [
+        "TENDER",
+        "UTILITY_PROCUREMENT"
+      ],
+      "evidence_grade": "REVIEW_REQUIRED",
+      "published": false,
+      "publish_decision": "HOLD_FOR_REVIEW",
+      "dates": {
+        "publication_date": "2026-09-01",
+        "event_date": null,
+        "tender_float_date": null,
+        "tender_close_date": null,
+        "bid_opening_date": null,
+        "expected_award_date": null,
+        "award_date": null,
+        "project_start_date": null,
+        "commissioning_date": null,
+        "source_checked_at": "2026-09-25",
+        "update_date": null
+      },
+      "date_correction": null
+    }
+  ],
+  "source_registry": {
+    "new_primary_sources": [
+      "dewa-open-tenders",
+      "ewec",
+      "taqa-transmission",
+      "sewa",
+      "etimad",
+      "saudi-water-authority",
+      "sec-saudi-energy",
+      "sppc",
+      "mewre-kuwait",
+      "kuwait-central-procurement",
+      "apsr-oman",
+      "invest-oman",
+      "oetc",
+      "nama-group",
+      "voltamp-oman",
+      "bahrain-tender-board",
+      "ewa-bahrain",
+      "kahramaa",
+      "qatar-tender-committee"
+    ],
+    "new_arabic_sources": [
+      "dewa-open-tenders",
+      "ewec",
+      "taqa-transmission",
+      "sewa",
+      "etimad",
+      "saudi-water-authority",
+      "sec-saudi-energy",
+      "sppc",
+      "mewre-kuwait",
+      "kuwait-central-procurement",
+      "apsr-oman",
+      "invest-oman",
+      "oetc",
+      "nama-group",
+      "oman-observer",
+      "bahrain-tender-board",
+      "ewa-bahrain",
+      "kahramaa",
+      "qatar-tender-committee"
+    ],
+    "new_procurement_sources": [
+      "dewa-open-tenders",
+      "ewec",
+      "etimad",
+      "saudi-water-authority",
+      "sec-saudi-energy",
+      "sppc",
+      "mewre-kuwait",
+      "kuwait-central-procurement",
+      "bahrain-tender-board",
+      "ewa-bahrain",
+      "kahramaa",
+      "qatar-tender-committee"
+    ],
+    "total_gcc_sources": 23
+  },
+  "date_corrections": [
+    {
+      "candidate_id": "sa-swa-rabigh-2p5mva",
+      "country": "Saudi Arabia",
+      "title": "Saudi Water Authority — 2.5 MVA 6.6/0.4 kV oil-filled transformer for Rabigh Production System",
+      "found": true,
+      "source": [
+        "https://tenders.etimad.sa/Tender/DetailsForVisitor?STenderId=YYulueYsiIAkLL3QtkpaYQ==",
+        "https://www.tenderdetail.com/Global-Tenders/TenderNotice/117055177/17B9D72B-E5DC-44E1-9FC4-5FF68C761BAD"
+      ],
+      "source_types": [
+        "PROCUREMENT_PORTAL",
+        "CREDIBLE_TRADE_PRESS"
+      ],
+      "why_previously_missed": "No Etimad / Saudi Water Authority adapter; Arabic مناقسة vocabulary not in discovery dictionary; water-authority transformers outside English news feeds.",
+      "classification": [
+        "TENDER",
+        "UTILITY_PROCUREMENT"
+      ],
+      "evidence_grade": "CONFIRMED",
+      "published": false,
+      "publish_decision": "REVIEW_QUEUE",
+      "dates": {
+        "publication_date": "2026-08-18",
+        "event_date": "2026-09-02",
+        "tender_float_date": "2026-08-18",
+        "tender_close_date": "2026-09-02",
+        "bid_opening_date": "2026-09-02",
+        "expected_award_date": null,
+        "award_date": null,
+        "project_start_date": null,
+        "commissioning_date": null,
+        "source_checked_at": "2026-09-25",
+        "update_date": null
+      },
+      "date_correction": {
+        "event_date": "2026-09-02",
+        "publication_date": "2026-08-18"
+      }
+    },
+    {
+      "candidate_id": "kw-mewre-75mva-stage1",
+      "country": "Kuwait",
+      "title": "MEWRE — replacement of damaged transformers up to 75 MVA and parallel reactors up to 50 MVA (first stage)",
+      "found": true,
+      "source": [
+        "https://tenderimpulse.com/government-tenders/kuwait/replacement-and-substitution-of-damaged-transformers-up-to-a-capacity-of-75-mva-14709840"
+      ],
+      "source_types": [
+        "TENDER_BOARD"
+      ],
+      "why_previously_missed": "No MEWRE / CAPT Arabic tender-board adapter; parallel-reactor + transformer maintenance programmes not in English RSS set.",
+      "classification": [
+        "TENDER",
+        "TRANSFORMER_REPLACEMENT",
+        "MAINTENANCE",
+        "UTILITY_PROCUREMENT"
+      ],
+      "evidence_grade": "SUPPORTED",
+      "published": false,
+      "publish_decision": "HOLD_FOR_REVIEW",
+      "dates": {
+        "publication_date": "2026-09-07",
+        "event_date": "2026-09-12",
+        "tender_float_date": "2026-09-07",
+        "tender_close_date": "2026-10-06",
+        "bid_opening_date": null,
+        "expected_award_date": null,
+        "award_date": null,
+        "project_start_date": null,
+        "commissioning_date": null,
+        "source_checked_at": "2026-09-25",
+        "update_date": null
+      },
+      "date_correction": {
+        "event_date": "2026-09-12",
+        "publication_date": "2026-09-07"
+      }
+    },
+    {
+      "candidate_id": "kw-mewre-75mva-stage2",
+      "country": "Kuwait",
+      "title": "MEWRE — second-stage maintenance/replacement programme (transformers up to 75 MVA; parallel reactors up to 50 MVA)",
+      "found": true,
+      "source": [
+        "https://tenderimpulse.com/government-tenders/kuwait/maintenance-and-replacement-of-damaged-parts-and-civil-works-related-to-a-number-14608275"
+      ],
+      "source_types": [
+        "TENDER_BOARD"
+      ],
+      "why_previously_missed": "Stage-2 of same MEWRE programme — needs canonical procurement linking, not a separate news card. No CAPT adapter.",
+      "classification": [
+        "TENDER",
+        "MAINTENANCE",
+        "TRANSFORMER_REPLACEMENT",
+        "UTILITY_PROCUREMENT"
+      ],
+      "evidence_grade": "SUPPORTED",
+      "published": false,
+      "publish_decision": "HOLD_FOR_REVIEW",
+      "dates": {
+        "publication_date": "2026-08-31",
+        "event_date": "2026-09-24",
+        "tender_float_date": "2026-08-31",
+        "tender_close_date": "2026-09-29",
+        "bid_opening_date": null,
+        "expected_award_date": null,
+        "award_date": null,
+        "project_start_date": null,
+        "commissioning_date": null,
+        "source_checked_at": "2026-09-25",
+        "update_date": null
+      },
+      "date_correction": {
+        "event_date": "2026-09-24",
+        "publication_date": "2026-08-31"
+      }
+    },
+    {
+      "candidate_id": "om-localisation-aug12",
+      "country": "Oman",
+      "title": "Oman — 10 agreements to localise electrical transformer-component manufacturing (RO15m; 7 new factories)",
+      "found": true,
+      "source": [
+        "https://www.omanobserver.om/article/1194395/business/ro-15m-pacts-signed-to-drive-local-production-of-transformer-components",
+        "https://www.omanobserver.om/article/1196433/business/oman-localises-transformer-production",
+        "https://www.thearabianstories.com/2026/09/19/oman-localises-transformer-production-with-ro-15-million-investment/",
+        "https://timesofoman.com/article/175526-ten-agreements-signed-to-localise-electrical-transformer-component-manufacturing-in-oman"
+      ],
+      "source_types": [
+        "CREDIBLE_TRADE_PRESS",
+        "CREDIBLE_TRADE_PRESS",
+        "BUSINESS_MEDIA",
+        "BUSINESS_MEDIA"
+      ],
+      "why_previously_missed": "Item existed in curated intel.html (MEED 13 Aug) but (1) collapsed dates — no separate event_date vs update_date for 19 Sep resurfacing; (2) not classified as FACTORY_INVESTMENT + LOCALISATION for knowledge-graph fan-out; (3) absent from data/intel.json GCC region used by some builders; (4) no systematic APSR/Invest Oman/ONA discovery watch.",
+      "classification": [
+        "FACTORY_INVESTMENT",
+        "LOCALISATION",
+        "NEW_FACTORY",
+        "SUPPLY_CHAIN",
+        "CAPACITY_EXPANSION",
+        "REGULATORY"
+      ],
+      "evidence_grade": "CONFIRMED",
+      "published": true,
+      "publish_decision": "REVIEW_QUEUE",
+      "dates": {
+        "publication_date": "2026-08-12",
+        "event_date": "2026-08-12",
+        "tender_float_date": null,
+        "tender_close_date": null,
+        "bid_opening_date": null,
+        "expected_award_date": null,
+        "award_date": null,
+        "project_start_date": null,
+        "commissioning_date": null,
+        "source_checked_at": "2026-09-25",
+        "update_date": "2026-09-19"
+      },
+      "date_correction": {
+        "event_date": "2026-08-12",
+        "update_date": "2026-09-19",
+        "publication_date": "2026-08-12"
+      }
+    }
+  ],
+  "pipeline": {
+    "discovery": "GCC source registry + EN/AR dictionary + Sep discovery input → candidates",
+    "deduplication": "canonical_procurement_id merges status events onto one record",
+    "source_checking": "per-candidate sources[] with PRIMARY/SECONDARY roles; official preferred",
+    "classification": "TENDER, AWARD, PROJECT, FACTORY_INVESTMENT, CAPACITY_EXPANSION, LOCALISATION, NEW_FACTORY, FRAMEWORK_AGREEMENT, TRANSFORMER_REPLACEMENT, MAINTENANCE, UTILITY_PROCUREMENT, PRODUCT_LAUNCH, FACTORY_COMMISSIONING, REGULATORY, SUPPLY_CHAIN",
+    "publishing": "HOLD_FOR_REVIEW / REVIEW_QUEUE / INTERNAL_COVERAGE_ONLY — never auto-publish"
+  },
+  "freshness": {
+    "statement": "0/6 GCC market adapters live — registry covers 6/6; discovery-input validation does not equal live portal crawl",
+    "markets_registered": 6,
+    "markets_adapter_live": 0,
+    "markets_with_validated_candidates": 6,
+    "latest_source_checked_at": "2026-09-25",
+    "latest_confirmed_event_date": "2026-09-25",
+    "data_current_claim_allowed": false,
+    "honesty": "Do NOT declare DATA CURRENT because the build ran today. Freshness depends on source coverage + source_checked_at + validated newest record."
+  },
+  "root_cause": {
+    "over_relied_on": [
+      "English-language news",
+      "Google-indexed articles",
+      "manufacturer press releases",
+      "existing RSS/news feeds (tdworld, power-eng, transformers-magazine, etc. — no GCC portals)"
+    ],
+    "under_covered": [
+      "utility procurement portals (DEWA, SEWA, KAHRAMAA)",
+      "government tender boards (Bahrain BTB, Kuwait CAPT, Etimad)",
+      "water authorities (Saudi Water Authority)",
+      "electricity authorities / ministries (MEWRE, EWA, SEC)",
+      "Arabic-language sources and vocabulary (محول، محول التأريض، منافسة، توطين)",
+      "regulators and investment authorities (APSR, Invest Oman)",
+      "local business publications for update_date semantics",
+      "procurement status changes on a single canonical ID"
+    ]
+  },
+  "tests": {
+    "gcc_discovery_regression": "PASS",
+    "failures": []
+  },
+  "dictionary_term_counts": {
+    "english_core": 20,
+    "arabic_core": 19
+  }
+}
