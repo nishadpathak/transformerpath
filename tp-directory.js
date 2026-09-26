@@ -261,7 +261,7 @@
       // Update count
       var countEl = root.querySelector('.dir-count');
       if (countEl) {
-        countEl.innerHTML = '<span>Showing <b>' + hits.length + '</b> of ' + DATA.length + ' verified records</span><span style="font-size:.8rem;color:var(--accent);font-weight:600">Tip: Select up to 5 entities to compare side-by-side</span>';
+        countEl.innerHTML = '<span>Showing <b>' + hits.length + '</b> of ' + DATA.length + ' directory records</span><span style="font-size:.8rem;color:var(--accent);font-weight:600">Tip: Select up to 5 entities to compare side-by-side</span>';
       }
 
       // Update list
@@ -333,7 +333,7 @@
       '</div>' +
 
       '<div class="dir-count" style="display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:.85rem;margin:14px 0 10px">' +
-        '<span>Showing <b>' + hits.length + '</b> of ' + DATA.length + ' verified records</span>' +
+        '<span>Showing <b>' + hits.length + '</b> of ' + DATA.length + ' directory records</span>' +
         '<span style="font-size:.8rem;color:var(--accent);font-weight:600">Tip: Select up to 5 entities to compare side-by-side</span>' +
       '</div>' +
 

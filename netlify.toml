@@ -48,6 +48,25 @@
   status = 301
   force = true
 
+# Common aliases auditors / users try for Daily Intel
+[[redirects]]
+  from = "/daily-intel"
+  to = "/intel.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/daily-intel.html"
+  to = "/intel.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/daily-intel/"
+  to = "/intel.html"
+  status = 301
+  force = true
+
 [[redirects]]
   from = "/grids"
   to = "/grids.html"
