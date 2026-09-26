@@ -148,12 +148,16 @@ const intel = JSON.parse(fs.readFileSync(ISO_PATH, 'utf8'));
 // Canonical data-refresh timestamp. This is a CURATED dataset compiled at build;
 // it is not a live scrape. The public freshness readout must show THIS date, not
 // the visitor's local "today", and never imply a change that is only a redeploy.
-intel.updated = new Date().toISOString();
-intel.refresh_meta = {
+intel.updated = intel.refresh_meta && intel.refresh_meta.newest_validated_content_date
+  ? (String(intel.refresh_meta.newest_validated_content_date).length === 10
+      ? intel.refresh_meta.newest_validated_content_date + 'T12:00:00.000Z'
+      : intel.refresh_meta.newest_validated_content_date)
+  : new Date().toISOString();
+intel.refresh_meta = Object.assign({}, intel.refresh_meta || {}, {
   cadence: 'daily (curated)',
   refreshed_at_build: true,
-  note: 'Curated transformer-industry intelligence. Compiled and regenerated at each build — not an automatic live scrape.',
-};
+  note: 'Curated transformer-industry intelligence. updated tracks newest validated content observation when present — not a silent redeploy clock.',
+});
 const FOLD = { China: 'RoW', AsiaPac: 'RoW', LatAm: 'RoW', Africa: 'RoW' };
 const srcByRegion = {};
 ITEMS.forEach((it) => { const fold = FOLD[it.region] || it.region; (srcByRegion[fold] = srcByRegion[fold] || []).push(it); });

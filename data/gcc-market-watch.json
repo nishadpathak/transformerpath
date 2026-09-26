@@ -1,0 +1,108 @@
+{
+  "$schema": "https://transformerpath.com/gcc-market-watch.schema.json",
+  "generated": "2026-09-25T09:19:18.084Z",
+  "purpose": "Internal GCC coverage matrix. No stories ≠ discovery succeeded.",
+  "columns": [
+    "COUNTRY",
+    "SOURCES_CHECKED",
+    "SOURCES_REGISTERED",
+    "NEW_CANDIDATES",
+    "CONFIRMED",
+    "SUPPORTED",
+    "REVIEW_REQUIRED",
+    "REJECTED",
+    "LAST_CHECK",
+    "COVERAGE_STATUS"
+  ],
+  "markets": [
+    {
+      "country": "United Arab Emirates",
+      "sources_checked": 0,
+      "sources_registered": 4,
+      "new_candidates": 1,
+      "confirmed": 0,
+      "supported": 1,
+      "review_required": 0,
+      "rejected": 0,
+      "last_check": "2026-09-25",
+      "coverage_status": "DISCOVERY_INPUT_VALIDATED",
+      "note": null
+    },
+    {
+      "country": "Saudi Arabia",
+      "sources_checked": 0,
+      "sources_registered": 4,
+      "new_candidates": 5,
+      "confirmed": 1,
+      "supported": 4,
+      "review_required": 0,
+      "rejected": 0,
+      "last_check": "2026-09-25",
+      "coverage_status": "DISCOVERY_INPUT_VALIDATED",
+      "note": null
+    },
+    {
+      "country": "Kuwait",
+      "sources_checked": 0,
+      "sources_registered": 2,
+      "new_candidates": 3,
+      "confirmed": 0,
+      "supported": 3,
+      "review_required": 0,
+      "rejected": 0,
+      "last_check": "2026-09-25",
+      "coverage_status": "DISCOVERY_INPUT_VALIDATED",
+      "note": null
+    },
+    {
+      "country": "Oman",
+      "sources_checked": 0,
+      "sources_registered": 8,
+      "new_candidates": 1,
+      "confirmed": 1,
+      "supported": 0,
+      "review_required": 0,
+      "rejected": 0,
+      "last_check": "2026-09-25",
+      "coverage_status": "DISCOVERY_INPUT_VALIDATED",
+      "note": null
+    },
+    {
+      "country": "Bahrain",
+      "sources_checked": 0,
+      "sources_registered": 2,
+      "new_candidates": 2,
+      "confirmed": 1,
+      "supported": 0,
+      "review_required": 1,
+      "rejected": 0,
+      "last_check": "2026-09-25",
+      "coverage_status": "DISCOVERY_INPUT_VALIDATED",
+      "note": null
+    },
+    {
+      "country": "Qatar",
+      "sources_checked": 0,
+      "sources_registered": 2,
+      "new_candidates": 0,
+      "confirmed": 1,
+      "supported": 0,
+      "review_required": 0,
+      "rejected": 0,
+      "last_check": "2026-09-25",
+      "coverage_status": "NO_QUALIFYING_ACTIVITY_FOUND",
+      "note": "Zero qualifying September transformer-supply / station-EPC opportunities under defined scope. Valid. Do not fabricate.",
+      "internal_coverage_fact": true
+    }
+  ],
+  "freshness": {
+    "statement": "0/6 GCC market adapters live — registry covers 6/6; discovery-input validation does not equal live portal crawl",
+    "markets_registered": 6,
+    "markets_adapter_live": 0,
+    "markets_with_validated_candidates": 6,
+    "latest_source_checked_at": "2026-09-25",
+    "latest_confirmed_event_date": "2026-09-25",
+    "data_current_claim_allowed": false,
+    "honesty": "Do NOT declare DATA CURRENT because the build ran today. Freshness depends on source coverage + source_checked_at + validated newest record."
+  }
+}

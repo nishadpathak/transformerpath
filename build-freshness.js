@@ -22,8 +22,45 @@
 const fs = require('fs');
 function readJson(p, fb) { try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch (e) { return fb; } }
 function ts(f) { const d = readJson('data/' + f + '.json', {}); return d.updated || d.generated || d.generated_at || d.last_updated || (d.stats && d.stats.generated_at) || null; }
+function newestIntelObservation() {
+  // Prefer validated content / source-check dates over a redeploy touching intel.updated.
+  // Never use tender_close_date or future calendar days (those made the stamp read Nov 30).
+  const feed = readJson('data/intel-feed-ui.json', {});
+  const intel = readJson('data/intel.json', {});
+  const gcc = readJson('data/gcc-discovery-candidates.json', {});
+  const todayIso = new Date().toISOString().slice(0, 10);
+  const dates = [];
+  function pushDay(d) {
+    if (!d) return;
+    const day = String(d).slice(0, 10);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(day)) return;
+    if (day > todayIso) return;
+    dates.push(day);
+  }
+  if (feed.honesty && feed.honesty.latest_source_iso) pushDay(feed.honesty.latest_source_iso);
+  if (intel.refresh_meta && intel.refresh_meta.newest_validated_content_date) {
+    pushDay(intel.refresh_meta.newest_validated_content_date);
+  }
+  // Fall back to intel.updated only when it is not a future close-date leak
+  if (intel.updated) pushDay(String(intel.updated).slice(0, 10));
+  (gcc.candidates || []).forEach(function (c) {
+    const d = c.dates || {};
+    ['source_checked_at', 'update_date', 'tender_float_date', 'publication_date', 'event_date'].forEach(function (k) {
+      pushDay(d[k]);
+    });
+  });
+  dates.sort();
+  const newest = dates.length ? dates[dates.length - 1] : null;
+  if (!newest) return ts('intel');
+  // Calendar-day observations stamp at noon UTC for stable ageHours — but never
+  // in the future (morning UTC builds fail verify-hero "not newer than now").
+  const noon = newest + 'T12:00:00.000Z';
+  const nowIso = new Date().toISOString();
+  return noon > nowIso ? nowIso : noon;
+}
 const NOW = new Date().toISOString();
 const TODAY = NOW.slice(0, 10);
+const INTEL_OBS = newestIntelObservation();
 
 // Source body: cite what each intelligence surface is actually fed by, and its
 // last-known refresh. All values are observed from the data, never invented.
@@ -34,12 +71,12 @@ const surfaces = [
     cadence: 'daily (curated)',
     description: 'Curated transformer-industry intelligence feed. Data is compiled and regenerated at each build; it is not an automatic live scrape.',
     last_build: ts('intel-categories') || ts('intel'),
-    last_data_refresh: ts('intel'),
-    // P0 refresh metadata — a curated feed is refreshed at build, not on a live
-    // schedule. attempted == successful for a static build; there is no poller.
-    last_attempted_refresh: ts('intel'),
-    last_successful_refresh: ts('intel'),
-    latest_source_observation: 'curated items carry their own per-item source date',
+    last_data_refresh: INTEL_OBS,
+    // Honest refresh = newest validated content / source-check observation.
+    // Never treat a silent redeploy that only rewrites intel.updated as CURRENT.
+    last_attempted_refresh: INTEL_OBS,
+    last_successful_refresh: INTEL_OBS,
+    latest_source_observation: INTEL_OBS,
     records_added: null,
     records_updated: null,
     source_count: 'per-item',
@@ -149,7 +186,7 @@ const sources = [
   {
     name: 'Curated Daily Intel editorial items', type: 'curated-content', region: 'Global',
     works_for: ['daily_intel'],
-    last_checked: ts('intel-categories') || ts('intel'), last_success: ts('intel'), latest_content_date: 'per-item source date',
+    last_checked: INTEL_OBS, last_success: INTEL_OBS, latest_content_date: INTEL_OBS,
     failure_count: 0, status: 'HEALTHY',
   },
   {

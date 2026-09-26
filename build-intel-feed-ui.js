@@ -19,7 +19,7 @@ const path = require('path');
 const { lookup, parseSourceName } = require('./lib/intel-source-normalizer');
 const { H2_PROJECTS_ACTIVE, H2_HISTORICAL_REFERENCE } = require('./build-intel-audit');
 
-const TODAY_STR = '2026-09-15';
+const TODAY_STR = new Date().toISOString().slice(0, 10);
 const TODAY = new Date(TODAY_STR + 'T00:00:00Z');
 
 const MONTH = {
@@ -109,6 +109,7 @@ function parseItemDate(src) {
 function classifyAgeTier(dateObj) {
   if (!dateObj) return 'BACKGROUND';
   const diffDays = Math.round((TODAY.getTime() - dateObj.getTime()) / (1000 * 60 * 60 * 24));
+  if (diffDays < 0) return 'BACKGROUND'; // planned/future-dated labels are not "fresh news"
   if (diffDays <= 7) return 'FRESH';
   if (diffDays <= 30) return 'RECENT';
   if (diffDays <= 365) return 'BACKGROUND';
@@ -200,7 +201,27 @@ function pushPost(p) {
 
 function fromCurated(it, desk, regionKey, regionLabel, defaultCls) {
   if (!it || !it.title) return;
-  const dated = parseItemDate(it.src || it.date);
+  // Prefer explicit structured observation dates over the first date buried in src.
+  // Oman: update_date 19 Sep wins over event_date 12 Aug for age tier.
+  // Never prefer a future date_iso (e.g. tender close used as age by mistake).
+  let dated = { iso: null, label: '', precision: 'unknown', dateObj: null };
+  const obsDates = [it.update_date, it.tender_float_date, it.publication_date, it.event_date, it.date_iso, it.date]
+    .map(function (d) { return d ? String(d).slice(0, 10) : null; })
+    .filter(function (d) { return d && /^\d{4}-\d{2}-\d{2}$/.test(d) && d <= TODAY_STR; });
+  obsDates.sort();
+  const prefer = obsDates.length ? obsDates[obsDates.length - 1] : null;
+  if (prefer) {
+    const [y, mo, d] = String(prefer).split('-').map(Number);
+    dated = {
+      iso: prefer,
+      label: d + ' ' + MON[mo - 1] + ' ' + y,
+      precision: 'day',
+      dateObj: new Date(Date.UTC(y, mo - 1, d))
+    };
+  } else {
+    dated = parseItemDate(it.src || it.date);
+    // If src parsed to a future day (close date in label), fall back to BACKGROUND via classifyAgeTier
+  }
   const cls = it.cls || defaultCls || 'INFERRED';
   const ageTier = classifyAgeTier(dated.dateObj);
   const isActive = it.is_active || /under construction|active|commissioning|tender|tenders|pipeline|awarded|wins|contract|approved|rfq/i.test(it.title + ' ' + (it.snippet || ''));
@@ -221,6 +242,8 @@ function fromCurated(it, desk, regionKey, regionLabel, defaultCls) {
     date: dated.label,
     dateIso: dated.iso,
     datePrecision: dated.precision,
+    eventDate: it.event_date || null,
+    updateDate: it.update_date || null,
     url: it.url || '',
     provenance: provenanceOf(it, registry, 'CURATED'),
     buyer: it.buyer || '',
@@ -474,8 +497,8 @@ Object.keys(TECH_WATCH || {}).forEach(function (cat) {
 
 // Sort posts chronologically
 function sortKey(p) {
-  if (p.ageTier === 'FRESH') return '9999-' + (p.dateIso || '2026-09-15');
-  if (p.ageTier === 'RECENT') return '9990-' + (p.dateIso || '2026-09-01');
+  if (p.ageTier === 'FRESH') return '9999-' + (p.dateIso || TODAY_STR);
+  if (p.ageTier === 'RECENT') return '9990-' + (p.dateIso || TODAY_STR);
   if (p.dateIso && p.datePrecision === 'day') return p.dateIso + '-9';
   if (p.dateIso && p.datePrecision === 'month') return p.dateIso.slice(0, 7) + '-00-5';
   if (p.dateIso && p.datePrecision === 'year') return p.dateIso.slice(0, 4) + '-00-00-1';
