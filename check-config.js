@@ -364,6 +364,16 @@ function routeCheck(route, req, forb, rawReqs) {
 // /pricing — canonical plans, single 12-month payments, no cert claims, no $/year.
 routeCheck('pricing.html', ['Learning', 'Professional', 'Team', '\\$199', '\\$599', '\\$1,999', 'no auto-renewal', '12 months'],
   ['Learner\\s*(plan|tier)?\\s*<', 'Enterprise\\s*(plan|tier)?\\s*<', '\\$199\\s*/\\s*year', 'certificate per level', 'co-branded certificates?', 'capstone review \\+ certificate']);
+// Marketing counts on pricing must use data-stat so they cannot drift from site-stats
+// (audit regression: pricing said 709 while directory showed 911).
+{
+  const pricing = pageContentMap.get('pricing.html') || '';
+  check('pricing manufacturer claim uses data-stat', /data-stat="manufacturers">\d+<\/span>/.test(pricing));
+  check('pricing grid census uses data-stat', /data-stat="gridMarkets">\d+<\/span>/.test(pricing));
+  if (/\b709-manufacturer|\bBrowse 709 manufacturers/.test(pricing)) {
+    problems.push('route-stale pricing.html :: forbidden hardcoded 709-manufacturer claim');
+  }
+}
 // /for-manufacturers — neutral voice, no old claims, no old plan names.
 routeCheck('for-manufacturers.html', [], ['we are not FEM', 'we would rather tell you', 'instead of us', 'co-branded certificates?', '\\bLearner\\b\\s*(plan|tier)?\\s*<']);
 // FEM article + repository-wide 10-15% accuracy claim.
