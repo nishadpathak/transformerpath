@@ -297,8 +297,11 @@ window.__TP_ACC_SLUGS__ = ["a-bond-strands-pvt-ltd","abb-bushings-and-transforme
             '<div class="supp-desc">' + esc(s.description) + '</div>' +
           '</div>' +
           '<div class="supp-foot">' +
-            (ACC_SLUGS.has(slug) ? '<a href="accessories/' + slug + '/" class="btn btn-outline btn-sm" style="font-size:.76rem">Profile →</a>' : (s.website ? '<a href="' + esc(s.website) + '" target="_blank" rel="noopener" class="btn btn-outline btn-sm" style="font-size:.76rem">Official Website ↗</a>' : '<span></span>')) +
-            '<a href="rfq.html?company=' + encodeURIComponent(s.name) + '" class="btn btn-amber btn-sm" style="font-size:.76rem">Inquire / RFQ →</a>' +
+            '<div style="display:flex;gap:6px;align-items:center">' +
+              '<button type="button" class="btn btn-outline btn-sm tp-shortlist-btn" data-slug="' + esc(slug) + '" data-name="' + esc(s.name) + '" style="font-size:.74rem;padding:3px 8px">+ Shortlist</button>' +
+              (ACC_SLUGS.has(slug) ? '<a href="accessories/' + slug + '/" class="btn btn-outline btn-sm" style="font-size:.76rem">Profile →</a>' : (s.website ? '<a href="' + esc(s.website) + '" target="_blank" rel="noopener" class="btn btn-outline btn-sm" style="font-size:.76rem">Site ↗</a>' : '')) +
+            '</div>' +
+            '<a href="rfq.html?company=' + encodeURIComponent(s.name) + '" class="btn btn-amber btn-sm" style="font-size:.76rem">RFQ →</a>' +
           '</div>' +
         '</div>';
       }).join('');
@@ -431,5 +434,6 @@ const COMPONENTS = {
 </script>
 <script src="tp-nav.js?v=5" defer></script>
 <script src="analytics.js" defer></script>
+<script src="tp-shortlist.js?v=1" defer></script>
 </body>
 </html>

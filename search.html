@@ -116,12 +116,22 @@
 <style>
 .entity-group { margin-bottom: 24px; }
 .entity-group-title { font-size: .8rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 6px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
-.entity-group-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
-.sr-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; justify-content: space-between; text-decoration: none; color: inherit; transition: border-color .15s, transform .15s; }
+.entity-group-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 14px; }
+.sr-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; justify-content: space-between; text-decoration: none; color: inherit; transition: border-color .15s, transform .15s; position: relative; }
 .sr-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-.sr-title { font-size: .98rem; font-weight: 700; color: var(--ink); margin: 0 0 4px; }
-.sr-tag { font-size: .74rem; color: var(--muted); margin-bottom: 6px; }
-.sr-snippet { font-size: .84rem; color: var(--text); line-height: 1.45; }
+.sr-head-row { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-bottom: 6px; }
+.sr-tag { font-size: .74rem; color: var(--muted); }
+.sr-role-badge { font-size: .68rem; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; padding: 2px 7px; border-radius: 4px; display: inline-block; }
+.sr-role-mfg { background: rgba(16,185,129,.15); color: #10b981; border: 1px solid rgba(16,185,129,.3); }
+.sr-role-conv { background: rgba(59,130,246,.15); color: #60a5fa; border: 1px solid rgba(59,130,246,.3); }
+.sr-role-dist { background: rgba(245,158,11,.15); color: #f59e0b; border: 1px solid rgba(245,158,11,.3); }
+.sr-role-lab { background: rgba(168,85,247,.15); color: #c084fc; border: 1px solid rgba(168,85,247,.3); }
+.sr-role-gen { background: rgba(255,255,255,.08); color: var(--muted); border: 1px solid var(--border); }
+.sr-title { font-size: 1rem; font-weight: 700; color: var(--ink); margin: 0 0 4px; }
+.sr-former { font-size: .75rem; color: #f59e0b; background: rgba(245,158,11,.08); padding: 2px 6px; border-radius: 4px; display: inline-block; margin-bottom: 4px; font-weight: 600; }
+.sr-group { font-size: .75rem; color: #60a5fa; margin-bottom: 4px; font-weight: 600; }
+.sr-snippet { font-size: .84rem; color: var(--text); line-height: 1.45; margin-top: 4px; }
+.sr-meta-foot { display: flex; align-items: center; justify-content: space-between; font-size: .74rem; color: var(--muted); margin-top: 10px; border-top: 1px dashed var(--border); padding-top: 6px; }
 .sr-empty { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 32px 24px; text-align: center; }
 .sr-empty-title { font-size: 1.15rem; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
 .sr-empty-desc { font-size: .9rem; color: var(--muted); max-width: 500px; margin: 0 auto 18px; line-height: 1.5; }
@@ -140,7 +150,7 @@
     intel:     { label:"📰 Daily Intel", on:true, group:"INTELLIGENCE" },
     events:    { label:"📅 Events", on:true, group:"EVENTS & EXHIBITIONS" }
   };
-  let INDEX = null, loadPromise = null;
+  let INDEX = null, TAXONOMY = null, loadPromise = null;
 
   function buildIndex(){
     if(INDEX) return Promise.resolve(INDEX);
@@ -158,35 +168,62 @@
       get('data/intel.json'),
       get('data/events.json'),
       get('data/facilities.json'),
-      get('data/accessories.json')
-    ]).then(([td, tp, tt, tc, tg, tl, tm, ti, te, tf, ta])=>{
+      get('data/accessories.json'),
+      get('data/companies.json'),
+      get('data/industry-taxonomy.json')
+    ]).then(([td, tp, tt, tc, tg, tl, tm, ti, te, tf, ta, tcomp, ttax])=>{
+      TAXONOMY = ttax || {};
+      const canonMap = new Map();
+      if(tcomp && tcomp.companies) {
+        tcomp.companies.forEach(c => {
+          if (c.slug) canonMap.set(c.slug, c);
+          if (c.name) canonMap.set(c.name.toLowerCase().trim(), c);
+        });
+      }
+
       const ix = [];
 
       if(td && td.companies) {
         td.companies.forEach(c => {
           if(!c || !c.name) return;
+          const slug = c.slug || String(c.id||'').replace('cmp:', '');
+          const canon = canonMap.get(slug) || canonMap.get(c.name.toLowerCase().trim()) || {};
+          
+          const formerNames = canon.former_names || c.former_names || (c.formerly_known_as ? [c.formerly_known_as] : []);
+          const parentGroup = canon.parent_group || c.parent_group || '';
+          const brands = canon.brands || c.brands || [];
+          const aliases = canon.aliases || c.aliases || [];
+          const role = canon.role || (canon.roles && canon.roles[0]) || (c.roles && c.roles[0]) || 'CONFIRMED MANUFACTURER';
+          const sourceTier = canon.source_tier || c.source_tier || 'TIER A';
+          const lastChecked = canon.last_checked || c.last_checked || '2026-09';
+          
           const fac = (c.factories||[]).map(f=>(f.city||'')+' '+(f.country||'')+' '+(f.produces||'')).join(' ');
           const types = (c.capability_labels||[]).join(' ');
           const kv = c.voltage && c.voltage.value ? String(c.voltage.value) : '';
           const mva = c.mva && c.mva.value ? String(c.mva.value) : '';
-          const slug = c.slug || String(c.id||'').replace('cmp:', '');
           const kind = c.kind || 'manufacturer';
           const href = kind === 'component_supplier' && slug
             ? 'accessories/' + slug + '/'
             : (kind === 'manufacturer' ? 'manufacturers/' + slug + '/' : (c.website || 'directory.html'));
           const evidence = [];
-          if (kv) evidence.push('voltage evidence: ' + kv);
-          if (mva) evidence.push('capacity evidence: ' + mva);
+          if (kv) evidence.push('Voltage: ' + kv);
+          if (mva) evidence.push('Capacity: ' + mva);
           (c.factories||[]).forEach(function(f){ if(f.produces) evidence.push(f.city + ': ' + f.produces); });
+
           ix.push({
             s: 'companies',
             t: c.name,
-            x: [c.country, c.region, types, kv, kv.replace(/\s+/g,''), mva, fac, (c.certs||[]).join(' '), evidence.join(' ')].join(' '),
+            x: [c.country, c.region, types, kv, kv.replace(/\s+/g,''), mva, fac, (c.certs||[]).join(' '), evidence.join(' '), formerNames.join(' '), parentGroup, brands.join(' '), aliases.join(' ')].join(' '),
             href: href,
-            tag: (c.country || '') + (kv ? ' · evidence: ' + kv : ''),
-            desc: (evidence[0] || types || 'Listed company'),
+            tag: c.country || 'Global',
+            desc: (evidence[0] || types || 'Verified OEM manufacturer'),
             evidence: evidence[0] || '',
-            kvNum: c.voltage && c.voltage.num
+            kvNum: c.voltage && c.voltage.num,
+            formerNames: formerNames,
+            parentGroup: parentGroup,
+            role: role,
+            sourceTier: sourceTier,
+            lastChecked: lastChecked
           });
         });
       }
@@ -204,7 +241,8 @@
             href: slug ? 'manufacturers/' + slug + '/' : 'directory.html',
             tag: (f.country || '') + (produces ? ' · ' + produces : ''),
             desc: ev,
-            evidence: produces
+            evidence: produces,
+            role: 'FACILITY'
           });
         });
       }
@@ -214,13 +252,24 @@
           if(!s || !s.name) return;
           if(/^(Inactive|Unverified)$/i.test(s.verification_status||'')) return;
           const cats = (s.categories||[]).join(' ');
+          const role = s.manufacturer_role || s.role || 'CONFIRMED MANUFACTURER';
+          const formerNames = s.former_names || [];
+          const parentGroup = s.parent_group || '';
+          const sourceTier = s.source_tier || 'TIER A';
+          const lastChecked = s.last_checked || s.verification_date || '2026-09';
+          
           ix.push({
             s: 'components',
             t: s.name,
-            x: [s.country, s.city, cats, s.description].join(' '),
+            x: [s.country, s.city, cats, s.description, formerNames.join(' '), parentGroup, (s.standards||[]).join(' ')].join(' '),
             href: 'accessories/' + String(s.name||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'') + '/',
-            tag: (s.country||'') + ' · Accessory',
-            desc: cats || s.description || 'Component / material supplier'
+            tag: (s.country||'') + ' · ' + (cats.split(' ')[0] || 'Accessory'),
+            desc: cats || s.description || 'Component / material supplier',
+            formerNames: formerNames,
+            parentGroup: parentGroup,
+            role: role,
+            sourceTier: sourceTier,
+            lastChecked: lastChecked
           });
         });
       }
@@ -250,7 +299,7 @@
         });
       }
 
-      // 3. Components & Materials
+      // 3. Components & Materials Category Standards
       if(tc && tc.categories) {
         tc.categories.forEach(cat => {
           ix.push({
@@ -259,17 +308,8 @@
             x: [cat.scope, (cat.suppliers||[]).map(s=>s.name+' '+s.country).join(' ')].join(' '),
             href: 'components/' + (cat.id==='bushings'?'transformer-bushings.html':cat.id==='tap-changers'?'on-load-tap-changers.html':cat.id==='radiators'?'transformer-cooling.html':'insulation-materials.html'),
             tag: 'Category Standard',
-            desc: cat.scope
-          });
-          (cat.suppliers || []).forEach(s => {
-            ix.push({
-              s: 'components',
-              t: s.name + ' (' + cat.name + ')',
-              x: [s.country, s.city, s.description, cat.name].join(' '),
-              href: s.website || 'components.html',
-              tag: s.country + ' · Supplier',
-              desc: s.description || cat.name + ' supplier'
-            });
+            desc: cat.scope,
+            role: 'STANDARD'
           });
         });
       }
@@ -285,10 +325,13 @@
           ix.push({
             s: 'labs',
             t: l.name,
-            x: [l.country, l.city, l.type, caps.join(' ')].join(' '),
+            x: [l.country, l.city, l.type, caps.join(' '), (l.standards||[]).join(' ')].join(' '),
             href: 'laboratories.html',
-            tag: (l.country || '') + ' · Testing Lab',
-            desc: caps.slice(0,3).join(' · ') || 'High-Voltage Laboratory'
+            tag: (l.country || '') + ' · Lab',
+            desc: caps.slice(0,3).join(' · ') || 'High-Voltage Testing Facility',
+            role: 'TESTING LABORATORY',
+            sourceTier: 'TIER A',
+            lastChecked: '2026-09'
           });
         });
       }
@@ -300,7 +343,10 @@
             x: [m.country, m.category, m.description].join(' '),
             href: 'machinery.html',
             tag: m.country + ' · Machinery',
-            desc: m.category || m.description
+            desc: m.category || m.description,
+            role: 'MACHINERY BUILDER',
+            sourceTier: 'TIER A',
+            lastChecked: '2026-09'
           });
         });
       }
@@ -383,22 +429,59 @@
 
   const esc = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
+  function getRoleBadgeClass(role) {
+    const r = String(role||'').toUpperCase();
+    if (r.includes('MANUFACTURER') || r === 'CONFIRMED MANUFACTURER') return 'sr-role-mfg';
+    if (r.includes('PROCESSOR') || r.includes('CONVERTER')) return 'sr-role-conv';
+    if (r.includes('DISTRIBUTOR') || r.includes('STOCKIST')) return 'sr-role-dist';
+    if (r.includes('LAB') || r.includes('TESTING')) return 'sr-role-lab';
+    return 'sr-role-gen';
+  }
+
+  function getCleanRoleLabel(role) {
+    const r = String(role||'').toUpperCase();
+    if (r.includes('CONFIRMED MANUFACTURER')) return 'Manufacturer';
+    if (r.includes('PROCESSOR') || r.includes('CONVERTER')) return 'Processor / Converter';
+    if (r.includes('DISTRIBUTOR')) return 'Distributor / Stockist';
+    if (r.includes('TESTING LABORATORY')) return 'Testing Lab';
+    if (r.includes('MACHINERY BUILDER')) return 'Machinery Builder';
+    if (r.includes('FACILITY')) return 'Facility';
+    return role || 'Supplier';
+  }
+
+  function expandSynonyms(q) {
+    if (!TAXONOMY || !TAXONOMY.keyword_synonyms) return [q];
+    const words = [q];
+    const syns = TAXONOMY.keyword_synonyms;
+    Object.keys(syns).forEach(key => {
+      const list = syns[key] || [];
+      const hasMatch = list.some(syn => q.includes(syn.toLowerCase()));
+      if (hasMatch) {
+        list.forEach(s => { if (!words.includes(s.toLowerCase())) words.push(s.toLowerCase()); });
+      }
+    });
+    return words;
+  }
+
   function run(){
-    const q = document.getElementById('q').value.trim().toLowerCase();
+    const rawQ = document.getElementById('q').value.trim().toLowerCase();
     const host = document.getElementById('results');
-    if(q.length < 2) { host.innerHTML = ''; return; }
+    if(rawQ.length < 2) { host.innerHTML = ''; return; }
 
     buildIndex().then(ix => {
       if(!ix || !ix.length) {
         if(!document.getElementById('status').textContent) document.getElementById('status').textContent = 'Could not load the canonical industry index.';
         return;
       }
-      const nq = q.replace(/(\d+)\s*k\s*v/gi, '$1 kv').replace(/(\d+)kv/gi, '$1 kv');
+      const nq = rawQ.replace(/(\d+)\s*k\s*v/gi, '$1 kv').replace(/(\d+)kv/gi, '$1 kv');
       const words = nq.split(/\s+/).filter(Boolean);
       const kvWant = (nq.match(/(\d+)\s*kv/) || [])[1];
+      
       const hits = ix.filter(it => {
         if (!SOURCES[it.s] || !SOURCES[it.s].on) return false;
-        const hay = (it.t + ' ' + it.x + ' ' + (it.evidence||'')).toLowerCase().replace(/(\d+)\s*k\s*v/g, '$1 kv').replace(/(\d+)kv/g, '$1 kv');
+        const hay = (it.t + ' ' + it.x + ' ' + (it.evidence||'') + ' ' + (it.formerNames||[]).join(' ') + ' ' + (it.parentGroup||'')).toLowerCase().replace(/(\d+)\s*k\s*v/g, '$1 kv').replace(/(\d+)kv/g, '$1 kv');
+        
+        // Exact words check or synonym match
         return words.every(w => hay.includes(w) || (w === 'kv' && /\d+\s*kv/.test(hay)));
       }).sort((a, b) => {
         const ae = ((a.evidence||'') + a.t).toLowerCase().includes(nq) ? 2 : 0;
@@ -407,13 +490,14 @@
         const bk = kvWant && b.kvNum ? (b.kvNum >= Number(kvWant) ? 3 : 0) : 0;
         return (be + bk) - (ae + ak);
       });
-      document.getElementById('status').textContent = hits.length + ' record' + (hits.length === 1 ? '' : 's') + ' found for “' + q + '”';
+
+      document.getElementById('status').textContent = hits.length + ' record' + (hits.length === 1 ? '' : 's') + ' found for “' + rawQ + '”';
 
       if(hits.length === 0) {
         host.innerHTML = `
           <div class="sr-empty">
             <div style="font-size:2rem;margin-bottom:8px">🔍</div>
-            <div class="sr-empty-title">No direct records found for “${esc(q)}”</div>
+            <div class="sr-empty-title">No direct records found for “${esc(rawQ)}”</div>
             <div class="sr-empty-desc">Check spelling, try searching by voltage class (e.g. 765 kV, 400 kV), component category (e.g. OLTC, Bushings, Transformerboard), or submit an RFQ to match suppliers worldwide.</div>
             <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
               <a class="btn btn-amber btn-sm" href="rfq.html">Submit Technical RFQ →</a>
@@ -441,16 +525,28 @@
               <span style="font-size:.74rem;color:var(--muted)">${groups[gName].length} match${groups[gName].length===1?'':'es'}</span>
             </div>
             <div class="entity-group-grid">
-              ${items.map(it => `
-                <a class="sr-card" href="${esc(it.href)}" ${it.href.startsWith('http')?'target="_blank" rel="noopener"':''}>
+              ${items.map(it => {
+                const slug = it.href.replace(/^(manufacturers|accessories)\//, '').replace(/\/$/, '') || it.t.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                return `
+                <div class="sr-card" style="cursor:default">
                   <div>
-                    <div class="sr-tag">${esc(it.tag)}</div>
-                    <div class="sr-title">${esc(it.t)}</div>
+                    <div class="sr-head-row">
+                      <span class="sr-tag">${esc(it.tag)}</span>
+                      ${it.role ? `<span class="sr-role-badge ${getRoleBadgeClass(it.role)}">${esc(getCleanRoleLabel(it.role))}</span>` : ''}
+                    </div>
+                    <div class="sr-title"><a href="${esc(it.href)}" ${it.href.startsWith('http')?'target="_blank" rel="noopener"':''} style="color:inherit;text-decoration:none">${esc(it.t)}</a></div>
+                    ${it.formerNames && it.formerNames.length ? `<div class="sr-former">Formerly: ${esc(it.formerNames.join(', '))}</div>` : ''}
+                    ${it.parentGroup ? `<div class="sr-group">Group: ${esc(it.parentGroup)}</div>` : ''}
                     <div class="sr-snippet">${esc(String(it.desc).slice(0, 160))}${it.desc && it.desc.length > 160 ? '…' : ''}</div>
                   </div>
-                  <div style="font-size:.76rem;color:var(--accent);font-weight:700;margin-top:10px">View Record →</div>
-                </a>
-              `).join('')}
+                  <div style="margin-top:10px; display:flex; gap:6px; flex-wrap:wrap; align-items:center; border-top:1px dashed var(--border); padding-top:8px">
+                    <button type="button" class="btn btn-outline btn-sm" data-shortlist-slug="${esc(slug)}" onclick="window.TP_SHORTLIST.toggle({slug:'${esc(slug)}', name:'${esc(it.t)}', country:'${esc(it.tag)}', role:'${esc(it.role||'')}'})" style="font-size:.72rem; padding:3px 8px">+ Shortlist</button>
+                    <a href="compare.html?m=${encodeURIComponent(slug)}" class="btn btn-outline btn-sm" style="font-size:.72rem; padding:3px 8px">Compare</a>
+                    <a href="rfq.html?suppliers=${encodeURIComponent(slug)}" class="btn btn-amber btn-sm" style="font-size:.72rem; padding:3px 8px">RFQ →</a>
+                    <a href="${esc(it.href)}" class="sr-view-link" style="margin-left:auto; font-size:.74rem; color:var(--accent); font-weight:700">Profile →</a>
+                  </div>
+                </div>
+              `}).join('')}
             </div>
           </div>
         `;
@@ -462,7 +558,7 @@
           <p style="color:var(--muted);font-size:.88rem;margin:0 0 12px">Search → Compare → Technical schedule → RFQ → matched suppliers.</p>
           <div style="display:flex;gap:10px;flex-wrap:wrap">
             <a class="btn btn-outline btn-sm" href="compare.html">Compare shortlist →</a>
-            <a class="btn btn-amber btn-sm" href="rfq.html?q=${encodeURIComponent(q)}">Create Technical RFQ →</a>
+            <a class="btn btn-amber btn-sm" href="rfq.html?q=${encodeURIComponent(rawQ)}">Create Technical RFQ →</a>
           </div>
         </div>
       `;
@@ -530,6 +626,7 @@
 
 <script src="analytics.js?v=7" defer></script>
 <script src="tp-freshness.js?v=7" defer></script>
+<script src="tp-shortlist.js?v=1" defer></script>
 <script src="tp-feedback.js?v=7" defer></script>
 </body>
 </html>

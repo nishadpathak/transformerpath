@@ -1,0 +1,67 @@
+{
+  "$schema": "https://transformerpath.com/research-verdicts.schema.json",
+  "$comment": "Deep-research verdicts for census records that were RESEARCH_REQUIRED (no website) or ACTIVE_LIMITED_DATA. Each verdict records what could be independently verified and its claim_type. No URLs/capabilities/categories invented; UNKNOWN where unverified. Records verified as NOT transformer manufacturers (retailer/distributor/service) are flagged with is_transformer_manufacturer=false and kept flagged for review, never auto-deleted.",
+  "generated": "2026-08-31",
+  "verdicts": [
+    {
+      "name": "National Transformer Company (Saudi Voltamp)",
+      "country": "Saudi Arabia",
+      "city": "Jeddah",
+      "is_transformer_manufacturer": true,
+      "transformer_products": ["POWER"],
+      "official_website": null,
+      "parent": "Voltamp Energy (Oman) — holds ~80% after raising from 49%",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "sources": [
+        "https://www.omannews.gov.om/topics/en/80/show/115922/ftp",
+        "https://www.omanobserver.om/article/1185347/business/voltamp-energy-secures-control-of-saudi-joint-venture",
+        "https://transformer-technology.com/voltamp-energy-gains-majority-control-of-saudi-transformer-venture/"
+      ],
+      "note": "Confirmed power-transformer manufacturer with a plant near Jeddah; majority-owned by Voltamp Energy (Oman). The Saudi JV has no separately-owned official site (parent site voltampoman.com). kV/MVA unverified."
+    },
+    {
+      "name": "Viji Power Transformers",
+      "country": "India",
+      "city": "Bengaluru",
+      "is_transformer_manufacturer": false,
+      "transformer_products": [],
+      "official_website": null,
+      "claim_type": "UNKNOWN",
+      "sources": ["https://www.exportersindia.com/"],
+      "note": "Directory describes it as a 'Retailer of Steel Windings Mandrels & Industrial Breather' with no verified manufacturing evidence. Likely a retailer/distributor, not a transformer manufacturer. Flagged for review; not auto-deleted."
+    },
+    {
+      "name": "Tamilnadu Electricals",
+      "country": "India",
+      "city": "Chennai",
+      "is_transformer_manufacturer": null,
+      "transformer_products": [],
+      "official_website": null,
+      "claim_type": "UNKNOWN",
+      "sources": ["https://www.indiamart.com/"],
+      "note": "Directory-only transformer supplier; no official site/registry found; manufacturing unconfirmed. Flagged for review."
+    },
+    {
+      "name": "Niroo Transfo",
+      "country": "Iran",
+      "city": "Tehran",
+      "is_transformer_manufacturer": null,
+      "transformer_products": [],
+      "official_website": "https://nirootransfo.com",
+      "claim_type": "UNKNOWN",
+      "sources": ["https://codal.ir/", "https://nirootransfo.com"],
+      "note": "Tehran exchange-listed. Candidate site nirootransfo.com (content not fetched); niroutrans.com also seen. kV/MVA/categories unverified."
+    },
+    {
+      "name": "Alfa Trafo",
+      "country": "Türkiye",
+      "city": "Şanlıurfa",
+      "is_transformer_manufacturer": null,
+      "transformer_products": [],
+      "official_website": null,
+      "claim_type": "UNKNOWN",
+      "sources": [],
+      "note": "No Turkish entity found; searches surfaced only an unrelated Alfa Transformers Ltd (India, stock-listed). Unresolved; flag for re-verification."
+    }
+  ]
+}

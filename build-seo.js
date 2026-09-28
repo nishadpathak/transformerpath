@@ -264,7 +264,7 @@ TYPE_HUBS.forEach(function (th) {
     const comboDir = typeDir + '/' + cslug;
     fs.mkdirSync(comboDir, { recursive: true });
     const comboTitle = th.name + ' Manufacturers in ' + countryName;
-    const comboLead = 'Verified ' + th.name.toLowerCase() + ' manufacturers and suppliers based in ' + countryName + '.';
+    const comboLead = 'Directory of ' + th.name.toLowerCase() + ' manufacturers and suppliers based in ' + countryName + ' with technical capabilities, official website links, and RFQ channels.';
     const comboHtml = renderHub(
       comboTitle,
       comboLead,

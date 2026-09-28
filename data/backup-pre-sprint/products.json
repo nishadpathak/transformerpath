@@ -1,0 +1,155 @@
+{
+  "$schema": "https://transformerpath.com/product-matrix.schema.json",
+  "version": "2.0.0",
+  "updated": "2026-09-02",
+  "note": "Single source of truth for TransformerPath products and the free-vs-paid feature matrix. Pricing pages derive from this table rather than inventing features page-by-page. Prices are commercial REFERENCE/TARGET prices unless marked APPROVED; do not silently change an approved live price — change it here once and rebuild.",
+  "currency": "USD",
+  "always_free": [
+    "Daily Intel (public briefing)",
+    "Basic manufacturer directory (listed, public-source profiles)",
+    "Basic supplier directory",
+    "Events list",
+    "Webinar listings",
+    "Grids (map + tables)",
+    "Industry news",
+    "Basic knowledge articles",
+    "Basic jobs browsing",
+    "RFQ submission (buyer — always free)",
+    "Selected engineering calculators",
+    "Selected book excerpts"
+  ],
+  "consumers": {
+    "free": {
+      "id": "free", "name": "Free", "customer": "Everyone",
+      "purpose": "Discovery / intelligence", "price": 0, "cadence": null, "seats": null,
+      "price_status": "APPROVED",
+      "outcome": "Read daily intel, browse manufacturers/projects/tenders/events, post an RFQ, use selected tools and learning.",
+      "positioning": "The free network. Protects the Google to TransformerPath to recurring visitor flywheel."
+    },
+    "learning": {
+      "id": "learning", "name": "Learning", "customer": "Individual engineers",
+      "purpose": "Full structured learning", "price": 199, "cadence": "year", "seats": 1,
+      "price_status": "APPROVED",
+      "outcome": "Learn: full pathways, practice, progress, 3D learning, Test Bay, capstones, completion records.",
+      "includes": ["full academy", "digital books", "3D models", "saved designs", "design calculator", "Design Engineer Track"],
+      "positioning": "LEARN. A structured pathway covering transformer-design topics typically developed over several years of engineering practice."
+    },
+    "professional": {
+      "id": "professional", "name": "Professional", "customer": "Working engineers",
+      "purpose": "Advanced engineering plus work tools", "price": 599, "cadence": "year", "seats": 1,
+      "price_status": "APPROVED",
+      "outcome": "Work: Learning plus professional engineering utility — costing workbench, specification builder, bid evaluation, DGA workspace, professional exports.",
+      "includes": ["everything in Learning", "costing workbench", "specification builder", "bid evaluation", "DGA workspace", "professional reports/exports", "priority capstone review"],
+      "positioning": "LEARN plus WORK. Professional is Learning plus a real professional workspace, not faster support."
+    },
+    "team": {
+      "id": "team", "name": "Team", "customer": "Companies / departments",
+      "purpose": "Team learning plus tools", "price": 1999, "cadence": "year", "seats": 10,
+      "price_status": "APPROVED",
+      "outcome": "A team on one plan with organization management, members, individual progress, assigned pathways and a shared workspace.",
+      "includes": ["up to 10 seats", "organization admin", "member management", "individual learning progress", "assigned pathways"],
+      "positioning": "For engineering departments, manufacturers, utilities, EPCs, consultants and service organizations."
+    }
+  },
+  "b2b_supplier": {
+    "listed": {
+      "id": "supplier_listed", "name": "Listed", "customer": "Manufacturers / suppliers",
+      "purpose": "Free public factual listing", "price": 0, "cadence": null,
+      "price_status": "APPROVED",
+      "outcome": "A factual public listing — company, country, researched categories, official website, sourced capability.",
+      "neutrality": "No endorsement. Listed is a census listing, not a recommendation."
+    },
+    "verified": {
+      "id": "supplier_verified", "name": "Verified Manufacturer", "customer": "Manufacturers / suppliers",
+      "purpose": "Commercial readiness", "price": 499, "cadence": "year",
+      "price_status": "APPROVED",
+      "outcome": "Verified company contact, enhanced profile, logo/media, product info, brochure, contact CTA, RFQ response eligibility, basic analytics, website backlink where organically relevant, featured pin on the Industry Map.",
+      "meaning": "VERIFIED MANUFACTURER means the organization/contact/profile completed TransformerPath's defined verification process. It does NOT mean product certified, quality certified, approved supplier, or technically superior.",
+      "neutrality": "Verification is identity/contact verification, never a technical quality judgement."
+    },
+    "supplier_pro": {
+      "id": "supplier_pro", "name": "Supplier Pro", "customer": "Manufacturers / suppliers",
+      "purpose": "Supplier Pro", "price": 1499, "cadence": "year",
+      "price_status": "TARGET",
+      "outcome": "Everything in Verified plus advanced analytics, commercial profile tools, RFQ workflow, market watchlists, Intel Pro entitlement, monthly performance report, promotional inventory (including a featured Industry Map pin), advanced opportunity alerts.",
+      "neutrality": "Promotional placement is explicitly FEATURED or SPONSORED. Supplier Pro never buys organic technical ranking."
+    }
+  },
+  "b2b_intel": {
+    "intel_pro": {
+      "id": "intel_pro", "name": "Intel Pro", "customer": "Market intelligence users",
+      "purpose": "Monitoring / filtering / history / alerting", "price": 499, "price_monthly": 49, "cadence": "year",
+      "price_status": "TARGET",
+      "outcome": "Advanced project/tender filters, award history, factory expansions, company timelines, saved searches, watchlists, alerts, country dashboards, historical archive, monthly brief, exports when ready.",
+      "neutrality": "Intel Pro monetizes monitoring/filtering/history — never the factual headline itself. Factual Intel stays public; the paywall adds decision value."
+    },
+    "intel_team": {
+      "id": "intel_team", "name": "Intel Team", "customer": "Teams",
+      "purpose": "Shared market intelligence", "price": 1999, "price_monthly": 199, "cadence": "year",
+      "price_status": "TARGET",
+      "outcome": "Organization, members, shared watchlists, shared saved searches, team alerts, exports, shared reports.",
+      "neutrality": "Shared decision value, not a paywall over facts."
+    },
+    "enterprise": {
+      "id": "enterprise_intelligence", "name": "Enterprise Intelligence", "customer": "Manufacturers, utilities, EPCs, consultancies, investors",
+      "purpose": "Multi-user plus custom research", "price": null, "cadence": "custom",
+      "price_status": "CUSTOM",
+      "outcome": "Multi-user access, advanced exports, custom market monitoring, custom reports, research requests, bespoke briefings, company/project tracking.",
+      "cta": "Talk to TransformerPath",
+      "neutrality": "Only advertise functionality actually deliverable."
+    }
+  },
+  "b2b_media": {
+    "featured_event": {
+      "id": "featured_event", "name": "Featured Event", "customer": "Event organizers",
+      "purpose": "Prominent labelled promotion", "price": 299, "cadence": "per_event",
+      "price_status": "REFERENCE",
+      "outcome": "Prominent, clearly-labelled placement, logo/banner, enhanced event page, registration CTA, sponsor/exhibitor links, analytics.",
+      "neutrality": "FEATURED is promotional placement, clearly labelled. It is not an editorial recommendation."
+    },
+    "featured_exhibitor": {
+      "id": "featured_exhibitor", "name": "Featured Exhibitor", "customer": "Exhibitors",
+      "purpose": "Promoted exhibitor visibility", "price": 399, "cadence": "per_event",
+      "price_status": "REFERENCE",
+      "outcome": "FEATURED label, logo, booth number, products, brochure, manufacturer profile, meeting CTA, event analytics.",
+      "neutrality": "FEATURED is promotional placement. It never implies an editorial recommendation."
+    },
+    "hosted_webinar": {
+      "id": "hosted_webinar", "name": "Hosted Webinar", "customer": "Manufacturers / component suppliers",
+      "purpose": "Webinar hosting plus promotion", "price": 1500, "cadence": "engagement",
+      "price_status": "REFERENCE",
+      "outcome": "Event page, registration, promotion, hosting, recording where supported, post-event replay, sponsor identification. Attendee reporting subject to privacy/consent.",
+      "neutrality": "No lead data where consent/privacy does not permit it."
+    },
+    "sponsorship": {
+      "id": "sponsorship", "name": "Sponsorship", "customer": "Industry organizations",
+      "purpose": "Sponsor inventory", "price": 299, "cadence": "engagement",
+      "price_status": "REFERENCE",
+      "outcome": "Daily Intel sponsor, event spotlight, category sponsor, market sponsor, newsletter sponsor, annual knowledge partner. Every paid placement is visibly SPONSORED or FEATURED.",
+      "neutrality": "Never sells editorial conclusions."
+    }
+  },
+  "books": {
+    "premium_volume": {
+      "id": "book_premium_volume", "name": "Premium digital books", "customer": "Readers",
+      "purpose": "In-depth engineering volumes", "price": null, "cadence": "one_time",
+      "price_status": "APPROVED",
+      "outcome": "Digital reference volumes; cross-sell to the related Learn pathway."
+    }
+  },
+  "feature_matrix": {
+    "daily_intel":            { "free": true,  "learning": true, "professional": true, "team": true },
+    "basic_calculator":       { "free": true,  "learning": true, "professional": true, "team": true },
+    "full_academy":           { "free": false, "learning": true, "professional": true, "team": true },
+    "digital_books":          { "free": false, "learning": true, "professional": true, "team": true },
+    "3d_models":              { "free": "limited", "learning": true, "professional": true, "team": true },
+    "saved_designs":          { "free": false, "learning": true, "professional": true, "team": true },
+    "costing_workbench":      { "free": false, "learning": false, "professional": true, "team": true },
+    "specification_builder":  { "free": false, "learning": false, "professional": true, "team": true },
+    "bid_evaluation":         { "free": false, "learning": false, "professional": true, "team": true },
+    "dga_workspace":          { "free": false, "learning": false, "professional": true, "team": true },
+    "team_management":        { "free": false, "learning": false, "professional": false, "team": true },
+    "corporate_training":     { "free": false, "learning": false, "professional": false, "team": true },
+    "certificates":           { "free": false, "learning": true, "professional": true, "team": true }
+  }
+}

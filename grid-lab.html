@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" class="tp-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transformer Grid Lab — Interactive 3D Power System Journey | TransformerPath</title>
+  <meta name="description" content="Explore how transformers operate across the entire electrical grid in interactive 3D: Generator (21 kV) → GSU (400 kV) → Autotransformer (220 kV) → Substation (33/11 kV) → Distribution (415 V). Live engineering calculations, load physics, OLTC regulation, and fault simulations.">
+  <link rel="canonical" href="https://transformerpath.com/grid-lab.html">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="TransformerPath">
+  <meta property="og:title" content="Transformer Grid Lab — Interactive 3D Power System Journey">
+  <meta property="og:description" content="Ride electrical power from generation to consumer across 3D step-up/step-down transformers, OLTC voltage regulation, and grid fault scenarios.">
+  <meta property="og:url" content="https://transformerpath.com/grid-lab.html">
+  <meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/svg+xml" href="brand/favicon.svg">
+  <link rel="stylesheet" href="tp-nav.css?v=14">
+  <link rel="stylesheet" href="tp-feedback.css?v=14">
+  <link rel="stylesheet" href="tp-grid-lab.css?v=1">
+</head>
+<body>
+  <a class="skip-link" href="#gl-canvas-container">Skip to 3D simulation</a>
+
+  <!-- Top Bar -->
+  <header class="gl-topbar">
+    <a href="index.html" class="gl-brand" title="TransformerPath Home">
+      <svg width="28" height="28" viewBox="0 0 64 64" aria-hidden="true" style="flex:none">
+        <circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/>
+        <g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8">
+          <line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/>
+        </g>
+        <path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/>
+      </svg>
+      <span>Transformer<span style="color:var(--gl-accent)">Path</span></span>
+      <span class="badge">Grid Lab</span>
+    </a>
+
+    <div class="gl-top-links">
+      <a class="gl-btn-sm" href="academy.html">🎓 Academy</a>
+      <a class="gl-btn-sm" href="explorer.html">🔍 3D Explorer</a>
+      <a class="gl-btn-sm" href="grids.html">🌐 Grids</a>
+      <button class="gl-btn-sm" id="gl-toggle-accessible" title="Toggle Accessible Non-3D View">📄 Schematic / A11y</button>
+      <a class="gl-btn-sm" href="directory.html" style="border-color:var(--gl-accent);color:var(--gl-accent)">Sourcing Directory →</a>
+    </div>
+  </header>
+
+  <!-- 3D Canvas Viewport -->
+  <main id="gl-canvas-container" role="region" aria-label="Interactive 3D Power System Grid" tabindex="0"></main>
+
+  <!-- Left Simulation Controls Panel -->
+  <aside class="gl-panel-left" aria-label="Simulation Controls">
+    <!-- Camera View Mode -->
+    <div class="gl-card">
+      <div class="gl-card-title">Camera Mode</div>
+      <div class="gl-btn-group" id="gl-cam-group">
+        <button data-mode="follow" class="active">⚡ Follow</button>
+        <button data-mode="overview">🔭 Overview</button>
+        <button data-mode="transformer">⚙️ Focus</button>
+        <button data-mode="free">🕹️ Orbit</button>
+      </div>
+    </div>
+
+    <!-- System Load Control -->
+    <div class="gl-card">
+      <div class="gl-card-title">System Loading</div>
+      <div class="gl-btn-group" id="gl-load-group">
+        <button data-load="25">25%</button>
+        <button data-load="50">50%</button>
+        <button data-load="75">75%</button>
+        <button data-load="100" class="active">100%</button>
+        <button data-load="120">120%</button>
+      </div>
+      <div style="font-size:0.72rem;color:var(--gl-muted);margin-top:6px;line-height:1.4">
+        Adjusting load changes current and calculates dynamic I²R conductor &amp; winding losses.
+      </div>
+    </div>
+
+    <!-- Active Regulation & Reliability -->
+    <div class="gl-card">
+      <div class="gl-card-title">Substation Regulation</div>
+      <label style="display:flex;align-items:center;justify-content:space-between;font-size:0.78rem;margin-bottom:8px;cursor:pointer">
+        <span>Automatic Voltage (AVR)</span>
+        <input type="checkbox" id="gl-avr-toggle" checked style="accent-color:var(--gl-accent)">
+      </label>
+      <button class="gl-btn-sm" id="gl-trip-t1-btn" style="width:100%;justify-content:center">
+        Trip T1 (Simulate Outage)
+      </button>
+    </div>
+
+    <!-- Fault Simulation Mode -->
+    <div class="gl-card">
+      <div class="gl-card-title">Fault Scenario</div>
+      <select class="gl-select" id="gl-fault-select">
+        <option value="normal">Normal Grid Operation</option>
+        <option value="tx-fault">400 kV Transmission Fault</option>
+        <option value="internal-fault">Transformer Internal Fault (87T)</option>
+        <option value="feeder-fault">11 kV Feeder Overcurrent</option>
+      </select>
+    </div>
+  </aside>
+
+  <!-- Right Live Engineering Panel -->
+  <section class="gl-panel-right gl-card" aria-label="Live Engineering Metrics">
+    <div id="gl-eng-panel-content">
+      <!-- Dynamically populated by js/tp-grid-lab.js -->
+    </div>
+    <div class="gl-disclaimer">
+      Illustrative educational power-system configuration. Actual voltage levels, vector groups, and transformer arrangements vary by country and utility.
+    </div>
+  </section>
+
+  <!-- Persistent Bottom Journey Stage Bar -->
+  <nav class="gl-journey-bar" id="gl-journey-bar" aria-label="Grid Stages Navigation">
+    <!-- Populated by js/tp-grid-lab.js -->
+  </nav>
+
+  <!-- Accessible / Non-WebGL Fallback Screen -->
+  <section id="gl-accessible-view" aria-label="Accessible Grid Stages Table and Engineering Guide">
+    <div class="gl-accessible-wrap">
+      <h1 style="font-size:1.8rem;color:#fff;margin-bottom:8px">The Transformer Grid Journey — Engineering Architecture</h1>
+      <p style="color:var(--gl-muted);font-size:0.95rem;line-height:1.6;margin-bottom:24px">
+        Electrical power is generated at moderate voltage, stepped up to extra-high voltage (EHV) for bulk transmission to minimize current and I²R losses, and then progressively stepped down across regional, primary, and local distribution transformers for end-user safety and equipment compatibility.
+      </p>
+
+      <div style="background:var(--gl-panel);border:1px solid var(--gl-panel-border);border-radius:10px;padding:20px;margin-bottom:24px">
+        <h2 style="font-size:1.1rem;color:var(--gl-accent);margin-bottom:12px">Grid Transformation Hierarchy (Educational Scenario)</h2>
+        <table style="width:100%;border-collapse:collapse;font-size:0.85rem;color:var(--gl-ink);text-align:left">
+          <thead>
+            <tr style="border-bottom:1px solid var(--gl-panel-border);color:var(--gl-muted)">
+              <th style="padding:8px">Stage</th>
+              <th style="padding:8px">Transformer Type</th>
+              <th style="padding:8px">Voltage (In → Out)</th>
+              <th style="padding:8px">Vector Group</th>
+              <th style="padding:8px">Primary Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+              <td style="padding:8px"><b>1. Generation</b></td>
+              <td style="padding:8px">Synchronous Generator</td>
+              <td style="padding:8px">— → 21.0 kV</td>
+              <td style="padding:8px">Star (NGR)</td>
+              <td style="padding:8px">Bulk power generation bounded by stator winding dielectric insulation.</td>
+            </tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+              <td style="padding:8px"><b>2. GSU Step-Up</b></td>
+              <td style="padding:8px">Generator Step-Up (GSU)</td>
+              <td style="padding:8px">21.0 kV → 400.0 kV</td>
+              <td style="padding:8px">YNd11</td>
+              <td style="padding:8px">Steps voltage up 19.05x, dropping current by 19.05x and slashing I²R losses by ~362.8x (illustrative equal-R basis).</td>
+            </tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+              <td style="padding:8px"><b>3. EHV Grid</b></td>
+              <td style="padding:8px">400 kV Transmission Lines</td>
+              <td style="padding:8px">400.0 kV → 400.0 kV</td>
+              <td style="padding:8px">Quad-bundle</td>
+              <td style="padding:8px">Long-distance bulk electrical energy transmission.</td>
+            </tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+              <td style="padding:8px"><b>4. Interconnecting</b></td>
+              <td style="padding:8px">Autotransformer</td>
+              <td style="padding:8px">400.0 kV → 220.0 kV</td>
+              <td style="padding:8px">YNauto0+d</td>
+              <td style="padding:8px">Shares common winding turns for high efficiency and compact footprint.</td>
+            </tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+              <td style="padding:8px"><b>5. Regional Grid</b></td>
+              <td style="padding:8px">220 kV Subtransmission</td>
+              <td style="padding:8px">220.0 kV → 220.0 kV</td>
+              <td style="padding:8px">Twin-bundle</td>
+              <td style="padding:8px">Transfers bulk power from interconnector hubs to regional centers.</td>
+            </tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+              <td style="padding:8px"><b>6. Step-Down Substation</b></td>
+              <td style="padding:8px">Main Grid Power Transformer</td>
+              <td style="padding:8px">220.0 kV → 132.0 kV</td>
+              <td style="padding:8px">YNyn0+d</td>
+              <td style="padding:8px">Steps transmission down from 220 kV regional network to 132 kV subtransmission level.</td>
+            </tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+              <td style="padding:8px"><b>7. Primary Substation</b></td>
+              <td style="padding:8px">Dual Power Transformers (T1/T2)</td>
+              <td style="padding:8px">132.0 kV → 33.0 kV</td>
+              <td style="padding:8px">Dyn11</td>
+              <td style="padding:8px">Subtransmission to primary distribution with active OLTC regulation and N-1 redundancy.</td>
+            </tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+              <td style="padding:8px"><b>8. Distribution Substation</b></td>
+              <td style="padding:8px">MV Distribution Transformer</td>
+              <td style="padding:8px">33.0 kV → 11.0 kV</td>
+              <td style="padding:8px">Dyn11</td>
+              <td style="padding:8px">Steps primary 33 kV distribution down to 11 kV municipal feeders and ring mains.</td>
+            </tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+              <td style="padding:8px"><b>9. Local Distribution</b></td>
+              <td style="padding:8px">Cast-Resin / Oil Distribution</td>
+              <td style="padding:8px">11.0 kV → 0.415 kV / 240 V</td>
+              <td style="padding:8px">Dyn11</td>
+              <td style="padding:8px">Final step-down to safe three-phase (415 V) and single-phase (240 V) consumer supply.</td>
+            </tr>
+            <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
+              <td style="padding:8px"><b>10. Consumer Load</b></td>
+              <td style="padding:8px">End Consumers</td>
+              <td style="padding:8px">0.415 kV / 240 V</td>
+              <td style="padding:8px">TN-C-S / TN-S</td>
+              <td style="padding:8px">Industrial manufacturing, data centers, commercial buildings, and domestic loads.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="display:flex;gap:12px;margin-top:20px">
+        <a class="gl-action-btn" href="directory.html" style="max-width:240px">Open Sourcing Directory</a>
+        <a class="gl-btn-sm" href="rfq.html">Submit Technical RFQ</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Scripts -->
+  <script src="vendor/three.min.js"></script>
+  <script src="js/tp-grid-calc.js"></script>
+  <script src="js/tp-grid-lab.js"></script>
+  <script src="analytics.js?v=7" defer></script>
+</body>
+</html>

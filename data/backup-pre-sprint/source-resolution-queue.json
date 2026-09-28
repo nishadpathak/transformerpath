@@ -1,0 +1,9 @@
+{
+  "$schema": "https://transformerpath.com/source-resolution-queue.schema.json",
+  "generated": "2026-09-04",
+  "purpose": "Queue for Intel source-attribution items that could NOT be resolved to a registry source. Future executable migration (lib/intel-source-normalizer.js -> buildQueue) writes entries here for HUMAN review. Unknown > guessed: nothing here is auto-resolved.",
+  "entry_fields": ["intel_id", "source_name", "source_domain", "source_id_candidate", "resolution_status", "note"],
+  "resolution_statuses": ["UNREGISTERED", "AMBIGUOUS", "INVALID_URL", "MISSING_SOURCE"],
+  "note": "Do not populate from a partial sample. Populated only after scanning ALL Intel items. AMBIGUOUS entries require manual classification; never silently resolve.",
+  "queue": []
+}

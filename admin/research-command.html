@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research Command Center — TransformerPath Internal Intelligence</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="../style.css?v=14">
+<style>
+  .admin-wrap { max-width: 1200px; margin: 0 auto; padding: 40px 20px 80px; }
+  .admin-head { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 14px; }
+  .admin-head h1 { font-size: 1.85rem; color: var(--ink); margin: 0 0 6px; }
+  .admin-head p { color: var(--muted); margin: 0; font-size: .95rem; }
+  .badge-tag { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: .74rem; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; }
+  .badge-high { background: rgba(239,68,68,.15); color: #f87171; border: 1px solid rgba(239,68,68,.3); }
+  .badge-med { background: rgba(245,158,11,.15); color: #fbbf24; border: 1px solid rgba(245,158,11,.3); }
+  .badge-low { background: rgba(16,185,129,.15); color: #34d399; border: 1px solid rgba(16,185,129,.3); }
+  .prio-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; margin-bottom: 14px; display: grid; grid-template-columns: 48px 1fr auto; gap: 16px; align-items: center; transition: border-color .15s; }
+  .prio-card:hover { border-color: var(--amber); }
+  .prio-num { font-size: 1.6rem; font-weight: 800; color: var(--amber); text-align: center; }
+  .prio-title { font-size: 1.1rem; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+  .prio-meta { font-size: .84rem; color: var(--muted); line-height: 1.45; }
+  .prio-score { text-align: right; }
+  .prio-score-val { font-size: 1.4rem; font-weight: 800; color: var(--ink); }
+  .prio-score-lbl { font-size: .7rem; color: var(--muted); text-transform: uppercase; }
+  .sat-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: .88rem; background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .sat-table th, .sat-table td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--border); }
+  .sat-table th { background: rgba(13,27,46,.9); color: var(--muted); font-size: .74rem; text-transform: uppercase; letter-spacing: .06em; }
+  .sat-table tr:hover { background: rgba(255,255,255,.02); }
+</style>
+</head>
+<body>
+<div class="admin-wrap">
+  <div class="admin-head">
+    <div>
+      <div style="font-size:.78rem; font-weight:800; text-transform:uppercase; color:var(--amber); letter-spacing:.08em; margin-bottom:4px">TransformerPath Autonomous Operations</div>
+      <h1>🎯 Research Command Center</h1>
+      <p>Self-improving database prioritization engine: calculates where user search demand, RFQ transactions, and supplier data weaknesses intersect.</p>
+    </div>
+    <div style="text-align:right">
+      <span class="badge-tag badge-med">Algorithm: Demand × RFQ × Weakness × Staleness</span>
+      <div style="font-size:.78rem; color:var(--muted); margin-top:6px" id="lastUpdated">Updated: 15 Sep 2026</div>
+    </div>
+  </div>
+
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:14px; margin-bottom:28px">
+    <div style="background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px">
+      <div style="font-size:.74rem; color:var(--muted); text-transform:uppercase; font-weight:700">Audited Verticals</div>
+      <div style="font-size:1.8rem; font-weight:800; color:var(--ink); margin-top:4px" id="totCats">12</div>
+      <div style="font-size:.78rem; color:var(--muted)">Component &amp; service categories</div>
+    </div>
+    <div style="background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px">
+      <div style="font-size:.74rem; color:var(--muted); text-transform:uppercase; font-weight:700">Top Priority Category</div>
+      <div style="font-size:1.15rem; font-weight:800; color:#f87171; margin-top:4px" id="topPrio">Online DGA &amp; Monitoring</div>
+      <div style="font-size:.78rem; color:var(--muted)">High search volume · low supplier census</div>
+    </div>
+    <div style="background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px">
+      <div style="font-size:.74rem; color:var(--muted); text-transform:uppercase; font-weight:700">Average Tier-A Coverage</div>
+      <div style="font-size:1.8rem; font-weight:800; color:var(--ok); margin-top:4px">84.2%</div>
+      <div style="font-size:.78rem; color:var(--muted)">Direct primary website verification</div>
+    </div>
+    <div style="background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px">
+      <div style="font-size:.74rem; color:var(--muted); text-transform:uppercase; font-weight:700">Admin Actions</div>
+      <div style="margin-top:8px; display:flex; gap:8px">
+        <a href="source-health.html" class="btn btn-outline btn-sm">Source Health</a>
+        <a href="directory-health.html" class="btn btn-outline btn-sm">Directory Health</a>
+      </div>
+    </div>
+  </div>
+
+  <h2 style="font-size:1.25rem; color:var(--ink); margin-bottom:14px">🔥 Today's Sourcing &amp; Research Priorities</h2>
+  <div id="prioritiesContainer"></div>
+
+  <h2 style="font-size:1.25rem; color:var(--ink); margin:34px 0 14px">📊 Category Saturation &amp; Depth Ledger</h2>
+  <div style="overflow-x:auto">
+    <table class="sat-table">
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Standard Range</th>
+          <th>Confirmed Makers</th>
+          <th>Processors</th>
+          <th>Distributors</th>
+          <th>Countries</th>
+          <th>Tier-A Coverage</th>
+          <th>Saturation Status</th>
+        </tr>
+      </thead>
+      <tbody id="satTableBody"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+fetch('../data/category-saturation.json')
+  .then(r => r.json())
+  .then(d => {
+    document.getElementById('lastUpdated').textContent = 'Audit: ' + (d.audit_date || '2026-09-15');
+    document.getElementById('totCats').textContent = d.total_categories_audited || 12;
+    if (d.top_research_priorities && d.top_research_priorities.length) {
+      document.getElementById('topPrio').textContent = d.top_research_priorities[0].category;
+    }
+
+    // Render Priority Cards
+    const prioCont = document.getElementById('prioritiesContainer');
+    prioCont.innerHTML = (d.top_research_priorities || []).map(p => `
+      <div class="prio-card">
+        <div class="prio-num">#${p.rank}</div>
+        <div>
+          <div class="prio-title">${p.category}</div>
+          <div class="prio-meta">
+            <b>Action Brief:</b> ${p.action_brief}<br>
+            <span style="color:var(--muted)">Current Census: ${p.manufacturers_logged} confirmed manufacturers across ${p.countries_covered} countries · Saturation: <b style="color:${p.saturation==='LOW'?'#f87171':(p.saturation==='MEDIUM'?'#fbbf24':'#34d399')}">${p.saturation}</b></span>
+          </div>
+        </div>
+        <div class="prio-score">
+          <div class="prio-score-val">${p.priority_score}</div>
+          <div class="prio-score-lbl">Priority Score</div>
+        </div>
+      </div>
+    `).join('');
+
+    // Render Saturation Table
+    const tbody = document.getElementById('satTableBody');
+    tbody.innerHTML = (d.categories || []).map(c => `
+      <tr>
+        <td><b style="color:var(--ink)">${c.category_name}</b><br><small style="color:var(--muted)">${(c.standards||[]).join(', ')}</small></td>
+        <td><span style="font-size:.8rem; color:var(--text)">${c.technical_range || 'Standard'}</span></td>
+        <td><b style="color:#4ade80">${c.metrics.confirmed_manufacturers}</b></td>
+        <td>${c.metrics.processors_converters || '—'}</td>
+        <td>${c.metrics.distributors_stockists || '—'}</td>
+        <td>${c.metrics.countries_count} countries</td>
+        <td>${c.metrics.tier_a_coverage_pct}%</td>
+        <td>
+          <span class="badge-tag ${c.metrics.saturation_tier==='HIGH'?'badge-low':(c.metrics.saturation_tier==='MEDIUM'?'badge-med':'badge-high')}">
+            ${c.metrics.saturation_tier}
+          </span>
+        </td>
+      </tr>
+    `).join('');
+  })
+  .catch(err => {
+    console.error('Could not load category saturation data', err);
+  });
+</script>
+</body>
+</html>
