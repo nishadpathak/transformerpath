@@ -146,3 +146,29 @@ const current = {
 };
 fs.writeFileSync('data/site-stats.json', JSON.stringify(current, null, 2) + '\n');
 console.log('site-stats.json wrote: ' + makers + ' manufacturers / ' + factoryCount + ' sourced plants / ' + CANON_FACILITIES.length + ' facility records / ' + totalCapabilities + ' capabilities / ' + mkgCountries + ' countries / ' + avgCompleteness + '% completeness / ' + totalSourcedPoints + ' sourced points');
+
+// ── Sync the homepage KPI hero fallbacks to the canonical computed stats ──
+// The hardcoded data-stat="…" fallbacks in index.html are time/data-sensitive
+// (open tenders and upcoming events change with the date; tender/award counts
+// change as data lands). Stamping them from `current` here means the homepage
+// can never drift out of sync with site-stats.json — which is exactly what
+// check-config.js and tests/verify-hero-integrity.js enforce.
+try {
+  const HP = 'index.html';
+  let home = fs.readFileSync(HP, 'utf8');
+  const SYNC_KEYS = ['manufacturers', 'manufacturingCountries', 'countries', 'gridOperators',
+    'projects', 'tenders', 'openTenders', 'awards', 'upcomingEvents'];
+  let synced = 0;
+  for (const k of SYNC_KEYS) {
+    if (typeof current[k] !== 'number') continue;
+    home = home.replace(new RegExp('(data-stat="' + k + '">\\s*)\\d[\\d,]*'), (m, p1) => { synced++; return p1 + current[k]; });
+  }
+  // Keep the events-strip title in sync too ("Explore N upcoming industry conferences …").
+  if (typeof current.upcomingEvents === 'number') {
+    home = home.replace(/(title="Explore )\d[\d,]*( upcoming industry conferences)/, '$1' + current.upcomingEvents + '$2');
+  }
+  fs.writeFileSync(HP, home);
+  console.log('site-stats: synced ' + synced + ' homepage KPI hero data-stat fallbacks to canonical stats');
+} catch (e) {
+  console.error('homepage KPI sync failed:', e.message);
+}
