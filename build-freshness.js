@@ -31,8 +31,8 @@ const surfaces = [
   {
     id: 'daily_intel',
     name: 'Daily Intel',
-    cadence: 'daily (curated)',
-    description: 'Curated transformer-industry intelligence feed. Data is compiled and regenerated at each build; it is not an automatic live scrape.',
+    cadence: 'twice daily (curated)',
+    description: 'Curated transformer-industry intelligence feed. Regenerated on each deploy; Netlify scheduled rebuilds at 06:00 and 18:00 UTC (via TP_BUILD_HOOK_URL) keep the desk from going stale. Not an automatic live scrape.',
     last_build: ts('intel-categories') || ts('intel'),
     last_data_refresh: ts('intel'),
     // P0 refresh metadata — a curated feed is refreshed at build, not on a live
@@ -45,7 +45,7 @@ const surfaces = [
     source_count: 'per-item',
     source_failures: null,
     status: 'HEALTHY',
-    source_health: 'curated — refreshed at build; next refresh depends on the publishing cycle',
+    source_health: 'curated — refreshed at build; scheduled rebuilds twice daily (06:00 / 18:00 UTC) when TP_BUILD_HOOK_URL is set',
     records: readJson('data/intel.json', {}),
   },
   {
@@ -163,7 +163,7 @@ const sources = [
 const freshness = {
   $schema: 'https://transformerpath.com/freshness.schema.json',
   generated: NOW,
-  honest_note: 'PAGE BUILD DATE is when this artifact was last regenerated; DATA REFRESH DATE is the last successful source refresh. These are distinct. The curated Daily Intel feed is refreshed at build (daily cadence label) — it is not an hourly live scrape. The serverless auto-briefing cache is a separate background cache. A freshness status of HEALTHY/AGING/STALE is computed from observed dates; nothing is presented as live.',
+  honest_note: 'PAGE BUILD DATE is when this artifact was last regenerated; DATA REFRESH DATE is the last successful source refresh. These are distinct. The curated Daily Intel feed is refreshed at build on a twice-daily cadence (06:00 / 18:00 UTC rebuild hook) — it is not an hourly live scrape. The serverless auto-briefing cache is a separate background cache. A freshness status of HEALTHY/AGING/STALE is computed from observed dates; nothing is presented as live.',
   surfaces,
   sources,
 };

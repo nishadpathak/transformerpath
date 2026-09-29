@@ -30,7 +30,7 @@
     {
       "@type": "Question",
       "name": "How fresh is Daily Intel?",
-      "acceptedAnswer": { "@type": "Answer", "text": "The desk shows the last successful data refresh. Within 36 hours is Data Current; 36–72 hours is Refresh Delayed; beyond 72 hours is Data Stale. Page build date and source refresh date are distinct." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Curated Daily Intel regenerates on a twice-daily deploy cadence (06:00 and 18:00 UTC). The desk shows the last successful data refresh. Within 36 hours is Data Current; 36–72 hours is Refresh Delayed; beyond 72 hours is Data Stale. Page build date and source refresh date are distinct." }
     },
     {
       "@type": "Question",
@@ -367,7 +367,7 @@ a.plain:hover { text-decoration:underline; }
       <span style="color:var(--muted);font-size:.9rem">The daily briefing is free and open — built for the desks that buy, build and rate transformers. Every item is sourced; corrections are published, not buried.</span>
     </div>
     <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 16px;margin-bottom:10px;font-size:.82rem;color:var(--muted)">
-      <b style="color:var(--text)">Data freshness:</b> <span id="freshnessLine">Last successful refresh: <b style="color:var(--text)">14 Sept 2026 17:26 UTC</b> · cadence: daily (curated)</span> <span style="color:var(--muted)">· Curated Daily Intel is refreshed at build. Page build date and last successful data refresh are distinct. This line is never left as “Loading…”.</span>
+      <b style="color:var(--text)">Data freshness:</b> <span id="freshnessLine">Last successful refresh: <b style="color:var(--text)">14 Sept 2026 17:26 UTC</b> · cadence: twice daily (curated)</span> <span style="color:var(--muted)">· Curated Daily Intel regenerates at build on a twice-daily schedule (06:00 / 18:00 UTC). Page build date and last successful data refresh are distinct. This line is never left as “Loading…”.</span>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px">
       <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:11px 14px">
@@ -1239,7 +1239,7 @@ a.plain:hover { text-decoration:underline; }
   if(!el) return;
   fetch('data/freshness.json').then(function(r){ return r.json().catch(function(){ return {}; }); }).then(function(d){
     var di=(d.surfaces||[]).find(function(s){ return s.id==='daily_intel'; });
-    if(di && di.last_build){ el.innerHTML='Curated Daily Intel <b style="color:var(--text)">last refreshed ' + di.last_build + '</b> · cadence: ' + (di.cadence||'daily'); }
+    if(di && di.last_build){ el.innerHTML='Curated Daily Intel <b style="color:var(--text)">last refreshed ' + di.last_build + '</b> · cadence: ' + (di.cadence||'twice daily'); }
     else { el.innerHTML='Curated Daily Intel <b style="color:var(--text)">refresh date unavailable</b>'; }
   }).catch(function(){ el.textContent='Freshness unavailable'; });
 })();

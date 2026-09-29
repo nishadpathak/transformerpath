@@ -150,9 +150,9 @@ const intel = JSON.parse(fs.readFileSync(ISO_PATH, 'utf8'));
 // the visitor's local "today", and never imply a change that is only a redeploy.
 intel.updated = new Date().toISOString();
 intel.refresh_meta = {
-  cadence: 'daily (curated)',
+  cadence: 'twice daily (curated)',
   refreshed_at_build: true,
-  note: 'Curated transformer-industry intelligence. Compiled and regenerated at each build — not an automatic live scrape.',
+  note: 'Curated transformer-industry intelligence. Regenerated at each build; scheduled rebuilds twice daily (06:00 / 18:00 UTC) when the Netlify build hook is set — not an automatic live scrape.',
 };
 const FOLD = { China: 'RoW', AsiaPac: 'RoW', LatAm: 'RoW', Africa: 'RoW' };
 const srcByRegion = {};
