@@ -1,8 +1,10 @@
 // Netlify scheduled function: soft-freshness rebuild trigger.
-// Posts to TP_BUILD_HOOK_URL when configured so events Up-next / site-stats
-// counters cannot freeze for weeks between manual deploys.
+// Posts to TP_BUILD_HOOK_URL when configured so curated Daily Intel,
+// events Up-next, and site-stats counters cannot freeze for weeks
+// between manual deploys.
 //
-// Schedule: daily 06:00 UTC (netlify.toml). No-op without the hook env var.
+// Schedule: twice daily — 06:00 and 18:00 UTC (netlify.toml).
+// No-op without the hook env var.
 exports.handler = async function () {
   const hook = process.env.TP_BUILD_HOOK_URL || process.env.BUILD_HOOK_URL || '';
   if (!hook) {
@@ -19,7 +21,10 @@ exports.handler = async function () {
     const res = await fetch(hook, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ trigger: 'daily-rebuild', at: new Date().toISOString() })
+      body: JSON.stringify({
+        trigger: 'twice-daily-rebuild',
+        at: new Date().toISOString()
+      })
     });
     return {
       statusCode: res.ok ? 200 : 502,
