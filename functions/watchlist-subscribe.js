@@ -6,9 +6,7 @@
  *   1. Supabase table tp_intel_alert_subscriptions (if SUPABASE_* configured)
  *   2. Always emails confirmation to the subscriber + operator notify when RESEND_API_KEY set
  *
- * Honest: without RESEND_API_KEY, returns { sent:false, reason:'not_configured' }
- * without failing the UX. Without Supabase, subscription is still emailed to NOTIFY_TO
- * so the desk can add it manually / via next digest bootstrap.
+ * SQL: data/tp_intel_alert_subscriptions.sql (run in Supabase once).
  */
 'use strict';
 const sb = require('./lib/supabase-server');
