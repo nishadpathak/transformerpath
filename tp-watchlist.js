@@ -1,5 +1,6 @@
 /* tp-watchlist.js — Free local Intel watchlists (browser-stored).
  * Intel Pro adds shared org watchlists, alerts and exports; this is the free teaser.
+ * Supports card watches + GCC portal keyword presets (DEWA / Etimad / MEWRE).
  */
 (function () {
   'use strict';
@@ -31,11 +32,14 @@
         title: item.title || 'Intel item',
         href: item.href || '',
         region: item.region || '',
+        keywords: item.keywords || '',
+        kind: item.kind || 'item',
         saved_at: new Date().toISOString()
       });
       save(list);
       TP_WATCHLIST.render();
       TP_WATCHLIST.syncButtons();
+      TP_WATCHLIST.highlightMatches();
       return list;
     },
     remove: function (id) {
@@ -43,6 +47,7 @@
       save(list);
       TP_WATCHLIST.render();
       TP_WATCHLIST.syncButtons();
+      TP_WATCHLIST.highlightMatches();
       return list;
     },
     toggle: function (item) {
@@ -53,6 +58,7 @@
       save([]);
       TP_WATCHLIST.render();
       TP_WATCHLIST.syncButtons();
+      TP_WATCHLIST.highlightMatches();
     },
     syncButtons: function () {
       document.querySelectorAll('[data-watch-id]').forEach(function (btn) {
@@ -62,15 +68,44 @@
         btn.setAttribute('aria-pressed', on ? 'true' : 'false');
         btn.classList.toggle('is-watching', on);
       });
+      document.querySelectorAll('[data-watch-preset]').forEach(function (btn) {
+        var id = 'preset-' + btn.getAttribute('data-watch-preset');
+        var on = TP_WATCHLIST.has(id);
+        var label = btn.getAttribute('data-watch-preset');
+        if (label === 'DEWA') btn.textContent = on ? '★ Watching DEWA tenders' : '☆ Watch DEWA tenders';
+        else if (label === 'Etimad') btn.textContent = on ? '★ Watching Etimad' : '☆ Watch Etimad';
+        else if (label === 'MEWRE') btn.textContent = on ? '★ Watching MEWRE' : '☆ Watch MEWRE';
+        else btn.textContent = (on ? '★ Watching ' : '☆ Watch ') + label;
+        btn.classList.toggle('is-watching', on);
+      });
       var countEl = document.getElementById('tp-watch-count');
       if (countEl) countEl.textContent = String(load().length);
+    },
+    highlightMatches: function () {
+      var presets = load().filter(function (x) { return x.kind === 'preset' && x.keywords; });
+      document.querySelectorAll('article.intel-post, .card-title').forEach(function (el) {
+        el.style.outline = '';
+        el.style.outlineOffset = '';
+        if (!presets.length) return;
+        var text = (el.textContent || '').toLowerCase();
+        var hit = presets.some(function (p) {
+          return String(p.keywords).split(',').some(function (k) {
+            k = k.trim().toLowerCase();
+            return k && text.indexOf(k) >= 0;
+          });
+        });
+        if (hit) {
+          el.style.outline = '2px solid rgba(245,166,35,.55)';
+          el.style.outlineOffset = '2px';
+        }
+      });
     },
     render: function () {
       var panel = document.getElementById('tp-watchlist-panel');
       if (!panel) return;
       var list = load();
       if (!list.length) {
-        panel.innerHTML = '<p style="margin:0;color:var(--muted);font-size:.86rem">No watched items yet. Click <b>☆ Watch</b> on any Intel card to save it here (stored in this browser).</p>';
+        panel.innerHTML = '<p style="margin:0;color:var(--muted);font-size:.86rem">No watched items yet. Use a GCC portal preset above, or click <b>☆ Watch</b> on any Intel card (stored in this browser).</p>';
         return;
       }
       panel.innerHTML =
@@ -79,10 +114,11 @@
           var link = x.href
             ? '<a href="' + esc(x.href) + '" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;font-weight:700">' + esc(x.title) + '</a>'
             : '<span style="font-weight:700">' + esc(x.title) + '</span>';
+          var meta = x.kind === 'preset'
+            ? '<div style="font-size:.72rem;color:var(--muted);margin-top:3px">Keyword alert · ' + esc(x.keywords) + ' · matches highlighted on this page</div>'
+            : (x.region ? '<div style="font-size:.72rem;color:var(--muted);margin-top:3px">' + esc(x.region) + '</div>' : '');
           return '<li style="display:flex;gap:10px;align-items:flex-start;justify-content:space-between;border:1px solid var(--border);border-radius:10px;padding:10px 12px;background:var(--card)">' +
-            '<div style="min-width:0">' + link +
-            (x.region ? '<div style="font-size:.72rem;color:var(--muted);margin-top:3px">' + esc(x.region) + '</div>' : '') +
-            '</div>' +
+            '<div style="min-width:0">' + link + meta + '</div>' +
             '<button type="button" class="btn btn-outline btn-sm" data-watch-remove="' + esc(x.id) + '" style="font-size:.72rem;flex:none">Remove</button>' +
             '</li>';
         }).join('') +
@@ -122,7 +158,6 @@
         });
         byline.appendChild(btn);
       });
-      // Compact cards (region grids)
       document.querySelectorAll('.card-title a').forEach(function (a) {
         var card = a.closest('.card, .intel-card, article, div');
         if (!card || card.querySelector('[data-watch-id]')) return;
@@ -143,8 +178,24 @@
         });
         a.parentNode.appendChild(btn);
       });
+      document.querySelectorAll('[data-watch-preset]').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+          e.preventDefault();
+          var name = btn.getAttribute('data-watch-preset');
+          var keywords = btn.getAttribute('data-watch-keywords') || name;
+          TP_WATCHLIST.toggle({
+            id: 'preset-' + name,
+            title: name + ' transformer tender watch',
+            keywords: keywords,
+            kind: 'preset',
+            region: 'GCC',
+            href: '#tp-watchlists'
+          });
+        });
+      });
       TP_WATCHLIST.syncButtons();
       TP_WATCHLIST.render();
+      TP_WATCHLIST.highlightMatches();
     }
   };
 
