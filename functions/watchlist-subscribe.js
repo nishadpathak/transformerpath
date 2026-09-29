@@ -7,6 +7,8 @@
  *   2. Always emails confirmation to the subscriber + operator notify when RESEND_API_KEY set
  *
  * SQL: data/tp_intel_alert_subscriptions.sql (run in Supabase once).
+ * Honest: without RESEND_API_KEY returns { sent:false, reason:'not_configured' }.
+ * Without Supabase, signup is still emailed to NOTIFY_TO for manual / bootstrap.
  */
 'use strict';
 const sb = require('./lib/supabase-server');

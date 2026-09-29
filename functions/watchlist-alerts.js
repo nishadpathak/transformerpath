@@ -26,7 +26,7 @@ const PRESET_KW = {
   MEWRE: 'mewre,kuwait,ministry of electricity',
   KAHRAMAA: 'kahramaa,qatar,km.qa',
   Nama: 'nama,oman distribution',
-  OETC: 'oetc,oman grid,omangrid'
+  OETC: 'oetc,oman grid,omangrid,omangrid.com'
 };
 
 function readLocalFeed() {

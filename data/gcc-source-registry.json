@@ -300,7 +300,7 @@
       "crawl_frequency": "daily",
       "last_checked": "2026-09-29",
       "last_success": null,
-      "status": "NEEDS_ADAPTER",
+      "status": "BLOCKED_AUTH",
       "authority_class": "OFFICIAL",
       "primary_or_secondary": "PRIMARY",
       "topics": [
@@ -390,27 +390,29 @@
       "source_id": "oetc",
       "country": "Oman",
       "organization": "Oman Electricity Transmission Company (OETC)",
-      "domain": "omangrid.om",
-      "canonical_domain": "omangrid.om",
+      "domain": "omangrid.com",
+      "canonical_domain": "omangrid.com",
       "domains": [
-        "www.omangrid.om",
-        "oetc.co.om"
+        "www.omangrid.com",
+        "omangrid.com"
       ],
-      "list_url": "https://oetc.co.om/",
+      "list_url": "https://www.omangrid.com/en/Pages/tendering-procurement.aspx",
+      "url": "https://www.omangrid.com/en",
       "source_type": "TRANSMISSION_OPERATOR",
       "language": "en, ar",
       "discovery_method": "portal_list",
       "priority": "P1",
       "crawl_frequency": "twice_weekly",
-      "last_checked": null,
-      "last_success": null,
-      "status": "NEEDS_ADAPTER",
+      "last_checked": "2026-09-29",
+      "last_success": "2026-09-29",
+      "status": "ACTIVE",
       "authority_class": "OFFICIAL",
       "primary_or_secondary": "PRIMARY",
       "topics": [
         "transmission tenders",
         "grid stations"
-      ]
+      ],
+      "notes": "Official portal is omangrid.com (not omangrid.om / oetc.co.om — those do not resolve). Public tenders also point to Oman Tender Board. Incomplete TLS chain may require relaxed verify on probe."
     },
     {
       "source_id": "nama-group",
@@ -556,8 +558,8 @@
       "priority": "P0",
       "crawl_frequency": "daily",
       "last_checked": "2026-09-29",
-      "last_success": "2026-09-29",
-      "status": "ACTIVE",
+      "last_success": null,
+      "status": "NEEDS_ADAPTER",
       "authority_class": "OFFICIAL",
       "primary_or_secondary": "PRIMARY",
       "topics": [

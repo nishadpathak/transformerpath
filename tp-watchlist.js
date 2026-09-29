@@ -1,6 +1,6 @@
 /* tp-watchlist.js — Free local Intel watchlists (browser-stored).
  * Intel Pro adds shared org watchlists, alerts and exports; this is the free teaser.
- * Supports card watches + GCC portal keyword presets (DEWA / Etimad / MEWRE).
+ * Supports card watches + GCC portal keyword presets (DEWA / Etimad / MEWRE / KAHRAMAA / Nama / OETC).
  */
 (function () {
   'use strict';
@@ -77,6 +77,7 @@
         else if (label === 'MEWRE') btn.textContent = on ? '★ Watching MEWRE' : '☆ Watch MEWRE';
         else if (label === 'KAHRAMAA') btn.textContent = on ? '★ Watching KAHRAMAA' : '☆ Watch KAHRAMAA';
         else if (label === 'Nama') btn.textContent = on ? '★ Watching Nama' : '☆ Watch Nama';
+        else if (label === 'OETC') btn.textContent = on ? '★ Watching OETC' : '☆ Watch OETC';
         else btn.textContent = (on ? '★ Watching ' : '☆ Watch ') + label;
         btn.classList.toggle('is-watching', on);
       });
