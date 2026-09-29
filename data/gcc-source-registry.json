@@ -3,7 +3,14 @@
   "generated": "2026-09-25",
   "purpose": "Canonical GCC source registry for TransformerPath Intel discovery. Primary path is utility procurement portals, tender boards, water/electricity authorities, regulators and investment bodies — not English trade-press RSS alone.",
   "extends": "data/source-registry.json",
-  "countries": ["United Arab Emirates", "Saudi Arabia", "Kuwait", "Oman", "Bahrain", "Qatar"],
+  "countries": [
+    "United Arab Emirates",
+    "Saudi Arabia",
+    "Kuwait",
+    "Oman",
+    "Bahrain",
+    "Qatar"
+  ],
   "source_type_enum": [
     "UTILITY",
     "TRANSMISSION_OPERATOR",
@@ -21,13 +28,44 @@
     "INDUSTRY_MEDIA",
     "BUSINESS_MEDIA"
   ],
-  "priority_enum": ["P0", "P1", "P2"],
-  "crawl_frequency_enum": ["daily", "twice_weekly", "weekly", "event_driven"],
-  "status_enum": ["ACTIVE", "NEEDS_ADAPTER", "BLOCKED_AUTH", "MANUAL_REVIEW"],
-  "discovery_method_enum": ["portal_list", "tender_board", "rss", "official_news", "curated", "arabic_press"],
+  "priority_enum": [
+    "P0",
+    "P1",
+    "P2"
+  ],
+  "crawl_frequency_enum": [
+    "daily",
+    "twice_weekly",
+    "weekly",
+    "event_driven"
+  ],
+  "status_enum": [
+    "ACTIVE",
+    "NEEDS_ADAPTER",
+    "BLOCKED_AUTH",
+    "MANUAL_REVIEW"
+  ],
+  "discovery_method_enum": [
+    "portal_list",
+    "tender_board",
+    "rss",
+    "official_news",
+    "curated",
+    "arabic_press"
+  ],
   "schema_fields": [
-    "source_id", "country", "organization", "domain", "source_type", "language",
-    "discovery_method", "priority", "crawl_frequency", "last_checked", "last_success", "status"
+    "source_id",
+    "country",
+    "organization",
+    "domain",
+    "source_type",
+    "language",
+    "discovery_method",
+    "priority",
+    "crawl_frequency",
+    "last_checked",
+    "last_success",
+    "status"
   ],
   "honesty_note": "last_checked / last_success remain null until an actual fetch succeeds. NEEDS_ADAPTER means the source is registered for discovery but the automated adapter is not yet live.",
   "sources": [
@@ -37,7 +75,9 @@
       "organization": "Dubai Electricity & Water Authority (DEWA)",
       "domain": "dewa.gov.ae",
       "canonical_domain": "dewa.gov.ae",
-      "domains": ["www.dewa.gov.ae"],
+      "domains": [
+        "www.dewa.gov.ae"
+      ],
       "list_url": "https://www.dewa.gov.ae/en/supplier/services/list-of-tender-documents",
       "results_url": "https://www.dewa.gov.ae/en/supplier/services/tender-opening-results",
       "source_type": "UTILITY",
@@ -45,12 +85,18 @@
       "discovery_method": "portal_list",
       "priority": "P0",
       "crawl_frequency": "daily",
-      "last_checked": null,
-      "last_success": null,
-      "status": "NEEDS_ADAPTER",
+      "last_checked": "2026-09-29",
+      "last_success": "2026-09-29",
+      "status": "ACTIVE",
       "authority_class": "OFFICIAL",
       "primary_or_secondary": "PRIMARY",
-      "topics": ["distribution substations", "kiosks", "package substations", "transformer supply", "installation testing commissioning"],
+      "topics": [
+        "distribution substations",
+        "kiosks",
+        "package substations",
+        "transformer supply",
+        "installation testing commissioning"
+      ],
       "notes": "Authoritative for DEWA floated tenders. Portal is JS/session-gated; adapter required. Recurring title family: installation/testing/commissioning of distribution substations & kiosks."
     },
     {
@@ -59,7 +105,9 @@
       "organization": "Emirates Water and Electricity Company (EWEC)",
       "domain": "ewec.ae",
       "canonical_domain": "ewec.ae",
-      "domains": ["www.ewec.ae"],
+      "domains": [
+        "www.ewec.ae"
+      ],
       "source_type": "UTILITY",
       "language": "en, ar",
       "discovery_method": "official_news",
@@ -70,7 +118,11 @@
       "status": "NEEDS_ADAPTER",
       "authority_class": "OFFICIAL",
       "primary_or_secondary": "PRIMARY",
-      "topics": ["generation procurement", "grid connection", "Abu Dhabi power"]
+      "topics": [
+        "generation procurement",
+        "grid connection",
+        "Abu Dhabi power"
+      ]
     },
     {
       "source_id": "taqa-transmission",
@@ -78,7 +130,9 @@
       "organization": "TAQA Transmission",
       "domain": "taqa.com",
       "canonical_domain": "taqa.com",
-      "domains": ["www.taqa.com"],
+      "domains": [
+        "www.taqa.com"
+      ],
       "source_type": "TRANSMISSION_OPERATOR",
       "language": "en, ar",
       "discovery_method": "official_news",
@@ -89,7 +143,11 @@
       "status": "NEEDS_ADAPTER",
       "authority_class": "OFFICIAL",
       "primary_or_secondary": "PRIMARY",
-      "topics": ["transmission", "substations", "grid expansion"]
+      "topics": [
+        "transmission",
+        "substations",
+        "grid expansion"
+      ]
     },
     {
       "source_id": "sewa",
@@ -97,7 +155,9 @@
       "organization": "Sharjah Electricity, Water and Gas Authority (SEWA)",
       "domain": "sewa.gov.ae",
       "canonical_domain": "sewa.gov.ae",
-      "domains": ["www.sewa.gov.ae"],
+      "domains": [
+        "www.sewa.gov.ae"
+      ],
       "source_type": "DISTRIBUTION_UTILITY",
       "language": "en, ar",
       "discovery_method": "portal_list",
@@ -108,7 +168,11 @@
       "status": "NEEDS_ADAPTER",
       "authority_class": "OFFICIAL",
       "primary_or_secondary": "PRIMARY",
-      "topics": ["distribution", "substations", "procurement"]
+      "topics": [
+        "distribution",
+        "substations",
+        "procurement"
+      ]
     },
     {
       "source_id": "etimad",
@@ -116,19 +180,29 @@
       "organization": "Etimad Government Procurement Portal",
       "domain": "tenders.etimad.sa",
       "canonical_domain": "tenders.etimad.sa",
-      "domains": ["tenders.etimad.sa", "www.etimad.sa", "login.etimad.sa"],
+      "domains": [
+        "tenders.etimad.sa",
+        "www.etimad.sa",
+        "login.etimad.sa"
+      ],
       "list_url": "https://tenders.etimad.sa/",
       "source_type": "PROCUREMENT_PORTAL",
       "language": "ar, en",
       "discovery_method": "portal_list",
       "priority": "P0",
       "crawl_frequency": "daily",
-      "last_checked": null,
+      "last_checked": "2026-09-29",
       "last_success": null,
-      "status": "NEEDS_ADAPTER",
+      "status": "BLOCKED_AUTH",
       "authority_class": "OFFICIAL",
       "primary_or_secondary": "PRIMARY",
-      "topics": ["منافسة", "محول", "محول التأريض", "transformer replacement", "water authority procurement"],
+      "topics": [
+        "منافسة",
+        "محول",
+        "محول التأريض",
+        "transformer replacement",
+        "water authority procurement"
+      ],
       "notes": "Primary Saudi government tender board. Arabic-first. Required for Saudi Water Authority and ministry procurements."
     },
     {
@@ -137,18 +211,26 @@
       "organization": "Saudi Water Authority (الهيئة السعودية للمياه)",
       "domain": "swa.gov.sa",
       "canonical_domain": "swa.gov.sa",
-      "domains": ["www.swa.gov.sa", "swa.gov.sa"],
+      "domains": [
+        "www.swa.gov.sa",
+        "swa.gov.sa"
+      ],
       "source_type": "WATER_AUTHORITY",
       "language": "ar, en",
       "discovery_method": "portal_list",
       "priority": "P0",
       "crawl_frequency": "daily",
-      "last_checked": null,
+      "last_checked": "2026-09-29",
       "last_success": null,
-      "status": "NEEDS_ADAPTER",
+      "status": "BLOCKED_AUTH",
       "authority_class": "OFFICIAL",
       "primary_or_secondary": "PRIMARY",
-      "topics": ["desalination plant transformers", "GSU-adjacent", "earthing transformers", "Yanbu/Jubail/Rabigh production systems"],
+      "topics": [
+        "desalination plant transformers",
+        "GSU-adjacent",
+        "earthing transformers",
+        "Yanbu/Jubail/Rabigh production systems"
+      ],
       "notes": "Buyer entity; notices typically surface via Etimad."
     },
     {
@@ -157,18 +239,25 @@
       "organization": "Saudi Electricity Company / Saudi Energy",
       "domain": "se.com.sa",
       "canonical_domain": "se.com.sa",
-      "domains": ["www.se.com.sa"],
+      "domains": [
+        "www.se.com.sa"
+      ],
       "source_type": "UTILITY",
       "language": "ar, en",
       "discovery_method": "portal_list",
       "priority": "P0",
       "crawl_frequency": "daily",
-      "last_checked": null,
+      "last_checked": "2026-09-29",
       "last_success": null,
-      "status": "NEEDS_ADAPTER",
+      "status": "BLOCKED_AUTH",
       "authority_class": "OFFICIAL",
       "primary_or_secondary": "PRIMARY",
-      "topics": ["power transformers", "380 kV", "primary substations", "framework agreements"]
+      "topics": [
+        "power transformers",
+        "380 kV",
+        "primary substations",
+        "framework agreements"
+      ]
     },
     {
       "source_id": "sppc",
@@ -176,7 +265,9 @@
       "organization": "Saudi Power Procurement Company (SPPC)",
       "domain": "sppc.gov.sa",
       "canonical_domain": "sppc.gov.sa",
-      "domains": ["www.sppc.gov.sa"],
+      "domains": [
+        "www.sppc.gov.sa"
+      ],
       "source_type": "ENERGY_MINISTRY",
       "language": "en, ar",
       "discovery_method": "official_news",
@@ -187,7 +278,10 @@
       "status": "NEEDS_ADAPTER",
       "authority_class": "OFFICIAL",
       "primary_or_secondary": "PRIMARY",
-      "topics": ["IPP procurement", "GSU packages"]
+      "topics": [
+        "IPP procurement",
+        "GSU packages"
+      ]
     },
     {
       "source_id": "mewre-kuwait",
@@ -195,18 +289,25 @@
       "organization": "Ministry of Electricity, Water & Renewable Energy (MEWRE)",
       "domain": "mew.gov.kw",
       "canonical_domain": "mew.gov.kw",
-      "domains": ["www.mew.gov.kw"],
+      "domains": [
+        "www.mew.gov.kw"
+      ],
       "source_type": "ENERGY_MINISTRY",
       "language": "ar, en",
       "discovery_method": "portal_list",
       "priority": "P0",
       "crawl_frequency": "daily",
-      "last_checked": null,
+      "last_checked": "2026-09-29",
       "last_success": null,
       "status": "NEEDS_ADAPTER",
       "authority_class": "OFFICIAL",
       "primary_or_secondary": "PRIMARY",
-      "topics": ["transformer replacement", "parallel reactors", "75 MVA", "maintenance programmes"]
+      "topics": [
+        "transformer replacement",
+        "parallel reactors",
+        "75 MVA",
+        "maintenance programmes"
+      ]
     },
     {
       "source_id": "kuwait-central-procurement",
@@ -214,18 +315,25 @@
       "organization": "Kuwait Central Agency for Public Tenders / Central Procurement",
       "domain": "capt.gov.kw",
       "canonical_domain": "capt.gov.kw",
-      "domains": ["www.capt.gov.kw", "capt.gov.kw"],
+      "domains": [
+        "www.capt.gov.kw",
+        "capt.gov.kw"
+      ],
       "source_type": "TENDER_BOARD",
       "language": "ar",
       "discovery_method": "tender_board",
       "priority": "P0",
       "crawl_frequency": "daily",
-      "last_checked": null,
+      "last_checked": "2026-09-29",
       "last_success": null,
-      "status": "NEEDS_ADAPTER",
+      "status": "BLOCKED_AUTH",
       "authority_class": "OFFICIAL",
       "primary_or_secondary": "PRIMARY",
-      "topics": ["MEWRE procurements", "transformer maintenance", "Arabic notices"]
+      "topics": [
+        "MEWRE procurements",
+        "transformer maintenance",
+        "Arabic notices"
+      ]
     },
     {
       "source_id": "apsr-oman",
@@ -233,18 +341,23 @@
       "organization": "Authority for Public Services Regulation (APSR)",
       "domain": "apsr.om",
       "canonical_domain": "apsr.om",
-      "domains": ["www.apsr.om"],
+      "domains": [
+        "www.apsr.om"
+      ],
       "source_type": "REGULATOR",
       "language": "en, ar",
       "discovery_method": "official_news",
       "priority": "P0",
       "crawl_frequency": "twice_weekly",
-      "last_checked": null,
+      "last_checked": "2026-09-29",
       "last_success": null,
-      "status": "NEEDS_ADAPTER",
+      "status": "BLOCKED_AUTH",
       "authority_class": "OFFICIAL",
       "primary_or_secondary": "PRIMARY",
-      "topics": ["localisation initiatives", "electricity sector partnerships"]
+      "topics": [
+        "localisation initiatives",
+        "electricity sector partnerships"
+      ]
     },
     {
       "source_id": "invest-oman",
@@ -252,18 +365,24 @@
       "organization": "Invest Oman / Ministry of Commerce, Industry and Investment Promotion",
       "domain": "investoman.om",
       "canonical_domain": "investoman.om",
-      "domains": ["www.investoman.om"],
+      "domains": [
+        "www.investoman.om"
+      ],
       "source_type": "INVESTMENT_AUTHORITY",
       "language": "en, ar",
       "discovery_method": "official_news",
       "priority": "P0",
       "crawl_frequency": "twice_weekly",
-      "last_checked": null,
+      "last_checked": "2026-09-29",
       "last_success": null,
-      "status": "NEEDS_ADAPTER",
+      "status": "BLOCKED_AUTH",
       "authority_class": "OFFICIAL",
       "primary_or_secondary": "PRIMARY",
-      "topics": ["manufacturing investment", "factory localisation", "industrial estates"]
+      "topics": [
+        "manufacturing investment",
+        "factory localisation",
+        "industrial estates"
+      ]
     },
     {
       "source_id": "oetc",
@@ -271,7 +390,10 @@
       "organization": "Oman Electricity Transmission Company (OETC)",
       "domain": "omangrid.om",
       "canonical_domain": "omangrid.om",
-      "domains": ["www.omangrid.om", "oetc.co.om"],
+      "domains": [
+        "www.omangrid.om",
+        "oetc.co.om"
+      ],
       "source_type": "TRANSMISSION_OPERATOR",
       "language": "en, ar",
       "discovery_method": "portal_list",
@@ -282,7 +404,10 @@
       "status": "NEEDS_ADAPTER",
       "authority_class": "OFFICIAL",
       "primary_or_secondary": "PRIMARY",
-      "topics": ["transmission tenders", "grid stations"]
+      "topics": [
+        "transmission tenders",
+        "grid stations"
+      ]
     },
     {
       "source_id": "nama-group",
@@ -290,7 +415,9 @@
       "organization": "Nama Group",
       "domain": "nama.om",
       "canonical_domain": "nama.om",
-      "domains": ["www.nama.om"],
+      "domains": [
+        "www.nama.om"
+      ],
       "source_type": "DISTRIBUTION_UTILITY",
       "language": "en, ar",
       "discovery_method": "portal_list",
@@ -301,7 +428,10 @@
       "status": "NEEDS_ADAPTER",
       "authority_class": "OFFICIAL",
       "primary_or_secondary": "PRIMARY",
-      "topics": ["distribution", "procurement"]
+      "topics": [
+        "distribution",
+        "procurement"
+      ]
     },
     {
       "source_id": "voltamp-oman",
@@ -309,7 +439,9 @@
       "organization": "Voltamp Energy SAOG",
       "domain": "voltampoman.com",
       "canonical_domain": "voltampoman.com",
-      "domains": ["www.voltampoman.com"],
+      "domains": [
+        "www.voltampoman.com"
+      ],
       "source_type": "MANUFACTURER",
       "language": "en",
       "discovery_method": "official_news",
@@ -320,7 +452,11 @@
       "status": "NEEDS_ADAPTER",
       "authority_class": "COMPANY_REPORTED",
       "primary_or_secondary": "PRIMARY",
-      "topics": ["transformer manufacturing", "component localisation", "factory investment"],
+      "topics": [
+        "transformer manufacturing",
+        "component localisation",
+        "factory investment"
+      ],
       "notes": "PRIMARY for its own announcements; COMPANY_REPORTED for commercial claims. Cross-check with APSR/Invest Oman/ONA."
     },
     {
@@ -329,7 +465,9 @@
       "organization": "Oman Observer / ONA",
       "domain": "omanobserver.om",
       "canonical_domain": "omanobserver.om",
-      "domains": ["www.omanobserver.om"],
+      "domains": [
+        "www.omanobserver.om"
+      ],
       "source_type": "CREDIBLE_TRADE_PRESS",
       "language": "en, ar",
       "discovery_method": "arabic_press",
@@ -340,7 +478,11 @@
       "status": "NEEDS_ADAPTER",
       "authority_class": "AUTHORITATIVE_SECONDARY",
       "primary_or_secondary": "SECONDARY",
-      "topics": ["industrial investment", "localisation", "transformer components"]
+      "topics": [
+        "industrial investment",
+        "localisation",
+        "transformer components"
+      ]
     },
     {
       "source_id": "bahrain-tender-board",
@@ -348,19 +490,25 @@
       "organization": "Kingdom of Bahrain Tender Board",
       "domain": "tenderboard.gov.bh",
       "canonical_domain": "tenderboard.gov.bh",
-      "domains": ["www.tenderboard.gov.bh"],
+      "domains": [
+        "www.tenderboard.gov.bh"
+      ],
       "list_url": "https://www.tenderboard.gov.bh/",
       "source_type": "TENDER_BOARD",
       "language": "en, ar",
       "discovery_method": "tender_board",
       "priority": "P0",
       "crawl_frequency": "daily",
-      "last_checked": null,
-      "last_success": null,
-      "status": "NEEDS_ADAPTER",
+      "last_checked": "2026-09-29",
+      "last_success": "2026-09-29",
+      "status": "ACTIVE",
       "authority_class": "OFFICIAL",
       "primary_or_secondary": "PRIMARY",
-      "topics": ["EWA procurements", "package substations", "approved manufacturers"]
+      "topics": [
+        "EWA procurements",
+        "package substations",
+        "approved manufacturers"
+      ]
     },
     {
       "source_id": "ewa-bahrain",
@@ -368,18 +516,24 @@
       "organization": "Electricity & Water Authority (EWA) — Central Stores Directorate",
       "domain": "ewa.bh",
       "canonical_domain": "ewa.bh",
-      "domains": ["www.ewa.bh"],
+      "domains": [
+        "www.ewa.bh"
+      ],
       "source_type": "UTILITY",
       "language": "en, ar",
       "discovery_method": "portal_list",
       "priority": "P0",
       "crawl_frequency": "daily",
-      "last_checked": null,
-      "last_success": null,
-      "status": "NEEDS_ADAPTER",
+      "last_checked": "2026-09-29",
+      "last_success": "2026-09-29",
+      "status": "ACTIVE",
       "authority_class": "OFFICIAL",
       "primary_or_secondary": "PRIMARY",
-      "topics": ["package substations", "distribution transformers", "approved manufacturer lists"]
+      "topics": [
+        "package substations",
+        "distribution transformers",
+        "approved manufacturer lists"
+      ]
     },
     {
       "source_id": "kahramaa",
@@ -387,18 +541,25 @@
       "organization": "Qatar General Electricity & Water Corporation (KAHRAMAA)",
       "domain": "km.qa",
       "canonical_domain": "km.qa",
-      "domains": ["www.km.qa", "km.qa"],
+      "domains": [
+        "www.km.qa",
+        "km.qa"
+      ],
       "source_type": "UTILITY",
       "language": "en, ar",
       "discovery_method": "portal_list",
       "priority": "P0",
       "crawl_frequency": "daily",
-      "last_checked": null,
-      "last_success": null,
-      "status": "NEEDS_ADAPTER",
+      "last_checked": "2026-09-29",
+      "last_success": "2026-09-29",
+      "status": "ACTIVE",
       "authority_class": "OFFICIAL",
       "primary_or_secondary": "PRIMARY",
-      "topics": ["transmission", "distribution", "transformer procurement"]
+      "topics": [
+        "transmission",
+        "distribution",
+        "transformer procurement"
+      ]
     },
     {
       "source_id": "qatar-tender-committee",
@@ -406,7 +567,9 @@
       "organization": "Central Tender Committee / Government Procurement",
       "domain": "ctc.gov.qa",
       "canonical_domain": "ctc.gov.qa",
-      "domains": ["www.ctc.gov.qa"],
+      "domains": [
+        "www.ctc.gov.qa"
+      ],
       "source_type": "TENDER_BOARD",
       "language": "ar, en",
       "discovery_method": "tender_board",
@@ -417,7 +580,9 @@
       "status": "NEEDS_ADAPTER",
       "authority_class": "OFFICIAL",
       "primary_or_secondary": "PRIMARY",
-      "topics": ["government tenders"]
+      "topics": [
+        "government tenders"
+      ]
     },
     {
       "source_id": "meed",
@@ -425,7 +590,10 @@
       "organization": "MEED",
       "domain": "meed.com",
       "canonical_domain": "meed.com",
-      "domains": ["www.meed.com", "guest.meed.com"],
+      "domains": [
+        "www.meed.com",
+        "guest.meed.com"
+      ],
       "source_type": "CREDIBLE_TRADE_PRESS",
       "language": "en",
       "discovery_method": "curated",
@@ -436,7 +604,11 @@
       "status": "ACTIVE",
       "authority_class": "INDUSTRY_MEDIA",
       "primary_or_secondary": "SECONDARY",
-      "topics": ["GCC projects", "tenders", "manufacturing investment"],
+      "topics": [
+        "GCC projects",
+        "tenders",
+        "manufacturing investment"
+      ],
       "notes": "Discovery/secondary only. Prefer underlying utility/tender-board primary."
     },
     {
@@ -445,7 +617,9 @@
       "organization": "Times of Oman",
       "domain": "timesofoman.com",
       "canonical_domain": "timesofoman.com",
-      "domains": ["www.timesofoman.com"],
+      "domains": [
+        "www.timesofoman.com"
+      ],
       "source_type": "BUSINESS_MEDIA",
       "language": "en",
       "discovery_method": "arabic_press",
@@ -456,7 +630,10 @@
       "status": "NEEDS_ADAPTER",
       "authority_class": "AUTHORITATIVE_SECONDARY",
       "primary_or_secondary": "SECONDARY",
-      "topics": ["industrial agreements", "localisation"]
+      "topics": [
+        "industrial agreements",
+        "localisation"
+      ]
     },
     {
       "source_id": "arabian-stories",
@@ -464,7 +641,9 @@
       "organization": "The Arabian Stories",
       "domain": "thearabianstories.com",
       "canonical_domain": "thearabianstories.com",
-      "domains": ["www.thearabianstories.com"],
+      "domains": [
+        "www.thearabianstories.com"
+      ],
       "source_type": "BUSINESS_MEDIA",
       "language": "en",
       "discovery_method": "curated",
@@ -475,7 +654,9 @@
       "status": "NEEDS_ADAPTER",
       "authority_class": "INDUSTRY_MEDIA",
       "primary_or_secondary": "SECONDARY",
-      "topics": ["Oman industrial updates"],
+      "topics": [
+        "Oman industrial updates"
+      ],
       "notes": "Useful for publication_date / update_date (e.g. 19 Sep resurfacing of 12 Aug Oman agreements)."
     }
   ]

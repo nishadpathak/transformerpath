@@ -1,6 +1,6 @@
 {
   "$schema": "https://transformerpath.com/freshness.schema.json",
-  "generated": "2026-09-29T21:11:11.327Z",
+  "generated": "2026-09-29T21:12:39.710Z",
   "honest_note": "PAGE BUILD DATE is when this artifact was last regenerated; DATA REFRESH DATE is the last successful source refresh. These are distinct. The curated Daily Intel feed is refreshed at build (daily cadence label) — it is not an hourly live scrape. The serverless auto-briefing cache is a separate background cache. A freshness status of HEALTHY/AGING/STALE is computed from observed dates; nothing is presented as live.",
   "surfaces": [
     {
@@ -2594,17 +2594,17 @@
       "name": "GCC Intel discovery",
       "cadence": "daily (when adapters live)",
       "description": "GCC utility/tender-board/water-authority discovery layer. Distinct from curated Daily Intel. Discovery does not equal publication.",
-      "last_build": "2026-09-29T21:11:11.327Z",
+      "last_build": "2026-09-29T21:12:39.710Z",
       "last_data_refresh": null,
       "last_attempted_refresh": "2026-09-29",
-      "last_successful_refresh": null,
+      "last_successful_refresh": "2026-09-29T21:12:39.710Z",
       "latest_source_observation": "2026-09-25",
       "records_added": 12,
       "records_updated": null,
       "source_count": 23,
-      "source_failures": 0,
-      "status": "MANUAL_REVIEW",
-      "source_health": "0/6+ P0 portal probes live this build — no live portal body yet (gated/unreachable); registry still populated",
+      "source_failures": 7,
+      "status": "HEALTHY",
+      "source_health": "4/6+ P0 portal probes live this build — at least one official list returned transformer vocabulary",
       "records": 12
     }
   ],
@@ -2665,10 +2665,10 @@
     }
   ],
   "gcc_market_watch": {
-    "generated": "2026-09-29T21:11:11.327Z",
-    "statement": "0/6+ P0 portal probes live this build — no live portal body yet (gated/unreachable); registry still populated",
+    "generated": "2026-09-29T21:12:39.710Z",
+    "statement": "4/6+ P0 portal probes live this build — at least one official list returned transformer vocabulary",
     "markets_registered": 6,
-    "markets_adapter_live": 0,
+    "markets_adapter_live": 4,
     "latest_confirmed_event_date": "2026-09-25",
     "data_current_claim_allowed": false,
     "honesty": "Do NOT declare DATA CURRENT because the build ran today. Freshness depends on source coverage + source_checked_at + validated newest record.",
