@@ -355,7 +355,16 @@ a.plain:hover { text-decoration:underline; }
     <a class="btn btn-outline btn-sm" href="workspace.html" data-track="account_created" data-track-context="intel">Create a free account →</a>
     <a class="btn btn-outline btn-sm" href="events.html">Events calendar →</a>
     <a class="btn btn-outline btn-sm" href="webinars.html">Webinars →</a>
+    <a class="btn btn-outline btn-sm" href="#tp-watchlists">My watchlist (<span id="tp-watch-count">0</span>) →</a>
   </div>
+
+  <section id="tp-watchlists" style="max-width:860px;margin:0 auto 22px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px">
+    <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:baseline;justify-content:space-between;margin-bottom:8px">
+      <h2 style="font-size:1.05rem;color:var(--ink);margin:0">My Intel watchlist</h2>
+      <span style="font-size:.72rem;color:var(--muted)">Free · browser-local · <a href="intel-pro.html" style="color:var(--accent)">Intel Pro</a> adds shared lists &amp; alerts</span>
+    </div>
+    <div id="tp-watchlist-panel"></div>
+  </section>
 
   <section class="matidx" id="materials" style="max-width:860px;margin:0 auto 22px">
     <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:8px">
@@ -2135,6 +2144,7 @@ tabList.forEach((t, idx) => {
 <script src="follow-button.js" defer></script>
 <script src="analytics.js?v=7" defer></script>
 <script src="tp-freshness.js?v=7" defer></script>
+<script src="tp-watchlist.js?v=1" defer></script>
 <script src="tp-feedback.js?v=7" defer></script>
 </body>
 </html>

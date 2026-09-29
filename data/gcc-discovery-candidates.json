@@ -1,6 +1,6 @@
 {
   "$schema": "https://transformerpath.com/gcc-discovery-candidates.schema.json",
-  "generated": "2026-09-25T09:19:18.084Z",
+  "generated": "2026-09-29T21:11:11.327Z",
   "window": {
     "from": "2026-09-01",
     "to": "2026-09-25"
@@ -75,14 +75,19 @@
     }
   ],
   "freshness": {
-    "statement": "0/6 GCC market adapters live — registry covers 6/6; discovery-input validation does not equal live portal crawl",
+    "statement": "0/6+ P0 portal probes live this build — no live portal body yet (gated/unreachable); registry still populated",
     "markets_registered": 6,
     "markets_adapter_live": 0,
     "markets_with_validated_candidates": 6,
-    "latest_source_checked_at": "2026-09-25",
+    "latest_source_checked_at": "2026-09-29",
     "latest_confirmed_event_date": "2026-09-25",
     "data_current_claim_allowed": false,
-    "honesty": "Do NOT declare DATA CURRENT because the build ran today. Freshness depends on source coverage + source_checked_at + validated newest record."
+    "honesty": "Do NOT declare DATA CURRENT because the build ran today. Freshness depends on source coverage + source_checked_at + validated newest record.",
+    "adapter_probe": {
+      "probed": 0,
+      "live": 0,
+      "honesty": "TP_SKIP_ADAPTER_PROBES=1 — live portal probes skipped this build"
+    }
   },
   "candidates": [
     {

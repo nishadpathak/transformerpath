@@ -5,6 +5,7 @@
  *   data/gcc-discovery-candidates.json  — graded Sep backfill + pipeline output
  *   data/gcc-market-watch.json          — per-country coverage matrix
  *   data/gcc-coverage-report.json       — required report artifact
+ *   data/gcc-adapter-report.json        — live P0 portal probe results
  *   merges P0 GCC sources into data/source-registry.json (additive)
  *   extends data/freshness.json with gcc_market_watch honesty block
  *
@@ -16,6 +17,7 @@
 const fs = require('fs');
 const path = require('path');
 const gcc = require('./lib/gcc-discovery');
+const adapters = require('./lib/gcc-adapters');
 
 function readJson(p, fb) {
   try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch (e) { return fb; }
@@ -24,6 +26,7 @@ function writeJson(p, obj) {
   fs.writeFileSync(p, JSON.stringify(obj, null, 2) + '\n');
 }
 
+async function main() {
 const NOW = new Date().toISOString();
 const TODAY = NOW.slice(0, 10);
 
@@ -31,9 +34,55 @@ const registry = readJson('data/gcc-source-registry.json', { sources: [] });
 const discoveryInput = readJson('data/gcc-sep-2026-discovery-input.json', { candidates: [] });
 const dictionary = readJson('data/gcc-discovery-dictionary.json', {});
 
+// P0: probe DEWA / Etimad / Bahrain (and other P0 registry rows) before grading.
+// Network failures are honest — probes stamp last_checked; live only on success.
+// Set TP_SKIP_ADAPTER_PROBES=1 for offline/CI when egress is blocked.
+let adapterReport = { probed: 0, live: 0, reports: [], honesty: 'skipped' };
+try {
+  if (process.env.TP_SKIP_ADAPTER_PROBES === '1') {
+    adapterReport = {
+      generated_at: NOW,
+      probed: 0,
+      live: 0,
+      reports: [],
+      honesty: 'TP_SKIP_ADAPTER_PROBES=1 — live portal probes skipped this build'
+    };
+    writeJson('data/gcc-adapter-report.json', adapterReport);
+    console.log('GCC adapters: skipped (TP_SKIP_ADAPTER_PROBES=1)');
+  } else {
+  adapterReport = await adapters.probeP0Sources(registry);
+  writeJson('data/gcc-adapter-report.json', adapterReport);
+  writeJson('data/gcc-source-registry.json', registry);
+  console.log('GCC adapters: probed ' + adapterReport.probed + ', live ' + adapterReport.live);
+  }
+} catch (e) {
+  console.warn('GCC adapters: probe failed — ' + (e && e.message));
+  adapterReport = {
+    generated_at: NOW,
+    probed: 0,
+    live: 0,
+    reports: [],
+    error: String(e && e.message || e),
+    honesty: 'Adapter probe threw; discovery continues with registry-only validation.'
+  };
+  writeJson('data/gcc-adapter-report.json', adapterReport);
+}
+
 const result = gcc.runPipeline(discoveryInput.candidates || [], registry.sources || [], {
   checkedAt: TODAY
 });
+result.market_watch = adapters.markSourcesCheckedFromReports(result.market_watch, adapterReport.reports);
+result.freshness = gcc.gccFreshnessSummary(result.market_watch, result.candidates, TODAY);
+// Count live adapters from probe report (authoritative) not just sources_checked
+result.freshness.markets_adapter_live = adapterReport.live;
+result.freshness.adapter_probe = {
+  probed: adapterReport.probed,
+  live: adapterReport.live,
+  honesty: adapterReport.honesty
+};
+result.freshness.statement = adapterReport.live + '/6+ P0 portal probes live this build — ' +
+  (adapterReport.live ? 'at least one official list returned transformer vocabulary' : 'no live portal body yet (gated/unreachable); registry still populated');
+result.freshness.data_current_claim_allowed = false;
 
 // Separate internal coverage facts (e.g. Qatar zero) from publishable candidate counts
 const coverageFacts = result.candidates.filter(function (c) {
@@ -302,13 +351,13 @@ var gccSurface = {
   last_build: NOW,
   last_data_refresh: null,
   last_attempted_refresh: TODAY,
-  last_successful_refresh: null,
+  last_successful_refresh: adapterReport.live ? NOW : null,
   latest_source_observation: result.freshness.latest_confirmed_event_date,
   records_added: result.counts.candidates,
   records_updated: null,
   source_count: (registry.sources || []).length,
-  source_failures: null,
-  status: 'MANUAL_REVIEW',
+  source_failures: adapterReport.probed - adapterReport.live,
+  status: adapterReport.live > 0 ? 'HEALTHY' : 'MANUAL_REVIEW',
   source_health: result.freshness.statement,
   records: result.counts.candidates
 };
@@ -343,3 +392,9 @@ console.log('Regression: ' + (fixture.pass ? 'PASS' : 'FAIL') + (fixture.failure
 console.log('Merged ' + added + ' GCC sources into source-registry.json');
 
 if (!fixture.pass) process.exitCode = 1;
+}
+
+main().catch(function (e) {
+  console.error(e);
+  process.exit(1);
+});
