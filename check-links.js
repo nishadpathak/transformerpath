@@ -14,7 +14,7 @@ function walk(dir, skip = []) {
   return out;
 }
 
-const SKIP = ['archive', '_private', 'transformerpath-site', 'dist', 'node_modules', 'functions', '_partials', 'Transformer Equipments'];
+const SKIP = ['archive', '_private', 'transformerpath-site', 'transformerpath', 'dist', 'node_modules', 'functions', '_partials', 'Transformer Equipments'];
 const files = walk('.', SKIP);
 
 // Link target existence: resolve relative to the file's directory.
