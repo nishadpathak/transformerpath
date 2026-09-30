@@ -1,17 +1,46 @@
-/* TransformerPath PWA: one service-worker register, install prompt, standalone chrome. */
+/* TransformerPath PWA: one service-worker register, install prompt, standalone chrome.
+ * Dismiss persists for DISMISS_DAYS (localStorage timestamp). Never nag in standalone. */
 (function () {
   'use strict';
   if (window.__TP_PWA__) return;
   window.__TP_PWA__ = true;
 
-  var DISMISS_INSTALL = 'tp-pwa-install-dismissed';
-  var DISMISS_IOS = 'tp-pwa-ios-hint-dismissed';
-  var SEEN_INSTALL = 'tp-pwa-install-seen';
-  var SEEN_IOS = 'tp-pwa-ios-seen';
+  var DISMISS_INSTALL = 'tp-pwa-install-dismissed-until';
+  var DISMISS_IOS = 'tp-pwa-ios-hint-dismissed-until';
+  var DISMISS_DAYS = 45;
+  var LEGACY_INSTALL = 'tp-pwa-install-dismissed';
+  var LEGACY_IOS = 'tp-pwa-ios-hint-dismissed';
 
   function standalone() {
     return window.matchMedia('(display-mode: standalone)').matches
-      || window.navigator.standalone === true;
+      || window.navigator.standalone === true
+      || document.referrer.indexOf('android-app://') === 0;
+  }
+
+  function dismissedUntil(key, legacyKey) {
+    try {
+      if (legacyKey && localStorage.getItem(legacyKey) === '1') {
+        // Migrate permanent legacy dismiss → long cooldown
+        var untilLegacy = Date.now() + DISMISS_DAYS * 86400000;
+        localStorage.setItem(key, String(untilLegacy));
+        localStorage.removeItem(legacyKey);
+        return untilLegacy;
+      }
+      var raw = localStorage.getItem(key);
+      if (!raw) return 0;
+      var n = parseInt(raw, 10);
+      return isNaN(n) ? 0 : n;
+    } catch (e) { return 0; }
+  }
+
+  function dismissFor(key, days) {
+    try {
+      localStorage.setItem(key, String(Date.now() + (days || DISMISS_DAYS) * 86400000));
+    } catch (e) {}
+  }
+
+  function stillDismissed(key, legacyKey) {
+    return Date.now() < dismissedUntil(key, legacyKey);
   }
 
   function registerSW() {
@@ -24,9 +53,9 @@
   }
 
   function currentTab() {
-    var p = location.pathname.replace(/\/$/, '') || '/index.html';
-    if (p.indexOf('/intel') === 0) return 'intel';
-    if (p.indexOf('/map') === 0) return 'map';
+    var p = location.pathname.replace(/\/$/, '') || '/';
+    if (p === '/intel' || p.indexOf('/intel') === 0) return 'intel';
+    if (p === '/map' || p.indexOf('/map') === 0) return 'map';
     if (p.indexOf('/directory') === 0 || p.indexOf('/manufacturers') === 0) return 'directory';
     if (p.indexOf('/learn') === 0 || p.indexOf('/masterclass') === 0 || p.indexOf('/books') === 0) return 'learn';
     return '';
@@ -39,21 +68,17 @@
     nav.id = 'tp-pwa-nav';
     nav.setAttribute('aria-label', 'App');
     nav.innerHTML =
-      '<a href="/intel.html"' + (tab === 'intel' ? ' aria-current="page"' : '') + '>Intel</a>' +
-      '<a href="/map.html"' + (tab === 'map' ? ' aria-current="page"' : '') + '>Map</a>' +
-      '<a href="/directory.html"' + (tab === 'directory' ? ' aria-current="page"' : '') + '>Directory</a>' +
-      '<a href="/learn.html"' + (tab === 'learn' ? ' aria-current="page"' : '') + '>Learn</a>';
+      '<a href="/intel"' + (tab === 'intel' ? ' aria-current="page"' : '') + '>Intel</a>' +
+      '<a href="/map"' + (tab === 'map' ? ' aria-current="page"' : '') + '>Map</a>' +
+      '<a href="/directory"' + (tab === 'directory' ? ' aria-current="page"' : '') + '>Directory</a>' +
+      '<a href="/learn"' + (tab === 'learn' ? ' aria-current="page"' : '') + '>Learn</a>';
     document.body.appendChild(nav);
     document.documentElement.classList.add('tp-pwa-standalone');
   }
 
   function chromeInstall(deferred) {
     if (standalone() || document.getElementById('tpInstall')) return;
-    try {
-      if (localStorage.getItem(DISMISS_INSTALL) === '1') return;
-      if (sessionStorage.getItem(SEEN_INSTALL) === '1') return;
-      sessionStorage.setItem(SEEN_INSTALL, '1');
-    } catch (e) {}
+    if (stillDismissed(DISMISS_INSTALL, LEGACY_INSTALL)) return;
     var wrap = document.createElement('div');
     wrap.id = 'tpInstall';
     wrap.className = 'tp-pwa-banner';
@@ -64,13 +89,19 @@
     wrap.addEventListener('click', function (e) {
       var act = e.target && e.target.getAttribute && e.target.getAttribute('data-pwa');
       if (act === 'no') {
-        try { localStorage.setItem(DISMISS_INSTALL, '1'); } catch (err) {}
+        dismissFor(DISMISS_INSTALL, DISMISS_DAYS);
         wrap.remove();
         return;
       }
       if (act === 'go' && deferred) {
         wrap.remove();
         deferred.prompt();
+        try {
+          deferred.userChoice.then(function (choice) {
+            if (choice && choice.outcome === 'dismissed') dismissFor(DISMISS_INSTALL, DISMISS_DAYS);
+            if (choice && choice.outcome === 'accepted') dismissFor(DISMISS_INSTALL, 365);
+          });
+        } catch (err) {}
       }
     });
     document.body.appendChild(wrap);
@@ -80,11 +111,7 @@
     if (standalone()) return;
     var ua = navigator.userAgent || '';
     if (!/iPhone/.test(ua) || !/Safari/.test(ua) || /CriOS|FxiOS|EdgiOS/.test(ua)) return;
-    try {
-      if (localStorage.getItem(DISMISS_IOS) === '1') return;
-      if (sessionStorage.getItem(SEEN_IOS) === '1') return;
-      sessionStorage.setItem(SEEN_IOS, '1');
-    } catch (e) {}
+    if (stillDismissed(DISMISS_IOS, LEGACY_IOS)) return;
     if (document.getElementById('tpIosHint')) return;
     var bar = document.createElement('div');
     bar.id = 'tpIosHint';
@@ -94,7 +121,7 @@
       '<button type="button" data-pwa="no" class="ghost">OK</button>';
     bar.addEventListener('click', function (e) {
       if (e.target && e.target.getAttribute && e.target.getAttribute('data-pwa') === 'no') {
-        try { localStorage.setItem(DISMISS_IOS, '1'); } catch (err) {}
+        dismissFor(DISMISS_IOS, DISMISS_DAYS);
         bar.remove();
       }
     });
@@ -129,6 +156,8 @@
   var deferredPrompt = null;
   window.addEventListener('beforeinstallprompt', function (e) {
     e.preventDefault();
+    if (standalone()) return;
+    if (stillDismissed(DISMISS_INSTALL, LEGACY_INSTALL)) return;
     deferredPrompt = e;
     ready(function () { chromeInstall(deferredPrompt); });
   });

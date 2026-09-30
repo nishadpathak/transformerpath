@@ -63,6 +63,7 @@ const ROOT_JS = [
   'site-stats.js', 'supabase-config.js', 'supabase.js', 'sw.js',
   'tp-directory.js', 'tp-feedback.js', 'tp-freshness.js', 'tp-nav.js', 'tp-pwa.js',
   'tp-theme.js', 'tp-shortlist.js', 'tp-watchlist.js', 'map.js',
+  'tp-webgl-gate.js',
   'tp-3d-core.js', 'tp-power-assembly.js', 'tp-oil-assembly.js',
   'tp-castresin-assembly.js', 'tp-ct-assembly.js',
   'part-ecosystem.js', 'component-3d-bridge.js',

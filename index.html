@@ -192,7 +192,11 @@
   font-family:"Instrument Sans",system-ui,sans-serif;
 }
 .hero-stage__viz{ position:absolute; inset:0; z-index:0; }
-.hero-stage__viz iframe{ width:100%; height:100%; border:0; display:block; background:#07111c; }
+.hero-stage__viz iframe{ width:100%; height:100%; border:0; display:block; background:#07111c; position:absolute; inset:0; z-index:2; }
+.hero-stage__poster{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:1; background:#07111c; }
+.hero-stage__3dnote{ color:#9fb0c4; font-size:.9rem; max-width:34rem; margin:0 0 8px; }
+.hero-stage.is-3d-ready .hero-stage__poster{ opacity:0; transition:opacity .5s ease; pointer-events:none; }
+.hero-stage.is-3d-unavailable .hero-stage__hint{ display:none; }
 .hero-stage__scrim{
   position:absolute; inset:0; z-index:1; pointer-events:none;
   background:
@@ -288,14 +292,18 @@
 </style>
 
 <section class="hero-stage" aria-label="TransformerPath hero">
-  <div class="hero-stage__viz" aria-hidden="false">
-    <iframe
-      id="hero3dFrame"
-      title="Interactive 3D power transformer"
-      src="hero-3d.html"
-      loading="eager"
-      allow="fullscreen"
-     ></iframe>
+  <div class="hero-stage__viz" id="heroViz" aria-hidden="false" data-tp-3d-state="INITIALIZING">
+    <img
+      data-tp-3d-poster
+      class="hero-stage__poster"
+      src="media/power-transformer-3d-poster.jpg"
+      alt="Power transformer"
+      width="1600"
+      height="900"
+      decoding="async"
+      fetchpriority="high"
+    >
+    <!-- 3D iframe injected after idle/interaction when WebGL is available -->
   </div>
   <div class="hero-stage__scrim" aria-hidden="true"></div>
   <div class="hero-stage__inner">
@@ -304,6 +312,7 @@
         <p class="hero-stage__brand">Transformer<span>Path</span></p>
         <h1>A power transformer you can take apart in 3D.</h1>
         <p class="hero-stage__lead">Orbit the live model, then watch a short tour of the intel, directory, grids, events, and RFQ tools behind every part.</p>
+        <p class="hero-stage__3dnote" id="hero3dNote" hidden>Interactive 3D is unavailable in this browser. You can still explore TransformerPath’s engineering content and transformer components.</p>
         <div class="hero-stage__ctas">
           <a class="btn-primary" href="power3d.html">Open free 3D explorer</a>
           <button class="btn-ghost" type="button" id="heroWatchBtn" aria-haspopup="dialog" aria-controls="heroVideoModal">
@@ -314,7 +323,7 @@
       </div>
     </div>
   </div>
-  <p class="hero-stage__hint">Drag to orbit · scroll to zoom</p>
+  <p class="hero-stage__hint" id="hero3dHint">Drag to orbit · scroll to zoom</p>
 </section>
 
 <div class="tp-video-modal" id="heroVideoModal" hidden role="dialog" aria-modal="true" aria-labelledby="heroVideoTitle">
@@ -952,7 +961,7 @@
     <div class="grid grid-3" id="glanceCards">
       <div class="card reveal"><span class="emoji" aria-hidden="true">📋</span><h3>Tenders & Projects</h3><p>SEC awards SPTC a $376M transformer & reactor deal; Hitachi Energy India wins a Rs 6.47B 765kV PGCIL order; KAHRAMAA 2026 expansion packages out.</p></div>
       <div class="card reveal"><span class="emoji" aria-hidden="true">🌍</span><h3>Supplier & Capacity News</h3><p>Weidmann commits $220M+ to a new China transformerboard plant; Voltamp and Virginia Transformer add new capacity; US LPT lead times run 30–36 months per the latest NLR report, insulation materials named a bottleneck.</p></div>
-      <div class="card reveal"><span class="emoji" aria-hidden="true">📈</span><h3>Prices & Materials</h3><p>Copper <b data-m="copper" style="color:var(--accent)">≈$14,170/t</b> (LME 3-month reference); Aluminium <b data-m="aluminium" style="color:var(--accent)">≈$3,182/t</b> (LME reference). CRGO has <b>no public daily index</b> — it varies by market, grade, thickness and commercial basis, so it is shown as <b>GRADE NOT SPECIFIED</b> rather than a single comparable number. <span style="color:var(--muted);font-size:.82rem">Observed <span data-m-obs="copper">26 Aug 2026</span> · <a href="materials.html" style="color:var(--accent);font-weight:600">Materials &rarr;</a></span></p></div>
+      <div class="card reveal"><span class="emoji" aria-hidden="true">📈</span><h3>Prices & Materials</h3><p>Copper <b data-m="copper" style="color:var(--accent)">≈$14,170/t</b> (LME 3-month reference); Aluminium <b data-m="aluminium" style="color:var(--accent)">≈$3,182/t</b> (LME reference). <b>Historical market reference</b> — not a live feed. CRGO has <b>no public daily index</b> — it varies by market, grade, thickness and commercial basis, so it is shown as <b>GRADE NOT SPECIFIED</b> rather than a single comparable number. <span style="color:var(--muted);font-size:.82rem"><span data-m-obs="copper">Historical market reference · Observed 20 Aug 2026</span> · <a href="materials.html" style="color:var(--accent);font-weight:600">Materials &rarr;</a></span></p></div>
     </div>
     <p style="text-align:center; margin-top:30px" class="reveal"><a href="intel.html" class="btn btn-amber">Open the Intel feed →</a></p>
   </div>
@@ -969,7 +978,7 @@
       <a class="card reveal" href="grids.html"><span class="emoji" aria-hidden="true">🌐</span><h3>World Grids →</h3><p><span data-stat="countries">151</span> countries, <span data-stat="gridOperators">166</span> operators — voltages, frequencies and official links.</p></a>
       <a class="card reveal" href="map.html"><span class="emoji" aria-hidden="true">🗺️</span><h3>Industry Map →</h3><p>Zoom a world map of manufacturers, utilities, suppliers and events. Pins are country-level unless a site coordinate exists.</p></a>
       <a class="card reveal" href="events.html"><span class="emoji" aria-hidden="true">📅</span><h3>Events →</h3><p>Every major power & transformer exhibition through 2028, with one-click hotel and flight booking.</p></a>
-      <a class="card reveal" href="manufacturers.html"><span class="emoji" aria-hidden="true">🏭</span><h3>Manufacturers →</h3><p>A growing sourced directory of 1,002 transformer makers — power, distribution and dry-type — country by country.</p></a>
+      <a class="card reveal" href="manufacturers.html"><span class="emoji" aria-hidden="true">🏭</span><h3>Manufacturers →</h3><p>A growing sourced directory of <span data-stat="manufacturers">906</span> transformer makers — power, distribution and dry-type — country by country.</p></a>
       <a class="card reveal" href="markets.html"><span class="emoji" aria-hidden="true">🌍</span><h3>Markets →</h3><p>Country intelligence hubs — grid operators, manufacturers, projects, events and technical context, market by market.</p></a>
       <a class="card reveal" href="learn.html"><span class="emoji" aria-hidden="true">🎓</span><h3>Learn →</h3><p>A 26-chapter design masterclass — 3D models and a live design calculator, included with 12 months access.</p></a>
       <a class="card reveal" href="knowledge.html"><span class="emoji" aria-hidden="true">💡</span><h3>Knowledge →</h3><p>Clear, source-referenced answers to transformer-engineering questions, from cooling codes to DGA and bushings.</p></a>
@@ -1159,6 +1168,63 @@ if('IntersectionObserver' in window){
 <script src="analytics.js?v=7" defer></script>
 <script src="site-stats.js?v=7" defer></script>
 <script src="material-latest.js?v=7" defer></script>
+<script src="tp-webgl-gate.js" defer></script>
+<script>
+/* Homepage 3D: poster first → idle/interaction → WebGL iframe. Never required. */
+(function(){
+  function ready(fn){ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fn); else fn(); }
+  ready(function(){
+    var stage=document.querySelector('.hero-stage');
+    var viz=document.getElementById('heroViz');
+    var note=document.getElementById('hero3dNote');
+    var hint=document.getElementById('hero3dHint');
+    if(!viz||!stage) return;
+    var gate=window.TPWebGL;
+    var started=false;
+    function unavailable(detail){
+      stage.classList.add('is-3d-unavailable');
+      if(note) note.hidden=false;
+      if(hint) hint.hidden=true;
+      if(gate) gate.setState(viz,'UNAVAILABLE',detail||'no_webgl');
+    }
+    function inject(){
+      if(started) return; started=true;
+      if(!gate || !gate.detect().ok){ unavailable(gate&&gate.detect().reason); return; }
+      gate.setState(viz,'LOADING_MODEL');
+      var f=document.createElement('iframe');
+      f.id='hero3dFrame';
+      f.title='Interactive 3D power transformer';
+      f.src='hero-3d.html';
+      f.allow='fullscreen';
+      f.setAttribute('loading','lazy');
+      viz.appendChild(f);
+      var watch=gate.startLoadWatchdog(viz,14000,function(){
+        try{ f.remove(); }catch(e){}
+        unavailable('timeout');
+      });
+      window.addEventListener('message',function(ev){
+        var d=ev&&ev.data; if(!d||d.type!=='tp-3d-state') return;
+        if(d.state==='READY'){
+          watch.markReady();
+          stage.classList.add('is-3d-ready');
+          gate.setState(viz,'READY');
+        } else if(d.state==='UNAVAILABLE'||d.state==='LOAD_FAILED'||d.state==='CONTEXT_LOST'){
+          watch.cancel();
+          try{ f.remove(); }catch(e){}
+          unavailable(d.state);
+        }
+      });
+    }
+    // Prefer idle callback; fall back to timeout; also start on first pointer/keydown
+    var kick=function(){ inject(); };
+    ['pointerdown','keydown','touchstart'].forEach(function(ev){
+      window.addEventListener(ev,kick,{once:true,passive:true});
+    });
+    if('requestIdleCallback' in window) requestIdleCallback(kick,{timeout:2500});
+    else setTimeout(kick,1800);
+  });
+})();
+</script>
 <script src="tp-freshness.js?v=7" defer></script>
 <script src="tp-feedback.js?v=7" defer></script>
 <script>

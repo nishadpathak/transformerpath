@@ -139,7 +139,7 @@ body{font-family:var(--font-sans);background:#08121e;color:var(--ink)}
   <script src="tp-nav.js?v=7" defer></script>
   <script src="tp-pwa.js?v=7" defer></script>
 </header>
-<div id="c3d"></div>
+<div id="c3d" data-tp-3d-state="INITIALIZING"></div>
 
 <div id="topbar">
   <div>
@@ -196,11 +196,37 @@ body{font-family:var(--font-sans);background:#08121e;color:var(--ink)}
 <div id="help">🖱 drag = orbit · wheel = zoom · right-drag/shift-drag = pan · click = identify<br>🎬 sit back for the build story · ⚡ hear it hum · 🚨 watch a fault unfold</div>
 <div id="tourcap"><div class="step" id="tourstep"></div><div id="tourtext"></div></div>
 
+<script src="tp-webgl-gate.js"></script>
 <script src="vendor/three.min.js"></script>
 <script>
+(function(){
+
 /* ================= scene ================= */
 const container = document.getElementById('c3d');
-const renderer = new THREE.WebGLRenderer({antialias:true});
+TPWebGL.ensurePoster(container);
+TPWebGL.setState(container, 'INITIALIZING');
+const __tpCreated = TPWebGL.createRenderer(THREE, { antialias: true });
+if (!__tpCreated.ok) {
+  TPWebGL.showFallback(container, {
+    state: 'UNAVAILABLE',
+    detail: __tpCreated.reason,
+    title: 'Interactive 3D is unavailable in this browser.',
+    body: 'You can still explore TransformerPath engineering content and transformer components.',
+    controlsRoot: document
+  });
+  return;
+}
+const renderer = __tpCreated.renderer;
+TPWebGL.bindContextLoss(renderer, container, { controlsRoot: document });
+const __tpWatch = TPWebGL.startLoadWatchdog(container, 15000, function () {
+  TPWebGL.showFallback(container, {
+    state: 'LOAD_FAILED',
+    detail: 'timeout',
+    title: '3D model took too long to load.',
+    body: 'The page remains usable — open Academy, Engineering Tools, or Components, or retry 3D.',
+    controlsRoot: document
+  });
+});
 renderer.setPixelRatio(Math.min(devicePixelRatio,2));
 renderer.setSize(innerWidth,innerHeight);
 renderer.shadowMap.enabled = true;
@@ -209,6 +235,8 @@ renderer.outputEncoding = THREE.sRGBEncoding;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.12;
 container.appendChild(renderer.domElement);
+TPWebGL.setState(container, 'LOADING_MODEL');
+requestAnimationFrame(function(){ requestAnimationFrame(function(){ __tpWatch.markReady(); TPWebGL.removePoster(container); }); });
 
 const scene = new THREE.Scene();
 /* dusk-sky gradient background */
@@ -996,6 +1024,8 @@ addEventListener('resize',()=>{
   camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();
   renderer.setSize(innerWidth,innerHeight);
 });
+
+})();
 </script>
 <script src="tp-theme.js?v=1" defer></script>
 <footer>
