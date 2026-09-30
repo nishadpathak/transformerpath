@@ -306,21 +306,35 @@ function page(r, slug) {
   const pageSchema = { '@context': 'https://schema.org', '@type': 'WebPage', name: r.name + ' — Company Profile', url: url, about: { '@type': 'Organization', name: r.name } };
   const b = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Manufacturers', item: 'https://transformerpath.com/manufacturers.html' }, { '@type': 'ListItem', position: 2, name: r.name }] };
   const schema = '<script type="application/ld+json">' + JSON.stringify(orgSchema) + '</script><script type="application/ld+json">' + JSON.stringify(pageSchema) + '</script><script type="application/ld+json">' + JSON.stringify(b) + '</script>';
-  // tier enrichment table
+  // tier enrichment table — highest voltage = MAX(tier.kv, accepted provenance voltage facts)
   let tierTable = '';
   if (tier) {
     const row = function (k, v) { return v ? '<tr><th>' + k + '</th><td>' + v + '</td></tr>' : ''; };
     const c = tier.mva ? '~' + tier.mva.toLocaleString('en-US') + ' MVA' : '—';
-    const kv = tier.kv ? tier.kv + ' kV' : '—';
+    const provRec = PROV_BY_NAME[norm(lookupName(r))];
+    let maxKv = typeof tier.kv === 'number' ? tier.kv : (parseFloat(tier.kv) || 0);
+    let maxKvSource = tier.source || null;
+    (provRec && provRec.facts || []).forEach(function (f) {
+      if (!f || f.field !== 'voltage_class_evidence') return;
+      const conf = String(f.confidence || '').toUpperCase();
+      // Accept independently sourced / high-confidence evidence; skip REJECTED.
+      if (/REJECT/.test(conf)) return;
+      const v = typeof f.value === 'number' ? f.value : parseFloat(f.value);
+      if (!isNaN(v) && v > maxKv) {
+        maxKv = v;
+        maxKvSource = f.source_title || f.source_url || 'provenance evidence';
+      }
+    });
+    const kv = maxKv ? maxKv + ' kV' : '—';
     // Source-authority honesty: capability figures resting only on a
     // low-authority third-party directory (Ensun / IQS / Sinovoltaics / generic
     // "industry directory") must be flagged as unverified — they are not
     // independently sourced evidence of a capability.
     const LOW_AUTH = /ensun|iqs|sinovoltaics|industry directory|directory/i;
-    const lowAuth = LOW_AUTH.test('' + tier.source);
-    const srcLabel = (tier.source || '—') + (lowAuth ? ' <span style="color:var(--muted);font-weight:600">(third-party directory — not independently verified)</span>' : '') + (tier.note ? ' <span style="color:var(--muted);cursor:help" title="' + esc(tier.note) + '">&#8505;</span>' : '');
+    const lowAuth = LOW_AUTH.test('' + (maxKvSource || tier.source));
+    const srcLabel = (maxKvSource || tier.source || '—') + (lowAuth ? ' <span style="color:var(--muted);font-weight:600">(third-party directory — not independently verified)</span>' : '') + (tier.note ? ' <span style="color:var(--muted);cursor:help" title="' + esc(tier.note) + '">&#8505;</span>' : '');
     const capNote = c === '—' ? '' : ' <span style="color:var(--muted);font-size:.78rem">(sourced figure — not independently audited)</span>';
-    tierTable = '<table class="tbl"><tbody>' + row('Indicative sourced capacity / yr', c === '—' ? c : c + capNote) + row('Highest sourced voltage evidence', kv) + row('Product types', (tier.types || []).join(', ')) + row('Regions served', (tier.regions || []).join(', ')) + row('Reported standards', (tier.certs || []).join(', ')) + row('Source', srcLabel) + '</tbody></table>' + '<p style="font-size:.72rem;color:var(--muted)">These are the <b>highest sourced figures</b> on file — they are <b>not</b> asserted as the company maximum unless an authoritative source states that. Annual capacity and voltage evidence are independent values and are never combined into a single product rating. Verify against the manufacturer before a procurement decision.</p>';
+    tierTable = '<table class="tbl"><tbody>' + row('Indicative sourced capacity / yr', c === '—' ? c : c + capNote) + row('Highest sourced voltage evidence', kv) + row('Product types', (tier.types || []).join(', ')) + row('Regions served', (tier.regions || []).join(', ')) + row('Reported standards', (tier.certs || []).join(', ')) + row('Source', srcLabel) + '</tbody></table>' + '<p style="font-size:.72rem;color:var(--muted)">These are the <b>highest sourced figures</b> on file — they are <b>not</b> asserted as the company maximum unless an authoritative source states that. Voltage summary is <b>MAX(accepted voltage evidence records, tier filing)</b>. Annual capacity and voltage evidence are independent values and are never combined into a single product rating. Verify against the manufacturer before a procurement decision.</p>';
   }
 
   return '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +

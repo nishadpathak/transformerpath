@@ -1,0 +1,89 @@
+{
+  "$schema": "https://transformerpath.com/census-reconciliation.schema.json",
+  "title": "Manufacturer census reconciliation 911 → 906",
+  "generated": "2026-09-30",
+  "from_count": 911,
+  "to_count": 906,
+  "honesty": "906 is preferred to 911 when the delta is canonicalisation (rename / duplicate / non-OEM), not loss of real transformer manufacturers. Public counters (site-stats) showed 911→906; country-grouped manufacturers.json maker rows moved 908→902 in the pre-sprint backup vs current (same reconciliation events).",
+  "method": "Diff data/backup-pre-sprint/manufacturers.json maker rows against current data/manufacturers.json; classify via data/duplicate-review.json alias_map and OEM-scope review.",
+  "records": [
+    {
+      "prior_name": "Hammond Power Solutions (Americas)",
+      "prior_country": "USA",
+      "action": "DUPLICATE",
+      "canonical_name": "Hammond Power Solutions",
+      "canonical_country": "Canada",
+      "why": "Americas/USA row duplicated the Canadian HQ census entry; alias_map routes both to hammond-power-solutions."
+    },
+    {
+      "prior_name": "Larson Electronics",
+      "prior_country": "USA",
+      "action": "FACILITY_NOT_COMPANY",
+      "canonical_name": null,
+      "why": "Industrial lighting / specialty electrical supplier, not a transformer OEM. Removed from manufacturer census; no alias retained."
+    },
+    {
+      "prior_name": "Camille Bauer Metrawatt",
+      "prior_country": "Switzerland",
+      "action": "FACILITY_NOT_COMPANY",
+      "canonical_name": null,
+      "why": "Measurement / instrumentation OEM (Metrawatt), not a power/distribution transformer manufacturer. Removed from manufacturer census."
+    },
+    {
+      "prior_name": "IMEFY",
+      "prior_country": "Spain",
+      "action": "RENAMED",
+      "canonical_name": "IMEFY Group",
+      "canonical_country": "Spain",
+      "why": "Legal/trading name normalized to IMEFY Group; alias_map imefy → imefy-group slug."
+    },
+    {
+      "prior_name": "Ganz Transformers and Electric Rotating Machines",
+      "prior_country": "Hungary",
+      "action": "DIVISION_NORMALIZED",
+      "canonical_name": "Ganz Transformers & Electric Rotating Machines",
+      "canonical_country": "Hungary",
+      "why": "Same entity; ampersand vs 'and' string variant collapsed to a single census row."
+    },
+    {
+      "prior_name": "Astor Enerji",
+      "prior_country": "Türkiye",
+      "action": "RENAMED",
+      "canonical_name": "Astor Enerji A.Ş.",
+      "canonical_country": "Türkiye",
+      "why": "Legal form (A.Ş.) applied; alias_map retains Astor Enerji → Astor Enerji A.Ş."
+    },
+    {
+      "prior_name": "Sunten Electric",
+      "prior_country": "China",
+      "action": "RENAMED",
+      "canonical_name": "Sunten Electric Co., Ltd.",
+      "canonical_country": "China",
+      "why": "Legal name expanded; alias_map sunten electric → Sunten Electric Co., Ltd."
+    },
+    {
+      "prior_name": "KP Electric",
+      "prior_country": "South Korea",
+      "action": "RENAMED",
+      "canonical_name": "KP Electric Co., Ltd.",
+      "canonical_country": "South Korea",
+      "why": "Legal name expanded; alias_map kp electric → KP Electric Co., Ltd."
+    },
+    {
+      "prior_name": "Bambang Djaja (B&D Transformer)",
+      "prior_country": "Indonesia",
+      "action": "RENAMED",
+      "canonical_name": "PT Bambang Djaja (B&D Transformers)",
+      "canonical_country": "Indonesia",
+      "why": "Indonesian PT legal form + plural Transformers; alias_map retained."
+    }
+  ],
+  "summary": {
+    "duplicate": 1,
+    "facility_not_company": 2,
+    "renamed": 5,
+    "division_normalized": 1,
+    "net_unique_oem_loss": 2,
+    "note": "Only Larson Electronics and Camille Bauer Metrawatt left the census without a surviving OEM row. All other removals map to a canonical manufacturer still counted in 906."
+  }
+}

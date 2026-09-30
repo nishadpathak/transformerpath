@@ -270,7 +270,7 @@
         ],
         "evidence_grade": "CONFIRMED",
         "candidate_id": "om-localisation-aug12",
-        "age_tier": "FRESH",
+        "age_tier": "RECENT",
         "date_label": "19 Sep 2026"
       },
       {
@@ -296,8 +296,10 @@
         "evidence_grade": "CONFIRMED",
         "candidate_id": "bh-ewa-389-2026-1000kva",
         "tender_id": "389/2026/BTB",
-        "age_tier": "RECENT",
-        "date_label": "28 Aug 2026"
+        "age_tier": "BACKGROUND",
+        "date_label": "28 Aug 2026",
+        "is_active": true,
+        "current_relevance": "Project under active procurement/construction or multi-year grid framework."
       },
       {
         "title": "DEWA floats EPC tender for twelve 132/11 kV substations in Dubai South and Expo Valley development zones",
@@ -2443,12 +2445,12 @@
       }
     ]
   },
-  "updated": "2026-09-25T09:22:18.396Z",
+  "updated": "2026-09-25T12:00:00.000Z",
   "refresh_meta": {
     "cadence": "daily (curated)",
     "refreshed_at_build": true,
     "newest_validated_content_date": "2026-09-25",
-    "note": "updated reflects newest validated GCC/content observation — not a silent redeploy clock. Excludes tender_close_date and future dates.",
+    "note": "updated reflects newest validated CONTENT observation (float/publication/event/update) — not source_checked_at and not a silent redeploy clock. Excludes tender_close_date and future dates.",
     "gcc_published": [
       "uae-dewa-2122600155",
       "sa-swa-rabigh-2p5mva",

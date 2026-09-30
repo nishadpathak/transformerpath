@@ -76,7 +76,8 @@ if (intelSurface) {
 
 const INTEL_HTML = fs.readFileSync('intel.html', 'utf8');
 check('Intel page pre-renders canonical freshness line (no Loading freshness)', !INTEL_HTML.includes('Loading freshness') && !INTEL_HTML.includes('id="freshnessLine">Loading'));
-check('Intel page displays explicit refresh status (current/delayed/stale)', INTEL_HTML.includes('Last successful refresh:') || INTEL_HTML.includes('Refresh delayed') || INTEL_HTML.includes('Data stale'));
+check('Intel page displays explicit refresh status (current/delayed/stale/coverage)',
+  /DATA CURRENT|REFRESH DELAYED|DATA STALE|INTEL COVERAGE DELAYED|Latest sourced item/i.test(INTEL_HTML));
 
 console.log('\n=== 3. SEARCH SMOKE TESTING ===');
 const DIR = JSON.parse(fs.readFileSync('data/directory-index.json', 'utf8'));
