@@ -68,6 +68,26 @@ check('GSU loop explores gsu.html then Grid Lab then calculator', (function () {
 })());
 check('factory footage is permission-needed, not invented clips', academy.factory_footage && academy.factory_footage.status === 'permission-needed');
 check('watch does not award competency in skills passport note', /progress only|not a qualification/i.test(JSON.parse(fs.readFileSync('data/skills-passport.json', 'utf8')).evidence_note || ''));
+check('Skills Passport progress is not from page visits', /not from visiting a page|Opening a Lab/i.test(fs.readFileSync('data/skills-passport.json', 'utf8')));
+(function () {
+  const sp = JSON.parse(fs.readFileSync('data/skills-passport.json', 'utf8'));
+  const titles = (sp.groups || []).map((g) => g.title);
+  const needed = ['Grid Systems', 'Transformer Construction', 'Insulation Systems', 'Transformer Operation', 'Protection', 'Manufacturing', 'Testing'];
+  check('Skills Passport has seven competency groups', needed.every((t) => titles.indexOf(t) >= 0) && titles.length === 7, titles.join(', '));
+})();
+const labs = JSON.parse(fs.readFileSync('data/engineering-labs.json', 'utf8'));
+check('Engineering Labs catalog has four labs', (labs.labs || []).length === 4);
+check('Grid Lab is live; Factory and Substation are coming', (function () {
+  const by = {};
+  (labs.labs || []).forEach((l) => { by[l.id] = l; });
+  return by.grid && by.grid.status === 'live' && by.grid.href === 'grid-lab.html' &&
+    by.factory && by.factory.status === 'coming' && !by.factory.href &&
+    by.substation && by.substation.status === 'coming' && !by.substation.href &&
+    by.transformer && (by.transformer.status === 'index' || by.transformer.status === 'live');
+})());
+check('Transformer Lab is a drill-down, not ten front doors', (labs.labs.find((l) => l.id === 'transformer').drilldown || []).length >= 8);
+check('Engineering Labs copy is not a 3D-model catalogue', /not in .3D models/i.test(labs.framing || '') && !/11 models/i.test(JSON.stringify(labs)));
+check('engineering-lab.html exists', fs.existsSync('engineering-lab.html'));
 check('APPLY_SQL creates video_progress', /create table if not exists public\.video_progress\b/i.test(model.APPLY_SQL));
 check('APPLY_SQL creates rfqs and company_claims', /create table if not exists public\.rfqs\b/i.test(model.APPLY_SQL) && /create table if not exists public\.company_claims\b/i.test(model.APPLY_SQL));
 check('canSaveDesigns is false for Learning, true for Professional',

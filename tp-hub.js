@@ -430,6 +430,7 @@
     var cont = 'Open Grid Lab';
     if (grid && grid.aggregate_percent) cont = 'Grid Systems ' + grid.aggregate_percent + '%';
     tile('#learning', 'Continue', cont, 'Learning + Grid Lab');
+    tile('#labs', 'Labs', '4', 'Grid live · others coming');
     tile('#designs', 'Engineering', designs.length, 'saved designs');
     tile('#skills', 'Skills', skills.length || '0', 'passport evidence');
     tile('#saved', 'Saved', saved, 'items + shortlist');

@@ -6,7 +6,11 @@
 (function () {
   'use strict';
   var SKILLS = [];
+  var GROUPS = [];
+  var PASSPORT = null;
+  var LABS = null;
   var PATH = null;
+  var LEVEL_KINDS = { lesson: 1, assessment: 1, calculation: 1, grid_lab: 1, capstone: 1 };
   var ROLES = [
     { value: 'student', label: 'Student' },
     { value: 'graduate_engineer', label: 'Graduate Engineer' },
@@ -105,6 +109,31 @@
     return L;
   }
 
+  function uniqueKinds(list) {
+    return (list || []).filter(function (v, i, a) { return a.indexOf(v) === i; });
+  }
+
+  function levelEvidenceKinds(kinds) {
+    return (kinds || []).filter(function (k) { return LEVEL_KINDS[k]; });
+  }
+
+  function skillRow(c, rec, kinds) {
+    var levelKinds = levelEvidenceKinds(kinds);
+    var watchOnly = kinds.length > 0 && !levelKinds.length;
+    var level = 'NOT STARTED';
+    var how;
+    if (watchOnly) {
+      how = 'Watch recorded (progress only). Passport levels need assessment, calculation, Grid Lab or capstone evidence — not a page visit.';
+    } else if (rec) {
+      level = normalizeLevel(rec.level);
+      how = levelKinds.length ? levelKinds.join(' + ') : (rec.how_earned || c.how);
+    } else {
+      how = c.how;
+    }
+    return '<div class="ws-row"><span class="ws-note-title">' + esc(c.name) + '</span>' +
+      '<span class="ws-sub">' + esc(level) + ' · ' + esc(how) + '</span></div>';
+  }
+
   function renderSkills(el, records, evidence) {
     if (!el) return;
     var byId = {};
@@ -118,15 +147,80 @@
       el.innerHTML = '<p class="ws-empty">Skills Passport catalog loading…</p>';
       return;
     }
-    el.innerHTML = '<p class="ws-sub">Evidence-based only (lesson, assessment, calculation, Grid Lab, capstone). Levels: Developing / Intermediate / Advanced. <b>Course completion record, not a qualification.</b></p>' +
-      SKILLS.map(function (c) {
-        var rec = byId[c.id];
-        var level = rec ? normalizeLevel(rec.level) : 'NOT STARTED';
-        var kinds = (evBy[c.id] || []).filter(function (v, i, a) { return a.indexOf(v) === i; });
-        var how = kinds.length ? kinds.join(' + ') : (rec && rec.how_earned ? rec.how_earned : c.how);
-        return '<div class="ws-row"><span class="ws-note-title">' + esc(c.name) + '</span>' +
-          '<span class="ws-sub">' + esc(level) + ' · ' + esc(how) + '</span></div>';
+    var note = (PASSPORT && PASSPORT.evidence_note) ||
+      'Evidence-based only (lesson, assessment, calculation, Grid Lab, capstone). Opening a Lab or a 3D view is not evidence. Course completion record, not a qualification.';
+    var groups = GROUPS.length ? GROUPS : [{ id: 'all', title: 'Skills' }];
+    var html = '<p class="ws-sub">' + esc(note) + '</p>';
+    groups.forEach(function (g) {
+      var comps = SKILLS.filter(function (c) {
+        return (c.group || '') === g.id || (c.family || '') === g.title;
+      });
+      if (!comps.length && g.id !== 'all') return;
+      if (g.id === 'all') comps = SKILLS;
+      var evidenced = 0;
+      comps.forEach(function (c) {
+        var kinds = uniqueKinds(evBy[c.id] || []);
+        if (levelEvidenceKinds(kinds).length || (byId[c.id] && !kinds.length)) evidenced++;
+      });
+      html += '<h4 style="margin:16px 0 6px;font-size:.78rem;letter-spacing:.06em;color:var(--muted)">' +
+        esc(g.title) + '</h4>';
+      html += '<p class="ws-sub">' + evidenced + ' of ' + comps.length +
+        ' with recorded evidence (not page visits)</p>';
+      html += comps.map(function (c) {
+        return skillRow(c, byId[c.id], uniqueKinds(evBy[c.id] || []));
       }).join('');
+    });
+    el.innerHTML = html;
+  }
+
+  function labStatusLabel(st) {
+    if (st === 'live') return 'Live';
+    if (st === 'index') return 'Index';
+    return 'Coming';
+  }
+
+  function renderLabs(el, catalog) {
+    if (!el) return;
+    var data = catalog || LABS;
+    if (!data) {
+      el.innerHTML = '<p class="ws-empty">Engineering Labs catalog loading…</p>';
+      fetch('data/engineering-labs.json', { cache: 'no-cache' })
+        .then(function (r) { return r.json(); })
+        .then(function (d) { LABS = d; renderLabs(el, d); })
+        .catch(function () {
+          el.innerHTML = '<p class="ws-empty">Open the <a href="engineering-lab.html">Engineering Lab index</a>.</p>';
+        });
+      return;
+    }
+    var mm = data.mental_models || {};
+    var html = '<p class="ws-sub">' + esc(data.framing || 'Think in Labs and systems, not in “3D models”.') + '</p>';
+    if (mm.system) html += '<p class="ws-sub"><b>System:</b> ' + esc(mm.system) + '</p>';
+    if (mm.process) html += '<p class="ws-sub"><b>Process:</b> ' + esc(mm.process) + '</p>';
+    (data.labs || []).forEach(function (lab) {
+      var href = lab.href || ('engineering-lab.html#' + lab.id);
+      var title = lab.href
+        ? '<a href="' + esc(href) + '">' + esc(lab.title) + '</a>'
+        : esc(lab.title);
+      html += '<div class="ws-row" style="align-items:flex-start;flex-wrap:wrap">';
+      html += '<span class="ws-note-title">' + title + '</span>';
+      html += '<span class="lab-st lab-st-' + esc(lab.status || 'coming') + '">' + esc(labStatusLabel(lab.status)) + '</span>';
+      html += '<span class="ws-sub" style="flex-basis:100%">' + esc(lab.summary || '') + '</span>';
+      html += '</div>';
+      if (lab.drilldown && lab.drilldown.length) {
+        html += '<p class="ws-sub" style="margin:4px 0 10px">Drill-down: ' +
+          lab.drilldown.map(function (s) {
+            return '<a href="' + esc(s.href) + '">' + esc(s.step) + '</a>';
+          }).join(' → ') + '</p>';
+      }
+      if (lab.related && lab.related.length) {
+        html += '<p class="ws-sub" style="margin:4px 0 10px">' +
+          lab.related.map(function (s) {
+            return '<a href="' + esc(s.href) + '">' + esc(s.label) + '</a>';
+          }).join(' · ') + '</p>';
+      }
+    });
+    html += '<p class="ws-sub" style="margin-top:10px"><a href="engineering-lab.html">Open the Engineering Lab index →</a></p>';
+    el.innerHTML = html;
   }
 
   function renderGrid(el, catalog, rows) {
@@ -214,6 +308,7 @@
     getSnap: getSnap,
     post: post,
     renderSkills: renderSkills,
+    renderLabs: renderLabs,
     renderGrid: renderGrid,
     renderLearning: renderLearning,
     renderDesigns: renderDesigns,
@@ -223,7 +318,15 @@
 
   fetch('data/skills-passport.json', { cache: 'no-cache' })
     .then(function (r) { return r.json(); })
-    .then(function (d) { SKILLS = d.competencies || []; })
+    .then(function (d) {
+      PASSPORT = d;
+      SKILLS = d.competencies || [];
+      GROUPS = d.groups || [];
+    })
+    .catch(function () {});
+  fetch('data/engineering-labs.json', { cache: 'no-cache' })
+    .then(function (r) { return r.json(); })
+    .then(function (d) { LABS = d; })
     .catch(function () {});
   fetch('data/learning-path.json', { cache: 'no-cache' })
     .then(function (r) { return r.json(); })

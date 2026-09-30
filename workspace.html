@@ -63,6 +63,10 @@
   .ws-formgrid input, .ws-formgrid select, .ws-formgrid textarea { width:100%; padding:8px 10px; border:1px solid var(--border); border-radius:8px; background:var(--bg); color:var(--text); font-family:inherit; }
   .ac-spine { display:flex; flex-wrap:wrap; gap:6px; margin:8px 0 0; }
   .ac-spine span { font-size:.7rem; font-weight:800; letter-spacing:.04em; text-transform:uppercase; border:1px solid var(--border); border-radius:999px; padding:3px 8px; color:var(--muted); }
+  .lab-st { margin-left:auto; font-size:.68rem; font-weight:800; letter-spacing:.04em; text-transform:uppercase; padding:3px 8px; border-radius:999px; }
+  .lab-st-live { background:rgba(30,158,90,.16); color:#1e9e5a; }
+  .lab-st-index { background:rgba(245,166,35,.16); color:var(--amber); }
+  .lab-st-coming { background:var(--bg); color:var(--muted); border:1px solid var(--border); }
 </style>
     <link rel="stylesheet" href="tp-nav.css?v=14">
   <link rel="stylesheet" href="tp-feedback.css?v=14">
@@ -187,6 +191,7 @@
       <a href="#overview" class="on">Overview</a>
       <a href="#learning">Learning</a>
       <a href="#grid-lab">Grid Lab</a>
+      <a href="#labs">Labs</a>
       <a href="#skills">Skills</a>
       <a href="#designs">Engineering</a>
       <a href="#saved">Saved</a>
@@ -200,7 +205,7 @@
       <div class="ws-dash" id="hubDash"></div>
       <div class="ws-sec">
         <h3>Continue</h3>
-        <p class="ws-sub">Academy spine: READ → WATCH → EXPLORE IN 3D → CALCULATE → SIMULATE → TEST. Videos complement 3D Labs.</p>
+        <p class="ws-sub">Academy spine: READ → WATCH → EXPLORE IN 3D → CALCULATE → SIMULATE → TEST. Videos complement Engineering Labs — think in systems, not in a catalogue of isolated models.</p>
         <p class="ac-spine"><span>Read</span><span>Watch</span><span>Explore</span><span>Calculate</span><span>Simulate</span><span>Test</span></p>
         <p style="margin-top:10px"><a class="btn btn-amber btn-sm" href="academy-loop.html?id=grid-journey">Grid Journey loop →</a>
         <a class="btn btn-outline btn-sm" href="grid-lab.html">Grid Lab →</a>
@@ -262,7 +267,7 @@
         <a class="btn btn-outline btn-sm" href="academy.html">Academy loops →</a>
       </div>
       <div class="ws-sec"><h3>Chapter progress</h3><div id="tpProgress"></div></div>
-      <div class="ws-sec"><h3>3D Labs</h3><p class="ws-sub">Interactive 3D is a working demo under the industry platform — not Country Grid Lab.</p><a class="btn btn-outline btn-sm" href="explorer.html">Open 3D explorer →</a></div>
+      <div class="ws-sec"><h3>Engineering Labs</h3><p class="ws-sub">Grid Lab is live. Transformer Lab is one drill-down through existing explorers. Factory Lab and Substation &amp; Protection Lab are coming. Opening a Lab is not Skills Passport evidence.</p><a class="btn btn-outline btn-sm" href="engineering-lab.html">Open Engineering Lab index →</a> <a class="btn btn-outline btn-sm" href="#labs">My Labs →</a></div>
       <div class="ws-sec"><h3>Knowledge</h3><p class="ws-sub">Masterclass, Design Engineer Track, knowledge library.</p><a class="btn btn-outline btn-sm" href="learn.html">Open Learn →</a></div>
       <div class="ws-sec">
         <h3>Professional engineering suite</h3>
@@ -279,16 +284,25 @@
     <div id="panel-grid-lab" class="hub-panel" hidden>
       <div class="ws-sec">
         <h3>Grid Lab scenarios</h3>
-        <p class="ws-sub">COMPLETE / percent / NOT STARTED. Aggregate is Grid Systems %. Country Grid Lab is later.</p>
+        <p class="ws-sub">COMPLETE / percent / NOT STARTED. Aggregate is Grid Systems %. Country Grid Lab is later. Grid Lab is the live Engineering Lab — not another isolated model.</p>
         <div id="tpGridLab"></div>
-        <p style="margin-top:10px"><a class="btn btn-amber btn-sm" href="grid-lab.html">Open Grid Lab →</a></p>
+        <p style="margin-top:10px"><a class="btn btn-amber btn-sm" href="grid-lab.html">Open Grid Lab →</a>
+        <a class="btn btn-outline btn-sm" href="engineering-lab.html">All four Labs →</a></p>
+      </div>
+    </div>
+
+    <div id="panel-labs" class="hub-panel" hidden>
+      <div class="ws-sec">
+        <h3>Engineering Labs</h3>
+        <p class="ws-sub">Four system-level environments. Think in Labs and systems, not in “3D models”. Grid Lab is live; Transformer Lab indexes existing explorers; Factory Lab and Substation &amp; Protection Lab are coming — no simulators in this cycle.</p>
+        <div id="tpLabs"></div>
       </div>
     </div>
 
     <div id="panel-skills" class="hub-panel" hidden>
       <div class="ws-sec">
         <h3>Skills Passport</h3>
-        <p class="ws-sub">Evidence-based competencies (lesson, assessment, calculation, Grid Lab, capstone). Levels Developing / Intermediate / Advanced. Course completion record, not a qualification. No XP, coins, badges or leaderboards.</p>
+        <p class="ws-sub">Seven groups: Grid Systems, Transformer Construction, Insulation Systems, Transformer Operation, Protection, Manufacturing, Testing. Progress from recorded evidence — not page visits. Levels Developing / Intermediate / Advanced. Course completion record, not a qualification. No XP, coins, badges or leaderboards.</p>
         <div id="tpSkills"></div>
       </div>
     </div>
@@ -578,7 +592,7 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 
   function showHub(id){
-    var aliases = { engineering: 'designs', buyer: 'shortlist', intel: 'overview' };
+    var aliases = { engineering: 'designs', buyer: 'shortlist', intel: 'overview', lab: 'labs', 'engineering-lab': 'labs' };
     id = aliases[id] || id;
     var panels = document.querySelectorAll('.hub-panel');
     for(var i=0;i<panels.length;i++) panels[i].hidden = panels[i].id !== 'panel-'+id;
@@ -595,6 +609,7 @@ document.addEventListener('DOMContentLoaded', function(){
     if (/\/me\/shortlist$/.test(p)) return 'shortlist';
     if (/\/me\/rfqs$/.test(p)) return 'rfqs';
     if (/\/me\/supplier$/.test(p)) return 'supplier';
+    if (/\/me\/labs$/.test(p)) return 'labs';
     if (location.hash) return location.hash.replace('#','');
     if (viewQ === 'account') return 'certificates';
     if (viewQ) return viewQ;
@@ -655,6 +670,7 @@ document.addEventListener('DOMContentLoaded', function(){
     L.getSnap().then(function(snap){
       if(!snap || !snap.ok){
         try { if(!localStorage.getItem('tp-onboard')) L.showOnboarding(user); } catch(e){}
+        L.renderLabs(document.getElementById('tpLabs'));
         return;
       }
       var learner = snap.learner || {};
@@ -697,6 +713,7 @@ document.addEventListener('DOMContentLoaded', function(){
       var chk=[];
       chk.push(learner.onboarding_done?'<div class="ws-row"><span class="ws-note-title">Onboarding</span><span class="ws-sub">COMPLETE</span></div>':'<div class="ws-row"><span class="ws-note-title">Onboarding</span><span class="ws-sub">NOT STARTED</span></div>');
       chk.push('<div class="ws-row"><span class="ws-note-title">Grid Lab</span><span class="ws-sub"><a href="grid-lab.html">Open scenarios</a></span></div>');
+      chk.push('<div class="ws-row"><span class="ws-note-title">Engineering Labs</span><span class="ws-sub"><a href="engineering-lab.html">Grid live · Transformer index · Factory / Substation coming</a></span></div>');
       chk.push('<div class="ws-row"><span class="ws-note-title">Masterclass</span><span class="ws-sub"><a href="learn.html">Continue learning</a></span></div>');
       var elC=document.getElementById('tpChecklist'); if(elC) elC.innerHTML=chk.join('');
       fetch('data/grid-lab.json',{cache:'no-cache'}).then(function(r){return r.json();}).then(function(g){
@@ -712,6 +729,7 @@ document.addEventListener('DOMContentLoaded', function(){
           : '<p>Grid Lab catalog complete. Open <a href="learn.html">Learn</a> for the masterclass.</p>';
       }).catch(function(){});
       L.renderSkills(document.getElementById('tpSkills'), snap.skills||[], snap.skill_evidence||[]);
+      L.renderLabs(document.getElementById('tpLabs'));
       L.renderLearning({
         name: document.getElementById('learnName'),
         track: document.getElementById('learnTrack'),
@@ -806,6 +824,15 @@ document.addEventListener('DOMContentLoaded', function(){
   // action delegation for the "✕" buttons
   document.getElementById('tpWorkspace').addEventListener('click', function(e){
     var t=e.target;
+    var aLink = t.closest && t.closest('a[href^="#"]');
+    if (aLink && aLink.closest('#hubTabs') == null) {
+      var hid = (aLink.getAttribute('href') || '').replace('#','');
+      if (hid && (document.getElementById('panel-' + hid) || { engineering: 1, lab: 1, 'engineering-lab': 1, buyer: 1, intel: 1 }[hid])) {
+        e.preventDefault();
+        showHub(hid);
+        return;
+      }
+    }
     if(t.dataset.unsave){ var a=t.dataset.unsave.split('|'); TP.unsave(a[0],a[1]).then(renderRefresh); }
     else if(t.dataset.deldesign){ TP.deleteDesign(t.dataset.deldesign).then(renderRefresh); }
     else if(t.dataset.delnote){ TP.deleteNote(t.dataset.delnote).then(renderRefresh); }

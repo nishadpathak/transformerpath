@@ -78,6 +78,16 @@
   status = 200
 
 [[redirects]]
+  from = "/labs"
+  to = "/engineering-lab.html"
+  status = 200
+
+[[redirects]]
+  from = "/engineering-lab"
+  to = "/engineering-lab.html"
+  status = 200
+
+[[redirects]]
   from = "/my"
   to = "/workspace.html"
   status = 200
@@ -104,6 +114,11 @@
 
 [[redirects]]
   from = "/me/supplier"
+  to = "/workspace.html"
+  status = 200
+
+[[redirects]]
+  from = "/me/labs"
   to = "/workspace.html"
   status = 200
 

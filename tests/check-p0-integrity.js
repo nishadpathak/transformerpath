@@ -124,6 +124,17 @@ check('pricing CTAs require an account (not a raw Payment Link as the primary hr
 check('certificates.html exists as learning records, not credentials', fs.existsSync('certificates.html') && /not an accredited/i.test(fs.readFileSync('certificates.html', 'utf8')));
 check('netlify maps /me /sign-in /onboarding /certificates', /from = "\/me"/.test(toml) && /from = "\/sign-in"/.test(toml) && /from = "\/onboarding"/.test(toml) && /from = "\/certificates"/.test(toml));
 check('netlify maps /me/designs /me/shortlist /me/rfqs', /from = "\/me\/designs"/.test(toml) && /from = "\/me\/shortlist"/.test(toml) && /from = "\/me\/rfqs"/.test(toml));
+check('netlify maps /labs /engineering-lab /me/labs', /from = "\/labs"/.test(toml) && /from = "\/engineering-lab"/.test(toml) && /from = "\/me\/labs"/.test(toml));
+check('engineering-lab.html lists four Labs and Grid Lab live', fs.existsSync('engineering-lab.html') && /Grid Lab/.test(fs.readFileSync('engineering-lab.html', 'utf8')) && /Factory Lab/.test(fs.readFileSync('engineering-lab.html', 'utf8')) && /Substation/.test(fs.readFileSync('engineering-lab.html', 'utf8')) && /Coming/.test(fs.readFileSync('engineering-lab.html', 'utf8')));
+check('tools.html does not say ten models or 11 models', !/ten interactive 3D models/i.test(fs.readFileSync('tools.html', 'utf8')) && !/11 models/i.test(fs.readFileSync('tools.html', 'utf8')));
+check('academy.html does not sell a count of interactive 3D labs', !/10 interactive 3D labs/i.test(fs.readFileSync('academy.html', 'utf8')));
+check('workspace hub has Labs panel, not a 3D Labs stub', /id="panel-labs"/.test(fs.readFileSync('workspace.html', 'utf8')) && !/<h3>3D Labs<\/h3>/.test(fs.readFileSync('workspace.html', 'utf8')));
+check('Skills Passport groups include Grid Systems through Testing', (function () {
+  const sp = JSON.parse(fs.readFileSync('data/skills-passport.json', 'utf8'));
+  const titles = (sp.groups || []).map((g) => g.title).join('|');
+  return /Grid Systems/.test(titles) && /Transformer Construction/.test(titles) && /Insulation Systems/.test(titles) && /Transformer Operation/.test(titles) && /Protection/.test(titles) && /Manufacturing/.test(titles) && /Testing/.test(titles);
+})());
+check('Skills Passport evidence is not a page visit', /not from visiting a page/i.test(fs.readFileSync('data/skills-passport.json', 'utf8')) && /Opening a Lab/i.test(fs.readFileSync('data/skills-passport.json', 'utf8')));
 check('netlify maps /academy and /academy/*', /from = "\/academy"/.test(toml) && /from = "\/academy\/\*"/.test(toml));
 check('workspace hub has Engineering / Shortlist / RFQ board', /id="panel-designs"/.test(fs.readFileSync('workspace.html', 'utf8')) && /id="panel-shortlist"/.test(fs.readFileSync('workspace.html', 'utf8')) && /id="tpRfqBoard"/.test(fs.readFileSync('workspace.html', 'utf8')));
 check('Skills Passport still not a professional qualification', /not a qualification/i.test(fs.readFileSync('data/skills-passport.json', 'utf8')));
