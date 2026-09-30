@@ -63,7 +63,8 @@ const KEY_SURFACES = [
   'jobs.html',
   'explorer.html',
   'power3d.html',
-  'materials.html'
+  'materials.html',
+  'faq.html'
 ];
 
 const out = {
