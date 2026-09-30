@@ -13,6 +13,11 @@
 [functions."refresh-data"]
   schedule = "0 * * * *"
 
+# Soft freshness: optional Netlify Build Hook (env TP_BUILD_HOOK_URL) so
+# events Up-next / site-stats cannot freeze between manual deploys.
+[functions."daily-rebuild"]
+  schedule = "0 6 * * *"
+
 # ── Keep internal docs off the public site ──────────────────────────────
 # publish = "." deploys the whole folder, so the internal strategy/setup
 # markdown and the stale archive/ copies would otherwise be fetchable

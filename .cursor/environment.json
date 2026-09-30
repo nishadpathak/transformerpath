@@ -1,0 +1,16 @@
+{
+  "name": "TransformerPath",
+  "install": "cd transformerpath && npm install",
+  "terminals": [
+    {
+      "name": "dev-server",
+      "command": "cd transformerpath && npm run dev"
+    }
+  ],
+  "ports": [
+    {
+      "name": "Dev server",
+      "port": 8888
+    }
+  ]
+}

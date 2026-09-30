@@ -60,7 +60,7 @@
   <div class="match-hero">
     <div style="font-size:.78rem; font-weight:800; text-transform:uppercase; color:var(--amber); letter-spacing:.08em; margin-bottom:4px">TransformerPath Sourcing Intelligence</div>
     <h1>Evidence-Backed <span style="color:var(--amber)">Supplier Matcher</span></h1>
-    <p>Specify your required transformer rating, voltage, standard, and installation market. TransformerPath identifies qualified manufacturers backed by verified type-test and production evidence.</p>
+    <p>Specify your required transformer rating, voltage, standard, and installation market. TransformerPath identifies qualified manufacturers backed by verified type-test and production evidence. Every result shows <b>why</b> it matched — evidence tier, capability envelope, standards/certs signals, and destination fit — never a paid boost. See <a href="methodology.html#how-we-source">how we source</a>.</p>
   </div>
 
   <div class="form-box">
@@ -207,13 +207,28 @@ function runMatch() {
       return; // Skip non-matching
     }
 
+    const reasons = [];
+    if (canHandleKv) reasons.push(`Primary voltage: reported ${maxKv || '—'} kV ≥ ${kvReq} kV`);
+    else reasons.push(`Primary voltage: reported ${maxKv || '—'} kV (below ${kvReq} kV)`);
+    if (canHandleMva) reasons.push(`Rating: reported ${maxMva || '—'} MVA ≥ ${mvaReq} MVA`);
+    else reasons.push(`Rating: reported ${maxMva || '—'} MVA (below ${mvaReq} MVA)`);
+    if (hasType) reasons.push(`Product class signal matches ${eqType}`);
+    if (hasStd) reasons.push(`Standards/certs signal includes ${stdReq.split(' ')[0]} / ISO / ACTIVE_CONFIRMED`);
+    else reasons.push(`Standards/certs for ${stdReq} not publicly confirmed`);
+    const destFit = !!(ctryReq && (ctry === ctryReq || facs.includes(ctryReq)));
+    if (destFit) reasons.push(`Destination fit: HQ or factory text matches “${ctryReq}”`);
+    else if (ctryReq) reasons.push(`Destination “${ctryReq}”: no HQ/factory text match (still eligible on capability)`);
+    reasons.push(`Research status: ${c.research_status || 'UNSTATED'}`);
+
+    const destBonus = destFit ? 15 : 0;
     matches.push({
       company: c,
       tier: tier,
       rationale: rationale,
+      reasons: reasons,
       maxKv: maxKv,
       maxMva: maxMva,
-      score: (tier === 'CONFIRMED' ? 100 : (tier === 'SUPPORTED' ? 60 : 20)) + (ctry === ctryReq || facs.includes(ctryReq) ? 15 : 0)
+      score: (tier === 'CONFIRMED' ? 100 : (tier === 'SUPPORTED' ? 60 : 20)) + destBonus
     });
   });
 
@@ -225,7 +240,7 @@ function runMatch() {
 
   document.getElementById('resultsSummary').style.display = 'flex';
   document.getElementById('summaryTitle').textContent = `${matches.length} Matching Manufacturers Identified`;
-  document.getElementById('summarySubtitle').textContent = `${confirmed.length} Confirmed Tier-1 Evidence · ${supported.length} Supported · ${unknown.length} Research Required`;
+  document.getElementById('summarySubtitle').textContent = `${confirmed.length} Confirmed Tier-1 Evidence · ${supported.length} Supported · ${unknown.length} Research Required — scores are capability evidence, not paid placement`;
 
   const slugs = confirmed.map(m => m.company.slug).slice(0, 5).join(',');
   document.getElementById('bulkActions').innerHTML = `
@@ -240,19 +255,22 @@ function runMatch() {
         const c = m.company;
         const tierCls = m.tier === 'CONFIRMED' ? 'tier-confirmed' : (m.tier === 'SUPPORTED' ? 'tier-supported' : 'tier-unknown');
         const badgeCls = m.tier === 'CONFIRMED' ? 'badge-confirmed' : (m.tier === 'SUPPORTED' ? 'badge-supported' : 'badge-unknown');
+        const reasonHtml = (m.reasons || []).map(r => `<li>${r}</li>`).join('');
         return `
           <div class="match-card ${tierCls}">
             <div>
               <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px">
                 <span class="status-badge ${badgeCls}">● ${m.tier}</span>
-                <span style="font-size:12px; color:var(--muted)">${c.country || 'Global'}</span>
+                <span style="font-size:12px; color:var(--muted)">${c.country || 'Global'} · score ${m.score}</span>
               </div>
               <h3 style="font-size:1.15rem; color:var(--ink); margin:0 0 4px"><a href="manufacturers/${c.slug}/" style="color:inherit; text-decoration:none">${c.name}</a></h3>
               <div style="font-size:12px; color:var(--amber); font-weight:700; margin-bottom:8px">
                 Max Voltage: ${c.reported_voltage ? c.reported_voltage + ' kV' : '—'} · Max MVA: ${c.reported_mva ? c.reported_mva + ' MVA' : '—'}
               </div>
               <div class="evidence-box">
-                <b style="color:var(--text)">Evidence Match:</b> ${m.rationale}
+                <b style="color:var(--text)">Evidence match:</b> ${m.rationale}
+                <ul style="margin:8px 0 0;padding-left:18px;color:var(--muted);font-size:.8rem;line-height:1.45">${reasonHtml}</ul>
+                <div style="margin-top:8px;font-size:.72rem;color:var(--muted)">Paid listing never changes this tier. <a href="methodology.html#how-we-source" style="color:var(--accent)">Methodology →</a></div>
               </div>
             </div>
             <div style="display:flex; gap:8px; margin-top:12px; border-top:1px dashed var(--border); padding-top:10px">
