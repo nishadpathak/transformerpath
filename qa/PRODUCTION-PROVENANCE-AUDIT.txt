@@ -1,0 +1,51 @@
+PRODUCTION PROVENANCE AUDIT — 30 Sep 2026
+=========================================
+
+Diagnosis: production (transformerpath.com) is NOT serving the final-stabilization
+release. PR #11/#12 are not merged into main. Production freshness.json still uses
+the pre-three-clock schema; preview has build_at + INTEL COVERAGE DELAYED.
+
+## Deploy identity
+
+PROD freshness.generated: 2026-09-30T16:01:11.959Z
+PROD top-level build_at: None
+PROD latest_source_date: None
+PREV build_at: 2026-09-30T16:59:14.586Z
+PREV latest_source_date: 2026-09-25
+PREV public_intel_status: INTEL COVERAGE DELAYED
+
+## Surface skew (prod vs preview-12)
+
+PROD CG highest cell context: Highest sourced voltage evidence</th><td>400 kV
+PREV CG highest cell context: Highest sourced voltage evidence</th><td>765 kV
+
+## Merge state
+intel-unification (#11) NOT in main
+final-stabilization (#12) NOT in main
+
+## Required next step
+1. Merge #12 (includes #11 work) to main and wait for a single Netlify production deploy.
+2. Re-crawl key surfaces; all must share tp-build-commit / tp-build-at / tp-data-version.
+3. Only then re-audit Intel clocks, CG 765 kV, census copy, WebGL-disabled browser.
+
+Commodities on production: CLOSE (Historical reference presentation).
+WebGL: needs real browser with WebGL disabled after merge — HTML-only crawl insufficient.
+
+## Key page HTTP (30 Sep crawl)
+
+All of /, /intel.html, /intelligence, /pricing, /manufacturers,
+/manufacturers/cg-power/, /events/middle-east-energy/, /jobs.html, /explorer
+returned HTTP 200 on production. jobs.html is reachable (auditor retrieval
+failure was transient or path-specific).
+
+## What this branch adds for the next production deploy
+
+- data/build-provenance.json (build_commit, build_at, data_version)
+- Meta stamps on 11 key HTML surfaces: tp-build-commit / tp-build-at / tp-data-version
+- check-release-provenance.js fails the Netlify build if surfaces disagree
+- publication_date < event_date → REVIEW_REQUIRED for non-tender stories
+  (check-intel-date-order.js + lib/gcc-discovery gradeEvidence)
+
+After merge: re-crawl production; every key page must show the same
+tp-build-commit. If homepage and /intel.html disagree, stop and fix deploy —
+do not patch page copy.
