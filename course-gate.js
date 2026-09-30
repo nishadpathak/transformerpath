@@ -118,6 +118,16 @@
     return;
   }
 
+  // Free-teaser pages (e.g. calculator.html) stay usable; soft upsell instead of lock.
+  var freeTeaser = document.documentElement.getAttribute('data-tp-free-teaser') === '1'
+    || (document.currentScript && document.currentScript.getAttribute('data-free-teaser') === '1')
+    || !!(window.TP_COURSE_GATE && window.TP_COURSE_GATE.freeTeaser);
+
+  if (freeTeaser) {
+    showTeaserBanner();
+    return;
+  }
+
   // No stored access and no verifiable session -> gate the page.
   showGate();
 
@@ -127,6 +137,34 @@
     } else {
       lock();
     }
+  }
+
+  function showTeaserBanner() {
+    function inject() {
+      if (!document.body || document.getElementById('tp-free-teaser')) return;
+      var b = document.createElement('div');
+      b.id = 'tp-free-teaser';
+      b.setAttribute('role', 'region');
+      b.setAttribute('aria-label', 'Free calculator preview');
+      b.setAttribute('style',
+        'position:sticky;top:0;z-index:9000;background:linear-gradient(90deg,#0d1b2e,#14304f);' +
+        'color:#e8edf4;border-bottom:1px solid #1e3a5c;padding:10px 16px;font-size:.88rem;' +
+        'display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;' +
+        'font-family:"Segoe UI",system-ui,-apple-system,sans-serif');
+      b.innerHTML =
+        '<span style="max-width:640px;line-height:1.45;text-align:center">' +
+        '<b style="color:#f5a623">Free preview</b> — run a first-pass design here. ' +
+        'Yearly Access unlocks the full Design Engineer Track, masterclass and academy tools.' +
+        '</span>' +
+        '<a href="pricing.html" style="background:#f5a623;color:#0d1b2e;font-weight:800;' +
+        'padding:8px 16px;border-radius:8px;text-decoration:none;white-space:nowrap">See plans →</a>' +
+        '<button type="button" aria-label="Dismiss" style="background:transparent;border:1px solid #3a516e;' +
+        'color:#9fb0c4;border-radius:8px;padding:6px 10px;cursor:pointer">Dismiss</button>';
+      b.querySelector('button').addEventListener('click', function () { b.remove(); });
+      document.body.insertBefore(b, document.body.firstChild);
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', inject);
+    else inject();
   }
 
   function lock() {

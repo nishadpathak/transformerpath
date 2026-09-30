@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="dark" data-tp-free-teaser="1">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,7 +16,8 @@
 <link rel="stylesheet" href="tp-feedback.css?v=14">
 <script src="fem-leakage.js?v=1" defer></script>
 <script src="analytics.js?v=7" defer></script>
-<script src="course-gate.js?v=7"></script>
+<script>window.TP_COURSE_GATE={freeTeaser:true};</script>
+<script src="course-gate.js?v=7" data-free-teaser="1"></script>
 <meta property="og:title" content="Transformer Design Calculator — Distribution | Power | Cast Resin">
 <meta property="og:description" content="Analytical transformer design workspace (BETA / engineering review) with a leakage-field solver; first-pass core, turns and conductor sizing runs analytically. Outputs are analytical estimates — verify before use.">
 <meta property="og:url" content="https://transformerpath.com/calculator.html">
@@ -2201,6 +2202,16 @@ function pdfWrap(s,n){
 }
 function downloadPDF(){
   if(!LAST)calc();
+  // Free teaser: one watermarked IEC 60076 PDF; further PDF exports need Yearly Access.
+  var paid = !!(window.TP_ACCESS && window.TP_ACCESS.hasAnyAccess && window.TP_ACCESS.hasAnyAccess());
+  var freeKey = 'tp_calc_free_pdf';
+  var used = 0;
+  try { used = parseInt(localStorage.getItem(freeKey) || '0', 10) || 0; } catch (e) {}
+  if (!paid && used >= 1) {
+    if (!confirm('Your free watermarked design PDF is already used in this browser.\n\nUnlock Yearly Access for unlimited PDF reports, or cancel to keep using the on-screen calculator.')) return;
+    location.href = 'pricing.html#engineers';
+    return;
+  }
   const r=LAST;
   const NAVY="0.05 0.17 0.31",BLUE="0.05 0.37 0.66",GREY="0.36 0.42 0.50",BLACK="0 0 0";
   const pages=[];let cur="",y=0;
@@ -2213,6 +2224,9 @@ function downloadPDF(){
   T(60,y,"TRANSFORMER DESIGN REPORT","F2",16,NAVY);y-=16;
   T(60,y,"First-cut electromagnetic, performance & thermal design to "+r.std.name,"F1",9.5,GREY);y-=13;
   T(60,y,"Generated "+new Date().toISOString().slice(0,10)+"  -  Transformer Design Calculator","F1",8.5,GREY);y-=8;
+  if(!paid){
+    T(60,y,"FREE PREVIEW — watermarked · one download per browser · unlock Yearly Access for clean exports","F2",8.5,"0.71 0.33 0.04");y-=8;
+  }
   L(60,y,535,y,1.2,"0.05 0.37 0.66");y-=6;
   // sections
   for(const s of REC.secs){
@@ -2265,7 +2279,13 @@ function downloadPDF(){
     if(y<60){newPage();y-=10;}T(60,y,ln,"F1",8,GREY);y-=10;
   }
   if(cur)pages.push(cur); // flush last page
-  const pgs=pages.filter(Boolean);
+  let pgs=pages.filter(Boolean);
+  if(!paid){
+    // Diagonal-style footer watermark on every page (Type1 text; keep ASCII)
+    pgs = pgs.map(function(st){
+      return st + 'BT /F2 10 Tf 0.85 0.55 0.15 rg 1 0 0 1 72 36 Tm (FREE PREVIEW — TransformerPath calculator teaser) Tj ET\n';
+    });
+  }
   // assemble PDF
   const objs=[];
   objs[1]="<< /Type /Catalog /Pages 2 0 R >>";
@@ -2286,9 +2306,12 @@ function downloadPDF(){
   const blob=new Blob([pdf],{type:"application/pdf"});
   const a=document.createElement("a");
   a.href=URL.createObjectURL(blob);
-  a.download=`Transformer_Design_${TTYPE}_${Math.round(r.Sin)}${r.isMVA?"MVA":"kVA"}_${Math.round(r.hv/1000)}kV.pdf`;
+  a.download=`Transformer_Design_${TTYPE}_${Math.round(r.Sin)}${r.isMVA?"MVA":"kVA"}_${Math.round(r.hv/1000)}kV${paid?"":"_PREVIEW"}.pdf`;
   document.body.appendChild(a);a.click();
   setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},2000);
+  if(!paid){
+    try { localStorage.setItem(freeKey, String(used + 1)); } catch (e) {}
+  }
 }
 
 /* ============================================================================

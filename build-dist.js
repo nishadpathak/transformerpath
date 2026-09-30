@@ -62,7 +62,7 @@ const ROOT_JS = [
   'follow-button.js', 'form-notify.js', 'intel-feed-ui.js', 'material-latest.js', 'rfq-engine.js',
   'site-stats.js', 'supabase-config.js', 'supabase.js', 'sw.js',
   'tp-directory.js', 'tp-feedback.js', 'tp-freshness.js', 'tp-nav.js', 'tp-pwa.js',
-  'tp-theme.js', 'map.js',
+  'tp-theme.js', 'tp-shortlist.js', 'tp-watchlist.js', 'map.js',
   'tp-3d-core.js', 'tp-power-assembly.js', 'tp-oil-assembly.js',
   'tp-castresin-assembly.js', 'tp-ct-assembly.js',
   'part-ecosystem.js', 'component-3d-bridge.js',
@@ -116,8 +116,9 @@ function copyDir(dir) {
     if (e.name.startsWith('.')) continue;            // .DS_Store and friends
     if (CONFLICT_COPY.test(e.name)) { skippedConflicts.push(path.join(dir, e.name)); continue; }
     const p = path.join(dir, e.name);
-    // Never copy internal prospect intelligence to the public distribution
+    // Never copy internal prospect intelligence / discovery-ops artifacts to the public distribution
     if (p === 'data/commerce-intel.json' || p === 'data/engineer-track-paid.json') continue;
+    if (p === 'data/gcc-sep-2026-discovery-input.json' || p === 'data/gcc-coverage-report.json') continue;
     if (e.isDirectory()) n += copyDir(p);
     else { copyFile(p, p); n++; }
   }
