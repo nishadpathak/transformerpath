@@ -1,10 +1,24 @@
 {
   "$schema": "https://transformerpath.com/census-reconciliation.schema.json",
-  "title": "Manufacturer census reconciliation 911 → 906",
+  "title": "Manufacturer census reconciliation 911 \u2192 906",
   "generated": "2026-09-30",
   "from_count": 911,
   "to_count": 906,
-  "honesty": "906 is preferred to 911 when the delta is canonicalisation (rename / duplicate / non-OEM), not loss of real transformer manufacturers. Public counters (site-stats) showed 911→906; country-grouped manufacturers.json maker rows moved 908→902 in the pre-sprint backup vs current (same reconciliation events).",
+  "public_delta": -5,
+  "public_delta_note": "Homepage/directory counters moved 911 \u2192 906 (\u22125). The maker-row records below are the auditable account of that delta. Larson Electronics and Camille Bauer Metrawatt are the two true OEM-scope removals with no surviving census row \u2014 keep them documented; do not re-add just to preserve 911. Renames and the Hammond Americas duplicate collapse count without inventing replacements.",
+  "true_oem_losses_without_surviving_row": [
+    {
+      "prior_name": "Larson Electronics",
+      "action": "FACILITY_NOT_COMPANY",
+      "why": "Not a transformer OEM \u2014 removed with no surviving census row. Do not re-add to inflate the count."
+    },
+    {
+      "prior_name": "Camille Bauer Metrawatt",
+      "action": "FACILITY_NOT_COMPANY",
+      "why": "Instrumentation OEM \u2014 removed with no surviving census row. Do not re-add to inflate the count."
+    }
+  ],
+  "honesty": "906 is preferred to 911 when the delta is canonicalisation (rename / duplicate / non-OEM), not loss of real transformer manufacturers. Public counters (site-stats) showed 911\u2192906; country-grouped manufacturers.json maker rows moved 908\u2192902 in the pre-sprint backup vs current (same reconciliation events). Keep documenting Larson + Camille Bauer explicitly \u2014 never replace them just to preserve 911.",
   "method": "Diff data/backup-pre-sprint/manufacturers.json maker rows against current data/manufacturers.json; classify via data/duplicate-review.json alias_map and OEM-scope review.",
   "records": [
     {
@@ -35,7 +49,7 @@
       "action": "RENAMED",
       "canonical_name": "IMEFY Group",
       "canonical_country": "Spain",
-      "why": "Legal/trading name normalized to IMEFY Group; alias_map imefy → imefy-group slug."
+      "why": "Legal/trading name normalized to IMEFY Group; alias_map imefy \u2192 imefy-group slug."
     },
     {
       "prior_name": "Ganz Transformers and Electric Rotating Machines",
@@ -47,11 +61,11 @@
     },
     {
       "prior_name": "Astor Enerji",
-      "prior_country": "Türkiye",
+      "prior_country": "T\u00fcrkiye",
       "action": "RENAMED",
-      "canonical_name": "Astor Enerji A.Ş.",
-      "canonical_country": "Türkiye",
-      "why": "Legal form (A.Ş.) applied; alias_map retains Astor Enerji → Astor Enerji A.Ş."
+      "canonical_name": "Astor Enerji A.\u015e.",
+      "canonical_country": "T\u00fcrkiye",
+      "why": "Legal form (A.\u015e.) applied; alias_map retains Astor Enerji \u2192 Astor Enerji A.\u015e."
     },
     {
       "prior_name": "Sunten Electric",
@@ -59,7 +73,7 @@
       "action": "RENAMED",
       "canonical_name": "Sunten Electric Co., Ltd.",
       "canonical_country": "China",
-      "why": "Legal name expanded; alias_map sunten electric → Sunten Electric Co., Ltd."
+      "why": "Legal name expanded; alias_map sunten electric \u2192 Sunten Electric Co., Ltd."
     },
     {
       "prior_name": "KP Electric",
@@ -67,7 +81,7 @@
       "action": "RENAMED",
       "canonical_name": "KP Electric Co., Ltd.",
       "canonical_country": "South Korea",
-      "why": "Legal name expanded; alias_map kp electric → KP Electric Co., Ltd."
+      "why": "Legal name expanded; alias_map kp electric \u2192 KP Electric Co., Ltd."
     },
     {
       "prior_name": "Bambang Djaja (B&D Transformer)",
