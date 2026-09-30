@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transformer Manufacturers — Worldwide Census | TransformerPath</title>
+<meta name="description" content="A worldwide census of transformer manufacturers — power, distribution and dry-type/cast-resin makers country by country, with locations and official links.">
+<link rel="canonical" href="https://transformerpath.com/manufacturers.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TransformerPath">
+<meta property="og:title" content="Transformer Manufacturers — Worldwide Census | TransformerPath">
+<meta property="og:description" content="A worldwide census of transformer manufacturers — power, distribution and dry-type/cast-resin makers country by country, with locations and official links.">
+<meta property="og:url" content="https://transformerpath.com/manufacturers.html">
+<meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Transformer Manufacturers — Worldwide Census | TransformerPath">
+<meta name="twitter:description" content="A worldwide census of transformer manufacturers — power, distribution and dry-type/cast-resin makers country by country, with locations and official links.">
+<meta name="twitter:image" content="https://transformerpath.com/brand/og-image.png">
+<link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
+<link rel="apple-touch-icon" href="brand/apple-touch-icon.png">
+<style>
+.controls { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:18px; }
+.controls input, .controls select { padding:9px 13px; border:1px solid var(--border); border-radius:8px; font-size:.92rem; font-family:inherit; }
+.controls input { flex:1; min-width:200px; }
+.stat-row { display:flex; gap:24px; justify-content:center; flex-wrap:wrap; margin-bottom:26px; }
+.stat-row .s b { display:block; font-size:1.8rem; color:var(--accent); text-align:center; }
+.stat-row .s small { color:var(--muted); font-size:.82rem; }
+.region-h { font-size:1.15rem; font-weight:800; color:var(--ink); margin:30px 0 14px; padding-bottom:6px; border-bottom:2px solid var(--amber); }
+.ctry-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px 20px; margin-bottom:12px; }
+.ctry-head { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:8px; }
+.ctry-head .flag { font-size:1.3rem; } .ctry-head h3 { color:var(--ink); font-size:1.02rem; margin:0; }
+.ctry-head .cnt { margin-left:auto; background:#f1f5f9; color:#475569; font-size:.68rem; font-weight:700; text-transform:uppercase; letter-spacing:.4px; padding:2px 9px; border-radius:999px; }
+.mk-row { display:grid; grid-template-columns:1.6fr 1.3fr auto auto; gap:12px; align-items:center; padding:7px 0; border-top:1px solid #f1f4f9; font-size:.9rem; }
+.mk-row b { color:var(--ink); } .mk-row .city { color:var(--muted); } .mk-row a { color:var(--accent); font-weight:600; white-space:nowrap; }
+.mk-row .note { grid-column:1/-1; color:var(--muted); font-style:italic; }
+.tpill { font-size:.62rem; font-weight:800; padding:2px 7px; border-radius:999px; margin-left:4px; letter-spacing:.3px; }
+.t-PT{background:#dbeafe;color:#1e40af} .t-DT{background:#dcfce7;color:#166534} .t-DRY{background:#fef3c7;color:#92400e} .t-CT{background:#ede9fe;color:#5b21b6}
+.feat { background:linear-gradient(135deg,var(--navy),#1b3a5c); color:#fff; border-radius:16px; padding:26px; margin-bottom:30px; }
+.feat-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px; }
+.feat-card { background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:12px; padding:18px 20px; }
+.feat-card .badge { display:inline-block; background:var(--amber); color:var(--navy); font-size:.66rem; font-weight:800; text-transform:uppercase; letter-spacing:.5px; padding:3px 10px; border-radius:999px; margin-bottom:10px; }
+.feat-card h3 { margin:0 0 4px; font-size:1.08rem; }
+.feat-card .cat { color:var(--amber); font-size:.8rem; font-weight:600; margin-bottom:8px; }
+.feat-card p { color:#c4d2e4; font-size:.88rem; margin:0 0 10px; }
+.feat-card ul { margin:0 0 12px 18px; padding:0; } .feat-card li { color:#d8e2ee; font-size:.84rem; margin-bottom:3px; }
+.feat-card a { color:var(--amber); font-weight:600; font-size:.85rem; text-decoration:none; }
+@media (max-width:700px){ .feat-grid { grid-template-columns:1fr; } .mk-row { grid-template-columns:1fr; gap:3px; } }
+/* category browse tiles */
+.cat-tiles { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:24px; }
+.cat-tile { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px 18px; cursor:pointer; text-align:left; transition:transform .15s, box-shadow .15s, border-color .15s; }
+.cat-tile:hover { transform:translateY(-2px); box-shadow:0 8px 22px rgba(13,27,46,.1); }
+.cat-tile.on { border-color:var(--amber); box-shadow:0 4px 16px rgba(245,166,35,.18); }
+.cat-tile .ct-ico { font-size:1.4rem; } .cat-tile h3 { color:var(--ink); font-size:1rem; margin:6px 0 2px; }
+.cat-tile .ct-n { color:var(--accent); font-weight:800; font-size:1.5rem; line-height:1; }
+.cat-tile small { color:var(--muted); font-size:.8rem; }
+@media (max-width:640px){ .cat-tiles { grid-template-columns:1fr; } }
+/* verified badge + tiers */
+.v-badge { display:inline-flex; align-items:center; gap:3px; background:#dcfce7; color:#166534; font-size:.62rem; font-weight:800; text-transform:uppercase; letter-spacing:.4px; padding:2px 7px; border-radius:999px; margin-left:6px; }
+.v-badge.pro { background:var(--amber); color:var(--navy); }
+.mk-row a.prof { color:var(--ink); font-weight:600; white-space:nowrap; }
+.mk-row a.prof:hover { color:var(--accent); }
+.tier-legend { display:flex; gap:14px; flex-wrap:wrap; align-items:center; justify-content:center; font-size:.78rem; color:var(--muted); margin:4px 0 18px; }
+.tier-legend .lg { display:inline-flex; align-items:center; gap:5px; }
+.tier-legend .dot { font-size:.6rem; font-weight:800; padding:2px 7px; border-radius:999px; }
+.tier-legend .d-L { background:#f1f5f9; color:#475569; } .tier-legend .d-V { background:#dcfce7; color:#166534; } .tier-legend .d-P { background:var(--amber); color:var(--navy); }
+.tier-legend a { color:var(--accent); font-weight:600; text-decoration:none; }
+/* list-your-company CTA */
+.list-cta { background:linear-gradient(135deg,var(--navy),#1b3a5c); color:#fff; border-radius:16px; padding:28px 30px; margin-top:40px; text-align:center; }
+.list-cta h2 { margin:0 0 8px; font-size:1.5rem; } .list-cta p { color:#b8c4d4; margin:0 auto 18px; max-width:560px; }
+.list-cta .cats { color:#9fb0c4; font-size:.82rem; margin-top:14px; }
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TransformerPath">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5646978915498298" crossorigin="anonymous"></script>
+</head>
+<body data-tp-node="manufacturers">
+
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg width="30" height="30" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span>Path</span></a>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav" onclick="var n=document.querySelector('.nav-links');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))">☰</button>
+    <nav class="nav-links" id="mainNav">
+      <a href="intel.html">Daily Intel</a>
+      <a href="events.html">Events</a>
+      <a href="webinars.html">Webinars</a>
+      <a href="manufacturers.html" aria-current="page">Manufacturers</a>
+      <a href="learn.html">Learn</a>
+      <a href="grids.html">Grids</a>
+      <a href="resources.html">Knowledge</a>
+      <a href="blog.html">Blog</a>
+      <a href="sponsor.html">Sponsor</a>
+      <a href="search.html" title="Search" aria-label="Search">🔍</a>
+      <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">🌙</button>
+    </nav>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    // Night mode is the default; light is opt-in via the toggle.
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+
+    if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
+    updateThemeIcon();
+
+    themeToggle?.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      updateThemeIcon();
+    });
+
+    function updateThemeIcon() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+    }
+  </script>
+</header>
+
+<section class="hero" style="padding:50px 0 40px">
+  <div class="container">
+    <h1 style="font-size:2.2rem">Transformer <span>Manufacturers</span></h1>
+    <p>A worldwide census of transformer makers — power, distribution and dry-type/cast-resin — country by country, with locations and official links.</p>
+  </div>
+</section>
+
+<section class="block">
+  <div class="container" style="max-width:900px">
+
+    <div class="stat-row" id="statRow"></div>
+
+    <div class="section-head" style="margin-bottom:14px"><h2>Browse by Product Category</h2><p>Pick a category to filter the directory, or search and refine below.</p></div>
+    <p style="text-align:center;margin:-4px 0 22px;font-size:.92rem;color:var(--muted)">Looking for parts, not transformers? Browse the <a href="components.html" style="color:var(--accent);font-weight:700">Components &amp; Accessories directory →</a> or <a href="rfq.html" style="color:var(--accent);font-weight:700">post an RFQ →</a></p>
+    <div class="cat-tiles" id="catTiles"></div>
+
+    <div class="section-head" style="margin:28px 0 8px"><h2>Explore in 3D</h2><p>Click any accessory in the explorers — each part opens components, machinery and manufacturer sourcing.</p></div>
+    <div id="explorerStrip" class="tp-explorer-strip"></div>
+
+    <div class="controls">
+      <input type="search" id="search" placeholder="Search maker, country, city…">
+      <select id="fRegion"><option value="">All regions</option></select>
+      <select id="fType">
+        <option value="">All types</option>
+        <option value="PT">Power (PT)</option>
+        <option value="DT">Distribution (DT)</option>
+        <option value="DRY">Dry-type / Cast Resin</option>
+      </select>
+    </div>
+    <p style="color:var(--muted); font-size:.85rem; margin-bottom:14px" id="count"></p>
+
+    <div class="tier-legend">
+      <span class="lg"><span class="dot d-L">Listed</span> public-source entry</span>
+      <span class="lg"><span class="dot d-V">✓ Verified</span> company-confirmed</span>
+      <span class="lg"><span class="dot d-P">★ Pro Verified</span> credentials reviewed</span>
+      <a href="verified-standards.html">How verification works →</a>
+    </div>
+
+    <div id="board"></div>
+
+    <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:20px">
+      PT = Power Transformers · DT = Distribution Transformers · DRY = Dry-type / Cast Resin. Listed entries are compiled from public sources; <a href="verified-standards.html" style="color:var(--accent);font-weight:600">Verified &amp; Pro Verified</a> entries are confirmed by the company. Verify capability before commercial decisions.
+    </p>
+
+    <!-- List / claim your company -->
+    <div class="list-cta">
+      <h2>List or claim your company — free</h2>
+      <p>Are you a transformer maker, accessory or material supplier, or service company? Get listed in front of buyers worldwide, claim your existing entry, or upgrade to a Verified profile.</p>
+      <a href="list-company.html" class="btn btn-amber">List / Claim your company →</a>
+      <div class="cats">Categories: Power · Distribution · Dry-type / Cast Resin · Bushings · Tap-Changers · Core Steel &amp; Raw Materials · Insulation · Transformer Oil · Radiators &amp; Fittings · Testing Equipment · Services &amp; Repair</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><g fill="none" stroke="#f5a623" stroke-width="3.6" stroke-linecap="round"><path d="M21 16 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4 a5.2 5.2 0 0 1 0 10.4"/><path d="M43 16 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4 a5.2 5.2 0 0 0 0 10.4"/></g><g stroke="#fff" stroke-width="2.8" stroke-linecap="round"><line x1="30" y1="14" x2="30" y2="50"/><line x1="34" y1="14" x2="34" y2="50"/></g></svg>Transformer<span style="color:var(--amber)">Path</span></a>
+        <p style="margin-top:12px">The global intelligence and networking platform for transformer manufacturers, suppliers, engineers and utilities.</p>
+      </div>
+      <div><h4>PLATFORM</h4><a href="intel.html">Daily Intel</a><a href="subscribe.html">Daily Brief</a><a href="events.html">Events</a><a href="webinars.html">Webinars</a><a href="manufacturers.html">Manufacturers</a><a href="vendors.html">Vendors</a><a href="learn.html">Learn</a><a href="teams.html">Corporate Training</a><a href="grids.html">Grids</a><a href="resources.html">Knowledge</a><a href="blog.html">Blog</a><a href="components.html">Components</a><a href="rfq.html">RFQ Board</a><a href="jobs.html">Jobs</a><a href="search.html">Search</a><a href="archive.html">Intel Archive</a><a href="sponsor.html">Sponsor</a></div>
+      <div><h4>COMPANY</h4><a href="about.html">About Us</a><a href="mailto:hello@transformerpath.com">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><h4>CONTACT</h4><a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a><a href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener">LinkedIn ↗</a></div>
+    </div>
+    <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
+  </div>
+</footer>
+
+<script>
+const DATA_URL = 'data/manufacturers.json';
+let DATA = [];
+let regions = [];
+const REGION_ORDER = ["North America","Latin America","Europe","Eurasia","Middle East","Africa","South Asia","East Asia","Southeast Asia","Oceania"];
+
+const TNAME={PT:"Power",DT:"Distribution",DRY:"Dry/Cast"};
+
+const fRegion=document.getElementById('fRegion');
+const search=document.getElementById('search'), fType=document.getElementById('fType');
+
+async function loadData() {
+  try {
+    const res = await fetch(DATA_URL);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const json = await res.json();
+    DATA = Array.isArray(json) ? json : json.data;
+    regions = [...new Set(DATA.map(c=>c.region))].sort((a,b)=>REGION_ORDER.indexOf(a)-REGION_ORDER.indexOf(b));
+    regions.forEach(r=>{const o=document.createElement('option');o.value=r;o.textContent=r;fRegion.appendChild(o);});
+    initCatTiles();
+    render();
+  } catch (err) {
+    console.error('Failed to load manufacturers:', err);
+    document.getElementById('board').innerHTML = '<p style="color:var(--red);text-align:center;padding:40px">Could not load the manufacturer directory. Please refresh the page.</p>';
+  }
+}
+
+function tpills(types){ if(!types) return ''; return types.split(',').map(t=>t.trim()).filter(Boolean).map(t=>`<span class="tpill t-${t}">${TNAME[t]||t}</span>`).join(''); }
+// A maker tuple is [name, city, website, types, tierFlag?, established?].
+// m[4]: 'P' = Pro Verified, 'V' = Verified, else Listed. m[5]: established year (optional).
+function vbadge(m){ if(m[4]==='P') return '<span class="v-badge pro">★ Pro Verified</span>'; if(m[4]==='V') return '<span class="v-badge">✓ Verified</span>'; return ''; }
+
+// Category browse tiles (count makers offering each transformer type)
+const CATS=[{k:'PT',ico:'⚡',t:'Power Transformers',d:'HV / EHV power units'},{k:'DT',ico:'🔌',t:'Distribution',d:'MV/LV distribution'},{k:'DRY',ico:'🌀',t:'Dry-type / Cast Resin',d:'Cast-resin & VPI'}];
+function countType(k){ return DATA.reduce((s,c)=>s+c.makers.filter(m=>!/^Served by/i.test(m[0])&&(m[3]||'').split(',').map(x=>x.trim()).includes(k)).length,0); }
+const catTiles=document.getElementById('catTiles');
+function initCatTiles(){
+  catTiles.innerHTML=CATS.map(c=>`<button class="cat-tile" data-k="${c.k}"><span class="ct-ico">${c.ico}</span><div class="ct-n">${countType(c.k)}</div><h3>${c.t}</h3><small>${c.d}</small></button>`).join('');
+  catTiles.querySelectorAll('.cat-tile').forEach(btn=>btn.addEventListener('click',()=>{
+    const k=btn.dataset.k, was=btn.classList.contains('on');
+    catTiles.querySelectorAll('.cat-tile').forEach(b=>b.classList.remove('on'));
+    if(was){ fType.value=''; } else { btn.classList.add('on'); fType.value=k; }
+    render(); document.getElementById('board').scrollIntoView({behavior:'smooth',block:'start'});
+  }));
+}
+
+function stats(list){
+  const makers=list.reduce((s,c)=>s+c.makers.filter(m=>!/^Served by/i.test(m[0])).length,0);
+  document.getElementById('statRow').innerHTML=
+    `<div class="s"><b>${makers}</b><small>Manufacturers</small></div>
+     <div class="s"><b>${list.length}</b><small>Countries</small></div>
+     <div class="s"><b>${new Set(list.map(c=>c.region)).size}</b><small>Regions</small></div>`;
+}
+
+function render(){
+  const q=search.value.trim().toLowerCase(), r=fRegion.value, ty=fType.value;
+  let list=DATA.map(c=>{
+    let makers=c.makers;
+    if(ty) makers=makers.filter(m=>/^Served by/i.test(m[0]) ? false : (m[3]||'').split(',').map(x=>x.trim()).includes(ty));
+    if(q) makers=makers.filter(m=>(m[0]+' '+(m[1]||'')+' '+c.country).toLowerCase().includes(q));
+    return {...c, makers};
+  }).filter(c=>{ if(r&&c.region!==r) return false; return c.makers.length>0; });
+  const groups={}; list.forEach(c=>{(groups[c.region]??=[]).push(c);});
+  const order=regions.filter(rg=>groups[rg]);
+  document.getElementById('board').innerHTML=order.map(region=>
+    `<div class="region-h">${region}</div>`+groups[region].map(c=>{
+      const real=c.makers.filter(m=>!/^Served by/i.test(m[0])).length;
+      return `<div class="ctry-card"><div class="ctry-head"><span class="flag">${c.flag}</span><h3>${c.country}</h3><span class="cnt">${real} maker${real!==1?'s':''}</span></div>`+
+        c.makers.map(m=>/^Served by/i.test(m[0])
+          ? `<div class="mk-row"><span class="note">${m[0]}</span></div>`
+          : `<div class="mk-row"><b>${m[0]}${vbadge(m)}${tpills(m[3])}</b><span class="city">${m[1]||''}${m[5]?` · est. ${m[5]}`:''}</span><a class="prof" href="company.html?c=${encodeURIComponent(m[0])}&y=${encodeURIComponent(c.country)}">Profile →</a>${m[2]?`<a href="${m[2]}" target="_blank" rel="noopener">Site →</a>`:'<span></span>'}</div>`).join('')+
+        `</div>`;
+    }).join('')).join('');
+  document.getElementById('count').textContent=`Showing ${list.reduce((s,c)=>s+c.makers.filter(m=>!/^Served by/i.test(m[0])).length,0)} makers in ${list.length} countries`;
+  stats(list);
+}
+[search,fRegion,fType].forEach(el=>{el.addEventListener('input',render);el.addEventListener('change',render);});
+fType.addEventListener('change',()=>{ catTiles.querySelectorAll('.cat-tile').forEach(b=>b.classList.toggle('on', b.dataset.k===fType.value)); });
+loadData();
+</script>
+
+<script>
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
+(function(){var dp;window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();dp=e;if(document.getElementById('tpInstall'))return;var b=document.createElement('button');b.id='tpInstall';b.textContent='\u2913 Install TransformerPath';b.setAttribute('style','position:fixed;right:16px;bottom:16px;z-index:9999;background:#f5a623;color:#0d1b2e;border:0;border-radius:999px;padding:11px 18px;font-weight:800;font-size:.9rem;box-shadow:0 6px 20px rgba(0,0,0,.28);cursor:pointer;font-family:inherit');b.onclick=function(){b.remove();dp.prompt();dp.userChoice.finally(function(){dp=null;});};document.body.appendChild(b);});})();
+</script>
+<script src="analytics.js" defer></script>
+<script src="directory-graph.js"></script>
+<script>
+(function(){
+  var el=document.getElementById("explorerStrip");
+  if(!el||!window.TPDirectory) return;
+  function paint(){
+    el.innerHTML = TPDirectory.explorerStripHtml(["PT","DT","DRY","CT"], { fallbackAll:true }) ||
+      '<a class="tp-explorer-link" href="power3d.html"><span class="tpill t-PT">PT</span> Power 3D →</a>'+
+      '<a class="tp-explorer-link" href="explorer.html?mode=oil"><span class="tpill t-DT">DT</span> Oil DT 3D →</a>'+
+      '<a class="tp-explorer-link" href="castresin3d.html"><span class="tpill t-DRY">DRY</span> Cast-resin 3D →</a>'+
+      '<a class="tp-explorer-link" href="ct3d.html"><span class="tpill t-CT">CT</span> CT 3D →</a>';
+  }
+  paint();
+  if (TPDirectory.load) TPDirectory.load().then(paint).catch(function(){ paint(); });
+})();
+</script>
+<script src="site-graph.js" defer></script>
+</body>
+</html>

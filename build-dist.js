@@ -85,6 +85,7 @@ const FORBIDDEN_PATTERNS = [
   /(^|\/)[^/]* \d{1,2}(\.[^./]+)?$/,   // conflict copies — backstop for the skip above
   /^_private\//, /^_docs\//, /^_partials\//, /^tests\//, /^supabase\//,
   /^functions\//, /^engine\//, /^archive\//, /^transformerpath-site\//,
+  /^transformerpath\//,  // Maghreb nested fork
   /^Transformer Equipments\//, /^Transformer Radiators\//,
   /^build-.*\.js$/, /^check-.*\.js$/, /^audit-.*\.js$/, /^merge-.*\.js$/,
   /^_region_.*\.json$/, /^_final_.*\.json$/, /^_sync_diag\.js$/,
