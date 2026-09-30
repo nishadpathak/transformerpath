@@ -123,15 +123,27 @@ const out = {
   freshness_scale: 'CURRENT_REFERENCE (observed within ~1 week) | AGING (verified, older) | STALE (verified, substantially older) | HISTORICAL (no verified public reference). Computed from observation_date; a reference is never presented as "live".',
   materials: rows,
   // Backward-compatible row for the homepage / intel ticker (material-latest.js).
-  latest_rows: rows.map((r) => ({
-    id: r.material.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, ''),
-    name: r.material, unit: r.unit, value: r.price, value_display: (r.price == null ? '—' : '≈ ' + r.price.toLocaleString('en-US')),
-    currency: r.currency, market: r.market, source: r.source, observation_date: r.observation_date || null,
-    last_verified: r.retrieved_at, status: (r.price == null ? 'historical' : r.freshness_status.toLowerCase()),
-    freshness_status: r.freshness_status, basis: r.basis, note: r.notes,
-  })),
-};
-fs.writeFileSync('data/materials.json', JSON.stringify(out, null, 2));
+  latest_rows: rows.map((r) => {
+    const fsStatus = r.freshness_status;
+    const aged = fsStatus === 'STALE' || fsStatus === 'AGING' || fsStatus === 'HISTORICAL';
+    return {
+      id: r.material.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, ''),
+      name: r.material, unit: r.unit, value: r.price, value_display: (r.price == null ? '—' : '≈ ' + r.price.toLocaleString('en-US')),
+      currency: r.currency, market: r.market, source: r.source, observation_date: r.observation_date || null,
+      last_verified: r.retrieved_at,
+      // Commodity freshness is independent of Intel/build clocks. Aged verified
+      // LME refs are presented as Historical market reference — never "live".
+      status: (r.price == null || aged) ? 'historical' : fsStatus.toLowerCase(),
+      freshness_status: (aged && r.price != null) ? 'HISTORICAL' : fsStatus,
+      freshness_label: (aged && r.price != null) ? 'HISTORICAL' : fsStatus,
+      presentation: (r.price == null || aged) ? 'Historical market reference' : 'Market reference',
+      basis: r.basis,
+      note: (aged && r.price != null)
+        ? ('Historical market reference. Observed ' + r.observation_date + '. Independent of Intel/build clocks. Verify against LME before commercial use.')
+        : r.notes,
+    };
+  }),
+};fs.writeFileSync('data/materials.json', JSON.stringify(out, null, 2));
 // Regenerate materials-latest.json (backward-compat source for the homepage ticker).
 const latest = {
   $schema: 'https://transformerpath.com/material-index.schema.json',

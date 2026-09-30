@@ -1,6 +1,6 @@
 {
   "$schema": "https://transformerpath.com/material-index.schema.json",
-  "updated": "2026-09-15",
+  "updated": "2026-09-30",
   "currency": "USD",
   "note": "Copper and aluminium are the LME 3-month official ring settlement as latest REFERENCE (dated, sourced, not a live feed). CRGO, oil, ester, pressboard and tank steel have no established public daily index and are shown as unavailable/GRADE NOT SPECIFIED rather than invented. Unknown > incorrect.",
   "rows": [
@@ -9,36 +9,32 @@
       "name": "Aluminium",
       "unit": "USD / t",
       "value": 3182,
-      "value_display": "\u2248 3,182",
+      "value_display": "≈ 3,182",
       "currency": "USD",
       "market": "LME",
       "source": "LME official price",
       "observation_date": "2026-08-20",
       "last_verified": "2026-08-26",
-      "status": "historical",
-      "freshness_status": "HISTORICAL",
+      "status": "stale",
+      "freshness_status": "STALE",
       "basis": "3-month official ring settlement (reference)",
-      "note": "Historical market reference (LME 3-month official ring settlement). Observation date unchanged \u2014 not silently refreshed. Independent of Intel/build clocks. Verify against LME before commercial use.",
-      "presentation": "Historical market reference",
-      "freshness_label": "HISTORICAL"
+      "note": "LME 3-month official ring settlement as a latest reference. Varies by day; verify against the LME official price before commercial use. Not a live feed."
     },
     {
       "id": "copper",
       "name": "Copper",
       "unit": "USD / t",
       "value": 14170,
-      "value_display": "\u2248 14,170",
+      "value_display": "≈ 14,170",
       "currency": "USD",
       "market": "LME",
       "source": "LME official price",
       "observation_date": "2026-08-20",
       "last_verified": "2026-08-26",
-      "status": "historical",
-      "freshness_status": "HISTORICAL",
+      "status": "stale",
+      "freshness_status": "STALE",
       "basis": "3-month official ring settlement (reference)",
-      "note": "Historical market reference (LME 3-month official ring settlement). Observation date unchanged \u2014 not silently refreshed. Independent of Intel/build clocks. Verify against LME before commercial use.",
-      "presentation": "Historical market reference",
-      "freshness_label": "HISTORICAL"
+      "note": "LME 3-month official ring settlement as a latest reference. Varies by day; verify against the LME official price before commercial use. Not a live feed."
     }
   ]
 }
