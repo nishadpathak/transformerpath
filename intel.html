@@ -211,29 +211,28 @@ a.plain:hover { text-decoration:underline; }
 </section>
 
 <div class="wrap intel-app">
-  <div class="stamp" id="stamp">Last successful refresh: 25 Sept 2026 09:22 UTC</div>
-  <script>/* Truthful freshness: calculate tier (<36h: DATA CURRENT, 36-72h: REFRESH DELAYED, >72h: DATA STALE)
-     from canonical data/freshness.json, NOT the visitor's local clock. */
+  <div class="stamp" id="stamp"><span style="color:#e0a800;font-weight:800;letter-spacing:.5px">● INTEL COVERAGE DELAYED</span> · Latest sourced item: <b style="color:var(--text)">25 Sept 2026</b> · source checked 29 Sept 2026 · page built 30 Sept 2026</div>
+  <script>/* Status follows latest_source_date from freshness.json — never build clock alone. */
     (function () {
       var el = document.getElementById('stamp'); if (!el || !window.fetch) return;
       fetch('data/freshness.json', { cache: 'no-cache' }).then(function (r) { return r.json().catch(function () { return {}; }); }).then(function (d) {
         var di = (d.surfaces || []).find(function (s) { return s.id === 'daily_intel'; }) || {};
-        var date = di.last_successful_refresh || di.last_data_refresh || di.last_build;
-        if (!date) { el.textContent = 'Status: DATA STALE · Refresh pending'; return; }
-        var dt = new Date(date);
-        var dstr = isNaN(dt.getTime()) ? date : dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-        var ageHours = !isNaN(dt.getTime()) ? (Date.now() - dt.getTime()) / (1000 * 60 * 60) : 0;
-        var statusLabel = 'DATA CURRENT';
-        var badgeColor = 'var(--ok)';
-        if (ageHours > 72) {
-          statusLabel = 'DATA STALE';
-          badgeColor = '#94a3b8';
-        } else if (ageHours > 36) {
-          statusLabel = 'REFRESH DELAYED';
-          badgeColor = 'var(--amber)';
+        var statusLabel = di.public_status || d.public_intel_status || 'INTEL COVERAGE DELAYED';
+        var sourceIso = di.latest_source_date || d.latest_source_date;
+        var sourceLabel = sourceIso || 'not recorded';
+        var checked = di.latest_source_checked_at || d.latest_source_checked_at;
+        var buildAt = di.build_at || d.build_at || d.generated;
+        function fmt(iso) {
+          if (!iso) return null;
+          var dt = new Date(iso);
+          return isNaN(dt.getTime()) ? String(iso) : dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
         }
-        el.innerHTML = '<span style="color:' + badgeColor + ';font-weight:800;letter-spacing:.5px">● ' + statusLabel + '</span> &middot; Last Refreshed: <b style="color:var(--text)">' + dstr + '</b>';
-      }).catch(function () { el.textContent = 'Status: Refreshed at build'; });
+        if (/^\d{4}-\d{2}-\d{2}/.test(String(sourceLabel))) sourceLabel = fmt(sourceLabel) || sourceLabel;
+        var badgeColor = statusLabel === 'DATA CURRENT' ? 'var(--ok)' : (statusLabel === 'DATA STALE' ? '#94a3b8' : 'var(--amber)');
+        el.innerHTML = '<span style="color:' + badgeColor + ';font-weight:800;letter-spacing:.5px">● ' + statusLabel + '</span> &middot; Latest sourced item: <b style="color:var(--text)">' + sourceLabel + '</b>' +
+          (checked ? ' &middot; source checked ' + fmt(checked) : '') +
+          (buildAt ? ' &middot; page built ' + fmt(buildAt) : '');
+      }).catch(function () { el.textContent = 'Status: INTEL COVERAGE DELAYED'; });
     })();
   </script>
   <div id="changelog-strip" style="display:none;background:#0f2a1e;border:1px solid #1e5c40;border-radius:8px;padding:8px 14px;margin:10px 0;font-size:.85rem;line-height:1.5"></div>
@@ -326,7 +325,7 @@ a.plain:hover { text-decoration:underline; }
       <span style="color:var(--muted);font-size:.9rem">The daily briefing is free and open — built for the desks that buy, build and rate transformers. Every item is sourced; corrections are published, not buried.</span>
     </div>
     <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 16px;margin-bottom:10px;font-size:.82rem;color:var(--muted)">
-      <b style="color:var(--text)">Data freshness:</b> <span id="freshnessLine">Last successful refresh: <b style="color:var(--text)">25 Sept 2026 09:22 UTC</b> · cadence: daily (curated)</span> <span style="color:var(--muted)">· Curated Daily Intel is refreshed at build. Page build date and last successful data refresh are distinct. This line is never left as “Loading…”.</span>
+      <b style="color:var(--text)">Data freshness:</b> <span id="freshnessLine">Latest sourced item <b style="color:var(--text)">25 Sept 2026</b> · last source check <b style="color:var(--text)">29 Sept 2026</b> · build <b style="color:var(--text)">30 Sept 2026</b> · status <b style="color:var(--text)">INTEL COVERAGE DELAYED</b></span> <span style="color:var(--muted)">· Curated Daily Intel is refreshed at build. Page build date and last successful data refresh are distinct. This line is never left as “Loading…”.</span>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px">
       <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:11px 14px">
@@ -1204,9 +1203,16 @@ a.plain:hover { text-decoration:underline; }
   var el=document.getElementById('freshnessLine');
   if(!el) return;
   fetch('data/freshness.json').then(function(r){ return r.json().catch(function(){ return {}; }); }).then(function(d){
-    var di=(d.surfaces||[]).find(function(s){ return s.id==='daily_intel'; });
-    if(di && di.last_build){ el.innerHTML='Curated Daily Intel <b style="color:var(--text)">last refreshed ' + di.last_build + '</b> · cadence: ' + (di.cadence||'daily'); }
-    else { el.innerHTML='Curated Daily Intel <b style="color:var(--text)">refresh date unavailable</b>'; }
+    var di=(d.surfaces||[]).find(function(s){ return s.id==='daily_intel'; })||{};
+    var status = di.public_status || d.public_intel_status || 'INTEL COVERAGE DELAYED';
+    var source = di.latest_source_date || d.latest_source_date || 'unavailable';
+    var checked = di.latest_source_checked_at || d.latest_source_checked_at;
+    var build = di.build_at || d.build_at || d.generated;
+    function fmt(iso){ if(!iso) return null; var dt=new Date(iso); return isNaN(dt.getTime())?String(iso):dt.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'}); }
+    if (/^\d{4}-\d{2}-\d{2}/.test(String(source))) source = fmt(source) || source;
+    el.innerHTML='Status <b style="color:var(--text)">'+status+'</b> · latest sourced item <b style="color:var(--text)">'+source+'</b>'+
+      (checked?' · source checked '+fmt(checked):'')+
+      (build?' · page built '+fmt(build):'');
   }).catch(function(){ el.textContent='Freshness unavailable'; });
 })();
 </script>
@@ -1230,6 +1236,7 @@ const NEWS = {
       { title:"MEWRE — second-stage maintenance/replacement programme (transformers up to 75 MVA; parallel reactors up to 50 MVA)", snippet:"Phase-two maintenance and replacement of damaged parts and related civil works for transformers ≤75 MVA and parallel reactors ≤50 MVA.", value:"up to 75 MVA / 50 MVA reactors", src:"kuwait central procurement · 24 Sep 2026 [en]", url:"https://tenderimpulse.com/government-tenders/kuwait/maintenance-and-replacement-of-damaged-parts-and-civil-works-related-to-a-number-14608275", cls:"PIPELINE", lang:"en", isNew:true, event_date:"2026-09-24", publication_date:"2026-08-31", date_iso:"2026-09-24", tender_id:"CAPT-GOV-KW-16/2025/2026" },
       { title:"EWA Central Stores — 11/0.415 kV 1,000 kVA mineral-oil-filled package substation with distribution board", snippet:"Bahrain Tender Board 389/2026/BTB (PT/CSD/HR/2026/102): SUBSTATION KIOSK 11/0.415 kV, 1000 kVA, mineral oil filled, with distribution board.", value:"1000 kVA · 11/0.415 kV", src:"bahrain tender board · 28 Aug 2026 [en]", url:"https://www.tenderboard.gov.bh/", cls:"CONFIRMED", lang:"en", isNew:true, event_date:"2026-08-28", publication_date:"2026-08-28", date_iso:"2026-08-28", tender_id:"389/2026/BTB" },
       /*/INJECT:GCC_DISCOVERY*/
+      
       
       
       
@@ -2149,7 +2156,7 @@ tabList.forEach((t, idx) => {
 <script src="follow-button.js" defer></script>
 <script src="analytics.js?v=7" defer></script>
 <script src="tp-freshness.js?v=7" defer></script>
-<script src="tp-watchlist.js?v=1" defer></script>
+<script src="tp-watchlist.js?v=7" defer></script>
 <script src="tp-feedback.js?v=7" defer></script>
 </body>
 </html>

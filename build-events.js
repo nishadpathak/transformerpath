@@ -277,7 +277,7 @@ function eventPage(ev) {
     (confirmed ? travelButtons(ev.name, rec.c, rec.co, rec.s, rec.e) : '') +
     '<p class="lead">' + esc(ev.blurb) + '</p>' +
     '<h2>What it covers</h2><p style="line-height:1.7;color:var(--text)">' + esc(rec.d || ev.blurb) + '</p>' +
-    '<h2>Transformer companies &amp; suppliers</h2><p style="color:var(--muted);font-size:.94rem;margin:4px 0 8px">Companies in this market (TransformerPath entity pages) — verify capability before a decision.</p><div style="margin:4px 0 8px">' + mkPills + '</div>' + (countryLink ? '<div style="margin-top:8px">' + countryLink + '</div>' : '') +
+    '<h2>Transformer suppliers active in this market</h2><p style="color:var(--muted);font-size:.94rem;margin:4px 0 8px">TransformerPath entity pages for manufacturers in this country/market — <b>not</b> a confirmed exhibitor list. Verify capability before a decision.</p><div style="margin:4px 0 8px">' + mkPills + '</div>' + (countryLink ? '<div style="margin-top:8px">' + countryLink + '</div>' : '') +
     '<h2>Related TransformerPath intelligence</h2><ul>' + intelHtml + '</ul>' +
     '<h2>Related components</h2><div>' + comps + '</div>' +
     (marketLink ? '<h2>Related market</h2><div>' + marketLink + '</div>' : '') +

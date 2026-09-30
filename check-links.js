@@ -14,7 +14,11 @@ function walk(dir, skip = []) {
   return out;
 }
 
-const SKIP = ['archive', '_private', 'transformerpath-site', 'dist', 'node_modules', 'functions', '_partials', 'Transformer Equipments'];
+/* Maghreb #3 accidentally committed a nested fork under transformerpath/
+   (parallel site + Stripe checkout experiment). It is not published via
+   build-dist and must not fail the root link gate — same class as
+   transformerpath-site/. */
+const SKIP = ['archive', '_private', 'transformerpath-site', 'transformerpath', 'dist', 'node_modules', 'functions', '_partials', 'Transformer Equipments'];
 const files = walk('.', SKIP);
 
 // Link target existence: resolve relative to the file's directory.
