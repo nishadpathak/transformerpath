@@ -143,7 +143,8 @@ const out = {
         : r.notes,
     };
   }),
-};fs.writeFileSync('data/materials.json', JSON.stringify(out, null, 2));
+};
+fs.writeFileSync('data/materials.json', JSON.stringify(out, null, 2));
 // Regenerate materials-latest.json (backward-compat source for the homepage ticker).
 const latest = {
   $schema: 'https://transformerpath.com/material-index.schema.json',
