@@ -198,12 +198,15 @@ function renderEvents(html) {
      can never say "Live now" — that combination was reaching production. */
   const relLabel = (ev) => {
     const key = evState(ev).key;
-    if (key === 'LIVE') return '<span class="rel-today">Live now</span>';
+    // data-rel/data-rel-end let the client script recompute the badge against
+    // today's date so it never goes stale between builds.
+    const relAttr = ` data-rel="${esc(ev.s)}" data-rel-end="${esc(ev.e)}"`;
+    if (key === 'LIVE') return `<span class="rel-today"${relAttr}>Live now</span>`;
     if (key !== 'CONFIRMED_UPCOMING') return '';
     const d = relDays(ev.s);
     if (d <= 0) return '';
-    if (d === 1) return '<span class="rel-soon">In 1 day</span>';
-    if (d <= 31) return `<span class="rel-soon">In ${d} days</span>`;
+    if (d === 1) return `<span class="rel-soon"${relAttr}>In 1 day</span>`;
+    if (d <= 31) return `<span class="rel-soon"${relAttr}>In ${d} days</span>`;
     return '';
   };
   const icsHref = (ev) => {
@@ -245,7 +248,7 @@ function renderEvents(html) {
     const trav = travelable(ev);
     const dateLbl = (st.key === 'DATE_TBC' || st.key === 'UNCONFIRMED' || st.key === 'MONITORING') ? 'Dates TBC' : (`${fmt(ev.s)} → ${fmt(ev.e)}`);
     const venueLbl = (st.key === 'VENUE_TBC') ? 'Venue TBC' : `${esc(ev.v)} — ${esc(ev.c)}, ${esc(ev.co)}`;
-    return `<div class="intel-item event-card">
+    return `<div class="intel-item event-card" data-start="${esc(ev.s)}" data-end="${esc(ev.e)}">
       <h3>${esc(ev.n)}${soon ? '<span class="badge-soon">Soon</span>' : ''}${badgeHTML(ev)}</h3>
       <div class="dates">${dateLbl}${relLabel(ev)}</div>
       <div class="venue">📍 ${venueLbl}${esc(ev.r) ? ' · ' + esc(ev.r) : ''}</div>
