@@ -109,9 +109,19 @@ const rows = [
 rows.sort((a, b) => (a.price == null) - (b.price == null) || String(a.material).localeCompare(b.material));
 
 // Attach P0 freshness_status per record (computed honestly from observation date
-// and whether a verified figure exists). Purely additive — preserves all legacy fields.
+// and whether a verified figure exists). Aged verified LME refs are publicly
+// presented as Historical market reference — independent of Intel/build clocks.
 rows.forEach((r) => {
-  r.freshness_status = freshnessStatus(r.observation_date, r.price == null);
+  const fsStatus = freshnessStatus(r.observation_date, r.price == null);
+  const aged = fsStatus === 'STALE' || fsStatus === 'AGING' || fsStatus === 'HISTORICAL';
+  r.age_class = fsStatus;
+  // Public badge for aged priced refs: HISTORICAL (not STALE) + Observed date.
+  r.freshness_status = (aged && r.price != null) ? 'HISTORICAL' : fsStatus;
+  r.presentation = (r.price == null || aged) ? 'Historical market reference' : 'Market reference';
+  if (aged && r.price != null && r.observation_date) {
+    r.notes = 'Historical market reference. Observed ' + r.observation_date +
+      '. Independent of Intel/build clocks. Verify against LME before commercial use.';
+  }
 });
 
 const out = {
@@ -119,28 +129,24 @@ const out = {
   generated: new Date().toISOString(),
   updated: TODAY,
   currency: 'USD',
-  honesty_note: 'Copper and aluminium are the LME 3-month official ring settlement as latest REFERENCE (dated, sourced, not a live feed). CRGO, oil, ester, pressboard and tank steel have no established public daily index and are shown as unavailable/GRADE NOT SPECIFIED rather than invented. Unknown > incorrect.',
-  freshness_scale: 'CURRENT_REFERENCE (observed within ~1 week) | AGING (verified, older) | STALE (verified, substantially older) | HISTORICAL (no verified public reference). Computed from observation_date; a reference is never presented as "live".',
+  honesty_note: 'Copper and aluminium are the LME 3-month official ring settlement as latest REFERENCE (dated, sourced, not a live feed). Aged observations are labelled Historical market reference with an Observed date — never a live feed. CRGO, oil, ester, pressboard and tank steel have no established public daily index and are shown as unavailable/GRADE NOT SPECIFIED rather than invented. Unknown > incorrect. Commodity freshness is independent of Intel freshness, census freshness, and build freshness.',
+  freshness_scale: 'CURRENT_REFERENCE (observed within ~1 week) | AGING (verified, older) | STALE (verified, substantially older; public label becomes Historical market reference) | HISTORICAL (aged reference or no verified public figure). Computed from observation_date; a reference is never presented as "live".',
   materials: rows,
   // Backward-compatible row for the homepage / intel ticker (material-latest.js).
   latest_rows: rows.map((r) => {
     const fsStatus = r.freshness_status;
-    const aged = fsStatus === 'STALE' || fsStatus === 'AGING' || fsStatus === 'HISTORICAL';
+    const aged = r.presentation === 'Historical market reference';
     return {
       id: r.material.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, ''),
       name: r.material, unit: r.unit, value: r.price, value_display: (r.price == null ? '—' : '≈ ' + r.price.toLocaleString('en-US')),
       currency: r.currency, market: r.market, source: r.source, observation_date: r.observation_date || null,
       last_verified: r.retrieved_at,
-      // Commodity freshness is independent of Intel/build clocks. Aged verified
-      // LME refs are presented as Historical market reference — never "live".
-      status: (r.price == null || aged) ? 'historical' : fsStatus.toLowerCase(),
-      freshness_status: (aged && r.price != null) ? 'HISTORICAL' : fsStatus,
-      freshness_label: (aged && r.price != null) ? 'HISTORICAL' : fsStatus,
-      presentation: (r.price == null || aged) ? 'Historical market reference' : 'Market reference',
+      status: aged ? 'historical' : String(fsStatus || '').toLowerCase(),
+      freshness_status: fsStatus,
+      freshness_label: fsStatus,
+      presentation: r.presentation,
       basis: r.basis,
-      note: (aged && r.price != null)
-        ? ('Historical market reference. Observed ' + r.observation_date + '. Independent of Intel/build clocks. Verify against LME before commercial use.')
-        : r.notes,
+      note: r.notes,
     };
   }),
 };

@@ -47,10 +47,18 @@
   status = 301
   force = true
 
+# Canonical Intel route is clean /intel (matches rel=canonical).
+# Serve content under /intel; send legacy .html form to the clean URL.
+[[redirects]]
+  from = "/intel.html"
+  to = "/intel"
+  status = 301
+  force = true
+
 [[redirects]]
   from = "/intel"
   to = "/intel.html"
-  status = 301
+  status = 200
   force = true
 
 [[redirects]]
@@ -86,19 +94,19 @@
 # Common aliases auditors / users try for Daily Intel
 [[redirects]]
   from = "/daily-intel"
-  to = "/intel.html"
+  to = "/intel"
   status = 301
   force = true
 
 [[redirects]]
   from = "/daily-intel.html"
-  to = "/intel.html"
+  to = "/intel"
   status = 301
   force = true
 
 [[redirects]]
   from = "/daily-intel/"
-  to = "/intel.html"
+  to = "/intel"
   status = 301
   force = true
 

@@ -70,6 +70,15 @@
       nodes[i].setAttribute('aria-hidden', 'true');
       nodes[i].style.pointerEvents = 'none';
       nodes[i].style.opacity = '0.35';
+      var inputs = nodes[i].querySelectorAll('input, button, select, textarea, a');
+      for (var j = 0; j < inputs.length; j++) {
+        if (inputs[j].tagName === 'A') {
+          inputs[j].setAttribute('tabindex', '-1');
+          inputs[j].setAttribute('aria-disabled', 'true');
+        } else {
+          inputs[j].disabled = true;
+        }
+      }
     }
   }
 
