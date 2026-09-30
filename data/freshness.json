@@ -1,28 +1,325 @@
 {
   "$schema": "https://transformerpath.com/freshness.schema.json",
-  "generated": "2026-09-29T21:33:04.089Z",
-  "honest_note": "PAGE BUILD DATE is when this artifact was last regenerated; DATA REFRESH DATE is the last successful source refresh. These are distinct. The curated Daily Intel feed is refreshed at build on a twice-daily cadence (06:00 / 18:00 UTC rebuild hook) — it is not an hourly live scrape. The serverless auto-briefing cache is a separate background cache. A freshness status of HEALTHY/AGING/STALE is computed from observed dates; nothing is presented as live.",
+  "generated": "2026-09-29T21:12:39.710Z",
+  "honest_note": "PAGE BUILD DATE is when this artifact was last regenerated; DATA REFRESH DATE is the last successful source refresh. These are distinct. The curated Daily Intel feed is refreshed at build (twice-daily cadence (06:00 / 18:00 UTC rebuild hook)) — it is not an hourly live scrape. The serverless auto-briefing cache is a separate background cache. A freshness status of HEALTHY/AGING/STALE is computed from observed dates; nothing is presented as live.",
   "surfaces": [
     {
       "id": "daily_intel",
       "name": "Daily Intel",
       "cadence": "twice daily (curated)",
-      "description": "Curated transformer-industry intelligence feed. Regenerated on each deploy; Netlify scheduled rebuilds at 06:00 and 18:00 UTC (via TP_BUILD_HOOK_URL) keep the desk from going stale. Not an automatic live scrape.",
+      "description": "Curated transformer-industry intelligence feed. Data is compiled and regenerated at each build; it is not an automatic live scrape.",
       "last_build": "2026-09-14",
-      "last_data_refresh": "2026-09-15T14:31:23.374Z",
-      "last_attempted_refresh": "2026-09-15T14:31:23.374Z",
-      "last_successful_refresh": "2026-09-15T14:31:23.374Z",
-      "latest_source_observation": "curated items carry their own per-item source date",
+      "last_data_refresh": "2026-09-25T09:22:27.036Z",
+      "last_attempted_refresh": "2026-09-25T09:22:27.036Z",
+      "last_successful_refresh": "2026-09-25T09:22:27.036Z",
+      "latest_source_observation": "2026-09-25T09:22:27.036Z",
       "records_added": null,
       "records_updated": null,
       "source_count": "per-item",
       "source_failures": null,
       "status": "HEALTHY",
-      "source_health": "curated — refreshed at build; scheduled rebuilds twice daily (06:00 / 18:00 UTC) when TP_BUILD_HOOK_URL is set",
+      "source_health": "curated — refreshed at build; next refresh depends on the publishing cycle",
       "records": {
         "GCC": {
           "label": "GCC (UAE · Saudi · Qatar · Oman · Kuwait · Bahrain)",
           "items": [
+            {
+              "title": "DEWA — Installation, testing and commissioning of distribution substations and kiosks (incl. disconnection/recovery/replacement of equipment)",
+              "snippet": "DEWA floated tender 2122600155 for installation, testing and commissioning of distribution substations and kiosks, including disconnection, recovery and replacement of equipment.",
+              "value": "",
+              "src": "dewa open tenders · 24 Sep 2026 [en]",
+              "url": "https://www.dewa.gov.ae/en/supplier/services/list-of-tender-documents",
+              "cls": "PIPELINE",
+              "lang": "en",
+              "isNew": true,
+              "region": "GCC",
+              "buyer": "Dubai Electricity & Water Authority (DEWA)",
+              "event_date": "2026-09-24",
+              "publication_date": "2026-09-24",
+              "tender_float_date": "2026-09-24",
+              "tender_close_date": "2026-10-27",
+              "date_iso": "2026-09-24",
+              "classifications": [
+                "TENDER",
+                "UTILITY_PROCUREMENT",
+                "MAINTENANCE",
+                "TRANSFORMER_REPLACEMENT"
+              ],
+              "evidence_grade": "SUPPORTED",
+              "candidate_id": "uae-dewa-2122600155",
+              "tender_id": "2122600155",
+              "age_tier": "FRESH",
+              "date_label": "24 Sep 2026"
+            },
+            {
+              "title": "Saudi Water Authority — 2.5 MVA 6.6/0.4 kV oil-filled transformer for Rabigh Production System",
+              "snippet": "Etimad-listed SWA competition for supply of a medium-voltage oil-filled electrical transformer (2.5 MVA, 6.6/0.4 kV) for Rabigh Production System (ref. 60020899).",
+              "value": "2.5 MVA · 6.6/0.4 kV",
+              "src": "etimad · 2 Sep 2026 [en]",
+              "url": "https://tenders.etimad.sa/Tender/DetailsForVisitor?STenderId=YYulueYsiIAkLL3QtkpaYQ==",
+              "cls": "CONFIRMED",
+              "lang": "en",
+              "isNew": true,
+              "region": "GCC",
+              "buyer": "Saudi Water Authority",
+              "event_date": "2026-09-02",
+              "publication_date": "2026-08-18",
+              "tender_float_date": "2026-08-18",
+              "tender_close_date": "2026-09-02",
+              "date_iso": "2026-09-02",
+              "classifications": [
+                "TENDER",
+                "UTILITY_PROCUREMENT"
+              ],
+              "evidence_grade": "CONFIRMED",
+              "candidate_id": "sa-swa-rabigh-2p5mva",
+              "tender_id": "60020899",
+              "age_tier": "RECENT",
+              "date_label": "2 Sep 2026"
+            },
+            {
+              "title": "Saudi Water Authority — 33/0.4 kV grounding (earthing) transformer, Jubail Phase 4",
+              "snippet": "توريد وتركيب محول التأريض 33/0.4 كيلو فولت بمرحلة الجبيل 4 — SWA Etimad competition 260839007703.",
+              "value": "33/0.4 kV",
+              "src": "etimad · 3 Sep 2026 [en]",
+              "url": "https://bidsfactory.com/en/tenders/3304-4-saudi_etimad-40d892d6879b8761",
+              "cls": "PIPELINE",
+              "lang": "en",
+              "isNew": true,
+              "region": "GCC",
+              "buyer": "Saudi Water Authority",
+              "event_date": "2026-09-03",
+              "publication_date": "2026-09-03",
+              "tender_float_date": "2026-09-03",
+              "tender_close_date": "2026-09-19",
+              "date_iso": "2026-09-03",
+              "classifications": [
+                "TENDER",
+                "UTILITY_PROCUREMENT"
+              ],
+              "evidence_grade": "SUPPORTED",
+              "candidate_id": "sa-swa-jubail-grounding",
+              "tender_id": "260839007703",
+              "age_tier": "RECENT",
+              "date_label": "3 Sep 2026"
+            },
+            {
+              "title": "33 kV transformer replacement — Substation No. 6, Technical College for Girls, Al-Aflaj",
+              "snippet": "General Foundation for Technical and Vocational Training via Etimad — replacement of the 33 kV transformer at station No. 6, Technical College for Girls, Al-Aflaj.",
+              "value": "33 kV",
+              "src": "etimad · 8 Sep 2026 [en]",
+              "url": "https://tenderimpulse.com/government-tenders/saudi-arab/replacement-of-the-33-kv-transformer-for-station-no-6-with-the-technical-college-14893514",
+              "cls": "PIPELINE",
+              "lang": "en",
+              "isNew": true,
+              "region": "GCC",
+              "buyer": "Technical and Vocational Training Corporation (TVTC) / Technical College for Girls Al-Aflaj",
+              "event_date": "2026-09-08",
+              "publication_date": "2026-09-08",
+              "tender_float_date": "2026-09-08",
+              "date_iso": "2026-09-08",
+              "classifications": [
+                "TENDER",
+                "TRANSFORMER_REPLACEMENT",
+                "UTILITY_PROCUREMENT"
+              ],
+              "evidence_grade": "SUPPORTED",
+              "candidate_id": "sa-al-aflaj-33kv-replacement",
+              "tender_id": "260939000800",
+              "age_tier": "RECENT",
+              "date_label": "8 Sep 2026"
+            },
+            {
+              "title": "King Abdulaziz Air Base Hospital — 1,500 kVA standby transformer, Dhahran",
+              "snippet": "Competition to supply and install a 1,500 kVA backup/standby electrical transformer for the chillers area at King Abdulaziz Air Base Hospital, Dhahran (Etimad 260839006518).",
+              "value": "1500 kVA",
+              "src": "etimad · 14 Sep 2026 [en]",
+              "url": "https://bidsfactory.com/en/tenders/1500-saudi_etimad-8a384ba1b679c3e3",
+              "cls": "PIPELINE",
+              "lang": "en",
+              "isNew": true,
+              "region": "GCC",
+              "buyer": "King Abdulaziz Air Base Hospital, Dhahran",
+              "event_date": "2026-09-14",
+              "publication_date": "2026-09-14",
+              "tender_float_date": "2026-09-14",
+              "tender_close_date": "2026-09-30",
+              "date_iso": "2026-09-14",
+              "classifications": [
+                "TENDER",
+                "UTILITY_PROCUREMENT"
+              ],
+              "evidence_grade": "SUPPORTED",
+              "candidate_id": "sa-dhahran-1500kva-standby",
+              "tender_id": "260839006518",
+              "age_tier": "RECENT",
+              "date_label": "14 Sep 2026"
+            },
+            {
+              "title": "Saudi Water Authority — supervision of Transformer T803 replacement (502 MVA, 380/110/13.8 kV) PST1 Yanbu Phase 3",
+              "snippet": "Etimad notice 260839007272: project for supervision of GIB replacement and Transformer T803 replacement at SWA third-stage conversion station, Yanbu seawater desalination system. Underlying T803 supply tender (250639001175) floated Jul 2025; Sep 2026 activity is supervision package.",
+              "value": "502 MVA · 380/110/13.8 kV",
+              "src": "etimad · 3 Sep 2026 [en]",
+              "url": "https://tenderimpulse.com/government-tenders/saudi-arab/project-for-the-supervision-of-the-replacement-of-major-gas-solving-bars-gib-and-14656272",
+              "cls": "PIPELINE",
+              "lang": "en",
+              "isNew": true,
+              "region": "GCC",
+              "buyer": "Saudi Water Authority",
+              "event_date": "2026-09-03",
+              "publication_date": "2026-09-03",
+              "tender_float_date": "2026-09-03",
+              "tender_close_date": "2026-09-10",
+              "date_iso": "2026-09-03",
+              "classifications": [
+                "TENDER",
+                "TRANSFORMER_REPLACEMENT",
+                "UTILITY_PROCUREMENT",
+                "MAINTENANCE"
+              ],
+              "evidence_grade": "SUPPORTED",
+              "candidate_id": "sa-swa-yanbu-t803-supervision",
+              "tender_id": "260839007272",
+              "age_tier": "RECENT",
+              "date_label": "3 Sep 2026"
+            },
+            {
+              "title": "MEWRE — replacement of damaged transformers up to 75 MVA and parallel reactors up to 50 MVA (first stage)",
+              "snippet": "Ministry of Electricity, Water and Renewable Energy first-stage procurement for replacement/substitution of damaged transformers ≤75 MVA and parallel reactors ≤50 MVA.",
+              "value": "up to 75 MVA (transformers); up to 50 MVA (parallel reactors)",
+              "src": "kuwait central procurement · 12 Sep 2026 [en]",
+              "url": "https://tenderimpulse.com/government-tenders/kuwait/replacement-and-substitution-of-damaged-transformers-up-to-a-capacity-of-75-mva-14709840",
+              "cls": "PIPELINE",
+              "lang": "en",
+              "isNew": true,
+              "region": "GCC",
+              "buyer": "Ministry of Electricity, Water & Renewable Energy (MEWRE)",
+              "event_date": "2026-09-12",
+              "publication_date": "2026-09-07",
+              "tender_float_date": "2026-09-07",
+              "tender_close_date": "2026-10-06",
+              "date_iso": "2026-09-12",
+              "classifications": [
+                "TENDER",
+                "TRANSFORMER_REPLACEMENT",
+                "MAINTENANCE",
+                "UTILITY_PROCUREMENT"
+              ],
+              "evidence_grade": "SUPPORTED",
+              "candidate_id": "kw-mewre-75mva-stage1",
+              "tender_id": "CAPT-GOV-KW-12/2025/2026",
+              "age_tier": "RECENT",
+              "date_label": "12 Sep 2026"
+            },
+            {
+              "title": "MEWRE — dismantling, relocation and installation of one 75 MVA power transformer",
+              "snippet": "Dismantling, relocation and installation of one (1) 75 MVA power transformer at Shuaiba (Ax) Substation.",
+              "value": "75 MVA",
+              "src": "mewre kuwait · 24 Sep 2026 [en]",
+              "url": "http://www.biddetail.com/latest-tenders/117573786$d84ae31a-0b12-4035-93f7-f0d7cdc01f0d",
+              "cls": "PIPELINE",
+              "lang": "en",
+              "isNew": true,
+              "region": "GCC",
+              "buyer": "Ministry of Electricity, Water & Renewable Energy (MEWRE)",
+              "event_date": "2026-09-24",
+              "publication_date": "2026-09-24",
+              "tender_close_date": "2026-11-30",
+              "date_iso": "2026-09-24",
+              "classifications": [
+                "TENDER",
+                "TRANSFORMER_REPLACEMENT",
+                "MAINTENANCE",
+                "UTILITY_PROCUREMENT"
+              ],
+              "evidence_grade": "SUPPORTED",
+              "candidate_id": "kw-mewre-75mva-relocation",
+              "tender_id": "KW-MEWRE-75MVA-RELOC",
+              "age_tier": "FRESH",
+              "date_label": "24 Sep 2026"
+            },
+            {
+              "title": "MEWRE — second-stage maintenance/replacement programme (transformers up to 75 MVA; parallel reactors up to 50 MVA)",
+              "snippet": "Phase-two maintenance and replacement of damaged parts and related civil works for transformers ≤75 MVA and parallel reactors ≤50 MVA.",
+              "value": "up to 75 MVA / 50 MVA reactors",
+              "src": "kuwait central procurement · 24 Sep 2026 [en]",
+              "url": "https://tenderimpulse.com/government-tenders/kuwait/maintenance-and-replacement-of-damaged-parts-and-civil-works-related-to-a-number-14608275",
+              "cls": "PIPELINE",
+              "lang": "en",
+              "isNew": true,
+              "region": "GCC",
+              "buyer": "Ministry of Electricity, Water & Renewable Energy (MEWRE)",
+              "event_date": "2026-09-24",
+              "publication_date": "2026-08-31",
+              "tender_float_date": "2026-08-31",
+              "tender_close_date": "2026-09-29",
+              "date_iso": "2026-09-24",
+              "classifications": [
+                "TENDER",
+                "MAINTENANCE",
+                "TRANSFORMER_REPLACEMENT",
+                "UTILITY_PROCUREMENT"
+              ],
+              "evidence_grade": "SUPPORTED",
+              "candidate_id": "kw-mewre-75mva-stage2",
+              "tender_id": "CAPT-GOV-KW-16/2025/2026",
+              "age_tier": "FRESH",
+              "date_label": "24 Sep 2026"
+            },
+            {
+              "title": "Oman — 10 agreements to localise electrical transformer-component manufacturing (RO15m; 7 new factories)",
+              "snippet": "Ten agreements signed 12 Aug 2026 under APSR cooperation with Voltamp Energy / Invest Oman to localise key transformer components: ~RO15m, 7 new factories (8 components) plus 2 new lines at existing factories (2 components). Sites: Khazaen Economic City, Madayn industrial estates, SOHAR Free Zone. Commercial production expected 2027–2028. 19 Sep 2026 coverage re-surfaced implementation progress — that is publication/update_date, NOT a new signing date.",
+              "value": "RO15 million (~$39m)",
+              "src": "oman observer · 19 Sep 2026 [en]",
+              "url": "https://www.omanobserver.om/article/1194395/business/ro-15m-pacts-signed-to-drive-local-production-of-transformer-components",
+              "cls": "CONFIRMED",
+              "lang": "en",
+              "isNew": true,
+              "region": "GCC",
+              "buyer": "Authority for Public Services Regulation (APSR) / Invest Oman / Voltamp Energy partnership",
+              "event_date": "2026-08-12",
+              "update_date": "2026-09-19",
+              "publication_date": "2026-08-12",
+              "date_iso": "2026-09-19",
+              "classifications": [
+                "FACTORY_INVESTMENT",
+                "LOCALISATION",
+                "NEW_FACTORY",
+                "SUPPLY_CHAIN",
+                "CAPACITY_EXPANSION",
+                "REGULATORY"
+              ],
+              "evidence_grade": "CONFIRMED",
+              "candidate_id": "om-localisation-aug12",
+              "age_tier": "FRESH",
+              "date_label": "19 Sep 2026"
+            },
+            {
+              "title": "EWA Central Stores — 11/0.415 kV 1,000 kVA mineral-oil-filled package substation with distribution board",
+              "snippet": "Bahrain Tender Board 389/2026/BTB (PT/CSD/HR/2026/102): SUBSTATION KIOSK 11/0.415 kV, 1000 kVA, mineral oil filled, with distribution board.",
+              "value": "1000 kVA · 11/0.415 kV",
+              "src": "bahrain tender board · 28 Aug 2026 [en]",
+              "url": "https://www.tenderboard.gov.bh/",
+              "cls": "CONFIRMED",
+              "lang": "en",
+              "isNew": true,
+              "region": "GCC",
+              "buyer": "Electricity & Water Authority (EWA) — Central Stores Directorate",
+              "event_date": "2026-08-28",
+              "publication_date": "2026-08-28",
+              "tender_float_date": "2026-08-27",
+              "tender_close_date": "2026-09-20",
+              "date_iso": "2026-08-28",
+              "classifications": [
+                "TENDER",
+                "UTILITY_PROCUREMENT"
+              ],
+              "evidence_grade": "CONFIRMED",
+              "candidate_id": "bh-ewa-389-2026-1000kva",
+              "tender_id": "389/2026/BTB",
+              "age_tier": "RECENT",
+              "date_label": "28 Aug 2026"
+            },
             {
               "title": "DEWA floats EPC tender for twelve 132/11 kV substations in Dubai South and Expo Valley development zones",
               "snippet": "Dubai Electricity and Water Authority invited commercial bids for 12 new 132/11 kV primary substations plus 48 km of underground 132 kV cabling, supporting aviation and logistics district load growth. Bid closing 28 Oct 2026.",
@@ -30,7 +327,7 @@
               "src": "MEED · 9 Sep 2026 [en]",
               "url": "https://guest.meed.com/dewa-floats-12-substation-tender/",
               "isNew": true,
-              "age_tier": "FRESH",
+              "age_tier": "RECENT",
               "date_iso": "2026-09-09",
               "date_label": "9 Sep 2026"
             },
@@ -41,7 +338,7 @@
               "src": "SaudiGulf Projects · 12 Sep 2026 [en]",
               "url": "https://www.saudigulfprojects.com/2026/09/al-babtain-awarded-al-hasa-north-substation-contract/",
               "isNew": true,
-              "age_tier": "FRESH",
+              "age_tier": "RECENT",
               "date_iso": "2026-09-12",
               "date_label": "12 Sep 2026"
             },
@@ -460,7 +757,7 @@
               "src": "T&D India · 14 Sep 2026 [en]",
               "url": "https://www.tndindia.com/pgcil-approves-investment-for-western-southern-expansion/",
               "isNew": true,
-              "age_tier": "FRESH",
+              "age_tier": "RECENT",
               "date_iso": "2026-09-14",
               "date_label": "14 Sep 2026"
             },
@@ -877,7 +1174,7 @@
               "src": "Hitachi Energy Press · 10 Sep 2026 [en]",
               "url": "https://www.hitachienergy.com/news-and-events/press-releases/2026/09/bad-honnef-testing-expansion",
               "isNew": true,
-              "age_tier": "FRESH",
+              "age_tier": "RECENT",
               "date_iso": "2026-09-10",
               "date_label": "10 Sep 2026"
             },
@@ -888,7 +1185,7 @@
               "src": "Transformer Magazine · 11 Sep 2026 [en]",
               "url": "https://transformer-magazine.com/news/siemens-energy-tennet-complete-balwin3-fat/",
               "isNew": true,
-              "age_tier": "FRESH",
+              "age_tier": "RECENT",
               "date_iso": "2026-09-11",
               "date_label": "11 Sep 2026"
             },
@@ -1317,7 +1614,7 @@
               "src": "Utility Dive · 8 Sep 2026 [en]",
               "url": "https://www.utilitydive.com/news/aep-ohio-puco-transmission-filing-data-centers/829104/",
               "isNew": true,
-              "age_tier": "FRESH",
+              "age_tier": "RECENT",
               "date_iso": "2026-09-08",
               "date_label": "8 Sep 2026"
             },
@@ -1841,9 +2138,11 @@
               "src": "Stockstar 证券之星 · 22 Aug 2026 [zh]",
               "url": "https://wap.stockstar.com/detail/RB2026082200008768",
               "lang": "zh",
-              "age_tier": "RECENT",
+              "age_tier": "BACKGROUND",
               "date_iso": "2026-08-22",
-              "date_label": "22 Aug 2026"
+              "date_label": "22 Aug 2026",
+              "is_active": true,
+              "current_relevance": "Project under active procurement/construction or multi-year grid framework."
             },
             {
               "title": "特变电工 TBEA: bid-evaluation result for main transformers of Jinsha River upper-reach Changbo hydropower station",
@@ -1885,7 +2184,7 @@
               "src": "BusinessDay Nigeria · 19 Aug 2026 [en]",
               "url": "https://businessday.ng/news/article/tcn-expands-lagos-power-grid-with-840mva-transformer-roll-out/",
               "lang": "en",
-              "age_tier": "RECENT",
+              "age_tier": "BACKGROUND",
               "date_iso": "2026-08-19",
               "date_label": "19 Aug 2026"
             },
@@ -2019,7 +2318,7 @@
               "src": "36Kr Japan · 22 Aug 2026 [ja]",
               "url": "https://36kr.jp/500659/",
               "lang": "ja",
-              "age_tier": "RECENT",
+              "age_tier": "BACKGROUND",
               "date_iso": "2026-08-22",
               "date_label": "22 Aug 2026"
             },
@@ -2165,11 +2464,24 @@
             }
           ]
         },
-        "updated": "2026-09-15T14:31:23.374Z",
+        "updated": "2026-09-25T09:22:18.396Z",
         "refresh_meta": {
           "cadence": "twice daily (curated)",
           "refreshed_at_build": true,
-          "note": "Curated transformer-industry intelligence. Regenerated at each build; scheduled rebuilds twice daily (06:00 / 18:00 UTC) when the Netlify build hook is set — not an automatic live scrape."
+          "newest_validated_content_date": "2026-09-25",
+          "note": "updated reflects newest validated GCC/content observation — not a silent redeploy clock. Excludes tender_close_date and future dates.",
+          "gcc_published": [
+            "uae-dewa-2122600155",
+            "sa-swa-rabigh-2p5mva",
+            "sa-swa-jubail-grounding",
+            "sa-al-aflaj-33kv-replacement",
+            "sa-dhahran-1500kva-standby",
+            "sa-swa-yanbu-t803-supervision",
+            "kw-mewre-75mva-stage1",
+            "kw-mewre-75mva-relocation",
+            "kw-mewre-75mva-stage2",
+            "bh-ewa-389-2026-1000kva"
+          ]
         },
         "North America": {
           "label": "North America",
@@ -2182,7 +2494,7 @@
               "url": "https://www.utilitydive.com/news/aep-ohio-puco-transmission-filing-data-centers/829104/",
               "lang": "en",
               "isNew": true,
-              "age_tier": "FRESH",
+              "age_tier": "RECENT",
               "date_iso": "2026-09-08",
               "date_label": "8 Sep 2026"
             }
@@ -2229,18 +2541,18 @@
       "id": "tenders",
       "name": "Tender Watch",
       "cadence": "maintained",
-      "last_build": "2026-09-14",
-      "last_data_refresh": "2026-09-14",
-      "last_attempted_refresh": "2026-09-14",
-      "last_successful_refresh": "2026-09-14",
-      "latest_source_observation": "2026-09-14",
+      "last_build": "2026-09-25",
+      "last_data_refresh": "2026-09-25",
+      "last_attempted_refresh": "2026-09-25",
+      "last_successful_refresh": "2026-09-25",
+      "latest_source_observation": "2026-09-25",
       "records_added": null,
       "records_updated": null,
       "source_count": null,
       "source_failures": null,
       "status": "HEALTHY",
       "source_health": "derived from source-backed projects + intel; never fabricated",
-      "records": 150
+      "records": 151
     },
     {
       "id": "awards",
@@ -2276,6 +2588,24 @@
       "status": "HEALTHY",
       "source_health": "reference only — not a live feed",
       "records": 7
+    },
+    {
+      "id": "gcc_discovery",
+      "name": "GCC Intel discovery",
+      "cadence": "daily (when adapters live)",
+      "description": "GCC utility/tender-board/water-authority discovery layer. Distinct from curated Daily Intel. Discovery does not equal publication.",
+      "last_build": "2026-09-29T21:12:39.710Z",
+      "last_data_refresh": null,
+      "last_attempted_refresh": "2026-09-29",
+      "last_successful_refresh": "2026-09-29T21:12:39.710Z",
+      "latest_source_observation": "2026-09-25",
+      "records_added": 12,
+      "records_updated": null,
+      "source_count": 23,
+      "source_failures": 7,
+      "status": "HEALTHY",
+      "source_health": "4/6+ P0 portal probes live this build — at least one official list returned transformer vocabulary",
+      "records": 12
     }
   ],
   "sources": [
@@ -2299,9 +2629,9 @@
       "works_for": [
         "daily_intel"
       ],
-      "last_checked": "2026-09-14",
-      "last_success": "2026-09-15T14:31:23.374Z",
-      "latest_content_date": "per-item source date",
+      "last_checked": "2026-09-25T09:22:27.036Z",
+      "last_success": "2026-09-25T09:22:27.036Z",
+      "latest_content_date": "2026-09-25T09:22:27.036Z",
       "failure_count": 0,
       "status": "HEALTHY"
     },
@@ -2317,6 +2647,33 @@
       "latest_content_date": null,
       "failure_count": null,
       "status": "MANUAL_REVIEW"
+    },
+    {
+      "name": "GCC procurement & authority registry",
+      "type": "gcc-source-registry",
+      "region": "GCC",
+      "works_for": [
+        "gcc_discovery",
+        "daily_intel",
+        "tenders"
+      ],
+      "last_checked": null,
+      "last_success": null,
+      "latest_content_date": "2026-09-25",
+      "failure_count": null,
+      "status": "MANUAL_REVIEW"
     }
-  ]
+  ],
+  "gcc_market_watch": {
+    "generated": "2026-09-29T21:12:39.710Z",
+    "statement": "4/6+ P0 portal probes live this build — at least one official list returned transformer vocabulary",
+    "markets_registered": 6,
+    "markets_adapter_live": 4,
+    "latest_confirmed_event_date": "2026-09-25",
+    "data_current_claim_allowed": false,
+    "honesty": "Do NOT declare DATA CURRENT because the build ran today. Freshness depends on source coverage + source_checked_at + validated newest record.",
+    "surface_id": "gcc_discovery",
+    "status": "MANUAL_REVIEW",
+    "source_health": "GCC source registry populated; portal adapters NEEDS_ADAPTER until live crawl stamps last_checked"
+  }
 }
