@@ -3,7 +3,7 @@
  *
  * Implements:
  * 1. Content-Age Classification:
- *    - FRESH: 0–7 days (relative to current date 2026-09-15)
+ *    - FRESH: 0–7 days (relative to the build's UTC calendar day)
  *    - RECENT: 8–30 days
  *    - BACKGROUND: >30 days to 12 months
  *    - HISTORICAL: >12 months
@@ -34,7 +34,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const TODAY_STR = '2026-09-15';
+const TODAY_STR = new Date().toISOString().slice(0, 10);
 const TODAY = new Date(TODAY_STR + 'T00:00:00Z');
 
 function parseDate(s) {

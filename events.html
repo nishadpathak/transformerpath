@@ -4186,14 +4186,19 @@ function render() {
   else list.sort((a,b) => a.s.localeCompare(b.s));
 
   const elUp = document.getElementById("upNext");
-  if (elUp && (yearF !== "all" || monthF !== "all" || regionF !== "all" || themeF !== "all" || qF)) {
-    const up = list.filter(ev => isDiscoverableClient(ev) && !/unconfirmed|date est\.|⚠/i.test(ev.d || '')).slice(0,3);
-    elUp.innerHTML = up.map(ev => {
+  // Always recompute Up-next from the live clock. SSR cards go stale between
+  // deploys; relative badges alone left ended fairs sitting in the hero strip.
+  if (elUp) {
+    const strip = EVENTS
+      .filter(ev => new Date(ev.e) >= now && isDiscoverableClient(ev) && !/unconfirmed|date est\.|⚠/i.test(ev.d || ''))
+      .sort((a, b) => a.s.localeCompare(b.s))
+      .slice(0, 3);
+    elUp.innerHTML = strip.map(ev => {
       const d = relDays(ev.s);
       const endPassed = Date.parse(ev.e + 'T23:59:59Z') < todayUTC;
       const isLive = !endPassed && Date.parse(ev.s + 'T00:00:00Z') <= todayUTC;
-      const lbl = endPassed ? 'Ended' : isLive ? 'Live now' : d === 0 ? 'Today' : d === 1 ? 'Tomorrow' : 'In '+d+' days';
-      return `<div class="up-next-card"><span class="up-next-abs">${fmt(ev.s)} → ${fmt(ev.e)}</span><h3>${ev.n}</h3><span class="up-next-rel" data-rel="${ev.s}" data-rel-end="${ev.e}">${lbl}</span><div class="venue">📍 ${ev.v} — ${ev.c}, ${ev.co}</div><a class="btn btn-amber btn-sm" href="${ev.u}" target="_blank" rel="noopener">View →</a></div>`;
+      const lbl = endPassed ? 'Ended' : isLive ? 'Live now' : d === 0 ? 'Today' : d === 1 ? 'Tomorrow' : 'In ' + d + ' days';
+      return `<div class="up-next-card"><span class="up-next-abs">${fmt(ev.s)} → ${fmt(ev.e)}</span><h3>${ev.n}</h3><span class="up-next-rel" data-rel="${ev.s}" data-rel-end="${ev.e}">${lbl}</span><div class="venue">📍 ${ev.v} — ${ev.c}, ${ev.co}</div><a class="btn btn-amber btn-sm" href="${ev.u}" target="_blank" rel="noopener">View →</a> <a class="btn btn-outline btn-sm" href="map.html?layer=events&amp;q=${encodeURIComponent(ev.n)}">View on map</a></div>`;
     }).join('');
   }
 
@@ -4254,6 +4259,7 @@ document.querySelectorAll("#theme-filters button").forEach(b => b.addEventListen
   b.classList.add("on"); themeF = b.dataset.theme; render();
 }));
 if (qF) render();
+else render(); // always refresh Up-next + grid against today's clock
 
 /* Detect the visitor's country → nearest hub airport, then update origin. Fails silently. */
 fetch('https://ipapi.co/json/')
@@ -4300,6 +4306,19 @@ fetch('https://ipapi.co/json/')
         el.textContent = 'In ' + dt + ' days';
       }
     });
+    // Auto-adjust to today: remove events that have already ended from the
+    // "upcoming" grid + strip and keep the "Showing N upcoming events" count honest.
+    var hadStamps = !!document.querySelector('#grid .event-card[data-end]');
+    document.querySelectorAll('#grid .event-card[data-end]').forEach(function(card){
+      var de = card.getAttribute('data-end');
+      if (de && now > new Date(de + 'T23:59:59Z')) card.remove();
+    });
+    document.querySelectorAll('#upNext .up-next-card').forEach(function(c){
+      var rel = c.querySelector('[data-rel-end]');
+      if (rel && now > new Date((rel.getAttribute('data-rel-end') || '') + 'T23:59:59Z')) c.remove();
+    });
+    var cnt = document.getElementById('count');
+    if (cnt && hadStamps) cnt.textContent = 'Showing ' + document.querySelectorAll('#grid .event-card').length + ' upcoming events';
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', upd);
   else upd();
