@@ -1,51 +1,57 @@
-PRODUCTION PROVENANCE AUDIT — 30 Sep 2026
-=========================================
+PRODUCTION PROVENANCE AUDIT — 30 Sep 2026 (recheck 19:00 UTC)
+=============================================================
 
-Diagnosis: production (transformerpath.com) is NOT serving the final-stabilization
-release. PR #11/#12 are not merged into main. Production freshness.json still uses
-the pre-three-clock schema; preview has build_at + INTEL COVERAGE DELAYED.
+Verdict: public production is a MIXED generation. Do not treat remaining
+"bugs" as separate content tasks until one release owns every key surface.
 
-## Deploy identity
+## What changed on main today
 
-PROD freshness.generated: 2026-09-30T16:01:11.959Z
-PROD top-level build_at: None
-PROD latest_source_date: None
-PREV build_at: 2026-09-30T16:59:14.586Z
-PREV latest_source_date: 2026-09-25
-PREV public_intel_status: INTEL COVERAGE DELAYED
+origin/main advanced to:
+  35096d689  Intel P0: GCC source-discovery + honest freshness (#6)
 
-## Surface skew (prod vs preview-12)
+So production can now show SOME newer Intel/discovery pieces (e.g. /intelligence
+September events, CG Power Daily Intel attribution language) while still
+serving OLD homepage/intel/FAQ generation artifacts from earlier Maghreb-era
+HTML. That is exactly "different builds coexisting," not "#11 failed."
 
-PROD CG highest cell context: Highest sourced voltage evidence</th><td>400 kV
-PREV CG highest cell context: Highest sourced voltage evidence</th><td>765 kV
+PR #11 / #12 (three clocks, census cleanup, CG MAX voltage, WebGL gate,
+release provenance stamps) are STILL NOT on main.
 
-## Merge state
-intel-unification (#11) NOT in main
-final-stabilization (#12) NOT in main
+## Live production markers (transformerpath.com, this recheck)
 
-## Required next step
-1. Merge #12 (includes #11 work) to main and wait for a single Netlify production deploy.
-2. Re-crawl key surfaces; all must share tp-build-commit / tp-build-at / tp-data-version.
-3. Only then re-audit Intel clocks, CG 765 kV, census copy, WebGL-disabled browser.
+| Surface | Finding |
+| --- | --- |
+| / | 906 at top + stale "1,002 transformer makers"; "After the hero…"; DATA CURRENT language with older source dates; NO tp-build-* stamps |
+| /intel.html | Old freshness UX (DATA STALE / Last Refreshed style paths still present in JS/copy); NO tp-build-* stamps |
+| /faq.html | Still documents 36h Current / 36–72h Delayed / >72h Stale |
+| /data/freshness.json | generated 2026-09-30T16:01:11.959Z — OLD schema (no top-level build_at / latest_source_date / public_intel_status) |
+| /data/build-provenance.json | HTTP 404 (release stamps not on production) |
+| /intelligence | Newer typed event architecture visible (explains partial #6 landing) |
+| Commodities | Historical reference — CLOSE |
+| Manufacturer profiles | Newer Intelligence integration visible on CG Power |
 
-Commodities on production: CLOSE (Historical reference presentation).
-WebGL: needs real browser with WebGL disabled after merge — HTML-only crawl insufficient.
+## Release branch (cursor/final-stabilization-a955) after merging main
 
-## Key page HTTP (30 Sep crawl)
+- Merged origin/main (#6) so the next production deploy is one lineage.
+- Homepage on branch: no 1,002 makers, no "After the hero".
+- Intel stamp on branch: INTEL COVERAGE DELAYED + three clocks.
+- FAQ on branch: updated to three-clock / INTEL COVERAGE DELAYED model (removed 36h ladder).
+- 12 key surfaces share identical tp-build-commit / tp-build-at / tp-data-version.
+- data/build-provenance.json is generated and copied via build-dist data/ allowlist.
 
-All of /, /intel.html, /intelligence, /pricing, /manufacturers,
-/manufacturers/cg-power/, /events/middle-east-energy/, /jobs.html, /explorer
-returned HTTP 200 on production. jobs.html is reachable (auditor retrieval
-failure was transient or path-specific).
+## Only P0
 
-## What this branch adds for the next production deploy
+1. Merge PR #12 to main.
+2. Wait for ONE Netlify production deploy to finish.
+3. Recrawl and require identical meta on every key URL:
+     tp-build-commit
+     tp-build-at
+     tp-data-version
+   Pages: / , /intel.html , /intelligence , /pricing , /faq.html ,
+   /manufacturers , /manufacturers/cg-power/ , /events/middle-east-energy/ ,
+   /jobs.html , /explorer , /data/build-provenance.json
+4. If any surface disagrees or 404s provenance → stop; purge/revalidate that
+   artifact; do not edit page copy.
+5. Only after identity matches: re-audit WebGL-disabled browser + Intel clocks.
 
-- data/build-provenance.json (build_commit, build_at, data_version)
-- Meta stamps on 11 key HTML surfaces: tp-build-commit / tp-build-at / tp-data-version
-- check-release-provenance.js fails the Netlify build if surfaces disagree
-- publication_date < event_date → REVIEW_REQUIRED for non-tender stories
-  (check-intel-date-order.js + lib/gcc-discovery gradeEvidence)
-
-After merge: re-crawl production; every key page must show the same
-tp-build-commit. If homepage and /intel.html disagree, stop and fix deploy —
-do not patch page copy.
+No new product work until step 4 passes.
