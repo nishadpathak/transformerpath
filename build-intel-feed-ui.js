@@ -356,12 +356,20 @@ PIPELINE.forEach(function (p) {
 });
 
 // 5. Factory Expansions & Manufacturing Capacity
+// Status strings often carry COD / commercial-production milestones ("Apr 2029",
+// "operations expected 2028"). Those are not observation dates — never put them
+// in the intel byline or age them as FRESH. Prefer undated BACKGROUND over a lie.
 FACTORIES.forEach(function (f) {
   if (!f || !f.name) return;
   let cls = 'INFERRED';
   if (/opened|operational|complete|ramping/i.test(f.status || '')) cls = 'CONFIRMED';
   else if (/announc|planned|construction|under/i.test(f.status || '')) cls = 'PIPELINE';
-  const dated = parseItemDate(f.status || f.backer || '');
+  let dated = parseItemDate(f.status || f.backer || '');
+  const _statusFuture = !!(dated.dateObj && dated.dateObj.getTime() > TODAY.getTime());
+  const _statusMilestone = /commercial production|operations expected|mass-prod|COD|target(?:ed)?\s+(?:online|COD)|online\s+20\d{2}/i.test(f.status || '');
+  if (_statusFuture || _statusMilestone) {
+    dated = { iso: null, label: '', precision: 'unknown', dateObj: null };
+  }
   const ageTier = classifyAgeTier(dated.dateObj);
   pushPost({
     id: slugId('cap', f.name, f.src),
@@ -376,9 +384,9 @@ FACTORIES.forEach(function (f) {
     value: f.cap || '',
     src: f.backer || '',
     sourceName: f.backer || 'Source',
-    date: dated.label || '2026',
-    dateIso: dated.iso || '2026-06-30',
-    datePrecision: dated.precision === 'unknown' ? 'year' : dated.precision,
+    date: dated.label || '',
+    dateIso: dated.iso || null,
+    datePrecision: dated.precision,
     url: f.src || '',
     provenance: provenanceOf({ src: f.backer, url: f.src }, registry, 'CURATED'),
     buyer: f.backer || ''

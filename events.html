@@ -4306,6 +4306,19 @@ fetch('https://ipapi.co/json/')
         el.textContent = 'In ' + dt + ' days';
       }
     });
+    // Auto-adjust to today: remove events that have already ended from the
+    // "upcoming" grid + strip and keep the "Showing N upcoming events" count honest.
+    var hadStamps = !!document.querySelector('#grid .event-card[data-end]');
+    document.querySelectorAll('#grid .event-card[data-end]').forEach(function(card){
+      var de = card.getAttribute('data-end');
+      if (de && now > new Date(de + 'T23:59:59Z')) card.remove();
+    });
+    document.querySelectorAll('#upNext .up-next-card').forEach(function(c){
+      var rel = c.querySelector('[data-rel-end]');
+      if (rel && now > new Date((rel.getAttribute('data-rel-end') || '') + 'T23:59:59Z')) c.remove();
+    });
+    var cnt = document.getElementById('count');
+    if (cnt && hadStamps) cnt.textContent = 'Showing ' + document.querySelectorAll('#grid .event-card').length + ' upcoming events';
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', upd);
   else upd();
