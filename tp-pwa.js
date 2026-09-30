@@ -36,9 +36,12 @@
   }
 
   function standalone() {
-    return window.matchMedia('(display-mode: standalone)').matches
-      || window.navigator.standalone === true
-      || document.referrer.indexOf('android-app://') === 0;
+    try {
+      if (window.matchMedia('(display-mode: standalone)').matches) return true;
+      if (window.navigator.standalone === true) return true;
+      if (document.referrer && document.referrer.indexOf('android-app://') === 0) return true;
+    } catch (e) {}
+    return false;
   }
 
   function loadEngage() {
