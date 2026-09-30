@@ -303,9 +303,12 @@
       <div class="hero-stage__copy">
         <p class="hero-stage__brand">Transformer<span>Path</span></p>
         <h1>A power transformer you can take apart in 3D.</h1>
-        <p class="hero-stage__lead">Orbit the live model, then search the sourced manufacturer census, plants, and components behind every part.</p>
+        <p class="hero-stage__lead">Orbit the live model, then watch a short tour of the intel, directory, grids, events, and RFQ tools behind every part.</p>
         <div class="hero-stage__ctas">
           <a class="btn-primary" href="power3d.html">Open free 3D explorer</a>
+          <button class="btn-ghost" type="button" id="heroWatchBtn" aria-haspopup="dialog" aria-controls="heroVideoModal">
+            <span class="play" aria-hidden="true">▶</span> Watch the platform tour
+          </button>
           <a class="btn-ghost" href="directory.html">Browse supplier directory →</a>
         </div>
       </div>
@@ -313,6 +316,23 @@
   </div>
   <p class="hero-stage__hint">Drag to orbit · scroll to zoom</p>
 </section>
+
+<div class="tp-video-modal" id="heroVideoModal" hidden role="dialog" aria-modal="true" aria-labelledby="heroVideoTitle">
+  <div class="tp-video-dialog">
+    <div class="tp-video-bar">
+      <span id="heroVideoTitle">TransformerPath — platform features tour</span>
+      <button type="button" id="heroVideoClose" aria-label="Close platform tour">×</button>
+    </div>
+    <video
+      id="heroVideo"
+      controls
+      playsinline
+      preload="none"
+      poster="media/platform-features-poster.jpg"
+      src="media/platform-features-tour.mp4">
+    </video>
+  </div>
+</div>
 
 <!-- ══ Platform census — search + sourced counts ══ -->
 <style>
@@ -1144,5 +1164,32 @@ if('IntersectionObserver' in window){
 <script src="material-latest.js?v=7" defer></script>
 <script src="tp-freshness.js?v=7" defer></script>
 <script src="tp-feedback.js?v=7" defer></script>
+<script>
+(function(){
+  var modal = document.getElementById('heroVideoModal');
+  var video = document.getElementById('heroVideo');
+  var openBtn = document.getElementById('heroWatchBtn');
+  var closeBtn = document.getElementById('heroVideoClose');
+  if(!modal || !video || !openBtn) return;
+  var lastFocus = null;
+  function openModal(){
+    lastFocus = document.activeElement;
+    modal.hidden = false;
+    document.body.style.overflow = 'hidden';
+    try { video.currentTime = 0; video.play(); } catch(e){}
+    closeBtn && closeBtn.focus();
+  }
+  function closeModal(){
+    video.pause();
+    modal.hidden = true;
+    document.body.style.overflow = '';
+    if(lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  openBtn.addEventListener('click', openModal);
+  closeBtn && closeBtn.addEventListener('click', closeModal);
+  modal.addEventListener('click', function(e){ if(e.target === modal) closeModal(); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && !modal.hidden) closeModal(); });
+})();
+</script>
 </body>
 </html>
