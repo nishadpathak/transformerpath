@@ -51,7 +51,10 @@ check('Homepage tenders matches site-stats', homeTenders === STATS.tenders, home
 check('Homepage openTenders matches site-stats', homeOpenTenders === STATS.openTenders, homeOpenTenders + ' vs ' + STATS.openTenders);
 check('Homepage awards matches site-stats', homeAwards === STATS.awards, homeAwards + ' vs ' + STATS.awards);
 check('Homepage upcomingEvents matches site-stats', homeEvents === STATS.upcomingEvents, homeEvents + ' vs ' + STATS.upcomingEvents);
-check('Homepage uses the 3D hero stage', HOME.includes('class="hero-stage"') && HOME.includes('src="hero-3d.html"'));
+check('Homepage uses the 3D hero stage', HOME.includes('class="hero-stage"'));
+check('Hero uses static poster for LCP', HOME.includes('id="heroPoster"') && HOME.includes('class="hero-poster"') && HOME.includes('brand/hero.jpg'));
+check('Hero WebGL is deferred (data-src, not eager src)', /id="hero3dFrame"[\s\S]*?data-src="hero-3d\.html"/.test(HOME) && !/<iframe[^>]*id="hero3dFrame"[^>]*\ssrc=/.test(HOME));
+check('Hero Load interactive 3D control is present', HOME.includes('id="heroLoad3d"') && /Load interactive 3D/i.test(HOME));
 check('Hero 3D page is present', fs.existsSync('hero-3d.html'));
 check('Hero 3D core script is present', fs.existsSync('tp-3d-core.js'));
 check('Hero 3D power assembly is present', fs.existsSync('tp-power-assembly.js'));

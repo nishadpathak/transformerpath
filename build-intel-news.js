@@ -154,9 +154,9 @@ intel.updated = intel.refresh_meta && intel.refresh_meta.newest_validated_conten
       : intel.refresh_meta.newest_validated_content_date)
   : new Date().toISOString();
 intel.refresh_meta = Object.assign({}, intel.refresh_meta || {}, {
-  cadence: 'daily (curated)',
+  cadence: 'twice daily (curated)',
   refreshed_at_build: true,
-  note: 'Curated transformer-industry intelligence. updated tracks newest validated content observation when present — not a silent redeploy clock.',
+  note: 'Curated transformer-industry intelligence. updated tracks newest validated content observation when present — not a silent redeploy clock. Scheduled rebuilds twice daily (06:00 / 18:00 UTC) when the Netlify build hook is set.',
 });
 const FOLD = { China: 'RoW', AsiaPac: 'RoW', LatAm: 'RoW', Africa: 'RoW' };
 const srcByRegion = {};
