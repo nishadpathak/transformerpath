@@ -1,53 +1,42 @@
-MERGE CONFLICT CLASSIFICATION — vs origin/main (fetched 2026-10-02)
-==================================================================
+MERGE CONFLICT CLASSIFICATION — vs origin/main
+Fetched: 2026-10-02T20:35:52.576751+00:00
+origin/main: ff38af7fa90d0d8b8b08b6111e5e6d95fb5fcda6
 
-## PR #12 cursor/final-stabilization-a955 (this sprint branch)
+## Current branch PR #12 (cursor/final-stabilization-a955)
 
-Status: MERGEABLE — origin/main is an ancestor of HEAD.
-Conflicts with main: NONE.
-Action: none for merge conflicts; unblock Netlify CI then merge for production truth.
+Status: MERGEABLE — Already up to date with origin/main (main is ancestor).
+Conflicts with main: **NONE**.
+Simple conflicts to fix: n/a.
+Action: none for merge conflicts. Unblock Netlify deploy-preview separately.
 
-## PR #11 cursor/intel-unification-integrity-a955 — CONFLICTING
+## PR #11 cursor/intel-unification-integrity-a955 — CONFLICTING (INTENT)
 
-Files:
-| File | Class | Reason |
+| File | Class | Notes |
 | --- | --- | --- |
-| build-freshness.js | INTENT | Competing freshness models (legacy HEALTHY ladder vs three-clock INTEL COVERAGE DELAYED). #12 already carries the intended three-clock path. |
-| check-links.js | SIMPLE | Overlapping link-resolution edits; mechanical combine possible, but superseded by #12. |
-| data/freshness.json | INTENT | Generated artifact from different freshness builders — do not hand-merge. |
-| data/intel.json | INTENT | Divergent intel universe / timestamps; must come from one generator. |
-| intel.html | INTENT | Public copy + clock UX conflict. |
-| netlify.toml | INTENT | Build gates + /intel routing differ; #12’s rewrite-only /intel is required after loop diagnosis. |
+| build-freshness.js | INTENT | Three-clock vs legacy freshness model |
+| check-links.js | SIMPLE | Mechanical; superseded by #12 |
+| data/freshness.json | INTENT | Generated artifact — do not hand-merge |
+| data/intel.json | INTENT | Competing intel universes |
+| intel.html | INTENT | Public clock UX |
+| netlify.toml | INTENT | Routing/build gates |
 
-Recommendation: CLOSE as superseded by #12 (intel unification already folded in).
+Recommendation: **close as superseded by #12**.
 
-## PR #10 cursor/p4-alerts-adapters-desk-a955 — CONFLICTING
+## PR #10 cursor/p4-alerts-adapters-desk-a955 — CONFLICTING (MIXED)
 
-Files:
-| File | Class | Reason |
+| File | Class | Notes |
 | --- | --- | --- |
-| build-dist.js | SIMPLE | Allowlist / copy-list overlap — mechanical. |
-| build-freshness.js | INTENT | Same freshness-model conflict as #11. |
-| netlify.toml | INTENT | Schedule / build-command / redirect divergence vs #12. |
+| build-dist.js | SIMPLE | Allowlist overlap |
+| build-freshness.js | INTENT | Freshness model |
+| netlify.toml | INTENT | Schedule/command/redirects |
 
-Recommendation: rebase AFTER #12 lands; keep alerts/adapters commits, take #12 freshness + netlify routing.
+Recommendation: rebase after #12; take #12 freshness + netlify.
 
-## PR #4 cursor/integrity-learner-profile-c468 — CONFLICTING
+## PR #4 cursor/integrity-learner-profile-c468 — CONFLICTING (INTENT-HEAVY)
 
-Files (many): academy/calculator/compare/course-gate/config/pricing/index/intel/grid-lab/tools + build-dist/freshness/site-stats/bump-assets/netlify.
+Census 911 vs 906, Learner Profile/pricing, freshness, grid-lab add/add, many HTML surfaces.
+Recommendation: **do not merge this sprint** — human product decision required.
 
-| Theme | Class | Reason |
-| --- | --- | --- |
-| Census / site-stats (911 vs 906) | INTENT | Canonical count is intentionally 906; #4-era 911 must not return. |
-| pricing.html / Learner Profile | INTENT | Product/pricing surface conflict — out of sprint scope; needs human product decision. |
-| build-freshness / intel.html | INTENT | Freshness model conflict. |
-| netlify.toml / build-dist / bump-assets | SIMPLE-ISH | Mechanical once intent files resolved — but blocked by pricing/census intents. |
-| grid-lab.html add/add | INTENT | New surface vs stabilization “no new product” rule. |
+## Simple conflicts fixed on this pass
 
-Recommendation: DO NOT merge during this sprint. Human decision on Learner Profile / pricing; census must stay 906.
-
-## Summary
-
-- Simple-only conflicts: none that are worth fixing on #11/#10/#4 while #12 is the release vehicle.
-- Complicated / intent conflicts: freshness clocks, census 906 vs 911, Learner Profile pricing, competing intel.html / netlify routing.
-- Fix applied on #12: none needed for main merge conflicts (already integrated).
+None on #12 (no conflicts). No safe simple auto-merge on #11/#10/#4 without reopening intent debates; leave those PRs unmerged.
