@@ -27,6 +27,7 @@ const SKIP_DIRS = new Set([
 const SKIP_FILES = new Set([
   'check-census-stale.js',
   'check-config.js',
+  'check-data-health.js',
   'data/census-reconciliation-911-to-906.json'
 ]);
 
