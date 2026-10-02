@@ -58,7 +58,7 @@ const KEY_SURFACES = [
   'intelligence.html',
   'pricing.html',
   'manufacturers.html',
-  'manufacturers/cg-power/index.html',
+  'manufacturers/cg-power-and-industrial-solutions/index.html',
   'events/middle-east-energy/index.html',
   'jobs.html',
   'explorer.html',

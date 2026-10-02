@@ -387,6 +387,64 @@ html, body {
   box-shadow: 0 4px 14px rgba(245, 166, 35, 0.4);
 }
 
+.gl-parts-panel {
+  background: rgba(7, 14, 23, 0.75);
+  border: 1px solid var(--gl-panel-border);
+  border-left: 3px solid var(--gl-accent);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin: 10px 0 8px;
+}
+
+.gl-parts-title {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  color: var(--gl-accent);
+  margin-bottom: 4px;
+}
+
+.gl-parts-note {
+  font-size: 0.7rem;
+  color: var(--gl-muted);
+  line-height: 1.4;
+  margin: 0 0 8px;
+}
+
+.gl-parts-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.gl-parts-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.gl-parts-list a {
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.gl-parts-list a:hover {
+  color: var(--gl-accent);
+  text-decoration: underline;
+}
+
+.gl-parts-ev {
+  font-size: 0.68rem;
+  color: var(--gl-muted);
+  line-height: 1.35;
+}
+
 .gl-sub-links {
   display: flex;
   gap: 6px;

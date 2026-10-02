@@ -22,6 +22,8 @@ const SKIP = ['archive', '_private', 'transformerpath-site', 'transformerpath', 
 const files = walk('.', SKIP);
 
 // Link target existence: resolve relative to the file's directory.
+// Clean routes like /intel are served via Netlify redirects/rewrites to
+// intel.html — treat those as valid when the matching .html (or index.html) exists.
 const siteRoot = process.cwd();
 function existsTarget(fromFile, target) {
   const clean = target.split('#')[0].split('?')[0].trim();
@@ -32,7 +34,16 @@ function existsTarget(fromFile, target) {
   const resolved = clean.startsWith('/')
     ? path.resolve(siteRoot, clean.slice(1))          // site-absolute (Netlify serves from publish root)
     : path.resolve(path.dirname(fromFile), clean);
-  return { ok: fs.existsSync(resolved), resolved };
+  if (fs.existsSync(resolved)) return { ok: true, resolved };
+  // Extensionless pretty URL → sibling .html
+  if (!path.extname(resolved) && fs.existsSync(resolved + '.html')) {
+    return { ok: true, resolved: resolved + '.html' };
+  }
+  // Directory pretty URL → index.html
+  if (!path.extname(resolved) && fs.existsSync(path.join(resolved, 'index.html'))) {
+    return { ok: true, resolved: path.join(resolved, 'index.html') };
+  }
+  return { ok: false, resolved };
 }
 
 // Strip JS template literals and string-concat expressions so ${...} and '+...+'
