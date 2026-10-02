@@ -17,6 +17,47 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="TransformerPath">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is Daily Intel free?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Yes. TransformerPath Daily Intel is free to read — sourced transformer-industry news, tenders and project signals with evidence grades. Paid Intel Pro adds watchlists, alerts and exports." }
+    },
+    {
+      "@type": "Question",
+      "name": "How fresh is Daily Intel?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Curated Daily Intel regenerates on a twice-daily deploy cadence (06:00 and 18:00 UTC). The desk shows the last successful data refresh. Within 36 hours is Data Current; 36–72 hours is Refresh Delayed; beyond 72 hours is Data Stale. Page build date and source refresh date are distinct." }
+    },
+    {
+      "@type": "Question",
+      "name": "What do CONFIRMED, INFERRED and PIPELINE mean?",
+      "acceptedAnswer": { "@type": "Answer", "text": "CONFIRMED means transformer scope is explicitly established in the source. INFERRED means a transformer opportunity is reasonably implied. PIPELINE covers planned, tender or pre-award work. Discovery of a candidate is not the same as publishing an Intel card." }
+    },
+    {
+      "@type": "Question",
+      "name": "Where is the weekly GCC tenders LinkedIn pack?",
+      "acceptedAnswer": { "@type": "Answer", "text": "A weekly pack of CONFIRMED GCC transformer tenders is auto-drafted at https://transformerpath.com/gcc-weekly-pack.html for LinkedIn distribution." }
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "name": "TransformerPath Daily Intel",
+  "description": "Curated, sourced transformer-industry intelligence feed with evidence grades (CONFIRMED, INFERRED, PIPELINE, WATCH), regional desks and material-index references.",
+  "url": "https://transformerpath.com/intel.html",
+  "creator": { "@type": "Organization", "name": "TransformerPath", "url": "https://transformerpath.com/" },
+  "license": "https://transformerpath.com/terms.html",
+  "isAccessibleForFree": true,
+  "keywords": ["transformers", "tenders", "grid", "CRGO", "power transformers", "GCC"]
+}
+</script>
 <style>
 /* Intel-page components, on top of the shared site styles (light + dark via vars). */
 :root { --link:#0b5fb8; --ok:#0d6e2f; --ok-bg:#e6f4ea; }
@@ -326,7 +367,7 @@ a.plain:hover { text-decoration:underline; }
       <span style="color:var(--muted);font-size:.9rem">The daily briefing is free and open — built for the desks that buy, build and rate transformers. Every item is sourced; corrections are published, not buried.</span>
     </div>
     <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 16px;margin-bottom:10px;font-size:.82rem;color:var(--muted)">
-      <b style="color:var(--text)">Data freshness:</b> <span id="freshnessLine">Last successful refresh: <b style="color:var(--text)">25 Sept 2026 09:22 UTC</b> · cadence: daily (curated)</span> <span style="color:var(--muted)">· Curated Daily Intel is refreshed at build. Page build date and last successful data refresh are distinct. This line is never left as “Loading…”.</span>
+      <b style="color:var(--text)">Data freshness:</b> <span id="freshnessLine">Last successful refresh: <b style="color:var(--text)">25 Sept 2026 09:22 UTC</b> · cadence: twice daily (curated)</span> <span style="color:var(--muted)">· Curated Daily Intel regenerates at build on a twice-daily schedule (06:00 / 18:00 UTC). Page build date and last successful data refresh are distinct. This line is never left as “Loading…”.</span>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px">
       <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:11px 14px">
@@ -347,9 +388,11 @@ a.plain:hover { text-decoration:underline; }
       </div>
     </div>
   </div>
+  </details>
 
   <div style="max-width:860px;margin:0 auto 22px;display:flex;flex-wrap:wrap;gap:10px">
     <a class="btn btn-amber btn-sm" href="subscribe.html" data-track="newsletter_signup" data-track-context="intel">Receive the Daily Brief →</a>
+    <a class="btn btn-outline btn-sm" href="gcc-weekly-pack.html">Weekly GCC LinkedIn pack →</a>
     <a class="btn btn-outline btn-sm" href="rfq.html" data-track="rfq_started" data-track-context="intel">Looking for suppliers? Submit an RFQ →</a>
     <a class="btn btn-outline btn-sm" href="manufacturers.html" data-track="explore_manufacturers" data-track-context="intel">Explore <span data-stat="manufacturers">906</span> transformer manufacturers →</a>
     <a class="btn btn-outline btn-sm" href="workspace.html" data-track="account_created" data-track-context="intel">Create a free account →</a>
@@ -382,12 +425,18 @@ a.plain:hover { text-decoration:underline; }
 
   <section class="matidx" id="materials" style="max-width:860px;margin:0 auto 22px">
     <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:8px">
-      <h2 style="font-size:1.15rem;color:var(--ink);margin:0">Transformer Material Index</h2>
-      <span style="font-size:.72rem;color:var(--muted)">input-cost signal · latest reference</span>
+      <h2 style="font-size:1.15rem;color:var(--ink);margin:0">Lead-time &amp; materials desk</h2>
+      <span style="font-size:.72rem;color:var(--muted)">dated reference · beside Daily Intel · not a live feed</span>
     </div>
+    <p style="margin:0 0 10px;color:var(--muted);font-size:.86rem;line-height:1.5">CRGO, copper and bushings bind many award schedules. LME copper/aluminium below are dated ring settlements; CRGO/bushing/OLTC slots have no public daily index — we show notes, never invented prices.</p>
     <div id="matRows" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px"></div>
     <div id="matImpact" style="margin-top:10px"></div>
-    <p style="font-size:.74rem;color:var(--muted);line-height:1.5;margin:8px 0 0">Copper &amp; aluminium are a latest reference from the LME 3-month official ring settlement (varies by day — verify against LME official before commercial use). CRGO, ester/oil and pressboard have no public daily index, so they are shown as estimate/contact. Source: <a href="https://www.lme.com/en/market-data/lme-reference-prices/lme-official-price" target="_blank" rel="noopener" style="color:var(--accent)">LME official prices</a>.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:12px;font-size:.82rem;line-height:1.45">
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 12px"><b style="color:var(--amber)">CRGO / GOES</b><div style="color:var(--muted);margin-top:4px">No public daily index — inquire with mill / service centre. Allocation, not spot, usually decides.</div></div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 12px"><b style="color:var(--amber)">Bushings &amp; OLTCs</b><div style="color:var(--muted);margin-top:4px">Common critical path on EHV builds — <a href="components/transformer-bushings.html" style="color:var(--accent)">bushing suppliers</a> · <a href="components/on-load-tap-changers.html" style="color:var(--accent)">OLTC suppliers</a>.</div></div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 12px"><b style="color:var(--amber)">≥100 MVA lead times</b><div style="color:var(--muted);margin-top:4px">Industry desks still cite ~110–180 weeks (varies by book). Verify per RFQ — not a TransformerPath forecast.</div></div>
+    </div>
+    <p style="font-size:.74rem;color:var(--muted);line-height:1.5;margin:8px 0 0">Copper &amp; aluminium: LME 3-month official ring settlement as latest reference — verify before commercial use. Source: <a href="https://www.lme.com/en/market-data/lme-reference-prices/lme-official-price" target="_blank" rel="noopener" style="color:var(--accent)">LME official prices</a>.</p>
   </section>
   <div class="sowhat" style="max-width:860px;margin:0 auto 20px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:11px 16px">
     <b style="color:var(--ink);font-size:.9rem">How to read each panel:</b>
@@ -431,7 +480,6 @@ a.plain:hover { text-decoration:underline; }
     }).catch(function(){});
   })();
   </script>
-  </details>
 
   <div class="intel-desks" role="tablist" aria-label="Intel desks">
     <button type="button" class="intel-tab active" role="tab" id="tab-latest" data-feed="latest" aria-selected="true" aria-controls="intel-timeline">Latest</button>
@@ -1214,7 +1262,7 @@ a.plain:hover { text-decoration:underline; }
   if(!el) return;
   fetch('data/freshness.json').then(function(r){ return r.json().catch(function(){ return {}; }); }).then(function(d){
     var di=(d.surfaces||[]).find(function(s){ return s.id==='daily_intel'; });
-    if(di && di.last_build){ el.innerHTML='Curated Daily Intel <b style="color:var(--text)">last refreshed ' + di.last_build + '</b> · cadence: ' + (di.cadence||'daily'); }
+    if(di && di.last_build){ el.innerHTML='Curated Daily Intel <b style="color:var(--text)">last refreshed ' + di.last_build + '</b> · cadence: ' + (di.cadence||'twice daily'); }
     else { el.innerHTML='Curated Daily Intel <b style="color:var(--text)">refresh date unavailable</b>'; }
   }).catch(function(){ el.textContent='Freshness unavailable'; });
 })();

@@ -66,6 +66,10 @@
       exploreUrl: null,
       directoryCat: 'machinery.html',
       directoryLabel: 'Explore Power Plant Machinery',
+      parts: [
+        { part: 'Stator / IPB interfaces', href: 'components/tank-and-mechanical.html', evidence: 'SUPPORTED — mechanical & enclosure suppliers in directory' },
+        { part: 'Protection & monitoring', href: 'components/protection-monitoring.html', evidence: 'SUPPORTED — relay / monitoring device makers' }
+      ],
       physics: 'Generates bulk electrical power at medium voltage (21 kV) constrained by generator stator winding dielectric insulation limits.'
     },
     {
@@ -87,6 +91,12 @@
       exploreUrl: 'gsu.html',
       directoryCat: 'manufacturers/power-transformers/',
       directoryLabel: 'Explore GSU Manufacturers',
+      parts: [
+        { part: 'GSU / power transformer OEMs', href: 'manufacturers/power-transformers/', evidence: 'CONFIRMED — census OEMs with GSU / EHV capability signals' },
+        { part: '400 kV bushings (OIP/RIP)', href: 'components/transformer-bushings.html', evidence: 'CONFIRMED — bushing specialists with IEC 60137 evidence' },
+        { part: 'ODAF / OFAF cooling plant', href: 'components/transformer-cooling.html', evidence: 'SUPPORTED — cooler / radiator / pump suppliers' },
+        { part: 'CRGO core & conductors', href: 'components/conductors-and-core.html', evidence: 'SUPPORTED — mill / CTC / magnet-wire entities' }
+      ],
       physics: 'Steps voltage up from 21 kV to 400 kV (19.05x increase). At equal transmitted apparent power and equal circuit resistance, line current falls from ~27,493 A to ~1,443 A, reducing conductor I²R losses by ~362.8x! (Illustrative comparison at equal transmitted apparent power and equal assumed circuit resistance. Actual line losses depend on conductor configuration, resistance, length, loading and network design).'
     },
     {
@@ -108,6 +118,10 @@
       exploreUrl: null,
       directoryCat: 'grids.html',
       directoryLabel: 'View Global Grid Standards',
+      parts: [
+        { part: 'HV insulators', href: 'components/high-voltage-insulators.html', evidence: 'SUPPORTED — insulator suppliers for EHV strings' },
+        { part: 'Grid standards & TSOs', href: 'grids.html', evidence: 'CONFIRMED — utility / grid architecture pages' }
+      ],
       physics: 'Bulk power transmission superhighway. Quad-bundle conductors reduce surface electrical gradient, suppressing corona discharge and audible noise.'
     },
     {
@@ -129,6 +143,12 @@
       exploreUrl: 'autotransformer.html',
       directoryCat: 'components/transformer-bushings.html',
       directoryLabel: 'Explore 400 kV Bushings & Components',
+      parts: [
+        { part: '400 kV bushings', href: 'components/transformer-bushings.html', evidence: 'CONFIRMED — bushing type → supplier directory with evidence' },
+        { part: 'Neutral-end OLTC', href: 'components/on-load-tap-changers.html', evidence: 'CONFIRMED — OLTC OEMs with vacuum / diverter evidence' },
+        { part: 'Autotransformer OEMs', href: 'manufacturers/power-transformers/', evidence: 'CONFIRMED — interconnecting autotransformer makers' },
+        { part: 'Oil / fluid preservation', href: 'components/oil-fluids-preservation.html', evidence: 'SUPPORTED — conservator / dehydrating breathers' }
+      ],
       physics: 'Autotransformers share common winding turns between 400 kV and 220 kV systems, lowering internal impedance, copper mass, and core losses.'
     },
     {
@@ -150,6 +170,10 @@
       exploreUrl: null,
       directoryCat: 'grids.html',
       directoryLabel: 'Explore Regional Grid Maps',
+      parts: [
+        { part: 'Regional grid maps', href: 'grids.html', evidence: 'CONFIRMED — voltage / frequency architectures' },
+        { part: 'HV insulators', href: 'components/high-voltage-insulators.html', evidence: 'SUPPORTED — line insulator suppliers' }
+      ],
       physics: 'Transfers bulk power from national grid interconnectors toward regional transmission substations.'
     },
     {
@@ -171,6 +195,12 @@
       exploreUrl: 'power3d.html',
       directoryCat: 'manufacturers/power-transformers/',
       directoryLabel: 'Explore Power Transformer Manufacturers',
+      parts: [
+        { part: 'Power transformer OEMs', href: 'manufacturers/power-transformers/', evidence: 'CONFIRMED — OEMs with public type / voltage evidence' },
+        { part: 'HV bushings', href: 'components/transformer-bushings.html', evidence: 'CONFIRMED — bushing specialists' },
+        { part: 'ONAF cooling', href: 'components/transformer-cooling.html', evidence: 'SUPPORTED — radiator / fan plant' },
+        { part: 'Protection devices', href: 'components/protection-monitoring.html', evidence: 'SUPPORTED — Buchholz / PRV / DGA' }
+      ],
       physics: 'Steps transmission down from 220 kV regional grid to 132 kV subtransmission level, matching regional utility grid voltage levels.'
     },
     {
@@ -192,6 +222,12 @@
       exploreUrl: 'oltc.html',
       directoryCat: 'components/on-load-tap-changers.html',
       directoryLabel: 'Explore On-Load Tap Changers',
+      parts: [
+        { part: 'Vacuum / high-speed OLTC', href: 'components/on-load-tap-changers.html', evidence: 'CONFIRMED — OLTC OEMs with diverter evidence' },
+        { part: 'Power transformer OEMs', href: 'manufacturers/power-transformers/', evidence: 'CONFIRMED — dual-bank / N-1 capable makers' },
+        { part: 'Bushings & terminations', href: 'components/transformer-bushings.html', evidence: 'CONFIRMED — HV/LV bushing suppliers' },
+        { part: 'Match with evidence grades', href: 'match.html', evidence: 'CONFIRMED vs SUPPORTED vs UNKNOWN on RFQ match' }
+      ],
       physics: 'N-1 redundant primary substation. OLTC actively compensates for line voltage drop as consumer loading changes during peak demand.'
     },
     {
@@ -213,6 +249,11 @@
       exploreUrl: 'power3d.html',
       directoryCat: 'manufacturers/distribution-transformers/',
       directoryLabel: 'Explore Distribution Transformers',
+      parts: [
+        { part: 'Distribution transformer OEMs', href: 'manufacturers/distribution-transformers/', evidence: 'CONFIRMED — MV distribution makers in census' },
+        { part: 'Insulation materials', href: 'components/insulation-materials.html', evidence: 'SUPPORTED — pressboard / paper / aramid' },
+        { part: 'ONAN cooling / radiators', href: 'components/transformer-cooling.html', evidence: 'SUPPORTED — radiator suppliers' }
+      ],
       physics: 'Steps 33 kV primary distribution down to 11 kV municipal feeders, supplying city ring mains, commercial parks, and light industry.'
     },
     {
@@ -234,6 +275,11 @@
       exploreUrl: 'explorer.html',
       directoryCat: 'components/insulation-materials.html',
       directoryLabel: 'Explore Transformer Insulation',
+      parts: [
+        { part: 'Cast-resin / oil distribution OEMs', href: 'manufacturers/distribution-transformers/', evidence: 'CONFIRMED — distribution census entities' },
+        { part: 'Insulation & casting resins', href: 'components/insulation-materials.html', evidence: 'SUPPORTED — insulation material suppliers' },
+        { part: 'LV terminations', href: 'components/transformer-bushings.html', evidence: 'SUPPORTED — cable box / LV bushing suppliers' }
+      ],
       physics: 'Final step-down conversion from 11 kV to usable 415 V three-phase / 240 V single-phase domestic and commercial power.'
     },
     {
@@ -255,6 +301,10 @@
       exploreUrl: null,
       directoryCat: 'buyers-guide.html',
       directoryLabel: 'Transformer Buyer\'s Guide',
+      parts: [
+        { part: 'Buyer\'s guide', href: 'buyers-guide.html', evidence: 'How to specify parts with evidence grades' },
+        { part: 'RFQ match (CONFIRMED / SUPPORTED)', href: 'match.html', evidence: 'Surface evidence tier on shortlists' }
+      ],
       physics: 'Final destination of the power journey. Electric power safely consumed across factories, data centers, hospitals, and homes.'
     }
   ];
@@ -969,6 +1019,19 @@
           <a class="gl-action-btn" href="/${stage.exploreUrl}" target="_blank" data-track="grid_explore_inside">
             🔍 Explore Inside 3D Model →
           </a>
+        ` : ''}
+
+        ${(stage.parts && stage.parts.length) ? `
+          <div class="gl-parts-panel" aria-label="Parts to supplier evidence">
+            <div class="gl-parts-title">Parts → suppliers with evidence</div>
+            <p class="gl-parts-note">Each part type links to directory entities graded CONFIRMED / SUPPORTED — not a generic list.</p>
+            <ul class="gl-parts-list">
+              ${stage.parts.map(function (p) {
+                return '<li><a href="/' + p.href + '" data-track="grid_part_supplier">' + p.part + '</a>' +
+                  '<span class="gl-parts-ev">' + p.evidence + '</span></li>';
+              }).join('')}
+            </ul>
+          </div>
         ` : ''}
 
         <div class="gl-sub-links">

@@ -193,6 +193,25 @@
 }
 .hero-stage__viz{ position:absolute; inset:0; z-index:0; }
 .hero-stage__viz iframe{ width:100%; height:100%; border:0; display:block; background:#07111c; }
+.hero-poster{
+  position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+  display:block; background:#07111c;
+}
+.hero-load3d{
+  position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); z-index:2;
+  display:inline-flex; align-items:center; gap:10px;
+  background:rgba(13,27,46,.82); color:#fff; border:1px solid rgba(245,166,35,.55);
+  border-radius:999px; padding:12px 18px; font-weight:800; font-size:.92rem; cursor:pointer;
+  backdrop-filter:blur(6px);
+}
+.hero-load3d .play{
+  display:inline-flex; width:28px; height:28px; border-radius:999px; align-items:center; justify-content:center;
+  background:var(--hs-amber,#f5a623); color:#0d1b2e; font-size:.8rem;
+}
+.hero-load3d:hover{ border-color:#f5a623; background:rgba(13,27,46,.92); }
+.hero-stage.is-3d-live .hero-poster,
+.hero-stage.is-3d-live .hero-load3d{ display:none; }
+.hero-stage.is-3d-live iframe{ display:block; }
 .hero-stage__scrim{
   position:absolute; inset:0; z-index:1; pointer-events:none;
   background:
@@ -288,13 +307,27 @@
 </style>
 
 <section class="hero-stage" aria-label="TransformerPath hero">
-  <div class="hero-stage__viz" aria-hidden="false">
+  <div class="hero-stage__viz" id="heroViz" aria-hidden="false">
+    <img
+      id="heroPoster"
+      class="hero-poster"
+      src="brand/hero.jpg"
+      width="1600"
+      height="900"
+      alt=""
+      decoding="async"
+      fetchpriority="high"
+    />
+    <button type="button" id="heroLoad3d" class="hero-load3d" aria-controls="hero3dFrame">
+      <span class="play" aria-hidden="true">▶</span> Load interactive 3D
+    </button>
     <iframe
       id="hero3dFrame"
       title="Interactive 3D power transformer"
-      src="hero-3d.html"
-      loading="eager"
+      data-src="hero-3d.html"
+      loading="lazy"
       allow="fullscreen"
+      hidden
      ></iframe>
   </div>
   <div class="hero-stage__scrim" aria-hidden="true"></div>
@@ -314,7 +347,7 @@
       </div>
     </div>
   </div>
-  <p class="hero-stage__hint">Drag to orbit · scroll to zoom</p>
+  <p class="hero-stage__hint">Tap Load 3D · then drag to orbit · scroll to zoom</p>
 </section>
 
 <div class="tp-video-modal" id="heroVideoModal" hidden role="dialog" aria-modal="true" aria-labelledby="heroVideoTitle">
@@ -1054,6 +1087,44 @@ document.querySelectorAll('#mainNav a').forEach(a=>a.addEventListener('click',()
   const n=document.getElementById('mainNav'), t=document.querySelector('.menu-toggle');
   n.classList.remove('open'); if(t) t.setAttribute('aria-expanded','false');
 }));
+
+/* ── Hero 3D: static poster first (mobile LCP); WebGL on intent / desktop idle ── */
+(function(){
+  var stage=document.querySelector('.hero-stage');
+  var frame=document.getElementById('hero3dFrame');
+  var btn=document.getElementById('heroLoad3d');
+  var poster=document.getElementById('heroPoster');
+  if(!stage||!frame||!btn) return;
+  var loaded=false;
+  function load3d(){
+    if(loaded) return;
+    loaded=true;
+    var src=frame.getAttribute('data-src')||'hero-3d.html';
+    frame.removeAttribute('hidden');
+    frame.src=src;
+    stage.classList.add('is-3d-live');
+    if(poster) poster.setAttribute('aria-hidden','true');
+    btn.setAttribute('aria-pressed','true');
+  }
+  btn.addEventListener('click', load3d);
+  // Desktop: defer WebGL until idle / first pointer — never block LCP on mobile.
+  var desktop = window.matchMedia && window.matchMedia('(min-width:821px)').matches
+    && !(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  if(desktop){
+    var kick=function(){ load3d(); cleanup(); };
+    var cleanup=function(){
+      window.removeEventListener('pointerdown', kick);
+      window.removeEventListener('keydown', kick);
+    };
+    window.addEventListener('pointerdown', kick, {once:true, passive:true});
+    window.addEventListener('keydown', kick, {once:true});
+    if('requestIdleCallback' in window){
+      requestIdleCallback(function(){ setTimeout(load3d, 1200); }, {timeout:4000});
+    } else {
+      setTimeout(load3d, 2500);
+    }
+  }
+})();
 
 /* ── 3D explorer: auto-load on desktop, tap-to-load on mobile (saves ~1MB of JS on phones) ── */
 (function(){

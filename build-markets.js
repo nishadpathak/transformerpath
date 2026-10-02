@@ -58,13 +58,22 @@ const MARKETS = [
       ['Does the UAE manufacture transformers locally?', 'There is a modest domestic OEM presence alongside heavy import reliance — the TransformerPath census tracks UAE manufacturers, but most high-voltage plant is imported from regional and global suppliers.'],
     ] },
   { slug: 'saudi-arabia', name: 'Saudi Arabia', gridsName: 'Saudi Arabia', manufName: 'Saudi Arabia', region: 'Middle East', flag: '🇸🇦',
-    intel: 'GCC', kw: ['saudi', 'ksa', 'neom', 'red sea', 'sec', 'vision'],
+    intel: 'GCC', kw: ['saudi', 'ksa', 'neom', 'red sea', 'sec', 'vision', 'etimad'],
     blurb: 'Saudi Arabia is the largest transformer market in the Gulf, driven by Vision 2030 giga-projects (NEOM, Red Sea, Qiddiya), grid expansion and a massive renewables build-out. It demands high-ambient, high-reliability plant for one of the harshest operating environments on earth.',
     tech: ['380 kV / 110 / 13.8 kV transmission, 60 Hz transmission is not used — 50 Hz', 'Very high ambient temperature derating and sand/dust protection', 'National grid operator (SEC) procurement and international compliance', 'Large-scale solar + BESS integration and grid-stability requirements', 'Strong demand for power and distribution transformers, reactors and GSUs'],
     faq: [
       ['Who buys transformers in Saudi Arabia?', 'The Saudi Electricity Company (SEC) and its subsidiaries, alongside independent power producers (IPPs) and the developer-owners of Vision 2030 giga-projects.'],
       ['What transformer voltage does Saudi Arabia use?', 'The transmission grid is 380 kV / 110 kV, with distribution at 13.8 kV and lower. Frequency is 50 Hz.'],
       ['Why is upstream demand growing so fast?', 'Project awards rose sharply in 2026 (per TransformerPath intel), with substation and transmission build-out a direct consequence of large solar, industrial and giga-project loads.'],
+    ] },
+  { slug: 'kuwait', name: 'Kuwait', gridsName: 'Kuwait', manufName: 'Kuwait', region: 'Middle East', flag: '🇰🇼',
+    intel: 'GCC', kw: ['kuwait', 'mew', 'mewre', 'capt', 'kuwait oil', 'knpc'],
+    blurb: 'Kuwait’s transformer demand is utility-led — MEW/MEWRE transmission and distribution renewals, CAPT-routed public procurement, and oil-sector industrial load. High ambient ratings and GCCIA interconnection shape specifications; discovery of transformer scope often starts on MEWRE and CAPT portals rather than English trade press.',
+    tech: ['400 / 275 / 132 / 33 / 11 kV classes on a 50 Hz GCCIA-linked grid', 'MEW / MEWRE as the primary utility buyer of power and distribution transformers', 'CAPT public procurement for government packages', 'High-ambient and desert-duty enclosure requirements', 'Renewal and relocation programmes keep replacement MVA in the pipeline'],
+    faq: [
+      ['Who buys transformers in Kuwait?', 'The Ministry of Electricity, Water and Renewable Energy (MEW/MEWRE) is the main buyer; oil-sector entities and CAPT-routed government packages also generate demand.'],
+      ['How is public procurement routed?', 'Many government packages appear via CAPT (Central Agency for Public Tenders); utility packages also surface on MEWRE channels. TransformerPath grades discovery candidates before publishing Intel cards.'],
+      ['What voltage classes are common?', 'Transmission and sub-transmission around 400/275/132 kV with 33/11 kV distribution, at 50 Hz on the GCCIA interconnection.'],
     ] },
   { slug: 'india', name: 'India', gridsName: 'India', manufName: 'India', region: 'South Asia', flag: '🇮🇳',
     intel: 'India', kw: ['india', 'indian', 'ceat', 'power grid'],
@@ -611,6 +620,27 @@ function marketPage(m) {
     '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="../../markets.html" style="color:var(--accent)">Markets</a> › ' + esc(m.name) + '</nav>' +
     '<h1>' + m.flag + ' Transformer Industry — ' + esc(m.name) + '</h1>' +
     '<p class="lead">' + esc(m.blurb) + '</p>' +
+    (function () {
+      const nextEv = evs[0];
+      const openT = tenders.filter(function (t) { return /open|active|evaluation|tender/i.test(String(t.status || 'OPEN')); }).slice(0, 3);
+      const confirmedIntel = intel.filter(function (it) { return /confirmed|transformer/i.test(String(it.title || '') + ' ' + String(it.snippet || '')); }).slice(0, 2);
+      if (!nextEv && !openT.length && !confirmedIntel.length) return '';
+      return '<div style="background:var(--card);border:1px solid var(--border);border-left:4px solid var(--amber);border-radius:12px;padding:14px 16px;margin:16px 0 4px">' +
+        '<div style="font-size:.66rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--accent);margin-bottom:8px">Live this build — discovery, not static copy</div>' +
+        '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;font-size:.86rem;line-height:1.45">' +
+        '<div><b style="color:var(--ink)">Next event</b><div style="color:var(--muted);margin-top:4px">' +
+        (nextEv ? '<a href="' + esc(nextEv.u) + '" target="_blank" rel="noopener" style="color:var(--accent)">' + esc(nextEv.n) + '</a> · ' + fmt(nextEv.s) : 'None upcoming in calendar') +
+        '</div></div>' +
+        '<div><b style="color:var(--ink)">Open / live tenders</b><div style="color:var(--muted);margin-top:4px">' +
+        (openT.length ? openT.map(function (t) { return esc(t.title); }).join(' · ') : (tenders.length ? tenders.length + ' recorded (see board)' : 'None in this build')) +
+        '</div></div>' +
+        '<div><b style="color:var(--ink)">Intel signal</b><div style="color:var(--muted);margin-top:4px">' +
+        (confirmedIntel.length ? confirmedIntel.map(function (it) { return esc(it.title).slice(0, 90); }).join(' · ') : (intel.length ? intel.length + ' market items graded this build' : 'See Daily Intel')) +
+        '</div></div>' +
+        '</div>' +
+        '<p style="margin:10px 0 0;font-size:.74rem;color:var(--muted)">Pulled from tenders.json, events.json and curated intel at build. Discovery candidates are not auto-published as Intel cards.</p>' +
+        '</div>';
+    })() +
     '<div class="stats">' +
     '<div class="s"><b>' + mk.length + '</b><span>manufacturers tracked</span></div>' +
     '<div class="s"><b>' + facs.length + '</b><span>sourced plants</span></div>' +

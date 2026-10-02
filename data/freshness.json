@@ -1,12 +1,12 @@
 {
   "$schema": "https://transformerpath.com/freshness.schema.json",
   "generated": "2026-09-29T21:12:39.710Z",
-  "honest_note": "PAGE BUILD DATE is when this artifact was last regenerated; DATA REFRESH DATE is the last successful source refresh. These are distinct. The curated Daily Intel feed is refreshed at build (daily cadence label) — it is not an hourly live scrape. The serverless auto-briefing cache is a separate background cache. A freshness status of HEALTHY/AGING/STALE is computed from observed dates; nothing is presented as live.",
+  "honest_note": "PAGE BUILD DATE is when this artifact was last regenerated; DATA REFRESH DATE is the last successful source refresh. These are distinct. The curated Daily Intel feed is refreshed at build (twice-daily cadence (06:00 / 18:00 UTC rebuild hook)) — it is not an hourly live scrape. The serverless auto-briefing cache is a separate background cache. A freshness status of HEALTHY/AGING/STALE is computed from observed dates; nothing is presented as live.",
   "surfaces": [
     {
       "id": "daily_intel",
       "name": "Daily Intel",
-      "cadence": "daily (curated)",
+      "cadence": "twice daily (curated)",
       "description": "Curated transformer-industry intelligence feed. Data is compiled and regenerated at each build; it is not an automatic live scrape.",
       "last_build": "2026-09-14",
       "last_data_refresh": "2026-09-25T09:22:27.036Z",
@@ -2466,7 +2466,7 @@
         },
         "updated": "2026-09-25T09:22:18.396Z",
         "refresh_meta": {
-          "cadence": "daily (curated)",
+          "cadence": "twice daily (curated)",
           "refreshed_at_build": true,
           "newest_validated_content_date": "2026-09-25",
           "note": "updated reflects newest validated GCC/content observation — not a silent redeploy clock. Excludes tender_close_date and future dates.",

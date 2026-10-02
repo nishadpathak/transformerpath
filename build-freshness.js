@@ -69,7 +69,7 @@ const surfaces = [
     id: 'daily_intel',
     name: 'Daily Intel',
     cadence: 'twice daily (curated)',
-    description: 'Curated transformer-industry intelligence feed. Data is compiled and regenerated at each build; it is not an automatic live scrape.',
+    description: 'Curated transformer-industry intelligence feed. Regenerated on each deploy; Netlify scheduled rebuilds at 06:00 and 18:00 UTC (via TP_BUILD_HOOK_URL) keep the desk from going stale. Not an automatic live scrape.',
     last_build: ts('intel-categories') || ts('intel'),
     last_data_refresh: INTEL_OBS,
     // Honest refresh = newest validated content / source-check observation.
@@ -200,7 +200,7 @@ const sources = [
 const freshness = {
   $schema: 'https://transformerpath.com/freshness.schema.json',
   generated: NOW,
-  honest_note: 'PAGE BUILD DATE is when this artifact was last regenerated; DATA REFRESH DATE is the last successful source refresh. These are distinct. The curated Daily Intel feed is refreshed at build (twice-daily cadence (06:00 / 18:00 UTC rebuild hook)) — it is not an hourly live scrape. The serverless auto-briefing cache is a separate background cache. A freshness status of HEALTHY/AGING/STALE is computed from observed dates; nothing is presented as live.',
+  honest_note: 'PAGE BUILD DATE is when this artifact was last regenerated; DATA REFRESH DATE is the last successful source refresh. These are distinct. The curated Daily Intel feed is refreshed at build on a twice-daily cadence (06:00 / 18:00 UTC rebuild hook) — it is not an hourly live scrape. The serverless auto-briefing cache is a separate background cache. A freshness status of HEALTHY/AGING/STALE is computed from observed dates; nothing is presented as live.',
   surfaces,
   sources,
 };
