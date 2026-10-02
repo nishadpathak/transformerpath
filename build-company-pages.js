@@ -27,6 +27,7 @@ function slugify(s) { return String(s || '').normalize('NFKD').replace(/[\u0300-
 const ci = function (s) { return (s || '').toLowerCase(); };
 const norm = function (s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim().replace(/\s+/g, ' '); };
 
+const { resolveCompanyAlias, norm: aliasNorm } = require('./lib/company-aliases');
 const MANUF = JSON.parse(fs.readFileSync('data/manufacturers.json', 'utf8'));
 const TIERS = JSON.parse(fs.readFileSync('data/manufacturer-tiers.json', 'utf8'));
 const EVENTS = JSON.parse(fs.readFileSync('data/events.json', 'utf8'));
@@ -80,26 +81,79 @@ MANUF.forEach(function (g) { COUNTRY_PAGE[ci(g.country)] = slugify(g.country); }
 function pageSlugFor(country) { const k = ci(country); if (COUNTRY_PAGE[k]) return COUNTRY_PAGE[k]; return country && MANUF.some(function (g) { return ci(g.country) === k; }) ? slugify(country) : ''; }
 
 // ── Assemble company records ──
+// Alias-collapse historical / short legal names onto one canonical entity
+// (e.g. "CG Power" → "CG Power and Industrial Solutions") so we never publish
+// two public identities for the same operating company.
 const records = {}; const seen = {};
+function canonicalKey(rawName) {
+  const alias = resolveCompanyAlias(rawName);
+  // Use alias-module norm (& → "and") so "CG Power & …" and "CG Power and …" share a key.
+  return aliasNorm(alias.name);
+}
+function mergeTypes(a, b) {
+  const out = [];
+  (a || []).concat(b || []).forEach(function (t) { if (t && out.indexOf(t) < 0) out.push(t); });
+  return out;
+}
 MANUF.forEach(function (g) {
   g.makers.forEach(function (x) {
     if (/^Served by/i.test(x[0])) return; // not a company
-    const name = x[0].trim(); const key = norm(name);
-    if (seen[key]) return; // dedupe across countries (keep first)
-    seen[key] = 1;
+    const rawName = x[0].trim();
+    const alias = resolveCompanyAlias(rawName);
+    const name = alias.name;
+    const key = canonicalKey(rawName);
     const types = String(x[3] || '').split(',').map(function (s) { return s.trim(); }).filter(Boolean);
-    records[key] = { name: name, country: g.country, region: g.region, flag: g.flag, city: x[1] || '', url: x[2] || '', types: types, flagV: x[4] || '', established: x[5] || '', tierFile: tierFor(name), listed: true };
+    if (seen[key] && records[key]) {
+      // Same canonical company seen again (short name / second country row):
+      // keep the richer display name + URL; union types; never invent a 2nd page.
+      const prev = records[key];
+      if ((!prev.url && x[2]) || (alias.aliased && /industrial solutions/i.test(rawName) && !/industrial solutions/i.test(prev.name))) {
+        prev.name = rawName; // prefer full legal census name when alias collapses onto it
+      }
+      if (!prev.url && x[2]) prev.url = x[2];
+      if (!prev.city && x[1]) prev.city = x[1];
+      prev.types = mergeTypes(prev.types, types);
+      if (!prev.tierFile) prev.tierFile = tierFor(rawName) || tierFor(name);
+      if (alias.aliased) {
+        prev.canonical_slug = alias.slug;
+        prev.aka = mergeTypes(prev.aka || [], [rawName]);
+      }
+      return;
+    }
+    seen[key] = 1;
+    records[key] = {
+      name: name,
+      country: g.country,
+      region: g.region,
+      flag: g.flag,
+      city: x[1] || '',
+      url: x[2] || '',
+      types: types,
+      flagV: x[4] || '',
+      established: x[5] || '',
+      tierFile: tierFor(rawName) || tierFor(name),
+      listed: true,
+      canonical_slug: alias.aliased ? alias.slug : undefined,
+      aka: alias.aliased && alias.sourceName !== name ? [alias.sourceName] : undefined
+    };
   });
 });
 // Add the documented global leaders (manufacturer-tiers.json) that aren't a census
 // maker under that exact name, so every sufficiently-documented company has a page.
 function tierTypes(ts) { const map = { power: 'PT', distribution: 'DT', dry: 'DRY', 'dry-type': 'DRY', cast: 'DRY', 'cast-resin': 'DRY' }; return (ts || []).map(function (t) { return map[ci(t)]; }).filter(Boolean); }
 TIERS.forEach(function (t) {
-  const key = norm(t.name);
+  const alias = resolveCompanyAlias(t.name);
+  const key = canonicalKey(t.name);
+  if (seen[key] && records[key]) {
+    if (!records[key].tierFile) records[key].tierFile = t;
+    if (!records[key].url && t.site) records[key].url = t.site;
+    if (alias.aliased) records[key].canonical_slug = alias.slug;
+    return;
+  }
   if (seen[key]) return; // already a census record
   seen[key] = 1;
   const rec = MANUF.find(function (g) { return ci(g.country) === ci(t.country); });
-  const r = { name: t.name, country: t.country || 'Global', region: rec ? rec.region : 'Europe', flag: rec ? rec.flag : '', city: '', url: t.site || '', types: tierTypes(t.types).length ? tierTypes(t.types) : ['PT', 'DT'], flagV: '', established: '', tierFile: t, listed: true };
+  const r = { name: alias.name, country: t.country || 'Global', region: rec ? rec.region : 'Europe', flag: rec ? rec.flag : '', city: '', url: t.site || '', types: tierTypes(t.types).length ? tierTypes(t.types) : ['PT', 'DT'], flagV: '', established: '', tierFile: t, listed: true, canonical_slug: alias.aliased ? alias.slug : undefined };
   records[key] = r;
 });
 
@@ -190,13 +244,39 @@ function timelineHtml(r) {
 // ("Hitachi Energy") for developments/timeline/provenance.
 function lookupName(r) {
   if (r.tierFile && /global hq/i.test(r.name || '') && norm(r.tierFile.name) !== norm(r.name)) return r.tierFile.name;
+  if (r.tierFile && r.tierFile.name) return r.tierFile.name;
   return r.name;
+}
+/** Try display name, tier name, aka short names, and alias-module norms. */
+function lookupCandidates(r) {
+  const out = [];
+  function push(n) {
+    if (!n) return;
+    const k = aliasNorm(n);
+    if (!k || out.some(function (x) { return aliasNorm(x) === k; })) return;
+    out.push(n);
+  }
+  push(lookupName(r));
+  push(r.name);
+  if (r.tierFile) push(r.tierFile.name);
+  (r.aka || []).forEach(push);
+  const alias = resolveCompanyAlias(r.name);
+  if (alias.aliased) push(alias.sourceName);
+  return out;
+}
+function byNameAny(map, r) {
+  const cands = lookupCandidates(r);
+  for (let i = 0; i < cands.length; i++) {
+    const hit = map[norm(cands[i])] || map[aliasNorm(cands[i])];
+    if (hit) return hit;
+  }
+  return null;
 }
 
 // Sourced, company-specific developments (orders, expansions, acquisitions,
 // rebrands) pulled from TransformerPath Daily Intel — linked to their sources.
 function developmentsHtml(r) {
-  const d = DEV_BY_NAME[norm(lookupName(r))];
+  const d = byNameAny(DEV_BY_NAME, r);
   if (!d || !d.developments || !d.developments.length) return '';
   const lis = d.developments.map(function (x) {
     const dateMatch = String(x.src || '').match(/(\d{1,2}\s+\w{3}\s+\d{4})/);
@@ -210,7 +290,7 @@ function developmentsHtml(r) {
 // Sourced capability EVIDENCE with provenance — a single field per fact, never
 // asserted as a company maximum.
 function provenanceHtml(r) {
-  const p = PROV_BY_NAME[norm(lookupName(r))];
+  const p = byNameAny(PROV_BY_NAME, r);
   if (!p || !p.facts || !p.facts.length) return '';
   const rows = p.facts.map(function (f) {
     const cap = f.field.replace(/_/g, ' ').replace(/^./, function (c) { return c.toUpperCase(); });
@@ -311,7 +391,7 @@ function page(r, slug) {
   if (tier) {
     const row = function (k, v) { return v ? '<tr><th>' + k + '</th><td>' + v + '</td></tr>' : ''; };
     const c = tier.mva ? '~' + tier.mva.toLocaleString('en-US') + ' MVA' : '—';
-    const provRec = PROV_BY_NAME[norm(lookupName(r))];
+    const provRec = byNameAny(PROV_BY_NAME, r);
     let maxKv = typeof tier.kv === 'number' ? tier.kv : (parseFloat(tier.kv) || 0);
     let maxKvSource = tier.source || null;
     (provRec && provRec.facts || []).forEach(function (f) {
@@ -376,10 +456,11 @@ fs.mkdirSync('manufacturers', { recursive: true });
 const slugsUsed = {};
 let indexed = 0, noindexed = 0, rich = 0;
 const list = Object.keys(records).map(function (k) { return records[k]; });
-// ensure unique slugs
+// ensure unique slugs — prefer explicit canonical_slug from aliases
 list.forEach(function (r) {
-  let slug = slugify(r.name); let k = 2;
-  while (slugsUsed[slug]) { k++; slug = slugify(r.name) + '-' + k; }
+  let slug = r.canonical_slug || slugify(r.name); let k = 2;
+  const base = slug;
+  while (slugsUsed[slug]) { k++; slug = base + '-' + k; }
   slugsUsed[slug] = 1; r.slug = slug;
 });
 list.forEach(function (r) {
@@ -388,10 +469,53 @@ list.forEach(function (r) {
   if (r.url) { indexed++; if (r.tierFile) rich++; } else noindexed++;
 });
 console.log('company pages:', list.length, '| indexed:', indexed, '(rich tier:', rich + ')', '| noindex(follow):', noindexed);
+// Historical / short-name slugs that alias onto a canonical company must remain
+// as lightweight redirect pages so internal links and indexed URLs do not 404
+// before Netlify 301s apply. Entity relationship: SAME company, not deletion.
+const aliasRedirectSlugs = {};
+Object.keys(require('./lib/company-aliases').ALIASES).forEach(function (k) {
+  const a = require('./lib/company-aliases').ALIASES[k];
+  const srcSlug = require('./lib/company-aliases').slugify(k);
+  if (srcSlug && srcSlug !== a.slug) aliasRedirectSlugs[srcSlug] = a.slug;
+});
+// Also cover common census display forms used historically as directory slugs.
+[
+  ['cg-power', 'cg-power-and-industrial-solutions'],
+  ['prolec-ge-ge-vernova', 'prolec-ge'],
+  ['prolec-ge-brasil', 'prolec-ge'],
+  ['prolec-ge-waukesha', 'prolec-ge'],
+  ['hico-america-hyosung', 'hyosung-heavy-industries']
+].forEach(function (pair) { aliasRedirectSlugs[pair[0]] = pair[1]; });
+
+Object.keys(aliasRedirectSlugs).forEach(function (src) {
+  const dest = aliasRedirectSlugs[src];
+  if (!dest || src === dest) return;
+  // Skip if a full company page already owns this slug
+  if (list.some(function (r) { return r.slug === src; })) return;
+  // Only emit redirect when canonical profile exists (avoid inventing targets)
+  if (!list.some(function (r) { return r.slug === dest; }) && !fs.existsSync('manufacturers/' + dest + '/index.html')) {
+    console.warn('skip alias redirect (missing canonical): ' + src + ' → ' + dest);
+    delete aliasRedirectSlugs[src];
+    return;
+  }
+  const href = '/manufacturers/' + dest + '/';
+  const html = '<!DOCTYPE html>\n<html lang="en"><head><meta charset="UTF-8">' +
+    '<meta http-equiv="refresh" content="0;url=' + href + '">' +
+    '<link rel="canonical" href="https://transformerpath.com' + href + '">' +
+    '<meta name="robots" content="noindex,follow">' +
+    '<title>Redirecting…</title></head><body>' +
+    '<p>This company identity redirects to the canonical profile: ' +
+    '<a href="' + href + '">' + href + '</a>.</p></body></html>\n';
+  fs.mkdirSync('manufacturers/' + src, { recursive: true });
+  fs.writeFileSync('manufacturers/' + src + '/index.html', html);
+  console.log('alias redirect page: manufacturers/' + src + ' → ' + dest);
+});
+
 // Prune stale company directories (companies no longer in the census) so the
 // published tree always matches the current census and no orphaned/thin pages
-// are served.
+// are served. Alias redirect slugs are retained.
 const currentSlugs = new Set(list.map(function (r) { return r.slug; }));
+Object.keys(aliasRedirectSlugs).forEach(function (s) { currentSlugs.add(s); });
 // Protect programmatic SEO product-type hubs from being pruned
 ['power-transformers', 'distribution-transformers', 'dry-type-transformers'].forEach(function (s) {
   currentSlugs.add(s);

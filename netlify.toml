@@ -47,14 +47,9 @@
   status = 301
   force = true
 
-# Canonical Intel route is clean /intel (matches rel=canonical).
-# Serve content under /intel; send legacy .html form to the clean URL.
-[[redirects]]
-  from = "/intel.html"
-  to = "/intel"
-  status = 301
-  force = true
-
+# Canonical Intel route is clean /intel (rel=canonical on intel.html).
+# Rewrite only — do NOT also 301 /intel.html → /intel. That pair is a
+# Netlify redirect loop (/intel.html→/intel→/intel.html) and fails deploy.
 [[redirects]]
   from = "/intel"
   to = "/intel.html"
