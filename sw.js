@@ -1,11 +1,17 @@
-/* TransformerPath service worker — offline support + always-fresh HTML */
-const CACHE = 'transformerpath-v13';
+/* TransformerPath service worker — offline shell + always-fresh HTML
+ *
+ * Do NOT precache generated HTML (index/intel/manufacturers/…). Precached
+ * pages from a prior release survive across deploys and create mixed-generation
+ * public truth. Navigate/HTML is network-first; only the offline shell + static
+ * brand assets are installed into the core cache.
+ */
+const CACHE = 'transformerpath-v14';
 const CORE = [
-  'index.html', 'style.css?v=14', 'intel.html', 'manufacturers.html', 'events.html',
-  'grids.html', 'learn.html', 'resources.html', 'subscribe.html',
-  'map.html', 'directory.html',
   'offline.html',
-  'brand/favicon-32.png', 'brand/icon-192.png', 'manifest.webmanifest'
+  'style.css?v=14',
+  'brand/favicon-32.png',
+  'brand/icon-192.png',
+  'manifest.webmanifest'
 ];
 
 self.addEventListener('install', e => {
@@ -29,13 +35,24 @@ self.addEventListener('fetch', e => {
   // caching them would serve stale location data forever.
   if (new URL(req.url).origin !== self.location.origin) return;
   const accept = req.headers.get('accept') || '';
+  const path = new URL(req.url).pathname;
 
-  // Network-first for pages, so daily intel + data are never stale; fall back to cache offline.
-  if (req.mode === 'navigate' || accept.includes('text/html')) {
+  // Network-first for pages AND build/data JSON so release provenance and
+  // freshness clocks cannot stick to an older generation in the SW cache.
+  const isHtml = req.mode === 'navigate' || accept.includes('text/html');
+  const isReleaseData = /\.(?:html?)$/i.test(path) ||
+    path === '/data/freshness.json' ||
+    path === '/data/build-provenance.json' ||
+    path === '/data/site-stats.json' ||
+    path.startsWith('/data/gcc-');
+  if (isHtml || isReleaseData) {
     e.respondWith(
       fetch(req).then(r => {
-        const copy = r.clone();
-        caches.open(CACHE).then(c => c.put(req, copy));
+        // Cache successful HTML only as offline fallback — never prefer it online.
+        if (isHtml && r && r.ok) {
+          const copy = r.clone();
+          caches.open(CACHE).then(c => c.put(req, copy));
+        }
         return r;
       }).catch(() => caches.match(req).then(m => m || caches.match('offline.html')))
     );
@@ -43,7 +60,7 @@ self.addEventListener('fetch', e => {
   }
 
   // Immutable vendor libs: cache-first (never change without a filename change).
-  if (new URL(req.url).pathname.startsWith('/vendor/')) {
+  if (path.startsWith('/vendor/')) {
     e.respondWith(caches.match(req).then(m => m || fetch(req).then(r => {
       const copy = r.clone();
       caches.open(CACHE).then(c => c.put(req, copy));
@@ -52,7 +69,7 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  // Everything else (css, js, images, json): stale-while-revalidate —
+  // Everything else (css, js, images, other json): stale-while-revalidate —
   // serve from cache instantly but refresh the cache in the background,
   // so style/data updates reach returning visitors on their next view.
   e.respondWith(
