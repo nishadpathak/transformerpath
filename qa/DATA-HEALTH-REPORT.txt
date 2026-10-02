@@ -1,16 +1,11 @@
 TransformerPath DATA HEALTH REPORT
-Generated: 2026-10-02T20:38:36.065Z
+Generated: 2026-10-02T20:41:25.882Z
 Result: PASS
 Errors: 0 | Warnings: 31
-Child gates skipped: no
+Child gates skipped: yes
 
 ## Child gates
-  PASS  census-stale — stale manufacturer counts :: CENSUS GATE OK — canonical manufacturers=906; no stale 709/911/1002 manufacturer-count copy
-  PASS  voltage-evidence — capability vs evidence :: VOLTAGE EVIDENCE OK — 2 manufacturers where provenance MAX exceeds tier.kv (incl. CG Power 765 kV)
-  PASS  intel-date-order — intel date anomalies :: INTEL DATE ORDER OK — flagged review rows=0 explicitly allowed=6
-  PASS  links — broken internal links :: scanned 2467 files, 269225 link targets, 0 broken
-  PASS  event-integrity — duplicate events / status contradictions ::   ○ CANONICAL_EDITION_WITHOUT_SOURCE CWIEME Berlin 2026 | EVENT INTEGRITY OK — no LIVE/DATE_TBC, COMPLETED+Register, CANCELLED+countdown, du
-  PASS  archives — future/immutable archive dates ::  | ARCHIVE IMMUTABILITY OK.
+  Skipped (--skip-children / TP_DATA_HEALTH_SKIP_CHILDREN=1)
 
 ## Stale manufacturer counts
   Canonical manufacturers = 906
@@ -56,7 +51,7 @@ Child gates skipped: no
   Materials rows checked: 7
 
 ## Broken internal links (sample)
-  Sampled root pages broken links: 0 (full scan via child gate check-links.js)
+  Sampled root pages broken links: 0
 
 ## Missing canonical tags
   Root public HTML missing canonical: 0 / 99

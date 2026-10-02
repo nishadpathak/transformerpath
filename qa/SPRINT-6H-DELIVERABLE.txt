@@ -1,0 +1,202 @@
+# TRANSFORMERPATH — 6-HOUR SPRINT DELIVERABLE
+Generated: 2026-10-02T20:45Z
+Branch: `cursor/final-stabilization-a955` · PR #12
+Preview: https://deploy-preview-12--transformerpath.netlify.app (CI green)
+Production: **NOT YET UPDATED** — still `ff38af7` until #12 merges
+
+---
+
+## 1. EXECUTIVE SUMMARY
+
+What materially changed on #12:
+
+- **One-release identity:** `build_commit` / `build_at` / `data_version` stamps + `/data/build-provenance.json`
+- **Census 906** gate; stale 709/911/1002 manufacturer-count copy blocked
+- **CG Power** alias → canonical `cg-power-and-industrial-solutions`; summary **765 kV** from evidence
+- **Intel clocks:** rebuild cannot mint DATA CURRENT; homepage/intel share freshness helpers; date-order REVIEW_REQUIRED
+- **WebGL** progressive enhancement + failure fallbacks (poster-first)
+- **PWA:** SW v14 — no HTML precache (mixed-generation risk)
+- **AdSense:** no custom `data-*` on Google script
+- **Phase-20** `check-data-health.js` consolidator
+- **Netlify CI green** after fixing untracked health script + stale census-audit 911 + R8 on redirect stubs
+
+Do **not** treat production as fixed until this PR merges and one production deploy completes.
+
+---
+
+## 2. COMMITS (main..HEAD, newest first)
+
+| Hash | Description |
+| --- | --- |
+| 384838d3a | fix(ci): refresh census-audit to 906; skip R8 on alias redirects |
+| 0fde3293d | docs(qa): refresh DATA-HEALTH-REPORT |
+| 60e5d0921 | fix(ci): track check-data-health.js |
+| 5d03e7925 | fix(ci): restore known-good /intel 301 |
+| b69bd3c35 | fix(pwa): stop precaching HTML; /intel nav gate |
+| 791cc0ea7 | break intel redirect loop; canonicalize CG Power |
+| 28e901500 | stamp canonical CG Power for provenance gate |
+| e3e1973ee | merge main; clean /intel links; CG canonicalize |
+| (+ earlier) | WebGL, clocks, census, materials Historical, PWA, AdSense |
+
+---
+
+## 3. PRODUCTION VERSION
+
+| Field | Production (live) | Preview #12 |
+| --- | --- | --- |
+| commit | ff38af7 (main / #6) | **384838d3a0c4e94f2b27a29a45eeef39c9f3e539** |
+| build_at | (no stamps) | **2026-10-02T20:42:16.876Z** |
+| data_version | (no stamps) | **c6ab352aa859** |
+| build-provenance.json | **404** | **200** |
+
+---
+
+## 4. CENSUS
+
+| Item | Value |
+| --- | --- |
+| canonical count | **906** |
+| stale manufacturer-count refs | Gate clean on branch; live prod homepage still had `1,002` pre-merge |
+| duplicates resolved | `cg-power` → canonical (same company / historical short name); Prolec/HICO/etc. alias redirect stubs |
+| remaining review | 932 facilities without manufacturing evidence (warning); intel year-precision date sentinels |
+
+---
+
+## 5. INTEL
+
+| Clock | Preview freshness.json |
+| --- | --- |
+| latest_source_date (observation) | 2026-09-25T12:00:00.000Z |
+| latest_source_checked_at | (via surface last_successful_refresh paths) |
+| build_at | 2026-10-02T20:42:16.876Z (provenance) / surface last_build 20:42:12Z |
+| public status | Preview surfaces show **INTEL COVERAGE DELAYED** vocabulary; daily_intel status AGING (legacy schema field still present alongside) |
+
+### GCC (from `data/gcc-coverage-report.json`)
+
+| Country | Status |
+| --- | --- |
+| UAE | DEWA Sep tender supported |
+| KSA | Multiple Sep procurements supported/confirmed |
+| Kuwait | MEWRE 75 MVA programme supported |
+| Oman | Localisation CONFIRMED; event_date 2026-08-12; pub update Sep |
+| Bahrain | EWA 1000 kVA CONFIRMED |
+| Qatar | **NO_QUALIFYING_ACTIVITY_FOUND** (sources registered) |
+
+sources checked / confirmed / review: see coverage report (12 candidates; 3 confirmed; 8 supported; 1 review)
+
+---
+
+## 6. EVIDENCE
+
+| Item | Value |
+| --- | --- |
+| CG Power expected | 765 kV |
+| CG Power actual (preview) | **765 kV** |
+| other contradictions | Hitachi tier.kv=1200 vs evidence max 765 (tier ahead of sparse evidence — review; MAX logic still surfaces tier). Annual vs unit MVA advisory notes remain (R4). |
+
+---
+
+## 7. 3D
+
+| Mode | Status |
+| --- | --- |
+| WebGL supported | Gate + poster-first on homepage/explorer/power3d (regression PASS) |
+| WebGL unavailable | Fallback panel + UNAVAILABLE state (regression PASS) |
+| model failure / timeout / context loss | Covered by `tests/webgl-gate-regression.js` PASS |
+| static fallback | Poster before first frame |
+| mobile | Same gate scripts; not separately device-labbed this sprint |
+
+---
+
+## 8. PWA / CACHE
+
+| Item | Status |
+| --- | --- |
+| service worker | **v14** — CORE = offline shell only (no HTML precache) |
+| dismiss persistence | Engagement-gated + cooldown (regression PASS) |
+| stale-generation risk | Reduced: HTML network-first; release JSON network-first |
+
+---
+
+## 9. DATA HEALTH
+
+| Item | Value |
+| --- | --- |
+| errors before | Untracked gate + census-audit 911 + R8×21 redirect stubs (CI red) |
+| errors after | **0** hard errors (`qa/DATA-HEALTH-REPORT.txt` PASS) |
+| remaining warnings | 31 (facilities without mfg evidence; year-precision dateIso sentinels) |
+
+---
+
+## 10. CI
+
+| Command / check | Result |
+| --- | --- |
+| Netlify deploy-preview `384838d3a` | **PASS** (131s) |
+| check-build-tracked | PASS |
+| check-census-stale | PASS |
+| check-voltage-evidence-consistency | PASS |
+| check-release-provenance | PASS |
+| check-intel-date-order | PASS |
+| check-data-quality | PASS |
+| check-config / check-brand / check-links | PASS |
+| check-data-health.js --skip-children | PASS (31 warnings) |
+| webgl / intel-clock / pwa / provenance / gcc / date-order regressions | PASS |
+
+---
+
+## 11. PRODUCTION SMOKE TEST
+
+**Production not re-verified this turn** (still pre-#12).
+
+### Deploy Preview smoke (`deploy-preview-12`)
+
+| Route | Result |
+| --- | --- |
+| / | 200 · stamp 384838d3a · 906 · WebGL gate · no 1,002 |
+| /intel.html · /intel | 200 · same stamp · INTEL COVERAGE DELAYED present |
+| /intelligence | 200 · stamp |
+| /manufacturers · /pricing · /faq.html | 200 · stamp |
+| /projects · /tenders · /awards · /events | 200 (stamps not on all list pages — known 12-surface set) |
+| /events/middle-east-energy/ | 200 · stamp |
+| /manufacturers/cg-power/ | 200 → canonical · **765 kV** |
+| /manufacturers/cg-power-and-industrial-solutions/ | 200 · **765 kV** |
+| /explorer · /power3d | 200 · WebGL gate |
+| /jobs.html | 200 · stamp |
+| /data/build-provenance.json | **200** |
+| /data/site-stats.json | manufacturers **906** |
+
+911/1002 string hits on intel/events are **false positives** (URL IDs / ICS / Unicode), not manufacturer-count copy.
+
+---
+
+## 12. REMAINING P0 / P1 / P2
+
+### P0
+1. **Merge #12 → production** and re-crawl for identical provenance on all key URLs
+2. Purge any CDN/PWA survivors if a surface disagrees after deploy
+
+### P1
+- Extend provenance stamps beyond the 12 key surfaces (projects/tenders/awards/events list pages)
+- Hitachi 1200 tier vs 765 evidence review
+- Refresh GCC `last_checked` fields still empty on some registry rows
+
+### P2
+- Close #11 as superseded; rebase #10; hold #4 for Learner/pricing human decision
+- Commodity / facility evidence warnings (non-blocking)
+- Full WebGL-disabled browser + slow-network manual pass on production after merge
+
+---
+
+## DEFINITION OF SUCCESS — STATUS
+
+| Criterion | Preview | Production |
+| --- | --- | --- |
+| 906 where it means companies | YES | NO (until merge) |
+| One Intel truth + honest freshness | Largely YES | NO |
+| GCC Sep via canonical layer | Data YES | Partial (#6 only) |
+| Evidence-derived CG 765 | YES | Unknown/mixed |
+| 3D graceful failure | YES (tests) | NO gate on live home |
+| No old release via PWA/artifacts | Improved on branch | Risk until merge |
+
+**Do not report production complete.** Merge #12, then run Phase 22 on transformerpath.com.
