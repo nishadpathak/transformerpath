@@ -156,6 +156,11 @@ if (corrHtml) {
 for (const f of companyPages) {
   if (!fs.existsSync(f)) continue;
   const html = fs.readFileSync(f, 'utf8');
+  // Historical alias slug pages are lightweight redirects to the canonical
+  // company profile — they must not require full CTA chrome (R8 is for real
+  // manufacturer entity pages only).
+  if (/http-equiv=["']refresh["']/i.test(html) && /canonical profile/i.test(html)) continue;
+  if (/meta\s+name=["']robots["']\s+content=["']noindex/i.test(html) && /Redirecting/i.test(html)) continue;
   if (!/Suggest a correction/.test(html) || html.indexOf('correct-company.html') < 0) { pageNoCorrCta++; problems.push('R8 manufacturer page missing corrections CTA :: ' + f); }
   if (/Official website/.test(html) && !/data-track="official_website_click"/.test(html)) { pageNoSiteClick++; problems.push('R8 manufacturer page missing official_website_click :: ' + f); }
 }
