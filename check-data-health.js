@@ -82,6 +82,7 @@ function walkFiles(dir, pred, out) {
 const CHILD_GATES = [
   { id: 'census-stale', script: 'check-census-stale.js', covers: 'stale manufacturer counts' },
   { id: 'voltage-evidence', script: 'check-voltage-evidence-consistency.js', covers: 'capability vs evidence' },
+  { id: 'entity-canonical', script: 'check-entity-canonical.js', covers: 'alias redirects / competing OEM profiles' },
   { id: 'intel-date-order', script: 'check-intel-date-order.js', covers: 'intel date anomalies' },
   { id: 'links', script: 'check-links.js', covers: 'broken internal links' },
   { id: 'event-integrity', script: 'check-event-integrity.js', covers: 'duplicate events / status contradictions' },

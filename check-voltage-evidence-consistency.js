@@ -45,11 +45,32 @@ if (!cg || cg.evidence_max_kv < 765) {
   process.exit(1);
 }
 
+// Generated profile must surface the MAX in the summary row — not only in the
+// evidence table. Production regression: summary said 400 kV while evidence
+// listed accepted 765 kV on the same page.
+const CG_HTML = 'manufacturers/cg-power-and-industrial-solutions/index.html';
+if (!fs.existsSync(CG_HTML)) {
+  console.error('VOLTAGE EVIDENCE GATE FAILED — missing canonical CG profile ' + CG_HTML);
+  process.exit(1);
+}
+const cgHtml = fs.readFileSync(CG_HTML, 'utf8');
+const summaryKv = cgHtml.match(/Highest sourced voltage evidence<\/th>\s*<td>(\d+)\s*kV/i);
+const summaryN = summaryKv ? Number(summaryKv[1]) : 0;
+if (summaryN < 765) {
+  console.error('VOLTAGE EVIDENCE GATE FAILED — CG canonical summary must be ≥765 kV (got ' + (summaryKv ? summaryKv[1] : 'missing') + ')');
+  process.exit(1);
+}
+if (/Highest sourced voltage evidence<\/th>\s*<td>400\s*kV/i.test(cgHtml)) {
+  console.error('VOLTAGE EVIDENCE GATE FAILED — CG summary still shows stale 400 kV');
+  process.exit(1);
+}
+
 fs.writeFileSync('data/voltage-evidence-consistency.json', JSON.stringify({
   generated: new Date().toISOString(),
   manufacturers_with_evidence_above_tier: raised.length,
   raised: raised,
+  cg_canonical_summary_kv: summaryN,
   honesty: 'Summary Highest sourced voltage evidence = MAX(tier.kv, accepted provenance voltage_class_evidence).'
 }, null, 2) + '\n');
 
-console.log('VOLTAGE EVIDENCE OK — ' + raised.length + ' manufacturers where provenance MAX exceeds tier.kv (incl. CG Power ' + cg.evidence_max_kv + ' kV)');
+console.log('VOLTAGE EVIDENCE OK — ' + raised.length + ' manufacturers where provenance MAX exceeds tier.kv (incl. CG Power ' + cg.evidence_max_kv + ' kV; HTML summary ' + summaryN + ' kV)');
