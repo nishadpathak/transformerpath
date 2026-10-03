@@ -410,7 +410,16 @@ a.plain:hover { text-decoration:underline; }
       <button type="button" class="btn btn-outline btn-sm" data-watch-preset="DEWA" data-watch-keywords="dewa,dubai electricity">☆ Watch DEWA tenders</button>
       <button type="button" class="btn btn-outline btn-sm" data-watch-preset="Etimad" data-watch-keywords="etimad,منافسة,saudi">☆ Watch Etimad</button>
       <button type="button" class="btn btn-outline btn-sm" data-watch-preset="MEWRE" data-watch-keywords="mewre,kuwait,ministry of electricity">☆ Watch MEWRE</button>
+      <button type="button" class="btn btn-outline btn-sm" data-watch-preset="KAHRAMAA" data-watch-keywords="kahramaa,qatar">☆ Watch KAHRAMAA</button>
+      <button type="button" class="btn btn-outline btn-sm" data-watch-preset="Nama" data-watch-keywords="nama,oman">☆ Watch Nama</button>
+      <button type="button" class="btn btn-outline btn-sm" data-watch-preset="OETC" data-watch-keywords="oetc,omangrid,oman transmission">☆ Watch OETC</button>
     </div>
+    <form id="tp-alert-form" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0 10px" data-track-form="watchlist_alert_form">
+      <label for="tp-alert-email" style="font-size:.78rem;color:var(--muted);font-weight:700">Email me matches</label>
+      <input id="tp-alert-email" name="email" type="email" required placeholder="you@company.com" style="flex:1;min-width:180px;padding:8px 10px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text)">
+      <button type="submit" class="btn btn-amber btn-sm" data-track="watchlist_alert_submit">Enable email alerts</button>
+    </form>
+    <p id="tp-alert-status" style="margin:0 0 10px;font-size:.78rem;color:var(--muted)">Uses your watched presets (or DEWA/Etimad/MEWRE by default). Digests fire with the twice-daily Intel refresh when Resend is configured.</p>
     <div id="tp-watchlist-panel"></div>
   </section>
 

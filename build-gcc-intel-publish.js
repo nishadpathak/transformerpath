@@ -24,6 +24,9 @@ function jstr(s) {
 
 const candidatesDoc = readJson('data/gcc-discovery-candidates.json', { candidates: [] });
 const candidates = candidatesDoc.candidates || [];
+const overrides = readJson('data/gcc-discovery-publish-overrides.json', { approve: [], reject: [] });
+const APPROVE = new Set(overrides.approve || []);
+const REJECT = new Set(overrides.reject || []);
 
 const ALLOW_SUPPORTED_IDS = new Set([
   'uae-dewa-2122600155',
@@ -38,6 +41,9 @@ const ALLOW_SUPPORTED_IDS = new Set([
 
 function shouldPublish(c) {
   if (!c || c.publish_decision === 'INTERNAL_COVERAGE_ONLY') return false;
+  if (REJECT.has(c.candidate_id)) return false;
+  // Human desk approval can release HOLD / SUPPORTED items explicitly.
+  if (APPROVE.has(c.candidate_id)) return true;
   if (c.publish_decision === 'HOLD_FOR_REVIEW' && c.evidence_grade === 'REVIEW_REQUIRED') return false;
   // Already curated under a near-duplicate headline in NEWS.GCC
   if (c.candidate_id === 'om-localisation-aug12') return false;
@@ -232,11 +238,12 @@ if (newest) {
   intel.updated = noon > nowIso ? nowIso : noon;
 }
 intel.refresh_meta = {
-  cadence: 'daily (curated)',
+  cadence: 'twice daily (curated)',
   refreshed_at_build: true,
   newest_validated_content_date: newest,
-  note: 'updated reflects newest validated GCC/content observation — not a silent redeploy clock. Excludes tender_close_date and future dates.',
-  gcc_published: publishableAll.map(function (p) { return p.candidate_id || p.title; })
+  note: 'updated reflects newest validated GCC/content observation — not a silent redeploy clock. Excludes tender_close_date and future dates. Human approve[] overrides from gcc-discovery-publish-overrides.json.',
+  gcc_published: publishableAll.map(function (p) { return p.candidate_id || p.title; }),
+  desk_approved: Array.from(APPROVE)
 };
 fs.writeFileSync('data/intel.json', JSON.stringify(intel, null, 2));
 console.log('data/intel.json: upserted ' + upserted + ', prepended ' + prepended + '; updated=' + intel.updated);

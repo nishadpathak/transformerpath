@@ -1,0 +1,8 @@
+{
+  "$schema": "https://transformerpath.com/gcc-discovery-publish-overrides.schema.json",
+  "purpose": "Human review overrides for GCC discovery → Intel publish. Editors approve SUPPORTED / HOLD_FOR_REVIEW candidates here; build-gcc-intel-publish.js honors approve[] and never auto-publishes reject[].",
+  "honesty": "Discovery ≠ publication. Empty approve list means only the script's default CONFIRMED (+ allowlisted SUPPORTED) gate applies.",
+  "updated": "2026-09-29",
+  "approve": [],
+  "reject": []
+}

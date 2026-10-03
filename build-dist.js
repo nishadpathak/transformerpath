@@ -120,6 +120,8 @@ function copyDir(dir) {
     // Never copy internal prospect intelligence / discovery-ops artifacts to the public distribution
     if (p === 'data/commerce-intel.json' || p === 'data/engineer-track-paid.json') continue;
     if (p === 'data/gcc-sep-2026-discovery-input.json' || p === 'data/gcc-coverage-report.json') continue;
+    // Tracked ops schemas (e.g. data/*.sql) must stay in git but never ship on the CDN
+    if (/\.sql$/i.test(e.name)) continue;
     if (e.isDirectory()) n += copyDir(p);
     else { copyFile(p, p); n++; }
   }

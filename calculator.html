@@ -2208,10 +2208,17 @@ function downloadPDF(){
   var used = 0;
   try { used = parseInt(localStorage.getItem(freeKey) || '0', 10) || 0; } catch (e) {}
   if (!paid && used >= 1) {
+    try { if (window.TP_TRACK) window.TP_TRACK('calculator_teaser_paywall', { used: String(used) }); } catch (e) {}
     if (!confirm('Your free watermarked design PDF is already used in this browser.\n\nUnlock Yearly Access for unlimited PDF reports, or cancel to keep using the on-screen calculator.')) return;
+    try { if (window.TP_TRACK) window.TP_TRACK('calculator_teaser_upgrade_click', {}); } catch (e) {}
     location.href = 'pricing.html#engineers';
     return;
   }
+  try {
+    if (window.TP_TRACK) {
+      window.TP_TRACK(paid ? 'calculator_pdf_export' : 'calculator_teaser_pdf', { paid: paid ? '1' : '0', used: String(used) });
+    }
+  } catch (e) {}
   const r=LAST;
   const NAVY="0.05 0.17 0.31",BLUE="0.05 0.37 0.66",GREY="0.36 0.42 0.50",BLACK="0 0 0";
   const pages=[];let cur="",y=0;
