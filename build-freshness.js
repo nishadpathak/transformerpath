@@ -23,8 +23,8 @@ const fs = require('fs');
 function readJson(p, fb) { try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch (e) { return fb; } }
 function ts(f) { const d = readJson('data/' + f + '.json', {}); return d.updated || d.generated || d.generated_at || d.last_updated || (d.stats && d.stats.generated_at) || null; }
 function newestIntelObservation() {
-  // Prefer validated content / source-check dates over a redeploy touching intel.updated.
-  // Never use tender_close_date or future calendar days (those made the stamp read Nov 30).
+  // CONTENT dates only — never source_checked_at (that is a probe clock) and
+  // never a redeploy touching intel.updated without new content.
   const feed = readJson('data/intel-feed-ui.json', {});
   const intel = readJson('data/intel.json', {});
   const gcc = readJson('data/gcc-discovery-candidates.json', {});
@@ -41,26 +41,48 @@ function newestIntelObservation() {
   if (intel.refresh_meta && intel.refresh_meta.newest_validated_content_date) {
     pushDay(intel.refresh_meta.newest_validated_content_date);
   }
-  // Fall back to intel.updated only when it is not a future close-date leak
-  if (intel.updated) pushDay(String(intel.updated).slice(0, 10));
   (gcc.candidates || []).forEach(function (c) {
     const d = c.dates || {};
-    ['source_checked_at', 'update_date', 'tender_float_date', 'publication_date', 'event_date'].forEach(function (k) {
+    // Intentionally omit source_checked_at — that is latest_source_checked_at.
+    ['update_date', 'tender_float_date', 'publication_date', 'event_date'].forEach(function (k) {
       pushDay(d[k]);
     });
   });
   dates.sort();
   const newest = dates.length ? dates[dates.length - 1] : null;
-  if (!newest) return ts('intel');
-  // Calendar-day observations stamp at noon UTC for stable ageHours — but never
-  // in the future (morning UTC builds fail verify-hero "not newer than now").
+  if (!newest) return null;
   const noon = newest + 'T12:00:00.000Z';
   const nowIso = new Date().toISOString();
   return noon > nowIso ? nowIso : noon;
 }
+function newestSourceCheckedAt() {
+  const gcc = readJson('data/gcc-discovery-candidates.json', {});
+  const dates = [];
+  (gcc.candidates || []).forEach(function (c) {
+    const d = c.dates && c.dates.source_checked_at;
+    if (d) dates.push(String(d).slice(0, 10));
+  });
+  const feed = readJson('data/gcc-adapter-report.json', {});
+  if (feed.generated_at) dates.push(String(feed.generated_at).slice(0, 10));
+  dates.sort();
+  return dates.length ? dates[dates.length - 1] : null;
+}
 const NOW = new Date().toISOString();
 const TODAY = NOW.slice(0, 10);
-const INTEL_OBS = newestIntelObservation();
+const feedHonesty = readJson('data/intel-feed-ui.json', {}).honesty || {};
+const INTEL_OBS = newestIntelObservation() ||
+  (feedHonesty.latest_source_iso ? feedHonesty.latest_source_iso + 'T12:00:00.000Z' : null);
+const INTEL_CHECKED = newestSourceCheckedAt();
+const { classifyIntelStatus } = require('./lib/intel-freshness');
+const gccCoverage = readJson('data/gcc-coverage-report.json', {});
+const gccFresh = gccCoverage.freshness || readJson('data/gcc-market-watch.json', {}).freshness || {};
+const intelStatus = classifyIntelStatus({
+  latestSourceIso: (INTEL_OBS && String(INTEL_OBS).slice(0, 10)) || feedHonesty.latest_source_iso,
+  latestCheckedAt: INTEL_CHECKED,
+  buildAt: NOW,
+  // Never allow DATA CURRENT from build alone; GCC honesty defaults to false.
+  dataCurrentClaimAllowed: gccFresh.data_current_claim_allowed === true
+});
 
 // Source body: cite what each intelligence surface is actually fed by, and its
 // last-known refresh. All values are observed from the data, never invented.
@@ -68,21 +90,25 @@ const surfaces = [
   {
     id: 'daily_intel',
     name: 'Daily Intel',
-    cadence: 'twice daily (curated)',
-    description: 'Curated transformer-industry intelligence feed. Regenerated on each deploy; Netlify scheduled rebuilds at 06:00 and 18:00 UTC (via TP_BUILD_HOOK_URL) keep the desk from going stale. Not an automatic live scrape.',
-    last_build: ts('intel-categories') || ts('intel'),
+    cadence: 'daily (curated)',
+    description: 'Curated transformer-industry intelligence feed. Data is compiled and regenerated at each build; it is not an automatic live scrape.',
+    last_build: NOW,
+    build_at: NOW,
     last_data_refresh: INTEL_OBS,
-    // Honest refresh = newest validated content / source-check observation.
-    // Never treat a silent redeploy that only rewrites intel.updated as CURRENT.
     last_attempted_refresh: INTEL_OBS,
     last_successful_refresh: INTEL_OBS,
     latest_source_observation: INTEL_OBS,
+    latest_source_date: intelStatus.latest_source_iso,
+    latest_source_checked_at: INTEL_CHECKED,
+    public_status: intelStatus.statusLabel,
+    public_status_reason: intelStatus.reason,
+    data_current_claim_allowed: intelStatus.data_current_claim_allowed,
     records_added: null,
     records_updated: null,
     source_count: 'per-item',
     source_failures: null,
-    status: 'HEALTHY',
-    source_health: 'curated — refreshed at build; scheduled rebuilds twice daily (06:00 / 18:00 UTC) when TP_BUILD_HOOK_URL is set',
+    status: intelStatus.statusLabel === 'DATA STALE' ? 'STALE' : (intelStatus.statusLabel === 'DATA CURRENT' ? 'HEALTHY' : 'AGING'),
+    source_health: intelStatus.honesty,
     records: readJson('data/intel.json', {}),
   },
   {
@@ -200,9 +226,16 @@ const sources = [
 const freshness = {
   $schema: 'https://transformerpath.com/freshness.schema.json',
   generated: NOW,
-  honest_note: 'PAGE BUILD DATE is when this artifact was last regenerated; DATA REFRESH DATE is the last successful source refresh. These are distinct. The curated Daily Intel feed is refreshed at build on a twice-daily cadence (06:00 / 18:00 UTC rebuild hook) — it is not an hourly live scrape. The serverless auto-briefing cache is a separate background cache. A freshness status of HEALTHY/AGING/STALE is computed from observed dates; nothing is presented as live.',
+  build_at: NOW,
+  latest_source_date: intelStatus.latest_source_iso,
+  latest_source_checked_at: INTEL_CHECKED,
+  public_intel_status: intelStatus.statusLabel,
+  public_intel_status_reason: intelStatus.reason,
+  data_current_claim_allowed: intelStatus.data_current_claim_allowed,
+  honest_note: 'Three clocks: latest_source_date (content), latest_source_checked_at (portal probe), build_at (artifact regenerate). DATA CURRENT requires a recent latest_source_date — never a desk rebuild alone. INTEL COVERAGE DELAYED when discovery lags the industry.',
   surfaces,
   sources,
+  clocks: intelStatus
 };
 fs.writeFileSync('data/freshness.json', JSON.stringify(freshness, null, 2));
-console.log('freshness.json wrote ' + surfaces.length + ' surfaces + ' + sources.length + ' sources (distinguishes page-build vs data-refresh)');
+console.log('freshness.json wrote ' + surfaces.length + ' surfaces · public status ' + intelStatus.statusLabel + ' (source ' + (intelStatus.latest_source_iso || 'none') + ')');

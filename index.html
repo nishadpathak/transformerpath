@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="dark" data-tp-build-commit="28e901500810983af9e07b477551eb86a580a289" data-tp-build-at="2026-10-02T20:30:37.186Z" data-tp-data-version="f6bd8e2d408e">
 <head>
+<meta name="tp-build-commit" content="28e901500810983af9e07b477551eb86a580a289"><meta name="tp-build-at" content="2026-10-02T20:30:37.186Z"><meta name="tp-data-version" content="f6bd8e2d408e">
+<!-- tp-release build_commit=28e901500810983af9e07b477551eb86a580a289 build_at=2026-10-02T20:30:37.186Z data_version=f6bd8e2d408e -->
 <meta charset="UTF-8">
 <script>document.documentElement.className += ' js';</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -106,7 +108,7 @@
     <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
     <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
     <nav class="tpnav" id="mainNav" aria-label="Primary">
-      <a href="intel.html">Intel</a>
+      <a href="/intel">Intel</a>
       <div class="tpnav-dropdown">
         <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
         <div class="tpnav-dropdown-panel" role="menu">
@@ -192,26 +194,11 @@
   font-family:"Instrument Sans",system-ui,sans-serif;
 }
 .hero-stage__viz{ position:absolute; inset:0; z-index:0; }
-.hero-stage__viz iframe{ width:100%; height:100%; border:0; display:block; background:#07111c; }
-.hero-poster{
-  position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
-  display:block; background:#07111c;
-}
-.hero-load3d{
-  position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); z-index:2;
-  display:inline-flex; align-items:center; gap:10px;
-  background:rgba(13,27,46,.82); color:#fff; border:1px solid rgba(245,166,35,.55);
-  border-radius:999px; padding:12px 18px; font-weight:800; font-size:.92rem; cursor:pointer;
-  backdrop-filter:blur(6px);
-}
-.hero-load3d .play{
-  display:inline-flex; width:28px; height:28px; border-radius:999px; align-items:center; justify-content:center;
-  background:var(--hs-amber,#f5a623); color:#0d1b2e; font-size:.8rem;
-}
-.hero-load3d:hover{ border-color:#f5a623; background:rgba(13,27,46,.92); }
-.hero-stage.is-3d-live .hero-poster,
-.hero-stage.is-3d-live .hero-load3d{ display:none; }
-.hero-stage.is-3d-live iframe{ display:block; }
+.hero-stage__viz iframe{ width:100%; height:100%; border:0; display:block; background:#07111c; position:absolute; inset:0; z-index:2; }
+.hero-stage__poster{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:1; background:#07111c; }
+.hero-stage__3dnote{ color:#9fb0c4; font-size:.9rem; max-width:34rem; margin:0 0 8px; }
+.hero-stage.is-3d-ready .hero-stage__poster{ opacity:0; transition:opacity .5s ease; pointer-events:none; }
+.hero-stage.is-3d-unavailable .hero-stage__hint{ display:none; }
 .hero-stage__scrim{
   position:absolute; inset:0; z-index:1; pointer-events:none;
   background:
@@ -307,28 +294,18 @@
 </style>
 
 <section class="hero-stage" aria-label="TransformerPath hero">
-  <div class="hero-stage__viz" id="heroViz" aria-hidden="false">
+  <div class="hero-stage__viz" id="heroViz" aria-hidden="false" data-tp-3d-state="INITIALIZING">
     <img
-      id="heroPoster"
-      class="hero-poster"
-      src="brand/hero.jpg"
+      data-tp-3d-poster
+      class="hero-stage__poster"
+      src="media/power-transformer-3d-poster.jpg"
+      alt="Power transformer"
       width="1600"
       height="900"
-      alt=""
       decoding="async"
       fetchpriority="high"
-    />
-    <button type="button" id="heroLoad3d" class="hero-load3d" aria-controls="hero3dFrame">
-      <span class="play" aria-hidden="true">▶</span> Load interactive 3D
-    </button>
-    <iframe
-      id="hero3dFrame"
-      title="Interactive 3D power transformer"
-      data-src="hero-3d.html"
-      loading="lazy"
-      allow="fullscreen"
-      hidden
-     ></iframe>
+    >
+    <!-- 3D iframe injected after idle/interaction when WebGL is available -->
   </div>
   <div class="hero-stage__scrim" aria-hidden="true"></div>
   <div class="hero-stage__inner">
@@ -337,6 +314,7 @@
         <p class="hero-stage__brand">Transformer<span>Path</span></p>
         <h1>A power transformer you can take apart in 3D.</h1>
         <p class="hero-stage__lead">Orbit the live model, then watch a short tour of the intel, directory, grids, events, and RFQ tools behind every part.</p>
+        <p class="hero-stage__3dnote" id="hero3dNote" hidden>Interactive 3D is unavailable in this browser. You can still explore TransformerPath’s engineering content and transformer components.</p>
         <div class="hero-stage__ctas">
           <a class="btn-primary" href="power3d.html">Open free 3D explorer</a>
           <button class="btn-ghost" type="button" id="heroWatchBtn" aria-haspopup="dialog" aria-controls="heroVideoModal">
@@ -347,7 +325,7 @@
       </div>
     </div>
   </div>
-  <p class="hero-stage__hint">Tap Load 3D · then drag to orbit · scroll to zoom</p>
+  <p class="hero-stage__hint" id="hero3dHint">Drag to orbit · scroll to zoom</p>
 </section>
 
 <div class="tp-video-modal" id="heroVideoModal" hidden role="dialog" aria-modal="true" aria-labelledby="heroVideoTitle">
@@ -842,15 +820,15 @@
     <div class="hero-grid">
       <div class="hero-copy">
         <div class="hero-live-pill" id="hero-live-pill">
-          <span class="live-dot" id="hero-live-dot" aria-hidden="true" style="background:#1a9d4a"></span>
-          <span class="live-badge-text" id="hero-live-status">DATA CURRENT</span>
+          <span class="live-dot" id="hero-live-dot" aria-hidden="true" style="background:#e0a800"></span>
+          <span class="live-badge-text" id="hero-live-status">INTEL COVERAGE DELAYED</span>
           <span class="live-sep">&middot;</span>
-          <span id="hero-live-date">Canonical database refreshed 25 Sept 2026</span>
+          <span id="hero-live-date">Latest sourced item 25 Sept 2026</span>
         </div>
         <h2>Where the world's <span>transformer industry</span> stays ahead.</h2>
         <p class="lead">Industry intelligence &middot; Engineering &middot; Manufacturers &middot; Markets &middot; Tools.</p>
         <div class="hero-ctas">
-          <a href="intel.html" class="btn btn-amber">Read today’s briefing →</a>
+          <a href="/intel" class="btn btn-amber">Read today’s briefing →</a>
           <a href="manufacturers.html" class="hero-secondary">or browse the manufacturer census</a>
         </div>
 
@@ -924,7 +902,7 @@
             <b class="is-amber" data-stat="openTenders">22</b>
             <span>Open Tenders</span>
           </a>
-          <a href="intel.html?type=awards" class="strip-item" title="Review 56 confirmed contract awards">
+          <a href="/intel?type=awards" class="strip-item" title="Review 56 confirmed contract awards">
             <b data-stat="awards">56</b>
             <span>Confirmed Awards</span>
           </a>
@@ -944,7 +922,7 @@
   <div class="container wrap">
     <div class="reveal">
       <h2>Go deeper in the <span>free 3D explorer</span></h2>
-      <p>After the hero, open the full workstation — explode the assembly, toggle systems, and click any part. No account required. Then return to Search, Directory and Daily Intel for sourced records.</p>
+      <p>Open the full workstation — explode the assembly, toggle systems, and click any part. No account required. Then return to Search, Directory and Daily Intel for sourced records.</p>
       <div class="chips"><span>Orbit · pan · zoom</span><span>Exploded view</span><span>Oil &amp; cast-resin</span><span>Click-to-identify</span><span>Free preview</span></div>
       <a href="explorer.html" class="btn btn-amber">Open the free 3D explorer →</a>
     </div>
@@ -971,7 +949,7 @@
       <div class="card reveal"><span class="emoji" aria-hidden="true">🏭</span><h3>Manufacturers & OEMs</h3><p>Track tenders, project awards and capacity moves across every major market.</p></div>
       <div class="card reveal"><span class="emoji" aria-hidden="true">🔧</span><h3>Accessories Suppliers</h3><p>Bushings, tap-changers, insulation, oil, radiators — follow demand signals and material prices.</p></div>
       <div class="card reveal"><span class="emoji" aria-hidden="true">⚡</span><h3>Utilities & EPCs</h3><p>Stay ahead of supplier capacity, lead times and grid investment worldwide.</p></div>
-      <div class="card reveal"><span class="emoji" aria-hidden="true">🤝</span><h3>Consultants & Engineers</h3><p>Daily intel, industry events, a grid census and a global jobs board in one place.</p></div>
+      <div class="card reveal"><span class="emoji" aria-hidden="true">🤝</span><h3>Consultants & Engineers</h3><p>Daily intel, industry events and a grid census in one place — plus curated openings on the <a href="jobs.html" style="color:var(--accent)">Jobs</a> page.</p></div>
     </div>
   </div>
 </section>
@@ -985,9 +963,9 @@
     <div class="grid grid-3" id="glanceCards">
       <div class="card reveal"><span class="emoji" aria-hidden="true">📋</span><h3>Tenders & Projects</h3><p>SEC awards SPTC a $376M transformer & reactor deal; Hitachi Energy India wins a Rs 6.47B 765kV PGCIL order; KAHRAMAA 2026 expansion packages out.</p></div>
       <div class="card reveal"><span class="emoji" aria-hidden="true">🌍</span><h3>Supplier & Capacity News</h3><p>Weidmann commits $220M+ to a new China transformerboard plant; Voltamp and Virginia Transformer add new capacity; US LPT lead times run 30–36 months per the latest NLR report, insulation materials named a bottleneck.</p></div>
-      <div class="card reveal"><span class="emoji" aria-hidden="true">📈</span><h3>Prices & Materials</h3><p>Copper <b data-m="copper" style="color:var(--accent)">≈$14,170/t</b> (LME 3-month reference); Aluminium <b data-m="aluminium" style="color:var(--accent)">≈$3,182/t</b> (LME reference). CRGO has <b>no public daily index</b> — it varies by market, grade, thickness and commercial basis, so it is shown as <b>GRADE NOT SPECIFIED</b> rather than a single comparable number. <span style="color:var(--muted);font-size:.82rem">Observed <span data-m-obs="copper">26 Aug 2026</span> · <a href="materials.html" style="color:var(--accent);font-weight:600">Materials &rarr;</a></span></p></div>
+      <div class="card reveal"><span class="emoji" aria-hidden="true">📈</span><h3>Prices & Materials</h3><p>Copper <b data-m="copper" style="color:var(--accent)">≈$14,170/t</b> (LME 3-month reference); Aluminium <b data-m="aluminium" style="color:var(--accent)">≈$3,182/t</b> (LME reference). <b>Historical market reference</b> — not a live feed. CRGO has <b>no public daily index</b> — it varies by market, grade, thickness and commercial basis, so it is shown as <b>GRADE NOT SPECIFIED</b> rather than a single comparable number. <span style="color:var(--muted);font-size:.82rem"><span data-m-obs="copper">Historical market reference · Observed 20 Aug 2026</span> · <a href="materials.html" style="color:var(--accent);font-weight:600">Materials &rarr;</a></span></p></div>
     </div>
-    <p style="text-align:center; margin-top:30px" class="reveal"><a href="intel.html" class="btn btn-amber">Open the Intel feed →</a></p>
+    <p style="text-align:center; margin-top:30px" class="reveal"><a href="/intel" class="btn btn-amber">Open the Intel feed →</a></p>
   </div>
 </section>
 
@@ -998,11 +976,11 @@
       <p>The transformer industry, in one place.</p>
     </div>
     <div class="grid grid-3">
-      <a class="card reveal" href="intel.html"><span class="emoji" aria-hidden="true">📰</span><h3>Daily Intel →</h3><p>Daily global briefing — tenders, supplier moves, prices — ordered by your region.</p></a>
+      <a class="card reveal" href="/intel"><span class="emoji" aria-hidden="true">📰</span><h3>Daily Intel →</h3><p>Daily global briefing — tenders, supplier moves, prices — ordered by your region.</p></a>
       <a class="card reveal" href="grids.html"><span class="emoji" aria-hidden="true">🌐</span><h3>World Grids →</h3><p><span data-stat="countries">151</span> countries, <span data-stat="gridOperators">166</span> operators — voltages, frequencies and official links.</p></a>
       <a class="card reveal" href="map.html"><span class="emoji" aria-hidden="true">🗺️</span><h3>Industry Map →</h3><p>Zoom a world map of manufacturers, utilities, suppliers and events. Pins are country-level unless a site coordinate exists.</p></a>
       <a class="card reveal" href="events.html"><span class="emoji" aria-hidden="true">📅</span><h3>Events →</h3><p>Every major power & transformer exhibition through 2028, with one-click hotel and flight booking.</p></a>
-      <a class="card reveal" href="manufacturers.html"><span class="emoji" aria-hidden="true">🏭</span><h3>Manufacturers →</h3><p>A growing sourced directory of 1,002 transformer makers — power, distribution and dry-type — country by country.</p></a>
+      <a class="card reveal" href="manufacturers.html"><span class="emoji" aria-hidden="true">🏭</span><h3>Manufacturers →</h3><p>A growing sourced directory of <span data-stat="manufacturers">906</span> transformer makers — power, distribution and dry-type — country by country.</p></a>
       <a class="card reveal" href="markets.html"><span class="emoji" aria-hidden="true">🌍</span><h3>Markets →</h3><p>Country intelligence hubs — grid operators, manufacturers, projects, events and technical context, market by market.</p></a>
       <a class="card reveal" href="learn.html"><span class="emoji" aria-hidden="true">🎓</span><h3>Learn →</h3><p>A 26-chapter design masterclass — 3D models and a live design calculator, included with 12 months access.</p></a>
       <a class="card reveal" href="knowledge.html"><span class="emoji" aria-hidden="true">💡</span><h3>Knowledge →</h3><p>Clear, source-referenced answers to transformer-engineering questions, from cooling codes to DGA and bushings.</p></a>
@@ -1038,7 +1016,7 @@
         <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
         <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data. Built for utilities, transformer manufacturers, component suppliers, EPCs, consultants and engineers.</p>
       </div>
-      <div><p class="footer-col-label">INTELLIGENCE</p><a href="intel.html">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="projects.html">Projects</a><a href="tenders.html">Tenders</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="map.html">Industry Map</a><a href="events.html">Events</a></div>
+      <div><p class="footer-col-label">INTELLIGENCE</p><a href="/intel">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="projects.html">Projects</a><a href="tenders.html">Tenders</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="map.html">Industry Map</a><a href="events.html">Events</a></div>
       <div><p class="footer-col-label">DIRECTORY</p><a href="manufacturers.html">Manufacturers</a><a href="directory.html">Directory Index</a><a href="components.html">Components &amp; Materials</a><a href="machinery.html">Machinery</a><a href="laboratories.html">Testing Labs</a><a href="services.html">Service &amp; Repair</a><a href="logistics.html">Logistics</a><a href="buyers.html">Buyers &amp; Utilities</a><a href="rfq.html">RFQ Board</a></div>
       <div><p class="footer-col-label">ENGINEERING</p><a href="tools.html">Engineering Hub</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Interactive Models</a><a href="standards.html">Standards &amp; Codes</a><a href="knowledge.html">Knowledge Base</a><a href="case-studies.html">Case Studies</a></div>
       <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learning Hub</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy 3D Tools</a><a href="books.html">Books</a><a href="education.html">Education</a></div>
@@ -1088,44 +1066,6 @@ document.querySelectorAll('#mainNav a').forEach(a=>a.addEventListener('click',()
   n.classList.remove('open'); if(t) t.setAttribute('aria-expanded','false');
 }));
 
-/* ── Hero 3D: static poster first (mobile LCP); WebGL on intent / desktop idle ── */
-(function(){
-  var stage=document.querySelector('.hero-stage');
-  var frame=document.getElementById('hero3dFrame');
-  var btn=document.getElementById('heroLoad3d');
-  var poster=document.getElementById('heroPoster');
-  if(!stage||!frame||!btn) return;
-  var loaded=false;
-  function load3d(){
-    if(loaded) return;
-    loaded=true;
-    var src=frame.getAttribute('data-src')||'hero-3d.html';
-    frame.removeAttribute('hidden');
-    frame.src=src;
-    stage.classList.add('is-3d-live');
-    if(poster) poster.setAttribute('aria-hidden','true');
-    btn.setAttribute('aria-pressed','true');
-  }
-  btn.addEventListener('click', load3d);
-  // Desktop: defer WebGL until idle / first pointer — never block LCP on mobile.
-  var desktop = window.matchMedia && window.matchMedia('(min-width:821px)').matches
-    && !(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-  if(desktop){
-    var kick=function(){ load3d(); cleanup(); };
-    var cleanup=function(){
-      window.removeEventListener('pointerdown', kick);
-      window.removeEventListener('keydown', kick);
-    };
-    window.addEventListener('pointerdown', kick, {once:true, passive:true});
-    window.addEventListener('keydown', kick, {once:true});
-    if('requestIdleCallback' in window){
-      requestIdleCallback(function(){ setTimeout(load3d, 1200); }, {timeout:4000});
-    } else {
-      setTimeout(load3d, 2500);
-    }
-  }
-})();
-
 /* ── 3D explorer: auto-load on desktop, tap-to-load on mobile (saves ~1MB of JS on phones) ── */
 (function(){
   const frame=document.getElementById('frame3d'), btn=document.getElementById('load3dBtn');
@@ -1157,40 +1097,37 @@ document.querySelectorAll('#mainNav a').forEach(a=>a.addEventListener('click',()
     const esc=s=>String(s||'').replace(/</g,'&lt;');
     host.innerHTML=pick.map(it=>{
       const snip=esc(it.soWhat);
-      return '<a class="card reveal in" href="intel.html#p-'+esc(it.id)+'"><span class="g-region">'+esc(it.region)+'</span>'+
+      return '<a class="card reveal in" href="/intel#p-'+esc(it.id)+'"><span class="g-region">'+esc(it.region)+'</span>'+
         '<h3 style="font-size:1rem">'+esc(it.headline)+'</h3><p>'+snip+'</p>'+
         '<p class="g-val" style="margin-top:8px">'+(it.date?esc(it.date):'Date not stated')+(it.value?' · '+esc(it.value):'')+'</p></a>';
     }).join('');
-    // Canonical refresh date & 3-tier freshness calculation
+    // Canonical status from latest_source_date — never from desk/build alone.
     fetch('data/freshness.json',{cache:'no-cache'}).then(function(r){ return r.json().catch(function(){ return {}; }); }).then(function(d){
       const di=(d.surfaces||[]).find(function(s){ return s.id==='daily_intel'; })||{};
-      const date=di.last_successful_refresh||di.last_data_refresh||di.last_build;
-      if(!date) return;
-      const dt=new Date(date);
-      const dstr=isNaN(dt)?date:dt.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
-      
-      // Calculate freshness tier: <36h: CURRENT, 36-72h: DELAYED, >72h: STALE
-      const ageHours = !isNaN(dt) ? (Date.now() - dt.getTime()) / (1000 * 60 * 60) : 0;
-      let statusLabel = 'DATA CURRENT';
-      let dotColor = '#1a9d4a';
-      if (ageHours > 72) {
-        statusLabel = 'DATA STALE';
-        dotColor = '#94a3b8';
-      } else if (ageHours > 36) {
-        statusLabel = 'REFRESH DELAYED';
-        dotColor = '#e0a800';
-      }
+      const statusLabel = di.public_status || d.public_intel_status || 'INTEL COVERAGE DELAYED';
+      const sourceIso = di.latest_source_date || d.latest_source_date || (feed.honesty && feed.honesty.latest_source_iso);
+      const sourceLabel = (feed.honesty && feed.honesty.latest_source_date) || sourceIso || 'not recorded';
+      const checked = di.latest_source_checked_at || d.latest_source_checked_at;
+      const buildAt = di.build_at || d.build_at || d.generated;
+      const fmt = function(iso){
+        if(!iso) return null;
+        const dt=new Date(iso);
+        return isNaN(dt)?String(iso):dt.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'});
+      };
+      const dotColor = statusLabel==='DATA CURRENT' ? '#1a9d4a' : (statusLabel==='DATA STALE' ? '#94a3b8' : '#e0a800');
 
       const pillStatus = document.getElementById('hero-live-status');
       const pillDate = document.getElementById('hero-live-date');
       const pillDot = document.getElementById('hero-live-dot');
       if (pillStatus) pillStatus.textContent = statusLabel;
-      if (pillDate) pillDate.textContent = 'Canonical database refreshed ' + dstr;
+      if (pillDate) pillDate.textContent = 'Latest sourced item ' + sourceLabel;
       if (pillDot) pillDot.style.background = dotColor;
 
       if(sub){
-        const latestSrc = feed.honesty && feed.honesty.latest_source_date;
-        sub.innerHTML=(latestSrc?'Latest sourced item <b>'+latestSrc+'</b> · ':'')+'desk refresh <b>'+dstr+'</b> ('+statusLabel+'). Dates are on the source, not this visit. <a href="intel.html" style="color:var(--accent)">Open Daily Intel →</a>';
+        sub.innerHTML='Latest sourced item <b>'+sourceLabel+'</b>'+
+          (checked?' · source checked <b>'+fmt(checked)+'</b>':'')+
+          (buildAt?' · page built <b>'+fmt(buildAt)+'</b>':'')+
+          ' · <b>'+statusLabel+'</b>. Dates are on the source, not this visit. <a href="/intel" style="color:var(--accent)">Open Daily Intel →</a>';
       }
     }).catch(function(){});
   }).catch(()=>{});
@@ -1233,6 +1170,63 @@ if('IntersectionObserver' in window){
 <script src="analytics.js?v=7" defer></script>
 <script src="site-stats.js?v=7" defer></script>
 <script src="material-latest.js?v=7" defer></script>
+<script src="tp-webgl-gate.js" defer></script>
+<script>
+/* Homepage 3D: poster first → idle/interaction → WebGL iframe. Never required. */
+(function(){
+  function ready(fn){ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fn); else fn(); }
+  ready(function(){
+    var stage=document.querySelector('.hero-stage');
+    var viz=document.getElementById('heroViz');
+    var note=document.getElementById('hero3dNote');
+    var hint=document.getElementById('hero3dHint');
+    if(!viz||!stage) return;
+    var gate=window.TPWebGL;
+    var started=false;
+    function unavailable(detail){
+      stage.classList.add('is-3d-unavailable');
+      if(note) note.hidden=false;
+      if(hint) hint.hidden=true;
+      if(gate) gate.setState(viz,'UNAVAILABLE',detail||'no_webgl');
+    }
+    function inject(){
+      if(started) return; started=true;
+      if(!gate || !gate.detect().ok){ unavailable(gate&&gate.detect().reason); return; }
+      gate.setState(viz,'LOADING_MODEL');
+      var f=document.createElement('iframe');
+      f.id='hero3dFrame';
+      f.title='Interactive 3D power transformer';
+      f.src='hero-3d.html';
+      f.allow='fullscreen';
+      f.setAttribute('loading','lazy');
+      viz.appendChild(f);
+      var watch=gate.startLoadWatchdog(viz,14000,function(){
+        try{ f.remove(); }catch(e){}
+        unavailable('timeout');
+      });
+      window.addEventListener('message',function(ev){
+        var d=ev&&ev.data; if(!d||d.type!=='tp-3d-state') return;
+        if(d.state==='READY'){
+          watch.markReady();
+          stage.classList.add('is-3d-ready');
+          gate.setState(viz,'READY');
+        } else if(d.state==='UNAVAILABLE'||d.state==='LOAD_FAILED'||d.state==='CONTEXT_LOST'){
+          watch.cancel();
+          try{ f.remove(); }catch(e){}
+          unavailable(d.state);
+        }
+      });
+    }
+    // Prefer idle callback; fall back to timeout; also start on first pointer/keydown
+    var kick=function(){ inject(); };
+    ['pointerdown','keydown','touchstart'].forEach(function(ev){
+      window.addEventListener(ev,kick,{once:true,passive:true});
+    });
+    if('requestIdleCallback' in window) requestIdleCallback(kick,{timeout:2500});
+    else setTimeout(kick,1800);
+  });
+})();
+</script>
 <script src="tp-freshness.js?v=7" defer></script>
 <script src="tp-feedback.js?v=7" defer></script>
 <script>

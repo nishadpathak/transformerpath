@@ -302,7 +302,14 @@ const NAV_HTML = pageContentMap.get('index.html') || fs.readFileSync('index.html
 const NAV_PRIMARY = ['intel.html', 'manufacturers.html', 'projects.html', 'tenders.html',
   'grids.html', 'events.html', 'learn.html', 'tools.html', 'rfq.html'];
 for (const href of NAV_PRIMARY) {
-  check('nav primary link ' + href, new RegExp('class="tpnav"[\\s\\S]{0,4000}?href="' + href.replace('.', '\\.') + '"').test(NAV_HTML));
+  // Clean /intel rewrite is the preferred canonical route; accept either form.
+  const alts = href === 'intel.html'
+    ? ['intel.html', '/intel.html', '/intel', 'intel']
+    : [href, '/' + href];
+  const okNav = alts.some(function (h) {
+    return new RegExp('class="tpnav"[\\s\\S]{0,4000}?href="' + h.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '"').test(NAV_HTML);
+  });
+  check('nav primary link ' + href, okNav);
 }
 check('nav has flat container', /class="tpnav"/.test(NAV_HTML));
 check('nav has More list', /tpnav-more-panel/.test(NAV_HTML));

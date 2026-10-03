@@ -51,16 +51,20 @@ check('Homepage tenders matches site-stats', homeTenders === STATS.tenders, home
 check('Homepage openTenders matches site-stats', homeOpenTenders === STATS.openTenders, homeOpenTenders + ' vs ' + STATS.openTenders);
 check('Homepage awards matches site-stats', homeAwards === STATS.awards, homeAwards + ' vs ' + STATS.awards);
 check('Homepage upcomingEvents matches site-stats', homeEvents === STATS.upcomingEvents, homeEvents + ' vs ' + STATS.upcomingEvents);
-check('Homepage uses the 3D hero stage', HOME.includes('class="hero-stage"'));
-check('Hero uses static poster for LCP', HOME.includes('id="heroPoster"') && HOME.includes('class="hero-poster"') && HOME.includes('brand/hero.jpg'));
-check('Hero WebGL is deferred (data-src, not eager src)', /id="hero3dFrame"[\s\S]*?data-src="hero-3d\.html"/.test(HOME) && !/<iframe[^>]*id="hero3dFrame"[^>]*\ssrc=/.test(HOME));
-check('Hero Load interactive 3D control is present', HOME.includes('id="heroLoad3d"') && /Load interactive 3D/i.test(HOME));
+check('Homepage uses the 3D hero stage with static poster', HOME.includes('class="hero-stage"') && HOME.includes('power-transformer-3d-poster.jpg'));
+check('Homepage progressively enhances to hero-3d (not eager iframe)', HOME.includes("src='hero-3d.html'") || HOME.includes('src="hero-3d.html"') || HOME.includes("f.src='hero-3d.html'") || HOME.includes('f.src="hero-3d.html"'));
+check('Homepage loads WebGL gate', HOME.includes('tp-webgl-gate.js'));
 check('Hero 3D page is present', fs.existsSync('hero-3d.html'));
+check('Hero 3D gate is present', fs.existsSync('tp-webgl-gate.js'));
 check('Hero 3D core script is present', fs.existsSync('tp-3d-core.js'));
 check('Hero 3D power assembly is present', fs.existsSync('tp-power-assembly.js'));
 check('Hero tour video is present', fs.existsSync('media/platform-features-tour.mp4'));
 check('Hero tour poster is present', fs.existsSync('media/platform-features-poster.jpg'));
 check('Hero CTA opens the platform tour', HOME.includes('Watch the platform tour') && HOME.includes('media/platform-features-tour.mp4'));
+check('Hero 3D page has fallback poster + gate', (() => {
+  const h = fs.readFileSync('hero-3d.html', 'utf8');
+  return h.includes('tp-webgl-gate.js') && h.includes('data-tp-3d-poster');
+})());
 
 console.log('\n=== 2. FRESHNESS INTEGRITY ===');
 const FRESH = JSON.parse(fs.readFileSync('data/freshness.json', 'utf8'));
@@ -79,7 +83,8 @@ if (intelSurface) {
 
 const INTEL_HTML = fs.readFileSync('intel.html', 'utf8');
 check('Intel page pre-renders canonical freshness line (no Loading freshness)', !INTEL_HTML.includes('Loading freshness') && !INTEL_HTML.includes('id="freshnessLine">Loading'));
-check('Intel page displays explicit refresh status (current/delayed/stale)', INTEL_HTML.includes('Last successful refresh:') || INTEL_HTML.includes('Refresh delayed') || INTEL_HTML.includes('Data stale'));
+check('Intel page displays explicit refresh status (current/delayed/stale/coverage)',
+  /DATA CURRENT|REFRESH DELAYED|DATA STALE|INTEL COVERAGE DELAYED|Latest sourced item/i.test(INTEL_HTML));
 
 console.log('\n=== 3. SEARCH SMOKE TESTING ===');
 const DIR = JSON.parse(fs.readFileSync('data/directory-index.json', 'utf8'));

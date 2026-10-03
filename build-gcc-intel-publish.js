@@ -227,7 +227,12 @@ publishableAll.forEach(function (it) {
   });
 });
 (candidatesDoc.candidates || []).forEach(function (c) {
-  if (c.dates) pushObs(c.dates.source_checked_at);
+  // Do NOT push source_checked_at into content newest — that is a probe clock.
+  if (c.dates) {
+    ['update_date', 'tender_float_date', 'publication_date', 'event_date'].forEach(function (k) {
+      pushObs(c.dates[k]);
+    });
+  }
 });
 dateCandidates.sort();
 const newest = dateCandidates.length ? dateCandidates[dateCandidates.length - 1] : null;
@@ -241,7 +246,7 @@ intel.refresh_meta = {
   cadence: 'twice daily (curated)',
   refreshed_at_build: true,
   newest_validated_content_date: newest,
-  note: 'updated reflects newest validated GCC/content observation — not a silent redeploy clock. Excludes tender_close_date and future dates. Human approve[] overrides from gcc-discovery-publish-overrides.json.',
+  note: 'updated reflects newest validated CONTENT observation (float/publication/event/update) — not source_checked_at and not a silent redeploy clock. Excludes tender_close_date and future dates. Human approve[] overrides from gcc-discovery-publish-overrides.json.',
   gcc_published: publishableAll.map(function (p) { return p.candidate_id || p.title; }),
   desk_approved: Array.from(APPROVE)
 };

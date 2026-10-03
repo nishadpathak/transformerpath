@@ -1,0 +1,123 @@
+# TransformerPath — Final Stabilization QA Report
+
+**Scope:** Deploy preview for PR #12 (`cursor/final-stabilization-a955`) plus local regression gates.  
+**Date:** 30 September 2026  
+**Preview:** https://deploy-preview-12--transformerpath.netlify.app  
+**Principle verified:** 3D enhances TransformerPath; it must never be required for TransformerPath to work.
+
+---
+
+## 3D
+
+| Item | Result |
+| --- | --- |
+| WebGL capability detection | **PASS** — `TPWebGL.detect()` / `createRenderer()` gate before `THREE.WebGLRenderer` |
+| Homepage fallback | **PASS** — WebGL-disabled Chrome: static poster retained; copy *Interactive 3D is unavailable in this browser…*; no permanent “Loading 3D model…” |
+| Explorer fallback | **PASS** — `data-tp-3d-state="UNAVAILABLE"`; poster + fallback panel + Retry + Academy/Tools/Components links |
+| Power3D fallback | **PASS** — same as explorer |
+| Loading timeout | **PASS** (unit) — watchdog → `LOAD_FAILED`; 15s on explorer/power3d |
+| Context-loss handling | **PASS** (unit) — `webglcontextlost` → `CONTEXT_LOST` + Reload path |
+| Static poster | **PASS** — homepage poster-first; explorer/power3d `ensurePoster` before init |
+| Retry | **PASS** — Retry 3D button present on unavailable surfaces |
+| Mobile | **NOT FULLY AUTOMATED** — layout is responsive; device matrix (iPhone Safari / Android Chrome) still required post-merge on production |
+
+**WebGL-disabled evidence:** screenshots under `/opt/cursor/artifacts/screenshots/preview-*-nowebgl.png`.  
+`#panel` / `#help` marked `hidden` + `pointer-events:none` while unavailable.
+
+---
+
+## CENSUS
+
+| Item | Result |
+| --- | --- |
+| Canonical count | **906** (`data/site-stats.json` + homepage) |
+| Stale occurrences found | **0** manufacturer-count hits for 709 / 911 / 1,002 on preview homepage |
+| Corrected | Build gate `check-census-stale.js` fails CI on stale hard-coded census numbers |
+
+---
+
+## INTEL
+
+| Item | Preview value |
+| --- | --- |
+| Latest source date | **2026-09-25** (`latest_source_date`) |
+| Latest source checked | **2026-09-30** (`latest_source_checked_at`) |
+| Build time | **2026-09-30T16:59:14.586Z** (`build_at`) |
+| Public status | **INTEL COVERAGE DELAYED** (discovery claim disallowed — not minted by rebuild) |
+| GCC latest record | **2026-09-24** — DEWA tender 2122600155 (installation/testing/commissioning of distribution substations and kiosks) |
+
+Three-clock regression: `node tests/intel-clock-regression.js` → **PASS**.
+
+---
+
+## COMMODITIES
+
+| Item | Result |
+| --- | --- |
+| Copper observation | **2026-08-20** (retrieved/verified 2026-08-26) — not silently advanced |
+| Aluminium observation | **2026-08-20** (retrieved/verified 2026-08-26) |
+| Presentation | Homepage ticker: **Historical market reference · Observed 20 Aug 2026**. Materials pages regenerated to public badge **HISTORICAL** / Historical market reference (fixes prior STALE badge on `/materials` while JSON already said Historical). Commodity clocks independent of Intel/build. |
+
+---
+
+## ADSENSE
+
+| Item | Result |
+| --- | --- |
+| Warning reproduced | Not fired on WebGL-disabled preview load (AdSense not injected until consent) |
+| Root cause | Custom `data-tp-adsense` on Google’s script element (unsupported) |
+| Fix | `consent.js` loads AdSense with `client=` + `crossOrigin=anonymous` only; internal state on `window.__TP_ADSENSE_*__` |
+
+---
+
+## PWA
+
+| Item | Result |
+| --- | --- |
+| Dismiss persistence | **PASS** (unit) — cooldown `dismiss-until`; engagement gate; not every page |
+| Already-installed handling | **PASS** (unit) — no prompt in standalone; `appinstalled` handled; manifest `start_url` `/` |
+
+---
+
+## URLS
+
+| Item | Result |
+| --- | --- |
+| Canonical Intel route | **`/intel`** (`rel=canonical` → `https://transformerpath.com/intel`) |
+| Legacy redirects | `/intel.html` → **301** `/intel`; `/intel` → **200** rewrite to `intel.html`; `/daily-intel*` → `/intel` |
+| Internal links corrected | Header/footer + homepage + power3d + explorer prefer `/intel` (not a site-wide mass rewrite) |
+
+---
+
+## TESTS
+
+| Command | Result |
+| --- | --- |
+| `node tests/webgl-gate-regression.js` | **PASS** |
+| `node tests/pwa-install-regression.js` | **PASS** |
+| `node check-census-stale.js` | **PASS** |
+| `node tests/intel-clock-regression.js` | **PASS** |
+| `node tests/verify-hero-integrity.js` | **PASS** |
+
+---
+
+## PRODUCTION / PREVIEW MATRIX
+
+| Environment | Result |
+| --- | --- |
+| Desktop (preview, WebGL disabled) | Homepage / power3d / explorer usable with static poster + fallback — **PASS** |
+| Mobile | Deferred to post-merge device pass |
+| WebGL disabled | **PASS** (Chrome `--disable-webgl --disable-3d-apis`) |
+| Slow network | Not measured in this run (no fabricated CWV) |
+| Model failure | Covered by gate timeout + `LOAD_FAILED` unit path |
+
+**Release condition check:** Visitor with no WebGL sees **STATIC TRANSFORMER + WORKING PAGE + CLEAR FALLBACK + OPTIONAL RETRY** — not permanent loading + black canvas + active controls + uncaught WebGL error.
+
+---
+
+## Remaining after merge
+
+1. Production device matrix: Chrome desktop (WebGL on), Safari desktop, iPhone Safari, Android Chrome.  
+2. Confirm production AdSense console is clean after cookie accept.  
+3. Confirm production `/intel` stays clean (no bounce to `.html` in the address bar).  
+4. Optional: CWV before/after once real field data exists — do not invent numbers.
