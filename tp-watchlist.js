@@ -1,6 +1,6 @@
 /* tp-watchlist.js — Free local Intel watchlists (browser-stored).
  * Intel Pro adds shared org watchlists, alerts and exports; this is the free teaser.
- * Supports card watches + GCC portal keyword presets (DEWA / Etimad / MEWRE).
+ * Supports card watches + GCC portal keyword presets (DEWA / Etimad / MEWRE / KAHRAMAA / Nama / OETC).
  */
 (function () {
   'use strict';
@@ -75,6 +75,9 @@
         if (label === 'DEWA') btn.textContent = on ? '★ Watching DEWA tenders' : '☆ Watch DEWA tenders';
         else if (label === 'Etimad') btn.textContent = on ? '★ Watching Etimad' : '☆ Watch Etimad';
         else if (label === 'MEWRE') btn.textContent = on ? '★ Watching MEWRE' : '☆ Watch MEWRE';
+        else if (label === 'KAHRAMAA') btn.textContent = on ? '★ Watching KAHRAMAA' : '☆ Watch KAHRAMAA';
+        else if (label === 'Nama') btn.textContent = on ? '★ Watching Nama' : '☆ Watch Nama';
+        else if (label === 'OETC') btn.textContent = on ? '★ Watching OETC' : '☆ Watch OETC';
         else btn.textContent = (on ? '★ Watching ' : '☆ Watch ') + label;
         btn.classList.toggle('is-watching', on);
       });
@@ -125,7 +128,7 @@
         '</ul>' +
         '<div style="margin-top:10px;display:flex;flex-wrap:wrap;gap:8px;align-items:center">' +
         '<button type="button" class="btn btn-outline btn-sm" id="tp-watch-clear">Clear all</button>' +
-        '<a class="btn btn-amber btn-sm" href="intel-pro.html">Intel Pro — shared lists &amp; alerts →</a>' +
+        '<a class="btn btn-amber btn-sm" href="intel-pro.html" data-track="intel_pro_cta" data-track-context="watchlist">Intel Pro — shared lists &amp; alerts →</a>' +
         '</div>';
       panel.querySelectorAll('[data-watch-remove]').forEach(function (btn) {
         btn.addEventListener('click', function () {
@@ -134,6 +137,34 @@
       });
       var clear = document.getElementById('tp-watch-clear');
       if (clear) clear.addEventListener('click', function () { TP_WATCHLIST.clear(); });
+    },
+    track: function (name, props) {
+      try {
+        if (typeof window.TP_TRACK === 'function') window.TP_TRACK(name, props || {});
+      } catch (e) {}
+    },
+    subscribeAlerts: function (email, presets) {
+      var body = {
+        email: email,
+        presets: presets,
+        keywords: presets.map(function (p) {
+          var btn = document.querySelector('[data-watch-preset="' + p + '"]');
+          return (btn && btn.getAttribute('data-watch-keywords')) || p;
+        }).join(',')
+      };
+      TP_WATCHLIST.track('watchlist_alert_subscribe_start', { presets: presets.join(',') });
+      return fetch('/.netlify/functions/watchlist-subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      }).then(function (r) { return r.json().catch(function () { return {}; }); }).then(function (res) {
+        TP_WATCHLIST.track('watchlist_alert_subscribe', {
+          presets: presets.join(','),
+          emailed: res && res.emailed_user ? '1' : '0',
+          stored: res && res.stored ? '1' : '0'
+        });
+        return res;
+      });
     },
     attach: function () {
       document.querySelectorAll('article.intel-post').forEach(function (art) {
@@ -154,7 +185,9 @@
         btn.textContent = '☆ Watch';
         btn.addEventListener('click', function (e) {
           e.preventDefault();
+          var before = TP_WATCHLIST.has(id);
           TP_WATCHLIST.toggle({ id: id, title: title, href: href, region: region });
+          if (!before) TP_WATCHLIST.track('watchlist_add', { kind: 'item', region: region || '' });
         });
         byline.appendChild(btn);
       });
@@ -174,7 +207,9 @@
         btn.addEventListener('click', function (e) {
           e.preventDefault();
           e.stopPropagation();
+          var before = TP_WATCHLIST.has(id);
           TP_WATCHLIST.toggle({ id: id, title: title, href: href, region: '' });
+          if (!before) TP_WATCHLIST.track('watchlist_add', { kind: 'card' });
         });
         a.parentNode.appendChild(btn);
       });
@@ -183,6 +218,7 @@
           e.preventDefault();
           var name = btn.getAttribute('data-watch-preset');
           var keywords = btn.getAttribute('data-watch-keywords') || name;
+          var before = TP_WATCHLIST.has('preset-' + name);
           TP_WATCHLIST.toggle({
             id: 'preset-' + name,
             title: name + ' transformer tender watch',
@@ -191,8 +227,39 @@
             region: 'GCC',
             href: '#tp-watchlists'
           });
+          if (!before) TP_WATCHLIST.track('watchlist_add', { kind: 'preset', preset: name });
         });
       });
+      var alertForm = document.getElementById('tp-alert-form');
+      if (alertForm && !alertForm.getAttribute('data-bound')) {
+        alertForm.setAttribute('data-bound', '1');
+        alertForm.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var emailEl = document.getElementById('tp-alert-email');
+          var status = document.getElementById('tp-alert-status');
+          var email = emailEl && emailEl.value ? emailEl.value.trim() : '';
+          var presets = load().filter(function (x) { return x.kind === 'preset'; }).map(function (x) {
+            return String(x.id || '').replace(/^preset-/, '');
+          });
+          if (!presets.length) {
+            document.querySelectorAll('[data-watch-preset]').forEach(function (b) {
+              if (b.classList.contains('is-watching')) presets.push(b.getAttribute('data-watch-preset'));
+            });
+          }
+          if (!presets.length) presets = ['DEWA', 'Etimad', 'MEWRE'];
+          if (status) status.textContent = 'Sending…';
+          TP_WATCHLIST.subscribeAlerts(email, presets).then(function (res) {
+            if (status) {
+              if (res && res.emailed_user) status.textContent = 'Confirmation emailed — digests follow matching CONFIRMED/SUPPORTED GCC items.';
+              else if (res && res.ok && res.reason === 'not_configured') status.textContent = 'Saved for the desk (email delivery not configured on this deploy).';
+              else if (res && res.ok) status.textContent = 'Registered. Check your inbox if email is configured.';
+              else status.textContent = (res && res.error) || 'Could not subscribe — try again.';
+            }
+          }).catch(function () {
+            if (status) status.textContent = 'Network error — try again.';
+          });
+        });
+      }
       TP_WATCHLIST.syncButtons();
       TP_WATCHLIST.render();
       TP_WATCHLIST.highlightMatches();

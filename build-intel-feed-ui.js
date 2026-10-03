@@ -365,9 +365,9 @@ FACTORIES.forEach(function (f) {
   if (/opened|operational|complete|ramping/i.test(f.status || '')) cls = 'CONFIRMED';
   else if (/announc|planned|construction|under/i.test(f.status || '')) cls = 'PIPELINE';
   let dated = parseItemDate(f.status || f.backer || '');
-  const statusFuture = !!(dated.dateObj && dated.dateObj.getTime() > TODAY.getTime());
-  const statusMilestone = /commercial production|operations expected|mass-prod|COD|target(?:ed)?\s+(?:online|COD)|online\s+20\d{2}/i.test(f.status || '');
-  if (statusFuture || statusMilestone) {
+  const _statusFuture = !!(dated.dateObj && dated.dateObj.getTime() > TODAY.getTime());
+  const _statusMilestone = /commercial production|operations expected|mass-prod|COD|target(?:ed)?\s+(?:online|COD)|online\s+20\d{2}/i.test(f.status || '');
+  if (_statusFuture || _statusMilestone) {
     dated = { iso: null, label: '', precision: 'unknown', dateObj: null };
   }
   const ageTier = classifyAgeTier(dated.dateObj);
