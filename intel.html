@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="dark" data-tp-build-commit="28e901500810983af9e07b477551eb86a580a289" data-tp-build-at="2026-10-02T20:30:37.186Z" data-tp-data-version="f6bd8e2d408e">
 <head>
+<meta name="tp-build-commit" content="28e901500810983af9e07b477551eb86a580a289"><meta name="tp-build-at" content="2026-10-02T20:30:37.186Z"><meta name="tp-data-version" content="f6bd8e2d408e">
+<!-- tp-release build_commit=28e901500810983af9e07b477551eb86a580a289 build_at=2026-10-02T20:30:37.186Z data_version=f6bd8e2d408e -->
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Transformer Market Intelligence — TransformerPath</title>
@@ -17,47 +19,6 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="TransformerPath">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Is Daily Intel free?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Yes. TransformerPath Daily Intel is free to read — sourced transformer-industry news, tenders and project signals with evidence grades. Paid Intel Pro adds watchlists, alerts and exports." }
-    },
-    {
-      "@type": "Question",
-      "name": "How fresh is Daily Intel?",
-      "acceptedAnswer": { "@type": "Answer", "text": "Curated Daily Intel regenerates on a twice-daily deploy cadence (06:00 and 18:00 UTC). The desk shows the last successful data refresh. Within 36 hours is Data Current; 36–72 hours is Refresh Delayed; beyond 72 hours is Data Stale. Page build date and source refresh date are distinct." }
-    },
-    {
-      "@type": "Question",
-      "name": "What do CONFIRMED, INFERRED and PIPELINE mean?",
-      "acceptedAnswer": { "@type": "Answer", "text": "CONFIRMED means transformer scope is explicitly established in the source. INFERRED means a transformer opportunity is reasonably implied. PIPELINE covers planned, tender or pre-award work. Discovery of a candidate is not the same as publishing an Intel card." }
-    },
-    {
-      "@type": "Question",
-      "name": "Where is the weekly GCC tenders LinkedIn pack?",
-      "acceptedAnswer": { "@type": "Answer", "text": "A weekly pack of CONFIRMED GCC transformer tenders is auto-drafted at https://transformerpath.com/gcc-weekly-pack.html for LinkedIn distribution." }
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Dataset",
-  "name": "TransformerPath Daily Intel",
-  "description": "Curated, sourced transformer-industry intelligence feed with evidence grades (CONFIRMED, INFERRED, PIPELINE, WATCH), regional desks and material-index references.",
-  "url": "https://transformerpath.com/intel.html",
-  "creator": { "@type": "Organization", "name": "TransformerPath", "url": "https://transformerpath.com/" },
-  "license": "https://transformerpath.com/terms.html",
-  "isAccessibleForFree": true,
-  "keywords": ["transformers", "tenders", "grid", "CRGO", "power transformers", "GCC"]
-}
-</script>
 <style>
 /* Intel-page components, on top of the shared site styles (light + dark via vars). */
 :root { --link:#0b5fb8; --ok:#0d6e2f; --ok-bg:#e6f4ea; }
@@ -252,29 +213,28 @@ a.plain:hover { text-decoration:underline; }
 </section>
 
 <div class="wrap intel-app">
-  <div class="stamp" id="stamp">Last successful refresh: 25 Sept 2026 09:22 UTC</div>
-  <script>/* Truthful freshness: calculate tier (<36h: DATA CURRENT, 36-72h: REFRESH DELAYED, >72h: DATA STALE)
-     from canonical data/freshness.json, NOT the visitor's local clock. */
+  <div class="stamp" id="stamp"><span style="color:#e0a800;font-weight:800;letter-spacing:.5px">● INTEL COVERAGE DELAYED</span> · Latest sourced item: <b style="color:var(--text)">25 Sept 2026</b> · source checked 29 Sept 2026 · page built 30 Sept 2026</div>
+  <script>/* Status follows latest_source_date from freshness.json — never build clock alone. */
     (function () {
       var el = document.getElementById('stamp'); if (!el || !window.fetch) return;
       fetch('data/freshness.json', { cache: 'no-cache' }).then(function (r) { return r.json().catch(function () { return {}; }); }).then(function (d) {
         var di = (d.surfaces || []).find(function (s) { return s.id === 'daily_intel'; }) || {};
-        var date = di.last_successful_refresh || di.last_data_refresh || di.last_build;
-        if (!date) { el.textContent = 'Status: DATA STALE · Refresh pending'; return; }
-        var dt = new Date(date);
-        var dstr = isNaN(dt.getTime()) ? date : dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-        var ageHours = !isNaN(dt.getTime()) ? (Date.now() - dt.getTime()) / (1000 * 60 * 60) : 0;
-        var statusLabel = 'DATA CURRENT';
-        var badgeColor = 'var(--ok)';
-        if (ageHours > 72) {
-          statusLabel = 'DATA STALE';
-          badgeColor = '#94a3b8';
-        } else if (ageHours > 36) {
-          statusLabel = 'REFRESH DELAYED';
-          badgeColor = 'var(--amber)';
+        var statusLabel = di.public_status || d.public_intel_status || 'INTEL COVERAGE DELAYED';
+        var sourceIso = di.latest_source_date || d.latest_source_date;
+        var sourceLabel = sourceIso || 'not recorded';
+        var checked = di.latest_source_checked_at || d.latest_source_checked_at;
+        var buildAt = di.build_at || d.build_at || d.generated;
+        function fmt(iso) {
+          if (!iso) return null;
+          var dt = new Date(iso);
+          return isNaN(dt.getTime()) ? String(iso) : dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
         }
-        el.innerHTML = '<span style="color:' + badgeColor + ';font-weight:800;letter-spacing:.5px">● ' + statusLabel + '</span> &middot; Last Refreshed: <b style="color:var(--text)">' + dstr + '</b>';
-      }).catch(function () { el.textContent = 'Status: Refreshed at build'; });
+        if (/^\d{4}-\d{2}-\d{2}/.test(String(sourceLabel))) sourceLabel = fmt(sourceLabel) || sourceLabel;
+        var badgeColor = statusLabel === 'DATA CURRENT' ? 'var(--ok)' : (statusLabel === 'DATA STALE' ? '#94a3b8' : 'var(--amber)');
+        el.innerHTML = '<span style="color:' + badgeColor + ';font-weight:800;letter-spacing:.5px">● ' + statusLabel + '</span> &middot; Latest sourced item: <b style="color:var(--text)">' + sourceLabel + '</b>' +
+          (checked ? ' &middot; source checked ' + fmt(checked) : '') +
+          (buildAt ? ' &middot; page built ' + fmt(buildAt) : '');
+      }).catch(function () { el.textContent = 'Status: INTEL COVERAGE DELAYED'; });
     })();
   </script>
   <div id="changelog-strip" style="display:none;background:#0f2a1e;border:1px solid #1e5c40;border-radius:8px;padding:8px 14px;margin:10px 0;font-size:.85rem;line-height:1.5"></div>
@@ -367,7 +327,7 @@ a.plain:hover { text-decoration:underline; }
       <span style="color:var(--muted);font-size:.9rem">The daily briefing is free and open — built for the desks that buy, build and rate transformers. Every item is sourced; corrections are published, not buried.</span>
     </div>
     <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 16px;margin-bottom:10px;font-size:.82rem;color:var(--muted)">
-      <b style="color:var(--text)">Data freshness:</b> <span id="freshnessLine">Last successful refresh: <b style="color:var(--text)">25 Sept 2026 09:22 UTC</b> · cadence: twice daily (curated)</span> <span style="color:var(--muted)">· Curated Daily Intel regenerates at build on a twice-daily schedule (06:00 / 18:00 UTC). Page build date and last successful data refresh are distinct. This line is never left as “Loading…”.</span>
+      <b style="color:var(--text)">Data freshness:</b> <span id="freshnessLine">Latest sourced item <b style="color:var(--text)">25 Sept 2026</b> · last source check <b style="color:var(--text)">29 Sept 2026</b> · build <b style="color:var(--text)">30 Sept 2026</b> · status <b style="color:var(--text)">INTEL COVERAGE DELAYED</b></span> <span style="color:var(--muted)">· Curated Daily Intel is refreshed at build. Page build date and last successful data refresh are distinct. This line is never left as “Loading…”.</span>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px">
       <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:11px 14px">
@@ -375,8 +335,8 @@ a.plain:hover { text-decoration:underline; }
         <div style="font-size:.84rem;color:var(--text);line-height:1.45;margin-top:3px">Traced to a primary filing, release or named counterparty — never a re-blog.</div>
       </div>
       <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:11px 14px">
-        <div style="font-size:.66rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--accent)">Verified</div>
-        <div style="font-size:.84rem;color:var(--text);line-height:1.45;margin-top:3px">Supplier moves checked against a recent type-test or announcement record.</div>
+        <div style="font-size:.66rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--accent)">SOURCE CHECKED</div>
+        <div style="font-size:.84rem;color:var(--text);line-height:1.45;margin-top:3px">Portals and filings last probed on the source-checked clock — independent of page build.</div>
       </div>
       <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:11px 14px">
         <div style="font-size:.66rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--accent)">Materials</div>
@@ -388,11 +348,9 @@ a.plain:hover { text-decoration:underline; }
       </div>
     </div>
   </div>
-  </details>
 
   <div style="max-width:860px;margin:0 auto 22px;display:flex;flex-wrap:wrap;gap:10px">
     <a class="btn btn-amber btn-sm" href="subscribe.html" data-track="newsletter_signup" data-track-context="intel">Receive the Daily Brief →</a>
-    <a class="btn btn-outline btn-sm" href="gcc-weekly-pack.html">Weekly GCC LinkedIn pack →</a>
     <a class="btn btn-outline btn-sm" href="rfq.html" data-track="rfq_started" data-track-context="intel">Looking for suppliers? Submit an RFQ →</a>
     <a class="btn btn-outline btn-sm" href="manufacturers.html" data-track="explore_manufacturers" data-track-context="intel">Explore <span data-stat="manufacturers">906</span> transformer manufacturers →</a>
     <a class="btn btn-outline btn-sm" href="workspace.html" data-track="account_created" data-track-context="intel">Create a free account →</a>
@@ -425,18 +383,12 @@ a.plain:hover { text-decoration:underline; }
 
   <section class="matidx" id="materials" style="max-width:860px;margin:0 auto 22px">
     <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:8px">
-      <h2 style="font-size:1.15rem;color:var(--ink);margin:0">Lead-time &amp; materials desk</h2>
-      <span style="font-size:.72rem;color:var(--muted)">dated reference · beside Daily Intel · not a live feed</span>
+      <h2 style="font-size:1.15rem;color:var(--ink);margin:0">Transformer Material Index</h2>
+      <span style="font-size:.72rem;color:var(--muted)">input-cost signal · latest reference</span>
     </div>
-    <p style="margin:0 0 10px;color:var(--muted);font-size:.86rem;line-height:1.5">CRGO, copper and bushings bind many award schedules. LME copper/aluminium below are dated ring settlements; CRGO/bushing/OLTC slots have no public daily index — we show notes, never invented prices.</p>
     <div id="matRows" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px"></div>
     <div id="matImpact" style="margin-top:10px"></div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:12px;font-size:.82rem;line-height:1.45">
-      <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 12px"><b style="color:var(--amber)">CRGO / GOES</b><div style="color:var(--muted);margin-top:4px">No public daily index — inquire with mill / service centre. Allocation, not spot, usually decides.</div></div>
-      <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 12px"><b style="color:var(--amber)">Bushings &amp; OLTCs</b><div style="color:var(--muted);margin-top:4px">Common critical path on EHV builds — <a href="components/transformer-bushings.html" style="color:var(--accent)">bushing suppliers</a> · <a href="components/on-load-tap-changers.html" style="color:var(--accent)">OLTC suppliers</a>.</div></div>
-      <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 12px"><b style="color:var(--amber)">≥100 MVA lead times</b><div style="color:var(--muted);margin-top:4px">Industry desks still cite ~110–180 weeks (varies by book). Verify per RFQ — not a TransformerPath forecast.</div></div>
-    </div>
-    <p style="font-size:.74rem;color:var(--muted);line-height:1.5;margin:8px 0 0">Copper &amp; aluminium: LME 3-month official ring settlement as latest reference — verify before commercial use. Source: <a href="https://www.lme.com/en/market-data/lme-reference-prices/lme-official-price" target="_blank" rel="noopener" style="color:var(--accent)">LME official prices</a>.</p>
+    <p style="font-size:.74rem;color:var(--muted);line-height:1.5;margin:8px 0 0">Copper &amp; aluminium are a latest reference from the LME 3-month official ring settlement (varies by day — verify against LME official before commercial use). CRGO, ester/oil and pressboard have no public daily index, so they are shown as estimate/contact. Source: <a href="https://www.lme.com/en/market-data/lme-reference-prices/lme-official-price" target="_blank" rel="noopener" style="color:var(--accent)">LME official prices</a>.</p>
   </section>
   <div class="sowhat" style="max-width:860px;margin:0 auto 20px;background:var(--card);border:1px solid var(--border);border-radius:10px;padding:11px 16px">
     <b style="color:var(--ink);font-size:.9rem">How to read each panel:</b>
@@ -480,6 +432,7 @@ a.plain:hover { text-decoration:underline; }
     }).catch(function(){});
   })();
   </script>
+  </details>
 
   <div class="intel-desks" role="tablist" aria-label="Intel desks">
     <button type="button" class="intel-tab active" role="tab" id="tab-latest" data-feed="latest" aria-selected="true" aria-controls="intel-timeline">Latest</button>
@@ -1261,9 +1214,16 @@ a.plain:hover { text-decoration:underline; }
   var el=document.getElementById('freshnessLine');
   if(!el) return;
   fetch('data/freshness.json').then(function(r){ return r.json().catch(function(){ return {}; }); }).then(function(d){
-    var di=(d.surfaces||[]).find(function(s){ return s.id==='daily_intel'; });
-    if(di && di.last_build){ el.innerHTML='Curated Daily Intel <b style="color:var(--text)">last refreshed ' + di.last_build + '</b> · cadence: ' + (di.cadence||'twice daily'); }
-    else { el.innerHTML='Curated Daily Intel <b style="color:var(--text)">refresh date unavailable</b>'; }
+    var di=(d.surfaces||[]).find(function(s){ return s.id==='daily_intel'; })||{};
+    var status = di.public_status || d.public_intel_status || 'INTEL COVERAGE DELAYED';
+    var source = di.latest_source_date || d.latest_source_date || 'unavailable';
+    var checked = di.latest_source_checked_at || d.latest_source_checked_at;
+    var build = di.build_at || d.build_at || d.generated;
+    function fmt(iso){ if(!iso) return null; var dt=new Date(iso); return isNaN(dt.getTime())?String(iso):dt.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'}); }
+    if (/^\d{4}-\d{2}-\d{2}/.test(String(source))) source = fmt(source) || source;
+    el.innerHTML='Status <b style="color:var(--text)">'+status+'</b> · latest sourced item <b style="color:var(--text)">'+source+'</b>'+
+      (checked?' · source checked '+fmt(checked):'')+
+      (build?' · page built '+fmt(build):'');
   }).catch(function(){ el.textContent='Freshness unavailable'; });
 })();
 </script>
@@ -1287,6 +1247,7 @@ const NEWS = {
       { title:"MEWRE — second-stage maintenance/replacement programme (transformers up to 75 MVA; parallel reactors up to 50 MVA)", snippet:"Phase-two maintenance and replacement of damaged parts and related civil works for transformers ≤75 MVA and parallel reactors ≤50 MVA.", value:"up to 75 MVA / 50 MVA reactors", src:"kuwait central procurement · 24 Sep 2026 [en]", url:"https://tenderimpulse.com/government-tenders/kuwait/maintenance-and-replacement-of-damaged-parts-and-civil-works-related-to-a-number-14608275", cls:"PIPELINE", lang:"en", isNew:true, event_date:"2026-09-24", publication_date:"2026-08-31", date_iso:"2026-09-24", tender_id:"CAPT-GOV-KW-16/2025/2026" },
       { title:"EWA Central Stores — 11/0.415 kV 1,000 kVA mineral-oil-filled package substation with distribution board", snippet:"Bahrain Tender Board 389/2026/BTB (PT/CSD/HR/2026/102): SUBSTATION KIOSK 11/0.415 kV, 1000 kVA, mineral oil filled, with distribution board.", value:"1000 kVA · 11/0.415 kV", src:"bahrain tender board · 28 Aug 2026 [en]", url:"https://www.tenderboard.gov.bh/", cls:"CONFIRMED", lang:"en", isNew:true, event_date:"2026-08-28", publication_date:"2026-08-28", date_iso:"2026-08-28", tender_id:"389/2026/BTB" },
       /*/INJECT:GCC_DISCOVERY*/
+      
       
       
       
@@ -2206,7 +2167,7 @@ tabList.forEach((t, idx) => {
 <script src="follow-button.js" defer></script>
 <script src="analytics.js?v=7" defer></script>
 <script src="tp-freshness.js?v=7" defer></script>
-<script src="tp-watchlist.js?v=1" defer></script>
+<script src="tp-watchlist.js?v=7" defer></script>
 <script src="tp-feedback.js?v=7" defer></script>
 </body>
 </html>

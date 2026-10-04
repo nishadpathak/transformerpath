@@ -257,7 +257,7 @@ function renderIntelligence() {
 
   const body = '<main class="biw-wrap">' +
     '<h1>TransformerPath <span style="color:var(--accent)">Intelligence</span></h1>' +
-    '<p class="lead">The transformer-industry business-intelligence hub. TransformerPath accumulates industry memory — every sourced development is attached to a permanent company, project or utility and typed as an event, so you can follow what changed, where and when. All entries are source-tracked with confidence labels; nothing is inferred without a source.</p>' +
+    '<p class="lead">The transformer-industry business-intelligence hub — the <b>canonical event/entity layer</b>. Every sourced development is attached to a permanent company, project or utility and typed as an event (factory expansion, order/contract, ownership, laboratory, reference). Daily Intel, the homepage briefing and company timelines are views over this memory, not separate databases. All entries are source-tracked with confidence labels; nothing is inferred without a source. <a href="intel.html" style="color:var(--accent)">Open Daily Intel →</a></p>' +
     counts +
     '<div class="biw-sec"><h2>Transformer-relevant projects</h2><p class="sub">Structured grid, substation and transformer projects — tenders, awards, construction and energisation — with the transformer scope graded confirmed / inferred / unknown per the published source.</p><div>' + pj + '</div></div>' +
     '<div class="biw-sec"><h2>Tender Watch</h2><p class="sub">Pre-award procurement opportunities — open, closing soon, under evaluation and expected. Awards are carried separately (see Recent awards); awarded tenders move out of the active procurement flow.</p><div>' + tRows + '</div></div>' +

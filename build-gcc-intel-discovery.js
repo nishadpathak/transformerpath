@@ -351,7 +351,9 @@ var gccSurface = {
   last_build: NOW,
   last_data_refresh: null,
   last_attempted_refresh: TODAY,
-  last_successful_refresh: adapterReport.live ? NOW : null,
+  last_successful_refresh: result.freshness.latest_confirmed_event_date
+    ? (result.freshness.latest_confirmed_event_date + 'T12:00:00.000Z')
+    : null,
   latest_source_observation: result.freshness.latest_confirmed_event_date,
   records_added: result.counts.candidates,
   records_updated: null,

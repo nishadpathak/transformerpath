@@ -1,8 +1,8 @@
 {
   "$schema": "https://transformerpath.com/material-index.schema.json",
-  "updated": "2026-09-15",
+  "updated": "2026-09-30",
   "currency": "USD",
-  "note": "Copper and aluminium are the LME 3-month official ring settlement as latest REFERENCE (dated, sourced, not a live feed). CRGO, oil, ester, pressboard and tank steel have no established public daily index and are shown as unavailable/GRADE NOT SPECIFIED rather than invented. Unknown > incorrect.",
+  "note": "Copper and aluminium are the LME 3-month official ring settlement as latest REFERENCE (dated, sourced, not a live feed). Aged observations are labelled Historical market reference with an Observed date — never a live feed. CRGO, oil, ester, pressboard and tank steel have no established public daily index and are shown as unavailable/GRADE NOT SPECIFIED rather than invented. Unknown > incorrect. Commodity freshness is independent of Intel freshness, census freshness, and build freshness.",
   "rows": [
     {
       "id": "aluminium",
@@ -15,10 +15,12 @@
       "source": "LME official price",
       "observation_date": "2026-08-20",
       "last_verified": "2026-08-26",
-      "status": "aging",
-      "freshness_status": "AGING",
+      "status": "historical",
+      "freshness_status": "HISTORICAL",
+      "freshness_label": "HISTORICAL",
+      "presentation": "Historical market reference",
       "basis": "3-month official ring settlement (reference)",
-      "note": "LME 3-month official ring settlement as a latest reference. Varies by day; verify against the LME official price before commercial use. Not a live feed."
+      "note": "Historical market reference. Observed 2026-08-20. Independent of Intel/build clocks. Verify against LME before commercial use."
     },
     {
       "id": "copper",
@@ -31,10 +33,12 @@
       "source": "LME official price",
       "observation_date": "2026-08-20",
       "last_verified": "2026-08-26",
-      "status": "aging",
-      "freshness_status": "AGING",
+      "status": "historical",
+      "freshness_status": "HISTORICAL",
+      "freshness_label": "HISTORICAL",
+      "presentation": "Historical market reference",
       "basis": "3-month official ring settlement (reference)",
-      "note": "LME 3-month official ring settlement as a latest reference. Varies by day; verify against the LME official price before commercial use. Not a live feed."
+      "note": "Historical market reference. Observed 2026-08-20. Independent of Intel/build clocks. Verify against LME before commercial use."
     }
   ]
 }

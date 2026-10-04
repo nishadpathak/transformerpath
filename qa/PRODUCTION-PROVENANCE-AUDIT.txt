@@ -1,0 +1,57 @@
+PRODUCTION PROVENANCE AUDIT — 30 Sep 2026 (recheck 19:00 UTC)
+=============================================================
+
+Verdict: public production is a MIXED generation. Do not treat remaining
+"bugs" as separate content tasks until one release owns every key surface.
+
+## What changed on main today
+
+origin/main advanced to:
+  35096d689  Intel P0: GCC source-discovery + honest freshness (#6)
+
+So production can now show SOME newer Intel/discovery pieces (e.g. /intelligence
+September events, CG Power Daily Intel attribution language) while still
+serving OLD homepage/intel/FAQ generation artifacts from earlier Maghreb-era
+HTML. That is exactly "different builds coexisting," not "#11 failed."
+
+PR #11 / #12 (three clocks, census cleanup, CG MAX voltage, WebGL gate,
+release provenance stamps) are STILL NOT on main.
+
+## Live production markers (transformerpath.com, this recheck)
+
+| Surface | Finding |
+| --- | --- |
+| / | 906 at top + stale "1,002 transformer makers"; "After the hero…"; DATA CURRENT language with older source dates; NO tp-build-* stamps |
+| /intel.html | Old freshness UX (DATA STALE / Last Refreshed style paths still present in JS/copy); NO tp-build-* stamps |
+| /faq.html | Still documents 36h Current / 36–72h Delayed / >72h Stale |
+| /data/freshness.json | generated 2026-09-30T16:01:11.959Z — OLD schema (no top-level build_at / latest_source_date / public_intel_status) |
+| /data/build-provenance.json | HTTP 404 (release stamps not on production) |
+| /intelligence | Newer typed event architecture visible (explains partial #6 landing) |
+| Commodities | Historical reference — CLOSE |
+| Manufacturer profiles | Newer Intelligence integration visible on CG Power |
+
+## Release branch (cursor/final-stabilization-a955) after merging main
+
+- Merged origin/main (#6) so the next production deploy is one lineage.
+- Homepage on branch: no 1,002 makers, no "After the hero".
+- Intel stamp on branch: INTEL COVERAGE DELAYED + three clocks.
+- FAQ on branch: updated to three-clock / INTEL COVERAGE DELAYED model (removed 36h ladder).
+- 12 key surfaces share identical tp-build-commit / tp-build-at / tp-data-version.
+- data/build-provenance.json is generated and copied via build-dist data/ allowlist.
+
+## Only P0
+
+1. Merge PR #12 to main.
+2. Wait for ONE Netlify production deploy to finish.
+3. Recrawl and require identical meta on every key URL:
+     tp-build-commit
+     tp-build-at
+     tp-data-version
+   Pages: / , /intel.html , /intelligence , /pricing , /faq.html ,
+   /manufacturers , /manufacturers/cg-power/ , /events/middle-east-energy/ ,
+   /jobs.html , /explorer , /data/build-provenance.json
+4. If any surface disagrees or 404s provenance → stop; purge/revalidate that
+   artifact; do not edit page copy.
+5. Only after identity matches: re-audit WebGL-disabled browser + Intel clocks.
+
+No new product work until step 4 passes.

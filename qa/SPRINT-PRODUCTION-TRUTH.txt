@@ -1,0 +1,42 @@
+PRODUCTION TRUTH RECORD — 6h sprint Phase 1
+===========================================
+Recorded_at_UTC: 2026-10-02T20:24:58.508305+00:00
+Agent_branch: cursor/final-stabilization-a955
+Agent_commit: 28e901500810983af9e07b477551eb86a580a289
+
+## Production (transformerpath.com) as crawled
+
+| Field | Value |
+| --- | --- |
+| Production deploy commit (Netlify main ready) | ff38af7fa90d0d8b8b08b6111e5e6d95fb5fcda6 |
+| Production branch tip | origin/main = ff38af7 (ancestor of agent branch) |
+| data/site-stats manufacturers | 906 |
+| data/freshness.generated | 2026-10-02T20:05:11.690Z |
+| Daily Intel last_build | 2026-10-02 |
+| Daily Intel last_data_refresh | 2026-09-25T12:00:00.000Z |
+| Daily Intel status (legacy schema) | HEALTHY |
+| data/build-provenance.json | HTTP 404 |
+
+## Route HTTP status (all 200 unless noted)
+
+/, /intel.html, /intelligence, /manufacturers, /pricing, /faq.html,
+/projects, /tenders, /awards, /events, /events/middle-east-energy/,
+/manufacturers/cg-power/, /manufacturers/cg-power-and-industrial-solutions/,
+/explorer, /power3d, /jobs.html — all served.
+/data/build-provenance.json — 404
+
+## Stale-generation diagnosis (evidence, not guess)
+
+1. Mixed generation: production main = #6 GCC discovery (ff38af7) WITHOUT
+   PR #12 release stamps / three-clock model / WebGL gate / census copy cleanup.
+2. Homepage still contains "1,002" manufacturer marketing copy + no tp-build-* meta.
+3. /intel.html still documents old 36h DATA CURRENT ladder; no three-clock stamps.
+4. Dual CG URLs both 200 (short slug not yet 301 to canonical).
+5. Not CDN mystery alone: site-stats.json already 906, but HTML generations disagree.
+6. Root cause to fix for ONE PUBLIC TRUTH: merge/deploy PR #12 after green Netlify.
+   Netlify deploy-preview currently ERROR — suspected /intel.html↔/intel redirect loop.
+
+## Branch already contains (local gates green)
+
+- build_commit / build_at / data_version stamps + check-release-provenance
+- census gate 906; WebGL gate; intel clock regression; GCC fixtures
