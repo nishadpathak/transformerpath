@@ -67,6 +67,7 @@ const ROOT_JS = [
   'tp-3d-core.js', 'tp-power-assembly.js', 'tp-oil-assembly.js',
   'tp-castresin-assembly.js', 'tp-ct-assembly.js',
   'part-ecosystem.js', 'component-3d-bridge.js',
+  'tp-lab-geometry.js', 'tp-lab-engine.js',
 ];
 
 // Everything else at the root that must ship.

@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" class="tp-dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transformer Lab — Interactive Disassembly | TransformerPath</title>
+<meta name="description" content="Take a 100 MVA power transformer apart layer by layer. Explore the tank, active part, core, windings, insulation, cooling, bushings and OLTC in one interactive engineering environment.">
+<link rel="canonical" href="https://transformerpath.com/transformer-lab.html">
+<meta property="og:title" content="Transformer Lab — Interactive Disassembly | TransformerPath">
+<meta property="og:description" content="Take a 100 MVA power transformer apart layer by layer in this interactive engineering environment.">
+<meta property="og:url" content="https://transformerpath.com/transformer-lab.html">
+<meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TransformerPath">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg">
+<link rel="icon" href="brand/favicon.ico" sizes="any">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
+<link rel="stylesheet" href="tp-theme.css?v=6">
+<link rel="stylesheet" href="tp-nav.css?v=14">
+<link rel="stylesheet" href="tp-feedback.css?v=14">
+<style>
+/* ═══════════════════════════════════════════════════════
+   Transformer Lab — local design system
+   Uses TransformerPath tokens from tp-theme.css
+═══════════════════════════════════════════════════════ */
+:root {
+  --lab-bg:      #080f1a;
+  --lab-panel:   rgba(10,22,38,.92);
+  --lab-border:  #1e3a5c;
+  --lab-ink:     #dbe9f6;
+  --lab-mut:     #7a9ab8;
+  --lab-acc:     #f5a623;
+  --lab-acc2:    #fbbf24;
+  --lab-blue:    #3b82f6;
+  --lab-green:   #22c55e;
+  --lab-r:       10px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  background: var(--lab-bg);
+  color: var(--lab-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── canvas ── */
+#lab-canvas-host {
+  position: absolute;
+  inset: 0;
+  cursor: grab;
+}
+#lab-canvas-host.dragging { cursor: grabbing; }
+
+/* ── top bar ── */
+#lab-topbar {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 54px;
+  background: linear-gradient(180deg,rgba(8,15,26,.96),rgba(8,15,26,.72) 80%,transparent);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  z-index: 20;
+  pointer-events: none;
+}
+#lab-topbar .lab-title {
+  font-size: .95rem;
+  font-weight: 700;
+  letter-spacing: .4px;
+  color: var(--lab-acc);
+}
+#lab-topbar .lab-sub {
+  font-size: .72rem;
+  color: var(--lab-mut);
+  white-space: nowrap;
+}
+#lab-topbar .lab-stage-pill {
+  background: rgba(245,166,35,.14);
+  border: 1px solid rgba(245,166,35,.3);
+  color: var(--lab-acc);
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+#lab-topbar .tbar-right {
+  margin-left: auto;
+  pointer-events: auto;
+  display: flex;
+  gap: 8px;
+}
+#lab-topbar a {
+  font-size: .78rem;
+  color: var(--lab-mut);
+  text-decoration: none;
+  border: 1px solid var(--lab-border);
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: rgba(10,22,38,.7);
+  white-space: nowrap;
+  transition: color .2s, border-color .2s;
+}
+#lab-topbar a:hover { color: var(--lab-acc); border-color: var(--lab-acc); }
+
+/* ── caption strip ── */
+#lab-caption {
+  position: absolute;
+  left: 50%;
+  bottom: 108px;
+  transform: translateX(-50%);
+  max-width: 700px;
+  width: calc(100% - 32px);
+  background: rgba(8,15,26,.88);
+  border: 1px solid rgba(245,166,35,.25);
+  border-radius: 12px;
+  padding: 12px 20px;
+  text-align: center;
+  z-index: 15;
+  backdrop-filter: blur(8px);
+  pointer-events: none;
+  transition: opacity .3s;
+}
+#lab-caption .cap-stage {
+  font-size: .68rem;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--lab-acc);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+#lab-caption .cap-text {
+  font-size: .88rem;
+  line-height: 1.5;
+  color: var(--lab-ink);
+}
+
+/* ── control bar (bottom) ── */
+#lab-controls {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 96px;
+  background: linear-gradient(0deg,rgba(8,15,26,.97),rgba(8,15,26,.82) 80%,transparent);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 16px 12px;
+  z-index: 20;
+  gap: 6px;
+}
+
+/* slider row */
+.ctrl-slider-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 860px;
+}
+.ctrl-slider-row span {
+  font-size: .68rem;
+  color: var(--lab-mut);
+  white-space: nowrap;
+  min-width: 64px;
+}
+.ctrl-slider-row span:last-child { text-align: right; }
+#lab-slider {
+  flex: 1;
+  accent-color: var(--lab-acc);
+  height: 4px;
+}
+#lab-slider::-webkit-slider-thumb { cursor: pointer; }
+
+/* button row */
+.ctrl-btn-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.ctrl-btn {
+  background: rgba(14,28,48,.8);
+  border: 1px solid var(--lab-border);
+  color: var(--lab-ink);
+  border-radius: 7px;
+  padding: 6px 14px;
+  font-size: .78rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color .18s, background .18s, color .18s;
+  white-space: nowrap;
+  line-height: 1;
+}
+.ctrl-btn:hover { border-color: var(--lab-acc); color: var(--lab-acc); }
+.ctrl-btn.active { background: var(--lab-acc); color: #0d1b2e; border-color: var(--lab-acc); font-weight: 700; }
+.ctrl-btn.primary {
+  background: linear-gradient(135deg, #f5a623, #e8870a);
+  border-color: transparent;
+  color: #0d1b2e;
+  font-weight: 700;
+  padding: 6px 18px;
+}
+.ctrl-btn.primary:hover { background: linear-gradient(135deg, #fbbf24, #f5a623); }
+
+/* ── left sidebar — engineering panel ── */
+#lab-panel {
+  position: absolute;
+  top: 62px;
+  right: 14px;
+  width: 300px;
+  max-height: calc(100% - 120px);
+  overflow-y: auto;
+  background: var(--lab-panel);
+  border: 1px solid var(--lab-border);
+  border-radius: var(--lab-r);
+  padding: 14px 16px;
+  z-index: 20;
+  backdrop-filter: blur(8px);
+  scrollbar-width: thin;
+  scrollbar-color: var(--lab-border) transparent;
+}
+#lab-panel h3 {
+  font-size: .68rem;
+  text-transform: uppercase;
+  letter-spacing: 1.1px;
+  color: var(--lab-mut);
+  margin: 12px 0 5px;
+}
+#lab-panel h3:first-child { margin-top: 0; }
+#lab-panel .comp-name {
+  font-size: .97rem;
+  font-weight: 700;
+  color: var(--lab-acc);
+  line-height: 1.3;
+  margin-bottom: 6px;
+}
+#lab-panel .comp-desc {
+  font-size: .80rem;
+  line-height: 1.6;
+  color: var(--lab-ink);
+  margin-bottom: 8px;
+}
+#lab-panel .comp-empty {
+  font-size: .80rem;
+  color: var(--lab-mut);
+  font-style: italic;
+  line-height: 1.5;
+}
+#lab-panel .comp-note {
+  font-size: .70rem;
+  color: #9a8a64;
+  margin-bottom: 6px;
+  font-style: italic;
+}
+.panel-links {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 8px;
+}
+.panel-link {
+  display: inline-block;
+  font-size: .76rem;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background .18s, color .18s;
+  text-align: center;
+}
+.panel-link.learn  { background: rgba(59,130,246,.18); color: #93c5fd; border: 1px solid rgba(59,130,246,.3); }
+.panel-link.explore{ background: rgba(245,166,35,.14); color: var(--lab-acc); border: 1px solid rgba(245,166,35,.3); }
+.panel-link.dir    { background: rgba(34,197,94,.12);  color: #86efac; border: 1px solid rgba(34,197,94,.25); }
+.panel-link.grid   { background: rgba(168,85,247,.14); color: #c084fc; border: 1px solid rgba(168,85,247,.3); }
+.panel-link:hover  { filter: brightness(1.2); }
+
+.panel-badge {
+  display: inline-block;
+  font-size: .65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: rgba(245,166,35,.15);
+  border: 1px solid rgba(245,166,35,.35);
+  color: var(--lab-acc);
+}
+
+/* guided mode overlay — bottom-centre */
+#guided-overlay {
+  position: absolute;
+  bottom: 84px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(8,17,32,.94);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(245,166,35,.4);
+  border-radius: 10px;
+  padding: 12px 18px;
+  max-width: 620px;
+  width: calc(100% - 32px);
+  z-index: 25;
+  box-shadow: 0 8px 32px rgba(0,0,0,.6);
+}
+.guided-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.guided-step-badge {
+  font-size: .65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .8px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(245,166,35,.2);
+  color: var(--lab-acc);
+  border: 1px solid rgba(245,166,35,.35);
+  flex-shrink: 0;
+}
+.guided-title {
+  font-size: .88rem;
+  font-weight: 700;
+  color: #f1f5f9;
+  flex: 1;
+}
+.guided-btn-exit {
+  background: none;
+  border: 1px solid var(--lab-border);
+  color: var(--lab-mut);
+  font-size: .70rem;
+  padding: 3px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.guided-btn-exit:hover {
+  border-color: #ef4444;
+  color: #fca5a5;
+}
+.guided-body {
+  font-size: .82rem;
+  color: #cbd5e1;
+  line-height: 1.45;
+  margin-bottom: 10px;
+}
+.guided-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.guided-nav-btn {
+  background: rgba(15,29,48,.9);
+  border: 1px solid var(--lab-border);
+  color: var(--lab-ink);
+  font-size: .74rem;
+  font-weight: 600;
+  padding: 5px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.guided-nav-btn:hover { border-color: var(--lab-acc); color: var(--lab-acc); }
+.guided-nav-btn.primary {
+  background: var(--lab-acc);
+  border-color: var(--lab-acc);
+  color: #07101c;
+  font-weight: 700;
+}
+.guided-nav-btn.primary:hover { filter: brightness(1.15); }
+.guided-dots {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+.guided-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.2);
+  cursor: pointer;
+  transition: all .15s;
+}
+.guided-dot.active {
+  background: var(--lab-acc);
+  transform: scale(1.25);
+}
+
+/* mode & view toolbar — bottom-left */
+#lab-toolbar {
+  position: absolute;
+  bottom: 104px;
+  left: 14px;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.toolbar-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.toolbar-group-label {
+  font-size: .62rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--lab-mut);
+  margin-bottom: 2px;
+}
+.tb-btn {
+  background: rgba(10,22,38,.85);
+  border: 1px solid var(--lab-border);
+  color: var(--lab-mut);
+  font-size: .70rem;
+  font-weight: 500;
+  padding: 4px 9px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all .15s;
+  white-space: nowrap;
+}
+.tb-btn:hover { border-color: var(--lab-acc); color: var(--lab-acc); }
+.tb-btn.active { background: rgba(245,166,35,.18); border-color: var(--lab-acc); color: var(--lab-acc); }
+
+/* ── 3D labels ── */
+.tp3d-lbl {
+  position: absolute;
+  transform: translate(-50%, -130%);
+  background: rgba(8,15,26,.9);
+  border: 1px solid var(--lab-border);
+  color: #c8ddf0;
+  font-size: 10px;
+  font-family: inherit;
+  padding: 2px 7px;
+  border-radius: 4px;
+  pointer-events: auto;
+  cursor: pointer;
+  white-space: nowrap;
+  z-index: 5;
+  transition: border-color .15s, color .15s;
+}
+.tp3d-lbl:hover { border-color: var(--lab-acc); color: var(--lab-acc); }
+.tp3d-lbl::after {
+  content: '';
+  position: absolute;
+  left: 50%; top: 100%;
+  margin-left: -3px;
+  border: 3px solid transparent;
+  border-top-color: var(--lab-border);
+}
+
+/* ── help hint ── */
+#lab-help {
+  position: absolute;
+  left: 14px;
+  top: 62px;
+  z-index: 15;
+  font-size: .70rem;
+  color: var(--lab-mut);
+  background: rgba(10,22,38,.75);
+  border: 1px solid var(--lab-border);
+  border-radius: 7px;
+  padding: 6px 10px;
+  line-height: 1.6;
+  pointer-events: none;
+}
+#lab-help kbd {
+  background: rgba(30,58,92,.7);
+  border-radius: 3px;
+  padding: 1px 4px;
+  font-size: .66rem;
+  color: var(--lab-ink);
+  font-family: inherit;
+}
+
+/* ── accessible tree (non-3D) ── */
+#lab-a11y {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+#lab-a11y:focus-within {
+  position: static;
+  width: auto;
+  height: auto;
+  left: auto;
+  background: var(--lab-panel);
+  border: 1px solid var(--lab-border);
+  border-radius: var(--lab-r);
+  padding: 16px;
+  margin: 16px;
+  z-index: 99;
+  overflow: auto;
+}
+
+/* ── WebGL fallback ── */
+#lab-webgl-fallback {
+  display: none;
+  position: absolute;
+  inset: 0;
+  background: var(--lab-bg);
+  overflow-y: auto;
+  padding: 32px;
+  z-index: 50;
+}
+#lab-webgl-fallback h2 { color: var(--lab-acc); margin-bottom: 12px; }
+#lab-webgl-fallback ol { padding-left: 20px; line-height: 2; color: var(--lab-ink); }
+
+/* ── mobile ── */
+@media (max-width: 768px) {
+  #lab-panel {
+    width: auto;
+    left: 0; right: 0;
+    top: auto;
+    bottom: 96px;
+    max-height: 38vh;
+    border-radius: var(--lab-r) var(--lab-r) 0 0;
+    display: none; /* shown via toggle */
+  }
+  #lab-panel.open { display: block; }
+  #lab-toolbar { display: none; }
+  #lab-help { display: none; }
+  #lab-caption { bottom: 132px; font-size: .82rem; }
+  #lab-topbar .lab-sub { display: none; }
+  .ctrl-btn-row .ctrl-btn { padding: 5px 9px; font-size: .72rem; }
+  #lab-controls { height: 108px; }
+}
+
+/* ── reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#lab-a11y">Skip to accessible component list</a>
+
+<!-- ═══════════ NAV ═══════════ -->
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px">
+      <svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none">
+        <circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/>
+        <g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8">
+          <line x1="8" y1="32" x2="56" y2="32"/>
+          <ellipse cx="32" cy="32" rx="11" ry="26"/>
+          <ellipse cx="32" cy="32" rx="21" ry="26"/>
+        </g>
+        <path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/>
+      </svg>
+      <span class="word">Transformer<span class="accent">Path</span></span>
+    </a>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
+    <nav class="tpnav" id="mainNav" aria-label="Primary">
+      <a href="intel.html">Intel</a>
+      <div class="tpnav-dropdown">
+        <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
+        <div class="tpnav-dropdown-panel" role="menu">
+          <a href="manufacturers.html">Manufacturers</a>
+          <a href="map.html">Industry Map</a>
+          <a href="components.html">Components &amp; Materials</a>
+          <a href="directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory →</a>
+        </div>
+      </div>
+      <a href="learn.html">Learn</a>
+      <a href="tools.html" class="tpnav-opt">Engineering</a>
+      <a href="power3d.html" class="tpnav-opt">3D Explorer</a>
+      <span class="tpnav-utils">
+        <a href="search.html" title="Search" aria-label="Search">&#128269;</a>
+        <a href="workspace.html" data-tp-account>My TransformerPath</a>
+      </span>
+    </nav>
+  </div>
+  <script>
+    const _themeToggle2 = document.getElementById('theme-toggle');
+    const _html2 = document.documentElement;
+    if ((localStorage.getItem('theme') || 'dark') === 'dark') _html2.setAttribute('data-theme', 'dark');
+  </script>
+  <script src="tp-nav.js?v=7" defer></script>
+  <script src="tp-pwa.js?v=7" defer></script>
+</header>
+
+<!-- ═══════════ 3D CANVAS ═══════════ -->
+<div id="lab-canvas-host" role="img" aria-label="Interactive 3D transformer disassembly. Use controls below or keyboard arrows to step through disassembly stages."></div>
+
+<!-- ═══════════ TOPBAR ═══════════ -->
+<div id="lab-topbar" aria-hidden="true">
+  <div>
+    <div class="lab-title">⚡ Transformer Lab</div>
+    <div class="lab-sub">100 MVA · 132/33 kV · YNd11 · ONAN/ONAF · OLTC ±10%</div>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center">
+    <div class="lab-stage-pill" id="lab-mode-pill" style="background:rgba(59,130,246,.15);border-color:rgba(59,130,246,.35);color:#93c5fd;font-weight:600">FREE EXPLORE</div>
+    <div class="lab-stage-pill" id="lab-stage-counter">Stage 0 / 16</div>
+  </div>
+  <div class="tbar-right">
+    <a href="power3d.html">3D Explorer ↗</a>
+    <a href="grid-lab.html">Grid Lab ↗</a>
+    <a href="learn.html">Learn</a>
+    <a href="academy.html">Academy</a>
+  </div>
+</div>
+
+<!-- ═══════════ CAPTION ═══════════ -->
+<div id="lab-caption" aria-live="polite" aria-atomic="true">
+  <div class="cap-stage" id="lab-cap-stage">STAGE 0 / 16</div>
+  <div class="cap-text" id="lab-cap-text">A 100 MVA, 132/33 kV YNd11 grid transformer — approximately 180 tonnes complete, 60 000 litres of oil. Click TAKE IT APART to begin disassembly.</div>
+</div>
+
+<!-- ═══════════ GUIDED MODE OVERLAY (bottom strip) ═══════════ -->
+<div id="guided-overlay" style="display:none" aria-live="polite">
+  <div class="guided-header">
+    <span class="guided-step-badge" id="guided-step-badge">STEP 1 OF 12</span>
+    <span class="guided-title" id="guided-title">Complete Power Transformer</span>
+    <button class="guided-btn-exit" id="btn-guided-exit" title="Exit to Free Explore">✕ Free Explore</button>
+  </div>
+  <div class="guided-body" id="guided-text">
+    A 100 MVA, 132/33 kV unit — 180 tonnes, 60,000 litres of oil.
+  </div>
+  <div class="guided-actions">
+    <button class="guided-nav-btn" id="btn-guided-prev">◄ Previous</button>
+    <div class="guided-dots" id="guided-dots"></div>
+    <button class="guided-nav-btn primary" id="btn-guided-next">Next Step ►</button>
+  </div>
+</div>
+
+<!-- ═══════════ ENGINEERING PANEL (right) ═══════════ -->
+<aside id="lab-panel" aria-label="Selected component details">
+  <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px">
+    <h3>Selected Component</h3>
+    <span id="panel-system-badge" class="panel-badge" style="display:none"></span>
+  </div>
+  <div id="panel-name" class="comp-name" aria-live="polite">—</div>
+
+  <h3>Engineering Role &amp; Function</h3>
+  <div id="panel-desc" class="comp-desc">
+    <span class="comp-empty">Click any part of the transformer to identify it and read its engineering role.</span>
+  </div>
+
+  <div id="panel-mat-wrap" style="display:none;margin-top:10px">
+    <h3 style="margin-top:0">Typical Material</h3>
+    <div id="panel-material" style="font-size:.80rem;color:var(--lab-ink);line-height:1.4"></div>
+  </div>
+
+  <div id="panel-why-wrap" style="display:none;margin-top:10px">
+    <h3 style="margin-top:0">Why It Matters</h3>
+    <div id="panel-why" style="font-size:.80rem;color:#fcd34d;line-height:1.4"></div>
+  </div>
+
+  <div id="panel-note" class="comp-note" style="display:none"></div>
+  <div id="panel-links" class="panel-links"></div>
+
+  <h3 style="margin-top:16px">Disassembly Stage</h3>
+  <div id="panel-stage-name" style="font-size:.82rem;color:var(--lab-ink);line-height:1.5">—</div>
+</aside>
+
+<!-- ═══════════ MODE / VIEW TOOLBAR (bottom-left) ═══════════ -->
+<div id="lab-toolbar" aria-label="Display modes and camera presets">
+  <div class="toolbar-group-label">Mode</div>
+  <div class="toolbar-group" id="mode-btns">
+    <button class="tb-btn active" data-mode="FULL"        id="mb-FULL">Full</button>
+    <button class="tb-btn" data-mode="ACTIVE_PART" id="mb-ACTIVE_PART">Active Part</button>
+    <button class="tb-btn" data-mode="WINDINGS"    id="mb-WINDINGS">Windings</button>
+    <button class="tb-btn" data-mode="INSULATION"  id="mb-INSULATION">Insulation</button>
+    <button class="tb-btn" data-mode="CORE"        id="mb-CORE">Core</button>
+    <button class="tb-btn" data-mode="ACCESSORIES" id="mb-ACCESSORIES">Accessories</button>
+    <button class="tb-btn" data-mode="COOLING"     id="mb-COOLING">Cooling</button>
+    <button class="tb-btn" data-mode="MAGNETIC"    id="mb-MAGNETIC">Magnetic Flux</button>
+    <button class="tb-btn" data-mode="MECHANICAL"  id="mb-MECHANICAL">Mechanical</button>
+  </div>
+  <div class="toolbar-group-label" style="margin-top:6px">View</div>
+  <div class="toolbar-group" id="view-btns">
+    <button class="tb-btn active" data-cam="OVERVIEW"    id="vb-OVERVIEW">Overview</button>
+    <button class="tb-btn" data-cam="ACTIVE_PART" id="vb-ACTIVE_PART">Active Part</button>
+    <button class="tb-btn" data-cam="TOP"         id="vb-TOP">Top</button>
+    <button class="tb-btn" data-cam="SIDE"        id="vb-SIDE">Side</button>
+    <button class="tb-btn" data-cam="WINDINGS"    id="vb-WINDINGS">Windings</button>
+    <button class="tb-btn" data-cam="CORE"        id="vb-CORE">Core</button>
+  </div>
+  <div class="toolbar-group" style="margin-top:6px">
+    <button class="tb-btn" id="tb-labels">🏷 Labels</button>
+    <button class="tb-btn" id="tb-xray">🔍 X-Ray</button>
+    <button class="tb-btn" id="tb-cutaway">✂ Cutaway</button>
+    <button class="tb-btn" id="tb-oilflow">🌊 Oil Flow</button>
+    <button class="tb-btn" id="tb-flux">🧲 Flux Loop</button>
+    <button class="tb-btn" id="tb-elec">⚡ Elec. Path</button>
+    <button class="tb-btn" id="tb-focus">⦿ Focus</button>
+    <button class="tb-btn" id="tb-rotate">⟳ Auto-rotate</button>
+  </div>
+</div>
+
+<!-- ═══════════ BOTTOM CONTROLS ═══════════ -->
+<div id="lab-controls" role="toolbar" aria-label="Disassembly controls">
+  <div class="ctrl-slider-row">
+    <span>Assembled</span>
+    <input id="lab-slider" type="range" min="0" max="100" value="0"
+           aria-label="Disassembly slider — 0 is fully assembled, 100 is fully exploded">
+    <span>Exploded</span>
+  </div>
+  <div class="ctrl-btn-row">
+    <button class="ctrl-btn" id="btn-assemble"  aria-label="Assemble transformer">⏮ Assemble</button>
+    <button class="ctrl-btn" id="btn-stepback"  aria-label="Step back one stage">◄ Step</button>
+    <button class="ctrl-btn primary" id="btn-explode"   aria-label="Take the transformer apart">TAKE IT APART</button>
+    <button class="ctrl-btn" id="btn-playpause" aria-label="Play or pause disassembly animation">▶ Play</button>
+    <button class="ctrl-btn" id="btn-stepfwd"   aria-label="Step forward one stage">Step ►</button>
+    <button class="ctrl-btn" id="btn-reset"     aria-label="Reset to assembled state">⌂ Reset</button>
+    <button class="ctrl-btn" id="btn-panel-mobile" style="display:none" aria-label="Show component details">☰ Details</button>
+  </div>
+</div>
+
+<!-- ═══════════ KEYBOARD HELP ═══════════ -->
+<div id="lab-help" aria-hidden="true">
+  🖱 drag = orbit · wheel = zoom · right-drag = pan · click = identify<br>
+  <kbd>→</kbd>/<kbd>←</kbd> step · <kbd>Space</kbd> play/pause · <kbd>R</kbd> reset · <kbd>F</kbd> focus · <kbd>X</kbd> X-ray
+</div>
+
+<!-- ═══════════ ACCESSIBLE TREE ═══════════ -->
+<section id="lab-a11y" tabindex="-1" aria-label="Accessible transformer component list">
+  <h2 style="color:var(--lab-acc);margin-bottom:12px;font-size:1rem">Power Transformer — Component Overview</h2>
+  <p style="font-size:.82rem;color:var(--lab-mut);margin-bottom:12px">This is the non-3D accessible version of the Transformer Lab.</p>
+  <ol style="padding-left:20px;line-height:2.2;font-size:.85rem">
+    <li><strong>External Accessories</strong> — conservator, Buchholz relay, surge arresters</li>
+    <li><strong>Cooling System</strong> — radiator banks, fans, oil pumps</li>
+    <li><strong>HV Bushings</strong> — 132 kV condenser-graded bushings, bushing CTs</li>
+    <li><strong>LV Bushings</strong> — 33 kV porcelain bushings, neutral bushing</li>
+    <li><strong>Tank</strong> — welded plate tank, cover, pressure-relief valves</li>
+    <li><strong>Active Part</strong> — core + windings + insulation assembly</li>
+    <li><strong>OLTC</strong> — on-load tap-changer and motor drive</li>
+    <li><strong>Clamping Structure</strong> — top yoke, tie rods, clamping frames</li>
+    <li><strong>Tapping Winding</strong> — outermost regulating winding</li>
+    <li><strong>HV Winding</strong> — 132 kV continuous disc winding</li>
+    <li><strong>Insulation Barriers</strong> — pressboard cylinders, HV–LV barrier</li>
+    <li><strong>LV Winding</strong> — 33 kV helical CTC winding</li>
+    <li><strong>Core</strong> — three-limb Hi-B CRGO core, limbs and bottom yoke</li>
+  </ol>
+  <p style="margin-top:12px;font-size:.78rem;color:var(--lab-mut)">Use a WebGL-capable browser to experience the full interactive disassembly.</p>
+</section>
+
+<!-- ═══════════ WEBGL FALLBACK ═══════════ -->
+<div id="lab-webgl-fallback">
+  <h2>3D not available</h2>
+  <p style="color:var(--lab-mut);margin-bottom:12px;font-size:.85rem">Your browser or device does not support WebGL. Here is the full disassembly sequence as a text overview.</p>
+  <ol>
+    <li>Complete transformer — all subsystems assembled</li>
+    <li>Remove surge arresters</li>
+    <li>Remove conservator, Buchholz relay and accessories</li>
+    <li>Remove radiator banks and cooling plant</li>
+    <li>Remove 132 kV HV bushings</li>
+    <li>Remove 33 kV LV bushings and neutral bushing</li>
+    <li>Remove tank cover, PRVs and inspection hatches</li>
+    <li>X-ray: active part revealed inside transparent tank</li>
+    <li>Lift active part clear of tank</li>
+    <li>Remove tank and oil — active part isolated</li>
+    <li>Isolate OLTC</li>
+    <li>Separate top yoke and clamping structure</li>
+    <li>Separate outermost tapping winding</li>
+    <li>Separate HV winding and HV–tap barrier</li>
+    <li>Separate LV winding and main HV–LV barrier</li>
+    <li>Core exposed — limbs and bottom yoke</li>
+    <li>Fully exploded engineering view</li>
+  </ol>
+</div>
+
+<!-- ═══════════ SCRIPTS ═══════════ -->
+<script src="vendor/three.min.js"></script>
+<script src="tp-lab-geometry.js?v=1"></script>
+<script src="tp-lab-engine.js?v=1"></script>
+<script>
+/* ══════════════════════════════════════════════════════════════
+   Transformer Lab — page bootstrap
+══════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+
+  /* ── WebGL detection ─────────────────────────────────────── */
+  function supportsWebGL() {
+    try {
+      var c = document.createElement('canvas');
+      return !!(window.WebGLRenderingContext && (c.getContext('webgl') || c.getContext('experimental-webgl')));
+    } catch (e) { return false; }
+  }
+  if (!supportsWebGL()) {
+    document.getElementById('lab-webgl-fallback').style.display = 'block';
+    return;
+  }
+
+  /* ── Three.js scene setup (mirrors power3d.html) ─────────── */
+  var container = document.getElementById('lab-canvas-host');
+  var renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  if (renderer.outputEncoding !== undefined) renderer.outputEncoding = THREE.sRGBEncoding;
+  if (THREE.ACESFilmicToneMapping) { renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.12; }
+  container.appendChild(renderer.domElement);
+
+  var scene = new THREE.Scene();
+  /* dusk-sky gradient */
+  (function () {
+    var cv = document.createElement('canvas'); cv.width = 16; cv.height = 512;
+    var g = cv.getContext('2d'); var gr = g.createLinearGradient(0, 0, 0, 512);
+    gr.addColorStop(0, '#1e3a5c'); gr.addColorStop(.4, '#0e1e30'); gr.addColorStop(.78, '#0a1422'); gr.addColorStop(1, '#080f1a');
+    g.fillStyle = gr; g.fillRect(0, 0, 16, 512);
+    scene.background = new THREE.CanvasTexture(cv);
+  })();
+  scene.fog = new THREE.Fog(0x0a141e, 200, 500);
+
+  var camera = new THREE.PerspectiveCamera(44, window.innerWidth / window.innerHeight, 0.5, 900);
+
+  /* lighting */
+  scene.add(new THREE.HemisphereLight(0xbcd4ea, 0x14202c, 0.88));
+  var sun = new THREE.DirectionalLight(0xffffff, 0.95);
+  sun.position.set(90, 130, 60); sun.castShadow = true;
+  sun.shadow.mapSize.set(2048, 2048);
+  var sc = sun.shadow.camera;
+  sc.left = -130; sc.right = 130; sc.top = 130; sc.bottom = -130; sc.far = 400;
+  scene.add(sun);
+  var fill = new THREE.DirectionalLight(0x88aacc, 0.35);
+  fill.position.set(-70, 40, -80); scene.add(fill);
+
+  /* ground */
+  var ground = new THREE.Mesh(
+    new THREE.CircleGeometry(280, 64),
+    new THREE.MeshStandardMaterial({ color: 0x0c1826, roughness: .95, metalness: 0 })
+  );
+  ground.rotation.x = -Math.PI / 2; ground.position.y = -6.2; ground.receiveShadow = true; scene.add(ground);
+  var grid = new THREE.GridHelper(280, 56, 0x1e3a5c, 0x111e2e);
+  grid.position.y = -6.15; scene.add(grid);
+
+  /* ── camera orbit state ───────────────────────────────────── */
+  var target = new THREE.Vector3(0, 22, 0);
+  var sph = { r: 148, th: 0.75, ph: 1.15 };
+  function applyCam() {
+    sph.ph = Math.max(0.12, Math.min(Math.PI - 0.22, sph.ph));
+    sph.r  = Math.max(38, Math.min(360, sph.r));
+    camera.position.set(
+      target.x + sph.r * Math.sin(sph.ph) * Math.sin(sph.th),
+      target.y + sph.r * Math.cos(sph.ph),
+      target.z + sph.r * Math.sin(sph.ph) * Math.cos(sph.th)
+    );
+    camera.lookAt(target);
+  }
+  applyCam();
+
+  /* ── DOM refs ─────────────────────────────────────────────── */
+  var $stageCounter = document.getElementById('lab-stage-counter');
+  var $capStage     = document.getElementById('lab-cap-stage');
+  var $capText      = document.getElementById('lab-cap-text');
+  var $slider       = document.getElementById('lab-slider');
+  var $panelName    = document.getElementById('panel-name');
+  var $panelDesc    = document.getElementById('panel-desc');
+  var $panelNote    = document.getElementById('panel-note');
+  var $panelLinks   = document.getElementById('panel-links');
+  var $panelStageName = document.getElementById('panel-stage-name');
+
+  /* ── engine init ──────────────────────────────────────────── */
+  var engine = TpLabEngine.create(scene, THREE, {
+    labelHost: document.body,
+    slider: $slider,
+    stageLabel: null,     // we update manually below
+    stageCaption: null,
+    stageCounter: $stageCounter,
+    onSelect: onPartSelected,
+    onPlayState: onPlayState
+  }, {
+    camera: camera,
+    camSph: sph,
+    camTarget: target,
+    camApply: applyCam,
+    shadows: true,
+    animSpeed: 1.6
+  });
+
+  /* ── part selection → engineering panel ──────────────────── */
+  function onPartSelected(part) {
+    var $badge = document.getElementById('panel-system-badge');
+    var $mWrap = document.getElementById('panel-mat-wrap');
+    var $mText = document.getElementById('panel-material');
+    var $wWrap = document.getElementById('panel-why-wrap');
+    var $wText = document.getElementById('panel-why');
+
+    if (!part) {
+      $panelName.textContent = '—';
+      $panelDesc.innerHTML = '<span class="comp-empty">Click any part of the transformer to identify it and read its engineering role.</span>';
+      $panelNote.style.display = 'none';
+      $panelLinks.innerHTML = '';
+      $panelStageName.textContent = '—';
+      if ($badge) $badge.style.display = 'none';
+      if ($mWrap) $mWrap.style.display = 'none';
+      if ($wWrap) $wWrap.style.display = 'none';
+      return;
+    }
+    $panelName.textContent = part.name;
+    $panelDesc.textContent = part.desc || '';
+
+    /* system badge */
+    var sys = part.system || (part.meta && part.meta.system) || '';
+    if ($badge) {
+      if (sys) {
+        $badge.textContent = sys;
+        $badge.style.display = 'inline-block';
+      } else {
+        $badge.style.display = 'none';
+      }
+    }
+
+    /* material */
+    var mat = part.material || (part.meta && part.meta.material) || '';
+    if ($mWrap && $mText) {
+      if (mat) {
+        $mText.textContent = mat;
+        $mWrap.style.display = 'block';
+      } else {
+        $mWrap.style.display = 'none';
+      }
+    }
+
+    /* why it matters */
+    var why = part.whyItMatters || (part.meta && part.meta.whyItMatters) || '';
+    if ($wWrap && $wText) {
+      if (why) {
+        $wText.textContent = why;
+        $wWrap.style.display = 'block';
+      } else {
+        $wWrap.style.display = 'none';
+      }
+    }
+
+    /* illustrative note */
+    if (part.meta && part.meta.note) {
+      $panelNote.textContent = '* ' + part.meta.note;
+      $panelNote.style.display = 'block';
+    } else {
+      $panelNote.style.display = 'none';
+    }
+
+    /* links */
+    $panelLinks.innerHTML = '';
+    var links = (part.links || {});
+    if (links.learn)     $panelLinks.innerHTML += '<a href="' + links.learn     + '" class="panel-link learn"  >LEARN →</a>';
+    if (links.explore)   $panelLinks.innerHTML += '<a href="' + links.explore   + '" class="panel-link explore">EXPLORE IN 3D →</a>';
+    if (links.directory) $panelLinks.innerHTML += '<a href="' + links.directory + '" class="panel-link dir"    >EXPLORE MANUFACTURERS →</a>';
+    if (links.grid)      $panelLinks.innerHTML += '<a href="' + links.grid      + '" class="panel-link grid"   >SEE IN GRID LAB →</a>';
+
+    /* stage info */
+    var stageIdx = part.stage || 0;
+    var stageDef = TpLabEngine.STAGES[Math.max(0, Math.min(engine.STAGE_COUNT, stageIdx))];
+    $panelStageName.textContent = stageDef ? 'Removed at: ' + stageDef.label : '—';
+
+    /* mobile: open panel */
+    document.getElementById('lab-panel').classList.add('open');
+  }
+
+  /* ── 12-step guided mode ─────────────────────────────────── */
+  var GUIDED_STEPS = [
+    {
+      title: "1. Complete Power Transformer",
+      stage: 0,
+      cam: "OVERVIEW",
+      text: "A 100 MVA, 132/33 kV unit — 180 tonnes, 60,000 litres of oil.",
+      partKey: null
+    },
+    {
+      title: "2. Cooling System",
+      stage: 3,
+      cam: "OVERVIEW",
+      text: "Radiators remove heat from the oil. Without cooling, the windings overheat.",
+      partKey: "Radiator"
+    },
+    {
+      title: "3. Bushings & Connections",
+      stage: 5,
+      cam: "OVERVIEW",
+      text: "Conductors enter and leave the tank through bushings — high-voltage insulators.",
+      partKey: "condenser"
+    },
+    {
+      title: "4. Tank & Pressure Vessel",
+      stage: 6,
+      cam: "OVERVIEW",
+      text: "The tank is a sealed pressure vessel, not part of the electromagnetic design.",
+      partKey: "Main tank"
+    },
+    {
+      title: "5. Active Part Revealed",
+      stage: 7,
+      cam: "ACTIVE_PART",
+      text: "This is the active part: core + windings + insulation. It does all the work.",
+      partKey: null
+    },
+    {
+      title: "6. Lift Active Part",
+      stage: 8,
+      cam: "ACTIVE_PART",
+      text: "The active part lifts clear — ready for factory inspection or rewinding.",
+      partKey: null
+    },
+    {
+      title: "7. Clamping Structure",
+      stage: 11,
+      cam: "ACTIVE_PART",
+      text: "Steel frames pre-compress the windings to resist fault forces.",
+      partKey: "Top yoke"
+    },
+    {
+      title: "8. Tapping Winding",
+      stage: 12,
+      cam: "WINDINGS",
+      text: "The outermost winding adjusts voltage ratio via the tap changer.",
+      partKey: "Tapping"
+    },
+    {
+      title: "9. HV–Tap Dielectric Barrier",
+      stage: 13,
+      cam: "WINDINGS",
+      text: "Pressboard cylinders subdivide the oil gap and set leakage impedance.",
+      partKey: "HV–tap"
+    },
+    {
+      title: "10. HV Continuous Disc Winding",
+      stage: 13,
+      cam: "WINDINGS",
+      text: "132 kV continuous disc winding — 80–110 discs of paper-insulated copper.",
+      partKey: "HV winding"
+    },
+    {
+      title: "11. Main HV–LV Insulation Barrier",
+      stage: 14,
+      cam: "WINDINGS",
+      text: "The main HV–LV insulation barrier, the most critical dielectric boundary.",
+      partKey: "Main HV–LV"
+    },
+    {
+      title: "12. LV Winding & CRGO Core",
+      stage: 15,
+      cam: "CORE",
+      text: "The innermost winding and the core that links them magnetically.",
+      partKey: "Core — limbs"
+    }
+  ];
+
+  var inGuidedMode = false;
+  var guidedIndex = 0;
+  var $guidedOverlay = document.getElementById('guided-overlay');
+  var $guidedStepBadge = document.getElementById('guided-step-badge');
+  var $guidedTitle = document.getElementById('guided-title');
+  var $guidedText = document.getElementById('guided-text');
+  var $guidedDots = document.getElementById('guided-dots');
+  var $labCaption = document.getElementById('lab-caption');
+  var $modePill = document.getElementById('lab-mode-pill');
+
+  if ($guidedDots) {
+    GUIDED_STEPS.forEach(function (_, i) {
+      var dot = document.createElement('div');
+      dot.className = 'guided-dot' + (i === 0 ? ' active' : '');
+      dot.addEventListener('click', function () { setGuidedStep(i); });
+      $guidedDots.appendChild(dot);
+    });
+  }
+
+  function setGuidedMode(on) {
+    inGuidedMode = !!on;
+    if (inGuidedMode) {
+      if ($guidedOverlay) $guidedOverlay.style.display = 'block';
+      if ($labCaption) $labCaption.style.display = 'none';
+      if ($modePill) {
+        $modePill.textContent = 'GUIDED MODE';
+        $modePill.style.background = 'rgba(245,166,35,.2)';
+        $modePill.style.borderColor = 'rgba(245,166,35,.4)';
+        $modePill.style.color = 'var(--lab-acc)';
+      }
+      setGuidedStep(guidedIndex);
+    } else {
+      if ($guidedOverlay) $guidedOverlay.style.display = 'none';
+      if ($labCaption) $labCaption.style.display = '';
+      if ($modePill) {
+        $modePill.textContent = 'FREE EXPLORE';
+        $modePill.style.background = 'rgba(59,130,246,.15)';
+        $modePill.style.borderColor = 'rgba(59,130,246,.35)';
+        $modePill.style.color = '#93c5fd';
+      }
+    }
+  }
+
+  function setGuidedStep(idx) {
+    guidedIndex = Math.max(0, Math.min(GUIDED_STEPS.length - 1, idx));
+    var step = GUIDED_STEPS[guidedIndex];
+    if ($guidedStepBadge) $guidedStepBadge.textContent = 'STEP ' + (guidedIndex + 1) + ' OF ' + GUIDED_STEPS.length;
+    if ($guidedTitle) $guidedTitle.textContent = step.title;
+    if ($guidedText) $guidedText.textContent = step.text;
+
+    if ($guidedDots) {
+      var dots = $guidedDots.querySelectorAll('.guided-dot');
+      dots.forEach(function (d, i) { d.classList.toggle('active', i === guidedIndex); });
+    }
+
+    engine.goToStage(step.stage);
+    if (step.cam) engine.setCamPreset(step.cam);
+
+    if (step.partKey && engine.parts) {
+      var found = engine.parts.find(function (p) { return p.name.indexOf(step.partKey) !== -1; });
+      if (found) engine.selectPart(found);
+      else engine.clearSelection();
+    } else {
+      engine.clearSelection();
+    }
+
+    updateStageUI(step.stage);
+  }
+
+  document.getElementById('btn-guided-prev').addEventListener('click', function () {
+    if (guidedIndex > 0) setGuidedStep(guidedIndex - 1);
+  });
+  document.getElementById('btn-guided-next').addEventListener('click', function () {
+    if (guidedIndex < GUIDED_STEPS.length - 1) setGuidedStep(guidedIndex + 1);
+    else setGuidedMode(false);
+  });
+  document.getElementById('btn-guided-exit').addEventListener('click', function () {
+    setGuidedMode(false);
+  });
+
+  /* ── play state UI ───────────────────────────────────────── */
+  var $btnPlay = document.getElementById('btn-playpause');
+  function onPlayState(on) {
+    $btnPlay.textContent = on ? '⏸ Pause' : '▶ Play';
+    $btnPlay.classList.toggle('active', on);
+  }
+
+  /* ── stage update UI ─────────────────────────────────────── */
+  function updateStageUI(fStage) {
+    var idx = Math.max(0, Math.min(engine.STAGE_COUNT, Math.round(fStage)));
+    var s   = TpLabEngine.STAGES[idx];
+    $stageCounter.textContent = 'Stage ' + idx + ' / ' + engine.STAGE_COUNT;
+    $capStage.textContent     = 'STAGE ' + idx + ' / ' + engine.STAGE_COUNT + ' — ' + (s.label || '').toUpperCase();
+    $capText.textContent      = s.caption;
+    $panelStageName.textContent = s.label;
+  }
+  updateStageUI(0);
+
+  /* ── slider ──────────────────────────────────────────────── */
+  $slider.addEventListener('input', function () {
+    if (inGuidedMode) setGuidedMode(false);
+    engine.stopPlay();
+    engine.scrubToPercent(+this.value);
+    updateStageUI(engine.getCurrentStage());
+  });
+
+  /* ── control buttons ─────────────────────────────────────── */
+  document.getElementById('btn-explode').addEventListener('click', function () {
+    if (!inGuidedMode) {
+      setGuidedMode(true);
+      setGuidedStep(0);
+    } else {
+      if (guidedIndex < GUIDED_STEPS.length - 1) setGuidedStep(guidedIndex + 1);
+      else engine.goToStage(16);
+    }
+  });
+  document.getElementById('btn-assemble').addEventListener('click', function () {
+    if (inGuidedMode) setGuidedMode(false);
+    engine.assemble();
+    updateStageUI(0);
+  });
+  document.getElementById('btn-stepback').addEventListener('click', function () {
+    if (inGuidedMode) setGuidedMode(false);
+    engine.stepBack();
+    updateStageUI(engine.getTargetStage());
+  });
+  document.getElementById('btn-stepfwd').addEventListener('click', function () {
+    if (inGuidedMode) setGuidedMode(false);
+    engine.stepForward();
+    updateStageUI(engine.getTargetStage());
+  });
+  document.getElementById('btn-playpause').addEventListener('click', function () {
+    if (inGuidedMode) setGuidedMode(false);
+    engine.togglePlay();
+  });
+  document.getElementById('btn-reset').addEventListener('click', function () {
+    if (inGuidedMode) setGuidedMode(false);
+    engine.reset(false);
+    updateStageUI(0);
+    // reset mode buttons
+    document.querySelectorAll('.tb-btn[data-mode]').forEach(function (b) { b.classList.toggle('active', b.dataset.mode === 'FULL'); });
+    document.querySelectorAll('.tb-btn[data-cam]').forEach(function (b) { b.classList.toggle('active', b.dataset.cam === 'OVERVIEW'); });
+    ['tb-labels','tb-xray','tb-cutaway','tb-oilflow','tb-flux','tb-elec','tb-focus','tb-rotate'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) el.classList.remove('active');
+    });
+    document.getElementById('tb-labels').classList.add('active');
+    engine.setLabels(true);
+  });
+
+  /* mobile panel toggle */
+  var $mobileBtn = document.getElementById('btn-panel-mobile');
+  if (window.innerWidth <= 768) $mobileBtn.style.display = '';
+  $mobileBtn.addEventListener('click', function () {
+    document.getElementById('lab-panel').classList.toggle('open');
+  });
+
+  /* ── mode buttons ────────────────────────────────────────── */
+  document.getElementById('mode-btns').addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-mode]');
+    if (!btn) return;
+    engine.setMode(btn.dataset.mode);
+    document.querySelectorAll('.tb-btn[data-mode]').forEach(function (b) { b.classList.toggle('active', b === btn); });
+  });
+
+  /* ── camera preset buttons ───────────────────────────────── */
+  document.getElementById('view-btns').addEventListener('click', function (e) {
+    var btn = e.target.closest('[data-cam]');
+    if (!btn) return;
+    engine.setCamPreset(btn.dataset.cam);
+    document.querySelectorAll('.tb-btn[data-cam]').forEach(function (b) { b.classList.toggle('active', b === btn); });
+  });
+
+  /* ── toggle buttons ──────────────────────────────────────── */
+  var labelsOn = true;
+  document.getElementById('tb-labels').classList.add('active');
+  document.getElementById('tb-labels').addEventListener('click', function () {
+    labelsOn = !labelsOn;
+    engine.setLabels(labelsOn);
+    this.classList.toggle('active', labelsOn);
+  });
+
+  document.getElementById('tb-xray').addEventListener('click', function () {
+    var on = !engine.isXRay();
+    engine.setXRay(on);
+    this.classList.toggle('active', on);
+  });
+
+  document.getElementById('tb-cutaway').addEventListener('click', function () {
+    var on = !this.classList.contains('active');
+    engine.setCutaway(on);
+    this.classList.toggle('active', on);
+  });
+
+  document.getElementById('tb-oilflow').addEventListener('click', function () {
+    var on = !engine.isOilFlow();
+    engine.setOilFlow(on);
+    this.classList.toggle('active', on);
+  });
+
+  document.getElementById('tb-flux').addEventListener('click', function () {
+    var on = !engine.isMagneticFlux();
+    engine.setMagneticFlux(on);
+    this.classList.toggle('active', on);
+  });
+
+  document.getElementById('tb-elec').addEventListener('click', function () {
+    var on = !this.classList.contains('active');
+    engine.setElectricalPath(on);
+    this.classList.toggle('active', on);
+  });
+
+  document.getElementById('tb-focus').addEventListener('click', function () {
+    var on = !engine.isFocusMode();
+    engine.setFocusMode(on);
+    this.classList.toggle('active', on);
+  });
+
+  var autoRotate = false;
+  document.getElementById('tb-rotate').addEventListener('click', function () {
+    autoRotate = !autoRotate;
+    this.classList.toggle('active', autoRotate);
+  });
+
+  /* ── pointer / orbit controls ────────────────────────────── */
+  var dragging = false, panning = false, lastX = 0, lastY = 0, moved = 0;
+  var canvas = renderer.domElement;
+  canvas.addEventListener('contextmenu', function (e) { e.preventDefault(); });
+  canvas.addEventListener('pointerdown', function (e) {
+    dragging = true; moved = 0;
+    panning = (e.button === 2 || e.shiftKey || e.button === 1);
+    lastX = e.clientX; lastY = e.clientY;
+    container.classList.add('dragging');
+    try { canvas.setPointerCapture(e.pointerId); } catch (err) {}
+  });
+  canvas.addEventListener('pointermove', function (e) {
+    if (!dragging) return;
+    var dx = e.clientX - lastX, dy = e.clientY - lastY;
+    lastX = e.clientX; lastY = e.clientY;
+    moved += Math.abs(dx) + Math.abs(dy);
+    if (panning) {
+      var s2 = sph.r / 700;
+      var right = new THREE.Vector3().subVectors(camera.position, target).cross(camera.up).normalize();
+      target.addScaledVector(right, -dx * s2); target.y += dy * s2;
+    } else {
+      sph.th -= dx * 0.0055; sph.ph -= dy * 0.0055;
+    }
+    applyCam();
+  });
+  canvas.addEventListener('pointerup', function (e) {
+    dragging = false;
+    container.classList.remove('dragging');
+    if (moved < 6) engine.pick(e, canvas);
+  });
+  canvas.addEventListener('wheel', function (e) {
+    e.preventDefault();
+    sph.r *= 1 + Math.sign(e.deltaY) * 0.09;
+    applyCam();
+  }, { passive: false });
+  var pinchD = 0;
+  canvas.addEventListener('touchstart', function (e) {
+    if (e.touches.length === 2) pinchD = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+  }, { passive: true });
+  canvas.addEventListener('touchmove', function (e) {
+    if (e.touches.length === 2 && pinchD) {
+      var d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+      sph.r *= pinchD / d; pinchD = d; applyCam();
+    }
+  }, { passive: true });
+
+  /* ── resize ──────────────────────────────────────────────── */
+  window.addEventListener('resize', function () {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    if (window.innerWidth <= 768) $mobileBtn.style.display = '';
+    else { $mobileBtn.style.display = 'none'; document.getElementById('lab-panel').classList.remove('open'); }
+  });
+
+  /* ── learner profile hook ────────────────────────────────── */
+  document.addEventListener('tplab:event', function (e) {
+    var ev = e.detail;
+    /* forward significant interactions to the learner profile system */
+    if (typeof window.tpRecordActivity === 'function') {
+      var meaningful = ['component_selected','active_part_lifted','insulation_mode_opened','oltc_opened','bushing_opened','explode_completed','assembly_replayed'];
+      if (meaningful.indexOf(ev.name) !== -1) {
+        window.tpRecordActivity('transformer_lab', ev.name, ev.data);
+      }
+    }
+  });
+
+  /* ── render loop ─────────────────────────────────────────── */
+  var clock = new THREE.Clock();
+  function tick() {
+    requestAnimationFrame(tick);
+    var dt = clock.getDelta();
+    var now = performance.now();
+
+    if (autoRotate && !dragging) { sph.th += 0.0028; applyCam(); }
+
+    /* fan spin */
+    if (engine.geo.fanBlades) {
+      engine.geo.fanBlades.forEach(function (b) { b.rotation.y += dt * 5.5; });
+    }
+
+    engine.tick(dt, now);
+
+    /* update caption and slider */
+    updateStageUI(engine.getCurrentStage());
+    $slider.value = Math.round(engine.getCurrentStage() / engine.STAGE_COUNT * 100);
+
+    renderer.render(scene, camera);
+  }
+  tick();
+
+  /* ── initial hint (fade after first interaction) ─────────── */
+  var $help = document.getElementById('lab-help');
+  var helpFaded = false;
+  canvas.addEventListener('pointerdown', function () {
+    if (!helpFaded) { helpFaded = true; $help.style.opacity = '0'; setTimeout(function () { $help.style.display = 'none'; }, 500); }
+  }, { once: false });
+
+})();
+</script>
+
+<script src="analytics.js?v=7" defer></script>
+<script src="course-gate.js?v=7"></script>
+<script src="tp-theme.js?v=1" defer></script>
+<script src="tp-freshness.js?v=7" defer></script>
+<script src="tp-feedback.js?v=7" defer></script>
+
+<footer>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="index.html" class="logo" style="font-size:1.1rem;display:inline-flex;align-items:center;gap:8px">
+          <svg class="logo-mark" width="24" height="24" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg>
+          <span class="word">Transformer<span class="accent">Path</span></span>
+        </a>
+        <p style="margin-top:10px;font-size:.82rem">Independent transformer industry intelligence, engineering knowledge and data.</p>
+      </div>
+      <div><p class="footer-col-label">ENGINEERING</p><a href="tools.html">Engineering Hub</a><a href="calculator.html">Design Calculator</a><a href="power3d.html">3D Explorer</a><a href="transformer-lab.html" style="color:var(--amber)">Transformer Lab</a><a href="coilassembly.html">Coil Assembly 3D</a><a href="oltc.html">OLTC 3D</a></div>
+      <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learning Hub</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy 3D Tools</a></div>
+      <div><p class="footer-col-label">COMPANY</p><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+    </div>
+    <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
+  </div>
+</footer>
+</body>
+</html>
