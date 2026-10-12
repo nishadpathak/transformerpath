@@ -1,8 +1,11 @@
 {
   "$schema": "https://transformerpath.com/gcc-sep-2026-discovery-input.schema.json",
-  "generated": "2026-09-25",
-  "window": { "from": "2026-09-01", "to": "2026-09-25" },
-  "purpose": "Discovery INPUT only for GCC Sep 1–25 2026 backfill. Not authoritative evidence. Each row must be source-checked before CONFIRMED / publish.",
+  "generated": "2026-10-12T08:30:00.000Z",
+  "window": {
+    "from": "2026-09-01",
+    "to": "2026-10-12"
+  },
+  "purpose": "Discovery INPUT for GCC Sep–Oct 2026. Not authoritative evidence. Each row must be source-checked before CONFIRMED / publish.",
   "candidates": [
     {
       "candidate_id": "uae-dewa-2122600155",
@@ -14,17 +17,28 @@
       "canonical_procurement_id": "DEWA-2122600155",
       "procurement_state": "OPEN",
       "procurement_events": [
-        { "state": "ANNOUNCED", "at": "2026-09-24" },
-        { "state": "OPEN", "at": "2026-09-24" }
+        {
+          "state": "ANNOUNCED",
+          "at": "2026-09-24"
+        },
+        {
+          "state": "OPEN",
+          "at": "2026-09-24"
+        }
       ],
       "tender_float_date": "2026-09-24",
       "tender_close_date": "2026-10-27",
       "publication_date": "2026-09-24",
       "event_date": "2026-09-24",
-      "source_checked_at": "2026-09-25",
+      "source_checked_at": "2026-10-12",
       "transformer_category": "distribution / package-kiosk related works",
       "transformer_relevant": true,
-      "classifications": ["TENDER", "UTILITY_PROCUREMENT", "MAINTENANCE", "TRANSFORMER_REPLACEMENT"],
+      "classifications": [
+        "TENDER",
+        "UTILITY_PROCUREMENT",
+        "MAINTENANCE",
+        "TRANSFORMER_REPLACEMENT"
+      ],
       "key_values_extracted": {
         "tender_id": "2122600155",
         "float": "2026-09-24",
@@ -62,13 +76,16 @@
       "tender_close_date": "2026-09-02",
       "bid_opening_date": "2026-09-02",
       "event_date": "2026-09-02",
-      "source_checked_at": "2026-09-25",
+      "source_checked_at": "2026-10-12",
       "voltage": "6.6/0.4 kV",
       "rating": "2.5 MVA",
       "location": "Rabigh Production System",
       "transformer_category": "oil-filled distribution / MV transformer",
       "transformer_relevant": true,
-      "classifications": ["TENDER", "UTILITY_PROCUREMENT"],
+      "classifications": [
+        "TENDER",
+        "UTILITY_PROCUREMENT"
+      ],
       "key_values_extracted": {
         "rating": "2.5 MVA",
         "voltage": "6.6/0.4 kV",
@@ -110,12 +127,15 @@
       "tender_float_date": "2026-09-03",
       "tender_close_date": "2026-09-19",
       "event_date": "2026-09-03",
-      "source_checked_at": "2026-09-25",
+      "source_checked_at": "2026-10-12",
       "voltage": "33/0.4 kV",
       "location": "Jubail Phase 4",
       "transformer_category": "grounding / earthing transformer",
       "transformer_relevant": true,
-      "classifications": ["TENDER", "UTILITY_PROCUREMENT"],
+      "classifications": [
+        "TENDER",
+        "UTILITY_PROCUREMENT"
+      ],
       "key_values_extracted": {
         "voltage": "33/0.4 kV",
         "type": "earthing/grounding transformer",
@@ -150,12 +170,16 @@
       "publication_date": "2026-09-08",
       "tender_float_date": "2026-09-08",
       "event_date": "2026-09-08",
-      "source_checked_at": "2026-09-25",
+      "source_checked_at": "2026-10-12",
       "voltage": "33 kV",
       "location": "Al-Aflaj",
       "transformer_category": "distribution transformer replacement",
       "transformer_relevant": true,
-      "classifications": ["TENDER", "TRANSFORMER_REPLACEMENT", "UTILITY_PROCUREMENT"],
+      "classifications": [
+        "TENDER",
+        "TRANSFORMER_REPLACEMENT",
+        "UTILITY_PROCUREMENT"
+      ],
       "key_values_extracted": {
         "voltage": "33 kV",
         "station": "No. 6",
@@ -190,12 +214,15 @@
       "tender_float_date": "2026-09-14",
       "tender_close_date": "2026-09-30",
       "event_date": "2026-09-14",
-      "source_checked_at": "2026-09-25",
+      "source_checked_at": "2026-10-12",
       "rating": "1500 kVA",
       "location": "Dhahran",
       "transformer_category": "standby / backup distribution transformer",
       "transformer_relevant": true,
-      "classifications": ["TENDER", "UTILITY_PROCUREMENT"],
+      "classifications": [
+        "TENDER",
+        "UTILITY_PROCUREMENT"
+      ],
       "key_values_extracted": {
         "rating": "1500 kVA",
         "type": "standby/backup",
@@ -229,13 +256,18 @@
       "tender_float_date": "2026-09-03",
       "tender_close_date": "2026-09-10",
       "event_date": "2026-09-03",
-      "source_checked_at": "2026-09-25",
+      "source_checked_at": "2026-10-12",
       "voltage": "380/110/13.8 kV",
       "rating": "502 MVA",
       "location": "Yanbu Phase 3 PST1",
       "transformer_category": "large power transformer replacement / supervision",
       "transformer_relevant": true,
-      "classifications": ["TENDER", "TRANSFORMER_REPLACEMENT", "UTILITY_PROCUREMENT", "MAINTENANCE"],
+      "classifications": [
+        "TENDER",
+        "TRANSFORMER_REPLACEMENT",
+        "UTILITY_PROCUREMENT",
+        "MAINTENANCE"
+      ],
       "key_values_extracted": {
         "unit": "T803",
         "rating": "502 MVA",
@@ -272,11 +304,16 @@
       "tender_float_date": "2026-09-07",
       "tender_close_date": "2026-10-06",
       "event_date": "2026-09-12",
-      "source_checked_at": "2026-09-25",
+      "source_checked_at": "2026-10-12",
       "rating": "up to 75 MVA (transformers); up to 50 MVA (parallel reactors)",
       "transformer_category": "power transformer replacement + parallel reactors",
       "transformer_relevant": true,
-      "classifications": ["TENDER", "TRANSFORMER_REPLACEMENT", "MAINTENANCE", "UTILITY_PROCUREMENT"],
+      "classifications": [
+        "TENDER",
+        "TRANSFORMER_REPLACEMENT",
+        "MAINTENANCE",
+        "UTILITY_PROCUREMENT"
+      ],
       "key_values_extracted": {
         "transformer_cap": "75 MVA",
         "reactor_cap": "50 MVA",
@@ -310,12 +347,17 @@
       "publication_date": "2026-09-24",
       "event_date": "2026-09-24",
       "tender_close_date": "2026-11-30",
-      "source_checked_at": "2026-09-25",
+      "source_checked_at": "2026-10-12",
       "rating": "75 MVA",
       "location": "Shuaiba (Ax) Substation",
       "transformer_category": "power transformer relocation/installation",
       "transformer_relevant": true,
-      "classifications": ["TENDER", "TRANSFORMER_REPLACEMENT", "MAINTENANCE", "UTILITY_PROCUREMENT"],
+      "classifications": [
+        "TENDER",
+        "TRANSFORMER_REPLACEMENT",
+        "MAINTENANCE",
+        "UTILITY_PROCUREMENT"
+      ],
       "key_values_extracted": {
         "qty": 1,
         "rating": "75 MVA",
@@ -350,10 +392,15 @@
       "tender_float_date": "2026-08-31",
       "tender_close_date": "2026-09-29",
       "event_date": "2026-09-24",
-      "source_checked_at": "2026-09-25",
+      "source_checked_at": "2026-10-12",
       "rating": "up to 75 MVA / 50 MVA reactors",
       "transformer_relevant": true,
-      "classifications": ["TENDER", "MAINTENANCE", "TRANSFORMER_REPLACEMENT", "UTILITY_PROCUREMENT"],
+      "classifications": [
+        "TENDER",
+        "MAINTENANCE",
+        "TRANSFORMER_REPLACEMENT",
+        "UTILITY_PROCUREMENT"
+      ],
       "key_values_extracted": {
         "stage": "second",
         "transformer_cap": "75 MVA",
@@ -385,12 +432,19 @@
       "event_date": "2026-08-12",
       "publication_date": "2026-08-12",
       "update_date": "2026-09-19",
-      "source_checked_at": "2026-09-25",
+      "source_checked_at": "2026-10-12",
       "location": "Khazaen Economic City; Madayn; SOHAR Free Zone",
       "supplier": "Voltamp Energy (programme anchor); multiple SME/international partners",
       "transformer_category": "transformer components manufacturing",
       "transformer_relevant": true,
-      "classifications": ["FACTORY_INVESTMENT", "LOCALISATION", "NEW_FACTORY", "SUPPLY_CHAIN", "CAPACITY_EXPANSION", "REGULATORY"],
+      "classifications": [
+        "FACTORY_INVESTMENT",
+        "LOCALISATION",
+        "NEW_FACTORY",
+        "SUPPLY_CHAIN",
+        "CAPACITY_EXPANSION",
+        "REGULATORY"
+      ],
       "key_values_extracted": {
         "investment": "RO15 million (~$39m)",
         "agreements": 10,
@@ -399,7 +453,11 @@
         "components_existing_lines": 2,
         "production_window": "2027-2028",
         "area_sqm": 34000,
-        "locations": ["Khazaen Economic City", "Madayn", "SOHAR Free Zone"]
+        "locations": [
+          "Khazaen Economic City",
+          "Madayn",
+          "SOHAR Free Zone"
+        ]
       },
       "sources": [
         {
@@ -456,12 +514,15 @@
       "tender_float_date": "2026-08-27",
       "tender_close_date": "2026-09-20",
       "event_date": "2026-08-28",
-      "source_checked_at": "2026-09-25",
+      "source_checked_at": "2026-10-12",
       "voltage": "11/0.415 kV",
       "rating": "1000 kVA",
       "transformer_category": "mineral-oil-filled package / kiosk substation",
       "transformer_relevant": true,
-      "classifications": ["TENDER", "UTILITY_PROCUREMENT"],
+      "classifications": [
+        "TENDER",
+        "UTILITY_PROCUREMENT"
+      ],
       "key_values_extracted": {
         "tender_board_id": "389/2026/BTB",
         "internal_ref": "PT/CSD/HR/2026/102",
@@ -503,9 +564,12 @@
       "discovery_input_only": true,
       "publication_date": "2026-09-01",
       "event_date": null,
-      "source_checked_at": "2026-09-25",
+      "source_checked_at": "2026-10-12",
       "transformer_relevant": true,
-      "classifications": ["TENDER", "UTILITY_PROCUREMENT"],
+      "classifications": [
+        "TENDER",
+        "UTILITY_PROCUREMENT"
+      ],
       "sources": [],
       "confidence": "LOW",
       "force_grade": "REVIEW_REQUIRED",
@@ -521,10 +585,12 @@
       "snippet": "Research found no qualifying September opportunity under defined transformer-supply / station-EPC scope. Zero is valid coverage information.",
       "buyer": null,
       "transformer_relevant": true,
-      "classifications": ["UTILITY_PROCUREMENT"],
+      "classifications": [
+        "UTILITY_PROCUREMENT"
+      ],
       "publication_date": "2026-09-25",
       "event_date": null,
-      "source_checked_at": "2026-09-25",
+      "source_checked_at": "2026-10-12",
       "sources": [
         {
           "source_id": "kahramaa",
@@ -545,6 +611,126 @@
         "qualifying_september_opportunities": 0
       },
       "notes": "Do NOT fabricate a Qatar story. Record as coverage matrix: NO_QUALIFYING_ACTIVITY_FOUND once KAHRAMAA/CTC adapters run."
+    },
+    {
+      "candidate_id": "uae-dewa-2012605104-spare-ct",
+      "country": "United Arab Emirates",
+      "title": "DEWA — Spare Current Transformers procurement (notice 2012605104)",
+      "snippet": "Dubai Electricity & Water Authority floated a tender for spare current transformers (Document Ref 2012605104). Published 30 Sep 2026; bid close 5 Oct 2026.",
+      "buyer": "Dubai Electricity & Water Authority (DEWA)",
+      "tender_id": "2012605104",
+      "canonical_procurement_id": "DEWA-2012605104",
+      "procurement_state": "CLOSED",
+      "procurement_events": [
+        {
+          "state": "ANNOUNCED",
+          "at": "2026-09-30"
+        },
+        {
+          "state": "OPEN",
+          "at": "2026-09-30"
+        },
+        {
+          "state": "CLOSED",
+          "at": "2026-10-05"
+        }
+      ],
+      "tender_float_date": "2026-09-30",
+      "tender_close_date": "2026-10-05",
+      "publication_date": "2026-09-30",
+      "event_date": null,
+      "source_checked_at": "2026-10-12",
+      "transformer_category": "instrument / current transformers (utility spares)",
+      "transformer_relevant": true,
+      "classifications": [
+        "TENDER",
+        "UTILITY_PROCUREMENT"
+      ],
+      "key_values_extracted": {
+        "tender_id": "2012605104",
+        "float": "2026-09-30",
+        "close": "2026-10-05",
+        "scope": "spare current transformers"
+      },
+      "sources": [
+        {
+          "source_id": "dewa-open-tenders",
+          "url": "https://www.dewa.gov.ae/en/supplier/services/list-of-tender-documents",
+          "source_type": "UTILITY",
+          "role": "PRIMARY",
+          "authority_class": "OFFICIAL",
+          "note": "Authoritative DEWA portal; row confirmed via secondary tender mirror with DEWA document ref."
+        },
+        {
+          "source_id": "tendersontime-dewa-mirror",
+          "url": "https://www.tendersontime.com/tenders-details/spare-current-transformers-8f3395e/",
+          "source_type": "AGGREGATOR",
+          "role": "SECONDARY",
+          "authority_class": "COMMERCIAL",
+          "note": "Mirror listing with publish 30 Sep / close 5 Oct 2026."
+        }
+      ],
+      "confidence": "MEDIUM",
+      "force_grade": "SUPPORTED",
+      "publish_decision": "HOLD_FOR_REVIEW",
+      "why_previously_missed": "October DEWA CT spare notice not in Sep-only discovery window.",
+      "published_to_intel": false,
+      "notes": "CT spares — transformer-family procurement, not power-transformer OEM award. Keep HOLD until primary portal row scraped live."
+    },
+    {
+      "candidate_id": "sa-swa-380kv-al-jadeeda-shuaiba",
+      "country": "Saudi Arabia",
+      "title": "Saudi Water Authority — design, supply and implementation of 380 kV central transformation station (Al-Jadeeda / Al-Shuaiba, Group Two)",
+      "snippet": "Etimad competition 260739004813: project for design, supply and implementation of a 380 kV central transformation station at Al-Jadeeda, Al-Shuaiba and connection to the electrical grid (Group Two). Offer deadline 13 Oct 2026.",
+      "buyer": "Saudi Water Authority",
+      "tender_id": "260739004813",
+      "canonical_procurement_id": "ETIMAD-260739004813",
+      "procurement_state": "OPEN",
+      "procurement_events": [
+        {
+          "state": "ANNOUNCED",
+          "at": "2026-08-13"
+        },
+        {
+          "state": "OPEN",
+          "at": "2026-08-13"
+        }
+      ],
+      "tender_float_date": "2026-08-13",
+      "tender_close_date": "2026-10-13",
+      "publication_date": "2026-08-13",
+      "event_date": null,
+      "source_checked_at": "2026-10-12",
+      "transformer_category": "380 kV central transformation station",
+      "transformer_relevant": true,
+      "classifications": [
+        "TENDER",
+        "UTILITY_PROCUREMENT",
+        "PROJECT"
+      ],
+      "key_values_extracted": {
+        "tender_id": "260739004813",
+        "competition": "204709",
+        "voltage": "380 kV",
+        "close": "2026-10-13",
+        "scope": "central transformation station design/supply/implementation + grid connection"
+      },
+      "sources": [
+        {
+          "source_id": "etimad",
+          "url": "https://bidsfactory.com/en/tenders/380-saudi_etimad-d3b41d6834e7c6ed",
+          "source_type": "PROCUREMENT_PORTAL",
+          "role": "SECONDARY",
+          "authority_class": "OFFICIAL",
+          "note": "Etimad notice mirrored on BidsFactory; explicit 380 kV transformation station in title."
+        }
+      ],
+      "confidence": "HIGH",
+      "force_grade": "CONFIRMED",
+      "publish_decision": "HOLD_FOR_REVIEW",
+      "why_previously_missed": "Open SWA/Etimad 380 kV transformation-station tender active into October; Sep window closed before close date.",
+      "published_to_intel": false,
+      "notes": "Transformer scope explicit in title (380 kV central transformation station). Publish to Intel only after primary Etimad body capture or desk approval."
     }
   ]
 }

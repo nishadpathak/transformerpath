@@ -1,9 +1,9 @@
 {
   "$schema": "https://transformerpath.com/gcc-discovery-candidates.schema.json",
-  "generated": "2026-09-29T21:12:39.710Z",
+  "generated": "2026-10-12T08:47:14.270Z",
   "window": {
     "from": "2026-09-01",
-    "to": "2026-09-25"
+    "to": "2026-10-12"
   },
   "purpose": "Graded GCC discovery candidates. NOT auto-published Intel.",
   "pipeline": [
@@ -59,9 +59,9 @@
   "dictionary_ref": "data/gcc-discovery-dictionary.json",
   "registry_ref": "data/gcc-source-registry.json",
   "counts": {
-    "candidates": 12,
-    "confirmed": 3,
-    "supported": 8,
+    "candidates": 14,
+    "confirmed": 4,
+    "supported": 9,
     "review_required": 1,
     "rejected": 0,
     "internal_coverage_facts": 1
@@ -75,18 +75,18 @@
     }
   ],
   "freshness": {
-    "statement": "4/6+ P0 portal probes live this build — at least one official list returned transformer vocabulary",
+    "statement": "0/6+ P0 portal probes live this build — no live portal body yet (gated/unreachable); registry still populated",
     "markets_registered": 6,
-    "markets_adapter_live": 4,
+    "markets_adapter_live": 0,
     "markets_with_validated_candidates": 6,
-    "latest_source_checked_at": "2026-09-29",
+    "latest_source_checked_at": "2026-10-12",
     "latest_confirmed_event_date": "2026-09-25",
     "data_current_claim_allowed": false,
     "honesty": "Do NOT declare DATA CURRENT because the build ran today. Freshness depends on source coverage + source_checked_at + validated newest record.",
     "adapter_probe": {
-      "probed": 11,
-      "live": 4,
-      "honesty": "live = HTTP reachable + transformer vocabulary observed. Gated portals are not counted as live adapters."
+      "probed": 0,
+      "live": 0,
+      "honesty": "TP_SKIP_ADAPTER_PROBES=1 — live portal probes skipped this build"
     }
   },
   "candidates": [
@@ -138,7 +138,7 @@
         "award_date": null,
         "project_start_date": null,
         "commissioning_date": null,
-        "source_checked_at": "2026-09-25",
+        "source_checked_at": "2026-10-12",
         "update_date": null
       },
       "sources": [
@@ -209,7 +209,7 @@
         "award_date": null,
         "project_start_date": null,
         "commissioning_date": null,
-        "source_checked_at": "2026-09-25",
+        "source_checked_at": "2026-10-12",
         "update_date": null
       },
       "sources": [
@@ -284,7 +284,7 @@
         "award_date": null,
         "project_start_date": null,
         "commissioning_date": null,
-        "source_checked_at": "2026-09-25",
+        "source_checked_at": "2026-10-12",
         "update_date": null
       },
       "sources": [
@@ -354,7 +354,7 @@
         "award_date": null,
         "project_start_date": null,
         "commissioning_date": null,
-        "source_checked_at": "2026-09-25",
+        "source_checked_at": "2026-10-12",
         "update_date": null
       },
       "sources": [
@@ -423,7 +423,7 @@
         "award_date": null,
         "project_start_date": null,
         "commissioning_date": null,
-        "source_checked_at": "2026-09-25",
+        "source_checked_at": "2026-10-12",
         "update_date": null
       },
       "sources": [
@@ -495,7 +495,7 @@
         "award_date": null,
         "project_start_date": null,
         "commissioning_date": null,
-        "source_checked_at": "2026-09-25",
+        "source_checked_at": "2026-10-12",
         "update_date": null
       },
       "sources": [
@@ -565,7 +565,7 @@
         "award_date": null,
         "project_start_date": null,
         "commissioning_date": null,
-        "source_checked_at": "2026-09-25",
+        "source_checked_at": "2026-10-12",
         "update_date": null
       },
       "sources": [
@@ -637,7 +637,7 @@
         "award_date": null,
         "project_start_date": null,
         "commissioning_date": null,
-        "source_checked_at": "2026-09-25",
+        "source_checked_at": "2026-10-12",
         "update_date": null
       },
       "sources": [
@@ -707,7 +707,7 @@
         "award_date": null,
         "project_start_date": null,
         "commissioning_date": null,
-        "source_checked_at": "2026-09-25",
+        "source_checked_at": "2026-10-12",
         "update_date": null
       },
       "sources": [
@@ -788,7 +788,7 @@
         "award_date": null,
         "project_start_date": null,
         "commissioning_date": null,
-        "source_checked_at": "2026-09-25",
+        "source_checked_at": "2026-10-12",
         "update_date": "2026-09-19"
       },
       "sources": [
@@ -885,7 +885,7 @@
         "award_date": null,
         "project_start_date": null,
         "commissioning_date": null,
-        "source_checked_at": "2026-09-25",
+        "source_checked_at": "2026-10-12",
         "update_date": null
       },
       "sources": [
@@ -958,7 +958,7 @@
         "award_date": null,
         "project_start_date": null,
         "commissioning_date": null,
-        "source_checked_at": "2026-09-25",
+        "source_checked_at": "2026-10-12",
         "update_date": null
       },
       "sources": [],
@@ -1015,7 +1015,7 @@
         "award_date": null,
         "project_start_date": null,
         "commissioning_date": null,
-        "source_checked_at": "2026-09-25",
+        "source_checked_at": "2026-10-12",
         "update_date": null
       },
       "sources": [
@@ -1041,6 +1041,178 @@
         "project": null,
         "tender": null,
         "transformer_category": null,
+        "voltage": null,
+        "rating": null,
+        "facility_location": null,
+        "supplier_award_winner": null
+      },
+      "evidence_grade": "CONFIRMED"
+    },
+    {
+      "candidate_id": "uae-dewa-2012605104-spare-ct",
+      "country": "United Arab Emirates",
+      "title": "DEWA — Spare Current Transformers procurement (notice 2012605104)",
+      "snippet": "Dubai Electricity & Water Authority floated a tender for spare current transformers (Document Ref 2012605104). Published 30 Sep 2026; bid close 5 Oct 2026.",
+      "buyer": "Dubai Electricity & Water Authority (DEWA)",
+      "tender_id": "2012605104",
+      "canonical_procurement_id": "DEWA-2012605104",
+      "procurement_state": "CLOSED",
+      "procurement_events": [
+        {
+          "state": "ANNOUNCED",
+          "at": "2026-09-30"
+        },
+        {
+          "state": "OPEN",
+          "at": "2026-09-30"
+        },
+        {
+          "state": "CLOSED",
+          "at": "2026-10-05"
+        }
+      ],
+      "classifications": [
+        "TENDER",
+        "UTILITY_PROCUREMENT"
+      ],
+      "transformer_relevant": true,
+      "transformer_category": "instrument / current transformers (utility spares)",
+      "voltage": null,
+      "rating": null,
+      "location": null,
+      "project": null,
+      "supplier": null,
+      "key_values_extracted": {
+        "tender_id": "2012605104",
+        "float": "2026-09-30",
+        "close": "2026-10-05",
+        "scope": "spare current transformers"
+      },
+      "dates": {
+        "publication_date": "2026-09-30",
+        "event_date": null,
+        "tender_float_date": "2026-09-30",
+        "tender_close_date": "2026-10-05",
+        "bid_opening_date": null,
+        "expected_award_date": null,
+        "award_date": null,
+        "project_start_date": null,
+        "commissioning_date": null,
+        "source_checked_at": "2026-10-12",
+        "update_date": null
+      },
+      "sources": [
+        {
+          "source_id": "dewa-open-tenders",
+          "url": "https://www.dewa.gov.ae/en/supplier/services/list-of-tender-documents",
+          "source_type": "UTILITY",
+          "role": "PRIMARY",
+          "authority_class": "OFFICIAL",
+          "note": "Authoritative DEWA portal; row confirmed via secondary tender mirror with DEWA document ref."
+        },
+        {
+          "source_id": "tendersontime-dewa-mirror",
+          "url": "https://www.tendersontime.com/tenders-details/spare-current-transformers-8f3395e/",
+          "source_type": "AGGREGATOR",
+          "role": "SECONDARY",
+          "authority_class": "COMMERCIAL",
+          "note": "Mirror listing with publish 30 Sep / close 5 Oct 2026."
+        }
+      ],
+      "confidence": "MEDIUM",
+      "why_previously_missed": "October DEWA CT spare notice not in Sep-only discovery window.",
+      "published_to_intel": false,
+      "publish_decision": "HOLD_FOR_REVIEW",
+      "discovery_input_only": false,
+      "reject_reason": null,
+      "notes": "CT spares — transformer-family procurement, not power-transformer OEM award. Keep HOLD until primary portal row scraped live.",
+      "entity_links": {
+        "country": "United Arab Emirates",
+        "utility_buyer": "Dubai Electricity & Water Authority (DEWA)",
+        "project": null,
+        "tender": "2012605104",
+        "transformer_category": "instrument / current transformers (utility spares)",
+        "voltage": null,
+        "rating": null,
+        "facility_location": null,
+        "supplier_award_winner": null
+      },
+      "evidence_grade": "SUPPORTED"
+    },
+    {
+      "candidate_id": "sa-swa-380kv-al-jadeeda-shuaiba",
+      "country": "Saudi Arabia",
+      "title": "Saudi Water Authority — design, supply and implementation of 380 kV central transformation station (Al-Jadeeda / Al-Shuaiba, Group Two)",
+      "snippet": "Etimad competition 260739004813: project for design, supply and implementation of a 380 kV central transformation station at Al-Jadeeda, Al-Shuaiba and connection to the electrical grid (Group Two). Offer deadline 13 Oct 2026.",
+      "buyer": "Saudi Water Authority",
+      "tender_id": "260739004813",
+      "canonical_procurement_id": "ETIMAD-260739004813",
+      "procurement_state": "OPEN",
+      "procurement_events": [
+        {
+          "state": "ANNOUNCED",
+          "at": "2026-08-13"
+        },
+        {
+          "state": "OPEN",
+          "at": "2026-08-13"
+        }
+      ],
+      "classifications": [
+        "TENDER",
+        "UTILITY_PROCUREMENT",
+        "PROJECT"
+      ],
+      "transformer_relevant": true,
+      "transformer_category": "380 kV central transformation station",
+      "voltage": null,
+      "rating": null,
+      "location": null,
+      "project": null,
+      "supplier": null,
+      "key_values_extracted": {
+        "tender_id": "260739004813",
+        "competition": "204709",
+        "voltage": "380 kV",
+        "close": "2026-10-13",
+        "scope": "central transformation station design/supply/implementation + grid connection"
+      },
+      "dates": {
+        "publication_date": "2026-08-13",
+        "event_date": null,
+        "tender_float_date": "2026-08-13",
+        "tender_close_date": "2026-10-13",
+        "bid_opening_date": null,
+        "expected_award_date": null,
+        "award_date": null,
+        "project_start_date": null,
+        "commissioning_date": null,
+        "source_checked_at": "2026-10-12",
+        "update_date": null
+      },
+      "sources": [
+        {
+          "source_id": "etimad",
+          "url": "https://bidsfactory.com/en/tenders/380-saudi_etimad-d3b41d6834e7c6ed",
+          "source_type": "PROCUREMENT_PORTAL",
+          "role": "SECONDARY",
+          "authority_class": "OFFICIAL",
+          "note": "Etimad notice mirrored on BidsFactory; explicit 380 kV transformation station in title."
+        }
+      ],
+      "confidence": "HIGH",
+      "why_previously_missed": "Open SWA/Etimad 380 kV transformation-station tender active into October; Sep window closed before close date.",
+      "published_to_intel": false,
+      "publish_decision": "HOLD_FOR_REVIEW",
+      "discovery_input_only": false,
+      "reject_reason": null,
+      "notes": "Transformer scope explicit in title (380 kV central transformation station). Publish to Intel only after primary Etimad body capture or desk approval.",
+      "entity_links": {
+        "country": "Saudi Arabia",
+        "utility_buyer": "Saudi Water Authority",
+        "project": null,
+        "tender": "260739004813",
+        "transformer_category": "380 kV central transformation station",
         "voltage": null,
         "rating": null,
         "facility_location": null,

@@ -1,9 +1,9 @@
 {
   "$schema": "https://transformerpath.com/freshness.schema.json",
-  "generated": "2026-09-30T16:23:48.362Z",
-  "build_at": "2026-09-30T16:23:48.362Z",
-  "latest_source_date": "2026-09-25",
-  "latest_source_checked_at": "2026-09-29",
+  "generated": "2026-10-12T08:47:14.304Z",
+  "build_at": "2026-10-12T08:47:14.304Z",
+  "latest_source_date": "2026-10-08",
+  "latest_source_checked_at": "2026-10-12",
   "public_intel_status": "INTEL COVERAGE DELAYED",
   "public_intel_status_reason": "discovery_claim_disallowed",
   "data_current_claim_allowed": false,
@@ -14,14 +14,14 @@
       "name": "Daily Intel",
       "cadence": "daily (curated)",
       "description": "Curated transformer-industry intelligence feed. Data is compiled and regenerated at each build; it is not an automatic live scrape.",
-      "last_build": "2026-09-30T16:23:48.362Z",
-      "build_at": "2026-09-30T16:23:48.362Z",
-      "last_data_refresh": "2026-09-25T12:00:00.000Z",
-      "last_attempted_refresh": "2026-09-25T12:00:00.000Z",
-      "last_successful_refresh": "2026-09-25T12:00:00.000Z",
-      "latest_source_observation": "2026-09-25T12:00:00.000Z",
-      "latest_source_date": "2026-09-25",
-      "latest_source_checked_at": "2026-09-29",
+      "last_build": "2026-10-12T08:47:14.304Z",
+      "build_at": "2026-10-12T08:47:14.304Z",
+      "last_data_refresh": "2026-10-08T12:00:00.000Z",
+      "last_attempted_refresh": "2026-10-08T12:00:00.000Z",
+      "last_successful_refresh": "2026-10-08T12:00:00.000Z",
+      "latest_source_observation": "2026-10-08T12:00:00.000Z",
+      "latest_source_date": "2026-10-08",
+      "latest_source_checked_at": "2026-10-12",
       "public_status": "INTEL COVERAGE DELAYED",
       "public_status_reason": "discovery_claim_disallowed",
       "data_current_claim_allowed": false,
@@ -60,7 +60,7 @@
               "evidence_grade": "SUPPORTED",
               "candidate_id": "uae-dewa-2122600155",
               "tender_id": "2122600155",
-              "age_tier": "FRESH",
+              "age_tier": "RECENT",
               "date_label": "24 Sep 2026"
             },
             {
@@ -86,7 +86,7 @@
               "evidence_grade": "CONFIRMED",
               "candidate_id": "sa-swa-rabigh-2p5mva",
               "tender_id": "60020899",
-              "age_tier": "RECENT",
+              "age_tier": "BACKGROUND",
               "date_label": "2 Sep 2026"
             },
             {
@@ -112,7 +112,7 @@
               "evidence_grade": "SUPPORTED",
               "candidate_id": "sa-swa-jubail-grounding",
               "tender_id": "260839007703",
-              "age_tier": "RECENT",
+              "age_tier": "BACKGROUND",
               "date_label": "3 Sep 2026"
             },
             {
@@ -138,7 +138,7 @@
               "evidence_grade": "SUPPORTED",
               "candidate_id": "sa-al-aflaj-33kv-replacement",
               "tender_id": "260939000800",
-              "age_tier": "RECENT",
+              "age_tier": "BACKGROUND",
               "date_label": "8 Sep 2026"
             },
             {
@@ -192,8 +192,10 @@
               "evidence_grade": "SUPPORTED",
               "candidate_id": "sa-swa-yanbu-t803-supervision",
               "tender_id": "260839007272",
-              "age_tier": "RECENT",
-              "date_label": "3 Sep 2026"
+              "age_tier": "BACKGROUND",
+              "date_label": "3 Sep 2026",
+              "is_active": true,
+              "current_relevance": "Project under active procurement/construction or multi-year grid framework."
             },
             {
               "title": "MEWRE — replacement of damaged transformers up to 75 MVA and parallel reactors up to 50 MVA (first stage)",
@@ -247,7 +249,7 @@
               "evidence_grade": "SUPPORTED",
               "candidate_id": "kw-mewre-75mva-relocation",
               "tender_id": "KW-MEWRE-75MVA-RELOC",
-              "age_tier": "FRESH",
+              "age_tier": "RECENT",
               "date_label": "24 Sep 2026"
             },
             {
@@ -275,7 +277,7 @@
               "evidence_grade": "SUPPORTED",
               "candidate_id": "kw-mewre-75mva-stage2",
               "tender_id": "CAPT-GOV-KW-16/2025/2026",
-              "age_tier": "FRESH",
+              "age_tier": "RECENT",
               "date_label": "24 Sep 2026"
             },
             {
@@ -341,9 +343,11 @@
               "src": "MEED · 9 Sep 2026 [en]",
               "url": "https://guest.meed.com/dewa-floats-12-substation-tender/",
               "isNew": true,
-              "age_tier": "RECENT",
+              "age_tier": "BACKGROUND",
               "date_iso": "2026-09-09",
-              "date_label": "9 Sep 2026"
+              "date_label": "9 Sep 2026",
+              "is_active": true,
+              "current_relevance": "Project under active procurement/construction or multi-year grid framework."
             },
             {
               "title": "Saudi Electricity Company (SEC) awards SAR 412m Al-Hasa North 380/115 kV BSP substation EPC to Al-Babtain",
@@ -1188,7 +1192,7 @@
               "src": "Hitachi Energy Press · 10 Sep 2026 [en]",
               "url": "https://www.hitachienergy.com/news-and-events/press-releases/2026/09/bad-honnef-testing-expansion",
               "isNew": true,
-              "age_tier": "RECENT",
+              "age_tier": "BACKGROUND",
               "date_iso": "2026-09-10",
               "date_label": "10 Sep 2026"
             },
@@ -1199,7 +1203,7 @@
               "src": "Transformer Magazine · 11 Sep 2026 [en]",
               "url": "https://transformer-magazine.com/news/siemens-energy-tennet-complete-balwin3-fat/",
               "isNew": true,
-              "age_tier": "RECENT",
+              "age_tier": "BACKGROUND",
               "date_iso": "2026-09-11",
               "date_label": "11 Sep 2026"
             },
@@ -1628,7 +1632,7 @@
               "src": "Utility Dive · 8 Sep 2026 [en]",
               "url": "https://www.utilitydive.com/news/aep-ohio-puco-transmission-filing-data-centers/829104/",
               "isNew": true,
-              "age_tier": "RECENT",
+              "age_tier": "BACKGROUND",
               "date_iso": "2026-09-08",
               "date_label": "8 Sep 2026"
             },
@@ -2472,18 +2476,18 @@
               "src": "مصراوي (Masrawy) · 31 Aug 2026 [ar]",
               "url": "https://www.masrawy.com/news/news_egypt/details/2026/8/31/3041158/%D9%88%D8%B2%D9%8A%D8%B1-%D8%A7%D9%84%D9%83%D9%87%D8%B1%D8%A8%D8%A7%D8%A1-37-%D9%85%D9%84%D9%8A%D8%A7%D8%B1-%D8%AC%D9%86%D9%8A%D9%87-%D9%84%D8%AA%D8%B7%D9%88%D9%8A%D8%B1-%D9%88%D8%AA%D8%AD%D8%AF%D9%8A%D8%AB-%D8%B4%D8%A8%D9%83%D8%A9-%D9%86%D9%82%D9%84-%D8%A7%D9%84%D9%83%D9%87%D8%B1%D8%A8%D8%A7%D8%A1#article-news",
               "lang": "ar",
-              "age_tier": "RECENT",
+              "age_tier": "BACKGROUND",
               "date_iso": "2026-08-31",
               "date_label": "31 Aug 2026"
             }
           ]
         },
-        "updated": "2026-09-25T12:00:00.000Z",
+        "updated": "2026-10-08T12:00:00.000Z",
         "refresh_meta": {
           "cadence": "daily (curated)",
           "refreshed_at_build": true,
-          "newest_validated_content_date": "2026-09-25",
-          "note": "updated reflects newest validated CONTENT observation (float/publication/event/update) — not source_checked_at and not a silent redeploy clock. Excludes tender_close_date and future dates.",
+          "newest_validated_content_date": "2026-10-08",
+          "note": "updated reflects newest validated CONTENT observation (float/publication/event/update) — not source_checked_at and not a silent redeploy clock. Excludes tender_close_date and future dates. Synced from intel-feed-ui honesty after NEWS date_iso items.",
           "gcc_published": [
             "uae-dewa-2122600155",
             "sa-swa-rabigh-2p5mva",
@@ -2508,7 +2512,7 @@
               "url": "https://www.utilitydive.com/news/aep-ohio-puco-transmission-filing-data-centers/829104/",
               "lang": "en",
               "isNew": true,
-              "age_tier": "RECENT",
+              "age_tier": "BACKGROUND",
               "date_iso": "2026-09-08",
               "date_label": "8 Sep 2026"
             }
@@ -2590,10 +2594,10 @@
       "name": "Materials Intelligence",
       "cadence": "reference",
       "description": "Copper/aluminium are the LME reference (dated, sourced, freshness_status). CRGO and others are shown as unavailable (no public daily index).",
-      "last_build": "2026-09-15",
-      "last_data_refresh": "2026-09-15",
-      "last_attempted_refresh": "2026-09-15",
-      "last_successful_refresh": "2026-09-15",
+      "last_build": "2026-09-30",
+      "last_data_refresh": "2026-09-30",
+      "last_attempted_refresh": "2026-09-30",
+      "last_successful_refresh": "2026-09-30",
       "latest_source_observation": "LME reference observed 2026-08-20 (per record); others have no verified reference",
       "records_added": null,
       "records_updated": null,
@@ -2612,8 +2616,8 @@
       "works_for": [
         "materials"
       ],
-      "last_checked": "2026-09-15",
-      "last_success": "2026-09-15",
+      "last_checked": "2026-09-30",
+      "last_success": "2026-09-30",
       "latest_content_date": "2026-08-20",
       "failure_count": 0,
       "status": "HEALTHY"
@@ -2625,9 +2629,9 @@
       "works_for": [
         "daily_intel"
       ],
-      "last_checked": "2026-09-25T12:00:00.000Z",
-      "last_success": "2026-09-25T12:00:00.000Z",
-      "latest_content_date": "2026-09-25T12:00:00.000Z",
+      "last_checked": "2026-10-08T12:00:00.000Z",
+      "last_success": "2026-10-08T12:00:00.000Z",
+      "latest_content_date": "2026-10-08T12:00:00.000Z",
       "failure_count": 0,
       "status": "HEALTHY"
     },
@@ -2648,11 +2652,11 @@
   "clocks": {
     "statusLabel": "INTEL COVERAGE DELAYED",
     "reason": "discovery_claim_disallowed",
-    "ageDays": 5,
-    "latest_source_date": "25 Sept 2026",
-    "latest_source_iso": "2026-09-25",
-    "latest_source_checked_at": "2026-09-29",
-    "build_at": "2026-09-30T16:23:48.362Z",
+    "ageDays": 4,
+    "latest_source_date": "8 Oct 2026",
+    "latest_source_iso": "2026-10-08",
+    "latest_source_checked_at": "2026-10-12",
+    "build_at": "2026-10-12T08:47:14.304Z",
     "data_current_claim_allowed": false,
     "honesty": "Status follows latest_source_date, not build_at. Desk rebuild alone never yields DATA CURRENT."
   }

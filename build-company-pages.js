@@ -34,6 +34,20 @@ const EVENTS = JSON.parse(fs.readFileSync('data/events.json', 'utf8'));
 const INTEL = JSON.parse(fs.readFileSync('data/intel.json', 'utf8'));
 const STATS = JSON.parse(fs.readFileSync('data/site-stats.json', 'utf8'));
 const CS = require('./data/site-stats.json');
+// Stable Directory V2 IDs (TPM companies / TPF facilities) — never invent census rows.
+const ID_LOOKUP = (function () {
+  try { return JSON.parse(fs.readFileSync('data/permanent-id-lookup.json', 'utf8')); }
+  catch (e) { return { by_slug: {}, by_facility_id: {} }; }
+})();
+function tpmFor(slug) { return (ID_LOOKUP.by_slug && ID_LOOKUP.by_slug[slug]) || ''; }
+function tpfFor(facilityId) { return (ID_LOOKUP.by_facility_id && ID_LOOKUP.by_facility_id[facilityId]) || ''; }
+function copyIdBtn(id) {
+  if (!id) return '';
+  return ' <button type="button" class="tp-copy-id" data-copy-id="' + esc(id) + '" title="Copy ' + esc(id) + '" ' +
+    'style="font:inherit;font-size:.72rem;font-family:ui-monospace,monospace;font-weight:700;letter-spacing:.04em;' +
+    'color:var(--accent);background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.35);border-radius:6px;' +
+    'padding:2px 8px;cursor:pointer;vertical-align:middle">' + esc(id) + '</button>';
+}
 // Company → Brand → Site inventory (internal; grouped by shared website).
 const SITES = JSON.parse(fs.readFileSync('data/manufacturer-sites.json', 'utf8'));
 function normUrl(u) { return String(u || '').replace(/^https?:\/\//, '').replace(/\/+$/, '').toLowerCase().trim(); }
@@ -187,14 +201,16 @@ function verifiedFactoriesHtml(r) {
   if (!verified.length) return '';
   const rows = verified.map(function (f) {
     const lo = (f.city ? esc(f.city) : '') + (f.country ? ', ' + esc(f.country) : '');
-    const fid = f.facility_id ? '<span style="font-family:monospace;font-size:.72rem;background:rgba(255,255,255,.06);padding:1px 6px;border-radius:4px;color:var(--muted);margin-left:6px">' + esc(f.facility_id) + '</span>' : '';
+    const tpf = f.facility_id ? tpfFor(f.facility_id) : '';
+    const fid = (tpf ? copyIdBtn(tpf) : '') +
+      (f.facility_id ? '<span style="font-family:monospace;font-size:.72rem;background:rgba(255,255,255,.06);padding:1px 6px;border-radius:4px;color:var(--muted);margin-left:6px">' + esc(f.facility_id) + '</span>' : '');
     const prod = f.produces ? '<div style="font-size:.8rem;color:var(--muted);margin-top:2px">' + esc(f.produces) + '</div>' : '';
     const src = f.source_url ? '<a href="' + esc(f.source_url) + '" target="_blank" rel="noopener" style="color:var(--accent);font-size:.78rem">source ↗</a>' : '';
     const ct = f.claim_type ? '<span class="vbadge" style="font-size:.68rem;font-weight:600">' + esc(f.claim_type.replace(/_/g, ' ')) + '</span>' : '';
     return '<tr><td style="padding:8px 10px;vertical-align:top"><b style="color:var(--text)">' + (lo || '—') + '</b>' + fid + prod + '</td>' +
       '<td style="padding:8px 10px;vertical-align:top;font-size:.8rem;color:var(--muted)">' + ct + ' ' + src + '</td></tr>';
   }).join('');
-  return '<h2>Confirmed manufacturing facilities</h2><p style="font-size:.82rem;color:var(--muted)">Where an independent source documents a transformer manufacturing plant, it is catalogued here with its verified facility ID and source attribution. Factory capability is separate from the company group maximum and is never inferred from it.</p>' +
+  return '<h2>Confirmed manufacturing facilities</h2><p style="font-size:.82rem;color:var(--muted)">Where an independent source documents a transformer manufacturing plant, it is catalogued here with a permanent <b>TPF</b> facility ID and source attribution. Factory capability is separate from the company group maximum and is never inferred from it.</p>' +
     '<table class="tbl"><tbody>' + rows + '</tbody></table>';
 }
 
@@ -430,6 +446,7 @@ function page(r, slug) {
     '</head>\n<body>\n' + HEAD + '\n<main id="main" tabindex="-1" class="c-wrap">' +
     '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="../../manufacturers.html" style="color:var(--accent)">Manufacturers</a> › ' + crumbCountry + ' › ' + esc(r.name) + '</nav>' +
     '<h1>' + esc(r.name) + ' <button class="follow-btn" data-follow-type="company" data-follow-subject="' + esc(r.name) + '" data-follow-label="' + esc(r.name) + '" title="Follow this manufacturer in My TransformerPath">Follow</button></h1>' +
+    (tpmFor(r.slug) ? '<p style="margin:6px 0 0;font-size:.82rem;color:var(--muted)">Permanent company ID ' + copyIdBtn(tpmFor(r.slug)) + ' <span style="opacity:.75">(stable census identity — not a certification)</span></p>' : '') +
     '<p class="lead">Independent company profile covering reported transformer capabilities, markets, related industry developments and relevant events.</p>' +
     '<p style="font-size:.9rem;color:var(--muted);margin:6px 0 0">' + (r.flag || '') + ' <b style="color:var(--text)">' + esc(r.country) + '</b>' + (r.city ? ' · ' + esc(r.city) : '') + ' · <span style="color:var(--accent)">' + verify + '</span>' + (r.url ? ' · <a href="' + esc(r.url) + '" target="_blank" rel="noopener nofollow" data-track="official_website_click" data-track-manufacturer="' + esc(r.name) + '" style="color:var(--accent)">Official website ↗</a>' : '') + '</p>' +
     trust +
@@ -449,7 +466,9 @@ function page(r, slug) {
     '<a class="btn btn-outline btn-sm" href="../../correct-company.html?company=' + encodeURIComponent(r.name) + '" data-track="manufacturer_correction_started" data-track-manufacturer="' + esc(r.name) + '">Suggest a correction →</a></div>' +
     '<div class="card" style="background:var(--bg);border:1px solid var(--border);padding:16px 18px;text-align:center;margin-top:14px"><b style="color:var(--text)">Looking for transformer suppliers?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Submit a technical requirement for supplier matching across the ' + esc(r.country) + ' and regional manufacturing base.</p>' +
     '<a class="btn btn-amber" href="../../rfq.html" data-track="rfq_started" data-track-manufacturer="' + esc(r.name) + '">Submit an RFQ</a> <a class="btn btn-outline btn-sm" href="../../compare.html?m=' + esc(r.slug) + '" data-track="manufacturer_compare" data-track-manufacturer="' + esc(r.name) + '">Compare with others →</a></div>' +
-    '</main>\n' + FOOT + '\n<script src="../../analytics.js?v=2" defer></script>\n<script src="../../follow-button.js" defer></script>\n</body>\n</html>';
+    '</main>\n' + FOOT + '\n<script src="../../analytics.js?v=2" defer></script>\n<script src="../../follow-button.js" defer></script>\n' +
+    '<script>(function(){document.querySelectorAll(".tp-copy-id").forEach(function(btn){btn.addEventListener("click",function(){var id=btn.getAttribute("data-copy-id")||btn.textContent;if(!id||!navigator.clipboard)return;navigator.clipboard.writeText(id).then(function(){var t=btn.textContent;btn.textContent="Copied";setTimeout(function(){btn.textContent=t;},1200);});});});})();</script>\n' +
+    '</body>\n</html>';
 }
 
 fs.mkdirSync('manufacturers', { recursive: true });
