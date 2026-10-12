@@ -1,0 +1,78 @@
+# TransformerPath — 12 October 2026 audit response
+Sprint branch: `cursor/intel-dir-v2-sprint-a955`
+Allocation followed: ~60% Intel · ~30% Directory V2 IDs · ~10% regression / awards filters
+
+---
+
+## Live production verification (raw HTTP, 12 Oct 2026)
+
+Audit search crawl cited **31 Aug** as newest Intel. Direct production fetch disagrees:
+
+| Field | Live production |
+| --- | --- |
+| build_commit | `2e6d27b1f` (Transformer Lab + #13 Intel Oct items + #12 stabilization) |
+| build_at | `2026-10-12T06:31:01.486Z` |
+| data_version | present via `/data/build-provenance.json` **200** |
+| Homepage latest sourced | **8 Oct 2026** |
+| Public status | **INTEL COVERAGE DELAYED** (honest — not DATA CURRENT) |
+| Source checked / page built | shown on intel stamp (three-clock model live post-#12) |
+| Census card | **906** (no 1,002 on homepage in this crawl) |
+| site-stats | manufacturers 906 · countries 88 · completeness 54% · projects 306 · tenders 151 · awards 56 |
+
+**Conclusion:** The 42-day / 31-Aug finding is consistent with **search/index lag**, not the bytes currently served. Operational freshness is still weak (latest content 8 Oct → ~4 day lag vs “daily”; GCC portal adapters still not live in CI), but the catastrophic 42-day homepage claim is not what raw production HTML shows today.
+
+---
+
+## Sprint deliverables on this branch
+
+### P0 — Intel recovery
+1. Re-ran `build-intel-feed-ui` so October NEWS `date_iso` items (TARIL / Voltamp / LS Electric / Kolektor from #13) drive the SSR timeline and honesty clocks.
+2. Synced `data/intel.json` `newest_validated_content_date` → **2026-10-08**.
+3. Rebuilt freshness + stamps → **latest_source_date 2026-10-08**, **latest_source_checked_at 2026-10-12**, status remains **INTEL COVERAGE DELAYED**.
+4. Extended GCC discovery window Sep–Oct with two sourced candidates:
+   - DEWA spare CT notice 2012605104 (float 30 Sep / close 5 Oct) — SUPPORTED / HOLD
+   - SWA/Etimad 380 kV central transformation station (close 13 Oct) — CONFIRMED scope / HOLD for publish
+5. Regenerated `data/gcc-coverage-report.json` for UAE / KSA / Kuwait / Oman / Bahrain / Qatar.
+
+Publish rule unchanged: discovery ≠ auto-publication. Desk approval still required before Intel cards.
+
+### P1 — Directory V2 permanent IDs
+- New `build-permanent-ids.js` → `data/permanent-ids.json` + lookup
+- **915 TPM** company IDs (company-slugs OEM set; public census counter stays 906)
+- **903 TPF** facility IDs from manufacturer-sites
+- Company profiles show copy-to-clipboard TPM (e.g. CG Power `TPM-000117`)
+- Facilities prepared for TPF display where `facility_id` links resolve
+- Wired into Netlify build before `build-company-pages.js`
+- Regression: `tests/permanent-ids-regression.js` (IDs do not reshuffle)
+
+Does **not** inflate manufacturer count.
+
+### P1 — Awards classification UX
+- Awards page filters: All / Equipment CONFIRMED (11) / INFERRED / UNKNOWN
+- Stats strip separates equipment CONFIRMED vs scope INFERRED
+- Every row now shows transformer scope explicitly
+
+### Regression (10%)
+- census-stale / entity-canonical / voltage HTML 765 gates available on lineage from #12
+- permanent-ids stability test added
+
+---
+
+## Still open (next iterations — not this PR’s stop line)
+
+| Item | Status |
+| --- | --- |
+| Live P0 portal adapter bodies (DEWA/Etimad/…) | Still gated / 0 live in offline CI |
+| Qatar qualifying Oct activity | Still zero under scope (valid empty) |
+| Directory facility research (UAE/KSA/Kuwait 0 plants) | Not started — IDs first |
+| Project overdue Q2/Q3 2026 status revalidation | Not started |
+| Jobs vacancy vs role-category split | Not started |
+| Account/payment journey | Not started (commercial) |
+
+---
+
+## Recommended next milestone (unchanged from audit)
+
+Reliable mid-October Intel with live GCC source checks, then facility research on GCC markets — not more website sections.
+
+Daily Intel freshness / directory-count / provenance audit: agreeable — schedule against raw `/data/build-provenance.json` + intel stamp, not search snippets alone.
