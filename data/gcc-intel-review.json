@@ -1,7 +1,7 @@
 {
   "$schema": "https://transformerpath.com/gcc-intel-review.schema.json",
   "purpose": "Per-candidate human review ledger for GCC discovery. Publication requires decision=PUBLISH with reviewer and reviewed_at. HOLD is not publication.",
-  "honesty": "Rows are review records, not new evidence. PUBLISH rows are the PR #16 desk release, the 9 Oct and 13 Oct items, and six September notices released on 14 Oct 2026 after their source pages were fetched. Grades were not upgraded. HOLD rows keep reviewer null.",
+  "honesty": "Rows are review records, not new evidence. PUBLISH rows are the PR #16 desk release, the 9 Oct and 13 Oct items, and six September notices released on 14 Oct 2026 after their source pages were fetched. Grades were not upgraded. om-localisation-aug12 was rejected on 2026-10-14 after official pages were fetched and did not state the 12 Aug 2026 claim; its recorded grade was not relabeled. HOLD rows keep reviewer null.",
   "updated": "2026-10-14",
   "reviews": [
     {
@@ -94,12 +94,12 @@
       "evidence_status": "SUPPORTED",
       "hold_reason": {
         "code": "REVIEW_REQUIRED",
-        "text": "BidDetail returned HTTP 200 on 2026-10-14 and the title for dismantling, relocation and installation of one 75 MVA power transformer in Kuwait. The date is behind the paywall and was not on the fetched page."
+        "text": "BidDetail returned HTTP 200 on 2026-10-14 and the title for dismantling, relocation and installation of one 75 MVA power transformer in Kuwait. The date is behind the paywall and was not on the fetched page. Official recheck the same day: https://www.capt.gov.kw/ returned HTTP 403 (Cloudflare challenge, no tender body) and https://www.mew.gov.kw/ failed TLS (unsafe legacy renegotiation), so no official page stated the tender or a date."
       },
       "reviewer": null,
       "reviewed_at": null,
       "decision": "HOLD",
-      "decision_note": "Held. Title is visible; the date is not. reviewer stays null.",
+      "decision_note": "Held. The aggregator title is visible and the date is not. Official CAPT and MEW pages did not return a tender body, so the row is not published and not rejected. reviewer stays null.",
       "source_urls": [
         "http://www.biddetail.com/latest-tenders/117573786$d84ae31a-0b12-4035-93f7-f0d7cdc01f0d"
       ]
@@ -120,18 +120,21 @@
       "candidate_id": "om-localisation-aug12",
       "evidence_status": "CONFIRMED",
       "hold_reason": {
-        "code": "DUPLICATE_OF_CURATED",
-        "text": "A near-duplicate is already in curated GCC intel. Rechecked 2026-10-14: Times of Oman and The Arabian Stories still describe the RO 15 million agreements; Oman Observer returned HTTP 502. Not injected a second time. event_date stays 2026-08-12."
+        "code": "REVIEW_REQUIRED",
+        "text": "Official APSR and Invest Oman pages fetched on 2026-10-14 do not state the 12 Aug 2026 signing of ten agreements for about RO 15 million. https://apsr.om/ is HTTP 200 and only the JavaScript shell. https://www.investoman.om/ is HTTP 200 with no transformer-agreement text. https://investoman.om/investment-opportunities/1778 and /1744 are HTTP 404 Page Not Found. Press pages are not authority_class OFFICIAL and were not the basis of this decision."
       },
-      "reviewer": null,
-      "reviewed_at": null,
-      "decision": "HOLD",
-      "decision_note": "Held as a duplicate of the curated card. reviewer stays null.",
+      "reviewer": "transformerpath-desk",
+      "reviewed_at": "2026-10-14T15:10:24Z",
+      "decision": "REJECT",
+      "decision_note": "Rejected on 2026-10-14T15:10:24Z by transformerpath-desk. Fetched https://apsr.om/ and https://www.apsr.om/ (both HTTP 200, body text: Please enable JavaScript to continue using this application). Fetched https://www.investoman.om/ (HTTP 200, no transformer-agreement text), https://www.investoman.om/investment-opportunities and https://www.investoman.om/media-center/news (HTTP 200 script shells, no agreement text), and https://investoman.om/investment-opportunities/1778 and https://investoman.om/investment-opportunities/1744 (HTTP 404, title Page Not Found | Invest Oman). omannews.gov.om failed certificate verification (unable to get local issuer certificate) and was not used. Oman Observer, Times of Oman and The Arabian Stories are secondary press, not OFFICIAL, and were not the basis. evidence_status stays the recorded CONFIRMED grade and was not relabeled. The curated Intel card was not removed.",
       "source_urls": [
-        "https://www.omanobserver.om/article/1194395/business/ro-15m-pacts-signed-to-drive-local-production-of-transformer-components",
-        "https://www.omanobserver.om/article/1196433/business/oman-localises-transformer-production",
-        "https://www.thearabianstories.com/2026/09/19/oman-localises-transformer-production-with-ro-15-million-investment/",
-        "https://timesofoman.com/article/175526-ten-agreements-signed-to-localise-electrical-transformer-component-manufacturing-in-oman"
+        "https://apsr.om/",
+        "https://www.apsr.om/",
+        "https://www.investoman.om/",
+        "https://www.investoman.om/investment-opportunities",
+        "https://www.investoman.om/media-center/news",
+        "https://investoman.om/investment-opportunities/1778",
+        "https://investoman.om/investment-opportunities/1744"
       ]
     },
     {
@@ -165,12 +168,12 @@
       "evidence_status": "CONFIRMED",
       "hold_reason": {
         "code": "INTERNAL_COVERAGE_ONLY",
-        "text": "Coverage fact only, not an Intel card. km.qa timed out on 2026-10-14, so the September zero was not reconfirmed. Zero stays a valid result."
+        "text": "Coverage fact only, not an Intel card. https://www.km.qa/ timed out after 25s on 2026-10-14 and https://www.km.qa/Business/Pages/Tenders.aspx timed out after 40s, so the September zero was not reconfirmed from the official utility page."
       },
       "reviewer": null,
       "reviewed_at": null,
       "decision": "HOLD",
-      "decision_note": "Held as internal coverage. reviewer stays null. Not an Intel card.",
+      "decision_note": "Held as internal coverage. reviewer stays null. Not an Intel card. The official KAHRAMAA pages timed out, so this pass neither publishes nor rejects the September zero.",
       "source_urls": [
         "https://www.km.qa/"
       ]
