@@ -131,10 +131,10 @@ function copyDir(dir) {
     // the rest of that generation) must never reach the CDN. The root
     // commerce-intel 404 does not cover this copy.
     if (/(^|\/)backup[^/]*$/.test(p) || /pre-sprint/i.test(p)) continue;
-    // Tracked ops schemas (e.g. data/*.sql) must stay in git but never ship on the CDN
-    if (/\.sql$/i.test(e.name)) continue;
-    // Design scripts tracked under brand/ (logo-concepts/render_previews.py) stay in git.
-    if (/\.py$/i.test(e.name)) continue;
+    // Tracked ops files under a public directory (schemas, logo studies, notes)
+    // stay in git but never ship on the CDN. The dist gate rejects these
+    // extensions if a copy still gets through.
+    if (/\.(sql|py|md)$/i.test(e.name)) continue;
     if (e.isDirectory()) n += copyDir(p);
     else { copyFile(p, p); n++; }
   }
