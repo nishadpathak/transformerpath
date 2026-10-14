@@ -27,6 +27,7 @@ const CSSV = (CFG.assets && CFG.assets.css) || 12;
 // ONE canonical event-status resolver (shared across Events/Homepage/Search/
 // Market/Company/Structured-data surfaces). Replaces the local heuristic below.
 const { resolveStatus, isTravelSafe, chip: statusChip } = require('./lib/event-status');
+const { TP_LOADER } = require('./lib/seo-cwv');
 // Company entity pages (built by build-company-pages) -> exhibitor map for events.
 const CSMAP = {}; const COUNTRY_CO = {};
 try { JSON.parse(fs.readFileSync('data/company-slugs.json', 'utf8')).forEach(function (c) { CSMAP[c.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()] = c.slug; (COUNTRY_CO[c.country] = COUNTRY_CO[c.country] || []).push({ name: c.name, slug: c.slug }); }); } catch (e) {}
@@ -289,7 +290,7 @@ function eventPage(ev) {
     '<a class="btn btn-amber" href="../../sponsor.html" data-track="event_feature_inquiry" data-track-event="' + esc(ev.slug) + '">Feature your company — $399 →</a> <a class="btn btn-outline btn-sm" href="../../rfq.html" data-track="rfq_started" data-track-component_category="' + esc(ev.slug) + '">Submit an RFQ</a> <a class="btn btn-outline btn-sm" href="../../list-company.html" data-track="supplier_claim_started" data-track-component_category="' + esc(ev.slug) + '">Get Verified</a></div>' +
     '<div style="font-size:.85rem;color:var(--muted);text-align:center;margin-top:8px">Explore: <a href="../../events.html" style="color:var(--accent);font-weight:600">Events</a> · <a href="../../webinars.html" style="color:var(--accent);font-weight:600">Webinars</a> · <a href="../../learn.html" style="color:var(--accent);font-weight:600">Learn</a> · <a href="../../intel.html" style="color:var(--accent);font-weight:600">Intel</a> · <a href="../../map.html?layer=events" style="color:var(--accent);font-weight:600">Map</a> · <a href="../../markets.html" style="color:var(--accent);font-weight:600">Markets</a></div>' +
     '</main>\n' + FOOT + '\n<script src="../../analytics.js?v=2" defer></script>\n' +
-    '<script>(function(){function ok(){try{return localStorage.getItem("tp-cookie-consent")==="accepted"}catch(e){return false}}function load(){var s=document.createElement("script");s.async=1;s.src="https://emrldtp.com/NTQ4OTM4.js?t=548938";s.setAttribute("data-cmp-ab","2");document.head.appendChild(s)}if(ok()){load()}else{var h=function(e){if(e.key==="tp-cookie-consent"&&e.newValue==="accepted"){load();document.removeEventListener("storage",h)}};document.addEventListener("storage",h)}})();<\/script>\n</body>\n</html>';
+    TP_LOADER + '\n</body>\n</html>';
 }
 const OEMS_SAMPLE = 'SIEMENS ENERGY · HITACHI ENERGY · GE VERNOVA · TBEA · HYOSUNG HEAVY INDUSTRIES'; // (kept for reference)
 
