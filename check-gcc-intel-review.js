@@ -67,9 +67,8 @@ const heldPublished = doc.reviews.filter(function (r) {
 });
 if (heldPublished.length) fail('held candidates marked publishable: ' + heldPublished.map(function (r) { return r.candidate_id; }).join(', '));
 
-// Oman was already in the Intel feed before this ledger (published_to_intel true,
-// decision HOLD, duplicate of a curated card). No other held id may be flagged published.
-const alreadyInFeed = { 'om-localisation-aug12': true };
+// A REJECT or HOLD row must not stay flagged published. om-localisation-aug12
+// was a curated card; the public card was unpublished after the 14 Oct REJECT.
 function assertNotNewlyPublished(file) {
   if (!fs.existsSync(file)) return;
   const rows = JSON.parse(fs.readFileSync(file, 'utf8'));
@@ -77,7 +76,6 @@ function assertNotNewlyPublished(file) {
   (Array.isArray(list) ? list : []).forEach(function (c) {
     if (!c || !c.candidate_id || c.published_to_intel !== true) return;
     if (reviewLib.isPublishable(seen[c.candidate_id])) return;
-    if (alreadyInFeed[c.candidate_id]) return;
     fail(file + ' marks held candidate published: ' + c.candidate_id);
   });
 }
