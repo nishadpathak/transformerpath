@@ -141,25 +141,26 @@
     {
       "year": 2027,
       "slug": "elektro-2027",
-      "name": "ELEKTRO 2027",
+      "name": "ELEKTRO 2027 (35th Anniversary)",
       "city": "Moscow",
       "country": "Russia",
-      "venue": "Crocus Expo Moscow",
-      "venue_verified": false,
+      "venue": "Crocus Expo, Moscow",
+      "venue_verified": true,
       "dates": {
-        "start": "2027-06-07",
-        "end": "2027-06-09"
+        "start": "2027-06-08",
+        "end": "2027-06-10"
       },
-      "dates_confirmed": false,
+      "dates_confirmed": true,
       "lifecycle_status": "UPCOMING",
-      "date_status": "TBC",
+      "date_status": "CONFIRMED",
       "categories": [
         "Distribution",
         "Components"
       ],
       "has_published_summary": false,
       "has_exhibitors": false,
-      "note": "Raw 'ELEKTRO 2027' (Crocus Expo, Europe) and 'ELEKTRO 2027 (35th Anniversary)' (Sokolniki, Eurasia) are the same edition; conflicting venue/region -> venue + dates unconfirmed.",
+      "source": "https://www.elektro-expo.ru/en/",
+      "note": "Organiser page https://www.elektro-expo.ru/en/ lists 8–10 June 2027 at Crocus Expo, Moscow (35th anniversary, Expocentre). The Sokolniki listing and the 7–9 June dates were the same edition.",
       "series": "ELEKTRO (Moscow)",
       "seriesKey": "elektro-moscow",
       "seriesSlug": "elektro-2027",
@@ -167,10 +168,10 @@
       "relevance": "MEDIUM_TRANSFORMER_RELEVANCE",
       "split": {
         "lifecycle": "UPCOMING",
-        "date_confidence": "DATE_TBC",
-        "venue_confidence": "UNVERIFIED",
-        "status_key": "DATE_TBC",
-        "status_reason": "dates not confirmed"
+        "date_confidence": "CONFIRMED",
+        "venue_confidence": "CONFIRMED",
+        "status_key": "CONFIRMED_UPCOMING",
+        "status_reason": "organiser page lists 8–10 June 2027 at Crocus Expo"
       },
       "aliases": [
         "elektro 2027",
@@ -302,14 +303,14 @@
       "city": "Muscat",
       "country": "Oman",
       "venue": "JW Marriott Hotel Muscat",
-      "venue_verified": false,
+      "venue_verified": true,
       "dates": {
         "start": "2026-11-02",
         "end": "2026-11-04"
       },
-      "dates_confirmed": false,
+      "dates_confirmed": true,
       "lifecycle_status": "UPCOMING",
-      "date_status": "TBC",
+      "date_status": "CONFIRMED",
       "categories": [
         "Power Transformers",
         "Substations",
@@ -317,7 +318,8 @@
       ],
       "has_published_summary": false,
       "has_exhibitors": false,
-      "note": "Raw 'GCC POWER 2026' (Dubai, venue TBC, Oct 15-17) and 'GCC POWER 2026 / CIGRE 22nd Conference (Muscat)' (Nov 2-4) are likely the same GCC CIGRE conference with conflicting host city/date -> verify with organiser; not confirmed.",
+      "source": "https://cigre-gccpower.com/",
+      "note": "Organiser page https://cigre-gccpower.com/ lists 2–4 November 2026 at JW Marriott Hotel Muscat. The Dubai 15–17 October listing was the same edition and is not published.",
       "series": "GCC POWER / CIGRE GCC Conference",
       "seriesKey": "gcc-power",
       "seriesSlug": "gcc-power-2026",
@@ -325,10 +327,10 @@
       "relevance": "HIGH_TRANSFORMER_RELEVANCE",
       "split": {
         "lifecycle": "UPCOMING",
-        "date_confidence": "DATE_TBC",
-        "venue_confidence": "UNVERIFIED",
-        "status_key": "DATE_TBC",
-        "status_reason": "dates not confirmed"
+        "date_confidence": "CONFIRMED",
+        "venue_confidence": "CONFIRMED",
+        "status_key": "CONFIRMED_UPCOMING",
+        "status_reason": "organiser page lists 2–4 November 2026 at JW Marriott Hotel Muscat"
       },
       "aliases": [
         "gcc power 2026",
