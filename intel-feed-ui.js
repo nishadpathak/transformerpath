@@ -95,8 +95,11 @@
     var more = items.length > shown;
     var empty = !slice.length ? '<p class="intel-empty">No sourced posts on this desk yet. TransformerPath is the only poster — items appear when the daily desk files them.</p>' : '';
     var honesty = '';
-    if (feed && feed.honesty && feed.honesty.latest_source_date) {
-      honesty = '<p class="intel-honesty">Latest sourced item: <b>' + esc(feed.honesty.latest_source_date) + '</b> · dates are on the source, not this visit.</p>';
+    var statusLabel = window.__TP_INTEL_STATUS && window.__TP_INTEL_STATUS.latest_source_date;
+    var feedLabel = feed && feed.honesty && feed.honesty.latest_source_date;
+    var label = statusLabel || feedLabel;
+    if (label) {
+      honesty = '<p class="intel-honesty">Latest sourced item: <b>' + esc(label) + '</b> · dates are on the source, not this visit.</p>';
     }
     host.innerHTML = honesty + empty + slice.map(card).join('') +
       (more ? '<button type="button" class="intel-more" id="intelMore">Show more · ' + (items.length - shown) + ' remaining</button>' : '');
@@ -161,6 +164,10 @@
     bindTabs();
     var hash = (location.hash || '').replace('#', '');
     if (hash && /^(latest|tenders|awards|capacity|factories|materials|metals|pipeline|tech|reference|foryou)$/.test(hash)) tab = hash;
+    fetch('data/intel-status.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (st) {
+      window.__TP_INTEL_STATUS = st;
+      if (feed) paint(false);
+    }).catch(function () {});
     fetch('data/intel-feed-ui.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (d) {
       feed = d;
       setTab(tab);
