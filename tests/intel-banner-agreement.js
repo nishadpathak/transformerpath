@@ -27,6 +27,11 @@ function region(html, id) {
   return html.slice(at, at + 900).replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
 }
 
+function sourcedDay(text) {
+  const m = String(text || '').match(/(\d{1,2} [A-Z][a-z]{2} \d{4})/);
+  return m ? m[1] : '';
+}
+
 console.log('=== INTEL BANNER AGREEMENT ===');
 const status = JSON.parse(fs.readFileSync('data/intel-status.json', 'utf8'));
 const home = fs.readFileSync('index.html', 'utf8');
@@ -62,6 +67,20 @@ check('homepage banner reads intel-status.json', /data\/intel-status\.json/.test
 check('intel stamp reads intel-status.json', /data\/intel-status\.json/.test(intel));
 check('homepage does not prefer the feed honesty label', !/feed\.honesty\s*&&\s*feed\.honesty\.latest_source_date/.test(home));
 check('no hardcoded 8 Oct banner date', !/Latest sourced item 8 Oct 2026/i.test(home) && !/LATEST SOURCED ITEM 8 OCT 2026/.test(home));
+
+const homeDay = sourcedDay(home.slice(home.indexOf('id="hero-live-date"'), home.indexOf('id="hero-live-date"') + 180));
+const stampSlice = intel.slice(intel.indexOf('id="stamp"'), intel.indexOf('id="changelog-strip"'));
+const stampDay = sourcedDay(stampSlice);
+const lineDay = sourcedDay(intel.slice(intel.indexOf('id="freshnessLine"'), intel.indexOf('id="freshnessLine"') + 700));
+[homeDay, stampDay, lineDay].forEach(function (day, i) {
+  const name = ['homepage', 'intel stamp', 'intel freshness'][i];
+  check(name + ' sourced date is a calendar day', /^\d{1,2} [A-Z][a-z]{2} \d{4}$/.test(day), JSON.stringify(day));
+  check(name + ' sourced date matches the status file', day === status.latest_source_date, day + ' vs ' + status.latest_source_date);
+});
+check('homepage and intel.html sourced dates agree', homeDay && homeDay === stampDay && stampDay === lineDay, homeDay + ' / ' + stampDay + ' / ' + lineDay);
+check('stamp date stays light on the navy pill', stampSlice.indexOf('color:#e5e7eb') !== -1 && stampSlice.indexOf('color:var(--text)') === -1);
+check('stamp script keeps the build-time date when the payload is blank', stampSlice.indexOf('/^\\d{1,2} [A-Za-z]{3} \\d{4}$/.test(sourceLabel)') !== -1);
+check('homepage script keeps the build-time date when the payload is blank', home.indexOf('/^\\d{1,2} [A-Za-z]{3} \\d{4}$/.test(sourceLabel)') !== -1);
 
 const review = JSON.parse(fs.readFileSync('data/gcc-intel-review.json', 'utf8'));
 const rows = review.rows || review.reviews || review.candidates || [];

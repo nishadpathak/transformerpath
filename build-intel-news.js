@@ -42,6 +42,9 @@ function itemObj(it) {
     ', src:"' + jstr(it.src) + '", url:"' + jstr(it.url) + '"' +
     (it.cls ? ', cls:"' + jstr(it.cls) + '"' : '') +
     ', lang:"' + (it.lang || 'en') + '"' +
+    (it.publication_date ? ', publication_date:"' + jstr(it.publication_date) + '"' : '') +
+    (it.date_iso ? ', date_iso:"' + jstr(it.date_iso) + '"' : '') +
+    (it.event_date ? ', event_date:"' + jstr(it.event_date) + '"' : '') +
     (it.isNew ? ', isNew:true' : '') + ' }';
   return out;
 }
@@ -145,6 +148,19 @@ if (insertedCount > 0) {
 // pick up the international coverage without breaking the 5-key contract.
 const ISO_PATH = 'data/intel.json';
 const intel = JSON.parse(fs.readFileSync(ISO_PATH, 'utf8'));
+const todayIso = new Date().toISOString().slice(0, 10);
+let newestContent = intel.refresh_meta && intel.refresh_meta.newest_validated_content_date
+  ? String(intel.refresh_meta.newest_validated_content_date).slice(0, 10)
+  : null;
+ITEMS.forEach(function (it) {
+  [it.publication_date, it.date_iso, it.event_date].forEach(function (d) {
+    const day = String(d || '').slice(0, 10);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(day) || day > todayIso) return;
+    if (!newestContent || day > newestContent) newestContent = day;
+  });
+});
+intel.refresh_meta = Object.assign({}, intel.refresh_meta || {});
+if (newestContent) intel.refresh_meta.newest_validated_content_date = newestContent;
 // Canonical data-refresh timestamp. This is a CURATED dataset compiled at build;
 // it is not a live scrape. The public freshness readout must show THIS date, not
 // the visitor's local "today", and never imply a change that is only a redeploy.
@@ -155,9 +171,11 @@ intel.updated = intel.refresh_meta && intel.refresh_meta.newest_validated_conten
   : new Date().toISOString();
 intel.refresh_meta = Object.assign({}, intel.refresh_meta || {}, {
   cadence: 'once daily at 06:00 UTC (10:00 Dubai), only when TP_BUILD_HOOK_URL is set',
-  refreshed_at_build: true,
-  note: 'Curated transformer-industry intelligence. updated tracks newest validated content observation when present — not a silent redeploy clock. The scheduled rebuild is once daily (06:00 UTC / 10:00 Dubai) and only runs when TP_BUILD_HOOK_URL is set.',
+  refreshed_at_build: true
 });
+if (!intel.refresh_meta.note) {
+  intel.refresh_meta.note = 'Curated transformer-industry intelligence. updated tracks newest validated content observation when present — not a silent redeploy clock. The scheduled rebuild is once daily (06:00 UTC / 10:00 Dubai) and only runs when TP_BUILD_HOOK_URL is set.';
+}
 const FOLD = { China: 'RoW', AsiaPac: 'RoW', LatAm: 'RoW', Africa: 'RoW' };
 const srcByRegion = {};
 ITEMS.forEach((it) => { const fold = FOLD[it.region] || it.region; (srcByRegion[fold] = srcByRegion[fold] || []).push(it); });
@@ -171,6 +189,9 @@ Object.keys(srcByRegion).forEach((region) => {
     const o = { title: it.title, snippet: it.snippet, value: it.value || '', src: it.src, url: it.url, lang: it.lang || 'en' };
     if (it.isNew) o.isNew = true;
     if (it.cls) o.cls = it.cls;
+    if (it.date_iso) o.date_iso = it.date_iso;
+    if (it.publication_date) o.publication_date = it.publication_date;
+    if (it.event_date) o.event_date = it.event_date;
     return o;
   }));
   mergedCount += fresh.length;
