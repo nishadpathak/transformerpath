@@ -124,29 +124,13 @@
       "recurrence": "annual",
       "href": "/events/elektro-2027/",
       "editions": [
-        {
-          "year": 2027,
-          "slug": "elektro-2027",
-          "name": "ELEKTRO 2027",
-          "city": "Moscow",
-          "country": "Russia",
-          "venue": "Crocus Expo Moscow",
-          "venue_verified": false,
-          "dates": {
-            "start": "2027-06-07",
-            "end": "2027-06-09"
-          },
-          "dates_confirmed": false,
-          "lifecycle_status": "UPCOMING",
-          "date_status": "TBC",
-          "categories": [
-            "Distribution",
-            "Components"
-          ],
-          "has_published_summary": false,
-          "has_exhibitors": false,
-          "note": "Raw 'ELEKTRO 2027' (Crocus Expo, Europe) and 'ELEKTRO 2027 (35th Anniversary)' (Sokolniki, Eurasia) are the same edition; conflicting venue/region -> venue + dates unconfirmed."
-        }
+        { "year": 2027, "slug": "elektro-2027", "name": "ELEKTRO 2027 (35th Anniversary)",
+          "city": "Moscow", "country": "Russia", "venue": "Crocus Expo, Moscow", "venue_verified": true,
+          "dates": { "start": "2027-06-08", "end": "2027-06-10" }, "dates_confirmed": true,
+          "lifecycle_status": "UPCOMING", "date_status": "CONFIRMED",
+          "categories": ["Distribution", "Components"], "has_published_summary": false, "has_exhibitors": false,
+          "source": "https://www.elektro-expo.ru/en/",
+          "note": "Organiser page https://www.elektro-expo.ru/en/ lists 8–10 June 2027 at Crocus Expo, Moscow (35th anniversary, Expocentre). The Sokolniki listing and the 7–9 June dates were the same edition." }
       ],
       "aliases": [
         "elektro 2027",
@@ -295,7 +279,7 @@
           ],
           "has_published_summary": false,
           "has_exhibitors": false,
-          "note": "Official cigre-gccpower.com checked 2026-10-14. Dubai October duplicate removed from the registry.",
+          "note": "Organiser page https://cigre-gccpower.com/ lists 2–4 November 2026 at JW Marriott Hotel Muscat. The Dubai 15–17 October listing was the same edition and is not published.",
           "source": {
             "url": "https://cigre-gccpower.com/",
             "type": "official_organizer",

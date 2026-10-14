@@ -42,15 +42,11 @@ const syncLabels = new Set(GRIDS.map((g) => g.sync).filter(Boolean)).size;
    num(prev.events) — a hand-typed 203 that copied itself forward while the
    dataset held 300. */
 const EVENTS = readJson('data/events.json', []);
-const todayISO = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Dubai', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
-const upcomingEvents = EVENTS.filter((e) => {
-  const end = e.end || e.e || '';
-  const start = e.start || e.s || '';
-  const when = end || start;
-  if (!when || when < todayISO) return false;
-  if (e.date_status === 'CANCELLED' || e.research_status === 'REJECTED_NO_EVIDENCE') return false;
-  return true;
-}).length;
+const { isUpcoming, platformToday } = require('./lib/event-status');
+/* Same predicate as /events: end date is still on or after the Asia/Dubai
+   platform date, and the record is discoverable. */
+const todayISO = platformToday();
+const upcomingEvents = EVENTS.filter((e) => isUpcoming(e, todayISO)).length;
 const MONTHS_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 function shortDay(iso) {
   if (!iso || !/^\d{4}-\d{2}-\d{2}$/.test(iso)) return '';

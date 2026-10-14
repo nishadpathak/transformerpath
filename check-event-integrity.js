@@ -27,6 +27,7 @@
 const fs = require('fs');
 const status = require('./lib/event-status');
 
+const { isUpcoming, platformToday } = status;
 const SERIES = (JSON.parse(fs.readFileSync('data/event-series.json', 'utf8')).series) || [];
 const today = new Date().toISOString().slice(0, 10);
 
@@ -98,6 +99,53 @@ editions.forEach((e) => {
     adv('CANONICAL_EDITION_WITHOUT_SOURCE ' + e.name);
   }
 });
+
+// Public calendar duplicates. Same year, and one normalised name is the other
+// (or a longer form of it). This is the GCC POWER 2026 / ELEKTRO 2027 class:
+// two rows for one organiser edition. Distinct editions that only share a
+// brand (spring vs fall, two host cities) keep different names and do not match.
+function normEventName(n) {
+  return String(n || '').toLowerCase()
+    .replace(/\b20\d{2}\b/g, ' ')
+    .replace(/&/g, ' and ')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+const publicEvents = JSON.parse(fs.readFileSync('data/events.json', 'utf8'));
+for (let i = 0; i < publicEvents.length; i++) {
+  for (let j = i + 1; j < publicEvents.length; j++) {
+    const a = publicEvents[i], b = publicEvents[j];
+    if ((a.s || '').slice(0, 4) !== (b.s || '').slice(0, 4)) continue;
+    const na = normEventName(a.n), nb = normEventName(b.n);
+    if (!na || !nb) continue;
+    if (na === nb || na.startsWith(nb + ' ') || nb.startsWith(na + ' ')) {
+      hfail('DUPLICATE_PUBLIC_EVENT ' + a.n + ' vs ' + b.n);
+    }
+  }
+}
+
+// One upcoming definition: site-stats (homepage [data-stat]) and the events
+// page count must equal isUpcoming() on the platform date.
+const day = platformToday();
+const upcomingN = publicEvents.filter((ev) => isUpcoming(ev, day)).length;
+const stats = JSON.parse(fs.readFileSync('data/site-stats.json', 'utf8'));
+if (stats.upcomingEvents !== upcomingN) {
+  hfail('UPCOMING_COUNT site-stats ' + stats.upcomingEvents + ' vs shared isUpcoming ' + upcomingN + ' on ' + day);
+}
+const eventsHtml = fs.readFileSync('events.html', 'utf8');
+const shown = eventsHtml.match(/Showing (\d+) upcoming events/);
+if (!shown || Number(shown[1]) !== upcomingN) {
+  hfail('UPCOMING_COUNT events.html ' + (shown ? shown[1] : 'missing') + ' vs shared isUpcoming ' + upcomingN);
+}
+if (eventsHtml.indexOf('function isUpcomingEvent') < 0) {
+  hfail('events.html does not use isUpcomingEvent');
+}
+const home = fs.readFileSync('index.html', 'utf8');
+const homeN = home.match(/data-stat="upcomingEvents">\s*(\d+)/);
+if (!homeN || Number(homeN[1]) !== upcomingN) {
+  hfail('UPCOMING_COUNT homepage ' + (homeN ? homeN[1] : 'missing') + ' vs shared isUpcoming ' + upcomingN);
+}
 
 console.log('EVENT INTEGRITY GATE');
 console.log('Canonical editions checked: ' + editions.length + ' (via single resolver lib/event-status.js)');

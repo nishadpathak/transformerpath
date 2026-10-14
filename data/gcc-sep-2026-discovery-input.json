@@ -110,7 +110,7 @@
       "tender_float_date": "2026-09-03",
       "tender_close_date": "2026-09-19",
       "event_date": "2026-09-03",
-      "source_checked_at": "2026-09-25",
+      "source_checked_at": "2026-10-14",
       "voltage": "33/0.4 kV",
       "location": "Jubail Phase 4",
       "transformer_category": "grounding / earthing transformer",
@@ -136,7 +136,8 @@
       "force_grade": "SUPPORTED",
       "publish_decision": "HOLD_FOR_REVIEW",
       "why_previously_missed": "Arabic term محول التأريض absent from discovery dictionary; no Etimad crawl; grounding transformers under-covered vs power/distribution headlines.",
-      "published_to_intel": false
+      "published_to_intel": true,
+      "notes": "2026-10-14 review: source page returned the transformer claim and the recorded dates."
     },
     {
       "candidate_id": "sa-al-aflaj-33kv-replacement",
@@ -147,10 +148,11 @@
       "tender_id": "260939000800",
       "canonical_procurement_id": "ETIMAD-260939000800",
       "procurement_state": "CLOSED",
-      "publication_date": "2026-09-08",
-      "tender_float_date": "2026-09-08",
-      "event_date": "2026-09-08",
-      "source_checked_at": "2026-09-25",
+      "publication_date": "2026-09-18",
+      "tender_float_date": "2026-09-18",
+      "event_date": "2026-09-18",
+      "tender_close_date": "2026-09-18",
+      "source_checked_at": "2026-10-14",
       "voltage": "33 kV",
       "location": "Al-Aflaj",
       "transformer_category": "distribution transformer replacement",
@@ -175,7 +177,8 @@
       "force_grade": "SUPPORTED",
       "publish_decision": "HOLD_FOR_REVIEW",
       "why_previously_missed": "Non-utility institutional buyer; Etimad-only; English news feeds ignore college/campus transformer replacements.",
-      "published_to_intel": false
+      "published_to_intel": true,
+      "notes": "2026-10-14 review: TenderImpulse page shows published and closing 18 Sep 2026 (earlier 8 Sep date was not on the page)."
     },
     {
       "candidate_id": "sa-dhahran-1500kva-standby",
@@ -190,7 +193,7 @@
       "tender_float_date": "2026-09-14",
       "tender_close_date": "2026-09-30",
       "event_date": "2026-09-14",
-      "source_checked_at": "2026-09-25",
+      "source_checked_at": "2026-10-14",
       "rating": "1500 kVA",
       "location": "Dhahran",
       "transformer_category": "standby / backup distribution transformer",
@@ -214,7 +217,8 @@
       "force_grade": "SUPPORTED",
       "publish_decision": "HOLD_FOR_REVIEW",
       "why_previously_missed": "Hospital/military-campus procurement on Etimad; not covered by manufacturer press or English GCC project media.",
-      "published_to_intel": false
+      "published_to_intel": true,
+      "notes": "2026-10-14 review: source page returned the transformer claim and the recorded dates."
     },
     {
       "candidate_id": "sa-swa-yanbu-t803-supervision",
@@ -229,7 +233,7 @@
       "tender_float_date": "2026-09-03",
       "tender_close_date": "2026-09-10",
       "event_date": "2026-09-03",
-      "source_checked_at": "2026-09-25",
+      "source_checked_at": "2026-10-14",
       "voltage": "380/110/13.8 kV",
       "rating": "502 MVA",
       "location": "Yanbu Phase 3 PST1",
@@ -256,8 +260,8 @@
       "force_grade": "SUPPORTED",
       "publish_decision": "HOLD_FOR_REVIEW",
       "why_previously_missed": "Date/semantics: unit replacement announced 2025; Sep 2026 is supervision. No Etimad adapter; water-authority HV transformers outside curated GCC news.",
-      "published_to_intel": false,
-      "notes": "Do not mis-date the original T803 supply float as 24 Sep 2026. Sep activity is supervision of replacement."
+      "published_to_intel": true,
+      "notes": "Do not mis-date the original T803 supply float as 24 Sep 2026. Sep activity is supervision of replacement. 2026-10-14 review: source page returned the transformer claim and the recorded dates."
     },
     {
       "candidate_id": "kw-mewre-75mva-stage1",
@@ -271,8 +275,8 @@
       "publication_date": "2026-09-07",
       "tender_float_date": "2026-09-07",
       "tender_close_date": "2026-10-06",
-      "event_date": "2026-09-12",
-      "source_checked_at": "2026-09-25",
+      "event_date": "2026-09-07",
+      "source_checked_at": "2026-10-14",
       "rating": "up to 75 MVA (transformers); up to 50 MVA (parallel reactors)",
       "transformer_category": "power transformer replacement + parallel reactors",
       "transformer_relevant": true,
@@ -296,7 +300,8 @@
       "force_grade": "SUPPORTED",
       "publish_decision": "HOLD_FOR_REVIEW",
       "why_previously_missed": "No MEWRE / CAPT Arabic tender-board adapter; parallel-reactor + transformer maintenance programmes not in English RSS set.",
-      "published_to_intel": false
+      "published_to_intel": true,
+      "notes": "2026-10-14 review: page shows published 7 Sep 2026 and deadline 6 Oct 2026. A 12 Sep event date was not on the page."
     },
     {
       "candidate_id": "kw-mewre-75mva-relocation",
@@ -310,7 +315,7 @@
       "publication_date": "2026-09-24",
       "event_date": "2026-09-24",
       "tender_close_date": "2026-11-30",
-      "source_checked_at": "2026-09-25",
+      "source_checked_at": "2026-10-14",
       "rating": "75 MVA",
       "location": "Shuaiba (Ax) Substation",
       "transformer_category": "power transformer relocation/installation",
@@ -335,7 +340,8 @@
       "force_grade": "SUPPORTED",
       "publish_decision": "HOLD_FOR_REVIEW",
       "why_previously_missed": "Same root cause: no Kuwait procurement portal watch; single-unit relocation not covered by project mega-award journalism.",
-      "published_to_intel": false
+      "published_to_intel": false,
+      "notes": "2026-10-14 review: BidDetail returned HTTP 200 and the 75 MVA relocation title, behind a paywall with no visible date. Held."
     },
     {
       "candidate_id": "kw-mewre-75mva-stage2",
@@ -349,8 +355,8 @@
       "publication_date": "2026-08-31",
       "tender_float_date": "2026-08-31",
       "tender_close_date": "2026-09-29",
-      "event_date": "2026-09-24",
-      "source_checked_at": "2026-09-25",
+      "event_date": "2026-08-31",
+      "source_checked_at": "2026-10-14",
       "rating": "up to 75 MVA / 50 MVA reactors",
       "transformer_relevant": true,
       "classifications": ["TENDER", "MAINTENANCE", "TRANSFORMER_REPLACEMENT", "UTILITY_PROCUREMENT"],
@@ -372,8 +378,8 @@
       "force_grade": "SUPPORTED",
       "publish_decision": "HOLD_FOR_REVIEW",
       "why_previously_missed": "Stage-2 of same MEWRE programme — needs canonical procurement linking, not a separate news card. No CAPT adapter.",
-      "published_to_intel": false,
-      "notes": "Keep distinct from stage-1 via canonical_procurement_id; do not spawn duplicate Intel stories on status change alone."
+      "published_to_intel": true,
+      "notes": "Keep distinct from stage-1 via canonical_procurement_id; do not spawn duplicate Intel stories on status change alone. 2026-10-14 review: page shows published 31 Aug 2026 and deadline 29 Sep 2026. A 24 Sep event date was not on the page."
     },
     {
       "candidate_id": "om-localisation-aug12",
@@ -385,7 +391,7 @@
       "event_date": "2026-08-12",
       "publication_date": "2026-08-12",
       "update_date": "2026-09-19",
-      "source_checked_at": "2026-09-25",
+      "source_checked_at": "2026-10-14",
       "location": "Khazaen Economic City; Madayn; SOHAR Free Zone",
       "supplier": "Voltamp Energy (programme anchor); multiple SME/international partners",
       "transformer_category": "transformer components manufacturing",
@@ -441,7 +447,7 @@
       "publish_decision": "REVIEW_QUEUE",
       "why_previously_missed": "Item existed in curated intel.html (MEED 13 Aug) but (1) collapsed dates — no separate event_date vs update_date for 19 Sep resurfacing; (2) not classified as FACTORY_INVESTMENT + LOCALISATION for knowledge-graph fan-out; (3) absent from data/intel.json GCC region used by some builders; (4) no systematic APSR/Invest Oman/ONA discovery watch.",
       "published_to_intel": true,
-      "notes": "Knowledge-graph targets: Oman market intel, manufacturing-investment Intel, future factory records, component-manufacturing research queues, Voltamp company profile evidence. event_date MUST remain 2026-08-12."
+      "notes": "Knowledge-graph targets: Oman market intel, manufacturing-investment Intel, future factory records, component-manufacturing research queues, Voltamp company profile evidence. event_date MUST remain 2026-08-12. 2026-10-14 review: Times of Oman (12 Aug 2026) and Arabian Stories (19 Sep 2026) still describe the agreements. Oman Observer returned HTTP 502. Already a curated Intel card; not injected again."
     },
     {
       "candidate_id": "bh-ewa-389-2026-1000kva",
@@ -503,16 +509,17 @@
       "discovery_input_only": true,
       "publication_date": "2026-09-01",
       "event_date": null,
-      "source_checked_at": "2026-09-25",
+      "source_checked_at": "2026-10-14",
       "transformer_relevant": true,
       "classifications": ["TENDER", "UTILITY_PROCUREMENT"],
       "sources": [],
       "confidence": "LOW",
-      "force_grade": "REVIEW_REQUIRED",
-      "publish_decision": "HOLD_FOR_REVIEW",
+      "force_grade": "REJECTED",
+      "publish_decision": "REJECTED",
       "why_previously_missed": "No AML crawl; approval lists not treated as discovery objects.",
+      "reject_reason": "No source URL and no event date. Placeholder only; do not infer an approved-manufacturer list.",
       "published_to_intel": false,
-      "notes": "Separate investigation required before any publish. Related historical AML appears on other BTB package-substation notices (e.g. transformers up to 1500 kVA approved makers) — do not copy across tenders without evidence."
+      "notes": "Separate investigation required before any publish. Related historical AML appears on other BTB package-substation notices (e.g. transformers up to 1500 kVA approved makers) — do not copy across tenders without evidence. 2026-10-14 review: rejected. sources[] is empty."
     },
     {
       "candidate_id": "qa-sept-zero",
@@ -524,7 +531,7 @@
       "classifications": ["UTILITY_PROCUREMENT"],
       "publication_date": "2026-09-25",
       "event_date": null,
-      "source_checked_at": "2026-09-25",
+      "source_checked_at": "2026-10-14",
       "sources": [
         {
           "source_id": "kahramaa",
@@ -544,7 +551,7 @@
       "key_values_extracted": {
         "qualifying_september_opportunities": 0
       },
-      "notes": "Do NOT fabricate a Qatar story. Record as coverage matrix: NO_QUALIFYING_ACTIVITY_FOUND once KAHRAMAA/CTC adapters run."
+      "notes": "Do NOT fabricate a Qatar story. Record as coverage matrix: NO_QUALIFYING_ACTIVITY_FOUND once KAHRAMAA/CTC adapters run. 2026-10-14 review: kept as internal coverage. km.qa timed out, so the September zero was not reconfirmed. Not an Intel card."
     }
   ]
 }

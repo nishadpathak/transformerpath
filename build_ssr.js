@@ -23,7 +23,7 @@ const path = require('path');
 /* ONE canonical event-status resolver, shared with build-events.js and
    check-event-integrity.js. This file used to re-derive status and countdowns
    from raw dates, which is how "Dates TBC" could render beside "Live now". */
-const { resolveStatus, isTravelSafe, isDiscoverable } = require('./lib/event-status');
+const { resolveStatus, isTravelSafe, isDiscoverable, isUpcoming, platformToday } = require('./lib/event-status');
 const { eventHref, eventPageMap } = require('./lib/event-href');
 const { loadEvents } = require('./lib/events-reader');
 const { dateLine, allowsCalendar, badgeText, dubaiToday } = require('./lib/event-display');
@@ -175,15 +175,8 @@ function renderEvents(html) {
      did not list it (REJECTED_NO_EVIDENCE) or that is still under research is not
      an upcoming event — it leaves this list rather than sitting in it with a
      warning nobody reads. */
-  const upcomingRow = (ev) => {
-    if (ev.research_status === 'REJECTED_NO_EVIDENCE') return false;
-    if (ev.date_status === 'CANCELLED') return false;
-    if (!isDiscoverable(resolveStatus(ev))) return false;
-    if (!ev.end) return ev.date_status === 'TBA' || ev.date_status === 'PROJECTED';
-    return ev.end >= TODAY;
-  };
-  let list = EVENTS.filter(upcomingRow);
-  list.sort((a, b) => String(a.start || '9999').localeCompare(String(b.start || '9999')));
+  let list = EVENTS.filter((ev) => isUpcoming(ev, platformToday()));
+  list.sort((a, b) => String(a.s || a.start || '').localeCompare(String(b.s || b.start || '')));
 
   const PLATFORM_TZ_MS = 4*60*60*1000; // GST/Asia-Dubai
   const todayUTC = (function(){ var g=new Date(Date.now()+PLATFORM_TZ_MS); return Date.UTC(g.getUTCFullYear(),g.getUTCMonth(),g.getUTCDate()); })();
@@ -233,7 +226,11 @@ function renderEvents(html) {
      same event can show two different date-confidence states on one page. Only
      confirmed-date events are eligible for the strip at all, because every card in
      it carries a relative-time claim. */
-  const upEligible = EVENTS.filter((ev) => allowsCalendar(ev) && ev.end >= TODAY);
+  const upEligible = EVENTS.filter((ev) => {
+    if (!isUpcoming(ev, platformToday())) return false;
+    const st = evState(ev).st;
+    return st.key === 'CONFIRMED_UPCOMING' || st.key === 'LIVE';
+  });
   const up = upEligible.sort((a, b) => a.s.localeCompare(b.s)).slice(0, 3);
   const upNext = up.map((ev) => {
     const d = relDays(ev.s);
@@ -269,10 +266,17 @@ function renderEvents(html) {
 
   html = inject(html, '<div id="grid">', 'events-grid', cards);
   html = inject(html, '<div id="upNext" class="up-next" aria-label="Upcoming events">', 'events-upnext', upNext);
-  const confirmedN = EVENTS.filter((ev) => allowsCalendar(ev) && ev.end >= TODAY).length;
-  const projectedN = EVENTS.filter((ev) => ev.date_status === 'PROJECTED' && (!ev.end || ev.end >= TODAY)).length;
-  const hostCountries = new Set(EVENTS.filter((ev) => upcomingRow(ev) && ev.country).map((ev) => ev.country));
-  const countText = confirmedN + ' upcoming confirmed · ' + projectedN + ' projected · ' + hostCountries.size + ' countries hosting';
+  const depthConfirmed = EVENTS.filter((ev) => ev.date_status === 'CONFIRMED' && ev.source_url && ev.source_checked_at && ev.end && ev.end >= TODAY).length;
+  const depthProjected = EVENTS.filter((ev) => ev.date_status === 'PROJECTED' && (!ev.end || ev.end >= TODAY)).length;
+  const depthCountries = new Set(EVENTS.filter((ev) => {
+    if (ev.research_status === 'REJECTED_NO_EVIDENCE' || ev.date_status === 'CANCELLED') return false;
+    if (!isDiscoverable(resolveStatus(ev))) return false;
+    if (!ev.country) return false;
+    if (!ev.end) return ev.date_status === 'TBA' || ev.date_status === 'PROJECTED';
+    return ev.end >= TODAY;
+  }).map((ev) => ev.country)).size;
+  const countText = 'Showing ' + list.length + ' upcoming events. ' +
+    depthConfirmed + ' upcoming confirmed · ' + depthProjected + ' projected · ' + depthCountries + ' countries hosting';
   html = inject(html, '<p style="text-align:center; color:var(--muted); font-size:.88rem" id="count">', 'events-count',
     countText);
 
