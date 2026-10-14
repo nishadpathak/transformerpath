@@ -5,18 +5,29 @@
  * redirect chain, age, cache-status and etag. Exits 1 on any failed assert.
  *
  * --wait polls /data/build-provenance.json until build_commit equals
- * expected_sha (30 minutes), then runs the checks.
+ * expected_sha, then runs the checks. --wait-minutes sets that budget
+ * (default 30). A Netlify onSuccess hook uses a short budget because the
+ * deploy has already been published.
  */
 'use strict';
 const http = require('http');
 const https = require('https');
 const { URL } = require('url');
 
-const args = process.argv.slice(2).filter(function (a) { return a !== '--wait'; });
-const wait = process.argv.indexOf('--wait') >= 0;
+const rawArgs = process.argv.slice(2);
+const wait = rawArgs.indexOf('--wait') >= 0;
+let waitMinutes = 30;
+const waitFlag = rawArgs.indexOf('--wait-minutes');
+if (waitFlag >= 0) waitMinutes = Number(rawArgs[waitFlag + 1]);
+if (!Number.isFinite(waitMinutes) || waitMinutes <= 0) waitMinutes = 30;
+const args = rawArgs.filter(function (a, i) {
+  if (a === '--wait' || a === '--wait-minutes') return false;
+  if (i > 0 && rawArgs[i - 1] === '--wait-minutes') return false;
+  return true;
+});
 const base = (args[0] || '').replace(/\/$/, '');
 const expected = (args[1] || '').trim();
-if (!base || !expected) {
+if (require.main === module && (!base || !expected)) {
   console.error('usage: node scripts/smoke-release.js <base_url> <expected_sha> [--wait]');
   process.exit(1);
 }
@@ -99,6 +110,7 @@ const PAGES = [
   '/manufacturers.html',
   '/directory.html',
   '/manufacturers/cg-power/',
+  '/manufacturers/hitachi-energy/',
   '/markets/india/',
   '/markets/uae/',
   '/jobs.html',
@@ -107,6 +119,8 @@ const PAGES = [
   '/grids.html',
   '/tenders.html',
   '/pricing.html',
+  '/events.html',
+  '/events',
   '/events/middle-east-energy/'
 ];
 
@@ -122,6 +136,14 @@ const FORBIDDEN = [
   { re: /twice-daily/i, label: 'twice-daily' }
 ];
 
+const ERROR_TEXT = [
+  { re: /Internal Server Error/i, label: 'Internal Server Error' },
+  { re: /Application error/i, label: 'Application error' },
+  { re: /A server error has occurred/i, label: 'server error' },
+  { re: /Page not found/i, label: 'Page not found' },
+  { re: /This page could not be found/i, label: 'could not be found' }
+];
+
 const results = [];
 function record(name, ok, detail) {
   results.push({ name: name, ok: ok, detail: detail || '' });
@@ -130,7 +152,7 @@ function record(name, ok, detail) {
 
 async function main() {
   if (wait) {
-    const deadline = Date.now() + 30 * 60 * 1000;
+    const deadline = Date.now() + waitMinutes * 60 * 1000;
     let seen = '';
     while (Date.now() < deadline) {
       try {
@@ -160,6 +182,22 @@ async function main() {
     process.exit(1);
   }
 
+  const buildRes = await fetchFollow(bust(base + '/build.json'));
+  const buildPlain = await fetchFollow(base + '/build.json');
+  let build = null;
+  try { build = JSON.parse(buildRes.body); } catch (e) { build = null; }
+  record('build.json 200', buildRes.status === 200 && buildPlain.status === 200, 'bust=' + buildRes.status + ' plain=' + buildPlain.status);
+  record('build.json commit', !!(build && build.commit === expected), build && build.commit);
+  record(
+    'build.json matches provenance',
+    !!(build && build.commit === prov.build_commit && build.build_time === prov.build_at && build.data_version === prov.data_version && build.latest_intel_date && typeof build.manufacturer_count === 'number'),
+    build ? (build.commit + ' intel=' + build.latest_intel_date + ' makers=' + build.manufacturer_count) : 'missing'
+  );
+  if (!build || build.commit !== expected) {
+    console.error('smoke stopped: /build.json is not this release');
+    process.exit(1);
+  }
+
   const stamps = [];
   for (const p of PAGES) {
     const url = base + p;
@@ -170,9 +208,15 @@ async function main() {
     const c = meta(busted.body, 'tp-build-commit');
     const a = meta(busted.body, 'tp-build-at');
     const v = meta(busted.body, 'tp-data-version');
-    const same = c === prov.build_commit && a === prov.build_at && v === prov.data_version;
+    const intelDate = meta(busted.body, 'tp-latest-intel-date');
+    const makerCount = meta(busted.body, 'tp-manufacturer-count');
+    const same = c === prov.build_commit && a === prov.build_at && v === prov.data_version &&
+      c === build.commit && a === build.build_time && v === build.data_version &&
+      intelDate === build.latest_intel_date && makerCount === String(build.manufacturer_count);
     const text = visible(busted.body);
     const bad = FORBIDDEN.filter(function (f) { return f.re.test(text); }).map(function (f) { return f.label; });
+    const errors = ERROR_TEXT.filter(function (f) { return f.re.test(text); }).map(function (f) { return f.label; });
+    bad.push.apply(bad, errors);
     const hdr = [
       'age=' + (busted.headers.age || ''),
       'cache=' + (busted.headers['cache-status'] || ''),
@@ -208,7 +252,11 @@ async function main() {
   if (failed.length) process.exit(1);
 }
 
-main().catch(function (e) {
-  console.error('SMOKE FAIL — ' + (e && e.stack || e));
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch(function (e) {
+    console.error('SMOKE FAIL — ' + (e && e.stack || e));
+    process.exit(1);
+  });
+}
+
+module.exports = { PAGES, ERROR_TEXT, FORBIDDEN };

@@ -3,12 +3,21 @@ name: post-deploy-smoke
 on:
   push:
     branches: [main]
+  deployment_status:
 
 jobs:
   smoke:
+    if: >-
+      github.event_name == 'push' ||
+      (github.event.deployment_status.state == 'success' &&
+       (github.event.deployment.environment == 'production' ||
+        github.event.deployment.environment == 'Production'))
     runs-on: ubuntu-latest
     timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
       - name: Wait for production and smoke the release
-        run: node scripts/smoke-release.js https://transformerpath.com "$GITHUB_SHA" --wait
+        run: |
+          SHA="${{ github.event.deployment.sha }}"
+          if [ -z "$SHA" ]; then SHA="${{ github.sha }}"; fi
+          node scripts/smoke-release.js https://transformerpath.com "$SHA" --wait
