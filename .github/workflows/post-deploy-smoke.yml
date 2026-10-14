@@ -3,12 +3,52 @@ name: post-deploy-smoke
 on:
   push:
     branches: [main]
+  deployment_status:
+
+permissions:
+  contents: read
+  statuses: write
 
 jobs:
   smoke:
+    if: >-
+      github.event_name == 'push' ||
+      (github.event.deployment_status.state == 'success' &&
+       (github.event.deployment.environment == 'production' ||
+        github.event.deployment.environment == 'Production'))
     runs-on: ubuntu-latest
     timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
+      - name: Record that the production deploy is in progress
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_SHA: ${{ github.event.deployment.sha || github.sha }}
+        run: |
+          gh api --method POST "repos/${{ github.repository }}/statuses/${RELEASE_SHA}" \
+            -f state=pending \
+            -f context='transformerpath/production' \
+            -f description='Waiting for Netlify to publish this commit' \
+            -f target_url='https://transformerpath.com/build.json'
       - name: Wait for production and smoke the release
-        run: node scripts/smoke-release.js https://transformerpath.com "$GITHUB_SHA" --wait
+        env:
+          RELEASE_SHA: ${{ github.event.deployment.sha || github.sha }}
+        run: node scripts/smoke-release.js https://transformerpath.com "$RELEASE_SHA" --wait
+      - name: Record the production deploy result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_SHA: ${{ github.event.deployment.sha || github.sha }}
+        run: |
+          if [ "${{ job.status }}" = "success" ]; then
+            STATE=success
+            DESC='Production is serving this commit'
+          else
+            STATE=failure
+            DESC='Production is not serving this commit'
+          fi
+          gh api --method POST "repos/${{ github.repository }}/statuses/${RELEASE_SHA}" \
+            -f state="$STATE" \
+            -f context='transformerpath/production' \
+            -f description="$DESC" \
+            -f target_url='https://transformerpath.com/build.json'
