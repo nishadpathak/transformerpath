@@ -36,7 +36,7 @@
 const crypto = require('crypto');
 const { isConfigured, client } = require('./lib/supabase-server');
 const { sendPaidReceipts } = require('./lib/paid-receipt');
-const { isFeaturedEventCheckout } = require('../lib/paid-listings');
+const { listingProduct, companySlugFromReference } = require('../lib/paid-listings');
 
 const PAID_LISTING_PRODUCTS = { verified_manufacturer: true, featured_event: true };
 
@@ -120,18 +120,22 @@ function verifySignature(payload, signatureHeader, secret, tolerance = 300) {
 }
 
 function paidListingProduct(session) {
-  const product = session && session.metadata && session.metadata.product;
+  const product = listingProduct(session);
   if (PAID_LISTING_PRODUCTS[product]) return product;
-  if (isFeaturedEventCheckout(session)) return 'featured_event';
   return null;
 }
 
 function paidListingRow(session) {
   const meta = session.metadata || {};
+  const product = paidListingProduct(session);
+  let companySlug = meta.company_slug || null;
+  if (!companySlug && product === 'verified_manufacturer') {
+    companySlug = companySlugFromReference(session.client_reference_id);
+  }
   return {
     session_id: session.id,
-    product: paidListingProduct(session),
-    company_slug: meta.company_slug || null,
+    product: product,
+    company_slug: companySlug,
     event_id: meta.event_id || null,
     email: session.customer_email || (session.customer_details && session.customer_details.email) || null,
     amount: typeof session.amount_total === 'number' ? session.amount_total : null,

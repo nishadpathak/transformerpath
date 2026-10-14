@@ -153,11 +153,9 @@ form input[type="checkbox"] { width:auto; min-width:0; padding:0; margin:0; flex
 
     <div class="card" style="max-width:640px;margin:0 auto 36px;text-align:center">
       <h3 style="color:var(--ink);margin-bottom:8px">💳 How payment works</h3>
-      <p style="color:var(--muted);font-size:.92rem;margin-bottom:10px">Submit the form below and choose Verified or Premium — we reply within one business day with a payment link (card) or invoice for bank transfer (USD&nbsp;/&nbsp;EUR). Your badge goes live as soon as payment clears. Cancel any time; unused months refunded pro-rata.</p>
-      <div class="paid-checkout" data-product="verified_manufacturer" data-fallback="#lcForm" data-email-from="fld_contact_email" data-slug-from="fld_company">
-        <button type="button" class="btn btn-amber paid-checkout-btn">Pay $499 — Get Verified</button>
-        <p id="paidCheckoutNote" style="color:var(--muted);font-size:.82rem;margin:8px 0 0">If checkout is unavailable, submit the form and we email a payment link.</p>
-      </div>
+      <p style="color:var(--muted);font-size:.92rem;margin-bottom:10px">Pay $499 for a Verified Manufacturer listing. After payment, submit your company details on the claim form. The VERIFIED MANUFACTURER badge appears only after manual review. Payment does not change capability, evidence, or ranking.</p>
+      <p style="margin:0 0 8px"><a class="btn btn-amber" href="https://buy.stripe.com/4gMbIU7G8bFHak8d5EfYY05" data-verified-manufacturer-pay="1">Pay $499 — Get Verified</a></p>
+      <p class="paid-after-note" style="color:var(--muted);font-size:.82rem;margin:8px 0 0">After payment, submit your company details on the <a href="claim-profile.html?paid=verified_manufacturer#claimForm" style="color:var(--accent)">claim form</a>.</p>
     </div>
 
     <div class="card">
@@ -264,7 +262,6 @@ form input[type="checkbox"] { width:auto; min-width:0; padding:0; margin:0; flex
   </div>
 </footer>
 
-<script src="paid-checkout.js" defer></script>
 <script src="analytics.js?v=7" defer></script>
 <script src="tp-freshness.js?v=7" defer></script>
 <script src="tp-feedback.js?v=7" defer></script>

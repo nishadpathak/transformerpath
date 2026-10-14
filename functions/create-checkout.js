@@ -83,10 +83,10 @@ exports.handler = async function (event) {
   const origin = siteOrigin();
   const success = product === 'featured_event'
     ? origin + paid.FEATURED_EVENT_SUCCESS_PATH
-    : origin + '/pricing.html?session_id={CHECKOUT_SESSION_ID}&product=' + encodeURIComponent(product);
+    : origin + paid.VERIFIED_MANUFACTURER_SUCCESS_PATH;
   const cancel = product === 'featured_event'
     ? origin + '/events.html#submit-event'
-    : origin + '/pricing.html?checkout=cancelled&product=' + encodeURIComponent(product);
+    : origin + '/claim-profile.html#claimForm';
 
   const form = new URLSearchParams();
   form.set('mode', 'payment');

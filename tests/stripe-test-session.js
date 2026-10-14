@@ -42,11 +42,15 @@ async function main() {
   }
 
   const origin = (process.env.SITE_URL || 'https://transformerpath.com').replace(/\/$/, '');
+  const successPath = product === 'featured_event'
+    ? paid.FEATURED_EVENT_SUCCESS_PATH
+    : paid.VERIFIED_MANUFACTURER_SUCCESS_PATH;
+  const cancelPath = product === 'featured_event' ? '/events.html#submit-event' : '/claim-profile.html#claimForm';
   const form = new URLSearchParams();
   form.set('mode', 'payment');
   form.set('customer_email', 'payments-ready-test@example.com');
-  form.set('success_url', origin + '/pricing.html?session_id={CHECKOUT_SESSION_ID}&product=' + encodeURIComponent(product));
-  form.set('cancel_url', origin + '/pricing.html?checkout=cancelled&product=' + encodeURIComponent(product));
+  form.set('success_url', origin + successPath);
+  form.set('cancel_url', origin + cancelPath);
   form.set('line_items[0][price]', price);
   form.set('line_items[0][quantity]', '1');
   form.set('metadata[product]', product);

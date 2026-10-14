@@ -114,8 +114,21 @@ async function main() {
     body: JSON.stringify({ product: 'featured_event', event_id: 'middle-east-energy', email: 'buyer@example.com' })
   });
   check('featured checkout success url opens the events form', res.statusCode === 200 && featuredCheckoutBody.indexOf('paid%3Dfeatured_event') >= 0 && featuredCheckoutBody.indexOf('%23submit-event') >= 0, res.statusCode + ' ' + featuredCheckoutBody.slice(0, 240));
+
+  process.env.STRIPE_PRICE_VERIFIED_MANUFACTURER = 'price_test_verified';
+  let manufacturerCheckoutBody = '';
+  global.fetch = async function (url, opts) {
+    manufacturerCheckoutBody = opts && opts.body ? String(opts.body) : '';
+    return { ok: true, status: 200, json: async function () { return { id: 'cs_test_mfr_created', url: 'https://checkout.stripe.com/c/pay/cs_test_created', livemode: false }; } };
+  };
+  res = await checkout.handler({
+    httpMethod: 'POST',
+    body: JSON.stringify({ product: 'verified_manufacturer', company_slug: 'a-plus-power-solution', email: 'buyer@example.com' })
+  });
+  check('manufacturer checkout success url opens the claim form', res.statusCode === 200 && manufacturerCheckoutBody.indexOf('paid%3Dverified_manufacturer') >= 0 && manufacturerCheckoutBody.indexOf('%23claimForm') >= 0, res.statusCode + ' ' + manufacturerCheckoutBody.slice(0, 280));
   delete process.env.STRIPE_SECRET_KEY;
   delete process.env.STRIPE_PRICE_FEATURED_EVENT;
+  delete process.env.STRIPE_PRICE_VERIFIED_MANUFACTURER;
   global.fetch = function () { throw new Error('stripe must not be called'); };
 
   process.env.STRIPE_WEBHOOK_SECRET = 'whsec_unit_test_secret';
@@ -281,6 +294,56 @@ async function main() {
   check('configured plink id ignores a different $299 link', paid.isFeaturedEventCheckout({ amount_total: 29900, currency: 'usd', payment_link: 'plink_other', metadata: {} }) === false);
   delete process.env.STRIPE_PAYMENT_LINK_FEATURED_EVENT;
   check('engineer payment link is not a featured slot', paid.isFeaturedEventCheckout({ amount_total: 19900, currency: 'usd', payment_link: 'plink_learn', metadata: { user_id: 'user_1', plan: 'learning' } }) === false);
+  check('engineer payment link is not a manufacturer slot', paid.isVerifiedManufacturerCheckout({ amount_total: 19900, currency: 'usd', payment_link: 'plink_learn', metadata: { user_id: 'user_1', plan: 'learning' } }) === false);
+
+  const mfrLinkSession = 'cs_test_payment_link_verified';
+  check('manufacturer payment link fixture session id is test mode', mfrLinkSession.indexOf('cs_test_') === 0);
+  delete process.env.STRIPE_PAYMENT_LINK_VERIFIED_MANUFACTURER;
+  const mfrLinkEvent = {
+    id: 'evt_plink_verified',
+    type: 'checkout.session.completed',
+    data: {
+      object: {
+        id: mfrLinkSession,
+        amount_total: paid.VERIFIED_MANUFACTURER_AMOUNT_CENTS,
+        currency: 'usd',
+        livemode: false,
+        payment_link: 'plink_test_verified',
+        client_reference_id: 'a-plus-power-solution',
+        customer_details: { email: 'maker@example.com' },
+        metadata: {}
+      }
+    }
+  };
+  const mfrLinkRes = await postWebhook(wh.handler, secret, mfrLinkEvent);
+  const mfrLinkRow = store.listings.get(mfrLinkSession);
+  check('payment link writes a pending manufacturer verification', mfrLinkRes.statusCode === 200 && mfrLinkRow && mfrLinkRow.product === 'verified_manufacturer' && mfrLinkRow.status === 'paid_pending_verification' && mfrLinkRow.company_slug === 'a-plus-power-solution', JSON.stringify(mfrLinkRow));
+  check('payment link does not publish VERIFIED MANUFACTURER', paid.manufacturerBadgeHtml('a-plus-power-solution', { listings: [mfrLinkRow] }) === '');
+
+  const mfrReturn = await postWebhook(wh.handler, secret, {
+    id: 'evt_verified_return',
+    type: 'checkout.session.completed',
+    data: {
+      object: {
+        id: 'cs_test_verified_return',
+        amount_total: 49900,
+        currency: 'usd',
+        livemode: false,
+        success_url: 'https://transformerpath.com/claim-profile.html?paid=verified_manufacturer&session_id=cs_test_verified_return#claimForm',
+        customer_email: 'return-mfr@example.com',
+        metadata: {}
+      }
+    }
+  });
+  const mfrReturnRow = store.listings.get('cs_test_verified_return');
+  check('after-payment URL matches a pending verification', mfrReturn.statusCode === 200 && mfrReturnRow && mfrReturnRow.product === 'verified_manufacturer' && mfrReturnRow.status === 'paid_pending_verification', mfrReturn.body);
+
+  process.env.STRIPE_PAYMENT_LINK_VERIFIED_MANUFACTURER = 'plink_mfr_expected';
+  check('configured manufacturer plink id matches that link', paid.isVerifiedManufacturerCheckout({ amount_total: 49900, currency: 'usd', payment_link: 'plink_mfr_expected', metadata: {} }) === true);
+  check('configured manufacturer plink id ignores a different $499 link', paid.isVerifiedManufacturerCheckout({ amount_total: 49900, currency: 'usd', payment_link: 'plink_other', metadata: {} }) === false);
+  delete process.env.STRIPE_PAYMENT_LINK_VERIFIED_MANUFACTURER;
+  check('$299 featured link is not a manufacturer slot', paid.isVerifiedManufacturerCheckout({ amount_total: 29900, currency: 'usd', payment_link: 'plink_test_featured', metadata: {} }) === false);
+  check('$499 link is not a featured slot', paid.isFeaturedEventCheckout({ amount_total: 49900, currency: 'usd', payment_link: 'plink_test_verified', metadata: {} }) === false);
 
   const engineerStill = await postWebhook(wh.handler, secret, {
     id: 'evt_eng_199',
@@ -317,6 +380,34 @@ async function main() {
   jsHits('.', hits);
   check('payment link URL lives in one config constant', hits.length === 1 && hits[0] === './lib/paid-listings.js', hits.join(','));
 
+  const mfrLink = paid.VERIFIED_MANUFACTURER_PAYMENT_LINK;
+  check('both pay URLs live in the same config object', paid.PAYMENT_LINKS.featured_event.url === link && paid.PAYMENT_LINKS.verified_manufacturer.url === mfrLink);
+  const mfrHits = [];
+  function jsHitsMfr(dir, found) {
+    fs.readdirSync(dir).forEach(function (name) {
+      if (name === 'node_modules' || name === 'dist' || name === 'transformerpath' || name === '.git') return;
+      const p = dir + '/' + name;
+      const st = fs.statSync(p);
+      if (st.isDirectory()) jsHitsMfr(p, found);
+      else if (name.endsWith('.js') && fs.readFileSync(p, 'utf8').indexOf(mfrLink) >= 0) found.push(p);
+    });
+  }
+  jsHitsMfr('.', mfrHits);
+  check('manufacturer payment link URL lives in that same constant', mfrHits.length === 1 && mfrHits[0] === './lib/paid-listings.js', mfrHits.join(','));
+  check('list-company pay button uses the constant', fs.readFileSync('list-company.html', 'utf8').indexOf('href="' + mfrLink + '"') >= 0 && fs.readFileSync('list-company.html', 'utf8').indexOf('badge goes live as soon as payment clears') < 0);
+  const claimHtml = fs.readFileSync('claim-profile.html', 'utf8');
+  check('claim form pay button uses the constant', claimHtml.indexOf('href="' + mfrLink + '"') >= 0 && claimHtml.indexOf('id="claimForm"') >= 0 && claimHtml.indexOf('name="payment_session"') >= 0 && claimHtml.indexOf('claimPaidBanner') >= 0);
+  check('pricing manufacturer pay button uses the constant', fs.readFileSync('pricing.html', 'utf8').indexOf('href="' + mfrLink + '"') >= 0);
+  const profileDirs = fs.readdirSync('manufacturers').filter(function (d) {
+    return fs.existsSync('manufacturers/' + d + '/index.html') && fs.readFileSync('manufacturers/' + d + '/index.html', 'utf8').indexOf('>Claim this profile →</a>') >= 0;
+  });
+  const linkedProfiles = profileDirs.filter(function (d) {
+    const html = fs.readFileSync('manufacturers/' + d + '/index.html', 'utf8');
+    return html.indexOf('href="' + mfrLink + '?client_reference_id=' + d + '"') >= 0 && html.indexOf('Pay $499 — Get Verified') >= 0;
+  });
+  check('manufacturer profiles use the Get Verified payment link', profileDirs.length === linkedProfiles.length && linkedProfiles.length > 900, 'profiles=' + profileDirs.length + ' linked=' + linkedProfiles.length);
+  check('sample profile keeps the claim link beside the pay button', fs.readFileSync('manufacturers/erea-energy-engineering/index.html', 'utf8').indexOf('client_reference_id=erea-energy-engineering') >= 0);
+
   const gate = require('../check-paid-badges');
   const stray = '<span class="paid-badge" data-paid-badge="verified-manufacturer" data-company-slug="a-plus-power-solution">VERIFIED MANUFACTURER</span>';
   check('CI fails a badge without a verified row', gate.auditHtml('sample.html', stray, { listings: [] }).length === 1);
@@ -331,6 +422,8 @@ async function main() {
   check('receipt text does not contain a secret key', msgs.buyer.text.indexOf('sk_') < 0 && msgs.internal.text.indexOf('whsec_') < 0);
   const featuredReceipt = receipt.messages(linkRow);
   check('featured receipt sends the buyer to the events form', featuredReceipt.buyer && featuredReceipt.buyer.text.indexOf('/events.html?paid=featured_event#submit-event') >= 0);
+  const manufacturerReceipt = receipt.messages(mfrLinkRow);
+  check('manufacturer receipt sends the buyer to the claim form', manufacturerReceipt.buyer && manufacturerReceipt.buyer.text.indexOf('/claim-profile.html?paid=verified_manufacturer#claimForm') >= 0);
 
   const widget = paid.checkoutWidget({
     product: 'verified_manufacturer',
@@ -383,6 +476,28 @@ async function main() {
     body: JSON.stringify({ session_id: linkSession })
   })).body);
   check('featured payment link does not grant course access', featuredAccess.valid === false && featuredAccess.paid === true && featuredAccess.product === 'featured_event' && featuredAccess.listing === 'paid_pending_verification' && !featuredAccess.entitlement_token, JSON.stringify(featuredAccess));
+
+  global.fetch = async function () {
+    return {
+      ok: true,
+      json: async function () {
+        return {
+          id: mfrLinkSession,
+          payment_status: 'paid',
+          amount_total: 49900,
+          currency: 'usd',
+          livemode: false,
+          payment_link: 'plink_test_verified',
+          metadata: {}
+        };
+      }
+    };
+  };
+  const manufacturerAccess = JSON.parse((await verify.handler({
+    httpMethod: 'POST',
+    body: JSON.stringify({ session_id: mfrLinkSession })
+  })).body);
+  check('manufacturer payment link does not grant course access', manufacturerAccess.valid === false && manufacturerAccess.paid === true && manufacturerAccess.product === 'verified_manufacturer' && manufacturerAccess.listing === 'paid_pending_verification' && !manufacturerAccess.entitlement_token, JSON.stringify(manufacturerAccess));
 
   global.fetch = async function () {
     return {

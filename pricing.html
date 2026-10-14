@@ -295,11 +295,8 @@ table.cmp .n { color:var(--border); }
             <li>Eligibility to receive direct buyer inquiries</li>
           </ul>
         </div>
-        <div class="paid-checkout" data-product="verified_manufacturer" data-fallback="mailto:hello@transformerpath.com?subject=Verified%20Manufacturer%20%24499" style="margin-bottom:8px">
-          <input class="paid-checkout-slug" type="text" placeholder="Directory slug" aria-label="Directory slug" style="width:100%;margin:0 0 8px;padding:8px 10px;border:1px solid var(--border);border-radius:8px">
-          <input class="paid-checkout-email" type="email" placeholder="Work email" aria-label="Work email" style="width:100%;margin:0 0 8px;padding:8px 10px;border:1px solid var(--border);border-radius:8px">
-          <button type="button" class="btn btn-amber btn-sm paid-checkout-btn" style="width:100%">Pay $499 — Get Verified</button>
-        </div>
+        <p style="margin:0 0 8px"><a class="btn btn-amber btn-sm" href="https://buy.stripe.com/4gMbIU7G8bFHak8d5EfYY05" data-verified-manufacturer-pay="1" style="width:100%;text-align:center">Pay $499 — Get Verified</a></p>
+        <p class="paid-after-note" style="color:var(--muted);font-size:.8rem;margin:0 0 8px">After payment, submit your company details on the <a href="claim-profile.html?paid=verified_manufacturer#claimForm" style="color:var(--accent)">claim form</a>. The VERIFIED MANUFACTURER badge appears only after review.</p>
         <a href="verified.html" class="btn btn-outline btn-sm" style="text-align:center">Get Verified →</a>
       </div>
 
@@ -476,7 +473,6 @@ table.cmp .n { color:var(--border); }
   </div>
 </footer>
 
-<script src="paid-checkout.js" defer></script>
 <script>
 (function(){
   var KEY = 'tp-course-access';
@@ -593,7 +589,7 @@ table.cmp .n { color:var(--border); }
         b.innerHTML = (res && res.paid)
           ? (listingProduct === 'featured_event'
             ? 'Payment received. Submit the event name, URL, and dates on the <a href="events.html?paid=featured_event#submit-event" style="color:#fff;text-decoration:underline">events list</a>. FEATURED is shown only after review.'
-            : 'Payment received. ' + label + ' is published only after review. Payment does not change capability, evidence, or ranking.')
+            : 'Payment received. Submit your company details on the <a href="claim-profile.html?paid=verified_manufacturer#claimForm" style="color:#fff;text-decoration:underline">claim form</a>. ' + label + ' is published only after review.')
           : 'We could not confirm this payment yet. If you were charged, email hello@transformerpath.com with your receipt.';
         b.style.display = 'block';
         params.delete('session_id');

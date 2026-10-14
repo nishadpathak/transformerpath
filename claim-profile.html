@@ -127,8 +127,15 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
         <b style="color:var(--text)">Integrity & Verification Standard.</b> TransformerPath strictly verifies every representative claim to maintain industry trust. Commercial status or payments never imply technical certification or endorsement. Profile updates and capability claims are held in moderation until verified by our research team.
       </p>
 
+      <div id="claimPaidBanner" style="display:none;background:#14365c;color:#fff;border-radius:10px;padding:12px 14px;margin:0 0 16px;font-size:.9rem;line-height:1.5">
+        Payment received. Submit your company details in the form below. The VERIFIED MANUFACTURER badge appears only after manual review. Payment does not change capability, evidence, or ranking.
+      </div>
+      <p style="margin:0 0 8px"><a class="btn btn-amber" href="https://buy.stripe.com/4gMbIU7G8bFHak8d5EfYY05" data-verified-manufacturer-pay="1">Pay $499 — Get Verified</a></p>
+      <p class="paid-after-note" style="color:var(--muted);font-size:.82rem;margin:0 0 16px">After payment, return to this form and submit your company details. The badge appears only after review.</p>
+
       <form name="claim-profile" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" id="claimForm" data-track-form="supplier_claim_submitted">
         <input type="hidden" name="form-name" value="claim-profile">
+        <input type="hidden" name="payment_session" id="claimPaymentSession" value="">
         <p hidden><label>Leave this empty: <input name="bot-field"></label></p>
 
         <label for="fld_company">Company Profile to Claim *</label>
@@ -184,12 +191,7 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
       <div id="claimThanks" style="display:none;text-align:center;padding:32px 16px">
         <div style="font-size:3rem">&#9989;</div>
         <h2 style="color:var(--ink);margin:8px 0">Profile Claim Received</h2>
-        <p style="color:var(--muted);max-width:480px;margin:0 auto 18px">Thank you. Your claim has been submitted to the TransformerPath moderation queue. We will verify your credentials against the corporate domain and confirm within 1 business day.</p>
-        <div class="paid-checkout" id="claimPay" data-product="verified_manufacturer" data-fallback="mailto:hello@transformerpath.com?subject=Verified%20Manufacturer%20%24499" style="max-width:420px;margin:0 auto 16px">
-          <input class="paid-checkout-email" id="claimPayEmail" type="email" placeholder="Work email" aria-label="Work email" style="width:100%;margin:0 0 8px;padding:8px 10px;border:1px solid var(--border);border-radius:8px">
-          <button type="button" class="btn btn-amber paid-checkout-btn">Pay $499 — Get Verified</button>
-          <p id="paidCheckoutNote" style="color:var(--muted);font-size:.82rem;margin:8px 0 0">If checkout is unavailable, we will email a payment link.</p>
-        </div>
+        <p style="color:var(--muted);max-width:480px;margin:0 auto 18px">Thank you. Your claim has been submitted to the TransformerPath moderation queue. We will verify your credentials against the corporate domain and confirm within 1 business day. The VERIFIED MANUFACTURER badge appears only after that review.</p>
         <a href="directory.html" class="btn btn-outline" style="display:inline-block">Return to Directory &rarr;</a>
       </div>
 
@@ -210,23 +212,24 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
           var body = new URLSearchParams(new FormData(f)).toString();
           fetch('/', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:body}).then(done).catch(done);
         });
-        function slugify(s) {
-          return String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim()
-            .replace(/&/g, 'and').replace(/['’´]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
-        }
         function done(){
-          var pay = document.getElementById('claimPay');
-          var emailEl = document.getElementById('fld_email');
-          var companyEl = document.getElementById('fld_company');
-          if (pay) pay.setAttribute('data-company-slug', slugify(companyEl && companyEl.value));
-          var payEmail = document.getElementById('claimPayEmail');
-          if (payEmail && emailEl) payEmail.value = emailEl.value;
           f.style.display = 'none';
           var t = document.getElementById('claimThanks');
           t.style.display = 'block';
-          if (window.tpPaidCheckoutBoot) window.tpPaidCheckoutBoot();
           t.scrollIntoView({behavior:'smooth', block:'center'});
         }
+        try {
+          var paid = new URLSearchParams(location.search);
+          if (paid.get('paid') === 'verified_manufacturer') {
+            var banner = document.getElementById('claimPaidBanner');
+            if (banner) banner.style.display = 'block';
+            var sessionField = document.getElementById('claimPaymentSession');
+            if (sessionField && paid.get('session_id')) sessionField.value = paid.get('session_id');
+            var tier = document.getElementById('fld_tier');
+            if (tier) tier.value = 'VERIFIED';
+            f.scrollIntoView({behavior:'smooth', block:'start'});
+          }
+        } catch (err) {}
       })();
       </script>
     </div>
@@ -257,7 +260,6 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
   </div>
 </footer>
 
-<script src="paid-checkout.js" defer></script>
 <script src="analytics.js?v=7" defer></script>
 <script src="tp-freshness.js?v=7" defer></script>
 <script src="tp-feedback.js?v=7" defer></script>
