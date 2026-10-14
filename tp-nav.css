@@ -63,6 +63,8 @@ body > header:not(.mc-hero):not(.ac-hero):not(.hero) {
   color: #fff;
   font-size: 1.6rem;
   cursor: pointer;
+  min-width: 44px;
+  min-height: 44px;
   padding: 8px 12px;
   line-height: 1;
 }
@@ -264,6 +266,7 @@ body > header:not(.mc-hero):not(.ac-hero):not(.hero) {
   .tpnav.open { display: flex; }
   .tpnav a {
     padding: 13px 22px;             /* comfortable touch target */
+    min-height: 44px;
     border-radius: 0;
     font-size: .98rem;
     border-bottom: 1px solid rgba(255, 255, 255, .06);
@@ -278,6 +281,8 @@ body > header:not(.mc-hero):not(.ac-hero):not(.hero) {
     width: 100%;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    min-height: 44px;
     padding: 13px 22px;
     font-size: .98rem;
     border-radius: 0;
@@ -379,7 +384,8 @@ body > header:not(.mc-hero):not(.ac-hero):not(.hero) {
   background: #f5a623;
   color: #0d1b2e;
   border: 0;
-  border-radius: 999px;
+  border-radius: 8px;
+  min-height: 44px;
   padding: 8px 14px;
   font-weight: 800;
   font-size: .85rem;
