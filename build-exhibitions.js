@@ -23,6 +23,7 @@
 'use strict';
 const fs = require('fs');
 const tpAff = require('./lib/travelpayouts');
+const { platformToday } = require('./lib/event-status');
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
@@ -67,7 +68,7 @@ const marketSlug = (c) => MARKET_BY_COUNTRY[c] || slugify(c);
 function getEventStatus(e) {
   const dates = (e.next_dates || '').match(/(\d{4}-\d{2}-\d{2})/g) || [];
   const end = dates[1] || dates[0] || '';
-  const today = new Date().toISOString().slice(0, 10);
+  const today = platformToday();
   if (!end) return 'Dates TBC';
   return (end < today) ? 'Completed' : 'Upcoming';
 }
