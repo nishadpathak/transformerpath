@@ -1,0 +1,18 @@
+name: site-footer
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  site-footer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Fail when a page repeats the site footer
+        run: node check-site-footer.js

@@ -279,9 +279,6 @@ window.__TP_ACC_SLUGS__ = ${JSON.stringify([...ACC_SLUGS])};
   <section style="display:none" aria-hidden="true">
     <div id="compGrid" class="grid grid-3"><!--SSR:components-grid--><!--/SSR:components-grid--></div>
   </section>
-</main>
-
-${FOOT}
 
 <script>
 const COMPONENTS = {
