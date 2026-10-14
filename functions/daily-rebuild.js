@@ -8,12 +8,13 @@
 exports.handler = async function () {
   const hook = process.env.TP_BUILD_HOOK_URL || process.env.BUILD_HOOK_URL || '';
   if (!hook) {
+    console.error('daily-rebuild: TP_BUILD_HOOK_URL is not set. The scheduled rebuild did not run.');
     return {
-      statusCode: 204,
+      statusCode: 503,
       body: JSON.stringify({
-        ok: true,
+        ok: false,
         triggered: false,
-        reason: 'TP_BUILD_HOOK_URL not set — soft freshness relies on next manual/CI deploy'
+        reason: 'TP_BUILD_HOOK_URL not set. Twice-daily rebuild did not run.'
       })
     };
   }

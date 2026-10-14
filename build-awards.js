@@ -54,6 +54,12 @@ TENDERS.forEach((t) => {
     utility: t.utility || '',
     epc: t.epc || '',
     country: t.country || '',
+    project_country: (t.project_country != null && String(t.project_country).trim() !== '')
+      ? t.project_country
+      : ((t.country != null && String(t.country).trim() !== '') ? t.country : null),
+    buyer_country: t.buyer_country != null ? t.buyer_country : null,
+    supplier_country: t.supplier_country != null ? t.supplier_country : null,
+    source_country: t.source_country != null ? t.source_country : null,
     region: t.region || 'Other',
     voltage: t.voltage || '',
     transformer_scope: t.transformer_scope || 'UNKNOWN',

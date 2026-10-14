@@ -18,7 +18,16 @@
 'use strict';
 const fs = require('fs');
 const tpAff = require('./lib/travelpayouts');
+const { scoreHtml } = require('./build-knowledge-depth.js');
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
+const ASSETS = (() => {
+  try {
+    const cfg = JSON.parse(fs.readFileSync('data/config.json', 'utf8'));
+    return { css: (cfg.assets && cfg.assets.css) || 5, js: (cfg.assets && cfg.assets.js) || 2 };
+  } catch (e) {
+    return { css: 5, js: 2 };
+  }
+})();
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
@@ -182,11 +191,13 @@ const ARTICLES = [
     slug: 'buchholz-relay', topic: 'Components', level: 'Intermediate', minutes: 5,
     title: 'What Is a Buchholz Relay and What Does It Protect?',
     question: 'What is a Buchholz relay and how does it protect a transformer?',
-    quick: 'A Buchholz relay is a gas-actuated protection device fitted in the pipe between the transformer conservator and tank. It collects gas released by an internal fault and trips the unit on a major fault, or gives an alarm on a slow accumulation (e.g. minor overheating). The gas collected can be analysed to diagnose the fault.',
+    quick: 'A Buchholz relay is a gas-actuated protection device fitted in the pipe between the transformer conservator and tank. It collects gas released by an internal fault and trips the unit on a major fault, or gives an alarm on a slow accumulation (e.g. minor overheating). The gas collected can be analysed to diagnose the fault. It is fitted on oil-filled units above a certain size.',
     sections: [
       ['How it works', 'The relay is a chamber with float switches (or a baffle/reed) that sense oil level and gas accumulation. An internal fault generates gas that rises into the relay; a large fault creates a surge of oil that trips a second element.'],
       ['What it senses', 'Gas collection indicates a slow fault (e.g. a hot spot, partial discharge or cellulose overheating); an oil surge indicates a more energetic arcing fault. The amount and type of gas, and the pressure, guide the diagnosis.'],
       ['Buchholz gas analysis', 'Collecting the gas and testing it (combustible, CO2, colour) helps identify the fault — for example a combustible, odourless gas typically points to a thermal or dielectric event.'],
+      ['Alarm vs trip', 'Slow gas accumulation trips the alarm and flags a developing fault; a major gas or surge trips the breaker to disconnect the transformer, protecting it.'],
+      ['Diagnosis', 'The collected gas is analysed (combustible, CO2, etc.) and the DGA used to identify whether it is a thermal, partial-discharge or arcing fault.'],
     ],
     refs: ['IEC 60076-1', 'IEEE C57.12.90'],
     comps: ['protection-monitoring', 'oil-fluids-preservation'], types: ['PT', 'DT'],
@@ -806,10 +817,11 @@ const ARTICLES = [
     quick: 'Insulation coordination is the selection of the insulation levels of equipment so they withstand the system and surge voltages with the right margin, and so surge arresters and protection operate to protect the most expensive equipment. It matches Basic Insulation Level (BIL) to the expected overvoltage, using arresters to clamp surges and choosing BIL so a flashover (if any) occurs at a cheap, replaceable point rather than at a transformer.',
     sections: [
       ['The idea', 'You choose the insulation strength (BIL) of equipment so it survives the normal and switching voltage, and the clearances, so that any surge is diverted by arrester protection before it threatens the asset. The cost rises with BIL, so the design balances cost and risk.'],
-      ['How it works', 'Arresters limit the surge voltage to a value below the equipment BIL, with a margin; the BIL increases with system voltage. Coordination ensures the BIL of the transformer (or bushing) is above the protective level of the arrester.'],
+      ['How it works', 'Arresters limit the surge voltage to a value below the equipment BIL, with a margin; the BIL increases with system voltage. Coordination ensures the BIL of the transformer (or bushing) is above the protective level of the arrester. A transformer at a given system voltage has a defined BIL and test levels. It is given as e.g. 110 kV system, 550 kV BIL.'],
+      ['Applied and induced tests', 'The applied (power-frequency) test proves the insulation to earth and between windings; the induced test proves the inter-turn insulation. Both are specified with the insulation level.'],
       ['Why it matters', 'It prevents insulation failure from lightning or switching surges and ensures that, if a failure does occur, it is at a location and component that is cheaper and safer to replace.'],
     ],
-    refs: ['IEC 60071 (insulation coordination)', 'IEC 60076-3'],
+    refs: ['IEC 60071 (insulation coordination)', 'IEC 60076-3', 'IEEE C57.12.00'],
     comps: ['transformer-bushings', 'insulation-materials'], types: ['PT', 'DT'],
   },
   {
@@ -1478,19 +1490,6 @@ const ARTICLES = [
     comps: ['oil-fluids-preservation', 'transformer-cooling', 'protection-monitoring'], types: ['PT', 'DT'],
   },
   {
-    slug: 'insulation-coordination-simple', topic: 'Standards', level: 'Beginner', minutes: 5,
-    title: 'Transformer Insulation Levels and Test Voltages (Simple Guide)',
-    question: 'What are the insulation levels and test voltages of a transformer?',
-    quick: 'A transformer insulation level is set by its rated voltage, its BIL (basic insulation level, the lightning impulse withstand), and the applied and induced test voltages. Higher voltage classes need higher insulation and BIL. The insulation level must match the system voltage and the arrester protection, so the unit survives normal, switching and surge stresses. It is given as e.g. 110 kV system, 550 kV BIL.',
-    sections: [
-      ['Rated and BIL', 'The rated voltage sets the operating level; the BIL is the impulse the insulation must withstand. A transformer at a given system voltage has a defined BIL and test levels.'],
-      ['Applied and induced tests', 'The applied (power-frequency) test proves the insulation to earth and between windings; the induced test proves the inter-turn insulation. Both are specified with the insulation level.'],
-      ['Why it matters', 'Choosing the insulation level and BIL correctly ensures the transformer survives the overvoltages it will see and coordinates with the surge arresters.'],
-    ],
-    refs: ['IEC 60076-3 (insulation levels)', 'IEEE C57.12.00'],
-    comps: ['insulation-materials', 'transformer-bushings'], types: ['PT', 'DT'],
-  },
-  {
     slug: 'oltc-maintenance', topic: 'Field Service', level: 'Intermediate', minutes: 6,
     title: 'How Is an On-Load Tap-Changer (OLTC) Maintained?',
     question: 'How is an on-load tap changer maintained?',
@@ -1528,19 +1527,6 @@ const ARTICLES = [
     ],
     refs: ['IEC 60076-1', 'IEEE C57.12.90'],
     comps: ['protection-monitoring', 'conductors-and-core'], types: ['PT', 'DT'],
-  },
-  {
-    slug: 'buchholz-relay-operation', topic: 'Components', level: 'Intermediate', minutes: 5,
-    title: 'What Does a Buchholz Relay Detect and How Does It Trip?',
-    question: 'How does a Buchholz relay operate?',
-    quick: 'A Buchholz relay senses gas accumulation and oil surge in the pipe between the transformer and the conservator. A slow gas accumulation (from a minor fault) gives an alarm; a large gas or oil surge (from a major fault) trips the transformer. The gas can be collected and analysed to diagnose the fault. It is fitted on oil-filled units above a certain size.',
-    sections: [
-      ['What it senses', 'It has a gas (and sometimes a surprise) element and an oil-surge element. Gas collects under the relay from a minor fault and gives a low alarm; a violent fault causes gas and an oil surge that trips the unit.'],
-      ['Alarm vs trip', 'Slow gas accumulation trips the alarm and flags a developing fault; a major gas or surge trips the breaker to disconnect the transformer, protecting it.'],
-      ['Diagnosis', 'The collected gas is analysed (combustible, CO2, etc.) and the DGA used to identify whether it is a thermal, partial-discharge or arcing fault.'],
-    ],
-    refs: ['IEC 60076-1', 'IEEE C57.12.90'],
-    comps: ['protection-monitoring', 'oil-fluids-preservation'], types: ['PT', 'DT'],
   },
   {
     slug: 'winding-overheating', topic: 'Failures', level: 'Intermediate', minutes: 6,
@@ -2283,9 +2269,9 @@ function articlePage(a) {
     '<meta property="og:type" content="article"><meta property="og:site_name" content="TransformerPath">' +
     '<meta property="og:title" content="' + esc(a.title) + '"><meta property="og:url" content="https://transformerpath.com/knowledge/' + a.slug + '.html">' +
     '<meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow">' +
-    '<link rel="stylesheet" href="../style.css?v=5"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin><link rel="preconnect" href="https://www.google-analytics.com"><link rel="icon" type="image/svg+xml" href="../brand/favicon.svg">' +
+    '<link rel="stylesheet" href="../style.css?v=' + ASSETS.css + '"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin><link rel="preconnect" href="https://www.google-analytics.com"><link rel="icon" type="image/svg+xml" href="../brand/favicon.svg">' +
     '<style>.k-wrap{max-width:800px;margin:0 auto;padding:44px 20px 90px}.k-wrap h1{font-size:1.85rem;color:var(--ink);line-height:1.2}.k-wrap .lead{color:var(--muted);font-size:1.02rem;line-height:1.6}.k-wrap h2{font-size:1.3rem;color:var(--ink);margin:30px 0 8px}.k-wrap p{color:var(--text);line-height:1.7}.ameta{display:flex;flex-wrap:wrap;gap:10px;font-size:.8rem;color:var(--muted);margin:10px 0 4px}.ameta span{padding:2px 8px;border:1px solid var(--border);border-radius:999px}.lvl,.topic{color:var(--accent);font-weight:600}.quick{background:rgba(245,166,35,.08);border:1px solid var(--accent);border-radius:10px;padding:12px 16px;margin:16px 0}.quick b{color:var(--accent)}.eq{background:var(--bg);border:1px dashed var(--accent);border-radius:8px;padding:10px 14px;margin:14px 0;font-family:monospace;font-size:.92rem}.box{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 16px;margin:14px 0}.rel{margin:6px 0}.tpill{display:inline-block;background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:2px 10px;font-size:.74rem;color:var(--text);margin:3px 4px 3px 0}.k-wrap .toc{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 18px 10px 10px;font-size:.9rem}.k-wrap .toc ul{padding-left:18px;margin:4px 0}.k-wrap .toc a{color:var(--accent)}.method{font-size:.8rem;color:var(--muted);border-top:1px solid var(--border);margin-top:34px;padding-top:14px}</style>' + schema +
-    '</head>\n<body>\n' + HEAD + '\n<main class="k-wrap">' +
+    '<link rel="stylesheet" href="../tp-nav.css?v=' + ASSETS.css + '">\n</head>\n<body>\n' + HEAD + '\n<main class="k-wrap">' +
     '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="../knowledge.html" style="color:var(--accent)">Knowledge</a> › ' + esc(a.topic) + '</nav>' +
     '<h1>' + esc(a.title) + '</h1>' + meta +
     '<div class="quick"><b>Quick answer</b> — ' + esc(a.quick) + '</div>' +
@@ -2296,33 +2282,227 @@ function articlePage(a) {
     (tpAff.TRIP_KNOWLEDGE[a.slug] ? tpAff.tripOffers({ slug: a.slug, place: tpAff.TRIP_KNOWLEDGE[a.slug], prefix: '../', disclosureHref: '../affiliate-disclosure.html' }) : '') +
     '<div class="box" style="text-align:center;margin-top:22px"><b style="color:var(--text)">Source transformers for this application</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 10px">Submit an RFQ or browse manufacturers and components.</p>' +
     '<a class="btn btn-amber" href="../rfq.html" data-track="rfq_started" data-track-component_category="' + esc(a.title) + '">Submit an RFQ</a> <a class="btn btn-outline btn-sm" href="../list-company.html" data-track="supplier_claim_started">Get Verified</a></div>' +
-    '</main>\n' + FOOT + '\n<script src="../analytics.js?v=2" defer></script>\n</body>\n</html>';
+    '</main>\n' + FOOT + '\n<script src="../analytics.js?v=' + ASSETS.js + '" defer></script>\n</body>\n</html>';
 }
 
-// ── Generate article pages ──
-fs.mkdirSync('knowledge', { recursive: true });
-const cards = [];
-ARTICLES.forEach(function (a) {
-  fs.writeFileSync('knowledge/' + a.slug + '.html', articlePage(a));
-  cards.push(a);
-  console.log('OK knowledge/' + a.slug + '.html');
-});
+function membership(taxonomy) {
+  const owner = {};
+  (taxonomy.clusters || []).forEach(function (cluster) {
+    const members = [];
+    if (cluster.pillar_slug) members.push(cluster.pillar_slug);
+    (cluster.spokes || []).forEach(function (slug) { members.push(slug); });
+    members.forEach(function (slug) {
+      if (!owner[slug]) owner[slug] = [];
+      owner[slug].push(cluster.id);
+    });
+  });
+  return owner;
+}
 
-// ── Knowledge index (root) grouped by category ──
-function catCards(cat) {
-  return cards.filter(function (a) { return a.topic === cat; }).map(function (a) {
-    return '<a class="card kcard" href="knowledge/' + a.slug + '.html"><span class="topic" style="color:var(--accent);font-size:.72rem;text-transform:uppercase">' + esc(a.topic) + '</span><h3>' + esc(a.title) + '</h3><span style="font-size:.8rem;color:var(--muted)">' + esc(a.level) + ' · ' + a.minutes + ' min read · ' + esc(a.question) + '</span></a>';
+function hubCard(a, grade, lifecycle, label, role) {
+  const search = [a.title, a.question, a.topic, a.slug, a.level, lifecycle, label].join(' ').toLowerCase();
+  const roleHtml = role === 'pillar' ? '<span class="kh-role">Pillar</span>' : '';
+  return '<a class="card kcard" href="knowledge/' + a.slug + '.html" data-topic="' + esc(a.topic) + '" data-level="' + esc(a.level) + '" data-lifecycle="' + esc(lifecycle) + '" data-search="' + esc(search) + '">' +
+    roleHtml +
+    '<span class="topic" style="color:var(--accent);font-size:.72rem;text-transform:uppercase">' + esc(a.topic) + '</span>' +
+    '<h3>' + esc(a.title) + '</h3>' +
+    '<span class="kh-meta">' + esc(a.level) + ' · ' + a.minutes + ' min · <span class="kh-grade kh-grade-' + esc(grade) + '">' + esc(grade) + '</span></span>' +
+    '<span class="kh-life">' + esc(label) + '</span>' +
+    '</a>';
+}
+
+function hubClientScript() {
+  return '<script>\n' +
+    '(function () {\n' +
+    '  var form = document.getElementById("kh-filters");\n' +
+    '  if (!form) return;\n' +
+    '  var cards = Array.prototype.slice.call(document.querySelectorAll("a.kcard"));\n' +
+    '  var clusters = Array.prototype.slice.call(document.querySelectorAll("[data-kh-cluster]"));\n' +
+    '  var countEl = document.getElementById("kh-count");\n' +
+    '  var groups = [];\n' +
+    '  function flatten(node, out) {\n' +
+    '    if (typeof node === "string") out.push(node.toLowerCase());\n' +
+    '    else if (Array.isArray(node)) node.forEach(function (n) { flatten(n, out); });\n' +
+    '    else if (node && typeof node === "object") Object.keys(node).forEach(function (k) { flatten(node[k], out); });\n' +
+    '  }\n' +
+    '  function needlesFor(token) {\n' +
+    '    var set = [token];\n' +
+    '    groups.forEach(function (terms) {\n' +
+    '      var hit = terms.some(function (term) {\n' +
+    '        if (!term || term.length < 2) return false;\n' +
+    '        if (term === token) return true;\n' +
+    '        if (token.length >= 3 && term.length >= 3 && (term.indexOf(token) !== -1 || token.indexOf(term) !== -1)) return true;\n' +
+    '        return false;\n' +
+    '      });\n' +
+    '      if (hit) terms.forEach(function (term) { if (term && term.length >= 3) set.push(term); });\n' +
+    '    });\n' +
+    '    return set;\n' +
+    '  }\n' +
+    '  function matchesQuery(text, query) {\n' +
+    '    var tokens = query.toLowerCase().trim().split(/\\s+/).filter(Boolean);\n' +
+    '    if (!tokens.length) return true;\n' +
+    '    return tokens.every(function (tok) {\n' +
+    '      return needlesFor(tok).some(function (n) { return n.length >= 2 && text.indexOf(n) !== -1; });\n' +
+    '    });\n' +
+    '  }\n' +
+    '  function apply() {\n' +
+    '    var topic = form.topic.value;\n' +
+    '    var level = form.level.value;\n' +
+    '    var life = form.lifecycle.value;\n' +
+    '    var query = form.q.value || "";\n' +
+    '    var shown = 0;\n' +
+    '    cards.forEach(function (card) {\n' +
+    '      var ok = (!topic || card.getAttribute("data-topic") === topic) &&\n' +
+    '        (!level || card.getAttribute("data-level") === level) &&\n' +
+    '        (!life || card.getAttribute("data-lifecycle") === life) &&\n' +
+    '        matchesQuery(card.getAttribute("data-search") || "", query);\n' +
+    '      card.classList.toggle("is-hidden", !ok);\n' +
+    '      if (ok) shown++;\n' +
+    '    });\n' +
+    '    clusters.forEach(function (sec) {\n' +
+    '      sec.hidden = !sec.querySelector("a.kcard:not(.is-hidden)");\n' +
+    '    });\n' +
+    '    if (countEl) countEl.textContent = "Showing " + shown + " of " + cards.length + " articles";\n' +
+    '  }\n' +
+    '  form.addEventListener("submit", function (ev) { ev.preventDefault(); apply(); });\n' +
+    '  form.addEventListener("input", apply);\n' +
+    '  form.addEventListener("change", apply);\n' +
+    '  fetch("/data/search-synonyms.json").then(function (r) { return r.json(); }).then(function (data) {\n' +
+    '    groups = (data.categories || []).map(function (cat) {\n' +
+    '      var terms = [];\n' +
+    '      flatten(cat.primary_keyword, terms);\n' +
+    '      flatten(cat.synonyms, terms);\n' +
+    '      flatten(cat.abbreviations, terms);\n' +
+    '      flatten(cat.technical_terms, terms);\n' +
+    '      flatten(cat.local_language_terms, terms);\n' +
+    '      return terms;\n' +
+    '    });\n' +
+    '    apply();\n' +
+    '  }).catch(function () {});\n' +
+    '  apply();\n' +
+    '})();\n' +
+    '</script>\n';
+}
+
+function build() {
+  const taxonomy = JSON.parse(fs.readFileSync('data/knowledge-taxonomy.json', 'utf8'));
+  const labels = taxonomy.lifecycle_labels || {};
+  const bySlug = {};
+  ARTICLES.forEach(function (a) { bySlug[a.slug] = a; });
+  const owner = membership(taxonomy);
+  const missing = ARTICLES.filter(function (a) { return !owner[a.slug] || owner[a.slug].length !== 1 || !taxonomy.lifecycle || !taxonomy.lifecycle[a.slug]; });
+  if (missing.length) {
+    console.error('build-knowledge: taxonomy does not place every article in exactly one cluster with a lifecycle');
+    missing.forEach(function (a) { console.error('  ' + a.slug); });
+    process.exit(1);
+  }
+
+  fs.mkdirSync('knowledge', { recursive: true });
+  const keep = {};
+  const grades = {};
+  ARTICLES.forEach(function (a) {
+    const html = articlePage(a);
+    fs.writeFileSync('knowledge/' + a.slug + '.html', html);
+    grades[a.slug] = scoreHtml(html).grade;
+    keep[a.slug + '.html'] = 1;
+    console.log('OK knowledge/' + a.slug + '.html');
+  });
+  fs.readdirSync('knowledge').forEach(function (name) {
+    if (name.endsWith('.html') && !keep[name]) {
+      fs.unlinkSync('knowledge/' + name);
+      console.log('removed knowledge/' + name);
+    }
+  });
+
+  const topics = CATS.filter(function (c) { return ARTICLES.some(function (a) { return a.topic === c; }); });
+  const levels = [];
+  ARTICLES.forEach(function (a) { if (levels.indexOf(a.level) < 0) levels.push(a.level); });
+  const lives = taxonomy.lifecycle_values || [];
+  function options(values, labelOf) {
+    return '<option value="">All</option>' + values.map(function (v) {
+      return '<option value="' + esc(v) + '">' + esc(labelOf ? labelOf(v) : v) + '</option>';
+    }).join('');
+  }
+
+  const listItems = [];
+  let position = 0;
+  const clusterHtml = taxonomy.clusters.map(function (cluster, index) {
+    const ordered = [];
+    if (cluster.pillar_slug) ordered.push(cluster.pillar_slug);
+    (cluster.spokes || []).forEach(function (slug) { ordered.push(slug); });
+    const cards = ordered.map(function (slug) {
+      const a = bySlug[slug];
+      const life = taxonomy.lifecycle[slug];
+      const role = slug === cluster.pillar_slug ? 'pillar' : 'spoke';
+      position += 1;
+      listItems.push({ '@type': 'ListItem', position: position, name: a.title, url: 'https://transformerpath.com/knowledge/' + a.slug + '.html' });
+      return hubCard(a, grades[slug], life, labels[life] || life, role);
+    }).join('');
+    return '<section class="kh-cluster" id="cluster-' + esc(cluster.id) + '" data-kh-cluster="' + esc(cluster.id) + '">' +
+      '<h2>' + (index + 1) + '. ' + esc(cluster.title) + '</h2>' +
+      '<div class="grid kh-grid">' + cards + '</div></section>';
   }).join('');
+
+  const breadcrumb = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://transformerpath.com/' },
+      { '@type': 'ListItem', position: 2, name: 'Knowledge', item: 'https://transformerpath.com/knowledge.html' }
+    ]
+  };
+  const itemList = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Transformer knowledge articles',
+    numberOfItems: listItems.length,
+    itemListElement: listItems
+  };
+  const schema = '<script type="application/ld+json">' + JSON.stringify(breadcrumb) + '</script><script type="application/ld+json">' + JSON.stringify(itemList) + '</script>';
+  const hubStyle = '<style>' +
+    '.kh-filters{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 8px;align-items:flex-end}' +
+    '.kh-filters label{display:flex;flex-direction:column;gap:4px;font-size:.75rem;color:var(--muted)}' +
+    '.kh-filters select,.kh-filters input{background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:8px 10px;font:inherit;min-width:150px}' +
+    '.kh-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}' +
+    '.kcard{display:flex;flex-direction:column;gap:6px;padding:16px}' +
+    '.kcard.is-hidden{display:none}' +
+    '.kh-meta,.kh-life{font-size:.8rem;color:var(--muted)}' +
+    '.kh-role{font-size:.72rem;font-weight:700;color:var(--accent);text-transform:uppercase}' +
+    '.kh-grade{font-weight:700}' +
+    '.kh-grade-DEEP{color:var(--green)}' +
+    '.kh-grade-OK{color:var(--accent)}' +
+    '.kh-cluster h2{font-size:1.2rem;color:var(--ink);margin:22px 0 8px}' +
+    '#kh-count{font-size:.85rem;color:var(--muted);margin:8px 0 0}' +
+    '</style>';
+
+  const idx = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
+    '<title>Transformer Knowledge — Technical Answers | TransformerPath</title>' +
+    '<meta name="description" content="Clear, source-referenced answers to transformer engineering questions — design, manufacturing, testing, diagnostics, insulation, components and applications.">' +
+    '<link rel="canonical" href="https://transformerpath.com/knowledge.html">' +
+    '<link rel="stylesheet" href="style.css?v=' + ASSETS.css + '">' +
+    '<link rel="icon" type="image/svg+xml" href="brand/favicon.svg">' +
+    '<link rel="stylesheet" href="tp-nav.css?v=' + ASSETS.css + '">' +
+    hubStyle + schema +
+    '</head><body>' +
+    HEAD +
+    '\n<section class="hero" style="padding:48px 0 26px"><div class="container" style="max-width:960px"><h1 style="font-size:2rem">Transformers, explained</h1><p style="color:var(--muted);max-width:720px">Best answers to transformer-engineering questions — written neutrally, referenced to standards, and linked to the tools, components, manufacturers and book chapters that go deeper.</p></div></section>' +
+    '<main id="main" class="container" style="max-width:960px;padding:0 0 60px">' +
+    '<form id="kh-filters" action="knowledge.html" method="get">' +
+    '<label for="kh-topic">Topic<select id="kh-topic" name="topic">' + options(topics) + '</select></label>' +
+    '<label for="kh-level">Level<select id="kh-level" name="level">' + options(levels) + '</select></label>' +
+    '<label for="kh-life">Lifecycle<select id="kh-life" name="lifecycle">' + options(lives, function (v) { return labels[v] || v; }) + '</select></label>' +
+    '<label for="kh-q">Search<input id="kh-q" name="q" type="search" placeholder="Search articles" autocomplete="off"></label>' +
+    '</form>' +
+    '<p id="kh-count">' + ARTICLES.length + ' articles</p>' +
+    '<noscript><p style="font-size:.85rem;color:var(--muted)">Filters and search run in the browser. Every article stays linked below.</p></noscript>' +
+    clusterHtml +
+    '<p style="font-size:.8rem;color:var(--muted);margin-top:30px">Technical content is prepared from engineering references, standards frameworks, manufacturer documentation and industry sources. Contractual or compliance decisions should refer to current official standards. <b>TransformerPath Technical Editorial.</b></p>' +
+    '</main>' + FOOT + '\n' +
+    hubClientScript() +
+    '<script src="analytics.js?v=' + ASSETS.js + '" defer></script>\n</body>\n</html>';
+  fs.writeFileSync('knowledge.html', idx);
+  console.log('OK knowledge.html index |', ARTICLES.length, 'articles');
 }
-const grouped = CATS.filter(function (c) { return cards.some(function (a) { return a.topic === c; }); });
-const idx = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
-  '<title>Transformer Knowledge — Technical Answers | TransformerPath</title>' +
-  '<meta name="description" content="Clear, source-referenced answers to transformer engineering questions — design, manufacturing, testing, diagnostics, insulation, components and applications.">' +
-  '<link rel="canonical" href="https://transformerpath.com/knowledge.html"><link rel="stylesheet" href="style.css?v=5"><link rel="icon" type="image/svg+xml" href="brand/favicon.svg"></head><body>' +
-  HEAD + '\n<section class="hero" style="padding:48px 0 26px"><div class="container" style="max-width:960px"><h1 style="font-size:2rem">Transformers, explained</h1><p style="color:var(--muted);max-width:720px">Best answers to transformer-engineering questions — written neutrally, referenced to standards, and linked to the tools, components, manufacturers and book chapters that go deeper.</p></div></section>' +
-  '<main class="container" style="max-width:960px;padding:0 0 60px">' +
-  grouped.map(function (c) { return '<h2 style="font-size:1.2rem;color:var(--ink);margin:22px 0 8px">' + esc(c) + '</h2><div class="grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px">' + catCards(c) + '</div>'; }).join('') +
-  '<p style="font-size:.8rem;color:var(--muted);margin-top:30px">Technical content is prepared from engineering references, standards frameworks, manufacturer documentation and industry sources. Contractual or compliance decisions should refer to current official standards. <b>TransformerPath Technical Editorial.</b></p>' +
-  '</main>' + FOOT + '\n<script src="analytics.js?v=2" defer></script>\n</body>\n</html>';
-fs.writeFileSync('knowledge.html', idx);
-console.log('OK knowledge.html index |', cards.length, 'articles');
+
+if (require.main === module) build();
+module.exports = { ARTICLES: ARTICLES, CATS: CATS, build: build };

@@ -108,8 +108,15 @@ function addTender(o) {
   seen[key] = 1;
   const deadline = parseDeadline(o.deadline_raw || o.expected_raw || '');
   const status = deriveStatus(o.stage, o.expected_raw, deadline);
+  const projectCountry = (o.project_country != null && String(o.project_country).trim() !== '')
+    ? o.project_country
+    : ((o.country != null && String(o.country).trim() !== '') ? o.country : null);
   tenders.push(Object.assign({}, o, {
     tender_id: 'T-' + slugify(o.title).slice(0, 32).replace(/-+$/, ''),
+    project_country: projectCountry,
+    buyer_country: o.buyer_country != null ? o.buyer_country : null,
+    supplier_country: o.supplier_country != null ? o.supplier_country : null,
+    source_country: o.source_country != null ? o.source_country : null,
     status,
     statusLabel: STATUS_LABEL[status],
     statusGroup: STATUS_GROUP[status],
@@ -133,6 +140,12 @@ PROJECTS.forEach((p) => {
     utility: p.utility || '',
     epc: p.epc || '',
     country: p.country,
+    project_country: (p.project_country != null && String(p.project_country).trim() !== '')
+      ? p.project_country
+      : ((p.country != null && String(p.country).trim() !== '') ? p.country : null),
+    buyer_country: p.buyer_country != null ? p.buyer_country : null,
+    supplier_country: p.supplier_country != null ? p.supplier_country : null,
+    source_country: p.source_country != null ? p.source_country : null,
     region: regionOf(p.country),
     project_slug: slugify(p.project),
     transformer_scope: trScope(p.transformer_requirement),

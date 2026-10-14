@@ -109,6 +109,7 @@ DEV.forEach(function (dev) {
       url: x.url || '',
       value: valueLabel(x.value),
       date: dateFromSrc(x.src, x.date_iso),
+      facility_id: x.facility_id || null,
       confidence: BASE_CONF,
       claimType: BASE_CLAIM,
       sourceType: 'company_development',
@@ -228,7 +229,15 @@ function renderIntelligence() {
 
   // Companies with structured timelines.
   const compRows = Object.keys(co).sort(function (a, b) { return co[b].events.length - co[a].events.length; }).map(function (k) {
-    return '<span class="chip"><a href="manufacturers/' + esc(co[k].slug || resolveCompanyAlias(co[k].name).slug) + '/"><b>' + esc(co[k].name) + '</b> · ' + co[k].events.length + '</a></span>';
+    const slug = co[k].slug || resolveCompanyAlias(co[k].name).slug;
+    const label = '<b>' + esc(co[k].name) + '</b> · ' + co[k].events.length;
+    // Link only when that manufacturer profile is a real page. Utilities,
+    // logistics firms and subsidiary aliases can match an Intel title without
+    // having a profile, and a chip must not point at a missing URL.
+    if (slug && fs.existsSync('manufacturers/' + slug + '/index.html')) {
+      return '<span class="chip"><a href="manufacturers/' + esc(slug) + '/">' + label + '</a></span>';
+    }
+    return '<span class="chip">' + label + '</span>';
   });
   const companies = compRows.join('') || '<div class="tl-row" style="color:var(--muted)">No companies trackable yet.</div>';
 
