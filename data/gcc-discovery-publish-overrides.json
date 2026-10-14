@@ -2,7 +2,12 @@
   "$schema": "https://transformerpath.com/gcc-discovery-publish-overrides.schema.json",
   "purpose": "Human review overrides for GCC discovery → Intel publish. Editors approve SUPPORTED / HOLD_FOR_REVIEW candidates here; build-gcc-intel-publish.js honors approve[] and never auto-publishes reject[].",
   "honesty": "Discovery ≠ publication. Empty approve list means only the script's default CONFIRMED (+ allowlisted SUPPORTED) gate applies.",
-  "updated": "2026-09-29",
-  "approve": [],
-  "reject": []
+  "updated": "2026-10-14",
+  "approve": [
+    "sa-swa-rabigh-2p5mva",
+    "bh-ewa-389-2026-1000kva",
+    "uae-dewa-2122600155"
+  ],
+  "reject": [],
+  "desk_note": "2026-10-14 desk release of three held candidates only. sa-swa-rabigh-2p5mva and bh-ewa-389-2026-1000kva are CONFIRMED. uae-dewa-2122600155 is SUPPORTED only — no portal adapter has confirmed the row — and must be labeled SUPPORTED, never CONFIRMED. Other held candidates stay held."
 }

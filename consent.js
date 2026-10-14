@@ -1,14 +1,17 @@
-/* TransformerPath cookie consent loader.
-   Google AdSense and GA4 both set non-essential cookies. AdSense is injected
-   here after accept; analytics.js gates GA4 on the same localStorage key and
-   also listens for `tp-consent-changed` so a same-page accept loads GA4.
+/* TransformerPath cookie consent banner.
+   Google Analytics loads only after Accept. The AdSense loader itself is
+   stamped into <head> by build-dist.js so Auto ads and the AdSense crawler
+   can see ca-pub-5646978915498298 without a click. Personalized ads for
+   EEA, UK and Switzerland visitors are gated by Google's certified CMP
+   (AdSense → Privacy & messaging / Funding Choices), not by this banner.
+   This banner is not a certified CMP and must not be the only AdSense gate.
 
    State (localStorage['tp-cookie-consent']):
-     - 'accepted'  -> load AdSense + allow GA4
-     - 'essential' -> never load AdSense / GA4
+     - 'accepted'  -> allow GA4; AdSense tag is already on the page
+     - 'essential' -> never load GA4
      - null        -> not decided; show the banner
 
-   Nothing here loads a third-party script unless the visitor opts in. */
+   If a published page is missing the head tag, Accept still injects it once. */
 (function () {
   var PUB = 'ca-pub-5646978915498298';
   var KEY = 'tp-cookie-consent';
@@ -55,7 +58,7 @@
       'font-size:.82rem;line-height:1.4;');
     b.innerHTML =
       '<div class="tp-consent-inner">' +
-      '<div class="tp-consent-copy">We use essential cookies to keep the site working. With your consent we also use Google Analytics (GA4) and Google AdSense for analytics and relevant ads. <a href="privacy.html">Privacy policy</a>.</div>' +
+      '<div class="tp-consent-copy">We use essential cookies to keep the site working. With your consent we load Google Analytics. Advertising uses Google AdSense; visitors in the EEA, UK and Switzerland get Google&rsquo;s privacy message before personalized ads. <a href="/privacy.html">Privacy policy</a>.</div>' +
       '<div class="tp-consent-actions">' +
       '<button type="button" data-c="accept">Accept</button>' +
       '<button type="button" data-c="essential">Essential only</button>' +

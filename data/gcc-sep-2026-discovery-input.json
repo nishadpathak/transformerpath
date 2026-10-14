@@ -45,7 +45,7 @@
       "force_grade": "SUPPORTED",
       "publish_decision": "HOLD_FOR_REVIEW",
       "why_previously_missed": "Intel discovery had no DEWA procurement-portal adapter. Pipeline over-relied on English trade press / MEED / curated RSS (no GCC utility portals). Tender 2122600155 never entered discovery.",
-      "published_to_intel": false,
+      "published_to_intel": true,
       "notes": "Product spot-check asserts official DEWA visibility for 2122600155 float 24 Sep / close 27 Oct. Automated portal fetch of this ID timed out / not adaptered in this run → SUPPORTED not CONFIRMED until adapter returns the row."
     },
     {
@@ -95,7 +95,7 @@
       "force_grade": "CONFIRMED",
       "publish_decision": "REVIEW_QUEUE",
       "why_previously_missed": "No Etimad / Saudi Water Authority adapter; Arabic مناقسة vocabulary not in discovery dictionary; water-authority transformers outside English news feeds.",
-      "published_to_intel": false
+      "published_to_intel": true
     },
     {
       "candidate_id": "sa-swa-jubail-grounding",
@@ -492,7 +492,7 @@
       "force_grade": "CONFIRMED",
       "publish_decision": "REVIEW_QUEUE",
       "why_previously_missed": "No Bahrain Tender Board adapter; package-substation / kiosk supply not in RSS_FEEDS; EWA Central Stores procurements invisible to MEED-centric curation.",
-      "published_to_intel": false
+      "published_to_intel": true
     },
     {
       "candidate_id": "bh-ewa-aml-sep-review",
