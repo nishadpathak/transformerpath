@@ -14,12 +14,13 @@ const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|dat
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+const { directoryBadge, scrubLegacyLabels } = require('./lib/provenance-badge');
 
 const DATA = JSON.parse(fs.readFileSync('data/education.json', 'utf8'));
 const PROVIDERS = DATA.providers || [];
 
 function render() {
-  const eduJson = JSON.stringify(PROVIDERS);
+  const eduJson = scrubLegacyLabels(JSON.stringify(PROVIDERS));
 
   const html = `<!DOCTYPE html>
 <html lang="en" data-theme="dark">
@@ -108,7 +109,7 @@ ${HEAD}
     </div>
     <div class="stat-box">
       <div class="num">100%</div>
-      <div class="lbl">Website checked</div>
+      <div class="lbl">Provenance on each card</div>
     </div>
   </div>
 
@@ -133,6 +134,7 @@ ${HEAD}
 
 ${FOOT}
 
+<script src="lib/provenance-badge.js"></script>
 <script>
 window.__TP_EDUCATION__ = ${eduJson};
 (function(){
@@ -188,7 +190,7 @@ window.__TP_EDUCATION__ = ${eduJson};
       return '<div class="edu-card">' +
         '<div class="edu-top">' +
           '<h2 class="edu-name">' + esc(d.provider_name) + '</h2>' +
-          '<span class="ev-badge ev-confirmed">' + esc(d.verification_status || 'Verified') + '</span>' +
+          (window.TPProvenance ? TPProvenance.directoryBadge(d) : '') +
         '</div>' +
         '<div class="edu-loc">📍 ' + esc(loc) + ' &nbsp; ' + modePill + '</div>' +
         '<p style="color:var(--text);font-size:.9rem;line-height:1.5;margin:6px 0 10px">' + esc(d.description) + '</p>' +

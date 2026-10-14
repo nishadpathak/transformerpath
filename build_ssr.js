@@ -27,6 +27,7 @@ const { resolveStatus, isTravelSafe, isDiscoverable } = require('./lib/event-sta
 const { eventHref, eventPageMap } = require('./lib/event-href');
 const { loadEvents } = require('./lib/events-reader');
 const { dateLine, allowsCalendar, badgeText, dubaiToday } = require('./lib/event-display');
+const { eventBadge, intelBadge } = require('./lib/provenance-badge');
 
 /* ------------------------------------------------------------------ *
  * Helpers
@@ -200,7 +201,12 @@ function renderEvents(html) {
     const st = resolveStatus(ev);
     return { key: st.key, label: CARD_LABEL[st.key] === undefined ? st.label : CARD_LABEL[st.key], st: st };
   };
-  const badgeHTML = (ev) => { const b = badgeText(ev); return b ? '<span class="badge-unc">' + esc(b) + '</span>' : ''; };
+  const badgeHTML = (ev) => {
+    const prov = eventBadge(ev);
+    if (prov) return prov;
+    const b = badgeText(ev);
+    return b ? '<span class="badge-unc">' + esc(b) + '</span>' : '';
+  };
   const travelable = (ev) => allowsCalendar(ev) && isTravelSafe(evState(ev).st);
   /* A relative chip is a CLAIM about when the event happens. It is therefore only
      permitted when the canonical resolver says the dates are confirmed. DATE_TBC,
@@ -606,8 +612,11 @@ function renderIntel(html) {
 
   // 1. Generation 2 (tabs & panels: intel.html and 13 dated editions)
   if (html.includes('id="panel-news"')) {
-    // Live intel.html: first-page timeline from compact JSON. Archives keep the full dump.
-    if (html.includes('id="intel-timeline"') && fs.existsSync('data/intel-feed-ui.json')) {
+    // Live intel.html: build-intel-feed-ui.js owns the timeline (age, relevance,
+    // and the shared provenance badge). Replacing it here drops that markup.
+    if (html.includes('<!--SSR:intel-timeline-->')) {
+      /* leave the richer SSR in place */
+    } else if (html.includes('id="intel-timeline"') && fs.existsSync('data/intel-feed-ui.json')) {
       try {
         const feed = JSON.parse(fs.readFileSync('data/intel-feed-ui.json', 'utf8'));
         const first = (feed.posts || []).filter(function (p) {
@@ -623,7 +632,7 @@ function renderIntel(html) {
             (p.soWhat ? '<p class="intel-sowhat">' + esc(p.soWhat) + '</p>' : '') +
             '<div class="intel-meta">' +
             (p.cls ? '<span class="cls-badge cls-' + esc(p.cls) + '">' + esc(p.cls) + '</span>' : '') +
-            (p.provenance ? '<span class="intel-prov intel-prov-' + esc(p.provenance) + '">' + esc(p.provenance) + '</span>' : '') +
+            (intelBadge(p) || '') +
             '<span class="intel-region">' + esc(p.region || '') + '</span>' +
             '<span class="src">' + esc(p.sourceName || p.src || '') + '</span></div></div></article>';
         }).join('');

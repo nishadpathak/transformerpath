@@ -54,6 +54,7 @@ const DIRS = [
 // Individual files from directories that are NOT wholly public.
 const FILES_FROM_MIXED_DIRS = [
   'lib/event-search.js',        // loaded by search.html; the rest of lib/ is build-time
+  'lib/provenance-badge.js',    // shared provenance badge, loaded by public pages
 ];
 
 // Runtime JavaScript at the root, derived from what pages actually load.

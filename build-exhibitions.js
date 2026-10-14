@@ -6,6 +6,7 @@
 'use strict';
 const fs = require('fs');
 const { dubaiToday, dateLine, nullText, badgeText } = require('./lib/event-display');
+const { eventBadge } = require('./lib/provenance-badge');
 
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
@@ -37,7 +38,7 @@ const generated = {
     exhibitor_count: ev.stats && ev.stats.exhibitors ? ev.stats.exhibitors.value : null,
     visitor_count: ev.stats && ev.stats.visitors ? ev.stats.visitors.value : null,
     description: ev.description,
-    verification_status: (ev.date_status === 'CONFIRMED' && ev.source_url && ev.source_checked_at) ? 'Official Website Checked' : null,
+    verification_status: null,
     source_checked_at: ev.source_checked_at,
     source_url: ev.source_url,
   })),
@@ -46,8 +47,8 @@ fs.writeFileSync('data/exhibitions.json', JSON.stringify(generated, null, 2) + '
 
 const upcoming = rows.filter((ev) => !ev.end || ev.end >= TODAY);
 const cards = upcoming.map((ev) => {
-  const badge = badgeText(ev);
-  return '<div class="intel-item"><h3>' + esc(ev.name) + (badge ? ' <span class="badge-unc">' + esc(badge) + '</span>' : '') + '</h3>' +
+  const badge = eventBadge(ev) || (badgeText(ev) ? '<span class="badge-unc">' + esc(badgeText(ev)) + '</span>' : '');
+  return '<div class="intel-item"><h3>' + esc(ev.name) + (badge ? ' ' + badge : '') + '</h3>' +
     '<div class="dates">' + esc(dateLine(ev)) + '</div>' +
     '<div class="venue">' + esc(ev.venue || nullText()) + (ev.city ? ' — ' + esc(ev.city) : '') + (ev.country ? ', ' + esc(ev.country) : '') + '</div>' +
     '<p style="color:var(--muted)">' + esc(ev.description || '') + '</p>' +

@@ -9,6 +9,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 execFileSync(process.execPath, [path.join(__dirname, 'build-event-canonicalization.js')], { stdio: 'inherit' });
 const { dubaiToday, fmtDay, dateLine, nullText, allowsCalendar, badgeText } = require('./lib/event-display');
+const { eventBadge } = require('./lib/provenance-badge');
 const { eventIcs, calendarIcs } = require('./lib/event-ics');
 
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
@@ -150,7 +151,7 @@ Object.keys(groups).forEach((slug) => {
   const others = list.filter((ev) => ev !== nxt);
   const leadBlock = nxt
     ? ('<p class="lead">' + esc(dateLine(nxt)) + (nxt.venue ? ' · ' + esc(nxt.venue) : '') + (nxt.city ? ', ' + esc(nxt.city) : '') + '</p>' +
-      '<p><span class="badge">' + esc(badgeText(nxt)) + '</span></p>' +
+      '<p>' + (eventBadge(nxt) || (badgeText(nxt) ? '<span class="badge">' + esc(badgeText(nxt)) + '</span>' : '')) + '</p>' +
       '<div class="evmeta">' +
       '<span><b>Organiser</b> ' + esc(nxt.organiser || nullText()) + '</span>' +
       (nxt.official_url ? '<span><a href="' + esc(nxt.official_url) + '">Official site</a></span>' : '<span>' + esc(nullText()) + '</span>') +
@@ -186,11 +187,13 @@ Object.keys(groups).forEach((slug) => {
 
   list.forEach((ev) => {
     const pastEd = isPast(ev);
-    const badge = pastEd ? 'Completed' : badgeText(ev);
+    const badge = pastEd
+      ? '<span class="badge">Completed</span>'
+      : (eventBadge(ev) || (badgeText(ev) ? '<span class="badge">' + esc(badgeText(ev)) + '</span>' : ''));
     const nextLink = nxt && nxt.id !== ev.id ? '<p><a href="../' + esc(slug) + '/">Next edition: ' + esc(nxt.name) + '</a></p>' : '<p><a href="../' + esc(slug) + '/">Series hub</a></p>';
     const edBody = '<nav style="font-size:.8rem"><a href="../../events.html">Events</a> › <a href="../' + esc(slug) + '/">' + esc(seriesName) + '</a> › ' + esc(ev.name) + '</nav>' +
       '<h1>' + esc(ev.name) + '</h1>' +
-      '<p>' + esc(badge || '') + '</p>' +
+      '<p>' + (badge || '') + '</p>' +
       '<p class="lead">' + esc(dateLine(ev)) + '</p>' +
       '<div class="evmeta"><span><b>Venue</b> ' + esc(ev.venue || nullText()) + '</span>' +
       '<span><b>City</b> ' + esc(ev.city || nullText()) + '</span>' +

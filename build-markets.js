@@ -17,6 +17,7 @@ const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|dat
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+const { facilityBadge } = require('./lib/provenance-badge');
 function slugify(s) { return String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/&/g, 'and').replace(/['’´]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, ''); }
 const ci = function (s) { return (s || '').toLowerCase(); };
 
@@ -513,7 +514,11 @@ function factoriesFor(m) {
       country: f.country,
       products: (f.capabilities && f.capabilities.transformer_types) || [],
       facility_id: f.id,
-      produces: (f.capabilities && f.capabilities.produces) || f.produces || ''
+      produces: (f.capabilities && f.capabilities.produces) || f.produces || '',
+      source_url: f.source_url || '',
+      claim_type: f.claim_type || '',
+      confidence: f.confidence || '',
+      source_tier: f.source_tier || ''
     };
   });
   if (fromCanon.length) return fromCanon;
@@ -585,7 +590,8 @@ function marketPage(m) {
     facs.slice(0, 10).map(function (f) {
       const prods = (f.products || []).join(', ') || '—';
       const fid = f.facility_id ? '<span style="font-family:monospace;font-size:.74rem;color:var(--muted)">' + esc(f.facility_id) + '</span>' : '—';
-      return '<tr><td style="padding:8px 10px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text)">' + esc(f.name) + '</td><td style="padding:8px 10px;border-bottom:1px solid var(--border);color:var(--muted)">' + esc(f.city || '—') + '</td><td style="padding:8px 10px;border-bottom:1px solid var(--border)">' + esc(prods) + '</td><td style="padding:8px 10px;border-bottom:1px solid var(--border)">' + fid + '</td></tr>';
+      const badge = facilityBadge(f);
+      return '<tr><td style="padding:8px 10px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text)">' + esc(f.name) + (badge ? '<div>' + badge + '</div>' : '') + '</td><td style="padding:8px 10px;border-bottom:1px solid var(--border);color:var(--muted)">' + esc(f.city || '—') + '</td><td style="padding:8px 10px;border-bottom:1px solid var(--border)">' + esc(prods) + '</td><td style="padding:8px 10px;border-bottom:1px solid var(--border)">' + fid + '</td></tr>';
     }).join('') +
     '</tbody></table></div>' + (facs.length > 10 ? '<p style="color:var(--muted);font-size:.8rem">+' + (facs.length - 10) + ' more sourced plant records in this market.</p>' : '')
   ) : '<p style="color:var(--muted);font-size:.85rem">No independent plant sites indexed yet.</p>';

@@ -24,6 +24,7 @@ const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|dat
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+const { directoryBadge, scrubLegacyLabels } = require('./lib/provenance-badge');
 function slugify(s) { return String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/&/g, 'and').replace(/['’´]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, ''); }
 const ci = (s) => (s || '').toLowerCase();
 
@@ -98,7 +99,7 @@ const regionsHtml = regionKeys.map((r) => {
 const STANDARDS_DATA = (() => {
   try { return JSON.parse(fs.readFileSync('data/standards.json', 'utf8')).standards || []; } catch(e) { return []; }
 })();
-const stdJson = JSON.stringify(STANDARDS_DATA);
+const stdJson = scrubLegacyLabels(JSON.stringify(STANDARDS_DATA));
 
 const html = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Global Transformer Standards & Regulations Directory — IEC, IEEE, National Standards | TransformerPath</title>' +
   '<meta name="description" content="Worldwide directory of electrical transformer standards, test codes, and regulatory efficiency mandates (IEC 60076, IEEE C57, EU Ecodesign, US DOE 2027, IS 1180, GB/T 1094). Verified scopes, frequencies, and voltage levels.">' +
@@ -160,7 +161,7 @@ const html = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta cha
   '<div class="std-tbl"><div style="display:flex;font-size:.72rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;padding:8px 10px;border-bottom:2px solid var(--border)"><span style="width:26%">Country</span><span style="width:14%">Region</span><span style="width:10%">Freq</span><span style="width:14%">Top voltage</span><span style="width:26%">Synchronous area</span><span style="width:10%">Operators</span></div><div id="stBody">' + regionsHtml + '</div></div>' +
   '<p class="std-note">National grid data is source-backed from the TransformerPath grid census. All standards entries reflect official publications confirmed by direct website verification.</p>' +
   '</main>\n' + FOOT + 
-  '\n<script>window.__TP_STANDARDS__=' + stdJson + ';</script>\n' +
+  '\n<script src="lib/provenance-badge.js"></script>\n<script>window.__TP_STANDARDS__=' + stdJson + ';</script>\n' +
   `<script>
 (function(){
   var data = window.__TP_STANDARDS__ || [];
@@ -200,7 +201,7 @@ const html = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta cha
       return '<div class="std-reg-card">' +
         '<div class="std-reg-top">' +
           '<div><span class="std-reg-code">' + esc(d.standard_code) + '</span> &nbsp; <span class="std-pill">' + esc(d.country) + '</span></div>' +
-          '<span class="ev-badge ev-confirmed">' + esc(d.verification_status || 'Verified') + '</span>' +
+          (window.TPProvenance ? TPProvenance.directoryBadge(d) : '') +
         '</div>' +
         '<div class="std-reg-title">' + esc(d.title) + '</div>' +
         '<div style="font-size:.82rem;color:var(--muted);margin-bottom:8px"><b>Body:</b> ' + esc(d.standard_body) + ' &nbsp;|&nbsp; <b>Frequency:</b> ' + esc(d.frequency_hz) + ' &nbsp;|&nbsp; <b>Voltages:</b> ' + esc(d.voltage_levels_kv) + '</div>' +

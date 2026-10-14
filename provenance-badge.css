@@ -1,0 +1,68 @@
+/* Shared provenance badge. One component, every surface. */
+.tp-prov {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  position: relative;
+  max-width: 100%;
+  margin: 2px 0 2px 6px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: .72rem;
+  font-weight: 650;
+  line-height: 1.35;
+  letter-spacing: 0;
+  text-transform: none;
+  vertical-align: middle;
+}
+.tp-prov-confirmed {
+  background: #14351f;
+  color: #4ade80;
+  border: 1px solid rgba(74, 222, 128, .4);
+}
+.tp-prov-supported {
+  background: #12283f;
+  color: #93c5fd;
+  border: 1px solid rgba(147, 197, 253, .4);
+}
+.tp-prov-listed {
+  background: transparent;
+  color: var(--muted, #9ca3af);
+  border: 1px solid var(--border, #374151);
+  font-weight: 600;
+}
+.tp-prov-mark { margin-right: 4px; }
+.tp-prov a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.tp-prov-tip {
+  margin-left: 6px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  background: transparent;
+  color: inherit;
+  font: 700 9px/13px var(--font-sans, system-ui, sans-serif);
+  padding: 0;
+  cursor: help;
+}
+.tp-prov-pop {
+  display: none;
+  position: absolute;
+  z-index: 30;
+  left: 0;
+  top: calc(100% + 6px);
+  width: min(280px, 72vw);
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--card, #1f2937);
+  color: var(--text, #e5e7eb);
+  border: 1px solid var(--border, #374151);
+  font-weight: 500;
+  font-size: .75rem;
+  line-height: 1.4;
+  text-align: left;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .28);
+}
+.tp-prov:hover .tp-prov-pop,
+.tp-prov:focus-within .tp-prov-pop { display: block; }
+.tp-prov-pop a { color: var(--accent, #fbbf24); font-weight: 700; }

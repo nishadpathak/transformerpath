@@ -14,12 +14,13 @@ const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|dat
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+const { directoryBadge, scrubLegacyLabels } = require('./lib/provenance-badge');
 
 const DATA = JSON.parse(fs.readFileSync('data/associations.json', 'utf8'));
 const ASSOCIATIONS = DATA.associations || [];
 
 function render() {
-  const ascJson = JSON.stringify(ASSOCIATIONS);
+  const ascJson = scrubLegacyLabels(JSON.stringify(ASSOCIATIONS));
 
   const html = `<!DOCTYPE html>
 <html lang="en" data-theme="dark">
@@ -133,6 +134,7 @@ ${HEAD}
 
 ${FOOT}
 
+<script src="lib/provenance-badge.js"></script>
 <script>
 window.__TP_ASSOCIATIONS__ = ${ascJson};
 (function(){
@@ -187,7 +189,7 @@ window.__TP_ASSOCIATIONS__ = ${ascJson};
       return '<div class="asc-card">' +
         '<div class="asc-top">' +
           '<h2 class="asc-name">' + esc(d.association_name) + '</h2>' +
-          '<span class="ev-badge ev-confirmed">' + esc(d.verification_status || 'Verified') + '</span>' +
+          (window.TPProvenance ? TPProvenance.directoryBadge(d) : '') +
         '</div>' +
         '<div class="asc-loc">📍 ' + esc(d.country) + ' &nbsp; ' + scopeBadge + '</div>' +
         '<p style="color:var(--text);font-size:.9rem;line-height:1.5;margin:6px 0 10px">' + esc(d.description) + '</p>' +

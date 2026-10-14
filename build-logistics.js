@@ -14,12 +14,13 @@ const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|dat
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+const { directoryBadge, scrubLegacyLabels } = require('./lib/provenance-badge');
 
 const DATA = JSON.parse(fs.readFileSync('data/logistics.json', 'utf8'));
 const COMPANIES = DATA.companies || [];
 
 function render() {
-  const logJson = JSON.stringify(COMPANIES);
+  const logJson = scrubLegacyLabels(JSON.stringify(COMPANIES));
 
   const html = `<!DOCTYPE html>
 <html lang="en" data-theme="dark">
@@ -108,7 +109,7 @@ ${HEAD}
     </div>
     <div class="stat-box">
       <div class="num">100%</div>
-      <div class="lbl">Website checked</div>
+      <div class="lbl">Provenance on each card</div>
     </div>
   </div>
 
@@ -134,6 +135,7 @@ ${HEAD}
 
 ${FOOT}
 
+<script src="lib/provenance-badge.js"></script>
 <script>
 window.__TP_LOGISTICS__ = ${logJson};
 (function(){
@@ -193,7 +195,7 @@ window.__TP_LOGISTICS__ = ${logJson};
       return '<div class="log-card">' +
         '<div class="log-top">' +
           '<h2 class="log-name">' + esc(d.company_name) + '</h2>' +
-          '<span class="ev-badge ev-confirmed">' + esc(d.verification_status || 'Verified') + '</span>' +
+          (window.TPProvenance ? TPProvenance.directoryBadge(d) : '') +
         '</div>' +
         '<div class="log-loc">📍 ' + esc(loc) + '</div>' +
         '<div style="margin-bottom:8px">' + weightBadge + '</div>' +
