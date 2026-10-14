@@ -23,8 +23,11 @@ const path = require('path');
 /* ONE canonical event-status resolver, shared with build-events.js and
    check-event-integrity.js. This file used to re-derive status and countdowns
    from raw dates, which is how "Dates TBC" could render beside "Live now". */
-const { resolveStatus, isTravelSafe, isUpcoming, platformToday } = require('./lib/event-status');
+const { resolveStatus, isTravelSafe, isDiscoverable, isUpcoming, platformToday } = require('./lib/event-status');
 const { eventHref, eventPageMap, resolveEventSlug } = require('./lib/event-href');
+const { loadEvents } = require('./lib/events-reader');
+const { dateLine, allowsCalendar, badgeText, dubaiToday } = require('./lib/event-display');
+const { eventBadge, intelBadge } = require('./lib/provenance-badge');
 const tpAff = require('./lib/travelpayouts');
 
 /* ------------------------------------------------------------------ *
@@ -159,15 +162,16 @@ function webinarCta(w) {
  * EVENTS
  * ------------------------------------------------------------------ */
 function renderEvents(html) {
-  const EVENTS = JSON.parse(fs.readFileSync('data/events.json', 'utf8'));
-  const now = new Date(new Date().toDateString());
+  const EVENTS = loadEvents();
+  const TODAY = dubaiToday();
+  const now = new Date(TODAY + 'T00:00:00Z');
 
   /* Normal upcoming discovery. A record whose organiser calendar was checked and
      did not list it (REJECTED_NO_EVIDENCE) or that is still under research is not
      an upcoming event — it leaves this list rather than sitting in it with a
      warning nobody reads. */
   let list = EVENTS.filter((ev) => isUpcoming(ev, platformToday()));
-  list.sort((a, b) => a.s.localeCompare(b.s));
+  list.sort((a, b) => String(a.s || a.start || '').localeCompare(String(b.s || b.start || '')));
 
   const PLATFORM_TZ_MS = 4*60*60*1000; // GST/Asia-Dubai
   const todayUTC = (function(){ var g=new Date(Date.now()+PLATFORM_TZ_MS); return Date.UTC(g.getUTCFullYear(),g.getUTCMonth(),g.getUTCDate()); })();
@@ -185,13 +189,19 @@ function renderEvents(html) {
     const st = resolveStatus(ev);
     return { key: st.key, label: CARD_LABEL[st.key] === undefined ? st.label : CARD_LABEL[st.key], st: st };
   };
-  const badgeHTML = (ev) => { const s = evState(ev); return s.label ? '<span class="badge-unc">' + s.label + '</span>' : ''; };
-  const travelable = (ev) => isTravelSafe(evState(ev).st);
+  const badgeHTML = (ev) => {
+    const prov = eventBadge(ev);
+    if (prov) return prov;
+    const b = badgeText(ev);
+    return b ? '<span class="badge-unc">' + esc(b) + '</span>' : '';
+  };
+  const travelable = (ev) => allowsCalendar(ev) && isTravelSafe(evState(ev).st);
   /* A relative chip is a CLAIM about when the event happens. It is therefore only
      permitted when the canonical resolver says the dates are confirmed. DATE_TBC,
      MONITORING, VENUE_TBC, POSTPONED, CANCELLED and COMPLETED get no countdown and
      can never say "Live now" — that combination was reaching production. */
   const relLabel = (ev) => {
+    if (!allowsCalendar(ev)) return '';
     const key = evState(ev).key;
     // data-rel/data-rel-end let the client script recompute the badge against
     // today's date so it never goes stale between builds.
@@ -204,17 +214,7 @@ function renderEvents(html) {
     if (d <= 31) return `<span class="rel-soon"${relAttr}>In ${d} days</span>`;
     return '';
   };
-  const icsHref = (ev) => {
-    const dt = (d) => d.replace(/-/g, '');
-    const escv = (t) => (t || '').replace(/,/g, '\\,');
-    const lines = ['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//TransformerPath//Events//EN','CALSCALE:GREGORIAN','BEGIN:VEVENT',
-      'UID:' + dt(ev.s) + '-' + dt(ev.e) + '@transformerpath.com',
-      'DTSTAMP:' + dt(new Date().toISOString().slice(0, 10)) + 'T000000Z',
-      'DTSTART;VALUE=DATE:' + dt(ev.s), 'DTEND;VALUE=DATE:' + dt(ev.e),
-      'SUMMARY:' + escv(ev.n), 'LOCATION:' + escv(ev.v + ', ' + ev.c + ', ' + ev.co), 'URL:' + ev.u,
-      'END:VEVENT','END:VCALENDAR'];
-    return 'data:text/calendar;charset=utf-8,' + encodeURIComponent(lines.join('\r\n'));
-  };
+  const icsHref = (ev) => (allowsCalendar(ev) && ev.id) ? ('events/ics/' + ev.id + '.ics') : '';
 
   // Up-Next strip (soonest 3) — pre-rendered so crawlers see it too
   /* The hero strip must consume the SAME canonical record as the full list, or the
@@ -238,37 +238,44 @@ function renderEvents(html) {
   }).join('\n');
 
   const cards = list.map((ev) => {
-    const soon = new Date(ev.s) > now && (new Date(ev.s) - now) / 86400000 <= 31;
-    const st = evState(ev);
+    const soon = allowsCalendar(ev) && ev.s && new Date(ev.s) > now && (new Date(ev.s) - now) / 86400000 <= 31;
     const trav = travelable(ev);
-    const dateLbl = (st.key === 'DATE_TBC' || st.key === 'UNCONFIRMED' || st.key === 'MONITORING') ? 'Dates TBC' : (`${fmt(ev.s)} → ${fmt(ev.e)}`);
-    const venueLbl = (st.key === 'VENUE_TBC') ? 'Venue TBC' : `${esc(ev.v)} — ${esc(ev.c)}, ${esc(ev.co)}`;
+    const dateLbl = dateLine(ev);
+    const venueLbl = `${esc(ev.v) || 'Not yet published by organiser'} — ${esc(ev.c) || 'Not yet published by organiser'}, ${esc(ev.co)}`;
     return `<div class="intel-item event-card" data-start="${esc(ev.s)}" data-end="${esc(ev.e)}">
       <h3>${esc(ev.n)}${soon ? '<span class="badge-soon">Soon</span>' : ''}${badgeHTML(ev)}</h3>
       <div class="dates">${dateLbl}${relLabel(ev)}</div>
       <div class="venue">📍 ${venueLbl}${esc(ev.r) ? ' · ' + esc(ev.r) : ''}</div>
       <p style="color:var(--muted); font-size:.92rem; margin-bottom:10px">${esc(ev.d)}</p>
       <div style="display:flex; gap:8px; flex-wrap:wrap">
-        <a class="btn btn-amber btn-sm" href="${esc(ev.u)}" target="_blank" rel="noopener">Official site →</a>
+        ${ev.u ? `<a class="btn btn-amber btn-sm" href="${esc(ev.u)}" target="_blank" rel="noopener">Official site →</a>` : '<span>Official site: Not yet published by organiser</span>'}
         ${eventHref(ev, { fallbackListing: false }) ? `<a class="btn btn-outline btn-sm" href="${esc(eventHref(ev, { fallbackListing: false }))}">Event page →</a>` : ''}
         <a class="btn btn-outline btn-sm" href="${esc('map.html?layer=events&q=' + encodeURIComponent(ev.n))}">View on map</a>
         ${trav ? tpAff.calendarLinks({ slug: resolveEventSlug(ev.n) || ev.n, city: ev.c, checkIn: ev.s, checkOut: ev.e, disclosureHref: 'affiliate-disclosure.html' }) : ''}
-        ${trav ? `<a class="btn btn-outline btn-sm" data-aff="calendar" data-ev="${esc(ev.n)}" href="${esc(icsHref(ev))}" download target="_blank" rel="noopener">📅 Add</a>` : ''}
+        ${icsHref(ev) ? `<a class="btn btn-outline btn-sm" data-aff="calendar" data-ev="${esc(ev.n)}" href="${esc(icsHref(ev))}">📅 Add</a>` : ''}
       </div>
     </div>`;
   }).join('\n');
 
   html = inject(html, '<div id="grid">', 'events-grid', cards);
   html = inject(html, '<div id="upNext" class="up-next" aria-label="Upcoming events">', 'events-upnext', upNext);
+  const depthConfirmed = EVENTS.filter((ev) => ev.date_status === 'CONFIRMED' && ev.source_url && ev.source_checked_at && ev.end && ev.end >= TODAY).length;
+  const depthProjected = EVENTS.filter((ev) => ev.date_status === 'PROJECTED' && (!ev.end || ev.end >= TODAY)).length;
+  const depthCountries = new Set(EVENTS.filter((ev) => {
+    if (ev.research_status === 'REJECTED_NO_EVIDENCE' || ev.date_status === 'CANCELLED') return false;
+    if (!isDiscoverable(resolveStatus(ev))) return false;
+    if (!ev.country) return false;
+    if (!ev.end) return ev.date_status === 'TBA' || ev.date_status === 'PROJECTED';
+    return ev.end >= TODAY;
+  }).map((ev) => ev.country)).size;
+  const countText = 'Showing ' + list.length + ' upcoming events. ' +
+    depthConfirmed + ' upcoming confirmed · ' + depthProjected + ' projected · ' + depthCountries + ' countries hosting';
   html = inject(html, '<p style="text-align:center; color:var(--muted); font-size:.88rem" id="count">', 'events-count',
-    `Showing ${list.length} upcoming events`);
+    countText);
 
   // Dynamically generate JSON-LD schema with only future, discoverable, scheduled events
   const jsonLdEvents = list
-    .filter((ev) => {
-      const st = evState(ev).st;
-      return (st.key === 'CONFIRMED_UPCOMING' || st.key === 'LIVE') && new Date(ev.s) >= now;
-    })
+    .filter((ev) => allowsCalendar(ev) && ev.end >= TODAY)
     .slice(0, 60)
     .map((ev) => ({
       '@type': 'Event',
@@ -295,6 +302,10 @@ function renderEvents(html) {
   // Synchronize client-side EVENTS array and event-page slug map
   html = html.replace(/const EVENT_PAGES\s*=\s*\{[\s\S]*?\};/m, 'const EVENT_PAGES = ' + JSON.stringify(eventPageMap()) + ';');
   html = html.replace(/const EVENTS\s*=\s*\[[\s\S]*?\];/m, 'const EVENTS = ' + JSON.stringify(EVENTS) + ';');
+
+  const past = EVENTS.filter((ev) => ev.end && ev.end < TODAY && ev.research_status !== 'REJECTED_NO_EVIDENCE').slice(-30).reverse();
+  const pastHtml = past.map((ev) => '<div class="intel-item event-card"><h3>' + esc(ev.n) + ' <span class="badge-unc">Completed</span></h3><div class="dates">' + esc(dateLine(ev)) + '</div><div class="venue">' + esc(ev.v || 'Not yet published by organiser') + '</div></div>').join('\n');
+  html = injectById(html, 'pastGrid', pastHtml);
 
   return { page: html, records: list.length };
 }
@@ -601,8 +612,11 @@ function renderIntel(html) {
 
   // 1. Generation 2 (tabs & panels: intel.html and 13 dated editions)
   if (html.includes('id="panel-news"')) {
-    // Live intel.html: first-page timeline from compact JSON. Archives keep the full dump.
-    if (html.includes('id="intel-timeline"') && fs.existsSync('data/intel-feed-ui.json')) {
+    // Live intel.html: build-intel-feed-ui.js owns the timeline (age, relevance,
+    // and the shared provenance badge). Replacing it here drops that markup.
+    if (html.includes('<!--SSR:intel-timeline-->')) {
+      /* leave the richer SSR in place */
+    } else if (html.includes('id="intel-timeline"') && fs.existsSync('data/intel-feed-ui.json')) {
       try {
         const feed = JSON.parse(fs.readFileSync('data/intel-feed-ui.json', 'utf8'));
         const first = (feed.posts || []).filter(function (p) {
@@ -622,7 +636,7 @@ function renderIntel(html) {
             ((p.evidenceGrade && p.evidenceGrade !== 'CONFIRMED' && p.evidenceGrade !== p.cls)
               ? '<span class="cls-badge cls-' + esc(p.evidenceGrade) + '" title="Supported evidence — not yet fully verified. No live portal adapter has confirmed this item.">' + esc(p.evidenceGrade) + '</span>'
               : '') +
-            (p.provenance ? '<span class="intel-prov intel-prov-' + esc(p.provenance) + '">' + esc(p.provenance) + '</span>' : '') +
+            (intelBadge(p) || '') +
             '<span class="intel-region">' + esc(p.region || '') + '</span>' +
             '<span class="src">' + esc(p.sourceName || p.src || '') + '</span></div></div></article>';
         }).join('');

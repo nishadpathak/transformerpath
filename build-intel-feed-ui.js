@@ -571,6 +571,7 @@ function ageBadgeHtml(ageTier, isActive) {
   return '<span class="age-badge age-ref" style="background:rgba(159,176,196,.15);color:#9fb0c4;border:1px solid rgba(159,176,196,.35);font-size:.65rem;font-weight:800;padding:2px 7px;border-radius:4px;letter-spacing:.5px">REFERENCE</span>';
 }
 
+const { intelBadge } = require('./lib/provenance-badge');
 function ssrCard(p) {
   const cls = p.cls ? '<span class="cls-badge cls-' + esc(p.cls) + '">' + esc(p.cls) + '</span>' : '';
   const evidence = (p.evidenceGrade && p.evidenceGrade !== 'CONFIRMED' && p.evidenceGrade !== p.cls)
@@ -579,7 +580,7 @@ function ssrCard(p) {
   const evidenceNote = p.evidenceNote
     ? '<p class="intel-evidence-note" style="font-size:.76rem;color:#f0c14a;margin:6px 0 0">' + esc(p.evidenceNote) + '</p>'
     : '';
-  const prov = p.provenance ? '<span class="intel-prov intel-prov-' + esc(p.provenance) + '">' + esc(p.provenance) + '</span>' : '';
+  const prov = intelBadge(p);
   const age = ageBadgeHtml(p.ageTier, p.isActive);
   const date = p.date ? esc(p.date) : 'Date not stated';
   const href = p.url || ('intel.html#p-' + p.id);

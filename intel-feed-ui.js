@@ -56,7 +56,7 @@
     var evidenceNote = p.evidenceNote
       ? '<p class="intel-evidence-note" style="font-size:.76rem;color:#f0c14a;margin:6px 0 0">' + esc(p.evidenceNote) + '</p>'
       : '';
-    var prov = p.provenance ? '<span class="intel-prov intel-prov-' + esc(p.provenance) + '">' + esc(p.provenance) + '</span>' : '';
+    var prov = (window.TPProvenance && p.provenance) ? TPProvenance.intelBadge(p) : '';
     var age = ageBadgeHtml(p.ageTier, p.isActive, p.historicalReference);
     var relevance = p.currentRelevance ? '<div class="intel-relevance" style="font-size:.76rem;color:var(--muted);margin-top:6px;padding-top:4px;border-top:1px dashed var(--border)"><b>Current Relevance:</b> ' + esc(p.currentRelevance) + '</div>' : '';
 

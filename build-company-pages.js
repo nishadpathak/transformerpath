@@ -24,6 +24,7 @@ const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|dat
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+const { evidenceBadge, facilityBadge } = require('./lib/provenance-badge');
 function slugify(s) { return String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/&/g, 'and').replace(/['’´]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, ''); }
 const ci = function (s) { return (s || '').toLowerCase(); };
 const norm = function (s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim().replace(/\s+/g, ' '); };
@@ -207,9 +208,9 @@ function verifiedFactoriesHtml(r) {
     const fid = f.facility_id ? '<span style="font-family:monospace;font-size:.72rem;background:rgba(255,255,255,.06);padding:1px 6px;border-radius:4px;color:var(--muted);margin-left:6px">' + esc(f.facility_id) + '</span>' : '';
     const prod = f.produces ? '<div style="font-size:.8rem;color:var(--muted);margin-top:2px">' + esc(f.produces) + '</div>' : '';
     const src = f.source_url ? '<a href="' + esc(f.source_url) + '" target="_blank" rel="noopener" style="color:var(--accent);font-size:.78rem">source ↗</a>' : '';
-    const ct = f.claim_type ? '<span class="vbadge" style="font-size:.68rem;font-weight:600">' + esc(f.claim_type.replace(/_/g, ' ')) + '</span>' : '';
+    const badge = facilityBadge(f);
     return '<tr><td style="padding:8px 10px;vertical-align:top"><b style="color:var(--text)">' + (lo || '—') + '</b>' + fid + prod + '</td>' +
-      '<td style="padding:8px 10px;vertical-align:top;font-size:.8rem;color:var(--muted)">' + ct + ' ' + src + '</td></tr>';
+      '<td style="padding:8px 10px;vertical-align:top;font-size:.8rem;color:var(--muted)">' + (badge || src) + '</td></tr>';
   }).join('');
   return '<h2>Confirmed manufacturing facilities</h2><p style="font-size:.82rem;color:var(--muted)">Where an independent source documents a transformer manufacturing plant, it is catalogued here with its verified facility ID and source attribution. Factory capability is separate from the company group maximum and is never inferred from it.</p>' +
     '<table class="tbl"><tbody>' + rows + '</tbody></table>';
@@ -314,7 +315,7 @@ function provenanceHtml(r) {
     const cap = f.field.replace(/_/g, ' ').replace(/^./, function (c) { return c.toUpperCase(); });
     return '<tr><th style="text-align:left;color:var(--muted);font-weight:600;padding:6px 10px;border-bottom:1px solid var(--border);width:38%">' + esc(cap) + '</th>' +
       '<td style="padding:6px 10px;border-bottom:1px solid var(--border);color:var(--text);font-weight:600">' + esc(f.value) + ' ' + esc(f.unit) + '</td>' +
-      '<td style="padding:6px 10px;border-bottom:1px solid var(--border);color:var(--muted);font-size:.78rem">' + esc(f.confidence) + ' · ' + esc(f.claim_type.replace(/_/g, ' ')) + '<br><a href="' + esc(f.source_url) + '" target="_blank" rel="noopener nofollow" style="color:var(--accent)">source</a></td></tr>';
+      '<td style="padding:6px 10px;border-bottom:1px solid var(--border);color:var(--muted);font-size:.78rem">' + (evidenceBadge(f) || '') + '</td></tr>';
   }).join('');
   const notes = p.facts.map(function (f) { return '<li style="color:var(--muted);font-size:.8rem">' + esc(f.note) + '</li>'; }).join('');
   return '<h2>Reported capability — sourced evidence</h2><p style="font-size:.82rem;color:var(--muted)">Evidence is attached to a <b>single</b> reported quantity (voltage or rating) and is <b>not</b> combined into a single product capability. It is shown because a source confirms it; it is <b>not</b> asserted as the company\'s maximum.</p>' +

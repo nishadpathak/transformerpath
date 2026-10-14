@@ -20,6 +20,7 @@ const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|dat
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+const { directoryBadge, scrubLegacyLabels } = require('./lib/provenance-badge');
 function slugify(s) { return String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/&/g, 'and').replace(/['’´]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, ''); }
 
 const DATA = JSON.parse(fs.readFileSync('data/accessories.json', 'utf8'));
@@ -106,7 +107,7 @@ function page(s) {
     (s.founded_year ? '<tr><th>Founded</th><td>' + esc(String(s.founded_year)) + '</td></tr>' : '') +
     (s.evidence_source ? '<tr><th>Primary evidence citation</th><td><span style="font-size:.85rem;color:var(--muted)">' + esc(s.evidence_source) + '</span></td></tr>' : '') +
     (s.source_tier ? '<tr><th>Source tier</th><td><span class="tpill" style="color:#10b981;border-color:rgba(16,185,129,.4)">' + esc(s.source_tier) + '</span></td></tr>' : '') +
-    '<tr><th>Verification</th><td>' + esc(s.verification_status) + ' · ' + esc(s.verification_date || '') + '</td></tr>' +
+    '<tr><th>Provenance</th><td>' + (directoryBadge(s) || '—') + '</td></tr>' +
     '</table>' +
     '<p style="font-size:.78rem;color:var(--muted);margin-top:8px">Directory entries are informational supplier listings and do not imply verification, endorsement or commercial affiliation. Verification reflects a website check on the date recorded; always carry out your own due diligence before a commercial decision.</p>' +
     '<div class="card" style="background:rgba(245,166,35,.06);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:24px"><b style="color:var(--text)">Supply transformer accessories?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Get your company listed in the directory, or post a requirement to reach accessory suppliers.</p>' +
@@ -140,7 +141,7 @@ fs.writeFileSync('data/accessories-meta.json', JSON.stringify({ total: indexable
  */
 (function embedIndexData() {
   try {
-    const json = fs.readFileSync('data/accessories.json', 'utf8').replace(/<\/script/gi, '<\\/script');
+    const json = scrubLegacyLabels(fs.readFileSync('data/accessories.json', 'utf8')).replace(/<\/script/gi, '<\\/script');
     const marker = "<script src='data/accessories.json'";
     let s = fs.readFileSync('accessories.html', 'utf8');
     // Inject the inline data variable right before the app <script> that fetches it.

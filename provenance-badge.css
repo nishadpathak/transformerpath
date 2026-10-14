@@ -1,0 +1,47 @@
+/* Verified tick. Shown only for a confirmed source with a check date. */
+.tp-prov {
+  display: inline-flex;
+  position: relative;
+  vertical-align: middle;
+  margin: 0 0 0 6px;
+}
+.tp-prov-tick {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #15803d;
+  cursor: help;
+  line-height: 0;
+}
+:root[data-theme="dark"] .tp-prov-tick { color: #4ade80; }
+.tp-prov-tick:focus { outline: 2px solid currentColor; outline-offset: 2px; }
+.tp-prov-tick svg { display: block; }
+.tp-prov-pop {
+  display: none;
+  position: absolute;
+  z-index: 40;
+  left: 0;
+  top: calc(100% + 6px);
+  width: min(280px, 72vw);
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--card, #fff);
+  color: var(--text, #111827);
+  border: 1px solid var(--border, #d1d5db);
+  font-weight: 500;
+  font-size: .75rem;
+  line-height: 1.4;
+  text-align: left;
+  white-space: normal;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .28);
+}
+.tp-prov:hover .tp-prov-pop,
+.tp-prov:focus-within .tp-prov-pop,
+.tp-prov.is-open .tp-prov-pop { display: block; }
+.tp-prov-pop a { color: var(--accent, #b45309); font-weight: 700; }

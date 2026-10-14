@@ -1,6 +1,6 @@
 {
   "$schema": "https://transformerpath.com/gcc-coverage-report.schema.json",
-  "generated": "2026-10-14T10:51:07.469Z",
+  "generated": "2026-10-14T11:57:46.444Z",
   "title": "INTEL P0 — GCC TRANSFORMER ACTIVITY COVERAGE",
   "gcc_coverage": {
     "UAE": {
@@ -57,8 +57,8 @@
     "candidates": 14,
     "confirmed": 3,
     "supported": 10,
-    "review_required": 1,
-    "rejected": 0,
+    "review_required": 0,
+    "rejected": 1,
     "internal_coverage_facts": 1
   },
   "missed_record_analysis": [
@@ -154,7 +154,7 @@
         "UTILITY_PROCUREMENT"
       ],
       "evidence_grade": "SUPPORTED",
-      "published": false,
+      "published": true,
       "publish_decision": "HOLD_FOR_REVIEW",
       "dates": {
         "publication_date": "2026-09-03",
@@ -166,7 +166,7 @@
         "award_date": null,
         "project_start_date": null,
         "commissioning_date": null,
-        "source_checked_at": "2026-09-25",
+        "source_checked_at": "2026-10-14",
         "update_date": null
       },
       "date_correction": null
@@ -189,19 +189,19 @@
         "UTILITY_PROCUREMENT"
       ],
       "evidence_grade": "SUPPORTED",
-      "published": false,
+      "published": true,
       "publish_decision": "HOLD_FOR_REVIEW",
       "dates": {
-        "publication_date": "2026-09-08",
-        "event_date": "2026-09-08",
-        "tender_float_date": "2026-09-08",
-        "tender_close_date": null,
+        "publication_date": "2026-09-18",
+        "event_date": "2026-09-18",
+        "tender_float_date": "2026-09-18",
+        "tender_close_date": "2026-09-18",
         "bid_opening_date": null,
         "expected_award_date": null,
         "award_date": null,
         "project_start_date": null,
         "commissioning_date": null,
-        "source_checked_at": "2026-09-25",
+        "source_checked_at": "2026-10-14",
         "update_date": null
       },
       "date_correction": null
@@ -223,7 +223,7 @@
         "UTILITY_PROCUREMENT"
       ],
       "evidence_grade": "SUPPORTED",
-      "published": false,
+      "published": true,
       "publish_decision": "HOLD_FOR_REVIEW",
       "dates": {
         "publication_date": "2026-09-14",
@@ -235,7 +235,7 @@
         "award_date": null,
         "project_start_date": null,
         "commissioning_date": null,
-        "source_checked_at": "2026-09-25",
+        "source_checked_at": "2026-10-14",
         "update_date": null
       },
       "date_correction": null
@@ -259,7 +259,7 @@
         "MAINTENANCE"
       ],
       "evidence_grade": "SUPPORTED",
-      "published": false,
+      "published": true,
       "publish_decision": "HOLD_FOR_REVIEW",
       "dates": {
         "publication_date": "2026-09-03",
@@ -271,7 +271,7 @@
         "award_date": null,
         "project_start_date": null,
         "commissioning_date": null,
-        "source_checked_at": "2026-09-25",
+        "source_checked_at": "2026-10-14",
         "update_date": null
       },
       "date_correction": null
@@ -295,11 +295,11 @@
         "UTILITY_PROCUREMENT"
       ],
       "evidence_grade": "SUPPORTED",
-      "published": false,
+      "published": true,
       "publish_decision": "HOLD_FOR_REVIEW",
       "dates": {
         "publication_date": "2026-09-07",
-        "event_date": "2026-09-12",
+        "event_date": "2026-09-07",
         "tender_float_date": "2026-09-07",
         "tender_close_date": "2026-10-06",
         "bid_opening_date": null,
@@ -307,13 +307,10 @@
         "award_date": null,
         "project_start_date": null,
         "commissioning_date": null,
-        "source_checked_at": "2026-09-25",
+        "source_checked_at": "2026-10-14",
         "update_date": null
       },
-      "date_correction": {
-        "event_date": "2026-09-12",
-        "publication_date": "2026-09-07"
-      }
+      "date_correction": null
     },
     {
       "candidate_id": "kw-mewre-75mva-relocation",
@@ -346,7 +343,7 @@
         "award_date": null,
         "project_start_date": null,
         "commissioning_date": null,
-        "source_checked_at": "2026-09-25",
+        "source_checked_at": "2026-10-14",
         "update_date": null
       },
       "date_correction": null
@@ -370,11 +367,11 @@
         "UTILITY_PROCUREMENT"
       ],
       "evidence_grade": "SUPPORTED",
-      "published": false,
+      "published": true,
       "publish_decision": "HOLD_FOR_REVIEW",
       "dates": {
         "publication_date": "2026-08-31",
-        "event_date": "2026-09-24",
+        "event_date": "2026-08-31",
         "tender_float_date": "2026-08-31",
         "tender_close_date": "2026-09-29",
         "bid_opening_date": null,
@@ -382,13 +379,10 @@
         "award_date": null,
         "project_start_date": null,
         "commissioning_date": null,
-        "source_checked_at": "2026-09-25",
+        "source_checked_at": "2026-10-14",
         "update_date": null
       },
-      "date_correction": {
-        "event_date": "2026-09-24",
-        "publication_date": "2026-08-31"
-      }
+      "date_correction": null
     },
     {
       "candidate_id": "om-localisation-aug12",
@@ -429,7 +423,7 @@
         "award_date": null,
         "project_start_date": null,
         "commissioning_date": null,
-        "source_checked_at": "2026-09-25",
+        "source_checked_at": "2026-10-14",
         "update_date": "2026-09-19"
       },
       "date_correction": {
@@ -486,9 +480,9 @@
         "TENDER",
         "UTILITY_PROCUREMENT"
       ],
-      "evidence_grade": "REVIEW_REQUIRED",
+      "evidence_grade": "REJECTED",
       "published": false,
-      "publish_decision": "HOLD_FOR_REVIEW",
+      "publish_decision": "REJECTED",
       "dates": {
         "publication_date": "2026-09-01",
         "event_date": null,
@@ -499,7 +493,7 @@
         "award_date": null,
         "project_start_date": null,
         "commissioning_date": null,
-        "source_checked_at": "2026-09-25",
+        "source_checked_at": "2026-10-14",
         "update_date": null
       },
       "date_correction": null
@@ -677,84 +671,6 @@
       }
     },
     {
-      "candidate_id": "kw-mewre-75mva-stage1",
-      "country": "Kuwait",
-      "title": "MEWRE — replacement of damaged transformers up to 75 MVA and parallel reactors up to 50 MVA (first stage)",
-      "found": true,
-      "source": [
-        "https://tenderimpulse.com/government-tenders/kuwait/replacement-and-substitution-of-damaged-transformers-up-to-a-capacity-of-75-mva-14709840"
-      ],
-      "source_types": [
-        "TENDER_BOARD"
-      ],
-      "why_previously_missed": "No MEWRE / CAPT Arabic tender-board adapter; parallel-reactor + transformer maintenance programmes not in English RSS set.",
-      "classification": [
-        "TENDER",
-        "TRANSFORMER_REPLACEMENT",
-        "MAINTENANCE",
-        "UTILITY_PROCUREMENT"
-      ],
-      "evidence_grade": "SUPPORTED",
-      "published": false,
-      "publish_decision": "HOLD_FOR_REVIEW",
-      "dates": {
-        "publication_date": "2026-09-07",
-        "event_date": "2026-09-12",
-        "tender_float_date": "2026-09-07",
-        "tender_close_date": "2026-10-06",
-        "bid_opening_date": null,
-        "expected_award_date": null,
-        "award_date": null,
-        "project_start_date": null,
-        "commissioning_date": null,
-        "source_checked_at": "2026-09-25",
-        "update_date": null
-      },
-      "date_correction": {
-        "event_date": "2026-09-12",
-        "publication_date": "2026-09-07"
-      }
-    },
-    {
-      "candidate_id": "kw-mewre-75mva-stage2",
-      "country": "Kuwait",
-      "title": "MEWRE — second-stage maintenance/replacement programme (transformers up to 75 MVA; parallel reactors up to 50 MVA)",
-      "found": true,
-      "source": [
-        "https://tenderimpulse.com/government-tenders/kuwait/maintenance-and-replacement-of-damaged-parts-and-civil-works-related-to-a-number-14608275"
-      ],
-      "source_types": [
-        "TENDER_BOARD"
-      ],
-      "why_previously_missed": "Stage-2 of same MEWRE programme — needs canonical procurement linking, not a separate news card. No CAPT adapter.",
-      "classification": [
-        "TENDER",
-        "MAINTENANCE",
-        "TRANSFORMER_REPLACEMENT",
-        "UTILITY_PROCUREMENT"
-      ],
-      "evidence_grade": "SUPPORTED",
-      "published": false,
-      "publish_decision": "HOLD_FOR_REVIEW",
-      "dates": {
-        "publication_date": "2026-08-31",
-        "event_date": "2026-09-24",
-        "tender_float_date": "2026-08-31",
-        "tender_close_date": "2026-09-29",
-        "bid_opening_date": null,
-        "expected_award_date": null,
-        "award_date": null,
-        "project_start_date": null,
-        "commissioning_date": null,
-        "source_checked_at": "2026-09-25",
-        "update_date": null
-      },
-      "date_correction": {
-        "event_date": "2026-09-24",
-        "publication_date": "2026-08-31"
-      }
-    },
-    {
       "candidate_id": "om-localisation-aug12",
       "country": "Oman",
       "title": "Oman — 10 agreements to localise electrical transformer-component manufacturing (RO15m; 7 new factories)",
@@ -793,7 +709,7 @@
         "award_date": null,
         "project_start_date": null,
         "commissioning_date": null,
-        "source_checked_at": "2026-09-25",
+        "source_checked_at": "2026-10-14",
         "update_date": "2026-09-19"
       },
       "date_correction": {
@@ -849,9 +765,9 @@
     "publishing": "HOLD_FOR_REVIEW / REVIEW_QUEUE / INTERNAL_COVERAGE_ONLY — never auto-publish"
   },
   "freshness": {
-    "statement": "5/6+ P0 portal probes live this build — at least one official list returned transformer vocabulary",
+    "statement": "4/6+ P0 portal probes live this build — at least one official list returned transformer vocabulary",
     "markets_registered": 6,
-    "markets_adapter_live": 5,
+    "markets_adapter_live": 4,
     "markets_with_validated_candidates": 6,
     "latest_source_checked_at": "2026-10-14",
     "latest_confirmed_event_date": "2026-09-25",
@@ -859,7 +775,7 @@
     "honesty": "Do NOT declare DATA CURRENT because the build ran today. Freshness depends on source coverage + source_checked_at + validated newest record.",
     "adapter_probe": {
       "probed": 13,
-      "live": 5,
+      "live": 4,
       "honesty": "live = HTTP reachable + transformer vocabulary observed. Gated portals are not counted as live adapters."
     }
   },

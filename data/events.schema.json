@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://transformerpath.com/events.schema.json",
+  "title": "TransformerPath event edition",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": true,
+    "required": ["id", "name", "date_status", "relevance_tier"],
+    "properties": {
+      "id": { "type": "string", "minLength": 1 },
+      "series_slug": { "type": ["string", "null"] },
+      "edition_label": { "type": ["string", "null"] },
+      "name": { "type": "string", "minLength": 1 },
+      "type": { "type": ["string", "null"], "enum": ["exhibition", "conference", "technical_committee", "seminar", "webinar", null] },
+      "start": { "type": ["string", "null"], "pattern": "^(\\d{4}-\\d{2}-\\d{2})?$" },
+      "end": { "type": ["string", "null"], "pattern": "^(\\d{4}-\\d{2}-\\d{2})?$" },
+      "date_status": { "type": ["string", "null"], "enum": ["CONFIRMED", "PROJECTED", "TBA", "CANCELLED", null] },
+      "venue": { "type": ["string", "null"] },
+      "city": { "type": ["string", "null"] },
+      "country": { "type": ["string", "null"] },
+      "region": { "type": ["string", "null"] },
+      "organiser": { "type": ["string", "null"] },
+      "official_url": { "type": ["string", "null"] },
+      "source_url": { "type": ["string", "null"] },
+      "source_checked_at": { "type": ["string", "null"] },
+      "relevance_tier": { "type": ["string", "null"], "enum": ["CORE", "HIGH", "ADJACENT", null] },
+      "relevance_reason": { "type": ["string", "null"] },
+      "description": { "type": ["string", "null"] },
+      "research_status": { "type": ["string", "null"] },
+      "lifecycle_status": { "type": ["string", "null"] },
+      "stats": { "type": ["object", "null"] },
+      "key_exhibitors": { "type": ["array", "null"] },
+      "programme": { "type": ["array", "null"] },
+      "deadlines": { "type": ["array", "null"] },
+      "registration": { "type": ["object", "null"] },
+      "markets": { "type": ["array", "null"] },
+      "intel_links": { "type": ["array", "null"] }
+    }
+  }
+}

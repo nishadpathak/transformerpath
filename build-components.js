@@ -16,6 +16,7 @@ const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|dat
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+const { directoryBadge, scrubLegacyLabels } = require('./lib/provenance-badge');
 function slugify(s) { return String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/&/g, 'and').replace(/['’´]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, ''); }
 const ACC_SLUGS = new Set();
 try {
@@ -26,7 +27,7 @@ try {
 
 const DATA = JSON.parse(fs.readFileSync('data/components-deep-dive.json', 'utf8'));
 const CATEGORIES = DATA.categories || [];
-const deepDiveJson = JSON.stringify(CATEGORIES);
+const deepDiveJson = scrubLegacyLabels(JSON.stringify(CATEGORIES));
 
 let totalSuppliers = 0;
 CATEGORIES.forEach(c => { totalSuppliers += (c.suppliers || []).length; });
@@ -122,7 +123,7 @@ ${HEAD}
     </div>
     <div class="stat-box">
       <div class="num">Official site</div>
-      <div class="lbl">Website checked</div>
+      <div class="lbl">Provenance on each card</div>
     </div>
   </div>
 
@@ -145,6 +146,7 @@ ${HEAD}
 
 ${FOOT}
 
+<script src="lib/provenance-badge.js"></script>
 <script>
 window.__TP_COMPONENTS_DEEP__ = ${deepDiveJson};
 window.__TP_ACC_SLUGS__ = ${JSON.stringify([...ACC_SLUGS])};
@@ -227,7 +229,7 @@ window.__TP_ACC_SLUGS__ = ${JSON.stringify([...ACC_SLUGS])};
           '<div>' +
             '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:6px;margin-bottom:4px">' +
               profile +
-              '<span class="ev-badge ev-confirmed">' + esc(s.verification_status || 'Verified') + '</span>' +
+              (window.TPProvenance ? TPProvenance.directoryBadge(s) : '') +
             '</div>' +
             '<div class="supp-loc">📍 ' + esc(loc) + '</div>' +
             '<div class="supp-desc">' + esc(s.description) + '</div>' +
