@@ -1,0 +1,99 @@
+{
+  "$schema": "https://transformerpath.com/gcc-held-review.schema.json",
+  "reviewed_at": "2026-10-14T10:36:53Z",
+  "scope": "GCC discovery candidates that were held or queued after PR #15. Three were already released in PR #16 and are logged as skipped.",
+  "method": "Each recorded source URL was fetched on 2026-10-14. A row is published only when the page returned the transformer claim and a date. Aggregator pages stay SUPPORTED. An empty source list is a reject. A page that shows the title and hides the date stays held.",
+  "rows": [
+    {
+      "candidate": "uae-dewa-2122600155",
+      "decision": "skip",
+      "reason": "Already released in PR #16 as SUPPORTED. Not re-fetched in this pass.",
+      "source": "https://www.dewa.gov.ae/en/supplier/services/list-of-tender-documents",
+      "timestamp": "2026-10-14T10:36:53Z"
+    },
+    {
+      "candidate": "sa-swa-rabigh-2p5mva",
+      "decision": "skip",
+      "reason": "Already released in PR #16 as CONFIRMED. Not re-fetched in this pass.",
+      "source": "https://tenders.etimad.sa/Tender/DetailsForVisitor?STenderId=YYulueYsiIAkLL3QtkpaYQ==",
+      "timestamp": "2026-10-14T10:36:53Z"
+    },
+    {
+      "candidate": "bh-ewa-389-2026-1000kva",
+      "decision": "skip",
+      "reason": "Already released in PR #16 as CONFIRMED. Not re-fetched in this pass.",
+      "source": "https://www.tenderboard.gov.bh/",
+      "timestamp": "2026-10-14T10:36:53Z"
+    },
+    {
+      "candidate": "sa-swa-jubail-grounding",
+      "decision": "publish",
+      "reason": "BidsFactory returned HTTP 200. Page title is the 33/0.4 kV grounding transformer at Jubail Phase 4 for the Saudi Water Authority, published 3 Sep 2026. Secondary aggregator, so SUPPORTED.",
+      "source": "https://bidsfactory.com/en/tenders/3304-4-saudi_etimad-40d892d6879b8761",
+      "timestamp": "2026-10-14T10:36:53Z"
+    },
+    {
+      "candidate": "sa-al-aflaj-33kv-replacement",
+      "decision": "publish",
+      "reason": "TenderImpulse returned HTTP 200. Page is the 33 kV transformer replacement at station No. 6, Technical College for Girls, published and closing 18 Sep 2026. The previous 8 Sep date was not on the page and was corrected. SUPPORTED.",
+      "source": "https://tenderimpulse.com/government-tenders/saudi-arab/replacement-of-the-33-kv-transformer-for-station-no-6-with-the-technical-college-14893514",
+      "timestamp": "2026-10-14T10:36:53Z"
+    },
+    {
+      "candidate": "sa-dhahran-1500kva-standby",
+      "decision": "publish",
+      "reason": "BidsFactory returned HTTP 200. Page is the 1,500 kVA standby transformer for King Abdulaziz Air Base Hospital, Dhahran, published 14 Sep 2026. SUPPORTED.",
+      "source": "https://bidsfactory.com/en/tenders/1500-saudi_etimad-8a384ba1b679c3e3",
+      "timestamp": "2026-10-14T10:36:53Z"
+    },
+    {
+      "candidate": "sa-swa-yanbu-t803-supervision",
+      "decision": "publish",
+      "reason": "TenderImpulse returned HTTP 200. Page names supervision of transformer T803 replacement at the Saudi Water Authority Yanbu desalination station, published 3 Sep 2026, deadline 10 Sep 2026. SUPPORTED.",
+      "source": "https://tenderimpulse.com/government-tenders/saudi-arab/project-for-the-supervision-of-the-replacement-of-major-gas-solving-bars-gib-and-14656272",
+      "timestamp": "2026-10-14T10:36:53Z"
+    },
+    {
+      "candidate": "kw-mewre-75mva-stage1",
+      "decision": "publish",
+      "reason": "TenderImpulse returned HTTP 200. Ministry of Electricity tender to replace damaged transformers up to 75 MVA and reactors up to 50 MVA, first stage, published 7 Sep 2026, deadline 6 Oct 2026. A 12 Sep event date was not on the page and was corrected. SUPPORTED.",
+      "source": "https://tenderimpulse.com/government-tenders/kuwait/replacement-and-substitution-of-damaged-transformers-up-to-a-capacity-of-75-mva-14709840",
+      "timestamp": "2026-10-14T10:36:53Z"
+    },
+    {
+      "candidate": "kw-mewre-75mva-stage2",
+      "decision": "publish",
+      "reason": "TenderImpulse returned HTTP 200. Same ministry, second phase, transformers up to 75 MVA, published 31 Aug 2026, deadline 29 Sep 2026. A 24 Sep event date was not on the page and was corrected. SUPPORTED.",
+      "source": "https://tenderimpulse.com/government-tenders/kuwait/maintenance-and-replacement-of-damaged-parts-and-civil-works-related-to-a-number-14608275",
+      "timestamp": "2026-10-14T10:36:53Z"
+    },
+    {
+      "candidate": "kw-mewre-75mva-relocation",
+      "decision": "hold",
+      "reason": "BidDetail returned HTTP 200 and the title for dismantling, relocation and installation of one 75 MVA power transformer in Kuwait. The date is behind the paywall and was not on the fetched page, so it is not published.",
+      "source": "http://www.biddetail.com/latest-tenders/117573786$d84ae31a-0b12-4035-93f7-f0d7cdc01f0d",
+      "timestamp": "2026-10-14T10:36:53Z"
+    },
+    {
+      "candidate": "om-localisation-aug12",
+      "decision": "hold",
+      "reason": "Times of Oman (12 Aug 2026) and The Arabian Stories (19 Sep 2026) still describe the RO 15 million transformer-component agreements. Oman Observer returned HTTP 502. The item is already a curated Intel card, so it is not injected a second time.",
+      "source": "https://timesofoman.com/article/175526-ten-agreements-signed-to-localise-electrical-transformer-component-manufacturing-in-oman",
+      "timestamp": "2026-10-14T10:36:53Z"
+    },
+    {
+      "candidate": "bh-ewa-aml-sep-review",
+      "decision": "reject",
+      "reason": "No source URL and no event date. The row is a placeholder to investigate an EWA approved-manufacturer list. Nothing was fetched because there is nothing to fetch.",
+      "source": "",
+      "timestamp": "2026-10-14T10:36:53Z"
+    },
+    {
+      "candidate": "qa-sept-zero",
+      "decision": "hold",
+      "reason": "Internal coverage fact, not an Intel card. km.qa timed out on 14 Oct 2026, so the September zero was not reconfirmed. Zero stays a valid result.",
+      "source": "https://www.km.qa/",
+      "timestamp": "2026-10-14T10:36:53Z"
+    }
+  ]
+}

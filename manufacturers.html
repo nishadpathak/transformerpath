@@ -184,6 +184,7 @@
   <div class="container">
     <h1>Transformer <span>Manufacturers</span></h1>
     <p>A growing, sourced directory of transformer makers — power, distribution and dry-type/cast-resin — listed country by country, with locations and official links. Coverage expands as public records are confirmed; this is not every workshop worldwide.</p>
+    <p id="census-method" style="margin:12px 0 0;font-size:.92rem;color:var(--muted)">Company pages lead with the place, products and sourced figures already on that record. A year of establishment is printed only when the census already has one. Listings are compiled from public sources. Verification confirms company identity and published profile data. It does not constitute technical certification, factory approval or commercial endorsement.</p>
     <p style="margin:12px 0 0"><a href="directory.html" style="color:var(--accent);font-weight:700">Searchable sourcing directory →</a> <span style="color:var(--muted)">filter by transformer type, voltage, country and capability evidence, then compare and RFQ. No ranking.</span></p>
   </div>
 </section>
@@ -289,6 +290,17 @@ const REGION_ORDER = ["North America","Latin America","Europe","Eurasia","Middle
 
 const TNAME={PT:"Power",DT:"Distribution",DRY:"Dry/Cast",TX:"Transformer",SR:"Reactor",IT:"Instrument"};
 function slugifyName(s){return String(s||'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim().replace(/&/g,'and').replace(/['’´]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'');}
+// Country hub filename. Same rules as build-company-pages.js pageSlugFor:
+// census names slugify, and USA / UAE / Türkiye keep their short files.
+function countrySlug(s){
+  const k = String(s||'').toLowerCase().trim();
+  const alias = {
+    'usa':'usa','united states':'usa','united states of america':'usa',
+    'uae':'uae','united arab emirates':'uae',
+    'türkiye':'turkiye','turkey':'turkiye'
+  };
+  return alias[k] || slugifyName(s);
+}
 function slugKey(s){return String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();}
 function makerHref(name){ return 'manufacturers/' + (SLUGS[slugKey(name)] || slugifyName(name)) + '/'; }
 
@@ -350,7 +362,17 @@ async function loadData() {
     render();
   } catch (err) {
     console.error('Failed to load manufacturers:', err);
-    document.getElementById('board').innerHTML = '<p style="color:var(--red);text-align:center;padding:40px">Could not load the manufacturer directory. Please refresh the page.</p>';
+    // Keep the server-rendered census. Replacing #board hides every company
+    // whenever a later render throws (the countrySlug failure did this).
+    var board = document.getElementById('board');
+    if (board && !board.querySelector('[data-dir-fallback]')) {
+      var note = document.createElement('p');
+      note.setAttribute('data-dir-fallback', '1');
+      note.setAttribute('role', 'status');
+      note.style.cssText = 'color:var(--red);text-align:center;padding:12px 16px';
+      note.textContent = 'The live directory could not refresh. Showing the last published list.';
+      board.insertBefore(note, board.firstChild);
+    }
   }
 }
 

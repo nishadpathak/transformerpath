@@ -42,8 +42,11 @@ const syncLabels = new Set(GRIDS.map((g) => g.sync).filter(Boolean)).size;
    num(prev.events) — a hand-typed 203 that copied itself forward while the
    dataset held 300. */
 const EVENTS = readJson('data/events.json', []);
-const todayISO = new Date().toISOString().slice(0, 10);
-const upcomingEvents = EVENTS.filter((e) => (e.s || e.startDate || '') >= todayISO).length;
+const { isUpcoming, platformToday } = require('./lib/event-status');
+/* Same predicate as /events (build_ssr.js and the events page client):
+   end date is still on or after the Asia/Dubai platform date, and the record
+   is discoverable. Counting start dates dropped live events from the homepage. */
+const upcomingEvents = EVENTS.filter((e) => isUpcoming(e, platformToday())).length;
 
 // Compute structured database metrics across manufacturers, factories, and capabilities
 const SITES = readJson('data/manufacturer-sites.json', []);
