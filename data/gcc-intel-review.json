@@ -1,7 +1,7 @@
 {
   "$schema": "https://transformerpath.com/gcc-intel-review.schema.json",
   "purpose": "Per-candidate human review ledger for GCC discovery. Publication requires decision=PUBLISH with reviewer and reviewed_at. HOLD is not publication.",
-  "honesty": "Rows are review records, not new evidence. PUBLISH rows record the PR #16 desk release only. Every other candidate is HOLD with reviewer null. No grade was upgraded.",
+  "honesty": "Rows are review records, not new evidence. PUBLISH rows are the PR #16 desk release, the 9 Oct and 13 Oct items, and six September notices released on 14 Oct 2026 after their source pages were fetched. Grades were not upgraded. HOLD rows keep reviewer null.",
   "updated": "2026-10-14",
   "reviews": [
     {
@@ -32,14 +32,11 @@
     {
       "candidate_id": "sa-swa-jubail-grounding",
       "evidence_status": "SUPPORTED",
-      "hold_reason": {
-        "code": "AWAITING_HUMAN_REVIEW",
-        "text": "Candidate publish_decision is HOLD_FOR_REVIEW. No reviewer has released it."
-      },
-      "reviewer": null,
-      "reviewed_at": null,
-      "decision": "HOLD",
-      "decision_note": "Pre-filled HOLD. reviewer is null. Not published by this ledger.",
+      "hold_reason": null,
+      "reviewer": "transformerpath-desk",
+      "reviewed_at": "2026-10-14T10:36:53Z",
+      "decision": "PUBLISH",
+      "decision_note": "Fetched https://bidsfactory.com/en/tenders/3304-4-saudi_etimad-40d892d6879b8761 on 2026-10-14. HTTP 200. Page is the 33/0.4 kV grounding transformer at Jubail Phase 4 for the Saudi Water Authority, published 3 Sep 2026. Aggregator page, so evidence_status stays SUPPORTED.",
       "source_urls": [
         "https://bidsfactory.com/en/tenders/3304-4-saudi_etimad-40d892d6879b8761"
       ]
@@ -47,14 +44,11 @@
     {
       "candidate_id": "sa-al-aflaj-33kv-replacement",
       "evidence_status": "SUPPORTED",
-      "hold_reason": {
-        "code": "AWAITING_HUMAN_REVIEW",
-        "text": "Candidate publish_decision is HOLD_FOR_REVIEW. No reviewer has released it."
-      },
-      "reviewer": null,
-      "reviewed_at": null,
-      "decision": "HOLD",
-      "decision_note": "Pre-filled HOLD. reviewer is null. Not published by this ledger.",
+      "hold_reason": null,
+      "reviewer": "transformerpath-desk",
+      "reviewed_at": "2026-10-14T10:36:53Z",
+      "decision": "PUBLISH",
+      "decision_note": "Fetched the TenderImpulse page on 2026-10-14. HTTP 200. Page is the 33 kV transformer replacement at station No. 6, Technical College for Girls, published and closing 18 Sep 2026. The earlier 8 Sep date was not on the page and was corrected. Aggregator page, so evidence_status stays SUPPORTED.",
       "source_urls": [
         "https://tenderimpulse.com/government-tenders/saudi-arab/replacement-of-the-33-kv-transformer-for-station-no-6-with-the-technical-college-14893514"
       ]
@@ -62,14 +56,11 @@
     {
       "candidate_id": "sa-dhahran-1500kva-standby",
       "evidence_status": "SUPPORTED",
-      "hold_reason": {
-        "code": "AWAITING_HUMAN_REVIEW",
-        "text": "Candidate publish_decision is HOLD_FOR_REVIEW. No reviewer has released it."
-      },
-      "reviewer": null,
-      "reviewed_at": null,
-      "decision": "HOLD",
-      "decision_note": "Pre-filled HOLD. reviewer is null. Not published by this ledger.",
+      "hold_reason": null,
+      "reviewer": "transformerpath-desk",
+      "reviewed_at": "2026-10-14T10:36:53Z",
+      "decision": "PUBLISH",
+      "decision_note": "Fetched https://bidsfactory.com/en/tenders/1500-saudi_etimad-8a384ba1b679c3e3 on 2026-10-14. HTTP 200. Page is the 1,500 kVA standby transformer for King Abdulaziz Air Base Hospital, Dhahran, published 14 Sep 2026. Aggregator page, so evidence_status stays SUPPORTED.",
       "source_urls": [
         "https://bidsfactory.com/en/tenders/1500-saudi_etimad-8a384ba1b679c3e3"
       ]
@@ -77,14 +68,11 @@
     {
       "candidate_id": "sa-swa-yanbu-t803-supervision",
       "evidence_status": "SUPPORTED",
-      "hold_reason": {
-        "code": "AWAITING_HUMAN_REVIEW",
-        "text": "Do not mis-date the original T803 supply float as 24 Sep 2026. Sep activity is supervision of replacement."
-      },
-      "reviewer": null,
-      "reviewed_at": null,
-      "decision": "HOLD",
-      "decision_note": "Pre-filled HOLD. reviewer is null. Not published by this ledger.",
+      "hold_reason": null,
+      "reviewer": "transformerpath-desk",
+      "reviewed_at": "2026-10-14T10:36:53Z",
+      "decision": "PUBLISH",
+      "decision_note": "Fetched the TenderImpulse page on 2026-10-14. HTTP 200. Page names supervision of transformer T803 replacement at the Saudi Water Authority Yanbu desalination station, published 3 Sep 2026, deadline 10 Sep 2026. The original supply float is not redated. Aggregator page, so evidence_status stays SUPPORTED.",
       "source_urls": [
         "https://tenderimpulse.com/government-tenders/saudi-arab/project-for-the-supervision-of-the-replacement-of-major-gas-solving-bars-gib-and-14656272"
       ]
@@ -92,14 +80,11 @@
     {
       "candidate_id": "kw-mewre-75mva-stage1",
       "evidence_status": "SUPPORTED",
-      "hold_reason": {
-        "code": "AWAITING_HUMAN_REVIEW",
-        "text": "Candidate publish_decision is HOLD_FOR_REVIEW. No reviewer has released it."
-      },
-      "reviewer": null,
-      "reviewed_at": null,
-      "decision": "HOLD",
-      "decision_note": "Pre-filled HOLD. reviewer is null. Not published by this ledger.",
+      "hold_reason": null,
+      "reviewer": "transformerpath-desk",
+      "reviewed_at": "2026-10-14T10:36:53Z",
+      "decision": "PUBLISH",
+      "decision_note": "Fetched the TenderImpulse page on 2026-10-14. HTTP 200. Ministry of Electricity tender to replace damaged transformers up to 75 MVA and reactors up to 50 MVA, first stage, published 7 Sep 2026, deadline 6 Oct 2026. A 12 Sep event date was not on the page and was corrected. Kept as its own card, distinct from stage 2. Aggregator page, so evidence_status stays SUPPORTED.",
       "source_urls": [
         "https://tenderimpulse.com/government-tenders/kuwait/replacement-and-substitution-of-damaged-transformers-up-to-a-capacity-of-75-mva-14709840"
       ]
@@ -108,13 +93,13 @@
       "candidate_id": "kw-mewre-75mva-relocation",
       "evidence_status": "SUPPORTED",
       "hold_reason": {
-        "code": "AWAITING_HUMAN_REVIEW",
-        "text": "Candidate publish_decision is HOLD_FOR_REVIEW. No reviewer has released it."
+        "code": "REVIEW_REQUIRED",
+        "text": "BidDetail returned HTTP 200 on 2026-10-14 and the title for dismantling, relocation and installation of one 75 MVA power transformer in Kuwait. The date is behind the paywall and was not on the fetched page."
       },
       "reviewer": null,
       "reviewed_at": null,
       "decision": "HOLD",
-      "decision_note": "Pre-filled HOLD. reviewer is null. Not published by this ledger.",
+      "decision_note": "Held. Title is visible; the date is not. reviewer stays null.",
       "source_urls": [
         "http://www.biddetail.com/latest-tenders/117573786$d84ae31a-0b12-4035-93f7-f0d7cdc01f0d"
       ]
@@ -122,14 +107,11 @@
     {
       "candidate_id": "kw-mewre-75mva-stage2",
       "evidence_status": "SUPPORTED",
-      "hold_reason": {
-        "code": "AWAITING_HUMAN_REVIEW",
-        "text": "Keep distinct from stage-1 via canonical_procurement_id; do not spawn duplicate Intel stories on status change alone."
-      },
-      "reviewer": null,
-      "reviewed_at": null,
-      "decision": "HOLD",
-      "decision_note": "Pre-filled HOLD. reviewer is null. Not published by this ledger.",
+      "hold_reason": null,
+      "reviewer": "transformerpath-desk",
+      "reviewed_at": "2026-10-14T10:36:53Z",
+      "decision": "PUBLISH",
+      "decision_note": "Fetched the TenderImpulse page on 2026-10-14. HTTP 200. Same ministry, second phase, transformers up to 75 MVA, published 31 Aug 2026, deadline 29 Sep 2026. A 24 Sep event date was not on the page and was corrected. Kept as its own card, distinct from stage 1. Aggregator page, so evidence_status stays SUPPORTED.",
       "source_urls": [
         "https://tenderimpulse.com/government-tenders/kuwait/maintenance-and-replacement-of-damaged-parts-and-civil-works-related-to-a-number-14608275"
       ]
@@ -139,12 +121,12 @@
       "evidence_status": "CONFIRMED",
       "hold_reason": {
         "code": "DUPLICATE_OF_CURATED",
-        "text": "Candidate remains REVIEW_QUEUE. A near-duplicate is already in curated GCC intel; this row was not part of the PR #16 desk release."
+        "text": "A near-duplicate is already in curated GCC intel. Rechecked 2026-10-14: Times of Oman and The Arabian Stories still describe the RO 15 million agreements; Oman Observer returned HTTP 502. Not injected a second time. event_date stays 2026-08-12."
       },
       "reviewer": null,
       "reviewed_at": null,
       "decision": "HOLD",
-      "decision_note": "Pre-filled HOLD. reviewer is null. Not published by this ledger.",
+      "decision_note": "Held as a duplicate of the curated card. reviewer stays null.",
       "source_urls": [
         "https://www.omanobserver.om/article/1194395/business/ro-15m-pacts-signed-to-drive-local-production-of-transformer-components",
         "https://www.omanobserver.om/article/1196433/business/oman-localises-transformer-production",
@@ -170,12 +152,12 @@
       "evidence_status": "WEAK",
       "hold_reason": {
         "code": "REVIEW_REQUIRED",
-        "text": "Market report flagged possible AML updates and additional 500/1000/1500 kVA opportunities. Do not infer manufacturer approval from unrelated sources."
+        "text": "No source URL and no event date. Placeholder only; do not infer an approved-manufacturer list."
       },
-      "reviewer": null,
-      "reviewed_at": null,
-      "decision": "HOLD",
-      "decision_note": "Pre-filled HOLD. reviewer is null. Not published by this ledger.",
+      "reviewer": "transformerpath-desk",
+      "reviewed_at": "2026-10-14T10:36:53Z",
+      "decision": "REJECT",
+      "decision_note": "Rejected on 2026-10-14. sources[] is empty, so nothing was fetched. Not published.",
       "source_urls": []
     },
     {
@@ -183,12 +165,12 @@
       "evidence_status": "CONFIRMED",
       "hold_reason": {
         "code": "INTERNAL_COVERAGE_ONLY",
-        "text": "Coverage fact only. publish_decision is INTERNAL_COVERAGE_ONLY; not an Intel card."
+        "text": "Coverage fact only, not an Intel card. km.qa timed out on 2026-10-14, so the September zero was not reconfirmed. Zero stays a valid result."
       },
       "reviewer": null,
       "reviewed_at": null,
       "decision": "HOLD",
-      "decision_note": "Pre-filled HOLD. reviewer is null. Not published by this ledger.",
+      "decision_note": "Held as internal coverage. reviewer stays null. Not an Intel card.",
       "source_urls": [
         "https://www.km.qa/"
       ]
