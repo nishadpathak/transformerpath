@@ -46,7 +46,7 @@ const DIST = 'dist';
 // Whole directories copied verbatim — served content only.
 const DIRS = [
   'accessories', 'applications', 'admin', 'books', 'brand', 'case-studies',
-  'components', 'data', 'events', 'grids', 'knowledge', 'manufacturers',
+  'components', 'events', 'grids', 'knowledge', 'manufacturers',
   'markets', 'materials', 'media', 'projects', 'tenders', 'topics', 'utilities',
   'viz', 'vendor',
 ];
@@ -155,13 +155,60 @@ for (const f of ROOT_JS.concat(ROOT_OTHER)) {
   else console.warn('  ! allowlisted but missing: ' + f);
 }
 
-// 3. Public directories.
+// 3. Public directories. data/ is NOT copied wholesale — only JSON files
+// that shipped HTML/JS actually reference (see step 5).
 for (const d of DIRS) count += copyDir(d);
 
 // 4. Individual files from mixed directories.
 for (const f of FILES_FROM_MIXED_DIRS) {
   if (fs.existsSync(f)) { copyFile(f, f); count++; }
   else console.warn('  ! allowlisted but missing: ' + f);
+}
+
+// 5. data/*.json allowlist, derived from references in the artifact.
+const DATA_REF = /data\/([A-Za-z0-9_.\/-]+\.json)/g;
+const dataRefs = new Set();
+(function scanRefs(dir) {
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    const p = path.join(dir, e.name);
+    if (e.isDirectory()) { scanRefs(p); continue; }
+    if (!/\.(html|js|xml|webmanifest)$/i.test(e.name)) continue;
+    const text = fs.readFileSync(p, 'utf8');
+    let m;
+    DATA_REF.lastIndex = 0;
+    while ((m = DATA_REF.exec(text))) {
+      if (m[1].includes('..')) continue;
+      dataRefs.add(m[1]);
+    }
+  }
+})(DIST);
+
+function dataForbidden(rel) {
+  return /backup/i.test(rel) || /pre-sprint/i.test(rel) ||
+    rel === 'commerce-intel.json' || rel === 'engineer-track-paid.json' ||
+    rel === 'gcc-sep-2026-discovery-input.json' || rel === 'gcc-coverage-report.json' ||
+    /\.sql$/i.test(rel);
+}
+
+let dataCopied = 0;
+const dataMissing = [];
+for (const rel of dataRefs) {
+  if (dataForbidden(rel)) {
+    console.warn('  ! data reference not published: data/' + rel);
+    continue;
+  }
+  const src = path.join('data', rel);
+  if (!fs.existsSync(src) || !fs.statSync(src).isFile()) {
+    dataMissing.push(rel);
+    continue;
+  }
+  copyFile(src, path.join('data', rel));
+  dataCopied++;
+}
+console.log('data allowlist: ' + dataCopied + ' JSON files referenced by dist HTML/JS');
+if (dataMissing.length) {
+  console.warn('  ! referenced data JSON not in source (' + dataMissing.length + '):');
+  dataMissing.slice(0, 12).forEach(function (r) { console.warn('      data/' + r); });
 }
 
 // ── Verification gate ─────────────────────────────────────────────────────
