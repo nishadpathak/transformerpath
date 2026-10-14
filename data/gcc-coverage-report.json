@@ -1,6 +1,6 @@
 {
   "$schema": "https://transformerpath.com/gcc-coverage-report.schema.json",
-  "generated": "2026-10-14T10:48:05.121Z",
+  "generated": "2026-10-14T10:51:07.469Z",
   "title": "INTEL P0 — GCC TRANSFORMER ACTIVITY COVERAGE",
   "gcc_coverage": {
     "UAE": {
@@ -849,9 +849,9 @@
     "publishing": "HOLD_FOR_REVIEW / REVIEW_QUEUE / INTERNAL_COVERAGE_ONLY — never auto-publish"
   },
   "freshness": {
-    "statement": "4/6+ P0 portal probes live this build — at least one official list returned transformer vocabulary",
+    "statement": "5/6+ P0 portal probes live this build — at least one official list returned transformer vocabulary",
     "markets_registered": 6,
-    "markets_adapter_live": 4,
+    "markets_adapter_live": 5,
     "markets_with_validated_candidates": 6,
     "latest_source_checked_at": "2026-10-14",
     "latest_confirmed_event_date": "2026-09-25",
@@ -859,7 +859,7 @@
     "honesty": "Do NOT declare DATA CURRENT because the build ran today. Freshness depends on source coverage + source_checked_at + validated newest record.",
     "adapter_probe": {
       "probed": 13,
-      "live": 4,
+      "live": 5,
       "honesty": "live = HTTP reachable + transformer vocabulary observed. Gated portals are not counted as live adapters."
     }
   },
