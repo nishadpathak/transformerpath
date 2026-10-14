@@ -379,10 +379,8 @@ html { scroll-behavior: smooth; }
 ::selection { background: #f5a623; color: #0d1b2e; }
 :focus-visible { outline: 2px solid #f5a623; outline-offset: 2px; }
 
-/* Logo mark micro-interaction */
 .logo { display: inline-flex; align-items: center; gap: 9px; }
-.logo .logo-mark { flex: none; transition: transform .55s cubic-bezier(.34,1.56,.64,1); transform-origin: center; }
-.logo:hover .logo-mark { transform: rotate(120deg) scale(1.05); }
+.logo .logo-mark { flex: none; }
 .logo .word { color: var(--ink); font-weight: 800; letter-spacing: -.5px; display: inline; }
 .logo .word .accent { color: #f5a623; display: inline; letter-spacing: -.5px; }
 
@@ -415,7 +413,7 @@ html { scroll-behavior: smooth; }
 .kicker { position: relative; padding-left: 14px; }
 .kicker::before { content: ""; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 4px; height: 1.2em; background: #f5a623; border-radius: 2px; }
 
-@media (prefers-reduced-motion: reduce) { .hero::before, .logo-mark { animation: none !important; transition: none !important; } }
+@media (prefers-reduced-motion: reduce) { .hero::before { animation: none !important; } }
 
 /* Transformer requirement / intel confidence badges (CONFIRMED / INFERRED / PIPELINE / WATCH / UNKNOWN) */
 .cls-badge { display: inline-block; font-weight: 700; font-size: 9.5px; letter-spacing: .05em; padding: 1px 6px; border-radius: 8px; margin-left: 6px; vertical-align: middle; text-transform: uppercase; }
