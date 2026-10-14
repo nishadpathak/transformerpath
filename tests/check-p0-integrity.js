@@ -3,7 +3,7 @@
  *
  * 1. Canonical manufacturer count (no 709 / 1002 drift on homepage, pricing, intel, directory)
  * 2. Separate freshness clocks (census vs Daily Intel; no DATA CURRENT on >72h census)
- * 3. Grid Lab page exists
+ * 3. Grid Lab page exists (public /grid-lab is the live system Lab: generation → GSU)
  * 4. Segmented directory search for "765 kV"
  * 5. Pricing: no "11 models"; no Team shared-link-as-product
  * 6. Learner Profile / My TransformerPath hub files exist
@@ -70,7 +70,9 @@ check('data/grid-lab.json exists with scenarios', (function () {
 const pricing = fs.readFileSync('pricing.html', 'utf8');
 check('pricing does not say “11 models”', !/11 models/i.test(pricing));
 check('pricing mentions Grid Lab', /Grid Lab/i.test(pricing));
-check('grid-lab is a census simulator, not a 3D part model', /simulator/i.test(fs.readFileSync('grid-lab.html', 'utf8')) && /not another 3D|not a new 3D|not a 3D part/i.test(fs.readFileSync('grid-lab.html', 'utf8') + fs.readFileSync('tp-grid-lab.js', 'utf8')));
+const gridLabHtml = fs.readFileSync('grid-lab.html', 'utf8');
+check('grid-lab.html is the live system Lab (generation → GSU journey)', /Generation/i.test(gridLabHtml) && /GSU/i.test(gridLabHtml));
+check('grid-lab.html loads the 3D Grid Lab engine', /js\/tp-grid-lab\.js/.test(gridLabHtml));
 
 console.log('\n=== P0.4 SSR / SEGMENTED DIRECTORY SEARCH ===');
 const idx = JSON.parse(fs.readFileSync('data/directory-index.json', 'utf8')).companies || [];
@@ -119,7 +121,12 @@ check('onboarding.html exists (short Learner Profile onboarding)', fs.existsSync
 check('assessments.html exists with calculation spine', fs.existsSync('assessments.html') && /line current|100 MVA/i.test(fs.readFileSync('data/assessments.json', 'utf8')));
 check('create-checkout function is account-first', /sign_in_required/.test(fs.readFileSync('functions/create-checkout.js', 'utf8')));
 check('APPLY_SQL runner exists', fs.existsSync('apply-sql.js') && /organization_members/.test(require('../functions/lib/account-model').APPLY_SQL));
-check('grid-lab.html is independently stamped with named scenarios', /50 Hz and 60 Hz/.test(fs.readFileSync('grid-lab.html', 'utf8')));
+check('census Grid Lab scenarios remain for the hub (50/60 Hz)', (function () {
+  try {
+    const g = JSON.parse(fs.readFileSync('data/grid-lab.json', 'utf8'));
+    return (g.scenarios || []).some((s) => /50 Hz and 60 Hz/i.test(s.title || ''));
+  } catch (e) { return false; }
+})());
 check('pricing CTAs require an account (not a raw Payment Link as the primary href)', /Create account|Choose /.test(fs.readFileSync('pricing.html', 'utf8')) && /create-checkout/.test(fs.readFileSync('pricing.html', 'utf8')));
 check('certificates.html exists as learning records, not credentials', fs.existsSync('certificates.html') && /not an accredited/i.test(fs.readFileSync('certificates.html', 'utf8')));
 check('netlify maps /me /sign-in /onboarding /certificates', /from = "\/me"/.test(toml) && /from = "\/sign-in"/.test(toml) && /from = "\/onboarding"/.test(toml) && /from = "\/certificates"/.test(toml));

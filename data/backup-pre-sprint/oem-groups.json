@@ -1,0 +1,136 @@
+{
+  "_note": "Two-level filing model for multi-location transformer OEMs. Level 1 = a corporate group (one record per OEM, with HQ + group site). Level 2 = its manufacturing/affiliate sites, each posted under its host country in data/manufacturers.json and aggregated here. The manufacturers directory stays plant-based (national footprint); this file is the corporate linkage a company page reads to show 'group -> all sites'. Site url is the group/local page; use the group global site where a reliable country page was not verified.",
+  "groups": [
+    {
+      "group": "Hitachi Energy",
+      "hq": "Zurich, Switzerland",
+      "cc": "CH",
+      "site": "https://www.hitachienergy.com/",
+      "sites": [
+        { "country": "Switzerland", "name": "Hitachi Energy (global HQ)", "city": "Zurich", "url": "https://www.hitachienergy.com/" },
+        { "country": "USA", "name": "Hitachi Energy USA", "city": "South Boston, VA", "url": "https://www.hitachienergy.com/" },
+        { "country": "Canada", "name": "Hitachi Energy Canada", "city": "", "url": "https://www.hitachienergy.com/" },
+        { "country": "Brazil", "name": "Hitachi Energy Brasil", "city": "", "url": "https://www.hitachienergy.com/" },
+        { "country": "Colombia", "name": "Hitachi Energy Colombia", "city": "Bogota", "url": "https://www.hitachienergy.com/" },
+        { "country": "Italy", "name": "Hitachi Energy Italy", "city": "", "url": "https://www.hitachienergy.com/" },
+        { "country": "Spain", "name": "Hitachi Energy Spain", "city": "", "url": "https://www.hitachienergy.com/" },
+        { "country": "Sweden", "name": "Hitachi Energy Sweden", "city": "", "url": "https://www.hitachienergy.com/" },
+        { "country": "Finland", "name": "Hitachi Energy Finland", "city": "", "url": "https://www.hitachienergy.com/" },
+        { "country": "Norway", "name": "National Industri (Hitachi Energy)", "city": "", "url": "https://www.hitachienergy.com/" },
+        { "country": "Turkiye", "name": "Hitachi Energy Turkiye", "city": "", "url": "https://www.hitachienergy.com/" },
+        { "country": "Egypt", "name": "Hitachi Energy Transformers SAE", "city": "", "url": "https://www.hitachienergy.com/africa/en" },
+        { "country": "India", "name": "Hitachi Energy India", "city": "", "url": "https://www.hitachienergy.com/in/en" },
+        { "country": "China", "name": "Hitachi Energy (Chongqing / Shanghai)", "city": "Chongqing", "url": "https://www.hitachienergy.com/" },
+        { "country": "Japan", "name": "Hitachi Energy Japan", "city": "", "url": "https://www.hitachienergy.com/" },
+        { "country": "Thailand", "name": "Hitachi Energy Thailand", "city": "", "url": "https://www.hitachienergy.com/" },
+        { "country": "Malaysia", "name": "Hitachi Energy Malaysia", "city": "", "url": "https://www.hitachienergy.com/my/en" },
+        { "country": "Vietnam", "name": "Hitachi Energy Vietnam", "city": "", "url": "https://www.hitachienergy.com/" }
+      ]
+    },
+    {
+      "group": "Siemens Energy",
+      "hq": "Munich, Germany",
+      "cc": "DE",
+      "site": "https://www.siemens-energy.com/",
+      "sites": [
+        { "country": "Germany", "name": "Siemens Energy", "city": "Nuremberg", "url": "https://www.siemens-energy.com/" },
+        { "country": "Austria", "name": "Siemens Energy (Transformers Weiz)", "city": "Weiz", "url": "https://www.siemens-energy.com/" },
+        { "country": "USA", "name": "Siemens Energy", "city": "Charlotte, NC", "url": "https://www.siemens-energy.com/" },
+        { "country": "Brazil", "name": "Siemens Energy Brasil", "city": "", "url": "https://www.siemens-energy.com/" },
+        { "country": "Colombia", "name": "Siemens Energy", "city": "", "url": "https://www.siemens-energy.com/" },
+        { "country": "India", "name": "Siemens Energy India", "city": "", "url": "https://www.siemens-energy.com/in/en" },
+        { "country": "Pakistan", "name": "Siemens Pakistan", "city": "", "url": "https://www.siemens.com/pk/en.html" },
+        { "country": "China", "name": "Siemens Transformer (Wuhan)", "city": "Wuhan", "url": "https://www.siemens-energy.com/" }
+      ]
+    },
+    {
+      "group": "GE Vernova (incl. Prolec GE)",
+      "hq": "Atlanta, USA",
+      "cc": "US",
+      "site": "https://www.gevernova.com/",
+      "sites": [
+        { "country": "USA", "name": "Prolec GE (GE Vernova)", "city": "Shreveport, LA", "url": "https://www.prolec.energy/" },
+        { "country": "USA", "name": "Prolec GE Waukesha", "city": "Waukesha, WI", "url": "https://www.prolec.energy/" },
+        { "country": "Brazil", "name": "Prolec GE Brasil", "city": "", "url": "https://www.prolec.energy/" },
+        { "country": "United Kingdom", "name": "GE Vernova (HVDC transformers)", "city": "", "url": "https://www.gevernova.com/" },
+        { "country": "India", "name": "GE Vernova T&D India", "city": "", "url": "https://www.gevernova.com/" },
+        { "country": "Turkiye", "name": "GE Vernova (Grid Solutions)", "city": "", "url": "https://www.gevernova.com/" }
+      ]
+    },
+    {
+      "group": "Schneider Electric",
+      "hq": "Rueil-Malmaison, France",
+      "cc": "FR",
+      "site": "https://www.se.com/",
+      "sites": [
+        { "country": "France", "name": "Schneider Electric", "city": "", "url": "https://www.se.com/" },
+        { "country": "France", "name": "France Transfo (Schneider)", "city": "", "url": "https://www.francetransfo.com" },
+        { "country": "USA", "name": "Schneider Electric / Square D", "city": "", "url": "https://www.se.com/us/" },
+        { "country": "India", "name": "Schneider Electric India", "city": "", "url": "https://www.se.com/in" },
+        { "country": "Indonesia", "name": "Schneider Electric Mfg Batam", "city": "Batam", "url": "https://www.se.com/id" },
+        { "country": "Malaysia", "name": "Tamco Switchgear (Schneider)", "city": "", "url": "https://www.se.com/my" }
+      ]
+    },
+    {
+      "group": "ABB",
+      "hq": "Zurich, Switzerland",
+      "cc": "CH",
+      "site": "https://global.abb/",
+      "sites": [
+        { "country": "Switzerland", "name": "Trasfor (ABB)", "city": "", "url": "https://www.trasfor.ch" },
+        { "country": "Turkiye", "name": "ABB Turkiye", "city": "", "url": "https://new.abb.com/tr" },
+        { "country": "Thailand", "name": "ABB Thailand", "city": "", "url": "https://new.abb.com" }
+      ]
+    },
+    {
+      "group": "TBEA",
+      "hq": "Urumqi, China",
+      "cc": "CN",
+      "site": "https://en.tbea.com/",
+      "sites": [
+        { "country": "China", "name": "TBEA Group", "city": "Changji / Shenyang / Hengyang / Tianjin", "url": "https://en.tbea.com/" }
+      ]
+    },
+    {
+      "group": "Hyosung Heavy Industries",
+      "hq": "Seoul, South Korea",
+      "cc": "KR",
+      "site": "https://www.hyosungheavyindustries.com",
+      "sites": [
+        { "country": "South Korea", "name": "Hyosung Heavy Industries", "city": "Seoul", "url": "https://www.hyosungheavyindustries.com" },
+        { "country": "USA", "name": "HICO America (Hyosung)", "city": "", "url": "https://www.hicoamerica.com/" }
+      ]
+    },
+    {
+      "group": "LS Electric",
+      "hq": "Anyang, South Korea",
+      "cc": "KR",
+      "site": "https://www.lselectric.co.kr",
+      "sites": [
+        { "country": "South Korea", "name": "LS Electric", "city": "Anyang", "url": "https://www.lselectric.co.kr" },
+        { "country": "USA", "name": "LS Electric America", "city": "", "url": "https://www.ls-electric.com/" }
+      ]
+    },
+    {
+      "group": "SGB-SMIT Group",
+      "hq": "Regensburg, Germany",
+      "cc": "DE",
+      "site": "https://www.sgb-smit.com/",
+      "sites": [
+        { "country": "Germany", "name": "SGB-SMIT Group", "city": "Regensburg", "url": "https://www.sgb-smit.com/" },
+        { "country": "Germany", "name": "SGB (Neumark works)", "city": "Neumark", "url": "https://www.sgb-smit.com/" },
+        { "country": "South Africa", "name": "SGB-SMIT Power Matla", "city": "", "url": "https://www.sgbsmitpowermatla.com/" },
+        { "country": "China", "name": "SGB Transformer (Changzhou)", "city": "Changzhou", "url": "https://www.sgb-smit.com/" }
+      ]
+    },
+    {
+      "group": "Elsewedy Electric",
+      "hq": "Cairo, Egypt",
+      "cc": "EG",
+      "site": "https://elsewedyelectric.com",
+      "sites": [
+        { "country": "Egypt", "name": "Elsewedy Electric (Transformers)", "city": "Cairo", "url": "https://www.elsewedyelectric.com/" }
+      ]
+    }
+  ]
+}

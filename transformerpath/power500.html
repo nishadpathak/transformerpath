@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>500 MVA Power Transformer — Interactive 3D (400/220 kV, radiators, conservator, OLTC)</title>
+<meta name="description" content="500 MVA, 400/220 kV power transformer in interactive 3D — construction, components and insulation system explored.">
+<link rel="canonical" href="https://transformerpath.com/power500.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TransformerPath">
+<meta property="og:title" content="500 MVA Power Transformer — Interactive 3D (400/220 kV, radiators, conservator, OLTC)">
+<meta property="og:description" content="500 MVA, 400/220 kV power transformer in interactive 3D — construction, components and insulation system explored.">
+<meta property="og:url" content="https://transformerpath.com/power500.html">
+<meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+:root{--panel:#0e1c2c;--panel2:#13263a;--ink:#e8eef5;--mut:#8fa6bc;--acc:#3da5f4;--acc2:#e8732a;--line:#23415e}
+*{box-sizing:border-box;margin:0;padding:0}html,body{height:100%;overflow:hidden}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#08121e;color:var(--ink)}
+#c3d{position:absolute;inset:0;cursor:grab}#c3d.dragging{cursor:grabbing}
+#topbar{position:absolute;top:0;left:0;right:0;height:52px;background:linear-gradient(180deg,rgba(8,18,30,.95),rgba(8,18,30,.78) 70%,transparent);display:flex;align-items:center;gap:12px;padding:0 18px;z-index:10;pointer-events:none}
+#topbar h1{font-size:1rem;font-weight:600;white-space:nowrap}
+#topbar a{pointer-events:auto;color:var(--acc);text-decoration:none;font-size:.8rem;border:1px solid var(--line);padding:4px 10px;border-radius:6px;background:rgba(14,28,44,.7);white-space:nowrap}
+#topbar a:hover{background:var(--panel2)}
+#panel{position:absolute;top:60px;right:12px;width:300px;max-height:calc(100% - 80px);overflow-y:auto;background:rgba(14,28,44,.92);border:1px solid var(--line);border-radius:12px;padding:14px 16px;z-index:10;backdrop-filter:blur(6px)}
+#panel h2{font-size:.78rem;text-transform:uppercase;letter-spacing:1px;color:var(--mut);margin:12px 0 6px}#panel h2:first-child{margin-top:0}
+.sl{width:100%;margin:4px 0 2px;accent-color:var(--acc)}
+.slrow{display:flex;justify-content:space-between;font-size:.72rem;color:var(--mut)}
+.tgl{display:flex;align-items:center;gap:8px;font-size:.82rem;padding:2.5px 0;cursor:pointer;user-select:none}.tgl input{accent-color:var(--acc)}
+.sw{width:11px;height:11px;border-radius:3px;display:inline-block;flex:none}
+#info{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;margin-top:6px;font-size:.83rem;line-height:1.5;min-height:84px}#info b{color:var(--acc)}#info .hint{color:var(--mut);font-size:.78rem}
+.btnrow{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.btnrow button{flex:1;background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:7px;padding:6px 4px;font-size:.76rem;cursor:pointer;white-space:nowrap}
+.btnrow button:hover{border-color:var(--acc)}.btnrow button.on{background:var(--acc);color:#04121f;font-weight:600}
+.spec{font-size:.74rem;color:var(--mut);line-height:1.5;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:8px 10px}.spec b{color:var(--acc2)}
+#help{position:absolute;left:14px;bottom:12px;z-index:10;font-size:.74rem;color:var(--mut);background:rgba(14,28,44,.75);border:1px solid var(--line);border-radius:8px;padding:7px 11px;line-height:1.6;pointer-events:none}
+.lbl{position:absolute;transform:translate(-50%,-130%);background:rgba(10,22,36,.88);border:1px solid var(--line);color:#dbe7f3;font-size:11px;padding:2px 7px;border-radius:5px;pointer-events:auto;cursor:pointer;white-space:nowrap;z-index:5}
+.lbl::after{content:"";position:absolute;left:50%;top:100%;margin-left:-4px;border:4px solid transparent;border-top-color:var(--line)}
+@media(max-width:760px){#panel{width:250px}#topbar h1{font-size:.8rem}}
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TransformerPath">
+<!-- 3D unlocked for component↔supplier marketplace (was course-gate.js) -->
+</head>
+<body data-tp-node="power500">
+<div style="background:#0d1b2e;color:#fff;padding:10px 18px;display:flex;align-items:center;gap:16px;font-size:.9rem;flex-wrap:wrap">
+  <a href="index.html" style="color:#fff;font-weight:800;text-decoration:none;font-size:1.05rem;letter-spacing:-.3px">Transformer<span style="color:#f5a623">Path</span></a>
+  <a href="learn.html" style="color:#cbd5e1;text-decoration:none;margin-left:auto">&#8592; Learn hub</a>
+</div>
+<div id="c3d"></div>
+<div id="topbar">
+  <h1>🏭 500 MVA Power Transformer</h1>
+  <a href="academy.html">🏠 Hub</a>
+  <a href="power3d.html">Power 100 MVA</a>
+  <a href="explorer.html">Distribution</a>
+  <a href="castresin3d.html">Cast resin 3D</a>
+  <a href="ct3d.html">CT 3D</a>
+  <a href="masterclass.html">← Masterclass</a>
+  <a href="coretopology.html">Core types →</a>
+  <a href="oltc.html">OLTC →</a>
+</div>
+<div id="panel">
+  <div class="spec"><b>500 MVA</b> · 400/220 kV · two-winding · <b>YNyn0+d</b> · 5-limb core · ONAN/ONAF/ODAF · BIL 1425/1050 kV · ~340 t</div>
+  <h2>Tank opacity (see inside)</h2>
+  <input id="tankop" class="sl" type="range" min="10" max="100" value="100">
+  <div class="slrow"><span>active part</span><span>solid tank</span></div>
+  <h2>Exploded view</h2>
+  <input id="explode" class="sl" type="range" min="0" max="100" value="0">
+  <div class="slrow"><span>assembled</span><span>exploded</span></div>
+  <h2>Components</h2>
+  <div id="toggles"></div>
+  <h2>View &amp; action</h2>
+  <div class="btnrow">
+    <button id="bCool" class="on">❄ Run cooling</button>
+    <button id="bEnergize">⚡ Energize</button>
+    <button id="bRotate">⟳ Rotate</button>
+  </div>
+  <div class="btnrow">
+    <button id="bLabels" class="on">🏷 Labels</button>
+    <button id="bScale" class="on">🧍 Scale</button>
+    <button id="bReset">⌂ Reset</button>
+  </div>
+  <div class="btnrow">
+    <button data-v="34">¾ view</button>
+    <button data-v="front">Front</button>
+    <button data-v="side">Side</button>
+    <button data-v="top">Top</button>
+  </div>
+  <h2>Selected part</h2>
+  <div id="info"><span class="hint">Click any part to identify it. Drag = orbit · wheel = zoom · right-drag = pan.</span></div>
+</div>
+<div id="help">🖱 drag = orbit · wheel = zoom · right-drag = pan · click = identify<br>Radiator banks + fans, conservator, OLTC, bushings, wheels on rails. Slide tank opacity to see the core &amp; windings.</div>
+
+<script src="vendor/three.min.js"></script>
+<script>
+/* ===================== scene ===================== */
+const container=document.getElementById('c3d');
+const renderer=new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.setSize(innerWidth,innerHeight);
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.outputEncoding=THREE.sRGBEncoding;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.18;
+container.appendChild(renderer.domElement);
+const scene=new THREE.Scene();
+(function(){const cv=document.createElement('canvas');cv.width=16;cv.height=512;const g=cv.getContext('2d');
+ const gr=g.createLinearGradient(0,0,0,512);gr.addColorStop(0,'#2b5a86');gr.addColorStop(.45,'#143049');gr.addColorStop(.78,'#0c1c30');gr.addColorStop(1,'#0a1624');
+ g.fillStyle=gr;g.fillRect(0,0,16,512);scene.background=new THREE.CanvasTexture(cv);})();
+scene.fog=new THREE.Fog(0x0d1f33,300,720);
+const camera=new THREE.PerspectiveCamera(45,innerWidth/innerHeight,0.5,1400);
+scene.add(new THREE.HemisphereLight(0xbcd4ea,0x16202c,.92));
+const sun=new THREE.DirectionalLight(0xffffff,1.0);sun.position.set(140,200,120);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);
+const sc=sun.shadow.camera;sc.left=-180;sc.right=180;sc.top=180;sc.bottom=-60;sc.far=620;scene.add(sun);
+const fill=new THREE.DirectionalLight(0x88aacc,.3);fill.position.set(-120,80,-130);scene.add(fill);
+const ground=new THREE.Mesh(new THREE.PlaneGeometry(1100,1100),new THREE.MeshStandardMaterial({color:0x17313f,roughness:1}));
+ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
+scene.add(new THREE.GridHelper(1100,55,0x254257,0x1b3346));
+// rim / back light for separation
+const rim=new THREE.DirectionalLight(0xa9c6e8,.5);rim.position.set(-90,70,150);scene.add(rim);
+// PBR environment map (procedural sky→ground) → real reflections on metal & porcelain
+(function(){const c=document.createElement('canvas');c.width=256;c.height=128;const x=c.getContext('2d');
+  const g=x.createLinearGradient(0,0,0,128);g.addColorStop(0,'#b9d4ef');g.addColorStop(.5,'#5e7d99');g.addColorStop(.52,'#3a4f63');g.addColorStop(1,'#1b2a38');
+  x.fillStyle=g;x.fillRect(0,0,256,128);const tex=new THREE.CanvasTexture(c);tex.mapping=THREE.EquirectangularReflectionMapping;
+  const pmrem=new THREE.PMREMGenerator(renderer);const env=pmrem.fromEquirectangular(tex).texture;scene.environment=env;tex.dispose();pmrem.dispose();})();
+// soft contact shadow under the unit (cheap fake AO)
+(function(){const c=document.createElement('canvas');c.width=c.height=128;const x=c.getContext('2d');
+  const g=x.createRadialGradient(64,64,6,64,64,64);g.addColorStop(0,'rgba(0,0,0,.55)');g.addColorStop(1,'rgba(0,0,0,0)');
+  x.fillStyle=g;x.fillRect(0,0,128,128);const t=new THREE.CanvasTexture(c);
+  const m=new THREE.Mesh(new THREE.PlaneGeometry(240,130),new THREE.MeshBasicMaterial({map:t,transparent:true,depthWrite:false}));
+  m.rotation.x=-Math.PI/2;m.position.y=0.35;scene.add(m);})();
+
+/* ===================== materials ===================== */
+const M={
+  tank:new THREE.MeshStandardMaterial({color:0x6f8093,metalness:.55,roughness:.5}),
+  tankG:new THREE.MeshStandardMaterial({color:0x76899c,metalness:.5,roughness:.48,transparent:true,opacity:1}),
+  rib:new THREE.MeshStandardMaterial({color:0x5d6e80,metalness:.6,roughness:.5}),
+  rad:new THREE.MeshStandardMaterial({color:0x7c8b9d,metalness:.5,roughness:.55}),
+  pipe:new THREE.MeshStandardMaterial({color:0x556677,metalness:.7,roughness:.42}),
+  fan:new THREE.MeshStandardMaterial({color:0x2c3a4a,metalness:.6,roughness:.55}),
+  fanblade:new THREE.MeshStandardMaterial({color:0x3a4a5c,metalness:.5,roughness:.5}),
+  steel:new THREE.MeshStandardMaterial({color:0x9aa9bb,metalness:.85,roughness:.4}),
+  dark:new THREE.MeshStandardMaterial({color:0x28323e,metalness:.5,roughness:.6}),
+  cab:new THREE.MeshStandardMaterial({color:0x808d9b,metalness:.5,roughness:.6}),
+  porcHV:new THREE.MeshStandardMaterial({color:0xc3ccd4,metalness:.12,roughness:.38}),
+  porcLV:new THREE.MeshStandardMaterial({color:0x8a6a48,metalness:.15,roughness:.4}),
+  red:new THREE.MeshStandardMaterial({color:0xc0392b,metalness:.4,roughness:.6}),
+  core:new THREE.MeshStandardMaterial({color:0x47556a,metalness:.78,roughness:.34}),
+  cu:new THREE.MeshStandardMaterial({color:0xc97a3d,metalness:.7,roughness:.45,side:THREE.DoubleSide}),
+  cuHV:new THREE.MeshStandardMaterial({color:0xb5651d,metalness:.65,roughness:.5,side:THREE.DoubleSide}),
+  conserv:new THREE.MeshStandardMaterial({color:0x808f9f,metalness:.55,roughness:.5}),
+  rubber:new THREE.MeshStandardMaterial({color:0x20272f,metalness:.2,roughness:.8}),
+  human:new THREE.MeshStandardMaterial({color:0xe8732a,roughness:.85})
+};
+
+/* ===================== registry ===================== */
+const PARTS={};const pickables=[];
+function reg(obj,key,name,desc,ex){obj.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;o.userData.key=key;pickables.push(o);}});
+  PARTS[key]={root:obj,name,desc,base:obj.position.clone(),ex:ex||new THREE.Vector3()};return obj;}
+const root=new THREE.Group();scene.add(root);
+const box=(w,h,d)=>new THREE.BoxGeometry(w,h,d);
+const cylG=(r,h,s)=>new THREE.CylinderGeometry(r,r,h,s||24);
+
+/* dimensions (1 unit ~ 0.1 m) */
+const TL=110,TW=46,TH=56,TY0=12;        // tank length(x), width(z), height(y), bottom y
+const TCY=TY0+TH/2;                       // tank centre y
+
+/* ===================== base skid + wheels + rails ===================== */
+const baseGrp=new THREE.Group();
+const skid=new THREE.Mesh(box(TL+16,8,TW+14),M.dark);skid.position.set(0,8,0);baseGrp.add(skid);
+// longitudinal I-beams
+for(const sz of[-1,1]){const beam=new THREE.Mesh(box(TL+22,5,5),M.steel);beam.position.set(0,5,sz*(TW/2+2));baseGrp.add(beam);}
+root.add(baseGrp);
+reg(baseGrp,'base','Base frame / under-carriage','The fabricated steel under-base carries the ~340 t mass, ties the core clamping to the tank, and mounts the haulage wheels and jacking pads.',new THREE.Vector3(0,0,0));
+
+// rails on the ground
+const railGrp=new THREE.Group();
+for(const sz of[-1,1]){const rail=new THREE.Mesh(box(260,1.6,4),M.steel);rail.position.set(0,0.8,sz*22);railGrp.add(rail);}
+root.add(railGrp);
+PARTS['rail']={root:railGrp,name:'',desc:'',base:railGrp.position.clone(),ex:new THREE.Vector3()};
+
+// flanged bidirectional wheels
+const wheelGrp=new THREE.Group();
+function wheelSet(x,z){const g=new THREE.Group();
+  const w=new THREE.Mesh(new THREE.CylinderGeometry(4,4,3,22),M.steel);w.rotation.x=Math.PI/2;
+  const fl1=new THREE.Mesh(new THREE.CylinderGeometry(5,5,0.7,22),M.steel);fl1.rotation.x=Math.PI/2;fl1.position.z=1.6;
+  const fl2=fl1.clone();fl2.position.z=-1.6;
+  const bogie=new THREE.Mesh(box(11,3,7),M.dark);bogie.position.y=4.5;
+  g.add(w,fl1,fl2,bogie);g.position.set(x,5.5,z);return g;}
+[-1,1].forEach(sx=>[-1,1].forEach(sz=>wheelGrp.add(wheelSet(sx*(TL/2-8),sz*22))));
+// extra mid wheels
+[-1,1].forEach(sz=>wheelGrp.add(wheelSet(0,sz*22)));
+root.add(wheelGrp);
+reg(wheelGrp,'wheels','Flanged haulage wheels','Bidirectional flanged wheels run on rails so the unit can be skidded onto its plinth and rotated 90° for either-axis travel. Locked and jacked off-load once positioned.',new THREE.Vector3(0,0,0));
+
+/* ===================== main tank ===================== */
+const tankGrp=new THREE.Group();
+const tank=new THREE.Mesh(box(TL,TH,TW),M.tankG);tank.position.set(0,TCY,0);tankGrp.add(tank);
+// vertical stiffener ribs
+for(let i=-2;i<=2;i++){const r=new THREE.Mesh(box(2.2,TH-4,TW+2.2),M.rib);r.position.set(i*22,TCY,0);tankGrp.add(r);}
+for(const sz of[-1,1]){const r=new THREE.Mesh(box(TL+2.2,TH-4,2.2),M.rib);r.position.set(0,TCY,sz*(TW/2));tankGrp.add(r);}
+root.add(tankGrp);
+reg(tankGrp,'tank','Main tank','Stiffened steel tank holding the active part in ~95 kL of mineral oil. Ribs resist the vacuum-fill and short-circuit pressure. Slide <b>Tank opacity</b> to reveal the core &amp; windings.',new THREE.Vector3(0,0,0));
+// cover
+const lid=new THREE.Mesh(box(TL+3,5,TW+3),M.tank);lid.position.set(0,TY0+TH+2.5,0);
+root.add(lid);reg(lid,'lid','Tank cover','Bolted/welded cover carrying the bushing turrets, conservator pipework and inspection covers. Sealed against the oil/gas space.',new THREE.Vector3(0,30,0));
+// lifting lugs
+const lugGrp=new THREE.Group();
+[-1,1].forEach(sx=>[-1,1].forEach(sz=>{const l=new THREE.Mesh(box(4,8,3),M.steel);l.position.set(sx*(TL/2-4),TY0+TH+6,sz*(TW/2-3));lugGrp.add(l);}));
+root.add(lugGrp);reg(lugGrp,'lugs','Lifting lugs & jacking pads','Welded lugs for lifting the complete unit and pads for hydraulic jacking during transport and placement.',new THREE.Vector3(0,12,0));
+
+/* ===================== active part (inside) ===================== */
+const activeGrp=new THREE.Group();
+const LIMB=[-30,0,30];
+LIMB.forEach(x=>{const l=new THREE.Mesh(cylG(5.5,TH-16,24),M.core);l.position.set(x,TCY,0);activeGrp.add(l);});
+[-48,48].forEach(x=>{const l=new THREE.Mesh(cylG(4.4,TH-16,20),M.core);l.position.set(x,TCY,0);activeGrp.add(l);}); // 5-limb returns (inside tank)
+[1,-1].forEach(s=>{const yk=new THREE.Mesh(box(104,9,9),M.core);yk.position.set(0,TCY+s*(TH-16)/2,0);activeGrp.add(yk);});
+LIMB.forEach(x=>{const lv=new THREE.Mesh(new THREE.CylinderGeometry(9,9,TH-22,30,1,true),M.cu);lv.position.set(x,TCY,0);activeGrp.add(lv);
+  const hv=new THREE.Mesh(new THREE.CylinderGeometry(12,12,TH-22,30,1,true),M.cuHV);hv.position.set(x,TCY,0);activeGrp.add(hv);});
+root.add(activeGrp);
+reg(activeGrp,'active','Active part (core + windings)','The 5-limb core and the three concentric winding stacks (tertiary → 220 kV LV → 400 kV HV) sit in the oil. Three wound limbs plus two return limbs keep the yoke low for transport.',new THREE.Vector3(0,0,0));
+
+/* ===================== panel radiator banks + fans ===================== */
+const radGrp=new THREE.Group();const fanList=[];
+const PANEL_D=15;                                   // radiator element depth (out from tank, in z)
+const N_PANEL=14, P_STEP=1.35, BANK_W=N_PANEL*P_STEP;
+const panelMats=[];                                  // collect every panel's transform → one InstancedMesh
+function radiatorBank(cx,sz){                        // sz = +1 / -1 (which long side); cx = position along tank
+  const g=new THREE.Group();
+  const zMid=sz*(TW/2+3+PANEL_D/2);                  // panel centre, hanging outboard
+  // panel elements collected for instancing (each = a pressed-steel oval-tube panel)
+  for(let i=0;i<N_PANEL;i++){const m=new THREE.Matrix4().setPosition(cx-BANK_W/2+i*P_STEP+P_STEP/2,TY0+25,zMid);panelMats.push(m);}
+  // top & bottom oil header manifolds (run along the bank, against the tank)
+  const ht=new THREE.Mesh(box(BANK_W+3,3,3.4),M.pipe);ht.position.set(cx,TY0+47,zMid);g.add(ht);
+  const hb=new THREE.Mesh(box(BANK_W+3,3,3.4),M.pipe);hb.position.set(cx,TY0+4,zMid);g.add(hb);
+  // riser/return pipes from the manifolds into the tank (top hot, bottom cool)
+  for(const yy of[TY0+47,TY0+4]){const r=new THREE.Mesh(cylG(1.3,7,12),M.pipe);r.rotation.x=Math.PI/2;
+    r.position.set(cx+BANK_W/2-2,yy,sz*(TW/2+1.5)); g.add(r);}
+  // forced-air fan + guard below the bank (ONAF/ODAF)
+  const fan=makeFan();fan.position.set(cx,TY0-2,zMid);g.add(fan);fanList.push(fan);
+  const guard=new THREE.Mesh(new THREE.TorusGeometry(7.5,0.7,8,26),M.dark);guard.rotation.x=Math.PI/2;guard.position.set(cx,TY0-2,zMid);g.add(guard);
+  return g;
+}
+function makeFan(){const f=new THREE.Group();const hub=new THREE.Mesh(cylG(1.2,1.4,12),M.fan);f.add(hub);
+  for(let b=0;b<6;b++){const blade=new THREE.Mesh(box(6.0,0.4,2.2),M.fanblade);const p=new THREE.Group();p.add(blade);blade.position.x=4.0;blade.rotation.z=0.5;p.rotation.y=b*Math.PI*2/6;f.add(p);}return f;}
+// five banks down each long side = ten banks, 140 panel elements
+[-1,1].forEach(sz=>[-46,-23,0,23,46].forEach(cx=>radGrp.add(radiatorBank(cx,sz))));
+// all 140 panels as ONE InstancedMesh (one draw call instead of 140 meshes)
+const panelInst=new THREE.InstancedMesh(box(0.85,42,PANEL_D),M.rad,panelMats.length);
+panelMats.forEach((m,i)=>panelInst.setMatrixAt(i,m));panelInst.instanceMatrix.needsUpdate=true;
+panelInst.frustumCulled=false;                       // instances span the whole tank; base bounding sphere would wrongly cull
+radGrp.add(panelInst);
+root.add(radGrp);
+reg(radGrp,'rad','Panel radiator banks + fans','Ten banks of <b>pressed-steel panel radiators</b> (not fins) hang off the long sides — each element a stack of oval oil tubes between top and bottom manifolds. They shed the ~1.3 MW of losses: ONAN by natural convection, with the <b>fans</b> cut in for ONAF and the oil pumps for ODAF as load rises. Hit “Run cooling”.',new THREE.Vector3(0,30,0));
+// oil pumps at bottom headers (ODAF)
+const pumpGrp=new THREE.Group();
+[-1,1].forEach(sz=>[-46,0,46].forEach(cx=>{const p=new THREE.Mesh(cylG(2.6,5,16),M.red);p.rotation.x=Math.PI/2;p.position.set(cx,TY0+4,sz*(TW/2+3));pumpGrp.add(p);}));
+root.add(pumpGrp);
+reg(pumpGrp,'pump','Oil pumps (ODAF)','Motor-driven oil pumps force-circulate (directed) oil through the windings and radiators for the top ODAF rating — the difference between, say, 350 MVA ONAF and 500 MVA ODAF.',new THREE.Vector3(0,22,0));
+
+/* ===================== bushings ===================== */
+function condBush(h,r,col){const g=new THREE.Group();const n=Math.round(h/2.3);
+  for(let i=0;i<n;i++){const rr=r+(1-i/n)*1.4;const s=new THREE.Mesh(cylG(rr,1.0,18),col);s.position.y=i*2.3;g.add(s);
+    const stem=new THREE.Mesh(cylG(rr*0.55,2.3,14),col);stem.position.y=i*2.3;g.add(stem);}
+  const turret=new THREE.Mesh(cylG(r+2.4,6,18),M.tank);turret.position.y=-3;g.add(turret);
+  const cap=new THREE.Mesh(new THREE.SphereGeometry(r+1,14,10,0,Math.PI*2,0,Math.PI/2),M.steel);cap.position.y=n*2.3;g.add(cap);
+  return g;}
+const COV=TY0+TH+5;
+// HV 400 kV — 3 phases across the width, near one end
+const hvB=new THREE.Group();
+[-46,-34,-22].forEach(x=>{const b=condBush(46,3.4,M.porcHV);b.position.set(x,COV,-6);hvB.add(b);});
+root.add(hvB);reg(hvB,'hv','400 kV HV bushings','Three tall RIP/OIP condenser bushings (BIL 1425 kV) bring the 400 kV line leads through the cover. Long sheds give the creepage for dusty/coastal GCC air.',new THREE.Vector3(0,40,0));
+// LV 220 kV — 3 phases other end
+const lvB=new THREE.Group();
+[22,34,46].forEach(x=>{const b=condBush(30,3.0,M.porcLV);b.position.set(x,COV,-6);lvB.add(b);});
+root.add(lvB);reg(lvB,'lv','220 kV LV bushings','Three 220 kV condenser bushings (BIL 1050 kV) at the opposite end — shorter than the 400 kV set.',new THREE.Vector3(0,30,0));
+// neutrals + tertiary
+const nB=new THREE.Group();
+const hvN=condBush(20,2.8,M.porcHV);hvN.position.set(-50,COV,-18);nB.add(hvN);
+const lvN=condBush(16,2.6,M.porcLV);lvN.position.set(50,COV,-18);nB.add(lvN);
+[-8,8].forEach(z=>{const t=condBush(11,2.2,M.porcLV);t.position.set(6,COV,z+12);nB.add(t);});
+root.add(nB);reg(nB,'neutral','Neutral + tertiary bushings','The HV and LV star neutrals are brought out for solid earthing and neutral CTs. The buried delta is a <b>stabilising winding</b> (normally unloaded, one corner earthed) that gives third-harmonic magnetising current a path — hence YNyn0+d; the 33 kV bushings expose it for test/earthing rather than continuous load.',new THREE.Vector3(0,26,0));
+
+/* ===================== conservator + Buchholz + breather ===================== */
+const consGrp=new THREE.Group();
+const cons=new THREE.Mesh(cylG(8,76,24),M.conserv);cons.rotation.z=Math.PI/2;cons.position.set(-6,TY0+TH+22,-20);consGrp.add(cons);
+[-30,30].forEach(x=>{const st=new THREE.Mesh(box(2.4,20,2.4),M.steel);st.position.set(x,TY0+TH+10,-20);consGrp.add(st);});
+root.add(consGrp);reg(consGrp,'cons','Conservator tank','The cylindrical conservator sits above the cover; its internal air-cell takes up oil expansion as the load and ambient swing, keeping the main tank full and the oil away from air.',new THREE.Vector3(0,26,-10));
+// Buchholz relay in the pipe to the tank
+const buch=new THREE.Mesh(cylG(3,7,16),M.red);buch.rotation.z=Math.PI/2;buch.position.set(-6,TY0+TH+12,-18);
+root.add(buch);reg(buch,'buch','Buchholz relay','In the conservator-to-tank pipe: traps gas from incipient faults (alarm) and trips on a strong oil surge from a major fault.',new THREE.Vector3(0,14,-6));
+// breather (silica gel)
+const breGrp=new THREE.Group();
+const bre=new THREE.Mesh(cylG(2.4,18,16),new THREE.MeshStandardMaterial({color:0xd9b85a,transparent:true,opacity:.85,roughness:.4}));
+bre.position.set(28,TY0+24,-34);breGrp.add(bre);
+const brePipe=new THREE.Mesh(cylG(1,18,10),M.pipe);brePipe.position.set(28,TY0+40,-34);breGrp.add(brePipe);
+root.add(breGrp);reg(breGrp,'bre','Silica-gel breather','The conservator breathes through a silica-gel breather that dries incoming air, keeping moisture out of the oil. Colour change = time to regenerate/replace.',new THREE.Vector3(8,0,-8));
+
+/* ===================== OLTC + motor drive + marshalling ===================== */
+const oltcGrp=new THREE.Group();
+const oltcT=new THREE.Mesh(cylG(7,40,22),M.tank);oltcT.position.set(TL/2+9,TY0+26,-6);oltcGrp.add(oltcT);
+root.add(oltcGrp);reg(oltcGrp,'oltc','On-load tap-changer','End-mounted OLTC compartment switching the regulating winding under load (±voltage control). Its diverter oil is separate from the main tank — see the OLTC cutaway model.',new THREE.Vector3(14,0,0));
+const motor=new THREE.Mesh(box(12,18,11),M.cab);motor.position.set(TL/2+9,TY0+9,12);
+root.add(motor);reg(motor,'motor','OLTC motor drive','Motor-drive cabinet with the tap-position indicator, step/limit logic and hand-crank. One command = one tap step.',new THREE.Vector3(14,0,0));
+const marsh=new THREE.Mesh(box(14,22,10),M.cab);marsh.position.set(-TL/2-9,TY0+11,28);
+root.add(marsh);reg(marsh,'marsh','Marshalling cabinet','Central cabinet wiring up the CTs, RTD/oil-temperature gauges, fan/pump control and online DGA back to the control room.',new THREE.Vector3(-14,0,0));
+
+/* ===================== bolt-on accessories ===================== */
+// surge arresters beside the HV bushings
+const arrGrp=new THREE.Group();
+function arrester(x,z){const g=new THREE.Group();const n=10;
+  for(let i=0;i<n;i++){const r=2.6-(i/n)*0.5;const s=new THREE.Mesh(cylG(r,3,16),M.porcHV);s.position.y=8+i*3.2;g.add(s);}
+  const ba=new THREE.Mesh(cylG(3.2,4,16),M.dark);ba.position.y=4;g.add(ba);
+  const gr=new THREE.Mesh(new THREE.TorusGeometry(4,0.6,8,22),M.steel);gr.rotation.x=Math.PI/2;gr.position.y=8+n*3.2;g.add(gr);
+  g.position.set(x,0,z);return g;}
+[-16,0,16].forEach(z=>arrGrp.add(arrester(-66,z)));
+root.add(arrGrp);reg(arrGrp,'arr','Surge arresters','Metal-oxide (ZnO) arresters beside the 400 kV bushings clamp lightning and switching surges, protecting the line-end insulation.',new THREE.Vector3(-12,0,0));
+
+// pressure-relief valve on the cover
+const prv=new THREE.Group();
+prv.add(new THREE.Mesh(cylG(2.4,5,16),M.red));prv.children[0].position.set(16,COV+1,16);
+const prvCap=new THREE.Mesh(new THREE.SphereGeometry(2.6,12,8,0,Math.PI*2,0,Math.PI/2),M.red);prvCap.position.set(16,COV+3.5,16);prv.add(prvCap);
+root.add(prv);reg(prv,'prv','Pressure-relief valve (PRV)','Spring-loaded valve on the cover snaps open to vent a sudden internal pressure rise from an internal fault, protecting the tank from rupture, then reseals.',new THREE.Vector3(6,12,6));
+
+// oil & winding temperature gauges (OTI / WTI)
+const gaugeGrp=new THREE.Group();
+[-22,-12].forEach(x=>{const dial=new THREE.Mesh(cylG(3,2,20),M.cab);dial.rotation.x=Math.PI/2;dial.position.set(x,TY0+20,TW/2+1.5);gaugeGrp.add(dial);
+  const face=new THREE.Mesh(cylG(2.4,0.5,20),new THREE.MeshStandardMaterial({color:0xeef2f6,roughness:.5}));face.rotation.x=Math.PI/2;face.position.set(x,TY0+20,TW/2+2.7);gaugeGrp.add(face);});
+root.add(gaugeGrp);reg(gaugeGrp,'gauge','Oil / winding temperature gauges','Dial OTI and WTI indicators with alarm/trip contacts drive the cooler control and protection; the WTI models the winding hot-spot from a heater image of load current.',new THREE.Vector3(0,8,8));
+
+// magnetic oil-level gauge on the conservator
+const mog=new THREE.Mesh(cylG(3,2,18),M.cab);mog.rotation.z=Math.PI/2;mog.position.set(-44,TY0+TH+22,-20);
+root.add(mog);reg(mog,'mog','Magnetic oil-level gauge (MOG)','Shows conservator oil level against temperature and alarms on low level — the first warning of an oil leak.',new THREE.Vector3(-10,4,-6));
+
+// drain / sampling / filter valves
+const valveGrp=new THREE.Group();
+[[40,TY0+3,TW/2+1],[30,TY0+3,TW/2+1],[-50,TY0+22,TW/2+1]].forEach(p=>{const v=new THREE.Mesh(cylG(1.4,4,12),M.steel);v.rotation.x=Math.PI/2;v.position.set(p[0],p[1],p[2]);valveGrp.add(v);
+  const wh=new THREE.Mesh(new THREE.TorusGeometry(1.6,0.4,6,16),M.red);wh.position.set(p[0],p[1],p[2]+2.4);valveGrp.add(wh);});
+root.add(valveGrp);reg(valveGrp,'valve','Drain / sampling / filter valves','Bottom drain and oil-sampling valves plus top and bottom filter valves used to vacuum-fill, filter and draw DGA oil samples through life.',new THREE.Vector3(8,0,8));
+
+// rating & diagram plate
+const plate=new THREE.Mesh(box(10,7,0.6),new THREE.MeshStandardMaterial({color:0xc4ccd4,metalness:.7,roughness:.4}));
+plate.position.set(20,TY0+18,TW/2+1.3);root.add(plate);reg(plate,'plate','Rating &amp; diagram plate','Stainless plate carrying MVA / voltage / impedance / vector group / mass and the connection diagram — the identity used for operation and tendering.',new THREE.Vector3(6,0,8));
+
+// online DGA monitor
+const dga=new THREE.Mesh(box(7,11,6),M.red);dga.position.set(-TL/2-9,TY0+8,-28);
+root.add(dga);reg(dga,'dga','Online DGA monitor','Tank-mounted dissolved-gas analyser trends fault gases (H2, C2H2 and others) continuously, giving early warning between manual oil samples.',new THREE.Vector3(-14,0,0));
+
+/* ===================== scale human ===================== */
+const human=new THREE.Group();
+const hbody=new THREE.Mesh(cylG(2,12,10),M.human);hbody.position.y=8;human.add(hbody);
+const hhead=new THREE.Mesh(new THREE.SphereGeometry(2,12,10),M.human);hhead.position.y=15.5;human.add(hhead);
+human.position.set(72,0,34);root.add(human);
+PARTS['human']={root:human,name:'',desc:'',base:human.position.clone(),ex:new THREE.Vector3()};
+
+/* ===================== toggles ===================== */
+const swatch={tank:'#76899c',lid:'#6f8093',active:'#47556a',rad:'#7c8b9d',pump:'#c0392b',hv:'#c3ccd4',lv:'#8a6a48',neutral:'#8a6a48',cons:'#808f9f',buch:'#c0392b',bre:'#d9b85a',oltc:'#6f8093',motor:'#808d9b',marsh:'#808d9b',wheels:'#9aa9bb',lugs:'#9aa9bb',base:'#28323e',arr:'#c3ccd4',prv:'#c0392b',gauge:'#eef2f6',mog:'#808d9b',valve:'#9aa9bb',plate:'#c4ccd4',dga:'#c0392b'};
+const togList=[['active','Core + windings'],['tank','Main tank'],['lid','Cover'],['rad','Radiators + fans'],['pump','Oil pumps'],['hv','400 kV bushings'],['lv','220 kV bushings'],['neutral','Neutrals + tertiary'],['arr','Surge arresters'],['cons','Conservator'],['buch','Buchholz relay'],['bre','Breather'],['mog','Oil-level gauge'],['gauge','Temp gauges (OTI/WTI)'],['prv','Pressure-relief valve'],['valve','Drain/sample valves'],['oltc','OLTC'],['motor','Motor drive'],['marsh','Marshalling cab.'],['dga','Online DGA'],['plate','Rating plate'],['wheels','Wheels'],['lugs','Lifting lugs'],['base','Base frame']];
+const togBox=document.getElementById('toggles');const tstate={};
+togList.forEach(([k,label])=>{tstate[k]=true;const l=document.createElement('label');l.className='tgl';
+  l.innerHTML=`<input type="checkbox" data-k="${k}" checked><span class="sw" style="background:${swatch[k]||'#888'}"></span>${label}`;togBox.appendChild(l);});
+togBox.addEventListener('change',e=>{const k=e.target.dataset.k;if(PARTS[k])PARTS[k].root.visible=e.target.checked;});
+
+/* ===================== orbit / pick / labels ===================== */
+const el=renderer.domElement;
+let sph={r:250,th:.8,ph:1.05};const target=new THREE.Vector3(0,42,0);
+function applyCam(){sph.ph=Math.max(.16,Math.min(1.5,sph.ph));sph.r=Math.max(80,Math.min(640,sph.r));
+  camera.position.set(target.x+sph.r*Math.sin(sph.ph)*Math.sin(sph.th),target.y+sph.r*Math.cos(sph.ph),target.z+sph.r*Math.sin(sph.ph)*Math.cos(sph.th));camera.lookAt(target);}
+applyCam();
+let dragging=false,panning=false,moved=0,px=0,py=0,pinchD=0;
+el.addEventListener('contextmenu',e=>e.preventDefault());
+el.addEventListener('pointerdown',e=>{dragging=true;moved=0;panning=(e.button===2||e.shiftKey);px=e.clientX;py=e.clientY;container.classList.add('dragging');});
+el.addEventListener('pointermove',e=>{if(!dragging)return;const dx=e.clientX-px,dy=e.clientY-py;px=e.clientX;py=e.clientY;moved+=Math.abs(dx)+Math.abs(dy);
+  if(panning){const s=sph.r*0.0016;const right=new THREE.Vector3().subVectors(camera.position,target).cross(camera.up).normalize();target.addScaledVector(right,-dx*s);target.y+=dy*s;}
+  else{sph.th-=dx*0.005;sph.ph-=dy*0.005;}applyCam();});
+el.addEventListener('pointerup',e=>{dragging=false;container.classList.remove('dragging');if(moved<6)pick(e);});
+el.addEventListener('wheel',e=>{e.preventDefault();sph.r*=(1+Math.sign(e.deltaY)*.09);applyCam();},{passive:false});
+el.addEventListener('touchstart',e=>{if(e.touches.length===2)pinchD=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);},{passive:true});
+el.addEventListener('touchmove',e=>{if(e.touches.length===2){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);sph.r*=pinchD/d;pinchD=d;applyCam();}},{passive:true});
+const ray=new THREE.Raycaster();const mouse=new THREE.Vector2();
+function pick(e){mouse.x=(e.clientX/innerWidth)*2-1;mouse.y=-(e.clientY/innerHeight)*2+1;ray.setFromCamera(mouse,camera);
+  const hits=ray.intersectObjects(pickables,true);for(const h of hits){const k=h.object.userData.key;if(h.object.visible&&k){if(k==='tank'&&M.tankG.opacity<0.35)continue;selectPart(k);return;}}}
+const info=document.getElementById('info');
+function selectPart(k){const p=PARTS[k];if(!p||!p.name)return;info.innerHTML=`<b>${p.name}</b><br>${p.desc}`;}
+const labels=[];
+function makeLabel(key,text,dx,dy,dz){const p=PARTS[key];if(!p)return;const e=document.createElement('div');e.className='lbl';e.textContent=text;e.addEventListener('click',()=>selectPart(key));document.body.appendChild(e);labels.push({key,el:e,off:new THREE.Vector3(dx,dy,dz)});}
+makeLabel('hv','400 kV HV',-34,COV+48,0);
+makeLabel('lv','220 kV LV',34,COV+32,0);
+makeLabel('neutral','Neutral + tertiary',-50,COV+22,-18);
+makeLabel('cons','Conservator',-6,TY0+TH+34,-20);
+makeLabel('buch','Buchholz',-6,TY0+TH+12,-18);
+makeLabel('bre','Breather',28,TY0+44,-34);
+makeLabel('rad','Radiators + fans',0,TY0+30,TW/2+22);
+makeLabel('pump','Oil pumps',-32,TY0+7,TW/2+10);
+makeLabel('oltc','OLTC',TL/2+9,TY0+44,-6);
+makeLabel('motor','Motor drive',TL/2+9,TY0+22,12);
+makeLabel('marsh','Marshalling',-TL/2-9,TY0+26,28);
+makeLabel('tank','Main tank',-TL/2-6,TCY+6,0);
+makeLabel('active','Core + windings',0,TCY+2,0);
+makeLabel('wheels','Wheels on rails',TL/2-8,2,22);
+makeLabel('lugs','Lifting lugs',TL/2-4,TY0+TH+8,0);
+makeLabel('arr','Surge arresters',-66,52,0);
+makeLabel('prv','Pressure-relief valve',16,COV+6,16);
+makeLabel('gauge','OTI / WTI gauges',-17,TY0+26,TW/2+3);
+makeLabel('mog','Oil-level gauge',-44,TY0+TH+27,-20);
+makeLabel('valve','Drain / sample valves',38,TY0+3,TW/2+4);
+makeLabel('plate','Rating plate',20,TY0+24,TW/2+2);
+makeLabel('dga','Online DGA',-TL/2-9,TY0+20,-28);
+makeLabel('base','Base frame',-TL/2+10,4,22);
+makeLabel('lid','Cover',TL/2-20,TY0+TH+5,0);
+let labelsOn=true;
+
+/* ===================== controls ===================== */
+const tankSl=document.getElementById('tankop');
+function applyTank(){const o=tankSl.value/100;M.tankG.opacity=o;M.tankG.transparent=o<1;M.tankG.depthWrite=o>0.55;}
+tankSl.addEventListener('input',applyTank);
+const explodeSl=document.getElementById('explode');
+function applyExplode(){const t=explodeSl.value/100;for(const k in PARTS){const p=PARTS[k];p.root.position.copy(p.base).addScaledVector(p.ex,t);}}
+explodeSl.addEventListener('input',applyExplode);
+let cooling=true;document.getElementById('bCool').onclick=function(){cooling=!cooling;this.classList.toggle('on',cooling);};
+let energ=false;document.getElementById('bEnergize').onclick=function(){energ=!energ;this.classList.toggle('on',energ);};
+let rotating=false;document.getElementById('bRotate').onclick=function(){rotating=!rotating;this.classList.toggle('on',rotating);};
+document.getElementById('bLabels').onclick=function(){labelsOn=!labelsOn;this.classList.toggle('on',labelsOn);};
+document.getElementById('bScale').onclick=function(){const v=!human.visible;human.visible=v;this.classList.toggle('on',v);};
+document.getElementById('bReset').onclick=()=>{sph={r:250,th:.8,ph:1.05};target.set(0,42,0);applyCam();explodeSl.value=0;applyExplode();tankSl.value=100;applyTank();};
+document.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>{const v=b.dataset.v;
+  if(v==='34')sph={r:250,th:.8,ph:1.05};if(v==='front')sph={r:250,th:0,ph:1.12};
+  if(v==='side')sph={r:250,th:1.57,ph:1.08};if(v==='top')sph={r:250,th:.7,ph:.3};applyCam();});
+
+/* ===================== animate ===================== */
+function tick(){requestAnimationFrame(tick);
+  if(rotating){sph.th+=0.0035;applyCam();}
+  if(cooling||energ){fanList.forEach(f=>f.rotation.y+=0.28);}
+  if(energ){const e=0.5+0.5*Math.sin(Date.now()*0.006);M.core.emissive.setRGB(e*0.4,e*0.26,0.03);}
+  else M.core.emissive.setRGB(0,0,0);
+  labels.forEach(L=>{const p=PARTS[L.key];if(!labelsOn||!p.root.visible){L.el.style.display='none';return;}
+    const v=L.off.clone().add(p.root.position).sub(p.base);v.project(camera);if(v.z>1){L.el.style.display='none';return;}
+    L.el.style.display='block';L.el.style.left=((v.x*.5+.5)*innerWidth)+'px';L.el.style.top=((-v.y*.5+.5)*innerHeight)+'px';});
+  renderer.render(scene,camera);
+}
+tick();
+addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
+</script>
+<script>
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
+(function(){var dp;window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();dp=e;if(document.getElementById('tpInstall'))return;var b=document.createElement('button');b.id='tpInstall';b.textContent='\u2913 Install TransformerPath';b.setAttribute('style','position:fixed;right:16px;bottom:16px;z-index:9999;background:#f5a623;color:#0d1b2e;border:0;border-radius:999px;padding:11px 18px;font-weight:800;font-size:.9rem;box-shadow:0 6px 20px rgba(0,0,0,.28);cursor:pointer;font-family:inherit');b.onclick=function(){b.remove();dp.prompt();dp.userChoice.finally(function(){dp=null;});};document.body.appendChild(b);});})();
+</script>
+<script src="analytics.js" defer></script>
+
+<script src="featured-suppliers.js"></script>
+<script src="components-catalog.js"></script>
+<script src="part-ecosystem.js"></script>
+<script src="payments-config.js"></script>
+<script src="payments.js"></script>
+<script src="component-3d-bridge.js"></script>
+<script>
+(function(){
+  function enrich(p){
+    if(!p || !window.TPComponent3D) return;
+    var name = p.name || p;
+    var desc = p.desc || '';
+    if(typeof p === 'string' && typeof PARTS !== 'undefined' && PARTS[p]){
+      name = PARTS[p].name; desc = PARTS[p].desc;
+    }
+    TPComponent3D.writeInfo(name, desc);
+  }
+  var _select = typeof selectPart === 'function' ? selectPart : null;
+  if(_select){
+    selectPart = function(p){ _select(p); enrich(p); };
+  }
+  var _pick = typeof pick === 'function' ? pick : null;
+  if(_pick){
+    pick = function(e){
+      _pick(e);
+      if(typeof selected !== 'undefined' && selected){
+        if(selected.name) enrich(selected);
+        else if(typeof PARTS !== 'undefined' && PARTS[selected]) enrich(PARTS[selected]);
+      }
+    };
+  }
+})();
+</script>
+
+<script src="site-graph.js" defer></script>
+</body>
+</html>

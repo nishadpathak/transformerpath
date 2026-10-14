@@ -1,0 +1,325 @@
+{
+  "$schema": "https://transformerpath.com/implementation-matrix.schema.json",
+  "generated": "2026-09-01T19:20:32.813Z",
+  "note": "P0 audit before building. READ-ONLY snapshot of checked-in source + generated data. Does not assert anything about a live environment it cannot verify. UNKNOWN > INCORRECT.",
+  "sections": {
+    "freshness": [
+      {
+        "feature": "Intel freshness readout",
+        "current_state": "data/freshness.json with 6 surfaces; intel.html shows last_build + cadence",
+        "working": "YES",
+        "data_source": "build-freshness.js",
+        "production_state": "ships in sitemap",
+        "issue": "Surfaces carry last_build/last_data_refresh/source_health but NOT the P0 full set (last_attempted_refresh, last_successful_refresh, latest_source_observation, records_added/updated, source_count, source_failures, status).",
+        "action": "Extend build-freshness.js to emit the full per-dataset refresh metadata set; add truthful source-health statuses."
+      },
+      {
+        "feature": "Source-health page",
+        "current_state": "admin.html has a Source Health card (renders per-surface cadence/dates). No dedicated /admin/source-health page.",
+        "working": "PARTIAL",
+        "data_source": "data/freshness.json",
+        "production_state": "admin only (noindex)",
+        "issue": "No public/dedicated source-health surface; statuses not per-source (only per-surface).",
+        "action": "Build /admin/source-health with per-source rows (name/type/region/last_checked/last_success/latest_content_date/failure_count/status)."
+      }
+    ],
+    "materials": [
+      {
+        "feature": "Materials index (/materials)",
+        "current_state": "Transformer Materials Intelligence; 7 materials with provenance; CRGO monitor link.",
+        "working": "YES",
+        "data_source": "data/materials.json (build-materials.js)",
+        "production_state": "ships, in sitemap",
+        "issue": "Price records use price_basis/delay_type/confidence rather than the P0 terms basis/freshness_status.",
+        "action": "Align material record schema to P0 (material/grade/market/country/region/price/currency/unit/basis/observation_date/source/source_url/retrieved_at/freshness_status)."
+      },
+      {
+        "feature": "CRGO monitor (/materials/crgo)",
+        "current_state": "Explains no single global price; GRADE NOT SPECIFIED table.",
+        "working": "YES",
+        "data_source": "build-materials-pages.js",
+        "production_state": "ships, in sitemap",
+        "issue": "Market/grade table is qualitative (no rows where no verified figure exists).",
+        "action": "Keep honest; do not invent rows. Add trend/source columns only where a verified observation exists."
+      },
+      {
+        "feature": "Material history (30d/90d/1y trend)",
+        "current_state": "Not present — only a single latest reference per material.",
+        "working": "NO",
+        "data_source": "none",
+        "production_state": "n/a",
+        "issue": "No multi-observation history stored, so no trend computed.",
+        "action": "Only compute trends where enough dated observations exist; never fabricate missing history. Requires an observation store."
+      },
+      {
+        "feature": "Connect materials to calculator",
+        "current_state": "Calculator BOM uses fixed \"indicative supply-only USD\" default prices, editable by user. No market-reference link.",
+        "working": "PARTIAL",
+        "data_source": "calculator.html (hardcoded)",
+        "production_state": "ships",
+        "issue": "No distinction between MARKET REFERENCE / USER PRICE / DEFAULT ASSUMPTION; no observation-date/source shown for BOM prices.",
+        "action": "Add a provenance tri-state with source+date per price; never silently overwrite user inputs."
+      },
+      {
+        "feature": "BOM cost movement (baseline vs current)",
+        "current_state": "Not present.",
+        "working": "NO",
+        "data_source": "none",
+        "production_state": "n/a",
+        "issue": "No baseline save or indicative movement calc.",
+        "action": "Add SAVE BOM BASELINE → INDICATIVE MATERIAL COST MOVEMENT (never labelled actual selling-price change)."
+      }
+    ],
+    "learning": [
+      {
+        "feature": "Public truthfulness of liveliness claims",
+        "current_state": "intel.html & faq.html say refreshed daily (curated) + separate auto-briefing cache. No \"live\" claim.",
+        "working": "YES",
+        "data_source": "build-freshness.js / manual",
+        "production_state": "ships (intel)",
+        "issue": "Good — no false LIVE/HOURLY claims. Materials footers can still read \"reference\" not \"live\".",
+        "action": "Keep truthful cadence; ensure materials use LATEST MARKET REFERENCE everywhere."
+      },
+      {
+        "feature": "Course depth audit",
+        "current_state": "26 chapters audited; 6 DEPTH_FLAG (11,14,16,17,23,24).",
+        "working": "YES",
+        "data_source": "build-course-depth.js / data/course-depth.json",
+        "production_state": "tracked data",
+        "issue": "Flags exist; chapters not yet deepened.",
+        "action": "Deepen flagged chapters with real content (not count inflation)."
+      },
+      {
+        "feature": "Engineering-claim classification",
+        "current_state": "193 pieces; knowledge layer 100% normed; 4 masterclass ch (1,7,23,25) flagged ENGINEERING_REVIEW_REQUIRED.",
+        "working": "YES",
+        "data_source": "build-engineering-claims.js / data/engineering-claims.json",
+        "production_state": "tracked data",
+        "issue": "Register confirms normed coverage and a 4-chapter review queue.",
+        "action": "Route flags to human engineering review; do NOT guess-fix."
+      },
+      {
+        "feature": "Technical figure standard + SVG set",
+        "current_state": "Masterclass uses inline SVG diagrams (22) + 48 tables; no unified Technical Figure Standard; buyers-guide/index use emoji icons.",
+        "working": "PARTIAL",
+        "data_source": "masterclass.html (static)",
+        "production_state": "ships",
+        "issue": "No pro-drawing standard; emoji icons violate the standard.",
+        "action": "Author TRANSFORMERPATH TECHNICAL FIGURE STANDARD + first high-value SVG set (core/step-lap/winding/insulation/leakage/impulse)."
+      }
+    ],
+    "directory": [
+      {
+        "feature": "Shared entity model",
+        "current_state": "manufacturers.json keyed by country (country -> [makers]); accessories.json has categories+suppliers; none is a canonical Company entity spanning categories.",
+        "working": "PARTIAL",
+        "data_source": "data/manufacturers.json, data/accessories.json",
+        "production_state": "ships",
+        "issue": "No single Company entity; a company in several categories would be duplicated. This is the core P2 gap.",
+        "action": "Introduce a shared Company entity (researched facts vs company-provided) referenced by category directories — never duplicate."
+      },
+      {
+        "feature": "Component directory",
+        "current_state": "components.html has 8 hardcoded COMPONENTS categories (inline const, no shared data file).",
+        "working": "PARTIAL",
+        "data_source": "components.html (inline)",
+        "production_state": "ships",
+        "issue": "Data is inline, not a canonical directory source; categories limited to 8 top-level.",
+        "action": "Move to a canonical components data file; add structured subcategories (bushings, OLTC/DETC, radiators, fans, pumps, Buchholz, PRD, CTs, marshalling, etc.)."
+      },
+      {
+        "feature": "Testing/diagnostics/software/services/test-lab directories",
+        "current_state": "Not built as a categories architecture.",
+        "working": "NO",
+        "data_source": "none",
+        "production_state": "n/a",
+        "issue": "The high-value B2B/testing surface is absent.",
+        "action": "Add shared directory categories for testing, software, services, test labs — only where credible; never infer accreditation/capability."
+      },
+      {
+        "feature": "Directory search",
+        "current_state": "search.html exists; no unified INDUSTRY DIRECTORY SEARCH with the stated filters.",
+        "working": "PARTIAL",
+        "data_source": "search.html / company data",
+        "production_state": "ships",
+        "issue": "Search is not a bounded directory search with category/capability/country filters and explicit FEATURED/SPONSORED labels.",
+        "action": "Build a single directory search that never ranks paid > factual; label promotional placements."
+      }
+    ],
+    "integrity": [
+      {
+        "feature": "Build gates",
+        "current_state": "DATA QUALITY 0 critical · CONFIG CHECK 65 assertions · 0 broken links (2811 targets).",
+        "working": "YES",
+        "data_source": "check-data-quality/check-config/check-links",
+        "production_state": "chain",
+        "issue": "All green.",
+        "action": "Preserve every build; run full chain after each unit."
+      },
+      {
+        "feature": "Account workflow (follow/save)",
+        "current_state": "workspace.html + supabase.js expose TP.saveItem/TP.follow/listSaved/listFollows; Supabase URL+anon key configured.",
+        "working": "PARTIAL",
+        "data_source": "supabase.js / workspace.html",
+        "production_state": "account layer (needs live Supabase)",
+        "issue": "follow/save exist; compare and alerts do NOT.",
+        "action": "Add compare + alerts; complete follow--save--compare--RFQ--alert. Supabase service key stays creds-blocked."
+      }
+    ]
+  },
+  "rows": [
+    {
+      "feature": "Intel freshness readout",
+      "current_state": "data/freshness.json with 6 surfaces; intel.html shows last_build + cadence",
+      "working": "YES",
+      "data_source": "build-freshness.js",
+      "production_state": "ships in sitemap",
+      "issue": "Surfaces carry last_build/last_data_refresh/source_health but NOT the P0 full set (last_attempted_refresh, last_successful_refresh, latest_source_observation, records_added/updated, source_count, source_failures, status).",
+      "action": "Extend build-freshness.js to emit the full per-dataset refresh metadata set; add truthful source-health statuses."
+    },
+    {
+      "feature": "Source-health page",
+      "current_state": "admin.html has a Source Health card (renders per-surface cadence/dates). No dedicated /admin/source-health page.",
+      "working": "PARTIAL",
+      "data_source": "data/freshness.json",
+      "production_state": "admin only (noindex)",
+      "issue": "No public/dedicated source-health surface; statuses not per-source (only per-surface).",
+      "action": "Build /admin/source-health with per-source rows (name/type/region/last_checked/last_success/latest_content_date/failure_count/status)."
+    },
+    {
+      "feature": "Public truthfulness of liveliness claims",
+      "current_state": "intel.html & faq.html say refreshed daily (curated) + separate auto-briefing cache. No \"live\" claim.",
+      "working": "YES",
+      "data_source": "build-freshness.js / manual",
+      "production_state": "ships (intel)",
+      "issue": "Good — no false LIVE/HOURLY claims. Materials footers can still read \"reference\" not \"live\".",
+      "action": "Keep truthful cadence; ensure materials use LATEST MARKET REFERENCE everywhere."
+    },
+    {
+      "feature": "Materials index (/materials)",
+      "current_state": "Transformer Materials Intelligence; 7 materials with provenance; CRGO monitor link.",
+      "working": "YES",
+      "data_source": "data/materials.json (build-materials.js)",
+      "production_state": "ships, in sitemap",
+      "issue": "Price records use price_basis/delay_type/confidence rather than the P0 terms basis/freshness_status.",
+      "action": "Align material record schema to P0 (material/grade/market/country/region/price/currency/unit/basis/observation_date/source/source_url/retrieved_at/freshness_status)."
+    },
+    {
+      "feature": "CRGO monitor (/materials/crgo)",
+      "current_state": "Explains no single global price; GRADE NOT SPECIFIED table.",
+      "working": "YES",
+      "data_source": "build-materials-pages.js",
+      "production_state": "ships, in sitemap",
+      "issue": "Market/grade table is qualitative (no rows where no verified figure exists).",
+      "action": "Keep honest; do not invent rows. Add trend/source columns only where a verified observation exists."
+    },
+    {
+      "feature": "Material history (30d/90d/1y trend)",
+      "current_state": "Not present — only a single latest reference per material.",
+      "working": "NO",
+      "data_source": "none",
+      "production_state": "n/a",
+      "issue": "No multi-observation history stored, so no trend computed.",
+      "action": "Only compute trends where enough dated observations exist; never fabricate missing history. Requires an observation store."
+    },
+    {
+      "feature": "Connect materials to calculator",
+      "current_state": "Calculator BOM uses fixed \"indicative supply-only USD\" default prices, editable by user. No market-reference link.",
+      "working": "PARTIAL",
+      "data_source": "calculator.html (hardcoded)",
+      "production_state": "ships",
+      "issue": "No distinction between MARKET REFERENCE / USER PRICE / DEFAULT ASSUMPTION; no observation-date/source shown for BOM prices.",
+      "action": "Add a provenance tri-state with source+date per price; never silently overwrite user inputs."
+    },
+    {
+      "feature": "BOM cost movement (baseline vs current)",
+      "current_state": "Not present.",
+      "working": "NO",
+      "data_source": "none",
+      "production_state": "n/a",
+      "issue": "No baseline save or indicative movement calc.",
+      "action": "Add SAVE BOM BASELINE → INDICATIVE MATERIAL COST MOVEMENT (never labelled actual selling-price change)."
+    },
+    {
+      "feature": "Course depth audit",
+      "current_state": "26 chapters audited; 6 DEPTH_FLAG (11,14,16,17,23,24).",
+      "working": "YES",
+      "data_source": "build-course-depth.js / data/course-depth.json",
+      "production_state": "tracked data",
+      "issue": "Flags exist; chapters not yet deepened.",
+      "action": "Deepen flagged chapters with real content (not count inflation)."
+    },
+    {
+      "feature": "Engineering-claim classification",
+      "current_state": "193 pieces; knowledge layer 100% normed; 4 masterclass ch (1,7,23,25) flagged ENGINEERING_REVIEW_REQUIRED.",
+      "working": "YES",
+      "data_source": "build-engineering-claims.js / data/engineering-claims.json",
+      "production_state": "tracked data",
+      "issue": "Register confirms normed coverage and a 4-chapter review queue.",
+      "action": "Route flags to human engineering review; do NOT guess-fix."
+    },
+    {
+      "feature": "Technical figure standard + SVG set",
+      "current_state": "Masterclass uses inline SVG diagrams (22) + 48 tables; no unified Technical Figure Standard; buyers-guide/index use emoji icons.",
+      "working": "PARTIAL",
+      "data_source": "masterclass.html (static)",
+      "production_state": "ships",
+      "issue": "No pro-drawing standard; emoji icons violate the standard.",
+      "action": "Author TRANSFORMERPATH TECHNICAL FIGURE STANDARD + first high-value SVG set (core/step-lap/winding/insulation/leakage/impulse)."
+    },
+    {
+      "feature": "Shared entity model",
+      "current_state": "manufacturers.json keyed by country (country -> [makers]); accessories.json has categories+suppliers; none is a canonical Company entity spanning categories.",
+      "working": "PARTIAL",
+      "data_source": "data/manufacturers.json, data/accessories.json",
+      "production_state": "ships",
+      "issue": "No single Company entity; a company in several categories would be duplicated. This is the core P2 gap.",
+      "action": "Introduce a shared Company entity (researched facts vs company-provided) referenced by category directories — never duplicate."
+    },
+    {
+      "feature": "Component directory",
+      "current_state": "components.html has 8 hardcoded COMPONENTS categories (inline const, no shared data file).",
+      "working": "PARTIAL",
+      "data_source": "components.html (inline)",
+      "production_state": "ships",
+      "issue": "Data is inline, not a canonical directory source; categories limited to 8 top-level.",
+      "action": "Move to a canonical components data file; add structured subcategories (bushings, OLTC/DETC, radiators, fans, pumps, Buchholz, PRD, CTs, marshalling, etc.)."
+    },
+    {
+      "feature": "Testing/diagnostics/software/services/test-lab directories",
+      "current_state": "Not built as a categories architecture.",
+      "working": "NO",
+      "data_source": "none",
+      "production_state": "n/a",
+      "issue": "The high-value B2B/testing surface is absent.",
+      "action": "Add shared directory categories for testing, software, services, test labs — only where credible; never infer accreditation/capability."
+    },
+    {
+      "feature": "Directory search",
+      "current_state": "search.html exists; no unified INDUSTRY DIRECTORY SEARCH with the stated filters.",
+      "working": "PARTIAL",
+      "data_source": "search.html / company data",
+      "production_state": "ships",
+      "issue": "Search is not a bounded directory search with category/capability/country filters and explicit FEATURED/SPONSORED labels.",
+      "action": "Build a single directory search that never ranks paid > factual; label promotional placements."
+    },
+    {
+      "feature": "Build gates",
+      "current_state": "DATA QUALITY 0 critical · CONFIG CHECK 65 assertions · 0 broken links (2811 targets).",
+      "working": "YES",
+      "data_source": "check-data-quality/check-config/check-links",
+      "production_state": "chain",
+      "issue": "All green.",
+      "action": "Preserve every build; run full chain after each unit."
+    },
+    {
+      "feature": "Account workflow (follow/save)",
+      "current_state": "workspace.html + supabase.js expose TP.saveItem/TP.follow/listSaved/listFollows; Supabase URL+anon key configured.",
+      "working": "PARTIAL",
+      "data_source": "supabase.js / workspace.html",
+      "production_state": "account layer (needs live Supabase)",
+      "issue": "follow/save exist; compare and alerts do NOT.",
+      "action": "Add compare + alerts; complete follow--save--compare--RFQ--alert. Supabase service key stays creds-blocked."
+    }
+  ]
+}

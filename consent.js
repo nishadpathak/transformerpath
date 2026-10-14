@@ -15,12 +15,21 @@
   var started = false;
 
   function loadAdSense() {
-    if (document.querySelector('script[data-tp-adsense]')) return;
+    if (window.__TP_ADSENSE_LOADING__ || window.__TP_ADSENSE_LOADED__) return;
+    if (document.querySelector('script[src*="adsbygoogle.js"]')) {
+      window.__TP_ADSENSE_LOADED__ = true;
+      return;
+    }
+    window.__TP_ADSENSE_LOADING__ = true;
     var s = document.createElement('script');
     s.async = true;
     s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + PUB;
-    s.setAttribute('data-tp-adsense', '1');
+    // Google requires crossorigin=anonymous and the client query param only.
+    // Do NOT put custom data-* markers on the AdSense script element — they
+    // trigger "AdSense head tag doesn't support data-… attribute" console warnings.
     s.crossOrigin = 'anonymous';
+    s.onload = function () { window.__TP_ADSENSE_LOADED__ = true; window.__TP_ADSENSE_LOADING__ = false; };
+    s.onerror = function () { window.__TP_ADSENSE_LOADING__ = false; };
     document.head.appendChild(s);
   }
 

@@ -1,0 +1,79 @@
+{
+  "$schema": "https://transformerpath.com/topic-hub.schema.json",
+  "registered": "2026-09-03",
+  "purpose": "Reusable Topic entity/hub over the TransformerPath industry graph. Each hub aggregates EXISTING structured records (directory, intel, knowledge, events, projects, tenders, materials). A hub is an interface, not an AI-generated article. Sections with no existing data are OMITTED — nothing is invented. One canonical fact feeds many views, never five copied articles.",
+  "pilot_topics": [
+    {
+      "key": "power-transformers", "label": "Power transformers", "type": "transformer_class",
+      "description": "Power transformers (network, GSU, autotransformer) — capability and procurement intelligence from the TransformerPath graph.",
+      "match_directory": { "transformer_type": "power" },
+      "intel_keywords": ["power transformer", "network transformer", "autotransformer", "generator step-up", "400 kv transformer", "500 kv", "765 kv", "power transformer"],
+      "knowledge_slugs": ["power-vs-distribution", "core-vs-shell-type", "autotransformer", "gsu-transformers", "insulation-coordination", "transformer-impedance"],
+      "project_keywords": ["power transformer", "transformer", "autotransformer", "generator step-up", "400 kv", "500 kv", "765 kv"],
+      "tender_keywords": ["power transformer", "transformer", "autotransformer", "400 kv", "500 kv", "765 kv"],
+      "event_keywords": ["power", "transformer"]
+    },
+    {
+      "key": "shunt-reactors", "label": "Shunt reactors", "type": "transformer_class",
+      "description": "Shunt reactors (reactive compensation) — procurement and engineering intelligence.",
+      "match_directory": null,
+      "intel_keywords": ["shunt reactor", "reactor", "reactive compensation", "mvar", "reactive power"],
+      "knowledge_slugs": ["shunt-reactor", "reactor-vs-transformer"],
+      "project_keywords": ["reactor", "reactive", "compensation", "mvar", "shunt reactor"],
+      "tender_keywords": ["reactor", "reactive", "shunt reactor", "mvar"],
+      "event_keywords": ["transmission", "substation", "power"]
+    },
+    {
+      "key": "oltc", "label": "OLTC / tap-changers", "type": "component",
+      "description": "On-load and de-energised tap-changers — suppliers, technology and engineering.",
+      "match_directory": { "supplier_label": "Tap changers (OLTC / DETC)" },
+      "intel_keywords": ["oltc", "tap-changer", "tap changer", "on-load tap", "detc", "regulating winding"],
+      "knowledge_slugs": ["oltc-maintenance", "oltc-operation", "tap-changer-faults", "transformer-oltc-oil"],
+      "project_keywords": ["oltc", "tap changer", "tap-changer", "regulating"],
+      "tender_keywords": ["oltc", "tap changer", "tap-changer", "regulating"],
+      "event_keywords": ["transformer", "power"]
+    },
+    {
+      "key": "bushings", "label": "Bushings", "type": "component",
+      "description": "Transformer bushings (OIP/RIP/RIS) — suppliers, technology and engineering.",
+      "match_directory": { "supplier_label": "Bushings (HV, LV)" },
+      "intel_keywords": ["bushing", "rip bushing", "oip", "ris bushing", "bushing"],
+      "knowledge_slugs": ["transformer-bushing-types", "transformer-bushing-failure", "transformer-bushing-sf6"],
+      "project_keywords": ["bushing", "oip", "rip", "insulator"],
+      "tender_keywords": ["bushing", "oip", "rip"],
+      "event_keywords": ["transformer", "power", "insulation"]
+    },
+    {
+      "key": "crgo", "label": "CRGO / electrical steel", "type": "material",
+      "description": "Grain-oriented electrical steel (CRGO) — material intelligence, producers, processors and engineering.",
+      "match_directory": { "supplier_label": "CRGO (core steel)" },
+      "intel_keywords": ["crgo", "grain-oriented", "electrical steel", "silicon steel", "core steel", "grain oriented"],
+      "knowledge_slugs": ["transformer-core-build", "transformer-core-clamping", "transformer-core-annealing", "core-loss-hysteresis-eddy"],
+      "project_keywords": ["crgo", "core steel", "grain oriented", "electrical steel"],
+      "tender_keywords": ["crgo", "core steel", "grain oriented"],
+      "event_keywords": ["magnet", "winding", "material"]
+    },
+    {
+      "key": "transformer-oil", "label": "Transformer oil / ester", "type": "material",
+      "description": "Transformer insulating oil and natural/synthetic ester — material intelligence and suppliers.",
+      "match_directory": { "supplier_label": "Transformer oil / ester fluids" },
+      "intel_keywords": ["transformer oil", "insulating oil", "mineral oil", "natural ester", "synthetic ester", "ester fluid", "dielectric", "transformer fluid", "insulation liquid"],
+      "knowledge_slugs": ["transformer-oil-tests", "transformer-oil-sampling", "transformer-oil-filtering", "transformer-oil-regeneration", "transformer-oil-dga-hydrogen", "oil-breakdown-voltage-test", "oil-filling-degassing", "transformer-oil-oxidation"],
+      "project_keywords": ["transformer oil", "ester", "insulating oil"],
+      "tender_keywords": ["transformer oil", "ester", "insulating oil"],
+      "event_keywords": ["insulation", "oil", "transformer"]
+    }
+  ],
+  "intel_classification": [
+    "PROJECT", "TENDER", "AWARD", "FACTORY", "CAPACITY_EXPANSION", "COMPANY", "PRODUCT_LAUNCH", "TECHNOLOGY",
+    "UTILITY", "MATERIAL", "SUPPLY_CHAIN", "PARTNERSHIP", "EVENT", "REGULATION", "RESEARCH"
+  ],
+  "entity_relations": {
+    "company": ["factory", "product", "topic", "project", "award", "event", "intel"],
+    "factory": ["company", "product", "capability", "certification", "topic", "intel", "project"],
+    "product": ["company", "topic", "event", "intel", "standard"],
+    "topic": ["company", "intel", "knowledge", "project", "tender", "event", "material", "product"],
+    "intel": ["company", "topic", "project", "tender", "award", "event", "utility", "material"],
+    "event": ["company", "intel", "post_event_summary", "product", "topic"]
+  }
+}

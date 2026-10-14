@@ -1,0 +1,107 @@
+{
+  "$schema": "https://transformerpath.com/gcc-discovery-dictionary.schema.json",
+  "generated": "2026-09-25",
+  "purpose": "Bilingual EN/AR transformer-domain discovery vocabulary for GCC Intel. Terms are those actually used by GCC utilities and procurement systems — not blind machine translations.",
+  "languages": ["en", "ar"],
+  "english": {
+    "core": [
+      "transformer",
+      "power transformer",
+      "distribution transformer",
+      "grounding transformer",
+      "earthing transformer",
+      "package substation",
+      "pocket substation",
+      "kiosk substation",
+      "transformer station",
+      "substation transformer",
+      "reactor",
+      "shunt reactor",
+      "parallel reactor",
+      "transformer replacement",
+      "transformer maintenance",
+      "transformer factory",
+      "transformer components",
+      "autotransformer",
+      "GSU",
+      "generator step-up"
+    ],
+    "procurement": [
+      "tender",
+      "invitation to tender",
+      "bid closing",
+      "float date",
+      "opening of bids",
+      "award",
+      "framework agreement",
+      "approved manufacturer",
+      "vendor list",
+      "procurement"
+    ],
+    "manufacturing": [
+      "localisation",
+      "localization",
+      "local content",
+      "in-country value",
+      "manufacturing investment",
+      "new factory",
+      "production line",
+      "component manufacturing"
+    ]
+  },
+  "arabic": {
+    "note": "Terminology observed on Etimad, Bahrain Tender Board, MEW/MEWRE notices, DEWA supplier portal titles, and Arabic GCC utility communications.",
+    "core": [
+      { "term": "محول", "gloss": "transformer (general)" },
+      { "term": "محول كهربائي", "gloss": "electrical transformer" },
+      { "term": "محول قدرة", "gloss": "power transformer" },
+      { "term": "محول توزيع", "gloss": "distribution transformer" },
+      { "term": "محول التأريض", "gloss": "earthing/grounding transformer (Etimad / SWA usage)" },
+      { "term": "محول أرضي", "gloss": "grounding transformer (alt.)" },
+      { "term": "محطة فرعية", "gloss": "substation" },
+      { "term": "محطة توزيع", "gloss": "distribution substation" },
+      { "term": "كشك", "gloss": "kiosk (package/kiosk substation context)" },
+      { "term": "محطة كشك", "gloss": "kiosk substation" },
+      { "term": "مفاعل", "gloss": "reactor" },
+      { "term": "مفاعل توازي", "gloss": "parallel reactor" },
+      { "term": "مفاعل تحويل", "gloss": "shunt/parallel reactor (procurement phrasing)" },
+      { "term": "استبدال محول", "gloss": "transformer replacement" },
+      { "term": "صيانة محولات", "gloss": "transformer maintenance" },
+      { "term": "مصنع محولات", "gloss": "transformer factory" },
+      { "term": "مكونات المحولات", "gloss": "transformer components" },
+      { "term": "توطين", "gloss": "localisation / in-country manufacturing" },
+      { "term": "المحتوى المحلي", "gloss": "local content" }
+    ],
+    "procurement": [
+      { "term": "منافسة", "gloss": "competition / tender (Etimad)" },
+      { "term": "مناقصة", "gloss": "tender" },
+      { "term": "طرح", "gloss": "float / issuance" },
+      { "term": "آخر موعد لتقديم العروض", "gloss": "bid submission deadline" },
+      { "term": "فتح العروض", "gloss": "bid opening" },
+      { "term": "ترسية", "gloss": "award" },
+      { "term": "قائمة المصنعين المعتمدين", "gloss": "approved manufacturer list" }
+    ]
+  },
+  "relevance_include": [
+    "power transformers",
+    "distribution transformers",
+    "GSU transformers",
+    "autotransformers",
+    "converter transformers",
+    "grounding/earthing transformers",
+    "traction transformers",
+    "furnace transformers",
+    "package/kiosk/pocket substations where transformer supply is included",
+    "transformer replacement",
+    "commercially significant transformer repair/maintenance",
+    "reactors relevant to transformer-sector procurement",
+    "transformer manufacturing",
+    "transformer components",
+    "transformer factories"
+  ],
+  "relevance_exclude": [
+    "generic substation civil/EPC with no established transformer scope",
+    "unrelated electrical works without transformer relevance",
+    "fabricated country activity to fill a coverage matrix"
+  ]
+}

@@ -151,6 +151,13 @@
   <h2>Transformer-scope grading</h2>
   <p>Transformer-relevant projects carry a scope grade so a grid/substation project is never misread as confirmed transformer equipment. <b>CONFIRMED</b> = transformer equipment explicitly documented · <b>INFERRED</b> = reasonably inferred from the substation/grid scope · <b>UNKNOWN</b> = not yet documented. Inference is always shown as inference, never as confirmation.</p>
 
+  <h2 id="how-we-source">How we source (and what we do not claim)</h2>
+  <p>Every public Intel card, directory fact and project/tender row must trace to a source URL or filing. We prefer official utility / tender-board / regulator pages, then stock filings, then corroborated trade press. Keyword hits and portal mirrors are discovery inputs — they are graded CONFIRMED / SUPPORTED / REVIEW_REQUIRED / REJECTED before anything is eligible to publish.</p>
+  <div class="card2">
+    <b style="color:var(--text)">Discovery ≠ publication.</b> Finding a GCC tender or localisation story in a portal registry does <b>not</b> auto-inject a Daily Intel card. Publish gates require evidence grade, date-field honesty (observation dates only — never tender close as “freshness”), and editorial review. Zero qualifying activity in a market (for example a clean Qatar September) is reported as coverage success, not failure.
+  </div>
+  <p>Live portal adapters (DEWA, Etimad, Bahrain Tender Board and peers) stamp <code>last_checked</code> on every probe and <code>last_success</code> only when the response body is reachable and contains transformer-domain vocabulary. Session-gated or JS-only shells stay <b>BLOCKED_AUTH</b> / <b>NEEDS_ADAPTER</b> — they are never counted as live coverage.</p>
+
   <h2>Corrections</h2>
   <p>Every company, project, utility and intelligence page offers "suggest a correction". A correction is reviewed against a source before it is applied — it is never auto-overwritten. Tell us the entity, the field, the current value, your proposed correction and a source/document, and the correction stays pending until reviewed.</p>
 

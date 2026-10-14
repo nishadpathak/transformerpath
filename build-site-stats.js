@@ -165,9 +165,10 @@ try {
 } catch (e) { console.warn('site-stats: could not sync config.counters:', e.message); }
 
 /* No-JS [data-stat] fallbacks in HTML must match site-stats.json or
-   tests/verify-hero-integrity.js fails after date-sensitive counters move
-   (e.g. upcomingEvents drops when an event's start day passes). site-stats.js
-   overwrites these at runtime; keep the static digits in lockstep at build. */
+   check-config.js / tests/verify-hero-integrity.js fail after counters move
+   (e.g. build-tenders derives a new OPEN row from intel, or upcomingEvents
+   drops when an event's start day passes). site-stats.js overwrites these at
+   runtime; keep the static digits in lockstep at build. */
 const STAT_HTML = ['index.html', 'directory.html', 'pricing.html', 'intel.html'];
 let htmlPatched = 0;
 for (let i = 0; i < STAT_HTML.length; i++) {

@@ -1,0 +1,69 @@
+MERGE CONFLICT CLASSIFICATION — vs origin/main
+Fetched: 2026-10-02 (latest origin/main = ff38af7fa — P2/P3 discovery depth #9)
+Classifier pass: post-fetch review of open PRs #12, #11, #10, #4
+
+## PR #12 cursor/final-stabilization-a955
+
+Status: MERGEABLE / CLEAN
+Conflicts with main: NONE (main is ancestor of this tip).
+Simple conflicts fixed: n/a
+Action: none for merge conflicts. Ready to land for production one-release truth.
+
+## PR #10 cursor/p4-alerts-adapters-desk-a955 — WAS CONFLICTING → FIXED
+
+All three conflict files were SIMPLE (mechanical / unionable). Resolved by merging
+origin/main into the branch and committing aed344ada.
+
+| File | Class | Resolution |
+| --- | --- | --- |
+| build-dist.js | SIMPLE | Comment-only Maghreb skip wording — took main |
+| build-freshness.js | SIMPLE | Copy strings for Daily Intel cadence / honest_note — took main (same model) |
+| netlify.toml | SIMPLE | Union: keep main's `build-gcc-linkedin-pack.js` + this PR's `build-discovery-desk.js` and `[functions.watchlist-alerts]` schedule |
+
+Post-fix: MERGEABLE (CI may still be settling = UNSTABLE).
+Note: still recommend landing #12 first so production truth / census / clocks ship before P4 feature surface.
+
+## PR #11 cursor/intel-unification-integrity-a955 — CONFLICTING (INTENT) — DO NOT AUTO-FIX
+
+| File | Class | Notes |
+| --- | --- | --- |
+| check-links.js | SIMPLE | Maghreb skip comment only — identical SKIP list |
+| build-freshness.js | INTENT | Three-clock / honesty model vs main post-#6/#9 freshness |
+| data/freshness.json | INTENT | Generated artifact — do not hand-merge |
+| data/intel.json | INTENT | Competing intel universes / content |
+| intel.html | INTENT | Public clock UX (SOURCE CHECKED / COVERAGE DELAYED) vs main |
+| netlify.toml | INTENT | HEAD adds voltage-evidence + intel-clock-regression; main adds LinkedIn pack — lineage already carried forward in #12 |
+
+Recommendation: close as superseded by #12 (which already contains #11 commits plus release hardening). No safe partial merge without reopening intel UX/data debates already resolved on #12.
+
+## PR #4 cursor/integrity-learner-profile-c468 — CONFLICTING (INTENT-HEAVY) — HOLD
+
+18 conflicted files. Not a mechanical rebase.
+
+| Area | Class | Conflicting intents |
+| --- | --- | --- |
+| data/site-stats.json / index / pricing | INTENT | Census **911** (PR) vs **906** (main / canonical) |
+| data/config.json counters | INTENT | upcomingEvents 179 vs 168; tenders 150 vs 151 |
+| pricing.html | INTENT | Learner Profile / engineering-tools framing vs Platform Plans commercial audiences; hardcoded 911 vs 906 |
+| index.html hero | INTENT | Honest SOURCE CHECKED clocks (PR) vs "DATA CURRENT" / Sept 25 copy (main) — also overlaps #12 clock work |
+| grid-lab.html | INTENT (add/add) | Entire alternate Grid Lab page (scenario learning IA) vs main's Grid Lab V2 |
+| academy / tools / course-gate / compare / calculator | INTENT | Learner Profile / Skills Passport product surface vs current platform copy |
+| build-site-stats / bump-assets / build-dist / netlify / freshness | MIXED→INTENT | Build/tooling drift entangled with product counters and IA |
+
+Recommendation: **do not merge this sprint**. Requires human product decisions on (1) census number, (2) pricing narrative, (3) Grid Lab IA, (4) Learner Profile scope — then rebase onto post-#12 main and regenerate stats artifacts.
+
+## Simple conflicts fixed this pass
+
+- PR #10: all three files resolved and pushed (`merge(main): resolve simple conflicts with P4 alerts/adapters desk`).
+
+## Complicated conflicts reported (unfixed)
+
+- PR #11: intent / superseded — leave open only if explicitly needed; prefer close.
+- PR #4: intent-heavy product fork — hold for human decision.
+
+## Suggested merge order
+
+1. #12 → main (production truth)
+2. Rebase/verify #10 on post-#12 main (now mergeable vs current main; recheck after #12 lands)
+3. Close #11
+4. Hold #4 until product calls

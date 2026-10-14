@@ -14,7 +14,23 @@
     var width = container.clientWidth || window.innerWidth;
     var height = container.clientHeight || window.innerHeight;
 
-    var renderer = new THREE.WebGLRenderer({ antialias: true });
+    var gate = root.TPWebGL;
+    if (!gate) throw new Error("TPWebGL gate required before TP3D");
+    gate.setState(container, "INITIALIZING");
+    var created = gate.createRenderer(THREE, { antialias: true });
+    if (!created.ok) {
+      gate.showFallback(container, {
+        state: "UNAVAILABLE",
+        detail: created.reason,
+        title: "Interactive 3D is unavailable in this browser.",
+        body: "You can still explore TransformerPath’s engineering content and transformer components.",
+        controlsRoot: opts.controlsRoot || document
+      });
+      var err = new Error("WebGL unavailable: " + (created.reason || "unknown"));
+      err.tpWebGL = created;
+      throw err;
+    }
+    var renderer = created.renderer;
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
     renderer.setSize(width, height);
     renderer.shadowMap.enabled = !!opts.shadows;
@@ -24,8 +40,15 @@
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
       renderer.toneMappingExposure = opts.exposure != null ? opts.exposure : 1.05;
     }
+    // Keep any poster until first frame; clear non-poster children carefully
+    var poster = container.querySelector("[data-tp-3d-poster]");
     container.innerHTML = "";
+    if (poster) container.appendChild(poster);
     container.appendChild(renderer.domElement);
+    gate.bindContextLoss(renderer, container, {
+      controlsRoot: opts.controlsRoot || document,
+      onRetry: opts.onRetry
+    });
     var canvas = renderer.domElement;
     canvas.style.display = "block";
     canvas.style.width = "100%";

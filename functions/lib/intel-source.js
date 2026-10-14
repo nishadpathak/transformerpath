@@ -22,6 +22,12 @@ const EVENTREGISTRY_URL = 'https://eventregistry.org/api/v1/article/getArticles'
    German feed lands in the right panel even though our text classifier is
    English-based. Non-English feeds widen coverage beyond the Anglophone
    trade press without needing an API key. */
+/* GCC P0 note: this live RSS set is English/global trade press. It does NOT
+   replace the GCC source-discovery layer (data/gcc-source-registry.json),
+   which watches utility portals, tender boards, water authorities and Arabic
+   procurement vocabulary. Discovery ≠ publication — see lib/gcc-discovery.js.
+   Do not add paywalled/CloudFront-blocked MENA marketing RSS here as a false
+   substitute for DEWA / Etimad / Bahrain Tender Board / MEWRE / KAHRAMAA. */
 const RSS_FEEDS = [
   { url: 'https://www.tdworld.com/rss.xml',                  lang: 'en', region: null },
   { url: 'https://www.power-eng.com/rss.xml',                lang: 'en', region: null },
@@ -130,6 +136,12 @@ async function fetchEventRegistry() {
               { keyword: 'Electrical Transformers', keywordLoc: 'body' },
               { keyword: 'Power transformers', keywordLoc: 'body' },
               { keyword: 'Distribution transformers', keywordLoc: 'body' },
+              { keyword: 'package substation', keywordLoc: 'body' },
+              { keyword: 'grounding transformer', keywordLoc: 'body' },
+              { keyword: 'earthing transformer', keywordLoc: 'body' },
+              { keyword: 'transformer localisation', keywordLoc: 'body' },
+              { keyword: 'محول', keywordLoc: 'body' },
+              { keyword: 'محول التأريض', keywordLoc: 'body' },
               { conceptUri: 'http://en.wikipedia.org/wiki/Electrical_grid' },
               { conceptUri: 'http://en.wikipedia.org/wiki/Electricity_market' },
               { conceptUri: 'http://en.wikipedia.org/wiki/Electricity' },

@@ -1,0 +1,128 @@
+{
+  "version": 1,
+  "updated": "2026-09-11",
+  "assets": {
+    "css": 14,
+    "js": 7,
+    "theme": 6,
+    "sw": "transformerpath-v13"
+  },
+  "counters": {
+    "manufacturers": 911,
+    "manufacturingCountries": 88,
+    "gridCountries": 151,
+    "gridOperators": 166,
+    "events": 295,
+    "regions": 10,
+    "syncLabels": 56
+  },
+  "intel": {
+    "cadence": "daily",
+    "cadenceLabel": "Daily",
+    "classificationLevels": [
+      "CONFIRMED",
+      "INFERRED",
+      "PIPELINE",
+      "WATCH"
+    ],
+    "badgeColors": {
+      "CONFIRMED": "#1d7a4f",
+      "INFERRED": "#0b5fa5",
+      "PIPELINE": "#a86a05",
+      "WATCH": "#6b7280"
+    }
+  },
+  "pricing": {
+    "currency": "USD",
+    "plans": {
+      "Learning": {
+        "price": 199,
+        "seatLabel": "1 seat",
+        "billing": "12 months",
+        "autoRenew": false
+      },
+      "Professional": {
+        "price": 599,
+        "seatLabel": "1 seat",
+        "billing": "12 months",
+        "autoRenew": false
+      },
+      "Team": {
+        "price": 1999,
+        "seatLabel": "up to 10 seats",
+        "billing": "12 months",
+        "autoRenew": false
+      }
+    },
+    "verifiedSupplier": {
+      "price": 499,
+      "billing": "12 months"
+    },
+    "proVerifiedSupplier": {
+      "price": 1499,
+      "billing": "12 months"
+    },
+    "foundingVerified": {
+      "price": 199,
+      "note": "first 50-100 companies, first year"
+    },
+    "featuredEventExhibitor": {
+      "price": 399,
+      "billing": "per event"
+    },
+    "hostedWebinarFrom": 1500,
+    "sponsorshipFrom": 299,
+    "intelligenceFrom": 999,
+    "bookDigitalV1": 49,
+    "bookPrintV1": 99,
+    "bookBundleV1": 119,
+    "bookDigitalV2": 49,
+    "bookPrintV2": 99,
+    "bookBundleV2": 119,
+    "bookBundleV1V2Digital": 79,
+    "noAutoRenew": true,
+    "bookStripeLinks": {
+      "v1_digital": "REPLACE_WITH_STRIPE_LINK",
+      "v1_print": "REPLACE_WITH_STRIPE_LINK",
+      "v1_bundle": "REPLACE_WITH_STRIPE_LINK",
+      "v2_digital": "REPLACE_WITH_STRIPE_LINK",
+      "v2_print": "REPLACE_WITH_STRIPE_LINK",
+      "v2_bundle": "REPLACE_WITH_STRIPE_LINK",
+      "both_digital": "REPLACE_WITH_STRIPE_LINK",
+      "both_print": "REPLACE_WITH_STRIPE_LINK"
+    },
+    "intelPro": {
+      "price": null,
+      "priceMonthly": 49,
+      "priceYear": 499,
+      "billing": "12 months",
+      "autoRenew": false,
+      "status": "TARGET"
+    },
+    "intelTeam": {
+      "price": null,
+      "priceMonthly": 199,
+      "priceYear": 1999,
+      "billing": "12 months",
+      "autoRenew": false,
+      "status": "TARGET"
+    },
+    "featuredEvent": {
+      "price": 299,
+      "billing": "per event",
+      "status": "REFERENCE"
+    },
+    "enterpriseIntelligence": {
+      "price": null,
+      "billing": "custom",
+      "status": "CUSTOM",
+      "cta": "Talk to TransformerPath"
+    }
+  },
+  "voice": {
+    "neutralInstitutional": true,
+    "noEducationalCertificationClaims": true,
+    "noPersonalReferences": true,
+    "noELINReferences": true
+  }
+}

@@ -17,16 +17,20 @@
   .boot {
     position: absolute; inset: 0; z-index: 3; display: grid; place-items: center;
     color: #9fb0c4; font: 600 0.9rem/1.4 system-ui, sans-serif; letter-spacing: 0.04em;
-    background: #07111c; transition: opacity .45s ease;
+    background: transparent; transition: opacity .45s ease;
   }
   .boot.is-done { opacity: 0; pointer-events: none; }
+  #stage canvas { position: relative; z-index: 2; }
 </style>
 </head>
 <body>
-  <div id="stage" role="img" aria-label="Interactive 3D power transformer"></div>
+  <div id="stage" role="img" aria-label="Interactive 3D power transformer" data-tp-3d-state="INITIALIZING">
+    <img data-tp-3d-poster src="media/power-transformer-3d-poster.jpg" alt="Power transformer preview" width="1280" height="720" decoding="async" fetchpriority="high" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;background:#07111c">
+  </div>
   <div class="veil" aria-hidden="true"></div>
   <div class="boot" id="boot">Loading 3D model…</div>
 
+  <script src="tp-webgl-gate.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="tp-3d-core.js"></script>
   <script src="tp-power-assembly.js"></script>
@@ -36,52 +40,93 @@
     var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var auto = params.get('spin') !== '0' && !reduced;
     var stage = document.getElementById('stage');
-
-    var engine = TP3D.bootstrap(stage, {
-      shadows: false,
-      labels: false,
-      ground: false,
-      fog: true,
-      fogNear: 160,
-      fogFar: 420,
-      bg: 0x07111c,
-      distance: 148,
-      theta: 0.95,
-      phi: 1.12,
-      target: { x: 0, y: 24, z: 0 }
-    });
-
-    var assembly = TPPowerAssembly.build(engine);
-    if (assembly && assembly.setTankOpacity) assembly.setTankOpacity(0.28);
-
-    engine.setLabels(false);
-    engine.setAutoRotate(auto);
-
-    if (!reduced && params.get('pulse') !== '0') {
-      var t0 = performance.now();
-      engine.setOnTick(function () {
-        if (stage.classList.contains('dragging')) return;
-        var t = (performance.now() - t0) / 1000;
-        var e = 0.08 + 0.07 * (0.5 + 0.5 * Math.sin(t * 0.55));
-        engine.setExplode(e);
-      });
-    }
-
     var boot = document.getElementById('boot');
-    requestAnimationFrame(function () {
-      setTimeout(function () { boot.classList.add('is-done'); }, 280);
+    var gate = window.TPWebGL;
+
+    function fail(reason, detail) {
+      if (boot) boot.classList.add('is-done');
+      gate.showFallback(stage, {
+        state: reason || 'UNAVAILABLE',
+        detail: detail || null,
+        title: 'Interactive 3D is unavailable in this browser.',
+        body: 'You can still explore TransformerPath’s engineering content and transformer components.',
+        onRetry: function () { location.reload(); }
+      });
+      try { parent.postMessage({ type: 'tp-3d-state', state: reason || 'UNAVAILABLE' }, '*'); } catch (e) {}
+    }
+
+    if (!gate || !gate.detect().ok) {
+      fail('UNAVAILABLE', gate && gate.detect().reason);
+      return;
+    }
+
+    gate.setState(stage, 'LOADING_MODEL');
+    var watch = gate.startLoadWatchdog(stage, 12000, function () {
+      fail('LOAD_FAILED', 'timeout');
     });
 
-    var idleTimer;
-    function bump() {
-      engine.setAutoRotate(false);
-      clearTimeout(idleTimer);
-      if (!auto) return;
-      idleTimer = setTimeout(function () { engine.setAutoRotate(true); }, 4200);
+    var engine;
+    try {
+      engine = TP3D.bootstrap(stage, {
+        shadows: false,
+        labels: false,
+        ground: false,
+        fog: true,
+        fogNear: 160,
+        fogFar: 420,
+        bg: 0x07111c,
+        distance: 148,
+        theta: 0.95,
+        phi: 1.12,
+        target: { x: 0, y: 24, z: 0 },
+        onRetry: function () { location.reload(); }
+      });
+    } catch (e) {
+      watch.cancel();
+      fail((e && e.tpWebGL && 'UNAVAILABLE') || 'LOAD_FAILED', String(e && e.message || e));
+      return;
     }
-    ['pointerdown', 'wheel', 'touchstart'].forEach(function (ev) {
-      stage.addEventListener(ev, bump, { passive: true });
-    });
+
+    try {
+      var assembly = TPPowerAssembly.build(engine);
+      if (assembly && assembly.setTankOpacity) assembly.setTankOpacity(0.28);
+      engine.setLabels(false);
+      engine.setAutoRotate(auto);
+
+      if (!reduced && params.get('pulse') !== '0') {
+        var t0 = performance.now();
+        engine.setOnTick(function () {
+          if (stage.classList.contains('dragging')) return;
+          var t = (performance.now() - t0) / 1000;
+          var e = 0.08 + 0.07 * (0.5 + 0.5 * Math.sin(t * 0.55));
+          engine.setExplode(e);
+        });
+      }
+
+      // First useful frame → drop poster + boot
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          watch.markReady();
+          gate.removePoster(stage);
+          if (boot) boot.classList.add('is-done');
+          try { parent.postMessage({ type: 'tp-3d-state', state: 'READY' }, '*'); } catch (e) {}
+        });
+      });
+
+      var idleTimer;
+      function bump() {
+        engine.setAutoRotate(false);
+        clearTimeout(idleTimer);
+        if (!auto) return;
+        idleTimer = setTimeout(function () { engine.setAutoRotate(true); }, 4200);
+      }
+      stage.addEventListener('pointerdown', function () { stage.classList.add('dragging'); bump(); });
+      stage.addEventListener('pointerup', function () { stage.classList.remove('dragging'); });
+      stage.addEventListener('wheel', bump, { passive: true });
+    } catch (e) {
+      watch.cancel();
+      fail('LOAD_FAILED', String(e && e.message || e));
+    }
   })();
   </script>
 </body>

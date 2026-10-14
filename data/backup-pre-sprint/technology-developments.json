@@ -1,0 +1,28 @@
+{
+  "$schema": "https://transformerpath.com/technology-developments.schema.json",
+  "registered": "2026-09-03",
+  "purpose": "Structured Technology / Product-Launch intelligence. Each record is a MANUFACTURER-REPORTED or independently-sourced development with provenance. Manufacturer marketing claims are stored as claims, never restated as verified fact. A technology record feeds many views (topic hub, company, product, event, intel) — one canonical record, never copied articles.",
+  "categories": ["TRANSFORMER", "OLTC", "BUSHING", "INSULATION", "CRGO", "CONDUCTOR", "COOLING", "MONITORING", "TESTING", "MANUFACTURING_EQUIPMENT", "FLUID", "OTHER_TRANSFORMER_RELEVANT"],
+  "confidence_levels": ["CONFIRMED", "COMPANY_REPORTED", "SECONDARY_SOURCE", "UNVERIFIED"],
+  "developments": [
+    {
+      "id": "trench-integrated-power-quality-package-2026",
+      "company": "Trench Group",
+      "company_slug": "trench-group",
+      "product": "Integrated power-quality package",
+      "category": "OTHER_TRANSFORMER_RELEVANT",
+      "announcement_date": "2026-08",
+      "event": "CIGRE Paris Session 2026",
+      "technical_claims": "Integrated power-quality package (grid/component vendor).",
+      "application": "Power quality / grid components",
+      "source": [{ "title": "Transformer Magazine — Trench Group launches integrated power quality package", "url": "https://transformer-magazine.com/news/trench-group-launches-integrated-power-quality-package/", "source_type": "credible_industry_media" }],
+      "claim_type": "COMPANY_REPORTED",
+      "confidence": "COMPANY_REPORTED",
+      "last_verified": "2026-09-03",
+      "related_topic": ["bushings"],
+      "related_company": ["trench-group"],
+      "related_factory": []
+    }
+  ],
+  "note": "A manufacturer claim (e.g. '30% lower losses') must be stored as a MANUFACTURER-REPORTED CLAIM, not as an independently verified fact. Only confidence='CONFIRMED' may be presented as independently sourced."
+}

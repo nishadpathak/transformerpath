@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GCC Discovery → Publish Desk — TransformerPath</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="stylesheet" href="../style.css?v=14">
+<link rel="icon" type="image/svg+xml" href="../brand/favicon.svg">
+<style>
+  .desk{max-width:900px;margin:0 auto;padding:40px 20px 80px}
+  .q-card{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--amber);border-radius:12px;padding:16px 18px;margin:14px 0}
+  .q-meta{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px;font-size:.78rem}
+  .badge{font-weight:800;letter-spacing:.4px;text-transform:uppercase;font-size:.66rem;padding:3px 8px;border-radius:6px;border:1px solid var(--border)}
+  .badge.grade{color:#4ade80;border-color:rgba(74,222,128,.4);background:rgba(74,222,128,.1)}
+  .badge.decision{color:var(--amber);border-color:rgba(245,166,35,.4);background:rgba(245,166,35,.1)}
+  .muted{color:var(--muted)}
+  .snip{color:var(--muted);font-size:.9rem;line-height:1.5;margin:6px 0 12px}
+  .q-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .btn{display:inline-block;padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:.8rem;cursor:pointer;text-decoration:none}
+  .btn.copy{border-color:var(--amber);color:var(--amber)}
+  .id{font-size:.72rem;color:var(--muted)}
+  .hint{font-size:.74rem;color:var(--muted);margin:10px 0 0;line-height:1.45}
+  .stats{display:flex;flex-wrap:wrap;gap:12px;margin:16px 0 8px}
+  .stats .s{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 14px}
+  .stats .s b{display:block;color:var(--accent);font-size:1.2rem}
+</style>
+</head>
+<body>
+<main class="desk">
+  <p style="font-size:.72rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--accent);margin:0 0 8px">Internal · discovery ≠ publication</p>
+  <h1 style="margin:0 0 8px;color:var(--ink)">GCC discovery → publish desk</h1>
+  <p style="color:var(--muted);line-height:1.5;margin:0 0 8px">Human review queue generated <b>2026-09-29</b>. Approve by editing overrides, never by inventing grades.</p>
+  <div class="stats">
+    <div class="s"><b>13</b><span style="font-size:.78rem;color:var(--muted)">in review queue</span></div>
+    <div class="s"><b>0</b><span style="font-size:.78rem;color:var(--muted)">approved overrides</span></div>
+    <div class="s"><b>0</b><span style="font-size:.78rem;color:var(--muted)">rejected</span></div>
+    <div class="s"><b>4</b><span style="font-size:.78rem;color:var(--muted)">CONFIRMED / approved pool</span></div>
+  </div>
+  <p style="font-size:.8rem;color:var(--muted)">Artifact: <code>data/gcc-discovery-publish-overrides.json</code> · consumed by <code>build-gcc-intel-publish.js</code></p>
+  <article class="q-card" data-id="uae-dewa-2122600155"><div class="q-meta"><span class="badge grade">SUPPORTED</span><span class="badge decision">HOLD_FOR_REVIEW</span><span class="muted">Dubai Electricity &amp; Water Authority (DEWA)</span></div><h2>DEWA — Installation, testing and commissioning of distribution substations and kiosks (incl. disconnection/recovery/replacement of equipment)</h2><p class="snip">DEWA floated tender 2122600155 for installation, testing and commissioning of distribution substations and kiosks, including disconnection, recovery and replacement of equipment.</p><div class="q-actions"><a class="btn" href="https://www.dewa.gov.ae/en/supplier/services/list-of-tender-documents" target="_blank" rel="noopener">Open source</a><button type="button" class="btn copy" data-copy="{
+  &quot;approve&quot;: [
+    &quot;uae-dewa-2122600155&quot;
+  ]
+}">Copy approve override</button><code class="id">uae-dewa-2122600155</code></div><p class="hint">To publish: add <code>"uae-dewa-2122600155"</code> to <code>data/gcc-discovery-publish-overrides.json</code> → <code>approve</code>, then rebuild.</p></article>
+<article class="q-card" data-id="sa-swa-rabigh-2p5mva"><div class="q-meta"><span class="badge grade">CONFIRMED</span><span class="badge decision">REVIEW_QUEUE</span><span class="muted">Saudi Water Authority</span></div><h2>Saudi Water Authority — 2.5 MVA 6.6/0.4 kV oil-filled transformer for Rabigh Production System</h2><p class="snip">Etimad-listed SWA competition for supply of a medium-voltage oil-filled electrical transformer (2.5 MVA, 6.6/0.4 kV) for Rabigh Production System (ref. 60020899).</p><div class="q-actions"><a class="btn" href="https://tenders.etimad.sa/Tender/DetailsForVisitor?STenderId=YYulueYsiIAkLL3QtkpaYQ==" target="_blank" rel="noopener">Open source</a><button type="button" class="btn copy" data-copy="{
+  &quot;approve&quot;: [
+    &quot;sa-swa-rabigh-2p5mva&quot;
+  ]
+}">Copy approve override</button><code class="id">sa-swa-rabigh-2p5mva</code></div><p class="hint">To publish: add <code>"sa-swa-rabigh-2p5mva"</code> to <code>data/gcc-discovery-publish-overrides.json</code> → <code>approve</code>, then rebuild.</p></article>
+<article class="q-card" data-id="sa-swa-jubail-grounding"><div class="q-meta"><span class="badge grade">SUPPORTED</span><span class="badge decision">HOLD_FOR_REVIEW</span><span class="muted">Saudi Water Authority</span></div><h2>Saudi Water Authority — 33/0.4 kV grounding (earthing) transformer, Jubail Phase 4</h2><p class="snip">توريد وتركيب محول التأريض 33/0.4 كيلو فولت بمرحلة الجبيل 4 — SWA Etimad competition 260839007703.</p><div class="q-actions"><a class="btn" href="https://bidsfactory.com/en/tenders/3304-4-saudi_etimad-40d892d6879b8761" target="_blank" rel="noopener">Open source</a><button type="button" class="btn copy" data-copy="{
+  &quot;approve&quot;: [
+    &quot;sa-swa-jubail-grounding&quot;
+  ]
+}">Copy approve override</button><code class="id">sa-swa-jubail-grounding</code></div><p class="hint">To publish: add <code>"sa-swa-jubail-grounding"</code> to <code>data/gcc-discovery-publish-overrides.json</code> → <code>approve</code>, then rebuild.</p></article>
+<article class="q-card" data-id="sa-al-aflaj-33kv-replacement"><div class="q-meta"><span class="badge grade">SUPPORTED</span><span class="badge decision">HOLD_FOR_REVIEW</span><span class="muted">Technical and Vocational Training Corporation (TVTC) / Technical College for Girls Al-Aflaj</span></div><h2>33 kV transformer replacement — Substation No. 6, Technical College for Girls, Al-Aflaj</h2><p class="snip">General Foundation for Technical and Vocational Training via Etimad — replacement of the 33 kV transformer at station No. 6, Technical College for Girls, Al-Aflaj.</p><div class="q-actions"><a class="btn" href="https://tenderimpulse.com/government-tenders/saudi-arab/replacement-of-the-33-kv-transformer-for-station-no-6-with-the-technical-college-14893514" target="_blank" rel="noopener">Open source</a><button type="button" class="btn copy" data-copy="{
+  &quot;approve&quot;: [
+    &quot;sa-al-aflaj-33kv-replacement&quot;
+  ]
+}">Copy approve override</button><code class="id">sa-al-aflaj-33kv-replacement</code></div><p class="hint">To publish: add <code>"sa-al-aflaj-33kv-replacement"</code> to <code>data/gcc-discovery-publish-overrides.json</code> → <code>approve</code>, then rebuild.</p></article>
+<article class="q-card" data-id="sa-dhahran-1500kva-standby"><div class="q-meta"><span class="badge grade">SUPPORTED</span><span class="badge decision">HOLD_FOR_REVIEW</span><span class="muted">King Abdulaziz Air Base Hospital, Dhahran</span></div><h2>King Abdulaziz Air Base Hospital — 1,500 kVA standby transformer, Dhahran</h2><p class="snip">Competition to supply and install a 1,500 kVA backup/standby electrical transformer for the chillers area at King Abdulaziz Air Base Hospital, Dhahran (Etimad 260839006518).</p><div class="q-actions"><a class="btn" href="https://bidsfactory.com/en/tenders/1500-saudi_etimad-8a384ba1b679c3e3" target="_blank" rel="noopener">Open source</a><button type="button" class="btn copy" data-copy="{
+  &quot;approve&quot;: [
+    &quot;sa-dhahran-1500kva-standby&quot;
+  ]
+}">Copy approve override</button><code class="id">sa-dhahran-1500kva-standby</code></div><p class="hint">To publish: add <code>"sa-dhahran-1500kva-standby"</code> to <code>data/gcc-discovery-publish-overrides.json</code> → <code>approve</code>, then rebuild.</p></article>
+<article class="q-card" data-id="sa-swa-yanbu-t803-supervision"><div class="q-meta"><span class="badge grade">SUPPORTED</span><span class="badge decision">HOLD_FOR_REVIEW</span><span class="muted">Saudi Water Authority</span></div><h2>Saudi Water Authority — supervision of Transformer T803 replacement (502 MVA, 380/110/13.8 kV) PST1 Yanbu Phase 3</h2><p class="snip">Etimad notice 260839007272: project for supervision of GIB replacement and Transformer T803 replacement at SWA third-stage conversion station, Yanbu seawater desalination system. Underlying T803 supply tender (250639001175) floated Jul 2025; Sep 2026 activity is supervision package.</p><div class="q-actions"><a class="btn" href="https://tenderimpulse.com/government-tenders/saudi-arab/project-for-the-supervision-of-the-replacement-of-major-gas-solving-bars-gib-and-14656272" target="_blank" rel="noopener">Open source</a><button type="button" class="btn copy" data-copy="{
+  &quot;approve&quot;: [
+    &quot;sa-swa-yanbu-t803-supervision&quot;
+  ]
+}">Copy approve override</button><code class="id">sa-swa-yanbu-t803-supervision</code></div><p class="hint">To publish: add <code>"sa-swa-yanbu-t803-supervision"</code> to <code>data/gcc-discovery-publish-overrides.json</code> → <code>approve</code>, then rebuild.</p></article>
+<article class="q-card" data-id="kw-mewre-75mva-stage1"><div class="q-meta"><span class="badge grade">SUPPORTED</span><span class="badge decision">HOLD_FOR_REVIEW</span><span class="muted">Ministry of Electricity, Water &amp; Renewable Energy (MEWRE)</span></div><h2>MEWRE — replacement of damaged transformers up to 75 MVA and parallel reactors up to 50 MVA (first stage)</h2><p class="snip">Ministry of Electricity, Water and Renewable Energy first-stage procurement for replacement/substitution of damaged transformers ≤75 MVA and parallel reactors ≤50 MVA.</p><div class="q-actions"><a class="btn" href="https://tenderimpulse.com/government-tenders/kuwait/replacement-and-substitution-of-damaged-transformers-up-to-a-capacity-of-75-mva-14709840" target="_blank" rel="noopener">Open source</a><button type="button" class="btn copy" data-copy="{
+  &quot;approve&quot;: [
+    &quot;kw-mewre-75mva-stage1&quot;
+  ]
+}">Copy approve override</button><code class="id">kw-mewre-75mva-stage1</code></div><p class="hint">To publish: add <code>"kw-mewre-75mva-stage1"</code> to <code>data/gcc-discovery-publish-overrides.json</code> → <code>approve</code>, then rebuild.</p></article>
+<article class="q-card" data-id="kw-mewre-75mva-relocation"><div class="q-meta"><span class="badge grade">SUPPORTED</span><span class="badge decision">HOLD_FOR_REVIEW</span><span class="muted">Ministry of Electricity, Water &amp; Renewable Energy (MEWRE)</span></div><h2>MEWRE — dismantling, relocation and installation of one 75 MVA power transformer</h2><p class="snip">Dismantling, relocation and installation of one (1) 75 MVA power transformer at Shuaiba (Ax) Substation.</p><div class="q-actions"><a class="btn" href="http://www.biddetail.com/latest-tenders/117573786$d84ae31a-0b12-4035-93f7-f0d7cdc01f0d" target="_blank" rel="noopener">Open source</a><button type="button" class="btn copy" data-copy="{
+  &quot;approve&quot;: [
+    &quot;kw-mewre-75mva-relocation&quot;
+  ]
+}">Copy approve override</button><code class="id">kw-mewre-75mva-relocation</code></div><p class="hint">To publish: add <code>"kw-mewre-75mva-relocation"</code> to <code>data/gcc-discovery-publish-overrides.json</code> → <code>approve</code>, then rebuild.</p></article>
+<article class="q-card" data-id="kw-mewre-75mva-stage2"><div class="q-meta"><span class="badge grade">SUPPORTED</span><span class="badge decision">HOLD_FOR_REVIEW</span><span class="muted">Ministry of Electricity, Water &amp; Renewable Energy (MEWRE)</span></div><h2>MEWRE — second-stage maintenance/replacement programme (transformers up to 75 MVA; parallel reactors up to 50 MVA)</h2><p class="snip">Phase-two maintenance and replacement of damaged parts and related civil works for transformers ≤75 MVA and parallel reactors ≤50 MVA.</p><div class="q-actions"><a class="btn" href="https://tenderimpulse.com/government-tenders/kuwait/maintenance-and-replacement-of-damaged-parts-and-civil-works-related-to-a-number-14608275" target="_blank" rel="noopener">Open source</a><button type="button" class="btn copy" data-copy="{
+  &quot;approve&quot;: [
+    &quot;kw-mewre-75mva-stage2&quot;
+  ]
+}">Copy approve override</button><code class="id">kw-mewre-75mva-stage2</code></div><p class="hint">To publish: add <code>"kw-mewre-75mva-stage2"</code> to <code>data/gcc-discovery-publish-overrides.json</code> → <code>approve</code>, then rebuild.</p></article>
+<article class="q-card" data-id="om-localisation-aug12"><div class="q-meta"><span class="badge grade">CONFIRMED</span><span class="badge decision">REVIEW_QUEUE</span><span class="muted">Authority for Public Services Regulation (APSR) / Invest Oman / Voltamp Energy partnership</span></div><h2>Oman — 10 agreements to localise electrical transformer-component manufacturing (RO15m; 7 new factories)</h2><p class="snip">Ten agreements signed 12 Aug 2026 under APSR cooperation with Voltamp Energy / Invest Oman to localise key transformer components: ~RO15m, 7 new factories (8 components) plus 2 new lines at existing factories (2 components). Sites: Khazaen Economic City, Madayn industrial estates, SOHAR Free Zone. Commercial production expected 2027–2028. 19 Sep 2026 coverage re-surfaced implementation progress — that is publication/update_date, NOT a new signing date.</p><div class="q-actions"><a class="btn" href="https://www.omanobserver.om/article/1194395/business/ro-15m-pacts-signed-to-drive-local-production-of-transformer-components" target="_blank" rel="noopener">Open source</a><button type="button" class="btn copy" data-copy="{
+  &quot;approve&quot;: [
+    &quot;om-localisation-aug12&quot;
+  ]
+}">Copy approve override</button><code class="id">om-localisation-aug12</code></div><p class="hint">To publish: add <code>"om-localisation-aug12"</code> to <code>data/gcc-discovery-publish-overrides.json</code> → <code>approve</code>, then rebuild.</p></article>
+<article class="q-card" data-id="bh-ewa-389-2026-1000kva"><div class="q-meta"><span class="badge grade">CONFIRMED</span><span class="badge decision">REVIEW_QUEUE</span><span class="muted">Electricity &amp; Water Authority (EWA) — Central Stores Directorate</span></div><h2>EWA Central Stores — 11/0.415 kV 1,000 kVA mineral-oil-filled package substation with distribution board</h2><p class="snip">Bahrain Tender Board 389/2026/BTB (PT/CSD/HR/2026/102): SUBSTATION KIOSK 11/0.415 kV, 1000 kVA, mineral oil filled, with distribution board.</p><div class="q-actions"><a class="btn" href="https://www.tenderboard.gov.bh/" target="_blank" rel="noopener">Open source</a><button type="button" class="btn copy" data-copy="{
+  &quot;approve&quot;: [
+    &quot;bh-ewa-389-2026-1000kva&quot;
+  ]
+}">Copy approve override</button><code class="id">bh-ewa-389-2026-1000kva</code></div><p class="hint">To publish: add <code>"bh-ewa-389-2026-1000kva"</code> to <code>data/gcc-discovery-publish-overrides.json</code> → <code>approve</code>, then rebuild.</p></article>
+<article class="q-card" data-id="bh-ewa-aml-sep-review"><div class="q-meta"><span class="badge grade">REVIEW_REQUIRED</span><span class="badge decision">HOLD_FOR_REVIEW</span><span class="muted">Electricity &amp; Water Authority (EWA)</span></div><h2>EWA approved-manufacturer list / additional 500–1,500 kVA September opportunities — investigate separately</h2><p class="snip">Market report flagged possible AML updates and additional 500/1000/1500 kVA opportunities. Do not infer manufacturer approval from unrelated sources.</p><div class="q-actions"><button type="button" class="btn copy" data-copy="{
+  &quot;approve&quot;: [
+    &quot;bh-ewa-aml-sep-review&quot;
+  ]
+}">Copy approve override</button><code class="id">bh-ewa-aml-sep-review</code></div><p class="hint">To publish: add <code>"bh-ewa-aml-sep-review"</code> to <code>data/gcc-discovery-publish-overrides.json</code> → <code>approve</code>, then rebuild.</p></article>
+<article class="q-card" data-id="qa-sept-zero"><div class="q-meta"><span class="badge grade">CONFIRMED</span><span class="badge decision">INTERNAL_COVERAGE_ONLY</span></div><h2>Qatar — no qualifying new transformer-supply or transformer-station EPC opportunity for September (defined scope)</h2><p class="snip">Research found no qualifying September opportunity under defined transformer-supply / station-EPC scope. Zero is valid coverage information.</p><div class="q-actions"><a class="btn" href="https://www.km.qa/" target="_blank" rel="noopener">Open source</a><button type="button" class="btn copy" data-copy="{
+  &quot;approve&quot;: [
+    &quot;qa-sept-zero&quot;
+  ]
+}">Copy approve override</button><code class="id">qa-sept-zero</code></div><p class="hint">To publish: add <code>"qa-sept-zero"</code> to <code>data/gcc-discovery-publish-overrides.json</code> → <code>approve</code>, then rebuild.</p></article>
+</main>
+<script>
+document.querySelectorAll('[data-copy]').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var t = btn.getAttribute('data-copy') || '';
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(t).then(function(){ btn.textContent = 'Copied'; });
+    } else {
+      prompt('Copy approve snippet', t);
+    }
+  });
+});
+</script>
+</body>
+</html>

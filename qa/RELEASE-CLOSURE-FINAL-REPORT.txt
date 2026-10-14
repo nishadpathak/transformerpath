@@ -1,0 +1,132 @@
+# TRANSFORMERPATH — RELEASE CLOSURE FINAL REPORT
+Generated: 2026-10-03T02:55Z (UTC)
+Branch: `cursor/final-stabilization-a955` · PR #12
+Audience: flight-command deliverable (production truth + four-item closure)
+
+---
+
+## 0. Executive verdict
+
+**Stabilization is complete on the release branch and deploy-preview path.
+It is NOT yet production-complete** because PR #12 has not landed on `main`.
+
+Production currently tracks `origin/main` tip **`8465d373a`** (#10 P4 alerts/desk),
+which never included the final-stabilization release stack (provenance stamps,
+census hardcode gate, CG alias redirects, three-clock Intel UX, WebGL gate).
+
+User live score **8.6/10** is consistent with this mixed state: Jobs / Historical
+materials / site-stats 906 improved via earlier merges; Intel clocks, 1,002 copy,
+CG 400-vs-765 summary, and dual CG identities remain pre-#12.
+
+---
+
+## 1. Production smoke (live crawl 2026-10-03)
+
+| Surface | HTTP | Observation |
+| --- | --- | --- |
+| `/` / `index.html` | 200 | Hero **DATA STALE**; census card **906**; marketing card still **“1,002 transformer makers”** |
+| `/intel.html` (`/intel` → same) | 200 | Stamp: “Data stale — last successful refresh **25 Sept 2026**”; Sept items present (24 Sep…); trust strip still **Verified** (not SOURCE CHECKED); Explore **906** |
+| `/jobs.html` | 200 | Live product (openings + employer directory) — claim stands |
+| `/materials.html` | 200 | **Historical reference** labelling present |
+| `/data/site-stats.json` | 200 | `manufacturers: 906`, `updated: 2026-10-03` |
+| `/data/intel.json` | 200 | `updated: 2026-09-25T12:00:00.000Z`; `newest_validated_content_date: 2026-09-25`; GCC publish list present |
+| `/data/freshness.json` | 200 | daily_intel `last_data_refresh: 2026-09-25T12:00:00.000Z`, `last_build: 2026-10-03` |
+| `/data/build-provenance.json` | **404** | Release observability **not deployed** |
+| `/manufacturers/cg-power/` | 200 | **Full competing profile**; summary **400 kV**; evidence table **765 kV**; completeness 65% |
+| `/manufacturers/cg-power-and-industrial-solutions/` | 200 | Separate full profile; facilities; completeness **90%**; no MAX summary row in this generation |
+
+### Production clocks (what is actually served)
+
+| Clock | Production value | Notes |
+| --- | --- | --- |
+| **production commit** | `8465d373a` (#10) | `git` / Netlify main; **not** #12 |
+| **build_at** | *unavailable* | provenance JSON 404; freshness `last_build` date-only `2026-10-03` |
+| **data_version** | *unavailable* | provenance JSON 404 |
+| **latest_source_date** (intel content) | **2026-09-25** (`newest_validated_content_date` / `intel.updated`) | September GCC/items are on the wire |
+| **latest_source_checked_at** | *not exposed as three-clock field* | Old freshness model; desk uses DATA STALE / Verified vocabulary |
+| **public status** | DATA STALE (hero + intel stamp) | Not INTEL COVERAGE DELAYED / SOURCE CHECKED |
+
+Cache note (user qualification accepted): search indexes can lag CDN bytes. Direct live
+fetch above is the bytes served to this audit agent. Provenance 404 still means
+operators cannot reconcile search vs CDN without #12 stamps.
+
+---
+
+## 2. Why the six-hour objective is not live
+
+PR #12 (`final-stabilization`) remained open while **#10 merged to main**.
+#12 is now rebased/merged with main (`d02c0fa9e`+) and **MERGEABLE** again, but
+until it ships, production cannot show one-release truth.
+
+| Area | Branch #12 | Production |
+| --- | --- | --- |
+| build_commit / build_at / data_version stamps | Yes | No (404) |
+| Homepage 1,002 makers copy | Removed → `data-stat` 906 | Still present |
+| Intel three clocks + INTEL COVERAGE DELAYED | Yes | No (legacy DATA STALE / Verified) |
+| CG short slug | Redirect stub + Netlify 301 | Full competing page |
+| CG summary MAX evidence | **765 kV** on canonical | Short page **400 kV** vs evidence 765 |
+| Census stale gate (709/911/1002) | In Netlify command | Not on main tip |
+
+---
+
+## 3. Four-item release closure (done on branch)
+
+### 1) Intel production generation
+- Branch `intel.html` already carried three-clock stamp + INTEL COVERAGE DELAYED.
+- Closure pass: trust strip **Verified → SOURCE CHECKED** (source-checked clock copy).
+- September GCC records already in `data/intel.json` / feed (also visible on prod data).
+- Regressions: `tests/intel-clock-regression.js` PASS.
+
+### 2) Census regression
+- Branch homepage uses `<span data-stat="manufacturers">906</span>` (no 1,002).
+- `check-census-stale.js` PASS on branch (blocks 709/911/1002 manufacturer-count copy).
+- Production still serves stale 1,002 until #12 deploys.
+
+### 3) Evidence derivation (CG → 765 kV)
+- Canonical generated profile on branch: **Highest sourced voltage evidence = 765 kV**.
+- `check-voltage-evidence-consistency.js` extended to **parse the generated HTML summary**
+  and fail if <765 or still 400. Local run: **PASS (HTML summary 765 kV)**.
+
+### 4) Entity normalization + 906 duplicate sweep
+- Alias map already collapses `cg-power` → `cg-power-and-industrial-solutions`.
+- Branch emits redirect stub for `/manufacturers/cg-power/` + Netlify 301s.
+- New gate: **`check-entity-canonical.js`**
+  - fails if alias short-slugs are full competing profiles
+  - fails if company-slugs lists indexable alias collisions
+  - sweeps alias resolution across all company-slugs
+  - host-share review notes (warn): 51 shared-host groups (parents/subsidiaries — not auto-fail)
+- Wired into `netlify.toml` + `check-data-health.js` children. Local: **PASS**.
+
+---
+
+## 4. CI / preview
+
+| Check | Status |
+| --- | --- |
+| PR #12 mergeable | **MERGEABLE** (after merge of `origin/main` / #10) |
+| Netlify deploy-preview | Ready (`deploy-preview-12--transformerpath.netlify.app`) |
+| Header / Redirect rules | pass |
+| Closure gates (local) | entity-canonical / voltage HTML / census-stale / intel-clock **PASS** |
+
+Merge #12 to main, then re-run production smoke: provenance 200 + shared
+`build_commit`/`build_at`/`data_version`, intel SOURCE CHECKED clocks, no 1,002,
+CG short URL redirects, CG summary 765 kV.
+
+---
+
+## 5. Stop line (per instruction)
+
+After #12 lands and the four items above are verified on production, **stop
+stabilization**. Next phase = Intel discovery coverage measurement (sources
+checked, time-to-detect, CONFIRMED/REVIEW_REQUIRED rates, geographic blind spots)
+— not more infrastructure sprints.
+
+---
+
+## 6. Suggested merge order (unchanged)
+
+1. **Merge #12 → main** (this report’s release)
+2. Production smoke (Phase 22 live)
+3. Close #11 as superseded
+4. Hold #4 (intent-heavy Learner/911)
+5. #10 already on main — already integrated into #12 via merge commit

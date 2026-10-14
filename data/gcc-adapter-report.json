@@ -1,0 +1,125 @@
+{
+  "generated_at": "2026-09-29T21:53:01.601Z",
+  "probed": 13,
+  "live": 5,
+  "reports": [
+    {
+      "id": "dewa-open-tenders",
+      "live": true,
+      "status": "ACTIVE",
+      "http": 200,
+      "hits": 1,
+      "reason": "",
+      "tls_relaxed": false
+    },
+    {
+      "id": "etimad",
+      "live": false,
+      "status": "BLOCKED_AUTH",
+      "http": 200,
+      "hits": 0,
+      "reason": "portal_appears_session_or_js_gated",
+      "tls_relaxed": false
+    },
+    {
+      "id": "saudi-water-authority",
+      "live": false,
+      "status": "BLOCKED_AUTH",
+      "http": 200,
+      "hits": 0,
+      "reason": "portal_appears_session_or_js_gated",
+      "tls_relaxed": false
+    },
+    {
+      "id": "bahrain-tender-board",
+      "live": true,
+      "status": "ACTIVE",
+      "http": 200,
+      "hits": 1,
+      "reason": "",
+      "tls_relaxed": false
+    },
+    {
+      "id": "ewa-bahrain",
+      "live": true,
+      "status": "ACTIVE",
+      "http": 200,
+      "hits": 1,
+      "reason": "",
+      "tls_relaxed": false
+    },
+    {
+      "id": "mewre-kuwait",
+      "live": false,
+      "status": "BLOCKED_AUTH",
+      "http": 200,
+      "hits": 0,
+      "reason": "portal_appears_session_or_js_gated",
+      "tls_relaxed": true
+    },
+    {
+      "id": "kuwait-central-procurement",
+      "live": false,
+      "status": "BLOCKED_AUTH",
+      "http": 403,
+      "hits": 0,
+      "reason": "portal_appears_session_or_js_gated",
+      "tls_relaxed": false
+    },
+    {
+      "id": "kahramaa",
+      "live": false,
+      "status": "NEEDS_ADAPTER",
+      "http": 0,
+      "hits": 0,
+      "reason": "timeout",
+      "tls_relaxed": false
+    },
+    {
+      "id": "nama-group",
+      "live": true,
+      "status": "ACTIVE",
+      "http": 200,
+      "hits": 1,
+      "reason": "",
+      "tls_relaxed": false
+    },
+    {
+      "id": "oetc",
+      "live": true,
+      "status": "ACTIVE",
+      "http": 200,
+      "hits": 1,
+      "reason": "reachable_via_relaxed_tls",
+      "tls_relaxed": true
+    },
+    {
+      "id": "sec-saudi-energy",
+      "live": false,
+      "status": "BLOCKED_AUTH",
+      "http": 200,
+      "hits": 0,
+      "reason": "portal_appears_session_or_js_gated",
+      "tls_relaxed": false
+    },
+    {
+      "id": "apsr-oman",
+      "live": false,
+      "status": "BLOCKED_AUTH",
+      "http": 200,
+      "hits": 0,
+      "reason": "portal_appears_session_or_js_gated",
+      "tls_relaxed": false
+    },
+    {
+      "id": "invest-oman",
+      "live": false,
+      "status": "BLOCKED_AUTH",
+      "http": 200,
+      "hits": 0,
+      "reason": "portal_appears_session_or_js_gated",
+      "tls_relaxed": false
+    }
+  ],
+  "honesty": "P0+P4 adapter probe; tls_relaxed=true means incomplete/legacy cert chain accepted after strict verify failed"
+}

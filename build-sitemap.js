@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /* build-sitemap.js — sitemap from published HTML on disk.
  * Skips noindex, refresh stubs, iCloud conflict copies, and admin/_partials.
- * lastmod is the file mtime (UTC date), not a synthetic stamp.
+ * lastmod: build-day discipline (TP_SITEMAP_LASTMOD / DEPLOY_DATE / today),
+ * floored at file mtime so GSC sees a fresh signal every deploy.
  * Run: node build-sitemap.js
  */
 'use strict';
@@ -39,10 +40,14 @@ function toUrl(rel) {
 }
 
 function lastmod(filePath) {
+  // Discipline: every Netlify/CI build regenerates lastmod to the build day so
+  // GSC sees a fresh signal for the whole published surface, not only touched files.
+  const buildDay = (process.env.TP_SITEMAP_LASTMOD || process.env.DEPLOY_DATE || new Date().toISOString()).slice(0, 10);
   try {
-    return fs.statSync(filePath).mtime.toISOString().slice(0, 10);
+    const fileDay = fs.statSync(filePath).mtime.toISOString().slice(0, 10);
+    return fileDay > buildDay ? fileDay : buildDay;
   } catch (e) {
-    return new Date().toISOString().slice(0, 10);
+    return buildDay;
   }
 }
 

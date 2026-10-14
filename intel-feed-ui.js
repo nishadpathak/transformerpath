@@ -1,6 +1,7 @@
 /* intel-feed-ui.js — X-speed timeline + Reuters desks for TransformerPath Intel.
  * Fetches compact data/intel-feed-ui.json. Never invents dates. Relative
  * "2m ago" / "Live now" are forbidden — source calendar dates only.
+ * Content-age tiers: FRESH (0-7d), RECENT (8-30d), ACTIVE PIPELINE, REFERENCE.
  */
 (function () {
   'use strict';
@@ -16,18 +17,33 @@
   }
 
   function matches(p) {
-    if (tab === 'latest') return p.desk === 'news' || p.desk === 'grid' || p.desk === 'awards';
+    if (tab === 'latest') {
+      if (p.desk === 'reference') return false;
+      if (p.ageTier === 'FRESH' || p.ageTier === 'RECENT') return true;
+      return p.isActive && (p.desk === 'news' || p.desk === 'grid' || p.desk === 'awards');
+    }
+    if (tab === 'tenders') return p.desk === 'tenders';
+    if (tab === 'awards') return p.desk === 'awards';
+    if (tab === 'capacity' || tab === 'factories') return p.desk === 'capacity' || p.desk === 'factories';
+    if (tab === 'materials' || tab === 'metals') return p.desk === 'materials' || p.desk === 'metals';
+    if (tab === 'pipeline') return p.desk === 'pipeline';
+    if (tab === 'tech') return p.desk === 'tech';
+    if (tab === 'reference') return p.desk === 'reference' || p.historicalReference;
     if (tab === 'foryou') {
       if (userRegion === 'Global') return p.desk === 'news' || p.desk === 'grid';
       var r = userRegion;
       if (r === 'USA') r = 'North America';
       return (p.region === r || p.region === userRegion) && (p.desk === 'news' || p.desk === 'grid' || p.desk === 'tenders' || p.desk === 'awards');
     }
-    if (tab === 'tenders') return p.desk === 'tenders';
-    if (tab === 'awards') return p.desk === 'awards';
-    if (tab === 'capacity') return p.desk === 'capacity';
-    if (tab === 'metals') return p.desk === 'metals';
     return true;
+  }
+
+  function ageBadgeHtml(ageTier, isActive, isRef) {
+    if (isRef || ageTier === 'HISTORICAL') return '<span class="age-badge age-ref" style="background:rgba(159,176,196,.15);color:#9fb0c4;border:1px solid rgba(159,176,196,.35);font-size:.65rem;font-weight:800;padding:2px 7px;border-radius:4px;letter-spacing:.5px">HISTORICAL REFERENCE</span>';
+    if (ageTier === 'FRESH') return '<span class="age-badge age-fresh" style="background:rgba(74,222,128,.15);color:#4ade80;border:1px solid rgba(74,222,128,.35);font-size:.65rem;font-weight:800;padding:2px 7px;border-radius:4px;letter-spacing:.5px">FRESH</span>';
+    if (ageTier === 'RECENT') return '<span class="age-badge age-recent" style="background:rgba(96,165,250,.15);color:#60a5fa;border:1px solid rgba(96,165,250,.35);font-size:.65rem;font-weight:800;padding:2px 7px;border-radius:4px;letter-spacing:.5px">RECENT</span>';
+    if (isActive) return '<span class="age-badge age-active" style="background:rgba(232,196,106,.15);color:#e8c46a;border:1px solid rgba(232,196,106,.35);font-size:.65rem;font-weight:800;padding:2px 7px;border-radius:4px;letter-spacing:.5px">ACTIVE PIPELINE</span>';
+    return '<span class="age-badge age-ref" style="background:rgba(159,176,196,.15);color:#9fb0c4;border:1px solid rgba(159,176,196,.35);font-size:.65rem;font-weight:800;padding:2px 7px;border-radius:4px;letter-spacing:.5px">BACKGROUND</span>';
   }
 
   function card(p) {
@@ -35,14 +51,18 @@
     var date = p.date ? esc(p.date) : 'Date not stated';
     var cls = p.cls ? '<span class="cls-badge cls-' + esc(p.cls) + '">' + esc(p.cls) + '</span>' : '';
     var prov = p.provenance ? '<span class="intel-prov intel-prov-' + esc(p.provenance) + '">' + esc(p.provenance) + '</span>' : '';
-    return '<article class="intel-post" id="p-' + esc(p.id) + '" data-desk="' + esc(p.desk) + '" data-region="' + esc(p.region) + '">' +
+    var age = ageBadgeHtml(p.ageTier, p.isActive, p.historicalReference);
+    var relevance = p.currentRelevance ? '<div class="intel-relevance" style="font-size:.76rem;color:var(--muted);margin-top:6px;padding-top:4px;border-top:1px dashed var(--border)"><b>Current Relevance:</b> ' + esc(p.currentRelevance) + '</div>' : '';
+
+    return '<article class="intel-post" id="p-' + esc(p.id) + '" data-desk="' + esc(p.desk) + '" data-region="' + esc(p.region) + '" data-age="' + esc(p.ageTier || '') + '">' +
       '<div class="intel-avatar" aria-hidden="true">TP</div>' +
       '<div class="intel-body">' +
       '<div class="intel-byline"><strong>TransformerPath</strong><span class="intel-handle">@intel</span>' +
-      '<span class="intel-date" title="Source date — not the page-build clock">' + date + '</span></div>' +
+      '<span class="intel-date" title="Source date — not the page-build clock">' + date + '</span>' + age + '</div>' +
       '<h3 class="intel-headline"><a href="' + esc(href) + '"' + (p.url ? ' target="_blank" rel="noopener"' : '') + '>' + esc(p.headline) + '</a></h3>' +
       (p.soWhat ? '<p class="intel-sowhat">' + esc(p.soWhat) + '</p>' : '') +
       (p.buyer ? '<p class="intel-buyer">Who buys: ' + esc(p.buyer) + '</p>' : '') +
+      relevance +
       '<div class="intel-meta">' + cls + prov +
       '<span class="intel-region">' + esc(p.region) + '</span>' +
       (p.value ? '<span class="val">' + esc(p.value) + '</span>' : '') +
@@ -133,7 +153,7 @@
     detectRegion();
     bindTabs();
     var hash = (location.hash || '').replace('#', '');
-    if (hash && /^(foryou|latest|tenders|awards|capacity|metals)$/.test(hash)) tab = hash;
+    if (hash && /^(latest|tenders|awards|capacity|factories|materials|metals|pipeline|tech|reference|foryou)$/.test(hash)) tab = hash;
     fetch('data/intel-feed-ui.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (d) {
       feed = d;
       setTab(tab);

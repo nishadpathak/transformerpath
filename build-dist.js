@@ -54,6 +54,9 @@ const DIRS = [
 // Individual files from directories that are NOT wholly public.
 const FILES_FROM_MIXED_DIRS = [
   'lib/event-search.js',        // loaded by search.html; the rest of lib/ is build-time
+  'js/tp-grid-lab.js',          // Grid Lab V2 engine (public /grid-lab)
+  'js/tp-grid-calc.js',
+  'js/tp-webgl-gate.js',
 ];
 
 // Runtime JavaScript at the root, derived from what pages actually load.
@@ -63,10 +66,12 @@ const ROOT_JS = [
   'site-stats.js', 'supabase-config.js', 'supabase.js', 'sw.js',
   'tp-directory.js', 'tp-feedback.js', 'tp-freshness.js', 'tp-nav.js', 'tp-pwa.js',
   'tp-grid-lab.js', 'tp-learner.js', 'tp-entitlement.js', 'tp-hub.js', 'tp-academy.js',
-  'tp-theme.js', 'map.js',
+  'tp-theme.js', 'tp-shortlist.js', 'tp-watchlist.js', 'map.js',
+  'tp-webgl-gate.js',
   'tp-3d-core.js', 'tp-power-assembly.js', 'tp-oil-assembly.js',
   'tp-castresin-assembly.js', 'tp-ct-assembly.js',
   'part-ecosystem.js', 'component-3d-bridge.js',
+  'tp-lab-geometry.js', 'tp-lab-engine.js',
 ];
 
 // Everything else at the root that must ship.
@@ -86,6 +91,7 @@ const FORBIDDEN_PATTERNS = [
   /(^|\/)[^/]* \d{1,2}(\.[^./]+)?$/,   // conflict copies — backstop for the skip above
   /^_private\//, /^_docs\//, /^_partials\//, /^tests\//, /^supabase\//,
   /^functions\//, /^engine\//, /^archive\//, /^transformerpath-site\//,
+  /^transformerpath\//,  // Maghreb nested fork — never publish alongside root site
   /^Transformer Equipments\//, /^Transformer Radiators\//,
   /^build-.*\.js$/, /^check-.*\.js$/, /^audit-.*\.js$/, /^merge-.*\.js$/,
   /^_region_.*\.json$/, /^_final_.*\.json$/, /^_sync_diag\.js$/,
@@ -117,8 +123,11 @@ function copyDir(dir) {
     if (e.name.startsWith('.')) continue;            // .DS_Store and friends
     if (CONFLICT_COPY.test(e.name)) { skippedConflicts.push(path.join(dir, e.name)); continue; }
     const p = path.join(dir, e.name);
-    // Never copy internal prospect intelligence to the public distribution
+    // Never copy internal prospect intelligence / discovery-ops artifacts to the public distribution
     if (p === 'data/commerce-intel.json' || p === 'data/engineer-track-paid.json') continue;
+    if (p === 'data/gcc-sep-2026-discovery-input.json' || p === 'data/gcc-coverage-report.json') continue;
+    // Tracked ops schemas (e.g. data/*.sql) must stay in git but never ship on the CDN
+    if (/\.sql$/i.test(e.name)) continue;
     if (e.isDirectory()) n += copyDir(p);
     else { copyFile(p, p); n++; }
   }

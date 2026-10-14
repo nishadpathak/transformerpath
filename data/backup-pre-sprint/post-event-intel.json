@@ -1,0 +1,52 @@
+{
+  "$schema": "https://transformerpath.com/post-event-intel.schema.json",
+  "registered": "2026-09-03",
+  "purpose": "Post-event transformer-industry intelligence workflow (architecture + quality rules). The trigger is an event whose status becomes COMPLETED. A post-event research job collects sources, removes duplicates, filters for transformer relevance, extracts structured facts, classifies confidence, and only then publishes a summary. Nothing here is assembled into fake facts: a summary must be source-backed at the fact level and is validated by check-event-intel.js before publication. Unsupported (e.g. social-only) claims are rejected.",
+  "trigger": { "event_status": "COMPLETED", "note": "A past event (end date before today) is treated as completed; its summary route is prepared for research (RESEARCH_QUEUED) until verified facts exist." },
+  "source_priority": [
+    { "rank": 1, "type": "official_organizer_post_event_report" },
+    { "rank": 2, "type": "official_exhibitor_list_event_website" },
+    { "rank": 3, "type": "company_press_release" },
+    { "rank": 4, "type": "utility_epc_announcement" },
+    { "rank": 5, "type": "credible_industry_media" },
+    { "rank": 6, "type": "newspapers_business_media" },
+    { "rank": 7, "type": "company_linkedin" },
+    { "rank": 8, "type": "public_social_discovery_only" }
+  ],
+  "workflow": [
+    "event_completed", "collect_sources", "remove_duplicates", "filter_transformer_relevance",
+    "extract_structured_facts", "classify_confidence", "generate_summary", "qa", "publish"
+  ],
+  "summary_sections": [
+    "event_overview", "transformer_manufacturers_present", "component_suppliers", "material_suppliers",
+    "manufacturing_equipment_suppliers", "testing_diagnostic_companies", "new_product_launches",
+    "new_transformer_technology", "factory_capacity_announcements", "utility_epc_announcements",
+    "projects_tenders", "partnerships_mous_contracts", "regional_demand_signals",
+    "technical_presentations", "major_market_themes", "what_changed_vs_previous_edition",
+    "what_to_watch_next", "sources", "last_updated"
+  ],
+  "transformer_relevance_keywords": ["transformer", "bushing", "tap-chang", "oltc", "reactor", "substation", "grid", "utility ", "epc", "hvdc", "distribution transformer", "power transformer", "gsu", "generator step-up", "insulation", "crgo", "pressboard", "ctc", "transformer oil", "ester", "transformer test", "partial discharge", "dielectric", "windings", "traction transformer", "furnace transformer", "rectifier transformer", "converter transformer"],
+  "confidence_levels": [
+    { "key": "CONFIRMED", "label": "Confirmed", "meaning": "Backed by an official-organizer/official-documentation or independent primary source." },
+    { "key": "COMPANY_REPORTED", "label": "Company reported", "meaning": "Stated by the company itself (press release)." },
+    { "key": "SECONDARY_SOURCE", "label": "Secondary source", "meaning": "Credible industry/business media; not independently confirmed." },
+    { "key": "UNVERIFIED", "label": "Unverified", "meaning": "Social/discovery only, or no attributable source — must NOT be presented as confirmed." }
+  ],
+  "entity_types": ["event", "company", "factory", "project", "tender", "award", "utility", "market", "material", "product"],
+  "quality_rules": {
+    "reject": [
+      "duplicate_news", "advertorial_presented_as_news", "pure_promotional_slogan", "unsourced_attendance_claim",
+      "fake_partnership_claim", "irrelevant_generic_energy_news", "social_only_claim_without_label"
+    ],
+    "require": [
+      "every_fact_has_a_source", "social_only_claims_labeled", "no_duplicate_company_records", "transformer_relevance",
+      "attendance_numbers_sourced", "partnership_mou_sourced"
+    ]
+  },
+  "free_vs_intel_pro": {
+    "free": ["executive_summary", "major_announcements", "top_transformer_themes", "selected_company_activity", "sources"],
+    "intel_pro": ["full_company_activity_list", "detailed_launch_tracker", "project_tender_links", "category_breakdown", "downloadable_report", "historical_comparison", "saved_follow_up_alerts"]
+  },
+  "admin_statuses": ["COLLECTING", "DRAFT", "REVIEW_REQUIRED", "READY", "PUBLISHED", "UPDATED"],
+  "company_timeline_events": ["exhibited", "product_launched", "factory_expansion_announced", "partnership_announced", "contract_announced", "new_market_entry_announced"]
+}
