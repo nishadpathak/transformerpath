@@ -70,6 +70,21 @@ exports.handler = async (event) => {
     // The security boundary: the session must be paid. Anything else (open,
     // unpaid, expired, refunded) is rejected.
     if (session.payment_status === 'paid') {
+      // Manufacturer and event payments are not course entitlements. valid
+      // stays false so course-gate does not grant a learner token.
+      const product = session.metadata && session.metadata.product;
+      if (product === 'verified_manufacturer' || product === 'featured_event') {
+        return {
+          statusCode: 200,
+          body: JSON.stringify({
+            valid: false,
+            paid: true,
+            listing: 'paid_pending_verification',
+            product: product,
+            reason: 'listing_payment_not_course'
+          }),
+        };
+      }
       const tier = deriveTier(session);
       // Issue a server-trusted, expiring entitlement token (not localStorage,
       // not a query param) so gated content delivery can be verified server-side.

@@ -35,6 +35,9 @@
  * ========================================================================== */
 const crypto = require('crypto');
 const { isConfigured, client } = require('./lib/supabase-server');
+const { sendPaidReceipts } = require('./lib/paid-receipt');
+
+const PAID_LISTING_PRODUCTS = { verified_manufacturer: true, featured_event: true };
 
 // Should be loaded from env in production; never committed.
 const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
@@ -115,22 +118,69 @@ function verifySignature(payload, signatureHeader, secret, tolerance = 300) {
   return JSON.parse(payload);
 }
 
+function paidListingProduct(session) {
+  const product = session && session.metadata && session.metadata.product;
+  return PAID_LISTING_PRODUCTS[product] ? product : null;
+}
+
+function paidListingRow(session) {
+  const meta = session.metadata || {};
+  return {
+    session_id: session.id,
+    product: paidListingProduct(session),
+    company_slug: meta.company_slug || null,
+    event_id: meta.event_id || null,
+    email: session.customer_email || (session.customer_details && session.customer_details.email) || null,
+    amount: typeof session.amount_total === 'number' ? session.amount_total : null,
+    currency: session.currency || null,
+    livemode: session.livemode === true,
+    status: 'paid_pending_verification',
+    created_at: isoNow()
+  };
+}
+
+let persistenceOverride = null;
+function persistence() {
+  if (persistenceOverride) return persistenceOverride;
+  return {
+    eventProcessed: eventProcessed,
+    markProcessed: markProcessed,
+    writeEntitlement: writeEntitlement,
+    writePaidListing: writePaidListing
+  };
+}
+
 async function handle(ev) {
   const type = ev.type;
+  const store = persistence();
   // Idempotency: processed-event store (Supabase `webhook_events` keyed by event.id).
   // If the event id is already recorded, return success without re-writing.
-  if (await eventProcessed(ev.id)) return respond(200, { received: true, idempotent: true });
+  if (await store.eventProcessed(ev.id)) return respond(200, { received: true, idempotent: true });
+
+  if (type === 'checkout.session.completed' && paidListingProduct(ev.data && ev.data.object)) {
+    const row = paidListingRow(ev.data.object);
+    try {
+      await store.writePaidListing(row);
+    } catch (err) {
+      console.warn('paid listing write failed');
+      return respond(500, { error: 'paid listing not stored' });
+    }
+    const receipt = await sendPaidReceipts(row);
+    if (receipt && receipt.retry) return respond(500, { error: 'receipt failed' });
+    await store.markProcessed(ev.id, type);
+    return respond(200, { received: true, paid_listing: true });
+  }
 
   let entitlement;
   if (type === 'checkout.session.completed') entitlement = fromCheckout(ev.data.object);
   else if (type === 'customer.subscription.created' || type === 'customer.subscription.updated') entitlement = fromSubscription(ev.data.object);
   else if (type === 'customer.subscription.deleted') entitlement = fromSubscription(ev.data.object, 'CANCELLED');
   else if (type === 'charge.refunded') entitlement = fromCharge(ev.data.object);
-  else return respond(400, { error: 'unsupported event ' + type }); // unhandled event -> not an entitlement write
+  else return respond(200, { received: true, ignored: type });
 
   if (!entitlement || !entitlement.user_id) return respond(400, { error: 'no linked user' });
-  await writeEntitlement(entitlement);
-  await markProcessed(ev.id);
+  await store.writeEntitlement(entitlement);
+  await store.markProcessed(ev.id, type);
   return respond(200, { received: true });
 }
 
@@ -184,6 +234,17 @@ async function eventProcessed(id) {
   }
 }
 
+async function writePaidListing(row) {
+  if (!isConfigured()) {
+    const err = new Error('paid_listings store not configured');
+    err.code = 'not_configured';
+    throw err;
+  }
+  const supabase = client();
+  const { error } = await supabase.from('paid_listings').upsert(row, { onConflict: 'session_id' });
+  if (error) throw new Error('paid_listings upsert failed');
+}
+
 async function markProcessed(id, type) {
   if (!isConfigured()) return;
   try {
@@ -193,6 +254,9 @@ async function markProcessed(id, type) {
     console.warn('markProcessed error:', err.message);
   }
 }
+
+exports._setPersistenceForTests = function (store) { persistenceOverride = store; };
+exports._paidListingRow = paidListingRow;
 
 function isoNow() { return new Date().toISOString(); }
 function respond(code, obj) {
