@@ -196,6 +196,7 @@ const dataRefs = new Set();
 function dataForbidden(rel) {
   return /backup/i.test(rel) || /pre-sprint/i.test(rel) ||
     rel === 'commerce-intel.json' || rel === 'engineer-track-paid.json' ||
+    rel === 'paid-listings.json' ||
     rel === 'gcc-sep-2026-discovery-input.json' || rel === 'gcc-coverage-report.json' ||
     /\.sql$/i.test(rel);
 }
