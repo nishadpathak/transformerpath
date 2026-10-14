@@ -5,7 +5,7 @@
  * public truth. Navigate/HTML is network-first; only the offline shell + static
  * brand assets are installed into the core cache.
  */
-const CACHE = 'transformerpath-v16';
+const CACHE = 'transformerpath-v17';
 const CORE = [
   'offline.html',
   'style.css?v=14',
@@ -42,6 +42,7 @@ self.addEventListener('fetch', e => {
   const isHtml = req.mode === 'navigate' || accept.includes('text/html');
   const isReleaseData = /\.(?:html?)$/i.test(path) ||
     path === '/data/freshness.json' ||
+    path === '/build.json' ||
     path === '/data/build-provenance.json' ||
     path === '/data/site-stats.json' ||
     path.startsWith('/data/gcc-');

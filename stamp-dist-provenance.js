@@ -22,21 +22,42 @@ if (!prov || !prov.build_commit || !prov.build_at || !prov.data_version) {
   console.error('stamp-dist-provenance: missing build provenance (' + provPath + ')');
   process.exit(1);
 }
+if (!prov.latest_intel_date || typeof prov.manufacturer_count !== 'number') {
+  console.error('stamp-dist-provenance: provenance is missing latest_intel_date or manufacturer_count');
+  process.exit(1);
+}
+
+/* Public /build.json. Same commit, build time, data_version, latest Intel
+ * date and manufacturer count the HTML stamps carry. */
+const buildJson = {
+  commit: prov.build_commit,
+  build_time: prov.build_at,
+  data_version: prov.data_version,
+  latest_intel_date: prov.latest_intel_date,
+  manufacturer_count: prov.manufacturer_count
+};
 
 const metas =
-  '<meta name="tp-build-commit" content="' + prov.build_commit + '">' +
-  '<meta name="tp-build-at" content="' + prov.build_at + '">' +
-  '<meta name="tp-data-version" content="' + prov.data_version + '">';
+  '<meta name="tp-build-commit" content="' + buildJson.commit + '">' +
+  '<meta name="tp-build-at" content="' + buildJson.build_time + '">' +
+  '<meta name="tp-data-version" content="' + buildJson.data_version + '">' +
+  '<meta name="tp-latest-intel-date" content="' + buildJson.latest_intel_date + '">' +
+  '<meta name="tp-manufacturer-count" content="' + buildJson.manufacturer_count + '">';
 const comment =
-  '<!-- tp-release build_commit=' + prov.build_commit +
-  ' build_at=' + prov.build_at +
-  ' data_version=' + prov.data_version + ' -->';
+  '<!-- build.json commit=' + buildJson.commit +
+  ' build_time=' + buildJson.build_time +
+  ' data_version=' + buildJson.data_version +
+  ' latest_intel_date=' + buildJson.latest_intel_date +
+  ' manufacturer_count=' + buildJson.manufacturer_count + ' -->';
 
 function stampHtml(file) {
   let html = fs.readFileSync(file, 'utf8');
   html = html.replace(/\s*<meta name="tp-build-(?:commit|at)"[^>]*>/gi, '');
   html = html.replace(/\s*<meta name="tp-data-version"[^>]*>/gi, '');
+  html = html.replace(/\s*<meta name="tp-latest-intel-date"[^>]*>/gi, '');
+  html = html.replace(/\s*<meta name="tp-manufacturer-count"[^>]*>/gi, '');
   html = html.replace(/\s*<!-- tp-release [^>]*-->/g, '');
+  html = html.replace(/\s*<!-- build\.json [^>]*-->/g, '');
   if (/<head[^>]*>/i.test(html)) {
     html = html.replace(/<head([^>]*)>/i, '<head$1>\n' + metas + '\n' + comment);
   } else if (/<html[^>]*>/i.test(html)) {
@@ -51,11 +72,15 @@ function stampHtml(file) {
     a = a
       .replace(/\sdata-tp-build-commit="[^"]*"/gi, '')
       .replace(/\sdata-tp-build-at="[^"]*"/gi, '')
-      .replace(/\sdata-tp-data-version="[^"]*"/gi, '');
+      .replace(/\sdata-tp-data-version="[^"]*"/gi, '')
+      .replace(/\sdata-tp-latest-intel-date="[^"]*"/gi, '')
+      .replace(/\sdata-tp-manufacturer-count="[^"]*"/gi, '');
     return '<html' + a +
-      ' data-tp-build-commit="' + prov.build_commit + '"' +
-      ' data-tp-build-at="' + prov.build_at + '"' +
-      ' data-tp-data-version="' + prov.data_version + '">';
+      ' data-tp-build-commit="' + buildJson.commit + '"' +
+      ' data-tp-build-at="' + buildJson.build_time + '"' +
+      ' data-tp-data-version="' + buildJson.data_version + '"' +
+      ' data-tp-latest-intel-date="' + buildJson.latest_intel_date + '"' +
+      ' data-tp-manufacturer-count="' + buildJson.manufacturer_count + '">';
   });
   fs.writeFileSync(file, html);
 }
@@ -100,4 +125,6 @@ prov.stamp_root = DIST;
 if (fs.existsSync(path.dirname(distProvPath))) {
   fs.writeFileSync(distProvPath, JSON.stringify(prov, null, 2) + '\n');
 }
+fs.writeFileSync(path.join(DIST, 'build.json'), JSON.stringify(buildJson, null, 2) + '\n');
 console.log('stamp-dist-provenance: ' + htmlFiles.length + '/' + htmlFiles.length + ' pages stamped');
+console.log('stamp-dist-provenance: wrote ' + path.join(DIST, 'build.json'));

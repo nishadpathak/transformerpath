@@ -59,6 +59,11 @@ const commit = gitSha(gitState);
 const context = process.env.CONTEXT || '';
 const commitRef = (process.env.COMMIT_REF || '').trim();
 const head = (gitState.head || '').trim();
+const stats = readJson('data/site-stats.json', {});
+const fresh = readJson('data/freshness.json', {});
+const materials = readJson('data/materials-latest.json', {});
+const latestIntelDate = fresh.latest_source_date || null;
+const manufacturerCount = (typeof stats.manufacturers === 'number') ? stats.manufacturers : null;
 
 if (context === 'production') {
   const problems = [];
@@ -70,20 +75,18 @@ if (context === 'production') {
   if (gitState.git_dirty) problems.push('git tree is dirty:\n' + String(gitState.porcelain || '').slice(0, 2000));
   if (gitState.error) problems.push(gitState.error);
   if (!gitState.captured_at) problems.push('git state was not captured before generators ran');
+  if (!latestIntelDate) problems.push('latest Intel date is missing');
+  if (manufacturerCount == null) problems.push('manufacturer count is missing');
   if (problems.length) {
     console.error('RELEASE PROVENANCE: production deploy refused');
     problems.forEach(function (p) { console.error('  - ' + p); });
     process.exit(1);
   }
 }
-const stats = readJson('data/site-stats.json', {});
-const fresh = readJson('data/freshness.json', {});
-const materials = readJson('data/materials-latest.json', {});
-
 const fingerprintPayload = JSON.stringify({
-  manufacturers: stats.manufacturers,
+  manufacturers: manufacturerCount,
   site_stats_updated: stats.updated,
-  latest_source_date: fresh.latest_source_date || null,
+  latest_source_date: latestIntelDate,
   latest_source_checked_at: fresh.latest_source_checked_at || null,
   public_intel_status: fresh.public_intel_status || null,
   materials_updated: materials.updated || null,
@@ -112,6 +115,8 @@ const out = {
   build_commit: commit,
   build_at: NOW,
   data_version: data_version,
+  latest_intel_date: latestIntelDate,
+  manufacturer_count: manufacturerCount,
   data_fingerprint: JSON.parse(fingerprintPayload),
   honest_note:
     'Every HTML page in this deploy must carry the same build_commit + build_at + data_version. Mixed generations on production are a release defect.',
