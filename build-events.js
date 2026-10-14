@@ -27,6 +27,7 @@ const CSSV = (CFG.assets && CFG.assets.css) || 12;
 // ONE canonical event-status resolver (shared across Events/Homepage/Search/
 // Market/Company/Structured-data surfaces). Replaces the local heuristic below.
 const { resolveStatus, isTravelSafe, chip: statusChip } = require('./lib/event-status');
+const tpAff = require('./lib/travelpayouts');
 const { TP_LOADER } = require('./lib/seo-cwv');
 // Company entity pages (built by build-company-pages) -> exhibitor map for events.
 const CSMAP = {}; const COUNTRY_CO = {};
@@ -178,22 +179,21 @@ const fmt = function (d) {
   if (isNaN(dt.getTime())) return '';
   return dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
 };
-// Travelpayout-affiliated attendee buttons (Book Hotel / Flights / Things to Do /
-// calendar) for a curated event, matching the exhibitions + events.html pattern.
-const TP = { hotel: 'https://search.hotellook.com/?marker=736890&destination=', flights: 'https://kiwi.tpk.ro/dClaRHg1', activities: 'https://kkday.tpk.ro/VGC9WqGf' };
-function travelButtons(name, city, country, s, e) {
+function travelButtons(name, city, country, s, e, slug) {
   if (!city) return '';
-  const hotel = TP.hotel + encodeURIComponent(city);
+  const widgets = tpAff.eventWidgets({
+    slug: slug,
+    city: city,
+    checkIn: s,
+    checkOut: e,
+    prefix: '../../',
+    disclosureHref: '../../affiliate-disclosure.html',
+  });
   const nm = String(name || '').replace(/[\r\n]/g, ' ').trim();
   const loc = [city, country].filter(Boolean).join(', ');
   const d0 = String(s || '').replace(/-/g, ''), d1 = String(e || '').replace(/-/g, '') || d0;
   const cal = 'data:text/calendar;charset=utf-8,BEGIN%3AVCALENDAR%0D%0AVERSION%3A2.0%0D%0APRODID%3A-%2F%2FTransformerPath%2F%2FEvents%2F%2FEN%0D%0ACALSCALE%3AGREGORIAN%0D%0ABEGIN%3AVEVENT%0D%0AUID%3A' + (d0 || 'tbd') + '%40transformerpath.com%0D%0ADTSTAMP%3A20260901T000000Z%0D%0ADTSTART%3BVALUE%3DDATE%3A' + d0 + '%0D%0ADTEND%3BVALUE%3DDATE%3A' + d1 + '%0D%0ASUMMARY%3A' + encodeURIComponent(nm) + '%0D%0ALOCATION%3A' + encodeURIComponent(loc) + '%0D%0AEND%3AVEVENT%0D%0AEND%3AVCALENDAR';
-  return '<div class="ev-travel" style="margin:10px 0 4px">' +
-    '<div style="font-size:.72rem;color:var(--muted);margin-bottom:4px">Travel links may earn an affiliate commission to support TransformerPath independent research.</div>' +
-    '<a class="btn btn-outline btn-sm" data-aff="hotel" data-ev="' + esc(nm) + '" href="' + esc(hotel) + '" target="_blank" rel="noopener sponsored">🏨 Book Hotel</a> ' +
-    '<a class="btn btn-outline btn-sm" data-aff="flights" data-ev="' + esc(nm) + '" href="' + esc(TP.flights) + '" target="_blank" rel="noopener sponsored">✈ Find Flights</a> ' +
-    '<a class="btn btn-outline btn-sm" data-aff="activities" data-ev="' + esc(nm) + '" href="' + esc(TP.activities) + '" target="_blank" rel="noopener sponsored">&#127915;&#65039; Things to Do</a> ' +
-    '<a class="btn btn-outline btn-sm" data-aff="calendar" data-ev="' + esc(nm) + '" href="' + cal + '" download target="_blank" rel="noopener">&#128197; Add</a></div>';
+  return widgets + '<div class="ev-travel" style="margin:10px 0 4px"><a class="btn btn-outline btn-sm" data-aff="calendar" data-ev="' + esc(nm) + '" href="' + cal + '" download target="_blank" rel="noopener">&#128197; Add to calendar</a></div>';
 }
 
 /* ── Event confirmation state ───────────────────────────────────────────────
@@ -275,7 +275,7 @@ function eventPage(ev) {
       ? '<span><a href="../../map.html?layer=events&amp;q=' + encodeURIComponent(ev.name) + '" style="color:var(--accent)">View on map</a></span>'
       : '') + '</div>' +
     (confirmed && ev.register ? '<div style="margin:10px 0 4px"><a class="btn btn-amber" href="' + esc(ev.register) + '" target="_blank" rel="noopener" data-track="event_register" data-track-event="' + esc(ev.slug) + '">Register for ' + esc(ev.name) + ' →</a></div>' : '') +
-    (confirmed ? travelButtons(ev.name, rec.c, rec.co, rec.s, rec.e) : '') +
+    (confirmed && rec.c ? travelButtons(ev.name, rec.c, rec.co, rec.s, rec.e, ev.slug) : '') +
     '<p class="lead">' + esc(ev.blurb) + '</p>' +
     '<h2>What it covers</h2><p style="line-height:1.7;color:var(--text)">' + esc(rec.d || ev.blurb) + '</p>' +
     '<h2>Transformer suppliers active in this market</h2><p style="color:var(--muted);font-size:.94rem;margin:4px 0 8px">TransformerPath entity pages for manufacturers in this country/market — <b>not</b> a confirmed exhibitor list. Verify capability before a decision.</p><div style="margin:4px 0 8px">' + mkPills + '</div>' + (countryLink ? '<div style="margin-top:8px">' + countryLink + '</div>' : '') +

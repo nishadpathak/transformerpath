@@ -17,6 +17,7 @@
  */
 'use strict';
 const fs = require('fs');
+const tpAff = require('./lib/travelpayouts');
 const { scoreHtml } = require('./build-knowledge-depth.js');
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const ASSETS = (() => {
@@ -2278,6 +2279,7 @@ function articlePage(a) {
     '<div class="lead" style="margin-top:18px">' + esc(a.question) + '</div>' +
     body + eq + ex + refs + links + makersSec + compSec +
     '<div class="method">Technical content is prepared from engineering references, standards frameworks, manufacturer documentation and industry sources. Contractual or compliance decisions should refer to current official standards. <b>TransformerPath Technical Editorial.</b></div>' +
+    (tpAff.TRIP_KNOWLEDGE[a.slug] ? tpAff.tripOffers({ slug: a.slug, place: tpAff.TRIP_KNOWLEDGE[a.slug], prefix: '../', disclosureHref: '../affiliate-disclosure.html' }) : '') +
     '<div class="box" style="text-align:center;margin-top:22px"><b style="color:var(--text)">Source transformers for this application</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 10px">Submit an RFQ or browse manufacturers and components.</p>' +
     '<a class="btn btn-amber" href="../rfq.html" data-track="rfq_started" data-track-component_category="' + esc(a.title) + '">Submit an RFQ</a> <a class="btn btn-outline btn-sm" href="../list-company.html" data-track="supplier_claim_started">Get Verified</a></div>' +
     '</main>\n' + FOOT + '\n<script src="../analytics.js?v=' + ASSETS.js + '" defer></script>\n</body>\n</html>';
