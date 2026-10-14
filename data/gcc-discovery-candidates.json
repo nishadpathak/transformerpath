@@ -1,9 +1,9 @@
 {
   "$schema": "https://transformerpath.com/gcc-discovery-candidates.schema.json",
-  "generated": "2026-10-14T10:07:13.716Z",
+  "generated": "2026-10-14T10:33:06.332Z",
   "window": {
     "from": "2026-09-01",
-    "to": "2026-09-25"
+    "to": "2026-10-14"
   },
   "purpose": "Graded GCC discovery candidates. NOT auto-published Intel.",
   "pipeline": [
@@ -59,9 +59,9 @@
   "dictionary_ref": "data/gcc-discovery-dictionary.json",
   "registry_ref": "data/gcc-source-registry.json",
   "counts": {
-    "candidates": 12,
+    "candidates": 14,
     "confirmed": 3,
-    "supported": 8,
+    "supported": 10,
     "review_required": 1,
     "rejected": 0,
     "internal_coverage_facts": 1
@@ -158,6 +158,7 @@
       "discovery_input_only": false,
       "reject_reason": null,
       "notes": "Product spot-check asserts official DEWA visibility for 2122600155 float 24 Sep / close 27 Oct. Automated portal fetch of this ID timed out / not adaptered in this run → SUPPORTED not CONFIRMED until adapter returns the row.",
+      "grid_news": false,
       "entity_links": {
         "country": "United Arab Emirates",
         "utility_buyer": "Dubai Electricity & Water Authority (DEWA)",
@@ -234,6 +235,7 @@
       "discovery_input_only": false,
       "reject_reason": null,
       "notes": null,
+      "grid_news": false,
       "entity_links": {
         "country": "Saudi Arabia",
         "utility_buyer": "Saudi Water Authority",
@@ -304,6 +306,7 @@
       "discovery_input_only": false,
       "reject_reason": null,
       "notes": null,
+      "grid_news": false,
       "entity_links": {
         "country": "Saudi Arabia",
         "utility_buyer": "Saudi Water Authority",
@@ -374,6 +377,7 @@
       "discovery_input_only": false,
       "reject_reason": null,
       "notes": null,
+      "grid_news": false,
       "entity_links": {
         "country": "Saudi Arabia",
         "utility_buyer": "Technical and Vocational Training Corporation (TVTC) / Technical College for Girls Al-Aflaj",
@@ -442,6 +446,7 @@
       "discovery_input_only": false,
       "reject_reason": null,
       "notes": null,
+      "grid_news": false,
       "entity_links": {
         "country": "Saudi Arabia",
         "utility_buyer": "King Abdulaziz Air Base Hospital, Dhahran",
@@ -514,6 +519,7 @@
       "discovery_input_only": false,
       "reject_reason": null,
       "notes": "Do not mis-date the original T803 supply float as 24 Sep 2026. Sep activity is supervision of replacement.",
+      "grid_news": false,
       "entity_links": {
         "country": "Saudi Arabia",
         "utility_buyer": "Saudi Water Authority",
@@ -585,6 +591,7 @@
       "discovery_input_only": false,
       "reject_reason": null,
       "notes": null,
+      "grid_news": false,
       "entity_links": {
         "country": "Kuwait",
         "utility_buyer": "Ministry of Electricity, Water & Renewable Energy (MEWRE)",
@@ -656,6 +663,7 @@
       "discovery_input_only": false,
       "reject_reason": null,
       "notes": null,
+      "grid_news": false,
       "entity_links": {
         "country": "Kuwait",
         "utility_buyer": "Ministry of Electricity, Water & Renewable Energy (MEWRE)",
@@ -726,6 +734,7 @@
       "discovery_input_only": false,
       "reject_reason": null,
       "notes": "Keep distinct from stage-1 via canonical_procurement_id; do not spawn duplicate Intel stories on status change alone.",
+      "grid_news": false,
       "entity_links": {
         "country": "Kuwait",
         "utility_buyer": "Ministry of Electricity, Water & Renewable Energy (MEWRE)",
@@ -833,6 +842,7 @@
       "discovery_input_only": false,
       "reject_reason": null,
       "notes": "Knowledge-graph targets: Oman market intel, manufacturing-investment Intel, future factory records, component-manufacturing research queues, Voltamp company profile evidence. event_date MUST remain 2026-08-12.",
+      "grid_news": false,
       "entity_links": {
         "country": "Oman",
         "utility_buyer": "Authority for Public Services Regulation (APSR) / Invest Oman / Voltamp Energy partnership",
@@ -913,6 +923,7 @@
       "discovery_input_only": false,
       "reject_reason": null,
       "notes": null,
+      "grid_news": false,
       "entity_links": {
         "country": "Bahrain",
         "utility_buyer": "Electricity & Water Authority (EWA) — Central Stores Directorate",
@@ -969,6 +980,7 @@
       "discovery_input_only": true,
       "reject_reason": null,
       "notes": "Separate investigation required before any publish. Related historical AML appears on other BTB package-substation notices (e.g. transformers up to 1500 kVA approved makers) — do not copy across tenders without evidence.",
+      "grid_news": false,
       "entity_links": {
         "country": "Bahrain",
         "utility_buyer": "Electricity & Water Authority (EWA)",
@@ -1035,6 +1047,7 @@
       "discovery_input_only": false,
       "reject_reason": null,
       "notes": "Do NOT fabricate a Qatar story. Record as coverage matrix: NO_QUALIFYING_ACTIVITY_FOUND once KAHRAMAA/CTC adapters run.",
+      "grid_news": false,
       "entity_links": {
         "country": "Qatar",
         "utility_buyer": null,
@@ -1047,6 +1060,146 @@
         "supplier_award_winner": null
       },
       "evidence_grade": "CONFIRMED"
+    },
+    {
+      "candidate_id": "gcc-uae-saudi-grid-mou-2026-10-09",
+      "country": "United Arab Emirates",
+      "title": "UAE and Saudi Arabia sign an MoU on electricity interconnection",
+      "snippet": "MEED, 9 October 2026: the UAE and Saudi Arabia signed an MoU in Riyadh on 8 October to strengthen electricity interconnection, study the exchange and sale of power, and coordinate with other GCC states on expanding the regional interconnection. The report also describes the earlier GCCIA project: a 96 km double-circuit 400 kV line from Al-Silaa in Abu Dhabi to Salwa in Saudi Arabia.",
+      "buyer": "UAE Ministry of Investment / Saudi Ministry of Energy",
+      "tender_id": null,
+      "canonical_procurement_id": null,
+      "procurement_state": "ANNOUNCED",
+      "procurement_events": [],
+      "classifications": [
+        "REGULATORY",
+        "PROJECT"
+      ],
+      "transformer_relevant": false,
+      "transformer_category": null,
+      "voltage": "400 kV",
+      "rating": null,
+      "location": "Riyadh; Al-Silaa (Abu Dhabi) to Salwa",
+      "project": null,
+      "supplier": null,
+      "key_values_extracted": {
+        "signed": "2026-10-08",
+        "reported": "2026-10-09",
+        "line_described_in_source": "96 km double-circuit 400 kV Al-Silaa to Salwa"
+      },
+      "dates": {
+        "publication_date": "2026-10-09",
+        "event_date": "2026-10-08",
+        "tender_float_date": null,
+        "tender_close_date": null,
+        "bid_opening_date": null,
+        "expected_award_date": null,
+        "award_date": null,
+        "project_start_date": null,
+        "commissioning_date": null,
+        "source_checked_at": "2026-10-14",
+        "update_date": "2026-10-09"
+      },
+      "sources": [
+        {
+          "source_id": "meed",
+          "url": "https://guest.meed.com/uae-and-saudi-arabia-plan-electricity-interconnection/",
+          "source_type": "INDUSTRY_MEDIA",
+          "role": "SECONDARY",
+          "authority_class": "INDUSTRY_MEDIA",
+          "note": "Fetched 2026-10-14. Page is dated 9 October 2026."
+        }
+      ],
+      "confidence": "MEDIUM",
+      "why_previously_missed": "Published 9 October 2026, after the September discovery window.",
+      "published_to_intel": true,
+      "publish_decision": "HOLD_FOR_REVIEW",
+      "discovery_input_only": false,
+      "reject_reason": null,
+      "notes": null,
+      "grid_news": true,
+      "entity_links": {
+        "country": "United Arab Emirates",
+        "utility_buyer": "UAE Ministry of Investment / Saudi Ministry of Energy",
+        "project": null,
+        "tender": null,
+        "transformer_category": null,
+        "voltage": "400 kV",
+        "rating": null,
+        "facility_location": "Riyadh; Al-Silaa (Abu Dhabi) to Salwa",
+        "supplier_award_winner": null
+      },
+      "evidence_grade": "SUPPORTED"
+    },
+    {
+      "candidate_id": "sa-sppc-grid-scale-2026-10-13",
+      "country": "Saudi Arabia",
+      "title": "Saudi Power Procurement says about half the grid is being scaled up for demand including AI",
+      "snippet": "Arab News, updated 13 October 2026: Saudi Power Procurement Co. CEO Mazin Al-Bahkali told the 25th WPC Energy Congress in Riyadh that about 50 percent of the grid is being scaled up for growing demand, including AI and data centres.",
+      "buyer": "Saudi Power Procurement Company",
+      "tender_id": null,
+      "canonical_procurement_id": null,
+      "procurement_state": "ANNOUNCED",
+      "procurement_events": [],
+      "classifications": [
+        "REGULATORY",
+        "PROJECT"
+      ],
+      "transformer_relevant": false,
+      "transformer_category": null,
+      "voltage": null,
+      "rating": null,
+      "location": "Riyadh",
+      "project": null,
+      "supplier": null,
+      "key_values_extracted": {
+        "speaker": "Mazin Al-Bahkali, Saudi Power Procurement Co.",
+        "claim": "About 50 percent of the grid is being scaled up",
+        "event": "25th WPC Energy Congress, Riyadh"
+      },
+      "dates": {
+        "publication_date": "2026-10-13",
+        "event_date": "2026-10-13",
+        "tender_float_date": null,
+        "tender_close_date": null,
+        "bid_opening_date": null,
+        "expected_award_date": null,
+        "award_date": null,
+        "project_start_date": null,
+        "commissioning_date": null,
+        "source_checked_at": "2026-10-14",
+        "update_date": "2026-10-13"
+      },
+      "sources": [
+        {
+          "source_id": "arab-news",
+          "url": "https://www.arabnews.com/energy/saudi-arabia-upgrading-50-of-power-grid-as-demand-climbs-from-industry-to-ai-3006079",
+          "source_type": "INDUSTRY_MEDIA",
+          "role": "SECONDARY",
+          "authority_class": "INDUSTRY_MEDIA",
+          "note": "Fetched 2026-10-14. Page says Updated 13 October 2026."
+        }
+      ],
+      "confidence": "MEDIUM",
+      "why_previously_missed": "Published 13 October 2026, after the September discovery window.",
+      "published_to_intel": true,
+      "publish_decision": "HOLD_FOR_REVIEW",
+      "discovery_input_only": false,
+      "reject_reason": null,
+      "notes": null,
+      "grid_news": true,
+      "entity_links": {
+        "country": "Saudi Arabia",
+        "utility_buyer": "Saudi Power Procurement Company",
+        "project": null,
+        "tender": null,
+        "transformer_category": null,
+        "voltage": null,
+        "rating": null,
+        "facility_location": "Riyadh",
+        "supplier_award_winner": null
+      },
+      "evidence_grade": "SUPPORTED"
     }
   ]
 }

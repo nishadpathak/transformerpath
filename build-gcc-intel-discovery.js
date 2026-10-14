@@ -32,6 +32,7 @@ const TODAY = NOW.slice(0, 10);
 
 const registry = readJson('data/gcc-source-registry.json', { sources: [] });
 const discoveryInput = readJson('data/gcc-sep-2026-discovery-input.json', { candidates: [] });
+const octoberInput = readJson('data/gcc-oct-2026-discovery-input.json', { candidates: [] });
 const dictionary = readJson('data/gcc-discovery-dictionary.json', {});
 
 // P0: probe DEWA / Etimad / Bahrain (and other P0 registry rows) before grading.
@@ -68,9 +69,11 @@ try {
   writeJson('data/gcc-adapter-report.json', adapterReport);
 }
 
-const result = gcc.runPipeline(discoveryInput.candidates || [], registry.sources || [], {
-  checkedAt: TODAY
-});
+const result = gcc.runPipeline(
+  (discoveryInput.candidates || []).concat(octoberInput.candidates || []),
+  registry.sources || [],
+  { checkedAt: TODAY }
+);
 result.market_watch = adapters.markSourcesCheckedFromReports(result.market_watch, adapterReport.reports);
 result.freshness = gcc.gccFreshnessSummary(result.market_watch, result.candidates, TODAY);
 // Count live adapters from probe report (authoritative) not just sources_checked
@@ -119,7 +122,10 @@ result.market_watch = result.market_watch.map(function (row) {
 const candidatesOut = {
   $schema: 'https://transformerpath.com/gcc-discovery-candidates.schema.json',
   generated: NOW,
-  window: discoveryInput.window || { from: '2026-09-01', to: '2026-09-25' },
+  window: {
+    from: (discoveryInput.window && discoveryInput.window.from) || '2026-09-01',
+    to: (octoberInput.window && octoberInput.window.to) || (discoveryInput.window && discoveryInput.window.to) || TODAY
+  },
   purpose: 'Graded GCC discovery candidates. NOT auto-published Intel.',
   pipeline: result.pipeline,
   publish_rule: result.publish_rule,
