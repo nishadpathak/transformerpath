@@ -19,6 +19,7 @@
  */
 'use strict';
 const fs = require('fs');
+const tpAff = require('./lib/travelpayouts');
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
@@ -524,7 +525,15 @@ function page(r, slug) {
     '<h2>Related components</h2><div>' + compLinks + '</div>' +
     '<h2>Relevant applications</h2><div>' + appLinks + '</div>' +
     '<h2>Markets</h2><div>' + countryLink + (cityHtml ? ' ' + cityHtml : '') + (marketLink ? ' ' + marketLink : '') + '</div>' +
-    verifiedFactoriesHtml(r) + brandSitesHtml(r) + timelineHtml(r) + developmentsHtml(r) + provenanceHtml(r) +
+    (function () {
+      const fac = verifiedFactoriesHtml(r);
+      const rec = INTEL_BY_SLUG[slug] || INTEL_BY_NAME[norm(r.name)] || null;
+      const sourced = rec && rec.factories ? rec.factories.filter(function (f) { return f && f.source_url; }) : [];
+      if (!sourced.length) return fac;
+      const city = sourced.find(function (f) { return f.city; });
+      const place = city && city.city ? ('a factory visit in ' + city.city) : 'a factory visit';
+      return fac + tpAff.tripOffers({ slug: slug, place: place, prefix: '../../', disclosureHref: '../../affiliate-disclosure.html' });
+    })() + brandSitesHtml(r) + timelineHtml(r) + developmentsHtml(r) + provenanceHtml(r) +
     '<h2>Latest TransformerPath intelligence</h2><ul>' + intelHtml + '</ul>' +
     '<h2>Upcoming events</h2><ul>' + evHtml + '</ul>' +
     '<p style="font-size:.72rem;color:var(--muted)">Last reviewed: ' + lastReviewed + '.</p>' +

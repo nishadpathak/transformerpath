@@ -12,6 +12,7 @@
  */
 'use strict';
 const fs = require('fs');
+const tpAff = require('./lib/travelpayouts');
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
@@ -47,6 +48,7 @@ function page(c) {
     paras +
     '<h2>Related principle</h2><p style="color:var(--text);line-height:1.7">' + esc(c.related_principle) + '</p>' +
     (related ? '<h2>Related reading</h2><div style="margin:4px 0 8px">' + related + '</div>' : '') +
+    (c.slug === 'lessons-from-a-400kv-factory-test' ? tpAff.tripOffers({ slug: c.slug, place: 'a factory acceptance test (FAT)', prefix: '../../', disclosureHref: '../../affiliate-disclosure.html' }) : '') +
     '</main>\n' + FOOT + '\n<script src="../../analytics.js" defer></script>\n</body>\n</html>';
 }
 

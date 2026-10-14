@@ -24,10 +24,11 @@ const path = require('path');
    check-event-integrity.js. This file used to re-derive status and countdowns
    from raw dates, which is how "Dates TBC" could render beside "Live now". */
 const { resolveStatus, isTravelSafe, isDiscoverable, isUpcoming, platformToday } = require('./lib/event-status');
-const { eventHref, eventPageMap } = require('./lib/event-href');
+const { eventHref, eventPageMap, resolveEventSlug } = require('./lib/event-href');
 const { loadEvents } = require('./lib/events-reader');
 const { dateLine, allowsCalendar, badgeText, dubaiToday } = require('./lib/event-display');
 const { eventBadge, intelBadge } = require('./lib/provenance-badge');
+const tpAff = require('./lib/travelpayouts');
 
 /* ------------------------------------------------------------------ *
  * Helpers
@@ -162,14 +163,8 @@ function webinarCta(w) {
  * ------------------------------------------------------------------ */
 function renderEvents(html) {
   const EVENTS = loadEvents();
-  const AFF = extractConst(html, 'AFFILIATE');
   const TODAY = dubaiToday();
   const now = new Date(TODAY + 'T00:00:00Z');
-  const hotelURL = (ev) =>
-    AFF.travelpayoutsMarker
-      ? `https://search.hotellook.com/?marker=${AFF.travelpayoutsMarker}&destination=${encodeURIComponent(ev.c)}&checkIn=${ev.s}&checkOut=${ev.e}`
-      : (AFF.travelLink || `https://www.booking.com/searchresults.html?ss=${encodeURIComponent(ev.c)}&checkin=${ev.s}&checkout=${ev.e}`);
-  const flightURL = () => AFF.kiwiLink || null;
 
   /* Normal upcoming discovery. A record whose organiser calendar was checked and
      did not list it (REJECTED_NO_EVIDENCE) or that is still under research is not
@@ -256,9 +251,7 @@ function renderEvents(html) {
         ${ev.u ? `<a class="btn btn-amber btn-sm" href="${esc(ev.u)}" target="_blank" rel="noopener">Official site →</a>` : '<span>Official site: Not yet published by organiser</span>'}
         ${eventHref(ev, { fallbackListing: false }) ? `<a class="btn btn-outline btn-sm" href="${esc(eventHref(ev, { fallbackListing: false }))}">Event page →</a>` : ''}
         <a class="btn btn-outline btn-sm" href="${esc('map.html?layer=events&q=' + encodeURIComponent(ev.n))}">View on map</a>
-        ${trav ? `<a class="btn btn-outline btn-sm" data-aff="hotel" data-ev="${esc(ev.n)}" href="${esc(hotelURL(ev))}" target="_blank" rel="noopener sponsored">🏨 Book Hotel</a>` : ''}
-        ${trav && flightURL(ev) ? `<a class="btn btn-outline btn-sm" data-aff="flights" data-ev="${esc(ev.n)}" href="${esc(flightURL(ev))}" target="_blank" rel="noopener sponsored">✈ Find Flights</a>` : ''}
-        ${trav && AFF.kkdayLink ? `<a class="btn btn-outline btn-sm" data-aff="activities" data-ev="${esc(ev.n)}" href="${esc(AFF.kkdayLink)}" target="_blank" rel="noopener sponsored">🎟️ Things to Do</a>` : ''}
+        ${trav ? tpAff.calendarLinks({ slug: resolveEventSlug(ev.n) || ev.n, city: ev.c, checkIn: ev.s, checkOut: ev.e, disclosureHref: 'affiliate-disclosure.html' }) : ''}
         ${icsHref(ev) ? `<a class="btn btn-outline btn-sm" data-aff="calendar" data-ev="${esc(ev.n)}" href="${esc(icsHref(ev))}">📅 Add</a>` : ''}
       </div>
     </div>`;

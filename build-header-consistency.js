@@ -119,6 +119,24 @@ function looksCanonical(html) {
     && /data-tp-account/.test(html);
 }
 
+function ensureAffiliateFooter(html, nested) {
+  if (!html || !/<footer[\s>]/.test(html)) return html;
+  const disc = nested ? '/affiliate-disclosure.html' : 'affiliate-disclosure.html';
+  if (!/affiliate-disclosure\.html/.test(html)) {
+    html = html.replace(
+      /(<a href="(?:\/)?terms\.html">Terms<\/a>)/,
+      '$1<a href="' + disc + '">Affiliate disclosure</a>'
+    );
+  }
+  if (/data-tp-emerald=/.test(html) && !/tp-affiliate\.js/.test(html)) {
+    const src = nested ? '/tp-affiliate.js' : 'tp-affiliate.js';
+    if (html.includes('</body>')) {
+      html = html.replace('</body>', '<script src="' + src + '" defer></script>\n</body>');
+    }
+  }
+  return html;
+}
+
 function main() {
   const files = walk('.').sort();
   let swapped = 0;
@@ -129,19 +147,28 @@ function main() {
 
   files.forEach((file) => {
     const base = path.basename(file);
-    if (SKIP_FILES.has(base)) { skipped += 1; return; }
+    const skipHeader = SKIP_FILES.has(base);
+    let html = fs.readFileSync(file, 'utf8');
+    const original = html;
+    const nested = isNested(file);
 
-    const html = fs.readFileSync(file, 'utf8');
-    const loc = locateSiteChrome(html);
-    if (!loc) { skipped += 1; return; }
+    if (!skipHeader) {
+      const loc = locateSiteChrome(html);
+      if (!loc) { skipped += 1; return; }
+      const nextHead = nested ? ABS : REL;
+      html = html.slice(0, loc.start) + nextHead + html.slice(loc.end).replace(/^\s*\n/, '\n');
+      html = ensureTpNavCss(html);
+      html = dedupeChromeScripts(html);
+    }
 
-    const nextHead = isNested(file) ? ABS : REL;
-    let out = html.slice(0, loc.start) + nextHead + html.slice(loc.end).replace(/^\s*\n/, '\n');
-    out = ensureTpNavCss(out);
-    out = dedupeChromeScripts(out);
-
-    if (out === html) { unchanged += 1; return; }
-    fs.writeFileSync(file, out);
+    html = ensureAffiliateFooter(html, nested);
+    if (html === original) {
+      if (skipHeader) skipped += 1;
+      else unchanged += 1;
+      return;
+    }
+    fs.writeFileSync(file, html);
+    if (skipHeader) { swapped += 1; return; }
 
     const post = fs.readFileSync(file, 'utf8');
     if (looksCanonical(post)) {

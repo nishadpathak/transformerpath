@@ -5,8 +5,9 @@
  */
 'use strict';
 const fs = require('fs');
-const { dubaiToday, dateLine, nullText, badgeText } = require('./lib/event-display');
+const { dubaiToday, dateLine, nullText, badgeText, allowsCalendar } = require('./lib/event-display');
 const { eventBadge } = require('./lib/provenance-badge');
+const tpAff = require('./lib/travelpayouts');
 
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
@@ -56,6 +57,7 @@ const cards = upcoming.map((ev) => {
     ' · Visitors: ' + esc(ev.stats && ev.stats.visitors && ev.stats.visitors.value != null ? ev.stats.visitors.value : nullText()) + '</p>' +
     '<a class="btn btn-outline btn-sm" href="events/' + esc(ev.series_slug || ev.id) + '/">Series hub</a> ' +
     (ev.official_url ? '<a class="btn btn-amber btn-sm" href="' + esc(ev.official_url) + '">Official site</a>' : '') +
+    (allowsCalendar(ev) && ev.city ? tpAff.calendarLinks({ slug: ev.series_slug || ev.id, city: ev.city, checkIn: ev.start, checkOut: ev.end, disclosureHref: 'affiliate-disclosure.html' }) : '') +
     '</div>';
 }).join('\n');
 

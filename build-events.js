@@ -11,6 +11,7 @@ execFileSync(process.execPath, [path.join(__dirname, 'build-event-canonicalizati
 const { dubaiToday, fmtDay, dateLine, nullText, allowsCalendar, badgeText } = require('./lib/event-display');
 const { eventBadge } = require('./lib/provenance-badge');
 const { eventIcs, calendarIcs } = require('./lib/event-ics');
+const tpAff = require('./lib/travelpayouts');
 
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
@@ -37,6 +38,17 @@ function upcoming(ev) {
   return ev.end >= TODAY;
 }
 function isPast(ev) { return !!(ev.end && ev.end < TODAY); }
+function travelBlock(ev) {
+  if (!allowsCalendar(ev) || !ev.city) return '';
+  return tpAff.eventWidgets({
+    slug: ev.series_slug || ev.id,
+    city: ev.city,
+    checkIn: ev.start,
+    checkOut: ev.end,
+    prefix: '../../',
+    disclosureHref: '../../affiliate-disclosure.html',
+  });
+}
 
 const groups = {};
 ALL.forEach((ev) => {
@@ -156,7 +168,7 @@ Object.keys(groups).forEach((slug) => {
       '<span><b>Organiser</b> ' + esc(nxt.organiser || nullText()) + '</span>' +
       (nxt.official_url ? '<span><a href="' + esc(nxt.official_url) + '">Official site</a></span>' : '<span>' + esc(nullText()) + '</span>') +
       (allowsCalendar(nxt) ? '<span><a href="../../events/ics/' + esc(nxt.id) + '.ics">Add to calendar</a></span>' : '') +
-      '</div>' +
+      '</div>' + travelBlock(nxt) +
       '<p>' + esc(nxt.description || '') + '</p>' +
       '<h2>Deadlines</h2>' + deadlineHtml(nxt) +
       '<h2>Programme</h2>' + programmeHtml(nxt) +
@@ -199,6 +211,7 @@ Object.keys(groups).forEach((slug) => {
       '<span><b>City</b> ' + esc(ev.city || nullText()) + '</span>' +
       '<span><b>Organiser</b> ' + esc(ev.organiser || nullText()) + '</span></div>' +
       (ev.official_url ? '<p><a href="' + esc(ev.official_url) + '">Official site</a></p>' : '<p>Official site: ' + esc(nullText()) + '</p>') +
+      travelBlock(ev) +
       '<p>' + esc(ev.description || '') + '</p>' +
       (ev.relevance_reason ? '<p>' + esc(ev.relevance_reason) + '</p>' : '') +
       '<h2>Deadlines</h2>' + deadlineHtml(ev) +

@@ -65,7 +65,7 @@ const ROOT_JS = [
   'analytics.js', 'consent.js', 'course-gate.js', 'fem-leakage.js',
   'follow-button.js', 'form-notify.js', 'intel-feed-ui.js', 'material-latest.js', 'rfq-engine.js',
   'site-stats.js', 'supabase-config.js', 'supabase.js', 'sw.js',
-  'tp-directory.js', 'tp-feedback.js', 'tp-freshness.js', 'tp-nav.js', 'tp-pwa.js',
+  'tp-affiliate.js', 'tp-directory.js', 'tp-feedback.js', 'tp-freshness.js', 'tp-nav.js', 'tp-pwa.js',
   'tp-theme.js', 'tp-shortlist.js', 'tp-watchlist.js', 'map.js',
   'tp-webgl-gate.js',
   'tp-3d-core.js', 'tp-power-assembly.js', 'tp-oil-assembly.js',
