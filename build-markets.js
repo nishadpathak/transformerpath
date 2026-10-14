@@ -43,9 +43,14 @@ const COMPONENTS = {
 
 // Company entity-page slug map -> reciprocal link from market/event pages back
 // to each manufacturer's own profile (the entity-graph reverse edge).
+const { resolveCompanyAlias } = require('./lib/company-aliases');
 let CSMAP = {};
 try { JSON.parse(fs.readFileSync('data/company-slugs.json', 'utf8')).forEach(function (c) { CSMAP[c.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()] = c.slug; }); } catch (e) {}
-const csl = function (m) { return CSMAP[String(m).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()]; };
+const csl = function (m) {
+  const resolved = resolveCompanyAlias(m);
+  if (resolved.aliased) return resolved.slug;
+  return CSMAP[String(m).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()];
+};
 
 const MARKETS = [
   { slug: 'uae', name: 'UAE', gridsName: 'United Arab Emirates', manufName: 'UAE', region: 'Middle East', flag: '🇦🇪',

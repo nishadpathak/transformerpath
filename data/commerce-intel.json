@@ -1,19 +1,19 @@
 {
   "$schema": "https://transformerpath.com/commerce-intel.schema.json",
-  "generated": "2026-09-14T17:27:01.037Z",
+  "generated": "2026-10-14T10:08:28.730Z",
   "honesty_note": "Revenue and conversion figures are NOT shown because live Stripe/Supabase transaction data is not available in this static build. No revenue, no conversion rate and no pipeline value are fabricated. The figures below are real platform-scale and prospect signals derived from the canonical datasets.",
   "metrics": {
     "platform_scale": {
-      "manufacturers": 911,
+      "manufacturers": 906,
       "projects": 306,
-      "tenders": 150,
-      "open_tenders": 21,
+      "tenders": 154,
+      "open_tenders": 23,
       "awards": 56,
       "events": 295
     },
     "prospect_signals": {
-      "supplier_prospects_with_website": 900,
-      "upcoming_events": 181
+      "supplier_prospects_with_website": 894,
+      "upcoming_events": 157
     }
   },
   "supplier_prospects": [
@@ -1235,17 +1235,6 @@
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
-      "name": "Hammond Power Solutions",
-      "country": "Canada",
-      "region": "North America",
-      "city": "Guelph, ON",
-      "categories": [
-        "DRY"
-      ],
-      "website": "https://www.hammondpowersolutions.com/",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
       "name": "Hitachi Energy Canada",
       "country": "Canada",
       "region": "North America",
@@ -2090,7 +2079,7 @@
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
-      "name": "Sunten Electric",
+      "name": "Sunten Electric Co., Ltd.",
       "country": "China",
       "region": "East Asia",
       "city": "Foshan, Guangdong",
@@ -2391,201 +2380,20 @@
       ],
       "website": "http://www.transformatori.hr/",
       "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Elpro-Energo",
+      "country": "Czechia",
+      "region": "Europe",
+      "city": "Hnojník",
+      "categories": [
+        "DT"
+      ],
+      "website": "https://www.czechtrafo.cz",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
     }
   ],
   "event_prospects": [
-    {
-      "name": "ECCE Europe 2026 (EPE Conference)",
-      "city": "Valencia",
-      "country": "Spain",
-      "region": "Europe",
-      "date": "2026-09-14",
-      "url": "https://www.ecce-europe.org/2026/"
-    },
-    {
-      "name": "ENERGETAB 2026 (Bielsko-Biała) — Poland's flagship power fair",
-      "city": "Bielsko-Biała",
-      "country": "Poland",
-      "region": "Europe",
-      "date": "2026-09-15",
-      "url": "https://energetab.pl/"
-    },
-    {
-      "name": "Electricity Eurasia 2026",
-      "city": "Istanbul",
-      "country": "Turkey",
-      "region": "Eurasia",
-      "date": "2026-09-16",
-      "url": "https://electricityeurasia.com/en/"
-    },
-    {
-      "name": "ICCI 2026 + Electricity Eurasia",
-      "city": "Istanbul",
-      "country": "Turkey",
-      "region": "Europe",
-      "date": "2026-09-16",
-      "url": "https://icci.com.tr/en/icci-home/"
-    },
-    {
-      "name": "World Power Industry Expo 2026 (Guangzhou)",
-      "city": "Guangzhou",
-      "country": "China",
-      "region": "Asia",
-      "date": "2026-09-16",
-      "url": "https://www.eventseye.com/fairs/f-power-expo-27954-1.html"
-    },
-    {
-      "name": "ICHVE 2026 — IEEE Int'l Conf. on High Voltage Engineering",
-      "city": "São Paulo",
-      "country": "Brazil",
-      "region": "Americas",
-      "date": "2026-09-20",
-      "url": "https://www.ichve2026.com.br/"
-    },
-    {
-      "name": "Middle East Saudi International Power Exhibition 2026",
-      "city": "Riyadh",
-      "country": "Saudi Arabia",
-      "region": "Middle East",
-      "date": "2026-09-20",
-      "url": "https://www.meceise.net/"
-    },
-    {
-      "name": "CIGRE Canada Conference & Exhibition 2026 (Calgary)",
-      "city": "Calgary",
-      "country": "Canada",
-      "region": "Americas",
-      "date": "2026-09-21",
-      "url": "https://cigre-canada.org/"
-    },
-    {
-      "name": "IEEE PES/IAS PowerAfrica 2026",
-      "city": "Nairobi",
-      "country": "Kenya",
-      "region": "Africa",
-      "date": "2026-09-21",
-      "url": "https://ieee-powerafrica.org/"
-    },
-    {
-      "name": "wire China 2026",
-      "city": "Shanghai",
-      "country": "China",
-      "region": "Asia",
-      "date": "2026-09-21",
-      "url": "https://www.wirechina.net/"
-    },
-    {
-      "name": "Enlit Asia 2026",
-      "city": "Jakarta",
-      "country": "Indonesia",
-      "region": "Asia",
-      "date": "2026-09-22",
-      "url": "https://www.enlit-asia.com/"
-    },
-    {
-      "name": "RSEEC 2026 — 8th Regional SE European CIGRE Conference",
-      "city": "Constanța",
-      "country": "Romania",
-      "region": "Europe",
-      "date": "2026-09-22",
-      "url": "https://rseec.cigre.org.ro/"
-    },
-    {
-      "name": "Coiltech Italia 2026 (17th edition)",
-      "city": "Pordenone",
-      "country": "Italy",
-      "region": "Europe",
-      "date": "2026-09-23",
-      "url": "https://www.coiltech.it/"
-    },
-    {
-      "name": "PEEC 2026 — Pakistan Energy Exhibition & Conference",
-      "city": "Karachi",
-      "country": "Pakistan",
-      "region": "Asia",
-      "date": "2026-10-01",
-      "url": "https://peec.com.pk/"
-    },
-    {
-      "name": "IEEE ECCE 2026 (Vancouver)",
-      "city": "Vancouver",
-      "country": "Canada",
-      "region": "Americas",
-      "date": "2026-10-04",
-      "url": "https://www.ieee-ecce.org/"
-    },
-    {
-      "name": "Industry Navigator 2026 (Transformers Magazine)",
-      "city": "Vienna",
-      "country": "Austria",
-      "region": "Europe",
-      "date": "2026-10-06",
-      "url": "https://conference.transformers-magazine.com/"
-    },
-    {
-      "name": "XI Semana de la Energía 2026 (OLADE, Santo Domingo)",
-      "city": "Santo Domingo",
-      "country": "Dominican Republic",
-      "region": "Americas",
-      "date": "2026-10-06",
-      "url": "https://semanadelaenergia.olade.org/"
-    },
-    {
-      "name": "IGEM 2026 (Kuala Lumpur) — Int'l Greentech & Eco Products Exhibition",
-      "city": "Kuala Lumpur",
-      "country": "Malaysia",
-      "region": "Asia",
-      "date": "2026-10-07",
-      "url": "https://www.igem.my/"
-    },
-    {
-      "name": "Power & Energy Tanzania 2026",
-      "city": "Dar es Salaam",
-      "country": "Tanzania",
-      "region": "Africa",
-      "date": "2026-10-07",
-      "url": "https://www.expogr.com/tanzania/powerenergy/"
-    },
-    {
-      "name": "Vietnam ETE Hanoi 2026",
-      "city": "Hanoi",
-      "country": "Vietnam",
-      "region": "Asia",
-      "date": "2026-10-07",
-      "url": "https://vietnam-ete.com.vn/en/"
-    },
-    {
-      "name": "EPIC 2026 — Electric Power Industry Conference",
-      "city": "Fort Worth",
-      "country": "USA",
-      "region": "Americas",
-      "date": "2026-10-11",
-      "url": "https://www.epicpower.org/event/2cae1335-9561-4d46-bf60-5c8609e24eba/summary"
-    },
-    {
-      "name": "IEEE PowerCon 2026 (Malaysia)",
-      "city": "Kota Kinabalu",
-      "country": "Malaysia",
-      "region": "Asia",
-      "date": "2026-10-11",
-      "url": "https://attend.ieee.org/powercon-2026/"
-    },
-    {
-      "name": "Egypt Energy 2026 (formerly Electricx)",
-      "city": "Cairo",
-      "country": "Egypt",
-      "region": "Africa",
-      "date": "2026-10-12",
-      "url": "https://www.egypt-energy.com/en/home.html"
-    },
-    {
-      "name": "belektro 2026 (Berlin)",
-      "city": "Berlin",
-      "country": "Germany",
-      "region": "Europe",
-      "date": "2026-10-13",
-      "url": "https://www.belektro.de/"
-    },
     {
       "name": "Philippines Future Energy & Grid Summit 2026 (Manila)",
       "city": "Manila",

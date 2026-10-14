@@ -11,9 +11,7 @@ const path = require('path');
 
 const MANUF = JSON.parse(fs.readFileSync('data/manufacturers.json', 'utf8'));
 
-function slugify(s) {
-  return String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/&/g, 'and').replace(/['’´]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
-}
+const { resolveCompanyAlias, slugify } = require('./lib/company-aliases');
 
 // Canonical slug mappings for merged / normalized companies
 const SLUG_MAP = {
@@ -45,7 +43,9 @@ function rebuildManufacturersBoard() {
       const website = m[2] || '';
       const typesStr = m[3] || '';
       const types = typesStr.split(',').map(s => s.trim()).filter(Boolean);
-      const slug = slugify(name);
+      const resolved = resolveCompanyAlias(name);
+      const raw = slugify(name);
+      const slug = resolved.aliased ? resolved.slug : (SLUG_MAP[raw] || raw);
       byRegion[r][c].makers.push({ name, city, website, types, slug });
     });
   });

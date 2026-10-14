@@ -269,7 +269,7 @@ if (newest) {
   intel.updated = noon > nowIso ? nowIso : noon;
 }
 intel.refresh_meta = {
-  cadence: 'twice daily (curated)',
+  cadence: 'once daily at 06:00 UTC (10:00 Dubai), only when TP_BUILD_HOOK_URL is set',
   refreshed_at_build: true,
   newest_validated_content_date: newest,
   note: 'updated reflects newest validated CONTENT observation (float/publication/event/update) — not source_checked_at and not a silent redeploy clock. Excludes tender_close_date and future dates. Human approve[] overrides from gcc-discovery-publish-overrides.json.',

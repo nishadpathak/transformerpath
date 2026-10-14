@@ -1,0 +1,14 @@
+name: post-deploy-smoke
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Wait for production and smoke the release
+        run: node scripts/smoke-release.js https://transformerpath.com "$GITHUB_SHA" --wait
