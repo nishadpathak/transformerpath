@@ -1,0 +1,693 @@
+{
+  "checked": "2026-10-14",
+  "method": "Official pages fetched 2026-10-14. Directory websites were requested with curl. HTTP 403, 406 and 429 are blocked, not dead. DNS failure and HTTP 404/410 are dead. Companies with a dead website were flagged, not replaced.",
+  "counts_before": {
+    "manufacturers": {
+      "records": 906,
+      "dead_links": 157,
+      "redirected_links": 152,
+      "blocked_links": 38,
+      "unreachable_links": 50,
+      "error_links": 5,
+      "duplicate_names": 3,
+      "duplicate_rows_merged": 0,
+      "missing_city": 13,
+      "missing_website": 8,
+      "countries_wrong": 1
+    },
+    "buyers": {
+      "records": 8,
+      "dead_links": 3,
+      "redirected_links": 1,
+      "blocked_links": 2,
+      "unreachable_links": 0,
+      "duplicate_names": 0,
+      "missing_city": 0,
+      "missing_website": 0
+    },
+    "utilities": {
+      "records": 166,
+      "dead_links": 1,
+      "redirected_links": 24,
+      "blocked_links": 17,
+      "unreachable_links": 23,
+      "error_links": 1,
+      "duplicate_names": 0,
+      "missing_website": 22
+    },
+    "services": {
+      "records": 19,
+      "dead_links": 6,
+      "redirected_links": 2,
+      "blocked_links": 2,
+      "duplicate_rows": 1,
+      "missing_city": 0,
+      "missing_website": 0
+    },
+    "logistics": {
+      "records": 14,
+      "dead_links": 0,
+      "redirected_links": 1,
+      "blocked_links": 3,
+      "unreachable_links": 1,
+      "duplicate_rows": 2,
+      "missing_city": 0,
+      "missing_website": 0
+    },
+    "laboratories": {
+      "records": 14,
+      "dead_links": 1,
+      "redirected_links": 5,
+      "blocked_links": 0,
+      "unreachable_links": 3,
+      "duplicate_names": 0
+    },
+    "machinery": {
+      "records": 20,
+      "dead_links": 2,
+      "redirected_links": 5,
+      "blocked_links": 0,
+      "unreachable_links": 3,
+      "duplicate_names": 0
+    }
+  },
+  "fixes": [
+    {
+      "directory": "manufacturers",
+      "name": "Hammond Power Solutions",
+      "change": "Canonical profile headquarters set to Guelph, Ontario, Canada. US plant renamed Hammond Power Solutions (Baraboo) and 301s to hammond-power-solutions.",
+      "source": "https://americas.hammondpowersolutions.com/contact/contact-hps",
+      "checked": "2026-10-14"
+    },
+    {
+      "directory": "manufacturers",
+      "name": "Siemens Energy (Nuremberg)",
+      "change": "Website replaced. The row had pointed at the jobs site.",
+      "source": "https://www.siemens-energy.com/de/de/home/locations/nuernberg.html",
+      "checked": "2026-10-14"
+    },
+    {
+      "directory": "manufacturers",
+      "name": "Siemens Energy (Tenjo)",
+      "change": "Plant name disambiguated. 301 to siemens-energy. City and country unchanged.",
+      "source": null,
+      "checked": "2026-10-14"
+    },
+    {
+      "directory": "manufacturers",
+      "name": "Green Transfo Energy Turkey",
+      "change": "Türkiye plant given its published legal name. 301 to green-transfo. Headquarters remains Cahors, France.",
+      "source": "https://green-transfo.com/company-overview/",
+      "checked": "2026-10-14"
+    },
+    {
+      "directory": "manufacturers",
+      "name": "Jefferson Electric (Voltaris)",
+      "change": "Website updated to the destination that names Jefferson Electric. Legacy profile jefferson-electric 301s to jefferson-electric-voltaris.",
+      "source": "https://voltarispower.com/",
+      "checked": "2026-10-14"
+    },
+    {
+      "directory": "manufacturers",
+      "name": "Bridgeport Magnetics",
+      "change": "City set to Shelton, CT.",
+      "source": "https://bridgeportmagnetics.com/contact-us/",
+      "checked": "2026-10-14"
+    },
+    {
+      "directory": "manufacturers",
+      "name": "Foster Transformer Company",
+      "change": "City set to Cincinnati, OH.",
+      "source": "https://foster-transformer.com/contact/",
+      "checked": "2026-10-14"
+    },
+    {
+      "directory": "manufacturers",
+      "name": "JST Transformateurs",
+      "change": "City set to Lyon.",
+      "source": "https://jst-transformers.eu/contacts",
+      "checked": "2026-10-14"
+    },
+    {
+      "directory": "manufacturers",
+      "name": "Specialtrasfo SpA",
+      "change": "City set to Agrate Brianza, the published headquarters.",
+      "source": "https://specialtrasfo.com/contacts/",
+      "checked": "2026-10-14"
+    },
+    {
+      "directory": "manufacturers",
+      "name": "Gangheng Electric",
+      "change": "City set to Jiangshan, Zhejiang.",
+      "source": "https://ghswitchcabinet.com/contact-us/",
+      "checked": "2026-10-14"
+    },
+    {
+      "directory": "services",
+      "name": "SD Myers, LLC",
+      "change": "Removed duplicate row S.D. Myers (srv:sdmyers). Kept SD Myers, LLC. Phone set to the number on the official site.",
+      "source": "https://www.sdmyers.com/",
+      "checked": "2026-10-14"
+    },
+    {
+      "directory": "services",
+      "name": "Hitachi Energy Transformer Services",
+      "change": "Website updated from the retired offering path to the current transformer-service page.",
+      "source": "https://www.hitachienergy.com/products-and-solutions/transformers/transformer-service",
+      "checked": "2026-10-14"
+    },
+    {
+      "directory": "logistics",
+      "name": "Fagioli S.p.A.",
+      "change": "Removed the second Fagioli row that reused id log:fagioli.",
+      "source": "https://www.fagioli.com/",
+      "checked": "2026-10-14"
+    },
+    {
+      "directory": "logistics",
+      "name": "Felbermayr Transport- und Hebetechnik",
+      "change": "Removed the shorter Felbermayr duplicate. Phone set from the impressum.",
+      "source": "https://www.felbermayr.cc/impressum",
+      "checked": "2026-10-14"
+    },
+    {
+      "directory": "laboratories",
+      "name": "KEMA Labs (CESI Group) — Arnhem",
+      "change": "Website moved off /kema-labs/, which redirected to a 2022 news story. Capacity text set to the published 13000 MVA figure.",
+      "source": "https://www.cesi.it/labs/arnhem/",
+      "checked": "2026-10-14"
+    },
+    {
+      "directory": "laboratories",
+      "name": "KEMA Labs (CESI Group) — Milan",
+      "change": "Website set to the Milan lab page.",
+      "source": "https://www.cesi.it/labs/milan/",
+      "checked": "2026-10-14"
+    },
+    {
+      "directory": "laboratories",
+      "name": "IPH Institut Prüffeld (CESI Group)",
+      "change": "Website set to the Berlin lab page. Short-circuit text set to 2 × 1200 MVA generators.",
+      "source": "https://www.cesi.it/labs/berlin/",
+      "checked": "2026-10-14"
+    }
+  ],
+  "not_merged": [
+    "Same corporate domain across different countries (Hitachi Energy, Schneider Electric, Siemens Energy plants, TenneT Germany and TenneT Netherlands) kept as separate operating locations.",
+    "KEMA Arnhem, Milan and Berlin kept as separate laboratories on cesi.it.",
+    "Machinery rows that share a manufacturer website are different machines, not duplicate companies.",
+    "Green Transfo Poland (Mefta Green Transfo Energy Poland, Mikołów) is published at https://green-transfo.com/factories/ and was not added. Adding it would invent a census row."
+  ],
+  "flags": [
+    {
+      "directory": "manufacturers",
+      "name": "R.E. Uptegraff Mfg",
+      "country": "USA",
+      "field": "website",
+      "label": "cleared_not_official",
+      "checked": "2026-10-14",
+      "source": "https://www.datasheets.com/es/manufacturer/r--e--uptegraff-manufacturing-co-43666",
+      "note": "Third-party datasheet page, not an official company site. Cleared. No replacement verified."
+    },
+    {
+      "directory": "manufacturers",
+      "name": "Altran Corporation",
+      "country": "USA",
+      "field": "city",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": "https://altrancorp.com",
+      "note": "Fetch on 2026-10-14 was blocked by the site security page. City left empty."
+    },
+    {
+      "directory": "manufacturers",
+      "name": "Electronetics LLC",
+      "country": "USA",
+      "field": "city",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": "https://electronetics.com",
+      "note": "Fetch on 2026-10-14 returned a bot challenge. City left empty."
+    },
+    {
+      "directory": "manufacturers",
+      "name": "CTM Magnetics",
+      "country": "USA",
+      "field": "city",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": "https://ctmmagnetics.com",
+      "note": "Fetch on 2026-10-14 was blocked. City left empty."
+    },
+    {
+      "directory": "manufacturers",
+      "name": "GETRA Power",
+      "country": "Colombia",
+      "field": "city",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": null,
+      "note": "The stored URL was a third-party news article, not a company site. City was not on that page. Left empty."
+    },
+    {
+      "directory": "manufacturers",
+      "name": "GETRA Power",
+      "country": "Colombia",
+      "field": "website",
+      "label": "cleared_not_official",
+      "checked": "2026-10-14",
+      "source": "https://www.lenergygroup.com/getra-power-afina-su-estrategia-sobre-latinoamerica-para-posicionarse-como-lider-en-transformadores-de-potencia-y-de-distribucion/",
+      "note": "News article used as the company website. Cleared. No official replacement verified."
+    },
+    {
+      "directory": "manufacturers",
+      "name": "Custom Transformers Ltd",
+      "country": "United Kingdom",
+      "field": "city",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": "https://www.custom-transformers.co.uk/contact",
+      "note": "Contact page fetched 2026-10-14 did not include a street address or city."
+    },
+    {
+      "directory": "manufacturers",
+      "name": "Indel",
+      "country": "Poland",
+      "field": "city",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": "http://www.indel.pl/gb_o_firmie.htm",
+      "note": "About page mentions Warsaw and Brzeziny historically. No single current factory city was stated clearly enough to record."
+    },
+    {
+      "directory": "manufacturers",
+      "name": "Trafocz",
+      "country": "Czechia",
+      "field": "city",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": "https://www.trafocz.cz/en/contacts",
+      "note": "Contacts page fetched 2026-10-14 did not expose a city in the readable text."
+    },
+    {
+      "directory": "manufacturers",
+      "name": "Alfa Trafo",
+      "country": "Türkiye",
+      "field": "website",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": null,
+      "note": "No official website verified. Left empty."
+    },
+    {
+      "directory": "manufacturers",
+      "name": "National Transformer Company (Saudi Voltamp)",
+      "country": "Saudi Arabia",
+      "field": "website",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": "https://www.omanobserver.om/article/1185347/business/voltamp-energy-secures-control-of-saudi-joint-venture",
+      "note": "Prior research found no separate official site. Left empty."
+    },
+    {
+      "directory": "manufacturers",
+      "name": "Jordan Transformer Manufacturing Co. (JTM / MECO)",
+      "country": "Jordan",
+      "field": "website",
+      "label": "cleared_wrong_entity",
+      "checked": "2026-10-14",
+      "source": "https://jordantransformer.com/",
+      "note": "That site is Jordan Transformer, LLC, 1000 Syndicate St, Jordan, MN 55352, USA. It is not the Sahab, Amman manufacturer. URL cleared. No official replacement found."
+    },
+    {
+      "directory": "manufacturers",
+      "name": "Niroo Transfo",
+      "country": "Iran",
+      "field": "website",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": null,
+      "note": "No official website verified on this pass. Left empty."
+    },
+    {
+      "directory": "manufacturers",
+      "name": "Star Trans (Star Transformer Technology)",
+      "country": "Egypt",
+      "field": "city",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": "https://startranseg.com/en-eg/pages/about-us",
+      "note": "About page was rate-limited on 2026-10-14. City left empty."
+    },
+    {
+      "directory": "manufacturers",
+      "name": "Maroc Transfo",
+      "country": "Morocco",
+      "field": "website",
+      "label": "cleared_not_official",
+      "checked": "2026-10-14",
+      "source": "https://www.kerix.net/fr/annuaire-entreprise/maroc-transfo",
+      "note": "Business-directory listing, not an official site. Cleared. No replacement verified."
+    },
+    {
+      "directory": "manufacturers",
+      "name": "Star Delta Transformers Ltd",
+      "country": "India",
+      "field": "website",
+      "label": "cleared_hijacked",
+      "checked": "2026-10-14",
+      "source": "https://www.stardelta.in/",
+      "note": "stardelta.in returned 301 to https://diaryofanimperfectmum.com/ on 2026-10-14. Unrelated destination. URL cleared. No replacement verified."
+    },
+    {
+      "directory": "manufacturers",
+      "name": "Tamilnadu Electricals",
+      "country": "India",
+      "field": "website",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": null,
+      "note": "No official website verified. Left empty."
+    },
+    {
+      "directory": "manufacturers",
+      "name": "Viji Power Transformers",
+      "country": "India",
+      "field": "website",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": "https://www.exportersindia.com/",
+      "note": "No official website. Research verdict: not shown to be a transformer manufacturer."
+    },
+    {
+      "directory": "manufacturers",
+      "name": "Siemens Pakistan",
+      "country": "Pakistan",
+      "field": "website",
+      "label": "cleared_wrong_entity",
+      "checked": "2026-10-14",
+      "source": "https://www.siemens.com/pk/en.html",
+      "note": "That URL 301s to the Siemens investor-relations Pakistan page, not a transformer manufacturer site. Cleared. No replacement verified."
+    },
+    {
+      "directory": "manufacturers",
+      "name": "Sylvan Technologies Ltd (STL)",
+      "country": "Bangladesh",
+      "field": "website",
+      "label": "cleared_not_official",
+      "checked": "2026-10-14",
+      "source": "https://www.newagebd.net/article/129454/stl-inaugurates-power-transformer-plant",
+      "note": "Newspaper article used as the website. Cleared. No official replacement verified."
+    },
+    {
+      "directory": "manufacturers",
+      "name": "Hainan Jinpan (Jinpan Group; Guilin, Yangzhou)",
+      "country": "China",
+      "field": "website",
+      "label": "cleared_not_official",
+      "checked": "2026-10-14",
+      "source": "https://markets.ft.markitdigital.com/data/equities/tearsheet/profile?s=688676:SHH",
+      "note": "Equity tearsheet used as the website. Cleared. No official replacement verified."
+    },
+    {
+      "directory": "manufacturers",
+      "name": "Jeil Electric",
+      "country": "South Korea",
+      "field": "website",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": null,
+      "note": "No official website verified. Left empty."
+    },
+    {
+      "directory": "manufacturers",
+      "name": "Samil Transformer",
+      "country": "South Korea",
+      "field": "website",
+      "label": "cleared_not_official",
+      "checked": "2026-10-14",
+      "source": "http://www.koreaittimes.com/news/articleView.html?idxno=26112",
+      "note": "News article used as the website. Cleared. No official replacement verified."
+    },
+    {
+      "directory": "manufacturers",
+      "name": "Morawa Electric Transbuana",
+      "country": "Indonesia",
+      "field": "website",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": null,
+      "note": "No official website verified. Left empty."
+    },
+    {
+      "directory": "manufacturers",
+      "name": "Myanmar Transformer & Switchgear (MTS)",
+      "country": "Myanmar",
+      "field": "website",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": null,
+      "note": "No official website verified. Left empty."
+    },
+    {
+      "directory": "utilities",
+      "name": "PEEGT",
+      "country": "Syria",
+      "field": "website",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": null,
+      "note": "No official source verified on 2026-10-14. Left empty."
+    },
+    {
+      "directory": "utilities",
+      "name": "PEC (Public Electricity Corp)",
+      "country": "Yemen",
+      "field": "website",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": null,
+      "note": "No official source verified on 2026-10-14. Left empty."
+    },
+    {
+      "directory": "utilities",
+      "name": "NEGU (National Electric Grid)",
+      "country": "Uzbekistan",
+      "field": "website",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": null,
+      "note": "No official source verified on 2026-10-14. Left empty."
+    },
+    {
+      "directory": "utilities",
+      "name": "NESK",
+      "country": "Kyrgyzstan",
+      "field": "website",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": null,
+      "note": "No official source verified on 2026-10-14. Left empty."
+    },
+    {
+      "directory": "utilities",
+      "name": "Türkmenenergo",
+      "country": "Turkmenistan",
+      "field": "website",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": null,
+      "note": "No official source verified on 2026-10-14. Left empty."
+    },
+    {
+      "directory": "utilities",
+      "name": "HVEN (High Voltage Electric Networks)",
+      "country": "Armenia",
+      "field": "website",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": null,
+      "note": "No official source verified on 2026-10-14. Left empty."
+    },
+    {
+      "directory": "utilities",
+      "name": "NPTG (National Power Transmission Grid)",
+      "country": "Mongolia",
+      "field": "website",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": null,
+      "note": "No official source verified on 2026-10-14. Left empty."
+    },
+    {
+      "directory": "utilities",
+      "name": "SETCO / STPG",
+      "country": "Sudan",
+      "field": "website",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": null,
+      "note": "No official source verified on 2026-10-14. Left empty."
+    },
+    {
+      "directory": "utilities",
+      "name": "SONATREL",
+      "country": "Cameroon",
+      "field": "website",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": null,
+      "note": "No official source verified on 2026-10-14. Left empty."
+    },
+    {
+      "directory": "utilities",
+      "name": "LEC (Lesotho Electricity Company)",
+      "country": "Lesotho",
+      "field": "website",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": null,
+      "note": "No official source verified on 2026-10-14. Left empty."
+    },
+    {
+      "directory": "utilities",
+      "name": "EDM-SA",
+      "country": "Mali",
+      "field": "website",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": null,
+      "note": "No official source verified on 2026-10-14. Left empty."
+    },
+    {
+      "directory": "utilities",
+      "name": "CEB + SBEE",
+      "country": "Benin",
+      "field": "website",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": null,
+      "note": "No official source verified on 2026-10-14. Left empty."
+    },
+    {
+      "directory": "utilities",
+      "name": "CEB + CEET",
+      "country": "Togo",
+      "field": "website",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": null,
+      "note": "No official source verified on 2026-10-14. Left empty."
+    },
+    {
+      "directory": "utilities",
+      "name": "EDG (Électricité de Guinée)",
+      "country": "Guinea",
+      "field": "website",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": null,
+      "note": "No official source verified on 2026-10-14. Left empty."
+    },
+    {
+      "directory": "utilities",
+      "name": "SOMELEC",
+      "country": "Mauritania",
+      "field": "website",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": null,
+      "note": "No official source verified on 2026-10-14. Left empty."
+    },
+    {
+      "directory": "utilities",
+      "name": "EDD (Électricité de Djibouti)",
+      "country": "Djibouti",
+      "field": "website",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": null,
+      "note": "No official source verified on 2026-10-14. Left empty."
+    },
+    {
+      "directory": "utilities",
+      "name": "MOEP / ESE",
+      "country": "Myanmar",
+      "field": "website",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": null,
+      "note": "No official source verified on 2026-10-14. Left empty."
+    },
+    {
+      "directory": "utilities",
+      "name": "DES + Berakas Power",
+      "country": "Brunei",
+      "field": "website",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": null,
+      "note": "No official source verified on 2026-10-14. Left empty."
+    },
+    {
+      "directory": "utilities",
+      "name": "EDTL",
+      "country": "Timor-Leste",
+      "field": "website",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": null,
+      "note": "No official source verified on 2026-10-14. Left empty."
+    },
+    {
+      "directory": "utilities",
+      "name": "Corpoelec",
+      "country": "Venezuela",
+      "field": "website",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": null,
+      "note": "No official source verified on 2026-10-14. Left empty."
+    },
+    {
+      "directory": "utilities",
+      "name": "UNE (Unión Eléctrica)",
+      "country": "Cuba",
+      "field": "website",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": null,
+      "note": "No official source verified on 2026-10-14. Left empty."
+    },
+    {
+      "directory": "utilities",
+      "name": "EBS",
+      "country": "Suriname",
+      "field": "website",
+      "label": "unknown",
+      "checked": "2026-10-14",
+      "source": null,
+      "note": "No official source verified on 2026-10-14. Left empty."
+    },
+    {
+      "directory": "utilities",
+      "name": "EOR / EPR",
+      "country": "Central America (SIEPAC)",
+      "field": "country",
+      "label": "regional_not_a_country",
+      "checked": "2026-10-14",
+      "source": "https://www.enteoperador.org/",
+      "note": "SIEPAC is the regional 230 kV interconnection of Guatemala, El Salvador, Honduras, Nicaragua, Costa Rica and Panama. It is not an ISO country. The operator row is kept; member countries are not split without a per-country official source."
+    },
+    {
+      "directory": "manufacturers",
+      "name": "Viji Power Transformers",
+      "country": "India",
+      "field": "relevance",
+      "label": "not_transformer_manufacturer",
+      "checked": "2026-10-14",
+      "source": "https://www.exportersindia.com/",
+      "note": "Existing research verdict: directory text describes a retailer of steel winding mandrels, with no verified transformer manufacturing. Kept and flagged. Not deleted, because that verdict was not an official company page."
+    }
+  ]
+}
