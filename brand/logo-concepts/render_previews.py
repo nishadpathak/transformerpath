@@ -58,8 +58,6 @@ def mask_path():
     return m
 
 MARKS = {
-    1: ("Three-limb core", "A core-type transformer seen end-on: two windows, a wider center limb.", mask_core),
-    2: ("Core and windings", "A section through the core, with three turns on each side.", mask_windings),
     3: ("Grid path", "Four terminals on an open route — a path across a grid, not a closed box.", mask_path),
 }
 
@@ -243,13 +241,11 @@ def write_lockup_svg(path, mark_svg_body, mark_fill, word_fill, path_fill, label
 def main():
     os.makedirs(ART, exist_ok=True)
     bodies = {}
-    for name in ("option-1-core.svg", "option-2-windings.svg", "option-3-path.svg"):
+    for name in ("option-3-path.svg",):
         raw = open(os.path.join(ROOT, name)).read()
         inner = raw.split(">", 1)[1].rsplit("</svg>", 1)[0].strip()
         bodies[name] = inner
     pairs = [
-        (1, "option-1-core.svg", "option-1-lockup-light.svg", "option-1-lockup-dark.svg"),
-        (2, "option-2-windings.svg", "option-2-lockup-light.svg", "option-2-lockup-dark.svg"),
         (3, "option-3-path.svg", "option-3-lockup-light.svg", "option-3-lockup-dark.svg"),
     ]
     for n, mark_name, light_name, dark_name in pairs:
