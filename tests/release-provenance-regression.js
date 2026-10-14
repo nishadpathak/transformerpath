@@ -21,6 +21,10 @@ assert(prov.latest_intel_date === prov.data_fingerprint.latest_source_date, 'lat
 assert(prov.manufacturer_count === prov.data_fingerprint.manufacturers, 'manufacturer count is the census clock');
 assert(Object.prototype.hasOwnProperty.call(prov, 'git_dirty'), 'provenance records git_dirty');
 assert(prov.netlify && Object.prototype.hasOwnProperty.call(prov.netlify, 'COMMIT_REF'), 'provenance records Netlify COMMIT_REF');
+assert(prov.netlify && Object.prototype.hasOwnProperty.call(prov.netlify, 'COMMIT_ID'), 'provenance records Netlify COMMIT_ID');
+assert(prov.commit_id === prov.build_commit, 'commit_id is the commit this build produced');
+assert(prov.commit_source === 'COMMIT_ID' || prov.commit_source === 'COMMIT_REF' || prov.commit_source === 'git_head', 'commit source is ' + prov.commit_source);
+assert(typeof prov.main_head_at_build === 'string', 'main_head_at_build is recorded');
 
 const fixture = path.join('dist', '_prov_fixture');
 fs.rmSync('dist', { recursive: true, force: true });
@@ -49,6 +53,8 @@ assert(/DIST PROVENANCE OK — 6\/6 pages stamped/.test(check), 'fixture pages s
 
 const buildJson = JSON.parse(fs.readFileSync('dist/build.json', 'utf8'));
 assert(buildJson.commit === prov.build_commit, 'build.json commit matches provenance');
+assert(buildJson.commit_id === prov.build_commit, 'build.json commit_id is the built commit');
+assert(buildJson.main_head_at_build === prov.main_head_at_build, 'build.json records main at build time');
 assert(buildJson.build_time === prov.build_at, 'build.json build_time matches provenance');
 assert(buildJson.data_version === prov.data_version, 'build.json data_version matches provenance');
 assert(buildJson.latest_intel_date === prov.latest_intel_date, 'build.json latest_intel_date matches provenance');

@@ -144,6 +144,32 @@ const ERROR_TEXT = [
   { re: /This page could not be found/i, label: 'could not be found' }
 ];
 
+const MAIN_LAG_MS = 15 * 60 * 1000;
+
+/* liveSha is behind main when main has commits the deploy does not.
+ * divergenceAt is the committer time of the oldest of those commits.
+ * A gap of 15 minutes or less is a build still in flight. Longer is a stuck deploy. */
+function mainLagVerdict(liveSha, mainSha, divergenceAt, nowMs) {
+  if (!mainSha) return { ok: false, detail: 'GitHub main HEAD unknown' };
+  if (String(liveSha) === String(mainSha)) return { ok: true, detail: 'live commit is main HEAD' };
+  const at = new Date(divergenceAt).getTime();
+  if (!Number.isFinite(at)) return { ok: false, detail: 'main divergence time missing' };
+  const ageMs = (nowMs == null ? Date.now() : nowMs) - at;
+  const min = Math.max(0, Math.round(ageMs / 60000));
+  const detail = 'live ' + String(liveSha).slice(0, 12) + ' behind main ' + String(mainSha).slice(0, 12) + ' for ' + min + ' min';
+  if (ageMs > MAIN_LAG_MS) return { ok: false, detail: detail };
+  return { ok: true, detail: detail + ' (within 15)' };
+}
+
+function productionHost(url) {
+  try {
+    const host = new URL(url).hostname;
+    return host === 'transformerpath.com' || host === 'www.transformerpath.com';
+  } catch (e) {
+    return false;
+  }
+}
+
 const results = [];
 function record(name, ok, detail) {
   results.push({ name: name, ok: ok, detail: detail || '' });
@@ -190,8 +216,8 @@ async function main() {
   record('build.json commit', !!(build && build.commit === expected), build && build.commit);
   record(
     'build.json matches provenance',
-    !!(build && build.commit === prov.build_commit && build.build_time === prov.build_at && build.data_version === prov.data_version && build.latest_intel_date && typeof build.manufacturer_count === 'number'),
-    build ? (build.commit + ' intel=' + build.latest_intel_date + ' makers=' + build.manufacturer_count) : 'missing'
+    !!(build && build.commit === prov.build_commit && build.commit_id === build.commit && build.build_time === prov.build_at && build.data_version === prov.data_version && build.latest_intel_date && typeof build.manufacturer_count === 'number' && typeof build.main_head_at_build === 'string'),
+    build ? (build.commit_id + ' source=' + (build.commit_source || '') + ' main_at_build=' + (build.main_head_at_build || '') + ' intel=' + build.latest_intel_date + ' makers=' + build.manufacturer_count) : 'missing'
   );
   if (!build || build.commit !== expected) {
     console.error('smoke stopped: /build.json is not this release');
@@ -242,6 +268,35 @@ async function main() {
   const unique = new Set(stamps);
   record('pages share one stamp', unique.size === 1, unique.size + ' distinct triples');
 
+  if (!productionHost(base)) {
+    record('main lag', true, 'skipped off production');
+  } else {
+    try {
+      const mainRes = await fetchFollow('https://api.github.com/repos/nishadpathak/transformerpath/commits/main');
+      const mainDoc = JSON.parse(mainRes.body);
+      const mainSha = mainDoc.sha || '';
+      let divergenceAt = mainDoc.commit && mainDoc.commit.committer && mainDoc.commit.committer.date;
+      if (mainSha && mainSha !== build.commit) {
+        const cmpRes = await fetchFollow('https://api.github.com/repos/nishadpathak/transformerpath/compare/' + build.commit + '...' + mainSha);
+        const cmp = JSON.parse(cmpRes.body);
+        if (cmp.status === 'diverged' || cmp.status === 'behind') {
+          record('main lag', false, 'live commit is ' + cmp.status + ' from main ' + mainSha.slice(0, 12));
+        } else {
+          if (cmp.commits && cmp.commits[0] && cmp.commits[0].commit && cmp.commits[0].commit.committer) {
+            divergenceAt = cmp.commits[0].commit.committer.date;
+          }
+          const verdict = mainLagVerdict(build.commit, mainSha, divergenceAt, Date.now());
+          record('main lag', verdict.ok, verdict.detail);
+        }
+      } else {
+        const verdict = mainLagVerdict(build.commit, mainSha, divergenceAt, Date.now());
+        record('main lag', verdict.ok, verdict.detail);
+      }
+    } catch (e) {
+      record('main lag', false, String(e && e.message || e));
+    }
+  }
+
   for (const forbiddenPath of ['/data/commerce-intel.json', '/data/backup-pre-sprint/commerce-intel.json', '/data/backup-pre-sprint/site-stats.json']) {
     const res = await fetchFollow(bust(base + forbiddenPath));
     record(forbiddenPath + ' 404', res.status === 404, 'status=' + res.status + ' chain=' + res.chain.map(function (c) { return c.status; }).join('→'));
@@ -259,4 +314,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { PAGES, ERROR_TEXT, FORBIDDEN };
+module.exports = { PAGES, ERROR_TEXT, FORBIDDEN, mainLagVerdict, MAIN_LAG_MS };

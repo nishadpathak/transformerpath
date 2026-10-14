@@ -19,6 +19,14 @@ REQUIRED.forEach(function (p) {
   assert(smoke.PAGES.indexOf(p) >= 0, 'smoke covers ' + p);
 });
 assert(smoke.ERROR_TEXT.some(function (e) { return e.label === 'Internal Server Error'; }), 'smoke flags Internal Server Error');
+const now = Date.parse('2026-10-14T12:33:00Z');
+const live = 'fcd838a9e48eb8a1cbd81458e9dc7ade79d0eb5b';
+const main = '6d3afe9643dcb128da100cd74f89335fdfc48c54';
+assert(smoke.mainLagVerdict(live, live, '2026-10-14T12:00:00Z', now).ok, 'matching main HEAD passes');
+assert(smoke.mainLagVerdict(live, main, '2026-10-14T12:29:44Z', now).ok, 'a few minutes behind main is still a deploy in flight');
+assert(!smoke.mainLagVerdict(live, main, '2026-10-14T12:00:00Z', now).ok, 'more than 15 minutes behind main fails');
+assert(!smoke.mainLagVerdict(live, main, '2026-10-14T12:17:59Z', now).ok, '15 minutes plus a second fails');
+assert(smoke.mainLagVerdict(live, main, '2026-10-14T12:18:00Z', now).ok, 'exactly 15 minutes is still inside the window');
 
 const plugin = fs.readFileSync('plugins/netlify-plugin-post-deploy-smoke/index.js', 'utf8');
 const manifest = fs.readFileSync('plugins/netlify-plugin-post-deploy-smoke/manifest.yml', 'utf8');
@@ -40,6 +48,9 @@ const prov = {
 };
 const build = {
   commit: SHA,
+  commit_id: SHA,
+  commit_source: 'COMMIT_REF',
+  main_head_at_build: SHA,
   build_time: BUILD,
   data_version: VERSION,
   latest_intel_date: '2026-10-13',
