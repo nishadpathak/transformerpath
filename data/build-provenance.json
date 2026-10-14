@@ -1,19 +1,19 @@
 {
   "$schema": "https://transformerpath.com/build-provenance.schema.json",
-  "build_commit": "28e901500810983af9e07b477551eb86a580a289",
-  "build_at": "2026-10-02T20:30:37.186Z",
-  "data_version": "f6bd8e2d408e",
+  "build_commit": "533fc238ec3e31a5e0ad068bef62cf8be2de3fdf",
+  "build_at": "2026-10-14T10:25:36.910Z",
+  "data_version": "b78740d3ed65",
   "data_fingerprint": {
     "manufacturers": 906,
-    "site_stats_updated": "2026-09-26",
-    "latest_source_date": "2026-09-25",
-    "latest_source_checked_at": "2026-09-29",
+    "site_stats_updated": "2026-10-14",
+    "latest_source_date": "2026-10-13",
+    "latest_source_checked_at": "2026-10-14",
     "public_intel_status": "INTEL COVERAGE DELAYED",
-    "materials_updated": "2026-09-30",
+    "materials_updated": "2026-10-14",
     "copper_obs": "2026-08-20",
     "aluminium_obs": "2026-08-20"
   },
-  "honest_note": "Every key public surface in this deploy must carry the same build_commit + build_at + data_version. Mixed generations on production are a release defect.",
+  "honest_note": "Every HTML page in this deploy must carry the same build_commit + build_at + data_version. Mixed generations on production are a release defect.",
   "key_surfaces": [
     "index.html",
     "intel.html",
@@ -28,7 +28,14 @@
     "materials.html",
     "faq.html"
   ],
-  "stamped_at": "2026-10-02T20:30:37.186Z",
-  "surfaces_stamped": [],
-  "stamp_pass_at": "2026-10-02T20:35:52.530Z"
+  "netlify": {
+    "CONTEXT": "",
+    "DEPLOY_ID": "",
+    "BUILD_ID": "",
+    "COMMIT_REF": ""
+  },
+  "git_dirty": true,
+  "git_head": "533fc238ec3e31a5e0ad068bef62cf8be2de3fdf",
+  "git_state_captured_at": "2026-10-14T10:24:25.519Z",
+  "stamped_at": "2026-10-14T10:25:36.910Z"
 }

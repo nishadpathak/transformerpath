@@ -129,6 +129,7 @@ console.log('generated', indexLinks.length, 'component pages');
 
 /* ── Per-country manufacturer pages (/manufacturers/<country>) ─────────────── */
 function slugify(n){ return String(n).normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim().replace(/&/g,'and').replace(/['’´]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,''); }
+const { resolveCompanyAlias } = require('./lib/company-aliases');
 const MGF = JSON.parse(fs.readFileSync('data/manufacturers.json', 'utf8'));
 var CSMAP={}; try{ JSON.parse(fs.readFileSync('data/company-slugs.json','utf8')).forEach(function(c){ CSMAP[c.name.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()] = c.slug; }); }catch(e){}
 
@@ -142,7 +143,8 @@ for (const c of MGF) {
   const real = c.makers.filter((m) => !/^Served by/i.test(m[0]).valueOf() && !/^Served by/i.test(m[0]));
   const rows = c.makers.map((m) => {
     if (/^Served by/i.test(m[0])) return '<div class="mk-row"><span class="note">' + esc(m[0]) + '</span></div>';
-    const cslug = CSMAP[String(m[0]).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()];
+    const alias = resolveCompanyAlias(m[0]);
+    const cslug = alias.aliased ? alias.slug : CSMAP[String(m[0]).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()];
     const nameHtml = cslug
       ? '<a href="/manufacturers/' + cslug + '/" style="color:var(--accent);font-weight:700">' + esc(m[0]) + '</a>'
       : '<b>' + esc(m[0]) + '</b>';
@@ -188,7 +190,8 @@ TYPE_HUBS.forEach(function (th) {
 
   function renderHub(title, lead, makersList, canonicalPath, breadcrumbs, isNoindex, extraHtml) {
     const rows = makersList.map(function (m) {
-      const cslug = CSMAP[m.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()];
+      const alias = resolveCompanyAlias(m.name);
+      const cslug = alias.aliased ? alias.slug : CSMAP[m.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()];
       const nameLink = cslug ? '<a href="/manufacturers/' + cslug + '/" style="color:var(--accent);font-weight:700">' + esc(m.name) + '</a>' : '<b style="color:var(--text)">' + esc(m.name) + '</b>';
       const vb = m.flagV === 'P' ? ' <span class="v-badge pro">★ Supplier Pro</span>' : (m.flagV === 'V' ? ' <span class="v-badge">✓ Verified</span>' : '');
       const siteLink = m.url ? '<a href="' + esc(m.url) + '" target="_blank" rel="noopener nofollow" style="color:var(--muted);font-size:.78rem" data-track="official_website_click" data-track-manufacturer="' + esc(m.name) + '">Official website ↗</a>' : '';

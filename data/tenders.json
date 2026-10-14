@@ -1,19 +1,20 @@
 {
   "schema": "https://transformerpath.com/tenders.schema.json",
   "$comment": "First-class tenders. Derived from source-backed project/intel data; never fabricated. Public metadata + official links only.",
-  "updated": "2026-09-25",
+  "updated": "2026-10-14",
   "stats": {
-    "generated_at": "2026-09-25T09:22:26.985Z",
-    "total": 151,
+    "generated_at": "2026-10-14T10:25:31.350Z",
+    "total": 155,
     "by_status": {
       "OPEN": 22,
-      "EXPECTED": 68,
+      "CLOSING_SOON": 1,
+      "EXPECTED": 69,
       "EVALUATION": 3,
       "AWARDED": 56,
-      "CLOSED": 2
+      "CLOSED": 4
     },
     "by_region": {
-      "Middle East": 27,
+      "Middle East": 31,
       "Europe": 33,
       "Africa": 10,
       "Latin America": 13,
@@ -23,9 +24,9 @@
       "Other": 6
     },
     "countries": 45,
-    "confirmed_scope": 25,
+    "confirmed_scope": 27,
     "by_pipeline_of_projects": 24,
-    "source_verified": 149
+    "source_verified": 153
   },
   "tenders": [
     {
@@ -35,10 +36,6 @@
       "utility": "",
       "epc": "",
       "country": "",
-      "project_country": null,
-      "buyer_country": null,
-      "supplier_country": null,
-      "source_country": null,
       "region": "Middle East",
       "project_slug": "",
       "transformer_scope": "UNKNOWN",
@@ -60,11 +57,15 @@
       "stage": "tendering",
       "cls": "",
       "tender_id": "T-dewa-floats-epc-tender-for-twelv",
+      "project_country": null,
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
       "status": "OPEN",
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Amprion launches tender for decentralised grid booster projects",
@@ -73,10 +74,6 @@
       "utility": "",
       "epc": "",
       "country": "",
-      "project_country": null,
-      "buyer_country": null,
-      "supplier_country": null,
-      "source_country": null,
       "region": "Europe",
       "project_slug": "",
       "transformer_scope": "UNKNOWN",
@@ -98,11 +95,15 @@
       "stage": "tendering",
       "cls": "",
       "tender_id": "T-amprion-launches-tender-for-dece",
+      "project_country": null,
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
       "status": "OPEN",
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Sonelgaz supply-and-install tender for 30/10 kV power transformers",
@@ -140,7 +141,7 @@
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "AMBA I – Ampliación del Sistema de Transporte Eléctrico",
@@ -180,7 +181,7 @@
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Interconexión Eléctrica 500 kV Puerto Madryn – Choele Choel – Bahía Blanca",
@@ -220,7 +221,7 @@
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Hunter Transmission Project",
@@ -259,7 +260,7 @@
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Matarbari 400/230/132 kV substation & LILO of Matarbari–Banskhali 400 kV line",
@@ -297,7 +298,7 @@
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "El Dabaa nuclear power plant grid connection",
@@ -336,7 +337,7 @@
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "2028",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "RECPDCL tender for 765 kV intrastate transmission project in Maharashtra",
@@ -374,7 +375,7 @@
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Transmission system for Offshore Wind Zone Phase-I (500 MW) off Gujarat coast",
@@ -413,7 +414,7 @@
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "India grants 2-year public-procurement exemption to four Chinese-owned transformer/equipment subsidiaries",
@@ -422,10 +423,6 @@
       "utility": "",
       "epc": "",
       "country": "India",
-      "project_country": "India",
-      "buyer_country": null,
-      "supplier_country": null,
-      "source_country": null,
       "region": "Asia",
       "project_slug": "",
       "transformer_scope": "UNKNOWN",
@@ -447,11 +444,15 @@
       "stage": "tendering",
       "cls": "",
       "tender_id": "T-india-grants-2-year-public-procu",
+      "project_country": "India",
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
       "status": "OPEN",
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "India to open power tenders to China-linked OEMs with local factories",
@@ -460,10 +461,6 @@
       "utility": "",
       "epc": "",
       "country": "India",
-      "project_country": "India",
-      "buyer_country": null,
-      "supplier_country": null,
-      "source_country": null,
       "region": "Asia",
       "project_slug": "",
       "transformer_scope": "UNKNOWN",
@@ -485,11 +482,15 @@
       "stage": "tendering",
       "cls": "",
       "tender_id": "T-india-to-open-power-tenders-to-c",
+      "project_country": "India",
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
       "status": "OPEN",
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "CFE Plan de Fortalecimiento y Expansión de la Red Nacional de Transmisión 2025-2030",
@@ -529,7 +530,7 @@
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "2026-2027",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Central Fotovoltaica Puerto Peñasco Secuencia III",
@@ -569,7 +570,7 @@
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "OETC Sadaf 400 kV grid station project",
@@ -607,7 +608,7 @@
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Oman (Nama) floats international tender for 800–1,000 MW green-hydrogen power plant",
@@ -616,10 +617,6 @@
       "utility": "",
       "epc": "",
       "country": "Oman",
-      "project_country": "Oman",
-      "buyer_country": null,
-      "supplier_country": null,
-      "source_country": null,
       "region": "Middle East",
       "project_slug": "",
       "transformer_scope": "UNKNOWN",
@@ -641,11 +638,15 @@
       "stage": "tendering",
       "cls": "",
       "tender_id": "T-oman-nama-floats-international-t",
+      "project_country": "Oman",
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
       "status": "OPEN",
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Ras Laffan substation",
@@ -683,7 +684,7 @@
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Independent Transmission Projects (ITP) procurement programme – first phase",
@@ -721,7 +722,7 @@
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Uganda–Tanzania 400 kV interconnector project",
@@ -759,7 +760,7 @@
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "EGAT 500 kV border transmission line supply & construction",
@@ -797,7 +798,7 @@
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "EGAT 230 kV Srinagarind 2 substation supply & construction",
@@ -835,7 +836,7 @@
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "EWEC 400 MW BESS power project",
@@ -873,7 +874,59 @@
       "statusLabel": "Open",
       "statusGroup": "Open",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
+    },
+    {
+      "title": "DEWA — Installation, testing and commissioning of distribution substations and kiosks (incl. disconnection/recovery/replacement of equipment)",
+      "full_title": "DEWA — Installation, testing and commissioning of distribution substations and kiosks (incl. disconnection/recovery/replacement of equipment)",
+      "buyer": "Dubai Electricity & Water Authority (DEWA)",
+      "utility": "Dubai Electricity & Water Authority (DEWA)",
+      "epc": "",
+      "country": "United Arab Emirates",
+      "region": "Middle East",
+      "project_slug": "",
+      "transformer_scope": "CONFIRMED",
+      "voltage": "",
+      "quantity": "",
+      "primary_voltage": "",
+      "secondary_voltage": "",
+      "rating": "",
+      "standard": "",
+      "delivery_requirement": "",
+      "qualification_requirement": "",
+      "official_procurement_url": "https://www.dewa.gov.ae/en/supplier/services/list-of-tender-documents",
+      "source": "dewa open tenders · 24 Sep 2026 [en]",
+      "source_urls": [
+        "https://www.dewa.gov.ae/en/supplier/services/list-of-tender-documents"
+      ],
+      "source_verified": true,
+      "expected_raw": "2026-10-27",
+      "deadline_raw": "2026-10-27",
+      "stage": "tendering",
+      "cls": "PIPELINE",
+      "procurement_id": "2122600155",
+      "status_events": [
+        {
+          "type": "floated",
+          "date": "2026-09-24",
+          "source_url": "https://www.dewa.gov.ae/en/supplier/services/list-of-tender-documents"
+        },
+        {
+          "type": "submission_deadline",
+          "date": "2026-10-27",
+          "source_url": "https://www.dewa.gov.ae/en/supplier/services/list-of-tender-documents"
+        }
+      ],
+      "tender_id": "T-dewa-installation-testing-and-co",
+      "project_country": "United Arab Emirates",
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
+      "status": "CLOSING_SOON",
+      "statusLabel": "Closing soon",
+      "statusGroup": "Open",
+      "deadline": "2026-10-27",
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Iraq Ministry of Electricity to procure 4,026 locally-made transformers",
@@ -882,10 +935,6 @@
       "utility": "",
       "epc": "",
       "country": "",
-      "project_country": null,
-      "buyer_country": null,
-      "supplier_country": null,
-      "source_country": null,
       "region": "Other",
       "project_slug": "",
       "transformer_scope": "UNKNOWN",
@@ -907,11 +956,15 @@
       "stage": "expected",
       "cls": "",
       "tender_id": "T-iraq-ministry-of-electricity-to",
+      "project_country": null,
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
       "status": "EXPECTED",
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "New England REZ transmission line",
@@ -950,7 +1003,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "South West REZ transmission project",
@@ -989,7 +1042,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Sydney Ring South",
@@ -1027,7 +1080,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Victoria–NSW Interconnector West",
@@ -1066,7 +1119,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Borumba Pumped Hydro Project – Transmission Connections",
@@ -1104,7 +1157,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Eyre Peninsula Upgrade",
@@ -1143,7 +1196,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Grid reinforcement east",
@@ -1182,7 +1235,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Bahrain (EWA) takes bids for Sitra 400 kV grid substation cable works; Siemens Energy holds $127m substation EPC",
@@ -1191,10 +1244,6 @@
       "utility": "",
       "epc": "",
       "country": "Bahrain",
-      "project_country": "Bahrain",
-      "buyer_country": null,
-      "supplier_country": null,
-      "source_country": null,
       "region": "Middle East",
       "project_slug": "",
       "transformer_scope": "UNKNOWN",
@@ -1216,11 +1265,15 @@
       "stage": "expected",
       "cls": "",
       "tender_id": "T-bahrain-ewa-takes-bids-for-sitra",
+      "project_country": "Bahrain",
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
       "status": "EXPECTED",
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "PGCB 765 kV transmission project",
@@ -1258,7 +1311,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Boucle du Hainaut",
@@ -1296,7 +1349,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "TritonLink",
@@ -1334,7 +1387,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Alberta–British Columbia Intertie Restoration",
@@ -1373,7 +1426,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Ontario Northeast Power Line",
@@ -1413,7 +1466,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Longwood to Lakeshore Transmission Line",
@@ -1452,7 +1505,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Sistema de Transmisión S/E Tineo – S/E Nueva Ancud",
@@ -1492,7 +1545,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Ganjiang–Gannan 1000 kV UHVAC project",
@@ -1531,7 +1584,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Interconexión Eléctrica Colombia-Panamá",
@@ -1570,7 +1623,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Køge–Vordingborg 400 kV connection",
@@ -1608,7 +1661,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Germany–Denmark offshore interconnector",
@@ -1646,7 +1699,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Chaingy–Dambron 400 kV line",
@@ -1684,7 +1737,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Foulventour 400 kV line connection",
@@ -1722,7 +1775,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Boucles de la Seine grid transition",
@@ -1760,7 +1813,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "A-Nord",
@@ -1799,7 +1852,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Rhein-Main-Link",
@@ -1838,7 +1891,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Ultranet",
@@ -1877,7 +1930,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "BalWin1 & BalWin2",
@@ -1915,7 +1968,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "BalWin4 & LanWin1",
@@ -1954,7 +2007,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Ostniedersachsenleitung",
@@ -1992,7 +2045,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Unterweser–Conneforde",
@@ -2030,7 +2083,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Bommersheim–Eschborn",
@@ -2068,7 +2121,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Raigarh–Pugalur ±800 kV, 6000 MW HVDC system upgradation",
@@ -2106,7 +2159,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Sumatra–Java HVDC interconnection",
@@ -2145,7 +2198,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Green Energy Corridor Sulawesi (South) project",
@@ -2183,7 +2236,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Hokkaido–Honshu 2 GW HVDC interconnection",
@@ -2222,7 +2275,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Kuwait MEW transformer substations package",
@@ -2260,7 +2313,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "2026",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Sarawak–Peninsular Malaysia interconnection",
@@ -2298,7 +2351,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "La Alegría Solar",
@@ -2338,7 +2391,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Xlinks Morocco–UK 3.6 GW power link",
@@ -2376,7 +2429,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Beverwijk–Vijfhuizen 380 kV transformer station",
@@ -2414,7 +2467,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Central North Island 220 kV Capacity Project",
@@ -2452,7 +2505,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Ōtāhuhu–Whakamaru A and B Lines Reconductoring Project",
@@ -2491,7 +2544,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "ADB $330 million clean energy transmission expansion",
@@ -2529,7 +2582,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "2026",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Parque Eólico Urani (Ocucaje, Ica) – 112.2 MW con subestación elevadora 33/220 kV y dos líneas de transmisión 220 kV",
@@ -2568,7 +2621,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Terra Solar",
@@ -2607,7 +2660,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "2026",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "NGCP Milaor 500 kV substation",
@@ -2646,7 +2699,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Harmony Link",
@@ -2684,7 +2737,45 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
+    },
+    {
+      "title": "Saudi Power Procurement says about half the grid is being scaled up for demand including AI",
+      "full_title": "Saudi Power Procurement says about half the grid is being scaled up for demand including AI",
+      "buyer": "",
+      "utility": "",
+      "epc": "",
+      "country": "Saudi",
+      "region": "Middle East",
+      "project_slug": "",
+      "transformer_scope": "UNKNOWN",
+      "voltage": "",
+      "quantity": "",
+      "primary_voltage": "",
+      "secondary_voltage": "",
+      "rating": "",
+      "standard": "",
+      "delivery_requirement": "",
+      "qualification_requirement": "",
+      "official_procurement_url": "https://www.arabnews.com/energy/saudi-arabia-upgrading-50-of-power-grid-as-demand-climbs-from-industry-to-ai-3006079",
+      "source": "arab news · 13 Oct 2026 [en]",
+      "source_urls": [
+        "https://www.arabnews.com/energy/saudi-arabia-upgrading-50-of-power-grid-as-demand-climbs-from-industry-to-ai-3006079"
+      ],
+      "source_verified": true,
+      "expected_raw": "",
+      "stage": "expected",
+      "cls": "",
+      "tender_id": "T-saudi-power-procurement-says-abo",
+      "project_country": "Saudi",
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
+      "status": "EXPECTED",
+      "statusLabel": "Expected",
+      "statusGroup": "Pre-award",
+      "deadline": "",
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Saudi Power Procurement signs SAR 11.5bn",
@@ -2693,10 +2784,6 @@
       "utility": "",
       "epc": "",
       "country": "Saudi",
-      "project_country": "Saudi",
-      "buyer_country": null,
-      "supplier_country": null,
-      "source_country": null,
       "region": "Middle East",
       "project_slug": "",
       "transformer_scope": "UNKNOWN",
@@ -2718,11 +2805,15 @@
       "stage": "expected",
       "cls": "",
       "tender_id": "T-saudi-power-procurement-signs-sa",
+      "project_country": "Saudi",
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
       "status": "EXPECTED",
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "GCCIA Saudi-Kuwait interconnection",
@@ -2758,7 +2849,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "2026",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "PIF–Google Cloud AI hub",
@@ -2796,7 +2887,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Saudi Arabia–South Africa power interconnection",
@@ -2834,7 +2925,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Gamma–Perseus 2nd 765 kV powerline",
@@ -2872,7 +2963,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "La Serna–Magallón 400 kV line",
@@ -2910,7 +3001,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Ekhyddan–Nybro 400 kV line",
@@ -2949,7 +3040,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Scotland–England Green Link",
@@ -2987,7 +3078,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "2034",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "LionLink",
@@ -3026,7 +3117,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Bramford–Twinstead 400 kV reinforcement",
@@ -3065,7 +3156,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Norwich–Tilbury 400 kV reinforcement",
@@ -3104,7 +3195,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Mankato–Mississippi River 345 kV Transmission Project",
@@ -3144,7 +3235,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Big Stone South to Alexandria 345 kV Transmission Line",
@@ -3184,7 +3275,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "SOO Green HVDC Link",
@@ -3224,7 +3315,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Maryland Piedmont Reliability Project",
@@ -3264,7 +3355,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "2028",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Manning–Metcalf 500 kV Transmission Line Project",
@@ -3304,7 +3395,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Southline Transmission Project",
@@ -3344,7 +3435,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Atlantic Shores South",
@@ -3383,7 +3474,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "AEP Ohio New Albany Data Center Substation",
@@ -3421,7 +3512,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Jamestown–Ellendale",
@@ -3461,7 +3552,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "North Plains Connector",
@@ -3501,7 +3592,7 @@
       "statusLabel": "Expected",
       "statusGroup": "Pre-award",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Kuwait MEW main 132/300/400 kV substation maintenance & repair",
@@ -3539,7 +3630,7 @@
       "statusLabel": "Evaluation",
       "statusGroup": "Evaluation",
       "deadline": "2026",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "DEWA 13 x 132/11 kV substations EPC",
@@ -3577,7 +3668,7 @@
       "statusLabel": "Evaluation",
       "statusGroup": "Evaluation",
       "deadline": "2026",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "DEWA Tawimura 33/11 kV substation",
@@ -3615,7 +3706,7 @@
       "statusLabel": "Evaluation",
       "statusGroup": "Evaluation",
       "deadline": "2026",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "平高电气 Pinggao Electric: wins CNY 876m of State Grid procurement",
@@ -3624,10 +3715,6 @@
       "utility": "",
       "epc": "",
       "country": "",
-      "project_country": null,
-      "buyer_country": null,
-      "supplier_country": null,
-      "source_country": null,
       "region": "Other",
       "project_slug": "",
       "transformer_scope": "UNKNOWN",
@@ -3649,11 +3736,15 @@
       "stage": "awarded",
       "cls": "",
       "tender_id": "T-pinggao-electric-wins-cny-876m-o",
+      "project_country": null,
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
       "status": "AWARDED",
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Marinus Link",
@@ -3692,7 +3783,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Lower Wonga Hybrid Connection",
@@ -3731,7 +3822,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Clean Energy Link – North",
@@ -3770,7 +3861,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "400 kV substation contract",
@@ -3809,7 +3900,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Energisa Lote 12 – ANEEL Transmission Auction 01/2024",
@@ -3848,7 +3939,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "ISA Energia Brasil Projeto Itatiaia",
@@ -3887,7 +3978,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "2029",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Nueva Subestación Margarita y Línea 2x110 kV Margarita – Agua Santa",
@@ -3927,7 +4018,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "China XD wins CNY 4.13bn in SGCC third-batch UHV & transmission equipment tenders",
@@ -3936,10 +4027,6 @@
       "utility": "",
       "epc": "",
       "country": "China",
-      "project_country": "China",
-      "buyer_country": null,
-      "supplier_country": null,
-      "source_country": null,
       "region": "Other",
       "project_slug": "",
       "transformer_scope": "UNKNOWN",
@@ -3961,11 +4048,15 @@
       "stage": "awarded",
       "cls": "",
       "tender_id": "T-china-xd-wins-cny-4-13bn-in-sgcc",
+      "project_country": "China",
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
       "status": "AWARDED",
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "SGCC 8th-batch UHV equipment tender: CNY 1.7bn of reactors split among 7 firms",
@@ -3974,10 +4065,6 @@
       "utility": "",
       "epc": "",
       "country": "China",
-      "project_country": "China",
-      "buyer_country": null,
-      "supplier_country": null,
-      "source_country": null,
       "region": "Other",
       "project_slug": "",
       "transformer_scope": "UNKNOWN",
@@ -3999,11 +4086,15 @@
       "stage": "awarded",
       "cls": "",
       "tender_id": "T-sgcc-8th-batch-uhv-equipment-ten",
+      "project_country": "China",
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
       "status": "AWARDED",
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "中国西电 China XD Electric: 14 subsidiaries win CNY 1.447bn of State Grid procurement",
@@ -4012,10 +4103,6 @@
       "utility": "",
       "epc": "",
       "country": "China",
-      "project_country": "China",
-      "buyer_country": null,
-      "supplier_country": null,
-      "source_country": null,
       "region": "Other",
       "project_slug": "",
       "transformer_scope": "UNKNOWN",
@@ -4037,11 +4124,15 @@
       "stage": "awarded",
       "cls": "",
       "tender_id": "T-china-xd-electric-14-subsidiarie",
+      "project_country": "China",
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
       "status": "AWARDED",
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "中国西电 China XD Electric: 6 subsidiaries win CNY 1.899bn of State Grid UHV project procurement",
@@ -4050,10 +4141,6 @@
       "utility": "",
       "epc": "",
       "country": "China",
-      "project_country": "China",
-      "buyer_country": null,
-      "supplier_country": null,
-      "source_country": null,
       "region": "Other",
       "project_slug": "",
       "transformer_scope": "UNKNOWN",
@@ -4075,11 +4162,15 @@
       "stage": "awarded",
       "cls": "",
       "tender_id": "T-china-xd-electric-6-subsidiaries",
+      "project_country": "China",
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
       "status": "AWARDED",
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Subestación Magangué 500/110 kV y líneas de transmisión asociadas",
@@ -4119,7 +4210,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Segundo circuito 500 kV Cerromatoso-Sahagún-Chinú y ampliación Subestación Sahagún 500 kV",
@@ -4158,7 +4249,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "2026",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Bornholm Energy Island",
@@ -4198,7 +4289,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "IGC 500 kV power transmission project",
@@ -4237,7 +4328,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Nefertiti 500 MW/1,000 MWh BESS project",
@@ -4276,7 +4367,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Ostwind 4",
@@ -4314,7 +4405,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "2031",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "North Sea Connector 2",
@@ -4352,7 +4443,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "2034",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Bhadla–Fatehpur ±800 kV HVDC transmission project",
@@ -4392,7 +4483,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Khavda–Nagpur ±800 kV HVDC link",
@@ -4431,7 +4522,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "KPS III HVDC transmission",
@@ -4471,7 +4562,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "AESL 7 GW Renewable Energy Evacuation Transmission Network",
@@ -4509,7 +4600,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "PGCIL bulk order for 765 kV power transformers",
@@ -4548,7 +4639,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "GE Vernova extra high-voltage transformers and shunt reactors for POWERGRID renewable energy corridors",
@@ -4587,7 +4678,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "POWERGRID ISTS project for pumped-storage evacuation in Uttar Pradesh",
@@ -4625,7 +4716,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "AESL ~Rs 2,800 crore transmission project for green hydrogen/ammonia manufacturing",
@@ -4664,7 +4755,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Three substation projects in Sumatra",
@@ -4702,7 +4793,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Adriatic Link",
@@ -4741,7 +4832,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Hokkaido–Honshu HVDC interconnection (Kitahon) Pole 1 renewal",
@@ -4780,7 +4871,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "KETRACO PPP energy transmission infrastructure project",
@@ -4819,7 +4910,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "TNB Jelutong switching station",
@@ -4858,7 +4949,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "IJmuiden Ver Alpha",
@@ -4896,7 +4987,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Cook Strait HVDC link upgrade",
@@ -4934,7 +5025,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "GCCIA UAE–Oman 400 kV power interconnection",
@@ -4973,7 +5064,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Proyectos de transmisión Grupo 1 – Nueva SE 'Hub' Poroma 500 kV y Enlace 500 kV Hub Poroma-Colectora; Nueva SE 'Hub' San José 220 kV; Nueva SE Marcona II 138 kV",
@@ -5013,7 +5104,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "2028",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Proyectos de transmisión Grupo 2 – Línea 500 kV Chilca CTM-Carabayllo (tercer circuito); Nueva Subestación Bicentenario 500/220 kV; Reconfiguración 220 kV Chavarría-Santa Rosa-Carapongo; Nueva SE Muyurina 220 kV y SE Ayacucho; Ampliación sistema Ica",
@@ -5053,7 +5144,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Cuatro proyectos de transmisión – Línea 500 kV Miguel Grau-Pariñas; Líneas 220 kV Felam-Tierras, Nuevas-Salitral y Muyurina-Mollepata; Nueva Subestación Palián 220/60 kV",
@@ -5093,7 +5184,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "2031",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Dukhan solar 2 GW project grid connection",
@@ -5132,7 +5223,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "KAHRAMAA 2026 plan: 198 tenders worth QR21.4bn ($5.9bn); QR8.9bn for transmission",
@@ -5141,10 +5232,6 @@
       "utility": "",
       "epc": "",
       "country": "Qatar",
-      "project_country": "Qatar",
-      "buyer_country": null,
-      "supplier_country": null,
-      "source_country": null,
       "region": "Middle East",
       "project_slug": "",
       "transformer_scope": "UNKNOWN",
@@ -5166,11 +5253,15 @@
       "stage": "awarded",
       "cls": "",
       "tender_id": "T-kahramaa-2026-plan-198-tenders-w",
+      "project_country": "Qatar",
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
       "status": "AWARDED",
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "SEC transformers and reactors contract",
@@ -5209,7 +5300,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "TBEA 380/132kV GIS substation project",
@@ -5248,7 +5339,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "380/230 kV Amiral substation",
@@ -5286,7 +5377,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "380 kV Taibah power plant substation",
@@ -5324,7 +5415,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "NEOM substation order",
@@ -5362,7 +5453,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "132/13.8kV substation at Expo 2030 Riyadh",
@@ -5400,7 +5491,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "East Coast–East Seoul 500 kV HVDC (Donghae–East Seoul) network",
@@ -5440,7 +5531,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Shinan Ui offshore wind power project – offshore substation",
@@ -5479,7 +5570,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Svenska kraftnät main grid expansion framework",
@@ -5517,7 +5608,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "GUNKUL–EGAT 500 kV transmission line",
@@ -5555,7 +5646,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "400 kV grid station for Industrial City of Abu Dhabi",
@@ -5593,7 +5684,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Eastern Green Link 3",
@@ -5631,7 +5722,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Eastern Green Link 4",
@@ -5670,7 +5761,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "2033",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Beckham County–Potter 345 kV Project",
@@ -5710,7 +5801,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "SouthCoast Wind",
@@ -5750,7 +5841,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Pansulu–Mansa 330 kV transmission and transformation project",
@@ -5788,7 +5879,7 @@
       "statusLabel": "Awarded",
       "statusGroup": "Awarded",
       "deadline": "",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Bahrain EWA Sitra 400 kV grid substation",
@@ -5826,7 +5917,64 @@
       "statusLabel": "Closed",
       "statusGroup": "Closed",
       "deadline": "2026",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
+    },
+    {
+      "title": "EWA Central Stores — 11/0.415 kV 1,000 kVA mineral-oil-filled package substation with distribution board",
+      "full_title": "EWA Central Stores — 11/0.415 kV 1,000 kVA mineral-oil-filled package substation with distribution board",
+      "buyer": "Electricity & Water Authority (EWA) — Central Stores Directorate",
+      "utility": "Electricity & Water Authority (EWA) — Central Stores Directorate",
+      "epc": "",
+      "country": "Bahrain",
+      "region": "Middle East",
+      "project_slug": "",
+      "transformer_scope": "UNKNOWN",
+      "voltage": "",
+      "quantity": "1000 kVA · 11/0.415 kV",
+      "primary_voltage": "",
+      "secondary_voltage": "",
+      "rating": "",
+      "standard": "",
+      "delivery_requirement": "",
+      "qualification_requirement": "",
+      "official_procurement_url": "https://www.tenderboard.gov.bh/",
+      "source": "bahrain tender board · 28 Aug 2026 [en]",
+      "source_urls": [
+        "https://www.tenderboard.gov.bh/"
+      ],
+      "source_verified": true,
+      "expected_raw": "2026-09-20",
+      "deadline_raw": "2026-09-20",
+      "stage": "tendering",
+      "cls": "CONFIRMED",
+      "procurement_id": "389/2026/BTB",
+      "status_events": [
+        {
+          "type": "floated",
+          "date": "2026-08-27",
+          "source_url": "https://www.tenderboard.gov.bh/"
+        },
+        {
+          "type": "published",
+          "date": "2026-08-28",
+          "source_url": "https://www.tenderboard.gov.bh/"
+        },
+        {
+          "type": "submission_deadline",
+          "date": "2026-09-20",
+          "source_url": "https://www.tenderboard.gov.bh/"
+        }
+      ],
+      "tender_id": "T-ewa-central-stores-11-0-415-kv-1",
+      "project_country": "Bahrain",
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
+      "status": "CLOSED",
+      "statusLabel": "Closed",
+      "statusGroup": "Closed",
+      "deadline": "2026-09-20",
+      "last_verified": "2026-10-14"
     },
     {
       "title": "KAHRAMAA 2026 transmission expansion EPC",
@@ -5864,7 +6012,59 @@
       "statusLabel": "Closed",
       "statusGroup": "Closed",
       "deadline": "2026",
-      "last_verified": "2026-09-25"
+      "last_verified": "2026-10-14"
+    },
+    {
+      "title": "Saudi Water Authority — 2.5 MVA 6.6/0.4 kV oil-filled transformer for Rabigh Production System",
+      "full_title": "Saudi Water Authority — 2.5 MVA 6.6/0.4 kV oil-filled transformer for Rabigh Production System",
+      "buyer": "Saudi Water Authority",
+      "utility": "Saudi Water Authority",
+      "epc": "",
+      "country": "Saudi Arabia",
+      "region": "Middle East",
+      "project_slug": "",
+      "transformer_scope": "CONFIRMED",
+      "voltage": "",
+      "quantity": "2.5 MVA · 6.6/0.4 kV",
+      "primary_voltage": "",
+      "secondary_voltage": "",
+      "rating": "",
+      "standard": "",
+      "delivery_requirement": "",
+      "qualification_requirement": "",
+      "official_procurement_url": "https://tenders.etimad.sa/Tender/DetailsForVisitor?STenderId=YYulueYsiIAkLL3QtkpaYQ==",
+      "source": "etimad · 2 Sep 2026 [en]",
+      "source_urls": [
+        "https://tenders.etimad.sa/Tender/DetailsForVisitor?STenderId=YYulueYsiIAkLL3QtkpaYQ=="
+      ],
+      "source_verified": true,
+      "expected_raw": "2026-09-02",
+      "deadline_raw": "2026-09-02",
+      "stage": "tendering",
+      "cls": "CONFIRMED",
+      "procurement_id": "60020899",
+      "status_events": [
+        {
+          "type": "floated",
+          "date": "2026-08-18",
+          "source_url": "https://tenders.etimad.sa/Tender/DetailsForVisitor?STenderId=YYulueYsiIAkLL3QtkpaYQ=="
+        },
+        {
+          "type": "submission_deadline",
+          "date": "2026-09-02",
+          "source_url": "https://tenders.etimad.sa/Tender/DetailsForVisitor?STenderId=YYulueYsiIAkLL3QtkpaYQ=="
+        }
+      ],
+      "tender_id": "T-saudi-water-authority-2-5-mva-6",
+      "project_country": "Saudi Arabia",
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
+      "status": "CLOSED",
+      "statusLabel": "Closed",
+      "statusGroup": "Closed",
+      "deadline": "2026-09-02",
+      "last_verified": "2026-10-14"
     }
   ]
 }

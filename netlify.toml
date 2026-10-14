@@ -1,5 +1,5 @@
 [build]
-  command = "node check-build-tracked.js && node build-factories.js && node build-company-developments.js && node build-intelligence.js && node build-provenance.js && node build-entity-graph.js && node build-census-audit.js && node build-manufacturer-intel.js && node build-services.js && node build-logistics.js && node build-associations.js && node build-education.js && node build-buyers.js && node build-media.js && node build-components.js && node build-canonical-entities.js && node apply-sourced-facility-evidence.js && node build-directory-index.js && node build-company-pages.js && node check-voltage-evidence-consistency.js && node check-entity-canonical.js && node check-census-stale.js && node build-data-quality.js && node build-directory-health.js && node build-intel-news.js && node build-gcc-intel-discovery.js && node build-gcc-intel-publish.js && node build-intel-feed-ui.js && node build-gcc-linkedin-pack.js && node build-intel-categories.js && node build-applications.js && node build-standards.js && node build-knowledge.js && node build-engineering-claims.js && node build-course-depth.js && node build-materials.js && node build-materials-pages.js && node build-markets.js && node build-utilities.js && node build-grids.js && node build-projects.js && node build-tenders.js && node build-awards.js && node build-case-studies.js && node build-accessories.js && node build-machinery.js && node build-laboratories.js && node build-category-landing-pages.js && node build-events.js && node build-post-event-intel.js && node build-event-summary-pages.js && node build-topic-hubs.js && node build-masterclass-paywall.js && node build-exhibitions.js && node build-books.js && node build-commerce.js && node build-commerce-intel.js && node build-freshness.js && node build-production-audit.js && node build-site-stats.js && node build-map.js && node build_ssr.js && node build-seo.js && node stamp-intel.js && node build-release-provenance.js && node stamp-release-provenance.js && node check-release-provenance.js && node check-intel-date-order.js && node build-header-consistency.js && node bump-assets.js && node check-archives.js && node check-data-quality.js && node check-config.js && node check-brand.js && node check-links.js && node check-data-health.js --skip-children && node check-design.js && node tests/engine-sanity.js && node check-event-intel.js && node check-event-integrity.js && node check-topics.js && node check-data-graph.js && node check-masterclass-paywall.js && node tests/masterclass-live-qa.test.js && node tests/viz-math.test.js && node tests/verify-hero-integrity.js && node tests/check-verification-terms.js && node tests/pwa-install-regression.js && node tests/webgl-gate-regression.js && node tests/intel-clock-regression.js && node tests/release-provenance-regression.js && node tests/intel-date-order-regression.js && node check-gcc-intel-review.js && node check-sourced-facilities.js && node tests/market-country-regression.js && node tests/awards-wording-regression.js && node tests/company-timeline-regression.js && node tests/cg-power-765-regression.js && node tests/scheduled-refresh-regression.js && node tests/oct-intel-freshness-regression.js && node tests/gcc-discovery-regression.js && node tests/entitlement-regression.js && node build-discovery-desk.js && node tests/check-lab-integrity.js && node build-gcc-source-coverage.js && node build-dist.js && echo 'Static site with serverless functions'"
+  command = "node check-build-tracked.js && node scripts/capture-git-state.js && node check-source-unstamped.js && node build-factories.js && node build-intel-news.js && node build-gcc-intel-discovery.js && node build-gcc-intel-publish.js && node build-company-developments.js && node build-provenance.js && node build-entity-graph.js && node build-census-audit.js && node build-manufacturer-intel.js && node build-services.js && node build-logistics.js && node build-associations.js && node build-education.js && node build-buyers.js && node build-media.js && node build-components.js && node build-canonical-entities.js && node apply-sourced-facility-evidence.js && node build-directory-index.js && node build-company-pages.js && node check-voltage-evidence-consistency.js && node check-entity-canonical.js && node check-census-stale.js && node build-data-quality.js && node build-directory-health.js && node build-intelligence.js && node build-intel-feed-ui.js && node build-gcc-linkedin-pack.js && node build-intel-categories.js && node build-applications.js && node build-standards.js && node build-knowledge.js && node build-engineering-claims.js && node build-course-depth.js && node build-materials.js && node build-materials-pages.js && node build-markets.js && node build-utilities.js && node build-grids.js && node build-projects.js && node build-tenders.js && node build-awards.js && node build-case-studies.js && node build-accessories.js && node build-machinery.js && node build-laboratories.js && node build-category-landing-pages.js && node build-events.js && node build-post-event-intel.js && node build-event-summary-pages.js && node build-topic-hubs.js && node build-masterclass-paywall.js && node build-exhibitions.js && node build-books.js && node build-commerce.js && node build-commerce-intel.js && node build-freshness.js && node build-production-audit.js && node build-site-stats.js && node build-map.js && node build_ssr.js && node build-seo.js && node stamp-intel.js && node build-release-provenance.js && node check-intel-date-order.js && node build-header-consistency.js && node bump-assets.js && node check-archives.js && node check-data-quality.js && node check-config.js && node check-brand.js && node check-links.js && node check-data-health.js --skip-children && node check-design.js && node tests/engine-sanity.js && node check-event-intel.js && node check-event-integrity.js && node check-topics.js && node check-data-graph.js && node check-masterclass-paywall.js && node tests/masterclass-live-qa.test.js && node tests/viz-math.test.js && node tests/verify-hero-integrity.js && node tests/check-verification-terms.js && node tests/pwa-install-regression.js && node tests/webgl-gate-regression.js && node tests/intel-clock-regression.js && node tests/tz-entity-events.js && node tests/intel-tender-parity.js && node tests/release-provenance-regression.js && node tests/intel-date-order-regression.js && node tests/gcc-discovery-regression.js && node tests/entitlement-regression.js && node build-discovery-desk.js && node tests/check-lab-integrity.js && node build-gcc-source-coverage.js && node check-gcc-intel-review.js && node check-sourced-facilities.js && node tests/market-country-regression.js && node tests/awards-wording-regression.js && node tests/company-timeline-regression.js && node tests/cg-power-765-regression.js && node tests/scheduled-refresh-regression.js && node tests/oct-intel-freshness-regression.js && node tests/adsense-inject.test.js && node build-dist.js && node stamp-dist-provenance.js && node check-dist-provenance.js && node check-adsense.js && node check-entity-canonical.js --dist && echo 'Static site with serverless functions'"
 
   # publish = "." shipped the whole working folder, so every internal file was on
   # the CDN and "protected" only by case-sensitive 404 rules that Netlify's
@@ -7,6 +7,9 @@
   # nothing is published unless build-dist.js names it.
   publish = "dist"
   functions = "functions"
+
+[build.environment]
+  TZ = "UTC"
 
 [functions]
   node_bundler = "esbuild"
@@ -17,7 +20,7 @@
 # Soft freshness: optional Netlify Build Hook (env TP_BUILD_HOOK_URL) so
 # events Up-next / site-stats cannot freeze between manual deploys.
 [functions."daily-rebuild"]
-  schedule = "0 6,18 * * *"
+  schedule = "0 6 * * *"
 
 # GCC watchlist digests — shortly after rebuild windows
 [functions."watchlist-alerts"]
@@ -27,6 +30,15 @@
 # publish = "." deploys the whole folder, so the internal strategy/setup
 # markdown and the stale archive/ copies would otherwise be fetchable
 # directly (e.g. /PREMIUM-PRICING-STRATEGY.md). Serve 404 instead.
+
+# Pre-sprint data snapshot. Forced 404 even if a stale copy is still published.
+# First redirect so no later splat or catch-all can serve it.
+[[redirects]]
+  from = "/data/backup-pre-sprint/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
 [[redirects]]
   from = "/_docs/*"
   to = "/404.html"
@@ -165,6 +177,20 @@
 # Commercial pipeline and supplier prospect lists. Internal CRM/pipeline only.
 [[redirects]]
   from = "/data/commerce-intel.json"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# Pre-sprint snapshot of that CRM (and the rest of the 15 Sep generation).
+# build-dist.js no longer copies it; this rule covers a stale CDN object.
+[[redirects]]
+  from = "/data/backup-pre-sprint/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/data/backup-pre-sprint"
   to = "/404.html"
   status = 404
   force = true
@@ -309,10 +335,15 @@
   force = true
 
 
-# Security hardening headers — safe to set globally; chosen so nothing on the
-# JS-heavy site breaks. CSP is intentionally NOT set here (inline scripts +
-# AdSense/Stripe/geolocation callers make it easy to get wrong); add it in a
-# tested way if you want it.
+# Security headers. The CSP stays permissive on purpose: pages use inline
+# scripts and styles, and the browser also calls Stripe, Supabase, Google
+# Analytics, fonts and ipapi. A tight allow-list would blank those calls.
+# https: keeps that working. The AdSense / Funding Choices hosts are named
+# explicitly so a later tightening does not drop them:
+#   pagead2.googlesyndication.com  tpc.googlesyndication.com
+#   googleads.g.doubleclick.net    ad.doubleclick.net
+#   fundingchoicesmessages.google.com  partner.googleadservices.com
+#   adservice.google.com  www.googleadservices.com  ep1.adtrafficquality.google
 [[headers]]
   for = "/*"
   [headers.values]
@@ -320,6 +351,7 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    Content-Security-Policy = "default-src 'self' https: data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://googleads.g.doubleclick.net https://ad.doubleclick.net https://fundingchoicesmessages.google.com https://partner.googleadservices.com https://adservice.google.com https://www.googleadservices.com https://ep1.adtrafficquality.google https: blob:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: blob: https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://googleads.g.doubleclick.net https://ad.doubleclick.net https:; font-src 'self' data: https:; connect-src 'self' https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://googleads.g.doubleclick.net https://ad.doubleclick.net https://fundingchoicesmessages.google.com https://adservice.google.com https://ep1.adtrafficquality.google https: wss:; frame-src 'self' https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://pagead2.googlesyndication.com https://fundingchoicesmessages.google.com https://www.google.com https:; media-src 'self' data: blob: https:; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https:"
 
 # Long-lived caching for static assets; HTML stays revalidated so daily intel is never stale.
 [[headers]]

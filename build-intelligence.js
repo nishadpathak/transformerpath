@@ -25,6 +25,8 @@
  */
 'use strict';
 const fs = require('fs');
+const { resolveCompanyAlias } = require('./lib/company-aliases');
+const { dateFromSrcUtc } = require('./lib/src-date');
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
@@ -33,6 +35,10 @@ function slugify(s) { return String(s || '').normalize('NFKD').replace(/[\u0300-
 const ci = (s) => (s || '').toLowerCase();
 
 const TODAY = new Date().toISOString().slice(0, 10);
+const CSS_V = (function () {
+  try { return JSON.parse(fs.readFileSync('data/config.json', 'utf8')).assets.css || 14; }
+  catch (e) { return 14; }
+})();
 
 // ── Source data (all pre-verified/attributed upstream) ───────────────────────
 const DEV = JSON.parse(fs.readFileSync('data/company-developments.json', 'utf8'));
@@ -75,11 +81,9 @@ const BASE_CONF = 'LIMITED';
 const BASE_CLAIM = 'INDEPENDENTLY_SOURCED';
 
 // Extract a display date from the item's src string ("SaudiGulf Projects · 18 Jul 2026 [en]").
-function dateFromSrc(src) {
-  const m = String(src || '').match(/(\d{1,2}\s+\w{3}\s+\d{4})/);
-  if (!m) return '';
-  const d = new Date(m[1]);
-  return isNaN(d.getTime()) ? '' : d.toISOString().slice(0, 10);
+// Parsed as a UTC calendar day so a Dubai build matches a UTC build.
+function dateFromSrc(src, iso) {
+  return dateFromSrcUtc(src, iso);
 }
 // Extract a value label (strip currency/count for display; keep verbatim too).
 function valueLabel(v) { return (v || '').trim(); }
@@ -87,10 +91,11 @@ function valueLabel(v) { return (v || '').trim(); }
 // ── Build the typed event log (company -> events) ───────────────────────────
 const entities = {};
 DEV.forEach(function (dev) {
-  const ent = VERIFIED_BY_NAME[ci(dev.name)];
+  const resolved = resolveCompanyAlias(dev.name);
+  const ent = VERIFIED_BY_NAME[ci(resolved.name)] || VERIFIED_BY_NAME[ci(dev.name)];
   const company = {
     name: dev.name,
-    slug: ent ? ent.slug : slugify(dev.name),
+    slug: resolved.aliased ? resolved.slug : (ent && ent.slug ? ent.slug : resolved.slug),
     country: ent ? ent.country : '',
     indexable: ent ? !!ent.indexable : false,
     events: [],
@@ -103,7 +108,7 @@ DEV.forEach(function (dev) {
       src: x.src || '',
       url: x.url || '',
       value: valueLabel(x.value),
-      date: x.date_iso || dateFromSrc(x.src),
+      date: dateFromSrc(x.src, x.date_iso),
       facility_id: x.facility_id || null,
       confidence: BASE_CONF,
       claimType: BASE_CLAIM,
@@ -118,12 +123,6 @@ const projectSummary = PROJECTS.map(function (p) {
   return {
     name: p.project,
     country: p.country,
-    project_country: (p.project_country != null && String(p.project_country).trim() !== '')
-      ? p.project_country
-      : ((p.country != null && String(p.country).trim() !== '') ? p.country : null),
-    buyer_country: p.buyer_country != null ? p.buyer_country : null,
-    supplier_country: p.supplier_country != null ? p.supplier_country : null,
-    source_country: p.source_country != null ? p.source_country : null,
     voltage: p.voltage || '',
     status: p.status || '',
     transformer_requirement: (p.transformer_requirement || 'UNKNOWN').toUpperCase(),
@@ -230,7 +229,15 @@ function renderIntelligence() {
 
   // Companies with structured timelines.
   const compRows = Object.keys(co).sort(function (a, b) { return co[b].events.length - co[a].events.length; }).map(function (k) {
-    return '<span class="chip"><a href="manufacturers/' + slugify(co[k].name) + '/"><b>' + esc(co[k].name) + '</b> · ' + co[k].events.length + '</a></span>';
+    const slug = co[k].slug || resolveCompanyAlias(co[k].name).slug;
+    const label = '<b>' + esc(co[k].name) + '</b> · ' + co[k].events.length;
+    // Link only when that manufacturer profile is a real page. Utilities,
+    // logistics firms and subsidiary aliases can match an Intel title without
+    // having a profile, and a chip must not point at a missing URL.
+    if (slug && fs.existsSync('manufacturers/' + slug + '/index.html')) {
+      return '<span class="chip"><a href="manufacturers/' + esc(slug) + '/">' + label + '</a></span>';
+    }
+    return '<span class="chip">' + label + '</span>';
   });
   const companies = compRows.join('') || '<div class="tl-row" style="color:var(--muted)">No companies trackable yet.</div>';
 
@@ -264,7 +271,7 @@ function renderIntelligence() {
 
   const body = '<main class="biw-wrap">' +
     '<h1>TransformerPath <span style="color:var(--accent)">Intelligence</span></h1>' +
-    '<p class="lead">The transformer-industry business-intelligence hub — the <b>canonical event/entity layer</b>. Every sourced development is attached to a permanent company, project or utility and typed as an event (factory expansion, order/contract, ownership, laboratory, reference). Daily Intel, the homepage briefing and company timelines are views over this memory, not separate databases. All entries are source-tracked with confidence labels; nothing is inferred without a source. <a href="intel.html" style="color:var(--accent)">Open Daily Intel →</a></p>' +
+    '<p class="lead">The transformer-industry business-intelligence hub — the <b>canonical event/entity layer</b>. Every sourced development is attached to a permanent company, project or utility and typed as an event (factory expansion, order/contract, ownership, laboratory, reference). Company timelines on this page are generated from the same Daily Intel items as this release. The homepage briefing is a separate curated view of that feed. These are generated pages, not one shared live database. All entries are source-tracked with confidence labels; nothing is inferred without a source. <a href="intel.html" style="color:var(--accent)">Open Daily Intel →</a></p>' +
     counts +
     '<div class="biw-sec"><h2>Transformer-relevant projects</h2><p class="sub">Structured grid, substation and transformer projects — tenders, awards, construction and energisation — with the transformer scope graded confirmed / inferred / unknown per the published source.</p><div>' + pj + '</div></div>' +
     '<div class="biw-sec"><h2>Tender Watch</h2><p class="sub">Pre-award procurement opportunities — open, closing soon, under evaluation and expected. Awards are carried separately (see Recent awards); awarded tenders move out of the active procurement flow.</p><div>' + tRows + '</div></div>' +
@@ -279,7 +286,7 @@ function renderIntelligence() {
     '<title>TransformerPath Intelligence — Industry Business Intelligence Dashboard</title>\n' +
     '<meta name="description" content="TransformerPath Intelligence — the transformer industry business-intelligence hub. Structured company timelines, projects, orders and contracts, factory expansions, ownership changes, utility approvals and market dashboards — source-tracked, with confidence labels and full provenance.">\n' +
     '<link rel="canonical" href="https://transformerpath.com/intelligence.html">\n<meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath">\n<meta property="og:title" content="TransformerPath Intelligence — Business Intelligence Dashboard">\n<meta property="og:description" content="Structured transformer-industry intelligence: company timelines, projects, awards, factory expansions, ownership, utility approvals and market dashboards.">\n<meta property="og:url" content="https://transformerpath.com/intelligence.html">\n<meta property="og:image" content="https://transformerpath.com/brand/og-image.png">\n<meta name="twitter:card" content="summary_large_image">\n' +
-    '<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">\n<link rel="stylesheet" href="style.css?v=9"><link rel="manifest" href="manifest.webmanifest">\n<meta name="theme-color" content="#0d1b2e">\n<style>' +
+    '<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">\n<link rel="stylesheet" href="style.css?v=' + CSS_V + '"><link rel="manifest" href="manifest.webmanifest">\n<meta name="theme-color" content="#0d1b2e">\n<style>' +
     '.biw-wrap{max-width:1080px;margin:0 auto;padding:44px 20px 90px}.biw-wrap h1{font-size:2.1rem;color:var(--ink)}.biw-wrap .lead{color:var(--muted);font-size:1.05rem;max-width:840px;margin:8px 0 30px}.biw-counts{display:flex;flex-wrap:wrap;gap:14px;margin:0 0 30px}.biw-counts .s{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 18px;text-align:center;min-width:120px}.biw-counts .s b{color:var(--text);font-size:1.5rem;display:block}.biw-counts .s small{color:var(--muted);font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em}.biw-sec{margin:38px 0 0}.biw-sec h2{font-size:1.3rem;color:var(--ink);margin:0 0 6px}.biw-sec .sub{color:var(--muted);font-size:.9rem;margin:0 0 16px}.tl-row{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:13px 16px;margin-bottom:10px}.tl-row .tl-evt{color:var(--accent);font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em}.tl-row .tl-co{color:var(--muted);font-size:.8rem;margin:2px 0 4px}.tl-row a.ttl{color:var(--text);font-weight:600;text-decoration:none}.tl-row a.ttl:hover{color:var(--accent)}.tl-row .src{color:var(--muted);font-size:.78rem;margin-top:6px}.tl-row .src a{color:var(--accent)}.chip{display:inline-block;background:var(--card);border:1px solid var(--border);border-radius:999px;padding:5px 12px;font-size:.8rem;color:var(--text);margin:3px 4px 0 0}.chip:hover{border-color:var(--accent);color:var(--accent)}.chip a{color:var(--text);text-decoration:none}.chip a:hover{color:var(--accent)}.conf{display:inline-block;font-weight:700;font-size:9.5px;letter-spacing:.05em;padding:1px 6px;border-radius:8px;margin-left:6px;vertical-align:middle}.conf-LIMITED{background:#1d2330;color:#9fb0c4;border:1px solid rgba(159,176,196,.35)}.conf-MEDIUM{background:#12283f;color:#60a5fa;border:1px solid rgba(96,165,250,.35)}.conf-HIGH{background:#14351f;color:#4ade80;border:1px solid rgba(74,222,128,.35)}.biw-note{background:rgba(245,166,35,.05);border:1px solid var(--border);border-radius:10px;padding:13px 16px;color:var(--muted);font-size:.85rem;margin-top:26px}</style>\n</head>\n<body>\n' +
     HEAD + '\n' + body + '\n' + FOOT + '\n<script src="analytics.js" defer></script>\n</body>\n</html>';
   return head;
@@ -287,7 +294,7 @@ function renderIntelligence() {
 
 // Write the SSRed page. Content is baked into the HTML so it paints on first
 // render (no client fetch / no empty-container flash). The stylesheet is
-// versioned (style.css?v=9) and normalised by bump-assets.js.
+// versioned from data/config.json assets.css and normalised by bump-assets.js.
 fs.writeFileSync('intelligence.html', renderIntelligence());
 console.log('intelligence.html wrote (server-rendered, no client fetch)');
 
