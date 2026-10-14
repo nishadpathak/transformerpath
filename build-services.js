@@ -135,6 +135,7 @@ ${HEAD}
 
 ${FOOT}
 
+<script src="directory-intro.js"></script>
 <script>
 window.__TP_SERVICES__ = ${servJson};
 (function(){
@@ -198,7 +199,7 @@ window.__TP_SERVICES__ = ${servJson};
         '</div>' +
         '<div class="srv-loc">📍 ' + esc(loc) + '</div>' +
         '<div style="margin-bottom:8px">' + kv + mva + '</div>' +
-        '<p style="color:var(--text);font-size:.9rem;line-height:1.5;margin:6px 0 12px">' + esc(d.description) + '</p>' +
+        '<p style="color:var(--text);font-size:.9rem;line-height:1.5;margin:6px 0 12px">' + esc(window.TPIntro ? TPIntro.enrichExisting({ description: d.description, established: d.founded_year, requireYear: true, products: d.service_types, capacity: d.capacity_mva ? (d.capacity_mva + ' MVA') : '', voltage: d.voltage_capability_kv, extra: d.employees ? ('Reported scale: ' + d.employees + '.') : '' }) : d.description) + '</p>' +
         '<div class="srv-types">' + typesHtml + '</div>' +
         '<div class="card-foot">' +
           (d.website ? '<a href="' + esc(d.website) + '" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Official Website ↗</a>' : '<span></span>') +

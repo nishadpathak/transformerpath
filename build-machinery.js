@@ -47,6 +47,7 @@ function renderCardServer(m) {
     '</div>' +
     '<h2 class="mach-name" style="font-size:1.25rem">' + esc(m.name) + '</h2>' +
     '<div class="mach-maker">By <b>' + esc(m.manufacturer) + '</b> · ' + esc(m.city) + ', ' + esc(m.country) + '</div>' +
+    '<p style="color:var(--text);font-size:.88rem;line-height:1.5;margin:8px 0">' + esc(require('./directory-intro').supplierIntro({ name: (m.manufacturer || '') + ' — ' + (m.name || ''), role: 'transformer machinery supplier', city: m.city, country: m.country, products: [m.machine_type, m.category, m.transformer_application], capacity: m.capacity_range, extra: (m.installations_count ? ('Reference base on file: ' + m.installations_count + '.') : '') })) + '</p>' +
     '<div class="spec-badges" style="margin:4px 0 10px">' +
       '<span class="kg-spec-pill" style="color:var(--accent);border-color:rgba(245,166,35,.35)">⚙️ ' + esc(m.machine_type) + '</span>' +
       '<span class="kg-spec-pill" style="color:#10b981;border-color:rgba(16,185,129,.35)">🤖 ' + esc(m.automation_level) + '</span>' +
@@ -232,6 +233,7 @@ ${HEAD}
 
 ${FOOT}
 
+<script src="directory-intro.js"></script>
 <script>
 var MACHINES = ${machJson};
 var activeCat = '';
@@ -287,6 +289,7 @@ function renderCards() {
       '</div>' +
       '<h2 class="mach-name" style="font-size:1.25rem">' + esc(m.name) + '</h2>' +
       '<div class="mach-maker">By <b>' + esc(m.manufacturer) + '</b> · ' + esc(m.city) + ', ' + esc(m.country) + '</div>' +
+      '<p style="color:var(--text);font-size:.88rem;line-height:1.5;margin:8px 0">' + esc(window.TPIntro ? TPIntro.supplierIntro({ name: (m.manufacturer || '') + ' — ' + (m.name || ''), role: 'transformer machinery supplier', city: m.city, country: m.country, products: [m.machine_type, m.category, m.transformer_application], capacity: m.capacity_range, extra: (m.installations_count ? ('Reference base on file: ' + m.installations_count + '.') : '') }) : '') + '</p>' +
       '<div class="spec-badges" style="margin:4px 0 10px">' +
         '<span class="kg-spec-pill" style="color:var(--accent);border-color:rgba(245,166,35,.35)">⚙️ ' + esc(m.machine_type) + '</span>' +
         '<span class="kg-spec-pill" style="color:#10b981;border-color:rgba(16,185,129,.35)">🤖 ' + esc(m.automation_level) + '</span>' +

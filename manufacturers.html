@@ -43,6 +43,7 @@
 .mk-row { display:grid; grid-template-columns:1.6fr 1.3fr auto auto; gap:12px; align-items:center; padding:7px 0; border-top:1px solid #f1f4f9; font-size:.9rem; }
 .mk-row b { color:var(--ink); } .mk-row .city { color:var(--muted); } .mk-row a { color:var(--accent); font-weight:600; white-space:nowrap; }
 .mk-row .note { grid-column:1/-1; color:var(--muted); font-style:italic; }
+.mk-intro { grid-column:1/-1; margin:0 0 8px; color:var(--text); font-size:.84rem; line-height:1.45; font-weight:400; }
 .tpill { font-size:.62rem; font-weight:800; padding:2px 7px; border-radius:999px; margin-left:4px; letter-spacing:.3px; }
 .t-PT{background:#dbeafe;color:#1e40af} .t-DT{background:#dcfce7;color:#166534} .t-DRY{background:#fef3c7;color:#92400e}
 .t-TX{background:#ede9fe;color:#5b21b6} .t-SR{background:#fce7f3;color:#9d174d} .t-IT{background:#e0e7ff;color:#3730a3}
@@ -279,6 +280,7 @@ Showing 906 companies across 88 countries
   </div>
 </footer>
 
+<script src="directory-intro.js"></script>
 <script>
 const DATA_URL = 'data/manufacturers.json';
 let DATA = [];
@@ -387,9 +389,21 @@ function stats(list){
 function makerSlug(name){
   return String(name||'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
 }
-function makerRow(m){
+function makerIntro(m, country){
+  if(!window.TPIntro) return '';
+  return TPIntro.supplierIntro({
+    name: m[0],
+    role: 'transformer manufacturer',
+    city: m[1] || '',
+    country: country || '',
+    products: String(m[3] || '').split(',').map(function(s){ return s.trim(); }).filter(Boolean),
+    established: m[5] || ''
+  });
+}
+function makerRow(m, country){
   if(/^Served by/i.test(m[0])) return `<div class="mk-row"><span class="note">${m[0]}</span></div>`;
   const slug = makerSlug(m[0]);
+  const intro = makerIntro(m, country);
   return `<div class="mk-row">
     <div><a class="prof" href="${makerHref(m[0])}" style="color:var(--accent);font-weight:700">${m[0]}</a>${vbadge(m)}${tpills(m[3])}</div>
     <span class="city">${m[1]||''}${m[5]?` · est. ${m[5]}`:''}</span>
@@ -397,6 +411,7 @@ function makerRow(m){
       <button type="button" class="btn btn-outline btn-sm tp-shortlist-btn" data-slug="${slug}" data-name="${m[0]}" style="font-size:.72rem;padding:3px 8px">+ Shortlist</button>
       ${m[2]?`<a href="${m[2]}" target="_blank" rel="noopener" style="font-size:.82rem">Site →</a>`:''}
     </div>
+    ${intro ? `<p class="mk-intro">${intro.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</p>` : ''}
   </div>`;
 }
 function pagerHtml(totalCountries){
@@ -438,7 +453,7 @@ function render(){
       const real=c.makers.filter(m=>!/^Served by/i.test(m[0])).length;
       const open = expand || real<=6;
       return `<div class="ctry-card${open?'':' collapsed'}" data-country="${c.country}"><div class="ctry-head" role="button" tabindex="0" aria-expanded="${open?'true':'false'}"><span class="flag">${c.flag}</span><h3>${c.country}</h3><span class="cnt">${real} maker${real!==1?'s':''}</span><span class="ctry-toggle">${open?'Hide':'Show'}</span></div><div class="mk-rows">`+
-        c.makers.map(makerRow).join('')+
+        c.makers.map(function(m){ return makerRow(m, c.country); }).join('')+
         `<p style="margin:8px 0 0;font-size:.8rem"><a href="manufacturers/${countrySlug(c.country)}.html" style="color:var(--accent);font-weight:700">Country page →</a></p></div></div>`;
     }).join('')).join('')+pagerHtml(list.length);
   document.getElementById('count').textContent=`Showing ${makerCount} listed companies across ${list.length} countries — sourced coverage, not a complete worldwide census.`;

@@ -133,6 +133,7 @@ ${HEAD}
 
 ${FOOT}
 
+<script src="directory-intro.js"></script>
 <script>
 window.__TP_BUYERS__ = ${byrJson};
 (function(){
@@ -191,7 +192,7 @@ window.__TP_BUYERS__ = ${byrJson};
           '<span class="ev-badge ev-confirmed">' + esc(d.verification_status || 'Verified') + '</span>' +
         '</div>' +
         '<div class="byr-loc">📍 ' + esc(loc) + ' &nbsp; ' + typePill + '</div>' +
-        '<p style="color:var(--text);font-size:.9rem;line-height:1.5;margin:6px 0 10px">' + esc(d.description) + '</p>' +
+        '<p style="color:var(--text);font-size:.9rem;line-height:1.5;margin:6px 0 10px">' + esc(window.TPIntro ? TPIntro.enrichExisting({ description: d.description, established: d.founded_year, requireYear: true, products: d.transformer_types_purchased, capacity: d.capacity_range, voltage: d.voltage_classes }) : d.description) + '</p>' +
         (d.voltage_classes ? '<div style="font-size:.8rem;color:var(--muted);margin-bottom:6px"><b>Voltages:</b> ' + esc(d.voltage_classes) + '</div>' : '') +
         (d.procurement_process ? '<div style="font-size:.78rem;color:var(--muted);margin-bottom:10px;line-height:1.4"><b>Process:</b> ' + esc(d.procurement_process) + '</div>' : '') +
         '<div class="purchased-tags">' + itemsHtml + '</div>' +

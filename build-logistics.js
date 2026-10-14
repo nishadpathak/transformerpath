@@ -134,6 +134,7 @@ ${HEAD}
 
 ${FOOT}
 
+<script src="directory-intro.js"></script>
 <script>
 window.__TP_LOGISTICS__ = ${logJson};
 (function(){
@@ -197,7 +198,7 @@ window.__TP_LOGISTICS__ = ${logJson};
         '</div>' +
         '<div class="log-loc">📍 ' + esc(loc) + '</div>' +
         '<div style="margin-bottom:8px">' + weightBadge + '</div>' +
-        '<p style="color:var(--text);font-size:.9rem;line-height:1.5;margin:6px 0 10px">' + esc(d.description) + '</p>' +
+        '<p style="color:var(--text);font-size:.9rem;line-height:1.5;margin:6px 0 10px">' + esc(window.TPIntro ? TPIntro.enrichExisting({ description: d.description, established: d.founded_year, requireYear: true, products: d.transport_modes, capacity: d.max_weight_tons ? ('up to ' + d.max_weight_tons + ' t') : '', extra: d.employees ? ('Reported scale: ' + d.employees + '.') : '' }) : d.description) + '</p>' +
         '<div style="font-size:.8rem;color:var(--muted);margin-bottom:8px"><b>Coverage:</b> ' + esc(regionsText) + '</div>' +
         '<div class="log-modes">' + modesHtml + '</div>' +
         '<div class="card-foot">' +

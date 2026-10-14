@@ -178,6 +178,7 @@
           '<span class="dir-tag" style="background:rgba(245,166,35,.12);border-color:var(--amber);color:var(--text);font-weight:700">' + kindIcon + ' ' + esc(kindText) + '</span>' +
           evBadge(c.evidence) +
         '</div>' +
+        (c.intro ? '<p class="dir-intro" style="margin:8px 0 0;color:var(--text);font-size:.86rem;line-height:1.5">' + esc(c.intro) + '</p>' : '') +
         (specsHtml.length ? '<div class="kg-card-specs">' + specsHtml.join('') + '</div>' : '') +
         '<div class="dir-tags">' + (c.capability_labels || []).slice(0, 6).map(function (l) { return '<span class="dir-tag">' + esc(l) + '</span>'; }).join('') + '</div>' +
         '<div class="kg-comp-wrapper">' +
