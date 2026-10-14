@@ -1,7 +1,7 @@
 {
   "$schema": "https://transformerpath.com/gcc-intel-review.schema.json",
   "purpose": "Per-candidate human review ledger for GCC discovery. Publication requires decision=PUBLISH with reviewer and reviewed_at. HOLD is not publication.",
-  "honesty": "Rows are review records, not new evidence. PUBLISH rows are the PR #16 desk release, the 9 Oct and 13 Oct items, and six September notices released on 14 Oct 2026 after their source pages were fetched. Grades were not upgraded. om-localisation-aug12 was rejected on 2026-10-14 after official pages were fetched and did not state the 12 Aug 2026 claim; its recorded grade was not relabeled. HOLD rows keep reviewer null.",
+  "honesty": "Rows are review records, not new evidence. PUBLISH rows are the PR #16 desk release, the 9 Oct and 13 Oct items, and six September notices released on 14 Oct 2026 after their source pages were fetched. Grades were not upgraded. om-localisation-aug12 was rejected on 2026-10-14 after official pages were fetched and did not state the 12 Aug 2026 claim; its recorded grade was not relabeled. The public Intel card was unpublished so it is no longer shown as confirmed. HOLD rows keep reviewer null.",
   "updated": "2026-10-14",
   "reviews": [
     {
@@ -126,7 +126,7 @@
       "reviewer": "transformerpath-desk",
       "reviewed_at": "2026-10-14T15:10:24Z",
       "decision": "REJECT",
-      "decision_note": "Rejected on 2026-10-14T15:10:24Z by transformerpath-desk. Fetched https://apsr.om/ and https://www.apsr.om/ (both HTTP 200, body text: Please enable JavaScript to continue using this application). Fetched https://www.investoman.om/ (HTTP 200, no transformer-agreement text), https://www.investoman.om/investment-opportunities and https://www.investoman.om/media-center/news (HTTP 200 script shells, no agreement text), and https://investoman.om/investment-opportunities/1778 and https://investoman.om/investment-opportunities/1744 (HTTP 404, title Page Not Found | Invest Oman). omannews.gov.om failed certificate verification (unable to get local issuer certificate) and was not used. Oman Observer, Times of Oman and The Arabian Stories are secondary press, not OFFICIAL, and were not the basis. evidence_status stays the recorded CONFIRMED grade and was not relabeled. The curated Intel card was not removed.",
+      "decision_note": "Rejected on 2026-10-14T15:10:24Z by transformerpath-desk. Fetched https://apsr.om/ and https://www.apsr.om/ (both HTTP 200, body text: Please enable JavaScript to continue using this application). Fetched https://www.investoman.om/ (HTTP 200, no transformer-agreement text), https://www.investoman.om/investment-opportunities and https://www.investoman.om/media-center/news (HTTP 200 script shells, no agreement text), and https://investoman.om/investment-opportunities/1778 and https://investoman.om/investment-opportunities/1744 (HTTP 404, title Page Not Found | Invest Oman). omannews.gov.om failed certificate verification (unable to get local issuer certificate) and was not used. Oman Observer, Times of Oman and The Arabian Stories are secondary press, not OFFICIAL, and were not the basis. evidence_status stays the recorded CONFIRMED grade and was not relabeled. The public Intel card was unpublished on 2026-10-14 (feed, intel.json, and Oman manufacturer regional lists) so it is no longer shown as CONFIRMED.",
       "source_urls": [
         "https://apsr.om/",
         "https://www.apsr.om/",
