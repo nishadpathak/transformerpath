@@ -2266,16 +2266,16 @@
     "cadence": "twice daily (curated)",
     "refreshed_at_build": true,
     "newest_validated_content_date": "2026-09-25",
-    "note": "updated reflects newest validated CONTENT observation (float/publication/event/update) — not source_checked_at and not a silent redeploy clock. Excludes tender_close_date and future dates. Human approve[] overrides from gcc-discovery-publish-overrides.json.",
+    "note": "updated reflects newest validated CONTENT observation (float/publication/event/update) — not source_checked_at and not a silent redeploy clock. Excludes tender_close_date and future dates. Publication requires gcc-intel-review.json decision=PUBLISH with reviewer and reviewed_at. Held candidates are not auto-published.",
     "gcc_published": [
       "uae-dewa-2122600155",
       "sa-swa-rabigh-2p5mva",
       "bh-ewa-389-2026-1000kva"
     ],
     "desk_approved": [
+      "uae-dewa-2122600155",
       "sa-swa-rabigh-2p5mva",
-      "bh-ewa-389-2026-1000kva",
-      "uae-dewa-2122600155"
+      "bh-ewa-389-2026-1000kva"
     ]
   },
   "North America": {

@@ -103,7 +103,8 @@ DEV.forEach(function (dev) {
       src: x.src || '',
       url: x.url || '',
       value: valueLabel(x.value),
-      date: dateFromSrc(x.src),
+      date: x.date_iso || dateFromSrc(x.src),
+      facility_id: x.facility_id || null,
       confidence: BASE_CONF,
       claimType: BASE_CLAIM,
       sourceType: 'company_development',
@@ -117,6 +118,12 @@ const projectSummary = PROJECTS.map(function (p) {
   return {
     name: p.project,
     country: p.country,
+    project_country: (p.project_country != null && String(p.project_country).trim() !== '')
+      ? p.project_country
+      : ((p.country != null && String(p.country).trim() !== '') ? p.country : null),
+    buyer_country: p.buyer_country != null ? p.buyer_country : null,
+    supplier_country: p.supplier_country != null ? p.supplier_country : null,
+    source_country: p.source_country != null ? p.source_country : null,
     voltage: p.voltage || '',
     status: p.status || '',
     transformer_requirement: (p.transformer_requirement || 'UNKNOWN').toUpperCase(),

@@ -1,0 +1,67 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://transformerpath.com/gcc-intel-review.schema.json",
+  "title": "GCC Intel review ledger",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "purpose", "reviews"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "purpose": { "type": "string" },
+    "honesty": { "type": "string" },
+    "updated": { "type": "string" },
+    "reviews": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/review" }
+    }
+  },
+  "definitions": {
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidate_id",
+        "evidence_status",
+        "hold_reason",
+        "reviewer",
+        "reviewed_at",
+        "decision",
+        "decision_note",
+        "source_urls"
+      ],
+      "properties": {
+        "candidate_id": { "type": "string", "minLength": 1 },
+        "evidence_status": { "enum": ["CONFIRMED", "SUPPORTED", "WEAK", "UNSOURCED"] },
+        "hold_reason": {
+          "anyOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["code", "text"],
+              "properties": {
+                "code": {
+                  "enum": [
+                    "AWAITING_HUMAN_REVIEW",
+                    "REVIEW_REQUIRED",
+                    "INTERNAL_COVERAGE_ONLY",
+                    "DUPLICATE_OF_CURATED"
+                  ]
+                },
+                "text": { "type": "string" }
+              }
+            }
+          ]
+        },
+        "reviewer": { "type": ["string", "null"] },
+        "reviewed_at": { "type": ["string", "null"] },
+        "decision": { "enum": ["PUBLISH", "HOLD", "REJECT"] },
+        "decision_note": { "type": "string" },
+        "source_urls": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  }
+}

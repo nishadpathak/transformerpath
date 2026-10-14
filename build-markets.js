@@ -439,60 +439,99 @@ function gridsFor(m) {
   const g = GRIDS.find(function (x) { return ci(x.country).indexOf(ci(m.gridsName)) >= 0 || ci(m.gridsName).indexOf(ci(x.country)) >= 0; });
   return g;
 }
+const COUNTRY_EQUIV = {
+  'uae': ['uae', 'united arab emirates'],
+  'united arab emirates': ['uae', 'united arab emirates'],
+  'usa': ['usa', 'united states', 'u.s.'],
+  'united states': ['usa', 'united states', 'u.s.'],
+  'türkiye': ['türkiye', 'turkey', 'turkiye'],
+  'turkey': ['türkiye', 'turkey', 'turkiye'],
+  'turkiye': ['türkiye', 'turkey', 'turkiye'],
+  'saudi arabia': ['saudi arabia', 'ksa'],
+  'ksa': ['saudi arabia', 'ksa']
+};
+function sameMarketCountry(value, m) {
+  if (value == null || String(value).trim() === '') return false;
+  const v = ci(value);
+  const names = [ci(m.gridsName), ci(m.name), ci(m.manufName)].filter(Boolean);
+  if (names.indexOf(v) >= 0) return true;
+  const equiv = COUNTRY_EQUIV[v] || [];
+  return names.some(function (n) { return equiv.indexOf(n) >= 0 || (COUNTRY_EQUIV[n] || []).indexOf(v) >= 0; });
+}
+// Keywords are word-bounded. They apply only when the record has no country.
+function wordBounded(text, kw) {
+  const k = ci(kw).trim();
+  if (!k) return false;
+  const escKw = k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s+');
+  return new RegExp('(?:^|[^a-z0-9])' + escKw + '(?:[^a-z0-9]|$)', 'i').test(ci(text));
+}
+function keywordHit(text, m) {
+  return !!(m.kw && m.kw.some(function (k) { return wordBounded(text, k); }));
+}
+
 function eventsFor(m) {
   const now = new Date();
   return EVENTS.filter(function (ev) {
-    const countryMatch = ci(ev.co) === ci(m.gridsName) || ci(ev.co) === ci(m.manufName) || ci(m.name) === ci(ev.co);
-    const kwMatch = m.kw.some(function (k) { return ci(ev.n + ' ' + ev.co + ' ' + ev.r + ' ' + ev.d).indexOf(k) >= 0; });
-    return countryMatch || (kwMatch && ci(ev.co).indexOf(ci(m.name)) >= 0);
+    const hasCountry = ev.co != null && String(ev.co).trim() !== '';
+    if (hasCountry) return sameMarketCountry(ev.co, m);
+    return keywordHit((ev.n || '') + ' ' + (ev.r || '') + ' ' + (ev.d || ''), m);
   }).filter(function (ev) { return new Date(ev.e) >= now; }).sort(function (a, b) { return String(a.s).localeCompare(String(b.s)); }).slice(0, 8);
 }
 function intelFor(m) {
   const reg = INTEL[m.intel]; const out = [];
   if (reg && reg.items) reg.items.forEach(function (it) {
-    if (m.kw.some(function (k) { return ci(it.title + ' ' + it.snippet).indexOf(k) >= 0; })) out.push(it);
+    // Intel cards have no project_country. Word-bounded keywords only.
+    if (keywordHit((it.title || '') + ' ' + (it.snippet || ''), m)) out.push(it);
   });
   return out.slice(0, 5);
 }
 // Business-intelligence activity for a market: typed company developments and
 // structured projects that involve this country/region. Only sourced entries.
 function biFor(m) {
-  const countries = [ci(m.gridsName), ci(m.name)].filter(Boolean);
-  const countryHit = function (c) { return countries.indexOf(ci(c)) >= 0; };
-  // Projects matching the country (or region keywords).
-  const projects = BI_PROJECTS.filter(function (p) { return countryHit(p.country) || m.kw.some(function (k) { return ci(p.country + ' ' + p.name).indexOf(k) >= 0; }); });
+  // Project lists filter on project_country only.
+  const projects = BI_PROJECTS.filter(function (p) {
+    return sameMarketCountry(p.project_country, m);
+  });
   // Typed company events for companies headquartered/operating in this market.
   const events = [];
   Object.keys(BI_EVENTS).forEach(function (co) {
     const c = BI_EVENTS[co];
-    const inMarket = c.country && countryHit(c.country) || m.kw.some(function (k) { return ci(co + ' ' + (c.country || '')).indexOf(k) >= 0; });
+    const hasCountry = c.country != null && String(c.country).trim() !== '';
+    const inMarket = hasCountry ? sameMarketCountry(c.country, m) : keywordHit(co, m);
     if (!inMarket) return;
     (c.events || []).forEach(function (e) { if (e.type !== 'reference') events.push({ co: co, e: e }); });
   });
   return { projects: projects, events: events };
 }
 
+function listingCountry(rec) {
+  if (!rec || rec.project_country == null || String(rec.project_country).trim() === '') return null;
+  return rec.project_country;
+}
 function tendersFor(m) {
+  // Market lists filter on project_country only. Keyword matching is not an OR.
   return TENDERS.filter(function (t) {
-    if (!t) return false;
-    const cMatch = ci(t.country) === ci(m.gridsName) || ci(t.country) === ci(m.name) || ci(t.country) === ci(m.manufName);
-    const kwMatch = m.kw && m.kw.some(function (k) { return ci((t.title || '') + ' ' + (t.utility || '')).indexOf(k) >= 0; });
-    return cMatch || kwMatch;
+    return t && sameMarketCountry(listingCountry(t), m);
   }).slice(0, 6);
 }
 
 function awardsFor(m) {
   return AWARDS.filter(function (a) {
-    if (!a) return false;
-    const cMatch = ci(a.country) === ci(m.gridsName) || ci(a.country) === ci(m.name) || ci(a.country) === ci(m.manufName);
-    const kwMatch = m.kw && m.kw.some(function (k) { return ci((a.title || '') + ' ' + (a.winner || '')).indexOf(k) >= 0; });
-    return cMatch || kwMatch;
+    return a && sameMarketCountry(listingCountry(a), m);
   }).slice(0, 6);
 }
 
 const FACILITIES = (() => {
   try { return JSON.parse(fs.readFileSync('data/facilities.json', 'utf8')).facilities || []; } catch (e) { return []; }
 })();
+const RESEARCH_QUEUE = (() => {
+  try { return JSON.parse(fs.readFileSync('data/facility-research-queue.json', 'utf8')).targets || []; } catch (e) { return []; }
+})();
+function researchFor(m) {
+  return RESEARCH_QUEUE.filter(function (t) {
+    return t && t.status === 'TO_RESEARCH' && sameMarketCountry(t.country, m);
+  });
+}
 
 function factoriesFor(m) {
   const matchCountry = function (c) {
@@ -552,7 +591,7 @@ function marketPage(m) {
     return '<li style="margin:6px 0"><b style="color:var(--accent);font-size:.78rem;text-transform:uppercase;letter-spacing:.03em">' + esc(label) + '</b> · <a href="' + esc(x.e.url) + '" target="_blank" rel="noopener" style="color:var(--accent);font-weight:600">' + esc(x.e.title) + '</a> <span style="color:var(--muted);font-size:.82rem">· ' + esc(x.co) + '</span></li>';
   }).join('');
   const biProj = bi.projects.slice(0, 8).map(function (p) {
-    return '<li style="margin:6px 0"><a href="' + esc(p.url) + '" style="color:var(--accent);font-weight:600">' + esc(p.name) + '</a> <span style="color:var(--muted);font-size:.82rem">· ' + esc(p.country) + (p.voltage ? ' · ' + esc(p.voltage) : '') + ' · ' + esc(p.status || '') + ' · transformer scope <b>' + esc(p.transformer_requirement) + '</b></span></li>';
+    return '<li style="margin:6px 0" data-listing="project" data-project-country="' + esc(p.project_country || '') + '"><a href="' + esc(p.url) + '" style="color:var(--accent);font-weight:600">' + esc(p.name) + '</a> <span style="color:var(--muted);font-size:.82rem">· ' + esc(p.project_country || p.country) + (p.voltage ? ' · ' + esc(p.voltage) : '') + ' · ' + esc(p.status || '') + ' · transformer scope <b>' + esc(p.transformer_requirement) + '</b></span></li>';
   }).join('');
   const biHtml = (biEvt || biProj)
     ? '<p style="font-size:.85rem;color:var(--muted)">Sourced company developments and transformer-relevant projects with a footprint in this market. An item is shown because it <b>references</b> the company or project — it is not an independently verified award or scope unless the source confirms one.</p>' +
@@ -584,11 +623,19 @@ function marketPage(m) {
     '</tbody></table></div>' + (facs.length > 10 ? '<p style="color:var(--muted);font-size:.8rem">+' + (facs.length - 10) + ' more sourced plant records in this market.</p>' : '')
   ) : '<p style="color:var(--muted);font-size:.85rem">No independent plant sites indexed yet.</p>';
 
+  const research = researchFor(m);
+  const researchHtml = research.length ? (
+    '<p style="font-size:.85rem;color:var(--muted)">Directory names queued for plant research. Every row is <b>TO_RESEARCH</b>. None are marked SOURCED.</p>' +
+    '<ul>' + research.map(function (t) {
+      return '<li style="margin:6px 0" data-research-status="TO_RESEARCH"><b style="color:var(--text)">' + esc(t.company_name) + '</b> <span style="color:var(--muted)">· ' + esc(t.city || t.site || '') + ' · ' + esc(t.status) + '</span></li>';
+    }).join('') + '</ul>'
+  ) : '';
+
   const tendersHtml = tenders.length ? (
     '<ul>' + tenders.map(function (t) {
       const st = '<span class="vbadge" style="font-size:.72rem;margin-left:6px">' + esc(t.status || 'ACTIVE') + '</span>';
       const ut = t.utility ? ' · <span style="color:var(--muted)">' + esc(t.utility) + '</span>' : '';
-      return '<li style="margin:8px 0"><a href="../../tenders.html" style="color:var(--accent);font-weight:600">' + esc(t.title) + '</a>' + st + ut + '</li>';
+      return '<li style="margin:8px 0" data-listing="tender" data-project-country="' + esc(t.project_country || '') + '"><a href="../../tenders.html" style="color:var(--accent);font-weight:600">' + esc(t.title) + '</a>' + st + ut + '</li>';
     }).join('') + '</ul>'
   ) : '<p style="color:var(--muted);font-size:.85rem">No active public tenders recorded at this build. See the <a href="../../tenders.html" style="color:var(--accent)">Tenders</a> board.</p>';
 
@@ -596,7 +643,7 @@ function marketPage(m) {
     '<ul>' + awards.map(function (a) {
       const val = a.value ? ' · <b style="color:var(--green)">' + esc(a.value) + '</b>' : '';
       const win = a.winner ? ' · Awardee: <b style="color:var(--text)">' + esc(a.winner) + '</b>' : '';
-      return '<li style="margin:8px 0"><b style="color:var(--text)">' + esc(a.title) + '</b>' + win + val + '</li>';
+      return '<li style="margin:8px 0" data-listing="award" data-project-country="' + esc(a.project_country || '') + '"><b style="color:var(--text)">' + esc(a.title) + '</b>' + win + val + '</li>';
     }).join('') + '</ul>'
   ) : '<p style="color:var(--muted);font-size:.85rem">No recent major awards indexed for this market. See <a href="../../awards.html" style="color:var(--accent)">Awards</a>.</p>';
 
@@ -616,7 +663,7 @@ function marketPage(m) {
     '<meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow">' +
     '<link rel="stylesheet" href="../../style.css?v=12"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin><link rel="preconnect" href="https://www.google-analytics.com"><link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">' +
     '<style>.c-wrap{max-width:940px;margin:0 auto;padding:44px 20px 90px}.c-wrap h1{font-size:1.9rem;color:var(--ink)}.c-wrap .lead{color:var(--muted);font-size:1rem;max-width:760px}.c-wrap .mk-row{display:flex;align-items:baseline;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:.92rem}.c-wrap .mk-row b{color:var(--ink)}.c-wrap .mk-row .city{color:var(--muted);font-size:.82rem}.c-wrap .mk-row .prof{color:var(--accent);font-size:.78rem;font-weight:600;margin-left:auto}.c-wrap h2{font-size:1.25rem;color:var(--ink);margin-top:26px}.c-wrap .tpill{display:inline-block;background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:2px 10px;font-size:.74rem;color:var(--text);margin:3px 4px 3px 0}.stats{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0}.stats .s{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 16px}.stats .s b{color:var(--accent);font-size:1.15rem;display:block}.stats .s span{color:var(--muted);font-size:.78rem}.tbl-responsive{overflow-x:auto;-webkit-overflow-scrolling:touch}.vbadge{color:var(--green);font-weight:700;font-size:.78rem}</style>' + schema +
-    '</head>\n<body>\n' + HEAD + '\n<main class="c-wrap">' +
+    '</head>\n<body>\n' + HEAD + '\n<main class="c-wrap" data-market="' + esc(m.slug) + '" data-market-country="' + esc(m.gridsName) + '">' +
     '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="../../markets.html" style="color:var(--accent)">Markets</a> › ' + esc(m.name) + '</nav>' +
     '<h1>' + m.flag + ' Transformer Industry — ' + esc(m.name) + '</h1>' +
     '<p class="lead">' + esc(m.blurb) + '</p>' +
@@ -651,6 +698,7 @@ function marketPage(m) {
     '</div>' +
     '<h2>Grid &amp; utilities</h2>' + (utlHtml || '<p style="color:var(--muted)">See the grid directory for operator details.</p>') +
     '<h2>Confirmed manufacturing plants &amp; facilities (' + facs.length + ')</h2>' + facsHtml +
+    (researchHtml ? '<h2>Facility research queue (' + research.length + ')</h2>' + researchHtml : '') +
     '<h2>Transformer manufacturers</h2><p style="font-size:.85rem;color:var(--muted)">' + mkCount + ' manufacturers tracked in the ' + esc(m.name) + ' census — the same unique-company count as the figure above. <a href="../../manufacturers/' + slugify(m.manufName) + '.html" style="color:var(--accent)">All ' + esc(m.name) + ' manufacturers →</a></p>' + (mkHtml || '<p style="color:var(--muted)">No manufacturers listed yet.</p>') +
     '<h2>Current tenders &amp; procurement (' + tenders.length + ')</h2>' + tendersHtml +
     '<h2>Recent transformer contract awards (' + awards.length + ')</h2>' + awardsHtml +
