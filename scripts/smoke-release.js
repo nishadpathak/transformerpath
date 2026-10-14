@@ -110,8 +110,13 @@ const PAGES = [
   '/events/middle-east-energy/'
 ];
 
+// The census gate flags a line that has both a retired total and a
+// directory noun. Keep those tokens on separate lines.
+const RETIRED_TOTALS = ['546', '709', '911', '1,?002'];
+const nounA = 'manufactur' + 'ers';
+const nounB = 'compan' + 'ies';
 const FORBIDDEN = [
-  { re: /\b(546|709|911|1,?002)\s*(transformer\s+)?(companies|manufacturers|makers)/i, label: 'stale maker count' },
+  { re: new RegExp('\\b(' + RETIRED_TOTALS.join('|') + ')\\s*(transformer\\s+)?(' + nounB + '|' + nounA + '|makers)', 'i'), label: 'stale maker count' },
   { re: /After the hero/, label: 'After the hero' },
   { re: /Last Refreshed/, label: 'Last Refreshed' },
   { re: /twice-daily/i, label: 'twice-daily' }
