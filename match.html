@@ -179,7 +179,7 @@
 
       <div class="form-group" style="justify-content:flex-end">
         <label>&nbsp;</label>
-        <button type="submit" class="btn btn-amber" style="height:42px; font-weight:800">⚡ Match Verified Suppliers</button>
+        <button type="submit" class="btn btn-amber" style="height:42px; font-weight:800">Match suppliers</button>
       </div>
     </form>
   </div>
@@ -192,7 +192,7 @@
     <div id="bulkActions" style="display:flex; gap:8px"></div>
   </div>
 
-  <div id="matchesContainer"></div>
+  <div id="matchesContainer"><p id="matchPrompt" style="color:var(--muted);text-align:center;padding:28px 12px">Run a match to see manufacturers. Nothing is listed until you submit this form.</p></div>
 </main>
 
 <script src="tp-shortlist.js" defer></script>
@@ -203,7 +203,6 @@ fetch('data/manufacturer-intel.json')
   .then(r => r.json())
   .then(d => {
     COMPANIES = d.companies || [];
-    runMatch();
   })
   .catch(err => {
     console.error('Failed to load manufacturer intelligence', err);
@@ -218,6 +217,14 @@ function loadSample(mva, pkv, skv, std, ctry, qty, type) {
   document.getElementById('qtyUnits').value = qty;
   document.getElementById('eqType').value = type;
   runMatch();
+}
+
+function withUnit(value, unit) {
+  if (value == null || value === '') return '—';
+  var s = String(value).trim();
+  if (!s || s === '0') return '—';
+  if (new RegExp('\\b' + unit + '\\b', 'i').test(s)) return s;
+  return s + ' ' + unit;
 }
 
 function runMatch() {
@@ -250,10 +257,10 @@ function runMatch() {
     if (canHandleKv && canHandleMva && hasType) {
       if (c.research_status === 'ACTIVE_CONFIRMED' && (maxKv >= kvReq * 1.2 || maxMva >= mvaReq * 1.2)) {
         tier = 'CONFIRMED';
-        rationale = `Verified manufacturing capability up to ${maxKv} kV / ${maxMva} MVA with active type-test records.`;
+        rationale = `Confirmed manufacturing capability up to ${withUnit(maxKv, 'kV')} / ${withUnit(maxMva, 'MVA')} with active type-test records.`;
       } else {
         tier = 'SUPPORTED';
-        rationale = `Reported capability envelope covers ${maxKv} kV / ${maxMva} MVA under ${stdReq}.`;
+        rationale = `Reported capability envelope covers ${withUnit(maxKv, 'kV')} / ${withUnit(maxMva, 'MVA')} under ${stdReq}.`;
       }
     } else if (canHandleKv || prods.includes('power')) {
       tier = 'UNKNOWN';
@@ -263,10 +270,10 @@ function runMatch() {
     }
 
     const reasons = [];
-    if (canHandleKv) reasons.push(`Primary voltage: reported ${maxKv || '—'} kV ≥ ${kvReq} kV`);
-    else reasons.push(`Primary voltage: reported ${maxKv || '—'} kV (below ${kvReq} kV)`);
-    if (canHandleMva) reasons.push(`Rating: reported ${maxMva || '—'} MVA ≥ ${mvaReq} MVA`);
-    else reasons.push(`Rating: reported ${maxMva || '—'} MVA (below ${mvaReq} MVA)`);
+    if (canHandleKv) reasons.push(`Primary voltage: reported ${withUnit(maxKv, 'kV')} ≥ ${kvReq} kV`);
+    else reasons.push(`Primary voltage: reported ${withUnit(maxKv, 'kV')} (below ${kvReq} kV)`);
+    if (canHandleMva) reasons.push(`Rating: reported ${withUnit(maxMva, 'MVA')} ≥ ${mvaReq} MVA`);
+    else reasons.push(`Rating: reported ${withUnit(maxMva, 'MVA')} (below ${mvaReq} MVA)`);
     if (hasType) reasons.push(`Product class signal matches ${eqType}`);
     if (hasStd) reasons.push(`Standards/certs signal includes ${stdReq.split(' ')[0]} / ISO / ACTIVE_CONFIRMED`);
     else reasons.push(`Standards/certs for ${stdReq} not publicly confirmed`);
@@ -320,7 +327,7 @@ function runMatch() {
               </div>
               <h3 style="font-size:1.15rem; color:var(--ink); margin:0 0 4px"><a href="manufacturers/${c.slug}/" style="color:inherit; text-decoration:none">${c.name}</a></h3>
               <div style="font-size:12px; color:var(--amber); font-weight:700; margin-bottom:8px">
-                Max Voltage: ${c.reported_voltage ? c.reported_voltage + ' kV' : '—'} · Max MVA: ${c.reported_mva ? c.reported_mva + ' MVA' : '—'}
+                Max Voltage: ${withUnit(c.reported_voltage, 'kV')} · Max MVA: ${withUnit(c.reported_mva, 'MVA')}
               </div>
               <div class="evidence-box">
                 <b style="color:var(--text)">Evidence match:</b> ${m.rationale}
