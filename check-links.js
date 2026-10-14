@@ -21,29 +21,75 @@ function walk(dir, skip = []) {
 const SKIP = ['archive', '_private', 'transformerpath-site', 'transformerpath', 'dist', 'node_modules', 'functions', '_partials', 'Transformer Equipments'];
 const files = walk('.', SKIP);
 
-// Link target existence: resolve relative to the file's directory.
-// Clean routes like /intel are served via Netlify redirects/rewrites to
-// intel.html — treat those as valid when the matching .html (or index.html) exists.
+// Netlify pretty URLs map /directory → directory.html and /certificates/x →
+// certificates.html (rewrite). Extensionless / trailing-slash targets count
+// as OK when the corresponding .html page exists. Also honour explicit aliases
+// from netlify.toml (/me, /grid-lab, /assessments, …).
+const PRETTY = {
+  '/me': 'workspace.html',
+  '/me/designs': 'workspace.html',
+  '/me/shortlist': 'workspace.html',
+  '/me/rfqs': 'workspace.html',
+  '/me/supplier': 'workspace.html',
+  '/me/labs': 'workspace.html',
+  '/my': 'workspace.html',
+  '/sign-in': 'workspace.html',
+  '/sign-up': 'workspace.html',
+  '/account': 'workspace.html',
+  '/onboarding': 'onboarding.html',
+  '/grid-lab': 'grid-lab.html',
+  '/labs': 'engineering-lab.html',
+  '/engineering-lab': 'engineering-lab.html',
+  '/certificates': 'certificates.html',
+  '/directory': 'directory.html',
+  '/assessments': 'assessments.html',
+  '/pricing': 'pricing.html',
+  '/academy': 'academy.html',
+};
+
 const siteRoot = process.cwd();
+
 function existsTarget(fromFile, target) {
   const clean = target.split('#')[0].split('?')[0].trim();
   if (!clean) return { ok: true };
   if (/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(clean)) return { ok: true }; // protocol (http, mailto, tel, data)
   if (clean.startsWith('//')) return { ok: true };
-  if (clean === '') return { ok: true };
+
   const resolved = clean.startsWith('/')
-    ? path.resolve(siteRoot, clean.slice(1))          // site-absolute (Netlify serves from publish root)
+    ? path.resolve(siteRoot, clean.slice(1))
     : path.resolve(path.dirname(fromFile), clean);
-  if (fs.existsSync(resolved)) return { ok: true, resolved };
-  // Extensionless pretty URL → sibling .html
-  if (!path.extname(resolved) && fs.existsSync(resolved + '.html')) {
-    return { ok: true, resolved: resolved + '.html' };
+
+  const candidates = [resolved];
+  const trimmed = resolved.replace(/[/\\]+$/, '');
+  if (trimmed !== resolved) candidates.push(trimmed);
+  candidates.push(trimmed + '.html');
+  candidates.push(path.join(trimmed, 'index.html'));
+
+  const relFromRoot = path.posix.normalize(
+    '/' + path.relative(siteRoot, trimmed).split(path.sep).join('/')
+  );
+  if (PRETTY[relFromRoot]) candidates.push(path.resolve(siteRoot, PRETTY[relFromRoot]));
+  if (relFromRoot === '/certificates' || relFromRoot.indexOf('/certificates/') === 0) {
+    candidates.push(path.resolve(siteRoot, 'certificates.html'));
   }
-  // Directory pretty URL → index.html
-  if (!path.extname(resolved) && fs.existsSync(path.join(resolved, 'index.html'))) {
-    return { ok: true, resolved: path.join(resolved, 'index.html') };
+  if (relFromRoot === '/academy' || relFromRoot.indexOf('/academy/') === 0) {
+    candidates.push(path.resolve(siteRoot, 'academy.html'));
+    candidates.push(path.resolve(siteRoot, 'academy-loop.html'));
   }
-  return { ok: false, resolved };
+
+  // Walk up: certificates/slug → certificates.html; directory → directory.html
+  let probe = trimmed;
+  while (probe.startsWith(siteRoot) && probe !== siteRoot) {
+    candidates.push(probe);
+    candidates.push(probe + '.html');
+    candidates.push(path.join(probe, 'index.html'));
+    probe = path.dirname(probe);
+  }
+
+  for (let i = 0; i < candidates.length; i++) {
+    if (candidates[i] && fs.existsSync(candidates[i])) return { ok: true, resolved: candidates[i] };
+  }
+  return { ok: false, resolved: resolved };
 }
 
 // Strip JS template literals and string-concat expressions so ${...} and '+...+'
@@ -87,3 +133,5 @@ if (broken) {
      link could never stop a deploy. */
   process.exitCode = 1;
 }
+
+module.exports = { existsTarget };

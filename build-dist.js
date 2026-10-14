@@ -57,6 +57,9 @@ const DIRS = [
 // Individual files from directories that are NOT wholly public.
 const FILES_FROM_MIXED_DIRS = [
   'lib/event-search.js',        // loaded by search.html; the rest of lib/ is build-time
+  'js/tp-grid-lab.js',          // Grid Lab V2 engine (public /grid-lab)
+  'js/tp-grid-calc.js',
+  'js/tp-webgl-gate.js',
 ];
 
 // Runtime JavaScript at the root, derived from what pages actually load.
@@ -65,6 +68,7 @@ const ROOT_JS = [
   'follow-button.js', 'form-notify.js', 'intel-feed-ui.js', 'material-latest.js', 'rfq-engine.js',
   'site-stats.js', 'supabase-config.js', 'supabase.js', 'sw.js',
   'tp-directory.js', 'tp-feedback.js', 'tp-freshness.js', 'tp-nav.js', 'tp-pwa.js',
+  'tp-grid-lab.js', 'tp-learner.js', 'tp-entitlement.js', 'tp-hub.js', 'tp-academy.js',
   'tp-theme.js', 'tp-shortlist.js', 'tp-watchlist.js', 'map.js',
   'tp-webgl-gate.js',
   'tp-3d-core.js', 'tp-power-assembly.js', 'tp-oil-assembly.js',

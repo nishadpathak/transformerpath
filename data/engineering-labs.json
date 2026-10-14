@@ -1,0 +1,62 @@
+{
+  "_comment": "Engineering Labs IA — four system-level environments, not a catalogue of isolated transformer meshes. No new CAD this cycle. Grid Lab is live. Transformer Lab is a drill-down index over existing explorers. Factory Lab and Substation & Protection Lab are coming (no simulators here).",
+  "framing": "Think in Labs and systems, not in “3D models”. Component-level transformer views already exist; they sit inside Transformer Lab rather than as ten front doors.",
+  "mental_models": {
+    "system": "GRID → SUBSTATION → TRANSFORMER → COMPONENT → PHYSICS → FAULT/OPERATION",
+    "process": "MATERIAL → MANUFACTURING → TESTING → TRANSFORMER → GRID"
+  },
+  "labs": [
+    {
+      "id": "grid",
+      "title": "Grid Lab",
+      "status": "live",
+      "href": "grid-lab.html",
+      "summary": "Generation → GSU → transmission → autotransformer → substation → step-down → distribution → consumer. Census scenarios (frequency, UHV / 765 kV, synchronous areas). Later: load, OLTC, N-1, faults, country architectures. Not another transformer mesh.",
+      "later": ["Load flow", "OLTC on the grid", "N-1", "Faults", "Country architectures"]
+    },
+    {
+      "id": "transformer",
+      "title": "Transformer Lab",
+      "status": "index",
+      "href": "engineering-lab.html#transformer",
+      "summary": "One drill-down through the machine: Tank → Core → Windings → Insulation → Leads → Bushings → OLTC → Cooling → Protection. Existing explorers are rooms inside this Lab — not ten separate products.",
+      "drilldown": [
+        { "step": "Tank", "href": "power3d.html", "note": "Power transformer explorer" },
+        { "step": "Core", "href": "coretopology.html", "note": "3-limb / 5-limb / shell-form" },
+        { "step": "Windings", "href": "windings.html", "note": "Helical, disc, layer, interleaved" },
+        { "step": "Insulation", "href": "coilassembly.html", "note": "Active-part / pressboard geometry" },
+        { "step": "Leads", "href": "coilassembly.html", "note": "Leads and cleats on the CCA" },
+        { "step": "Bushings", "href": "bushing.html", "note": "Existing condenser-bushing cutaway — not a new Bushings Lab" },
+        { "step": "OLTC", "href": "oltc.html", "note": "On-load tap-changer cutaway" },
+        { "step": "Cooling", "href": "power500.html", "note": "ODAF cooler banks on the 500 MVA unit" },
+        { "step": "Protection", "href": "power3d.html", "note": "Fault / Buchholz path on the power unit" }
+      ]
+    },
+    {
+      "id": "factory",
+      "title": "Factory Lab",
+      "status": "coming",
+      "href": null,
+      "summary": "Later, commercially important: CRGO → core cutting → stacking → winding → insulation → active part → drying → tanking → vacuum filling → assembly → testing → dispatch. Clicks will link Academy, Machinery, Materials, suppliers and RFQ. No simulator in this cycle.",
+      "related": [
+        { "label": "Academy manufacturing loop", "href": "academy-loop.html?id=disc-winding" },
+        { "label": "Machinery directory", "href": "machinery.html" },
+        { "label": "Materials", "href": "materials.html" },
+        { "label": "RFQ", "href": "rfq.html" }
+      ]
+    },
+    {
+      "id": "substation",
+      "title": "Substation & Protection Lab",
+      "status": "coming",
+      "href": null,
+      "summary": "Before another component model: 400/132/33 kV AIS/GIS; click through to existing transformer / bushing / OLTC; later animate CB / CT / CVT / arrester / busbar; fault → CT → differential → trip → isolate. No simulator in this cycle.",
+      "related": [
+        { "label": "Grid Lab (live system context)", "href": "grid-lab.html" },
+        { "label": "GSU explorer", "href": "gsu.html" },
+        { "label": "OLTC cutaway", "href": "oltc.html" },
+        { "label": "Bushing cutaway", "href": "bushing.html" }
+      ]
+    }
+  ]
+}

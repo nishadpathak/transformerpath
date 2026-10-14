@@ -1,0 +1,230 @@
+{
+  "_comment": "TransformerPath Grid Lab. Derived from data/grids.json. Not a 3D model. Country Grid Lab is later.",
+  "generated": "2026-09-16",
+  "countries": 151,
+  "operators": 166,
+  "note": "Country Grid Lab (per-country engineering models) is scheduled later — not the next 3D model.",
+  "scenarios": [
+    {
+      "id": "freq-50-60",
+      "title": "50 Hz and 60 Hz worlds",
+      "family": "Grid systems",
+      "minutes": 6,
+      "skill": "grid-frequency",
+      "summary": "The census records national frequency. Most of the world is 50 Hz; a smaller set — including North America, parts of the Americas, Saudi Arabia, Japan (split), South Korea and the Philippines — is 60 Hz.",
+      "prompt": "Which of these census countries is recorded as 60 Hz?",
+      "options": [
+        "Saudi Arabia",
+        "Canada",
+        "South Korea",
+        "Germany",
+        "India",
+        "France"
+      ],
+      "answer_hint": "60 Hz countries in this census include Saudi Arabia, South Korea, Taiwan, Philippines, USA, Canada, Mexico, Brazil….",
+      "census_readout": {
+        "label": "Census readout — 60 Hz countries (simulator, not a 3D model)",
+        "count": 19,
+        "rows": [
+          {
+            "country": "Saudi Arabia",
+            "freq": "60",
+            "sync": "GCCIA",
+            "kv": 380
+          },
+          {
+            "country": "South Korea",
+            "freq": "60",
+            "sync": "Isolated",
+            "kv": 765
+          },
+          {
+            "country": "Taiwan",
+            "freq": "60",
+            "sync": "Isolated",
+            "kv": 345
+          },
+          {
+            "country": "Philippines",
+            "freq": "60",
+            "sync": "National (HVDC-bridged)",
+            "kv": 500
+          },
+          {
+            "country": "USA",
+            "freq": "60",
+            "sync": "3 interconnections",
+            "kv": 765
+          },
+          {
+            "country": "Canada",
+            "freq": "60",
+            "sync": "Eastern / Western / Québec",
+            "kv": 735
+          },
+          {
+            "country": "Mexico",
+            "freq": "60",
+            "sync": "SIN Mexico",
+            "kv": 400
+          },
+          {
+            "country": "Brazil",
+            "freq": "60",
+            "sync": "SIN Brazil",
+            "kv": 750
+          }
+        ]
+      },
+      "census_count": 19,
+      "next": "uhv-765"
+    },
+    {
+      "id": "uhv-765",
+      "title": "UHV and 765 kV class",
+      "family": "Grid systems",
+      "minutes": 8,
+      "skill": "uhv-systems",
+      "summary": "A 765 kV class grid is uncommon. The census records transmission voltage per operator — UHV / 765 kV is a structured voltage match, not a marketing label.",
+      "prompt": "Open the directory for 765 kV manufacturers after this scenario. First: which census countries show a grid voltage of 765 kV or above?",
+      "options": [
+        "Kazakhstan",
+        "South Africa",
+        "India",
+        "China",
+        "South Korea",
+        "USA"
+      ],
+      "answer_hint": "Census countries at ≥765 kV: Kazakhstan (1150 kV); South Africa (765 kV); India (765 kV); China (1000 kV); South Korea (765 kV); USA (765 kV); Venezuela (765 kV).",
+      "census_readout": {
+        "label": "Census readout — countries at ≥765 kV",
+        "count": 7,
+        "rows": [
+          {
+            "country": "Kazakhstan",
+            "freq": "",
+            "sync": "",
+            "kv": 1150
+          },
+          {
+            "country": "South Africa",
+            "freq": "",
+            "sync": "",
+            "kv": 765
+          },
+          {
+            "country": "India",
+            "freq": "",
+            "sync": "",
+            "kv": 765
+          },
+          {
+            "country": "China",
+            "freq": "",
+            "sync": "",
+            "kv": 1000
+          },
+          {
+            "country": "South Korea",
+            "freq": "",
+            "sync": "",
+            "kv": 765
+          },
+          {
+            "country": "USA",
+            "freq": "",
+            "sync": "",
+            "kv": 765
+          },
+          {
+            "country": "Venezuela",
+            "freq": "",
+            "sync": "",
+            "kv": 765
+          }
+        ]
+      },
+      "census_count": 7,
+      "directory_query": "765 kV",
+      "next": "sync-areas"
+    },
+    {
+      "id": "sync-areas",
+      "title": "Synchronous areas",
+      "family": "Grid systems",
+      "minutes": 6,
+      "skill": "sync-areas",
+      "summary": "grids.json records a free-text `sync` label (Continental Europe, GCCIA, Isolated, …). It is not yet a controlled vocabulary — Grid Lab therefore asks you to read the label, not to invent a “synchronous-area total”.",
+      "prompt": "Which of these countries is labelled GCCIA in the census?",
+      "options": [
+        "United Arab Emirates",
+        "Saudi Arabia",
+        "Kuwait",
+        "Brazil",
+        "Australia",
+        "Japan"
+      ],
+      "answer_hint": "GCCIA-labelled countries: United Arab Emirates, Saudi Arabia, Kuwait, Qatar, Bahrain, Oman, Iraq.",
+      "census_count": 7,
+      "next": "kv-400"
+    },
+    {
+      "id": "kv-400",
+      "title": "400 kV class grids",
+      "family": "Grid systems",
+      "minutes": 6,
+      "skill": "transmission-class",
+      "summary": "400 kV (and nearby 380 / 400 / 420 kV) is the common extra-high-voltage transmission class outside UHV systems.",
+      "prompt": "The census maps 151 national grids. Which of these reaches at least 400 kV but below 765 kV?",
+      "options": [
+        "United Kingdom",
+        "France",
+        "United Arab Emirates",
+        "Maldives",
+        "Iceland",
+        "Saudi Arabia"
+      ],
+      "answer_hint": "85 census countries reach 400–764 kV class.",
+      "census_count": 85,
+      "next": "isolated"
+    },
+    {
+      "id": "isolated",
+      "title": "Isolated systems",
+      "family": "Grid systems",
+      "minutes": 5,
+      "skill": "isolated-grids",
+      "summary": "An Isolated sync label means the census does not record a continental synchronous tie — islands, remote systems, or unlinked national grids.",
+      "prompt": "Which of these is labelled Isolated in the census?",
+      "options": [
+        "Iceland",
+        "Yemen",
+        "Iran",
+        "France",
+        "Germany",
+        "Belgium"
+      ],
+      "answer_hint": "25 census rows carry an Isolated (or similar) sync label.",
+      "census_count": 25,
+      "next": "highest-voltage"
+    },
+    {
+      "id": "highest-voltage",
+      "title": "Highest voltage in the census",
+      "family": "Grid systems",
+      "minutes": 4,
+      "skill": "highest-voltage",
+      "summary": "The highest transmission voltage in this census is derived from operator voltage strings — never invented.",
+      "prompt": "What is the highest transmission voltage currently recorded in the grid census, and where?",
+      "options": [
+        "Kazakhstan · 1150 kV",
+        "United States · 765 kV only",
+        "Germany · 400 kV",
+        "A figure we do not have"
+      ],
+      "answer_hint": "🇰🇿 Kazakhstan records 1150 kV as the highest operator voltage in this census.",
+      "census_count": 1,
+      "next": null
+    }
+  ]
+}

@@ -10,6 +10,24 @@
   "honest_note": "Three clocks: latest_source_date (content), latest_source_checked_at (portal probe), build_at (artifact regenerate). DATA CURRENT requires a recent latest_source_date — never a desk rebuild alone. INTEL COVERAGE DELAYED when discovery lags the industry.",
   "surfaces": [
     {
+      "id": "census",
+      "name": "Manufacturer census",
+      "cadence": "rebuild (at publish)",
+      "description": "Canonical manufacturer + facility census. Separate from Daily Intel. Never labelled DATA CURRENT when last rebuilt more than 72 hours ago.",
+      "last_build": "2026-09-14",
+      "last_data_refresh": "2026-09-14",
+      "last_attempted_refresh": "2026-09-14",
+      "last_successful_refresh": "2026-09-14",
+      "latest_source_observation": "per-company website / source date",
+      "records_added": null,
+      "records_updated": null,
+      "source_count": "census",
+      "source_failures": null,
+      "status": "HEALTHY",
+      "source_health": "rebuilt with the site; independent of the Daily Intel clock",
+      "records": 906
+    },
+    {
       "id": "daily_intel",
       "name": "Daily Intel",
       "cadence": "daily (curated)",

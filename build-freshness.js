@@ -88,6 +88,24 @@ const intelStatus = classifyIntelStatus({
 // last-known refresh. All values are observed from the data, never invented.
 const surfaces = [
   {
+    id: 'census',
+    name: 'Manufacturer census',
+    cadence: 'rebuild (at publish)',
+    description: 'Canonical manufacturer + facility census. Separate from Daily Intel. Never labelled DATA CURRENT when last rebuilt more than 72 hours ago.',
+    last_build: ts('census-audit') || ts('site-stats') || TODAY,
+    last_data_refresh: ts('census-audit') || ts('site-stats') || TODAY,
+    last_attempted_refresh: ts('census-audit') || ts('site-stats') || TODAY,
+    last_successful_refresh: ts('census-audit') || ts('site-stats') || TODAY,
+    latest_source_observation: 'per-company website / source date',
+    records_added: null,
+    records_updated: null,
+    source_count: 'census',
+    source_failures: null,
+    status: 'HEALTHY',
+    source_health: 'rebuilt with the site; independent of the Daily Intel clock',
+    records: readJson('data/census-audit.json', {}).total || null,
+  },
+  {
     id: 'daily_intel',
     name: 'Daily Intel',
     cadence: 'daily (curated)',

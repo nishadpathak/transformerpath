@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /* build-census-audit.js — TransformerPath manufacturer census intelligence audit.
  *
- * Every record in data/manufacturers.json (the ~546-company census) is passed
+ * Every record in data/manufacturers.json (the live census; count is data/site-stats.json) is passed
  * through a systematic, rule-based check to produce an INTERNAL research-status
  * flag and a persistent audit object (data/census-audit.json). The audit is an
  * intelligence aid, not an editorial judgement: it records what the records hold

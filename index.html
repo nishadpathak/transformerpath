@@ -821,12 +821,15 @@
       <div class="hero-copy">
         <div class="hero-live-pill" id="hero-live-pill">
           <span class="live-dot" id="hero-live-dot" aria-hidden="true" style="background:#e0a800"></span>
-          <span class="live-badge-text" id="hero-live-status">INTEL COVERAGE DELAYED</span>
+          <span class="live-badge-text" id="hero-live-status" data-tp-clock="intel">INTEL COVERAGE DELAYED</span>
           <span class="live-sep">&middot;</span>
           <span id="hero-live-date">Latest sourced item 8 Oct 2026</span>
         </div>
+        <div class="hero-live-pill" id="hero-census-pill" style="margin-top:8px">
+          <span class="live-badge-text" id="hero-census" data-tp-clock="census">Census rebuilt — date on load</span>
+        </div>
         <h2>Where the world's <span>transformer industry</span> stays ahead.</h2>
-        <p class="lead">Industry intelligence &middot; Engineering &middot; Manufacturers &middot; Markets &middot; Tools.</p>
+        <p class="lead">Industry intelligence, the manufacturer census, grid markets and engineering tools — 3D is a working demo beneath this briefing, not the product.</p>
         <div class="hero-ctas">
           <a href="/intel" class="btn btn-amber">Read today’s briefing →</a>
           <a href="manufacturers.html" class="hero-secondary">or browse the manufacturer census</a>
@@ -840,7 +843,7 @@
           </form>
           <div class="hero-search-pills">
             <span class="pill-tag">Suggested:</span>
-            <a href="search.html?q=765+kV" class="pill">765 kV manufacturers</a>
+            <a href="/directory?q=765+kV" class="pill">765 kV manufacturers</a>
             <a href="search.html?q=Transformerboard" class="pill">Transformerboard suppliers</a>
             <a href="search.html?q=OLTC" class="pill">OLTC manufacturers</a>
             <a href="search.html?q=Saudi+Arabia" class="pill">Saudi Arabia</a>
@@ -879,17 +882,17 @@
             <div class="stat-card-top"><b data-stat="manufacturers">906</b><span class="stat-card-arrow" aria-hidden="true">&rarr;</span></div>
             <span class="stat-label">Transformer Companies</span>
           </a>
-          <a href="manufacturers.html?view=countries" class="stat-card" title="Explore manufacturing across 88 countries">
-            <div class="stat-card-top"><b data-stat="manufacturingCountries">88</b><span class="stat-card-arrow" aria-hidden="true">&rarr;</span></div>
-            <span class="stat-label">Manufacturing Countries</span>
+          <a href="markets.html" class="stat-card" title="Open country market hubs">
+            <div class="stat-card-top"><b data-stat="gridMarkets">151</b><span class="stat-card-arrow" aria-hidden="true">&rarr;</span></div>
+            <span class="stat-label">Markets</span>
           </a>
-          <a href="projects.html" class="stat-card" title="Track 306 global grid and substation projects">
+          <a href="projects.html" class="stat-card" title="Track global grid and substation projects">
             <div class="stat-card-top"><b data-stat="projects">306</b><span class="stat-card-arrow" aria-hidden="true">&rarr;</span></div>
-            <span class="stat-label">Global Projects Tracked</span>
+            <span class="stat-label">Projects</span>
           </a>
-          <a href="grids.html" class="stat-card" title="Survey 151 national grid systems">
-            <div class="stat-card-top"><b data-stat="countries">151</b><span class="stat-card-arrow" aria-hidden="true">&rarr;</span></div>
-            <span class="stat-label">National Grids Mapped</span>
+          <a href="tenders.html" class="stat-card" title="Transformer-relevant tenders">
+            <div class="stat-card-top"><b data-stat="tenders">151</b><span class="stat-card-arrow" aria-hidden="true">&rarr;</span></div>
+            <span class="stat-label">Tenders</span>
           </a>
         </div>
         <div class="stat-strip">
@@ -1104,6 +1107,7 @@ document.querySelectorAll('#mainNav a').forEach(a=>a.addEventListener('click',()
     // Canonical status from latest_source_date — never from desk/build alone.
     fetch('data/freshness.json',{cache:'no-cache'}).then(function(r){ return r.json().catch(function(){ return {}; }); }).then(function(d){
       const di=(d.surfaces||[]).find(function(s){ return s.id==='daily_intel'; })||{};
+      const ce=(d.surfaces||[]).find(function(s){ return s.id==='census'; })||{};
       const statusLabel = di.public_status || d.public_intel_status || 'INTEL COVERAGE DELAYED';
       const sourceIso = di.latest_source_date || d.latest_source_date || (feed.honesty && feed.honesty.latest_source_iso);
       const sourceLabel = (feed.honesty && feed.honesty.latest_source_date) || sourceIso || 'not recorded';
@@ -1119,15 +1123,31 @@ document.querySelectorAll('#mainNav a').forEach(a=>a.addEventListener('click',()
       const pillStatus = document.getElementById('hero-live-status');
       const pillDate = document.getElementById('hero-live-date');
       const pillDot = document.getElementById('hero-live-dot');
+      const censusEl = document.getElementById('hero-census');
       if (pillStatus) pillStatus.textContent = statusLabel;
       if (pillDate) pillDate.textContent = 'Latest sourced item ' + sourceLabel;
       if (pillDot) pillDot.style.background = dotColor;
+
+      function ageH(iso){
+        if(!iso) return null;
+        var t = Date.parse(iso);
+        if(isNaN(t) && /^\d{4}-\d{2}-\d{2}$/.test(String(iso))) t = Date.parse(iso+'T12:00:00Z');
+        if(isNaN(t)) return null;
+        return (Date.now()-t)/3600000;
+      }
+      const censusIso=ce.last_successful_refresh||ce.last_data_refresh||ce.last_build;
+      const ch=ageH(censusIso);
+      let censusLabel='Census rebuilt '+(fmt(censusIso)||'date unknown');
+      if(ch!=null && ch>72) censusLabel='Census rebuilt '+fmt(censusIso)+' · not labelled current (>'+Math.round(ch)+'h)';
+      if(censusEl) censusEl.textContent=censusLabel;
 
       if(sub){
         sub.innerHTML='Latest sourced item <b>'+sourceLabel+'</b>'+
           (checked?' · source checked <b>'+fmt(checked)+'</b>':'')+
           (buildAt?' · page built <b>'+fmt(buildAt)+'</b>':'')+
-          ' · <b>'+statusLabel+'</b>. Dates are on the source, not this visit. <a href="/intel" style="color:var(--accent)">Open Daily Intel →</a>';
+          ' · <b>'+statusLabel+'</b>'+
+          (censusIso?' · census rebuilt <b>'+(fmt(censusIso)||'—')+'</b>':'')+
+          '. Dates are on the source, not this visit. <a href="/intel" style="color:var(--accent)">Open Daily Intel →</a>';
       }
     }).catch(function(){});
   }).catch(()=>{});

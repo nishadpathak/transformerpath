@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Onboarding — Your Transformer Path | TransformerPath</title>
+<meta name="description" content="Short onboarding to open your Learner Profile on TransformerPath. Public name — not a student scoreboard. No address, CV or phone.">
+<link rel="canonical" href="https://transformerpath.com/onboarding.html">
+<meta name="robots" content="noindex, follow">
+<link rel="stylesheet" href="style.css?v=14">
+<link rel="stylesheet" href="tp-nav.css?v=14">
+<link rel="icon" type="image/svg+xml" href="brand/favicon.svg">
+<link rel="icon" href="brand/favicon.ico" sizes="any">
+<style>
+.ws-wrap{max-width:560px;margin:0 auto;padding:42px 20px 90px}
+.auth-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px}
+.auth-card label{display:block;font-size:.82rem;font-weight:700;color:var(--muted);margin:14px 0 4px}
+.auth-card input,.auth-card select{width:100%;padding:12px 14px;border:1px solid var(--border);border-radius:8px;font-size:.95rem;font-family:inherit;background:var(--bg);color:var(--text)}
+.auth-note{font-size:.8rem;color:var(--muted);margin-top:14px;line-height:1.5}
+</style>
+</head>
+<body data-tp-onboard-page="1">
+<a class="skip-link" href="#main">Skip to content</a>
+<header>
+  <div class="container nav">
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><span class="word">Transformer<span class="accent">Path</span></span></a>
+    <nav class="tpnav" id="mainNav" aria-label="Primary">
+      <a href="learn.html">Learn</a>
+      <a href="grid-lab.html">Grid Lab</a>
+      <a href="workspace.html" data-tp-account>My TransformerPath</a>
+    </nav>
+  </div>
+  <script src="tp-nav.js?v=7" defer></script>
+</header>
+<main id="main" class="ws-wrap">
+  <h1>Your Transformer Path</h1>
+  <p class="auth-note" style="margin-bottom:18px">Short onboarding (role, experience, interests). This is your Learner Profile — a public name, not a student scoreboard. One account; flags Learner, Buyer and Supplier can combine later. No address, CV or phone.</p>
+  <div id="tpOnboard"></div>
+  <p id="needAuth" class="auth-note" hidden>Sign in first — <a href="workspace.html?auth=in">/sign-in</a> or <a href="workspace.html?auth=up">/sign-up</a>.</p>
+</main>
+<script src="supabase-config.js"></script>
+<script src="supabase.js" defer></script>
+<script src="tp-learner.js" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  function goHub(){ location.replace('workspace.html'); }
+  function wait(){
+    if(!window.TP || !TP.onAuth){ setTimeout(wait, 80); return; }
+    TP.onAuth(function(user){
+      if(!user){ document.getElementById('needAuth').hidden=false; return; }
+      if(!window.TP_LEARNER){ setTimeout(function(){ TP_LEARNER.showOnboarding(user); }, 50); return; }
+      TP_LEARNER.getSnap().then(function(snap){
+        if(snap && snap.learner && snap.learner.onboarding_done){ goHub(); return; }
+        TP_LEARNER.showOnboarding(user);
+      });
+    });
+  }
+  wait();
+});
+</script>
+</body>
+</html>

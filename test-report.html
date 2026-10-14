@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="dark" data-tp-need-page="professional">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -263,7 +263,7 @@
     <label>Remarks</label>
     <input id="ovRemarks" type="text" placeholder="Optional — any deviation, retest, or observation notes">
     <div class="btnrow">
-      <button class="btn primary" onclick="downloadTestReportPDF()">Generate Test Report (PDF) →</button>
+      <button class="btn primary" data-tp-need="professional" onclick="downloadTestReportPDF()">Generate Test Report (PDF) →</button>
     </div>
     <div class="note">This tool formats a report from the values you enter — it does not verify measurement accuracy or connect to test equipment. Compare all results against the applicable IEC 60076-1 / IEEE C57.12.90 tolerance tables before issuing to a customer.</div>
   </div>
@@ -295,6 +295,9 @@
 </footer>
 
 <script src="analytics.js?v=7" defer></script>
+<script src="supabase-config.js"></script>
+<script src="supabase.js" defer></script>
+<script src="tp-entitlement.js" defer></script>
 <script src="course-gate.js?v=7"></script>
 <script>
 /* ---------- PDF helpers (same hand-rolled pattern as calculator.html) ---------- */
@@ -310,6 +313,7 @@ function pdfSan(s){
 const V=id=>{const el=document.getElementById(id);return el?el.value:"";};
 
 function downloadTestReportPDF(){
+  if(window.TP_ENTITLEMENT && !TP_ENTITLEMENT.has('professional')){ location.href='pricing.html#professional'; return; }
   const NAVY="0.05 0.17 0.31",BLUE="0.05 0.37 0.66",GREY="0.36 0.42 0.50",BLACK="0 0 0",GREEN="0.04 0.47 0.29",RED="0.75 0.15 0.18";
   const pages=[];let cur="",y=0;
   const newPage=()=>{if(cur)pages.push(cur);cur="";y=792;};
