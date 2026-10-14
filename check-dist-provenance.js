@@ -18,6 +18,30 @@ if (!prov || !prov.build_commit || !prov.build_at || !prov.data_version) {
   process.exit(1);
 }
 
+/* Pages that must carry the public /build.json identity, so a reader can
+ * prove intel, the directory and two profiles are one release. */
+const COMPARE_PAGES = [
+  'intel.html',
+  'manufacturers.html',
+  'manufacturers/hitachi-energy/index.html',
+  'manufacturers/cg-power-and-industrial-solutions/index.html'
+];
+
+function meta(html, name) {
+  return (html.match(new RegExp('name="' + name + '"\\s+content="([^"]+)"', 'i')) || [])[1] || '';
+}
+
+function pageIdentity(html) {
+  const count = meta(html, 'tp-manufacturer-count');
+  return {
+    commit: meta(html, 'tp-build-commit'),
+    build_time: meta(html, 'tp-build-at'),
+    data_version: meta(html, 'tp-data-version'),
+    latest_intel_date: meta(html, 'tp-latest-intel-date'),
+    manufacturer_count: count === '' ? null : Number(count)
+  };
+}
+
 const htmlFiles = [];
 function walk(dir) {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -36,28 +60,64 @@ const errors = [];
 let stamped = 0;
 htmlFiles.forEach(function (file) {
   const html = fs.readFileSync(file, 'utf8');
-  const commit = (html.match(/name="tp-build-commit"\s+content="([^"]+)"/i) || [])[1];
-  const buildAt = (html.match(/name="tp-build-at"\s+content="([^"]+)"/i) || [])[1];
-  const dataVer = (html.match(/name="tp-data-version"\s+content="([^"]+)"/i) || [])[1];
+  const id = pageIdentity(html);
   const attr = (html.match(/data-tp-build-commit="([^"]+)"/i) || [])[1];
-  if (!commit || !buildAt || !dataVer || !attr) {
+  const attrIntel = (html.match(/data-tp-latest-intel-date="([^"]+)"/i) || [])[1];
+  const attrCount = (html.match(/data-tp-manufacturer-count="([^"]+)"/i) || [])[1];
+  if (!id.commit || !id.build_time || !id.data_version || !id.latest_intel_date || id.manufacturer_count == null || !attr) {
     errors.push(path.relative(DIST, file) + ': missing stamp');
     return;
   }
-  if (commit !== prov.build_commit || attr !== prov.build_commit) {
+  if (id.commit !== prov.build_commit || attr !== prov.build_commit) {
     errors.push(path.relative(DIST, file) + ': build_commit mismatch');
     return;
   }
-  if (buildAt !== prov.build_at) {
+  if (id.build_time !== prov.build_at) {
     errors.push(path.relative(DIST, file) + ': build_at mismatch');
     return;
   }
-  if (dataVer !== prov.data_version) {
+  if (id.data_version !== prov.data_version) {
     errors.push(path.relative(DIST, file) + ': data_version mismatch');
+    return;
+  }
+  if (id.latest_intel_date !== prov.latest_intel_date || attrIntel !== prov.latest_intel_date) {
+    errors.push(path.relative(DIST, file) + ': latest_intel_date mismatch');
+    return;
+  }
+  if (id.manufacturer_count !== prov.manufacturer_count || attrCount !== String(prov.manufacturer_count)) {
+    errors.push(path.relative(DIST, file) + ': manufacturer_count mismatch');
     return;
   }
   stamped++;
 });
+
+const buildPath = path.join(DIST, 'build.json');
+const buildJson = readJson(buildPath, null);
+if (!buildJson) {
+  errors.push('build.json missing');
+} else {
+  const expected = {
+    commit: prov.build_commit,
+    build_time: prov.build_at,
+    data_version: prov.data_version,
+    latest_intel_date: prov.latest_intel_date,
+    manufacturer_count: prov.manufacturer_count
+  };
+  Object.keys(expected).forEach(function (k) {
+    if (buildJson[k] !== expected[k]) errors.push('build.json ' + k + ' mismatch');
+  });
+  COMPARE_PAGES.forEach(function (rel) {
+    const file = path.join(DIST, rel);
+    if (!fs.existsSync(file)) {
+      errors.push(rel + ': missing page for build.json comparison');
+      return;
+    }
+    const id = pageIdentity(fs.readFileSync(file, 'utf8'));
+    Object.keys(expected).forEach(function (k) {
+      if (id[k] !== buildJson[k]) errors.push(rel + ': ' + k + ' does not match build.json');
+    });
+  });
+}
 
 ['data/site-stats.json', 'data/freshness.json'].forEach(function (rel) {
   const doc = readJson(path.join(DIST, rel), null);
@@ -76,4 +136,7 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log('DIST PROVENANCE OK — ' + stamped + '/' + htmlFiles.length + ' pages stamped');
+console.log(
+  'DIST PROVENANCE OK — ' + stamped + '/' + htmlFiles.length +
+  ' pages stamped; build.json matches ' + COMPARE_PAGES.length + ' pages'
+);

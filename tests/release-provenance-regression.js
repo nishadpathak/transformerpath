@@ -15,6 +15,10 @@ const prov = JSON.parse(fs.readFileSync('data/build-provenance.json', 'utf8'));
 assert(!!prov.build_commit, 'provenance has build_commit');
 assert(!!prov.build_at, 'provenance has build_at');
 assert(!!prov.data_version, 'provenance has data_version');
+assert(!!prov.latest_intel_date, 'provenance has latest_intel_date');
+assert(typeof prov.manufacturer_count === 'number', 'provenance has manufacturer_count');
+assert(prov.latest_intel_date === prov.data_fingerprint.latest_source_date, 'latest Intel date is the freshness clock');
+assert(prov.manufacturer_count === prov.data_fingerprint.manufacturers, 'manufacturer count is the census clock');
 assert(Object.prototype.hasOwnProperty.call(prov, 'git_dirty'), 'provenance records git_dirty');
 assert(prov.netlify && Object.prototype.hasOwnProperty.call(prov.netlify, 'COMMIT_REF'), 'provenance records Netlify COMMIT_REF');
 
@@ -27,10 +31,35 @@ fs.writeFileSync('dist/data/site-stats.json', JSON.stringify({ manufacturers: 1 
 fs.writeFileSync('dist/data/freshness.json', JSON.stringify({ generated: prov.build_at }) + '\n');
 fs.writeFileSync(path.join(fixture, 'page.html'), '<!DOCTYPE html><html lang="en"><head><title>t</title></head><body>ok</body></html>');
 fs.writeFileSync(path.join(fixture, 'stub', 'index.html'), '<!DOCTYPE html><html lang="en"><head><meta http-equiv="refresh" content="0;url=/x/"></head><body>redirect</body></html>');
+const comparePages = [
+  'intel.html',
+  'manufacturers.html',
+  'manufacturers/hitachi-energy/index.html',
+  'manufacturers/cg-power-and-industrial-solutions/index.html'
+];
+comparePages.forEach(function (rel) {
+  const file = path.join('dist', rel);
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(file, '<!DOCTYPE html><html lang="en"><head><title>' + rel + '</title></head><body>ok</body></html>');
+});
 
 execSync('node stamp-dist-provenance.js', { stdio: 'pipe' });
 const check = execSync('node check-dist-provenance.js', { encoding: 'utf8' });
-assert(/DIST PROVENANCE OK — 2\/2 pages stamped/.test(check), 'both fixture pages stamped: ' + check.trim());
+assert(/DIST PROVENANCE OK — 6\/6 pages stamped/.test(check), 'fixture pages stamped: ' + check.trim());
+
+const buildJson = JSON.parse(fs.readFileSync('dist/build.json', 'utf8'));
+assert(buildJson.commit === prov.build_commit, 'build.json commit matches provenance');
+assert(buildJson.build_time === prov.build_at, 'build.json build_time matches provenance');
+assert(buildJson.data_version === prov.data_version, 'build.json data_version matches provenance');
+assert(buildJson.latest_intel_date === prov.latest_intel_date, 'build.json latest_intel_date matches provenance');
+assert(buildJson.manufacturer_count === prov.manufacturer_count, 'build.json manufacturer_count matches provenance');
+comparePages.forEach(function (rel) {
+  const html = fs.readFileSync(path.join('dist', rel), 'utf8');
+  assert(html.includes('name="tp-build-commit" content="' + buildJson.commit + '"'), rel + ' stamps the build.json commit');
+  assert(html.includes('name="tp-latest-intel-date" content="' + buildJson.latest_intel_date + '"'), rel + ' stamps the latest Intel date');
+  assert(html.includes('name="tp-manufacturer-count" content="' + buildJson.manufacturer_count + '"'), rel + ' stamps the manufacturer count');
+  assert(html.includes('<!-- build.json commit=' + buildJson.commit), rel + ' carries the build.json comment');
+});
 
 const stamped = fs.readFileSync(path.join(fixture, 'stub', 'index.html'), 'utf8');
 assert(stamped.includes('name="tp-build-commit" content="' + prov.build_commit + '"'), 'stub carries build_commit');
