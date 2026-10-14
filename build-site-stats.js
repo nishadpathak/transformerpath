@@ -42,8 +42,33 @@ const syncLabels = new Set(GRIDS.map((g) => g.sync).filter(Boolean)).size;
    num(prev.events) — a hand-typed 203 that copied itself forward while the
    dataset held 300. */
 const EVENTS = readJson('data/events.json', []);
-const todayISO = new Date().toISOString().slice(0, 10);
-const upcomingEvents = EVENTS.filter((e) => (e.s || e.startDate || '') >= todayISO).length;
+const todayISO = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Dubai', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+const upcomingEvents = EVENTS.filter((e) => {
+  const end = e.end || e.e || '';
+  const start = e.start || e.s || '';
+  const when = end || start;
+  if (!when || when < todayISO) return false;
+  if (e.date_status === 'CANCELLED' || e.research_status === 'REJECTED_NO_EVIDENCE') return false;
+  return true;
+}).length;
+const MONTHS_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+function shortDay(iso) {
+  if (!iso || !/^\d{4}-\d{2}-\d{2}$/.test(iso)) return '';
+  return { d: parseInt(iso.slice(8, 10), 10), m: MONTHS_SHORT[parseInt(iso.slice(5, 7), 10) - 1], y: iso.slice(0, 4) };
+}
+const nextConfirmedLine = EVENTS.filter((e) => e.date_status === 'CONFIRMED' && e.source_url && e.source_checked_at && (e.end || e.e) && (e.end || e.e) >= todayISO)
+  .sort((a, b) => String(a.start || a.s).localeCompare(String(b.start || b.s)))
+  .slice(0, 3)
+  .map((e) => {
+    const a = shortDay(e.start || e.s);
+    const b = shortDay(e.end || e.e);
+    let range = '';
+    if (a && b && a.y === b.y && a.m === b.m && a.d !== b.d) range = a.d + '–' + b.d + ' ' + a.m + ' ' + a.y;
+    else if (a && b && (a.d !== b.d || a.m !== b.m)) range = a.d + ' ' + a.m + ' ' + a.y + '–' + b.d + ' ' + b.m + ' ' + b.y;
+    else if (a) range = a.d + ' ' + a.m + ' ' + a.y;
+    return (e.name || e.n) + ' (' + range + ')';
+  })
+  .join('; ');
 
 // Compute structured database metrics across manufacturers, factories, and capabilities
 const SITES = readJson('data/manufacturer-sites.json', []);
@@ -188,6 +213,12 @@ for (let i = 0; i < STAT_HTML.length; i++) {
       /title="Explore \d+ upcoming industry conferences and exhibitions"/g,
       'title="Explore ' + current.upcomingEvents + ' upcoming industry conferences and exhibitions"'
     );
+    if (nextConfirmedLine) {
+      html = html.replace(
+        /(<h3>Events →<\/h3><p>)[\s\S]*?(<\/p>)/,
+        '$1Next confirmed editions: ' + nextConfirmedLine + '. Official pages checked ' + todayISO + '.$2'
+      );
+    }
   }
   if (html !== before) {
     fs.writeFileSync(p, html);

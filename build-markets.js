@@ -22,7 +22,9 @@ const ci = function (s) { return (s || '').toLowerCase(); };
 
 const MANUF = JSON.parse(fs.readFileSync('data/manufacturers.json', 'utf8'));
 const GRIDS = JSON.parse(fs.readFileSync('data/grids.json', 'utf8'));
-const EVENTS = JSON.parse(fs.readFileSync('data/events.json', 'utf8'));
+const { loadEvents } = require('./lib/events-reader');
+const { dubaiToday } = require('./lib/event-display');
+const EVENTS = loadEvents();
 const INTEL = JSON.parse(fs.readFileSync('data/intel.json', 'utf8'));
 const STATS = JSON.parse(fs.readFileSync('data/site-stats.json', 'utf8'));
 const TENDERS = JSON.parse(fs.readFileSync('data/tenders.json', 'utf8')).tenders || [];
@@ -440,12 +442,13 @@ function gridsFor(m) {
   return g;
 }
 function eventsFor(m) {
-  const now = new Date();
+  const today = dubaiToday();
   return EVENTS.filter(function (ev) {
-    const countryMatch = ci(ev.co) === ci(m.gridsName) || ci(ev.co) === ci(m.manufName) || ci(m.name) === ci(ev.co);
-    const kwMatch = m.kw.some(function (k) { return ci(ev.n + ' ' + ev.co + ' ' + ev.r + ' ' + ev.d).indexOf(k) >= 0; });
-    return countryMatch || (kwMatch && ci(ev.co).indexOf(ci(m.name)) >= 0);
-  }).filter(function (ev) { return new Date(ev.e) >= now; }).sort(function (a, b) { return String(a.s).localeCompare(String(b.s)); }).slice(0, 8);
+    if (ev.date_status !== 'CONFIRMED' || !ev.source_url || !ev.source_checked_at || !ev.end || ev.end < today) return false;
+    const onMarket = (ev.markets || []).indexOf(m.slug) >= 0;
+    const countryMatch = ci(ev.co) === ci(m.gridsName) || ci(ev.co) === ci(m.manufName) || ci(m.name) === ci(ev.co) || ci(ev.co) === ci(m.name);
+    return onMarket || countryMatch;
+  }).sort(function (a, b) { return String(a.s).localeCompare(String(b.s)); }).slice(0, 3);
 }
 function intelFor(m) {
   const reg = INTEL[m.intel]; const out = [];
@@ -543,7 +546,10 @@ function marketPage(m) {
     return '<div class="mk-row">' + name + '<span class="city">' + esc(x.city || '') + '</span><span class="prof">' + esc(x.types || '') + '</span>' + (x.url ? ' <a href="' + esc(x.url) + '" style="color:var(--accent);font-size:.78rem" target="_blank" rel="noopener">↗</a>' : '') + '</div>';
   }).join('') + (mk.length > 14 ? '<p style="color:var(--muted);font-size:.82rem">+' + (mk.length - 14) + ' more on the country page.</p>' : '');
   const utlHtml = utl.map(function (u) { return '<div class="mk-row"><b>' + esc(u[0]) + '</b><span class="city">' + esc(u[1]) + '</span><span class="prof">' + esc(u[2]) + '</span>' + (u[3] ? ' <a href="' + esc(u[3]) + '" style="color:var(--accent);font-size:.78rem" target="_blank" rel="noopener">↗</a>' : '') + '</div>'; }).join('');
-  const evHtml = evs.map(function (ev) { return '<li style="margin:6px 0"><a href="' + esc(ev.u) + '" target="_blank" rel="noopener" style="color:var(--accent)">' + esc(ev.n) + '</a> <span style="color:var(--muted);font-size:.85rem">' + fmt(ev.s) + ' · ' + esc(ev.c) + ', ' + esc(ev.co) + '</span></li>'; }).join('') || '<li style="color:var(--muted)">No local events yet — check the events calendar.</li>';
+  const evHtml = evs.map(function (ev) {
+    const hub = ev.series_slug ? ('../../events/' + ev.series_slug + '/') : (ev.u || '../../events.html');
+    return '<li style="margin:6px 0"><a href="' + esc(hub) + '" style="color:var(--accent)">' + esc(ev.n) + '</a> <span style="color:var(--muted);font-size:.85rem">' + fmt(ev.s) + ' · ' + esc(ev.c) + ', ' + esc(ev.co) + '</span>' + (ev.u ? ' · <a href="' + esc(ev.u) + '" target="_blank" rel="noopener" style="color:var(--accent)">Official site</a>' : '') + '</li>';
+  }).join('') || '<li style="color:var(--muted)">No confirmed local edition is published yet — check the events calendar.</li>';
   const intelHtml = intel.map(function (it) { return '<li style="margin:6px 0"><b style="color:var(--text)">' + esc(it.title) + '</b><p style="color:var(--muted);font-size:.86rem;margin:2px 0 0">' + esc(it.snippet.slice(0, 200)) + (it.snippet.length > 200 ? '…' : '') + '</p></li>'; }).join('') || '<li style="color:var(--muted)">No published intelligence items for this market yet. Curated Daily Intel is refreshed at build — see <a href="../../intel.html">Daily Intel</a> for the latest feed.</li>';
   // Structured business-intelligence feed (typed company developments + projects).
   const bi = biFor(m);

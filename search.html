@@ -390,10 +390,10 @@
         te.forEach(ev => {
           ix.push({
             s: 'events',
-            t: ev.n,
-            x: [ev.c, ev.co, ev.r, ev.s].join(' '),
+            t: ev.n || ev.name,
+            x: [ev.c || ev.city, ev.co || ev.country, ev.r || ev.region, ev.s || ev.start].join(' '),
             href: ev.u || 'events.html',
-            tag: (ev.s||'').slice(0,10) + ' · ' + ev.co,
+            tag: ((ev.s || ev.start || '')).slice(0,10) + ' · ' + (ev.co || ev.country || ''),
             desc: ev.c + ', ' + ev.co
           });
         });
