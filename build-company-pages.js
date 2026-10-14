@@ -449,7 +449,8 @@ function page(r, slug) {
   };
   const provLabel = provLabels[provType] || provType;
   const lastReviewed = (intelRec && intelRec.last_verified) || (STATS.updated || '2026-08-26');
-  const verify = r.flagV === 'P' ? '★ Supplier Pro' : r.flagV === 'V' ? '✓ Verified' : (r.flagV === 'C' ? 'Claimed' : 'Listed');
+  const earnedVerified = paidListings.isVerifiedManufacturer(slug, PAID_LISTINGS);
+  const verify = earnedVerified ? 'Verified' : (r.flagV === 'P' ? '★ Supplier Pro' : (r.flagV === 'C' ? 'Claimed' : 'Listed'));
   const leadText = censusLead(r, tier, intelRec);
   const trust = '<p style="font-size:.78rem;color:var(--muted);margin-top:8px">Independent census profile, not the company website. <a href="../../manufacturers.html#census-method" style="color:var(--accent)">How this census is compiled</a>. <b>Last reviewed</b> ' + esc(lastReviewed) + ' &nbsp;&middot;&nbsp; <b>Profile status</b> <span style="color:var(--accent)">' + verify + '</span></p>';
 
@@ -527,6 +528,7 @@ function page(r, slug) {
     paidListings.manufacturerBadgeHtml(slug, PAID_LISTINGS) +
     '<p class="lead">' + esc(leadText) + '</p>' +
     '<p style="font-size:.9rem;color:var(--muted);margin:6px 0 0">' + (r.flag || '') + ' <b style="color:var(--text)">' + esc(r.country) + '</b>' + (r.city ? ' · ' + esc(r.city) : '') + ' · <span style="color:var(--accent)">' + verify + '</span>' + (r.url ? ' · <a href="' + esc(r.url) + '" target="_blank" rel="noopener nofollow" data-track="official_website_click" data-track-manufacturer="' + esc(r.name) + '" style="color:var(--accent)">Official website ↗</a>' : '') + '</p>' +
+    (earnedVerified ? '' : paidListings.verifiedManufacturerCtasHtml({ companySlug: slug, trackName: r.name })) +
     trust +
     completenessCard +
     '<h2>Capabilities</h2><div style="margin:4px 0 8px">' + typeHtml + '</div>' +
@@ -549,13 +551,13 @@ function page(r, slug) {
     '<p style="font-size:.72rem;color:var(--muted)">Last reviewed: ' + lastReviewed + '.</p>' +
     '<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:22px"><b style="color:var(--text)">Represent this company?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Claim and update this profile to keep its capabilities, markets and verification accurate.</p>' +
     '<a class="btn btn-outline btn-sm" href="../../claim-profile.html?company=' + encodeURIComponent(r.name) + '" data-track="supplier_claim_started" data-track-manufacturer="' + esc(r.name) + '">Claim this profile →</a> ' +
-    paidListings.verifiedManufacturerPayHtml({
+    (earnedVerified ? '' : paidListings.verifiedManufacturerPayHtml({
       companySlug: slug,
       trackName: r.name,
       formHref: '../../claim-profile.html?paid=verified_manufacturer#claimForm',
       style: 'margin-left:8px',
       label: 'Pay $499 — Get Verified'
-    }) + '</div>' +
+    })) + '</div>' +
     '<div class="card" style="background:var(--bg);border:1px solid var(--border);padding:16px 18px;text-align:center;margin-top:14px"><b style="color:var(--text)">Find something inaccurate?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Tell us what and why, with a source where you can. Corrections are reviewed against a source before they are applied — they are never auto-overwritten.</p>' +
     '<a class="btn btn-outline btn-sm" href="../../correct-company.html?company=' + encodeURIComponent(r.name) + '" data-track="manufacturer_correction_started" data-track-manufacturer="' + esc(r.name) + '">Suggest a correction →</a></div>' +
     '<div class="card" style="background:var(--bg);border:1px solid var(--border);padding:16px 18px;text-align:center;margin-top:14px"><b style="color:var(--text)">Looking for transformer suppliers?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Submit a technical requirement for supplier matching across the ' + esc(r.country) + ' and regional manufacturing base.</p>' +

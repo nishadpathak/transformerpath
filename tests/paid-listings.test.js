@@ -407,6 +407,12 @@ async function main() {
   });
   check('manufacturer profiles use the Get Verified payment link', profileDirs.length === linkedProfiles.length && linkedProfiles.length > 900, 'profiles=' + profileDirs.length + ' linked=' + linkedProfiles.length);
   check('sample profile keeps the claim link beside the pay button', fs.readFileSync('manufacturers/erea-energy-engineering/index.html', 'utf8').indexOf('client_reference_id=erea-energy-engineering') >= 0);
+  const sampleCtas = paid.verifiedManufacturerCtasHtml({ companySlug: 'erea-energy-engineering', trackName: 'EREA Energy Engineering' });
+  check('profile and directory ctas use the $499 link with the maker slug', sampleCtas.indexOf('href="' + mfrLink + '?client_reference_id=erea-energy-engineering"') >= 0 && sampleCtas.indexOf('>Get verified<') >= 0 && sampleCtas.indexOf('>Claim this profile<') >= 0 && sampleCtas.indexOf('data-mfr-verify-cta="claim"') >= 0 && sampleCtas.indexOf('data-mfr-verify-cta="get-verified"') >= 0);
+  check('earned manufacturer does not get a verify cta', paid.verifiedManufacturerCtasHtml({ companySlug: 'erea-energy-engineering', earned: true }) === '');
+  const samplePage = fs.readFileSync('manufacturers/erea-energy-engineering/index.html', 'utf8');
+  const topAt = samplePage.indexOf('data-mfr-verify-cta="get-verified"');
+  check('sample profile shows both ctas above the census note', topAt > 0 && topAt < samplePage.indexOf('Independent census profile') && samplePage.indexOf('data-mfr-verify-cta="claim"') > 0 && samplePage.indexOf('data-mfr-verify-cta="claim"') < samplePage.indexOf('Independent census profile'));
 
   const gate = require('../check-paid-badges');
   const stray = '<span class="paid-badge" data-paid-badge="verified-manufacturer" data-company-slug="a-plus-power-solution">VERIFIED MANUFACTURER</span>';

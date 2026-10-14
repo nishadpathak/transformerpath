@@ -524,7 +524,21 @@ function renderManufacturers(html) {
   let CSMAP = {};
   try { JSON.parse(fs.readFileSync('data/company-slugs.json', 'utf8')).forEach(function (c) { CSMAP[c.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()] = c.slug; }); } catch (e) {}
   const csl = (m) => CSMAP[String(m[0]).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()];
-  const vbadge = (m) => { if (m[4] === 'P') return '<span class="v-badge pro">★ Supplier Pro</span>'; if (m[4] === 'V') return '<span class="v-badge">✓ Verified</span>'; return ''; };
+  const { directoryCompanySlug } = require('./lib/company-aliases');
+  const paidListings = require('./lib/paid-listings');
+  const paidDoc = paidListings.load();
+  const paySlug = (name) => directoryCompanySlug(name, CSMAP);
+  const vbadge = (m, slug) => {
+    if (m[4] === 'P') return '<span class="v-badge pro">★ Supplier Pro</span>';
+    if (slug && paidListings.isVerifiedManufacturer(slug, paidDoc)) {
+      return '<span class="v-badge" data-paid-badge="verified-manufacturer" data-company-slug="' + paidListings.esc(slug) + '">✓ Verified</span>';
+    }
+    return '';
+  };
+  const verifyCtas = (name, slug) => {
+    if (!slug || paidListings.isVerifiedManufacturer(slug, paidDoc)) return '';
+    return paidListings.verifiedManufacturerCtasHtml({ companySlug: slug, trackName: name, compact: true });
+  };
   const tpills = (types) => { if (!types) return ''; return types.split(',').map((t) => t.trim()).filter(Boolean).map((t) => `<span class="tpill t-${t}">${esc(TNAME[t] || t)}</span>`).join(''); };
   const groups = {};
   DATA.forEach((c) => { (groups[c.region] = groups[c.region] || []).push(c); });
@@ -543,7 +557,10 @@ function renderManufacturers(html) {
       return `<div class="ctry-card"><div class="ctry-head"><span class="flag">${esc(c.flag)}</span><h3>${esc(c.country)}</h3><span class="cnt">${real} maker${real !== 1 ? 's' : ''}</span></div>` +
         c.makers.map((m) => /^Served by/i.test(m[0])
           ? `<div class="mk-row"><span class="note">${esc(m[0])}</span></div>`
-          : `<div class="mk-row">${csl(m) ? `<a class="prof" href="manufacturers/${csl(m)}/" style="color:var(--accent);font-weight:700">${esc(m[0])}</a>` : `<b>${esc(m[0])}</b>`}${vbadge(m)}${tpills(m[3])}<span class="city">${esc(m[1] || '')}${m[5] ? ` · est. ${esc(m[5])}` : ''}</span>${m[2] ? `<a href="${esc(m[2])}" target="_blank" rel="noopener">Site →</a>` : '<span></span>'}</div>`).join('') +
+          : (function () {
+            const slug = paySlug(m[0]);
+            return `<div class="mk-row">${csl(m) ? `<a class="prof" href="manufacturers/${csl(m)}/" style="color:var(--accent);font-weight:700">${esc(m[0])}</a>` : `<b>${esc(m[0])}</b>`}${vbadge(m, slug)}${tpills(m[3])}<span class="city">${esc(m[1] || '')}${m[5] ? ` · est. ${esc(m[5])}` : ''}</span>${m[2] ? `<a href="${esc(m[2])}" target="_blank" rel="noopener">Site →</a>` : '<span></span>'}${verifyCtas(m[0], slug)}</div>`;
+          })()).join('') +
         `</div>`;
     }).join('')).join('');
 
@@ -576,6 +593,12 @@ function renderManufacturers(html) {
 
   // Keep the Dataset schema "size" in sync with the live census count.
   html = html.replace(/("size"\s*:\s*)\d+/g, '$1' + makers);
+
+  const aliasMap = require('./lib/company-aliases').ALIASES;
+  const aliasSlugs = {};
+  Object.keys(aliasMap).forEach(function (key) { aliasSlugs[key] = aliasMap[key].slug; });
+  html = html.replace(/const VERIFIED_MANUFACTURER_PAY_URL = [^;]*;/, 'const VERIFIED_MANUFACTURER_PAY_URL = ' + JSON.stringify(paidListings.VERIFIED_MANUFACTURER_PAYMENT_LINK) + ';');
+  html = html.replace(/const MAKER_ALIAS = [^;]*;/, 'const MAKER_ALIAS = ' + JSON.stringify(aliasSlugs) + ';');
 
   return { page: html, records: makers };
 }
@@ -798,7 +821,9 @@ for (const f of intelFiles) {
   jobs.push([f, renderIntel, 'intel-archive']);
 }
 
+const onlyFile = process.argv[2];
 for (const [file, fn, label] of jobs) {
+  if (onlyFile && file !== onlyFile) continue;
   let html;
   try { html = fs.readFileSync(file, 'utf8'); } catch (e) { console.error('!! read ' + file + ' failed: ' + e.message); continue; }
   try {
