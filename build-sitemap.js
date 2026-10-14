@@ -1,16 +1,20 @@
 #!/usr/bin/env node
 /* build-sitemap.js — sitemap from published HTML on disk.
- * Skips noindex, refresh stubs, iCloud conflict copies, and admin/_partials.
- * lastmod: build-day discipline (TP_SITEMAP_LASTMOD / DEPLOY_DATE / today),
- * floored at file mtime so GSC sees a fresh signal every deploy.
+ * Skips noindex, refresh stubs, iCloud conflict copies, admin/_partials,
+ * and the legacy /transformerpath/ copy (those URLs 301 or noindex).
+ * lastmod is the content date from lib/sitemap-dates.js. Never the build clock.
  * Run: node build-sitemap.js
  */
 'use strict';
 const fs = require('fs');
 const path = require('path');
+const dates = require('./lib/sitemap-dates');
 
 const ROOT = __dirname;
-const SKIP_DIR = new Set(['.git', 'node_modules', '.cursor', 'admin', '_partials', 'functions', 'dist']);
+const SKIP_DIR = new Set([
+  '.git', 'node_modules', '.cursor', 'admin', '_partials', 'functions', 'dist',
+  'transformerpath', 'transformerpath-site', 'archive', '_private', '_docs', 'tests'
+]);
 const SKIP_FILE = new Set(['404.html', 'offline.html', 'admin.html']);
 const ICLOUD = / \d+\.[^/]+$/;
 
@@ -39,18 +43,6 @@ function toUrl(rel) {
   return 'https://transformerpath.com/' + posix;
 }
 
-function lastmod(filePath) {
-  // Discipline: every Netlify/CI build regenerates lastmod to the build day so
-  // GSC sees a fresh signal for the whole published surface, not only touched files.
-  const buildDay = (process.env.TP_SITEMAP_LASTMOD || process.env.DEPLOY_DATE || new Date().toISOString()).slice(0, 10);
-  try {
-    const fileDay = fs.statSync(filePath).mtime.toISOString().slice(0, 10);
-    return fileDay > buildDay ? fileDay : buildDay;
-  } catch (e) {
-    return buildDay;
-  }
-}
-
 function walk(dir, out) {
   let names;
   try { names = fs.readdirSync(dir); } catch (e) { return; }
@@ -61,28 +53,48 @@ function walk(dir, out) {
     try { st = fs.statSync(p); } catch (e) { continue; }
     if (st.isDirectory()) walk(p, out);
     else if (st.isFile() && !shouldSkipFile(name) && isIndexable(p)) {
-      out.push({ loc: toUrl(path.relative(ROOT, p)), lastmod: lastmod(p) });
+      out.push({ rel: path.relative(ROOT, p).split(path.sep).join('/'), loc: toUrl(path.relative(ROOT, p)) });
     }
   }
 }
 
 function writeSitemap() {
+  const dated = dates.load();
   const rows = [];
   walk(ROOT, rows);
   const seen = new Set();
   const unique = [];
+  const missing = [];
   rows.sort(function (a, b) { return a.loc.localeCompare(b.loc); }).forEach(function (r) {
     if (seen.has(r.loc)) return;
+    if (r.loc.indexOf('/transformerpath/') !== -1) return;
     seen.add(r.loc);
-    unique.push(r);
+    const lastmod = dates.dateFor(r.rel, dated, dated.pages);
+    if (!lastmod) missing.push(r.rel);
+    unique.push({ rel: r.rel, loc: r.loc, lastmod: lastmod });
   });
+  if (missing.length) {
+    console.error('sitemap lastmod missing for ' + missing.length + ' pages (no source date, no cache):');
+    missing.slice(0, 30).forEach(function (m) { console.error('  ' + m); });
+    process.exit(1);
+  }
+  if (!dated.fromCache) {
+    const cachePath = path.join(ROOT, 'data', 'sitemap-content-dates.json');
+    const doc = JSON.parse(fs.readFileSync(cachePath, 'utf8'));
+    const pages = {};
+    unique.forEach(function (r) { pages[r.rel] = r.lastmod; });
+    doc.pages = pages;
+    fs.writeFileSync(cachePath, JSON.stringify(doc, null, 2) + '\n');
+  }
   const sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
     unique.map(function (r) {
       return '  <url><loc>' + r.loc + '</loc><lastmod>' + r.lastmod + '</lastmod></url>';
     }).join('\n') +
     '\n</urlset>\n';
   fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), sm);
-  console.log('sitemap.xml wrote', unique.length, 'URLs');
+  const distinct = {};
+  unique.forEach(function (r) { distinct[r.lastmod] = 1; });
+  console.log('sitemap.xml wrote ' + unique.length + ' URLs, ' + Object.keys(distinct).length + ' distinct lastmod dates');
   return unique.length;
 }
 
