@@ -15,6 +15,7 @@
  */
 'use strict';
 const fs = require('fs');
+const { isUpcoming } = require('./lib/event-status');
 // Root-absolutise header/footer links so they work from nested /applications/ pages.
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
@@ -331,13 +332,12 @@ function makersFor(types) {
   return out;
 }
 function eventsFor(app) {
-  const now = new Date();
   const kws = (app.evkw || []).concat((app.title.toLowerCase().split(/[^a-z]+/)));
   return EVENTS.filter(function (ev) {
     const hay = ((ev.n + ' ' + ev.d + ' ' + ev.r + ' ' + ev.co)).toLowerCase();
     const inRegion = ev.r && app.regions.indexOf(ev.r) >= 0;
     const inKw = kws.some(function (k) { return k && hay.indexOf(k) >= 0; });
-    return new Date(ev.e) >= now && (inRegion || inKw);
+    return isUpcoming(ev) && (inRegion || inKw);
   }).sort(function (a, b) { return String(a.s).localeCompare(String(b.s)); }).slice(0, 6);
 }
 const fmt = function (d) { try { return new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }); } catch (e) { return ''; } };

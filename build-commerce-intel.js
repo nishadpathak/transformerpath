@@ -17,6 +17,7 @@
  */
 'use strict';
 const fs = require('fs');
+const { isUpcoming } = require('./lib/event-status');
 function readJson(p, fb) { try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch (e) { return fb; } }
 
 const MANUF = readJson('data/manufacturers.json', []);
@@ -53,9 +54,8 @@ MANUF.forEach((g) => {
 supplierProspects.sort((a, b) => String(a.country).localeCompare(b.country) || String(a.name).localeCompare(b.name));
 
 // Event promotion prospects: upcoming events (no featured package recorded statically).
-const today = new Date().toISOString().slice(0, 10);
 const eventProspects = events
-  .filter((e) => e.s && e.s >= today && e.d)
+  .filter((e) => isUpcoming(e) && e.d)
   .map((e) => ({ name: e.n, city: e.c || '', country: e.co || '', region: e.r || '', date: e.s, url: e.u || '' }))
   .sort((a, b) => String(a.date).localeCompare(b.date));
 

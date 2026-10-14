@@ -8,13 +8,13 @@ const fs = require('fs');
 const { dubaiToday, dateLine, nullText, badgeText, allowsCalendar } = require('./lib/event-display');
 const { eventBadge } = require('./lib/provenance-badge');
 const tpAff = require('./lib/travelpayouts');
-
+const { platformToday } = require('./lib/event-status');
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 
-const TODAY = dubaiToday();
+const TODAY = platformToday();
 const canon = JSON.parse(fs.readFileSync('data/events-canonical.json', 'utf8'));
 const rows = (canon.canonical_editions || []).filter((ev) => ev.type === 'exhibition' && (ev.relevance_tier === 'CORE' || ev.relevance_tier === 'HIGH'));
 rows.sort((a, b) => String(a.start || '9999').localeCompare(String(b.start || '9999')));
@@ -46,7 +46,7 @@ const generated = {
 };
 fs.writeFileSync('data/exhibitions.json', JSON.stringify(generated, null, 2) + '\n');
 
-const upcoming = rows.filter((ev) => !ev.end || ev.end >= TODAY);
+const upcoming = rows.filter((ev) => ev.end && ev.end >= platformToday());
 const cards = upcoming.map((ev) => {
   const badge = eventBadge(ev) || (badgeText(ev) ? '<span class="badge-unc">' + esc(badgeText(ev)) + '</span>' : '');
   return '<div class="intel-item"><h3>' + esc(ev.name) + (badge ? ' ' + badge : '') + '</h3>' +

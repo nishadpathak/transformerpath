@@ -15,6 +15,7 @@
 const fs = require('fs');
 const tpAff = require('./lib/travelpayouts');
 const { recordOnMarket } = require('./lib/market-country');
+const { isUpcoming } = require('./lib/event-status');
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
@@ -480,9 +481,9 @@ function keywordHit(text, m) {
 }
 
 function eventsFor(m) {
-  const today = dubaiToday();
   return EVENTS.filter(function (ev) {
-    if (ev.date_status !== 'CONFIRMED' || !ev.source_url || !ev.source_checked_at || !ev.end || ev.end < today) return false;
+    if (!isUpcoming(ev)) return false;
+    if (ev.date_status !== 'CONFIRMED' || !ev.source_url || !ev.source_checked_at) return false;
     const onMarket = (ev.markets || []).indexOf(m.slug) >= 0;
     const countryMatch = ci(ev.co) === ci(m.gridsName) || ci(ev.co) === ci(m.manufName) || ci(m.name) === ci(ev.co) || ci(ev.co) === ci(m.name);
     return onMarket || countryMatch;
