@@ -1,68 +1,47 @@
-/* Shared provenance badge. One component, every surface. */
+/* Verified tick. Shown only for a confirmed source with a check date. */
 .tp-prov {
   display: inline-flex;
-  flex-wrap: wrap;
-  align-items: center;
   position: relative;
-  max-width: 100%;
-  margin: 2px 0 2px 6px;
-  padding: 2px 8px;
-  border-radius: 999px;
-  font-size: .72rem;
-  font-weight: 650;
-  line-height: 1.35;
-  letter-spacing: 0;
-  text-transform: none;
   vertical-align: middle;
+  margin: 0 0 0 6px;
 }
-.tp-prov-confirmed {
-  background: #14351f;
-  color: #4ade80;
-  border: 1px solid rgba(74, 222, 128, .4);
-}
-.tp-prov-supported {
-  background: #12283f;
-  color: #93c5fd;
-  border: 1px solid rgba(147, 197, 253, .4);
-}
-.tp-prov-listed {
-  background: transparent;
-  color: var(--muted, #9ca3af);
-  border: 1px solid var(--border, #374151);
-  font-weight: 600;
-}
-.tp-prov-mark { margin-right: 4px; }
-.tp-prov a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
-.tp-prov-tip {
-  margin-left: 6px;
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  border: 1px solid currentColor;
-  background: transparent;
-  color: inherit;
-  font: 700 9px/13px var(--font-sans, system-ui, sans-serif);
+.tp-prov-tick {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
   padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #15803d;
   cursor: help;
+  line-height: 0;
 }
+:root[data-theme="dark"] .tp-prov-tick { color: #4ade80; }
+.tp-prov-tick:focus { outline: 2px solid currentColor; outline-offset: 2px; }
+.tp-prov-tick svg { display: block; }
 .tp-prov-pop {
   display: none;
   position: absolute;
-  z-index: 30;
+  z-index: 40;
   left: 0;
   top: calc(100% + 6px);
   width: min(280px, 72vw);
   padding: 8px 10px;
   border-radius: 8px;
-  background: var(--card, #1f2937);
-  color: var(--text, #e5e7eb);
-  border: 1px solid var(--border, #374151);
+  background: var(--card, #fff);
+  color: var(--text, #111827);
+  border: 1px solid var(--border, #d1d5db);
   font-weight: 500;
   font-size: .75rem;
   line-height: 1.4;
   text-align: left;
+  white-space: normal;
   box-shadow: 0 8px 24px rgba(0, 0, 0, .28);
 }
 .tp-prov:hover .tp-prov-pop,
-.tp-prov:focus-within .tp-prov-pop { display: block; }
-.tp-prov-pop a { color: var(--accent, #fbbf24); font-weight: 700; }
+.tp-prov:focus-within .tp-prov-pop,
+.tp-prov.is-open .tp-prov-pop { display: block; }
+.tp-prov-pop a { color: var(--accent, #b45309); font-weight: 700; }
