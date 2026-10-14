@@ -37,6 +37,9 @@ _private/
 # Generated public deploy artifact — assembled by build-dist.js
 dist/
 
+# Git snapshot taken at the start of the Netlify build, before generators run.
+data/.release-git-state.json
+
 # Private assets outside repo
 ../private_assets/
 # Archived Intel snapshots

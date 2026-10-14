@@ -1,7 +1,7 @@
 {
   "$schema": "https://transformerpath.com/gcc-discovery-publish-overrides.schema.json",
-  "purpose": "Human review overrides for GCC discovery → Intel publish. Editors approve SUPPORTED / HOLD_FOR_REVIEW candidates here; build-gcc-intel-publish.js honors approve[] and never auto-publishes reject[].",
-  "honesty": "Discovery ≠ publication. Empty approve list means only the script's default CONFIRMED (+ allowlisted SUPPORTED) gate applies.",
+  "purpose": "Historical desk list. Publication is NOT driven by approve[]. build-gcc-intel-publish.js publishes only when data/gcc-intel-review.json has decision=PUBLISH with reviewer and reviewed_at. Held candidates are never auto-published.",
+  "honesty": "Discovery ≠ publication. approve[] is not a publish gate. The review ledger is the only release record.",
   "updated": "2026-10-14",
   "approve": [
     "sa-swa-rabigh-2p5mva",

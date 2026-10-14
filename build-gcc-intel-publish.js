@@ -1,11 +1,10 @@
 #!/usr/bin/env node
 /* build-gcc-intel-publish.js — promote graded GCC discovery candidates into Intel.
  *
- * Desk path: data/gcc-discovery-publish-overrides.json approve[] releases a
- * held candidate (HOLD_FOR_REVIEW / REVIEW_QUEUE), including SUPPORTED items.
- * reject[] never publishes. INTERNAL_COVERAGE_ONLY and REVIEW_REQUIRED stay off
- * the feed. CONFIRMED items that are not still in the review queue publish
- * without a desk row. The SUPPORTED allowlist does not bypass a hold.
+ * The only publish gate is data/gcc-intel-review.json. A candidate publishes
+ * when its review decision is PUBLISH and both reviewer and reviewed_at are
+ * set. HOLD and REJECT never publish. approve[] overrides, CONFIRMED grades,
+ * and the old SUPPORTED allowlist do not publish anything.
  *
  * SUPPORTED releases keep evidence_grade SUPPORTED (never relabeled CONFIRMED).
  * Idempotent via INJECT:GCC_DISCOVERY markers in intel.html.
@@ -14,6 +13,7 @@
  */
 'use strict';
 const fs = require('fs');
+const reviewLib = require('./lib/gcc-intel-review');
 
 function readJson(p, fb) {
   try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch (e) { return fb; }
@@ -27,34 +27,13 @@ function jstr(s) {
 
 const candidatesDoc = readJson('data/gcc-discovery-candidates.json', { candidates: [] });
 const candidates = candidatesDoc.candidates || [];
-const overrides = readJson('data/gcc-discovery-publish-overrides.json', { approve: [], reject: [] });
-const APPROVE = new Set(overrides.approve || []);
-const REJECT = new Set(overrides.reject || []);
-
-const ALLOW_SUPPORTED_IDS = new Set([
-  'uae-dewa-2122600155',
-  'kw-mewre-75mva-stage1',
-  'kw-mewre-75mva-relocation',
-  'kw-mewre-75mva-stage2',
-  'sa-swa-jubail-grounding',
-  'sa-al-aflaj-33kv-replacement',
-  'sa-dhahran-1500kva-standby',
-  'sa-swa-yanbu-t803-supervision'
-]);
+const reviewRows = reviewLib.loadReview('data/gcc-intel-review.json');
+const REVIEW = reviewLib.byId(reviewRows);
 
 function shouldPublish(c) {
-  if (!c || c.publish_decision === 'INTERNAL_COVERAGE_ONLY') return false;
-  if (REJECT.has(c.candidate_id)) return false;
-  if (c.evidence_grade === 'REJECTED' || c.evidence_grade === 'REVIEW_REQUIRED') return false;
-  // Already curated under a near-duplicate headline in NEWS.GCC
-  if (c.candidate_id === 'om-localisation-aug12') return false;
-  // Desk approve[] is the only release for a candidate still in the review queue.
-  // A SUPPORTED allowlist must not publish the rest of the held set.
-  if (APPROVE.has(c.candidate_id)) return true;
-  if (c.publish_decision === 'HOLD_FOR_REVIEW' || c.publish_decision === 'REVIEW_QUEUE') return false;
-  if (c.evidence_grade === 'CONFIRMED') return true;
-  if (c.evidence_grade === 'SUPPORTED' && ALLOW_SUPPORTED_IDS.has(c.candidate_id)) return true;
-  return false;
+  if (!c || !c.candidate_id) return false;
+  // Ledger only. Held candidates are never auto-published.
+  return reviewLib.isPublishable(REVIEW[c.candidate_id]);
 }
 
 function toIntelItem(c) {
@@ -269,12 +248,12 @@ if (newest) {
   intel.updated = noon > nowIso ? nowIso : noon;
 }
 intel.refresh_meta = {
-  cadence: 'twice daily (curated)',
+  cadence: 'once daily at 06:00 UTC (10:00 Dubai), only when TP_BUILD_HOOK_URL is set',
   refreshed_at_build: true,
   newest_validated_content_date: newest,
-  note: 'updated reflects newest validated CONTENT observation (float/publication/event/update) — not source_checked_at and not a silent redeploy clock. Excludes tender_close_date and future dates. Human approve[] overrides from gcc-discovery-publish-overrides.json.',
+  note: 'updated reflects newest validated CONTENT observation (float/publication/event/update) — not source_checked_at and not a silent redeploy clock. Excludes tender_close_date and future dates. Publication requires gcc-intel-review.json decision=PUBLISH with reviewer and reviewed_at. Held candidates are not auto-published.',
   gcc_published: publishableAll.map(function (p) { return p.candidate_id || p.title; }),
-  desk_approved: Array.from(APPROVE)
+  desk_approved: reviewRows.filter(reviewLib.isPublishable).map(function (r) { return r.candidate_id; })
 };
 fs.writeFileSync('data/intel.json', JSON.stringify(intel, null, 2));
 console.log('data/intel.json: upserted ' + upserted + ', prepended ' + prepended + ', removed held ' + removedHeld + '; updated=' + intel.updated);
@@ -299,7 +278,10 @@ const inputPath = 'data/gcc-sep-2026-discovery-input.json';
 if (fs.existsSync(inputPath)) {
   let inputText = fs.readFileSync(inputPath, 'utf8');
   publishedIds.forEach(function (id) {
-    const re = new RegExp('("candidate_id"\\s*:\\s*"' + id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '"[\\s\\S]*?"published_to_intel"\\s*:\\s*)false');
+    // Stay inside this candidate. A greedy span was flipping the next row's
+    // published_to_intel when this row was already true.
+    const escaped = id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const re = new RegExp('("candidate_id"\\s*:\\s*"' + escaped + '"(?:(?!"candidate_id")[\\s\\S])*?"published_to_intel"\\s*:\\s*)false');
     inputText = inputText.replace(re, '$1true');
   });
   fs.writeFileSync(inputPath, inputText);

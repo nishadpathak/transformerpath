@@ -245,8 +245,9 @@ function timelineHtml(r) {
     const label = EVT_TYPE_LABEL[t] || t;
     const lis = items.map(function (e) {
       const src = esc(e.src || '');
+      const fac = e.facility_id ? ' · facility <span style="font-family:monospace">' + esc(e.facility_id) + '</span>' : '';
       return '<li style="margin:8px 0"><a href="' + esc(e.url) + '" target="_blank" rel="noopener" style="color:var(--accent);font-weight:600">' + esc(e.title) + '</a>' + (e.value ? ' <span style="color:var(--muted)">· ' + esc(e.value) + '</span>' : '') + '<br>' +
-        '<span style="color:var(--muted);font-size:.8rem">' + (e.date ? esc(e.date) + ' · ' : '') + (src || '') + ' · confidence <span class="vbadge" style="font-weight:600">' + esc(CONF[e.confidence] || e.confidence) + '</span></span></li>';
+        '<span style="color:var(--muted);font-size:.8rem">' + (e.date ? esc(e.date) + ' · ' : '') + (src || '') + fac + ' · confidence <span class="vbadge" style="font-weight:600">' + esc(CONF[e.confidence] || e.confidence) + '</span></span></li>';
     }).join('');
     return '<a name="' + esc(t) + '"></a><h3 style="font-size:.98rem;color:var(--accent);margin:16px 0 4px">' + esc(label) + '</h3><ul>' + lis + '</ul>';
   }).join('');

@@ -1,0 +1,221 @@
+{
+  "$schema": "https://transformerpath.com/gcc-intel-review.schema.json",
+  "purpose": "Per-candidate human review ledger for GCC discovery. Publication requires decision=PUBLISH with reviewer and reviewed_at. HOLD is not publication.",
+  "honesty": "Rows are review records, not new evidence. PUBLISH rows record the PR #16 desk release only. Every other candidate is HOLD with reviewer null. No grade was upgraded.",
+  "updated": "2026-10-14",
+  "reviews": [
+    {
+      "candidate_id": "uae-dewa-2122600155",
+      "evidence_status": "SUPPORTED",
+      "hold_reason": null,
+      "reviewer": "nishadpathak",
+      "reviewed_at": "2026-10-14T07:26:01.000Z",
+      "decision": "PUBLISH",
+      "decision_note": "Desk release in PR #16 (commit 05fe029, author nishadpathak, 2026-10-14T11:26:01+04:00). The candidate row still has publish_decision HOLD_FOR_REVIEW; this ledger is the review record. evidence_status stays SUPPORTED.",
+      "source_urls": [
+        "https://www.dewa.gov.ae/en/supplier/services/list-of-tender-documents"
+      ]
+    },
+    {
+      "candidate_id": "sa-swa-rabigh-2p5mva",
+      "evidence_status": "CONFIRMED",
+      "hold_reason": null,
+      "reviewer": "nishadpathak",
+      "reviewed_at": "2026-10-14T07:26:01.000Z",
+      "decision": "PUBLISH",
+      "decision_note": "Desk release in PR #16 (commit 05fe029, author nishadpathak, 2026-10-14T11:26:01+04:00). The candidate row still has publish_decision REVIEW_QUEUE; this ledger is the review record. evidence_status stays CONFIRMED.",
+      "source_urls": [
+        "https://tenders.etimad.sa/Tender/DetailsForVisitor?STenderId=YYulueYsiIAkLL3QtkpaYQ==",
+        "https://www.tenderdetail.com/Global-Tenders/TenderNotice/117055177/17B9D72B-E5DC-44E1-9FC4-5FF68C761BAD"
+      ]
+    },
+    {
+      "candidate_id": "sa-swa-jubail-grounding",
+      "evidence_status": "SUPPORTED",
+      "hold_reason": {
+        "code": "AWAITING_HUMAN_REVIEW",
+        "text": "Candidate publish_decision is HOLD_FOR_REVIEW. No reviewer has released it."
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "decision": "HOLD",
+      "decision_note": "Pre-filled HOLD. reviewer is null. Not published by this ledger.",
+      "source_urls": [
+        "https://bidsfactory.com/en/tenders/3304-4-saudi_etimad-40d892d6879b8761"
+      ]
+    },
+    {
+      "candidate_id": "sa-al-aflaj-33kv-replacement",
+      "evidence_status": "SUPPORTED",
+      "hold_reason": {
+        "code": "AWAITING_HUMAN_REVIEW",
+        "text": "Candidate publish_decision is HOLD_FOR_REVIEW. No reviewer has released it."
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "decision": "HOLD",
+      "decision_note": "Pre-filled HOLD. reviewer is null. Not published by this ledger.",
+      "source_urls": [
+        "https://tenderimpulse.com/government-tenders/saudi-arab/replacement-of-the-33-kv-transformer-for-station-no-6-with-the-technical-college-14893514"
+      ]
+    },
+    {
+      "candidate_id": "sa-dhahran-1500kva-standby",
+      "evidence_status": "SUPPORTED",
+      "hold_reason": {
+        "code": "AWAITING_HUMAN_REVIEW",
+        "text": "Candidate publish_decision is HOLD_FOR_REVIEW. No reviewer has released it."
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "decision": "HOLD",
+      "decision_note": "Pre-filled HOLD. reviewer is null. Not published by this ledger.",
+      "source_urls": [
+        "https://bidsfactory.com/en/tenders/1500-saudi_etimad-8a384ba1b679c3e3"
+      ]
+    },
+    {
+      "candidate_id": "sa-swa-yanbu-t803-supervision",
+      "evidence_status": "SUPPORTED",
+      "hold_reason": {
+        "code": "AWAITING_HUMAN_REVIEW",
+        "text": "Do not mis-date the original T803 supply float as 24 Sep 2026. Sep activity is supervision of replacement."
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "decision": "HOLD",
+      "decision_note": "Pre-filled HOLD. reviewer is null. Not published by this ledger.",
+      "source_urls": [
+        "https://tenderimpulse.com/government-tenders/saudi-arab/project-for-the-supervision-of-the-replacement-of-major-gas-solving-bars-gib-and-14656272"
+      ]
+    },
+    {
+      "candidate_id": "kw-mewre-75mva-stage1",
+      "evidence_status": "SUPPORTED",
+      "hold_reason": {
+        "code": "AWAITING_HUMAN_REVIEW",
+        "text": "Candidate publish_decision is HOLD_FOR_REVIEW. No reviewer has released it."
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "decision": "HOLD",
+      "decision_note": "Pre-filled HOLD. reviewer is null. Not published by this ledger.",
+      "source_urls": [
+        "https://tenderimpulse.com/government-tenders/kuwait/replacement-and-substitution-of-damaged-transformers-up-to-a-capacity-of-75-mva-14709840"
+      ]
+    },
+    {
+      "candidate_id": "kw-mewre-75mva-relocation",
+      "evidence_status": "SUPPORTED",
+      "hold_reason": {
+        "code": "AWAITING_HUMAN_REVIEW",
+        "text": "Candidate publish_decision is HOLD_FOR_REVIEW. No reviewer has released it."
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "decision": "HOLD",
+      "decision_note": "Pre-filled HOLD. reviewer is null. Not published by this ledger.",
+      "source_urls": [
+        "http://www.biddetail.com/latest-tenders/117573786$d84ae31a-0b12-4035-93f7-f0d7cdc01f0d"
+      ]
+    },
+    {
+      "candidate_id": "kw-mewre-75mva-stage2",
+      "evidence_status": "SUPPORTED",
+      "hold_reason": {
+        "code": "AWAITING_HUMAN_REVIEW",
+        "text": "Keep distinct from stage-1 via canonical_procurement_id; do not spawn duplicate Intel stories on status change alone."
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "decision": "HOLD",
+      "decision_note": "Pre-filled HOLD. reviewer is null. Not published by this ledger.",
+      "source_urls": [
+        "https://tenderimpulse.com/government-tenders/kuwait/maintenance-and-replacement-of-damaged-parts-and-civil-works-related-to-a-number-14608275"
+      ]
+    },
+    {
+      "candidate_id": "om-localisation-aug12",
+      "evidence_status": "CONFIRMED",
+      "hold_reason": {
+        "code": "DUPLICATE_OF_CURATED",
+        "text": "Candidate remains REVIEW_QUEUE. A near-duplicate is already in curated GCC intel; this row was not part of the PR #16 desk release."
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "decision": "HOLD",
+      "decision_note": "Pre-filled HOLD. reviewer is null. Not published by this ledger.",
+      "source_urls": [
+        "https://www.omanobserver.om/article/1194395/business/ro-15m-pacts-signed-to-drive-local-production-of-transformer-components",
+        "https://www.omanobserver.om/article/1196433/business/oman-localises-transformer-production",
+        "https://www.thearabianstories.com/2026/09/19/oman-localises-transformer-production-with-ro-15-million-investment/",
+        "https://timesofoman.com/article/175526-ten-agreements-signed-to-localise-electrical-transformer-component-manufacturing-in-oman"
+      ]
+    },
+    {
+      "candidate_id": "bh-ewa-389-2026-1000kva",
+      "evidence_status": "CONFIRMED",
+      "hold_reason": null,
+      "reviewer": "nishadpathak",
+      "reviewed_at": "2026-10-14T07:26:01.000Z",
+      "decision": "PUBLISH",
+      "decision_note": "Desk release in PR #16 (commit 05fe029, author nishadpathak, 2026-10-14T11:26:01+04:00). The candidate row still has publish_decision REVIEW_QUEUE; this ledger is the review record. evidence_status stays CONFIRMED.",
+      "source_urls": [
+        "https://www.tenderboard.gov.bh/",
+        "https://tenderimpulse.com/government-tenders/bahrain/supply-of-substation-oil-1000kva-with-board-14577184"
+      ]
+    },
+    {
+      "candidate_id": "bh-ewa-aml-sep-review",
+      "evidence_status": "WEAK",
+      "hold_reason": {
+        "code": "REVIEW_REQUIRED",
+        "text": "Market report flagged possible AML updates and additional 500/1000/1500 kVA opportunities. Do not infer manufacturer approval from unrelated sources."
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "decision": "HOLD",
+      "decision_note": "Pre-filled HOLD. reviewer is null. Not published by this ledger.",
+      "source_urls": []
+    },
+    {
+      "candidate_id": "qa-sept-zero",
+      "evidence_status": "CONFIRMED",
+      "hold_reason": {
+        "code": "INTERNAL_COVERAGE_ONLY",
+        "text": "Coverage fact only. publish_decision is INTERNAL_COVERAGE_ONLY; not an Intel card."
+      },
+      "reviewer": null,
+      "reviewed_at": null,
+      "decision": "HOLD",
+      "decision_note": "Pre-filled HOLD. reviewer is null. Not published by this ledger.",
+      "source_urls": [
+        "https://www.km.qa/"
+      ]
+    },
+    {
+      "candidate_id": "gcc-uae-saudi-grid-mou-2026-10-09",
+      "evidence_status": "SUPPORTED",
+      "hold_reason": null,
+      "reviewer": "nishadpathak",
+      "reviewed_at": "2026-10-14T09:29:27.000Z",
+      "decision": "PUBLISH",
+      "decision_note": "Fetched MEED page https://guest.meed.com/uae-and-saudi-arabia-plan-electricity-interconnection/ on 2026-10-14. The page is dated 9 October 2026 and says the MoU was signed on 8 October. Grade stays SUPPORTED. This is grid news, not a transformer tender. Held September candidates were not released by this row.",
+      "source_urls": [
+        "https://guest.meed.com/uae-and-saudi-arabia-plan-electricity-interconnection/"
+      ]
+    },
+    {
+      "candidate_id": "sa-sppc-grid-scale-2026-10-13",
+      "evidence_status": "SUPPORTED",
+      "hold_reason": null,
+      "reviewer": "nishadpathak",
+      "reviewed_at": "2026-10-14T09:29:27.000Z",
+      "decision": "PUBLISH",
+      "decision_note": "Fetched Arab News https://www.arabnews.com/energy/saudi-arabia-upgrading-50-of-power-grid-as-demand-climbs-from-industry-to-ai-3006079 on 2026-10-14. The page says Updated 13 October 2026. Grade stays SUPPORTED. Held September candidates were not released by this row.",
+      "source_urls": [
+        "https://www.arabnews.com/energy/saudi-arabia-upgrading-50-of-power-grid-as-demand-climbs-from-industry-to-ai-3006079"
+      ]
+    }
+  ]
+}

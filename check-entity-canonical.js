@@ -125,8 +125,78 @@ try {
   console.warn('host sweep skipped:', e.message);
 }
 
+// 4) HTML must not link at a meta-refresh alias stub, or at a manufacturer
+// slug that is neither in company-slugs.json nor a real non-company hub
+// (category landings such as /manufacturers/distribution-transformers/).
+const slugSet = {};
+slugs.forEach(function (r) { if (r && r.slug) slugSet[r.slug] = true; });
+const aliasStub = {};
+Object.keys(aliasPairs).forEach(function (src) { aliasStub[src] = aliasPairs[src]; });
+
+const pageCache = {};
+function pageHtml(slug) {
+  if (Object.prototype.hasOwnProperty.call(pageCache, slug)) return pageCache[slug];
+  const page = path.join('manufacturers', slug, 'index.html');
+  pageCache[slug] = fs.existsSync(page) ? fs.readFileSync(page, 'utf8') : '';
+  return pageCache[slug];
+}
+function isRefreshStub(slug) {
+  const html = pageHtml(slug);
+  return !!html && /http-equiv=["']refresh["']/i.test(html);
+}
+function isCategoryHub(slug) {
+  const html = pageHtml(slug);
+  if (!html) return false;
+  if (/http-equiv=["']refresh["']/i.test(html)) return false;
+  if (/Highest sourced voltage evidence|Claim this profile/i.test(html)) return false;
+  return true;
+}
+
+const roots = [];
+if (process.argv.indexOf('--dist') >= 0) {
+  if (!fs.existsSync('dist')) {
+    console.error('ENTITY CANONICAL: --dist set but dist/ is missing');
+    process.exit(1);
+  }
+  roots.push('dist');
+} else {
+  roots.push('.');
+}
+
+const SKIP = new Set(['.git', 'node_modules', 'dist', 'vendor', 'transformerpath', 'data']);
+const hrefRe = /href=(["'])([^"']*\/manufacturers\/([a-z0-9-]+)\/)/gi;
+let hrefChecked = 0;
+function walkHref(dir, inDist) {
+  let names;
+  try { names = fs.readdirSync(dir); } catch (e) { return; }
+  for (const name of names) {
+    if (!inDist && SKIP.has(name)) continue;
+    const p = path.join(dir, name);
+    let st;
+    try { st = fs.statSync(p); } catch (e) { continue; }
+    if (st.isDirectory()) walkHref(p, inDist);
+    else if (name.endsWith('.html')) {
+      const text = fs.readFileSync(p, 'utf8');
+      let m;
+      hrefRe.lastIndex = 0;
+      while ((m = hrefRe.exec(text))) {
+        const slug = m[3];
+        hrefChecked++;
+        if (aliasStub[slug] || isRefreshStub(slug)) {
+          fail(path.relative('.', p) + ' links to alias stub /manufacturers/' + slug + '/');
+          continue;
+        }
+        if (!slugSet[slug] && !isCategoryHub(slug)) {
+          fail(path.relative('.', p) + ' links to /manufacturers/' + slug + '/ which is not in company-slugs.json');
+        }
+      }
+    }
+  }
+}
+roots.forEach(function (r) { walkHref(r, r === 'dist'); });
+
 if (failed) {
   console.error('ENTITY CANONICAL: ' + failed + ' failure(s)');
   process.exit(1);
 }
-console.log('ENTITY CANONICAL OK — alias redirects clean; no competing canonical collisions across ' + slugs.length + ' company-slugs' + (hostDupWarn ? ' (host-share review notes: ' + hostDupWarn + ')' : ''));
+console.log('ENTITY CANONICAL OK — alias redirects clean; no competing canonical collisions across ' + slugs.length + ' company-slugs; ' + hrefChecked + ' manufacturer hrefs checked' + (hostDupWarn ? ' (host-share review notes: ' + hostDupWarn + ')' : ''));
