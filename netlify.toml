@@ -27,6 +27,15 @@
 # publish = "." deploys the whole folder, so the internal strategy/setup
 # markdown and the stale archive/ copies would otherwise be fetchable
 # directly (e.g. /PREMIUM-PRICING-STRATEGY.md). Serve 404 instead.
+
+# Pre-sprint data snapshot. Forced 404 even if a stale copy is still published.
+# First redirect so no later splat or catch-all can serve it.
+[[redirects]]
+  from = "/data/backup-pre-sprint/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
 [[redirects]]
   from = "/_docs/*"
   to = "/404.html"
