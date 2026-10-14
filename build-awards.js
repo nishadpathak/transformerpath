@@ -54,6 +54,12 @@ TENDERS.forEach((t) => {
     utility: t.utility || '',
     epc: t.epc || '',
     country: t.country || '',
+    project_country: (t.project_country != null && String(t.project_country).trim() !== '')
+      ? t.project_country
+      : ((t.country != null && String(t.country).trim() !== '') ? t.country : null),
+    buyer_country: t.buyer_country != null ? t.buyer_country : null,
+    supplier_country: t.supplier_country != null ? t.supplier_country : null,
+    source_country: t.source_country != null ? t.source_country : null,
     region: t.region || 'Other',
     voltage: t.voltage || '',
     transformer_scope: t.transformer_scope || 'UNKNOWN',
@@ -75,7 +81,7 @@ TENDERS.forEach((t) => {
 });
 
 // Sort: by country then recency of source label (descending).
-function dateFromSrc(src) { const m = String(src || '').match(/(\d{1,2}\s+\w{3}\s+\d{4})/); if (!m) return ''; const d = new Date(m[1]); return isNaN(d.getTime()) ? '' : d.toISOString().slice(0, 10); }
+function dateFromSrc(src) { return require('./lib/src-date').dateFromSrcUtc(src); }
 awards.sort((a, b) => String(a.country).localeCompare(b.country) || String(dateFromSrc(b.source)).localeCompare(dateFromSrc(a.source)));
 
 const stats = {

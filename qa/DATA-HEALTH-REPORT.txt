@@ -1,5 +1,5 @@
 TransformerPath DATA HEALTH REPORT
-Generated: 2026-10-08T11:00:04.430Z
+Generated: 2026-10-14T10:42:54.733Z
 Result: PASS
 Errors: 0 | Warnings: 31
 Child gates skipped: yes
@@ -12,15 +12,15 @@ Child gates skipped: yes
   OK — no stale 709/911/1002 manufacturer-count copy in key surfaces
 
 ## Duplicate canonical company IDs
-  data/companies.json: 1210 records, duplicates=0
-  data/directory-index.json: 1200 records, duplicates=0
-  data/manufacturer-intel.json: 907 records, duplicates=0
+  data/companies.json: 1170 records, duplicates=0
+  data/directory-index.json: 1194 records, duplicates=0
+  data/manufacturer-intel.json: 906 records, duplicates=0
   OK — no duplicate canonical company IDs
 
 ## Orphan facilities / manufacturing evidence
-  Facilities=1123 public_count≈191
+  Facilities=1117 public_count≈199
   Orphan company_id=0 | missing location=0 | broken facility_ids refs=0
-  Without manufacturing evidence=932 (warning — not auto-deleted)
+  Without manufacturing evidence=918 (warning — not auto-deleted)
 
 ## Capability summary vs evidence
   CG Power evidence max = 765 kV
@@ -32,11 +32,11 @@ Child gates skipped: yes
 
 ## Intel source / status
   Intel feed posts=513 missing source=0
-  GCC candidates=13 bad grade=0 published-without-source=0
+  GCC candidates=15 bad grade=0 published-without-source=0
   daily_intel status=INTEL COVERAGE DELAYED
 
 ## Date anomalies
-  Future-date hard findings: 0 (today=2026-10-08)
+  Future-date hard findings: 0 (today=2026-10-14)
   OK — no future publication/observation/archive dates
 
 ## Duplicate canonical events
@@ -78,7 +78,7 @@ Child gates skipped: yes
   Search "India" → 257 hits
 
 ## Warnings (review — non-blocking)
-  ⚠ [facilities] 932/1123 facilities lack manufacturing evidence (census-only / review). Samples: fac:a-plus-power-solution:metro-manila, fac:abay-transformers:addis-ababa, fac:abb-thailand:bang-pu, fac:abb-turkiye:istanbul, fac:abc-transformers:faridabad-up
+  ⚠ [facilities] 918/1117 facilities lack manufacturing evidence (census-only / review). Samples: fac:a-plus-power-solution:metro-manila, fac:abay-transformers:addis-ababa, fac:abb-thailand:bang-pu, fac:abb-turkiye:istanbul, fac:abc-transformers:faridabad-up
   ⚠ [dates] intel:grid-finance-sina-com-cn-roll-2026-04-15-doc-inhuqwta dateIso=2026-12-31 (precision=year) is after today — review sentinel
   ⚠ [dates] intel:grid-www-afdb-org-en-news-and-events-press-releases-a dateIso=2026-12-31 (precision=year) is after today — review sentinel
   ⚠ [dates] intel:tech-www-powerelectronicsnews-com-real-world-solid-st dateIso=2026-12-31 (precision=year) is after today — review sentinel

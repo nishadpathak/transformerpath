@@ -107,6 +107,19 @@ MANUF.forEach(function (g) {
       // Same canonical company seen again (short name / second country row):
       // keep the richer display name + URL; union types; never invent a 2nd page.
       const prev = records[key];
+      // A later row that actually carries the canonical name replaces HQ fields
+      // taken from an earlier plant alias. Limited to Hammond: the US Baraboo
+      // row was winning over the Guelph corporate office. Other aliases
+      // (Prolec, Hyosung) are left as they were until their HQ is re-fetched.
+      if (!alias.aliased && prev.fromAlias && prev.canonical_slug === 'hammond-power-solutions') {
+        prev.name = name;
+        prev.country = g.country;
+        prev.region = g.region;
+        prev.flag = g.flag;
+        if (x[1]) prev.city = x[1];
+        if (x[2]) prev.url = x[2];
+        prev.fromAlias = false;
+      }
       if ((!prev.url && x[2]) || (alias.aliased && /industrial solutions/i.test(rawName) && !/industrial solutions/i.test(prev.name))) {
         prev.name = rawName; // prefer full legal census name when alias collapses onto it
       }
@@ -134,7 +147,8 @@ MANUF.forEach(function (g) {
       tierFile: tierFor(rawName) || tierFor(name),
       listed: true,
       canonical_slug: alias.aliased ? alias.slug : undefined,
-      aka: alias.aliased && alias.sourceName !== name ? [alias.sourceName] : undefined
+      aka: alias.aliased && alias.sourceName !== name ? [alias.sourceName] : undefined,
+      fromAlias: !!alias.aliased
     };
   });
 });
@@ -231,8 +245,9 @@ function timelineHtml(r) {
     const label = EVT_TYPE_LABEL[t] || t;
     const lis = items.map(function (e) {
       const src = esc(e.src || '');
+      const fac = e.facility_id ? ' · facility <span style="font-family:monospace">' + esc(e.facility_id) + '</span>' : '';
       return '<li style="margin:8px 0"><a href="' + esc(e.url) + '" target="_blank" rel="noopener" style="color:var(--accent);font-weight:600">' + esc(e.title) + '</a>' + (e.value ? ' <span style="color:var(--muted)">· ' + esc(e.value) + '</span>' : '') + '<br>' +
-        '<span style="color:var(--muted);font-size:.8rem">' + (e.date ? esc(e.date) + ' · ' : '') + (src || '') + ' · confidence <span class="vbadge" style="font-weight:600">' + esc(CONF[e.confidence] || e.confidence) + '</span></span></li>';
+        '<span style="color:var(--muted);font-size:.8rem">' + (e.date ? esc(e.date) + ' · ' : '') + (src || '') + fac + ' · confidence <span class="vbadge" style="font-weight:600">' + esc(CONF[e.confidence] || e.confidence) + '</span></span></li>';
     }).join('');
     return '<a name="' + esc(t) + '"></a><h3 style="font-size:.98rem;color:var(--accent);margin:16px 0 4px">' + esc(label) + '</h3><ul>' + lis + '</ul>';
   }).join('');
@@ -550,6 +565,11 @@ Object.keys(require('./lib/company-aliases').ALIASES).forEach(function (k) {
 // Also cover common census display forms used historically as directory slugs.
 [
   ['cg-power', 'cg-power-and-industrial-solutions'],
+  ['hammond-power-solutions-baraboo', 'hammond-power-solutions'],
+  ['green-transfo-energy-turkey', 'green-transfo'],
+  ['siemens-energy-tenjo', 'siemens-energy'],
+  ['siemens-energy-nuremberg', 'siemens-energy'],
+  ['jefferson-electric', 'jefferson-electric-voltaris'],
   ['prolec-ge-ge-vernova', 'prolec-ge'],
   ['prolec-ge-brasil', 'prolec-ge'],
   ['prolec-ge-waukesha', 'prolec-ge'],

@@ -108,8 +108,15 @@ function addTender(o) {
   seen[key] = 1;
   const deadline = parseDeadline(o.deadline_raw || o.expected_raw || '');
   const status = deriveStatus(o.stage, o.expected_raw, deadline);
+  const projectCountry = (o.project_country != null && String(o.project_country).trim() !== '')
+    ? o.project_country
+    : ((o.country != null && String(o.country).trim() !== '') ? o.country : null);
   tenders.push(Object.assign({}, o, {
     tender_id: 'T-' + slugify(o.title).slice(0, 32).replace(/-+$/, ''),
+    project_country: projectCountry,
+    buyer_country: o.buyer_country != null ? o.buyer_country : null,
+    supplier_country: o.supplier_country != null ? o.supplier_country : null,
+    source_country: o.source_country != null ? o.source_country : null,
     status,
     statusLabel: STATUS_LABEL[status],
     statusGroup: STATUS_GROUP[status],
@@ -133,6 +140,12 @@ PROJECTS.forEach((p) => {
     utility: p.utility || '',
     epc: p.epc || '',
     country: p.country,
+    project_country: (p.project_country != null && String(p.project_country).trim() !== '')
+      ? p.project_country
+      : ((p.country != null && String(p.country).trim() !== '') ? p.country : null),
+    buyer_country: p.buyer_country != null ? p.buyer_country : null,
+    supplier_country: p.supplier_country != null ? p.supplier_country : null,
+    source_country: p.source_country != null ? p.source_country : null,
     region: regionOf(p.country),
     project_slug: slugify(p.project),
     transformer_scope: trScope(p.transformer_requirement),
@@ -191,6 +204,91 @@ INTEL_ITEMS.forEach((it) => {
     cls: '',
   });
 });
+
+// 3) CONFIRMED / official-portal GCC procurement IDs.
+// Republisher mirrors (tenderimpulse, bidsfactory, biddetail, MEED, …) are not
+// official portals. The invented id KW-MEWRE-75MVA-RELOC is never promoted.
+const OFFICIAL_PROCUREMENT_HOSTS = {
+  'dewa.gov.ae': true,
+  'www.dewa.gov.ae': true,
+  'tenders.etimad.sa': true,
+  'etimad.sa': true,
+  'www.etimad.sa': true,
+  'tenderboard.gov.bh': true,
+  'www.tenderboard.gov.bh': true
+};
+const INVENTED_PROCUREMENT_IDS = { 'KW-MEWRE-75MVA-RELOC': true };
+function officialHost(url) {
+  try { return new URL(url).hostname.replace(/^www\./, '').toLowerCase(); }
+  catch (e) { return ''; }
+}
+function isOfficialProcurementUrl(url) {
+  const host = officialHost(url);
+  if (!host) return false;
+  if (OFFICIAL_PROCUREMENT_HOSTS[host] || OFFICIAL_PROCUREMENT_HOSTS['www.' + host]) return true;
+  return host === 'dewa.gov.ae' || host === 'tenders.etimad.sa' || host === 'etimad.sa' || host === 'tenderboard.gov.bh';
+}
+const byProcurement = {};
+tenders.forEach(function (t) {
+  if (t.procurement_id) byProcurement[String(t.procurement_id)] = t;
+});
+let officialAdded = 0;
+INTEL_ITEMS.forEach(function (it) {
+  const pid = String(it.tender_id || '').trim();
+  if (!pid || INVENTED_PROCUREMENT_IDS[pid]) return;
+  const classes = it.classifications || [];
+  const tenderClass = classes.indexOf('TENDER') >= 0;
+  if (!tenderClass) return;
+  if (!isOfficialProcurementUrl(it.url)) return;
+  if (byProcurement[pid]) return;
+  const country = (it.buyer && /DEWA|Dubai/i.test(it.buyer)) ? 'United Arab Emirates'
+    : /Saudi/i.test(it.buyer || it.title || '') ? 'Saudi Arabia'
+    : /Bahrain|EWA/i.test(it.buyer || it.title || '') ? 'Bahrain'
+    : /Kuwait|MEWRE/i.test(it.buyer || it.title || '') ? 'Kuwait'
+    : /Oman/i.test(it.buyer || it.title || '') ? 'Oman' : '';
+  const events = [];
+  if (it.tender_float_date) events.push({ type: 'floated', date: String(it.tender_float_date).slice(0, 10), source_url: it.url });
+  if (it.publication_date && it.publication_date !== it.tender_float_date) {
+    events.push({ type: 'published', date: String(it.publication_date).slice(0, 10), source_url: it.url });
+  }
+  if (it.tender_close_date) events.push({ type: 'submission_deadline', date: String(it.tender_close_date).slice(0, 10), source_url: it.url });
+  const close = it.tender_close_date ? String(it.tender_close_date).slice(0, 10) : '';
+  addTender({
+    title: it.title,
+    full_title: it.title,
+    buyer: it.buyer || '',
+    utility: it.buyer || '',
+    epc: '',
+    country: country,
+    region: 'Middle East',
+    project_slug: '',
+    transformer_scope: (classes.indexOf('TRANSFORMER_REPLACEMENT') >= 0 || /transformer/i.test((it.title || '') + ' ' + (it.snippet || ''))) ? 'CONFIRMED' : 'UNKNOWN',
+    voltage: '',
+    quantity: it.value || '',
+    primary_voltage: '',
+    secondary_voltage: '',
+    rating: '',
+    standard: '',
+    delivery_requirement: '',
+    qualification_requirement: '',
+    official_procurement_url: it.url || '',
+    source: it.src || 'official procurement portal',
+    source_urls: it.url ? [it.url] : [],
+    source_verified: true,
+    expected_raw: close,
+    deadline_raw: close,
+    stage: 'tendering',
+    cls: it.cls || '',
+    procurement_id: pid,
+    status_events: events
+  });
+  const added = tenders[tenders.length - 1];
+  if (added && added.procurement_id === pid) {
+    byProcurement[pid] = added;
+    officialAdded++;
+  }
+});
+console.log('official-portal procurement IDs added: ' + officialAdded);
 
 // Sort: open/expected first, then by region.
 const ORDER = { OPEN: 0, CLOSING_SOON: 1, EXPECTED: 2, EVALUATION: 3, AWARDED: 4, CLOSED: 5, UNKNOWN: 6 };

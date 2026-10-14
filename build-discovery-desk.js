@@ -1,14 +1,15 @@
 #!/usr/bin/env node
 /* build-discovery-desk.js — human review queue for GCC discovery → publish.
  *
- * Reads data/gcc-discovery-candidates.json + publish overrides and writes
- * admin/discovery-desk.html — a simple desk listing HOLD_FOR_REVIEW /
- * REVIEW_QUEUE / REVIEW_REQUIRED items with copy-ready override snippets.
+ * The queue is data/gcc-intel-review.json. HOLD rows are the desk. A row
+ * leaves the queue only when decision=PUBLISH with reviewer and reviewed_at.
+ * approve[] overrides do not publish and do not clear a HOLD.
  *
  * Wire after build-gcc-intel-discovery.js in Netlify.
  */
 'use strict';
 const fs = require('fs');
+const reviewLib = require('./lib/gcc-intel-review');
 
 function readJson(p, fb) {
   try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch (e) { return fb; }
@@ -19,45 +20,36 @@ function esc(s) {
 }
 
 const candidates = (readJson('data/gcc-discovery-candidates.json', { candidates: [] }).candidates) || [];
-const overrides = readJson('data/gcc-discovery-publish-overrides.json', { approve: [], reject: [] });
-const approve = new Set(overrides.approve || []);
-const reject = new Set(overrides.reject || []);
+const reviews = reviewLib.loadReview('data/gcc-intel-review.json');
+const reviewById = reviewLib.byId(reviews);
+const candById = {};
+candidates.forEach(function (c) { if (c && c.candidate_id) candById[c.candidate_id] = c; });
 
-const QUEUE_DECISIONS = new Set(['HOLD_FOR_REVIEW', 'REVIEW_QUEUE', 'INTERNAL_COVERAGE_ONLY']);
-const queue = candidates.filter(function (c) {
-  if (!c) return false;
-  if (reject.has(c.candidate_id)) return false;
-  if (approve.has(c.candidate_id)) return false;
-  if (QUEUE_DECISIONS.has(c.publish_decision)) return true;
-  if (c.evidence_grade === 'REVIEW_REQUIRED') return true;
-  if (c.evidence_grade === 'SUPPORTED' && c.publish_decision !== 'PUBLISH') return true;
-  return false;
-});
-
-const published = candidates.filter(function (c) {
-  return approve.has(c.candidate_id) || c.evidence_grade === 'CONFIRMED';
-});
+const queue = reviews.filter(function (r) { return r && r.decision === 'HOLD'; });
+const published = reviews.filter(reviewLib.isPublishable);
+const rejected = reviews.filter(function (r) { return r && r.decision === 'REJECT'; });
 
 const TODAY = new Date().toISOString().slice(0, 10);
 
-function row(c) {
+function row(r) {
+  const c = candById[r.candidate_id] || {};
   const primary = (c.sources || []).find(function (s) { return s.role === 'PRIMARY'; }) || (c.sources || [])[0] || {};
-  const approveSnippet = JSON.stringify({ approve: [c.candidate_id] }, null, 2);
-  return '<article class="q-card" data-id="' + esc(c.candidate_id) + '">' +
+  const reason = r.hold_reason ? (r.hold_reason.code + ' — ' + r.hold_reason.text) : '';
+  return '<article class="q-card" data-id="' + esc(r.candidate_id) + '" data-decision="' + esc(r.decision) + '">' +
     '<div class="q-meta">' +
-    '<span class="badge grade">' + esc(c.evidence_grade || '—') + '</span>' +
-    '<span class="badge decision">' + esc(c.publish_decision || '—') + '</span>' +
+    '<span class="badge grade">' + esc(r.evidence_status || '—') + '</span>' +
+    '<span class="badge decision">' + esc(r.decision) + '</span>' +
+    (r.reviewer ? '<span class="muted">reviewer ' + esc(r.reviewer) + '</span>' : '<span class="muted">reviewer unset</span>') +
     (c.buyer ? '<span class="muted">' + esc(c.buyer) + '</span>' : '') +
     '</div>' +
-    '<h2>' + esc(c.title) + '</h2>' +
+    '<h2>' + esc(c.title || r.candidate_id) + '</h2>' +
     '<p class="snip">' + esc(c.snippet || '') + '</p>' +
+    (reason ? '<p class="hint"><b>Hold:</b> ' + esc(reason) + '</p>' : '') +
     '<div class="q-actions">' +
     (primary.url ? '<a class="btn" href="' + esc(primary.url) + '" target="_blank" rel="noopener">Open source</a>' : '') +
-    '<button type="button" class="btn copy" data-copy="' + esc(approveSnippet) + '">Copy approve override</button>' +
-    '<code class="id">' + esc(c.candidate_id) + '</code>' +
+    '<code class="id">' + esc(r.candidate_id) + '</code>' +
     '</div>' +
-    '<p class="hint">To publish: add <code>"' + esc(c.candidate_id) + '"</code> to ' +
-    '<code>data/gcc-discovery-publish-overrides.json</code> → <code>approve</code>, then rebuild.</p>' +
+    '<p class="hint">Still held. Publishing requires <code>decision: PUBLISH</code> plus <code>reviewer</code> and <code>reviewed_at</code> on this row in <code>data/gcc-intel-review.json</code>. An approve[] override does not publish a held candidate.</p>' +
     '</article>';
 }
 
@@ -93,14 +85,16 @@ const html = `<!DOCTYPE html>
 <main class="desk">
   <p style="font-size:.72rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--accent);margin:0 0 8px">Internal · discovery ≠ publication</p>
   <h1 style="margin:0 0 8px;color:var(--ink)">GCC discovery → publish desk</h1>
-  <p style="color:var(--muted);line-height:1.5;margin:0 0 8px">Human review queue generated <b>${esc(TODAY)}</b>. Approve by editing overrides, never by inventing grades.</p>
+  <p style="color:var(--muted);line-height:1.5;margin:0 0 8px">Review ledger generated <b>${esc(TODAY)}</b>. Held candidates stay held until a person sets decision=PUBLISH with reviewer and reviewed_at. Grades are not invented here.</p>
   <div class="stats">
-    <div class="s"><b>${queue.length}</b><span style="font-size:.78rem;color:var(--muted)">in review queue</span></div>
-    <div class="s"><b>${(overrides.approve||[]).length}</b><span style="font-size:.78rem;color:var(--muted)">approved overrides</span></div>
-    <div class="s"><b>${(overrides.reject||[]).length}</b><span style="font-size:.78rem;color:var(--muted)">rejected</span></div>
-    <div class="s"><b>${published.length}</b><span style="font-size:.78rem;color:var(--muted)">CONFIRMED / approved pool</span></div>
+    <div class="s"><b>${queue.length}</b><span style="font-size:.78rem;color:var(--muted)">held in review queue</span></div>
+    <div class="s"><b>${published.length}</b><span style="font-size:.78rem;color:var(--muted)">PUBLISH with reviewer</span></div>
+    <div class="s"><b>${rejected.length}</b><span style="font-size:.78rem;color:var(--muted)">rejected</span></div>
   </div>
-  <p style="font-size:.8rem;color:var(--muted)">Artifact: <code>data/gcc-discovery-publish-overrides.json</code> · consumed by <code>build-gcc-intel-publish.js</code></p>
+  <p style="font-size:.8rem;color:var(--muted)">Ledger: <code>data/gcc-intel-review.json</code> · consumed by <code>build-gcc-intel-publish.js</code> and <code>build-gcc-source-coverage.js</code></p>
+  ${published.length ? '<h2 style="margin-top:22px;color:var(--ink)">Released</h2><ul>' + published.map(function (r) {
+    return '<li><code>' + esc(r.candidate_id) + '</code> · ' + esc(r.evidence_status) + ' · ' + esc(r.reviewer) + ' · ' + esc(r.reviewed_at) + '</li>';
+  }).join('') + '</ul>' : ''}
   ${queue.length ? queue.map(row).join('\n') : '<p style="color:var(--muted)">Queue empty — nothing waiting on human review this build.</p>'}
 </main>
 <script>
@@ -121,4 +115,4 @@ document.querySelectorAll('[data-copy]').forEach(function(btn){
 
 fs.mkdirSync('admin', { recursive: true });
 fs.writeFileSync('admin/discovery-desk.html', html);
-console.log('discovery-desk: ' + queue.length + ' queued, ' + (overrides.approve || []).length + ' approved overrides');
+console.log('discovery-desk: ' + queue.length + ' held, ' + published.length + ' publishable, ' + rejected.length + ' rejected');
