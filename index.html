@@ -829,7 +829,7 @@
         <h2>Where the world's <span>transformer industry</span> stays ahead.</h2>
         <p class="lead">Industry intelligence &middot; Engineering &middot; Manufacturers &middot; Markets &middot; Tools.</p>
         <div class="hero-ctas">
-          <a href="/intel" class="btn btn-amber">Read today’s briefing →</a>
+          <a href="/intel" class="btn btn-amber" id="hero-intel-cta">Open the latest sourced briefing →</a>
           <a href="manufacturers.html" class="hero-secondary">or browse the manufacturer census</a>
         </div>
 
@@ -1041,7 +1041,7 @@
 
 <script>
 /* ====== DAILY-UPDATED TICKER (the daily intel job rewrites this one line) ====== */
-const TICKER = "<b>Copper</b> $<span data-m='copper' data-m-type='num'>14,170</span>/t LME 3-mo ref · obs. <span data-m-obs='copper'>2026-08-20</span> &nbsp; <b>Aluminium</b> $<span data-m='aluminium' data-m-type='num'>3,182</span>/t LME 3-mo ref · obs. <span data-m-obs='aluminium'>2026-08-20</span> &nbsp; <b>UK</b> National Grid appoints Laing O’Rourke to the North West London Upgrade — 400 kV works at Letchmore Heath, Elstree, St John’s Wood &nbsp; <b>Malaysia</b> MN Holdings takes two TNB awards in a week — RM122.31m 132 kV cable (Penang) and RM71.02m 2 × 45 MVA intake (Cameron Highlands) &nbsp; <b>Tanzania</b> 2,115 MW / $2.814bn Julius Nyerere hydropower plant fully commissioned &nbsp; <b>India</b> 35,670 MVA of ≥220 kV transformation commissioned Apr–Jul FY27 &nbsp; <b>UAE</b> six DEWA transformer-adjacent tenders close 25 Aug – 17 Sep";
+const TICKER = "<b>Copper</b> $<span data-m='copper' data-m-type='num'>14,170</span>/t LME 3-mo ref · obs. <span data-m-obs='copper'>2026-08-20</span> &nbsp; <b>Aluminium</b> $<span data-m='aluminium' data-m-type='num'>3,182</span>/t LME 3-mo ref · obs. <span data-m-obs='aluminium'>2026-08-20</span> &nbsp; <b>UK</b> National Grid appoints Laing O’Rourke to the North West London Upgrade — 400 kV works at Letchmore Heath, Elstree, St John’s Wood &nbsp; <b>Malaysia</b> MN Holdings takes two TNB awards in a week — RM122.31m 132 kV cable (Penang) and RM71.02m 2 × 45 MVA intake (Cameron Highlands) &nbsp; <b>Tanzania</b> 2,115 MW / $2.814bn Julius Nyerere hydropower plant fully commissioned &nbsp; <b>India</b> 35,670 MVA of ≥220 kV transformation commissioned Apr–Jul FY27 &nbsp; <b>UAE</b> six DEWA transformer-adjacent tenders — closed 25 Aug – 17 Sep 2026";
 (function(){var tk=document.getElementById('ticker'); if(tk) tk.innerHTML = TICKER + ' &nbsp;&nbsp;&nbsp; ' + TICKER + ' &nbsp;&nbsp;&nbsp; ';})();
 // Count-up KPIs (fire when the row scrolls into view)
 function countUp(el){
@@ -1127,6 +1127,10 @@ document.querySelectorAll('#mainNav a').forEach(a=>a.addEventListener('click',()
       const pillDot = document.getElementById('hero-live-dot');
       if (pillStatus) pillStatus.textContent = statusLabel;
       if (pillDate) pillDate.textContent = 'Latest sourced item ' + sourceLabel;
+      const heroCta = document.getElementById('hero-intel-cta');
+      if (heroCta && statusLabel !== 'DATA CURRENT') {
+        heroCta.textContent = 'Coverage is delayed — open the latest briefing →';
+      }
       if (pillDot) pillDot.style.background = dotColor;
 
       if(sub){
