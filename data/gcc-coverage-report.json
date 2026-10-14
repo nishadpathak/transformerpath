@@ -1,11 +1,12 @@
 {
   "$schema": "https://transformerpath.com/gcc-coverage-report.schema.json",
-  "generated": "2026-09-29T21:12:39.710Z",
+  "generated": "2026-10-14T10:41:22.453Z",
   "title": "INTEL P0 — GCC TRANSFORMER ACTIVITY COVERAGE",
   "gcc_coverage": {
     "UAE": {
       "candidates": [
-        "uae-dewa-2122600155"
+        "uae-dewa-2122600155",
+        "gcc-uae-saudi-grid-mou-2026-10-09"
       ],
       "status": "DEWA portal registered; Sep distribution-substation/kiosk tender SUPPORTED pending live adapter",
       "sources_registered": 4
@@ -16,7 +17,8 @@
         "sa-swa-jubail-grounding",
         "sa-al-aflaj-33kv-replacement",
         "sa-dhahran-1500kva-standby",
-        "sa-swa-yanbu-t803-supervision"
+        "sa-swa-yanbu-t803-supervision",
+        "sa-sppc-grid-scale-2026-10-13"
       ],
       "status": "Etimad + SWA registered; multiple Sep transformer procurements SUPPORTED/CONFIRMED from portal mirrors",
       "sources_registered": 4
@@ -52,9 +54,9 @@
     }
   },
   "backfill": {
-    "candidates": 12,
+    "candidates": 14,
     "confirmed": 3,
-    "supported": 8,
+    "supported": 10,
     "review_required": 1,
     "rejected": 0,
     "internal_coverage_facts": 1
@@ -501,6 +503,78 @@
         "update_date": null
       },
       "date_correction": null
+    },
+    {
+      "candidate_id": "gcc-uae-saudi-grid-mou-2026-10-09",
+      "country": "United Arab Emirates",
+      "title": "UAE and Saudi Arabia sign an MoU on electricity interconnection",
+      "found": true,
+      "source": [
+        "https://guest.meed.com/uae-and-saudi-arabia-plan-electricity-interconnection/"
+      ],
+      "source_types": [
+        "INDUSTRY_MEDIA"
+      ],
+      "why_previously_missed": "Published 9 October 2026, after the September discovery window.",
+      "classification": [
+        "REGULATORY",
+        "PROJECT"
+      ],
+      "evidence_grade": "SUPPORTED",
+      "published": true,
+      "publish_decision": "HOLD_FOR_REVIEW",
+      "dates": {
+        "publication_date": "2026-10-09",
+        "event_date": "2026-10-08",
+        "tender_float_date": null,
+        "tender_close_date": null,
+        "bid_opening_date": null,
+        "expected_award_date": null,
+        "award_date": null,
+        "project_start_date": null,
+        "commissioning_date": null,
+        "source_checked_at": "2026-10-14",
+        "update_date": "2026-10-09"
+      },
+      "date_correction": {
+        "event_date": "2026-10-08",
+        "update_date": "2026-10-09",
+        "publication_date": "2026-10-09"
+      }
+    },
+    {
+      "candidate_id": "sa-sppc-grid-scale-2026-10-13",
+      "country": "Saudi Arabia",
+      "title": "Saudi Power Procurement says about half the grid is being scaled up for demand including AI",
+      "found": true,
+      "source": [
+        "https://www.arabnews.com/energy/saudi-arabia-upgrading-50-of-power-grid-as-demand-climbs-from-industry-to-ai-3006079"
+      ],
+      "source_types": [
+        "INDUSTRY_MEDIA"
+      ],
+      "why_previously_missed": "Published 13 October 2026, after the September discovery window.",
+      "classification": [
+        "REGULATORY",
+        "PROJECT"
+      ],
+      "evidence_grade": "SUPPORTED",
+      "published": true,
+      "publish_decision": "HOLD_FOR_REVIEW",
+      "dates": {
+        "publication_date": "2026-10-13",
+        "event_date": "2026-10-13",
+        "tender_float_date": null,
+        "tender_close_date": null,
+        "bid_opening_date": null,
+        "expected_award_date": null,
+        "award_date": null,
+        "project_start_date": null,
+        "commissioning_date": null,
+        "source_checked_at": "2026-10-14",
+        "update_date": "2026-10-13"
+      },
+      "date_correction": null
     }
   ],
   "source_registry": {
@@ -582,7 +656,7 @@
         "UTILITY_PROCUREMENT"
       ],
       "evidence_grade": "CONFIRMED",
-      "published": false,
+      "published": true,
       "publish_decision": "REVIEW_QUEUE",
       "dates": {
         "publication_date": "2026-08-18",
@@ -727,6 +801,44 @@
         "update_date": "2026-09-19",
         "publication_date": "2026-08-12"
       }
+    },
+    {
+      "candidate_id": "gcc-uae-saudi-grid-mou-2026-10-09",
+      "country": "United Arab Emirates",
+      "title": "UAE and Saudi Arabia sign an MoU on electricity interconnection",
+      "found": true,
+      "source": [
+        "https://guest.meed.com/uae-and-saudi-arabia-plan-electricity-interconnection/"
+      ],
+      "source_types": [
+        "INDUSTRY_MEDIA"
+      ],
+      "why_previously_missed": "Published 9 October 2026, after the September discovery window.",
+      "classification": [
+        "REGULATORY",
+        "PROJECT"
+      ],
+      "evidence_grade": "SUPPORTED",
+      "published": false,
+      "publish_decision": "HOLD_FOR_REVIEW",
+      "dates": {
+        "publication_date": "2026-10-09",
+        "event_date": "2026-10-08",
+        "tender_float_date": null,
+        "tender_close_date": null,
+        "bid_opening_date": null,
+        "expected_award_date": null,
+        "award_date": null,
+        "project_start_date": null,
+        "commissioning_date": null,
+        "source_checked_at": "2026-10-14",
+        "update_date": "2026-10-09"
+      },
+      "date_correction": {
+        "event_date": "2026-10-08",
+        "update_date": "2026-10-09",
+        "publication_date": "2026-10-09"
+      }
     }
   ],
   "pipeline": {
@@ -741,12 +853,12 @@
     "markets_registered": 6,
     "markets_adapter_live": 4,
     "markets_with_validated_candidates": 6,
-    "latest_source_checked_at": "2026-09-29",
+    "latest_source_checked_at": "2026-10-14",
     "latest_confirmed_event_date": "2026-09-25",
     "data_current_claim_allowed": false,
     "honesty": "Do NOT declare DATA CURRENT because the build ran today. Freshness depends on source coverage + source_checked_at + validated newest record.",
     "adapter_probe": {
-      "probed": 11,
+      "probed": 13,
       "live": 4,
       "honesty": "live = HTTP reachable + transformer vocabulary observed. Gated portals are not counted as live adapters."
     }

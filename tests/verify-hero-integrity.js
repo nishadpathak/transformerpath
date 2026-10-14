@@ -51,6 +51,9 @@ check('Homepage tenders matches site-stats', homeTenders === STATS.tenders, home
 check('Homepage openTenders matches site-stats', homeOpenTenders === STATS.openTenders, homeOpenTenders + ' vs ' + STATS.openTenders);
 check('Homepage awards matches site-stats', homeAwards === STATS.awards, homeAwards + ' vs ' + STATS.awards);
 check('Homepage upcomingEvents matches site-stats', homeEvents === STATS.upcomingEvents, homeEvents + ' vs ' + STATS.upcomingEvents);
+check('Homepage hero tagline is the sourced-makers line', HOME.includes('Every transformer maker, tender and factory, sourced.'));
+check('Homepage 3D sub-line is the layer-by-layer line', HOME.includes('Take a power transformer apart, layer by layer.'));
+check('Homepage no longer uses the old 3D-only hero tagline', !HOME.includes('A power transformer you can take apart in 3D'));
 check('Homepage uses the 3D hero stage with static poster', HOME.includes('class="hero-stage"') && HOME.includes('power-transformer-3d-poster.jpg'));
 check('Homepage progressively enhances to hero-3d (not eager iframe)', HOME.includes("src='hero-3d.html'") || HOME.includes('src="hero-3d.html"') || HOME.includes("f.src='hero-3d.html'") || HOME.includes('f.src="hero-3d.html"'));
 check('Homepage loads WebGL gate', HOME.includes('tp-webgl-gate.js'));

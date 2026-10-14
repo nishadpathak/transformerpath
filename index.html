@@ -1,8 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark" data-tp-build-commit="28e901500810983af9e07b477551eb86a580a289" data-tp-build-at="2026-10-02T20:30:37.186Z" data-tp-data-version="f6bd8e2d408e">
+<html lang="en" data-theme="dark">
 <head>
-<meta name="tp-build-commit" content="28e901500810983af9e07b477551eb86a580a289"><meta name="tp-build-at" content="2026-10-02T20:30:37.186Z"><meta name="tp-data-version" content="f6bd8e2d408e">
-<!-- tp-release build_commit=28e901500810983af9e07b477551eb86a580a289 build_at=2026-10-02T20:30:37.186Z data_version=f6bd8e2d408e -->
 <meta charset="UTF-8">
 <script>document.documentElement.className += ' js';</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -121,9 +119,7 @@
           <a href="services.html">Services &amp; Repair</a>
           <a href="markets.html">Markets</a>
           <a href="buyers-guide.html">Buyer's Guide</a>
-          <a href="match.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">🎯 Match for Me →</a>
-          <a href="compare.html" style="font-weight:700;color:var(--accent)">⚖️ Compare Shortlist →</a>
-          <a href="directory.html" style="font-size:.82rem;color:var(--muted)">All Directory Verticals →</a>
+          <a href="directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
         </div>
       </div>
       <a href="projects.html">Projects</a>
@@ -217,8 +213,12 @@
 }
 .hero-stage__brand span{ color:var(--hs-amber); }
 .hero-stage h1{
-  margin:0 0 16px; font-family:Syne,sans-serif; font-weight:800;
-  font-size:clamp(2.1rem,4.6vw,3.35rem); line-height:1.05; letter-spacing:-.035em; max-width:15ch;
+  margin:0 0 10px; font-family:Syne,sans-serif; font-weight:800;
+  font-size:clamp(1.85rem,3.1vw,2.45rem); line-height:1.12; letter-spacing:-.03em; max-width:100%;
+}
+.hero-stage__3dsub{
+  margin:0 0 14px; color:var(--hs-amber); font-weight:700;
+  font-size:clamp(1rem,1.4vw,1.15rem); line-height:1.35; max-width:28ch;
 }
 .hero-stage__lead{
   margin:0 0 28px; color:var(--hs-mute); font-size:clamp(1.02rem,1.5vw,1.18rem);
@@ -312,7 +312,8 @@
     <div class="container">
       <div class="hero-stage__copy">
         <p class="hero-stage__brand">Transformer<span>Path</span></p>
-        <h1>A power transformer you can take apart in 3D.</h1>
+        <h1>Every transformer maker, tender and factory, sourced.</h1>
+        <p class="hero-stage__3dsub">Take a power transformer apart, layer by layer.</p>
         <p class="hero-stage__lead">Orbit the live model, then watch a short tour of the intel, directory, grids, events, and RFQ tools behind every part.</p>
         <p class="hero-stage__3dnote" id="hero3dNote" hidden>Interactive 3D is unavailable in this browser. You can still explore TransformerPath’s engineering content and transformer components.</p>
         <div class="hero-stage__ctas">
@@ -823,7 +824,7 @@
           <span class="live-dot" id="hero-live-dot" aria-hidden="true" style="background:#e0a800"></span>
           <span class="live-badge-text" id="hero-live-status">INTEL COVERAGE DELAYED</span>
           <span class="live-sep">&middot;</span>
-          <span id="hero-live-date">Latest sourced item 8 Oct 2026</span>
+          <span id="hero-live-date">Latest sourced item 13 Oct 2026</span>
         </div>
         <h2>Where the world's <span>transformer industry</span> stays ahead.</h2>
         <p class="lead">Industry intelligence &middot; Engineering &middot; Manufacturers &middot; Markets &middot; Tools.</p>
@@ -894,20 +895,25 @@
         </div>
         <div class="stat-strip">
           <a href="tenders.html" class="strip-item" title="View 150 procurement tenders worldwide">
-            <b data-stat="tenders">151</b>
+            <b data-stat="tenders">155</b>
             <span>Tenders Tracked</span>
           </a>
           <a href="tenders.html?status=open" class="strip-item is-live" title="21 open tenders accepting bids right now">
             <span class="strip-live-dot" aria-hidden="true"></span>
-            <b class="is-amber" data-stat="openTenders">22</b>
+            <b class="is-amber" data-stat="openTenders">23</b>
             <span>Open Tenders</span>
           </a>
-          <a href="/intel?type=awards" class="strip-item" title="Review 56 confirmed contract awards">
+          <a href="/intel?type=awards" class="strip-item" title="56 awards tracked, split by transformer scope">
             <b data-stat="awards">56</b>
-            <span>Confirmed Awards</span>
+            <span>Awards tracked</span>
+            <span class="award-split" style="display:block;font-size:.68rem;line-height:1.35;font-weight:600;margin-top:2px">
+              <span data-award-scope="confirmed"><b data-stat="awardsConfirmed">11</b> confirmed awards</span>
+              · <span data-award-scope="inferred"><b data-stat="awardsInferred">39</b> inferred</span>
+              · <span data-award-scope="unknown"><b data-stat="awardsUnknown">6</b> unknown</span>
+            </span>
           </a>
-          <a href="events.html" class="strip-item" title="Explore 168 upcoming industry conferences and exhibitions">
-            <b data-stat="upcomingEvents">168</b>
+          <a href="events.html" class="strip-item" title="Explore 157 upcoming industry conferences and exhibitions">
+            <b data-stat="upcomingEvents">157</b>
             <span>Upcoming Events</span>
           </a>
         </div>
