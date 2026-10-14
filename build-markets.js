@@ -15,6 +15,7 @@
 const fs = require('fs');
 const tpAff = require('./lib/travelpayouts');
 const { recordOnMarket } = require('./lib/market-country');
+const { isUpcoming } = require('./lib/event-status');
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
@@ -477,12 +478,11 @@ function keywordHit(text, m) {
 }
 
 function eventsFor(m) {
-  const now = new Date();
   return EVENTS.filter(function (ev) {
     const hasCountry = ev.co != null && String(ev.co).trim() !== '';
     if (hasCountry) return sameMarketCountry(ev.co, m);
     return keywordHit((ev.n || '') + ' ' + (ev.r || '') + ' ' + (ev.d || ''), m);
-  }).filter(function (ev) { return new Date(ev.e) >= now; }).sort(function (a, b) { return String(a.s).localeCompare(String(b.s)); }).slice(0, 8);
+  }).filter(function (ev) { return isUpcoming(ev); }).sort(function (a, b) { return String(a.s).localeCompare(String(b.s)); }).slice(0, 8);
 }
 function intelFor(m) {
   const reg = INTEL[m.intel]; const out = [];

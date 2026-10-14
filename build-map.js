@@ -17,7 +17,7 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
-const { resolveStatus, isDiscoverable } = require('./lib/event-status');
+const { resolveStatus, isDiscoverable, isUpcoming, platformToday } = require('./lib/event-status');
 const { eventHref } = require('./lib/event-href');
 const listingTier = require('./lib/listing-tier');
 
@@ -274,13 +274,13 @@ function shouldPinEvent(ev) {
   return true;
 }
 
-const today = new Date().toISOString().slice(0, 10);
+const today = platformToday();
 const EVENTS = JSON.parse(fs.readFileSync('data/events.json', 'utf8'));
 let upcomingDiscoverable = 0;
 EVENTS.forEach((ev) => {
   if (!ev.n) return;
   const st = resolveStatus(ev);
-  const upcoming = !!(ev.e && ev.e >= today && isDiscoverable(st));
+  const upcoming = isUpcoming(ev, today);
   if (upcoming) upcomingDiscoverable += 1;
   if (!shouldPinEvent(ev)) return;
   pushItem({

@@ -29,6 +29,7 @@ const ci = function (s) { return (s || '').toLowerCase(); };
 const norm = function (s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim().replace(/\s+/g, ' '); };
 
 const { resolveCompanyAlias, norm: aliasNorm } = require('./lib/company-aliases');
+const { isUpcoming } = require('./lib/event-status');
 const MANUF = JSON.parse(fs.readFileSync('data/manufacturers.json', 'utf8'));
 const TIERS = JSON.parse(fs.readFileSync('data/manufacturer-tiers.json', 'utf8'));
 const EVENTS = JSON.parse(fs.readFileSync('data/events.json', 'utf8'));
@@ -389,9 +390,9 @@ function metaFromLead(text) {
   return dot > 80 ? cut.slice(0, dot + 1) : cut.replace(/\s+\S*$/, '') + '.';
 }
 function eventsFor(rec) {
-  const now = new Date(); const alias = COUNTRY_ALIAS[ci(rec.country)] || rec.country;
+  const alias = COUNTRY_ALIAS[ci(rec.country)] || rec.country;
   return EVENTS.filter(function (ev) { return ci(ev.co) === ci(rec.country) || ci(ev.co) === ci(alias); })
-    .filter(function (ev) { return new Date(ev.e) >= now; })
+    .filter(function (ev) { return isUpcoming(ev); })
     .sort(function (a, b) { return String(a.s).localeCompare(String(b.s)); }).slice(0, 5);
 }
 function intelFor(rec) {
