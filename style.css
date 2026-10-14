@@ -405,7 +405,7 @@ html { scroll-behavior: smooth; }
     radial-gradient(38% 42% at 22% 28%, rgba(245,166,35,.20), transparent 62%),
     radial-gradient(42% 50% at 78% 24%, rgba(56,130,246,.18), transparent 60%),
     radial-gradient(52% 58% at 50% 92%, rgba(245,166,35,.12), transparent 60%);
-  filter: blur(34px); opacity: .9; pointer-events: none; animation: aurora 18s ease-in-out infinite alternate; }
+  opacity: .9; pointer-events: none; }
 .hero > * { position: relative; z-index: 3; }
 @keyframes aurora { 0% { transform: translate(-3%, -2%) scale(1); } 100% { transform: translate(3%, 3%) scale(1.06); } }
 
