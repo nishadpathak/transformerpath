@@ -10,6 +10,7 @@
 
 const STRIPE_API = 'https://api.stripe.com/v1';
 const SK = (process.env.STRIPE_SECRET_KEY || '').trim();
+const { listingProduct } = require('../lib/paid-listings');
 
 // Map the amount actually charged (in cents) to the plan tier. This mirrors the
 // three live Payment Links; the legacy $100 Learner link maps to learner too.
@@ -70,6 +71,21 @@ exports.handler = async (event) => {
     // The security boundary: the session must be paid. Anything else (open,
     // unpaid, expired, refunded) is rejected.
     if (session.payment_status === 'paid') {
+      // Manufacturer and event payments are not course entitlements. valid
+      // stays false so course-gate does not grant a learner token.
+      const listing = listingProduct(session);
+      if (listing === 'verified_manufacturer' || listing === 'featured_event') {
+        return {
+          statusCode: 200,
+          body: JSON.stringify({
+            valid: false,
+            paid: true,
+            listing: 'paid_pending_verification',
+            product: listing,
+            reason: 'listing_payment_not_course'
+          }),
+        };
+      }
       const tier = deriveTier(session);
       // Issue a server-trusted, expiring entitlement token (not localStorage,
       // not a query param) so gated content delivery can be verified server-side.

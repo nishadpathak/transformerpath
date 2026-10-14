@@ -1,0 +1,162 @@
+# Payments — Verified Manufacturer and Featured Event
+
+Stripe test mode until the go-live checklist is done. Never commit secret keys, webhook secrets, or price ids that are not public.
+
+This file names the environment variables Nishad sets in Netlify. It does not contain values.
+
+## Environment variables
+
+Set these on the Netlify site (Site → Environment variables). Server-only. Do not put them in browser code.
+
+| Name | Used by |
+| --- | --- |
+| `STRIPE_SECRET_KEY` | `functions/create-checkout.js`, `functions/verify-access.js`, `functions/entitle.js`. Test mode: a key that starts with `sk_test_`. |
+| `STRIPE_WEBHOOK_SECRET` | `functions/stripe-webhook.js` signature check. From `stripe listen` or the Dashboard endpoint. |
+| `STRIPE_PRICE_VERIFIED_MANUFACTURER` | One-time price id for Verified Manufacturer, 49900 cents USD. |
+| `STRIPE_PRICE_FEATURED_EVENT` | One-time price id for Featured Event, 29900 cents USD. Used only if Checkout is created through `create-checkout`. The Pay button uses the Payment Link below. |
+| `STRIPE_PAYMENT_LINK_FEATURED_EVENT` | Optional. The `plink_…` id of the Featured Event Payment Link. When set, the webhook matches that id exactly. When unset, a $299 Payment Link session is the featured slot. |
+| `STRIPE_PAYMENT_LINK_VERIFIED_MANUFACTURER` | Optional. The `plink_…` id of the Verified Manufacturer Payment Link. When set, the webhook matches that id exactly. When unset, a $499 Payment Link session is the pending verification. |
+| `SITE_URL` | Absolute site origin for Checkout success and cancel URLs. Defaults to `https://transformerpath.com`. |
+| `SUPABASE_URL` | Service-role client in `functions/lib/supabase-server.js`. |
+| `SUPABASE_SECRET_KEY` | Service role key. `SUPABASE_SERVICE_ROLE_KEY` is accepted as an alias. |
+| `RESEND_API_KEY` | Buyer confirmation and internal notice from the webhook. |
+| `RESEND_FROM` | Verified sender, for example `TransformerPath <noreply@transformerpath.com>`. |
+| `NOTIFY_TO` | Internal paid-listing notice. Defaults to `hello@transformerpath.com`. |
+
+Engineer Payment Links on `pricing.html` are unchanged and do not use these price ids.
+
+If `STRIPE_SECRET_KEY` or the price id is missing, `create-checkout` returns `503` with `{ "configured": false }`. The Pay button then follows the existing form or email path. It does not charge the card.
+
+## Create the test products
+
+Use a test-mode secret (`sk_test_`). Do not use a live key for these steps.
+
+```bash
+stripe products create --name "Verified Manufacturer" --description "12-month verified manufacturer listing. Badge after review."
+stripe prices create --unit-amount 49900 --currency usd -d "product=prod_REPLACE"
+stripe products create --name "Featured Event" --description "Featured label for one event. Label after review."
+stripe prices create --unit-amount 29900 --currency usd -d "product=prod_REPLACE"
+```
+
+Put the two price ids in `STRIPE_PRICE_VERIFIED_MANUFACTURER` and `STRIPE_PRICE_FEATURED_EVENT`.
+
+Checkout is `mode=payment` (one-time, not a subscription).
+
+Both Pay buttons read one config object, `PAYMENT_LINKS` in `lib/paid-listings.js`. That object is the only copy of either URL in JavaScript.
+
+Verified Manufacturer (`PAYMENT_LINKS.verified_manufacturer.url`):
+
+`https://buy.stripe.com/4gMbIU7G8bFHak8d5EfYY05`
+
+`list-company.html`, `claim-profile.html`, `pricing.html`, and each manufacturer profile's **Pay $499 — Get Verified** button use that URL. A profile button adds `?client_reference_id=` set to the directory slug so the webhook can store `company_slug`.
+
+After payment, the buyer must land on the claim form and submit company details. In the Stripe Dashboard, open this Payment Link → After payment → Redirect to:
+
+`https://transformerpath.com/claim-profile.html?paid=verified_manufacturer&session_id={CHECKOUT_SESSION_ID}#claimForm`
+
+`{CHECKOUT_SESSION_ID}` must stay as that placeholder. The form is the existing `claim-profile` form (`#claimForm` on `claim-profile.html`). The page shows a banner that the VERIFIED MANUFACTURER badge appears only after manual review. `create-checkout` uses the same path from `PAYMENT_LINKS.verified_manufacturer.successPath`.
+
+Featured Event (`PAYMENT_LINKS.featured_event.url`, also `FEATURED_EVENT_PAYMENT_LINK`):
+
+`https://buy.stripe.com/00w6oA2lO8tvdwkaXwfYY04`
+
+Event pages, `events.html`, and `pricing.html` point their Featured Event button at it.
+
+After payment, the buyer must land on the events list form and submit the event name, official URL, and dates. In the Stripe Dashboard, open this Payment Link → After payment → Redirect to:
+
+`https://transformerpath.com/events.html?paid=featured_event&session_id={CHECKOUT_SESSION_ID}#submit-event`
+
+`{CHECKOUT_SESSION_ID}` must stay as that placeholder. The host comes from `SITE_URL` when `create-checkout` builds the same path. The form is the existing `sponsor-enquiry` form (`#submit-event` on `events.html`, and the same event name, URL, and dates fields on `sponsor.html`).
+
+The Payment Link does not carry an event id. The webhook stores a pending slot with `event_id` empty until a reviewer connects the form to that payment. The public FEATURED label is still only the reviewed row in `data/paid-listings.json`.
+
+## Webhook
+
+Endpoint: `/.netlify/functions/stripe-webhook`
+
+Local forward:
+
+```bash
+stripe listen --forward-to localhost:8888/.netlify/functions/stripe-webhook
+```
+
+`stripe listen` prints a webhook signing secret. Put that value in `STRIPE_WEBHOOK_SECRET` for local runs. The Dashboard endpoint has a different secret; use that one in production.
+
+Handled for these products: `checkout.session.completed`. The handler upserts `paid_listings` on `session_id` with status `paid_pending_verification`. A Featured Event Payment Link session matches when `metadata.product` is `featured_event`, when `success_url` contains `paid=featured_event`, when `payment_link` equals `STRIPE_PAYMENT_LINK_FEATURED_EVENT`, or — until that id is set — when the session is a Payment Link for 29900 USD cents and it is not an engineer checkout. The row stays `paid_pending_verification` with no event id. It does not render FEATURED.
+
+A Verified Manufacturer Payment Link session matches the same way for `verified_manufacturer`: `metadata.product`, `success_url` containing `paid=verified_manufacturer`, the buy.stripe.com code, `STRIPE_PAYMENT_LINK_VERIFIED_MANUFACTURER`, or — until that id is set — a Payment Link for 49900 USD cents that is not an engineer checkout. `company_slug` comes from metadata or from `client_reference_id` when that value is a directory slug. The row stays `paid_pending_verification`. It does not render VERIFIED MANUFACTURER. `verify-access` does not grant a course token for this amount.
+
+Other event types return 200 so Stripe does not retry them. Engineer subscription, checkout, and refund handling is unchanged. A $199 / $599 / $1,999 Payment Link still follows the engineer path and does not write `paid_listings`.
+
+Apply `sql/paid_listings.sql` in the Supabase SQL editor once. Row Level Security is on. There is no anon or authenticated policy. Only the service role can read and write.
+
+## Receipts
+
+On `checkout.session.completed` the webhook sends:
+
+- a buyer confirmation through Resend to the Checkout email
+- an internal notice to `NOTIFY_TO`
+
+Turn on Stripe email receipts as well: Dashboard → Settings → Customer emails → Successful payments. Resend does not replace the card receipt.
+
+If `RESEND_API_KEY` is unset, the listing row is still stored and the webhook returns 200. A Resend provider error returns 500 so Stripe retries.
+
+## Badge after review
+
+Payment does not publish a badge and does not change capability, evidence, or ranking.
+
+1. Confirm the Supabase row (`paid_pending_verification`).
+2. Add a row to `data/paid-listings.json` with `status` `verified`, `reviewer`, `reviewed_at`, and `verification_evidence`, plus `company_slug` or `event_id`.
+3. Redeploy. `build-paid-listings.js` sets `listing_tier` to `verified` and `verified` to `true` on that directory row only. Company pages render `VERIFIED MANUFACTURER` with the neutrality sentence from `data/commerce.json`. Event pages render `FEATURED`.
+
+`check-paid-badges.js` fails the build if a badge or a verified directory flag appears without that reviewed row.
+
+Example row (do not invent a real company):
+
+```json
+{
+  "session_id": "cs_test_example",
+  "product": "verified_manufacturer",
+  "company_slug": "example-slug",
+  "email": "buyer@example.com",
+  "status": "verified",
+  "reviewer": "name",
+  "reviewed_at": "2026-10-14T09:00:00Z",
+  "verification_evidence": "What was checked."
+}
+```
+
+## Buttons
+
+- `list-company.html`, `claim-profile.html`, `pricing.html`, and each manufacturer profile: **Pay $499 — Get Verified**, linking to `PAYMENT_LINKS.verified_manufacturer.url`. After payment the buyer submits company details on the claim form.
+- Event pages, `events.html` (the list and submission form), `pricing.html`, and `sponsor.html`: **Feature this event — $299**, linking to `PAYMENT_LINKS.featured_event.url`
+
+## Go-live checklist
+
+1. Create the two live products and prices in Stripe live mode. Amounts stay 49900 and 29900 USD, mode payment.
+2. Replace the Netlify test values of `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_PRICE_VERIFIED_MANUFACTURER`, and `STRIPE_PRICE_FEATURED_EVENT` with the live values. Do not commit them.
+3. Point the live webhook at `https://transformerpath.com/.netlify/functions/stripe-webhook` for `checkout.session.completed`. Leave the existing engineer events subscribed if that endpoint already receives them.
+4. On the live Featured Event Payment Link, set After payment to `https://transformerpath.com/events.html?paid=featured_event&session_id={CHECKOUT_SESSION_ID}#submit-event`. If the Dashboard shows a `plink_` id, put it in `STRIPE_PAYMENT_LINK_FEATURED_EVENT`.
+5. On the live Verified Manufacturer Payment Link, set After payment to `https://transformerpath.com/claim-profile.html?paid=verified_manufacturer&session_id={CHECKOUT_SESSION_ID}#claimForm`. If the Dashboard shows a `plink_` id, put it in `STRIPE_PAYMENT_LINK_VERIFIED_MANUFACTURER`.
+6. Run `sql/paid_listings.sql` on the production Supabase project if it is not applied yet.
+7. Set `RESEND_API_KEY`, `RESEND_FROM`, and `NOTIFY_TO`. Send one test-mode payment first and confirm both emails.
+8. Turn on Stripe successful-payment email receipts.
+9. Set `SITE_URL` to `https://transformerpath.com`.
+10. Pay once in test mode, confirm the Supabase row is `paid_pending_verification`, confirm no badge, then add a reviewed `verified` row and confirm the badge on the next deploy.
+11. Confirm a $199 engineer Payment Link still unlocks Learning and does not write `paid_listings`.
+12. Switch the site to the live keys only after the steps above.
+
+## Tests
+
+```bash
+node tests/paid-listings.test.js
+node check-paid-badges.js
+```
+
+A real test-mode session, with no capture, when the test key and price id are set:
+
+```bash
+node tests/stripe-test-session.js verified_manufacturer
+```
+
+The script refuses a live key and prints the session id only.

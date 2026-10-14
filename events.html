@@ -495,10 +495,69 @@
       <span style="color:var(--text);font-size:.92rem;line-height:1.5"><b>Are you exhibiting here?</b> Get featured on TransformerPath and reach the buyers, specifiers and engineers attending. <b style="color:var(--muted)">Organising an event?</b> Promote it to transformer professionals.</span>
       <span style="display:flex;gap:10px;flex-wrap:wrap">
         <a class="btn btn-amber" style="padding:8px 16px;font-size:.84rem" href="sponsor.html" data-track="exhibitor_feature_inquiry" data-track-plan="Featured Exhibitor">Featured Exhibitor · $399 →</a>
-        <a class="btn btn-outline btn-sm" href="mailto:hello@transformerpath.com?subject=Featured%20event" style="padding:8px 16px" data-track="event_feature_inquiry" data-track-plan="Featured Event">Featured Event · $299</a>
+        <a class="btn btn-outline btn-sm" href="https://buy.stripe.com/00w6oA2lO8tvdwkaXwfYY04" style="padding:8px 16px" data-track="event_feature_inquiry" data-track-plan="Featured Event" data-featured-event-pay="1">Feature this event — $299</a>
       </span>
     </div>
   </div>
+  <div class="container" id="submit-event" style="max-width:640px;margin:0 auto 28px">
+    <div id="featuredPayNote" role="status" style="display:none;margin:0 0 12px;padding:12px 14px;border-radius:10px;background:#14365c;color:#fff;font-size:.9rem;line-height:1.5"></div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px">
+      <h2 style="font-size:1.05rem;margin:0 0 6px;color:var(--ink)">Submit event details</h2>
+      <p style="color:var(--muted);font-size:.86rem;margin:0 0 12px">After you pay for Featured Event, send the event name, official URL, and dates. The FEATURED label is shown only after manual review.</p>
+      <form name="sponsor-enquiry" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" id="eventSubmitForm" data-track-form="sponsor_inquiry">
+        <input type="hidden" name="form-name" value="sponsor-enquiry">
+        <p hidden><label>Leave empty: <input name="bot-field"></label></p>
+        <input type="hidden" name="interest" value="Event Spotlight">
+        <input type="hidden" name="payment_session" id="featuredPaymentSession" value="">
+        <div style="margin-bottom:10px"><label for="ev_name">Event name *</label><input id="ev_name" name="event_name" type="text" required style="width:100%;margin-top:4px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text)"></div>
+        <div style="margin-bottom:10px"><label for="ev_url">Event URL *</label><input id="ev_url" name="event_url" type="url" required placeholder="https://" style="width:100%;margin-top:4px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text)"></div>
+        <div style="margin-bottom:10px"><label for="ev_dates">Dates *</label><input id="ev_dates" name="event_dates" type="text" required placeholder="1 Sep 2026 – 3 Sep 2026" style="width:100%;margin-top:4px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text)"></div>
+        <div style="margin-bottom:10px"><label for="ev_email">Email *</label><input id="ev_email" name="email" type="email" required style="width:100%;margin-top:4px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text)"></div>
+        <div style="margin-bottom:12px"><label for="ev_contact">Your name</label><input id="ev_contact" name="name" type="text" style="width:100%;margin-top:4px;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text)"></div>
+        <button class="btn btn-amber" type="submit">Submit event details</button>
+      </form>
+      <div id="eventSubmitThanks" style="display:none;padding:8px 0">
+        <p style="font-weight:700;color:var(--ink);margin:0 0 4px">Thanks — the event is queued for review.</p>
+        <p style="color:var(--muted);font-size:.88rem;margin:0">FEATURED is shown only after a reviewer confirms the name, URL, and dates.</p>
+      </div>
+    </div>
+  </div>
+  <script>
+  (function () {
+    var form = document.getElementById('eventSubmitForm');
+    if (form) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (!form.checkValidity()) { form.reportValidity(); return; }
+        var btn = form.querySelector('button[type="submit"]');
+        if (btn) btn.disabled = true;
+        fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(new FormData(form)).toString() })
+          .then(function (r) { if (!r.ok) throw new Error('Submission failed'); form.style.display = 'none'; document.getElementById('eventSubmitThanks').style.display = 'block'; })
+          .catch(function () { if (btn) btn.disabled = false; alert('Submission failed. Please try again or email hello@transformerpath.com.'); });
+      });
+    }
+    var params = new URLSearchParams(location.search);
+    if (params.get('paid') !== 'featured_event') return;
+    var note = document.getElementById('featuredPayNote');
+    var session = params.get('session_id') || '';
+    var hidden = document.getElementById('featuredPaymentSession');
+    if (hidden) hidden.value = session;
+    var pending = 'Payment received. Submit the event name, URL, and dates below. The FEATURED label is shown only after manual review.';
+    if (note) { note.style.display = 'block'; note.textContent = pending; }
+    var box = document.getElementById('submit-event');
+    if (box && box.scrollIntoView) box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (!session || session.indexOf('{') !== -1) return;
+    fetch('/.netlify/functions/verify-access', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ session_id: session }) })
+      .then(function (r) { return r.json(); })
+      .then(function (res) {
+        if (!note) return;
+        if (res && res.paid) note.textContent = pending;
+        else if (res && res.configured === false) note.textContent = 'Submit the event name, URL, and dates below. If you just paid, use the email on the Stripe receipt. The FEATURED label is shown only after manual review.';
+        else note.textContent = 'We could not confirm this payment yet. Submit the event name, URL, and dates, and email hello@transformerpath.com with your receipt if you were charged.';
+      })
+      .catch(function () {});
+  })();
+  </script>
 
     <div id="upNext" class="up-next" aria-label="Upcoming events">
 <!--SSR:events-upnext-->

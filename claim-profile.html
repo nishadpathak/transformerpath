@@ -127,8 +127,15 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
         <b style="color:var(--text)">Integrity & Verification Standard.</b> TransformerPath strictly verifies every representative claim to maintain industry trust. Commercial status or payments never imply technical certification or endorsement. Profile updates and capability claims are held in moderation until verified by our research team.
       </p>
 
+      <div id="claimPaidBanner" style="display:none;background:#14365c;color:#fff;border-radius:10px;padding:12px 14px;margin:0 0 16px;font-size:.9rem;line-height:1.5">
+        Payment received. Submit your company details in the form below. The VERIFIED MANUFACTURER badge appears only after manual review. Payment does not change capability, evidence, or ranking.
+      </div>
+      <p style="margin:0 0 8px"><a class="btn btn-amber" href="https://buy.stripe.com/4gMbIU7G8bFHak8d5EfYY05" data-verified-manufacturer-pay="1">Pay $499 — Get Verified</a></p>
+      <p class="paid-after-note" style="color:var(--muted);font-size:.82rem;margin:0 0 16px">After payment, return to this form and submit your company details. The badge appears only after review.</p>
+
       <form name="claim-profile" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" id="claimForm" data-track-form="supplier_claim_submitted">
         <input type="hidden" name="form-name" value="claim-profile">
+        <input type="hidden" name="payment_session" id="claimPaymentSession" value="">
         <p hidden><label>Leave this empty: <input name="bot-field"></label></p>
 
         <label for="fld_company">Company Profile to Claim *</label>
@@ -184,8 +191,8 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
       <div id="claimThanks" style="display:none;text-align:center;padding:32px 16px">
         <div style="font-size:3rem">&#9989;</div>
         <h2 style="color:var(--ink);margin:8px 0">Profile Claim Received</h2>
-        <p style="color:var(--muted);max-width:480px;margin:0 auto 18px">Thank you. Your claim has been submitted to the TransformerPath moderation queue. We will verify your credentials against the corporate domain and confirm within 1 business day.</p>
-        <a href="directory.html" class="btn btn-amber" style="display:inline-block">Return to Directory &rarr;</a>
+        <p style="color:var(--muted);max-width:480px;margin:0 auto 18px">Thank you. Your claim has been submitted to the TransformerPath moderation queue. We will verify your credentials against the corporate domain and confirm within 1 business day. The VERIFIED MANUFACTURER badge appears only after that review.</p>
+        <a href="directory.html" class="btn btn-outline" style="display:inline-block">Return to Directory &rarr;</a>
       </div>
 
       <script>
@@ -211,6 +218,18 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
           t.style.display = 'block';
           t.scrollIntoView({behavior:'smooth', block:'center'});
         }
+        try {
+          var paid = new URLSearchParams(location.search);
+          if (paid.get('paid') === 'verified_manufacturer') {
+            var banner = document.getElementById('claimPaidBanner');
+            if (banner) banner.style.display = 'block';
+            var sessionField = document.getElementById('claimPaymentSession');
+            if (sessionField && paid.get('session_id')) sessionField.value = paid.get('session_id');
+            var tier = document.getElementById('fld_tier');
+            if (tier) tier.value = 'VERIFIED';
+            f.scrollIntoView({behavior:'smooth', block:'start'});
+          }
+        } catch (err) {}
       })();
       </script>
     </div>
