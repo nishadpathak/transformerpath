@@ -597,7 +597,14 @@ function renderManufacturers(html) {
   const aliasMap = require('./lib/company-aliases').ALIASES;
   const aliasSlugs = {};
   Object.keys(aliasMap).forEach(function (key) { aliasSlugs[key] = aliasMap[key].slug; });
+  const earnedSlugs = [];
+  (paidDoc.listings || []).forEach(function (row) {
+    if (paidListings.reviewed(row) && row.product === 'verified_manufacturer' && row.company_slug) {
+      earnedSlugs.push(String(row.company_slug).trim().toLowerCase());
+    }
+  });
   html = html.replace(/const VERIFIED_MANUFACTURER_PAY_URL = [^;]*;/, 'const VERIFIED_MANUFACTURER_PAY_URL = ' + JSON.stringify(paidListings.VERIFIED_MANUFACTURER_PAYMENT_LINK) + ';');
+  html = html.replace(/const EARNED_VERIFIED_SLUGS = [^;]*;/, 'const EARNED_VERIFIED_SLUGS = ' + JSON.stringify(earnedSlugs) + ';');
   html = html.replace(/const MAKER_ALIAS = [^;]*;/, 'const MAKER_ALIAS = ' + JSON.stringify(aliasSlugs) + ';');
 
   return { page: html, records: makers };

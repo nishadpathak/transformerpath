@@ -296,6 +296,7 @@ const DATA_URL = 'data/manufacturers.json';
 let DATA = [];
 let SLUGS = {};
 const VERIFIED_MANUFACTURER_PAY_URL = "https://buy.stripe.com/4gMbIU7G8bFHak8d5EfYY05";
+const EARNED_VERIFIED_SLUGS = [];
 const MAKER_ALIAS = {"prolec ge ge vernova":"prolec-ge","prolec ge waukesha":"prolec-ge","prolec ge brasil":"prolec-ge","spx transformer solutions":"prolec-ge","spx transformer solutions prolec ge waukesha":"prolec-ge","waukesha electric systems":"prolec-ge","hico america hyosung":"hyosung-heavy-industries","abb power grids":"hitachi-energy","abb transformers":"hitachi-energy","hitachi abb power grids":"hitachi-energy","ge grid solutions":"ge-vernova","alstom grid":"ge-vernova","areva t and d":"ge-vernova","areva td":"ge-vernova","crompton greaves":"cg-power-and-industrial-solutions","crompton greaves ltd":"cg-power-and-industrial-solutions","cg power":"cg-power-and-industrial-solutions","cg-power":"cg-power-and-industrial-solutions","hammond power solutions baraboo":"hammond-power-solutions","green transfo energy turkey":"green-transfo","siemens energy tenjo":"siemens-energy","siemens energy nuremberg":"siemens-energy","jefferson electric":"jefferson-electric-voltaris","hyundai heavy industries ees":"hd-hyundai-electric","hyundai electric and energy systems":"hd-hyundai-electric","smit transformatoren":"sgb-smit-group","royal smit":"sgb-smit-group","cooper power systems":"cargill"};
 let regions = [];
 let page = 1;
@@ -360,20 +361,7 @@ async function loadData() {
         if (typeof statsJson.dataCompleteness === 'number') completeness = statsJson.dataCompleteness;
       }
     } catch (e) {}
-    try {
-      const paidRes = await fetch('data/paid-listings.json');
-      if (paidRes.ok) {
-        const paidDoc = await paidRes.json();
-        const earned = new Set();
-        (paidDoc.listings || []).forEach(function(row){
-          if (!row || row.status !== 'verified' || row.product !== 'verified_manufacturer') return;
-          if (!row.reviewer || !row.reviewed_at || !row.verification_evidence) return;
-          const slug = String(row.company_slug || '').trim().toLowerCase();
-          if (slug) earned.add(slug);
-        });
-        EARNED_VERIFIED = earned;
-      }
-    } catch (e) {}
+    EARNED_VERIFIED = new Set(EARNED_VERIFIED_SLUGS);
     DATA.forEach(function(c){
       (c.makers || []).forEach(function(m){
         if (/^Served by/i.test(m[0])) return;
@@ -458,7 +446,7 @@ function paySlug(name){
   return MAKER_ALIAS[aliasNorm(cleanBrandName(name))] || MAKER_ALIAS[aliasNorm(name)] || '';
 }
 function escAttr(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
-let EARNED_VERIFIED = new Set();
+let EARNED_VERIFIED = new Set(EARNED_VERIFIED_SLUGS);
 function verifyCtas(slug, name){
   if (!slug || EARNED_VERIFIED.has(slug)) return '';
   const href = VERIFIED_MANUFACTURER_PAY_URL + '?client_reference_id=' + encodeURIComponent(slug);
