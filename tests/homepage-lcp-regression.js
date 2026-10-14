@@ -28,6 +28,9 @@ check('full poster remains available for wide screens', html.indexOf(full + ' 12
 check('poster is not faded in from opacity 0', /\.hero-stage__viz\{ animation: none; \}/.test(html));
 check('brand/hero.jpg is not preloaded ahead of the poster', !/rel="preload" as="image" href="brand\/hero\.jpg"/.test(html));
 check('google fonts do not block first paint', /rel="preload" as="style" href="https:\/\/fonts\.googleapis\.com\//.test(html));
+check('late font swap cannot reset LCP', /display=optional/.test(html));
+check('phones do not idle-load the 3D model', /matchMedia\('\(max-width: 819px\)'\)/.test(html));
+check('the LCP poster is preloaded and decoded on the critical path', /rel="preload" as="image" href="media\/power-transformer-3d-poster-800\.jpg"/.test(html) && !/data-tp-3d-poster[\s\S]{0,400}decoding="async"/.test(html));
 check('aurora blur does not animate forever', !/animation: aurora /.test(html) && !/animation: aurora /.test(fs.readFileSync('style.css', 'utf8')));
 
 const stamped = inject.stampHtml(html, 'index.html');
