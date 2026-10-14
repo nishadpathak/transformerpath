@@ -1,10 +1,13 @@
 #!/usr/bin/env node
 /* build-gcc-intel-publish.js — promote graded GCC discovery candidates into Intel.
  *
- * Only CONFIRMED (+ selected high-evidence SUPPORTED tenders) with a non-internal
- * publish_decision enter NEWS.GCC / data/intel.json. Discovery still does not
- * auto-publish REVIEW_REQUIRED / AML speculation / Qatar-zero coverage facts.
+ * Desk path: data/gcc-discovery-publish-overrides.json approve[] releases a
+ * held candidate (HOLD_FOR_REVIEW / REVIEW_QUEUE), including SUPPORTED items.
+ * reject[] never publishes. INTERNAL_COVERAGE_ONLY and REVIEW_REQUIRED stay off
+ * the feed. CONFIRMED items that are not still in the review queue publish
+ * without a desk row. The SUPPORTED allowlist does not bypass a hold.
  *
+ * SUPPORTED releases keep evidence_grade SUPPORTED (never relabeled CONFIRMED).
  * Idempotent via INJECT:GCC_DISCOVERY markers in intel.html.
  *
  * Run after build-gcc-intel-discovery.js and before build-intel-feed-ui.js.
@@ -42,11 +45,13 @@ const ALLOW_SUPPORTED_IDS = new Set([
 function shouldPublish(c) {
   if (!c || c.publish_decision === 'INTERNAL_COVERAGE_ONLY') return false;
   if (REJECT.has(c.candidate_id)) return false;
-  // Human desk approval can release HOLD / SUPPORTED items explicitly.
-  if (APPROVE.has(c.candidate_id)) return true;
-  if (c.publish_decision === 'HOLD_FOR_REVIEW' && c.evidence_grade === 'REVIEW_REQUIRED') return false;
+  if (c.evidence_grade === 'REJECTED' || c.evidence_grade === 'REVIEW_REQUIRED') return false;
   // Already curated under a near-duplicate headline in NEWS.GCC
   if (c.candidate_id === 'om-localisation-aug12') return false;
+  // Desk approve[] is the only release for a candidate still in the review queue.
+  // A SUPPORTED allowlist must not publish the rest of the held set.
+  if (APPROVE.has(c.candidate_id)) return true;
+  if (c.publish_decision === 'HOLD_FOR_REVIEW' || c.publish_decision === 'REVIEW_QUEUE') return false;
   if (c.evidence_grade === 'CONFIRMED') return true;
   if (c.evidence_grade === 'SUPPORTED' && ALLOW_SUPPORTED_IDS.has(c.candidate_id)) return true;
   return false;
@@ -84,6 +89,7 @@ function toIntelItem(c) {
     const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     srcDateLabel = Number(parts[2]) + ' ' + MON[Number(parts[1]) - 1] + ' ' + parts[0];
   }
+  // Never promote SUPPORTED (or anything short of CONFIRMED) to a CONFIRMED badge.
   const cls = c.evidence_grade === 'CONFIRMED' ? 'CONFIRMED'
     : (c.classifications || []).indexOf('TENDER') >= 0 ? 'PIPELINE' : 'INFERRED';
   const valueBits = [];
@@ -109,6 +115,9 @@ function toIntelItem(c) {
     date_iso: displayDate || dates.event_date || undefined,
     classifications: c.classifications,
     evidence_grade: c.evidence_grade,
+    evidence_note: c.evidence_grade === 'SUPPORTED'
+      ? 'Evidence: SUPPORTED — not yet fully verified. No live portal adapter has confirmed this item.'
+      : undefined,
     candidate_id: c.candidate_id,
     tender_id: c.tender_id || undefined
   };
@@ -119,6 +128,8 @@ function itemLiteral(it) {
   if (it.value) out += ', value:"' + jstr(it.value) + '"';
   out += ', src:"' + jstr(it.src) + '", url:"' + jstr(it.url) + '"';
   if (it.cls) out += ', cls:"' + jstr(it.cls) + '"';
+  if (it.evidence_grade) out += ', evidence_grade:"' + jstr(it.evidence_grade) + '"';
+  if (it.evidence_note) out += ', evidence_note:"' + jstr(it.evidence_note) + '"';
   out += ', lang:"' + (it.lang || 'en') + '"';
   if (it.isNew) out += ', isNew:true';
   if (it.event_date) out += ', event_date:"' + jstr(it.event_date) + '"';
@@ -212,6 +223,21 @@ publishableAll.forEach(function (it) {
   }
 });
 
+// Drop discovery rows that are still held. Keep curated cards and anything
+// already published (Oman) even when this build does not re-inject it.
+const publishedIds = new Set(publishableAll.map(function (p) { return p.candidate_id; }).filter(Boolean));
+const knownIds = new Set((candidates || []).map(function (c) { return c.candidate_id; }));
+const alreadyPublished = new Set((candidates || []).filter(function (c) {
+  return c.published_to_intel === true;
+}).map(function (c) { return c.candidate_id; }));
+let removedHeld = 0;
+intel.GCC.items = (intel.GCC.items || []).filter(function (x) {
+  if (!x || !x.candidate_id || !knownIds.has(x.candidate_id)) return true;
+  if (publishedIds.has(x.candidate_id) || alreadyPublished.has(x.candidate_id)) return true;
+  removedHeld++;
+  return false;
+});
+
 // Stamp from validated observation dates only — never tender_close, never future.
 const dateCandidates = [];
 function pushObs(d) {
@@ -251,4 +277,38 @@ intel.refresh_meta = {
   desk_approved: Array.from(APPROVE)
 };
 fs.writeFileSync('data/intel.json', JSON.stringify(intel, null, 2));
-console.log('data/intel.json: upserted ' + upserted + ', prepended ' + prepended + '; updated=' + intel.updated);
+console.log('data/intel.json: upserted ' + upserted + ', prepended ' + prepended + ', removed held ' + removedHeld + '; updated=' + intel.updated);
+
+// Publication sticks across the next discovery rebuild: flip published_to_intel
+// only for rows this build actually released. Held candidates stay false.
+function markPublished(list) {
+  let n = 0;
+  (list || []).forEach(function (c) {
+    if (!c || !publishedIds.has(c.candidate_id)) return;
+    if (c.published_to_intel !== true) n++;
+    c.published_to_intel = true;
+  });
+  return n;
+}
+markPublished(candidatesDoc.candidates);
+fs.writeFileSync('data/gcc-discovery-candidates.json', JSON.stringify(candidatesDoc, null, 2) + '\n');
+// Discovery input is hand-maintained. Flip only the published_to_intel booleans
+// for this release so the next discovery rebuild does not drop them, without
+// reformatting the rest of the file.
+const inputPath = 'data/gcc-sep-2026-discovery-input.json';
+if (fs.existsSync(inputPath)) {
+  let inputText = fs.readFileSync(inputPath, 'utf8');
+  publishedIds.forEach(function (id) {
+    const re = new RegExp('("candidate_id"\\s*:\\s*"' + id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '"[\\s\\S]*?"published_to_intel"\\s*:\\s*)false');
+    inputText = inputText.replace(re, '$1true');
+  });
+  fs.writeFileSync(inputPath, inputText);
+}
+const coverageReport = readJson('data/gcc-coverage-report.json', null);
+if (coverageReport && Array.isArray(coverageReport.missed_record_analysis)) {
+  coverageReport.missed_record_analysis.forEach(function (row) {
+    if (row && publishedIds.has(row.candidate_id)) row.published = true;
+  });
+  fs.writeFileSync('data/gcc-coverage-report.json', JSON.stringify(coverageReport, null, 2) + '\n');
+}
+console.log('published_to_intel set for ' + publishedIds.size + ' desk release(s): ' + Array.from(publishedIds).join(', '));
