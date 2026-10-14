@@ -23,7 +23,7 @@ const path = require('path');
 /* ONE canonical event-status resolver, shared with build-events.js and
    check-event-integrity.js. This file used to re-derive status and countdowns
    from raw dates, which is how "Dates TBC" could render beside "Live now". */
-const { resolveStatus, isTravelSafe, isDiscoverable } = require('./lib/event-status');
+const { resolveStatus, isTravelSafe, isUpcoming, platformToday } = require('./lib/event-status');
 const { eventHref, eventPageMap } = require('./lib/event-href');
 
 /* ------------------------------------------------------------------ *
@@ -171,7 +171,7 @@ function renderEvents(html) {
      did not list it (REJECTED_NO_EVIDENCE) or that is still under research is not
      an upcoming event — it leaves this list rather than sitting in it with a
      warning nobody reads. */
-  let list = EVENTS.filter((ev) => new Date(ev.e) >= now && isDiscoverable(resolveStatus(ev)));
+  let list = EVENTS.filter((ev) => isUpcoming(ev, platformToday()));
   list.sort((a, b) => a.s.localeCompare(b.s));
 
   const PLATFORM_TZ_MS = 4*60*60*1000; // GST/Asia-Dubai
@@ -227,9 +227,9 @@ function renderEvents(html) {
      confirmed-date events are eligible for the strip at all, because every card in
      it carries a relative-time claim. */
   const upEligible = EVENTS.filter((ev) => {
+    if (!isUpcoming(ev, platformToday())) return false;
     const st = evState(ev).st;
-    if (!isDiscoverable(st)) return false;   // failed verification -> not discoverable
-    return (st.key === 'CONFIRMED_UPCOMING' || st.key === 'LIVE') && new Date(ev.e) >= now;
+    return st.key === 'CONFIRMED_UPCOMING' || st.key === 'LIVE';
   });
   const up = upEligible.sort((a, b) => a.s.localeCompare(b.s)).slice(0, 3);
   const upNext = up.map((ev) => {
