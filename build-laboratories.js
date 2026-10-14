@@ -74,7 +74,7 @@ function renderCardServer(lab) {
       '<span class="kv-pill ' + (isUhv ? 'uhv' : '') + '">' + esc(lab.max_voltage_kv) + ' kV Peak</span>' +
     '</div>' +
     '<div class="lab-loc">📍 ' + esc(lab.city) + ', ' + esc(lab.country) + (lab.third_party_independent ? ' · <span style="color:#10b981;font-weight:700">Third-Party Independent</span>' : '') + '</div>' +
-    '<p style="font-size:.86rem;color:var(--muted);line-height:1.5;margin:0 0 12px">' + esc(lab.description) + '</p>' +
+    '<p style="font-size:.86rem;color:var(--text);line-height:1.5;margin:0 0 12px">' + esc(window.TPIntro ? TPIntro.enrichExisting({ description: lab.description, established: lab.founded_year, requireYear: true, capacity: lab.short_circuit_capacity, voltage: lab.max_voltage_kv ? (lab.max_voltage_kv + ' kV') : '' }) : lab.description) + '</p>' +
     accredHtml +
     '<table class="cap-table"><tbody>' + capRows + '</tbody></table>' +
     '<div class="card-foot">' +
@@ -230,6 +230,7 @@ ${HEAD}
 
 ${FOOT}
 
+<script src="directory-intro.js"></script>
 <script>
 var LABS = ${labsJson};
 var requiredCaps = {};
@@ -318,7 +319,7 @@ function renderCards() {
         '<span class="kv-pill ' + (isUhv ? 'uhv' : '') + '">' + esc(lab.max_voltage_kv) + ' kV Peak</span>' +
       '</div>' +
       '<div class="lab-loc">📍 ' + esc(lab.city) + ', ' + esc(lab.country) + (lab.third_party_independent ? ' · <span style="color:#10b981;font-weight:700">Third-Party Independent</span>' : '') + '</div>' +
-      '<p style="font-size:.86rem;color:var(--muted);line-height:1.5;margin:0 0 12px">' + esc(lab.description) + '</p>' +
+      '<p style="font-size:.86rem;color:var(--text);line-height:1.5;margin:0 0 12px">' + esc(window.TPIntro ? TPIntro.enrichExisting({ description: lab.description, established: lab.founded_year, requireYear: true, capacity: lab.short_circuit_capacity, voltage: lab.max_voltage_kv ? (lab.max_voltage_kv + ' kV') : '' }) : lab.description) + '</p>' +
       accredHtml +
       '<table class="cap-table"><tbody>' + capRows + '</tbody></table>' +
       '<div class="card-foot">' +

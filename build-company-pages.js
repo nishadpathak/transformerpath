@@ -23,6 +23,7 @@ const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|dat
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+const directoryIntro = require('./directory-intro');
 function slugify(s) { return String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/&/g, 'and').replace(/['’´]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, ''); }
 const ci = function (s) { return (s || '').toLowerCase(); };
 const norm = function (s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim().replace(/\s+/g, ' '); };
@@ -382,7 +383,17 @@ function page(r, slug) {
     missingList +
   '</div>';
   // conservative schema: describe the company, never claim affiliation
-  const orgSchema = { '@context': 'https://schema.org', '@type': 'Organization', name: r.name, url: r.url ? r.url : url, description: (r.types.length ? 'Transformer manufacturer (' + r.types.map(typeBadge).join(', ') + ')' : 'Transformer manufacturer') + ' — ' + r.country + (r.city ? ', ' + r.city : ''), address: { '@type': 'PostalAddress', addressCountry: r.country, addressLocality: r.city || undefined } };
+  const introText = directoryIntro.supplierIntro({
+    name: r.name,
+    role: 'transformer manufacturer',
+    city: r.city,
+    country: r.country,
+    products: r.types,
+    established: r.established,
+    voltage: tier && tier.kv ? (tier.kv + ' kV') : '',
+    capacity: tier && tier.mva ? ('~' + Number(tier.mva).toLocaleString('en-US') + ' MVA/year') : ''
+  });
+  const orgSchema = { '@context': 'https://schema.org', '@type': 'Organization', name: r.name, url: r.url ? r.url : url, description: introText, address: { '@type': 'PostalAddress', addressCountry: r.country, addressLocality: r.city || undefined } };
   const pageSchema = { '@context': 'https://schema.org', '@type': 'WebPage', name: r.name + ' — Company Profile', url: url, about: { '@type': 'Organization', name: r.name } };
   const b = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Manufacturers', item: 'https://transformerpath.com/manufacturers.html' }, { '@type': 'ListItem', position: 2, name: r.name }] };
   const schema = '<script type="application/ld+json">' + JSON.stringify(orgSchema) + '</script><script type="application/ld+json">' + JSON.stringify(pageSchema) + '</script><script type="application/ld+json">' + JSON.stringify(b) + '</script>';
@@ -419,7 +430,7 @@ function page(r, slug) {
 
   return '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
     '<title>' + esc(r.name) + ' — Company Profile, Products &amp; Industry Information | TransformerPath</title>' +
-    '<meta name="description" content="' + esc(r.name) + ' — independent company profile: transformer capabilities (' + esc((r.types.length ? r.types : ['DT']).map(typeBadge).join(', ')) + '), location, related components, market intelligence and events, from the TransformerPath census.">' +
+    '<meta name="description" content="' + esc(introText) + '">' +
     '<link rel="canonical" href="' + url + '">' +
     '<meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath">' +
     '<meta property="og:title" content="' + esc(r.name) + ' — Company Profile"><meta property="og:url" content="' + url + '">' +
@@ -430,7 +441,8 @@ function page(r, slug) {
     '</head>\n<body>\n' + HEAD + '\n<main id="main" tabindex="-1" class="c-wrap">' +
     '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="../../manufacturers.html" style="color:var(--accent)">Manufacturers</a> › ' + crumbCountry + ' › ' + esc(r.name) + '</nav>' +
     '<h1>' + esc(r.name) + ' <button class="follow-btn" data-follow-type="company" data-follow-subject="' + esc(r.name) + '" data-follow-label="' + esc(r.name) + '" title="Follow this manufacturer in My TransformerPath">Follow</button></h1>' +
-    '<p class="lead">Independent company profile covering reported transformer capabilities, markets, related industry developments and relevant events.</p>' +
+    '<p class="lead">' + esc(introText) + '</p>' +
+    '<p style="font-size:.82rem;color:var(--muted);margin-top:0">Census introduction from the public listing. A founding year appears only when the census records one. Sourced voltage and capacity are the highest figures on file, not an audited maximum.</p>' +
     '<p style="font-size:.9rem;color:var(--muted);margin:6px 0 0">' + (r.flag || '') + ' <b style="color:var(--text)">' + esc(r.country) + '</b>' + (r.city ? ' · ' + esc(r.city) : '') + ' · <span style="color:var(--accent)">' + verify + '</span>' + (r.url ? ' · <a href="' + esc(r.url) + '" target="_blank" rel="noopener nofollow" data-track="official_website_click" data-track-manufacturer="' + esc(r.name) + '" style="color:var(--accent)">Official website ↗</a>' : '') + '</p>' +
     trust +
     completenessCard +

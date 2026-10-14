@@ -25,6 +25,7 @@ function slugify(s) {
     .replace(/&/g, 'and').replace(/['’´]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
 }
 const { resolveCompanyAlias } = require('./lib/company-aliases');
+const directoryIntro = require('./directory-intro');
 const TAX = JSON.parse(fs.readFileSync('data/industry-taxonomy.json', 'utf8'));
 const MFG = JSON.parse(fs.readFileSync('data/manufacturer-intel.json', 'utf8')).companies || [];
 const ACC = JSON.parse(fs.readFileSync('data/accessories.json', 'utf8'));
@@ -682,6 +683,64 @@ try {
     else if (hit.tier === 'verified') c.commercial_status = c.commercial_status && /verified|pro|featured/i.test(c.commercial_status) ? c.commercial_status : 'VERIFIED';
   });
 } catch (e) { /* overlay optional */ }
+
+// One factual introduction per record. Researched blurbs stay intact; a founding
+// year is appended only when the source file records one.
+const ROLE = {
+  manufacturer: 'transformer manufacturer',
+  component_supplier: 'component and material supplier',
+  machinery_manufacturer: 'transformer machinery supplier',
+  testing_laboratory: 'independent testing laboratory',
+  service_repair: 'transformer service and repair supplier',
+  transport_logistics: 'heavy-transport supplier',
+  buyer_procurement: 'transformer buyer',
+  industry_association: 'industry association',
+  education_provider: 'education provider',
+  media_publication: 'industry publication'
+};
+function noteKey(name) { return String(name || '').toLowerCase().trim(); }
+const PROFILE_NOTES = new Map();
+function remember(name, description, year) {
+  const k = noteKey(name);
+  if (!k) return;
+  PROFILE_NOTES.set(k, { description: description || '', year: year || '' });
+}
+ACC_SUPPLIERS.forEach((s) => remember(s.name, s.description, s.founded_year));
+MACH_DATA.forEach((m) => remember(m.manufacturer + ' — ' + m.name, '', ''));
+LAB_DATA.forEach((l) => remember(l.name, l.description, l.founded_year));
+SRV_DATA.forEach((s) => remember(s.company_name, s.description, s.founded_year));
+LOG_DATA.forEach((l) => remember(l.company_name, l.description, l.founded_year));
+ASC_DATA.forEach((a) => remember(a.association_name, a.description, a.founded_year));
+EDU_DATA.forEach((e) => remember(e.provider_name, e.description, e.founded_year));
+BYR_DATA.forEach((b) => remember(b.organization_name, b.description, b.founded_year));
+MED_DATA.forEach((m) => remember(m.publication_name, m.description, m.founded_year));
+index.forEach((c) => {
+  const note = PROFILE_NOTES.get(noteKey(c.name));
+  const established = (note && note.year) || c.founded_year || '';
+  const place = String(c.headquarters || '').replace(new RegExp(',\\s*' + (c.country || '') + '$'), '');
+  if (note && note.description && c.kind !== 'manufacturer') {
+    c.intro = directoryIntro.enrichExisting({
+      description: note.description,
+      established: established,
+      requireYear: !established,
+      products: c.capability_labels,
+      capacity: c.mva && c.mva.value ? c.mva.value : '',
+      voltage: c.voltage && c.voltage.value ? c.voltage.value : ''
+    });
+  } else {
+    c.intro = directoryIntro.supplierIntro({
+      name: c.name,
+      role: ROLE[c.kind] || 'directory listing',
+      city: place,
+      country: c.country,
+      products: (c.capability_labels && c.capability_labels.length) ? c.capability_labels : c.product_codes,
+      established: established,
+      voltage: c.voltage && c.voltage.value ? c.voltage.value : '',
+      capacity: c.mva && c.mva.value ? c.mva.value : ''
+    });
+  }
+  if (established) c.founded_year = established;
+});
 
 // Deterministic sort: manufacturers first, then suppliers, machinery, labs, services, etc.
 const KIND_ORDER = {
