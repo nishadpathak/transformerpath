@@ -226,7 +226,7 @@ function fromCurated(it, desk, regionKey, regionLabel, defaultCls) {
   const ageTier = classifyAgeTier(dated.dateObj);
   const isActive = it.is_active || /under construction|active|commissioning|tender|tenders|pipeline|awarded|wins|contract|approved|rfq/i.test(it.title + ' ' + (it.snippet || ''));
 
-  pushPost({
+  const post = {
     id: slugId(desk, it.title, it.url),
     desk: desk,
     region: mapRegion(regionKey, regionLabel),
@@ -248,7 +248,10 @@ function fromCurated(it, desk, regionKey, regionLabel, defaultCls) {
     provenance: provenanceOf(it, registry, 'CURATED'),
     buyer: it.buyer || '',
     lang: it.lang || ''
-  });
+  };
+  if (it.evidence_grade) post.evidenceGrade = it.evidence_grade;
+  if (it.evidence_note) post.evidenceNote = it.evidence_note;
+  pushPost(post);
 }
 
 // 1. Regional & Grid Curated Items
@@ -571,6 +574,12 @@ function ageBadgeHtml(ageTier, isActive) {
 const { intelBadge } = require('./lib/provenance-badge');
 function ssrCard(p) {
   const cls = p.cls ? '<span class="cls-badge cls-' + esc(p.cls) + '">' + esc(p.cls) + '</span>' : '';
+  const evidence = (p.evidenceGrade && p.evidenceGrade !== 'CONFIRMED' && p.evidenceGrade !== p.cls)
+    ? '<span class="cls-badge cls-' + esc(p.evidenceGrade) + '" title="Supported evidence — not yet fully verified. No live portal adapter has confirmed this item.">' + esc(p.evidenceGrade) + '</span>'
+    : '';
+  const evidenceNote = p.evidenceNote
+    ? '<p class="intel-evidence-note" style="font-size:.76rem;color:#f0c14a;margin:6px 0 0">' + esc(p.evidenceNote) + '</p>'
+    : '';
   const prov = intelBadge(p);
   const age = ageBadgeHtml(p.ageTier, p.isActive);
   const date = p.date ? esc(p.date) : 'Date not stated';
@@ -584,8 +593,9 @@ function ssrCard(p) {
     '<span class="intel-date" title="Source date, not page-build time">' + date + '</span>' + age + '</div>' +
     '<h3 class="intel-headline"><a href="' + esc(href) + '" target="_blank" rel="noopener">' + esc(p.headline) + '</a></h3>' +
     (p.soWhat ? '<p class="intel-sowhat">' + esc(p.soWhat) + '</p>' : '') +
+    evidenceNote +
     relevance +
-    '<div class="intel-meta">' + cls + prov +
+    '<div class="intel-meta">' + cls + evidence + prov +
     '<span class="intel-region">' + esc(p.region) + '</span>' +
     (p.value ? '<span class="val">' + esc(p.value) + '</span>' : '') +
     '<span class="src">' + esc(p.sourceName || p.src) + '</span></div>' +

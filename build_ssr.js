@@ -382,15 +382,18 @@ function renderJobs(html) {
   const DATA = extractConst(html, 'DATA');
   const FN = extractConst(html, 'FN');
   const FN_CLASS = extractConst(html, 'FN_CLASS');
+  const live = (LIVE || []).filter(function (j) {
+    return j && j.posting_url && j.captured_at && j.last_verified_at;
+  });
 
-  const liveGrid = LIVE.map((j) =>
+  const liveGrid = (live.length ? live.map((j) =>
     `<div class="live-row">
      <span class="lt">${esc(j.t)}</span>
      <span class="lc">${esc(j.co)}</span>
      <span class="ll">📍 ${esc(j.loc)}</span>
-     <span class="ld">${esc(j.fn)} · ${esc(j.posted)}</span>
-     <a class="lapply" href="${esc(j.url)}" target="_blank" rel="noopener">Apply →</a>
-   </div>`).join('\n');
+     <span class="ld">${esc(j.fn)} · verified ${esc(j.last_verified_at)}</span>
+     <a class="lapply" href="${esc(j.posting_url)}" target="_blank" rel="noopener">Apply →</a>
+   </div>`).join('\n') : '<p class="jobs-empty">0 live openings.</p>');
 
   // default view of the employer board (no search / country / function filter)
   const groups = {};
@@ -413,10 +416,10 @@ function renderJobs(html) {
   const countries = new Set(DATA.map((d) => d.country)).size;
   const roles = DATA.reduce((s, d) => s + (d.roles ? d.roles.length : 0), 0);
   const stats =
-    `<div class="s"><b>${LIVE.length}</b><small>Live openings</small></div>
+    `<div class="s"><b>${live.length}</b><small>Live openings</small></div>
      <div class="s"><b>${companies}</b><small>Employers</small></div>
      <div class="s"><b>${countries}</b><small>Countries</small></div>
-     <div class="s"><b>${roles}+</b><small>Role categories</small></div>`;
+     <div class="s"><b>${roles}</b><small>typical role types listed by employers</small></div>`;
 
   html = inject(html, '<div id="liveBoard">', 'jobs-live', liveGrid);
   html = inject(html, '<div id="board">', 'jobs-board', board);
@@ -630,8 +633,12 @@ function renderIntel(html) {
             esc(p.date || 'Date not stated') + '</span></div>' +
             '<h3 class="intel-headline"><a href="' + esc(href) + '" target="_blank" rel="noopener">' + esc(p.headline) + '</a></h3>' +
             (p.soWhat ? '<p class="intel-sowhat">' + esc(p.soWhat) + '</p>' : '') +
+            (p.evidenceNote ? '<p class="intel-evidence-note" style="font-size:.76rem;color:#f0c14a;margin:6px 0 0">' + esc(p.evidenceNote) + '</p>' : '') +
             '<div class="intel-meta">' +
             (p.cls ? '<span class="cls-badge cls-' + esc(p.cls) + '">' + esc(p.cls) + '</span>' : '') +
+            ((p.evidenceGrade && p.evidenceGrade !== 'CONFIRMED' && p.evidenceGrade !== p.cls)
+              ? '<span class="cls-badge cls-' + esc(p.evidenceGrade) + '" title="Supported evidence — not yet fully verified. No live portal adapter has confirmed this item.">' + esc(p.evidenceGrade) + '</span>'
+              : '') +
             (intelBadge(p) || '') +
             '<span class="intel-region">' + esc(p.region || '') + '</span>' +
             '<span class="src">' + esc(p.sourceName || p.src || '') + '</span></div></div></article>';

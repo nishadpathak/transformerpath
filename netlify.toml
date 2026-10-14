@@ -1,5 +1,5 @@
 [build]
-  command = "node check-build-tracked.js && node build-factories.js && node build-company-developments.js && node build-provenance.js && node build-entity-graph.js && node build-census-audit.js && node build-manufacturer-intel.js && node build-services.js && node build-logistics.js && node build-associations.js && node build-education.js && node build-buyers.js && node build-media.js && node build-components.js && node build-canonical-entities.js && node build-directory-index.js && node build-company-pages.js && node check-voltage-evidence-consistency.js && node check-entity-canonical.js && node check-census-stale.js && node build-data-quality.js && node build-directory-health.js && node build-intelligence.js && node build-intel-news.js && node build-gcc-intel-discovery.js && node build-gcc-intel-publish.js && node build-intel-feed-ui.js && node build-gcc-linkedin-pack.js && node build-intel-categories.js && node build-applications.js && node build-standards.js && node build-knowledge.js && node build-engineering-claims.js && node build-course-depth.js && node build-materials.js && node build-materials-pages.js && node build-event-canonicalization.js && node build-markets.js && node build-utilities.js && node build-grids.js && node build-projects.js && node build-tenders.js && node build-awards.js && node build-case-studies.js && node build-accessories.js && node build-machinery.js && node build-laboratories.js && node build-category-landing-pages.js && node build-events.js && node build-post-event-intel.js && node build-event-summary-pages.js && node build-topic-hubs.js && node build-masterclass-paywall.js && node build-exhibitions.js && node build-books.js && node build-commerce.js && node build-commerce-intel.js && node build-freshness.js && node build-production-audit.js && node build-site-stats.js && node build-map.js && node build_ssr.js && node build-seo.js && node stamp-intel.js && node build-release-provenance.js && node stamp-release-provenance.js && node check-release-provenance.js && node check-intel-date-order.js && node build-header-consistency.js && node bump-assets.js && node check-archives.js && node check-data-quality.js && node check-config.js && node check-brand.js && node check-links.js && node check-data-health.js --skip-children && node check-design.js && node tests/engine-sanity.js && node check-event-intel.js && node check-event-integrity.js && node tests/check-events-integrity.js && node tests/check-provenance-labels.js && node check-topics.js && node check-data-graph.js && node check-masterclass-paywall.js && node tests/masterclass-live-qa.test.js && node tests/viz-math.test.js && node tests/verify-hero-integrity.js && node tests/check-verification-terms.js && node tests/pwa-install-regression.js && node tests/webgl-gate-regression.js && node tests/intel-clock-regression.js && node tests/release-provenance-regression.js && node tests/intel-date-order-regression.js && node tests/gcc-discovery-regression.js && node tests/entitlement-regression.js && node build-discovery-desk.js && node tests/check-lab-integrity.js && node build-gcc-source-coverage.js && node build-dist.js && echo 'Static site with serverless functions'"
+  command = "node check-build-tracked.js && node scripts/capture-git-state.js && node check-source-unstamped.js && node build-factories.js && node build-intel-news.js && node build-gcc-intel-discovery.js && node build-gcc-intel-publish.js && node build-company-developments.js && node build-provenance.js && node build-entity-graph.js && node build-census-audit.js && node build-manufacturer-intel.js && node build-services.js && node build-logistics.js && node build-associations.js && node build-education.js && node build-buyers.js && node build-media.js && node build-components.js && node build-canonical-entities.js && node apply-sourced-facility-evidence.js && node build-directory-index.js && node build-company-pages.js && node check-voltage-evidence-consistency.js && node check-entity-canonical.js && node tests/check-directories.js && node check-census-stale.js && node build-data-quality.js && node build-directory-health.js && node build-intelligence.js && node build-intel-feed-ui.js && node build-gcc-linkedin-pack.js && node build-intel-categories.js && node build-applications.js && node build-standards.js && node build-knowledge.js && node build-knowledge-depth.js && node tests/check-knowledge-integrity.js && node build-engineering-claims.js && node build-course-depth.js && node build-materials.js && node build-materials-pages.js && node build-event-canonicalization.js && node build-markets.js && node build-utilities.js && node build-grids.js && node build-projects.js && node build-tenders.js && node build-awards.js && node build-case-studies.js && node build-accessories.js && node build-machinery.js && node build-laboratories.js && node build-category-landing-pages.js && node build-events.js && node build-post-event-intel.js && node build-event-summary-pages.js && node build-topic-hubs.js && node build-masterclass-paywall.js && node build-exhibitions.js && node build-books.js && node build-commerce.js && node build-commerce-intel.js && node build-freshness.js && node build-production-audit.js && node build-site-stats.js && node build-map.js && node build_ssr.js && node build-seo.js && node check-sitemap.js && node stamp-intel.js && node build-release-provenance.js && node check-intel-date-order.js && node build-header-consistency.js && node bump-assets.js && node check-archives.js && node check-data-quality.js && node check-config.js && node check-brand.js && node check-links.js && node check-data-health.js --skip-children && node check-design.js && node tests/engine-sanity.js && node check-event-intel.js && node check-event-integrity.js && node tests/check-events-integrity.js && node tests/check-provenance-labels.js && node check-topics.js && node check-data-graph.js && node check-masterclass-paywall.js && node tests/masterclass-live-qa.test.js && node tests/viz-math.test.js && node tests/verify-hero-integrity.js && node tests/check-verification-terms.js && node tests/pwa-install-regression.js && node tests/webgl-gate-regression.js && node tests/intel-clock-regression.js && node tests/tz-entity-events.js && node tests/intel-tender-parity.js && node tests/release-provenance-regression.js && node tests/intel-date-order-regression.js && node tests/gcc-discovery-regression.js && node tests/entitlement-regression.js && node build-discovery-desk.js && node tests/check-lab-integrity.js && node build-gcc-source-coverage.js && node check-gcc-intel-review.js && node check-sourced-facilities.js && node tests/market-country-regression.js && node tests/awards-wording-regression.js && node tests/company-timeline-regression.js && node tests/cg-power-765-regression.js && node tests/scheduled-refresh-regression.js && node tests/oct-intel-freshness-regression.js && node tests/adsense-inject.test.js && node build-dist.js && node stamp-dist-provenance.js && node check-dist-provenance.js && node check-adsense.js && node check-entity-canonical.js --dist && echo 'Static site with serverless functions'"
 
   # publish = "." shipped the whole working folder, so every internal file was on
   # the CDN and "protected" only by case-sensitive 404 rules that Netlify's
@@ -7,6 +7,9 @@
   # nothing is published unless build-dist.js names it.
   publish = "dist"
   functions = "functions"
+
+[build.environment]
+  TZ = "UTC"
 
 [functions]
   node_bundler = "esbuild"
@@ -27,6 +30,15 @@
 # publish = "." deploys the whole folder, so the internal strategy/setup
 # markdown and the stale archive/ copies would otherwise be fetchable
 # directly (e.g. /PREMIUM-PRICING-STRATEGY.md). Serve 404 instead.
+
+# Pre-sprint data snapshot. Forced 404 even if a stale copy is still published.
+# First redirect so no later splat or catch-all can serve it.
+[[redirects]]
+  from = "/data/backup-pre-sprint/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
 [[redirects]]
   from = "/_docs/*"
   to = "/404.html"
@@ -169,6 +181,20 @@
   status = 404
   force = true
 
+# Pre-sprint snapshot of that CRM (and the rest of the 15 Sep generation).
+# build-dist.js no longer copies it; this rule covers a stale CDN object.
+[[redirects]]
+  from = "/data/backup-pre-sprint/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/data/backup-pre-sprint"
+  to = "/404.html"
+  status = 404
+  force = true
+
 [[redirects]]
   from = "/data/gcc-coverage-report.json"
   to = "/404.html"
@@ -267,6 +293,144 @@
 
 
 
+# Legacy nested copy under /transformerpath/ (Maghreb fork). Root pages are
+# canonical. 301 only where that root file exists. Pages with no root
+# equivalent are noindex in the source and are not redirected onto a 404.
+[[redirects]]
+  from = "/transformerpath"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/transformerpath/"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/transformerpath/index.html"
+  to = "/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/transformerpath/academy.html"
+  to = "/academy.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/transformerpath/bushing.html"
+  to = "/bushing.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/transformerpath/company.html"
+  to = "/company.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/transformerpath/components.html"
+  to = "/components.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/transformerpath/coretopology.html"
+  to = "/coretopology.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/transformerpath/explorer.html"
+  to = "/explorer.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/transformerpath/grids.html"
+  to = "/grids.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/transformerpath/hero-3d.html"
+  to = "/hero-3d.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/transformerpath/intel.html"
+  to = "/intel.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/transformerpath/learn.html"
+  to = "/learn.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/transformerpath/list-company.html"
+  to = "/list-company.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/transformerpath/manufacturers.html"
+  to = "/manufacturers.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/transformerpath/oltc.html"
+  to = "/oltc.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/transformerpath/power3d.html"
+  to = "/power3d.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/transformerpath/power500.html"
+  to = "/power500.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/transformerpath/sponsor.html"
+  to = "/sponsor.html"
+  status = 301
+  force = true
+
+# No root page for these. noindex in the HTML; do not 301 onto a missing URL.
+[[headers]]
+  for = "/transformerpath/castresin3d.html"
+  [headers.values]
+    X-Robots-Tag = "noindex, follow"
+
+[[headers]]
+  for = "/transformerpath/ct3d.html"
+  [headers.values]
+    X-Robots-Tag = "noindex, follow"
+
+[[headers]]
+  for = "/transformerpath/platform-map.html"
+  [headers.values]
+    X-Robots-Tag = "noindex, follow"
+
+[[headers]]
+  for = "/transformerpath/checkout-success.html"
+  [headers.values]
+    X-Robots-Tag = "noindex, follow"
+
 # transformerpath-site/ is an early-August snapshot of ~25 pages that also
 # exist at the top level. Serving it would publish stale duplicates and split
 # SEO ranking between two copies of the same page.
@@ -309,10 +473,15 @@
   force = true
 
 
-# Security hardening headers — safe to set globally; chosen so nothing on the
-# JS-heavy site breaks. CSP is intentionally NOT set here (inline scripts +
-# AdSense/Stripe/geolocation callers make it easy to get wrong); add it in a
-# tested way if you want it.
+# Security headers. The CSP stays permissive on purpose: pages use inline
+# scripts and styles, and the browser also calls Stripe, Supabase, Google
+# Analytics, fonts and ipapi. A tight allow-list would blank those calls.
+# https: keeps that working. The AdSense / Funding Choices hosts are named
+# explicitly so a later tightening does not drop them:
+#   pagead2.googlesyndication.com  tpc.googlesyndication.com
+#   googleads.g.doubleclick.net    ad.doubleclick.net
+#   fundingchoicesmessages.google.com  partner.googleadservices.com
+#   adservice.google.com  www.googleadservices.com  ep1.adtrafficquality.google
 [[headers]]
   for = "/*"
   [headers.values]
@@ -320,6 +489,7 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    Content-Security-Policy = "default-src 'self' https: data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://googleads.g.doubleclick.net https://ad.doubleclick.net https://fundingchoicesmessages.google.com https://partner.googleadservices.com https://adservice.google.com https://www.googleadservices.com https://ep1.adtrafficquality.google https: blob:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: blob: https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://googleads.g.doubleclick.net https://ad.doubleclick.net https:; font-src 'self' data: https:; connect-src 'self' https://pagead2.googlesyndication.com https://tpc.googlesyndication.com https://googleads.g.doubleclick.net https://ad.doubleclick.net https://fundingchoicesmessages.google.com https://adservice.google.com https://ep1.adtrafficquality.google https: wss:; frame-src 'self' https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://pagead2.googlesyndication.com https://fundingchoicesmessages.google.com https://www.google.com https:; media-src 'self' data: blob: https:; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self' https:"
 
 # Long-lived caching for static assets; HTML stays revalidated so daily intel is never stale.
 [[headers]]
@@ -416,6 +586,37 @@
 [[redirects]]
   from = "/manufacturers/cg-power/"
   to = "/manufacturers/cg-power-and-industrial-solutions/"
+  status = 301
+  force = true
+
+# Plant rows that share a canonical company profile. Checked 2026-10-14.
+[[redirects]]
+  from = "/manufacturers/hammond-power-solutions-baraboo/"
+  to = "/manufacturers/hammond-power-solutions/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/green-transfo-energy-turkey/"
+  to = "/manufacturers/green-transfo/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/siemens-energy-tenjo/"
+  to = "/manufacturers/siemens-energy/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/siemens-energy-nuremberg/"
+  to = "/manufacturers/siemens-energy/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/manufacturers/jefferson-electric/"
+  to = "/manufacturers/jefferson-electric-voltaris/"
   status = 301
   force = true
 
@@ -620,5 +821,30 @@
 [[redirects]]
   from = "/manufacturers/hico-america-hyosung/"
   to = "/manufacturers/hyosung-heavy-industries/"
+  status = 301
+  force = true
+
+# Knowledge near-duplicates folded into the stronger page.
+[[redirects]]
+  from = "/knowledge/buchholz-relay-operation"
+  to = "/knowledge/buchholz-relay.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/knowledge/buchholz-relay-operation.html"
+  to = "/knowledge/buchholz-relay.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/knowledge/insulation-coordination-simple"
+  to = "/knowledge/insulation-coordination.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/knowledge/insulation-coordination-simple.html"
+  to = "/knowledge/insulation-coordination.html"
   status = 301
   force = true

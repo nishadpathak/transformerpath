@@ -163,6 +163,10 @@ const current = {
   openTenders: openTenders || num(prev.openTenders, 0),
   preAward: preAward || num(prev.preAward, 0),
   awards: AWARDS.length || num(prev.awards, 0),
+  awardsConfirmed: AWARDS.filter((a) => a.transformer_scope === 'CONFIRMED').length,
+  awardsInferred: AWARDS.filter((a) => a.transformer_scope === 'INFERRED').length,
+  awardsUnknown: AWARDS.filter((a) => a.transformer_scope !== 'CONFIRMED' && a.transformer_scope !== 'INFERRED').length,
+  awardsScopeTaxonomy: 'CONFIRMED / INFERRED / UNKNOWN transformer_scope, same labels as Intelligence',
   events: EVENTS.length || num(prev.events, 0),
   upcomingEvents: upcomingEvents || num(prev.upcomingEvents, 0),
   gridsCardText: GRIDS.length + ' countries, ' +

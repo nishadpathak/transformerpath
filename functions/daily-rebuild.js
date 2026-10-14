@@ -3,17 +3,18 @@
 // events Up-next, and site-stats counters cannot freeze for weeks
 // between manual deploys.
 //
-// Schedule: twice daily — 06:00 and 18:00 UTC (netlify.toml).
-// No-op without the hook env var.
+// Schedule: once daily — 06:00 UTC (10:00 Dubai). See netlify.toml.
+// No-op unless TP_BUILD_HOOK_URL is set.
 exports.handler = async function () {
   const hook = process.env.TP_BUILD_HOOK_URL || process.env.BUILD_HOOK_URL || '';
   if (!hook) {
+    console.error('daily-rebuild: TP_BUILD_HOOK_URL is not set. The scheduled rebuild did not run.');
     return {
-      statusCode: 204,
+      statusCode: 503,
       body: JSON.stringify({
-        ok: true,
+        ok: false,
         triggered: false,
-        reason: 'TP_BUILD_HOOK_URL not set — soft freshness relies on next manual/CI deploy'
+        reason: 'TP_BUILD_HOOK_URL not set. Twice-daily rebuild did not run.'
       })
     };
   }
@@ -22,7 +23,7 @@ exports.handler = async function () {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        trigger: 'twice-daily-rebuild',
+        trigger: 'daily-rebuild',
         at: new Date().toISOString()
       })
     });

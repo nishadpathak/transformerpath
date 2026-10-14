@@ -1,0 +1,19 @@
+name: sitemap
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  sitemap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Rebuild sitemap from content dates and check it
+        run: node build-sitemap.js && node check-sitemap.js

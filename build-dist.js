@@ -27,13 +27,16 @@
  * function and stays reachable through the gated endpoint — but is no longer
  * served as a static file. That closes the 210 KB paid-content exposure.
  *
- * This runs LAST, after every generator. It only copies; no builder changes.
+ * This runs LAST, after every generator. It copies, then stamps the AdSense
+ * loader (and at most one in-content slot) into every published HTML page.
+ * Source files stay untouched so the next generator run cannot drop the tag.
  *
  * Run: node build-dist.js
  */
 'use strict';
 const fs = require('fs');
 const path = require('path');
+const { stampHtml } = require('./adsense-inject');
 
 const DIST = 'dist';
 
@@ -46,7 +49,7 @@ const DIST = 'dist';
 // Whole directories copied verbatim — served content only.
 const DIRS = [
   'accessories', 'applications', 'admin', 'books', 'brand', 'case-studies',
-  'components', 'data', 'events', 'grids', 'knowledge', 'manufacturers',
+  'components', 'events', 'grids', 'knowledge', 'manufacturers',
   'markets', 'materials', 'media', 'projects', 'tenders', 'topics', 'utilities',
   'viz', 'vendor',
 ];
@@ -97,6 +100,8 @@ const FORBIDDEN_PATTERNS = [
   /^stamp-intel\.js$/, /^bump-assets\.js$/, /^build_ssr\.js$/, /^build\.py$/,
   /^data\/commerce-intel\.json$/,
   /^data\/engineer-track-paid\.json$/,
+  /^data\/backup/i,
+  /pre-sprint/i,
 ];
 
 /* iCloud Drive / macOS conflict copies ("index 2.html", "usa 2/"). The site folder
@@ -123,6 +128,10 @@ function copyDir(dir) {
     // Never copy internal prospect intelligence / discovery-ops artifacts to the public distribution
     if (p === 'data/commerce-intel.json' || p === 'data/engineer-track-paid.json') continue;
     if (p === 'data/gcc-sep-2026-discovery-input.json' || p === 'data/gcc-coverage-report.json') continue;
+    // Pre-sprint CRM snapshots (data/backup-pre-sprint/commerce-intel.json and
+    // the rest of that generation) must never reach the CDN. The root
+    // commerce-intel 404 does not cover this copy.
+    if (/(^|\/)backup[^/]*$/.test(p) || /pre-sprint/i.test(p)) continue;
     // Tracked ops schemas (e.g. data/*.sql) must stay in git but never ship on the CDN
     if (/\.sql$/i.test(e.name)) continue;
     if (e.isDirectory()) n += copyDir(p);
@@ -150,13 +159,89 @@ for (const f of ROOT_JS.concat(ROOT_OTHER)) {
   else console.warn('  ! allowlisted but missing: ' + f);
 }
 
-// 3. Public directories.
+// 3. Public directories. data/ is NOT copied wholesale — only JSON files
+// that shipped HTML/JS actually reference (see step 5).
 for (const d of DIRS) count += copyDir(d);
 
 // 4. Individual files from mixed directories.
 for (const f of FILES_FROM_MIXED_DIRS) {
   if (fs.existsSync(f)) { copyFile(f, f); count++; }
   else console.warn('  ! allowlisted but missing: ' + f);
+}
+
+// 5. data/*.json allowlist, derived from references in the artifact.
+const DATA_REF = /data\/([A-Za-z0-9_.\/-]+\.json)/g;
+const dataRefs = new Set();
+(function scanRefs(dir) {
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    const p = path.join(dir, e.name);
+    if (e.isDirectory()) { scanRefs(p); continue; }
+    if (!/\.(html|js|xml|webmanifest)$/i.test(e.name)) continue;
+    const text = fs.readFileSync(p, 'utf8');
+    let m;
+    DATA_REF.lastIndex = 0;
+    while ((m = DATA_REF.exec(text))) {
+      if (m[1].includes('..')) continue;
+      dataRefs.add(m[1]);
+    }
+  }
+})(DIST);
+
+function dataForbidden(rel) {
+  return /backup/i.test(rel) || /pre-sprint/i.test(rel) ||
+    rel === 'commerce-intel.json' || rel === 'engineer-track-paid.json' ||
+    rel === 'gcc-sep-2026-discovery-input.json' || rel === 'gcc-coverage-report.json' ||
+    /\.sql$/i.test(rel);
+}
+
+let dataCopied = 0;
+const dataMissing = [];
+for (const rel of dataRefs) {
+  if (dataForbidden(rel)) {
+    console.warn('  ! data reference not published: data/' + rel);
+    continue;
+  }
+  const src = path.join('data', rel);
+  if (!fs.existsSync(src) || !fs.statSync(src).isFile()) {
+    dataMissing.push(rel);
+    continue;
+  }
+  copyFile(src, path.join('data', rel));
+  dataCopied++;
+}
+console.log('data allowlist: ' + dataCopied + ' JSON files referenced by dist HTML/JS');
+if (dataMissing.length) {
+  console.warn('  ! referenced data JSON not in source (' + dataMissing.length + '):');
+  dataMissing.slice(0, 12).forEach(function (r) { console.warn('      data/' + r); });
+}
+
+// 6. AdSense loader on every published page, plus one collapsed in-content
+//    slot on knowledge articles, the intel list and the directory lists.
+let stamped = 0;
+let stampErrors = 0;
+(function stampWalk(dir) {
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    const p = path.join(dir, e.name);
+    if (e.isDirectory()) { stampWalk(p); continue; }
+    if (!e.name.endsWith('.html')) continue;
+    const rel = path.relative(DIST, p);
+    let html;
+    try { html = fs.readFileSync(p, 'utf8'); }
+    catch (err) { console.error('  ! unreadable ' + rel); stampErrors++; continue; }
+    let next;
+    try { next = stampHtml(html, rel); }
+    catch (err) {
+      console.error('  ! adsense stamp failed for ' + rel + ': ' + err.message);
+      stampErrors++;
+      continue;
+    }
+    if (next !== html) { fs.writeFileSync(p, next); stamped++; }
+  }
+})(DIST);
+console.log('AdSense stamp: ' + stamped + ' HTML page(s) updated.');
+if (stampErrors) {
+  console.error('DIST GATE FAILED — AdSense stamp could not update ' + stampErrors + ' page(s).');
+  process.exit(1);
 }
 
 // ── Verification gate ─────────────────────────────────────────────────────

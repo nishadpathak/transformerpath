@@ -3,8 +3,8 @@
 // can actually populate.
 //
 // Reliability (P0 intel pipeline):
-//   - fetchJson() retries up to MAX_ATTEMPTS with backoff, so a transient
-//     upstream error does not silently produce an empty feed.
+//   - The shared intel source retries upstream calls. A missing
+//     EVENTREGISTRY_KEY falls through to public RSS instead of skipping.
 //   - Failed-source isolation: a fetch failure is recorded and does not
 //     clobber the last good cache — we serve it (flagged `stale` in the worst
 //     case) rather than returning an empty "(Briefing loading...)".
@@ -23,12 +23,9 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
-const EVENTREGISTRY_KEY = process.env.EVENTREGISTRY_KEY || '';
-const EVENTREGISTRY_URL = 'https://eventregistry.org/api/v1/article/getArticles';
+const { buildFeed } = require('./lib/intel-source');
 
-// Retry / staleness knobs.
-const MAX_ATTEMPTS = 3;
-const BACKOFF_MS = 1000;        // doubles each retry (1s, 2s, 4s)
+// Staleness knob. Fetch retries live in functions/lib/intel-source.js.
 const STALE_AFTER_MS = 26 * 3600 * 1000; // >24h of no successful fetch = stale
 
 // Netlify function filesystems are read-only except /tmp — never write into the
@@ -49,120 +46,19 @@ function writeCache(data) {
   }
 }
 
-// Fetch JSON with retry + backoff; resolves null if all attempts fail.
-async function fetchJson(url, opts, attempts) {
-  let lastErr = null;
-  for (let i = 1; i <= (attempts || MAX_ATTEMPTS); i++) {
-    try {
-      const res = await fetch(url, opts);
-      if (res.ok) return await res.json();
-      lastErr = new Error('HTTP ' + res.status);
-    } catch (err) {
-      lastErr = err;
-    }
-    if (i < (attempts || MAX_ATTEMPTS)) {
-      await new Promise(function (r) { setTimeout(r, BACKOFF_MS * Math.pow(2, i - 1)); });
-    }
-  }
-  console.error('fetchJson failed after retries:', lastErr && lastErr.message);
-  return null;
-}
-
-// Fetch and normalize intel from EventRegistry (region-grouped).
+// Fetch through the shared source. EventRegistry when a key is set, otherwise
+// the public RSS feeds. A missing key must not return an empty success.
 async function fetchIntel() {
-  if (!EVENTREGISTRY_KEY) {
-    console.warn('EVENTREGISTRY_KEY not set. Skipping intel fetch.');
-    return { intel: null, count: 0 };
+  const feed = await buildFeed();
+  const articles = feed && Array.isArray(feed.articles) ? feed.articles : [];
+  const count = articles.reduce(function (s, r) { return s + (r.items ? r.items.length : 0); }, 0);
+  if (!count) {
+    console.error('refresh-data: no articles from EventRegistry or RSS.');
+    return { intel: null, count: 0, briefing: feed && feed.briefing };
   }
-
-  const payload = {
-    query: {
-      $query: {
-        $and: [
-          {
-            $or: [
-              { keyword: 'Electrical Transformers', keywordLoc: 'body' },
-              { keyword: 'Power transformers', keywordLoc: 'body' },
-              { keyword: 'Distribution transformers', keywordLoc: 'body' },
-              { conceptUri: 'http://en.wikipedia.org/wiki/Electrical_grid' },
-              { conceptUri: 'http://en.wikipedia.org/wiki/Electricity_market' },
-              { conceptUri: 'http://en.wikipedia.org/wiki/Electricity' },
-            ],
-          },
-          { categoryUri: 'dmoz/Business' },
-        ],
-      },
-      $filter: { forceMaxDataTimeWindow: '31' }, // Last 31 days
-    },
-    resultType: 'articles',
-    articlesSortBy: 'date',
-    articlesCount: 50,
-    apiKey: EVENTREGISTRY_KEY,
-  };
-
-  const data = await fetchJson(EVENTREGISTRY_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-  });
-
-  if (!data || !data.articles || data.articles.length === 0) {
-    console.warn('No articles found from EventRegistry (or fetch failed).');
-    return { intel: null, count: 0 };
-  }
-
-  const regions = {
-    'Middle East / GCC': [],
-    'India / South Asia': [],
-    'Europe': [],
-    'North America': [],
-    'Global': [],
-  };
-
-  data.articles.slice(0, 30).forEach((article) => {
-    const text = (article.title + ' ' + (article.body || '')).toLowerCase();
-    const location = article.location?.label || '';
-    let region = 'Global';
-
-    if (location.includes('UAE') || location.includes('Saudi') || location.includes('Gulf') ||
-        text.includes('uae') || text.includes('saudi') || text.includes('gulf') || text.includes('middle east')) {
-      region = 'Middle East / GCC';
-    } else if (location.includes('India') || location.includes('Bangladesh') ||
-               text.includes('india') || text.includes('south asia')) {
-      region = 'India / South Asia';
-    } else if (location.includes('Europe') || text.includes('europe') || text.includes('germany') || text.includes('uk')) {
-      region = 'Europe';
-    } else if (location.includes('United States') || location.includes('Canada') ||
-               text.includes('us') || text.includes('united states') || text.includes('canada')) {
-      region = 'North America';
-    }
-
-    regions[region].push({
-      title: article.title,
-      snippet: (article.body || article.summary || '').substring(0, 150),
-      value: '',
-      src: `${article.source.title} · ${new Date(article.dateTime).toLocaleDateString('en-US', {year: '2-digit', month: 'short', day: 'numeric'})}`,
-      url: article.url,
-      isNew: true,
-    });
-  });
-
-  const intel = Object.entries(regions)
-    .filter(([, items]) => items.length > 0)
-    .map(([label, items]) => ({ label, items: items.slice(0, 5) }));
-
-  const regionCounts = Object.entries(regions)
-    .filter(([, items]) => items.length > 0)
-    .map(([region, items]) => `${region} (${items.length})`)
-    .join(', ');
-
-  const totalArticles = Object.values(regions).flat().length;
-  const timestamp = new Date().toLocaleString('en-GB', { day: 'numeric', month: 'short', year: '2-digit' });
-
-  const autoBriefing = `Daily auto-refresh (${timestamp}): EventRegistry fetched ${totalArticles} transformer industry articles across regions (${regionCounts}). Grouped by region and sorted by date. No manual curation — raw feeds only.`;
-
-  intel.autoBriefing = autoBriefing;
-  return { intel, count: totalArticles };
+  const intel = articles;
+  intel.autoBriefing = feed.briefing;
+  return { intel: intel, count: count };
 }
 
 async function refresh() {
@@ -183,12 +79,11 @@ async function refresh() {
     if (prev.briefing) {
       writeCache(Object.assign({}, prev, meta));
     }
-    return { success: false, stale: meta.stale, lastSuccessfulFetch: meta.lastSuccessfulFetch, note: 'EventRegistry fetch failed; serving last good cache.' };
+    return { success: false, stale: meta.stale, lastSuccessfulFetch: meta.lastSuccessfulFetch, note: 'No articles fetched from EventRegistry or RSS. Last good cache kept when one exists.' };
   }
 
   const briefing = result.intel.autoBriefing;
-  const intelData = Object.assign({}, result.intel);
-  delete intelData.autoBriefing;
+  const intelData = result.intel.filter(function (row) { return row && row.label; });
   meta.successCount = (prev.successCount || 0) + 1;
   meta.lastSuccessfulFetch = meta.lastAttempt;
   meta.stale = false;
@@ -211,11 +106,13 @@ exports.handler = async (event) => {
     const res = await refresh();
     const cached = readCached();
     return {
-      statusCode: 200,
+      statusCode: res.success ? 200 : 503,
       body: JSON.stringify(Object.assign({ timestamp: nowIso() }, res, {
-        updated: res.success ? articleCount(cached) : articleCount(cached),
+        updated: articleCount(cached),
         cachedArticleCount: articleCount(cached),
-        note: 'Set EVENTREGISTRY_KEY in Netlify env vars to enable the fetch.',
+        note: res.success
+          ? 'Fetched via EventRegistry when EVENTREGISTRY_KEY is set, otherwise public RSS.'
+          : 'Refresh fetched no articles. EVENTREGISTRY_KEY is optional; RSS is the fallback.',
       })),
     };
   }
