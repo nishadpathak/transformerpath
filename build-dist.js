@@ -96,6 +96,8 @@ const FORBIDDEN_PATTERNS = [
   /^stamp-intel\.js$/, /^bump-assets\.js$/, /^build_ssr\.js$/, /^build\.py$/,
   /^data\/commerce-intel\.json$/,
   /^data\/engineer-track-paid\.json$/,
+  /^data\/backup/i,
+  /pre-sprint/i,
 ];
 
 /* iCloud Drive / macOS conflict copies ("index 2.html", "usa 2/"). The site folder
@@ -122,6 +124,10 @@ function copyDir(dir) {
     // Never copy internal prospect intelligence / discovery-ops artifacts to the public distribution
     if (p === 'data/commerce-intel.json' || p === 'data/engineer-track-paid.json') continue;
     if (p === 'data/gcc-sep-2026-discovery-input.json' || p === 'data/gcc-coverage-report.json') continue;
+    // Pre-sprint CRM snapshots (data/backup-pre-sprint/commerce-intel.json and
+    // the rest of that generation) must never reach the CDN. The root
+    // commerce-intel 404 does not cover this copy.
+    if (/(^|\/)backup[^/]*$/.test(p) || /pre-sprint/i.test(p)) continue;
     // Tracked ops schemas (e.g. data/*.sql) must stay in git but never ship on the CDN
     if (/\.sql$/i.test(e.name)) continue;
     if (e.isDirectory()) n += copyDir(p);

@@ -169,6 +169,20 @@
   status = 404
   force = true
 
+# Pre-sprint snapshot of that CRM (and the rest of the 15 Sep generation).
+# build-dist.js no longer copies it; this rule covers a stale CDN object.
+[[redirects]]
+  from = "/data/backup-pre-sprint/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/data/backup-pre-sprint"
+  to = "/404.html"
+  status = 404
+  force = true
+
 [[redirects]]
   from = "/data/gcc-coverage-report.json"
   to = "/404.html"
