@@ -36,6 +36,7 @@
 const crypto = require('crypto');
 const { isConfigured, client } = require('./lib/supabase-server');
 const { sendPaidReceipts } = require('./lib/paid-receipt');
+const { isFeaturedEventCheckout } = require('../lib/paid-listings');
 
 const PAID_LISTING_PRODUCTS = { verified_manufacturer: true, featured_event: true };
 
@@ -120,7 +121,9 @@ function verifySignature(payload, signatureHeader, secret, tolerance = 300) {
 
 function paidListingProduct(session) {
   const product = session && session.metadata && session.metadata.product;
-  return PAID_LISTING_PRODUCTS[product] ? product : null;
+  if (PAID_LISTING_PRODUCTS[product]) return product;
+  if (isFeaturedEventCheckout(session)) return 'featured_event';
+  return null;
 }
 
 function paidListingRow(session) {
@@ -241,7 +244,19 @@ async function writePaidListing(row) {
     throw err;
   }
   const supabase = client();
-  const { error } = await supabase.from('paid_listings').upsert(row, { onConflict: 'session_id' });
+  const payload = {
+    session_id: row.session_id,
+    product: row.product,
+    company_slug: row.company_slug || null,
+    event_id: row.event_id || null,
+    email: row.email || null,
+    amount: row.amount,
+    currency: row.currency || null,
+    livemode: row.livemode === true,
+    status: row.status,
+    created_at: row.created_at
+  };
+  const { error } = await supabase.from('paid_listings').upsert(payload, { onConflict: 'session_id' });
   if (error) throw new Error('paid_listings upsert failed');
 }
 

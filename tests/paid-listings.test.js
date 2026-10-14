@@ -102,6 +102,22 @@ async function main() {
   check('unconfigured checkout is 503', res.statusCode === 503 && unconfigured.configured === false, res.body);
   check('503 names missing env vars', Array.isArray(unconfigured.missing) && unconfigured.missing.indexOf('STRIPE_SECRET_KEY') >= 0);
 
+  process.env.STRIPE_SECRET_KEY = 'sk_test_x';
+  process.env.STRIPE_PRICE_FEATURED_EVENT = 'price_test_featured';
+  let featuredCheckoutBody = '';
+  global.fetch = async function (url, opts) {
+    featuredCheckoutBody = opts && opts.body ? String(opts.body) : '';
+    return { ok: true, status: 200, json: async function () { return { id: 'cs_test_featured_created', url: 'https://checkout.stripe.com/c/pay/cs_test_created', livemode: false }; } };
+  };
+  res = await checkout.handler({
+    httpMethod: 'POST',
+    body: JSON.stringify({ product: 'featured_event', event_id: 'middle-east-energy', email: 'buyer@example.com' })
+  });
+  check('featured checkout success url opens the events form', res.statusCode === 200 && featuredCheckoutBody.indexOf('paid%3Dfeatured_event') >= 0 && featuredCheckoutBody.indexOf('%23submit-event') >= 0, res.statusCode + ' ' + featuredCheckoutBody.slice(0, 240));
+  delete process.env.STRIPE_SECRET_KEY;
+  delete process.env.STRIPE_PRICE_FEATURED_EVENT;
+  global.fetch = function () { throw new Error('stripe must not be called'); };
+
   process.env.STRIPE_WEBHOOK_SECRET = 'whsec_unit_test_secret';
   const wh = require('../functions/stripe-webhook');
   const store = memoryStore();
@@ -217,6 +233,90 @@ async function main() {
   check('reviewed event renders FEATURED', featuredHtml.indexOf('>FEATURED<') >= 0 && featuredHtml.indexOf('data-event-id="middle-east-energy"') >= 0, featuredHtml);
   check('event id is in the catalog', paid.knownEventId('middle-east-energy') === true);
 
+  const linkSession = 'cs_test_payment_link_featured';
+  check('payment link fixture session id is test mode', linkSession.indexOf('cs_test_') === 0);
+  delete process.env.STRIPE_PAYMENT_LINK_FEATURED_EVENT;
+  const linkEvent = {
+    id: 'evt_plink_featured',
+    type: 'checkout.session.completed',
+    data: {
+      object: {
+        id: linkSession,
+        amount_total: paid.FEATURED_EVENT_AMOUNT_CENTS,
+        currency: 'usd',
+        livemode: false,
+        payment_link: 'plink_test_featured',
+        customer_details: { email: 'organiser@example.com' },
+        metadata: {}
+      }
+    }
+  };
+  const linkRes = await postWebhook(wh.handler, secret, linkEvent);
+  const linkRow = store.listings.get(linkSession);
+  check('payment link writes a pending featured slot', linkRes.statusCode === 200 && linkRow && linkRow.product === 'featured_event' && linkRow.status === 'paid_pending_verification' && !linkRow.event_id, JSON.stringify(linkRow));
+  check('payment link does not publish FEATURED', paid.featuredEventHtml('middle-east-energy', { listings: [linkRow] }) === '');
+  const linkReplay = await postWebhook(wh.handler, secret, linkEvent);
+  check('payment link replay is idempotent', linkReplay.statusCode === 200 && JSON.parse(linkReplay.body).idempotent === true);
+
+  const returnEvent = await postWebhook(wh.handler, secret, {
+    id: 'evt_featured_return',
+    type: 'checkout.session.completed',
+    data: {
+      object: {
+        id: 'cs_test_featured_return',
+        amount_total: 29900,
+        currency: 'usd',
+        livemode: false,
+        success_url: 'https://transformerpath.com/events.html?paid=featured_event&session_id=cs_test_featured_return#submit-event',
+        customer_email: 'return@example.com',
+        metadata: {}
+      }
+    }
+  });
+  const returnRow = store.listings.get('cs_test_featured_return');
+  check('after-payment URL matches a pending featured slot', returnEvent.statusCode === 200 && returnRow && returnRow.product === 'featured_event' && returnRow.status === 'paid_pending_verification', returnEvent.body);
+
+  process.env.STRIPE_PAYMENT_LINK_FEATURED_EVENT = 'plink_expected';
+  check('configured plink id matches that link', paid.isFeaturedEventCheckout({ amount_total: 29900, currency: 'usd', payment_link: 'plink_expected', metadata: {} }) === true);
+  check('configured plink id ignores a different $299 link', paid.isFeaturedEventCheckout({ amount_total: 29900, currency: 'usd', payment_link: 'plink_other', metadata: {} }) === false);
+  delete process.env.STRIPE_PAYMENT_LINK_FEATURED_EVENT;
+  check('engineer payment link is not a featured slot', paid.isFeaturedEventCheckout({ amount_total: 19900, currency: 'usd', payment_link: 'plink_learn', metadata: { user_id: 'user_1', plan: 'learning' } }) === false);
+
+  const engineerStill = await postWebhook(wh.handler, secret, {
+    id: 'evt_eng_199',
+    type: 'checkout.session.completed',
+    data: { object: { id: 'cs_test_eng_199', amount_total: 19900, currency: 'usd', payment_link: 'plink_learn', metadata: { plan: 'learning', user_id: 'user_199' } } }
+  });
+  check('engineer $199 payment link still writes an entitlement', engineerStill.statusCode === 200 && store.entitlementWrites === 2 && !store.listings.get('cs_test_eng_199'), engineerStill.body);
+
+  const link = paid.FEATURED_EVENT_PAYMENT_LINK;
+  check('events list pay button uses the constant', fs.readFileSync('events.html', 'utf8').indexOf('href="' + link + '"') >= 0 && fs.readFileSync('events.html', 'utf8').indexOf('name="event_name"') >= 0 && fs.readFileSync('events.html', 'utf8').indexOf('name="event_url"') >= 0 && fs.readFileSync('events.html', 'utf8').indexOf('name="event_dates"') >= 0);
+  check('pricing pay button uses the constant', fs.readFileSync('pricing.html', 'utf8').indexOf('href="' + link + '"') >= 0);
+  const eventPages = fs.readdirSync('events').filter(function (d) { return fs.existsSync('events/' + d + '/index.html'); });
+  const cardPages = eventPages.filter(function (d) {
+    return fs.readFileSync('events/' + d + '/index.html', 'utf8').indexOf('Feature your company on TransformerPath') >= 0;
+  });
+  const linkedPages = cardPages.filter(function (d) {
+    return fs.readFileSync('events/' + d + '/index.html', 'utf8').indexOf('href="' + link + '"') >= 0;
+  });
+  const leftoverWidgets = eventPages.filter(function (d) {
+    return fs.readFileSync('events/' + d + '/index.html', 'utf8').indexOf('data-product="featured_event"') >= 0;
+  });
+  check('event pages use the payment link', cardPages.length > 20 && linkedPages.length === cardPages.length && leftoverWidgets.length === 0, 'cards=' + cardPages.length + ' linked=' + linkedPages.length + ' leftover=' + leftoverWidgets.length);
+
+  function jsHits(dir, hits) {
+    fs.readdirSync(dir).forEach(function (name) {
+      if (name === 'node_modules' || name === 'dist' || name === 'transformerpath' || name === '.git') return;
+      const p = dir + '/' + name;
+      const st = fs.statSync(p);
+      if (st.isDirectory()) jsHits(p, hits);
+      else if (name.endsWith('.js') && fs.readFileSync(p, 'utf8').indexOf(link) >= 0) hits.push(p);
+    });
+  }
+  const hits = [];
+  jsHits('.', hits);
+  check('payment link URL lives in one config constant', hits.length === 1 && hits[0] === './lib/paid-listings.js', hits.join(','));
+
   const gate = require('../check-paid-badges');
   const stray = '<span class="paid-badge" data-paid-badge="verified-manufacturer" data-company-slug="a-plus-power-solution">VERIFIED MANUFACTURER</span>';
   check('CI fails a badge without a verified row', gate.auditHtml('sample.html', stray, { listings: [] }).length === 1);
@@ -229,6 +329,8 @@ async function main() {
   check('buyer confirmation is addressed to the payer', msgs.buyer && msgs.buyer.to[0] === 'buyer@example.com');
   check('internal notice goes to NOTIFY_TO', msgs.internal && msgs.internal.to[0] === 'ops@example.com');
   check('receipt text does not contain a secret key', msgs.buyer.text.indexOf('sk_') < 0 && msgs.internal.text.indexOf('whsec_') < 0);
+  const featuredReceipt = receipt.messages(linkRow);
+  check('featured receipt sends the buyer to the events form', featuredReceipt.buyer && featuredReceipt.buyer.text.indexOf('/events.html?paid=featured_event#submit-event') >= 0);
 
   const widget = paid.checkoutWidget({
     product: 'verified_manufacturer',
@@ -264,7 +366,29 @@ async function main() {
     return {
       ok: true,
       json: async function () {
-        return { id: 'cs_test_learn', payment_status: 'paid', amount_total: 19900, livemode: false, metadata: {} };
+        return {
+          id: linkSession,
+          payment_status: 'paid',
+          amount_total: 29900,
+          currency: 'usd',
+          livemode: false,
+          payment_link: 'plink_test_featured',
+          metadata: {}
+        };
+      }
+    };
+  };
+  const featuredAccess = JSON.parse((await verify.handler({
+    httpMethod: 'POST',
+    body: JSON.stringify({ session_id: linkSession })
+  })).body);
+  check('featured payment link does not grant course access', featuredAccess.valid === false && featuredAccess.paid === true && featuredAccess.product === 'featured_event' && featuredAccess.listing === 'paid_pending_verification' && !featuredAccess.entitlement_token, JSON.stringify(featuredAccess));
+
+  global.fetch = async function () {
+    return {
+      ok: true,
+      json: async function () {
+        return { id: 'cs_test_learn', payment_status: 'paid', amount_total: 19900, livemode: false, metadata: {}, payment_link: 'plink_learn' };
       }
     };
   };

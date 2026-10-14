@@ -378,12 +378,9 @@ table.cmp .n { color:var(--border); }
     <div class="section-head" style="margin:22px 0 10px"><h3 style="font-size:1.02rem;color:var(--accent);margin:0">For Events &amp; Marketing</h3></div>
     <div class="grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px">
       <div class="card" style="padding:16px;border-radius:12px"><b>Featured Event</b><div style="color:var(--accent);font-weight:700;margin:4px 0">$299 / event</div><p style="color:var(--muted);font-size:.82rem;margin:0">Prominent, clearly-labelled placement, logo/banner, enhanced event page, registration CTA. FEATURED is promotional placement, not an editorial recommendation.</p>
-        <div class="paid-checkout" data-product="featured_event" data-fallback="mailto:hello@transformerpath.com?subject=Featured%20Event%20%24299">
-          <input class="paid-checkout-event" type="text" placeholder="Event id" aria-label="Event id" style="width:100%;margin:0 0 8px;padding:8px 10px;border:1px solid var(--border);border-radius:8px">
-          <input class="paid-checkout-email" type="email" placeholder="Work email" aria-label="Work email" style="width:100%;margin:0 0 8px;padding:8px 10px;border:1px solid var(--border);border-radius:8px">
-          <button type="button" class="btn btn-amber btn-sm paid-checkout-btn">Feature this event — $299</button>
-        </div>
-        <a href="events.html" style="font-size:.8rem;font-weight:700;color:var(--accent)">Feature an event &rarr;</a></div>
+        <p style="margin:10px 0 8px"><a class="btn btn-amber btn-sm" href="https://buy.stripe.com/00w6oA2lO8tvdwkaXwfYY04" data-featured-event-pay="1" data-track="event_feature_inquiry" data-track-plan="Featured Event">Feature this event — $299</a></p>
+        <p style="color:var(--muted);font-size:.8rem;margin:0 0 8px">After payment, submit the event name, URL, and dates. The FEATURED label is shown only after review.</p>
+        <a href="events.html#submit-event" style="font-size:.8rem;font-weight:700;color:var(--accent)">Submit event details &rarr;</a></div>
       <div class="card" style="padding:16px;border-radius:12px"><b>Featured Exhibitor</b><div style="color:var(--accent);font-weight:700;margin:4px 0">$399 / event</div><p style="color:var(--muted);font-size:.82rem;margin:0">FEATURED label, logo, booth number, products, brochure, manufacturer profile, meeting CTA. FEATURED never implies a recommendation.</p><a href="events.html" style="font-size:.8rem;font-weight:700;color:var(--accent)">Feature an exhibitor &rarr;</a></div>
       <div class="card" style="padding:16px;border-radius:12px"><b>Hosted Webinar</b><div style="color:var(--accent);font-weight:700;margin:4px 0">from $1,500</div><p style="color:var(--muted);font-size:.82rem;margin:0">Event page, registration, promotion, hosting, recording where supported, post-event replay. Attendee reporting subject to privacy/consent. Inquiry via email — not a live Stripe checkout.</p><a href="sponsor.html#hosted-webinar" style="font-size:.8rem;font-weight:700;color:var(--accent)">Host a webinar &rarr;</a></div>
       <div class="card" style="padding:16px;border-radius:12px"><b>Sponsorship</b><div style="color:var(--accent);font-weight:700;margin:4px 0">from $299</div><p style="color:var(--muted);font-size:.82rem;margin:0">Daily Intel sponsor, event spotlight, category/market sponsor, newsletter sponsor, annual knowledge partner. Every placement is visibly SPONSORED — we never sell editorial conclusions.</p><a href="sponsor.html" style="font-size:.8rem;font-weight:700;color:var(--accent)">Sponsor &rarr;</a></div>
@@ -594,7 +591,9 @@ table.cmp .n { color:var(--border); }
         var label = listingProduct === 'featured_event' ? 'FEATURED' : 'VERIFIED MANUFACTURER';
         b.style.background = '#14365c';
         b.innerHTML = (res && res.paid)
-          ? 'Payment received. ' + label + ' is published only after review. Payment does not change capability, evidence, or ranking.'
+          ? (listingProduct === 'featured_event'
+            ? 'Payment received. Submit the event name, URL, and dates on the <a href="events.html?paid=featured_event#submit-event" style="color:#fff;text-decoration:underline">events list</a>. FEATURED is shown only after review.'
+            : 'Payment received. ' + label + ' is published only after review. Payment does not change capability, evidence, or ranking.')
           : 'We could not confirm this payment yet. If you were charged, email hello@transformerpath.com with your receipt.';
         b.style.display = 'block';
         params.delete('session_id');

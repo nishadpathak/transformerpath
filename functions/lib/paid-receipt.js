@@ -36,6 +36,9 @@ function messages(row) {
     'Session: ' + row.session_id,
     '',
     'Status: paid, pending verification.',
+    row.product === 'featured_event'
+      ? 'Submit the event name, official URL, and dates at ' + ((process.env.SITE_URL || 'https://transformerpath.com').trim().replace(/\/$/, '')) + '/events.html?paid=featured_event#submit-event'
+      : null,
     'A VERIFIED MANUFACTURER badge or FEATURED label is published only after a reviewer confirms the organization. Payment does not change technical capability, evidence, or ranking.',
     '',
     'Stripe can also email a card receipt. Turn on email receipts in the Stripe Dashboard under Settings → Customer emails → Successful payments.'

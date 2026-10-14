@@ -129,12 +129,8 @@
     <div class="grid grid-2">
       <div class="card"><span class="emoji" aria-hidden="true">📬</span><h3>Daily Brief Sponsor</h3><p>"Presented by" placement in the daily intel email and web briefing. One sponsor per month, category-exclusive.</p></div>
       <div class="card"><span class="emoji" aria-hidden="true">🎪</span><h3>Event Spotlight</h3><p>Feature your exhibition event to the transformer community — from a listing highlight to full event promotion.</p>
-        <div class="paid-checkout" data-product="featured_event" data-fallback="#sForm" style="margin-top:10px">
-          <input class="paid-checkout-event" type="text" placeholder="Event id" aria-label="Event id" style="width:100%;margin:0 0 8px;padding:8px 10px;border:1px solid var(--border);border-radius:8px">
-          <input class="paid-checkout-email" type="email" placeholder="Work email" aria-label="Work email" style="width:100%;margin:0 0 8px;padding:8px 10px;border:1px solid var(--border);border-radius:8px">
-          <button type="button" class="btn btn-amber btn-sm paid-checkout-btn">Feature this event — $299</button>
-          <p id="paidCheckoutNote" style="color:var(--muted);font-size:.8rem;margin:8px 0 0">If checkout is unavailable, use the enquiry form.</p>
-        </div>
+        <p style="margin:10px 0 0"><a class="btn btn-amber btn-sm" href="https://buy.stripe.com/00w6oA2lO8tvdwkaXwfYY04" data-featured-event-pay="1" data-track="event_feature_inquiry" data-track-plan="Featured Event">Feature this event — $299</a></p>
+        <p style="color:var(--muted);font-size:.8rem;margin:8px 0 0">After payment, submit the event name, URL, and dates on the <a href="events.html#submit-event" style="color:var(--accent)">events list</a>. The FEATURED label is shown only after review.</p>
       </div>
       <div class="card"><span class="emoji" aria-hidden="true">🏢</span><h3>Featured Exhibitor</h3><p>Raise your stand above the floor plan with a featured exhibitor card on the relevant event page.</p></div>
       <div class="card" id="hosted-webinar"><span class="emoji" aria-hidden="true">🎥</span><h3>Hosted Webinar</h3><p>Run a technical TransformerPath webinar — registration, moderation, hosting, recording and post-event replay. From $1,500 per engagement. Inquiry by email or the form below — not a live Stripe checkout.</p><p style="margin:10px 0 0"><a class="btn btn-amber btn-sm" href="mailto:hello@transformerpath.com?subject=Hosted%20Webinar%20inquiry" data-track="webinar_inquiry" data-track-plan="Hosted Webinar">Email to host a webinar →</a> <a href="webinars.html" style="font-size:.82rem;font-weight:700;color:var(--accent);margin-left:8px">See the webinar directory</a></p></div>
@@ -173,6 +169,11 @@
             </select>
           </div>
         </div>
+        <div class="row">
+          <div><label for="fld_event_name">Event name</label><input id="fld_event_name" type="text" name="event_name" placeholder="Event name"></div>
+          <div><label for="fld_event_url">Event URL</label><input id="fld_event_url" type="url" name="event_url" placeholder="https://"></div>
+        </div>
+        <div style="margin-bottom:16px"><label for="fld_event_dates">Dates</label><input id="fld_event_dates" type="text" name="event_dates" placeholder="1 Sep 2026 – 3 Sep 2026"></div>
         <div style="margin-bottom:16px"><label for="fld_message">Message</label><textarea id="fld_message" name="message" rows="4" placeholder="Tell us about your goals..."></textarea></div>
         <button class="btn btn-amber" type="submit" style="width:100%">Send Enquiry →</button>
         <div id="sError" style="display:none;margin-top:12px;padding:10px;background:rgba(239,68,68,.12);color:#ef4444;border:1px solid rgba(239,68,68,.3);border-radius:6px;font-size:0.9rem;text-align:center">Submission failed. Please try again or email us directly at contact@transformerpath.com.</div>
@@ -211,7 +212,6 @@
   </div>
 </footer>
 
-<script src="paid-checkout.js" defer></script>
 <script src="analytics.js?v=7" defer></script>
 <script src="tp-freshness.js?v=7" defer></script>
 <script src="tp-feedback.js?v=7" defer></script>

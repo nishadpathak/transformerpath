@@ -13,7 +13,8 @@ Set these on the Netlify site (Site → Environment variables). Server-only. Do 
 | `STRIPE_SECRET_KEY` | `functions/create-checkout.js`, `functions/verify-access.js`, `functions/entitle.js`. Test mode: a key that starts with `sk_test_`. |
 | `STRIPE_WEBHOOK_SECRET` | `functions/stripe-webhook.js` signature check. From `stripe listen` or the Dashboard endpoint. |
 | `STRIPE_PRICE_VERIFIED_MANUFACTURER` | One-time price id for Verified Manufacturer, 49900 cents USD. |
-| `STRIPE_PRICE_FEATURED_EVENT` | One-time price id for Featured Event, 29900 cents USD. |
+| `STRIPE_PRICE_FEATURED_EVENT` | One-time price id for Featured Event, 29900 cents USD. Used only if Checkout is created through `create-checkout`. The Pay button uses the Payment Link below. |
+| `STRIPE_PAYMENT_LINK_FEATURED_EVENT` | Optional. The `plink_…` id of the Featured Event Payment Link. When set, the webhook matches that id exactly. When unset, a $299 Payment Link session is the featured slot. |
 | `SITE_URL` | Absolute site origin for Checkout success and cancel URLs. Defaults to `https://transformerpath.com`. |
 | `SUPABASE_URL` | Service-role client in `functions/lib/supabase-server.js`. |
 | `SUPABASE_SECRET_KEY` | Service role key. `SUPABASE_SERVICE_ROLE_KEY` is accepted as an alias. |
@@ -38,11 +39,25 @@ stripe prices create --unit-amount 29900 --currency usd -d "product=prod_REPLACE
 
 Put the two price ids in `STRIPE_PRICE_VERIFIED_MANUFACTURER` and `STRIPE_PRICE_FEATURED_EVENT`.
 
-Checkout is `mode=payment` (one-time, not a subscription). Success URL:
+Checkout is `mode=payment` (one-time, not a subscription).
+
+Verified Manufacturer success URL:
 
 `/pricing.html?session_id={CHECKOUT_SESSION_ID}&product=verified_manufacturer`
 
-or `product=featured_event`. The host comes from `SITE_URL`.
+Featured Event Pay buttons use one constant, `FEATURED_EVENT_PAYMENT_LINK` in `lib/paid-listings.js`:
+
+`https://buy.stripe.com/00w6oA2lO8tvdwkaXwfYY04`
+
+That constant is the only copy of the URL in JavaScript. Event pages, `events.html`, and `pricing.html` point their Featured Event button at it.
+
+After payment, the buyer must land on the events list form and submit the event name, official URL, and dates. In the Stripe Dashboard, open this Payment Link → After payment → Redirect to:
+
+`https://transformerpath.com/events.html?paid=featured_event&session_id={CHECKOUT_SESSION_ID}#submit-event`
+
+`{CHECKOUT_SESSION_ID}` must stay as that placeholder. The host comes from `SITE_URL` when `create-checkout` builds the same path. The form is the existing `sponsor-enquiry` form (`#submit-event` on `events.html`, and the same event name, URL, and dates fields on `sponsor.html`).
+
+The Payment Link does not carry an event id. The webhook stores a pending slot with `event_id` empty until a reviewer connects the form to that payment. The public FEATURED label is still only the reviewed row in `data/paid-listings.json`.
 
 ## Webhook
 
@@ -56,7 +71,7 @@ stripe listen --forward-to localhost:8888/.netlify/functions/stripe-webhook
 
 `stripe listen` prints a webhook signing secret. Put that value in `STRIPE_WEBHOOK_SECRET` for local runs. The Dashboard endpoint has a different secret; use that one in production.
 
-Handled for these products: `checkout.session.completed`. The handler upserts `paid_listings` on `session_id` with status `paid_pending_verification`. Other event types return 200 so Stripe does not retry them. Engineer subscription, checkout, and refund handling is unchanged.
+Handled for these products: `checkout.session.completed`. The handler upserts `paid_listings` on `session_id` with status `paid_pending_verification`. A Featured Event Payment Link session matches when `metadata.product` is `featured_event`, when `success_url` contains `paid=featured_event`, when `payment_link` equals `STRIPE_PAYMENT_LINK_FEATURED_EVENT`, or — until that id is set — when the session is a Payment Link for 29900 USD cents and it is not an engineer checkout. The row stays `paid_pending_verification` with no event id. It does not render FEATURED. Other event types return 200 so Stripe does not retry them. Engineer subscription, checkout, and refund handling is unchanged. A $199 / $599 / $1,999 Payment Link still follows the engineer path and does not write `paid_listings`.
 
 Apply `sql/paid_listings.sql` in the Supabase SQL editor once. Row Level Security is on. There is no anon or authenticated policy. Only the service role can read and write.
 
@@ -99,7 +114,7 @@ Example row (do not invent a real company):
 ## Buttons
 
 - Company profile claim area, `list-company.html`, and `claim-profile.html` after submit: **Pay $499 — Get Verified**
-- Event pages, `sponsor.html`, and `pricing.html`: **Feature this event — $299**
+- Event pages, `events.html` (the list and submission form), `pricing.html`, and `sponsor.html`: **Feature this event — $299**, linking to `FEATURED_EVENT_PAYMENT_LINK`
 - `pricing.html` also has the $499 manufacturer entry
 
 ## Go-live checklist
@@ -107,13 +122,14 @@ Example row (do not invent a real company):
 1. Create the two live products and prices in Stripe live mode. Amounts stay 49900 and 29900 USD, mode payment.
 2. Replace the Netlify test values of `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_PRICE_VERIFIED_MANUFACTURER`, and `STRIPE_PRICE_FEATURED_EVENT` with the live values. Do not commit them.
 3. Point the live webhook at `https://transformerpath.com/.netlify/functions/stripe-webhook` for `checkout.session.completed`. Leave the existing engineer events subscribed if that endpoint already receives them.
-4. Run `sql/paid_listings.sql` on the production Supabase project if it is not applied yet.
-5. Set `RESEND_API_KEY`, `RESEND_FROM`, and `NOTIFY_TO`. Send one test-mode payment first and confirm both emails.
-6. Turn on Stripe successful-payment email receipts.
-7. Set `SITE_URL` to `https://transformerpath.com`.
-8. Pay once in test mode, confirm the Supabase row is `paid_pending_verification`, confirm no badge, then add a reviewed `verified` row and confirm the badge on the next deploy.
-9. Confirm a $199 engineer Payment Link still unlocks Learning and does not write `paid_listings`.
-10. Switch the site to the live keys only after steps 1–9.
+4. On the live Featured Event Payment Link, set After payment to `https://transformerpath.com/events.html?paid=featured_event&session_id={CHECKOUT_SESSION_ID}#submit-event`. If the Dashboard shows a `plink_` id, put it in `STRIPE_PAYMENT_LINK_FEATURED_EVENT`.
+5. Run `sql/paid_listings.sql` on the production Supabase project if it is not applied yet.
+6. Set `RESEND_API_KEY`, `RESEND_FROM`, and `NOTIFY_TO`. Send one test-mode payment first and confirm both emails.
+7. Turn on Stripe successful-payment email receipts.
+8. Set `SITE_URL` to `https://transformerpath.com`.
+9. Pay once in test mode, confirm the Supabase row is `paid_pending_verification`, confirm no badge, then add a reviewed `verified` row and confirm the badge on the next deploy.
+10. Confirm a $199 engineer Payment Link still unlocks Learning and does not write `paid_listings`.
+11. Switch the site to the live keys only after the steps above.
 
 ## Tests
 

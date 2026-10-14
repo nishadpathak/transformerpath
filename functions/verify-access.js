@@ -10,6 +10,7 @@
 
 const STRIPE_API = 'https://api.stripe.com/v1';
 const SK = (process.env.STRIPE_SECRET_KEY || '').trim();
+const { isFeaturedEventCheckout } = require('../lib/paid-listings');
 
 // Map the amount actually charged (in cents) to the plan tier. This mirrors the
 // three live Payment Links; the legacy $100 Learner link maps to learner too.
@@ -72,15 +73,16 @@ exports.handler = async (event) => {
     if (session.payment_status === 'paid') {
       // Manufacturer and event payments are not course entitlements. valid
       // stays false so course-gate does not grant a learner token.
-      const product = session.metadata && session.metadata.product;
-      if (product === 'verified_manufacturer' || product === 'featured_event') {
+      const metaProduct = session.metadata && session.metadata.product;
+      const featuredLink = isFeaturedEventCheckout(session);
+      if (metaProduct === 'verified_manufacturer' || featuredLink) {
         return {
           statusCode: 200,
           body: JSON.stringify({
             valid: false,
             paid: true,
             listing: 'paid_pending_verification',
-            product: product,
+            product: metaProduct === 'verified_manufacturer' ? 'verified_manufacturer' : 'featured_event',
             reason: 'listing_payment_not_course'
           }),
         };

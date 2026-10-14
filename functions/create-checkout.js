@@ -81,8 +81,12 @@ exports.handler = async function (event) {
   const secret = process.env.STRIPE_SECRET_KEY.trim();
   const price = process.env[spec.priceEnv].trim();
   const origin = siteOrigin();
-  const success = origin + '/pricing.html?session_id={CHECKOUT_SESSION_ID}&product=' + encodeURIComponent(product);
-  const cancel = origin + '/pricing.html?checkout=cancelled&product=' + encodeURIComponent(product);
+  const success = product === 'featured_event'
+    ? origin + paid.FEATURED_EVENT_SUCCESS_PATH
+    : origin + '/pricing.html?session_id={CHECKOUT_SESSION_ID}&product=' + encodeURIComponent(product);
+  const cancel = product === 'featured_event'
+    ? origin + '/events.html#submit-event'
+    : origin + '/pricing.html?checkout=cancelled&product=' + encodeURIComponent(product);
 
   const form = new URLSearchParams();
   form.set('mode', 'payment');

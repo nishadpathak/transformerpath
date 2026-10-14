@@ -12,6 +12,8 @@ const { dubaiToday, fmtDay, dateLine, nullText, allowsCalendar, badgeText } = re
 const { eventBadge } = require('./lib/provenance-badge');
 const { eventIcs, calendarIcs } = require('./lib/event-ics');
 const tpAff = require('./lib/travelpayouts');
+const paidListings = require('./lib/paid-listings');
+const PAID_LISTINGS = paidListings.load();
 
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
@@ -124,7 +126,15 @@ function jsonLd(ev) {
   return '<script type="application/ld+json">' + JSON.stringify(data) + '</script>';
 }
 
-function shell(title, desc, canonical, body, ld) {
+function shell(title, desc, canonical, body, ld, eventId) {
+  const badge = eventId ? paidListings.featuredEventHtml(eventId, PAID_LISTINGS) : '';
+  const withBadge = badge && body.indexOf('</h1>') >= 0 ? body.replace('</h1>', '</h1>' + badge) : (badge + body);
+  const pay = paidListings.featuredEventPayHtml({
+    eventId: eventId || '',
+    formHref: '../../events.html#submit-event',
+    className: 'btn btn-amber btn-sm',
+    style: 'margin:0 8px 8px 0'
+  });
   return '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
     '<title>' + esc(title) + '</title>' +
     '<meta name="description" content="' + esc(String(desc || '').slice(0, 160)) + '">' +
@@ -136,9 +146,10 @@ function shell(title, desc, canonical, body, ld) {
     '<link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">' +
     '<style>.c-wrap{max-width:900px;margin:0 auto;padding:44px 20px 90px}.c-wrap h1{font-size:1.8rem;color:var(--ink)}.c-wrap .lead{color:var(--muted)}.c-wrap h2{font-size:1.2rem;margin-top:22px}.evmeta{display:flex;flex-wrap:wrap;gap:8px 18px;color:var(--muted);font-size:.92rem}</style>' +
     (ld || '') +
-    '</head>\n<body>\n' + HEAD + '\n<main id="main" tabindex="-1" class="c-wrap">' + body +
+    '</head>\n<body>\n' + HEAD + '\n<main id="main" tabindex="-1" class="c-wrap">' + withBadge +
     '<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:24px">' +
     '<div style="font-size:.8rem;color:var(--muted);margin-bottom:12px">Exhibiting here? Feature your company on TransformerPath — from $399 per event.</div>' +
+    pay +
     '<a class="btn btn-amber" href="../../sponsor.html">Feature your company — $399 →</a></div>' +
     '<p style="font-size:.85rem;color:var(--muted);text-align:center;margin-top:12px"><a href="../../events.html">Events</a> · <a href="../../exhibitions.html">Exhibitions</a> · <a href="../../webinars.html">Webinars</a></p>' +
     '</main>\n' + FOOT + '\n<script src="../../analytics.js?v=2" defer></script>\n</body>\n</html>';
@@ -194,7 +205,8 @@ Object.keys(groups).forEach((slug) => {
     nxt ? (nxt.description || seriesName) : cta,
     'https://transformerpath.com/events/' + slug + '/',
     body2,
-    nxt ? jsonLd(nxt) : ''
+    nxt ? jsonLd(nxt) : '',
+    slug
   ));
 
   list.forEach((ev) => {
@@ -226,7 +238,8 @@ Object.keys(groups).forEach((slug) => {
       ev.description || ev.name,
       'https://transformerpath.com/events/' + ev.id + '/',
       edBody,
-      pastEd ? '' : jsonLd(ev)
+      pastEd ? '' : jsonLd(ev),
+      ev.id
     ));
   });
 });
