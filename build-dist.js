@@ -27,13 +27,16 @@
  * function and stays reachable through the gated endpoint — but is no longer
  * served as a static file. That closes the 210 KB paid-content exposure.
  *
- * This runs LAST, after every generator. It only copies; no builder changes.
+ * This runs LAST, after every generator. It copies, then stamps the AdSense
+ * loader (and at most one in-content slot) into every published HTML page.
+ * Source files stay untouched so the next generator run cannot drop the tag.
  *
  * Run: node build-dist.js
  */
 'use strict';
 const fs = require('fs');
 const path = require('path');
+const { stampHtml } = require('./adsense-inject');
 
 const DIST = 'dist';
 
@@ -96,6 +99,7 @@ const FORBIDDEN_PATTERNS = [
   /^stamp-intel\.js$/, /^bump-assets\.js$/, /^build_ssr\.js$/, /^build\.py$/,
   /^data\/commerce-intel\.json$/,
   /^data\/engineer-track-paid\.json$/,
+  /^data\/backup-pre-sprint\//,
 ];
 
 /* iCloud Drive / macOS conflict copies ("index 2.html", "usa 2/"). The site folder
@@ -122,6 +126,8 @@ function copyDir(dir) {
     // Never copy internal prospect intelligence / discovery-ops artifacts to the public distribution
     if (p === 'data/commerce-intel.json' || p === 'data/engineer-track-paid.json') continue;
     if (p === 'data/gcc-sep-2026-discovery-input.json' || p === 'data/gcc-coverage-report.json') continue;
+    // Pre-sprint snapshot of data/ — never copy the folder or anything under it
+    if (p === 'data/backup-pre-sprint') continue;
     // Tracked ops schemas (e.g. data/*.sql) must stay in git but never ship on the CDN
     if (/\.sql$/i.test(e.name)) continue;
     if (e.isDirectory()) n += copyDir(p);
@@ -156,6 +162,35 @@ for (const d of DIRS) count += copyDir(d);
 for (const f of FILES_FROM_MIXED_DIRS) {
   if (fs.existsSync(f)) { copyFile(f, f); count++; }
   else console.warn('  ! allowlisted but missing: ' + f);
+}
+
+// 5. AdSense loader on every published page, plus one collapsed in-content
+//    slot on knowledge articles, the intel list and the directory lists.
+let stamped = 0;
+let stampErrors = 0;
+(function stampWalk(dir) {
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    const p = path.join(dir, e.name);
+    if (e.isDirectory()) { stampWalk(p); continue; }
+    if (!e.name.endsWith('.html')) continue;
+    const rel = path.relative(DIST, p);
+    let html;
+    try { html = fs.readFileSync(p, 'utf8'); }
+    catch (err) { console.error('  ! unreadable ' + rel); stampErrors++; continue; }
+    let next;
+    try { next = stampHtml(html, rel); }
+    catch (err) {
+      console.error('  ! adsense stamp failed for ' + rel + ': ' + err.message);
+      stampErrors++;
+      continue;
+    }
+    if (next !== html) { fs.writeFileSync(p, next); stamped++; }
+  }
+})(DIST);
+console.log('AdSense stamp: ' + stamped + ' HTML page(s) updated.');
+if (stampErrors) {
+  console.error('DIST GATE FAILED — AdSense stamp could not update ' + stampErrors + ' page(s).');
+  process.exit(1);
 }
 
 // ── Verification gate ─────────────────────────────────────────────────────
