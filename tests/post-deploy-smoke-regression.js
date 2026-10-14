@@ -9,6 +9,7 @@ const http = require('http');
 const path = require('path');
 const { spawn } = require('child_process');
 const smoke = require('../scripts/smoke-release');
+const publish = require('../scripts/refuse-stale-production-publish');
 
 const assert = (c, m) => { if (!c) { console.error('FAIL', m); process.exit(1); } console.log('  ✓', m); };
 
@@ -27,6 +28,13 @@ assert(smoke.mainLagVerdict(live, main, '2026-10-14T12:29:44Z', now).ok, 'a few 
 assert(!smoke.mainLagVerdict(live, main, '2026-10-14T12:00:00Z', now).ok, 'more than 15 minutes behind main fails');
 assert(!smoke.mainLagVerdict(live, main, '2026-10-14T12:17:59Z', now).ok, '15 minutes plus a second fails');
 assert(smoke.mainLagVerdict(live, main, '2026-10-14T12:18:00Z', now).ok, 'exactly 15 minutes is still inside the window');
+const OLD = 'fcd838a9e48eb8a1cbd81458e9dc7ade79d0eb5b';
+const NEW = '6d3afe9643dcb128da100cd74f89335fdfc48c54';
+assert(publish.shouldPublish('deploy-preview', OLD, NEW).publish, 'preview builds are not blocked when main has moved');
+assert(publish.shouldPublish('production', NEW, NEW).publish, 'production publishes when COMMIT_REF is main');
+assert(!publish.shouldPublish('production', OLD, NEW).publish, 'production refuses a commit main has already passed');
+assert(!publish.shouldPublish('production', '', NEW).publish, 'production refuses a missing COMMIT_REF');
+assert(publish.shouldPublish('production', NEW, '').publish, 'an unreadable main SHA does not freeze the deploy');
 
 const plugin = fs.readFileSync('plugins/netlify-plugin-post-deploy-smoke/index.js', 'utf8');
 const manifest = fs.readFileSync('plugins/netlify-plugin-post-deploy-smoke/manifest.yml', 'utf8');
@@ -35,8 +43,11 @@ assert(/context !== 'production'/.test(plugin), 'plugin smokes production deploy
 assert(/netlify-plugin-post-deploy-smoke/.test(manifest), 'plugin manifest is named');
 const workflow = fs.readFileSync('.github/workflows/post-deploy-smoke.yml', 'utf8');
 assert(/deployment_status:/.test(workflow), 'GitHub Action listens for deployment_status');
+assert(/transformerpath\/production/.test(workflow), 'the action posts a production commit status');
+assert(/statuses: write/.test(workflow), 'the action can write commit statuses');
 const toml = fs.readFileSync('netlify.toml', 'utf8');
 assert(/package = "\.\/plugins\/netlify-plugin-post-deploy-smoke"/.test(toml), 'netlify.toml installs the local plugin');
+assert(/node scripts\/refuse-stale-production-publish\.js/.test(toml), 'the build command refuses a stale production publish');
 
 const SHA = '0123456789abcdef0123456789abcdef01234567';
 const BUILD = '2026-10-14T12:00:00.000Z';
@@ -48,9 +59,6 @@ const prov = {
 };
 const build = {
   commit: SHA,
-  commit_id: SHA,
-  commit_source: 'COMMIT_REF',
-  main_head_at_build: SHA,
   build_time: BUILD,
   data_version: VERSION,
   latest_intel_date: '2026-10-13',

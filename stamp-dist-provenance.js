@@ -31,9 +31,6 @@ if (!prov.latest_intel_date || typeof prov.manufacturer_count !== 'number') {
  * date and manufacturer count the HTML stamps carry. */
 const buildJson = {
   commit: prov.build_commit,
-  commit_id: prov.commit_id || prov.build_commit,
-  commit_source: prov.commit_source || '',
-  main_head_at_build: prov.main_head_at_build || '',
   build_time: prov.build_at,
   data_version: prov.data_version,
   latest_intel_date: prov.latest_intel_date,

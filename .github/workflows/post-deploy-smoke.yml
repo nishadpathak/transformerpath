@@ -5,6 +5,10 @@ on:
     branches: [main]
   deployment_status:
 
+permissions:
+  contents: read
+  statuses: write
+
 jobs:
   smoke:
     if: >-
@@ -16,8 +20,35 @@ jobs:
     timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
-      - name: Wait for production and smoke the release
+      - name: Record that the production deploy is in progress
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_SHA: ${{ github.event.deployment.sha || github.sha }}
         run: |
-          SHA="${{ github.event.deployment.sha }}"
-          if [ -z "$SHA" ]; then SHA="${{ github.sha }}"; fi
-          node scripts/smoke-release.js https://transformerpath.com "$SHA" --wait
+          gh api --method POST "repos/${{ github.repository }}/statuses/${RELEASE_SHA}" \
+            -f state=pending \
+            -f context='transformerpath/production' \
+            -f description='Waiting for Netlify to publish this commit' \
+            -f target_url='https://transformerpath.com/build.json'
+      - name: Wait for production and smoke the release
+        env:
+          RELEASE_SHA: ${{ github.event.deployment.sha || github.sha }}
+        run: node scripts/smoke-release.js https://transformerpath.com "$RELEASE_SHA" --wait
+      - name: Record the production deploy result
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_SHA: ${{ github.event.deployment.sha || github.sha }}
+        run: |
+          if [ "${{ job.status }}" = "success" ]; then
+            STATE=success
+            DESC='Production is serving this commit'
+          else
+            STATE=failure
+            DESC='Production is not serving this commit'
+          fi
+          gh api --method POST "repos/${{ github.repository }}/statuses/${RELEASE_SHA}" \
+            -f state="$STATE" \
+            -f context='transformerpath/production' \
+            -f description="$DESC" \
+            -f target_url='https://transformerpath.com/build.json'

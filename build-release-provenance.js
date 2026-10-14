@@ -19,46 +19,12 @@ function readJson(p, fb) {
   try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch (e) { return fb; }
 }
 
-function gitOut(args, timeoutMs) {
+function gitOut(args) {
   try {
-    return execSync('git ' + args, {
-      encoding: 'utf8',
-      stdio: ['ignore', 'pipe', 'pipe'],
-      timeout: timeoutMs || 15000
-    }).trim();
+    return execSync('git ' + args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
   } catch (e) {
     return '';
   }
-}
-
-function shaEnv(name) {
-  const v = String(process.env[name] || '').trim();
-  return /^[0-9a-f]{7,40}$/i.test(v) ? v.slice(0, 40) : '';
-}
-
-/* The SHA Netlify checked out. COMMIT_ID is preferred when the build image
- * sets it; COMMIT_REF is Netlify's documented name for that same commit.
- * git HEAD is only the local fallback, so a later main push cannot be
- * mistaken for the commit this build produced. */
-function builtCommit(state) {
-  const commitId = shaEnv('COMMIT_ID');
-  const commitRef = shaEnv('COMMIT_REF');
-  if (commitId && commitRef && commitId !== commitRef && !commitRef.startsWith(commitId) && !commitId.startsWith(commitRef)) {
-    return { sha: '', source: 'conflict', commitId: commitId, commitRef: commitRef };
-  }
-  if (commitId) return { sha: commitId, source: 'COMMIT_ID', commitId: commitId, commitRef: commitRef };
-  if (commitRef) return { sha: commitRef, source: 'COMMIT_REF', commitId: commitRef, commitRef: commitRef };
-  const headSha = state && state.head ? String(state.head).slice(0, 40) : '';
-  if (/^[0-9a-f]{7,40}$/i.test(headSha)) {
-    return { sha: headSha, source: 'git_head', commitId: headSha, commitRef: commitRef };
-  }
-  return { sha: 'unknown', source: 'unknown', commitId: '', commitRef: commitRef };
-}
-
-function mainHeadAtBuild() {
-  gitOut('fetch --no-tags origin main', 20000);
-  const sha = gitOut('rev-parse origin/main') || gitOut('rev-parse refs/remotes/origin/main');
-  return /^[0-9a-f]{7,40}$/i.test(sha) ? sha.slice(0, 40) : '';
 }
 
 function readGitState() {
@@ -75,15 +41,21 @@ function readGitState() {
   };
 }
 
+function gitSha(state) {
+  const env =
+    process.env.COMMIT_REF ||
+    process.env.GITHUB_SHA ||
+    process.env.HEAD ||
+    process.env.GIT_COMMIT ||
+    '';
+  if (env && /^[0-9a-f]{7,40}$/i.test(env.trim())) return env.trim().slice(0, 40);
+  if (state && state.head) return state.head.slice(0, 40);
+  return 'unknown';
+}
+
 const NOW = new Date().toISOString();
 const gitState = readGitState();
-const built = builtCommit(gitState);
-const commit = built.sha;
-const mainHead = mainHeadAtBuild();
-if (built.source === 'conflict') {
-  console.error('RELEASE PROVENANCE: COMMIT_ID ' + built.commitId + ' does not match COMMIT_REF ' + built.commitRef);
-  process.exit(1);
-}
+const commit = gitSha(gitState);
 const context = process.env.CONTEXT || '';
 const commitRef = (process.env.COMMIT_REF || '').trim();
 const head = (gitState.head || '').trim();
@@ -141,9 +113,6 @@ const KEY_SURFACES = [
 const out = {
   $schema: 'https://transformerpath.com/build-provenance.schema.json',
   build_commit: commit,
-  commit_id: built.commitId || commit,
-  commit_source: built.source,
-  main_head_at_build: mainHead,
   build_at: NOW,
   data_version: data_version,
   latest_intel_date: latestIntelDate,
@@ -156,8 +125,7 @@ const out = {
     CONTEXT: context,
     DEPLOY_ID: process.env.DEPLOY_ID || '',
     BUILD_ID: process.env.BUILD_ID || '',
-    COMMIT_REF: commitRef,
-    COMMIT_ID: String(process.env.COMMIT_ID || '').trim()
+    COMMIT_REF: commitRef
   },
   git_dirty: !!gitState.git_dirty,
   git_head: head,

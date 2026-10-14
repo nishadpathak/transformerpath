@@ -216,8 +216,8 @@ async function main() {
   record('build.json commit', !!(build && build.commit === expected), build && build.commit);
   record(
     'build.json matches provenance',
-    !!(build && build.commit === prov.build_commit && build.commit_id === build.commit && build.build_time === prov.build_at && build.data_version === prov.data_version && build.latest_intel_date && typeof build.manufacturer_count === 'number' && typeof build.main_head_at_build === 'string'),
-    build ? (build.commit_id + ' source=' + (build.commit_source || '') + ' main_at_build=' + (build.main_head_at_build || '') + ' intel=' + build.latest_intel_date + ' makers=' + build.manufacturer_count) : 'missing'
+    !!(build && build.commit === prov.build_commit && build.build_time === prov.build_at && build.data_version === prov.data_version && build.latest_intel_date && typeof build.manufacturer_count === 'number'),
+    build ? ('intel=' + build.latest_intel_date + ' makers=' + build.manufacturer_count) : 'missing'
   );
   if (!build || build.commit !== expected) {
     console.error('smoke stopped: /build.json is not this release');

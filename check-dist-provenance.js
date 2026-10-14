@@ -106,10 +106,6 @@ if (!buildJson) {
   Object.keys(expected).forEach(function (k) {
     if (buildJson[k] !== expected[k]) errors.push('build.json ' + k + ' mismatch');
   });
-  if (buildJson.commit_id !== prov.build_commit) errors.push('build.json commit_id is not the built commit');
-  if ((buildJson.main_head_at_build || '') !== (prov.main_head_at_build || '')) {
-    errors.push('build.json main_head_at_build mismatch');
-  }
   COMPARE_PAGES.forEach(function (rel) {
     const file = path.join(DIST, rel);
     if (!fs.existsSync(file)) {
