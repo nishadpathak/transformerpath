@@ -540,8 +540,11 @@ function factoriesFor(m) {
       || (m.name === 'UAE' && /united arab emirates|^uae$/.test(ci(c)));
   };
   const fromCanon = FACILITIES.filter(function (f) {
-    if (!f.public_count) return false;
-    return matchCountry(f.country);
+    if (!matchCountry(f.country)) return false;
+    // public_count is the existing sourced-plant flag. A facility fetched from
+    // an official or company page is also counted when status is SOURCED.
+    if (f.public_count) return true;
+    return f.status === 'SOURCED' && f.source_url && f.evidence_quote;
   }).map(function (f) {
     return {
       name: f.facility_name,
@@ -549,7 +552,9 @@ function factoriesFor(m) {
       country: f.country,
       products: (f.capabilities && f.capabilities.transformer_types) || [],
       facility_id: f.id,
-      produces: (f.capabilities && f.capabilities.produces) || f.produces || ''
+      produces: (f.capabilities && f.capabilities.produces) || f.produces || '',
+      source_url: f.source_url || '',
+      source_type: f.source_type || ''
     };
   });
   if (fromCanon.length) return fromCanon;
@@ -614,18 +619,20 @@ function marketPage(m) {
   const localSuppliers = suppliersFor(m);
 
   const facsHtml = facs.length ? (
-    '<div class="tbl-responsive"><table style="width:100%;border-collapse:collapse;margin:10px 0;font-size:.88rem"><thead><tr><th style="text-align:left;padding:8px 10px;border-bottom:2px solid var(--border);color:var(--muted)">Plant / Facility</th><th style="text-align:left;padding:8px 10px;border-bottom:2px solid var(--border);color:var(--muted)">City</th><th style="text-align:left;padding:8px 10px;border-bottom:2px solid var(--border);color:var(--muted)">Products</th><th style="text-align:left;padding:8px 10px;border-bottom:2px solid var(--border);color:var(--muted)">Facility ID</th></tr></thead><tbody>' +
+    '<div class="tbl-responsive"><table style="width:100%;border-collapse:collapse;margin:10px 0;font-size:.88rem"><thead><tr><th style="text-align:left;padding:8px 10px;border-bottom:2px solid var(--border);color:var(--muted)">Plant / Facility</th><th style="text-align:left;padding:8px 10px;border-bottom:2px solid var(--border);color:var(--muted)">City</th><th style="text-align:left;padding:8px 10px;border-bottom:2px solid var(--border);color:var(--muted)">Products</th><th style="text-align:left;padding:8px 10px;border-bottom:2px solid var(--border);color:var(--muted)">Source</th></tr></thead><tbody>' +
     facs.slice(0, 10).map(function (f) {
       const prods = (f.products || []).join(', ') || '—';
-      const fid = f.facility_id ? '<span style="font-family:monospace;font-size:.74rem;color:var(--muted)">' + esc(f.facility_id) + '</span>' : '—';
-      return '<tr><td style="padding:8px 10px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text)">' + esc(f.name) + '</td><td style="padding:8px 10px;border-bottom:1px solid var(--border);color:var(--muted)">' + esc(f.city || '—') + '</td><td style="padding:8px 10px;border-bottom:1px solid var(--border)">' + esc(prods) + '</td><td style="padding:8px 10px;border-bottom:1px solid var(--border)">' + fid + '</td></tr>';
+      const src = f.source_url
+        ? '<a href="' + esc(f.source_url) + '" target="_blank" rel="noopener" style="color:var(--accent)">' + esc(f.source_type || 'source') + '</a>'
+        : '—';
+      return '<tr data-sourced-plant="1"><td style="padding:8px 10px;border-bottom:1px solid var(--border);font-weight:600;color:var(--text)">' + esc(f.name) + '</td><td style="padding:8px 10px;border-bottom:1px solid var(--border);color:var(--muted)">' + esc(f.city || '—') + '</td><td style="padding:8px 10px;border-bottom:1px solid var(--border)">' + esc(prods) + '</td><td style="padding:8px 10px;border-bottom:1px solid var(--border)">' + src + '</td></tr>';
     }).join('') +
     '</tbody></table></div>' + (facs.length > 10 ? '<p style="color:var(--muted);font-size:.8rem">+' + (facs.length - 10) + ' more sourced plant records in this market.</p>' : '')
   ) : '<p style="color:var(--muted);font-size:.85rem">No independent plant sites indexed yet.</p>';
 
   const research = researchFor(m);
   const researchHtml = research.length ? (
-    '<p style="font-size:.85rem;color:var(--muted)">Directory names queued for plant research. Every row is <b>TO_RESEARCH</b>. None are marked SOURCED.</p>' +
+    '<p style="font-size:.85rem;color:var(--muted)">Directory names still queued. Every row below is <b>TO_RESEARCH</b>. Plants with a fetched official or company page are listed above and are not in this queue.</p>' +
     '<ul>' + research.map(function (t) {
       return '<li style="margin:6px 0" data-research-status="TO_RESEARCH"><b style="color:var(--text)">' + esc(t.company_name) + '</b> <span style="color:var(--muted)">· ' + esc(t.city || t.site || '') + ' · ' + esc(t.status) + '</span></li>';
     }).join('') + '</ul>'

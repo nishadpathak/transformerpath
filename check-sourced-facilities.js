@@ -54,16 +54,21 @@ const ksa = (man.find(function (g) { return g.country === 'Saudi Arabia'; }) || 
 const uae = (man.find(function (g) { return g.country === 'UAE'; }) || {}).makers || [];
 
 if (!Array.isArray(queue.targets) || !queue.targets.length) fail('research queue empty');
-if (queue.sourced_count !== 0) fail('research queue sourced_count must be 0');
 if (queue.count !== queue.targets.length) fail('queue count does not match targets');
 
 const names = {};
+let queueSourced = 0;
 queue.targets.forEach(function (t) {
-  if (!t || t.status !== 'TO_RESEARCH') fail((t && t.target_id) + ' status must be TO_RESEARCH');
-  if (t && t.status === 'SOURCED') fail(t.target_id + ' must not be SOURCED');
+  if (!t) { fail('empty queue target'); return; }
+  if (t.status !== 'TO_RESEARCH' && t.status !== 'SOURCED') fail(t.target_id + ' status must be TO_RESEARCH or SOURCED');
+  if (t.status === 'SOURCED') {
+    queueSourced++;
+    asSourced(t);
+  }
   if (t.company_id && !companyIds[t.company_id]) fail(t.target_id + ' company_id not in companies.json');
   names[(t.company_name || '').toLowerCase()] = t;
 });
+if (queue.sourced_count !== queueSourced) fail('research queue sourced_count ' + queue.sourced_count + ' != SOURCED targets ' + queueSourced);
 
 ['Emirates Transformer & Switchgear (ETS)', 'Eurogulf Transformers', 'Federal Power Transformers LLC', 'Crux Transformers', 'Tesar Gulf'].forEach(function (n) {
   if (!names[n.toLowerCase()]) fail('missing named research target ' + n);
@@ -80,4 +85,5 @@ if (failed) {
   console.error('SOURCED FACILITY GATE FAILED (' + failed + ')');
   process.exit(1);
 }
-console.log('SOURCED FACILITY GATE OK — facilities SOURCED=' + sourced + ', research queue TO_RESEARCH=' + queue.targets.length + ', sourced_count=' + queue.sourced_count);
+const queued = queue.targets.filter(function (t) { return t && t.status === 'TO_RESEARCH'; }).length;
+console.log('SOURCED FACILITY GATE OK — facilities SOURCED=' + sourced + ', research queue TO_RESEARCH=' + queued + ', sourced_count=' + queue.sourced_count);
