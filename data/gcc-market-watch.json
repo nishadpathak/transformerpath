@@ -1,6 +1,6 @@
 {
   "$schema": "https://transformerpath.com/gcc-market-watch.schema.json",
-  "generated": "2026-10-14T11:45:54.381Z",
+  "generated": "2026-10-14T11:52:10.154Z",
   "purpose": "Internal GCC coverage matrix. No stories ≠ discovery succeeded.",
   "columns": [
     "COUNTRY",
@@ -97,14 +97,14 @@
       "last_check": "2026-10-14",
       "coverage_status": "NO_QUALIFYING_ACTIVITY_FOUND",
       "note": "Zero qualifying September transformer-supply / station-EPC opportunities under defined scope. Valid. Do not fabricate.",
-      "adapter_live_count": 1,
+      "adapter_live_count": 0,
       "internal_coverage_fact": true
     }
   ],
   "freshness": {
-    "statement": "5/6+ P0 portal probes live this build — at least one official list returned transformer vocabulary",
+    "statement": "4/6+ P0 portal probes live this build — at least one official list returned transformer vocabulary",
     "markets_registered": 6,
-    "markets_adapter_live": 5,
+    "markets_adapter_live": 4,
     "markets_with_validated_candidates": 6,
     "latest_source_checked_at": "2026-10-14",
     "latest_confirmed_event_date": "2026-09-25",
@@ -112,7 +112,7 @@
     "honesty": "Do NOT declare DATA CURRENT because the build ran today. Freshness depends on source coverage + source_checked_at + validated newest record.",
     "adapter_probe": {
       "probed": 13,
-      "live": 5,
+      "live": 4,
       "honesty": "live = HTTP reachable + transformer vocabulary observed. Gated portals are not counted as live adapters."
     }
   }
