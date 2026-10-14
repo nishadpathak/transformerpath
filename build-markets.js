@@ -13,6 +13,7 @@
  */
 'use strict';
 const fs = require('fs');
+const { recordOnMarket } = require('./lib/market-country');
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
@@ -493,10 +494,8 @@ function intelFor(m) {
 // Business-intelligence activity for a market: typed company developments and
 // structured projects that involve this country/region. Only sourced entries.
 function biFor(m) {
-  // Project lists filter on project_country only.
-  const projects = BI_PROJECTS.filter(function (p) {
-    return sameMarketCountry(p.project_country, m);
-  });
+  // Projects stay on the project or delivery country. A title keyword is not a country.
+  const projects = BI_PROJECTS.filter(function (p) { return recordOnMarket(p, m); });
   // Typed company events for companies headquartered/operating in this market.
   const events = [];
   Object.keys(BI_EVENTS).forEach(function (co) {
@@ -509,21 +508,12 @@ function biFor(m) {
   return { projects: projects, events: events };
 }
 
-function listingCountry(rec) {
-  if (!rec || rec.project_country == null || String(rec.project_country).trim() === '') return null;
-  return rec.project_country;
-}
 function tendersFor(m) {
-  // Market lists filter on project_country only. Keyword matching is not an OR.
-  return TENDERS.filter(function (t) {
-    return t && sameMarketCountry(listingCountry(t), m);
-  }).slice(0, 6);
+  return TENDERS.filter(function (t) { return recordOnMarket(t, m); }).slice(0, 6);
 }
 
 function awardsFor(m) {
-  return AWARDS.filter(function (a) {
-    return a && sameMarketCountry(listingCountry(a), m);
-  }).slice(0, 6);
+  return AWARDS.filter(function (a) { return recordOnMarket(a, m); }).slice(0, 6);
 }
 
 const FACILITIES = (() => {

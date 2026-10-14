@@ -278,12 +278,10 @@ const inputPath = 'data/gcc-sep-2026-discovery-input.json';
 if (fs.existsSync(inputPath)) {
   let inputText = fs.readFileSync(inputPath, 'utf8');
   publishedIds.forEach(function (id) {
+    // Stay inside this candidate. A greedy span was flipping the next row's
+    // published_to_intel when this row was already true.
     const escaped = id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    // Stay inside this candidate object. A cross-object match would flip the
-    // next held row when this id is already published_to_intel true.
-    const re = new RegExp(
-      '("candidate_id"\\s*:\\s*"' + escaped + '"(?:(?!"candidate_id")[\\s\\S])*?"published_to_intel"\\s*:\\s*)false'
-    );
+    const re = new RegExp('("candidate_id"\\s*:\\s*"' + escaped + '"(?:(?!"candidate_id")[\\s\\S])*?"published_to_intel"\\s*:\\s*)false');
     inputText = inputText.replace(re, '$1true');
   });
   fs.writeFileSync(inputPath, inputText);
