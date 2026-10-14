@@ -21,6 +21,7 @@
  */
 'use strict';
 const fs = require('fs');
+const { dateFromSrcUtc } = require('./lib/src-date');
 const INTEL = JSON.parse(fs.readFileSync('data/intel.json', 'utf8'));
 const ITEMS = Object.values(INTEL).flatMap(function (r) { return (r.items || []); });
 
@@ -62,12 +63,14 @@ function matches(item, kws) {
 const out = [];
 Object.entries(MAP).forEach(function (e) {
   const name = e[0]; const kws = e[1];
-  const hits = ITEMS.filter(function (it) { return matches(it, kws); }).slice(0, 5);
+  const hits = ITEMS.filter(function (it) { return matches(it, kws); }).sort(function (a, b) {
+    return dateFromSrcUtc(b.src, b.date_iso).localeCompare(dateFromSrcUtc(a.src, a.date_iso));
+  }).slice(0, 5);
   if (!hits.length) return;
   out.push({
     name: name,
     developments: hits.map(function (it) {
-      return { title: it.title, src: it.src, url: it.url, value: it.value || '' };
+      return { title: it.title, src: it.src, url: it.url, value: it.value || '', date_iso: it.date_iso || '' };
     }),
     source: 'TransformerPath Daily Intel',
     lastVerified: '2026-08-28',

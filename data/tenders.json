@@ -4,16 +4,17 @@
   "updated": "2026-09-25",
   "stats": {
     "generated_at": "2026-09-25T09:22:26.985Z",
-    "total": 151,
+    "total": 154,
     "by_status": {
       "OPEN": 22,
+      "CLOSING_SOON": 1,
       "EXPECTED": 68,
       "EVALUATION": 3,
       "AWARDED": 56,
-      "CLOSED": 2
+      "CLOSED": 4
     },
     "by_region": {
-      "Middle East": 27,
+      "Middle East": 30,
       "Europe": 33,
       "Africa": 10,
       "Latin America": 13,
@@ -23,9 +24,9 @@
       "Other": 6
     },
     "countries": 45,
-    "confirmed_scope": 25,
+    "confirmed_scope": 27,
     "by_pipeline_of_projects": 24,
-    "source_verified": 149
+    "source_verified": 152
   },
   "tenders": [
     {
@@ -786,6 +787,54 @@
       "statusGroup": "Open",
       "deadline": "",
       "last_verified": "2026-09-25"
+    },
+    {
+      "title": "DEWA — Installation, testing and commissioning of distribution substations and kiosks (incl. disconnection/recovery/replacement of equipment)",
+      "full_title": "DEWA — Installation, testing and commissioning of distribution substations and kiosks (incl. disconnection/recovery/replacement of equipment)",
+      "buyer": "Dubai Electricity & Water Authority (DEWA)",
+      "utility": "Dubai Electricity & Water Authority (DEWA)",
+      "epc": "",
+      "country": "United Arab Emirates",
+      "region": "Middle East",
+      "project_slug": "",
+      "transformer_scope": "CONFIRMED",
+      "voltage": "",
+      "quantity": "",
+      "primary_voltage": "",
+      "secondary_voltage": "",
+      "rating": "",
+      "standard": "",
+      "delivery_requirement": "",
+      "qualification_requirement": "",
+      "official_procurement_url": "https://www.dewa.gov.ae/en/supplier/services/list-of-tender-documents",
+      "source": "dewa open tenders · 24 Sep 2026 [en]",
+      "source_urls": [
+        "https://www.dewa.gov.ae/en/supplier/services/list-of-tender-documents"
+      ],
+      "source_verified": true,
+      "expected_raw": "2026-10-27",
+      "deadline_raw": "2026-10-27",
+      "stage": "tendering",
+      "cls": "PIPELINE",
+      "procurement_id": "2122600155",
+      "status_events": [
+        {
+          "type": "floated",
+          "date": "2026-09-24",
+          "source_url": "https://www.dewa.gov.ae/en/supplier/services/list-of-tender-documents"
+        },
+        {
+          "type": "submission_deadline",
+          "date": "2026-10-27",
+          "source_url": "https://www.dewa.gov.ae/en/supplier/services/list-of-tender-documents"
+        }
+      ],
+      "tender_id": "T-dewa-installation-testing-and-co",
+      "status": "CLOSING_SOON",
+      "statusLabel": "Closing soon",
+      "statusGroup": "Open",
+      "deadline": "2026-10-27",
+      "last_verified": "2026-10-14"
     },
     {
       "title": "Iraq Ministry of Electricity to procure 4,026 locally-made transformers",
@@ -5229,6 +5278,59 @@
       "last_verified": "2026-09-25"
     },
     {
+      "title": "EWA Central Stores — 11/0.415 kV 1,000 kVA mineral-oil-filled package substation with distribution board",
+      "full_title": "EWA Central Stores — 11/0.415 kV 1,000 kVA mineral-oil-filled package substation with distribution board",
+      "buyer": "Electricity & Water Authority (EWA) — Central Stores Directorate",
+      "utility": "Electricity & Water Authority (EWA) — Central Stores Directorate",
+      "epc": "",
+      "country": "Bahrain",
+      "region": "Middle East",
+      "project_slug": "",
+      "transformer_scope": "UNKNOWN",
+      "voltage": "",
+      "quantity": "1000 kVA · 11/0.415 kV",
+      "primary_voltage": "",
+      "secondary_voltage": "",
+      "rating": "",
+      "standard": "",
+      "delivery_requirement": "",
+      "qualification_requirement": "",
+      "official_procurement_url": "https://www.tenderboard.gov.bh/",
+      "source": "bahrain tender board · 28 Aug 2026 [en]",
+      "source_urls": [
+        "https://www.tenderboard.gov.bh/"
+      ],
+      "source_verified": true,
+      "expected_raw": "2026-09-20",
+      "deadline_raw": "2026-09-20",
+      "stage": "tendering",
+      "cls": "CONFIRMED",
+      "procurement_id": "389/2026/BTB",
+      "status_events": [
+        {
+          "type": "floated",
+          "date": "2026-08-27",
+          "source_url": "https://www.tenderboard.gov.bh/"
+        },
+        {
+          "type": "published",
+          "date": "2026-08-28",
+          "source_url": "https://www.tenderboard.gov.bh/"
+        },
+        {
+          "type": "submission_deadline",
+          "date": "2026-09-20",
+          "source_url": "https://www.tenderboard.gov.bh/"
+        }
+      ],
+      "tender_id": "T-ewa-central-stores-11-0-415-kv-1",
+      "status": "CLOSED",
+      "statusLabel": "Closed",
+      "statusGroup": "Closed",
+      "deadline": "2026-09-20",
+      "last_verified": "2026-10-14"
+    },
+    {
       "title": "KAHRAMAA 2026 transmission expansion EPC",
       "full_title": "KAHRAMAA 2026 transmission expansion EPC (S1/S2/S5 + cables C1/C2)",
       "buyer": "Kahramaa",
@@ -5261,6 +5363,54 @@
       "statusGroup": "Closed",
       "deadline": "2026",
       "last_verified": "2026-09-25"
+    },
+    {
+      "title": "Saudi Water Authority — 2.5 MVA 6.6/0.4 kV oil-filled transformer for Rabigh Production System",
+      "full_title": "Saudi Water Authority — 2.5 MVA 6.6/0.4 kV oil-filled transformer for Rabigh Production System",
+      "buyer": "Saudi Water Authority",
+      "utility": "Saudi Water Authority",
+      "epc": "",
+      "country": "Saudi Arabia",
+      "region": "Middle East",
+      "project_slug": "",
+      "transformer_scope": "CONFIRMED",
+      "voltage": "",
+      "quantity": "2.5 MVA · 6.6/0.4 kV",
+      "primary_voltage": "",
+      "secondary_voltage": "",
+      "rating": "",
+      "standard": "",
+      "delivery_requirement": "",
+      "qualification_requirement": "",
+      "official_procurement_url": "https://tenders.etimad.sa/Tender/DetailsForVisitor?STenderId=YYulueYsiIAkLL3QtkpaYQ==",
+      "source": "etimad · 2 Sep 2026 [en]",
+      "source_urls": [
+        "https://tenders.etimad.sa/Tender/DetailsForVisitor?STenderId=YYulueYsiIAkLL3QtkpaYQ=="
+      ],
+      "source_verified": true,
+      "expected_raw": "2026-09-02",
+      "deadline_raw": "2026-09-02",
+      "stage": "tendering",
+      "cls": "CONFIRMED",
+      "procurement_id": "60020899",
+      "status_events": [
+        {
+          "type": "floated",
+          "date": "2026-08-18",
+          "source_url": "https://tenders.etimad.sa/Tender/DetailsForVisitor?STenderId=YYulueYsiIAkLL3QtkpaYQ=="
+        },
+        {
+          "type": "submission_deadline",
+          "date": "2026-09-02",
+          "source_url": "https://tenders.etimad.sa/Tender/DetailsForVisitor?STenderId=YYulueYsiIAkLL3QtkpaYQ=="
+        }
+      ],
+      "tender_id": "T-saudi-water-authority-2-5-mva-6",
+      "status": "CLOSED",
+      "statusLabel": "Closed",
+      "statusGroup": "Closed",
+      "deadline": "2026-09-02",
+      "last_verified": "2026-10-14"
     }
   ]
 }
