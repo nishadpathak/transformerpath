@@ -25,15 +25,18 @@
     }
     window.__TP_ADSENSE_LOADING__ = true;
     var s = document.createElement('script');
-    s.async = true;
+    // Fallback only. The published head tag is already deferred. Wait for
+    // load so this copy does not compete with the first paint, and do not
+    // put data-* attributes on the AdSense element.
+    s.defer = true;
+    s.async = false;
     s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + PUB;
-    // Google requires crossorigin=anonymous and the client query param only.
-    // Do NOT put custom data-* markers on the AdSense script element — they
-    // trigger "AdSense head tag doesn't support data-… attribute" console warnings.
     s.crossOrigin = 'anonymous';
     s.onload = function () { window.__TP_ADSENSE_LOADED__ = true; window.__TP_ADSENSE_LOADING__ = false; };
     s.onerror = function () { window.__TP_ADSENSE_LOADING__ = false; };
-    document.head.appendChild(s);
+    function mount() { document.head.appendChild(s); }
+    if (document.readyState === 'complete') mount();
+    else window.addEventListener('load', mount, { once: true });
   }
 
   function getConsent() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
