@@ -13,6 +13,7 @@
  */
 'use strict';
 const fs = require('fs');
+const { recordOnMarket } = require('./lib/market-country');
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
@@ -464,8 +465,8 @@ function intelFor(m) {
 function biFor(m) {
   const countries = [ci(m.gridsName), ci(m.name)].filter(Boolean);
   const countryHit = function (c) { return countries.indexOf(ci(c)) >= 0; };
-  // Projects matching the country (or region keywords).
-  const projects = BI_PROJECTS.filter(function (p) { return countryHit(p.country) || m.kw.some(function (k) { return ci(p.country + ' ' + p.name).indexOf(k) >= 0; }); });
+  // Projects stay on the project or delivery country. A title keyword is not a country.
+  const projects = BI_PROJECTS.filter(function (p) { return recordOnMarket(p, m); });
   // Typed company events for companies headquartered/operating in this market.
   const events = [];
   Object.keys(BI_EVENTS).forEach(function (co) {
@@ -478,21 +479,11 @@ function biFor(m) {
 }
 
 function tendersFor(m) {
-  return TENDERS.filter(function (t) {
-    if (!t) return false;
-    const cMatch = ci(t.country) === ci(m.gridsName) || ci(t.country) === ci(m.name) || ci(t.country) === ci(m.manufName);
-    const kwMatch = m.kw && m.kw.some(function (k) { return ci((t.title || '') + ' ' + (t.utility || '')).indexOf(k) >= 0; });
-    return cMatch || kwMatch;
-  }).slice(0, 6);
+  return TENDERS.filter(function (t) { return recordOnMarket(t, m); }).slice(0, 6);
 }
 
 function awardsFor(m) {
-  return AWARDS.filter(function (a) {
-    if (!a) return false;
-    const cMatch = ci(a.country) === ci(m.gridsName) || ci(a.country) === ci(m.name) || ci(a.country) === ci(m.manufName);
-    const kwMatch = m.kw && m.kw.some(function (k) { return ci((a.title || '') + ' ' + (a.winner || '')).indexOf(k) >= 0; });
-    return cMatch || kwMatch;
-  }).slice(0, 6);
+  return AWARDS.filter(function (a) { return recordOnMarket(a, m); }).slice(0, 6);
 }
 
 const FACILITIES = (() => {
