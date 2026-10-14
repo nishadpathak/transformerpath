@@ -522,16 +522,24 @@ posts.sort(function (a, b) {
   return String(a.headline).localeCompare(String(b.headline));
 });
 
-const dated = posts.filter(function (p) { return p.datePrecision === 'day' && p.dateIso; });
-const latestIso = dated.length ? dated[0].dateIso : '2026-09-14';
-const latestLabel = dated.length ? dated[0].date : '14 Sep 2026';
+let latestIso = null;
+let latestLabel = null;
+const todayIso = new Date().toISOString().slice(0, 10);
+posts.forEach(function (p) {
+  if (!p || p.datePrecision !== 'day' || !/^\d{4}-\d{2}-\d{2}$/.test(String(p.dateIso || ''))) return;
+  if (p.dateIso > todayIso) return;
+  if (!latestIso || p.dateIso > latestIso) {
+    latestIso = p.dateIso;
+    latestLabel = p.date || null;
+  }
+});
 
 const out = {
   generated: new Date().toISOString(),
   poster: { handle: 'TransformerPath', role: 'official', note: 'TransformerPath is the only poster. Not open UGC.' },
   honesty: {
     note: 'Item dates are source dates, never the page-build clock. Relative "2m ago" / "Live now" are not used.',
-    latest_source_date: latestLabel || '14 Sep 2026',
+    latest_source_date: latestLabel,
     latest_source_iso: latestIso,
     build_is_not_an_edition: true
   },

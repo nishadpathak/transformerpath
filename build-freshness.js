@@ -22,67 +22,19 @@
 const fs = require('fs');
 function readJson(p, fb) { try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch (e) { return fb; } }
 function ts(f) { const d = readJson('data/' + f + '.json', {}); return d.updated || d.generated || d.generated_at || d.last_updated || (d.stats && d.stats.generated_at) || null; }
-function newestIntelObservation() {
-  // CONTENT dates only — never source_checked_at (that is a probe clock) and
-  // never a redeploy touching intel.updated without new content.
-  const feed = readJson('data/intel-feed-ui.json', {});
-  const intel = readJson('data/intel.json', {});
-  const gcc = readJson('data/gcc-discovery-candidates.json', {});
-  const todayIso = new Date().toISOString().slice(0, 10);
-  const dates = [];
-  function pushDay(d) {
-    if (!d) return;
-    const day = String(d).slice(0, 10);
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(day)) return;
-    if (day > todayIso) return;
-    dates.push(day);
-  }
-  if (feed.honesty && feed.honesty.latest_source_iso) pushDay(feed.honesty.latest_source_iso);
-  if (intel.refresh_meta && intel.refresh_meta.newest_validated_content_date) {
-    pushDay(intel.refresh_meta.newest_validated_content_date);
-  }
-  (gcc.candidates || []).forEach(function (c) {
-    const d = c.dates || {};
-    // Intentionally omit source_checked_at — that is latest_source_checked_at.
-    ['update_date', 'tender_float_date', 'publication_date', 'event_date'].forEach(function (k) {
-      pushDay(d[k]);
-    });
-  });
-  dates.sort();
-  const newest = dates.length ? dates[dates.length - 1] : null;
-  if (!newest) return null;
-  const noon = newest + 'T12:00:00.000Z';
-  const nowIso = new Date().toISOString();
-  return noon > nowIso ? nowIso : noon;
-}
-function newestSourceCheckedAt() {
-  const gcc = readJson('data/gcc-discovery-candidates.json', {});
-  const dates = [];
-  (gcc.candidates || []).forEach(function (c) {
-    const d = c.dates && c.dates.source_checked_at;
-    if (d) dates.push(String(d).slice(0, 10));
-  });
-  const feed = readJson('data/gcc-adapter-report.json', {});
-  if (feed.generated_at) dates.push(String(feed.generated_at).slice(0, 10));
-  dates.sort();
-  return dates.length ? dates[dates.length - 1] : null;
-}
+const { computeIntelStatus } = require('./lib/intel-status');
 const NOW = new Date().toISOString();
-const TODAY = NOW.slice(0, 10);
-const feedHonesty = readJson('data/intel-feed-ui.json', {}).honesty || {};
-const INTEL_OBS = newestIntelObservation() ||
-  (feedHonesty.latest_source_iso ? feedHonesty.latest_source_iso + 'T12:00:00.000Z' : null);
-const INTEL_CHECKED = newestSourceCheckedAt();
-const { classifyIntelStatus } = require('./lib/intel-freshness');
-const gccCoverage = readJson('data/gcc-coverage-report.json', {});
-const gccFresh = gccCoverage.freshness || readJson('data/gcc-market-watch.json', {}).freshness || {};
-const intelStatus = classifyIntelStatus({
-  latestSourceIso: (INTEL_OBS && String(INTEL_OBS).slice(0, 10)) || feedHonesty.latest_source_iso,
-  latestCheckedAt: INTEL_CHECKED,
-  buildAt: NOW,
-  // Never allow DATA CURRENT from build alone; GCC honesty defaults to false.
-  dataCurrentClaimAllowed: gccFresh.data_current_claim_allowed === true
-});
+const shared = computeIntelStatus({ buildAt: NOW, now: new Date(NOW) });
+const noon = shared.latest_source_iso ? shared.latest_source_iso + 'T12:00:00.000Z' : null;
+const INTEL_OBS = noon ? (noon > NOW ? NOW : noon) : null;
+const INTEL_CHECKED = shared.latest_source_checked_at;
+const intelStatus = {
+  latest_source_iso: shared.latest_source_iso,
+  statusLabel: shared.status,
+  reason: shared.reason,
+  data_current_claim_allowed: shared.data_current_claim_allowed,
+  honesty: 'Status follows latest_source_date, not build_at. Desk rebuild alone never yields DATA CURRENT.'
+};
 
 // Source body: cite what each intelligence surface is actually fed by, and its
 // last-known refresh. All values are observed from the data, never invented.

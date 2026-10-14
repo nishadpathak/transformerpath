@@ -212,27 +212,23 @@ a.plain:hover { text-decoration:underline; }
 </section>
 
 <div class="wrap intel-app">
-  <div class="stamp" id="stamp"><span style="color:#e0a800;font-weight:800;letter-spacing:.5px">● INTEL COVERAGE DELAYED</span> · Latest sourced item: <b style="color:var(--text)">13 Oct 2026</b> · source checked 14 Oct 2026 · page built 14 Oct 2026</div>
-  <script>/* Status follows latest_source_date from freshness.json — never build clock alone. */
+  <div class="stamp" id="stamp" data-intel-status="INTEL COVERAGE DELAYED" data-intel-source="2026-10-13" data-intel-checked="2026-10-14"><span style="color:#e0a800;font-weight:800;letter-spacing:.5px">● INTEL COVERAGE DELAYED</span> · Latest sourced item: <b style="color:var(--text)">13 Oct 2026</b> · source checked 14 Oct 2026 · page built 14 Oct 2026</div>
+  <script>/* Same file as the homepage banner: data/intel-status.json. */
     (function () {
       var el = document.getElementById('stamp'); if (!el || !window.fetch) return;
-      fetch('data/freshness.json', { cache: 'no-cache' }).then(function (r) { return r.json().catch(function () { return {}; }); }).then(function (d) {
-        var di = (d.surfaces || []).find(function (s) { return s.id === 'daily_intel'; }) || {};
-        var statusLabel = di.public_status || d.public_intel_status || 'INTEL COVERAGE DELAYED';
-        var sourceIso = di.latest_source_date || d.latest_source_date;
-        var sourceLabel = sourceIso || 'not recorded';
-        var checked = di.latest_source_checked_at || d.latest_source_checked_at;
-        var buildAt = di.build_at || d.build_at || d.generated;
-        function fmt(iso) {
-          if (!iso) return null;
-          var dt = new Date(iso);
-          return isNaN(dt.getTime()) ? String(iso) : dt.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
-        }
-        if (/^\d{4}-\d{2}-\d{2}/.test(String(sourceLabel))) sourceLabel = fmt(sourceLabel) || sourceLabel;
+      fetch('data/intel-status.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (st) {
+        window.__TP_INTEL_STATUS = st;
+        var statusLabel = st.status || 'INTEL COVERAGE DELAYED';
+        var sourceLabel = st.latest_source_date || 'not recorded';
+        var checkedLabel = st.latest_source_checked_label;
+        var buildLabel = st.build_label;
+        el.setAttribute('data-intel-status', statusLabel);
+        el.setAttribute('data-intel-source', st.latest_source_iso || '');
+        el.setAttribute('data-intel-checked', st.latest_source_checked_at || '');
         var badgeColor = statusLabel === 'DATA CURRENT' ? 'var(--ok)' : (statusLabel === 'DATA STALE' ? '#94a3b8' : 'var(--amber)');
         el.innerHTML = '<span style="color:' + badgeColor + ';font-weight:800;letter-spacing:.5px">● ' + statusLabel + '</span> &middot; Latest sourced item: <b style="color:var(--text)">' + sourceLabel + '</b>' +
-          (checked ? ' &middot; source checked ' + fmt(checked) : '') +
-          (buildAt ? ' &middot; page built ' + fmt(buildAt) : '');
+          (checkedLabel ? ' &middot; source checked ' + checkedLabel : '') +
+          (buildLabel ? ' &middot; page built ' + buildLabel : '');
       }).catch(function () { el.textContent = 'Status: INTEL COVERAGE DELAYED'; });
     })();
   </script>
@@ -326,7 +322,7 @@ a.plain:hover { text-decoration:underline; }
       <span style="color:var(--muted);font-size:.9rem">The daily briefing is free and open — built for the desks that buy, build and rate transformers. Every item is sourced; corrections are published, not buried.</span>
     </div>
     <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 16px;margin-bottom:10px;font-size:.82rem;color:var(--muted)">
-      <b style="color:var(--text)">Data freshness:</b> <span id="freshnessLine">Latest sourced item <b style="color:var(--text)">13 Oct 2026</b> · last source check <b style="color:var(--text)">14 Oct 2026</b> · build <b style="color:var(--text)">14 Oct 2026</b> · status <b style="color:var(--text)">INTEL COVERAGE DELAYED</b></span> <span style="color:var(--muted)">· Curated Daily Intel is refreshed at build. Page build date and last successful data refresh are distinct. This line is never left as “Loading…”.</span>
+      <b style="color:var(--text)">Data freshness:</b> <span id="freshnessLine" data-intel-status="INTEL COVERAGE DELAYED" data-intel-source="2026-10-13" data-intel-checked="2026-10-14">Latest sourced item <b style="color:var(--text)">13 Oct 2026</b> · last source check <b style="color:var(--text)">14 Oct 2026</b> · build <b style="color:var(--text)">14 Oct 2026</b> · status <b style="color:var(--text)">INTEL COVERAGE DELAYED</b></span> <span style="color:var(--muted)">· Curated Daily Intel is refreshed at build. Page build date and last successful data refresh are distinct. This line is never left as “Loading…”.</span>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px">
       <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:11px 14px">
@@ -1249,17 +1245,18 @@ a.plain:hover { text-decoration:underline; }
 (function(){
   var el=document.getElementById('freshnessLine');
   if(!el) return;
-  fetch('data/freshness.json').then(function(r){ return r.json().catch(function(){ return {}; }); }).then(function(d){
-    var di=(d.surfaces||[]).find(function(s){ return s.id==='daily_intel'; })||{};
-    var status = di.public_status || d.public_intel_status || 'INTEL COVERAGE DELAYED';
-    var source = di.latest_source_date || d.latest_source_date || 'unavailable';
-    var checked = di.latest_source_checked_at || d.latest_source_checked_at;
-    var build = di.build_at || d.build_at || d.generated;
-    function fmt(iso){ if(!iso) return null; var dt=new Date(iso); return isNaN(dt.getTime())?String(iso):dt.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'}); }
-    if (/^\d{4}-\d{2}-\d{2}/.test(String(source))) source = fmt(source) || source;
-    el.innerHTML='Status <b style="color:var(--text)">'+status+'</b> · latest sourced item <b style="color:var(--text)">'+source+'</b>'+
-      (checked?' · source checked '+fmt(checked):'')+
-      (build?' · page built '+fmt(build):'');
+  fetch('data/intel-status.json', { cache: 'no-cache' }).then(function(r){ return r.json(); }).then(function(st){
+    var status = st.status || 'INTEL COVERAGE DELAYED';
+    var source = st.latest_source_date || 'unavailable';
+    var checked = st.latest_source_checked_label;
+    var build = st.build_label;
+    el.setAttribute('data-intel-status', status);
+    el.setAttribute('data-intel-source', st.latest_source_iso || '');
+    el.setAttribute('data-intel-checked', st.latest_source_checked_at || '');
+    el.innerHTML='Latest sourced item <b style="color:var(--text)">'+source+'</b>'+
+      (checked?' · last source check <b style="color:var(--text)">'+checked+'</b>':'')+
+      (build?' · build <b style="color:var(--text)">'+build+'</b>':'')+
+      ' · status <b style="color:var(--text)">'+status+'</b>';
   }).catch(function(){ el.textContent='Freshness unavailable'; });
 })();
 </script>

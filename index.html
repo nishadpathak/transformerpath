@@ -822,11 +822,13 @@
   <div class="container">
     <div class="hero-grid">
       <div class="hero-copy">
-        <div class="hero-live-pill" id="hero-live-pill">
+        <div class="hero-live-pill" id="hero-live-pill" data-intel-status="INTEL COVERAGE DELAYED" data-intel-source="2026-10-13" data-intel-checked="2026-10-14">
           <span class="live-dot" id="hero-live-dot" aria-hidden="true" style="background:#e0a800"></span>
           <span class="live-badge-text" id="hero-live-status">INTEL COVERAGE DELAYED</span>
           <span class="live-sep">&middot;</span>
           <span id="hero-live-date">Latest sourced item 13 Oct 2026</span>
+          <span class="live-sep">&middot;</span>
+          <span id="hero-live-check">source checked 14 Oct 2026</span>
         </div>
         <h2>Where the world's <span>transformer industry</span> stays ahead.</h2>
         <p class="lead">Industry intelligence &middot; Engineering &middot; Manufacturers &middot; Markets &middot; Tools.</p>
@@ -1097,7 +1099,7 @@ document.querySelectorAll('#mainNav a').forEach(a=>a.addEventListener('click',()
    "today's live briefing" — a deploy is not a new edition. */
 (function(){
   const host=document.getElementById('glanceCards'), sub=document.getElementById('glanceSub');
-  if(!host||!window.fetch) return;
+  if(host && window.fetch){
   fetch('data/intel-feed-ui.json',{cache:'no-cache'}).then(r=>r.json()).then(feed=>{
     const items=(feed.posts||[]).filter(function(p){ return p.desk==='news'||p.desk==='grid'||p.desk==='awards'; });
     const pick=items.slice(0,3);
@@ -1109,40 +1111,39 @@ document.querySelectorAll('#mainNav a').forEach(a=>a.addEventListener('click',()
         '<h3 style="font-size:1rem">'+esc(it.headline)+'</h3><p>'+snip+'</p>'+
         '<p class="g-val" style="margin-top:8px">'+(it.date?esc(it.date):'Date not stated')+(it.value?' · '+esc(it.value):'')+'</p></a>';
     }).join('');
-    // Canonical status from latest_source_date — never from desk/build alone.
-    fetch('data/freshness.json',{cache:'no-cache'}).then(function(r){ return r.json().catch(function(){ return {}; }); }).then(function(d){
-      const di=(d.surfaces||[]).find(function(s){ return s.id==='daily_intel'; })||{};
-      const statusLabel = di.public_status || d.public_intel_status || 'INTEL COVERAGE DELAYED';
-      const sourceIso = di.latest_source_date || d.latest_source_date || (feed.honesty && feed.honesty.latest_source_iso);
-      const sourceLabel = (feed.honesty && feed.honesty.latest_source_date) || sourceIso || 'not recorded';
-      const checked = di.latest_source_checked_at || d.latest_source_checked_at;
-      const buildAt = di.build_at || d.build_at || d.generated;
-      const fmt = function(iso){
-        if(!iso) return null;
-        const dt=new Date(iso);
-        return isNaN(dt)?String(iso):dt.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'});
-      };
-      const dotColor = statusLabel==='DATA CURRENT' ? '#1a9d4a' : (statusLabel==='DATA STALE' ? '#94a3b8' : '#e0a800');
-
-      const pillStatus = document.getElementById('hero-live-status');
-      const pillDate = document.getElementById('hero-live-date');
-      const pillDot = document.getElementById('hero-live-dot');
-      if (pillStatus) pillStatus.textContent = statusLabel;
-      if (pillDate) pillDate.textContent = 'Latest sourced item ' + sourceLabel;
-      const heroCta = document.getElementById('hero-intel-cta');
-      if (heroCta && statusLabel !== 'DATA CURRENT') {
-        heroCta.textContent = 'Coverage is delayed — open the latest briefing →';
-      }
-      if (pillDot) pillDot.style.background = dotColor;
-
-      if(sub){
-        sub.innerHTML='Latest sourced item <b>'+sourceLabel+'</b>'+
-          (checked?' · source checked <b>'+fmt(checked)+'</b>':'')+
-          (buildAt?' · page built <b>'+fmt(buildAt)+'</b>':'')+
-          ' · <b>'+statusLabel+'</b>. Dates are on the source, not this visit. <a href="/intel" style="color:var(--accent)">Open Daily Intel →</a>';
-      }
-    }).catch(function(){});
   }).catch(()=>{});
+  }
+  // Same build-time file as intel.html. Do not read feed honesty or freshness here.
+  if (window.fetch) fetch('data/intel-status.json',{cache:'no-cache'}).then(function(r){ return r.json(); }).then(function(st){
+    const statusLabel = st.status || 'INTEL COVERAGE DELAYED';
+    const sourceLabel = st.latest_source_date || 'not recorded';
+    const checkedLabel = st.latest_source_checked_label || '';
+    const dotColor = st.dot || (statusLabel==='DATA CURRENT' ? '#1a9d4a' : (statusLabel==='DATA STALE' ? '#94a3b8' : '#e0a800'));
+    const pill = document.getElementById('hero-live-pill');
+    const pillStatus = document.getElementById('hero-live-status');
+    const pillDate = document.getElementById('hero-live-date');
+    const pillCheck = document.getElementById('hero-live-check');
+    const pillDot = document.getElementById('hero-live-dot');
+    if (pill) {
+      pill.setAttribute('data-intel-status', statusLabel);
+      pill.setAttribute('data-intel-source', st.latest_source_iso || '');
+      pill.setAttribute('data-intel-checked', st.latest_source_checked_at || '');
+    }
+    if (pillStatus) pillStatus.textContent = statusLabel;
+    if (pillDate) pillDate.textContent = 'Latest sourced item ' + sourceLabel;
+    if (pillCheck) pillCheck.textContent = checkedLabel ? ('source checked ' + checkedLabel) : '';
+    if (pillDot) pillDot.style.background = dotColor;
+    const heroCta = document.getElementById('hero-intel-cta');
+    if (heroCta && statusLabel !== 'DATA CURRENT') {
+      heroCta.textContent = 'Coverage is delayed — open the latest briefing →';
+    }
+    if (sub) {
+      sub.innerHTML='Latest sourced item <b>'+sourceLabel+'</b>'+
+        (checkedLabel?' · source checked <b>'+checkedLabel+'</b>':'')+
+        (st.build_label?' · page built <b>'+st.build_label+'</b>':'')+
+        ' · <b>'+statusLabel+'</b>. Dates are on the source, not this visit. <a href="/intel" style="color:var(--accent)">Open Daily Intel →</a>';
+    }
+  }).catch(function(){});
 })();
 
 // Scroll reveal (with fallback: if IntersectionObserver is unavailable, show everything)
