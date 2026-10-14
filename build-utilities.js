@@ -15,6 +15,7 @@
  */
 'use strict';
 const fs = require('fs');
+const { splitEntityIntel } = require('./lib/entity-intel');
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
@@ -123,10 +124,14 @@ function buildUtility(u) {
   const uMarketSlug = MARKET_SLUG[country];
   const marketLink = (uMarketSlug && fs.existsSync('markets/' + uMarketSlug + '/index.html')) ? '<a class="tpill" href="../../markets/' + uMarketSlug + '/">' + esc(country) + ' market hub</a>' : '';
 
-  // Intel for this region (GCC/Europe/etc.) — map region to intel key.
+  // Entity intel names this operator. The rest of the regional feed is labelled
+  // as regional and is not presented as news about the operator.
   const intelKey = gridRec && gridRec.region ? (ci(gridRec.region).indexOf('middle east') >= 0 || ci(gridRec.region).indexOf('gcc') >= 0 ? 'GCC' : '') : '';
-  const intelItems = (INTEL[intelKey] && INTEL[intelKey].items ? INTEL[intelKey].items : []).slice(0, 4);
-  const intelHtml = intelItems.map((it) => '<li style="margin:6px 0"><b style="color:var(--text);font-size:.9rem">' + esc(it.title) + '</b><p style="color:var(--muted);font-size:.84rem;margin:2px 0 0">' + esc(it.snippet.slice(0, 150)) + (it.snippet.length > 150 ? '…' : '') + '</p></li>').join('') || '<li style="color:var(--muted)">No recent TransformerPath intel for this market yet.</li>';
+  const intelPool = (INTEL[intelKey] && INTEL[intelKey].items) ? INTEL[intelKey].items : [];
+  const intelSplit = splitEntityIntel(intelPool, opName);
+  const intelLi = (it) => '<li style="margin:6px 0"><b style="color:var(--text);font-size:.9rem">' + esc(it.title) + '</b><p style="color:var(--muted);font-size:.84rem;margin:2px 0 0">' + esc((it.snippet || '').slice(0, 150)) + ((it.snippet || '').length > 150 ? '…' : '') + '</p></li>';
+  const intelHtml = intelSplit.about.slice(0, 4).map(intelLi).join('') || '<li style="color:var(--muted)">No published intelligence evidenced as about this operator.</li>';
+  const regionalHtml = intelSplit.regional.slice(0, 4).map(intelLi).join('');
 
   // Events in this country (from events.json).
   const evArr = Array.isArray(EVENTS) ? EVENTS : (EVENTS.events || []);
@@ -176,7 +181,8 @@ function buildUtility(u) {
     '</ul>' +
     '<h2>Relevant manufacturers</h2><p style="color:var(--muted);font-size:.94rem;margin:4px 0 8px">' + mkCount + ' transformer makers recorded in the ' + esc(country) + ' census — power, distribution and dry-type. Verify capability before a decision.</p><div style="margin:4px 0 8px">' + mkPills + '</div>' + (manufCountryLink ? '<div style="margin-top:8px">' + manufCountryLink + '</div>' : '') +
     '<h2>Market context</h2><div>' + (marketLink || '<span style="color:var(--muted);font-size:.85rem">Market hub not yet built for this country.</span>') + '</div>' +
-    '<h2>Latest TransformerPath intel</h2><ul>' + intelHtml + '</ul>' +
+    '<h2>Latest intelligence about this operator</h2><ul>' + intelHtml + '</ul>' +
+    (regionalHtml ? '<h2>Regional intel</h2><p style="color:var(--muted);font-size:.84rem;margin:4px 0 8px">Same regional feed. These items do not name this operator.</p><ul>' + regionalHtml + '</ul>' : '') +
     '<h2>Related projects</h2><ul>' + projHtml + '</ul>' +
     '<h2>Upcoming events</h2><ul>' + evHtml + '</ul>' +
     '<p style="font-size:.78rem;color:var(--muted);margin-top:8px">Last reviewed: ' + new Date().toISOString().slice(0, 10) + '. Sources: official utility / operator filings and public announcements; maintained encyclopedia-style from the TransformerPath grid census. Report a <a href="mailto:hello@transformerpath.com?subject=Grid%20census%20correction" style="color:var(--accent)">correction</a>.</p>' +

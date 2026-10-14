@@ -31,6 +31,7 @@ const norm = function (s) { return String(s || '').toLowerCase().normalize('NFD'
 
 const { resolveCompanyAlias, norm: aliasNorm } = require('./lib/company-aliases');
 const { isUpcoming } = require('./lib/event-status');
+const { splitEntityIntel, fold: foldEntity } = require('./lib/entity-intel');
 const MANUF = JSON.parse(fs.readFileSync('data/manufacturers.json', 'utf8'));
 const TIERS = JSON.parse(fs.readFileSync('data/manufacturer-tiers.json', 'utf8'));
 const EVENTS = JSON.parse(fs.readFileSync('data/events.json', 'utf8'));
@@ -398,12 +399,14 @@ function eventsFor(rec) {
 }
 function intelFor(rec) {
   const regions = { 'Middle East': 'GCC', 'Europe': 'Europe', 'Americas': 'USA', 'Asia': 'India', 'South Asia': 'India', 'East Asia': 'RoW', 'Southeast Asia': 'RoW', 'Eurasia': 'RoW', 'Africa': 'RoW', 'Latin America': 'RoW', 'Oceania': 'RoW' };
-  const reg = INTEL[regions[rec.region] || 'RoW']; const out = [];
-  if (reg && reg.items) {
-    const kw = ci(rec.country).split(/[^a-z]+/).filter(function (w) { return w.length > 3; }).concat([ci(rec.country).replace(/\s+/g, ' ')]);
-    reg.items.forEach(function (it) { if (kw.some(function (k) { return k && ci(it.title + ' ' + it.snippet).indexOf(k) >= 0; })) out.push(it); });
-  }
-  return out.slice(0, 3);
+  const reg = INTEL[regions[rec.region] || 'RoW'];
+  const items = (reg && reg.items) ? reg.items : [];
+  const split = splitEntityIntel(items, rec.name);
+  const country = foldEntity(rec.country || '');
+  const regional = split.regional.filter(function (it) {
+    return country.length > 3 && foldEntity((it.title || '') + ' ' + (it.snippet || '')).indexOf(country) >= 0;
+  });
+  return { about: split.about.slice(0, 3), regional: regional.slice(0, 3) };
 }
 const fmt = function (d) { try { return new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }); } catch (e) { return ''; } };
 
@@ -428,7 +431,9 @@ function page(r, slug) {
   const evs = eventsFor(r);
   const evHtml = evs.map(function (ev) { return '<li style="margin:6px 0"><a href="' + esc(ev.u) + '" target="_blank" rel="noopener" style="color:var(--accent)">' + esc(ev.n) + '</a> <span style="color:var(--muted);font-size:.85rem">' + fmt(ev.s) + ' · ' + esc(ev.c) + ', ' + esc(ev.co) + '</span></li>'; }).join('') || '<li style="color:var(--muted)">No confirmed events for this market yet.</li>';
   const intel = intelFor(r);
-  const intelHtml = intel.map(function (it) { return '<li style="margin:6px 0"><b style="color:var(--text);font-size:.9rem">' + esc(it.title) + '</b><p style="color:var(--muted);font-size:.84rem;margin:2px 0 0">' + esc(it.snippet.slice(0, 150)) + (it.snippet.length > 150 ? '…' : '') + '</p></li>'; }).join('') || '<li style="color:var(--muted)">No published intelligence items for this company yet. Curated Daily Intel is refreshed at build — see <a href="../../intel.html">Daily Intel</a> for the latest feed.</li>';
+  const intelLi = function (it) { return '<li style="margin:6px 0"><b style="color:var(--text);font-size:.9rem">' + esc(it.title) + '</b><p style="color:var(--muted);font-size:.84rem;margin:2px 0 0">' + esc((it.snippet || '').slice(0, 150)) + ((it.snippet || '').length > 150 ? '…' : '') + '</p></li>'; };
+  const intelHtml = intel.about.map(intelLi).join('') || '<li style="color:var(--muted)">No published intelligence evidenced as about this company. Curated Daily Intel is refreshed at build — see <a href="../../intel.html">Daily Intel</a> for the latest feed.</li>';
+  const regionalHtml = intel.regional.map(intelLi).join('');
   const intelRec = INTEL_BY_SLUG[slug] || INTEL_BY_NAME[norm(r.name)] || null;
   const score = intelRec ? (intelRec.completeness_score || 0) : (r.tierFile ? 65 : (r.url ? 45 : 25));
   const missing = (intelRec && intelRec.missing_fields) ? intelRec.missing_fields : [];
@@ -535,7 +540,8 @@ function page(r, slug) {
       const place = city && city.city ? ('a factory visit in ' + city.city) : 'a factory visit';
       return fac + tpAff.tripOffers({ slug: slug, place: place, prefix: '../../', disclosureHref: '../../affiliate-disclosure.html' });
     })() + brandSitesHtml(r) + timelineHtml(r) + developmentsHtml(r) + provenanceHtml(r) +
-    '<h2>Latest TransformerPath intelligence</h2><ul>' + intelHtml + '</ul>' +
+    '<h2>Latest intelligence about this company</h2><ul>' + intelHtml + '</ul>' +
+    (regionalHtml ? '<h2>Regional intel</h2><p style="color:var(--muted);font-size:.84rem;margin:4px 0 8px">Same country, not evidenced as about this company.</p><ul>' + regionalHtml + '</ul>' : '') +
     '<h2>Upcoming events</h2><ul>' + evHtml + '</ul>' +
     '<p style="font-size:.72rem;color:var(--muted)">Last reviewed: ' + lastReviewed + '.</p>' +
     '<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:22px"><b style="color:var(--text)">Represent this company?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Claim and update this profile to keep its capabilities, markets and verification accurate.</p>' +
