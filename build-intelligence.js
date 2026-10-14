@@ -203,14 +203,17 @@ function renderIntelligence() {
   const typed = evts.filter(function (e) { return e.type !== 'reference'; });
   const TYPE_LABEL2 = graph.types || TYPE_LABEL;
 
-  // Counts row — all canonical, computed from the shared datasets. Never typed.
+  // Counts row — event-layer totals, not the manufacturer census.
+  let censusN = 0;
+  try { censusN = JSON.parse(fs.readFileSync('data/site-stats.json', 'utf8')).manufacturers || 0; } catch (e) {}
   const counts = '<div class="biw-counts">' +
     '<div class="s"><b>' + (graph.projects || []).length + '</b><small>Projects tracked</small></div>' +
     '<div class="s"><b>' + (graph.tenders || []).length + '</b><small>Tenders</small></div>' +
     '<div class="s"><b>' + (graph.open_tenders || 0) + '</b><small>Open now</small></div>' +
     '<div class="s"><b>' + (graph.awards || []).length + '</b><small>Recent awards</small></div>' +
-    '<div class="s"><b>' + Object.keys(co).length + '</b><small>Companies</small></div>' +
-    '<div class="s"><b>' + (graph.factory_expansions || 0) + '</b><small>Factory expansions</small></div></div>';
+    '<div class="s"><b>' + Object.keys(co).length + '</b><small>Companies in the event layer</small></div>' +
+    '<div class="s"><b>' + (graph.factory_expansions || 0) + '</b><small>Factory expansion events</small></div></div>' +
+    '<p class="sub" style="margin:-12px 0 22px">These tiles count the event layer — sourced developments — not the manufacturer census. <a href="manufacturers.html" style="color:var(--accent);font-weight:700">Manufacturer census' + (censusN ? ': ' + censusN + ' companies' : '') + ' →</a></p>';
 
   // Activity feed: typed events first (date desc), then reference items. De-dupe by company+title.
   const all = typed.concat(evts.filter(function (e) { return e.type === 'reference'; }));
