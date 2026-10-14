@@ -42,6 +42,7 @@ self.addEventListener('fetch', e => {
   const isHtml = req.mode === 'navigate' || accept.includes('text/html');
   const isReleaseData = /\.(?:html?)$/i.test(path) ||
     path === '/data/freshness.json' ||
+    path === '/data/intel-status.json' ||
     path === '/build.json' ||
     path === '/data/build-provenance.json' ||
     path === '/data/site-stats.json' ||

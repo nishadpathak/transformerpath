@@ -17,14 +17,18 @@ if (!status || !status.status || !status.latest_source_iso) {
 }
 
 const statusLabel = status.status;
-const sourceLabel = status.latest_source_date || 'not recorded';
+const sourceLabel = String(status.latest_source_date || '').replace(/\s+/g, ' ').trim();
+if (!/^\d{1,2} [A-Za-z]{3} \d{4}$/.test(sourceLabel)) {
+  console.error('latest sourced item label is blank or not a calendar day: ' + JSON.stringify(status.latest_source_date));
+  process.exit(1);
+}
 const checkedLabel = status.latest_source_checked_label || null;
 const buildLabel = status.build_label || null;
 const dot = status.dot || statusDotColor(statusLabel);
 
 const stamp =
   '<span style="color:' + dot + ';font-weight:800;letter-spacing:.5px">● ' +
-  statusLabel + '</span> · Latest sourced item: <b style="color:var(--text)">' + sourceLabel + '</b>' +
+  statusLabel + '</span> · Latest sourced item: <b style="color:#e5e7eb">' + sourceLabel + '</b>' +
   (checkedLabel ? ' · source checked ' + checkedLabel : '') +
   (buildLabel ? ' · page built ' + buildLabel : '');
 const line =
