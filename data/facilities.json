@@ -1,7 +1,7 @@
 {
   "$schema": "https://transformerpath.com/facilities.schema.json",
-  "generated_at": "2026-10-14T10:34:12.107Z",
-  "count": 1118,
+  "generated_at": "2026-10-14T10:38:59.688Z",
+  "count": 1117,
   "public_count": 199,
   "note": "count = every explicit plant record (census city or sourced). public_count = plants with sourced evidence (produces, source_url, or INDEPENDENTLY_SOURCED). HQ-clone facilities are not created.",
   "facilities": [
@@ -3228,11 +3228,11 @@
       "confidence": "LIMITED"
     },
     {
-      "id": "fac:bridgeport-magnetics:usa",
+      "id": "fac:bridgeport-magnetics:shelton",
       "company_id": "cmp:bridgeport-magnetics",
       "company_name": "Bridgeport Magnetics",
       "facility_name": "Bridgeport Magnetics",
-      "city": "",
+      "city": "Shelton, CT",
       "country": "USA",
       "region": "North America",
       "status": "UNCLEAR",
@@ -9093,11 +9093,11 @@
       "confidence": "LIMITED"
     },
     {
-      "id": "fac:foster-transformer-company:usa",
+      "id": "fac:foster-transformer-company:cincinnati",
       "company_id": "cmp:foster-transformer-company",
       "company_name": "Foster Transformer Company",
       "facility_name": "Foster Transformer Company",
-      "city": "",
+      "city": "Cincinnati, OH",
       "country": "USA",
       "region": "North America",
       "status": "UNCLEAR",
@@ -9433,11 +9433,11 @@
       "confidence": "LIMITED"
     },
     {
-      "id": "fac:gangheng-electric:china",
+      "id": "fac:gangheng-electric:jiangshan",
       "company_id": "cmp:gangheng-electric",
       "company_name": "Gangheng Electric",
       "facility_name": "Gangheng Electric",
-      "city": "",
+      "city": "Jiangshan, Zhejiang",
       "country": "China",
       "region": "East Asia",
       "status": "UNCLEAR",
@@ -10166,37 +10166,6 @@
       "confidence": "LIMITED"
     },
     {
-      "id": "fac:getra-power:colombia",
-      "company_id": "cmp:getra-power",
-      "company_name": "GETRA Power",
-      "facility_name": "GETRA Power",
-      "city": "",
-      "country": "Colombia",
-      "region": "Latin America",
-      "status": "UNCLEAR",
-      "claim_type": "",
-      "produces": "",
-      "public_count": false,
-      "capabilities": {
-        "transformer_types": [
-          "TR_POWER",
-          "TR_DISTRIBUTION"
-        ],
-        "max_voltage_kv": null,
-        "max_mva": null,
-        "annual_mva_capacity": null,
-        "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [],
-        "test_capabilities": [],
-        "produces": ""
-      },
-      "source": "TransformerPath census (site list; status unclassified)",
-      "source_tier": "Tier C",
-      "source_url": "https://www.lenergygroup.com/getra-power-afina-su-estrategia-sobre-latinoamerica-para-posicionarse-como-lider-en-transformadores-de-potencia-y-de-distribucion/",
-      "last_checked": "2026-08-28",
-      "confidence": "LIMITED"
-    },
-    {
       "id": "fac:global-transformers-and-switchgear-gts:jebel-ali-free-zone",
       "company_id": "cmp:global-transformers-and-switchgear-gts",
       "company_name": "Global Transformers & Switchgear (GTS)",
@@ -10296,7 +10265,7 @@
       "id": "fac:green-transfo:kocaeli-cay-rova",
       "company_id": "cmp:green-transfo",
       "company_name": "Green Transfo",
-      "facility_name": "Green Transfo",
+      "facility_name": "Green Transfo Energy Turkey",
       "city": "Kocaeli (Çayırova)",
       "country": "Türkiye",
       "region": "Eurasia",
@@ -10635,7 +10604,7 @@
       "id": "fac:hainan-jinpan-jinpan-group-guilin-yangzhou:haikou",
       "company_id": "cmp:hainan-jinpan-jinpan-group-guilin-yangzhou",
       "company_name": "Hainan Jinpan (Jinpan Group; Guilin, Yangzhou)",
-      "facility_name": "Hainan Jinpan (Jinpan Group; Guilin, Yangzhou)",
+      "facility_name": "Hainan Jinpan (Jinpan Group; Guilin, Yangzhou) — Haikou, Hainan",
       "city": "Haikou, Hainan",
       "country": "China",
       "region": "East Asia",
@@ -10655,42 +10624,10 @@
         "test_capabilities": [],
         "produces": ""
       },
-      "source": "TransformerPath census (site list; status unclassified)",
+      "source": "Company intelligence store (listed plant city)",
       "source_tier": "Tier C",
-      "source_url": "https://markets.ft.markitdigital.com/data/equities/tearsheet/profile?s=688676:SHH",
-      "last_checked": "2026-08-28",
-      "confidence": "LIMITED"
-    },
-    {
-      "id": "fac:hammond-power-solutions:baraboo",
-      "company_id": "cmp:hammond-power-solutions",
-      "company_name": "Hammond Power Solutions",
-      "facility_name": "Hammond Power Solutions",
-      "city": "Baraboo, WI",
-      "country": "USA",
-      "region": "North America",
-      "status": "UNCLEAR",
-      "claim_type": "",
-      "produces": "",
-      "public_count": false,
-      "capabilities": {
-        "transformer_types": [
-          "TR_DRY_CAST",
-          "TR_DISTRIBUTION",
-          "TR_POWER"
-        ],
-        "max_voltage_kv": null,
-        "max_mva": null,
-        "annual_mva_capacity": null,
-        "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [],
-        "test_capabilities": [],
-        "produces": ""
-      },
-      "source": "TransformerPath census (site list; status unclassified)",
-      "source_tier": "Tier C",
-      "source_url": "https://americas.hammondpowersolutions.com/",
-      "last_checked": "2026-08-28",
+      "source_url": "",
+      "last_checked": "2026-08-15",
       "confidence": "LIMITED"
     },
     {
@@ -10719,7 +10656,39 @@
       },
       "source": "TransformerPath census (site list; status unclassified)",
       "source_tier": "Tier C",
-      "source_url": "https://www.hammondpowersolutions.com/",
+      "source_url": "https://americas.hammondpowersolutions.com/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:hammond-power-solutions:baraboo",
+      "company_id": "cmp:hammond-power-solutions",
+      "company_name": "Hammond Power Solutions",
+      "facility_name": "Hammond Power Solutions (Baraboo)",
+      "city": "Baraboo, WI",
+      "country": "USA",
+      "region": "North America",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DRY_CAST",
+          "TR_DISTRIBUTION",
+          "TR_POWER"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "https://americas.hammondpowersolutions.com/",
       "last_checked": "2026-08-28",
       "confidence": "LIMITED"
     },
@@ -17258,7 +17227,7 @@
       },
       "source": "TransformerPath census (site list; status unclassified)",
       "source_tier": "Tier C",
-      "source_url": "https://www.jeffersonelectric.com/",
+      "source_url": "https://voltarispower.com/",
       "last_checked": "2026-08-28",
       "confidence": "LIMITED"
     },
@@ -17580,7 +17549,7 @@
       "id": "fac:jordan-transformer-manufacturing-co-jtm-meco:sahab",
       "company_id": "cmp:jordan-transformer-manufacturing-co-jtm-meco",
       "company_name": "Jordan Transformer Manufacturing Co. (JTM / MECO)",
-      "facility_name": "Jordan Transformer Manufacturing Co. (JTM / MECO)",
+      "facility_name": "Jordan Transformer Manufacturing Co. (JTM / MECO) — Sahab, Amman",
       "city": "Sahab, Amman",
       "country": "Jordan",
       "region": "Middle East",
@@ -17601,10 +17570,10 @@
         "test_capabilities": [],
         "produces": ""
       },
-      "source": "TransformerPath census (site list; status unclassified)",
+      "source": "Company intelligence store (listed plant city)",
       "source_tier": "Tier C",
-      "source_url": "https://www.jordantransformer.com/",
-      "last_checked": "2026-08-28",
+      "source_url": "",
+      "last_checked": "2026-08-15",
       "confidence": "LIMITED"
     },
     {
@@ -17639,11 +17608,11 @@
       "confidence": "LIMITED"
     },
     {
-      "id": "fac:jst-transformateurs:france",
+      "id": "fac:jst-transformateurs:lyon",
       "company_id": "cmp:jst-transformateurs",
       "company_name": "JST Transformateurs",
       "facility_name": "JST Transformateurs",
-      "city": "",
+      "city": "Lyon",
       "country": "France",
       "region": "Europe",
       "status": "UNCLEAR",
@@ -19451,7 +19420,7 @@
       "id": "fac:maroc-transfo:had-soualem",
       "company_id": "cmp:maroc-transfo",
       "company_name": "Maroc Transfo",
-      "facility_name": "Maroc Transfo",
+      "facility_name": "Maroc Transfo — Had Soualem",
       "city": "Had Soualem",
       "country": "Morocco",
       "region": "Africa",
@@ -19471,10 +19440,10 @@
         "test_capabilities": [],
         "produces": ""
       },
-      "source": "TransformerPath census (site list; status unclassified)",
+      "source": "Company intelligence store (listed plant city)",
       "source_tier": "Tier C",
-      "source_url": "https://www.kerix.net/fr/annuaire-entreprise/maroc-transfo",
-      "last_checked": "2026-08-28",
+      "source_url": "",
+      "last_checked": "2026-08-15",
       "confidence": "LIMITED"
     },
     {
@@ -23467,7 +23436,7 @@
       "id": "fac:r-e-uptegraff-mfg:scottdale",
       "company_id": "cmp:r-e-uptegraff-mfg",
       "company_name": "R.E. Uptegraff Mfg",
-      "facility_name": "R.E. Uptegraff Mfg",
+      "facility_name": "R.E. Uptegraff Mfg — Scottdale, PA",
       "city": "Scottdale, PA",
       "country": "USA",
       "region": "North America",
@@ -23487,10 +23456,10 @@
         "test_capabilities": [],
         "produces": ""
       },
-      "source": "TransformerPath census (site list; status unclassified)",
+      "source": "Company intelligence store (listed plant city)",
       "source_tier": "Tier C",
-      "source_url": "https://www.datasheets.com/es/manufacturer/r--e--uptegraff-manufacturing-co-43666",
-      "last_checked": "2026-08-28",
+      "source_url": "",
+      "last_checked": "2026-08-15",
       "confidence": "LIMITED"
     },
     {
@@ -24451,7 +24420,7 @@
       "id": "fac:samil-transformer:eumseong",
       "company_id": "cmp:samil-transformer",
       "company_name": "Samil Transformer",
-      "facility_name": "Samil Transformer",
+      "facility_name": "Samil Transformer — Eumseong",
       "city": "Eumseong",
       "country": "South Korea",
       "region": "East Asia",
@@ -24472,10 +24441,10 @@
         "test_capabilities": [],
         "produces": ""
       },
-      "source": "TransformerPath census (site list; status unclassified)",
+      "source": "Company intelligence store (listed plant city)",
       "source_tier": "Tier C",
-      "source_url": "http://www.koreaittimes.com/news/articleView.html?idxno=26112",
-      "last_checked": "2026-08-28",
+      "source_url": "",
+      "last_checked": "2026-08-15",
       "confidence": "LIMITED"
     },
     {
@@ -26581,66 +26550,6 @@
       "confidence": "LIMITED"
     },
     {
-      "id": "fac:siemens-energy:tenjo",
-      "company_id": "cmp:siemens-energy",
-      "company_name": "Siemens Energy",
-      "facility_name": "Siemens Energy",
-      "city": "Tenjo",
-      "country": "Colombia",
-      "region": "Latin America",
-      "status": "UNCLEAR",
-      "claim_type": "",
-      "produces": "",
-      "public_count": false,
-      "capabilities": {
-        "transformer_types": [
-          "TR_POWER"
-        ],
-        "max_voltage_kv": null,
-        "max_mva": null,
-        "annual_mva_capacity": null,
-        "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [],
-        "test_capabilities": [],
-        "produces": ""
-      },
-      "source": "TransformerPath census (site list; status unclassified)",
-      "source_tier": "Tier C",
-      "source_url": "https://www.siemens-energy.com/co/es.html",
-      "last_checked": "2026-08-28",
-      "confidence": "LIMITED"
-    },
-    {
-      "id": "fac:siemens-energy:nuremberg",
-      "company_id": "cmp:siemens-energy",
-      "company_name": "Siemens Energy",
-      "facility_name": "Siemens Energy",
-      "city": "Nuremberg",
-      "country": "Germany",
-      "region": "Europe",
-      "status": "OPERATIONAL",
-      "claim_type": "INDEPENDENTLY_SOURCED",
-      "produces": "power transformers (since 1912)",
-      "public_count": true,
-      "capabilities": {
-        "transformer_types": [
-          "TR_POWER"
-        ],
-        "max_voltage_kv": null,
-        "max_mva": null,
-        "annual_mva_capacity": null,
-        "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [],
-        "test_capabilities": [],
-        "produces": "power transformers (since 1912)"
-      },
-      "source": "TransformerPath deep-research (independently sourced factory record)",
-      "source_tier": "Tier A",
-      "source_url": "https://www.siemens-energy.com",
-      "last_checked": "2026-08-28",
-      "confidence": "HIGH"
-    },
-    {
       "id": "fac:siemens-energy:linz",
       "company_id": "cmp:siemens-energy",
       "company_name": "Siemens Energy",
@@ -26713,6 +26622,66 @@
       "source_url": "https://www.siemens-energy.com",
       "last_checked": "2026-08-28",
       "confidence": "HIGH"
+    },
+    {
+      "id": "fac:siemens-energy:nuremberg",
+      "company_id": "cmp:siemens-energy",
+      "company_name": "Siemens Energy",
+      "facility_name": "Siemens Energy (Nuremberg)",
+      "city": "Nuremberg",
+      "country": "Germany",
+      "region": "Europe",
+      "status": "UNCLEAR",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "produces": "power transformers (since 1912)",
+      "public_count": true,
+      "capabilities": {
+        "transformer_types": [
+          "TR_POWER"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": "power transformers (since 1912)"
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.siemens-energy.com/de/de/home/locations/nuernberg.html",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:siemens-energy:tenjo",
+      "company_id": "cmp:siemens-energy",
+      "company_name": "Siemens Energy",
+      "facility_name": "Siemens Energy (Tenjo)",
+      "city": "Tenjo",
+      "country": "Colombia",
+      "region": "Latin America",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_POWER"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.siemens-energy.com/co/es.html",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
     },
     {
       "id": "fac:siemens-energy:weiz",
@@ -27755,7 +27724,7 @@
       "id": "fac:siemens-pakistan:lahore",
       "company_id": "cmp:siemens-pakistan",
       "company_name": "Siemens Pakistan",
-      "facility_name": "Siemens Pakistan",
+      "facility_name": "Siemens Pakistan — Lahore",
       "city": "Lahore",
       "country": "Pakistan",
       "region": "South Asia",
@@ -27776,10 +27745,10 @@
         "test_capabilities": [],
         "produces": ""
       },
-      "source": "TransformerPath census (site list; status unclassified)",
+      "source": "Company intelligence store (listed plant city)",
       "source_tier": "Tier C",
-      "source_url": "https://www.siemens.com/pk/en.html",
-      "last_checked": "2026-08-28",
+      "source_url": "",
+      "last_checked": "2026-08-15",
       "confidence": "LIMITED"
     },
     {
@@ -28309,11 +28278,11 @@
       "confidence": "LIMITED"
     },
     {
-      "id": "fac:specialtrasfo-spa:italy",
+      "id": "fac:specialtrasfo-spa:agrate-brianza",
       "company_id": "cmp:specialtrasfo-spa",
       "company_name": "Specialtrasfo SpA",
       "facility_name": "Specialtrasfo SpA",
-      "city": "",
+      "city": "Agrate Brianza",
       "country": "Italy",
       "region": "Europe",
       "status": "UNCLEAR",
@@ -28404,7 +28373,7 @@
       "id": "fac:star-delta-transformers-ltd:bhopal",
       "company_id": "cmp:star-delta-transformers-ltd",
       "company_name": "Star Delta Transformers Ltd",
-      "facility_name": "Star Delta Transformers Ltd",
+      "facility_name": "Star Delta Transformers Ltd — Bhopal, Madhya Pradesh",
       "city": "Bhopal, Madhya Pradesh",
       "country": "India",
       "region": "South Asia",
@@ -28425,10 +28394,10 @@
         "test_capabilities": [],
         "produces": ""
       },
-      "source": "TransformerPath census (site list; status unclassified)",
+      "source": "Company intelligence store (listed plant city)",
       "source_tier": "Tier C",
-      "source_url": "https://www.stardelta.in/",
-      "last_checked": "2026-08-28",
+      "source_url": "",
+      "last_checked": "2026-08-15",
       "confidence": "LIMITED"
     },
     {
@@ -28806,7 +28775,7 @@
       "id": "fac:sylvan-technologies-ltd-stl:dhaka",
       "company_id": "cmp:sylvan-technologies-ltd-stl",
       "company_name": "Sylvan Technologies Ltd (STL)",
-      "facility_name": "Sylvan Technologies Ltd (STL)",
+      "facility_name": "Sylvan Technologies Ltd (STL) — Dhaka",
       "city": "Dhaka",
       "country": "Bangladesh",
       "region": "South Asia",
@@ -28827,10 +28796,10 @@
         "test_capabilities": [],
         "produces": ""
       },
-      "source": "TransformerPath census (site list; status unclassified)",
+      "source": "Company intelligence store (listed plant city)",
       "source_tier": "Tier C",
-      "source_url": "https://www.newagebd.net/article/129454/stl-inaugurates-power-transformer-plant",
-      "last_checked": "2026-08-28",
+      "source_url": "",
+      "last_checked": "2026-08-15",
       "confidence": "LIMITED"
     },
     {

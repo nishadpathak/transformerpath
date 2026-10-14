@@ -1,14 +1,14 @@
 {
   "$schema": "https://transformerpath.com/directory.schema.json",
-  "generated": "2026-10-14T10:34:12.256Z",
-  "count": 1195,
+  "generated": "2026-10-14T10:38:59.841Z",
+  "count": 1194,
   "counts": {
     "manufacturers": 899,
     "component_suppliers": 211,
     "machinery_manufacturers": 20,
     "testing_laboratories": 14,
-    "services": 19,
-    "logistics": 14,
+    "services": 18,
+    "logistics": 12,
     "associations": 8,
     "education": 8,
     "buyers": 8,
@@ -9096,11 +9096,11 @@
       ],
       "testing_capability": null,
       "facility_ids": [
-        "fac:bridgeport-magnetics:usa"
+        "fac:bridgeport-magnetics:shelton"
       ],
       "factories": [
         {
-          "city": "",
+          "city": "Shelton, CT",
           "country": "USA",
           "produces": "",
           "claim_type": "",
@@ -9126,9 +9126,9 @@
         "Test bay specifications & utility references"
       ],
       "provenance_type": "OFFICIAL_SOURCE",
-      "last_verified": "2026-08-15",
+      "last_verified": "2026-08-28",
       "research_completeness": 6,
-      "research_status": "ACTIVE_LIMITED_DATA",
+      "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
       "listing_tier": "listed",
@@ -24387,11 +24387,11 @@
       ],
       "testing_capability": null,
       "facility_ids": [
-        "fac:foster-transformer-company:usa"
+        "fac:foster-transformer-company:cincinnati"
       ],
       "factories": [
         {
-          "city": "",
+          "city": "Cincinnati, OH",
           "country": "USA",
           "produces": "",
           "claim_type": "",
@@ -24418,9 +24418,9 @@
         "Test bay specifications & utility references"
       ],
       "provenance_type": "TRANSFORMERPATH_RESEARCHED",
-      "last_verified": "2026-08-15",
+      "last_verified": "2026-08-28",
       "research_completeness": 5,
-      "research_status": "ACTIVE_LIMITED_DATA",
+      "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
       "listing_tier": "listed",
@@ -25385,11 +25385,11 @@
       ],
       "testing_capability": null,
       "facility_ids": [
-        "fac:gangheng-electric:china"
+        "fac:gangheng-electric:jiangshan"
       ],
       "factories": [
         {
-          "city": "",
+          "city": "Jiangshan, Zhejiang",
           "country": "China",
           "produces": "",
           "claim_type": "",
@@ -25415,9 +25415,9 @@
         "Test bay specifications & utility references"
       ],
       "provenance_type": "TRANSFORMERPATH_RESEARCHED",
-      "last_verified": "2026-08-15",
+      "last_verified": "2026-08-28",
       "research_completeness": 6,
-      "research_status": "ACTIVE_LIMITED_DATA",
+      "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
       "listing_tier": "listed",
@@ -26293,7 +26293,7 @@
       "slug": "getra-power",
       "country": "Colombia",
       "region": "Latin America",
-      "website": "https://www.lenergygroup.com/getra-power-afina-su-estrategia-sobre-latinoamerica-para-posicionarse-como-lider-en-transformadores-de-potencia-y-de-distribucion/",
+      "website": "",
       "headquarters": "",
       "product_codes": [
         "PT",
@@ -26325,9 +26325,7 @@
       },
       "certs": [],
       "testing_capability": null,
-      "facility_ids": [
-        "fac:getra-power:colombia"
-      ],
+      "facility_ids": [],
       "factories": [
         {
           "city": "",
@@ -26338,21 +26336,22 @@
         }
       ],
       "capability_evidence": {
-        "products": "INFERRED",
+        "products": "UNKNOWN",
         "voltage": "UNKNOWN",
         "mva": "UNKNOWN"
       },
-      "evidence": "INFERRED",
+      "evidence": "UNKNOWN",
       "claim_type": "INFERRED",
       "confidence": "LIMITED",
       "source_meta": {
         "source_title": "",
         "source_type": "",
-        "source_url": "https://www.lenergygroup.com/getra-power-afina-su-estrategia-sobre-latinoamerica-para-posicionarse-como-lider-en-transformadores-de-potencia-y-de-distribucion/"
+        "source_url": ""
       },
-      "completeness_score": 50,
+      "completeness_score": 40,
       "missing_fields": [
         "Headquarters address",
+        "Official corporate website",
         "Maximum voltage rating",
         "Maximum unit MVA / rating",
         "Standards compliance (IEC/IEEE) & ISO certifications",
@@ -26360,18 +26359,18 @@
       ],
       "provenance_type": "PUBLIC_SOURCE",
       "last_verified": "2026-08-15",
-      "research_completeness": 4,
-      "research_status": "ACTIVE_LIMITED_DATA",
+      "research_completeness": 2,
+      "research_status": "UNVERIFIED",
       "commercial_status": "LISTED",
       "featured": false,
       "listing_tier": "listed",
       "verified": false,
       "sources": {
-        "website": "https://www.lenergygroup.com/getra-power-afina-su-estrategia-sobre-latinoamerica-para-posicionarse-como-lider-en-transformadores-de-potencia-y-de-distribucion/",
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       },
-      "factory_count": 1
+      "factory_count": 0
     },
     {
       "id": "cmp:global-transformers-and-switchgear-gts",
@@ -27563,7 +27562,7 @@
       "slug": "hainan-jinpan-jinpan-group-guilin-yangzhou",
       "country": "China",
       "region": "East Asia",
-      "website": "https://markets.ft.markitdigital.com/data/equities/tearsheet/profile?s=688676:SHH",
+      "website": "",
       "headquarters": "",
       "product_codes": [
         "DRY"
@@ -27614,26 +27613,27 @@
       "source_meta": {
         "source_title": "",
         "source_type": "",
-        "source_url": "https://markets.ft.markitdigital.com/data/equities/tearsheet/profile?s=688676:SHH"
+        "source_url": ""
       },
-      "completeness_score": 50,
+      "completeness_score": 40,
       "missing_fields": [
         "Headquarters address",
+        "Official corporate website",
         "Maximum voltage rating",
         "Maximum unit MVA / rating",
         "Standards compliance (IEC/IEEE) & ISO certifications",
         "Test bay specifications & utility references"
       ],
       "provenance_type": "PUBLIC_SOURCE",
-      "last_verified": "2026-08-28",
-      "research_completeness": 4,
-      "research_status": "ACTIVE_CONFIRMED",
+      "last_verified": "2026-08-15",
+      "research_completeness": 2,
+      "research_status": "RESEARCH_REQUIRED",
       "commercial_status": "LISTED",
       "featured": false,
       "listing_tier": "listed",
       "verified": false,
       "sources": {
-        "website": "https://markets.ft.markitdigital.com/data/equities/tearsheet/profile?s=688676:SHH",
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       },
@@ -35656,7 +35656,7 @@
       "slug": "jefferson-electric-voltaris",
       "country": "USA",
       "region": "North America",
-      "website": "https://www.jeffersonelectric.com/",
+      "website": "https://voltarispower.com/",
       "headquarters": "",
       "product_codes": [
         "DRY"
@@ -35710,7 +35710,7 @@
       "source_meta": {
         "source_title": "Jefferson Electric / Pioneer Power Solutions SEC Filings",
         "source_type": "industry_publication",
-        "source_url": "https://www.jeffersonelectric.com/"
+        "source_url": "https://voltarispower.com/"
       },
       "completeness_score": 85,
       "missing_fields": [
@@ -35726,7 +35726,7 @@
       "listing_tier": "listed",
       "verified": false,
       "sources": {
-        "website": "https://www.jeffersonelectric.com/",
+        "website": "https://voltarispower.com/",
         "capability_source": "Jefferson Electric / Pioneer Power Solutions SEC Filings",
         "capability_note": "Dry-type transformer production capacity benchmarked in public regulatory filings."
       },
@@ -36669,7 +36669,7 @@
       "slug": "jordan-transformer-manufacturing-co-jtm-meco",
       "country": "Jordan",
       "region": "Middle East",
-      "website": "https://www.jordantransformer.com/",
+      "website": "",
       "headquarters": "",
       "product_codes": [
         "PT",
@@ -36724,26 +36724,27 @@
       "source_meta": {
         "source_title": "",
         "source_type": "",
-        "source_url": "https://www.jordantransformer.com/"
+        "source_url": ""
       },
-      "completeness_score": 50,
+      "completeness_score": 40,
       "missing_fields": [
         "Headquarters address",
+        "Official corporate website",
         "Maximum voltage rating",
         "Maximum unit MVA / rating",
         "Standards compliance (IEC/IEEE) & ISO certifications",
         "Test bay specifications & utility references"
       ],
       "provenance_type": "PUBLIC_SOURCE",
-      "last_verified": "2026-08-28",
-      "research_completeness": 4,
-      "research_status": "ACTIVE_CONFIRMED",
+      "last_verified": "2026-08-15",
+      "research_completeness": 2,
+      "research_status": "RESEARCH_REQUIRED",
       "commercial_status": "LISTED",
       "featured": false,
       "listing_tier": "listed",
       "verified": false,
       "sources": {
-        "website": "https://www.jordantransformer.com/",
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       },
@@ -36880,11 +36881,11 @@
       "certs": [],
       "testing_capability": null,
       "facility_ids": [
-        "fac:jst-transformateurs:france"
+        "fac:jst-transformateurs:lyon"
       ],
       "factories": [
         {
-          "city": "",
+          "city": "Lyon",
           "country": "France",
           "produces": "",
           "claim_type": "",
@@ -36913,9 +36914,9 @@
         "Test bay specifications & utility references"
       ],
       "provenance_type": "PUBLIC_SOURCE",
-      "last_verified": "2026-08-15",
+      "last_verified": "2026-08-28",
       "research_completeness": 4,
-      "research_status": "ACTIVE_LIMITED_DATA",
+      "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
       "listing_tier": "listed",
@@ -42138,7 +42139,7 @@
       "slug": "maroc-transfo",
       "country": "Morocco",
       "region": "Africa",
-      "website": "https://www.kerix.net/fr/annuaire-entreprise/maroc-transfo",
+      "website": "",
       "headquarters": "",
       "product_codes": [
         "DT"
@@ -42189,26 +42190,27 @@
       "source_meta": {
         "source_title": "",
         "source_type": "",
-        "source_url": "https://www.kerix.net/fr/annuaire-entreprise/maroc-transfo"
+        "source_url": ""
       },
-      "completeness_score": 50,
+      "completeness_score": 40,
       "missing_fields": [
         "Headquarters address",
+        "Official corporate website",
         "Maximum voltage rating",
         "Maximum unit MVA / rating",
         "Standards compliance (IEC/IEEE) & ISO certifications",
         "Test bay specifications & utility references"
       ],
       "provenance_type": "PUBLIC_SOURCE",
-      "last_verified": "2026-08-28",
-      "research_completeness": 4,
-      "research_status": "ACTIVE_CONFIRMED",
+      "last_verified": "2026-08-15",
+      "research_completeness": 2,
+      "research_status": "RESEARCH_REQUIRED",
       "commercial_status": "LISTED",
       "featured": false,
       "listing_tier": "listed",
       "verified": false,
       "sources": {
-        "website": "https://www.kerix.net/fr/annuaire-entreprise/maroc-transfo",
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       },
@@ -52616,7 +52618,7 @@
       "slug": "r-e-uptegraff-mfg",
       "country": "USA",
       "region": "North America",
-      "website": "https://www.datasheets.com/es/manufacturer/r--e--uptegraff-manufacturing-co-43666",
+      "website": "",
       "headquarters": "",
       "product_codes": [
         "DT"
@@ -52667,26 +52669,27 @@
       "source_meta": {
         "source_title": "",
         "source_type": "",
-        "source_url": "https://www.datasheets.com/es/manufacturer/r--e--uptegraff-manufacturing-co-43666"
+        "source_url": ""
       },
-      "completeness_score": 50,
+      "completeness_score": 40,
       "missing_fields": [
         "Headquarters address",
+        "Official corporate website",
         "Maximum voltage rating",
         "Maximum unit MVA / rating",
         "Standards compliance (IEC/IEEE) & ISO certifications",
         "Test bay specifications & utility references"
       ],
       "provenance_type": "PUBLIC_SOURCE",
-      "last_verified": "2026-08-28",
-      "research_completeness": 4,
-      "research_status": "ACTIVE_CONFIRMED",
+      "last_verified": "2026-08-15",
+      "research_completeness": 2,
+      "research_status": "RESEARCH_REQUIRED",
       "commercial_status": "LISTED",
       "featured": false,
       "listing_tier": "listed",
       "verified": false,
       "sources": {
-        "website": "https://www.datasheets.com/es/manufacturer/r--e--uptegraff-manufacturing-co-43666",
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       },
@@ -55487,7 +55490,7 @@
       "slug": "samil-transformer",
       "country": "South Korea",
       "region": "East Asia",
-      "website": "http://www.koreaittimes.com/news/articleView.html?idxno=26112",
+      "website": "",
       "headquarters": "",
       "product_codes": [
         "DT",
@@ -55542,26 +55545,27 @@
       "source_meta": {
         "source_title": "",
         "source_type": "",
-        "source_url": "http://www.koreaittimes.com/news/articleView.html?idxno=26112"
+        "source_url": ""
       },
-      "completeness_score": 50,
+      "completeness_score": 40,
       "missing_fields": [
         "Headquarters address",
+        "Official corporate website",
         "Maximum voltage rating",
         "Maximum unit MVA / rating",
         "Standards compliance (IEC/IEEE) & ISO certifications",
         "Test bay specifications & utility references"
       ],
       "provenance_type": "PUBLIC_SOURCE",
-      "last_verified": "2026-08-28",
-      "research_completeness": 4,
-      "research_status": "ACTIVE_CONFIRMED",
+      "last_verified": "2026-08-15",
+      "research_completeness": 2,
+      "research_status": "RESEARCH_REQUIRED",
       "commercial_status": "LISTED",
       "featured": false,
       "listing_tier": "listed",
       "verified": false,
       "sources": {
-        "website": "http://www.koreaittimes.com/news/articleView.html?idxno=26112",
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       },
@@ -61443,20 +61447,6 @@
           "source_url": ""
         },
         {
-          "city": "Tenjo",
-          "country": "Colombia",
-          "produces": "",
-          "claim_type": "",
-          "source_url": ""
-        },
-        {
-          "city": "Nuremberg",
-          "country": "Germany",
-          "produces": "",
-          "claim_type": "",
-          "source_url": ""
-        },
-        {
           "city": "Nuremberg",
           "country": "Germany",
           "produces": "power transformers (since 1912)",
@@ -61483,6 +61473,13 @@
           "produces": "transformer service",
           "claim_type": "INDEPENDENTLY_SOURCED",
           "source_url": "https://www.siemens-energy.com"
+        },
+        {
+          "city": "Tenjo",
+          "country": "Colombia",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
         }
       ],
       "capability_evidence": {
@@ -61513,7 +61510,7 @@
         "capability_source": "Siemens Energy Annual Report & Factory Records",
         "capability_note": "Global power transformer manufacturing network capacity based on annual corporate reporting and factory disclosures."
       },
-      "factory_count": 10
+      "factory_count": 6
     },
     {
       "id": "cmp:siemens-energy-transformers-weiz",
@@ -62173,7 +62170,7 @@
       "slug": "siemens-pakistan",
       "country": "Pakistan",
       "region": "South Asia",
-      "website": "https://www.siemens.com/pk/en.html",
+      "website": "",
       "headquarters": "",
       "product_codes": [
         "PT",
@@ -62228,26 +62225,27 @@
       "source_meta": {
         "source_title": "",
         "source_type": "",
-        "source_url": "https://www.siemens.com/pk/en.html"
+        "source_url": ""
       },
-      "completeness_score": 50,
+      "completeness_score": 40,
       "missing_fields": [
         "Headquarters address",
+        "Official corporate website",
         "Maximum voltage rating",
         "Maximum unit MVA / rating",
         "Standards compliance (IEC/IEEE) & ISO certifications",
         "Test bay specifications & utility references"
       ],
       "provenance_type": "PUBLIC_SOURCE",
-      "last_verified": "2026-08-28",
-      "research_completeness": 4,
-      "research_status": "ACTIVE_CONFIRMED",
+      "last_verified": "2026-08-15",
+      "research_completeness": 2,
+      "research_status": "RESEARCH_REQUIRED",
       "commercial_status": "LISTED",
       "featured": false,
       "listing_tier": "listed",
       "verified": false,
       "sources": {
-        "website": "https://www.siemens.com/pk/en.html",
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       },
@@ -63431,11 +63429,11 @@
       ],
       "testing_capability": null,
       "facility_ids": [
-        "fac:specialtrasfo-spa:italy"
+        "fac:specialtrasfo-spa:agrate-brianza"
       ],
       "factories": [
         {
-          "city": "",
+          "city": "Agrate Brianza",
           "country": "Italy",
           "produces": "",
           "claim_type": "",
@@ -63462,9 +63460,9 @@
         "Test bay specifications & utility references"
       ],
       "provenance_type": "TRANSFORMERPATH_RESEARCHED",
-      "last_verified": "2026-08-15",
+      "last_verified": "2026-08-28",
       "research_completeness": 5,
-      "research_status": "ACTIVE_LIMITED_DATA",
+      "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
       "listing_tier": "listed",
@@ -63665,7 +63663,7 @@
       "slug": "star-delta-transformers-ltd",
       "country": "India",
       "region": "South Asia",
-      "website": "https://www.stardelta.in/",
+      "website": "",
       "headquarters": "",
       "product_codes": [
         "DT",
@@ -63720,26 +63718,27 @@
       "source_meta": {
         "source_title": "",
         "source_type": "",
-        "source_url": "https://www.stardelta.in/"
+        "source_url": ""
       },
-      "completeness_score": 50,
+      "completeness_score": 40,
       "missing_fields": [
         "Headquarters address",
+        "Official corporate website",
         "Maximum voltage rating",
         "Maximum unit MVA / rating",
         "Standards compliance (IEC/IEEE) & ISO certifications",
         "Test bay specifications & utility references"
       ],
       "provenance_type": "PUBLIC_SOURCE",
-      "last_verified": "2026-08-28",
-      "research_completeness": 4,
-      "research_status": "ACTIVE_CONFIRMED",
+      "last_verified": "2026-08-15",
+      "research_completeness": 2,
+      "research_status": "RESEARCH_REQUIRED",
       "commercial_status": "LISTED",
       "featured": false,
       "listing_tier": "listed",
       "verified": false,
       "sources": {
-        "website": "https://www.stardelta.in/",
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       },
@@ -64844,7 +64843,7 @@
       "slug": "sylvan-technologies-ltd-stl",
       "country": "Bangladesh",
       "region": "South Asia",
-      "website": "https://www.newagebd.net/article/129454/stl-inaugurates-power-transformer-plant",
+      "website": "",
       "headquarters": "",
       "product_codes": [
         "PT",
@@ -64899,26 +64898,27 @@
       "source_meta": {
         "source_title": "",
         "source_type": "",
-        "source_url": "https://www.newagebd.net/article/129454/stl-inaugurates-power-transformer-plant"
+        "source_url": ""
       },
-      "completeness_score": 50,
+      "completeness_score": 40,
       "missing_fields": [
         "Headquarters address",
+        "Official corporate website",
         "Maximum voltage rating",
         "Maximum unit MVA / rating",
         "Standards compliance (IEC/IEEE) & ISO certifications",
         "Test bay specifications & utility references"
       ],
       "provenance_type": "PUBLIC_SOURCE",
-      "last_verified": "2026-08-28",
-      "research_completeness": 4,
-      "research_status": "ACTIVE_CONFIRMED",
+      "last_verified": "2026-08-15",
+      "research_completeness": 2,
+      "research_status": "RESEARCH_REQUIRED",
       "commercial_status": "LISTED",
       "featured": false,
       "listing_tier": "listed",
       "verified": false,
       "sources": {
-        "website": "https://www.newagebd.net/article/129454/stl-inaugurates-power-transformer-plant",
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       },
@@ -98269,7 +98269,7 @@
       "slug": "iph-berlin",
       "country": "Germany",
       "region": "Berlin",
-      "website": "https://www.cesi.it/kema-labs/locations/berlin/",
+      "website": "https://www.cesi.it/labs/berlin/",
       "headquarters": "Berlin, Germany",
       "product_codes": [
         "LAB_TESTING"
@@ -98294,7 +98294,7 @@
         "unit": "kV"
       },
       "mva": {
-        "value": "High-power test bays with multiple 3,000 MVA short-circuit generators",
+        "value": "2 × 1200 MVA short-circuit generators (maximum 2400 MVA)",
         "num": null,
         "unit": "MVA"
       },
@@ -98313,18 +98313,18 @@
       "claim_type": "INDEPENDENTLY_SOURCED",
       "confidence": "HIGH",
       "source_meta": {
-        "source_title": "DAkkS accreditation registry",
+        "source_title": "https://www.cesi.it/labs/berlin/",
         "source_type": "official_accreditation",
-        "source_url": "https://www.cesi.it/kema-labs/locations/berlin/"
+        "source_url": "https://www.cesi.it/labs/berlin/"
       },
       "research_completeness": 9,
       "completeness_score": 95,
       "provenance_type": "OFFICIAL_SOURCE",
-      "last_verified": "2026-08-10",
+      "last_verified": "2026-10-14",
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "",
       "sources": {
-        "website": "https://www.cesi.it/kema-labs/locations/berlin/"
+        "website": "https://www.cesi.it/labs/berlin/"
       },
       "factory_count": 0,
       "featured": false,
@@ -98342,7 +98342,7 @@
       "slug": "kema-labs-arnhem",
       "country": "Netherlands",
       "region": "Arnhem",
-      "website": "https://www.cesi.it/kema-labs/",
+      "website": "https://www.cesi.it/labs/arnhem/",
       "headquarters": "Arnhem, Netherlands",
       "product_codes": [
         "LAB_TESTING"
@@ -98367,7 +98367,7 @@
         "unit": "kV"
       },
       "mva": {
-        "value": "10,000 MVA (world's highest capacity independent test bay)",
+        "value": "13000 MVA (six 2100 MVA short-circuit generators)",
         "num": null,
         "unit": "MVA"
       },
@@ -98386,18 +98386,18 @@
       "claim_type": "INDEPENDENTLY_SOURCED",
       "confidence": "HIGH",
       "source_meta": {
-        "source_title": "RvA accreditation directory & CESI KEMA published scope",
+        "source_title": "https://www.cesi.it/labs/arnhem/",
         "source_type": "official_accreditation",
-        "source_url": "https://www.cesi.it/kema-labs/"
+        "source_url": "https://www.cesi.it/labs/arnhem/"
       },
       "research_completeness": 9,
       "completeness_score": 95,
       "provenance_type": "OFFICIAL_SOURCE",
-      "last_verified": "2026-08-20",
+      "last_verified": "2026-10-14",
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "",
       "sources": {
-        "website": "https://www.cesi.it/kema-labs/"
+        "website": "https://www.cesi.it/labs/arnhem/"
       },
       "factory_count": 0,
       "featured": false,
@@ -98415,7 +98415,7 @@
       "slug": "kema-labs-milan",
       "country": "Italy",
       "region": "Milan",
-      "website": "https://www.cesi.it/kema-labs/",
+      "website": "https://www.cesi.it/labs/milan/",
       "headquarters": "Milan, Italy",
       "product_codes": [
         "LAB_TESTING"
@@ -98459,18 +98459,18 @@
       "claim_type": "INDEPENDENTLY_SOURCED",
       "confidence": "HIGH",
       "source_meta": {
-        "source_title": "ACCREDIA laboratory registry",
+        "source_title": "https://www.cesi.it/labs/milan/",
         "source_type": "official_accreditation",
-        "source_url": "https://www.cesi.it/kema-labs/"
+        "source_url": "https://www.cesi.it/labs/milan/"
       },
       "research_completeness": 9,
       "completeness_score": 95,
       "provenance_type": "OFFICIAL_SOURCE",
-      "last_verified": "2026-08-20",
+      "last_verified": "2026-10-14",
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "",
       "sources": {
-        "website": "https://www.cesi.it/kema-labs/"
+        "website": "https://www.cesi.it/labs/milan/"
       },
       "factory_count": 0,
       "featured": false,
@@ -99345,7 +99345,7 @@
       "slug": "hitachi-energy-service",
       "country": "Switzerland",
       "region": "Zurich",
-      "website": "https://www.hitachienergy.com/offering/product-and-system/transformers/transformer-service",
+      "website": "https://www.hitachienergy.com/products-and-solutions/transformers/transformer-service",
       "headquarters": "Zurich, Switzerland",
       "product_codes": [
         "SERVICE_REPAIR"
@@ -99394,16 +99394,16 @@
       "source_meta": {
         "source_title": "Official website verification",
         "source_type": "company_documentation",
-        "source_url": "https://www.hitachienergy.com/offering/product-and-system/transformers/transformer-service"
+        "source_url": "https://www.hitachienergy.com/products-and-solutions/transformers/transformer-service"
       },
       "research_completeness": 8,
       "completeness_score": 90,
       "provenance_type": "OFFICIAL_SOURCE",
-      "last_verified": "2026-09-11",
+      "last_verified": "2026-10-14",
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "",
       "sources": {
-        "website": "https://www.hitachienergy.com/offering/product-and-system/transformers/transformer-service"
+        "website": "https://www.hitachienergy.com/products-and-solutions/transformers/transformer-service"
       },
       "factory_count": 0,
       "featured": false,
@@ -99552,74 +99552,6 @@
       "listing_tier": "listed"
     },
     {
-      "id": "cmp:s-d-myers",
-      "canonical_id": "cmp:s-d-myers",
-      "roles": [
-        "Transformer Service Provider"
-      ],
-      "kind": "service_repair",
-      "name": "S.D. Myers",
-      "slug": "sdmyers",
-      "country": "USA",
-      "region": "Ohio",
-      "website": "https://www.sdmyers.com/",
-      "headquarters": "Tallmadge, USA",
-      "product_codes": [
-        "SERVICE_REPAIR"
-      ],
-      "capability_labels": [
-        "Oil Processing & Vacuum Filling",
-        "Fleet Condition Assessment",
-        "Field Service & Commissioning"
-      ],
-      "transformer_types": {
-        "power": {},
-        "distribution": {},
-        "dry_type": {},
-        "special": {}
-      },
-      "voltage": {
-        "value": "",
-        "num": null,
-        "unit": "kV"
-      },
-      "mva": {
-        "value": "",
-        "num": null,
-        "unit": "MVA"
-      },
-      "certs": [],
-      "testing_capability": "On-Site Diagnostic Testing & Overhaul",
-      "facility_ids": [],
-      "factories": [],
-      "capability_evidence": {
-        "products": "CONFIRMED",
-        "voltage": "CONFIRMED",
-        "mva": "CONFIRMED"
-      },
-      "evidence": "CONFIRMED",
-      "claim_type": "INDEPENDENTLY_SOURCED",
-      "confidence": "HIGH",
-      "source_meta": {
-        "source_title": "Official website verification",
-        "source_type": "company_documentation",
-        "source_url": "https://www.sdmyers.com/"
-      },
-      "research_completeness": 8,
-      "completeness_score": 90,
-      "provenance_type": "OFFICIAL_SOURCE",
-      "last_verified": "2026-09-13",
-      "research_status": "ACTIVE_CONFIRMED",
-      "commercial_status": "",
-      "sources": {
-        "website": "https://www.sdmyers.com/"
-      },
-      "factory_count": 0,
-      "featured": false,
-      "verified": false,
-      "listing_tier": "listed"
-    },
-    {
       "id": "cmp:sd-myers-llc",
       "canonical_id": "cmp:sd-myers-llc",
       "roles": [
@@ -99681,7 +99613,7 @@
       "research_completeness": 8,
       "completeness_score": 90,
       "provenance_type": "OFFICIAL_SOURCE",
-      "last_verified": "2026-09-11",
+      "last_verified": "2026-10-14",
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "",
       "sources": {
@@ -100485,8 +100417,8 @@
       "listing_tier": "listed"
     },
     {
-      "id": "cmp:fagioli",
-      "canonical_id": "cmp:fagioli",
+      "id": "cmp:fagioli-s-p-a",
+      "canonical_id": "cmp:fagioli-s-p-a",
       "roles": [
         "Logistics & Heavy Transport"
       ],
@@ -100504,9 +100436,7 @@
         "Heavy Road Haulage & Girder Frames",
         "Rail Transport",
         "Ocean & River Vessel Charter",
-        "Strand Jack & Tower Gantry Lifting",
-        "Hydraulic Multi-Axle Platform Trailers (SPMT)",
-        "Heavy Crane Rigging"
+        "Strand Jack & Tower Gantry Lifting"
       ],
       "transformer_types": {
         "power": {},
@@ -100548,7 +100478,7 @@
       "research_completeness": 8,
       "completeness_score": 85,
       "provenance_type": "OFFICIAL_SOURCE",
-      "last_verified": "2026-09-11",
+      "last_verified": "2026-10-14",
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "",
       "sources": {
@@ -100560,8 +100490,8 @@
       "listing_tier": "listed"
     },
     {
-      "id": "cmp:felbermayr",
-      "canonical_id": "cmp:felbermayr",
+      "id": "cmp:felbermayr-transport-und-hebetechnik",
+      "canonical_id": "cmp:felbermayr-transport-und-hebetechnik",
       "roles": [
         "Logistics & Heavy Transport"
       ],
@@ -100579,10 +100509,7 @@
         "Rail Transport (Own 32-Axle Schnabel Rail Wagon)",
         "Girder Bridge Road Transporters",
         "Inland Waterway / Danube Barging",
-        "Jack-and-Slide Substation Rigging",
-        "Hydraulic Multi-Axle Platform Trailers (SPMT)",
-        "Rail Schnabel Transport",
-        "Barge & Ocean Vessel"
+        "Jack-and-Slide Substation Rigging"
       ],
       "transformer_types": {
         "power": {},
@@ -100624,7 +100551,7 @@
       "research_completeness": 8,
       "completeness_score": 85,
       "provenance_type": "OFFICIAL_SOURCE",
-      "last_verified": "2026-09-11",
+      "last_verified": "2026-10-14",
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "",
       "sources": {
