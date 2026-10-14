@@ -128,7 +128,14 @@
     <div class="section-head"><h2>Sponsorship Opportunities</h2><p>Limited slots — one sponsor per category per month keeps your brand exclusive.</p></div>
     <div class="grid grid-2">
       <div class="card"><span class="emoji" aria-hidden="true">📬</span><h3>Daily Brief Sponsor</h3><p>"Presented by" placement in the daily intel email and web briefing. One sponsor per month, category-exclusive.</p></div>
-      <div class="card"><span class="emoji" aria-hidden="true">🎪</span><h3>Event Spotlight</h3><p>Feature your exhibition event to the transformer community — from a listing highlight to full event promotion.</p></div>
+      <div class="card"><span class="emoji" aria-hidden="true">🎪</span><h3>Event Spotlight</h3><p>Feature your exhibition event to the transformer community — from a listing highlight to full event promotion.</p>
+        <div class="paid-checkout" data-product="featured_event" data-fallback="#sForm" style="margin-top:10px">
+          <input class="paid-checkout-event" type="text" placeholder="Event id" aria-label="Event id" style="width:100%;margin:0 0 8px;padding:8px 10px;border:1px solid var(--border);border-radius:8px">
+          <input class="paid-checkout-email" type="email" placeholder="Work email" aria-label="Work email" style="width:100%;margin:0 0 8px;padding:8px 10px;border:1px solid var(--border);border-radius:8px">
+          <button type="button" class="btn btn-amber btn-sm paid-checkout-btn">Feature this event — $299</button>
+          <p id="paidCheckoutNote" style="color:var(--muted);font-size:.8rem;margin:8px 0 0">If checkout is unavailable, use the enquiry form.</p>
+        </div>
+      </div>
       <div class="card"><span class="emoji" aria-hidden="true">🏢</span><h3>Featured Exhibitor</h3><p>Raise your stand above the floor plan with a featured exhibitor card on the relevant event page.</p></div>
       <div class="card" id="hosted-webinar"><span class="emoji" aria-hidden="true">🎥</span><h3>Hosted Webinar</h3><p>Run a technical TransformerPath webinar — registration, moderation, hosting, recording and post-event replay. From $1,500 per engagement. Inquiry by email or the form below — not a live Stripe checkout.</p><p style="margin:10px 0 0"><a class="btn btn-amber btn-sm" href="mailto:hello@transformerpath.com?subject=Hosted%20Webinar%20inquiry" data-track="webinar_inquiry" data-track-plan="Hosted Webinar">Email to host a webinar →</a> <a href="webinars.html" style="font-size:.82rem;font-weight:700;color:var(--accent);margin-left:8px">See the webinar directory</a></p></div>
       <div class="card"><span class="emoji" aria-hidden="true">🗂️</span><h3>Category Sponsor</h3><p>Exclusive sponsorship of a component or product category (bushings, OLTC, insulation…).</p></div>
@@ -204,6 +211,7 @@
   </div>
 </footer>
 
+<script src="paid-checkout.js" defer></script>
 <script src="analytics.js?v=7" defer></script>
 <script src="tp-freshness.js?v=7" defer></script>
 <script src="tp-feedback.js?v=7" defer></script>

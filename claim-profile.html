@@ -185,7 +185,12 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
         <div style="font-size:3rem">&#9989;</div>
         <h2 style="color:var(--ink);margin:8px 0">Profile Claim Received</h2>
         <p style="color:var(--muted);max-width:480px;margin:0 auto 18px">Thank you. Your claim has been submitted to the TransformerPath moderation queue. We will verify your credentials against the corporate domain and confirm within 1 business day.</p>
-        <a href="directory.html" class="btn btn-amber" style="display:inline-block">Return to Directory &rarr;</a>
+        <div class="paid-checkout" id="claimPay" data-product="verified_manufacturer" data-fallback="mailto:hello@transformerpath.com?subject=Verified%20Manufacturer%20%24499" style="max-width:420px;margin:0 auto 16px">
+          <input class="paid-checkout-email" id="claimPayEmail" type="email" placeholder="Work email" aria-label="Work email" style="width:100%;margin:0 0 8px;padding:8px 10px;border:1px solid var(--border);border-radius:8px">
+          <button type="button" class="btn btn-amber paid-checkout-btn">Pay $499 — Get Verified</button>
+          <p id="paidCheckoutNote" style="color:var(--muted);font-size:.82rem;margin:8px 0 0">If checkout is unavailable, we will email a payment link.</p>
+        </div>
+        <a href="directory.html" class="btn btn-outline" style="display:inline-block">Return to Directory &rarr;</a>
       </div>
 
       <script>
@@ -205,10 +210,21 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
           var body = new URLSearchParams(new FormData(f)).toString();
           fetch('/', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:body}).then(done).catch(done);
         });
+        function slugify(s) {
+          return String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim()
+            .replace(/&/g, 'and').replace(/['’´]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+        }
         function done(){
+          var pay = document.getElementById('claimPay');
+          var emailEl = document.getElementById('fld_email');
+          var companyEl = document.getElementById('fld_company');
+          if (pay) pay.setAttribute('data-company-slug', slugify(companyEl && companyEl.value));
+          var payEmail = document.getElementById('claimPayEmail');
+          if (payEmail && emailEl) payEmail.value = emailEl.value;
           f.style.display = 'none';
           var t = document.getElementById('claimThanks');
           t.style.display = 'block';
+          if (window.tpPaidCheckoutBoot) window.tpPaidCheckoutBoot();
           t.scrollIntoView({behavior:'smooth', block:'center'});
         }
       })();
@@ -241,6 +257,7 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
   </div>
 </footer>
 
+<script src="paid-checkout.js" defer></script>
 <script src="analytics.js?v=7" defer></script>
 <script src="tp-freshness.js?v=7" defer></script>
 <script src="tp-feedback.js?v=7" defer></script>

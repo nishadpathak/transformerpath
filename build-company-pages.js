@@ -30,8 +30,11 @@ const ci = function (s) { return (s || '').toLowerCase(); };
 const norm = function (s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim().replace(/\s+/g, ' '); };
 
 const { resolveCompanyAlias, norm: aliasNorm } = require('./lib/company-aliases');
+<<<<<<< HEAD
 const { isUpcoming } = require('./lib/event-status');
 const { splitEntityIntel, fold: foldEntity } = require('./lib/entity-intel');
+const paidListings = require('./lib/paid-listings');
+const PAID_LISTINGS = paidListings.load();
 const MANUF = JSON.parse(fs.readFileSync('data/manufacturers.json', 'utf8'));
 const TIERS = JSON.parse(fs.readFileSync('data/manufacturer-tiers.json', 'utf8'));
 const EVENTS = JSON.parse(fs.readFileSync('data/events.json', 'utf8'));
@@ -522,7 +525,12 @@ function page(r, slug) {
     '</head>\n<body>\n' + HEAD + '\n<main id="main" tabindex="-1" class="c-wrap">' +
     '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="../../manufacturers.html" style="color:var(--accent)">Manufacturers</a> › ' + crumbCountry + ' › ' + esc(r.name) + '</nav>' +
     '<h1>' + esc(r.name) + ' <button class="follow-btn" data-follow-type="company" data-follow-subject="' + esc(r.name) + '" data-follow-label="' + esc(r.name) + '" title="Follow this manufacturer in My TransformerPath">Follow</button></h1>' +
+<<<<<<< HEAD
     '<p class="lead">' + esc(leadText) + '</p>' +
+=======
+    paidListings.manufacturerBadgeHtml(slug, PAID_LISTINGS) +
+    '<p class="lead">Independent company profile covering reported transformer capabilities, markets, related industry developments and relevant events.</p>' +
+>>>>>>> 3ca2ebebe (Add Checkout for Verified Manufacturer and Featured Event.)
     '<p style="font-size:.9rem;color:var(--muted);margin:6px 0 0">' + (r.flag || '') + ' <b style="color:var(--text)">' + esc(r.country) + '</b>' + (r.city ? ' · ' + esc(r.city) : '') + ' · <span style="color:var(--accent)">' + verify + '</span>' + (r.url ? ' · <a href="' + esc(r.url) + '" target="_blank" rel="noopener nofollow" data-track="official_website_click" data-track-manufacturer="' + esc(r.name) + '" style="color:var(--accent)">Official website ↗</a>' : '') + '</p>' +
     trust +
     completenessCard +
@@ -545,12 +553,18 @@ function page(r, slug) {
     '<h2>Upcoming events</h2><ul>' + evHtml + '</ul>' +
     '<p style="font-size:.72rem;color:var(--muted)">Last reviewed: ' + lastReviewed + '.</p>' +
     '<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:22px"><b style="color:var(--text)">Represent this company?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Claim and update this profile to keep its capabilities, markets and verification accurate.</p>' +
-    '<a class="btn btn-outline btn-sm" href="../../claim-profile.html?company=' + encodeURIComponent(r.name) + '" data-track="supplier_claim_started" data-track-manufacturer="' + esc(r.name) + '">Claim this profile →</a></div>' +
+    '<a class="btn btn-outline btn-sm" href="../../claim-profile.html?company=' + encodeURIComponent(r.name) + '" data-track="supplier_claim_started" data-track-manufacturer="' + esc(r.name) + '">Claim this profile →</a>' +
+    paidListings.checkoutWidget({
+      product: 'verified_manufacturer',
+      companySlug: slug,
+      fallback: '../../claim-profile.html?company=' + encodeURIComponent(r.name),
+      button: 'Pay $499 — Get Verified'
+    }) + '</div>' +
     '<div class="card" style="background:var(--bg);border:1px solid var(--border);padding:16px 18px;text-align:center;margin-top:14px"><b style="color:var(--text)">Find something inaccurate?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Tell us what and why, with a source where you can. Corrections are reviewed against a source before they are applied — they are never auto-overwritten.</p>' +
     '<a class="btn btn-outline btn-sm" href="../../correct-company.html?company=' + encodeURIComponent(r.name) + '" data-track="manufacturer_correction_started" data-track-manufacturer="' + esc(r.name) + '">Suggest a correction →</a></div>' +
     '<div class="card" style="background:var(--bg);border:1px solid var(--border);padding:16px 18px;text-align:center;margin-top:14px"><b style="color:var(--text)">Looking for transformer suppliers?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Submit a technical requirement for supplier matching across the ' + esc(r.country) + ' and regional manufacturing base.</p>' +
     '<a class="btn btn-amber" href="../../rfq.html" data-track="rfq_started" data-track-manufacturer="' + esc(r.name) + '">Submit an RFQ</a> <a class="btn btn-outline btn-sm" href="../../compare.html?m=' + esc(r.slug) + '" data-track="manufacturer_compare" data-track-manufacturer="' + esc(r.name) + '">Compare with others →</a></div>' +
-    '</main>\n' + FOOT + '\n<script src="../../analytics.js?v=2" defer></script>\n<script src="../../follow-button.js" defer></script>\n</body>\n</html>';
+    '</main>\n' + FOOT + '\n<script src="../../analytics.js?v=2" defer></script>\n<script src="../../follow-button.js" defer></script>\n<script src="../../paid-checkout.js" defer></script>\n</body>\n</html>';
 }
 
 fs.mkdirSync('manufacturers', { recursive: true });

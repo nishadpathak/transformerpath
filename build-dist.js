@@ -67,7 +67,7 @@ const ROOT_JS = [
   'site-stats.js', 'supabase-config.js', 'supabase.js', 'sw.js',
   'tp-affiliate.js', 'tp-directory.js', 'tp-feedback.js', 'tp-freshness.js', 'tp-nav.js', 'tp-pwa.js',
   'tp-theme.js', 'tp-shortlist.js', 'tp-watchlist.js', 'map.js',
-  'tp-webgl-gate.js',
+  'tp-webgl-gate.js', 'paid-checkout.js',
   'tp-3d-core.js', 'tp-power-assembly.js', 'tp-oil-assembly.js',
   'tp-castresin-assembly.js', 'tp-ct-assembly.js',
   'part-ecosystem.js', 'component-3d-bridge.js',
@@ -102,6 +102,7 @@ const FORBIDDEN_PATTERNS = [
   /^data\/engineer-track-paid\.json$/,
   /^data\/backup/i,
   /pre-sprint/i,
+  /^data\/paid-listings\.json$/,
 ];
 
 /* iCloud Drive / macOS conflict copies ("index 2.html", "usa 2/"). The site folder
@@ -127,6 +128,7 @@ function copyDir(dir) {
     const p = path.join(dir, e.name);
     // Never copy internal prospect intelligence / discovery-ops artifacts to the public distribution
     if (p === 'data/commerce-intel.json' || p === 'data/engineer-track-paid.json') continue;
+    if (p === 'data/paid-listings.json') continue;
     if (p === 'data/gcc-sep-2026-discovery-input.json' || p === 'data/gcc-coverage-report.json') continue;
     // Pre-sprint CRM snapshots (data/backup-pre-sprint/commerce-intel.json and
     // the rest of that generation) must never reach the CDN. The root
