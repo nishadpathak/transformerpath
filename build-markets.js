@@ -13,6 +13,7 @@
  */
 'use strict';
 const fs = require('fs');
+const tpAff = require('./lib/travelpayouts');
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
@@ -667,6 +668,7 @@ function marketPage(m) {
     '<h2>Technical context</h2><ul>' + techHtml + '</ul>' +
     '<h2>Frequently asked</h2>' + faqHtml +
     '<h2>Related reading</h2><div style="margin:4px 0 8px">' + kmapFor(m).map(function (s) { return '<a class="tpill" href="../../knowledge/' + s + '.html">' + esc(knowLabel(s)) + '</a>'; }).join(' ') + '</div>' +
+    tpAff.tripOffers({ slug: m.slug, place: 'a site visit in ' + m.name, prefix: '../../', disclosureHref: '../../affiliate-disclosure.html' }) +
     '<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:24px"><b style="color:var(--text)">Find transformer suppliers in ' + esc(m.name) + '</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Submit a requirement and TransformerPath will match it against the ' + esc(m.name) + ' and regional manufacturing base.</p>' +
     '<a class="btn btn-amber" href="../../rfq.html" data-track="rfq_started" data-track-component_category="' + esc(m.name) + ' market">Submit an RFQ</a> <a class="btn btn-outline btn-sm" href="../../list-company.html" data-track="supplier_claim_started" data-track-component_category="' + esc(m.name) + ' market">Are you a supplier here? Get Verified →</a></div>' +
     '<div style="font-size:.85rem;color:var(--muted);text-align:center;margin-top:8px">Learn more: <a href="../../knowledge.html" style="color:var(--accent);font-weight:600">Knowledge</a> · <a href="../../applications.html" style="color:var(--accent);font-weight:600">Applications</a> · <a href="../../components.html" style="color:var(--accent);font-weight:600">Components</a> · <a href="../../books.html" style="color:var(--accent);font-weight:600">Books</a> · <a href="../../academy.html" style="color:var(--accent);font-weight:600">Academy</a></div>' +

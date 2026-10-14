@@ -22,6 +22,7 @@
  */
 'use strict';
 const fs = require('fs');
+const tpAff = require('./lib/travelpayouts');
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
@@ -71,30 +72,25 @@ function getEventStatus(e) {
   return (end < today) ? 'Completed' : 'Upcoming';
 }
 
-// Travelpayout-affiliated attendee buttons (Book Hotel / Flights / Things to Do /
-// Add to calendar) for a verified exhibition. Mirrors the events.html pattern so
-// the Exhibitions directory is monetized like the Events calendar. The calendar
-// entry is a data: URI VEVENT; hotel uses a destination-scoped hotellook search.
-const TP = { hotel: 'https://search.hotellook.com/?marker=736890&destination=', flights: 'https://kiwi.tpk.ro/dClaRHg1', activities: 'https://kkday.tpk.ro/VGC9WqGf' };
 function travelButtons(e, slug) {
   const st = getEventStatus(e);
-  if (!e.city || st === 'Completed' || st === 'Dates TBC') return '';
-  const dest = encodeURIComponent(e.city);
-  const hotel = TP.hotel + dest;
-  // Build an .ics-safe calendar URI from the event name/city/country.
+  const dates = (e.next_dates || '').match(/(\d{4}-\d{2}-\d{2})/g) || [];
+  const today = new Date().toISOString().slice(0, 10);
+  if (!e.city || st !== 'Upcoming' || !dates[0] || dates[0] <= today) return '';
+  const widgets = tpAff.eventWidgets({
+    slug: slug,
+    city: e.city,
+    checkIn: dates[0],
+    checkOut: dates[1] || dates[0],
+    prefix: '../../',
+    disclosureHref: '../../affiliate-disclosure.html',
+  });
   const name = String(e.event_name || '').replace(/[\r\n]/g, ' ').trim();
   const loc = [e.city, e.country].filter(Boolean).join(', ');
-  const dates = (e.next_dates || '').match(/(\d{4})-(\d{2})-(\d{2})/g) || [];
-  const start = dates[0] ? dates[0].replace(/-/g, '') : '';
-  const end = dates[1] ? dates[1].replace(/-/g, '') : start;
-  const cal = 'data:text/calendar;charset=utf-8,BEGIN%3AVCALENDAR%0D%0AVERSION%3A2.0%0D%0APRODID%3A-%2F%2FTransformerPath%2F%2FEvents%2F%2FEN%0D%0ACALSCALE%3AGREGORIAN%0D%0ABEGIN%3AVEVENT%0D%0AUID%3A' + (start || 'tbd') + '%40transformerpath.com%0D%0ADTSTAMP%3A20260901T000000Z%0D%0ADTSTART%3BVALUE%3DDATE%3A' + (start || '') + '%0D%0ADTEND%3BVALUE%3DDATE%3A' + (end || '') + '%0D%0ASUMMARY%3A' + encodeURIComponent(name) + '%0D%0ALOCATION%3A' + encodeURIComponent(loc) + '%0D%0AEND%3AVEVENT%0D%0AEND%3AVCALENDAR';
-  return '<div class="ev-travel" style="margin:6px 0 4px">' +
-    '<div style="font-size:.72rem;color:var(--muted);margin-bottom:4px">Travel links may earn an affiliate commission to support TransformerPath independent research.</div>' +
-    '<a class="btn btn-outline btn-sm" data-aff="hotel" data-ev="' + esc(name) + '" href="' + esc(hotel) + '" target="_blank" rel="noopener sponsored">🏨 Book Hotel</a> ' +
-    '<a class="btn btn-outline btn-sm" data-aff="flights" data-ev="' + esc(name) + '" href="' + esc(TP.flights) + '" target="_blank" rel="noopener sponsored">✈ Find Flights</a> ' +
-    '<a class="btn btn-outline btn-sm" data-aff="activities" data-ev="' + esc(name) + '" href="' + esc(TP.activities) + '" target="_blank" rel="noopener sponsored">&#127915;&#65039; Things to Do</a> ' +
-    '<a class="btn btn-outline btn-sm" data-aff="calendar" data-ev="' + esc(name) + '" href="' + cal + '" download target="_blank" rel="noopener">&#128197; Add</a>' +
-    '</div>';
+  const start = dates[0].replace(/-/g, '');
+  const end = (dates[1] || dates[0]).replace(/-/g, '');
+  const cal = 'data:text/calendar;charset=utf-8,BEGIN%3AVCALENDAR%0D%0AVERSION%3A2.0%0D%0APRODID%3A-%2F%2FTransformerPath%2F%2FEvents%2F%2FEN%0D%0ACALSCALE%3AGREGORIAN%0D%0ABEGIN%3AVEVENT%0D%0AUID%3A' + start + '%40transformerpath.com%0D%0ADTSTAMP%3A20260901T000000Z%0D%0ADTSTART%3BVALUE%3DDATE%3A' + start + '%0D%0ADTEND%3BVALUE%3DDATE%3A' + end + '%0D%0ASUMMARY%3A' + encodeURIComponent(name) + '%0D%0ALOCATION%3A' + encodeURIComponent(loc) + '%0D%0AEND%3AVEVENT%0D%0AEND%3AVCALENDAR';
+  return widgets + '<div class="ev-travel" style="margin:6px 0 4px"><a class="btn btn-outline btn-sm" data-aff="calendar" data-ev="' + esc(name) + '" href="' + cal + '" download target="_blank" rel="noopener">&#128197; Add to calendar</a></div>';
 }
 
 function eventPage(e) {
@@ -182,8 +178,7 @@ function indexPage() {
     '<style>.ex-wrap{max-width:1000px;margin:0 auto;padding:44px 20px 90px}.ex-wrap h1{font-size:2rem;color:var(--ink)}.ex-wrap .lead{color:var(--muted);font-size:1.02rem;max-width:820px;margin:8px 0 26px}.ex-counts{display:flex;flex-wrap:wrap;gap:14px;margin:0 0 26px}.ex-counts .s{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 18px;text-align:center;min-width:110px}.ex-counts .s b{color:var(--text);font-size:1.4rem;display:block}.ex-counts .s small{color:var(--muted);font-size:.78rem;font-weight:600}.region-h{font-size:1.05rem;font-weight:800;color:var(--ink);text-transform:uppercase;letter-spacing:.05em;margin:26px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--border)}.ex-row{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:13px 16px;margin-bottom:10px}.ex-row .ex-top{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px}.ex-row .ex-name{color:var(--accent);font-weight:700;font-size:.98rem;text-decoration:none}.ex-row .ex-name:hover{text-decoration:underline}.ex-row .ex-focus{color:var(--muted);font-size:.76rem;font-weight:600}.ex-row .ex-meta{color:var(--muted);font-size:.85rem;margin:4px 0}.ex-row .ex-src{color:var(--muted);font-size:.8rem}.ex-row .ex-src b{color:var(--text)}.ex-row .ex-site{display:inline-block;color:var(--accent);font-size:.78rem;font-weight:600;margin-top:6px;text-decoration:none}.ex-row .ex-site:hover{text-decoration:underline}</style>' +
     '</head>\n<body>\n' + HEAD + '\n<main id="main" tabindex="-1" class="ex-wrap">' +
     '<h1>Transformer <span style="color:var(--accent)">Exhibitions</span> &amp; Conferences</h1>' +
-    '<p class="lead">A verified, searchable directory of transformer-related exhibitions, trade shows, conferences and industry events worldwide. Each entry is checked against the event\'s official website for dates, venue, organiser and transformer relevance, and carries a verification status. Organised by country — filter by category or search to find the events that matter to your market. Also see the <a href="events.html" style="color:var(--accent);font-weight:700">events calendar</a>, <a href="webinars.html" style="color:var(--accent);font-weight:700">webinars</a> and the <a href="map.html?layer=events" style="color:var(--accent);font-weight:700">industry map</a>.</p>' +
-    '<div style="margin:0 0 18px"><a class="btn btn-outline btn-sm" data-aff="hotel" href="' + esc(TP.hotel) + '" target="_blank" rel="noopener sponsored">🏨 Book Hotels</a> <a class="btn btn-outline btn-sm" data-aff="flights" href="' + esc(TP.flights) + '" target="_blank" rel="noopener sponsored">✈ Find Flights</a> <a class="btn btn-outline btn-sm" data-aff="activities" href="' + esc(TP.activities) + '" target="_blank" rel="noopener sponsored">&#127915;&#65039; Things to Do</a></div>' +
+    '<p class="lead">A verified, searchable directory of transformer-related exhibitions, trade shows, conferences and industry events worldwide. Each entry is checked against the event\'s official website for dates, venue, organiser and transformer relevance, and carries a verification status. Organised by country — filter by category or search to find the events that matter to your market. Also see the <a href="events.html" style="color:var(--accent);font-weight:700">events calendar</a>, <a href="webinars.html" style="color:var(--accent);font-weight:700">webinars</a> and the <a href="map.html?layer=events" style="color:var(--accent);font-weight:700">industry map</a>. Hotel and flight search sits on each upcoming event page, prefilled with that event\'s city and dates.</p>' +
     '<div class="ex-counts" id="exCounts"></div>' +
     '<input id="exSearch" class="acc-search" type="search" placeholder="Search events… e.g. CWIEME, CIGRE, transformer, Dubai" aria-label="Search exhibitions" style="width:100%;max-width:420px;display:block;margin:0 0 22px;padding:11px 16px;border:1px solid var(--border);border-radius:8px;font-family:inherit;font-size:.95rem;background:var(--card);color:var(--text)">' +
     '<div id="exList">' + countryBlocks + '</div>' +
