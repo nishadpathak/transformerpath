@@ -973,13 +973,18 @@
   <div class="container">
     <div class="section-head reveal">
       <h2>Transformer Intel — At a Glance</h2>
-      <p id="glanceSub">Sourced transformer posts — tenders, awards, capacity and materials, dated on the source.</p>
+      <p id="glanceSub"><!--GLANCE:sub-->
+Latest sourced item <b>15 Oct 2026</b>. Dates are on the source, not this visit.
+<!--/GLANCE:sub--></p>
     </div>
     <div class="grid grid-3" id="glanceCards">
-      <div class="card reveal"><span class="emoji" aria-hidden="true">📋</span><h3>Tenders & Projects</h3><p>SEC awards SPTC a $376M transformer & reactor deal; Hitachi Energy India wins a Rs 6.47B 765kV PGCIL order; KAHRAMAA 2026 expansion packages out.</p></div>
-      <div class="card reveal"><span class="emoji" aria-hidden="true">🌍</span><h3>Supplier & Capacity News</h3><p>Weidmann commits $220M+ to a new China transformerboard plant; Voltamp and Virginia Transformer add new capacity; US LPT lead times run 30–36 months per the latest NLR report, insulation materials named a bottleneck.</p></div>
-      <div class="card reveal"><span class="emoji" aria-hidden="true">📈</span><h3>Prices & Materials</h3><p>Copper <b data-m="copper" style="color:var(--accent)">≈$14,170/t</b> (LME 3-month reference); Aluminium <b data-m="aluminium" style="color:var(--accent)">≈$3,182/t</b> (LME reference). <b>Historical market reference</b> — not a live feed. CRGO has <b>no public daily index</b> — it varies by market, grade, thickness and commercial basis, so it is shown as <b>GRADE NOT SPECIFIED</b> rather than a single comparable number. <span style="color:var(--muted);font-size:.82rem"><span data-m-obs="copper">prices as of 20 Aug 2026, updated when a new LME official settlement is recorded</span> · <a href="materials.html" style="color:var(--accent);font-weight:600">Materials &rarr;</a></span></p></div>
+<!--GLANCE:cards-->
+<a class="card reveal in" data-glance-date="2026-10-15" data-glance-headline="Augstsprieguma tīkls tenders a rebuild of 110 kV substation No. 6 TEC-1" href="/intel#p-grid-ted-europa-eu-en-notice-detail-712707-2026"><span class="g-region">Europe</span><h3 style="font-size:1rem">Augstsprieguma tīkls tenders a rebuild of 110 kV substation No. 6 TEC-1</h3><p class="g-val" style="margin-top:8px">15 Oct 2026</p></a>
+<a class="card reveal in" data-glance-date="2026-10-15" data-glance-headline="Distribuție Energie Oltenia tenders 123 kV breaker modules for a 110 kV line bay and a transformer bay" href="/intel#p-grid-ted-europa-eu-en-notice-detail-711669-2026"><span class="g-region">Europe</span><h3 style="font-size:1rem">Distribuție Energie Oltenia tenders 123 kV breaker modules for a 110 kV line bay and a transformer bay</h3><p>The work modernizes the 110 kV Preajba line bay and transformer-2 bay, and a breaker module at the 110/20 kV Harlesti substation in Trivalea-Mosteni, Teleorman.</p><p class="g-val" style="margin-top:8px">15 Oct 2026 · RON 4,772,200</p></a>
+<a class="card reveal in" data-glance-date="2026-10-15" data-glance-headline="Mondragon solar project tenders floating transformer substations" href="/intel#p-grid-ted-europa-eu-en-notice-detail-713576-2026"><span class="g-region">Europe</span><h3 style="font-size:1rem">Mondragon solar project tenders floating transformer substations</h3><p>TED notice 713576-2026, published 15 October 2026, is supply lot 3 (PTR) from Centrale solaire de Mondragon (CSMOD2) for the supply and on-site delivery of floating transformer substations.</p><p class="g-val" style="margin-top:8px">15 Oct 2026</p></a>
+<!--/GLANCE:cards-->
     </div>
+    <p class="glance-materials" style="margin-top:18px;color:var(--muted);font-size:.9rem"><b style="color:var(--text)">Prices &amp; materials</b> — Copper <b data-m="copper" style="color:var(--accent)">≈$14,170/t</b> (LME 3-month reference); Aluminium <b data-m="aluminium" style="color:var(--accent)">≈$3,182/t</b> (LME reference). <b>Historical market reference</b> — not a live feed. CRGO has <b>no public daily index</b> — it varies by market, grade, thickness and commercial basis, so it is shown as <b>GRADE NOT SPECIFIED</b> rather than a single comparable number. <span data-m-obs="copper">prices as of 20 Aug 2026, updated when a new LME official settlement is recorded</span> · <a href="materials.html" style="color:var(--accent);font-weight:600">Materials &rarr;</a></p>
     <p style="text-align:center; margin-top:30px" class="reveal"><a href="/intel" class="btn btn-amber">Open the Intel feed →</a></p>
   </div>
 </section>
@@ -1099,21 +1104,27 @@ document.querySelectorAll('#mainNav a').forEach(a=>a.addEventListener('click',()
 })();
 
 /* ── Latest "at a glance" from the compact Intel feed ─────────────
-   Cards are sourced posts with calendar dates. We do NOT label them
-   "today's live briefing" — a deploy is not a new edition. */
+   Build-intel-feed-ui.js stamps these cards from the same file. This
+   refresh uses that order: day-dated posts, newest first. A deploy is
+   not a new edition — dates stay on the source. */
 (function(){
   const host=document.getElementById('glanceCards'), sub=document.getElementById('glanceSub');
   if(host && window.fetch){
   fetch('data/intel-feed-ui.json',{cache:'no-cache'}).then(r=>r.json()).then(feed=>{
-    const items=(feed.posts||[]).filter(function(p){ return p.desk==='news'||p.desk==='grid'||p.desk==='awards'; });
+    const todayIso=new Date().toISOString().slice(0,10);
+    const items=(feed.posts||[]).filter(function(p){
+      return p && p.headline && p.datePrecision==='day' && /^\d{4}-\d{2}-\d{2}$/.test(p.dateIso||'') && p.dateIso<=todayIso;
+    });
     const pick=items.slice(0,3);
-    if(pick.length<3) return;
-    const esc=s=>String(s||'').replace(/</g,'&lt;');
+    if(!pick.length) return;
+    const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     host.innerHTML=pick.map(it=>{
-      const snip=esc(it.soWhat);
-      return '<a class="card reveal in" href="/intel#p-'+esc(it.id)+'"><span class="g-region">'+esc(it.region)+'</span>'+
-        '<h3 style="font-size:1rem">'+esc(it.headline)+'</h3><p>'+snip+'</p>'+
-        '<p class="g-val" style="margin-top:8px">'+(it.date?esc(it.date):'Date not stated')+(it.value?' · '+esc(it.value):'')+'</p></a>';
+      const raw=String(it.soWhat||'').trim();
+      const snip=/^[0-9a-z]/.test(raw)?'':esc(raw);
+      const meta=(it.date?esc(it.date):'Date not stated')+(it.value?' · '+esc(it.value):'');
+      return '<a class="card reveal in" data-glance-date="'+esc(it.dateIso)+'" data-glance-headline="'+esc(it.headline)+'" href="/intel#p-'+esc(it.id)+'"><span class="g-region">'+esc(it.region)+'</span>'+
+        '<h3 style="font-size:1rem">'+esc(it.headline)+'</h3>'+(snip?'<p>'+snip+'</p>':'')+
+        '<p class="g-val" style="margin-top:8px">'+meta+'</p></a>';
     }).join('');
   }).catch(()=>{});
   }

@@ -15,3 +15,4 @@ jobs:
           node-version: '22'
       - run: node tests/homepage-coverage-delayed.js
       - run: node tests/homepage-ticker-regression.js
+      - run: node tests/homepage-glance-regression.js
