@@ -41,6 +41,10 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; overflow: hidden; }
 body {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: 100%;
   font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
   background: var(--lab-bg);
   color: var(--lab-ink);
@@ -539,7 +543,9 @@ body {
   #lab-toolbar { display: none; }
   #lab-help { display: none; }
   #lab-caption { bottom: 132px; font-size: .82rem; }
+  #lab-topbar { height: auto; flex-wrap: wrap; align-items: flex-start; row-gap: 6px; padding-top: 8px; padding-bottom: 8px; }
   #lab-topbar .lab-sub { display: none; }
+  #lab-topbar .tbar-right { margin-left: 0; flex-wrap: wrap; max-width: 100%; }
   .ctrl-btn-row .ctrl-btn { padding: 5px 9px; font-size: .72rem; }
   #lab-controls { height: 108px; }
 }

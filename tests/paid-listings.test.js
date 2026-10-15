@@ -259,6 +259,7 @@ async function main() {
         currency: 'usd',
         livemode: false,
         payment_link: 'plink_test_featured',
+        url: paid.FEATURED_EVENT_PAYMENT_LINK,
         customer_details: { email: 'organiser@example.com' },
         metadata: {}
       }
@@ -270,6 +271,23 @@ async function main() {
   check('payment link does not publish FEATURED', paid.featuredEventHtml('middle-east-energy', { listings: [linkRow] }) === '');
   const linkReplay = await postWebhook(wh.handler, secret, linkEvent);
   check('payment link replay is idempotent', linkReplay.statusCode === 200 && JSON.parse(linkReplay.body).idempotent === true);
+
+  const amountOnly = await postWebhook(wh.handler, secret, {
+    id: 'evt_amount_only_299',
+    type: 'checkout.session.completed',
+    data: {
+      object: {
+        id: 'cs_test_amount_only_299',
+        amount_total: 29900,
+        currency: 'usd',
+        livemode: false,
+        payment_link: 'plink_job_featured',
+        metadata: {},
+        customer_details: { email: 'jobs@example.com' }
+      }
+    }
+  });
+  check('$299 amount alone does not write Featured Event', amountOnly.statusCode === 400 && !store.listings.get('cs_test_amount_only_299'), amountOnly.body);
 
   const returnEvent = await postWebhook(wh.handler, secret, {
     id: 'evt_featured_return',
@@ -309,6 +327,7 @@ async function main() {
         currency: 'usd',
         livemode: false,
         payment_link: 'plink_test_verified',
+        url: paid.VERIFIED_MANUFACTURER_PAYMENT_LINK,
         client_reference_id: 'a-plus-power-solution',
         customer_details: { email: 'maker@example.com' },
         metadata: {}
@@ -363,6 +382,7 @@ async function main() {
         amount_total: 39900,
         currency: 'usd',
         payment_link: 'plink_test_exhibitor',
+        url: paid.FEATURED_EXHIBITOR_PAYMENT_LINK,
         livemode: false,
         metadata: {},
         customer_email: 'buyer@example.com'
@@ -388,6 +408,7 @@ async function main() {
         amount_total: 150000,
         currency: 'usd',
         payment_link: 'plink_test_webinar',
+        url: paid.HOSTED_WEBINAR_PAYMENT_LINK,
         livemode: false,
         metadata: {},
         customer_email: 'buyer@example.com'
@@ -422,6 +443,12 @@ async function main() {
     return fs.readFileSync('events/' + d + '/index.html', 'utf8').indexOf('data-product="featured_event"') >= 0;
   });
   check('event pages use the payment link', cardPages.length > 20 && linkedPages.length === cardPages.length && leftoverWidgets.length === 0, 'cards=' + cardPages.length + ' linked=' + linkedPages.length + ' leftover=' + leftoverWidgets.length);
+  const pricedPages = cardPages.filter(function (d) {
+    const html = fs.readFileSync('events/' + d + '/index.html', 'utf8');
+    return html.indexOf('Featured Event is $299 per event.') >= 0 && html.indexOf('Featured Exhibitor is $399 per event.') >= 0 && html.indexOf('from $399') < 0;
+  });
+  check('event cards show Featured Event at $299 and Featured Exhibitor at $399', pricedPages.length === cardPages.length, 'priced=' + pricedPages.length + ' cards=' + cardPages.length);
+  check('event card template keeps the two prices distinct', fs.readFileSync('build-events.js', 'utf8').indexOf('Featured Event is $299 per event. Featured Exhibitor is $399 per event.') >= 0 && fs.readFileSync('build-events.js', 'utf8').indexOf('from $399') < 0);
 
   function jsHits(dir, hits) {
     fs.readdirSync(dir).forEach(function (name) {
@@ -581,6 +608,7 @@ async function main() {
           currency: 'usd',
           livemode: false,
           payment_link: 'plink_test_featured',
+          url: paid.FEATURED_EVENT_PAYMENT_LINK,
           metadata: {}
         };
       }
@@ -603,6 +631,7 @@ async function main() {
           currency: 'usd',
           livemode: false,
           payment_link: 'plink_test_verified',
+          url: paid.VERIFIED_MANUFACTURER_PAYMENT_LINK,
           metadata: {}
         };
       }
@@ -625,6 +654,7 @@ async function main() {
           currency: 'usd',
           livemode: false,
           payment_link: 'plink_test_exhibitor',
+          url: paid.FEATURED_EXHIBITOR_PAYMENT_LINK,
           metadata: {}
         };
       }
@@ -647,6 +677,7 @@ async function main() {
           currency: 'usd',
           livemode: false,
           payment_link: 'plink_test_webinar',
+          url: paid.HOSTED_WEBINAR_PAYMENT_LINK,
           metadata: {}
         };
       }
@@ -657,6 +688,55 @@ async function main() {
     body: JSON.stringify({ session_id: webinarLinkSession })
   })).body);
   check('webinar payment link does not grant course access', webinarAccess.valid === false && webinarAccess.paid === true && webinarAccess.product === 'hosted_webinar' && webinarAccess.listing === 'paid_pending_verification' && !webinarAccess.entitlement_token, JSON.stringify(webinarAccess));
+
+  const coursePay = require('../lib/course-payment');
+  check('$299 amount alone is not Featured Event', paid.isFeaturedEventCheckout({ amount_total: 29900, currency: 'usd', payment_link: 'plink_job_featured', metadata: {} }) === false);
+  check('$199 amount alone is not Featured Event', paid.isFeaturedEventCheckout({ amount_total: 19900, currency: 'usd', payment_link: 'plink_job_standard', metadata: {} }) === false);
+  check('$199 amount alone is not a course', coursePay.classifyCourse({ amount_total: 19900, currency: 'usd', payment_link: 'plink_job_standard', metadata: {} }) === null);
+  check('$299 amount alone is not Learning', coursePay.classifyCourse({ amount_total: 29900, currency: 'usd', payment_link: 'plink_job_featured', metadata: {} }) === null);
+  check('learning metadata classifies without using the amount', coursePay.classifyCourse({ amount_total: 29900, metadata: { plan: 'learning' } }).tier === 'learner');
+  check('learning Payment Link code classifies a $199 charge', coursePay.classifyCourse({ amount_total: 19900, url: 'https://buy.stripe.com/' + coursePay.COURSES.learning.code, metadata: {} }).product === 'learning');
+  check('expanded Learning Payment Link classifies a completed $199 session', coursePay.classifyCourse({
+    amount_total: 19900,
+    url: null,
+    metadata: {},
+    payment_link: { id: 'plink_learn_live', object: 'payment_link', url: 'https://buy.stripe.com/' + coursePay.COURSES.learning.code }
+  }).tier === 'learner');
+  check('expanded Professional Payment Link classifies without the amount', coursePay.classifyCourse({
+    amount_total: 19900,
+    url: null,
+    metadata: {},
+    payment_link: { id: 'plink_pro_live', url: 'https://buy.stripe.com/' + coursePay.COURSES.professional.code }
+  }).tier === 'professional');
+  check('expanded Team Payment Link classifies without the amount', coursePay.classifyCourse({
+    amount_total: 29900,
+    url: null,
+    metadata: {},
+    payment_link: { id: 'plink_team_live', url: 'https://buy.stripe.com/' + coursePay.COURSES.team.code }
+  }).tier === 'enterprise');
+  check('expanded unknown Payment Link is not Learning', coursePay.classifyCourse({
+    amount_total: 19900,
+    url: null,
+    metadata: {},
+    payment_link: { id: 'plink_job_standard', url: 'https://buy.stripe.com/jobstandardnotacourse' }
+  }) === null);
+  check('expanded Featured Event link is not a course', coursePay.classifyCourse({
+    amount_total: 29900,
+    url: null,
+    metadata: {},
+    payment_link: { id: 'plink_featured_live', url: paid.FEATURED_EVENT_PAYMENT_LINK }
+  }) === null);
+  check('expanded Featured Event link still matches that product', paid.isFeaturedEventCheckout({
+    amount_total: 34900,
+    url: null,
+    metadata: {},
+    payment_link: { id: 'plink_featured_live', url: paid.FEATURED_EVENT_PAYMENT_LINK }
+  }) === true);
+  delete process.env.STRIPE_PAYMENT_LINK_LEARNING;
+  process.env.STRIPE_PAYMENT_LINK_LEARNING = 'plink_learn_expected';
+  check('configured learning plink id classifies that link', coursePay.classifyCourse({ amount_total: 19900, payment_link: 'plink_learn_expected', metadata: {} }).tier === 'learner');
+  check('configured learning plink id ignores a different $199 link', coursePay.classifyCourse({ amount_total: 19900, payment_link: 'plink_job_standard', metadata: {} }) === null);
+  delete process.env.STRIPE_PAYMENT_LINK_LEARNING;
 
   global.fetch = async function () {
     return {
@@ -670,10 +750,174 @@ async function main() {
     httpMethod: 'POST',
     body: JSON.stringify({ session_id: 'cs_test_learn' })
   })).body);
-  check('engineer $199 payment still grants learner', learning.valid === true && learning.tier === 'learner' && !!learning.entitlement_token, JSON.stringify({ valid: learning.valid, tier: learning.tier, hasToken: !!learning.entitlement_token }));
+  check('$199 amount alone does not grant Learning', learning.valid === false && learning.paid === true && learning.reason === 'unclassified' && !learning.entitlement_token, JSON.stringify(learning));
+
+  global.fetch = async function () {
+    return {
+      ok: true,
+      json: async function () {
+        return { id: 'cs_test_job_299', payment_status: 'paid', amount_total: 29900, currency: 'usd', livemode: false, metadata: {}, payment_link: 'plink_job_featured' };
+      }
+    };
+  };
+  const jobFeatured = JSON.parse((await verify.handler({
+    httpMethod: 'POST',
+    body: JSON.stringify({ session_id: 'cs_test_job_299' })
+  })).body);
+  check('$299 amount alone does not grant Learning or Featured Event', jobFeatured.valid === false && jobFeatured.reason === 'unclassified' && jobFeatured.product !== 'featured_event' && jobFeatured.tier !== 'learner', JSON.stringify(jobFeatured));
+
+  global.fetch = async function () {
+    return {
+      ok: true,
+      json: async function () {
+        return { id: 'cs_test_learn_meta', payment_status: 'paid', amount_total: 19900, livemode: false, metadata: { plan: 'learning' }, payment_link: 'plink_learn' };
+      }
+    };
+  };
+  const learningMeta = JSON.parse((await verify.handler({
+    httpMethod: 'POST',
+    body: JSON.stringify({ session_id: 'cs_test_learn_meta' })
+  })).body);
+  check('learning metadata still grants learner', learningMeta.valid === true && learningMeta.tier === 'learner' && !!learningMeta.entitlement_token, JSON.stringify({ valid: learningMeta.valid, tier: learningMeta.tier }));
+
+  let expandedUrl = '';
+  global.fetch = async function (url) {
+    expandedUrl = String(url);
+    return {
+      ok: true,
+      json: async function () {
+        return {
+          id: 'cs_test_learn_expanded',
+          payment_status: 'paid',
+          amount_total: 19900,
+          livemode: false,
+          metadata: {},
+          url: null,
+          payment_link: { id: 'plink_learn_live', object: 'payment_link', url: 'https://buy.stripe.com/' + coursePay.COURSES.learning.code }
+        };
+      }
+    };
+  };
+  const learningExpanded = JSON.parse((await verify.handler({
+    httpMethod: 'POST',
+    body: JSON.stringify({ session_id: 'cs_test_learn_expanded' })
+  })).body);
+  check('verify-access expands the Payment Link', expandedUrl.indexOf('expand[]=payment_link') !== -1, expandedUrl);
+  check('expanded Learning link grants learner', learningExpanded.valid === true && learningExpanded.tier === 'learner' && !!learningExpanded.entitlement_token, JSON.stringify({ valid: learningExpanded.valid, tier: learningExpanded.tier }));
+
+  global.fetch = async function () {
+    return {
+      ok: true,
+      json: async function () {
+        return {
+          id: 'cs_test_job_expanded',
+          payment_status: 'paid',
+          amount_total: 19900,
+          livemode: false,
+          metadata: {},
+          url: null,
+          payment_link: { id: 'plink_job_standard', object: 'payment_link', url: 'https://buy.stripe.com/jobstandardnotacourse' }
+        };
+      }
+    };
+  };
+  const jobExpanded = JSON.parse((await verify.handler({
+    httpMethod: 'POST',
+    body: JSON.stringify({ session_id: 'cs_test_job_expanded' })
+  })).body);
+  check('expanded $199 job link does not grant Learning', jobExpanded.valid === false && jobExpanded.paid === true && jobExpanded.reason === 'unclassified' && !jobExpanded.entitlement_token, JSON.stringify(jobExpanded));
 
   global.fetch = savedFetch;
   if (savedStripe === undefined) delete process.env.STRIPE_SECRET_KEY; else process.env.STRIPE_SECRET_KEY = savedStripe;
+
+  const confirm = require('../functions/confirm-listing-payment');
+  delete process.env.STRIPE_SECRET_KEY;
+  let stripeCalls = 0;
+  global.fetch = function () { stripeCalls++; return Promise.reject(new Error('stripe must not be called')); };
+  let confirmRes = await confirm.handler({ httpMethod: 'POST', body: JSON.stringify({ session_id: 'cs_test_fake', product: 'verified_manufacturer', paid: true }) });
+  let confirmBody = JSON.parse(confirmRes.body);
+  check('missing stripe key does not confirm a session_id', confirmRes.statusCode === 200 && confirmBody.configured === false && confirmBody.paid === false && stripeCalls === 0, JSON.stringify(confirmBody));
+
+  process.env.STRIPE_SECRET_KEY = 'sk_test_confirm_only';
+  global.fetch = function (url) {
+    stripeCalls++;
+    const id = String(url).split('/').pop().split('?')[0];
+    const sessions = {
+      cs_test_unpaid: { payment_status: 'unpaid', metadata: { product: 'verified_manufacturer' } },
+      cs_test_wrong: { payment_status: 'paid', metadata: { product: 'featured_event' } },
+      cs_test_paid_mfr: { payment_status: 'paid', metadata: { product: 'verified_manufacturer' } },
+      cs_test_paid_webinar: { payment_status: 'paid', metadata: { product: 'hosted_webinar' } },
+      cs_test_course: { payment_status: 'paid', amount_total: 19900, currency: 'usd', metadata: { plan: 'learning' } }
+    };
+    if (!sessions[id]) return Promise.resolve({ ok: false, json: async function () { return { error: 'missing' }; } });
+    return Promise.resolve({ ok: true, json: async function () { return sessions[id]; } });
+  };
+  confirmRes = await confirm.handler({ httpMethod: 'POST', body: JSON.stringify({ session_id: 'cs_test_unpaid', product: 'verified_manufacturer' }) });
+  confirmBody = JSON.parse(confirmRes.body);
+  check('unpaid session is not payment received', confirmBody.configured === true && confirmBody.paid === false, JSON.stringify(confirmBody));
+  confirmRes = await confirm.handler({ httpMethod: 'POST', body: JSON.stringify({ session_id: 'cs_test_wrong', product: 'verified_manufacturer' }) });
+  confirmBody = JSON.parse(confirmRes.body);
+  check('paid session for a different product is not confirmed', confirmBody.paid === false && confirmBody.product === 'featured_event', JSON.stringify(confirmBody));
+  confirmRes = await confirm.handler({ httpMethod: 'POST', body: JSON.stringify({ session_id: 'cs_test_course', product: 'featured_exhibitor' }) });
+  confirmBody = JSON.parse(confirmRes.body);
+  check('course payment does not confirm a listing', confirmBody.paid === false, JSON.stringify(confirmBody));
+  confirmRes = await confirm.handler({ httpMethod: 'POST', body: JSON.stringify({ session_id: 'cs_test_paid_mfr', product: 'verified_manufacturer' }) });
+  confirmBody = JSON.parse(confirmRes.body);
+  check('paid matching listing session is confirmed', confirmBody.configured === true && confirmBody.paid === true && confirmBody.product === 'verified_manufacturer', JSON.stringify(confirmBody));
+  confirmRes = await confirm.handler({ httpMethod: 'POST', body: JSON.stringify({ session_id: 'cs_test_paid_webinar', product: 'hosted_webinar' }) });
+  confirmBody = JSON.parse(confirmRes.body);
+  check('paid hosted webinar session is confirmed only for that product', confirmBody.paid === true && confirmBody.product === 'hosted_webinar', JSON.stringify(confirmBody));
+  confirmRes = await confirm.handler({ httpMethod: 'POST', body: JSON.stringify({ session_id: 'cs_test_paid_webinar', product: 'featured_exhibitor' }) });
+  confirmBody = JSON.parse(confirmRes.body);
+  check('paid webinar session does not confirm an exhibitor return', confirmBody.paid === false && confirmBody.product === 'hosted_webinar', JSON.stringify(confirmBody));
+  confirmRes = await confirm.handler({ httpMethod: 'GET' });
+  check('confirm requires a product', confirmRes.statusCode === 400 && JSON.parse(confirmRes.body).paid === false);
+
+  const vm = require('vm');
+  const clientSrc = fs.readFileSync('listing-payment.js', 'utf8');
+  async function banner(search, payload) {
+    const note = { style: { display: 'none' }, textContent: 'Payment received. should be replaced' };
+    const hidden = { value: '' };
+    const sandbox = {
+      URLSearchParams: URLSearchParams,
+      location: { search: search },
+      document: { getElementById: function (id) { return id === 'claimPaidBanner' ? note : hidden; } },
+      fetch: function () {
+        return Promise.resolve({ json: function () { return Promise.resolve(payload); } });
+      }
+    };
+    sandbox.window = sandbox;
+    vm.createContext(sandbox);
+    vm.runInContext(clientSrc, sandbox);
+    sandbox.window.tpListingPayment.confirm({
+      product: 'verified_manufacturer',
+      noteId: 'claimPaidBanner',
+      sessionFieldId: 'claimPaymentSession',
+      paidText: 'Payment received. Submit your company details in the form below.'
+    });
+    await new Promise(function (resolve) { setTimeout(resolve, 0); });
+    return note.textContent;
+  }
+  const neutral = 'If you completed payment, submit the form below; we confirm payment before review.';
+  check('client keeps neutral text when stripe is not configured', await banner('?paid=verified_manufacturer&session_id=cs_test_fake', { configured: false, paid: false, product: null }) === neutral);
+  check('client keeps neutral text for an unpaid session', await banner('?paid=verified_manufacturer&session_id=cs_test_fake', { configured: true, paid: false, product: null }) === neutral);
+  check('client says payment received only after a matching confirmation', await banner('?paid=verified_manufacturer&session_id=cs_test_paid_mfr', { configured: true, paid: true, product: 'verified_manufacturer' }) === 'Payment received. Submit your company details in the form below.');
+  check('client ignores a paid flag for another product', await banner('?paid=verified_manufacturer&session_id=cs_test_fake', { configured: true, paid: true, product: 'featured_event' }) === neutral);
+
+  const claimPage = fs.readFileSync('claim-profile.html', 'utf8');
+  const claimBanner = claimPage.slice(claimPage.indexOf('id="claimPaidBanner"'), claimPage.indexOf('id="claimPaidBanner"') + 500);
+  check('claim banner default copy is neutral', claimBanner.indexOf(neutral) >= 0 && claimBanner.indexOf('Payment received') < 0);
+  check('claim page asks confirm-listing-payment', claimPage.indexOf('listing-payment.js') >= 0);
+  check('events page does not treat the query as payment received', fs.readFileSync('events.html', 'utf8').indexOf("note.textContent = pending") < 0 && fs.readFileSync('events.html', 'utf8').indexOf('listing-payment.js') >= 0);
+  check('sponsor page asks confirm-listing-payment', fs.readFileSync('sponsor.html', 'utf8').indexOf('confirm-listing-payment') < 0 && fs.readFileSync('sponsor.html', 'utf8').indexOf('listing-payment.js') >= 0 && fs.readFileSync('sponsor.html', 'utf8').indexOf("note.textContent=pending") < 0 && fs.readFileSync('sponsor.html', 'utf8').indexOf("product:'hosted_webinar'") >= 0);
+  check('pricing listing return uses confirm-listing-payment', fs.readFileSync('pricing.html', 'utf8').indexOf('confirm-listing-payment') >= 0);
+  ['claim-profile.html', 'events.html', 'sponsor.html'].forEach(function (rel) {
+    const page = fs.readFileSync(rel, 'utf8');
+    check(rel + ' shows the return banner after deferred scripts', page.indexOf('DOMContentLoaded') >= 0 && page.indexOf('tpListingPayment.confirm') >= 0);
+  });
+
+  delete process.env.STRIPE_SECRET_KEY;
+  global.fetch = savedFetch;
   if (savedPriceM === undefined) delete process.env.STRIPE_PRICE_VERIFIED_MANUFACTURER; else process.env.STRIPE_PRICE_VERIFIED_MANUFACTURER = savedPriceM;
   if (savedPriceE === undefined) delete process.env.STRIPE_PRICE_FEATURED_EVENT; else process.env.STRIPE_PRICE_FEATURED_EVENT = savedPriceE;
   if (savedNotify === undefined) delete process.env.NOTIFY_TO; else process.env.NOTIFY_TO = savedNotify;

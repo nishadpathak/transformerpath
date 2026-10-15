@@ -1,0 +1,19 @@
+name: intel-cadence
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  cadence:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node build-intel-cadence.js
+      - run: node tests/intel-cadence-regression.js
+      - name: Cadence output is committed
+        run: git diff --exit-code -- data/intel-cadence.json methodology.html intel.html
