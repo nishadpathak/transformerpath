@@ -32,6 +32,7 @@ const norm = function (s) { return String(s || '').toLowerCase().normalize('NFD'
 const { resolveCompanyAlias, norm: aliasNorm } = require('./lib/company-aliases');
 const headOffice = require('./lib/head-office');
 const HEAD_OFFICES = headOffice.load(__dirname);
+const companyParents = require('./lib/company-parents');
 const { isUpcoming, platformToday } = require('./lib/event-status');
 const { splitEntityIntel, fold: foldEntity } = require('./lib/entity-intel');
 const paidListings = require('./lib/paid-listings');
@@ -526,6 +527,10 @@ function page(r, slug) {
   // conservative schema: describe the company, never claim affiliation
   const orgSchema = { '@context': 'https://schema.org', '@type': 'Organization', name: r.name, url: r.url ? r.url : url, description: leadText, address: { '@type': 'PostalAddress', streetAddress: (r.headOffice && r.headOffice.address) || undefined, addressCountry: r.country, addressLocality: r.city || undefined } };
   if (r.headOffice && r.headOffice.source_url) orgSchema.sameAs = [r.headOffice.source_url];
+  const parentLink = companyParents.parentFor(r);
+  if (parentLink) {
+    orgSchema.parentOrganization = { '@type': 'Organization', name: parentLink.parent_name, url: 'https://transformerpath.com/manufacturers/' + parentLink.parent_slug + '/' };
+  }
   const pageSchema = { '@context': 'https://schema.org', '@type': 'WebPage', name: r.name + ' — Company Profile', url: url, about: { '@type': 'Organization', name: r.name } };
   const b = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Manufacturers', item: 'https://transformerpath.com/manufacturers.html' }, { '@type': 'ListItem', position: 2, name: r.name }] };
   const schema = '<script type="application/ld+json">' + JSON.stringify(orgSchema) + '</script><script type="application/ld+json">' + JSON.stringify(pageSchema) + '</script><script type="application/ld+json">' + JSON.stringify(b) + '</script>';
@@ -576,6 +581,7 @@ function page(r, slug) {
     '<p class="lead">' + esc(leadText) + '</p>' +
     '<p style="font-size:.9rem;color:var(--muted);margin:6px 0 0">' + (r.flag || '') + ' <b style="color:var(--text)">' + esc(r.country) + '</b>' + (r.city ? ' · ' + esc(r.city) : '') + ' · <span style="color:var(--accent)">' + verify + '</span>' + (r.url ? ' · <a href="' + esc(r.url) + '" target="_blank" rel="noopener nofollow" data-track="official_website_click" data-track-manufacturer="' + esc(r.name) + '" style="color:var(--accent)">Official website ↗</a>' : '') + '</p>' +
     (r.headOffice ? '<p style="font-size:.78rem;color:var(--muted);margin:4px 0 0">Head office' + (r.headOffice.address ? ': ' + esc(r.headOffice.address) : '') + '. <a href="' + esc(r.headOffice.source_url) + '" target="_blank" rel="noopener" style="color:var(--accent)">' + esc(r.headOffice.source_title) + '</a> (checked ' + esc(r.headOffice.retrieved_at) + ').</p>' : '') +
+    (parentLink ? '<p style="font-size:.78rem;color:var(--muted);margin:4px 0 0">Part of <a href="../../manufacturers/' + parentLink.parent_slug + '/" style="color:var(--accent)">' + esc(parentLink.parent_name) + '</a>. <a href="' + esc(parentLink.source_url) + '" target="_blank" rel="noopener" style="color:var(--accent)">' + esc(parentLink.source_note) + '</a> (checked ' + esc(parentLink.retrieved_at) + ').</p>' : '') +
     (earnedVerified ? '' : paidListings.verifiedManufacturerCtasHtml({ companySlug: slug, trackName: r.name })) +
     trust +
     completenessCard +
@@ -650,7 +656,18 @@ Object.keys(require('./lib/company-aliases').ALIASES).forEach(function (k) {
   ['prolec-ge-ge-vernova', 'prolec-ge'],
   ['prolec-ge-brasil', 'prolec-ge'],
   ['prolec-ge-waukesha', 'prolec-ge'],
-  ['hico-america-hyosung', 'hyosung-heavy-industries']
+  ['hico-america-hyosung', 'hyosung-heavy-industries'],
+  ['bhel-bharat-heavy-electricals', 'bhel'],
+  ['tbea-co-ltd', 'tbea-group-changji-hq-shenyang-hengyang-tianjin-plants'],
+  ['china-xd-group', 'china-xd-group-xian-xd-transformer'],
+  ['efacec-power-solutions', 'efacec'],
+  ['efacec-distribution-transformers', 'efacec'],
+  ['tmc-transformers-spa', 'tmc-transformers'],
+  ['transformers-and-rectifiers-india', 'transformers-and-rectifiers-india-taril'],
+  ['elsewedy-electric', 'elsewedy-electric-transformers'],
+  ['smit-transformers', 'royal-smit-transformers-b-v-sgb-smit-group'],
+  ['jshp-transformer-jiangsu', 'jiangsu-huapeng-jshp-huapeng-group'],
+  ['hitachi-energy-global-hq', 'hitachi-energy']
 ].forEach(function (pair) { aliasRedirectSlugs[pair[0]] = pair[1]; });
 
 Object.keys(aliasRedirectSlugs).forEach(function (src) {
