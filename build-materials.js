@@ -119,8 +119,8 @@ rows.forEach((r) => {
   r.freshness_status = (aged && r.price != null) ? 'HISTORICAL' : fsStatus;
   r.presentation = (r.price == null || aged) ? 'Historical market reference' : 'Market reference';
   if (aged && r.price != null && r.observation_date) {
-    r.notes = 'Historical market reference. Observed ' + r.observation_date +
-      '. Independent of Intel/build clocks. Verify against LME before commercial use.';
+    r.notes = 'Historical market reference. Prices as of ' + r.observation_date +
+      ', updated when a new LME official settlement is recorded. Not a live feed. Independent of Intel/build clocks. Verify against LME before commercial use.';
   }
 });
 
