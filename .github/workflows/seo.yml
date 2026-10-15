@@ -18,3 +18,5 @@ jobs:
         run: node tests/seo-schema.test.js
       - name: Virginia Transformer sourced specs
         run: node tests/virginia-transformer-specs.js
+      - name: Sourced manufacturer specifications
+        run: node tests/manufacturer-specs.js
