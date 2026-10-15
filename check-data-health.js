@@ -371,8 +371,15 @@ function checkAnnualMvaAsUnit() {
 const VALID_EVIDENCE = new Set(['CONFIRMED', 'SUPPORTED', 'REVIEW_REQUIRED', 'REJECTED']);
 const VALID_PUBLIC_STATUS = new Set([
   'DATA CURRENT', 'REFRESH DELAYED', 'DATA STALE', 'INTEL COVERAGE DELAYED',
-  'HEALTHY', 'AGING', 'STALE'
+  'Updated today', 'HEALTHY', 'AGING', 'STALE'
 ]);
+
+function isPublicIntelStatus(pub) {
+  const s = String(pub || '');
+  if (!s.trim()) return false;
+  if (VALID_PUBLIC_STATUS.has(s)) return true;
+  return /^UPDATED \d{1,2} [A-Za-z]{3} \d{4}$/.test(s);
+}
 
 function checkIntelSources() {
   const lines = [];
@@ -411,8 +418,7 @@ function checkIntelSources() {
     fail('intel-source', 'daily_intel surface missing from freshness.json');
   } else {
     const pub = di.public_status || di.status_label || di.status;
-    if (pub && !VALID_PUBLIC_STATUS.has(String(pub))) {
-      // Allow compound labels already in production set; unknown → error
+    if (pub && !isPublicIntelStatus(pub)) {
       fail('intel-source', 'invalid daily_intel public status: ' + pub);
     } else {
       lines.push('daily_intel status=' + pub);
