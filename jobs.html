@@ -25,6 +25,9 @@
 .live-row .ld { color:var(--muted); font-size:.78rem; }
 .live-row .lapply { background:var(--amber); color:var(--navy); font-weight:700; font-size:.82rem; padding:7px 14px; border-radius:8px; white-space:nowrap; }
 .live-row .lapply:hover { background:var(--amber-dark); }
+.live-row.is-featured { border-left-color: var(--amber); box-shadow: 0 0 0 1px rgba(245,166,35,.35); }
+.job-featured { display:inline-block; margin-right:8px; background:var(--amber); color:var(--navy); font-size:.68rem; font-weight:800; letter-spacing:.04em; padding:2px 7px; border-radius:999px; vertical-align:middle; }
+.job-featured-note { grid-column:1 / -1; margin:4px 0 0; color:var(--muted); font-size:.78rem; }
 @media (max-width:680px){ .live-row { grid-template-columns:1fr; gap:4px; } .live-row .lapply { justify-self:start; margin-top:6px; } }
 
 .emp-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:18px 20px; margin-bottom:14px; }
@@ -154,7 +157,7 @@
 <!--/SSR:jobs-stats-->
 </div>
 
-    <div class="section-head" style="margin-bottom:18px"><h2>Live openings</h2><p>Counted only when a row has a specific vacancy URL, a capture date and a verification date. None are on file. Paylocity job 3846464 (Pennsylvania Transformer Technology) returned HTTP 404 on 14 Oct 2026, so it is not listed as open.</p></div>
+    <div class="section-head" style="margin-bottom:18px"><h2>Live openings</h2><p>Counted only when a reviewed row has a specific vacancy URL, a capture date and a verification date. A post drops off 30 days after that verification date. A reviewed FEATURED post is pinned above other live openings and is promotional placement, not an editorial recommendation. None are on file. Paylocity job 3846464 (Pennsylvania Transformer Technology) returned HTTP 404 on 14 Oct 2026, so it is not listed as open.</p></div>
     <div id="liveBoard">
 <!--SSR:jobs-live-->
 <p class="jobs-empty">0 live openings.</p>
@@ -515,7 +518,7 @@ Showing 30 employers across 18 countries
 </div>
 
     <div class="card" id="post" style="margin-top:44px">
-      <div class="section-head" style="margin-bottom:20px"><h2>Hiring? Post a Job — Free</h2><p>Reach transformer professionals worldwide.</p></div>
+      <div class="section-head" style="margin-bottom:20px"><h2>Hiring? Post a Job — Free</h2><p>Submit one vacancy. A reviewer checks that the apply URL is a specific opening and is not a 404, then records the capture date and the verification date. A careers-page search stays in the hiring-signals list and is not published as a live opening. Nothing is published from this form by itself.</p></div>
       <form name="job-posting" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" id="jForm">
         <input type="hidden" name="form-name" value="job-posting"><p hidden><label>Leave empty: <input name="bot-field"></label></p>
         <div class="row">
@@ -532,18 +535,24 @@ Showing 30 employers across 18 countries
             </select>
           </div>
         </div>
-        <div style="margin-bottom:16px"><label for="fld_description">Job Description *</label><textarea id="fld_description" name="description" rows="4" required placeholder="Role, requirements, experience..."></textarea></div>
+        <div style="margin-bottom:16px"><label for="fld_description">Job Description *</label><textarea id="fld_description" name="description" rows="4" required placeholder="One position. Role, requirements, experience..."></textarea></div>
         <div class="row">
           <div><label for="fld_email">Contact Email *</label><input id="fld_email" type="email" name="email" required></div>
-          <div><label for="fld_apply_url">Apply URL (optional)</label><input id="fld_apply_url" type="url" name="apply_url" placeholder="https://..."></div>
+          <div><label for="fld_apply_url">Apply URL *</label><input id="fld_apply_url" type="url" name="apply_url" required placeholder="https://…/job/12345"></div>
         </div>
-        <button class="btn btn-amber" type="submit" style="width:100%">Post Job →</button>
+        <div class="row">
+          <div><label for="fld_slug">Company slug (optional)</label><input id="fld_slug" type="text" name="company_slug" placeholder="directory slug, if you have one"></div>
+          <div style="display:flex;align-items:flex-end"><label style="font-weight:600"><input id="fld_one" type="checkbox" name="one_position" value="yes" required> This is one position, not a multi-role or staffing ad</label></div>
+        </div>
+        <p id="jFormError" style="display:none;color:#b91c1c;font-size:.88rem;margin:0 0 12px"></p>
+        <button class="btn btn-amber" type="submit" style="width:100%">Submit for review →</button>
       </form>
       <div id="jThanks" style="display:none;text-align:center;padding:20px 0">
-        <p style="font-size:1.1rem;font-weight:700;color:var(--ink)">Thanks — we'll review and publish it shortly.</p>
+        <p style="font-size:1.1rem;font-weight:700;color:var(--ink)">Thanks — this is in the review queue. It is not a live opening until a reviewer records the vacancy URL, the capture date, and the verification date.</p>
       </div>
     </div>
-    <script>(function(){var f=document.getElementById('jForm');if(!f)return;f.addEventListener('submit',function(e){e.preventDefault();if(!f.checkValidity()){f.reportValidity();return;}fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(new FormData(f)).toString()}).then(d).catch(d);function d(){f.style.display='none';document.getElementById('jThanks').style.display='block';}});})();</script>
+    <script src="lib/job-board.js"></script>
+    <script>(function(){var f=document.getElementById('jForm');if(!f)return;f.addEventListener('submit',function(e){e.preventDefault();var err=document.getElementById('jFormError');if(!f.checkValidity()){f.reportValidity();return;}var data=new FormData(f);var problems=window.TPJobBoard?TPJobBoard.submissionErrors({title:data.get('title'),company:data.get('company'),location:data.get('location'),function:data.get('function'),description:data.get('description'),email:data.get('email'),apply_url:data.get('apply_url'),one_position:data.get('one_position')==='yes'}):[];if(problems.length){err.style.display='block';err.textContent=problems.join(' ');return;}err.style.display='none';fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(data).toString()}).then(d).catch(d);function d(){f.style.display='none';document.getElementById('jThanks').style.display='block';}});})();</script>
 
     <p style="text-align:center; color:var(--muted); font-size:.86rem; margin-top:24px">
       Also browse aggregators:
@@ -602,16 +611,18 @@ const SIGNALS = [
  { t:"Transformer Design / Applications Engineer", co:"Eaton", loc:"Multiple (US)", fn:"Engineering & Design", url:"https://jobs.eaton.com/" }
 ];
 let liveRows = [];
+function escJob(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 function renderLive(rows){
-  liveRows = (rows || []).filter(j => j.posting_url && j.captured_at && j.last_verified_at);
+  liveRows = rows || [];
   const board = document.getElementById('liveBoard');
   board.innerHTML = liveRows.length ? liveRows.map(j=>
-    `<div class="live-row">
-       <span class="lt">${j.t}</span>
-       <span class="lc">${j.co}</span>
-       <span class="ll">📍 ${j.loc||''}</span>
-       <span class="ld">${j.fn||''} · verified ${j.last_verified_at}</span>
-       <a class="lapply" href="${j.posting_url}" target="_blank" rel="noopener">Apply →</a>
+    `<div class="live-row${j.featured?' is-featured':''}">
+       <span class="lt">${j.featured?'<span class="job-featured" data-job-featured="1">FEATURED</span> ':''}${escJob(j.t)}</span>
+       <span class="lc">${escJob(j.co)}</span>
+       <span class="ll">📍 ${escJob(j.loc||'')}</span>
+       <span class="ld">${escJob(j.fn||'')} · verified ${escJob(j.last_verified_at)}</span>
+       <a class="lapply" href="${escJob(j.posting_url)}" target="_blank" rel="noopener">Apply →</a>
+       ${j.featured?'<p class="job-featured-note">'+escJob(j.featured_note||'')+'</p>':''}
      </div>`).join("") : '<p class="jobs-empty">0 live openings.</p>';
   const lc = document.getElementById('liveCount'); if (lc) lc.textContent = liveRows.length;
   const ls = document.getElementById('liveStat'); if (ls) ls.textContent = liveRows.length;
@@ -628,8 +639,12 @@ function renderSignals(rows){
        <a class="lapply" href="${j.url}" target="_blank" rel="noopener">Careers page →</a>
      </div>`).join('');
 }
-renderLive(LIVE.filter(j => j.posting_url && j.captured_at && j.last_verified_at));
 renderSignals(SIGNALS);
+fetch('data/job-postings.json').then(function(r){ return r.json(); }).then(function(doc){
+  var rows = (window.TPJobBoard ? TPJobBoard.publicOpenings(doc.published || []) : []).map(function(row){ return TPJobBoard.displayRow(row); });
+  renderLive(rows);
+  if (typeof renderBoard === 'function') renderBoard();
+}).catch(function(){});
 
 const DATA = [
  { co:"GE Vernova", country:"USA", flag:"🇺🇸", hq:"Multiple US plants", url:"https://careers.gevernova.com/jobs", roles:["Lead/Mechanical Engineer – Power Transformer components","Manufacturing & quality professionals","Field service & commissioning engineers"], fn:["eng","mfg","svc"] },

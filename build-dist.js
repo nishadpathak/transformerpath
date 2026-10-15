@@ -57,6 +57,7 @@ const DIRS = [
 // Individual files from directories that are NOT wholly public.
 const FILES_FROM_MIXED_DIRS = [
   'lib/event-search.js',        // loaded by search.html; the rest of lib/ is build-time
+  'lib/job-board.js',           // jobs page and the review queue; rules, not a data file
   'lib/provenance-badge.js',    // shared provenance badge, loaded by public pages
   'lib/saved-design.js',        // calculator save/open snapshot helper
   'js/tp-grid-calc.js',         // Grid Lab formulas; js/ is not copied wholesale
