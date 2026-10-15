@@ -118,12 +118,19 @@ ${FOOT}
 }
 
 fs.mkdirSync('components', { recursive: true });
+const { componentHasHub } = require('./lib/component-href');
 const indexLinks = [];
 for (const cat of Object.keys(COMPONENTS)) {
   const meta = META[cat];
-  fs.writeFileSync('components/' + meta.slug + '.html', page(cat));
+  const thin = 'components/' + meta.slug + '.html';
+  if (componentHasHub(meta.slug)) {
+    if (fs.existsSync(thin)) fs.unlinkSync(thin);
+    console.log('hub owns /components/' + meta.slug + '/ — not writing ' + thin);
+    continue;
+  }
+  fs.writeFileSync(thin, page(cat));
   indexLinks.push(`<a href="components/${meta.slug}.html">${meta.t}</a>`);
-  console.log('OK components/' + meta.slug + '.html');
+  console.log('OK ' + thin);
 }
 console.log('generated', indexLinks.length, 'component pages');
 

@@ -62,7 +62,8 @@ function compLinks(s) {
   if (!slugs.length) return '';
   // Component directory labels for the pills' accessible text.
   const LABEL = { 'protection-monitoring': 'Protection & Monitoring', 'transformer-bushings': 'Bushings & Terminations', 'high-voltage-insulators': 'High-Voltage Insulators', 'on-load-tap-changers': 'Tap-Changers', 'transformer-cooling': 'Cooling', 'insulation-materials': 'Insulation Materials', 'conductors-and-core': 'Conductors & Core', 'oil-fluids-preservation': 'Oil, Fluids & Preservation', 'tank-and-mechanical': 'Tank & Mechanical' };
-  return '<h2>Related components</h2><div style="margin:4px 0 8px">' + slugs.map((c) => '<a class="tpill" href="../../components/' + c + '.html" data-track="component_crosslink" data-track-supplier="' + esc(s.name) + '">' + esc(LABEL[c] || c) + '</a>').join(' ') + '</div>';
+  const { componentSlugHref } = require('./lib/component-href');
+  return '<h2>Related components</h2><div style="margin:4px 0 8px">' + slugs.map((c) => '<a class="tpill" href="' + componentSlugHref('../../', c) + '" data-track="component_crosslink" data-track-supplier="' + esc(s.name) + '">' + esc(LABEL[c] || c) + '</a>').join(' ') + '</div>';
 }
 
 function page(s) {

@@ -378,7 +378,8 @@ function page(app) {
           gg.names.slice(0, 8).map(function (x) { return esc(x[0]); }).join(' · ') + (gg.names.length > 8 ? ' …' : '') + '</span></div>';
       }).join('') + '</div>';
   }).join('');
-  const compHtml = app.components.map(function (s) { return '<a class="tpill" href="../components/' + s + '.html">' + esc(COMPONENTS[s] || s) + '</a>'; }).join(' ');
+  const { componentSlugHref } = require('./lib/component-href');
+  const compHtml = app.components.map(function (s) { return '<a class="tpill" href="' + componentSlugHref('../', s) + '">' + esc(COMPONENTS[s] || s) + '</a>'; }).join(' ');
   const evHtml = eventsFor(app).map(function (ev) {
     return '<li style="margin:6px 0"><a href="' + esc(ev.u) + '" target="_blank" rel="noopener" style="color:var(--accent)">' + esc(ev.n) + '</a> <span style="color:var(--muted);font-size:.85rem">' + fmt(ev.s) + (ev.e && ev.e !== ev.s ? ' → ' + fmt(ev.e) : '') + ' · ' + esc(ev.c) + ', ' + esc(ev.co) + '</span></li>';
   }).join('') || '<li style="color:var(--muted)">No matches yet — check back, or submit an RFQ.</li>';

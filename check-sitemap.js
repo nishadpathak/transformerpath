@@ -105,6 +105,19 @@ function checkSitemap(xml, root, readFile) {
   });
 
   if (root) errors.push.apply(errors, auditCanonicals(locVals, root, readFile));
+  /* Netlify serves foo.html at /foo, which hides foo/index.html. A directory
+   * URL in the sitemap must not have that sibling file. */
+  if (root && !readFile) {
+    locVals.forEach(function (loc) {
+      let pathname = '';
+      try { pathname = new URL(loc).pathname; } catch (e) { return; }
+      if (!pathname.endsWith('/') || pathname === '/') return;
+      const sibling = path.join(root, pathname.slice(1, -1) + '.html');
+      if (fs.existsSync(sibling)) {
+        errors.push('directory URL is shadowed by sibling html: ' + loc);
+      }
+    });
+  }
   return { errors: errors, locVals: locVals, distinct: distinct };
 }
 
