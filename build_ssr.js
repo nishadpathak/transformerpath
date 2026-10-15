@@ -375,21 +375,24 @@ function renderComponents(html) {
  * JOBS
  * ------------------------------------------------------------------ */
 function renderJobs(html) {
-  const LIVE = extractConst(html, 'LIVE');
+  const jobBoard = require('./lib/job-board');
   const DATA = extractConst(html, 'DATA');
   const FN = extractConst(html, 'FN');
   const FN_CLASS = extractConst(html, 'FN_CLASS');
-  const live = (LIVE || []).filter(function (j) {
-    return j && j.posting_url && j.captured_at && j.last_verified_at;
-  });
+  let published = [];
+  try {
+    published = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/job-postings.json'), 'utf8')).published || [];
+  } catch (e) { published = []; }
+  const live = jobBoard.publicOpenings(published).map(function (row) { return jobBoard.displayRow(row); });
 
   const liveGrid = (live.length ? live.map((j) =>
-    `<div class="live-row">
-     <span class="lt">${esc(j.t)}</span>
+    `<div class="live-row${j.featured ? ' is-featured' : ''}">
+     <span class="lt">${j.featured ? '<span class="job-featured" data-job-featured="1">FEATURED</span> ' : ''}${esc(j.t)}</span>
      <span class="lc">${esc(j.co)}</span>
      <span class="ll">📍 ${esc(j.loc)}</span>
      <span class="ld">${esc(j.fn)} · verified ${esc(j.last_verified_at)}</span>
      <a class="lapply" href="${esc(j.posting_url)}" target="_blank" rel="noopener">Apply →</a>
+     ${j.featured ? '<p class="job-featured-note">' + esc(j.featured_note) + '</p>' : ''}
    </div>`).join('\n') : '<p class="jobs-empty">0 live openings.</p>');
 
   // default view of the employer board (no search / country / function filter)
@@ -422,7 +425,7 @@ function renderJobs(html) {
   html = inject(html, '<div id="board">', 'jobs-board', board);
   html = inject(html, '<div class="stat-row" id="statRow">', 'jobs-stats', stats);
   html = inject(html, 'id="count">', 'jobs-count', `Showing ${DATA.length} employers across ${order.length} countries`);
-  return { page: html, records: DATA.length + LIVE.length };
+  return { page: html, records: DATA.length + live.length };
 }
 
 /* ------------------------------------------------------------------ *
