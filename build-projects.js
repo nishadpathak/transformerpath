@@ -62,7 +62,8 @@ function page(p) {
   const marketSlug = MARKET_SLUG[p.country];
   const marketLink = (marketSlug && fs.existsSync('markets/' + marketSlug + '/index.html')) ? '<a class="tpill" href="../../markets/' + marketSlug + '/">' + esc(p.country) + ' market</a>' : '';
   const utilLink = (p.utility && uSlug(p.utility)) ? '<a class="tpill" href="../../utilities/' + uSlug(p.utility) + '/">' + esc(p.utility) + ' profile</a>' : '';
-  const srcLinks = (p.sources || []).filter((u) => u).map((u) => '<a href="' + esc(u) + '" target="_blank" rel="noopener" style="color:var(--accent)">source</a>').join(' · ') || '—';
+  const srcList = (p.sources || []).filter(function (u) { return /^https?:\/\//i.test(String(u || '')) && !/example\.com|\bupd\b/i.test(String(u)); });
+  const srcLinks = srcList.map((u) => '<a href="' + esc(u) + '" target="_blank" rel="noopener" style="color:var(--accent)">source</a>').join(' · ') || 'No source URL on file';
 
   return '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
     '<title>' + esc(p.project) + ' — Transformer Project | TransformerPath</title>' +
@@ -177,7 +178,7 @@ console.log('project entity pages:', built);
           '<h3><a href="projects/' + slug + '/">' + esc(p.project) + '</a></h3>' +
           '<div class="meta"><b>Country</b> ' + esc(p.country) + ' &middot; <b>Voltage</b> ' + esc(p.voltage || '—') + ' &middot; <b>Status</b> ' + esc(STAT_LABEL[st] || label(p.status)) + ' <span class="cls-badge cls-' + g + '">' + g + '</span></div>' +
           (p.utility ? '<div class="meta"><b>Utility</b> ' + esc(p.utility) + '</div>' : '') +
-          '<div class="src"><a href="' + esc((p.sources && p.sources[0]) || '#') + '" target="_blank" rel="noopener">source</a>' + (p.expected ? ' · expected ' + esc(p.expected) : '') + '</div></div>';
+          '<div class="src">' + ((p.sources || []).some(function (u) { return /^https?:\/\//i.test(String(u || '')) && !/example\.com|\bupd\b/i.test(String(u)); }) ? '<a href="' + esc((p.sources || []).find(function (u) { return /^https?:\/\//i.test(String(u || '')) && !/example\.com|\bupd\b/i.test(String(u)); })) + '" target="_blank" rel="noopener">source</a>' : 'No source URL on file') + (p.expected ? ' · expected ' + esc(p.expected) : '') + '</div></div>';
       }).join('');
       return '<div class="u-country" data-stc="' + esc(countryData) + '"><b class="u-cname">' + esc(country) + ' (' + byRegion[region][country].length + ')</b>' + items + '</div>';
     }).join('');

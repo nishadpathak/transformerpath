@@ -165,7 +165,7 @@ body{font-family:var(--font-sans);background:#08121e;color:var(--ink)}
   <h2>Selected part</h2>
   <div id="info"><span class="hint">Click any part to identify it. Press <b>Raise</b> to watch a tap operation: the selector pre-selects off-load, then the diverter transfers the current.</span></div>
 </div>
-<div id="help">🖱 drag = orbit · wheel = zoom · right-drag = pan · click = identify<br>Watch the sequence: <b>selector moves first (no current)</b> → <b>diverter snaps</b> (current bridges through the transition resistor).</div>
+<div id="help">🖱 drag = orbit · wheel = zoom · right-drag = pan · click = identify<br>Watch the sequence: <b>selector moves first (no current)</b> → <b>diverter snaps</b> (current bridges through the transition resistor, or through the vacuum bottle when that view is on).</div>
 
 <script src="vendor/three.min.js"></script>
 <script>
@@ -251,7 +251,7 @@ const armOddPivot=new THREE.Group();armOddPivot.add(selArmOdd);
 const armEvenPivot=new THREE.Group();armEvenPivot.add(selArmEven);
 selGrp.add(armOddPivot,armEvenPivot);
 root.add(selGrp);
-reg(selGrp,'sel','Tap selector','The <b>selector</b> chooses the next tap while it carries no load (the diverter still holds the current on the present tap). Because it pre-selects off-load, its contacts never arc — only the diverter does.',new THREE.Vector3(0,-12,0));
+reg(selGrp,'sel','Tap selector','The <b>selector</b> chooses the next tap while it carries no load (the diverter still holds the current on the present tap). Because it pre-selects off-load, its contacts never arc — only the diverter does. The ring is drawn with 9 contacts so the motion stays readable. The counter runs the full 17 positions (±10%, 16 steps of 1.25%).',new THREE.Vector3(0,-12,0));
 
 /* ===== change-over (reversing) selector ===== */
 const coGrp=new THREE.Group();coGrp.position.y=14;
@@ -344,7 +344,9 @@ function tick(){requestAnimationFrame(tick);
     } else if(t<0.66){ // diverter SNAP + resistor heats
       const u=(t-0.5)/0.16;
       diverter.rotation.y = ((anim.dir>0? u: -u)*0.6) + (diverter.userData.rest||0);
-      const g=Math.sin(u*Math.PI);M.res.emissive.setRGB(g*0.6,g*0.15,0);
+      const g=Math.sin(u*Math.PI);
+      if(resGrp.visible) M.res.emissive.setRGB(g*0.6,g*0.15,0);
+      else M.res.emissive.setRGB(0,0,0);
     } else { // settle
       M.res.emissive&&M.res.emissive.setRGB(0,0,0);diverter.rotation.y=0;
       selEvenAngle=armEvenPivot.rotation.y;

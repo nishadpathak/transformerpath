@@ -176,7 +176,7 @@ intel.refresh_meta = Object.assign({}, intel.refresh_meta || {}, {
 if (!intel.refresh_meta.note) {
   intel.refresh_meta.note = 'Curated transformer-industry intelligence. updated tracks newest validated content observation when present — not a silent redeploy clock. The scheduled rebuild is once daily (06:00 UTC / 10:00 Dubai) and only runs when TP_BUILD_HOOK_URL is set.';
 }
-const FOLD = { China: 'RoW', AsiaPac: 'RoW', LatAm: 'RoW', Africa: 'RoW' };
+const FOLD = { China: 'RoW', AsiaPac: 'RoW', LatAm: 'RoW', Africa: 'RoW', 'North America': 'USA' };
 const srcByRegion = {};
 ITEMS.forEach((it) => { const fold = FOLD[it.region] || it.region; (srcByRegion[fold] = srcByRegion[fold] || []).push(it); });
 let mergedCount = 0;
@@ -196,5 +196,18 @@ Object.keys(srcByRegion).forEach((region) => {
   }));
   mergedCount += fresh.length;
 });
+// The USA desk already carries the AEP Ohio filing. A second "North America"
+// key is the same story, and a later build must not put that key back.
+if (intel['North America']) {
+  if (!intel.USA) intel.USA = { label: 'USA', items: [] };
+  const seen = new Set((intel.USA.items || []).map((x) => x.url || x.title));
+  (intel['North America'].items || []).forEach((it) => {
+    const key = it.url || it.title;
+    if (seen.has(key)) return;
+    intel.USA.items.push(it);
+    seen.add(key);
+  });
+  delete intel['North America'];
+}
 fs.writeFileSync(ISO_PATH, JSON.stringify(intel, null, 2));
 console.log('data/intel.json: merged ' + mergedCount + ' international items (' + Object.keys(srcByRegion).join(',') + ')');

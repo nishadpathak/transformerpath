@@ -31,6 +31,7 @@
  */
 'use strict';
 const fs = require('fs');
+const { isoDateInText, countryFromText, usableSource } = require('./lib/tender-country');
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
@@ -130,9 +131,10 @@ PROJECTS.forEach((p) => {
   const stage = ci(p.status || '');
   if (!['tendering', 'evaluation', 'expected', 'planned', 'awarded'].includes(stage)) return;
   let buyer = p.utility || p.epc || '';
-  const sources = (p.sources || []).filter(Boolean);
-  // A placeholder/non-canonical source is recorded but flagged as unverified.
-  const verifiedSource = sources.find((s) => !/example\.com|\bupd\b/.test(s));
+  const sources = (p.sources || []).filter(usableSource);
+  // A placeholder URL (example.com) is not a source. No auditable URL, no tender.
+  if (!sources.length) return;
+  const verifiedSource = sources[0];
   addTender({
     title: (p.project || '').replace(/\s*—.*$/, '').replace(/\s*\(.*\),?\s*$/, '').trim() || p.project,
     full_title: p.project,
@@ -173,9 +175,17 @@ INTEL_ITEMS.forEach((it) => {
   // text mentioning "float"/"floating" (as in a floating HVDC project) is NOT.
   const text = (it.title || '') + ' ' + (it.snippet || '');
   if (!/(invites? bids?|tender|bid deadline|prequalif|epc tender|bids? for|bid (submission|opening|deadline)|procur|supply and installation)/i.test(it.title || '')) return;
-  const country = (text.match(/(Saudi|UAE|Qatar|Kuwait|Bahrain|Oman|India|China|Korea|Japan|Turkey|Türkiye|Vietnam|Indonesia|Malaysia|Germany|UK|France|Italy|Spain|Brazil|Chile|Mexico|Egypt|Kenya|Nigeria|South Africa|Australia)\b/i) || [])[1] || '';
-  const r = it._region === 'GCC' ? 'Middle East' : it._region === 'India' ? 'Asia' : it._region === 'Europe' ? 'Europe' : it._region === 'USA' ? 'North America' : 'Other';
-  const stage = /award/i.test(text) ? 'awarded' : /evaluation|L1/i.test(text) ? 'evaluation' : /deadline/i.test(text) ? 'tendering' : /invites? bids?|floats?|tender/i.test(text) ? 'tendering' : 'expected';
+  const country = it.country || countryFromText(text);
+  const fallbackRegion = it._region === 'GCC' ? 'Middle East' : it._region === 'India' ? 'Asia' : it._region === 'Europe' ? 'Europe' : it._region === 'USA' ? 'North America' : 'Other';
+  const r = country ? regionOf(country) : fallbackRegion;
+  const namedDeadline = (it.tender_close_date && String(it.tender_close_date).slice(0, 10)) || isoDateInText(text);
+  /* "Awards expected" is not an award. Only awarded / wins / won is. */
+  const stage = /awards?\s+expected|expected\s+to\s+award/i.test(text) ? 'evaluation'
+    : /\b(awarded|wins?|won)\b/i.test(text) ? 'awarded'
+    : /evaluation|\bL1\b/i.test(text) ? 'evaluation'
+    : /deadline/i.test(text) ? 'tendering'
+    : /invites? bids?|floats?|tender/i.test(text) ? 'tendering'
+    : 'expected';
   // Skip if this already maps to a project tender (match on buyer-ish fragment).
   addTender({
     title: (it.title || '').replace(/\s*—.*$/, '').replace(/\s*\(.*\),?\s*$/, '').trim() || it.title,
@@ -199,7 +209,8 @@ INTEL_ITEMS.forEach((it) => {
     source: it.src || 'TransformerPath Daily Intel',
     source_urls: it.url ? [it.url] : [],
     source_verified: true,
-    expected_raw: '',
+    expected_raw: namedDeadline || '',
+    deadline_raw: namedDeadline || '',
     stage,
     cls: '',
   });
@@ -365,6 +376,9 @@ tenders.forEach((t) => {
   fs.writeFileSync('tenders/' + slug + '/index.html', tenderPage(t));
   tSlugs.add(slug);
 });
+fs.readdirSync('tenders', { withFileTypes: true }).forEach(function (e) {
+  if (e.isDirectory() && !tSlugs.has(e.name)) fs.rmSync('tenders/' + e.name, { recursive: true, force: true });
+});
 console.log('tender entity pages wrote: ' + tSlugs.size);
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -390,7 +404,7 @@ console.log('tender entity pages wrote: ' + tSlugs.size);
     '<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any"><link rel="stylesheet" href="style.css?v=13"><style>' + style + '</style></head><body>\n' + HEAD + '\n<main class="t-wrap">' +
     '<h1>Transformer <span style="color:var(--accent)">Tender Watch</span></h1>' +
     '<p class="lead" style="color:var(--muted);font-size:1.02rem;max-width:840px;margin:8px 0 18px">A worldwide directory of transformer-relevant tenders, bids and procurement opportunities, tracked by region and country. Derived from public, source-backed signals — the same data behind the Project database and Daily Intel. Every tender links to its source; TransformerPath does not republish restricted procurement documentation.</p>' +
-    '<div class="t-stats"><div class="s"><b>' + tenders.length + '</b><small>Tenders</small></div><div class="s"><b>' + stats.by_status.OPEN + '</b><small>Open now</small></div><div class="s"><b>' + (stats.by_status.EVALUATION + stats.by_status.EXPECTED) + '</b><small>Pre-award</small></div><div class="s"><b>' + stats.by_status.AWARDED + '</b><small>Awarded</small></div><div class="s"><b>' + stats.countries + '</b><small>Countries</small></div></div>' +
+    '<div class="t-stats"><div class="s"><b>' + tenders.length + '</b><small>Tenders</small></div><div class="s"><b>' + ((stats.by_status.OPEN || 0) + (stats.by_status.CLOSING_SOON || 0)) + '</b><small>Open now</small></div><div class="s"><b>' + ((stats.by_status.EVALUATION || 0) + (stats.by_status.EXPECTED || 0)) + '</b><small>Pre-award</small></div><div class="s"><b>' + (stats.by_status.AWARDED || 0) + '</b><small>Awarded</small></div><div class="s"><b>' + stats.countries + '</b><small>Countries</small></div></div>' +
     body +
     '<p class="t-note">Tender metadata is public and source-tracked. Status is derived only from the source (e.g. OPEN/EXPECTED/EVALUATION/AWARDED) and may change — verify against the official procurement source before acting. Report a <a href="mailto:hello@transformerpath.com?subject=Tender%20correction" style="color:var(--accent)">correction</a>.</p>' +
     '</main>\n' + FOOT + '\n<script src="analytics.js" defer></script>\n</body>\n</html>';

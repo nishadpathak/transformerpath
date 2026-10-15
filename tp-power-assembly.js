@@ -360,7 +360,7 @@
       div.position.set(8, 61, -2);
       g.add(div);
       reg(g, "Conservator (2 compartments)",
-        "Twin-compartment rubber-bag conservator: main tank vs OLTC diverter oil. Free-breathing power practice.",
+        "Twin-compartment conservator. A rubber bag on the main-tank side takes up expansion so oil does not meet air; the breather dries only the air around the bag. The second compartment is OLTC diverter oil and has its own breather.",
         [0, 32, 0], { toggle: "conservator", id: "conservator", label: "Conservator" });
     }
     {
@@ -491,8 +491,8 @@
         pump.position.set(5.5, 5.2, zs * 18.5);
         g.add(pump);
       });
-      reg(g, "Oil circulating pumps (OFAF)",
-        "Forced-oil pumps for OFAF/ODAF duty. Magnetic-drive preferred; staged with fans by WTI.",
+      reg(g, "Oil pumps (optional OFAF)",
+        "Not on the ONAN/ONAF nameplate of this 100 MVA reference. Fit them only when the cooling class is OFAF or ODAF. The winding-temperature indicator stages them with the fans. Magnetic-drive pumps are preferred.",
         [8, -20, 12], { toggle: "pumps", id: "oil-pumps", label: "Oil pumps" });
     }
     {

@@ -140,11 +140,15 @@ Object.keys(censusByName).forEach((name) => {
   const dev = DEV_BY[name] || null;
   const primary = variants[0];
 
+  // The CG Power tier is the Bhopal and Malanpur filing, not every
+  // cgglobal.com census row. A different country must not inherit those figures.
+  const cgOtherPlant = !!(tier && norm(tier.name) === 'cg power' && norm(primary.country) !== norm(tier.country || ''));
+  const plantPlace = String(primary.city || primary.country || 'this').split(',')[0].trim();
   // Reported capability — SEPARATE maxima, never combined.
-  const reported_voltage = tier && tier.kv ? tier.kv + ' kV' : (prov && prov.facts && prov.facts.some((f) => f.unit === 'kV') ? prov.facts.filter((f) => f.unit === 'kV').map((f) => f.value + ' kV').join(', ') : '');
-  const reported_mva = tier && tier.mva ? tier.mva.toLocaleString('en-US') + ' MVA' : (prov && prov.facts && prov.facts.some((f) => f.unit === 'MVA') ? prov.facts.filter((f) => f.unit === 'MVA').map((f) => f.value + ' MVA').join(', ') : '');
-  const certs = (tier && tier.certs) || [];
-  const testing = (tier && tier.note && /test/i.test(tier.note)) ? 'Reported' : '';
+  const reported_voltage = cgOtherPlant ? '' : (tier && tier.kv ? tier.kv + ' kV' : (prov && prov.facts && prov.facts.some((f) => f.unit === 'kV') ? prov.facts.filter((f) => f.unit === 'kV').map((f) => f.value + ' kV').join(', ') : ''));
+  const reported_mva = cgOtherPlant ? '' : (tier && tier.mva ? tier.mva.toLocaleString('en-US') + ' MVA' : (prov && prov.facts && prov.facts.some((f) => f.unit === 'MVA') ? prov.facts.filter((f) => f.unit === 'MVA').map((f) => f.value + ' MVA').join(', ') : ''));
+  const certs = cgOtherPlant ? [] : ((tier && tier.certs) || []);
+  const testing = cgOtherPlant ? '' : ((tier && tier.note && /test/i.test(tier.note)) ? 'Reported' : '');
   const approvals = []; // not yet sourced; kept empty rather than invented
   const orders_dev = dev && dev.developments ? dev.developments.map((d) => ({ title: d.title, url: d.url, value: d.value || '', src: d.src || '' })) : [];
 
@@ -166,8 +170,10 @@ Object.keys(censusByName).forEach((name) => {
     corporate_events: orders_dev.length,
     sources: {
       website: primary.url || null,
-      capability_source: tier ? (tier.source || '') : (prov && prov.source ? prov.source : ''),
-      capability_note: tier ? (tier.note || '') : '',
+      capability_source: cgOtherPlant ? '' : (tier ? (tier.source || '') : (prov && prov.source ? prov.source : '')),
+      capability_note: cgOtherPlant
+        ? ('The CG Power annual report discloses the Bhopal and Malanpur, India plant figures. Those figures are not a sourced rating for the ' + plantPlace + ' plant, so they are not shown here.')
+        : (tier ? (tier.note || '') : ''),
     },
     research_status: (audit && AUDIT_BY[norm(primary.name) + '|' + norm(primary.country)]) ? AUDIT_BY[norm(primary.name) + '|' + norm(primary.country)].status : 'ACTIVE_LIMITED_DATA',
     company_reported: false,
