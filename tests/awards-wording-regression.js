@@ -36,9 +36,13 @@ check('pairing is not the tracked total', together.length === 1 && together[0].i
 check('inferred count is present', html.indexOf('data-stat="awardsInferred">' + inferred) >= 0);
 check('unknown count is present', html.indexOf('data-stat="awardsUnknown">' + unknown) >= 0);
 const title = html.match(/title="(\d+) awards tracked, split by transformer scope"/);
+const visible = html.match(/data-stat="awards">(\d+)/);
 check('awards title uses the same total as the visible split', !!title && Number(title[1]) === confirmed + inferred + unknown, title && title[1]);
+check('visible awards count uses that same total', !!visible && !!title && visible[1] === title[1], (visible && visible[1]) + ' vs ' + (title && title[1]));
 const loader = fs.readFileSync('site-stats.js', 'utf8');
-check('runtime title is set from the same three counts', /awardsConfirmed[\s\S]*awardsInferred[\s\S]*awardsUnknown/.test(loader) && /type=awards/.test(loader));
+check('runtime title is set from the same three counts', /awardParts\[0\] \+ awardParts\[1\] \+ awardParts\[2\]/.test(loader) && /d\.awards = awardTracked/.test(loader) && /awardTracked \+ ' awards tracked/.test(loader));
+const builder = fs.readFileSync('build-site-stats.js', 'utf8');
+check('build writes one tracked total into the JSON and the homepage title', /const awardsTracked = awardsConfirmed \+ awardsInferred \+ awardsUnknown/.test(builder) && /awards: awardsTracked/.test(builder) && /current\.awards \+ ' awards tracked/.test(builder));
 
 if (failed) {
   console.error('AWARDS WORDING REGRESSION FAILED (' + failed + ')');
