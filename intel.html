@@ -435,7 +435,7 @@ a.plain:hover { text-decoration:underline; }
     <div class="cls-help">How each item is graded: <b>CONFIRMED</b> where the transformer scope is explicitly established, <b>INFERRED</b> where the source implies a transformer opportunity, <b>PIPELINE</b> for planned / tender / pre-award work, <b>SUPPORTED</b> where evidence is source-backed but a live portal adapter has not confirmed it (do not read it as confirmed), and <b>WATCH</b> for early signals that may not yet materialise. A blue language badge is the source language from the item's <b>lang</b> field. <b>DE</b> means German. Beside <b>CONFIRMED</b> it marks a German-language source whose transformer scope is explicitly established. Items without a badge read as the panel's default and are graded per item where it matters most.</div>
   </div>
   <script>
-  (function(){
+  document.addEventListener('DOMContentLoaded', function(){
     var targets=[document.getElementById('matRows'), document.getElementById('matRowsTab')].filter(Boolean);
     if(!targets.length) return;
     fetch('data/materials-latest.json').then(function(r){ return r.json().catch(function(){ return {}; }); }).then(function(d){
@@ -466,7 +466,7 @@ a.plain:hover { text-decoration:underline; }
       }).join('');
       targets.forEach(function(el){ el.innerHTML = out || '<div style="color:var(--muted)">No material rates available.</div>'; });
     }).catch(function(){});
-  })();
+  });
   </script>
   </details>
 
