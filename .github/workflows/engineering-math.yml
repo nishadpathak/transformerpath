@@ -17,5 +17,7 @@ jobs:
         run: node tests/autotransformer-sizing.test.js
       - name: Nameplate short-circuit current in kA
         run: node tests/nameplate-short-circuit.test.js
+      - name: Published calculator validation examples
+        run: node tests/calculator-examples.test.js
       - name: No personal service lines
         run: node tests/no-personal-services.test.js
