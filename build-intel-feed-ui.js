@@ -600,12 +600,12 @@ function ssrCard(p) {
     '<div class="intel-avatar" aria-hidden="true">TP</div>' +
     '<div class="intel-body">' +
     '<div class="intel-byline"><strong>TransformerPath</strong><span class="intel-handle">@intel</span>' +
-    '<span class="intel-date" title="Source date, not page-build time">' + date + '</span>' + age + '</div>' +
+    '<span class="intel-date" title="Source date, not page-build time">' + date + '</span> ' + age + '</div>' +
     '<h3 class="intel-headline"><a href="' + esc(href) + '" target="_blank" rel="noopener">' + esc(p.headline) + '</a></h3>' +
     (p.soWhat ? '<p class="intel-sowhat">' + esc(p.soWhat) + '</p>' : '') +
     evidenceNote +
     relevance +
-    '<div class="intel-meta">' + cls + evidence + prov +
+    '<div class="intel-meta">' + [cls, evidence, prov].filter(Boolean).join(' ') +
     '<span class="intel-region">' + esc(p.region) + '</span>' +
     (p.value ? '<span class="val">' + esc(p.value) + '</span>' : '') +
     '<span class="src">' + esc(p.sourceName || p.src) + '</span></div>' +

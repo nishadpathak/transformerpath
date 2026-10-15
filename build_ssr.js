@@ -624,20 +624,25 @@ function renderIntel(html) {
     CONFIRMED: { help: 'Transformer scope explicitly established.' },
     INFERRED:  { help: 'Transformer opportunity reasonably inferred from the source.' },
     PIPELINE:  { help: 'Planned / tender / pre-award stage.' },
+    SUPPORTED: { help: 'Supported evidence — not yet fully verified. No live portal adapter has confirmed this item.' },
     WATCH:     { help: 'Early signal; monitor for confirmation.' },
   };
   function tag(items, base) {
     return (items || []).map(function(it) { return (it && !it.cls) ? Object.assign({}, it, { cls: base }) : it; });
   }
   function card(it) {
-    const langBadge = (it.lang && it.lang !== 'en') ? `<span class="lang-badge">${esc(it.lang.toUpperCase())}</span>` : '';
+    const langCode = (it.lang && it.lang !== 'en') ? String(it.lang).toUpperCase() : '';
+    const langBadge = langCode ? `<span class="lang-badge" title="Source language: ${esc(langCode)}.">${esc(langCode)}</span>` : '';
     const cls = it.cls && CLASSIFY[it.cls] ? `<span class="cls-badge cls-${esc(it.cls)}" title="${esc(CLASSIFY[it.cls].help)}">${esc(it.cls)}</span>` : '';
+    const ev = (it.evidence_grade && it.evidence_grade !== 'CONFIRMED' && it.evidence_grade !== it.cls && CLASSIFY[it.evidence_grade])
+      ? `<span class="cls-badge cls-${esc(it.evidence_grade)}" title="${esc(CLASSIFY[it.evidence_grade].help)}">${esc(it.evidence_grade)}</span>` : '';
     const newBadge = it.isNew ? '<span class="new-badge">NEW</span>' : '';
+    const badges = [langBadge, cls, ev, newBadge].filter(Boolean).join(' ');
     const val = it.value ? `<span class="val">${esc(it.value)}</span> · ` : '';
     const src = it.src ? `<span class="src">${esc(it.src)}</span>` : '';
     const url = it.url || '#';
     return `<div class="card">
-      <div class="card-title"><a href="${esc(url)}" target="_blank" rel="noopener">${esc(it.title)}</a>${langBadge}${cls}${newBadge}</div>
+      <div class="card-title"><a href="${esc(url)}" target="_blank" rel="noopener">${esc(it.title)}</a> ${badges}</div>
       <div class="card-snippet">${esc(it.snippet)}</div>
       <div class="card-meta">${val}${src}<a class="tp-li-share-inline" data-linkedin-share data-url="${esc(url)}" href="#" rel="noopener" title="Share this item on LinkedIn">LinkedIn</a></div>
     </div>`;
@@ -665,11 +670,13 @@ function renderIntel(html) {
             (p.soWhat ? '<p class="intel-sowhat">' + esc(p.soWhat) + '</p>' : '') +
             (p.evidenceNote ? '<p class="intel-evidence-note" style="font-size:.76rem;color:#f0c14a;margin:6px 0 0">' + esc(p.evidenceNote) + '</p>' : '') +
             '<div class="intel-meta">' +
-            (p.cls ? '<span class="cls-badge cls-' + esc(p.cls) + '">' + esc(p.cls) + '</span>' : '') +
-            ((p.evidenceGrade && p.evidenceGrade !== 'CONFIRMED' && p.evidenceGrade !== p.cls)
-              ? '<span class="cls-badge cls-' + esc(p.evidenceGrade) + '" title="Supported evidence — not yet fully verified. No live portal adapter has confirmed this item.">' + esc(p.evidenceGrade) + '</span>'
-              : '') +
-            (intelBadge(p) || '') +
+            [
+              (p.cls ? '<span class="cls-badge cls-' + esc(p.cls) + '">' + esc(p.cls) + '</span>' : ''),
+              ((p.evidenceGrade && p.evidenceGrade !== 'CONFIRMED' && p.evidenceGrade !== p.cls)
+                ? '<span class="cls-badge cls-' + esc(p.evidenceGrade) + '" title="Supported evidence — not yet fully verified. No live portal adapter has confirmed this item.">' + esc(p.evidenceGrade) + '</span>'
+                : ''),
+              (intelBadge(p) || '')
+            ].filter(Boolean).join(' ') +
             '<span class="intel-region">' + esc(p.region || '') + '</span>' +
             '<span class="src">' + esc(p.sourceName || p.src || '') + '</span></div></div></article>';
         }).join('');
