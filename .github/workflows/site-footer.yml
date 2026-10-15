@@ -3,7 +3,7 @@ name: site-footer
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: [main, "cursor/**"]
 
 jobs:
   site-footer:

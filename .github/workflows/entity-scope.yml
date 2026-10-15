@@ -2,7 +2,7 @@ name: entity-scope
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: [main, "cursor/**"]
 jobs:
   scope:
     runs-on: ubuntu-latest

@@ -38,7 +38,18 @@ const { isConfigured, client } = require('./lib/supabase-server');
 const { sendPaidReceipts } = require('./lib/paid-receipt');
 const { listingProduct, companySlugFromReference } = require('../lib/paid-listings');
 
-const PAID_LISTING_PRODUCTS = { verified_manufacturer: true, featured_event: true, featured_exhibitor: true, hosted_webinar: true };
+const PAID_LISTING_PRODUCTS = {
+  verified_manufacturer: true,
+  featured_event: true,
+  featured_exhibitor: true,
+  hosted_webinar: true,
+  job_standard: true,
+  job_featured: true,
+  job_bundle_5: true,
+  rfq_lead: true,
+  rfq_lead_pro: true,
+  supplier_pro: true
+};
 
 // Should be loaded from env in production; never committed.
 const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;

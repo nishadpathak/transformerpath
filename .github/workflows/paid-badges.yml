@@ -2,7 +2,7 @@ name: paid-badges
 on:
   pull_request:
   push:
-    branches: [main, payments-ready]
+    branches: [main, payments-ready, "cursor/**"]
 jobs:
   badges:
     runs-on: ubuntu-latest

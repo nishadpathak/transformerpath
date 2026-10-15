@@ -49,7 +49,7 @@
 
   <div class="acard">
     <h2>Check a submission</h2>
-    <p class="sub" style="color:var(--muted)">Intake is the Netlify form <code>job-posting</code>. This check does not add a live opening. A careers search, a multi-role ad, or a missing date fails.</p>
+    <p class="sub" style="color:var(--muted)">Intake is the Netlify form <code>job-posting</code>. This check calls the same automatic URL, date, and reachability rules. It does not add a live opening and it does not set FEATURED. A careers search or a multi-role ad fails before the URL is fetched.</p>
     <form id="checkForm">
       <div class="row2">
         <div><label for="title">Title</label><input id="title" required></div>
@@ -64,28 +64,15 @@
         <div><label for="email">Employer email</label><input id="email" type="email" required></div>
         <div><label for="apply_url">Apply URL</label><input id="apply_url" type="url" required placeholder="https://…/job/12345"></div>
       </div>
-      <div class="row2">
-        <div><label for="captured_at">Capture date</label><input id="captured_at" type="date"></div>
-        <div><label for="last_verified_at">Verification date</label><input id="last_verified_at" type="date"></div>
-      </div>
-      <div class="row2">
-        <div><label for="http_status">HTTP status</label><input id="http_status" inputmode="numeric" placeholder="200"></div>
-        <div><label for="http_checked_at">HTTP checked</label><input id="http_checked_at" type="date"></div>
-      </div>
-      <div class="row2">
-        <div><label for="reviewer">Reviewer</label><input id="reviewer"></div>
-        <div><label for="evidence">Evidence</label><input id="evidence" placeholder="HTTP result and date"></div>
-      </div>
       <label style="font-weight:600"><input id="one_position" type="checkbox"> One position</label>
-      <label style="font-weight:600"><input id="featured" type="checkbox"> Featured pin (labelled, 30 days, no newsletter)</label>
-      <p style="margin-top:14px"><button class="btn btn-amber" type="submit">Check — do not publish</button></p>
+      <p style="margin-top:14px"><button class="btn btn-amber" type="submit">Check the vacancy URL</button></p>
     </form>
     <div id="checkOut"></div>
   </div>
 
   <div class="acard" id="rfqQueue">
     <h2>RFQ review</h2>
-    <p class="sub" style="color:var(--muted)">A lead is billable only after consent, a calendar-date deadline, a kV or MVA number, and a person’s mark. Payment does not create that mark. The reviewed match list is at most 5 suppliers. Buyer contact stays off the public page. The public file starts with no leads.</p>
+    <p class="sub" style="color:var(--muted)">A lead is billable when the automatic rules pass: consent, a calendar-date deadline, and a kV or MVA number. Payment does not create that mark. The match list is at most 5 suppliers. Buyer contact stays off the public page. The public file starts with no leads.</p>
     <div class="big" id="rfqCount">…</div>
     <p id="rfqEmpty" style="color:var(--muted)">Loading…</p>
     <form id="rfqCheck">
@@ -103,7 +90,6 @@
       </div>
       <label for="rfq_details">Details</label><textarea id="rfq_details" rows="3"></textarea>
       <label style="font-weight:600"><input id="rfq_consent" type="checkbox"> Consent ticked</label>
-      <label style="font-weight:600"><input id="rfq_person" type="checkbox"> A person marked this qualified</label>
       <p style="margin-top:14px"><button class="btn btn-amber" type="submit">Check qualification — do not publish</button></p>
     </form>
     <div id="rfqOut" style="white-space:pre-wrap;font-size:.88rem;margin-top:12px"></div>
@@ -171,7 +157,7 @@ document.getElementById('rfqCheck').addEventListener('submit', function (e) {
     consent: document.getElementById('rfq_consent').checked,
     consent_version: TPRfqLeads.CONSENT_VERSION,
     consent_at: document.getElementById('rfq_consent').checked ? new Date().toISOString() : '',
-    qualified_by: document.getElementById('rfq_person').checked ? 'reviewer' : ''
+    qualified_by_payment: false
   });
   var view = TPRfqLeads.redact({ company: val('rfq_company'), email: val('rfq_email'), details: val('rfq_details'), category: val('rfq_category') });
   document.getElementById('rfqOut').textContent = (result.qualified ? 'Meets the qualification rules. Still not published.' : 'Not qualified: ' + result.reasons.join('; ')) + '\nPublic card would say: ' + view.contact + '\nThis check did not store a lead.';
@@ -181,28 +167,32 @@ document.getElementById('checkForm').addEventListener('submit', function (e) {
   e.preventDefault();
   var val = function (id) { return document.getElementById(id).value.trim(); };
   var one = document.getElementById('one_position').checked;
-  var submission = TPJobBoard.submissionErrors({
+  var input = {
     title: val('title'), company: val('company'), location: val('location'), function: val('fn'),
     description: val('description'), email: val('email'), apply_url: val('apply_url'),
     one_position: one
-  });
-  var row = {
-    status: 'published',
-    title: val('title'), company: val('company'), location: val('location'), function: val('fn'),
-    description: val('description'), posting_url: val('apply_url'),
-    captured_at: val('captured_at'), last_verified_at: val('last_verified_at'),
-    http_status: val('http_status'), http_checked_at: val('http_checked_at'),
-    one_position: one, reviewer: val('reviewer'), reviewed_at: val('reviewer') ? new Date().toISOString() : '',
-    verification_evidence: val('evidence'), featured: document.getElementById('featured').checked
   };
-  var publishErrors = TPJobBoard.reviewErrors(row);
-  var live = TPJobBoard.isLiveOpening(row);
-  var out = [];
-  out.push(submission.length ? 'Not accepted for review: ' + submission.join('; ') : 'Accepted for review. Still not a live opening.');
-  out.push(live ? 'Would count as a live opening after the row is saved in data/job-postings.json.' : 'Would not be published: ' + publishErrors.join('; '));
-  if (row.featured && live) out.push(TPJobBoard.FEATURED_NOTE);
-  out.push('This check did not write a posting.');
-  document.getElementById('checkOut').textContent = out.join('\n');
+  var submission = TPJobBoard.submissionErrors(input);
+  var out = document.getElementById('checkOut');
+  if (submission.length) {
+    out.textContent = 'Not accepted: ' + submission.join('; ') + '\nThis check did not fetch the URL and did not write a posting.';
+    return;
+  }
+  out.textContent = 'Checking the vacancy URL…';
+  fetch('/.netlify/functions/review-vacancy', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify(input)
+  }).then(function (r) { return r.json(); }).then(function (decision) {
+    var lines = [];
+    lines.push(decision.accepted ? 'Automatic check passed. Featured stays off.' : 'Not accepted: ' + (decision.errors || []).join('; '));
+    if (decision.http_status) lines.push('HTTP ' + decision.http_status + ' on ' + (decision.checked_on || ''));
+    lines.push(decision.stored ? 'Stored.' : 'Not stored. The public board is unchanged.');
+    lines.push('This check did not write a posting.');
+    out.textContent = lines.join('\n');
+  }).catch(function () {
+    out.textContent = 'The automatic check did not complete. Nothing was published.';
+  });
 });
 </script>
 </body>
