@@ -16,3 +16,5 @@ jobs:
           node-version: '20'
       - name: JSON-LD and title-window tests
         run: node tests/seo-schema.test.js
+      - name: Virginia Transformer sourced specs
+        run: node tests/virginia-transformer-specs.js

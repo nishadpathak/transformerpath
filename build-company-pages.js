@@ -559,7 +559,8 @@ function page(r, slug) {
     // independently sourced evidence of a capability.
     const LOW_AUTH = /ensun|iqs|sinovoltaics|industry directory|directory/i;
     const lowAuth = LOW_AUTH.test('' + (maxKvSource || tier.source));
-    const srcLabel = (maxKvSource || tier.source || '—') + (lowAuth ? ' <span style="color:var(--muted);font-weight:600">(third-party directory — not independently verified)</span>' : '') + (tier.note ? ' <span style="color:var(--muted);cursor:help" title="' + esc(tier.note) + '">&#8505;</span>' : '');
+    const srcLink = tier.source_url ? ' <a href="' + esc(tier.source_url) + '" target="_blank" rel="noopener">source</a>' : '';
+    const srcLabel = (maxKvSource || tier.source || '—') + srcLink + (lowAuth ? ' <span style="color:var(--muted);font-weight:600">(third-party directory — not independently verified)</span>' : '') + (tier.note ? ' <span style="color:var(--muted);cursor:help" title="' + esc(tier.note) + '">&#8505;</span>' : '');
     const capNote = c === '—' ? '' : ' <span style="color:var(--muted);font-size:.78rem">(sourced figure — not independently audited)</span>';
     tierTable = '<table class="tbl"><tbody>' + row('Indicative sourced capacity / yr', c === '—' ? c : c + capNote) + row('Highest sourced voltage evidence', kv) + row('Product types', (tier.types || []).join(', ')) + row('Regions served', (tier.regions || []).join(', ')) + row('Reported standards', (tier.certs || []).join(', ')) + row('Source', srcLabel) + '</tbody></table>' + '<p style="font-size:.72rem;color:var(--muted)">These are the <b>highest sourced figures</b> on file — they are <b>not</b> asserted as the company maximum unless an authoritative source states that. Voltage summary is <b>MAX(accepted voltage evidence records, tier filing)</b>. Annual capacity and voltage evidence are independent values and are never combined into a single product rating. Verify against the manufacturer before a procurement decision.</p>';
   }
