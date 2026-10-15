@@ -33,6 +33,8 @@ jobs:
             -f target_url='https://transformerpath.com/build.json'
       - name: Wait for production and smoke the release
         env:
+          # The commit this run released. Do not substitute the tip of main:
+          # main can move while --wait polls, and that is not a failed release.
           RELEASE_SHA: ${{ github.event.deployment.sha || github.sha }}
         run: node scripts/smoke-release.js https://transformerpath.com "$RELEASE_SHA" --wait
       - name: Install Playwright Chromium and WebKit

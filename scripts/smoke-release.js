@@ -4,10 +4,17 @@
  * Cache-busted and plain requests. Follows redirects and records status,
  * redirect chain, age, cache-status and etag. Exits 1 on any failed assert.
  *
+ * expected_sha is the commit this run released: the workflow's github.sha,
+ * or the deployed commit. Live /build.json and /data/build-provenance.json
+ * are compared to that SHA. The current tip of main is not the expected
+ * value. Main can move while --wait is polling, and a newer tip is not a
+ * failed release when the released SHA is the one that is live.
+ *
  * --wait polls /data/build-provenance.json until build_commit equals
  * expected_sha, then runs the checks. --wait-minutes sets that budget
- * (default 30). A Netlify onSuccess hook uses a short budget because the
- * deploy has already been published.
+ * (default 30). --wait-interval-ms sets the poll gap (default 20000).
+ * A Netlify onSuccess hook uses a short budget because the deploy has
+ * already been published.
  */
 'use strict';
 const http = require('http');
@@ -20,9 +27,14 @@ let waitMinutes = 30;
 const waitFlag = rawArgs.indexOf('--wait-minutes');
 if (waitFlag >= 0) waitMinutes = Number(rawArgs[waitFlag + 1]);
 if (!Number.isFinite(waitMinutes) || waitMinutes <= 0) waitMinutes = 30;
+let waitIntervalMs = 20000;
+const intervalFlag = rawArgs.indexOf('--wait-interval-ms');
+if (intervalFlag >= 0) waitIntervalMs = Number(rawArgs[intervalFlag + 1]);
+if (!Number.isFinite(waitIntervalMs) || waitIntervalMs < 0) waitIntervalMs = 20000;
+const flagWithValue = { '--wait-minutes': true, '--wait-interval-ms': true };
 const args = rawArgs.filter(function (a, i) {
-  if (a === '--wait' || a === '--wait-minutes') return false;
-  if (i > 0 && rawArgs[i - 1] === '--wait-minutes') return false;
+  if (a === '--wait' || flagWithValue[a]) return false;
+  if (i > 0 && flagWithValue[rawArgs[i - 1]]) return false;
   return true;
 });
 const base = (args[0] || '').replace(/\/$/, '');
@@ -144,30 +156,20 @@ const ERROR_TEXT = [
   { re: /This page could not be found/i, label: 'could not be found' }
 ];
 
-const MAIN_LAG_MS = 15 * 60 * 1000;
-
-/* liveSha is behind main when main has commits the deploy does not.
- * divergenceAt is the committer time of the oldest of those commits.
- * A gap of 15 minutes or less is a build still in flight. Longer is a stuck deploy. */
-function mainLagVerdict(liveSha, mainSha, divergenceAt, nowMs) {
-  if (!mainSha) return { ok: false, detail: 'GitHub main HEAD unknown' };
-  if (String(liveSha) === String(mainSha)) return { ok: true, detail: 'live commit is main HEAD' };
-  const at = new Date(divergenceAt).getTime();
-  if (!Number.isFinite(at)) return { ok: false, detail: 'main divergence time missing' };
-  const ageMs = (nowMs == null ? Date.now() : nowMs) - at;
-  const min = Math.max(0, Math.round(ageMs / 60000));
-  const detail = 'live ' + String(liveSha).slice(0, 12) + ' behind main ' + String(mainSha).slice(0, 12) + ' for ' + min + ' min';
-  if (ageMs > MAIN_LAG_MS) return { ok: false, detail: detail };
-  return { ok: true, detail: detail + ' (within 15)' };
-}
-
-function productionHost(url) {
-  try {
-    const host = new URL(url).hostname;
-    return host === 'transformerpath.com' || host === 'www.transformerpath.com';
-  } catch (e) {
-    return false;
+/* Both live files must equal the SHA this run released. The current tip of
+ * main is not an input: it can advance while --wait is still polling. */
+function mainLagVerdict(liveBuildCommit, liveProvenanceCommit, releasedSha) {
+  const released = String(releasedSha || '').trim();
+  const buildCommit = String(liveBuildCommit || '').trim();
+  const provCommit = String(liveProvenanceCommit || '').trim();
+  if (!released) return { ok: false, detail: 'released SHA missing' };
+  if (buildCommit === released && provCommit === released) {
+    return { ok: true, detail: 'live build.json and provenance match released ' + released.slice(0, 12) };
   }
+  const mismatches = [];
+  if (buildCommit !== released) mismatches.push('build.json ' + (buildCommit.slice(0, 12) || 'missing'));
+  if (provCommit !== released) mismatches.push('provenance ' + (provCommit.slice(0, 12) || 'missing'));
+  return { ok: false, detail: mismatches.join(', ') + ' != released ' + released.slice(0, 12) };
 }
 
 const results = [];
@@ -188,7 +190,7 @@ async function main() {
         if (seen === expected) break;
       } catch (e) { seen = String(e.message || e); }
       console.log('waiting for deploy: build_commit=' + seen + ' expected=' + expected);
-      await sleep(20000);
+      await sleep(waitIntervalMs);
     }
     if (seen !== expected) {
       console.error('deploy not observed');
@@ -268,34 +270,8 @@ async function main() {
   const unique = new Set(stamps);
   record('pages share one stamp', unique.size === 1, unique.size + ' distinct triples');
 
-  if (!productionHost(base)) {
-    record('main lag', true, 'skipped off production');
-  } else {
-    try {
-      const mainRes = await fetchFollow('https://api.github.com/repos/nishadpathak/transformerpath/commits/main');
-      const mainDoc = JSON.parse(mainRes.body);
-      const mainSha = mainDoc.sha || '';
-      let divergenceAt = mainDoc.commit && mainDoc.commit.committer && mainDoc.commit.committer.date;
-      if (mainSha && mainSha !== build.commit) {
-        const cmpRes = await fetchFollow('https://api.github.com/repos/nishadpathak/transformerpath/compare/' + build.commit + '...' + mainSha);
-        const cmp = JSON.parse(cmpRes.body);
-        if (cmp.status === 'diverged' || cmp.status === 'behind') {
-          record('main lag', false, 'live commit is ' + cmp.status + ' from main ' + mainSha.slice(0, 12));
-        } else {
-          if (cmp.commits && cmp.commits[0] && cmp.commits[0].commit && cmp.commits[0].commit.committer) {
-            divergenceAt = cmp.commits[0].commit.committer.date;
-          }
-          const verdict = mainLagVerdict(build.commit, mainSha, divergenceAt, Date.now());
-          record('main lag', verdict.ok, verdict.detail);
-        }
-      } else {
-        const verdict = mainLagVerdict(build.commit, mainSha, divergenceAt, Date.now());
-        record('main lag', verdict.ok, verdict.detail);
-      }
-    } catch (e) {
-      record('main lag', false, String(e && e.message || e));
-    }
-  }
+  const verdict = mainLagVerdict(build && build.commit, prov && prov.build_commit, expected);
+  record('main lag', verdict.ok, verdict.detail);
 
   for (const forbiddenPath of ['/data/commerce-intel.json', '/data/backup-pre-sprint/commerce-intel.json', '/data/backup-pre-sprint/site-stats.json']) {
     const res = await fetchFollow(bust(base + forbiddenPath));
@@ -314,4 +290,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { PAGES, ERROR_TEXT, FORBIDDEN, mainLagVerdict, MAIN_LAG_MS };
+module.exports = { PAGES, ERROR_TEXT, FORBIDDEN, mainLagVerdict };

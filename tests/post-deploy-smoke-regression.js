@@ -20,14 +20,17 @@ REQUIRED.forEach(function (p) {
   assert(smoke.PAGES.indexOf(p) >= 0, 'smoke covers ' + p);
 });
 assert(smoke.ERROR_TEXT.some(function (e) { return e.label === 'Internal Server Error'; }), 'smoke flags Internal Server Error');
-const now = Date.parse('2026-10-14T12:33:00Z');
-const live = 'fcd838a9e48eb8a1cbd81458e9dc7ade79d0eb5b';
-const main = '6d3afe9643dcb128da100cd74f89335fdfc48c54';
-assert(smoke.mainLagVerdict(live, live, '2026-10-14T12:00:00Z', now).ok, 'matching main HEAD passes');
-assert(smoke.mainLagVerdict(live, main, '2026-10-14T12:29:44Z', now).ok, 'a few minutes behind main is still a deploy in flight');
-assert(!smoke.mainLagVerdict(live, main, '2026-10-14T12:00:00Z', now).ok, 'more than 15 minutes behind main fails');
-assert(!smoke.mainLagVerdict(live, main, '2026-10-14T12:17:59Z', now).ok, '15 minutes plus a second fails');
-assert(smoke.mainLagVerdict(live, main, '2026-10-14T12:18:00Z', now).ok, 'exactly 15 minutes is still inside the window');
+const released = 'ea26f4c500eb7cbd9ddf710bd9829d34059a5919';
+const other = '3d43832047640e4ca351dd3acd2e031e8e20daca';
+const matched = smoke.mainLagVerdict(released, released, released);
+assert(matched.ok, 'live build.json and provenance match the released SHA');
+assert(/match released/.test(matched.detail) && matched.detail.indexOf(released.slice(0, 12)) >= 0, 'verdict names the released SHA');
+assert(!smoke.mainLagVerdict(other, released, released).ok, 'a live build.json from another commit fails');
+assert(!smoke.mainLagVerdict(released, other, released).ok, 'a live provenance from another commit fails');
+assert(!smoke.mainLagVerdict(released, released, '').ok, 'a missing released SHA fails');
+const smokeSrc = fs.readFileSync('scripts/smoke-release.js', 'utf8');
+assert(!/commits\/main/.test(smokeSrc), 'smoke does not read the current tip of main');
+assert(!/api\.github\.com/.test(smokeSrc), 'smoke does not compare the live release to GitHub');
 const OLD = 'fcd838a9e48eb8a1cbd81458e9dc7ade79d0eb5b';
 const NEW = '6d3afe9643dcb128da100cd74f89335fdfc48c54';
 assert(publish.shouldPublish('deploy-preview', OLD, NEW).publish, 'preview builds are not blocked when main has moved');
@@ -43,6 +46,7 @@ assert(/context !== 'production'/.test(plugin), 'plugin smokes production deploy
 assert(/netlify-plugin-post-deploy-smoke/.test(manifest), 'plugin manifest is named');
 const workflow = fs.readFileSync('.github/workflows/post-deploy-smoke.yml', 'utf8');
 assert(/deployment_status:/.test(workflow), 'GitHub Action listens for deployment_status');
+assert(/github\.event\.deployment\.sha \|\| github\.sha/.test(workflow), 'the action smokes the released SHA, not the tip of main');
 assert(/transformerpath\/production/.test(workflow), 'the action posts a production commit status');
 assert(/statuses: write/.test(workflow), 'the action can write commit statuses');
 const toml = fs.readFileSync('netlify.toml', 'utf8');
@@ -79,16 +83,18 @@ function page(extra) {
     '</body></html>';
 }
 
-function serve(bodies) {
+function serve(bodies, onRequest) {
   return new Promise(function (resolve) {
     const server = http.createServer(function (req, res) {
       const pathname = req.url.split('?')[0];
+      if (onRequest) onRequest(pathname);
       if (!Object.prototype.hasOwnProperty.call(bodies, pathname)) {
         res.writeHead(404, { 'content-type': 'text/plain' });
         res.end('missing');
         return;
       }
-      const body = bodies[pathname];
+      const raw = bodies[pathname];
+      const body = typeof raw === 'function' ? raw() : raw;
       const type = pathname.endsWith('.json') ? 'application/json' : 'text/html';
       res.writeHead(200, { 'content-type': type });
       res.end(body);
@@ -99,13 +105,13 @@ function serve(bodies) {
   });
 }
 
-function runSmoke(port) {
+function runSmoke(port, extraArgs) {
   return new Promise(function (resolve) {
     const child = spawn(process.execPath, [
       path.join('scripts', 'smoke-release.js'),
       'http://127.0.0.1:' + port,
       SHA
-    ]);
+    ].concat(extraArgs || []));
     let stdout = '';
     let stderr = '';
     child.stdout.on('data', function (d) { stdout += d; });
@@ -129,6 +135,7 @@ function runSmoke(port) {
   if (pass.status !== 0) console.error(pass.stdout + '\n' + pass.stderr);
   assert(pass.status === 0, 'fixture release passes smoke');
   assert(/SMOKE PASS/.test(pass.stdout), 'fixture release prints SMOKE PASS');
+  assert(/match released/.test(pass.stdout), 'fixture release matches the released SHA');
 
   const badBodies = Object.assign({}, good);
   badBodies['/pricing.html'] = page('Internal Server Error');
@@ -137,6 +144,38 @@ function runSmoke(port) {
   bad.server.close();
   assert(fail.status !== 0, 'error text fails smoke');
   assert(/Internal Server Error/.test(fail.stdout), 'failure names the error text');
+
+  /* Run ea26f4c: the released SHA went live while --wait was polling, and
+   * main moved to a newer tip before the check finished. That tip is not
+   * the expected value. */
+  const PREVIOUS = '3d43832047640e4ca351dd3acd2e031e8e20daca';
+  const ADVANCED = '8ad8478499e2aaaaaaaaaaaaaaaaaaaaaaaaaaaa';
+  let provenanceReads = 0;
+  let mainTip = SHA;
+  let mainLookups = 0;
+  const moving = Object.assign({}, good);
+  moving['/data/build-provenance.json'] = function () {
+    provenanceReads += 1;
+    if (provenanceReads === 1) {
+      mainTip = ADVANCED;
+      return JSON.stringify(Object.assign({}, prov, { build_commit: PREVIOUS }));
+    }
+    return JSON.stringify(prov);
+  };
+  const raced = await serve(moving, function (pathname) {
+    if (/commits\/main|\/compare\//.test(pathname)) mainLookups += 1;
+  });
+  const racedRun = await runSmoke(raced.port, ['--wait', '--wait-minutes', '1', '--wait-interval-ms', '20']);
+  raced.server.close();
+  if (racedRun.status !== 0) console.error(racedRun.stdout + '\n' + racedRun.stderr);
+  assert(provenanceReads >= 2, 'smoke waited while the released SHA was not live yet');
+  assert(mainTip === ADVANCED, 'main advanced while the check was waiting');
+  assert(mainLookups === 0, 'smoke did not look up the tip of main');
+  assert(racedRun.status === 0, 'main advancing mid-run still passes when the released SHA is live');
+  assert(/waiting for deploy: build_commit=/.test(racedRun.stdout), 'smoke polled until the released SHA was live');
+  assert(/match released/.test(racedRun.stdout), 'smoke compares the live files to the released SHA');
+  assert(!/behind main/.test(racedRun.stdout), 'smoke does not report lag behind the new main tip');
+  assert(racedRun.stdout.indexOf(ADVANCED.slice(0, 12)) < 0, 'smoke does not judge the release against the new main tip');
   console.log('PASS — post-deploy smoke');
 })().catch(function (e) {
   console.error(e);
