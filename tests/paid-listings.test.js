@@ -732,6 +732,52 @@ async function main() {
     metadata: {},
     payment_link: { id: 'plink_featured_live', url: paid.FEATURED_EVENT_PAYMENT_LINK }
   }) === true);
+  check('known learning plink id classifies without an env var', coursePay.classifyCourse({
+    amount_total: 59900,
+    metadata: {},
+    payment_link: 'plink_1UQhha2YHcFlJstOHjvZv5V0'
+  }).tier === 'learner');
+  check('inactive yearly learning link does not classify', coursePay.classifyCourse({
+    amount_total: 19900,
+    metadata: {},
+    payment_link: { id: 'plink_old_yearly', url: 'https://buy.stripe.com/4gMbIU2lO5hj1NC5DcfYY03' }
+  }) === null);
+  check('learning metadata does not become a listing', paid.listingProduct({
+    amount_total: 19900,
+    metadata: { product: 'learning' },
+    payment_link: 'plink_1UQhha2YHcFlJstOHjvZv5V0'
+  }) === null);
+  check('engineering pro metadata classifies without the amount', coursePay.classifyCourse({
+    amount_total: 19900,
+    metadata: { product: 'engineering_pro' }
+  }).plan === 'Engineering Pro' && coursePay.classifyCourse({
+    amount_total: 19900,
+    metadata: { product: 'engineering_pro' }
+  }).tier === 'professional');
+  check('engineering team metadata classifies without the amount', coursePay.classifyCourse({
+    amount_total: 29900,
+    metadata: { plan: 'Engineering Team' }
+  }).tier === 'enterprise');
+  const pricingPage = fs.readFileSync('pricing.html', 'utf8');
+  check('pricing learning button is the one-time link', pricingPage.indexOf('href="' + paid.PAYMENT_LINKS.learning.url + '"') >= 0 && pricingPage.indexOf('4gMbIU2lO5hj1NC5DcfYY03') < 0 && pricingPage.indexOf('Unavailable — email us to unlock') < 0);
+  check('pricing engineering pro button is the existing link', pricingPage.indexOf('href="' + paid.PAYMENT_LINKS.engineering_pro.url + '"') >= 0);
+  check('pricing engineering team button is the existing link', pricingPage.indexOf('href="' + paid.PAYMENT_LINKS.engineering_team.url + '"') >= 0);
+  check('pricing keeps the single-payment learning line', pricingPage.indexOf('Single payment · 12 months access · no auto-renewal') >= 0);
+  ['pricing.html', 'intel-pro.html', 'verified.html', 'list-company.html'].forEach(function (file) {
+    const html = fs.readFileSync(file, 'utf8');
+    const uls = html.split('<ul');
+    const soonInList = uls.slice(1).some(function (chunk) {
+      const list = chunk.slice(0, chunk.indexOf('</ul>'));
+      return list.indexOf('Coming soon') >= 0;
+    });
+    check(file + ' paid lists do not contain Coming soon', !soonInList && html.indexOf('On the roadmap (not included yet)') >= 0);
+  });
+  check('supplier and intel pages do not advertise an uncheckouted price',
+    pricingPage.indexOf('$1,499') < 0 && pricingPage.indexOf('$49/mo') < 0 && pricingPage.indexOf('$49 / month') < 0
+    && fs.readFileSync('intel-pro.html', 'utf8').indexOf('$49') < 0
+    && fs.readFileSync('verified.html', 'utf8').indexOf('$1,499') < 0
+    && fs.readFileSync('verified.html', 'utf8').indexOf('$199') < 0);
+
   delete process.env.STRIPE_PAYMENT_LINK_LEARNING;
   process.env.STRIPE_PAYMENT_LINK_LEARNING = 'plink_learn_expected';
   check('configured learning plink id classifies that link', coursePay.classifyCourse({ amount_total: 19900, payment_link: 'plink_learn_expected', metadata: {} }).tier === 'learner');
