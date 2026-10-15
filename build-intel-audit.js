@@ -353,6 +353,20 @@ Object.keys(INTEL).forEach(reg => {
   });
 });
 
+// Same story must not survive as both USA and North America. The injection
+// above already lands the AEP Ohio filing on USA; drop the extra key.
+if (INTEL['North America']) {
+  if (!INTEL.USA) INTEL.USA = { label: 'USA', items: [] };
+  const seen = new Set((INTEL.USA.items || []).map((x) => x.url || x.title));
+  (INTEL['North America'].items || []).forEach((it) => {
+    const key = it.url || it.title;
+    if (seen.has(key)) return;
+    INTEL.USA.items.push(it);
+    seen.add(key);
+  });
+  delete INTEL['North America'];
+}
+
 fs.writeFileSync('data/intel.json', JSON.stringify(INTEL, null, 2));
 
 // 2. Build the strict gate checker for Daily News feed
