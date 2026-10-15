@@ -45,6 +45,8 @@
 
     function fail(reason, detail) {
       if (boot) boot.classList.add('is-done');
+      try { parent.postMessage({ type: 'tp-3d-state', state: reason || 'UNAVAILABLE' }, '*'); } catch (e) {}
+      if (!gate || !gate.showFallback) return;
       gate.showFallback(stage, {
         state: reason || 'UNAVAILABLE',
         detail: detail || null,
@@ -52,7 +54,6 @@
         body: 'You can still explore TransformerPath’s engineering content and transformer components.',
         onRetry: function () { location.reload(); }
       });
-      try { parent.postMessage({ type: 'tp-3d-state', state: reason || 'UNAVAILABLE' }, '*'); } catch (e) {}
     }
 
     if (!gate || !gate.detect().ok) {

@@ -212,7 +212,7 @@ a.plain:hover { text-decoration:underline; }
 </section>
 
 <div class="wrap intel-app">
-  <div class="stamp" id="stamp" data-intel-status="INTEL COVERAGE DELAYED" data-intel-source="2026-10-14" data-intel-checked="2026-10-14"><span style="color:#e0a800;font-weight:800;letter-spacing:.5px">● INTEL COVERAGE DELAYED</span> · Latest sourced item: <b style="color:#e5e7eb">14 Oct 2026</b> · source checked 14 Oct 2026 · page built 14 Oct 2026</div>
+  <div class="stamp" id="stamp" data-intel-status="UPDATED 14 Oct 2026" data-intel-source="2026-10-14" data-intel-checked="2026-10-14"><span style="color:#1a9d4a;font-weight:800;letter-spacing:.5px">● UPDATED 14 Oct 2026</span> · Latest sourced item: <b style="color:#e5e7eb">14 Oct 2026</b> · source checked 14 Oct 2026 · page built 15 Oct 2026</div>
   <script>/* Same file as the homepage banner: data/intel-status.json. */
     (function () {
       var el = document.getElementById('stamp'); if (!el || !window.fetch) return;
@@ -226,7 +226,8 @@ a.plain:hover { text-decoration:underline; }
         el.setAttribute('data-intel-status', statusLabel);
         el.setAttribute('data-intel-source', st.latest_source_iso || '');
         el.setAttribute('data-intel-checked', st.latest_source_checked_at || '');
-        var badgeColor = statusLabel === 'DATA CURRENT' ? 'var(--ok)' : (statusLabel === 'DATA STALE' ? '#94a3b8' : 'var(--amber)');
+        var freshLabel = statusLabel === 'DATA CURRENT' || statusLabel === 'Updated today' || /^UPDATED \d{1,2} [A-Za-z]{3} \d{4}$/.test(statusLabel);
+        var badgeColor = st.dot || (freshLabel ? '#1a9d4a' : (statusLabel === 'DATA STALE' ? '#94a3b8' : '#e0a800'));
         el.innerHTML = '<span style="color:' + badgeColor + ';font-weight:800;letter-spacing:.5px">● ' + statusLabel + '</span> &middot; Latest sourced item: <b style="color:#e5e7eb">' + sourceLabel + '</b>' +
           (checkedLabel ? ' &middot; source checked ' + checkedLabel : '') +
           (buildLabel ? ' &middot; page built ' + buildLabel : '');
@@ -323,7 +324,7 @@ a.plain:hover { text-decoration:underline; }
       <span style="color:var(--muted);font-size:.9rem">The daily briefing is free and open — built for the desks that buy, build and rate transformers. Every item is sourced; corrections are published, not buried.</span>
     </div>
     <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 16px;margin-bottom:10px;font-size:.82rem;color:var(--muted)">
-      <b style="color:var(--text)">Data freshness:</b> <span id="freshnessLine" data-intel-status="INTEL COVERAGE DELAYED" data-intel-source="2026-10-14" data-intel-checked="2026-10-14">Latest sourced item <b style="color:var(--text)">14 Oct 2026</b> · last source check <b style="color:var(--text)">14 Oct 2026</b> · build <b style="color:var(--text)">14 Oct 2026</b> · status <b style="color:var(--text)">INTEL COVERAGE DELAYED</b></span> <span style="color:var(--muted)">· Curated Daily Intel is refreshed at build. Page build date and last successful data refresh are distinct. This line is never left as “Loading…”.</span>
+      <b style="color:var(--text)">Data freshness:</b> <span id="freshnessLine" data-intel-status="UPDATED 14 Oct 2026" data-intel-source="2026-10-14" data-intel-checked="2026-10-14">Latest sourced item <b style="color:var(--text)">14 Oct 2026</b> · last source check <b style="color:var(--text)">14 Oct 2026</b> · build <b style="color:var(--text)">15 Oct 2026</b> · status <b style="color:var(--text)">UPDATED 14 Oct 2026</b></span> <span style="color:var(--muted)">· Curated Daily Intel is refreshed at build. Page build date and last successful data refresh are distinct. This line is never left as “Loading…”.</span>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px">
       <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:11px 14px">

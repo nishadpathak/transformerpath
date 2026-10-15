@@ -15,6 +15,7 @@
 const fs = require('fs');
 const tpAff = require('./lib/travelpayouts');
 const { recordOnMarket } = require('./lib/market-country');
+const { formatDayUTC } = require('./lib/intel-freshness');
 const { isUpcoming } = require('./lib/event-status');
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
@@ -22,6 +23,34 @@ const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 const { facilityBadge } = require('./lib/provenance-badge');
 function slugify(s) { return String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/&/g, 'and').replace(/['’´]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, ''); }
+
+function gccConfirmedIso() {
+  let coverage = {};
+  let watch = {};
+  try { coverage = JSON.parse(fs.readFileSync('data/gcc-coverage-report.json', 'utf8')); } catch (e) {}
+  try { watch = JSON.parse(fs.readFileSync('data/gcc-market-watch.json', 'utf8')); } catch (e) {}
+  const fromCoverage = coverage.freshness && coverage.freshness.latest_confirmed_event_date;
+  const fromWatch = watch.freshness && watch.freshness.latest_confirmed_event_date;
+  const coverageIso = fromCoverage ? String(fromCoverage).slice(0, 10) : '';
+  const watchIso = fromWatch ? String(fromWatch).slice(0, 10) : '';
+  if (coverageIso && watchIso && coverageIso !== watchIso) {
+    console.error('GCC latest_confirmed_event_date disagrees: coverage ' + coverageIso + ' vs market watch ' + watchIso);
+    process.exit(1);
+  }
+  const iso = coverageIso || watchIso;
+  return /^\d{4}-\d{2}-\d{2}$/.test(iso) ? iso : '';
+}
+
+function gccCoverageHtml(m) {
+  if (m.intel !== 'GCC') return '';
+  const iso = gccConfirmedIso();
+  const label = iso ? formatDayUTC(iso) : '';
+  if (!/^\d{1,2} [A-Za-z]{3} \d{4}$/.test(label)) {
+    console.error('GCC market ' + m.slug + ' needs a real latest_confirmed_event_date, got ' + JSON.stringify(iso));
+    process.exit(1);
+  }
+  return '<p id="gcc-coverage" data-gcc-confirmed="' + esc(iso) + '" style="margin:14px 0 0;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--card);font-size:.92rem;font-weight:700;color:var(--text)">GCC: latest confirmed ' + esc(label) + '</p>';
+}
 const ci = function (s) { return (s || '').toLowerCase(); };
 
 const MANUF = JSON.parse(fs.readFileSync('data/manufacturers.json', 'utf8'));
@@ -682,6 +711,7 @@ function marketPage(m) {
     '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="../../markets.html" style="color:var(--accent)">Markets</a> › ' + esc(m.name) + '</nav>' +
     '<h1>' + m.flag + ' Transformer Industry — ' + esc(m.name) + '</h1>' +
     '<p class="lead">' + esc(m.blurb) + '</p>' +
+    gccCoverageHtml(m) +
     (function () {
       const nextEv = evs[0];
       const openT = tenders.filter(function (t) { return /open|active|evaluation|tender/i.test(String(t.status || 'OPEN')); }).slice(0, 3);

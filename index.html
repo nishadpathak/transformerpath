@@ -405,8 +405,7 @@
   border-radius: 999px;
   font-size: .76rem;
   font-weight: 700;
-  letter-spacing: .6px;
-  text-transform: uppercase;
+  letter-spacing: .2px;
   color: #cbd5e1;
   margin-bottom: 18px;
   backdrop-filter: blur(10px);
@@ -815,6 +814,7 @@
   .hero-v2 .stat-strip { grid-template-columns: 1fr 1fr; gap: 6px; }
   .hero-v2 .hero-search-form { flex-direction: column; align-items: stretch; }
   .hero-v2 .hero-search-form button { width: 100%; }
+  .hero-v2 .hero-live-pill { flex-wrap: wrap; max-width: 100%; row-gap: 4px; border-radius: 14px; }
 }
 </style>
 
@@ -822,9 +822,9 @@
   <div class="container">
     <div class="hero-grid">
       <div class="hero-copy">
-        <div class="hero-live-pill" id="hero-live-pill" data-intel-status="INTEL COVERAGE DELAYED" data-intel-source="2026-10-14" data-intel-checked="2026-10-14">
-          <span class="live-dot" id="hero-live-dot" aria-hidden="true" style="background:#e0a800"></span>
-          <span class="live-badge-text" id="hero-live-status">INTEL COVERAGE DELAYED</span>
+        <div class="hero-live-pill" id="hero-live-pill" data-intel-status="UPDATED 14 Oct 2026" data-intel-source="2026-10-14" data-intel-checked="2026-10-14">
+          <span class="live-dot" id="hero-live-dot" aria-hidden="true" style="background:#1a9d4a"></span>
+          <span class="live-badge-text" id="hero-live-status">UPDATED 14 Oct 2026</span>
           <span class="live-sep">&middot;</span>
           <span id="hero-live-date">Latest sourced item 14 Oct 2026</span>
           <span class="live-sep">&middot;</span>
@@ -1118,7 +1118,8 @@ document.querySelectorAll('#mainNav a').forEach(a=>a.addEventListener('click',()
     const sourceLabel = String(st.latest_source_date || '').replace(/\s+/g, ' ').trim();
     if (!/^\d{1,2} [A-Za-z]{3} \d{4}$/.test(sourceLabel)) return;
     const checkedLabel = st.latest_source_checked_label || '';
-    const dotColor = st.dot || (statusLabel==='DATA CURRENT' ? '#1a9d4a' : (statusLabel==='DATA STALE' ? '#94a3b8' : '#e0a800'));
+    const freshLabel = statusLabel === 'DATA CURRENT' || statusLabel === 'Updated today' || /^UPDATED \d{1,2} [A-Za-z]{3} \d{4}$/.test(statusLabel);
+    const dotColor = st.dot || (freshLabel ? '#1a9d4a' : (statusLabel==='DATA STALE' ? '#94a3b8' : '#e0a800'));
     const pill = document.getElementById('hero-live-pill');
     const pillStatus = document.getElementById('hero-live-status');
     const pillDate = document.getElementById('hero-live-date');
@@ -1134,7 +1135,7 @@ document.querySelectorAll('#mainNav a').forEach(a=>a.addEventListener('click',()
     if (pillCheck) pillCheck.textContent = checkedLabel ? ('source checked ' + checkedLabel) : '';
     if (pillDot) pillDot.style.background = dotColor;
     const heroCta = document.getElementById('hero-intel-cta');
-    if (heroCta && statusLabel !== 'DATA CURRENT') {
+    if (heroCta && /^(INTEL COVERAGE DELAYED|REFRESH DELAYED|DATA STALE)$/.test(statusLabel)) {
       heroCta.textContent = 'Coverage is delayed — open the latest briefing →';
     }
     if (sub) {

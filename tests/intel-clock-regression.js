@@ -13,7 +13,7 @@
  * Run: node tests/intel-clock-regression.js
  */
 'use strict';
-const { classifyIntelStatus, dayIso } = require('../lib/intel-freshness');
+const { classifyIntelStatus, dayIso, formatDayUTC } = require('../lib/intel-freshness');
 
 let failed = 0;
 function check(label, pass, detail) {
@@ -38,7 +38,7 @@ const SOURCE_STALE = daysAgoIso(40, NOW);  // clearly stale
 const BUILD_A = '2026-09-30T10:00:00.000Z';
 const BUILD_B = '2026-09-30T18:00:00.000Z'; // later rebuild, same sources
 
-// --- Case 1: frozen source >72h, discovery claim disallowed (production honesty) ---
+// --- Case 1: frozen source >72h. GCC claim flag must not change the label. ---
 const a1 = classifyIntelStatus({
   latestSourceIso: SOURCE_FROZEN,
   latestCheckedAt: SOURCE_FROZEN,
@@ -53,14 +53,23 @@ const b1 = classifyIntelStatus({
   dataCurrentClaimAllowed: false,
   now: NOW
 });
+const a1Allowed = classifyIntelStatus({
+  latestSourceIso: SOURCE_FROZEN,
+  latestCheckedAt: SOURCE_FROZEN,
+  buildAt: BUILD_A,
+  dataCurrentClaimAllowed: true,
+  now: NOW
+});
 
 check('frozen source iso is a calendar day', !!dayIso(SOURCE_FROZEN), SOURCE_FROZEN);
 check('rebuild A → B keeps latest_source_iso identical', a1.latest_source_iso === b1.latest_source_iso, a1.latest_source_iso + ' vs ' + b1.latest_source_iso);
 check('rebuild A → B changes only build_at', a1.build_at === BUILD_A && b1.build_at === BUILD_B);
 check('rebuild does not invent a newer source date', a1.latest_source_iso === SOURCE_FROZEN && b1.latest_source_iso === SOURCE_FROZEN);
-check('status is never DATA CURRENT when claim disallowed', a1.statusLabel !== 'DATA CURRENT' && b1.statusLabel !== 'DATA CURRENT', a1.statusLabel + '/' + b1.statusLabel);
-check('status stable across rebuilds (claim disallowed)', a1.statusLabel === b1.statusLabel, a1.statusLabel + ' → ' + b1.statusLabel);
-check('expected INTEL COVERAGE DELAYED when claim disallowed', a1.statusLabel === 'INTEL COVERAGE DELAYED', a1.statusLabel);
+check('status is never DATA CURRENT from a 5d source', a1.statusLabel !== 'DATA CURRENT' && b1.statusLabel !== 'DATA CURRENT', a1.statusLabel + '/' + b1.statusLabel);
+check('status stable across rebuilds', a1.statusLabel === b1.statusLabel, a1.statusLabel + ' → ' + b1.statusLabel);
+check('5d source keeps REFRESH DELAYED', a1.statusLabel === 'REFRESH DELAYED', a1.statusLabel);
+check('GCC claim flag does not change the global label', a1.statusLabel === a1Allowed.statusLabel && a1.reason === a1Allowed.reason, a1.statusLabel + ' / ' + a1Allowed.statusLabel);
+check('reason is age, not discovery_claim_disallowed', a1.reason === 'source_within_7d' && a1.reason !== 'discovery_claim_disallowed', a1.reason);
 
 // --- Case 2: source >72h even if claim were allowed — still not CURRENT ---
 const a2 = classifyIntelStatus({
@@ -103,9 +112,29 @@ const day5 = classifyIntelStatus({
   dataCurrentClaimAllowed: true,
   now: dayPlus
 });
-check('1d-old source with claim allowed → DATA CURRENT', day0.statusLabel === 'DATA CURRENT', day0.statusLabel);
-check('same source five days later is not CURRENT after rebuild', day5.statusLabel !== 'DATA CURRENT', day5.statusLabel);
+check('1d-old source reads UPDATED with that calendar day', day0.statusLabel === 'UPDATED ' + formatDayUTC(FRESH), day0.statusLabel);
+check('1d-old source is not DATA CURRENT', day0.statusLabel !== 'DATA CURRENT', day0.statusLabel);
+check('UPDATED date is not blank', /^UPDATED \d{1,2} [A-Za-z]{3} \d{4}$/.test(day0.statusLabel), day0.statusLabel);
+check('same source five days later is not CURRENT after rebuild', day5.statusLabel !== 'DATA CURRENT' && !/^UPDATED /.test(day5.statusLabel), day5.statusLabel);
 check('source iso still the original fresh day after later rebuild', day5.latest_source_iso === FRESH);
+
+const sameDay = classifyIntelStatus({
+  latestSourceIso: daysAgoIso(0, NOW),
+  buildAt: BUILD_A,
+  dataCurrentClaimAllowed: false,
+  now: NOW
+});
+check('same-day source reads Updated today', sameDay.statusLabel === 'Updated today', sameDay.statusLabel);
+check('same-day source does not mint DATA CURRENT', sameDay.statusLabel !== 'DATA CURRENT');
+check('same-day source still has a calendar day', /^\d{1,2} [A-Za-z]{3} \d{4}$/.test(sameDay.latest_source_date), sameDay.latest_source_date);
+check('GCC disallow flag does not force coverage delayed on a fresh source', sameDay.reason !== 'discovery_claim_disallowed', sameDay.reason);
+
+const twoDay = classifyIntelStatus({
+  latestSourceIso: daysAgoIso(2, NOW),
+  dataCurrentClaimAllowed: false,
+  now: NOW
+});
+check('2d source keeps DATA CURRENT', twoDay.statusLabel === 'DATA CURRENT', twoDay.statusLabel + ' ' + twoDay.reason);
 
 if (failed) {
   console.error('\nINTEL CLOCK REGRESSION: FAIL (' + failed + ')');

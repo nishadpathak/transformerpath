@@ -179,6 +179,8 @@ files.forEach(function (file) {
     if (!/\bsrc\s*=/i.test(attrs)) continue;
     if (/\b(?:defer|async)\b/i.test(attrs)) continue;
     if (/type\s*=\s*["']module["']/i.test(attrs)) continue;
+    // 3D boot files stay blocking so the inline scene script sees THREE.
+    if (cwv.scriptKeepsParserOrder(attrs)) continue;
     fail(rel + ': blocking script ' + attrs.slice(0, 80));
     break;
   }
