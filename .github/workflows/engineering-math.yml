@@ -3,7 +3,7 @@ name: engineering-math
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: [main, "cursor/**"]
 
 jobs:
   math:

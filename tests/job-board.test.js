@@ -117,5 +117,23 @@ const rejected = jobs.submissionErrors({
 });
 check('a careers search cannot enter review as an opening', rejected.length >= 2, rejected.join('; '));
 
+const autoInput = {
+  title: 'Power Transformer Design Engineer',
+  company: 'Example Transformers',
+  location: 'Vadodara, India',
+  function: 'Engineering & Design',
+  description: 'One design engineer role for power transformers.',
+  email: 'jobs@example.com',
+  apply_url: 'https://jobs.example.com/job/88421',
+  one_position: true,
+  featured: true
+};
+const auto = jobs.autoReview(autoInput, { ok: true, status: 200, final_url: autoInput.apply_url }, '2026-10-15T12:00:00Z');
+check('automatic check fills the dates and stays unfeatured', auto.live === true && auto.record.reviewer === 'auto' && auto.record.captured_at === '2026-10-15' && auto.record.last_verified_at === '2026-10-15' && auto.record.http_status === 200 && auto.record.featured === false && auto.row.featured === false);
+check('automatic check drops the employer email', !Object.prototype.hasOwnProperty.call(auto.record, 'email') && JSON.stringify(auto.row).indexOf('jobs@example.com') === -1);
+check('a 404 probe is not a live opening', jobs.autoReview(autoInput, { ok: false, status: 404, final_url: 'https://recruiting.paylocity.com/Recruiting/Jobs/Details/3846464', error: 'vacancy URL returned HTTP 404' }, '2026-10-15').live === false);
+check('a redirect to a careers page is not a live opening', jobs.autoReview(autoInput, { ok: true, status: 200, final_url: 'https://jobs.example.com/careers' }, '2026-10-15').accepted === false);
+check('jobs page says the check is automatic', html.indexOf('checked automatically') !== -1 && html.indexOf('A reviewer checks') === -1);
+
 assert.strictEqual(failed, 0);
 console.log('\njob board: PASS');

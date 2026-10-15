@@ -157,7 +157,7 @@
 <!--/SSR:jobs-stats-->
 </div>
 
-    <div class="section-head" style="margin-bottom:18px"><h2>Live openings</h2><p>Counted only when a reviewed row has a specific vacancy URL, a capture date and a verification date. A post drops off 30 days after that verification date. A reviewed FEATURED post is pinned above other live openings and is promotional placement, not an editorial recommendation. None are on file. Paylocity job 3846464 (Pennsylvania Transformer Technology) returned HTTP 404 on 14 Oct 2026, so it is not listed as open.</p></div>
+    <div class="section-head" style="margin-bottom:18px"><h2>Live openings</h2><p>Counted only when an automatic check has recorded a specific vacancy URL, a capture date, and a verification date. A post drops off 30 days after that verification date. FEATURED is a labelled pin above other live openings and is promotional placement, not an editorial recommendation. The automatic check never sets that pin. None are on file. Paylocity job 3846464 (Pennsylvania Transformer Technology) returned HTTP 404 on 14 Oct 2026, so it is not listed as open.</p></div>
     <div id="liveBoard">
 <!--SSR:jobs-live-->
 <p class="jobs-empty">0 live openings.</p>
@@ -518,7 +518,7 @@ Showing 30 employers across 18 countries
 </div>
 
     <div class="card" id="post" style="margin-top:44px">
-      <div class="section-head" style="margin-bottom:20px"><h2 id="jobPostHeading">Hiring? Post a Job — Free</h2><p>Submit one vacancy. A reviewer checks that the apply URL is a specific opening and is not a 404, then records the capture date and the verification date. A careers-page search stays in the hiring-signals list and is not published as a live opening. Nothing is published from this form by itself.</p></div>
+      <div class="section-head" style="margin-bottom:20px"><h2 id="jobPostHeading">Hiring? Post a Job — Free</h2><p>Submit one vacancy. The apply URL is checked automatically: it has to be one specific opening, and the capture date and the verification date are the day that check runs. A careers-page search stays in the hiring-signals list. An unreachable URL, including a 404, is not listed. FEATURED stays off. Nothing is added to the public board from this form by itself.</p></div>
       <p id="listingPayNote" style="display:none;color:var(--muted);font-size:.9rem;margin:0 0 12px"></p>
       <div data-jobs-rfq-pay="jobs" hidden style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px"></div>
       <form name="job-posting" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" id="jForm">
@@ -547,16 +547,58 @@ Showing 30 employers across 18 countries
           <div style="display:flex;align-items:flex-end"><label style="font-weight:600"><input id="fld_one" type="checkbox" name="one_position" value="yes" required> This is one position, not a multi-role or staffing ad</label></div>
         </div>
         <p id="jFormError" style="display:none;color:#b91c1c;font-size:.88rem;margin:0 0 12px"></p>
-        <button class="btn btn-amber" type="submit" style="width:100%">Submit for review →</button>
+        <button class="btn btn-amber" type="submit" style="width:100%">Check this vacancy →</button>
       </form>
       <div id="jThanks" style="display:none;text-align:center;padding:20px 0">
-        <p style="font-size:1.1rem;font-weight:700;color:var(--ink)">Thanks — this is in the review queue. It is not a live opening until a reviewer records the vacancy URL, the capture date, and the verification date.</p>
+        <p id="jThanksText" style="font-size:1.1rem;font-weight:700;color:var(--ink)">Checked automatically. This is not a live opening.</p>
       </div>
     </div>
     <script src="lib/job-board.js"></script>
     <script src="listing-payment.js"></script>
     <script src="jobs-rfq-pay.js"></script>
-    <script>(function(){var f=document.getElementById('jForm');if(!f)return;f.addEventListener('submit',function(e){e.preventDefault();var err=document.getElementById('jFormError');if(!f.checkValidity()){f.reportValidity();return;}var data=new FormData(f);var problems=window.TPJobBoard?TPJobBoard.submissionErrors({title:data.get('title'),company:data.get('company'),location:data.get('location'),function:data.get('function'),description:data.get('description'),email:data.get('email'),apply_url:data.get('apply_url'),one_position:data.get('one_position')==='yes'}):[];if(problems.length){err.style.display='block';err.textContent=problems.join(' ');return;}err.style.display='none';fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(data).toString()}).then(d).catch(d);function d(){f.style.display='none';document.getElementById('jThanks').style.display='block';}});})();</script>
+    <script>
+    (function () {
+      var f = document.getElementById('jForm');
+      if (!f) return;
+      f.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var err = document.getElementById('jFormError');
+        if (!f.checkValidity()) { f.reportValidity(); return; }
+        var data = new FormData(f);
+        var input = {
+          title: data.get('title'), company: data.get('company'), location: data.get('location'),
+          function: data.get('function'), description: data.get('description'), email: data.get('email'),
+          apply_url: data.get('apply_url'), one_position: data.get('one_position') === 'yes'
+        };
+        var problems = window.TPJobBoard ? TPJobBoard.submissionErrors(input) : [];
+        if (problems.length) { err.style.display = 'block'; err.textContent = problems.join(' '); return; }
+        err.style.display = 'none';
+        fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(data).toString() }).catch(function () {});
+        fetch('/.netlify/functions/review-vacancy', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(input)
+        }).then(function (r) { return r.json(); }).then(function (decision) {
+          if (!decision || decision.accepted !== true) {
+            err.style.display = 'block';
+            err.textContent = (decision && decision.errors && decision.errors.length) ? decision.errors.join(' ') : 'This vacancy did not pass the automatic check.';
+            return;
+          }
+          err.style.display = 'none';
+          err.textContent = '';
+          f.style.display = 'none';
+          var note = document.getElementById('jThanksText');
+          var when = decision.checked_on || '';
+          var status = decision.http_status || '';
+          note.textContent = 'Checked automatically on ' + when + '. The apply URL returned HTTP ' + status + '. Featured placement stays off. This opening is not on the public board, so the live count stays 0.';
+          document.getElementById('jThanks').style.display = 'block';
+        }).catch(function () {
+          err.style.display = 'block';
+          err.textContent = 'The automatic check did not complete. Nothing was published.';
+        });
+      });
+    })();
+    </script>
 
     <p style="text-align:center; color:var(--muted); font-size:.86rem; margin-top:24px">
       Also browse aggregators:

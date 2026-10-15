@@ -1,7 +1,8 @@
 #!/usr/bin/env node
-/* Qualified leads need consent, a calendar deadline, and a person's review.
- * The public file has no leads. Buyer contact stays redacted until a lead
- * is included in the 4 Supplier Pro credits or paid.
+/* Qualified leads need consent and a calendar deadline. A person is not
+ * required. Payment does not qualify a lead. The public file has no leads.
+ * Buyer contact stays redacted until a lead is included in the 4 Supplier
+ * Pro credits or paid.
  */
 'use strict';
 const fs = require('fs');
@@ -46,7 +47,15 @@ check('a bare year is not a billable deadline', leads.qualify(sample({ deadline:
 check('deadline.js still treats a bare year as open', deadline.classifyOpenDeadline('2027', '2026-10-15') === 'OPEN');
 check('a past calendar date is not qualified', leads.qualify(sample({ deadline: '2026-01-02' }), '2026-10-15').qualified === false);
 check('missing kV and MVA is not qualified', leads.qualify(sample({ rating: '', voltage: 'soon' }), '2026-10-15').qualified === false);
+check('a person is not required', leads.qualify(sample({ qualified_by: '' }), '2026-10-15').qualified === true);
 check('payment does not qualify a lead', leads.qualify(sample({ qualified_by: '', qualified_by_payment: true }), '2026-10-15').qualified === false);
+var matched = [1, 2, 3, 4, 5, 6].map(function (n) {
+  return { name: 'Supplier ' + n, slug: 's' + n, country: 'India', research_completeness: n, reasons: ['covers the category'] };
+});
+var offer = leads.autoMatch(sample({ qualified_by: '' }), matched, '2026-10-15', []);
+check('automatic match keeps order and stops at 5', offer.qualified === true && offer.offered.length === 5 && offer.offered[0].slug === 's1' && offer.offered[4].slug === 's5');
+check('automatic match hides the buyer', JSON.stringify(offer).indexOf('amina@') === -1 && offer.contact.indexOf('hidden') !== -1);
+check('an unqualified RFQ is not offered', leads.autoMatch(sample({ deadline: 'Q2 2027', qualified_by: '' }), matched, '2026-10-15').offered.length === 0);
 check('consent text is the stored version', leads.CONSENT_TEXT.indexOf('at most 5') !== -1);
 
 var prior = [sample()];

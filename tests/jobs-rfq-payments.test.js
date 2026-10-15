@@ -55,7 +55,9 @@ delete process.env.TP_JOBS_RFQ_PAYMENTS;
   CODES.forEach(function (code) {
     check(fileName + ' has no ' + code, text.indexOf(code) === -1);
   });
-  check(fileName + ' has no plink id', text.indexOf('plink_1UQh') === -1);
+  ['plink_1UQhNK', 'plink_1UQhNM', 'plink_1UQhNP', 'plink_1UQhNR', 'plink_1UQhNT', 'plink_1UQhNW'].forEach(function (id) {
+    check(fileName + ' has no ' + id, text.indexOf(id) === -1);
+  });
 });
 check('button script does not embed a Stripe URL', fs.readFileSync('jobs-rfq-pay.js', 'utf8').indexOf('buy.stripe.com') === -1);
 check('jobs heading stays free until the flag paints it', fs.readFileSync('jobs.html', 'utf8').indexOf('Hiring? Post a Job — Free') !== -1);

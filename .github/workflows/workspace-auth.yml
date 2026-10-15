@@ -3,7 +3,7 @@ name: workspace-auth
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: [main, "cursor/**"]
 
 jobs:
   workspace:

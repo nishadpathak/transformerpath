@@ -2,7 +2,7 @@ name: upcoming-profile-events
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: [main, "cursor/**"]
 jobs:
   upcoming:
     runs-on: ubuntu-latest

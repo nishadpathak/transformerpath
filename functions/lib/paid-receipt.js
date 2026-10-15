@@ -33,7 +33,7 @@ function nextStep(product) {
   if (product === 'hosted_webinar') return 'TransformerPath does not host webinars. Email hello@transformerpath.com about this payment.';
   if (product === 'verified_manufacturer') return 'Submit your company details at ' + origin() + '/claim-profile.html?paid=verified_manufacturer#claimForm';
   if (product === 'job_standard' || product === 'job_featured' || product === 'job_bundle_5') {
-    return 'Submit the vacancy at ' + origin() + '/jobs.html?paid=' + product + '#post. Payment does not publish the opening. A reviewer still records the apply URL, the capture date, and the verification date.';
+    return 'Submit the vacancy at ' + origin() + '/jobs.html?paid=' + product + '#post. Payment does not publish the opening. The apply URL, its dates, and its HTTP status are checked automatically. Featured placement stays off until that payment is confirmed.';
   }
   if (product === 'rfq_lead' || product === 'rfq_lead_pro') {
     return 'This payment does not qualify a lead and does not release the buyer contact. Contact stays hidden until the lead is included or marked paid and is still qualified. See ' + origin() + '/rfq.html?paid=' + product;
