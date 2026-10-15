@@ -13,6 +13,7 @@ const schema = require('./lib/seo-schema');
 const html = require('./lib/seo-html');
 const catalog = require('./lib/seo-catalog');
 const { resolveStatus } = require('./lib/event-status');
+const eventSeo = require('./lib/event-seo');
 const cwv = require('./lib/seo-cwv');
 
 const DIST = process.argv[2] || 'dist';
@@ -92,7 +93,22 @@ files.forEach(function (file) {
   const lang = (source.match(/<html[^>]*\blang=["']([^"']+)["']/i) || [])[1] || 'en';
   langs[lang] = 1;
 
-  if (title.length < 50 || title.length > 60) fail(rel + ': title length ' + title.length + ' (' + title + ')');
+  const eventProfile = /data-tp-event-role="(?:hub|edition)"/.test(source);
+  const titleMax = eventProfile ? 100 : 60;
+  if (title.length < 50 || title.length > titleMax) fail(rel + ': title length ' + title.length + ' (' + title + ')');
+  if (eventProfile) {
+    const brands = title.match(/TransformerPath/g) || [];
+    if (brands.length !== 1) fail(rel + ': event title brand count ' + brands.length + ' (' + title + ')');
+    if (!/\| Transformer Events \| TransformerPath$/.test(title)) fail(rel + ': event title suffix (' + title + ')');
+    if (/\sprofile\b/i.test(title) || /\| transformer event\b/i.test(title)) {
+      fail(rel + ': old event title (' + title + ')');
+    }
+  }
+  if (rel === 'events.html') {
+    const brands = title.match(/TransformerPath/g) || [];
+    if (brands.length !== 1) fail('events.html title brand count ' + brands.length + ' (' + title + ')');
+    if (/TransformerPath\s*\|\s*TransformerPath/.test(title)) fail('events.html duplicates the brand (' + title + ')');
+  }
   if (description.length < 140 || description.length > 160) {
     fail(rel + ': description length ' + description.length);
   }
@@ -123,22 +139,52 @@ files.forEach(function (file) {
   if (!breadcrumbsOk(nodes)) fail(rel + ': BreadcrumbList is missing or unordered');
 
   if (/^events\/[^/]+\/index\.html$/.test(rel)) {
-    const name = html.h1(source);
-    const rec = catalog.matchEvent(cat.events, name);
+    const role = catalog.eventRoleOf(source);
     const eventNodes = nodes.filter(function (n) { return n['@type'] === 'Event'; });
     if (!eventNodes.length) fail(rel + ': missing Event');
-    const status = rec ? resolveStatus(rec).key : 'MONITORING';
-    const firm = status === 'CONFIRMED_UPCOMING' || status === 'LIVE' || status === 'COMPLETED';
-    eventNodes.forEach(function (n) {
-      const scheduled = String(n.eventStatus || '').indexOf('EventScheduled') !== -1;
-      if (firm && rec && rec.s && (rec.c || rec.co || schema.venueIsReal(rec.v))) {
-        if (!scheduled) fail(rel + ': confirmed event missing EventScheduled');
-        if (n.startDate !== rec.s) fail(rel + ': startDate ' + n.startDate + ' != ' + rec.s);
-        if (!n.location) fail(rel + ': scheduled event missing location');
-      } else if (scheduled || n.startDate) {
-        fail(rel + ': unconfirmed event claims a firm date or EventScheduled');
-      }
-    });
+    if (role === 'hub') {
+      eventNodes.forEach(function (n) {
+        if (n.startDate || String(n.eventStatus || '').indexOf('EventScheduled') !== -1) {
+          fail(rel + ': series hub claims a dated occurrence');
+        }
+        schema.validateEventNode(n).forEach(function (err) { fail(rel + ': ' + err); });
+      });
+    } else if (!/http-equiv=["']refresh["']/i.test(source)) {
+      const id = catalog.eventIdOf(source);
+      const byId = id ? cat.events.filter(function (ev) { return ev && ev.id === id; }) : [];
+      const rec = byId.length === 1 ? byId[0] : catalog.matchEvent(cat.events, html.h1(source));
+      const status = rec ? resolveStatus(rec).key : 'MONITORING';
+      const firm = status === 'CONFIRMED_UPCOMING' || status === 'LIVE' || status === 'COMPLETED';
+      eventNodes.forEach(function (n) {
+        const scheduled = String(n.eventStatus || '').indexOf('EventScheduled') !== -1;
+        if (firm && rec && (rec.s || rec.start) && (rec.c || rec.co || rec.city || rec.country || schema.venueIsReal(rec.v || rec.venue))) {
+          if (!scheduled) fail(rel + ': confirmed event missing EventScheduled');
+          if (n.startDate !== (rec.s || rec.start)) fail(rel + ': startDate ' + n.startDate + ' != ' + (rec.s || rec.start));
+          if (!n.location || n.location['@type'] !== 'Place') fail(rel + ': scheduled event missing Place');
+          if (n.location && n.location.address && n.location.address['@type'] !== 'PostalAddress') {
+            fail(rel + ': location address is not PostalAddress');
+          }
+          if (!n.eventAttendanceMode) fail(rel + ': scheduled event missing eventAttendanceMode');
+          const end = rec.e || rec.end;
+          if (end && n.endDate !== end) fail(rel + ': endDate ' + n.endDate + ' != ' + end);
+          const org = rec.organiser || rec.organizer || '';
+          if (org && (!n.organizer || n.organizer.name !== org)) fail(rel + ': organizer missing');
+          const official = rec.official_url || '';
+          if (/^https?:\/\//i.test(official) && (!n.offers || n.offers.url !== official)) {
+            fail(rel + ': offers.url is not the official site');
+          }
+        } else if (scheduled || n.startDate) {
+          fail(rel + ': unconfirmed event claims a firm date or EventScheduled');
+        }
+        schema.validateEventNode(n).forEach(function (err) { fail(rel + ': ' + err); });
+        const recordedImage = rec && (rec.image || rec.image_url) || '';
+        if (eventSeo.isRealEventImage(recordedImage)) {
+          if (n.image !== recordedImage) fail(rel + ': recorded event image missing');
+        } else if (n.image) {
+          fail(rel + ': image set without an event image on the record');
+        }
+      });
+    }
   }
 
   if (rel === 'intel.html') {
