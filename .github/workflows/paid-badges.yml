@@ -15,4 +15,5 @@ jobs:
       - run: node tests/paid-listings.test.js
       - run: node check-paid-badges.js
       - run: node check-verified-ctas.js
+      - run: node tests/directory-spec-filters.js
       - run: node check-commerce-features.js
