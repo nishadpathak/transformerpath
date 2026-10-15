@@ -18,6 +18,8 @@ const { directoryBadge, scrubLegacyLabels } = require('./lib/provenance-badge');
 
 const DATA = JSON.parse(fs.readFileSync('data/associations.json', 'utf8'));
 const ASSOCIATIONS = DATA.associations || [];
+const { sourcedCardCount } = require('./lib/sourced-card-count');
+const provenanceStat = sourcedCardCount(ASSOCIATIONS);
 
 function render() {
   const ascJson = scrubLegacyLabels(JSON.stringify(ASSOCIATIONS));
@@ -108,8 +110,8 @@ ${HEAD}
       <div class="lbl">Technical Committees</div>
     </div>
     <div class="stat-box">
-      <div class="num">100%</div>
-      <div class="lbl">Verified Official Portals</div>
+      <div class="num" data-sourced="website-and-check-date">${provenanceStat.text}</div>
+      <div class="lbl">Cards with a source URL and check date</div>
     </div>
   </div>
 

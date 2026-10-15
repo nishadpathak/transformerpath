@@ -18,6 +18,8 @@ const { directoryBadge, scrubLegacyLabels } = require('./lib/provenance-badge');
 
 const DATA = JSON.parse(fs.readFileSync('data/services.json', 'utf8'));
 const SERVICES = DATA.services || [];
+const { sourcedCardCount } = require('./lib/sourced-card-count');
+const provenanceStat = sourcedCardCount(SERVICES);
 
 function render() {
   const servJson = scrubLegacyLabels(JSON.stringify(SERVICES));
@@ -108,8 +110,8 @@ ${HEAD}
       <div class="lbl">Max Capacity Repaired</div>
     </div>
     <div class="stat-box">
-      <div class="num">100%</div>
-      <div class="lbl">Provenance on each card</div>
+      <div class="num" data-sourced="website-and-check-date">${provenanceStat.text}</div>
+      <div class="lbl">Cards with a source URL and check date</div>
     </div>
   </div>
 
