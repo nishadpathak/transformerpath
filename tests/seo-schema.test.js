@@ -213,6 +213,10 @@ Object.keys(seoCat.companies).forEach(function (slug) {
 });
 assert(titleMiss === 0, 'every indexable manufacturer title is 50–60 and keeps the country');
 
+const topicCrumbs = catalog.draft('topics/bushings/index.html', '<h1>Bushings</h1>', seoCat).crumbs;
+assert(topicCrumbs.some(function (c) { return /\/topics\/bushings\/$/.test(c.item); }), 'topic hub breadcrumb keeps the hub URL');
+assert(!topicCrumbs.some(function (c) { return /\/topics\/?$/.test(c.item); }), 'topic breadcrumb does not link a missing /topics/ index');
+
 const prolec = catalog.draft('manufacturers/prolec-ge/index.html', '<h1>Prolec GE</h1>', seoCat);
 const prolecOrg = prolec.nodes.find(function (n) { return n['@type'] === 'Organization' && n.name === 'Prolec GE'; });
 assert(prolecOrg && prolecOrg.parentOrganization && prolecOrg.parentOrganization.name === 'GE Vernova', 'Prolec GE parentOrganization is GE Vernova');
