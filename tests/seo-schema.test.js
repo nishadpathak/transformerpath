@@ -268,12 +268,30 @@ assert(!/TransformerPath\s*\|\s*TransformerPath/.test(doubled), 'doubled brand s
 const dashed = fitWindow('Industry Events — TransformerPath', 50, 60, [' | TransformerPath']);
 assert((dashed.match(/TransformerPath/g) || []).length === 1, 'em-dash brand is not doubled: ' + dashed);
 
-assert(eventSeo.shouldNoindexEdition({ date_status: 'PROJECTED', description: 'US Coiltech. Date est. (annual, June).' }), 'boilerplate stub is noindex');
-assert(!eventSeo.shouldNoindexEdition({ date_status: 'CONFIRMED', start: '2026-11-02', description: 'US Coiltech. Date est. (annual, June).' }), 'confirmed edition stays indexable');
+assert(eventSeo.shouldNoindexEdition({ date_status: 'PROJECTED', end: '2028-06-08', description: 'US Coiltech. Date est. (annual, June).' }, '2026-10-15'), 'projected edition with no source is noindex');
+assert(!eventSeo.shouldNoindexEdition({ date_status: 'CONFIRMED', start: '2026-11-02', description: 'US Coiltech. Date est. (annual, June).' }, '2026-10-15'), 'confirmed edition stays indexable');
+assert(eventSeo.shouldNoindexEdition({
+  date_status: 'PROJECTED',
+  end: '2027-07-09',
+  description: "Thailand's largest energy event. Provisional — annual July cadence at QSNCC, exact dates TBC."
+}, '2026-10-15'), 'projected future edition with no source is noindex');
 assert(!eventSeo.shouldNoindexEdition({
   date_status: 'PROJECTED',
+  end: '2027-07-09',
+  source_url: 'https://www.asew-expo.com/',
   description: "Thailand's largest energy event. Provisional — annual July cadence at QSNCC, exact dates TBC."
-}), 'a real sentence is not boilerplate-only');
+}, '2026-10-15'), 'a sourced edition with a real sentence stays indexable');
+assert(!eventSeo.boilerplateOnly("Thailand's largest energy event. Provisional — annual July cadence at QSNCC, exact dates TBC."), 'a real sentence is not boilerplate-only');
+assert(eventSeo.shouldNoindexEdition({
+  date_status: null,
+  end: '2026-10-22',
+  description: "DEWA water, energy and environment expo with a recorded visitor count."
+}, '2026-10-15'), 'unconfirmed future edition with no source is noindex');
+assert(!eventSeo.shouldNoindexEdition({
+  date_status: null,
+  end: '2026-01-22',
+  description: 'Largest networking event for power generation professionals in the Americas.'
+}, '2026-10-15'), 'past unconfirmed edition with a real description stays indexable');
 
 if (failed) {
   console.error('\n' + failed + ' failed');

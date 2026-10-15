@@ -1,5 +1,5 @@
 [build]
-  command = "rm -rf dist && node scripts/check-no-owner-name.js && node scripts/write-supabase-config.js && node tests/student-access.test.js && node tests/student-content-access.test.js && node tests/workspace-public-config.test.js && node tests/saved-design.test.js && node tests/workspace-rls.test.js && node tests/workspace-ui.test.js && node tests/workspace-client.test.js && node check-build-tracked.js && node scripts/capture-git-state.js && node check-source-unstamped.js && node build-factories.js && node build-intel-news.js && node build-gcc-intel-discovery.js && node build-gcc-intel-publish.js && node build-company-developments.js && node build-provenance.js && node build-entity-graph.js && node build-census-audit.js && node build-manufacturer-intel.js && node build-services.js && node build-logistics.js && node build-associations.js && node build-education.js && node build-buyers.js && node build-media.js && node build-components.js && node build-canonical-entities.js && node apply-sourced-facility-evidence.js && node build-directory-index.js && node build-paid-listings.js && node build-company-pages.js && node check-voltage-evidence-consistency.js && node check-entity-canonical.js && node tests/check-directories.js && node check-census-stale.js && node build-data-quality.js && node build-directory-health.js && node build-intelligence.js && node tests/entity-scope-regression.js && node build-intel-feed-ui.js && node build-gcc-linkedin-pack.js && node build-intel-categories.js && node build-applications.js && node build-standards.js && node build-knowledge.js && node build-knowledge-depth.js && node tests/check-knowledge-integrity.js && node build-engineering-claims.js && node build-course-depth.js && node build-materials.js && node build-materials-pages.js && node build-event-canonicalization.js && node build-markets.js && node build-utilities.js && node build-grids.js && node build-projects.js && node build-tenders.js && node build-awards.js && node build-case-studies.js && node build-accessories.js && node build-machinery.js && node build-laboratories.js && node build-category-landing-pages.js && node build-events.js && node check-paid-badges.js && node build-post-event-intel.js && node build-event-summary-pages.js && node build-topic-hubs.js && node build-masterclass-paywall.js && node build-exhibitions.js && node build-books.js && node build-commerce.js && node build-commerce-intel.js && node build-freshness.js && node build-production-audit.js && node build-site-stats.js && node build-map.js && node build_ssr.js && node build-seo.js && node check-sitemap.js && node build-intel-status.js && node stamp-intel.js && node tests/intel-banner-agreement.js && node build-release-provenance.js && node check-intel-date-order.js && node build-header-consistency.js && node bump-assets.js && node check-archives.js && node check-data-quality.js && node check-config.js && node check-brand.js && node check-links.js && node check-data-health.js --skip-children && node check-design.js && node tests/engine-sanity.js && node check-event-intel.js && node check-event-integrity.js && node tests/check-events-integrity.js && node tests/check-provenance-labels.js && node check-topics.js && node check-data-graph.js && node check-masterclass-paywall.js && node tests/masterclass-live-qa.test.js && node tests/viz-math.test.js && node tests/autotransformer-sizing.test.js && node tests/nameplate-short-circuit.test.js && node tests/no-personal-services.test.js && node tests/verify-hero-integrity.js && node tests/check-verification-terms.js && node tests/pwa-install-regression.js && node tests/webgl-gate-regression.js && node tests/seo-cwv-3d-regression.js && node tests/intel-clock-regression.js && node tests/tz-entity-events.js && node tests/intel-tender-parity.js && node tests/release-provenance-regression.js && node tests/post-deploy-smoke-regression.js && node tests/data-correctness-audit.js && node tests/deadline-year-regression.js && node tests/grid-lab-publish.test.js && node tests/browser-smoke-regression.js && node tests/nav-trim-regression.js && node tests/intel-date-order-regression.js && node tests/gcc-discovery-regression.js && node tests/entitlement-regression.js && node build-discovery-desk.js && node tests/check-lab-integrity.js && node tests/laboratories-claims-regression.js && node tests/unsourced-claim-guard.js && node build-gcc-source-coverage.js && node build-intel-cadence.js && node tests/intel-cadence-regression.js && node check-gcc-intel-review.js && node check-sourced-facilities.js && node tests/market-country-regression.js && node tests/awards-wording-regression.js && node tests/company-timeline-regression.js && node tests/cg-power-765-regression.js && node tests/scheduled-refresh-regression.js && node tests/price-as-of-regression.js && node tests/oct-intel-freshness-regression.js && node tests/oct14-language-intel.js && node tests/manufacturers-directory-smoke.js && node tests/match-page-regression.js && node tests/intelligence-event-layer.js && node tests/homepage-ticker-regression.js && node tests/homepage-glance-regression.js && node tests/homepage-coverage-delayed.js && node tests/homepage-lcp-regression.js && node tests/adsense-inject.test.js && node tests/travelpayouts-affiliate.test.js && node tests/past-events-regression.js && node tests/upcoming-profile-events.js && node tests/entity-intel-regression.js && node tests/paid-listings.test.js && node build-event-ics.js && node tests/check-event-ics.js && node build-dist.js && node stamp-dist-provenance.js && node build-seo-pass.js && node check-dist-provenance.js && node check-adsense.js && node tests/seo-schema.test.js && node check-seo.js && node check-entity-canonical.js --dist && node scripts/refuse-stale-production-publish.js && node scripts/check-no-owner-name.js && node tests/case-study-links-regression.js && node tests/live-qa-layout-regression.js && node tests/intel-badge-legend.js && node tests/supply-chain-label-regression.js && echo 'Static site with serverless functions'"
+  command = "rm -rf dist && node scripts/check-no-owner-name.js && node scripts/write-supabase-config.js && node tests/student-access.test.js && node tests/student-content-access.test.js && node tests/workspace-public-config.test.js && node tests/saved-design.test.js && node tests/workspace-rls.test.js && node tests/workspace-ui.test.js && node tests/workspace-client.test.js && node check-build-tracked.js && node scripts/capture-git-state.js && node check-source-unstamped.js && node build-factories.js && node build-intel-news.js && node build-gcc-intel-discovery.js && node build-gcc-intel-publish.js && node build-company-developments.js && node build-provenance.js && node build-entity-graph.js && node build-census-audit.js && node build-manufacturer-intel.js && node build-services.js && node build-logistics.js && node build-associations.js && node build-education.js && node build-buyers.js && node build-media.js && node build-components.js && node build-canonical-entities.js && node apply-sourced-facility-evidence.js && node build-directory-index.js && node build-paid-listings.js && node build-company-pages.js && node check-voltage-evidence-consistency.js && node check-entity-canonical.js && node tests/check-directories.js && node check-census-stale.js && node build-data-quality.js && node build-directory-health.js && node build-intelligence.js && node tests/entity-scope-regression.js && node build-intel-feed-ui.js && node build-gcc-linkedin-pack.js && node build-intel-categories.js && node build-applications.js && node build-standards.js && node build-knowledge.js && node build-knowledge-depth.js && node tests/check-knowledge-integrity.js && node build-engineering-claims.js && node build-course-depth.js && node build-materials.js && node build-materials-pages.js && node build-event-canonicalization.js && node build-markets.js && node build-utilities.js && node build-grids.js && node build-projects.js && node build-tenders.js && node build-awards.js && node build-case-studies.js && node build-accessories.js && node build-machinery.js && node build-laboratories.js && node build-category-landing-pages.js && node build-events.js && node check-paid-badges.js && node build-post-event-intel.js && node build-event-summary-pages.js && node build-topic-hubs.js && node build-masterclass-paywall.js && node build-exhibitions.js && node build-books.js && node build-commerce.js && node build-commerce-intel.js && node build-freshness.js && node build-production-audit.js && node build-site-stats.js && node build-map.js && node build_ssr.js && node build-seo.js && node tests/sitemap-canonical-regression.js && node tests/event-canonical-regression.js && node check-sitemap.js && node build-intel-status.js && node stamp-intel.js && node tests/intel-banner-agreement.js && node build-release-provenance.js && node check-intel-date-order.js && node build-header-consistency.js && node bump-assets.js && node check-archives.js && node check-data-quality.js && node check-config.js && node check-brand.js && node check-links.js && node check-data-health.js --skip-children && node check-design.js && node tests/engine-sanity.js && node check-event-intel.js && node check-event-integrity.js && node tests/check-events-integrity.js && node tests/check-provenance-labels.js && node check-topics.js && node check-data-graph.js && node check-masterclass-paywall.js && node tests/masterclass-live-qa.test.js && node tests/viz-math.test.js && node tests/autotransformer-sizing.test.js && node tests/nameplate-short-circuit.test.js && node tests/no-personal-services.test.js && node tests/verify-hero-integrity.js && node tests/check-verification-terms.js && node tests/pwa-install-regression.js && node tests/webgl-gate-regression.js && node tests/seo-cwv-3d-regression.js && node tests/intel-clock-regression.js && node tests/tz-entity-events.js && node tests/intel-tender-parity.js && node tests/release-provenance-regression.js && node tests/post-deploy-smoke-regression.js && node tests/data-correctness-audit.js && node tests/deadline-year-regression.js && node tests/grid-lab-publish.test.js && node tests/browser-smoke-regression.js && node tests/nav-trim-regression.js && node tests/intel-date-order-regression.js && node tests/gcc-discovery-regression.js && node tests/entitlement-regression.js && node build-discovery-desk.js && node tests/check-lab-integrity.js && node tests/laboratories-claims-regression.js && node tests/unsourced-claim-guard.js && node build-gcc-source-coverage.js && node build-intel-cadence.js && node tests/intel-cadence-regression.js && node check-gcc-intel-review.js && node check-sourced-facilities.js && node tests/market-country-regression.js && node tests/awards-wording-regression.js && node tests/company-timeline-regression.js && node tests/cg-power-765-regression.js && node tests/scheduled-refresh-regression.js && node tests/price-as-of-regression.js && node tests/oct-intel-freshness-regression.js && node tests/oct14-language-intel.js && node tests/manufacturers-directory-smoke.js && node tests/match-page-regression.js && node tests/intelligence-event-layer.js && node tests/homepage-ticker-regression.js && node tests/homepage-glance-regression.js && node tests/homepage-coverage-delayed.js && node tests/homepage-lcp-regression.js && node tests/adsense-inject.test.js && node tests/travelpayouts-affiliate.test.js && node tests/past-events-regression.js && node tests/upcoming-profile-events.js && node tests/entity-intel-regression.js && node tests/paid-listings.test.js && node build-event-ics.js && node tests/check-event-ics.js && node build-dist.js && node stamp-dist-provenance.js && node build-seo-pass.js && node check-dist-provenance.js && node check-adsense.js && node tests/seo-schema.test.js && node check-seo.js && node check-entity-canonical.js --dist && node scripts/refuse-stale-production-publish.js && node scripts/check-no-owner-name.js && node tests/case-study-links-regression.js && node tests/live-qa-layout-regression.js && node tests/intel-badge-legend.js && node tests/supply-chain-label-regression.js && echo 'Static site with serverless functions'"
   # publish = "." shipped the whole working folder, so every internal file was on
   # the CDN and "protected" only by case-sensitive 404 rules that Netlify's
   # case-insensitive file serving defeated. dist/ is an allowlisted artifact:
@@ -967,3 +967,196 @@
   to = "/knowledge/insulation-coordination.html"
   status = 301
   force = true
+# BEGIN event-canonical-redirects
+[[redirects]]
+  from = "/events/middle-energy"
+  to = "/events/middle-east-energy/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/events/middle-energy/"
+  to = "/events/middle-east-energy/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/events/asean-sustainable-energy-week-incl-renewable-energy-asia"
+  to = "/events/asean-sustainable-energy-week/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/events/asean-sustainable-energy-week-incl-renewable-energy-asia/"
+  to = "/events/asean-sustainable-energy-week/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/events/power-uzbekistan-19th-energy-exhibition"
+  to = "/events/power-uzbekistan/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/events/power-uzbekistan-19th-energy-exhibition/"
+  to = "/events/power-uzbekistan/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/events/ieee-pes-tandd-conference-and-exposition"
+  to = "/events/ieee-pes-td/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/events/ieee-pes-tandd-conference-and-exposition/"
+  to = "/events/ieee-pes-td/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/events/7th-international-colloquium-transformer-research-and-asset-management-ictram-2026"
+  to = "/events/7th-ictram-intl-colloquium-on-transformer-research-and-asset-management/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/events/7th-international-colloquium-transformer-research-and-asset-management-ictram-2026/"
+  to = "/events/7th-ictram-intl-colloquium-on-transformer-research-and-asset-management/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/events/cigre-australia-a2"
+  to = "/events/cigre-australia-a2-transformer-and-reactor-workshop/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/events/cigre-australia-a2/"
+  to = "/events/cigre-australia-a2-transformer-and-reactor-workshop/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/events/cigre-canada"
+  to = "/events/cigre-canada-conference-and-exhibition/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/events/cigre-canada/"
+  to = "/events/cigre-canada-conference-and-exhibition/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/events/cigre-symposium"
+  to = "/events/cigre-symposium-cairns/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/events/cigre-symposium/"
+  to = "/events/cigre-symposium-cairns/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/events/distributech-international-2026"
+  to = "/events/distributech/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/events/distributech-international-2026/"
+  to = "/events/distributech/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/events/elfack-gothenburg"
+  to = "/events/elfack/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/events/elfack-gothenburg/"
+  to = "/events/elfack/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/events/enlit-africa-2026-formerly-african-utility-week"
+  to = "/events/enlit-africa/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/events/enlit-africa-2026-formerly-african-utility-week/"
+  to = "/events/enlit-africa/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/events/ichve"
+  to = "/events/ichve-ieee-intl-conf-on-high-voltage-engineering/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/events/ichve/"
+  to = "/events/ichve-ieee-intl-conf-on-high-voltage-engineering/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/events/ieee-eic"
+  to = "/events/ieee-eic-and-ipmhvc/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/events/ieee-eic/"
+  to = "/events/ieee-eic-and-ipmhvc/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/events/ieee-pes-transformers-committee-fall"
+  to = "/events/ieee-pes-transformers-committee/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/events/ieee-pes-transformers-committee-fall/"
+  to = "/events/ieee-pes-transformers-committee/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/events/korea-smart-grid"
+  to = "/events/korea-smart-grid-week/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/events/korea-smart-grid/"
+  to = "/events/korea-smart-grid-week/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/events/megawhat-transformer-iandc-days-2026"
+  to = "/events.html"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/events/megawhat-transformer-iandc-days-2026/"
+  to = "/events.html"
+  status = 301
+  force = true
+# END event-canonical-redirects

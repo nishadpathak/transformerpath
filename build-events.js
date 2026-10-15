@@ -160,8 +160,11 @@ function shell(title, desc, canonical, body, ld, eventId, flags) {
 }
 
 function seriesTitle(slug, list) {
-  const sample = list[0];
-  return eventSeo.seriesDisplayName(sample && sample.name, slug);
+  const names = list.map(function (ev) {
+    return eventSeo.seriesDisplayName(ev && ev.name, slug);
+  }).filter(Boolean);
+  names.sort(function (a, b) { return a.length - b.length || a.localeCompare(b); });
+  return names[0] || eventSeo.seriesDisplayName('', slug);
 }
 
 Object.keys(groups).forEach((slug) => {
@@ -181,8 +184,8 @@ Object.keys(groups).forEach((slug) => {
     return '<li><a href="../' + esc(ev.id) + '/">' + esc(ev.name) + '</a> — ' + esc(dateLine(ev)) +
       (place ? ', ' + esc(place) : '') + summaries + '</li>';
   }).join('') + '</ul>';
-  const lead = 'Recorded editions of ' + seriesName + '. Each year has its own page. Dates and venues on this hub are the values stored for that edition.';
-  const featured = nxt ? travelBlock(nxt) + visitorGuideBlock(nxt) : '';
+  const lead = 'Recorded editions of ' + seriesName + '. This series page lists every edition. Each year has its own page. Dates and venues on this hub are the values stored for that edition.';
+  const featured = nxt ? visitorGuideBlock(nxt) : '';
   const body = '<nav style="font-size:.8rem;color:var(--muted)"><a href="../../events.html">Events</a> › ' + esc(seriesName) + '</nav>' +
     '<h1>' + esc(h1) + '</h1>' +
     '<p class="lead">' + esc(lead) + '</p>' +
@@ -240,7 +243,7 @@ Object.keys(groups).forEach((slug) => {
       { name: seriesName, item: 'https://transformerpath.com/events/' + slug + '/' },
       { name: ev.name, item: edUrl }
     ];
-    const noindex = eventSeo.shouldNoindexEdition(ev);
+    const noindex = eventSeo.shouldNoindexEdition(ev, TODAY);
     writePage('events/' + ev.id + '/index.html', shell(
       eventSeo.eventProfileTitle(ev),
       ev.description || ev.name,
@@ -270,31 +273,16 @@ Object.keys(regions).forEach((r) => {
   fs.writeFileSync('events/calendar-' + slug + '.ics', calendarIcs(regions[r], 'TransformerPath — ' + r));
 });
 
-/* Old public slugs that do not match the series slug. Keep them as
-   aliases so existing links still open the series hub. */
-const ALIASES = {
-  '7th-international-colloquium-transformer-research-and-asset-management-ictram-2026': '7th-ictram-intl-colloquium-on-transformer-research-and-asset-management',
-  'cigre-australia-a2': 'cigre-australia-a2-transformer-and-reactor-workshop',
-  'cigre-canada': 'cigre-canada-conference-and-exhibition',
-  'cigre-symposium': 'cigre-symposium-cairns',
-  'distributech-international-2026': 'distributech',
-  'elfack-gothenburg': 'elfack',
-  'enlit-africa-2026-formerly-african-utility-week': 'enlit-africa',
-  'ichve': 'ichve-ieee-intl-conf-on-high-voltage-engineering',
-  'ieee-eic': 'ieee-eic-and-ipmhvc',
-  'ieee-pes-transformers-committee-fall': 'ieee-pes-transformers-committee',
-  'korea-smart-grid': 'korea-smart-grid-week',
-  'megawhat-transformer-iandc-days-2026': 'events.html',
-};
-Object.keys(ALIASES).forEach((oldSlug) => {
-  const target = ALIASES[oldSlug];
-  const href = target === 'events.html' ? '/events.html' : ('/events/' + target + '/');
-  const html = '<!DOCTYPE html>\n<html lang="en"><head><meta charset="UTF-8">' +
-    '<meta http-equiv="refresh" content="0; url=' + href + '">' +
-    '<link rel="canonical" href="https://transformerpath.com' + href + '">' +
-    '<title>Redirect</title></head><body><p><a href="' + href + '">Continue</a></p></body></html>';
-  writePage('events/' + oldSlug + '/index.html', html);
-});
+/* Old public slugs 301. Do not also publish an HTML copy: two pages for
+   one series is the duplicate the redirect exists to remove. */
+const eventRedirects = require('./lib/event-redirects');
+function syncRedirectFile(file, block) {
+  const prev = fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : '';
+  const next = eventRedirects.spliceMarked(prev, block);
+  if (next !== prev) fs.writeFileSync(file, next.endsWith('\n') ? next : next + '\n');
+}
+syncRedirectFile('_redirects', eventRedirects.redirectsBlock());
+syncRedirectFile('netlify.toml', eventRedirects.tomlBlock());
 
 /* Post-event summaries live beside edition pages and use their own slugs.
    Keep those directories even when the slug is not an edition id. */
@@ -319,4 +307,9 @@ if (fs.existsSync('events')) {
   });
 }
 
+const noindexSeries = {};
+ALL.forEach(function (ev) {
+  if (eventSeo.shouldNoindexEdition(ev, TODAY)) noindexSeries[ev.series_slug || ev.id] = 1;
+});
 console.log('OK series hubs ' + Object.keys(groups).length + ' | edition pages ' + ALL.length + ' | ics ' + confirmedUpcoming.length);
+console.log('series with a noindex unsourced edition: ' + Object.keys(noindexSeries).length);
