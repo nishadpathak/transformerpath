@@ -136,8 +136,11 @@
     <div class="row"><span>Series winding current</span><b id="i-series"></b></div>
     <div class="row"><span>Common winding current</span><b id="i-common"></b></div>
   </div>
-  <div class="check">
-    <b>Worked check.</b> 100 MVA at 132/66 kV gives a co-ratio of 0.5, an equivalent rating of 50 MVA, an LV line current of 874.8 A, and series and common winding currents of 437.4 A each.
+  <div class="check" id="auto-validation">
+    <b>Validation example.</b>
+    Inputs: throughput 100 MVA, HV line voltage 132 kV, LV line voltage 66 kV.
+    Expected: co-ratio 0.5, equivalent rating 50 MVA, LV line current 874.8 A, series winding current 437.4 A, common winding current 437.4 A.
+    References: IEEE C57.12.10 uses the co-ratio α = 1 − V<sub>LV</sub>/V<sub>HV</sub> for the equivalent two-winding rating, S<sub>eq</sub> = S<sub>through</sub> × α. IEC 60076-1 rated current is I = S / (√3 · U). Series current is the HV line current. Common current is I<sub>LV</sub> − I<sub>HV</sub>.
   </div>
   <h2>Method</h2>
   <p>The co-ratio α = (V<sub>HV</sub> − V<sub>LV</sub>) / V<sub>HV</sub> is the fraction of throughput that is transformed. IEEE C57.12.10 uses that co-ratio for the equivalent two-winding (self) rating: S<sub>eq</sub> = S<sub>through</sub> × α. The rest of the throughput is conducted, which is why the autotransformer is smaller than a two-winding unit of the same throughput.</p>

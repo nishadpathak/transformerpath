@@ -343,6 +343,12 @@
     </div>
   </div>
 </div>
+<div class="card" id="sizing-validation" style="margin:0 0 24px;padding:16px 18px;border:1px solid rgba(245,166,35,.35)">
+  <h3 style="margin:0 0 8px;font-size:1.05rem;color:var(--ink)">Validation example</h3>
+  <p style="margin:0 0 8px;font-size:.88rem;color:var(--text)"><b>Inputs.</b> 3-phase, 1,000 kVA, 11 kV / 0.433 kV, 50 Hz, peak flux 1.65 T, current density 2.8 A/mm², K = 0.45.</p>
+  <p style="margin:0 0 8px;font-size:.88rem;color:var(--text)"><b>Expected.</b> Volts per turn 14.23 V, net core area 388 cm², HV turns 446, LV turns 18, HV line current 52.5 A, LV line current 1,333 A, HV conductor 18.7 mm², LV conductor 476 mm².</p>
+  <p style="margin:0;font-size:.84rem;color:var(--muted)"><b>References.</b> Line current is I = S / (√3 · U) for three phases, the rated-current relation in IEC 60076-1, with U in volts. Phase voltage for a star winding is the line voltage divided by √3. Turns are that phase voltage divided by volts per turn. Net core area uses the sinusoidal EMF equation E = 4.44 · f · N · B · A, rearranged as A = Eₜ / (4.44 · f · B). Conductor area is current divided by current density. K√kVA is this page’s empirical volts-per-turn start, not an IEC constant. Star connection is assumed for the three-phase case.</p>
+</div>
 
 <script>
 // ── Interactive Self-Test Quiz Logic ──
@@ -456,13 +462,12 @@
     // core area from Et = 4.44 f B Ac  -> Ac (m2) -> cm2
     const Ac = Et/(4.44*f*B); // m^2
     const AcCm = Ac*1e4;
-    // phase voltages
-    const Vp_hv = ph===3 ? HV/Math.sqrt(3) : HV;   // assume star HV for 3ph (typical)
-    const Vp_lv = ph===3 ? LV/Math.sqrt(3) : LV;
+    // Line voltages are entered in kV. Phase voltage and current use volts.
+    const Vp_hv = (ph===3 ? HV/Math.sqrt(3) : HV) * 1000;   // assume star HV for 3ph (typical)
+    const Vp_lv = (ph===3 ? LV/Math.sqrt(3) : LV) * 1000;
     const Nhv = Vp_hv/Et, Nlv = Vp_lv/Et;
-    // currents (line)
-    const Ihv = ph===3 ? S/(Math.sqrt(3)*HV) : S/HV;
-    const Ilv = ph===3 ? S/(Math.sqrt(3)*LV) : S/LV;
+    const Ihv = ph===3 ? S/(Math.sqrt(3)*HV*1000) : S/(HV*1000);
+    const Ilv = ph===3 ? S/(Math.sqrt(3)*LV*1000) : S/(LV*1000);
     const aHv = Ihv/dens, aLv = Ilv/dens; // mm^2 (line current ~ phase for star)
     
     currentDesign = {
