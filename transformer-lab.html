@@ -41,6 +41,10 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; overflow: hidden; }
 body {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: 100%;
   font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
   background: var(--lab-bg);
   color: var(--lab-ink);
@@ -539,7 +543,9 @@ body {
   #lab-toolbar { display: none; }
   #lab-help { display: none; }
   #lab-caption { bottom: 132px; font-size: .82rem; }
+  #lab-topbar { height: auto; flex-wrap: wrap; align-items: flex-start; row-gap: 6px; padding-top: 8px; padding-bottom: 8px; }
   #lab-topbar .lab-sub { display: none; }
+  #lab-topbar .tbar-right { margin-left: 0; flex-wrap: wrap; max-width: 100%; }
   .ctrl-btn-row .ctrl-btn { padding: 5px 9px; font-size: .72rem; }
   #lab-controls { height: 108px; }
 }
@@ -767,7 +773,7 @@ body {
   <p style="font-size:.82rem;color:var(--lab-mut);margin-bottom:12px">This is the non-3D accessible version of the Transformer Lab.</p>
   <ol style="padding-left:20px;line-height:2.2;font-size:.85rem">
     <li><strong>External Accessories</strong> — conservator, Buchholz relay, surge arresters</li>
-    <li><strong>Cooling System</strong> — radiator banks, fans, oil pumps</li>
+    <li><strong>Cooling System</strong> — radiator banks and fans (ONAN/ONAF). Oil pumps only if an OFAF rating is specified</li>
     <li><strong>HV Bushings</strong> — 132 kV condenser-graded bushings, bushing CTs</li>
     <li><strong>LV Bushings</strong> — 33 kV porcelain bushings, neutral bushing</li>
     <li><strong>Tank</strong> — welded plate tank, cover, pressure-relief valves</li>

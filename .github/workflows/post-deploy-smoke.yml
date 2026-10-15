@@ -8,6 +8,7 @@ on:
 permissions:
   contents: read
   statuses: write
+  issues: write
 
 jobs:
   smoke:
@@ -17,7 +18,7 @@ jobs:
        (github.event.deployment.environment == 'production' ||
         github.event.deployment.environment == 'Production'))
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
       - name: Record that the production deploy is in progress
@@ -34,6 +35,12 @@ jobs:
         env:
           RELEASE_SHA: ${{ github.event.deployment.sha || github.sha }}
         run: node scripts/smoke-release.js https://transformerpath.com "$RELEASE_SHA" --wait
+      - name: Install Playwright Chromium and WebKit
+        run: |
+          npm install --no-save --no-package-lock playwright@1.55.1
+          npx playwright install --with-deps chromium webkit
+      - name: Browser smoke
+        run: node scripts/browser-smoke.js https://transformerpath.com || node scripts/browser-smoke.js https://transformerpath.com
       - name: Record the production deploy result
         if: always()
         env:
@@ -52,3 +59,33 @@ jobs:
             -f context='transformerpath/production' \
             -f description="$DESC" \
             -f target_url='https://transformerpath.com/build.json'
+      - name: Roll production back
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          FAILING_SHA: ${{ github.event.deployment.sha || github.sha }}
+        run: node scripts/rollback-production.js
+      - name: Open a GitHub issue
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          FAILING_SHA: ${{ github.event.deployment.sha || github.sha }}
+        run: |
+          if [ -z "$NETLIFY_AUTH_TOKEN" ]; then
+            TOKEN_NOTE='NETLIFY_AUTH_TOKEN is not set on this repository. Rollback was a no-op and did not call the Netlify API.'
+          else
+            TOKEN_NOTE='Rollback ran with NETLIFY_AUTH_TOKEN. See the workflow log for the restore result.'
+          fi
+          gh issue create \
+            --title "Production smoke failed for ${FAILING_SHA}" \
+            --body "$(cat <<EOF
+          Production smoke failed for \`${FAILING_SHA}\`.
+
+          ${TOKEN_NOTE}
+
+          Workflow: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          EOF
+          )"

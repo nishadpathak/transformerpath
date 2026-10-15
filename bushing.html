@@ -41,7 +41,12 @@ body{font-family:var(--font-sans);background:#0a1624;color:var(--ink)}
 #help{position:absolute;left:14px;bottom:12px;z-index:10;font-size:.74rem;color:var(--mut);background:rgba(20,37,61,.85);border:1px solid var(--line);border-radius:8px;padding:7px 11px;line-height:1.6;pointer-events:none}
 .lbl{position:absolute;transform:translate(-50%,-130%);background:rgba(10,22,36,.92);border:1px solid var(--line);color:#e8edf4;font-size:11px;padding:2px 7px;border-radius:5px;pointer-events:auto;cursor:pointer;white-space:nowrap;z-index:5}
 .lbl::after{content:"";position:absolute;left:50%;top:100%;margin-left:-4px;border:4px solid transparent;border-top-color:var(--line)}
-@media(max-width:760px){#panel{width:248px}#topbar h1{font-size:.8rem}}
+#labelLayer{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:6}
+@media(max-width:760px){
+  #topbar{height:auto;flex-wrap:wrap;align-items:flex-start;padding:8px 10px;row-gap:6px}
+  #topbar h1{font-size:.8rem;white-space:normal;flex:1 1 100%}
+  #panel{left:8px;right:8px;width:auto;top:auto;bottom:8px;max-height:40vh}
+}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0d1b2e">
@@ -131,6 +136,7 @@ body{font-family:var(--font-sans);background:#0a1624;color:var(--ink)}
   <script src="tp-pwa.js?v=7" defer></script>
 </header>
 <div id="c3d"></div>
+<div id="labelLayer"></div>
 <div id="topbar">
   <h1>🔌 Condenser Bushing — Cutaway</h1>
   <a href="academy.html">🏠 Hub</a>
@@ -286,7 +292,7 @@ function pick(e){mouse.x=(e.clientX/innerWidth)*2-1;mouse.y=-(e.clientY/innerHei
 const info=document.getElementById('info');
 function selectPart(k){const p=PARTS[k];if(!p)return;info.innerHTML=`<b>${p.name}</b><br>${p.desc}`;}
 const labels=[];
-function makeLabel(key,text,dx,dy,dz){const p=PARTS[key];if(!p)return;const e=document.createElement('div');e.className='lbl';e.textContent=text;e.addEventListener('click',()=>selectPart(key));document.body.appendChild(e);labels.push({key,el:e,off:new THREE.Vector3(dx,dy,dz)});}
+function makeLabel(key,text,dx,dy,dz){const p=PARTS[key];if(!p)return;const e=document.createElement('div');e.className='lbl';e.textContent=text;e.addEventListener('click',()=>selectPart(key));document.getElementById('labelLayer').appendChild(e);labels.push({key,el:e,off:new THREE.Vector3(dx,dy,dz)});}
 makeLabel('term','Terminal + corona ring',0,78,0);makeLabel('air','Air-side sheds',8,40,0);
 makeLabel('core','Capacitor core',6,4,0);makeLabel('flange','Flange (earth)',12,0,0);
 makeLabel('tap','Test tap',14,-2,0);makeLabel('oilend','Oil-side end',0,-30,0);makeLabel('ct','Bushing CT',-10,-10,0);makeLabel('cond','Conductor',0,100,0);

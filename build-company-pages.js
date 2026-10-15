@@ -347,7 +347,21 @@ function phraseList(items) {
  * (place, products, year only when the record has one, sourced kV/MVA labelled
  * as the highest figures on file). Inlined so this page does not depend on
  * directory-intro.js. Nothing is filled in when the field is empty. */
-function censusLead(r, tier, intelRec) {
+function highestSourcedKv(tier, provRec) {
+  let maxKv = 0;
+  if (tier && tier.kv != null && tier.kv !== '') {
+    const n = typeof tier.kv === 'number' ? tier.kv : parseFloat(tier.kv);
+    if (!isNaN(n) && n > 0) maxKv = n;
+  }
+  (provRec && provRec.facts || []).forEach(function (f) {
+    if (!f || f.field !== 'voltage_class_evidence') return;
+    if (/REJECT/i.test(String(f.confidence || ''))) return;
+    const v = typeof f.value === 'number' ? f.value : parseFloat(f.value);
+    if (!isNaN(v) && v > maxKv) maxKv = v;
+  });
+  return maxKv;
+}
+function censusLead(r, tier, intelRec, sourcedKv) {
   const place = [r.city, r.country].filter(Boolean).join(', ');
   const sentences = [];
   sentences.push(r.name + ' is listed as a transformer manufacturer' + (place ? ' in ' + place : '') + '.');
@@ -355,11 +369,8 @@ function censusLead(r, tier, intelRec) {
   if (products) sentences.push('Products and scope on file: ' + products + '.');
   if (r.established) sentences.push('Year of establishment on file: ' + r.established + '.');
   let voltage = '';
-  let kv = 0;
-  if (tier && tier.kv) {
-    const n = typeof tier.kv === 'number' ? tier.kv : parseFloat(tier.kv);
-    if (!isNaN(n) && n > 0) { kv = n; voltage = n + ' kV'; }
-  }
+  let kv = sourcedKv || 0;
+  if (kv > 0) voltage = kv + ' kV';
   if (intelRec && intelRec.reported_voltage) {
     const raw = String(intelRec.reported_voltage).trim();
     const n = parseFloat(raw);
@@ -455,7 +466,8 @@ function page(r, slug) {
   const lastReviewed = (intelRec && intelRec.last_verified) || (STATS.updated || '2026-08-26');
   const earnedVerified = paidListings.isVerifiedManufacturer(slug, PAID_LISTINGS);
   const verify = earnedVerified ? 'Verified' : (r.flagV === 'P' ? '★ Supplier Pro' : (r.flagV === 'C' ? 'Claimed' : 'Listed'));
-  const leadText = censusLead(r, tier, intelRec);
+  const provRec = byNameAny(PROV_BY_NAME, r);
+  const leadText = censusLead(r, tier, intelRec, highestSourcedKv(tier, provRec));
   const trust = '<p style="font-size:.78rem;color:var(--muted);margin-top:8px">Independent census profile, not the company website. <a href="../../manufacturers.html#census-method" style="color:var(--accent)">How this census is compiled</a>. <b>Last reviewed</b> ' + esc(lastReviewed) + ' &nbsp;&middot;&nbsp; <b>Profile status</b> <span style="color:var(--accent)">' + verify + '</span></p>';
 
   const meterColor = score >= 75 ? '#10b981' : (score >= 50 ? 'var(--accent)' : 'var(--muted)');
@@ -490,7 +502,6 @@ function page(r, slug) {
   if (tier) {
     const row = function (k, v) { return v ? '<tr><th>' + k + '</th><td>' + v + '</td></tr>' : ''; };
     const c = tier.mva ? '~' + tier.mva.toLocaleString('en-US') + ' MVA' : '—';
-    const provRec = byNameAny(PROV_BY_NAME, r);
     let maxKv = typeof tier.kv === 'number' ? tier.kv : (parseFloat(tier.kv) || 0);
     let maxKvSource = tier.source || null;
     (provRec && provRec.facts || []).forEach(function (f) {
