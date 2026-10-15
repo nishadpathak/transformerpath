@@ -157,9 +157,12 @@ INTEL_ITEMS.forEach((it) => {
   const fallbackRegion = it._region === 'GCC' ? 'Middle East' : it._region === 'India' ? 'Asia' : it._region === 'Europe' ? 'Europe' : it._region === 'USA' ? 'North America' : 'Other';
   const r = country ? regionOf(country) : fallbackRegion;
   const namedDeadline = (it.tender_close_date && String(it.tender_close_date).slice(0, 10)) || isoDateInText(text);
-  /* "Awards expected" is not an award. Only awarded / wins / won is. */
+  /* "Awards expected" is not an award. Awarded / wins / won is.
+     A completed allocation ("split among N firms") is a result even when
+     the headline still contains the word "tender". */
   const stage = /awards?\s+expected|expected\s+to\s+award/i.test(text) ? 'evaluation'
     : /\b(awarded|wins?|won)\b/i.test(text) ? 'awarded'
+    : /\bsplit among\b/i.test(text) ? 'awarded'
     : /evaluation|\bL1\b/i.test(text) ? 'evaluation'
     : /deadline/i.test(text) ? 'tendering'
     : /invites? bids?|floats?|tender/i.test(text) ? 'tendering'
