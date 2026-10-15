@@ -40,7 +40,9 @@
   </header>
 
   <!-- 3D Canvas Viewport -->
-  <main id="gl-canvas-container" role="region" aria-label="Interactive 3D Power System Grid" tabindex="0"></main>
+  <main id="gl-canvas-container" role="region" aria-label="Interactive 3D Power System Grid" tabindex="0">
+    <p data-gl-fallback style="position:absolute;left:16px;right:16px;top:88px;color:#c5d0dc;font-size:.95rem;line-height:1.5;max-width:42rem">The 3D grid is loading. If this stays blank, use Schematic / A11y in the header for the stage-by-stage engineering view.</p>
+  </main>
 
   <!-- Left Simulation Controls Panel -->
   <aside class="gl-panel-left" aria-label="Simulation Controls">
@@ -139,14 +141,14 @@
               <td style="padding:8px"><b>1. Generation</b></td>
               <td style="padding:8px">Synchronous Generator</td>
               <td style="padding:8px">— → 21.0 kV</td>
-              <td style="padding:8px">Star (NGR)</td>
+              <td style="padding:8px">Star, low-resistance NGR</td>
               <td style="padding:8px">Bulk power generation bounded by stator winding dielectric insulation.</td>
             </tr>
             <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
               <td style="padding:8px"><b>2. GSU Step-Up</b></td>
               <td style="padding:8px">Generator Step-Up (GSU)</td>
               <td style="padding:8px">21.0 kV → 400.0 kV</td>
-              <td style="padding:8px">YNd11</td>
+              <td style="padding:8px">YNd1</td>
               <td style="padding:8px">Steps voltage up 19.05x, dropping current by 19.05x and slashing I²R losses by ~362.8x (illustrative equal-R basis).</td>
             </tr>
             <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
@@ -181,8 +183,8 @@
               <td style="padding:8px"><b>7. Primary Substation</b></td>
               <td style="padding:8px">Dual Power Transformers (T1/T2)</td>
               <td style="padding:8px">132.0 kV → 33.0 kV</td>
-              <td style="padding:8px">Dyn11</td>
-              <td style="padding:8px">Subtransmission to primary distribution with active OLTC regulation and N-1 redundancy.</td>
+              <td style="padding:8px">YNd11</td>
+              <td style="padding:8px">Subtransmission to primary distribution with active OLTC regulation and N-1 redundancy. HV is star-earthed; the 33 kV delta is earthed through an earthing transformer.</td>
             </tr>
             <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
               <td style="padding:8px"><b>8. Distribution Substation</b></td>

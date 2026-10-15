@@ -383,7 +383,7 @@ let oilMesh;
   oilMesh.castShadow = false; oilMesh.receiveShadow=false;
   g.add(oilMesh); oilRoot.add(g);
   reg(g,'Insulating oil',
-   'Mineral oil (IEC 60296) — or fire-safer ester liquid — is insulant, coolant and diagnostic window at once. Heated oil rises through the winding ducts, cools in the radiators and sinks back: the ONAN thermosiphon.',
+   'Mineral oil (IEC 60296), or a fire-safer ester, is the insulant, the coolant and the diagnostic window. Heated oil rises through the winding ducts, cools in the corrugated fin walls and sinks back: the ONAN thermosiphon. This tank has no detachable radiators.',
    [0,0,0],'oil');
 }
 /* --- cover --- */
@@ -396,7 +396,7 @@ let oilMesh;
   const ti = cyl(.9,.9,2.2,M.glass); ti.position.set(2,32.7,5.5); g.add(ti);
   oilRoot.add(g);
   reg(g,'Tank cover (+ PRV, OTI/WTI pockets)',
-   'Bolted, gasketed cover carrying the bushings, pressure-relief valve (red) and thermometer pockets for the oil- and winding-temperature indicators that stage the fans and trip on overheating.',
+   'Bolted, gasketed cover carrying the bushings, a pressure-relief device (red) and OTI/WTI pockets. This oil model is ONAN, so there are no fans to stage. The indicators alarm and trip on over-temperature. Fan staging belongs on an ONAF rating.',
    [0,18,0],'tank');
 }
 /* --- HV bushings --- */
@@ -476,7 +476,7 @@ let oilMesh;
   }
   oilRoot.add(g);
   reg(g,'Corrugated fin walls (ONAN cooling)',
-   'On distribution transformers the tank wall IS the radiator: thin steel sheet is pressed into deep vertical fins (the corrugations you see on every pad-mount and pole-mount unit). Hot oil rises inside, sheds heat through the fin faces, and sinks — pure ONAN thermosiphon, no fans, no valves, nothing to maintain. The fins also flex elastically to absorb oil expansion, which is what lets hermetically sealed designs delete the conservator entirely. Larger distribution units (≥1600 kVA) switch to detachable plate-type radiators like the power transformer’s.',
+   'On a distribution tank the wall is the cooler: thin steel pressed into deep vertical fins. Hot oil rises inside, sheds heat through the fin faces and sinks. That is ONAN, with no fans and no radiator valves. This model is the free-breathing arrangement, so expansion goes to the conservator and the fins are only the cooler. A hermetic corrugated tank is a different unit: the fins flex, and the conservator, Buchholz relay and breather are omitted. Do not specify both expansion methods on one tank. Larger free-breathing units, from about 1600 kVA, often change the cooler to detachable plate radiators.',
    [0,0,0],'cooling');
 }
 /* --- OLTC --- */
@@ -487,7 +487,7 @@ let oilMesh;
   const mot = box(3,4.5,3,M.steelDk); mot.position.set(-25.4,6,5); g.add(mot);
   oilRoot.add(g);
   reg(g,'On-load tap-changer (OLTC)',
-   'Adjusts HV turns under load (e.g. ±10% in 17 steps) to hold the LV voltage as network load swings. Diverter switch with transition resistors — modern units switch in vacuum interrupters, stretching maintenance to ~300 000 operations. Driven by the motor box below, commanded by an AVR relay.',
+   'Adjusts HV turns under load, for example ±10% in 17 positions (16 steps of 1.25%), to hold the LV voltage as network load swings. That is usual on larger free-breathing distribution units. Many small hermetic tanks use an off-circuit tap switch instead. The diverter uses transition resistors, or vacuum interrupters on modern units, with maintenance out toward 300 000 operations. The motor box below follows the AVR relay.',
    [-14,0,0],'oltc');
 }
 
