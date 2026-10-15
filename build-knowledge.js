@@ -226,8 +226,12 @@ const ARTICLES = [
       ['Advantages', 'For a modest ratio change (e.g. 11 kV to 6.6 kV, or a 10% voltage adjustment), the autotransformer uses far less copper and core material, is lighter and has lower losses.'],
       ['Limitations', 'There is no galvanic isolation, the short-circuit current can be much higher, and the winding must be insulated for the highest voltage. Two-winding transformers are used where isolation and low fault currents are needed.'],
     ],
-    refs: ['IEC 60076-1', 'IEEE C57.12.00'],
+    refs: ['IEC 60076-1', 'IEEE C57.12.00', 'IEEE C57.12.10'],
     comps: ['conductors-and-core', 'tank-and-mechanical'], types: ['PT'],
+    calc: 'autotransformer-sizing.html',
+    calcLabel: 'Equivalent rating',
+    model: 'autotransformer.html',
+    work: 'A 100 MVA, 132/66 kV three-phase autotransformer has co-ratio 0.5, so the equivalent self rating is 50 MVA. LV line current is 874.8 A and the series and common winding currents are each 437.4 A. The sizing page computes this from throughput and the two line voltages.',
   },
   {
     slug: 'power-factor-test', topic: 'Testing', level: 'Intermediate', minutes: 6,
@@ -2250,7 +2254,7 @@ function articlePage(a) {
   const refs = '<h2>References &amp; standards</h2><ul>' + a.refs.map(function (r) { return '<li>' + esc(r) + '</li>'; }).join('') + '</ul>';
   const ex = a.work ? '<div class="box"><b style="color:var(--accent)">Worked example</b><p style="margin-top:6px">' + esc(a.work) + '</p></div>' : '';
   const links = '<h2>Related</h2><div class="rel">' +
-    (a.calc ? '<a class="tpill" href="../' + a.calc + '">Calculator</a>' : '') +
+    (a.calc ? '<a class="tpill" href="../' + a.calc + '">' + esc(a.calcLabel || 'Calculator') + '</a>' : '') +
     (a.model ? '<a class="tpill" href="../' + a.model + '">3D model</a>' : '') +
     '<a class="tpill" href="../books.html">Book series</a><a class="tpill" href="../academy.html">Academy</a></div>';
   const makersSec = makerLinks ? '<h2>Related manufacturers</h2><p style="font-size:.92rem">' + makerLinks + '</p>' : '';
