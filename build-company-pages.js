@@ -525,7 +525,7 @@ function page(r, slug) {
     missingList +
   '</div>';
   // conservative schema: describe the company, never claim affiliation
-  const orgSchema = { '@context': 'https://schema.org', '@type': 'Organization', name: r.name, url: r.url ? r.url : url, description: leadText, address: { '@type': 'PostalAddress', streetAddress: (r.headOffice && r.headOffice.address) || undefined, addressCountry: r.country, addressLocality: r.city || undefined } };
+  const orgSchema = { '@context': 'https://schema.org', '@type': 'Organization', name: r.name, url: r.url ? r.url : url, description: leadText, address: { '@type': 'PostalAddress', addressCountry: r.country, addressLocality: r.city || undefined } };
   if (r.headOffice && r.headOffice.source_url) orgSchema.sameAs = [r.headOffice.source_url];
   const parentLink = companyParents.parentFor(r);
   if (parentLink) {
