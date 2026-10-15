@@ -628,10 +628,15 @@ const latest = posts.filter(function (p) {
 }).slice(0, 14);
 
 let page = fs.readFileSync('intel.html', 'utf8');
-if (page.indexOf('<!--SSR:intel-feed-->') >= 0) {
-  page = injectMarker(page, 'intel-feed', latest.map(ssrCard).join(''));
+if (page.indexOf('<!--SSR:intel-feed-->') >= 0 || page.indexOf('<!--SSR:intel-timeline-->') >= 0) {
+  const cards = latest.map(ssrCard).join('');
+  // Both markers sit inside #intel-timeline. Writing the same cards into each
+  // one printed every post twice and reused every article id.
   if (page.indexOf('<!--SSR:intel-timeline-->') >= 0) {
-    page = injectMarker(page, 'intel-timeline', latest.map(ssrCard).join(''));
+    page = injectMarker(page, 'intel-timeline', cards);
+    if (page.indexOf('<!--SSR:intel-feed-->') >= 0) page = injectMarker(page, 'intel-feed', '');
+  } else {
+    page = injectMarker(page, 'intel-feed', cards);
   }
   const newsNote = '<p class="intel-legacy-note">Comprehensive regional market intelligence across GCC, India, Europe, Americas, and Rest of World.</p>';
   if (page.indexOf('<!--SSR:panel-news-->') >= 0) {
