@@ -135,6 +135,7 @@
 .leaflet-control-attribution { background: rgba(8,18,30,.75) !important; color: #8fa6bc !important; }
 .leaflet-control-attribution a { color: #f5a623 !important; }
 .leaflet-container { font-family: inherit; }
+#tpMap.leaflet-container { touch-action: pan-y; }
 @media (max-width: 720px) {
   .tp-map-intro { padding: 20px 16px 4px; }
   .tp-map-intro h1 { font-size: 1.55rem; }
@@ -290,6 +291,7 @@
     <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
   </div>
 </footer>
+<script src="tp-canvas-scroll.js"></script>
 <script src="vendor/leaflet/leaflet.js"></script>
 <script src="vendor/leaflet.markercluster/leaflet.markercluster.js"></script>
 <script src="map.js"></script>

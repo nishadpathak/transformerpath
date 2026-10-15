@@ -13,7 +13,7 @@
 <style>
 :root{--panel:#14253d;--panel2:#0d1b2e;--ink:#e8edf4;--mut:#94a3b8;--acc:#f5a623;--acc2:#fbbf24;--line:#1e3a5c}
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;overflow:hidden}
+html,body{height:100%;overflow:hidden;overscroll-behavior:none}
 body{font-family:var(--font-sans);background:#0a1624;color:var(--ink)}
 #c3d{position:absolute;inset:0;cursor:grab}
 #c3d.dragging{cursor:grabbing}
@@ -183,13 +183,14 @@ body{font-family:var(--font-sans);background:#0a1624;color:var(--ink)}
   </div>
 
   <h2>Selected part</h2>
-  <div id="info"><span class="hint">Click any part of the transformer to identify it and read what it does. Drag to orbit · scroll to zoom · right-drag to pan.</span></div>
+  <div id="info"><span class="hint">Click any part of the transformer to identify it and read what it does. Drag to orbit · Ctrl + scroll to zoom · right-drag to pan.</span></div>
 </div>
 
 <div id="help">🖱 drag = orbit &nbsp;·&nbsp; wheel = zoom &nbsp;·&nbsp; right-drag / shift-drag = pan &nbsp;·&nbsp; click = identify part<br>📱 one finger = orbit &nbsp;·&nbsp; pinch = zoom</div>
 
 <script src="tp-webgl-gate.js"></script>
 <script src="vendor/three.min.js"></script>
+<script src="tp-canvas-scroll.js"></script>
 <script>
 (function(){
 
@@ -819,6 +820,7 @@ let dragging=false, panning=false, lastX=0, lastY=0, moved=0;
 const el = renderer.domElement;
 el.addEventListener('contextmenu',e=>e.preventDefault());
 el.addEventListener('pointerdown',e=>{
+  if(e.pointerType==='touch')return;
   dragging=true; moved=0; panning = (e.button===2 || e.shiftKey);
   lastX=e.clientX; lastY=e.clientY; container.classList.add('dragging');
   el.setPointerCapture(e.pointerId);
@@ -841,11 +843,17 @@ el.addEventListener('pointerup',e=>{
   dragging=false; container.classList.remove('dragging');
   if(moved<6) pick(e);
 });
-el.addEventListener('wheel',e=>{ e.preventDefault(); sph.r *= (1 + Math.sign(e.deltaY)*0.09); applyCam(); },{passive:false});
-/* pinch zoom */
-let pinchD=0;
-el.addEventListener('touchstart',e=>{ if(e.touches.length===2){ pinchD=Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);} },{passive:true});
-el.addEventListener('touchmove',e=>{ if(e.touches.length===2){ const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY); sph.r *= pinchD/d; pinchD=d; applyCam(); } },{passive:true});
+TPCanvasScroll.setPanY(el);
+TPCanvasScroll.bindWheel(el, function (e) {
+  sph.r *= 1 + Math.sign(e.deltaY) * 0.09;
+  applyCam();
+});
+TPCanvasScroll.bindTwoFinger(el, function (g) {
+  if (g.zoom && isFinite(g.zoom)) sph.r *= g.zoom;
+  if (g.dAngle) sph.th += g.dAngle;
+  applyCam();
+});
+TPCanvasScroll.bindZoomHint(typeof container !== 'undefined' ? container : el.parentElement);
 
 /* ============ picking ============ */
 const ray = new THREE.Raycaster(); const mouse = new THREE.Vector2();

@@ -7,7 +7,7 @@
 <link rel="canonical" href="https://transformerpath.com/hero-3d.html">
 <meta name="robots" content="noindex,follow">
 <style>
-  html, body { margin: 0; height: 100%; overflow: hidden; background: #07111c; }
+  html, body { margin: 0; height: 100%; overflow: hidden; overscroll-behavior: none; background: #07111c; }
   #stage { position: absolute; inset: 0; cursor: grab; }
   #stage.dragging { cursor: grabbing; }
   .veil {
@@ -30,6 +30,7 @@
   <div class="boot" id="boot">Loading 3D model…</div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="../tp-canvas-scroll.js"></script>
   <script src="tp-3d-core.js"></script>
   <script src="tp-power-assembly.js"></script>
   <script>

@@ -291,7 +291,7 @@
       </div>
     </div>
   </div>
-  <p class="hero-stage__hint">Drag to orbit · scroll to zoom</p>
+  <p class="hero-stage__hint" hidden>Ctrl + scroll to zoom</p>
 </section>
 
 <!-- ══ Count-up KPIs ══ -->
@@ -320,7 +320,7 @@
           <span class="l3-txt">Tap to load the 3D transformer</span>
           <span class="l3-sub">Interactive · rotates in your hand</span>
         </button>
-        <span class="hint" hidden>🖱️ Drag to rotate · scroll to zoom</span>
+        <span class="hint" hidden>Ctrl + scroll to zoom</span>
       </div>
     </div>
   </div>
@@ -500,6 +500,18 @@ if('IntersectionObserver' in window){
 <script>
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}
 (function(){var dp;window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();dp=e;if(document.getElementById('tpInstall'))return;var b=document.createElement('button');b.id='tpInstall';b.textContent='\u2913 Install TransformerPath';b.setAttribute('style','position:fixed;right:16px;bottom:16px;z-index:9999;background:#f5a623;color:#0d1b2e;border:0;border-radius:999px;padding:11px 18px;font-weight:800;font-size:.9rem;box-shadow:0 6px 20px rgba(0,0,0,.28);cursor:pointer;font-family:inherit');b.onclick=function(){b.remove();dp.prompt();dp.userChoice.finally(function(){dp=null;});};document.body.appendChild(b);});})();
+</script>
+<script src="../tp-canvas-scroll.js"></script>
+<script>
+(function () {
+  if (window.TPCanvasScroll) TPCanvasScroll.installParentScrollRelay();
+  var viz = document.querySelector('.hero-stage__viz');
+  var hint = document.querySelector('.hero-stage__hint');
+  if (!viz || !hint) return;
+  function show() { hint.hidden = false; }
+  viz.addEventListener('pointerenter', show, { once: true });
+  viz.addEventListener('mouseenter', show, { once: true });
+})();
 </script>
 <script src="analytics.js" defer></script>
 <script src="site-graph.js" defer></script>

@@ -418,6 +418,32 @@
     };
   }
 
+  var mapWheelAcc = 0;
+  function bindMapScroll(map) {
+    var el = map.getContainer();
+    if (window.TPCanvasScroll) {
+      TPCanvasScroll.setPanY(el);
+      TPCanvasScroll.bindWheel(el, function (e) {
+        mapWheelAcc += e.deltaY || 0;
+        if (Math.abs(mapWheelAcc) < 50) return;
+        var dir = mapWheelAcc > 0 ? -1 : 1;
+        mapWheelAcc = 0;
+        map.setZoomAround(map.mouseEventToContainerPoint(e), map.getZoom() + dir);
+      });
+      TPCanvasScroll.bindZoomHint(el);
+    }
+    el.addEventListener('touchstart', function (e) {
+      if (!e.touches || e.touches.length !== 1 || !map.dragging) return;
+      map.dragging.disable();
+    }, { capture: true, passive: true });
+    function restoreDrag(e) {
+      if (e && e.touches && e.touches.length) return;
+      if (map.dragging && !map.dragging.enabled()) map.dragging.enable();
+    }
+    el.addEventListener('touchend', restoreDrag, { passive: true });
+    el.addEventListener('touchcancel', restoreDrag, { passive: true });
+  }
+
   function initMap(data) {
     allItems = data.items || [];
     dirMeta = data.directory || {};
@@ -426,8 +452,9 @@
     map = L.map('tpMap', {
       worldCopyJump: true,
       zoomControl: false,
-      scrollWheelZoom: true
+      scrollWheelZoom: false
     }).setView([20, 15], 2);
+    bindMapScroll(map);
     map.createPane('featuredPane');
     map.getPane('featuredPane').style.zIndex = 650;
     L.control.zoom({ position: 'topright' }).addTo(map);

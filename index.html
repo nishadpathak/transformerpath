@@ -333,7 +333,7 @@
       </div>
     </div>
   </div>
-  <p class="hero-stage__hint" id="hero3dHint">Drag to orbit · scroll to zoom</p>
+  <p class="hero-stage__hint" id="hero3dHint" hidden>Ctrl + scroll to zoom</p>
 </section>
 
 <div class="tp-video-modal" id="heroVideoModal" hidden role="dialog" aria-modal="true" aria-labelledby="heroVideoTitle">
@@ -948,7 +948,7 @@
           <span class="l3-txt">Tap to load the 3D transformer</span>
           <span class="l3-sub">Interactive · rotates in your hand</span>
         </button>
-        <span class="hint" hidden>🖱️ Drag to rotate · scroll to zoom</span>
+        <span class="hint" hidden>Ctrl + scroll to zoom</span>
       </div>
     </div>
   </div>
@@ -1095,7 +1095,12 @@ document.querySelectorAll('#mainNav a').forEach(a=>a.addEventListener('click',()
     f.src='explorer.html'; f.title='Interactive 3D transformer'; f.loading='lazy';
     frame.insertBefore(f, frame.firstChild);
     btn.remove();
-    const h=frame.querySelector('.hint'); if(h) h.hidden=false;
+    const h=frame.querySelector('.hint');
+    if(h && frame){
+      const show=function(){ h.hidden=false; };
+      frame.addEventListener('pointerenter', show, {once:true});
+      frame.addEventListener('mouseenter', show, {once:true});
+    }
   }
   btn.addEventListener('click',load);
   if(window.innerWidth>=820 && 'IntersectionObserver' in window){
@@ -1204,15 +1209,22 @@ if('IntersectionObserver' in window){
 <script src="site-stats.js?v=7" defer></script>
 <script src="material-latest.js?v=7" defer></script>
 <script src="tp-webgl-gate.js" defer></script>
+<script src="tp-canvas-scroll.js"></script>
 <script>
 /* Homepage 3D: poster first → idle/interaction → WebGL iframe. Never required. */
 (function(){
   function ready(fn){ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fn); else fn(); }
   ready(function(){
+    if(window.TPCanvasScroll) TPCanvasScroll.installParentScrollRelay();
     var stage=document.querySelector('.hero-stage');
     var viz=document.getElementById('heroViz');
     var note=document.getElementById('hero3dNote');
     var hint=document.getElementById('hero3dHint');
+    if(viz && hint){
+      var showHint=function(){ hint.hidden=false; hint.textContent='Ctrl + scroll to zoom'; };
+      viz.addEventListener('pointerenter', showHint, {once:true});
+      viz.addEventListener('mouseenter', showHint, {once:true});
+    }
     if(!viz||!stage) return;
     var gate=window.TPWebGL;
     var started=false;
