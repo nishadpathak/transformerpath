@@ -455,7 +455,7 @@ const ARTICLES = [
     sections: [
       ['No-load losses', 'These come from the alternating flux in the core (hysteresis) and the eddy currents in the laminations. They depend on the core material (e.g. CRGO, amorphous), the flux density and the core construction, and are essentially constant at rated voltage.'],
       ['Load losses', 'The winding conductor I2R loss plus stray loss in the tank, leads and core, which scale with the square of the current. The auxiliary losses from fans and oil pumps add when the cooling is running.'],
-      ['Efficiency and economics', 'Efficiency is output divided by input, so it peaks near full load and falls at light load because the no-load losses dominate. Buyers capitalise losses over the transformer life to compare suppliers — lower losses often justify a higher price.'],
+      ['Efficiency and economics', 'Efficiency is output divided by input. It peaks where load loss equals no-load loss, at a load fraction of √(P₀/Pk): about 30–45% for distribution transformers and nearer 40–60% for power transformers, not at full load (IEC 60076-20 peak efficiency index). It falls at light load because the no-load losses dominate. Buyers capitalise losses over the transformer life to compare suppliers — lower losses often justify a higher price.'],
     ],
     refs: ['IEC 60076-1', 'IEC 60076-20 (efficiency/eco-design context)'],
     comps: ['conductors-and-core', 'transformer-cooling'], types: ['PT', 'DT'],

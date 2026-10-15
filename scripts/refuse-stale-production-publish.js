@@ -106,6 +106,13 @@ function getJson(hostname, path) {
   });
 }
 
+function repoSlugFromEnv(env) {
+  const explicit = String(env.TP_GITHUB_REPO || '').trim();
+  if (/^[\w.-]+\/[\w.-]+$/.test(explicit)) return explicit;
+  const m = String(env.REPOSITORY_URL || '').match(/github\.com[/:]([\w.-]+\/[\w.-]+?)(?:\.git)?\/?$/);
+  return m ? m[1] : '';
+}
+
 async function main() {
   const context = process.env.CONTEXT || '';
   const commitRef = process.env.COMMIT_REF || '';
@@ -114,8 +121,13 @@ async function main() {
     console.log('production publish check: ' + skipped.detail);
     return;
   }
-  const repoUrl = 'https://github.com/nishadpathak/transformerpath';
-  const repoSlug = repoUrl.slice('https://github.com/'.length);
+  // Netlify sets REPOSITORY_URL on git-linked builds; TP_GITHUB_REPO
+  // (owner/name) overrides it. No repository is hard-coded here.
+  const repoSlug = repoSlugFromEnv(process.env);
+  if (!repoSlug) {
+    console.log('production publish check: repository unknown (no REPOSITORY_URL/TP_GITHUB_REPO); not blocking');
+    return;
+  }
   const mainDoc = await getJson('api.github.com', '/repos/' + repoSlug + '/commits/main');
   const mainSha = mainDoc && mainDoc.sha || '';
   const live = await getJson('transformerpath.com', '/build.json');
@@ -158,6 +170,7 @@ if (require.main === module) {
 
 module.exports = {
   shouldPublish: shouldPublish,
+  repoSlugFromEnv: repoSlugFromEnv,
   onMainFromCompare: onMainFromCompare,
   olderThanPublishedFromCompare: olderThanPublishedFromCompare
 };

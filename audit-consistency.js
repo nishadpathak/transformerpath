@@ -65,7 +65,7 @@ console.log('BOOKS');
 console.log('  "first releases" present:', pick(/first releases/i.test(b)));
 console.log('  no "Two volumes of transformer engineering":', pick(!/two volumes of transformer engineering/i.test(b)));
 console.log('  no "Email to order":', pick(!/email to order/i.test(b)));
-console.log('  direct Buy buttons (data-buy):', pick(/(data-buy=)/.test(txt('books.html'))));
+console.log('  checkout marked coming soon:', pick(/Checkout coming soon/.test(txt('books.html'))));
 
 // ── 6. DESIGN DUEL SSR ──
 const dd = txt('design.html');
