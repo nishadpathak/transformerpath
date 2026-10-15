@@ -14,6 +14,7 @@ const latest = JSON.parse(fs.readFileSync('data/materials-latest.json', 'utf8'))
 const home = fs.readFileSync('index.html', 'utf8');
 const materials = fs.readFileSync('materials.html', 'utf8');
 const loader = fs.readFileSync('material-latest.js', 'utf8');
+const intel = fs.readFileSync('intel.html', 'utf8');
 const NOTE = 'prices as of ';
 const CADENCE = 'updated when a new LME official settlement is recorded';
 
@@ -28,6 +29,9 @@ check('homepage fallback states the as-of note', home.indexOf(NOTE) >= 0 && home
 check('homepage still says this is not a live feed', /not a live feed/i.test(home));
 check('materials page states the as-of note', materials.indexOf('prices as of 2026-08-20') >= 0 && materials.indexOf(CADENCE) >= 0);
 check('loader builds the note from the observation date', loader.indexOf(NOTE) >= 0 && loader.indexOf(CADENCE) >= 0 && /observation_date/.test(loader));
+check('intel materials note uses historical status', /st==='historical'/.test(intel));
+check('intel materials note is built from observation_date and the recorded cadence', intel.indexOf(NOTE) >= 0 && intel.indexOf(CADENCE) >= 0 && /observation_date/.test(intel) && /m\.note/.test(intel));
+check('intel fills the materials desk after that markup exists', intel.indexOf('DOMContentLoaded') >= 0 && intel.indexOf('id="matRowsTab"') > intel.indexOf('DOMContentLoaded'));
 
 if (failed) {
   console.error('PRICE AS-OF NOTE FAILED (' + failed + ')');

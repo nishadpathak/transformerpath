@@ -13,6 +13,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - run: node tests/awards-wording-regression.js
+      - run: node tests/price-as-of-regression.js
       - run: node tests/homepage-coverage-delayed.js
       - run: node tests/homepage-ticker-regression.js
       - run: node tests/homepage-glance-regression.js
+      - run: node tests/directory-headline-counts.js

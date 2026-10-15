@@ -204,6 +204,12 @@
     <div class="note" style="margin:12px 0 0;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff">
       <b>Engineering Review Notice:</b> This is an <b>analytical, first-pass design workspace (BETA)</b>. Calculations — core area, turns, conductor sizing, losses, impedance, thermal, impulse and short-circuit figures — provide rapid exploratory sizing based on IEC 60076 principles. All outputs must be checked against the applicable project specification, current published standards, and verified by a qualified design engineer before fabrication.
     </div>
+    <div class="note" id="design-validation" style="margin:12px 0 0;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:#fff">
+      <b>Validation example — full design.</b>
+      Inputs: 1,000 kVA, 50 Hz, 11,000 / 433 V, Dyn11, K = 0.45, peak flux 1.70 T, current density 3.0 A/mm² LV and 3.2 A/mm² HV, tap ±5%.
+      Expected: LV turns 18, HV turns 792, HV turns at +5% tap 832, volts per turn 13.888 V, net core area 368.0 cm², LV line current 1,333.4 A, HV line current 52.49 A, HV winding current 30.30 A, conductor area 444.5 mm² LV and 9.47 mm² HV, insulation level 75 / 28 kV.
+      References: IEC 60076-1 line current I = S / (√3 · U). Dyn11 is delta on HV, so the HV winding current is the line current divided by √3, and star on LV, so the LV winding current is the line current. Turns are phase voltage divided by volts per turn; volts per turn is then the LV phase voltage divided by the rounded LV turn count. Net core area uses E = 4.44 · f · B · A. The 75 kV lightning impulse and 28 kV AC withstand are the IEC 60076-3 levels for Um 12 kV. K√kVA is this page’s empirical starting volts per turn, not an IEC constant. Loss, weight and impedance on the workbench are first-pass estimates and are outside this check.
+    </div>
   </div>
 </div>
 
@@ -232,7 +238,7 @@
           <div class="row"><span>Symmetrical short-circuit current</span><b id="np-ka"></b></div>
           <div class="row"><span>Short-circuit power (not a current)</span><b id="np-mva-sc"></b></div>
         </div>
-        <p class="note">Worked check: 63 MVA, 230 kV and 12.5% is about 1.265 kA. 504 is the short-circuit power in MVA, not the current. Questions: <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>.</p>
+        <p class="note" id="nameplate-validation"><b>Validation example.</b> Inputs: 63 MVA, 230 kV, impedance 12.5%. Expected: rated line current 158.1 A, symmetrical short-circuit current 1.265 kA, short-circuit power 504 MVA. References: IEC 60076-1 rated current I = S / (√3 · U); IEC 60076-5 clause 4.1 symmetrical short-circuit current I<sub>sc</sub> = I / z with z = uk% / 100, transformer impedance only (infinite bus). 504 MVA is S / z, a power, not a current. Questions: <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>.</p>
       </div>
 
       <div class="card" style="background:linear-gradient(180deg,#14253d,#0d1b2e);border:1px solid #234268">

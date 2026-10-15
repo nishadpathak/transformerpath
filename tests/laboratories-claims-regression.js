@@ -41,10 +41,9 @@ unsourced.forEach(function (lab) {
   check(lab.name + ' has no sourced capability true', sourcedTrue.length === 0, sourcedTrue.join(','));
   const piece = card(lab.name);
   check(lab.name + ' card is on the page', piece.length > 0);
-  check(lab.name + ' states voltage is missing', piece.indexOf('Voltage not stated') >= 0);
-  check(lab.name + ' does not render a kV pill', !/\d[\d,]*\s*kV Peak/.test(piece), piece.slice(0, 180));
+  check(lab.name + ' hides an empty voltage pill', piece.indexOf('kv-pill') < 0 && !/kV Peak/.test(piece));
   check(lab.name + ' does not check a capability', piece.indexOf('✓ Yes') < 0);
-  check(lab.name + ' marks every capability unknown', (piece.match(/— unknown/g) || []).length === 10, String((piece.match(/— unknown/g) || []).length));
+  check(lab.name + ' marks every capability Not stated', (piece.match(/Not stated/g) || []).length === 10, String((piece.match(/Not stated/g) || []).length));
 });
 
 const kema = labs.find(function (lab) { return lab.id === 'lab:kema-labs-arnhem'; });

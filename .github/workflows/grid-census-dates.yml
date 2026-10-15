@@ -1,0 +1,19 @@
+name: grid-census-dates
+
+on:
+  pull_request:
+  push:
+    branches: [main, "cursor/**"]
+
+jobs:
+  dates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Census date is separate from operator record dates
+        run: node tests/grid-census-dates.test.js

@@ -13,6 +13,8 @@ const { eventBadge } = require('./lib/provenance-badge');
 const { eventIcs, calendarIcs } = require('./lib/event-ics');
 const tpAff = require('./lib/travelpayouts');
 const paidListings = require('./lib/paid-listings');
+const schema = require('./lib/seo-schema');
+const eventSeo = require('./lib/event-seo');
 const PAID_LISTINGS = paidListings.load();
 
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
@@ -50,6 +52,15 @@ function travelBlock(ev) {
     prefix: '../../',
     disclosureHref: '../../affiliate-disclosure.html',
   });
+}
+
+/* Visitor guide is data, not a hardcoded page list. Absent field → no block. */
+function visitorGuideBlock(ev) {
+  const url = ev && typeof ev.languagepath_visit_url === 'string' ? ev.languagepath_visit_url : '';
+  if (!/^https:\/\/languagepath\.org\/events\/visiting\/[a-z0-9-]+\/$/.test(url)) return '';
+  return '<aside class="lp-visit" style="margin:16px 0;padding:12px 14px;border:1px solid var(--border);border-radius:10px;background:var(--card)">' +
+    '<a href="' + esc(url) + '" rel="noopener" target="_blank">Travelling there? Phrases, etiquette and local tips for visitors</a>' +
+    '</aside>';
 }
 
 const groups = {};
@@ -101,32 +112,16 @@ function statsHtml(ev) {
   return '<ul>' + rows + '</ul>';
 }
 
-function jsonLd(ev) {
-  if (ev.date_status !== 'CONFIRMED' || !ev.start || !ev.source_url || !ev.source_checked_at) return '';
-  const data = {
-    '@context': 'https://schema.org',
-    '@type': 'Event',
-    name: ev.name,
-    startDate: ev.start,
-    endDate: ev.end || ev.start,
-    eventStatus: 'https://schema.org/EventScheduled',
-    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-    url: ev.official_url || undefined,
-    location: {
-      '@type': 'Place',
-      name: ev.venue || ev.city || undefined,
-      address: {
-        '@type': 'PostalAddress',
-        addressLocality: ev.city || undefined,
-        addressCountry: ev.country || undefined,
-      },
-    },
-  };
-  if (ev.organiser) data.organizer = { '@type': 'Organization', name: ev.organiser, url: ev.official_url || undefined };
-  return '<script type="application/ld+json">' + JSON.stringify(data) + '</script>';
+function ldScript(pageUrl, crumbs, input) {
+  const graph = schema.graph([
+    schema.breadcrumbNode(pageUrl, crumbs),
+    schema.eventNode(pageUrl, input)
+  ]);
+  return '<script type="application/ld+json">' + JSON.stringify(graph) + '</script>';
 }
 
-function shell(title, desc, canonical, body, ld, eventId) {
+function shell(title, desc, canonical, body, ld, eventId, flags) {
+  flags = flags || {};
   const badge = eventId ? paidListings.featuredEventHtml(eventId, PAID_LISTINGS) : '';
   const withBadge = badge && body.indexOf('</h1>') >= 0 ? body.replace('</h1>', '</h1>' + badge) : (badge + body);
   const pay = paidListings.featuredEventPayHtml({
@@ -141,18 +136,21 @@ function shell(title, desc, canonical, body, ld, eventId) {
     className: 'btn btn-amber',
     label: 'Feature your company — $399 →'
   });
+  const robots = flags.noindex ? 'noindex,follow' : 'index,follow';
+  const role = flags.role ? ' data-tp-event-role="' + esc(flags.role) + '"' : '';
+  const eid = flags.eventId ? ' data-tp-event-id="' + esc(flags.eventId) + '"' : '';
   return '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
     '<title>' + esc(title) + '</title>' +
-    '<meta name="description" content="' + esc(String(desc || '').slice(0, 160)) + '">' +
+    '<meta name="description" content="' + esc(String(desc || '').slice(0, 300)) + '">' +
     '<link rel="canonical" href="' + canonical + '">' +
     '<meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath">' +
     '<meta property="og:title" content="' + esc(title) + '"><meta property="og:url" content="' + canonical + '">' +
-    '<meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow">' +
+    '<meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="' + robots + '">' +
     '<link rel="stylesheet" href="../../style.css?v=' + CSSV + '"><link rel="stylesheet" href="../../tp-nav.css?v=' + CSSV + '">' +
     '<link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">' +
     '<style>.c-wrap{max-width:900px;margin:0 auto;padding:44px 20px 90px}.c-wrap h1{font-size:1.8rem;color:var(--ink)}.c-wrap .lead{color:var(--muted)}.c-wrap h2{font-size:1.2rem;margin-top:22px}.evmeta{display:flex;flex-wrap:wrap;gap:8px 18px;color:var(--muted);font-size:.92rem}</style>' +
     (ld || '') +
-    '</head>\n<body>\n' + HEAD + '\n<main id="main" tabindex="-1" class="c-wrap">' + withBadge +
+    '</head>\n<body>\n' + HEAD + '\n<main id="main" tabindex="-1" class="c-wrap"' + role + eid + '>' + withBadge +
     '<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:24px">' +
     '<div style="font-size:.8rem;color:var(--muted);margin-bottom:12px">Feature your company on TransformerPath — Featured Event is $299 per event. Featured Exhibitor is $399 per event.</div>' +
     pay +
@@ -163,7 +161,7 @@ function shell(title, desc, canonical, body, ld, eventId) {
 
 function seriesTitle(slug, list) {
   const sample = list[0];
-  return String(sample.name || slug).replace(/\s*\(?20\d{2}\)?/g, '').replace(/\s+/g, ' ').trim();
+  return eventSeo.seriesDisplayName(sample && sample.name, slug);
 }
 
 Object.keys(groups).forEach((slug) => {
@@ -171,48 +169,39 @@ Object.keys(groups).forEach((slug) => {
   const nxt = nextConfirmed(list);
   const seriesName = seriesTitle(slug, list);
   const checked = checkedDate(list);
-  const leadName = nxt ? nxt.name : seriesName;
   const h1 = seriesName;
   const cta = nxt
     ? ('Meet the industry at ' + nxt.name)
     : ('Next edition: dates not yet announced' + (checked ? ' (checked ' + checked + ')' : ''));
-  const past = list.filter(isPast);
-  const others = list.filter((ev) => ev !== nxt);
-  const leadBlock = nxt
-    ? ('<p class="lead">' + esc(dateLine(nxt)) + (nxt.venue ? ' · ' + esc(nxt.venue) : '') + (nxt.city ? ', ' + esc(nxt.city) : '') + '</p>' +
-      '<p>' + (eventBadge(nxt) || (badgeText(nxt) ? '<span class="badge">' + esc(badgeText(nxt)) + '</span>' : '')) + '</p>' +
-      '<div class="evmeta">' +
-      '<span><b>Organiser</b> ' + esc(nxt.organiser || nullText()) + '</span>' +
-      (nxt.official_url ? '<span><a href="' + esc(nxt.official_url) + '">Official site</a></span>' : '<span>' + esc(nullText()) + '</span>') +
-      (allowsCalendar(nxt) ? '<span><a href="../../events/ics/' + esc(nxt.id) + '.ics">Add to calendar</a></span>' : '') +
-      '</div>' + travelBlock(nxt) +
-      '<p>' + esc(nxt.description || '') + '</p>' +
-      '<h2>Deadlines</h2>' + deadlineHtml(nxt) +
-      '<h2>Programme</h2>' + programmeHtml(nxt) +
-      '<h2>Key exhibitors</h2>' + exhibitorHtml(nxt) +
-      '<h2>Stats</h2>' + statsHtml(nxt))
-    : ('<p class="lead">' + esc(cta) + '</p><p>' + esc(nullText()) + '</p>');
-  const pastHtml = past.length
-    ? '<h2>Past editions</h2><ul>' + past.map((ev) => '<li><a href="../' + esc(ev.id) + '/">' + esc(ev.name) + '</a> — Completed' +
-      ((ev.intel_links || []).map((id) => ' · <a href="../' + esc(id) + '/summary/">post-event summary</a>').join('')) +
-      '</li>').join('') + '</ul>'
-    : '';
-  const otherHtml = others.filter((ev) => !isPast(ev) && ev !== nxt).length
-    ? '<h2>Other editions</h2><ul>' + others.filter((ev) => !isPast(ev)).map((ev) => '<li><a href="../' + esc(ev.id) + '/">' + esc(ev.name) + '</a> — ' + esc(dateLine(ev)) + '</li>').join('') + '</ul>'
-    : '';
+  const hubUrl = 'https://transformerpath.com/events/' + slug + '/';
+  const blurb = eventSeo.hubBlurb(seriesName, list);
+  const editionLinks = '<h2>Editions</h2><ul>' + list.map((ev) => {
+    const place = [ev.city, ev.country].filter(Boolean).join(', ');
+    const summaries = (ev.intel_links || []).map((id) => ' · <a href="../' + esc(id) + '/summary/">post-event summary</a>').join('');
+    return '<li><a href="../' + esc(ev.id) + '/">' + esc(ev.name) + '</a> — ' + esc(dateLine(ev)) +
+      (place ? ', ' + esc(place) : '') + summaries + '</li>';
+  }).join('') + '</ul>';
+  const lead = 'Recorded editions of ' + seriesName + '. Each year has its own page. Dates and venues on this hub are the values stored for that edition.';
+  const featured = nxt ? travelBlock(nxt) + visitorGuideBlock(nxt) : '';
   const body = '<nav style="font-size:.8rem;color:var(--muted)"><a href="../../events.html">Events</a> › ' + esc(seriesName) + '</nav>' +
-    '<h1>' + esc(h1) + '</h1>' + leadBlock + pastHtml + otherHtml +
-    '<h2>' + esc(cta.indexOf('Meet the industry') === 0 ? cta : 'Meet the industry') + '</h2>';
-  /* Keep the CTA sentence exact for the rollover check. */
-  const body2 = body.replace('<h2>' + esc(cta.indexOf('Meet the industry') === 0 ? cta : 'Meet the industry') + '</h2>',
-    '<p id="series-cta"><b>' + esc(cta) + '</b></p>');
+    '<h1>' + esc(h1) + '</h1>' +
+    '<p class="lead">' + esc(lead) + '</p>' +
+    editionLinks +
+    featured +
+    '<p id="series-cta"><b>' + esc(cta) + '</b></p>';
+  const hubCrumbs = [
+    { name: 'Home', item: 'https://transformerpath.com/' },
+    { name: 'Events', item: 'https://transformerpath.com/events.html' },
+    { name: seriesName, item: hubUrl }
+  ];
   writePage('events/' + slug + '/index.html', shell(
-    seriesName + ' — TransformerPath',
-    nxt ? (nxt.description || seriesName) : cta,
-    'https://transformerpath.com/events/' + slug + '/',
-    body2,
-    nxt ? jsonLd(nxt) : '',
-    slug
+    eventSeo.eventHubTitle(seriesName),
+    blurb,
+    hubUrl,
+    body,
+    ldScript(hubUrl, hubCrumbs, eventSeo.hubInput(seriesName, blurb)),
+    slug,
+    { role: 'hub' }
   ));
 
   list.forEach((ev) => {
@@ -220,16 +209,22 @@ Object.keys(groups).forEach((slug) => {
     const badge = pastEd
       ? '<span class="badge">Completed</span>'
       : (eventBadge(ev) || (badgeText(ev) ? '<span class="badge">' + esc(badgeText(ev)) + '</span>' : ''));
-    const nextLink = nxt && nxt.id !== ev.id ? '<p><a href="../' + esc(slug) + '/">Next edition: ' + esc(nxt.name) + '</a></p>' : '<p><a href="../' + esc(slug) + '/">Series hub</a></p>';
+    const siblings = list.filter((other) => other.id !== ev.id);
+    const siblingHtml = siblings.length
+      ? '<h2>Other years</h2><ul>' + siblings.map((other) => '<li><a href="../' + esc(other.id) + '/">' + esc(other.name) + '</a></li>').join('') + '</ul>'
+      : '';
+    const edUrl = 'https://transformerpath.com/events/' + ev.id + '/';
     const edBody = '<nav style="font-size:.8rem"><a href="../../events.html">Events</a> › <a href="../' + esc(slug) + '/">' + esc(seriesName) + '</a> › ' + esc(ev.name) + '</nav>' +
       '<h1>' + esc(ev.name) + '</h1>' +
       '<p>' + (badge || '') + '</p>' +
       '<p class="lead">' + esc(dateLine(ev)) + '</p>' +
+      '<p>This page is the ' + esc(ev.name) + ' edition. <a href="../' + esc(slug) + '/">All ' + esc(seriesName) + ' editions</a> are listed on the series hub.</p>' +
       '<div class="evmeta"><span><b>Venue</b> ' + esc(ev.venue || nullText()) + '</span>' +
       '<span><b>City</b> ' + esc(ev.city || nullText()) + '</span>' +
       '<span><b>Organiser</b> ' + esc(ev.organiser || nullText()) + '</span></div>' +
       (ev.official_url ? '<p><a href="' + esc(ev.official_url) + '">Official site</a></p>' : '<p>Official site: ' + esc(nullText()) + '</p>') +
-      travelBlock(ev) +
+      (allowsCalendar(ev) && ev.end >= TODAY ? '<p><a href="../../events/ics/' + esc(ev.id) + '.ics">Add to calendar</a></p>' : '') +
+      travelBlock(ev) + visitorGuideBlock(ev) +
       '<p>' + esc(ev.description || '') + '</p>' +
       (ev.relevance_reason ? '<p>' + esc(ev.relevance_reason) + '</p>' : '') +
       '<h2>Deadlines</h2>' + deadlineHtml(ev) +
@@ -237,15 +232,23 @@ Object.keys(groups).forEach((slug) => {
       '<h2>Key exhibitors</h2>' + exhibitorHtml(ev) +
       '<h2>Stats</h2>' + statsHtml(ev) +
       ((ev.intel_links || []).length ? '<h2>Post-event summary</h2><ul>' + ev.intel_links.map((id) => '<li><a href="../' + esc(id) + '/summary/">' + esc(id) + '</a></li>').join('') + '</ul>' : '') +
-      nextLink +
+      siblingHtml +
       (pastEd ? '' : '<p id="series-cta"><b>Meet the industry at ' + esc(ev.name) + '</b></p>');
+    const edCrumbs = [
+      { name: 'Home', item: 'https://transformerpath.com/' },
+      { name: 'Events', item: 'https://transformerpath.com/events.html' },
+      { name: seriesName, item: 'https://transformerpath.com/events/' + slug + '/' },
+      { name: ev.name, item: edUrl }
+    ];
+    const noindex = eventSeo.shouldNoindexEdition(ev);
     writePage('events/' + ev.id + '/index.html', shell(
-      ev.name + ' — TransformerPath',
+      eventSeo.eventProfileTitle(ev),
       ev.description || ev.name,
-      'https://transformerpath.com/events/' + ev.id + '/',
+      edUrl,
       edBody,
-      pastEd ? '' : jsonLd(ev),
-      ev.id
+      ldScript(edUrl, edCrumbs, eventSeo.editionInput(ev)),
+      ev.id,
+      { role: 'edition', eventId: ev.id, noindex: noindex }
     ));
   });
 });
