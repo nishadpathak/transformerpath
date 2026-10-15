@@ -16,7 +16,7 @@ const ticker = (html.match(/const TICKER = "([\s\S]*?)";/) || [])[1] || '';
 check('ticker dates the DEWA tenders and marks them closed', /closed 25 Aug – 17 Sep 2026/.test(ticker));
 check('ticker does not leave that close window undated', !/tenders close 25 Aug/.test(ticker));
 check('static hero CTA does not say today’s briefing', !/Read today’s briefing/.test(html) && /Open the latest sourced briefing/.test(html));
-check('delayed coverage rewrites the hero CTA', /Coverage is delayed — open the latest briefing/.test(html) && /hero-intel-cta/.test(html));
+check('a lagging source rewrites the hero CTA from the status reason', /Coverage is behind — open the latest briefing/.test(html) && /source_lag_/.test(html) && /hero-intel-cta/.test(html));
 if (failures.length) {
   console.error('\n' + failures.length + ' homepage ticker check(s) failed');
   process.exit(1);
