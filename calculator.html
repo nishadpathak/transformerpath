@@ -238,6 +238,10 @@
           <input type="file" id="file_import_json" style="display:none" accept=".json" onchange="importDesignJSON(event)">
           <button class="b1" id="btn_push_rfq" onclick="pushToRFQ()" style="font-size:12px;padding:8px 6px;grid-column:span 2;background:#f5a623;color:#0d1b2e;font-weight:800">⚡ Push to RFQ Schedule →</button>
           <button class="b2" id="btn_copy_md" onclick="copyDesignMarkdown()" style="font-size:12px;padding:8px 6px;grid-column:span 2">📋 Copy Full Spec (MD)</button>
+          <label for="tpDesignName" style="grid-column:span 2;margin:8px 0 0">Save to your account</label>
+          <input id="tpDesignName" type="text" maxlength="120" placeholder="Design name" style="grid-column:span 2">
+          <button class="b1" id="btn_save_account" type="button" style="font-size:12px;padding:8px 6px;grid-column:span 2">Save to account</button>
+          <p id="tpSaveStatus" style="grid-column:span 2;margin:4px 0 0;font-size:12px" role="status"></p>
         </div>
       </div>
 
@@ -622,7 +626,7 @@
 "use strict";
 const MU0=4e-7*Math.PI, RHO75=0.0211, RHO120=0.0244, DCU=8890, DFE=7650, DOIL=890;
 const $=id=>document.getElementById(id);
-let TTYPE="dist", touched={}, LAST=null, CURSTD="iec", GOVR=null, IMPT=false;
+let TTYPE="dist", touched={}, LAST=null, CURSTD="iec", GOVR=null, IMPT=false, currentDesignId=null;
 
 /* Standards: reference temps for losses, rise limits, tolerances, cooling target */
 const STDS={
@@ -2701,7 +2705,123 @@ function copyDesignMarkdown() {
 }
 
 calc();
+
+function captureDesign() {
+  var inputs = window.TPSavedDesign.readInputs(function (id) {
+    if (id === 'type') return TTYPE;
+    var el = $(id);
+    if (!el) return undefined;
+    if (el.type === 'checkbox') return window.TPSavedDesign.checkboxValue(el.checked);
+    return el.value;
+  });
+  var summary = null;
+  if (LAST) {
+    summary = {
+      rating: LAST.ratStr,
+      vector: LAST.vec,
+      nll_w: LAST.NLL,
+      ll_w: LAST.LL,
+      z: LAST.ez,
+      freq: LAST.f
+    };
+  }
+  return window.TPSavedDesign.snapshot(inputs, summary);
+}
+function applyDesignSnapshot(data) {
+  data = window.TPSavedDesign.validateSnapshot(data);
+  var s = data.inputs || {};
+  if (s.type === 'dist' || s.type === 'power' || s.type === 'cast') {
+    document.querySelectorAll('#typesel button').forEach(function (x) {
+      x.classList.toggle('on', x.dataset.t === s.type);
+    });
+    TTYPE = s.type;
+    $('ratlbl').textContent = TTYPE === 'power' ? 'Rating (MVA)' : 'Rating (kVA)';
+  }
+  window.TPSavedDesign.INPUT_IDS.forEach(function (id) {
+    var el = $(id);
+    if (!el) return;
+    var box = el.type === 'checkbox';
+    if (!window.TPSavedDesign.shouldApply(s[id], box)) return;
+    if (box) el.checked = window.TPSavedDesign.isChecked(s[id]);
+    else el.value = s[id];
+  });
+  if (s.std && STDS[s.std]) {
+    CURSTD = s.std;
+    if (!s.freq) $('freq').value = STDS[CURSTD].freq;
+    renderRef();
+  }
+  if (s.freq) touched.freq = true;
+  calc();
+}
+function saySave(text) {
+  var el = $('tpSaveStatus');
+  if (el) el.textContent = text || '';
+}
+var savingDesign = false;
+$('btn_save_account').addEventListener('click', function () {
+  if (savingDesign) return;
+  if (!window.TP || !TP.whenReady) { saySave('Accounts are being set up.'); return; }
+  savingDesign = true;
+  var btn = $('btn_save_account');
+  if (btn) btn.disabled = true;
+  function releaseSave() {
+    savingDesign = false;
+    if (btn) btn.disabled = false;
+  }
+  TP.whenReady().then(function (state) {
+    if (!state || !state.configured || !TP.user || !TP.user.email) {
+      saySave(state && state.configured ? 'Sign in to save this design.' : 'Accounts are being set up.');
+      return;
+    }
+    if (!LAST) calc();
+    var snap = captureDesign();
+    var name = ($('tpDesignName').value || '').trim() || window.TPSavedDesign.defaultName(snap.summary, snap.inputs);
+    $('tpDesignName').value = name;
+    return TP.saveDesign({ id: currentDesignId || undefined, name: name, kind: 'calculator', data: snap }).then(function (saved) {
+      currentDesignId = saved.design.id;
+      history.replaceState(null, '', 'calculator.html?design=' + encodeURIComponent(currentDesignId));
+      saySave('Saved “' + name + '”. Revision ' + (saved.revision && saved.revision.revision != null ? saved.revision.revision : '') + '.');
+    });
+  }).catch(function (err) {
+    if (err && err.designId) currentDesignId = err.designId;
+    saySave((err && err.message) || 'Could not save this design.');
+  }).then(releaseSave, releaseSave);
+});
+function loadSavedDesignFromQuery() {
+  var params = new URLSearchParams(location.search);
+  var designId = params.get('design');
+  var revisionId = params.get('revision');
+  if (!designId && !revisionId) return;
+  if (!window.TP || !TP.whenReady) { saySave('Accounts are being set up. This design cannot be opened yet.'); return; }
+  TP.whenReady().then(function (state) {
+    if (!state || !state.configured) {
+      saySave('Accounts are being set up. This design cannot be opened yet.');
+      return;
+    }
+    if (!TP.user || !TP.user.email) {
+      saySave('Sign in to open this design.');
+      return;
+    }
+    var pending = revisionId ? TP.getRevision(revisionId) : TP.getDesign(designId);
+    return pending.then(function (row) {
+      if (!row || !row.data) throw new Error('That saved design was not found in your account.');
+      currentDesignId = row.design_id || row.id;
+      applyDesignSnapshot(row.data);
+      if (revisionId) return TP.getDesign(currentDesignId);
+      return row;
+    }).then(function (row) {
+      if (row && row.name && $('tpDesignName')) $('tpDesignName').value = row.name;
+      saySave(revisionId ? 'Opened a saved revision.' : 'Opened saved design.');
+    });
+  }).catch(function (err) {
+    saySave((err && err.message) || 'Could not open this design.');
+  });
+}
 </script>
+<script src="supabase-config.js"></script>
+<script src="lib/saved-design.js"></script>
+<script src="supabase.js"></script>
+<script>loadSavedDesignFromQuery();</script>
 
 <script src="tp-freshness.js?v=7" defer></script>
 <script src="tp-feedback.js?v=7" defer></script>

@@ -44,6 +44,21 @@
   .ws-tag { background: var(--bg); border: 1px solid var(--border); border-radius: 999px; padding: 4px 12px; font-size: .8rem; color: var(--text); }
   .ws-note-title { font-weight: 700; color: var(--ink); }
   .ws-plus { color: var(--bg); }
+  [hidden] { display: none !important; }
+  .ws-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-left: auto; }
+  .ws-actions a, .ws-actions button { font-size: .8rem; }
+  .ws-rename { flex: 1; min-width: 140px; padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; font: inherit; color: var(--ink); background: var(--bg); }
+  .ws-revs { margin: 0 0 12px 8px; }
+  .auth-card .btn + .btn, #googleBtn { margin-top: 10px; }
+  #tpProfile label { display: block; font-size: .82rem; font-weight: 700; color: var(--muted); margin: 14px 0 4px; }
+  #tpProfile input { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: .95rem; font-family: inherit; background: var(--bg); color: var(--ink); }
+  #tpProfile .btn { margin-top: 16px; }
+  @media (max-width: 420px) {
+    .ws-wrap { padding: 24px 14px 64px; }
+    .ws-head { flex-wrap: wrap; align-items: flex-start; }
+    .auth-card { padding: 18px 14px; }
+    .ws-row { flex-wrap: wrap; }
+  }
 </style>
     <link rel="stylesheet" href="tp-nav.css?v=14">
   <link rel="stylesheet" href="tp-feedback.css?v=14">
@@ -126,96 +141,45 @@
   <script src="tp-pwa.js?v=7" defer></script>
 </header>
 <main id="main" tabindex="-1" class="ws-wrap">
-  <h1>Engineering Workspace &amp; Account</h1>
-  <p class="ws-lead">Your professional engineering hub: manage saved transformer designs, project workspaces, BOM &amp; costing, PDF reports, client files, and followed market intelligence.</p>
+  <h1>Your workspace</h1>
+  <p class="ws-lead">Sign in to save calculator designs to your account, rename them, and keep each revision.</p>
 
   <div class="auth-card" id="tpAuth">
-    <div class="auth-tabs">
-      <button id="tabIn" class="on" type="button">Sign in</button>
-      <button id="tabUp" type="button">Create account</button>
-    </div>
-    <form id="signinForm">
-      <label for="siEmail">Email</label>
-      <input id="siEmail" name="email" type="email" autocomplete="email" required>
-      <label for="siPass">Password</label>
-      <input id="siPass" name="pass" type="password" autocomplete="current-password" required>
-      <button class="btn btn-amber" type="submit">Sign in</button>
+    <p class="auth-note" id="tpSetup">Accounts are being set up. Sign-in stays off until this deploy has a Supabase URL and public key.</p>
+    <form id="magicForm" hidden>
+      <label for="magicEmail">Email</label>
+      <input id="magicEmail" name="email" type="email" autocomplete="email" required>
+      <button class="btn btn-amber" type="submit">Email me a sign-in link</button>
     </form>
-    <form id="signupForm" style="display:none">
-      <label for="suName">Name (optional)</label>
-      <input id="suName" name="name" type="text" autocomplete="name">
-      <label for="suEmail">Email</label>
-      <input id="suEmail" name="email" type="email" autocomplete="email" required>
-      <label for="suPass">Password</label>
-      <input id="suPass" name="pass" type="password" autocomplete="new-password" minlength="8" required>
-      <input id="suPass" name="pass" type="password" autocomplete="new-password" minlength="8" required>
-      <button class="btn btn-amber" type="submit">Create account</button>
-      <p class="auth-note">Use 8+ characters. Your password is hashed and stored securely.</p>
-    </form>
-    <div id="tpMsg"></div>
-    <p class="auth-note" id="tpSetup" style="display:none">Accounts are being set up — this workspace will be available soon.</p>
+    <button class="btn btn-outline" id="googleBtn" type="button" hidden>Continue with Google</button>
+    <div id="tpMsg" role="status"></div>
   </div>
 
-  <div id="tpWorkspace" style="display:none">
+  <div id="tpWorkspace" hidden>
     <div class="ws-head">
-      <h2>Signed in as <span id="tpName">—</span></h2>
+      <h2>Signed in as <span id="tpEmail"></span></h2>
       <button class="btn btn-outline btn-sm" id="tpSignOut" type="button">Sign out</button>
     </div>
 
-    <!-- Professional Engineering Suite -->
     <div class="ws-sec">
-      <h3>⚡ Professional Engineering Suite</h3>
-      <p class="ws-sub" style="font-size:.82rem;color:var(--muted);margin:0 0 12px">Integrated calculation, costing, testing and adaptation tools for practicing electrical and transformer design engineers.</p>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:12px">
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px">
-          <div style="font-weight:700;font-size:.9rem;color:var(--ink);margin-bottom:4px">Design Calculator &amp; Revisions</div>
-          <div style="font-size:.78rem;color:var(--muted);margin-bottom:10px">IEC 60076 electromagnetic core &amp; winding sizing with parameter histories.</div>
-          <a href="calculator.html" class="btn btn-amber btn-sm" style="font-size:.75rem">Open Calculator →</a>
-        </div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px">
-          <div style="font-weight:700;font-size:.9rem;color:var(--ink);margin-bottom:4px">BOM &amp; Active Material Costing</div>
-          <div style="font-size:.78rem;color:var(--muted);margin-bottom:10px">Active weight models: CRGO steel, copper, oil, tank steel &amp; total active cost.</div>
-          <a href="calculator.html#costing" class="btn btn-outline btn-sm" style="font-size:.75rem">Costing Engine →</a>
-        </div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px">
-          <div style="font-weight:700;font-size:.9rem;color:var(--ink);margin-bottom:4px">Factory Test Report Builder</div>
-          <div style="font-size:.78rem;color:var(--muted);margin-bottom:10px">Generate routine &amp; type test certificates with IEC/IEEE tolerance validation.</div>
-          <a href="test-report.html" class="btn btn-outline btn-sm" style="font-size:.75rem">Test Bay Report →</a>
-        </div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px">
-          <div style="font-weight:700;font-size:.9rem;color:var(--ink);margin-bottom:4px">Country Design Adapter</div>
-          <div style="font-size:.78rem;color:var(--muted);margin-bottom:10px">Auto-adapt designs for 196 countries: 50/60 Hz, vector groups, grid codes.</div>
-          <a href="country-designer.html" class="btn btn-outline btn-sm" style="font-size:.75rem">Country Adapter →</a>
-        </div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px">
-          <div style="font-weight:700;font-size:.9rem;color:var(--ink);margin-bottom:4px">Side-by-Side Design Comparison</div>
-          <div style="font-size:.78rem;color:var(--muted);margin-bottom:10px">Evaluate competing designs: losses, capital cost, efficiency &amp; total cost of ownership.</div>
-          <a href="compare.html" class="btn btn-outline btn-sm" style="font-size:.75rem">Compare Designs →</a>
-        </div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px">
-          <div style="font-weight:700;font-size:.9rem;color:var(--ink);margin-bottom:4px">3D Explorer &amp; Core Topology</div>
-          <div style="font-size:.78rem;color:var(--muted);margin-bottom:10px">Interactive spatial 3D inspection of core limbs, windings, tap changers and bushings.</div>
-          <a href="explorer.html" class="btn btn-outline btn-sm" style="font-size:.75rem">3D Explorer →</a>
-        </div>
-      </div>
+      <h3>Profile</h3>
+      <form id="tpProfile">
+        <label for="tpDisplayName">Display name</label>
+        <input id="tpDisplayName" name="display_name" type="text" maxlength="80" autocomplete="name">
+        <label for="tpCompany">Company</label>
+        <input id="tpCompany" name="company" type="text" maxlength="120" autocomplete="organization">
+        <label for="tpRole">Role</label>
+        <input id="tpRole" name="role" type="text" maxlength="80" autocomplete="organization-title">
+        <button class="btn btn-amber" type="submit">Save profile</button>
+      </form>
+      <div id="tpProfileMsg" role="status"></div>
     </div>
 
-    <div class="ws-sec"><h3>Saved content</h3><div id="tpSaved" class="ws-tags"></div></div>
-    <div class="ws-sec"><h3>Saved designs &amp; Projects</h3><div id="tpDesigns"></div></div>
-    <div class="ws-sec"><h3>Notes &amp; Engineering Memoranda</h3><div id="tpNotes"></div></div>
-    <div class="ws-sec"><h3>Following</h3><div id="tpFollows" class="ws-tags"></div></div>
-
-    <div class="ws-sec"><h3>My Market</h3>
-      <p class="ws-sub" style="font-size:.82rem;color:var(--muted);margin:0 0 8px">Live aggregation across what you follow — projects, tenders, intel, manufacturers, utilities and markets. Counts are computed from canonical platform data at page load.</p>
-      <div id="tpMarket" class="ws-tags"><span class="ws-empty">Sign in and follow companies, projects, tenders or markets to populate this dashboard.</span></div>
+    <div class="ws-sec">
+      <h3>Saved designs</h3>
+      <p class="ws-sub">Designs saved from the <a href="calculator.html">design calculator</a>. Each save keeps a revision.</p>
+      <div id="tpDesigns"></div>
     </div>
-
-    <div class="ws-sec"><h3>Learning progress</h3><div id="tpProgress"></div></div>
-    <div class="ws-sec"><h3>My Subscription</h3><div id="tpSub"></div></div>
-    <div class="ws-sec"><h3>My Books</h3><div id="tpBooks"></div></div>
-    <div class="ws-sec"><h3>My RFQs</h3><div id="tpRfqs"></div></div>
-    <div class="ws-sec"><h3>My Companies</h3><div id="tpClaims"></div></div>
-    <div class="ws-sec"><h3>Email preferences</h3><div id="tpEmail"></div></div>
   </div>
 </main>
 <footer>
@@ -242,156 +206,179 @@
 </footer>
 <script src="supabase-config.js"></script>
 <script src="supabase.js" defer></script>
-<script src="rfq-engine.js" defer></script>
-<script src="analytics.js?v=7" defer></script>
 <script>
-document.addEventListener('DOMContentLoaded', function(){
-  (function(){
-  function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-  var cfg = window.TP_SUPABASE || {url:'',anon:''};
-  var auth=document.getElementById('tpAuth'), ws=document.getElementById('tpWorkspace'),
-      msg=document.getElementById('tpMsg'), setup=document.getElementById('tpSetup'),
-      tabIn=document.getElementById('tabIn'), tabUp=document.getElementById('tabUp'),
-      si=document.getElementById('signinForm'), su=document.getElementById('signupForm');
-  function show(el,on){ el.style.display = on ? '' : 'none'; }
-  function setMsg(t,ok){ msg.textContent=t; msg.style.color = ok ? '#16a34a' : '#b91c1c'; }
+document.addEventListener('DOMContentLoaded', function () {
+  var auth = document.getElementById('tpAuth');
+  var ws = document.getElementById('tpWorkspace');
+  var msg = document.getElementById('tpMsg');
+  var setup = document.getElementById('tpSetup');
+  var magic = document.getElementById('magicForm');
+  var google = document.getElementById('googleBtn');
+  var profileMsg = document.getElementById('tpProfileMsg');
 
-  if(!cfg.url || !cfg.anon){
-    /* tpSetup lives INSIDE tpAuth, so hiding tpAuth hid the notice too and the
-       page rendered empty. Keep the card visible and hide only the interactive
-       parts, so a visitor is told what is going on instead of seeing nothing. */
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+  function show(el, on) { if (el) el.hidden = !on; }
+  function setMsg(t, ok) {
+    msg.textContent = t || '';
+    msg.style.color = ok ? '#16a34a' : '#b91c1c';
+  }
+  function showSetup() {
     show(setup, true);
-    var tabs = auth.querySelector('.auth-tabs');
-    if (tabs) show(tabs, false);
-    show(si, false); show(su, false);
-    return;
+    show(magic, false);
+    show(google, false);
+    show(auth, true);
+    show(ws, false);
+  }
+  function showAuthForm() {
+    show(setup, false);
+    show(magic, true);
+    show(google, true);
+    show(auth, true);
+    show(ws, false);
+  }
+  function signedInUser(user) {
+    return user && user.email ? user : null;
+  }
+  function whenSignedIn(user) {
+    var real = signedInUser(user);
+    if (!real) { showAuthForm(); return; }
+    document.getElementById('tpEmail').textContent = real.email;
+    show(auth, false);
+    show(ws, true);
+    loadProfile();
+    loadDesigns();
+  }
+  function authErrorFromUrl() {
+    var q = new URLSearchParams(location.search);
+    var h = new URLSearchParams((location.hash || '').replace(/^#/, ''));
+    return q.get('error_description') || h.get('error_description') || '';
+  }
+  function stamp(value) {
+    var d = new Date(value);
+    return isNaN(d.getTime()) ? String(value || '') : d.toLocaleString();
   }
 
-  tabIn.addEventListener('click',function(){ tabIn.classList.add('on'); tabUp.classList.remove('on'); show(si,true); show(su,false); });
-  tabUp.addEventListener('click',function(){ tabUp.classList.add('on'); tabIn.classList.remove('on'); show(su,true); show(si,false); });
-
-  si.addEventListener('submit',function(e){
+  magic.addEventListener('submit', function (e) {
     e.preventDefault();
-    var emailVal = (si.elements['email'] ? si.elements['email'].value : document.getElementById('siEmail').value).trim();
-    var passVal = (si.elements['pass'] ? si.elements['pass'].value : document.getElementById('siPass').value);
-    TP.signIn(emailVal, passVal).then(function(){ setMsg('',true); })
-      .catch(function(x){ setMsg((x&&x.message)||'Sign-in failed', false); });
+    var email = magic.elements.email.value.trim();
+    setMsg('Sending a sign-in link…', true);
+    TP.signInWithMagicLink(email).then(function () {
+      setMsg('Check your email for a sign-in link.', true);
+    }).catch(function (err) {
+      setMsg((err && err.message) || 'Could not send the sign-in link.', false);
+    });
   });
-  su.addEventListener('submit',function(e){
+  google.addEventListener('click', function () {
+    setMsg('', true);
+    TP.signInWithGoogle().catch(function (err) {
+      setMsg((err && err.message) || 'Google sign-in did not start.', false);
+    });
+  });
+  document.getElementById('tpSignOut').addEventListener('click', function () {
+    TP.signOut().then(function () { showAuthForm(); });
+  });
+
+  document.getElementById('tpProfile').addEventListener('submit', function (e) {
     e.preventDefault();
-    var emailVal = (su.elements['email'] ? su.elements['email'].value : document.getElementById('suEmail').value).trim();
-    var passVal = (su.elements['pass'] ? su.elements['pass'].value : document.getElementById('suPass').value);
-    var nameVal = (su.elements['name'] ? su.elements['name'].value : (document.getElementById('suName') ? document.getElementById('suName').value : '')).trim();
-    TP.signUp(emailVal, passVal, {display_name: nameVal}).then(function(r){
-      if(r && r.data && r.data.session){ setMsg('',true); }
-      else { setMsg('Almost there — check your inbox to confirm your email.', true); }
-    }).catch(function(x){ setMsg((x&&x.message)||'Sign-up failed', false); });
-  });
-  document.getElementById('tpSignOut').addEventListener('click',function(){ TP.signOut(); });
-
-  TP.onAuth(function(user){
-    if(user){ show(ws,true); show(auth,false); render(user); }
-    else { show(auth,true); show(ws,false); }
-  });
-
-  function render(user){
-    document.getElementById('tpName').textContent = (user && user.email) || 'engineer';
-    TP.listSaved().then(function(it){
-      var el=document.getElementById('tpSaved');
-      el.innerHTML = it.length ? it.map(function(i){
-        return '<span class="ws-tag"><a href="'+esc(i.url||'#')+'" style="color:var(--text);text-decoration:none">'+esc(i.title||i.item_id)+'</a> <button class="ws-x" data-unsave="'+esc(i.item_type)+'|'+esc(i.item_id)+'" aria-label="Remove">✕</button></span>';
-      }).join('') : '<span class="ws-empty">Nothing saved yet — use “Save” on manufacturers, events, webinars.</span>';
-    });
-    TP.listDesigns().then(function(ds){
-      document.getElementById('tpDesigns').innerHTML = ds.length ? ds.map(function(d){
-        return '<div class="ws-row"><span class="ws-note-title">'+esc(d.name||'Untitled')+'</span><span class="ws-sub">'+(d.kind||'design')+'</span><button class="ws-x" data-deldesign="'+esc(d.id)+'" aria-label="Delete">✕</button></div>';
-      }).join('') : '<p class="ws-empty">No saved designs yet. Save results from the Design Calculator.</p>';
-    });
-    TP.listNotes().then(function(ns){
-      document.getElementById('tpNotes').innerHTML = ns.length ? ns.map(function(n){
-        return '<div class="ws-row"><span class="ws-note-title">'+esc(n.title||'Note')+'</span><span class="ws-sub">'+esc((n.body||'').slice(0,80))+'</span><button class="ws-x" data-delnote="'+esc(n.id)+'" aria-label="Delete">✕</button></div>';
-      }).join('') : '<p class="ws-empty">No notes yet.</p>';
-    });
-    TP.listFollows().then(function(fl){
-      var el=document.getElementById('tpFollows');
-      el.innerHTML = fl.length ? fl.map(function(f){
-        return '<span class="ws-tag">'+esc(f.subject)+'<button class="ws-x" data-unfollow="'+esc(f.subject_type)+'|'+esc(f.subject)+'" aria-label="Unfollow">✕</button></span>';
-      }).join('') : '<span class="ws-empty">Following nothing yet — hit “Follow” on markets, companies, topics.</span>';
-    });
-    TP.listProgress().then(function(ps){
-      document.getElementById('tpProgress').innerHTML = ps.length ? ps.map(function(p){
-        return '<div class="ws-row"><span class="ws-note-title">'+esc(p.course)+'</span><span class="ws-sub">'+esc(p.chapter)+(p.status&&p.status!=='completed'?'' : '')+' · '+esc(p.status||'')+'</span></div>';
-      }).join('') : '<p class=\"ws-empty\">No learning progress yet.</p>';
-    });
-    TP.getEntitlements().then(function(e){ document.getElementById('tpSub').innerHTML = '<div class=\"ws-row\"><span class=\"ws-note-title\">Plan</span><span class=\"ws-sub\">'+esc(e&&e.plan||'free')+'</span></div>' + (e&&e.plan&&e.plan!=='free' ? '' : '<p class=\"ws-empty\">Free plan. Upgrade at <a href=\"pricing.html\">pricing</a>.</p>'); });
-    TP.listBooks().then(function(b){ document.getElementById('tpBooks').innerHTML = (b&&b.length) ? b.map(function(x){ return '<div class=\"ws-row\"><span class=\"ws-note-title\">'+esc(x.book_id)+'</span><span class=\"ws-sub\">'+esc(x.edition||'digital')+'</span></div>'; }).join('') : '<p class=\"ws-empty\">No books activated yet.</p>'; });
-    TP.listRfqs().then(function(r){ document.getElementById('tpRfqs').innerHTML = (r&&r.length) ? r.map(function(x){ 
-      var ref=esc(x.reference||'RFQ'); var status=esc(x.status||'open'); var cat=esc(x.category||'');
-      var est=''; if(window.TP_RFQ && (x.rating||x.voltage||x.category)){ est=' <span class="ws-sub">· matched suppliers shown on submission</span>'; }
-      return '<div class="ws-row"><span class="ws-note-title">'+ref+'</span><span class="ws-sub">'+cat+' · '+status+'</span></div>';
-    }).join('') : '<p class="ws-empty">No RFQs submitted yet. Post a requirement from the <a href="rfq.html" style="color:var(--accent)">RFQ Board</a>.</p>'; });
-    TP.listClaims().then(function(c){ document.getElementById('tpClaims').innerHTML = (c&&c.length) ? c.map(function(x){ return '<div class=\"ws-row\"><span class=\"ws-note-title\">'+esc(x.company)+'</span><span class=\"ws-sub\">'+esc(x.country||'')+' · '+esc(x.status||'claimed')+'</span></div>'; }).join('') : '<p class=\"ws-empty\">No company claims yet — claim your profile from a manufacturer listing.</p>'; });
-    TP.getEmailPrefs().then(function(pr){ document.getElementById('tpEmail').innerHTML = '<div class=\"ws-row\"><span class=\"ws-note-title\">Preferences</span><span class=\"ws-sub\">Daily Brief '+(pr&&pr.daily_brief?'on':'off')+' · Alerts '+(pr&&pr.alerts?'on':'off')+'</span></div>'; });
-    TP.listFollows().then(function(fl){ TP.getSession().then(function(r){ renderMyMarket(fl || []); }); });
-  }
-
-  // ── My Market: aggregate followed subjects against canonical platform data ──
-  function renderMyMarket(follows){
-    var el=document.getElementById('tpMarket');
-    if(!el) return;
-    var types = {}; var subs = {};
-    follows.forEach(function(f){ types[f.subject_type]=(types[f.subject_type]||0)+1; subs[f.subject_type]=subs[f.subject_type]||[]; subs[f.subject_type].push(String(f.subject||'').toLowerCase()); });
-    // Load canonical datasets in parallel and aggregate. If any is unavailable, omit that bucket.
-    var buckets = {};
-    var ds = {
-      projects: Promise.resolve().then(function(){ throw null; }).catch(function(){ return fetch('data/projects.json').then(function(r){return r.json();}).then(function(d){return d.projects||[];}); }).catch(function(){return [];}),
-      tenders: fetch('data/tenders.json').then(function(r){return r.json();}).then(function(d){return d.tenders||[];}).catch(function(){return [];}),
+    var body = {
+      display_name: document.getElementById('tpDisplayName').value,
+      company: document.getElementById('tpCompany').value,
+      role: document.getElementById('tpRole').value
     };
-    Promise.all([ds.projects, ds.tenders]).then(function(res){
-      var projects=res[0], tenders=res[1];
-      var countries = (subs.market || subs.country || subs["company,country"] || []);
-      // Followed companies also count if their country matches a project/tender.
-      var projMatch = projects.filter(function(p){ return countries.some(function(c){ return (p.country||'').toLowerCase().indexOf(c)>=0; }); });
-      var tMatch = tenders.filter(function(t){ return countries.some(function(c){ return (t.country||'').toLowerCase().indexOf(c)>=0; }); });
-      var stat = {};
-      projMatch.forEach(function(p){ stat[p.status]=(stat[p.status]||0)+1; });
-      var tstat={}; tMatch.forEach(function(t){ tstat[t.status]=(tstat[t.status]||0)+1; });
-      var totalP=projMatch.length, totalT=tMatch.length;
-      var openCode = (tstat.OPEN||0)+(tstat.EVALUATION||0);
-      buckets = { projects: totalP, tenders_total: totalT, open: openCode, statuses: stat };
-      var chips=[];
-      function pill(label, n){ if(n>0) chips.push('<span class="ws-tag" style="font-weight:700">'+esc(label)+' <b style="color:var(--accent)">'+n+'</b></span>'); }
-      pill('Projects', totalP); pill('Open tenders', openCode); pill('Tenders', totalT);
-      pill('Following', follows.length);
-      var html='';
-      if(!totalP && !totalT && !follows.length){ html='<span class="ws-empty">Following nothing yet — follow companies, projects, tenders or markets to populate this dashboard.</span>'; }
-      else {
-        html += '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px">'+chips.join('')+'</div>';
-        if(totalP){
-          html += '<div style="font-size:.8rem;color:var(--muted);margin-bottom:4px"><b style="color:var(--text)">'+totalP+' project'+(totalP>1?'s':'')+'</b> in your followed markets — '+
-            Object.keys(stat).map(function(s){ return esc(s)+' '+stat[s]; }).join(' · ')+'</div>';
-        }
-        if(totalT){
-          html += '<div style="font-size:.8rem;color:var(--muted)"><b style="color:var(--text)">'+totalT+' tender'+(totalT>1?'s':'')+'</b> — '+(tstat.OPEN?esc(tstat.OPEN)+' open · ':'')+(tstat.EVALUATION?esc(tstat.EVALUATION)+' in evaluation · ':'')+(tstat.AWARDED?esc(tstat.AWARDED)+' awarded':'')+'</div>';
-        }
-        html += '<div style="font-size:.78rem;color:var(--muted);margin-top:8px"><a href="projects.html" style="color:var(--accent)">Browse projects →</a> · <a href="tenders.html" style="color:var(--accent)">Tender Watch →</a></div>';
-      }
-      el.innerHTML=html;
-    }).catch(function(){ el.innerHTML='<span class="ws-empty">Sign in and follow companies, projects, tenders or markets to populate this dashboard.</span>'; });
+    TP.saveProfile(body).then(function () {
+      profileMsg.textContent = 'Profile saved.';
+      profileMsg.style.color = '#16a34a';
+    }).catch(function (err) {
+      profileMsg.textContent = (err && err.message) || 'Could not save the profile.';
+      profileMsg.style.color = '#b91c1c';
+    });
+  });
+
+  function loadProfile() {
+    TP.getProfile().then(function (row) {
+      row = row || {};
+      document.getElementById('tpDisplayName').value = row.display_name || row.public_name || '';
+      document.getElementById('tpCompany').value = row.company || '';
+      document.getElementById('tpRole').value = row.role || '';
+    }).catch(function (err) {
+      profileMsg.textContent = (err && err.message) || 'Profile is not available yet.';
+      profileMsg.style.color = '#b91c1c';
+    });
   }
 
-  // action delegation for the "✕" buttons
-  document.getElementById('tpWorkspace').addEventListener('click', function(e){
-    var t=e.target;
-    if(t.dataset.unsave){ var a=t.dataset.unsave.split('|'); TP.unsave(a[0],a[1]).then(renderRefresh); }
-    else if(t.dataset.deldesign){ TP.deleteDesign(t.dataset.deldesign).then(renderRefresh); }
-    else if(t.dataset.delnote){ TP.deleteNote(t.dataset.delnote).then(renderRefresh); }
-    else if(t.dataset.unfollow){ var b=t.dataset.unfollow.split('|'); TP.unfollow(b[0],b[1]).then(renderRefresh); }
+  function loadDesigns() {
+    var host = document.getElementById('tpDesigns');
+    TP.listDesigns().then(function (rows) {
+      if (!rows.length) {
+        host.innerHTML = '<p class="ws-empty">No saved designs yet. Save one from the <a href="calculator.html">design calculator</a>.</p>';
+        return;
+      }
+      host.innerHTML = rows.map(function (d) {
+        return '<div class="ws-row" data-design="' + esc(d.id) + '">' +
+          '<input class="ws-rename" value="' + esc(d.name || '') + '" aria-label="Design name" data-name="' + esc(d.id) + '">' +
+          '<span class="ws-actions">' +
+          '<a class="btn btn-outline btn-sm" href="calculator.html?design=' + encodeURIComponent(d.id) + '">Open</a>' +
+          '<button class="btn btn-outline btn-sm" type="button" data-rename="' + esc(d.id) + '">Rename</button>' +
+          '<button class="btn btn-outline btn-sm" type="button" data-history="' + esc(d.id) + '">History</button>' +
+          '<button class="btn btn-outline btn-sm" type="button" data-delete="' + esc(d.id) + '">Delete</button>' +
+          '</span></div>' +
+          '<div class="ws-revs" id="revs-' + esc(d.id) + '" hidden></div>';
+      }).join('');
+    }).catch(function (err) {
+      host.innerHTML = '<p class="ws-empty">' + esc((err && err.message) || 'Saved designs are not available yet.') + '</p>';
+    });
+  }
+
+  document.getElementById('tpDesigns').addEventListener('click', function (e) {
+    var t = e.target;
+    if (t.dataset.rename) {
+      var input = document.querySelector('[data-name="' + t.dataset.rename + '"]');
+      TP.renameDesign(t.dataset.rename, input ? input.value : '').then(loadDesigns).catch(function (err) {
+        document.getElementById('tpDesigns').insertAdjacentHTML('afterbegin', '<p class="ws-empty">' + esc(err.message || 'Could not rename.') + '</p>');
+      });
+    } else if (t.dataset.delete) {
+      if (!confirm('Delete this design and its revisions?')) return;
+      TP.deleteDesign(t.dataset.delete).then(loadDesigns).catch(function (err) {
+        document.getElementById('tpDesigns').insertAdjacentHTML('afterbegin', '<p class="ws-empty">' + esc(err.message || 'Could not delete.') + '</p>');
+      });
+    } else if (t.dataset.history) {
+      var box = document.getElementById('revs-' + t.dataset.history);
+      if (!box) return;
+      if (!box.hidden && box.dataset.loaded === '1') { box.hidden = true; return; }
+      box.hidden = false;
+      TP.listRevisions(t.dataset.history).then(function (revs) {
+        box.dataset.loaded = '1';
+        if (!revs.length) {
+          box.innerHTML = '<p class="ws-empty">No saved revisions yet.</p>';
+          return;
+        }
+        box.innerHTML = revs.map(function (rev) {
+          var label = 'Revision ' + (rev.revision == null ? '' : rev.revision);
+          return '<div class="ws-row"><span class="ws-note-title">' + esc(label) + '</span>' +
+            '<span class="ws-sub">' + esc(stamp(rev.created_at)) + '</span>' +
+            '<a class="btn btn-outline btn-sm" href="calculator.html?design=' + encodeURIComponent(t.dataset.history) + '&revision=' + encodeURIComponent(rev.id) + '">Open</a></div>';
+        }).join('');
+      }).catch(function (err) {
+        box.innerHTML = '<p class="ws-empty">' + esc(err.message || 'Revisions are not available yet.') + '</p>';
+      });
+    }
   });
-  function renderRefresh(){ TP.getSession().then(function(r){ render(r && r.data && r.data.session ? r.data.session.user : (TP.user||null)); }); }
-  })();
+
+  if (!window.TP || !TP.whenReady) { showSetup(); return; }
+  TP.onAuth(function (user) {
+    if (TP.configured) whenSignedIn(user);
+  });
+  TP.whenReady().then(function (state) {
+    if (!state || !state.configured) { showSetup(); return; }
+    var urlErr = authErrorFromUrl();
+    if (urlErr) setMsg(urlErr, false);
+    whenSignedIn(TP.user);
+  }).catch(function () { showSetup(); });
 });
 </script>
+<script src="analytics.js?v=7" defer></script>
 <script src="tp-freshness.js?v=7" defer></script>
 <script src="tp-feedback.js?v=7" defer></script>
 </body>
