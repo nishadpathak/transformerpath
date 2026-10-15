@@ -278,6 +278,9 @@ assert(!/Nov/.test(unconfirmed) && /Abu Dhabi/.test(unconfirmed), 'unconfirmed d
 const hubTitle = eventSeo.eventHubTitle('ADIPEC');
 assert(hubTitle === 'ADIPEC editions | Transformer Events | TransformerPath', 'hub title ' + hubTitle);
 assert(hubTitle !== adipecTitle, 'hub title differs from the year page');
+const acdcHub = eventSeo.eventHubTitle('ACDC China (24th IET AC & DC Power Transmission Conference)');
+assert(acdcHub === 'ACDC China editions | Transformer Events | TransformerPath', 'hub title drops an unclosed parenthetical: ' + acdcHub);
+assert(acdcHub.length >= 50 && acdcHub.length <= 100 && acdcHub.split('(').length === acdcHub.split(')').length, 'ACDC hub title stays in range and balanced');
 
 const eventsPage = fs.readFileSync(path.join(__dirname, '..', 'events.html'), 'utf8');
 const eventsTitle = (eventsPage.match(/<title>([^<]*)<\/title>/) || [])[1] || '';
