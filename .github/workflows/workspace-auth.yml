@@ -1,0 +1,22 @@
+name: workspace-auth
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  workspace:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - run: node tests/workspace-public-config.test.js
+      - run: node tests/saved-design.test.js
+      - run: node tests/workspace-rls.test.js
+      - run: node tests/workspace-ui.test.js
+      - run: node tests/workspace-client.test.js

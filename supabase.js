@@ -41,26 +41,41 @@
   /* ------------------------------------------------------------------ *
    * Expose the API object (functions are swapped in once ready)
    * ------------------------------------------------------------------ */
+  function notReady() { return Promise.reject(new Error('Accounts are being set up.')); }
+
   var TP = {
     ready: false,
+    configured: false,
     user: null,
     onAuth: function (cb) { if (typeof cb === 'function') authListeners.push(cb); },
     signUp: noop, signIn: noop, signOut: noop,
-    getSession: function () { return Promise.resolve({ user: null, session: null }); },
+    signInWithMagicLink: notReady, signInWithGoogle: notReady,
+    getSession: function () { return Promise.resolve({ user: null, session: null, data: { session: null } }); },
     saveItem: noop, unsave: noop, isSaved: function () { return Promise.resolve(false); },
-    listSaved: emptyArray, saveDesign: noop, listDesigns: emptyArray, deleteDesign: noop,
+    listSaved: emptyArray, saveDesign: notReady, listDesigns: notReady, deleteDesign: notReady,
+    renameDesign: notReady, getDesign: notReady, listRevisions: notReady, getRevision: notReady,
+    getProfile: notReady, saveProfile: notReady,
     addNote: noop, listNotes: emptyArray, deleteNote: noop,
     follow: noop, unfollow: noop, isFollowing: function () { return Promise.resolve(false); },
     listFollows: emptyArray, setProgress: noop, listProgress: emptyArray
   };
   window.TP = TP;
 
-  /* ------------------------------------------------------------------ *
-   * If not configured → leave the no-ops in place, do nothing more.
-   * ------------------------------------------------------------------ */
-  if (!cfg.url || !cfg.anon) {
-    return; // graceful degrade
+  var settled = false;
+  var readyResolve;
+  var readyPromise = new Promise(function (resolve) { readyResolve = resolve; });
+  TP.whenReady = function () { return readyPromise; };
+
+  function hasConfig(c) { return !!(c && c.url && c.anon); }
+
+  function finish(ok) {
+    if (settled) return;
+    settled = true;
+    TP.configured = !!ok && !!supabase;
+    readyResolve({ configured: TP.configured, user: TP.user });
   }
+
+  function redirectTo() { return window.location.origin + '/workspace.html'; }
 
   /* ------------------------------------------------------------------ *
    * Load the Supabase JS client from CDN, then initialise.
@@ -90,9 +105,10 @@
 
   function guard() { return !!uid(); }
 
-  loadLib().then(function () {
-    supabase = window.supabase.createClient(cfg.url, cfg.anon, {
-      auth: { persistSession: true, autoRefreshToken: true }
+  function activate(activeCfg) {
+    return loadLib().then(function () {
+    supabase = window.supabase.createClient(activeCfg.url, activeCfg.anon, {
+      auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
     });
 
     /* auth */
@@ -103,6 +119,20 @@
     TP.signIn = function (email, password) {
       return supabase.auth.signInWithPassword({ email: email, password: password })
         .then(function (r) { if (r.error) throw r.error; return r; });
+    };
+    TP.signInWithMagicLink = function (email) {
+      var address = String(email || '').trim();
+      if (!address) return Promise.reject(new Error('Email required'));
+      return supabase.auth.signInWithOtp({
+        email: address,
+        options: { emailRedirectTo: redirectTo(), shouldCreateUser: true }
+      }).then(function (r) { if (r.error) throw r.error; return true; });
+    };
+    TP.signInWithGoogle = function () {
+      return supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: redirectTo() }
+      }).then(function (r) { if (r.error) throw r.error; return r; });
     };
     TP.signOut = function () {
       return supabase.auth.signOut().then(function () { setUser(null); });
@@ -126,10 +156,6 @@
 
     supabase.auth.onAuthStateChange(function (_event, session) {
       setUser(session ? session.user : null);
-    });
-    supabase.auth.getSession().then(function (r) {
-      setUser(r && r.data && r.data.session ? r.data.session.user : null);
-      ready = true; TP.ready = true; injectNav();
     });
 
     /* saved items */
@@ -157,22 +183,76 @@
       return q.then(function (r) { return r.error ? [] : r.data; });
     };
 
-    /* designs */
+    /* designs — each save appends a design_versions row (history). */
+    function designRow(r) { if (r.error) throw r.error; return r.data; }
     TP.saveDesign = function (o) {
-      if (!guard()) return Promise.resolve(false);
-      return supabase.from('saved_designs').insert({
-        user_id: uid(), name: o.name || 'Untitled', kind: o.kind || 'design', data: o.data || {}
-      }).then(function (r) { if (r.error) throw r.error; return true; });
+      if (!guard()) return Promise.reject(new Error('Sign in required'));
+      o = o || {};
+      var row = {
+        name: o.name || 'Untitled design',
+        kind: o.kind || 'calculator',
+        data: o.data || {},
+        updated_at: new Date().toISOString()
+      };
+      var write = o.id
+        ? supabase.from('saved_designs').update(row).eq('id', o.id).eq('user_id', uid()).select('id,name,kind,updated_at').single()
+        : supabase.from('saved_designs').insert(Object.assign({ user_id: uid() }, row)).select('id,name,kind,updated_at').single();
+      return write.then(designRow).then(function (design) {
+        return supabase.from('design_versions').insert({
+          design_id: design.id, user_id: uid(), data: row.data, label: o.label || 'Saved'
+        }).select('id,design_id,revision,label,created_at').single().then(designRow).then(function (revision) {
+          return { design: design, revision: revision };
+        });
+      });
     };
     TP.listDesigns = function (kind) {
-      if (!guard()) return emptyArray();
-      var q = supabase.from('saved_designs').select('*').eq('user_id', uid()).order('updated_at', { ascending: false });
+      if (!guard()) return Promise.reject(new Error('Sign in required'));
+      var q = supabase.from('saved_designs').select('id,name,kind,updated_at,created_at').eq('user_id', uid()).order('updated_at', { ascending: false });
       if (kind) q = q.eq('kind', kind);
-      return q.then(function (r) { return r.error ? [] : r.data; });
+      return q.then(function (r) { if (r.error) throw r.error; return r.data || []; });
+    };
+    TP.getDesign = function (id) {
+      if (!guard()) return Promise.reject(new Error('Sign in required'));
+      return supabase.from('saved_designs').select('id,name,kind,data,updated_at').eq('id', id).eq('user_id', uid()).maybeSingle().then(designRow);
+    };
+    TP.renameDesign = function (id, name) {
+      if (!guard()) return Promise.reject(new Error('Sign in required'));
+      var next = String(name || '').trim();
+      if (!next) return Promise.reject(new Error('Name required'));
+      return supabase.from('saved_designs').update({ name: next }).eq('id', id).eq('user_id', uid()).select('id,name,updated_at').single().then(designRow);
     };
     TP.deleteDesign = function (id) {
-      if (!guard()) return Promise.resolve(false);
-      return supabase.from('saved_designs').delete().eq('id', id).eq('user_id', uid()).then(function (r) { return !r.error; });
+      if (!guard()) return Promise.reject(new Error('Sign in required'));
+      return supabase.from('saved_designs').delete().eq('id', id).eq('user_id', uid()).then(function (r) {
+        if (r.error) throw r.error;
+        return true;
+      });
+    };
+    TP.listRevisions = function (designId) {
+      if (!guard()) return Promise.reject(new Error('Sign in required'));
+      return supabase.from('design_versions').select('id,design_id,revision,label,created_at').eq('design_id', designId).eq('user_id', uid()).order('revision', { ascending: false })
+        .then(function (r) { if (r.error) throw r.error; return r.data || []; });
+    };
+    TP.getRevision = function (id) {
+      if (!guard()) return Promise.reject(new Error('Sign in required'));
+      return supabase.from('design_versions').select('id,design_id,revision,label,data,created_at').eq('id', id).eq('user_id', uid()).maybeSingle().then(designRow);
+    };
+    TP.getProfile = function () {
+      if (!guard()) return Promise.reject(new Error('Sign in required'));
+      return supabase.from('profiles').select('id,email,display_name,public_name,company,role').eq('id', uid()).maybeSingle().then(designRow);
+    };
+    TP.saveProfile = function (p) {
+      if (!guard()) return Promise.reject(new Error('Sign in required'));
+      p = p || {};
+      var display = String(p.display_name || '').trim();
+      return supabase.from('profiles').upsert({
+        id: uid(),
+        email: currentUser.email || null,
+        display_name: display,
+        public_name: display,
+        company: String(p.company || '').trim(),
+        role: String(p.role || '').trim()
+      }, { onConflict: 'id' }).select('id,email,display_name,public_name,company,role').single().then(designRow);
     };
 
     /* notes */
@@ -300,8 +380,31 @@
         nav.appendChild(a);
       });
     }
-  }).catch(function (e) {
-    // stay degraded; log once for developers
-    if (window.console && console.info) console.info('[TP] Accounts disabled:', e && e.message);
-  });
+    return supabase.auth.getSession().then(function (r) {
+      setUser(r && r.data && r.data.session ? r.data.session.user : null);
+      ready = true; TP.ready = true; injectNav();
+      finish(true);
+      return true;
+    });
+    }).catch(function (e) {
+      if (window.console && console.info) console.info('[TP] Accounts disabled:', e && e.message);
+      finish(false);
+      return false;
+    });
+  }
+
+  if (hasConfig(cfg)) {
+    activate(cfg);
+  } else {
+    fetch('/.netlify/functions/supabase-public-config', { credentials: 'same-origin' })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (data && data.configured && data.url && data.anon) {
+          window.TP_SUPABASE = { url: data.url, anon: data.anon };
+          return activate(window.TP_SUPABASE);
+        }
+        finish(false);
+      })
+      .catch(function () { finish(false); });
+  }
 })();
