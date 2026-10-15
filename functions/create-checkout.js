@@ -1,14 +1,15 @@
 /* Netlify function: Stripe Checkout for Verified Manufacturer ($499),
- * Featured Event ($299), and Featured Exhibitor ($399). POST only.
+ * Featured Event ($299), Featured Exhibitor ($399), and Hosted Webinar ($1,500). POST only.
  * GET returns 405. OPTIONS is CORS.
  *
- * Body: { product: "verified_manufacturer"|"featured_event"|"featured_exhibitor", company_slug?, event_id?, email }
+ * Body: { product: "verified_manufacturer"|"featured_event"|"featured_exhibitor"|"hosted_webinar", company_slug?, event_id?, email }
  *
  * Env (names only — never commit values):
  *   STRIPE_SECRET_KEY
  *   STRIPE_PRICE_VERIFIED_MANUFACTURER
  *   STRIPE_PRICE_FEATURED_EVENT
  *   STRIPE_PRICE_FEATURED_EXHIBITOR
+ *   STRIPE_PRICE_HOSTED_WEBINAR
  *   SITE_URL   optional; defaults to https://transformerpath.com
  *
  * Missing Stripe env returns 503 { configured: false }. The button then uses
@@ -85,11 +86,13 @@ exports.handler = async function (event) {
   const origin = siteOrigin();
   const linkSpec = paid.PAYMENT_LINKS[product];
   const success = origin + linkSpec.successPath;
-  const cancel = product === 'featured_exhibitor'
-    ? origin + '/sponsor.html#contact'
-    : product === 'featured_event'
-      ? origin + '/events.html#submit-event'
-      : origin + '/claim-profile.html#claimForm';
+  const cancel = product === 'hosted_webinar'
+    ? origin + '/sponsor.html#hosted-webinar'
+    : product === 'featured_exhibitor'
+      ? origin + '/sponsor.html#contact'
+      : product === 'featured_event'
+        ? origin + '/events.html#submit-event'
+        : origin + '/claim-profile.html#claimForm';
 
   const form = new URLSearchParams();
   form.set('mode', 'payment');
