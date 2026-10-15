@@ -133,8 +133,13 @@ const shown = fs.readFileSync('events.html', 'utf8').match(/Showing (\d+) upcomi
 check('events page count matches', shown && Number(shown[1]) === upcoming, shown && shown[1]);
 const home = fs.readFileSync('index.html', 'utf8').match(/data-stat="upcomingEvents">\s*(\d+)/);
 check('homepage upcoming count matches', home && Number(home[1]) === upcoming, home && home[1]);
-const homeOpen = fs.readFileSync('index.html', 'utf8').match(/data-stat="openTenders">\s*(\d+)/);
+const homeHtml = fs.readFileSync('index.html', 'utf8');
+const homeOpen = homeHtml.match(/data-stat="openTenders">\s*(\d+)/);
 check('homepage open tenders matches Tender Watch', homeOpen && Number(homeOpen[1]) === openNow, (homeOpen && homeOpen[1]) + ' vs ' + openNow);
+const titleOpen = homeHtml.match(/title="(\d+) open tenders accepting bids right now"/);
+check('homepage open-tender tooltip matches Tender Watch', titleOpen && Number(titleOpen[1]) === openNow, (titleOpen && titleOpen[1]) + ' vs ' + openNow);
+const titleAll = homeHtml.match(/title="View (\d+) procurement tenders worldwide"/);
+check('homepage tender tooltip matches the tender total', titleAll && Number(titleAll[1]) === rows.length, (titleAll && titleAll[1]) + ' vs ' + rows.length);
 
 const paid = JSON.parse(fs.readFileSync('data/paid-listings.json', 'utf8'));
 check('no paid verified listing is on file', !(paid.listings || []).some(function (row) { return row && row.status === 'verified'; }));
