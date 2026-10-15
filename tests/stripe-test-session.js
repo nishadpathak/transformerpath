@@ -6,6 +6,7 @@
  *
  *   node tests/stripe-test-session.js verified_manufacturer
  *   node tests/stripe-test-session.js featured_event
+ *   node tests/stripe-test-session.js featured_exhibitor
  */
 'use strict';
 const paid = require('../lib/paid-listings');
@@ -42,10 +43,10 @@ async function main() {
   }
 
   const origin = (process.env.SITE_URL || 'https://transformerpath.com').replace(/\/$/, '');
-  const successPath = product === 'featured_event'
-    ? paid.FEATURED_EVENT_SUCCESS_PATH
-    : paid.VERIFIED_MANUFACTURER_SUCCESS_PATH;
-  const cancelPath = product === 'featured_event' ? '/events.html#submit-event' : '/claim-profile.html#claimForm';
+  const successPath = paid.PAYMENT_LINKS[product].successPath;
+  const cancelPath = product === 'featured_exhibitor'
+    ? '/sponsor.html#contact'
+    : product === 'featured_event' ? '/events.html#submit-event' : '/claim-profile.html#claimForm';
   const form = new URLSearchParams();
   form.set('mode', 'payment');
   form.set('customer_email', 'payments-ready-test@example.com');
@@ -55,7 +56,7 @@ async function main() {
   form.set('line_items[0][quantity]', '1');
   form.set('metadata[product]', product);
   if (product === 'verified_manufacturer') form.set('metadata[company_slug]', 'a-plus-power-solution');
-  if (product === 'featured_event') form.set('metadata[event_id]', 'middle-east-energy');
+  if (product === 'featured_event' || product === 'featured_exhibitor') form.set('metadata[event_id]', 'middle-east-energy');
 
   const res = await fetch('https://api.stripe.com/v1/checkout/sessions', {
     method: 'POST',

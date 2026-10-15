@@ -58,8 +58,8 @@ const DIRS = [
 const FILES_FROM_MIXED_DIRS = [
   'lib/event-search.js',        // loaded by search.html; the rest of lib/ is build-time
   'lib/provenance-badge.js',    // shared provenance badge, loaded by public pages
-  'js/tp-grid-calc.js',         // grid-lab.html engineering calculations
-  'js/tp-grid-lab.js',          // grid-lab.html 3D scene — js/ is not a public directory
+  'js/tp-grid-calc.js',         // Grid Lab formulas; js/ is not copied wholesale
+  'js/tp-grid-lab.js',          // Grid Lab scene; production 404'd these and the canvas never started
 ];
 
 // Runtime JavaScript at the root, derived from what pages actually load.

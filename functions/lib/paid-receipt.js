@@ -12,7 +12,8 @@
 
 const LABELS = {
   verified_manufacturer: 'Verified Manufacturer ($499)',
-  featured_event: 'Featured Event ($299)'
+  featured_event: 'Featured Event ($299)',
+  featured_exhibitor: 'Featured Exhibitor ($399)'
 };
 
 function resendKey() { return (process.env.RESEND_API_KEY || '').trim(); }
@@ -38,6 +39,9 @@ function messages(row) {
     'Status: paid, pending verification.',
     row.product === 'featured_event'
       ? 'Submit the event name, official URL, and dates at ' + ((process.env.SITE_URL || 'https://transformerpath.com').trim().replace(/\/$/, '')) + '/events.html?paid=featured_event#submit-event'
+      : null,
+    row.product === 'featured_exhibitor'
+      ? 'Submit your company and the event at ' + ((process.env.SITE_URL || 'https://transformerpath.com').trim().replace(/\/$/, '')) + '/sponsor.html?paid=featured_exhibitor#contact'
       : null,
     row.product === 'verified_manufacturer'
       ? 'Submit your company details at ' + ((process.env.SITE_URL || 'https://transformerpath.com').trim().replace(/\/$/, '')) + '/claim-profile.html?paid=verified_manufacturer#claimForm'

@@ -491,7 +491,7 @@ let oilMesh;
   const st=cyl(.55,.7,7.5,M.porcel); st.position.y=3.6; nb.add(st);
   nb.position.set(28,43.5,0); g.add(nb);
   reg(g,'33 kV bushings + HV neutral bushing',
-  'Three 33 kV porcelain bushings with turret CTs (the delta is closed inside the tank). At the tank end, the 132 kV star-point comes out through a smaller graded-insulation neutral bushing — solid earthing lets the whole neutral end of the HV winding be insulated for a fraction of line level, a major cost saver. The neutral CT feeds restricted-earth-fault (REF) protection.',
+  'Three 33 kV porcelain bushings with turret CTs. The LV is delta, closed inside the tank, so there is no LV neutral bushing. The 132 kV star point leaves through a shorter graded-insulation neutral bushing: solid earthing lets that end of the HV winding be insulated for a fraction of line voltage. Restricted-earth-fault protection needs a neutral CT in the turret or a separate window CT; that CT is not drawn on this bushing.',
   [0,20,0],'bushings');
 }
 
@@ -522,7 +522,7 @@ let oilMesh;
     const bc=cyl(1.4,1.4,.9,M.steelDk); bc.position.set(x,45.9,3); g.add(bc);};
   mk(16.5); mk(-25);
   reg(g,'Conservator (2 compartments), Buchholz, RS relay & breathers',
-  'Twin-compartment conservator: the large side breathes for the main tank through the Buchholz relay (orange — gas alarm / surge trip, with isolating valves so it can be tested in service); the small side serves the OLTC diverter oil, which is deliberately kept separate because diverter arcing blackens its oil. The OLTC pipe carries an oil-surge (RS) relay — instant trip. A rubber bag inside the main compartment stops air ever touching the oil; each compartment has its own magnetic level gauge and maintenance-free (or silica-gel) breather.',
+  'Twin-compartment conservator. Main-tank oil reaches it through the Buchholz relay in the pipe (orange: gas alarm and oil-surge trip, with isolating valves for in-service testing). A rubber bag in the main compartment takes up expansion, so the oil never meets air; the breather on that end dries only the air around the bag. The small compartment holds OLTC diverter oil, kept separate because diverter arcing blackens it, and has its own pipe, oil-surge (RS) relay and breather. Each compartment has a magnetic oil-level gauge.',
   [0,30,0],'conservator');
 }
 
@@ -561,8 +561,8 @@ const fanBlades=[];
     bank.userData.exDir=new THREE.Vector3(0,0,zs*26);
     g.add(bank);
   }
-  reg(g,'Radiator banks, fans, pumps & valves (ONAN/ONAF/OFAF)',
-  'Each radiator is a stack of pressed-plate elements (two steel sheets seam-welded with vertical oil channels, ~520 mm wide, hung at ~45 mm pitch) on top and bottom collector pipes that bolt to the tank wall through butterfly valves — so every radiator detaches for transport without draining the tank. Hot oil enters the top collector, falls through the plate channels as it cools, and returns via the bottom collector. Fan groups beneath blow air up between the plates: ONAN ≈ 60% rating, first fan stage ONAF₁ ≈ 80%, all fans ONAF₂ = 100%; the bottom-pipework pump and flow indicator add OFAF for emergency duty. Fans and pumps are staged automatically by the winding-temperature relay. Watch the blades spin — and toggle 🌊 to see the oil loop they serve.',
+  reg(g,'Radiator banks and fans (ONAN/ONAF)',
+  'Each radiator is a stack of pressed-plate elements (two steel sheets seam-welded with vertical oil channels, ~520 mm wide, hung at ~45 mm pitch) on top and bottom collector pipes that bolt to the tank wall through butterfly valves, so every radiator detaches for transport without draining the tank. Hot oil enters the top collector, falls through the plate channels as it cools, and returns via the bottom collector. The nameplate of this reference is ONAN/ONAF, and 100 MVA is the all-fans rating: ONAN is the lower rating (often about 60 MVA), the first fan stage ONAF₁ about 80 MVA, and ONAF₂ the full 100 MVA. Fans under the banks blow upward and are staged by the winding-temperature indicator. The pump and flow indicator on the bottom pipe are an optional OFAF upgrade (oil forced and air forced). They are not part of the ONAN/ONAF rating and they are not an emergency mode. Watch the blades spin, and toggle the oil-flow view to see the ONAN thermosiphon.',
   [0,0,0],'cooling');
 }
 
@@ -869,7 +869,7 @@ const TOUR=[
  {th:2.25,ph:1.0,r:96, ex:0, d:6000,cap:"Condenser bushings with turret CTs carry 132 kV through earthed steel — the most failure-prone interface on the unit."},
  {th:2.85,ph:.92,r:102,ex:0, d:6000,cap:"Conservator, Buchholz and RS relay: mechanical guardians that catch the faults electrical relays cannot see."},
  {th:3.65,ph:1.1,r:96, ex:0, d:6000,cap:"The OLTC steps ±10% in 17 positions under load — vacuum diverter, ~300 000 operations between services."},
- {th:4.45,ph:1.18,r:125,ex:0,d:6000,cap:"Radiator banks with staged fans and pumps: ONAN → ONAF → OFAF as the load climbs. Try ⚡ Energize and 🌊 Oil flow."},
+ {th:4.45,ph:1.18,r:125,ex:0,d:6000,cap:"Radiator banks with staged fans: ONAN, then ONAF₁, then ONAF₂ at the 100 MVA nameplate. Oil pumps would be a separate OFAF rating. Try ⚡ Energize and 🌊 Oil flow."},
  {th:5.55,ph:1.12,r:152,ex:0,d:6500,cap:"Surge arresters complete the insulation co-ordination. One machine, twenty engineering disciplines — that is a power transformer."},
 ];
 let tourOn=false, tourIdx=0, tourT0=0, tourFrom=null;
