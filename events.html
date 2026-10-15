@@ -1329,7 +1329,8 @@
           .catch(function () { if (btn) btn.disabled = false; alert('Submission failed. Please try again or email hello@transformerpath.com.'); });
       });
     }
-    if (window.tpListingPayment) {
+    function showListingReturn() {
+      if (!window.tpListingPayment) return;
       window.tpListingPayment.confirm({
         product: 'featured_event',
         noteId: 'featuredPayNote',
@@ -1338,6 +1339,8 @@
         paidText: 'Payment received. Submit the event name, URL, and dates below. The FEATURED label is shown only after manual review.'
       });
     }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', showListingReturn);
+    else showListingReturn();
   })();
   </script>
 
