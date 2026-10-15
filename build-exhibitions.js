@@ -8,6 +8,7 @@ const fs = require('fs');
 const { dubaiToday, dateLine, nullText, badgeText, allowsCalendar } = require('./lib/event-display');
 const { eventBadge } = require('./lib/provenance-badge');
 const tpAff = require('./lib/travelpayouts');
+const paidListings = require('./lib/paid-listings');
 const { platformToday } = require('./lib/event-status');
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
@@ -72,6 +73,7 @@ const html = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta cha
   '<p class="lead" style="color:var(--muted)">A view of canonical editions where type is exhibition and relevance is CORE or HIGH. ' +
   upcoming.length + ' upcoming in this view. Figures the organiser has not published stay as “' + esc(nullText()) + '”.</p>' +
   '<p><a href="events.html">Full events calendar</a> · <a href="events/calendar.ics">Download confirmed calendar</a> · <a href="webinars.html">Webinars</a></p>' +
+  paidListings.featuredExhibitorPayHtml({ className: 'btn btn-amber btn-sm', label: 'Feature your exhibitor — $399' }) +
   cards +
   '</main>\n' + FOOT + '\n</body></html>';
 fs.writeFileSync('exhibitions.html', html);
