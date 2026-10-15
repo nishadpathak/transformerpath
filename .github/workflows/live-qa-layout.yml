@@ -14,4 +14,4 @@ jobs:
         with:
           node-version: '22'
       - name: Phone overflow, archive stamps, and Netlify build table
-        run: node tests/live-qa-layout-regression.js && node tests/voice-elin-supplier-regression.js && node tests/sitemap-tender-slug-regression.js
+        run: node tests/live-qa-layout-regression.js && node tests/case-study-links-regression.js && node tests/voice-elin-supplier-regression.js && node tests/sitemap-tender-slug-regression.js
