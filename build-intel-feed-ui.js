@@ -647,3 +647,51 @@ if (page.indexOf('<!--SSR:intel-feed-->') >= 0 || page.indexOf('<!--SSR:intel-ti
   fs.writeFileSync('intel.html', page);
   console.log('intel.html: SSR updated with ' + latest.length + ' fresh & recent timeline posts');
 }
+
+// Homepage "At a Glance" is the same feed, not a hand-written blurb.
+// The first day-dated post is the newest item; the row must include it.
+function injectGlance(page, name, inner) {
+  const startM = '<!--GLANCE:' + name + '-->';
+  const endM = '<!--/GLANCE:' + name + '-->';
+  const cm = page.indexOf(startM);
+  const em = cm < 0 ? -1 : page.indexOf(endM, cm + startM.length);
+  if (cm < 0 || em < 0) {
+    console.error('index.html missing glance marker ' + name);
+    process.exit(1);
+  }
+  return page.slice(0, cm + startM.length) + '\n' + inner + '\n' + page.slice(em);
+}
+
+function glanceSoWhat(p) {
+  const s = String(p.soWhat || '').trim();
+  // Abbreviation splits ("No. 6") can leave a fragment. Keep a real sentence.
+  if (!s || /^[0-9a-z]/.test(s)) return '';
+  return s;
+}
+
+function glanceCard(p) {
+  const meta = [p.date || 'Date not stated'];
+  if (p.value) meta.push(p.value);
+  const sowhat = glanceSoWhat(p);
+  return '<a class="card reveal in" data-glance-date="' + esc(p.dateIso) + '" data-glance-headline="' + esc(p.headline) + '" href="/intel#p-' + esc(p.id) + '">' +
+    '<span class="g-region">' + esc(p.region || '') + '</span>' +
+    '<h3 style="font-size:1rem">' + esc(p.headline) + '</h3>' +
+    (sowhat ? '<p>' + esc(sowhat) + '</p>' : '') +
+    '<p class="g-val" style="margin-top:8px">' + esc(meta.join(' · ')) + '</p></a>';
+}
+
+const glanceToday = new Date().toISOString().slice(0, 10);
+const glancePosts = posts.filter(function (p) {
+  return p && p.headline && p.datePrecision === 'day' && /^\d{4}-\d{2}-\d{2}$/.test(String(p.dateIso || '')) && p.dateIso <= glanceToday;
+});
+const glancePick = glancePosts.slice(0, 3);
+if (!latestIso || !glancePick.length || glancePick[0].dateIso !== latestIso) {
+  console.error('At a Glance would lag the newest Intel feed item (' + (latestLabel || latestIso || 'none') + ')');
+  process.exit(1);
+}
+let home = fs.readFileSync('index.html', 'utf8');
+const glanceSub = 'Latest sourced item <b>' + esc(latestLabel) + '</b>. Dates are on the source, not this visit.';
+home = injectGlance(home, 'sub', glanceSub);
+home = injectGlance(home, 'cards', glancePick.map(glanceCard).join('\n'));
+fs.writeFileSync('index.html', home);
+console.log('index.html: At a Glance stamped from the feed · ' + latestLabel + ' · ' + glancePick.length + ' headlines');

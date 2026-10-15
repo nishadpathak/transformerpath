@@ -287,7 +287,7 @@ FRESH_NEWS_INJECTIONS.forEach(inj => {
     INTEL_NEWS.unshift(inj);
   }
 });
-fs.writeFileSync('data/intel-news.json', JSON.stringify(INTEL_NEWS, null, 2));
+fs.writeFileSync('data/intel-news.json', JSON.stringify(INTEL_NEWS, null, 2) + '\n');
 
 // Process INTEL dataset
 Object.keys(INTEL).forEach(reg => {
