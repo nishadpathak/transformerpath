@@ -1,8 +1,8 @@
 # Service-line prices
 
-15 October 2026. Proposal for Nishad. These figures are not on the public site. `service-lines.html` shows no price while `TP_SERVICE_LINES_SHOW_PRICE_NOTE` is false. Turning that flag on shows the words “Pricing announced soon” and still does not show these amounts.
+**Status: rejected, 15 October 2026.** Nishad will not offer design-office support, a live cohort, consulting, calls, or other work that needs his time. The figures below are the research that was set aside. `service-lines.html` and `test-lab-consulting.html` are removed. `services.html` stays the generated Service & Repair directory.
 
-`services.html` is the generated Service & Repair directory (`build-services.js`). The intake is `service-lines.html` so a deploy does not replace that directory.
+15 October 2026. This was a proposal only. The amounts were never shown on the public site.
 
 Polsia’s Brief / Studio / Masterclass / Consulting amounts ($0, $199, $699, and $1,999 per month) are not used. They were display-only on their site, and $199 and $1,999 already match TransformerPath’s yearly Learning and Team software prices.
 
