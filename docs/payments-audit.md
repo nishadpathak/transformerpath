@@ -23,7 +23,7 @@ Production probes the same day:
 | Engineering Team | $1,999 one-time | [pricing](https://transformerpath.com/pricing.html). [teams](https://transformerpath.com/teams.html) is a separate empty checkout. | WORKS as a Payment Link | Button opens `https://buy.stripe.com/aFacMY6C4aBD2RG2r0fYY02`. `teams.html` Team and Department buttons still alert that checkout is not connected (`CHECKOUT.team` and `CHECKOUT.department` are empty). |
 | Verified Manufacturer | $499 / 12 months | [pricing](https://transformerpath.com/pricing.html), [verified](https://transformerpath.com/verified.html), [list-company](https://transformerpath.com/list-company.html), [claim-profile](https://transformerpath.com/claim-profile.html), [manufacturers](https://transformerpath.com/manufacturers.html), manufacturer profiles. Buttons: “Pay $499 — Get Verified”, “Get verified”, “Claim this profile”. | WORKS | `https://buy.stripe.com/4gMbIU7G8bFHak8d5EfYY05` opens **$499.00**. Stripe product name is Verified Manufacturer (12 months). The list-company tier card says “Contact us” next to the $499 pay button. |
 | Supplier Pro | No public price | [pricing](https://transformerpath.com/pricing.html) and [verified](https://transformerpath.com/verified.html) say Contact us (`mailto:hello@transformerpath.com`). | MAILTO/CONTACT ONLY | No Payment Link. The page does not show a price. Create a link only after the inbox exists. |
-| Founding Verified | No public price | [verified](https://transformerpath.com/verified.html) says the reduced first year is not on sale. | NO LINK | No checkout and no dollar amount on the page. |
+| Verified Manufacturer founding offer | $199 first year, Coming soon | [verified](https://transformerpath.com/verified.html), under the same name as the $499 plan. | COMING SOON | Same review and VERIFIED badge as Verified Manufacturer, for the first 50–100 companies, first year. Does not include Supplier Pro, logo upload, a featured map pin, RFQ eligibility, or analytics. No checkout. |
 | Intel Pro | $499 / 12 months | [pricing](https://transformerpath.com/pricing.html) and [intel-pro](https://transformerpath.com/intel-pro.html). Button is Contact us. | NO LINK | No checkout and no monthly price. The $499 amount is unchanged. Real-time tender alerts, shared watchlists, and exports are not delivered. |
 | Intel Team | No public price | [pricing](https://transformerpath.com/pricing.html) Contact us | MAILTO/CONTACT ONLY | No checkout. Shared watchlists and CSV/JSON exports are not built. |
 | Featured Event | $299 / event | [pricing](https://transformerpath.com/pricing.html), [events](https://transformerpath.com/events.html), [sponsor](https://transformerpath.com/sponsor.html) Event Spotlight, 529 event pages. Button: “Feature this event — $299”. | WORKS | `https://buy.stripe.com/00w6oA2lO8tvdwkaXwfYY04` opens **$299.00**. Stripe title is generic “TransformerPath”. Event pages put “from $399” on the same card as this $299 button. |
@@ -63,12 +63,12 @@ Already live and amount-checked:
 - Engineering Team $1,999 — `https://buy.stripe.com/aFacMY6C4aBD2RG2r0fYY02`
 - Learning $199 one-time — `https://buy.stripe.com/8x27sE3pS4dfak8c1AfYY0p` (`plink_1UQhha2YHcFlJstOHjvZv5V0`). The yearly code `4gMbIU2lO5hj1NC5DcfYY03` is inactive and is not a classifier.
 
-Still missing a checkout (Contact us; Supplier Pro, Intel Team, and Founding Verified do not show a price; Intel Pro shows $499 / 12 months and no monthly price):
+Still missing a checkout (Contact us where noted; Intel Pro shows $499 / 12 months and no monthly price):
 
-- Supplier Pro
-- Intel Pro
-- Intel Team
-- Founding Verified
+- Supplier Pro (Contact us, no public price)
+- Intel Pro ($499 / 12 months, Contact us, no monthly price, no Payment Link)
+- Intel Team (Contact us, no public price)
+- Verified Manufacturer founding offer ($199 for the first year, marked Coming soon, no Payment Link)
 - Book links for all eight `bookStripeLinks` keys
 - Team and Department seat links for `teams.html`
 - Sponsorship packages other than the $299 Featured Event (daily brief, category, article, knowledge partner)
