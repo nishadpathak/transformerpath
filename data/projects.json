@@ -124,19 +124,20 @@
       "source_country": null,
       "utility": "Kahramaa",
       "epc": null,
-      "transformer_requirement": "CONFIRMED",
+      "transformer_requirement": "INFERRED",
       "voltage": "400/132/11 kV",
       "status": "tendering",
       "manufacturer": null,
-      "expected": "H2 2026",
+      "expected": "2026-05-14",
       "sources": [
-        "https://example.com/upd"
+        "https://www.saudigulfprojects.com/2026/04/kahramaa-invites-bids-for-2026-power-transmission-system-expansion-project/"
       ],
       "src_label": "SaudiGulf Projects / MEED",
       "related_market": "Qatar",
       "related_intel": "Pipeline",
       "region": "Middle East",
-      "last_verified": "2026-09-01"
+      "last_verified": "2026-09-01",
+      "source_note": "Replaces placeholder example.com/upd. Same EPC package named in the Apr 2026 SaudiGulf Projects / MEED report, which says bids closed 14 May. Transformer scope is inferred from the substation packages; the report does not confirm a transformer lot."
     },
     {
       "project": "DEWA 13 x 132/11 kV substations EPC",
@@ -244,7 +245,8 @@
       "src_label": "Pipeline",
       "related_market": "Saudi Arabia",
       "related_intel": "Pipeline",
-      "region": "Middle East"
+      "region": "Middle East",
+      "source_note": "No source URL on file. Withheld from Tender Watch until a source is attached."
     },
     {
       "project": "Bhadla–Fatehpur ±800 kV HVDC transmission project",

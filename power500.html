@@ -42,7 +42,12 @@ body{font-family:var(--font-sans);background:#08121e;color:var(--ink)}
 #help{position:absolute;left:14px;bottom:12px;z-index:10;font-size:.74rem;color:var(--mut);background:rgba(14,28,44,.75);border:1px solid var(--line);border-radius:8px;padding:7px 11px;line-height:1.6;pointer-events:none}
 .lbl{position:absolute;transform:translate(-50%,-130%);background:rgba(10,22,36,.88);border:1px solid var(--line);color:#dbe7f3;font-size:11px;padding:2px 7px;border-radius:5px;pointer-events:auto;cursor:pointer;white-space:nowrap;z-index:5}
 .lbl::after{content:"";position:absolute;left:50%;top:100%;margin-left:-4px;border:4px solid transparent;border-top-color:var(--line)}
-@media(max-width:760px){#panel{width:250px}#topbar h1{font-size:.8rem}}
+#labelLayer{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:6}
+@media(max-width:760px){
+  #topbar{height:auto;flex-wrap:wrap;align-items:flex-start;padding:8px 10px;row-gap:6px}
+  #topbar h1{font-size:.8rem;white-space:normal;flex:1 1 100%}
+  #panel{left:8px;right:8px;width:auto;top:auto;bottom:8px;max-height:40vh}
+}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0d1b2e">
@@ -132,6 +137,7 @@ body{font-family:var(--font-sans);background:#08121e;color:var(--ink)}
   <script src="tp-pwa.js?v=7" defer></script>
 </header>
 <div id="c3d"></div>
+<div id="labelLayer"></div>
 <div id="topbar">
   <h1>🏭 500 MVA Power Transformer</h1>
   <a href="academy.html">🏠 Hub</a>
@@ -140,7 +146,7 @@ body{font-family:var(--font-sans);background:#08121e;color:var(--ink)}
   <a href="oltc.html">OLTC →</a>
 </div>
 <div id="panel">
-  <div class="spec"><b>500 MVA</b> · 400/220 kV · two-winding · <b>YNyn0+d</b> · 5-limb core · ONAN/ONAF/ODAF · BIL 1425/1050 kV · ~340 t</div>
+  <div class="spec"><b>500 MVA</b> · 400/220 kV · three-winding · <b>YNyn0+d</b> · stabilising tertiary · 5-limb core · ONAN/ONAF/ODAF · BIL 1425/1050 kV · ~340 t</div>
   <h2>Tank opacity (see inside)</h2>
   <input id="tankop" class="sl" type="range" min="10" max="100" value="100">
   <div class="slrow"><span>active part</span><span>solid tank</span></div>
@@ -225,6 +231,7 @@ const M={
   core:new THREE.MeshStandardMaterial({color:0x47556a,metalness:.78,roughness:.34}),
   cu:new THREE.MeshStandardMaterial({color:0xc97a3d,metalness:.7,roughness:.45,side:THREE.DoubleSide}),
   cuHV:new THREE.MeshStandardMaterial({color:0xb5651d,metalness:.65,roughness:.5,side:THREE.DoubleSide}),
+  cuTV:new THREE.MeshStandardMaterial({color:0xd7b07a,metalness:.55,roughness:.5,side:THREE.DoubleSide}),
   conserv:new THREE.MeshStandardMaterial({color:0x808f9f,metalness:.55,roughness:.5}),
   rubber:new THREE.MeshStandardMaterial({color:0x20272f,metalness:.2,roughness:.8}),
   human:new THREE.MeshStandardMaterial({color:0xe8732a,roughness:.85})
@@ -292,7 +299,10 @@ const LIMB=[-30,0,30];
 LIMB.forEach(x=>{const l=new THREE.Mesh(cylG(5.5,TH-16,24),M.core);l.position.set(x,TCY,0);activeGrp.add(l);});
 [-48,48].forEach(x=>{const l=new THREE.Mesh(cylG(4.4,TH-16,20),M.core);l.position.set(x,TCY,0);activeGrp.add(l);}); // 5-limb returns (inside tank)
 [1,-1].forEach(s=>{const yk=new THREE.Mesh(box(104,9,9),M.core);yk.position.set(0,TCY+s*(TH-16)/2,0);activeGrp.add(yk);});
-LIMB.forEach(x=>{const lv=new THREE.Mesh(new THREE.CylinderGeometry(9,9,TH-22,30,1,true),M.cu);lv.position.set(x,TCY,0);activeGrp.add(lv);
+LIMB.forEach(x=>{
+  // YNyn0+d: stabilising tertiary nearest the core, then 220 kV, then 400 kV.
+  const tv=new THREE.Mesh(new THREE.CylinderGeometry(7.15,7.15,TH-28,30,1,true),M.cuTV);tv.position.set(x,TCY,0);activeGrp.add(tv);
+  const lv=new THREE.Mesh(new THREE.CylinderGeometry(9,9,TH-22,30,1,true),M.cu);lv.position.set(x,TCY,0);activeGrp.add(lv);
   const hv=new THREE.Mesh(new THREE.CylinderGeometry(12,12,TH-22,30,1,true),M.cuHV);hv.position.set(x,TCY,0);activeGrp.add(hv);});
 root.add(activeGrp);
 reg(activeGrp,'active','Active part (core + windings)','The 5-limb core and the three concentric winding stacks (tertiary → 220 kV LV → 400 kV HV) sit in the oil. Three wound limbs plus two return limbs keep the yoke low for transport.',new THREE.Vector3(0,0,0));
@@ -369,9 +379,9 @@ root.add(buch);reg(buch,'buch','Buchholz relay','In the conservator-to-tank pipe
 // breather (silica gel)
 const breGrp=new THREE.Group();
 const bre=new THREE.Mesh(cylG(2.4,18,16),new THREE.MeshStandardMaterial({color:0xd9b85a,transparent:true,opacity:.85,roughness:.4}));
-bre.position.set(28,TY0+24,-34);breGrp.add(bre);
-const brePipe=new THREE.Mesh(cylG(1,18,10),M.pipe);brePipe.position.set(28,TY0+40,-34);breGrp.add(brePipe);
-root.add(breGrp);reg(breGrp,'bre','Silica-gel breather','The conservator breathes through a silica-gel breather that dries incoming air, keeping moisture out of the oil. Colour change = time to regenerate/replace.',new THREE.Vector3(8,0,-8));
+bre.position.set(32,TY0+TH-8,-20);breGrp.add(bre);
+const brePipe=new THREE.Mesh(cylG(1,24,10),M.pipe);brePipe.position.set(32,TY0+TH+8,-20);breGrp.add(brePipe);
+root.add(breGrp);reg(breGrp,'bre','Silica-gel breather','Hung from the conservator end. With an air cell, the breather dries air entering the space around the bag, not air in contact with the oil. A colour change means regenerate or replace the gel.',new THREE.Vector3(8,0,-8));
 
 /* ===================== OLTC + motor drive + marshalling ===================== */
 const oltcGrp=new THREE.Group();
@@ -460,7 +470,7 @@ function pick(e){mouse.x=(e.clientX/innerWidth)*2-1;mouse.y=-(e.clientY/innerHei
 const info=document.getElementById('info');
 function selectPart(k){const p=PARTS[k];if(!p||!p.name)return;info.innerHTML=`<b>${p.name}</b><br>${p.desc}`;}
 const labels=[];
-function makeLabel(key,text,dx,dy,dz){const p=PARTS[key];if(!p)return;const e=document.createElement('div');e.className='lbl';e.textContent=text;e.addEventListener('click',()=>selectPart(key));document.body.appendChild(e);labels.push({key,el:e,off:new THREE.Vector3(dx,dy,dz)});}
+function makeLabel(key,text,dx,dy,dz){const p=PARTS[key];if(!p)return;const e=document.createElement('div');e.className='lbl';e.textContent=text;e.addEventListener('click',()=>selectPart(key));document.getElementById('labelLayer').appendChild(e);labels.push({key,el:e,off:new THREE.Vector3(dx,dy,dz)});}
 makeLabel('hv','400 kV HV',-34,COV+48,0);
 makeLabel('lv','220 kV LV',34,COV+32,0);
 makeLabel('neutral','Neutral + tertiary',-50,COV+22,-18);
