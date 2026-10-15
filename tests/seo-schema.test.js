@@ -239,6 +239,8 @@ Object.keys(seoCat.companies).forEach(function (slug) {
 });
 assert(openParen === 0, 'manufacturer titles do not leave an open parenthesis ' + openParen);
 assert(midWord === 0, 'manufacturer titles do not slice a name mid-word ' + midWord);
+const eventSearchSrc = fs.readFileSync(path.join(__dirname, '..', 'lib', 'event-search.js'), 'utf8');
+assert(/typeof require === 'function' && require\.main === module/.test(eventSearchSrc), 'event search self-test is not evaluated in the browser');
 
 const topicCrumbs = catalog.draft('topics/bushings/index.html', '<h1>Bushings</h1>', seoCat).crumbs;
 assert(topicCrumbs.some(function (c) { return /\/topics\/bushings\/$/.test(c.item); }), 'topic hub breadcrumb keeps the hub URL');
