@@ -775,8 +775,7 @@ async function main() {
   check('supplier and intel pages do not advertise an uncheckouted price',
     pricingPage.indexOf('$1,499') < 0 && pricingPage.indexOf('$49/mo') < 0 && pricingPage.indexOf('$49 / month') < 0
     && !/\$49(?!\d)/.test(fs.readFileSync('intel-pro.html', 'utf8'))
-    && fs.readFileSync('verified.html', 'utf8').indexOf('$1,499') < 0
-    && fs.readFileSync('verified.html', 'utf8').indexOf('$199') < 0);
+    && fs.readFileSync('verified.html', 'utf8').indexOf('$1,499') < 0);
   check('intel pro shows $499 for 12 months and no monthly figure', (function () {
     const intel = fs.readFileSync('intel-pro.html', 'utf8');
     const start = pricingPage.indexOf('>Intel Pro</h3>');
@@ -791,6 +790,15 @@ async function main() {
       && intel.indexOf('$499') >= 0 && intel.indexOf('/ 12 months') >= 0
       && intel.indexOf('mailto:hello@transformerpath.com?subject=Intel%20Pro') >= 0
       && noMonthly(card) && noMonthly(intel);
+  })());
+  check('verified founding offer uses the Verified Manufacturer name and is coming soon', (function () {
+    const html = fs.readFileSync('verified.html', 'utf8');
+    const at = html.indexOf('Verified Manufacturer founding offer');
+    const block = at < 0 ? '' : html.slice(at, html.indexOf('</p>', at));
+    return at >= 0 && block.indexOf('$199') >= 0 && block.indexOf('Coming soon') >= 0
+      && block.indexOf('buy.stripe.com') < 0 && block.indexOf('$499') >= 0
+      && html.indexOf('Pay $499 — Get Verified') >= 0
+      && html.indexOf(paid.PAYMENT_LINKS.verified_manufacturer.url) >= 0;
   })());
 
   delete process.env.STRIPE_PAYMENT_LINK_LEARNING;

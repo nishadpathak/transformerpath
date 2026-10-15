@@ -139,7 +139,16 @@ check('verified Supplier Pro has no uncheckouted price',
   !new RegExp('\\$' + bp.proVerifiedSupplier.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',?') + '\\b').test(VERIFIED)
   && /mailto:hello@transformerpath\.com\?subject=Supplier%20Pro/.test(VERIFIED));
 check('verified has Listed (free) tier', /<h2>Listed<\/h2>[\s\S]*?<div class="price">Free<\/div>/.test(VERIFIED));
-check('verified founding offer has no uncheckouted price', !new RegExp('\\$' + bp.foundingVerified.price + '\\b').test(VERIFIED));
+check('verified founding offer is Verified Manufacturer, priced, and coming soon', (function () {
+  const price = String(bp.foundingVerified.price);
+  const at = VERIFIED.indexOf('$' + price);
+  if (at < 0) return false;
+  const window = VERIFIED.slice(Math.max(0, at - 500), at + 800);
+  return window.indexOf('Verified Manufacturer founding offer') >= 0
+    && window.indexOf('Coming soon') >= 0
+    && window.indexOf('buy.stripe.com') < 0
+    && VERIFIED.indexOf('Pay $' + price) < 0;
+})());
 
 // ── 3. Intel cadence + classification ─────────────────────────────────────
 const INTEL = fs.readFileSync('intel.html', 'utf8');
