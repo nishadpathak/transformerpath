@@ -422,6 +422,12 @@ async function main() {
     return fs.readFileSync('events/' + d + '/index.html', 'utf8').indexOf('data-product="featured_event"') >= 0;
   });
   check('event pages use the payment link', cardPages.length > 20 && linkedPages.length === cardPages.length && leftoverWidgets.length === 0, 'cards=' + cardPages.length + ' linked=' + linkedPages.length + ' leftover=' + leftoverWidgets.length);
+  const pricedPages = cardPages.filter(function (d) {
+    const html = fs.readFileSync('events/' + d + '/index.html', 'utf8');
+    return html.indexOf('Featured Event is $299 per event.') >= 0 && html.indexOf('Featured Exhibitor is $399 per event.') >= 0 && html.indexOf('from $399') < 0;
+  });
+  check('event cards show Featured Event at $299 and Featured Exhibitor at $399', pricedPages.length === cardPages.length, 'priced=' + pricedPages.length + ' cards=' + cardPages.length);
+  check('event card template keeps the two prices distinct', fs.readFileSync('build-events.js', 'utf8').indexOf('Featured Event is $299 per event. Featured Exhibitor is $399 per event.') >= 0 && fs.readFileSync('build-events.js', 'utf8').indexOf('from $399') < 0);
 
   function jsHits(dir, hits) {
     fs.readdirSync(dir).forEach(function (name) {
