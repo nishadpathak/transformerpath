@@ -1,5 +1,6 @@
 /* Jobs and RFQ Payment Links stay classified, and the public buy buttons
  * stay off unless TP_JOBS_RFQ_PAYMENTS is turned on. No live charge.
+ * The committed flag file stays false.
  */
 'use strict';
 const crypto = require('crypto');
