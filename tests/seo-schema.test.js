@@ -114,6 +114,19 @@ assert(gapTitle.length >= 50 && gapTitle.length <= 60, 'mid-length title stays i
 assert(!/\sprofile$/.test(gapTitle), 'mid-length title is not padded with profile: ' + gapTitle);
 assert((gapTitle.match(/TransformerPath/g) || []).length <= 1, 'mid-length title has one brand: ' + gapTitle);
 
+[
+  'Dry-Type Transformers Manufacturers in Algeria | TransformerPath',
+  'Power Transformers Manufacturers in Algeria',
+  'Distribution Transformers Manufacturers in Dominican Republic'
+].forEach(function (draft) {
+  const fitted = fitWindow(draft, 50, 60, [' | TransformerPath']);
+  const place = draft.replace(/\s+\|\s*TransformerPath$/, '').split(' ').pop();
+  assert(fitted.length >= 50 && fitted.length <= 60, 'country hub title window ' + fitted);
+  assert(fitted.indexOf(place) !== -1, 'country hub title keeps the place ' + fitted);
+  assert(!/\sin\s+\|/.test(fitted), 'country hub title does not drop the place ' + fitted);
+  assert((fitted.match(/TransformerPath/g) || []).length === 1, 'country hub title has one brand ' + fitted);
+});
+
 const longTitle = fitWindow('Ahlstrom-Munksjö | Helsinki, Finland supplier', 50, 60, [' | TransformerPath']);
 assert(longTitle.length >= 50 && longTitle.length <= 60, 'long title stays in window ' + longTitle.length);
 assert(longTitle.indexOf('TransformerP') === -1 || longTitle.indexOf('TransformerPath') !== -1, 'brand is not sliced: ' + longTitle);
