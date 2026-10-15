@@ -1,6 +1,6 @@
 {
   "$schema": "https://transformerpath.com/directory.schema.json",
-  "generated": "2026-10-14T11:58:52.392Z",
+  "generated": "2026-10-15T03:46:41.098Z",
   "count": 1194,
   "counts": {
     "manufacturers": 899,
@@ -10548,18 +10548,16 @@
         "special": {}
       },
       "voltage": {
-        "value": "400 kV",
-        "num": 400,
+        "value": "",
+        "num": null,
         "unit": "kV"
       },
       "mva": {
-        "value": "146,000 MVA",
-        "num": 146000,
+        "value": "",
+        "num": null,
         "unit": "MVA"
       },
-      "certs": [
-        "IEC"
-      ],
+      "certs": [],
       "testing_capability": null,
       "facility_ids": [
         "fac:cg-power-systems-ireland-formerly-pauwels-ireland:cavan"
@@ -10574,26 +10572,29 @@
         }
       ],
       "capability_evidence": {
-        "products": "CONFIRMED",
-        "voltage": "CONFIRMED",
-        "mva": "CONFIRMED"
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
       },
-      "evidence": "CONFIRMED",
-      "claim_type": "INDEPENDENTLY_SOURCED",
-      "confidence": "MEDIUM",
+      "evidence": "INFERRED",
+      "claim_type": "INFERRED",
+      "confidence": "LIMITED",
       "source_meta": {
-        "source_title": "CG Power and Industrial Solutions Annual Report",
-        "source_type": "industry_publication",
+        "source_title": "",
+        "source_type": "",
         "source_url": "https://www.cgglobal.com/"
       },
-      "completeness_score": 85,
+      "completeness_score": 50,
       "missing_fields": [
         "Headquarters address",
+        "Maximum voltage rating",
+        "Maximum unit MVA / rating",
+        "Standards compliance (IEC/IEEE) & ISO certifications",
         "Test bay specifications & utility references"
       ],
-      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
+      "provenance_type": "PUBLIC_SOURCE",
       "last_verified": "2026-08-28",
-      "research_completeness": 6,
+      "research_completeness": 4,
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
@@ -10601,8 +10602,8 @@
       "verified": false,
       "sources": {
         "website": "https://www.cgglobal.com/",
-        "capability_source": "CG Power and Industrial Solutions Annual Report",
-        "capability_note": "Bhopal and Malanpur power transformer capacity disclosed in BSE/NSE audited annual filings."
+        "capability_source": "",
+        "capability_note": "The CG Power annual report discloses the Bhopal and Malanpur, India plant figures. Those figures are not a sourced rating for the Cavan plant, so they are not shown here."
       },
       "factory_count": 1
     },
