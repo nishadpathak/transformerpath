@@ -1,0 +1,17 @@
+name: homepage-coverage
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  coverage-label:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node tests/homepage-coverage-delayed.js
+      - run: node tests/homepage-ticker-regression.js
