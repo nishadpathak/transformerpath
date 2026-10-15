@@ -45,7 +45,7 @@ function messages(row) {
       ? 'Submit your company and the event at ' + ((process.env.SITE_URL || 'https://transformerpath.com').trim().replace(/\/$/, '')) + '/sponsor.html?paid=featured_exhibitor#contact'
       : null,
     row.product === 'hosted_webinar'
-      ? 'Submit the webinar topic, date, and company at ' + ((process.env.SITE_URL || 'https://transformerpath.com').trim().replace(/\/$/, '')) + '/sponsor.html?paid=hosted_webinar#contact'
+      ? 'TransformerPath does not host webinars. Email hello@transformerpath.com about this payment.'
       : null,
     row.product === 'verified_manufacturer'
       ? 'Submit your company details at ' + ((process.env.SITE_URL || 'https://transformerpath.com').trim().replace(/\/$/, '')) + '/claim-profile.html?paid=verified_manufacturer#claimForm'

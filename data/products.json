@@ -39,7 +39,7 @@
       "purpose": "Advanced engineering plus work tools", "price": 599, "cadence": "year", "seats": 1,
       "price_status": "APPROVED",
       "outcome": "Work: Learning plus professional engineering utility — costing workbench, specification builder, bid evaluation, DGA workspace, professional exports.",
-      "includes": ["everything in Learning", "costing workbench", "specification builder", "bid evaluation", "DGA workspace", "professional reports/exports", "priority capstone review"],
+      "includes": ["everything in Learning", "costing workbench", "specification builder", "bid evaluation", "DGA workspace", "professional reports/exports"],
       "positioning": "LEARN plus WORK. Professional is Learning plus a real professional workspace, not faster support."
     },
     "team": {
@@ -92,10 +92,10 @@
     },
     "enterprise": {
       "id": "enterprise_intelligence", "name": "Enterprise Intelligence", "customer": "Manufacturers, utilities, EPCs, consultancies, investors",
-      "purpose": "Multi-user plus custom research", "price": null, "cadence": "custom",
+      "purpose": "Multi-user software access", "price": null, "cadence": "custom",
       "price_status": "CUSTOM",
-      "outcome": "Multi-user access, advanced exports, custom market monitoring, custom reports, research requests, bespoke briefings, company/project tracking.",
-      "cta": "Talk to TransformerPath",
+      "outcome": "Multi-user access and company/project tracking. There is no checkout and no custom research service.",
+      "cta": "No checkout yet",
       "neutrality": "Only advertise functionality actually deliverable."
     }
   },
@@ -113,13 +113,6 @@
       "price_status": "REFERENCE",
       "outcome": "FEATURED label, logo, booth number, products, brochure, manufacturer profile, meeting CTA, event analytics.",
       "neutrality": "FEATURED is promotional placement. It never implies an editorial recommendation."
-    },
-    "hosted_webinar": {
-      "id": "hosted_webinar", "name": "Hosted Webinar", "customer": "Manufacturers / component suppliers",
-      "purpose": "Webinar hosting plus promotion", "price": 1500, "cadence": "engagement",
-      "price_status": "REFERENCE",
-      "outcome": "Event page, registration, promotion, hosting, recording where supported, post-event replay, sponsor identification. Attendee reporting subject to privacy/consent.",
-      "neutrality": "No lead data where consent/privacy does not permit it."
     },
     "sponsorship": {
       "id": "sponsorship", "name": "Sponsorship", "customer": "Industry organizations",
@@ -142,7 +135,7 @@
     { "id": "models_3d", "label": "Interactive 3D component models and Grid Lab", "delivery": "built", "products": ["learning"] },
     { "id": "design_calculator", "label": "IEC 60076 design calculator", "delivery": "built", "products": ["learning"] },
     { "id": "engineer_track", "label": "Design Engineer Track", "delivery": "built", "products": ["learning"] },
-    { "id": "capstone_review", "label": "Capstone review", "delivery": "built", "products": ["learning", "professional"] },
+    { "id": "capstone_review", "label": "Capstone projects with published model answers", "delivery": "built", "products": ["learning", "professional"] },
     { "id": "bom_costing", "label": "BOM and active material costing", "delivery": "built", "products": ["professional"] },
     { "id": "pdf_reports", "label": "PDF engineering reports", "delivery": "built", "products": ["professional"] },
     { "id": "rating_plate", "label": "Rating plate generator", "delivery": "built", "products": ["professional"] },
@@ -182,11 +175,9 @@
     { "id": "intel_team_seats", "label": "Shared Intel team seats", "delivery": "coming_soon", "products": ["intel_team"] },
     { "id": "shared_watchlists", "label": "Shared watchlists", "delivery": "coming_soon", "products": ["intel_team"] },
     { "id": "csv_json_exports", "label": "CSV/JSON dataset exports", "delivery": "coming_soon", "products": ["intel_team", "intel_pro"] },
-    { "id": "bespoke_briefings", "label": "Bespoke briefings", "delivery": "coming_soon", "products": ["intel_team"] },
     { "id": "featured_event_label", "label": "FEATURED event label after review", "delivery": "built", "products": ["featured_event"] },
     { "id": "featured_event_extras", "label": "Event logo, banner and analytics", "delivery": "coming_soon", "products": ["featured_event"] },
-    { "id": "featured_exhibitor_card", "label": "Featured exhibitor card", "delivery": "coming_soon", "products": ["featured_exhibitor"] },
-    { "id": "hosted_webinar", "label": "Hosted webinar fulfillment", "delivery": "coming_soon", "products": ["hosted_webinar"] }
+    { "id": "featured_exhibitor_card", "label": "Featured exhibitor card", "delivery": "coming_soon", "products": ["featured_exhibitor"] }
   ],
   "feature_matrix": {
     "daily_intel":            { "free": true,  "learning": true, "professional": true, "team": true },

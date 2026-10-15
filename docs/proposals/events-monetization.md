@@ -5,7 +5,7 @@ Researched against `main` @ e456044 and the live site on 15 Oct 2026. Production
 
 ## Evidence base
 - Repo has **543** event page directories under `events/`, built by `build-events.js`; each carries a Featured Event ($299) and Featured Exhibitor ($399) button.
-- Live Payment Links (`lib/paid-listings.js`, `PAYMENTS.md`): Featured Event $299 `https://buy.stripe.com/00w6oA2lO8tvdwkaXwfYY04`, Featured Exhibitor $399 `https://buy.stripe.com/dRm9AM5y06ln1NC9TsfYY06`, Hosted Webinar $1,500 `https://buy.stripe.com/14A3co8Kc6ln77Wc1AfYY07`. Sponsorship "from $299" (pricing.html line 394, sponsor.html line 154) has **no checkout**.
+- Live Payment Links (`lib/paid-listings.js`): Featured Event $299 `https://buy.stripe.com/00w6oA2lO8tvdwkaXwfYY04`, Featured Exhibitor $399 `https://buy.stripe.com/dRm9AM5y06ln1NC9TsfYY06`. The $1,500 hosted-webinar offer was withdrawn and is not in `PAYMENT_LINKS`.
 - Travelpayouts marker **736890** (PR #37) already on event/exhibition pages: Hotellook hotel form (`marker=736890.<sub_id>`) and Kiwi flight link (`shmarker=736890.<sub_id>`), per-page sub-IDs, documented in `affiliate-disclosure.html`. Click counts are only in browser `localStorage` (`tp-aff-clicks`) plus the Travelpayouts dashboard.
 - **No traffic, click or conversion data is in the repo.** All revenue figures below are **estimates** built on stated assumptions; replace them with Netlify/Travelpayouts numbers when available.
 
@@ -17,7 +17,7 @@ Researched against `main` @ e456044 and the live site on 15 Oct 2026. Production
 | 2 | Sponsorship packages with real checkout (fix "from $299") | Event Spotlight $299 (existing link); Category sponsor $599/mo; Event-page sponsor slot $499/event | S: 1–2 Payment Links + card copy | $500–1,100 (assume 1–2 sales) | 20 Oct |
 | 3 | Price-mismatch cleanup (#6) | none | XS | indirect (fewer abandoned checkouts) | 16–17 Oct with deploy |
 | 4 | Lead capture → TP Sales bot (exhibitors + attendees) | free form; feeds #1/#2/#5 | S–M: form + Supabase row + Sales routing | indirect; assume +1 paid sale from leads by 14 Nov ($299–399) | 22 Oct |
-| 5 | Hosted webinar for event exhibitors (pre-show) | $1,500 (live) | XS: outreach | $0–1,500 (assume 0–1 sale; long cycle) | 16 Oct |
+| 5 | Hosted webinar for event exhibitors (pre-show) | withdrawn | — | $0. Nishad will not host webinars. Do not sell this. | rejected |
 | 6 | Travelpayouts expansion (tickets, hotels, flights) | free to users; commission | S: add event-ticket/activity widgets, top-10 event pages, server-side click log | $10–60 (assume low hundreds of clicks, ~1–3% book, few $ commission; plus 30-day cookie lag) | 21 Oct |
 | 7 | Paid event alert / calendar newsletter | $9/mo or $79/yr (sponsor slot in free edition $199/issue) | M: list, sign-up, send pipeline, Stripe link | $0–200 (assume 0–20 subs; slow to build) | 31 Oct |
 

@@ -31,7 +31,7 @@ function walk(dir) {
 walk(root);
 ok(hits.length === 0, 'no remaining link to a removed service page' + (hits.length ? ' (' + hits.join(', ') + ')' : ''));
 
-var promiseRe = /design-office support|live cohort|live training|book a call|schedule a call|consulting engagement|design consulting|design services|test-lab consulting/i;
+var promiseRe = /design-office support|live cohort|live training|book a call|schedule a call|consulting engagement|design consulting|design services|test-lab consulting|host a webinar|hosted webinar|14A3co8Kc6ln77Wc1AfYY07|manually reviewed|sales team will be in touch|practising engineer|marked-up engineering review|request the media kit|talk to transformerpath/i;
 var promised = [];
 fs.readdirSync(root).forEach(function (name) {
   if (!name.endsWith('.html') || name === 'services.html') return;
