@@ -208,13 +208,36 @@
     </div>
 
     <div id="liveRfqs"></div>
+    <div id="reviewedMatches" style="margin-bottom:28px"></div>
+    <script src="lib/rfq-leads.js"></script>
     <script>
-    /* ====== LIVE RFQs: curated — add entries from email submissions. Newest first. ====== */
-    const RFQS = [];
+    /* Public cards are redacted. Reviewed matches are capped at 5. Neither list starts with a lead. */
     (function(){
-      const host=document.getElementById('liveRfqs');
-      if(!RFQS.length){ host.innerHTML='<p style="text-align:center;color:var(--muted);background:var(--card);border:1px dashed var(--border);border-radius:12px;padding:22px;margin-bottom:34px">📭 No open RFQs yet — be the first to post one below. Posted RFQs appear here with buyer details kept private.</p>'; return; }
-      host.innerHTML = RFQS.map(r=>'<div class="card" style="margin-bottom:14px"><b style="color:var(--ink)">'+r.title+'</b><p style="color:var(--muted);font-size:.92rem;margin:6px 0">'+r.detail+'</p><span style="font-size:.8rem;color:var(--accent);font-weight:700">'+r.country+' · '+r.cat+' · closes '+r.close+'</span><p style="margin-top:8px"><a class="btn btn-amber" style="padding:7px 16px;font-size:.85rem" href="mailto:hello@transformerpath.com?subject=Quote for RFQ: '+encodeURIComponent(r.title)+'">Respond to this RFQ →</a></p></div>').join('');
+      function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+      function paint(doc){
+        var host=document.getElementById('liveRfqs');
+        var cards=(doc&&doc.cards)||[];
+        var rows=cards.map(function(card){ return window.TPRfqLeads?TPRfqLeads.redact(card):{}; });
+        if(!rows.length){
+          host.innerHTML='<p style="text-align:center;color:var(--muted);background:var(--card);border:1px dashed var(--border);border-radius:12px;padding:22px;margin-bottom:18px">No open RFQs yet. Posted RFQs appear here with buyer name, email, and phone never shown publicly.</p>';
+        } else {
+          host.innerHTML=rows.map(function(r){
+            return '<div class="card" style="margin-bottom:14px"><b style="color:var(--ink)">'+esc(r.category)+'</b><p style="color:var(--muted);font-size:.92rem;margin:6px 0">'+esc(r.detail)+'</p><span style="font-size:.8rem;color:var(--accent);font-weight:700">'+esc(r.country)+' · '+esc(r.rating)+' · '+esc(r.voltage)+' · deadline '+esc(r.deadline)+'</span><p style="margin-top:8px;color:var(--muted);font-size:.85rem">'+esc(r.contact)+'</p></div>';
+          }).join('');
+        }
+        var matchHost=document.getElementById('reviewedMatches');
+        var matches=(doc&&doc.matches)||[];
+        if(!matches.length){
+          matchHost.innerHTML='<p style="color:var(--muted);font-size:.9rem;margin:0 0 28px">No reviewed supplier matches. A reviewed lead is offered to at most 5 suppliers, in the matcher’s existing order. None are on file.</p>';
+          return;
+        }
+        matchHost.innerHTML=matches.map(function(row){
+          var suppliers=(window.TPRfqLeads?TPRfqLeads.billableMatches(row.suppliers||[]):(row.suppliers||[]).slice(0,5));
+          return '<div class="card" style="margin-bottom:12px"><b style="color:var(--ink)">Reviewed match</b><p style="color:var(--muted);font-size:.88rem;margin:6px 0">'+suppliers.map(function(s){ return esc(s.name||s.slug||''); }).join(' · ')+'</p><p style="color:var(--muted);font-size:.8rem;margin:0">'+suppliers.length+' of at most 5. Buyer contact is not on this page.</p></div>';
+        }).join('');
+      }
+      paint({cards:[],matches:[]});
+      fetch('data/rfq-public.json').then(function(r){ return r.json(); }).then(paint).catch(function(){ paint({cards:[],matches:[]}); });
     })();
     </script>
 
@@ -224,6 +247,9 @@
       <form name="rfq" method="POST" enctype="multipart/form-data" data-netlify="true" data-netlify-honeypot="bot-field" data-track-form="rfq_submitted">
         <input type="hidden" name="reference" id="fld_ref" value="">
         <input type="hidden" name="form-name" value="rfq">
+        <input type="hidden" name="consent_version" id="fld_consent_version" value="rfq-consent-2026-10-15">
+        <input type="hidden" name="consent_text" id="fld_consent_text" value="I agree that TransformerPath may send my name, work email, company, and the technical fields in this RFQ to at most 5 matched suppliers so they can respond to this request. This disclosure is to those suppliers, not a processor relationship. I can withdraw consent, and further sends will stop.">
+        <input type="hidden" name="consent_at" id="fld_consent_at" value="">
         <p style="display:none"><label>Do not fill: <input name="bot-field"></label></p>
         <div class="row">
           <div><label for="fld_name">Your Name *</label><input id="fld_name" type="text" name="name" required placeholder="Full name"></div>
@@ -258,14 +284,16 @@
         <div style="margin-bottom:16px"><label for="fld_details">Requirement Details *</label><textarea id="fld_details" rows="5" name="details" required placeholder="Specs, quantity, standards (IEC/ANSI), delivery location, timeline…"></textarea>
         </div>
         <div class="row">
-          <div><label for="fld_delivery">Target Delivery</label><input id="fld_delivery" type="text" name="delivery" placeholder="e.g. Q2 2027"></div>
+          <div><label for="fld_deadline">Deadline *</label><input id="fld_deadline" type="date" name="deadline" required><p style="font-size:.78rem;color:var(--muted);margin:6px 0 0">A calendar date. A quarter or a year alone is not enough for a supplier to be charged.</p></div>
           <div><label for="fld_budget">Budget (optional)</label><input id="fld_budget" type="text" name="budget" placeholder="USD / EUR"></div>
         </div>
         <div style="margin-bottom:16px"><label for="fld_dest">Required delivery destination</label><input id="fld_dest" type="text" name="destination" placeholder="City / country, e.g. Riyadh, Saudi Arabia"></div>
         <div style="margin-bottom:16px"><label for="fld_att">Attach a specification (optional)</label><input id="fld_att" type="file" name="attachment" accept=".pdf,.doc,.docx,.xls,.xlsx,.txt,.zip"><p style="font-size:.78rem;color:var(--muted);margin-top:6px">Attachments can be shared by email after submitting with your reference number — the online form captures your details, quantity, rating, voltage and standard here.</p></div>
-        <p style="font-size:.82rem;color:var(--muted);margin:0 0 12px">Buyers submit free. We match your requirement against supplier capability (rating, voltage, categories) and forward responses to you.</p>
+        <p style="font-size:.82rem;color:var(--muted);margin:0 0 12px">Buyers submit free. Enter a rating or a voltage. We match your requirement against supplier capability. A reviewed lead can be offered to at most 5 suppliers. Your name, email, and phone are never shown publicly.</p>
+        <label style="display:block;font-weight:600;font-size:.9rem;margin:0 0 14px"><input id="fld_consent" type="checkbox" name="consent" value="yes" required> I agree that TransformerPath may send my name, work email, company, and the technical fields in this RFQ to at most 5 matched suppliers so they can respond to this request. This disclosure is to those suppliers, not a processor relationship. I can withdraw consent, and further sends will stop.</label>
+        <p id="rfqFormError" style="display:none;color:#b91c1c;font-size:.88rem;margin:0 0 12px"></p>
         <button class="btn btn-amber" type="submit" style="width:100%">Submit RFQ →</button>
-        <p style="text-align:center; color:var(--muted); font-size:.85rem; margin-top:12px">Reviewed before publication. Your contact details are never shown publicly — responses are forwarded to you.</p>
+        <p style="text-align:center; color:var(--muted); font-size:.85rem; margin-top:12px">Reviewed before publication. Your contact details are never shown publicly — responses are forwarded to you. <a href="supplier-inbox.html" style="color:var(--accent)">Supplier inbox</a> · <a href="privacy.html#rfq-contacts" style="color:var(--accent)">Privacy</a></p>
       </form>
 
       <div id="rfqResult" style="display:none; margin-top:18px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:18px"></div>
@@ -491,8 +519,10 @@
       var refNo = (document.getElementById('fld_ref') && document.getElementById('fld_ref').value) || '';
       var html='';
       if(refNo){ html += '<div style="font-size:.9rem;color:var(--text);margin-bottom:8px">✅ Your RFQ reference: <b style="color:var(--accent)">'+esc(refNo)+'</b> — quote it in any follow-up. We\u2019ll match suppliers and forward responses to your email.</div>'; }
-      html += '<div style="font-size:1.1rem;font-weight:800;color:var(--ink);margin-bottom:4px">Potentially relevant manufacturers <span style="color:var(--muted);font-weight:600;font-size:.85rem">('+matches.length+')</span></div>'+
-        '<p style="font-size:.84rem;color:var(--muted);margin:0 0 12px">Matched from the source-backed TransformerPath census on category, reported rating/voltage and manufacturing geography. This is a <b>capability-based</b> match — it is not a ranking, not a score and not an endorsement. Verify with the manufacturer before a commercial decision.</p>';
+      var research=matches;
+      var offered=window.TPRfqLeads?TPRfqLeads.billableMatches(matches):matches.slice(0,5);
+      html += '<div style="font-size:1.1rem;font-weight:800;color:var(--ink);margin-bottom:4px">Potentially relevant manufacturers <span style="color:var(--muted);font-weight:600;font-size:.85rem">('+research.length+')</span></div>'+
+        '<p style="font-size:.84rem;color:var(--muted);margin:0 0 12px">Matched from the source-backed TransformerPath census on category, reported rating/voltage and manufacturing geography. This research list is not a billed lead list. After review, at most '+offered.length+' of these suppliers can be offered the lead, and never more than 5. Match order is research completeness. It is not a ranking, not a score and not an endorsement. Your contact details are not shown here.</p>';
       html += matches.map(function(m){
         var mva=m.reported_mva?(' · '+esc(m.reported_mva)):''; var kv=m.reported_voltage?(' · '+esc(m.reported_voltage)):'';
         return '<div style="padding:9px 12px;border-bottom:1px solid var(--border);font-size:.9rem"><a href="manufacturers/'+esc(m.slug)+'/" style="color:var(--accent);font-weight:700">'+esc(m.name)+'</a> <span style="color:var(--muted);font-size:.8rem">'+esc(m.country||'')+mva+kv+'</span><div style="font-size:.8rem;color:var(--muted);margin-top:2px">'+m.reasons.map(esc).join(' · ')+'</div></div>';
@@ -501,7 +531,17 @@
     });
   }
   if(!f || !result) return; // no form on this page
-  f.addEventListener("submit",function(){
+  f.addEventListener("submit",function(e){
+    var err=document.getElementById('rfqFormError');
+    var rating=val('fld_rating'), voltage=val('fld_voltage'), deadline=val('fld_deadline');
+    var hasNumber=window.TPRfqLeads && (TPRfqLeads.mvaNumber(rating)>0 || TPRfqLeads.kvNumber(voltage)>0);
+    var problems=[];
+    if(!hasNumber) problems.push('Enter a rating in MVA or kVA, or a voltage in kV.');
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(deadline)) problems.push('Deadline must be a calendar date.');
+    if(!document.getElementById('fld_consent').checked) problems.push('Consent is required.');
+    if(problems.length){ e.preventDefault(); if(err){ err.style.display='block'; err.textContent=problems.join(' '); } return; }
+    if(err) err.style.display='none';
+    var stamp=document.getElementById('fld_consent_at'); if(stamp && !stamp.value) stamp.value=new Date().toISOString();
     var reference=ref();
     if(window.TP && window.TP.saveRfq){
       window.TP.saveRfq({reference:reference, category:val("fld_category"), quantity:val("fld_qty"), rating:val("fld_rating"), voltage:val("fld_voltage"), standard:val("fld_standard"), destination:val("fld_dest")});
