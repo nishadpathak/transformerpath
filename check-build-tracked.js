@@ -46,6 +46,15 @@ try {
 }
 
 const toml = fs.readFileSync('netlify.toml', 'utf8');
+// [build] must own `command` and `functions = "functions"`. Without that header
+// the root key `functions` collides with the [functions] table and Netlify
+// rejects the file before any build step runs.
+const commandAt = toml.search(/command\s*=/);
+const buildAt = toml.indexOf('[build]');
+if (buildAt < 0 || commandAt < 0 || buildAt > commandAt) {
+  console.error('check-build-tracked: netlify.toml is missing the [build] header above the build command.');
+  process.exit(1);
+}
 const cmdMatch = toml.match(/command\s*=\s*"([^"]+)"/);
 if (!cmdMatch) {
   console.error('check-build-tracked: no build command found in netlify.toml');

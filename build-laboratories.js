@@ -66,14 +66,12 @@ function capCell(lab, k) {
   const claim = capClaim(lab, k);
   if (claim === 'yes') return 'c-yes"><span class="cmp-yes">✓ Yes</span>';
   if (claim === 'no') return 'c-no"><span class="sub-l">—</span>';
-  return 'c-unknown"><span class="sub-l">— unknown</span>';
+  return 'c-unknown"><span class="sub-l">Not stated</span>';
 }
 
 function voltagePill(lab) {
   const kv = lab.max_voltage_kv;
-  if (typeof kv !== 'number' || !isFinite(kv)) {
-    return '<span class="kv-pill kv-unstated">Voltage not stated</span>';
-  }
+  if (typeof kv !== 'number' || !isFinite(kv)) return '';
   const isUhv = kv >= 765;
   return '<span class="kv-pill' + (isUhv ? ' uhv' : '') + '">' + esc(kv) + ' kV Peak</span>';
 }
@@ -326,9 +324,7 @@ function capClaim(lab, k) {
 
 function voltagePill(lab) {
   var kv = lab.max_voltage_kv;
-  if (typeof kv !== 'number' || !isFinite(kv)) {
-    return '<span class="kv-pill kv-unstated">Voltage not stated</span>';
-  }
+  if (typeof kv !== 'number' || !isFinite(kv)) return '';
   var isUhv = kv >= 765;
   return '<span class="kv-pill' + (isUhv ? ' uhv' : '') + '">' + esc(kv) + ' kV Peak</span>';
 }
@@ -362,7 +358,7 @@ function renderCards() {
       var claim = capClaim(lab, k);
       var cell = claim === 'yes'
         ? 'c-yes"><span class="cmp-yes">✓ Yes</span>'
-        : (claim === 'no' ? 'c-no"><span class="sub-l">—</span>' : 'c-unknown"><span class="sub-l">— unknown</span>');
+        : (claim === 'no' ? 'c-no"><span class="sub-l">—</span>' : 'c-unknown"><span class="sub-l">Not stated</span>');
       return '<tr><td class="c-name">' + esc(CAP_NAMES[k]) + '</td><td class="c-status ' + cell + '</td></tr>';
     }).join('');
 

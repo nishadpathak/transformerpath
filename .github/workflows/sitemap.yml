@@ -16,4 +16,4 @@ jobs:
         with:
           node-version: '20'
       - name: Rebuild sitemap from content dates and check it
-        run: node build-sitemap.js && node check-sitemap.js
+        run: node tests/sitemap-tender-slug-regression.js && node build-sitemap.js && node check-sitemap.js

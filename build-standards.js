@@ -13,8 +13,8 @@
  *
  * Honesty (Rule #4): all voltage/frequency/synchronous-area figures are the
  * source-backed grid census values. Where a country's data is not populated we
- * leave it blank rather than guess. Standards text is factual reference, not a
- * quality ranking.
+ * show "Not available" rather than a blank, or the words undefined, NaN or null.
+ * Standards text is factual reference, not a quality ranking.
  *
  * Run: node build-standards.js  (after build-factories.js).
  */
@@ -67,24 +67,27 @@ const hz50 = GRIDS.filter((c) => c.freq === '50').length;
 const hz60 = GRIDS.filter((c) => c.freq === '60').length;
 const maxVoltage = GRIDS.reduce((m, c) => Math.max(m, highestVoltage(c)), 0);
 
-// Country reference rows (searchable client-side).
-const countryRows = GRIDS.slice().sort((a, b) => a.country.localeCompare(b.country)).map((c) => {
-  const hv = highestVoltage(c);
-  return {
-    country: c.country, flag: c.flag || '', region: c.region,
-    freq: freqLabel(c.freq), sync: c.sync || '',
-    voltage: hv ? hv + ' kV' : '', operators: (c.grids || []).length,
-  };
-});
+/* A missing census field is shown as words. Never emit a blank cell or the
+ * JavaScript tokens undefined / NaN / null. */
+function shown(value) {
+  if (value == null) return 'Not available';
+  const s = String(value).trim();
+  if (!s || /^(undefined|nan|null|—|-)$/i.test(s)) return 'Not available';
+  return s;
+}
 
-function countryRowHtml(r) {
-  return '<div class="st-row" data-country="' + esc(ci(r.country)) + '" data-region="' + esc(r.region) + '" data-freq="' + esc(r.freq) + '">' +
-    '<span class="st-c">' + (r.flag ? r.flag + ' ' : '') + esc(r.country) + '</span>' +
-    '<span class="st-r st-cell">' + esc(r.region) + '</span>' +
-    '<span class="st-f st-cell">' + esc(r.freq || '—') + '</span>' +
-    '<span class="st-v st-cell">' + esc(r.voltage || '—') + '</span>' +
-    '<span class="st-s st-cell">' + esc(r.sync || '—') + '</span>' +
-    '<span class="st-o st-cell">' + (r.grids || []).length + '</span></div>';
+function countryRowHtml(c) {
+  const hv = highestVoltage(c);
+  const freq = freqLabel(c.freq);
+  const voltage = hv ? hv + ' kV' : '';
+  const operators = (c.grids || []).length;
+  return '<div class="st-row" data-country="' + esc(ci(c.country)) + '" data-region="' + esc(c.region) + '" data-freq="' + esc(c.freq) + '">' +
+    '<span class="st-c">' + (c.flag ? c.flag + ' ' : '') + esc(c.country) + '</span>' +
+    '<span class="st-r st-cell">' + esc(shown(c.region)) + '</span>' +
+    '<span class="st-f st-cell">' + esc(shown(freq)) + '</span>' +
+    '<span class="st-v st-cell">' + esc(shown(voltage)) + '</span>' +
+    '<span class="st-s st-cell">' + esc(shown(c.sync)) + '</span>' +
+    '<span class="st-o st-cell">' + esc(operators ? String(operators) : 'Not available') + '</span></div>';
 }
 
 const style = '.std-wrap{max-width:1180px;margin:0 auto;padding:44px 20px 96px}.std-wrap h1{font-size:2rem;color:var(--ink)}.std-wrap .lead{color:var(--muted);font-size:1.02rem;max-width:900px;margin:8px 0 22px}.std-stats{display:flex;flex-wrap:wrap;gap:14px;margin:0 0 24px}.std-stats .s{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 18px;text-align:center;min-width:130px}.std-stats .s b{color:var(--text);font-size:1.3rem;display:block}.std-stats .s small{color:var(--muted);font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em}.std-h2{font-size:1.3rem;color:var(--ink);margin:30px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border)}.std-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:14px}.std-card h3{font-size:1.1rem;color:var(--ink);margin:0 0 4px}.std-card .rgn{color:var(--muted);font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin:0 0 8px}.std-card p{color:var(--text);line-height:1.7;font-size:.94rem;margin:0 0 10px}.std-card .pt{display:flex;flex-wrap:wrap;gap:8px}.std-card .pt span{background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:2px 10px;font-size:.76rem;color:var(--muted)}.std-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0 8px}.std-tools input,.std-tools select{padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:.9rem;background:var(--card);color:var(--text)}.std-tbl{width:100%;border-collapse:collapse;font-size:.86rem}.std-tbl th{text-align:left;color:var(--muted);font-weight:800;font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;padding:8px 10px;border-bottom:2px solid var(--border);white-space:nowrap}.std-tbl td{padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top}.std-tbl a{color:var(--accent);font-weight:700}.std-note{color:var(--muted);font-size:.8rem;margin-top:14px}@media(max-width:720px){.std-wrap{overflow-x:clip;max-width:100%}.std-tbl{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}.std-tbl th{white-space:normal}}';

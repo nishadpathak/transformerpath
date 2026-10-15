@@ -1,0 +1,17 @@
+name: live-qa-layout
+
+on:
+  pull_request:
+  push:
+    branches: [main, "cursor/**"]
+
+jobs:
+  layout:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Phone overflow, archive stamps, and Netlify build table
+        run: node tests/live-qa-layout-regression.js && node tests/case-study-links-regression.js && node tests/voice-elin-supplier-regression.js && node tests/sitemap-tender-slug-regression.js

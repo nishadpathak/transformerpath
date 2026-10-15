@@ -38,6 +38,18 @@ const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 function slugify(s) { return String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/&/g, 'and').replace(/['’´]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, ''); }
+function isoDay(v) {
+  if (!v) return null;
+  const day = String(v).slice(0, 10);
+  return /^\d{4}-\d{2}-\d{2}$/.test(day) ? day : null;
+}
+function stampSourceDates(record, it) {
+  if (!record || !it) return;
+  const published = isoDay(it.publication_date);
+  const captured = isoDay(it.captured_at || it.capture_date);
+  if (published) record.publication_date = published;
+  if (captured) record.captured_at = captured;
+}
 const ci = (s) => (s || '').toLowerCase();
 
 const PROJECTS = JSON.parse(fs.readFileSync('data/projects.json', 'utf8')).projects || [];
@@ -195,6 +207,8 @@ INTEL_ITEMS.forEach((it) => {
     stage,
     cls: '',
   });
+  const addedIntel = tenders[tenders.length - 1];
+  if (addedIntel && addedIntel.full_title === it.title) stampSourceDates(addedIntel, it);
 });
 
 // 3) CONFIRMED / official-portal GCC procurement IDs.
@@ -276,6 +290,7 @@ INTEL_ITEMS.forEach(function (it) {
   });
   const added = tenders[tenders.length - 1];
   if (added && added.procurement_id === pid) {
+    stampSourceDates(added, it);
     byProcurement[pid] = added;
     officialAdded++;
   }
@@ -370,13 +385,16 @@ console.log('tender entity pages wrote: ' + tSlugs.size);
   const regions = {};
   tenders.forEach((t) => { (regions[t.region] = regions[t.region] || []).push(t); });
   const regionKeys = Object.keys(regions).sort((a, b) => (REGION_ORDER[a] ?? 9) - (REGION_ORDER[b] ?? 9));
-  const style = '.t-wrap{max-width:1080px;margin:0 auto;padding:44px 20px 90px}.t-wrap h1{font-size:2rem;color:var(--ink)}.t-stats{display:flex;flex-wrap:wrap;gap:14px;margin:14px 0 24px}.t-stats .s{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 18px;text-align:center;min-width:120px}.t-stats .s b{color:var(--text);font-size:1.3rem;display:block}.t-stats .s small{color:var(--muted);font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em}.region-h{font-size:1.02rem;font-weight:800;color:var(--ink);text-transform:uppercase;letter-spacing:.05em;margin:24px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--border)}.t-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);font-size:.92rem}.t-row .t-title{color:var(--accent);font-weight:700;font-size:.95rem;text-decoration:none;flex:1}.t-row .t-title:hover{text-decoration:underline}.t-row .t-meta{color:var(--muted);font-size:.8rem}.st{display:inline-block;font-weight:700;font-size:.66rem;letter-spacing:.04em;padding:1px 8px;border-radius:8px;text-transform:uppercase}.st-open{background:#14351f;color:#4ade80}.st-expected{background:#2a2413;color:#e8c46a}.st-closing{background:#2a1a13;color:#fb923c}.st-eval{background:#12283f;color:#60a5fa}.st-awarded{background:#0f2a2a;color:#2dd4bf}.st-closed{background:#1d2330;color:#9fb0c4}.st-unknown{background:#1d2330;color:#9fb0c4}.t-note{color:var(--muted);font-size:.8rem;margin-top:20px}';
+  const style = '.t-wrap{max-width:1080px;margin:0 auto;padding:44px 20px 90px}.t-wrap h1{font-size:2rem;color:var(--ink)}.t-stats{display:flex;flex-wrap:wrap;gap:14px;margin:14px 0 24px}.t-stats .s{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 18px;text-align:center;min-width:120px}.t-stats .s b{color:var(--text);font-size:1.3rem;display:block}.t-stats .s small{color:var(--muted);font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em}.region-h{font-size:1.02rem;font-weight:800;color:var(--ink);text-transform:uppercase;letter-spacing:.05em;margin:24px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--border)}.t-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);font-size:.92rem}.t-row .t-title{color:var(--accent);font-weight:700;font-size:.95rem;text-decoration:none;flex:1}.t-row .t-title:hover{text-decoration:underline}.t-row .t-meta{color:var(--muted);font-size:.8rem}.st{display:inline-block;font-weight:700;font-size:.66rem;letter-spacing:.04em;padding:1px 8px;border-radius:8px;text-transform:uppercase}.st-open{background:#14351f;color:#4ade80}.st-expected{background:#2a2413;color:#e8c46a}.st-closing{background:#2a1a13;color:#fb923c}.st-eval{background:#12283f;color:#60a5fa}.st-awarded{background:#0f2a2a;color:#2dd4bf}.st-closed{background:#1d2330;color:#9fb0c4}.st-unknown{background:#1d2330;color:#9fb0c4}.t-note{color:var(--muted);font-size:.8rem;margin-top:20px}.t-filters{margin:0 0 18px}.scope-filter{font:inherit;font-weight:800;font-size:.95rem;padding:10px 16px;border-radius:999px;border:2px solid #4ade80;background:#14351f;color:#4ade80;cursor:pointer}.scope-filter[aria-pressed="true"]{background:#4ade80;color:#05210f}.scope-badge{display:inline-block;font-weight:800;font-size:.66rem;letter-spacing:.03em;padding:2px 8px;border-radius:8px;background:#14351f;color:#4ade80;border:1px solid rgba(74,222,128,.45)}';
   const stCls = { OPEN: 'st-open', CLOSING_SOON: 'st-closing', EXPECTED: 'st-expected', EVALUATION: 'st-eval', AWARDED: 'st-awarded', CLOSED: 'st-closed', UNKNOWN: 'st-unknown' };
   const body = regionKeys.map((region) => {
-    const rows = regions[region].sort((a, b) => (ORDER[a.status] - ORDER[b.status]) || String(a.title).localeCompare(b.title)).map((t) =>
-      '<div class="t-row"><a class="t-title" href="tenders/' + esc(slugify(t.title)) + '/">' + esc(t.title) + '</a>' +
+    const rows = regions[region].sort((a, b) => (ORDER[a.status] - ORDER[b.status]) || String(a.title).localeCompare(b.title)).map((t) => {
+      const confirmed = t.transformer_scope === 'CONFIRMED';
+      return '<div class="t-row" data-scope="' + esc(t.transformer_scope || '') + '"><a class="t-title" href="tenders/' + esc(slugify(t.title)) + '/">' + esc(t.title) + '</a>' +
       '<span class="st ' + (stCls[t.status] || 'st-unknown') + '">' + esc(t.statusLabel) + '</span>' +
-      '<span class="t-meta">' + esc(t.country || t.region) + (t.voltage ? ' · ' + esc(t.voltage) : '') + (t.transformer_scope ? ' · ' + esc(t.transformer_scope) : '') + '</span></div>').join('');
+      (confirmed ? '<span class="scope-badge">Confirmed transformer scope</span>' : '') +
+      '<span class="t-meta">' + esc(t.country || t.region) + (t.voltage ? ' · ' + esc(t.voltage) : '') + '</span></div>';
+    }).join('');
     return '<div class="region-h">' + esc(region) + ' (' + regions[region].length + ')</div>' + rows;
   }).join('');
   const html = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Transformer Tender Watch — Global Procurement Opportunities | TransformerPath</title>' +
@@ -386,9 +404,10 @@ console.log('tender entity pages wrote: ' + tSlugs.size);
     '<h1>Transformer <span style="color:var(--accent)">Tender Watch</span></h1>' +
     '<p class="lead" style="color:var(--muted);font-size:1.02rem;max-width:840px;margin:8px 0 18px">A worldwide directory of transformer-relevant tenders, bids and procurement opportunities, tracked by region and country. Derived from public, source-backed signals — the same data behind the Project database and Daily Intel. Every tender links to its source; TransformerPath does not republish restricted procurement documentation.</p>' +
     '<div class="t-stats"><div class="s"><b>' + tenders.length + '</b><small>Tenders</small></div><div class="s"><b>' + ((stats.by_status.OPEN || 0) + (stats.by_status.CLOSING_SOON || 0)) + '</b><small>Open now</small></div><div class="s"><b>' + ((stats.by_status.EVALUATION || 0) + (stats.by_status.EXPECTED || 0)) + '</b><small>Pre-award</small></div><div class="s"><b>' + (stats.by_status.AWARDED || 0) + '</b><small>Awarded</small></div><div class="s"><b>' + stats.countries + '</b><small>Countries</small></div></div>' +
+    '<div class="t-filters"><button type="button" id="scopeFilter" class="scope-filter" aria-pressed="false">Confirmed transformer scope</button></div>' +
     body +
     '<p class="t-note">Tender metadata is public and source-tracked. Status is derived only from the source (e.g. OPEN/EXPECTED/EVALUATION/AWARDED) and may change — verify against the official procurement source before acting. Report a <a href="mailto:hello@transformerpath.com?subject=Tender%20correction" style="color:var(--accent)">correction</a>.</p>' +
-    '</main>\n' + FOOT + '\n<script src="analytics.js" defer></script>\n</body>\n</html>';
+    '</main>\n' + FOOT + '\n<script src="analytics.js" defer></script>\n<script>(function(){var btn=document.getElementById("scopeFilter");if(!btn)return;function apply(){var on=btn.getAttribute("aria-pressed")==="true";var heads=document.querySelectorAll(".region-h");heads.forEach(function(h){var el=h.nextElementSibling,any=false;while(el&&!el.classList.contains("region-h")){if(el.classList.contains("t-row")){var show=!on||el.getAttribute("data-scope")==="CONFIRMED";el.style.display=show?"":"none";if(show)any=true;}el=el.nextElementSibling;}h.style.display=any?"":"none";});}btn.addEventListener("click",function(){btn.setAttribute("aria-pressed",btn.getAttribute("aria-pressed")==="true"?"false":"true");apply();});if(/[?&]scope=confirmed(?:&|$)/.test(location.search)){btn.setAttribute("aria-pressed","true");apply();}})();</script>\n</body>\n</html>';
   fs.writeFileSync('tenders.html', html);
   console.log('tenders.html wrote (Tender Watch: ' + tenders.length + ' tenders / ' + stats.countries + ' countries / ' + regionKeys.length + ' regions; ' + stats.by_status.OPEN + ' open)');
 })();
