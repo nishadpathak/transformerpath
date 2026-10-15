@@ -52,6 +52,15 @@ function travelBlock(ev) {
   });
 }
 
+/* Visitor guide is data, not a hardcoded page list. Absent field → no block. */
+function visitorGuideBlock(ev) {
+  const url = ev && typeof ev.languagepath_visit_url === 'string' ? ev.languagepath_visit_url : '';
+  if (!/^https:\/\/languagepath\.org\/events\/visiting\/[a-z0-9-]+\/$/.test(url)) return '';
+  return '<aside class="lp-visit" style="margin:16px 0;padding:12px 14px;border:1px solid var(--border);border-radius:10px;background:var(--card)">' +
+    '<a href="' + esc(url) + '" rel="noopener" target="_blank">Travelling there? Phrases, etiquette and local tips for visitors</a>' +
+    '</aside>';
+}
+
 const groups = {};
 ALL.forEach((ev) => {
   const k = ev.series_slug || ev.id;
@@ -185,7 +194,7 @@ Object.keys(groups).forEach((slug) => {
       '<span><b>Organiser</b> ' + esc(nxt.organiser || nullText()) + '</span>' +
       (nxt.official_url ? '<span><a href="' + esc(nxt.official_url) + '">Official site</a></span>' : '<span>' + esc(nullText()) + '</span>') +
       (allowsCalendar(nxt) ? '<span><a href="../../events/ics/' + esc(nxt.id) + '.ics">Add to calendar</a></span>' : '') +
-      '</div>' + travelBlock(nxt) +
+      '</div>' + travelBlock(nxt) + visitorGuideBlock(nxt) +
       '<p>' + esc(nxt.description || '') + '</p>' +
       '<h2>Deadlines</h2>' + deadlineHtml(nxt) +
       '<h2>Programme</h2>' + programmeHtml(nxt) +
@@ -229,7 +238,7 @@ Object.keys(groups).forEach((slug) => {
       '<span><b>City</b> ' + esc(ev.city || nullText()) + '</span>' +
       '<span><b>Organiser</b> ' + esc(ev.organiser || nullText()) + '</span></div>' +
       (ev.official_url ? '<p><a href="' + esc(ev.official_url) + '">Official site</a></p>' : '<p>Official site: ' + esc(nullText()) + '</p>') +
-      travelBlock(ev) +
+      travelBlock(ev) + visitorGuideBlock(ev) +
       '<p>' + esc(ev.description || '') + '</p>' +
       (ev.relevance_reason ? '<p>' + esc(ev.relevance_reason) + '</p>' : '') +
       '<h2>Deadlines</h2>' + deadlineHtml(ev) +

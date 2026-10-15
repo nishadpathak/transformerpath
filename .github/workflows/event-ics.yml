@@ -18,5 +18,7 @@ jobs:
         run: node build-event-ics.js
       - name: Every linked .ics exists
         run: node tests/check-event-ics.js
+      - name: Visitor guide blocks match event data
+        run: node tests/languagepath-visit.test.js
       - name: Committed calendars match the generator
         run: git status --porcelain -- events/ics events.html events && test -z "$(git status --porcelain -- events/ics events.html events)"
