@@ -17,3 +17,5 @@ jobs:
         run: node tests/autotransformer-sizing.test.js
       - name: Nameplate short-circuit current in kA
         run: node tests/nameplate-short-circuit.test.js
+      - name: Service lines page hides prices
+        run: node tests/service-lines-public.test.js
