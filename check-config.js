@@ -407,7 +407,7 @@ for (const f of pages) {
   }
 }
 // Books — first releases, direct checkout, no email-only ordering.
-routeCheck('books.html', ['first releases'], ['Email to order', 'Two volumes of transformer engineering'], ['data-buy=']);
+routeCheck('books.html', ['first releases', 'Checkout coming soon'], ['Email to order', 'Two volumes of transformer engineering', 'data-buy='], []);
 // Design Duel SSR — values must be present in crawlable HTML.
 routeCheck('design.html', ['72 kW', '355 kW', '215 t'], ['id="sp-nll"></', 'id="sp-ll"></']);
 // Footer — no "networking" positioning.
