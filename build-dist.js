@@ -84,6 +84,7 @@ const ROOT_JS = [
 const ROOT_OTHER = [
   'robots.txt', 'ads.txt', 'sitemap.xml', 'feed.xml', 'intel-feed.xml',
   'manifest.webmanifest', 'favicon.ico', 'apple-touch-icon.png',
+  '_redirects',
 ];
 
 // Root stylesheets — small and fully enumerable.

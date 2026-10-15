@@ -1,6 +1,6 @@
 # Proposal: paid job posts and qualified-lead fees
 
-Status: **prices approved, not on the live site**. Nishad approved the staged prices below on 15 Oct 2026. This file is the record. `data/commerce.json`, `jobs.html`, `pricing.html`, and `rfq.html` do not show them yet. No Stripe Product, Price, Payment Link, or Coupon has been created for them.
+Status: **prices approved, not on the live site**. The owner approved the staged prices below on 15 Oct 2026. This file is the record. `data/commerce.json`, `jobs.html`, `pricing.html`, and `rfq.html` do not show them yet. No Stripe Product, Price, Payment Link, or Coupon has been created for them.
 
 Currency is USD, matching `data/commerce.json`.
 
@@ -294,7 +294,7 @@ Nothing in this list is created in the repo or in Stripe by the classification c
 
 Env vars for the `plink_` ids, set when each link exists: `STRIPE_PAYMENT_LINK_JOB_STANDARD`, `STRIPE_PAYMENT_LINK_JOB_FEATURED`, `STRIPE_PAYMENT_LINK_JOB_BUNDLE_5`, `STRIPE_PAYMENT_LINK_RFQ_LEAD`, `STRIPE_PAYMENT_LINK_RFQ_LEAD_PRO`, `STRIPE_PAYMENT_LINK_SUPPLIER_PRO`. Checkout price ids, only when Checkout replaces the link: `STRIPE_PRICE_JOB_STANDARD`, `STRIPE_PRICE_JOB_FEATURED`, `STRIPE_PRICE_JOB_BUNDLE_5`, `STRIPE_PRICE_RFQ_LEAD`, `STRIPE_PRICE_RFQ_LEAD_PRO`, `STRIPE_PRICE_SUPPLIER_PRO`.
 
-## What Nishad still decides
+## What the owner still decides
 
 Prices, the 10-opening rise, the “leads are flowing” rise, the $149 Pro overage, the four included leads, and the founding 20 at 30% off year one are approved.
 

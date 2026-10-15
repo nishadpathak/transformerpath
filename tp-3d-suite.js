@@ -136,7 +136,7 @@
 
     modalHtml += '<div style="margin-top:10px;padding-top:8px;border-top:1px solid #1e3a5c;display:flex;gap:8px;font-size:11.5px">' +
       '<a href="calculator.html" style="color:var(--acc,#f5a623);text-decoration:none;font-weight:600">⚡ Sizing Calculator</a> · ' +
-      '<a href="masterclass.html" style="color:var(--acc,#f5a623);text-decoration:none;font-weight:600">📚 Masterclass</a> · ' +
+      '<a href="learn.html" style="color:var(--acc,#f5a623);text-decoration:none;font-weight:600">📚 Design course</a> · ' +
       '<a href="components.html" style="color:var(--acc,#f5a623);text-decoration:none;font-weight:600">🧩 Components</a>' +
       '</div>';
 

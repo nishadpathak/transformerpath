@@ -1,6 +1,6 @@
 # Search Console and Bing Webmaster
 
-Steps for Nishad to verify transformerpath.com, submit the sitemap, and request indexing. The sitemap URL is `https://transformerpath.com/sitemap.xml`. `robots.txt` already names that sitemap.
+Steps for the owner to verify transformerpath.com, submit the sitemap, and request indexing. The sitemap URL is `https://transformerpath.com/sitemap.xml`. `robots.txt` already names that sitemap.
 
 Do these in a browser while signed in as the Google account that should own the property, and as the Bing account that should own the site. Nothing below is stored in the repository. Google and Bing generate the verification token; do not reuse a token from another property.
 

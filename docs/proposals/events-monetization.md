@@ -1,6 +1,6 @@
-# Events monetization plan (for NMPFL, due 17 Oct 2026)
+# Events monetization plan (internal, due 17 Oct 2026)
 
-Status: proposal only. No code or Stripe changes in this PR. **Any new price below needs Nishad's approval before it goes live.**
+Status: proposal only. No code or Stripe changes in this PR. **Any new price below needs the owner's approval before it goes live.**
 Researched against `main` @ e456044 and the live site on 15 Oct 2026. Production is stuck on **ea26f4c**, so every launch date assumes the deploy fix lands by 16 Oct; slip that and every date slips with it.
 
 ## Evidence base
@@ -17,7 +17,7 @@ Researched against `main` @ e456044 and the live site on 15 Oct 2026. Production
 | 2 | Sponsorship packages with real checkout (fix "from $299") | Event Spotlight $299 (existing link); Category sponsor $599/mo; Event-page sponsor slot $499/event | S: 1–2 Payment Links + card copy | $500–1,100 (assume 1–2 sales) | 20 Oct |
 | 3 | Price-mismatch cleanup (#6) | none | XS | indirect (fewer abandoned checkouts) | 16–17 Oct with deploy |
 | 4 | Lead capture → TP Sales bot (exhibitors + attendees) | free form; feeds #1/#2/#5 | S–M: form + Supabase row + Sales routing | indirect; assume +1 paid sale from leads by 14 Nov ($299–399) | 22 Oct |
-| 5 | Hosted webinar for event exhibitors (pre-show) | withdrawn | — | $0. Nishad will not host webinars. Do not sell this. | rejected |
+| 5 | Hosted webinar for event exhibitors (pre-show) | withdrawn | — | $0. The owner will not host webinars. Do not sell this. | rejected |
 | 6 | Travelpayouts expansion (tickets, hotels, flights) | free to users; commission | S: add event-ticket/activity widgets, top-10 event pages, server-side click log | $10–60 (assume low hundreds of clicks, ~1–3% book, few $ commission; plus 30-day cookie lag) | 21 Oct |
 | 7 | Paid event alert / calendar newsletter | $9/mo or $79/yr (sponsor slot in free edition $199/issue) | M: list, sign-up, send pipeline, Stripe link | $0–200 (assume 0–20 subs; slow to build) | 31 Oct |
 
@@ -46,5 +46,5 @@ Weekly "transformer events & deadlines" email. Free edition with one $199 sponso
 - `pricing.html` line 394 and `sponsor.html` line 154 "Sponsorship from $299" — no checkout (see #2).
 - Stripe product title on the $299 link is generic "TransformerPath" (payments-audit line 29); product renames were done 15 Oct — re-verify.
 
-## Approvals needed from Nishad
-New prices: Category sponsor $599/mo, Event-page sponsor slot $499/event, newsletter $9/mo / $79/yr, newsletter sponsor $199/issue, optional $499 Featured Event tier. Outreach emails in #1 are public-facing and need his go-ahead on recipients and copy.
+## Approvals needed from the owner
+New prices: Category sponsor $599/mo, Event-page sponsor slot $499/event, newsletter $9/mo / $79/yr, newsletter sponsor $199/issue, optional $499 Featured Event tier. Outreach emails in #1 are public-facing and need the owner's go-ahead on recipients and copy.

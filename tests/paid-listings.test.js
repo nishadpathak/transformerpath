@@ -490,7 +490,8 @@ async function main() {
   check('commerce catalog stores the exhibitor payment link', commerceExhibitor && commerceExhibitor.price === 399 && commerceExhibitor.payment_link === exhibitorLink, JSON.stringify(commerceExhibitor && { price: commerceExhibitor.price, payment_link: commerceExhibitor.payment_link }));
   const retiredWebinarCode = '14A3co8Kc6ln77Wc1AfYY07';
   check('hosted webinar is not a sellable payment link', !paid.PAYMENT_LINKS.hosted_webinar && !paid.HOSTED_WEBINAR_PAYMENT_LINK);
-  ['pricing.html', 'webinars.html', 'sponsor.html', 'events.html', 'exhibitions.html'].forEach(function (rel) {
+  check('webinars page is not published', !fs.existsSync('webinars.html'));
+  ['pricing.html', 'sponsor.html', 'events.html', 'exhibitions.html'].forEach(function (rel) {
     const html = fs.readFileSync(rel, 'utf8');
     check(rel + ' does not offer a hosted webinar', html.indexOf(retiredWebinarCode) < 0 && html.indexOf('Host a webinar') < 0 && html.indexOf('Hosted Webinar') < 0 && html.indexOf('id="hosted-webinar"') < 0);
   });
