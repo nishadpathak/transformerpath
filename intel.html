@@ -441,20 +441,27 @@ a.plain:hover { text-decoration:underline; }
     fetch('data/materials-latest.json').then(function(r){ return r.json().catch(function(){ return {}; }); }).then(function(d){
       var rows=(d.rows||[]);
       var out=rows.map(function(m){
-        var st=(m.status||'stale').toLowerCase();
-        var isStale = st==='stale';
+        var st=(m.status||'').toLowerCase();
+        var isHistorical = st==='historical' || st==='stale' || String(m.freshness_status||'').toUpperCase()==='HISTORICAL';
         var isFresh = st==='recent' || st==='fresh';
-        var stColor = isStale ? '#9fb0c4' : (isFresh ? 'var(--ok)' : '#e8c46a');
-        var stBg = isStale ? 'rgba(159,176,196,.12)' : (isFresh ? 'rgba(74,222,128,.12)' : 'rgba(232,196,106,.15)');
-        var lbl = isStale ? 'Historical reference' : (isFresh ? 'Fresh' : 'Aging');
-        var obs=m.observation_date||m.last_verified||'';
-        var note = m.last_verified ? ' · last verified '+m.last_verified : '';
+        var stColor = isHistorical ? '#9fb0c4' : (isFresh ? 'var(--ok)' : '#e8c46a');
+        var stBg = isHistorical ? 'rgba(159,176,196,.12)' : (isFresh ? 'rgba(74,222,128,.12)' : 'rgba(232,196,106,.15)');
+        var lbl = isHistorical ? 'Historical reference' : (isFresh ? 'Fresh' : 'Aging');
+        var obs=m.observation_date||'';
+        var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        var parts=/^(\d{4})-(\d{2})-(\d{2})/.exec(obs);
+        var obsLabel = parts ? (String(Number(parts[3]))+' '+months[Number(parts[2])-1]+' '+parts[1]) : obs;
+        var cadence = (m.note && m.note.indexOf('updated when a new LME official settlement is recorded')>=0)
+          ? 'updated when a new LME official settlement is recorded' : '';
+        var asOf = (isHistorical && obsLabel && cadence)
+          ? '<div style="font-size:.72rem;color:#9fb0c4;margin-top:4px">prices as of '+obsLabel+', '+cadence+'</div>' : '';
+        var verified = m.last_verified ? ' · last verified '+m.last_verified : '';
         return '<div class="mat-card" style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px">'
           +'<div style="display:flex;justify-content:space-between;align-items:center;font-size:.72rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--muted)">'+m.name
           +'<span style="font-size:.65rem;font-weight:700;color:'+stColor+';background:'+stBg+';border:1px solid '+stColor+'44;padding:2px 8px;border-radius:999px">'+lbl+'</span></div>'
           +'<div style="font-size:1.2rem;font-weight:800;color:var(--ink);margin:4px 0 2px">'+(m.value_display||'')+' <span style="font-size:.72rem;color:var(--muted);font-weight:600">'+m.unit+'</span></div>'
-          +'<div style="font-size:.72rem;color:var(--muted)">'+(m.market||'')+(obs?' · observation '+obs:'')+note+'</div>'
-          +(isStale ? '<div style="font-size:.72rem;color:#9fb0c4;margin-top:4px">Observed '+obs+' — shown as a historical reference, not a current market rate.</div>' : '')
+          +'<div style="font-size:.72rem;color:var(--muted)">'+(m.market||'')+verified+'</div>'
+          +asOf
           +'</div>';
       }).join('');
       targets.forEach(function(el){ el.innerHTML = out || '<div style="color:var(--muted)">No material rates available.</div>'; });
