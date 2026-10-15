@@ -268,8 +268,11 @@ function renderEvents(html) {
     if (!ev.end) return ev.date_status === 'TBA' || ev.date_status === 'PROJECTED';
     return ev.end >= TODAY;
   }).map((ev) => ev.country)).size;
+  const depthOther = list.length - depthConfirmed - depthProjected;
   const countText = 'Showing ' + list.length + ' upcoming events. ' +
-    depthConfirmed + ' upcoming confirmed · ' + depthProjected + ' projected · ' + depthCountries + ' countries hosting';
+    depthConfirmed + ' upcoming confirmed · ' + depthProjected + ' projected' +
+    (depthOther > 0 ? ' · ' + depthOther + ' dates not confirmed' : '') +
+    ' · ' + depthCountries + ' countries hosting';
   html = inject(html, '<p style="text-align:center; color:var(--muted); font-size:.88rem" id="count">', 'events-count',
     countText);
 

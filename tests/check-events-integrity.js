@@ -8,7 +8,7 @@ const fs = require('fs');
 const path = require('path');
 const { loadEvents } = require('../lib/events-reader');
 const { dubaiToday } = require('../lib/event-display');
-const { resolveStatus, isDiscoverable } = require('../lib/event-status');
+const { resolveStatus, isDiscoverable, isUpcoming } = require('../lib/event-status');
 
 const hard = [];
 const warn = [];
@@ -110,7 +110,12 @@ if (fs.existsSync('events.html')) {
     if (!e.end) return e.date_status === 'TBA' || e.date_status === 'PROJECTED';
     return e.end >= today;
   }).map((e) => e.country)).size;
-  const expect = confirmed + ' upcoming confirmed · ' + projected + ' projected · ' + countries + ' countries hosting';
+  const upcoming = events.filter((e) => isUpcoming(e, today)).length;
+  const other = upcoming - confirmed - projected;
+  if (other < 0) fail('events count split exceeds the upcoming list (' + other + ')');
+  const expect = confirmed + ' upcoming confirmed · ' + projected + ' projected' +
+    (other > 0 ? ' · ' + other + ' dates not confirmed' : '') +
+    ' · ' + countries + ' countries hosting';
   if (page.indexOf(expect) < 0) fail('events.html count copy does not match data (' + expect + ')');
   if (/140 countries/.test(page.replace(/const EVENTS\s*=\s*\[[\s\S]*?\];/, ''))) fail('events.html still says 140 countries outside event records');
 }
