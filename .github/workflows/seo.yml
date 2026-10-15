@@ -20,3 +20,5 @@ jobs:
         run: node tests/virginia-transformer-specs.js
       - name: Sourced manufacturer specifications
         run: node tests/manufacturer-specs.js
+      - name: Sourced product and voltage hubs
+        run: node tests/sourced-hubs.js
