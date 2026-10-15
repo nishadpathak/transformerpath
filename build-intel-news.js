@@ -170,11 +170,11 @@ intel.updated = intel.refresh_meta && intel.refresh_meta.newest_validated_conten
       : intel.refresh_meta.newest_validated_content_date)
   : new Date().toISOString();
 intel.refresh_meta = Object.assign({}, intel.refresh_meta || {}, {
-  cadence: 'once daily at 06:00 UTC (10:00 Dubai), only when TP_BUILD_HOOK_URL is set',
+  cadence: 'once daily at 06:00 UTC, only when TP_BUILD_HOOK_URL is set',
   refreshed_at_build: true
 });
 if (!intel.refresh_meta.note) {
-  intel.refresh_meta.note = 'Curated transformer-industry intelligence. updated tracks newest validated content observation when present — not a silent redeploy clock. The scheduled rebuild is once daily (06:00 UTC / 10:00 Dubai) and only runs when TP_BUILD_HOOK_URL is set.';
+  intel.refresh_meta.note = 'Curated transformer-industry intelligence. updated tracks newest validated content observation when present — not a silent redeploy clock. The scheduled rebuild is once daily (06:00 UTC) and only runs when TP_BUILD_HOOK_URL is set.';
 }
 const FOLD = { China: 'RoW', AsiaPac: 'RoW', LatAm: 'RoW', Africa: 'RoW', 'North America': 'USA' };
 const srcByRegion = {};
