@@ -240,8 +240,12 @@ for (const f of pages) {
   const text = s.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
   const cred = affirmCredClaim(text);
   if (cred) problems.push('voice-cert-claim ' + f + ' :: ' + cred);
-  if (/\bELIN\b|\bpersonal\s+reference\b/i.test(text)) {
-    const m = text.match(/\bELIN\b|\bpersonal\s+reference\b/i);
+  // "Elin" as the site's voice stays banned. The supplier Elin Insulation FZ LLC
+  // is a company name, including the slug elin-insulation, and is not that voice.
+  if (/\bpersonal\s+reference\b/i.test(text)) {
+    problems.push('voice-elinstrict ' + f + ' :: personal reference');
+  } else if (/\bELIN\b(?!\s+Insulation\b)(?!-insulation\b)/i.test(text)) {
+    const m = text.match(/\bELIN\b(?!\s+Insulation\b)(?!-insulation\b)/i);
     problems.push('voice-elinstrict ' + f + ' :: ' + (m && m[0]));
   }
   // ── Commercial-architecture forbidden terminology (audit P0) ──────────
