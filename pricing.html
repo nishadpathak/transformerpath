@@ -579,25 +579,33 @@ table.cmp .n { color:var(--border); }
     b.style.display = 'block';
   }
 
-  if (stripeReturn && (params.get('product') === 'verified_manufacturer' || params.get('product') === 'featured_event')) {
-    var listingProduct = params.get('product');
-    fetch('/.netlify/functions/verify-access', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ session_id: stripeReturn }) })
+  var listingReturn = params.get('product');
+  if (stripeReturn && (listingReturn === 'verified_manufacturer' || listingReturn === 'featured_event' || listingReturn === 'featured_exhibitor')) {
+    var listingNeutral = 'If you completed payment, submit the form below; we confirm payment before review.';
+    var listingBanner = document.getElementById('unlockBanner');
+    if (listingBanner) {
+      listingBanner.style.background = '#14365c';
+      listingBanner.textContent = listingNeutral;
+      listingBanner.style.display = 'block';
+    }
+    fetch('/.netlify/functions/confirm-listing-payment', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ session_id: stripeReturn, product: listingReturn }) })
       .then(function (r) { return r.json(); })
       .then(function (res) {
-        var b = document.getElementById('unlockBanner');
-        if (!b) return;
-        var label = listingProduct === 'featured_event' ? 'FEATURED' : 'VERIFIED MANUFACTURER';
-        b.style.background = '#14365c';
-        b.innerHTML = (res && res.paid)
-          ? (listingProduct === 'featured_event'
-            ? 'Payment received. Submit the event name, URL, and dates on the <a href="events.html?paid=featured_event#submit-event" style="color:#fff;text-decoration:underline">events list</a>. FEATURED is shown only after review.'
-            : 'Payment received. Submit your company details on the <a href="claim-profile.html?paid=verified_manufacturer#claimForm" style="color:#fff;text-decoration:underline">claim form</a>. ' + label + ' is published only after review.')
-          : 'We could not confirm this payment yet. If you were charged, email hello@transformerpath.com with your receipt.';
-        b.style.display = 'block';
-        params.delete('session_id');
-        history.replaceState({}, '', location.pathname + (params.toString() ? '?' + params.toString() : ''));
+        if (!listingBanner) return;
+        var confirmed = res && res.configured === true && res.paid === true && res.product === listingReturn;
+        if (!confirmed) {
+          listingBanner.textContent = listingNeutral;
+          return;
+        }
+        listingBanner.innerHTML = listingReturn === 'featured_event'
+          ? 'Payment received. Submit the event name, URL, and dates on the <a href="events.html?paid=featured_event#submit-event" style="color:#fff;text-decoration:underline">events list</a>. FEATURED is shown only after review.'
+          : listingReturn === 'featured_exhibitor'
+            ? 'Payment received. Submit your company and the event on the <a href="sponsor.html?paid=featured_exhibitor#contact" style="color:#fff;text-decoration:underline">sponsor form</a>. FEATURED is shown only after review.'
+            : 'Payment received. Submit your company details on the <a href="claim-profile.html?paid=verified_manufacturer#claimForm" style="color:#fff;text-decoration:underline">claim form</a>. VERIFIED MANUFACTURER is published only after review.';
       })
-      .catch(function () {});
+      .catch(function () {
+        if (listingBanner) listingBanner.textContent = listingNeutral;
+      });
     return;
   }
 

@@ -128,7 +128,7 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
       </p>
 
       <div id="claimPaidBanner" style="display:none;background:#14365c;color:#fff;border-radius:10px;padding:12px 14px;margin:0 0 16px;font-size:.9rem;line-height:1.5">
-        Payment received. Submit your company details in the form below. The VERIFIED MANUFACTURER badge appears only after manual review. Payment does not change capability, evidence, or ranking.
+        If you completed payment, submit the form below; we confirm payment before review.
       </div>
       <p style="margin:0 0 8px"><a class="btn btn-amber" href="https://buy.stripe.com/4gMbIU7G8bFHak8d5EfYY05" data-verified-manufacturer-pay="1">Pay $499 — Get Verified</a></p>
       <p class="paid-after-note" style="color:var(--muted);font-size:.82rem;margin:0 0 16px">After payment, return to this form and submit your company details. The badge appears only after review.</p>
@@ -195,6 +195,7 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
         <a href="directory.html" class="btn btn-outline" style="display:inline-block">Return to Directory &rarr;</a>
       </div>
 
+      <script src="listing-payment.js"></script>
       <script>
       (function(){
         try {
@@ -221,13 +222,17 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
         try {
           var paid = new URLSearchParams(location.search);
           if (paid.get('paid') === 'verified_manufacturer') {
-            var banner = document.getElementById('claimPaidBanner');
-            if (banner) banner.style.display = 'block';
-            var sessionField = document.getElementById('claimPaymentSession');
-            if (sessionField && paid.get('session_id')) sessionField.value = paid.get('session_id');
             var tier = document.getElementById('fld_tier');
             if (tier) tier.value = 'VERIFIED';
-            f.scrollIntoView({behavior:'smooth', block:'start'});
+          }
+          if (window.tpListingPayment) {
+            window.tpListingPayment.confirm({
+              product: 'verified_manufacturer',
+              noteId: 'claimPaidBanner',
+              sessionFieldId: 'claimPaymentSession',
+              scrollId: 'claimForm',
+              paidText: 'Payment received. Submit your company details in the form below. The VERIFIED MANUFACTURER badge appears only after manual review. Payment does not change capability, evidence, or ranking.'
+            });
           }
         } catch (err) {}
       })();

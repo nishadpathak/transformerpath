@@ -522,6 +522,7 @@
       </div>
     </div>
   </div>
+  <script src="listing-payment.js"></script>
   <script>
   (function () {
     var form = document.getElementById('eventSubmitForm');
@@ -536,26 +537,15 @@
           .catch(function () { if (btn) btn.disabled = false; alert('Submission failed. Please try again or email hello@transformerpath.com.'); });
       });
     }
-    var params = new URLSearchParams(location.search);
-    if (params.get('paid') !== 'featured_event') return;
-    var note = document.getElementById('featuredPayNote');
-    var session = params.get('session_id') || '';
-    var hidden = document.getElementById('featuredPaymentSession');
-    if (hidden) hidden.value = session;
-    var pending = 'Payment received. Submit the event name, URL, and dates below. The FEATURED label is shown only after manual review.';
-    if (note) { note.style.display = 'block'; note.textContent = pending; }
-    var box = document.getElementById('submit-event');
-    if (box && box.scrollIntoView) box.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    if (!session || session.indexOf('{') !== -1) return;
-    fetch('/.netlify/functions/verify-access', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ session_id: session }) })
-      .then(function (r) { return r.json(); })
-      .then(function (res) {
-        if (!note) return;
-        if (res && res.paid) note.textContent = pending;
-        else if (res && res.configured === false) note.textContent = 'Submit the event name, URL, and dates below. If you just paid, use the email on the Stripe receipt. The FEATURED label is shown only after manual review.';
-        else note.textContent = 'We could not confirm this payment yet. Submit the event name, URL, and dates, and email hello@transformerpath.com with your receipt if you were charged.';
-      })
-      .catch(function () {});
+    if (window.tpListingPayment) {
+      window.tpListingPayment.confirm({
+        product: 'featured_event',
+        noteId: 'featuredPayNote',
+        sessionFieldId: 'featuredPaymentSession',
+        scrollId: 'submit-event',
+        paidText: 'Payment received. Submit the event name, URL, and dates below. The FEATURED label is shown only after manual review.'
+      });
+    }
   })();
   </script>
 

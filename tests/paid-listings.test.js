@@ -600,6 +600,84 @@ async function main() {
 
   global.fetch = savedFetch;
   if (savedStripe === undefined) delete process.env.STRIPE_SECRET_KEY; else process.env.STRIPE_SECRET_KEY = savedStripe;
+
+  const confirm = require('../functions/confirm-listing-payment');
+  delete process.env.STRIPE_SECRET_KEY;
+  let stripeCalls = 0;
+  global.fetch = function () { stripeCalls++; return Promise.reject(new Error('stripe must not be called')); };
+  let confirmRes = await confirm.handler({ httpMethod: 'POST', body: JSON.stringify({ session_id: 'cs_test_fake', product: 'verified_manufacturer', paid: true }) });
+  let confirmBody = JSON.parse(confirmRes.body);
+  check('missing stripe key does not confirm a session_id', confirmRes.statusCode === 200 && confirmBody.configured === false && confirmBody.paid === false && stripeCalls === 0, JSON.stringify(confirmBody));
+
+  process.env.STRIPE_SECRET_KEY = 'sk_test_confirm_only';
+  global.fetch = function (url) {
+    stripeCalls++;
+    const id = String(url).split('/').pop();
+    const sessions = {
+      cs_test_unpaid: { payment_status: 'unpaid', metadata: { product: 'verified_manufacturer' } },
+      cs_test_wrong: { payment_status: 'paid', metadata: { product: 'featured_event' } },
+      cs_test_paid_mfr: { payment_status: 'paid', metadata: { product: 'verified_manufacturer' } },
+      cs_test_course: { payment_status: 'paid', amount_total: 19900, currency: 'usd', metadata: { plan: 'learning' } }
+    };
+    if (!sessions[id]) return Promise.resolve({ ok: false, json: async function () { return { error: 'missing' }; } });
+    return Promise.resolve({ ok: true, json: async function () { return sessions[id]; } });
+  };
+  confirmRes = await confirm.handler({ httpMethod: 'POST', body: JSON.stringify({ session_id: 'cs_test_unpaid', product: 'verified_manufacturer' }) });
+  confirmBody = JSON.parse(confirmRes.body);
+  check('unpaid session is not payment received', confirmBody.configured === true && confirmBody.paid === false, JSON.stringify(confirmBody));
+  confirmRes = await confirm.handler({ httpMethod: 'POST', body: JSON.stringify({ session_id: 'cs_test_wrong', product: 'verified_manufacturer' }) });
+  confirmBody = JSON.parse(confirmRes.body);
+  check('paid session for a different product is not confirmed', confirmBody.paid === false && confirmBody.product === 'featured_event', JSON.stringify(confirmBody));
+  confirmRes = await confirm.handler({ httpMethod: 'POST', body: JSON.stringify({ session_id: 'cs_test_course', product: 'featured_exhibitor' }) });
+  confirmBody = JSON.parse(confirmRes.body);
+  check('course payment does not confirm a listing', confirmBody.paid === false, JSON.stringify(confirmBody));
+  confirmRes = await confirm.handler({ httpMethod: 'POST', body: JSON.stringify({ session_id: 'cs_test_paid_mfr', product: 'verified_manufacturer' }) });
+  confirmBody = JSON.parse(confirmRes.body);
+  check('paid matching listing session is confirmed', confirmBody.configured === true && confirmBody.paid === true && confirmBody.product === 'verified_manufacturer', JSON.stringify(confirmBody));
+  confirmRes = await confirm.handler({ httpMethod: 'GET' });
+  check('confirm requires a product', confirmRes.statusCode === 400 && JSON.parse(confirmRes.body).paid === false);
+
+  const vm = require('vm');
+  const clientSrc = fs.readFileSync('listing-payment.js', 'utf8');
+  async function banner(search, payload) {
+    const note = { style: { display: 'none' }, textContent: 'Payment received. should be replaced' };
+    const hidden = { value: '' };
+    const sandbox = {
+      URLSearchParams: URLSearchParams,
+      location: { search: search },
+      document: { getElementById: function (id) { return id === 'claimPaidBanner' ? note : hidden; } },
+      fetch: function () {
+        return Promise.resolve({ json: function () { return Promise.resolve(payload); } });
+      }
+    };
+    sandbox.window = sandbox;
+    vm.createContext(sandbox);
+    vm.runInContext(clientSrc, sandbox);
+    sandbox.window.tpListingPayment.confirm({
+      product: 'verified_manufacturer',
+      noteId: 'claimPaidBanner',
+      sessionFieldId: 'claimPaymentSession',
+      paidText: 'Payment received. Submit your company details in the form below.'
+    });
+    await new Promise(function (resolve) { setTimeout(resolve, 0); });
+    return note.textContent;
+  }
+  const neutral = 'If you completed payment, submit the form below; we confirm payment before review.';
+  check('client keeps neutral text when stripe is not configured', await banner('?paid=verified_manufacturer&session_id=cs_test_fake', { configured: false, paid: false, product: null }) === neutral);
+  check('client keeps neutral text for an unpaid session', await banner('?paid=verified_manufacturer&session_id=cs_test_fake', { configured: true, paid: false, product: null }) === neutral);
+  check('client says payment received only after a matching confirmation', await banner('?paid=verified_manufacturer&session_id=cs_test_paid_mfr', { configured: true, paid: true, product: 'verified_manufacturer' }) === 'Payment received. Submit your company details in the form below.');
+  check('client ignores a paid flag for another product', await banner('?paid=verified_manufacturer&session_id=cs_test_fake', { configured: true, paid: true, product: 'featured_event' }) === neutral);
+
+  const claimPage = fs.readFileSync('claim-profile.html', 'utf8');
+  const claimBanner = claimPage.slice(claimPage.indexOf('id="claimPaidBanner"'), claimPage.indexOf('id="claimPaidBanner"') + 500);
+  check('claim banner default copy is neutral', claimBanner.indexOf(neutral) >= 0 && claimBanner.indexOf('Payment received') < 0);
+  check('claim page asks confirm-listing-payment', claimPage.indexOf('listing-payment.js') >= 0);
+  check('events page does not treat the query as payment received', fs.readFileSync('events.html', 'utf8').indexOf("note.textContent = pending") < 0 && fs.readFileSync('events.html', 'utf8').indexOf('listing-payment.js') >= 0);
+  check('sponsor page asks confirm-listing-payment', fs.readFileSync('sponsor.html', 'utf8').indexOf('confirm-listing-payment') < 0 && fs.readFileSync('sponsor.html', 'utf8').indexOf('listing-payment.js') >= 0 && fs.readFileSync('sponsor.html', 'utf8').indexOf("note.textContent=pending") < 0);
+  check('pricing listing return uses confirm-listing-payment', fs.readFileSync('pricing.html', 'utf8').indexOf('confirm-listing-payment') >= 0);
+
+  delete process.env.STRIPE_SECRET_KEY;
+  global.fetch = savedFetch;
   if (savedPriceM === undefined) delete process.env.STRIPE_PRICE_VERIFIED_MANUFACTURER; else process.env.STRIPE_PRICE_VERIFIED_MANUFACTURER = savedPriceM;
   if (savedPriceE === undefined) delete process.env.STRIPE_PRICE_FEATURED_EVENT; else process.env.STRIPE_PRICE_FEATURED_EVENT = savedPriceE;
   if (savedNotify === undefined) delete process.env.NOTIFY_TO; else process.env.NOTIFY_TO = savedNotify;
