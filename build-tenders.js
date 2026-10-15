@@ -32,6 +32,7 @@
 'use strict';
 const fs = require('fs');
 const { isoDateInText, countryFromText, usableSource } = require('./lib/tender-country');
+const { parseDeadline, deadlineLabel, classifyOpenDeadline } = require('./lib/deadline');
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
@@ -64,33 +65,10 @@ function regionOf(c) {
 const STATUS_LABEL = { EXPECTED: 'Expected', OPEN: 'Open', CLOSING_SOON: 'Closing soon', CLOSED: 'Closed', EVALUATION: 'Evaluation', AWARDED: 'Awarded', UNKNOWN: 'Stage unknown' };
 const STATUS_GROUP = { EXPECTED: 'Pre-award', OPEN: 'Open', CLOSING_SOON: 'Open', CLOSED: 'Closed', EVALUATION: 'Evaluation', AWARDED: 'Awarded', UNKNOWN: 'Pre-award' };
 
-// Deadline parsing: extract an ISO/date-ish token from expected/intel text.
-function parseDeadline(text) {
-  if (!text) return '';
-  const m = String(text).match(/\b(20\d{2})-?(\d{2})?-?(\d{2})?\b/);
-  return m ? m[0] : '';
-}
-function isNearDeadline(deadline) {
-  if (!deadline) return false;
-  const d = new Date(deadline);
-  if (isNaN(d)) return false;
-  const days = (d - Date.now()) / 86400000;
-  return days >= 0 && days <= 14;
-}
-function isPast(deadline) {
-  if (!deadline) return false;
-  const d = new Date(deadline);
-  if (isNaN(d)) return false;
-  return d < Date.now();
-}
 function deriveStatus(stage, expected, deadline) {
   if (stage === 'evaluation') return 'EVALUATION';
   if (/award/i.test(stage)) return 'AWARDED';
-  if (stage === 'tendering') {
-    if (isPast(deadline)) return 'CLOSED';
-    if (isNearDeadline(deadline)) return 'CLOSING_SOON';
-    return 'OPEN';
-  }
+  if (stage === 'tendering') return classifyOpenDeadline(deadline);
   if (stage === 'expected' || stage === 'planned') return 'EXPECTED';
   return 'UNKNOWN';
 }
@@ -345,7 +323,7 @@ function tenderPage(t) {
     ['Voltage class', esc(t.voltage || '—')],
     ['Transformer scope', scopeBadge || '—'],
     ['Delivery / timeline', esc(t.delivery_requirement || '—')],
-    ['Deadline', esc(t.deadline || '—')],
+    ['Deadline', esc(deadlineLabel(t.deadline) || '—')],
   ].map((r) => '<tr><th style="width:170px">' + r[0] + '</th><td>' + r[1] + '</td></tr>').join('');
   return '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
     '<title>' + esc(t.title) + ' — Transformer Tender | TransformerPath</title>' +
