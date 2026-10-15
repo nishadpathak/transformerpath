@@ -56,6 +56,12 @@
 
 # Pretty-URL mappings for top-level pages
 [[redirects]]
+  from = "/manufacturers"
+  to = "/manufacturers.html"
+  status = 301
+  force = true
+
+[[redirects]]
   from = "/workspace"
   to = "/workspace.html"
   status = 301
