@@ -206,35 +206,41 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
           }
         } catch(e){}
         var f = document.getElementById('claimForm');
-        if (!f) return;
-        f.addEventListener('submit', function(e){
-          e.preventDefault();
-          if (typeof f.checkValidity === 'function' && !f.checkValidity()){ f.reportValidity(); return; }
-          var body = new URLSearchParams(new FormData(f)).toString();
-          fetch('/', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:body}).then(done).catch(done);
-        });
+        if (f) {
+          f.addEventListener('submit', function(e){
+            e.preventDefault();
+            if (typeof f.checkValidity === 'function' && !f.checkValidity()){ f.reportValidity(); return; }
+            var body = new URLSearchParams(new FormData(f)).toString();
+            fetch('/', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:body}).then(done).catch(done);
+          });
+        }
         function done(){
-          f.style.display = 'none';
+          if (f) f.style.display = 'none';
           var t = document.getElementById('claimThanks');
+          if (!t) return;
           t.style.display = 'block';
           t.scrollIntoView({behavior:'smooth', block:'center'});
         }
-        try {
-          var paid = new URLSearchParams(location.search);
-          if (paid.get('paid') === 'verified_manufacturer') {
-            var tier = document.getElementById('fld_tier');
-            if (tier) tier.value = 'VERIFIED';
-          }
-          if (window.tpListingPayment) {
-            window.tpListingPayment.confirm({
-              product: 'verified_manufacturer',
-              noteId: 'claimPaidBanner',
-              sessionFieldId: 'claimPaymentSession',
-              scrollId: 'claimForm',
-              paidText: 'Payment received. Submit your company details in the form below. The VERIFIED MANUFACTURER badge appears only after manual review. Payment does not change capability, evidence, or ranking.'
-            });
-          }
-        } catch (err) {}
+        function showListingReturn() {
+          try {
+            var paid = new URLSearchParams(location.search);
+            if (paid.get('paid') === 'verified_manufacturer') {
+              var tier = document.getElementById('fld_tier');
+              if (tier) tier.value = 'VERIFIED';
+            }
+            if (window.tpListingPayment) {
+              window.tpListingPayment.confirm({
+                product: 'verified_manufacturer',
+                noteId: 'claimPaidBanner',
+                sessionFieldId: 'claimPaymentSession',
+                scrollId: 'claimForm',
+                paidText: 'Payment received. Submit your company details in the form below. The VERIFIED MANUFACTURER badge appears only after manual review. Payment does not change capability, evidence, or ranking.'
+              });
+            }
+          } catch (err) {}
+        }
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', showListingReturn);
+        else showListingReturn();
       })();
       </script>
     </div>

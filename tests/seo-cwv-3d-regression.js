@@ -79,6 +79,14 @@ check('homepage keeps the static unavailable note',
 check('mobile poster is still the LCP image',
   home.indexOf('media/power-transformer-3d-poster-800.jpg') !== -1);
 
+['claim-profile.html', 'events.html', 'sponsor.html'].forEach(function (rel) {
+  const published = publish(rel);
+  const tag = scriptTags(published).filter(function (attrs) {
+    return srcOf(attrs).indexOf('listing-payment.js') !== -1;
+  })[0];
+  check(rel + ' does not defer listing-payment.js', !!(tag && !/\bdefer\b/i.test(tag) && cwv.scriptKeepsParserOrder(tag)), tag);
+});
+
 const gate = fs.readFileSync(path.join(root, 'tp-webgl-gate.js'), 'utf8');
 check('no-WebGL fallback copy remains',
   gate.indexOf('Interactive 3D is unavailable in this browser.') !== -1 &&
