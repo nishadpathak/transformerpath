@@ -3,6 +3,7 @@
  * - learn.html price column used flex:none and widened a 390px screen
  * - methodology tables widened the document instead of scrolling inside the page
  * - the 14 Aug 2026 archive stamp rendered 3 Aug because the briefing date was not applied
+ * - netlify.toml lost its [build] header, so every deploy was rejected before the build
  */
 'use strict';
 const fs = require('fs');
@@ -15,6 +16,12 @@ function check(label, pass, detail) {
     failed++;
   }
 }
+
+const toml = fs.readFileSync('netlify.toml', 'utf8');
+const commandAt = toml.search(/command\s*=/);
+const buildAt = toml.indexOf('[build]');
+const functionsTable = toml.indexOf('\n[functions]');
+check('netlify.toml keeps build settings in the [build] table', buildAt === 0 && commandAt > buildAt && functionsTable > commandAt);
 
 const learn = fs.readFileSync('learn.html', 'utf8');
 check('learn price column can shrink', /class="price-side"/.test(learn) && !/flex:none;text-align:center/.test(learn));
