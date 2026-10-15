@@ -640,7 +640,8 @@ function marketPage(m) {
       (biProj ? '<div style="margin-top:8px"><b style="color:var(--text)">Transformer projects</b><ul>' + biProj + '</ul></div>' : '') +
       '<p style="font-size:.82rem;color:var(--muted)">See the <a href="../../intelligence.html" style="color:var(--accent)">Intelligence</a> hub for the full activity feed.</p>'
     : '<p style="color:var(--muted)">No source-backed business activity published for this market yet.</p>';
-  const compHtml = Object.keys(COMPONENTS).map(function (c) { return '<a class="tpill" href="../../components/' + c + '.html">' + esc(COMPONENTS[c]) + '</a>'; }).join(' ');
+  const { componentSlugHref } = require('./lib/component-href');
+  const compHtml = Object.keys(COMPONENTS).map(function (c) { return '<a class="tpill" href="' + componentSlugHref('../../', c) + '">' + esc(COMPONENTS[c]) + '</a>'; }).join(' ');
   const techHtml = m.tech.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('');
   const faqHtml = m.faq.map(function (f) { return '<div style="margin:12px 0"><b style="color:var(--ink)">' + esc(f[0]) + '</b><p style="color:var(--text);margin:4px 0 0">' + esc(f[1]) + '</p></div>'; }).join('');
   const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: m.faq.map(function (f) { return { '@type': 'Question', name: f[0], acceptedAnswer: { '@type': 'Answer', text: f[1] } }; }) };

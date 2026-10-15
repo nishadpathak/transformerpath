@@ -2242,7 +2242,8 @@ function toc(secs) { return '<ul>' + secs.map(function (s) { return '<li><a href
 
 function articlePage(a) {
   const makers = makersFor(a.types);
-  const compLinks = (a.comps || []).map(function (c) { return '<a class="tpill" href="../components/' + c + '.html">' + esc(COMPONENTS[c] || c) + '</a>'; }).join(' ');
+  const { componentSlugHref } = require('./lib/component-href');
+  const compLinks = (a.comps || []).map(function (c) { return '<a class="tpill" href="' + componentSlugHref('../', c) + '">' + esc(COMPONENTS[c] || c) + '</a>'; }).join(' ');
   const makerLinks = makers.map(function (m) { return '<a href="../manufacturers/' + m.slug + '.html" style="color:var(--accent)">' + esc(m.name) + '</a>'; }).join(' · ');
   const today = '27 Aug 2026';
   const ct = Math.round((a.minutes * 200 + 40) / 55); // rough words ≈ minutes

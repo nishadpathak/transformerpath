@@ -68,7 +68,7 @@
       directoryLabel: 'Explore Power Plant Machinery',
       parts: [
         { part: 'Stator / IPB interfaces', href: 'components/tank-and-mechanical.html', evidence: 'SUPPORTED — mechanical & enclosure suppliers in directory' },
-        { part: 'Protection & monitoring', href: 'components/protection-monitoring.html', evidence: 'SUPPORTED — relay / monitoring device makers' }
+        { part: 'Protection & monitoring', href: 'components/protection-monitoring/', evidence: 'SUPPORTED — relay / monitoring device makers' }
       ],
       physics: 'Generates bulk electrical power at medium voltage (21 kV) constrained by generator stator winding dielectric insulation limits.'
     },
@@ -199,7 +199,7 @@
         { part: 'Power transformer OEMs', href: 'manufacturers/power-transformers/', evidence: 'CONFIRMED — OEMs with public type / voltage evidence' },
         { part: 'HV bushings', href: 'components/transformer-bushings.html', evidence: 'CONFIRMED — bushing specialists' },
         { part: 'ONAF cooling', href: 'components/transformer-cooling.html', evidence: 'SUPPORTED — radiator / fan plant' },
-        { part: 'Protection devices', href: 'components/protection-monitoring.html', evidence: 'SUPPORTED — Buchholz / PRV / DGA' }
+        { part: 'Protection devices', href: 'components/protection-monitoring/', evidence: 'SUPPORTED — Buchholz / PRV / DGA' }
       ],
       physics: 'Steps transmission down from 220 kV regional grid to 132 kV subtransmission level, matching regional utility grid voltage levels.'
     },

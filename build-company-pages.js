@@ -470,7 +470,8 @@ function page(r, slug) {
   // capabilities: union of type + tier fields
   const typeHtml = (r.types.length ? r.types : ['DT']).map(function (t) { return '<span class="tpill">' + esc(typeBadge(t)) + '</span>'; }).join(' ');
   const comps = [...new Set((r.types.length ? r.types : ['DT']).reduce(function (a, t) { return a.concat(TYPE_COMPS[t] || []); }, []))];
-  const compLinks = comps.map(function (c) { return '<a class="tpill" href="../../components/' + c + '.html">' + esc(COMPONENTS[c] || c) + '</a>'; }).join(' ');
+  const { componentSlugHref } = require('./lib/component-href');
+  const compLinks = comps.map(function (c) { return '<a class="tpill" href="' + componentSlugHref('../../', c) + '">' + esc(COMPONENTS[c] || c) + '</a>'; }).join(' ');
   const apps = [...new Set((r.types.length ? r.types : ['DT']).reduce(function (a, t) { return a.concat(TYPE_APPS[t] || []); }, []))];
   const appLinks = apps.map(function (a) { return '<a class="tpill" href="../../applications/' + a + '.html">' + esc(APPS[a] || a) + '</a>'; }).join(' ');
   const marketSlug = COUNTRY_MARKET[ci(r.country)];
