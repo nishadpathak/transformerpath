@@ -124,7 +124,8 @@ html, body {
   gap: 4px;
   backdrop-filter: blur(12px);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-  max-width: 95vw;
+  max-width: calc(100vw - 16px);
+  min-width: 0;
   overflow-x: auto;
 }
 
@@ -138,6 +139,7 @@ html, body {
   border-radius: 999px;
   cursor: pointer;
   white-space: nowrap;
+  flex: 0 0 auto;
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
@@ -508,6 +510,17 @@ html, body {
 }
 
 @media (max-width: 768px) {
+  .gl-topbar {
+    height: auto;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    padding: 8px 10px 12px;
+    row-gap: 8px;
+  }
+  .gl-top-links {
+    flex-wrap: wrap;
+    max-width: 100%;
+  }
   .gl-panel-left {
     display: none;
   }
@@ -521,8 +534,14 @@ html, body {
     max-height: 48vh;
   }
   .gl-journey-bar {
+    left: 8px;
+    right: 8px;
     bottom: 8px;
+    transform: none;
+    width: auto;
+    max-width: none;
     padding: 4px 8px;
+    justify-content: flex-start;
   }
   .gl-stage-pill {
     padding: 4px 8px;

@@ -58,6 +58,8 @@ const DIRS = [
 const FILES_FROM_MIXED_DIRS = [
   'lib/event-search.js',        // loaded by search.html; the rest of lib/ is build-time
   'lib/provenance-badge.js',    // shared provenance badge, loaded by public pages
+  'js/tp-grid-calc.js',         // Grid Lab formulas; js/ is not copied wholesale
+  'js/tp-grid-lab.js',          // Grid Lab scene; production 404'd these and the canvas never started
 ];
 
 // Runtime JavaScript at the root, derived from what pages actually load.
@@ -282,6 +284,37 @@ if (offenders.length) {
   console.error('\nDIST GATE FAILED — private or build-only files reached the artifact:');
   offenders.slice(0, 40).forEach((o) => console.error('  ' + o));
   if (offenders.length > 40) console.error('  … and ' + (offenders.length - 40) + ' more');
+  process.exit(1);
+}
+
+// A page that references a same-origin script the allowlist did not copy 404s
+// in production (Grid Lab's engine did this). Fail the build instead.
+const SCRIPT_SRC = /<script\b[^>]*\bsrc=["']([^"']+)["']/gi;
+const missingScripts = [];
+(function scanScripts(dir) {
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    const p = path.join(dir, e.name);
+    if (e.isDirectory()) { scanScripts(p); continue; }
+    if (!e.name.endsWith('.html')) continue;
+    const rel = path.relative(DIST, p);
+    const html = fs.readFileSync(p, 'utf8');
+    let m;
+    SCRIPT_SRC.lastIndex = 0;
+    while ((m = SCRIPT_SRC.exec(html))) {
+      let src = m[1].split('#')[0].split('?')[0];
+      if (!src || /^(https?:)?\/\//i.test(src) || src.startsWith('data:')) continue;
+      if (src.startsWith('/')) src = src.slice(1);
+      else src = path.posix.normalize(path.posix.join(path.posix.dirname(rel.split(path.sep).join('/')), src));
+      if (src.startsWith('../') || src.includes('..')) continue;
+      const abs = path.join(DIST, src);
+      if (!fs.existsSync(abs) || !fs.statSync(abs).isFile()) missingScripts.push(rel + ' → ' + src);
+    }
+  }
+})(DIST);
+if (missingScripts.length) {
+  console.error('\nDIST GATE FAILED — published HTML references a script that was not copied:');
+  missingScripts.slice(0, 40).forEach((o) => console.error('  ' + o));
+  if (missingScripts.length > 40) console.error('  … and ' + (missingScripts.length - 40) + ' more');
   process.exit(1);
 }
 console.log('DIST GATE OK — no private, manuscript, build-script or internal file in the artifact.');

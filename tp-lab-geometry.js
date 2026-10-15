@@ -461,12 +461,12 @@
         g.add(bank);
       }
       reg(g, 'Radiator banks, fans, pumps & valves',
-        'Each radiator is a stack of pressed-plate elements on top and bottom collector pipes that bolt to the tank wall through butterfly valves — every radiator detaches for transport without draining the tank. Hot oil enters the top collector, falls through the plate channels as it cools, and returns via the bottom. Fan groups (ONAN→ONAF→OFAF) are staged automatically by the winding-temperature relay.',
+        'Each radiator is a stack of pressed-plate elements on top and bottom collector pipes that bolt to the tank wall through butterfly valves, so every radiator detaches for transport without draining the tank. Hot oil enters the top collector, falls through the plate channels as it cools, and returns via the bottom. The nameplate is ONAN/ONAF: fans under the banks stage from ONAN up to the all-fans rating. The pump drawn on the bottom pipe is an optional OFAF upgrade and is not part of this rating. The winding-temperature indicator stages the fans.',
         [0, 0, 0], 'cooling',
         {
           stage: 3, group: 'cooling',
           system: 'Cooling',
-          material: 'Pressed steel plate radiator elements; aluminium fan blades; cast-iron pump casings',
+          material: 'Pressed steel plate radiator elements and fan blades. Pump casings are drawn only as an optional OFAF upgrade.',
           whyItMatters: 'Without the cooling system, winding temperature would rise within minutes to the point of insulation degradation — the radiators are what allow a 100 MVA transformer to operate continuously.',
           factoryId: 'radiators_fans',
           links: { directory: 'components.html' }

@@ -16,3 +16,5 @@ jobs:
           node-version: '20'
       - name: Fail when a page repeats the site footer
         run: node check-site-footer.js
+      - name: Grid Lab scripts are on the publish allowlist
+        run: node tests/grid-lab-publish.test.js
