@@ -161,6 +161,9 @@ for (const f of companyPages) {
   // manufacturer entity pages only).
   if (/http-equiv=["']refresh["']/i.test(html) && /canonical profile/i.test(html)) continue;
   if (/meta\s+name=["']robots["']\s+content=["']noindex/i.test(html) && /Redirecting/i.test(html)) continue;
+  // Group directories (manufacturers/sourced/…) list several profiles. They are
+  // not one company page, so the entity correction CTA does not apply.
+  if (f.split(path.sep).indexOf('sourced') !== -1) continue;
   if (!/Suggest a correction/.test(html) || html.indexOf('correct-company.html') < 0) { pageNoCorrCta++; problems.push('R8 manufacturer page missing corrections CTA :: ' + f); }
   if (/Official website/.test(html) && !/data-track="official_website_click"/.test(html)) { pageNoSiteClick++; problems.push('R8 manufacturer page missing official_website_click :: ' + f); }
 }
