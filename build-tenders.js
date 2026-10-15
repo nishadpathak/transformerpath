@@ -38,6 +38,18 @@ const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 function slugify(s) { return String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/&/g, 'and').replace(/['’´]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, ''); }
+function isoDay(v) {
+  if (!v) return null;
+  const day = String(v).slice(0, 10);
+  return /^\d{4}-\d{2}-\d{2}$/.test(day) ? day : null;
+}
+function stampSourceDates(record, it) {
+  if (!record || !it) return;
+  const published = isoDay(it.publication_date);
+  const captured = isoDay(it.captured_at || it.capture_date);
+  if (published) record.publication_date = published;
+  if (captured) record.captured_at = captured;
+}
 const ci = (s) => (s || '').toLowerCase();
 
 const PROJECTS = JSON.parse(fs.readFileSync('data/projects.json', 'utf8')).projects || [];
@@ -195,6 +207,8 @@ INTEL_ITEMS.forEach((it) => {
     stage,
     cls: '',
   });
+  const addedIntel = tenders[tenders.length - 1];
+  if (addedIntel && addedIntel.full_title === it.title) stampSourceDates(addedIntel, it);
 });
 
 // 3) CONFIRMED / official-portal GCC procurement IDs.
@@ -276,6 +290,7 @@ INTEL_ITEMS.forEach(function (it) {
   });
   const added = tenders[tenders.length - 1];
   if (added && added.procurement_id === pid) {
+    stampSourceDates(added, it);
     byProcurement[pid] = added;
     officialAdded++;
   }
