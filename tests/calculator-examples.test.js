@@ -100,6 +100,13 @@ const share = parallelLoadShare(140, 100, 12.5, 100, 12.5, true, true);
   ok(block.includes('IEC 60076-1'), id + ' cites IEC 60076-1');
 });
 
+ok(!calc.includes('const totalHarmPk_kW = (r.Pk / 1000)'), 'harmonic total does not divide a missing Pk field');
+ok(calc.includes('lossWatts(r.Pk, r.LL)'), 'harmonic load loss uses the design LL when Pk is absent');
+ok(calc.includes('lossWatts(r.P0, r.NLL)'), 'no-load loss uses the design NLL when P0 is absent');
+ok(!/design design/.test(read('index.html') + read('learn.html') + read('pricing.html')), 'course copy does not repeat the word design');
+const inbox = read('supplier-inbox.html');
+ok(inbox.includes("if (!document.getElementById('spec_rating')) return;"), 'supplier inbox skips the RFQ spec builder when those fields are absent');
+
 if (problems.length) {
   console.error('\n' + problems.length + ' failed');
   process.exit(1);
