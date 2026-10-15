@@ -79,11 +79,12 @@ function main() {
     rows.push({ kind: 'knowledge', id: slug, name: title, ...classify({ html }) });
   });
 
-  // Masterclass course chapters.
-  const mc = fs.readFileSync('masterclass.html', 'utf8');
-  chapterSplit(mc).forEach((ch) => {
-    rows.push({ kind: 'masterclass', id: 'ch' + ch.num, name: ch.title, num: ch.num, ...classify({ html: ch.html }) });
-  });
+  if (fs.existsSync('masterclass.html')) {
+    const mc = fs.readFileSync('masterclass.html', 'utf8');
+    chapterSplit(mc).forEach((ch) => {
+      rows.push({ kind: 'course', id: 'ch' + ch.num, name: ch.title, num: ch.num, ...classify({ html: ch.html }) });
+    });
+  }
 
   // Sort: review-required first (by kind group), then by id.
   rows.sort((a, b) => {

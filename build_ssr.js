@@ -817,7 +817,6 @@ function renderIntel(html) {
 
 const jobs = [
   ['events.html', renderEvents, 'events'],
-  ['webinars.html', renderWebinars, 'webinars'],
   ['components.html', renderComponents, 'components'],
   ['jobs.html', renderJobs, 'jobs'],
   ['grids.html', renderGrids, 'grids'],

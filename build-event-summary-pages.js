@@ -67,13 +67,13 @@ function renderSummary(s) {
     '</head>\n<body>\n' + HEAD + '\n<main id="main" tabindex="-1" class="s-wrap">' +
     '<nav style="font-size:.78rem;color:var(--muted);margin-bottom:10px"><a href="events.html" style="color:var(--accent)">Events</a> \u203A ' + esc(s.event) + '</nav>' +
     '<h1>Post-Event Transformer Industry Summary</h1>' +
-    '<div style="margin:6px 0 14px">' + statusBadge + ' <span style="color:var(--muted);font-size:.82rem">' + esc(s.event) + ' · ' + esc(s.edition || '') + ' · ' + (s.verified && s.verified.dates || '') + ' · <a href="' + esc(eventProfileHref(s)) + '" style="color:var(--accent)">event page</a> · <a href="map.html?layer=events&amp;q=' + encodeURIComponent(s.event || '') + '" style="color:var(--accent)">map</a> · <a href="webinars.html" style="color:var(--accent)">webinars</a></span></div>' +
+    '<div style="margin:6px 0 14px">' + statusBadge + ' <span style="color:var(--muted);font-size:.82rem">' + esc(s.event) + ' · ' + esc(s.edition || '') + ' · ' + (s.verified && s.verified.dates || '') + ' · <a href="' + esc(eventProfileHref(s)) + '" style="color:var(--accent)">event page</a> · <a href="map.html?layer=events&amp;q=' + encodeURIComponent(s.event || '') + '" style="color:var(--accent)">map</a></span></div>' +
     '<p class="src">Every fact is source-backed; confidence shows the evidence level: <b>CONFIRMED</b> (official/primary), <b>COMPANY_REPORTED</b>, <b>SECONDARY_SOURCE</b>, <b>UNVERIFIED</b> (social/discovery only, never presented as confirmed).</p>' +
     '<div class="card"><h2 style="margin-top:0">Overview</h2><p>' + esc(s.overview || s.sections && s.sections.event_overview || '') + '</p>' +
     '<h2>Source-backed facts</h2>' + (facts || '<p style="color:var(--muted)">No source-backed facts yet.</p>') + '</div>' +
     '<h2>Sections</h2>' + (secHtml || '<p style="color:var(--muted)">Sections not yet populated — this summary is in research.</p>') +
     '<p class="src" style="margin-top:18px">Last updated ' + esc(s.last_updated || '') + '</p>' +
-    '<div style="font-size:.85rem;color:var(--muted);text-align:center;margin-top:16px">Explore: <a href="events.html" style="color:var(--accent);font-weight:600">Events</a> · <a href="webinars.html" style="color:var(--accent);font-weight:600">Webinars</a> · <a href="intel.html" style="color:var(--accent);font-weight:600">Intel</a> · <a href="learn.html" style="color:var(--accent);font-weight:600">Learn</a></div>' +
+    '<div style="font-size:.85rem;color:var(--muted);text-align:center;margin-top:16px">Explore: <a href="events.html" style="color:var(--accent);font-weight:600">Events</a> · <a href="intel.html" style="color:var(--accent);font-weight:600">Intel</a> · <a href="learn.html" style="color:var(--accent);font-weight:600">Learn</a></div>' +
     '</main>\n' + FOOT + '\n<script src="analytics.js?v=6" defer></script>\n</body>\n</html>';
 }
 

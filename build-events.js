@@ -157,7 +157,7 @@ function shell(title, desc, canonical, body, ld, eventId) {
     '<div style="font-size:.8rem;color:var(--muted);margin-bottom:12px">Feature your company on TransformerPath — Featured Event is $299 per event. Featured Exhibitor is $399 per event.</div>' +
     pay +
     exhibitorPay + '</div>' +
-    '<p style="font-size:.85rem;color:var(--muted);text-align:center;margin-top:12px"><a href="../../events.html">Events</a> · <a href="../../exhibitions.html">Exhibitions</a> · <a href="../../webinars.html">Webinars</a></p>' +
+    '<p style="font-size:.85rem;color:var(--muted);text-align:center;margin-top:12px"><a href="../../events.html">Events</a> · <a href="../../exhibitions.html">Exhibitions</a></p>' +
     '</main>\n' + FOOT + '\n<script src="../../analytics.js?v=2" defer></script>\n</body>\n</html>';
 }
 
