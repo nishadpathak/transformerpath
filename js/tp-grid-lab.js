@@ -370,6 +370,8 @@
       renderer.outputEncoding = THREE.sRGBEncoding;
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
       renderer.toneMappingExposure = 1.15;
+      const fallback = container.querySelector('[data-gl-fallback]');
+      if (fallback) fallback.remove();
       container.appendChild(renderer.domElement);
 
       setupLighting();

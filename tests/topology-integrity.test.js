@@ -64,4 +64,11 @@ STAGES.forEach((stage, idx) => {
 });
 
 console.log('✓ All 10 electrical stages verified: 100% voltage node continuity without incompatible jumps.');
+
+const distAllow = fs.readFileSync(path.join(__dirname, '../build-dist.js'), 'utf8');
+assert(distAllow.includes("'js/tp-grid-lab.js'"), 'grid-lab scene script is on the dist allowlist');
+assert(distAllow.includes("'js/tp-grid-calc.js'"), 'grid-lab calc script is on the dist allowlist');
+const gridPage = fs.readFileSync(path.join(__dirname, '../grid-lab.html'), 'utf8');
+assert(gridPage.includes('js/tp-grid-lab.js') && gridPage.includes('js/tp-grid-calc.js'), 'grid-lab.html loads both scripts');
+
 console.log('✅ GRID TOPOLOGY INTEGRITY TEST PASSED');
