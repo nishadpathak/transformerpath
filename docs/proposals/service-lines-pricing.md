@@ -1,6 +1,6 @@
 # Service-line prices
 
-**Status: rejected, 15 October 2026.** Nishad will not offer design-office support, a live cohort, consulting, calls, or other work that needs his time. The figures below are the research that was set aside. `service-lines.html` and `test-lab-consulting.html` are removed. `services.html` stays the generated Service & Repair directory.
+**Status: rejected, 15 October 2026.** the owner will not offer design-office support, a live cohort, consulting, calls, or other work that needs the owner's time. The figures below are the research that was set aside. `service-lines.html` and `test-lab-consulting.html` are removed. `services.html` stays the generated Service & Repair directory.
 
 15 October 2026. This was a proposal only. The amounts were never shown on the public site.
 

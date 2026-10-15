@@ -72,7 +72,7 @@ const html = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta cha
   '<h1>Transformer exhibitions</h1>' +
   '<p class="lead" style="color:var(--muted)">A view of canonical editions where type is exhibition and relevance is CORE or HIGH. ' +
   upcoming.length + ' upcoming in this view. Figures the organiser has not published stay as “' + esc(nullText()) + '”.</p>' +
-  '<p><a href="events.html">Full events calendar</a> · <a href="events/calendar.ics">Download confirmed calendar</a> · <a href="webinars.html">Webinars</a></p>' +
+  '<p><a href="events.html">Full events calendar</a> · <a href="events/calendar.ics">Download confirmed calendar</a></p>' +
   paidListings.featuredExhibitorPayHtml({ className: 'btn btn-amber btn-sm', label: 'Feature your exhibitor — $399' }) +
   cards +
   '</main>\n' + FOOT + '\n</body></html>';

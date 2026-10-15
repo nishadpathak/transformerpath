@@ -56,10 +56,9 @@ console.log('1. DIRECT API ACCESS / ABUSE (no entitlement):');
 
   console.log('\n3. HTML / SEO LEAKAGE (file-level):');
   const fs = require('fs');
-  const served = fs.readFileSync('masterclass.html', 'utf8');
-  ['decay envelope', 'Fig. 14.1', 'K√S', 'Duval'].forEach((m) => { ok(served.indexOf(m) < 0, 'served masterclass.html has no "' + m + '"'); });
-  ok(served.indexOf('class="mc-locked"') >= 0, 'served page uses locked placeholders (not hidden CSS)');
-  ok(served.indexOf('"html"') < 0 && served.indexOf('decay') < 0, 'no preloaded full-chapter JSON in served HTML');
+  const redirects = fs.readFileSync('_redirects', 'utf8');
+  ok(!fs.existsSync('masterclass.html'), 'public course page is not in the tree');
+  ok(/\/masterclass\.html\s+\/learn\s+301/.test(redirects), 'course page 301s to /learn');
   ok(!fs.existsSync('_private/masterclass-full.html'), 'full course source NOT in the deploy tree (moved to vault / gitignored) — outputs are committed, so the paywall functions without it');
 
   console.log('\nMASTERCLASS LIVE QA (verifiable): ' + (problems.length ? problems.length + ' problem(s)' : 'PASS'));

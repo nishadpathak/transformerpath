@@ -44,11 +44,11 @@ function page(v) {
   const schema = '<script type="application/ld+json">' + JSON.stringify(bookSchema) + '</script><script type="application/ld+json">' + JSON.stringify(pageSchema) + '</script><script type="application/ld+json">' + JSON.stringify(bc) + '</script>';
   const route = VOLUMES.map(function (o) { return '<a class="tpill' + (o.n === v.n ? ' on' : '') + '" href="../volume-' + o.n + '/">V' + o.n + ' ' + (o.st === 'available' ? '✓' : '·') + '</a>'; }).join('');
 
-  const courseHref = '../../masterclass.html#' + (v.course || 'fundamentals');
+  const courseHref = '../../learn.html';
   const courseCta =
     '<div class="box" style="margin-top:18px"><b style="color:var(--text)">Match this volume to the course</b>' +
-    '<p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">The Masterclass teaches the working path. This volume is the matching reference — titles and outcomes only on this page; the book itself is the full text.</p>' +
-    '<a class="btn btn-amber" href="' + courseHref + '">Open the matching Masterclass module →</a> ' +
+    '<p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">The design course teaches the working path. This volume is the matching reference — titles and outcomes only on this page; the book itself is the full text.</p>' +
+    '<a class="btn btn-amber" href="' + courseHref + '">Open the matching course module →</a> ' +
     '<a class="btn btn-outline" href="../../learn.html#series-path" style="margin-left:8px">See the Learn series path →</a></div>';
 
   let body;

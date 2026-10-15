@@ -82,7 +82,7 @@
             function inspect(e) {
               var c = COMPONENTS.find(function (x) { return x.id === e.getAttribute('data-comp'); });
               if (!c) return;
-              host.querySelector('#vz-cc-info').innerHTML = '<b>' + c.name + '</b><p>' + c.fn + '</p><div>Material: ' + c.mat + '</div><div>Design role: ' + c.role + '</div><div>Masterclass: <a href="masterclass.html' + c.mc + '">section</a></div>';
+              host.querySelector('#vz-cc-info').innerHTML = '<b>' + c.name + '</b><p>' + c.fn + '</p><div>Material: ' + c.mat + '</div><div>Design role: ' + c.role + '</div><div>Design course: <a href="learn.html' + c.mc + '">section</a></div>';
             }
             S.querySelectorAll('[data-comp]').forEach(function (e) {
               e.addEventListener('click', function () { inspect(e); });

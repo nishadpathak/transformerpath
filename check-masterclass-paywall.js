@@ -15,15 +15,13 @@ const fs = require('fs');
 let problems = [];
 function ok(c, m) { console.log((c ? '  ok — ' : '  ✗ ') + m); if (!c) problems.push(m); }
 
-// Deep, full-chapter-only markers (must NOT be in served HTML).
-const FULL_MARKERS = ['decay envelope', 'Fig. 14.1', 'K√S', 'short-circuit method', 'Duval', 'axially split'];
-const html = fs.readFileSync('masterclass.html', 'utf8');
+const redirects = fs.existsSync('_redirects') ? fs.readFileSync('_redirects', 'utf8') : '';
 
 console.log('MASTERCLASS PAYWALL QA\n');
-console.log('1. SERVED HTML LEAK CHECK:');
-FULL_MARKERS.forEach((m) => { ok(html.indexOf(m) < 0, 'served masterclass.html does not contain "' + m + '"'); });
-ok(html.indexOf('class="mc-locked"') >= 0, 'served page uses locked placeholders (not CSS-hidden full text)');
-ok(html.indexOf('Unlock full Masterclass') >= 0, 'served page shows an unlock CTA');
+console.log('1. PUBLIC COURSE PAGE IS RETIRED:');
+ok(!fs.existsSync('masterclass.html'), 'public masterclass.html is not served');
+ok(/\/masterclass\.html\s+\/learn\s+301/.test(redirects), '_redirects 301s /masterclass.html to /learn');
+ok(/\/masterclass\s+\/learn\s+301/.test(redirects), '_redirects 301s /masterclass to /learn');
 
 console.log('\n2. SERVER-SIDE PAYLOAD:');
 const CH = require('./functions/lib/masterclass-chapters.js');
@@ -52,9 +50,10 @@ function call(body) { return fn.handler({ httpMethod: 'GET', queryStringParamete
   const expired = await fn.handler({ httpMethod: 'GET', queryStringParameters: { chapter: 'inrush' }, headers: { authorization: 'Bearer ' + ent.issue('learning', -10) } });
   ok(JSON.parse(expired.body).locked === true, 'expired token -> LOCKED');
 
-  console.log('\n4. FREE CHAPTERS PRESENT:');
-  ok(html.indexOf('id="fundamentals"') >= 0, 'free chapter fundamentals is in the served page');
-  ok(html.indexOf('id="classification"') >= 0, 'free chapter classification is in the served page');
+  console.log('\n4. FREE CHAPTERS STILL COME FROM THE FUNCTION:');
+  const freeFund = JSON.parse((await fn.handler({ httpMethod: 'GET', queryStringParameters: { chapter: 'fundamentals' }, headers: {} })).body);
+  ok(freeFund.free === true, 'free chapter fundamentals is delivered without a token');
+  ok(!fs.existsSync('masterclass.html'), 'free chapters are not copied into a public course page');
 
   console.log('\n5. ENGINEER TRACK GATE:');
   const etHtml = fs.readFileSync('engineer-track.html', 'utf8');

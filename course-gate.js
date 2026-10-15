@@ -178,7 +178,7 @@
       b.innerHTML =
         '<span style="max-width:640px;line-height:1.45;text-align:center">' +
         '<b style="color:#f5a623">Free preview</b> — run a first-pass design here. ' +
-        'Yearly Access unlocks the full Design Engineer Track, masterclass and academy tools.' +
+        'Yearly Access unlocks the full Design Engineer Track, design course and academy tools.' +
         '</span>' +
         '<a href="pricing.html" style="background:#f5a623;color:#0d1b2e;font-weight:800;' +
         'padding:8px 16px;border-radius:8px;text-decoration:none;white-space:nowrap">See plans →</a>' +

@@ -114,7 +114,9 @@ async function main() {
     console.log('production publish check: ' + skipped.detail);
     return;
   }
-  const mainDoc = await getJson('api.github.com', '/repos/nishadpathak/transformerpath/commits/main');
+  const repoUrl = 'https://github.com/nishadpathak/transformerpath';
+  const repoSlug = repoUrl.slice('https://github.com/'.length);
+  const mainDoc = await getJson('api.github.com', '/repos/' + repoSlug + '/commits/main');
   const mainSha = mainDoc && mainDoc.sha || '';
   const live = await getJson('transformerpath.com', '/build.json');
   const publishedSha = live && live.commit || '';
@@ -123,14 +125,14 @@ async function main() {
   if (/^[0-9a-f]{40}$/i.test(mainSha)) {
     if (sameSha(commitRef, mainSha)) onMain = true;
     else {
-      const cmp = await getJson('api.github.com', '/repos/nishadpathak/transformerpath/compare/' + commitRef + '...' + mainSha);
+      const cmp = await getJson('api.github.com', '/repos/' + repoSlug + '/compare/' + commitRef + '...' + mainSha);
       onMain = cmp ? onMainFromCompare(cmp.status) : null;
     }
   }
   if (publishedSha) {
     if (sameSha(commitRef, publishedSha)) olderThanPublished = false;
     else {
-      const cmp = await getJson('api.github.com', '/repos/nishadpathak/transformerpath/compare/' + commitRef + '...' + publishedSha);
+      const cmp = await getJson('api.github.com', '/repos/' + repoSlug + '/compare/' + commitRef + '...' + publishedSha);
       olderThanPublished = cmp ? olderThanPublishedFromCompare(cmp.status) : null;
     }
   }
