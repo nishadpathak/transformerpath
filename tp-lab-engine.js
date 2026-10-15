@@ -116,7 +116,7 @@
     },
     {
       id: 14, label: 'Separate LV winding & inner barrier',
-      caption: 'The innermost 33 kV delta winding of epoxy-bonded continuously transposed conductor (CTC). The pressboard cylinder underneath it is the main HV–LV insulation barrier — it also sets the transformer\'s leakage impedance at 12–14%.',
+      caption: 'The innermost 33 kV delta winding of epoxy-bonded continuously transposed conductor (CTC). The main HV–LV pressboard barrier is the cylinder outside this winding, in the oil duct between LV and HV. That gap sets the leakage impedance, about 12–14%. The cylinder under the LV is only the winding former on the core.',
       camTh: 0.25, camPh: 1.1, camR: 75, tank: 0.0,
       visGroups: { tank:false, oil:false, core:true, lv:true, hv:false, tap:false, barriers:true, bushings:false, conservator:false, cooling:false, oltc:false, controls:false, arresters:false }
     },

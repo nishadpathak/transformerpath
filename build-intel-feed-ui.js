@@ -17,6 +17,7 @@
 const fs = require('fs');
 const path = require('path');
 const { lookup, parseSourceName } = require('./lib/intel-source-normalizer');
+const { closedReason, itemIsActive } = require('./lib/intel-activity');
 const { H2_PROJECTS_ACTIVE, H2_HISTORICAL_REFERENCE } = require('./build-intel-audit');
 
 const TODAY_STR = new Date().toISOString().slice(0, 10);
@@ -224,7 +225,8 @@ function fromCurated(it, desk, regionKey, regionLabel, defaultCls) {
   }
   const cls = it.cls || defaultCls || 'INFERRED';
   const ageTier = classifyAgeTier(dated.dateObj);
-  const isActive = it.is_active || /under construction|active|commissioning|tender|tenders|pipeline|awarded|wins|contract|approved|rfq/i.test(it.title + ' ' + (it.snippet || ''));
+  const closed = closedReason(it, TODAY_STR);
+  const isActive = itemIsActive(it, TODAY_STR);
 
   const post = {
     id: slugId(desk, it.title, it.url),
@@ -233,7 +235,7 @@ function fromCurated(it, desk, regionKey, regionLabel, defaultCls) {
     cls: cls,
     ageTier: ageTier,
     isActive: Boolean(isActive),
-    currentRelevance: it.current_relevance || (ageTier === 'FRESH' || ageTier === 'RECENT' ? 'Current sourced intelligence' : (isActive ? 'Active project development / multi-year grid framework' : '')),
+    currentRelevance: closed || it.current_relevance || (ageTier === 'FRESH' || ageTier === 'RECENT' ? 'Current sourced intelligence' : (isActive ? 'Active project development / multi-year grid framework' : '')),
     headline: it.title,
     soWhat: soWhat(it.snippet, it.title),
     value: it.value || '',
@@ -628,10 +630,15 @@ const latest = posts.filter(function (p) {
 }).slice(0, 14);
 
 let page = fs.readFileSync('intel.html', 'utf8');
-if (page.indexOf('<!--SSR:intel-feed-->') >= 0) {
-  page = injectMarker(page, 'intel-feed', latest.map(ssrCard).join(''));
+if (page.indexOf('<!--SSR:intel-feed-->') >= 0 || page.indexOf('<!--SSR:intel-timeline-->') >= 0) {
+  const cards = latest.map(ssrCard).join('');
+  // Both markers sit inside #intel-timeline. Writing the same cards into each
+  // one printed every post twice and reused every article id.
   if (page.indexOf('<!--SSR:intel-timeline-->') >= 0) {
-    page = injectMarker(page, 'intel-timeline', latest.map(ssrCard).join(''));
+    page = injectMarker(page, 'intel-timeline', cards);
+    if (page.indexOf('<!--SSR:intel-feed-->') >= 0) page = injectMarker(page, 'intel-feed', '');
+  } else {
+    page = injectMarker(page, 'intel-feed', cards);
   }
   const newsNote = '<p class="intel-legacy-note">Comprehensive regional market intelligence across GCC, India, Europe, Americas, and Rest of World.</p>';
   if (page.indexOf('<!--SSR:panel-news-->') >= 0) {

@@ -174,7 +174,7 @@ const html = `<!DOCTYPE html>
     <button type="button" class="btn btn-outline btn-sm" id="copyDraft">Copy draft text</button>
     <a class="btn btn-outline btn-sm" href="intel.html">Open Daily Intel →</a>
   </div>
-  <pre id="draft" style="white-space:pre-wrap;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;color:var(--text);font-size:.88rem;line-height:1.55">${esc(draft)}</pre>
+  <pre id="draft" style="white-space:pre-wrap;overflow-wrap:anywhere;max-width:100%;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;color:var(--text);font-size:.88rem;line-height:1.55">${esc(draft)}</pre>
   <h2 style="font-size:1.15rem;color:var(--ink);margin:28px 0 10px">CONFIRMED items this pack (${packItems.length})</h2>
   <ul style="padding-left:18px;color:var(--text);line-height:1.55">
     ${packItems.map(function (it) {

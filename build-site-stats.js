@@ -213,6 +213,14 @@ for (let i = 0; i < STAT_HTML.length; i++) {
       /title="Explore \d+ upcoming industry conferences and exhibitions"/g,
       'title="Explore ' + current.upcomingEvents + ' upcoming industry conferences and exhibitions"'
     );
+    html = html.replace(
+      /title="View \d+ procurement tenders worldwide"/g,
+      'title="View ' + current.tenders + ' procurement tenders worldwide"'
+    );
+    html = html.replace(
+      /title="\d+ open tenders accepting bids right now"/g,
+      'title="' + current.openTenders + ' open tenders accepting bids right now"'
+    );
     if (nextConfirmedLine) {
       html = html.replace(
         /(<h3>Events →<\/h3><p>)[\s\S]*?(<\/p>)/,
