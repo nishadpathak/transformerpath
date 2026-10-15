@@ -58,7 +58,12 @@
 .calc-out .or span { color:#9fb0c4; }
 .calc-out .or b { color:var(--amber); font-size:1.02rem; font-variant-numeric:tabular-nums; }
 .calc-out h4 { margin:0 0 8px; font-size:.74rem; text-transform:uppercase; letter-spacing:.6px; color:#9fb0c4; }
-@media (max-width:700px){ .calc { grid-template-columns:1fr; } }
+.quiz-opts { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+@media (max-width:700px){
+  .calc { grid-template-columns:1fr; }
+  .calc-inputs { grid-template-columns:1fr; }
+}
+@media (max-width:520px){ .quiz-opts { grid-template-columns:1fr; } }
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0d1b2e">
@@ -283,11 +288,215 @@
     </div>
 
     <div id="paid-tools" class="card" style="margin:44px 0 18px;padding:28px 26px;text-align:center;border:1px solid var(--border)">
-      <h2 style="margin:0 0 8px">Key formulas &amp; sizing calculator</h2>
-      <p style="color:var(--muted);margin:0 0 16px">The design formulas and live first-pass calculator ship with 12-month access — they are not embedded on this public page.</p>
+      <h2 style="margin:0 0 8px">Self-test and first-pass sizing</h2>
+      <p style="color:var(--muted);margin:0 0 16px">The knowledge check and sizing engine below run in the browser. The full formula set, design workspace and capstone review ship with 12-month access.</p>
       <a class="btn btn-amber" href="masterclass.html">Start free chapters →</a>
       <a href="pricing.html" style="margin-left:14px;font-weight:600;color:var(--accent)">See plans</a>
     </div>
+
+<!-- ── INTERACTIVE ENGINEERING SELF-TEST QUIZ (TRACK 3) ── -->
+<div class="card" style="margin:36px 0 24px; border:1px solid rgba(245,166,35,.35); background:linear-gradient(180deg, rgba(13,27,46,.95) 0%, rgba(13,27,46,.8) 100%); padding:24px;">
+  <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
+    <div>
+      <span style="font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.06em; color:var(--amber); background:rgba(245,166,35,.15); padding:3px 8px; border-radius:6px; border:1px solid rgba(245,166,35,.3);">🎓 Knowledge Check</span>
+      <h3 style="font-size:1.35rem; color:var(--ink); margin:8px 0 4px">Transformer Engineering Self-Test</h3>
+      <p style="font-size:.88rem; color:var(--muted); margin:0">Test your mastery of core electromagnetics, vector groups, thermal aging, and short-circuit forces.</p>
+    </div>
+    <div id="quizScoreBox" style="font-size:.85rem; font-weight:700; color:var(--amber); background:var(--bg); border:1px solid var(--border); padding:6px 14px; border-radius:8px;">Score: 0 / 4</div>
+  </div>
+
+  <div id="quizContainer" style="display:flex; flex-direction:column; gap:16px;">
+    <!-- Rendered by JS -->
+  </div>
+</div>
+
+<!-- ── Quick sizing calculator ── -->
+<div class="calc">
+  <div>
+    <h3 style="color:var(--ink);margin:0 0 4px">⚡ Sizing Engine</h3>
+    <p style="font-size:.84rem;color:var(--muted);margin:0 0 14px">Compute volts-per-turn, net core cross-section, turn counts, and line current densities.</p>
+    <div class="calc-inputs">
+      <label>Phases <select id="cPh"><option value="3" selected>3-Phase</option><option value="1">1-Phase</option></select></label>
+      <label>Rating (kVA) <input id="cKva" type="number" value="1000" step="50"></label>
+      <label>HV Line kV <input id="cHv" type="number" value="11" step="0.5"></label>
+      <label>LV Line kV <input id="cLv" type="number" value="0.433" step="0.01"></label>
+      <label>Frequency (Hz) <select id="cF"><option value="50" selected>50 Hz</option><option value="60">60 Hz</option></select></label>
+      <label>Peak Flux B (T) <input id="cB" type="number" value="1.65" step="0.05"></label>
+      <label>Current Density (A/mm²) <input id="cD" type="number" value="2.8" step="0.1"></label>
+      <label>K Factor (Et = K√kVA) <input id="cK" type="number" value="0.45" step="0.01"></label>
+    </div>
+  </div>
+  <div style="display:flex; flex-direction:column; justify-content:space-between; gap:12px;">
+    <div class="calc-out" id="calcOut">
+      <!-- Sizing output -->
+    </div>
+    <div style="display:flex; justify-content:flex-end; gap:8px;">
+      <button type="button" id="btnCopyDesignSheet" class="btn btn-outline btn-sm" style="font-size:.78rem">📋 Copy Design Sheet (MD)</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Interactive Self-Test Quiz Logic ──
+(function(){
+  const questions = [
+    {
+      q: "1. Under sinusoidal flux excitation, what fundamental constant links Induced EMF (E) to frequency (f), turns (N), flux density (B_m), and core area (A_c)?",
+      opts: ["2.22 (π / √2)", "4.44 (√2 · π)", "6.28 (2π)", "1.414 (√2)"],
+      ans: 1,
+      exp: "E = 4.44 · f · N · B_m · A_c. The constant 4.44 derives from the RMS value of a sinusoidal derivative (2π / √2 = √2 · π ≈ 4.44288)."
+    },
+    {
+      q: "2. If a power transformer experiences a through-fault with twice (2×) the rated short-circuit current, how do the radial electromagnetic forces change?",
+      opts: ["Doubled (2×)", "Halved (0.5×)", "Quadrupled (4×, proportional to I²)", "Octupled (8×)"],
+      ans: 2,
+      exp: "Electromagnetic force is proportional to the square of current (F ∝ I²). Doubling the current quadruples (4×) the radial hoop and buckling stresses."
+    },
+    {
+      q: "3. For a standard distribution transformer designated Dyn11, what is the exact angular phase displacement?",
+      opts: ["LV leads HV by +30° (11 o'clock)", "LV lags HV by 30° (1 o'clock)", "Zero phase shift (12 o'clock)", "180° phase inversion (6 o'clock)"],
+      ans: 0,
+      exp: "In clock notation, 11 means the LV phasor points to 11 o'clock, which is +30° ahead (leading) of the HV reference at 12 o'clock."
+    },
+    {
+      q: "4. Under the Arrhenius thermal degradation model in IEC 60076-7, roughly what temperature increment halves the expected life of standard cellulose insulation?",
+      opts: ["~1 K", "~6 K", "~25 K", "~50 K"],
+      ans: 1,
+      exp: "The 6 K doubling rule (IEC 60076-7 / Montsinger law): every ~6 K sustained temperature increase approximately doubles the rate of cellulose insulation aging (halves thermal life)."
+    }
+  ];
+
+  let userAnswers = {};
+
+  function renderQuiz(){
+    const container = document.getElementById('quizContainer');
+    if(!container) return;
+
+    container.innerHTML = questions.map((q, qIdx) => {
+      const selected = userAnswers[qIdx];
+      const isAnswered = selected !== undefined;
+      const isCorrect = selected === q.ans;
+
+      const optsHtml = q.opts.map((opt, oIdx) => {
+        let btnStyle = 'background:var(--bg); border:1px solid var(--border); color:var(--text); padding:8px 12px; border-radius:8px; font-size:.86rem; text-align:left; cursor:pointer; width:100%; transition:all .15s;';
+        if(isAnswered){
+          if(oIdx === q.ans){
+            btnStyle = 'background:rgba(22,163,74,.18); border:1px solid #16a34a; color:#4ade80; font-weight:700; padding:8px 12px; border-radius:8px; font-size:.86rem; text-align:left; width:100%;';
+          } else if(selected === oIdx){
+            btnStyle = 'background:rgba(220,38,38,.18); border:1px solid #dc2626; color:#f87171; padding:8px 12px; border-radius:8px; font-size:.86rem; text-align:left; width:100%;';
+          } else {
+            btnStyle += ' opacity:.6; cursor:default;';
+          }
+        }
+        return `<button type="button" class="quiz-opt" data-qid="${qIdx}" data-oid="${oIdx}" style="${btnStyle}">${opt}</button>`;
+      }).join('');
+
+      let feedbackHtml = '';
+      if(isAnswered){
+        feedbackHtml = `<div style="margin-top:8px; padding:8px 12px; background:rgba(0,0,0,.2); border-radius:6px; font-size:.82rem; color:${isCorrect ? '#4ade80' : '#f87171'}">
+          ${isCorrect ? '✅ <b>Correct!</b> ' : '❌ <b>Incorrect.</b> '}${q.exp}
+        </div>`;
+      }
+
+      return `<div style="background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px;">
+        <div style="font-weight:700; font-size:.92rem; color:var(--ink); margin-bottom:10px">${q.q}</div>
+        <div class="quiz-opts">${optsHtml}</div>
+        ${feedbackHtml}
+      </div>`;
+    }).join('');
+
+    // Update score
+    let score = 0;
+    Object.keys(userAnswers).forEach(k => {
+      if(userAnswers[k] === questions[k].ans) score++;
+    });
+    const sBox = document.getElementById('quizScoreBox');
+    if(sBox) sBox.textContent = `Score: ${score} / ${questions.length}`;
+
+    // Attach click listeners
+    container.querySelectorAll('.quiz-opt').forEach(btn => {
+      btn.addEventListener('click', function(){
+        const qid = parseInt(this.getAttribute('data-qid'));
+        const oid = parseInt(this.getAttribute('data-oid'));
+        if(userAnswers[qid] !== undefined) return; // already answered
+        userAnswers[qid] = oid;
+        renderQuiz();
+      });
+    });
+  }
+
+  renderQuiz();
+})();
+</script>
+
+<script>
+// ── Quick sizing calculator ──
+(function(){
+  const ids=['cPh','cKva','cHv','cLv','cF','cB','cD','cK'];
+  const el=Object.fromEntries(ids.map(i=>[i,document.getElementById(i)]));
+  const out=document.getElementById('calcOut');
+  if(!out) return;
+  const fmt=(n,d=0)=>isFinite(n)?n.toLocaleString("en",{maximumFractionDigits:d,minimumFractionDigits:d}):'—';
+  
+  let currentDesign = {};
+
+  function calc(){
+    const ph=+el.cPh.value, S=+el.cKva.value*1000, HV=+el.cHv.value, LV=+el.cLv.value;
+    const f=+el.cF.value, B=+el.cB.value, dens=+el.cD.value, K=+el.cK.value;
+    // volts per turn (empirical): Et = K*sqrt(kVA per phase-ish). Use total kVA for K calibration.
+    const Et = K*Math.sqrt(+el.cKva.value);
+    // core area from Et = 4.44 f B Ac  -> Ac (m2) -> cm2
+    const Ac = Et/(4.44*f*B); // m^2
+    const AcCm = Ac*1e4;
+    // phase voltages
+    const Vp_hv = ph===3 ? HV/Math.sqrt(3) : HV;   // assume star HV for 3ph (typical)
+    const Vp_lv = ph===3 ? LV/Math.sqrt(3) : LV;
+    const Nhv = Vp_hv/Et, Nlv = Vp_lv/Et;
+    // currents (line)
+    const Ihv = ph===3 ? S/(Math.sqrt(3)*HV) : S/HV;
+    const Ilv = ph===3 ? S/(Math.sqrt(3)*LV) : S/LV;
+    const aHv = Ihv/dens, aLv = Ilv/dens; // mm^2 (line current ~ phase for star)
+    
+    currentDesign = {
+      ph, kva:+el.cKva.value, HV, LV, f, B, dens, K,
+      Et, AcCm, Nhv, Nlv, Ihv, Ilv, aHv, aLv
+    };
+
+    out.innerHTML =
+      `<h4>First-pass design</h4>
+       <div class="or"><span>Volts per turn (Eₜ)</span><b>${fmt(Et,2)} V</b></div>
+       <div class="or"><span>Net core area</span><b>${fmt(AcCm,0)} cm²</b></div>
+       <div class="or"><span>HV turns / phase</span><b>${fmt(Nhv,0)}</b></div>
+       <div class="or"><span>LV turns / phase</span><b>${fmt(Nlv,0)}</b></div>
+       <div class="or"><span>HV line current</span><b>${fmt(Ihv,1)} A</b></div>
+       <div class="or"><span>LV line current</span><b>${fmt(Ilv,0)} A</b></div>
+       <div class="or"><span>HV conductor area</span><b>${fmt(aHv,1)} mm²</b></div>
+       <div class="or"><span>LV conductor area</span><b>${fmt(aLv,0)} mm²</b></div>`;
+  }
+  ids.forEach(i=>{ el[i]?.addEventListener('input',calc); el[i]?.addEventListener('change',calc); });
+  calc();
+
+  document.getElementById('btnCopyDesignSheet')?.addEventListener('click', function(){
+    const d = currentDesign;
+    const md = `### Transformer Sizing Calculation Sheet (${d.kva} kVA, ${d.HV}/${d.LV} kV)
+- **Configuration:** ${d.ph}-Phase, ${d.f} Hz
+- **Volts Per Turn (Eₜ):** ${d.Et.toFixed(2)} V (K = ${d.K})
+- **Net Core Cross-Section (Ac):** ${d.AcCm.toFixed(0)} cm² at B = ${d.B} T
+- **HV Winding:** ${d.Nhv.toFixed(0)} turns/phase | Line Current: ${d.Ihv.toFixed(1)} A | Conductor: ${d.aHv.toFixed(1)} mm²
+- **LV Winding:** ${d.Nlv.toFixed(0)} turns/phase | Line Current: ${d.Ilv.toFixed(0)} A | Conductor: ${d.aLv.toFixed(0)} mm²
+- **Current Density:** ${d.dens} A/mm²
+- **Standard Reference:** IEC 60076-1 / Faraday EMF Law E = 4.44·f·N·B·Ac
+`;
+    navigator.clipboard.writeText(md).then(()=>{
+      const btn = document.getElementById('btnCopyDesignSheet');
+      const orig = btn.textContent;
+      btn.textContent = '✅ Copied!';
+      setTimeout(()=>{ btn.textContent = orig; }, 2000);
+    });
+  });
+})();
+</script>
+
 
     <p style="text-align:center; color:var(--muted); font-size:.82rem; margin-top:22px">
       Engineering course authored for TransformerPath. The calculator gives a first-pass estimate using simplified formulas — always design to the applicable IEC 60076 / ANSI C57 standard.
@@ -432,209 +641,6 @@ if (seriesEl) {
        </div>
      </div>`).join('');
 }
-</script>
-
-<!-- ── INTERACTIVE ENGINEERING SELF-TEST QUIZ (TRACK 3) ── -->
-<div class="card" style="margin:36px 0 24px; border:1px solid rgba(245,166,35,.35); background:linear-gradient(180deg, rgba(13,27,46,.95) 0%, rgba(13,27,46,.8) 100%); padding:24px;">
-  <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
-    <div>
-      <span style="font-size:.72rem; font-weight:800; text-transform:uppercase; letter-spacing:.06em; color:var(--amber); background:rgba(245,166,35,.15); padding:3px 8px; border-radius:6px; border:1px solid rgba(245,166,35,.3);">🎓 Knowledge Check</span>
-      <h3 style="font-size:1.35rem; color:var(--ink); margin:8px 0 4px">Transformer Engineering Self-Test</h3>
-      <p style="font-size:.88rem; color:var(--muted); margin:0">Test your mastery of core electromagnetics, vector groups, thermal aging, and short-circuit forces.</p>
-    </div>
-    <div id="quizScoreBox" style="font-size:.85rem; font-weight:700; color:var(--amber); background:var(--bg); border:1px solid var(--border); padding:6px 14px; border-radius:8px;">Score: 0 / 4</div>
-  </div>
-
-  <div id="quizContainer" style="display:flex; flex-direction:column; gap:16px;">
-    <!-- Rendered by JS -->
-  </div>
-</div>
-
-<!-- ── Quick sizing calculator ── -->
-<div class="calc">
-  <div>
-    <h3 style="color:var(--ink);margin:0 0 4px">⚡ Sizing Engine</h3>
-    <p style="font-size:.84rem;color:var(--muted);margin:0 0 14px">Compute volts-per-turn, net core cross-section, turn counts, and line current densities.</p>
-    <div class="calc-inputs">
-      <label>Phases <select id="cPh"><option value="3" selected>3-Phase</option><option value="1">1-Phase</option></select></label>
-      <label>Rating (kVA) <input id="cKva" type="number" value="1000" step="50"></label>
-      <label>HV Line kV <input id="cHv" type="number" value="11" step="0.5"></label>
-      <label>LV Line kV <input id="cLv" type="number" value="0.433" step="0.01"></label>
-      <label>Frequency (Hz) <select id="cF"><option value="50" selected>50 Hz</option><option value="60">60 Hz</option></select></label>
-      <label>Peak Flux B (T) <input id="cB" type="number" value="1.65" step="0.05"></label>
-      <label>Current Density (A/mm²) <input id="cD" type="number" value="2.8" step="0.1"></label>
-      <label>K Factor (Et = K√kVA) <input id="cK" type="number" value="0.45" step="0.01"></label>
-    </div>
-  </div>
-  <div style="display:flex; flex-direction:column; justify-content:space-between; gap:12px;">
-    <div class="calc-out" id="calcOut">
-      <!-- Sizing output -->
-    </div>
-    <div style="display:flex; justify-content:flex-end; gap:8px;">
-      <button type="button" id="btnCopyDesignSheet" class="btn btn-outline btn-sm" style="font-size:.78rem">📋 Copy Design Sheet (MD)</button>
-    </div>
-  </div>
-</div>
-
-<script>
-// ── Interactive Self-Test Quiz Logic ──
-(function(){
-  const questions = [
-    {
-      q: "1. Under sinusoidal flux excitation, what fundamental constant links Induced EMF (E) to frequency (f), turns (N), flux density (B_m), and core area (A_c)?",
-      opts: ["2.22 (π / √2)", "4.44 (√2 · π)", "6.28 (2π)", "1.414 (√2)"],
-      ans: 1,
-      exp: "E = 4.44 · f · N · B_m · A_c. The constant 4.44 derives from the RMS value of a sinusoidal derivative (2π / √2 = √2 · π ≈ 4.44288)."
-    },
-    {
-      q: "2. If a power transformer experiences a through-fault with twice (2×) the rated short-circuit current, how do the radial electromagnetic forces change?",
-      opts: ["Doubled (2×)", "Halved (0.5×)", "Quadrupled (4×, proportional to I²)", "Octupled (8×)"],
-      ans: 2,
-      exp: "Electromagnetic force is proportional to the square of current (F ∝ I²). Doubling the current quadruples (4×) the radial hoop and buckling stresses."
-    },
-    {
-      q: "3. For a standard distribution transformer designated Dyn11, what is the exact angular phase displacement?",
-      opts: ["LV leads HV by +30° (11 o'clock)", "LV lags HV by 30° (1 o'clock)", "Zero phase shift (12 o'clock)", "180° phase inversion (6 o'clock)"],
-      ans: 0,
-      exp: "In clock notation, 11 means the LV phasor points to 11 o'clock, which is +30° ahead (leading) of the HV reference at 12 o'clock."
-    },
-    {
-      q: "4. Under the Arrhenius thermal degradation model in IEC 60076-7, roughly what temperature increment halves the expected life of standard cellulose insulation?",
-      opts: ["~1 K", "~6 K", "~25 K", "~50 K"],
-      ans: 1,
-      exp: "The 6 K doubling rule (IEC 60076-7 / Montsinger law): every ~6 K sustained temperature increase approximately doubles the rate of cellulose insulation aging (halves thermal life)."
-    }
-  ];
-
-  let userAnswers = {};
-
-  function renderQuiz(){
-    const container = document.getElementById('quizContainer');
-    if(!container) return;
-
-    container.innerHTML = questions.map((q, qIdx) => {
-      const selected = userAnswers[qIdx];
-      const isAnswered = selected !== undefined;
-      const isCorrect = selected === q.ans;
-
-      const optsHtml = q.opts.map((opt, oIdx) => {
-        let btnStyle = 'background:var(--bg); border:1px solid var(--border); color:var(--text); padding:8px 12px; border-radius:8px; font-size:.86rem; text-align:left; cursor:pointer; width:100%; transition:all .15s;';
-        if(isAnswered){
-          if(oIdx === q.ans){
-            btnStyle = 'background:rgba(22,163,74,.18); border:1px solid #16a34a; color:#4ade80; font-weight:700; padding:8px 12px; border-radius:8px; font-size:.86rem; text-align:left; width:100%;';
-          } else if(selected === oIdx){
-            btnStyle = 'background:rgba(220,38,38,.18); border:1px solid #dc2626; color:#f87171; padding:8px 12px; border-radius:8px; font-size:.86rem; text-align:left; width:100%;';
-          } else {
-            btnStyle += ' opacity:.6; cursor:default;';
-          }
-        }
-        return `<button type="button" class="quiz-opt" data-qid="${qIdx}" data-oid="${oIdx}" style="${btnStyle}">${opt}</button>`;
-      }).join('');
-
-      let feedbackHtml = '';
-      if(isAnswered){
-        feedbackHtml = `<div style="margin-top:8px; padding:8px 12px; background:rgba(0,0,0,.2); border-radius:6px; font-size:.82rem; color:${isCorrect ? '#4ade80' : '#f87171'}">
-          ${isCorrect ? '✅ <b>Correct!</b> ' : '❌ <b>Incorrect.</b> '}${q.exp}
-        </div>`;
-      }
-
-      return `<div style="background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px;">
-        <div style="font-weight:700; font-size:.92rem; color:var(--ink); margin-bottom:10px">${q.q}</div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">${optsHtml}</div>
-        ${feedbackHtml}
-      </div>`;
-    }).join('');
-
-    // Update score
-    let score = 0;
-    Object.keys(userAnswers).forEach(k => {
-      if(userAnswers[k] === questions[k].ans) score++;
-    });
-    const sBox = document.getElementById('quizScoreBox');
-    if(sBox) sBox.textContent = `Score: ${score} / ${questions.length}`;
-
-    // Attach click listeners
-    container.querySelectorAll('.quiz-opt').forEach(btn => {
-      btn.addEventListener('click', function(){
-        const qid = parseInt(this.getAttribute('data-qid'));
-        const oid = parseInt(this.getAttribute('data-oid'));
-        if(userAnswers[qid] !== undefined) return; // already answered
-        userAnswers[qid] = oid;
-        renderQuiz();
-      });
-    });
-  }
-
-  renderQuiz();
-})();
-</script>
-
-<script>
-// ── Quick sizing calculator ──
-(function(){
-  const ids=['cPh','cKva','cHv','cLv','cF','cB','cD','cK'];
-  const el=Object.fromEntries(ids.map(i=>[i,document.getElementById(i)]));
-  const out=document.getElementById('calcOut');
-  if(!out) return;
-  const fmt=(n,d=0)=>isFinite(n)?n.toLocaleString("en",{maximumFractionDigits:d,minimumFractionDigits:d}):'—';
-  
-  let currentDesign = {};
-
-  function calc(){
-    const ph=+el.cPh.value, S=+el.cKva.value*1000, HV=+el.cHv.value, LV=+el.cLv.value;
-    const f=+el.cF.value, B=+el.cB.value, dens=+el.cD.value, K=+el.cK.value;
-    // volts per turn (empirical): Et = K*sqrt(kVA per phase-ish). Use total kVA for K calibration.
-    const Et = K*Math.sqrt(+el.cKva.value);
-    // core area from Et = 4.44 f B Ac  -> Ac (m2) -> cm2
-    const Ac = Et/(4.44*f*B); // m^2
-    const AcCm = Ac*1e4;
-    // phase voltages
-    const Vp_hv = ph===3 ? HV/Math.sqrt(3) : HV;   // assume star HV for 3ph (typical)
-    const Vp_lv = ph===3 ? LV/Math.sqrt(3) : LV;
-    const Nhv = Vp_hv/Et, Nlv = Vp_lv/Et;
-    // currents (line)
-    const Ihv = ph===3 ? S/(Math.sqrt(3)*HV) : S/HV;
-    const Ilv = ph===3 ? S/(Math.sqrt(3)*LV) : S/LV;
-    const aHv = Ihv/dens, aLv = Ilv/dens; // mm^2 (line current ~ phase for star)
-    
-    currentDesign = {
-      ph, kva:+el.cKva.value, HV, LV, f, B, dens, K,
-      Et, AcCm, Nhv, Nlv, Ihv, Ilv, aHv, aLv
-    };
-
-    out.innerHTML =
-      `<h4>First-pass design</h4>
-       <div class="or"><span>Volts per turn (Eₜ)</span><b>${fmt(Et,2)} V</b></div>
-       <div class="or"><span>Net core area</span><b>${fmt(AcCm,0)} cm²</b></div>
-       <div class="or"><span>HV turns / phase</span><b>${fmt(Nhv,0)}</b></div>
-       <div class="or"><span>LV turns / phase</span><b>${fmt(Nlv,0)}</b></div>
-       <div class="or"><span>HV line current</span><b>${fmt(Ihv,1)} A</b></div>
-       <div class="or"><span>LV line current</span><b>${fmt(Ilv,0)} A</b></div>
-       <div class="or"><span>HV conductor area</span><b>${fmt(aHv,1)} mm²</b></div>
-       <div class="or"><span>LV conductor area</span><b>${fmt(aLv,0)} mm²</b></div>`;
-  }
-  ids.forEach(i=>{ el[i]?.addEventListener('input',calc); el[i]?.addEventListener('change',calc); });
-  calc();
-
-  document.getElementById('btnCopyDesignSheet')?.addEventListener('click', function(){
-    const d = currentDesign;
-    const md = `### Transformer Sizing Calculation Sheet (${d.kva} kVA, ${d.HV}/${d.LV} kV)
-- **Configuration:** ${d.ph}-Phase, ${d.f} Hz
-- **Volts Per Turn (Eₜ):** ${d.Et.toFixed(2)} V (K = ${d.K})
-- **Net Core Cross-Section (Ac):** ${d.AcCm.toFixed(0)} cm² at B = ${d.B} T
-- **HV Winding:** ${d.Nhv.toFixed(0)} turns/phase | Line Current: ${d.Ihv.toFixed(1)} A | Conductor: ${d.aHv.toFixed(1)} mm²
-- **LV Winding:** ${d.Nlv.toFixed(0)} turns/phase | Line Current: ${d.Ilv.toFixed(0)} A | Conductor: ${d.aLv.toFixed(0)} mm²
-- **Current Density:** ${d.dens} A/mm²
-- **Standard Reference:** IEC 60076-1 / Faraday EMF Law E = 4.44·f·N·B·Ac
-`;
-    navigator.clipboard.writeText(md).then(()=>{
-      const btn = document.getElementById('btnCopyDesignSheet');
-      const orig = btn.textContent;
-      btn.textContent = '✅ Copied!';
-      setTimeout(()=>{ btn.textContent = orig; }, 2000);
-    });
-  });
-})();
 </script>
 
 <script src="analytics.js?v=7" defer></script>
