@@ -2,7 +2,7 @@
 
 Read-only check on 15 Oct 2026. Sitemap has 2,911 URLs. Checkout links were opened in Playwright and not paid. No card was charged.
 
-Featured Exhibitor buttons were rechecked after they went live (the $399 href was not on the site at the first crawl, and was on production by the second). Hosted webinar was still email-only on that second pass.
+Featured Exhibitor buttons were rechecked after they went live (the $399 href was not on the site at the first crawl, and was on production by the second). Hosted webinar was email-only on that second pass. This change wires the $1,500 Payment Link on pricing, webinars, and sponsor, and records `hosted_webinar` in the webhook. Production still needs a deploy before those buttons are live.
 
 Production probes the same day:
 
@@ -28,7 +28,7 @@ Production probes the same day:
 | Intel Team | $1,999 / 12 months | [pricing](https://transformerpath.com/pricing.html) “Contact Procurement Sales” → [contact](https://transformerpath.com/contact.html) | MAILTO/CONTACT ONLY | TARGET. No checkout. Shared watchlists and CSV/JSON exports are not built. |
 | Featured Event | $299 / event | [pricing](https://transformerpath.com/pricing.html), [events](https://transformerpath.com/events.html), [sponsor](https://transformerpath.com/sponsor.html) Event Spotlight, 529 event pages. Button: “Feature this event — $299”. | WORKS | `https://buy.stripe.com/00w6oA2lO8tvdwkaXwfYY04` opens **$299.00**. Stripe title is generic “TransformerPath”. Event pages put “from $399” on the same card as this $299 button. |
 | Featured Exhibitor | $399 / event | [pricing](https://transformerpath.com/pricing.html), [events](https://transformerpath.com/events.html), [exhibitions](https://transformerpath.com/exhibitions.html), [sponsor](https://transformerpath.com/sponsor.html), and event pages (529). Buttons: “Feature your exhibitor — $399”, “Featured Exhibitor · $399”, “Feature your company — $399”. | WORKS | `https://buy.stripe.com/dRm9AM5y06ln1NC9TsfYY06` opens **Featured exhibitor, $399** at **$399.00**. Return URL is `sponsor.html?paid=featured_exhibitor&session_id=…#contact`. The banner shows for any session id and does not ask Stripe. Webhook code can store `featured_exhibitor`, but `STRIPE_WEBHOOK_SECRET` is unset, so nothing is recorded. There is no renderer that turns a reviewed exhibitor row into a FEATURED card. |
-| Hosted webinar | $1,500 | [pricing](https://transformerpath.com/pricing.html) → [sponsor#hosted-webinar](https://transformerpath.com/sponsor.html#hosted-webinar). [webinars](https://transformerpath.com/webinars.html) “Host a webinar · from $1,500”. Button on sponsor: “Email to host a webinar”. | MAILTO/CONTACT ONLY on the site. The new Payment Link opens the right amount. | `https://buy.stripe.com/14A3co8Kc6ln77Wc1AfYY07` opens **Hosted webinar $1,500.00**. Not wired. No webinar product in the webhook. |
+| Hosted webinar | $1,500 | [pricing](https://transformerpath.com/pricing.html), [webinars](https://transformerpath.com/webinars.html) “Host a webinar · from $1,500”, [sponsor#hosted-webinar](https://transformerpath.com/sponsor.html#hosted-webinar) “Host a webinar — $1,500”. | WIRED | `https://buy.stripe.com/14A3co8Kc6ln77Wc1AfYY07` opens **Hosted webinar $1,500.00**. Return URL is `sponsor.html?paid=hosted_webinar&session_id=…#contact`. Webhook code stores `hosted_webinar` as `paid_pending_verification`. `STRIPE_WEBHOOK_SECRET` is unset, so nothing is recorded until that secret is set. A reviewed row does not publish a public card. |
 | Sponsorship | from $299 | [sponsor](https://transformerpath.com/sponsor.html) “Request the Media Kit” mailto, plus the enquiry form. Event Spotlight reuses the $299 Featured Event link. Daily brief, category, article, and knowledge partner have no price and no checkout. | MAILTO/CONTACT ONLY, except Event Spotlight | Individual package links do not exist. The unpublished `transformerpath/sponsor.html` catalog ($2,500, $1,200, $999, $2,499) is not on the sitemap and is not the live page. |
 | Books | $49 digital, about $99 print, $79 digital pair, about $169 printed library | [books](https://transformerpath.com/books.html) | MAILTO | `data/config.json` `bookStripeLinks` are all `REPLACE_WITH_STRIPE_LINK`. Live buttons mailto `hello@transformerpath.com`. Eight links still to create. |
 | Team / Department seats | No dollar amount on the cards (“12 months access”) | [teams](https://transformerpath.com/teams.html) “Enrol your team” | BROKEN | Click shows “Checkout isn’t connected yet.” Enterprise is “Email us”. |
@@ -50,14 +50,14 @@ There is no `advertise.html`. Advertise is [sponsor](https://transformerpath.com
 
 **Featured Exhibitor.** The $399 button is live and opens the matching Checkout. `sponsor.html?paid=featured_exhibitor&session_id=cs_test_audit_do_not_pay` shows “Payment received. Submit your company and the event below.” and stores that session id without checking Stripe. The enquiry form is the existing Netlify `sponsor-enquiry` form. `functions/stripe-webhook.js` includes `featured_exhibitor` in `PAID_LISTING_PRODUCTS`, so a configured webhook would write `paid_pending_verification`. It cannot do that today. `lib/paid-listings.js` renders a public FEATURED badge for `featured_event` only. A reviewed `featured_exhibitor` row does not draw a logo, booth, or FEATURED card.
 
-**Hosted webinar.** The $1,500 Stripe link opens the right amount and is still not linked from any page. The webhook does not know this product.
+**Hosted webinar.** Pricing, webinars, and sponsor point at the $1,500 Payment Link. `sponsor.html?paid=hosted_webinar&session_id=cs_test_audit_do_not_pay` shows “Payment received. Submit the webinar topic, date, and company below.” and stores that session id without checking Stripe. The enquiry form is the existing Netlify `sponsor-enquiry` form. `functions/stripe-webhook.js` includes `hosted_webinar` in `PAID_LISTING_PRODUCTS`, so a configured webhook would write `paid_pending_verification`. It cannot do that today. There is no public webinar card renderer.
 
 ## Stripe links still to create
 
 Already live and amount-checked:
 
 - Featured Exhibitor $399 — `https://buy.stripe.com/dRm9AM5y06ln1NC9TsfYY06` (on pricing, events, exhibitions, sponsor, and event pages)
-- Hosted webinar $1,500 — `https://buy.stripe.com/14A3co8Kc6ln77Wc1AfYY07` (opens $1,500; still not attached to a page)
+- Hosted webinar $1,500 — `https://buy.stripe.com/14A3co8Kc6ln77Wc1AfYY07` (wired on pricing, webinars, and sponsor; opens $1,500)
 - Verified Manufacturer $499 and Featured Event $299 — already on the site and opening the right amounts
 - Professional $599 and Team $1,999 — right amounts, buttons held back until `STRIPE_SECRET_KEY` is set
 - Learning — current link is a $199/year **subscription**, not the one-time payment the page describes
@@ -86,10 +86,12 @@ Set on Netlify, not in the repo:
 | `STRIPE_PRICE_VERIFIED_MANUFACTURER` | Missing. Named in the create-checkout 503. |
 | `STRIPE_PRICE_FEATURED_EVENT` | Missing. Named in the create-checkout 503. |
 | `STRIPE_PRICE_FEATURED_EXHIBITOR` | Missing. Named in the create-checkout 503 for `featured_exhibitor`. |
+| `STRIPE_PRICE_HOSTED_WEBINAR` | Missing until set. `create-checkout` for `hosted_webinar` names it in the 503. The Pay button does not need it. |
 | `STRIPE_PAYMENT_LINK_FEATURED_EXHIBITOR` | Optional exact `plink_` matcher. |
+| `STRIPE_PAYMENT_LINK_HOSTED_WEBINAR` | Optional exact `plink_` matcher. |
 | `SUPABASE_URL` | Required with the service role key. Not probed. |
 | `STRIPE_PAYMENT_LINK_VERIFIED_MANUFACTURER`, `STRIPE_PAYMENT_LINK_FEATURED_EVENT` | Optional exact `plink_` matchers. |
 | `RESEND_API_KEY`, `RESEND_FROM`, `NOTIFY_TO` | Receipts. Listing row can still be stored without Resend; a provider error returns 500. |
 | `SITE_URL` | Defaults to `https://transformerpath.com`. |
 
-After the secret key is set, each engineer Payment Link’s after-payment URL must be `https://transformerpath.com/pricing.html?session_id={CHECKOUT_SESSION_ID}` so `course-gate.js` can call `verify-access`. Verified Manufacturer should return to `claim-profile.html?paid=verified_manufacturer&session_id={CHECKOUT_SESSION_ID}#claimForm`. Featured Event should return to `events.html?paid=featured_event&session_id={CHECKOUT_SESSION_ID}#submit-event`.
+After the secret key is set, each engineer Payment Link’s after-payment URL must be `https://transformerpath.com/pricing.html?session_id={CHECKOUT_SESSION_ID}` so `course-gate.js` can call `verify-access`. Verified Manufacturer should return to `claim-profile.html?paid=verified_manufacturer&session_id={CHECKOUT_SESSION_ID}#claimForm`. Featured Event should return to `events.html?paid=featured_event&session_id={CHECKOUT_SESSION_ID}#submit-event`. Featured Exhibitor and Hosted Webinar should return to `sponsor.html?paid=featured_exhibitor&session_id={CHECKOUT_SESSION_ID}#contact` and `sponsor.html?paid=hosted_webinar&session_id={CHECKOUT_SESSION_ID}#contact`.

@@ -7,6 +7,7 @@
  *   node tests/stripe-test-session.js verified_manufacturer
  *   node tests/stripe-test-session.js featured_event
  *   node tests/stripe-test-session.js featured_exhibitor
+ *   node tests/stripe-test-session.js hosted_webinar
  */
 'use strict';
 const paid = require('../lib/paid-listings');
@@ -44,9 +45,11 @@ async function main() {
 
   const origin = (process.env.SITE_URL || 'https://transformerpath.com').replace(/\/$/, '');
   const successPath = paid.PAYMENT_LINKS[product].successPath;
-  const cancelPath = product === 'featured_exhibitor'
-    ? '/sponsor.html#contact'
-    : product === 'featured_event' ? '/events.html#submit-event' : '/claim-profile.html#claimForm';
+  const cancelPath = product === 'hosted_webinar'
+    ? '/sponsor.html#hosted-webinar'
+    : product === 'featured_exhibitor'
+      ? '/sponsor.html#contact'
+      : product === 'featured_event' ? '/events.html#submit-event' : '/claim-profile.html#claimForm';
   const form = new URLSearchParams();
   form.set('mode', 'payment');
   form.set('customer_email', 'payments-ready-test@example.com');
