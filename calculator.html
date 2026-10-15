@@ -15,6 +15,7 @@
 <link rel="stylesheet" href="tp-theme.css?v=6">
 <link rel="stylesheet" href="tp-feedback.css?v=14">
 <script src="fem-leakage.js?v=1" defer></script>
+<script src="viz/nameplate-short-circuit.js" defer></script>
 <script src="analytics.js?v=7" defer></script>
 <script>window.TP_COURSE_GATE={freeTeaser:true};</script>
 <script src="course-gate.js?v=7" data-free-teaser="1"></script>
@@ -99,6 +100,12 @@
   svg text { font:10.5px var(--mono); fill:#43526b; }
   .btnrow { display:flex; gap:8px; margin-top:12px; }
   .btnrow button { flex:1; padding:10px; border:0; border-radius:8px; cursor:pointer; font-weight:700; font-size:13px; }
+  #nameplate-card { display:none; }
+  body[data-calc-mode="nameplate"] #nameplate-card { display:block; }
+  body[data-calc-mode="nameplate"] .inputs-col > .card:not(#nameplate-card) { display:none; }
+  body[data-calc-mode="nameplate"] .cols > div:nth-child(2) { display:none; }
+  #nameplate-out .row { display:flex; justify-content:space-between; gap:12px; padding:8px 0; border-bottom:1px solid var(--line); font-size:14px; }
+  #nameplate-out .row b { font-family:var(--mono); }
   .b1 { background:var(--accent); color:#fff; }
   .b2 { background:var(--chip); color:var(--accent); }
   @media print {
@@ -199,7 +206,30 @@
   <div class="cols">
     <!-- ============ INPUTS ============ -->
     <div class="inputs-col">
-      
+      <div class="typesel" id="calc-mode">
+        <button type="button" id="mode-full" class="on">Full design</button>
+        <button type="button" id="mode-nameplate">30-second nameplate</button>
+      </div>
+      <div class="card" id="nameplate-card">
+        <h2>30-second nameplate <span class="tag">symmetrical short-circuit current</span></h2>
+        <p class="note" style="margin-top:0">Three-phase line current from the nameplate. I = S / (√3 · U · z), with z = uk% / 100 — the same multiple this calculator uses, 100/uk%. IEC 60076-5 clause 4.1, transformer impedance only (infinite bus). Short-circuit power S/z is MVA, not a current.</p>
+        <form id="nameplate-form" action="calculator.html" method="get">
+          <div class="row3">
+            <div><label for="np-mva">Rated power (MVA)</label><input id="np-mva" name="mva" type="number" value="63" step="any" min="0"></div>
+            <div><label for="np-kv">Line voltage (kV)</label><input id="np-kv" name="kv" type="number" value="230" step="any" min="0"></div>
+            <div><label for="np-uk">Impedance uk (%)</label><input id="np-uk" name="uk" type="number" value="12.5" step="any" min="0"></div>
+          </div>
+          <div class="btnrow"><button class="b1" type="submit">Calculate</button></div>
+        </form>
+        <div id="nameplate-error" class="flag bad" hidden></div>
+        <div id="nameplate-out" style="margin-top:12px">
+          <div class="row"><span>Rated line current</span><b id="np-rated"></b></div>
+          <div class="row"><span>Symmetrical short-circuit current</span><b id="np-ka"></b></div>
+          <div class="row"><span>Short-circuit power (not a current)</span><b id="np-mva-sc"></b></div>
+        </div>
+        <p class="note">Worked check: 63 MVA, 230 kV and 12.5% is about 1.265 kA. 504 is the short-circuit power in MVA, not the current. Questions: <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>.</p>
+      </div>
+
       <div class="card" style="background:linear-gradient(180deg,#14253d,#0d1b2e);border:1px solid #234268">
         <h2 style="color:var(--amber);border-bottom:1px solid rgba(255,255,255,.1)">⚡ Design Actions &amp; Portability <span class="tag">JSON / RFQ / MD</span></h2>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px">
