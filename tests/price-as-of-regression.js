@@ -31,6 +31,7 @@ check('materials page states the as-of note', materials.indexOf('prices as of 20
 check('loader builds the note from the observation date', loader.indexOf(NOTE) >= 0 && loader.indexOf(CADENCE) >= 0 && /observation_date/.test(loader));
 check('intel materials note uses historical status', /st==='historical'/.test(intel));
 check('intel materials note is built from observation_date and the recorded cadence', intel.indexOf(NOTE) >= 0 && intel.indexOf(CADENCE) >= 0 && /observation_date/.test(intel) && /m\.note/.test(intel));
+check('intel fills the materials desk after that markup exists', intel.indexOf('DOMContentLoaded') >= 0 && intel.indexOf('id="matRowsTab"') > intel.indexOf('DOMContentLoaded'));
 
 if (failed) {
   console.error('PRICE AS-OF NOTE FAILED (' + failed + ')');
