@@ -103,6 +103,17 @@ assignUnique(titles, 'title', 50, 60);
 assert(titles[0].title !== titles[1].title, 'duplicate titles are split');
 assert(titles.every(function (t) { return t.title.length >= 50 && t.title.length <= 60; }), 'titles sit in 50–60');
 
+const brandedShort = fitWindow('Acme Electric | TransformerPath', 50, 60, [' | TransformerPath']);
+assert(brandedShort.length >= 50 && brandedShort.length <= 60, 'short branded title stays in window ' + brandedShort);
+assert((brandedShort.match(/TransformerPath/g) || []).length === 1, 'short branded title keeps one brand: ' + brandedShort);
+assert(!/\sprofile$/.test(brandedShort), 'short branded title is not padded with profile: ' + brandedShort);
+assert(!/\| TransformerPath \| TransformerPath/.test(brandedShort), 'short branded title is not doubled: ' + brandedShort);
+
+const gapTitle = fitWindow('Helsinki supplier record for this plant', 50, 60, [' | TransformerPath']);
+assert(gapTitle.length >= 50 && gapTitle.length <= 60, 'mid-length title stays in window ' + gapTitle);
+assert(!/\sprofile$/.test(gapTitle), 'mid-length title is not padded with profile: ' + gapTitle);
+assert((gapTitle.match(/TransformerPath/g) || []).length <= 1, 'mid-length title has one brand: ' + gapTitle);
+
 const longTitle = fitWindow('Ahlstrom-Munksjö | Helsinki, Finland supplier', 50, 60, [' | TransformerPath']);
 assert(longTitle.length >= 50 && longTitle.length <= 60, 'long title stays in window ' + longTitle.length);
 assert(longTitle.indexOf('TransformerP') === -1 || longTitle.indexOf('TransformerPath') !== -1, 'brand is not sliced: ' + longTitle);
