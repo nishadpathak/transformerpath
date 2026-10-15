@@ -1,17 +1,14 @@
-/* ============================================================================
- * TransformerPath — Supabase public config
- * ----------------------------------------------------------------------------
- * The anon key is PUBLIC and safe to ship to the browser (Row-Level Security
- * on every table stops users touching anyone else's rows). The service_role
- * key is SECRET and must live only in serverless-function env vars — never in
- * this file.
+/* Public Supabase settings for the browser.
  *
- * Fill these two values in after creating the Supabase project (see
- * SUPABASE_SETUP.md). While they are blank the whole account layer degrades
- * gracefully to "off" — pages render normally, no errors, and the workspace
- * page shows a "sign in unavailable" state.
- * ========================================================================== */
+ * Netlify overwrites this file during the build by running
+ * scripts/write-supabase-config.js, which reads SUPABASE_URL and either
+ * SUPABASE_ANON_KEY or SUPABASE_PUBLISHABLE_KEY. Keep both values empty in
+ * git. An empty pair is the honest "Accounts are being set up" state — the
+ * page must not pretend anyone is signed in.
+ *
+ * The service-role key is never written here.
+ */
 window.TP_SUPABASE = {
-  url:  "https://rpzpgfstrxeevhkizxsx.supabase.co",
-  anon: "sb_publishable_Hex-P9AY5L7Kz4WOwpDHNw_X_wNSlVe"   // public publishable key
+  url: "",
+  anon: ""
 };

@@ -4,6 +4,7 @@
   "private": true,
   "description": "TransformerPath — static site build scripts and Netlify serverless-function dependencies. @supabase/supabase-js is required by the serverless functions (functions/lib/supabase-server.js) and is bundled with esbuild by Netlify.",
   "dependencies": {
+    "@electric-sql/pglite": "^0.3.14",
     "@supabase/supabase-js": "^2.45.0"
   }
 }
