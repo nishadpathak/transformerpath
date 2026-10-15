@@ -44,6 +44,11 @@ check('14 Aug archive copies the briefing date onto the stamp', /stampEl\.textCo
   check(pair[0] + ' stamp matches the briefing', html.indexOf('id="stamp">' + pair[1] + '<') !== -1 && html.indexOf('BRIEFING_DATE = "' + pair[1] + '"') !== -1);
 });
 
+const courseCopy = ['index.html', 'learn.html', 'pricing.html'].map((f) => fs.readFileSync(f, 'utf8')).join('\n');
+check('course copy does not repeat the word design', !/design design/.test(courseCopy));
+const inbox = fs.readFileSync('supplier-inbox.html', 'utf8');
+check('supplier inbox does not read a missing spec field on load', inbox.includes("function loadQueryParams(){\n    if (!document.getElementById('spec_rating')) return;"));
+
 if (failed) {
   console.error('LIVE QA LAYOUT REGRESSION FAILED (' + failed + ')');
   process.exit(1);

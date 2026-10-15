@@ -33,6 +33,9 @@ const { resolveCompanyAlias, norm: aliasNorm } = require('./lib/company-aliases'
 const headOffice = require('./lib/head-office');
 const HEAD_OFFICES = headOffice.load(__dirname);
 const companyParents = require('./lib/company-parents');
+const manufacturerSpecs = require('./lib/manufacturer-specs');
+const SPEC_BY_SLUG = {};
+(manufacturerSpecs.load(__dirname).companies || []).forEach(function (c) { if (c && c.slug) SPEC_BY_SLUG[c.slug] = c; });
 const { isUpcoming, platformToday } = require('./lib/event-status');
 const { splitEntityIntel, fold: foldEntity } = require('./lib/entity-intel');
 const paidListings = require('./lib/paid-listings');
@@ -525,7 +528,7 @@ function page(r, slug) {
     missingList +
   '</div>';
   // conservative schema: describe the company, never claim affiliation
-  const orgSchema = { '@context': 'https://schema.org', '@type': 'Organization', name: r.name, url: r.url ? r.url : url, description: leadText, address: { '@type': 'PostalAddress', streetAddress: (r.headOffice && r.headOffice.address) || undefined, addressCountry: r.country, addressLocality: r.city || undefined } };
+  const orgSchema = { '@context': 'https://schema.org', '@type': 'Organization', name: r.name, url: r.url ? r.url : url, description: leadText, address: { '@type': 'PostalAddress', addressCountry: r.country, addressLocality: r.city || undefined } };
   if (r.headOffice && r.headOffice.source_url) orgSchema.sameAs = [r.headOffice.source_url];
   const parentLink = companyParents.parentFor(r);
   if (parentLink) {
@@ -588,6 +591,7 @@ function page(r, slug) {
     completenessCard +
     '<h2>Capabilities</h2><div style="margin:4px 0 8px">' + typeHtml + '</div>' +
     (tierTable ? '<h2>Indicative capability data</h2>' + tierTable : '') +
+    manufacturerSpecs.renderHtml(SPEC_BY_SLUG[slug]) +
     '<h2>Related components</h2><div>' + compLinks + '</div>' +
     '<h2>Relevant applications</h2><div>' + appLinks + '</div>' +
     '<h2>Markets</h2><div>' + countryLink + (cityHtml ? ' ' + cityHtml : '') + (marketLink ? ' ' + marketLink : '') + '</div>' +

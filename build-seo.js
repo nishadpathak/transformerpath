@@ -287,5 +287,8 @@ TYPE_HUBS.forEach(function (th) {
 });
 console.log('generated', typeHubCount, 'type hubs and', comboHubCount, 'type-country combination hubs');
 
+/* Sourced product and voltage hubs. A hub is written only at five or more makers. */
+require('./scripts/build-sourced-hubs.js')();
+
 /* Sitemap: walk published HTML (see build-sitemap.js). */
 require('./build-sitemap.js')();

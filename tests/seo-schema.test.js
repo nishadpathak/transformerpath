@@ -46,6 +46,12 @@ const local = schema.entryNode('https://transformerpath.com/accessories/example/
 });
 assert(local['@type'] === 'LocalBusiness' && local.address.streetAddress === '1 Mill Road', 'LocalBusiness only with a sourced street');
 
+const orgStreet = schema.entryNode('https://transformerpath.com/manufacturers/prolec-ge/', {
+  name: 'Prolec GE', street: 'Blvd. Carlos Salinas de Gortari km. 9.25', city: 'Apodaca', country: 'Mexico', asOrganization: true
+});
+assert(orgStreet['@type'] === 'Organization' && !orgStreet.address.streetAddress, 'Organization JSON-LD omits streetAddress');
+assert(orgStreet.address.addressLocality === 'Apodaca' && orgStreet.address.addressCountry === 'Mexico', 'Organization JSON-LD keeps city and country');
+
 const noSite = schema.entryNode('https://transformerpath.com/manufacturers/x/', { name: 'No Site Co', country: 'India' });
 assert(!noSite.url, 'missing website is omitted rather than replaced with the profile URL');
 
@@ -213,10 +219,15 @@ Object.keys(seoCat.companies).forEach(function (slug) {
 });
 assert(titleMiss === 0, 'every indexable manufacturer title is 50–60 and keeps the country');
 
+const topicCrumbs = catalog.draft('topics/bushings/index.html', '<h1>Bushings</h1>', seoCat).crumbs;
+assert(topicCrumbs.some(function (c) { return /\/topics\/bushings\/$/.test(c.item); }), 'topic hub breadcrumb keeps the hub URL');
+assert(!topicCrumbs.some(function (c) { return /\/topics\/?$/.test(c.item); }), 'topic breadcrumb does not link a missing /topics/ index');
+
 const prolec = catalog.draft('manufacturers/prolec-ge/index.html', '<h1>Prolec GE</h1>', seoCat);
 const prolecOrg = prolec.nodes.find(function (n) { return n['@type'] === 'Organization' && n.name === 'Prolec GE'; });
 assert(prolecOrg && prolecOrg.parentOrganization && prolecOrg.parentOrganization.name === 'GE Vernova', 'Prolec GE parentOrganization is GE Vernova');
-assert(prolecOrg && prolecOrg.address && prolecOrg.address.streetAddress && prolecOrg['@type'] === 'Organization', 'sourced street stays on Organization');
+assert(prolecOrg && prolecOrg['@type'] === 'Organization' && prolecOrg.address && !prolecOrg.address.streetAddress, 'sourced street is omitted from Organization JSON-LD');
+assert(prolecOrg.address.addressCountry === 'Mexico' && /Apodaca/.test(prolecOrg.address.addressLocality || ''), 'Prolec Organization keeps city and country');
 assert(!prolecOrg.logo, 'no logo is invented when the company has none');
 
 const usa = catalog.draft('manufacturers/usa.html', '<h1>USA</h1>', seoCat);

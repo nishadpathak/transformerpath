@@ -181,6 +181,7 @@
   }
 
   function renderSchedule(){
+    if (!document.getElementById('spec_rating')) return;
     var ratingStr = document.getElementById('spec_rating').value || '25 MVA';
     var mva = parseMva(ratingStr);
     var v1 = parseFloat(document.getElementById('spec_hv').value) || 66;
@@ -226,6 +227,7 @@
   }
 
   function generateMarkdown(){
+    if (!document.getElementById('spec_rating')) return '';
     var ratingStr = document.getElementById('spec_rating').value || '25 MVA';
     var mva = parseMva(ratingStr);
     var v1 = parseFloat(document.getElementById('spec_hv').value) || 66;
@@ -259,6 +261,7 @@
 
   // Bind preset buttons
   function setPreset(rating, hv, lv, cool, vec, imp, cat){
+    if (!document.getElementById('spec_rating')) return;
     document.getElementById('spec_rating').value = rating;
     document.getElementById('spec_hv').value = hv;
     document.getElementById('spec_lv').value = lv;
@@ -299,7 +302,9 @@
       details.scrollIntoView({ behavior: 'smooth' });
       details.focus();
     }
-    var r = document.getElementById('spec_rating').value;
+    var ratingEl = document.getElementById('spec_rating');
+    if (!ratingEl) return;
+    var r = ratingEl.value;
     var hv = document.getElementById('spec_hv').value;
     var lv = document.getElementById('spec_lv').value;
     var std = document.getElementById('spec_std').value;
@@ -310,6 +315,7 @@
 
   // Query parameter auto-population
   function loadQueryParams(){
+    if (!document.getElementById('spec_rating')) return;
     var p = new URLSearchParams(window.location.search);
     if(p.has('rating')){ document.getElementById('spec_rating').value = p.get('rating'); if(document.getElementById('fld_rating')) document.getElementById('fld_rating').value = p.get('rating'); }
     if(p.has('voltage')){
