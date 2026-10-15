@@ -48,6 +48,18 @@ check('validateSnapshot rejects a result-only blob', function () {
   assert.throws(function () { design.validateSnapshot({ summary: {} }); }, /missing calculator inputs/);
 });
 
+check('an unchecked box is stored and still applied', function () {
+  assert.strictEqual(design.checkboxValue(false), '0');
+  assert.strictEqual(design.checkboxValue(true), '1');
+  assert.strictEqual(design.isChecked('0'), false);
+  assert.strictEqual(design.isChecked(''), false);
+  assert.strictEqual(design.isChecked('1'), true);
+  assert.strictEqual(design.shouldApply('', true), true);
+  assert.strictEqual(design.shouldApply('0', true), true);
+  assert.strictEqual(design.shouldApply('', false), false);
+  assert.strictEqual(design.shouldApply(null, true), false);
+});
+
 check('default name uses the calculated rating', function () {
   assert.strictEqual(design.defaultName({ rating: '1000 kVA', vector: 'Dyn11' }, {}), '1000 kVA Dyn11');
   assert.strictEqual(design.defaultName(null, { skva: '1000', vec: 'Dyn11' }), '1000 Dyn11');

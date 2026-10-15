@@ -22,6 +22,9 @@ check('magic link and Google are the sign-in actions',
 check('password form is gone', workspace.indexOf('type="password"') === -1);
 check('no baked email in the signed-in header', !/Signed in as [^<]*@/.test(workspace));
 check('calculator can save to the account', calculator.indexOf('id="btn_save_account"') !== -1);
+check('restored standard is the one calc uses', calculator.indexOf('CURSTD = s.std') !== -1);
+check('a second save click is ignored while the first is in flight', calculator.indexOf('if (savingDesign) return;') !== -1);
+check('a failed revision keeps the new design id', calculator.indexOf('err.designId') !== -1);
 check('committed config has empty public fields', /url:\s*""/.test(config) && /anon:\s*""/.test(config));
 check('setup doc names the env vars and the Google callback',
   docs.indexOf('SUPABASE_URL') !== -1 &&

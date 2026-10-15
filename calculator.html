@@ -2681,7 +2681,7 @@ function captureDesign() {
     if (id === 'type') return TTYPE;
     var el = $(id);
     if (!el) return undefined;
-    if (el.type === 'checkbox') return el.checked ? '1' : '';
+    if (el.type === 'checkbox') return window.TPSavedDesign.checkboxValue(el.checked);
     return el.value;
   });
   var summary = null;
@@ -2708,12 +2708,18 @@ function applyDesignSnapshot(data) {
     $('ratlbl').textContent = TTYPE === 'power' ? 'Rating (MVA)' : 'Rating (kVA)';
   }
   window.TPSavedDesign.INPUT_IDS.forEach(function (id) {
-    if (s[id] == null || s[id] === '') return;
     var el = $(id);
     if (!el) return;
-    if (el.type === 'checkbox') el.checked = s[id] === true || s[id] === '1' || s[id] === 'true';
+    var box = el.type === 'checkbox';
+    if (!window.TPSavedDesign.shouldApply(s[id], box)) return;
+    if (box) el.checked = window.TPSavedDesign.isChecked(s[id]);
     else el.value = s[id];
   });
+  if (s.std && STDS[s.std]) {
+    CURSTD = s.std;
+    if (!s.freq) $('freq').value = STDS[CURSTD].freq;
+    renderRef();
+  }
   if (s.freq) touched.freq = true;
   calc();
 }
@@ -2721,8 +2727,17 @@ function saySave(text) {
   var el = $('tpSaveStatus');
   if (el) el.textContent = text || '';
 }
+var savingDesign = false;
 $('btn_save_account').addEventListener('click', function () {
+  if (savingDesign) return;
   if (!window.TP || !TP.whenReady) { saySave('Accounts are being set up.'); return; }
+  savingDesign = true;
+  var btn = $('btn_save_account');
+  if (btn) btn.disabled = true;
+  function releaseSave() {
+    savingDesign = false;
+    if (btn) btn.disabled = false;
+  }
   TP.whenReady().then(function (state) {
     if (!state || !state.configured || !TP.user || !TP.user.email) {
       saySave(state && state.configured ? 'Sign in to save this design.' : 'Accounts are being set up.');
@@ -2738,8 +2753,9 @@ $('btn_save_account').addEventListener('click', function () {
       saySave('Saved “' + name + '”. Revision ' + (saved.revision && saved.revision.revision != null ? saved.revision.revision : '') + '.');
     });
   }).catch(function (err) {
+    if (err && err.designId) currentDesignId = err.designId;
     saySave((err && err.message) || 'Could not save this design.');
-  });
+  }).then(releaseSave, releaseSave);
 });
 function loadSavedDesignFromQuery() {
   var params = new URLSearchParams(location.search);

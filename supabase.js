@@ -200,8 +200,12 @@
       return write.then(designRow).then(function (design) {
         return supabase.from('design_versions').insert({
           design_id: design.id, user_id: uid(), data: row.data, label: o.label || 'Saved'
-        }).select('id,design_id,revision,label,created_at').single().then(designRow).then(function (revision) {
-          return { design: design, revision: revision };
+        }).select('id,design_id,revision,label,created_at').single().then(function (r) {
+          if (r.error) {
+            r.error.designId = design.id;
+            throw r.error;
+          }
+          return { design: design, revision: r.data };
         });
       });
     };
