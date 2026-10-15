@@ -1,17 +1,10 @@
 /* ============================================================================
    TransformerPath — flat primary navigation
    ----------------------------------------------------------------------------
-   Replaces the five mega-menus (Intelligence / Industry / Engineering / Learn /
-   Business) with direct links. The nine primary destinations are one click, not
-   two. Only lower-priority items collapse into a single-column "More" menu, and
-   only when the row would not otherwise fit.
-
-   Breakpoints are driven by how much room the row actually needs, not by device
-   guesses:
-     >= 1400px   all nine primary links
-     1180-1399   Grids and Tools fold into More
-     1024-1179   Materials-class items already in More; Grids/Tools stay there
-     < 1024px    one flat hamburger panel, no nesting
+   Seven primary destinations stay in the bar: Intel, Directory, Projects,
+   Tenders, Events, Learn and RFQ. Engineering and the other lower-priority
+   destinations live in More on every width. Below 1024px the bar collapses
+   to the hamburger and More's links join that one panel.
 
    Loaded after style.css, so it overrides the older .nav-links rules.
    ========================================================================== */
@@ -228,12 +221,13 @@ body > header:not(.mc-hero):not(.ac-hero):not(.hero) {
   border-radius: 6px;
 }
 
-/* Hidden by default; each width band decides what to reveal. */
-.tpnav-more { display: none; }
+/* Seven primary destinations stay in the bar. Everything else is in More,
+   including on a wide screen. */
+.tpnav-more { display: block; }
 .tpnav .tpnav-opt { display: inline-block; }
 
 /* ── Width bands ──────────────────────────────────────────────────────── */
-/* Below 1400 the full row starts to crowd the logo, so demote two items. */
+/* Below 1400 the row is tighter. Optional links fold; More stays openable. */
 @media (max-width: 1399px) {
   .tpnav-more { display: block; }
   .tpnav .tpnav-opt { display: none; }
