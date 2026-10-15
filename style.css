@@ -255,8 +255,15 @@ footer a:hover { color: var(--amber); }
 .copyright { border-top: 1px solid rgba(255,255,255,.1); padding-top: 22px; text-align: center; font-size: .82rem; }
 
 /* Responsive table wrapper — lets wide tables scroll sideways on phones */
-.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 12px; }
+.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 12px; max-width: 100%; min-width: 0; }
 .table-wrap > table { min-width: 560px; }
+
+/* Accessory profiles put a spec table in a padded column. Long cells were
+   wider than a 390px screen, so the page itself scrolled sideways. */
+@media (max-width: 720px) {
+  .c-wrap table { width: 100%; table-layout: fixed; }
+  .c-wrap td, .c-wrap th { overflow-wrap: anywhere; }
+}
 
 /* Simple content page — self-contained hero + body (archive, blog, search).
    Shared here instead of duplicated inline per page; identical rule was previously
