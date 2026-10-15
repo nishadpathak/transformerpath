@@ -74,7 +74,7 @@ exports.handler = async (event) => {
       // Manufacturer and event payments are not course entitlements. valid
       // stays false so course-gate does not grant a learner token.
       const listing = listingProduct(session);
-      if (listing === 'verified_manufacturer' || listing === 'featured_event') {
+      if (listing) {
         return {
           statusCode: 200,
           body: JSON.stringify({

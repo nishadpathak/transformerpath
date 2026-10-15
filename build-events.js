@@ -135,6 +135,12 @@ function shell(title, desc, canonical, body, ld, eventId) {
     className: 'btn btn-amber btn-sm',
     style: 'margin:0 8px 8px 0'
   });
+  const exhibitorPay = paidListings.featuredExhibitorPayHtml({
+    eventId: eventId || '',
+    formHref: '../../sponsor.html#contact',
+    className: 'btn btn-amber',
+    label: 'Feature your company — $399 →'
+  });
   return '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
     '<title>' + esc(title) + '</title>' +
     '<meta name="description" content="' + esc(String(desc || '').slice(0, 160)) + '">' +
@@ -150,7 +156,7 @@ function shell(title, desc, canonical, body, ld, eventId) {
     '<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:24px">' +
     '<div style="font-size:.8rem;color:var(--muted);margin-bottom:12px">Exhibiting here? Feature your company on TransformerPath — from $399 per event.</div>' +
     pay +
-    '<a class="btn btn-amber" href="../../sponsor.html">Feature your company — $399 →</a></div>' +
+    exhibitorPay + '</div>' +
     '<p style="font-size:.85rem;color:var(--muted);text-align:center;margin-top:12px"><a href="../../events.html">Events</a> · <a href="../../exhibitions.html">Exhibitions</a> · <a href="../../webinars.html">Webinars</a></p>' +
     '</main>\n' + FOOT + '\n<script src="../../analytics.js?v=2" defer></script>\n</body>\n</html>';
 }
