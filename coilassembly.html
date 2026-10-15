@@ -183,6 +183,7 @@ body{position:fixed;inset:0;width:100%;max-width:100%;font-family:var(--font-san
 <div id="help">🖱 drag = orbit · wheel = zoom · right-drag = pan · click = identify<br>Core building mode: use the ⬇ stacking slider to lay the top yoke, layer by step-lap layer</div>
 
 <script src="vendor/three.min.js"></script>
+<script src="tp-canvas-scroll.js"></script>
 <script>
 /* ============ scene ============ */
 const container=document.getElementById('c3d');
@@ -695,7 +696,7 @@ applyCam();
 let dragging=false,panning=false,lastX=0,lastY=0,moved=0;
 const el=renderer.domElement;
 el.addEventListener('contextmenu',e=>e.preventDefault());
-el.addEventListener('pointerdown',e=>{dragging=true;moved=0;panning=(e.button===2||e.shiftKey);
+el.addEventListener('pointerdown',e=>{if(e.pointerType==='touch')return;dragging=true;moved=0;panning=(e.button===2||e.shiftKey);
   lastX=e.clientX;lastY=e.clientY;container.classList.add('dragging');el.setPointerCapture(e.pointerId);});
 el.addEventListener('pointermove',e=>{
   if(!dragging)return;
@@ -707,10 +708,17 @@ el.addEventListener('pointermove',e=>{
   applyCam();
 });
 el.addEventListener('pointerup',e=>{dragging=false;container.classList.remove('dragging');if(moved<6)pick(e);});
-el.addEventListener('wheel',e=>{e.preventDefault();sph.r*=(1+Math.sign(e.deltaY)*.09);applyCam();},{passive:false});
-let pinchD=0;
-el.addEventListener('touchstart',e=>{if(e.touches.length===2){pinchD=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);}},{passive:true});
-el.addEventListener('touchmove',e=>{if(e.touches.length===2){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);sph.r*=pinchD/d;pinchD=d;applyCam();}},{passive:true});
+TPCanvasScroll.setPanY(el);
+TPCanvasScroll.bindWheel(el, function (e) {
+  sph.r *= 1 + Math.sign(e.deltaY) * 0.09;
+  applyCam();
+});
+TPCanvasScroll.bindTwoFinger(el, function (g) {
+  if (g.zoom && isFinite(g.zoom)) sph.r *= g.zoom;
+  if (g.dAngle) sph.th += g.dAngle;
+  applyCam();
+});
+TPCanvasScroll.bindZoomHint(typeof container !== 'undefined' ? container : el.parentElement);
 
 /* ============ picking ============ */
 const ray=new THREE.Raycaster(); const mouse=new THREE.Vector2();
