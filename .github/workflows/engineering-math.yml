@@ -1,0 +1,17 @@
+name: engineering-math
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  math:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Autotransformer co-ratio sizing
+        run: node tests/autotransformer-sizing.test.js
