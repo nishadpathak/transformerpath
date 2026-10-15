@@ -5,27 +5,13 @@
 // Requires the environment variable STRIPE_SECRET_KEY (Stripe dashboard →
 // Developers → API keys → Secret key). Fail-closed: if the key is not set, or
 // the session is not paid, the function returns valid:false and NO access is
-// granted. The tier is derived server-side from the amount actually paid (or
-// from session metadata), so a client cannot over-claim a higher tier.
+// granted. The tier comes from session metadata or a known Payment Link id.
+// The amount is not a tier: an unknown $199 charge does not become Learning.
 
 const STRIPE_API = 'https://api.stripe.com/v1';
 const SK = (process.env.STRIPE_SECRET_KEY || '').trim();
 const { listingProduct } = require('../lib/paid-listings');
-
-// Map the amount actually charged (in cents) to the plan tier. This mirrors the
-// three live Payment Links; the legacy $100 Learner link maps to learner too.
-const AMOUNT_TIER = {
-  19900: 'learner',
-  10000: 'learner', // legacy one-time $100 Learner link (see FIX-learner-price.md)
-  59900: 'professional',
-  199900: 'enterprise',
-};
-
-function deriveTier(session) {
-  if (session.metadata && session.metadata.tier) return session.metadata.tier;
-  if (typeof session.amount_total === 'number') return AMOUNT_TIER[session.amount_total] || 'learner';
-  return 'learner';
-}
+const { classifyCourse } = require('../lib/course-payment');
 
 exports.handler = async (event) => {
   // A plain GET is a CONFIG status probe only — it must never grant access.
@@ -58,7 +44,7 @@ exports.handler = async (event) => {
   }
 
   try {
-    const res = await fetch(`${STRIPE_API}/checkout/sessions/${encodeURIComponent(sessionId)}`, {
+    const res = await fetch(`${STRIPE_API}/checkout/sessions/${encodeURIComponent(sessionId)}?expand[]=payment_link`, {
       headers: { Authorization: `Bearer ${SK}` },
     });
     const session = await res.json();
@@ -86,7 +72,14 @@ exports.handler = async (event) => {
           }),
         };
       }
-      const tier = deriveTier(session);
+      const course = classifyCourse(session);
+      if (!course) {
+        return {
+          statusCode: 200,
+          body: JSON.stringify({ valid: false, paid: true, reason: 'unclassified' })
+        };
+      }
+      const tier = course.tier;
       // Issue a server-trusted, expiring entitlement token (not localStorage,
       // not a query param) so gated content delivery can be verified server-side.
       const ent = require('./lib/entitlement');

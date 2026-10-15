@@ -54,7 +54,7 @@ exports.handler = async function (event) {
   }
 
   try {
-    const res = await fetch(STRIPE_API + '/checkout/sessions/' + encodeURIComponent(req.sessionId), {
+    const res = await fetch(STRIPE_API + '/checkout/sessions/' + encodeURIComponent(req.sessionId) + '?expand[]=payment_link', {
       headers: { Authorization: 'Bearer ' + secret }
     });
     const session = await res.json();

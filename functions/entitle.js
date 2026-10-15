@@ -17,32 +17,17 @@
  */
 'use strict';
 const { isConfigured, client } = require('./lib/supabase-server');
+const { classifyCourse } = require('../lib/course-payment');
 
 const STRIPE_API = 'https://api.stripe.com/v1';
 const SK = (process.env.STRIPE_SECRET_KEY || '').trim();
 
-// Amount charged (cents) -> product/plan. Mirrors the live Payment Links.
-const AMOUNT_PRODUCT = {
-  19900: { product: 'learning', plan: 'Learning' },
-  59900: { product: 'professional', plan: 'Professional' },
-  199900: { product: 'team', plan: 'Team' },
-  49900: { product: 'verified_supplier', plan: 'Verified Supplier' },
-  // Books (Volume 1 / Volume 2 digital, and the V1+V2 digital bundle).
-  // Stripe session metadata (product/plan) is read first and is authoritative;
-  // the amount map below is only a fallback when metadata is absent. V1 and V2
-  // digital both cost $49 (4900), so they are distinguished via metadata.
-  4900:  { product: 'book_v01', plan: 'Book Volume 1' },
-  7900:  { product: 'book_bundle', plan: 'Book Volume 1 + 2' },
-};
-
 function derive(session) {
-  if (session.metadata && session.metadata.product) {
-    return { product: session.metadata.product, plan: session.metadata.plan || session.metadata.product };
-  }
-  if (typeof session.amount_total === 'number') {
-    return AMOUNT_PRODUCT[session.amount_total] || { product: 'learning', plan: 'Learning' };
-  }
-  return { product: 'learning', plan: 'Learning' };
+  const meta = session && session.metadata ? session.metadata : {};
+  if (meta.product) return { product: meta.product, plan: meta.plan || meta.product };
+  const course = classifyCourse(session);
+  if (!course) return null;
+  return { product: course.product, plan: course.plan };
 }
 
 const iso = (d) => new Date(d).toISOString();
@@ -70,7 +55,7 @@ exports.handler = async (event) => {
   }
 
   try {
-    const res = await fetch(`${STRIPE_API}/checkout/sessions/${encodeURIComponent(sessionId)}`, {
+    const res = await fetch(`${STRIPE_API}/checkout/sessions/${encodeURIComponent(sessionId)}?expand[]=payment_link`, {
       headers: { Authorization: `Bearer ${SK}` },
     });
     const session = await res.json();
@@ -82,7 +67,12 @@ exports.handler = async (event) => {
       return { statusCode: 200, body: JSON.stringify({ valid: false, paid: false, payment_status: session.payment_status }) };
     }
 
-    const { product, plan } = derive(session);
+    const derived = derive(session);
+    if (!derived) {
+      return { statusCode: 200, body: JSON.stringify({ valid: false, paid: true, reason: 'unclassified' }) };
+    }
+    const product = derived.product;
+    const plan = derived.plan;
     const email = (session.customer_details && session.customer_details.email) || session.customer_email || null;
     const supabase = client();
 
