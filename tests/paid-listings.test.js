@@ -408,7 +408,7 @@ async function main() {
         amount_total: 150000,
         currency: 'usd',
         payment_link: 'plink_test_webinar',
-        url: paid.HOSTED_WEBINAR_PAYMENT_LINK,
+        url: 'https://buy.stripe.com/' + '14A3co8Kc6ln77Wc1AfYY07',
         livemode: false,
         metadata: {},
         customer_email: 'buyer@example.com'
@@ -488,27 +488,16 @@ async function main() {
     return found || (section.products || []).filter(function (product) { return product.id === 'featured_exhibitor'; })[0];
   }, null);
   check('commerce catalog stores the exhibitor payment link', commerceExhibitor && commerceExhibitor.price === 399 && commerceExhibitor.payment_link === exhibitorLink, JSON.stringify(commerceExhibitor && { price: commerceExhibitor.price, payment_link: commerceExhibitor.payment_link }));
-  const webinarLink = paid.HOSTED_WEBINAR_PAYMENT_LINK;
-  check('webinar pay URL lives in the same config object', paid.PAYMENT_LINKS.hosted_webinar.url === webinarLink && paid.PAYMENT_LINKS.hosted_webinar.amountCents === 150000);
-  const webinarHits = [];
-  function jsHitsWebinar(dir, found) {
-    fs.readdirSync(dir).forEach(function (name) {
-      if (name === 'node_modules' || name === 'dist' || name === 'transformerpath' || name === '.git') return;
-      const p = dir + '/' + name;
-      const st = fs.statSync(p);
-      if (st.isDirectory()) jsHitsWebinar(p, found);
-      else if (name.endsWith('.js') && fs.readFileSync(p, 'utf8').indexOf(webinarLink) >= 0) found.push(p);
-    });
-  }
-  jsHitsWebinar('.', webinarHits);
-  check('webinar payment link URL lives in that same constant', webinarHits.length === 1 && webinarHits[0] === './lib/paid-listings.js', webinarHits.join(','));
-  check('pricing webinar pay button uses the constant', fs.readFileSync('pricing.html', 'utf8').indexOf('href="' + webinarLink + '"') >= 0 && fs.readFileSync('pricing.html', 'utf8').indexOf('Host a webinar — $1,500') >= 0 && fs.readFileSync('pricing.html', 'utf8').indexOf('not a live Stripe checkout') < 0);
-  check('webinars page pay button uses the constant', fs.readFileSync('webinars.html', 'utf8').indexOf('href="' + webinarLink + '"') >= 0 && fs.readFileSync('webinars.html', 'utf8').indexOf('Host a webinar · from $1,500') >= 0);
-  check('sponsor webinar pay button uses the constant', fs.readFileSync('sponsor.html', 'utf8').indexOf('href="' + webinarLink + '"') >= 0 && fs.readFileSync('sponsor.html', 'utf8').indexOf('id="hosted-webinar"') >= 0 && fs.readFileSync('sponsor.html', 'utf8').indexOf('Host a webinar — $1,500') >= 0);
+  const retiredWebinarCode = '14A3co8Kc6ln77Wc1AfYY07';
+  check('hosted webinar is not a sellable payment link', !paid.PAYMENT_LINKS.hosted_webinar && !paid.HOSTED_WEBINAR_PAYMENT_LINK);
+  ['pricing.html', 'webinars.html', 'sponsor.html', 'events.html', 'exhibitions.html'].forEach(function (rel) {
+    const html = fs.readFileSync(rel, 'utf8');
+    check(rel + ' does not offer a hosted webinar', html.indexOf(retiredWebinarCode) < 0 && html.indexOf('Host a webinar') < 0 && html.indexOf('Hosted Webinar') < 0 && html.indexOf('id="hosted-webinar"') < 0);
+  });
   const commerceWebinar = commerce.sections.reduce(function (found, section) {
     return found || (section.products || []).filter(function (product) { return product.id === 'hosted_webinar'; })[0];
   }, null);
-  check('commerce catalog stores the webinar payment link', commerceWebinar && commerceWebinar.price === 1500 && commerceWebinar.payment_link === webinarLink, JSON.stringify(commerceWebinar && { price: commerceWebinar.price, payment_link: commerceWebinar.payment_link }));
+  check('commerce catalog does not sell a hosted webinar', !commerceWebinar && JSON.stringify(commerce).indexOf(retiredWebinarCode) < 0);
   const exhibitorPages = cardPages.filter(function (d) {
     const html = fs.readFileSync('events/' + d + '/index.html', 'utf8');
     return html.indexOf('href="' + exhibitorLink + '"') >= 0 && html.indexOf('data-featured-exhibitor-pay="1"') >= 0 && html.indexOf('href="../../sponsor.html">Feature your company — $399') < 0;
@@ -565,7 +554,7 @@ async function main() {
   const exhibitorReceipt = receipt.messages(exhibitorLinkRow);
   check('exhibitor receipt sends the buyer to the exhibitor form', exhibitorReceipt.buyer && exhibitorReceipt.buyer.text.indexOf('/sponsor.html?paid=featured_exhibitor#contact') >= 0 && exhibitorReceipt.buyer.text.indexOf('Featured Exhibitor ($399)') >= 0);
   const webinarReceipt = receipt.messages(webinarLinkRow);
-  check('webinar receipt sends the buyer to the sponsor form', webinarReceipt.buyer && webinarReceipt.buyer.text.indexOf('/sponsor.html?paid=hosted_webinar#contact') >= 0 && webinarReceipt.buyer.text.indexOf('Hosted Webinar ($1,500)') >= 0);
+  check('webinar receipt does not ask the buyer to schedule a webinar', webinarReceipt.buyer && webinarReceipt.buyer.text.indexOf('does not host webinars') >= 0 && webinarReceipt.buyer.text.indexOf('hello@transformerpath.com') >= 0 && webinarReceipt.buyer.text.indexOf('/sponsor.html?paid=hosted_webinar') < 0);
 
   const widget = paid.checkoutWidget({
     product: 'verified_manufacturer',
@@ -677,7 +666,7 @@ async function main() {
           currency: 'usd',
           livemode: false,
           payment_link: 'plink_test_webinar',
-          url: paid.HOSTED_WEBINAR_PAYMENT_LINK,
+          url: 'https://buy.stripe.com/' + '14A3co8Kc6ln77Wc1AfYY07',
           metadata: {}
         };
       }
@@ -732,6 +721,77 @@ async function main() {
     metadata: {},
     payment_link: { id: 'plink_featured_live', url: paid.FEATURED_EVENT_PAYMENT_LINK }
   }) === true);
+  check('known learning plink id classifies without an env var', coursePay.classifyCourse({
+    amount_total: 59900,
+    metadata: {},
+    payment_link: 'plink_1UQhha2YHcFlJstOHjvZv5V0'
+  }).tier === 'learner');
+  check('inactive yearly learning link does not classify', coursePay.classifyCourse({
+    amount_total: 19900,
+    metadata: {},
+    payment_link: { id: 'plink_old_yearly', url: 'https://buy.stripe.com/4gMbIU2lO5hj1NC5DcfYY03' }
+  }) === null);
+  check('learning metadata does not become a listing', paid.listingProduct({
+    amount_total: 19900,
+    metadata: { product: 'learning' },
+    payment_link: 'plink_1UQhha2YHcFlJstOHjvZv5V0'
+  }) === null);
+  check('engineering pro metadata classifies without the amount', coursePay.classifyCourse({
+    amount_total: 19900,
+    metadata: { product: 'engineering_pro' }
+  }).plan === 'Engineering Pro' && coursePay.classifyCourse({
+    amount_total: 19900,
+    metadata: { product: 'engineering_pro' }
+  }).tier === 'professional');
+  check('engineering team metadata classifies without the amount', coursePay.classifyCourse({
+    amount_total: 29900,
+    metadata: { plan: 'Engineering Team' }
+  }).tier === 'enterprise');
+  const pricingPage = fs.readFileSync('pricing.html', 'utf8');
+  check('pricing learning button is the one-time link', pricingPage.indexOf('href="' + paid.PAYMENT_LINKS.learning.url + '"') >= 0 && pricingPage.indexOf('4gMbIU2lO5hj1NC5DcfYY03') < 0 && pricingPage.indexOf('Unavailable — email us to unlock') < 0);
+  check('pricing engineering pro button is the existing link', pricingPage.indexOf('href="' + paid.PAYMENT_LINKS.engineering_pro.url + '"') >= 0);
+  check('pricing engineering team button is the existing link', pricingPage.indexOf('href="' + paid.PAYMENT_LINKS.engineering_team.url + '"') >= 0);
+  check('pricing keeps the single-payment learning line', pricingPage.indexOf('Single payment · 12 months access · no auto-renewal') >= 0);
+  ['pricing.html', 'intel-pro.html', 'verified.html', 'list-company.html'].forEach(function (file) {
+    const html = fs.readFileSync(file, 'utf8');
+    const uls = html.split('<ul');
+    const soonInList = uls.slice(1).some(function (chunk) {
+      const list = chunk.slice(0, chunk.indexOf('</ul>'));
+      return list.indexOf('Coming soon') >= 0;
+    });
+    check(file + ' paid lists do not contain Coming soon', !soonInList && html.indexOf('On the roadmap (not included yet)') >= 0);
+  });
+  check('supplier and intel pages do not advertise an uncheckouted price',
+    pricingPage.indexOf('$1,499') < 0 && pricingPage.indexOf('$49/mo') < 0 && pricingPage.indexOf('$49 / month') < 0
+    && !/\$49(?!\d)/.test(fs.readFileSync('intel-pro.html', 'utf8'))
+    && fs.readFileSync('verified.html', 'utf8').indexOf('$1,499') < 0);
+  check('intel pro shows $499 for 12 months and no monthly figure', (function () {
+    const intel = fs.readFileSync('intel-pro.html', 'utf8');
+    const start = pricingPage.indexOf('>Intel Pro</h3>');
+    const card = pricingPage.slice(start, pricingPage.indexOf('Enterprise / Procurement Team', start));
+    const noMonthly = function (html) {
+      return html.indexOf('$49/mo') < 0 && html.indexOf('$49 / month') < 0 && html.indexOf('$49 / mo') < 0
+        && !/\$49(?!\d)/.test(html) && html.indexOf('588') < 0 && html.indexOf('billed monthly') < 0;
+    };
+    return start > 0 && card.indexOf('$499') >= 0 && card.indexOf('/ 12 months') >= 0
+      && card.indexOf('mailto:hello@transformerpath.com?subject=Intel%20Pro') < 0
+      && card.indexOf('There is no checkout for this plan yet') >= 0
+      && card.indexOf('buy.stripe.com') < 0
+      && intel.indexOf('$499') >= 0 && intel.indexOf('/ 12 months') >= 0
+      && intel.indexOf('There is no checkout for Intel Pro') >= 0
+      && intel.indexOf('mailto:hello@transformerpath.com?subject=Intel%20Pro') < 0
+      && noMonthly(card) && noMonthly(intel);
+  })());
+  check('verified founding offer uses the Verified Manufacturer name and is coming soon', (function () {
+    const html = fs.readFileSync('verified.html', 'utf8');
+    const at = html.indexOf('Verified Manufacturer founding offer');
+    const block = at < 0 ? '' : html.slice(at, html.indexOf('</p>', at));
+    return at >= 0 && block.indexOf('$199') >= 0 && block.indexOf('Coming soon') >= 0
+      && block.indexOf('buy.stripe.com') < 0 && block.indexOf('$499') >= 0
+      && html.indexOf('Pay $499 — Get Verified') >= 0
+      && html.indexOf(paid.PAYMENT_LINKS.verified_manufacturer.url) >= 0;
+  })());
+
   delete process.env.STRIPE_PAYMENT_LINK_LEARNING;
   process.env.STRIPE_PAYMENT_LINK_LEARNING = 'plink_learn_expected';
   check('configured learning plink id classifies that link', coursePay.classifyCourse({ amount_total: 19900, payment_link: 'plink_learn_expected', metadata: {} }).tier === 'learner');
@@ -909,7 +969,7 @@ async function main() {
   check('claim banner default copy is neutral', claimBanner.indexOf(neutral) >= 0 && claimBanner.indexOf('Payment received') < 0);
   check('claim page asks confirm-listing-payment', claimPage.indexOf('listing-payment.js') >= 0);
   check('events page does not treat the query as payment received', fs.readFileSync('events.html', 'utf8').indexOf("note.textContent = pending") < 0 && fs.readFileSync('events.html', 'utf8').indexOf('listing-payment.js') >= 0);
-  check('sponsor page asks confirm-listing-payment', fs.readFileSync('sponsor.html', 'utf8').indexOf('confirm-listing-payment') < 0 && fs.readFileSync('sponsor.html', 'utf8').indexOf('listing-payment.js') >= 0 && fs.readFileSync('sponsor.html', 'utf8').indexOf("note.textContent=pending") < 0 && fs.readFileSync('sponsor.html', 'utf8').indexOf("product:'hosted_webinar'") >= 0);
+  check('sponsor page asks confirm-listing-payment', fs.readFileSync('sponsor.html', 'utf8').indexOf('confirm-listing-payment') < 0 && fs.readFileSync('sponsor.html', 'utf8').indexOf('listing-payment.js') >= 0 && fs.readFileSync('sponsor.html', 'utf8').indexOf("note.textContent=pending") < 0 && fs.readFileSync('sponsor.html', 'utf8').indexOf("product:'featured_exhibitor'") >= 0 && fs.readFileSync('sponsor.html', 'utf8').indexOf("product:'hosted_webinar'") < 0);
   check('pricing listing return uses confirm-listing-payment', fs.readFileSync('pricing.html', 'utf8').indexOf('confirm-listing-payment') >= 0);
   ['claim-profile.html', 'events.html', 'sponsor.html'].forEach(function (rel) {
     const page = fs.readFileSync(rel, 'utf8');

@@ -1,6 +1,6 @@
 {
   "$schema": "https://transformerpath.com/commerce.schema.json",
-  "generated": "2026-10-15T04:32:16.578Z",
+  "generated": "2026-10-15T06:13:16.893Z",
   "currency": "USD",
   "neutral_principle": "Payment never influences research quality, technical capability, factory classification, project/award relationships, organic technical matching, Intel conclusions or source confidence. A free Listed manufacturer may be technically more relevant than a paying Supplier Pro.",
   "features": [
@@ -360,14 +360,6 @@
       ]
     },
     {
-      "id": "bespoke_briefings",
-      "label": "Bespoke briefings",
-      "delivery": "coming_soon",
-      "products": [
-        "intel_team"
-      ]
-    },
-    {
       "id": "featured_event_label",
       "label": "FEATURED event label after review",
       "delivery": "built",
@@ -389,14 +381,6 @@
       "delivery": "coming_soon",
       "products": [
         "featured_exhibitor"
-      ]
-    },
-    {
-      "id": "hosted_webinar",
-      "label": "Hosted webinar fulfillment",
-      "delivery": "coming_soon",
-      "products": [
-        "hosted_webinar"
       ]
     }
   ],
@@ -420,6 +404,7 @@
           "price": 199,
           "cadence": "12 months",
           "cta": "Unlock Learning",
+          "payment_link": "https://buy.stripe.com/8x27sE3pS4dfak8c1AfYY0p",
           "outcome": "Learn: full pathways, practice, progress, 3D learning, Test Bay, capstones, completion records.",
           "single_payment": true,
           "auto_renew": false,
@@ -454,11 +439,12 @@
         },
         {
           "id": "professional",
-          "name": "Professional",
+          "name": "Engineering Pro",
           "price": 599,
           "cadence": "12 months",
-          "cta": "Unlock Professional",
-          "outcome": "Work: Learning plus professional engineering utility — costing workbench, specification builder, bid evaluation, DGA workspace, professional exports.",
+          "cta": "Unlock Engineering Pro",
+          "payment_link": "https://buy.stripe.com/fZu00c3pScJL1NC3v4fYY01",
+          "outcome": "Work: Learning plus professional engineering utility \u2014 costing workbench, specification builder, bid evaluation, DGA workspace, professional exports.",
           "single_payment": true,
           "auto_renew": false,
           "billing": "single payment for 12 months access",
@@ -512,10 +498,11 @@
         },
         {
           "id": "team",
-          "name": "Team",
+          "name": "Engineering Team",
           "price": 1999,
           "cadence": "12 months",
-          "cta": "Unlock Team",
+          "cta": "Unlock Engineering Team",
+          "payment_link": "https://buy.stripe.com/aFacMY6C4aBD2RG2r0fYY02",
           "outcome": "A team on one plan with organization management, members, individual progress, assigned pathways and a shared workspace.",
           "single_payment": true,
           "auto_renew": false,
@@ -555,7 +542,7 @@
           "price": 0,
           "cadence": null,
           "cta": "Claim your company",
-          "outcome": "A factual public listing — company, country, researched categories, official website, sourced capability.",
+          "outcome": "A factual public listing \u2014 company, country, researched categories, official website, sourced capability.",
           "neutrality": "No endorsement. Listed is a census listing, not a recommendation.",
           "features": [
             {
@@ -691,7 +678,7 @@
           "cadence": "12 months",
           "cta": "Unlock Intel Pro",
           "outcome": "Advanced project/tender filters, award history, factory expansions, company timelines, saved searches, watchlists, alerts, country dashboards, historical archive, monthly brief, exports when ready.",
-          "neutrality": "Intel Pro adds monitoring/filtering/decision value — it never paywalls the factual headline. Factual Intel stays public.",
+          "neutrality": "Intel Pro adds monitoring/filtering/decision value \u2014 it never paywalls the factual headline. Factual Intel stays public.",
           "price_status": "TARGET",
           "features": [
             {
@@ -765,11 +752,6 @@
               "id": "csv_json_exports",
               "label": "CSV/JSON dataset exports",
               "delivery": "coming_soon"
-            },
-            {
-              "id": "bespoke_briefings",
-              "label": "Bespoke briefings",
-              "delivery": "coming_soon"
             }
           ]
         },
@@ -778,8 +760,8 @@
           "name": "Enterprise Intelligence",
           "price": null,
           "cadence": "custom",
-          "cta": "Talk to TransformerPath",
-          "outcome": "Multi-user access, advanced exports, custom market monitoring, custom reports, research requests, bespoke briefings, company/project tracking.",
+          "cta": "No checkout yet",
+          "outcome": "Multi-user access and company/project tracking. There is no checkout and no custom research service.",
           "features": []
         }
       ]
@@ -822,22 +804,6 @@
             {
               "id": "featured_exhibitor_card",
               "label": "Featured exhibitor card",
-              "delivery": "coming_soon"
-            }
-          ]
-        },
-        {
-          "id": "hosted_webinar",
-          "name": "Hosted Webinar",
-          "price": 1500,
-          "cadence": "engagement",
-          "cta": "Host a webinar",
-          "payment_link": "https://buy.stripe.com/14A3co8Kc6ln77Wc1AfYY07",
-          "outcome": "Event page, registration, promotion, hosting, recording where supported, post-event replay, sponsor identification. Attendee reporting subject to privacy/consent.",
-          "features": [
-            {
-              "id": "hosted_webinar",
-              "label": "Hosted webinar fulfillment",
               "delivery": "coming_soon"
             }
           ]

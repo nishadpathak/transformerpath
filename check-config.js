@@ -135,10 +135,21 @@ check('books page uses a checkout (Stripe links or email fallback), not a bare t
 // ── 2c. Supplier tiers (verified.html) must reflect config ────────────────
 const VERIFIED = fs.readFileSync('verified.html', 'utf8');
 check('verified.Verified = $' + bp.verifiedSupplier.price, new RegExp('\\$' + bp.verifiedSupplier.price + '\\b').test(VERIFIED));
-check('verified.Supplier Pro = $' + bp.proVerifiedSupplier.price,
-  new RegExp('\\$' + bp.proVerifiedSupplier.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',?') + '\\b').test(VERIFIED));
+check('verified Supplier Pro has no uncheckouted price',
+  !new RegExp('\\$' + bp.proVerifiedSupplier.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',?') + '\\b').test(VERIFIED)
+  && /No checkout yet/.test(VERIFIED)
+  && !/mailto:hello@transformerpath\.com\?subject=Supplier%20Pro/.test(VERIFIED));
 check('verified has Listed (free) tier', /<h2>Listed<\/h2>[\s\S]*?<div class="price">Free<\/div>/.test(VERIFIED));
-check('verified has Founding offer', new RegExp('\\$' + bp.foundingVerified.price + '\\b').test(VERIFIED));
+check('verified founding offer is Verified Manufacturer, priced, and coming soon', (function () {
+  const price = String(bp.foundingVerified.price);
+  const at = VERIFIED.indexOf('$' + price);
+  if (at < 0) return false;
+  const window = VERIFIED.slice(Math.max(0, at - 500), at + 800);
+  return window.indexOf('Verified Manufacturer founding offer') >= 0
+    && window.indexOf('Coming soon') >= 0
+    && window.indexOf('buy.stripe.com') < 0
+    && VERIFIED.indexOf('Pay $' + price) < 0;
+})());
 
 // ── 3. Intel cadence + classification ─────────────────────────────────────
 const INTEL = fs.readFileSync('intel.html', 'utf8');
@@ -234,11 +245,11 @@ for (const f of pages) {
     problems.push('voice-elinstrict ' + f + ' :: ' + (m && m[0]));
   }
   // ── Commercial-architecture forbidden terminology (audit P0) ──────────
-  // Public plan names must be Learning/Professional/Team. Reject old "Learner"
-  // plan-tier and "$X/year" per-year billing phrasing on the public pricing
-  // surface only (not intel data, not JS internals, not legitimate company/
-  // business uses of "enterprise"). Standard/cert references (IEC, ISO, UL,
-  // IEEE, CE, ANSI) and negations are allowed.
+  // Public plan names must be Learning, Engineering Pro, and Engineering Team.
+  // Reject old "Learner" plan-tier and "$X/year" per-year billing phrasing on
+  // the public pricing surface only (not intel data, not JS internals, not
+  // legitimate company/business uses of "enterprise"). Standard/cert
+  // references (IEC, ISO, UL, IEEE, CE, ANSI) and negations are allowed.
   const pricingSurface = /pricing\.html$/.test(f);
   const learnSurface = /learn\.html$/.test(f);
   if (pricingSurface || learnSurface) {
@@ -251,7 +262,7 @@ for (const f of pages) {
       problems.push('voice-commercial-terms ' + f + ' :: per-year billing');
     }
     // Confirm the canonical names are all present.
-    if (!/Learning/.test(nodec) || !/\bProfessional\b/.test(nodec) || !/\bTeam\b/.test(nodec)) {
+    if (!/Learning/.test(nodec) || !/Engineering Pro/.test(nodec) || !/Engineering Team/.test(nodec)) {
       problems.push('voice-commercial-terms ' + f + ' :: missing canonical plan names');
     }
   }
@@ -369,7 +380,7 @@ function routeCheck(route, req, forb, rawReqs) {
   }
 }
 // /pricing — canonical plans, single 12-month payments, no cert claims, no $/year.
-routeCheck('pricing.html', ['Learning', 'Professional', 'Team', '\\$199', '\\$599', '\\$1,999', 'no auto-renewal', '12 months'],
+routeCheck('pricing.html', ['Learning', 'Engineering Pro', 'Engineering Team', '\\$199', '\\$599', '\\$1,999', 'no auto-renewal', '12 months'],
   ['Learner\\s*(plan|tier)?\\s*<', 'Enterprise\\s*(plan|tier)?\\s*<', '\\$199\\s*/\\s*year', 'certificate per level', 'co-branded certificates?', 'capstone review \\+ certificate']);
 // Marketing counts on pricing must use data-stat so they cannot drift from site-stats
 // (audit regression: pricing said 709 while directory showed 911).

@@ -30,7 +30,7 @@ function origin() {
 function nextStep(product) {
   if (product === 'featured_event') return 'Submit the event name, official URL, and dates at ' + origin() + '/events.html?paid=featured_event#submit-event';
   if (product === 'featured_exhibitor') return 'Submit your company and the event at ' + origin() + '/sponsor.html?paid=featured_exhibitor#contact';
-  if (product === 'hosted_webinar') return 'Submit the webinar topic, date, and company at ' + origin() + '/sponsor.html?paid=hosted_webinar#contact';
+  if (product === 'hosted_webinar') return 'TransformerPath does not host webinars. Email hello@transformerpath.com about this payment.';
   if (product === 'verified_manufacturer') return 'Submit your company details at ' + origin() + '/claim-profile.html?paid=verified_manufacturer#claimForm';
   if (product === 'job_standard' || product === 'job_featured' || product === 'job_bundle_5') {
     return 'Submit the vacancy at ' + origin() + '/jobs.html?paid=' + product + '#post. Payment does not publish the opening. A reviewer still records the apply URL, the capture date, and the verification date.';
