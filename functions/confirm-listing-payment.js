@@ -11,7 +11,8 @@ const { listingProduct } = require('../lib/paid-listings');
 const PRODUCTS = {
   verified_manufacturer: true,
   featured_event: true,
-  featured_exhibitor: true
+  featured_exhibitor: true,
+  hosted_webinar: true
 };
 
 function json(statusCode, body) {

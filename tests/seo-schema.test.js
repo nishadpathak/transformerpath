@@ -4,10 +4,12 @@
  */
 'use strict';
 
+const fs = require('fs');
+const path = require('path');
 const schema = require('../lib/seo-schema');
 const html = require('../lib/seo-html');
 const { assignUnique, fitWindow } = require('../lib/seo-fit');
-const { sourceDate, matchEvent } = require('../lib/seo-catalog');
+const { sourceDate, matchEvent, learnSectionTitle } = require('../lib/seo-catalog');
 
 let failed = 0;
 function assert(cond, msg) {
@@ -105,6 +107,20 @@ const longTitle = fitWindow('Ahlstrom-Munksjö | Helsinki, Finland supplier', 50
 assert(longTitle.length >= 50 && longTitle.length <= 60, 'long title stays in window ' + longTitle.length);
 assert(longTitle.indexOf('TransformerP') === -1 || longTitle.indexOf('TransformerPath') !== -1, 'brand is not sliced: ' + longTitle);
 assert(!/TransformerP(?!ath)/.test(longTitle), 'no partial TransformerPath in ' + longTitle);
+
+const learnPages = ['learn.html', 'engineer-track.html', 'academy.html', 'pricing.html', 'coretopology.html'];
+for (let v = 0; v <= 19; v++) learnPages.push('books/volume-' + v + '/index.html');
+learnPages.forEach(function (rel) {
+  const source = fs.readFileSync(path.join(__dirname, '..', rel), 'utf8');
+  const draft = learnSectionTitle(rel, source);
+  const fitted = fitWindow(draft, 50, 60, [' | TransformerPath']);
+  assert(fitted.length >= 50 && fitted.length <= 60, 'learn title window ' + rel + ' ' + fitted);
+  assert((fitted.match(/TransformerPath/g) || []).length <= 1, 'learn title does not repeat the brand: ' + fitted);
+  assert(!/\sprofile\b/.test(fitted), 'learn title is not padded with profile: ' + fitted);
+  assert(!/\s(and|from|the|a|an|of|to|for)\s+\|/.test(fitted), 'learn title does not end on a dangling word: ' + fitted);
+  assert(!/ series\b/.test(fitted), 'learn title does not use a series filler: ' + fitted);
+  assert(!/[:;]$/.test(draft) && !/'s$/.test(draft), 'learn title does not end on punctuation or a possessive: ' + draft);
+});
 
 const desc = fitWindow('Short record.', 140, 160, [
   ' Only sourced census fields are shown.',

@@ -346,6 +346,10 @@ async function main() {
   check('$499 link is not a featured slot', paid.isFeaturedEventCheckout({ amount_total: 49900, currency: 'usd', payment_link: 'plink_test_verified', metadata: {} }) === false);
   check('$399 exhibitor link is not a featured event slot', paid.isFeaturedEventCheckout({ amount_total: 39900, currency: 'usd', payment_link: 'plink_test_exhibitor', metadata: {} }) === false);
   check('$399 exhibitor link is not a manufacturer slot', paid.isVerifiedManufacturerCheckout({ amount_total: 39900, currency: 'usd', payment_link: 'plink_test_exhibitor', metadata: {} }) === false);
+  check('$1,500 webinar link is not a featured event slot', paid.isFeaturedEventCheckout({ amount_total: 150000, currency: 'usd', payment_link: 'plink_test_webinar', metadata: {} }) === false);
+  check('$1,500 webinar link is not an exhibitor slot', paid.isFeaturedExhibitorCheckout({ amount_total: 150000, currency: 'usd', payment_link: 'plink_test_webinar', metadata: {} }) === false);
+  check('$1,500 webinar link is not a manufacturer slot', paid.isVerifiedManufacturerCheckout({ amount_total: 150000, currency: 'usd', payment_link: 'plink_test_webinar', metadata: {} }) === false);
+  check('engineer $1,999 is not a hosted webinar', paid.isHostedWebinarCheckout({ amount_total: 199900, currency: 'usd', payment_link: 'plink_team', metadata: { plan: 'team', user_id: 'user_team' } }) === false);
 
   const exhibitorLinkSession = 'cs_test_payment_link_exhibitor';
   check('exhibitor payment link fixture session id is test mode', exhibitorLinkSession.indexOf('cs_test_') === 0);
@@ -371,6 +375,31 @@ async function main() {
   check('configured exhibitor plink id matches that link', paid.isFeaturedExhibitorCheckout({ amount_total: 39900, currency: 'usd', payment_link: 'plink_exhibitor_expected', metadata: {} }) === true);
   check('configured exhibitor plink id ignores a different $399 link', paid.isFeaturedExhibitorCheckout({ amount_total: 39900, currency: 'usd', payment_link: 'plink_other', metadata: {} }) === false);
   delete process.env.STRIPE_PAYMENT_LINK_FEATURED_EXHIBITOR;
+
+  const webinarLinkSession = 'cs_test_payment_link_webinar';
+  check('webinar payment link fixture session id is test mode', webinarLinkSession.indexOf('cs_test_') === 0);
+  delete process.env.STRIPE_PAYMENT_LINK_HOSTED_WEBINAR;
+  const webinarLinkRes = await postWebhook(wh.handler, secret, {
+    id: 'evt_webinar_link',
+    type: 'checkout.session.completed',
+    data: {
+      object: {
+        id: webinarLinkSession,
+        amount_total: 150000,
+        currency: 'usd',
+        payment_link: 'plink_test_webinar',
+        livemode: false,
+        metadata: {},
+        customer_email: 'buyer@example.com'
+      }
+    }
+  });
+  const webinarLinkRow = store.listings.get(webinarLinkSession);
+  check('payment link writes a pending webinar slot', webinarLinkRes.statusCode === 200 && webinarLinkRow && webinarLinkRow.product === 'hosted_webinar' && webinarLinkRow.status === 'paid_pending_verification' && !webinarLinkRow.event_id, JSON.stringify(webinarLinkRow));
+  process.env.STRIPE_PAYMENT_LINK_HOSTED_WEBINAR = 'plink_webinar_expected';
+  check('configured webinar plink id matches that link', paid.isHostedWebinarCheckout({ amount_total: 150000, currency: 'usd', payment_link: 'plink_webinar_expected', metadata: {} }) === true);
+  check('configured webinar plink id ignores a different $1,500 link', paid.isHostedWebinarCheckout({ amount_total: 150000, currency: 'usd', payment_link: 'plink_other', metadata: {} }) === false);
+  delete process.env.STRIPE_PAYMENT_LINK_HOSTED_WEBINAR;
 
   const engineerStill = await postWebhook(wh.handler, secret, {
     id: 'evt_eng_199',
@@ -432,6 +461,27 @@ async function main() {
     return found || (section.products || []).filter(function (product) { return product.id === 'featured_exhibitor'; })[0];
   }, null);
   check('commerce catalog stores the exhibitor payment link', commerceExhibitor && commerceExhibitor.price === 399 && commerceExhibitor.payment_link === exhibitorLink, JSON.stringify(commerceExhibitor && { price: commerceExhibitor.price, payment_link: commerceExhibitor.payment_link }));
+  const webinarLink = paid.HOSTED_WEBINAR_PAYMENT_LINK;
+  check('webinar pay URL lives in the same config object', paid.PAYMENT_LINKS.hosted_webinar.url === webinarLink && paid.PAYMENT_LINKS.hosted_webinar.amountCents === 150000);
+  const webinarHits = [];
+  function jsHitsWebinar(dir, found) {
+    fs.readdirSync(dir).forEach(function (name) {
+      if (name === 'node_modules' || name === 'dist' || name === 'transformerpath' || name === '.git') return;
+      const p = dir + '/' + name;
+      const st = fs.statSync(p);
+      if (st.isDirectory()) jsHitsWebinar(p, found);
+      else if (name.endsWith('.js') && fs.readFileSync(p, 'utf8').indexOf(webinarLink) >= 0) found.push(p);
+    });
+  }
+  jsHitsWebinar('.', webinarHits);
+  check('webinar payment link URL lives in that same constant', webinarHits.length === 1 && webinarHits[0] === './lib/paid-listings.js', webinarHits.join(','));
+  check('pricing webinar pay button uses the constant', fs.readFileSync('pricing.html', 'utf8').indexOf('href="' + webinarLink + '"') >= 0 && fs.readFileSync('pricing.html', 'utf8').indexOf('Host a webinar — $1,500') >= 0 && fs.readFileSync('pricing.html', 'utf8').indexOf('not a live Stripe checkout') < 0);
+  check('webinars page pay button uses the constant', fs.readFileSync('webinars.html', 'utf8').indexOf('href="' + webinarLink + '"') >= 0 && fs.readFileSync('webinars.html', 'utf8').indexOf('Host a webinar · from $1,500') >= 0);
+  check('sponsor webinar pay button uses the constant', fs.readFileSync('sponsor.html', 'utf8').indexOf('href="' + webinarLink + '"') >= 0 && fs.readFileSync('sponsor.html', 'utf8').indexOf('id="hosted-webinar"') >= 0 && fs.readFileSync('sponsor.html', 'utf8').indexOf('Host a webinar — $1,500') >= 0);
+  const commerceWebinar = commerce.sections.reduce(function (found, section) {
+    return found || (section.products || []).filter(function (product) { return product.id === 'hosted_webinar'; })[0];
+  }, null);
+  check('commerce catalog stores the webinar payment link', commerceWebinar && commerceWebinar.price === 1500 && commerceWebinar.payment_link === webinarLink, JSON.stringify(commerceWebinar && { price: commerceWebinar.price, payment_link: commerceWebinar.payment_link }));
   const exhibitorPages = cardPages.filter(function (d) {
     const html = fs.readFileSync('events/' + d + '/index.html', 'utf8');
     return html.indexOf('href="' + exhibitorLink + '"') >= 0 && html.indexOf('data-featured-exhibitor-pay="1"') >= 0 && html.indexOf('href="../../sponsor.html">Feature your company — $399') < 0;
@@ -487,6 +537,8 @@ async function main() {
   check('manufacturer receipt sends the buyer to the claim form', manufacturerReceipt.buyer && manufacturerReceipt.buyer.text.indexOf('/claim-profile.html?paid=verified_manufacturer#claimForm') >= 0);
   const exhibitorReceipt = receipt.messages(exhibitorLinkRow);
   check('exhibitor receipt sends the buyer to the exhibitor form', exhibitorReceipt.buyer && exhibitorReceipt.buyer.text.indexOf('/sponsor.html?paid=featured_exhibitor#contact') >= 0 && exhibitorReceipt.buyer.text.indexOf('Featured Exhibitor ($399)') >= 0);
+  const webinarReceipt = receipt.messages(webinarLinkRow);
+  check('webinar receipt sends the buyer to the sponsor form', webinarReceipt.buyer && webinarReceipt.buyer.text.indexOf('/sponsor.html?paid=hosted_webinar#contact') >= 0 && webinarReceipt.buyer.text.indexOf('Hosted Webinar ($1,500)') >= 0);
 
   const widget = paid.checkoutWidget({
     product: 'verified_manufacturer',
@@ -588,6 +640,28 @@ async function main() {
     return {
       ok: true,
       json: async function () {
+        return {
+          id: webinarLinkSession,
+          payment_status: 'paid',
+          amount_total: 150000,
+          currency: 'usd',
+          livemode: false,
+          payment_link: 'plink_test_webinar',
+          metadata: {}
+        };
+      }
+    };
+  };
+  const webinarAccess = JSON.parse((await verify.handler({
+    httpMethod: 'POST',
+    body: JSON.stringify({ session_id: webinarLinkSession })
+  })).body);
+  check('webinar payment link does not grant course access', webinarAccess.valid === false && webinarAccess.paid === true && webinarAccess.product === 'hosted_webinar' && webinarAccess.listing === 'paid_pending_verification' && !webinarAccess.entitlement_token, JSON.stringify(webinarAccess));
+
+  global.fetch = async function () {
+    return {
+      ok: true,
+      json: async function () {
         return { id: 'cs_test_learn', payment_status: 'paid', amount_total: 19900, livemode: false, metadata: {}, payment_link: 'plink_learn' };
       }
     };
@@ -617,6 +691,7 @@ async function main() {
       cs_test_unpaid: { payment_status: 'unpaid', metadata: { product: 'verified_manufacturer' } },
       cs_test_wrong: { payment_status: 'paid', metadata: { product: 'featured_event' } },
       cs_test_paid_mfr: { payment_status: 'paid', metadata: { product: 'verified_manufacturer' } },
+      cs_test_paid_webinar: { payment_status: 'paid', metadata: { product: 'hosted_webinar' } },
       cs_test_course: { payment_status: 'paid', amount_total: 19900, currency: 'usd', metadata: { plan: 'learning' } }
     };
     if (!sessions[id]) return Promise.resolve({ ok: false, json: async function () { return { error: 'missing' }; } });
@@ -634,6 +709,12 @@ async function main() {
   confirmRes = await confirm.handler({ httpMethod: 'POST', body: JSON.stringify({ session_id: 'cs_test_paid_mfr', product: 'verified_manufacturer' }) });
   confirmBody = JSON.parse(confirmRes.body);
   check('paid matching listing session is confirmed', confirmBody.configured === true && confirmBody.paid === true && confirmBody.product === 'verified_manufacturer', JSON.stringify(confirmBody));
+  confirmRes = await confirm.handler({ httpMethod: 'POST', body: JSON.stringify({ session_id: 'cs_test_paid_webinar', product: 'hosted_webinar' }) });
+  confirmBody = JSON.parse(confirmRes.body);
+  check('paid hosted webinar session is confirmed only for that product', confirmBody.paid === true && confirmBody.product === 'hosted_webinar', JSON.stringify(confirmBody));
+  confirmRes = await confirm.handler({ httpMethod: 'POST', body: JSON.stringify({ session_id: 'cs_test_paid_webinar', product: 'featured_exhibitor' }) });
+  confirmBody = JSON.parse(confirmRes.body);
+  check('paid webinar session does not confirm an exhibitor return', confirmBody.paid === false && confirmBody.product === 'hosted_webinar', JSON.stringify(confirmBody));
   confirmRes = await confirm.handler({ httpMethod: 'GET' });
   check('confirm requires a product', confirmRes.statusCode === 400 && JSON.parse(confirmRes.body).paid === false);
 
@@ -673,7 +754,7 @@ async function main() {
   check('claim banner default copy is neutral', claimBanner.indexOf(neutral) >= 0 && claimBanner.indexOf('Payment received') < 0);
   check('claim page asks confirm-listing-payment', claimPage.indexOf('listing-payment.js') >= 0);
   check('events page does not treat the query as payment received', fs.readFileSync('events.html', 'utf8').indexOf("note.textContent = pending") < 0 && fs.readFileSync('events.html', 'utf8').indexOf('listing-payment.js') >= 0);
-  check('sponsor page asks confirm-listing-payment', fs.readFileSync('sponsor.html', 'utf8').indexOf('confirm-listing-payment') < 0 && fs.readFileSync('sponsor.html', 'utf8').indexOf('listing-payment.js') >= 0 && fs.readFileSync('sponsor.html', 'utf8').indexOf("note.textContent=pending") < 0);
+  check('sponsor page asks confirm-listing-payment', fs.readFileSync('sponsor.html', 'utf8').indexOf('confirm-listing-payment') < 0 && fs.readFileSync('sponsor.html', 'utf8').indexOf('listing-payment.js') >= 0 && fs.readFileSync('sponsor.html', 'utf8').indexOf("note.textContent=pending") < 0 && fs.readFileSync('sponsor.html', 'utf8').indexOf("product:'hosted_webinar'") >= 0);
   check('pricing listing return uses confirm-listing-payment', fs.readFileSync('pricing.html', 'utf8').indexOf('confirm-listing-payment') >= 0);
 
   delete process.env.STRIPE_SECRET_KEY;

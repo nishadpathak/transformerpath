@@ -33,6 +33,7 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
+const { closedReason } = require('./lib/intel-activity');
 
 const TODAY_STR = new Date().toISOString().slice(0, 10);
 const TODAY = new Date(TODAY_STR + 'T00:00:00Z');
@@ -320,9 +321,17 @@ Object.keys(INTEL).forEach(reg => {
     else if (age === 'BACKGROUND') backgroundCount++;
     else if (age === 'HISTORICAL') historicalCount++;
 
-    // Check if active/developing
+    // A passed close date, or a reason already on the record, is not an open item.
+    // The word "tender" in an old headline must not reopen it.
+    const priorClosed = it.closed_reason ? String(it.closed_reason) : '';
+    const passedClose = closedReason(it, TODAY_STR);
+    const closed = priorClosed || passedClose;
     const isOngoing = /under construction|active|commissioning|tender|tenders|pipeline|awarded|wins|contract|approved|rfq/i.test(it.title + ' ' + it.snippet);
-    if ((age === 'BACKGROUND' || age === 'HISTORICAL') && isOngoing) {
+    if (closed) {
+      it.is_active = false;
+      if (!it.closed_reason) it.closed_reason = closed;
+      it.current_relevance = it.closed_reason;
+    } else if ((age === 'BACKGROUND' || age === 'HISTORICAL') && isOngoing) {
       it.is_active = true;
       it.current_relevance = 'Project under active procurement/construction or multi-year grid framework.';
       oldRetainedActiveCount++;
@@ -343,6 +352,20 @@ Object.keys(INTEL).forEach(reg => {
     });
   });
 });
+
+// Same story must not survive as both USA and North America. The injection
+// above already lands the AEP Ohio filing on USA; drop the extra key.
+if (INTEL['North America']) {
+  if (!INTEL.USA) INTEL.USA = { label: 'USA', items: [] };
+  const seen = new Set((INTEL.USA.items || []).map((x) => x.url || x.title));
+  (INTEL['North America'].items || []).forEach((it) => {
+    const key = it.url || it.title;
+    if (seen.has(key)) return;
+    INTEL.USA.items.push(it);
+    seen.add(key);
+  });
+  delete INTEL['North America'];
+}
 
 fs.writeFileSync('data/intel.json', JSON.stringify(INTEL, null, 2));
 

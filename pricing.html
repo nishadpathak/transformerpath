@@ -382,7 +382,10 @@ table.cmp .n { color:var(--border); }
         <p style="margin:10px 0 8px"><a class="btn btn-amber btn-sm" href="https://buy.stripe.com/dRm9AM5y06ln1NC9TsfYY06" data-featured-exhibitor-pay="1" data-track="exhibitor_feature_inquiry" data-track-plan="Featured Exhibitor">Feature your exhibitor — $399</a></p>
         <p style="color:var(--muted);font-size:.8rem;margin:0 0 8px">After payment, submit your company and the event. The FEATURED label is shown only after review.</p>
         <a href="sponsor.html#contact" style="font-size:.8rem;font-weight:700;color:var(--accent)">Submit exhibitor details &rarr;</a></div>
-      <div class="card" style="padding:16px;border-radius:12px"><b>Hosted Webinar</b><div style="color:var(--accent);font-weight:700;margin:4px 0">from $1,500</div><p style="color:var(--muted);font-size:.82rem;margin:0">Event page, registration, promotion, hosting, recording where supported, post-event replay. Attendee reporting subject to privacy/consent. Inquiry via email — not a live Stripe checkout.</p><a href="sponsor.html#hosted-webinar" style="font-size:.8rem;font-weight:700;color:var(--accent)">Host a webinar &rarr;</a></div>
+      <div class="card" style="padding:16px;border-radius:12px"><b>Hosted Webinar</b><div style="color:var(--accent);font-weight:700;margin:4px 0">from $1,500</div><p style="color:var(--muted);font-size:.82rem;margin:0">Event page, registration, promotion, hosting, recording where supported, post-event replay. Attendee reporting subject to privacy/consent.</p>
+        <p style="margin:10px 0 8px"><a class="btn btn-amber btn-sm" href="https://buy.stripe.com/14A3co8Kc6ln77Wc1AfYY07" data-hosted-webinar-pay="1" data-track="webinar_inquiry" data-track-plan="Hosted Webinar">Host a webinar — $1,500</a></p>
+        <p style="color:var(--muted);font-size:.8rem;margin:0 0 8px">After payment, submit the webinar topic, date, and company. The session is scheduled only after review.</p>
+        <a href="sponsor.html#contact" style="font-size:.8rem;font-weight:700;color:var(--accent)">Submit webinar details &rarr;</a></div>
       <div class="card" style="padding:16px;border-radius:12px"><b>Sponsorship</b><div style="color:var(--accent);font-weight:700;margin:4px 0">from $299</div><p style="color:var(--muted);font-size:.82rem;margin:0">Daily Intel sponsor, event spotlight, category/market sponsor, newsletter sponsor, annual knowledge partner. Every placement is visibly SPONSORED — we never sell editorial conclusions.</p><a href="sponsor.html" style="font-size:.8rem;font-weight:700;color:var(--accent)">Sponsor &rarr;</a></div>
     </div>
 
@@ -580,7 +583,7 @@ table.cmp .n { color:var(--border); }
   }
 
   var listingReturn = params.get('product');
-  if (stripeReturn && (listingReturn === 'verified_manufacturer' || listingReturn === 'featured_event' || listingReturn === 'featured_exhibitor')) {
+  if (stripeReturn && (listingReturn === 'verified_manufacturer' || listingReturn === 'featured_event' || listingReturn === 'featured_exhibitor' || listingReturn === 'hosted_webinar')) {
     var listingNeutral = 'If you completed payment, submit the form below; we confirm payment before review.';
     var listingBanner = document.getElementById('unlockBanner');
     if (listingBanner) {
@@ -597,11 +600,13 @@ table.cmp .n { color:var(--border); }
           listingBanner.textContent = listingNeutral;
           return;
         }
-        listingBanner.innerHTML = listingReturn === 'featured_event'
-          ? 'Payment received. Submit the event name, URL, and dates on the <a href="events.html?paid=featured_event#submit-event" style="color:#fff;text-decoration:underline">events list</a>. FEATURED is shown only after review.'
-          : listingReturn === 'featured_exhibitor'
-            ? 'Payment received. Submit your company and the event on the <a href="sponsor.html?paid=featured_exhibitor#contact" style="color:#fff;text-decoration:underline">sponsor form</a>. FEATURED is shown only after review.'
-            : 'Payment received. Submit your company details on the <a href="claim-profile.html?paid=verified_manufacturer#claimForm" style="color:#fff;text-decoration:underline">claim form</a>. VERIFIED MANUFACTURER is published only after review.';
+        var paidCopy = {
+          featured_event: 'Payment received. Submit the event name, URL, and dates on the <a href="events.html?paid=featured_event#submit-event" style="color:#fff;text-decoration:underline">events list</a>. FEATURED is shown only after review.',
+          featured_exhibitor: 'Payment received. Submit your company and the event on the <a href="sponsor.html?paid=featured_exhibitor#contact" style="color:#fff;text-decoration:underline">sponsor form</a>. FEATURED is shown only after review.',
+          hosted_webinar: 'Payment received. Submit the webinar topic, date, and company on the <a href="sponsor.html?paid=hosted_webinar#contact" style="color:#fff;text-decoration:underline">sponsor form</a>. The session is scheduled only after review.',
+          verified_manufacturer: 'Payment received. Submit your company details on the <a href="claim-profile.html?paid=verified_manufacturer#claimForm" style="color:#fff;text-decoration:underline">claim form</a>. VERIFIED MANUFACTURER is published only after review.'
+        };
+        listingBanner.innerHTML = paidCopy[listingReturn];
       })
       .catch(function () {
         if (listingBanner) listingBanner.textContent = listingNeutral;
