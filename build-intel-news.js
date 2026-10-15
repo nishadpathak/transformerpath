@@ -192,6 +192,7 @@ Object.keys(srcByRegion).forEach((region) => {
     if (it.date_iso) o.date_iso = it.date_iso;
     if (it.publication_date) o.publication_date = it.publication_date;
     if (it.event_date) o.event_date = it.event_date;
+    if (it.evidence_grade) o.evidence_grade = it.evidence_grade;
     return o;
   }));
   mergedCount += fresh.length;
