@@ -105,7 +105,7 @@ async function main() {
       A, 'ada@gmail.com', JSON.stringify({ signup_role: 'student', display_name: 'Ada' }),
       B, 'grace@gmail.com', JSON.stringify({ signup_role: 'engineer', display_name: 'Grace' }),
       C, 'alan@mit.edu', JSON.stringify({ signup_role: 'student', display_name: 'Alan' }),
-      D, 'nishad@example.com', JSON.stringify({ signup_role: 'engineer', display_name: 'Admin' })
+      D, 'desk@example.com', JSON.stringify({ signup_role: 'engineer', display_name: 'Admin' })
     ]
   );
 

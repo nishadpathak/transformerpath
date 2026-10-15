@@ -2,7 +2,7 @@
 
 Stripe test mode until the go-live checklist is done. Never commit secret keys, webhook secrets, or price ids that are not public.
 
-This file names the environment variables Nishad sets in Netlify. It does not contain values.
+This file names the environment variables the owner sets in Netlify. It does not contain values.
 
 ## Environment variables
 
