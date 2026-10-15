@@ -12,3 +12,4 @@ jobs:
       with:
         node-version: '22'
     - run: node tests/job-board.test.js
+    - run: node tests/rfq-leads.test.js
