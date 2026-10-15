@@ -243,6 +243,8 @@
 
     <div class="card">
       <h3 style="color:var(--ink);margin-bottom:14px">Post your RFQ</h3>
+      <p id="listingPayNote" style="display:none;color:var(--muted);font-size:.9rem;margin:0 0 12px"></p>
+      <div data-jobs-rfq-pay="rfq" hidden style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px"></div>
       <p style="font-size:.82rem;color:var(--muted);margin:0 0 10px">A unique RFQ reference is generated and confirmed by email when the requirement is submitted — quote it in any follow-up email.</p>
       <form name="rfq" method="POST" enctype="multipart/form-data" data-netlify="true" data-netlify-honeypot="bot-field" data-track-form="rfq_submitted">
         <input type="hidden" name="reference" id="fld_ref" value="">
@@ -555,5 +557,7 @@
 <script src="rfq-engine.js" defer></script>
 <script src="tp-freshness.js?v=7" defer></script>
 <script src="tp-feedback.js?v=7" defer></script>
+<script src="listing-payment.js"></script>
+<script src="jobs-rfq-pay.js"></script>
 </body>
 </html>

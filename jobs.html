@@ -518,7 +518,9 @@ Showing 30 employers across 18 countries
 </div>
 
     <div class="card" id="post" style="margin-top:44px">
-      <div class="section-head" style="margin-bottom:20px"><h2>Hiring? Post a Job — Free</h2><p>Submit one vacancy. A reviewer checks that the apply URL is a specific opening and is not a 404, then records the capture date and the verification date. A careers-page search stays in the hiring-signals list and is not published as a live opening. Nothing is published from this form by itself.</p></div>
+      <div class="section-head" style="margin-bottom:20px"><h2 id="jobPostHeading">Hiring? Post a Job — Free</h2><p>Submit one vacancy. A reviewer checks that the apply URL is a specific opening and is not a 404, then records the capture date and the verification date. A careers-page search stays in the hiring-signals list and is not published as a live opening. Nothing is published from this form by itself.</p></div>
+      <p id="listingPayNote" style="display:none;color:var(--muted);font-size:.9rem;margin:0 0 12px"></p>
+      <div data-jobs-rfq-pay="jobs" hidden style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px"></div>
       <form name="job-posting" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" id="jForm">
         <input type="hidden" name="form-name" value="job-posting"><p hidden><label>Leave empty: <input name="bot-field"></label></p>
         <div class="row">
@@ -552,6 +554,8 @@ Showing 30 employers across 18 countries
       </div>
     </div>
     <script src="lib/job-board.js"></script>
+    <script src="listing-payment.js"></script>
+    <script src="jobs-rfq-pay.js"></script>
     <script>(function(){var f=document.getElementById('jForm');if(!f)return;f.addEventListener('submit',function(e){e.preventDefault();var err=document.getElementById('jFormError');if(!f.checkValidity()){f.reportValidity();return;}var data=new FormData(f);var problems=window.TPJobBoard?TPJobBoard.submissionErrors({title:data.get('title'),company:data.get('company'),location:data.get('location'),function:data.get('function'),description:data.get('description'),email:data.get('email'),apply_url:data.get('apply_url'),one_position:data.get('one_position')==='yes'}):[];if(problems.length){err.style.display='block';err.textContent=problems.join(' ');return;}err.style.display='none';fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(data).toString()}).then(d).catch(d);function d(){f.style.display='none';document.getElementById('jThanks').style.display='block';}});})();</script>
 
     <p style="text-align:center; color:var(--muted); font-size:.86rem; margin-top:24px">

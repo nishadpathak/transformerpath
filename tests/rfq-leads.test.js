@@ -85,7 +85,8 @@ var html = fs.readFileSync('rfq.html', 'utf8');
 check('RFQ form asks for consent', html.indexOf('name="consent"') !== -1 && html.indexOf(leads.CONSENT_VERSION) !== -1);
 check('RFQ deadline is a calendar date', html.indexOf('type="date"') !== -1 && html.indexOf('Q2 2027') === -1);
 check('public RFQ copy stays redacted', html.indexOf('never shown publicly') !== -1);
-check('RFQ page has no new buy button', html.indexOf('buy.stripe.com/00w3co') === -1 && html.indexOf('data-jobs-rfq-pay') === -1);
+check('RFQ page has no new buy button', html.indexOf('buy.stripe.com/00w3co') === -1 && html.indexOf('plink_1UQhNR') === -1);
+check('RFQ pay mount stays empty in the HTML', html.indexOf('data-jobs-rfq-pay="rfq"') !== -1);
 
 var privacy = fs.readFileSync('privacy.html', 'utf8');
 check('privacy names the 5-supplier exception', privacy.indexOf('at most 5') !== -1 && privacy.indexOf('not a processor') !== -1);

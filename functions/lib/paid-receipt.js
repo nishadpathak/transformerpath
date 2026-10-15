@@ -14,8 +14,35 @@ const LABELS = {
   verified_manufacturer: 'Verified Manufacturer ($499)',
   featured_event: 'Featured Event ($299)',
   featured_exhibitor: 'Featured Exhibitor ($399)',
-  hosted_webinar: 'Hosted Webinar ($1,500)'
+  hosted_webinar: 'Hosted Webinar ($1,500)',
+  job_standard: 'Job posting ($199 / 30 days)',
+  job_featured: 'Featured job ($299 / 30 days)',
+  job_bundle_5: 'Job bundle, 5 posts ($799)',
+  rfq_lead: 'RFQ lead ($249)',
+  rfq_lead_pro: 'Supplier Pro extra lead ($149)',
+  supplier_pro: 'Supplier Pro ($1,499 / year)'
 };
+
+function origin() {
+  return (process.env.SITE_URL || 'https://transformerpath.com').trim().replace(/\/$/, '');
+}
+
+function nextStep(product) {
+  if (product === 'featured_event') return 'Submit the event name, official URL, and dates at ' + origin() + '/events.html?paid=featured_event#submit-event';
+  if (product === 'featured_exhibitor') return 'Submit your company and the event at ' + origin() + '/sponsor.html?paid=featured_exhibitor#contact';
+  if (product === 'hosted_webinar') return 'Submit the webinar topic, date, and company at ' + origin() + '/sponsor.html?paid=hosted_webinar#contact';
+  if (product === 'verified_manufacturer') return 'Submit your company details at ' + origin() + '/claim-profile.html?paid=verified_manufacturer#claimForm';
+  if (product === 'job_standard' || product === 'job_featured' || product === 'job_bundle_5') {
+    return 'Submit the vacancy at ' + origin() + '/jobs.html?paid=' + product + '#post. Payment does not publish the opening. A reviewer still records the apply URL, the capture date, and the verification date.';
+  }
+  if (product === 'rfq_lead' || product === 'rfq_lead_pro') {
+    return 'This payment does not qualify a lead and does not release the buyer contact. Contact stays hidden until the lead is included or marked paid and is still qualified. See ' + origin() + '/rfq.html?paid=' + product;
+  }
+  if (product === 'supplier_pro') {
+    return 'Supplier Pro stays pending verification. The inbox still counts only the included leads on file. Payment does not release a buyer contact. See ' + origin() + '/rfq.html?paid=supplier_pro';
+  }
+  return null;
+}
 
 function resendKey() { return (process.env.RESEND_API_KEY || '').trim(); }
 function notifyTo() { return (process.env.NOTIFY_TO || 'hello@transformerpath.com').trim(); }
@@ -38,18 +65,7 @@ function messages(row) {
     'Session: ' + row.session_id,
     '',
     'Status: paid, pending verification.',
-    row.product === 'featured_event'
-      ? 'Submit the event name, official URL, and dates at ' + ((process.env.SITE_URL || 'https://transformerpath.com').trim().replace(/\/$/, '')) + '/events.html?paid=featured_event#submit-event'
-      : null,
-    row.product === 'featured_exhibitor'
-      ? 'Submit your company and the event at ' + ((process.env.SITE_URL || 'https://transformerpath.com').trim().replace(/\/$/, '')) + '/sponsor.html?paid=featured_exhibitor#contact'
-      : null,
-    row.product === 'hosted_webinar'
-      ? 'Submit the webinar topic, date, and company at ' + ((process.env.SITE_URL || 'https://transformerpath.com').trim().replace(/\/$/, '')) + '/sponsor.html?paid=hosted_webinar#contact'
-      : null,
-    row.product === 'verified_manufacturer'
-      ? 'Submit your company details at ' + ((process.env.SITE_URL || 'https://transformerpath.com').trim().replace(/\/$/, '')) + '/claim-profile.html?paid=verified_manufacturer#claimForm'
-      : null,
+    nextStep(row.product),
     'A VERIFIED MANUFACTURER badge or FEATURED label is published only after a reviewer confirms the organization. Payment does not change technical capability, evidence, or ranking.',
     '',
     'Stripe can also email a card receipt. Turn on email receipts in the Stripe Dashboard under Settings → Customer emails → Successful payments.'

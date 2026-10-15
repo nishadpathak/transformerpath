@@ -126,6 +126,7 @@
       <p id="quota" style="font-size:2rem;font-weight:800;color:var(--accent);margin:6px 0">…</p>
       <p id="flow" style="color:var(--muted);font-size:.9rem;margin:0"></p>
     </div>
+    <div data-jobs-rfq-pay="supplier" hidden style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px"></div>
     <div id="inboxRows"></div>
     <p style="color:var(--muted);font-size:.85rem">A reviewed match list has at most 5 suppliers. Match order stays research completeness. <a href="rfq.html" style="color:var(--accent)">Buyer RFQ form</a> · <a href="privacy.html#rfq-contacts" style="color:var(--accent)">Privacy</a></p>
   </div>
@@ -386,6 +387,7 @@
 <script src="tp-feedback.js?v=7" defer></script>
 
 <script src="lib/rfq-leads.js"></script>
+<script src="jobs-rfq-pay.js"></script>
 <script>
 (function(){
   function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }

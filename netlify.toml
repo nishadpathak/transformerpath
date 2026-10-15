@@ -18,7 +18,10 @@
   node_bundler = "esbuild"
 
 [functions."create-checkout"]
-  included_files = ["data/directory-index.json", "data/events-canonical.json", "data/events.json", "data/company-slugs.json"]
+  included_files = ["data/directory-index.json", "data/events-canonical.json", "data/events.json", "data/company-slugs.json", "data/feature-flags.json"]
+
+[functions."commerce-flags"]
+  included_files = ["data/feature-flags.json"]
 
 [functions."refresh-data"]
   schedule = "0 * * * *"

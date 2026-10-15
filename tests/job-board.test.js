@@ -88,7 +88,8 @@ check('apply URL is required', /name="apply_url"[^>]*required|required[^>]*name=
 check('one-position attestation is on the form', html.indexOf('name="one_position"') !== -1);
 check('page loads the job board rules', html.indexOf('lib/job-board.js') !== -1);
 check('page reads the published file', html.indexOf('data/job-postings.json') !== -1);
-check('no job buy button on the page', html.indexOf('buy.stripe.com/aFa14g') === -1 && html.indexOf('data-jobs-rfq-pay') === -1);
+check('no job buy button on the page', html.indexOf('buy.stripe.com/aFa14g') === -1 && html.indexOf('plink_1UQhNK') === -1);
+check('job pay mount stays empty in the HTML', html.indexOf('data-jobs-rfq-pay="jobs" hidden') !== -1 && html.indexOf('Hiring? Post a Job — Free') !== -1);
 
 const ssr = fs.readFileSync('build_ssr.js', 'utf8');
 check('SSR counts published rows through the same rules', ssr.indexOf('publicOpenings') !== -1 && ssr.indexOf('job-postings.json') !== -1);
