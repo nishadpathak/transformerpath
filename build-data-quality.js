@@ -133,7 +133,7 @@ TENDERS.forEach((t) => {
       'A tender record has no verifiable source URL — provenance cannot be audited.',
       srcStr(t.source || ''), 'Attach the official procurement/source URL, or mark the record for review.');
   }
-  if (t.status && !/^(EXPECTED|OPEN|CLOSING_SOON|CLOSED|EVALUATION|AWARDED|CANCELLED|UNKNOWN)$/.test(t.status)) {
+  if (t.status && !/^(EXPECTED|OPEN|CLOSING_SOON|CLOSED|EVALUATION|AWARDED|CANCELLED|UNKNOWN|PROCUREMENT_PLAN|FRAMEWORK|MOU)$/.test(t.status)) {
     add('MEDIUM', 'invalid_tender_status', t.title, 'status', t.status, 'Tender status is not a recognized lifecycle value.',
       srcStr(t.source || ''), 'Reclassify against the tender lifecycle (EXPECTED/OPEN/CLOSING_SOON/CLOSED/EVALUATION/AWARDED/CANCELLED).');
   }

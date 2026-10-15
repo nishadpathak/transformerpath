@@ -28,11 +28,13 @@ function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').repla
 function slugify(s) { return String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/&/g, 'and').replace(/['’´]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, ''); }
 const ci = (s) => (s || '').toLowerCase();
 
+const { validateAward, awardeeOf } = require('./lib/award-classification');
 const TENDERS = (JSON.parse(fs.readFileSync('data/tenders.json', 'utf8')).tenders) || [];
 
 // Build the Award entity from source-confirmed AWARDED tenders.
 const awards = [];
 const seen = {};
+const refused = [];
 TENDERS.forEach((t) => {
   if (t.status !== 'AWARDED') return;
   // Source evidence required: only a tender with a real published source is an award.
@@ -41,8 +43,16 @@ TENDERS.forEach((t) => {
   const key = ci(t.title + '|' + t.tender_id);
   if (seen[key]) return;
   seen[key] = 1;
-  // Order of preference for buyer: utility, then buyer, then epc. Never fabricate a name.
-  const buyer = t.utility || t.buyer || t.epc || '';
+  // An award must name an awardee. Prefer the party the source names as the
+  // winner, then the EPC, the utility, or the buyer. Never fabricate a name.
+  const named = awardeeOf(t);
+  const buyer = t.utility || t.buyer || t.awardee || t.epc || '';
+  const candidate = Object.assign({}, t, { buyer: buyer, source_urls: srcUrls });
+  const problems = validateAward(candidate);
+  if (problems.length) {
+    refused.push(t.tender_id + ' (' + t.title + '): ' + problems.join('; '));
+    return;
+  }
   const isProjectDerived = ci(t.source || '').indexOf('transformerpath project database') >= 0;
   awards.push({
     award_id: 'AW-' + slugify(t.title).slice(0, 30).replace(/-+$/, ''),
@@ -50,6 +60,7 @@ TENDERS.forEach((t) => {
     project_slug: t.project_slug || '',
     project: t.project_slug ? slugify(t.project_slug) : '',
     title: t.title,
+    awardee: named,
     buyer,
     utility: t.utility || '',
     epc: t.epc || '',
@@ -69,6 +80,7 @@ TENDERS.forEach((t) => {
     currency: (/^(USD|EUR|CNY|INR|GBP|AED|SAR|QAR|KWD|KRW|JPY)\b/i.test(t.quantity || '') ? String(t.quantity).match(/^([A-Z]{2,3})/i)[1].toUpperCase() : ''),
     source: t.source || '',
     source_urls: srcUrls,
+    award_basis: t.award_basis || '',
     confidence: 'LIMITED',
     claim_type: 'INDEPENDENTLY_SOURCED',
     // The AWARD/order result is EXPLICIT (derived only from a source-confirmed
@@ -82,6 +94,12 @@ TENDERS.forEach((t) => {
 
 // Sort: by country then recency of source label (descending).
 function dateFromSrc(src) { return require('./lib/src-date').dateFromSrcUtc(src); }
+if (refused.length) {
+  refused.forEach(function (line) { console.error('award refused: ' + line); });
+  console.error('An award record must have an awardee and a source describing a contract award.');
+  process.exit(1);
+}
+
 awards.sort((a, b) => String(a.country).localeCompare(b.country) || String(dateFromSrc(b.source)).localeCompare(dateFromSrc(a.source)));
 
 const stats = {
@@ -111,7 +129,7 @@ console.log('awards.json wrote ' + awards.length + ' awards / ' + stats.countrie
   const html = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Transformer Awards — Confirmed Contract Results | TransformerPath</title>' +
     '<meta name="description" content="A worldwide directory of confirmed transformer-relevant awards — contract results with the buyer, EPC, country, voltage and source. ' + awards.length + ' source-confirmed awards across ' + stats.countries + ' countries.">' +
     '<link rel="canonical" href="https://transformerpath.com/awards.html"><meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath"><meta property="og:title" content="Transformer Awards — Confirmed Contract Results"><meta property="og:url" content="https://transformerpath.com/awards.html"><meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow"><meta name="theme-color" content="#0d1b2e">' +
-    '<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any"><link rel="stylesheet" href="style.css?v=13"><style>' + style + '</style></head><body>\n' + HEAD + '\n<main class="aw-wrap">' +
+    '<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any"><link rel="stylesheet" href="style.css?v=14"><style>' + style + '</style><link rel="stylesheet" href="tp-nav.css?v=14">\n</head><body>\n' + HEAD + '\n<main class="aw-wrap">' +
     '<h1>Transformer <span style="color:var(--accent)">Awards</span></h1>' +
     '<p class="lead">Confirmed contract results across the transformer industry — the outcome of a tender/procurement process. <b>Award status</b> confirms that the award/order result is explicit (never inferred from a vendor list, a project, or a technical capability). <b>Transformer scope</b> is a separate confidence in whether the transformer content itself is explicit or only inferred. Each award links to its source.</p>' +
     '<div class="aw-stats"><div class="s"><b>' + awards.length + '</b><small>Awards</small></div><div class="s"><b>' + stats.countries + '</b><small>Countries</small></div><div class="s"><b>' + Object.keys(stats.by_region).length + '</b><small>Regions</small></div><div class="s"><b>' + stats.confirmed_scope + '</b><small>Confirmed transformer scope</small></div></div>' +
