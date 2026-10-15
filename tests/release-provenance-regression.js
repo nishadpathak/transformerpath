@@ -12,6 +12,7 @@ const assert = (c, m) => { if (!c) { console.error('FAIL', m); process.exit(1); 
 console.log('=== RELEASE PROVENANCE REGRESSION ===');
 const { filterPorcelain } = require('../scripts/capture-git-state');
 assert(filterPorcelain(' M supabase-config.js') === '', 'generated supabase config is not source dirt');
+assert(filterPorcelain('M supabase-config.js') === '', 'trimmed status line for the generated config is not source dirt');
 assert(filterPorcelain(' M supabase-config.js\n M index.html') === ' M index.html', 'other dirty files still fail the snapshot');
 execSync('node build-release-provenance.js', { stdio: 'pipe' });
 const prov = JSON.parse(fs.readFileSync('data/build-provenance.json', 'utf8'));

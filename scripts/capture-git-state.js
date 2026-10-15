@@ -17,9 +17,9 @@ function git(args) {
  * rewrite is not source dirt. */
 function filterPorcelain(porcelain) {
   return String(porcelain || '').split('\n').filter(function (line) {
-    if (!line) return false;
-    const file = line.slice(3).trim();
-    return file !== 'supabase-config.js';
+    const text = line.trim();
+    if (!text) return false;
+    return !/(?:^|\s)supabase-config\.js$/.test(text);
   }).join('\n');
 }
 
