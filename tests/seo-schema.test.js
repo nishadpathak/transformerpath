@@ -174,6 +174,33 @@ assert(matchEvent([{ n: 'Show A 2026' }, { n: 'Show A 2026' }], 'Show A 2026') =
 assert(html.isNoindex('<meta http-equiv="refresh" content="0; url=claim-profile.html">'), 'refresh alias is noindex');
 assert(!html.isNoindex('<html><head><title>x</title></head></html>'), 'normal page stays indexable');
 
+const { titleKeepingCountry } = require('../lib/seo-fit');
+const catalog = require('../lib/seo-catalog');
+const seoCat = catalog.create();
+let titleMiss = 0;
+Object.keys(seoCat.companies).forEach(function (slug) {
+  const c = seoCat.companies[slug];
+  if (!c.indexable || !c.country) return;
+  const t = titleKeepingCountry(c.name, c.country);
+  const tail = ' in ' + c.country + ' | TransformerPath';
+  if (t.length < 50 || t.length > 60 || t.slice(-tail.length) !== tail) titleMiss++;
+});
+assert(titleMiss === 0, 'every indexable manufacturer title is 50–60 and keeps the country');
+
+const prolec = catalog.draft('manufacturers/prolec-ge/index.html', '<h1>Prolec GE</h1>', seoCat);
+const prolecOrg = prolec.nodes.find(function (n) { return n['@type'] === 'Organization' && n.name === 'Prolec GE'; });
+assert(prolecOrg && prolecOrg.parentOrganization && prolecOrg.parentOrganization.name === 'GE Vernova', 'Prolec GE parentOrganization is GE Vernova');
+assert(prolecOrg && prolecOrg.address && prolecOrg.address.streetAddress && prolecOrg['@type'] === 'Organization', 'sourced street stays on Organization');
+assert(!prolecOrg.logo, 'no logo is invented when the company has none');
+
+const usa = catalog.draft('manufacturers/usa.html', '<h1>USA</h1>', seoCat);
+const usaList = usa.nodes.find(function (n) { return n['@type'] === 'ItemList'; });
+assert(usaList && usaList.numberOfItems > 0 && usaList.itemListElement[0].item['@type'] === 'Organization', 'USA country page has an ItemList of organizations');
+const indiaPt = catalog.draft('manufacturers/power-transformers/india/index.html', '<h1>Power</h1>', seoCat);
+const indiaList = indiaPt.nodes.find(function (n) { return n['@type'] === 'ItemList'; });
+assert(indiaList && indiaList.numberOfItems > 0 && /India/.test(indiaPt.draftTitle), 'India power category page lists makers and keeps the country');
+assert(fs.readFileSync('netlify.toml', 'utf8').indexOf('from = "/manufacturers"\n  to = "/manufacturers.html"\n  status = 301') !== -1, '/manufacturers 301s to /manufacturers.html');
+
 if (failed) {
   console.error('\n' + failed + ' failed');
   process.exit(1);
