@@ -1,0 +1,85 @@
+{
+  "checked": "2026-10-15",
+  "_comment": "Audit broken-link list. A replacement is recorded only when a GET from this environment returned the company page. A link is removed only when no official site resolved.",
+  "replaced": [
+    {
+      "slug": "hitachi-energy-malaysia",
+      "from": "https://www.hitachienergy.com/my/en",
+      "to": "https://www.hitachienergy.com/company/company-profile/country-and-regional-information/malaysia",
+      "result": "404 on the old path. GET 200, title Hitachi Energy in Malaysia."
+    },
+    {
+      "slug": "zetrak",
+      "from": "https://zetrak.mx/OLD/Catalogo_Empresa.pdf",
+      "to": "https://zetrak.com.mx/",
+      "result": "The PDF returned 404. The company host answers with a Cloudflare check (HTTP 403). The same host is already the Transformadores Zetrak profile."
+    },
+    {
+      "slug": "celme-transformers",
+      "from": "https://www.celme.net/",
+      "to": "https://celmetransformers.com/",
+      "result": "celme.net returned HTTP 525. celmetransformers.com/en/company/ returned HTTP 200 and names Celme S.r.l. in Montebello Vicentino."
+    },
+    {
+      "slug": "henan-pinggao-electric-state-grid",
+      "from": "https://en.pinggao.com/",
+      "to": "https://www.pinggao.com/",
+      "result": "en.pinggao.com says the site has expired. www.pinggao.com returned HTTP 200 with the title 河南平高电气股份有限公司."
+    },
+    {
+      "slug": "shirdi-sai-electricals-ltd-ssel",
+      "from": "https://www.ssel.net/",
+      "to": "https://ssel.in/",
+      "result": "ssel.net returned HTTP 403 Forbidden. ssel.in returned HTTP 200, title Shirdi Sai Electricals Limited."
+    }
+  ],
+  "removed": [
+    {
+      "slug": "sandas-and-co",
+      "from": "https://www.sandasindia.com",
+      "result": "www.sandasindia.com did not connect. http://sandasindia.com/ returned HTTP 404. No replacement resolved."
+    },
+    {
+      "slug": "qingdao-transformer-group",
+      "from": "https://www.qdtg.com/",
+      "result": "qdtg.com did not connect. www.qdqb.com returned a lander, so it was not used."
+    }
+  ],
+  "left_in_place": [
+    {
+      "slug": "elmag-transformers",
+      "url": "https://www.elmagtransformers.com/",
+      "result": "HTTP/2 closed the connection. HTTP/1.1 GET returned 200, title Power and Distribution Transformers | Elmag Transformers."
+    },
+    {
+      "slug": "esennar-transformers",
+      "url": "https://esennar.com/",
+      "result": "One GET was closed (444). A later HTTP/1.1 GET returned 200 and 98 KB. The official host is unchanged."
+    },
+    {
+      "slug": "kanyaka-power-kpel",
+      "url": "https://www.kanyaka.in/",
+      "result": "HTTP/1.1 GET returned 200 and the page names Kanyaka."
+    },
+    {
+      "slug": "transcon-industries",
+      "url": "https://www.transconind.com/",
+      "result": "HTTP/1.1 GET returned 200, title Power Transformer manufacturers in India | Transconind."
+    },
+    {
+      "slug": "teco-electric-and-machinery",
+      "url": "https://www.teco.com.tw",
+      "result": "The host answers with a bot-check page, not a dead site. No second official site was substituted."
+    },
+    {
+      "slug": "electro-industries-enel-sonelgaz-group",
+      "url": "https://electro-industries.dz/",
+      "result": "electro-industries.dz did not connect. https://www.electro-industries.com/ also did not connect from this network, so the link was left."
+    },
+    {
+      "slug": "shanghai-electric-tandd-group",
+      "url": "https://www.shanghai-electric.com/",
+      "result": "HTTP 521. No alternate official URL returned a page, so the link was left."
+    }
+  ]
+}
