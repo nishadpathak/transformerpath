@@ -26,6 +26,11 @@
   .auth-tabs button { flex: 1; padding: 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font-weight: 700; cursor: pointer; }
   .auth-tabs button.on { background: var(--navy); color: #fff; border-color: var(--navy); }
   .auth-card label { display: block; font-size: .82rem; font-weight: 700; color: var(--muted); margin: 14px 0 4px; }
+  #tpRoleChoice { border: 1px solid var(--border); border-radius: 8px; margin: 0 0 12px; padding: 8px 12px 12px; }
+  #tpRoleChoice legend { font-size: .82rem; font-weight: 700; color: var(--muted); padding: 0 6px; }
+  #tpRoleChoice label { margin: 8px 0 0; font-weight: 650; color: var(--ink); }
+  #tpRoleChoice input { width: auto; margin-right: 8px; }
+  #tpStudentFile { width: 100%; margin-top: 8px; }
   .auth-card input { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: .95rem; font-family: inherit; }
   .auth-card .btn { width: 100%; margin-top: 18px; }
   .auth-note { font-size: .8rem; color: var(--muted); margin-top: 14px; line-height: 1.5; }
@@ -151,6 +156,13 @@
 
   <div class="auth-card" id="tpAuth">
     <p class="auth-note" id="tpSetup">Accounts are being set up. Sign-in stays off until this deploy has a Supabase URL and public key.</p>
+    <fieldset id="tpRoleChoice" hidden>
+      <legend>I am signing up as</legend>
+      <label><input type="radio" name="signup_role" value="student"> Student</label>
+      <label><input type="radio" name="signup_role" value="engineer"> Engineer</label>
+      <label><input type="radio" name="signup_role" value="company"> Company</label>
+    </fieldset>
+    <p class="auth-note" id="tpRoleNote" hidden>Students can sign up with any email. A university address (.edu, .edu.*, or .ac.*) gets a Student badge. Any other student email can upload a student ID for review. There is no charge at sign-up.</p>
     <form id="magicForm" hidden>
       <label for="magicEmail">Email</label>
       <input id="magicEmail" name="email" type="email" autocomplete="email" required>
@@ -178,6 +190,20 @@
         <button class="btn btn-amber" type="submit">Save profile</button>
       </form>
       <div id="tpProfileMsg" role="status"></div>
+    </div>
+
+    <div class="ws-sec" id="tpStudent">
+      <h3>Student access</h3>
+      <p id="tpStudentState" class="ws-sub"></p>
+      <form id="tpStudentId" hidden>
+        <label for="tpStudentFile">Student ID (JPEG, PNG, WebP, or PDF, up to 4 MB)</label>
+        <input id="tpStudentFile" name="student_id" type="file" accept="image/jpeg,image/png,image/webp,application/pdf">
+        <button class="btn btn-amber" type="submit">Submit for review</button>
+      </form>
+      <p id="tpStudentMsg" role="status"></p>
+      <p class="ws-sub">The calculator and saved designs are available on this signed-in account. Course pages open when the Student badge is on. <a href="skills-passport.html">Skills Passport</a></p>
+      <p class="ws-sub">A discounted Learning plan is not on sale. <a href="pricing.html#student-learning-offer">The coupon stays off until it is approved.</a></p>
+      <p class="ws-sub" id="tpAdminLink" hidden><a href="admin-student-reviews.html">Review student IDs</a></p>
     </div>
 
     <div class="ws-sec">
@@ -229,8 +255,12 @@ document.addEventListener('DOMContentLoaded', function () {
     msg.textContent = t || '';
     msg.style.color = ok ? '#16a34a' : '#b91c1c';
   }
+  var roleChoice = document.getElementById('tpRoleChoice');
+  var roleNote = document.getElementById('tpRoleNote');
   function showSetup() {
     show(setup, true);
+    show(roleChoice, false);
+    show(roleNote, false);
     show(magic, false);
     show(google, false);
     show(auth, true);
@@ -238,10 +268,16 @@ document.addEventListener('DOMContentLoaded', function () {
   }
   function showAuthForm() {
     show(setup, false);
+    show(roleChoice, true);
+    show(roleNote, true);
     show(magic, true);
     show(google, true);
     show(auth, true);
     show(ws, false);
+  }
+  function chosenRole() {
+    var picked = document.querySelector('input[name="signup_role"]:checked');
+    return picked ? picked.value : '';
   }
   function signedInUser(user) {
     return user && user.email ? user : null;
@@ -253,6 +289,7 @@ document.addEventListener('DOMContentLoaded', function () {
     show(auth, false);
     show(ws, true);
     loadProfile();
+    loadStudent();
     loadDesigns();
   }
   function authErrorFromUrl() {
@@ -268,16 +305,22 @@ document.addEventListener('DOMContentLoaded', function () {
   magic.addEventListener('submit', function (e) {
     e.preventDefault();
     var email = magic.elements.email.value.trim();
+    var role = chosenRole();
+    if (!role) { setMsg('Choose Student, Engineer, or Company.', false); return; }
+    try { sessionStorage.setItem('tp_signup_role', role); } catch (err) {}
     setMsg('Sending a sign-in link…', true);
-    TP.signInWithMagicLink(email).then(function () {
+    TP.signInWithMagicLink(email, role).then(function () {
       setMsg('Check your email for a sign-in link.', true);
     }).catch(function (err) {
       setMsg((err && err.message) || 'Could not send the sign-in link.', false);
     });
   });
   google.addEventListener('click', function () {
+    var role = chosenRole();
+    if (!role) { setMsg('Choose Student, Engineer, or Company.', false); return; }
+    try { sessionStorage.setItem('tp_signup_role', role); } catch (err) {}
     setMsg('', true);
-    TP.signInWithGoogle().catch(function (err) {
+    TP.signInWithGoogle(role).catch(function (err) {
       setMsg((err && err.message) || 'Google sign-in did not start.', false);
     });
   });
@@ -300,6 +343,77 @@ document.addEventListener('DOMContentLoaded', function () {
       profileMsg.style.color = '#b91c1c';
     });
   });
+
+  function loadStudent() {
+    var state = document.getElementById('tpStudentState');
+    var form = document.getElementById('tpStudentId');
+    var note = document.getElementById('tpStudentMsg');
+    var admin = document.getElementById('tpAdminLink');
+    TP.getStudentAccess().then(function (access) {
+      access = access || {};
+      var pendingRole = '';
+      try { pendingRole = sessionStorage.getItem('tp_signup_role') || ''; } catch (err) {}
+      if (!access.signup_role && pendingRole) {
+        return TP.setSignupRole(pendingRole).then(function () { return TP.getStudentAccess(); }, function () { return access; });
+      }
+      return access;
+    }).then(function (access) {
+      access = access || {};
+      var role = access.signup_role || 'not chosen';
+      if (access.student_badge && access.student_badge_source === 'academic_email') {
+        state.textContent = 'Signed up as ' + role + '. Student badge is on because this email is a university address.';
+        show(form, false);
+      } else if (access.student_badge && access.student_badge_source === 'id_review') {
+        state.textContent = 'Signed up as ' + role + '. Student badge is on because a student ID review was approved.';
+        show(form, false);
+      } else if (access.signup_role === 'student') {
+        state.textContent = 'Signed up as student. There is no Student badge yet. Upload a student ID for review, or sign in with a university email.';
+        show(form, true);
+      } else {
+        state.textContent = 'Signed up as ' + role + '. The Student badge is only for student accounts.';
+        show(form, false);
+      }
+      return TP.isWorkspaceAdmin();
+    }).then(function (isAdmin) {
+      show(admin, !!isAdmin);
+    }).catch(function (err) {
+      note.textContent = (err && err.message) || 'Student access is not available yet.';
+    });
+  }
+  document.getElementById('tpStudentId').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var note = document.getElementById('tpStudentMsg');
+    var input = document.getElementById('tpStudentFile');
+    var file = input.files && input.files[0];
+    readStudentFile(file).then(function (body) {
+      return TP.submitStudentId(body);
+    }).then(function () {
+      note.textContent = 'Submitted for review. The Student badge stays off until an admin approves it.';
+      note.style.color = '#16a34a';
+      input.value = '';
+    }).catch(function (err) {
+      note.textContent = (err && err.message) || 'Could not submit the student ID.';
+      note.style.color = '#b91c1c';
+    });
+  });
+  function readStudentFile(file) {
+    return new Promise(function (resolve, reject) {
+      var types = { 'image/jpeg': 1, 'image/png': 1, 'image/webp': 1, 'application/pdf': 1 };
+      if (!file) return reject(new Error('Choose a student ID file.'));
+      if (!types[file.type]) return reject(new Error('Use a JPEG, PNG, WebP, or PDF.'));
+      if (file.size <= 0 || file.size > 4000000) return reject(new Error('The file must be 4 MB or smaller.'));
+      var reader = new FileReader();
+      reader.onload = function () {
+        var text = String(reader.result || '');
+        var comma = text.indexOf(',');
+        var b64 = comma >= 0 ? text.slice(comma + 1) : '';
+        if (!b64) return reject(new Error('Could not read that file.'));
+        resolve({ file_name: file.name || 'student-id', content_type: file.type, file_base64: b64, byte_length: file.size });
+      };
+      reader.onerror = function () { reject(new Error('Could not read that file.')); };
+      reader.readAsDataURL(file);
+    });
+  }
 
   function loadProfile() {
     TP.getProfile().then(function (row) {

@@ -1172,22 +1172,32 @@ b.addEventListener('click',function(){var d=html.getAttribute('data-theme')==='d
 if(d){html.removeAttribute('data-theme');localStorage.setItem('theme','light');}else{html.setAttribute('data-theme','dark');localStorage.setItem('theme','dark');}upd();});
 })();
 </script>
+<script src="supabase-config.js"></script>
+<script src="supabase.js"></script>
 <script src="tp-freshness.js?v=7" defer></script>
 <script src="tp-feedback.js?v=7" defer></script>
 <script>
 document.addEventListener('DOMContentLoaded', function(){
   var secs = document.querySelectorAll('.mc-locked[data-chapter]');
   if(!window.fetch) return;
-  // Present the entitlement token to the gated function (same-origin cookie).
-  function loadChapter(id, sec){
-    fetch('/.netlify/functions/masterclass-content?chapter='+encodeURIComponent(id), { credentials:'include', headers:{ Accept:'application/json' } })
+  // Paid access uses the entitlement cookie. A student badge sends the
+  // Supabase access token in x-tp-supabase-auth. Neither is a forged query flag.
+  function loadChapter(id, sec, extra){
+    var headers = { Accept:'application/json' };
+    if (extra) Object.keys(extra).forEach(function (key) { headers[key] = extra[key]; });
+    fetch('/.netlify/functions/masterclass-content?chapter='+encodeURIComponent(id), { credentials:'include', headers: headers })
       .then(function(r){ return r.json(); }).catch(function(){ return {locked:true}; })
       .then(function(res){
-        if(res && res.ok && res.html){ sec.innerHTML = res.html; sec.classList.remove('mc-locked'); } 
+        if(res && res.ok && res.html){ sec.innerHTML = res.html; sec.classList.remove('mc-locked'); }
         else if(res && res.locked){ /* keep the locked preview */ }
       });
   }
-  secs.forEach(function(sec){ loadChapter(sec.getAttribute('data-chapter'), sec); });
+  function start(extra){
+    secs.forEach(function(sec){ loadChapter(sec.getAttribute('data-chapter'), sec, extra); });
+  }
+  if (window.TP && TP.whenReady && TP.authHeader) {
+    TP.whenReady().then(function(){ return TP.authHeader(); }).then(start, function(){ start(); });
+  } else start();
 });
 </script>
 </body>

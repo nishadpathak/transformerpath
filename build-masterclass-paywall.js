@@ -151,15 +151,22 @@ const CLIENT =
   '  var secs = document.querySelectorAll(\'.mc-locked[data-chapter]\');\n' +
   '  if(!window.fetch) return;\n' +
   '  // Present the entitlement token to the gated function (same-origin cookie).\n' +
-  '  function loadChapter(id, sec){\n' +
-  '    fetch(\'/.netlify/functions/masterclass-content?chapter=\'+encodeURIComponent(id), { credentials:\'include\', headers:{ Accept:\'application/json\' } })\n' +
+  '  function loadChapter(id, sec, extra){\n' +
+  '    var headers = { Accept:\'application/json\' };\n' +
+  '    if (extra) Object.keys(extra).forEach(function (key) { headers[key] = extra[key]; });\n' +
+  '    fetch(\'/.netlify/functions/masterclass-content?chapter=\'+encodeURIComponent(id), { credentials:\'include\', headers: headers })\n' +
   '      .then(function(r){ return r.json(); }).catch(function(){ return {locked:true}; })\n' +
   '      .then(function(res){\n' +
   '        if(res && res.ok && res.html){ sec.innerHTML = res.html; sec.classList.remove(\'mc-locked\'); } \n' +
   '        else if(res && res.locked){ /* keep the locked preview */ }\n' +
   '      });\n' +
   '  }\n' +
-  '  secs.forEach(function(sec){ loadChapter(sec.getAttribute(\'data-chapter\'), sec); });\n' +
+  '  function start(extra){\n' +
+  '    secs.forEach(function(sec){ loadChapter(sec.getAttribute(\'data-chapter\'), sec, extra); });\n' +
+  '  }\n' +
+  '  if (window.TP && TP.whenReady && TP.authHeader) {\n' +
+  '    TP.whenReady().then(function(){ return TP.authHeader(); }).then(start, function(){ start(); });\n' +
+  '  } else start();\n' +
   '});\n' +
   '</script>\n';
 
