@@ -33,11 +33,32 @@ assert(!/commits\/main/.test(smokeSrc), 'smoke does not read the current tip of 
 assert(!/api\.github\.com/.test(smokeSrc), 'smoke does not compare the live release to GitHub');
 const OLD = 'fcd838a9e48eb8a1cbd81458e9dc7ade79d0eb5b';
 const NEW = '6d3afe9643dcb128da100cd74f89335fdfc48c54';
-assert(publish.shouldPublish('deploy-preview', OLD, NEW).publish, 'preview builds are not blocked when main has moved');
-assert(publish.shouldPublish('production', NEW, NEW).publish, 'production publishes when COMMIT_REF is main');
-assert(!publish.shouldPublish('production', OLD, NEW).publish, 'production refuses a commit main has already passed');
-assert(!publish.shouldPublish('production', '', NEW).publish, 'production refuses a missing COMMIT_REF');
-assert(publish.shouldPublish('production', NEW, '').publish, 'an unreadable main SHA does not freeze the deploy');
+const LIVE = '3d43832047640e4ca351dd3acd2e031e8e20daca';
+assert(publish.shouldPublish('deploy-preview', OLD, { mainSha: NEW, onMain: false }).publish, 'preview builds are not blocked when main has moved');
+assert(publish.shouldPublish('production', NEW, { mainSha: NEW, onMain: true }).publish, 'production publishes when COMMIT_REF is main');
+assert(publish.shouldPublish('production', OLD, {
+  mainSha: NEW,
+  publishedSha: LIVE,
+  onMain: true,
+  olderThanPublished: false
+}).publish, 'production publishes a main ancestor newer than the live commit');
+assert(!publish.shouldPublish('production', OLD, {
+  mainSha: NEW,
+  publishedSha: NEW,
+  onMain: true,
+  olderThanPublished: true
+}).publish, 'production refuses a commit older than the live production commit');
+assert(!publish.shouldPublish('production', OLD, {
+  mainSha: NEW,
+  onMain: false,
+  olderThanPublished: false
+}).publish, 'production refuses a commit that is not on main');
+assert(!publish.shouldPublish('production', '', { mainSha: NEW }).publish, 'production refuses a missing COMMIT_REF');
+assert(publish.shouldPublish('production', NEW, { mainSha: '' }).publish, 'an unreadable main SHA does not freeze the deploy');
+assert(publish.onMainFromCompare('ahead') === true && publish.onMainFromCompare('identical') === true, 'main ahead of or equal to this commit means it is on main');
+assert(publish.onMainFromCompare('diverged') === false && publish.onMainFromCompare('behind') === false, 'a commit main does not contain is not on main');
+assert(publish.olderThanPublishedFromCompare('ahead') === true, 'published ahead of this commit means this commit is older');
+assert(publish.olderThanPublishedFromCompare('behind') === false, 'published behind this commit means this commit is newer');
 
 const plugin = fs.readFileSync('plugins/netlify-plugin-post-deploy-smoke/index.js', 'utf8');
 const manifest = fs.readFileSync('plugins/netlify-plugin-post-deploy-smoke/manifest.yml', 'utf8');
