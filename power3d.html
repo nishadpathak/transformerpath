@@ -43,7 +43,14 @@ body{font-family:var(--font-sans);background:#08121e;color:var(--ink)}
 .lbl::after{content:"";position:absolute;left:50%;top:100%;margin-left:-4px;border:4px solid transparent;border-top-color:var(--line)}
 #tourcap{position:absolute;left:50%;bottom:64px;transform:translateX(-50%);max-width:680px;background:rgba(8,18,30,.88);border:1px solid var(--acc);border-radius:12px;padding:14px 22px;font-size:1.02rem;line-height:1.5;text-align:center;z-index:20;display:none;backdrop-filter:blur(6px);box-shadow:0 4px 24px rgba(0,0,0,.5)}
 #tourcap .step{color:var(--acc);font-size:.75rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:700}
-@media(max-width:760px){#panel{width:248px}#topbar h1{font-size:.82rem}#topbar .sub{display:none}}
+#labelLayer{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:6}
+@media(max-width:760px){
+  #topbar{height:auto;flex-wrap:wrap;align-items:flex-start;padding:8px 10px 6px;row-gap:6px}
+  #topbar .right{margin-left:0;width:100%;flex-wrap:wrap;min-width:0}
+  #topbar h1{font-size:.82rem;white-space:normal}
+  #topbar .sub{display:none}
+  #panel{left:8px;right:8px;width:auto;top:auto;bottom:8px;max-height:38vh}
+}
 </style>
     <link rel="canonical" href="https://transformerpath.com/power3d.html">
     <script src="analytics.js?v=7" defer></script>
@@ -140,6 +147,7 @@ body{font-family:var(--font-sans);background:#08121e;color:var(--ink)}
   <script src="tp-pwa.js?v=7" defer></script>
 </header>
 <div id="c3d" data-tp-3d-state="INITIALIZING"></div>
+<div id="labelLayer"></div>
 
 <div id="topbar">
   <div>
@@ -687,7 +695,7 @@ const labelEls=[];
 function makeLabel(prefix,text,dx,dy,dz){
   const part=parts.find(p=>p.name.startsWith(prefix));
   if(!part) return;
-  const el=document.createElement('div'); el.className='lbl'; el.textContent=text; el.addEventListener('click',()=>{ if(part) selectPart(part); }); document.body.appendChild(el);
+  const el=document.createElement('div'); el.className='lbl'; el.textContent=text; el.addEventListener('click',()=>{ if(part) selectPart(part); }); document.getElementById('labelLayer').appendChild(el);
   labelEls.push({el,part,off:new THREE.Vector3(dx,dy,dz)});
 }
 parts.forEach(function(p){
@@ -696,7 +704,7 @@ parts.forEach(function(p){
     var ctr=box.getCenter(new THREE.Vector3()), rp=p.root.getWorldPosition(new THREE.Vector3());
     var off=ctr.sub(rp); off.y += (box.max.y-box.min.y)*0.12;
     var el=document.createElement("div"); el.className="lbl"; el.textContent=p.name;
-    el.addEventListener("click",function(){ selectPart(p); }); document.body.appendChild(el);
+    el.addEventListener("click",function(){ selectPart(p); }); document.getElementById('labelLayer').appendChild(el);
     labelEls.push({el:el, part:p, off:off});
   });
 /* note: offsets are world-ish; resolved per-frame from part world pos + (off - basePos) */
