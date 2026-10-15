@@ -275,6 +275,10 @@ assert(!eventSeo.shouldNoindexEdition({
   description: "Thailand's largest energy event. Provisional — annual July cadence at QSNCC, exact dates TBC."
 }), 'a real sentence is not boilerplate-only');
 
+const standardsPage = fs.readFileSync(path.join(__dirname, '..', 'standards.html'), 'utf8');
+const standardsTitle = (standardsPage.match(/<title>([^<]*)<\/title>/) || [])[1] || '';
+assert(standardsTitle.indexOf('Standards') !== -1, 'standards.html title includes Standards: ' + standardsTitle);
+
 if (failed) {
   console.error('\n' + failed + ' failed');
   process.exit(1);

@@ -538,41 +538,59 @@ table.cmp .n { color:var(--border); }
     b.style.display = 'block';
   }
 
-  var listingReturn = params.get('product');
-  if (stripeReturn && (listingReturn === 'verified_manufacturer' || listingReturn === 'featured_event' || listingReturn === 'featured_exhibitor')) {
+  // The product comes from verify-access (Stripe line items and metadata),
+  // never from ?product= on the return URL.
+  var LISTING_PRODUCTS = {
+    verified_manufacturer: true,
+    featured_event: true,
+    featured_exhibitor: true
+  };
+  var PAID_COPY = {
+    featured_event: 'Payment received. Submit the event name, URL, and dates on the <a href="events.html?paid=featured_event#submit-event" style="color:#fff;text-decoration:underline">events list</a>. FEATURED is shown only after review.',
+    featured_exhibitor: 'Payment received. Submit your company and the event on the <a href="sponsor.html?paid=featured_exhibitor#contact" style="color:#fff;text-decoration:underline">sponsor form</a>. FEATURED is shown only after review.',
+    verified_manufacturer: 'Payment received. Submit your company details on the <a href="claim-profile.html?paid=verified_manufacturer#claimForm" style="color:#fff;text-decoration:underline">claim form</a>. VERIFIED MANUFACTURER is published only after review.'
+  };
+
+  function showUnverified(banner) {
+    if (!banner) return;
+    banner.style.background = '#6b2a2a';
+    banner.style.display = 'block';
+    banner.innerHTML = "We couldn't verify this payment. " + '<a href="mailto:hello@transformerpath.com" style="color:#fff;text-decoration:underline">hello@transformerpath.com</a>';
+  }
+
+  function showListingConfirmation(banner, sessionId, product) {
     var listingNeutral = 'If you completed payment, submit the form below; we confirm payment before review.';
-    var listingBanner = document.getElementById('unlockBanner');
-    if (listingBanner) {
-      listingBanner.style.background = '#14365c';
-      listingBanner.textContent = listingNeutral;
-      listingBanner.style.display = 'block';
+    if (banner) {
+      banner.style.background = '#14365c';
+      banner.textContent = listingNeutral;
+      banner.style.display = 'block';
     }
-    fetch('/.netlify/functions/confirm-listing-payment', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ session_id: stripeReturn, product: listingReturn }) })
+    fetch('/.netlify/functions/confirm-listing-payment', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ session_id: sessionId, product: product }) })
       .then(function (r) { return r.json(); })
       .then(function (res) {
-        if (!listingBanner) return;
-        var confirmed = res && res.configured === true && res.paid === true && res.product === listingReturn;
+        if (!banner) return;
+        var confirmed = res && res.configured === true && res.paid === true && res.product === product;
         if (!confirmed) {
-          listingBanner.textContent = listingNeutral;
+          banner.textContent = listingNeutral;
           return;
         }
-        var paidCopy = {
-          featured_event: 'Payment received. Submit the event name, URL, and dates on the <a href="events.html?paid=featured_event#submit-event" style="color:#fff;text-decoration:underline">events list</a>. FEATURED is shown only after review.',
-          featured_exhibitor: 'Payment received. Submit your company and the event on the <a href="sponsor.html?paid=featured_exhibitor#contact" style="color:#fff;text-decoration:underline">sponsor form</a>. FEATURED is shown only after review.',
-          verified_manufacturer: 'Payment received. Submit your company details on the <a href="claim-profile.html?paid=verified_manufacturer#claimForm" style="color:#fff;text-decoration:underline">claim form</a>. VERIFIED MANUFACTURER is published only after review.'
-        };
-        listingBanner.innerHTML = paidCopy[listingReturn];
+        banner.innerHTML = PAID_COPY[product];
       })
       .catch(function () {
-        if (listingBanner) listingBanner.textContent = listingNeutral;
+        if (banner) banner.textContent = listingNeutral;
       });
-    return;
   }
 
   if (stripeReturn) {
+    var returnBanner = document.getElementById('unlockBanner');
     fetch('/.netlify/functions/verify-access', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ session_id: stripeReturn }) })
       .then(function (r) { return r.json(); })
       .then(function (res) {
+        var product = res && res.product;
+        if (res && res.paid === true && LISTING_PRODUCTS[product]) {
+          showListingConfirmation(returnBanner, stripeReturn, product);
+          return;
+        }
         if (res && res.valid) {
           justGranted = grant(res.tier || 'learner');
           // Persist the server-issued entitlement token as a cookie so gated
@@ -585,10 +603,16 @@ table.cmp .n { color:var(--border); }
             var e = new Date(); e.setFullYear(e.getFullYear() + 1);
             document.cookie = 'tp_ent=' + encodeURIComponent(res.entitlement_token) + '; expires=' + e.toUTCString() + '; path=/; SameSite=Lax' + (location.protocol === 'https:' ? '; Secure' : '');
           }
+          renderBanner();
+          return;
+        }
+        if (!res || res.reason === 'stripe_error') {
+          showUnverified(returnBanner);
+          return;
         }
         renderBanner();
       })
-      .catch(function () { renderBanner(); });
+      .catch(function () { showUnverified(returnBanner); });
     return;
   }
 
