@@ -8,7 +8,7 @@ const COPY = 'Travelling there? Phrases, etiquette and local tips for visitors';
 const EXPECT = {
   'wetex-2026': { start: '2026-10-20', end: '2026-10-22', name: /WETEX 2026/, url: 'https://languagepath.org/events/visiting/wetex-2026/' },
   'gcc-power-2026': { start: '2026-11-02', end: '2026-11-04', name: /GCC POWER 2026/, url: 'https://languagepath.org/events/visiting/gcc-power-2026/' },
-  'saudi-elenex-2026': { start: '2026-11-02', end: '2026-11-05', name: /Saudi Elenex 2026/, url: 'https://languagepath.org/events/visiting/saudi-elenex-2026/' },
+  'saudi-elenex-2026': { start: '2026-11-16', end: '2026-11-19', name: /Saudi Elenex 2026/, url: 'https://languagepath.org/events/visiting/saudi-elenex-2026/' },
   'ep-shanghai-2026': { start: '2026-12-03', end: '2026-12-05', name: /EP Shanghai 2026/, url: 'https://languagepath.org/events/visiting/ep-shanghai-2026/' },
   'world-future-energy-summit-2027': { start: '2027-01-12', end: '2027-01-14', name: /World Future Energy Summit 2027/, url: 'https://languagepath.org/events/visiting/world-future-energy-summit-2027/' },
   'elecrama-2027': { start: '2027-02-20', end: '2027-02-24', name: /ELECRAMA 2027/, url: 'https://languagepath.org/events/visiting/elecrama-2027/' },
