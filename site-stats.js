@@ -10,6 +10,11 @@
   fetch('/data/site-stats.json')
     .then(function (r) { return r.json().catch(function () { return {}; }); })
     .then(function (d) {
+      var awardParts = [d.awardsConfirmed, d.awardsInferred, d.awardsUnknown];
+      var awardTracked = awardParts.every(function (n) { return typeof n === 'number'; })
+        ? awardParts[0] + awardParts[1] + awardParts[2]
+        : null;
+      if (awardTracked != null) d.awards = awardTracked;
       Object.keys(d).forEach(function (k) {
         if (k.indexOf('_') === 0) return;
         var v = (typeof d[k] === 'number') ? d[k].toLocaleString('en-US') : d[k];
@@ -22,6 +27,11 @@
           if (!isNaN(n)) el.dataset.count = String(n);
         });
       });
+      if (awardTracked != null) {
+        document.querySelectorAll('a[href*="type=awards"]').forEach(function (el) {
+          el.setAttribute('title', awardTracked + ' awards tracked, split by transformer scope');
+        });
+      }
     })
     .catch(function () {});
 })();

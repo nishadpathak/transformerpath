@@ -116,6 +116,10 @@ LABS.forEach(l => {
   if (l.accreditation) intelSourcedCount++;
 });
 
+const awardsConfirmed = AWARDS.filter((a) => a.transformer_scope === 'CONFIRMED').length;
+const awardsInferred = AWARDS.filter((a) => a.transformer_scope === 'INFERRED').length;
+const awardsUnknown = AWARDS.filter((a) => a.transformer_scope !== 'CONFIRMED' && a.transformer_scope !== 'INFERRED').length;
+const awardsTracked = awardsConfirmed + awardsInferred + awardsUnknown;
 const companiesCount = (INTEL.companies || []).length || makers;
 const avgCompleteness = companiesCount ? Math.min(95, Math.max(54, Math.round(intelCompletenessTotal / companiesCount))) : 73;
 
@@ -158,10 +162,10 @@ const current = {
   tenders: TENDERS.length || num(prev.tenders, 0),
   openTenders: openTenders || num(prev.openTenders, 0),
   preAward: preAward || num(prev.preAward, 0),
-  awards: AWARDS.length || num(prev.awards, 0),
-  awardsConfirmed: AWARDS.filter((a) => a.transformer_scope === 'CONFIRMED').length,
-  awardsInferred: AWARDS.filter((a) => a.transformer_scope === 'INFERRED').length,
-  awardsUnknown: AWARDS.filter((a) => a.transformer_scope !== 'CONFIRMED' && a.transformer_scope !== 'INFERRED').length,
+  awards: awardsTracked,
+  awardsConfirmed: awardsConfirmed,
+  awardsInferred: awardsInferred,
+  awardsUnknown: awardsUnknown,
   awardsScopeTaxonomy: 'CONFIRMED / INFERRED / UNKNOWN transformer_scope, same labels as Intelligence',
   events: EVENTS.length || num(prev.events, 0),
   upcomingEvents: upcomingEvents || num(prev.upcomingEvents, 0),
@@ -220,6 +224,10 @@ for (let i = 0; i < STAT_HTML.length; i++) {
     html = html.replace(
       /title="\d+ open tenders accepting bids right now"/g,
       'title="' + current.openTenders + ' open tenders accepting bids right now"'
+    );
+    html = html.replace(
+      /title="\d+ awards tracked, split by transformer scope"/g,
+      'title="' + current.awards + ' awards tracked, split by transformer scope"'
     );
     if (nextConfirmedLine) {
       html = html.replace(
