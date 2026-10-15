@@ -9,17 +9,19 @@
 'use strict';
 const ent = require('./lib/entitlement');
 const LEVELS = require('./lib/engineer-track-levels');
+const studentBadge = require('./lib/student-badge');
 
 exports.handler = async (event) => {
   const token = ent.extractToken(event);
   const v = ent.verify(token);
-  if (v.valid) {
+  const student = v.valid ? false : await studentBadge.studentBadge(event);
+  if (v.valid || student) {
     return {
       statusCode: 200,
       headers: { 'content-type': 'application/json', 'cache-control': 'no-store' },
       body: JSON.stringify({
         ok: true,
-        plan: v.plan,
+        plan: v.valid ? v.plan : 'student',
         level2: LEVELS.level2,
         level3: LEVELS.level3,
         level4: LEVELS.level4,

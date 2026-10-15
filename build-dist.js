@@ -61,6 +61,7 @@ const FILES_FROM_MIXED_DIRS = [
   'lib/rfq-leads.js',           // RFQ consent, redaction, and the 5-supplier cap
   'lib/provenance-badge.js',    // shared provenance badge, loaded by public pages
   'lib/saved-design.js',        // calculator save/open snapshot helper
+  'lib/learning-catalog.js',    // Skills Passport and engineer-track progress catalog
   'js/tp-grid-calc.js',         // Grid Lab formulas; js/ is not copied wholesale
   'js/tp-grid-lab.js',          // Grid Lab scene; production 404'd these and the canvas never started
 ];

@@ -13,6 +13,7 @@
  */
 'use strict';
 const ent = require('./lib/entitlement');
+const studentBadge = require('./lib/student-badge');
 const CH = require('./lib/masterclass-chapters'); // { [id]: { title, preview, objectives[], teaser, html } }
 
 // Free chapters (always returned, indexable). Everything else is gated.
@@ -32,9 +33,10 @@ exports.handler = async (event) => {
 
   const token = ent.extractToken(event);
   const v = ent.verify(token);
-  if (v.valid) {
+  const student = v.valid ? false : await studentBadge.studentBadge(event);
+  if (v.valid || student) {
     const ch = CH[id];
-    return { statusCode: 200, body: JSON.stringify({ ok: true, plan: v.plan, chapter: id, title: ch.title, html: ch.html }) };
+    return { statusCode: 200, body: JSON.stringify({ ok: true, plan: v.valid ? v.plan : 'student', chapter: id, title: ch.title, html: ch.html }) };
   }
   // Fail-closed: locked preview with no full content.
   const ch = CH[id];

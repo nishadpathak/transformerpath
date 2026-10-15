@@ -55,6 +55,10 @@
     listSaved: emptyArray, saveDesign: notReady, listDesigns: notReady, deleteDesign: notReady,
     renameDesign: notReady, getDesign: notReady, listRevisions: notReady, getRevision: notReady,
     getProfile: notReady, saveProfile: notReady,
+    getStudentAccess: notReady, setSignupRole: notReady, submitStudentId: notReady,
+    listStudentReviews: notReady, decideStudentReview: notReady, isWorkspaceAdmin: notReady,
+    setSectionComplete: notReady, listSectionCompletions: notReady,
+    authHeader: function () { return Promise.resolve({}); },
     addNote: noop, listNotes: emptyArray, deleteNote: noop,
     follow: noop, unfollow: noop, isFollowing: function () { return Promise.resolve(false); },
     listFollows: emptyArray, setProgress: noop, listProgress: emptyArray
@@ -120,19 +124,33 @@
       return supabase.auth.signInWithPassword({ email: email, password: password })
         .then(function (r) { if (r.error) throw r.error; return r; });
     };
-    TP.signInWithMagicLink = function (email) {
+    function signupRole(value) {
+      var role = String(value || '').trim().toLowerCase();
+      return role === 'student' || role === 'engineer' || role === 'company' ? role : '';
+    }
+    function authData(role) {
+      var picked = signupRole(role);
+      return picked ? { signup_role: picked } : {};
+    }
+    TP.signInWithMagicLink = function (email, role) {
       var address = String(email || '').trim();
       if (!address) return Promise.reject(new Error('Email required'));
       return supabase.auth.signInWithOtp({
         email: address,
-        options: { emailRedirectTo: redirectTo(), shouldCreateUser: true }
+        options: { emailRedirectTo: redirectTo(), shouldCreateUser: true, data: authData(role) }
       }).then(function (r) { if (r.error) throw r.error; return true; });
     };
-    TP.signInWithGoogle = function () {
+    TP.signInWithGoogle = function (role) {
       return supabase.auth.signInWithOAuth({
         provider: 'google',
-        options: { redirectTo: redirectTo() }
+        options: { redirectTo: redirectTo(), data: authData(role) }
       }).then(function (r) { if (r.error) throw r.error; return r; });
+    };
+    TP.authHeader = function () {
+      return supabase.auth.getSession().then(function (r) {
+        var token = r && r.data && r.data.session && r.data.session.access_token;
+        return token ? { 'x-tp-supabase-auth': token } : {};
+      });
     };
     TP.signOut = function () {
       return supabase.auth.signOut().then(function () { setUser(null); });
@@ -243,7 +261,7 @@
     };
     TP.getProfile = function () {
       if (!guard()) return Promise.reject(new Error('Sign in required'));
-      return supabase.from('profiles').select('id,email,display_name,public_name,company,role').eq('id', uid()).maybeSingle().then(designRow);
+      return supabase.from('profiles').select('id,email,display_name,public_name,company,role,signup_role,student_badge,student_badge_source').eq('id', uid()).maybeSingle().then(designRow);
     };
     TP.saveProfile = function (p) {
       if (!guard()) return Promise.reject(new Error('Sign in required'));
@@ -300,18 +318,74 @@
       return q.then(function (r) { return r.error ? [] : r.data; });
     };
 
-    /* learning progress */
-    TP.setProgress = function (course, chapter, status, score) {
-      if (!guard()) return Promise.resolve(false);
+    /* learning progress — one row per completed catalog section. */
+    TP.setSectionComplete = function (levelId, sectionId, completed) {
+      if (!guard()) return Promise.reject(new Error('Sign in required'));
+      if (completed === false) {
+        return supabase.from('learning_progress').delete().eq('user_id', uid()).eq('level_id', levelId).eq('section_id', sectionId)
+          .then(function (r) { if (r.error) throw r.error; return true; });
+      }
       return supabase.from('learning_progress').upsert({
-        user_id: uid(), course: course, chapter: chapter || '', status: status || 'started', score: score || null
-      }, { onConflict: 'user_id,course,chapter' }).then(function (r) { if (r.error) throw r.error; return true; });
+        user_id: uid(), level_id: levelId, section_id: sectionId, completed_at: new Date().toISOString()
+      }, { onConflict: 'user_id,level_id,section_id' }).then(function (r) { if (r.error) throw r.error; return true; });
     };
-    TP.listProgress = function (course) {
-      if (!guard()) return emptyArray();
-      var q = supabase.from('learning_progress').select('*').eq('user_id', uid()).order('updated_at', { ascending: false });
-      if (course) q = q.eq('course', course);
-      return q.then(function (r) { return r.error ? [] : r.data; });
+    TP.listSectionCompletions = function () {
+      if (!guard()) return Promise.reject(new Error('Sign in required'));
+      return supabase.from('learning_progress').select('level_id,section_id,completed_at').eq('user_id', uid())
+        .then(function (r) { if (r.error) throw r.error; return r.data || []; });
+    };
+    TP.setProgress = function () { return Promise.reject(new Error('Use setSectionComplete for a published section.')); };
+    TP.listProgress = function () { return TP.listSectionCompletions(); };
+
+    TP.getStudentAccess = function () {
+      if (!guard()) return Promise.resolve({ signup_role: null, student_badge: false, student_badge_source: null });
+      return supabase.from('profiles').select('signup_role,student_badge,student_badge_source,email').eq('id', uid()).maybeSingle()
+        .then(function (r) {
+          if (r.error) throw r.error;
+          var row = r.data || {};
+          return {
+            signup_role: row.signup_role || null,
+            student_badge: row.student_badge === true,
+            student_badge_source: row.student_badge_source || null,
+            email: row.email || (currentUser && currentUser.email) || ''
+          };
+        });
+    };
+    TP.setSignupRole = function (role) {
+      var picked = signupRole(role);
+      if (!picked) return Promise.reject(new Error('Choose Student, Engineer, or Company.'));
+      if (!guard()) return Promise.reject(new Error('Sign in required'));
+      return supabase.from('profiles').update({ signup_role: picked }).eq('id', uid())
+        .select('signup_role,student_badge,student_badge_source').single().then(designRow);
+    };
+    TP.isWorkspaceAdmin = function () {
+      if (!guard()) return Promise.resolve(false);
+      return supabase.from('workspace_admins').select('user_id').eq('user_id', uid()).maybeSingle()
+        .then(function (r) { if (r.error) throw r.error; return !!(r.data && r.data.user_id); });
+    };
+    TP.submitStudentId = function (file) {
+      if (!guard()) return Promise.reject(new Error('Sign in required'));
+      file = file || {};
+      return supabase.from('student_id_reviews').insert({
+        user_id: uid(),
+        file_name: file.file_name,
+        content_type: file.content_type,
+        file_base64: file.file_base64,
+        byte_length: file.byte_length
+      }).select('id,status,created_at').single().then(designRow);
+    };
+    TP.listStudentReviews = function () {
+      if (!guard()) return Promise.reject(new Error('Sign in required'));
+      return supabase.from('student_id_reviews')
+        .select('id,user_id,status,file_name,content_type,byte_length,file_base64,created_at,reviewed_at,decision_note')
+        .order('created_at', { ascending: false })
+        .then(function (r) { if (r.error) throw r.error; return r.data || []; });
+    };
+    TP.decideStudentReview = function (id, status, note) {
+      if (!guard()) return Promise.reject(new Error('Sign in required'));
+      if (status !== 'approved' && status !== 'rejected') return Promise.reject(new Error('Approve or reject the review.'));
+      return supabase.from('student_id_reviews').update({ status: status, decision_note: note || null }).eq('id', id)
+        .select('id,status,reviewed_at').single().then(designRow);
     };
 
     /* books */
