@@ -126,6 +126,7 @@
       <p id="quota" style="font-size:2rem;font-weight:800;color:var(--accent);margin:6px 0">…</p>
       <p id="flow" style="color:var(--muted);font-size:.9rem;margin:0"></p>
     </div>
+    <div data-jobs-rfq-pay="supplier" hidden style="display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px"></div>
     <div id="inboxRows"></div>
     <p style="color:var(--muted);font-size:.85rem">A reviewed match list has at most 5 suppliers. Match order stays research completeness. <a href="rfq.html" style="color:var(--accent)">Buyer RFQ form</a> · <a href="privacy.html#rfq-contacts" style="color:var(--accent)">Privacy</a></p>
   </div>
@@ -351,7 +352,7 @@
       var research=matches;
       var offered=window.TPRfqLeads?TPRfqLeads.billableMatches(matches):matches.slice(0,5);
       html += '<div style="font-size:1.1rem;font-weight:800;color:var(--ink);margin-bottom:4px">Potentially relevant manufacturers <span style="color:var(--muted);font-weight:600;font-size:.85rem">('+research.length+')</span></div>'+
-        '<p style="font-size:.84rem;color:var(--muted);margin:0 0 12px">Matched from the source-backed TransformerPath census on category, reported rating/voltage and manufacturing geography. This research list is not a billed lead list. After review, at most '+offered.length+' of these suppliers can be offered the lead, and never more than 5. Match order is research completeness. It is not a ranking, not a score and not an endorsement. Your contact details are not shown here.</p>';
+        '<p style="font-size:.84rem;color:var(--muted);margin:0 0 12px">Matched from the source-backed TransformerPath census on category, reported rating/voltage and manufacturing geography. This research list is not a billed lead list. When the automatic checks pass, at most '+offered.length+' of these suppliers can be offered the lead, and never more than 5. Match order is research completeness. It is not a ranking, not a score and not an endorsement. Your contact details are not shown here.</p>';
       html += matches.map(function(m){
         var mva=m.reported_mva?(' · '+esc(m.reported_mva)):''; var kv=m.reported_voltage?(' · '+esc(m.reported_voltage)):'';
         return '<div style="padding:9px 12px;border-bottom:1px solid var(--border);font-size:.9rem"><a href="manufacturers/'+esc(m.slug)+'/" style="color:var(--accent);font-weight:700">'+esc(m.name)+'</a> <span style="color:var(--muted);font-size:.8rem">'+esc(m.country||'')+mva+kv+'</span><div style="font-size:.8rem;color:var(--muted);margin-top:2px">'+m.reasons.map(esc).join(' · ')+'</div></div>';
@@ -386,6 +387,7 @@
 <script src="tp-feedback.js?v=7" defer></script>
 
 <script src="lib/rfq-leads.js"></script>
+<script src="jobs-rfq-pay.js"></script>
 <script>
 (function(){
   function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }

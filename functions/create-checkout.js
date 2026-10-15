@@ -1,8 +1,13 @@
 /* Netlify function: Stripe Checkout for Verified Manufacturer ($499),
- * Featured Event ($299), Featured Exhibitor ($399), and Hosted Webinar ($1,500). POST only.
- * GET returns 405. OPTIONS is CORS.
+ * Featured Event ($299), Featured Exhibitor ($399), Hosted Webinar ($1,500),
+ * and the jobs / RFQ products. POST only. GET returns 405. OPTIONS is CORS.
  *
- * Body: { product: "verified_manufacturer"|"featured_event"|"featured_exhibitor"|"hosted_webinar", company_slug?, event_id?, email }
+ * Job and RFQ products stay closed unless TP_JOBS_RFQ_PAYMENTS is on (or the
+ * file flag jobs_rfq_payments is true). Public pages use Payment Links, not
+ * this function, and those buttons use the same switch.
+ *
+ * Body: { product, company_slug?, event_id?, email }
+ * product is a key of lib/paid-listings PRODUCTS, including the six job and RFQ products.
  *
  * Env (names only — never commit values):
  *   STRIPE_SECRET_KEY
@@ -10,6 +15,13 @@
  *   STRIPE_PRICE_FEATURED_EVENT
  *   STRIPE_PRICE_FEATURED_EXHIBITOR
  *   STRIPE_PRICE_HOSTED_WEBINAR
+ *   STRIPE_PRICE_JOB_STANDARD
+ *   STRIPE_PRICE_JOB_FEATURED
+ *   STRIPE_PRICE_JOB_BUNDLE_5
+ *   STRIPE_PRICE_RFQ_LEAD
+ *   STRIPE_PRICE_RFQ_LEAD_PRO
+ *   STRIPE_PRICE_SUPPLIER_PRO
+ *   TP_JOBS_RFQ_PAYMENTS   1/true/on enables job and RFQ checkout
  *   SITE_URL   optional; defaults to https://transformerpath.com
  *
  * Missing Stripe env returns 503 { configured: false }. The button then uses
@@ -17,6 +29,7 @@
  */
 'use strict';
 const paid = require('../lib/paid-listings');
+const { jobsRfqPaymentsEnabled } = require('../lib/feature-flags');
 
 const STRIPE_API = 'https://api.stripe.com/v1/checkout/sessions';
 
@@ -62,6 +75,9 @@ exports.handler = async function (event) {
   const product = String(body.product || '').trim();
   const spec = paid.PRODUCTS[product];
   if (!spec) return json(400, { error: 'unknown product' });
+  if (paid.JOBS_RFQ_GROUPS && (paid.JOBS_RFQ_GROUPS.jobs.indexOf(product) !== -1 || paid.JOBS_RFQ_GROUPS.rfq.indexOf(product) !== -1 || paid.JOBS_RFQ_GROUPS.supplier.indexOf(product) !== -1)) {
+    if (!jobsRfqPaymentsEnabled()) return json(403, { configured: false, enabled: false, error: 'payments_disabled' });
+  }
 
   const email = String(body.email || '').trim();
   if (!validEmail(email)) return json(400, { error: 'email required' });
@@ -86,16 +102,10 @@ exports.handler = async function (event) {
   const origin = siteOrigin();
   const linkSpec = paid.PAYMENT_LINKS[product];
   const success = origin + linkSpec.successPath;
-  const cancel = product === 'hosted_webinar'
-    ? origin + '/sponsor.html#hosted-webinar'
-    : product === 'featured_exhibitor'
-      ? origin + '/sponsor.html#contact'
-      : product === 'featured_event'
-        ? origin + '/events.html#submit-event'
-        : origin + '/claim-profile.html#claimForm';
+  const cancel = origin + paid.checkoutCancelPath(product);
 
   const form = new URLSearchParams();
-  form.set('mode', 'payment');
+  form.set('mode', spec.mode || 'payment');
   form.set('customer_email', email);
   form.set('success_url', success);
   form.set('cancel_url', cancel);
