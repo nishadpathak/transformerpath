@@ -30,6 +30,8 @@ const ci = function (s) { return (s || '').toLowerCase(); };
 const norm = function (s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim().replace(/\s+/g, ' '); };
 
 const { resolveCompanyAlias, norm: aliasNorm } = require('./lib/company-aliases');
+const headOffice = require('./lib/head-office');
+const HEAD_OFFICES = headOffice.load(__dirname);
 const { isUpcoming, platformToday } = require('./lib/event-status');
 const { splitEntityIntel, fold: foldEntity } = require('./lib/entity-intel');
 const paidListings = require('./lib/paid-listings');
@@ -113,11 +115,11 @@ MANUF.forEach(function (g) {
       // Same canonical company seen again (short name / second country row):
       // keep the richer display name + URL; union types; never invent a 2nd page.
       const prev = records[key];
-      // A later row that actually carries the canonical name replaces HQ fields
-      // taken from an earlier plant alias. Limited to Hammond: the US Baraboo
-      // row was winning over the Guelph corporate office. Other aliases
-      // (Prolec, Hyosung) are left as they were until their HQ is re-fetched.
-      if (!alias.aliased && prev.fromAlias && prev.canonical_slug === 'hammond-power-solutions') {
+      // A later row that is the company's own name replaces the country and
+      // city taken from an earlier plant alias. A plant alias does not replace
+      // a head office already taken from that own-name row. Sourced head
+      // offices in data/head-offices.json are applied after this pass.
+      if (headOffice.canonicalRowReplacesAliasHq(prev.fromAlias, alias.aliased)) {
         prev.name = name;
         prev.country = g.country;
         prev.region = g.region;
@@ -175,6 +177,23 @@ TIERS.forEach(function (t) {
   const rec = MANUF.find(function (g) { return ci(g.country) === ci(t.country); });
   const r = { name: alias.name, country: t.country || 'Global', region: rec ? rec.region : 'Europe', flag: rec ? rec.flag : '', city: '', url: t.site || '', types: tierTypes(t.types).length ? tierTypes(t.types) : ['PT', 'DT'], flagV: '', established: '', tierFile: t, listed: true, canonical_slug: alias.aliased ? alias.slug : undefined };
   records[key] = r;
+});
+
+// Sourced head office wins over every census row, including a non-alias row
+// that itself recorded a plant city (Siemens Energy was listed at Charlotte).
+Object.keys(records).forEach(function (key) {
+  const r = records[key];
+  const office = headOffice.officeFor(r, HEAD_OFFICES);
+  if (!office) return;
+  const group = MANUF.find(function (g) { return ci(g.country) === ci(office.country); });
+  r.country = office.country;
+  r.city = office.city || r.city;
+  if (group) {
+    r.region = group.region;
+    r.flag = group.flag;
+  }
+  if (office.website) r.url = office.website;
+  r.headOffice = office;
 });
 
 // Group capability/HQ inheritance: a multinational's corporate capability
@@ -505,7 +524,8 @@ function page(r, slug) {
     missingList +
   '</div>';
   // conservative schema: describe the company, never claim affiliation
-  const orgSchema = { '@context': 'https://schema.org', '@type': 'Organization', name: r.name, url: r.url ? r.url : url, description: leadText, address: { '@type': 'PostalAddress', addressCountry: r.country, addressLocality: r.city || undefined } };
+  const orgSchema = { '@context': 'https://schema.org', '@type': 'Organization', name: r.name, url: r.url ? r.url : url, description: leadText, address: { '@type': 'PostalAddress', streetAddress: (r.headOffice && r.headOffice.address) || undefined, addressCountry: r.country, addressLocality: r.city || undefined } };
+  if (r.headOffice && r.headOffice.source_url) orgSchema.sameAs = [r.headOffice.source_url];
   const pageSchema = { '@context': 'https://schema.org', '@type': 'WebPage', name: r.name + ' — Company Profile', url: url, about: { '@type': 'Organization', name: r.name } };
   const b = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Manufacturers', item: 'https://transformerpath.com/manufacturers.html' }, { '@type': 'ListItem', position: 2, name: r.name }] };
   const schema = '<script type="application/ld+json">' + JSON.stringify(orgSchema) + '</script><script type="application/ld+json">' + JSON.stringify(pageSchema) + '</script><script type="application/ld+json">' + JSON.stringify(b) + '</script>';
@@ -555,6 +575,7 @@ function page(r, slug) {
     paidListings.manufacturerBadgeHtml(slug, PAID_LISTINGS) +
     '<p class="lead">' + esc(leadText) + '</p>' +
     '<p style="font-size:.9rem;color:var(--muted);margin:6px 0 0">' + (r.flag || '') + ' <b style="color:var(--text)">' + esc(r.country) + '</b>' + (r.city ? ' · ' + esc(r.city) : '') + ' · <span style="color:var(--accent)">' + verify + '</span>' + (r.url ? ' · <a href="' + esc(r.url) + '" target="_blank" rel="noopener nofollow" data-track="official_website_click" data-track-manufacturer="' + esc(r.name) + '" style="color:var(--accent)">Official website ↗</a>' : '') + '</p>' +
+    (r.headOffice ? '<p style="font-size:.78rem;color:var(--muted);margin:4px 0 0">Head office' + (r.headOffice.address ? ': ' + esc(r.headOffice.address) : '') + '. <a href="' + esc(r.headOffice.source_url) + '" target="_blank" rel="noopener" style="color:var(--accent)">' + esc(r.headOffice.source_title) + '</a> (checked ' + esc(r.headOffice.retrieved_at) + ').</p>' : '') +
     (earnedVerified ? '' : paidListings.verifiedManufacturerCtasHtml({ companySlug: slug, trackName: r.name })) +
     trust +
     completenessCard +
