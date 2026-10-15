@@ -113,6 +113,11 @@ const openNow = rows.filter(function (t) { return t.status === 'OPEN' || t.statu
 const tendersHtml = fs.readFileSync('tenders.html', 'utf8');
 const openStat = tendersHtml.match(/<b>(\d+)<\/b><small>Open now<\/small>/);
 check('Tender Watch open count includes closing soon', openStat && Number(openStat[1]) === openNow, (openStat && openStat[1]) + ' vs ' + openNow);
+const intelPage = fs.readFileSync('intelligence.html', 'utf8');
+const intelOpen = intelPage.match(/<b>(\d+)<\/b><small>Open now<\/small>/);
+check('Intelligence open count matches Tender Watch', intelOpen && Number(intelOpen[1]) === openNow, (intelOpen && intelOpen[1]) + ' vs ' + openNow);
+const intelTenders = intelPage.match(/<b>(\d+)<\/b><small>Tenders<\/small>/);
+check('Intelligence tender total matches Tender Watch', intelTenders && Number(intelTenders[1]) === rows.length, (intelTenders && intelTenders[1]) + ' vs ' + rows.length);
 
 const cg = fs.readFileSync('manufacturers/cg-power-and-industrial-solutions/index.html', 'utf8');
 const lead = (cg.match(/<p class="lead">([\s\S]*?)<\/p>/) || [])[1] || '';

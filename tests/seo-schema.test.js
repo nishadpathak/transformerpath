@@ -218,6 +218,29 @@ Object.keys(seoCat.companies).forEach(function (slug) {
   if (t.length < 50 || t.length > 60 || t.slice(-tail.length) !== tail) titleMiss++;
 });
 assert(titleMiss === 0, 'every indexable manufacturer title is 50–60 and keeps the country');
+const aktifTitle = titleKeepingCountry('Aktif Elektroteknik (Transformatör)', 'Türkiye');
+assert(aktifTitle === 'Aktif Elektroteknik listed in Türkiye | TransformerPath', 'long parenthetical is dropped whole: ' + aktifTitle);
+assert(aktifTitle.indexOf('Transforma ') === -1, 'title is not sliced inside Transformatör');
+let openParen = 0;
+let midWord = 0;
+Object.keys(seoCat.companies).forEach(function (slug) {
+  const c = seoCat.companies[slug];
+  if (!c.indexable || !c.country) return;
+  const t = titleKeepingCountry(c.name, c.country);
+  if ((t.split('(').length) !== (t.split(')').length)) openParen++;
+  const head = t.slice(0, t.length - (' in ' + c.country + ' | TransformerPath').length);
+  const pieces = c.name.split(/[\s\-]+/).map(function (src) { return src.replace(/[().,/&]/g, ''); });
+  head.split(/\s+/).forEach(function (word) {
+    const bare = word.replace(/[().,/&-]/g, '');
+    if (bare.length < 5 || pieces.indexOf(bare) !== -1) return;
+    const hit = pieces.some(function (s) { return s.length > bare.length && s.indexOf(bare) === 0; });
+    if (hit) midWord++;
+  });
+});
+assert(openParen === 0, 'manufacturer titles do not leave an open parenthesis ' + openParen);
+assert(midWord === 0, 'manufacturer titles do not slice a name mid-word ' + midWord);
+const eventSearchSrc = fs.readFileSync(path.join(__dirname, '..', 'lib', 'event-search.js'), 'utf8');
+assert(/typeof require === 'function' && require\.main === module/.test(eventSearchSrc), 'event search self-test is not evaluated in the browser');
 
 const topicCrumbs = catalog.draft('topics/bushings/index.html', '<h1>Bushings</h1>', seoCat).crumbs;
 assert(topicCrumbs.some(function (c) { return /\/topics\/bushings\/$/.test(c.item); }), 'topic hub breadcrumb keeps the hub URL');
@@ -257,6 +280,9 @@ assert(!/Nov/.test(unconfirmed) && /Abu Dhabi/.test(unconfirmed), 'unconfirmed d
 const hubTitle = eventSeo.eventHubTitle('ADIPEC');
 assert(hubTitle === 'ADIPEC editions | Transformer Events | TransformerPath', 'hub title ' + hubTitle);
 assert(hubTitle !== adipecTitle, 'hub title differs from the year page');
+const acdcHub = eventSeo.eventHubTitle('ACDC China (24th IET AC & DC Power Transmission Conference)');
+assert(acdcHub === 'ACDC China editions | Transformer Events | TransformerPath', 'hub title drops an unclosed parenthetical: ' + acdcHub);
+assert(acdcHub.length >= 50 && acdcHub.length <= 100 && acdcHub.split('(').length === acdcHub.split(')').length, 'ACDC hub title stays in range and balanced');
 
 const eventsPage = fs.readFileSync(path.join(__dirname, '..', 'events.html'), 'utf8');
 const eventsTitle = (eventsPage.match(/<title>([^<]*)<\/title>/) || [])[1] || '';
