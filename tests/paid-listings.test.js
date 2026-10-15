@@ -696,6 +696,42 @@ async function main() {
   check('$299 amount alone is not Learning', coursePay.classifyCourse({ amount_total: 29900, currency: 'usd', payment_link: 'plink_job_featured', metadata: {} }) === null);
   check('learning metadata classifies without using the amount', coursePay.classifyCourse({ amount_total: 29900, metadata: { plan: 'learning' } }).tier === 'learner');
   check('learning Payment Link code classifies a $199 charge', coursePay.classifyCourse({ amount_total: 19900, url: 'https://buy.stripe.com/' + coursePay.COURSES.learning.code, metadata: {} }).product === 'learning');
+  check('expanded Learning Payment Link classifies a completed $199 session', coursePay.classifyCourse({
+    amount_total: 19900,
+    url: null,
+    metadata: {},
+    payment_link: { id: 'plink_learn_live', object: 'payment_link', url: 'https://buy.stripe.com/' + coursePay.COURSES.learning.code }
+  }).tier === 'learner');
+  check('expanded Professional Payment Link classifies without the amount', coursePay.classifyCourse({
+    amount_total: 19900,
+    url: null,
+    metadata: {},
+    payment_link: { id: 'plink_pro_live', url: 'https://buy.stripe.com/' + coursePay.COURSES.professional.code }
+  }).tier === 'professional');
+  check('expanded Team Payment Link classifies without the amount', coursePay.classifyCourse({
+    amount_total: 29900,
+    url: null,
+    metadata: {},
+    payment_link: { id: 'plink_team_live', url: 'https://buy.stripe.com/' + coursePay.COURSES.team.code }
+  }).tier === 'enterprise');
+  check('expanded unknown Payment Link is not Learning', coursePay.classifyCourse({
+    amount_total: 19900,
+    url: null,
+    metadata: {},
+    payment_link: { id: 'plink_job_standard', url: 'https://buy.stripe.com/jobstandardnotacourse' }
+  }) === null);
+  check('expanded Featured Event link is not a course', coursePay.classifyCourse({
+    amount_total: 29900,
+    url: null,
+    metadata: {},
+    payment_link: { id: 'plink_featured_live', url: paid.FEATURED_EVENT_PAYMENT_LINK }
+  }) === null);
+  check('expanded Featured Event link still matches that product', paid.isFeaturedEventCheckout({
+    amount_total: 34900,
+    url: null,
+    metadata: {},
+    payment_link: { id: 'plink_featured_live', url: paid.FEATURED_EVENT_PAYMENT_LINK }
+  }) === true);
   delete process.env.STRIPE_PAYMENT_LINK_LEARNING;
   process.env.STRIPE_PAYMENT_LINK_LEARNING = 'plink_learn_expected';
   check('configured learning plink id classifies that link', coursePay.classifyCourse({ amount_total: 19900, payment_link: 'plink_learn_expected', metadata: {} }).tier === 'learner');
@@ -744,6 +780,53 @@ async function main() {
   })).body);
   check('learning metadata still grants learner', learningMeta.valid === true && learningMeta.tier === 'learner' && !!learningMeta.entitlement_token, JSON.stringify({ valid: learningMeta.valid, tier: learningMeta.tier }));
 
+  let expandedUrl = '';
+  global.fetch = async function (url) {
+    expandedUrl = String(url);
+    return {
+      ok: true,
+      json: async function () {
+        return {
+          id: 'cs_test_learn_expanded',
+          payment_status: 'paid',
+          amount_total: 19900,
+          livemode: false,
+          metadata: {},
+          url: null,
+          payment_link: { id: 'plink_learn_live', object: 'payment_link', url: 'https://buy.stripe.com/' + coursePay.COURSES.learning.code }
+        };
+      }
+    };
+  };
+  const learningExpanded = JSON.parse((await verify.handler({
+    httpMethod: 'POST',
+    body: JSON.stringify({ session_id: 'cs_test_learn_expanded' })
+  })).body);
+  check('verify-access expands the Payment Link', expandedUrl.indexOf('expand[]=payment_link') !== -1, expandedUrl);
+  check('expanded Learning link grants learner', learningExpanded.valid === true && learningExpanded.tier === 'learner' && !!learningExpanded.entitlement_token, JSON.stringify({ valid: learningExpanded.valid, tier: learningExpanded.tier }));
+
+  global.fetch = async function () {
+    return {
+      ok: true,
+      json: async function () {
+        return {
+          id: 'cs_test_job_expanded',
+          payment_status: 'paid',
+          amount_total: 19900,
+          livemode: false,
+          metadata: {},
+          url: null,
+          payment_link: { id: 'plink_job_standard', object: 'payment_link', url: 'https://buy.stripe.com/jobstandardnotacourse' }
+        };
+      }
+    };
+  };
+  const jobExpanded = JSON.parse((await verify.handler({
+    httpMethod: 'POST',
+    body: JSON.stringify({ session_id: 'cs_test_job_expanded' })
+  })).body);
+  check('expanded $199 job link does not grant Learning', jobExpanded.valid === false && jobExpanded.paid === true && jobExpanded.reason === 'unclassified' && !jobExpanded.entitlement_token, JSON.stringify(jobExpanded));
+
   global.fetch = savedFetch;
   if (savedStripe === undefined) delete process.env.STRIPE_SECRET_KEY; else process.env.STRIPE_SECRET_KEY = savedStripe;
 
@@ -758,7 +841,7 @@ async function main() {
   process.env.STRIPE_SECRET_KEY = 'sk_test_confirm_only';
   global.fetch = function (url) {
     stripeCalls++;
-    const id = String(url).split('/').pop();
+    const id = String(url).split('/').pop().split('?')[0];
     const sessions = {
       cs_test_unpaid: { payment_status: 'unpaid', metadata: { product: 'verified_manufacturer' } },
       cs_test_wrong: { payment_status: 'paid', metadata: { product: 'featured_event' } },

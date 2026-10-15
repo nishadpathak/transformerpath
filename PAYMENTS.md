@@ -20,6 +20,9 @@ Set these on the Netlify site (Site → Environment variables). Server-only. Do 
 | `STRIPE_PAYMENT_LINK_FEATURED_EXHIBITOR` | Optional. The `plink_…` id of the Featured Exhibitor Payment Link. When set, the webhook matches that id. Amount is not a match. |
 | `STRIPE_PAYMENT_LINK_HOSTED_WEBINAR` | Optional. The `plink_…` id of the Hosted Webinar Payment Link. When set, the webhook matches that id. Amount is not a match. |
 | `STRIPE_PAYMENT_LINK_VERIFIED_MANUFACTURER` | Optional. The `plink_…` id of the Verified Manufacturer Payment Link. When set, the webhook matches that id. Amount is not a match. |
+| `STRIPE_PAYMENT_LINK_LEARNING` | Optional. The `plink_…` id of the dormant Learning Payment Link. `verify-access` also matches that link when the expanded Payment Link `url` contains `4gMbIU2lO5hj1NC5DcfYY03`. Amount is not a match. |
+| `STRIPE_PAYMENT_LINK_PROFESSIONAL` | Optional. The `plink_…` id of the dormant Professional Payment Link. The expanded `url` code is `fZu00c3pScJL1NC3v4fYY01`. Amount is not a match. |
+| `STRIPE_PAYMENT_LINK_TEAM` | Optional. The `plink_…` id of the dormant Team Payment Link. The expanded `url` code is `aFacMY6C4aBD2RG2r0fYY02`. Amount is not a match. |
 | `SITE_URL` | Absolute site origin for Checkout success and cancel URLs. Defaults to `https://transformerpath.com`. |
 | `SUPABASE_URL` | Service-role client in `functions/lib/supabase-server.js`. |
 | `SUPABASE_SECRET_KEY` | Service role key. `SUPABASE_SERVICE_ROLE_KEY` is accepted as an alias. |
@@ -126,7 +129,7 @@ A Hosted Webinar Payment Link session matches the same way for `hosted_webinar`:
 
 A Verified Manufacturer Payment Link session matches the same way for `verified_manufacturer`: `metadata.product`, `success_url` containing `paid=verified_manufacturer`, the buy.stripe.com code, or `STRIPE_PAYMENT_LINK_VERIFIED_MANUFACTURER`. `company_slug` comes from metadata or from `client_reference_id` when that value is a directory slug. The row stays `paid_pending_verification`. It does not render VERIFIED MANUFACTURER. `verify-access` does not grant a course token for that session.
 
-Other event types return 200 so Stripe does not retry them. Engineer checkout follows `lib/course-payment.js`: metadata (`product`, `plan`, or `tier`) or the known Payment Link id. A $199 charge with neither does not become Learning and does not write `paid_listings`.
+Other event types return 200 so Stripe does not retry them. Engineer checkout follows `lib/course-payment.js`: metadata (`product`, `plan`, or `tier`), `payment_link` equal to `STRIPE_PAYMENT_LINK_LEARNING`, `STRIPE_PAYMENT_LINK_PROFESSIONAL`, or `STRIPE_PAYMENT_LINK_TEAM`, or the buy.stripe.com code on the session. `verify-access` and `entitle` retrieve the session with `expand[]=payment_link`, because a completed session leaves `url` empty and puts that code on the Payment Link object. A $199 charge with none of those identifiers does not become Learning and does not write `paid_listings`.
 
 Apply `sql/paid_listings.sql` in the Supabase SQL editor once. Row Level Security is on. There is no anon or authenticated policy. Only the service role can read and write.
 
