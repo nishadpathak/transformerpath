@@ -1,6 +1,7 @@
 #!/usr/bin/env node
-/* 14 Oct 2026 multilingual intel: only fetched items, and the coverage
- * claim stays disallowed. A same-day source does not mint DATA CURRENT.
+/* 14 Oct 2026 multilingual intel: only fetched items. GCC discovery still
+ * refuses a DATA CURRENT claim in its own coverage report. Global status
+ * follows the sourced-item date: a same-day item reads Updated today.
  */
 'use strict';
 const fs = require('fs');
@@ -59,7 +60,9 @@ const status = classifyIntelStatus({
   dataCurrentClaimAllowed: false,
   now: now
 });
-check('same-day source stays INTEL COVERAGE DELAYED', status.statusLabel === 'INTEL COVERAGE DELAYED', status.statusLabel + ' ' + status.reason);
+check('same-day source reads Updated today', status.statusLabel === 'Updated today', status.statusLabel + ' ' + status.reason);
+check('same-day source does not mint DATA CURRENT', status.statusLabel !== 'DATA CURRENT');
+check('GCC disallow flag is not the global reason', status.reason !== 'discovery_claim_disallowed', status.reason);
 
 const builder = fs.readFileSync('build-intel-news.js', 'utf8');
 check('builder stamps publication_date into the page', /publication_date/.test(builder) && /date_iso/.test(builder));
@@ -68,4 +71,4 @@ if (failed) {
   console.error('14 OCT LANGUAGE INTEL FAILED (' + failed + ')');
   process.exit(1);
 }
-console.log('14 OCT LANGUAGE INTEL OK — 4 items (zh, zh-Hant, tr); claim still disallowed');
+console.log('14 OCT LANGUAGE INTEL OK — 4 items (zh, zh-Hant, tr); global status ' + status.statusLabel);

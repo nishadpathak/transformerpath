@@ -23,6 +23,11 @@ const fs = require('fs');
 function readJson(p, fb) { try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch (e) { return fb; } }
 function ts(f) { const d = readJson('data/' + f + '.json', {}); return d.updated || d.generated || d.generated_at || d.last_updated || (d.stats && d.stats.generated_at) || null; }
 const { computeIntelStatus } = require('./lib/intel-status');
+function surfaceHealth(label) {
+  if (label === 'DATA STALE') return 'STALE';
+  if (label === 'DATA CURRENT' || label === 'Updated today' || /^UPDATED \d{1,2} [A-Za-z]{3} \d{4}$/.test(label || '')) return 'HEALTHY';
+  return 'AGING';
+}
 const NOW = new Date().toISOString();
 const shared = computeIntelStatus({ buildAt: NOW, now: new Date(NOW) });
 const noon = shared.latest_source_iso ? shared.latest_source_iso + 'T12:00:00.000Z' : null;
@@ -33,7 +38,7 @@ const intelStatus = {
   statusLabel: shared.status,
   reason: shared.reason,
   data_current_claim_allowed: shared.data_current_claim_allowed,
-  honesty: 'Status follows latest_source_date, not build_at. Desk rebuild alone never yields DATA CURRENT.'
+  honesty: 'Status follows latest_source_date, not build_at and not the GCC discovery gate. Desk rebuild alone never yields UPDATED or DATA CURRENT.'
 };
 
 // Source body: cite what each intelligence surface is actually fed by, and its
@@ -59,7 +64,7 @@ const surfaces = [
     records_updated: null,
     source_count: 'per-item',
     source_failures: null,
-    status: intelStatus.statusLabel === 'DATA STALE' ? 'STALE' : (intelStatus.statusLabel === 'DATA CURRENT' ? 'HEALTHY' : 'AGING'),
+    status: surfaceHealth(intelStatus.statusLabel),
     source_health: intelStatus.honesty,
     records: readJson('data/intel.json', {}),
   },
@@ -184,7 +189,7 @@ const freshness = {
   public_intel_status: intelStatus.statusLabel,
   public_intel_status_reason: intelStatus.reason,
   data_current_claim_allowed: intelStatus.data_current_claim_allowed,
-  honest_note: 'Three clocks: latest_source_date (content), latest_source_checked_at (portal probe), build_at (artifact regenerate). DATA CURRENT requires a recent latest_source_date — never a desk rebuild alone. INTEL COVERAGE DELAYED when discovery lags the industry.',
+  honest_note: 'Three clocks: latest_source_date (content), latest_source_checked_at (portal probe), build_at (artifact regenerate). A sourced item no more than 1 day old reads UPDATED with that date, or Updated today. Older items keep the age labels. A desk rebuild never mints freshness. GCC confirmed coverage is stated only on GCC market pages.',
   surfaces,
   sources,
   clocks: intelStatus
