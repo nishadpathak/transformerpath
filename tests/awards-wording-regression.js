@@ -35,6 +35,10 @@ check('that pairing is the confirmed-scope count', together.length === 1 && toge
 check('pairing is not the tracked total', together.length === 1 && together[0].indexOf('>' + stats.awards + '<') < 0 && !new RegExp('>' + stats.awards + '<[^>]*>\\s*confirmed awards', 'i').test(html));
 check('inferred count is present', html.indexOf('data-stat="awardsInferred">' + inferred) >= 0);
 check('unknown count is present', html.indexOf('data-stat="awardsUnknown">' + unknown) >= 0);
+const title = html.match(/title="(\d+) awards tracked, split by transformer scope"/);
+check('awards title uses the same total as the visible split', !!title && Number(title[1]) === confirmed + inferred + unknown, title && title[1]);
+const loader = fs.readFileSync('site-stats.js', 'utf8');
+check('runtime title is set from the same three counts', /awardsConfirmed[\s\S]*awardsInferred[\s\S]*awardsUnknown/.test(loader) && /type=awards/.test(loader));
 
 if (failed) {
   console.error('AWARDS WORDING REGRESSION FAILED (' + failed + ')');
