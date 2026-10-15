@@ -31,11 +31,14 @@ hubs.forEach(function (h) {
   if (!list) fail(h.slug + ' ItemList missing');
   else if (list.numberOfItems !== h.companies.length) fail(h.slug + ' ItemList count');
   if (html.indexOf('application/ld+json') < 0) fail(h.slug + ' json-ld script');
+  if (html.indexOf('Suggest a correction') < 0 || html.indexOf('correct-company.html') < 0) fail(h.slug + ' corrections link');
   h.companies.forEach(function (c) {
     if (html.indexOf('/manufacturers/' + c.slug + '/') < 0) fail(h.slug + ' missing ' + c.slug);
   });
 });
 
+const indexHtml = fs.readFileSync('manufacturers/sourced/index.html', 'utf8');
+if (indexHtml.indexOf('Suggest a correction') < 0 || indexHtml.indexOf('correct-company.html') < 0) fail('index corrections link');
 const indexTitle = 'Sourced manufacturer group directory | TransformerPath';
 if (indexTitle.length < 50 || indexTitle.length > 60) fail('index title ' + indexTitle.length);
 const board = fs.readFileSync('manufacturers.html', 'utf8');

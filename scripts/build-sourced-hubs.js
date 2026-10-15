@@ -61,6 +61,7 @@ function page(hub) {
     '</head>\n<body>\n' + HEAD + '\n<main id="main" tabindex="-1" class="c-wrap">\n' +
     '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:10px"><a href="/manufacturers.html" style="color:var(--accent)">Manufacturers</a> › <a href="/manufacturers/sourced/" style="color:var(--accent)">Sourced</a> › ' + esc(hub.h1) + '</nav>\n' +
     '<h1>' + esc(hub.h1) + '</h1>\n<p class="lead">' + esc(hub.lead) + '</p>\n<ol>' + rows + '</ol>\n' +
+    '<p><a class="btn btn-outline btn-sm" href="/correct-company.html" data-track="manufacturer_correction_started">Suggest a correction →</a></p>\n' +
     '</main>\n' + FOOT + '\n</body>\n</html>\n';
 }
 
@@ -80,7 +81,9 @@ function indexPage(hubList) {
     '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:10px"><a href="/manufacturers.html" style="color:var(--accent)">Manufacturers</a> › Sourced</nav>\n' +
     '<h1>Sourced manufacturer groups</h1>\n' +
     '<p class="lead">A group is published when at least five manufacturers have a public page that states the qualification. Profiles without that source are not added to fill the list.</p>\n' +
-    '<ul>' + links + '</ul>\n</main>\n' + FOOT + '\n</body>\n</html>\n';
+    '<ul>' + links + '</ul>\n' +
+    '<p><a class="btn btn-outline btn-sm" href="/correct-company.html" data-track="manufacturer_correction_started">Suggest a correction →</a></p>\n' +
+    '</main>\n' + FOOT + '\n</body>\n</html>\n';
 }
 
 function main() {
