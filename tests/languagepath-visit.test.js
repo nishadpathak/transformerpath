@@ -59,7 +59,8 @@ check('no other event record stores a visitor URL', extras.length === 0 && canon
 
 const builder = fs.readFileSync('build-events.js', 'utf8');
 check('edition pages render the field', builder.includes('travelBlock(ev) + visitorGuideBlock(ev)'));
-check('series hubs render the featured edition field', builder.includes('travelBlock(nxt) + visitorGuideBlock(nxt)'));
+check('series hubs render the featured edition visitor guide', builder.includes('visitorGuideBlock(nxt)'));
+check('series hubs do not copy the edition travel block', !builder.includes('travelBlock(nxt)'));
 check('renderer keeps the copy and link attributes', builder.includes(COPY) && builder.includes('rel="noopener" target="_blank"') && !/sister/i.test(builder.slice(builder.indexOf('function visitorGuideBlock'), builder.indexOf('function visitorGuideBlock') + 800)));
 
 fs.readdirSync('events', { withFileTypes: true }).forEach((ent) => {
