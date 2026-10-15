@@ -12,24 +12,42 @@ function git(args) {
   return execSync('git ' + args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
 }
 
-let head = '';
-let porcelain = '';
-let error = '';
-try {
-  head = git('rev-parse HEAD');
-  porcelain = git('status --porcelain');
-} catch (e) {
-  error = String(e && e.message || e);
+/* write-supabase-config.js rewrites this file from public env before the
+ * snapshot. Empty in git, filled on a configured production build. That
+ * rewrite is not source dirt. */
+function filterPorcelain(porcelain) {
+  return String(porcelain || '').split('\n').filter(function (line) {
+    if (!line) return false;
+    const file = line.slice(3).trim();
+    return file !== 'supabase-config.js';
+  }).join('\n');
 }
 
-const state = {
-  head: head,
-  porcelain: porcelain,
-  git_dirty: porcelain.length > 0,
-  captured_at: new Date().toISOString(),
-  error: error
-};
+function capture() {
+  let head = '';
+  let porcelain = '';
+  let error = '';
+  try {
+    head = git('rev-parse HEAD');
+    porcelain = filterPorcelain(git('status --porcelain'));
+  } catch (e) {
+    error = String(e && e.message || e);
+  }
+  return {
+    head: head,
+    porcelain: porcelain,
+    git_dirty: porcelain.length > 0,
+    captured_at: new Date().toISOString(),
+    error: error
+  };
+}
 
-fs.mkdirSync('data', { recursive: true });
-fs.writeFileSync('data/.release-git-state.json', JSON.stringify(state, null, 2) + '\n');
-console.log('git state captured: head=' + (head || 'none').slice(0, 12) + ' dirty=' + state.git_dirty);
+if (require.main === module) {
+  const state = capture();
+
+  fs.mkdirSync('data', { recursive: true });
+  fs.writeFileSync('data/.release-git-state.json', JSON.stringify(state, null, 2) + '\n');
+  console.log('git state captured: head=' + (state.head || 'none').slice(0, 12) + ' dirty=' + state.git_dirty);
+}
+
+module.exports = { filterPorcelain: filterPorcelain, capture: capture };
