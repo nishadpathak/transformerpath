@@ -235,9 +235,40 @@ for (let i = 0; i < STAT_HTML.length; i++) {
         '$1Next confirmed editions: ' + nextConfirmedLine + '. Official pages checked ' + todayISO + '.$2'
       );
     }
+    html = html.replace(
+      /Explore manufacturing across \d+ countries/g,
+      'Explore manufacturing across ' + current.manufacturingCountries + ' countries'
+    );
+    html = html.replace(
+      /Browse all \d+ transformer companies/g,
+      'Browse all ' + current.manufacturers + ' transformer companies'
+    );
   }
   if (html !== before) {
     fs.writeFileSync(p, html);
+    htmlPatched++;
+  }
+}
+
+/* Directory headlines are not data-stat nodes. The SSR block, the count
+   line and the Dataset size are what crawlers and no-JS readers see, so
+   they have to be rewritten from the same census this file just counted. */
+if (fs.existsSync('manufacturers.html')) {
+  let html = fs.readFileSync('manufacturers.html', 'utf8');
+  const before = html;
+  const regionsShown = new Set(MANUF.filter((g) => (g.makers || []).some((m) => !/^Served by/i.test(m[0]))).map((g) => g.region).filter(Boolean)).size;
+  const statsBlock = '<!--SSR:mfg-stats-->\n' +
+    '<div class="s"><b>' + current.manufacturers + '</b><small>Companies</small></div>\n' +
+    '<div class="s"><b>' + current.manufacturingCountries + '</b><small>Countries</small></div>\n' +
+    '<div class="s"><b>' + regionsShown + '</b><small>Regions</small></div>\n' +
+    '<div class="s"><b>' + current.dataCompleteness + '%</b><small>Data completeness</small></div>\n' +
+    '<!--/SSR:mfg-stats-->';
+  html = html.replace(/<!--SSR:mfg-stats-->[\s\S]*?<!--\/SSR:mfg-stats-->/, statsBlock);
+  html = html.replace(/Showing \d+ companies across \d+ countries/,
+    'Showing ' + current.manufacturers + ' companies across ' + current.manufacturingCountries + ' countries');
+  html = html.replace(/("size"\s*:\s*)\d+/, '$1' + current.manufacturers);
+  if (html !== before) {
+    fs.writeFileSync('manufacturers.html', html);
     htmlPatched++;
   }
 }
