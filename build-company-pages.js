@@ -30,7 +30,7 @@ const ci = function (s) { return (s || '').toLowerCase(); };
 const norm = function (s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim().replace(/\s+/g, ' '); };
 
 const { resolveCompanyAlias, norm: aliasNorm } = require('./lib/company-aliases');
-const { isUpcoming } = require('./lib/event-status');
+const { isUpcoming, platformToday } = require('./lib/event-status');
 const { splitEntityIntel, fold: foldEntity } = require('./lib/entity-intel');
 const paidListings = require('./lib/paid-listings');
 const PAID_LISTINGS = paidListings.load();
@@ -393,10 +393,14 @@ function metaFromLead(text) {
   const dot = cut.lastIndexOf('. ');
   return dot > 80 ? cut.slice(0, dot + 1) : cut.replace(/\s+\S*$/, '') + '.';
 }
+// Upcoming is decided from the event END date against the platform day (Asia/Dubai).
+// A show that opened on 11 Oct and closed on 13 Oct is not upcoming on 15 Oct,
+// even though the row still displays the start date.
+const UPCOMING_AS_OF = platformToday();
 function eventsFor(rec) {
   const alias = COUNTRY_ALIAS[ci(rec.country)] || rec.country;
   return EVENTS.filter(function (ev) { return ci(ev.co) === ci(rec.country) || ci(ev.co) === ci(alias); })
-    .filter(function (ev) { return isUpcoming(ev); })
+    .filter(function (ev) { return isUpcoming(ev, UPCOMING_AS_OF); })
     .sort(function (a, b) { return String(a.s).localeCompare(String(b.s)); }).slice(0, 5);
 }
 function intelFor(rec) {
@@ -547,7 +551,7 @@ function page(r, slug) {
     })() + brandSitesHtml(r) + timelineHtml(r) + developmentsHtml(r) + provenanceHtml(r) +
     '<h2>Latest intelligence about this company</h2><ul>' + intelHtml + '</ul>' +
     (regionalHtml ? '<h2>Regional intel</h2><p style="color:var(--muted);font-size:.84rem;margin:4px 0 8px">Same country, not evidenced as about this company.</p><ul>' + regionalHtml + '</ul>' : '') +
-    '<h2>Upcoming events</h2><ul>' + evHtml + '</ul>' +
+    '<h2 data-upcoming-as-of="' + UPCOMING_AS_OF + '">Upcoming events</h2><ul>' + evHtml + '</ul>' +
     '<p style="font-size:.72rem;color:var(--muted)">Last reviewed: ' + lastReviewed + '.</p>' +
     '<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:22px"><b style="color:var(--text)">Represent this company?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Claim and update this profile to keep its capabilities, markets and verification accurate.</p>' +
     '<a class="btn btn-outline btn-sm" href="../../claim-profile.html?company=' + encodeURIComponent(r.name) + '" data-track="supplier_claim_started" data-track-manufacturer="' + esc(r.name) + '">Claim this profile →</a> ' +
