@@ -2386,15 +2386,27 @@ function applyTcoPreset() {
   calc();
 }
 
+/* The design result stores no-load and load loss as NLL and LL (watts).
+   The extended modules also accept P0/Pk when a record already uses those names. */
+function lossWatts(primary, fallback) {
+  const n = Number(primary);
+  if (Number.isFinite(n)) return n;
+  const f = Number(fallback);
+  return Number.isFinite(f) ? f : 0;
+}
+
 function calcExtendedModules(r) {
   if (!r) return;
+
+  const p0W = lossWatts(r.P0, r.NLL);
+  const pkW = lossWatts(r.Pk, r.LL);
 
   // --- 17. TOC / TCO Calculation ---
   const costA = parseFloat($('cost_a').value) || 6500;
   const costB = parseFloat($('cost_b').value) || 1800;
-  const capex = parseFloat($('capex_base').value) || (r.P0 * 5000 + r.Pk * 800 + 20000);
-  const p0_kW = (r.P0 || 0) / 1000;
-  const pk_kW = (r.Pk || 0) / 1000;
+  const capex = parseFloat($('capex_base').value) || (p0W * 5000 + pkW * 800 + 20000);
+  const p0_kW = p0W / 1000;
+  const pk_kW = pkW / 1000;
   const capP0 = p0_kW * costA;
   const capPk = pk_kW * costB;
   const totalCapLosses = capP0 + capPk;
@@ -2546,10 +2558,10 @@ function calcExtendedModules(r) {
     profLabel = "Industrial / VFD Drive";
   }
 
-  const basePec_kW = ((r.Pk || 10000) * 0.12) / 1000; // ~12% eddy in load loss
+  const basePec_kW = (pkW * 0.12) / 1000; // ~12% eddy in load loss
   const harmPec_kW = basePec_kW * fhl;
   const extraEddy_kW = harmPec_kW - basePec_kW;
-  const totalHarmPk_kW = (r.Pk / 1000) + extraEddy_kW;
+  const totalHarmPk_kW = (pkW / 1000) + extraEddy_kW;
 
   // Max permissible loading factor = sqrt( (1 + Pec_pu) / (1 + Fhl * Pec_pu) )
   const pec_pu = 0.12;
@@ -2601,8 +2613,8 @@ function exportDesignJSON() {
       flux_density_t: LAST.bm,
       lv_turns: LAST.Nlv,
       hv_turns: LAST.Nhv,
-      p0_w: LAST.P0,
-      pk_w: LAST.Pk,
+      p0_w: lossWatts(LAST.P0, LAST.NLL),
+      pk_w: lossWatts(LAST.Pk, LAST.LL),
       z_pct: LAST.z,
       eff_100_pct: LAST.eff100,
       total_mass_kg: LAST.Wtot
@@ -2682,9 +2694,9 @@ function copyDesignMarkdown() {
 
 ## 2. Electrical Performance & Guarantees
 - **Short-Circuit Impedance (%Z):** ${fmt(r.z, 2)} % (X/R = ${fmt(r.xr, 1)})
-- **No-Load Loss (P0):** ${fmt(r.P0/1000, 3)} kW
-- **Load Loss (Pk @ 75°C):** ${fmt(r.Pk/1000, 2)} kW
-- **Total Losses:** ${fmt((r.P0 + r.Pk)/1000, 2)} kW
+- **No-Load Loss (P0):** ${fmt(lossWatts(r.P0, r.NLL)/1000, 3)} kW
+- **Load Loss (Pk @ 75°C):** ${fmt(lossWatts(r.Pk, r.LL)/1000, 2)} kW
+- **Total Losses:** ${fmt((lossWatts(r.P0, r.NLL) + lossWatts(r.Pk, r.LL))/1000, 2)} kW
 - **Full Load Efficiency (1.0 PF):** ${fmt(r.eff100, 3)} %
 - **Voltage Regulation (0.8 PF lag):** ${fmt(r.reg08, 2)} %
 
