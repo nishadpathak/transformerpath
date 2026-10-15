@@ -110,6 +110,7 @@ DEV.forEach(function (dev) {
       value: valueLabel(x.value),
       date: dateFromSrc(x.src, x.date_iso),
       facility_id: x.facility_id || null,
+      event_scope: x.event_scope || (x.facility_id ? 'factory' : 'group'),
       confidence: BASE_CONF,
       claimType: BASE_CLAIM,
       sourceType: 'company_development',

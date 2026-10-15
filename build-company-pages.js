@@ -239,9 +239,19 @@ function brandSitesHtml(r) {
 // Company timeline: typed, source-backed events from the BI graph (Module 2).
 // Grouped by event type; every entry keeps its verbatim source URL. Confidence
 // carried through (defaults to LIMITED for keyword-matched Daily-Intel items).
+// Event sections follow this entity's own name (and its aliases), never a
+// parent group's timeline. A global-HQ or plant row must not inherit the
+// group's developments just because it shares a brand prefix.
+function entityNames(r) {
+  const names = [r.name].concat(r.aka || []);
+  const alias = resolveCompanyAlias(r.name);
+  if (alias.aliased) names.push(alias.name, alias.sourceName);
+  if (r.tierFile && r.tierFile.name && norm(r.tierFile.name) === norm(r.name)) names.push(r.tierFile.name);
+  return names;
+}
 function timelineHtml(r) {
-  const lookup = lookupName(r);
-  const ev = EVENTS_BY_NAME[norm(lookup)];
+  let ev = null;
+  entityNames(r).some(function (n) { ev = EVENTS_BY_NAME[norm(n)]; return !!ev; });
   if (!ev || !ev.events || !ev.events.length) return '';
   const TYPE_ORDER = ['order_award', 'factory_expansion', 'new_test_lab', 'ownership_change', 'rebranding', 'utility_approval', 'market_entry', 'reference'];
   const CONF = { HIGH: 'High', MEDIUM: 'Medium', LIMITED: 'Limited' };
@@ -260,9 +270,10 @@ function timelineHtml(r) {
   return '<h2>Company timeline</h2><p style="font-size:.82rem;color:var(--muted)">Typed, sourced developments attached to this permanent entity. Every item is linked to its published source and carries a confidence label. An item is shown because it <b>references</b> this company — it is not an independently verified award, order or project attribution unless the source explicitly confirms one. Confidence defaults to <b>Limited</b> for a keyword-matched Daily-Intel item and is never upgraded without corroborating source evidence.</p>' + grouped;
 }
 
-// Resolve the canonical lookup name for a record. An inherited-HQ record
-// (e.g. "Hitachi Energy (global HQ)") should look up the tier leader name
-// ("Hitachi Energy") for developments/timeline/provenance.
+// Provenance lookup. An inherited-HQ record may show the group tier's sourced
+// capability evidence. Developments and the company timeline do not use this:
+// those stay on entityNames(), so a plant or HQ row does not inherit the
+// group's events.
 function lookupName(r) {
   if (r.tierFile && /global hq/i.test(r.name || '') && norm(r.tierFile.name) !== norm(r.name)) return r.tierFile.name;
   if (r.tierFile && r.tierFile.name) return r.tierFile.name;
@@ -297,7 +308,8 @@ function byNameAny(map, r) {
 // Sourced, company-specific developments (orders, expansions, acquisitions,
 // rebrands) pulled from TransformerPath Daily Intel — linked to their sources.
 function developmentsHtml(r) {
-  const d = byNameAny(DEV_BY_NAME, r);
+  let d = null;
+  entityNames(r).some(function (n) { d = DEV_BY_NAME[norm(n)]; return !!d; });
   if (!d || !d.developments || !d.developments.length) return '';
   const lis = d.developments.map(function (x) {
     const dateMatch = String(x.src || '').match(/(\d{1,2}\s+\w{3}\s+\d{4})/);
