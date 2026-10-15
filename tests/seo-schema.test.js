@@ -293,6 +293,10 @@ assert(!eventSeo.shouldNoindexEdition({
   description: 'Largest networking event for power generation professionals in the Americas.'
 }, '2026-10-15'), 'past unconfirmed edition with a real description stays indexable');
 
+const standardsPage = fs.readFileSync(path.join(__dirname, '..', 'standards.html'), 'utf8');
+const standardsTitle = (standardsPage.match(/<title>([^<]*)<\/title>/) || [])[1] || '';
+assert(standardsTitle.indexOf('Standards') !== -1, 'standards.html title includes Standards: ' + standardsTitle);
+
 if (failed) {
   console.error('\n' + failed + ' failed');
   process.exit(1);

@@ -109,7 +109,7 @@ exports.handler = async function (event) {
     'You asked for email alerts on: ' + presets.join(', ') + '\n' +
     'Keywords: ' + keywords + '\n\n' +
     'We email when CONFIRMED / SUPPORTED GCC transformer tenders match these portals. ' +
-    'The Intel rebuild runs once daily at 06:00 UTC (10:00 Dubai), and only when TP_BUILD_HOOK_URL is set.\n\n' +
+    'The Intel rebuild runs once daily at 06:00 UTC, and only when TP_BUILD_HOOK_URL is set.\n\n' +
     'Desk: https://transformerpath.com/intel.html#tp-watchlists\n' +
     'To stop alerts, reply to this email.\n';
 

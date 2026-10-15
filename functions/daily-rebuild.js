@@ -3,7 +3,7 @@
 // events Up-next, and site-stats counters cannot freeze for weeks
 // between manual deploys.
 //
-// Schedule: once daily — 06:00 UTC (10:00 Dubai). See netlify.toml.
+// Schedule: once daily — 06:00 UTC. See netlify.toml.
 // No-op unless TP_BUILD_HOOK_URL is set.
 exports.handler = async function () {
   const hook = process.env.TP_BUILD_HOOK_URL || process.env.BUILD_HOOK_URL || '';
