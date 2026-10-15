@@ -45,13 +45,56 @@ const CAP_NAMES = {
   sfra: '📈 SFRA Frequency Response'
 };
 
+/* A capability checkmark needs an explicit true. Placeholder rows whose
+ * prose says the scope is not restated are not a sourced true, even if the
+ * JSON still holds a boolean. */
+function scopeUnsourced(lab) {
+  const sc = String(lab.short_circuit_capacity || '');
+  const scope = String((lab.accreditation && lab.accreditation.scope) || '');
+  return /not restated/i.test(sc) || /as published on the laboratory website/i.test(scope);
+}
+
+function capClaim(lab, k) {
+  if (scopeUnsourced(lab)) return 'unknown';
+  const raw = lab.capabilities ? lab.capabilities[k] : undefined;
+  if (raw === true) return 'yes';
+  if (raw === false) return 'no';
+  return 'unknown';
+}
+
+function capCell(lab, k) {
+  const claim = capClaim(lab, k);
+  if (claim === 'yes') return 'c-yes"><span class="cmp-yes">✓ Yes</span>';
+  if (claim === 'no') return 'c-no"><span class="sub-l">—</span>';
+  return 'c-unknown"><span class="sub-l">— unknown</span>';
+}
+
+function voltagePill(lab) {
+  const kv = lab.max_voltage_kv;
+  if (typeof kv !== 'number' || !isFinite(kv)) {
+    return '<span class="kv-pill kv-unstated">Voltage not stated</span>';
+  }
+  const isUhv = kv >= 765;
+  return '<span class="kv-pill' + (isUhv ? ' uhv' : '') + '">' + esc(kv) + ' kV Peak</span>';
+}
+
+function accreditationVerified(lab) {
+  const a = lab.accreditation;
+  if (!a || !a.standard || String(a.standard).indexOf('17025') < 0) return false;
+  const body = String(a.body || '').trim();
+  if (!body || /as published/i.test(body)) return false;
+  return true;
+}
+
+function independentVerified(lab) {
+  return lab.third_party_independent === true && !scopeUnsourced(lab);
+}
+
 function renderCardServer(lab) {
   const capRows = Object.keys(CAP_NAMES).map(function(k) {
-    const ok = lab.capabilities && lab.capabilities[k];
-    return '<tr><td class="c-name">' + esc(CAP_NAMES[k]) + '</td><td class="c-status ' + (ok ? 'c-yes"><span class="cmp-yes">✓ Yes</span>' : 'c-no"><span class="sub-l">—</span>') + '</td></tr>';
+    return '<tr><td class="c-name">' + esc(CAP_NAMES[k]) + '</td><td class="c-status ' + capCell(lab, k) + '</td></tr>';
   }).join('');
 
-  const isUhv = (lab.max_voltage_kv || 0) >= 765;
   const webUrl = safeUrl(lab.website);
 
   let accredHtml = '';
@@ -71,9 +114,9 @@ function renderCardServer(lab) {
   return '<div class="lab-card" style="box-shadow:0 4px 18px rgba(0,0,0,.12)">' +
     '<div class="lab-top">' +
       '<h2 class="lab-name" style="font-size:1.28rem">' + esc(lab.name) + '</h2>' +
-      '<span class="kv-pill ' + (isUhv ? 'uhv' : '') + '">' + esc(lab.max_voltage_kv) + ' kV Peak</span>' +
+      voltagePill(lab) +
     '</div>' +
-    '<div class="lab-loc">📍 ' + esc(lab.city) + ', ' + esc(lab.country) + (lab.third_party_independent ? ' · <span style="color:#10b981;font-weight:700">Third-Party Independent</span>' : '') + '</div>' +
+    '<div class="lab-loc">📍 ' + esc(lab.city) + ', ' + esc(lab.country) + (independentVerified(lab) ? ' · <span style="color:#10b981;font-weight:700">Third-Party Independent</span>' : '') + '</div>' +
     '<p style="font-size:.86rem;color:var(--muted);line-height:1.5;margin:0 0 12px">' + esc(lab.description) + '</p>' +
     accredHtml +
     '<table class="cap-table"><tbody>' + capRows + '</tbody></table>' +
@@ -89,9 +132,9 @@ function renderCardServer(lab) {
 
 function render() {
   const uniqueCountries = [...new Set(LABS.map(l => l.country).filter(Boolean))].sort();
-  const maxVoltage = Math.max.apply(null, LABS.map(l => l.max_voltage_kv || 0));
-  const accreditedCount = LABS.filter(l => l.accreditation && l.accreditation.standard && l.accreditation.standard.indexOf('17025') >= 0).length;
-  const independentCount = LABS.filter(l => l.third_party_independent).length;
+  const maxVoltage = Math.max.apply(null, LABS.map(l => (typeof l.max_voltage_kv === 'number' ? l.max_voltage_kv : 0)));
+  const accreditedCount = LABS.filter(accreditationVerified).length;
+  const independentCount = LABS.filter(independentVerified).length;
 
   const countryOptions = uniqueCountries.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('\n        ');
   const initialCardsHtml = LABS.map(renderCardServer).join('');
@@ -143,8 +186,9 @@ function render() {
 .lab-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
 .lab-name { font-size: 1.25rem; font-weight: 800; color: var(--ink); margin: 0; }
 .lab-loc { font-size: .88rem; color: var(--muted); margin-bottom: 12px; }
-.kv-pill { background: rgba(245,166,35,.12); border: 1px solid var(--accent); color: var(--accent); font-size: .78rem; font-weight: 800; padding: 3px 9px; border-radius: 999px; }
+.kv-pill { background: rgba(245,166,35,.12); border: 1px solid var(--accent); color: var(--accent); font-size: .78rem; font-weight: 800; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
 .kv-pill.uhv { background: rgba(239,68,68,.15); border-color: #ef4444; color: #f87171; }
+.kv-pill.kv-unstated { background: transparent; border-color: var(--border); color: var(--muted); font-weight: 700; }
 
 .cap-table { width: 100%; border-collapse: collapse; font-size: .84rem; margin: 12px 0 16px; }
 .cap-table td { padding: 5px 6px; border-bottom: 1px solid var(--border); }
@@ -152,6 +196,7 @@ function render() {
 .cap-table .c-status { text-align: right; font-weight: 800; }
 .c-yes { color: #10b981; }
 .c-no { color: var(--muted); opacity: .4; }
+.c-unknown { color: var(--muted); font-weight: 700; }
 
 .accred-box { background: rgba(255,255,255,.03); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; font-size: .8rem; color: var(--muted); margin-bottom: 14px; }
 .accred-box b { color: var(--text); }
@@ -179,12 +224,12 @@ ${HEAD}
       <div class="lbl">Peak Test Voltage</div>
     </div>
     <div class="stat-box">
-      <div class="num">${accreditedCount}</div>
-      <div class="lbl">ISO/IEC 17025 Accredited</div>
+      <div class="num">${accreditedCount} of ${LABS.length}</div>
+      <div class="lbl">ISO/IEC 17025 verified</div>
     </div>
     <div class="stat-box">
-      <div class="num">${independentCount}</div>
-      <div class="lbl">Third-Party Independent</div>
+      <div class="num">${independentCount} of ${LABS.length}</div>
+      <div class="lbl">Third-party independent verified</div>
     </div>
   </div>
 
@@ -265,10 +310,33 @@ function safeUrl(u) {
   return '';
 }
 
+function scopeUnsourced(lab) {
+  var sc = String(lab.short_circuit_capacity || '');
+  var scope = String((lab.accreditation && lab.accreditation.scope) || '');
+  return /not restated/i.test(sc) || /as published on the laboratory website/i.test(scope);
+}
+
+function capClaim(lab, k) {
+  if (scopeUnsourced(lab)) return 'unknown';
+  var raw = lab.capabilities ? lab.capabilities[k] : undefined;
+  if (raw === true) return 'yes';
+  if (raw === false) return 'no';
+  return 'unknown';
+}
+
+function voltagePill(lab) {
+  var kv = lab.max_voltage_kv;
+  if (typeof kv !== 'number' || !isFinite(kv)) {
+    return '<span class="kv-pill kv-unstated">Voltage not stated</span>';
+  }
+  var isUhv = kv >= 765;
+  return '<span class="kv-pill' + (isUhv ? ' uhv' : '') + '">' + esc(kv) + ' kV Peak</span>';
+}
+
 function renderCards() {
   var grid = document.getElementById('labGrid');
   var hits = LABS.filter(function(lab) {
-    if (minVoltage > 0 && (lab.max_voltage_kv || 0) < minVoltage) return false;
+    if (minVoltage > 0 && (typeof lab.max_voltage_kv !== 'number' || lab.max_voltage_kv < minVoltage)) return false;
     if (selectedCountry && lab.country !== selectedCountry) return false;
     if (searchQuery) {
       var q = searchQuery.toLowerCase();
@@ -277,7 +345,7 @@ function renderCards() {
       if (text.indexOf(q) < 0) return false;
     }
     for (var cap in requiredCaps) {
-      if (requiredCaps[cap] && (!lab.capabilities || !lab.capabilities[cap])) return false;
+      if (requiredCaps[cap] && capClaim(lab, cap) !== 'yes') return false;
     }
     return true;
   });
@@ -291,11 +359,13 @@ function renderCards() {
 
   grid.innerHTML = hits.map(function(lab) {
     var capRows = Object.keys(CAP_NAMES).map(function(k) {
-      var ok = lab.capabilities && lab.capabilities[k];
-      return '<tr><td class="c-name">' + esc(CAP_NAMES[k]) + '</td><td class="c-status ' + (ok ? 'c-yes"><span class="cmp-yes">✓ Yes</span>' : 'c-no"><span class="sub-l">—</span>') + '</td></tr>';
+      var claim = capClaim(lab, k);
+      var cell = claim === 'yes'
+        ? 'c-yes"><span class="cmp-yes">✓ Yes</span>'
+        : (claim === 'no' ? 'c-no"><span class="sub-l">—</span>' : 'c-unknown"><span class="sub-l">— unknown</span>');
+      return '<tr><td class="c-name">' + esc(CAP_NAMES[k]) + '</td><td class="c-status ' + cell + '</td></tr>';
     }).join('');
 
-    var isUhv = (lab.max_voltage_kv || 0) >= 765;
     var webUrl = safeUrl(lab.website);
 
     var accredHtml = '';
@@ -315,9 +385,9 @@ function renderCards() {
     return '<div class="lab-card" style="box-shadow:0 4px 18px rgba(0,0,0,.12)">' +
       '<div class="lab-top">' +
         '<h2 class="lab-name" style="font-size:1.28rem">' + esc(lab.name) + '</h2>' +
-        '<span class="kv-pill ' + (isUhv ? 'uhv' : '') + '">' + esc(lab.max_voltage_kv) + ' kV Peak</span>' +
+        voltagePill(lab) +
       '</div>' +
-      '<div class="lab-loc">📍 ' + esc(lab.city) + ', ' + esc(lab.country) + (lab.third_party_independent ? ' · <span style="color:#10b981;font-weight:700">Third-Party Independent</span>' : '') + '</div>' +
+      '<div class="lab-loc">📍 ' + esc(lab.city) + ', ' + esc(lab.country) + (!scopeUnsourced(lab) && lab.third_party_independent ? ' · <span style="color:#10b981;font-weight:700">Third-Party Independent</span>' : '') + '</div>' +
       '<p style="font-size:.86rem;color:var(--muted);line-height:1.5;margin:0 0 12px">' + esc(lab.description) + '</p>' +
       accredHtml +
       '<table class="cap-table"><tbody>' + capRows + '</tbody></table>' +
