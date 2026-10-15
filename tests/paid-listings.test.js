@@ -762,6 +762,10 @@ async function main() {
   check('events page does not treat the query as payment received', fs.readFileSync('events.html', 'utf8').indexOf("note.textContent = pending") < 0 && fs.readFileSync('events.html', 'utf8').indexOf('listing-payment.js') >= 0);
   check('sponsor page asks confirm-listing-payment', fs.readFileSync('sponsor.html', 'utf8').indexOf('confirm-listing-payment') < 0 && fs.readFileSync('sponsor.html', 'utf8').indexOf('listing-payment.js') >= 0 && fs.readFileSync('sponsor.html', 'utf8').indexOf("note.textContent=pending") < 0 && fs.readFileSync('sponsor.html', 'utf8').indexOf("product:'hosted_webinar'") >= 0);
   check('pricing listing return uses confirm-listing-payment', fs.readFileSync('pricing.html', 'utf8').indexOf('confirm-listing-payment') >= 0);
+  ['claim-profile.html', 'events.html', 'sponsor.html'].forEach(function (rel) {
+    const page = fs.readFileSync(rel, 'utf8');
+    check(rel + ' shows the return banner after deferred scripts', page.indexOf('DOMContentLoaded') >= 0 && page.indexOf('tpListingPayment.confirm') >= 0);
+  });
 
   delete process.env.STRIPE_SECRET_KEY;
   global.fetch = savedFetch;
