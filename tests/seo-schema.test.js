@@ -9,7 +9,8 @@ const path = require('path');
 const schema = require('../lib/seo-schema');
 const html = require('../lib/seo-html');
 const { assignUnique, fitWindow } = require('../lib/seo-fit');
-const { sourceDate, matchEvent, learnSectionTitle } = require('../lib/seo-catalog');
+const catalog = require('../lib/seo-catalog');
+const { sourceDate, matchEvent, learnSectionTitle } = catalog;
 const eventSeo = require('../lib/event-seo');
 
 let failed = 0;
@@ -207,7 +208,6 @@ assert(html.isNoindex('<meta http-equiv="refresh" content="0; url=claim-profile.
 assert(!html.isNoindex('<html><head><title>x</title></head></html>'), 'normal page stays indexable');
 
 const { titleKeepingCountry } = require('../lib/seo-fit');
-const catalog = require('../lib/seo-catalog');
 const seoCat = catalog.create();
 let titleMiss = 0;
 Object.keys(seoCat.companies).forEach(function (slug) {
@@ -296,6 +296,19 @@ assert(!eventSeo.shouldNoindexEdition({
 const standardsPage = fs.readFileSync(path.join(__dirname, '..', 'standards.html'), 'utf8');
 const standardsTitle = (standardsPage.match(/<title>([^<]*)<\/title>/) || [])[1] || '';
 assert(standardsTitle.indexOf('Standards') !== -1, 'standards.html title includes Standards: ' + standardsTitle);
+
+const SHORT_STANDARDS = 'Transformer & Regulations Directory | TransformerPath';
+const distStandards = path.join(__dirname, '..', 'dist', 'standards.html');
+assert(fs.existsSync(distStandards), 'dist/standards.html exists after the SEO pass');
+const distStandardsTitle = html.stripTags((fs.readFileSync(distStandards, 'utf8').match(/<title>([^<]*)<\/title>/i) || [])[1] || '');
+assert(distStandardsTitle.indexOf('Standards') !== -1, 'dist/standards.html title includes Standards: ' + distStandardsTitle);
+assert(distStandardsTitle !== SHORT_STANDARDS, 'dist/standards.html title keeps Standards: ' + distStandardsTitle);
+assert(distStandardsTitle.length >= 50 && distStandardsTitle.length <= 60, 'dist/standards.html title is 50–60 characters: ' + distStandardsTitle.length + ' ' + distStandardsTitle);
+
+const standardsDraft = catalog.draft('standards.html', standardsPage, seoCat);
+const fittedStandards = fitWindow(standardsDraft.draftTitle, 50, 60, standardsDraft.padsTitle);
+assert(fittedStandards.indexOf('Standards') !== -1, 'fitted standards draft keeps Standards: ' + fittedStandards);
+assert(fittedStandards !== SHORT_STANDARDS, 'fitted standards draft is not the shortened directory title: ' + fittedStandards);
 
 if (failed) {
   console.error('\n' + failed + ' failed');

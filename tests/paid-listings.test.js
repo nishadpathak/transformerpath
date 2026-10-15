@@ -893,10 +893,18 @@ async function main() {
   const savedExhibitorPrice = process.env.STRIPE_PRICE_FEATURED_EXHIBITOR;
   const savedManufacturerPrice = process.env.STRIPE_PRICE_VERIFIED_MANUFACTURER;
   const savedTeamProduct = process.env.STRIPE_PRODUCT_TEAM;
+  const savedListingProductIds = {
+    STRIPE_PRODUCT_VERIFIED_MANUFACTURER: process.env.STRIPE_PRODUCT_VERIFIED_MANUFACTURER,
+    STRIPE_PRODUCT_FEATURED_EVENT: process.env.STRIPE_PRODUCT_FEATURED_EVENT,
+    STRIPE_PRODUCT_FEATURED_EXHIBITOR: process.env.STRIPE_PRODUCT_FEATURED_EXHIBITOR
+  };
   process.env.STRIPE_PRICE_FEATURED_EVENT = 'price_test_featured_event';
   process.env.STRIPE_PRICE_FEATURED_EXHIBITOR = 'price_test_featured_exhibitor';
   process.env.STRIPE_PRICE_VERIFIED_MANUFACTURER = 'price_test_verified_manufacturer';
   process.env.STRIPE_PRODUCT_TEAM = 'prod_team_known';
+  process.env.STRIPE_PRODUCT_VERIFIED_MANUFACTURER = 'prod_test_verified_manufacturer';
+  process.env.STRIPE_PRODUCT_FEATURED_EVENT = 'prod_test_featured_event';
+  process.env.STRIPE_PRODUCT_FEATURED_EXHIBITOR = 'prod_test_featured_exhibitor';
 
   async function verifySession(id, session) {
     global.fetch = async function () {
@@ -973,6 +981,52 @@ async function main() {
     check('paid ' + name + ' line item does not unlock learning', blocked.valid === false && blocked.paid === true && blocked.product === name && blocked.listing === 'paid_pending_verification' && !blocked.entitlement_token);
   }
 
+  const listingProductIds = {
+    verified_manufacturer: 'prod_test_verified_manufacturer',
+    featured_event: 'prod_test_featured_event',
+    featured_exhibitor: 'prod_test_featured_exhibitor'
+  };
+  const learningTiers = { learner: 1, professional: 1, enterprise: 1 };
+  function identifiedListing(body, name) {
+    return body.valid === false && body.paid === true && body.product === name
+      && body.listing === 'paid_pending_verification'
+      && !('tier' in body) && !learningTiers[body.tier] && !body.entitlement_token;
+  }
+  for (let e = 0; e < listingNames.length; e++) {
+    const name = listingNames[e];
+    const byPrice = await verifySession('cs_empty_price_' + name, {
+      id: 'cs_empty_price_' + name,
+      payment_status: 'paid',
+      metadata: {},
+      line_items: {
+        data: [{
+          metadata: {},
+          price: {
+            id: listingPrices[name],
+            metadata: {},
+            product: { id: 'prod_unrelated_' + name, metadata: {} }
+          }
+        }]
+      }
+    });
+    const byProduct = await verifySession('cs_empty_product_' + name, {
+      id: 'cs_empty_product_' + name,
+      payment_status: 'paid',
+      metadata: {},
+      line_items: {
+        data: [{
+          metadata: {},
+          price: {
+            id: 'price_unrelated_' + name,
+            metadata: {},
+            product: { id: listingProductIds[name], metadata: {} }
+          }
+        }]
+      }
+    });
+    check('empty-metadata ' + name + ' is identified from the price or product id and is not a learning tier', identifiedListing(byPrice, name) && identifiedListing(byProduct, name), JSON.stringify({ byPrice: byPrice, byProduct: byProduct }));
+  }
+
   global.fetch = async function () {
     return { ok: false, status: 404, json: async function () { return { error: { message: 'No such checkout.session' } }; } };
   };
@@ -988,6 +1042,10 @@ async function main() {
   if (savedExhibitorPrice === undefined) delete process.env.STRIPE_PRICE_FEATURED_EXHIBITOR; else process.env.STRIPE_PRICE_FEATURED_EXHIBITOR = savedExhibitorPrice;
   if (savedManufacturerPrice === undefined) delete process.env.STRIPE_PRICE_VERIFIED_MANUFACTURER; else process.env.STRIPE_PRICE_VERIFIED_MANUFACTURER = savedManufacturerPrice;
   if (savedTeamProduct === undefined) delete process.env.STRIPE_PRODUCT_TEAM; else process.env.STRIPE_PRODUCT_TEAM = savedTeamProduct;
+  Object.keys(savedListingProductIds).forEach(function (key) {
+    if (savedListingProductIds[key] === undefined) delete process.env[key];
+    else process.env[key] = savedListingProductIds[key];
+  });
 
   global.fetch = savedFetch;
   if (savedStripe === undefined) delete process.env.STRIPE_SECRET_KEY; else process.env.STRIPE_SECRET_KEY = savedStripe;
