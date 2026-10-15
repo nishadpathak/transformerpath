@@ -35,13 +35,18 @@ function materialsIndex() {
     const fs_ = m.freshness_status || m.delay_type || 'HISTORICAL';
     const badge = (m.presentation === 'Historical market reference') ? 'HISTORICAL' : fs_;
     const basis = m.basis || m.price_basis || 'NOT VERIFIED';
+    const asOf = (m.observation_date && m.price != null && m.market === 'LME')
+      ? 'prices as of ' + esc(m.observation_date) + ', updated when a new LME official settlement is recorded'
+      : (m.observation_date ? 'Observed: ' + esc(m.observation_date) : '');
     const meta = (m.market ? '<span>Market: ' + esc(m.market) + '</span> · ' : '') +
-      (m.observation_date ? '<span>Observed: ' + esc(m.observation_date) + '</span> · ' : '') +
+      (asOf ? '<span>' + asOf + '</span> · ' : '') +
       '<span>Basis: ' + esc(basis) + '</span> · ' +
       (m.source ? '<span>Source: ' + esc(m.source) + '</span>' : '<span>Source: no public reference</span>') +
       '<br>' + (m.observation_date
         ? '<span class="mt-fig">' + esc(m.presentation || 'Market reference') +
-          (m.observation_date ? ' · Observed ' + esc(m.observation_date) : '') +
+          (m.price != null && m.market === 'LME'
+            ? ' · prices as of ' + esc(m.observation_date) + ', updated when a new LME official settlement is recorded'
+            : ' · Observed ' + esc(m.observation_date)) +
           ' · freshness: ' + esc(badge) + '</span>'
         : '');
     return '<div class="mt-card"><h3>' + esc(m.material) + '</h3><div class="val">' + esc(src) + '<span class="basis ' + esc(badge) + '">' + esc(badge) + '</span></div><div class="meta">' + meta + '</div>' +
