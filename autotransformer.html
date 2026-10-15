@@ -205,7 +205,7 @@ LIMB_X.forEach(x=>{
 root.add(wTert,wCommon,wSeries,juncGrp);
 reg(wCommon,'common','Common winding','Carried by <b>both</b> circuits. It sits between the neutral and the junction (IV) tap; the current in it is the <b>difference</b> I<sub>IV</sub> − I<sub>HV</sub>, which is why an autotransformer uses less copper than a two-winding unit.');
 reg(wSeries,'series','Series winding','In series above the common. HV = series + common in series, so the HV terminal is the top of the series winding; the IV terminal is the junction below it.');
-reg(wTert,'tert','Delta tertiary','A buried delta close to the core. It carries third-harmonic magnetising current and stabilises the neutral (an auto with an earthed star pair needs it); it can also be loaded at MV.');
+reg(wTert,'tert','Delta tertiary','A buried delta close to the core. It carries third-harmonic magnetising current and stabilises the neutral — an autotransformer with an earthed star pair needs that path. It is normally unloaded. A station may load it for auxiliary or reactive duty; it is not the main LV winding.');
 reg(juncGrp,'junc','Auto junction (IV tap)','The electrical join between common and series windings — the <b>220 kV (IV) terminal</b> is tapped here. This shared point is what removes the galvanic isolation of a two-winding transformer.');
 
 /* terminals / leads */
@@ -298,7 +298,7 @@ addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updat
     @media print{ #topbar,#panel,#canvas,#help,header,footer{display:none!important} }
   </style>
   <h2 style="color:var(--ink);font-size:1.5rem;margin:0 0 4px">Autotransformer design check</h2>
-  <p style="color:var(--muted);font-size:.92rem;margin:0 0 16px">First-cut check for a two-winding autotransformer (series + common, no galvanic isolation). Tender / estimation grade — verify with the manufacturer.</p>
+  <p style="color:var(--muted);font-size:.92rem;margin:0 0 16px">First-cut check for an autotransformer: series and common are parts of one winding, with no galvanic isolation. Tender / estimation grade — verify with the manufacturer.</p>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:0 0 16px">
     <div><label for="avh">HV (kV)</label><input id="avh" type="number" value="400" step="1"></div>
     <div><label for="avl">LV (kV)</label><input id="avl" type="number" value="220" step="1"></div>
