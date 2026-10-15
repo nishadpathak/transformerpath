@@ -24,7 +24,7 @@ Production probes the same day:
 | Verified Manufacturer | $499 / 12 months | [pricing](https://transformerpath.com/pricing.html), [verified](https://transformerpath.com/verified.html), [list-company](https://transformerpath.com/list-company.html), [claim-profile](https://transformerpath.com/claim-profile.html), [manufacturers](https://transformerpath.com/manufacturers.html), manufacturer profiles. Buttons: “Pay $499 — Get Verified”, “Get verified”, “Claim this profile”. | WORKS | `https://buy.stripe.com/4gMbIU7G8bFHak8d5EfYY05` opens **$499.00**. Stripe product name is Verified Manufacturer (12 months). The list-company tier card says “Contact us” next to the $499 pay button. |
 | Supplier Pro | No public price | [pricing](https://transformerpath.com/pricing.html) and [verified](https://transformerpath.com/verified.html) say Contact us (`mailto:hello@transformerpath.com`). | MAILTO/CONTACT ONLY | No Payment Link. The page does not show a price. Create a link only after the inbox exists. |
 | Founding Verified | No public price | [verified](https://transformerpath.com/verified.html) says the reduced first year is not on sale. | NO LINK | No checkout and no dollar amount on the page. |
-| Intel Pro | No public price | [pricing](https://transformerpath.com/pricing.html) and [intel-pro](https://transformerpath.com/intel-pro.html) say Contact us. | NO LINK | No checkout. Real-time tender alerts, shared watchlists, and exports are not delivered. |
+| Intel Pro | $499 / 12 months | [pricing](https://transformerpath.com/pricing.html) and [intel-pro](https://transformerpath.com/intel-pro.html). Button is Contact us. | NO LINK | No checkout and no monthly price. The $499 amount is unchanged. Real-time tender alerts, shared watchlists, and exports are not delivered. |
 | Intel Team | No public price | [pricing](https://transformerpath.com/pricing.html) Contact us | MAILTO/CONTACT ONLY | No checkout. Shared watchlists and CSV/JSON exports are not built. |
 | Featured Event | $299 / event | [pricing](https://transformerpath.com/pricing.html), [events](https://transformerpath.com/events.html), [sponsor](https://transformerpath.com/sponsor.html) Event Spotlight, 529 event pages. Button: “Feature this event — $299”. | WORKS | `https://buy.stripe.com/00w6oA2lO8tvdwkaXwfYY04` opens **$299.00**. Stripe title is generic “TransformerPath”. Event pages put “from $399” on the same card as this $299 button. |
 | Featured Exhibitor | $399 / event | [pricing](https://transformerpath.com/pricing.html), [events](https://transformerpath.com/events.html), [exhibitions](https://transformerpath.com/exhibitions.html), [sponsor](https://transformerpath.com/sponsor.html), and event pages (529). Buttons: “Feature your exhibitor — $399”, “Featured Exhibitor · $399”, “Feature your company — $399”. | WORKS | `https://buy.stripe.com/dRm9AM5y06ln1NC9TsfYY06` opens **Featured exhibitor, $399** at **$399.00**. Return URL is `sponsor.html?paid=featured_exhibitor&session_id=…#contact`. The banner shows for any session id and does not ask Stripe. Webhook code can store `featured_exhibitor`, but `STRIPE_WEBHOOK_SECRET` is unset, so nothing is recorded. There is no renderer that turns a reviewed exhibitor row into a FEATURED card. |
@@ -44,7 +44,7 @@ There is no `advertise.html`. Advertise is [sponsor](https://transformerpath.com
 
 **Featured Event.** `events.html?paid=featured_event` shows the submit-event note and stores the session id, again without checking Stripe. The FEATURED label needs the same empty review file. Webhook unconfigured.
 
-**Intel Pro.** Not for sale. The free watchlist is browser storage. `functions/watchlist-alerts.js` is a GCC email digest, not a paid real-time alert. No export endpoint is gated on Intel Pro.
+**Intel Pro.** Listed at $499 for 12 months. There is no checkout and no monthly price. The button is Contact us. The free watchlist is browser storage. `functions/watchlist-alerts.js` is a GCC email digest, not a paid real-time alert. No export endpoint is gated on Intel Pro.
 
 **Supplier Pro.** Not for sale. No RFQ inbox, lead-status board, or CSV/JSON lead export exists. The pricing “proof” block is labeled an illustrative composite.
 
@@ -63,7 +63,7 @@ Already live and amount-checked:
 - Engineering Team $1,999 — `https://buy.stripe.com/aFacMY6C4aBD2RG2r0fYY02`
 - Learning $199 one-time — `https://buy.stripe.com/8x27sE3pS4dfak8c1AfYY0p` (`plink_1UQhha2YHcFlJstOHjvZv5V0`). The yearly code `4gMbIU2lO5hj1NC5DcfYY03` is inactive and is not a classifier.
 
-Still missing a checkout (the public pages say Contact us and do not show a price):
+Still missing a checkout (Contact us; Supplier Pro, Intel Team, and Founding Verified do not show a price; Intel Pro shows $499 / 12 months and no monthly price):
 
 - Supplier Pro
 - Intel Pro

@@ -774,9 +774,24 @@ async function main() {
   });
   check('supplier and intel pages do not advertise an uncheckouted price',
     pricingPage.indexOf('$1,499') < 0 && pricingPage.indexOf('$49/mo') < 0 && pricingPage.indexOf('$49 / month') < 0
-    && fs.readFileSync('intel-pro.html', 'utf8').indexOf('$49') < 0
+    && !/\$49(?!\d)/.test(fs.readFileSync('intel-pro.html', 'utf8'))
     && fs.readFileSync('verified.html', 'utf8').indexOf('$1,499') < 0
     && fs.readFileSync('verified.html', 'utf8').indexOf('$199') < 0);
+  check('intel pro shows $499 for 12 months and no monthly figure', (function () {
+    const intel = fs.readFileSync('intel-pro.html', 'utf8');
+    const start = pricingPage.indexOf('>Intel Pro</h3>');
+    const card = pricingPage.slice(start, pricingPage.indexOf('Enterprise / Procurement Team', start));
+    const noMonthly = function (html) {
+      return html.indexOf('$49/mo') < 0 && html.indexOf('$49 / month') < 0 && html.indexOf('$49 / mo') < 0
+        && !/\$49(?!\d)/.test(html) && html.indexOf('588') < 0 && html.indexOf('billed monthly') < 0;
+    };
+    return start > 0 && card.indexOf('$499') >= 0 && card.indexOf('/ 12 months') >= 0
+      && card.indexOf('mailto:hello@transformerpath.com?subject=Intel%20Pro') >= 0
+      && card.indexOf('buy.stripe.com') < 0
+      && intel.indexOf('$499') >= 0 && intel.indexOf('/ 12 months') >= 0
+      && intel.indexOf('mailto:hello@transformerpath.com?subject=Intel%20Pro') >= 0
+      && noMonthly(card) && noMonthly(intel);
+  })());
 
   delete process.env.STRIPE_PAYMENT_LINK_LEARNING;
   process.env.STRIPE_PAYMENT_LINK_LEARNING = 'plink_learn_expected';
