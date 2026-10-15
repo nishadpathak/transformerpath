@@ -259,6 +259,7 @@ async function main() {
         currency: 'usd',
         livemode: false,
         payment_link: 'plink_test_featured',
+        url: paid.FEATURED_EVENT_PAYMENT_LINK,
         customer_details: { email: 'organiser@example.com' },
         metadata: {}
       }
@@ -270,6 +271,23 @@ async function main() {
   check('payment link does not publish FEATURED', paid.featuredEventHtml('middle-east-energy', { listings: [linkRow] }) === '');
   const linkReplay = await postWebhook(wh.handler, secret, linkEvent);
   check('payment link replay is idempotent', linkReplay.statusCode === 200 && JSON.parse(linkReplay.body).idempotent === true);
+
+  const amountOnly = await postWebhook(wh.handler, secret, {
+    id: 'evt_amount_only_299',
+    type: 'checkout.session.completed',
+    data: {
+      object: {
+        id: 'cs_test_amount_only_299',
+        amount_total: 29900,
+        currency: 'usd',
+        livemode: false,
+        payment_link: 'plink_job_featured',
+        metadata: {},
+        customer_details: { email: 'jobs@example.com' }
+      }
+    }
+  });
+  check('$299 amount alone does not write Featured Event', amountOnly.statusCode === 400 && !store.listings.get('cs_test_amount_only_299'), amountOnly.body);
 
   const returnEvent = await postWebhook(wh.handler, secret, {
     id: 'evt_featured_return',
@@ -309,6 +327,7 @@ async function main() {
         currency: 'usd',
         livemode: false,
         payment_link: 'plink_test_verified',
+        url: paid.VERIFIED_MANUFACTURER_PAYMENT_LINK,
         client_reference_id: 'a-plus-power-solution',
         customer_details: { email: 'maker@example.com' },
         metadata: {}
@@ -363,6 +382,7 @@ async function main() {
         amount_total: 39900,
         currency: 'usd',
         payment_link: 'plink_test_exhibitor',
+        url: paid.FEATURED_EXHIBITOR_PAYMENT_LINK,
         livemode: false,
         metadata: {},
         customer_email: 'buyer@example.com'
@@ -388,6 +408,7 @@ async function main() {
         amount_total: 150000,
         currency: 'usd',
         payment_link: 'plink_test_webinar',
+        url: paid.HOSTED_WEBINAR_PAYMENT_LINK,
         livemode: false,
         metadata: {},
         customer_email: 'buyer@example.com'
@@ -587,6 +608,7 @@ async function main() {
           currency: 'usd',
           livemode: false,
           payment_link: 'plink_test_featured',
+          url: paid.FEATURED_EVENT_PAYMENT_LINK,
           metadata: {}
         };
       }
@@ -609,6 +631,7 @@ async function main() {
           currency: 'usd',
           livemode: false,
           payment_link: 'plink_test_verified',
+          url: paid.VERIFIED_MANUFACTURER_PAYMENT_LINK,
           metadata: {}
         };
       }
@@ -631,6 +654,7 @@ async function main() {
           currency: 'usd',
           livemode: false,
           payment_link: 'plink_test_exhibitor',
+          url: paid.FEATURED_EXHIBITOR_PAYMENT_LINK,
           metadata: {}
         };
       }
@@ -653,6 +677,7 @@ async function main() {
           currency: 'usd',
           livemode: false,
           payment_link: 'plink_test_webinar',
+          url: paid.HOSTED_WEBINAR_PAYMENT_LINK,
           metadata: {}
         };
       }
@@ -663,6 +688,19 @@ async function main() {
     body: JSON.stringify({ session_id: webinarLinkSession })
   })).body);
   check('webinar payment link does not grant course access', webinarAccess.valid === false && webinarAccess.paid === true && webinarAccess.product === 'hosted_webinar' && webinarAccess.listing === 'paid_pending_verification' && !webinarAccess.entitlement_token, JSON.stringify(webinarAccess));
+
+  const coursePay = require('../lib/course-payment');
+  check('$299 amount alone is not Featured Event', paid.isFeaturedEventCheckout({ amount_total: 29900, currency: 'usd', payment_link: 'plink_job_featured', metadata: {} }) === false);
+  check('$199 amount alone is not Featured Event', paid.isFeaturedEventCheckout({ amount_total: 19900, currency: 'usd', payment_link: 'plink_job_standard', metadata: {} }) === false);
+  check('$199 amount alone is not a course', coursePay.classifyCourse({ amount_total: 19900, currency: 'usd', payment_link: 'plink_job_standard', metadata: {} }) === null);
+  check('$299 amount alone is not Learning', coursePay.classifyCourse({ amount_total: 29900, currency: 'usd', payment_link: 'plink_job_featured', metadata: {} }) === null);
+  check('learning metadata classifies without using the amount', coursePay.classifyCourse({ amount_total: 29900, metadata: { plan: 'learning' } }).tier === 'learner');
+  check('learning Payment Link code classifies a $199 charge', coursePay.classifyCourse({ amount_total: 19900, url: 'https://buy.stripe.com/' + coursePay.COURSES.learning.code, metadata: {} }).product === 'learning');
+  delete process.env.STRIPE_PAYMENT_LINK_LEARNING;
+  process.env.STRIPE_PAYMENT_LINK_LEARNING = 'plink_learn_expected';
+  check('configured learning plink id classifies that link', coursePay.classifyCourse({ amount_total: 19900, payment_link: 'plink_learn_expected', metadata: {} }).tier === 'learner');
+  check('configured learning plink id ignores a different $199 link', coursePay.classifyCourse({ amount_total: 19900, payment_link: 'plink_job_standard', metadata: {} }) === null);
+  delete process.env.STRIPE_PAYMENT_LINK_LEARNING;
 
   global.fetch = async function () {
     return {
@@ -676,7 +714,35 @@ async function main() {
     httpMethod: 'POST',
     body: JSON.stringify({ session_id: 'cs_test_learn' })
   })).body);
-  check('engineer $199 payment still grants learner', learning.valid === true && learning.tier === 'learner' && !!learning.entitlement_token, JSON.stringify({ valid: learning.valid, tier: learning.tier, hasToken: !!learning.entitlement_token }));
+  check('$199 amount alone does not grant Learning', learning.valid === false && learning.paid === true && learning.reason === 'unclassified' && !learning.entitlement_token, JSON.stringify(learning));
+
+  global.fetch = async function () {
+    return {
+      ok: true,
+      json: async function () {
+        return { id: 'cs_test_job_299', payment_status: 'paid', amount_total: 29900, currency: 'usd', livemode: false, metadata: {}, payment_link: 'plink_job_featured' };
+      }
+    };
+  };
+  const jobFeatured = JSON.parse((await verify.handler({
+    httpMethod: 'POST',
+    body: JSON.stringify({ session_id: 'cs_test_job_299' })
+  })).body);
+  check('$299 amount alone does not grant Learning or Featured Event', jobFeatured.valid === false && jobFeatured.reason === 'unclassified' && jobFeatured.product !== 'featured_event' && jobFeatured.tier !== 'learner', JSON.stringify(jobFeatured));
+
+  global.fetch = async function () {
+    return {
+      ok: true,
+      json: async function () {
+        return { id: 'cs_test_learn_meta', payment_status: 'paid', amount_total: 19900, livemode: false, metadata: { plan: 'learning' }, payment_link: 'plink_learn' };
+      }
+    };
+  };
+  const learningMeta = JSON.parse((await verify.handler({
+    httpMethod: 'POST',
+    body: JSON.stringify({ session_id: 'cs_test_learn_meta' })
+  })).body);
+  check('learning metadata still grants learner', learningMeta.valid === true && learningMeta.tier === 'learner' && !!learningMeta.entitlement_token, JSON.stringify({ valid: learningMeta.valid, tier: learningMeta.tier }));
 
   global.fetch = savedFetch;
   if (savedStripe === undefined) delete process.env.STRIPE_SECRET_KEY; else process.env.STRIPE_SECRET_KEY = savedStripe;

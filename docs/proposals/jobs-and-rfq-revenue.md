@@ -1,19 +1,34 @@
 # Proposal: paid job posts and qualified-lead fees
 
-Status: **proposal only**. No Payment Link, no Checkout price, no edit to `data/commerce.json`, `data/products.json`, `lib/paid-listings.js`, or the live Jobs and RFQ pages. Prices below that are not already in the catalog are **TARGET** until Nishad accepts them. Currency is USD, matching `data/commerce.json`.
+Status: **prices approved, not on the live site**. Nishad approved the staged prices below on 15 Oct 2026. This file is the record. `data/commerce.json`, `jobs.html`, `pricing.html`, and `rfq.html` do not show them yet. No Stripe Product, Price, Payment Link, or Coupon has been created for them.
 
-Checked against `main` on 15 Oct 2026.
+Currency is USD, matching `data/commerce.json`.
+
+Checked against `main` on 15 Oct 2026. Classification no longer uses the charged amount: a session matches a product only from metadata or a Payment Link id (`lib/paid-listings.js`, `lib/course-payment.js`).
+
+## Approved prices
+
+| Offer | Launch price | Later price | Trigger for the rise |
+| --- | --- | --- | --- |
+| Job post, 30 days, one position | **$199** | **$349** | The live-openings count reaches **10**. Count only rows with a specific vacancy URL, a capture date, and a verification date. The 15 careers-page signals do not count. Posts already paid keep the price they were bought at until they expire. |
+| Featured job, 30 days | **$299** | **$449** | The same trigger, in the same week: live openings reach **10**. Standard and featured move together. |
+| 5-post bundle | **$799** | none | No rise. Five 30-day standard posts, used within 12 months of purchase. Each post still has to pass review before it counts as a live opening. |
+| Qualified lead, any supplier | **$249** | none | No rise. |
+| Qualified lead, Supplier Pro member, after the 4 included leads | **$149** | none | No rise. The 4 included leads stay inside the subscription. |
+| Supplier Pro | **$1,499 / year** | **$2,499 / year** | **Leads are flowing**: the inbox has delivered at least one qualified lead (the definition in this file) to a supplier. The next new Supplier Pro purchase uses $2,499. A term already paid stays at the price paid for that year. |
+| Founding Supplier Pro | **30% off year one**, first **20** suppliers | The coupon stops at 20 redemptions | Count is purchases, not a calendar date. 30% off the list price in force for that purchase, first year only. At the launch price that is **$1,049.30** (30% off $1,499). If a founding seat is still open after the rise, that year one is **$1,749.30** (30% off $2,499). |
+
+These prices stay off the public pages until the inbox, the job review queue, and the Payment Link metadata in the Stripe section exist.
 
 ## Summary
 
-| Stream | Recommended price | What it buys | When it can be charged |
+| Stream | Approved price | What it buys | When it can be charged |
 | --- | --- | --- | --- |
-| Standard job post | **$199 / 30 days** | One moderated vacancy that can count as a live opening | After the $199 amount no longer grants Learning, and after review |
-| Featured job | **$299 / 30 days** | The same vacancy, plus a labeled FEATURED row above other live openings | After a $299 Payment Link can no longer be stored as Featured Event |
-| Qualified buyer lead | **$249 each** (TARGET, not a published market CPL) | One supplier receives a consented buyer contact for one matched RFQ | After consent, qualification, and a non-colliding charge path exist |
-| Supplier Pro | **$1,499 / 12 months** (already in the catalog, `price_status` TARGET) | Verified plus the RFQ inbox, with **4** qualified leads included, then $249 each | After `rfq_inbox` is built. The $1,499 link stays uncreated until then |
-
-Job prices are the published T&D World Job Center rates, the closest public power-industry board. IEEE and ASCE are the ceiling this site should not charge while it has **0 live openings** and no résumé database. No public per-RFQ dollar was found on Thomas or in the GlobalSpec 2026 media kit, so $249 is a proposed TARGET chosen so it does not collide with an existing Stripe amount.
+| Standard job post | **$199 / 30 days**, then **$349** at 10 live openings | One moderated vacancy that can count as a live opening | After review. The $199 amount no longer grants Learning. |
+| Featured job | **$299 / 30 days**, then **$449** at 10 live openings | The same vacancy, plus a labeled FEATURED row above other live openings | After review. A $299 charge is Featured Event only when that session's Payment Link id or metadata says so. |
+| 5-post bundle | **$799** | Five standard 30-day posts | After a single post can expire and be reviewed. |
+| Qualified buyer lead | **$249**, or **$149** for a Supplier Pro member past the included 4 | One supplier receives a consented buyer contact for one matched RFQ | After consent, qualification, and the inbox. |
+| Supplier Pro | **$1,499 / year**, then **$2,499 / year** once a qualified lead has been delivered | Verified plus the RFQ inbox, with **4** qualified leads included | After `rfq_inbox` is built. The link stays uncreated until then. |
 
 ## What is true on the site today
 
@@ -93,16 +108,17 @@ An unlabeled $799 control sits beside the Ultimate Recruitment Package descripti
 
 **ASCE Career Connections** — [employer pricing](https://employers.asce.org/). 30-day plans: Qualified $655, Practicing $765, Experienced $875, Specialist $985. Homepage featuring starts at Practicing. 60-day and 90-day steps are published on the same table ($765 to $1,205). Active members get 20% off ([member discount](https://employers.asce.org/static-page/10281/memberdiscount/)).
 
-### Recommended job prices
+### Approved job prices
 
-| SKU | Price | Why |
+The benchmark that set the launch numbers is still T&D World’s published 30-day listing at $199 and enhanced listing at $299 ([employer pricing](https://jobs.tdworld.com/employer/info)). IEEE’s live basic post is $449 and Job Flash is $549. ASCE’s 30-day plans are $655–$985. The launch prices sit on the T&D floor while this board has 0 live openings. The raised prices move toward those society boards only after the board has 10 real vacancies.
+
+| SKU | Launch | After 10 live openings |
 | --- | --- | --- |
-| `job_standard_30` | **$199 / 30 days** | T&D World’s published 30-day listing. IEEE’s basic post is $449 and ASCE’s entry post is $655. Those boards have large member lists and, on ASCE Specialist, a résumé database. This board has 0 verified live openings and no résumé product, so the T&D floor is the right list price and the society boards are the ceiling to stay under. |
-| `job_featured_30` | **$299 / 30 days** | T&D World’s published enhanced 30-day price. Here it buys the FEATURED label and top placement among live openings only. |
-| Five-pack | Later, **$800** for five 30-day standards | T&D World’s published 5-pack. Sell it only after a single post can expire and be reviewed. |
-| 90-day and the $10,000 mirror | Not recommended for MVP | The 90-day prices are real ($350 / $500). The stale-URL risk comes first. |
+| `job_standard_30` | **$199 / 30 days** | **$349 / 30 days** |
+| `job_featured_30` | **$299 / 30 days** | **$449 / 30 days** |
+| `job_bundle_5` | **$799** for five 30-day standard posts | No rise |
 
-These two job prices collide with live amounts. See the payment section. They are the commercial recommendation. They are not safe to paste into Stripe until that collision is fixed.
+A 90-day product and T&D World’s $10,000 mirroring product stay out of the MVP. The stale-URL risk comes first. T&D World’s own 5-pack is $800; the approved bundle is $799.
 
 ### Payment Links now, Checkout later
 
@@ -112,11 +128,9 @@ Fulfillment still needs the webhook. `checkout.session.completed` should write `
 
 A Payment Link cannot attach a different vacancy id on each click. The pay-then-form sequence already used for Featured Event is the right MVP: pay, then submit the job, then a person ties the session to the slug.
 
-**Later, Checkout.** `create-checkout` (and `functions/confirm-listing-payment.js`) need `STRIPE_SECRET_KEY` plus a `STRIPE_PRICE_JOB_STANDARD` and `STRIPE_PRICE_JOB_FEATURED`. The session metadata carries `product`, `company_slug`, and the job id. That is the point at which the return URL can name the vacancy and the amount fallback can be ignored. Checkout is blocked today: those env vars are unset, and the audit’s POST to `create-checkout` returns 503.
+**Later, Checkout.** `create-checkout` (and `functions/confirm-listing-payment.js`) need `STRIPE_SECRET_KEY` plus the price ids in the Stripe section. The session metadata carries `product`, `company_slug`, and the job id. Checkout is blocked today: those env vars are unset, and the audit’s POST to `create-checkout` returns 503.
 
-**Amount collision, launch blocker.** `functions/entitle.js` maps `19900` cents to Learning, and any unmapped amount also falls through to Learning when metadata is absent. A $199 job Payment Link that hits that function grants a course. `isPaymentLinkCheckout` in `lib/paid-listings.js` treats a $299 Payment Link as Featured Event when the link env is unset and the session has no other product metadata. A $299 featured job would be stored as a featured event. Featured Exhibitor is $399, Verified is $499, Professional is $599, Hosted Webinar is $1,500, Team is $1,999. A new job SKU at any of those amounts has the same class of bug.
-
-Ship the commercial prices ($199 and $299) only after metadata `product` is required and those two fallbacks no longer guess. A unique amount is a workaround, not the recommendation.
+**Amount is not a product.** `functions/entitle.js` and `functions/verify-access.js` used to map `19900` cents to Learning, and any unmapped amount fell through to Learning. `isPaymentLinkCheckout` used to treat any $299 Payment Link as Featured Event when the link env was unset. Both paths now require metadata or a Payment Link id. A $199 or $299 charge with neither is unclassified: it does not grant Learning and it does not write a Featured Event row. Each new Payment Link still has to set `metadata.product` or have its `plink_` id stored in the matching env var. The return URL query (`paid=job_standard`, `paid=job_featured`) is the other accepted identifier.
 
 ## 2. Lead and RFQ fees
 
@@ -159,13 +173,15 @@ No publisher page found for this proposal states a dollar price per industrial R
 - The [GlobalSpec 2026 media kit](https://advertising.globalspec.com/wp-content/uploads/2025/10/2026-GlobalSpec-Media-Kit.pdf) offers cost-per-lead programs (“only pay for the leads you receive”) and says the report includes name, company, and email. It does not print a dollar CPL. The 2011 GlobalSpec rate card is not a current price.
 - [Kompass Spain](https://es.solutions.kompass.com/productos-y-servicios/marketing-digital/booster-kit-digital/) publishes supplier-profile floors, not a per-lead fee: Booster Nacional **from €500 / year**, Booster Plus **from €1,000 / year**, Booster Internacional **from €2,000 / year**. The page says the profile can receive purchase requests (“Recibe solicitudes de Compra”). “From” means a starting price. Supplier Pro at $1,499 sits between the Plus and Internacional floors, which supports keeping an annual subscription rather than inventing a second annual number.
 
-**Recommended TARGET, for Nishad to accept or replace:**
+**Approved lead and subscription prices:**
 
 | Offer | Price | Notes |
 | --- | --- | --- |
-| One qualified lead (contact unlock) | **$249** | Proposed. Not a cited market CPL. 24900 cents matches no entry in `functions/entitle.js` `AMOUNT_PRODUCT` and no `PAYMENT_LINKS` amount, so it does not grant Learning or a featured listing by amount. It sits between T&D World’s $199 job post and the $299 featured-job / Featured Event price: one consented buyer contact costs more than one job ad and less than a featured placement. |
-| Supplier Pro | **$1,499 / 12 months** | Already the catalog price. Includes the Verified feature set plus the RFQ inbox once that inbox exists, and **4** qualified leads in the year. 4 × $249 = $996. $996 + the $499 Verified price = $1,495, which is the $1,499 figure. Further leads are $249. |
-| Lead pack as its own SKU | Do not add one yet | A 5-lead pack at a new annual price would sit beside Supplier Pro and the Kompass floors without a published CPL to justify it. |
+| One qualified lead | **$249** | Any supplier. No later rise. Identify the charge with `metadata.product=rfq_lead` or that Payment Link’s `plink_` id. |
+| Extra lead for a Supplier Pro member | **$149** | Applies only after the 4 included leads are used. `metadata.product=rfq_lead_pro`. |
+| Supplier Pro, launch | **$1,499 / year** | Includes the Verified feature set plus the RFQ inbox once that inbox exists, and **4** qualified leads in the year. |
+| Supplier Pro, after leads are flowing | **$2,499 / year** | Trigger: the inbox has delivered at least one qualified lead. New purchases only. |
+| Founding offer | **30% off year one, first 20 suppliers** | Stripe Coupon `percent_off=30`, `duration=once`, `max_redemptions=20`. Year one at $1,499 is $1,049.30. Year one at $2,499, if a seat remains, is $1,749.30. |
 
 Until analytics, lead export, Intel Pro seats, the Supplier Pro badge, and paid category placement are actually delivered, the $1,499 description that can be charged is: Verified-level profile, the RFQ inbox, and four qualified leads. The outcome paragraph that lists the unbuilt extras has to be narrowed in the same change that creates the Payment Link, or those extras have to be built first. This document does not edit that paragraph.
 
@@ -200,11 +216,11 @@ The RFQ form already has a honeypot. Add a per-email and per-domain rate limit, 
 
 ### How this fits Supplier Pro
 
-Supplier Pro is the subscription. The inbox is the product the audit says is missing. Per-lead $249 is the unlock for a supplier who does not buy the year. The four included leads are the bridge, using the $1,499 that is already published.
+Supplier Pro is the subscription. The inbox is the product the audit says is missing. Per-lead $249 is the unlock for a supplier who does not buy the year. A Supplier Pro member pays $149 for each lead after the four included ones. The launch subscription is $1,499 and becomes $2,499 for new purchases once a qualified lead has been delivered.
 
 Do not create `https://buy.stripe.com/...` for $1,499 in this work. Do not add `supplier_pro` to `PAYMENT_LINKS` or to `confirm-listing-payment.js` until a supplier can open an inbox and see lead status (`rfq_inbox`). Emailing a buyer contact from the Netlify form notification is not that inbox.
 
-Payment Links can sell a generic lead credit (pay, then staff attaches the credit to a reviewed lead and a slug), which matches the Featured Event pay-then-form pattern. They cannot name `rfq_id` and `supplier_slug` on their own. Checkout, later, puts both ids in metadata. That is the right long-term charge for a specific lead. It waits on `STRIPE_SECRET_KEY` and a price id, and on the same rule as jobs: an amount with no metadata must not become Learning.
+Payment Links can sell a generic lead credit (pay, then staff attaches the credit to a reviewed lead and a slug), which matches the Featured Event pay-then-form pattern. They cannot name `rfq_id` and `supplier_slug` on their own. Checkout, later, puts both ids in metadata. That is the right long-term charge for a specific lead. It waits on `STRIPE_SECRET_KEY` and a price id. An amount with no metadata and no Payment Link id stays unclassified.
 
 ## MVP stages
 
@@ -215,9 +231,9 @@ Each stage is a later change. This pull request is stage 0 for both streams.
 | Stage | Build | Depends on |
 | --- | --- | --- |
 | 0 | This proposal. | Nothing shipped. |
-| 1 | Workspace account linked to a company slug. Fix the Learning fallback in `entitle.js` and the $299 fallback in `isPaymentLinkCheckout` before any job link exists. | Accounts being built. `STRIPE_SECRET_KEY` is not required for the account link. It is required before any “payment received” banner. |
+| 1 | Workspace account linked to a company slug. Amount-only classification is already removed. | Accounts being built. `STRIPE_SECRET_KEY` is not required for the account link. It is required before any “payment received” banner. |
 | 2 | Review queue on the existing `job-posting` form. Publish to the live board only with `posting_url`, `captured_at`, `last_verified_at`, one position, and a URL that still resolves. The 15 signals stay signals. The counter stays at 0 until such a row exists. | None of the Stripe secrets. A human can moderate from the Netlify form mail. |
-| 3 | Payment Links for $199 and $299, return URLs, webhook row `paid_pending_verification`, 30-day expiry, FEATURED label from a reviewed row. `confirm-listing-payment.js` allow-lists the two products. | `STRIPE_WEBHOOK_SECRET`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` (or `SUPABASE_SECRET_KEY`). Optional `STRIPE_PAYMENT_LINK_JOB_STANDARD` and `STRIPE_PAYMENT_LINK_JOB_FEATURED` so amount is not the matcher. The button itself works before the secret key. Fulfillment does not. |
+| 3 | Payment Links for the launch job prices ($199, $299, and the $799 bundle), return URLs, webhook row `paid_pending_verification`, 30-day expiry, FEATURED label from a reviewed row. Switch the standard and featured links to $349 and $449 when live openings reach 10. | `STRIPE_WEBHOOK_SECRET`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` (or `SUPABASE_SECRET_KEY`). `STRIPE_PAYMENT_LINK_JOB_STANDARD` and `STRIPE_PAYMENT_LINK_JOB_FEATURED` hold the `plink_` ids. Each link sets `metadata.product`. |
 | 4 | Checkout with `metadata.product`, slug, and job id. Employer list of their own posts in the workspace. Five-pack only after expiry works. | `STRIPE_SECRET_KEY`, `STRIPE_PRICE_JOB_STANDARD`, `STRIPE_PRICE_JOB_FEATURED`. |
 
 ### Leads
@@ -228,7 +244,7 @@ Each stage is a later change. This pull request is stage 0 for both streams.
 | 1 | Consent checkbox, privacy and supplier terms, required kV or MVA, and a real deadline date. Public cards stay redacted. | Legal copy. No Stripe. |
 | 2 | Review queue and a stored match list from `rfq-engine.js`. No buyer email leaves the building. Cap the billable list at 5. | Maker categories and slugs already in the census. |
 | 3 | Supplier Pro inbox and lead-status board (`rfq_inbox`). Quota ledger of 4. Only then may the $1,499 Payment Link be created, and only with outcome copy that matches what the inbox actually does. | Supabase, workspace accounts, webhook, the collision fix. |
-| 4 | $249 lead credit via Payment Link (staff attaches it), then Checkout that names `rfq_id` and `supplier_slug`. Refunds restore the quota or reverse the charge. | Same secrets as job stage 4, plus `STRIPE_PRICE_RFQ_LEAD`. |
+| 4 | $249 lead credit via Payment Link, and $149 for a Supplier Pro member past the included four. Then Checkout that names `rfq_id` and `supplier_slug`. Refunds restore the quota or reverse the charge. | Same secrets as job stage 4, plus `STRIPE_PRICE_RFQ_LEAD` and `STRIPE_PRICE_RFQ_LEAD_PRO`. |
 
 ## Dependencies
 
@@ -241,14 +257,14 @@ Each stage is a later change. This pull request is stage 0 for both streams.
 | Maker id | Company slug. Verified pay links already pass it as `client_reference_id`. | Job posts and lead unlocks attach to a profile only when the slug is known. |
 | `rfq_inbox` | `coming_soon` on Supplier Pro. | The $1,499 link. |
 | `rfq_eligibility` | `coming_soon` on Verified. | Any claim that $499 already includes responding to RFQs. |
-| Amount fallbacks | $199 → Learning. Bare $299 Payment Link → Featured Event. Unknown amounts → Learning. | Every new price in this proposal. |
+| Amount fallbacks | Removed. Metadata or a Payment Link id classifies the session. A bare $199 or $299 charge stays unclassified. | Nothing, for classification. New links still need their own `metadata.product` or `plink_` env id before they fulfill. |
 
 `RESEND_API_KEY` is how paid-listing receipts go out today. A missing receipt currently fails the webhook with 500 after the listing write is attempted. Lead mail should use the same pattern and should not be the system of record. The inbox row is.
 
 ## Risks
 
 - Calling the 15 careers-page rows “15 live openings”, or letting a paid post increment the counter before the vacancy URL, capture date, and verification date exist.
-- A $199 or $299 Payment Link granting Learning or Featured Event because the amount fallbacks guess.
+- Publishing a new Payment Link without `metadata.product` or a stored `plink_` id, so the payment is unclassified and does not fulfill. Amount alone will not misfile it as Learning or Featured Event.
 - A “payment received” banner that trusts the query string. `confirm-listing-payment.js` was added so listing products do not do that. New products have to go through it.
 - Selling Supplier Pro, or emailing buyer contacts from the Netlify notification, while `rfq_inbox` is still coming soon.
 - Disclosing a buyer email while `privacy.html` still says data is only shared with processors, and while the RFQ page says details are never shown.
@@ -259,19 +275,36 @@ Each stage is a later change. This pull request is stage 0 for both streams.
 - One RFQ sold to all 24 matcher hits.
 - Stale apply URLs, which is the Paylocity 404 again.
 
-## What Nishad decides
+## Stripe objects to create later
 
-1. Accept **$199 / 30 days** and **$299 / 30 days** as the job list prices, or name different ones. The sourced alternatives are IEEE $449 basic / $549 Job Flash and ASCE $655–$985 for 30 days.
-2. Whether a reviewed free post may still become a live opening, or whether payment is required before a row enters `LIVE`. The free heading on `jobs.html` follows that choice.
-3. Featured means a labeled row above other live openings for 30 days, with no newsletter and no change to maker rank. Confirm that scope.
-4. Accept **$249** as the qualified-lead TARGET, or replace it. There is no published CPL to copy. The number is the non-colliding proposal between the $199 job and the $299 featured placement.
-5. Accept **4 leads included** in Supplier Pro at the existing **$1,499**, with further leads at the same $249. That is $996 of leads plus the $499 Verified price.
-6. Whether Verified’s coming-soon `rfq_eligibility` is “respond to a redacted RFQ” and the paid lead is the only way to receive the buyer email.
-7. The billable fan-out cap of **5** suppliers per RFQ.
-8. The refund window of **10 business days**, credit back onto the Pro quota, Stripe refund for a single $249 charge, and no refund after the supplier has written to the buyer.
-9. A qualified deadline is a calendar date. A bare year or a quarter is not billable.
-10. Narrow the Supplier Pro outcome text when the link is created, or build analytics, export, Intel seats, the badge, and category placement before charging $1,499 for that sentence.
-11. Approve the privacy exception (consented disclosure to at most 5 suppliers, public page stays redacted) before any contact is sent.
-12. Fix the $199 and $299 amount fallbacks before any new Payment Link is created. Recommended: yes.
+Nothing in this list is created in the repo or in Stripe by the classification change. Create the launch objects when that product is ready to sell. Create the raised Price and its Payment Link only when the trigger fires. Every Payment Link sets `metadata.product` to the value in the table and, after it exists, its `plink_` id goes in the env var. The after-payment URL includes `session_id={CHECKOUT_SESSION_ID}` and the `paid=` query for that product.
 
-No decision in this list is implemented by this document.
+| Object | Stripe type | Amount | `metadata.product` | When |
+| --- | --- | --- | --- | --- |
+| Job post, launch | Product, one-time Price, Payment Link | 19900 cents | `job_standard` | Job review queue is live |
+| Job post, raised | One-time Price, Payment Link | 34900 cents | `job_standard` | Live openings reach 10 |
+| Featured job, launch | Product, one-time Price, Payment Link | 29900 cents | `job_featured` | Job review queue is live |
+| Featured job, raised | One-time Price, Payment Link | 44900 cents | `job_featured` | Live openings reach 10 |
+| 5-post bundle | Product, one-time Price, Payment Link | 79900 cents | `job_bundle_5` | A single post can expire and be reviewed |
+| Qualified lead | Product, one-time Price, Payment Link | 24900 cents | `rfq_lead` | Inbox and consent are live |
+| Pro overage lead | One-time Price, Payment Link on the lead product | 14900 cents | `rfq_lead_pro` | Inbox can count the 4 included leads |
+| Supplier Pro, launch | Product, yearly recurring Price, Payment Link | 149900 cents / year | `supplier_pro` | `rfq_inbox` exists |
+| Supplier Pro, raised | Yearly recurring Price, Payment Link | 249900 cents / year | `supplier_pro` | One qualified lead has been delivered |
+| Founding Supplier Pro | Coupon `percent_off` 30, `duration` once, `max_redemptions` 20, applied to the Supplier Pro product | 30% off the year-one invoice | — | With the launch Payment Link. Retire the coupon at 20 redemptions. |
+
+Env vars for the `plink_` ids, set when each link exists: `STRIPE_PAYMENT_LINK_JOB_STANDARD`, `STRIPE_PAYMENT_LINK_JOB_FEATURED`, `STRIPE_PAYMENT_LINK_JOB_BUNDLE_5`, `STRIPE_PAYMENT_LINK_RFQ_LEAD`, `STRIPE_PAYMENT_LINK_RFQ_LEAD_PRO`, `STRIPE_PAYMENT_LINK_SUPPLIER_PRO`. Checkout price ids, only when Checkout replaces the link: `STRIPE_PRICE_JOB_STANDARD`, `STRIPE_PRICE_JOB_FEATURED`, `STRIPE_PRICE_JOB_BUNDLE_5`, `STRIPE_PRICE_RFQ_LEAD`, `STRIPE_PRICE_RFQ_LEAD_PRO`, `STRIPE_PRICE_SUPPLIER_PRO`.
+
+## What Nishad still decides
+
+Prices, the 10-opening rise, the “leads are flowing” rise, the $149 Pro overage, the four included leads, and the founding 20 at 30% off year one are approved.
+
+1. Whether a reviewed free post may still become a live opening, or whether payment is required before a row enters `LIVE`. The free heading on `jobs.html` follows that choice.
+2. Featured means a labeled row above other live openings for 30 days, with no newsletter and no change to maker rank.
+3. Whether Verified’s coming-soon `rfq_eligibility` is “respond to a redacted RFQ” and the paid lead is the only way to receive the buyer email.
+4. The billable fan-out cap of **5** suppliers per RFQ.
+5. The refund window of **10 business days**, credit back onto the Pro quota, Stripe refund for a single lead charge, and no refund after the supplier has written to the buyer. A $149 overage refunds $149. A $249 lead refunds $249.
+6. A qualified deadline is a calendar date. A bare year or a quarter is not billable.
+7. Narrow the Supplier Pro outcome text when the link is created, or build analytics, export, Intel seats, the badge, and category placement before charging $1,499 for that sentence.
+8. Approve the privacy exception (consented disclosure to at most 5 suppliers, public page stays redacted) before any contact is sent.
+
+Those items are not implemented by this document.
