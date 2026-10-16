@@ -1,7 +1,7 @@
 TransformerPath DATA HEALTH REPORT
-Generated: 2026-10-16T05:58:54.047Z
+Generated: 2026-10-16T06:53:04.163Z
 Result: PASS
-Errors: 0 | Warnings: 31
+Errors: 0 | Warnings: 30
 Child gates skipped: yes
 
 ## Child gates
@@ -12,8 +12,8 @@ Child gates skipped: yes
   OK — no stale 709/911/1002 manufacturer-count copy in key surfaces
 
 ## Duplicate canonical company IDs
-  data/companies.json: 1158 records, duplicates=0
-  data/directory-index.json: 1182 records, duplicates=0
+  data/companies.json: 1153 records, duplicates=0
+  data/directory-index.json: 1177 records, duplicates=0
   data/manufacturer-intel.json: 894 records, duplicates=0
   OK — no duplicate canonical company IDs
 
@@ -31,7 +31,7 @@ Child gates skipped: yes
   OK — no annual MVA misfiled as unit rating
 
 ## Intel source / status
-  Intel feed posts=524 missing source=0
+  Intel feed posts=522 missing source=0
   GCC candidates=15 bad grade=0 published-without-source=0
   daily_intel status=UPDATED 15 Oct 2026
 
@@ -54,7 +54,7 @@ Child gates skipped: yes
   Sampled root pages broken links: 0
 
 ## Missing canonical tags
-  Root public HTML missing canonical: 0 / 102
+  Root public HTML missing canonical: 0 / 101
 
 ## Public admin artifacts
   OK — admin not in sitemap.xml
@@ -75,7 +75,7 @@ Child gates skipped: yes
   Search "Transformerboard" → 1 hits
   Search "OLTC" → 22 hits
   Search "Saudi Arabia" → 11 hits
-  Search "India" → 257 hits
+  Search "India" → 251 hits
 
 ## Warnings (review — non-blocking)
   ⚠ [facilities] 907/1114 facilities lack manufacturing evidence (census-only / review). Samples: fac:a-plus-power-solution:metro-manila, fac:abay-transformers:addis-ababa, fac:abb-thailand:bang-pu, fac:abb-turkiye:istanbul, fac:abc-transformers:faridabad-up
@@ -94,7 +94,6 @@ Child gates skipped: yes
   ⚠ [dates] intel:grid-www-powermag-com-ferc-sets-june-deadline-to-rewr dateIso=2026-12-31 (precision=year) is after today — review sentinel
   ⚠ [dates] intel:grid-www-utilitydive-com-news-firstenergy-ferc-data-c dateIso=2026-12-31 (precision=year) is after today — review sentinel
   ⚠ [dates] intel:tech-www-zawya-com-en-press-release-research-and-stud dateIso=2026-12-31 (precision=year) is after today — review sentinel
-  ⚠ [dates] intel:news-aawsat-com-d8-a7-d9-84-d8-a7-d9-82-d8-aa-d8-b5-d dateIso=2026-12-31 (precision=year) is after today — review sentinel
   ⚠ [dates] intel:grid-www-zawya-com-en-projects-utilities-gcc-grid-aut dateIso=2026-12-31 (precision=year) is after today — review sentinel
   ⚠ [dates] intel:news-www-martinkaessler-com-leistungstransformatoren- dateIso=2026-12-31 (precision=year) is after today — review sentinel
   ⚠ [dates] intel:grid-theenergynewsbeat-substack-com-p-india-plans-109 dateIso=2026-12-31 (precision=year) is after today — review sentinel
