@@ -36,10 +36,29 @@ function check(name, ok, detail) {
   check('preview response does not echo the buyer address', JSON.stringify(previewBody).indexOf(buyer) === -1 && JSON.stringify(previewBody).indexOf('example.com') === -1);
   check('recipient is the site inbox only', notify.recipient().length === 1 && notify.recipient()[0] === 'hello@transformerpath.com' && notify.recipient()[0] !== buyer);
 
-  delete process.env.RESEND_API_KEY;
+  delete process.env.CONTEXT;
+  process.env.RESEND_API_KEY = 're_should_not_send';
+  const unset = await notify.handler({
+    httpMethod: 'POST',
+    headers: { host: 'deploy-preview-236--transformerpath.netlify.app' },
+    body: JSON.stringify({ form: 'rfq', email: buyer, reference: 'RFQ TP-TEST' })
+  });
+  const unsetBody = JSON.parse(unset.body);
+  check('missing CONTEXT does not send even with a key', unset.statusCode === 200 && unsetBody.sent === false && unsetBody.reason === 'preview_withheld');
+
   process.env.CONTEXT = 'production';
+  const wrongHost = await notify.handler({
+    httpMethod: 'POST',
+    headers: { host: 'deploy-preview-236--transformerpath.netlify.app' },
+    body: JSON.stringify({ form: 'rfq', email: buyer, reference: 'RFQ TP-TEST' })
+  });
+  const wrongHostBody = JSON.parse(wrongHost.body);
+  check('production context on a preview host does not send', wrongHost.statusCode === 200 && wrongHostBody.sent === false && wrongHostBody.reason === 'preview_withheld');
+
+  delete process.env.RESEND_API_KEY;
   const quiet = await notify.handler({
     httpMethod: 'POST',
+    headers: { host: 'transformerpath.com' },
     body: JSON.stringify({ form: 'rfq', email: buyer, reference: 'RFQ TP-TEST' })
   });
   const quietBody = JSON.parse(quiet.body);
