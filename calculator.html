@@ -353,7 +353,7 @@
         <h2>2 · Design choices <span class="tag">type defaults auto-fill</span></h2>
         <div class="row2">
           <div><label>Core constant K (Et=K√S)</label><input id="K" type="number" step="0.01" value="0.45"></div>
-          <div><label>Flux density Bm (T)</label><input id="bm" type="number" step="0.01" value="1.70"></div>
+          <div><label>Flux density Bm (T)</label><input id="bm" type="number" step="0.01" value="1.70"><small style="display:block;color:var(--muted);font-size:.75rem">CRGO saturates near 2.03 T. Typical design flux is 1.6–1.75 T.</small></div>
         </div>
         <div class="row2">
           <div><label>δ LV (A/mm²)</label><input id="dlv" type="number" step="0.05" value="3.0"></div>
@@ -1206,7 +1206,7 @@ function calc(){
   const chk=[];
   chk.push(r.Kw>0.45?"⚠ window fill > 0.45 — congested, increase h/d":"✓ window fill OK");
   chk.push((r.h/r.d)<1.5?"⚠ winding squat (h/d < 1.5) — short-circuit forces rise":"✓ winding aspect OK");
-  chk.push(r.Bm>1.75?"⚠ Bm > 1.75 T — saturation/inrush risk at +10 % overvoltage":"✓ Bm within CRGO working range");
+  chk.push(r.Bm>1.75?"⚠ Bm > 1.75 T — above the usual 1.6–1.75 T design band (CRGO saturates near 2.03 T)":"✓ Bm within the usual 1.6–1.75 T CRGO design band");
   chk.push(Math.abs(r.Et-r.K*Math.sqrt(r.S))/(r.K*Math.sqrt(r.S))>0.05?"ℹ Et adjusted by turn rounding":"✓ Et close to target");
   if(r.hv>245000) chk.push("ℹ EHV class: graded insulation assumed; consider autotransformer, part-winding transport & site assembly; K of 0.75–1.0 typical");
   if(!anyMeets) chk.push("✗ NO grade meets the NLL guarantee — lower Bm, raise K (bigger core, fewer W/kg) or renegotiate the figure");
