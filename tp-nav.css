@@ -464,3 +464,80 @@ html.tp-pwa-standalone body {
     padding-bottom: calc(56px + env(safe-area-inset-bottom));
   }
 }
+
+/* Sign in with Google sits in the utils cluster. The slot stays hidden
+   until GOOGLE_CLIENT_ID and SESSION_SECRET are both present at build. */
+.tp-auth {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  margin: 0 4px;
+}
+.tp-auth[hidden] { display: none !important; }
+.tp-auth-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, .4);
+  padding: 0;
+  background: var(--amber, #f5a623);
+  color: var(--navy, #0d1b2e);
+  font-weight: 800;
+  font-size: .85rem;
+  line-height: 32px;
+  text-align: center;
+  cursor: pointer;
+  overflow: hidden;
+}
+.tp-auth-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.tp-auth-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 200px;
+  background: var(--navy-2, #14253d);
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 9px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .38);
+  padding: 6px;
+  z-index: 220;
+}
+.tp-auth-menu[hidden] { display: none !important; }
+.tp-auth-name {
+  margin: 0;
+  padding: 6px 10px 8px;
+  color: #fff;
+  font-size: .86rem;
+  font-weight: 700;
+}
+.tp-auth-menu a,
+.tp-auth-menu button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: 0;
+  color: #cbd5e1;
+  font: inherit;
+  font-size: .86rem;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+}
+.tp-auth-menu a:hover,
+.tp-auth-menu button:hover { color: var(--amber, #f5a623); background: rgba(255, 255, 255, .06); }
+.tp-auth-error { margin: 0 0 0 6px; color: var(--amber, #f5a623); font-size: .75rem; }
+@media (min-width: 1024px) and (max-width: 1280px) {
+  .tpnav:has(.tp-auth:not([hidden]) .tp-auth-button) a,
+  .tpnav:has(.tp-auth:not([hidden]) .tp-auth-button) .tpnav-more-btn {
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: .78rem;
+  }
+}
+@media (max-width: 1023px) {
+  .tp-auth { margin: 10px 16px; }
+  .tp-auth-menu { position: static; margin-top: 8px; }
+}
