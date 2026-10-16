@@ -117,6 +117,25 @@ function session(product, where, status) {
     const tenderDoc = JSON.parse(fs.readFileSync('data/tenders.json', 'utf8'));
     const awardDoc = JSON.parse(fs.readFileSync('data/awards.json', 'utf8'));
     check('directory row count matches the live index', manifest.files.directory.rows === directoryDoc.companies.length);
+    const siteStats = JSON.parse(fs.readFileSync('data/site-stats.json', 'utf8'));
+    check('directory scope names the site manufacturer count and the larger file', manifest.directory_scope.indexOf(siteStats.manufacturers.toLocaleString('en-US')) !== -1 && manifest.directory_scope.indexOf(manifest.files.directory.rows.toLocaleString('en-US')) !== -1 && /not manufacturers/.test(manifest.directory_scope));
+    const directoryParsed = csv.parseCsv(csv.readStored(dest, 'directory'));
+    check('inferred or unverified directory rows show an em dash for last_verified', directoryParsed.rows.every(function (row, idx) {
+      const company = directoryDoc.companies[idx];
+      const hidden = csv.publicLastVerified('2020-01-01', [company.evidence, company.claim_type, company.research_status]) === csv.UNVERIFIED_MARK;
+      return hidden ? row.last_verified === csv.UNVERIFIED_MARK : row.last_verified !== csv.UNVERIFIED_MARK;
+    }));
+    const tenderParsed = csv.parseCsv(csv.readStored(dest, 'tenders'));
+    check('inferred tender rows show an em dash for last_verified', tenderParsed.rows.every(function (row, idx) {
+      const source = tenderDoc.tenders[idx];
+      const hidden = source.transformer_scope === 'INFERRED';
+      return hidden ? row.last_verified === csv.UNVERIFIED_MARK : (source.transformer_scope === 'CONFIRMED' ? /^\d{4}-\d{2}-\d{2}$/.test(row.last_verified) : true);
+    }));
+    const awardParsed = csv.parseCsv(csv.readStored(dest, 'awards'));
+    check('inferred award rows show an em dash for last_verified', awardParsed.rows.every(function (row, idx) {
+      const source = awardDoc.awards[idx];
+      return source.transformer_scope === 'INFERRED' ? row.last_verified === csv.UNVERIFIED_MARK : row.last_verified !== csv.UNVERIFIED_MARK || source.transformer_scope !== 'CONFIRMED';
+    }));
     check('tender row count matches the live register', manifest.files.tenders.rows === tenderDoc.tenders.length);
     check('award row count matches the live register', manifest.files.awards.rows === awardDoc.awards.length);
 
@@ -179,6 +198,7 @@ function session(product, where, status) {
     check('bogus session shows the verify-failed sentence', bogus.body.indexOf(csv.VERIFY_FAILED) !== -1);
     check('bogus session is not a CSV attachment', !bogus.headers['Content-Disposition']);
     check('bogus session shows 10-row samples', previewCount(bogus.body, 'directory') === 10 && previewCount(bogus.body, 'tenders') === 10 && previewCount(bogus.body, 'awards') === 10);
+    check('download page states what the directory rows are', bogus.body.indexOf('id="csv-directory-scope"') !== -1 && bogus.body.indexOf(manifest.directory_scope) !== -1);
     check('stripe was asked with the bearer secret', calls.length === 1 && calls[0].auth === 'Bearer ' + SECRET && calls[0].url.indexOf(SECRET) === -1 && calls[0].url.indexOf('https://api.stripe.com/') === 0);
     check('response does not contain the secret', bogus.body.indexOf(SECRET) === -1);
 
