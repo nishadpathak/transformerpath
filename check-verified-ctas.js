@@ -234,8 +234,9 @@ async function audit() {
   const stats = JSON.parse(fs.readFileSync('data/site-stats.json', 'utf8'));
   const client = await auditClient(page, census, slugs, tiers, stats, doc, map, earned);
   const violations = profiles.violations.concat(board.violations).concat(client.violations);
-  if (profiles.pages < 900) violations.push('only ' + profiles.pages + ' profile pages carry the CTA');
-  if (board.rows < 900) violations.push('only ' + board.rows + ' directory rows carry the CTA');
+  // The 16 Oct 2026 manufacturer retirement took the live census under 900.
+  if (profiles.pages < 890) violations.push('only ' + profiles.pages + ' profile pages carry the CTA');
+  if (board.rows < 890) violations.push('only ' + board.rows + ' directory rows carry the CTA');
   if (client.rows < board.rows) violations.push('live directory rendered ' + client.rows + ' makers, board has ' + board.rows);
   return { violations: violations, pages: profiles.pages, rows: board.rows, liveRows: client.rows };
 }
