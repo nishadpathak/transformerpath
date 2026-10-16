@@ -153,7 +153,7 @@
     <div class="dh-card">
       <div class="lbl">Tracked Projects & Tenders</div>
       <div class="val" id="stat-projects">456</div>
-      <div class="sub">306 projects &middot; 150 tenders (21 open)</div>
+      <div class="sub" id="stat-projects-sub">305 projects &middot; 159 tenders (8 open)</div>
     </div>
     <div class="dh-card">
       <div class="lbl">Daily Intel Freshness</div>
@@ -301,7 +301,11 @@
     document.getElementById('stat-mfg-co').textContent = s.manufacturingCountries || 85;
     document.getElementById('stat-caps').textContent = (s.capabilities || 1962).toLocaleString();
     document.getElementById('stat-evidence').textContent = (s.sourcedDataPoints || 1877).toLocaleString();
-    document.getElementById('stat-projects').textContent = ((s.projects||306) + (s.tenders||150)).toLocaleString();
+    document.getElementById('stat-projects').textContent = ((s.projects || 0) + (s.tenders || 0)).toLocaleString();
+    const projectSub = document.getElementById('stat-projects-sub');
+    if (projectSub && typeof s.projects === 'number' && typeof s.tenders === 'number' && typeof s.openTenders === 'number') {
+      projectSub.textContent = s.projects + ' projects · ' + s.tenders + ' tenders (' + s.openTenders + ' open)';
+    }
   }).catch(()=>{});
 
   fetch('data/freshness.json').then(r=>r.json()).then(f=>{
