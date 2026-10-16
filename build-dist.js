@@ -110,6 +110,8 @@ const FORBIDDEN_PATTERNS = [
   /^data\/backup/i,
   /pre-sprint/i,
   /^data\/paid-listings\.json$/,
+  /^data\/csv-exports\//,
+  /\.csv$/i,
 ];
 
 /* iCloud Drive / macOS conflict copies ("index 2.html", "usa 2/"). The site folder
@@ -204,6 +206,8 @@ function dataForbidden(rel) {
   return /backup/i.test(rel) || /pre-sprint/i.test(rel) ||
     rel === 'commerce-intel.json' || rel === 'engineer-track-paid.json' ||
     rel === 'paid-listings.json' ||
+    rel.indexOf('csv-exports/') === 0 ||
+    /\.csv$/i.test(rel) ||
     rel === 'gcc-sep-2026-discovery-input.json' || rel === 'gcc-coverage-report.json' ||
     /\.sql$/i.test(rel);
 }
