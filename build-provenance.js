@@ -128,6 +128,21 @@ const out = CURATED.map(function (c) {
   };
 });
 
+/* Records added outside this curated list (company-site facts such as
+ * Virginia Transformer Corp, fetched 2026-10-15) must survive a rebuild.
+ * Replacing the file with CURATED alone deleted them. */
+let prior = [];
+try { prior = JSON.parse(fs.readFileSync('data/manufacturer-provenance.json', 'utf8')); }
+catch (e) { prior = []; }
+if (!Array.isArray(prior)) prior = [];
+const curatedNames = {};
+out.forEach(function (c) { curatedNames[c.name] = 1; });
+prior.forEach(function (p) {
+  if (!p || !p.name || curatedNames[p.name]) return;
+  if (!Array.isArray(p.facts) || !p.facts.length) return;
+  out.push(p);
+});
+
 fs.mkdirSync('data', { recursive: true });
 fs.writeFileSync('data/manufacturer-provenance.json', JSON.stringify(out, null, 2));
 console.log('manufacturer-provenance.json wrote ' + out.length + ' entities | ' + out.reduce(function (s, c) { return s + c.facts.length; }, 0) + ' sourced facts');
