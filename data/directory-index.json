@@ -1,10 +1,10 @@
 {
   "$schema": "https://transformerpath.com/directory.schema.json",
-  "generated": "2026-10-15T03:46:41.098Z",
-  "count": 1192,
+  "generated": "2026-10-16T05:58:37.351Z",
+  "count": 1182,
   "counts": {
-    "manufacturers": 897,
-    "component_suppliers": 211,
+    "manufacturers": 887,
+    "component_suppliers": 212,
     "machinery_manufacturers": 20,
     "testing_laboratories": 14,
     "services": 18,
@@ -4633,13 +4633,13 @@
         "special": {}
       },
       "voltage": {
-        "value": "",
-        "num": null,
+        "value": "132 kV",
+        "num": 132,
         "unit": "kV"
       },
       "mva": {
-        "value": "",
-        "num": null,
+        "value": "50 MVA",
+        "num": 50,
         "unit": "MVA"
       },
       "certs": [],
@@ -4657,29 +4657,27 @@
         }
       ],
       "capability_evidence": {
-        "products": "INFERRED",
-        "voltage": "UNKNOWN",
-        "mva": "UNKNOWN"
+        "products": "CONFIRMED",
+        "voltage": "CONFIRMED",
+        "mva": "CONFIRMED"
       },
-      "evidence": "INFERRED",
-      "claim_type": "INFERRED",
-      "confidence": "LIMITED",
+      "evidence": "CONFIRMED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
       "source_meta": {
-        "source_title": "",
-        "source_type": "",
+        "source_title": "https://www.andrewyule.com/transformers.php",
+        "source_type": "industry_publication",
         "source_url": "https://www.andrewyule.com"
       },
-      "completeness_score": 50,
+      "completeness_score": 70,
       "missing_fields": [
         "Headquarters address",
-        "Maximum voltage rating",
-        "Maximum unit MVA / rating",
         "Standards compliance (IEC/IEEE) & ISO certifications",
         "Test bay specifications & utility references"
       ],
-      "provenance_type": "PUBLIC_SOURCE",
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
       "last_verified": "2026-08-28",
-      "research_completeness": 4,
+      "research_completeness": 6,
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
@@ -4687,7 +4685,7 @@
       "verified": false,
       "sources": {
         "website": "https://www.andrewyule.com",
-        "capability_source": "",
+        "capability_source": "https://www.andrewyule.com/transformers.php",
         "capability_note": ""
       },
       "factory_count": 1
@@ -6071,19 +6069,23 @@
         }
       },
       "voltage": {
-        "value": "",
-        "num": null,
+        "value": "800 kV",
+        "num": 800,
         "unit": "kV"
       },
       "mva": {
-        "value": "",
-        "num": null,
+        "value": "1000 MVA",
+        "num": 1000,
         "unit": "MVA"
       },
-      "certs": [],
-      "testing_capability": null,
+      "certs": [
+        "IEC",
+        "IEEE"
+      ],
+      "testing_capability": "short-circuit",
       "facility_ids": [
-        "fac:astor-enerji-a-s:ankara"
+        "fac:astor-enerji-a-s:ankara",
+        "fac:astor-enerji-a-s:sincan"
       ],
       "factories": [
         {
@@ -6092,32 +6094,35 @@
           "produces": "",
           "claim_type": "",
           "source_url": ""
+        },
+        {
+          "city": "Sincan",
+          "country": "Türkiye",
+          "produces": "",
+          "claim_type": "",
+          "source_url": "https://astoras.com.tr/en/power-transformers/power-transformers/"
         }
       ],
       "capability_evidence": {
-        "products": "INFERRED",
-        "voltage": "UNKNOWN",
-        "mva": "UNKNOWN"
+        "products": "CONFIRMED",
+        "voltage": "CONFIRMED",
+        "mva": "CONFIRMED"
       },
-      "evidence": "INFERRED",
-      "claim_type": "INFERRED",
-      "confidence": "LIMITED",
+      "evidence": "CONFIRMED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
       "source_meta": {
-        "source_title": "",
-        "source_type": "",
+        "source_title": "https://astoras.com.tr/en/power-transformers/power-transformers/",
+        "source_type": "industry_publication",
         "source_url": "https://astoras.com.tr"
       },
-      "completeness_score": 50,
+      "completeness_score": 100,
       "missing_fields": [
-        "Headquarters address",
-        "Maximum voltage rating",
-        "Maximum unit MVA / rating",
-        "Standards compliance (IEC/IEEE) & ISO certifications",
-        "Test bay specifications & utility references"
+        "Headquarters address"
       ],
-      "provenance_type": "PUBLIC_SOURCE",
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
       "last_verified": "2026-08-28",
-      "research_completeness": 4,
+      "research_completeness": 7,
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
@@ -6125,10 +6130,10 @@
       "verified": false,
       "sources": {
         "website": "https://astoras.com.tr",
-        "capability_source": "",
+        "capability_source": "https://astoras.com.tr/en/power-transformers/power-transformers/",
         "capability_note": ""
       },
-      "factory_count": 1
+      "factory_count": 2
     },
     {
       "id": "cmp:atas-trafo",
@@ -6158,19 +6163,20 @@
         "special": {}
       },
       "voltage": {
-        "value": "",
-        "num": null,
+        "value": "52 kV",
+        "num": 52,
         "unit": "kV"
       },
       "mva": {
-        "value": "",
-        "num": null,
+        "value": "6.3 MVA",
+        "num": 6.3,
         "unit": "MVA"
       },
       "certs": [],
       "testing_capability": null,
       "facility_ids": [
-        "fac:atas-trafo:ankara"
+        "fac:atas-trafo:ankara",
+        "fac:atas-trafo:sincan"
       ],
       "factories": [
         {
@@ -6179,32 +6185,37 @@
           "produces": "",
           "claim_type": "",
           "source_url": ""
+        },
+        {
+          "city": "Sincan",
+          "country": "Türkiye",
+          "produces": "",
+          "claim_type": "",
+          "source_url": "https://www.ankaratrafo.com.tr/en/products-category/guc-trafolari"
         }
       ],
       "capability_evidence": {
-        "products": "INFERRED",
-        "voltage": "UNKNOWN",
-        "mva": "UNKNOWN"
+        "products": "CONFIRMED",
+        "voltage": "CONFIRMED",
+        "mva": "CONFIRMED"
       },
-      "evidence": "INFERRED",
-      "claim_type": "INFERRED",
-      "confidence": "LIMITED",
+      "evidence": "CONFIRMED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
       "source_meta": {
-        "source_title": "",
-        "source_type": "",
+        "source_title": "https://www.ankaratrafo.com.tr/en/products-category/guc-trafolari",
+        "source_type": "industry_publication",
         "source_url": "https://www.ankaratrafo.com.tr"
       },
-      "completeness_score": 50,
+      "completeness_score": 85,
       "missing_fields": [
         "Headquarters address",
-        "Maximum voltage rating",
-        "Maximum unit MVA / rating",
         "Standards compliance (IEC/IEEE) & ISO certifications",
         "Test bay specifications & utility references"
       ],
-      "provenance_type": "PUBLIC_SOURCE",
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
       "last_verified": "2026-08-28",
-      "research_completeness": 4,
+      "research_completeness": 6,
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
@@ -6212,10 +6223,10 @@
       "verified": false,
       "sources": {
         "website": "https://www.ankaratrafo.com.tr",
-        "capability_source": "",
+        "capability_source": "https://www.ankaratrafo.com.tr/en/products-category/guc-trafolari",
         "capability_note": ""
       },
-      "factory_count": 1
+      "factory_count": 2
     },
     {
       "id": "cmp:atlanta-electricals",
@@ -6249,17 +6260,20 @@
         "special": {}
       },
       "voltage": {
-        "value": "",
-        "num": null,
+        "value": "220 kV",
+        "num": 220,
         "unit": "kV"
       },
       "mva": {
-        "value": "",
-        "num": null,
+        "value": "160 MVA",
+        "num": 160,
         "unit": "MVA"
       },
-      "certs": [],
-      "testing_capability": null,
+      "certs": [
+        "IEC",
+        "IS"
+      ],
+      "testing_capability": "routine-type",
       "facility_ids": [
         "fac:atlanta-electricals:anand"
       ],
@@ -6270,31 +6284,35 @@
           "produces": "",
           "claim_type": "",
           "source_url": ""
+        },
+        {
+          "city": "Anand",
+          "country": "India",
+          "produces": "",
+          "claim_type": "",
+          "source_url": "https://aetrafo.com/products/power-transformers.aspx"
         }
       ],
       "capability_evidence": {
-        "products": "INFERRED",
-        "voltage": "UNKNOWN",
-        "mva": "UNKNOWN"
+        "products": "CONFIRMED",
+        "voltage": "CONFIRMED",
+        "mva": "CONFIRMED"
       },
-      "evidence": "INFERRED",
-      "claim_type": "INFERRED",
-      "confidence": "LIMITED",
+      "evidence": "CONFIRMED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
       "source_meta": {
-        "source_title": "",
-        "source_type": "",
+        "source_title": "https://aetrafo.com/products/power-transformers.aspx",
+        "source_type": "industry_publication",
         "source_url": "https://aetrafo.com"
       },
-      "completeness_score": 60,
+      "completeness_score": 100,
       "missing_fields": [
-        "Headquarters address",
-        "Maximum voltage rating",
-        "Maximum unit MVA / rating",
-        "Standards compliance (IEC/IEEE) & ISO certifications"
+        "Headquarters address"
       ],
-      "provenance_type": "PUBLIC_SOURCE",
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
       "last_verified": "2026-08-28",
-      "research_completeness": 5,
+      "research_completeness": 8,
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
@@ -6302,7 +6320,7 @@
       "verified": false,
       "sources": {
         "website": "https://aetrafo.com",
-        "capability_source": "",
+        "capability_source": "https://aetrafo.com/products/power-transformers.aspx",
         "capability_note": ""
       },
       "factory_count": 1
@@ -7738,93 +7756,6 @@
       "factory_count": 1
     },
     {
-      "id": "cmp:berytech-energy-liban-cables-and-transfo",
-      "canonical_id": "cmp:berytech-energy-liban-cables-and-transfo",
-      "roles": [
-        "Transformer Manufacturer"
-      ],
-      "kind": "manufacturer",
-      "name": "Berytech Energy / Liban Cables & Transfo",
-      "slug": "berytech-energy-liban-cables-and-transfo",
-      "country": "Lebanon",
-      "region": "Middle East",
-      "website": "http://www.libancables.com/",
-      "headquarters": "",
-      "product_codes": [
-        "DT"
-      ],
-      "capability_labels": [
-        "Distribution transformer"
-      ],
-      "transformer_types": {
-        "power": {},
-        "distribution": {
-          "__present": true
-        },
-        "dry_type": {},
-        "special": {}
-      },
-      "voltage": {
-        "value": "",
-        "num": null,
-        "unit": "kV"
-      },
-      "mva": {
-        "value": "",
-        "num": null,
-        "unit": "MVA"
-      },
-      "certs": [],
-      "testing_capability": null,
-      "facility_ids": [
-        "fac:berytech-energy-liban-cables-and-transfo:dekwaneh"
-      ],
-      "factories": [
-        {
-          "city": "Dekwaneh, Beirut",
-          "country": "Lebanon",
-          "produces": "",
-          "claim_type": "",
-          "source_url": ""
-        }
-      ],
-      "capability_evidence": {
-        "products": "INFERRED",
-        "voltage": "UNKNOWN",
-        "mva": "UNKNOWN"
-      },
-      "evidence": "INFERRED",
-      "claim_type": "INFERRED",
-      "confidence": "LIMITED",
-      "source_meta": {
-        "source_title": "",
-        "source_type": "",
-        "source_url": "http://www.libancables.com/"
-      },
-      "completeness_score": 50,
-      "missing_fields": [
-        "Headquarters address",
-        "Maximum voltage rating",
-        "Maximum unit MVA / rating",
-        "Standards compliance (IEC/IEEE) & ISO certifications",
-        "Test bay specifications & utility references"
-      ],
-      "provenance_type": "PUBLIC_SOURCE",
-      "last_verified": "2026-08-28",
-      "research_completeness": 4,
-      "research_status": "ACTIVE_CONFIRMED",
-      "commercial_status": "LISTED",
-      "featured": false,
-      "listing_tier": "listed",
-      "verified": false,
-      "sources": {
-        "website": "http://www.libancables.com/",
-        "capability_source": "",
-        "capability_note": ""
-      },
-      "factory_count": 1
-    },
-    {
       "id": "cmp:best-transformer",
       "canonical_id": "cmp:best-transformer",
       "roles": [
@@ -7860,17 +7791,17 @@
         "special": {}
       },
       "voltage": {
-        "value": "",
-        "num": null,
+        "value": "765 kV",
+        "num": 765,
         "unit": "kV"
       },
       "mva": {
-        "value": "",
-        "num": null,
+        "value": "1250 MVA",
+        "num": 1250,
         "unit": "MVA"
       },
       "certs": [],
-      "testing_capability": null,
+      "testing_capability": "short-circuit",
       "facility_ids": [
         "fac:best-transformer:bal-kesir"
       ],
@@ -7884,29 +7815,26 @@
         }
       ],
       "capability_evidence": {
-        "products": "INFERRED",
-        "voltage": "UNKNOWN",
-        "mva": "UNKNOWN"
+        "products": "CONFIRMED",
+        "voltage": "CONFIRMED",
+        "mva": "CONFIRMED"
       },
-      "evidence": "INFERRED",
-      "claim_type": "INFERRED",
-      "confidence": "LIMITED",
+      "evidence": "CONFIRMED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
       "source_meta": {
-        "source_title": "",
-        "source_type": "",
+        "source_title": "https://www.besttransformer.com/en/products/power-transformers",
+        "source_type": "industry_publication",
         "source_url": "https://www.besttransformer.com"
       },
-      "completeness_score": 50,
+      "completeness_score": 80,
       "missing_fields": [
         "Headquarters address",
-        "Maximum voltage rating",
-        "Maximum unit MVA / rating",
-        "Standards compliance (IEC/IEEE) & ISO certifications",
-        "Test bay specifications & utility references"
+        "Standards compliance (IEC/IEEE) & ISO certifications"
       ],
-      "provenance_type": "PUBLIC_SOURCE",
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
       "last_verified": "2026-08-28",
-      "research_completeness": 4,
+      "research_completeness": 7,
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
@@ -7914,7 +7842,7 @@
       "verified": false,
       "sources": {
         "website": "https://www.besttransformer.com",
-        "capability_source": "",
+        "capability_source": "https://www.besttransformer.com/en/products/power-transformers",
         "capability_note": ""
       },
       "factory_count": 1
@@ -8323,17 +8251,21 @@
         "special": {}
       },
       "voltage": {
-        "value": "",
-        "num": null,
+        "value": "220 kV",
+        "num": 220,
         "unit": "kV"
       },
       "mva": {
-        "value": "",
-        "num": null,
+        "value": "200 MVA",
+        "num": 200,
         "unit": "MVA"
       },
-      "certs": [],
-      "testing_capability": null,
+      "certs": [
+        "ISO 9001:2015",
+        "IEC",
+        "IS"
+      ],
+      "testing_capability": "routine-type, temperature-rise, impulse",
       "facility_ids": [
         "fac:bharat-bijlee:navi-mumbai"
       ],
@@ -8347,29 +8279,25 @@
         }
       ],
       "capability_evidence": {
-        "products": "INFERRED",
-        "voltage": "UNKNOWN",
-        "mva": "UNKNOWN"
+        "products": "CONFIRMED",
+        "voltage": "CONFIRMED",
+        "mva": "CONFIRMED"
       },
-      "evidence": "INFERRED",
-      "claim_type": "INFERRED",
-      "confidence": "LIMITED",
+      "evidence": "CONFIRMED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
       "source_meta": {
-        "source_title": "",
-        "source_type": "",
+        "source_title": "https://www.bharatbijlee.com/transformers/overview/",
+        "source_type": "industry_publication",
         "source_url": "https://www.bharatbijlee.com"
       },
-      "completeness_score": 50,
+      "completeness_score": 95,
       "missing_fields": [
-        "Headquarters address",
-        "Maximum voltage rating",
-        "Maximum unit MVA / rating",
-        "Standards compliance (IEC/IEEE) & ISO certifications",
-        "Test bay specifications & utility references"
+        "Headquarters address"
       ],
-      "provenance_type": "PUBLIC_SOURCE",
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
       "last_verified": "2026-08-28",
-      "research_completeness": 4,
+      "research_completeness": 7,
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
@@ -8377,7 +8305,7 @@
       "verified": false,
       "sources": {
         "website": "https://www.bharatbijlee.com",
-        "capability_source": "",
+        "capability_source": "https://www.bharatbijlee.com/transformers/overview/",
         "capability_note": ""
       },
       "factory_count": 1
@@ -9503,7 +9431,7 @@
       "slug": "cadetra",
       "country": "Venezuela",
       "region": "Latin America",
-      "website": "http://cadetra.com",
+      "website": "https://cadetra.com/",
       "headquarters": "",
       "product_codes": [
         "DT"
@@ -9532,11 +9460,11 @@
       "certs": [],
       "testing_capability": null,
       "facility_ids": [
-        "fac:cadetra:caracas"
+        "fac:cadetra:barcelona"
       ],
       "factories": [
         {
-          "city": "Caracas",
+          "city": "Barcelona, Anzoátegui",
           "country": "Venezuela",
           "produces": "",
           "claim_type": "",
@@ -9554,7 +9482,7 @@
       "source_meta": {
         "source_title": "",
         "source_type": "",
-        "source_url": "http://cadetra.com"
+        "source_url": "https://cadetra.com/"
       },
       "completeness_score": 50,
       "missing_fields": [
@@ -9573,7 +9501,7 @@
       "listing_tier": "listed",
       "verified": false,
       "sources": {
-        "website": "http://cadetra.com",
+        "website": "https://cadetra.com/",
         "capability_source": "",
         "capability_note": ""
       },
@@ -10695,97 +10623,6 @@
       "factory_count": 1
     },
     {
-      "id": "cmp:chang-yang-electric",
-      "canonical_id": "cmp:chang-yang-electric",
-      "roles": [
-        "Transformer Manufacturer"
-      ],
-      "kind": "manufacturer",
-      "name": "Chang Yang Electric",
-      "slug": "chang-yang-electric",
-      "country": "Taiwan",
-      "region": "East Asia",
-      "website": "https://www.changyang.com.tw/",
-      "headquarters": "",
-      "product_codes": [
-        "DRY",
-        "DT"
-      ],
-      "capability_labels": [
-        "Dry-type",
-        "Distribution transformer"
-      ],
-      "transformer_types": {
-        "power": {},
-        "distribution": {
-          "__present": true
-        },
-        "dry_type": {
-          "__present": true
-        },
-        "special": {}
-      },
-      "voltage": {
-        "value": "",
-        "num": null,
-        "unit": "kV"
-      },
-      "mva": {
-        "value": "",
-        "num": null,
-        "unit": "MVA"
-      },
-      "certs": [],
-      "testing_capability": null,
-      "facility_ids": [
-        "fac:chang-yang-electric:new-taipei-city"
-      ],
-      "factories": [
-        {
-          "city": "New Taipei City",
-          "country": "Taiwan",
-          "produces": "",
-          "claim_type": "",
-          "source_url": ""
-        }
-      ],
-      "capability_evidence": {
-        "products": "INFERRED",
-        "voltage": "UNKNOWN",
-        "mva": "UNKNOWN"
-      },
-      "evidence": "INFERRED",
-      "claim_type": "INFERRED",
-      "confidence": "LIMITED",
-      "source_meta": {
-        "source_title": "",
-        "source_type": "",
-        "source_url": "https://www.changyang.com.tw/"
-      },
-      "completeness_score": 50,
-      "missing_fields": [
-        "Headquarters address",
-        "Maximum voltage rating",
-        "Maximum unit MVA / rating",
-        "Standards compliance (IEC/IEEE) & ISO certifications",
-        "Test bay specifications & utility references"
-      ],
-      "provenance_type": "PUBLIC_SOURCE",
-      "last_verified": "2026-08-28",
-      "research_completeness": 4,
-      "research_status": "ACTIVE_CONFIRMED",
-      "commercial_status": "LISTED",
-      "featured": false,
-      "listing_tier": "listed",
-      "verified": false,
-      "sources": {
-        "website": "https://www.changyang.com.tw/",
-        "capability_source": "",
-        "capability_note": ""
-      },
-      "factory_count": 1
-    },
-    {
       "id": "cmp:charoenchai-transformer",
       "canonical_id": "cmp:charoenchai-transformer",
       "roles": [
@@ -11412,7 +11249,7 @@
         "source_type": "",
         "source_url": "https://classictransformers.co.in"
       },
-      "completeness_score": 50,
+      "completeness_score": 60,
       "missing_fields": [
         "Headquarters address",
         "Maximum voltage rating",
@@ -13015,17 +12852,21 @@
         "special": {}
       },
       "voltage": {
-        "value": "",
-        "num": null,
+        "value": "245 kV",
+        "num": 245,
         "unit": "kV"
       },
       "mva": {
-        "value": "",
-        "num": null,
+        "value": "100 MVA",
+        "num": 100,
         "unit": "MVA"
       },
-      "certs": [],
-      "testing_capability": null,
+      "certs": [
+        "IEEE",
+        "IEC:60076",
+        "IS:1180"
+      ],
+      "testing_capability": "short-circuit, impulse, temperature-rise, routine-type",
       "facility_ids": [
         "fac:danish-power:jaipur"
       ],
@@ -13039,29 +12880,25 @@
         }
       ],
       "capability_evidence": {
-        "products": "INFERRED",
-        "voltage": "UNKNOWN",
-        "mva": "UNKNOWN"
+        "products": "CONFIRMED",
+        "voltage": "CONFIRMED",
+        "mva": "CONFIRMED"
       },
-      "evidence": "INFERRED",
-      "claim_type": "INFERRED",
-      "confidence": "LIMITED",
+      "evidence": "CONFIRMED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
       "source_meta": {
-        "source_title": "",
-        "source_type": "",
+        "source_title": "https://www.danish.co.in/liquid-immersed-transformers",
+        "source_type": "industry_publication",
         "source_url": "https://www.danish.co.in"
       },
-      "completeness_score": 50,
+      "completeness_score": 100,
       "missing_fields": [
-        "Headquarters address",
-        "Maximum voltage rating",
-        "Maximum unit MVA / rating",
-        "Standards compliance (IEC/IEEE) & ISO certifications",
-        "Test bay specifications & utility references"
+        "Headquarters address"
       ],
-      "provenance_type": "PUBLIC_SOURCE",
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
       "last_verified": "2026-08-28",
-      "research_completeness": 4,
+      "research_completeness": 7,
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
@@ -13069,7 +12906,7 @@
       "verified": false,
       "sources": {
         "website": "https://www.danish.co.in",
-        "capability_source": "",
+        "capability_source": "https://www.danish.co.in/liquid-immersed-transformers",
         "capability_note": ""
       },
       "factory_count": 1
@@ -15739,13 +15576,21 @@
       "certs": [
         "IEC"
       ],
-      "testing_capability": null,
+      "testing_capability": "Reported",
       "facility_ids": [
-        "fac:efacec:arroteia"
+        "fac:efacec:arroteia",
+        "fac:efacec:maia"
       ],
       "factories": [
         {
           "city": "Arroteia, Porto",
+          "country": "Portugal",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        },
+        {
+          "city": "Maia, Porto",
           "country": "Portugal",
           "produces": "",
           "claim_type": "",
@@ -15765,14 +15610,13 @@
         "source_type": "industry_publication",
         "source_url": "https://www.efacec.com"
       },
-      "completeness_score": 85,
+      "completeness_score": 95,
       "missing_fields": [
-        "Headquarters address",
-        "Test bay specifications & utility references"
+        "Headquarters address"
       ],
       "provenance_type": "OFFICIAL_SOURCE",
       "last_verified": "2026-08-28",
-      "research_completeness": 6,
+      "research_completeness": 7,
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
@@ -15783,7 +15627,7 @@
         "capability_source": "EFACEC Corporate Sustainability & Annual Filing",
         "capability_note": "Arroteia transformer manufacturing plant capacity and maximum voltage ratings reported in corporate filings."
       },
-      "factory_count": 1
+      "factory_count": 2
     },
     {
       "id": "cmp:egemac-egyptian-german-electrical-manufacturing-co",
@@ -17592,7 +17436,7 @@
       "slug": "electronetics-llc",
       "country": "USA",
       "region": "North America",
-      "website": "https://electronetics.com",
+      "website": "https://www.electronetics.us/",
       "headquarters": "",
       "product_codes": [
         "TX"
@@ -17645,7 +17489,7 @@
       "source_meta": {
         "source_title": "Electronetics Technical Documentation & ISO Certification",
         "source_type": "industry_publication",
-        "source_url": "https://electronetics.com"
+        "source_url": "https://www.electronetics.us/"
       },
       "completeness_score": 75,
       "missing_fields": [
@@ -17662,7 +17506,7 @@
       "listing_tier": "listed",
       "verified": false,
       "sources": {
-        "website": "https://electronetics.com",
+        "website": "https://www.electronetics.us/",
         "capability_source": "Electronetics Technical Documentation & ISO Certification",
         "capability_note": "Annual production capacity not publicly disclosed in regulatory filings."
       },
@@ -18507,16 +18351,18 @@
         "special": {}
       },
       "voltage": {
-        "value": "",
-        "num": null,
+        "value": "36 kV",
+        "num": 36,
         "unit": "kV"
       },
       "mva": {
-        "value": "",
-        "num": null,
+        "value": "30 MVA",
+        "num": 30,
         "unit": "MVA"
       },
-      "certs": [],
+      "certs": [
+        "IEC"
+      ],
       "testing_capability": null,
       "facility_ids": [
         "fac:elkima-trafo:izmir-bornova"
@@ -18531,29 +18377,26 @@
         }
       ],
       "capability_evidence": {
-        "products": "INFERRED",
-        "voltage": "UNKNOWN",
-        "mva": "UNKNOWN"
+        "products": "CONFIRMED",
+        "voltage": "CONFIRMED",
+        "mva": "CONFIRMED"
       },
-      "evidence": "INFERRED",
-      "claim_type": "INFERRED",
-      "confidence": "LIMITED",
+      "evidence": "CONFIRMED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
       "source_meta": {
-        "source_title": "",
-        "source_type": "",
+        "source_title": "https://www.elkima.com.tr/products/Guc-Transformatorleri.php",
+        "source_type": "industry_publication",
         "source_url": "https://www.elkima.com.tr"
       },
-      "completeness_score": 50,
+      "completeness_score": 85,
       "missing_fields": [
         "Headquarters address",
-        "Maximum voltage rating",
-        "Maximum unit MVA / rating",
-        "Standards compliance (IEC/IEEE) & ISO certifications",
         "Test bay specifications & utility references"
       ],
-      "provenance_type": "PUBLIC_SOURCE",
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
       "last_verified": "2026-08-28",
-      "research_completeness": 4,
+      "research_completeness": 6,
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
@@ -18561,7 +18404,7 @@
       "verified": false,
       "sources": {
         "website": "https://www.elkima.com.tr",
-        "capability_source": "",
+        "capability_source": "https://www.elkima.com.tr/products/Guc-Transformatorleri.php",
         "capability_note": ""
       },
       "factory_count": 1
@@ -19484,13 +19327,13 @@
         "special": {}
       },
       "voltage": {
-        "value": "",
-        "num": null,
+        "value": "52 kV",
+        "num": 52,
         "unit": "kV"
       },
       "mva": {
-        "value": "",
-        "num": null,
+        "value": "40 MVA",
+        "num": 40,
         "unit": "MVA"
       },
       "certs": [],
@@ -19508,29 +19351,27 @@
         }
       ],
       "capability_evidence": {
-        "products": "INFERRED",
-        "voltage": "UNKNOWN",
-        "mva": "UNKNOWN"
+        "products": "CONFIRMED",
+        "voltage": "CONFIRMED",
+        "mva": "CONFIRMED"
       },
-      "evidence": "INFERRED",
-      "claim_type": "INFERRED",
-      "confidence": "LIMITED",
+      "evidence": "CONFIRMED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
       "source_meta": {
-        "source_title": "",
-        "source_type": "",
+        "source_title": "https://www.elsantrafo.com/",
+        "source_type": "industry_publication",
         "source_url": "https://www.elsantrafo.com"
       },
-      "completeness_score": 50,
+      "completeness_score": 80,
       "missing_fields": [
         "Headquarters address",
-        "Maximum voltage rating",
-        "Maximum unit MVA / rating",
         "Standards compliance (IEC/IEEE) & ISO certifications",
         "Test bay specifications & utility references"
       ],
-      "provenance_type": "PUBLIC_SOURCE",
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
       "last_verified": "2026-08-28",
-      "research_completeness": 4,
+      "research_completeness": 6,
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
@@ -19538,8 +19379,8 @@
       "verified": false,
       "sources": {
         "website": "https://www.elsantrafo.com",
-        "capability_source": "",
-        "capability_note": ""
+        "capability_source": "https://www.elsantrafo.com/",
+        "capability_note": "Voltage quote: https://www.elsantrafo.com/%C3%9Cr%C3%BCnlerimiz/Dagitim-Transformatorleri-1"
       },
       "factory_count": 1
     },
@@ -20340,13 +20181,13 @@
         "special": {}
       },
       "voltage": {
-        "value": "",
-        "num": null,
+        "value": "420 kV",
+        "num": 420,
         "unit": "kV"
       },
       "mva": {
-        "value": "",
-        "num": null,
+        "value": "250 MVA",
+        "num": 250,
         "unit": "MVA"
       },
       "certs": [],
@@ -20364,29 +20205,27 @@
         }
       ],
       "capability_evidence": {
-        "products": "INFERRED",
-        "voltage": "UNKNOWN",
-        "mva": "UNKNOWN"
+        "products": "CONFIRMED",
+        "voltage": "CONFIRMED",
+        "mva": "CONFIRMED"
       },
-      "evidence": "INFERRED",
-      "claim_type": "INFERRED",
-      "confidence": "LIMITED",
+      "evidence": "CONFIRMED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
       "source_meta": {
-        "source_title": "",
-        "source_type": "",
+        "source_title": "https://www.eltas.com.tr/",
+        "source_type": "industry_publication",
         "source_url": "https://www.eltas.com.tr"
       },
-      "completeness_score": 50,
+      "completeness_score": 70,
       "missing_fields": [
         "Headquarters address",
-        "Maximum voltage rating",
-        "Maximum unit MVA / rating",
         "Standards compliance (IEC/IEEE) & ISO certifications",
         "Test bay specifications & utility references"
       ],
-      "provenance_type": "PUBLIC_SOURCE",
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
       "last_verified": "2026-08-28",
-      "research_completeness": 4,
+      "research_completeness": 6,
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
@@ -20394,7 +20233,7 @@
       "verified": false,
       "sources": {
         "website": "https://www.eltas.com.tr",
-        "capability_source": "",
+        "capability_source": "https://www.eltas.com.tr/",
         "capability_note": ""
       },
       "factory_count": 1
@@ -21590,19 +21429,23 @@
         "special": {}
       },
       "voltage": {
-        "value": "",
-        "num": null,
+        "value": "154 kV",
+        "num": 154,
         "unit": "kV"
       },
       "mva": {
-        "value": "",
-        "num": null,
+        "value": "150 MVA",
+        "num": 150,
         "unit": "MVA"
       },
-      "certs": [],
-      "testing_capability": null,
+      "certs": [
+        "TS EN 60076-2",
+        "TS EN 60076-3"
+      ],
+      "testing_capability": "temperature-rise, impulse, routine-type",
       "facility_ids": [
-        "fac:eren-transformator:ankara-sincan"
+        "fac:eren-transformator:ankara-sincan",
+        "fac:eren-transformator:sincan"
       ],
       "factories": [
         {
@@ -21611,32 +21454,35 @@
           "produces": "",
           "claim_type": "",
           "source_url": ""
+        },
+        {
+          "city": "Sincan",
+          "country": "Türkiye",
+          "produces": "",
+          "claim_type": "",
+          "source_url": "https://erentrafo.com.tr/about-us"
         }
       ],
       "capability_evidence": {
-        "products": "INFERRED",
-        "voltage": "UNKNOWN",
-        "mva": "UNKNOWN"
+        "products": "CONFIRMED",
+        "voltage": "CONFIRMED",
+        "mva": "CONFIRMED"
       },
-      "evidence": "INFERRED",
-      "claim_type": "INFERRED",
-      "confidence": "LIMITED",
+      "evidence": "CONFIRMED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
       "source_meta": {
-        "source_title": "",
-        "source_type": "",
+        "source_title": "https://erentrafo.com.tr/products/power-transformers",
+        "source_type": "industry_publication",
         "source_url": "https://erentrafo.com.tr"
       },
-      "completeness_score": 50,
+      "completeness_score": 100,
       "missing_fields": [
-        "Headquarters address",
-        "Maximum voltage rating",
-        "Maximum unit MVA / rating",
-        "Standards compliance (IEC/IEEE) & ISO certifications",
-        "Test bay specifications & utility references"
+        "Headquarters address"
       ],
-      "provenance_type": "PUBLIC_SOURCE",
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
       "last_verified": "2026-08-28",
-      "research_completeness": 4,
+      "research_completeness": 7,
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
@@ -21644,10 +21490,10 @@
       "verified": false,
       "sources": {
         "website": "https://erentrafo.com.tr",
-        "capability_source": "",
+        "capability_source": "https://erentrafo.com.tr/products/power-transformers",
         "capability_note": ""
       },
-      "factory_count": 1
+      "factory_count": 2
     },
     {
       "id": "cmp:ericon-transformers",
@@ -23241,97 +23087,6 @@
       "verified": false,
       "sources": {
         "website": "https://www.ftz.pl",
-        "capability_source": "",
-        "capability_note": ""
-      },
-      "factory_count": 1
-    },
-    {
-      "id": "cmp:famiq-transformadores-uruguay-cir-s-a",
-      "canonical_id": "cmp:famiq-transformadores-uruguay-cir-s-a",
-      "roles": [
-        "Transformer Manufacturer"
-      ],
-      "kind": "manufacturer",
-      "name": "Famiq Transformadores Uruguay / CIR S.A.",
-      "slug": "famiq-transformadores-uruguay-cir-s-a",
-      "country": "Uruguay",
-      "region": "Latin America",
-      "website": "https://www.cir.com.uy/",
-      "headquarters": "",
-      "product_codes": [
-        "DT",
-        "PT"
-      ],
-      "capability_labels": [
-        "Distribution transformer",
-        "Power transformer"
-      ],
-      "transformer_types": {
-        "power": {
-          "__present": true
-        },
-        "distribution": {
-          "__present": true
-        },
-        "dry_type": {},
-        "special": {}
-      },
-      "voltage": {
-        "value": "",
-        "num": null,
-        "unit": "kV"
-      },
-      "mva": {
-        "value": "",
-        "num": null,
-        "unit": "MVA"
-      },
-      "certs": [],
-      "testing_capability": null,
-      "facility_ids": [
-        "fac:famiq-transformadores-uruguay-cir-s-a:montevideo"
-      ],
-      "factories": [
-        {
-          "city": "Montevideo",
-          "country": "Uruguay",
-          "produces": "",
-          "claim_type": "",
-          "source_url": ""
-        }
-      ],
-      "capability_evidence": {
-        "products": "INFERRED",
-        "voltage": "UNKNOWN",
-        "mva": "UNKNOWN"
-      },
-      "evidence": "INFERRED",
-      "claim_type": "INFERRED",
-      "confidence": "LIMITED",
-      "source_meta": {
-        "source_title": "",
-        "source_type": "",
-        "source_url": "https://www.cir.com.uy/"
-      },
-      "completeness_score": 50,
-      "missing_fields": [
-        "Headquarters address",
-        "Maximum voltage rating",
-        "Maximum unit MVA / rating",
-        "Standards compliance (IEC/IEEE) & ISO certifications",
-        "Test bay specifications & utility references"
-      ],
-      "provenance_type": "PUBLIC_SOURCE",
-      "last_verified": "2026-08-28",
-      "research_completeness": 4,
-      "research_status": "ACTIVE_CONFIRMED",
-      "commercial_status": "LISTED",
-      "featured": false,
-      "listing_tier": "listed",
-      "verified": false,
-      "sources": {
-        "website": "https://www.cir.com.uy/",
         "capability_source": "",
         "capability_note": ""
       },
@@ -27320,8 +27075,8 @@
         "unit": "kV"
       },
       "mva": {
-        "value": "",
-        "num": null,
+        "value": "5 MVA",
+        "num": 5,
         "unit": "MVA"
       },
       "certs": [],
@@ -27339,29 +27094,28 @@
         }
       ],
       "capability_evidence": {
-        "products": "INFERRED",
+        "products": "CONFIRMED",
         "voltage": "UNKNOWN",
-        "mva": "UNKNOWN"
+        "mva": "CONFIRMED"
       },
-      "evidence": "INFERRED",
-      "claim_type": "INFERRED",
-      "confidence": "LIMITED",
+      "evidence": "CONFIRMED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
       "source_meta": {
-        "source_title": "",
-        "source_type": "",
+        "source_title": "https://www.hdtransformers.co.in/distribution-transformer.html",
+        "source_type": "industry_publication",
         "source_url": "https://www.hdtransformers.co.in"
       },
-      "completeness_score": 50,
+      "completeness_score": 70,
       "missing_fields": [
         "Headquarters address",
         "Maximum voltage rating",
-        "Maximum unit MVA / rating",
         "Standards compliance (IEC/IEEE) & ISO certifications",
         "Test bay specifications & utility references"
       ],
-      "provenance_type": "PUBLIC_SOURCE",
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
       "last_verified": "2026-08-28",
-      "research_completeness": 4,
+      "research_completeness": 5,
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
@@ -27369,7 +27123,7 @@
       "verified": false,
       "sources": {
         "website": "https://www.hdtransformers.co.in",
-        "capability_source": "",
+        "capability_source": "https://www.hdtransformers.co.in/distribution-transformer.html",
         "capability_note": ""
       },
       "factory_count": 1
@@ -27738,97 +27492,6 @@
       "verified": false,
       "sources": {
         "website": "https://www.qre.com.cn/",
-        "capability_source": "",
-        "capability_note": ""
-      },
-      "factory_count": 1
-    },
-    {
-      "id": "cmp:hanoi-transformer-manufacturing-hbt",
-      "canonical_id": "cmp:hanoi-transformer-manufacturing-hbt",
-      "roles": [
-        "Transformer Manufacturer"
-      ],
-      "kind": "manufacturer",
-      "name": "Hanoi Transformer Manufacturing (HBT)",
-      "slug": "hanoi-transformer-manufacturing-hbt",
-      "country": "Vietnam",
-      "region": "Southeast Asia",
-      "website": "https://www.hbt.com.vn/",
-      "headquarters": "",
-      "product_codes": [
-        "DT",
-        "PT"
-      ],
-      "capability_labels": [
-        "Distribution transformer",
-        "Power transformer"
-      ],
-      "transformer_types": {
-        "power": {
-          "__present": true
-        },
-        "distribution": {
-          "__present": true
-        },
-        "dry_type": {},
-        "special": {}
-      },
-      "voltage": {
-        "value": "",
-        "num": null,
-        "unit": "kV"
-      },
-      "mva": {
-        "value": "",
-        "num": null,
-        "unit": "MVA"
-      },
-      "certs": [],
-      "testing_capability": null,
-      "facility_ids": [
-        "fac:hanoi-transformer-manufacturing-hbt:hanoi"
-      ],
-      "factories": [
-        {
-          "city": "Hanoi",
-          "country": "Vietnam",
-          "produces": "",
-          "claim_type": "",
-          "source_url": ""
-        }
-      ],
-      "capability_evidence": {
-        "products": "INFERRED",
-        "voltage": "UNKNOWN",
-        "mva": "UNKNOWN"
-      },
-      "evidence": "INFERRED",
-      "claim_type": "INFERRED",
-      "confidence": "LIMITED",
-      "source_meta": {
-        "source_title": "",
-        "source_type": "",
-        "source_url": "https://www.hbt.com.vn/"
-      },
-      "completeness_score": 50,
-      "missing_fields": [
-        "Headquarters address",
-        "Maximum voltage rating",
-        "Maximum unit MVA / rating",
-        "Standards compliance (IEC/IEEE) & ISO certifications",
-        "Test bay specifications & utility references"
-      ],
-      "provenance_type": "PUBLIC_SOURCE",
-      "last_verified": "2026-08-28",
-      "research_completeness": 4,
-      "research_status": "ACTIVE_CONFIRMED",
-      "commercial_status": "LISTED",
-      "featured": false,
-      "listing_tier": "listed",
-      "verified": false,
-      "sources": {
-        "website": "https://www.hbt.com.vn/",
         "capability_source": "",
         "capability_note": ""
       },
@@ -29038,93 +28701,6 @@
       "factory_count": 1
     },
     {
-      "id": "cmp:hexaformer",
-      "canonical_id": "cmp:hexaformer",
-      "roles": [
-        "Transformer Manufacturer"
-      ],
-      "kind": "manufacturer",
-      "name": "Hexaformer",
-      "slug": "hexaformer",
-      "country": "Sweden",
-      "region": "Europe",
-      "website": "https://hexaformer.com",
-      "headquarters": "",
-      "product_codes": [
-        "DT"
-      ],
-      "capability_labels": [
-        "Distribution transformer"
-      ],
-      "transformer_types": {
-        "power": {},
-        "distribution": {
-          "__present": true
-        },
-        "dry_type": {},
-        "special": {}
-      },
-      "voltage": {
-        "value": "",
-        "num": null,
-        "unit": "kV"
-      },
-      "mva": {
-        "value": "",
-        "num": null,
-        "unit": "MVA"
-      },
-      "certs": [],
-      "testing_capability": null,
-      "facility_ids": [
-        "fac:hexaformer:vastervik"
-      ],
-      "factories": [
-        {
-          "city": "Västervik",
-          "country": "Sweden",
-          "produces": "",
-          "claim_type": "",
-          "source_url": ""
-        }
-      ],
-      "capability_evidence": {
-        "products": "INFERRED",
-        "voltage": "UNKNOWN",
-        "mva": "UNKNOWN"
-      },
-      "evidence": "INFERRED",
-      "claim_type": "INFERRED",
-      "confidence": "LIMITED",
-      "source_meta": {
-        "source_title": "",
-        "source_type": "",
-        "source_url": "https://hexaformer.com"
-      },
-      "completeness_score": 50,
-      "missing_fields": [
-        "Headquarters address",
-        "Maximum voltage rating",
-        "Maximum unit MVA / rating",
-        "Standards compliance (IEC/IEEE) & ISO certifications",
-        "Test bay specifications & utility references"
-      ],
-      "provenance_type": "PUBLIC_SOURCE",
-      "last_verified": "2026-08-28",
-      "research_completeness": 4,
-      "research_status": "ACTIVE_CONFIRMED",
-      "commercial_status": "LISTED",
-      "featured": false,
-      "listing_tier": "listed",
-      "verified": false,
-      "sources": {
-        "website": "https://hexaformer.com",
-        "capability_source": "",
-        "capability_note": ""
-      },
-      "factory_count": 1
-    },
-    {
       "id": "cmp:high-volt-electricals-pvt-ltd",
       "canonical_id": "cmp:high-volt-electricals-pvt-ltd",
       "roles": [
@@ -29390,6 +28966,147 @@
       "factory_count": 1
     },
     {
+      "id": "cmp:hitachi-energy",
+      "canonical_id": "cmp:hitachi-energy",
+      "roles": [
+        "Transformer Manufacturer",
+        "Component Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "Hitachi Energy",
+      "slug": "hitachi-energy",
+      "country": "Switzerland",
+      "region": "Europe",
+      "website": "https://www.hitachienergy.com/",
+      "headquarters": "Zurich, Switzerland",
+      "product_codes": [
+        "PT",
+        "DT",
+        "DRY",
+        "POWER",
+        "HVDC_CONVERTER",
+        "GSU",
+        "DISTRIBUTION"
+      ],
+      "capability_labels": [
+        "Power transformer",
+        "Distribution transformer",
+        "Dry-type",
+        "Converter (HVDC) transformer",
+        "Generator step-up",
+        "Bushings (HV, LV)",
+        "High voltage insulators / porcelain / composite shells"
+      ],
+      "transformer_types": {
+        "power": {
+          "__present": true,
+          "gsu": true
+        },
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {
+          "__present": true
+        },
+        "special": {
+          "__present": true,
+          "converter": true
+        }
+      },
+      "voltage": {
+        "value": "1200 kV",
+        "num": 1200,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "500,000 MVA",
+        "num": 500000,
+        "unit": "MVA"
+      },
+      "certs": [
+        "IEC",
+        "IEEE",
+        "UL"
+      ],
+      "testing_capability": null,
+      "facility_ids": [],
+      "factories": [
+        {
+          "city": "Zürich",
+          "country": "Switzerland",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        },
+        {
+          "city": "Ludvika",
+          "country": "Sweden",
+          "produces": "HVDC converter transformers",
+          "claim_type": "INDEPENDENTLY_SOURCED",
+          "source_url": "https://www.hitachienergy.com"
+        },
+        {
+          "city": "Maneja / Karjan (Vadodara)",
+          "country": "India",
+          "produces": "power transformers",
+          "claim_type": "INDEPENDENTLY_SOURCED",
+          "source_url": "https://www.hitachienergy.com"
+        },
+        {
+          "city": "Zhongshan",
+          "country": "China",
+          "produces": "transformers",
+          "claim_type": "INDEPENDENTLY_SOURCED",
+          "source_url": "https://www.hitachienergy.com"
+        },
+        {
+          "city": "Dilovası",
+          "country": "Türkiye",
+          "produces": "power transformers (+ factory & service center)",
+          "claim_type": "INDEPENDENTLY_SOURCED",
+          "source_url": "https://www.hitachienergy.com/ch/de/news-and-events/events-and-webinars/2026/06/dilovasi-power-transformers-factory-service-center"
+        },
+        {
+          "city": "Vaasa",
+          "country": "Finland",
+          "produces": "transformers",
+          "claim_type": "INDEPENDENTLY_SOURCED",
+          "source_url": "https://www.hitachienergy.com"
+        }
+      ],
+      "capability_evidence": {
+        "products": "CONFIRMED",
+        "voltage": "CONFIRMED",
+        "mva": "CONFIRMED"
+      },
+      "evidence": "CONFIRMED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
+      "source_meta": {
+        "source_title": "Hitachi Energy Annual Report & Corporate Disclosures",
+        "source_type": "industry_publication",
+        "source_url": "https://www.hitachienergy.com/"
+      },
+      "completeness_score": 90,
+      "missing_fields": [
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
+      "last_verified": "2026-08-28",
+      "research_completeness": 6,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "https://www.hitachienergy.com/",
+        "capability_source": "Hitachi Energy Annual Report & Corporate Disclosures",
+        "capability_note": "Annual production capacity benchmarked across global power transformer factories in investor disclosures and corporate filings. Capacity stated as annual MVA envelope."
+      },
+      "factory_count": 6
+    },
+    {
       "id": "cmp:hitachi-energy-chongqing-shanghai",
       "canonical_id": "cmp:hitachi-energy-chongqing-shanghai",
       "roles": [
@@ -29515,11 +29232,13 @@
         "source_type": "industry_publication",
         "source_url": "https://www.hitachienergy.com/"
       },
-      "completeness_score": 100,
-      "missing_fields": [],
+      "completeness_score": 90,
+      "missing_fields": [
+        "Test bay specifications & utility references"
+      ],
       "provenance_type": "TRANSFORMERPATH_RESEARCHED",
       "last_verified": "2026-08-28",
-      "research_completeness": 7,
+      "research_completeness": 6,
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
@@ -31491,13 +31210,11 @@
         "source_type": "industry_publication",
         "source_url": "https://www.hitachienergy.com"
       },
-      "completeness_score": 90,
-      "missing_fields": [
-        "Test bay specifications & utility references"
-      ],
+      "completeness_score": 100,
+      "missing_fields": [],
       "provenance_type": "TRANSFORMERPATH_RESEARCHED",
       "last_verified": "2026-08-28",
-      "research_completeness": 6,
+      "research_completeness": 7,
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
@@ -31895,97 +31612,6 @@
       "factory_count": 1
     },
     {
-      "id": "cmp:huacheng-electric",
-      "canonical_id": "cmp:huacheng-electric",
-      "roles": [
-        "Transformer Manufacturer"
-      ],
-      "kind": "manufacturer",
-      "name": "Huacheng Electric",
-      "slug": "huacheng-electric",
-      "country": "Taiwan",
-      "region": "East Asia",
-      "website": "https://www.huacheng.com.tw/",
-      "headquarters": "",
-      "product_codes": [
-        "PT",
-        "DT"
-      ],
-      "capability_labels": [
-        "Power transformer",
-        "Distribution transformer"
-      ],
-      "transformer_types": {
-        "power": {
-          "__present": true
-        },
-        "distribution": {
-          "__present": true
-        },
-        "dry_type": {},
-        "special": {}
-      },
-      "voltage": {
-        "value": "",
-        "num": null,
-        "unit": "kV"
-      },
-      "mva": {
-        "value": "",
-        "num": null,
-        "unit": "MVA"
-      },
-      "certs": [],
-      "testing_capability": null,
-      "facility_ids": [
-        "fac:huacheng-electric:taoyuan"
-      ],
-      "factories": [
-        {
-          "city": "Taoyuan",
-          "country": "Taiwan",
-          "produces": "",
-          "claim_type": "",
-          "source_url": ""
-        }
-      ],
-      "capability_evidence": {
-        "products": "INFERRED",
-        "voltage": "UNKNOWN",
-        "mva": "UNKNOWN"
-      },
-      "evidence": "INFERRED",
-      "claim_type": "INFERRED",
-      "confidence": "LIMITED",
-      "source_meta": {
-        "source_title": "",
-        "source_type": "",
-        "source_url": "https://www.huacheng.com.tw/"
-      },
-      "completeness_score": 50,
-      "missing_fields": [
-        "Headquarters address",
-        "Maximum voltage rating",
-        "Maximum unit MVA / rating",
-        "Standards compliance (IEC/IEEE) & ISO certifications",
-        "Test bay specifications & utility references"
-      ],
-      "provenance_type": "PUBLIC_SOURCE",
-      "last_verified": "2026-08-28",
-      "research_completeness": 4,
-      "research_status": "ACTIVE_CONFIRMED",
-      "commercial_status": "LISTED",
-      "featured": false,
-      "listing_tier": "listed",
-      "verified": false,
-      "sources": {
-        "website": "https://www.huacheng.com.tw/",
-        "capability_source": "",
-        "capability_note": ""
-      },
-      "factory_count": 1
-    },
-    {
       "id": "cmp:hyosung-heavy-industries",
       "canonical_id": "cmp:hyosung-heavy-industries",
       "roles": [
@@ -31994,10 +31620,10 @@
       "kind": "manufacturer",
       "name": "Hyosung Heavy Industries",
       "slug": "hyosung-heavy-industries",
-      "country": "South Korea",
-      "region": "East Asia",
-      "website": "https://www.hyosungheavyindustries.com/en",
-      "headquarters": "Seoul, South Korea",
+      "country": "USA",
+      "region": "North America",
+      "website": "https://www.hicoamerica.com/",
+      "headquarters": "",
       "product_codes": [
         "PT"
       ],
@@ -32030,7 +31656,8 @@
       "facility_ids": [
         "fac:hyosung-heavy-industries:changwon",
         "fac:hyosung-heavy-industries:memphis",
-        "fac:hyosung-heavy-industries:nantong"
+        "fac:hyosung-heavy-industries:nantong",
+        "fac:hyosung-heavy-industries:seoul"
       ],
       "factories": [
         {
@@ -32041,11 +31668,18 @@
           "source_url": ""
         },
         {
+          "city": "Seoul",
+          "country": "South Korea",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        },
+        {
           "city": "Changwon",
           "country": "South Korea",
           "produces": "EHV transformers (7,500+ units)",
-          "claim_type": "",
-          "source_url": ""
+          "claim_type": "INDEPENDENTLY_SOURCED",
+          "source_url": "https://www.hyosungheavyindustries.com"
         },
         {
           "city": "Nantong",
@@ -32066,7 +31700,7 @@
       "source_meta": {
         "source_title": "HICO America Technical Dossier & Factory Certification",
         "source_type": "industry_publication",
-        "source_url": "https://www.hyosungheavyindustries.com/en"
+        "source_url": "https://www.hicoamerica.com/"
       },
       "completeness_score": 85,
       "missing_fields": [
@@ -32082,13 +31716,11 @@
       "listing_tier": "listed",
       "verified": false,
       "sources": {
-        "website": "https://www.hyosungheavyindustries.com/en",
+        "website": "https://www.hicoamerica.com/",
         "capability_source": "HICO America Technical Dossier & Factory Certification",
-        "capability_note": "Greensburg, PA facility and parent plant technical manufacturing capacity documented in utility supplier certifications.",
-        "headquarters_source": "https://www.hyosungheavyindustries.com/en/company/info/global-network",
-        "headquarters_checked": "2026-10-15"
+        "capability_note": "Greensburg, PA facility and parent plant technical manufacturing capacity documented in utility supplier certifications."
       },
-      "factory_count": 3
+      "factory_count": 4
     },
     {
       "id": "cmp:i-p-l-products",
@@ -32101,7 +31733,7 @@
       "slug": "i-p-l-products",
       "country": "India",
       "region": "South Asia",
-      "website": "https://www.iplproducts.com",
+      "website": "",
       "headquarters": "",
       "product_codes": [
         "DT"
@@ -32152,26 +31784,27 @@
       "source_meta": {
         "source_title": "",
         "source_type": "",
-        "source_url": "https://www.iplproducts.com"
+        "source_url": ""
       },
-      "completeness_score": 50,
+      "completeness_score": 40,
       "missing_fields": [
         "Headquarters address",
+        "Official corporate website",
         "Maximum voltage rating",
         "Maximum unit MVA / rating",
         "Standards compliance (IEC/IEEE) & ISO certifications",
         "Test bay specifications & utility references"
       ],
       "provenance_type": "PUBLIC_SOURCE",
-      "last_verified": "2026-08-28",
-      "research_completeness": 4,
-      "research_status": "ACTIVE_CONFIRMED",
+      "last_verified": "2026-08-15",
+      "research_completeness": 2,
+      "research_status": "RESEARCH_REQUIRED",
       "commercial_status": "LISTED",
       "featured": false,
       "listing_tier": "listed",
       "verified": false,
       "sources": {
-        "website": "https://www.iplproducts.com",
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       },
@@ -32853,18 +32486,21 @@
         }
       },
       "voltage": {
-        "value": "",
-        "num": null,
+        "value": "400 kV",
+        "num": 400,
         "unit": "kV"
       },
       "mva": {
-        "value": "",
-        "num": null,
+        "value": "315 MVA",
+        "num": 315,
         "unit": "MVA"
       },
-      "certs": [],
-      "testing_capability": null,
+      "certs": [
+        "ISO 9001:2015"
+      ],
+      "testing_capability": "routine-type",
       "facility_ids": [
+        "fac:imp-powers:silvassa",
         "fac:imp-powers:silvassa-and-mumbai"
       ],
       "factories": [
@@ -32874,32 +32510,35 @@
           "produces": "",
           "claim_type": "",
           "source_url": ""
+        },
+        {
+          "city": "Silvassa",
+          "country": "India",
+          "produces": "",
+          "claim_type": "",
+          "source_url": "https://imp-powers.com/"
         }
       ],
       "capability_evidence": {
-        "products": "INFERRED",
-        "voltage": "UNKNOWN",
-        "mva": "UNKNOWN"
+        "products": "CONFIRMED",
+        "voltage": "CONFIRMED",
+        "mva": "CONFIRMED"
       },
-      "evidence": "INFERRED",
-      "claim_type": "INFERRED",
-      "confidence": "LIMITED",
+      "evidence": "CONFIRMED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
       "source_meta": {
-        "source_title": "",
-        "source_type": "",
+        "source_title": "https://imp-powers.com/power-transformer/",
+        "source_type": "industry_publication",
         "source_url": "https://imp-powers.com"
       },
-      "completeness_score": 50,
+      "completeness_score": 100,
       "missing_fields": [
-        "Headquarters address",
-        "Maximum voltage rating",
-        "Maximum unit MVA / rating",
-        "Standards compliance (IEC/IEEE) & ISO certifications",
-        "Test bay specifications & utility references"
+        "Headquarters address"
       ],
-      "provenance_type": "PUBLIC_SOURCE",
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
       "last_verified": "2026-08-28",
-      "research_completeness": 4,
+      "research_completeness": 7,
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
@@ -32907,10 +32546,10 @@
       "verified": false,
       "sources": {
         "website": "https://imp-powers.com",
-        "capability_source": "",
+        "capability_source": "https://imp-powers.com/power-transformer/",
         "capability_note": ""
       },
-      "factory_count": 1
+      "factory_count": 2
     },
     {
       "id": "cmp:inatra",
@@ -33122,13 +32761,13 @@
         "special": {}
       },
       "voltage": {
-        "value": "",
-        "num": null,
+        "value": "230 kV",
+        "num": 230,
         "unit": "kV"
       },
       "mva": {
-        "value": "",
-        "num": null,
+        "value": "200 MVA",
+        "num": 200,
         "unit": "MVA"
       },
       "certs": [],
@@ -33143,31 +32782,36 @@
           "produces": "",
           "claim_type": "",
           "source_url": ""
+        },
+        {
+          "city": "Kancheepuram",
+          "country": "India",
+          "produces": "",
+          "claim_type": "",
+          "source_url": "https://www.indo-tech.com/large-power-transformers/"
         }
       ],
       "capability_evidence": {
-        "products": "INFERRED",
-        "voltage": "UNKNOWN",
-        "mva": "UNKNOWN"
+        "products": "CONFIRMED",
+        "voltage": "CONFIRMED",
+        "mva": "CONFIRMED"
       },
-      "evidence": "INFERRED",
-      "claim_type": "INFERRED",
-      "confidence": "LIMITED",
+      "evidence": "CONFIRMED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
       "source_meta": {
-        "source_title": "",
-        "source_type": "",
+        "source_title": "https://www.indo-tech.com/large-power-transformers/",
+        "source_type": "industry_publication",
         "source_url": "https://www.indo-tech.com"
       },
-      "completeness_score": 60,
+      "completeness_score": 85,
       "missing_fields": [
         "Headquarters address",
-        "Maximum voltage rating",
-        "Maximum unit MVA / rating",
         "Standards compliance (IEC/IEEE) & ISO certifications"
       ],
-      "provenance_type": "PUBLIC_SOURCE",
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
       "last_verified": "2026-08-28",
-      "research_completeness": 5,
+      "research_completeness": 7,
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
@@ -33175,7 +32819,7 @@
       "verified": false,
       "sources": {
         "website": "https://www.indo-tech.com",
-        "capability_source": "",
+        "capability_source": "https://www.indo-tech.com/large-power-transformers/",
         "capability_note": ""
       },
       "factory_count": 1
@@ -35262,18 +34906,23 @@
         "special": {}
       },
       "voltage": {
-        "value": "",
-        "num": null,
+        "value": "66 kV",
+        "num": 66,
         "unit": "kV"
       },
       "mva": {
-        "value": "",
-        "num": null,
+        "value": "25 MVA",
+        "num": 25,
         "unit": "MVA"
       },
-      "certs": [],
-      "testing_capability": null,
+      "certs": [
+        "IEC",
+        "IS",
+        "ISO 9001:2015"
+      ],
+      "testing_capability": "routine-type",
       "facility_ids": [
+        "fac:jaybee-industries:bathinda",
         "fac:jaybee-industries:faridabad"
       ],
       "factories": [
@@ -35283,32 +34932,35 @@
           "produces": "",
           "claim_type": "",
           "source_url": ""
+        },
+        {
+          "city": "Bathinda",
+          "country": "India",
+          "produces": "",
+          "claim_type": "",
+          "source_url": "https://jaybeeindustries.com/about.html"
         }
       ],
       "capability_evidence": {
-        "products": "INFERRED",
-        "voltage": "UNKNOWN",
-        "mva": "UNKNOWN"
+        "products": "CONFIRMED",
+        "voltage": "CONFIRMED",
+        "mva": "CONFIRMED"
       },
-      "evidence": "INFERRED",
-      "claim_type": "INFERRED",
-      "confidence": "LIMITED",
+      "evidence": "CONFIRMED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
       "source_meta": {
-        "source_title": "",
-        "source_type": "",
+        "source_title": "https://jaybeeindustries.com/products.html",
+        "source_type": "industry_publication",
         "source_url": "https://jaybeeindustries.com"
       },
-      "completeness_score": 50,
+      "completeness_score": 100,
       "missing_fields": [
-        "Headquarters address",
-        "Maximum voltage rating",
-        "Maximum unit MVA / rating",
-        "Standards compliance (IEC/IEEE) & ISO certifications",
-        "Test bay specifications & utility references"
+        "Headquarters address"
       ],
-      "provenance_type": "PUBLIC_SOURCE",
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
       "last_verified": "2026-08-28",
-      "research_completeness": 4,
+      "research_completeness": 7,
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
@@ -35316,10 +34968,10 @@
       "verified": false,
       "sources": {
         "website": "https://jaybeeindustries.com",
-        "capability_source": "",
+        "capability_source": "https://jaybeeindustries.com/products.html",
         "capability_note": ""
       },
-      "factory_count": 1
+      "factory_count": 2
     },
     {
       "id": "cmp:jds-transformers-industries-pvt-ltd",
@@ -37261,17 +36913,19 @@
         "special": {}
       },
       "voltage": {
-        "value": "",
-        "num": null,
+        "value": "400 kV",
+        "num": 400,
         "unit": "kV"
       },
       "mva": {
-        "value": "",
-        "num": null,
+        "value": "500 MVA",
+        "num": 500,
         "unit": "MVA"
       },
-      "certs": [],
-      "testing_capability": null,
+      "certs": [
+        "ISO 9001:2015"
+      ],
+      "testing_capability": "routine-type, impulse, temperature-rise, short-circuit",
       "facility_ids": [
         "fac:kanohar-electricals:meerut"
       ],
@@ -37285,29 +36939,25 @@
         }
       ],
       "capability_evidence": {
-        "products": "INFERRED",
-        "voltage": "UNKNOWN",
-        "mva": "UNKNOWN"
+        "products": "CONFIRMED",
+        "voltage": "CONFIRMED",
+        "mva": "CONFIRMED"
       },
-      "evidence": "INFERRED",
-      "claim_type": "INFERRED",
-      "confidence": "LIMITED",
+      "evidence": "CONFIRMED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
       "source_meta": {
-        "source_title": "",
-        "source_type": "",
+        "source_title": "https://www.kanohar.com/",
+        "source_type": "industry_publication",
         "source_url": "https://www.kanohar.com"
       },
-      "completeness_score": 50,
+      "completeness_score": 95,
       "missing_fields": [
-        "Headquarters address",
-        "Maximum voltage rating",
-        "Maximum unit MVA / rating",
-        "Standards compliance (IEC/IEEE) & ISO certifications",
-        "Test bay specifications & utility references"
+        "Headquarters address"
       ],
-      "provenance_type": "PUBLIC_SOURCE",
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
       "last_verified": "2026-08-28",
-      "research_completeness": 4,
+      "research_completeness": 7,
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
@@ -37315,7 +36965,7 @@
       "verified": false,
       "sources": {
         "website": "https://www.kanohar.com",
-        "capability_source": "",
+        "capability_source": "https://www.kanohar.com/",
         "capability_note": ""
       },
       "factory_count": 1
@@ -39567,93 +39217,6 @@
       "factory_count": 1
     },
     {
-      "id": "cmp:kuwait-electrical-wiring-accessories-co-kewa-transformers",
-      "canonical_id": "cmp:kuwait-electrical-wiring-accessories-co-kewa-transformers",
-      "roles": [
-        "Transformer Manufacturer"
-      ],
-      "kind": "manufacturer",
-      "name": "Kuwait Electrical Wiring Accessories Co. (KEWA Transformers)",
-      "slug": "kuwait-electrical-wiring-accessories-co-kewa-transformers",
-      "country": "Kuwait",
-      "region": "Middle East",
-      "website": "http://www.kewakuwait.com/",
-      "headquarters": "",
-      "product_codes": [
-        "DT"
-      ],
-      "capability_labels": [
-        "Distribution transformer"
-      ],
-      "transformer_types": {
-        "power": {},
-        "distribution": {
-          "__present": true
-        },
-        "dry_type": {},
-        "special": {}
-      },
-      "voltage": {
-        "value": "",
-        "num": null,
-        "unit": "kV"
-      },
-      "mva": {
-        "value": "",
-        "num": null,
-        "unit": "MVA"
-      },
-      "certs": [],
-      "testing_capability": null,
-      "facility_ids": [
-        "fac:kuwait-electrical-wiring-accessories-co-kewa-transformers:sabhan-industrial-area"
-      ],
-      "factories": [
-        {
-          "city": "Sabhan Industrial Area",
-          "country": "Kuwait",
-          "produces": "",
-          "claim_type": "",
-          "source_url": ""
-        }
-      ],
-      "capability_evidence": {
-        "products": "INFERRED",
-        "voltage": "UNKNOWN",
-        "mva": "UNKNOWN"
-      },
-      "evidence": "INFERRED",
-      "claim_type": "INFERRED",
-      "confidence": "LIMITED",
-      "source_meta": {
-        "source_title": "",
-        "source_type": "",
-        "source_url": "http://www.kewakuwait.com/"
-      },
-      "completeness_score": 50,
-      "missing_fields": [
-        "Headquarters address",
-        "Maximum voltage rating",
-        "Maximum unit MVA / rating",
-        "Standards compliance (IEC/IEEE) & ISO certifications",
-        "Test bay specifications & utility references"
-      ],
-      "provenance_type": "PUBLIC_SOURCE",
-      "last_verified": "2026-08-28",
-      "research_completeness": 4,
-      "research_status": "ACTIVE_CONFIRMED",
-      "commercial_status": "LISTED",
-      "featured": false,
-      "listing_tier": "listed",
-      "verified": false,
-      "sources": {
-        "website": "http://www.kewakuwait.com/",
-        "capability_source": "",
-        "capability_note": ""
-      },
-      "factory_count": 1
-    },
-    {
       "id": "cmp:kyte-powertech",
       "canonical_id": "cmp:kyte-powertech",
       "roles": [
@@ -40182,97 +39745,6 @@
       "verified": false,
       "sources": {
         "website": "https://lioa.com.vn",
-        "capability_source": "",
-        "capability_note": ""
-      },
-      "factory_count": 1
-    },
-    {
-      "id": "cmp:lkh-projects-distribution",
-      "canonical_id": "cmp:lkh-projects-distribution",
-      "roles": [
-        "Transformer Manufacturer"
-      ],
-      "kind": "manufacturer",
-      "name": "LKH Projects Distribution",
-      "slug": "lkh-projects-distribution",
-      "country": "Singapore",
-      "region": "Southeast Asia",
-      "website": "https://www.lkhgroup.com",
-      "headquarters": "",
-      "product_codes": [
-        "DT",
-        "DRY"
-      ],
-      "capability_labels": [
-        "Distribution transformer",
-        "Dry-type"
-      ],
-      "transformer_types": {
-        "power": {},
-        "distribution": {
-          "__present": true
-        },
-        "dry_type": {
-          "__present": true
-        },
-        "special": {}
-      },
-      "voltage": {
-        "value": "",
-        "num": null,
-        "unit": "kV"
-      },
-      "mva": {
-        "value": "",
-        "num": null,
-        "unit": "MVA"
-      },
-      "certs": [],
-      "testing_capability": null,
-      "facility_ids": [
-        "fac:lkh-projects-distribution:singapore"
-      ],
-      "factories": [
-        {
-          "city": "Singapore",
-          "country": "Singapore",
-          "produces": "",
-          "claim_type": "",
-          "source_url": ""
-        }
-      ],
-      "capability_evidence": {
-        "products": "INFERRED",
-        "voltage": "UNKNOWN",
-        "mva": "UNKNOWN"
-      },
-      "evidence": "INFERRED",
-      "claim_type": "INFERRED",
-      "confidence": "LIMITED",
-      "source_meta": {
-        "source_title": "",
-        "source_type": "",
-        "source_url": "https://www.lkhgroup.com"
-      },
-      "completeness_score": 50,
-      "missing_fields": [
-        "Headquarters address",
-        "Maximum voltage rating",
-        "Maximum unit MVA / rating",
-        "Standards compliance (IEC/IEEE) & ISO certifications",
-        "Test bay specifications & utility references"
-      ],
-      "provenance_type": "PUBLIC_SOURCE",
-      "last_verified": "2026-08-28",
-      "research_completeness": 4,
-      "research_status": "ACTIVE_CONFIRMED",
-      "commercial_status": "LISTED",
-      "featured": false,
-      "listing_tier": "listed",
-      "verified": false,
-      "sources": {
-        "website": "https://www.lkhgroup.com",
         "capability_source": "",
         "capability_note": ""
       },
@@ -50894,7 +50366,7 @@
       "slug": "powerade-technology",
       "country": "Bangladesh",
       "region": "South Asia",
-      "website": "https://www.powerade.com.bd",
+      "website": "",
       "headquarters": "",
       "product_codes": [
         "DT"
@@ -50945,26 +50417,27 @@
       "source_meta": {
         "source_title": "",
         "source_type": "",
-        "source_url": "https://www.powerade.com.bd"
+        "source_url": ""
       },
-      "completeness_score": 50,
+      "completeness_score": 40,
       "missing_fields": [
         "Headquarters address",
+        "Official corporate website",
         "Maximum voltage rating",
         "Maximum unit MVA / rating",
         "Standards compliance (IEC/IEEE) & ISO certifications",
         "Test bay specifications & utility references"
       ],
       "provenance_type": "PUBLIC_SOURCE",
-      "last_verified": "2026-08-28",
-      "research_completeness": 4,
-      "research_status": "ACTIVE_CONFIRMED",
+      "last_verified": "2026-08-15",
+      "research_completeness": 2,
+      "research_status": "RESEARCH_REQUIRED",
       "commercial_status": "LISTED",
       "featured": false,
       "listing_tier": "listed",
       "verified": false,
       "sources": {
-        "website": "https://www.powerade.com.bd",
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       },
@@ -51422,10 +50895,10 @@
       "kind": "manufacturer",
       "name": "Prolec GE",
       "slug": "prolec-ge",
-      "country": "Mexico",
+      "country": "USA",
       "region": "North America",
       "website": "https://www.prolec.energy/",
-      "headquarters": "Apodaca, Mexico",
+      "headquarters": "Monterrey (Apodaca, Nuevo León), Mexico",
       "product_codes": [
         "PT",
         "DT",
@@ -51554,9 +51027,7 @@
       "sources": {
         "website": "https://www.prolec.energy/",
         "capability_source": "Prolec GE Corporate Disclosures & Utility Qualifications",
-        "capability_note": "Monterrey, Shreveport and Waukesha consolidated manufacturing capacity reported in utility supply and factory announcements.",
-        "headquarters_source": "https://www.prolec.energy/contact-us/",
-        "headquarters_checked": "2026-10-15"
+        "capability_note": "Monterrey, Shreveport and Waukesha consolidated manufacturing capacity reported in utility supply and factory announcements."
       },
       "factory_count": 5
     },
@@ -52171,24 +51642,25 @@
         "source_type": "",
         "source_url": ""
       },
-      "completeness_score": 50,
+      "completeness_score": 40,
       "missing_fields": [
         "Headquarters address",
+        "Official corporate website",
         "Maximum voltage rating",
         "Maximum unit MVA / rating",
         "Standards compliance (IEC/IEEE) & ISO certifications",
         "Test bay specifications & utility references"
       ],
       "provenance_type": "PUBLIC_SOURCE",
-      "last_verified": "2026-08-28",
-      "research_completeness": 4,
-      "research_status": "ACTIVE_CONFIRMED",
+      "last_verified": "2026-08-15",
+      "research_completeness": 2,
+      "research_status": "RESEARCH_REQUIRED",
       "commercial_status": "LISTED",
       "featured": false,
       "listing_tier": "listed",
       "verified": false,
       "sources": {
-        "website": "",
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       },
@@ -53646,7 +53118,7 @@
       "slug": "revive-electrical-transformers-ret",
       "country": "South Africa",
       "region": "Africa",
-      "website": "https://www.revive.co.za/",
+      "website": "https://ret.co.za/",
       "headquarters": "",
       "product_codes": [
         "DT",
@@ -53701,7 +53173,7 @@
       "source_meta": {
         "source_title": "",
         "source_type": "",
-        "source_url": "https://www.revive.co.za/"
+        "source_url": "https://ret.co.za/"
       },
       "completeness_score": 50,
       "missing_fields": [
@@ -53720,7 +53192,7 @@
       "listing_tier": "listed",
       "verified": false,
       "sources": {
-        "website": "https://www.revive.co.za/",
+        "website": "https://ret.co.za/",
         "capability_source": "",
         "capability_note": ""
       },
@@ -54192,7 +53664,7 @@
       "slug": "rlp-electric",
       "country": "Australia",
       "region": "Oceania",
-      "website": "https://www.rlp.com.au",
+      "website": "https://rlpelectric.com.au/",
       "headquarters": "",
       "product_codes": [
         "DT",
@@ -54225,11 +53697,11 @@
       "certs": [],
       "testing_capability": null,
       "facility_ids": [
-        "fac:rlp-electric:sydney"
+        "fac:rlp-electric:cardiff"
       ],
       "factories": [
         {
-          "city": "Sydney",
+          "city": "Cardiff, NSW",
           "country": "Australia",
           "produces": "",
           "claim_type": "",
@@ -54247,7 +53719,7 @@
       "source_meta": {
         "source_title": "",
         "source_type": "",
-        "source_url": "https://www.rlp.com.au"
+        "source_url": "https://rlpelectric.com.au/"
       },
       "completeness_score": 50,
       "missing_fields": [
@@ -54266,7 +53738,7 @@
       "listing_tier": "listed",
       "verified": false,
       "sources": {
-        "website": "https://www.rlp.com.au",
+        "website": "https://rlpelectric.com.au/",
         "capability_source": "",
         "capability_note": ""
       },
@@ -55586,24 +55058,25 @@
         "source_type": "",
         "source_url": ""
       },
-      "completeness_score": 50,
+      "completeness_score": 40,
       "missing_fields": [
         "Headquarters address",
+        "Official corporate website",
         "Maximum voltage rating",
         "Maximum unit MVA / rating",
         "Standards compliance (IEC/IEEE) & ISO certifications",
         "Test bay specifications & utility references"
       ],
       "provenance_type": "PUBLIC_SOURCE",
-      "last_verified": "2026-08-28",
-      "research_completeness": 4,
-      "research_status": "ACTIVE_CONFIRMED",
+      "last_verified": "2026-08-15",
+      "research_completeness": 2,
+      "research_status": "RESEARCH_REQUIRED",
       "commercial_status": "LISTED",
       "featured": false,
       "listing_tier": "listed",
       "verified": false,
       "sources": {
-        "website": "",
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       },
@@ -60960,97 +60433,6 @@
       "factory_count": 1
     },
     {
-      "id": "cmp:sichuan-transformer-co-ltd",
-      "canonical_id": "cmp:sichuan-transformer-co-ltd",
-      "roles": [
-        "Transformer Manufacturer"
-      ],
-      "kind": "manufacturer",
-      "name": "Sichuan Transformer Co., Ltd.",
-      "slug": "sichuan-transformer-co-ltd",
-      "country": "China",
-      "region": "East Asia",
-      "website": "https://www.chuandian.com/",
-      "headquarters": "",
-      "product_codes": [
-        "PT",
-        "DT"
-      ],
-      "capability_labels": [
-        "Power transformer",
-        "Distribution transformer"
-      ],
-      "transformer_types": {
-        "power": {
-          "__present": true
-        },
-        "distribution": {
-          "__present": true
-        },
-        "dry_type": {},
-        "special": {}
-      },
-      "voltage": {
-        "value": "",
-        "num": null,
-        "unit": "kV"
-      },
-      "mva": {
-        "value": "",
-        "num": null,
-        "unit": "MVA"
-      },
-      "certs": [],
-      "testing_capability": null,
-      "facility_ids": [
-        "fac:sichuan-transformer-co-ltd:chengdu"
-      ],
-      "factories": [
-        {
-          "city": "Chengdu, Sichuan",
-          "country": "China",
-          "produces": "",
-          "claim_type": "",
-          "source_url": ""
-        }
-      ],
-      "capability_evidence": {
-        "products": "INFERRED",
-        "voltage": "UNKNOWN",
-        "mva": "UNKNOWN"
-      },
-      "evidence": "INFERRED",
-      "claim_type": "INFERRED",
-      "confidence": "LIMITED",
-      "source_meta": {
-        "source_title": "",
-        "source_type": "",
-        "source_url": "https://www.chuandian.com/"
-      },
-      "completeness_score": 50,
-      "missing_fields": [
-        "Headquarters address",
-        "Maximum voltage rating",
-        "Maximum unit MVA / rating",
-        "Standards compliance (IEC/IEEE) & ISO certifications",
-        "Test bay specifications & utility references"
-      ],
-      "provenance_type": "PUBLIC_SOURCE",
-      "last_verified": "2026-08-28",
-      "research_completeness": 4,
-      "research_status": "ACTIVE_CONFIRMED",
-      "commercial_status": "LISTED",
-      "featured": false,
-      "listing_tier": "listed",
-      "verified": false,
-      "sources": {
-        "website": "https://www.chuandian.com/",
-        "capability_source": "",
-        "capability_note": ""
-      },
-      "factory_count": 1
-    },
-    {
       "id": "cmp:siddhi-vinayak-transformer-industries",
       "canonical_id": "cmp:siddhi-vinayak-transformer-industries",
       "roles": [
@@ -61150,10 +60532,10 @@
       "kind": "manufacturer",
       "name": "Siemens Energy",
       "slug": "siemens-energy",
-      "country": "Germany",
-      "region": "Europe",
-      "website": "https://www.siemens-energy.com/",
-      "headquarters": "Munich, Germany",
+      "country": "Colombia",
+      "region": "Latin America",
+      "website": "https://www.siemens-energy.com/co/es.html",
+      "headquarters": "Munich, Germany (Otto-Hahn-Ring 6)",
       "product_codes": [
         "PT",
         "POWER",
@@ -61197,10 +60579,10 @@
       "testing_capability": null,
       "facility_ids": [
         "fac:siemens-energy:budapest",
-        "fac:siemens-energy:charlotte",
         "fac:siemens-energy:doha",
         "fac:siemens-energy:jundiai",
         "fac:siemens-energy:linz",
+        "fac:siemens-energy:munich",
         "fac:siemens-energy:nuremberg",
         "fac:siemens-energy:tenjo",
         "fac:siemens-energy:trento-spini",
@@ -61209,8 +60591,8 @@
       ],
       "factories": [
         {
-          "city": "Charlotte, NC",
-          "country": "USA",
+          "city": "Tenjo",
+          "country": "Colombia",
           "produces": "",
           "claim_type": "",
           "source_url": ""
@@ -61244,8 +60626,8 @@
           "source_url": "https://www.siemens-energy.com"
         },
         {
-          "city": "Tenjo",
-          "country": "Colombia",
+          "city": "Munich",
+          "country": "Germany",
           "produces": "",
           "claim_type": "",
           "source_url": ""
@@ -61262,24 +60644,24 @@
       "source_meta": {
         "source_title": "Siemens Energy Annual Report & Factory Records",
         "source_type": "industry_publication",
-        "source_url": "https://www.siemens-energy.com/"
+        "source_url": "https://www.siemens-energy.com/co/es.html"
       },
-      "completeness_score": 100,
-      "missing_fields": [],
+      "completeness_score": 90,
+      "missing_fields": [
+        "Test bay specifications & utility references"
+      ],
       "provenance_type": "TRANSFORMERPATH_RESEARCHED",
       "last_verified": "2026-08-28",
-      "research_completeness": 7,
+      "research_completeness": 6,
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
       "listing_tier": "listed",
       "verified": false,
       "sources": {
-        "website": "https://www.siemens-energy.com/",
+        "website": "https://www.siemens-energy.com/co/es.html",
         "capability_source": "Siemens Energy Annual Report & Factory Records",
-        "capability_note": "Global power transformer manufacturing network capacity based on annual corporate reporting and factory disclosures.",
-        "headquarters_source": "https://www.siemens-energy.com/global/en/home/general/corporate-information.html",
-        "headquarters_checked": "2026-10-15"
+        "capability_note": "Global power transformer manufacturing network capacity based on annual corporate reporting and factory disclosures."
       },
       "factory_count": 6
     },
@@ -61393,11 +60775,13 @@
         "source_type": "industry_publication",
         "source_url": "https://www.siemens-energy.com"
       },
-      "completeness_score": 100,
-      "missing_fields": [],
+      "completeness_score": 90,
+      "missing_fields": [
+        "Test bay specifications & utility references"
+      ],
       "provenance_type": "TRANSFORMERPATH_RESEARCHED",
       "last_verified": "2026-08-28",
-      "research_completeness": 7,
+      "research_completeness": 6,
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
@@ -62644,13 +62028,13 @@
         "special": {}
       },
       "voltage": {
-        "value": "",
-        "num": null,
+        "value": "765 kV",
+        "num": 765,
         "unit": "kV"
       },
       "mva": {
-        "value": "",
-        "num": null,
+        "value": "500 MVA",
+        "num": 500,
         "unit": "MVA"
       },
       "certs": [],
@@ -62668,29 +62052,27 @@
         }
       ],
       "capability_evidence": {
-        "products": "INFERRED",
-        "voltage": "UNKNOWN",
-        "mva": "UNKNOWN"
+        "products": "CONFIRMED",
+        "voltage": "CONFIRMED",
+        "mva": "CONFIRMED"
       },
-      "evidence": "INFERRED",
-      "claim_type": "INFERRED",
-      "confidence": "LIMITED",
+      "evidence": "CONFIRMED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
       "source_meta": {
-        "source_title": "",
-        "source_type": "",
+        "source_title": "https://www.skipperseil.com/",
+        "source_type": "industry_publication",
         "source_url": "https://www.skipperseil.com/"
       },
-      "completeness_score": 50,
+      "completeness_score": 70,
       "missing_fields": [
         "Headquarters address",
-        "Maximum voltage rating",
-        "Maximum unit MVA / rating",
         "Standards compliance (IEC/IEEE) & ISO certifications",
         "Test bay specifications & utility references"
       ],
-      "provenance_type": "PUBLIC_SOURCE",
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
       "last_verified": "2026-08-28",
-      "research_completeness": 4,
+      "research_completeness": 6,
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
@@ -62698,7 +62080,7 @@
       "verified": false,
       "sources": {
         "website": "https://www.skipperseil.com/",
-        "capability_source": "",
+        "capability_source": "https://www.skipperseil.com/",
         "capability_note": ""
       },
       "factory_count": 1
@@ -62731,18 +62113,19 @@
         "special": {}
       },
       "voltage": {
-        "value": "",
-        "num": null,
+        "value": "123 kV",
+        "num": 123,
         "unit": "kV"
       },
       "mva": {
-        "value": "",
-        "num": null,
+        "value": "125 MVA",
+        "num": 125,
         "unit": "MVA"
       },
       "certs": [],
       "testing_capability": null,
       "facility_ids": [
+        "fac:sonmez-trafo:kocaeli",
         "fac:sonmez-trafo:kocaeli-gebze"
       ],
       "factories": [
@@ -62752,32 +62135,37 @@
           "produces": "",
           "claim_type": "",
           "source_url": ""
+        },
+        {
+          "city": "Kocaeli",
+          "country": "Türkiye",
+          "produces": "",
+          "claim_type": "",
+          "source_url": "https://sonmeztrafo.com.tr/Sonmez-Trafo/Headquarters-and-Production-Facility"
         }
       ],
       "capability_evidence": {
-        "products": "INFERRED",
-        "voltage": "UNKNOWN",
-        "mva": "UNKNOWN"
+        "products": "CONFIRMED",
+        "voltage": "CONFIRMED",
+        "mva": "CONFIRMED"
       },
-      "evidence": "INFERRED",
-      "claim_type": "INFERRED",
-      "confidence": "LIMITED",
+      "evidence": "CONFIRMED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
       "source_meta": {
-        "source_title": "",
-        "source_type": "",
+        "source_title": "https://sonmeztrafo.com.tr/Sonmez-Trafo/Area-Of-Use/Power-Transformers",
+        "source_type": "industry_publication",
         "source_url": "https://sonmeztrafo.com.tr"
       },
-      "completeness_score": 50,
+      "completeness_score": 75,
       "missing_fields": [
         "Headquarters address",
-        "Maximum voltage rating",
-        "Maximum unit MVA / rating",
         "Standards compliance (IEC/IEEE) & ISO certifications",
         "Test bay specifications & utility references"
       ],
-      "provenance_type": "PUBLIC_SOURCE",
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
       "last_verified": "2026-08-28",
-      "research_completeness": 4,
+      "research_completeness": 6,
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
@@ -62785,10 +62173,10 @@
       "verified": false,
       "sources": {
         "website": "https://sonmeztrafo.com.tr",
-        "capability_source": "",
+        "capability_source": "https://sonmeztrafo.com.tr/Sonmez-Trafo/Area-Of-Use/Power-Transformers",
         "capability_note": ""
       },
-      "factory_count": 1
+      "factory_count": 2
     },
     {
       "id": "cmp:south-wales-electric-zimbabwe-swe",
@@ -66655,16 +66043,18 @@
         "special": {}
       },
       "voltage": {
-        "value": "",
-        "num": null,
+        "value": "52 kV",
+        "num": 52,
         "unit": "kV"
       },
       "mva": {
-        "value": "",
-        "num": null,
+        "value": "10 MVA",
+        "num": 10,
         "unit": "MVA"
       },
-      "certs": [],
+      "certs": [
+        "IEC"
+      ],
       "testing_capability": null,
       "facility_ids": [
         "fac:tek-transformator:ankara"
@@ -66679,29 +66069,26 @@
         }
       ],
       "capability_evidence": {
-        "products": "INFERRED",
-        "voltage": "UNKNOWN",
-        "mva": "UNKNOWN"
+        "products": "CONFIRMED",
+        "voltage": "CONFIRMED",
+        "mva": "CONFIRMED"
       },
-      "evidence": "INFERRED",
-      "claim_type": "INFERRED",
-      "confidence": "LIMITED",
+      "evidence": "CONFIRMED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
       "source_meta": {
-        "source_title": "",
-        "source_type": "",
+        "source_title": "https://tektransformator.com/products/power-grid-step-down-distribution-transformers",
+        "source_type": "industry_publication",
         "source_url": "https://tektransformator.com"
       },
-      "completeness_score": 50,
+      "completeness_score": 95,
       "missing_fields": [
         "Headquarters address",
-        "Maximum voltage rating",
-        "Maximum unit MVA / rating",
-        "Standards compliance (IEC/IEEE) & ISO certifications",
         "Test bay specifications & utility references"
       ],
-      "provenance_type": "PUBLIC_SOURCE",
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
       "last_verified": "2026-08-28",
-      "research_completeness": 4,
+      "research_completeness": 6,
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
@@ -66709,7 +66096,7 @@
       "verified": false,
       "sources": {
         "website": "https://tektransformator.com",
-        "capability_source": "",
+        "capability_source": "https://tektransformator.com/products/power-grid-step-down-distribution-transformers",
         "capability_note": ""
       },
       "factory_count": 1
@@ -70585,7 +69972,7 @@
       "slug": "trafotaipu",
       "country": "Brazil",
       "region": "Latin America",
-      "website": "https://trafotaipu.com.br",
+      "website": "",
       "headquarters": "",
       "product_codes": [
         "DT"
@@ -70614,11 +70001,11 @@
       "certs": [],
       "testing_capability": null,
       "facility_ids": [
-        "fac:trafotaipu:sao-paulo"
+        "fac:trafotaipu:cajamar"
       ],
       "factories": [
         {
-          "city": "São Paulo",
+          "city": "Cajamar, São Paulo",
           "country": "Brazil",
           "produces": "",
           "claim_type": "",
@@ -70636,26 +70023,27 @@
       "source_meta": {
         "source_title": "",
         "source_type": "",
-        "source_url": "https://trafotaipu.com.br"
+        "source_url": ""
       },
-      "completeness_score": 50,
+      "completeness_score": 40,
       "missing_fields": [
         "Headquarters address",
+        "Official corporate website",
         "Maximum voltage rating",
         "Maximum unit MVA / rating",
         "Standards compliance (IEC/IEEE) & ISO certifications",
         "Test bay specifications & utility references"
       ],
       "provenance_type": "PUBLIC_SOURCE",
-      "last_verified": "2026-08-28",
-      "research_completeness": 4,
-      "research_status": "ACTIVE_CONFIRMED",
+      "last_verified": "2026-08-15",
+      "research_completeness": 2,
+      "research_status": "RESEARCH_REQUIRED",
       "commercial_status": "LISTED",
       "featured": false,
       "listing_tier": "listed",
       "verified": false,
       "sources": {
-        "website": "https://trafotaipu.com.br",
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       },
@@ -71451,93 +70839,6 @@
       "verified": false,
       "sources": {
         "website": "http://www.transfocaribe.com/",
-        "capability_source": "",
-        "capability_note": ""
-      },
-      "factory_count": 1
-    },
-    {
-      "id": "cmp:transfobol-s-r-l-transformadores-bolivia",
-      "canonical_id": "cmp:transfobol-s-r-l-transformadores-bolivia",
-      "roles": [
-        "Transformer Manufacturer"
-      ],
-      "kind": "manufacturer",
-      "name": "Transfobol S.R.L. (Transformadores Bolivia)",
-      "slug": "transfobol-s-r-l-transformadores-bolivia",
-      "country": "Bolivia",
-      "region": "Latin America",
-      "website": "http://www.transfobol.com/",
-      "headquarters": "",
-      "product_codes": [
-        "DT"
-      ],
-      "capability_labels": [
-        "Distribution transformer"
-      ],
-      "transformer_types": {
-        "power": {},
-        "distribution": {
-          "__present": true
-        },
-        "dry_type": {},
-        "special": {}
-      },
-      "voltage": {
-        "value": "",
-        "num": null,
-        "unit": "kV"
-      },
-      "mva": {
-        "value": "",
-        "num": null,
-        "unit": "MVA"
-      },
-      "certs": [],
-      "testing_capability": null,
-      "facility_ids": [
-        "fac:transfobol-s-r-l-transformadores-bolivia:cochabamba"
-      ],
-      "factories": [
-        {
-          "city": "Cochabamba",
-          "country": "Bolivia",
-          "produces": "",
-          "claim_type": "",
-          "source_url": ""
-        }
-      ],
-      "capability_evidence": {
-        "products": "INFERRED",
-        "voltage": "UNKNOWN",
-        "mva": "UNKNOWN"
-      },
-      "evidence": "INFERRED",
-      "claim_type": "INFERRED",
-      "confidence": "LIMITED",
-      "source_meta": {
-        "source_title": "",
-        "source_type": "",
-        "source_url": "http://www.transfobol.com/"
-      },
-      "completeness_score": 50,
-      "missing_fields": [
-        "Headquarters address",
-        "Maximum voltage rating",
-        "Maximum unit MVA / rating",
-        "Standards compliance (IEC/IEEE) & ISO certifications",
-        "Test bay specifications & utility references"
-      ],
-      "provenance_type": "PUBLIC_SOURCE",
-      "last_verified": "2026-08-28",
-      "research_completeness": 4,
-      "research_status": "ACTIVE_CONFIRMED",
-      "commercial_status": "LISTED",
-      "featured": false,
-      "listing_tier": "listed",
-      "verified": false,
-      "sources": {
-        "website": "http://www.transfobol.com/",
         "capability_source": "",
         "capability_note": ""
       },
@@ -72982,7 +72283,7 @@
       "slug": "transformadores-paraguay-s-a-trafopar",
       "country": "Paraguay",
       "region": "Latin America",
-      "website": "https://www.trafopar.com.py",
+      "website": "",
       "headquarters": "",
       "product_codes": [
         "DT",
@@ -73037,26 +72338,27 @@
       "source_meta": {
         "source_title": "",
         "source_type": "",
-        "source_url": "https://www.trafopar.com.py"
+        "source_url": ""
       },
-      "completeness_score": 50,
+      "completeness_score": 40,
       "missing_fields": [
         "Headquarters address",
+        "Official corporate website",
         "Maximum voltage rating",
         "Maximum unit MVA / rating",
         "Standards compliance (IEC/IEEE) & ISO certifications",
         "Test bay specifications & utility references"
       ],
       "provenance_type": "PUBLIC_SOURCE",
-      "last_verified": "2026-08-28",
-      "research_completeness": 4,
-      "research_status": "ACTIVE_CONFIRMED",
+      "last_verified": "2026-08-15",
+      "research_completeness": 2,
+      "research_status": "RESEARCH_REQUIRED",
       "commercial_status": "LISTED",
       "featured": false,
       "listing_tier": "listed",
       "verified": false,
       "sources": {
-        "website": "https://www.trafopar.com.py",
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       },
@@ -77111,7 +76413,7 @@
       "slug": "uttam-bharat-electricals",
       "country": "India",
       "region": "South Asia",
-      "website": "https://www.uttambharat.com/",
+      "website": "https://www.uttam-bharat.com/",
       "headquarters": "",
       "product_codes": [
         "DT",
@@ -77166,7 +76468,7 @@
       "source_meta": {
         "source_title": "",
         "source_type": "",
-        "source_url": "https://www.uttambharat.com/"
+        "source_url": "https://www.uttam-bharat.com/"
       },
       "completeness_score": 50,
       "missing_fields": [
@@ -77185,7 +76487,7 @@
       "listing_tier": "listed",
       "verified": false,
       "sources": {
-        "website": "https://www.uttambharat.com/",
+        "website": "https://www.uttam-bharat.com/",
         "capability_source": "",
         "capability_note": ""
       },
@@ -77821,93 +77123,6 @@
       "factory_count": 1
     },
     {
-      "id": "cmp:vermeire-belting-and-transformers",
-      "canonical_id": "cmp:vermeire-belting-and-transformers",
-      "roles": [
-        "Transformer Manufacturer"
-      ],
-      "kind": "manufacturer",
-      "name": "Vermeire-Belting & Transformers",
-      "slug": "vermeire-belting-and-transformers",
-      "country": "Belgium",
-      "region": "Europe",
-      "website": "https://www.vermeire.com/",
-      "headquarters": "",
-      "product_codes": [
-        "DT"
-      ],
-      "capability_labels": [
-        "Distribution transformer"
-      ],
-      "transformer_types": {
-        "power": {},
-        "distribution": {
-          "__present": true
-        },
-        "dry_type": {},
-        "special": {}
-      },
-      "voltage": {
-        "value": "",
-        "num": null,
-        "unit": "kV"
-      },
-      "mva": {
-        "value": "",
-        "num": null,
-        "unit": "MVA"
-      },
-      "certs": [],
-      "testing_capability": null,
-      "facility_ids": [
-        "fac:vermeire-belting-and-transformers:verviers-brussels"
-      ],
-      "factories": [
-        {
-          "city": "Verviers / Brussels",
-          "country": "Belgium",
-          "produces": "",
-          "claim_type": "",
-          "source_url": ""
-        }
-      ],
-      "capability_evidence": {
-        "products": "INFERRED",
-        "voltage": "UNKNOWN",
-        "mva": "UNKNOWN"
-      },
-      "evidence": "INFERRED",
-      "claim_type": "INFERRED",
-      "confidence": "LIMITED",
-      "source_meta": {
-        "source_title": "",
-        "source_type": "",
-        "source_url": "https://www.vermeire.com/"
-      },
-      "completeness_score": 50,
-      "missing_fields": [
-        "Headquarters address",
-        "Maximum voltage rating",
-        "Maximum unit MVA / rating",
-        "Standards compliance (IEC/IEEE) & ISO certifications",
-        "Test bay specifications & utility references"
-      ],
-      "provenance_type": "PUBLIC_SOURCE",
-      "last_verified": "2026-08-28",
-      "research_completeness": 4,
-      "research_status": "ACTIVE_CONFIRMED",
-      "commercial_status": "LISTED",
-      "featured": false,
-      "listing_tier": "listed",
-      "verified": false,
-      "sources": {
-        "website": "https://www.vermeire.com/",
-        "capability_source": "",
-        "capability_note": ""
-      },
-      "factory_count": 1
-    },
-    {
       "id": "cmp:vijai-electricals",
       "canonical_id": "cmp:vijai-electricals",
       "roles": [
@@ -78423,8 +77638,8 @@
       "confidence": "MEDIUM",
       "source_meta": {
         "source_title": "Virginia Transformer Corp About Us",
-        "source_type": "company_website",
-        "source_url": "https://www.vatransformer.com/about-us/"
+        "source_type": "industry_publication",
+        "source_url": "https://www.vatransformer.com/"
       },
       "completeness_score": 85,
       "missing_fields": [
@@ -78442,8 +77657,7 @@
       "sources": {
         "website": "https://www.vatransformer.com/",
         "capability_source": "Virginia Transformer Corp About Us",
-        "capability_source_url": "https://www.vatransformer.com/about-us/",
-        "capability_note": "Checked 2026-10-15 at https://www.vatransformer.com/about-us/. Core-type liquid-filled ratings up to 400 MVA/525 kV class; shell-type up to 500 MVA/500 kV; six facilities; 67,000 MVA annual capacity; power transformers up to 1,400 MVA, 500 kV. 525 kV is the highest voltage class stated on that page."
+        "capability_note": "Checked 2026-10-15 at https://www.vatransformer.com/about-us/. The page states core-type liquid-filled ratings from 300 kVA up to 400 MVA/525 kV class, shell-type liquid-filled ratings from 60 MVA up to 500 MVA/500 kV, six facilities, 67,000 MVA annual capacity, and power transformers up to 1,400 MVA, 500 kV. 525 kV is the highest voltage class on that page, not a claim that every unit is 525 kV."
       },
       "factory_count": 1
     },
@@ -79118,16 +78332,18 @@
         "special": {}
       },
       "voltage": {
-        "value": "",
-        "num": null,
+        "value": "220 kV",
+        "num": 220,
         "unit": "kV"
       },
       "mva": {
-        "value": "",
-        "num": null,
+        "value": "160 MVA",
+        "num": 160,
         "unit": "MVA"
       },
-      "certs": [],
+      "certs": [
+        "IEC 60076-14"
+      ],
       "testing_capability": null,
       "facility_ids": [
         "fac:voltamp-transformers:vadodara"
@@ -79142,28 +78358,25 @@
         }
       ],
       "capability_evidence": {
-        "products": "INFERRED",
-        "voltage": "UNKNOWN",
-        "mva": "UNKNOWN"
+        "products": "CONFIRMED",
+        "voltage": "CONFIRMED",
+        "mva": "CONFIRMED"
       },
-      "evidence": "INFERRED",
-      "claim_type": "INFERRED",
-      "confidence": "LIMITED",
+      "evidence": "CONFIRMED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
       "source_meta": {
-        "source_title": "",
-        "source_type": "",
+        "source_title": "https://www.voltamptransformers.com/products/oil_filled_transformer",
+        "source_type": "industry_publication",
         "source_url": "https://www.voltamptransformers.com"
       },
-      "completeness_score": 60,
+      "completeness_score": 95,
       "missing_fields": [
-        "Headquarters address",
-        "Maximum voltage rating",
-        "Maximum unit MVA / rating",
-        "Standards compliance (IEC/IEEE) & ISO certifications"
+        "Headquarters address"
       ],
-      "provenance_type": "PUBLIC_SOURCE",
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
       "last_verified": "2026-08-28",
-      "research_completeness": 5,
+      "research_completeness": 7,
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
@@ -79171,7 +78384,7 @@
       "verified": false,
       "sources": {
         "website": "https://www.voltamptransformers.com",
-        "capability_source": "",
+        "capability_source": "https://www.voltamptransformers.com/products/oil_filled_transformer",
         "capability_note": ""
       },
       "factory_count": 1
@@ -80689,7 +79902,7 @@
       "certs": [
         "IEC"
       ],
-      "testing_capability": null,
+      "testing_capability": "routine-type",
       "facility_ids": [
         "fac:wilson-transformer-company:glen-waverley-wodonga"
       ],
@@ -80715,14 +79928,13 @@
         "source_type": "industry_publication",
         "source_url": "https://www.wtc.com.au"
       },
-      "completeness_score": 85,
+      "completeness_score": 95,
       "missing_fields": [
-        "Headquarters address",
-        "Test bay specifications & utility references"
+        "Headquarters address"
       ],
       "provenance_type": "TRANSFORMERPATH_RESEARCHED",
       "last_verified": "2026-08-28",
-      "research_completeness": 6,
+      "research_completeness": 7,
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
@@ -81958,7 +81170,8 @@
       "certs": [],
       "testing_capability": null,
       "facility_ids": [
-        "fac:zetrak:queretaro"
+        "fac:zetrak:queretaro",
+        "fac:zetrak:tlalnepantla"
       ],
       "factories": [
         {
@@ -82003,7 +81216,7 @@
         "capability_source": "",
         "capability_note": ""
       },
-      "factory_count": 1
+      "factory_count": 2
     },
     {
       "id": "cmp:zhejiang-huada-transformer",
@@ -83688,7 +82901,7 @@
       "slug": "banmore-electricals-pvt-ltd",
       "country": "India",
       "region": "Madhya Pradesh",
-      "website": "https://www.banmorecore.com",
+      "website": "https://web.archive.org/web/20260216211904/https://banmorecore.com/",
       "headquarters": "Gwalior, India",
       "product_codes": [],
       "capability_labels": [
@@ -83725,7 +82938,7 @@
       "source_meta": {
         "source_title": "website-checked",
         "source_type": "company_documentation",
-        "source_url": "https://www.banmorecore.com"
+        "source_url": "https://web.archive.org/web/20260216211904/https://banmorecore.com/"
       },
       "research_completeness": 0,
       "completeness_score": 50,
@@ -83734,7 +82947,7 @@
       "research_status": "Listed — official website recorded",
       "commercial_status": "",
       "sources": {
-        "website": "https://www.banmorecore.com"
+        "website": "https://web.archive.org/web/20260216211904/https://banmorecore.com/"
       },
       "factory_count": 0,
       "featured": false,
@@ -84217,7 +83430,7 @@
       "slug": "bhavnish-metal-india-private-limited",
       "country": "India",
       "region": "Haryana",
-      "website": "https://www.bhavnishmetal.com",
+      "website": "https://web.archive.org/web/20250319053413/https://bhavnishmetal.com/",
       "headquarters": "Faridabad, India",
       "product_codes": [],
       "capability_labels": [
@@ -84255,7 +83468,7 @@
       "source_meta": {
         "source_title": "website-checked",
         "source_type": "company_documentation",
-        "source_url": "https://www.bhavnishmetal.com"
+        "source_url": "https://web.archive.org/web/20250319053413/https://bhavnishmetal.com/"
       },
       "research_completeness": 0,
       "completeness_score": 50,
@@ -84264,7 +83477,7 @@
       "research_status": "Listed — official website recorded",
       "commercial_status": "",
       "sources": {
-        "website": "https://www.bhavnishmetal.com"
+        "website": "https://web.archive.org/web/20250319053413/https://bhavnishmetal.com/"
       },
       "factory_count": 0,
       "featured": false,
@@ -86082,6 +85295,72 @@
       "listing_tier": "listed"
     },
     {
+      "id": "cmp:elin-insulation-fz-llc",
+      "canonical_id": "cmp:elin-insulation-fz-llc",
+      "roles": [
+        "Material Supplier"
+      ],
+      "kind": "component_supplier",
+      "name": "Elin Insulation FZ LLC",
+      "slug": "elin-insulation-fz-llc",
+      "country": "United Arab Emirates",
+      "region": "",
+      "website": "https://www.elininsulation.com",
+      "headquarters": "Ras Al Khaimah, United Arab Emirates",
+      "product_codes": [],
+      "capability_labels": [
+        "Pressboard / insulation materials",
+        "Laminated wood / insulation wood",
+        "DDP / DPE (densified pressboard)"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {},
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [],
+      "factories": [],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
+      "source_meta": {
+        "source_title": "website-checked",
+        "source_type": "company_documentation",
+        "source_url": "https://www.elininsulation.com"
+      },
+      "research_completeness": 0,
+      "completeness_score": 50,
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
+      "last_verified": "2026-10-15",
+      "research_status": "Listed — official website recorded",
+      "commercial_status": "",
+      "sources": {
+        "website": "https://www.elininsulation.com"
+      },
+      "factory_count": 0,
+      "featured": false,
+      "verified": false,
+      "listing_tier": "listed"
+    },
+    {
       "id": "cmp:elprom-heavy-industries-voltap",
       "canonical_id": "cmp:elprom-heavy-industries-voltap",
       "roles": [
@@ -87679,71 +86958,6 @@
       "commercial_status": "",
       "sources": {
         "website": "https://www.hp.co.in"
-      },
-      "factory_count": 0,
-      "featured": false,
-      "verified": false,
-      "listing_tier": "listed"
-    },
-    {
-      "id": "cmp:hitachi-energy",
-      "canonical_id": "cmp:hitachi-energy",
-      "roles": [
-        "Component Manufacturer"
-      ],
-      "kind": "component_supplier",
-      "name": "Hitachi Energy",
-      "slug": "hitachi-energy",
-      "country": "Switzerland",
-      "region": "",
-      "website": "https://www.hitachienergy.com",
-      "headquarters": "Zurich, Switzerland",
-      "product_codes": [],
-      "capability_labels": [
-        "Bushings (HV, LV)",
-        "High voltage insulators / porcelain / composite shells"
-      ],
-      "transformer_types": {
-        "power": {},
-        "distribution": {},
-        "dry_type": {},
-        "special": {}
-      },
-      "voltage": {
-        "value": "",
-        "num": null,
-        "unit": "kV"
-      },
-      "mva": {
-        "value": "",
-        "num": null,
-        "unit": "MVA"
-      },
-      "certs": [],
-      "testing_capability": null,
-      "facility_ids": [],
-      "factories": [],
-      "capability_evidence": {
-        "products": "INFERRED",
-        "voltage": "UNKNOWN",
-        "mva": "UNKNOWN"
-      },
-      "evidence": "INFERRED",
-      "claim_type": "INDEPENDENTLY_SOURCED",
-      "confidence": "MEDIUM",
-      "source_meta": {
-        "source_title": "website-checked",
-        "source_type": "company_documentation",
-        "source_url": "https://www.hitachienergy.com"
-      },
-      "research_completeness": 0,
-      "completeness_score": 50,
-      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
-      "last_verified": "2026-08-31",
-      "research_status": "Official Website Checked",
-      "commercial_status": "",
-      "sources": {
-        "website": "https://www.hitachienergy.com"
       },
       "factory_count": 0,
       "featured": false,
@@ -94398,7 +93612,7 @@
       "slug": "sorbead-india",
       "country": "India",
       "region": "Gujarat",
-      "website": "https://www.sorbeadindia.com/",
+      "website": "https://web.archive.org/web/20241006185951/https://www.sorbeadindia.com/",
       "headquarters": "Vadodara, India",
       "product_codes": [],
       "capability_labels": [
@@ -94435,7 +93649,7 @@
       "source_meta": {
         "source_title": "website-checked",
         "source_type": "company_documentation",
-        "source_url": "https://www.sorbeadindia.com/"
+        "source_url": "https://web.archive.org/web/20241006185951/https://www.sorbeadindia.com/"
       },
       "research_completeness": 0,
       "completeness_score": 50,
@@ -94444,7 +93658,7 @@
       "research_status": "Official Website Checked",
       "commercial_status": "",
       "sources": {
-        "website": "https://www.sorbeadindia.com/"
+        "website": "https://web.archive.org/web/20241006185951/https://www.sorbeadindia.com/"
       },
       "factory_count": 0,
       "featured": false,
@@ -97605,7 +96819,7 @@
       "slug": "asta-intertek-uk",
       "country": "United Kingdom",
       "region": "Rugby, Warwickshire",
-      "website": "https://www.intertek.com/asta/",
+      "website": "https://www.intertek.com/power-transmission-distribution/asta-certification/",
       "headquarters": "Rugby, Warwickshire, United Kingdom",
       "product_codes": [
         "LAB_TESTING"
@@ -97651,7 +96865,7 @@
       "source_meta": {
         "source_title": "UKAS testing laboratory accreditation schedule",
         "source_type": "official_accreditation",
-        "source_url": "https://www.intertek.com/asta/"
+        "source_url": "https://www.intertek.com/power-transmission-distribution/asta-certification/"
       },
       "research_completeness": 9,
       "completeness_score": 95,
@@ -97660,7 +96874,7 @@
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "",
       "sources": {
-        "website": "https://www.intertek.com/asta/"
+        "website": "https://www.intertek.com/power-transmission-distribution/asta-certification/"
       },
       "factory_count": 0,
       "featured": false,
@@ -97758,11 +96972,7 @@
       ],
       "capability_labels": [
         "Independent Test Laboratory",
-        "ISO/IEC 17025",
-        "Impulse Testing",
-        "Short-Circuit Testing",
-        "PD Measurement",
-        "Oil & DGA Lab"
+        "ISO/IEC 17025"
       ],
       "transformer_types": {
         "power": {},
@@ -97975,11 +97185,7 @@
       ],
       "capability_labels": [
         "Independent Test Laboratory",
-        "ISO/IEC 17025",
-        "Impulse Testing",
-        "Short-Circuit Testing",
-        "PD Measurement",
-        "Oil & DGA Lab"
+        "ISO/IEC 17025"
       ],
       "transformer_types": {
         "power": {},
@@ -98267,11 +97473,7 @@
       ],
       "capability_labels": [
         "Independent Test Laboratory",
-        "ISO/IEC 17025",
-        "Impulse Testing",
-        "Short-Circuit Testing",
-        "PD Measurement",
-        "Oil & DGA Lab"
+        "ISO/IEC 17025"
       ],
       "transformer_types": {
         "power": {},
@@ -98413,11 +97615,7 @@
       ],
       "capability_labels": [
         "Independent Test Laboratory",
-        "ISO/IEC 17025",
-        "Impulse Testing",
-        "Short-Circuit Testing",
-        "PD Measurement",
-        "Oil & DGA Lab"
+        "ISO/IEC 17025"
       ],
       "transformer_types": {
         "power": {},
@@ -101942,7 +101140,7 @@
         "EDUCATION_TRAINING"
       ],
       "capability_labels": [
-        "Transformer Diagnostics & DGA Masterclass",
+        "Transformer Diagnostics and DGA Intensive",
         "Insulation Power Factor / Tan Delta Analysis",
         "Sweep Frequency Response Analysis (SFRA)",
         "Partial Discharge Detection in Power Transformers"
@@ -102157,7 +101355,7 @@
       "capability_labels": [
         "Transformer Design & Thermal Engineering",
         "Moisture in Transformers: Physics, Assessment & Drying",
-        "Dissolved Gas Analysis (DGA) Interpretation Masterclass",
+        "Dissolved Gas Analysis (DGA) Interpretation Intensive",
         "OLTC Application, Protection and Maintenance"
       ],
       "transformer_types": {

@@ -78,8 +78,8 @@ function regionOf(c) {
 }
 
 // Status label + filterable bucket.
-const STATUS_LABEL = { EXPECTED: 'Expected', OPEN: 'Open', CLOSING_SOON: 'Closing soon', CLOSED: 'Closed', EVALUATION: 'Evaluation', AWARDED: 'Awarded', UNKNOWN: 'Stage unknown', PROCUREMENT_PLAN: 'Procurement plan', FRAMEWORK: 'Framework', MOU: 'MoU' };
-const STATUS_GROUP = { EXPECTED: 'Pre-award', OPEN: 'Open', CLOSING_SOON: 'Open', CLOSED: 'Closed', EVALUATION: 'Evaluation', AWARDED: 'Awarded', UNKNOWN: 'Pre-award', PROCUREMENT_PLAN: 'Procurement plan', FRAMEWORK: 'Framework', MOU: 'MoU' };
+const STATUS_LABEL = { UNDATED: 'Tendering (deadline not stated)', EXPECTED: 'Expected', OPEN: 'Open', CLOSING_SOON: 'Closing soon', CLOSED: 'Closed', EVALUATION: 'Evaluation', AWARDED: 'Awarded', UNKNOWN: 'Stage unknown', PROCUREMENT_PLAN: 'Procurement plan', FRAMEWORK: 'Framework', MOU: 'MoU' };
+const STATUS_GROUP = { UNDATED: 'Pre-award', EXPECTED: 'Pre-award', OPEN: 'Open', CLOSING_SOON: 'Open', CLOSED: 'Closed', EVALUATION: 'Evaluation', AWARDED: 'Awarded', UNKNOWN: 'Pre-award', PROCUREMENT_PLAN: 'Procurement plan', FRAMEWORK: 'Framework', MOU: 'MoU' };
 
 function deriveStatus(stage, expected, deadline) {
   if (stage === 'procurement_plan') return 'PROCUREMENT_PLAN';
@@ -87,7 +87,12 @@ function deriveStatus(stage, expected, deadline) {
   if (stage === 'mou') return 'MOU';
   if (stage === 'evaluation') return 'EVALUATION';
   if (/award/i.test(stage)) return 'AWARDED';
-  if (stage === 'tendering') return classifyOpenDeadline(deadline);
+  if (stage === 'tendering') {
+    // A tender is shown as open only when the source names an exact closing
+    // date. Year-only or missing deadlines are never "Open".
+    if (/^\d{4}-\d{2}-\d{2}$/.test(String(deadline || ''))) return classifyOpenDeadline(deadline);
+    return classifyOpenDeadline(deadline) === 'CLOSED' ? 'CLOSED' : 'UNDATED';
+  }
   if (stage === 'expected' || stage === 'planned') return 'EXPECTED';
   return 'UNKNOWN';
 }
@@ -161,6 +166,7 @@ PROJECTS.forEach((p) => {
     source_urls: sources,
     source_verified: !!verifiedSource,
     expected_raw: p.expected || '',
+    deadline_raw: p.bid_deadline || '',
     stage,
     cls: p.related_intel || '',
     awardee: p.awardee || '',
@@ -322,7 +328,7 @@ INTEL_ITEMS.forEach(function (it) {
 console.log('official-portal procurement IDs added: ' + officialAdded);
 
 // Sort: open/expected first, then by region.
-const ORDER = { OPEN: 0, CLOSING_SOON: 1, EXPECTED: 2, EVALUATION: 3, PROCUREMENT_PLAN: 4, FRAMEWORK: 5, MOU: 6, AWARDED: 7, CLOSED: 8, UNKNOWN: 9 };
+const ORDER = { OPEN: 0, CLOSING_SOON: 1, UNDATED: 2, EXPECTED: 2, EVALUATION: 3, PROCUREMENT_PLAN: 4, FRAMEWORK: 5, MOU: 6, AWARDED: 7, CLOSED: 8, UNKNOWN: 9 };
 tenders.sort((a, b) => (ORDER[a.status] - ORDER[b.status]) || String(a.country).localeCompare(b.country));
 
 const stats = {
@@ -344,6 +350,7 @@ console.log('tenders.json wrote ' + tenders.length + ' tenders (' + stats.by_sta
 const T_STATUS_LEGEND = {
   OPEN: 'The official sourcing event is open for submissions.',
   CLOSING_SOON: 'The submission deadline is within the next two weeks.',
+  UNDATED: 'A tender was reported, but the source names no exact closing date, so it is not shown as open. Check the official source.',
   EXPECTED: 'A tender is expected / planned but not yet open.',
   EVALUATION: 'Bids are under evaluation (or an L1 / lowest-bidder notice is published).',
   AWARDED: 'The source confirms an award has been made.',
@@ -413,7 +420,7 @@ console.log('tender entity pages wrote: ' + tSlugs.size);
   tenders.forEach((t) => { (regions[t.region] = regions[t.region] || []).push(t); });
   const regionKeys = Object.keys(regions).sort((a, b) => (REGION_ORDER[a] ?? 9) - (REGION_ORDER[b] ?? 9));
   const style = '.t-wrap{max-width:1080px;margin:0 auto;padding:44px 20px 90px}.t-wrap h1{font-size:2rem;color:var(--ink)}.t-stats{display:flex;flex-wrap:wrap;gap:14px;margin:14px 0 24px}.t-stats .s{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 18px;text-align:center;min-width:120px}.t-stats .s b{color:var(--text);font-size:1.3rem;display:block}.t-stats .s small{color:var(--muted);font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em}.region-h{font-size:1.02rem;font-weight:800;color:var(--ink);text-transform:uppercase;letter-spacing:.05em;margin:24px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--border)}.t-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);font-size:.92rem}.t-row .t-title{color:var(--accent);font-weight:700;font-size:.95rem;text-decoration:none;flex:1}.t-row .t-title:hover{text-decoration:underline}.t-row .t-meta{color:var(--muted);font-size:.8rem}.st{display:inline-block;font-weight:700;font-size:.66rem;letter-spacing:.04em;padding:1px 8px;border-radius:8px;text-transform:uppercase}.st-open{background:#14351f;color:#4ade80}.st-expected{background:#2a2413;color:#e8c46a}.st-closing{background:#2a1a13;color:#fb923c}.st-eval{background:#12283f;color:#60a5fa}.st-awarded{background:#0f2a2a;color:#2dd4bf}.st-closed{background:#1d2330;color:#9fb0c4}.st-unknown{background:#1d2330;color:#9fb0c4}.t-note{color:var(--muted);font-size:.8rem;margin-top:20px}.t-filters{margin:0 0 18px}.scope-filter{font:inherit;font-weight:800;font-size:.95rem;padding:10px 16px;border-radius:999px;border:2px solid #4ade80;background:#14351f;color:#4ade80;cursor:pointer}.scope-filter[aria-pressed="true"]{background:#4ade80;color:#05210f}.scope-badge{display:inline-block;font-weight:800;font-size:.66rem;letter-spacing:.03em;padding:2px 8px;border-radius:8px;background:#14351f;color:#4ade80;border:1px solid rgba(74,222,128,.45)}';
-  const stCls = { OPEN: 'st-open', CLOSING_SOON: 'st-closing', EXPECTED: 'st-expected', EVALUATION: 'st-eval', AWARDED: 'st-awarded', CLOSED: 'st-closed', UNKNOWN: 'st-unknown', PROCUREMENT_PLAN: 'st-expected', FRAMEWORK: 'st-expected', MOU: 'st-expected' };
+  const stCls = { OPEN: 'st-open', CLOSING_SOON: 'st-closing', UNDATED: 'st-expected', EXPECTED: 'st-expected', EVALUATION: 'st-eval', AWARDED: 'st-awarded', CLOSED: 'st-closed', UNKNOWN: 'st-unknown', PROCUREMENT_PLAN: 'st-expected', FRAMEWORK: 'st-expected', MOU: 'st-expected' };
   const body = regionKeys.map((region) => {
     const rows = regions[region].sort((a, b) => (ORDER[a.status] - ORDER[b.status]) || String(a.title).localeCompare(b.title)).map((t) => {
       const confirmed = t.transformer_scope === 'CONFIRMED';
@@ -430,7 +437,7 @@ console.log('tender entity pages wrote: ' + tSlugs.size);
     '<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any"><link rel="stylesheet" href="style.css?v=13"><style>' + style + '</style><link rel="stylesheet" href="tp-nav.css?v=14">\n</head><body>\n' + HEAD + '\n<main class="t-wrap">' +
     '<h1>Transformer <span style="color:var(--accent)">Tender Watch</span></h1>' +
     '<p class="lead" style="color:var(--muted);font-size:1.02rem;max-width:840px;margin:8px 0 18px">A worldwide directory of transformer-relevant tenders, bids and procurement opportunities, tracked by region and country. Derived from public, source-backed signals — the same data behind the Project database and Daily Intel. Every tender links to its source; TransformerPath does not republish restricted procurement documentation. <a href="/tenders/countries.html" style="color:var(--accent)">Country tender pages</a> list each country’s tenders, link a sourced award where one exists, and show directory manufacturers as directory matches. <a href="/lead-times.html" style="color:var(--accent)">Lead times and factory capacity</a> is a free tracker of sourced, dated figures.</p>' +
-    '<div class="t-stats"><div class="s"><b>' + tenders.length + '</b><small>Tenders</small></div><div class="s"><b>' + ((stats.by_status.OPEN || 0) + (stats.by_status.CLOSING_SOON || 0)) + '</b><small>Open now</small></div><div class="s"><b>' + ((stats.by_status.EVALUATION || 0) + (stats.by_status.EXPECTED || 0)) + '</b><small>Pre-award</small></div><div class="s"><b>' + (stats.by_status.AWARDED || 0) + '</b><small>Awarded</small></div><div class="s"><b>' + stats.countries + '</b><small>Countries</small></div></div>' +
+    '<div class="t-stats"><div class="s"><b>' + tenders.length + '</b><small>Tenders</small></div><div class="s"><b>' + ((stats.by_status.OPEN || 0) + (stats.by_status.CLOSING_SOON || 0)) + '</b><small>Open now</small></div><div class="s"><b>' + ((stats.by_status.EVALUATION || 0) + (stats.by_status.EXPECTED || 0) + (stats.by_status.UNDATED || 0)) + '</b><small>Pre-award</small></div><div class="s"><b>' + (stats.by_status.AWARDED || 0) + '</b><small>Awarded</small></div><div class="s"><b>' + stats.countries + '</b><small>Countries</small></div></div>' +
     '<div class="t-filters"><button type="button" id="scopeFilter" class="scope-filter" aria-pressed="false">Confirmed transformer scope</button></div>' +
     body +
     '<p class="t-note">Tender metadata is public and source-tracked. Status is derived only from the source (e.g. OPEN/EXPECTED/EVALUATION/AWARDED) and may change — verify against the official procurement source before acting. Report a <a href="mailto:hello@transformerpath.com?subject=Tender%20correction" style="color:var(--accent)">correction</a>.</p>' +

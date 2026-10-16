@@ -54,7 +54,9 @@ check('the North America copy of the AEP Ohio item is gone', !feed['North Americ
 const usaAep = (feed.USA.items || []).filter(function (it) {
   return it.url === 'https://www.utilitydive.com/news/aep-ohio-puco-transmission-filing-data-centers/829104/';
 });
-check('one USA copy of the AEP Ohio item remains', usaAep.length === 1);
+check('the unbacked AEP Ohio item is retired from every region', usaAep.length === 0);
+const RETIRED_URLS = ['tndindia.com/pgcil-approves-investment', 'al-babtain-awarded-al-hasa-north', 'siemens-energy-tennet-complete-balwin3-fat', 'bad-honnef-testing-expansion', 'dewa-floats-12-substation-tender', 'aep-ohio-puco-transmission-filing-data-centers'];
+check('none of the six unbacked intel items remain', !JSON.stringify(feed).match(new RegExp(RETIRED_URLS.join('|').replace(/\./g, '\\.'))));
 
 function findItem(title) {
   let hit = null;
@@ -63,9 +65,7 @@ function findItem(title) {
   });
   return hit;
 }
-const dewa = findItem('DEWA floats EPC tender for twelve 132/11 kV substations in Dubai South and Expo Valley development zones');
-check('DEWA twelve-substation item is the UAE', dewa && dewa.country === 'United Arab Emirates');
-check('DEWA close date is 28 Oct 2026 from the snippet', dewa && dewa.tender_close_date === '2026-10-28');
+check('the unbacked DEWA twelve-substation item is gone', !findItem('DEWA floats EPC tender for twelve 132/11 kV substations in Dubai South and Expo Valley development zones'));
 const amprion = findItem('Amprion launches tender for decentralised grid booster projects');
 check('Amprion item is Germany', amprion && amprion.country === 'Germany');
 const iraq = findItem('Iraq Ministry of Electricity to procure 4,026 locally-made transformers');
@@ -88,16 +88,18 @@ check('KAHRAMAA no longer cites example.com', kah && kah.sources.every(usableSou
 check('KAHRAMAA uses the SaudiGulf report already cited for this package', kah && kah.sources[0].indexOf('saudigulfprojects.com/2026/04/kahramaa-invites-bids') >= 0);
 check('KAHRAMAA transformer scope is inferred, not confirmed', kah && kah.transformer_requirement === 'INFERRED');
 const gcc = projects.find(function (p) { return p.project === 'GCCIA Saudi-Kuwait interconnection'; });
-check('GCCIA Saudi-Kuwait has no source URL', gcc && (!gcc.sources || gcc.sources.length === 0));
-check('GCCIA is labeled withheld', gcc && /No source URL on file/.test(gcc.source_note || ''));
+check('GCCIA Saudi-Kuwait now cites real sources', gcc && gcc.sources.length >= 1 && gcc.sources.every(usableSource));
+check('GCCIA no longer carries the withheld note', gcc && !gcc.source_note);
+const cim = projects.find(function (p) { return /Cimarr/.test(p.project); });
+check('Cimarron is operating', cim && cim.status === 'energized');
+const asw = projects.find(function (p) { return /Atlantic Shores South/.test(p.project); });
+check('Atlantic Shores South is cancelled', asw && asw.status === 'cancelled');
 
 const tenders = JSON.parse(fs.readFileSync('data/tenders.json', 'utf8'));
 const rows = tenders.tenders || [];
 function tender(title) { return rows.find(function (t) { return t.title === title; }); }
-const dewaT = tender('DEWA floats EPC tender for twelve 132/11 kV substations in Dubai South and Expo Valley development zones');
-check('DEWA tender country is the UAE', dewaT && dewaT.country === 'United Arab Emirates', dewaT && dewaT.country);
-check('DEWA tender deadline is 2026-10-28', dewaT && dewaT.deadline === '2026-10-28', dewaT && dewaT.deadline);
-check('DEWA tender is closing soon on 15 Oct 2026', dewaT && (dewaT.status === 'CLOSING_SOON' || dewaT.status === 'OPEN'), dewaT && dewaT.status);
+check('the fake DEWA twelve-substation tender is gone', !tender('DEWA floats EPC tender for twelve 132/11 kV substations in Dubai South and Expo Valley development zones'));
+check('no tender is open without an exact deadline', rows.every(function (t) { return (t.status !== 'OPEN' && t.status !== 'CLOSING_SOON') || /^\d{4}-\d{2}-\d{2}$/.test(t.deadline || ''); }));
 const omanT = tender('Oman (Nama) floats international tender for 800–1,000 MW green-hydrogen power plant');
 check('Oman Nama consulting deadline is not an open tender', omanT && omanT.status === 'CLOSED', omanT && omanT.status);
 check('Oman Nama deadline is 21 June 2026', omanT && omanT.deadline === '2026-06-21', omanT && omanT.deadline);
@@ -116,7 +118,8 @@ check('Amprion tender country is Germany', ampT && ampT.country === 'Germany', a
 const iraqT = tender('Iraq Ministry of Electricity to procure 4,026 locally-made transformers');
 check('Iraq tender country is Iraq', iraqT && iraqT.country === 'Iraq', iraqT && iraqT.country);
 check('Iraq tender region follows the project map', iraqT && iraqT.region === 'Middle East', iraqT && iraqT.region);
-check('GCCIA is not a published tender', !tender('GCCIA Saudi-Kuwait interconnection'));
+const gccT = tender('GCCIA Saudi-Kuwait interconnection');
+check('GCCIA (now sourced) is never shown as an open tender', !gccT || (gccT.status !== 'OPEN' && gccT.status !== 'CLOSING_SOON'), gccT && gccT.status);
 const kahT = tender('KAHRAMAA 2026 transmission expansion EPC');
 check('KAHRAMAA tender source is not a placeholder', kahT && usableSource(kahT.official_procurement_url));
 check('KAHRAMAA tender is not open', kahT && kahT.status !== 'OPEN' && kahT.status !== 'CLOSING_SOON', kahT && kahT.status);

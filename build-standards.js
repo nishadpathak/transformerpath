@@ -105,7 +105,7 @@ const STANDARDS_DATA = (() => {
 const stdJson = scrubLegacyLabels(JSON.stringify(STANDARDS_DATA));
 
 const html = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Global Transformer Standards & Regulations Directory — IEC, IEEE, National Standards | TransformerPath</title>' +
-  '<meta name="description" content="Worldwide directory of electrical transformer standards, test codes, and regulatory efficiency mandates (IEC 60076, IEEE C57, EU Ecodesign, US DOE 2027, IS 1180, GB/T 1094). Verified scopes, frequencies, and voltage levels.">' +
+  '<meta name="description" content="Worldwide directory of electrical transformer standards, test codes, and regulatory efficiency mandates (IEC 60076, IEEE C57, EU Ecodesign, US DOE 2024, IS 1180, GB/T 1094). Verified scopes, frequencies, and voltage levels.">' +
   '<link rel="canonical" href="https://transformerpath.com/standards.html"><meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath"><meta property="og:title" content="Global Transformer Standards & Regulations Directory"><meta property="og:url" content="https://transformerpath.com/standards.html"><meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow"><meta name="theme-color" content="#0d1b2e">' +
   '<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any"><link rel="stylesheet" href="style.css?v=15"><link rel="stylesheet" href="tp-nav.css?v=15"><style>' + style + 
   '.std-reg-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px;display:flex;flex-direction:column;transition:border-color .15s}' +
@@ -119,7 +119,7 @@ const html = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta cha
   '</style></head><body>\n' + HEAD + '\n<main class="std-wrap">' +
   '<nav style="font-size:.82rem;color:var(--muted);margin-bottom:12px"><a href="index.html" style="color:var(--accent)">Home</a> › <a href="directory.html" style="color:var(--accent)">Directory</a> › Standards &amp; Regulations</nav>' +
   '<h1>Transformer <span style="color:var(--accent)">Standards &amp; Regulations</span> Directory</h1>' +
-  '<p class="lead">A worldwide, verified directory of electrical transformer standards, test codes, energy efficiency mandates (EU Ecodesign Tier 2, US DOE 2027), and grid interconnection regulations. Includes direct links to official standards bodies and national grid characteristics from the TransformerPath census.</p>' +
+  '<p class="lead">A worldwide, verified directory of electrical transformer standards, test codes, energy efficiency mandates (EU Ecodesign Tier 2, US DOE 2024), and grid interconnection regulations. Includes direct links to official standards bodies and national grid characteristics from the TransformerPath census.</p>' +
   '<div class="std-stats">' +
     '<div class="s"><b>' + STANDARDS_DATA.length + '</b><small>Core Standards Listed</small></div>' +
     '<div class="s"><b>' + totalCountries + '</b><small>Countries in Grid Census</small></div>' +
@@ -130,7 +130,7 @@ const html = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta cha
   '<h2 class="std-h2">Global Standards &amp; Regulations Directory</h2>' +
   '<p style="color:var(--muted);font-size:.9rem;margin-bottom:14px">Search and filter verified transformer standards by code, country, standards body, or category:</p>' +
   '<div class="std-tools" style="margin-bottom:20px">' +
-    '<input id="stdSearch" type="search" placeholder="Search standard (e.g. IEC 60076, IEEE C57, DOE 2027, IS 1180, GB 1094)..." style="flex:1;min-width:240px">' +
+    '<input id="stdSearch" type="search" placeholder="Search standard (e.g. IEC 60076, IEEE C57, DOE 2024, IS 1180, GB 1094)..." style="flex:1;min-width:240px">' +
     '<select id="stdCountry"><option value="">All Countries / International</option></select>' +
     '<select id="stdCategory"><option value="">All Categories</option></select>' +
     '<button id="stdReset" class="btn btn-outline btn-sm">Reset</button>' +

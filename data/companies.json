@@ -1,7 +1,7 @@
 {
   "$schema": "https://transformerpath.com/companies.schema.json",
-  "generated_at": "2026-10-14T11:58:52.265Z",
-  "count": 1170,
+  "generated_at": "2026-10-16T05:58:37.097Z",
+  "count": 1158,
   "companies": [
     {
       "id": "cmp:a-plus-power-solution",
@@ -1880,14 +1880,14 @@
         "TR_DISTRIBUTION"
       ],
       "commercial_status": "LISTED",
-      "completeness_score": 50,
+      "completeness_score": 70,
       "provenance": {
-        "type": "PUBLIC_SOURCE",
+        "type": "TRANSFORMERPATH_RESEARCHED",
         "last_verified": "2026-08-28"
       },
       "sources": {
         "website": "https://www.andrewyule.com",
-        "capability_source": "",
+        "capability_source": "https://www.andrewyule.com/transformers.php",
         "capability_note": ""
       }
     },
@@ -2607,7 +2607,7 @@
         "city": "Rugby, Warwickshire",
         "address": ""
       },
-      "website": "https://www.intertek.com/asta/",
+      "website": "https://www.intertek.com/power-transmission-distribution/asta-certification/",
       "facility_ids": [],
       "factory_count": 0,
       "capabilities": [
@@ -2621,7 +2621,7 @@
         "last_verified": "2026-08-28"
       },
       "sources": {
-        "website": "https://www.intertek.com/asta/",
+        "website": "https://www.intertek.com/power-transmission-distribution/asta-certification/",
         "capability_source": "",
         "capability_note": ""
       }
@@ -2640,9 +2640,10 @@
       },
       "website": "https://astoras.com.tr",
       "facility_ids": [
-        "fac:astor-enerji-a-s:ankara"
+        "fac:astor-enerji-a-s:ankara",
+        "fac:astor-enerji-a-s:sincan"
       ],
-      "factory_count": 1,
+      "factory_count": 2,
       "capabilities": [
         "SR",
         "TR_DISTRIBUTION",
@@ -2650,14 +2651,14 @@
         "TR_POWER"
       ],
       "commercial_status": "LISTED",
-      "completeness_score": 50,
+      "completeness_score": 100,
       "provenance": {
-        "type": "PUBLIC_SOURCE",
+        "type": "TRANSFORMERPATH_RESEARCHED",
         "last_verified": "2026-08-28"
       },
       "sources": {
         "website": "https://astoras.com.tr",
-        "capability_source": "",
+        "capability_source": "https://astoras.com.tr/en/power-transformers/power-transformers/",
         "capability_note": ""
       }
     },
@@ -2675,21 +2676,22 @@
       },
       "website": "https://www.ankaratrafo.com.tr",
       "facility_ids": [
-        "fac:atas-trafo:ankara"
+        "fac:atas-trafo:ankara",
+        "fac:atas-trafo:sincan"
       ],
-      "factory_count": 1,
+      "factory_count": 2,
       "capabilities": [
         "TR_DISTRIBUTION"
       ],
       "commercial_status": "LISTED",
-      "completeness_score": 50,
+      "completeness_score": 85,
       "provenance": {
-        "type": "PUBLIC_SOURCE",
+        "type": "TRANSFORMERPATH_RESEARCHED",
         "last_verified": "2026-08-28"
       },
       "sources": {
         "website": "https://www.ankaratrafo.com.tr",
-        "capability_source": "",
+        "capability_source": "https://www.ankaratrafo.com.tr/en/products-category/guc-trafolari",
         "capability_note": ""
       }
     },
@@ -2715,14 +2717,14 @@
         "TR_POWER"
       ],
       "commercial_status": "LISTED",
-      "completeness_score": 60,
+      "completeness_score": 100,
       "provenance": {
-        "type": "PUBLIC_SOURCE",
+        "type": "TRANSFORMERPATH_RESEARCHED",
         "last_verified": "2026-08-28"
       },
       "sources": {
         "website": "https://aetrafo.com",
-        "capability_source": "",
+        "capability_source": "https://aetrafo.com/products/power-transformers.aspx",
         "capability_note": ""
       }
     },
@@ -3060,7 +3062,7 @@
         "city": "Gwalior",
         "address": ""
       },
-      "website": "https://www.banmorecore.com",
+      "website": "https://web.archive.org/web/20260216211904/https://banmorecore.com/",
       "facility_ids": [],
       "factory_count": 0,
       "capabilities": [
@@ -3073,7 +3075,7 @@
         "last_verified": "2026-08-28"
       },
       "sources": {
-        "website": "https://www.banmorecore.com",
+        "website": "https://web.archive.org/web/20260216211904/https://banmorecore.com/",
         "capability_source": "",
         "capability_note": ""
       }
@@ -3578,38 +3580,6 @@
       }
     },
     {
-      "id": "cmp:berytech-energy-liban-cables-and-transfo",
-      "name": "Berytech Energy / Liban Cables & Transfo",
-      "slug": "berytech-energy-liban-cables-and-transfo",
-      "roles": [
-        "Transformer Manufacturer"
-      ],
-      "headquarters": {
-        "country": "Lebanon",
-        "city": "",
-        "address": ""
-      },
-      "website": "http://www.libancables.com/",
-      "facility_ids": [
-        "fac:berytech-energy-liban-cables-and-transfo:dekwaneh"
-      ],
-      "factory_count": 1,
-      "capabilities": [
-        "TR_DISTRIBUTION"
-      ],
-      "commercial_status": "LISTED",
-      "completeness_score": 50,
-      "provenance": {
-        "type": "PUBLIC_SOURCE",
-        "last_verified": "2026-08-28"
-      },
-      "sources": {
-        "website": "http://www.libancables.com/",
-        "capability_source": "",
-        "capability_note": ""
-      }
-    },
-    {
       "id": "cmp:best-transformer",
       "name": "BEST Transformer",
       "slug": "best-transformer",
@@ -3632,14 +3602,14 @@
         "TR_POWER"
       ],
       "commercial_status": "LISTED",
-      "completeness_score": 50,
+      "completeness_score": 80,
       "provenance": {
-        "type": "PUBLIC_SOURCE",
+        "type": "TRANSFORMERPATH_RESEARCHED",
         "last_verified": "2026-08-28"
       },
       "sources": {
         "website": "https://www.besttransformer.com",
-        "capability_source": "",
+        "capability_source": "https://www.besttransformer.com/en/products/power-transformers",
         "capability_note": ""
       }
     },
@@ -3799,14 +3769,14 @@
         "TR_POWER"
       ],
       "commercial_status": "LISTED",
-      "completeness_score": 50,
+      "completeness_score": 95,
       "provenance": {
-        "type": "PUBLIC_SOURCE",
+        "type": "TRANSFORMERPATH_RESEARCHED",
         "last_verified": "2026-08-28"
       },
       "sources": {
         "website": "https://www.bharatbijlee.com",
-        "capability_source": "",
+        "capability_source": "https://www.bharatbijlee.com/transformers/overview/",
         "capability_note": ""
       }
     },
@@ -3887,7 +3857,7 @@
         "city": "Faridabad",
         "address": ""
       },
-      "website": "https://www.bhavnishmetal.com",
+      "website": "https://web.archive.org/web/20250319053413/https://bhavnishmetal.com/",
       "facility_ids": [],
       "factory_count": 0,
       "capabilities": [
@@ -3901,7 +3871,7 @@
         "last_verified": "2026-08-28"
       },
       "sources": {
-        "website": "https://www.bhavnishmetal.com",
+        "website": "https://web.archive.org/web/20250319053413/https://bhavnishmetal.com/",
         "capability_source": "",
         "capability_note": ""
       }
@@ -4469,9 +4439,9 @@
         "city": "",
         "address": ""
       },
-      "website": "http://cadetra.com",
+      "website": "https://cadetra.com/",
       "facility_ids": [
-        "fac:cadetra:caracas"
+        "fac:cadetra:barcelona"
       ],
       "factory_count": 1,
       "capabilities": [
@@ -4484,7 +4454,7 @@
         "last_verified": "2026-08-28"
       },
       "sources": {
-        "website": "http://cadetra.com",
+        "website": "https://cadetra.com/",
         "capability_source": "",
         "capability_note": ""
       }
@@ -5028,15 +4998,15 @@
         "TR_DISTRIBUTION"
       ],
       "commercial_status": "LISTED",
-      "completeness_score": 85,
+      "completeness_score": 50,
       "provenance": {
-        "type": "TRANSFORMERPATH_RESEARCHED",
+        "type": "PUBLIC_SOURCE",
         "last_verified": "2026-08-28"
       },
       "sources": {
         "website": "https://www.cgglobal.com/",
-        "capability_source": "CG Power and Industrial Solutions Annual Report",
-        "capability_note": "Bhopal and Malanpur power transformer capacity disclosed in BSE/NSE audited annual filings."
+        "capability_source": "",
+        "capability_note": "The CG Power annual report discloses the Bhopal and Malanpur, India plant figures. Those figures are not a sourced rating for the Cavan plant, so they are not shown here."
       }
     },
     {
@@ -5067,39 +5037,6 @@
       },
       "sources": {
         "website": "https://www.chakira.com.tn/",
-        "capability_source": "",
-        "capability_note": ""
-      }
-    },
-    {
-      "id": "cmp:chang-yang-electric",
-      "name": "Chang Yang Electric",
-      "slug": "chang-yang-electric",
-      "roles": [
-        "Transformer Manufacturer"
-      ],
-      "headquarters": {
-        "country": "Taiwan",
-        "city": "",
-        "address": ""
-      },
-      "website": "https://www.changyang.com.tw/",
-      "facility_ids": [
-        "fac:chang-yang-electric:new-taipei-city"
-      ],
-      "factory_count": 1,
-      "capabilities": [
-        "TR_DISTRIBUTION",
-        "TR_DRY_CAST"
-      ],
-      "commercial_status": "LISTED",
-      "completeness_score": 50,
-      "provenance": {
-        "type": "PUBLIC_SOURCE",
-        "last_verified": "2026-08-28"
-      },
-      "sources": {
-        "website": "https://www.changyang.com.tw/",
         "capability_source": "",
         "capability_note": ""
       }
@@ -5482,7 +5419,7 @@
         "TR_DISTRIBUTION"
       ],
       "commercial_status": "LISTED",
-      "completeness_score": 50,
+      "completeness_score": 60,
       "provenance": {
         "type": "PUBLIC_SOURCE",
         "last_verified": "2026-08-28"
@@ -6258,14 +6195,14 @@
         "TR_POWER"
       ],
       "commercial_status": "LISTED",
-      "completeness_score": 50,
+      "completeness_score": 100,
       "provenance": {
-        "type": "PUBLIC_SOURCE",
+        "type": "TRANSFORMERPATH_RESEARCHED",
         "last_verified": "2026-08-28"
       },
       "sources": {
         "website": "https://www.danish.co.in",
-        "capability_source": "",
+        "capability_source": "https://www.danish.co.in/liquid-immersed-transformers",
         "capability_note": ""
       }
     },
@@ -7634,9 +7571,10 @@
       },
       "website": "https://www.efacec.com",
       "facility_ids": [
-        "fac:efacec:arroteia"
+        "fac:efacec:arroteia",
+        "fac:efacec:maia"
       ],
-      "factory_count": 1,
+      "factory_count": 2,
       "capabilities": [
         "SR",
         "TR_DISTRIBUTION",
@@ -7644,48 +7582,15 @@
         "TR_POWER"
       ],
       "commercial_status": "LISTED",
-      "completeness_score": 85,
+      "completeness_score": 95,
       "provenance": {
-        "type": "OFFICIAL_SOURCE",
+        "type": "PUBLIC_SOURCE",
         "last_verified": "2026-08-28"
       },
       "sources": {
         "website": "https://www.efacec.com",
         "capability_source": "EFACEC Corporate Sustainability & Annual Filing",
         "capability_note": "Arroteia transformer manufacturing plant capacity and maximum voltage ratings reported in corporate filings."
-      }
-    },
-    {
-      "id": "cmp:efacec-distribution-transformers",
-      "name": "EFACEC Distribution Transformers",
-      "slug": "efacec-distribution-transformers",
-      "roles": [
-        "Transformer Manufacturer"
-      ],
-      "headquarters": {
-        "country": "Portugal",
-        "city": "",
-        "address": ""
-      },
-      "website": "https://www.efacec.pt/",
-      "facility_ids": [
-        "fac:efacec-distribution-transformers:maia"
-      ],
-      "factory_count": 1,
-      "capabilities": [
-        "TR_DISTRIBUTION",
-        "TR_DRY_CAST"
-      ],
-      "commercial_status": "LISTED",
-      "completeness_score": 50,
-      "provenance": {
-        "type": "PUBLIC_SOURCE",
-        "last_verified": "2026-08-28"
-      },
-      "sources": {
-        "website": "https://www.efacec.pt/",
-        "capability_source": "",
-        "capability_note": ""
       }
     },
     {
@@ -8415,7 +8320,7 @@
         "city": "",
         "address": ""
       },
-      "website": "https://electronetics.com",
+      "website": "https://www.electronetics.us/",
       "facility_ids": [
         "fac:electronetics-llc:usa"
       ],
@@ -8430,7 +8335,7 @@
         "last_verified": "2026-08-15"
       },
       "sources": {
-        "website": "https://electronetics.com",
+        "website": "https://www.electronetics.us/",
         "capability_source": "Electronetics Technical Documentation & ISO Certification",
         "capability_note": "Annual production capacity not publicly disclosed in regulatory filings."
       }
@@ -8760,6 +8665,38 @@
       }
     },
     {
+      "id": "cmp:elin-insulation-fz-llc",
+      "name": "Elin Insulation FZ LLC",
+      "slug": "elin-insulation-fz-llc",
+      "roles": [
+        "Material Supplier"
+      ],
+      "headquarters": {
+        "country": "United Arab Emirates",
+        "city": "Ras Al Khaimah",
+        "address": ""
+      },
+      "website": "https://www.elininsulation.com",
+      "facility_ids": [],
+      "factory_count": 0,
+      "capabilities": [
+        "DDP / DPE (densified pressboard)",
+        "Laminated wood / insulation wood",
+        "Pressboard / insulation materials"
+      ],
+      "commercial_status": "LISTED",
+      "completeness_score": 50,
+      "provenance": {
+        "type": "PUBLIC_SOURCE",
+        "last_verified": "2026-08-28"
+      },
+      "sources": {
+        "website": "https://www.elininsulation.com",
+        "capability_source": "",
+        "capability_note": ""
+      }
+    },
+    {
       "id": "cmp:elkima-trafo",
       "name": "ELKİMA Trafo",
       "slug": "elkima-trafo",
@@ -8781,14 +8718,14 @@
         "TR_DRY_CAST"
       ],
       "commercial_status": "LISTED",
-      "completeness_score": 50,
+      "completeness_score": 85,
       "provenance": {
-        "type": "PUBLIC_SOURCE",
+        "type": "TRANSFORMERPATH_RESEARCHED",
         "last_verified": "2026-08-28"
       },
       "sources": {
         "website": "https://www.elkima.com.tr",
-        "capability_source": "",
+        "capability_source": "https://www.elkima.com.tr/products/Guc-Transformatorleri.php",
         "capability_note": ""
       }
     },
@@ -9198,15 +9135,15 @@
         "TR_DISTRIBUTION"
       ],
       "commercial_status": "LISTED",
-      "completeness_score": 50,
+      "completeness_score": 80,
       "provenance": {
-        "type": "PUBLIC_SOURCE",
+        "type": "TRANSFORMERPATH_RESEARCHED",
         "last_verified": "2026-08-28"
       },
       "sources": {
         "website": "https://www.elsantrafo.com",
-        "capability_source": "",
-        "capability_note": ""
+        "capability_source": "https://www.elsantrafo.com/",
+        "capability_note": "Voltage quote: https://www.elsantrafo.com/%C3%9Cr%C3%BCnlerimiz/Dagitim-Transformatorleri-1"
       }
     },
     {
@@ -9516,14 +9453,14 @@
         "TR_DRY_CAST"
       ],
       "commercial_status": "LISTED",
-      "completeness_score": 50,
+      "completeness_score": 70,
       "provenance": {
-        "type": "PUBLIC_SOURCE",
+        "type": "TRANSFORMERPATH_RESEARCHED",
         "last_verified": "2026-08-28"
       },
       "sources": {
         "website": "https://www.eltas.com.tr",
-        "capability_source": "",
+        "capability_source": "https://www.eltas.com.tr/",
         "capability_note": ""
       }
     },
@@ -10178,21 +10115,22 @@
       },
       "website": "https://erentrafo.com.tr",
       "facility_ids": [
-        "fac:eren-transformator:ankara-sincan"
+        "fac:eren-transformator:ankara-sincan",
+        "fac:eren-transformator:sincan"
       ],
-      "factory_count": 1,
+      "factory_count": 2,
       "capabilities": [
         "TR_DISTRIBUTION"
       ],
       "commercial_status": "LISTED",
-      "completeness_score": 50,
+      "completeness_score": 100,
       "provenance": {
-        "type": "PUBLIC_SOURCE",
+        "type": "TRANSFORMERPATH_RESEARCHED",
         "last_verified": "2026-08-28"
       },
       "sources": {
         "website": "https://erentrafo.com.tr",
-        "capability_source": "",
+        "capability_source": "https://erentrafo.com.tr/products/power-transformers",
         "capability_note": ""
       }
     },
@@ -10864,39 +10802,6 @@
       },
       "sources": {
         "website": "https://www.fagioli.com/",
-        "capability_source": "",
-        "capability_note": ""
-      }
-    },
-    {
-      "id": "cmp:famiq-transformadores-uruguay-cir-s-a",
-      "name": "Famiq Transformadores Uruguay / CIR S.A.",
-      "slug": "famiq-transformadores-uruguay-cir-s-a",
-      "roles": [
-        "Transformer Manufacturer"
-      ],
-      "headquarters": {
-        "country": "Uruguay",
-        "city": "",
-        "address": ""
-      },
-      "website": "https://www.cir.com.uy/",
-      "facility_ids": [
-        "fac:famiq-transformadores-uruguay-cir-s-a:montevideo"
-      ],
-      "factory_count": 1,
-      "capabilities": [
-        "TR_DISTRIBUTION",
-        "TR_POWER"
-      ],
-      "commercial_status": "LISTED",
-      "completeness_score": 50,
-      "provenance": {
-        "type": "PUBLIC_SOURCE",
-        "last_verified": "2026-08-28"
-      },
-      "sources": {
-        "website": "https://www.cir.com.uy/",
         "capability_source": "",
         "capability_note": ""
       }
@@ -12568,14 +12473,14 @@
         "TR_DISTRIBUTION"
       ],
       "commercial_status": "LISTED",
-      "completeness_score": 50,
+      "completeness_score": 70,
       "provenance": {
-        "type": "PUBLIC_SOURCE",
+        "type": "TRANSFORMERPATH_RESEARCHED",
         "last_verified": "2026-08-28"
       },
       "sources": {
         "website": "https://www.hdtransformers.co.in",
-        "capability_source": "",
+        "capability_source": "https://www.hdtransformers.co.in/distribution-transformer.html",
         "capability_note": ""
       }
     },
@@ -12767,39 +12672,6 @@
       },
       "sources": {
         "website": "https://www.qre.com.cn/",
-        "capability_source": "",
-        "capability_note": ""
-      }
-    },
-    {
-      "id": "cmp:hanoi-transformer-manufacturing-hbt",
-      "name": "Hanoi Transformer Manufacturing (HBT)",
-      "slug": "hanoi-transformer-manufacturing-hbt",
-      "roles": [
-        "Transformer Manufacturer"
-      ],
-      "headquarters": {
-        "country": "Vietnam",
-        "city": "",
-        "address": ""
-      },
-      "website": "https://www.hbt.com.vn/",
-      "facility_ids": [
-        "fac:hanoi-transformer-manufacturing-hbt:hanoi"
-      ],
-      "factory_count": 1,
-      "capabilities": [
-        "TR_DISTRIBUTION",
-        "TR_POWER"
-      ],
-      "commercial_status": "LISTED",
-      "completeness_score": 50,
-      "provenance": {
-        "type": "PUBLIC_SOURCE",
-        "last_verified": "2026-08-28"
-      },
-      "sources": {
-        "website": "https://www.hbt.com.vn/",
         "capability_source": "",
         "capability_note": ""
       }
@@ -13377,38 +13249,6 @@
       }
     },
     {
-      "id": "cmp:hexaformer",
-      "name": "Hexaformer",
-      "slug": "hexaformer",
-      "roles": [
-        "Transformer Manufacturer"
-      ],
-      "headquarters": {
-        "country": "Sweden",
-        "city": "",
-        "address": ""
-      },
-      "website": "https://hexaformer.com",
-      "facility_ids": [
-        "fac:hexaformer:vastervik"
-      ],
-      "factory_count": 1,
-      "capabilities": [
-        "TR_DISTRIBUTION"
-      ],
-      "commercial_status": "LISTED",
-      "completeness_score": 50,
-      "provenance": {
-        "type": "PUBLIC_SOURCE",
-        "last_verified": "2026-08-28"
-      },
-      "sources": {
-        "website": "https://hexaformer.com",
-        "capability_source": "",
-        "capability_note": ""
-      }
-    },
-    {
       "id": "cmp:hi-tech-radiators-private-limited",
       "name": "Hi Tech Radiators Private Limited",
       "slug": "hi-tech-radiators-private-limited",
@@ -13695,30 +13535,43 @@
       "name": "Hitachi Energy",
       "slug": "hitachi-energy",
       "roles": [
-        "Component Manufacturer"
+        "Component Manufacturer",
+        "Transformer Manufacturer"
       ],
       "headquarters": {
         "country": "Switzerland",
-        "city": "Zurich",
+        "city": "Zurich, Switzerland",
         "address": ""
       },
       "website": "https://www.hitachienergy.com",
-      "facility_ids": [],
-      "factory_count": 0,
+      "facility_ids": [
+        "fac:hitachi-energy:dilovas",
+        "fac:hitachi-energy:ludvika",
+        "fac:hitachi-energy:maneja-karjan-vadodara",
+        "fac:hitachi-energy:vaasa",
+        "fac:hitachi-energy:zhongshan",
+        "fac:hitachi-energy:zurich"
+      ],
+      "factory_count": 6,
       "capabilities": [
         "Bushings (HV, LV)",
-        "High voltage insulators / porcelain / composite shells"
+        "High voltage insulators / porcelain / composite shells",
+        "TR_DISTRIBUTION",
+        "TR_DRY_CAST",
+        "TR_GSU",
+        "TR_POWER",
+        "TR_POWER_HVDC"
       ],
       "commercial_status": "LISTED",
-      "completeness_score": 50,
+      "completeness_score": 90,
       "provenance": {
-        "type": "PUBLIC_SOURCE",
+        "type": "TRANSFORMERPATH_RESEARCHED",
         "last_verified": "2026-08-28"
       },
       "sources": {
-        "website": "https://www.hitachienergy.com",
-        "capability_source": "",
-        "capability_note": ""
+        "website": "https://www.hitachienergy.com/",
+        "capability_source": "Hitachi Energy Annual Report & Corporate Disclosures",
+        "capability_note": "Annual production capacity benchmarked across global power transformer factories in investor disclosures and corporate filings. Capacity stated as annual MVA envelope."
       }
     },
     {
@@ -13751,48 +13604,7 @@
         "TR_POWER_HVDC"
       ],
       "commercial_status": "LISTED",
-      "completeness_score": 100,
-      "provenance": {
-        "type": "TRANSFORMERPATH_RESEARCHED",
-        "last_verified": "2026-08-28"
-      },
-      "sources": {
-        "website": "https://www.hitachienergy.com/",
-        "capability_source": "Hitachi Energy Annual Report & Corporate Disclosures",
-        "capability_note": "Annual production capacity benchmarked across global power transformer factories in investor disclosures and corporate filings. Capacity stated as annual MVA envelope."
-      }
-    },
-    {
-      "id": "cmp:hitachi-energy-global-hq",
-      "name": "Hitachi Energy (global HQ)",
-      "slug": "hitachi-energy-global-hq",
-      "roles": [
-        "Transformer Manufacturer"
-      ],
-      "headquarters": {
-        "country": "Switzerland",
-        "city": "Zurich, Switzerland",
-        "address": ""
-      },
-      "website": "https://www.hitachienergy.com/",
-      "facility_ids": [
-        "fac:hitachi-energy-global-hq:dilovas",
-        "fac:hitachi-energy-global-hq:ludvika",
-        "fac:hitachi-energy-global-hq:maneja-karjan-vadodara",
-        "fac:hitachi-energy-global-hq:vaasa",
-        "fac:hitachi-energy-global-hq:zhongshan",
-        "fac:hitachi-energy-global-hq:zurich"
-      ],
-      "factory_count": 6,
-      "capabilities": [
-        "TR_DISTRIBUTION",
-        "TR_DRY_CAST",
-        "TR_GSU",
-        "TR_POWER",
-        "TR_POWER_HVDC"
-      ],
-      "commercial_status": "LISTED",
-      "completeness_score": 100,
+      "completeness_score": 90,
       "provenance": {
         "type": "TRANSFORMERPATH_RESEARCHED",
         "last_verified": "2026-08-28"
@@ -14451,7 +14263,7 @@
         "TR_POWER_HVDC"
       ],
       "commercial_status": "LISTED",
-      "completeness_score": 90,
+      "completeness_score": 100,
       "provenance": {
         "type": "TRANSFORMERPATH_RESEARCHED",
         "last_verified": "2026-08-28"
@@ -14618,39 +14430,6 @@
       }
     },
     {
-      "id": "cmp:huacheng-electric",
-      "name": "Huacheng Electric",
-      "slug": "huacheng-electric",
-      "roles": [
-        "Transformer Manufacturer"
-      ],
-      "headquarters": {
-        "country": "Taiwan",
-        "city": "",
-        "address": ""
-      },
-      "website": "https://www.huacheng.com.tw/",
-      "facility_ids": [
-        "fac:huacheng-electric:taoyuan"
-      ],
-      "factory_count": 1,
-      "capabilities": [
-        "TR_DISTRIBUTION",
-        "TR_POWER"
-      ],
-      "commercial_status": "LISTED",
-      "completeness_score": 50,
-      "provenance": {
-        "type": "PUBLIC_SOURCE",
-        "last_verified": "2026-08-28"
-      },
-      "sources": {
-        "website": "https://www.huacheng.com.tw/",
-        "capability_source": "",
-        "capability_note": ""
-      }
-    },
-    {
       "id": "cmp:huaming-power-equipment-co-ltd",
       "name": "Huaming Power Equipment Co., Ltd.",
       "slug": "huaming-power-equipment-co-ltd",
@@ -14696,9 +14475,10 @@
       "facility_ids": [
         "fac:hyosung-heavy-industries:changwon",
         "fac:hyosung-heavy-industries:memphis",
-        "fac:hyosung-heavy-industries:nantong"
+        "fac:hyosung-heavy-industries:nantong",
+        "fac:hyosung-heavy-industries:seoul"
       ],
-      "factory_count": 3,
+      "factory_count": 4,
       "capabilities": [
         "SPECIAL",
         "TR_AUTO",
@@ -14711,17 +14491,17 @@
         "TR_TRACTION"
       ],
       "commercial_status": "LISTED",
-      "completeness_score": 90,
+      "completeness_score": 100,
       "provenance": {
         "type": "OFFICIAL_SOURCE",
         "last_verified": "2026-08-28"
       },
       "sources": {
-        "website": "https://www.hyosungheavyindustries.com/en",
-        "headquarters_source": "https://www.hyosungheavyindustries.com/en/company/info/global-network",
-        "headquarters_checked": "2026-10-15",
+        "website": "https://www.hicoamerica.com/",
         "capability_source": "Hyosung Heavy Industries Regulatory Filing & Factory Records",
-        "capability_note": "Changwon plant and US facilities annual production capacity reported in DART filings and grid qualification dossiers."
+        "capability_note": "Changwon plant and US facilities annual production capacity reported in DART filings and grid qualification dossiers.",
+        "headquarters_source": "https://www.hyosungheavyindustries.com/en/company/info/global-network",
+        "headquarters_checked": "2026-10-15"
       }
     },
     {
@@ -14736,7 +14516,7 @@
         "city": "",
         "address": ""
       },
-      "website": "https://www.iplproducts.com",
+      "website": "",
       "facility_ids": [
         "fac:i-p-l-products:chennai"
       ],
@@ -14748,10 +14528,10 @@
       "completeness_score": 50,
       "provenance": {
         "type": "PUBLIC_SOURCE",
-        "last_verified": "2026-08-28"
+        "last_verified": "2026-08-15"
       },
       "sources": {
-        "website": "https://www.iplproducts.com",
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       }
@@ -15033,23 +14813,24 @@
       },
       "website": "https://imp-powers.com",
       "facility_ids": [
+        "fac:imp-powers:silvassa",
         "fac:imp-powers:silvassa-and-mumbai"
       ],
-      "factory_count": 1,
+      "factory_count": 2,
       "capabilities": [
         "TR_DISTRIBUTION",
         "TR_POWER",
         "TX"
       ],
       "commercial_status": "LISTED",
-      "completeness_score": 50,
+      "completeness_score": 100,
       "provenance": {
-        "type": "PUBLIC_SOURCE",
+        "type": "TRANSFORMERPATH_RESEARCHED",
         "last_verified": "2026-08-28"
       },
       "sources": {
         "website": "https://imp-powers.com",
-        "capability_source": "",
+        "capability_source": "https://imp-powers.com/power-transformer/",
         "capability_note": ""
       }
     },
@@ -15170,14 +14951,14 @@
         "TR_POWER"
       ],
       "commercial_status": "LISTED",
-      "completeness_score": 60,
+      "completeness_score": 85,
       "provenance": {
-        "type": "PUBLIC_SOURCE",
+        "type": "TRANSFORMERPATH_RESEARCHED",
         "last_verified": "2026-08-28"
       },
       "sources": {
         "website": "https://www.indo-tech.com",
-        "capability_source": "",
+        "capability_source": "https://www.indo-tech.com/large-power-transformers/",
         "capability_note": ""
       }
     },
@@ -16037,21 +15818,22 @@
       },
       "website": "https://jaybeeindustries.com",
       "facility_ids": [
+        "fac:jaybee-industries:bathinda",
         "fac:jaybee-industries:faridabad"
       ],
-      "factory_count": 1,
+      "factory_count": 2,
       "capabilities": [
         "TR_DISTRIBUTION"
       ],
       "commercial_status": "LISTED",
-      "completeness_score": 50,
+      "completeness_score": 100,
       "provenance": {
-        "type": "PUBLIC_SOURCE",
+        "type": "TRANSFORMERPATH_RESEARCHED",
         "last_verified": "2026-08-28"
       },
       "sources": {
         "website": "https://jaybeeindustries.com",
-        "capability_source": "",
+        "capability_source": "https://jaybeeindustries.com/products.html",
         "capability_note": ""
       }
     },
@@ -16922,14 +16704,14 @@
         "TR_POWER"
       ],
       "commercial_status": "LISTED",
-      "completeness_score": 50,
+      "completeness_score": 95,
       "provenance": {
-        "type": "PUBLIC_SOURCE",
+        "type": "TRANSFORMERPATH_RESEARCHED",
         "last_verified": "2026-08-28"
       },
       "sources": {
         "website": "https://www.kanohar.com",
-        "capability_source": "",
+        "capability_source": "https://www.kanohar.com/",
         "capability_note": ""
       }
     },
@@ -18151,38 +17933,6 @@
       }
     },
     {
-      "id": "cmp:kuwait-electrical-wiring-accessories-co-kewa-transformers",
-      "name": "Kuwait Electrical Wiring Accessories Co. (KEWA Transformers)",
-      "slug": "kuwait-electrical-wiring-accessories-co-kewa-transformers",
-      "roles": [
-        "Transformer Manufacturer"
-      ],
-      "headquarters": {
-        "country": "Kuwait",
-        "city": "",
-        "address": ""
-      },
-      "website": "http://www.kewakuwait.com/",
-      "facility_ids": [
-        "fac:kuwait-electrical-wiring-accessories-co-kewa-transformers:sabhan-industrial-area"
-      ],
-      "factory_count": 1,
-      "capabilities": [
-        "TR_DISTRIBUTION"
-      ],
-      "commercial_status": "LISTED",
-      "completeness_score": 50,
-      "provenance": {
-        "type": "PUBLIC_SOURCE",
-        "last_verified": "2026-08-28"
-      },
-      "sources": {
-        "website": "http://www.kewakuwait.com/",
-        "capability_source": "",
-        "capability_note": ""
-      }
-    },
-    {
       "id": "cmp:kyte-powertech",
       "name": "Kyte Powertech",
       "slug": "kyte-powertech",
@@ -18527,39 +18277,6 @@
       },
       "sources": {
         "website": "https://lioa.com.vn",
-        "capability_source": "",
-        "capability_note": ""
-      }
-    },
-    {
-      "id": "cmp:lkh-projects-distribution",
-      "name": "LKH Projects Distribution",
-      "slug": "lkh-projects-distribution",
-      "roles": [
-        "Transformer Manufacturer"
-      ],
-      "headquarters": {
-        "country": "Singapore",
-        "city": "",
-        "address": ""
-      },
-      "website": "https://www.lkhgroup.com",
-      "facility_ids": [
-        "fac:lkh-projects-distribution:singapore"
-      ],
-      "factory_count": 1,
-      "capabilities": [
-        "TR_DISTRIBUTION",
-        "TR_DRY_CAST"
-      ],
-      "commercial_status": "LISTED",
-      "completeness_score": 50,
-      "provenance": {
-        "type": "PUBLIC_SOURCE",
-        "last_verified": "2026-08-28"
-      },
-      "sources": {
-        "website": "https://www.lkhgroup.com",
         "capability_source": "",
         "capability_note": ""
       }
@@ -24042,7 +23759,7 @@
         "city": "",
         "address": ""
       },
-      "website": "https://www.powerade.com.bd",
+      "website": "",
       "facility_ids": [
         "fac:powerade-technology:dhaka"
       ],
@@ -24054,10 +23771,10 @@
       "completeness_score": 50,
       "provenance": {
         "type": "PUBLIC_SOURCE",
-        "last_verified": "2026-08-28"
+        "last_verified": "2026-08-15"
       },
       "sources": {
-        "website": "https://www.powerade.com.bd",
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       }
@@ -24484,17 +24201,17 @@
         "Tap changers (OLTC / DETC)"
       ],
       "commercial_status": "LISTED",
-      "completeness_score": 90,
+      "completeness_score": 100,
       "provenance": {
         "type": "TRANSFORMERPATH_RESEARCHED",
         "last_verified": "2026-08-28"
       },
       "sources": {
         "website": "https://www.prolec.energy/",
-        "headquarters_source": "https://www.prolec.energy/contact-us/",
-        "headquarters_checked": "2026-10-15",
         "capability_source": "Prolec GE Corporate Disclosures & Utility Qualifications",
-        "capability_note": "Monterrey, Shreveport and Waukesha consolidated manufacturing capacity reported in utility supply and factory announcements."
+        "capability_note": "Monterrey, Shreveport and Waukesha consolidated manufacturing capacity reported in utility supply and factory announcements.",
+        "headquarters_source": "https://www.prolec.energy/contact-us/",
+        "headquarters_checked": "2026-10-15"
       }
     },
     {
@@ -24810,10 +24527,10 @@
       "completeness_score": 50,
       "provenance": {
         "type": "PUBLIC_SOURCE",
-        "last_verified": "2026-08-28"
+        "last_verified": "2026-08-15"
       },
       "sources": {
-        "website": "",
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       }
@@ -25604,7 +25321,7 @@
         "city": "",
         "address": ""
       },
-      "website": "https://www.revive.co.za/",
+      "website": "https://ret.co.za/",
       "facility_ids": [
         "fac:revive-electrical-transformers-ret:steeledale"
       ],
@@ -25620,7 +25337,7 @@
         "last_verified": "2026-08-28"
       },
       "sources": {
-        "website": "https://www.revive.co.za/",
+        "website": "https://ret.co.za/",
         "capability_source": "",
         "capability_note": ""
       }
@@ -25802,9 +25519,9 @@
         "city": "",
         "address": ""
       },
-      "website": "https://www.rlp.com.au",
+      "website": "https://rlpelectric.com.au/",
       "facility_ids": [
-        "fac:rlp-electric:sydney"
+        "fac:rlp-electric:cardiff"
       ],
       "factory_count": 1,
       "capabilities": [
@@ -25818,7 +25535,7 @@
         "last_verified": "2026-08-28"
       },
       "sources": {
-        "website": "https://www.rlp.com.au",
+        "website": "https://rlpelectric.com.au/",
         "capability_source": "",
         "capability_note": ""
       }
@@ -26423,10 +26140,10 @@
       "completeness_score": 50,
       "provenance": {
         "type": "PUBLIC_SOURCE",
-        "last_verified": "2026-08-28"
+        "last_verified": "2026-08-15"
       },
       "sources": {
-        "website": "",
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       }
@@ -28743,39 +28460,6 @@
       }
     },
     {
-      "id": "cmp:sichuan-transformer-co-ltd",
-      "name": "Sichuan Transformer Co., Ltd.",
-      "slug": "sichuan-transformer-co-ltd",
-      "roles": [
-        "Transformer Manufacturer"
-      ],
-      "headquarters": {
-        "country": "China",
-        "city": "",
-        "address": ""
-      },
-      "website": "https://www.chuandian.com/",
-      "facility_ids": [
-        "fac:sichuan-transformer-co-ltd:chengdu"
-      ],
-      "factory_count": 1,
-      "capabilities": [
-        "TR_DISTRIBUTION",
-        "TR_POWER"
-      ],
-      "commercial_status": "LISTED",
-      "completeness_score": 50,
-      "provenance": {
-        "type": "PUBLIC_SOURCE",
-        "last_verified": "2026-08-28"
-      },
-      "sources": {
-        "website": "https://www.chuandian.com/",
-        "capability_source": "",
-        "capability_note": ""
-      }
-    },
-    {
       "id": "cmp:siddhi-vinayak-transformer-industries",
       "name": "Siddhi Vinayak Transformer Industries",
       "slug": "siddhi-vinayak-transformer-industries",
@@ -28823,10 +28507,10 @@
       "website": "https://www.siemens-energy.com/",
       "facility_ids": [
         "fac:siemens-energy:budapest",
-        "fac:siemens-energy:charlotte",
         "fac:siemens-energy:doha",
         "fac:siemens-energy:jundiai",
         "fac:siemens-energy:linz",
+        "fac:siemens-energy:munich",
         "fac:siemens-energy:nuremberg",
         "fac:siemens-energy:tenjo",
         "fac:siemens-energy:trento-spini",
@@ -28846,11 +28530,11 @@
         "last_verified": "2026-08-28"
       },
       "sources": {
-        "website": "https://www.siemens-energy.com/",
-        "headquarters_source": "https://www.siemens-energy.com/global/en/home/general/corporate-information.html",
-        "headquarters_checked": "2026-10-15",
+        "website": "https://www.siemens-energy.com/co/es.html",
         "capability_source": "Siemens Energy Annual Report & Factory Records",
-        "capability_note": "Global power transformer manufacturing network capacity based on annual corporate reporting and factory disclosures."
+        "capability_note": "Global power transformer manufacturing network capacity based on annual corporate reporting and factory disclosures.",
+        "headquarters_source": "https://www.siemens-energy.com/global/en/home/general/corporate-information.html",
+        "headquarters_checked": "2026-10-15"
       }
     },
     {
@@ -28879,7 +28563,7 @@
         "TR_POWER_HVDC"
       ],
       "commercial_status": "LISTED",
-      "completeness_score": 100,
+      "completeness_score": 90,
       "provenance": {
         "type": "TRANSFORMERPATH_RESEARCHED",
         "last_verified": "2026-08-28"
@@ -29397,14 +29081,14 @@
         "TR_POWER"
       ],
       "commercial_status": "LISTED",
-      "completeness_score": 50,
+      "completeness_score": 70,
       "provenance": {
-        "type": "PUBLIC_SOURCE",
+        "type": "TRANSFORMERPATH_RESEARCHED",
         "last_verified": "2026-08-28"
       },
       "sources": {
         "website": "https://www.skipperseil.com/",
-        "capability_source": "",
+        "capability_source": "https://www.skipperseil.com/",
         "capability_note": ""
       }
     },
@@ -29422,21 +29106,22 @@
       },
       "website": "https://sonmeztrafo.com.tr",
       "facility_ids": [
+        "fac:sonmez-trafo:kocaeli",
         "fac:sonmez-trafo:kocaeli-gebze"
       ],
-      "factory_count": 1,
+      "factory_count": 2,
       "capabilities": [
         "TR_DISTRIBUTION"
       ],
       "commercial_status": "LISTED",
-      "completeness_score": 50,
+      "completeness_score": 75,
       "provenance": {
-        "type": "PUBLIC_SOURCE",
+        "type": "TRANSFORMERPATH_RESEARCHED",
         "last_verified": "2026-08-28"
       },
       "sources": {
         "website": "https://sonmeztrafo.com.tr",
-        "capability_source": "",
+        "capability_source": "https://sonmeztrafo.com.tr/Sonmez-Trafo/Area-Of-Use/Power-Transformers",
         "capability_note": ""
       }
     },
@@ -29452,7 +29137,7 @@
         "city": "Vadodara",
         "address": ""
       },
-      "website": "https://www.sorbeadindia.com/",
+      "website": "https://web.archive.org/web/20241006185951/https://www.sorbeadindia.com/",
       "facility_ids": [],
       "factory_count": 0,
       "capabilities": [
@@ -29465,7 +29150,7 @@
         "last_verified": "2026-08-28"
       },
       "sources": {
-        "website": "https://www.sorbeadindia.com/",
+        "website": "https://web.archive.org/web/20241006185951/https://www.sorbeadindia.com/",
         "capability_source": "",
         "capability_note": ""
       }
@@ -31246,14 +30931,14 @@
         "TR_DISTRIBUTION"
       ],
       "commercial_status": "LISTED",
-      "completeness_score": 50,
+      "completeness_score": 95,
       "provenance": {
-        "type": "PUBLIC_SOURCE",
+        "type": "TRANSFORMERPATH_RESEARCHED",
         "last_verified": "2026-08-28"
       },
       "sources": {
         "website": "https://tektransformator.com",
-        "capability_source": "",
+        "capability_source": "https://tektransformator.com/products/power-grid-step-down-distribution-transformers",
         "capability_note": ""
       }
     },
@@ -32980,9 +32665,9 @@
         "city": "",
         "address": ""
       },
-      "website": "https://trafotaipu.com.br",
+      "website": "",
       "facility_ids": [
-        "fac:trafotaipu:sao-paulo"
+        "fac:trafotaipu:cajamar"
       ],
       "factory_count": 1,
       "capabilities": [
@@ -32992,10 +32677,10 @@
       "completeness_score": 50,
       "provenance": {
         "type": "PUBLIC_SOURCE",
-        "last_verified": "2026-08-28"
+        "last_verified": "2026-08-15"
       },
       "sources": {
-        "website": "https://trafotaipu.com.br",
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       }
@@ -33287,38 +32972,6 @@
       },
       "sources": {
         "website": "http://www.transfocaribe.com/",
-        "capability_source": "",
-        "capability_note": ""
-      }
-    },
-    {
-      "id": "cmp:transfobol-s-r-l-transformadores-bolivia",
-      "name": "Transfobol S.R.L. (Transformadores Bolivia)",
-      "slug": "transfobol-s-r-l-transformadores-bolivia",
-      "roles": [
-        "Transformer Manufacturer"
-      ],
-      "headquarters": {
-        "country": "Bolivia",
-        "city": "",
-        "address": ""
-      },
-      "website": "http://www.transfobol.com/",
-      "facility_ids": [
-        "fac:transfobol-s-r-l-transformadores-bolivia:cochabamba"
-      ],
-      "factory_count": 1,
-      "capabilities": [
-        "TR_DISTRIBUTION"
-      ],
-      "commercial_status": "LISTED",
-      "completeness_score": 50,
-      "provenance": {
-        "type": "PUBLIC_SOURCE",
-        "last_verified": "2026-08-28"
-      },
-      "sources": {
-        "website": "http://www.transfobol.com/",
         "capability_source": "",
         "capability_note": ""
       }
@@ -33856,7 +33509,7 @@
         "city": "",
         "address": ""
       },
-      "website": "https://www.trafopar.com.py",
+      "website": "",
       "facility_ids": [
         "fac:transformadores-paraguay-s-a-trafopar:asuncion-fernando-de-la-mora"
       ],
@@ -33869,10 +33522,10 @@
       "completeness_score": 50,
       "provenance": {
         "type": "PUBLIC_SOURCE",
-        "last_verified": "2026-08-28"
+        "last_verified": "2026-08-15"
       },
       "sources": {
-        "website": "https://www.trafopar.com.py",
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       }
@@ -35574,7 +35227,7 @@
         "city": "",
         "address": ""
       },
-      "website": "https://www.uttambharat.com/",
+      "website": "https://www.uttam-bharat.com/",
       "facility_ids": [
         "fac:uttam-bharat-electricals:jaipur"
       ],
@@ -35590,7 +35243,7 @@
         "last_verified": "2026-08-28"
       },
       "sources": {
-        "website": "https://www.uttambharat.com/",
+        "website": "https://www.uttam-bharat.com/",
         "capability_source": "",
         "capability_note": ""
       }
@@ -35918,38 +35571,6 @@
       }
     },
     {
-      "id": "cmp:vermeire-belting-and-transformers",
-      "name": "Vermeire-Belting & Transformers",
-      "slug": "vermeire-belting-and-transformers",
-      "roles": [
-        "Transformer Manufacturer"
-      ],
-      "headquarters": {
-        "country": "Belgium",
-        "city": "",
-        "address": ""
-      },
-      "website": "https://www.vermeire.com/",
-      "facility_ids": [
-        "fac:vermeire-belting-and-transformers:verviers-brussels"
-      ],
-      "factory_count": 1,
-      "capabilities": [
-        "TR_DISTRIBUTION"
-      ],
-      "commercial_status": "LISTED",
-      "completeness_score": 50,
-      "provenance": {
-        "type": "PUBLIC_SOURCE",
-        "last_verified": "2026-08-28"
-      },
-      "sources": {
-        "website": "https://www.vermeire.com/",
-        "capability_source": "",
-        "capability_note": ""
-      }
-    },
-    {
       "id": "cmp:viat-instruments-pvt-ltd",
       "name": "Viat Instruments Pvt. Ltd.",
       "slug": "viat-instruments-pvt-ltd",
@@ -36207,8 +35828,7 @@
       "sources": {
         "website": "https://www.vatransformer.com/",
         "capability_source": "Virginia Transformer Corp About Us",
-        "capability_source_url": "https://www.vatransformer.com/about-us/",
-        "capability_note": "Checked 2026-10-15 at https://www.vatransformer.com/about-us/. Core-type liquid-filled ratings up to 400 MVA/525 kV class; shell-type up to 500 MVA/500 kV; six facilities; 67,000 MVA annual capacity; power transformers up to 1,400 MVA, 500 kV. 525 kV is the highest voltage class stated on that page."
+        "capability_note": "Checked 2026-10-15 at https://www.vatransformer.com/about-us/. The page states core-type liquid-filled ratings from 300 kVA up to 400 MVA/525 kV class, shell-type liquid-filled ratings from 60 MVA up to 500 MVA/500 kV, six facilities, 67,000 MVA annual capacity, and power transformers up to 1,400 MVA, 500 kV. 525 kV is the highest voltage class on that page, not a claim that every unit is 525 kV."
       }
     },
     {
@@ -36529,14 +36149,14 @@
         "TR_POWER"
       ],
       "commercial_status": "LISTED",
-      "completeness_score": 60,
+      "completeness_score": 95,
       "provenance": {
-        "type": "PUBLIC_SOURCE",
+        "type": "TRANSFORMERPATH_RESEARCHED",
         "last_verified": "2026-08-28"
       },
       "sources": {
         "website": "https://www.voltamptransformers.com",
-        "capability_source": "",
+        "capability_source": "https://www.voltamptransformers.com/products/oil_filled_transformer",
         "capability_note": ""
       }
     },
@@ -37268,7 +36888,7 @@
         "TR_POWER"
       ],
       "commercial_status": "LISTED",
-      "completeness_score": 85,
+      "completeness_score": 95,
       "provenance": {
         "type": "TRANSFORMERPATH_RESEARCHED",
         "last_verified": "2026-08-28"
@@ -37781,9 +37401,10 @@
       },
       "website": "https://zetrak.com.mx/",
       "facility_ids": [
-        "fac:zetrak:queretaro"
+        "fac:zetrak:queretaro",
+        "fac:zetrak:tlalnepantla"
       ],
-      "factory_count": 1,
+      "factory_count": 2,
       "capabilities": [
         "TR_DISTRIBUTION",
         "TR_POWER"
