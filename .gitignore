@@ -46,6 +46,10 @@ _private/
 # Generated public deploy artifact — assembled by build-dist.js
 dist/
 
+# Paid CSV exports are built by build-csv-exports.js and shipped only inside
+# the csv-download function. Never commit or publish the full files.
+data/csv-exports/
+
 # Git snapshot taken at the start of the Netlify build, before generators run.
 data/.release-git-state.json
 
