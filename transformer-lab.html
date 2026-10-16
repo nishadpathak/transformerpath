@@ -56,6 +56,9 @@ body {
   position: absolute;
   inset: 0;
   cursor: grab;
+  /* Callout labels are positioned in viewport pixels and can sit past the
+     edge. Clipping them here keeps a 390px screen from growing scrollWidth. */
+  overflow: hidden;
 }
 #lab-canvas-host.dragging { cursor: grabbing; }
 
@@ -915,7 +918,7 @@ body {
 
   /* ── engine init ──────────────────────────────────────────── */
   var engine = TpLabEngine.create(scene, THREE, {
-    labelHost: document.body,
+    labelHost: document.getElementById('lab-canvas-host'),
     slider: $slider,
     stageLabel: null,     // we update manually below
     stageCaption: null,

@@ -15,7 +15,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;overflow:hidden}
 body{position:fixed;inset:0;width:100%;max-width:100%;font-family:var(--font-sans);background:#0a1624;color:var(--ink)}
-#c3d{position:absolute;inset:0;cursor:grab}
+#c3d{position:absolute;inset:0;cursor:grab;overflow:hidden}
 #c3d.dragging{cursor:grabbing}
 #topbar{position:absolute;top:0;left:0;right:0;height:52px;background:linear-gradient(180deg,rgba(10,22,36,.95),rgba(10,22,36,.78) 70%,transparent);display:flex;align-items:center;gap:12px;padding:0 18px;z-index:10;pointer-events:none}
 #topbar h1{font-size:1rem;font-weight:600}
@@ -758,7 +758,7 @@ function pick(e){
 const labelEls=[];
 function makeLabel(part,text,dx,dy,dz){
   if(!part)return;
-  const el2=document.createElement('div'); el2.className='lbl'; el2.textContent=text; el2.addEventListener('click',()=>{ if(part) selectPart(part); }); document.body.appendChild(el2);
+  const el2=document.createElement('div'); el2.className='lbl'; el2.textContent=text; el2.addEventListener('click',()=>{ if(part) selectPart(part); }); document.getElementById('c3d').appendChild(el2);
   labelEls.push({el:el2,part,off:new THREE.Vector3(dx,dy,dz)});
 }
 function buildLabels(){
@@ -769,7 +769,7 @@ function buildLabels(){
     var ctr=box.getCenter(new THREE.Vector3()), rp=p.root.getWorldPosition(new THREE.Vector3());
     var off=ctr.sub(rp); off.y += (box.max.y-box.min.y)*0.12;
     var el=document.createElement("div"); el.className="lbl"; el.textContent=p.name;
-    el.addEventListener("click",function(){ selectPart(p); }); document.body.appendChild(el);
+    el.addEventListener("click",function(){ selectPart(p); }); document.getElementById("c3d").appendChild(el);
     labelEls.push({el:el, part:p, off:off});
   });
 }

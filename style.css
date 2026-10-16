@@ -697,12 +697,21 @@ body .vol-card:hover {
 
 /* Completeness Score Mini-Gauge */
 .kg-comp-wrapper {
-  display: inline-flex;
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 8px;
+  max-width: 100%;
+  min-width: 0;
   font-size: .76rem;
   color: var(--muted);
   margin-top: 4px;
+}
+/* Provenance values are often raw URLs. Without a break opportunity the
+   inline row widens the directory card past a 390px viewport. */
+.kg-comp-wrapper span {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 .kg-comp-bar {
   width: 72px;
