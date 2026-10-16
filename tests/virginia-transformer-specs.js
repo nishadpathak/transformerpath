@@ -26,6 +26,10 @@ check('tier annual capacity is 67,000 MVA', !!tier && tier.mva === 67000, tier &
 check('tier records the About Us URL', !!tier && tier.source_url === URL, tier && tier.source_url);
 check('provenance voltage fact is 525 kV from that URL', !!kvFact && kvFact.value === 525 && kvFact.source_url === URL);
 check('provenance annual capacity is 67,000 MVA from that URL', !!mvaFact && mvaFact.value === 67000 && mvaFact.source_url === URL);
+check('provenance claim type is company-reported', kvFact && kvFact.claim_type === 'COMPANY_REPORTED' && mvaFact && mvaFact.claim_type === 'COMPANY_REPORTED');
+check('provenance notes do not combine MVA and kV as one transformer capability', [kvFact, mvaFact].every(function (f) {
+  return f && !/\b[\d,.]+\s*MVA\b[^\n]*\b[\d,.]+\s*kV\b[^\n]*transformer/i.test(f.note || '');
+}));
 check('profile summary shows 525 kV', /Highest sourced voltage evidence<\/th><td>525 kV<\/td>/.test(html));
 check('profile summary shows 67,000 MVA/year', /~67,000 MVA/.test(html) && /67,000 MVA\/year/.test(html));
 check('profile links the About Us URL', html.indexOf(URL) >= 0);
