@@ -184,6 +184,30 @@ const desc = fitWindow('Short record.', 140, 160, [
   ' Independent record on TransformerPath.'
 ]);
 assert(desc.length >= 140 && desc.length <= 160, 'description window ' + desc.length);
+assert(!/\.{3}/.test(desc), 'description is not padded with dots: ' + desc);
+
+[
+  'About TransformerPath',
+  'Intel Archive | TransformerPath',
+  'The TransformerPath Blog',
+  'Contact TransformerPath',
+  'Empire Wind 1 | TransformerPath',
+  'Eskom / NTCSA | TransformerPath'
+].forEach(function (draft) {
+  const fitted = fitWindow(draft, 50, 60, [' | TransformerPath']);
+  assert(fitted.length >= 50 && fitted.length <= 60, 'short title stays in window ' + fitted);
+  assert(!/\.{3}/.test(fitted), 'short title is not padded with dots: ' + fitted);
+  assert((fitted.match(/TransformerPath/g) || []).length === 1, 'short title keeps one brand: ' + fitted);
+});
+
+const aboutDesc = fitWindow(
+  'About TransformerPath — an independent global information platform for the transformer industry.',
+  140,
+  160,
+  [' Only sourced fields are shown.', ' Independent record on TransformerPath.']
+);
+assert(aboutDesc.length >= 140 && aboutDesc.length <= 160, 'about description window ' + aboutDesc.length + ' ' + aboutDesc);
+assert(!/\.{3}/.test(aboutDesc), 'about description is not padded with dots: ' + aboutDesc);
 
 const graph = schema.graph(site.concat([crumbs, plain, confirmed, article]));
 const flat = schema.flatten([graph]);
