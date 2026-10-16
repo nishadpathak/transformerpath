@@ -1,5 +1,5 @@
 TransformerPath DATA HEALTH REPORT
-Generated: 2026-10-14T11:59:01.208Z
+Generated: 2026-10-16T05:47:25.871Z
 Result: PASS
 Errors: 0 | Warnings: 31
 Child gates skipped: yes
@@ -8,19 +8,19 @@ Child gates skipped: yes
   Skipped (--skip-children / TP_DATA_HEALTH_SKIP_CHILDREN=1)
 
 ## Stale manufacturer counts
-  Canonical manufacturers = 906
+  Canonical manufacturers = 894
   OK — no stale 709/911/1002 manufacturer-count copy in key surfaces
 
 ## Duplicate canonical company IDs
-  data/companies.json: 1170 records, duplicates=0
-  data/directory-index.json: 1194 records, duplicates=0
-  data/manufacturer-intel.json: 906 records, duplicates=0
+  data/companies.json: 1158 records, duplicates=0
+  data/directory-index.json: 1182 records, duplicates=0
+  data/manufacturer-intel.json: 894 records, duplicates=0
   OK — no duplicate canonical company IDs
 
 ## Orphan facilities / manufacturing evidence
-  Facilities=1117 public_count≈199
+  Facilities=1114 public_count≈207
   Orphan company_id=0 | missing location=0 | broken facility_ids refs=0
-  Without manufacturing evidence=918 (warning — not auto-deleted)
+  Without manufacturing evidence=907 (warning — not auto-deleted)
 
 ## Capability summary vs evidence
   CG Power evidence max = 765 kV
@@ -31,12 +31,12 @@ Child gates skipped: yes
   OK — no annual MVA misfiled as unit rating
 
 ## Intel source / status
-  Intel feed posts=519 missing source=0
+  Intel feed posts=526 missing source=0
   GCC candidates=15 bad grade=0 published-without-source=0
-  daily_intel status=INTEL COVERAGE DELAYED
+  daily_intel status=UPDATED 15 Oct 2026
 
 ## Date anomalies
-  Future-date hard findings: 0 (today=2026-10-14)
+  Future-date hard findings: 0 (today=2026-10-16)
   OK — no future publication/observation/archive dates
 
 ## Duplicate canonical events
@@ -54,12 +54,12 @@ Child gates skipped: yes
   Sampled root pages broken links: 0
 
 ## Missing canonical tags
-  Root public HTML missing canonical: 0 / 101
+  Root public HTML missing canonical: 0 / 102
 
 ## Public admin artifacts
   OK — admin not in sitemap.xml
   OK — robots.txt Disallow admin
-  Admin HTML files checked: 5 (must remain noindex; client hash is not authorization)
+  Admin HTML files checked: 6 (must remain noindex; client hash is not authorization)
 
 ## Secret / service-role exposure
   Client-side secret-pattern hits: 0
@@ -70,7 +70,7 @@ Child gates skipped: yes
   OK — no iCloud conflict copies or stray project dumps at scan roots
 
 ## Census + search smoke
-  Census makers match site-stats (906)
+  Census makers match site-stats (894)
   Search "765 kV" → 3 hits
   Search "Transformerboard" → 1 hits
   Search "OLTC" → 22 hits
@@ -78,7 +78,7 @@ Child gates skipped: yes
   Search "India" → 257 hits
 
 ## Warnings (review — non-blocking)
-  ⚠ [facilities] 918/1117 facilities lack manufacturing evidence (census-only / review). Samples: fac:a-plus-power-solution:metro-manila, fac:abay-transformers:addis-ababa, fac:abb-thailand:bang-pu, fac:abb-turkiye:istanbul, fac:abc-transformers:faridabad-up
+  ⚠ [facilities] 907/1114 facilities lack manufacturing evidence (census-only / review). Samples: fac:a-plus-power-solution:metro-manila, fac:abay-transformers:addis-ababa, fac:abb-thailand:bang-pu, fac:abb-turkiye:istanbul, fac:abc-transformers:faridabad-up
   ⚠ [dates] intel:grid-finance-sina-com-cn-roll-2026-04-15-doc-inhuqwta dateIso=2026-12-31 (precision=year) is after today — review sentinel
   ⚠ [dates] intel:grid-www-afdb-org-en-news-and-events-press-releases-a dateIso=2026-12-31 (precision=year) is after today — review sentinel
   ⚠ [dates] intel:tech-www-powerelectronicsnews-com-real-world-solid-st dateIso=2026-12-31 (precision=year) is after today — review sentinel

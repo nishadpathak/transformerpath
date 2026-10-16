@@ -46,7 +46,7 @@ const sitra = projects.find(function (p) {
 });
 check('Bahrain Sitra is on file', !!sitra);
 check('Bahrain Sitra expected value is the bare year 2026', sitra && sitra.expected === '2026');
-check('Bahrain Sitra is still in tendering', sitra && String(sitra.status).toLowerCase() === 'tendering');
+check('Bahrain Sitra is in evaluation (source: EWA received bids, Apr 2026)', sitra && String(sitra.status).toLowerCase() === 'evaluation');
 const sitraDeadline = parseDeadline(sitra && sitra.expected);
 check('Bahrain Sitra deadline is the year, not 1 January', sitraDeadline === '2026', sitraDeadline);
 check('Bahrain Sitra is not closed on 15 Oct 2026', classifyOpenDeadline(sitraDeadline, TODAY) !== 'CLOSED');

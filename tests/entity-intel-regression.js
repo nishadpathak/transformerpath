@@ -31,7 +31,8 @@ check(split.regional.indexOf(dewa) >= 0, 'DEWA tender stays in the regional bloc
 const intel = JSON.parse(fs.readFileSync('data/intel.json', 'utf8'));
 const gcc = (intel.GCC && intel.GCC.items) || [];
 const live = splitEntityIntel(gcc, SEC);
-check(live.about.some(function (it) { return /Saudi Electricity Company \(SEC\)/.test(it.title); }), 'corpus SEC award is entity intel');
+const secTitled = gcc.filter(function (it) { return /Saudi Electricity Company \(SEC\)/.test(it.title); });
+check(secTitled.every(function (it) { return live.about.indexOf(it) >= 0; }), 'every corpus SEC-titled item is entity intel (unbacked SEC award retired in intel audit)');
 check(!live.about.some(function (it) { return /DEWA/i.test(it.title) && !/Saudi Electricity/i.test(it.title); }), 'a DEWA-titled item is not SEC entity intel');
 check(live.about.every(function (it) { return mentionsEntity(it, SEC); }), 'every SEC entity item names SEC');
 
