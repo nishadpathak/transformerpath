@@ -83,6 +83,7 @@ const de = (staticHtml.match(/class="lang-badge"[^>]*>DE</g) || []).length;
 const deTitles = (staticHtml.match(/title="Source language: DE\."/g) || []).length;
 const gluedDe = /class="lang-badge"[^>]*>DE(?:CONFIRMED|INFERRED|PIPELINE|SUPPORTED|WATCH)/.test(staticHtml);
 check('German source badges stay DE', de > 0 && de === deTitles && !gluedDe, de + ' badges, ' + deTitles + ' titles');
+check('German source badges stay DE (at least 3 on this page)', de >= 3, String(de));
 check('legend defines DE as German', legend.has('DE') && intel.indexOf('DE — German source language') >= 0);
 check('legend defines CONFIRMED', legend.has('CONFIRMED'));
 
