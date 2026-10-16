@@ -728,8 +728,7 @@ const ARTICLES = [
     question: 'How does transformer insulation age and what is its life?',
     quick: 'Cellulose insulation ages by thermal, chemical and moisture-driven degradation. Heat, oxygen and water break the paper polymer chains, reducing the degree of polymerisation (DP) and mechanical strength, and releasing water, acids and carbon gases (CO, CO2). Aging is accelerated by high temperature, moisture and acidity, and the end-of-life point is typically set at a DP of about 200-250.',
     sections: [
-      'The reactions',
-      'Thermal aging breaks the cellulose chains; hydrolysis (with water) and oxidation (with oxygen) accelerate it. The products — water, acids, CO and CO2 — in turn further accelerate aging and lower the dielectric strength.',
+      ['The reactions', 'Thermal aging breaks the cellulose chains; hydrolysis (with water) and oxidation (with oxygen) accelerate it. The products — water, acids, CO and CO2 — in turn further accelerate aging and lower the dielectric strength.'],
       ['How it is measured', 'The degree of polymerisation (DP) of a paper sample indicates its strength; furan compounds in the oil indicate paper aging. A DP near 200-250 is a common replacement criterion.'],
       ['Practical life', 'The insulation life is a temperature-dependent exponential: modest temperature reductions dramatically extend it. Keeping the unit cool, dry and free of oxygen extends the life.'],
     ],
@@ -2249,6 +2248,9 @@ function articlePage(a) {
   const ct = Math.round((a.minutes * 200 + 40) / 55); // rough words ≈ minutes
   const meta = '<div class="ameta"><span>Published ' + today + '</span><span>Updated ' + today + '</span><span>' + a.minutes + ' min read</span><span class="lvl">' + esc(a.level) + '</span><span class="topic">' + esc(a.topic) + '</span></div>';
   const body = a.sections.map(function (s) {
+    if (!Array.isArray(s) || typeof s[0] !== 'string' || typeof s[1] !== 'string' || s[0].length < 2 || s[1].length < 2) {
+      throw new Error('knowledge section must be [title, body] in ' + a.slug);
+    }
     return '<h2 id="' + slugify(s[0]) + '">' + esc(s[0]) + '</h2><p>' + esc(s[1]) + '</p>';
   }).join('');
   const eq = a.eq ? '<div class="eq"><b style="color:var(--accent)">Equation</b> — ' + esc(a.eq) + '</div>' : '';
