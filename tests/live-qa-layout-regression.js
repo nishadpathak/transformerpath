@@ -49,6 +49,27 @@ check('course copy does not repeat the word design', !/design design/.test(cours
 const inbox = fs.readFileSync('supplier-inbox.html', 'utf8');
 check('supplier inbox does not read a missing spec field on load', inbox.includes("function loadQueryParams(){\n    if (!document.getElementById('spec_rating')) return;"));
 
+const STATS = JSON.parse(fs.readFileSync('data/site-stats.json', 'utf8'));
+const home = fs.readFileSync('index.html', 'utf8');
+const projectsTitle = home.match(/title="Track (\d+) global grid and substation projects"/);
+check('homepage project tooltip matches the canonical count', projectsTitle && Number(projectsTitle[1]) === STATS.projects, projectsTitle && projectsTitle[1]);
+
+const faq = fs.readFileSync('faq.html', 'utf8');
+check('FAQ does not repeat events', faq.indexOf('events, events') === -1);
+const search = fs.readFileSync('search.html', 'utf8');
+check('search description does not repeat events or a stale 500+ census', search.indexOf('events, events') === -1 && search.indexOf('500+ manufacturers') === -1);
+
+const intelPro = fs.readFileSync('intel-pro.html', 'utf8');
+['projects', 'tenders', 'awards'].forEach(function (key) {
+  const hit = intelPro.match(new RegExp('data-stat="' + key + '">\\s*(\\d+)'));
+  check('intel pro ' + key + ' fallback matches site-stats', hit && Number(hit[1]) === STATS[key], hit && hit[1]);
+});
+check('intel pro loads the canonical counter script', intelPro.indexOf('site-stats.js') !== -1);
+check('intel pro does not call the award total confirmed', intelPro.indexOf('Confirmed awards') === -1);
+
+const health = fs.readFileSync('health.html', 'utf8');
+check('health project subtitle uses canonical open tenders', health.indexOf('id="stat-projects-sub"') !== -1 && health.indexOf('s.openTenders') !== -1 && health.indexOf('21 open') === -1);
+
 const css = fs.readFileSync('style.css', 'utf8');
 check('directory provenance row wraps long URLs', /\.kg-comp-wrapper span\s*\{[^}]*overflow-wrap:\s*anywhere/.test(css));
 
