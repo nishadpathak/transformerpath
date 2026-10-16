@@ -209,6 +209,16 @@ const aboutDesc = fitWindow(
 assert(aboutDesc.length >= 140 && aboutDesc.length <= 160, 'about description window ' + aboutDesc.length + ' ' + aboutDesc);
 assert(!/\.{3}/.test(aboutDesc), 'about description is not padded with dots: ' + aboutDesc);
 
+const bareDesc = fitWindow('TransformerPath — Hero 3D', 140, 160, []);
+assert(bareDesc.length >= 140 && bareDesc.length <= 160, 'very short description still reaches the window ' + bareDesc.length + ' ' + bareDesc);
+assert(!/\.{3}/.test(bareDesc), 'very short description is not padded with dots: ' + bareDesc);
+let shortDescGap = '';
+for (let n = 0; n <= 139 && !shortDescGap; n++) {
+  const fitted = fitWindow('x'.repeat(n), 140, 160, []);
+  if (fitted.length < 140 || fitted.length > 160 || /\.{3}/.test(fitted)) shortDescGap = n + ' -> ' + fitted.length + ' ' + fitted;
+}
+assert(!shortDescGap, 'every short description reaches 140–160 without dots: ' + shortDescGap);
+
 const graph = schema.graph(site.concat([crumbs, plain, confirmed, article]));
 const flat = schema.flatten([graph]);
 assert(flat.some(function (n) { return n['@type'] === 'NewsArticle'; }), 'graph keeps NewsArticle');
