@@ -50,6 +50,12 @@ ok(guide.includes('≤ 250 pC, no rise > 50 pC'), 'construction guide: PD at 1.5
 ok(guide.includes('≤ 100 pC (IEC 60076-3)'), 'construction guide: PD at 1.2 Ur/√3');
 ok(guide.includes('cl. 11.1.2.2'), 'construction guide: routine tests above 72.5 kV');
 ok(!guide.includes('≤ 300 pC'), 'construction guide: 300 pC limit is gone');
+ok(guide.includes('routine for Um ≥ 72.5 kV (IEC 60076-3:2013)'), 'construction guide: lightning impulse routine above 72.5 kV');
+ok(!guide.includes('routine for ≥ 170 kV'), 'construction guide: lightning impulse is not tied to 170 kV');
+ok(guide.includes('short-circuit withstand (IEC 60076-5)'), 'construction guide: short-circuit is special');
+ok(testing.includes('<td>Sound level</td><td>Special</td>'), 'testing: sound level is a special test');
+ok(testing.includes('Type (routine ≥ 72.5 kV)'), 'testing: lightning impulse routine from 72.5 kV');
+ok(testing.includes('<td>Short-circuit withstand</td><td>Special</td>'), 'testing: short-circuit withstand is special');
 
 const reg = read('data/standards.json');
 ok(reg.includes('"standard_code": "IEEE Std C57.12.90"'), 'registry still lists C57.12.90');
@@ -72,7 +78,13 @@ for (const pair of [
   ['knowledge/transformer-partial-discharge-test.html', '≤ 250 pC'],
   ['knowledge/partial-discharge.html', '≤ 250 pC'],
   ['knowledge/transformer-oil-dga-hydrogen.html', 'C2H2 + CO'],
-  ['knowledge/transformer-zero-sequence-test.html', '3-limb, 5-limb or shell']
+  ['knowledge/transformer-zero-sequence-test.html', '3-limb, 5-limb or shell'],
+  ['knowledge/type-vs-routine-test.html', 'Short-circuit withstand is not a type test'],
+  ['knowledge/transformer-standard-testing-requirements.html', 'special test by agreement (IEC 60076-5)'],
+  ['knowledge/transformer-testing-sequence.html', 'not a type test'],
+  ['knowledge/lightning-impulse-test.html', 'routine test for Um ≥ 72.5 kV'],
+  ['knowledge/bil-impulse-level.html', 'routine test for Um ≥ 72.5 kV'],
+  ['knowledge/short-circuit-test-failure.html', 'special test, run by agreement']
 ]) {
   ok(read(pair[0]).includes(pair[1]), pair[0] + ' contains ' + pair[1]);
 }
