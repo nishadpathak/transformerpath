@@ -22,6 +22,7 @@ const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 const { facilityBadge } = require('./lib/provenance-badge');
+const comtrade = require('./lib/comtrade-hs8504');
 function slugify(s) { return String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/&/g, 'and').replace(/['’´]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, ''); }
 
 function gccConfirmedIso() {
@@ -742,6 +743,7 @@ function marketPage(m) {
     '<div class="s"><b>' + tenders.length + '</b><span>active tenders</span></div>' +
     '<div class="s"><b>' + evs.length + '</b><span>upcoming events</span></div>' +
     '</div>' +
+    comtrade.sectionHtml(m.gridsName) +
     '<h2>Grid &amp; utilities</h2>' + (utlHtml || '<p style="color:var(--muted)">See the grid directory for operator details.</p>') +
     '<h2>Confirmed manufacturing plants &amp; facilities (' + facs.length + ')</h2>' + facsHtml +
     (researchHtml ? '<h2>Facility research queue (' + research.length + ')</h2>' + researchHtml : '') +
@@ -795,7 +797,8 @@ MARKETS.forEach(function (m) {
     tenders: tenders.length,
     awards: awards.length,
     suppliers: localSuppliers.length,
-    projects: bi.projects.length
+    projects: bi.projects.length,
+    country: m.gridsName
   });
   console.log('OK markets/' + m.slug + '/ | ' + m.name);
 });
@@ -862,6 +865,7 @@ const idx = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta char
             '<b style="color:var(--amber);font-size:1.1rem">' + l.tenders + '</b> <span style="color:var(--text)">tenders</span> · <b style="color:var(--text)">' + l.awards + '</b> <span style="color:var(--muted)">awards</span>' +
           '</div>' +
         '</div>' +
+        comtrade.cardHtml(l.country || l.name) +
 
         '<div style="margin-bottom:18px">' +
           '<span style="font-size:.72rem;font-weight:700;text-transform:uppercase;color:var(--muted);letter-spacing:.4px;display:block;margin-bottom:6px">Supply Chain Scope</span>' +
