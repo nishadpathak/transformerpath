@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 /* build-events.js — series hubs and edition pages from the canonical feed.
- * No hardcoded edition years. The hub always leads with the next CONFIRMED
- * edition, or says the next edition is not yet announced.
+ * No hardcoded edition years. The hub names the next CONFIRMED edition.
+ * If none is confirmed, it names the next upcoming edition that already
+ * has a concrete date in data/events-canonical.json. Otherwise it says
+ * the next edition is not yet announced.
  */
 'use strict';
 const fs = require('fs');
@@ -9,6 +11,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 execFileSync(process.execPath, [path.join(__dirname, 'build-event-canonicalization.js')], { stdio: 'inherit' });
 const { dubaiToday, fmtDay, dateLine, nullText, allowsCalendar, badgeText } = require('./lib/event-display');
+const { seriesFeature } = require('./lib/event-hub-copy');
 const { eventBadge } = require('./lib/provenance-badge');
 const { eventIcs, calendarIcs } = require('./lib/event-ics');
 const tpAff = require('./lib/travelpayouts');
@@ -35,12 +38,6 @@ const ALL = (CANON.canonical_editions || []).map((e) => {
   return e;
 });
 
-function upcoming(ev) {
-  if (ev.research_status === 'REJECTED_NO_EVIDENCE') return false;
-  if (ev.lifecycle_status === 'REJECTED_NO_EVIDENCE' || ev.lifecycle_status === 'CANCELLED') return false;
-  if (!ev.end) return ev.date_status === 'TBA' || ev.date_status === 'PROJECTED' || ev.date_status === 'CONFIRMED';
-  return ev.end >= TODAY;
-}
 function isPast(ev) { return !!(ev.end && ev.end < TODAY); }
 function travelBlock(ev) {
   if (!allowsCalendar(ev) || !ev.city) return '';
@@ -68,15 +65,6 @@ ALL.forEach((ev) => {
   const k = ev.series_slug || ev.id;
   (groups[k] = groups[k] || []).push(ev);
 });
-
-function nextConfirmed(list) {
-  return list.filter((ev) => ev.date_status === 'CONFIRMED' && upcoming(ev) && ev.start)
-    .sort((a, b) => a.start.localeCompare(b.start))[0] || null;
-}
-function checkedDate(list) {
-  const dates = list.map((e) => e.source_checked_at).filter(Boolean).sort();
-  return dates.length ? dates[dates.length - 1] : null;
-}
 
 const written = new Set();
 function writePage(rel, html) {
@@ -169,13 +157,11 @@ function seriesTitle(slug, list) {
 
 Object.keys(groups).forEach((slug) => {
   const list = groups[slug].slice().sort((a, b) => String(b.start || '').localeCompare(String(a.start || '')));
-  const nxt = nextConfirmed(list);
+  const feature = seriesFeature(list, TODAY);
+  const nxt = feature.featured;
   const seriesName = seriesTitle(slug, list);
-  const checked = checkedDate(list);
   const h1 = seriesName;
-  const cta = nxt
-    ? ('Meet the industry at ' + nxt.name)
-    : ('Next edition: dates not yet announced' + (checked ? ' (checked ' + checked + ')' : ''));
+  const cta = feature.text;
   const hubUrl = 'https://transformerpath.com/events/' + slug + '/';
   const blurb = eventSeo.hubBlurb(seriesName, list);
   const editionLinks = '<h2>Editions</h2><ul>' + list.map((ev) => {
@@ -191,7 +177,7 @@ Object.keys(groups).forEach((slug) => {
     '<p class="lead">' + esc(lead) + '</p>' +
     editionLinks +
     featured +
-    '<p id="series-cta"><b>' + esc(cta) + '</b></p>';
+    '<p id="series-cta" data-hub-asof="' + esc(TODAY) + '"><b>' + esc(cta) + '</b></p>';
   const hubCrumbs = [
     { name: 'Home', item: 'https://transformerpath.com/' },
     { name: 'Events', item: 'https://transformerpath.com/events.html' },

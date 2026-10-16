@@ -69,6 +69,7 @@ check('coil assembly keeps callouts inside the viewport', /function clampLabel\(
 
 const lab = fs.readFileSync('transformer-lab.html', 'utf8');
 check('transformer lab clips 3D labels inside the stage', /#lab-canvas-host \{[^}]*overflow:\s*hidden/.test(lab) && /labelHost:\s*document\.getElementById\('lab-canvas-host'\)/.test(lab));
+check('transformer lab has a page h1', /<h1 class="lab-title">Transformer Lab<\/h1>/.test(lab) && !/id="lab-topbar"[^>]*aria-hidden/.test(lab));
 const engine = fs.readFileSync('tp-lab-engine.js', 'utf8');
 check('transformer lab keeps callouts inside the viewport', /function clampCallout\(/.test(engine));
 

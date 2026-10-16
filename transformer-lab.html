@@ -75,10 +75,13 @@ body {
   z-index: 20;
   pointer-events: none;
 }
-#lab-topbar .lab-title {
+#lab-topbar .lab-title,
+#lab-topbar h1.lab-title {
+  margin: 0;
   font-size: .95rem;
   font-weight: 700;
   letter-spacing: .4px;
+  line-height: 1.2;
   color: var(--lab-acc);
 }
 #lab-topbar .lab-sub {
@@ -645,9 +648,9 @@ body {
 <div id="lab-canvas-host" role="img" aria-label="Interactive 3D transformer disassembly. Use controls below or keyboard arrows to step through disassembly stages."></div>
 
 <!-- ═══════════ TOPBAR ═══════════ -->
-<div id="lab-topbar" aria-hidden="true">
+<div id="lab-topbar">
   <div>
-    <div class="lab-title">⚡ Transformer Lab</div>
+    <h1 class="lab-title">Transformer Lab</h1>
     <div class="lab-sub">100 MVA · 132/33 kV · YNd11 · ONAN/ONAF · OLTC ±10%</div>
   </div>
   <div style="display:flex;gap:8px;align-items:center">

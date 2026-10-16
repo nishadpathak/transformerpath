@@ -105,6 +105,16 @@ function checkSitemap(xml, root, readFile) {
   });
 
   if (root) errors.push.apply(errors, auditCanonicals(locVals, root, readFile));
+  /* A 301 is not a 200. Sitemap locs must be pages Netlify will serve. */
+  if (root && !readFile) {
+    const { permanentMap } = require('./lib/site-redirects');
+    const redirected = permanentMap(root);
+    locVals.forEach(function (loc) {
+      let pathname = '';
+      try { pathname = new URL(loc).pathname; } catch (e) { return; }
+      if (redirected.has(pathname)) errors.push('sitemap URL is a 301, not a 200: ' + loc + ' -> ' + redirected.get(pathname));
+    });
+  }
   /* Netlify serves foo.html at /foo, which hides foo/index.html. A directory
    * URL in the sitemap must not have that sibling file. */
   if (root && !readFile) {

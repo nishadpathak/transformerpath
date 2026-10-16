@@ -71,29 +71,32 @@ function html(statusCode, page) {
   };
 }
 
+function pageOpts(extra) {
+  const dir = exportDir();
+  return Object.assign({
+    previews: csv.loadPreviews(dir),
+    directoryScope: csv.readDirectoryScope(dir)
+  }, extra || {});
+}
+
 function failedPage() {
-  return html(200, csv.renderPage({
-    verified: false,
-    previews: csv.loadPreviews(exportDir())
-  }));
+  return html(200, csv.renderPage(pageOpts({ verified: false })));
 }
 
 function missingPage() {
-  return html(200, csv.renderPage({
+  return html(200, csv.renderPage(pageOpts({
     verified: true,
-    fileMissing: true,
-    previews: csv.loadPreviews(exportDir())
-  }));
+    fileMissing: true
+  })));
 }
 
 function paidPage(product, links) {
   const spec = csv.PRODUCTS[product];
-  return html(200, csv.renderPage({
+  return html(200, csv.renderPage(pageOpts({
     verified: true,
     productLabel: spec ? spec.label : '',
-    links: links,
-    previews: csv.loadPreviews(exportDir())
-  }));
+    links: links
+  })));
 }
 
 function fileResponse(key, text) {
