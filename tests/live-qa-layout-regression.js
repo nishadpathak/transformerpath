@@ -65,9 +65,12 @@ check('viz math still exports for node', typeof api.inrush === 'function' && typ
 
 const coil = fs.readFileSync('coilassembly.html', 'utf8');
 check('coil assembly clips 3D labels inside the stage', /#c3d\{[^}]*overflow:hidden/.test(coil) && !/className='lbl'[^;]*document\.body\.appendChild/.test(coil) && !/className="lbl"[\s\S]{0,180}document\.body\.appendChild/.test(coil));
+check('coil assembly keeps callouts inside the viewport', /function clampLabel\(/.test(coil));
 
 const lab = fs.readFileSync('transformer-lab.html', 'utf8');
 check('transformer lab clips 3D labels inside the stage', /#lab-canvas-host \{[^}]*overflow:\s*hidden/.test(lab) && /labelHost:\s*document\.getElementById\('lab-canvas-host'\)/.test(lab));
+const engine = fs.readFileSync('tp-lab-engine.js', 'utf8');
+check('transformer lab keeps callouts inside the viewport', /function clampCallout\(/.test(engine));
 
 const vector = fs.readFileSync('viz/vector-group.js', 'utf8');
 const outAt = vector.indexOf("var out = document.createElement('div')");

@@ -810,6 +810,20 @@ document.getElementById('bReset').onclick=()=>{
 
 /* ============ render loop ============ */
 const v3=new THREE.Vector3();
+/* Keep a callout fully on screen. The anchor is a projected 3D point, and
+   translate(-50%, -130%) makes the box wider than that point. */
+function clampLabel(el, x, y) {
+  el.style.left = x + 'px';
+  el.style.top = y + 'px';
+  var r = el.getBoundingClientRect();
+  var m = 6;
+  if (r.right > innerWidth - m) x -= r.right - (innerWidth - m);
+  if (r.left < m) x += m - r.left;
+  if (r.bottom > innerHeight - m) y -= r.bottom - (innerHeight - m);
+  if (r.top < m) y += m - r.top;
+  el.style.left = x + 'px';
+  el.style.top = y + 'px';
+}
 function tick(){
   requestAnimationFrame(tick);
   if(autoRotate&&!dragging){sph.th+=.0033;applyCam();}
@@ -820,8 +834,7 @@ function tick(){
     const pr=v3.project(camera);
     if(pr.z>1){L.el.style.display='none';return;}
     L.el.style.display='block';
-    L.el.style.left=((pr.x+1)/2*innerWidth)+'px';
-    L.el.style.top=((-pr.y+1)/2*innerHeight)+'px';
+    clampLabel(L.el, ((pr.x+1)/2*innerWidth), ((-pr.y+1)/2*innerHeight));
   });
 }
 setMode('cca');
