@@ -80,7 +80,9 @@ titles.forEach(function (title) {
 check('language badges are not glued to scope grades', glued.length === 0, glued.slice(0, 3).join(' || '));
 
 const de = (staticHtml.match(/class="lang-badge"[^>]*>DE</g) || []).length;
-check('German source badges stay DE (3 on this page)', de === 3, String(de));
+const deTitles = (staticHtml.match(/title="Source language: DE\."/g) || []).length;
+const gluedDe = /class="lang-badge"[^>]*>DE(?:CONFIRMED|INFERRED|PIPELINE|SUPPORTED|WATCH)/.test(staticHtml);
+check('German source badges stay DE', de > 0 && de === deTitles && !gluedDe, de + ' badges, ' + deTitles + ' titles');
 check('legend defines DE as German', legend.has('DE') && intel.indexOf('DE — German source language') >= 0);
 check('legend defines CONFIRMED', legend.has('CONFIRMED'));
 
