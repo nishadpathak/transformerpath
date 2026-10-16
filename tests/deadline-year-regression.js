@@ -34,6 +34,9 @@ check('a year-only tendering row stays open on 15 Oct 2026', classifyOpenDeadlin
 check('a year-only tendering row closes after 31 Dec', classifyOpenDeadline(YEAR, '2027-01-01') === 'CLOSED');
 check('an explicit 14 May 2026 is still that day', parseDeadline('2026-05-14') === '2026-05-14');
 check('14 May 2026 is already past on 15 Oct', classifyOpenDeadline('2026-05-14', TODAY) === 'CLOSED');
+check('a calendar day is still open at 01:00 UTC on that day', isPast('2026-10-16', '2026-10-16T01:04:00Z') === false);
+check('16 Oct 2026 is closing soon on the morning of 16 Oct', classifyOpenDeadline('2026-10-16', '2026-10-16T01:04:00Z') === 'CLOSING_SOON');
+check('a calendar day is past at 00:00 UTC the next day', isPast('2026-10-16', '2026-10-17T00:00:00Z') === true);
 check('an explicit 1 January stays 1 January', parseDeadline('2026-01-01') === '2026-01-01');
 check('28 Oct 2026 stays a calendar day', parseDeadline('Bid closing 2026-10-28') === '2026-10-28');
 

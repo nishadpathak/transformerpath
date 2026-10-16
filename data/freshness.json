@@ -1,10 +1,10 @@
 {
   "$schema": "https://transformerpath.com/freshness.schema.json",
-  "generated": "2026-10-15T02:27:41.300Z",
-  "build_at": "2026-10-15T02:27:41.300Z",
-  "latest_source_date": "2026-10-14",
-  "latest_source_checked_at": "2026-10-14",
-  "public_intel_status": "UPDATED 14 Oct 2026",
+  "generated": "2026-10-16T01:28:33.478Z",
+  "build_at": "2026-10-16T01:28:33.478Z",
+  "latest_source_date": "2026-10-15",
+  "latest_source_checked_at": "2026-10-16",
+  "public_intel_status": "UPDATED 15 Oct 2026",
   "public_intel_status_reason": "source_within_1d",
   "data_current_claim_allowed": false,
   "honest_note": "Three clocks: latest_source_date (content), latest_source_checked_at (portal probe), build_at (artifact regenerate). A sourced item no more than 1 day old reads UPDATED with that date, or Updated today. Older items keep the age labels. A desk rebuild never mints freshness. GCC confirmed coverage is stated only on GCC market pages.",
@@ -14,15 +14,15 @@
       "name": "Daily Intel",
       "cadence": "daily (curated)",
       "description": "Curated transformer-industry intelligence feed. Data is compiled and regenerated at each build; it is not an automatic live scrape.",
-      "last_build": "2026-10-15T02:27:41.300Z",
-      "build_at": "2026-10-15T02:27:41.300Z",
-      "last_data_refresh": "2026-10-14T12:00:00.000Z",
-      "last_attempted_refresh": "2026-10-14T12:00:00.000Z",
-      "last_successful_refresh": "2026-10-14T12:00:00.000Z",
-      "latest_source_observation": "2026-10-14T12:00:00.000Z",
-      "latest_source_date": "2026-10-14",
-      "latest_source_checked_at": "2026-10-14",
-      "public_status": "UPDATED 14 Oct 2026",
+      "last_build": "2026-10-16T01:28:33.478Z",
+      "build_at": "2026-10-16T01:28:33.478Z",
+      "last_data_refresh": "2026-10-15T12:00:00.000Z",
+      "last_attempted_refresh": "2026-10-15T12:00:00.000Z",
+      "last_successful_refresh": "2026-10-15T12:00:00.000Z",
+      "latest_source_observation": "2026-10-15T12:00:00.000Z",
+      "latest_source_date": "2026-10-15",
+      "latest_source_checked_at": "2026-10-16",
+      "public_status": "UPDATED 15 Oct 2026",
       "public_status_reason": "source_within_1d",
       "data_current_claim_allowed": false,
       "records_added": null,
@@ -62,7 +62,10 @@
               "candidate_id": "kw-mewre-75mva-stage2",
               "tender_id": "CAPT-GOV-KW-16/2025/2026",
               "age_tier": "BACKGROUND",
-              "date_label": "31 Aug 2026"
+              "date_label": "31 Aug 2026",
+              "is_active": false,
+              "closed_reason": "Submission deadline 2026-09-29 has passed. Not an open tender.",
+              "current_relevance": "Submission deadline 2026-09-29 has passed. Not an open tender."
             },
             {
               "title": "MEWRE — replacement of damaged transformers up to 75 MVA and parallel reactors up to 50 MVA (first stage)",
@@ -91,7 +94,10 @@
               "candidate_id": "kw-mewre-75mva-stage1",
               "tender_id": "CAPT-GOV-KW-12/2025/2026",
               "age_tier": "BACKGROUND",
-              "date_label": "7 Sep 2026"
+              "date_label": "7 Sep 2026",
+              "is_active": false,
+              "closed_reason": "Submission deadline 2026-10-06 has passed. Not an open tender.",
+              "current_relevance": "Submission deadline 2026-10-06 has passed. Not an open tender."
             },
             {
               "title": "Saudi Water Authority — supervision of Transformer T803 replacement (502 MVA, 380/110/13.8 kV) PST1 Yanbu Phase 3",
@@ -121,8 +127,9 @@
               "tender_id": "260839007272",
               "age_tier": "BACKGROUND",
               "date_label": "3 Sep 2026",
-              "is_active": true,
-              "current_relevance": "Project under active procurement/construction or multi-year grid framework."
+              "is_active": false,
+              "current_relevance": "Submission deadline 2026-09-10 has passed. Not an open tender.",
+              "closed_reason": "Submission deadline 2026-09-10 has passed. Not an open tender."
             },
             {
               "title": "King Abdulaziz Air Base Hospital — 1,500 kVA standby transformer, Dhahran",
@@ -148,8 +155,11 @@
               "evidence_note": "Evidence: SUPPORTED — not yet fully verified. No live portal adapter has confirmed this item.",
               "candidate_id": "sa-dhahran-1500kva-standby",
               "tender_id": "260839006518",
-              "age_tier": "RECENT",
-              "date_label": "14 Sep 2026"
+              "age_tier": "BACKGROUND",
+              "date_label": "14 Sep 2026",
+              "is_active": false,
+              "closed_reason": "Submission deadline 2026-09-30 has passed. Not an open tender.",
+              "current_relevance": "Submission deadline 2026-09-30 has passed. Not an open tender."
             },
             {
               "title": "33 kV transformer replacement — Substation No. 6, Technical College for Girls, Al-Aflaj",
@@ -177,7 +187,10 @@
               "candidate_id": "sa-al-aflaj-33kv-replacement",
               "tender_id": "260939000800",
               "age_tier": "RECENT",
-              "date_label": "18 Sep 2026"
+              "date_label": "18 Sep 2026",
+              "is_active": false,
+              "closed_reason": "Submission deadline 2026-09-18 has passed. Not an open tender.",
+              "current_relevance": "Submission deadline 2026-09-18 has passed. Not an open tender."
             },
             {
               "title": "Saudi Water Authority — 33/0.4 kV grounding (earthing) transformer, Jubail Phase 4",
@@ -204,7 +217,10 @@
               "candidate_id": "sa-swa-jubail-grounding",
               "tender_id": "260839007703",
               "age_tier": "BACKGROUND",
-              "date_label": "3 Sep 2026"
+              "date_label": "3 Sep 2026",
+              "is_active": false,
+              "closed_reason": "Submission deadline 2026-09-19 has passed. Not an open tender.",
+              "current_relevance": "Submission deadline 2026-09-19 has passed. Not an open tender."
             },
             {
               "title": "Saudi Power Procurement says about half the grid is being scaled up for demand including AI",
@@ -309,7 +325,10 @@
               "candidate_id": "sa-swa-rabigh-2p5mva",
               "tender_id": "60020899",
               "age_tier": "BACKGROUND",
-              "date_label": "2 Sep 2026"
+              "date_label": "2 Sep 2026",
+              "is_active": false,
+              "closed_reason": "Submission deadline 2026-09-02 has passed. Not an open tender.",
+              "current_relevance": "Submission deadline 2026-09-02 has passed. Not an open tender."
             },
             {
               "title": "EWA Central Stores — 11/0.415 kV 1,000 kVA mineral-oil-filled package substation with distribution board",
@@ -336,8 +355,9 @@
               "tender_id": "389/2026/BTB",
               "age_tier": "BACKGROUND",
               "date_label": "28 Aug 2026",
-              "is_active": true,
-              "current_relevance": "Project under active procurement/construction or multi-year grid framework."
+              "is_active": false,
+              "current_relevance": "Submission deadline 2026-09-20 has passed. Not an open tender.",
+              "closed_reason": "Submission deadline 2026-09-20 has passed. Not an open tender."
             },
             {
               "title": "DEWA floats EPC tender for twelve 132/11 kV substations in Dubai South and Expo Valley development zones",
@@ -350,7 +370,9 @@
               "date_iso": "2026-09-09",
               "date_label": "9 Sep 2026",
               "is_active": true,
-              "current_relevance": "Project under active procurement/construction or multi-year grid framework."
+              "current_relevance": "Project under active procurement/construction or multi-year grid framework.",
+              "country": "United Arab Emirates",
+              "tender_close_date": "2026-10-28"
             },
             {
               "title": "Saudi Electricity Company (SEC) awards SAR 412m Al-Hasa North 380/115 kV BSP substation EPC to Al-Babtain",
@@ -590,8 +612,10 @@
               "age_tier": "BACKGROUND",
               "date_iso": "2026-05-01",
               "date_label": "May 2026",
-              "is_active": true,
-              "current_relevance": "Project under active procurement/construction or multi-year grid framework."
+              "tender_close_date": "2026-06-21",
+              "is_active": false,
+              "current_relevance": "The sourced snippet states a consulting-proposal deadline of 21 June 2026. That date has passed. Not an open bid.",
+              "closed_reason": "The sourced snippet states a consulting-proposal deadline of 21 June 2026. That date has passed. Not an open bid."
             },
             {
               "title": "GCCIA signs ~$800m agreements to expand UAE link and interconnect Oman",
@@ -704,8 +728,9 @@
               "age_tier": "BACKGROUND",
               "date_iso": "2026-04-01",
               "date_label": "Apr 2026",
-              "is_active": true,
-              "current_relevance": "Project under active procurement/construction or multi-year grid framework."
+              "is_active": false,
+              "current_relevance": "SaudiGulf Projects / MEED (Apr 2026) says the EPC bids closed 14 May. Not an open tender. Awards were expected through H2 2026; no award notice is on file.",
+              "closed_reason": "SaudiGulf Projects / MEED (Apr 2026) says the EPC bids closed 14 May. Not an open tender. Awards were expected through H2 2026; no award notice is on file."
             },
             {
               "title": "SEC awards SPTC $376m transformer & reactor supply deal",
@@ -745,7 +770,10 @@
               "url": "https://www.zawya.com/en/projects/utilities/dubai-expected-to-award-substations-epc-contract-in-q3-fk1fcmsx",
               "age_tier": "UNKNOWN",
               "date_iso": null,
-              "date_label": ""
+              "date_label": "",
+              "is_active": false,
+              "closed_reason": "The source expected an award in Q3 2026. That quarter ended on 30 Sep 2026 and no later award or revised date is on file.",
+              "current_relevance": "The source expected an award in Q3 2026. That quarter ended on 30 Sep 2026 and no later award or revised date is on file."
             },
             {
               "title": "DEWA Tawimura 33/11 kV substation award expected this quarter",
@@ -755,7 +783,10 @@
               "url": "https://www.tradingview.com/news/reuters.com,2026-05-12:newsml_Zaw1C2Sz3:0-zawya-dubai-likely-to-award-33-11kv-substation-contract-in-q2-2026/",
               "age_tier": "UNKNOWN",
               "date_iso": null,
-              "date_label": ""
+              "date_label": "",
+              "is_active": false,
+              "closed_reason": "The May 2026 source says bids closed 28 Jan 2026 and an award was expected around May–Jun 2026. That window has passed and no award notice is on file.",
+              "current_relevance": "The May 2026 source says bids closed 28 Jan 2026 and an award was expected around May–Jun 2026. That window has passed and no award notice is on file."
             },
             {
               "title": "GCC–Oman direct electrical interconnection project launches with USD 700m funding",
@@ -794,9 +825,11 @@
               "src": "T&D India · 14 Sep 2026 [en]",
               "url": "https://www.tndindia.com/pgcil-approves-investment-for-western-southern-expansion/",
               "isNew": true,
-              "age_tier": "RECENT",
+              "age_tier": "BACKGROUND",
               "date_iso": "2026-09-14",
-              "date_label": "14 Sep 2026"
+              "date_label": "14 Sep 2026",
+              "is_active": true,
+              "current_relevance": "Project under active procurement/construction or multi-year grid framework."
             },
             {
               "title": "Atlanta Electricals Q1FY27: revenue +48%, Rs 291.68 cr RRVPNL power-transformer order; order book Rs 3,117 cr",
@@ -930,8 +963,10 @@
               "age_tier": "BACKGROUND",
               "date_iso": "2026-07-07",
               "date_label": "7 Jul 2026",
-              "is_active": true,
-              "current_relevance": "Project under active procurement/construction or multi-year grid framework."
+              "tender_watch": false,
+              "is_active": false,
+              "current_relevance": "Not an open tender. The 7 Jul 2026 source is a public-procurement exemption, not an invitation to bid, and it states no submission deadline.",
+              "closed_reason": "Not an open tender. The 7 Jul 2026 source is a public-procurement exemption, not an invitation to bid, and it states no submission deadline."
             },
             {
               "title": "PM Modi inaugurates Rajasthan REZ Phase-III and lays foundation for Phase-IV transmission — Rs 4,645 cr, 5,500 MVA new substation capacity",
@@ -980,8 +1015,10 @@
               "age_tier": "BACKGROUND",
               "date_iso": "2026-07-03",
               "date_label": "3 Jul 2026",
-              "is_active": true,
-              "current_relevance": "Project under active procurement/construction or multi-year grid framework."
+              "tender_watch": false,
+              "is_active": false,
+              "current_relevance": "Not an open tender. The 3 Jul 2026 source is a share-price report about a possible policy change. It is not an invitation to bid and states no submission deadline.",
+              "closed_reason": "Not an open tender. The 3 Jul 2026 source is a share-price report about a possible policy change. It is not an invitation to bid and states no submission deadline."
             },
             {
               "title": "TARIL secures $16.26m US export order for five transformers",
@@ -1404,7 +1441,8 @@
               "url": "https://www.energy-storage.news/germany-tso-amprion-launches-tender-for-decentralised-grid-booster-projects/",
               "age_tier": "UNKNOWN",
               "date_iso": null,
-              "date_label": ""
+              "date_label": "",
+              "country": "Germany"
             },
             {
               "title": "DNV launches power transformer joint industry project",
@@ -1638,6 +1676,153 @@
               "age_tier": "FUTURE_PLANNED",
               "date_iso": "2026-12-31",
               "date_label": "2026"
+            },
+            {
+              "title": "Sadales tīkls seeks mobile 630 kVA transformer substations",
+              "snippet": "TED notice 712579-2026, published 15 October 2026, is a contract notice from Latvian distribution operator Sadales tīkls for the supply of mobile transformer substations rated 630 kVA. The notice states an estimated value of EUR 220,771.70. Tenders are due 5 November 2026 at 10:00 (UTC+2). It does not state how many units. Original notice in Latvian. Buyer country on the notice: Latvia (Rīga).",
+              "country": "Latvia",
+              "tender_close_date": "2026-11-05",
+              "value": "EUR 220,771.70 estimated",
+              "src": "TED · 15 Oct 2026 [lv]",
+              "url": "https://ted.europa.eu/en/notice/-/detail/712579-2026",
+              "lang": "lv",
+              "isNew": true,
+              "cls": "PIPELINE",
+              "date_iso": "2026-10-15",
+              "publication_date": "2026-10-15",
+              "evidence_grade": "CONFIRMED",
+              "age_tier": "FRESH",
+              "date_label": "15 Oct 2026"
+            },
+            {
+              "title": "ŽĎAS tenders a 110 kV switchyard rebuild with two 110/22/6.3 kV transformers",
+              "snippet": "TED notice 711752-2026, published 15 October 2026, invites bids to rebuild the existing 110 kV ŽĎAS switchyard, including supply, installation and commissioning of two 110/22/6.3 kV transformers. The buyer is ŽĎAS, a.s. Offers are due 21 October 2026 at 10:00 (UTC+2). The notice fields retrieved do not state a contract value. Original notice in Czech. Buyer country on the notice: Czechia (Žďár nad Sázavou).",
+              "country": "Czechia",
+              "value": "",
+              "src": "TED · 15 Oct 2026 [cs]",
+              "url": "https://ted.europa.eu/en/notice/-/detail/711752-2026",
+              "lang": "cs",
+              "isNew": true,
+              "cls": "PIPELINE",
+              "date_iso": "2026-10-15",
+              "publication_date": "2026-10-15",
+              "evidence_grade": "CONFIRMED",
+              "age_tier": "FRESH",
+              "date_label": "15 Oct 2026"
+            },
+            {
+              "title": "Mondragon solar project tenders floating transformer substations",
+              "snippet": "TED notice 713576-2026, published 15 October 2026, is supply lot 3 (PTR) from Centrale solaire de Mondragon (CSMOD2) for the supply and on-site delivery of floating transformer substations. Offers are due 16 October 2026 at 23:59 (UTC+2). The notice fields retrieved do not state a unit count or a contract value. Original notice in French. Buyer country on the notice: France (Castelnau-le-Lez).",
+              "country": "France",
+              "value": "",
+              "src": "TED · 15 Oct 2026 [fr]",
+              "url": "https://ted.europa.eu/en/notice/-/detail/713576-2026",
+              "lang": "fr",
+              "isNew": true,
+              "cls": "PIPELINE",
+              "date_iso": "2026-10-15",
+              "publication_date": "2026-10-15",
+              "evidence_grade": "CONFIRMED",
+              "age_tier": "FRESH",
+              "date_label": "15 Oct 2026"
+            },
+            {
+              "title": "PSE tenders expansion of the 400/110 kV Czarna substation",
+              "snippet": "TED notice 711561-2026, published 15 October 2026, is a works contract from Polish transmission operator PSE to expand the 400/110 kV Czarna substation at Czerniec, in the Lubin municipality, so new facilities can connect to the national grid. The scope covers new construction and rebuilding of conflicting structures, including busbar bridges. Offers are due 27 October 2026 at 10:00 (UTC+1). No estimated value was in the notice fields retrieved. Original notice in Polish. Buyer country on the notice: Poland (Polskie Sieci Elektroenergetyczne, Konstancin-Jeziorna).",
+              "country": "Poland",
+              "value": "",
+              "src": "TED · 15 Oct 2026 [pl]",
+              "url": "https://ted.europa.eu/en/notice/-/detail/711561-2026",
+              "lang": "pl",
+              "isNew": true,
+              "cls": "PIPELINE",
+              "date_iso": "2026-10-15",
+              "publication_date": "2026-10-15",
+              "evidence_grade": "CONFIRMED",
+              "age_tier": "FRESH",
+              "date_label": "15 Oct 2026"
+            },
+            {
+              "title": "Augstsprieguma tīkls tenders a rebuild of 110 kV substation No. 6 TEC-1",
+              "snippet": "TED notice 712707-2026, published 15 October 2026, invites bids to rebuild substation No. 6 TEC-1, covering the 110 kV relay protection and control systems, including design, construction and equipment supply. The buyer is Latvian transmission operator Augstsprieguma tīkls. Offers are due 3 November 2026 at 10:00 (UTC+2). No estimated value was in the notice fields retrieved. Original notice in Latvian. Buyer country on the notice: Latvia (Rīga).",
+              "country": "Latvia",
+              "value": "",
+              "src": "TED · 15 Oct 2026 [lv]",
+              "url": "https://ted.europa.eu/en/notice/-/detail/712707-2026",
+              "lang": "lv",
+              "isNew": true,
+              "cls": "PIPELINE",
+              "date_iso": "2026-10-15",
+              "publication_date": "2026-10-15",
+              "evidence_grade": "CONFIRMED",
+              "age_tier": "FRESH",
+              "date_label": "15 Oct 2026"
+            },
+            {
+              "title": "PSE tenders 110/220/400 kV disconnectors and earthing switches, stage IV-A",
+              "snippet": "TED notice 713886-2026, published 15 October 2026, is a supplies contract from PSE for new disconnectors and earthing switches for 110 kV, 220 kV and 400 kV transmission substations. It is split into four packages: pantograph disconnectors; horizontal-break disconnectors and free-standing earthing switches; vertical-break disconnectors; and disconnectors for the Wielopole substation. Offers are due 28 October 2026 at 10:00 (UTC+1). No estimated value was in the notice fields retrieved. Original notice in Polish. Buyer country on the notice: Poland (Polskie Sieci Elektroenergetyczne, Konstancin-Jeziorna).",
+              "country": "Poland",
+              "value": "",
+              "src": "TED · 15 Oct 2026 [pl]",
+              "url": "https://ted.europa.eu/en/notice/-/detail/713886-2026",
+              "lang": "pl",
+              "isNew": true,
+              "cls": "PIPELINE",
+              "date_iso": "2026-10-15",
+              "publication_date": "2026-10-15",
+              "evidence_grade": "CONFIRMED",
+              "age_tier": "FRESH",
+              "date_label": "15 Oct 2026"
+            },
+            {
+              "title": "Distribuție Energie Oltenia tenders 123 kV breaker modules for a 110 kV line bay and a transformer bay",
+              "snippet": "TED notice 711669-2026, published 15 October 2026, is a contract from Distribuție Energie Oltenia to buy, design, install and commission 123 kV, 31.5 kA COMPASS breaker modules. The work modernizes the 110 kV Preajba line bay and transformer-2 bay, and a breaker module at the 110/20 kV Harlesti substation in Trivalea-Mosteni, Teleorman. The notice states RON 4,772,200. Offers are due 17 November 2026 at 11:00 (UTC+2). Original notice in Romanian. Buyer country on the notice: Romania (Craiova).",
+              "country": "Romania",
+              "value": "RON 4,772,200",
+              "src": "TED · 15 Oct 2026 [ro]",
+              "url": "https://ted.europa.eu/en/notice/-/detail/711669-2026",
+              "lang": "ro",
+              "isNew": true,
+              "cls": "PIPELINE",
+              "date_iso": "2026-10-15",
+              "publication_date": "2026-10-15",
+              "evidence_grade": "CONFIRMED",
+              "age_tier": "FRESH",
+              "date_label": "15 Oct 2026"
+            },
+            {
+              "title": "Red Eléctrica awards a 400 kV GIS bay at Santa María de Grado to Siemens Energy",
+              "snippet": "TED award notice 711925-2026, published 15 October 2026, records that Red Eléctrica de España awarded the supply and installation of one 400 kV GIS bay at the Santa María de Grado substation in Asturias to Siemens Energy S.A. The notice fields retrieved do not state the contract value. Original notice in Spanish. Buyer country on the notice: Spain (Alcobendas).",
+              "country": "Spain",
+              "awardee": "Siemens Energy S.A.",
+              "value": "",
+              "src": "TED · 15 Oct 2026 [es]",
+              "url": "https://ted.europa.eu/en/notice/-/detail/711925-2026",
+              "lang": "es",
+              "isNew": true,
+              "cls": "CONFIRMED",
+              "date_iso": "2026-10-15",
+              "publication_date": "2026-10-15",
+              "evidence_grade": "CONFIRMED",
+              "age_tier": "FRESH",
+              "date_label": "15 Oct 2026"
+            },
+            {
+              "title": "Red Eléctrica awards three 220 kV GIS bays to Siemens Energy",
+              "snippet": "TED award notice 713963-2026, published 15 October 2026, records that Red Eléctrica de España awarded the supply and installation of three 220 kV gas-insulated switchgear bays to Siemens Energy S.A. The notice fields retrieved do not state the contract value or name the substation. Original notice in Spanish. Buyer country on the notice: Spain (Alcobendas).",
+              "country": "Spain",
+              "awardee": "Siemens Energy S.A.",
+              "value": "",
+              "src": "TED · 15 Oct 2026 [es]",
+              "url": "https://ted.europa.eu/en/notice/-/detail/713963-2026",
+              "lang": "es",
+              "isNew": true,
+              "cls": "CONFIRMED",
+              "date_iso": "2026-10-15",
+              "publication_date": "2026-10-15",
+              "evidence_grade": "CONFIRMED",
+              "age_tier": "FRESH",
+              "date_label": "15 Oct 2026"
             }
           ]
         },
@@ -2054,7 +2239,8 @@
               "url": "https://www.powersystems.technology/news/iraq-expands-energy-sector-with-new-transformer-supply-agreement-transformer-technology-news.html",
               "age_tier": "UNKNOWN",
               "date_iso": null,
-              "date_label": ""
+              "date_label": "",
+              "country": "Iraq"
             },
             {
               "title": "Linxon signs three contracts to rehabilitate 400 kV BSP stations in Iraq",
@@ -2144,7 +2330,8 @@
             },
             {
               "title": "平高电气 Pinggao Electric: wins CNY 876m of State Grid procurement (GIS/switchgear)",
-              "snippet": "Pinggao Electric (平高电气) announced it won State Grid procurement tenders worth about CNY 876m. The listed switchgear maker's award reflects sustained State Grid spending on HV switchgear and related substation equipment.",
+              "snippet": "Pinggao Electric (平高电气) announced it won State Grid procurement tenders worth about CNY 876m. The listed switchgear maker's award reflects sustained State Grid spending on HV switchgear and related substation equipment. The 界面新闻 report quotes the announcement: the buyer is 国家电网有限公司 (State Grid Corporation of China).",
+              "country": "China",
               "value": "CNY 876m",
               "src": "Jiemian 界面 · Apr 2026 (announcement 1 Apr 2026) [zh]",
               "url": "https://www.jiemian.com/article/13829280.html",
@@ -2390,9 +2577,10 @@
               "src": "中国新聞デジタル · 15 Oct 2025 [ja]",
               "url": "https://www.chugoku-np.co.jp/articles/-/728319",
               "lang": "ja",
-              "age_tier": "BACKGROUND",
+              "age_tier": "HISTORICAL",
               "date_iso": "2025-10-15",
-              "date_label": "15 Oct 2025"
+              "date_label": "15 Oct 2025",
+              "historical_reference": true
             },
             {
               "title": "TEPCO Power Grid solicits land for 500 kV substations in Tokyo, Ibaraki and Chiba to serve data-center demand",
@@ -2558,11 +2746,11 @@
             }
           ]
         },
-        "updated": "2026-10-14T12:00:00.000Z",
+        "updated": "2026-10-13T12:00:00.000Z",
         "refresh_meta": {
           "cadence": "once daily at 06:00 UTC, only when TP_BUILD_HOOK_URL is set",
           "refreshed_at_build": true,
-          "newest_validated_content_date": "2026-10-14",
+          "newest_validated_content_date": "2026-10-13",
           "note": "updated reflects newest validated CONTENT observation (float/publication/event/update) — not source_checked_at and not a silent redeploy clock. Excludes tender_close_date and future dates. Publication requires gcc-intel-review.json decision=PUBLISH with reviewer and reviewed_at. Held candidates are not auto-published.",
           "gcc_published": [
             "uae-dewa-2122600155",
@@ -2589,23 +2777,6 @@
             "bh-ewa-389-2026-1000kva",
             "gcc-uae-saudi-grid-mou-2026-10-09",
             "sa-sppc-grid-scale-2026-10-13"
-          ]
-        },
-        "North America": {
-          "label": "North America",
-          "items": [
-            {
-              "title": "AEP Ohio files $840m transmission filing with PUCO for New Albany AI data centre cluster (4× 765/345 kV autotransformers)",
-              "snippet": "American Electric Power filed regulatory application for four 765/345 kV, 750 MVA autotransformers and associated 765 kV switching station to meet 3.2 GW of hyperscale computing demand in Central Ohio.",
-              "value": "$840m · 3,000 MVA",
-              "src": "Utility Dive · 8 Sep 2026 [en]",
-              "url": "https://www.utilitydive.com/news/aep-ohio-puco-transmission-filing-data-centers/829104/",
-              "lang": "en",
-              "isNew": true,
-              "age_tier": "BACKGROUND",
-              "date_iso": "2026-09-08",
-              "date_label": "8 Sep 2026"
-            }
           ]
         }
       }
@@ -2649,28 +2820,28 @@
       "id": "tenders",
       "name": "Tender Watch",
       "cadence": "maintained",
-      "last_build": "2026-10-14",
-      "last_data_refresh": "2026-10-14",
-      "last_attempted_refresh": "2026-10-14",
-      "last_successful_refresh": "2026-10-14",
-      "latest_source_observation": "2026-10-14",
+      "last_build": "2026-10-16",
+      "last_data_refresh": "2026-10-16",
+      "last_attempted_refresh": "2026-10-16",
+      "last_successful_refresh": "2026-10-16",
+      "latest_source_observation": "2026-10-16",
       "records_added": null,
       "records_updated": null,
       "source_count": null,
       "source_failures": null,
       "status": "HEALTHY",
       "source_health": "derived from source-backed projects + intel; never fabricated",
-      "records": 155
+      "records": 161
     },
     {
       "id": "awards",
       "name": "Awards",
       "cadence": "maintained",
-      "last_build": "2026-10-14",
-      "last_data_refresh": "2026-10-14",
-      "last_attempted_refresh": "2026-10-14",
-      "last_successful_refresh": "2026-10-14",
-      "latest_source_observation": "2026-10-14",
+      "last_build": "2026-10-16",
+      "last_data_refresh": "2026-10-16",
+      "last_attempted_refresh": "2026-10-16",
+      "last_successful_refresh": "2026-10-16",
+      "latest_source_observation": "2026-10-16",
       "records_added": null,
       "records_updated": null,
       "source_count": null,
@@ -2684,10 +2855,10 @@
       "name": "Materials Intelligence",
       "cadence": "reference",
       "description": "Copper/aluminium are the LME reference (dated, sourced, freshness_status). CRGO and others are shown as unavailable (no public daily index).",
-      "last_build": "2026-10-14",
-      "last_data_refresh": "2026-10-14",
-      "last_attempted_refresh": "2026-10-14",
-      "last_successful_refresh": "2026-10-14",
+      "last_build": "2026-10-16",
+      "last_data_refresh": "2026-10-16",
+      "last_attempted_refresh": "2026-10-16",
+      "last_successful_refresh": "2026-10-16",
       "latest_source_observation": "LME reference observed 2026-08-20 (per record); others have no verified reference",
       "records_added": null,
       "records_updated": null,
@@ -2706,8 +2877,8 @@
       "works_for": [
         "materials"
       ],
-      "last_checked": "2026-10-14",
-      "last_success": "2026-10-14",
+      "last_checked": "2026-10-16",
+      "last_success": "2026-10-16",
       "latest_content_date": "2026-08-20",
       "failure_count": 0,
       "status": "HEALTHY"
@@ -2719,9 +2890,9 @@
       "works_for": [
         "daily_intel"
       ],
-      "last_checked": "2026-10-14T12:00:00.000Z",
-      "last_success": "2026-10-14T12:00:00.000Z",
-      "latest_content_date": "2026-10-14T12:00:00.000Z",
+      "last_checked": "2026-10-15T12:00:00.000Z",
+      "last_success": "2026-10-15T12:00:00.000Z",
+      "latest_content_date": "2026-10-15T12:00:00.000Z",
       "failure_count": 0,
       "status": "HEALTHY"
     },
@@ -2740,8 +2911,8 @@
     }
   ],
   "clocks": {
-    "latest_source_iso": "2026-10-14",
-    "statusLabel": "UPDATED 14 Oct 2026",
+    "latest_source_iso": "2026-10-15",
+    "statusLabel": "UPDATED 15 Oct 2026",
     "reason": "source_within_1d",
     "data_current_claim_allowed": false,
     "honesty": "Status follows latest_source_date, not build_at and not the GCC discovery gate. Desk rebuild alone never yields UPDATED or DATA CURRENT."
