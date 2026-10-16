@@ -162,8 +162,32 @@ assert((gapTitle.match(/TransformerPath/g) || []).length <= 1, 'mid-length title
 
 const longTitle = fitWindow('Ahlstrom-Munksjö | Helsinki, Finland supplier', 50, 60, [' | TransformerPath']);
 assert(longTitle.length >= 50 && longTitle.length <= 60, 'long title stays in window ' + longTitle.length);
+assert(longTitle.indexOf('Ahlstrom-Munksjö') !== -1, 'long title keeps the company name: ' + longTitle);
+assert(longTitle.indexOf('Finland') !== -1, 'long title keeps the country: ' + longTitle);
 assert(longTitle.indexOf('TransformerP') === -1 || longTitle.indexOf('TransformerPath') !== -1, 'brand is not sliced: ' + longTitle);
 assert(!/TransformerP(?!ath)/.test(longTitle), 'no partial TransformerPath in ' + longTitle);
+
+[
+  ['Henan Yaan Electrical Insulation Material Co., Ltd. | Xuchang, China supplier', 'Yaan'],
+  ['TELK (Transformers and Electricals Kerala Ltd) | Angamaly, India supplier', 'TELK'],
+  ['Von Roll (Superior Essex) | Breitenbach, Switzerland supplier', 'Von Roll'],
+  ['Power Transformers Sales And Services (India) Private Limited | Coimbatore, India supplier', 'Power Transformers'],
+  ['Tianjin Jingwei Power Technology Co., Ltd. | Tianjin, China supplier', 'Jingwei'],
+  ['Hitachi Energy (Insulation & Components, Nanjangud — formerly Raman Boards) | Nanjangud, India supplier', 'Hitachi Energy'],
+  ['Sam Dong Co., Ltd. / Sam Dong America | Eumseong, South Korea supplier', 'Sam Dong'],
+  ['Tongling Jingda Special Magnet Wire Co., Ltd. (Jingda) | Tongling, China supplier', 'Jingda'],
+  ['Elektromotoren und Gerätebau Barleben GmbH (EMB) | Barleben, Germany supplier', 'Elektromotoren'],
+  ['Mehru Electrical & Mechanical Engineers Pvt. Ltd. | Bhiwadi, India supplier', 'Mehru Electrical'],
+  ['Nuova Magrini Galileo / NMG Radiators | Bergamo, Italy supplier', 'Nuova Magrini Galileo']
+].forEach(function (pair) {
+  const fitted = fitWindow(pair[0], 50, 60, [' | TransformerPath']);
+  assert(fitted.length >= 50 && fitted.length <= 60, 'supplier title window ' + fitted);
+  assert(fitted.indexOf(pair[1]) !== -1, 'supplier title keeps the name ' + pair[1] + ' in ' + fitted);
+  assert(!/Ltd\)/.test(fitted), 'supplier title does not leave a broken parenthesis: ' + fitted);
+  assert(!/\b(Henan|Tianjin|Tongling|China) Co\./.test(fitted), 'supplier title does not keep only a legal suffix: ' + fitted);
+  assert(!/[&/]\s*\|/.test(fitted), 'supplier title does not end the name on a separator: ' + fitted);
+  assert(!/\b(und|and|of|the)\s+\|/.test(fitted), 'supplier title does not end the name on a conjunction: ' + fitted);
+});
 
 const learnPages = ['learn.html', 'engineer-track.html', 'academy.html', 'pricing.html', 'coretopology.html'];
 for (let v = 0; v <= 19; v++) learnPages.push('books/volume-' + v + '/index.html');
