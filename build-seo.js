@@ -298,5 +298,8 @@ console.log('generated', typeHubCount, 'type hubs and', comboHubCount, 'type-cou
 /* Sourced product and voltage hubs. A hub is written only at five or more makers. */
 require('./scripts/build-sourced-hubs.js')();
 
+/* Cooling × MVA floor × country pages. A page is written only at three or more makers. */
+require('./scripts/build-spec-landings.js')();
+
 /* Sitemap: walk published HTML (see build-sitemap.js). */
 require('./build-sitemap.js')();

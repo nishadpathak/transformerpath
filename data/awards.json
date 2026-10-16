@@ -3,9 +3,9 @@
   "$comment": "First-class Award entity. Derived only from source-confirmed AWARDED tenders; an award is never inferred from a vendor list, a project, or a technical capability. Confidence limited/independently-sourced; values shown only where the source states them.",
   "updated": "2026-10-16",
   "stats": {
-    "generated_at": "2026-10-16T01:28:32.602Z",
-    "total": 56,
-    "countries": 28,
+    "generated_at": "2026-10-16T05:58:42.974Z",
+    "total": 57,
+    "countries": 29,
     "regions": 7,
     "confirmed_scope": 11,
     "by_region": {
@@ -15,7 +15,7 @@
       "Asia": 19,
       "Europe": 9,
       "Africa": 4,
-      "North America": 2
+      "North America": 3
     }
   },
   "awards": [
@@ -1101,6 +1101,42 @@
         "https://theedgemalaysia.com/node/786330"
       ],
       "award_basis": "",
+      "confidence": "LIMITED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "award_status": "CONFIRMED",
+      "last_verified": "2026-10-16",
+      "_derived": false
+    },
+    {
+      "award_id": "AW-central-fotovoltaica-puerto-pe",
+      "tender_id": "T-central-fotovoltaica-puerto-pena",
+      "project_slug": "central-fotovoltaica-puerto-penasco-secuencia-iii-300-mw-103-mw-3h-bess-contrato-coee-0002-2025",
+      "project": "central-fotovoltaica-puerto-penasco-secuencia-iii-300-mw-103-mw-3h-bess-contrato-coee-0002-2025",
+      "title": "Central Fotovoltaica Puerto Peñasco Secuencia III",
+      "awardee": "Consortium led by Eléctrica Aselco (with Epic Electric, Grupo Profezac, Enersave Wire and Cable)",
+      "buyer": "CFE",
+      "utility": "CFE",
+      "epc": "",
+      "country": "Mexico",
+      "project_country": "Mexico",
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
+      "cross_border_links": [],
+      "region": "North America",
+      "voltage": "",
+      "transformer_scope": "INFERRED",
+      "quantity": "",
+      "contract_value": "",
+      "currency": "",
+      "source": "pv magazine México / Industry & Energy Magazine",
+      "source_urls": [
+        "https://www.expreso.com.mx/noticias/sonora/adjudica-cfe-tercera-fase-central-solar-en-puerto-penasco/244748",
+        "https://www.pv-magazine-mexico.com/2025/09/24/la-cfe-lanza-contratacion-para-la-central-solar-puerto-penasco-secuencia-iii-de-300-mw-mas-almacenamiento/",
+        "https://energymagazine.mx/2025/11/puerto-penasco-acelera-cfe-lanza-300-mw-solares-103-mw-3h-en-baterias-secuencia-iii/",
+        "https://energiahoy.com/electricidad/cfe-abre-contratacion-de-puerto-penasco-secuencia-iii-con-300-mw-y-103-mw-bess/"
+      ],
+      "award_basis": "CFE award, Dec 2025, US$294 m turnkey",
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",

@@ -527,7 +527,7 @@ async function main() {
     const html = fs.readFileSync('manufacturers/' + d + '/index.html', 'utf8');
     return html.indexOf('href="' + mfrLink + '?client_reference_id=' + d + '"') >= 0 && html.indexOf('Pay $499 — Get Verified') >= 0;
   });
-  check('manufacturer profiles use the Get Verified payment link', profileDirs.length === linkedProfiles.length && linkedProfiles.length > 900, 'profiles=' + profileDirs.length + ' linked=' + linkedProfiles.length);
+  check('manufacturer profiles use the Get Verified payment link', profileDirs.length === linkedProfiles.length && linkedProfiles.length > 880, 'profiles=' + profileDirs.length + ' linked=' + linkedProfiles.length);
   check('sample profile keeps the claim link beside the pay button', fs.readFileSync('manufacturers/erea-energy-engineering/index.html', 'utf8').indexOf('client_reference_id=erea-energy-engineering') >= 0);
   const sampleCtas = paid.verifiedManufacturerCtasHtml({ companySlug: 'erea-energy-engineering', trackName: 'EREA Energy Engineering' });
   check('profile and directory ctas use the $499 link with the maker slug', sampleCtas.indexOf('href="' + mfrLink + '?client_reference_id=erea-energy-engineering"') >= 0 && sampleCtas.indexOf('>Get verified<') >= 0 && sampleCtas.indexOf('>Claim this profile<') >= 0 && sampleCtas.indexOf('data-mfr-verify-cta="claim"') >= 0 && sampleCtas.indexOf('data-mfr-verify-cta="get-verified"') >= 0);

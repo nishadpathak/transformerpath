@@ -112,7 +112,7 @@ const ARTICLES = [
     question: 'Why does a transformer fail a short-circuit test?',
     quick: 'A transformer passes a short-circuit test if it withstands the applied fault currents without unacceptable deformation, displacement or leakage paths. Failures come from mechanical deformation of windings (radial/buckling or axial collapse), broken or displaced leads and terminals, or insulation damage that leads to a subsequent power-frequency withstand failure — all from the enormous internal electromagnetic forces that scale with current squared.',
     sections: [
-      ['What the test establishes', 'Routine and type short-circuit tests (per IEC 60076-5 or IEEE C57.12.90 / C57.12.00) prove the transformer can survive a specified number of short-circuit events at kA of through-current without sustaining damage that would cause a later failure. Pass = no visible deformation, no insulation breakdown, no significant impedance change, and acceptable subsequent tests.'],
+      ['What the test establishes', 'The short-circuit withstand test is a special test, run by agreement (IEC 60076-5). It proves the transformer can survive a specified number of short-circuit events at kA of through-current without sustaining damage that would cause a later failure. Pass = no visible deformation, no insulation breakdown, no significant impedance change, and acceptable subsequent tests.'],
       ['Where the forces act', 'The winding currents create radial forces (tension on the outer winding, compression on the inner winding) and axial forces when ampere-turns do not balance. These try to stretch, squash or telescope the windings and push them longitudinally.'],
       ['Typical failure mechanisms', 'Compressive buckling of the inner winding, radial stretch or ovalising of the outer winding, axial collapse or vertical displacement, tilting of conductors, damage to clamping and end rings, and broken or loose leads terminations. Insulation can also be displaced, creating a weak point that only reveals itself during the follow-up voltage test.'],
       ['Why it matters for design', 'The design must size conductor section, axial and radial support (spacers), clamping forces and end structures to hold the winding below its yield/limit. Reinforcement must not create new thermal hotspots. Design margins and mechanical adequacy are the whole point.'],
@@ -316,11 +316,11 @@ const ARTICLES = [
     slug: 'type-vs-routine-test', topic: 'Testing', level: 'Beginner', minutes: 5,
     title: 'Type, Routine and Special Tests? What Is the Difference?',
     question: 'What is the difference between type, routine and special transformer tests?',
-    quick: 'Routine tests are run on every unit (ratio, resistance, no-load and load loss, power factor, HV/LV withstand, oil test). Above 72.5 kV, capacitance and tan δ, insulation resistance and DGA are also routine (IEC 60076-1:2011 cl. 11.1.2.2). Type tests are run on a design once to prove it (temperature rise, impulse, short-circuit withstand). Special tests are run by agreement (sound level, zero-sequence, harmonics, and DGA below 72.5 kV).',
+    quick: 'Routine tests are run on every unit (ratio, resistance, no-load and load loss, power factor, HV/LV withstand, oil test). Above 72.5 kV, capacitance and tan δ, insulation resistance and DGA are also routine (IEC 60076-1:2011 cl. 11.1.2.2). Lightning impulse is a type test and is also routine for Um ≥ 72.5 kV (IEC 60076-3:2013). Type tests proved on a design are the temperature-rise test and, below that voltage, the impulse test. Special tests are run by agreement (short-circuit withstand, sound level, zero-sequence, harmonics, and DGA below 72.5 kV).',
     sections: [
-      ['Routine tests', 'Performed on each manufactured unit to confirm it meets the specification and is free of defects: turns ratio, winding resistance, no-load and load loss, applied-voltage and induced-voltage tests, and oil tests. For Um above 72.5 kV, IEC 60076-1:2011 clause 11.1.2.2 also makes capacitance and tan δ, insulation resistance and dissolved-gas analysis routine tests.'],
-      ['Type tests', 'Proven once on a representative design and then applied to all units of that design: temperature-rise, lightning-impulse, switching-impulse and short-circuit withstand tests.'],
-      ['Special tests', 'Run only by agreement with the customer for particular requirements: sound level, zero-sequence impedance, harmonic and stray-loss tests, and frequency-response analysis. Dissolved-gas analysis is special below 72.5 kV and routine above that voltage.'],
+      ['Routine tests', 'Performed on each manufactured unit to confirm it meets the specification and is free of defects: turns ratio, winding resistance, no-load and load loss, applied-voltage and induced-voltage tests, and oil tests. For Um above 72.5 kV, IEC 60076-1:2011 clause 11.1.2.2 also makes capacitance and tan δ, insulation resistance and dissolved-gas analysis routine tests. Lightning impulse is routine for Um ≥ 72.5 kV (IEC 60076-3:2013).'],
+      ['Type tests', 'Proved on a representative design: the temperature-rise test, and lightning impulse when Um is below 72.5 kV. Short-circuit withstand is not a type test.'],
+      ['Special tests', 'Run only by agreement with the customer: short-circuit withstand (IEC 60076-5), sound level, zero-sequence impedance, harmonic and stray-loss tests, and frequency-response analysis. Dissolved-gas analysis is special below 72.5 kV and routine above that voltage.'],
     ],
     refs: ['IEC 60076-1:2011 (cl. 11.1.2.2)', 'IEEE C57.12.90-2026'],
     comps: ['tank-and-mechanical', 'protection-monitoring'], types: ['PT', 'DT'],
@@ -441,7 +441,7 @@ const ARTICLES = [
     quick: 'BIL (basic insulation level) is the crest value of the standard lightning impulse voltage (a 1.2/50 microsecond wave) the transformer insulation is designed to withstand — a key measure of its insulation strength. In IEC it is often called the rated lightning impulse withstand level (LI); in IEEE it is given in kV at the system voltage.',
     sections: [
       ['What it is', 'BIL is the peak impulse voltage the insulation must survive. It sets the insulation margin above the normal operating and switching voltage, protecting against lightning and switching surges.'],
-      ['How it is tested', 'A standard 1.2/50 us lightning impulse is applied, and the insulation must withstand it without breakdown; the full-wave and chopped-wave impulse tests are part of the type test.'],
+      ['How it is tested', 'A standard 1.2/50 us lightning impulse is applied, and the insulation must withstand it without breakdown. The full-wave lightning-impulse test is a type test, and a routine test for Um ≥ 72.5 kV (IEC 60076-3:2013).'],
       ['Why it matters', 'A higher BIL means a larger insulation margin and heavier, more costly insulation. The BIL is chosen for the system voltage and the required protection coordination with surge arresters.'],
     ],
     refs: ['IEC 60076-3 (insulation levels)', 'IEEE C57.12.00'],
@@ -728,8 +728,7 @@ const ARTICLES = [
     question: 'How does transformer insulation age and what is its life?',
     quick: 'Cellulose insulation ages by thermal, chemical and moisture-driven degradation. Heat, oxygen and water break the paper polymer chains, reducing the degree of polymerisation (DP) and mechanical strength, and releasing water, acids and carbon gases (CO, CO2). Aging is accelerated by high temperature, moisture and acidity, and the end-of-life point is typically set at a DP of about 200-250.',
     sections: [
-      'The reactions',
-      'Thermal aging breaks the cellulose chains; hydrolysis (with water) and oxidation (with oxygen) accelerate it. The products — water, acids, CO and CO2 — in turn further accelerate aging and lower the dielectric strength.',
+      ['The reactions', 'Thermal aging breaks the cellulose chains; hydrolysis (with water) and oxidation (with oxygen) accelerate it. The products — water, acids, CO and CO2 — in turn further accelerate aging and lower the dielectric strength.'],
       ['How it is measured', 'The degree of polymerisation (DP) of a paper sample indicates its strength; furan compounds in the oil indicate paper aging. A DP near 200-250 is a common replacement criterion.'],
       ['Practical life', 'The insulation life is a temperature-dependent exponential: modest temperature reductions dramatically extend it. Keeping the unit cool, dry and free of oxygen extends the life.'],
     ],
@@ -884,7 +883,7 @@ const ARTICLES = [
     slug: 'lightning-impulse-test', topic: 'Testing', level: 'Intermediate', minutes: 6,
     title: 'What Is a Lightning Impulse Test?',
     question: 'What is a lightning impulse test on a transformer?',
-    quick: 'A lightning impulse test applies a standard 1.2/50 microsecond voltage surge to the transformer winding to prove the insulation can withstand a lightning (or switching) surge. It is a type test, with both full-wave and chopped-wave forms, and the insulation must not flash over or show a breakdown. It verifies the insulation coordination and the BIL.',
+    quick: 'A lightning impulse test applies a standard 1.2/50 microsecond voltage surge to the transformer winding to prove the insulation can withstand a lightning surge. It is a type test, and a routine test for Um ≥ 72.5 kV (IEC 60076-3:2013). Full-wave and chopped-wave forms are applied, and the insulation must not flash over or show a breakdown. It verifies the insulation coordination and the BIL.',
     sections: [
       ['The standard wave', 'A 1.2/50 us lightning impulse (rise time 1.2 us, time to half-value 50 us) is the standard. The full-wave and chopped-wave (a wave cut by a gap flashover) are both applied.'],
       ['What it verifies', 'It proves the insulation (especially between turns and windings, and at the BIL) can survive a lightning surge without a flashover or insulation breakdown.'],
@@ -1523,7 +1522,7 @@ const ARTICLES = [
     slug: 'transformer-testing-sequence', topic: 'Testing', level: 'Intermediate', minutes: 6,
     title: 'What Is the Order of Transformer Tests?',
     question: 'What is the sequence of transformer tests?',
-    quick: 'Transformer tests follow a sequence: first the electrical measurements (ratio, polarity, winding resistance, vector group), then the dielectric tests (insulation resistance, power factor, applied and induced voltage), then the performance tests (no-load and load loss, impedance) and finally the temperature-rise, impulse and short-circuit tests (type). Routine tests are run on every unit in this order, with type tests on the design.',
+    quick: 'Transformer tests follow a sequence: first the electrical measurements (ratio, polarity, winding resistance, vector group), then the dielectric tests (insulation resistance, power factor, applied and induced voltage), then the performance tests (no-load and load loss, impedance) and finally the temperature-rise and impulse tests. Lightning impulse is a type test and is routine for Um ≥ 72.5 kV (IEC 60076-3:2013). Short-circuit withstand is a special test by agreement (IEC 60076-5), not a type test. Routine tests are run on every unit, with type tests on the design.',
     sections: [
       ['Measurement', 'Turns ratio and polarity, vector group, winding resistance and the short-circuit impedance/leakage reactance are measured first.'],
       ['Dielectric tests', 'Insulation resistance, power factor, the applied-voltage (between windings and earth) and induced-voltage (inter-turn) tests, and the impulse tests follow.'],
@@ -2214,11 +2213,11 @@ const ARTICLES = [
     slug: 'transformer-standard-testing-requirements', topic: 'Standards', level: 'Intermediate', minutes: 6,
     title: 'What Tests Does a Transformer Standard Require?',
     question: 'What tests does a transformer standard require?',
-    quick: 'The IEC 60076 (and IEEE C57) standards require a set of routine, type and special tests. Routine tests (ratio, resistance, no-load/load loss, impedance, dielectric, oil) are run on every unit. Above 72.5 kV, capacitance and tan δ, insulation resistance and DGA are routine as well (IEC 60076-1:2011 cl. 11.1.2.2). Type tests (temperature rise, impulse, short-circuit) are run on a design, and special tests by agreement.',
+    quick: 'The IEC 60076 (and IEEE C57) standards require a set of routine, type and special tests. Routine tests (ratio, resistance, no-load/load loss, impedance, dielectric, oil) are run on every unit. Above 72.5 kV, capacitance and tan δ, insulation resistance and DGA are routine as well (IEC 60076-1:2011 cl. 11.1.2.2). Lightning impulse is a type test and is also routine for Um ≥ 72.5 kV (IEC 60076-3:2013). Temperature rise is a type test. Short-circuit withstand is a special test by agreement (IEC 60076-5), as are sound level and the other agreed diagnostics.',
     sections: [
-      ['Routine tests', 'Run on every unit: ratio, winding resistance, no-load and load loss, impedance, applied and induced voltage, and the oil tests. For Um above 72.5 kV, IEC 60076-1:2011 clause 11.1.2.2 adds capacitance and tan δ, insulation resistance and dissolved-gas analysis to the routine list.'],
-      ['Type tests', 'Run on a design: temperature-rise, lightning-impulse, switching-impulse and short-circuit-withstand tests.'],
-      ['Special tests', 'Run by agreement: sound level, zero-sequence, harmonics and frequency-response analysis. DGA is in this group only when Um is 72.5 kV or below.'],
+      ['Routine tests', 'Run on every unit: ratio, winding resistance, no-load and load loss, impedance, applied and induced voltage, and the oil tests. For Um above 72.5 kV, IEC 60076-1:2011 clause 11.1.2.2 adds capacitance and tan δ, insulation resistance and dissolved-gas analysis to the routine list. Lightning impulse is routine for Um ≥ 72.5 kV (IEC 60076-3:2013).'],
+      ['Type tests', 'Run on a design: the temperature-rise test, and lightning impulse when Um is below 72.5 kV. Short-circuit withstand is not a type test.'],
+      ['Special tests', 'Run by agreement: short-circuit withstand (IEC 60076-5), sound level, zero-sequence, harmonics and frequency-response analysis. DGA is in this group only when Um is 72.5 kV or below.'],
     ],
     refs: ['IEC 60076-1:2011 (cl. 11.1.2.2)', 'IEEE C57.12.90-2026'],
     comps: ['protection-monitoring', 'transformer-cooling'], types: ['PT', 'DT'],
@@ -2249,6 +2248,9 @@ function articlePage(a) {
   const ct = Math.round((a.minutes * 200 + 40) / 55); // rough words ≈ minutes
   const meta = '<div class="ameta"><span>Published ' + today + '</span><span>Updated ' + today + '</span><span>' + a.minutes + ' min read</span><span class="lvl">' + esc(a.level) + '</span><span class="topic">' + esc(a.topic) + '</span></div>';
   const body = a.sections.map(function (s) {
+    if (!Array.isArray(s) || typeof s[0] !== 'string' || typeof s[1] !== 'string' || s[0].length < 2 || s[1].length < 2) {
+      throw new Error('knowledge section must be [title, body] in ' + a.slug);
+    }
     return '<h2 id="' + slugify(s[0]) + '">' + esc(s[0]) + '</h2><p>' + esc(s[1]) + '</p>';
   }).join('');
   const eq = a.eq ? '<div class="eq"><b style="color:var(--accent)">Equation</b> — ' + esc(a.eq) + '</div>' : '';
