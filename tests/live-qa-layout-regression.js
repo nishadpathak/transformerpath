@@ -49,6 +49,31 @@ check('course copy does not repeat the word design', !/design design/.test(cours
 const inbox = fs.readFileSync('supplier-inbox.html', 'utf8');
 check('supplier inbox does not read a missing spec field on load', inbox.includes("function loadQueryParams(){\n    if (!document.getElementById('spec_rating')) return;"));
 
+const css = fs.readFileSync('style.css', 'utf8');
+check('directory provenance row wraps long URLs', /\.kg-comp-wrapper span\s*\{[^}]*overflow-wrap:\s*anywhere/.test(css));
+
+const company = fs.readFileSync('company.html', 'utf8');
+check('company shell is not titled Loading', !/<h1[^>]*>\s*Loading…/.test(company));
+check('company shell is noindex', /name="robots" content="noindex, follow"/.test(company));
+check('missing company sets a real document title', /document\.title = 'Company not found — TransformerPath'/.test(company));
+check('bare company page does not download the census', /if \(!reqId && !reqC\) \{\s*showNotFound\(\);/.test(company));
+
+const math = fs.readFileSync('viz/viz-math.js', 'utf8');
+check('viz math does not throw module is not defined in the browser', !/^module\.exports\s*=/m.test(math));
+const api = require('../viz/viz-math');
+check('viz math still exports for node', typeof api.inrush === 'function' && typeof api.vecGroup === 'function');
+
+const coil = fs.readFileSync('coilassembly.html', 'utf8');
+check('coil assembly clips 3D labels inside the stage', /#c3d\{[^}]*overflow:hidden/.test(coil) && !/className='lbl'[^;]*document\.body\.appendChild/.test(coil) && !/className="lbl"[\s\S]{0,180}document\.body\.appendChild/.test(coil));
+
+const lab = fs.readFileSync('transformer-lab.html', 'utf8');
+check('transformer lab clips 3D labels inside the stage', /#lab-canvas-host \{[^}]*overflow:\s*hidden/.test(lab) && /labelHost:\s*document\.getElementById\('lab-canvas-host'\)/.test(lab));
+
+const vector = fs.readFileSync('viz/vector-group.js', 'utf8');
+const outAt = vector.indexOf("var out = document.createElement('div')");
+const controlsAt = vector.indexOf('V.controls(para');
+check('vector group builds its result node before the controls that update it', outAt > 0 && controlsAt > outAt);
+
 if (failed) {
   console.error('LIVE QA LAYOUT REGRESSION FAILED (' + failed + ')');
   process.exit(1);

@@ -13,6 +13,7 @@
 <meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="description" content="Transformer manufacturer profile — location, product lines, verification tier and official link, on TransformerPath's sourced manufacturer directory.">
+<meta name="robots" content="noindex, follow">
 <link rel="stylesheet" href="style.css?v=14">
 <link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
@@ -150,7 +151,7 @@
   <div class="container" style="max-width:860px">
     <div class="crumb"><a href="manufacturers.html">← Manufacturers</a> <span id="crumbCountry"></span></div>
     <div class="profile-head">
-      <h1 id="pName">Loading…</h1>
+      <h1 id="pName">Manufacturer profile</h1>
       <span id="pTier"></span>
     </div>
     <p id="pSub" style="margin:6px 0 0"></p>
@@ -231,7 +232,8 @@ function tpills(types) {
 function param(n) { return new URLSearchParams(location.search).get(n); }
 
 function showNotFound() {
-  document.getElementById('pName').textContent = 'Company Not Found';
+  document.title = 'Company not found — TransformerPath';
+  document.getElementById('pName').textContent = 'Company not found';
   document.getElementById('pSub').textContent = '';
   document.getElementById('profile').innerHTML = '';
   document.getElementById('notfound').style.display = 'block';
@@ -241,7 +243,9 @@ const reqId = (param('id') || '').trim();
 const reqC = (param('c') || '').trim();
 const reqY = (param('y') || '').trim();
 
-Promise.all([
+if (!reqId && !reqC) {
+  showNotFound();
+} else Promise.all([
   fetch('data/companies.json').then(r => r.json()).catch(() => null),
   fetch('data/facilities.json').then(r => r.json()).catch(() => null)
 ]).then(([compJson, facJson]) => {

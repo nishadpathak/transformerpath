@@ -57,21 +57,23 @@
           ]);
 
           // Parallel compatibility panel.
+          // Range controls call their handler while they are built, so the
+          // result node has to exist before V.controls or cmp throws.
           var para = host.querySelector('#vz-vg-para');
           var m2 = { clockA: 11, clockB: 5, za: 5, zb: 5, ra: 1, rb: 1 };
           para.innerHTML = '<div class="tp-viz-head">Parallel compatibility (two transformers)</div>';
-          V.controls(para, m2, [
-            { type: 'select', label: 'A clock', key: 'clockA', value: 11, options: [[0,'0'],[1,'1'],[5,'5'],[6,'6'],[11,'11']], on: cmp },
-            { type: 'select', label: 'B clock', key: 'clockB', value: 5, options: [[0,'0'],[5,'5'],[11,'11']], on: cmp },
-            { type: 'range', label: 'A impedance %', key: 'za', min: 3, max: 8, step: 0.5, value: 5, on: cmp },
-            { type: 'range', label: 'B impedance %', key: 'zb', min: 3, max: 8, step: 0.5, value: 5, on: cmp },
-          ]);
           var out = document.createElement('div'); out.className = 'tp-viz-paraout'; para.appendChild(out);
           function cmp() {
             var a = M.vecGroup('D', 'y', m2.clockA), b = M.vecGroup('D', 'y', m2.clockB);
             var r = M.parallelCheck(a, b, { zImpedanceA: m2.za, zImpedanceB: m2.zb });
             out.innerHTML = (r.compatible ? '✅ Parallel compatible' : '⚠ NOT directly parallelable') + '<ul>' + r.reasons.map(function (x) { return '<li>' + x + '</li>'; }).join('') + '</ul>';
           }
+          V.controls(para, m2, [
+            { type: 'select', label: 'A clock', key: 'clockA', value: 11, options: [[0,'0'],[1,'1'],[5,'5'],[6,'6'],[11,'11']], on: cmp },
+            { type: 'select', label: 'B clock', key: 'clockB', value: 5, options: [[0,'0'],[5,'5'],[11,'11']], on: cmp },
+            { type: 'range', label: 'A impedance %', key: 'za', min: 3, max: 8, step: 0.5, value: 5, on: cmp },
+            { type: 'range', label: 'B impedance %', key: 'zb', min: 3, max: 8, step: 0.5, value: 5, on: cmp },
+          ]);
           cmp();
         }
       });
