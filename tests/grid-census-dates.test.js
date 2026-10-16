@@ -26,7 +26,8 @@ ok(dates.operatorLabel('Not A Real Operator', doc) === 'Record updated: Not avai
 const operatorDays = Object.keys(doc.operators).map(function (name) { return doc.operators[name]; });
 ok(operatorDays.length === 166, '166 operator record dates');
 ok(operatorDays.every(function (day) { return day !== doc.census_verified; }), 'no operator record uses the census verification date');
-ok(operatorDays.filter(function (day) { return day === '2026-07-11'; }).length === 156, '156 operator records updated 11 July 2026');
+ok(operatorDays.filter(function (day) { return day === '2026-07-11'; }).length === 154, '154 operator records updated 11 July 2026');
+ok(operatorDays.filter(function (day) { return day === '2026-10-16'; }).length === 2, 'KEGOC and EDC records updated 16 October 2026');
 ok(operatorDays.filter(function (day) { return day === '2026-08-28'; }).length === 10, '10 operator records updated 28 August 2026');
 
 const blamed = dates.blameOperatorDates();
@@ -41,7 +42,8 @@ const grids = read('grids.html');
 ok(grids.includes('const LAST_VERIFIED = "2026-07-07"'), 'directory keeps the census constant');
 ok(grids.includes('Census verified 7 July 2026'), 'directory shows the census label');
 ok(!grids.includes('Data last verified 2026-07-07'), 'directory no longer presents the census date as a single data stamp');
-ok((grids.match(/Record updated 11 July 2026/g) || []).length === 156, 'directory lists 156 records updated 11 July 2026');
+ok((grids.match(/Record updated 11 July 2026/g) || []).length === 154, 'directory lists 154 records updated 11 July 2026');
+ok((grids.match(/Record updated 16 October 2026/g) || []).length === 2, 'directory lists KEGOC and EDC updated 16 October 2026');
 ok((grids.match(/Record updated 28 August 2026/g) || []).length === 10, 'directory lists 10 records updated 28 August 2026');
 
 const germany = read('grids/germany/index.html');
