@@ -4,14 +4,14 @@
   "confidence_policy": "LIMITED for keyword-matched Daily-Intel items; HIGH/MEDIUM only when carried from a corroborated source. No invented numeric capability.",
   "type_counts": {
     "order_award": 47,
-    "reference": 40,
+    "reference": 41,
     "ownership_change": 1,
-    "factory_expansion": 3,
+    "factory_expansion": 4,
     "new_test_lab": 1,
     "rebranding": 1,
     "market_entry": 1
   },
-  "companies": 37,
+  "companies": 38,
   "projects": [
     {
       "name": "Kuwait MEW main 132/300/400 kV substation maintenance & repair",
@@ -7730,10 +7730,10 @@
       "source_url": "https://news.goalfore.cn/latest/detail/61764.html"
     }
   ],
-  "factory_expansions": 3,
-  "events_total": 94,
-  "events_typed": 54,
-  "events_reference": 40,
+  "factory_expansions": 4,
+  "events_total": 96,
+  "events_typed": 55,
+  "events_reference": 41,
   "types": {
     "order_award": "Order / contract",
     "factory_expansion": "Factory expansion",
@@ -8356,6 +8356,20 @@
       "indexable": true,
       "events": [
         {
+          "title": "HD Hyundai Electric agrees a data-centre power memorandum with LG CNS",
+          "type": "reference",
+          "typeLabel": "Intel reference",
+          "src": "아이뉴스24 · 16 Oct 2026 [ko]",
+          "url": "https://www.inews24.com/view/2015667",
+          "value": "",
+          "date": "2026-10-16",
+          "facility_id": null,
+          "event_scope": "group",
+          "confidence": "LIMITED",
+          "claimType": "INDEPENDENTLY_SOURCED",
+          "sourceType": "company_development"
+        },
+        {
           "title": "HD Hyundai Electric builds its 1,000th transformer at the Alabama plant; second US plant due April 2027",
           "type": "factory_expansion",
           "typeLabel": "Factory expansion",
@@ -8635,6 +8649,28 @@
           "date": "",
           "facility_id": null,
           "event_scope": "subsidiary",
+          "confidence": "LIMITED",
+          "claimType": "INDEPENDENTLY_SOURCED",
+          "sourceType": "company_development"
+        }
+      ]
+    },
+    "Hyosung Heavy Industries": {
+      "name": "Hyosung Heavy Industries",
+      "slug": "hyosung-heavy-industries",
+      "country": "South Korea",
+      "indexable": true,
+      "events": [
+        {
+          "title": "Hyosung Heavy Industries opens an export ultra-high-voltage circuit-breaker plant in Changwon",
+          "type": "factory_expansion",
+          "typeLabel": "Factory expansion",
+          "src": "효성중공업 뉴스룸 · 16 Oct 2026 [ko]",
+          "url": "https://www.hyosung.com/kr/newsroom/view/19348",
+          "value": "18,996 m² · 420–800 kV",
+          "date": "2026-10-16",
+          "facility_id": null,
+          "event_scope": "group",
           "confidence": "LIMITED",
           "claimType": "INDEPENDENTLY_SOURCED",
           "sourceType": "company_development"
