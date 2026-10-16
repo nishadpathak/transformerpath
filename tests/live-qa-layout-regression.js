@@ -67,6 +67,9 @@ const intelPro = fs.readFileSync('intel-pro.html', 'utf8');
 check('intel pro loads the canonical counter script', intelPro.indexOf('site-stats.js') !== -1);
 check('intel pro does not call the award total confirmed', intelPro.indexOf('Confirmed awards') === -1);
 
+const intelPage = fs.readFileSync('intel.html', 'utf8');
+check('Mission 300 source uses the live World Bank FAQ', intelPage.indexOf('https://www.worldbank.org/ext/en/energizingafrica/faq') !== -1 && intelPage.indexOf('/en/programs/energizing-africa/faq') === -1);
+
 const health = fs.readFileSync('health.html', 'utf8');
 check('health project subtitle uses canonical open tenders', health.indexOf('id="stat-projects-sub"') !== -1 && health.indexOf('s.openTenders') !== -1 && health.indexOf('21 open') === -1);
 
