@@ -7,7 +7,8 @@
  *
  * Writes:
  *   data/gcc-weekly-linkedin-pack.json
- *   gcc-weekly-pack.html (editor/operator page)
+ *   (No public HTML. The old gcc-weekly-pack.html was an internal social-post
+ *   draft and is no longer written; any stale copy is removed.)
  *
  * Run after intel-feed-ui (or with available feed). Wired into Netlify build.
  */
@@ -202,5 +203,7 @@ document.getElementById('copyDraft').addEventListener('click', function () {
 </body>
 </html>
 `;
-fs.writeFileSync('gcc-weekly-pack.html', html);
+// Internal draft only: never publish. Remove any stale copy from the root.
+void html;
+try { fs.unlinkSync('gcc-weekly-pack.html'); } catch (e) { /* not present */ }
 console.log('GCC LinkedIn pack: ' + packItems.length + ' CONFIRMED items, ' + openTenders.length + ' open tenders');

@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /* A bare year is an imprecise deadline, not 1 January.
- * Bahrain Sitra's record says "2026". That must stay open through 31 Dec 2026
- * and render "Deadline: 2026 (exact date not stated)".
+ * A year-only value such as "2026" must stay open through 31 Dec 2026.
+ * Bahrain Sitra no longer carries a placeholder year (the source states no
+ * award date, 16 Oct 2026), and must appear as exactly one Evaluation row.
  *
  * Run after build-tenders.js so the generated Sitra page is checked too.
  */
@@ -45,22 +46,24 @@ const sitra = projects.find(function (p) {
   return p.project === 'Bahrain EWA Sitra 400 kV grid substation — transformer & reactor works';
 });
 check('Bahrain Sitra is on file', !!sitra);
-check('Bahrain Sitra expected value is the bare year 2026', sitra && sitra.expected === '2026');
+check('Bahrain Sitra has no placeholder expected value', sitra && !sitra.expected);
 check('Bahrain Sitra is in evaluation (source: EWA received bids, Apr 2026)', sitra && String(sitra.status).toLowerCase() === 'evaluation');
-const sitraDeadline = parseDeadline(sitra && sitra.expected);
-check('Bahrain Sitra deadline is the year, not 1 January', sitraDeadline === '2026', sitraDeadline);
-check('Bahrain Sitra is not closed on 15 Oct 2026', classifyOpenDeadline(sitraDeadline, TODAY) !== 'CLOSED');
+const yearDeadline = parseDeadline('2026');
+check('a bare year parses to the year, not 1 January', yearDeadline === '2026', yearDeadline);
+check('a bare-year deadline is not closed on 15 Oct 2026', classifyOpenDeadline(yearDeadline, TODAY) !== 'CLOSED');
 
 const pagePath = 'tenders/bahrain-ewa-sitra-400-kv-grid-substation/index.html';
 const page = fs.readFileSync(pagePath, 'utf8');
-check('the Sitra page shows the imprecise deadline', page.indexOf('Deadline: 2026 (exact date not stated)') >= 0);
+check('the Sitra page shows no placeholder deadline', page.indexOf('Deadline: 2026 (exact date not stated)') < 0);
 check('the Sitra page is not closed', /<b>Status<\/b> Closed/.test(page) === false);
 check('the Sitra page does not store 1 January', page.indexOf('2026-01-01') < 0);
 
 const tenders = JSON.parse(fs.readFileSync('data/tenders.json', 'utf8')).tenders;
 const row = tenders.find(function (t) { return t.title === 'Bahrain EWA Sitra 400 kV grid substation'; });
 check('the Sitra tender record is published', !!row);
-check('the Sitra record deadline is 2026', row && row.deadline === '2026', row && row.deadline);
+check('the Sitra record has no placeholder deadline', row && !row.deadline, row && row.deadline);
+check('Sitra appears as exactly one tender row', tenders.filter(function (t) { return /Sitra/i.test(t.title); }).length === 1);
+check('the Sitra record is in evaluation', row && row.status === 'EVALUATION', row && row.status);
 check('the Sitra record is not CLOSED', row && row.status !== 'CLOSED', row && row.status);
 
 if (failed) {
