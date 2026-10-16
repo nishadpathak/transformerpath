@@ -10,6 +10,10 @@
  *   llms.txt, web manifests, email templates, and README-style public text,
  *   and the site's own refresh schedule copy.
  *
+ * Inline scripts, and JS that can be published, are scanned for the word
+ * Dubai outside string and regex literals. A city, venue, tender or company
+ * record may name Dubai. A comment or an identifier may not.
+ *
  * Run: node scripts/check-brand-locale.js
  */
 'use strict';
@@ -90,6 +94,165 @@ function report(rel, where, text) {
 function hit(text) {
   PLACE_RE.lastIndex = 0;
   return PLACE_RE.test(text);
+}
+
+/* JS copied to dist by build-dist.js. Build modules stay off this list:
+ * they are not a public page, and a place name inside them is not brand copy. */
+const PUBLISHED_LIB = new Set([
+  'lib/event-search.js',
+  'lib/job-board.js',
+  'lib/rfq-leads.js',
+  'lib/provenance-badge.js',
+  'lib/saved-design.js',
+  'lib/learning-catalog.js'
+]);
+
+function isPublishedJs(rel) {
+  if (!/\.js$/i.test(rel)) return false;
+  if (PUBLISHED_LIB.has(rel)) return true;
+  const top = rel.split('/')[0];
+  if (top !== rel && ['tests', 'scripts', 'docs', 'functions', 'plugins', 'engine', 'lib', 'data', '.github'].indexOf(top) >= 0) return false;
+  if (top === rel && /^(build[-_]|check-|audit-|merge-|stamp-|bump-|apply-|sync-)/.test(rel)) return false;
+  return true;
+}
+
+function regexAllowed(last) {
+  if (!last) return true;
+  if (/^(return|case|throw|typeof|void|delete|new|in|of|instanceof|else|do|yield|await)$/.test(last)) return true;
+  if (/^(\(|\[|\{|,|;|:|=|!|&|\||\?|\+|-|\*|%|~|\^|<|>|\/)$/.test(last)) return true;
+  if (/^(=>|==|!=|<=|>=|\+\+|--|&&|\|\||\+=|-=|\*=|\/=|%=|===|!==|\?\?)$/.test(last)) return true;
+  return false;
+}
+
+/* Comments and identifiers stay. String literals and regular expressions are
+ * data (a record field, or a pattern that recognises a place in a record). */
+function outsideData(code) {
+  let out = '';
+  let i = 0;
+  const n = code.length;
+  let last = '';
+  let state = 'code';
+  let regexClass = false;
+  const tmplStack = [];
+  let exprDepth = 0;
+  function identChar(ch) { return /[A-Za-z0-9_$]/.test(ch); }
+  while (i < n) {
+    const c = code[i];
+    const c2 = code[i + 1];
+    if (state === 'line') {
+      if (c === '\n') { out += c; state = 'code'; last = ''; i++; continue; }
+      out += c;
+      i++;
+      continue;
+    }
+    if (state === 'block') {
+      out += c;
+      if (c === '*' && c2 === '/') { out += '/'; i += 2; state = 'code'; last = ''; continue; }
+      i++;
+      continue;
+    }
+    if (state === 'squote' || state === 'dquote' || state === 'template') {
+      const q = state === 'squote' ? "'" : state === 'dquote' ? '"' : '`';
+      if (c === '\\') { out += '  '; i += 2; continue; }
+      if (state === 'template' && c === '$' && c2 === '{') {
+        out += '  ';
+        i += 2;
+        tmplStack.push(exprDepth);
+        exprDepth = 1;
+        state = 'code';
+        last = '{';
+        continue;
+      }
+      if (c === q) { out += ' '; i++; state = 'code'; last = 'str'; continue; }
+      out += c === '\n' ? '\n' : ' ';
+      i++;
+      continue;
+    }
+    if (state === 'regex') {
+      if (c === '\\') { out += '  '; i += 2; continue; }
+      if (c === '[') regexClass = true;
+      else if (c === ']') regexClass = false;
+      if (c === '/' && !regexClass) {
+        out += ' ';
+        i++;
+        while (i < n && /[a-z]/i.test(code[i])) { out += ' '; i++; }
+        state = 'code';
+        last = 're';
+        regexClass = false;
+        continue;
+      }
+      if (c === '\n') { out += '\n'; i++; state = 'code'; last = ''; regexClass = false; continue; }
+      out += ' ';
+      i++;
+      continue;
+    }
+    if (c === ' ' || c === '\t' || c === '\r' || c === '\n') { out += c; i++; continue; }
+    if (c === '/' && c2 === '/') { state = 'line'; out += c; i++; continue; }
+    if (c === '/' && c2 === '*') { state = 'block'; out += c; i++; continue; }
+    if (c === "'") { state = 'squote'; out += ' '; i++; continue; }
+    if (c === '"') { state = 'dquote'; out += ' '; i++; continue; }
+    if (c === '`') { state = 'template'; out += ' '; i++; continue; }
+    if (c === '/' && regexAllowed(last)) { state = 'regex'; regexClass = false; out += ' '; i++; continue; }
+    if (c === '{' && tmplStack.length) exprDepth++;
+    if (c === '}' && tmplStack.length) {
+      exprDepth--;
+      if (exprDepth === 0) {
+        exprDepth = tmplStack.pop();
+        state = 'template';
+        out += ' ';
+        i++;
+        continue;
+      }
+    }
+    if (/[A-Za-z_$]/.test(c)) {
+      let j = i + 1;
+      while (j < n && identChar(code[j])) j++;
+      const word = code.slice(i, j);
+      out += word;
+      i = j;
+      last = word;
+      continue;
+    }
+    if (/[0-9]/.test(c)) {
+      let j = i + 1;
+      while (j < n && /[0-9.xXa-fA-F_]/.test(code[j])) j++;
+      out += code.slice(i, j).replace(/[^\n]/g, ' ');
+      i = j;
+      last = 'num';
+      continue;
+    }
+    const three = code.slice(i, i + 3);
+    const two = code.slice(i, i + 2);
+    let tok = c;
+    if (three === '===' || three === '!==' || three === '**=') tok = three;
+    else if (/^(=>|==|!=|<=|>=|\+\+|--|&&|\|\||\+=|-=|\*=|\/=|%=|\?\?)$/.test(two)) tok = two;
+    out += tok;
+    i += tok.length;
+    last = tok;
+  }
+  return out;
+}
+
+const DUBAI_WORD = /\bDubai\b/i;
+
+function mentionsDubai(text) {
+  DUBAI_WORD.lastIndex = 0;
+  return DUBAI_WORD.test(text);
+}
+
+function scanInlineScripts(rel, html) {
+  const re = /<script\b([^>]*)>([\s\S]*?)<\/script>/gi;
+  let m;
+  while ((m = re.exec(html))) {
+    if (/type\s*=\s*["']application\/ld\+json["']/i.test(m[1] || '')) continue;
+    const code = outsideData(m[2]);
+    if (mentionsDubai(code)) report(rel, 'inline script', code);
+  }
+}
+
+function scanPublishedJs(rel, code) {
+  const visible = outsideData(code);
+  if (mentionsDubai(visible)) report(rel, 'script', visible);
 }
 
 function walk(dir, out) {
@@ -227,6 +390,28 @@ function selfCheck() {
   scanBrandOrg('fixture-brand.html', brand);
   expect(problems.length === before + 1, 'TransformerPath Organization address and areaServed are brand copy');
   problems.length = before;
+
+  const commentScript = '<script>const EVENTS_DAY_OFFSET_MS = 4*60*60*1000; // GST / Asia/Dubai</script>';
+  const identScript = '<script>const dubai = 4*60*60*1000;</script>';
+  const dataScript = '<script>const EVENTS = [{"city":"Dubai","country":"UAE","v":"Dubai World Trade Centre"}];</script>';
+  const jsonLd = '<script type="application/ld+json">{"addressLocality":"Dubai"}</script>';
+  scanInlineScripts('fixture-comment.html', commentScript);
+  expect(problems.length === before + 1, 'a script comment that names Dubai is not data');
+  problems.length = before;
+  scanInlineScripts('fixture-ident.html', identScript);
+  expect(problems.length === before + 1, 'an identifier named dubai is not data');
+  problems.length = before;
+  scanInlineScripts('fixture-data.html', dataScript);
+  expect(problems.length === before, 'event records inside a script are data');
+  scanInlineScripts('fixture-ld.html', jsonLd);
+  expect(problems.length === before, 'JSON-LD is not an inline program');
+  expect(!mentionsDubai(outsideData("const fmt = { timeZone: 'Asia/Dubai' };")), 'a timezone string is data');
+  expect(!mentionsDubai(outsideData('if (/\\b(Dubai|DEWA)\\b/.test(t)) return;')), 'a place-matching regex is data');
+  expect(mentionsDubai(outsideData('const label = `offset ${dubai}`;')), 'an identifier inside a template is not data');
+  expect(isPublishedJs('lib/event-search.js'), 'published lib JS is scanned');
+  expect(!isPublishedJs('lib/event-status.js'), 'build-only lib JS is not a public script');
+  expect(!isPublishedJs('build_ssr.js'), 'build scripts are not a public script');
+  expect(isPublishedJs('analytics.js'), 'root runtime JS is scanned');
   if (failures.length) {
     console.error('brand-locale self-check failed:\n  ' + failures.join('\n  '));
     process.exit(1);
@@ -244,10 +429,17 @@ walk(root, []).forEach(function (file) {
     scanChrome(rel, html);
     scanBrandOrg(rel, html);
     scanMeta(rel, html);
+    scanInlineScripts(rel, html);
     if (rel === 'about.html' || rel === 'contact.html') scanPageText(rel, html);
     const alert = html.match(/<p\b[^>]*\bid=["']tp-alert-status["'][^>]*>[\s\S]*?<\/p>/i);
     if (alert && hit(alert[0])) report(rel, 'schedule copy', alert[0]);
     return;
+  }
+  if (isPublishedJs(rel)) {
+    let code;
+    try { code = fs.readFileSync(file, 'utf8'); }
+    catch (e) { return; }
+    scanPublishedJs(rel, code);
   }
   const base = path.basename(file);
   if (/^readme(\..*)?$/i.test(base) || base === 'llms.txt' || base.endsWith('.webmanifest')) {

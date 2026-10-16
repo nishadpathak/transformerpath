@@ -3540,8 +3540,8 @@ const fmt = d => {
   if (isNaN(dt.getTime())) return '';
   return dt.toLocaleDateString("en-GB", {day:"numeric", month:"short", year:"numeric", timeZone:"UTC"});
 };
-const PLATFORM_TZ_MS = 4*60*60*1000;  // GST / Asia-Dubai (UTC+4, no DST) — deterministic platform 'now'
-const todayUTC = (function(){ var g=new Date(Date.now()+PLATFORM_TZ_MS); return Date.UTC(g.getUTCFullYear(),g.getUTCMonth(),g.getUTCDate()); })();
+const EVENTS_DAY_OFFSET_MS = 4*60*60*1000; // UTC+4, no DST — deterministic platform day
+const todayUTC = (function(){ var g=new Date(Date.now()+EVENTS_DAY_OFFSET_MS); return Date.UTC(g.getUTCFullYear(),g.getUTCMonth(),g.getUTCDate()); })();
 const relDays = d => Math.ceil((Date.parse(d+'T00:00:00Z') - todayUTC)/86400000);
 function badgeHTML(ev){
   if (/unconfirmed|date est\.|⚠/i.test(ev.d)) return '<span class="badge-unc">Date est.</span>';
@@ -3576,9 +3576,9 @@ function isDiscoverableClient(ev) {
   return true;
 }
 /* Same upcoming rule as lib/event-status.js isUpcoming and build-site-stats.js:
-   the end date is still on or after the Asia/Dubai platform date. */
+   the end date is still on or after the platform date. */
 function platformTodayISO() {
-  var g = new Date(Date.now() + 4 * 60 * 60 * 1000);
+  var g = new Date(Date.now() + EVENTS_DAY_OFFSET_MS);
   function p(n) { return (n < 10 ? '0' : '') + n; }
   return g.getUTCFullYear() + '-' + p(g.getUTCMonth() + 1) + '-' + p(g.getUTCDate());
 }

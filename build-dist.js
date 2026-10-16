@@ -139,6 +139,7 @@ function copyDir(dir) {
     // Never copy internal prospect intelligence / discovery-ops artifacts to the public distribution
     if (p === 'data/commerce-intel.json' || p === 'data/engineer-track-paid.json') continue;
     if (p === 'data/paid-listings.json') continue;
+    if (p === 'data/gcc-weekly-linkedin-pack.json') continue;
     if (p === 'data/gcc-sep-2026-discovery-input.json' || p === 'data/gcc-coverage-report.json') continue;
     // Pre-sprint CRM snapshots (data/backup-pre-sprint/commerce-intel.json and
     // the rest of that generation) must never reach the CDN. The root
@@ -162,9 +163,13 @@ fs.mkdirSync(DIST, { recursive: true });
 
 let count = 0;
 
+// Internal operator/draft pages that must never ship.
+const INTERNAL_ROOT_HTML = new Set(['gcc-weekly-pack.html']);
+
 // 1. Every served HTML page at the root.
 for (const f of fs.readdirSync('.')) {
   if (CONFLICT_COPY.test(f)) { skippedConflicts.push(f); continue; }
+  if (INTERNAL_ROOT_HTML.has(f)) continue;
   if (f.endsWith('.html')) { copyFile(f, f); count++; }
   else if (ROOT_CSS_RE.test(f)) { copyFile(f, f); count++; }
 }

@@ -80,9 +80,7 @@ titles.forEach(function (title) {
 check('language badges are not glued to scope grades', glued.length === 0, glued.slice(0, 3).join(' || '));
 
 const de = (staticHtml.match(/class="lang-badge"[^>]*>DE</g) || []).length;
-/* The source page carries the curated German badges. SSR adds one DE badge
- * for each published German-language item, so the count is not frozen. */
-check('German source badges stay DE', de >= 3, String(de));
+check('German source badges stay DE (at least 3 on this page)', de >= 3, String(de));
 check('legend defines DE as German', legend.has('DE') && intel.indexOf('DE — German source language') >= 0);
 check('legend defines CONFIRMED', legend.has('CONFIRMED'));
 

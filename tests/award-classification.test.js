@@ -50,6 +50,15 @@ check('named winner with award language passes', validateAward({
   source_urls: ['https://www.jiemian.com/article/14811421.html'],
 }).length === 0);
 
+const intelDoc = JSON.parse(fs.readFileSync('data/intel.json', 'utf8'));
+let saarbrucken = null;
+Object.keys(intelDoc).forEach(function (region) {
+  ((intelDoc[region] && intelDoc[region].items) || []).forEach(function (it) {
+    if (/Stadtwerke Saarbrücken Netz awards/.test(it.title || '')) saarbrucken = it;
+  });
+});
+check('Saarbrücken TED notice names NATUS GmbH & Co. KG', saarbrucken && saarbrucken.awardee === 'NATUS GmbH & Co. KG', saarbrucken && saarbrucken.awardee);
+
 const awards = JSON.parse(fs.readFileSync('data/awards.json', 'utf8')).awards;
 const tenders = JSON.parse(fs.readFileSync('data/tenders.json', 'utf8')).tenders;
 const stats = JSON.parse(fs.readFileSync('data/site-stats.json', 'utf8'));
