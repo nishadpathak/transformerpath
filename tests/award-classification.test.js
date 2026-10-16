@@ -9,6 +9,7 @@ const {
   nonAwardKind,
   validateAward,
   describesContractAward,
+  awardeeFromTitle,
 } = require('../lib/award-classification');
 
 let failed = 0;
@@ -43,6 +44,10 @@ check('award whose source does not describe a contract fails', validateAward({
   source: 'Project page',
   source_urls: ['https://example.gov/projects/north-corridor'],
 }).indexOf('source does not describe a contract award') >= 0);
+check('an awards-to title names the supplier', awardeeFromTitle('Stadtwerke Saarbrücken Netz awards a 10 kV switchgear for substation BBH to NATUS') === 'NATUS');
+check('an awards-to title keeps a two-word supplier', awardeeFromTitle('Red Eléctrica awards three 220 kV GIS bays to Siemens Energy') === 'Siemens Energy');
+check('a title without a named supplier stays empty', awardeeFromTitle('Grid package awarded') === '');
+
 check('named winner with award language passes', validateAward({
   title: 'China XD wins SGCC equipment tenders',
   awardee: 'China XD',
