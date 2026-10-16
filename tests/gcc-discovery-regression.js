@@ -78,6 +78,10 @@ check('Freshness refuses DATA CURRENT from build clock', result.freshness.data_c
 
 check('Pipeline does not auto-publish', /must NOT automatically become Intel/i.test(result.publish_rule));
 
+const publishSrc = fs.readFileSync('build-gcc-intel-publish.js', 'utf8');
+check('GCC publish does not roll the feed clock backwards',
+  /capped > prev/.test(publishSrc) && /intel\.updated = capped/.test(publishSrc));
+
 // Ensure built artifacts exist after a prior build (optional soft check)
 const builtCandidates = path.join('data', 'gcc-discovery-candidates.json');
 if (fs.existsSync(builtCandidates)) {

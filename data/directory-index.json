@@ -1,10 +1,10 @@
 {
   "$schema": "https://transformerpath.com/directory.schema.json",
-  "generated": "2026-10-15T03:46:41.098Z",
-  "count": 1192,
+  "generated": "2026-10-16T01:28:29.445Z",
+  "count": 1193,
   "counts": {
-    "manufacturers": 897,
-    "component_suppliers": 211,
+    "manufacturers": 898,
+    "component_suppliers": 212,
     "machinery_manufacturers": 20,
     "testing_laboratories": 14,
     "services": 18,
@@ -15741,11 +15741,19 @@
       ],
       "testing_capability": null,
       "facility_ids": [
-        "fac:efacec:arroteia"
+        "fac:efacec:arroteia",
+        "fac:efacec:maia"
       ],
       "factories": [
         {
           "city": "Arroteia, Porto",
+          "country": "Portugal",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        },
+        {
+          "city": "Maia, Porto",
           "country": "Portugal",
           "produces": "",
           "claim_type": "",
@@ -15783,7 +15791,7 @@
         "capability_source": "EFACEC Corporate Sustainability & Annual Filing",
         "capability_note": "Arroteia transformer manufacturing plant capacity and maximum voltage ratings reported in corporate filings."
       },
-      "factory_count": 1
+      "factory_count": 2
     },
     {
       "id": "cmp:egemac-egyptian-german-electrical-manufacturing-co",
@@ -29390,6 +29398,147 @@
       "factory_count": 1
     },
     {
+      "id": "cmp:hitachi-energy",
+      "canonical_id": "cmp:hitachi-energy",
+      "roles": [
+        "Transformer Manufacturer",
+        "Component Manufacturer"
+      ],
+      "kind": "manufacturer",
+      "name": "Hitachi Energy",
+      "slug": "hitachi-energy",
+      "country": "Switzerland",
+      "region": "Europe",
+      "website": "https://www.hitachienergy.com/",
+      "headquarters": "Zurich, Switzerland",
+      "product_codes": [
+        "PT",
+        "DT",
+        "DRY",
+        "POWER",
+        "HVDC_CONVERTER",
+        "GSU",
+        "DISTRIBUTION"
+      ],
+      "capability_labels": [
+        "Power transformer",
+        "Distribution transformer",
+        "Dry-type",
+        "Converter (HVDC) transformer",
+        "Generator step-up",
+        "Bushings (HV, LV)",
+        "High voltage insulators / porcelain / composite shells"
+      ],
+      "transformer_types": {
+        "power": {
+          "__present": true,
+          "gsu": true
+        },
+        "distribution": {
+          "__present": true
+        },
+        "dry_type": {
+          "__present": true
+        },
+        "special": {
+          "__present": true,
+          "converter": true
+        }
+      },
+      "voltage": {
+        "value": "1200 kV",
+        "num": 1200,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "500,000 MVA",
+        "num": 500000,
+        "unit": "MVA"
+      },
+      "certs": [
+        "IEC",
+        "IEEE",
+        "UL"
+      ],
+      "testing_capability": null,
+      "facility_ids": [],
+      "factories": [
+        {
+          "city": "Zürich",
+          "country": "Switzerland",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        },
+        {
+          "city": "Ludvika",
+          "country": "Sweden",
+          "produces": "HVDC converter transformers",
+          "claim_type": "INDEPENDENTLY_SOURCED",
+          "source_url": "https://www.hitachienergy.com"
+        },
+        {
+          "city": "Maneja / Karjan (Vadodara)",
+          "country": "India",
+          "produces": "power transformers",
+          "claim_type": "INDEPENDENTLY_SOURCED",
+          "source_url": "https://www.hitachienergy.com"
+        },
+        {
+          "city": "Zhongshan",
+          "country": "China",
+          "produces": "transformers",
+          "claim_type": "INDEPENDENTLY_SOURCED",
+          "source_url": "https://www.hitachienergy.com"
+        },
+        {
+          "city": "Dilovası",
+          "country": "Türkiye",
+          "produces": "power transformers (+ factory & service center)",
+          "claim_type": "INDEPENDENTLY_SOURCED",
+          "source_url": "https://www.hitachienergy.com/ch/de/news-and-events/events-and-webinars/2026/06/dilovasi-power-transformers-factory-service-center"
+        },
+        {
+          "city": "Vaasa",
+          "country": "Finland",
+          "produces": "transformers",
+          "claim_type": "INDEPENDENTLY_SOURCED",
+          "source_url": "https://www.hitachienergy.com"
+        }
+      ],
+      "capability_evidence": {
+        "products": "CONFIRMED",
+        "voltage": "CONFIRMED",
+        "mva": "CONFIRMED"
+      },
+      "evidence": "CONFIRMED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
+      "source_meta": {
+        "source_title": "Hitachi Energy Annual Report & Corporate Disclosures",
+        "source_type": "industry_publication",
+        "source_url": "https://www.hitachienergy.com/"
+      },
+      "completeness_score": 90,
+      "missing_fields": [
+        "Test bay specifications & utility references"
+      ],
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
+      "last_verified": "2026-08-28",
+      "research_completeness": 6,
+      "research_status": "ACTIVE_CONFIRMED",
+      "commercial_status": "LISTED",
+      "featured": false,
+      "listing_tier": "listed",
+      "verified": false,
+      "sources": {
+        "website": "https://www.hitachienergy.com/",
+        "capability_source": "Hitachi Energy Annual Report & Corporate Disclosures",
+        "capability_note": "Annual production capacity benchmarked across global power transformer factories in investor disclosures and corporate filings. Capacity stated as annual MVA envelope."
+      },
+      "factory_count": 6
+    },
+    {
       "id": "cmp:hitachi-energy-chongqing-shanghai",
       "canonical_id": "cmp:hitachi-energy-chongqing-shanghai",
       "roles": [
@@ -29515,11 +29664,13 @@
         "source_type": "industry_publication",
         "source_url": "https://www.hitachienergy.com/"
       },
-      "completeness_score": 100,
-      "missing_fields": [],
+      "completeness_score": 90,
+      "missing_fields": [
+        "Test bay specifications & utility references"
+      ],
       "provenance_type": "TRANSFORMERPATH_RESEARCHED",
       "last_verified": "2026-08-28",
-      "research_completeness": 7,
+      "research_completeness": 6,
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
@@ -31491,13 +31642,11 @@
         "source_type": "industry_publication",
         "source_url": "https://www.hitachienergy.com"
       },
-      "completeness_score": 90,
-      "missing_fields": [
-        "Test bay specifications & utility references"
-      ],
+      "completeness_score": 100,
+      "missing_fields": [],
       "provenance_type": "TRANSFORMERPATH_RESEARCHED",
       "last_verified": "2026-08-28",
-      "research_completeness": 6,
+      "research_completeness": 7,
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
@@ -31994,10 +32143,10 @@
       "kind": "manufacturer",
       "name": "Hyosung Heavy Industries",
       "slug": "hyosung-heavy-industries",
-      "country": "South Korea",
-      "region": "East Asia",
-      "website": "https://www.hyosungheavyindustries.com/en",
-      "headquarters": "Seoul, South Korea",
+      "country": "USA",
+      "region": "North America",
+      "website": "https://www.hicoamerica.com/",
+      "headquarters": "",
       "product_codes": [
         "PT"
       ],
@@ -32030,7 +32179,8 @@
       "facility_ids": [
         "fac:hyosung-heavy-industries:changwon",
         "fac:hyosung-heavy-industries:memphis",
-        "fac:hyosung-heavy-industries:nantong"
+        "fac:hyosung-heavy-industries:nantong",
+        "fac:hyosung-heavy-industries:seoul"
       ],
       "factories": [
         {
@@ -32041,11 +32191,18 @@
           "source_url": ""
         },
         {
+          "city": "Seoul",
+          "country": "South Korea",
+          "produces": "",
+          "claim_type": "",
+          "source_url": ""
+        },
+        {
           "city": "Changwon",
           "country": "South Korea",
           "produces": "EHV transformers (7,500+ units)",
-          "claim_type": "",
-          "source_url": ""
+          "claim_type": "INDEPENDENTLY_SOURCED",
+          "source_url": "https://www.hyosungheavyindustries.com"
         },
         {
           "city": "Nantong",
@@ -32066,7 +32223,7 @@
       "source_meta": {
         "source_title": "HICO America Technical Dossier & Factory Certification",
         "source_type": "industry_publication",
-        "source_url": "https://www.hyosungheavyindustries.com/en"
+        "source_url": "https://www.hicoamerica.com/"
       },
       "completeness_score": 85,
       "missing_fields": [
@@ -32082,13 +32239,11 @@
       "listing_tier": "listed",
       "verified": false,
       "sources": {
-        "website": "https://www.hyosungheavyindustries.com/en",
+        "website": "https://www.hicoamerica.com/",
         "capability_source": "HICO America Technical Dossier & Factory Certification",
-        "capability_note": "Greensburg, PA facility and parent plant technical manufacturing capacity documented in utility supplier certifications.",
-        "headquarters_source": "https://www.hyosungheavyindustries.com/en/company/info/global-network",
-        "headquarters_checked": "2026-10-15"
+        "capability_note": "Greensburg, PA facility and parent plant technical manufacturing capacity documented in utility supplier certifications."
       },
-      "factory_count": 3
+      "factory_count": 4
     },
     {
       "id": "cmp:i-p-l-products",
@@ -51422,10 +51577,10 @@
       "kind": "manufacturer",
       "name": "Prolec GE",
       "slug": "prolec-ge",
-      "country": "Mexico",
+      "country": "USA",
       "region": "North America",
       "website": "https://www.prolec.energy/",
-      "headquarters": "Apodaca, Mexico",
+      "headquarters": "Monterrey (Apodaca, Nuevo León), Mexico",
       "product_codes": [
         "PT",
         "DT",
@@ -51554,9 +51709,7 @@
       "sources": {
         "website": "https://www.prolec.energy/",
         "capability_source": "Prolec GE Corporate Disclosures & Utility Qualifications",
-        "capability_note": "Monterrey, Shreveport and Waukesha consolidated manufacturing capacity reported in utility supply and factory announcements.",
-        "headquarters_source": "https://www.prolec.energy/contact-us/",
-        "headquarters_checked": "2026-10-15"
+        "capability_note": "Monterrey, Shreveport and Waukesha consolidated manufacturing capacity reported in utility supply and factory announcements."
       },
       "factory_count": 5
     },
@@ -52171,24 +52324,25 @@
         "source_type": "",
         "source_url": ""
       },
-      "completeness_score": 50,
+      "completeness_score": 40,
       "missing_fields": [
         "Headquarters address",
+        "Official corporate website",
         "Maximum voltage rating",
         "Maximum unit MVA / rating",
         "Standards compliance (IEC/IEEE) & ISO certifications",
         "Test bay specifications & utility references"
       ],
       "provenance_type": "PUBLIC_SOURCE",
-      "last_verified": "2026-08-28",
-      "research_completeness": 4,
-      "research_status": "ACTIVE_CONFIRMED",
+      "last_verified": "2026-08-15",
+      "research_completeness": 2,
+      "research_status": "RESEARCH_REQUIRED",
       "commercial_status": "LISTED",
       "featured": false,
       "listing_tier": "listed",
       "verified": false,
       "sources": {
-        "website": "",
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       },
@@ -55586,24 +55740,25 @@
         "source_type": "",
         "source_url": ""
       },
-      "completeness_score": 50,
+      "completeness_score": 40,
       "missing_fields": [
         "Headquarters address",
+        "Official corporate website",
         "Maximum voltage rating",
         "Maximum unit MVA / rating",
         "Standards compliance (IEC/IEEE) & ISO certifications",
         "Test bay specifications & utility references"
       ],
       "provenance_type": "PUBLIC_SOURCE",
-      "last_verified": "2026-08-28",
-      "research_completeness": 4,
-      "research_status": "ACTIVE_CONFIRMED",
+      "last_verified": "2026-08-15",
+      "research_completeness": 2,
+      "research_status": "RESEARCH_REQUIRED",
       "commercial_status": "LISTED",
       "featured": false,
       "listing_tier": "listed",
       "verified": false,
       "sources": {
-        "website": "",
+        "website": null,
         "capability_source": "",
         "capability_note": ""
       },
@@ -61150,10 +61305,10 @@
       "kind": "manufacturer",
       "name": "Siemens Energy",
       "slug": "siemens-energy",
-      "country": "Germany",
-      "region": "Europe",
-      "website": "https://www.siemens-energy.com/",
-      "headquarters": "Munich, Germany",
+      "country": "Colombia",
+      "region": "Latin America",
+      "website": "https://www.siemens-energy.com/co/es.html",
+      "headquarters": "Munich, Germany (Otto-Hahn-Ring 6)",
       "product_codes": [
         "PT",
         "POWER",
@@ -61197,10 +61352,10 @@
       "testing_capability": null,
       "facility_ids": [
         "fac:siemens-energy:budapest",
-        "fac:siemens-energy:charlotte",
         "fac:siemens-energy:doha",
         "fac:siemens-energy:jundiai",
         "fac:siemens-energy:linz",
+        "fac:siemens-energy:munich",
         "fac:siemens-energy:nuremberg",
         "fac:siemens-energy:tenjo",
         "fac:siemens-energy:trento-spini",
@@ -61209,8 +61364,8 @@
       ],
       "factories": [
         {
-          "city": "Charlotte, NC",
-          "country": "USA",
+          "city": "Tenjo",
+          "country": "Colombia",
           "produces": "",
           "claim_type": "",
           "source_url": ""
@@ -61244,8 +61399,8 @@
           "source_url": "https://www.siemens-energy.com"
         },
         {
-          "city": "Tenjo",
-          "country": "Colombia",
+          "city": "Munich",
+          "country": "Germany",
           "produces": "",
           "claim_type": "",
           "source_url": ""
@@ -61262,24 +61417,24 @@
       "source_meta": {
         "source_title": "Siemens Energy Annual Report & Factory Records",
         "source_type": "industry_publication",
-        "source_url": "https://www.siemens-energy.com/"
+        "source_url": "https://www.siemens-energy.com/co/es.html"
       },
-      "completeness_score": 100,
-      "missing_fields": [],
+      "completeness_score": 90,
+      "missing_fields": [
+        "Test bay specifications & utility references"
+      ],
       "provenance_type": "TRANSFORMERPATH_RESEARCHED",
       "last_verified": "2026-08-28",
-      "research_completeness": 7,
+      "research_completeness": 6,
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
       "listing_tier": "listed",
       "verified": false,
       "sources": {
-        "website": "https://www.siemens-energy.com/",
+        "website": "https://www.siemens-energy.com/co/es.html",
         "capability_source": "Siemens Energy Annual Report & Factory Records",
-        "capability_note": "Global power transformer manufacturing network capacity based on annual corporate reporting and factory disclosures.",
-        "headquarters_source": "https://www.siemens-energy.com/global/en/home/general/corporate-information.html",
-        "headquarters_checked": "2026-10-15"
+        "capability_note": "Global power transformer manufacturing network capacity based on annual corporate reporting and factory disclosures."
       },
       "factory_count": 6
     },
@@ -61393,11 +61548,13 @@
         "source_type": "industry_publication",
         "source_url": "https://www.siemens-energy.com"
       },
-      "completeness_score": 100,
-      "missing_fields": [],
+      "completeness_score": 90,
+      "missing_fields": [
+        "Test bay specifications & utility references"
+      ],
       "provenance_type": "TRANSFORMERPATH_RESEARCHED",
       "last_verified": "2026-08-28",
-      "research_completeness": 7,
+      "research_completeness": 6,
       "research_status": "ACTIVE_CONFIRMED",
       "commercial_status": "LISTED",
       "featured": false,
@@ -78423,8 +78580,8 @@
       "confidence": "MEDIUM",
       "source_meta": {
         "source_title": "Virginia Transformer Corp About Us",
-        "source_type": "company_website",
-        "source_url": "https://www.vatransformer.com/about-us/"
+        "source_type": "industry_publication",
+        "source_url": "https://www.vatransformer.com/"
       },
       "completeness_score": 85,
       "missing_fields": [
@@ -78442,8 +78599,7 @@
       "sources": {
         "website": "https://www.vatransformer.com/",
         "capability_source": "Virginia Transformer Corp About Us",
-        "capability_source_url": "https://www.vatransformer.com/about-us/",
-        "capability_note": "Checked 2026-10-15 at https://www.vatransformer.com/about-us/. Core-type liquid-filled ratings up to 400 MVA/525 kV class; shell-type up to 500 MVA/500 kV; six facilities; 67,000 MVA annual capacity; power transformers up to 1,400 MVA, 500 kV. 525 kV is the highest voltage class stated on that page."
+        "capability_note": "Checked 2026-10-15 at https://www.vatransformer.com/about-us/. The page states core-type liquid-filled ratings from 300 kVA up to 400 MVA/525 kV class, shell-type liquid-filled ratings from 60 MVA up to 500 MVA/500 kV, six facilities, 67,000 MVA annual capacity, and power transformers up to 1,400 MVA, 500 kV. 525 kV is the highest voltage class on that page, not a claim that every unit is 525 kV."
       },
       "factory_count": 1
     },
@@ -81958,7 +82114,8 @@
       "certs": [],
       "testing_capability": null,
       "facility_ids": [
-        "fac:zetrak:queretaro"
+        "fac:zetrak:queretaro",
+        "fac:zetrak:tlalnepantla"
       ],
       "factories": [
         {
@@ -82003,7 +82160,7 @@
         "capability_source": "",
         "capability_note": ""
       },
-      "factory_count": 1
+      "factory_count": 2
     },
     {
       "id": "cmp:zhejiang-huada-transformer",
@@ -86082,6 +86239,72 @@
       "listing_tier": "listed"
     },
     {
+      "id": "cmp:elin-insulation-fz-llc",
+      "canonical_id": "cmp:elin-insulation-fz-llc",
+      "roles": [
+        "Material Supplier"
+      ],
+      "kind": "component_supplier",
+      "name": "Elin Insulation FZ LLC",
+      "slug": "elin-insulation-fz-llc",
+      "country": "United Arab Emirates",
+      "region": "",
+      "website": "https://www.elininsulation.com",
+      "headquarters": "Ras Al Khaimah, United Arab Emirates",
+      "product_codes": [],
+      "capability_labels": [
+        "Pressboard / insulation materials",
+        "Laminated wood / insulation wood",
+        "DDP / DPE (densified pressboard)"
+      ],
+      "transformer_types": {
+        "power": {},
+        "distribution": {},
+        "dry_type": {},
+        "special": {}
+      },
+      "voltage": {
+        "value": "",
+        "num": null,
+        "unit": "kV"
+      },
+      "mva": {
+        "value": "",
+        "num": null,
+        "unit": "MVA"
+      },
+      "certs": [],
+      "testing_capability": null,
+      "facility_ids": [],
+      "factories": [],
+      "capability_evidence": {
+        "products": "INFERRED",
+        "voltage": "UNKNOWN",
+        "mva": "UNKNOWN"
+      },
+      "evidence": "INFERRED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "confidence": "MEDIUM",
+      "source_meta": {
+        "source_title": "website-checked",
+        "source_type": "company_documentation",
+        "source_url": "https://www.elininsulation.com"
+      },
+      "research_completeness": 0,
+      "completeness_score": 50,
+      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
+      "last_verified": "2026-10-15",
+      "research_status": "Listed — official website recorded",
+      "commercial_status": "",
+      "sources": {
+        "website": "https://www.elininsulation.com"
+      },
+      "factory_count": 0,
+      "featured": false,
+      "verified": false,
+      "listing_tier": "listed"
+    },
+    {
       "id": "cmp:elprom-heavy-industries-voltap",
       "canonical_id": "cmp:elprom-heavy-industries-voltap",
       "roles": [
@@ -87679,71 +87902,6 @@
       "commercial_status": "",
       "sources": {
         "website": "https://www.hp.co.in"
-      },
-      "factory_count": 0,
-      "featured": false,
-      "verified": false,
-      "listing_tier": "listed"
-    },
-    {
-      "id": "cmp:hitachi-energy",
-      "canonical_id": "cmp:hitachi-energy",
-      "roles": [
-        "Component Manufacturer"
-      ],
-      "kind": "component_supplier",
-      "name": "Hitachi Energy",
-      "slug": "hitachi-energy",
-      "country": "Switzerland",
-      "region": "",
-      "website": "https://www.hitachienergy.com",
-      "headquarters": "Zurich, Switzerland",
-      "product_codes": [],
-      "capability_labels": [
-        "Bushings (HV, LV)",
-        "High voltage insulators / porcelain / composite shells"
-      ],
-      "transformer_types": {
-        "power": {},
-        "distribution": {},
-        "dry_type": {},
-        "special": {}
-      },
-      "voltage": {
-        "value": "",
-        "num": null,
-        "unit": "kV"
-      },
-      "mva": {
-        "value": "",
-        "num": null,
-        "unit": "MVA"
-      },
-      "certs": [],
-      "testing_capability": null,
-      "facility_ids": [],
-      "factories": [],
-      "capability_evidence": {
-        "products": "INFERRED",
-        "voltage": "UNKNOWN",
-        "mva": "UNKNOWN"
-      },
-      "evidence": "INFERRED",
-      "claim_type": "INDEPENDENTLY_SOURCED",
-      "confidence": "MEDIUM",
-      "source_meta": {
-        "source_title": "website-checked",
-        "source_type": "company_documentation",
-        "source_url": "https://www.hitachienergy.com"
-      },
-      "research_completeness": 0,
-      "completeness_score": 50,
-      "provenance_type": "TRANSFORMERPATH_RESEARCHED",
-      "last_verified": "2026-08-31",
-      "research_status": "Official Website Checked",
-      "commercial_status": "",
-      "sources": {
-        "website": "https://www.hitachienergy.com"
       },
       "factory_count": 0,
       "featured": false,
@@ -97758,11 +97916,7 @@
       ],
       "capability_labels": [
         "Independent Test Laboratory",
-        "ISO/IEC 17025",
-        "Impulse Testing",
-        "Short-Circuit Testing",
-        "PD Measurement",
-        "Oil & DGA Lab"
+        "ISO/IEC 17025"
       ],
       "transformer_types": {
         "power": {},
@@ -97975,11 +98129,7 @@
       ],
       "capability_labels": [
         "Independent Test Laboratory",
-        "ISO/IEC 17025",
-        "Impulse Testing",
-        "Short-Circuit Testing",
-        "PD Measurement",
-        "Oil & DGA Lab"
+        "ISO/IEC 17025"
       ],
       "transformer_types": {
         "power": {},
@@ -98267,11 +98417,7 @@
       ],
       "capability_labels": [
         "Independent Test Laboratory",
-        "ISO/IEC 17025",
-        "Impulse Testing",
-        "Short-Circuit Testing",
-        "PD Measurement",
-        "Oil & DGA Lab"
+        "ISO/IEC 17025"
       ],
       "transformer_types": {
         "power": {},
@@ -98413,11 +98559,7 @@
       ],
       "capability_labels": [
         "Independent Test Laboratory",
-        "ISO/IEC 17025",
-        "Impulse Testing",
-        "Short-Circuit Testing",
-        "PD Measurement",
-        "Oil & DGA Lab"
+        "ISO/IEC 17025"
       ],
       "transformer_types": {
         "power": {},
@@ -101942,7 +102084,7 @@
         "EDUCATION_TRAINING"
       ],
       "capability_labels": [
-        "Transformer Diagnostics & DGA Masterclass",
+        "Transformer Diagnostics and DGA Intensive",
         "Insulation Power Factor / Tan Delta Analysis",
         "Sweep Frequency Response Analysis (SFRA)",
         "Partial Discharge Detection in Power Transformers"
@@ -102157,7 +102299,7 @@
       "capability_labels": [
         "Transformer Design & Thermal Engineering",
         "Moisture in Transformers: Physics, Assessment & Drying",
-        "Dissolved Gas Analysis (DGA) Interpretation Masterclass",
+        "Dissolved Gas Analysis (DGA) Interpretation Intensive",
         "OLTC Application, Protection and Maintenance"
       ],
       "transformer_types": {

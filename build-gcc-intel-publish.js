@@ -240,12 +240,16 @@ publishableAll.forEach(function (it) {
   }
 });
 dateCandidates.sort();
-const newest = dateCandidates.length ? dateCandidates[dateCandidates.length - 1] : null;
-if (newest) {
-  const noon = newest + 'T12:00:00.000Z';
+const gccNewest = dateCandidates.length ? dateCandidates[dateCandidates.length - 1] : null;
+if (gccNewest) {
+  const noon = gccNewest + 'T12:00:00.000Z';
   const nowIso = new Date().toISOString();
   // Cap at now so morning UTC builds never stamp a future refresh time.
-  intel.updated = noon > nowIso ? nowIso : noon;
+  const capped = noon > nowIso ? nowIso : noon;
+  // This stamp is the feed-wide content clock. A GCC-only day must not
+  // roll it backwards when another region already has a later observation.
+  const prev = String(intel.updated || '');
+  if (!prev || capped > prev) intel.updated = capped;
 }
 intel.refresh_meta = {
   cadence: 'once daily at 06:00 UTC, only when TP_BUILD_HOOK_URL is set',

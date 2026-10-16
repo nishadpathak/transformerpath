@@ -165,6 +165,7 @@ PROJECTS.forEach((p) => {
     cls: p.related_intel || '',
     awardee: p.awardee || '',
     award_basis: p.award_basis || '',
+    cross_border_links: Array.isArray(p.cross_border_links) ? p.cross_border_links : [],
   });
 });
 
@@ -173,7 +174,13 @@ INTEL_ITEMS.forEach((it) => {
   // Only title-level, unambiguous procurement language is a tender signal. Body
   // text mentioning "float"/"floating" (as in a floating HVDC project) is NOT.
   const text = (it.title || '') + ' ' + (it.snippet || '');
-  if (!/(invites? bids?|tender|bid deadline|prequalif|epc tender|bids? for|bid (submission|opening|deadline)|procur|supply and installation)/i.test(it.title || '')) return;
+  /* A policy story is not a bid. The record says so explicitly. */
+  if (it.tender_watch === false) return;
+  const titleHit = /(invites? bids?|tender|bid deadline|prequalif|epc tender|bids? for|bid (submission|opening|deadline)|procur|supply and installation)/i.test(it.title || '');
+  /* "seeks …" contract notices (Sadales tīkls) name the deadline in the snippet, not the title. */
+  const contractNotice = /contract notice/i.test(it.snippet || '') && /^\d{4}-\d{2}-\d{2}$/.test(String(it.tender_close_date || '').slice(0, 10));
+  const awardNotice = /award notice/i.test(it.snippet || '') && /\bawards?\b/i.test(it.title || '');
+  if (!titleHit && !contractNotice && !awardNotice) return;
   const country = it.country || countryFromText(text);
   const fallbackRegion = it._region === 'GCC' ? 'Middle East' : it._region === 'India' ? 'Asia' : it._region === 'Europe' ? 'Europe' : it._region === 'USA' ? 'North America' : 'Other';
   const r = country ? regionOf(country) : fallbackRegion;
@@ -220,7 +227,7 @@ INTEL_ITEMS.forEach((it) => {
     deadline_raw: namedDeadline || '',
     stage,
     cls: '',
-    awardee: awardeeFromTitle(it.title),
+    awardee: it.awardee || awardeeFromTitle(it.title),
     award_basis: it.snippet || '',
     snippet: it.snippet || '',
   });
@@ -413,7 +420,7 @@ console.log('tender entity pages wrote: ' + tSlugs.size);
       return '<div class="t-row" data-scope="' + esc(t.transformer_scope || '') + '"><a class="t-title" href="tenders/' + esc(slugify(t.title)) + '/">' + esc(t.title) + '</a>' +
       '<span class="st ' + (stCls[t.status] || 'st-unknown') + '">' + esc(t.statusLabel) + '</span>' +
       (confirmed ? '<span class="scope-badge">Confirmed transformer scope</span>' : '') +
-      '<span class="t-meta">' + esc(t.country || t.region) + (t.voltage ? ' · ' + esc(t.voltage) : '') + '</span></div>';
+      '<span class="t-meta">' + esc(t.country || 'Country not stated') + (t.voltage ? ' · ' + esc(t.voltage) : '') + '</span></div>';
     }).join('');
     return '<div class="region-h">' + esc(region) + ' (' + regions[region].length + ')</div>' + rows;
   }).join('');

@@ -1,57 +1,24 @@
 {
   "schema": "https://transformerpath.com/awards.schema.json",
   "$comment": "First-class Award entity. Derived only from source-confirmed AWARDED tenders; an award is never inferred from a vendor list, a project, or a technical capability. Confidence limited/independently-sourced; values shown only where the source states them.",
-  "updated": "2026-10-15",
+  "updated": "2026-10-16",
   "stats": {
-    "generated_at": "2026-10-15T11:27:07.443Z",
-    "total": 54,
-    "countries": 27,
-    "regions": 8,
+    "generated_at": "2026-10-16T01:28:32.602Z",
+    "total": 56,
+    "countries": 28,
+    "regions": 7,
     "confirmed_scope": 11,
     "by_region": {
-      "Other": 1,
       "Oceania": 4,
       "Middle East": 10,
       "Latin America": 8,
-      "Asia": 18,
-      "Europe": 7,
+      "Asia": 19,
+      "Europe": 9,
       "Africa": 4,
       "North America": 2
     }
   },
   "awards": [
-    {
-      "award_id": "AW-pinggao-electric-wins-cny-876m",
-      "tender_id": "T-pinggao-electric-wins-cny-876m-o",
-      "project_slug": "",
-      "project": "",
-      "title": "平高电气 Pinggao Electric: wins CNY 876m of State Grid procurement",
-      "awardee": "平高电气 Pinggao Electric",
-      "buyer": "平高电气 Pinggao Electric",
-      "utility": "",
-      "epc": "",
-      "country": "",
-      "project_country": null,
-      "buyer_country": null,
-      "supplier_country": null,
-      "source_country": null,
-      "region": "Other",
-      "voltage": "",
-      "transformer_scope": "UNKNOWN",
-      "quantity": "CNY 876m",
-      "contract_value": "CNY 876m",
-      "currency": "CNY",
-      "source": "Jiemian 界面 · Apr 2026 (announcement 1 Apr 2026) [zh]",
-      "source_urls": [
-        "https://www.jiemian.com/article/13829280.html"
-      ],
-      "award_basis": "Pinggao Electric (平高电气) announced it won State Grid procurement tenders worth about CNY 876m. The listed switchgear maker's award reflects sustained State Grid spending on HV switchgear and related substation equipment.",
-      "confidence": "LIMITED",
-      "claim_type": "INDEPENDENTLY_SOURCED",
-      "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
-      "_derived": false
-    },
     {
       "award_id": "AW-marinus-link",
       "tender_id": "T-marinus-link",
@@ -67,6 +34,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Oceania",
       "voltage": "750 MW HVDC",
       "transformer_scope": "INFERRED",
@@ -82,7 +50,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -100,6 +68,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Oceania",
       "voltage": "n/a (not stated)",
       "transformer_scope": "INFERRED",
@@ -115,7 +84,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -133,6 +102,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Oceania",
       "voltage": "n/a (not stated)",
       "transformer_scope": "INFERRED",
@@ -148,7 +118,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -166,6 +136,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Middle East",
       "voltage": "400 kV",
       "transformer_scope": "INFERRED",
@@ -181,7 +152,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -199,6 +170,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Latin America",
       "voltage": "500 kV",
       "transformer_scope": "INFERRED",
@@ -214,7 +186,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -232,6 +204,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Latin America",
       "voltage": "500 kV",
       "transformer_scope": "CONFIRMED",
@@ -247,7 +220,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -265,6 +238,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Latin America",
       "voltage": "110 kV",
       "transformer_scope": "INFERRED",
@@ -281,7 +255,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -299,6 +273,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Asia",
       "voltage": "",
       "transformer_scope": "UNKNOWN",
@@ -313,7 +288,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -331,6 +306,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Asia",
       "voltage": "",
       "transformer_scope": "UNKNOWN",
@@ -345,7 +321,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -363,6 +339,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Asia",
       "voltage": "",
       "transformer_scope": "UNKNOWN",
@@ -377,7 +354,40 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
+      "_derived": false
+    },
+    {
+      "award_id": "AW-pinggao-electric-wins-cny-876m",
+      "tender_id": "T-pinggao-electric-wins-cny-876m-o",
+      "project_slug": "",
+      "project": "",
+      "title": "平高电气 Pinggao Electric: wins CNY 876m of State Grid procurement",
+      "awardee": "平高电气 Pinggao Electric",
+      "buyer": "平高电气 Pinggao Electric",
+      "utility": "",
+      "epc": "",
+      "country": "China",
+      "project_country": "China",
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
+      "cross_border_links": [],
+      "region": "Asia",
+      "voltage": "",
+      "transformer_scope": "UNKNOWN",
+      "quantity": "CNY 876m",
+      "contract_value": "CNY 876m",
+      "currency": "CNY",
+      "source": "Jiemian 界面 · Apr 2026 (announcement 1 Apr 2026) [zh]",
+      "source_urls": [
+        "https://www.jiemian.com/article/13829280.html"
+      ],
+      "award_basis": "Pinggao Electric (平高电气) announced it won State Grid procurement tenders worth about CNY 876m. The listed switchgear maker's award reflects sustained State Grid spending on HV switchgear and related substation equipment. The 界面新闻 report quotes the announcement: the buyer is 国家电网有限公司 (State Grid Corporation of China).",
+      "confidence": "LIMITED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "award_status": "CONFIRMED",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -395,6 +405,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Asia",
       "voltage": "",
       "transformer_scope": "UNKNOWN",
@@ -409,7 +420,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -427,6 +438,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Latin America",
       "voltage": "500 kV",
       "transformer_scope": "CONFIRMED",
@@ -443,7 +455,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -461,6 +473,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Latin America",
       "voltage": "500 kV",
       "transformer_scope": "INFERRED",
@@ -476,7 +489,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -494,6 +507,12 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [
+        {
+          "country": "Germany",
+          "source_url": "https://www.iwr.de/news/milliardenauftrag-fuer-siemens-energy-bornholm-wird-stromdrehscheibe-zwischen-deutschland-und-daenemark-news39317"
+        }
+      ],
       "region": "Europe",
       "voltage": "HVDC",
       "transformer_scope": "CONFIRMED",
@@ -510,7 +529,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -528,6 +547,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Africa",
       "voltage": "500 kV",
       "transformer_scope": "INFERRED",
@@ -543,7 +563,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -561,6 +581,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Africa",
       "voltage": "",
       "transformer_scope": "INFERRED",
@@ -576,7 +597,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -594,6 +615,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Europe",
       "voltage": "525 kV HVDC (2 GW)",
       "transformer_scope": "CONFIRMED",
@@ -608,7 +630,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -626,6 +648,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Europe",
       "voltage": "HVDC (2 GW)",
       "transformer_scope": "CONFIRMED",
@@ -640,7 +663,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -658,6 +681,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Asia",
       "voltage": "±800 kV HVDC",
       "transformer_scope": "INFERRED",
@@ -674,7 +698,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -692,6 +716,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Asia",
       "voltage": "±800 kV HVDC",
       "transformer_scope": "INFERRED",
@@ -707,7 +732,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -725,6 +750,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Asia",
       "voltage": "",
       "transformer_scope": "INFERRED",
@@ -741,7 +767,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -759,6 +785,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Asia",
       "voltage": "",
       "transformer_scope": "INFERRED",
@@ -773,7 +800,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -791,6 +818,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Asia",
       "voltage": "765 kV",
       "transformer_scope": "CONFIRMED",
@@ -806,7 +834,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -824,6 +852,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Asia",
       "voltage": "",
       "transformer_scope": "CONFIRMED",
@@ -839,7 +868,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -857,6 +886,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Asia",
       "voltage": "",
       "transformer_scope": "INFERRED",
@@ -871,7 +901,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -889,6 +919,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Asia",
       "voltage": "",
       "transformer_scope": "INFERRED",
@@ -904,7 +935,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -922,6 +953,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Asia",
       "voltage": "",
       "transformer_scope": "INFERRED",
@@ -936,7 +968,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -954,6 +986,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Europe",
       "voltage": "HVDC",
       "transformer_scope": "INFERRED",
@@ -969,7 +1002,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -987,6 +1020,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Asia",
       "voltage": "±250 kV HVDC",
       "transformer_scope": "INFERRED",
@@ -1002,7 +1036,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -1020,6 +1054,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Africa",
       "voltage": "",
       "transformer_scope": "INFERRED",
@@ -1035,7 +1070,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -1053,6 +1088,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Asia",
       "voltage": "",
       "transformer_scope": "INFERRED",
@@ -1068,7 +1104,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -1086,6 +1122,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Europe",
       "voltage": "HVDC (2 GW)",
       "transformer_scope": "INFERRED",
@@ -1100,7 +1137,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -1118,6 +1155,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Oceania",
       "voltage": "HVDC",
       "transformer_scope": "INFERRED",
@@ -1132,7 +1170,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -1150,6 +1188,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Middle East",
       "voltage": "400 kV",
       "transformer_scope": "INFERRED",
@@ -1165,7 +1204,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -1183,6 +1222,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Latin America",
       "voltage": "500 kV",
       "transformer_scope": "CONFIRMED",
@@ -1199,7 +1239,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -1217,6 +1257,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Latin America",
       "voltage": "500 kV",
       "transformer_scope": "CONFIRMED",
@@ -1233,7 +1274,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -1251,6 +1292,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Latin America",
       "voltage": "500 kV",
       "transformer_scope": "CONFIRMED",
@@ -1267,7 +1309,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -1285,6 +1327,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Middle East",
       "voltage": "400 kV",
       "transformer_scope": "INFERRED",
@@ -1300,7 +1343,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -1318,6 +1361,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Middle East",
       "voltage": "",
       "transformer_scope": "CONFIRMED",
@@ -1333,7 +1377,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -1351,6 +1395,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Middle East",
       "voltage": "380/132 kV",
       "transformer_scope": "INFERRED",
@@ -1366,7 +1411,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -1384,6 +1429,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Middle East",
       "voltage": "380/230 kV",
       "transformer_scope": "INFERRED",
@@ -1398,7 +1444,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -1416,6 +1462,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Middle East",
       "voltage": "380 kV",
       "transformer_scope": "INFERRED",
@@ -1430,7 +1477,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -1448,6 +1495,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Middle East",
       "voltage": "",
       "transformer_scope": "INFERRED",
@@ -1462,7 +1510,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -1480,6 +1528,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Middle East",
       "voltage": "132/13.8 kV",
       "transformer_scope": "INFERRED",
@@ -1494,7 +1543,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -1512,6 +1561,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Asia",
       "voltage": "500 kV HVDC",
       "transformer_scope": "INFERRED",
@@ -1528,7 +1578,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -1546,6 +1596,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Asia",
       "voltage": "",
       "transformer_scope": "INFERRED",
@@ -1561,7 +1612,73 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
+      "_derived": false
+    },
+    {
+      "award_id": "AW-red-electrica-awards-a-400-kv",
+      "tender_id": "T-red-electrica-awards-a-400-kv-gi",
+      "project_slug": "",
+      "project": "",
+      "title": "Red Eléctrica awards a 400 kV GIS bay at Santa María de Grado to Siemens Energy",
+      "awardee": "Siemens Energy S.A.",
+      "buyer": "Siemens Energy S.A.",
+      "utility": "",
+      "epc": "",
+      "country": "Spain",
+      "project_country": "Spain",
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
+      "cross_border_links": [],
+      "region": "Europe",
+      "voltage": "",
+      "transformer_scope": "UNKNOWN",
+      "quantity": "",
+      "contract_value": "",
+      "currency": "",
+      "source": "TED · 15 Oct 2026 [es]",
+      "source_urls": [
+        "https://ted.europa.eu/en/notice/-/detail/711925-2026"
+      ],
+      "award_basis": "TED award notice 711925-2026, published 15 October 2026, records that Red Eléctrica de España awarded the supply and installation of one 400 kV GIS bay at the Santa María de Grado substation in Asturias to Siemens Energy S.A. The notice fields retrieved do not state the contract value. Original notice in Spanish. Buyer country on the notice: Spain (Alcobendas).",
+      "confidence": "LIMITED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "award_status": "CONFIRMED",
+      "last_verified": "2026-10-16",
+      "_derived": false
+    },
+    {
+      "award_id": "AW-red-electrica-awards-three-220",
+      "tender_id": "T-red-electrica-awards-three-220-k",
+      "project_slug": "",
+      "project": "",
+      "title": "Red Eléctrica awards three 220 kV GIS bays to Siemens Energy",
+      "awardee": "Siemens Energy S.A.",
+      "buyer": "Siemens Energy S.A.",
+      "utility": "",
+      "epc": "",
+      "country": "Spain",
+      "project_country": "Spain",
+      "buyer_country": null,
+      "supplier_country": null,
+      "source_country": null,
+      "cross_border_links": [],
+      "region": "Europe",
+      "voltage": "",
+      "transformer_scope": "UNKNOWN",
+      "quantity": "",
+      "contract_value": "",
+      "currency": "",
+      "source": "TED · 15 Oct 2026 [es]",
+      "source_urls": [
+        "https://ted.europa.eu/en/notice/-/detail/713963-2026"
+      ],
+      "award_basis": "TED award notice 713963-2026, published 15 October 2026, records that Red Eléctrica de España awarded the supply and installation of three 220 kV gas-insulated switchgear bays to Siemens Energy S.A. The notice fields retrieved do not state the contract value or name the substation. Original notice in Spanish. Buyer country on the notice: Spain (Alcobendas).",
+      "confidence": "LIMITED",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "award_status": "CONFIRMED",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -1579,6 +1696,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Asia",
       "voltage": "500 kV",
       "transformer_scope": "INFERRED",
@@ -1593,7 +1711,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -1611,6 +1729,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Middle East",
       "voltage": "400 kV",
       "transformer_scope": "INFERRED",
@@ -1625,7 +1744,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -1643,6 +1762,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Europe",
       "voltage": "HVDC (2 GW)",
       "transformer_scope": "INFERRED",
@@ -1657,7 +1777,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -1675,6 +1795,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Europe",
       "voltage": "HVDC (2 GW)",
       "transformer_scope": "INFERRED",
@@ -1690,7 +1811,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -1708,6 +1829,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "North America",
       "voltage": "345 kV",
       "transformer_scope": "INFERRED",
@@ -1724,7 +1846,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -1742,6 +1864,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "North America",
       "voltage": "",
       "transformer_scope": "INFERRED",
@@ -1758,7 +1881,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     },
     {
@@ -1776,6 +1899,7 @@
       "buyer_country": null,
       "supplier_country": null,
       "source_country": null,
+      "cross_border_links": [],
       "region": "Africa",
       "voltage": "330 kV",
       "transformer_scope": "INFERRED",
@@ -1790,7 +1914,7 @@
       "confidence": "LIMITED",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "award_status": "CONFIRMED",
-      "last_verified": "2026-10-15",
+      "last_verified": "2026-10-16",
       "_derived": false
     }
   ]

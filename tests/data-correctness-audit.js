@@ -98,6 +98,19 @@ const dewaT = tender('DEWA floats EPC tender for twelve 132/11 kV substations in
 check('DEWA tender country is the UAE', dewaT && dewaT.country === 'United Arab Emirates', dewaT && dewaT.country);
 check('DEWA tender deadline is 2026-10-28', dewaT && dewaT.deadline === '2026-10-28', dewaT && dewaT.deadline);
 check('DEWA tender is closing soon on 15 Oct 2026', dewaT && (dewaT.status === 'CLOSING_SOON' || dewaT.status === 'OPEN'), dewaT && dewaT.status);
+const omanT = tender('Oman (Nama) floats international tender for 800–1,000 MW green-hydrogen power plant');
+check('Oman Nama consulting deadline is not an open tender', omanT && omanT.status === 'CLOSED', omanT && omanT.status);
+check('Oman Nama deadline is 21 June 2026', omanT && omanT.deadline === '2026-06-21', omanT && omanT.deadline);
+const zdas = tender('ŽĎAS tenders a 110 kV switchyard rebuild with two 110/22/6.3 kV transformers');
+check('ŽĎAS tender country is Czechia', zdas && zdas.country === 'Czechia', zdas && zdas.country);
+const mondragon = tender('Mondragon solar project tenders floating transformer substations');
+check('Mondragon tender country is France', mondragon && mondragon.country === 'France', mondragon && mondragon.country);
+check('Mondragon is not closed on the morning of its 16 Oct 2026 deadline', mondragon && mondragon.status !== 'CLOSED', mondragon && mondragon.status);
+const policy = tender('India grants 2-year public-procurement exemption to four Chinese-owned transformer/equipment subsidiaries');
+check('the India procurement-exemption story is not a tender', !policy);
+check('no tender uses a region name as its country', rows.every(function (t) {
+  return ['Europe', 'Asia', 'Africa', 'Middle East', 'North America', 'Latin America', 'Oceania', 'Other'].indexOf(t.country) < 0;
+}));
 const ampT = tender('Amprion launches tender for decentralised grid booster projects');
 check('Amprion tender country is Germany', ampT && ampT.country === 'Germany', ampT && ampT.country);
 const iraqT = tender('Iraq Ministry of Electricity to procure 4,026 locally-made transformers');

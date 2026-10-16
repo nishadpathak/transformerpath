@@ -1,7 +1,7 @@
 {
   "$schema": "https://transformerpath.com/facilities.schema.json",
-  "generated_at": "2026-10-14T11:58:52.265Z",
-  "count": 1117,
+  "generated_at": "2026-10-16T01:28:29.330Z",
+  "count": 1119,
   "public_count": 199,
   "note": "count = every explicit plant record (census city or sourced). public_count = plants with sourced evidence (produces, source_url, or INDEPENDENTLY_SOURCED). HQ-clone facilities are not created.",
   "facilities": [
@@ -5703,9 +5703,9 @@
       "confidence": "LIMITED"
     },
     {
-      "id": "fac:efacec-distribution-transformers:maia",
-      "company_id": "cmp:efacec-distribution-transformers",
-      "company_name": "EFACEC Distribution Transformers",
+      "id": "fac:efacec:maia",
+      "company_id": "cmp:efacec",
+      "company_name": "Efacec",
       "facility_name": "EFACEC Distribution Transformers",
       "city": "Maia, Porto",
       "country": "Portugal",
@@ -11473,6 +11473,246 @@
       "confidence": "LIMITED"
     },
     {
+      "id": "fac:hitachi-energy:dilovas",
+      "company_id": "cmp:hitachi-energy",
+      "company_name": "Hitachi Energy",
+      "facility_name": "Hitachi Energy — Dilovası",
+      "city": "Dilovası",
+      "country": "Türkiye",
+      "region": "Europe",
+      "status": "OPERATIONAL",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "produces": "power transformers (+ factory & service center)",
+      "public_count": true,
+      "capabilities": {
+        "transformer_types": [
+          "TR_POWER",
+          "TR_DISTRIBUTION",
+          "TR_DRY_CAST",
+          "TR_POWER",
+          "TR_POWER_HVDC",
+          "TR_GSU",
+          "TR_DISTRIBUTION"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [
+          "IEC",
+          "IEEE",
+          "UL"
+        ],
+        "test_capabilities": [],
+        "produces": "power transformers (+ factory & service center)"
+      },
+      "source": "Company intelligence store (sourced plant)",
+      "source_tier": "Tier A",
+      "source_url": "https://www.hitachienergy.com/ch/de/news-and-events/events-and-webinars/2026/06/dilovasi-power-transformers-factory-service-center",
+      "last_checked": "2026-08-28",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "fac:hitachi-energy:ludvika",
+      "company_id": "cmp:hitachi-energy",
+      "company_name": "Hitachi Energy",
+      "facility_name": "Hitachi Energy — Ludvika",
+      "city": "Ludvika",
+      "country": "Sweden",
+      "region": "Europe",
+      "status": "OPERATIONAL",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "produces": "HVDC converter transformers",
+      "public_count": true,
+      "capabilities": {
+        "transformer_types": [
+          "TR_POWER",
+          "TR_DISTRIBUTION",
+          "TR_DRY_CAST",
+          "TR_POWER",
+          "TR_POWER_HVDC",
+          "TR_GSU",
+          "TR_DISTRIBUTION"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [
+          "IEC",
+          "IEEE",
+          "UL"
+        ],
+        "test_capabilities": [],
+        "produces": "HVDC converter transformers"
+      },
+      "source": "Company intelligence store (sourced plant)",
+      "source_tier": "Tier A",
+      "source_url": "https://www.hitachienergy.com",
+      "last_checked": "2026-08-28",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "fac:hitachi-energy:maneja-karjan-vadodara",
+      "company_id": "cmp:hitachi-energy",
+      "company_name": "Hitachi Energy",
+      "facility_name": "Hitachi Energy — Maneja / Karjan (Vadodara)",
+      "city": "Maneja / Karjan (Vadodara)",
+      "country": "India",
+      "region": "Europe",
+      "status": "OPERATIONAL",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "produces": "power transformers",
+      "public_count": true,
+      "capabilities": {
+        "transformer_types": [
+          "TR_POWER",
+          "TR_DISTRIBUTION",
+          "TR_DRY_CAST",
+          "TR_POWER",
+          "TR_POWER_HVDC",
+          "TR_GSU",
+          "TR_DISTRIBUTION"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [
+          "IEC",
+          "IEEE",
+          "UL"
+        ],
+        "test_capabilities": [],
+        "produces": "power transformers"
+      },
+      "source": "Company intelligence store (sourced plant)",
+      "source_tier": "Tier A",
+      "source_url": "https://www.hitachienergy.com",
+      "last_checked": "2026-08-28",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "fac:hitachi-energy:vaasa",
+      "company_id": "cmp:hitachi-energy",
+      "company_name": "Hitachi Energy",
+      "facility_name": "Hitachi Energy — Vaasa",
+      "city": "Vaasa",
+      "country": "Finland",
+      "region": "Europe",
+      "status": "OPERATIONAL",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "produces": "transformers",
+      "public_count": true,
+      "capabilities": {
+        "transformer_types": [
+          "TR_POWER",
+          "TR_DISTRIBUTION",
+          "TR_DRY_CAST",
+          "TR_POWER",
+          "TR_POWER_HVDC",
+          "TR_GSU",
+          "TR_DISTRIBUTION"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [
+          "IEC",
+          "IEEE",
+          "UL"
+        ],
+        "test_capabilities": [],
+        "produces": "transformers"
+      },
+      "source": "Company intelligence store (sourced plant)",
+      "source_tier": "Tier A",
+      "source_url": "https://www.hitachienergy.com",
+      "last_checked": "2026-08-28",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "fac:hitachi-energy:zhongshan",
+      "company_id": "cmp:hitachi-energy",
+      "company_name": "Hitachi Energy",
+      "facility_name": "Hitachi Energy — Zhongshan",
+      "city": "Zhongshan",
+      "country": "China",
+      "region": "Europe",
+      "status": "OPERATIONAL",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "produces": "transformers",
+      "public_count": true,
+      "capabilities": {
+        "transformer_types": [
+          "TR_POWER",
+          "TR_DISTRIBUTION",
+          "TR_DRY_CAST",
+          "TR_POWER",
+          "TR_POWER_HVDC",
+          "TR_GSU",
+          "TR_DISTRIBUTION"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [
+          "IEC",
+          "IEEE",
+          "UL"
+        ],
+        "test_capabilities": [],
+        "produces": "transformers"
+      },
+      "source": "Company intelligence store (sourced plant)",
+      "source_tier": "Tier A",
+      "source_url": "https://www.hitachienergy.com",
+      "last_checked": "2026-08-28",
+      "confidence": "HIGH"
+    },
+    {
+      "id": "fac:hitachi-energy:zurich",
+      "company_id": "cmp:hitachi-energy",
+      "company_name": "Hitachi Energy",
+      "facility_name": "Hitachi Energy — Zürich",
+      "city": "Zürich",
+      "country": "Switzerland",
+      "region": "Europe",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_POWER",
+          "TR_DISTRIBUTION",
+          "TR_DRY_CAST",
+          "TR_POWER",
+          "TR_POWER_HVDC",
+          "TR_GSU",
+          "TR_DISTRIBUTION"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [
+          "IEC",
+          "IEEE",
+          "UL"
+        ],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "Company intelligence store (listed plant city)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.hitachienergy.com/",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
       "id": "fac:hitachi-energy-chongqing-shanghai:chongqing-shanghai",
       "company_id": "cmp:hitachi-energy-chongqing-shanghai",
       "company_name": "Hitachi Energy (Chongqing / Shanghai)",
@@ -11705,246 +11945,6 @@
       "source_url": "https://www.hitachienergy.com",
       "last_checked": "2026-08-28",
       "confidence": "HIGH"
-    },
-    {
-      "id": "fac:hitachi-energy-global-hq:dilovas",
-      "company_id": "cmp:hitachi-energy-global-hq",
-      "company_name": "Hitachi Energy (global HQ)",
-      "facility_name": "Hitachi Energy (global HQ) — Dilovası",
-      "city": "Dilovası",
-      "country": "Türkiye",
-      "region": "Europe",
-      "status": "OPERATIONAL",
-      "claim_type": "INDEPENDENTLY_SOURCED",
-      "produces": "power transformers (+ factory & service center)",
-      "public_count": true,
-      "capabilities": {
-        "transformer_types": [
-          "TR_POWER",
-          "TR_DISTRIBUTION",
-          "TR_DRY_CAST",
-          "TR_POWER",
-          "TR_POWER_HVDC",
-          "TR_GSU",
-          "TR_DISTRIBUTION"
-        ],
-        "max_voltage_kv": null,
-        "max_mva": null,
-        "annual_mva_capacity": null,
-        "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [
-          "IEC",
-          "IEEE",
-          "UL"
-        ],
-        "test_capabilities": [],
-        "produces": "power transformers (+ factory & service center)"
-      },
-      "source": "Company intelligence store (sourced plant)",
-      "source_tier": "Tier A",
-      "source_url": "https://www.hitachienergy.com/ch/de/news-and-events/events-and-webinars/2026/06/dilovasi-power-transformers-factory-service-center",
-      "last_checked": "2026-08-28",
-      "confidence": "HIGH"
-    },
-    {
-      "id": "fac:hitachi-energy-global-hq:ludvika",
-      "company_id": "cmp:hitachi-energy-global-hq",
-      "company_name": "Hitachi Energy (global HQ)",
-      "facility_name": "Hitachi Energy (global HQ) — Ludvika",
-      "city": "Ludvika",
-      "country": "Sweden",
-      "region": "Europe",
-      "status": "OPERATIONAL",
-      "claim_type": "INDEPENDENTLY_SOURCED",
-      "produces": "HVDC converter transformers",
-      "public_count": true,
-      "capabilities": {
-        "transformer_types": [
-          "TR_POWER",
-          "TR_DISTRIBUTION",
-          "TR_DRY_CAST",
-          "TR_POWER",
-          "TR_POWER_HVDC",
-          "TR_GSU",
-          "TR_DISTRIBUTION"
-        ],
-        "max_voltage_kv": null,
-        "max_mva": null,
-        "annual_mva_capacity": null,
-        "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [
-          "IEC",
-          "IEEE",
-          "UL"
-        ],
-        "test_capabilities": [],
-        "produces": "HVDC converter transformers"
-      },
-      "source": "Company intelligence store (sourced plant)",
-      "source_tier": "Tier A",
-      "source_url": "https://www.hitachienergy.com",
-      "last_checked": "2026-08-28",
-      "confidence": "HIGH"
-    },
-    {
-      "id": "fac:hitachi-energy-global-hq:maneja-karjan-vadodara",
-      "company_id": "cmp:hitachi-energy-global-hq",
-      "company_name": "Hitachi Energy (global HQ)",
-      "facility_name": "Hitachi Energy (global HQ) — Maneja / Karjan (Vadodara)",
-      "city": "Maneja / Karjan (Vadodara)",
-      "country": "India",
-      "region": "Europe",
-      "status": "OPERATIONAL",
-      "claim_type": "INDEPENDENTLY_SOURCED",
-      "produces": "power transformers",
-      "public_count": true,
-      "capabilities": {
-        "transformer_types": [
-          "TR_POWER",
-          "TR_DISTRIBUTION",
-          "TR_DRY_CAST",
-          "TR_POWER",
-          "TR_POWER_HVDC",
-          "TR_GSU",
-          "TR_DISTRIBUTION"
-        ],
-        "max_voltage_kv": null,
-        "max_mva": null,
-        "annual_mva_capacity": null,
-        "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [
-          "IEC",
-          "IEEE",
-          "UL"
-        ],
-        "test_capabilities": [],
-        "produces": "power transformers"
-      },
-      "source": "Company intelligence store (sourced plant)",
-      "source_tier": "Tier A",
-      "source_url": "https://www.hitachienergy.com",
-      "last_checked": "2026-08-28",
-      "confidence": "HIGH"
-    },
-    {
-      "id": "fac:hitachi-energy-global-hq:vaasa",
-      "company_id": "cmp:hitachi-energy-global-hq",
-      "company_name": "Hitachi Energy (global HQ)",
-      "facility_name": "Hitachi Energy (global HQ) — Vaasa",
-      "city": "Vaasa",
-      "country": "Finland",
-      "region": "Europe",
-      "status": "OPERATIONAL",
-      "claim_type": "INDEPENDENTLY_SOURCED",
-      "produces": "transformers",
-      "public_count": true,
-      "capabilities": {
-        "transformer_types": [
-          "TR_POWER",
-          "TR_DISTRIBUTION",
-          "TR_DRY_CAST",
-          "TR_POWER",
-          "TR_POWER_HVDC",
-          "TR_GSU",
-          "TR_DISTRIBUTION"
-        ],
-        "max_voltage_kv": null,
-        "max_mva": null,
-        "annual_mva_capacity": null,
-        "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [
-          "IEC",
-          "IEEE",
-          "UL"
-        ],
-        "test_capabilities": [],
-        "produces": "transformers"
-      },
-      "source": "Company intelligence store (sourced plant)",
-      "source_tier": "Tier A",
-      "source_url": "https://www.hitachienergy.com",
-      "last_checked": "2026-08-28",
-      "confidence": "HIGH"
-    },
-    {
-      "id": "fac:hitachi-energy-global-hq:zhongshan",
-      "company_id": "cmp:hitachi-energy-global-hq",
-      "company_name": "Hitachi Energy (global HQ)",
-      "facility_name": "Hitachi Energy (global HQ) — Zhongshan",
-      "city": "Zhongshan",
-      "country": "China",
-      "region": "Europe",
-      "status": "OPERATIONAL",
-      "claim_type": "INDEPENDENTLY_SOURCED",
-      "produces": "transformers",
-      "public_count": true,
-      "capabilities": {
-        "transformer_types": [
-          "TR_POWER",
-          "TR_DISTRIBUTION",
-          "TR_DRY_CAST",
-          "TR_POWER",
-          "TR_POWER_HVDC",
-          "TR_GSU",
-          "TR_DISTRIBUTION"
-        ],
-        "max_voltage_kv": null,
-        "max_mva": null,
-        "annual_mva_capacity": null,
-        "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [
-          "IEC",
-          "IEEE",
-          "UL"
-        ],
-        "test_capabilities": [],
-        "produces": "transformers"
-      },
-      "source": "Company intelligence store (sourced plant)",
-      "source_tier": "Tier A",
-      "source_url": "https://www.hitachienergy.com",
-      "last_checked": "2026-08-28",
-      "confidence": "HIGH"
-    },
-    {
-      "id": "fac:hitachi-energy-global-hq:zurich",
-      "company_id": "cmp:hitachi-energy-global-hq",
-      "company_name": "Hitachi Energy (global HQ)",
-      "facility_name": "Hitachi Energy (global HQ) — Zürich",
-      "city": "Zürich",
-      "country": "Switzerland",
-      "region": "Europe",
-      "status": "UNCLEAR",
-      "claim_type": "",
-      "produces": "",
-      "public_count": false,
-      "capabilities": {
-        "transformer_types": [
-          "TR_POWER",
-          "TR_DISTRIBUTION",
-          "TR_DRY_CAST",
-          "TR_POWER",
-          "TR_POWER_HVDC",
-          "TR_GSU",
-          "TR_DISTRIBUTION"
-        ],
-        "max_voltage_kv": null,
-        "max_mva": null,
-        "annual_mva_capacity": null,
-        "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [
-          "IEC",
-          "IEEE",
-          "UL"
-        ],
-        "test_capabilities": [],
-        "produces": ""
-      },
-      "source": "Company intelligence store (listed plant city)",
-      "source_tier": "Tier C",
-      "source_url": "https://www.hitachienergy.com/",
-      "last_checked": "2026-08-28",
-      "confidence": "LIMITED"
     },
     {
       "id": "fac:hitachi-energy-brasil:dilovas",
@@ -15989,17 +15989,17 @@
       "confidence": "LIMITED"
     },
     {
-      "id": "fac:hyosung-heavy-industries:changwon",
+      "id": "fac:hyosung-heavy-industries:seoul",
       "company_id": "cmp:hyosung-heavy-industries",
       "company_name": "Hyosung Heavy Industries",
       "facility_name": "Hyosung Heavy Industries",
-      "city": "Changwon",
+      "city": "Seoul",
       "country": "South Korea",
       "region": "East Asia",
-      "status": "OPERATIONAL",
-      "claim_type": "INDEPENDENTLY_SOURCED",
-      "produces": "EHV transformers (7,500+ units)",
-      "public_count": true,
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
       "capabilities": {
         "transformer_types": [
           "TR_POWER",
@@ -16012,9 +16012,54 @@
         "annual_capacity_note": "Not publicly disclosed",
         "certifications": [],
         "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "https://www.hyosungheavyindustries.com",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:hyosung-heavy-industries:changwon",
+      "company_id": "cmp:hyosung-heavy-industries",
+      "company_name": "Hyosung Heavy Industries",
+      "facility_name": "Hyosung Heavy Industries — Changwon",
+      "city": "Changwon",
+      "country": "South Korea",
+      "region": "East Asia",
+      "status": "OPERATIONAL",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "produces": "EHV transformers (7,500+ units)",
+      "public_count": true,
+      "capabilities": {
+        "transformer_types": [
+          "TR_POWER",
+          "TR_DISTRIBUTION",
+          "TR_DRY_CAST",
+          "TR_POWER",
+          "TR_DISTRIBUTION",
+          "TR_DRY_CAST",
+          "TR_DRY_CAST",
+          "TR_AUTO",
+          "TR_GSU",
+          "TR_FURNACE",
+          "TR_TRACTION",
+          "TR_SPEC_MOBILE",
+          "SPECIAL"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [
+          "IEC",
+          "IEEE"
+        ],
+        "test_capabilities": [],
         "produces": "EHV transformers (7,500+ units)"
       },
-      "source": "TransformerPath deep-research (independently sourced factory record)",
+      "source": "Company intelligence store (sourced plant)",
       "source_tier": "Tier A",
       "source_url": "https://www.hyosungheavyindustries.com",
       "last_checked": "2026-08-28",
@@ -23343,7 +23388,7 @@
       "id": "fac:qingdao-transformer-group:qingdao",
       "company_id": "cmp:qingdao-transformer-group",
       "company_name": "Qingdao Transformer Group",
-      "facility_name": "Qingdao Transformer Group",
+      "facility_name": "Qingdao Transformer Group — Qingdao, Shandong",
       "city": "Qingdao, Shandong",
       "country": "China",
       "region": "East Asia",
@@ -23364,10 +23409,10 @@
         "test_capabilities": [],
         "produces": ""
       },
-      "source": "TransformerPath census (site list; status unclassified)",
+      "source": "Company intelligence store (listed plant city)",
       "source_tier": "Tier C",
       "source_url": "",
-      "last_checked": "2026-08-28",
+      "last_checked": "2026-08-15",
       "confidence": "LIMITED"
     },
     {
@@ -24513,7 +24558,7 @@
       "id": "fac:sandas-and-co:kolkata",
       "company_id": "cmp:sandas-and-co",
       "company_name": "Sandas & Co",
-      "facility_name": "Sandas & Co",
+      "facility_name": "Sandas & Co — Kolkata",
       "city": "Kolkata",
       "country": "India",
       "region": "South Asia",
@@ -24533,10 +24578,10 @@
         "test_capabilities": [],
         "produces": ""
       },
-      "source": "TransformerPath census (site list; status unclassified)",
+      "source": "Company intelligence store (listed plant city)",
       "source_tier": "Tier C",
       "source_url": "",
-      "last_checked": "2026-08-28",
+      "last_checked": "2026-08-15",
       "confidence": "LIMITED"
     },
     {
@@ -26520,13 +26565,13 @@
       "confidence": "LIMITED"
     },
     {
-      "id": "fac:siemens-energy:charlotte",
+      "id": "fac:siemens-energy:munich",
       "company_id": "cmp:siemens-energy",
       "company_name": "Siemens Energy",
       "facility_name": "Siemens Energy",
-      "city": "Charlotte, NC",
-      "country": "USA",
-      "region": "North America",
+      "city": "Munich",
+      "country": "Germany",
+      "region": "Europe",
       "status": "UNCLEAR",
       "claim_type": "",
       "produces": "",
@@ -26556,7 +26601,7 @@
       "facility_name": "Siemens Energy — Linz",
       "city": "Linz",
       "country": "Austria",
-      "region": "North America",
+      "region": "Latin America",
       "status": "OPERATIONAL",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "produces": "transformer service",
@@ -26587,13 +26632,50 @@
       "confidence": "HIGH"
     },
     {
+      "id": "fac:siemens-energy:nuremberg",
+      "company_id": "cmp:siemens-energy",
+      "company_name": "Siemens Energy",
+      "facility_name": "Siemens Energy — Nuremberg",
+      "city": "Nuremberg",
+      "country": "Germany",
+      "region": "Latin America",
+      "status": "OPERATIONAL",
+      "claim_type": "INDEPENDENTLY_SOURCED",
+      "produces": "power transformers (since 1912)",
+      "public_count": true,
+      "capabilities": {
+        "transformer_types": [
+          "TR_POWER",
+          "TR_POWER",
+          "TR_POWER_HVDC",
+          "TR_DISTRIBUTION"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [
+          "IEC",
+          "IEEE",
+          "CE"
+        ],
+        "test_capabilities": [],
+        "produces": "power transformers (since 1912)"
+      },
+      "source": "Company intelligence store (sourced plant)",
+      "source_tier": "Tier A",
+      "source_url": "https://www.siemens-energy.com",
+      "last_checked": "2026-08-28",
+      "confidence": "HIGH"
+    },
+    {
       "id": "fac:siemens-energy:trento-spini",
       "company_id": "cmp:siemens-energy",
       "company_name": "Siemens Energy",
       "facility_name": "Siemens Energy — Trento / Spini",
       "city": "Trento / Spini",
       "country": "Italy",
-      "region": "North America",
+      "region": "Latin America",
       "status": "OPERATIONAL",
       "claim_type": "INDEPENDENTLY_SOURCED",
       "produces": "transformers",
@@ -26622,36 +26704,6 @@
       "source_url": "https://www.siemens-energy.com",
       "last_checked": "2026-08-28",
       "confidence": "HIGH"
-    },
-    {
-      "id": "fac:siemens-energy:nuremberg",
-      "company_id": "cmp:siemens-energy",
-      "company_name": "Siemens Energy",
-      "facility_name": "Siemens Energy (Nuremberg)",
-      "city": "Nuremberg",
-      "country": "Germany",
-      "region": "Europe",
-      "status": "UNCLEAR",
-      "claim_type": "INDEPENDENTLY_SOURCED",
-      "produces": "power transformers (since 1912)",
-      "public_count": true,
-      "capabilities": {
-        "transformer_types": [
-          "TR_POWER"
-        ],
-        "max_voltage_kv": null,
-        "max_mva": null,
-        "annual_mva_capacity": null,
-        "annual_capacity_note": "Not publicly disclosed",
-        "certifications": [],
-        "test_capabilities": [],
-        "produces": "power transformers (since 1912)"
-      },
-      "source": "TransformerPath census (site list; status unclassified)",
-      "source_tier": "Tier C",
-      "source_url": "https://www.siemens-energy.com/de/de/home/locations/nuernberg.html",
-      "last_checked": "2026-08-28",
-      "confidence": "LIMITED"
     },
     {
       "id": "fac:siemens-energy:tenjo",
@@ -32073,7 +32125,7 @@
       "id": "fac:transformadores-zetrak:tlalnepantla",
       "company_id": "cmp:transformadores-zetrak",
       "company_name": "Transformadores Zetrak",
-      "facility_name": "Transformadores Zetrak",
+      "facility_name": "Transformadores Zetrak — Tlalnepantla",
       "city": "Tlalnepantla",
       "country": "Mexico",
       "region": "North America",
@@ -32094,7 +32146,7 @@
         "test_capabilities": [],
         "produces": ""
       },
-      "source": "TransformerPath census (site list; status unclassified)",
+      "source": "Company intelligence store (listed plant city)",
       "source_tier": "Tier C",
       "source_url": "https://zetrak.com.mx/",
       "last_checked": "2026-08-28",
@@ -35714,6 +35766,37 @@
       "source": "TransformerPath census (site list; status unclassified)",
       "source_tier": "Tier C",
       "source_url": "https://www.zesaholdings.co.zw/ZENT",
+      "last_checked": "2026-08-28",
+      "confidence": "LIMITED"
+    },
+    {
+      "id": "fac:zetrak:tlalnepantla",
+      "company_id": "cmp:zetrak",
+      "company_name": "Zetrak",
+      "facility_name": "Transformadores Zetrak",
+      "city": "Tlalnepantla",
+      "country": "Mexico",
+      "region": "North America",
+      "status": "UNCLEAR",
+      "claim_type": "",
+      "produces": "",
+      "public_count": false,
+      "capabilities": {
+        "transformer_types": [
+          "TR_DISTRIBUTION",
+          "TR_DRY_CAST"
+        ],
+        "max_voltage_kv": null,
+        "max_mva": null,
+        "annual_mva_capacity": null,
+        "annual_capacity_note": "Not publicly disclosed",
+        "certifications": [],
+        "test_capabilities": [],
+        "produces": ""
+      },
+      "source": "TransformerPath census (site list; status unclassified)",
+      "source_tier": "Tier C",
+      "source_url": "https://zetrak.com.mx/",
       "last_checked": "2026-08-28",
       "confidence": "LIMITED"
     },

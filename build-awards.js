@@ -71,6 +71,7 @@ TENDERS.forEach((t) => {
     buyer_country: t.buyer_country != null ? t.buyer_country : null,
     supplier_country: t.supplier_country != null ? t.supplier_country : null,
     source_country: t.source_country != null ? t.source_country : null,
+    cross_border_links: Array.isArray(t.cross_border_links) ? t.cross_border_links : [],
     region: t.region || 'Other',
     voltage: t.voltage || '',
     transformer_scope: t.transformer_scope || 'UNKNOWN',
