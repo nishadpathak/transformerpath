@@ -43,28 +43,17 @@ const syncLabels = new Set(GRIDS.map((g) => g.sync).filter(Boolean)).size;
    dataset held 300. */
 const EVENTS = readJson('data/events.json', []);
 const { isUpcoming, platformToday } = require('./lib/event-status');
+const { homepageEventsSentence } = require('./lib/homepage-events');
 /* Same predicate as /events: end date is still on or after the Asia/Dubai
    platform date, and the record is discoverable. */
 const todayISO = platformToday();
 const upcomingEvents = EVENTS.filter((e) => isUpcoming(e, todayISO)).length;
-const MONTHS_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-function shortDay(iso) {
-  if (!iso || !/^\d{4}-\d{2}-\d{2}$/.test(iso)) return '';
-  return { d: parseInt(iso.slice(8, 10), 10), m: MONTHS_SHORT[parseInt(iso.slice(5, 7), 10) - 1], y: iso.slice(0, 4) };
-}
-const nextConfirmedLine = EVENTS.filter((e) => e.date_status === 'CONFIRMED' && e.source_url && e.source_checked_at && (e.end || e.e) && (e.end || e.e) >= todayISO)
-  .sort((a, b) => String(a.start || a.s).localeCompare(String(b.start || b.s)))
-  .slice(0, 3)
-  .map((e) => {
-    const a = shortDay(e.start || e.s);
-    const b = shortDay(e.end || e.e);
-    let range = '';
-    if (a && b && a.y === b.y && a.m === b.m && a.d !== b.d) range = a.d + '–' + b.d + ' ' + a.m + ' ' + a.y;
-    else if (a && b && (a.d !== b.d || a.m !== b.m)) range = a.d + ' ' + a.m + ' ' + a.y + '–' + b.d + ' ' + b.m + ' ' + b.y;
-    else if (a) range = a.d + ' ' + a.m + ' ' + a.y;
-    return (e.name || e.n) + ' (' + range + ')';
-  })
-  .join('; ');
+/* Homepage event dates are the canonical edition records, not a handwritten
+   copy. events-canonical.json is produced from events.json by
+   build-event-canonicalization.js earlier in the same build. */
+const CANON = readJson('data/events-canonical.json', {});
+const CANON_EVENTS = (CANON.canonical_editions && CANON.canonical_editions.length) ? CANON.canonical_editions : EVENTS;
+const homepageEventsText = homepageEventsSentence(CANON_EVENTS, todayISO);
 
 // Compute structured database metrics across manufacturers, factories, and capabilities
 const SITES = readJson('data/manufacturer-sites.json', []);
@@ -229,10 +218,10 @@ for (let i = 0; i < STAT_HTML.length; i++) {
       /title="\d+ awards tracked, split by transformer scope"/g,
       'title="' + current.awards + ' awards tracked, split by transformer scope"'
     );
-    if (nextConfirmedLine) {
+    if (homepageEventsText) {
       html = html.replace(
-        /(<h3>Events →<\/h3><p>)[\s\S]*?(<\/p>)/,
-        '$1Next confirmed editions: ' + nextConfirmedLine + '. Official pages checked ' + todayISO + '.$2'
+        /(<h3>Events →<\/h3><p id="home-next-events">)[\s\S]*?(<\/p>)/,
+        '$1' + homepageEventsText + '$2'
       );
     }
     html = html.replace(
