@@ -12,12 +12,31 @@
 // If RESEND_API_KEY is not set the function does NOT fail the form: it logs the
 // lead and returns { sent:false, reason:'not_configured' } so the visitor still
 // sees success. To flip on real email, set the key and redeploy.
-const RESEND_API_KEY = (process.env.RESEND_API_KEY || '').trim();
-const NOTIFY_TO = (process.env.NOTIFY_TO || 'hello@transformerpath.com').trim();
-const RESEND_FROM = (process.env.RESEND_FROM || 'TransformerPath <onboarding@resend.dev>').trim();
+//
+// Recipients are only NOTIFY_TO (the site inbox). The form's email is a field
+// in the body, never a recipient. RFQ notifications on a deploy preview are
+// recorded and not sent, so a preview test does not email anyone.
+
+function envMail() {
+  return {
+    key: (process.env.RESEND_API_KEY || '').trim(),
+    to: (process.env.NOTIFY_TO || 'hello@transformerpath.com').trim(),
+    from: (process.env.RESEND_FROM || 'TransformerPath <onboarding@resend.dev>').trim(),
+    context: (process.env.CONTEXT || '').trim()
+  };
+}
 
 // Nicely printable field order for the email body.
-const FIELD_ORDER = ['form', 'name', 'company', 'email', 'phone', 'range', 'interest', 'service', 'product', 'seats', 'standards', 'message', 'url', 'note'];
+const FIELD_ORDER = ['form', 'form-name', 'reference', 'name', 'company', 'email', 'phone', 'country', 'category', 'quantity', 'rating', 'voltage', 'standard', 'details', 'deadline', 'budget', 'destination', 'consent', 'consent_version', 'consent_at', 'range', 'interest', 'service', 'product', 'seats', 'standards', 'message', 'url', 'note'];
+const OMIT = { 'bot-field': 1, bot_field: 1, consent_text: 1, attachment: 1 };
+
+function formName(data) {
+  return String((data && (data.form || data['form-name'])) || '').trim();
+}
+
+function previewRfq(data, mail) {
+  return formName(data) === 'rfq' && mail.context && mail.context !== 'production';
+}
 
 function fmtVal(field, v) {
   if (v === undefined || v === null || v === '') return null;
@@ -25,36 +44,54 @@ function fmtVal(field, v) {
   return `${label}: ${Array.isArray(v) ? v.join(', ') : v}`;
 }
 
+function linesFor(data) {
+  const keys = FIELD_ORDER.slice();
+  Object.keys(data || {}).forEach((k) => {
+    if (keys.indexOf(k) === -1 && !OMIT[k]) keys.push(k);
+  });
+  return keys.map((f) => fmtVal(f, data[f])).filter(Boolean).join('\n');
+}
+
+exports.recipient = function () {
+  return [envMail().to];
+};
+
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: JSON.stringify({ error: 'Method not allowed' }) };
   }
-  if (!RESEND_API_KEY) {
-    console.log('Notifying form lead (RESEND_API_KEY not set — email not sent):', event.body || '(no body)');
-    return { statusCode: 200, body: JSON.stringify({ sent: false, reason: 'not_configured' }) };
-  }
+  const mail = envMail();
 
   let data;
   try { data = JSON.parse(event.body || '{}'); } catch (e) {
     return { statusCode: 400, body: JSON.stringify({ error: 'Invalid JSON' }) };
   }
 
-  const lines = FIELD_ORDER
-    .map((f) => fmtVal(f, data[f]))
-    .filter(Boolean)
-    .join('\n');
-  const bodyText = `New TransformerPath enquiry\n\n${lines || '(no fields captured)'}\n\n—\nSent from the TransformerPath website.`;
+  if (previewRfq(data, mail)) {
+    console.log('RFQ notification withheld on ' + mail.context + ' (no email sent). reference=' + (data.reference || ''));
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ sent: false, reason: 'preview_withheld', notification_prepared: true, to: 'site-inbox' })
+    };
+  }
+
+  if (!mail.key) {
+    console.log('Notifying form lead (RESEND_API_KEY not set — email not sent):', event.body || '(no body)');
+    return { statusCode: 200, body: JSON.stringify({ sent: false, reason: 'not_configured' }) };
+  }
+
+  const bodyText = `New TransformerPath enquiry\n\n${linesFor(data) || '(no fields captured)'}\n\n—\nSent from the TransformerPath website.`;
 
   try {
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${RESEND_API_KEY}`,
+        Authorization: `Bearer ${mail.key}`,
       },
       body: JSON.stringify({
-        from: RESEND_FROM,
-        to: [NOTIFY_TO],
+        from: mail.from,
+        to: [mail.to],
         subject: '🔔 TransformerPath enquiry' + (data.form ? ` — ${data.form}` : ''),
         text: bodyText,
       }),
