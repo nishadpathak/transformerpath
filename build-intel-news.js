@@ -182,11 +182,18 @@ ITEMS.forEach((it) => { const fold = FOLD[it.region] || it.region; (srcByRegion[
 let mergedCount = 0;
 Object.keys(srcByRegion).forEach((region) => {
   if (!intel[region]) { intel[region] = { label: region, items: [] }; }
+  // An award notice names its awardee in intel-news. Copy that onto a card that
+  // was merged before the field existed, and onto every newly inserted card.
+  (intel[region].items || []).forEach(function (existing) {
+    const src = srcByRegion[region].find(function (it) { return it.url && it.url === existing.url; });
+    if (src && src.awardee && !existing.awardee) existing.awardee = src.awardee;
+  });
   const existingUrl = new Set((intel[region].items || []).map((x) => x.url));
   const fresh = srcByRegion[region].filter((it) => !existingUrl.has(it.url));
   if (!fresh.length) return;
   intel[region].items = intel[region].items.concat(fresh.map((it) => {
     const o = { title: it.title, snippet: it.snippet, value: it.value || '', src: it.src, url: it.url, lang: it.lang || 'en' };
+    if (it.awardee) o.awardee = it.awardee;
     if (it.isNew) o.isNew = true;
     if (it.cls) o.cls = it.cls;
     if (it.date_iso) o.date_iso = it.date_iso;

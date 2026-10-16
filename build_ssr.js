@@ -173,8 +173,8 @@ function renderEvents(html) {
   let list = EVENTS.filter((ev) => isUpcoming(ev, platformToday()));
   list.sort((a, b) => String(a.s || a.start || '').localeCompare(String(b.s || b.start || '')));
 
-  const PLATFORM_TZ_MS = 4*60*60*1000; // GST/Asia-Dubai
-  const todayUTC = (function(){ var g=new Date(Date.now()+PLATFORM_TZ_MS); return Date.UTC(g.getUTCFullYear(),g.getUTCMonth(),g.getUTCDate()); })();
+  const EVENTS_DAY_OFFSET_MS = 4*60*60*1000; // UTC+4, no DST
+  const todayUTC = (function(){ var g=new Date(Date.now()+EVENTS_DAY_OFFSET_MS); return Date.UTC(g.getUTCFullYear(),g.getUTCMonth(),g.getUTCDate()); })();
   const relDays = (d) => Math.ceil((Date.parse(d+'T00:00:00Z') - todayUTC) / 86400000);
   /* Adapter over the canonical resolver. The old local copy re-implemented the
      rules and drifted: it treated a past end-date as COMPLETED even when the
