@@ -1,0 +1,14 @@
+name: comtrade-hs8504
+on:
+  pull_request:
+  push:
+    branches: [main, "cursor/**"]
+jobs:
+  comtrade-hs8504:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+    - run: node tests/comtrade-hs8504.test.js

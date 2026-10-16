@@ -96,6 +96,9 @@ check('RFQ deadline is a calendar date', html.indexOf('type="date"') !== -1 && h
 check('public RFQ copy stays redacted', html.indexOf('never shown publicly') !== -1);
 check('RFQ page has no new buy button', html.indexOf('buy.stripe.com/00w3co') === -1 && html.indexOf('plink_1UQhNR') === -1);
 check('RFQ pay mount stays empty in the HTML', html.indexOf('data-jobs-rfq-pay="rfq"') !== -1);
+check('RFQ stores with a urlencoded form post', html.indexOf('application/x-www-form-urlencoded') !== -1 && html.indexOf("throw new Error('store')") !== -1);
+check('RFQ confirmation is the stored state', html.indexOf('id="rfqStored"') !== -1 && html.indexOf('Suppliers are not emailed from this form') !== -1);
+check('RFQ notifies the site function', html.indexOf('/.netlify/functions/notify') !== -1 && html.indexOf("form: 'rfq'") !== -1);
 
 var privacy = fs.readFileSync('privacy.html', 'utf8');
 check('privacy names the 5-supplier exception', privacy.indexOf('at most 5') !== -1 && privacy.indexOf('not a processor') !== -1);

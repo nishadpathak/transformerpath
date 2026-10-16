@@ -13,5 +13,6 @@ jobs:
         node-version: '22'
     - run: node tests/job-board.test.js
     - run: node tests/rfq-leads.test.js
+    - run: node tests/rfq-preview-notify.test.js
     - run: node tests/jobs-rfq-payments.test.js
     - run: node tests/review-automation.test.js

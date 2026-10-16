@@ -522,7 +522,7 @@
       qualified_by_payment: false
     };
   }
-  function runMatching(decision){
+  function runMatching(decision, note){
     var category=val("fld_category"), rating=val("fld_rating"), voltage=val("fld_voltage"), dest=val("fld_dest");
     var refNo = (document.getElementById('fld_ref') && document.getElementById('fld_ref').value) || '';
     function paint(matches){
@@ -531,7 +531,13 @@
       var offered = qualified ? auto.offered : [];
       var reasons = (decision && decision.reasons && decision.reasons.length) ? decision.reasons : auto.reasons;
       var html='';
-      if(refNo){ html += '<div style="font-size:.9rem;color:var(--text);margin-bottom:8px">Your RFQ reference: <b style="color:var(--accent)">'+esc(refNo)+'</b>. Quote it in any follow-up.</div>'; }
+      if(refNo){
+        html += '<div id="rfqStored" data-rfq-stored="1" style="font-size:.9rem;color:var(--text);margin-bottom:8px">Stored. Your RFQ reference is <b style="color:var(--accent)">'+esc(refNo)+'</b>.';
+        if(note && note.reason==='preview_withheld') html += ' This preview recorded the owner notification and did not send an email.';
+        else if(note && note.sent===true) html += ' The site inbox was notified. Suppliers are not emailed from this form.';
+        else html += ' Email notification did not send. Suppliers are not emailed from this form.';
+        html += '</div>';
+      }
       if(qualified){
         html += '<p style="font-size:.84rem;color:var(--muted);margin:0 0 12px">Matched automatically. '+offered.length+' of these suppliers can be offered the lead, and never more than 5. Your name, email, and phone are not shown and are not sent from this page.</p>';
       } else {
@@ -567,15 +573,35 @@
       window.TP.saveRfq({reference:reference, category:val("fld_category"), quantity:val("fld_qty"), rating:val("fld_rating"), voltage:val("fld_voltage"), standard:val("fld_standard"), destination:val("fld_dest")});
     }
     var data=new FormData(f);
-    fetch('/', { method: 'POST', body: data }).catch(function(){});
-    fetch('/.netlify/functions/review-rfq', {
+    data.delete('attachment');
+    var stored=fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(data).toString()
+    }).then(function(r){ if(!r.ok) throw new Error('store'); return true; });
+    var notified=fetch('/.netlify/functions/notify', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        form: 'rfq', 'form-name': 'rfq', reference: reference,
+        name: val('fld_name'), company: val('fld_company'), email: val('fld_email'),
+        country: val('fld_country'), category: val('fld_category'), quantity: val('fld_qty'),
+        rating: val('fld_rating'), voltage: val('fld_voltage'), standard: val('fld_standard'),
+        details: val('fld_details'), deadline: val('fld_deadline'), budget: val('fld_budget'),
+        destination: val('fld_dest'), consent: 'yes', consent_version: val('fld_consent_version'),
+        consent_at: val('fld_consent_at')
+      })
+    }).then(function(r){ return r.json(); }).catch(function(){ return { sent: false, reason: 'error' }; });
+    var reviewed=fetch('/.netlify/functions/review-rfq', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify(rfqPayload())
-    }).then(function(r){ return r.json(); }).then(function(decision){
-      runMatching(decision || { qualified: false, reasons: ['The automatic check did not complete.'] });
+    }).then(function(r){ return r.json(); }).catch(function(){ return { qualified: false, reasons: ['The automatic check did not complete.'] }; });
+    Promise.all([stored, notified, reviewed]).then(function(parts){
+      runMatching(parts[2] || { qualified: false, reasons: ['The automatic check did not complete.'] }, parts[1] || {});
     }).catch(function(){
-      runMatching({ qualified: false, reasons: ['The automatic check did not complete.'] });
+      if(err){ err.style.display='block'; err.textContent='The RFQ was not stored. Nothing was confirmed. Try again or email hello@transformerpath.com.'; }
+      result.style.display='none';
     });
   });
 })();
