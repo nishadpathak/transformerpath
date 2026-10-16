@@ -81,6 +81,8 @@ check('Pipeline does not auto-publish', /must NOT automatically become Intel/i.t
 const publishSrc = fs.readFileSync('build-gcc-intel-publish.js', 'utf8');
 check('GCC publish does not roll the feed clock backwards',
   /capped > prev/.test(publishSrc) && /intel\.updated = capped/.test(publishSrc));
+check('GCC publish stamps newest_validated_content_date from gccNewest',
+  /newest_validated_content_date:\s*gccNewest/.test(publishSrc));
 
 // Ensure built artifacts exist after a prior build (optional soft check)
 const builtCandidates = path.join('data', 'gcc-discovery-candidates.json');
