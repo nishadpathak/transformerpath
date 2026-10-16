@@ -148,11 +148,27 @@ function formatSpecNumber(n) {
 
 function applySourcedSpec(rec, spec) {
   if (!spec) return;
+  let filledVoltage = false;
+  let filledMva = false;
   if (!rec.reported_voltage && spec.max_kv && spec.max_kv.value != null) {
     rec.reported_voltage = formatSpecNumber(spec.max_kv.value) + ' kV';
+    filledVoltage = true;
   }
   if (!rec.reported_mva && spec.max_mva && spec.max_mva.value != null) {
     rec.reported_mva = formatSpecNumber(spec.max_mva.value) + ' MVA';
+    filledMva = true;
+  }
+  // A filled unit rating needs the page it was quoted from. The data-quality
+  // gate rejects voltage or MVA with neither capability_source nor capability_note.
+  if (filledVoltage || filledMva) {
+    rec.sources = rec.sources || {};
+    if (!rec.sources.capability_source && !rec.sources.capability_note) {
+      const urls = [];
+      if (filledMva && spec.max_mva.source_url) urls.push(spec.max_mva.source_url);
+      if (filledVoltage && spec.max_kv.source_url && urls.indexOf(spec.max_kv.source_url) < 0) urls.push(spec.max_kv.source_url);
+      if (urls.length) rec.sources.capability_source = urls[0];
+      if (urls.length > 1) rec.sources.capability_note = 'Voltage quote: ' + urls[1];
+    }
   }
   if ((!rec.reported_certs || !rec.reported_certs.length) && spec.standards && spec.standards.length) {
     const codes = [];
