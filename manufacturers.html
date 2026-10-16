@@ -213,16 +213,16 @@
     <div class="stat-row" id="statRow">
 <!--SSR:mfg-stats-->
 <div class="s"><b>905</b><small>Companies</small></div>
-     <div class="s"><b>88</b><small>Countries</small></div>
-     <div class="s"><b>10</b><small>Regions</small></div>
-     <div class="s"><b>54%</b><small>Data completeness</small></div>
+<div class="s"><b>88</b><small>Countries</small></div>
+<div class="s"><b>10</b><small>Regions</small></div>
+<div class="s"><b>55%</b><small>Data completeness</small></div>
 <!--/SSR:mfg-stats-->
 </div>
 
     <div class="section-head" style="margin-bottom:14px"><h2>Browse by Product Category</h2><p>Pick a category to filter the directory, or search and refine below.</p></div>
     <p style="text-align:center;margin:-4px 0 22px;font-size:.92rem;color:var(--muted)">Looking for parts, not transformers? Browse the <a href="components.html" style="color:var(--accent);font-weight:700">Components &amp; Accessories directory →</a> or <a href="rfq.html" style="color:var(--accent);font-weight:700">post an RFQ →</a>. Want a side-by-side capability view? <a href="compare.html" style="color:var(--accent);font-weight:700">Compare manufacturers →</a></p>
     <div class="cat-tiles" id="catTiles"></div>
-    <p style="text-align:center;margin:8px 0 18px;font-size:.88rem;color:var(--muted)">Type hubs: <a href="manufacturers/power-transformers/" style="color:var(--accent);font-weight:700">Power</a> · <a href="manufacturers/distribution-transformers/" style="color:var(--accent);font-weight:700">Distribution</a> · <a href="manufacturers/dry-type-transformers/" style="color:var(--accent);font-weight:700">Dry-type</a> · Sourced: <a href="manufacturers/sourced/power-transformers/" style="color:var(--accent);font-weight:700">Power</a> · <a href="manufacturers/sourced/400-kv/" style="color:var(--accent);font-weight:700">400 kV+</a></p>
+    <p style="text-align:center;margin:8px 0 18px;font-size:.88rem;color:var(--muted)">Type hubs: <a href="manufacturers/power-transformers/" style="color:var(--accent);font-weight:700">Power</a> · <a href="manufacturers/distribution-transformers/" style="color:var(--accent);font-weight:700">Distribution</a> · <a href="manufacturers/dry-type-transformers/" style="color:var(--accent);font-weight:700">Dry-type</a> · Sourced: <a href="manufacturers/sourced/power-transformers/" style="color:var(--accent);font-weight:700">Power</a> · <a href="manufacturers/sourced/400-kv/" style="color:var(--accent);font-weight:700">400 kV+</a> · <a href="manufacturers/specs/" style="color:var(--accent);font-weight:700">Cooling and MVA</a></p>
 
     <div class="controls">
       <input type="search" id="search" placeholder="Search maker, country, city…">
@@ -255,8 +255,14 @@
         <option value="UL">UL</option>
         <option value="ISO">ISO</option>
       </select>
+      <select id="fCool" aria-label="Sourced cooling class">
+        <option value="">Any sourced cooling class</option>
+      </select>
+      <select id="fTest" aria-label="Sourced test evidence">
+        <option value="">Any sourced test evidence</option>
+      </select>
     </div>
-    <p style="color:var(--muted);font-size:.78rem;margin:-6px 0 12px">Voltage, annual MVA and standards use the sourced tier record only. A maker with no sourced figure is hidden while one of those filters is set. Countries stay in pages of 20.</p>
+    <p style="color:var(--muted);font-size:.78rem;margin:-6px 0 12px">Voltage and annual MVA use the sourced tier record. Cooling class and test evidence use the sourced spec record. Standards use either record. A maker with no sourced figure for an active filter is hidden. Countries stay in pages of 20.</p>
     <p style="color:var(--muted); font-size:.85rem; margin-bottom:14px" id="count">
 <!--SSR:mfg-count-->
 Showing 905 companies across 88 countries
@@ -350,17 +356,32 @@ function makerHref(name){ return 'manufacturers/' + (SLUGS[slugKey(name)] || slu
 const fRegion=document.getElementById('fRegion');
 const search=document.getElementById('search'), fType=document.getElementById('fType');
 const fKv=document.getElementById('fKv'), fMva=document.getElementById('fMva'), fCert=document.getElementById('fCert');
+const fCool=document.getElementById('fCool'), fTest=document.getElementById('fTest');
 const CAPS={};
+const TEST_LABEL={'short-circuit':'Short-circuit test','impulse':'Impulse test','routine-type':'Routine, type or FAT','temperature-rise':'Temperature-rise test'};
 function capOf(name){ return CAPS[slugKey(name)] || null; }
+function ensureCap(name){
+  const key=slugKey(name);
+  if(!CAPS[key]) CAPS[key]={kv:null,mva:null,certs:[],cooling:[],tests:[]};
+  return CAPS[key];
+}
 function passesSpec(name){
-  const kv=fKv.value, mva=fMva.value, cert=fCert.value;
-  if(!kv && !mva && !cert) return true;
+  const kv=fKv.value, mva=fMva.value, cert=fCert.value, cool=fCool.value, test=fTest.value;
+  if(!kv && !mva && !cert && !cool && !test) return true;
   const cap=capOf(name);
   if(!cap) return false;
   if(kv && !(typeof cap.kv==='number' && cap.kv>=Number(kv))) return false;
   if(mva && !(typeof cap.mva==='number' && cap.mva>=Number(mva))) return false;
   if(cert && (cap.certs||[]).indexOf(cert)<0) return false;
+  if(cool && (cap.cooling||[]).indexOf(cool)<0) return false;
+  if(test && (cap.tests||[]).indexOf(test)<0) return false;
   return true;
+}
+function addFilterOption(select, value, label){
+  const opt=document.createElement('option');
+  opt.value=value;
+  opt.textContent=label;
+  select.appendChild(opt);
 }
 
 async function loadData() {
@@ -400,12 +421,40 @@ async function loadData() {
         const rows = await capRes.json();
         (Array.isArray(rows) ? rows : []).forEach(function(row){
           if (!row || !row.name) return;
-          CAPS[slugKey(row.name)] = {
-            kv: typeof row.kv === 'number' ? row.kv : null,
-            mva: typeof row.mva === 'number' ? row.mva : null,
-            certs: Array.isArray(row.certs) ? row.certs : []
-          };
+          const cap = ensureCap(row.name);
+          cap.kv = typeof row.kv === 'number' ? row.kv : null;
+          cap.mva = typeof row.mva === 'number' ? row.mva : null;
+          cap.certs = Array.isArray(row.certs) ? row.certs.slice() : [];
         });
+      }
+    } catch (e) {}
+    try {
+      const specRes = await fetch('data/sourced-spec-fields.json');
+      if (specRes.ok) {
+        const specDoc = await specRes.json();
+        const cools = {}, tests = {};
+        (specDoc.companies || []).forEach(function(row){
+          if (!row || !row.name) return;
+          const cap = ensureCap(row.name);
+          (row.cooling || []).forEach(function(item){
+            if (!item || !item.code) return;
+            if (cap.cooling.indexOf(item.code) < 0) cap.cooling.push(item.code);
+            cools[item.code] = 1;
+          });
+          (row.tests || []).forEach(function(item){
+            if (!item || !item.category) return;
+            if (cap.tests.indexOf(item.category) < 0) cap.tests.push(item.category);
+            tests[item.category] = 1;
+          });
+          (row.standards || []).forEach(function(item){
+            const code = String(item && item.code || '').toUpperCase();
+            ['IEC','IEEE','ISO','UL'].forEach(function(family){
+              if (code.indexOf(family) >= 0 && cap.certs.indexOf(family) < 0) cap.certs.push(family);
+            });
+          });
+        });
+        Object.keys(cools).sort().forEach(function(code){ addFilterOption(fCool, code, code); });
+        Object.keys(tests).sort().forEach(function(cat){ addFilterOption(fTest, cat, TEST_LABEL[cat] || cat); });
       }
     } catch (e) {}
     try {
@@ -536,7 +585,7 @@ function pagerHtml(totalCountries){
 
 function render(){
   const q=search.value.trim().toLowerCase(), r=fRegion.value, ty=fType.value;
-  const specOn=!!(fKv.value||fMva.value||fCert.value);
+  const specOn=!!(fKv.value||fMva.value||fCert.value||fCool.value||fTest.value);
   const filtered=!!(q||r||ty||specOn);
   let list=DATA.map(c=>{
     let makers=c.makers;
@@ -590,7 +639,7 @@ document.getElementById('board').addEventListener('click',function(ev){
   render();
   document.getElementById('board').scrollIntoView({behavior:'smooth',block:'start'});
 });
-[search,fRegion,fType,fKv,fMva,fCert].forEach(el=>{el.addEventListener('input',()=>{page=1;render();});el.addEventListener('change',()=>{page=1;render();});});
+[search,fRegion,fType,fKv,fMva,fCert,fCool,fTest].forEach(el=>{el.addEventListener('input',()=>{page=1;render();});el.addEventListener('change',()=>{page=1;render();});});
 fType.addEventListener('change',()=>{ catTiles.querySelectorAll('.cat-tile').forEach(b=>b.classList.toggle('on', b.dataset.k===fType.value)); });
 loadData();
 </script>
