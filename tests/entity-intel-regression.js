@@ -13,7 +13,7 @@ function check(cond, msg) {
 
 const SEC = 'Saudi Electricity Co / National Grid SA';
 const dewa = { title: 'DEWA floats EPC for a 132/11 kV substation', snippet: 'Dubai Electricity and Water Authority tender in the UAE.', buyer: 'DEWA' };
-const award = { title: 'Saudi Electricity Company (SEC) awards SAR 412m Al-Hasa North substation', snippet: 'National Grid SA procurement.', buyer: 'Saudi Electricity Company (SEC)' };
+const award = { title: 'Saudi Electricity Company (SEC) awards a substation EPC (synthetic fixture)', snippet: 'National Grid SA procurement.', buyer: 'Saudi Electricity Company (SEC)' };
 const secuencia = { title: 'Central Fotovoltaica Puerto Peñasco Secuencia III', snippet: 'CFE solar plant in Mexico.', buyer: 'CFE' };
 const sppc = { title: 'Saudi Power Procurement says about half the grid is being scaled up', snippet: 'Saudi Arabia grid demand, including AI.', buyer: 'Saudi Power Procurement Company' };
 
