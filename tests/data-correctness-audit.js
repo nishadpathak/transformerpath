@@ -118,7 +118,8 @@ check('Amprion tender country is Germany', ampT && ampT.country === 'Germany', a
 const iraqT = tender('Iraq Ministry of Electricity to procure 4,026 locally-made transformers');
 check('Iraq tender country is Iraq', iraqT && iraqT.country === 'Iraq', iraqT && iraqT.country);
 check('Iraq tender region follows the project map', iraqT && iraqT.region === 'Middle East', iraqT && iraqT.region);
-check('GCCIA is not a published tender', !tender('GCCIA Saudi-Kuwait interconnection'));
+const gccT = tender('GCCIA Saudi-Kuwait interconnection');
+check('GCCIA (now sourced) is never shown as an open tender', !gccT || (gccT.status !== 'OPEN' && gccT.status !== 'CLOSING_SOON'), gccT && gccT.status);
 const kahT = tender('KAHRAMAA 2026 transmission expansion EPC');
 check('KAHRAMAA tender source is not a placeholder', kahT && usableSource(kahT.official_procurement_url));
 check('KAHRAMAA tender is not open', kahT && kahT.status !== 'OPEN' && kahT.status !== 'CLOSING_SOON', kahT && kahT.status);
