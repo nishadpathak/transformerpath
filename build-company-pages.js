@@ -705,8 +705,9 @@ Object.keys(aliasRedirectSlugs).forEach(function (src) {
 // are served. Alias redirect slugs are retained.
 const currentSlugs = new Set(list.map(function (r) { return r.slug; }));
 Object.keys(aliasRedirectSlugs).forEach(function (s) { currentSlugs.add(s); });
-// Protect programmatic SEO product-type hubs from being pruned
-['power-transformers', 'distribution-transformers', 'dry-type-transformers'].forEach(function (s) {
+// Protect programmatic SEO hubs from being pruned. Sourced product/voltage
+// hubs and cooling × MVA spec pages are not census companies.
+['power-transformers', 'distribution-transformers', 'dry-type-transformers', 'sourced', 'specs'].forEach(function (s) {
   currentSlugs.add(s);
 });
 (function pruneStale(dir) {

@@ -36,6 +36,9 @@ const norm = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[\u0
 const slugOf = (name) => { const n = norm(name); const hit = SLUGS.find((c) => norm(c.name) === n); return hit ? hit.slug : null; };
 const byName = (arr, key) => { const o = {}; arr.forEach((x) => { o[norm(x[key] || x.name || '')] = x; }); return o; };
 let DEEP = []; try { DEEP = JSON.parse(fs.readFileSync('data/deep-research.json', 'utf8')).companies || []; } catch (e) {}
+let SPEC_FIELDS = []; try { SPEC_FIELDS = JSON.parse(fs.readFileSync('data/sourced-spec-fields.json', 'utf8')).companies || []; } catch (e) {}
+const SPEC_BY_SLUG = {};
+SPEC_FIELDS.forEach(function (row) { if (row && row.slug) SPEC_BY_SLUG[row.slug] = row; });
 const DEEP_BY = {};
 DEEP.forEach((x) => { DEEP_BY[norm(x.name)] = x; DEEP_BY[norm(x.slug)] = x; });
 const TIER_BY = byName(TIERS, 'name');
@@ -129,7 +132,72 @@ function evaluateCompleteness(rec) {
   if (rec.testing_capability || (rec.orders_projects && rec.orders_projects.length > 0)) score += 10;
   else missing.push('Test bay specifications & utility references');
 
+  // Sourced cooling class. Census factories already award the facility
+  // points; a factory with its own source URL and checked_at adds the rest.
+  if (rec.cooling_classes && rec.cooling_classes.length) score += 10;
+  if (rec.factories && rec.factories.some(function (f) { return f && f.source_url && f.checked_at; })) score += 5;
+  if (score > 100) score = 100;
+
   return { score, missing };
+}
+
+function formatSpecNumber(n) {
+  if (Math.abs(n - Math.round(n)) < 1e-9) return String(Math.round(n));
+  return String(n);
+}
+
+function applySourcedSpec(rec, spec) {
+  if (!spec) return;
+  let filledVoltage = false;
+  let filledMva = false;
+  if (!rec.reported_voltage && spec.max_kv && spec.max_kv.value != null) {
+    rec.reported_voltage = formatSpecNumber(spec.max_kv.value) + ' kV';
+    filledVoltage = true;
+  }
+  if (!rec.reported_mva && spec.max_mva && spec.max_mva.value != null) {
+    rec.reported_mva = formatSpecNumber(spec.max_mva.value) + ' MVA';
+    filledMva = true;
+  }
+  // A filled unit rating needs the page it was quoted from. The data-quality
+  // gate rejects voltage or MVA with neither capability_source nor capability_note.
+  if (filledVoltage || filledMva) {
+    rec.sources = rec.sources || {};
+    if (!rec.sources.capability_source && !rec.sources.capability_note) {
+      const urls = [];
+      if (filledMva && spec.max_mva.source_url) urls.push(spec.max_mva.source_url);
+      if (filledVoltage && spec.max_kv.source_url && urls.indexOf(spec.max_kv.source_url) < 0) urls.push(spec.max_kv.source_url);
+      if (urls.length) rec.sources.capability_source = urls[0];
+      if (urls.length > 1) rec.sources.capability_note = 'Voltage quote: ' + urls[1];
+    }
+  }
+  if ((!rec.reported_certs || !rec.reported_certs.length) && spec.standards && spec.standards.length) {
+    const codes = [];
+    spec.standards.forEach(function (row) {
+      if (row && row.code && codes.indexOf(row.code) < 0) codes.push(row.code);
+    });
+    if (codes.length) rec.reported_certs = codes;
+  }
+  if (!rec.testing_capability) {
+    const cats = [];
+    (spec.tests || []).forEach(function (row) {
+      if (row && row.category && cats.indexOf(row.category) < 0) cats.push(row.category);
+    });
+    if (cats.length) rec.testing_capability = cats.join(', ');
+    else if (spec.testing_statement && spec.testing_statement.quote) rec.testing_capability = 'Reported';
+  }
+  const cooling = [];
+  (spec.cooling || []).forEach(function (row) {
+    if (row && row.code && cooling.indexOf(row.code) < 0) cooling.push(row.code);
+  });
+  if (cooling.length) rec.cooling_classes = cooling;
+  if (spec.factory && spec.factory.city && spec.factory.source_url && spec.factory.checked_at) {
+    rec.factories.push({
+      city: spec.factory.city,
+      country: spec.factory.country || rec.country,
+      source_url: spec.factory.source_url,
+      checked_at: spec.factory.checked_at
+    });
+  }
 }
 
 const out = [];
@@ -196,6 +264,7 @@ Object.keys(censusByName).forEach((name) => {
     if (deep.notes) rec.research_notes = deep.notes;
   }
   rec.manufacturing_is_likely = !!rec.website && rec.products.length > 0;
+  if (rec.slug && SPEC_BY_SLUG[rec.slug]) applySourcedSpec(rec, SPEC_BY_SLUG[rec.slug]);
   rec.research_completeness = completeness(rec);
   const compEval = evaluateCompleteness(rec);
   rec.completeness_score = compEval.score;
