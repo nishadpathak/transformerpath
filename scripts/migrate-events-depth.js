@@ -20,6 +20,7 @@ const SRC = {
   enlitAfrica: 'https://www.enlit-africa.com/',
   pes: 'https://pes-gm.org/',
   elenex: 'https://saudielenex.com/',
+  elenexBrochure: 'https://saudielenex.com/wp-content/uploads/2026/02/260129-Saudi-Elenex-2026-Brochure-EN-DIGITAL.pdf',
   dtech: 'https://www.distributech.com/faqs',
   intersolar: 'https://www.intersolar.ae/',
   elecrama: 'https://elecrama.com/',
@@ -437,19 +438,20 @@ function applyOfficial(rec, oldStart, oldEnd, oldVenue) {
   if (n === 'Saudi Elenex 2026') {
     setConfirmed(rec, {
       edition_label: '27th',
-      start: '2026-11-02', end: '2026-11-05',
+      start: '2026-11-16', end: '2026-11-19',
       venue: 'Riyadh International Convention & Exhibition Center',
       city: 'Riyadh', country: 'Saudi Arabia', region: 'Middle East',
       official_url: SRC.elenex, type: 'exhibition', relevance_tier: 'HIGH',
       relevance_reason: 'The official Saudi Elenex page describes the 27th edition as an electricity and electrical-equipment exhibition in Riyadh.',
-      description: 'Official saudielenex.com page checked 14 Oct 2026: 2–5 November 2026 at the Riyadh International Convention & Exhibition Center. The on-page 2023 post-show report is not copied onto this edition.',
+      description: 'Official Saudi Elenex 2026 brochure checked 15 Oct 2026: 16–19 November 2026 at the Riyadh International Convention & Exhibition Center. UFI lists the same session.',
       stats: Object.assign(emptyStats(), {
         area_sqm: stat('8000+', '2026', SRC.elenex),
         exhibitors: stat('160+', '2026', SRC.elenex),
         countries: stat('14+', '2026', SRC.elenex),
       }),
-    }, SRC.elenex);
-    rememberChange(n, oldStart, oldEnd, oldVenue, rec, SRC.elenex);
+    }, SRC.elenexBrochure);
+    rec.source_checked_at = '2026-10-15';
+    rememberChange(n, oldStart, oldEnd, oldVenue, rec, SRC.elenexBrochure);
     return;
   }
   if (n === 'ELECRAMA 2027 (17th edition)') {
