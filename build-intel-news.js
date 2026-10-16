@@ -194,6 +194,7 @@ Object.keys(srcByRegion).forEach((region) => {
   intel[region].items = intel[region].items.concat(fresh.map((it) => {
     const o = { title: it.title, snippet: it.snippet, value: it.value || '', src: it.src, url: it.url, lang: it.lang || 'en' };
     if (it.awardee) o.awardee = it.awardee;
+    if (it.country) o.country = it.country;
     if (it.isNew) o.isNew = true;
     if (it.cls) o.cls = it.cls;
     if (it.date_iso) o.date_iso = it.date_iso;

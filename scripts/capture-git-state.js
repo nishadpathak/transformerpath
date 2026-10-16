@@ -12,14 +12,15 @@ function git(args) {
   return execSync('git ' + args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
 }
 
-/* write-supabase-config.js rewrites this file from public env before the
- * snapshot. Empty in git, filled on a configured production build. That
- * rewrite is not source dirt. */
+/* write-supabase-config.js and write-google-auth-config.js rewrite these
+ * files from public env before the snapshot. Empty in git, filled on a
+ * configured production build. Those rewrites are not source dirt.
+ * google-auth-config.js never contains SESSION_SECRET. */
 function filterPorcelain(porcelain) {
   return String(porcelain || '').split('\n').filter(function (line) {
     const text = line.trim();
     if (!text) return false;
-    return !/(?:^|\s)supabase-config\.js$/.test(text);
+    return !/(?:^|\s)(?:supabase-config|google-auth-config)\.js$/.test(text);
   }).join('\n');
 }
 
