@@ -656,6 +656,19 @@
         electricalHighlight.forEach(function (o) { o.material.emissiveIntensity = 0.4 + pulse * 0.6; });
       }
 
+      function clampCallout(el, x, y) {
+        el.style.left = x + 'px';
+        el.style.top = y + 'px';
+        var r = el.getBoundingClientRect();
+        var m = 6;
+        if (r.right > window.innerWidth - m) x -= r.right - (window.innerWidth - m);
+        if (r.left < m) x += m - r.left;
+        if (r.bottom > window.innerHeight - m) y -= r.bottom - (window.innerHeight - m);
+        if (r.top < m) y += m - r.top;
+        el.style.left = x + 'px';
+        el.style.top = y + 'px';
+      }
+
       /* label positions */
       if (labelsOn) {
         var cam = opts.camera;
@@ -665,8 +678,7 @@
           var pr = v3.project(cam);
           if (pr.z > 1) { L.el.style.display = 'none'; return; }
           L.el.style.display = 'block';
-          L.el.style.left = ((pr.x + 1) / 2 * window.innerWidth) + 'px';
-          L.el.style.top  = ((-pr.y + 1) / 2 * window.innerHeight) + 'px';
+          clampCallout(L.el, (pr.x + 1) / 2 * window.innerWidth, (-pr.y + 1) / 2 * window.innerHeight);
         });
       } else {
         labelEls.forEach(function (L) { L.el.style.display = 'none'; });
