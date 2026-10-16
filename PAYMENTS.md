@@ -131,7 +131,7 @@ A Verified Manufacturer Payment Link session matches the same way for `verified_
 
 Other event types return 200 so Stripe does not retry them. Engineer checkout follows `lib/course-payment.js`: metadata (`product`, `plan`, or `tier`, including `engineering_pro` and `engineering_team`), `payment_link` equal to the known Learning id `plink_1UQhha2YHcFlJstOHjvZv5V0` or to `STRIPE_PAYMENT_LINK_LEARNING`, `STRIPE_PAYMENT_LINK_PROFESSIONAL`, or `STRIPE_PAYMENT_LINK_TEAM`, or the buy.stripe.com code on the session (`8x27sE3pS4dfak8c1AfYY0p`, `fZu00c3pScJL1NC3v4fYY01`, `aFacMY6C4aBD2RG2r0fYY02`). The inactive yearly code `4gMbIU2lO5hj1NC5DcfYY03` does not match. `verify-access` and `entitle` retrieve the session with `expand[]=payment_link`, because a completed session leaves `url` empty and puts that code on the Payment Link object. A $199 charge with none of those identifiers does not become Learning and does not write `paid_listings`. A $299 charge with none of the Featured Event identifiers does not become Featured Event.
 
-Apply `sql/paid_listings.sql` in the Supabase SQL editor once. Row Level Security is on. There is no anon or authenticated policy. Only the service role can read and write.
+Apply `supabase/migrations/20261016150000_payments_tables.sql` in the Supabase SQL editor once (`docs/supabase-apply.md`). Row Level Security is on. Authenticated users can read their own entitlement rows. `paid_listings` and `webhook_events` have no anon or authenticated policy. Only the service role can write.
 
 ## Receipts
 
@@ -185,7 +185,7 @@ Example row (do not invent a real company):
 5. On the live Featured Exhibitor Payment Link, set After payment to `https://transformerpath.com/sponsor.html?paid=featured_exhibitor&session_id={CHECKOUT_SESSION_ID}#contact`. If the Dashboard shows a `plink_` id, put it in `STRIPE_PAYMENT_LINK_FEATURED_EXHIBITOR`.
 6. On the live Hosted Webinar Payment Link, set After payment to `https://transformerpath.com/sponsor.html?paid=hosted_webinar&session_id={CHECKOUT_SESSION_ID}#contact`. If the Dashboard shows a `plink_` id, put it in `STRIPE_PAYMENT_LINK_HOSTED_WEBINAR`.
 7. On the live Verified Manufacturer Payment Link, set After payment to `https://transformerpath.com/claim-profile.html?paid=verified_manufacturer&session_id={CHECKOUT_SESSION_ID}#claimForm`. If the Dashboard shows a `plink_` id, put it in `STRIPE_PAYMENT_LINK_VERIFIED_MANUFACTURER`.
-8. Run `sql/paid_listings.sql` on the production Supabase project if it is not applied yet.
+8. Run `supabase/migrations/20261016150000_payments_tables.sql` on the production Supabase project if it is not applied yet (`docs/supabase-apply.md`).
 9. Set `RESEND_API_KEY`, `RESEND_FROM`, and `NOTIFY_TO`. Send one test-mode payment first and confirm both emails.
 10. Turn on Stripe successful-payment email receipts.
 11. Set `SITE_URL` to `https://transformerpath.com`.
