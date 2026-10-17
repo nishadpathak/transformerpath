@@ -1,16 +1,11 @@
 {
   "name": "TransformerPath",
-  "install": "cd transformerpath && npm install",
-  "terminals": [
-    {
-      "name": "dev-server",
-      "command": "cd transformerpath && npm run dev"
-    }
-  ],
+  "install": "npm ci",
+  "start": "if curl -sf -o /dev/null --max-time 2 http://127.0.0.1:8080/; then exit 0; fi\nexec python3 -m http.server 8080 --bind 0.0.0.0",
   "ports": [
     {
-      "name": "Dev server",
-      "port": 8888
+      "name": "Site",
+      "port": 8080
     }
   ]
 }
