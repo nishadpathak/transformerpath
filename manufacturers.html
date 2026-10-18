@@ -24,6 +24,8 @@
 .controls { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:18px; }
 .controls input, .controls select { padding:9px 13px; border:1px solid var(--border); border-radius:8px; font-size:.92rem; font-family:inherit; }
 .controls input { flex:1; min-width:200px; }
+.geo-hubs { font-size:.82rem; line-height:1.7; margin:0 0 16px; overflow-wrap:anywhere; }
+.geo-hubs a { color:var(--accent); display:inline-block; margin:2px 8px 2px 0; }
 .stat-row { display:flex; gap:24px; justify-content:center; flex-wrap:wrap; margin-bottom:26px; }
 .stat-row .s b { display:block; font-size:1.8rem; color:var(--accent); text-align:center; }
 .stat-row .s small { color:var(--muted); font-size:.82rem; }
@@ -226,7 +228,8 @@
 
     <div class="controls">
       <input type="search" id="search" placeholder="Search maker, country, city…">
-      <select id="fRegion"><option value="">All regions</option></select>
+      <select id="fRegion" aria-label="Region"><option value="">All regions</option></select>
+      <select id="fCountry" aria-label="Country"><option value="">All countries</option></select>
       <select id="fType">
         <option value="">All types</option>
         <option value="PT">Power (PT)</option>
@@ -262,12 +265,18 @@
         <option value="">Any sourced test evidence</option>
       </select>
     </div>
+    <p class="geo-share" style="color:var(--muted);font-size:.78rem;margin:-2px 0 8px;overflow-wrap:anywhere">Region and country combine with search and category. The address keeps ?region= and ?country= so a filtered view can be shared.</p>
     <p style="color:var(--muted);font-size:.78rem;margin:-6px 0 12px">Voltage and annual MVA use the sourced tier record. Cooling class and test evidence use the sourced spec record. Standards use either record. A maker with no sourced figure for an active filter is hidden. Countries stay in pages of 20.</p>
     <p style="color:var(--muted); font-size:.85rem; margin-bottom:14px" id="count">
 <!--SSR:mfg-count-->
 Showing 894 companies across 88 countries
 <!--/SSR:mfg-count-->
 </p>
+    <div id="geoHubs" class="geo-hubs">
+<!--GEO:hubs-->
+<p><b>Browse by region:</b> <a href="directory/region/north-america/">North America (75)</a><a href="directory/region/latin-america/">Latin America (100)</a><a href="directory/region/europe/">Europe (165)</a><a href="directory/region/eurasia/">Eurasia (54)</a><a href="directory/region/middle-east/">Middle East (55)</a><a href="directory/region/africa/">Africa (83)</a><a href="directory/region/south-asia/">South Asia (182)</a><a href="directory/region/east-asia/">East Asia (111)</a><a href="directory/region/southeast-asia/">Southeast Asia (59)</a><a href="directory/region/oceania/">Oceania (10)</a></p><p><b>Countries with 5 or more listings:</b> <a href="directory/country/algeria/">Algeria (14)</a><a href="directory/country/argentina/">Argentina (14)</a><a href="directory/country/australia/">Australia (7)</a><a href="directory/country/austria/">Austria (5)</a><a href="directory/country/bangladesh/">Bangladesh (5)</a><a href="directory/country/belgium/">Belgium (5)</a><a href="directory/country/brazil/">Brazil (25)</a><a href="directory/country/bulgaria/">Bulgaria (9)</a><a href="directory/country/canada/">Canada (13)</a><a href="directory/country/chile/">Chile (7)</a><a href="directory/country/china/">China (68)</a><a href="directory/country/colombia/">Colombia (8)</a><a href="directory/country/czechia/">Czechia (5)</a><a href="directory/country/dominican-republic/">Dominican Republic (6)</a><a href="directory/country/ecuador/">Ecuador (8)</a><a href="directory/country/egypt/">Egypt (12)</a><a href="directory/country/ethiopia/">Ethiopia (7)</a><a href="directory/country/france/">France (7)</a><a href="directory/country/germany/">Germany (11)</a><a href="directory/country/guatemala/">Guatemala (5)</a><a href="directory/country/india/">India (160)</a><a href="directory/country/indonesia/">Indonesia (7)</a><a href="directory/country/iraq/">Iraq (5)</a><a href="directory/country/ireland/">Ireland (6)</a><a href="directory/country/italy/">Italy (17)</a><a href="directory/country/japan/">Japan (12)</a><a href="directory/country/jordan/">Jordan (5)</a><a href="directory/country/kenya/">Kenya (5)</a><a href="directory/country/malaysia/">Malaysia (6)</a><a href="directory/country/mexico/">Mexico (12)</a><a href="directory/country/morocco/">Morocco (8)</a><a href="directory/country/myanmar/">Myanmar (5)</a><a href="directory/country/nepal/">Nepal (6)</a><a href="directory/country/netherlands/">Netherlands (7)</a><a href="directory/country/nigeria/">Nigeria (7)</a><a href="directory/country/oman/">Oman (5)</a><a href="directory/country/pakistan/">Pakistan (6)</a><a href="directory/country/peru/">Peru (7)</a><a href="directory/country/philippines/">Philippines (9)</a><a href="directory/country/poland/">Poland (7)</a><a href="directory/country/portugal/">Portugal (5)</a><a href="directory/country/romania/">Romania (8)</a><a href="directory/country/russia/">Russia (5)</a><a href="directory/country/saudi-arabia/">Saudi Arabia (11)</a><a href="directory/country/serbia/">Serbia (5)</a><a href="directory/country/singapore/">Singapore (5)</a><a href="directory/country/south-africa/">South Africa (9)</a><a href="directory/country/south-korea/">South Korea (24)</a><a href="directory/country/spain/">Spain (10)</a><a href="directory/country/sri-lanka/">Sri Lanka (5)</a><a href="directory/country/sweden/">Sweden (5)</a><a href="directory/country/taiwan/">Taiwan (7)</a><a href="directory/country/tanzania/">Tanzania (5)</a><a href="directory/country/thailand/">Thailand (13)</a><a href="directory/country/tunisia/">Tunisia (5)</a><a href="directory/country/turkiye/">Türkiye (37)</a><a href="directory/country/uae/">UAE (9)</a><a href="directory/country/ukraine/">Ukraine (6)</a><a href="directory/country/united-kingdom/">United Kingdom (8)</a><a href="directory/country/usa/">USA (50)</a><a href="directory/country/uzbekistan/">Uzbekistan (5)</a><a href="directory/country/venezuela/">Venezuela (8)</a><a href="directory/country/vietnam/">Vietnam (14)</a></p>
+<!--/GEO:hubs-->
+</div>
 
     <div class="tier-legend">
       <span class="lg"><span class="dot d-L">Listed</span> public-source entry</span>
@@ -334,6 +343,8 @@ const EARNED_VERIFIED_SLUGS = [];
 const MAKER_ALIAS = {"prolec ge ge vernova":"prolec-ge","prolec ge waukesha":"prolec-ge","prolec ge brasil":"prolec-ge","spx transformer solutions":"prolec-ge","spx transformer solutions prolec ge waukesha":"prolec-ge","waukesha electric systems":"prolec-ge","hico america hyosung":"hyosung-heavy-industries","abb power grids":"hitachi-energy","abb transformers":"hitachi-energy","hitachi abb power grids":"hitachi-energy","ge grid solutions":"ge-vernova","alstom grid":"ge-vernova","areva t and d":"ge-vernova","areva td":"ge-vernova","crompton greaves":"cg-power-and-industrial-solutions","crompton greaves ltd":"cg-power-and-industrial-solutions","cg power":"cg-power-and-industrial-solutions","cg-power":"cg-power-and-industrial-solutions","hammond power solutions baraboo":"hammond-power-solutions","green transfo energy turkey":"green-transfo","siemens energy tenjo":"siemens-energy","siemens energy nuremberg":"siemens-energy","jefferson electric":"jefferson-electric-voltaris","hyundai heavy industries ees":"hd-hyundai-electric","hyundai electric and energy systems":"hd-hyundai-electric","smit transformatoren":"sgb-smit-group","royal smit":"sgb-smit-group","cooper power systems":"cargill","bhel bharat heavy electricals":"bhel","tbea co ltd":"tbea-group-changji-hq-shenyang-hengyang-tianjin-plants","china xd group":"china-xd-group-xian-xd-transformer","efacec power solutions":"efacec","efacec distribution transformers":"efacec","tmc transformers spa":"tmc-transformers","transformers and rectifiers india":"transformers-and-rectifiers-india-taril","elsewedy electric":"elsewedy-electric-transformers","smit transformers":"royal-smit-transformers-b-v-sgb-smit-group","jshp transformer jiangsu":"jiangsu-huapeng-jshp-huapeng-group","hitachi energy global hq":"hitachi-energy"};
 let regions = [];
 let page = 1;
+let geoLock = false;
+let geoSilent = false;
 let completeness = 54;
 const COUNTRIES_PER_PAGE = 20;
 const REGION_ORDER = ["North America","Latin America","Europe","Eurasia","Middle East","Africa","South Asia","East Asia","Southeast Asia","Oceania"];
@@ -355,6 +366,7 @@ function slugKey(s){return String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,' '
 function makerHref(name){ return 'manufacturers/' + (SLUGS[slugKey(name)] || slugifyName(name)) + '/'; }
 
 const fRegion=document.getElementById('fRegion');
+const fCountry=document.getElementById('fCountry');
 const search=document.getElementById('search'), fType=document.getElementById('fType');
 const fKv=document.getElementById('fKv'), fMva=document.getElementById('fMva'), fCert=document.getElementById('fCert');
 const fCool=document.getElementById('fCool'), fTest=document.getElementById('fTest');
@@ -485,7 +497,8 @@ async function loadData() {
       }
     });
     regions = [...new Set(DATA.map(c=>c.region))].sort((a,b)=>REGION_ORDER.indexOf(a)-REGION_ORDER.indexOf(b));
-    regions.forEach(r=>{const o=document.createElement('option');o.value=r;o.textContent=r;fRegion.appendChild(o);});
+    fillGeoFilters();
+    applyGeoFromUrl();
     initCatTiles();
     render();
   } catch (err) {
@@ -584,17 +597,116 @@ function pagerHtml(totalCountries){
   </div>`;
 }
 
+function realMakers(c){ return (c.makers||[]).filter(function(m){ return m && !/^Served by/i.test(m[0]); }); }
+function geoParams(){
+  try {
+    if (typeof URLSearchParams === 'undefined') return null;
+    if (typeof location === 'undefined' || !location || typeof location.search !== 'string') return null;
+    return new URLSearchParams(location.search);
+  } catch (e) { return null; }
+}
+function optionNodes(sel){
+  if (!sel) return [];
+  if (sel.options && typeof sel.options.length === 'number') return Array.prototype.slice.call(sel.options);
+  return sel.children || [];
+}
+function matchSelect(sel, raw){
+  var want = String(raw || '').trim();
+  if (!want) return '';
+  var slug = countrySlug(want);
+  var nodes = optionNodes(sel);
+  for (var i = 0; i < nodes.length; i++){
+    var val = nodes[i].value || '';
+    if (!val) continue;
+    if (val === want || countrySlug(val) === slug) return val;
+  }
+  return '';
+}
+function clearSelect(sel){
+  if (!sel || !sel.options || typeof sel.remove !== 'function') return;
+  while (sel.options.length > 1) sel.remove(1);
+}
+function addOption(sel, value, label){
+  var opt = document.createElement('option');
+  opt.value = value;
+  opt.textContent = label;
+  sel.appendChild(opt);
+}
+function setSelect(sel, value){
+  if (!sel || sel.value === value) return;
+  geoSilent = true;
+  try { sel.value = value; }
+  finally { geoSilent = false; }
+}
+function fillGeoFilters(){
+  if (!fRegion || !fCountry) return;
+  var keepRegion = fRegion.value || '';
+  var keepCountry = fCountry.value || '';
+  clearSelect(fRegion);
+  var regionCounts = {};
+  DATA.forEach(function(c){
+    var n = realMakers(c).length;
+    if (!n || !c.region) return;
+    regionCounts[c.region] = (regionCounts[c.region] || 0) + n;
+  });
+  regions.forEach(function(name){
+    if (!regionCounts[name]) return;
+    addOption(fRegion, name, name + ' (' + regionCounts[name] + ')');
+  });
+  setSelect(fRegion, regionCounts[keepRegion] ? keepRegion : '');
+  var region = fRegion.value || '';
+  clearSelect(fCountry);
+  var countryCounts = {};
+  DATA.forEach(function(c){
+    var n = realMakers(c).length;
+    if (!n || !c.country) return;
+    if (region && c.region !== region) return;
+    countryCounts[c.country] = (countryCounts[c.country] || 0) + n;
+  });
+  Object.keys(countryCounts).sort(function(a, b){ return a.localeCompare(b); }).forEach(function(name){
+    addOption(fCountry, name, name + ' (' + countryCounts[name] + ')');
+  });
+  setSelect(fCountry, countryCounts[keepCountry] ? keepCountry : '');
+}
+function applyGeoFromUrl(){
+  var params = geoParams();
+  if (!params || !fRegion || !fCountry) return;
+  var region = matchSelect(fRegion, params.get('region') || '');
+  if (region !== (fRegion.value || '')) {
+    setSelect(fRegion, region);
+    fillGeoFilters();
+  }
+  setSelect(fCountry, matchSelect(fCountry, params.get('country') || ''));
+}
+function writeGeoQuery(){
+  var params = geoParams();
+  if (!params || typeof history === 'undefined' || !history || typeof history.replaceState !== 'function') return;
+  if (fRegion && fRegion.value) params.set('region', fRegion.value); else params.delete('region');
+  if (fCountry && fCountry.value) params.set('country', fCountry.value); else params.delete('country');
+  var qs = params.toString();
+  var next = location.pathname + (qs ? '?' + qs : '') + (location.hash || '');
+  var cur = location.pathname + (location.search || '') + (location.hash || '');
+  if (next !== cur) history.replaceState(null, '', next);
+}
 function render(){
-  const q=search.value.trim().toLowerCase(), r=fRegion.value, ty=fType.value;
+  if (geoLock) return;
+  geoLock = true;
+  try { renderBoard(); }
+  finally { geoLock = false; }
+}
+function renderBoard(){
+  fillGeoFilters();
+  const q=search.value.trim().toLowerCase(), r=fRegion.value, cc=(fCountry&&fCountry.value)||'', ty=fType.value;
+  writeGeoQuery();
   const specOn=!!(fKv.value||fMva.value||fCert.value||fCool.value||fTest.value);
-  const filtered=!!(q||r||ty||specOn);
+  const filtered=!!(q||r||cc||ty||specOn);
   let list=DATA.map(c=>{
     let makers=c.makers;
     if(ty) makers=makers.filter(m=>/^Served by/i.test(m[0]) ? false : (m[3]||'').split(',').map(x=>x.trim()).includes(ty));
     if(q) makers=makers.filter(m=>(m[0]+' '+(m[1]||'')+' '+c.country).toLowerCase().includes(q));
     if(specOn) makers=makers.filter(m=>/^Served by/i.test(m[0]) ? false : passesSpec(m[0]));
     return {...c, makers};
-  }).filter(c=>{ if(r&&c.region!==r) return false; return c.makers.some(m=>!/^Served by/i.test(m[0])); });
+  }).filter(c=>{ if(r&&c.region!==r) return false; if(cc&&c.country!==cc) return false; return c.makers.some(m=>!/^Served by/i.test(m[0])); });
   list.sort((a,b)=>a.country.localeCompare(b.country));
   const pages=Math.max(1, Math.ceil(list.length/COUNTRIES_PER_PAGE));
   if(page>pages) page=pages;
@@ -603,7 +715,7 @@ function render(){
   Object.keys(groups).forEach(rg=>{ groups[rg].sort((a,b)=>a.country.localeCompare(b.country)); });
   const order=regions.filter(rg=>groups[rg]);
   if (!list.length) {
-    document.getElementById('board').innerHTML='<p style="text-align:center;padding:40px;color:var(--muted)">No manufacturers match these filters. Clear search or change the type/region.</p>';
+    document.getElementById('board').innerHTML='<p style="text-align:center;padding:40px;color:var(--muted)">No manufacturers match these filters. Clear search or change the region, country or type.</p>';
     document.getElementById('count').textContent='Showing 0 companies';
     stats(list);
     return;
@@ -640,7 +752,10 @@ document.getElementById('board').addEventListener('click',function(ev){
   render();
   document.getElementById('board').scrollIntoView({behavior:'smooth',block:'start'});
 });
-[search,fRegion,fType,fKv,fMva,fCert,fCool,fTest].forEach(el=>{el.addEventListener('input',()=>{page=1;render();});el.addEventListener('change',()=>{page=1;render();});});
+[search,fRegion,fCountry,fType,fKv,fMva,fCert,fCool,fTest].forEach(el=>{
+  el.addEventListener('input',()=>{ if(geoSilent) return; page=1; render(); });
+  el.addEventListener('change',()=>{ if(geoSilent) return; page=1; render(); });
+});
 fType.addEventListener('change',()=>{ catTiles.querySelectorAll('.cat-tile').forEach(b=>b.classList.toggle('on', b.dataset.k===fType.value)); });
 loadData();
 </script>
