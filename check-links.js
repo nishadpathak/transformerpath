@@ -38,6 +38,26 @@ function loadRedirects() {
   return map;
 }
 const REDIRECTS = loadRedirects();
+const TOML_REDIRECTS = loadTomlRedirects();
+
+function loadTomlRedirects() {
+  const map = Object.create(null);
+  let text = '';
+  try { text = fs.readFileSync(path.join(siteRoot, 'netlify.toml'), 'utf8'); } catch (e) { return map; }
+  text.split('[[redirects]]').slice(1).forEach(function (block) {
+    const from = (block.match(/^\s*from\s*=\s*"([^"]+)"/m) || [])[1];
+    const to = (block.match(/^\s*to\s*=\s*"([^"]+)"/m) || [])[1];
+    if (from && to && from.charAt(0) === '/') map[from] = to;
+  });
+  return map;
+}
+
+function functionFile(dest) {
+  const m = String(dest || '').match(/^\/\.netlify\/functions\/([A-Za-z0-9_-]+)\/?$/);
+  if (!m) return null;
+  const file = path.join(siteRoot, 'functions', m[1] + '.js');
+  return fs.existsSync(file) ? file : null;
+}
 function existsTarget(fromFile, target) {
   const clean = target.split('#')[0].split('?')[0].trim();
   if (!clean) return { ok: true };
@@ -60,8 +80,10 @@ function existsTarget(fromFile, target) {
   // Explicit _redirects rule (the file itself is gone; the rule owns the URL).
   let sitePath = '/' + path.relative(siteRoot, asDir).split(path.sep).join('/');
   if (clean.endsWith('/') && !sitePath.endsWith('/')) sitePath += '/';
-  const dest = REDIRECTS[sitePath];
+  const dest = REDIRECTS[sitePath] || TOML_REDIRECTS[sitePath];
   if (dest && dest.charAt(0) === '/' && dest !== sitePath) {
+    const fn = functionFile(dest);
+    if (fn) return { ok: true, resolved: fn };
     return existsTarget(path.join(siteRoot, 'index.html'), dest);
   }
   return { ok: false, resolved };

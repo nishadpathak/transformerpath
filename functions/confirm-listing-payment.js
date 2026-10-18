@@ -21,7 +21,8 @@ const PRODUCTS = {
   supplier_pro: true,
   featured_listing: true,
   featured_verified: true,
-  component_sponsor: true
+  component_sponsor: true,
+  dga_report: true
 };
 
 function json(statusCode, body) {
