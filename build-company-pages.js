@@ -39,7 +39,15 @@ const SPEC_BY_SLUG = {};
 const { isUpcoming, platformToday } = require('./lib/event-status');
 const { splitEntityIntel, fold: foldEntity } = require('./lib/entity-intel');
 const paidListings = require('./lib/paid-listings');
+const listingMedia = require('./lib/listing-media');
 const PAID_LISTINGS = paidListings.load();
+const LISTING_MEDIA = (function () { try { return JSON.parse(fs.readFileSync('data/listing-media.json', 'utf8')); } catch (e) { return { profiles: [] }; } })();
+function listingMediaHtml(slug) {
+  return listingMedia.render(listingMedia.collect(slug, {
+    listings: (PAID_LISTINGS && PAID_LISTINGS.listings) || [],
+    profiles: (LISTING_MEDIA && LISTING_MEDIA.profiles) || []
+  }));
+}
 const MANUF = JSON.parse(fs.readFileSync('data/manufacturers.json', 'utf8'));
 const TIERS = JSON.parse(fs.readFileSync('data/manufacturer-tiers.json', 'utf8'));
 const EVENTS = JSON.parse(fs.readFileSync('data/events.json', 'utf8'));
@@ -583,6 +591,7 @@ function page(r, slug) {
     '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="../../manufacturers.html" style="color:var(--accent)">Manufacturers</a> › ' + crumbCountry + ' › ' + esc(r.name) + '</nav>' +
     '<h1>' + esc(r.name) + ' <button class="follow-btn" data-follow-type="company" data-follow-subject="' + esc(r.name) + '" data-follow-label="' + esc(r.name) + '" title="Follow this manufacturer in My TransformerPath">Follow</button></h1>' +
     paidListings.manufacturerBadgeHtml(slug, PAID_LISTINGS) +
+    listingMediaHtml(slug) +
     '<p class="lead">' + esc(leadText) + '</p>' +
     '<p style="font-size:.9rem;color:var(--muted);margin:6px 0 0">' + (r.flag || '') + ' <b style="color:var(--text)">' + esc(r.country) + '</b>' + (r.city ? ' · ' + esc(r.city) : '') + ' · <span style="color:var(--accent)">' + verify + '</span>' + (r.url ? ' · <a href="' + esc(r.url) + '" target="_blank" rel="noopener nofollow" data-track="official_website_click" data-track-manufacturer="' + esc(r.name) + '" style="color:var(--accent)">Official website ↗</a>' : '') + '</p>' +
     (r.headOffice ? '<p style="font-size:.78rem;color:var(--muted);margin:4px 0 0">Head office' + (r.headOffice.address ? ': ' + esc(r.headOffice.address) : '') + '. <a href="' + esc(r.headOffice.source_url) + '" target="_blank" rel="noopener" style="color:var(--accent)">' + esc(r.headOffice.source_title) + '</a> (checked ' + esc(r.headOffice.retrieved_at) + ').</p>' : '') +
