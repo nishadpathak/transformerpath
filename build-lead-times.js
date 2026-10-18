@@ -52,16 +52,16 @@ const style = '.c-wrap{max-width:980px;margin:0 auto;padding:44px 20px 90px}.c-w
 const html = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
   '<title>Lead times and factory capacity</title>' +
   '<meta name="description" content="' + esc(description) + '">' +
-  '<link rel="canonical" href="https://transformerpath.com/lead-times.html">' +
+  '<link rel="canonical" href="https://transformerpath.com/factory-capacity/">' +
   '<meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath">' +
-  '<meta property="og:title" content="Lead times and factory capacity"><meta property="og:url" content="https://transformerpath.com/lead-times.html">' +
+  '<meta property="og:title" content="Lead times and factory capacity"><meta property="og:url" content="https://transformerpath.com/factory-capacity/">' +
   '<meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow"><meta name="theme-color" content="#0d1b2e">' +
-  '<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="stylesheet" href="style.css?v=14"><style>' + style + '</style><link rel="stylesheet" href="tp-nav.css?v=14">' +
+  '<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg"><link rel="stylesheet" href="/style.css?v=14"><style>' + style + '</style><link rel="stylesheet" href="/tp-nav.css?v=14">' +
   '</head>\n<body>\n' + HEAD + '\n<main class="c-wrap" data-lead-times="1">' +
   '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="/tenders.html">Tenders</a> · <a href="/tenders/countries.html">Countries</a> · Lead times</nav>' +
   '<h1>Lead times and factory capacity</h1>' +
   '<p class="lead">Free tracker. Every row is a figure already stored with a source URL and a day or a month. Last checked is that stored date. For a news item it is the publication date on the intel record, not a separate factory audit. For the Virginia Transformer capacity row it is the day that company page was read. A month is shown when the source label names a month and no day. Records with only a year, or with no date, are left off.</p>' +
-  '<p class="note">' + rows.length + ' rows · ' + lead.length + ' lead time · ' + capacity.length + ' factory capacity. <a href="/article-lead-times.html">Why lead times got longer</a> is a separate guide.</p>' +
+  '<p class="note">' + rows.length + ' rows · ' + lead.length + ' lead time · ' + capacity.length + ' factory capacity. <a href="/article-lead-times.html">Why lead times got longer</a> is a separate guide. Typical lead times by class and region are on the <a href="/lead-times/">grid lead-time tracker</a>.</p>' +
   '<h2>Lead times (' + lead.length + ')</h2>' + table(lead) +
   '<h2>Factory capacity (' + capacity.length + ')</h2>' + table(capacity) +
   '<h2>Left off this page</h2>' +
@@ -71,10 +71,12 @@ const html = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta cha
   '<li>Directory lead-time notes, which have no source URL and no check date.</li>' +
   '<li>Census plants whose capacity note says the figure is not publicly disclosed.</li>' +
   '</ul>' +
-  '</main>\n' + FOOT + '\n<script src="analytics.js" defer></script>\n</body>\n</html>';
+  '</main>\n' + FOOT + '\n<script src="/analytics.js" defer></script>\n</body>\n</html>';
 
-fs.writeFileSync('lead-times.html', html);
-console.log('lead-times.html wrote ' + rows.length + ' rows (' + lead.length + ' lead time, ' + capacity.length + ' factory capacity); skipped ' + selected.skipped.length);
+fs.mkdirSync('factory-capacity', { recursive: true });
+fs.writeFileSync('factory-capacity/index.html', html);
+if (fs.existsSync('lead-times.html')) fs.unlinkSync('lead-times.html');
+console.log('factory-capacity/index.html wrote ' + rows.length + ' rows (' + lead.length + ' lead time, ' + capacity.length + ' factory capacity); skipped ' + selected.skipped.length);
 selected.skipped.forEach(function (item) {
   console.log('  skipped: ' + item.reason + ' — ' + item.title);
 });

@@ -13,7 +13,7 @@ function check(label, pass, detail) {
 }
 
 const selected = selectRows();
-const html = fs.readFileSync('lead-times.html', 'utf8');
+const html = fs.readFileSync('factory-capacity/index.html', 'utf8');
 const rows = html.match(/<tr data-kind="[^"]+"[\s\S]*?<\/tr>/g) || [];
 check('page is the free tracker', html.indexOf('>Lead times and factory capacity<') >= 0 && /Free tracker/.test(html));
 check('row count matches the selector', rows.length === selected.rows.length, rows.length + ' vs ' + selected.rows.length);

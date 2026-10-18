@@ -164,7 +164,7 @@ slugs.forEach(function (slug) {
   const body = '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="/tenders.html" style="color:var(--accent)">Tenders</a> · <a href="/tenders/countries.html" style="color:var(--accent)">Countries</a> · ' + esc(group.name) + '</nav>' +
     '<h1>' + esc(group.name) + ' transformer tenders</h1>' +
     '<p class="lead">' + group.tenders.length + ' tenders are filed under ' + esc(group.name) + '. Each title links to the tender page. Where a sourced award record exists, the awardee links to that award. Manufacturers below are directory matches, not predictions of who will win.</p>' +
-    '<p class="t-meta">' + esc(modeRegion(group.tenders)) + ' · ' + awardCount + ' with a sourced award · <a href="/lead-times.html" style="color:var(--accent)">Lead times and factory capacity</a></p>' +
+    '<p class="t-meta">' + esc(modeRegion(group.tenders)) + ' · ' + awardCount + ' with a sourced award · <a href="/factory-capacity/" style="color:var(--accent)">Lead times and factory capacity</a></p>' +
     '<h2>Tenders (' + group.tenders.length + ')</h2>' +
     tenderRows(group.tenders) +
     directoryHtml(group);
@@ -202,7 +202,7 @@ const indexHtml = shell({
   attrs: ' data-country-index="1"',
   body: '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="/tenders.html" style="color:var(--accent)">Tenders</a> · Countries</nav>' +
     '<h1>Transformer tenders by country</h1>' +
-    '<p class="lead">One page for each country with a tender on file. A tender stays on the country stored on its record. An award link appears only where a sourced award record exists. Manufacturers on those pages are directory matches, not predictions of who will win. <a href="/lead-times.html" style="color:var(--accent)">Lead times and factory capacity</a> is separate, and free.</p>' +
+    '<p class="lead">One page for each country with a tender on file. A tender stays on the country stored on its record. An award link appears only where a sourced award record exists. Manufacturers on those pages are directory matches, not predictions of who will win. <a href="/factory-capacity/" style="color:var(--accent)">Lead times and factory capacity</a> is separate, and free.</p>' +
     indexRows
 });
 fs.writeFileSync('tenders/countries.html', indexHtml);
