@@ -60,6 +60,7 @@ const FILES_FROM_MIXED_DIRS = [
   'lib/job-board.js',           // jobs page and the review queue; rules, not a data file
   'lib/rfq-leads.js',           // RFQ consent, redaction, and the 5-supplier cap
   'lib/provenance-badge.js',    // shared provenance badge, loaded by public pages
+  'lib/listing-media.js',       // Verified logo, catalogue PDF and photo gallery
   'lib/saved-design.js',        // calculator save/open snapshot helper
   'lib/learning-catalog.js',    // Skills Passport and engineer-track progress catalog
   'js/tp-grid-calc.js',         // Grid Lab formulas; js/ is not copied wholesale

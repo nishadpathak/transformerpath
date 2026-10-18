@@ -2,7 +2,7 @@
 /* build-category-landing-pages.js — Canonical Category Hubs for Components & Materials.
  *
  * Generates canonical landing hubs with complete technical specifications,
- * subcategory matrices, standards, verified supplier tables, and direct RFQs:
+ * subcategory matrices, standards, and supplier tables. RFQ routing is coming soon:
  *   - /components/bushings/index.html
  *   - /components/oltc/index.html
  *   - /components/radiators/index.html
