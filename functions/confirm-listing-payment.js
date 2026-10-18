@@ -24,7 +24,8 @@ const PRODUCTS = {
   component_sponsor: true,
   dga_report: true,
   report_template: true,
-  template_bundle: true
+  template_bundle: true,
+  commissioning_job_post: true
 };
 
 function json(statusCode, body) {

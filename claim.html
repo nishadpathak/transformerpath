@@ -114,6 +114,19 @@
     <p style="color:var(--muted);font-size:.9rem;line-height:1.55">A session id in the address is not payment. This page asks Stripe, through the same server check that issues the HMAC entitlement for courses, and only then says payment received. Featured and sponsor slots stay empty until the listing is reviewed. A paid DGA PDF or a paid test template opens from the download page after the same check.</p>
     <p style="margin:16px 0 0"><a class="btn btn-outline" href="claim-profile.html">Claim a company profile</a> <a class="btn btn-outline" href="pricing.html#featured-listings">Pricing</a></p>
     <p style="margin:16px 0 0"><a id="claimNext" class="btn btn-amber" hidden href="/data/download">Download the paid file</a></p>
+    <form id="claimJob" name="commissioning-job-post" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" hidden style="margin-top:18px">
+      <input type="hidden" name="form-name" value="commissioning-job-post">
+      <p hidden><label>Leave empty: <input name="bot-field"></label></p>
+      <p><label>Job title <input name="title" required maxlength="120"></label></p>
+      <p><label>Company <input name="company" required maxlength="120"></label></p>
+      <p><label>Location <input name="location" required maxlength="120"></label></p>
+      <p><label>Voltage <select name="voltage" required><option value="HV">HV</option><option value="MV">MV</option></select></label></p>
+      <p><label>One-position description <textarea name="description" required maxlength="2000"></textarea></label></p>
+      <p><label>Specific apply URL <input name="apply_url" type="url" required maxlength="300"></label></p>
+      <p><label>Contact email <input name="email" type="email" required maxlength="120"></label></p>
+      <p><button class="btn btn-amber" type="submit">Send for review</button></p>
+      <p style="color:var(--muted);font-size:.9rem">The board lists a post only after the apply URL is one specific vacancy, the page responds, and the review dates are recorded. This form does not add the row.</p>
+    </form>
     <noscript><p>Turn on JavaScript so this page can confirm the checkout with Stripe. Until then it cannot say payment received. Email <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>.</p></noscript>
   </div>
 </section>
@@ -147,6 +160,8 @@
   var DOWNLOAD_NOTE = 'Payment received. The download page builds the file from this checkout. A session id in the address is not the file.';
   var LISTINGS = { featured_listing: true, featured_verified: true, component_sponsor: true };
   var DOWNLOADS = { dga_report: true, report_template: true, template_bundle: true };
+  var JOBS = { commissioning_job_post: true };
+  var JOB_NOTE = 'Payment received. Send the vacancy below. Payment does not publish the post, and a session id is not a listing.';
   var note = document.getElementById('claimSetupNote');
   var params = new URLSearchParams(location.search);
   var session = params.get('session_id') || '';
@@ -157,6 +172,11 @@
   function showNeutral() {
     if (note) note.textContent = NEUTRAL;
   }
+  function showJob() {
+    if (note) note.textContent = JOB_NOTE;
+    var form = document.getElementById('claimJob');
+    if (form) form.hidden = false;
+  }
   function showDownload(product) {
     if (note) note.textContent = DOWNLOAD_NOTE;
     var link = document.getElementById('claimNext');
@@ -165,7 +185,7 @@
     link.href = '/data/download?product=' + encodeURIComponent(product) + '&session_id=' + encodeURIComponent(session);
   }
   if (!session || session.indexOf('{') !== -1) {
-    if (DOWNLOADS[asked]) {
+    if (DOWNLOADS[asked] || JOBS[asked]) {
       showNeutral();
       return;
     }
@@ -179,7 +199,7 @@
     body: JSON.stringify({ session_id: session })
   }).then(function (r) { return r.json(); }).then(function (res) {
     var product = res && res.product;
-    if (!(res && res.paid === true && (LISTINGS[product] || DOWNLOADS[product]))) {
+    if (!(res && res.paid === true && (LISTINGS[product] || DOWNLOADS[product] || JOBS[product]))) {
       showNeutral();
       return null;
     }
@@ -193,6 +213,7 @@
         return;
       }
       if (DOWNLOADS[product]) showDownload(product);
+      else if (JOBS[product]) showJob();
       else showSetup();
     });
   }).catch(function () { showNeutral(); });

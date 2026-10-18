@@ -63,6 +63,7 @@ const FILES_FROM_MIXED_DIRS = [
   'lib/listing-media.js',       // Verified logo, catalogue PDF and photo gallery
   'lib/saved-design.js',        // calculator save/open snapshot helper
   'lib/dga-interpret.js',       // free DGA interpreter; the PDF is built in the function
+  'lib/commissioning-jobs.js',  // HV/MV board filter; payment does not publish a row
   'lib/learning-catalog.js',    // Skills Passport and engineer-track progress catalog
   'js/tp-grid-calc.js',         // Grid Lab formulas; js/ is not copied wholesale
   'js/tp-grid-lab.js',          // Grid Lab scene; production 404'd these and the canvas never started
