@@ -7,6 +7,7 @@
 'use strict';
 const fs = require('fs');
 const { countryFromText, isoDateInText, usableSource } = require('../lib/tender-country');
+const { classifyOpenDeadline } = require('../lib/deadline');
 const { closedReason, itemIsActive } = require('../lib/intel-activity');
 const { isUpcoming, platformToday } = require('../lib/event-status');
 
@@ -107,7 +108,8 @@ const zdas = tender('ŽĎAS tenders a 110 kV switchyard rebuild with two 110/22/
 check('ŽĎAS tender country is Czechia', zdas && zdas.country === 'Czechia', zdas && zdas.country);
 const mondragon = tender('Mondragon solar project tenders floating transformer substations');
 check('Mondragon tender country is France', mondragon && mondragon.country === 'France', mondragon && mondragon.country);
-check('Mondragon is not closed on the morning of its 16 Oct 2026 deadline', mondragon && mondragon.status !== 'CLOSED', mondragon && mondragon.status);
+check('Mondragon stays open through 16 Oct 2026 12:00 UTC', classifyOpenDeadline('2026-10-16', '2026-10-16T12:00:00.000Z') !== 'CLOSED');
+check('Mondragon status follows the deadline clock', mondragon && mondragon.status === classifyOpenDeadline(mondragon.deadline), mondragon && mondragon.status);
 const policy = tender('India grants 2-year public-procurement exemption to four Chinese-owned transformer/equipment subsidiaries');
 check('the India procurement-exemption story is not a tender', !policy);
 check('no tender uses a region name as its country', rows.every(function (t) {
