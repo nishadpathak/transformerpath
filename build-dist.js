@@ -50,7 +50,7 @@ const DIST = 'dist';
 const DIRS = [
   'accessories', 'applications', 'admin', 'books', 'brand', 'case-studies', 'tools',
   'components', 'events', 'grids', 'knowledge', 'manufacturers',
-  'markets', 'materials', 'media', 'projects', 'templates', 'tenders', 'topics', 'utilities',
+  'markets', 'materials', 'media', 'projects', 'commissioning-jobs', 'templates', 'tenders', 'topics', 'utilities',
   'viz', 'vendor',
 ];
 
