@@ -104,7 +104,9 @@ const PUBLISHED_LIB = new Set([
   'lib/rfq-leads.js',
   'lib/provenance-badge.js',
   'lib/saved-design.js',
-  'lib/learning-catalog.js'
+  'lib/learning-catalog.js',
+  'lib/dga-interpret.js',
+  'lib/commissioning-jobs.js'
 ]);
 
 function isPublishedJs(rel) {

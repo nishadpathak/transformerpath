@@ -1307,6 +1307,8 @@ async function main() {
   check('pricing keeps the exhibitor link', pricingSource.indexOf(exhibitorLink) >= 0 && pricingSource.indexOf('Feature your exhibitor — $399') >= 0);
   check('pricing adds featured listings plus tax', pricingSource.indexOf('id="featured-listings"') >= 0 && pricingSource.indexOf(paid.PAYMENT_LINKS.featured_listing.url) >= 0 && pricingSource.indexOf(paid.PAYMENT_LINKS.featured_verified.url) >= 0 && pricingSource.indexOf('$299') >= 0 && pricingSource.indexOf('$699') >= 0 && pricingSource.indexOf('plus tax') >= 0);
   check('pricing adds the component sponsor', pricingSource.indexOf('id="component-sponsor"') >= 0 && pricingSource.indexOf(paid.PAYMENT_LINKS.component_sponsor.url) >= 0 && pricingSource.indexOf('Sponsor this section, $199/mo') >= 0 && pricingSource.indexOf('plus tax') >= 0);
+  const pricingText = pricingSource.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+  check('pricing featured prices use yr and mo labels', pricingSource.indexOf('$299/yr') >= 0 && pricingSource.indexOf('$699/yr') >= 0 && pricingSource.indexOf('$199/mo') >= 0 && !/\$\d[\d,]*\s*\/\s*year\b/i.test(pricingText));
   const advertisePage = fs.readFileSync('sponsor.html', 'utf8');
   check('advertise page keeps the exhibitor checkout', advertisePage.indexOf(exhibitorLink) >= 0 && advertisePage.indexOf('id="featured-listings"') >= 0 && advertisePage.indexOf('id="component-sponsor"') >= 0 && advertisePage.indexOf('Core steel') >= 0 && advertisePage.indexOf('$199/mo plus tax') >= 0);
 

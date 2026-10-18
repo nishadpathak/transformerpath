@@ -17,6 +17,21 @@
 const fs = require('fs');
 const path = require('path');
 const csv = require('../lib/csv-exports');
+const dgaDownload = require('../lib/dga-download');
+const templateDownload = require('../lib/template-download');
+const jobPostReturn = require('../lib/job-post-return');
+const { listingProduct } = require('../lib/paid-listings');
+
+const DIGITAL = {
+  dga_report: dgaDownload,
+  report_template: templateDownload,
+  template_bundle: templateDownload,
+  commissioning_job_post: jobPostReturn
+};
+
+function digitalOf(name) {
+  return DIGITAL[String(name || '').trim()] || null;
+}
 
 const STRIPE_API = 'https://api.stripe.com/v1';
 
@@ -154,6 +169,9 @@ async function handle(event) {
   const body = bodyOf(event);
   const dl = String(q.dl || '').trim();
   const sig = String(q.sig || '').trim();
+  const asked = String(q.product || body.product || '').trim();
+  const signedDigital = digitalOf(dl);
+  if (signedDigital) return signedDigital.signedDownload(stripeSecret(), q);
   if (dl || sig) {
     const secret = stripeSecret();
     const sid = String(q.sid || '').trim();
@@ -165,17 +183,27 @@ async function handle(event) {
   }
 
   const sid = String(q.session_id || body.session_id || '').trim();
-  if (!acceptableSessionId(sid)) return failedPage();
+  const askedHandler = digitalOf(asked);
+  function denyDigital() {
+    return askedHandler ? askedHandler.failed() : failedPage();
+  }
+  if (!acceptableSessionId(sid)) return denyDigital();
   const secret = stripeSecret();
-  if (!secret) return failedPage();
+  if (!secret) return denyDigital();
 
   let session = null;
   try {
     session = await loadSession(secret, sid);
   } catch (e) {
-    return failedPage();
+    return denyDigital();
   }
-  if (!session || session.payment_status !== 'paid') return failedPage();
+  if (!session || session.payment_status !== 'paid') return denyDigital();
+  const listed = listingProduct(session);
+  const listedHandler = digitalOf(listed);
+  if (askedHandler || listedHandler) {
+    if (!listedHandler || (asked && asked !== listed)) return (askedHandler || listedHandler).failed();
+    return listedHandler.fulfilled(secret, sid, Object.assign({}, q, body), listed);
+  }
   const product = csv.csvProductFromSession(session);
   if (!product) return failedPage();
   return paidPage(product, csv.issueLinks(secret, sid, product));
@@ -185,6 +213,10 @@ exports.handler = async function (event) {
   try {
     return await handle(event || {});
   } catch (e) {
+    const q = queryOf(event || {});
+    const body = bodyOf(event || {});
+    const handler = digitalOf(q.dl) || digitalOf(q.product) || digitalOf(body.product);
+    if (handler) return handler.failed();
     return failedPage();
   }
 };

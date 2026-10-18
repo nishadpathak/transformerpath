@@ -48,9 +48,9 @@ const DIST = 'dist';
 
 // Whole directories copied verbatim — served content only.
 const DIRS = [
-  'accessories', 'applications', 'admin', 'books', 'brand', 'case-studies',
+  'accessories', 'applications', 'admin', 'books', 'brand', 'case-studies', 'tools',
   'components', 'events', 'grids', 'knowledge', 'manufacturers',
-  'markets', 'materials', 'media', 'projects', 'tenders', 'topics', 'utilities',
+  'markets', 'materials', 'media', 'projects', 'templates', 'tenders', 'topics', 'utilities',
   'viz', 'vendor',
 ];
 
@@ -62,6 +62,8 @@ const FILES_FROM_MIXED_DIRS = [
   'lib/provenance-badge.js',    // shared provenance badge, loaded by public pages
   'lib/listing-media.js',       // Verified logo, catalogue PDF and photo gallery
   'lib/saved-design.js',        // calculator save/open snapshot helper
+  'lib/dga-interpret.js',       // free DGA interpreter; the PDF is built in the function
+  'lib/commissioning-jobs.js',  // HV/MV board filter; payment does not publish a row
   'lib/learning-catalog.js',    // Skills Passport and engineer-track progress catalog
   'js/tp-grid-calc.js',         // Grid Lab formulas; js/ is not copied wholesale
   'js/tp-grid-lab.js',          // Grid Lab scene; production 404'd these and the canvas never started

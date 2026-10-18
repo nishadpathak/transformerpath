@@ -111,8 +111,22 @@
 <section class="block">
   <div class="container" style="max-width:720px">
     <div id="claimSetupNote" role="status" style="background:#14365c;color:#fff;border-radius:10px;padding:14px 16px;margin:0 0 16px;font-size:.95rem;line-height:1.5">Checking this checkout with Stripe.</div>
-    <p style="color:var(--muted);font-size:.9rem;line-height:1.55">A session id in the address is not payment. This page asks Stripe, through the same server check that issues the HMAC entitlement for courses, and only then says payment received. Featured and sponsor slots stay empty until the listing is reviewed.</p>
+    <p style="color:var(--muted);font-size:.9rem;line-height:1.55">A session id in the address is not payment. This page asks Stripe, through the same server check that issues the HMAC entitlement for courses, and only then says payment received. Featured and sponsor slots stay empty until the listing is reviewed. A paid DGA PDF or a paid test template opens from the download page after the same check.</p>
     <p style="margin:16px 0 0"><a class="btn btn-outline" href="claim-profile.html">Claim a company profile</a> <a class="btn btn-outline" href="pricing.html#featured-listings">Pricing</a></p>
+    <p style="margin:16px 0 0"><a id="claimNext" class="btn btn-amber" hidden href="/data/download">Download the paid file</a></p>
+    <form id="claimJob" name="commissioning-job-post" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" hidden style="margin-top:18px">
+      <input type="hidden" name="form-name" value="commissioning-job-post">
+      <p hidden><label>Leave empty: <input name="bot-field"></label></p>
+      <p><label>Job title <input name="title" required maxlength="120"></label></p>
+      <p><label>Company <input name="company" required maxlength="120"></label></p>
+      <p><label>Location <input name="location" required maxlength="120"></label></p>
+      <p><label>Voltage <select name="voltage" required><option value="HV">HV</option><option value="MV">MV</option></select></label></p>
+      <p><label>One-position description <textarea name="description" required maxlength="2000"></textarea></label></p>
+      <p><label>Specific apply URL <input name="apply_url" type="url" required maxlength="300"></label></p>
+      <p><label>Contact email <input name="email" type="email" required maxlength="120"></label></p>
+      <p><button class="btn btn-amber" type="submit">Send for review</button></p>
+      <p style="color:var(--muted);font-size:.9rem">The board lists a post only after the apply URL is one specific vacancy, the page responds, and the review dates are recorded. This form does not add the row.</p>
+    </form>
     <noscript><p>Turn on JavaScript so this page can confirm the checkout with Stripe. Until then it cannot say payment received. Email <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>.</p></noscript>
   </div>
 </section>
@@ -143,28 +157,49 @@
 (function () {
   var SETUP = "Payment received. We'll set up your listing within 2 business days via hello@transformerpath.com.";
   var NEUTRAL = 'Stripe has not confirmed this checkout. This page does not treat a session id as payment.';
-  var PRODUCTS = { featured_listing: true, featured_verified: true, component_sponsor: true };
+  var DOWNLOAD_NOTE = 'Payment received. The download page builds the file from this checkout. A session id in the address is not the file.';
+  var LISTINGS = { featured_listing: true, featured_verified: true, component_sponsor: true };
+  var DOWNLOADS = { dga_report: true, report_template: true, template_bundle: true };
+  var JOBS = { commissioning_job_post: true };
+  var JOB_NOTE = 'Payment received. Send the vacancy below. Payment does not publish the post, and a session id is not a listing.';
   var note = document.getElementById('claimSetupNote');
   var params = new URLSearchParams(location.search);
   var session = params.get('session_id') || '';
-  if (!session || session.indexOf('{') !== -1) {
-    location.replace('claim-profile.html' + location.search + location.hash);
-    return;
-  }
-  if (note) note.textContent = NEUTRAL;
+  var asked = params.get('product') || '';
   function showSetup() {
     if (note) note.textContent = SETUP;
   }
   function showNeutral() {
     if (note) note.textContent = NEUTRAL;
   }
+  function showJob() {
+    if (note) note.textContent = JOB_NOTE;
+    var form = document.getElementById('claimJob');
+    if (form) form.hidden = false;
+  }
+  function showDownload(product) {
+    if (note) note.textContent = DOWNLOAD_NOTE;
+    var link = document.getElementById('claimNext');
+    if (!link) return;
+    link.hidden = false;
+    link.href = '/data/download?product=' + encodeURIComponent(product) + '&session_id=' + encodeURIComponent(session);
+  }
+  if (!session || session.indexOf('{') !== -1) {
+    if (DOWNLOADS[asked] || JOBS[asked]) {
+      showNeutral();
+      return;
+    }
+    location.replace('claim-profile.html' + location.search + location.hash);
+    return;
+  }
+  if (note) note.textContent = NEUTRAL;
   fetch('/.netlify/functions/verify-access', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ session_id: session })
   }).then(function (r) { return r.json(); }).then(function (res) {
     var product = res && res.product;
-    if (!(res && res.paid === true && PRODUCTS[product])) {
+    if (!(res && res.paid === true && (LISTINGS[product] || DOWNLOADS[product] || JOBS[product]))) {
       showNeutral();
       return null;
     }
@@ -173,8 +208,13 @@
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ session_id: session, product: product })
     }).then(function (r) { return r.json(); }).then(function (confirm) {
-      if (confirm && confirm.configured === true && confirm.paid === true && confirm.product === product) showSetup();
-      else showNeutral();
+      if (!(confirm && confirm.configured === true && confirm.paid === true && confirm.product === product)) {
+        showNeutral();
+        return;
+      }
+      if (DOWNLOADS[product]) showDownload(product);
+      else if (JOBS[product]) showJob();
+      else showSetup();
     });
   }).catch(function () { showNeutral(); });
 })();

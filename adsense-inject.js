@@ -33,6 +33,7 @@ function wantsInContentSlot(rel) {
   if (n === 'intel.html') return true;
   if (n === 'directory.html' || n === 'manufacturers.html') return true;
   if (n === 'buy-early/index.html' || n === 'spare-capacity/index.html') return true;
+  if (n === 'tools/dga/index.html') return true;
   return false;
 }
 
@@ -114,6 +115,14 @@ function placeSlot(html, rel) {
     const root = html.indexOf('<div id="directoryRoot">');
     if (root < 0) throw new Error('directory list has no #directoryRoot');
     return insertAt(html, root, slot);
+  }
+
+  if (n === 'tools/dga/index.html') {
+    const hero = html.search(/<section[^>]*class="[^"]*\bhero\b/);
+    if (hero < 0) throw new Error('DGA tool has no hero');
+    const heroEnd = html.indexOf('</section>', hero);
+    if (heroEnd < 0) throw new Error('DGA tool hero is unclosed');
+    return insertAt(html, heroEnd + '</section>'.length, slot);
   }
 
   if (n === 'manufacturers.html') {
