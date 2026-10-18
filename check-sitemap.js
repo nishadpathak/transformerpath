@@ -146,5 +146,6 @@ if (require.main === module) {
 
 module.exports = checkSitemap;
 module.exports.auditCanonicals = auditCanonicals;
+module.exports.fileForLoc = fileForLoc;
 module.exports.normUrl = normUrl;
 module.exports.pageIsNoindex = pageIsNoindex;

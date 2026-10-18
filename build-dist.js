@@ -335,4 +335,15 @@ if (missingScripts.length) {
   if (missingScripts.length > 40) console.error('  … and ' + (missingScripts.length - 40) + ' more');
   process.exit(1);
 }
+
+// Sitemap locs are public URLs. A page that exists in git but is not copied
+// (the commissioning board did this) is a production 404. Fail the build.
+const { auditDistSitemap } = require('./scripts/check-dist-sitemap');
+const sitemapMisses = auditDistSitemap(DIST);
+if (sitemapMisses.length) {
+  console.error('\nDIST GATE FAILED — a sitemap URL is not a file in dist:');
+  sitemapMisses.slice(0, 40).forEach((o) => console.error('  ' + o));
+  if (sitemapMisses.length > 40) console.error('  … and ' + (sitemapMisses.length - 40) + ' more');
+  process.exit(1);
+}
 console.log('DIST GATE OK — no private, manuscript, build-script or internal file in the artifact.');
