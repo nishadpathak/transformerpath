@@ -92,6 +92,7 @@ check('mobile ticker sits in normal flow under the banner', /@media \(max-width:
 check('desktop does not force the mobile banner', /\.home-hero-banner \{ display: none; \}/.test(home));
 const labelLayout = fs.readFileSync('tp-label-layout.js', 'utf8');
 check('callout layout clamps and avoids collisions', /function layout\(/.test(labelLayout) && /function separate\(/.test(labelLayout) && /obstacleRects/.test(labelLayout));
+check('callout layout script is copied into the published site', /'tp-label-layout\.js'/.test(fs.readFileSync('build-dist.js', 'utf8')) && /tp-label-layout/.test(fs.readFileSync('lib/seo-cwv.js', 'utf8')));
 ['power3d.html', 'explorer.html'].forEach(function (file) {
   const src = fs.readFileSync(file, 'utf8');
   check(file + ' places callouts through the shared layout', src.indexOf('tp-label-layout.js') >= 0 && src.indexOf('TPLabelLayout.layout') >= 0 && src.indexOf('pinnedPart') >= 0);
