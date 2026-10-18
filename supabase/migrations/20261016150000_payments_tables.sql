@@ -81,6 +81,7 @@ create table if not exists public.paid_listings (
   currency text,
   livemode boolean not null default false,
   status text not null default 'paid_pending_verification',
+  component text,
   created_at timestamptz not null default now(),
   constraint paid_listings_session_id_key unique (session_id),
   constraint paid_listings_status_check check (
@@ -96,6 +97,7 @@ alter table public.paid_listings
   add column if not exists currency text,
   add column if not exists livemode boolean not null default false,
   add column if not exists status text not null default 'paid_pending_verification',
+  add column if not exists component text,
   add column if not exists created_at timestamptz not null default now();
 
 alter table public.paid_listings drop constraint if exists paid_listings_product_check;

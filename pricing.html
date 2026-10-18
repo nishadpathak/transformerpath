@@ -257,13 +257,7 @@ table.cmp .n { color:var(--border); }
 
     <div style="max-width:860px;margin:0 auto 18px;background:var(--card);border:1px solid var(--border);border-left:4px solid var(--amber);border-radius:12px;padding:16px 18px">
       <div style="font-size:.66rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--accent);margin-bottom:6px">Supplier Pro proof — anonymised RFQ → shortlist</div>
-      <p style="margin:0 0 10px;color:var(--text);font-size:.9rem;line-height:1.55"><b>Case:</b> a Mid-East EPC posted a 4×100 MVA 132/33 kV IEC 60076 RFQ. Match surfaced 11 manufacturers (3 CONFIRMED / 5 SUPPORTED / 3 research-required). The buyer shortlisted two CONFIRMED plants via the RFQ inbox; Supplier Pro on those profiles routed both inquiries with attachments and status tracking. Organic directory ranking did not change for either plant.</p>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:0 0 10px">
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 12px"><div style="font-size:.72rem;color:var(--muted)">Matched</div><div style="font-size:1.25rem;font-weight:800;color:var(--ink)">11</div></div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 12px"><div style="font-size:.72rem;color:var(--muted)">CONFIRMED shortlist</div><div style="font-size:1.25rem;font-weight:800;color:var(--ink)">2</div></div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 12px"><div style="font-size:.72rem;color:var(--muted)">Inbox response</div><div style="font-size:1.25rem;font-weight:800;color:var(--ink)">&lt; 36h</div></div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 12px"><div style="font-size:.72rem;color:var(--muted)">Organic rank change</div><div style="font-size:1.25rem;font-weight:800;color:var(--ink)">None</div></div>
-      </div>
+      <p style="margin:0 0 10px;color:var(--text);font-size:.9rem;line-height:1.55"><b>Case:</b> an EPC posted a 4×100 MVA 132/33 kV IEC 60076 requirement. Match can surface manufacturers by evidence. RFQ routing is coming soon. Organic directory ranking does not change because a company pays.</p>
       <p style="margin:0;font-size:.78rem;color:var(--muted)">Illustrative composite — not a named customer testimonial. The public <a href="match.html">matcher</a> is live. <span data-feature="rfq_inbox" data-delivery="built">The RFQ inbox in this example is illustrative; the live inbox starts empty</span>. Buying a listing does not purchase a search position. See <a href="methodology.html#how-we-source">methodology</a>.</p>
     </div>
 
@@ -289,12 +283,43 @@ table.cmp .n { color:var(--border); }
           <p style="color:var(--muted);font-size:.85rem;line-height:1.5;margin:0 0 14px">Direct identity and corporate contact verification confirming official company representation and contact routing.</p>
           <ul style="font-size:.84rem;color:var(--text);padding-left:16px;margin:0 0 14px;line-height:1.6">
             <li data-feature="verified_badge" data-delivery="built"><b style="color:#16a34a">VERIFIED</b> trust badge on profile, after review</li>
+            <li data-feature="logo_brochure_upload" data-delivery="built">Logo, catalogue PDF link and photo gallery, at no extra charge</li>
           </ul>
-          <p class="roadmap">On the roadmap (not included yet): <span data-feature="logo_brochure_upload" data-delivery="coming_soon">Enhanced profile with corporate logo &amp; brochures <span class="tp-soon">Coming soon</span></span>; <span data-feature="buyer_inquiry_routing" data-delivery="coming_soon">Direct procurement contact routing <span class="tp-soon">Coming soon</span></span>; <span data-feature="rfq_eligibility" data-delivery="coming_soon">Eligibility to receive direct buyer inquiries <span class="tp-soon">Coming soon</span></span>.</p>
+          <p class="roadmap">On the roadmap (not included yet): <span data-feature="buyer_inquiry_routing" data-delivery="coming_soon">Direct procurement contact routing <span class="tp-soon">Coming soon</span></span>; <span data-feature="rfq_eligibility" data-delivery="coming_soon">RFQ routing is coming soon <span class="tp-soon">Coming soon</span></span>.</p>
         </div>
         <p style="margin:0 0 8px"><a class="btn btn-amber btn-sm" href="https://buy.stripe.com/4gMbIU7G8bFHak8d5EfYY05" data-verified-manufacturer-pay="1" style="width:100%;text-align:center">Pay $499 — Get Verified</a></p>
         <p class="paid-after-note" style="color:var(--muted);font-size:.8rem;margin:0 0 8px">After payment, submit your company details on the <a href="claim-profile.html?paid=verified_manufacturer#claimForm" style="color:var(--accent)">claim form</a>. The VERIFIED MANUFACTURER badge appears only after review.</p>
         <a href="verified.html" class="btn btn-outline btn-sm" style="text-align:center">Get Verified →</a>
+      </div>
+
+      <div class="card" id="featured-listings" style="padding:22px;border-radius:14px;background:var(--card);border:1px solid var(--border);display:flex;flex-direction:column;justify-content:space-between">
+        <div>
+          <h3 style="margin:0 0 4px;font-size:1.15rem;color:var(--ink)">Featured Listing</h3>
+          <div style="color:var(--accent);font-weight:800;font-size:1.4rem;margin:6px 0">$299 <small style="font-size:.8rem;color:var(--muted);font-weight:600">/ year, plus tax</small></div>
+          <p style="color:var(--muted);font-size:.85rem;line-height:1.5;margin:0 0 14px">A labelled Featured slot on the directory and country pages. The slot shows "Your company here" until a real buyer is reviewed. Featured is a paid placement, not a recommendation.</p>
+        </div>
+        <p style="margin:0 0 8px"><a class="btn btn-amber btn-sm" href="https://buy.stripe.com/fZu4gsaSkbFHfEsghQfYY0P" data-featured-listing-pay="1" style="width:100%;text-align:center">Featured Listing — $299/yr plus tax</a></p>
+        <p class="paid-after-note" style="color:var(--muted);font-size:.8rem;margin:0">After payment, this site confirms the Stripe checkout. The listing is set up within 2 business days via hello@transformerpath.com.</p>
+      </div>
+
+      <div class="card" style="padding:22px;border-radius:14px;background:var(--card);border:1px solid var(--border);display:flex;flex-direction:column;justify-content:space-between">
+        <div>
+          <h3 style="margin:0 0 4px;font-size:1.15rem;color:var(--ink)">Featured + Verified</h3>
+          <div style="color:var(--accent);font-weight:800;font-size:1.4rem;margin:6px 0">$699 <small style="font-size:.8rem;color:var(--muted);font-weight:600">/ year, plus tax</small></div>
+          <p style="color:var(--muted);font-size:.85rem;line-height:1.5;margin:0 0 14px">The Featured directory slot plus the reviewed Verified Manufacturer badge. Payment does not publish either label before review.</p>
+        </div>
+        <p style="margin:0 0 8px"><a class="btn btn-amber btn-sm" href="https://buy.stripe.com/14AbIU0dG6lnbocghQfYY0Q" data-featured-verified-pay="1" style="width:100%;text-align:center">Featured + Verified — $699/yr plus tax</a></p>
+        <p class="paid-after-note" style="color:var(--muted);font-size:.8rem;margin:0">After payment, this site confirms the Stripe checkout. The listing is set up within 2 business days via hello@transformerpath.com.</p>
+      </div>
+
+      <div class="card" id="component-sponsor" style="padding:22px;border-radius:14px;background:var(--card);border:1px solid var(--border);display:flex;flex-direction:column;justify-content:space-between">
+        <div>
+          <h3 style="margin:0 0 4px;font-size:1.15rem;color:var(--ink)">Component Sponsor</h3>
+          <div style="color:var(--accent);font-weight:800;font-size:1.4rem;margin:6px 0">$199 <small style="font-size:.8rem;color:var(--muted);font-weight:600">/ month, plus tax</small></div>
+          <p style="color:var(--muted);font-size:.85rem;line-height:1.5;margin:0 0 14px">One sponsor section on pressboard, core steel, copper, or bushings. Checkout asks for the component. Core steel is the label for the value coresteel. The section stays empty until a sponsor is reviewed.</p>
+        </div>
+        <p style="margin:0 0 8px"><a class="btn btn-amber btn-sm" href="https://buy.stripe.com/bJedR2gcE257eAofdMfYY0R" data-component-sponsor-pay="1" style="width:100%;text-align:center">Sponsor this section, $199/mo</a></p>
+        <p class="paid-after-note" style="color:var(--muted);font-size:.8rem;margin:0">plus tax. After payment, this site confirms the Stripe checkout. The listing is set up within 2 business days via hello@transformerpath.com.</p>
       </div>
 
       <div class="card" style="padding:22px;border-radius:14px;background:var(--card);border:2px solid var(--amber);box-shadow:0 8px 24px rgba(245,166,35,.15);display:flex;flex-direction:column;justify-content:space-between;position:relative">

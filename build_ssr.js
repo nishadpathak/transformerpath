@@ -23,12 +23,13 @@ const path = require('path');
 /* ONE canonical event-status resolver, shared with build-events.js and
    check-event-integrity.js. This file used to re-derive status and countdowns
    from raw dates, which is how "Dates TBC" could render beside "Live now". */
-const { resolveStatus, isTravelSafe, isDiscoverable, isUpcoming, platformToday } = require('./lib/event-status');
+const { resolveStatus, isTravelSafe, isDiscoverable, isUpcoming } = require('./lib/event-status');
 const { eventHref, eventPageMap, resolveEventSlug } = require('./lib/event-href');
 const { loadEvents } = require('./lib/events-reader');
-const { dateLine, allowsCalendar, badgeText, dubaiToday } = require('./lib/event-display');
+const { dateLine, allowsCalendar, badgeText } = require('./lib/event-display');
 const { eventBadge, intelBadge } = require('./lib/provenance-badge');
 const tpAff = require('./lib/travelpayouts');
+const directorySsr = require('./lib/directory-ssr');
 
 /* ------------------------------------------------------------------ *
  * Helpers
@@ -125,6 +126,39 @@ function inject(html, openTag, id, newInner) {
 
 // Inject `newInner` into the element matching `id="..."`, bracketed by
 // invisible idempotent marker comments. Robust across arbitrary attributes.
+function findMatchingClose(html, tag, from) {
+  const re = new RegExp('<(/?)' + tag + '\\b[^>]*>', 'gi');
+  re.lastIndex = from;
+  let depth = 1;
+  let m;
+  while ((m = re.exec(html))) {
+    if (m[1]) depth--;
+    else depth++;
+    if (depth === 0) return m.index;
+  }
+  return -1;
+}
+
+/* Replace an element's children. Marker comments make a second run replace
+ * only the previous prerender, even when the new HTML contains the same tag. */
+function replaceInnerById(html, id, newInner) {
+  const startM = '<!--SSR:' + id + '-->';
+  const endM = '<!--/SSR:' + id + '-->';
+  const cm = html.indexOf(startM);
+  if (cm >= 0) {
+    const em = html.indexOf(endM, cm);
+    if (em < 0) throw new Error('unclosed SSR marker ' + id);
+    return html.slice(0, cm) + startM + '\n' + newInner + '\n' + html.slice(em);
+  }
+  const re = new RegExp('<([a-zA-Z0-9]+)([^>]*\\bid=["\']' + id + '["\'][^>]*)>');
+  const m = re.exec(html);
+  if (!m) throw new Error('id not found: ' + id);
+  const openEnd = m.index + m[0].length;
+  const closeAt = findMatchingClose(html, m[1], openEnd);
+  if (closeAt < 0) throw new Error('close not found: ' + id);
+  return html.slice(0, openEnd) + '\n' + startM + '\n' + newInner + '\n' + endM + '\n' + html.slice(closeAt);
+}
+
 function injectById(html, id, newInner) {
   const startM = '<!--SSR:' + id + '-->';
   const endM = '<!--/SSR:' + id + '-->';
@@ -163,18 +197,25 @@ function webinarCta(w) {
  * ------------------------------------------------------------------ */
 function renderEvents(html) {
   const EVENTS = loadEvents();
-  const TODAY = dubaiToday();
+  /* Same platform day as the page script. UTC+4, no DST. Status chips and the
+     "Showing N upcoming events" line are both taken from this clock at build
+     time, so a prerender cannot keep yesterday's "Live now". */
+  const EVENTS_DAY_OFFSET_MS = 4*60*60*1000; // UTC+4, no DST
+  const TODAY = (function () {
+    var g = new Date(Date.now() + EVENTS_DAY_OFFSET_MS);
+    var p = function (n) { return (n < 10 ? '0' : '') + n; };
+    return g.getUTCFullYear() + '-' + p(g.getUTCMonth() + 1) + '-' + p(g.getUTCDate());
+  })();
+  const todayUTC = Date.parse(TODAY + 'T00:00:00Z');
   const now = new Date(TODAY + 'T00:00:00Z');
 
   /* Normal upcoming discovery. A record whose organiser calendar was checked and
      did not list it (REJECTED_NO_EVIDENCE) or that is still under research is not
      an upcoming event — it leaves this list rather than sitting in it with a
      warning nobody reads. */
-  let list = EVENTS.filter((ev) => isUpcoming(ev, platformToday()));
+  let list = EVENTS.filter((ev) => isUpcoming(ev, TODAY));
   list.sort((a, b) => String(a.s || a.start || '').localeCompare(String(b.s || b.start || '')));
 
-  const EVENTS_DAY_OFFSET_MS = 4*60*60*1000; // UTC+4, no DST
-  const todayUTC = (function(){ var g=new Date(Date.now()+EVENTS_DAY_OFFSET_MS); return Date.UTC(g.getUTCFullYear(),g.getUTCMonth(),g.getUTCDate()); })();
   const relDays = (d) => Math.ceil((Date.parse(d+'T00:00:00Z') - todayUTC) / 86400000);
   /* Adapter over the canonical resolver. The old local copy re-implemented the
      rules and drifted: it treated a past end-date as COMPLETED even when the
@@ -186,7 +227,7 @@ function renderEvents(html) {
     MONITORING: 'Verify with organiser', POSTPONED: 'Postponed', CANCELLED: 'Cancelled',
   };
   const evState = (ev) => {
-    const st = resolveStatus(ev);
+    const st = resolveStatus(ev, { today: TODAY });
     return { key: st.key, label: CARD_LABEL[st.key] === undefined ? st.label : CARD_LABEL[st.key], st: st };
   };
   const badgeHTML = (ev) => {
@@ -222,7 +263,7 @@ function renderEvents(html) {
      confirmed-date events are eligible for the strip at all, because every card in
      it carries a relative-time claim. */
   const upEligible = EVENTS.filter((ev) => {
-    if (!isUpcoming(ev, platformToday())) return false;
+    if (!isUpcoming(ev, TODAY)) return false;
     const st = evState(ev).st;
     return st.key === 'CONFIRMED_UPCOMING' || st.key === 'LIVE';
   });
@@ -263,7 +304,7 @@ function renderEvents(html) {
   const depthProjected = EVENTS.filter((ev) => ev.date_status === 'PROJECTED' && (!ev.end || ev.end >= TODAY)).length;
   const depthCountries = new Set(EVENTS.filter((ev) => {
     if (ev.research_status === 'REJECTED_NO_EVIDENCE' || ev.date_status === 'CANCELLED') return false;
-    if (!isDiscoverable(resolveStatus(ev))) return false;
+    if (!isDiscoverable(resolveStatus(ev, { today: TODAY }))) return false;
     if (!ev.country) return false;
     if (!ev.end) return ev.date_status === 'TBA' || ev.date_status === 'PROJECTED';
     return ev.end >= TODAY;
@@ -618,6 +659,11 @@ function renderManufacturers(html) {
   html = html.replace(/const EARNED_VERIFIED_SLUGS = [^;]*;/, 'const EARNED_VERIFIED_SLUGS = ' + JSON.stringify(earnedSlugs) + ';');
   html = html.replace(/const MAKER_ALIAS = [^;]*;/, 'const MAKER_ALIAS = ' + JSON.stringify(aliasSlugs) + ';');
 
+  const featuredSlot = paidListings.featuredListingSlotHtml({ scope: 'directory', doc: paidDoc });
+  const featuredRe = /<section class="tp-featured-slot" data-featured-slot="directory"[\s\S]*?<\/section>/;
+  if (featuredRe.test(html)) html = html.replace(featuredRe, featuredSlot);
+  else html = html.replace('<div id="board">', featuredSlot + '\n<div id="board">');
+
   return { page: html, records: makers };
 }
 
@@ -830,8 +876,37 @@ function renderIntel(html) {
   return { page: html, records };
 }
 
+function loadDirectoryIndex() {
+  return JSON.parse(fs.readFileSync('data/directory-index.json', 'utf8'));
+}
+
+function renderVendors(html) {
+  const index = loadDirectoryIndex();
+  const view = directorySsr.vendors(index.companies || []);
+  html = replaceInnerById(html, 'cntTotal', String(view.total));
+  html = replaceInnerById(html, 'cntOem', String(view.oem));
+  html = replaceInnerById(html, 'cntComp', String(view.components));
+  html = replaceInnerById(html, 'cntCountries', String(view.countries));
+  html = replaceInnerById(html, 'vndVisibleCount', String(view.total));
+  html = replaceInnerById(html, 'pillAll', 'All categories (' + view.total + ')');
+  html = replaceInnerById(html, 'pillOem', 'Transformer OEMs (' + view.oem + ')');
+  html = replaceInnerById(html, 'vndCountry', view.countryOptions);
+  html = replaceInnerById(html, 'vndList', view.listHtml);
+  return { page: html, records: view.total };
+}
+
+function renderDirectoryPage(html) {
+  const index = loadDirectoryIndex();
+  let siteStats = {};
+  try { siteStats = JSON.parse(fs.readFileSync('data/site-stats.json', 'utf8')); } catch (e) { siteStats = {}; }
+  html = replaceInnerById(html, 'directoryRoot', directorySsr.directoryRoot(index.companies || [], siteStats));
+  return { page: html, records: (index.companies || []).length };
+}
+
 const jobs = [
   ['events.html', renderEvents, 'events'],
+  ['vendors.html', renderVendors, 'vendors'],
+  ['directory.html', renderDirectoryPage, 'directory'],
   ['components.html', renderComponents, 'components'],
   ['jobs.html', renderJobs, 'jobs'],
   ['grids.html', renderGrids, 'grids'],

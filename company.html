@@ -60,6 +60,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="TransformerPath">
+<script src="lib/listing-media.js"></script>
 <script src="consent.js" defer></script>
     <link rel="stylesheet" href="tp-nav.css?v=14">
   <link rel="stylesheet" href="tp-feedback.css?v=14">
@@ -247,8 +248,9 @@ if (!reqId && !reqC) {
   showNotFound();
 } else Promise.all([
   fetch('data/companies.json').then(r => r.json()).catch(() => null),
-  fetch('data/facilities.json').then(r => r.json()).catch(() => null)
-]).then(([compJson, facJson]) => {
+  fetch('data/facilities.json').then(r => r.json()).catch(() => null),
+  fetch('data/listing-media.json').then(r => r.json()).catch(() => ({ profiles: [] }))
+]).then(([compJson, facJson, mediaDoc]) => {
   const companies = (compJson && compJson.companies) || [];
   const facilities = (facJson && facJson.facilities) || [];
 
@@ -277,7 +279,7 @@ if (!reqId && !reqC) {
       f.company_id === foundCompany.id ||
       (foundCompany.facility_ids && foundCompany.facility_ids.includes(f.id))
     );
-    renderCanonical(foundCompany, compFacs, companies);
+    renderCanonical(foundCompany, compFacs, companies, mediaDoc);
   } else {
     loadLegacyManufacturers();
   }
@@ -285,7 +287,7 @@ if (!reqId && !reqC) {
   loadLegacyManufacturers();
 });
 
-function renderCanonical(comp, facs, allCompanies) {
+function renderCanonical(comp, facs, allCompanies, mediaDoc) {
   document.title = comp.name + ' — TransformerPath';
   document.getElementById('pName').textContent = comp.name;
   document.getElementById('pTier').innerHTML = tierTag(comp.commercial_status);
@@ -398,6 +400,8 @@ function renderCanonical(comp, facs, allCompanies) {
         ${rfqLink}
       </div>
     </div>
+
+    ${(window.tpListingMedia ? window.tpListingMedia.renderForCompany(comp, mediaDoc) : '')}
 
     ${facHtml}
 

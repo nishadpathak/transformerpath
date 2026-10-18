@@ -60,6 +60,7 @@ const FILES_FROM_MIXED_DIRS = [
   'lib/job-board.js',           // jobs page and the review queue; rules, not a data file
   'lib/rfq-leads.js',           // RFQ consent, redaction, and the 5-supplier cap
   'lib/provenance-badge.js',    // shared provenance badge, loaded by public pages
+  'lib/listing-media.js',       // Verified logo, catalogue PDF and photo gallery
   'lib/saved-design.js',        // calculator save/open snapshot helper
   'lib/learning-catalog.js',    // Skills Passport and engineer-track progress catalog
   'js/tp-grid-calc.js',         // Grid Lab formulas; js/ is not copied wholesale
@@ -75,7 +76,7 @@ const ROOT_JS = [
   'google-auth-config.js', 'tp-auth.js',
   'tp-theme.js', 'tp-shortlist.js', 'tp-watchlist.js', 'map.js',
   'tp-webgl-gate.js', 'paid-checkout.js', 'listing-payment.js', 'jobs-rfq-pay.js',
-  'tp-3d-core.js', 'tp-canvas-scroll.js', 'tp-power-assembly.js', 'tp-oil-assembly.js',
+  'tp-3d-core.js', 'tp-canvas-scroll.js', 'tp-label-layout.js', 'tp-power-assembly.js', 'tp-oil-assembly.js',
   'tp-castresin-assembly.js', 'tp-ct-assembly.js',
   'part-ecosystem.js', 'component-3d-bridge.js',
   'tp-lab-geometry.js', 'tp-lab-engine.js',
