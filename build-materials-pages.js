@@ -16,6 +16,7 @@
  */
 'use strict';
 const fs = require('fs');
+const paidListings = require('./lib/paid-listings');
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
@@ -106,6 +107,7 @@ function crgoPage() {
     '<div class="cr-h2">Reference table <span style="font-size:.9rem;color:var(--muted);font-weight:600;text-transform:none">(grade- and basis-specific verified figures only)</span></div>' +
     table +
     '<p class="cr-row" style="margin-top:16px"><b style="color:var(--text)">Honesty note:</b> each cell shows no verified figure rather than an estimate. Where a market publishes a good, grade-specific reference it will be added with its observation date, market, basis and source. Unknown &gt; incorrect. See <a href="../../materials.html" style="color:var(--accent)">Transformer Materials Intelligence</a> and the <a href="../../methodology.html" style="color:var(--accent)">research methodology</a>.</p>' +
+    paidListings.componentSponsorSectionHtml({ component: 'coresteel' }) +
     '</main>\n' + FOOT + '\n<script src="../../analytics.js" defer></script>\n</body>\n</html>';
 }
 fs.mkdirSync('materials/crgo', { recursive: true });

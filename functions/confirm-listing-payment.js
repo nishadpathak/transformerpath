@@ -6,7 +6,7 @@
 // request body as a payment.
 
 const STRIPE_API = 'https://api.stripe.com/v1';
-const { listingProduct } = require('../lib/paid-listings');
+const { listingProduct, componentFromSession } = require('../lib/paid-listings');
 
 const PRODUCTS = {
   verified_manufacturer: true,
@@ -18,7 +18,10 @@ const PRODUCTS = {
   job_bundle_5: true,
   rfq_lead: true,
   rfq_lead_pro: true,
-  supplier_pro: true
+  supplier_pro: true,
+  featured_listing: true,
+  featured_verified: true,
+  component_sponsor: true
 };
 
 function json(statusCode, body) {
@@ -72,7 +75,8 @@ exports.handler = async function (event) {
     return json(200, {
       configured: true,
       paid: paid === true,
-      product: listing || null
+      product: listing || null,
+      component: componentFromSession(session)
     });
   } catch (e) {
     return json(200, { configured: true, paid: false, product: null, reason: 'stripe_error' });
