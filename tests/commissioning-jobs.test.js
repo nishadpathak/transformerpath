@@ -53,6 +53,12 @@ const page = fs.readFileSync('commissioning-jobs/index.html', 'utf8');
 check('page states the empty board', page.indexOf('No HV or MV commissioning posts are listed.') !== -1);
 check('page offers the live $199 button', page.indexOf('Post a job, $199') !== -1 && page.indexOf('https://buy.stripe.com/4gMeV62lO9xz9g4fdMfYY0U') !== -1 && page.indexOf('data-product="commissioning_job_post"') !== -1);
 check('page does not invent a vacancy', page.indexOf('Example Utility') === -1 && page.indexOf('example.com/jobs') === -1);
+check('publish copies the board directory', (function () {
+  const src = fs.readFileSync('build-dist.js', 'utf8');
+  const dirs = src.match(/const DIRS = \[([\s\S]*?)\];/);
+  return !!(dirs && dirs[1].indexOf("'commissioning-jobs'") !== -1);
+})());
+check('page loads the empty postings file', page.indexOf('/data/commissioning-jobs.json') !== -1);
 check('page has no CSV product', page.indexOf('csv_') === -1);
 check('jobs page keeps the free heading and links the board', (function () {
   const jobs = fs.readFileSync('jobs.html', 'utf8');
