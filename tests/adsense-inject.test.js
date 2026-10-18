@@ -74,6 +74,11 @@ ok(guide.indexOf('data-tp-ad="in-content"') > guide.indexOf('</h1>'), 'buy-early
 ok(guide.indexOf('data-tp-ad="in-content"') < guide.indexOf('<h2>Next</h2>'), 'buy-early slot stays at the marker');
 ok(guide.indexOf('/consent.js') !== -1, 'buy-early gains the consent script when missing');
 ok(inject.headInner(guide).indexOf(cfg.LOADER) !== -1, 'buy-early gains the AdSense loader');
+ok(inject.wantsInContentSlot('bottlenecks/index.html'), 'bottlenecks hub gets an in-content slot');
+ok(inject.wantsInContentSlot('bottlenecks/bushings/index.html'), 'bottlenecks bushings page gets an in-content slot');
+const bottleneck = inject.stampHtml(GUIDE, 'bottlenecks/grain-oriented-electrical-steel/index.html');
+ok(bottleneck.indexOf('<!--tp-ad-slot-->') === -1, 'bottlenecks marker is replaced');
+ok(bottleneck.indexOf('data-tp-ad="in-content"') !== -1, 'bottlenecks slot is stamped');
 
 if (problems.length) {
   console.error('\n' + problems.length + ' failed');
