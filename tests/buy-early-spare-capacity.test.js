@@ -43,6 +43,7 @@ check('buy-early ad marker', buy.indexOf('<!--tp-ad-slot-->') !== -1);
 check('spare-capacity ad marker', spare.indexOf('<!--tp-ad-slot-->') !== -1);
 check('consent script on both pages', buy.indexOf('/consent.js') !== -1 && spare.indexOf('/consent.js') !== -1);
 check('verified label is the existing price', (spare.match(/Get Verified \$499\/yr/g) || []).length === rows.length);
+check('names omit the follow control and a second escape', spare.indexOf('>BHEL</a>') !== -1 && spare.indexOf('Follow</a>') === -1 && spare.indexOf('&amp;amp;') === -1 && buy.indexOf('Follow</a>') === -1 && buy.indexOf('&amp;amp;') === -1);
 check('no invented spare-capacity claim', !/has spare capacity/i.test(buy + spare));
 check('no Dubai or UAE in the new pages', !/\bDubai\b|\bUAE\b|United Arab Emirates/i.test(buy + spare));
 ['webinar', 'consulting', 'masterclass', 'book a call'].forEach(function (word) {
@@ -72,6 +73,11 @@ check('pages are not an eighth primary label', ['>Buy early<', '>Mid-tier makers
 
 const sitemap = fs.readFileSync('sitemap.xml', 'utf8');
 check('sitemap lists both pages', sitemap.indexOf('https://transformerpath.com/buy-early/') !== -1 && sitemap.indexOf('https://transformerpath.com/spare-capacity/') !== -1);
+check('publish copies both page directories', (function () {
+  const src = fs.readFileSync('build-dist.js', 'utf8');
+  const dirs = src.match(/const DIRS = \[([\s\S]*?)\];/);
+  return !!(dirs && dirs[1].indexOf("'buy-early'") !== -1 && dirs[1].indexOf("'spare-capacity'") !== -1);
+})());
 check('no sibling html shadows the directory URLs', !fs.existsSync('buy-early.html') && !fs.existsSync('spare-capacity.html'));
 
 const cat = catalog.create();
