@@ -301,6 +301,15 @@
   .hero-stage h1{ max-width:none; }
   .hero-stage__lead{ max-width:36ch; }
 }
+/* Phones already show the full wordmark banner. This stage's poster is a
+   second hero, cover-cropped in the short viz box, so it stays off. */
+@media (max-width: 760px) {
+  .hero-stage__viz,
+  .hero-stage__poster,
+  .hero-stage__scrim { display: none; }
+  .hero-cine,
+  .hero-cine.hero-v2 { background-image: none; background-size: auto; }
+}
 
 .tp-video-modal[hidden]{ display:none !important; }
 .tp-video-modal{
