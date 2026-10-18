@@ -138,7 +138,7 @@
     nav.id = 'tp-pwa-nav';
     nav.setAttribute('aria-label', 'App');
     nav.innerHTML =
-      '<a href="/intel"' + (tab === 'intel' ? ' aria-current="page"' : '') + '>Intel</a>' +
+      '<a href="/intel.html"' + (tab === 'intel' ? ' aria-current="page"' : '') + '>Intel</a>' +
       '<a href="/map"' + (tab === 'map' ? ' aria-current="page"' : '') + '>Map</a>' +
       '<a href="/directory"' + (tab === 'directory' ? ' aria-current="page"' : '') + '>Directory</a>' +
       '<a href="/learn"' + (tab === 'learn' ? ' aria-current="page"' : '') + '>Learn</a>';
