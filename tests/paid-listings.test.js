@@ -1204,6 +1204,286 @@ async function main() {
     check(rel + ' shows the return banner after deferred scripts', page.indexOf('DOMContentLoaded') >= 0 && page.indexOf('tpListingPayment.confirm') >= 0);
   });
 
+  const setupMessage = paid.LISTING_SETUP_MESSAGE;
+  check('setup message names the brand inbox', setupMessage === "Payment received. We'll set up your listing within 2 business days via hello@transformerpath.com.");
+  check('coresteel maps to Core steel', paid.normalizeComponent('coresteel') === 'coresteel' && paid.normalizeComponent('Core steel') === 'coresteel' && paid.componentLabel('coresteel') === 'Core steel');
+  check('component field accepts the four values', ['pressboard', 'coresteel', 'copper', 'bushings'].every(function (key) { return paid.normalizeComponent(key) === key && paid.componentLabel(key); }));
+
+  const featuredLinkSession = {
+    amount_total: 29900,
+    currency: 'usd',
+    metadata: {},
+    payment_link: { url: paid.PAYMENT_LINKS.featured_listing.url }
+  };
+  check('$299 featured listing link is featured_listing', paid.listingProduct(featuredLinkSession) === 'featured_listing');
+  check('$299 featured listing link is not Featured Event', paid.listingProduct(featuredLinkSession) !== 'featured_event' && paid.listingProduct(featuredLinkSession) !== 'job_featured');
+  const amountOnlyFeatured = { amount_total: 29900, currency: 'usd', metadata: {}, payment_link: 'plink_job_featured' };
+  check('$299 amount alone is not a featured listing', paid.listingProduct(amountOnlyFeatured) !== 'featured_listing' && paid.listingProduct(amountOnlyFeatured) !== 'featured_event');
+  const sponsorLinkSession = {
+    amount_total: 19900,
+    currency: 'usd',
+    metadata: {},
+    payment_link: { url: paid.PAYMENT_LINKS.component_sponsor.url },
+    custom_fields: [{ key: 'component', dropdown: { value: 'coresteel' } }]
+  };
+  check('$199 component sponsor link is component_sponsor', paid.listingProduct(sponsorLinkSession) === 'component_sponsor' && paid.componentFromSession(sponsorLinkSession) === 'coresteel');
+  check('$199 component sponsor is not Learning', paid.listingProduct(sponsorLinkSession) !== 'learning' && paid.listingProduct({ amount_total: 19900, currency: 'usd', metadata: { plan: 'learning', user_id: 'user_1' } }) !== 'component_sponsor');
+  const verifiedLinkSession = {
+    amount_total: 69900,
+    currency: 'usd',
+    metadata: { product: 'featured_verified' }
+  };
+  check('featured verified metadata is featured_verified', paid.listingProduct(verifiedLinkSession) === 'featured_verified');
+
+  const reviewedFeature = {
+    listings: [{
+      product: 'featured_listing',
+      status: 'verified',
+      reviewer: 'directory-review',
+      reviewed_at: '2026-10-16T00:00:00Z',
+      verification_evidence: 'Domain email matched the directory record.',
+      company_name: 'Northwind Components',
+      company_slug: 'northwind-components',
+      country: 'India'
+    }]
+  };
+  const emptySlot = paid.featuredListingSlotHtml({ scope: 'directory', doc: { listings: [] } });
+  check('empty featured slot says Your company here', emptySlot.indexOf('Your company here') >= 0 && emptySlot.indexOf('>Featured<') >= 0);
+  check('empty featured slot links the live prices', emptySlot.indexOf(paid.PAYMENT_LINKS.featured_listing.url) >= 0 && emptySlot.indexOf(paid.PAYMENT_LINKS.featured_verified.url) >= 0 && emptySlot.indexOf('/pricing.html#featured-listings') >= 0 && emptySlot.indexOf('$299/yr plus tax') >= 0 && emptySlot.indexOf('$699/yr plus tax') >= 0);
+  check('empty featured slot does not invent a sponsor', !/Hitachi|Siemens|Weidmann|\bABB\b|Northwind/.test(emptySlot));
+  const directorySlot = paid.featuredListingSlotHtml({ scope: 'directory', doc: reviewedFeature });
+  const indiaSlot = paid.featuredListingSlotHtml({ scope: 'country', country: 'India', doc: reviewedFeature });
+  const germanySlot = paid.featuredListingSlotHtml({ scope: 'country', country: 'Germany', doc: reviewedFeature });
+  check('reviewed featured row shows the company', directorySlot.indexOf('Northwind Components') >= 0 && directorySlot.indexOf('Your company here') < 0 && directorySlot.indexOf('/manufacturers/northwind-components/') >= 0);
+  check('country slot shows a matching reviewed company', indiaSlot.indexOf('Northwind Components') >= 0);
+  check('country slot stays empty for a different country', germanySlot.indexOf('Your company here') >= 0 && germanySlot.indexOf('Northwind') < 0);
+  const pendingFeature = paid.featuredListingSlotHtml({ scope: 'directory', doc: { listings: [Object.assign({}, reviewedFeature.listings[0], { status: 'paid_pending_verification', reviewer: '', company_name: '' })] } });
+  check('unreviewed payment does not fill the featured slot', pendingFeature.indexOf('Your company here') >= 0 && pendingFeature.indexOf('Northwind') < 0);
+
+  const emptySponsor = paid.componentSponsorSectionHtml({ component: 'coresteel', doc: { listings: [] } });
+  check('empty sponsor says Your company here', emptySponsor.indexOf('Your company here') >= 0 && emptySponsor.indexOf('Sponsor this section, $199/mo') >= 0 && emptySponsor.indexOf('Core steel') >= 0 && emptySponsor.indexOf(paid.PAYMENT_LINKS.component_sponsor.url) >= 0 && emptySponsor.indexOf('plus tax') >= 0);
+  check('empty sponsor does not invent a company', !/Hitachi|Siemens|Weidmann|\bABB\b|Northwind/.test(emptySponsor));
+  const reviewedSponsor = paid.componentSponsorSectionHtml({
+    component: 'core steel',
+    doc: {
+      listings: [{
+        product: 'component_sponsor',
+        component: 'coresteel',
+        status: 'verified',
+        reviewer: 'directory-review',
+        reviewed_at: '2026-10-16T00:00:00Z',
+        verification_evidence: 'Domain email matched the directory record.',
+        company_name: 'Northwind Components',
+        company_slug: 'northwind-components'
+      }]
+    }
+  });
+  check('reviewed sponsor shows the company on Core steel', reviewedSponsor.indexOf('Northwind Components') >= 0 && reviewedSponsor.indexOf('Your company here') < 0 && reviewedSponsor.indexOf('Core steel') >= 0);
+
+  ['directory.html', 'manufacturers.html', 'manufacturers/india.html'].forEach(function (rel) {
+    const page = fs.readFileSync(rel, 'utf8');
+    const slot = page.match(/<section class="tp-featured-slot"[\s\S]*?<\/section>/);
+    check(rel + ' has an honest Featured slot', !!slot && slot[0].indexOf('Your company here') >= 0 && slot[0].indexOf('>Featured<') >= 0 && slot[0].indexOf(paid.PAYMENT_LINKS.featured_listing.url) >= 0 && slot[0].indexOf('/pricing.html#featured-listings') >= 0 && !/Hitachi|Siemens|Weidmann|\bABB\b/.test(slot[0]));
+  });
+  [
+    ['components/bushings/index.html', 'bushings'],
+    ['materials/transformerboard/index.html', 'pressboard'],
+    ['materials/ctc/index.html', 'copper'],
+    ['materials/crgo/index.html', 'coresteel']
+  ].forEach(function (pair) {
+    const page = fs.readFileSync(pair[0], 'utf8');
+    const slot = page.match(/<section class="tp-component-sponsor"[\s\S]*?<\/section>/);
+    check(pair[0] + ' has an empty sponsor section', !!slot && slot[0].indexOf('data-component-sponsor="' + pair[1] + '"') >= 0 && slot[0].indexOf('Your company here') >= 0 && slot[0].indexOf('Sponsor this section, $199/mo') >= 0 && slot[0].indexOf('plus tax') >= 0 && !/Hitachi|Siemens|Weidmann|\bABB\b/.test(slot[0]));
+  });
+  const componentsPage = fs.readFileSync('components.html', 'utf8');
+  ['bushings', 'pressboard', 'copper', 'coresteel'].forEach(function (key) {
+    check('components.html sponsor ' + key, componentsPage.indexOf('data-component-sponsor=\\"' + key + '\\"') >= 0 || componentsPage.indexOf('data-component-sponsor="' + key + '"') >= 0);
+  });
+  check('components.html labels coresteel as Core steel', componentsPage.indexOf('Core steel') >= 0 && componentsPage.indexOf('Sponsor this section, $199/mo') >= 0);
+
+  const pricingSource = fs.readFileSync('pricing.html', 'utf8');
+  check('pricing keeps the verified manufacturer link', pricingSource.indexOf(mfrLink) >= 0 && pricingSource.indexOf('Pay $499') >= 0);
+  check('pricing keeps the featured event link', pricingSource.indexOf(link) >= 0 && pricingSource.indexOf('Feature this event — $299') >= 0);
+  check('pricing keeps the exhibitor link', pricingSource.indexOf(exhibitorLink) >= 0 && pricingSource.indexOf('Feature your exhibitor — $399') >= 0);
+  check('pricing adds featured listings plus tax', pricingSource.indexOf('id="featured-listings"') >= 0 && pricingSource.indexOf(paid.PAYMENT_LINKS.featured_listing.url) >= 0 && pricingSource.indexOf(paid.PAYMENT_LINKS.featured_verified.url) >= 0 && pricingSource.indexOf('$299') >= 0 && pricingSource.indexOf('$699') >= 0 && pricingSource.indexOf('plus tax') >= 0);
+  check('pricing adds the component sponsor', pricingSource.indexOf('id="component-sponsor"') >= 0 && pricingSource.indexOf(paid.PAYMENT_LINKS.component_sponsor.url) >= 0 && pricingSource.indexOf('Sponsor this section, $199/mo') >= 0 && pricingSource.indexOf('plus tax') >= 0);
+  const advertisePage = fs.readFileSync('sponsor.html', 'utf8');
+  check('advertise page keeps the exhibitor checkout', advertisePage.indexOf(exhibitorLink) >= 0 && advertisePage.indexOf('id="featured-listings"') >= 0 && advertisePage.indexOf('id="component-sponsor"') >= 0 && advertisePage.indexOf('Core steel') >= 0 && advertisePage.indexOf('$199/mo plus tax') >= 0);
+
+  const claimFile = fs.readFileSync('claim.html', 'utf8');
+  const claimNote = claimFile.slice(claimFile.indexOf('id="claimSetupNote"'), claimFile.indexOf('id="claimSetupNote"') + 420);
+  check('claim note does not say payment received before Stripe', claimNote.indexOf('Payment received') < 0 && claimNote.indexOf('Checking this checkout with Stripe.') >= 0);
+  let claimScript = '';
+  const claimScripts = /<script>([\s\S]*?)<\/script>/g;
+  let claimMatch;
+  while ((claimMatch = claimScripts.exec(claimFile))) {
+    if (claimMatch[1].indexOf('confirm-listing-payment') >= 0) claimScript = claimMatch[1];
+  }
+  async function claimReturn(search, verifyBody, confirmBody) {
+    const note = { textContent: 'Checking this checkout with Stripe.' };
+    const calls = [];
+    let replaced = '';
+    const sandbox = {
+      URLSearchParams: URLSearchParams,
+      location: { search: search, hash: '', replace: function (url) { replaced = url; } },
+      document: { getElementById: function (id) { return id === 'claimSetupNote' ? note : null; } },
+      fetch: function (url, opts) {
+        calls.push({ url: String(url), body: opts && opts.body });
+        const payload = String(url).indexOf('confirm-listing-payment') >= 0 ? confirmBody : verifyBody;
+        return Promise.resolve({ json: function () { return Promise.resolve(payload); } });
+      }
+    };
+    sandbox.window = sandbox;
+    vm.createContext(sandbox);
+    vm.runInContext(claimScript, sandbox);
+    await new Promise(function (resolve) { setTimeout(resolve, 0); });
+    await new Promise(function (resolve) { setTimeout(resolve, 0); });
+    return { note: note, calls: calls, replaced: replaced };
+  }
+  const claimMissing = await claimReturn('', null, null);
+  check('claim without a session returns to the profile form', claimMissing.replaced.indexOf('claim-profile.html') === 0 && claimMissing.note.textContent.indexOf('Payment received') < 0);
+  const claimUnpaid = await claimReturn('?session_id=cs_test_unpaid', { valid: false, paid: false, product: null }, null);
+  check('unconfirmed claim stays neutral', claimUnpaid.note.textContent.indexOf('Payment received') < 0 && claimUnpaid.note.textContent.indexOf('Stripe has not confirmed') >= 0 && claimUnpaid.calls.length === 1);
+  const claimPaid = await claimReturn('?session_id=cs_test_featured_listing', { valid: false, paid: true, product: 'featured_listing', listing: 'paid_pending_verification' }, { configured: true, paid: true, product: 'featured_listing' });
+  check('claim says payment received only after both checks', claimPaid.note.textContent === setupMessage && claimPaid.calls.length === 2 && claimPaid.calls[1].body.indexOf('featured_listing') >= 0);
+  const claimHalf = await claimReturn('?session_id=cs_test_featured_listing', { valid: false, paid: true, product: 'component_sponsor', listing: 'paid_pending_verification' }, { configured: true, paid: false, product: 'component_sponsor' });
+  check('claim stays neutral when confirmation disagrees', claimHalf.note.textContent.indexOf('Payment received') < 0);
+
+  process.env.STRIPE_SECRET_KEY = 'sk_test_new_products';
+  process.env.STRIPE_PRICE_COMPONENT_SPONSOR = 'price_test_component_sponsor';
+  let sponsorPosted = '';
+  global.fetch = function (url, opts) {
+    sponsorPosted = opts && opts.body ? String(opts.body) : '';
+    return Promise.resolve({ ok: true, status: 200, json: async function () { return { id: 'cs_test_sponsor_created', url: 'https://checkout.stripe.com/c/pay/cs_test_sponsor_created', livemode: false }; } });
+  };
+  const sponsorMissing = await checkout.handler({ httpMethod: 'POST', body: JSON.stringify({ product: 'component_sponsor', email: 'buyer@example.com' }) });
+  check('component sponsor checkout requires component', sponsorMissing.statusCode === 400);
+  const sponsorCreated = await checkout.handler({ httpMethod: 'POST', body: JSON.stringify({ product: 'component_sponsor', email: 'buyer@example.com', component: 'Core steel' }) });
+  check('component sponsor checkout stores coresteel', sponsorCreated.statusCode === 200 && sponsorPosted.indexOf('metadata%5Bcomponent%5D=coresteel') >= 0 && sponsorPosted.indexOf('metadata%5Bproduct%5D=component_sponsor') >= 0 && sponsorPosted.indexOf('%2Fclaim%3Fsession_id%3D') >= 0, sponsorPosted.slice(0, 400));
+  delete process.env.STRIPE_PRICE_COMPONENT_SPONSOR;
+  delete process.env.STRIPE_SECRET_KEY;
+
+  const verifyAccess = require('../functions/verify-access');
+  process.env.STRIPE_SECRET_KEY = 'sk_test_new_products';
+  global.fetch = function (url) {
+    const id = String(url).split('/').pop().split('?')[0];
+    const sessions = {
+      cs_test_sponsor_paid: {
+        payment_status: 'paid',
+        amount_total: 19900,
+        currency: 'usd',
+        metadata: { product: 'component_sponsor', component: 'coresteel' },
+        custom_fields: [{ key: 'component', dropdown: { value: 'coresteel' } }]
+      },
+      cs_test_listing_paid: {
+        payment_status: 'paid',
+        amount_total: 29900,
+        currency: 'usd',
+        metadata: { product: 'featured_listing' }
+      }
+    };
+    if (!sessions[id]) return Promise.resolve({ ok: false, json: async function () { return { error: 'missing' }; } });
+    return Promise.resolve({ ok: true, json: async function () { return sessions[id]; } });
+  };
+  const sponsorAccess = JSON.parse((await verifyAccess.handler({ httpMethod: 'POST', body: JSON.stringify({ session_id: 'cs_test_sponsor_paid' }) })).body);
+  check('component sponsor does not grant course access', sponsorAccess.valid === false && sponsorAccess.paid === true && sponsorAccess.product === 'component_sponsor' && !sponsorAccess.entitlement_token, JSON.stringify(sponsorAccess));
+  const featuredListingAccess = JSON.parse((await verifyAccess.handler({ httpMethod: 'POST', body: JSON.stringify({ session_id: 'cs_test_listing_paid' }) })).body);
+  check('featured listing does not grant course access', featuredListingAccess.valid === false && featuredListingAccess.paid === true && featuredListingAccess.product === 'featured_listing' && featuredListingAccess.listing === 'paid_pending_verification' && !featuredListingAccess.entitlement_token);
+  confirmRes = await confirm.handler({ httpMethod: 'POST', body: JSON.stringify({ session_id: 'cs_test_sponsor_paid', product: 'component_sponsor' }) });
+  confirmBody = JSON.parse(confirmRes.body);
+  check('confirm accepts a paid component sponsor', confirmBody.configured === true && confirmBody.paid === true && confirmBody.product === 'component_sponsor' && confirmBody.component === 'coresteel', JSON.stringify(confirmBody));
+  confirmRes = await confirm.handler({ httpMethod: 'POST', body: JSON.stringify({ session_id: 'cs_test_listing_paid', product: 'featured_listing' }) });
+  confirmBody = JSON.parse(confirmRes.body);
+  check('confirm accepts a paid featured listing', confirmBody.paid === true && confirmBody.product === 'featured_listing', JSON.stringify(confirmBody));
+
+  function unconfiguredStore() {
+    const events = new Map();
+    return {
+      eventProcessed: async function (id) { return events.has(id); },
+      markProcessed: async function (id, type) { events.set(id, type); },
+      writeEntitlement: async function () {},
+      writePaidListing: async function () {
+        const err = new Error('paid_listings store not configured');
+        err.code = 'not_configured';
+        throw err;
+      }
+    };
+  }
+  wh._setPersistenceForTests(unconfiguredStore());
+  const logged = [];
+  const originalLog = console.log;
+  console.log = function (line) { logged.push(String(line)); };
+  let webhookRes;
+  try {
+    webhookRes = await postWebhook(wh.handler, secret, {
+      id: 'evt_component_sponsor_unconfigured',
+      type: 'checkout.session.completed',
+      data: {
+        object: {
+          id: 'cs_test_component_unconfigured',
+          amount_total: 19900,
+          currency: 'usd',
+          livemode: false,
+          metadata: { product: 'component_sponsor' },
+          custom_fields: [{ key: 'component', dropdown: { value: 'coresteel' } }],
+          customer_details: { email: 'buyer@example.com' }
+        }
+      }
+    });
+  } finally {
+    console.log = originalLog;
+  }
+  const webhookBody = JSON.parse(webhookRes.body);
+  check('unconfigured component sponsor webhook does not 500', webhookRes.statusCode === 200 && webhookBody.stored === false && webhookBody.paid_listing === true, webhookRes.body);
+  check('unconfigured component sponsor webhook logs the component', logged.some(function (line) {
+    return line.indexOf('cs_test_component_unconfigured') >= 0 && line.indexOf('coresteel') >= 0 && line.indexOf(setupMessage) >= 0;
+  }));
+  const featuredWebhook = await postWebhook(wh.handler, secret, {
+    id: 'evt_featured_listing_unconfigured',
+    type: 'checkout.session.completed',
+    data: {
+      object: {
+        id: 'cs_test_featured_unconfigured',
+        amount_total: 29900,
+        currency: 'usd',
+        livemode: false,
+        metadata: { product: 'featured_listing' },
+        customer_details: { email: 'buyer@example.com' }
+      }
+    }
+  });
+  check('unconfigured featured listing webhook does not 500', featuredWebhook.statusCode === 200 && JSON.parse(featuredWebhook.body).stored === false);
+  const verifiedWebhook = await postWebhook(wh.handler, secret, {
+    id: 'evt_featured_verified_unconfigured',
+    type: 'checkout.session.completed',
+    data: {
+      object: {
+        id: 'cs_test_verified_unconfigured',
+        amount_total: 69900,
+        currency: 'usd',
+        livemode: false,
+        metadata: { product: 'featured_verified' },
+        customer_details: { email: 'buyer@example.com' }
+      }
+    }
+  });
+  check('unconfigured featured verified webhook does not 500', verifiedWebhook.statusCode === 200 && JSON.parse(verifiedWebhook.body).stored === false);
+  const oldProductWebhook = await postWebhook(wh.handler, secret, {
+    id: 'evt_featured_event_unconfigured',
+    type: 'checkout.session.completed',
+    data: {
+      object: {
+        id: 'cs_test_event_unconfigured',
+        amount_total: 29900,
+        currency: 'usd',
+        livemode: false,
+        metadata: { product: 'featured_event', event_id: 'middle-east-energy' },
+        customer_details: { email: 'buyer@example.com' }
+      }
+    }
+  });
+  check('unconfigured featured event webhook still fails closed', oldProductWebhook.statusCode === 500 && JSON.parse(oldProductWebhook.body).error === 'paid listing not stored', oldProductWebhook.body);
+
   delete process.env.STRIPE_SECRET_KEY;
   global.fetch = savedFetch;
   if (savedPriceM === undefined) delete process.env.STRIPE_PRICE_VERIFIED_MANUFACTURER; else process.env.STRIPE_PRICE_VERIFIED_MANUFACTURER = savedPriceM;

@@ -652,6 +652,11 @@ function renderManufacturers(html) {
   html = html.replace(/const EARNED_VERIFIED_SLUGS = [^;]*;/, 'const EARNED_VERIFIED_SLUGS = ' + JSON.stringify(earnedSlugs) + ';');
   html = html.replace(/const MAKER_ALIAS = [^;]*;/, 'const MAKER_ALIAS = ' + JSON.stringify(aliasSlugs) + ';');
 
+  const featuredSlot = paidListings.featuredListingSlotHtml({ scope: 'directory', doc: paidDoc });
+  const featuredRe = /<section class="tp-featured-slot" data-featured-slot="directory"[\s\S]*?<\/section>/;
+  if (featuredRe.test(html)) html = html.replace(featuredRe, featuredSlot);
+  else html = html.replace('<div id="board">', featuredSlot + '\n<div id="board">');
+
   return { page: html, records: makers };
 }
 

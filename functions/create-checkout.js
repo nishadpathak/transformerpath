@@ -84,6 +84,7 @@ exports.handler = async function (event) {
 
   const companySlug = String(body.company_slug || '').trim();
   const eventId = String(body.event_id || '').trim();
+  const component = paid.normalizeComponent(body.component);
 
   if (product === 'verified_manufacturer') {
     if (!companySlug) return json(400, { error: 'company_slug required' });
@@ -93,6 +94,7 @@ exports.handler = async function (event) {
     if (!eventId) return json(400, { error: 'event_id required' });
     if (!paid.knownEventId(eventId)) return json(400, { error: 'unknown event' });
   }
+  if (product === 'component_sponsor' && !component) return json(400, { error: 'component required' });
 
   const missing = missingConfig(product);
   if (missing.length) return json(503, { configured: false, missing: missing });
@@ -114,6 +116,7 @@ exports.handler = async function (event) {
   form.set('metadata[product]', product);
   if (companySlug) form.set('metadata[company_slug]', companySlug);
   if (eventId) form.set('metadata[event_id]', eventId);
+  if (component) form.set('metadata[component]', component);
 
   let res;
   try {
