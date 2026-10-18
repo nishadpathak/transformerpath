@@ -29,6 +29,7 @@ const { loadEvents } = require('./lib/events-reader');
 const { dateLine, allowsCalendar, badgeText, dubaiToday } = require('./lib/event-display');
 const { eventBadge, intelBadge } = require('./lib/provenance-badge');
 const tpAff = require('./lib/travelpayouts');
+const directorySsr = require('./lib/directory-ssr');
 
 /* ------------------------------------------------------------------ *
  * Helpers
@@ -125,6 +126,39 @@ function inject(html, openTag, id, newInner) {
 
 // Inject `newInner` into the element matching `id="..."`, bracketed by
 // invisible idempotent marker comments. Robust across arbitrary attributes.
+function findMatchingClose(html, tag, from) {
+  const re = new RegExp('<(/?)' + tag + '\\b[^>]*>', 'gi');
+  re.lastIndex = from;
+  let depth = 1;
+  let m;
+  while ((m = re.exec(html))) {
+    if (m[1]) depth--;
+    else depth++;
+    if (depth === 0) return m.index;
+  }
+  return -1;
+}
+
+/* Replace an element's children. Marker comments make a second run replace
+ * only the previous prerender, even when the new HTML contains the same tag. */
+function replaceInnerById(html, id, newInner) {
+  const startM = '<!--SSR:' + id + '-->';
+  const endM = '<!--/SSR:' + id + '-->';
+  const cm = html.indexOf(startM);
+  if (cm >= 0) {
+    const em = html.indexOf(endM, cm);
+    if (em < 0) throw new Error('unclosed SSR marker ' + id);
+    return html.slice(0, cm) + startM + '\n' + newInner + '\n' + html.slice(em);
+  }
+  const re = new RegExp('<([a-zA-Z0-9]+)([^>]*\\bid=["\']' + id + '["\'][^>]*)>');
+  const m = re.exec(html);
+  if (!m) throw new Error('id not found: ' + id);
+  const openEnd = m.index + m[0].length;
+  const closeAt = findMatchingClose(html, m[1], openEnd);
+  if (closeAt < 0) throw new Error('close not found: ' + id);
+  return html.slice(0, openEnd) + '\n' + startM + '\n' + newInner + '\n' + endM + '\n' + html.slice(closeAt);
+}
+
 function injectById(html, id, newInner) {
   const startM = '<!--SSR:' + id + '-->';
   const endM = '<!--/SSR:' + id + '-->';
@@ -830,8 +864,37 @@ function renderIntel(html) {
   return { page: html, records };
 }
 
+function loadDirectoryIndex() {
+  return JSON.parse(fs.readFileSync('data/directory-index.json', 'utf8'));
+}
+
+function renderVendors(html) {
+  const index = loadDirectoryIndex();
+  const view = directorySsr.vendors(index.companies || []);
+  html = replaceInnerById(html, 'cntTotal', String(view.total));
+  html = replaceInnerById(html, 'cntOem', String(view.oem));
+  html = replaceInnerById(html, 'cntComp', String(view.components));
+  html = replaceInnerById(html, 'cntCountries', String(view.countries));
+  html = replaceInnerById(html, 'vndVisibleCount', String(view.total));
+  html = replaceInnerById(html, 'pillAll', 'All categories (' + view.total + ')');
+  html = replaceInnerById(html, 'pillOem', 'Transformer OEMs (' + view.oem + ')');
+  html = replaceInnerById(html, 'vndCountry', view.countryOptions);
+  html = replaceInnerById(html, 'vndList', view.listHtml);
+  return { page: html, records: view.total };
+}
+
+function renderDirectoryPage(html) {
+  const index = loadDirectoryIndex();
+  let siteStats = {};
+  try { siteStats = JSON.parse(fs.readFileSync('data/site-stats.json', 'utf8')); } catch (e) { siteStats = {}; }
+  html = replaceInnerById(html, 'directoryRoot', directorySsr.directoryRoot(index.companies || [], siteStats));
+  return { page: html, records: (index.companies || []).length };
+}
+
 const jobs = [
   ['events.html', renderEvents, 'events'],
+  ['vendors.html', renderVendors, 'vendors'],
+  ['directory.html', renderDirectoryPage, 'directory'],
   ['components.html', renderComponents, 'components'],
   ['jobs.html', renderJobs, 'jobs'],
   ['grids.html', renderGrids, 'grids'],
