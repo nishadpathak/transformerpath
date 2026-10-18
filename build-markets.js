@@ -809,7 +809,7 @@ const idxFoot = fs.readFileSync('_partials/footer.html', 'utf8').trim();
 
 const idx = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
   '<title>Transformer Markets Intelligence by Country | TransformerPath</title>' +
-  '<meta name="description" content="Country transformer intelligence dashboards — grid operators, manufacturing bases, factories, components, live tenders, project pipelines and RFQ routing for key global markets.">' +
+  '<meta name="description" content="Country transformer intelligence dashboards — grid operators, manufacturing bases, factories, components, live tenders and project pipelines. RFQ routing is coming soon.">' +
   '<link rel="canonical" href="https://transformerpath.com/markets.html"><link rel="stylesheet" href="style.css?v=14"><link rel="stylesheet" href="tp-nav.css?v=13"><link rel="icon" type="image/svg+xml" href="brand/favicon.svg">' +
   '<style>' +
   '.market-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px;margin-top:20px}' +
@@ -822,7 +822,7 @@ const idx = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta char
   '<div class="container" style="max-width:1120px">' +
   '<span style="display:inline-block;font-size:.75rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--accent);background:rgba(11,95,165,.08);padding:4px 12px;border-radius:999px;margin-bottom:12px">Geographic Intelligence Hubs</span>' +
   '<h1 style="font-size:2.2rem;margin:0 0 12px;color:var(--ink)">Global Transformer Markets by Country</h1>' +
-  '<p style="color:var(--muted);max-width:820px;font-size:1.02rem;line-height:1.6">Comprehensive procurement &amp; intelligence dashboards for the world\'s primary transformer markets: grid frequency and voltage architectures, transmission system operators, domestic manufacturing facilities, component suppliers, active tenders and live RFQ routing.</p>' +
+  '<p style="color:var(--muted);max-width:820px;font-size:1.02rem;line-height:1.6">Comprehensive procurement &amp; intelligence dashboards for the world\'s primary transformer markets: grid frequency and voltage architectures, transmission system operators, domestic manufacturing facilities, component suppliers, active tenders and project pipelines. RFQ routing is coming soon.</p>' +
   '</div></section>' +
   '<main class="container" style="max-width:1120px;padding:0 20px 70px">' +
   '<div class="market-grid">' +

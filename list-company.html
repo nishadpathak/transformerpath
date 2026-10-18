@@ -146,14 +146,14 @@ form input[type="checkbox"] { width:auto; min-width:0; padding:0; margin:0; flex
         <span class="tag">Most popular</span>
         <h3>Verified</h3>
         <div class="price">$499</div>
-        <ul><li>Everything in Basic</li><li data-feature="verified_badge" data-delivery="built"><b>✓ Verified badge</b> after review</li><li>Public company profile</li></ul>
-        <p style="font-size:.8rem;color:var(--muted);margin:8px 0 0">On the roadmap (not included yet): <span data-feature="buyer_inquiry_routing" data-delivery="coming_soon">Enquiry button (buyer leads) <span class="tp-soon">Coming soon</span></span>.</p>
+        <ul><li>Everything in Basic</li><li data-feature="verified_badge" data-delivery="built"><b>✓ Verified badge</b> after review</li><li data-feature="logo_brochure_upload" data-delivery="built">Logo, catalogue PDF link and photo gallery, at no extra charge</li><li>Public company profile</li></ul>
+        <p style="font-size:.8rem;color:var(--muted);margin:8px 0 0">On the roadmap (not included yet): <span data-feature="buyer_inquiry_routing" data-delivery="coming_soon">Enquiry button (buyer leads) <span class="tp-soon">Coming soon</span></span>. RFQ routing is coming soon.</p>
       </div>
       <div class="tier">
         <h3>Premium</h3>
         <div class="price">No checkout yet</div>
         <ul><li>Everything in Verified</li></ul>
-        <p style="font-size:.8rem;color:var(--muted);margin:8px 0 0">On the roadmap (not included yet): <span data-feature="supplier_pro_badge" data-delivery="coming_soon"><b>★ Supplier Pro badge</b> <span class="tp-soon">Coming soon</span></span>; <span data-feature="featured_placement" data-delivery="coming_soon">Top placement in category <span class="tp-soon">Coming soon</span></span>; <span data-feature="logo_brochure_upload" data-delivery="coming_soon">Logo in directory <span class="tp-soon">Coming soon</span></span>; <span data-feature="monthly_brief" data-delivery="coming_soon">Monthly mention in the briefing <span class="tp-soon">Coming soon</span></span>.</p>
+        <p style="font-size:.8rem;color:var(--muted);margin:8px 0 0">On the roadmap (not included yet): <span data-feature="supplier_pro_badge" data-delivery="coming_soon"><b>★ Supplier Pro badge</b> <span class="tp-soon">Coming soon</span></span>; <span data-feature="featured_placement" data-delivery="coming_soon">Top placement in category <span class="tp-soon">Coming soon</span></span>; <span data-feature="monthly_brief" data-delivery="coming_soon">Monthly mention in the briefing <span class="tp-soon">Coming soon</span></span>.</p>
       </div>
     </div>
     <p style="text-align:center; font-size:.86rem; margin:0 0 36px"><a href="verified-standards.html" style="color:var(--accent);font-weight:600;text-decoration:none">See exactly what each tier requires → Verification standards</a></p>
@@ -214,6 +214,12 @@ form input[type="checkbox"] { width:auto; min-width:0; padding:0; margin:0; flex
           <div><label for="fld_contact_name">Contact Name *</label><input id="fld_contact_name" type="text" name="contact_name" required></div>
           <div><label for="fld_contact_email">Contact Email *</label><input id="fld_contact_email" type="email" name="contact_email" required></div>
         </div>
+        <div class="row">
+          <div><label for="fld_logo">Logo URL</label><input id="fld_logo" type="url" name="logo_url" placeholder="https://example.com/logo.png"></div>
+          <div><label for="fld_catalogue">Catalogue PDF link</label><input id="fld_catalogue" type="url" name="catalogue_url" placeholder="https://example.com/catalogue.pdf"></div>
+        </div>
+        <div style="margin-bottom:14px"><label for="fld_photos">Photo gallery URLs</label><textarea id="fld_photos" name="photo_urls" rows="3" placeholder="One https image URL per line. Included with Verified at no extra charge."></textarea></div>
+        <p style="color:var(--muted);font-size:.82rem;margin:-6px 0 14px">Logo, catalogue PDF and photos are included with Verified Manufacturer at no extra charge and appear on the company profile after review. RFQ routing is coming soon.</p>
         <div style="margin-bottom:14px"><label for="fld_description">Short company description</label><textarea id="fld_description" name="description" rows="3" placeholder="What you make / supply / service, key markets, certifications..."></textarea></div>
         <label style="display:flex; gap:9px; align-items:flex-start; font-size:.84rem; color:var(--muted); font-weight:400; margin-bottom:8px"><input type="checkbox" name="consent" required style="width:auto;margin-top:3px"> I confirm I'm authorised to submit this company and that TransformerPath may contact me about this listing.</label>
         <button class="btn btn-amber" type="submit" style="width:100%">Submit company &rarr;</button>

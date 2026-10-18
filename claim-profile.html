@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Claim Company Profile — TransformerPath</title>
-<meta name="description" content="Claim and verify your transformer manufacturing, component or service company profile on TransformerPath. Confirm technical capabilities, factories, certifications and manage RFQ routing.">
+<meta name="description" content="Claim your transformer company profile on TransformerPath. Verified includes a logo, catalogue PDF and photo gallery at no extra charge. RFQ routing is coming soon.">
 <link rel="canonical" href="https://transformerpath.com/claim-profile.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TransformerPath">
@@ -121,7 +121,7 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
 <section class="hero" style="padding:50px 0 36px">
   <div class="container">
     <h1 style="font-size:2.1rem">Claim Your <span>Company Profile</span></h1>
-    <p>Represent a transformer manufacturer, component supplier, or machine maker? Claim your listing to complete technical specifications, verify factory capabilities, and unlock direct RFQ leads.</p>
+    <p>Represent a transformer manufacturer, component supplier, or machine maker? Claim your listing to confirm factory capabilities. A logo, a catalogue PDF link and a photo gallery are included with Verified Manufacturer at no extra charge. RFQ routing is coming soon.</p>
   </div>
 </section>
 
@@ -176,10 +176,22 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
 
         <label for="fld_tier">Desired Profile Status</label>
         <select id="fld_tier" name="tier">
-          <option value="CLAIMED_FREE">Claimed (Free) — Complete factory specs, receive buyer RFQ notifications</option>
-          <option value="VERIFIED">Verified ($499 / 12 months) — Verified badge, catalogue upload, lead routing & analytics</option>
+          <option value="CLAIMED_FREE">Claimed (free) — factory specs. RFQ routing is coming soon</option>
+          <option value="VERIFIED">Verified ($499 / 12 months) — badge, logo, catalogue PDF and photo gallery at no extra charge. RFQ routing is coming soon</option>
           <option value="SUPPLIER_PRO">Supplier Pro — no checkout yet</option>
         </select>
+
+        <label for="fld_logo">Logo URL</label>
+        <input id="fld_logo" type="url" name="logo_url" placeholder="https://example.com/logo.png">
+        <p class="claim-note">Included with Verified Manufacturer at no extra charge. Shown on the company profile after review. Use an https PNG, JPG, GIF or WebP link. Leave blank if you do not have one.</p>
+
+        <label for="fld_catalogue">Catalogue PDF link</label>
+        <input id="fld_catalogue" type="url" name="catalogue_url" placeholder="https://example.com/catalogue.pdf">
+        <p class="claim-note">https link to a PDF. Included at no extra charge and shown after review.</p>
+
+        <label for="fld_photos">Photo gallery URLs</label>
+        <textarea id="fld_photos" name="photo_urls" placeholder="One https image URL per line"></textarea>
+        <p class="claim-note">Factory photos. One https image URL per line. Included at no extra charge and shown after review.</p>
 
         <label for="fld_updates">Initial Profile Updates / Specifications to Complete</label>
         <textarea id="fld_updates" name="updates" placeholder="List any factory locations, maximum verified voltage (kV), maximum MVA rating, ISO/IEC certifications, or test bay parameters to be added."></textarea>

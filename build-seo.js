@@ -22,6 +22,18 @@ function extractConst(src, name) {
 }
 const esc = (s) => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
+/* Meta descriptions stay a complete sentence and always name the RFQ status. */
+function hubMeta(lead) {
+  const note = 'RFQ routing is coming soon.';
+  let base = String(lead || '').replace(/\s*RFQ routing is coming soon\.?/gi, ' ').replace(/\s+/g, ' ').trim();
+  const limit = 160 - note.length - 1;
+  if (base.length > limit) {
+    base = base.slice(0, limit).replace(/\s+\S*$/, '').replace(/[.,;:\s]+$/, '');
+  }
+  if (base && !/[.!?]$/.test(base)) base += '.';
+  return (base ? base + ' ' : '') + note;
+}
+
 
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
@@ -69,7 +81,7 @@ const META = {
 function page(cat) {
   const meta = META[cat];
   const items = COMPONENTS[cat].map(([n, d]) => `<div class="card"><h3 style="color:var(--ink);margin:0 0 6px">${esc(n)}</h3><p style="color:var(--muted);font-size:.92rem">${esc(d)}</p><p style="margin-top:10px;font-size:.83rem"><a href="../manufacturers.html" style="color:var(--accent);font-weight:700">Find suppliers →</a> · <a href="../rfq.html" style="color:var(--accent);font-weight:700">Request quotes →</a></p></div>`).join('');
-  const suppliers = `<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:16px 18px;text-align:center"><b style="color:var(--text);font-size:.98rem">Request ${esc(meta.t)}?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Post an RFQ to reach relevant manufacturers and suppliers.</p><a class="btn btn-amber" href="../rfq.html" data-track="rfq_started" data-track-component_category="${esc(meta.t)}">Request an RFQ</a> <a class="btn btn-outline btn-sm" href="../list-company.html" data-track="supplier_claim_started" data-track-component_category="${esc(meta.t)}">Supply this? Claim your company →</a></div>`;
+  const suppliers = `<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:16px 18px;text-align:center"><b style="color:var(--text);font-size:.98rem">Request ${esc(meta.t)}?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Post an RFQ. RFQ routing is coming soon.</p><a class="btn btn-amber" href="../rfq.html" data-track="rfq_started" data-track-component_category="${esc(meta.t)}">Request an RFQ</a> <a class="btn btn-outline btn-sm" href="../list-company.html" data-track="supplier_claim_started" data-track-component_category="${esc(meta.t)}">Supply this? Claim your company →</a></div>`;
   const faq = meta.faq || [];
   const faqSchema = `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map(function (f) { return { '@type': 'Question', name: f[0], acceptedAnswer: { '@type': 'Answer', text: f[1] } }; }) })}</script>`;
   const faqHtml = faq.length ? `<h2 style="font-size:1.2rem;color:var(--ink);margin-top:26px">Frequently asked</h2>` + faq.map(function (f) { return `<div style="margin:12px 0"><b style="color:var(--ink)">${esc(f[0])}</b><p style="color:var(--text);margin:4px 0 0;line-height:1.7">${esc(f[1])}</p></div>`; }).join('') : '';
@@ -218,7 +230,7 @@ TYPE_HUBS.forEach(function (th) {
 
     return '<!DOCTYPE html>\n<html lang="en" data-theme="dark">\n<head>\n<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
       '<title>' + esc(title) + ' | TransformerPath</title>\n' +
-      '<meta name="description" content="' + esc(lead.slice(0, 155)) + '">\n' +
+      '<meta name="description" content="' + esc(hubMeta(lead)) + '">\n' +
       '<link rel="canonical" href="https://transformerpath.com/' + canonicalPath + '">\n' +
       '<meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath">\n' +
       '<meta property="og:title" content="' + esc(title) + '"><meta property="og:url" content="https://transformerpath.com/' + canonicalPath + '">\n' +
@@ -228,12 +240,12 @@ TYPE_HUBS.forEach(function (th) {
       '</head>\n<body>\n' + HEAD + '\n<main id="main" tabindex="-1" class="c-wrap">\n' +
       '<nav style="font-size:.82rem;color:var(--muted);margin-bottom:12px">' + crumbs + '</nav>\n' +
       '<h1>' + esc(title) + '</h1>\n' +
-      '<p class="lead">' + esc(lead) + ' Listing ' + makersList.length + ' listed manufacturers with technical capabilities, locations, comparison tools, and direct RFQ channels.</p>\n' +
+      '<p class="lead">' + esc(lead) + ' Listing ' + makersList.length + ' listed manufacturers with technical capabilities, locations and comparison tools. RFQ routing is coming soon.</p>\n' +
       (extraHtml || '') +
       '<div style="margin:20px 0">' + rows + '</div>\n' +
       '<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:18px 20px;text-align:center;margin-top:28px">' +
       '<b style="color:var(--text);font-size:1.1rem">Procuring ' + esc(title) + '?</b>' +
-      '<p style="color:var(--muted);font-size:.9rem;margin:6px 0 14px">Submit your required MVA, voltage class, and standards to receive direct quotes from matched global manufacturers.</p>' +
+      '<p style="color:var(--muted);font-size:.9rem;margin:6px 0 14px">Submit your required MVA, voltage class, and standards. RFQ routing is coming soon.</p>' +
       '<a class="btn btn-amber" href="/rfq.html?spec=' + encodeURIComponent(title) + '">Submit Technical RFQ</a> ' +
       '<a class="btn btn-outline btn-sm" href="/directory.html" style="margin-left:8px">Open Sourcing Directory →</a>' +
       '</div>\n' +
@@ -276,7 +288,7 @@ TYPE_HUBS.forEach(function (th) {
     const comboDir = typeDir + '/' + cslug;
     fs.mkdirSync(comboDir, { recursive: true });
     const comboTitle = th.name + ' Manufacturers in ' + countryName;
-    const comboLead = 'Directory of ' + th.name.toLowerCase() + ' manufacturers and suppliers based in ' + countryName + ' with technical capabilities, official website links, and RFQ channels.';
+    const comboLead = 'Directory of ' + th.name.toLowerCase() + ' manufacturers and suppliers based in ' + countryName + ' with technical capabilities and official website links.';
     const comboHtml = renderHub(
       comboTitle,
       comboLead,
