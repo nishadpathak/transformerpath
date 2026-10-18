@@ -32,6 +32,7 @@ function wantsInContentSlot(rel) {
   if (/^knowledge\/[^/]+\.html$/.test(n)) return true;
   if (n === 'intel.html') return true;
   if (n === 'directory.html' || n === 'manufacturers.html') return true;
+  if (n === 'buy-early/index.html' || n === 'spare-capacity/index.html') return true;
   return false;
 }
 
@@ -122,6 +123,13 @@ function placeSlot(html, rel) {
     const end = html.indexOf('</p>', i);
     if (end < 0) throw new Error('manufacturer directory count is unclosed');
     return insertAt(html, end + 4, slot);
+  }
+
+  if (n === 'buy-early/index.html' || n === 'spare-capacity/index.html') {
+    const marker = '<!--tp-ad-slot-->';
+    const i = html.indexOf(marker);
+    if (i < 0) throw new Error(n + ' has no in-content ad marker');
+    return html.slice(0, i) + slot + html.slice(i + marker.length);
   }
 
   return html;
