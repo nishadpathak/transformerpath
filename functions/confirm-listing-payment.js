@@ -22,7 +22,9 @@ const PRODUCTS = {
   featured_listing: true,
   featured_verified: true,
   component_sponsor: true,
-  dga_report: true
+  dga_report: true,
+  report_template: true,
+  template_bundle: true
 };
 
 function json(statusCode, body) {
