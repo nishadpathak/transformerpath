@@ -18,6 +18,7 @@ create table if not exists public.paid_listings (
   currency text,
   livemode boolean not null default false,
   status text not null default 'paid_pending_verification',
+  component text,
   created_at timestamptz not null default now(),
   constraint paid_listings_session_id_key unique (session_id),
   constraint paid_listings_status_check check (status in ('paid_pending_verification', 'verified', 'rejected', 'refunded'))

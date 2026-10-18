@@ -25,9 +25,16 @@ try {
   });
 } catch (e) {}
 
+const paidListings = require('./lib/paid-listings');
 const DATA = JSON.parse(fs.readFileSync('data/components-deep-dive.json', 'utf8'));
 const CATEGORIES = DATA.categories || [];
 const deepDiveJson = scrubLegacyLabels(JSON.stringify(CATEGORIES));
+const SPONSOR_BY_CAT = {
+  bushings: paidListings.componentSponsorSectionHtml({ component: 'bushings' }),
+  pressboard: paidListings.componentSponsorSectionHtml({ component: 'pressboard' }),
+  'crgo-steel': paidListings.componentSponsorSectionHtml({ component: 'coresteel' }),
+  'copper-ctc': paidListings.componentSponsorSectionHtml({ component: 'copper' })
+};
 
 let totalSuppliers = 0;
 CATEGORIES.forEach(c => { totalSuppliers += (c.suppliers || []).length; });
@@ -152,6 +159,7 @@ window.__TP_COMPONENTS_DEEP__ = ${deepDiveJson};
 window.__TP_ACC_SLUGS__ = ${JSON.stringify([...ACC_SLUGS])};
 (function(){
   const data = window.__TP_COMPONENTS_DEEP__ || [];
+  const SPONSOR_BY_CAT = ${JSON.stringify(SPONSOR_BY_CAT)};
   const ACC_SLUGS = new Set(window.__TP_ACC_SLUGS__ || []);
   function slugify(s){ return String(s||'').normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim().replace(/&/g,'and').replace(/['’´]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,''); }
   const searchInput = document.getElementById('compSearch');
@@ -241,7 +249,7 @@ window.__TP_ACC_SLUGS__ = ${JSON.stringify([...ACC_SLUGS])};
         '</div>';
       }).join('');
 
-      html += '<div class="deep-section">' +
+      html += '<div class="deep-section" id="' + esc(cat.id) + '">' +
         '<div class="deep-sec-head">' +
           '<div>' +
             '<h2 class="deep-sec-title">🔧 ' + esc(cat.name) + '</h2>' +
@@ -250,6 +258,7 @@ window.__TP_ACC_SLUGS__ = ${JSON.stringify([...ACC_SLUGS])};
           '<span style="font-size:.84rem;color:var(--muted)"><b>' + filteredSuppliers.length + '</b> Suppliers</span>' +
         '</div>' +
         '<div class="supplier-grid">' + cardsHtml + '</div>' +
+        (SPONSOR_BY_CAT[cat.id] || '') +
       '</div>';
     });
 

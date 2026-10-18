@@ -20,7 +20,10 @@ const LABELS = {
   job_bundle_5: 'Job bundle, 5 posts ($799)',
   rfq_lead: 'RFQ lead ($249)',
   rfq_lead_pro: 'Supplier Pro extra lead ($149)',
-  supplier_pro: 'Supplier Pro ($1,499 / year)'
+  supplier_pro: 'Supplier Pro ($1,499 / year)',
+  featured_listing: 'Featured Listing ($299/yr plus tax)',
+  featured_verified: 'Featured + Verified ($699/yr plus tax)',
+  component_sponsor: 'Component Sponsor ($199/mo plus tax)'
 };
 
 function origin() {
@@ -40,6 +43,9 @@ function nextStep(product) {
   }
   if (product === 'supplier_pro') {
     return 'Supplier Pro stays pending verification. The inbox still counts only the included leads on file. Payment does not release a buyer contact. See ' + origin() + '/rfq.html?paid=supplier_pro';
+  }
+  if (product === 'featured_listing' || product === 'featured_verified' || product === 'component_sponsor') {
+    return "Payment received. We'll set up your listing within 2 business days via hello@transformerpath.com.";
   }
   return null;
 }
