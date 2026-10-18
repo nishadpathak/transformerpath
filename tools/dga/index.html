@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DGA oil-test interpreter — TransformerPath</title>
+<meta name="description" content="Free dissolved-gas screening for mineral-oil transformers. Enter H2, CH4, C2H6, C2H4, C2H2, CO, and CO2. See Duval Triangle 1, Rogers ratios, IEEE C57.104 status, and the key-gas method. Optional PDF report is $19.">
+<link rel="canonical" href="https://transformerpath.com/tools/dga/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TransformerPath">
+<meta property="og:title" content="DGA oil-test interpreter">
+<meta property="og:description" content="Free Duval Triangle 1, Rogers ratios, IEEE C57.104 status, and key-gas screening. Optional $19 PDF. Not a substitute for expert diagnosis.">
+<meta property="og:url" content="https://transformerpath.com/tools/dga/">
+<meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
+<meta name="robots" content="index,follow">
+<link rel="stylesheet" href="/style.css?v=14">
+<link rel="stylesheet" href="/tp-nav.css?v=14">
+<link rel="stylesheet" href="/tp-feedback.css?v=14">
+<link rel="icon" type="image/svg+xml" href="/brand/favicon.svg">
+<link rel="icon" href="/brand/favicon.ico" sizes="any">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#0d1b2e">
+<style>
+.dga-wrap{max-width:880px;margin:0 auto;padding:8px 20px 72px}
+.dga-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:12px 0 18px}
+.dga-grid label,.dga-extra label{display:block;font-size:.78rem;font-weight:700;color:var(--muted);margin-bottom:4px}
+.dga-grid input,.dga-extra input,.dga-extra select{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--text);font:inherit}
+.dga-extra{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:0 0 16px}
+.dga-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:0 0 14px}
+.dga-card h2{margin:0 0 8px;font-size:1.05rem;color:var(--ink)}
+.dga-card p{margin:0 0 8px;line-height:1.55}
+.dga-note{background:rgba(245,166,35,.12);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin:16px 0}
+#dga-error{color:#b91c1c;font-weight:700}
+</style>
+<script src="/consent.js" defer></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header>
+  <style>
+    @media (min-width: 1024px) {
+      #mainNav > .tpnav-more { display: block; }
+    }
+  </style>
+  <div class="container nav">
+    <a href="/index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 16 16" aria-hidden="true" style="flex:none"><g fill="#f5a623"><rect x="1" y="1" width="4" height="4"/><rect x="11" y="1" width="4" height="4"/><rect x="1" y="11" width="4" height="4"/><rect x="11" y="11" width="4" height="4"/><rect x="5" y="2" width="6" height="2"/><rect x="12" y="5" width="2" height="6"/><rect x="5" y="12" width="6" height="2"/></g></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+    <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
+    <nav class="tpnav" id="mainNav" aria-label="Primary">
+      <a href="/intel">Intel</a>
+      <div class="tpnav-dropdown">
+        <a href="/directory.html" class="tpnav-dropdown-btn">Directory</a>
+        <div class="tpnav-dropdown-panel" role="menu">
+          <a href="/manufacturers.html">Manufacturers</a>
+          <a href="/map.html">Industry Map</a>
+          <a href="/grids.html">Global Grids</a>
+          <a href="/components.html">Components &amp; Materials</a>
+          <a href="/machinery.html">Machinery</a>
+          <a href="/laboratories.html">Testing Labs</a>
+          <a href="/services.html">Services &amp; Repair</a>
+          <a href="/markets.html">Markets</a>
+          <a href="/buyers-guide.html">Buyer's Guide</a>
+          <a href="/directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
+        </div>
+      </div>
+      <a href="/projects.html">Projects</a>
+      <a href="/tenders.html">Tenders</a>
+      <a href="/events.html">Events</a>
+      <a href="/learn.html">Learn</a>
+      <a href="/rfq.html">RFQ</a>
+      <div class="tpnav-more">
+        <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
+        <div class="tpnav-more-panel" role="menu">
+          <a href="/tools.html" role="menuitem">Engineering</a>
+          <a href="/map.html" role="menuitem">Industry Map</a>
+          <a href="/grids.html" role="menuitem">Global Grids</a>
+          
+          <a href="/standards.html" role="menuitem">Standards &amp; Codes</a>
+          <a href="/for-manufacturers.html" role="menuitem">For Manufacturers</a>
+          <a href="/pricing.html" role="menuitem">Pricing Plans</a>
+          <a href="/verified.html" role="menuitem">Verified Profiles</a>
+        </div>
+      </div>
+      <span class="tpnav-utils">
+        <a href="/search.html" title="Search" aria-label="Search">&#128269;</a>
+        <span class="tp-auth" data-tp-auth hidden></span>
+        <a href="/workspace.html" data-tp-account>Account</a>
+        <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">&#127769;</button>
+      </span>
+    </nav>
+  </div>
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    // Night mode is the default; light is opt-in via the toggle.
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+
+    if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
+    updateThemeIcon();
+
+    themeToggle?.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      updateThemeIcon();
+    });
+
+    function updateThemeIcon() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+    }
+  </script>
+  <script src="/google-auth-config.js" defer></script>
+  <script src="/tp-auth.js?v=1" defer></script>
+  <script src="/tp-nav.js?v=7" defer></script>
+  <script src="/tp-pwa.js?v=7" defer></script>
+</header>
+<section class="hero" style="padding:48px 0 28px">
+  <div class="container">
+    <h1 style="font-size:2.05rem">DGA oil-test <span>interpreter</span></h1>
+    <p>Enter the laboratory ppm values. The page screens them with four published methods. The tool is free. A PDF of the same result is $19.</p>
+  </div>
+</section>
+<main id="main" class="dga-wrap">
+  <p class="dga-note" id="dga-disclaimer"><strong>This is not a substitute for expert diagnosis.</strong> One sample cannot show a trend. Compare the result with the transformer's own history and with the limits in the equipment specification.</p>
+  <form id="dga-form">
+    <div class="dga-grid">
+      <div><label for="h2">H2 ppm</label><input id="h2" name="h2" inputmode="decimal" required value="0"></div>
+      <div><label for="ch4">CH4 ppm</label><input id="ch4" name="ch4" inputmode="decimal" required value="0"></div>
+      <div><label for="c2h6">C2H6 ppm</label><input id="c2h6" name="c2h6" inputmode="decimal" required value="0"></div>
+      <div><label for="c2h4">C2H4 ppm</label><input id="c2h4" name="c2h4" inputmode="decimal" required value="0"></div>
+      <div><label for="c2h2">C2H2 ppm</label><input id="c2h2" name="c2h2" inputmode="decimal" required value="0"></div>
+      <div><label for="co">CO ppm</label><input id="co" name="co" inputmode="decimal" required value="0"></div>
+      <div><label for="co2">CO2 ppm</label><input id="co2" name="co2" inputmode="decimal" required value="0"></div>
+    </div>
+    <div class="dga-extra">
+      <div><label for="o2n2">O2/N2 column</label>
+        <select id="o2n2" name="o2n2">
+          <option value="le02">At or below 0.2 (unknown uses this column)</option>
+          <option value="gt02">Above 0.2</option>
+        </select>
+      </div>
+      <div><label for="age">Age band</label>
+        <select id="age" name="age">
+          <option value="unknown">Not stated</option>
+          <option value="y1_9">1 to 9 years</option>
+          <option value="y10_30">10 to 30 years</option>
+          <option value="y30">Over 30 years</option>
+        </select>
+      </div>
+      <div><label for="asset">Asset label (optional, for the PDF)</label><input id="asset" name="asset" maxlength="80"></div>
+      <div><label for="sampled">Sample date (optional)</label><input id="sampled" name="sampled" maxlength="80" placeholder="YYYY-MM-DD"></div>
+    </div>
+    <button class="btn btn-amber" type="submit">Interpret</button>
+  </form>
+  <p id="dga-error" hidden></p>
+  <div id="dga-out" hidden>
+    <article class="dga-card"><h2>Plain-language reading</h2><p id="dga-narrative"></p></article>
+    <article class="dga-card"><h2>Duval Triangle 1</h2><p id="dga-duval"></p></article>
+    <article class="dga-card"><h2>Rogers ratios</h2><p id="dga-rogers"></p></article>
+    <article class="dga-card"><h2>IEEE C57.104 status</h2><p id="dga-ieee"></p></article>
+    <article class="dga-card"><h2>Key-gas method</h2><p id="dga-key"></p></article>
+  </div>
+  <section class="dga-card">
+    <h2>Optional $19 PDF report</h2>
+    <p>The PDF repeats the inputs and the four readings. Payment does not change the free result on this page.</p>
+    <p><a class="btn btn-amber" id="dga-buy" data-product="dga_report" href="https://buy.stripe.com/bJe7sE4tWh01ak8c1AfYY0V">$19 PDF report</a></p>
+    <p>After payment, <a href="/data/download?product=dga_report">the download page</a> checks the Stripe session and builds the PDF from the values saved in this browser, or from the same values in the page address.</p>
+  </section>
+  <section class="dga-card">
+    <h2>Methods</h2>
+    <p><strong>Duval Triangle 1.</strong> Methane, ethylene, and acetylene are converted to a percent of their sum. The zone is PD, T1, T2, T3, D1, D2, or DT, using the limits published with IEC 60599. The triangle is for identifying a suspected fault. It is not, by itself, proof that a fault exists.</p>
+    <p><strong>Rogers ratios.</strong> CH4/H2, C2H2/C2H4, and C2H4/C2H6 are coded with the IEC 60599 table. A code set that is not in that table is reported as no matching case. A ratio is not formed when both gases in the pair are zero.</p>
+    <p><strong>IEEE C57.104-2019 status.</strong> Each gas is compared with Table 1 (90th percentile) and Table 2 (95th percentile) for the O2/N2 column and age band you select. At or below Table 1 is status 1 on levels. Between the tables is status 2. Above Table 2 is status 3. Tables 3 and 4 need an earlier sample, so they are not applied. A single sample cannot show active gassing. When O2/N2 is unknown, the page uses the column for a ratio at or below 0.2 and says so.</p>
+    <p><strong>Key-gas method.</strong> IEEE C57.104-2019 Annex D.1. The gas with the highest multiple of its Table 1 norm, among acetylene, hydrogen, ethylene, and carbon monoxide, is the key gas when that multiple is above 1. The annex says an automatic reading is often inconclusive.</p>
+    <p>Questions about the file: <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>.</p>
+  </section>
+</main>
+<footer>
+  <div class="container">
+    <div class="cols">
+      <div>
+        <a href="/index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 16 16" aria-hidden="true" style="flex:none"><g fill="#f5a623"><rect x="1" y="1" width="4" height="4"/><rect x="11" y="1" width="4" height="4"/><rect x="1" y="11" width="4" height="4"/><rect x="11" y="11" width="4" height="4"/><rect x="5" y="2" width="6" height="2"/><rect x="12" y="5" width="2" height="6"/><rect x="5" y="12" width="6" height="2"/></g></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+        <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data. Built for utilities, transformer manufacturers, component suppliers, EPCs, consultants and engineers.</p>
+      </div>
+      <div><p class="footer-col-label">INTELLIGENCE</p><a href="/intel">Daily Intel</a><a href="/archive.html">Intel Archive</a><a href="/projects.html">Projects</a><a href="/tenders.html">Tenders</a><a href="/markets.html">Markets</a><a href="/grids.html">Grids</a><a href="/map.html">Industry Map</a><a href="/events.html">Events</a></div>
+      <div><p class="footer-col-label">DIRECTORY</p><a href="/manufacturers.html">Manufacturers</a><a href="/directory.html">Directory Index</a><a href="/components.html">Components &amp; Materials</a><a href="/machinery.html">Machinery</a><a href="/laboratories.html">Testing Labs</a><a href="/services.html">Service &amp; Repair</a><a href="/logistics.html">Logistics</a><a href="/buyers.html">Buyers &amp; Utilities</a><a href="/rfq.html">RFQ Board</a></div>
+      <div><p class="footer-col-label">ENGINEERING</p><a href="/tools.html">Engineering Hub</a><a href="/calculator.html">Design Calculator</a><a href="/explorer.html">3D Interactive Models</a><a href="/standards.html">Standards &amp; Codes</a><a href="/knowledge.html">Knowledge Base</a><a href="/case-studies.html">Case Studies</a></div>
+      <div><p class="footer-col-label">LEARN</p><a href="/learn.html">Learning Hub</a><a href="/engineer-track.html">Design Engineer Track</a><a href="/academy.html">Academy 3D Tools</a><a href="/books.html">Books</a><a href="/education.html">Education</a></div>
+      <div><p class="footer-col-label">BUSINESS</p><a href="/for-manufacturers.html">For Manufacturers</a><a href="/pricing.html">Pricing Plans</a><a href="/verified.html">Verified Profiles</a><a href="/sponsor.html">Sponsorship</a><a href="/associations.html">Associations</a><a href="/media.html">Media</a></div>
+      <div><p class="footer-col-label">COMPANY</p><a href="/about.html">About Us</a><a href="/workspace.html">Account</a><a href="/faq.html">FAQ</a><a href="/methodology.html">Methodology</a><a href="/contact.html">Contact</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a><a href="/affiliate-disclosure.html">Affiliate disclosure</a></div>
+      <div><p class="footer-col-label">CONTACT</p>
+        <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
+        <a href="/privacy.html#cookies" onclick="if(window.tpResetConsent){window.tpResetConsent();return false}">Cookie settings</a>
+        <a class="tp-li-btn tp-li-follow" data-linkedin-follow href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>Follow us on LinkedIn</a>
+      </div>
+    </div>
+    <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
+  </div>
+</footer>
+<script src="/lib/dga-interpret.js"></script>
+<script>
+(function () {
+  var KEY = 'tp-dga-inputs';
+  var form = document.getElementById('dga-form');
+  var err = document.getElementById('dga-error');
+  var out = document.getElementById('dga-out');
+  var names = ['h2','ch4','c2h6','c2h4','c2h2','co','co2','o2n2','age','asset','sampled'];
+  function read() {
+    var data = {};
+    names.forEach(function (name) {
+      var el = document.getElementById(name);
+      data[name] = el ? el.value : '';
+    });
+    return data;
+  }
+  function fill(data) {
+    if (!data) return;
+    names.forEach(function (name) {
+      var el = document.getElementById(name);
+      if (el && data[name] != null && data[name] !== '') el.value = data[name];
+    });
+  }
+  function paint(result) {
+    if (result.error) {
+      err.hidden = false;
+      err.textContent = result.error;
+      out.hidden = true;
+      return;
+    }
+    err.hidden = true;
+    out.hidden = false;
+    document.getElementById('dga-narrative').textContent = result.narrative;
+    document.getElementById('dga-duval').textContent = result.duval.summary;
+    document.getElementById('dga-rogers').textContent = result.rogers.summary;
+    document.getElementById('dga-ieee').textContent = result.ieee.label + ' (' + result.column.label + '). ' + result.ieee.meaning + ' ' + result.ieee.note;
+    document.getElementById('dga-key').textContent = result.keyGas.summary + ' ' + result.keyGas.limitation;
+  }
+  function persist(data) {
+    try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {}
+    try {
+      var params = new URLSearchParams();
+      names.forEach(function (name) { if (data[name] !== '') params.set(name, data[name]); });
+      history.replaceState(null, '', location.pathname + '?' + params.toString());
+    } catch (e2) {}
+  }
+  function run() {
+    var data = read();
+    var result = window.TPDga.interpret(data);
+    paint(result);
+    if (!result.error) persist(data);
+    return result;
+  }
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    run();
+  });
+  var buy = document.getElementById('dga-buy');
+  if (buy) buy.addEventListener('click', function () { run(); });
+  var fromUrl = {};
+  var params = new URLSearchParams(location.search);
+  var fromQuery = false;
+  names.forEach(function (name) {
+    if (params.has(name)) { fromUrl[name] = params.get(name); fromQuery = true; }
+  });
+  if (fromQuery) fill(fromUrl);
+  else {
+    try { fill(JSON.parse(localStorage.getItem(KEY) || 'null')); } catch (e3) {}
+  }
+  if (fromQuery || params.has('h2')) run();
+})();
+</script>
+<script src="/analytics.js?v=7" defer></script>
+<script src="/tp-freshness.js?v=7" defer></script>
+<script src="/tp-feedback.js?v=7" defer></script>
+</body>
+</html>

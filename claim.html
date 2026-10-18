@@ -111,8 +111,9 @@
 <section class="block">
   <div class="container" style="max-width:720px">
     <div id="claimSetupNote" role="status" style="background:#14365c;color:#fff;border-radius:10px;padding:14px 16px;margin:0 0 16px;font-size:.95rem;line-height:1.5">Checking this checkout with Stripe.</div>
-    <p style="color:var(--muted);font-size:.9rem;line-height:1.55">A session id in the address is not payment. This page asks Stripe, through the same server check that issues the HMAC entitlement for courses, and only then says payment received. Featured and sponsor slots stay empty until the listing is reviewed.</p>
+    <p style="color:var(--muted);font-size:.9rem;line-height:1.55">A session id in the address is not payment. This page asks Stripe, through the same server check that issues the HMAC entitlement for courses, and only then says payment received. Featured and sponsor slots stay empty until the listing is reviewed. A paid DGA PDF opens from the download page after the same check.</p>
     <p style="margin:16px 0 0"><a class="btn btn-outline" href="claim-profile.html">Claim a company profile</a> <a class="btn btn-outline" href="pricing.html#featured-listings">Pricing</a></p>
+    <p style="margin:16px 0 0"><a id="claimNext" class="btn btn-amber" hidden href="/data/download">Download the paid file</a></p>
     <noscript><p>Turn on JavaScript so this page can confirm the checkout with Stripe. Until then it cannot say payment received. Email <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>.</p></noscript>
   </div>
 </section>
@@ -143,28 +144,42 @@
 (function () {
   var SETUP = "Payment received. We'll set up your listing within 2 business days via hello@transformerpath.com.";
   var NEUTRAL = 'Stripe has not confirmed this checkout. This page does not treat a session id as payment.';
-  var PRODUCTS = { featured_listing: true, featured_verified: true, component_sponsor: true };
+  var DOWNLOAD_NOTE = 'Payment received. The download page builds the file from this checkout. A session id in the address is not the file.';
+  var LISTINGS = { featured_listing: true, featured_verified: true, component_sponsor: true };
+  var DOWNLOADS = { dga_report: true };
   var note = document.getElementById('claimSetupNote');
   var params = new URLSearchParams(location.search);
   var session = params.get('session_id') || '';
-  if (!session || session.indexOf('{') !== -1) {
-    location.replace('claim-profile.html' + location.search + location.hash);
-    return;
-  }
-  if (note) note.textContent = NEUTRAL;
+  var asked = params.get('product') || '';
   function showSetup() {
     if (note) note.textContent = SETUP;
   }
   function showNeutral() {
     if (note) note.textContent = NEUTRAL;
   }
+  function showDownload(product) {
+    if (note) note.textContent = DOWNLOAD_NOTE;
+    var link = document.getElementById('claimNext');
+    if (!link) return;
+    link.hidden = false;
+    link.href = '/data/download?product=' + encodeURIComponent(product) + '&session_id=' + encodeURIComponent(session);
+  }
+  if (!session || session.indexOf('{') !== -1) {
+    if (DOWNLOADS[asked]) {
+      showNeutral();
+      return;
+    }
+    location.replace('claim-profile.html' + location.search + location.hash);
+    return;
+  }
+  if (note) note.textContent = NEUTRAL;
   fetch('/.netlify/functions/verify-access', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ session_id: session })
   }).then(function (r) { return r.json(); }).then(function (res) {
     var product = res && res.product;
-    if (!(res && res.paid === true && PRODUCTS[product])) {
+    if (!(res && res.paid === true && (LISTINGS[product] || DOWNLOADS[product]))) {
       showNeutral();
       return null;
     }
@@ -173,8 +188,12 @@
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ session_id: session, product: product })
     }).then(function (r) { return r.json(); }).then(function (confirm) {
-      if (confirm && confirm.configured === true && confirm.paid === true && confirm.product === product) showSetup();
-      else showNeutral();
+      if (!(confirm && confirm.configured === true && confirm.paid === true && confirm.product === product)) {
+        showNeutral();
+        return;
+      }
+      if (DOWNLOADS[product]) showDownload(product);
+      else showSetup();
     });
   }).catch(function () { showNeutral(); });
 })();

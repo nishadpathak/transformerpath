@@ -37,6 +37,7 @@ const crypto = require('crypto');
 const { isConfigured, client } = require('./lib/supabase-server');
 const { sendPaidReceipts } = require('./lib/paid-receipt');
 const paidListings = require('../lib/paid-listings');
+const digitalProducts = require('../lib/digital-products');
 const { listingProduct, companySlugFromReference, componentFromSession } = paidListings;
 
 const PAID_LISTING_PRODUCTS = {
@@ -140,6 +141,12 @@ function paidListingProduct(session) {
   return null;
 }
 
+function digitalProduct(session) {
+  const product = listingProduct(session);
+  if (digitalProducts[product]) return product;
+  return null;
+}
+
 function paidListingRow(session) {
   const meta = session.metadata || {};
   const product = paidListingProduct(session);
@@ -179,6 +186,20 @@ async function handle(ev) {
   // Idempotency: processed-event store (Supabase `webhook_events` keyed by event.id).
   // If the event id is already recorded, return success without re-writing.
   if (await store.eventProcessed(ev.id)) return respond(200, { received: true, idempotent: true });
+
+  if (type === 'checkout.session.completed' && digitalProduct(ev.data && ev.data.object)) {
+    const session = ev.data.object;
+    const product = digitalProduct(session);
+    console.log(JSON.stringify({
+      msg: 'digital product received; supabase not required',
+      event_id: ev.id,
+      type: type,
+      product: product,
+      session_id: session.id
+    }));
+    try { await store.markProcessed(ev.id, type); } catch (markErr) { /* acknowledge either way */ }
+    return respond(200, { received: true, digital_product: product, stored: false });
+  }
 
   if (type === 'checkout.session.completed' && paidListingProduct(ev.data && ev.data.object)) {
     const row = paidListingRow(ev.data.object);

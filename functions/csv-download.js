@@ -17,6 +17,8 @@
 const fs = require('fs');
 const path = require('path');
 const csv = require('../lib/csv-exports');
+const dgaDownload = require('../lib/dga-download');
+const { listingProduct } = require('../lib/paid-listings');
 
 const STRIPE_API = 'https://api.stripe.com/v1';
 
@@ -154,6 +156,8 @@ async function handle(event) {
   const body = bodyOf(event);
   const dl = String(q.dl || '').trim();
   const sig = String(q.sig || '').trim();
+  const asked = String(q.product || body.product || '').trim();
+  if (dl === 'dga_report') return dgaDownload.signedDownload(stripeSecret(), q);
   if (dl || sig) {
     const secret = stripeSecret();
     const sid = String(q.sid || '').trim();
@@ -165,17 +169,23 @@ async function handle(event) {
   }
 
   const sid = String(q.session_id || body.session_id || '').trim();
-  if (!acceptableSessionId(sid)) return failedPage();
+  const dgaAsk = asked === 'dga_report';
+  if (!acceptableSessionId(sid)) return dgaAsk ? dgaDownload.failed() : failedPage();
   const secret = stripeSecret();
-  if (!secret) return failedPage();
+  if (!secret) return dgaAsk ? dgaDownload.failed() : failedPage();
 
   let session = null;
   try {
     session = await loadSession(secret, sid);
   } catch (e) {
-    return failedPage();
+    return dgaAsk ? dgaDownload.failed() : failedPage();
   }
-  if (!session || session.payment_status !== 'paid') return failedPage();
+  if (!session || session.payment_status !== 'paid') return dgaAsk ? dgaDownload.failed() : failedPage();
+  const listed = listingProduct(session);
+  if (listed === 'dga_report' || dgaAsk) {
+    if (listed !== 'dga_report') return dgaDownload.failed();
+    return dgaDownload.fulfilled(secret, sid, Object.assign({}, q, body));
+  }
   const product = csv.csvProductFromSession(session);
   if (!product) return failedPage();
   return paidPage(product, csv.issueLinks(secret, sid, product));
