@@ -11,7 +11,7 @@
      - there is NO overall score, star rating, tier ranking or "best" call;
      - shortlists require an account and are wired to the workspace (deferred).
 
-   If the index cannot load, the page degrades to an explanatory state.
+   If the index cannot load, a prerendered list stays in place.
    ========================================================================== */
 (function () {
   'use strict';
@@ -51,7 +51,8 @@
         render();
       })
       .catch(function () {
-        root.innerHTML = '<p style="color:var(--muted)">The directory index could not be loaded. Refresh, or report this page.</p>';
+        if (root && root.querySelector('.dir-list')) return;
+        if (root) root.innerHTML = '<p style="color:var(--muted)">The directory index could not be loaded. Refresh, or report this page.</p>';
       });
   }
 
@@ -73,6 +74,7 @@
 
   // ── State ────────────────────────────────────────────────────────────────
   var q = '', kind = '', country = '', type = '', minKv = 0, evFilter = '', onlyMultiPlant = false, minComp = 0;
+  var wired = false;
   var compare = {}; // id -> true
 
   var STOPWORDS = { manufacturer:1, manufacturers:1, supplier:1, suppliers:1, company:1, companies:1, transformer:1, transformers:1, factory:1, factories:1, for:1, the:1, a:1, an:1, and:1, make:1, makers:1, of:1, in:1, with:1, need:1 };
@@ -250,7 +252,13 @@
       var elQ = document.getElementById('dirQ');
       if (elQ && document.activeElement !== elQ && elQ.value !== q) elQ.value = q;
       var elC = document.getElementById('dirCountry');
-      if (elC && document.activeElement !== elC && elC.value !== country) elC.value = country;
+      if (elC && document.activeElement !== elC) {
+        if (elC.options.length !== countries.length + 1) {
+          elC.innerHTML = '<option value="">All Countries (' + countries.length + ')</option>' + countries.map(function (cc) {
+            return '<option value="' + esc(cc) + '"' + (country === cc ? ' selected' : '') + '>' + esc(cc) + ' (' + facets.countries[cc] + ')</option>';
+          }).join('');
+        } else if (elC.value !== country) elC.value = country;
+      }
       var elT = document.getElementById('dirType');
       if (elT && document.activeElement !== elT && elT.value !== type) elT.value = type;
       var elK = document.getElementById('dirKv');
@@ -283,6 +291,7 @@
         moreEl.remove();
       }
 
+      if (!wired) { wire(); wired = true; }
       renderCompare();
       renderCmpDock();
       return;
@@ -355,6 +364,7 @@
     renderCompare();
     renderCmpDock();
     wire();
+    wired = true;
   }
 
   function renderCmpDock() {
