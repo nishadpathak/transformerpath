@@ -50,6 +50,22 @@ function usesSharedPredicate(file) {
 });
 check(fs.readFileSync('build-exhibitions.js', 'utf8').indexOf('platformToday()') >= 0, 'exhibitions compare the end date with platformToday()');
 
+const ssr = fs.readFileSync('build_ssr.js', 'utf8');
+check(ssr.indexOf('const EVENTS_DAY_OFFSET_MS = 4*60*60*1000') >= 0, 'events prerender uses EVENTS_DAY_OFFSET_MS');
+check(ssr.indexOf('resolveStatus(ev, { today: TODAY })') >= 0, 'events prerender resolves status on the platform day');
+const eventsPage = fs.readFileSync('events.html', 'utf8');
+const countMatch = eventsPage.match(/<!--SSR:events-count-->\s*Showing (\d+) upcoming events/);
+const upcomingNow = events.filter((ev) => isUpcoming(ev, today));
+check(!!countMatch, 'events prerender has a Showing N upcoming events line');
+check(countMatch && Number(countMatch[1]) === upcomingNow.length, 'prerendered count matches canonical upcoming events (' + (countMatch && countMatch[1]) + ' vs ' + upcomingNow.length + ')');
+const upNext = (eventsPage.match(/<!--SSR:events-upnext-->([\s\S]*?)<!--\/SSR:events-upnext-->/) || [])[1] || '';
+const liveCards = upNext.match(/data-rel-end="(\d{4}-\d{2}-\d{2})"[^>]*>Live now/g) || [];
+check(liveCards.every(function (chip) {
+  const end = chip.match(/data-rel-end="(\d{4}-\d{2}-\d{2})"/)[1];
+  return end >= today;
+}), 'no prerendered Live now chip belongs to an event that already ended');
+check(upNext.indexOf('Powerex Asia') < 0 || today <= '2026-10-16', 'Powerex Asia is not Live now after 16 Oct 2026');
+
 if (failed) {
   console.error('PAST EVENTS REGRESSION FAILED (' + failed + ')');
   process.exit(1);

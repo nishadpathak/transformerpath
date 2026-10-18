@@ -87,6 +87,16 @@ check('viz math does not throw module is not defined in the browser', !/^module\
 const api = require('../viz/viz-math');
 check('viz math still exports for node', typeof api.inrush === 'function' && typeof api.vecGroup === 'function');
 
+check('mobile homepage shows the whole hero banner', /class="home-hero-banner"/.test(home) && /object-fit:\s*contain/.test(home) && /aspect-ratio:\s*1774 \/ 887/.test(home));
+check('mobile ticker sits in normal flow under the banner', /@media \(max-width: 760px\) \{[\s\S]*\.ticker \{ display: block; position: static;/.test(home));
+check('desktop does not force the mobile banner', /\.home-hero-banner \{ display: none; \}/.test(home));
+const labelLayout = fs.readFileSync('tp-label-layout.js', 'utf8');
+check('callout layout clamps and avoids collisions', /function layout\(/.test(labelLayout) && /function separate\(/.test(labelLayout) && /obstacleRects/.test(labelLayout));
+['power3d.html', 'explorer.html'].forEach(function (file) {
+  const src = fs.readFileSync(file, 'utf8');
+  check(file + ' places callouts through the shared layout', src.indexOf('tp-label-layout.js') >= 0 && src.indexOf('TPLabelLayout.layout') >= 0 && src.indexOf('pinnedPart') >= 0);
+});
+
 const coil = fs.readFileSync('coilassembly.html', 'utf8');
 check('coil assembly clips 3D labels inside the stage', /#c3d\{[^}]*overflow:hidden/.test(coil) && !/className='lbl'[^;]*document\.body\.appendChild/.test(coil) && !/className="lbl"[\s\S]{0,180}document\.body\.appendChild/.test(coil));
 check('coil assembly keeps callouts inside the viewport', /function clampLabel\(/.test(coil));

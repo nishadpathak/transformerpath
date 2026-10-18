@@ -191,6 +191,7 @@ body{font-family:var(--font-sans);background:#0a1624;color:var(--ink)}
 <script src="tp-webgl-gate.js"></script>
 <script src="vendor/three.min.js"></script>
 <script src="tp-canvas-scroll.js"></script>
+<script src="tp-label-layout.js"></script>
 <script>
 (function(){
 
@@ -858,6 +859,7 @@ TPCanvasScroll.bindZoomHint(typeof container !== 'undefined' ? container : el.pa
 /* ============ picking ============ */
 const ray = new THREE.Raycaster(); const mouse = new THREE.Vector2();
 let selected = null;
+let pinnedPart = null;
 function setEmissive(part, on, col=0x2b6ea8){
   part.root.traverse(o=>{ if(o.isMesh && o.material.emissive){
     if(on){ o.userData.em = o.material; o.material = o.material.clone(); o.material.emissive = new THREE.Color(col); o.material.emissiveIntensity=.8; }
@@ -866,6 +868,7 @@ function setEmissive(part, on, col=0x2b6ea8){
 }
 function selectPart(p){
   if(!p) return;
+  pinnedPart = p;
   if(typeof quizOn!=="undefined" && quizOn && typeof quizAnswer==="function"){ quizAnswer(p); return; }
   if(typeof selected!=="undefined"){ if(selected) setEmissive(selected,false); selected=p; } else { setEmissive(p,true); }
   setEmissive(p,true);
@@ -883,9 +886,10 @@ function pick(e){
   if(hits.length){
     const p = meshIndex.get(hits[0].object);
     if(quizOn){ quizAnswer(p); return; }
-    selected = p; setEmissive(p,true);
+    selected = p; pinnedPart = p; setEmissive(p,true);
     info.innerHTML = `<b>${p.name}</b><br>${p.desc}`;
   }else{
+    pinnedPart = null;
     info.innerHTML = quizOn
       ? `<b>🎯 Find and click: ${qTarget?qTarget.name:''}</b><br><span class="hint">Score: ${qScore}/${qCount} — that click hit empty space.</span>`
       : '<span class="hint">Click any part of the transformer to identify it and read what it does.</span>';
@@ -965,15 +969,21 @@ function tick(){
   if(autoRotate && !dragging){ sph.th += 0.0035; applyCam(); }
   renderer.render(scene,camera);
   /* labels */
+  var callouts=[];
   labelEls.forEach(L=>{
     if(!labelsOn || !L.part || !L.part.root.visible || !L.part.root.parent.visible){ L.el.style.display='none'; return; }
     v3.copy(L.part.root.getWorldPosition(new THREE.Vector3())).add(L.off);
     const pr = v3.clone().project(camera);
     if(pr.z>1){ L.el.style.display='none'; return; }
-    L.el.style.display='block';
-    L.el.style.left = ((pr.x+1)/2*innerWidth)+'px';
-    L.el.style.top  = ((-pr.y+1)/2*innerHeight)+'px';
+    callouts.push({
+      el:L.el,
+      x:((pr.x+1)/2*innerWidth),
+      y:((-pr.y+1)/2*innerHeight),
+      show:true,
+      pin:pinnedPart===L.part
+    });
   });
+  if(window.TPLabelLayout) TPLabelLayout.layout(callouts);
 }
 setMode('oil');
 tick();

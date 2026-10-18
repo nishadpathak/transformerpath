@@ -45,6 +45,25 @@
 .hero-cine .trust { display:flex; gap:26px; margin-top:32px; color:#9fb0c4; font-size:.9rem; flex-wrap:wrap; }
 .hero-cine .trust span::before { content:"✓ "; color:var(--amber); font-weight:700; }
 @media (max-width:760px){ .hero-cine h1 { font-size:2.2rem; } .hero-cine::after { background:rgba(13,27,46,.55); } }
+/* Mobile banner: the wordmark is painted into hero.jpg. Cover-cropping a
+   393px screen cuts the sides off ("RANSFORMER / ATH"). Show the whole file,
+   then the keyword ticker underneath it. Wider screens keep the ticker where
+   it is and do not add this image. */
+.home-hero-banner { display: none; }
+@media (max-width: 760px) {
+  .home-hero-banner {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 1774 / 887;
+    object-fit: contain;
+    object-position: center;
+    background: #0a1626;
+  }
+  .hero-cine { background-image: none; background-size: auto; }
+  .ticker { display: block; position: static; clear: both; }
+}
 
 /* ── Animated count-up stats ── */
 .kpi { background:var(--navy-2); color:#fff; padding:0; }
@@ -182,6 +201,7 @@
   <script src="tp-nav.js?v=7" defer></script>
   <script src="tp-pwa.js?v=7" defer></script>
 </header>
+<img class="home-hero-banner" src="brand/hero.jpg" width="1774" height="887" alt="TransformerPath. Intelligence, Engineering, Manufacturers, Markets, Tools.">
 <div class="ticker" aria-label="Market and industry headlines">
   <div class="ticker-inner" id="ticker"></div>
 </div>
