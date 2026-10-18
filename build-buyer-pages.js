@@ -93,7 +93,7 @@ function buyEarlyMain() {
   return '<nav class="crumbs"><a href="/manufacturers.html">Manufacturers</a> · <a href="/spare-capacity/">Mid-tier manufacturers</a> · Buy early</nav>' +
     '<h1>Buying long-lead transformer equipment early</h1>' +
     '<p class="lead">A free guide for buyers who have to place transformer orders before a project date is close. Figures below are copied from the linked public sources. TransformerPath adds no lead-time number of its own.</p>' +
-    '<p>The companion page is the <a href="/spare-capacity/">mid-tier manufacturer list</a>. A dash on that page means no public, dated capacity note is on file. The list does not say a factory has open capacity.</p>' +
+    '<p>The companion page is the <a href="/spare-capacity/">mid-tier manufacturer list</a>. A dash on that page means no public, dated capacity note is on file. The list does not say a factory has open capacity. Typical lead times by class and region are on the <a href="/lead-times/">grid lead-time tracker</a>.</p>' +
     '<h2>What stretches a lead time</h2>' +
     '<p>Demand has been running ahead of factory slots. ' + a('https://www.woodmac.com/news/opinion/4-years-into-a-difficult-transformers-market-in-the-us-is-there-a-potential-end-in-sight/', 'Wood Mackenzie, 27 June 2024') +
     ' wrote that power and generator step-up lead times had tripled since 2021, to about 150 weeks after receipt of order over the two quarters before that article, and that prices had risen 70–75% or more since 2020. ' +
@@ -187,7 +187,7 @@ function spareMain() {
     '<h1>Mid-tier transformer manufacturers</h1>' +
     '<p class="lead">These rows are the tier-2 manufacturers in the site directory that already have a profile. Region is the census region for the profile country. Voltage is the highest voltage that profile already states. A missing value is shown as a dash.</p>' +
     '<p>The capacity column is a public, dated note of a capacity expansion, a new plant, or an announced lead time. ' +
-    withNotes + ' of ' + ROWS.length + ' rows have such a note. A dash means no note of that kind is on file. The dash is not a statement that the factory is open or full. Ordering ahead is covered in the <a href="/buy-early/">free buying guide</a>.</p>' +
+    withNotes + ' of ' + ROWS.length + ' rows have such a note. A dash means no note of that kind is on file. The dash is not a statement that the factory is open or full. Ordering ahead is covered in the <a href="/buy-early/">free buying guide</a>. Typical lead times by class and region are on the <a href="/lead-times/">grid lead-time tracker</a>.</p>' +
     '<!--tp-ad-slot-->' +
     '<form class="filters" id="sc-filters" action="/spare-capacity/" method="get">' +
     '<label>Region<select id="sc-region" name="region"><option value="">Any</option>' + regionOptions + '</select></label>' +
