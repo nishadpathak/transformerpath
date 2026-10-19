@@ -750,7 +750,7 @@
   force = true
 
 # BEGIN claim-listing-query-redirects
-# Known listing queries go to the prerendered claim page. An unknown path returns the not-found page.
+# A slug query is a 301 to /claim-listing/<slug>/. An unknown path returns the not-found page with status 404.
 [[redirects]]
   from = "/claim-listing/"
   to = "/claim-listing/a-plus-power-solution/"
@@ -13238,10 +13238,22 @@
   status = 301
   force = true
   query = {slug = "ztt-jiangsu-zhongtian-ztt-group"}
+
+[[redirects]]
+  from = "/claim-listing/not-found"
+  to = "/claim-listing/not-found/index.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/claim-listing/not-found/"
+  to = "/claim-listing/not-found/index.html"
+  status = 404
+  force = true
 
 [[redirects]]
   from = "/claim-listing/*"
-  to = "/claim-listing/not-found/"
+  to = "/claim-listing/not-found/index.html"
   status = 404
 
 # END claim-listing-query-redirects
