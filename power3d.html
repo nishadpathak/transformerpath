@@ -1,8 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark" class="tp-dark" data-tp-build-commit="28e901500810983af9e07b477551eb86a580a289" data-tp-build-at="2026-10-02T20:30:37.186Z" data-tp-data-version="f6bd8e2d408e">
+<html lang="en" data-theme="dark" class="tp-dark">
 <head>
-<meta name="tp-build-commit" content="28e901500810983af9e07b477551eb86a580a289"><meta name="tp-build-at" content="2026-10-02T20:30:37.186Z"><meta name="tp-data-version" content="f6bd8e2d408e">
-<!-- tp-release build_commit=28e901500810983af9e07b477551eb86a580a289 build_at=2026-10-02T20:30:37.186Z data_version=f6bd8e2d408e -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Power Transformer — Interactive 3D Explorer (100 MVA, 132/33 kV)</title>
@@ -45,7 +43,14 @@ body{font-family:var(--font-sans);background:#08121e;color:var(--ink)}
 .lbl::after{content:"";position:absolute;left:50%;top:100%;margin-left:-4px;border:4px solid transparent;border-top-color:var(--line)}
 #tourcap{position:absolute;left:50%;bottom:64px;transform:translateX(-50%);max-width:680px;background:rgba(8,18,30,.88);border:1px solid var(--acc);border-radius:12px;padding:14px 22px;font-size:1.02rem;line-height:1.5;text-align:center;z-index:20;display:none;backdrop-filter:blur(6px);box-shadow:0 4px 24px rgba(0,0,0,.5)}
 #tourcap .step{color:var(--acc);font-size:.75rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:700}
-@media(max-width:760px){#panel{width:248px}#topbar h1{font-size:.82rem}#topbar .sub{display:none}}
+#labelLayer{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:6}
+@media(max-width:760px){
+  #topbar{height:auto;flex-wrap:wrap;align-items:flex-start;padding:8px 10px 6px;row-gap:6px}
+  #topbar .right{margin-left:0;width:100%;flex-wrap:wrap;min-width:0}
+  #topbar h1{font-size:.82rem;white-space:normal}
+  #topbar .sub{display:none}
+  #panel{left:8px;right:8px;width:auto;top:auto;bottom:8px;max-height:38vh}
+}
 </style>
     <link rel="canonical" href="https://transformerpath.com/power3d.html">
     <script src="analytics.js?v=7" defer></script>
@@ -67,11 +72,16 @@ body{font-family:var(--font-sans);background:#08121e;color:var(--ink)}
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 <header>
+  <style>
+    @media (min-width: 1024px) {
+      #mainNav > .tpnav-more { display: block; }
+    }
+  </style>
   <div class="container nav">
-    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 16 16" aria-hidden="true" style="flex:none"><g fill="#f5a623"><rect x="1" y="1" width="4" height="4"/><rect x="11" y="1" width="4" height="4"/><rect x="1" y="11" width="4" height="4"/><rect x="11" y="11" width="4" height="4"/><rect x="5" y="2" width="6" height="2"/><rect x="12" y="5" width="2" height="6"/><rect x="5" y="12" width="6" height="2"/></g></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
     <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
     <nav class="tpnav" id="mainNav" aria-label="Primary">
-      <a href="/intel">Intel</a>
+      <a href="/intel.html">Intel</a>
       <div class="tpnav-dropdown">
         <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
         <div class="tpnav-dropdown-panel" role="menu">
@@ -84,21 +94,25 @@ body{font-family:var(--font-sans);background:#08121e;color:var(--ink)}
           <a href="services.html">Services &amp; Repair</a>
           <a href="markets.html">Markets</a>
           <a href="buyers-guide.html">Buyer's Guide</a>
+          <a href="buy-early/">Buy early</a>
+          <a href="spare-capacity/">Mid-tier makers</a>
+          <a href="lead-times/">Lead times</a>
+          <a href="bottlenecks/">Bottlenecks</a>
           <a href="directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
         </div>
       </div>
       <a href="projects.html">Projects</a>
       <a href="tenders.html">Tenders</a>
       <a href="events.html">Events</a>
-      <a href="tools.html" class="tpnav-opt">Engineering</a>
       <a href="learn.html">Learn</a>
       <a href="rfq.html">RFQ</a>
       <div class="tpnav-more">
         <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
         <div class="tpnav-more-panel" role="menu">
+          <a href="tools.html" role="menuitem">Engineering</a>
           <a href="map.html" role="menuitem">Industry Map</a>
           <a href="grids.html" role="menuitem">Global Grids</a>
-          <a href="webinars.html" role="menuitem">Webinars</a>
+          
           <a href="standards.html" role="menuitem">Standards &amp; Codes</a>
           <a href="for-manufacturers.html" role="menuitem">For Manufacturers</a>
           <a href="pricing.html" role="menuitem">Pricing Plans</a>
@@ -107,6 +121,7 @@ body{font-family:var(--font-sans);background:#08121e;color:var(--ink)}
       </div>
       <span class="tpnav-utils">
         <a href="search.html" title="Search" aria-label="Search">&#128269;</a>
+        <span class="tp-auth" data-tp-auth hidden></span>
         <a href="workspace.html" data-tp-account>Account</a>
         <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">&#127769;</button>
       </span>
@@ -138,10 +153,13 @@ body{font-family:var(--font-sans);background:#08121e;color:var(--ink)}
       themeToggle.textContent = isDark ? '☀️' : '🌙';
     }
   </script>
+  <script src="google-auth-config.js" defer></script>
+  <script src="tp-auth.js?v=1" defer></script>
   <script src="tp-nav.js?v=7" defer></script>
   <script src="tp-pwa.js?v=7" defer></script>
 </header>
 <div id="c3d" data-tp-3d-state="INITIALIZING"></div>
+<div id="labelLayer"></div>
 
 <div id="topbar">
   <div>
@@ -150,7 +168,7 @@ body{font-family:var(--font-sans);background:#08121e;color:var(--ink)}
   </div>
   <div class="right">
     <a href="academy.html">🏠 Hub</a>
-    <a href="masterclass.html">← Tutorial</a>
+    <a href="learn.html">← Tutorial</a>
     <a href="explorer.html">Distribution / cast-resin 3D</a>
     <a href="coilassembly.html">CCA &amp; core building 3D</a>
     <a href="transformer-lab.html" style="background:rgba(245,166,35,.15);border-color:rgba(245,166,35,.4);color:#f5a623;font-weight:600">⚡ Transformer Lab</a>
@@ -201,6 +219,8 @@ body{font-family:var(--font-sans);background:#08121e;color:var(--ink)}
 
 <script src="tp-webgl-gate.js"></script>
 <script src="vendor/three.min.js"></script>
+<script src="tp-canvas-scroll.js"></script>
+<script src="tp-label-layout.js"></script>
 <script>
 (function(){
 
@@ -485,7 +505,7 @@ let oilMesh;
   const st=cyl(.55,.7,7.5,M.porcel); st.position.y=3.6; nb.add(st);
   nb.position.set(28,43.5,0); g.add(nb);
   reg(g,'33 kV bushings + HV neutral bushing',
-  'Three 33 kV porcelain bushings with turret CTs (the delta is closed inside the tank). At the tank end, the 132 kV star-point comes out through a smaller graded-insulation neutral bushing — solid earthing lets the whole neutral end of the HV winding be insulated for a fraction of line level, a major cost saver. The neutral CT feeds restricted-earth-fault (REF) protection.',
+  'Three 33 kV porcelain bushings with turret CTs. The LV is delta, closed inside the tank, so there is no LV neutral bushing. The 132 kV star point leaves through a shorter graded-insulation neutral bushing: solid earthing lets that end of the HV winding be insulated for a fraction of line voltage. Restricted-earth-fault protection needs a neutral CT in the turret or a separate window CT; that CT is not drawn on this bushing.',
   [0,20,0],'bushings');
 }
 
@@ -516,7 +536,7 @@ let oilMesh;
     const bc=cyl(1.4,1.4,.9,M.steelDk); bc.position.set(x,45.9,3); g.add(bc);};
   mk(16.5); mk(-25);
   reg(g,'Conservator (2 compartments), Buchholz, RS relay & breathers',
-  'Twin-compartment conservator: the large side breathes for the main tank through the Buchholz relay (orange — gas alarm / surge trip, with isolating valves so it can be tested in service); the small side serves the OLTC diverter oil, which is deliberately kept separate because diverter arcing blackens its oil. The OLTC pipe carries an oil-surge (RS) relay — instant trip. A rubber bag inside the main compartment stops air ever touching the oil; each compartment has its own magnetic level gauge and maintenance-free (or silica-gel) breather.',
+  'Twin-compartment conservator. Main-tank oil reaches it through the Buchholz relay in the pipe (orange: gas alarm and oil-surge trip, with isolating valves for in-service testing). A rubber bag in the main compartment takes up expansion, so the oil never meets air; the breather on that end dries only the air around the bag. The small compartment holds OLTC diverter oil, kept separate because diverter arcing blackens it, and has its own pipe, oil-surge (RS) relay and breather. Each compartment has a magnetic oil-level gauge.',
   [0,30,0],'conservator');
 }
 
@@ -555,8 +575,8 @@ const fanBlades=[];
     bank.userData.exDir=new THREE.Vector3(0,0,zs*26);
     g.add(bank);
   }
-  reg(g,'Radiator banks, fans, pumps & valves (ONAN/ONAF/OFAF)',
-  'Each radiator is a stack of pressed-plate elements (two steel sheets seam-welded with vertical oil channels, ~520 mm wide, hung at ~45 mm pitch) on top and bottom collector pipes that bolt to the tank wall through butterfly valves — so every radiator detaches for transport without draining the tank. Hot oil enters the top collector, falls through the plate channels as it cools, and returns via the bottom collector. Fan groups beneath blow air up between the plates: ONAN ≈ 60% rating, first fan stage ONAF₁ ≈ 80%, all fans ONAF₂ = 100%; the bottom-pipework pump and flow indicator add OFAF for emergency duty. Fans and pumps are staged automatically by the winding-temperature relay. Watch the blades spin — and toggle 🌊 to see the oil loop they serve.',
+  reg(g,'Radiator banks and fans (ONAN/ONAF)',
+  'Each radiator is a stack of pressed-plate elements (two steel sheets seam-welded with vertical oil channels, ~520 mm wide, hung at ~45 mm pitch) on top and bottom collector pipes that bolt to the tank wall through butterfly valves, so every radiator detaches for transport without draining the tank. Hot oil enters the top collector, falls through the plate channels as it cools, and returns via the bottom collector. The nameplate of this reference is ONAN/ONAF, and 100 MVA is the all-fans rating: ONAN is the lower rating (often about 60 MVA), the first fan stage ONAF₁ about 80 MVA, and ONAF₂ the full 100 MVA. Fans under the banks blow upward and are staged by the winding-temperature indicator. The pump and flow indicator on the bottom pipe are an optional OFAF upgrade (oil forced and air forced). They are not part of the ONAN/ONAF rating and they are not an emergency mode. Watch the blades spin, and toggle the oil-flow view to see the ONAN thermosiphon.',
   [0,0,0],'cooling');
 }
 
@@ -689,7 +709,7 @@ const labelEls=[];
 function makeLabel(prefix,text,dx,dy,dz){
   const part=parts.find(p=>p.name.startsWith(prefix));
   if(!part) return;
-  const el=document.createElement('div'); el.className='lbl'; el.textContent=text; el.addEventListener('click',()=>{ if(part) selectPart(part); }); document.body.appendChild(el);
+  const el=document.createElement('div'); el.className='lbl'; el.textContent=text; el.addEventListener('click',()=>{ if(part) selectPart(part); }); document.getElementById('labelLayer').appendChild(el);
   labelEls.push({el,part,off:new THREE.Vector3(dx,dy,dz)});
 }
 parts.forEach(function(p){
@@ -698,7 +718,7 @@ parts.forEach(function(p){
     var ctr=box.getCenter(new THREE.Vector3()), rp=p.root.getWorldPosition(new THREE.Vector3());
     var off=ctr.sub(rp); off.y += (box.max.y-box.min.y)*0.12;
     var el=document.createElement("div"); el.className="lbl"; el.textContent=p.name;
-    el.addEventListener("click",function(){ selectPart(p); }); document.body.appendChild(el);
+    el.addEventListener("click",function(){ selectPart(p); }); document.getElementById('labelLayer').appendChild(el);
     labelEls.push({el:el, part:p, off:off});
   });
 /* note: offsets are world-ish; resolved per-frame from part world pos + (off - basePos) */
@@ -780,7 +800,7 @@ applyCam();
 let dragging=false,panning=false,lastX=0,lastY=0,moved=0;
 const el=renderer.domElement;
 el.addEventListener('contextmenu',e=>e.preventDefault());
-el.addEventListener('pointerdown',e=>{dragging=true;moved=0;panning=(e.button===2||e.shiftKey);
+el.addEventListener('pointerdown',e=>{if(e.pointerType==='touch')return;dragging=true;moved=0;panning=(e.button===2||e.shiftKey);
   if(typeof stopTour==='function') stopTour();
   lastX=e.clientX;lastY=e.clientY;container.classList.add('dragging');el.setPointerCapture(e.pointerId);});
 el.addEventListener('pointermove',e=>{
@@ -793,14 +813,22 @@ el.addEventListener('pointermove',e=>{
   applyCam();
 });
 el.addEventListener('pointerup',e=>{dragging=false;container.classList.remove('dragging'); if(moved<6)pick(e);});
-el.addEventListener('wheel',e=>{e.preventDefault();sph.r*=(1+Math.sign(e.deltaY)*0.09);applyCam();},{passive:false});
-let pinchD=0;
-el.addEventListener('touchstart',e=>{if(e.touches.length===2){pinchD=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);}},{passive:true});
-el.addEventListener('touchmove',e=>{if(e.touches.length===2){const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);sph.r*=pinchD/d;pinchD=d;applyCam();}},{passive:true});
+TPCanvasScroll.setPanY(el);
+TPCanvasScroll.bindWheel(el, function (e) {
+  sph.r *= 1 + Math.sign(e.deltaY) * 0.09;
+  applyCam();
+});
+TPCanvasScroll.bindTwoFinger(el, function (g) {
+  if (g.zoom && isFinite(g.zoom)) sph.r *= g.zoom;
+  if (g.dAngle) sph.th += g.dAngle;
+  applyCam();
+});
+TPCanvasScroll.bindZoomHint(typeof container !== 'undefined' ? container : el.parentElement);
 
 /* ================= picking ================= */
 const ray=new THREE.Raycaster(); const mouse=new THREE.Vector2();
 let selected=null;
+let pinnedPart=null;
 function setEmissive(part,on){
   part.root.traverse(o=>{if(o.isMesh&&o.material.emissive!==undefined){
     if(on){o.userData.em=o.material;o.material=o.material.clone();o.material.emissive=new THREE.Color(0x2b6ea8);o.material.emissiveIntensity=.8;}
@@ -809,6 +837,7 @@ function setEmissive(part,on){
 }
 function selectPart(p){
   if(!p) return;
+  pinnedPart=p;
   if(typeof quizOn!=="undefined" && quizOn && typeof quizAnswer==="function"){ quizAnswer(p); return; }
   if(typeof selected!=="undefined"){ if(selected) setEmissive(selected,false); selected=p; } else { setEmissive(p,true); }
   setEmissive(p,true);
@@ -824,9 +853,10 @@ function pick(e){
   if(selected){setEmissive(selected,false);selected=null;}
   if(hits.length){
     const p=meshIndex.get(hits[0].object);
-    selected=p;setEmissive(p,true);
+    selected=p; pinnedPart=p; setEmissive(p,true);
     info.innerHTML=`<b>${p.name}</b><br>${p.desc}`;
   }else{
+    pinnedPart=null;
     info.innerHTML='<span class="hint">Click any part to identify it.</span>';
   }
 }
@@ -863,7 +893,7 @@ const TOUR=[
  {th:2.25,ph:1.0,r:96, ex:0, d:6000,cap:"Condenser bushings with turret CTs carry 132 kV through earthed steel — the most failure-prone interface on the unit."},
  {th:2.85,ph:.92,r:102,ex:0, d:6000,cap:"Conservator, Buchholz and RS relay: mechanical guardians that catch the faults electrical relays cannot see."},
  {th:3.65,ph:1.1,r:96, ex:0, d:6000,cap:"The OLTC steps ±10% in 17 positions under load — vacuum diverter, ~300 000 operations between services."},
- {th:4.45,ph:1.18,r:125,ex:0,d:6000,cap:"Radiator banks with staged fans and pumps: ONAN → ONAF → OFAF as the load climbs. Try ⚡ Energize and 🌊 Oil flow."},
+ {th:4.45,ph:1.18,r:125,ex:0,d:6000,cap:"Radiator banks with staged fans: ONAN, then ONAF₁, then ONAF₂ at the 100 MVA nameplate. Oil pumps would be a separate OFAF rating. Try ⚡ Energize and 🌊 Oil flow."},
  {th:5.55,ph:1.12,r:152,ex:0,d:6500,cap:"Surge arresters complete the insulation co-ordination. One machine, twenty engineering disciplines — that is a power transformer."},
 ];
 let tourOn=false, tourIdx=0, tourT0=0, tourFrom=null;
@@ -1009,16 +1039,22 @@ function tick(){
     });
   }
   renderer.render(scene,camera);
+  var callouts=[];
   labelEls.forEach(L=>{
     if(!labelsOn||!L.part.root.visible){L.el.style.display='none';return;}
     /* label anchor = stored world offset + current explode displacement of the part */
     v3.copy(L.off).add(L.part.root.position).sub(L.part.base);
     const pr=v3.project(camera);
     if(pr.z>1){L.el.style.display='none';return;}
-    L.el.style.display='block';
-    L.el.style.left=((pr.x+1)/2*innerWidth)+'px';
-    L.el.style.top=((-pr.y+1)/2*innerHeight)+'px';
+    callouts.push({
+      el:L.el,
+      x:((pr.x+1)/2*innerWidth),
+      y:((-pr.y+1)/2*innerHeight),
+      show:true,
+      pin:pinnedPart===L.part
+    });
   });
+  if(window.TPLabelLayout) TPLabelLayout.layout(callouts);
 }
 applyToggles();
 tick();
@@ -1035,20 +1071,19 @@ addEventListener('resize',()=>{
   <div class="container">
     <div class="cols">
       <div>
-        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 16 16" aria-hidden="true" style="flex:none"><g fill="#f5a623"><rect x="1" y="1" width="4" height="4"/><rect x="11" y="1" width="4" height="4"/><rect x="1" y="11" width="4" height="4"/><rect x="11" y="11" width="4" height="4"/><rect x="5" y="2" width="6" height="2"/><rect x="12" y="5" width="2" height="6"/><rect x="5" y="12" width="6" height="2"/></g></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
         <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data. Built for utilities, transformer manufacturers, component suppliers, EPCs, consultants and engineers.</p>
       </div>
-      <div><p class="footer-col-label">INTELLIGENCE</p><a href="/intel">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="projects.html">Projects</a><a href="tenders.html">Tenders</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="map.html">Industry Map</a><a href="events.html">Events</a></div>
+      <div><p class="footer-col-label">INTELLIGENCE</p><a href="/intel.html">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="projects.html">Projects</a><a href="tenders.html">Tenders</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="map.html">Industry Map</a><a href="events.html">Events</a></div>
       <div><p class="footer-col-label">DIRECTORY</p><a href="manufacturers.html">Manufacturers</a><a href="directory.html">Directory Index</a><a href="components.html">Components &amp; Materials</a><a href="machinery.html">Machinery</a><a href="laboratories.html">Testing Labs</a><a href="services.html">Service &amp; Repair</a><a href="logistics.html">Logistics</a><a href="buyers.html">Buyers &amp; Utilities</a><a href="rfq.html">RFQ Board</a></div>
       <div><p class="footer-col-label">ENGINEERING</p><a href="tools.html">Engineering Hub</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Interactive Models</a><a href="standards.html">Standards &amp; Codes</a><a href="knowledge.html">Knowledge Base</a><a href="case-studies.html">Case Studies</a></div>
-      <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learning Hub</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy 3D Tools</a><a href="books.html">Books</a><a href="education.html">Education</a></div>
-      <div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="pricing.html">Pricing Plans</a><a href="verified.html">Verified Profiles</a><a href="webinars.html">Webinars</a><a href="sponsor.html">Sponsorship</a><a href="associations.html">Associations</a><a href="media.html">Media</a></div>
-      <div><p class="footer-col-label">COMPANY</p><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learning Hub</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy 3D Tools</a><a href="books.html">Books</a><a href="education.html">Education</a></div>
+      <div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="pricing.html">Pricing Plans</a><a href="verified.html">Verified Profiles</a><a href="sponsor.html">Sponsorship</a><a href="associations.html">Associations</a><a href="media.html">Media</a></div>
+      <div><p class="footer-col-label">COMPANY</p><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="affiliate-disclosure.html">Affiliate disclosure</a></div>
       <div><p class="footer-col-label">CONTACT</p>
         <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
         <a href="privacy.html#cookies" onclick="if(window.tpResetConsent){window.tpResetConsent();return false}">Cookie settings</a>
         <a class="tp-li-btn tp-li-follow" data-linkedin-follow href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>Follow us on LinkedIn</a>
-        <a class="tp-li-btn tp-li-share" data-linkedin-share href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>LinkedIn</a>
       </div>
     </div>
     <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>

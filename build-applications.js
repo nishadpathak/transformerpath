@@ -15,6 +15,7 @@
  */
 'use strict';
 const fs = require('fs');
+const { isUpcoming } = require('./lib/event-status');
 // Root-absolutise header/footer links so they work from nested /applications/ pages.
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
@@ -331,13 +332,12 @@ function makersFor(types) {
   return out;
 }
 function eventsFor(app) {
-  const now = new Date();
   const kws = (app.evkw || []).concat((app.title.toLowerCase().split(/[^a-z]+/)));
   return EVENTS.filter(function (ev) {
     const hay = ((ev.n + ' ' + ev.d + ' ' + ev.r + ' ' + ev.co)).toLowerCase();
     const inRegion = ev.r && app.regions.indexOf(ev.r) >= 0;
     const inKw = kws.some(function (k) { return k && hay.indexOf(k) >= 0; });
-    return new Date(ev.e) >= now && (inRegion || inKw);
+    return isUpcoming(ev) && (inRegion || inKw);
   }).sort(function (a, b) { return String(a.s).localeCompare(String(b.s)); }).slice(0, 6);
 }
 const fmt = function (d) { try { return new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }); } catch (e) { return ''; } };
@@ -378,7 +378,8 @@ function page(app) {
           gg.names.slice(0, 8).map(function (x) { return esc(x[0]); }).join(' · ') + (gg.names.length > 8 ? ' …' : '') + '</span></div>';
       }).join('') + '</div>';
   }).join('');
-  const compHtml = app.components.map(function (s) { return '<a class="tpill" href="../components/' + s + '.html">' + esc(COMPONENTS[s] || s) + '</a>'; }).join(' ');
+  const { componentSlugHref } = require('./lib/component-href');
+  const compHtml = app.components.map(function (s) { return '<a class="tpill" href="' + componentSlugHref('../', s) + '">' + esc(COMPONENTS[s] || s) + '</a>'; }).join(' ');
   const evHtml = eventsFor(app).map(function (ev) {
     return '<li style="margin:6px 0"><a href="' + esc(ev.u) + '" target="_blank" rel="noopener" style="color:var(--accent)">' + esc(ev.n) + '</a> <span style="color:var(--muted);font-size:.85rem">' + fmt(ev.s) + (ev.e && ev.e !== ev.s ? ' → ' + fmt(ev.e) : '') + ' · ' + esc(ev.c) + ', ' + esc(ev.co) + '</span></li>';
   }).join('') || '<li style="color:var(--muted)">No matches yet — check back, or submit an RFQ.</li>';

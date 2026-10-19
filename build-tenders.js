@@ -19,7 +19,10 @@
  *   CLOSING_SOON  — source names a deadline within ~14 days
  *   CLOSED        — source names a deadline that has passed
  *   EVALUATION    — source says bids are under evaluation / L1 notice
- *   AWARDED       — source confirms an award
+ *   AWARDED       — source confirms a contract award, with a named awardee
+ *   PROCUREMENT_PLAN — source is a procurement plan or tender programme
+ *   FRAMEWORK     — source is a framework or collaboration announcement
+ *   MOU           — source is a memorandum of understanding
  *   EXPECTED      — source indicates a planned/upcoming tender
  *   UNKNOWN       — source does not pin the stage
  *
@@ -31,11 +34,26 @@
  */
 'use strict';
 const fs = require('fs');
+const { isoDateInText, countryFromText, usableSource } = require('./lib/tender-country');
+const { parseDeadline, deadlineLabel, classifyOpenDeadline } = require('./lib/deadline');
+const { nonAwardKind, awardeeFromTitle } = require('./lib/award-classification');
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 function slugify(s) { return String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/&/g, 'and').replace(/['’´]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, ''); }
+function isoDay(v) {
+  if (!v) return null;
+  const day = String(v).slice(0, 10);
+  return /^\d{4}-\d{2}-\d{2}$/.test(day) ? day : null;
+}
+function stampSourceDates(record, it) {
+  if (!record || !it) return;
+  const published = isoDay(it.publication_date);
+  const captured = isoDay(it.captured_at || it.capture_date);
+  if (published) record.publication_date = published;
+  if (captured) record.captured_at = captured;
+}
 const ci = (s) => (s || '').toLowerCase();
 
 const PROJECTS = JSON.parse(fs.readFileSync('data/projects.json', 'utf8')).projects || [];
@@ -60,35 +78,20 @@ function regionOf(c) {
 }
 
 // Status label + filterable bucket.
-const STATUS_LABEL = { EXPECTED: 'Expected', OPEN: 'Open', CLOSING_SOON: 'Closing soon', CLOSED: 'Closed', EVALUATION: 'Evaluation', AWARDED: 'Awarded', UNKNOWN: 'Stage unknown' };
-const STATUS_GROUP = { EXPECTED: 'Pre-award', OPEN: 'Open', CLOSING_SOON: 'Open', CLOSED: 'Closed', EVALUATION: 'Evaluation', AWARDED: 'Awarded', UNKNOWN: 'Pre-award' };
+const STATUS_LABEL = { UNDATED: 'Tendering (deadline not stated)', EXPECTED: 'Expected', OPEN: 'Open', CLOSING_SOON: 'Closing soon', CLOSED: 'Closed', EVALUATION: 'Evaluation', AWARDED: 'Awarded', UNKNOWN: 'Stage unknown', PROCUREMENT_PLAN: 'Procurement plan', FRAMEWORK: 'Framework', MOU: 'MoU' };
+const STATUS_GROUP = { UNDATED: 'Pre-award', EXPECTED: 'Pre-award', OPEN: 'Open', CLOSING_SOON: 'Open', CLOSED: 'Closed', EVALUATION: 'Evaluation', AWARDED: 'Awarded', UNKNOWN: 'Pre-award', PROCUREMENT_PLAN: 'Procurement plan', FRAMEWORK: 'Framework', MOU: 'MoU' };
 
-// Deadline parsing: extract an ISO/date-ish token from expected/intel text.
-function parseDeadline(text) {
-  if (!text) return '';
-  const m = String(text).match(/\b(20\d{2})-?(\d{2})?-?(\d{2})?\b/);
-  return m ? m[0] : '';
-}
-function isNearDeadline(deadline) {
-  if (!deadline) return false;
-  const d = new Date(deadline);
-  if (isNaN(d)) return false;
-  const days = (d - Date.now()) / 86400000;
-  return days >= 0 && days <= 14;
-}
-function isPast(deadline) {
-  if (!deadline) return false;
-  const d = new Date(deadline);
-  if (isNaN(d)) return false;
-  return d < Date.now();
-}
 function deriveStatus(stage, expected, deadline) {
+  if (stage === 'procurement_plan') return 'PROCUREMENT_PLAN';
+  if (stage === 'framework') return 'FRAMEWORK';
+  if (stage === 'mou') return 'MOU';
   if (stage === 'evaluation') return 'EVALUATION';
   if (/award/i.test(stage)) return 'AWARDED';
   if (stage === 'tendering') {
-    if (isPast(deadline)) return 'CLOSED';
-    if (isNearDeadline(deadline)) return 'CLOSING_SOON';
-    return 'OPEN';
+    // A tender is shown as open only when the source names an exact closing
+    // date. Year-only or missing deadlines are never "Open".
+    if (/^\d{4}-\d{2}-\d{2}$/.test(String(deadline || ''))) return classifyOpenDeadline(deadline);
+    return classifyOpenDeadline(deadline) === 'CLOSED' ? 'CLOSED' : 'UNDATED';
   }
   if (stage === 'expected' || stage === 'planned') return 'EXPECTED';
   return 'UNKNOWN';
@@ -108,8 +111,15 @@ function addTender(o) {
   seen[key] = 1;
   const deadline = parseDeadline(o.deadline_raw || o.expected_raw || '');
   const status = deriveStatus(o.stage, o.expected_raw, deadline);
+  const projectCountry = (o.project_country != null && String(o.project_country).trim() !== '')
+    ? o.project_country
+    : ((o.country != null && String(o.country).trim() !== '') ? o.country : null);
   tenders.push(Object.assign({}, o, {
     tender_id: 'T-' + slugify(o.title).slice(0, 32).replace(/-+$/, ''),
+    project_country: projectCountry,
+    buyer_country: o.buyer_country != null ? o.buyer_country : null,
+    supplier_country: o.supplier_country != null ? o.supplier_country : null,
+    source_country: o.source_country != null ? o.source_country : null,
     status,
     statusLabel: STATUS_LABEL[status],
     statusGroup: STATUS_GROUP[status],
@@ -121,11 +131,12 @@ function addTender(o) {
 // 1) Pre-award project records -> tenders (source-backed).
 PROJECTS.forEach((p) => {
   const stage = ci(p.status || '');
-  if (!['tendering', 'evaluation', 'expected', 'planned', 'awarded'].includes(stage)) return;
+  if (!['tendering', 'evaluation', 'expected', 'planned', 'awarded', 'framework', 'procurement_plan', 'mou'].includes(stage)) return;
   let buyer = p.utility || p.epc || '';
-  const sources = (p.sources || []).filter(Boolean);
-  // A placeholder/non-canonical source is recorded but flagged as unverified.
-  const verifiedSource = sources.find((s) => !/example\.com|\bupd\b/.test(s));
+  const sources = (p.sources || []).filter(usableSource);
+  // A placeholder URL (example.com) is not a source. No auditable URL, no tender.
+  if (!sources.length) return;
+  const verifiedSource = sources[0];
   addTender({
     title: (p.project || '').replace(/\s*—.*$/, '').replace(/\s*\(.*\),?\s*$/, '').trim() || p.project,
     full_title: p.project,
@@ -133,6 +144,12 @@ PROJECTS.forEach((p) => {
     utility: p.utility || '',
     epc: p.epc || '',
     country: p.country,
+    project_country: (p.project_country != null && String(p.project_country).trim() !== '')
+      ? p.project_country
+      : ((p.country != null && String(p.country).trim() !== '') ? p.country : null),
+    buyer_country: p.buyer_country != null ? p.buyer_country : null,
+    supplier_country: p.supplier_country != null ? p.supplier_country : null,
+    source_country: p.source_country != null ? p.source_country : null,
     region: regionOf(p.country),
     project_slug: slugify(p.project),
     transformer_scope: trScope(p.transformer_requirement),
@@ -149,8 +166,12 @@ PROJECTS.forEach((p) => {
     source_urls: sources,
     source_verified: !!verifiedSource,
     expected_raw: p.expected || '',
+    deadline_raw: p.bid_deadline || '',
     stage,
     cls: p.related_intel || '',
+    awardee: p.awardee || '',
+    award_basis: p.award_basis || '',
+    cross_border_links: Array.isArray(p.cross_border_links) ? p.cross_border_links : [],
   });
 });
 
@@ -159,10 +180,32 @@ INTEL_ITEMS.forEach((it) => {
   // Only title-level, unambiguous procurement language is a tender signal. Body
   // text mentioning "float"/"floating" (as in a floating HVDC project) is NOT.
   const text = (it.title || '') + ' ' + (it.snippet || '');
-  if (!/(invites? bids?|tender|bid deadline|prequalif|epc tender|bids? for|bid (submission|opening|deadline)|procur|supply and installation)/i.test(it.title || '')) return;
-  const country = (text.match(/(Saudi|UAE|Qatar|Kuwait|Bahrain|Oman|India|China|Korea|Japan|Turkey|Türkiye|Vietnam|Indonesia|Malaysia|Germany|UK|France|Italy|Spain|Brazil|Chile|Mexico|Egypt|Kenya|Nigeria|South Africa|Australia)\b/i) || [])[1] || '';
-  const r = it._region === 'GCC' ? 'Middle East' : it._region === 'India' ? 'Asia' : it._region === 'Europe' ? 'Europe' : it._region === 'USA' ? 'North America' : 'Other';
-  const stage = /award/i.test(text) ? 'awarded' : /evaluation|L1/i.test(text) ? 'evaluation' : /deadline/i.test(text) ? 'tendering' : /invites? bids?|floats?|tender/i.test(text) ? 'tendering' : 'expected';
+  /* A policy story is not a bid. The record says so explicitly. */
+  if (it.tender_watch === false) return;
+  const titleHit = /(invites? bids?|tender|bid deadline|prequalif|epc tender|bids? for|bid (submission|opening|deadline)|procur|supply and installation)/i.test(it.title || '');
+  /* "seeks …" contract notices (Sadales tīkls) name the deadline in the snippet, not the title. */
+  const contractNotice = /contract notice/i.test(it.snippet || '') && /^\d{4}-\d{2}-\d{2}$/.test(String(it.tender_close_date || '').slice(0, 10));
+  const awardNotice = /award notice/i.test(it.snippet || '') && /\bawards?\b/i.test(it.title || '');
+  if (!titleHit && !contractNotice && !awardNotice) return;
+  const country = it.country || countryFromText(text);
+  const fallbackRegion = it._region === 'GCC' ? 'Middle East' : it._region === 'India' ? 'Asia' : it._region === 'Europe' ? 'Europe' : it._region === 'USA' ? 'North America' : 'Other';
+  const r = country ? regionOf(country) : fallbackRegion;
+  const namedDeadline = (it.tender_close_date && String(it.tender_close_date).slice(0, 10)) || isoDateInText(text);
+  /* A plan, an invitation to bid, a framework or an MoU is not an award.
+     "Awards expected" is not an award. Awarded / wins / won is.
+     A completed allocation ("split among N firms") is a result even when
+     the headline still contains the word "tender". */
+  const announced = nonAwardKind(text, it.title);
+  const stage = announced === 'procurement_plan' ? 'procurement_plan'
+    : announced === 'framework' ? 'framework'
+    : announced === 'mou' ? 'mou'
+    : /awards?\s+expected|expected\s+to\s+award/i.test(text) ? 'evaluation'
+    : /\b(awarded|wins?|won)\b/i.test(text) ? 'awarded'
+    : /\bsplit among\b/i.test(text) ? 'awarded'
+    : /evaluation|\bL1\b/i.test(text) ? 'evaluation'
+    : /deadline/i.test(text) ? 'tendering'
+    : /invites? bids?|floats?|tender/i.test(text) ? 'tendering'
+    : 'expected';
   // Skip if this already maps to a project tender (match on buyer-ish fragment).
   addTender({
     title: (it.title || '').replace(/\s*—.*$/, '').replace(/\s*\(.*\),?\s*$/, '').trim() || it.title,
@@ -186,14 +229,106 @@ INTEL_ITEMS.forEach((it) => {
     source: it.src || 'TransformerPath Daily Intel',
     source_urls: it.url ? [it.url] : [],
     source_verified: true,
-    expected_raw: '',
+    expected_raw: namedDeadline || '',
+    deadline_raw: namedDeadline || '',
     stage,
     cls: '',
+    awardee: it.awardee || awardeeFromTitle(it.title),
+    award_basis: it.snippet || '',
+    snippet: it.snippet || '',
   });
+  const addedIntel = tenders[tenders.length - 1];
+  if (addedIntel && addedIntel.full_title === it.title) stampSourceDates(addedIntel, it);
 });
 
+// 3) CONFIRMED / official-portal GCC procurement IDs.
+// Republisher mirrors (tenderimpulse, bidsfactory, biddetail, MEED, …) are not
+// official portals. The invented id KW-MEWRE-75MVA-RELOC is never promoted.
+const OFFICIAL_PROCUREMENT_HOSTS = {
+  'dewa.gov.ae': true,
+  'www.dewa.gov.ae': true,
+  'tenders.etimad.sa': true,
+  'etimad.sa': true,
+  'www.etimad.sa': true,
+  'tenderboard.gov.bh': true,
+  'www.tenderboard.gov.bh': true
+};
+const INVENTED_PROCUREMENT_IDS = { 'KW-MEWRE-75MVA-RELOC': true };
+function officialHost(url) {
+  try { return new URL(url).hostname.replace(/^www\./, '').toLowerCase(); }
+  catch (e) { return ''; }
+}
+function isOfficialProcurementUrl(url) {
+  const host = officialHost(url);
+  if (!host) return false;
+  if (OFFICIAL_PROCUREMENT_HOSTS[host] || OFFICIAL_PROCUREMENT_HOSTS['www.' + host]) return true;
+  return host === 'dewa.gov.ae' || host === 'tenders.etimad.sa' || host === 'etimad.sa' || host === 'tenderboard.gov.bh';
+}
+const byProcurement = {};
+tenders.forEach(function (t) {
+  if (t.procurement_id) byProcurement[String(t.procurement_id)] = t;
+});
+let officialAdded = 0;
+INTEL_ITEMS.forEach(function (it) {
+  const pid = String(it.tender_id || '').trim();
+  if (!pid || INVENTED_PROCUREMENT_IDS[pid]) return;
+  const classes = it.classifications || [];
+  const tenderClass = classes.indexOf('TENDER') >= 0;
+  if (!tenderClass) return;
+  if (!isOfficialProcurementUrl(it.url)) return;
+  if (byProcurement[pid]) return;
+  const country = (it.buyer && /DEWA|Dubai/i.test(it.buyer)) ? 'United Arab Emirates'
+    : /Saudi/i.test(it.buyer || it.title || '') ? 'Saudi Arabia'
+    : /Bahrain|EWA/i.test(it.buyer || it.title || '') ? 'Bahrain'
+    : /Kuwait|MEWRE/i.test(it.buyer || it.title || '') ? 'Kuwait'
+    : /Oman/i.test(it.buyer || it.title || '') ? 'Oman' : '';
+  const events = [];
+  if (it.tender_float_date) events.push({ type: 'floated', date: String(it.tender_float_date).slice(0, 10), source_url: it.url });
+  if (it.publication_date && it.publication_date !== it.tender_float_date) {
+    events.push({ type: 'published', date: String(it.publication_date).slice(0, 10), source_url: it.url });
+  }
+  if (it.tender_close_date) events.push({ type: 'submission_deadline', date: String(it.tender_close_date).slice(0, 10), source_url: it.url });
+  const close = it.tender_close_date ? String(it.tender_close_date).slice(0, 10) : '';
+  addTender({
+    title: it.title,
+    full_title: it.title,
+    buyer: it.buyer || '',
+    utility: it.buyer || '',
+    epc: '',
+    country: country,
+    region: 'Middle East',
+    project_slug: '',
+    transformer_scope: (classes.indexOf('TRANSFORMER_REPLACEMENT') >= 0 || /transformer/i.test((it.title || '') + ' ' + (it.snippet || ''))) ? 'CONFIRMED' : 'UNKNOWN',
+    voltage: '',
+    quantity: it.value || '',
+    primary_voltage: '',
+    secondary_voltage: '',
+    rating: '',
+    standard: '',
+    delivery_requirement: '',
+    qualification_requirement: '',
+    official_procurement_url: it.url || '',
+    source: it.src || 'official procurement portal',
+    source_urls: it.url ? [it.url] : [],
+    source_verified: true,
+    expected_raw: close,
+    deadline_raw: close,
+    stage: 'tendering',
+    cls: it.cls || '',
+    procurement_id: pid,
+    status_events: events
+  });
+  const added = tenders[tenders.length - 1];
+  if (added && added.procurement_id === pid) {
+    stampSourceDates(added, it);
+    byProcurement[pid] = added;
+    officialAdded++;
+  }
+});
+console.log('official-portal procurement IDs added: ' + officialAdded);
+
 // Sort: open/expected first, then by region.
-const ORDER = { OPEN: 0, CLOSING_SOON: 1, EXPECTED: 2, EVALUATION: 3, AWARDED: 4, CLOSED: 5, UNKNOWN: 6 };
+const ORDER = { OPEN: 0, CLOSING_SOON: 1, UNDATED: 2, EXPECTED: 2, EVALUATION: 3, PROCUREMENT_PLAN: 4, FRAMEWORK: 5, MOU: 6, AWARDED: 7, CLOSED: 8, UNKNOWN: 9 };
 tenders.sort((a, b) => (ORDER[a.status] - ORDER[b.status]) || String(a.country).localeCompare(b.country));
 
 const stats = {
@@ -215,9 +350,13 @@ console.log('tenders.json wrote ' + tenders.length + ' tenders (' + stats.by_sta
 const T_STATUS_LEGEND = {
   OPEN: 'The official sourcing event is open for submissions.',
   CLOSING_SOON: 'The submission deadline is within the next two weeks.',
+  UNDATED: 'A tender was reported, but the source names no exact closing date, so it is not shown as open. Check the official source.',
   EXPECTED: 'A tender is expected / planned but not yet open.',
   EVALUATION: 'Bids are under evaluation (or an L1 / lowest-bidder notice is published).',
   AWARDED: 'The source confirms an award has been made.',
+  PROCUREMENT_PLAN: 'The source describes a procurement plan or tender programme, not a contract award.',
+  FRAMEWORK: 'The source describes a framework or collaboration announcement, not a contract award of the works.',
+  MOU: 'The source describes a memorandum of understanding, not a contract award.',
   CLOSED: 'The submission deadline has passed.',
   UNKNOWN: 'The stage is not pinned by the source.',
 };
@@ -236,7 +375,7 @@ function tenderPage(t) {
     ['Voltage class', esc(t.voltage || '—')],
     ['Transformer scope', scopeBadge || '—'],
     ['Delivery / timeline', esc(t.delivery_requirement || '—')],
-    ['Deadline', esc(t.deadline || '—')],
+    ['Deadline', esc(deadlineLabel(t.deadline) || '—')],
   ].map((r) => '<tr><th style="width:170px">' + r[0] + '</th><td>' + r[1] + '</td></tr>').join('');
   return '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
     '<title>' + esc(t.title) + ' — Transformer Tender | TransformerPath</title>' +
@@ -245,7 +384,7 @@ function tenderPage(t) {
     '<meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath"><meta property="og:title" content="' + esc(t.title) + ' — Transformer Tender"><meta property="og:url" content="' + url + '">' +
     '<meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow"><meta name="theme-color" content="#0d1b2e">' +
     '<link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg"><link rel="icon" href="../../brand/favicon.ico" sizes="any"><link rel="stylesheet" href="../../style.css?v=13"><style>' +
-    '.c-wrap{max-width:900px;margin:0 auto;padding:44px 20px 80px}.c-wrap h1{font-size:1.7rem;color:var(--ink)}.c-wrap .lead{color:var(--muted);font-size:1rem}.cw-meta{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:.9rem;color:var(--muted);margin:8px 0 16px}.cw-meta b{color:var(--text)}table{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:8px}th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:top}th{color:var(--muted);font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.03em}.cls-badge{display:inline-block;font-weight:700;font-size:.66rem;letter-spacing:.05em;padding:1px 7px;border-radius:8px;text-transform:uppercase}.cls-CONFIRMED{background:#14351f;color:#4ade80;border:1px solid rgba(74,222,128,.35)}.cls-INFERRED{background:#12283f;color:#60a5fa;border:1px solid rgba(96,165,250,.35)}.cls-UNKNOWN{background:#1d2330;color:#9fb0c4;border:1px solid rgba(159,176,196,.35)}</style></head><body>\n' +
+    '.c-wrap{max-width:900px;margin:0 auto;padding:44px 20px 80px}.c-wrap h1{font-size:1.7rem;color:var(--ink)}.c-wrap .lead{color:var(--muted);font-size:1rem}.cw-meta{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:.9rem;color:var(--muted);margin:8px 0 16px}.cw-meta b{color:var(--text)}table{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:8px}th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:top}th{color:var(--muted);font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.03em}.cls-badge{display:inline-block;font-weight:700;font-size:.66rem;letter-spacing:.05em;padding:1px 7px;border-radius:8px;text-transform:uppercase}.cls-CONFIRMED{background:#14351f;color:#4ade80;border:1px solid rgba(74,222,128,.35)}.cls-INFERRED{background:#12283f;color:#60a5fa;border:1px solid rgba(96,165,250,.35)}.cls-UNKNOWN{background:#1d2330;color:#9fb0c4;border:1px solid rgba(159,176,196,.35)}</style><link rel="stylesheet" href="../../tp-nav.css?v=14">\n</head><body>\n' +
     HEAD + '\n<main class="c-wrap">' +
     '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="../../tenders.html" style="color:var(--accent)">Tenders</a> › ' + esc(t.region) + ' › ' + esc(t.title) + '</nav>' +
     '<h1>' + esc(t.title) + ' <button class="follow-btn" data-follow-type="tender" data-follow-subject="' + esc(t.title) + '" data-follow-label="' + esc(t.title) + '" title="Follow this tender in My TransformerPath">Follow</button></h1>' +
@@ -267,6 +406,9 @@ tenders.forEach((t) => {
   fs.writeFileSync('tenders/' + slug + '/index.html', tenderPage(t));
   tSlugs.add(slug);
 });
+fs.readdirSync('tenders', { withFileTypes: true }).forEach(function (e) {
+  if (e.isDirectory() && !tSlugs.has(e.name)) fs.rmSync('tenders/' + e.name, { recursive: true, force: true });
+});
 console.log('tender entity pages wrote: ' + tSlugs.size);
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -277,25 +419,29 @@ console.log('tender entity pages wrote: ' + tSlugs.size);
   const regions = {};
   tenders.forEach((t) => { (regions[t.region] = regions[t.region] || []).push(t); });
   const regionKeys = Object.keys(regions).sort((a, b) => (REGION_ORDER[a] ?? 9) - (REGION_ORDER[b] ?? 9));
-  const style = '.t-wrap{max-width:1080px;margin:0 auto;padding:44px 20px 90px}.t-wrap h1{font-size:2rem;color:var(--ink)}.t-stats{display:flex;flex-wrap:wrap;gap:14px;margin:14px 0 24px}.t-stats .s{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 18px;text-align:center;min-width:120px}.t-stats .s b{color:var(--text);font-size:1.3rem;display:block}.t-stats .s small{color:var(--muted);font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em}.region-h{font-size:1.02rem;font-weight:800;color:var(--ink);text-transform:uppercase;letter-spacing:.05em;margin:24px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--border)}.t-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);font-size:.92rem}.t-row .t-title{color:var(--accent);font-weight:700;font-size:.95rem;text-decoration:none;flex:1}.t-row .t-title:hover{text-decoration:underline}.t-row .t-meta{color:var(--muted);font-size:.8rem}.st{display:inline-block;font-weight:700;font-size:.66rem;letter-spacing:.04em;padding:1px 8px;border-radius:8px;text-transform:uppercase}.st-open{background:#14351f;color:#4ade80}.st-expected{background:#2a2413;color:#e8c46a}.st-closing{background:#2a1a13;color:#fb923c}.st-eval{background:#12283f;color:#60a5fa}.st-awarded{background:#0f2a2a;color:#2dd4bf}.st-closed{background:#1d2330;color:#9fb0c4}.st-unknown{background:#1d2330;color:#9fb0c4}.t-note{color:var(--muted);font-size:.8rem;margin-top:20px}';
-  const stCls = { OPEN: 'st-open', CLOSING_SOON: 'st-closing', EXPECTED: 'st-expected', EVALUATION: 'st-eval', AWARDED: 'st-awarded', CLOSED: 'st-closed', UNKNOWN: 'st-unknown' };
+  const style = '.t-wrap{max-width:1080px;margin:0 auto;padding:44px 20px 90px}.t-wrap h1{font-size:2rem;color:var(--ink)}.t-stats{display:flex;flex-wrap:wrap;gap:14px;margin:14px 0 24px}.t-stats .s{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 18px;text-align:center;min-width:120px}.t-stats .s b{color:var(--text);font-size:1.3rem;display:block}.t-stats .s small{color:var(--muted);font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em}.region-h{font-size:1.02rem;font-weight:800;color:var(--ink);text-transform:uppercase;letter-spacing:.05em;margin:24px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--border)}.t-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);font-size:.92rem}.t-row .t-title{color:var(--accent);font-weight:700;font-size:.95rem;text-decoration:none;flex:1}.t-row .t-title:hover{text-decoration:underline}.t-row .t-meta{color:var(--muted);font-size:.8rem}.st{display:inline-block;font-weight:700;font-size:.66rem;letter-spacing:.04em;padding:1px 8px;border-radius:8px;text-transform:uppercase}.st-open{background:#14351f;color:#4ade80}.st-expected{background:#2a2413;color:#e8c46a}.st-closing{background:#2a1a13;color:#fb923c}.st-eval{background:#12283f;color:#60a5fa}.st-awarded{background:#0f2a2a;color:#2dd4bf}.st-closed{background:#1d2330;color:#9fb0c4}.st-unknown{background:#1d2330;color:#9fb0c4}.t-note{color:var(--muted);font-size:.8rem;margin-top:20px}.t-filters{margin:0 0 18px}.scope-filter{font:inherit;font-weight:800;font-size:.95rem;padding:10px 16px;border-radius:999px;border:2px solid #4ade80;background:#14351f;color:#4ade80;cursor:pointer}.scope-filter[aria-pressed="true"]{background:#4ade80;color:#05210f}.scope-badge{display:inline-block;font-weight:800;font-size:.66rem;letter-spacing:.03em;padding:2px 8px;border-radius:8px;background:#14351f;color:#4ade80;border:1px solid rgba(74,222,128,.45)}';
+  const stCls = { OPEN: 'st-open', CLOSING_SOON: 'st-closing', UNDATED: 'st-expected', EXPECTED: 'st-expected', EVALUATION: 'st-eval', AWARDED: 'st-awarded', CLOSED: 'st-closed', UNKNOWN: 'st-unknown', PROCUREMENT_PLAN: 'st-expected', FRAMEWORK: 'st-expected', MOU: 'st-expected' };
   const body = regionKeys.map((region) => {
-    const rows = regions[region].sort((a, b) => (ORDER[a.status] - ORDER[b.status]) || String(a.title).localeCompare(b.title)).map((t) =>
-      '<div class="t-row"><a class="t-title" href="tenders/' + esc(slugify(t.title)) + '/">' + esc(t.title) + '</a>' +
+    const rows = regions[region].sort((a, b) => (ORDER[a.status] - ORDER[b.status]) || String(a.title).localeCompare(b.title)).map((t) => {
+      const confirmed = t.transformer_scope === 'CONFIRMED';
+      return '<div class="t-row" data-scope="' + esc(t.transformer_scope || '') + '"><a class="t-title" href="tenders/' + esc(slugify(t.title)) + '/">' + esc(t.title) + '</a>' +
       '<span class="st ' + (stCls[t.status] || 'st-unknown') + '">' + esc(t.statusLabel) + '</span>' +
-      '<span class="t-meta">' + esc(t.country || t.region) + (t.voltage ? ' · ' + esc(t.voltage) : '') + (t.transformer_scope ? ' · ' + esc(t.transformer_scope) : '') + '</span></div>').join('');
+      (confirmed ? '<span class="scope-badge">Confirmed transformer scope</span>' : '') +
+      '<span class="t-meta">' + esc(t.country || 'Country not stated') + (t.voltage ? ' · ' + esc(t.voltage) : '') + '</span></div>';
+    }).join('');
     return '<div class="region-h">' + esc(region) + ' (' + regions[region].length + ')</div>' + rows;
   }).join('');
   const html = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Transformer Tender Watch — Global Procurement Opportunities | TransformerPath</title>' +
     '<meta name="description" content="A worldwide directory of transformer-relevant tenders, bids and procurement opportunities — open, expected and awarded, by region and country, source-tracked. ' + tenders.length + ' tenders across ' + stats.countries + ' countries.">' +
     '<link rel="canonical" href="https://transformerpath.com/tenders.html"><meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath"><meta property="og:title" content="Transformer Tender Watch — Global Procurement Opportunities"><meta property="og:url" content="https://transformerpath.com/tenders.html"><meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow"><meta name="theme-color" content="#0d1b2e">' +
-    '<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any"><link rel="stylesheet" href="style.css?v=13"><style>' + style + '</style></head><body>\n' + HEAD + '\n<main class="t-wrap">' +
+    '<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any"><link rel="stylesheet" href="style.css?v=13"><style>' + style + '</style><link rel="stylesheet" href="tp-nav.css?v=14">\n</head><body>\n' + HEAD + '\n<main class="t-wrap">' +
     '<h1>Transformer <span style="color:var(--accent)">Tender Watch</span></h1>' +
-    '<p class="lead" style="color:var(--muted);font-size:1.02rem;max-width:840px;margin:8px 0 18px">A worldwide directory of transformer-relevant tenders, bids and procurement opportunities, tracked by region and country. Derived from public, source-backed signals — the same data behind the Project database and Daily Intel. Every tender links to its source; TransformerPath does not republish restricted procurement documentation.</p>' +
-    '<div class="t-stats"><div class="s"><b>' + tenders.length + '</b><small>Tenders</small></div><div class="s"><b>' + stats.by_status.OPEN + '</b><small>Open now</small></div><div class="s"><b>' + (stats.by_status.EVALUATION + stats.by_status.EXPECTED) + '</b><small>Pre-award</small></div><div class="s"><b>' + stats.by_status.AWARDED + '</b><small>Awarded</small></div><div class="s"><b>' + stats.countries + '</b><small>Countries</small></div></div>' +
+    '<p class="lead" style="color:var(--muted);font-size:1.02rem;max-width:840px;margin:8px 0 18px">A worldwide directory of transformer-relevant tenders, bids and procurement opportunities, tracked by region and country. Derived from public, source-backed signals — the same data behind the Project database and Daily Intel. Every tender links to its source; TransformerPath does not republish restricted procurement documentation. <a href="/tenders/countries.html" style="color:var(--accent)">Country tender pages</a> list each country’s tenders, link a sourced award where one exists, and show directory manufacturers as directory matches. <a href="/factory-capacity/" style="color:var(--accent)">Lead times and factory capacity</a> is a free tracker of sourced, dated figures.</p>' +
+    '<div class="t-stats"><div class="s"><b>' + tenders.length + '</b><small>Tenders</small></div><div class="s"><b>' + ((stats.by_status.OPEN || 0) + (stats.by_status.CLOSING_SOON || 0)) + '</b><small>Open now</small></div><div class="s"><b>' + ((stats.by_status.EVALUATION || 0) + (stats.by_status.EXPECTED || 0) + (stats.by_status.UNDATED || 0)) + '</b><small>Pre-award</small></div><div class="s"><b>' + (stats.by_status.AWARDED || 0) + '</b><small>Awarded</small></div><div class="s"><b>' + stats.countries + '</b><small>Countries</small></div></div>' +
+    '<div class="t-filters"><button type="button" id="scopeFilter" class="scope-filter" aria-pressed="false">Confirmed transformer scope</button></div>' +
     body +
     '<p class="t-note">Tender metadata is public and source-tracked. Status is derived only from the source (e.g. OPEN/EXPECTED/EVALUATION/AWARDED) and may change — verify against the official procurement source before acting. Report a <a href="mailto:hello@transformerpath.com?subject=Tender%20correction" style="color:var(--accent)">correction</a>.</p>' +
-    '</main>\n' + FOOT + '\n<script src="analytics.js" defer></script>\n</body>\n</html>';
+    '</main>\n' + FOOT + '\n<script src="analytics.js" defer></script>\n<script>(function(){var btn=document.getElementById("scopeFilter");if(!btn)return;function apply(){var on=btn.getAttribute("aria-pressed")==="true";var heads=document.querySelectorAll(".region-h");heads.forEach(function(h){var el=h.nextElementSibling,any=false;while(el&&!el.classList.contains("region-h")){if(el.classList.contains("t-row")){var show=!on||el.getAttribute("data-scope")==="CONFIRMED";el.style.display=show?"":"none";if(show)any=true;}el=el.nextElementSibling;}h.style.display=any?"":"none";});}btn.addEventListener("click",function(){btn.setAttribute("aria-pressed",btn.getAttribute("aria-pressed")==="true"?"false":"true");apply();});if(/[?&]scope=confirmed(?:&|$)/.test(location.search)){btn.setAttribute("aria-pressed","true");apply();}})();</script>\n</body>\n</html>';
   fs.writeFileSync('tenders.html', html);
   console.log('tenders.html wrote (Tender Watch: ' + tenders.length + ' tenders / ' + stats.countries + ' countries / ' + regionKeys.length + ' regions; ' + stats.by_status.OPEN + ' open)');
 })();

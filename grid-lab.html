@@ -24,13 +24,7 @@
   <!-- Top Bar -->
   <header class="gl-topbar">
     <a href="index.html" class="gl-brand" title="TransformerPath Home">
-      <svg width="28" height="28" viewBox="0 0 64 64" aria-hidden="true" style="flex:none">
-        <circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/>
-        <g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8">
-          <line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/>
-        </g>
-        <path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/>
-      </svg>
+      <svg class="logo-mark" width="28" height="28" viewBox="0 0 16 16" aria-hidden="true" style="flex:none"><g fill="#f5a623"><rect x="1" y="1" width="4" height="4"/><rect x="11" y="1" width="4" height="4"/><rect x="1" y="11" width="4" height="4"/><rect x="11" y="11" width="4" height="4"/><rect x="5" y="2" width="6" height="2"/><rect x="12" y="5" width="2" height="6"/><rect x="5" y="12" width="6" height="2"/></g></svg>
       <span>Transformer<span style="color:var(--gl-accent)">Path</span></span>
       <span class="badge">Grid Lab</span>
     </a>
@@ -46,7 +40,9 @@
   </header>
 
   <!-- 3D Canvas Viewport -->
-  <main id="gl-canvas-container" role="region" aria-label="Interactive 3D Power System Grid" tabindex="0"></main>
+  <main id="gl-canvas-container" role="region" aria-label="Interactive 3D Power System Grid" tabindex="0">
+    <p data-gl-fallback style="position:absolute;left:16px;right:16px;top:88px;color:#c5d0dc;font-size:.95rem;line-height:1.5;max-width:42rem">The 3D grid is loading. If this stays blank, use Schematic / A11y in the header for the stage-by-stage engineering view.</p>
+  </main>
 
   <!-- Left Simulation Controls Panel -->
   <aside class="gl-panel-left" aria-label="Simulation Controls">
@@ -110,7 +106,11 @@
       <div style="color:var(--gl-muted);margin-bottom:6px">Want to see how this transformer is built inside?</div>
       <a href="transformer-lab.html" style="color:var(--gl-accent);font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:4px">TAKE THIS TRANSFORMER APART →</a>
     </div>
-    <div class="gl-disclaimer">
+    <div class="gl-disclaimer" id="grid-lab-validation">
+      <b style="color:var(--gl-accent)">Validation example.</b>
+      Inputs: 1,000 MVA at 21 kV and at 400 kV; a 140 MVA load shared by two 100 MVA transformers, each at 12.5% impedance, both in service.
+      Expected: 27,493 A at 21 kV, 1,443 A at 400 kV, and 70 MVA on each transformer.
+      References: IEC 60076-1 three-phase current I = S / (√3 · U). Equal percent impedance splits the load in proportion to rating, so each unit carries half of 140 MVA.
       Illustrative educational power-system configuration. Actual voltage levels, vector groups, and transformer arrangements vary by country and utility.
     </div>
   </section>
@@ -127,6 +127,12 @@
       <p style="color:var(--gl-muted);font-size:0.95rem;line-height:1.6;margin-bottom:24px">
         Electrical power is generated at moderate voltage, stepped up to extra-high voltage (EHV) for bulk transmission to minimize current and I²R losses, and then progressively stepped down across regional, primary, and local distribution transformers for end-user safety and equipment compatibility.
       </p>
+      <div id="grid-lab-validation-a11y" style="background:rgba(245,166,35,.08);border:1px solid rgba(245,166,35,.35);border-radius:10px;padding:14px 16px;margin-bottom:24px;color:#fff;font-size:.9rem;line-height:1.55">
+        <b>Validation example.</b>
+        Inputs: 1,000 MVA at 21 kV and at 400 kV; a 140 MVA load shared by two 100 MVA transformers, each at 12.5% impedance, both in service.
+        Expected: 27,493 A at 21 kV, 1,443 A at 400 kV, and 70 MVA on each transformer.
+        References: IEC 60076-1 three-phase current I = S / (√3 · U). Equal percent impedance splits the load in proportion to rating, so each unit carries half of 140 MVA.
+      </div>
 
       <div style="background:var(--gl-panel);border:1px solid var(--gl-panel-border);border-radius:10px;padding:20px;margin-bottom:24px">
         <h2 style="font-size:1.1rem;color:var(--gl-accent);margin-bottom:12px">Grid Transformation Hierarchy (Educational Scenario)</h2>
@@ -145,14 +151,14 @@
               <td style="padding:8px"><b>1. Generation</b></td>
               <td style="padding:8px">Synchronous Generator</td>
               <td style="padding:8px">— → 21.0 kV</td>
-              <td style="padding:8px">Star (NGR)</td>
+              <td style="padding:8px">Star, low-resistance NGR</td>
               <td style="padding:8px">Bulk power generation bounded by stator winding dielectric insulation.</td>
             </tr>
             <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
               <td style="padding:8px"><b>2. GSU Step-Up</b></td>
               <td style="padding:8px">Generator Step-Up (GSU)</td>
               <td style="padding:8px">21.0 kV → 400.0 kV</td>
-              <td style="padding:8px">YNd11</td>
+              <td style="padding:8px">YNd1</td>
               <td style="padding:8px">Steps voltage up 19.05x, dropping current by 19.05x and slashing I²R losses by ~362.8x (illustrative equal-R basis).</td>
             </tr>
             <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
@@ -187,8 +193,8 @@
               <td style="padding:8px"><b>7. Primary Substation</b></td>
               <td style="padding:8px">Dual Power Transformers (T1/T2)</td>
               <td style="padding:8px">132.0 kV → 33.0 kV</td>
-              <td style="padding:8px">Dyn11</td>
-              <td style="padding:8px">Subtransmission to primary distribution with active OLTC regulation and N-1 redundancy.</td>
+              <td style="padding:8px">YNd11</td>
+              <td style="padding:8px">Subtransmission to primary distribution with active OLTC regulation and N-1 redundancy. HV is star-earthed; the 33 kV delta is earthed through an earthing transformer.</td>
             </tr>
             <tr style="border-bottom:1px solid rgba(255,255,255,0.05)">
               <td style="padding:8px"><b>8. Distribution Substation</b></td>

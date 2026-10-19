@@ -1,8 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark" class="tp-dark" data-tp-build-commit="28e901500810983af9e07b477551eb86a580a289" data-tp-build-at="2026-10-02T20:30:37.186Z" data-tp-data-version="f6bd8e2d408e">
+<html lang="en" data-theme="dark" class="tp-dark">
 <head>
-<meta name="tp-build-commit" content="28e901500810983af9e07b477551eb86a580a289"><meta name="tp-build-at" content="2026-10-02T20:30:37.186Z"><meta name="tp-data-version" content="f6bd8e2d408e">
-<!-- tp-release build_commit=28e901500810983af9e07b477551eb86a580a289 build_at=2026-10-02T20:30:37.186Z data_version=f6bd8e2d408e -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Transformer Construction — Interactive 3D Explorer</title>
@@ -15,7 +13,7 @@
 <style>
 :root{--panel:#14253d;--panel2:#0d1b2e;--ink:#e8edf4;--mut:#94a3b8;--acc:#f5a623;--acc2:#fbbf24;--line:#1e3a5c}
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;overflow:hidden}
+html,body{height:100%;overflow:hidden;overscroll-behavior:none}
 body{font-family:var(--font-sans);background:#0a1624;color:var(--ink)}
 #c3d{position:absolute;inset:0;cursor:grab}
 #c3d.dragging{cursor:grabbing}
@@ -71,11 +69,16 @@ body{font-family:var(--font-sans);background:#0a1624;color:var(--ink)}
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 <header>
+  <style>
+    @media (min-width: 1024px) {
+      #mainNav > .tpnav-more { display: block; }
+    }
+  </style>
   <div class="container nav">
-    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 16 16" aria-hidden="true" style="flex:none"><g fill="#f5a623"><rect x="1" y="1" width="4" height="4"/><rect x="11" y="1" width="4" height="4"/><rect x="1" y="11" width="4" height="4"/><rect x="11" y="11" width="4" height="4"/><rect x="5" y="2" width="6" height="2"/><rect x="12" y="5" width="2" height="6"/><rect x="5" y="12" width="6" height="2"/></g></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
     <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
     <nav class="tpnav" id="mainNav" aria-label="Primary">
-      <a href="/intel">Intel</a>
+      <a href="/intel.html">Intel</a>
       <div class="tpnav-dropdown">
         <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
         <div class="tpnav-dropdown-panel" role="menu">
@@ -88,21 +91,25 @@ body{font-family:var(--font-sans);background:#0a1624;color:var(--ink)}
           <a href="services.html">Services &amp; Repair</a>
           <a href="markets.html">Markets</a>
           <a href="buyers-guide.html">Buyer's Guide</a>
+          <a href="buy-early/">Buy early</a>
+          <a href="spare-capacity/">Mid-tier makers</a>
+          <a href="lead-times/">Lead times</a>
+          <a href="bottlenecks/">Bottlenecks</a>
           <a href="directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
         </div>
       </div>
       <a href="projects.html">Projects</a>
       <a href="tenders.html">Tenders</a>
       <a href="events.html">Events</a>
-      <a href="tools.html" class="tpnav-opt">Engineering</a>
       <a href="learn.html">Learn</a>
       <a href="rfq.html">RFQ</a>
       <div class="tpnav-more">
         <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
         <div class="tpnav-more-panel" role="menu">
+          <a href="tools.html" role="menuitem">Engineering</a>
           <a href="map.html" role="menuitem">Industry Map</a>
           <a href="grids.html" role="menuitem">Global Grids</a>
-          <a href="webinars.html" role="menuitem">Webinars</a>
+          
           <a href="standards.html" role="menuitem">Standards &amp; Codes</a>
           <a href="for-manufacturers.html" role="menuitem">For Manufacturers</a>
           <a href="pricing.html" role="menuitem">Pricing Plans</a>
@@ -111,6 +118,7 @@ body{font-family:var(--font-sans);background:#0a1624;color:var(--ink)}
       </div>
       <span class="tpnav-utils">
         <a href="search.html" title="Search" aria-label="Search">&#128269;</a>
+        <span class="tp-auth" data-tp-auth hidden></span>
         <a href="workspace.html" data-tp-account>Account</a>
         <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">&#127769;</button>
       </span>
@@ -142,6 +150,8 @@ body{font-family:var(--font-sans);background:#0a1624;color:var(--ink)}
       themeToggle.textContent = isDark ? '☀️' : '🌙';
     }
   </script>
+  <script src="google-auth-config.js" defer></script>
+  <script src="tp-auth.js?v=1" defer></script>
   <script src="tp-nav.js?v=7" defer></script>
   <script src="tp-pwa.js?v=7" defer></script>
 </header>
@@ -150,7 +160,7 @@ body{font-family:var(--font-sans);background:#0a1624;color:var(--ink)}
 <div id="topbar">
   <h1>⚡ Transformer Construction — 3D Explorer</h1>
   <a href="academy.html">🏠 Hub</a>
-  <a href="masterclass.html">← Tutorial</a>
+  <a href="learn.html">← Tutorial</a>
   <a href="power3d.html">Power transformer 3D →</a>
   <div id="modeswitch">
     <button id="mOil" class="active">Oil-immersed</button>
@@ -180,13 +190,15 @@ body{font-family:var(--font-sans);background:#0a1624;color:var(--ink)}
   </div>
 
   <h2>Selected part</h2>
-  <div id="info"><span class="hint">Click any part of the transformer to identify it and read what it does. Drag to orbit · scroll to zoom · right-drag to pan.</span></div>
+  <div id="info"><span class="hint">Click any part of the transformer to identify it and read what it does. Drag to orbit · Ctrl + scroll to zoom · right-drag to pan.</span></div>
 </div>
 
 <div id="help">🖱 drag = orbit &nbsp;·&nbsp; wheel = zoom &nbsp;·&nbsp; right-drag / shift-drag = pan &nbsp;·&nbsp; click = identify part<br>📱 one finger = orbit &nbsp;·&nbsp; pinch = zoom</div>
 
 <script src="tp-webgl-gate.js"></script>
 <script src="vendor/three.min.js"></script>
+<script src="tp-canvas-scroll.js"></script>
+<script src="tp-label-layout.js"></script>
 <script>
 (function(){
 
@@ -385,7 +397,7 @@ let oilMesh;
   oilMesh.castShadow = false; oilMesh.receiveShadow=false;
   g.add(oilMesh); oilRoot.add(g);
   reg(g,'Insulating oil',
-   'Mineral oil (IEC 60296) — or fire-safer ester liquid — is insulant, coolant and diagnostic window at once. Heated oil rises through the winding ducts, cools in the radiators and sinks back: the ONAN thermosiphon.',
+   'Mineral oil (IEC 60296), or a fire-safer ester, is the insulant, the coolant and the diagnostic window. Heated oil rises through the winding ducts, cools in the corrugated fin walls and sinks back: the ONAN thermosiphon. This tank has no detachable radiators.',
    [0,0,0],'oil');
 }
 /* --- cover --- */
@@ -398,7 +410,7 @@ let oilMesh;
   const ti = cyl(.9,.9,2.2,M.glass); ti.position.set(2,32.7,5.5); g.add(ti);
   oilRoot.add(g);
   reg(g,'Tank cover (+ PRV, OTI/WTI pockets)',
-   'Bolted, gasketed cover carrying the bushings, pressure-relief valve (red) and thermometer pockets for the oil- and winding-temperature indicators that stage the fans and trip on overheating.',
+   'Bolted, gasketed cover carrying the bushings, a pressure-relief device (red) and OTI/WTI pockets. This oil model is ONAN, so there are no fans to stage. The indicators alarm and trip on over-temperature. Fan staging belongs on an ONAF rating.',
    [0,18,0],'tank');
 }
 /* --- HV bushings --- */
@@ -478,7 +490,7 @@ let oilMesh;
   }
   oilRoot.add(g);
   reg(g,'Corrugated fin walls (ONAN cooling)',
-   'On distribution transformers the tank wall IS the radiator: thin steel sheet is pressed into deep vertical fins (the corrugations you see on every pad-mount and pole-mount unit). Hot oil rises inside, sheds heat through the fin faces, and sinks — pure ONAN thermosiphon, no fans, no valves, nothing to maintain. The fins also flex elastically to absorb oil expansion, which is what lets hermetically sealed designs delete the conservator entirely. Larger distribution units (≥1600 kVA) switch to detachable plate-type radiators like the power transformer’s.',
+   'On a distribution tank the wall is the cooler: thin steel pressed into deep vertical fins. Hot oil rises inside, sheds heat through the fin faces and sinks. That is ONAN, with no fans and no radiator valves. This model is the free-breathing arrangement, so expansion goes to the conservator and the fins are only the cooler. A hermetic corrugated tank is a different unit: the fins flex, and the conservator, Buchholz relay and breather are omitted. Do not specify both expansion methods on one tank. Larger free-breathing units, from about 1600 kVA, often change the cooler to detachable plate radiators.',
    [0,0,0],'cooling');
 }
 /* --- OLTC --- */
@@ -489,7 +501,7 @@ let oilMesh;
   const mot = box(3,4.5,3,M.steelDk); mot.position.set(-25.4,6,5); g.add(mot);
   oilRoot.add(g);
   reg(g,'On-load tap-changer (OLTC)',
-   'Adjusts HV turns under load (e.g. ±10% in 17 steps) to hold the LV voltage as network load swings. Diverter switch with transition resistors — modern units switch in vacuum interrupters, stretching maintenance to ~300 000 operations. Driven by the motor box below, commanded by an AVR relay.',
+   'Adjusts HV turns under load, for example ±10% in 17 positions (16 steps of 1.25%), to hold the LV voltage as network load swings. That is usual on larger free-breathing distribution units. Many small hermetic tanks use an off-circuit tap switch instead. The diverter uses transition resistors, or vacuum interrupters on modern units, with maintenance out toward 300 000 operations. The motor box below follows the AVR relay.',
    [-14,0,0],'oltc');
 }
 
@@ -816,6 +828,7 @@ let dragging=false, panning=false, lastX=0, lastY=0, moved=0;
 const el = renderer.domElement;
 el.addEventListener('contextmenu',e=>e.preventDefault());
 el.addEventListener('pointerdown',e=>{
+  if(e.pointerType==='touch')return;
   dragging=true; moved=0; panning = (e.button===2 || e.shiftKey);
   lastX=e.clientX; lastY=e.clientY; container.classList.add('dragging');
   el.setPointerCapture(e.pointerId);
@@ -838,15 +851,22 @@ el.addEventListener('pointerup',e=>{
   dragging=false; container.classList.remove('dragging');
   if(moved<6) pick(e);
 });
-el.addEventListener('wheel',e=>{ e.preventDefault(); sph.r *= (1 + Math.sign(e.deltaY)*0.09); applyCam(); },{passive:false});
-/* pinch zoom */
-let pinchD=0;
-el.addEventListener('touchstart',e=>{ if(e.touches.length===2){ pinchD=Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);} },{passive:true});
-el.addEventListener('touchmove',e=>{ if(e.touches.length===2){ const d=Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY); sph.r *= pinchD/d; pinchD=d; applyCam(); } },{passive:true});
+TPCanvasScroll.setPanY(el);
+TPCanvasScroll.bindWheel(el, function (e) {
+  sph.r *= 1 + Math.sign(e.deltaY) * 0.09;
+  applyCam();
+});
+TPCanvasScroll.bindTwoFinger(el, function (g) {
+  if (g.zoom && isFinite(g.zoom)) sph.r *= g.zoom;
+  if (g.dAngle) sph.th += g.dAngle;
+  applyCam();
+});
+TPCanvasScroll.bindZoomHint(typeof container !== 'undefined' ? container : el.parentElement);
 
 /* ============ picking ============ */
 const ray = new THREE.Raycaster(); const mouse = new THREE.Vector2();
 let selected = null;
+let pinnedPart = null;
 function setEmissive(part, on, col=0x2b6ea8){
   part.root.traverse(o=>{ if(o.isMesh && o.material.emissive){
     if(on){ o.userData.em = o.material; o.material = o.material.clone(); o.material.emissive = new THREE.Color(col); o.material.emissiveIntensity=.8; }
@@ -855,6 +875,7 @@ function setEmissive(part, on, col=0x2b6ea8){
 }
 function selectPart(p){
   if(!p) return;
+  pinnedPart = p;
   if(typeof quizOn!=="undefined" && quizOn && typeof quizAnswer==="function"){ quizAnswer(p); return; }
   if(typeof selected!=="undefined"){ if(selected) setEmissive(selected,false); selected=p; } else { setEmissive(p,true); }
   setEmissive(p,true);
@@ -872,9 +893,10 @@ function pick(e){
   if(hits.length){
     const p = meshIndex.get(hits[0].object);
     if(quizOn){ quizAnswer(p); return; }
-    selected = p; setEmissive(p,true);
+    selected = p; pinnedPart = p; setEmissive(p,true);
     info.innerHTML = `<b>${p.name}</b><br>${p.desc}`;
   }else{
+    pinnedPart = null;
     info.innerHTML = quizOn
       ? `<b>🎯 Find and click: ${qTarget?qTarget.name:''}</b><br><span class="hint">Score: ${qScore}/${qCount} — that click hit empty space.</span>`
       : '<span class="hint">Click any part of the transformer to identify it and read what it does.</span>';
@@ -954,15 +976,21 @@ function tick(){
   if(autoRotate && !dragging){ sph.th += 0.0035; applyCam(); }
   renderer.render(scene,camera);
   /* labels */
+  var callouts=[];
   labelEls.forEach(L=>{
     if(!labelsOn || !L.part || !L.part.root.visible || !L.part.root.parent.visible){ L.el.style.display='none'; return; }
     v3.copy(L.part.root.getWorldPosition(new THREE.Vector3())).add(L.off);
     const pr = v3.clone().project(camera);
     if(pr.z>1){ L.el.style.display='none'; return; }
-    L.el.style.display='block';
-    L.el.style.left = ((pr.x+1)/2*innerWidth)+'px';
-    L.el.style.top  = ((-pr.y+1)/2*innerHeight)+'px';
+    callouts.push({
+      el:L.el,
+      x:((pr.x+1)/2*innerWidth),
+      y:((-pr.y+1)/2*innerHeight),
+      show:true,
+      pin:pinnedPart===L.part
+    });
   });
+  if(window.TPLabelLayout) TPLabelLayout.layout(callouts);
 }
 setMode('oil');
 tick();
@@ -979,20 +1007,19 @@ addEventListener('resize',()=>{
   <div class="container">
     <div class="cols">
       <div>
-        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 16 16" aria-hidden="true" style="flex:none"><g fill="#f5a623"><rect x="1" y="1" width="4" height="4"/><rect x="11" y="1" width="4" height="4"/><rect x="1" y="11" width="4" height="4"/><rect x="11" y="11" width="4" height="4"/><rect x="5" y="2" width="6" height="2"/><rect x="12" y="5" width="2" height="6"/><rect x="5" y="12" width="6" height="2"/></g></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
         <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data. Built for utilities, transformer manufacturers, component suppliers, EPCs, consultants and engineers.</p>
       </div>
-      <div><p class="footer-col-label">INTELLIGENCE</p><a href="/intel">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="projects.html">Projects</a><a href="tenders.html">Tenders</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="map.html">Industry Map</a><a href="events.html">Events</a></div>
+      <div><p class="footer-col-label">INTELLIGENCE</p><a href="/intel.html">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="projects.html">Projects</a><a href="tenders.html">Tenders</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="map.html">Industry Map</a><a href="events.html">Events</a></div>
       <div><p class="footer-col-label">DIRECTORY</p><a href="manufacturers.html">Manufacturers</a><a href="directory.html">Directory Index</a><a href="components.html">Components &amp; Materials</a><a href="machinery.html">Machinery</a><a href="laboratories.html">Testing Labs</a><a href="services.html">Service &amp; Repair</a><a href="logistics.html">Logistics</a><a href="buyers.html">Buyers &amp; Utilities</a><a href="rfq.html">RFQ Board</a></div>
       <div><p class="footer-col-label">ENGINEERING</p><a href="tools.html">Engineering Hub</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Interactive Models</a><a href="standards.html">Standards &amp; Codes</a><a href="knowledge.html">Knowledge Base</a><a href="case-studies.html">Case Studies</a></div>
-      <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learning Hub</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy 3D Tools</a><a href="books.html">Books</a><a href="education.html">Education</a></div>
-      <div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="pricing.html">Pricing Plans</a><a href="verified.html">Verified Profiles</a><a href="webinars.html">Webinars</a><a href="sponsor.html">Sponsorship</a><a href="associations.html">Associations</a><a href="media.html">Media</a></div>
-      <div><p class="footer-col-label">COMPANY</p><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learning Hub</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy 3D Tools</a><a href="books.html">Books</a><a href="education.html">Education</a></div>
+      <div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="pricing.html">Pricing Plans</a><a href="verified.html">Verified Profiles</a><a href="sponsor.html">Sponsorship</a><a href="associations.html">Associations</a><a href="media.html">Media</a></div>
+      <div><p class="footer-col-label">COMPANY</p><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="affiliate-disclosure.html">Affiliate disclosure</a></div>
       <div><p class="footer-col-label">CONTACT</p>
         <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
         <a href="privacy.html#cookies" onclick="if(window.tpResetConsent){window.tpResetConsent();return false}">Cookie settings</a>
         <a class="tp-li-btn tp-li-follow" data-linkedin-follow href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>Follow us on LinkedIn</a>
-        <a class="tp-li-btn tp-li-share" data-linkedin-share href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>LinkedIn</a>
       </div>
     </div>
     <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>

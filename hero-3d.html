@@ -4,8 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TransformerPath — Hero 3D</title>
+<link rel="canonical" href="https://transformerpath.com/hero-3d.html">
+<meta name="description" content="Interactive 3D power transformer used on the TransformerPath homepage. The model is a visual only. It does not publish a manufacturer, tender, or market figure.">
+<meta name="robots" content="noindex,follow">
 <style>
-  html, body { margin: 0; height: 100%; overflow: hidden; background: #07111c; }
+  html, body { margin: 0; height: 100%; overflow: hidden; overscroll-behavior: none; background: #07111c; }
   #stage { position: absolute; inset: 0; cursor: grab; }
   #stage.dragging { cursor: grabbing; }
   .veil {
@@ -32,6 +35,7 @@
 
   <script src="tp-webgl-gate.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="tp-canvas-scroll.js"></script>
   <script src="tp-3d-core.js"></script>
   <script src="tp-power-assembly.js"></script>
   <script>
@@ -45,6 +49,8 @@
 
     function fail(reason, detail) {
       if (boot) boot.classList.add('is-done');
+      try { parent.postMessage({ type: 'tp-3d-state', state: reason || 'UNAVAILABLE' }, '*'); } catch (e) {}
+      if (!gate || !gate.showFallback) return;
       gate.showFallback(stage, {
         state: reason || 'UNAVAILABLE',
         detail: detail || null,
@@ -52,7 +58,6 @@
         body: 'You can still explore TransformerPath’s engineering content and transformer components.',
         onRetry: function () { location.reload(); }
       });
-      try { parent.postMessage({ type: 'tp-3d-state', state: reason || 'UNAVAILABLE' }, '*'); } catch (e) {}
     }
 
     if (!gate || !gate.detect().ok) {

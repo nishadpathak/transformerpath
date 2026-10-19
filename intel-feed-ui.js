@@ -50,7 +50,13 @@
     var href = p.url || ('intel.html#p-' + p.id);
     var date = p.date ? esc(p.date) : 'Date not stated';
     var cls = p.cls ? '<span class="cls-badge cls-' + esc(p.cls) + '">' + esc(p.cls) + '</span>' : '';
-    var prov = p.provenance ? '<span class="intel-prov intel-prov-' + esc(p.provenance) + '">' + esc(p.provenance) + '</span>' : '';
+    var evidence = (p.evidenceGrade && p.evidenceGrade !== 'CONFIRMED' && p.evidenceGrade !== p.cls)
+      ? '<span class="cls-badge cls-' + esc(p.evidenceGrade) + '" title="Supported evidence — not yet fully verified. No live portal adapter has confirmed this item.">' + esc(p.evidenceGrade) + '</span>'
+      : '';
+    var evidenceNote = p.evidenceNote
+      ? '<p class="intel-evidence-note" style="font-size:.76rem;color:#f0c14a;margin:6px 0 0">' + esc(p.evidenceNote) + '</p>'
+      : '';
+    var prov = (window.TPProvenance && p.provenance) ? TPProvenance.intelBadge(p) : '';
     var age = ageBadgeHtml(p.ageTier, p.isActive, p.historicalReference);
     var relevance = p.currentRelevance ? '<div class="intel-relevance" style="font-size:.76rem;color:var(--muted);margin-top:6px;padding-top:4px;border-top:1px dashed var(--border)"><b>Current Relevance:</b> ' + esc(p.currentRelevance) + '</div>' : '';
 
@@ -58,12 +64,13 @@
       '<div class="intel-avatar" aria-hidden="true">TP</div>' +
       '<div class="intel-body">' +
       '<div class="intel-byline"><strong>TransformerPath</strong><span class="intel-handle">@intel</span>' +
-      '<span class="intel-date" title="Source date — not the page-build clock">' + date + '</span>' + age + '</div>' +
+      '<span class="intel-date" title="Source date — not the page-build clock">' + date + '</span> ' + age + '</div>' +
       '<h3 class="intel-headline"><a href="' + esc(href) + '"' + (p.url ? ' target="_blank" rel="noopener"' : '') + '>' + esc(p.headline) + '</a></h3>' +
       (p.soWhat ? '<p class="intel-sowhat">' + esc(p.soWhat) + '</p>' : '') +
+      evidenceNote +
       (p.buyer ? '<p class="intel-buyer">Who buys: ' + esc(p.buyer) + '</p>' : '') +
       relevance +
-      '<div class="intel-meta">' + cls + prov +
+      '<div class="intel-meta">' + [cls, evidence, prov].filter(Boolean).join(' ') +
       '<span class="intel-region">' + esc(p.region) + '</span>' +
       (p.value ? '<span class="val">' + esc(p.value) + '</span>' : '') +
       '<span class="src">' + esc(p.sourceName || p.src) + '</span></div>' +
@@ -88,8 +95,11 @@
     var more = items.length > shown;
     var empty = !slice.length ? '<p class="intel-empty">No sourced posts on this desk yet. TransformerPath is the only poster — items appear when the daily desk files them.</p>' : '';
     var honesty = '';
-    if (feed && feed.honesty && feed.honesty.latest_source_date) {
-      honesty = '<p class="intel-honesty">Latest sourced item: <b>' + esc(feed.honesty.latest_source_date) + '</b> · dates are on the source, not this visit.</p>';
+    var statusLabel = window.__TP_INTEL_STATUS && window.__TP_INTEL_STATUS.latest_source_date;
+    var feedLabel = feed && feed.honesty && feed.honesty.latest_source_date;
+    var label = statusLabel || feedLabel;
+    if (label) {
+      honesty = '<p class="intel-honesty">Latest sourced item: <b>' + esc(label) + '</b> · dates are on the source, not this visit.</p>';
     }
     host.innerHTML = honesty + empty + slice.map(card).join('') +
       (more ? '<button type="button" class="intel-more" id="intelMore">Show more · ' + (items.length - shown) + ' remaining</button>' : '');
@@ -154,6 +164,10 @@
     bindTabs();
     var hash = (location.hash || '').replace('#', '');
     if (hash && /^(latest|tenders|awards|capacity|factories|materials|metals|pipeline|tech|reference|foryou)$/.test(hash)) tab = hash;
+    fetch('data/intel-status.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (st) {
+      window.__TP_INTEL_STATUS = st;
+      if (feed) paint(false);
+    }).catch(function () {});
     fetch('data/intel-feed-ui.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (d) {
       feed = d;
       setTab(tab);

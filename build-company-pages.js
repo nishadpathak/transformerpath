@@ -19,15 +19,37 @@
  */
 'use strict';
 const fs = require('fs');
+const tpAff = require('./lib/travelpayouts');
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+const { evidenceBadge, facilityBadge } = require('./lib/provenance-badge');
 function slugify(s) { return String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/&/g, 'and').replace(/['’´]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, ''); }
 const ci = function (s) { return (s || '').toLowerCase(); };
 const norm = function (s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim().replace(/\s+/g, ' '); };
 
 const { resolveCompanyAlias, norm: aliasNorm } = require('./lib/company-aliases');
+const headOffice = require('./lib/head-office');
+const HEAD_OFFICES = headOffice.load(__dirname);
+const companyParents = require('./lib/company-parents');
+const manufacturerSpecs = require('./lib/manufacturer-specs');
+const SPEC_BY_SLUG = {};
+(manufacturerSpecs.load(__dirname).companies || []).forEach(function (c) { if (c && c.slug) SPEC_BY_SLUG[c.slug] = c; });
+const { isUpcoming, platformToday } = require('./lib/event-status');
+const { splitEntityIntel, fold: foldEntity } = require('./lib/entity-intel');
+const paidListings = require('./lib/paid-listings');
+const claimListing = require('./lib/claim-listing');
+const buyerPageCopy = require('./lib/buyer-page-copy');
+const listingMedia = require('./lib/listing-media');
+const PAID_LISTINGS = paidListings.load();
+const LISTING_MEDIA = (function () { try { return JSON.parse(fs.readFileSync('data/listing-media.json', 'utf8')); } catch (e) { return { profiles: [] }; } })();
+function listingMediaHtml(slug) {
+  return listingMedia.render(listingMedia.collect(slug, {
+    listings: (PAID_LISTINGS && PAID_LISTINGS.listings) || [],
+    profiles: (LISTING_MEDIA && LISTING_MEDIA.profiles) || []
+  }));
+}
 const MANUF = JSON.parse(fs.readFileSync('data/manufacturers.json', 'utf8'));
 const TIERS = JSON.parse(fs.readFileSync('data/manufacturer-tiers.json', 'utf8'));
 const EVENTS = JSON.parse(fs.readFileSync('data/events.json', 'utf8'));
@@ -107,6 +129,19 @@ MANUF.forEach(function (g) {
       // Same canonical company seen again (short name / second country row):
       // keep the richer display name + URL; union types; never invent a 2nd page.
       const prev = records[key];
+      // A later row that is the company's own name replaces the country and
+      // city taken from an earlier plant alias. A plant alias does not replace
+      // a head office already taken from that own-name row. Sourced head
+      // offices in data/head-offices.json are applied after this pass.
+      if (headOffice.canonicalRowReplacesAliasHq(prev.fromAlias, alias.aliased)) {
+        prev.name = name;
+        prev.country = g.country;
+        prev.region = g.region;
+        prev.flag = g.flag;
+        if (x[1]) prev.city = x[1];
+        if (x[2]) prev.url = x[2];
+        prev.fromAlias = false;
+      }
       if ((!prev.url && x[2]) || (alias.aliased && /industrial solutions/i.test(rawName) && !/industrial solutions/i.test(prev.name))) {
         prev.name = rawName; // prefer full legal census name when alias collapses onto it
       }
@@ -134,7 +169,8 @@ MANUF.forEach(function (g) {
       tierFile: tierFor(rawName) || tierFor(name),
       listed: true,
       canonical_slug: alias.aliased ? alias.slug : undefined,
-      aka: alias.aliased && alias.sourceName !== name ? [alias.sourceName] : undefined
+      aka: alias.aliased && alias.sourceName !== name ? [alias.sourceName] : undefined,
+      fromAlias: !!alias.aliased
     };
   });
 });
@@ -155,6 +191,23 @@ TIERS.forEach(function (t) {
   const rec = MANUF.find(function (g) { return ci(g.country) === ci(t.country); });
   const r = { name: alias.name, country: t.country || 'Global', region: rec ? rec.region : 'Europe', flag: rec ? rec.flag : '', city: '', url: t.site || '', types: tierTypes(t.types).length ? tierTypes(t.types) : ['PT', 'DT'], flagV: '', established: '', tierFile: t, listed: true, canonical_slug: alias.aliased ? alias.slug : undefined };
   records[key] = r;
+});
+
+// Sourced head office wins over every census row, including a non-alias row
+// that itself recorded a plant city (Siemens Energy was listed at Charlotte).
+Object.keys(records).forEach(function (key) {
+  const r = records[key];
+  const office = headOffice.officeFor(r, HEAD_OFFICES);
+  if (!office) return;
+  const group = MANUF.find(function (g) { return ci(g.country) === ci(office.country); });
+  r.country = office.country;
+  r.city = office.city || r.city;
+  if (group) {
+    r.region = group.region;
+    r.flag = group.flag;
+  }
+  if (office.website) r.url = office.website;
+  r.headOffice = office;
 });
 
 // Group capability/HQ inheritance: a multinational's corporate capability
@@ -190,9 +243,9 @@ function verifiedFactoriesHtml(r) {
     const fid = f.facility_id ? '<span style="font-family:monospace;font-size:.72rem;background:rgba(255,255,255,.06);padding:1px 6px;border-radius:4px;color:var(--muted);margin-left:6px">' + esc(f.facility_id) + '</span>' : '';
     const prod = f.produces ? '<div style="font-size:.8rem;color:var(--muted);margin-top:2px">' + esc(f.produces) + '</div>' : '';
     const src = f.source_url ? '<a href="' + esc(f.source_url) + '" target="_blank" rel="noopener" style="color:var(--accent);font-size:.78rem">source ↗</a>' : '';
-    const ct = f.claim_type ? '<span class="vbadge" style="font-size:.68rem;font-weight:600">' + esc(f.claim_type.replace(/_/g, ' ')) + '</span>' : '';
+    const badge = facilityBadge(f);
     return '<tr><td style="padding:8px 10px;vertical-align:top"><b style="color:var(--text)">' + (lo || '—') + '</b>' + fid + prod + '</td>' +
-      '<td style="padding:8px 10px;vertical-align:top;font-size:.8rem;color:var(--muted)">' + ct + ' ' + src + '</td></tr>';
+      '<td style="padding:8px 10px;vertical-align:top;font-size:.8rem;color:var(--muted)">' + (badge || src) + '</td></tr>';
   }).join('');
   return '<h2>Confirmed manufacturing facilities</h2><p style="font-size:.82rem;color:var(--muted)">Where an independent source documents a transformer manufacturing plant, it is catalogued here with its verified facility ID and source attribution. Factory capability is separate from the company group maximum and is never inferred from it.</p>' +
     '<table class="tbl"><tbody>' + rows + '</tbody></table>';
@@ -219,9 +272,19 @@ function brandSitesHtml(r) {
 // Company timeline: typed, source-backed events from the BI graph (Module 2).
 // Grouped by event type; every entry keeps its verbatim source URL. Confidence
 // carried through (defaults to LIMITED for keyword-matched Daily-Intel items).
+// Event sections follow this entity's own name (and its aliases), never a
+// parent group's timeline. A global-HQ or plant row must not inherit the
+// group's developments just because it shares a brand prefix.
+function entityNames(r) {
+  const names = [r.name].concat(r.aka || []);
+  const alias = resolveCompanyAlias(r.name);
+  if (alias.aliased) names.push(alias.name, alias.sourceName);
+  if (r.tierFile && r.tierFile.name && norm(r.tierFile.name) === norm(r.name)) names.push(r.tierFile.name);
+  return names;
+}
 function timelineHtml(r) {
-  const lookup = lookupName(r);
-  const ev = EVENTS_BY_NAME[norm(lookup)];
+  let ev = null;
+  entityNames(r).some(function (n) { ev = EVENTS_BY_NAME[norm(n)]; return !!ev; });
   if (!ev || !ev.events || !ev.events.length) return '';
   const TYPE_ORDER = ['order_award', 'factory_expansion', 'new_test_lab', 'ownership_change', 'rebranding', 'utility_approval', 'market_entry', 'reference'];
   const CONF = { HIGH: 'High', MEDIUM: 'Medium', LIMITED: 'Limited' };
@@ -231,17 +294,19 @@ function timelineHtml(r) {
     const label = EVT_TYPE_LABEL[t] || t;
     const lis = items.map(function (e) {
       const src = esc(e.src || '');
+      const fac = e.facility_id ? ' · facility <span style="font-family:monospace">' + esc(e.facility_id) + '</span>' : '';
       return '<li style="margin:8px 0"><a href="' + esc(e.url) + '" target="_blank" rel="noopener" style="color:var(--accent);font-weight:600">' + esc(e.title) + '</a>' + (e.value ? ' <span style="color:var(--muted)">· ' + esc(e.value) + '</span>' : '') + '<br>' +
-        '<span style="color:var(--muted);font-size:.8rem">' + (e.date ? esc(e.date) + ' · ' : '') + (src || '') + ' · confidence <span class="vbadge" style="font-weight:600">' + esc(CONF[e.confidence] || e.confidence) + '</span></span></li>';
+        '<span style="color:var(--muted);font-size:.8rem">' + (e.date ? esc(e.date) + ' · ' : '') + (src || '') + fac + ' · confidence <span class="vbadge" style="font-weight:600">' + esc(CONF[e.confidence] || e.confidence) + '</span></span></li>';
     }).join('');
     return '<a name="' + esc(t) + '"></a><h3 style="font-size:.98rem;color:var(--accent);margin:16px 0 4px">' + esc(label) + '</h3><ul>' + lis + '</ul>';
   }).join('');
   return '<h2>Company timeline</h2><p style="font-size:.82rem;color:var(--muted)">Typed, sourced developments attached to this permanent entity. Every item is linked to its published source and carries a confidence label. An item is shown because it <b>references</b> this company — it is not an independently verified award, order or project attribution unless the source explicitly confirms one. Confidence defaults to <b>Limited</b> for a keyword-matched Daily-Intel item and is never upgraded without corroborating source evidence.</p>' + grouped;
 }
 
-// Resolve the canonical lookup name for a record. An inherited-HQ record
-// (e.g. "Hitachi Energy (global HQ)") should look up the tier leader name
-// ("Hitachi Energy") for developments/timeline/provenance.
+// Provenance lookup. An inherited-HQ record may show the group tier's sourced
+// capability evidence. Developments and the company timeline do not use this:
+// those stay on entityNames(), so a plant or HQ row does not inherit the
+// group's events.
 function lookupName(r) {
   if (r.tierFile && /global hq/i.test(r.name || '') && norm(r.tierFile.name) !== norm(r.name)) return r.tierFile.name;
   if (r.tierFile && r.tierFile.name) return r.tierFile.name;
@@ -276,7 +341,8 @@ function byNameAny(map, r) {
 // Sourced, company-specific developments (orders, expansions, acquisitions,
 // rebrands) pulled from TransformerPath Daily Intel — linked to their sources.
 function developmentsHtml(r) {
-  const d = byNameAny(DEV_BY_NAME, r);
+  let d = null;
+  entityNames(r).some(function (n) { d = DEV_BY_NAME[norm(n)]; return !!d; });
   if (!d || !d.developments || !d.developments.length) return '';
   const lis = d.developments.map(function (x) {
     const dateMatch = String(x.src || '').match(/(\d{1,2}\s+\w{3}\s+\d{4})/);
@@ -296,26 +362,113 @@ function provenanceHtml(r) {
     const cap = f.field.replace(/_/g, ' ').replace(/^./, function (c) { return c.toUpperCase(); });
     return '<tr><th style="text-align:left;color:var(--muted);font-weight:600;padding:6px 10px;border-bottom:1px solid var(--border);width:38%">' + esc(cap) + '</th>' +
       '<td style="padding:6px 10px;border-bottom:1px solid var(--border);color:var(--text);font-weight:600">' + esc(f.value) + ' ' + esc(f.unit) + '</td>' +
-      '<td style="padding:6px 10px;border-bottom:1px solid var(--border);color:var(--muted);font-size:.78rem">' + esc(f.confidence) + ' · ' + esc(f.claim_type.replace(/_/g, ' ')) + '<br><a href="' + esc(f.source_url) + '" target="_blank" rel="noopener nofollow" style="color:var(--accent)">source</a></td></tr>';
+      '<td style="padding:6px 10px;border-bottom:1px solid var(--border);color:var(--muted);font-size:.78rem">' + (evidenceBadge(f) || '') + '</td></tr>';
   }).join('');
   const notes = p.facts.map(function (f) { return '<li style="color:var(--muted);font-size:.8rem">' + esc(f.note) + '</li>'; }).join('');
   return '<h2>Reported capability — sourced evidence</h2><p style="font-size:.82rem;color:var(--muted)">Evidence is attached to a <b>single</b> reported quantity (voltage or rating) and is <b>not</b> combined into a single product capability. It is shown because a source confirms it; it is <b>not</b> asserted as the company\'s maximum.</p>' +
     '<table class="tbl"><tbody>' + rows + '</tbody></table><ul>' + notes + '</ul>';
 }
+const TYPE_PHRASE = {
+  PT: 'power transformers',
+  DT: 'distribution transformers',
+  DRY: 'dry-type and cast-resin transformers',
+  TX: 'specialty transformers',
+  SR: 'reactors',
+  IT: 'instrument transformers',
+  INST: 'instrument transformers'
+};
+function phraseList(items) {
+  const a = [];
+  (items || []).forEach(function (item) {
+    const s = String(item || '').trim();
+    if (!s || a.indexOf(s) >= 0) return;
+    a.push(s);
+  });
+  if (!a.length) return '';
+  if (a.length === 1) return a[0];
+  return a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1];
+}
+/* Census lead. Same honesty rules as the directory intro on draft PR #17
+ * (place, products, year only when the record has one, sourced kV/MVA labelled
+ * as the highest figures on file). Inlined so this page does not depend on
+ * directory-intro.js. Nothing is filled in when the field is empty. */
+function highestSourcedKv(tier, provRec) {
+  let maxKv = 0;
+  if (tier && tier.kv != null && tier.kv !== '') {
+    const n = typeof tier.kv === 'number' ? tier.kv : parseFloat(tier.kv);
+    if (!isNaN(n) && n > 0) maxKv = n;
+  }
+  (provRec && provRec.facts || []).forEach(function (f) {
+    if (!f || f.field !== 'voltage_class_evidence') return;
+    if (/REJECT/i.test(String(f.confidence || ''))) return;
+    const v = typeof f.value === 'number' ? f.value : parseFloat(f.value);
+    if (!isNaN(v) && v > maxKv) maxKv = v;
+  });
+  return maxKv;
+}
+function censusLead(r, tier, intelRec, sourcedKv) {
+  const place = [r.city, r.country].filter(Boolean).join(', ');
+  const sentences = [];
+  sentences.push(r.name + ' is listed as a transformer manufacturer' + (place ? ' in ' + place : '') + '.');
+  const products = phraseList((r.types || []).map(function (t) { return TYPE_PHRASE[t] || t; }));
+  if (products) sentences.push('Products and scope on file: ' + products + '.');
+  if (r.established) sentences.push('Year of establishment on file: ' + r.established + '.');
+  let voltage = '';
+  let kv = sourcedKv || 0;
+  if (kv > 0) voltage = kv + ' kV';
+  if (intelRec && intelRec.reported_voltage) {
+    const raw = String(intelRec.reported_voltage).trim();
+    const n = parseFloat(raw);
+    if (raw && !isNaN(n) && n > kv) voltage = /kv/i.test(raw) ? raw : (n + ' kV');
+    else if (raw && !voltage) voltage = raw;
+  }
+  let capacity = '';
+  if (tier && tier.mva) {
+    const n = Number(tier.mva);
+    if (!isNaN(n) && n > 0) capacity = '~' + n.toLocaleString('en-US') + ' MVA/year';
+  } else if (intelRec && intelRec.reported_mva) {
+    capacity = String(intelRec.reported_mva).trim();
+  }
+  const sourced = [];
+  if (voltage) sourced.push('highest sourced voltage ' + voltage);
+  if (capacity) sourced.push('indicative capacity ' + capacity);
+  if (sourced.length) {
+    sentences.push('Sourced figures on file: ' + sourced.join('; ') + '. These are the highest sourced values, not an audited company maximum.');
+  }
+  const certs = [];
+  ((tier && tier.certs) || []).concat((intelRec && intelRec.reported_certs) || []).forEach(function (c) {
+    const s = String(c || '').trim();
+    if (s && certs.indexOf(s) < 0) certs.push(s);
+  });
+  if (certs.length) sentences.push('Reported standards on file: ' + phraseList(certs) + '.');
+  return sentences.join(' ');
+}
+function metaFromLead(text) {
+  if (text.length <= 300) return text;
+  const cut = text.slice(0, 300);
+  const dot = cut.lastIndexOf('. ');
+  return dot > 80 ? cut.slice(0, dot + 1) : cut.replace(/\s+\S*$/, '') + '.';
+}
+// Upcoming is decided from the event END date against the platform day (Asia/Dubai).
+// A show that opened on 11 Oct and closed on 13 Oct is not upcoming on 15 Oct,
+// even though the row still displays the start date.
+const UPCOMING_AS_OF = platformToday();
 function eventsFor(rec) {
-  const now = new Date(); const alias = COUNTRY_ALIAS[ci(rec.country)] || rec.country;
+  const alias = COUNTRY_ALIAS[ci(rec.country)] || rec.country;
   return EVENTS.filter(function (ev) { return ci(ev.co) === ci(rec.country) || ci(ev.co) === ci(alias); })
-    .filter(function (ev) { return new Date(ev.e) >= now; })
+    .filter(function (ev) { return isUpcoming(ev, UPCOMING_AS_OF); })
     .sort(function (a, b) { return String(a.s).localeCompare(String(b.s)); }).slice(0, 5);
 }
 function intelFor(rec) {
   const regions = { 'Middle East': 'GCC', 'Europe': 'Europe', 'Americas': 'USA', 'Asia': 'India', 'South Asia': 'India', 'East Asia': 'RoW', 'Southeast Asia': 'RoW', 'Eurasia': 'RoW', 'Africa': 'RoW', 'Latin America': 'RoW', 'Oceania': 'RoW' };
-  const reg = INTEL[regions[rec.region] || 'RoW']; const out = [];
-  if (reg && reg.items) {
-    const kw = ci(rec.country).split(/[^a-z]+/).filter(function (w) { return w.length > 3; }).concat([ci(rec.country).replace(/\s+/g, ' ')]);
-    reg.items.forEach(function (it) { if (kw.some(function (k) { return k && ci(it.title + ' ' + it.snippet).indexOf(k) >= 0; })) out.push(it); });
-  }
-  return out.slice(0, 3);
+  const reg = INTEL[regions[rec.region] || 'RoW'];
+  const items = (reg && reg.items) ? reg.items : [];
+  const split = splitEntityIntel(items, rec.name);
+  const country = foldEntity(rec.country || '');
+  const regional = split.regional.filter(function (it) {
+    return country.length > 3 && foldEntity((it.title || '') + ' ' + (it.snippet || '')).indexOf(country) >= 0;
+  });
+  return { about: split.about.slice(0, 3), regional: regional.slice(0, 3) };
 }
 const fmt = function (d) { try { return new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }); } catch (e) { return ''; } };
 
@@ -327,7 +480,8 @@ function page(r, slug) {
   // capabilities: union of type + tier fields
   const typeHtml = (r.types.length ? r.types : ['DT']).map(function (t) { return '<span class="tpill">' + esc(typeBadge(t)) + '</span>'; }).join(' ');
   const comps = [...new Set((r.types.length ? r.types : ['DT']).reduce(function (a, t) { return a.concat(TYPE_COMPS[t] || []); }, []))];
-  const compLinks = comps.map(function (c) { return '<a class="tpill" href="../../components/' + c + '.html">' + esc(COMPONENTS[c] || c) + '</a>'; }).join(' ');
+  const { componentSlugHref } = require('./lib/component-href');
+  const compLinks = comps.map(function (c) { return '<a class="tpill" href="' + componentSlugHref('../../', c) + '">' + esc(COMPONENTS[c] || c) + '</a>'; }).join(' ');
   const apps = [...new Set((r.types.length ? r.types : ['DT']).reduce(function (a, t) { return a.concat(TYPE_APPS[t] || []); }, []))];
   const appLinks = apps.map(function (a) { return '<a class="tpill" href="../../applications/' + a + '.html">' + esc(APPS[a] || a) + '</a>'; }).join(' ');
   const marketSlug = COUNTRY_MARKET[ci(r.country)];
@@ -340,7 +494,9 @@ function page(r, slug) {
   const evs = eventsFor(r);
   const evHtml = evs.map(function (ev) { return '<li style="margin:6px 0"><a href="' + esc(ev.u) + '" target="_blank" rel="noopener" style="color:var(--accent)">' + esc(ev.n) + '</a> <span style="color:var(--muted);font-size:.85rem">' + fmt(ev.s) + ' · ' + esc(ev.c) + ', ' + esc(ev.co) + '</span></li>'; }).join('') || '<li style="color:var(--muted)">No confirmed events for this market yet.</li>';
   const intel = intelFor(r);
-  const intelHtml = intel.map(function (it) { return '<li style="margin:6px 0"><b style="color:var(--text);font-size:.9rem">' + esc(it.title) + '</b><p style="color:var(--muted);font-size:.84rem;margin:2px 0 0">' + esc(it.snippet.slice(0, 150)) + (it.snippet.length > 150 ? '…' : '') + '</p></li>'; }).join('') || '<li style="color:var(--muted)">No published intelligence items for this company yet. Curated Daily Intel is refreshed at build — see <a href="../../intel.html">Daily Intel</a> for the latest feed.</li>';
+  const intelLi = function (it) { return '<li style="margin:6px 0"><b style="color:var(--text);font-size:.9rem">' + esc(it.title) + '</b><p style="color:var(--muted);font-size:.84rem;margin:2px 0 0">' + esc((it.snippet || '').slice(0, 150)) + ((it.snippet || '').length > 150 ? '…' : '') + '</p></li>'; };
+  const intelHtml = intel.about.map(intelLi).join('') || '<li style="color:var(--muted)">No published intelligence evidenced as about this company. Curated Daily Intel is refreshed at build — see <a href="../../intel.html">Daily Intel</a> for the latest feed.</li>';
+  const regionalHtml = intel.regional.map(intelLi).join('');
   const intelRec = INTEL_BY_SLUG[slug] || INTEL_BY_NAME[norm(r.name)] || null;
   const score = intelRec ? (intelRec.completeness_score || 0) : (r.tierFile ? 65 : (r.url ? 45 : 25));
   const missing = (intelRec && intelRec.missing_fields) ? intelRec.missing_fields : [];
@@ -354,10 +510,11 @@ function page(r, slug) {
   };
   const provLabel = provLabels[provType] || provType;
   const lastReviewed = (intelRec && intelRec.last_verified) || (STATS.updated || '2026-08-26');
-  const verify = r.flagV === 'P' ? '★ Supplier Pro' : r.flagV === 'V' ? '✓ Verified' : (r.flagV === 'C' ? 'Claimed' : 'Listed');
-  const trust = '<div class="src"><b>Data sources</b> <span class="tpill">Company website</span><span class="tpill">Public manufacturer documentation</span><span class="tpill">Public project announcements</span><span class="tpill">TransformerPath industry database</span></div>' +
-    '<div class="src" style="margin-top:6px"><b>Last reviewed</b> ' + lastReviewed + ' &nbsp;&middot;&nbsp; <b>Profile status</b> <span style="color:var(--accent)">' + verify + '</span></div>' +
-    '<p style="font-size:.78rem;color:var(--muted);margin-top:6px">Listed profiles are created from public sources. Verification confirms company identity and published profile data; it does <b>not</b> constitute technical certification, factory approval or commercial endorsement.</p>';
+  const earnedVerified = paidListings.isVerifiedManufacturer(slug, PAID_LISTINGS);
+  const verify = earnedVerified ? 'Verified' : (r.flagV === 'P' ? '★ Supplier Pro' : (r.flagV === 'C' ? 'Claimed' : 'Listed'));
+  const provRec = byNameAny(PROV_BY_NAME, r);
+  const leadText = censusLead(r, tier, intelRec, highestSourcedKv(tier, provRec));
+  const trust = '<p style="font-size:.78rem;color:var(--muted);margin-top:8px">Independent census profile, not the company website. <a href="../../manufacturers.html#census-method" style="color:var(--accent)">How this census is compiled</a>. <b>Last reviewed</b> ' + esc(lastReviewed) + ' &nbsp;&middot;&nbsp; <b>Profile status</b> <span style="color:var(--accent)">' + verify + '</span></p>';
 
   const meterColor = score >= 75 ? '#10b981' : (score >= 50 ? 'var(--accent)' : 'var(--muted)');
   const meterGrad = score >= 75
@@ -382,7 +539,12 @@ function page(r, slug) {
     missingList +
   '</div>';
   // conservative schema: describe the company, never claim affiliation
-  const orgSchema = { '@context': 'https://schema.org', '@type': 'Organization', name: r.name, url: r.url ? r.url : url, description: (r.types.length ? 'Transformer manufacturer (' + r.types.map(typeBadge).join(', ') + ')' : 'Transformer manufacturer') + ' — ' + r.country + (r.city ? ', ' + r.city : ''), address: { '@type': 'PostalAddress', addressCountry: r.country, addressLocality: r.city || undefined } };
+  const orgSchema = { '@context': 'https://schema.org', '@type': 'Organization', name: r.name, url: r.url ? r.url : url, description: leadText, address: { '@type': 'PostalAddress', addressCountry: r.country, addressLocality: r.city || undefined } };
+  if (r.headOffice && r.headOffice.source_url) orgSchema.sameAs = [r.headOffice.source_url];
+  const parentLink = companyParents.parentFor(r);
+  if (parentLink) {
+    orgSchema.parentOrganization = { '@type': 'Organization', name: parentLink.parent_name, url: 'https://transformerpath.com/manufacturers/' + parentLink.parent_slug + '/' };
+  }
   const pageSchema = { '@context': 'https://schema.org', '@type': 'WebPage', name: r.name + ' — Company Profile', url: url, about: { '@type': 'Organization', name: r.name } };
   const b = { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Manufacturers', item: 'https://transformerpath.com/manufacturers.html' }, { '@type': 'ListItem', position: 2, name: r.name }] };
   const schema = '<script type="application/ld+json">' + JSON.stringify(orgSchema) + '</script><script type="application/ld+json">' + JSON.stringify(pageSchema) + '</script><script type="application/ld+json">' + JSON.stringify(b) + '</script>';
@@ -391,7 +553,6 @@ function page(r, slug) {
   if (tier) {
     const row = function (k, v) { return v ? '<tr><th>' + k + '</th><td>' + v + '</td></tr>' : ''; };
     const c = tier.mva ? '~' + tier.mva.toLocaleString('en-US') + ' MVA' : '—';
-    const provRec = byNameAny(PROV_BY_NAME, r);
     let maxKv = typeof tier.kv === 'number' ? tier.kv : (parseFloat(tier.kv) || 0);
     let maxKvSource = tier.source || null;
     (provRec && provRec.facts || []).forEach(function (f) {
@@ -412,14 +573,15 @@ function page(r, slug) {
     // independently sourced evidence of a capability.
     const LOW_AUTH = /ensun|iqs|sinovoltaics|industry directory|directory/i;
     const lowAuth = LOW_AUTH.test('' + (maxKvSource || tier.source));
-    const srcLabel = (maxKvSource || tier.source || '—') + (lowAuth ? ' <span style="color:var(--muted);font-weight:600">(third-party directory — not independently verified)</span>' : '') + (tier.note ? ' <span style="color:var(--muted);cursor:help" title="' + esc(tier.note) + '">&#8505;</span>' : '');
+    const srcLink = tier.source_url ? ' <a href="' + esc(tier.source_url) + '" target="_blank" rel="noopener">source</a>' : '';
+    const srcLabel = (maxKvSource || tier.source || '—') + srcLink + (lowAuth ? ' <span style="color:var(--muted);font-weight:600">(third-party directory — not independently verified)</span>' : '') + (tier.note ? ' <span style="color:var(--muted);cursor:help" title="' + esc(tier.note) + '">&#8505;</span>' : '');
     const capNote = c === '—' ? '' : ' <span style="color:var(--muted);font-size:.78rem">(sourced figure — not independently audited)</span>';
     tierTable = '<table class="tbl"><tbody>' + row('Indicative sourced capacity / yr', c === '—' ? c : c + capNote) + row('Highest sourced voltage evidence', kv) + row('Product types', (tier.types || []).join(', ')) + row('Regions served', (tier.regions || []).join(', ')) + row('Reported standards', (tier.certs || []).join(', ')) + row('Source', srcLabel) + '</tbody></table>' + '<p style="font-size:.72rem;color:var(--muted)">These are the <b>highest sourced figures</b> on file — they are <b>not</b> asserted as the company maximum unless an authoritative source states that. Voltage summary is <b>MAX(accepted voltage evidence records, tier filing)</b>. Annual capacity and voltage evidence are independent values and are never combined into a single product rating. Verify against the manufacturer before a procurement decision.</p>';
   }
 
   return '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
     '<title>' + esc(r.name) + ' — Company Profile, Products &amp; Industry Information | TransformerPath</title>' +
-    '<meta name="description" content="' + esc(r.name) + ' — independent company profile: transformer capabilities (' + esc((r.types.length ? r.types : ['DT']).map(typeBadge).join(', ')) + '), location, related components, market intelligence and events, from the TransformerPath census.">' +
+    '<meta name="description" content="' + esc(metaFromLead(leadText)) + '">' +
     '<link rel="canonical" href="' + url + '">' +
     '<meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath">' +
     '<meta property="og:title" content="' + esc(r.name) + ' — Company Profile"><meta property="og:url" content="' + url + '">' +
@@ -430,21 +592,46 @@ function page(r, slug) {
     '</head>\n<body>\n' + HEAD + '\n<main id="main" tabindex="-1" class="c-wrap">' +
     '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="../../manufacturers.html" style="color:var(--accent)">Manufacturers</a> › ' + crumbCountry + ' › ' + esc(r.name) + '</nav>' +
     '<h1>' + esc(r.name) + ' <button class="follow-btn" data-follow-type="company" data-follow-subject="' + esc(r.name) + '" data-follow-label="' + esc(r.name) + '" title="Follow this manufacturer in My TransformerPath">Follow</button></h1>' +
-    '<p class="lead">Independent company profile covering reported transformer capabilities, markets, related industry developments and relevant events.</p>' +
+    paidListings.manufacturerBadgeHtml(slug, PAID_LISTINGS) +
+    listingMediaHtml(slug) +
+    '<p class="lead">' + esc(leadText) + '</p>' +
+    (tier && tier.tier === 2 ? buyerPageCopy.PROFILE_CROSSLINK : '') +
     '<p style="font-size:.9rem;color:var(--muted);margin:6px 0 0">' + (r.flag || '') + ' <b style="color:var(--text)">' + esc(r.country) + '</b>' + (r.city ? ' · ' + esc(r.city) : '') + ' · <span style="color:var(--accent)">' + verify + '</span>' + (r.url ? ' · <a href="' + esc(r.url) + '" target="_blank" rel="noopener nofollow" data-track="official_website_click" data-track-manufacturer="' + esc(r.name) + '" style="color:var(--accent)">Official website ↗</a>' : '') + '</p>' +
+    (r.headOffice ? '<p style="font-size:.78rem;color:var(--muted);margin:4px 0 0">Head office' + (r.headOffice.address ? ': ' + esc(r.headOffice.address) : '') + '. <a href="' + esc(r.headOffice.source_url) + '" target="_blank" rel="noopener" style="color:var(--accent)">' + esc(r.headOffice.source_title) + '</a> (checked ' + esc(r.headOffice.retrieved_at) + ').</p>' : '') +
+    (parentLink ? '<p style="font-size:.78rem;color:var(--muted);margin:4px 0 0">Part of <a href="../../manufacturers/' + parentLink.parent_slug + '/" style="color:var(--accent)">' + esc(parentLink.parent_name) + '</a>. <a href="' + esc(parentLink.source_url) + '" target="_blank" rel="noopener" style="color:var(--accent)">' + esc(parentLink.source_note) + '</a> (checked ' + esc(parentLink.retrieved_at) + ').</p>' : '') +
+    (earnedVerified ? '' : paidListings.verifiedManufacturerCtasHtml({ companySlug: slug, trackName: r.name })) +
+    '<p class="claim-listing-row" style="margin:10px 0 0">' + claimListing.linkHtml(slug) + '</p>' +
     trust +
     completenessCard +
     '<h2>Capabilities</h2><div style="margin:4px 0 8px">' + typeHtml + '</div>' +
     (tierTable ? '<h2>Indicative capability data</h2>' + tierTable : '') +
+    manufacturerSpecs.renderHtml(SPEC_BY_SLUG[slug]) +
     '<h2>Related components</h2><div>' + compLinks + '</div>' +
     '<h2>Relevant applications</h2><div>' + appLinks + '</div>' +
     '<h2>Markets</h2><div>' + countryLink + (cityHtml ? ' ' + cityHtml : '') + (marketLink ? ' ' + marketLink : '') + '</div>' +
-    verifiedFactoriesHtml(r) + brandSitesHtml(r) + timelineHtml(r) + developmentsHtml(r) + provenanceHtml(r) +
-    '<h2>Latest TransformerPath intelligence</h2><ul>' + intelHtml + '</ul>' +
-    '<h2>Upcoming events</h2><ul>' + evHtml + '</ul>' +
+    (function () {
+      const fac = verifiedFactoriesHtml(r);
+      const rec = INTEL_BY_SLUG[slug] || INTEL_BY_NAME[norm(r.name)] || null;
+      const sourced = rec && rec.factories ? rec.factories.filter(function (f) { return f && f.source_url; }) : [];
+      if (!sourced.length) return fac;
+      const city = sourced.find(function (f) { return f.city; });
+      const place = city && city.city ? ('a factory visit in ' + city.city) : 'a factory visit';
+      return fac + tpAff.tripOffers({ slug: slug, place: place, prefix: '../../', disclosureHref: '../../affiliate-disclosure.html' });
+    })() + brandSitesHtml(r) + timelineHtml(r) + developmentsHtml(r) + provenanceHtml(r) +
+    '<h2>Latest intelligence about this company</h2><ul>' + intelHtml + '</ul>' +
+    (regionalHtml ? '<h2>Regional intel</h2><p style="color:var(--muted);font-size:.84rem;margin:4px 0 8px">Same country, not evidenced as about this company.</p><ul>' + regionalHtml + '</ul>' : '') +
+    '<h2 data-upcoming-as-of="' + UPCOMING_AS_OF + '">Upcoming events</h2><ul>' + evHtml + '</ul>' +
     '<p style="font-size:.72rem;color:var(--muted)">Last reviewed: ' + lastReviewed + '.</p>' +
     '<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:22px"><b style="color:var(--text)">Represent this company?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Claim and update this profile to keep its capabilities, markets and verification accurate.</p>' +
-    '<a class="btn btn-outline btn-sm" href="../../claim-profile.html?company=' + encodeURIComponent(r.name) + '" data-track="supplier_claim_started" data-track-manufacturer="' + esc(r.name) + '">Claim this profile →</a></div>' +
+    claimListing.linkHtml(slug) + ' ' +
+    '<a class="btn btn-outline btn-sm" href="../../claim-profile.html?company=' + encodeURIComponent(r.name) + '" data-track="supplier_claim_started" data-track-manufacturer="' + esc(r.name) + '">Claim this profile →</a> ' +
+    (earnedVerified ? '' : paidListings.verifiedManufacturerPayHtml({
+      companySlug: slug,
+      trackName: r.name,
+      formHref: '../../claim-profile.html?paid=verified_manufacturer#claimForm',
+      style: 'margin-left:8px',
+      label: 'Pay $499 — Get Verified'
+    })) + '</div>' +
     '<div class="card" style="background:var(--bg);border:1px solid var(--border);padding:16px 18px;text-align:center;margin-top:14px"><b style="color:var(--text)">Find something inaccurate?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Tell us what and why, with a source where you can. Corrections are reviewed against a source before they are applied — they are never auto-overwritten.</p>' +
     '<a class="btn btn-outline btn-sm" href="../../correct-company.html?company=' + encodeURIComponent(r.name) + '" data-track="manufacturer_correction_started" data-track-manufacturer="' + esc(r.name) + '">Suggest a correction →</a></div>' +
     '<div class="card" style="background:var(--bg);border:1px solid var(--border);padding:16px 18px;text-align:center;margin-top:14px"><b style="color:var(--text)">Looking for transformer suppliers?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Submit a technical requirement for supplier matching across the ' + esc(r.country) + ' and regional manufacturing base.</p>' +
@@ -481,10 +668,26 @@ Object.keys(require('./lib/company-aliases').ALIASES).forEach(function (k) {
 // Also cover common census display forms used historically as directory slugs.
 [
   ['cg-power', 'cg-power-and-industrial-solutions'],
+  ['hammond-power-solutions-baraboo', 'hammond-power-solutions'],
+  ['green-transfo-energy-turkey', 'green-transfo'],
+  ['siemens-energy-tenjo', 'siemens-energy'],
+  ['siemens-energy-nuremberg', 'siemens-energy'],
+  ['jefferson-electric', 'jefferson-electric-voltaris'],
   ['prolec-ge-ge-vernova', 'prolec-ge'],
   ['prolec-ge-brasil', 'prolec-ge'],
   ['prolec-ge-waukesha', 'prolec-ge'],
-  ['hico-america-hyosung', 'hyosung-heavy-industries']
+  ['hico-america-hyosung', 'hyosung-heavy-industries'],
+  ['bhel-bharat-heavy-electricals', 'bhel'],
+  ['tbea-co-ltd', 'tbea-group-changji-hq-shenyang-hengyang-tianjin-plants'],
+  ['china-xd-group', 'china-xd-group-xian-xd-transformer'],
+  ['efacec-power-solutions', 'efacec'],
+  ['efacec-distribution-transformers', 'efacec'],
+  ['tmc-transformers-spa', 'tmc-transformers'],
+  ['transformers-and-rectifiers-india', 'transformers-and-rectifiers-india-taril'],
+  ['elsewedy-electric', 'elsewedy-electric-transformers'],
+  ['smit-transformers', 'royal-smit-transformers-b-v-sgb-smit-group'],
+  ['jshp-transformer-jiangsu', 'jiangsu-huapeng-jshp-huapeng-group'],
+  ['hitachi-energy-global-hq', 'hitachi-energy']
 ].forEach(function (pair) { aliasRedirectSlugs[pair[0]] = pair[1]; });
 
 Object.keys(aliasRedirectSlugs).forEach(function (src) {
@@ -516,8 +719,9 @@ Object.keys(aliasRedirectSlugs).forEach(function (src) {
 // are served. Alias redirect slugs are retained.
 const currentSlugs = new Set(list.map(function (r) { return r.slug; }));
 Object.keys(aliasRedirectSlugs).forEach(function (s) { currentSlugs.add(s); });
-// Protect programmatic SEO product-type hubs from being pruned
-['power-transformers', 'distribution-transformers', 'dry-type-transformers'].forEach(function (s) {
+// Protect programmatic SEO hubs from being pruned. Sourced product/voltage
+// hubs and cooling × MVA spec pages are not census companies.
+['power-transformers', 'distribution-transformers', 'dry-type-transformers', 'sourced', 'specs'].forEach(function (s) {
   currentSlugs.add(s);
 });
 (function pruneStale(dir) {

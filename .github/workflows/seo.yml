@@ -1,0 +1,29 @@
+name: seo
+
+on:
+  pull_request:
+  push:
+    branches: [main, "cursor/**"]
+
+jobs:
+  schema:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Publish dist titles
+        run: |
+          mkdir -p dist
+          cp standards.html dist/standards.html
+          node build-seo-pass.js
+      - name: JSON-LD and title-window tests
+        run: node tests/seo-schema.test.js
+      - name: Virginia Transformer sourced specs
+        run: node tests/virginia-transformer-specs.js
+      - name: Sourced manufacturer specifications
+        run: node tests/manufacturer-specs.js
+      - name: Sourced product and voltage hubs
+        run: node tests/sourced-hubs.js

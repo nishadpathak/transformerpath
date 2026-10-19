@@ -27,13 +27,16 @@
  * function and stays reachable through the gated endpoint — but is no longer
  * served as a static file. That closes the 210 KB paid-content exposure.
  *
- * This runs LAST, after every generator. It only copies; no builder changes.
+ * This runs LAST, after every generator. It copies, then stamps the AdSense
+ * loader (and at most one in-content slot) into every published HTML page.
+ * Source files stay untouched so the next generator run cannot drop the tag.
  *
  * Run: node build-dist.js
  */
 'use strict';
 const fs = require('fs');
 const path = require('path');
+const { stampHtml } = require('./adsense-inject');
 
 const DIST = 'dist';
 
@@ -45,26 +48,37 @@ const DIST = 'dist';
 
 // Whole directories copied verbatim — served content only.
 const DIRS = [
-  'accessories', 'applications', 'admin', 'books', 'brand', 'case-studies',
-  'components', 'data', 'events', 'grids', 'knowledge', 'manufacturers',
-  'markets', 'materials', 'media', 'projects', 'tenders', 'topics', 'utilities',
+  'accessories', 'applications', 'admin', 'books', 'brand', 'case-studies', 'claim-listing', 'tools',
+  'components', 'directory', 'events', 'grids', 'knowledge', 'manufacturers',
+  'markets', 'materials', 'media', 'projects', 'buy-early', 'spare-capacity', 'lead-times', 'bottlenecks', 'factory-capacity', 'commissioning-jobs', 'templates', 'tenders', 'topics', 'utilities',
   'viz', 'vendor',
 ];
 
 // Individual files from directories that are NOT wholly public.
 const FILES_FROM_MIXED_DIRS = [
   'lib/event-search.js',        // loaded by search.html; the rest of lib/ is build-time
+  'lib/job-board.js',           // jobs page and the review queue; rules, not a data file
+  'lib/rfq-leads.js',           // RFQ consent, redaction, and the 5-supplier cap
+  'lib/provenance-badge.js',    // shared provenance badge, loaded by public pages
+  'lib/listing-media.js',       // Verified logo, catalogue PDF and photo gallery
+  'lib/saved-design.js',        // calculator save/open snapshot helper
+  'lib/dga-interpret.js',       // free DGA interpreter; the PDF is built in the function
+  'lib/commissioning-jobs.js',  // HV/MV board filter; payment does not publish a row
+  'lib/learning-catalog.js',    // Skills Passport and engineer-track progress catalog
+  'js/tp-grid-calc.js',         // Grid Lab formulas; js/ is not copied wholesale
+  'js/tp-grid-lab.js',          // Grid Lab scene; production 404'd these and the canvas never started
 ];
 
 // Runtime JavaScript at the root, derived from what pages actually load.
 const ROOT_JS = [
-  'analytics.js', 'consent.js', 'course-gate.js', 'fem-leakage.js',
+  'analytics.js', 'claim-listing.js', 'consent.js', 'course-gate.js', 'fem-leakage.js',
   'follow-button.js', 'form-notify.js', 'intel-feed-ui.js', 'material-latest.js', 'rfq-engine.js',
   'site-stats.js', 'supabase-config.js', 'supabase.js', 'sw.js',
-  'tp-directory.js', 'tp-feedback.js', 'tp-freshness.js', 'tp-nav.js', 'tp-pwa.js',
+  'tp-affiliate.js', 'tp-directory.js', 'tp-feedback.js', 'tp-freshness.js', 'tp-nav.js', 'tp-pwa.js',
+  'google-auth-config.js', 'tp-auth.js',
   'tp-theme.js', 'tp-shortlist.js', 'tp-watchlist.js', 'map.js',
-  'tp-webgl-gate.js',
-  'tp-3d-core.js', 'tp-power-assembly.js', 'tp-oil-assembly.js',
+  'tp-webgl-gate.js', 'paid-checkout.js', 'listing-payment.js', 'jobs-rfq-pay.js',
+  'tp-3d-core.js', 'tp-canvas-scroll.js', 'tp-label-layout.js', 'tp-power-assembly.js', 'tp-oil-assembly.js',
   'tp-castresin-assembly.js', 'tp-ct-assembly.js',
   'part-ecosystem.js', 'component-3d-bridge.js',
   'tp-lab-geometry.js', 'tp-lab-engine.js',
@@ -74,6 +88,7 @@ const ROOT_JS = [
 const ROOT_OTHER = [
   'robots.txt', 'ads.txt', 'sitemap.xml', 'feed.xml', 'intel-feed.xml',
   'manifest.webmanifest', 'favicon.ico', 'apple-touch-icon.png',
+  '_redirects',
 ];
 
 // Root stylesheets — small and fully enumerable.
@@ -96,6 +111,11 @@ const FORBIDDEN_PATTERNS = [
   /^stamp-intel\.js$/, /^bump-assets\.js$/, /^build_ssr\.js$/, /^build\.py$/,
   /^data\/commerce-intel\.json$/,
   /^data\/engineer-track-paid\.json$/,
+  /^data\/backup/i,
+  /pre-sprint/i,
+  /^data\/paid-listings\.json$/,
+  /^data\/csv-exports\//,
+  /\.csv$/i,
 ];
 
 /* iCloud Drive / macOS conflict copies ("index 2.html", "usa 2/"). The site folder
@@ -121,9 +141,19 @@ function copyDir(dir) {
     const p = path.join(dir, e.name);
     // Never copy internal prospect intelligence / discovery-ops artifacts to the public distribution
     if (p === 'data/commerce-intel.json' || p === 'data/engineer-track-paid.json') continue;
+    if (p === 'data/paid-listings.json') continue;
+    if (p === 'data/gcc-weekly-linkedin-pack.json') continue;
     if (p === 'data/gcc-sep-2026-discovery-input.json' || p === 'data/gcc-coverage-report.json') continue;
-    // Tracked ops schemas (e.g. data/*.sql) must stay in git but never ship on the CDN
-    if (/\.sql$/i.test(e.name)) continue;
+    // Pre-sprint CRM snapshots (data/backup-pre-sprint/commerce-intel.json and
+    // the rest of that generation) must never reach the CDN. The root
+    // commerce-intel 404 does not cover this copy.
+    if (/(^|\/)backup[^/]*$/.test(p) || /pre-sprint/i.test(p)) continue;
+    // Tracked ops files under a public directory (schemas, logo studies, notes,
+    // and local generators such as brand/logo-concepts/render_previews.py)
+    // stay in git but never ship on the CDN. Skipping them here keeps a
+    // preview script in a public folder from failing the production build.
+    // The dist gate rejects these extensions if a copy still gets through.
+    if (/\.(sql|py|md)$/i.test(e.name)) continue;
     if (e.isDirectory()) n += copyDir(p);
     else { copyFile(p, p); n++; }
   }
@@ -136,9 +166,13 @@ fs.mkdirSync(DIST, { recursive: true });
 
 let count = 0;
 
+// Internal operator/draft pages that must never ship.
+const INTERNAL_ROOT_HTML = new Set(['gcc-weekly-pack.html']);
+
 // 1. Every served HTML page at the root.
 for (const f of fs.readdirSync('.')) {
   if (CONFLICT_COPY.test(f)) { skippedConflicts.push(f); continue; }
+  if (INTERNAL_ROOT_HTML.has(f)) continue;
   if (f.endsWith('.html')) { copyFile(f, f); count++; }
   else if (ROOT_CSS_RE.test(f)) { copyFile(f, f); count++; }
 }
@@ -149,13 +183,92 @@ for (const f of ROOT_JS.concat(ROOT_OTHER)) {
   else console.warn('  ! allowlisted but missing: ' + f);
 }
 
-// 3. Public directories.
+// 3. Public directories. data/ is NOT copied wholesale — only JSON files
+// that shipped HTML/JS actually reference (see step 5).
 for (const d of DIRS) count += copyDir(d);
 
 // 4. Individual files from mixed directories.
 for (const f of FILES_FROM_MIXED_DIRS) {
   if (fs.existsSync(f)) { copyFile(f, f); count++; }
   else console.warn('  ! allowlisted but missing: ' + f);
+}
+
+// 5. data/*.json allowlist, derived from references in the artifact.
+const DATA_REF = /data\/([A-Za-z0-9_.\/-]+\.json)/g;
+const dataRefs = new Set();
+(function scanRefs(dir) {
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    const p = path.join(dir, e.name);
+    if (e.isDirectory()) { scanRefs(p); continue; }
+    if (!/\.(html|js|xml|webmanifest)$/i.test(e.name)) continue;
+    const text = fs.readFileSync(p, 'utf8');
+    let m;
+    DATA_REF.lastIndex = 0;
+    while ((m = DATA_REF.exec(text))) {
+      if (m[1].includes('..')) continue;
+      dataRefs.add(m[1]);
+    }
+  }
+})(DIST);
+
+function dataForbidden(rel) {
+  return /backup/i.test(rel) || /pre-sprint/i.test(rel) ||
+    rel === 'commerce-intel.json' || rel === 'engineer-track-paid.json' ||
+    rel === 'paid-listings.json' ||
+    rel.indexOf('csv-exports/') === 0 ||
+    /\.csv$/i.test(rel) ||
+    rel === 'gcc-sep-2026-discovery-input.json' || rel === 'gcc-coverage-report.json' ||
+    /\.sql$/i.test(rel);
+}
+
+let dataCopied = 0;
+const dataMissing = [];
+for (const rel of dataRefs) {
+  if (dataForbidden(rel)) {
+    console.warn('  ! data reference not published: data/' + rel);
+    continue;
+  }
+  const src = path.join('data', rel);
+  if (!fs.existsSync(src) || !fs.statSync(src).isFile()) {
+    dataMissing.push(rel);
+    continue;
+  }
+  copyFile(src, path.join('data', rel));
+  dataCopied++;
+}
+console.log('data allowlist: ' + dataCopied + ' JSON files referenced by dist HTML/JS');
+if (dataMissing.length) {
+  console.warn('  ! referenced data JSON not in source (' + dataMissing.length + '):');
+  dataMissing.slice(0, 12).forEach(function (r) { console.warn('      data/' + r); });
+}
+
+// 6. AdSense loader on every published page, plus one collapsed in-content
+//    slot on knowledge articles, the intel list and the directory lists.
+let stamped = 0;
+let stampErrors = 0;
+(function stampWalk(dir) {
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    const p = path.join(dir, e.name);
+    if (e.isDirectory()) { stampWalk(p); continue; }
+    if (!e.name.endsWith('.html')) continue;
+    const rel = path.relative(DIST, p);
+    let html;
+    try { html = fs.readFileSync(p, 'utf8'); }
+    catch (err) { console.error('  ! unreadable ' + rel); stampErrors++; continue; }
+    let next;
+    try { next = stampHtml(html, rel); }
+    catch (err) {
+      console.error('  ! adsense stamp failed for ' + rel + ': ' + err.message);
+      stampErrors++;
+      continue;
+    }
+    if (next !== html) { fs.writeFileSync(p, next); stamped++; }
+  }
+})(DIST);
+console.log('AdSense stamp: ' + stamped + ' HTML page(s) updated.');
+if (stampErrors) {
+  console.error('DIST GATE FAILED — AdSense stamp could not update ' + stampErrors + ' page(s).');
+  process.exit(1);
 }
 
 // ── Verification gate ─────────────────────────────────────────────────────
@@ -189,6 +302,48 @@ if (offenders.length) {
   console.error('\nDIST GATE FAILED — private or build-only files reached the artifact:');
   offenders.slice(0, 40).forEach((o) => console.error('  ' + o));
   if (offenders.length > 40) console.error('  … and ' + (offenders.length - 40) + ' more');
+  process.exit(1);
+}
+
+// A page that references a same-origin script the allowlist did not copy 404s
+// in production (Grid Lab's engine did this). Fail the build instead.
+const SCRIPT_SRC = /<script\b[^>]*\bsrc=["']([^"']+)["']/gi;
+const missingScripts = [];
+(function scanScripts(dir) {
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    const p = path.join(dir, e.name);
+    if (e.isDirectory()) { scanScripts(p); continue; }
+    if (!e.name.endsWith('.html')) continue;
+    const rel = path.relative(DIST, p);
+    const html = fs.readFileSync(p, 'utf8');
+    let m;
+    SCRIPT_SRC.lastIndex = 0;
+    while ((m = SCRIPT_SRC.exec(html))) {
+      let src = m[1].split('#')[0].split('?')[0];
+      if (!src || /^(https?:)?\/\//i.test(src) || src.startsWith('data:')) continue;
+      if (src.startsWith('/')) src = src.slice(1);
+      else src = path.posix.normalize(path.posix.join(path.posix.dirname(rel.split(path.sep).join('/')), src));
+      if (src.startsWith('../') || src.includes('..')) continue;
+      const abs = path.join(DIST, src);
+      if (!fs.existsSync(abs) || !fs.statSync(abs).isFile()) missingScripts.push(rel + ' → ' + src);
+    }
+  }
+})(DIST);
+if (missingScripts.length) {
+  console.error('\nDIST GATE FAILED — published HTML references a script that was not copied:');
+  missingScripts.slice(0, 40).forEach((o) => console.error('  ' + o));
+  if (missingScripts.length > 40) console.error('  … and ' + (missingScripts.length - 40) + ' more');
+  process.exit(1);
+}
+
+// Sitemap locs are public URLs. A page that exists in git but is not copied
+// (the commissioning board did this) is a production 404. Fail the build.
+const { auditDistSitemap } = require('./scripts/check-dist-sitemap');
+const sitemapMisses = auditDistSitemap(DIST);
+if (sitemapMisses.length) {
+  console.error('\nDIST GATE FAILED — a sitemap URL is not a file in dist:');
+  sitemapMisses.slice(0, 40).forEach((o) => console.error('  ' + o));
+  if (sitemapMisses.length > 40) console.error('  … and ' + (sitemapMisses.length - 40) + ' more');
   process.exit(1);
 }
 console.log('DIST GATE OK — no private, manuscript, build-script or internal file in the artifact.');

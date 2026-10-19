@@ -20,8 +20,8 @@
         "Physical evidence closes the loop. Where possible, inspect the evidence a test points to: the diverter contacts, the winding clamps, the insulation at the suspect location. This is what turns a theory into a confirmed cause.",
         "The decision then becomes an engineering question, not a diagnosis: can the fault be repaired in place or by an off-site rebuild, and does the remaining life, reliability and transportation cost justify it at all? Record the reasoning and the evidence."
       ],
-      "related_principle": "Transformer failure analysis, DGA interpretation and the repair-or-replace decision (see the Masterclass chapters on losses, testing and protection).",
-      "related_links": ["masterclass.html#testing", "masterclass.html#sitelife", "knowledge/transformer-inrush-current.html"]
+      "related_principle": "Transformer failure analysis, DGA interpretation and the repair-or-replace decision.",
+      "related_links": ["knowledge/transformer-dga-ratio-interpretation.html", "knowledge/transformer-condition-assessment.html", "knowledge/transformer-inrush-current.html"]
     },
     {
       "slug": "lessons-from-a-400kv-factory-test",
@@ -40,8 +40,8 @@
         "The inspector should verify the calibration and instrument connections behind every number, and confirm that the guaranteed figures (no-load, load loss, impedance) are within the contractual tolerance band before the unit is accepted.",
         "Finally, record the evidence. A fat dossier with good traces and a clean SFRA fingerprint is worth far more than a pass in the acceptance letter — it is the baseline for the whole service life."
       ],
-      "related_principle": "Factory testing and type tests (see the Masterclass chapter on testing and IEC 60076).",
-      "related_links": ["masterclass.html#testing", "masterclass.html#standards"]
+      "related_principle": "Factory testing and type tests, including IEC 60076 routine and type tests.",
+      "related_links": ["knowledge/transformer-acceptance-testing.html", "knowledge/transformer-standard-testing-requirements.html"]
     },
     {
       "slug": "how-a-utility-evaluates-transformer-losses",
@@ -59,8 +59,8 @@
         "The designer's response is a trade-off: spend on better core steel and lower flux density to cut no-load loss, or on more conductor to cut load loss, until the marginal cost of a further loss reduction equals its capitalised value.",
         "The balance shifts with the evaluation. A utility with expensive energy and a high load factor will pay a premium for a low-loss design; a utility that values first cost over lifetime energy will not. This is precisely why the same transformer is rarely optimal for two different buyers."
       ],
-      "related_principle": "Transformer losses and tender evaluation (see the Masterclass chapters on losses/efficiency and procurement).",
-      "related_links": ["masterclass.html#losses", "masterclass.html#procurement"]
+      "related_principle": "Transformer losses and tender evaluation, including loss capitalisation and bid comparison.",
+      "related_links": ["knowledge/transformer-loss-evaluation.html", "knowledge/how-to-compare-transformer-quotes.html"]
     },
     {
       "slug": "lessons-from-transformer-transportation-damage",
@@ -78,8 +78,8 @@
         "On arrival, before energising: check the recorder, the pressure (a good vacuum/nitrogen blanket may have been lost), the oil level and the integrity of the bushings and accessories. An SFRA (sweep frequency response analysis) versus the factory fingerprint is the most sensitive check for a displaced core or winding.",
         "If the recorder shows an exceedance, do not energise until the investigation is complete — a minor transit event that is investigated rarely becomes a failure, but an ignored one is the classic undetected-damage case."
       ],
-      "related_principle": "Transformer transportation, handling and site acceptance (see the Masterclass chapters on construction and commissioning).",
-      "related_links": ["masterclass.html#construction", "masterclass.html#sitelife", "knowledge/transformer-vector-groups.html"]
+      "related_principle": "Transformer transportation, handling and site acceptance.",
+      "related_links": ["knowledge/transformer-transport-damage.html", "knowledge/transformer-site-preparation.html", "knowledge/transformer-vector-groups.html"]
     }
   ]
 }

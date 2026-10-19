@@ -25,6 +25,39 @@ const files = walk('.', SKIP);
 // Clean routes like /intel are served via Netlify redirects/rewrites to
 // intel.html — treat those as valid when the matching .html (or index.html) exists.
 const siteRoot = process.cwd();
+function loadRedirects() {
+  const map = Object.create(null);
+  let text = '';
+  try { text = fs.readFileSync(path.join(siteRoot, '_redirects'), 'utf8'); } catch (e) { return map; }
+  text.split('\n').forEach(function (line) {
+    const s = line.trim();
+    if (!s || s.charAt(0) === '#') return;
+    const parts = s.split(/\s+/);
+    if (parts.length >= 2 && parts[0].charAt(0) === '/') map[parts[0]] = parts[1];
+  });
+  return map;
+}
+const REDIRECTS = loadRedirects();
+const TOML_REDIRECTS = loadTomlRedirects();
+
+function loadTomlRedirects() {
+  const map = Object.create(null);
+  let text = '';
+  try { text = fs.readFileSync(path.join(siteRoot, 'netlify.toml'), 'utf8'); } catch (e) { return map; }
+  text.split('[[redirects]]').slice(1).forEach(function (block) {
+    const from = (block.match(/^\s*from\s*=\s*"([^"]+)"/m) || [])[1];
+    const to = (block.match(/^\s*to\s*=\s*"([^"]+)"/m) || [])[1];
+    if (from && to && from.charAt(0) === '/') map[from] = to;
+  });
+  return map;
+}
+
+function functionFile(dest) {
+  const m = String(dest || '').match(/^\/\.netlify\/functions\/([A-Za-z0-9_-]+)\/?$/);
+  if (!m) return null;
+  const file = path.join(siteRoot, 'functions', m[1] + '.js');
+  return fs.existsSync(file) ? file : null;
+}
 function existsTarget(fromFile, target) {
   const clean = target.split('#')[0].split('?')[0].trim();
   if (!clean) return { ok: true };
@@ -34,14 +67,24 @@ function existsTarget(fromFile, target) {
   const resolved = clean.startsWith('/')
     ? path.resolve(siteRoot, clean.slice(1))          // site-absolute (Netlify serves from publish root)
     : path.resolve(path.dirname(fromFile), clean);
-  if (fs.existsSync(resolved)) return { ok: true, resolved };
+  if (fs.existsSync(resolved) && !fs.statSync(resolved).isDirectory()) return { ok: true, resolved };
   // Extensionless pretty URL → sibling .html
   if (!path.extname(resolved) && fs.existsSync(resolved + '.html')) {
     return { ok: true, resolved: resolved + '.html' };
   }
   // Directory pretty URL → index.html
-  if (!path.extname(resolved) && fs.existsSync(path.join(resolved, 'index.html'))) {
-    return { ok: true, resolved: path.join(resolved, 'index.html') };
+  const asDir = resolved.endsWith(path.sep) ? resolved.slice(0, -1) : resolved;
+  if (!path.extname(asDir) && fs.existsSync(path.join(asDir, 'index.html'))) {
+    return { ok: true, resolved: path.join(asDir, 'index.html') };
+  }
+  // Explicit _redirects rule (the file itself is gone; the rule owns the URL).
+  let sitePath = '/' + path.relative(siteRoot, asDir).split(path.sep).join('/');
+  if (clean.endsWith('/') && !sitePath.endsWith('/')) sitePath += '/';
+  const dest = REDIRECTS[sitePath] || TOML_REDIRECTS[sitePath];
+  if (dest && dest.charAt(0) === '/' && dest !== sitePath) {
+    const fn = functionFile(dest);
+    if (fn) return { ok: true, resolved: fn };
+    return existsTarget(path.join(siteRoot, 'index.html'), dest);
   }
   return { ok: false, resolved };
 }

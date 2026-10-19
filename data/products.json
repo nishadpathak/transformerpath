@@ -35,15 +35,15 @@
       "positioning": "LEARN. A structured pathway covering transformer-design topics typically developed over several years of engineering practice."
     },
     "professional": {
-      "id": "professional", "name": "Professional", "customer": "Working engineers",
+      "id": "professional", "name": "Engineering Pro", "customer": "Working engineers",
       "purpose": "Advanced engineering plus work tools", "price": 599, "cadence": "year", "seats": 1,
       "price_status": "APPROVED",
       "outcome": "Work: Learning plus professional engineering utility — costing workbench, specification builder, bid evaluation, DGA workspace, professional exports.",
-      "includes": ["everything in Learning", "costing workbench", "specification builder", "bid evaluation", "DGA workspace", "professional reports/exports", "priority capstone review"],
+      "includes": ["everything in Learning", "costing workbench", "specification builder", "bid evaluation", "DGA workspace", "professional reports/exports"],
       "positioning": "LEARN plus WORK. Professional is Learning plus a real professional workspace, not faster support."
     },
     "team": {
-      "id": "team", "name": "Team", "customer": "Companies / departments",
+      "id": "team", "name": "Engineering Team", "customer": "Companies / departments",
       "purpose": "Team learning plus tools", "price": 1999, "cadence": "year", "seats": 10,
       "price_status": "APPROVED",
       "outcome": "A team on one plan with organization management, members, individual progress, assigned pathways and a shared workspace.",
@@ -63,7 +63,7 @@
       "id": "supplier_verified", "name": "Verified Manufacturer", "customer": "Manufacturers / suppliers",
       "purpose": "Commercial readiness", "price": 499, "cadence": "year",
       "price_status": "APPROVED",
-      "outcome": "Verified company contact, enhanced profile, logo/media, product info, brochure, contact CTA, RFQ response eligibility, basic analytics, website backlink where organically relevant, featured pin on the Industry Map.",
+      "outcome": "Verified company contact and profile after review. Logo, catalogue PDF link and photo gallery are included at no extra charge. RFQ routing is coming soon.",
       "meaning": "VERIFIED MANUFACTURER means the organization/contact/profile completed TransformerPath's defined verification process. It does NOT mean product certified, quality certified, approved supplier, or technically superior.",
       "neutrality": "Verification is identity/contact verification, never a technical quality judgement."
     },
@@ -71,7 +71,7 @@
       "id": "supplier_pro", "name": "Supplier Pro", "customer": "Manufacturers / suppliers",
       "purpose": "Supplier Pro", "price": 1499, "cadence": "year",
       "price_status": "TARGET",
-      "outcome": "Everything in Verified plus advanced analytics, commercial profile tools, RFQ workflow, market watchlists, Intel Pro entitlement, monthly performance report, promotional inventory (including a featured Industry Map pin), advanced opportunity alerts.",
+      "outcome": "Verified-level profile, the RFQ inbox, and four qualified leads.",
       "neutrality": "Promotional placement is explicitly FEATURED or SPONSORED. Supplier Pro never buys organic technical ranking."
     }
   },
@@ -92,10 +92,10 @@
     },
     "enterprise": {
       "id": "enterprise_intelligence", "name": "Enterprise Intelligence", "customer": "Manufacturers, utilities, EPCs, consultancies, investors",
-      "purpose": "Multi-user plus custom research", "price": null, "cadence": "custom",
+      "purpose": "Multi-user software access", "price": null, "cadence": "custom",
       "price_status": "CUSTOM",
-      "outcome": "Multi-user access, advanced exports, custom market monitoring, custom reports, research requests, bespoke briefings, company/project tracking.",
-      "cta": "Talk to TransformerPath",
+      "outcome": "Multi-user access and company/project tracking. There is no checkout and no custom research service.",
+      "cta": "No checkout yet",
       "neutrality": "Only advertise functionality actually deliverable."
     }
   },
@@ -111,21 +111,14 @@
       "id": "featured_exhibitor", "name": "Featured Exhibitor", "customer": "Exhibitors",
       "purpose": "Promoted exhibitor visibility", "price": 399, "cadence": "per_event",
       "price_status": "REFERENCE",
-      "outcome": "FEATURED label, logo, booth number, products, brochure, manufacturer profile, meeting CTA, event analytics.",
+      "outcome": "FEATURED label, logo, booth number, products, brochure, manufacturer profile, event analytics.",
       "neutrality": "FEATURED is promotional placement. It never implies an editorial recommendation."
-    },
-    "hosted_webinar": {
-      "id": "hosted_webinar", "name": "Hosted Webinar", "customer": "Manufacturers / component suppliers",
-      "purpose": "Webinar hosting plus promotion", "price": 1500, "cadence": "engagement",
-      "price_status": "REFERENCE",
-      "outcome": "Event page, registration, promotion, hosting, recording where supported, post-event replay, sponsor identification. Attendee reporting subject to privacy/consent.",
-      "neutrality": "No lead data where consent/privacy does not permit it."
     },
     "sponsorship": {
       "id": "sponsorship", "name": "Sponsorship", "customer": "Industry organizations",
       "purpose": "Sponsor inventory", "price": 299, "cadence": "engagement",
       "price_status": "REFERENCE",
-      "outcome": "Daily Intel sponsor, event spotlight, category sponsor, market sponsor, newsletter sponsor, annual knowledge partner. Every paid placement is visibly SPONSORED or FEATURED.",
+      "outcome": "Daily Intel sponsor, event spotlight, category sponsor, market sponsor, newsletter sponsor. Every paid placement is visibly SPONSORED or FEATURED.",
       "neutrality": "Never sells editorial conclusions."
     }
   },
@@ -137,6 +130,55 @@
       "outcome": "Digital reference volumes; cross-sell to the related Learn pathway."
     }
   },
+  "feature_delivery": [
+    { "id": "design_course", "label": "26-chapter design course, tutorial and academy", "delivery": "built", "products": ["learning"] },
+    { "id": "models_3d", "label": "Interactive 3D component models and Grid Lab", "delivery": "built", "products": ["learning"] },
+    { "id": "design_calculator", "label": "IEC 60076 design calculator", "delivery": "built", "products": ["learning"] },
+    { "id": "engineer_track", "label": "Design Engineer Track", "delivery": "built", "products": ["learning"] },
+    { "id": "capstone_review", "label": "Capstone projects with published model answers", "delivery": "built", "products": ["learning", "professional"] },
+    { "id": "bom_costing", "label": "BOM and active material costing", "delivery": "built", "products": ["professional"] },
+    { "id": "pdf_reports", "label": "PDF engineering reports", "delivery": "built", "products": ["professional"] },
+    { "id": "rating_plate", "label": "Rating plate generator", "delivery": "built", "products": ["professional"] },
+    { "id": "test_report", "label": "Factory test report generator", "delivery": "built", "products": ["professional"] },
+    { "id": "country_adapter", "label": "Country design adapter", "delivery": "built", "products": ["professional"] },
+    { "id": "saved_designs", "label": "Saved designs and design history", "delivery": "coming_soon", "products": ["professional"] },
+    { "id": "project_workspace", "label": "Project workspace and client files", "delivery": "coming_soon", "products": ["professional"] },
+    { "id": "design_comparison", "label": "Side-by-side design comparison", "delivery": "coming_soon", "products": ["professional"] },
+    { "id": "engineering_team_seats", "label": "Engineering team seats", "delivery": "coming_soon", "products": ["team"] },
+    { "id": "shared_design_library", "label": "Shared team project workspace and design library", "delivery": "coming_soon", "products": ["team"] },
+    { "id": "shared_access_link", "label": "Shared team access link", "delivery": "coming_soon", "products": ["team"] },
+    { "id": "team_rollout", "label": "Team rollout guide", "delivery": "coming_soon", "products": ["team"] },
+    { "id": "directory_listing", "label": "Public directory listing", "delivery": "built", "products": ["listed"] },
+    { "id": "verified_badge", "label": "Verified manufacturer badge after review", "delivery": "built", "products": ["verified"] },
+    { "id": "logo_brochure_upload", "label": "Logo, catalogue PDF and photo gallery", "delivery": "built", "products": ["verified"] },
+    { "id": "buyer_inquiry_routing", "label": "Direct buyer inquiry routing", "delivery": "coming_soon", "products": ["verified"] },
+    { "id": "rfq_eligibility", "label": "RFQ routing is coming soon", "delivery": "coming_soon", "products": ["verified"] },
+    { "id": "featured_map_pin", "label": "Featured Industry Map pin", "delivery": "coming_soon", "products": ["verified"] },
+    { "id": "rfq_inbox", "label": "RFQ inbox and lead status", "delivery": "built", "products": ["supplier_pro"] },
+    { "id": "analytics_dashboard", "label": "Analytics dashboard", "delivery": "coming_soon", "products": ["supplier_pro", "verified"] },
+    { "id": "sourcing_alerts", "label": "Sourcing interest alerts", "delivery": "coming_soon", "products": ["supplier_pro"] },
+    { "id": "lead_export", "label": "Lead export (CSV/JSON)", "delivery": "coming_soon", "products": ["supplier_pro"] },
+    { "id": "intel_pro_seats", "label": "Intel Pro seats for supplier reps", "delivery": "coming_soon", "products": ["supplier_pro"] },
+    { "id": "supplier_pro_badge", "label": "Supplier Pro badge", "delivery": "coming_soon", "products": ["supplier_pro"] },
+    { "id": "featured_placement", "label": "Paid category placement", "delivery": "coming_soon", "products": ["supplier_pro"] },
+    { "id": "daily_intel", "label": "Daily Intel briefing", "delivery": "built", "products": ["intel_free"] },
+    { "id": "public_tenders", "label": "Public tender announcements", "delivery": "built", "products": ["intel_free"] },
+    { "id": "basic_follows", "label": "Free local follows", "delivery": "built", "products": ["intel_free"] },
+    { "id": "match_for_me", "label": "Match for Me", "delivery": "built", "products": ["intel_pro"] },
+    { "id": "country_grids", "label": "Country grids", "delivery": "built", "products": ["intel_pro"] },
+    { "id": "custom_watchlists", "label": "Custom follow watchlists", "delivery": "coming_soon", "products": ["intel_pro"] },
+    { "id": "real_time_alerts", "label": "Real-time tender and award alerts", "delivery": "coming_soon", "products": ["intel_pro"] },
+    { "id": "company_timelines", "label": "Company timelines", "delivery": "coming_soon", "products": ["intel_pro"] },
+    { "id": "advanced_filters", "label": "Advanced project and tender filters", "delivery": "coming_soon", "products": ["intel_pro"] },
+    { "id": "saved_searches_deadline_alerts", "label": "Saved searches and deadline alerts", "delivery": "coming_soon", "products": ["intel_pro"] },
+    { "id": "monthly_brief", "label": "Monthly market brief", "delivery": "coming_soon", "products": ["intel_pro"] },
+    { "id": "intel_team_seats", "label": "Shared Intel team seats", "delivery": "coming_soon", "products": ["intel_team"] },
+    { "id": "shared_watchlists", "label": "Shared watchlists", "delivery": "coming_soon", "products": ["intel_team"] },
+    { "id": "csv_json_exports", "label": "CSV/JSON dataset exports", "delivery": "coming_soon", "products": ["intel_team", "intel_pro"] },
+    { "id": "featured_event_label", "label": "FEATURED event label after review", "delivery": "built", "products": ["featured_event"] },
+    { "id": "featured_event_extras", "label": "Event logo, banner and analytics", "delivery": "coming_soon", "products": ["featured_event"] },
+    { "id": "featured_exhibitor_card", "label": "Featured exhibitor card", "delivery": "coming_soon", "products": ["featured_exhibitor"] }
+  ],
   "feature_matrix": {
     "daily_intel":            { "free": true,  "learning": true, "professional": true, "team": true },
     "basic_calculator":       { "free": true,  "learning": true, "professional": true, "team": true },

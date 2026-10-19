@@ -17,7 +17,17 @@
  */
 'use strict';
 const fs = require('fs');
+const tpAff = require('./lib/travelpayouts');
+const { scoreHtml } = require('./build-knowledge-depth.js');
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
+const ASSETS = (() => {
+  try {
+    const cfg = JSON.parse(fs.readFileSync('data/config.json', 'utf8'));
+    return { css: (cfg.assets && cfg.assets.css) || 5, js: (cfg.assets && cfg.assets.js) || 2 };
+  } catch (e) {
+    return { css: 5, js: 2 };
+  }
+})();
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
@@ -71,12 +81,12 @@ const ARTICLES = [
     question: 'What causes high hydrogen in transformer oil dissolved-gas analysis?',
     quick: 'Hydrogen (H2) is produced whenever the oil or solid insulation is stressed thermally or electrically. A rise confined mostly to hydrogen — sometimes with methane and ethane — is the classic signature of partial discharge (corona) or low-energy sparking. Hydrogen plus acetylene points to higher-energy arcing, while hydrogen plus carbon oxides or methane points to cellulose overheating.',
     sections: [
-      ['What DGA measures', 'Dissolved-gas analysis samples the oil and measures the gases dissolved in it: hydrogen (H2), methane (CH4), ethane (C2H6), ethylene (C2H4), acetylene (C2H2), carbon monoxide (CO), carbon dioxide (CO2), oxygen (O2) and nitrogen (N2). The pattern and the rate of change diagnose the fault, not a single gas in isolation.'],
+      ['What DGA measures', 'Dissolved-gas analysis samples the oil and measures the gases dissolved in it: hydrogen (H2), methane (CH4), ethane (C2H6), ethylene (C2H4), acetylene (C2H2), carbon monoxide (CO), carbon dioxide (CO2), oxygen (O2) and nitrogen (N2). IEEE C57.104 total dissolved combustible gas is H2 + CH4 + C2H6 + C2H4 + C2H2 + CO. The pattern and the rate of change diagnose the fault, not a single gas in isolation.'],
       ['Why hydrogen appears', 'Hydrogen is released by low-energy discharges: partial discharge in voids, bubbles or on sharp edges, and by cracking of oil molecules under modest thermal stress. It is the gas that rises earliest and fastest in PD situations, which is why a "hydrogen-dominant" trend is a red flag.'],
       ['Interpreting the ratios', 'Use ratios (e.g. Duval or the classic Rogers/Doernenburg ratios) rather than absolute values: acetylene/hydrogen and methane/hydrogen distinguish thermal from electrical faults; ethylene/ethane separates low- and high-temperature thermal faults; carbon monoxide and carbon dioxide indicate paper involvement.'],
       ['What to do', 'Repeat the sample to confirm the trend (gases get worse, not better), consider online monitoring for rate tracking, inspect the tap changer if acetylene is present, and look for the PD source (loose connection, partial-discharge site, moisture or contamination). Do not open the sealed unit without de-energising and a plan.'],
     ],
-    refs: ['IEC 60599 (mineral-oil-filled equipment — DGA interpretation)', 'IEEE C57.104 (DGA guide)'],
+    refs: ['IEC 60599:2022 (mineral-oil-filled equipment — DGA interpretation)', 'IEEE C57.104 (DGA guide)'],
     comps: ['protection-monitoring', 'oil-fluids-preservation'], types: ['PT', 'DT'],
     work: 'A sample reads H2 600 ppm, CH4 120 ppm, C2H2 < 1 ppm. Hydrogen and methane dominate with no acetylene: consistent with partial discharge rather than arcing. The gas ratio methane/hydrogen < 0.1 confirms a PD/discharge signature.',
   },
@@ -102,7 +112,7 @@ const ARTICLES = [
     question: 'Why does a transformer fail a short-circuit test?',
     quick: 'A transformer passes a short-circuit test if it withstands the applied fault currents without unacceptable deformation, displacement or leakage paths. Failures come from mechanical deformation of windings (radial/buckling or axial collapse), broken or displaced leads and terminals, or insulation damage that leads to a subsequent power-frequency withstand failure — all from the enormous internal electromagnetic forces that scale with current squared.',
     sections: [
-      ['What the test establishes', 'Routine and type short-circuit tests (per IEC 60076-5 or IEEE C57.12.90 / C57.12.00) prove the transformer can survive a specified number of short-circuit events at kA of through-current without sustaining damage that would cause a later failure. Pass = no visible deformation, no insulation breakdown, no significant impedance change, and acceptable subsequent tests.'],
+      ['What the test establishes', 'The short-circuit withstand test is a special test, run by agreement (IEC 60076-5). It proves the transformer can survive a specified number of short-circuit events at kA of through-current without sustaining damage that would cause a later failure. Pass = no visible deformation, no insulation breakdown, no significant impedance change, and acceptable subsequent tests.'],
       ['Where the forces act', 'The winding currents create radial forces (tension on the outer winding, compression on the inner winding) and axial forces when ampere-turns do not balance. These try to stretch, squash or telescope the windings and push them longitudinally.'],
       ['Typical failure mechanisms', 'Compressive buckling of the inner winding, radial stretch or ovalising of the outer winding, axial collapse or vertical displacement, tilting of conductors, damage to clamping and end rings, and broken or loose leads terminations. Insulation can also be displaced, creating a weak point that only reveals itself during the follow-up voltage test.'],
       ['Why it matters for design', 'The design must size conductor section, axial and radial support (spacers), clamping forces and end structures to hold the winding below its yield/limit. Reinforcement must not create new thermal hotspots. Design margins and mechanical adequacy are the whole point.'],
@@ -181,11 +191,13 @@ const ARTICLES = [
     slug: 'buchholz-relay', topic: 'Components', level: 'Intermediate', minutes: 5,
     title: 'What Is a Buchholz Relay and What Does It Protect?',
     question: 'What is a Buchholz relay and how does it protect a transformer?',
-    quick: 'A Buchholz relay is a gas-actuated protection device fitted in the pipe between the transformer conservator and tank. It collects gas released by an internal fault and trips the unit on a major fault, or gives an alarm on a slow accumulation (e.g. minor overheating). The gas collected can be analysed to diagnose the fault.',
+    quick: 'A Buchholz relay is a gas-actuated protection device fitted in the pipe between the transformer conservator and tank. It collects gas released by an internal fault and trips the unit on a major fault, or gives an alarm on a slow accumulation (e.g. minor overheating). The gas collected can be analysed to diagnose the fault. It is fitted on oil-filled units above a certain size.',
     sections: [
       ['How it works', 'The relay is a chamber with float switches (or a baffle/reed) that sense oil level and gas accumulation. An internal fault generates gas that rises into the relay; a large fault creates a surge of oil that trips a second element.'],
       ['What it senses', 'Gas collection indicates a slow fault (e.g. a hot spot, partial discharge or cellulose overheating); an oil surge indicates a more energetic arcing fault. The amount and type of gas, and the pressure, guide the diagnosis.'],
       ['Buchholz gas analysis', 'Collecting the gas and testing it (combustible, CO2, colour) helps identify the fault — for example a combustible, odourless gas typically points to a thermal or dielectric event.'],
+      ['Alarm vs trip', 'Slow gas accumulation trips the alarm and flags a developing fault; a major gas or surge trips the breaker to disconnect the transformer, protecting it.'],
+      ['Diagnosis', 'The collected gas is analysed (combustible, CO2, etc.) and the DGA used to identify whether it is a thermal, partial-discharge or arcing fault.'],
     ],
     refs: ['IEC 60076-1', 'IEEE C57.12.90'],
     comps: ['protection-monitoring', 'oil-fluids-preservation'], types: ['PT', 'DT'],
@@ -214,8 +226,12 @@ const ARTICLES = [
       ['Advantages', 'For a modest ratio change (e.g. 11 kV to 6.6 kV, or a 10% voltage adjustment), the autotransformer uses far less copper and core material, is lighter and has lower losses.'],
       ['Limitations', 'There is no galvanic isolation, the short-circuit current can be much higher, and the winding must be insulated for the highest voltage. Two-winding transformers are used where isolation and low fault currents are needed.'],
     ],
-    refs: ['IEC 60076-1', 'IEEE C57.12.00'],
+    refs: ['IEC 60076-1', 'IEEE C57.12.00', 'IEEE C57.12.10'],
     comps: ['conductors-and-core', 'tank-and-mechanical'], types: ['PT'],
+    calc: 'autotransformer-sizing.html',
+    calcLabel: 'Equivalent rating',
+    model: 'autotransformer.html',
+    work: 'A 100 MVA, 132/66 kV three-phase autotransformer has co-ratio 0.5, so the equivalent self rating is 50 MVA. LV line current is 874.8 A and the series and common winding currents are each 437.4 A. The sizing page computes this from throughput and the two line voltages.',
   },
   {
     slug: 'power-factor-test', topic: 'Testing', level: 'Intermediate', minutes: 6,
@@ -237,10 +253,10 @@ const ARTICLES = [
     quick: 'Partial discharge (PD) is a localised electrical discharge that partially bridges the insulation between two conductors and is confined to a small volume. It does not instantly fail the unit, but it erodes the insulation over time and is a strong early indicator of an incipient fault — detected by PD measurement and often by hydrogen in the oil.',
     sections: [
       ['Where it occurs', 'PD happens at sites of stress concentration: in voids or gas bubbles in the insulation, at sharp edges, on contaminated surfaces, or at a delamination. The discharge repetitively erodes the insulation.'],
-      ['How it is detected', 'PD can be measured electrically (transient pulses), acoustically (ultrasonic sensors on the tank), or via dissolved-gas analysis — PD produces hydrogen (with methane) in the oil.'],
+      ['How it is detected', 'PD can be measured electrically (apparent charge per IEC 60270:2025). IEC 60076-3 accepts oil-immersed windings at ≤ 250 pC at 1.58 Ur/√3, with no rise greater than 50 pC, and ≤ 100 pC at 1.2 Ur/√3. Acoustic sensors and dissolved-gas analysis (hydrogen, with methane) are the in-service counterparts.'],
       ['Why it matters', 'Persistent PD degrades the insulation to the point of a flashover or failure, so early detection with PD and DGA monitoring lets you plan intervention rather than suffer an unplanned outage.'],
     ],
-    refs: ['IEC 60270 (PD measurement)', 'IEC 60599 (DGA interpretation)'],
+    refs: ['IEC 60270:2025 (PD measurement)', 'IEC 60599:2022 (DGA interpretation)', 'IEC 60076-3'],
     comps: ['protection-monitoring', 'insulation-materials'], types: ['PT', 'DT', 'DRY'],
   },
   {
@@ -263,7 +279,7 @@ const ARTICLES = [
     question: 'What do transformer insulation classes A, B, F and H mean?',
     quick: 'Insulation class is the maximum temperature at which the insulation system can be operated continuously without premature aging. Class A is 105 °C, E 120 °C, B 130 °C, F 155 °C and H 180 °C (each with a 10 °C margin specified). The class defines the allowable hottest-spot temperature, not the ambient, and is set by the materials and the design, including the cooling class.',
     sections: [
-      ['What the numbers mean', 'The class gives the maximum permissible hottest-spot temperature for a given insulation material set. Operating at or below it supports a long design life; exceeding it roughly halves the life for each extra 6–10 °C.'],
+      ['What the numbers mean', 'The class gives the maximum permissible hottest-spot temperature for a given insulation material set. Operating at or below it supports a long design life; exceeding it roughly doubles the ageing rate for each extra 6 °C (IEC 60076-7, non-upgraded paper).'],
       ['Transformer use', 'Oil-immersed transformers are commonly class A (cellulose/oil, 105 °C). Dry-type and cast-resin transformers use higher classes (B, F, H) with materials like epoxy, aramid or polyester.'],
       ['Relation to cooling and loading', 'The insulation class interacts with the cooling design and the loading rules: a unit can be overloaded only for a limited time before the hottest-spot temperature exceeds the class limit.'],
     ],
@@ -300,13 +316,13 @@ const ARTICLES = [
     slug: 'type-vs-routine-test', topic: 'Testing', level: 'Beginner', minutes: 5,
     title: 'Type, Routine and Special Tests? What Is the Difference?',
     question: 'What is the difference between type, routine and special transformer tests?',
-    quick: 'Routine tests are run on every unit (ratio, resistance, no-load and load loss, power factor, HV/LV withstand, oil test). Type tests are run on a design once to prove it (temperature rise, impulse, short-circuit withstand). Special tests are run by agreement (sound level, zero-sequence, harmonics, DGA).',
+    quick: 'Routine tests are run on every unit (ratio, resistance, no-load and load loss, power factor, HV/LV withstand, oil test). Above 72.5 kV, capacitance and tan δ, insulation resistance and DGA are also routine (IEC 60076-1:2011 cl. 11.1.2.2). Lightning impulse is a type test and is also routine for Um ≥ 72.5 kV (IEC 60076-3:2013). Type tests proved on a design are the temperature-rise test and, below that voltage, the impulse test. Special tests are run by agreement (short-circuit withstand, sound level, zero-sequence, harmonics, and DGA below 72.5 kV).',
     sections: [
-      ['Routine tests', 'Performed on each manufactured unit to confirm it meets the specification and is free of defects: turns ratio, winding resistance, no-load and load loss, insulation power factor/resistance, applied-voltage and induced-voltage tests, and oil tests.'],
-      ['Type tests', 'Proven once on a representative design and then applied to all units of that design: temperature-rise, lightning-impulse, switching-impulse and short-circuit withstand tests.'],
-      ['Special tests', 'Run only by agreement with the customer for particular requirements: sound level, zero-sequence impedance, harmonic and stray-loss tests, dissolved-gas or frequency-response analysis.'],
+      ['Routine tests', 'Performed on each manufactured unit to confirm it meets the specification and is free of defects: turns ratio, winding resistance, no-load and load loss, applied-voltage and induced-voltage tests, and oil tests. For Um above 72.5 kV, IEC 60076-1:2011 clause 11.1.2.2 also makes capacitance and tan δ, insulation resistance and dissolved-gas analysis routine tests. Lightning impulse is routine for Um ≥ 72.5 kV (IEC 60076-3:2013).'],
+      ['Type tests', 'Proved on a representative design: the temperature-rise test, and lightning impulse when Um is below 72.5 kV. Short-circuit withstand is not a type test.'],
+      ['Special tests', 'Run only by agreement with the customer: short-circuit withstand (IEC 60076-5), sound level, zero-sequence impedance, harmonic and stray-loss tests, and frequency-response analysis. Dissolved-gas analysis is special below 72.5 kV and routine above that voltage.'],
     ],
-    refs: ['IEC 60076-1', 'IEEE C57.12.90'],
+    refs: ['IEC 60076-1:2011 (cl. 11.1.2.2)', 'IEEE C57.12.90-2026'],
     comps: ['tank-and-mechanical', 'protection-monitoring'], types: ['PT', 'DT'],
   },
   {
@@ -425,7 +441,7 @@ const ARTICLES = [
     quick: 'BIL (basic insulation level) is the crest value of the standard lightning impulse voltage (a 1.2/50 microsecond wave) the transformer insulation is designed to withstand — a key measure of its insulation strength. In IEC it is often called the rated lightning impulse withstand level (LI); in IEEE it is given in kV at the system voltage.',
     sections: [
       ['What it is', 'BIL is the peak impulse voltage the insulation must survive. It sets the insulation margin above the normal operating and switching voltage, protecting against lightning and switching surges.'],
-      ['How it is tested', 'A standard 1.2/50 us lightning impulse is applied, and the insulation must withstand it without breakdown; the full-wave and chopped-wave impulse tests are part of the type test.'],
+      ['How it is tested', 'A standard 1.2/50 us lightning impulse is applied, and the insulation must withstand it without breakdown. The full-wave lightning-impulse test is a type test, and a routine test for Um ≥ 72.5 kV (IEC 60076-3:2013).'],
       ['Why it matters', 'A higher BIL means a larger insulation margin and heavier, more costly insulation. The BIL is chosen for the system voltage and the required protection coordination with surge arresters.'],
     ],
     refs: ['IEC 60076-3 (insulation levels)', 'IEEE C57.12.00'],
@@ -439,7 +455,7 @@ const ARTICLES = [
     sections: [
       ['No-load losses', 'These come from the alternating flux in the core (hysteresis) and the eddy currents in the laminations. They depend on the core material (e.g. CRGO, amorphous), the flux density and the core construction, and are essentially constant at rated voltage.'],
       ['Load losses', 'The winding conductor I2R loss plus stray loss in the tank, leads and core, which scale with the square of the current. The auxiliary losses from fans and oil pumps add when the cooling is running.'],
-      ['Efficiency and economics', 'Efficiency is output divided by input, so it peaks near full load and falls at light load because the no-load losses dominate. Buyers capitalise losses over the transformer life to compare suppliers — lower losses often justify a higher price.'],
+      ['Efficiency and economics', 'Efficiency is output divided by input. It peaks where load loss equals no-load loss, at a load fraction of √(P₀/Pk): about 30–45% for distribution transformers and nearer 40–60% for power transformers, not at full load (IEC 60076-20 peak efficiency index). It falls at light load because the no-load losses dominate. Buyers capitalise losses over the transformer life to compare suppliers — lower losses often justify a higher price.'],
     ],
     refs: ['IEC 60076-1', 'IEC 60076-20 (efficiency/eco-design context)'],
     comps: ['conductors-and-core', 'transformer-cooling'], types: ['PT', 'DT'],
@@ -489,13 +505,13 @@ const ARTICLES = [
     slug: 'transformer-overloading', topic: 'Applications', level: 'Intermediate', minutes: 6,
     title: 'Can You Overload a Transformer? (Loading Guide)',
     question: 'How much can a transformer be overloaded?',
-    quick: 'A transformer can be safely loaded above its nameplate rating only within defined thermal limits and for limited periods, because the winding hottest-spot temperature is the binding constraint. The loading guide (IEC 60076-7) gives allowed overloads for normal and emergency conditions based on the initial load, ambient temperature, insulation class and type of duty. Each 6-10 K over the design temperature roughly halves the insulation life.',
+    quick: 'A transformer can be safely loaded above its nameplate rating only within defined thermal limits and for limited periods, because the winding hottest-spot temperature is the binding constraint. The loading guide (IEC 60076-7) gives allowed overloads for normal and emergency conditions based on the initial load, ambient temperature, insulation class and type of duty. Each 6 K over the reference hot-spot roughly doubles the ageing rate and halves the insulation life (IEC 60076-7). IEC 60076-7:2018 Table 2 hot-spot limits are 120/140 °C for normal cyclic loading, 140/160 °C for long-time emergency loading, and 160 °C for short-time emergency loading (non-upgraded paper / thermally upgraded paper; short-time is 160 °C).',
     sections: [
       ['The binding limit', 'The winding hottest-spot temperature limits the load. Exceeding the design temperature rise accelerates insulation aging and risks moisture release or a failure.'],
-      ['Normal vs emergency loading', 'The loading guide allows certain overloads for normal daily and cyclic duty, and higher ones for emergencies, balanced against the aging and the condition of the cooling and oil.'],
+      ['Normal vs emergency loading', 'IEC 60076-7:2018 Table 2 limits the winding hot-spot to 120 °C (non-upgraded paper) or 140 °C (thermally upgraded paper) in normal cyclic loading, 140 °C or 160 °C in long-time emergency loading, and 160 °C in short-time emergency loading. The allowed current also depends on the initial load, the ambient temperature and the cooling.'],
       ['Practical rule', 'Do not overload without checking the loading guide, the design, the oil/winding temperature and whether the fans/pumps are running. Trending the hottest-spot temperature is the safe way to decide.'],
     ],
-    refs: ['IEC 60076-7 (loading guide)', 'IEEE C57.91 (loading guide)'],
+    refs: ['IEC 60076-7:2018 (loading guide, Table 2)', 'IEEE C57.91-2025 (loading guide)'],
     comps: ['transformer-cooling', 'protection-monitoring'], types: ['PT', 'DT', 'DRY'],
   },
   {
@@ -701,7 +717,7 @@ const ARTICLES = [
     sections: [
       ['Load and cooling', 'Running above nameplate without the corresponding cooling (ONAN/ONAF/OFAF) raises the winding and oil temperature. A failed fan or pump, blocked radiator, or a low oil level removes the designed cooling.'],
       ['System and environment', 'High ambient temperature derating, convector blockage, and internal sludge or poor oil flow all reduce the effective cooling or raise the loss.'],
-      ['Consequence', 'Each extra 6-10 K above the design hottest-spot temperature roughly halves the insulation life, and prolonged overheating can release moisture and lead to a thermal or electrical failure.'],
+      ['Consequence', 'Each extra 6 K above the reference hot-spot roughly doubles the ageing rate (IEC 60076-7), and prolonged overheating can release moisture and lead to a thermal or electrical failure.'],
     ],
     refs: ['IEC 60076-2 (temperature rise)', 'IEC 60076-7 (loading guide)'],
     comps: ['transformer-cooling', 'protection-monitoring', 'oil-fluids-preservation'], types: ['PT', 'DT'],
@@ -712,8 +728,7 @@ const ARTICLES = [
     question: 'How does transformer insulation age and what is its life?',
     quick: 'Cellulose insulation ages by thermal, chemical and moisture-driven degradation. Heat, oxygen and water break the paper polymer chains, reducing the degree of polymerisation (DP) and mechanical strength, and releasing water, acids and carbon gases (CO, CO2). Aging is accelerated by high temperature, moisture and acidity, and the end-of-life point is typically set at a DP of about 200-250.',
     sections: [
-      'The reactions',
-      'Thermal aging breaks the cellulose chains; hydrolysis (with water) and oxidation (with oxygen) accelerate it. The products — water, acids, CO and CO2 — in turn further accelerate aging and lower the dielectric strength.',
+      ['The reactions', 'Thermal aging breaks the cellulose chains; hydrolysis (with water) and oxidation (with oxygen) accelerate it. The products — water, acids, CO and CO2 — in turn further accelerate aging and lower the dielectric strength.'],
       ['How it is measured', 'The degree of polymerisation (DP) of a paper sample indicates its strength; furan compounds in the oil indicate paper aging. A DP near 200-250 is a common replacement criterion.'],
       ['Practical life', 'The insulation life is a temperature-dependent exponential: modest temperature reductions dramatically extend it. Keeping the unit cool, dry and free of oxygen extends the life.'],
     ],
@@ -805,10 +820,11 @@ const ARTICLES = [
     quick: 'Insulation coordination is the selection of the insulation levels of equipment so they withstand the system and surge voltages with the right margin, and so surge arresters and protection operate to protect the most expensive equipment. It matches Basic Insulation Level (BIL) to the expected overvoltage, using arresters to clamp surges and choosing BIL so a flashover (if any) occurs at a cheap, replaceable point rather than at a transformer.',
     sections: [
       ['The idea', 'You choose the insulation strength (BIL) of equipment so it survives the normal and switching voltage, and the clearances, so that any surge is diverted by arrester protection before it threatens the asset. The cost rises with BIL, so the design balances cost and risk.'],
-      ['How it works', 'Arresters limit the surge voltage to a value below the equipment BIL, with a margin; the BIL increases with system voltage. Coordination ensures the BIL of the transformer (or bushing) is above the protective level of the arrester.'],
+      ['How it works', 'Arresters limit the surge voltage to a value below the equipment BIL, with a margin; the BIL increases with system voltage. Coordination ensures the BIL of the transformer (or bushing) is above the protective level of the arrester. A transformer at a given system voltage has a defined BIL and test levels. It is given as e.g. 110 kV system, 550 kV BIL.'],
+      ['Applied and induced tests', 'The applied (power-frequency) test proves the insulation to earth and between windings; the induced test proves the inter-turn insulation. Both are specified with the insulation level.'],
       ['Why it matters', 'It prevents insulation failure from lightning or switching surges and ensures that, if a failure does occur, it is at a location and component that is cheaper and safer to replace.'],
     ],
-    refs: ['IEC 60071 (insulation coordination)', 'IEC 60076-3'],
+    refs: ['IEC 60071 (insulation coordination)', 'IEC 60076-3', 'IEEE C57.12.00'],
     comps: ['transformer-bushings', 'insulation-materials'], types: ['PT', 'DT'],
   },
   {
@@ -867,7 +883,7 @@ const ARTICLES = [
     slug: 'lightning-impulse-test', topic: 'Testing', level: 'Intermediate', minutes: 6,
     title: 'What Is a Lightning Impulse Test?',
     question: 'What is a lightning impulse test on a transformer?',
-    quick: 'A lightning impulse test applies a standard 1.2/50 microsecond voltage surge to the transformer winding to prove the insulation can withstand a lightning (or switching) surge. It is a type test, with both full-wave and chopped-wave forms, and the insulation must not flash over or show a breakdown. It verifies the insulation coordination and the BIL.',
+    quick: 'A lightning impulse test applies a standard 1.2/50 microsecond voltage surge to the transformer winding to prove the insulation can withstand a lightning surge. It is a type test, and a routine test for Um ≥ 72.5 kV (IEC 60076-3:2013). Full-wave and chopped-wave forms are applied, and the insulation must not flash over or show a breakdown. It verifies the insulation coordination and the BIL.',
     sections: [
       ['The standard wave', 'A 1.2/50 us lightning impulse (rise time 1.2 us, time to half-value 50 us) is the standard. The full-wave and chopped-wave (a wave cut by a gap flashover) are both applied.'],
       ['What it verifies', 'It proves the insulation (especially between turns and windings, and at the BIL) can survive a lightning surge without a flashover or insulation breakdown.'],
@@ -1108,7 +1124,7 @@ const ARTICLES = [
       ['Fiber-optic (optional)', 'Optical sensors can be placed directly in the winding hottest-spot for a precise reading, useful on large or high-loaded units.'],
       ['Using it', 'The winding temperature drives the cooling control (fans/pumps), the alarm and trip settings, and the loading policy, so it is critical for protecting the insulation life.'],
     ],
-    refs: ['IEC 60076-7 (loading guide)', 'IEEE C57.91'],
+    refs: ['IEC 60076-7 (loading guide)', 'IEEE C57.91-2025'],
     comps: ['transformer-cooling', 'protection-monitoring'], types: ['PT', 'DT'],
   },
   {
@@ -1467,27 +1483,14 @@ const ARTICLES = [
     slug: 'transformer-life-aging', topic: 'Failures', level: 'Intermediate', minutes: 6,
     title: 'What Determines the Life of a Transformer?',
     question: 'What determines the useful life of a transformer?',
-    quick: 'A transformer life is governed mainly by the thermal aging of the insulation. The winding hottest-spot temperature sets the aging rate: roughly, each 6-10 K above the design temperature halves the insulation life. Moisture, oxygen, overloads and harmonics accelerate aging, while keeping the unit cool, dry, well-documented and well-maintained extends the life. Many reactors and power transformers reach 30-40 years, and good life management can push this further.',
+    quick: 'A transformer life is governed mainly by the thermal aging of the insulation. The winding hottest-spot temperature sets the aging rate: roughly, each 6 K above the reference hot-spot doubles the ageing rate and halves the insulation life (IEC 60076-7). Moisture, oxygen, overloads and harmonics accelerate aging, while keeping the unit cool, dry, well-documented and well-maintained extends the life. Many reactors and power transformers reach 30-40 years, and good life management can push this further.',
     sections: [
       ['The aging driver', 'The paper insulation ages with temperature; the hottest-spot temperature is the key. It is set by the load, the ambient, the cooling and the design.'],
       ['Accelerating factors', 'Moisture, oxygen, acidity, overload, harmonics and a poor cooling or oil condition accelerate aging and reduce the life.'],
       ['Life management', 'Monitor DGA, moisture and furans, control the loading within the guide, keep the oil dry, and plan the replacement with a condition-based approach.'],
     ],
-    refs: ['IEC 60076-7 (loading guide)', 'IEEE C57.91'],
+    refs: ['IEC 60076-7 (loading guide)', 'IEEE C57.91-2025'],
     comps: ['oil-fluids-preservation', 'transformer-cooling', 'protection-monitoring'], types: ['PT', 'DT'],
-  },
-  {
-    slug: 'insulation-coordination-simple', topic: 'Standards', level: 'Beginner', minutes: 5,
-    title: 'Transformer Insulation Levels and Test Voltages (Simple Guide)',
-    question: 'What are the insulation levels and test voltages of a transformer?',
-    quick: 'A transformer insulation level is set by its rated voltage, its BIL (basic insulation level, the lightning impulse withstand), and the applied and induced test voltages. Higher voltage classes need higher insulation and BIL. The insulation level must match the system voltage and the arrester protection, so the unit survives normal, switching and surge stresses. It is given as e.g. 110 kV system, 550 kV BIL.',
-    sections: [
-      ['Rated and BIL', 'The rated voltage sets the operating level; the BIL is the impulse the insulation must withstand. A transformer at a given system voltage has a defined BIL and test levels.'],
-      ['Applied and induced tests', 'The applied (power-frequency) test proves the insulation to earth and between windings; the induced test proves the inter-turn insulation. Both are specified with the insulation level.'],
-      ['Why it matters', 'Choosing the insulation level and BIL correctly ensures the transformer survives the overvoltages it will see and coordinates with the surge arresters.'],
-    ],
-    refs: ['IEC 60076-3 (insulation levels)', 'IEEE C57.12.00'],
-    comps: ['insulation-materials', 'transformer-bushings'], types: ['PT', 'DT'],
   },
   {
     slug: 'oltc-maintenance', topic: 'Field Service', level: 'Intermediate', minutes: 6,
@@ -1519,7 +1522,7 @@ const ARTICLES = [
     slug: 'transformer-testing-sequence', topic: 'Testing', level: 'Intermediate', minutes: 6,
     title: 'What Is the Order of Transformer Tests?',
     question: 'What is the sequence of transformer tests?',
-    quick: 'Transformer tests follow a sequence: first the electrical measurements (ratio, polarity, winding resistance, vector group), then the dielectric tests (insulation resistance, power factor, applied and induced voltage), then the performance tests (no-load and load loss, impedance) and finally the temperature-rise, impulse and short-circuit tests (type). Routine tests are run on every unit in this order, with type tests on the design.',
+    quick: 'Transformer tests follow a sequence: first the electrical measurements (ratio, polarity, winding resistance, vector group), then the dielectric tests (insulation resistance, power factor, applied and induced voltage), then the performance tests (no-load and load loss, impedance) and finally the temperature-rise and impulse tests. Lightning impulse is a type test and is routine for Um ≥ 72.5 kV (IEC 60076-3:2013). Short-circuit withstand is a special test by agreement (IEC 60076-5), not a type test. Routine tests are run on every unit, with type tests on the design.',
     sections: [
       ['Measurement', 'Turns ratio and polarity, vector group, winding resistance and the short-circuit impedance/leakage reactance are measured first.'],
       ['Dielectric tests', 'Insulation resistance, power factor, the applied-voltage (between windings and earth) and induced-voltage (inter-turn) tests, and the impulse tests follow.'],
@@ -1527,19 +1530,6 @@ const ARTICLES = [
     ],
     refs: ['IEC 60076-1', 'IEEE C57.12.90'],
     comps: ['protection-monitoring', 'conductors-and-core'], types: ['PT', 'DT'],
-  },
-  {
-    slug: 'buchholz-relay-operation', topic: 'Components', level: 'Intermediate', minutes: 5,
-    title: 'What Does a Buchholz Relay Detect and How Does It Trip?',
-    question: 'How does a Buchholz relay operate?',
-    quick: 'A Buchholz relay senses gas accumulation and oil surge in the pipe between the transformer and the conservator. A slow gas accumulation (from a minor fault) gives an alarm; a large gas or oil surge (from a major fault) trips the transformer. The gas can be collected and analysed to diagnose the fault. It is fitted on oil-filled units above a certain size.',
-    sections: [
-      ['What it senses', 'It has a gas (and sometimes a surprise) element and an oil-surge element. Gas collects under the relay from a minor fault and gives a low alarm; a violent fault causes gas and an oil surge that trips the unit.'],
-      ['Alarm vs trip', 'Slow gas accumulation trips the alarm and flags a developing fault; a major gas or surge trips the breaker to disconnect the transformer, protecting it.'],
-      ['Diagnosis', 'The collected gas is analysed (combustible, CO2, etc.) and the DGA used to identify whether it is a thermal, partial-discharge or arcing fault.'],
-    ],
-    refs: ['IEC 60076-1', 'IEEE C57.12.90'],
-    comps: ['protection-monitoring', 'oil-fluids-preservation'], types: ['PT', 'DT'],
   },
   {
     slug: 'winding-overheating', topic: 'Failures', level: 'Intermediate', minutes: 6,
@@ -1551,7 +1541,7 @@ const ARTICLES = [
       ['Why it is dangerous', 'The insulation at the hot spot ages faster, so a local failure can develop even if the average temperature is fine.'],
       ['Detection', 'Winding-temperature measurement, fibre-optic hot-spot sensors, DGA (for overheating gases), and a thermographic inspection reveal a hot spot.'],
     ],
-    refs: ['IEC 60076-7', 'IEEE C57.91'],
+    refs: ['IEC 60076-7', 'IEEE C57.91-2025'],
     comps: ['transformer-cooling', 'protection-monitoring', 'conductors-and-core'], types: ['PT', 'DT'],
   },
   {
@@ -1707,7 +1697,7 @@ const ARTICLES = [
       ['Load management', 'Better load monitoring, phase balancing and using a spare can increase the usable capacity without changing the transformer.'],
       ['A larger unit', 'For a real capacity gain, install a larger transformer or add a parallel unit, subject to the substation space, protection and the fault level.'],
     ],
-    refs: ['IEC 60076-7', 'IEEE C57.91'],
+    refs: ['IEC 60076-7', 'IEEE C57.91-2025'],
     comps: ['transformer-cooling', 'protection-monitoring'], types: ['PT', 'DT'],
   },
   {
@@ -1909,13 +1899,13 @@ const ARTICLES = [
     slug: 'transformer-partial-discharge-test', topic: 'Testing', level: 'Advanced', minutes: 6,
     title: 'What Is a Partial Discharge (PD) Test?',
     question: 'What is a partial discharge test on a transformer?',
-    quick: 'A partial discharge (PD) test measures the small, localised discharges that occur in a void or defect in the insulation when a high voltage is applied, and reports the PD magnitude and inception/extinction voltage. A low/no PD indicates a void-free insulation; a high PD points to a defect. It is a type and routine test (and done by monitoring) that verifies the insulation is free of a harmful PD source.',
+    quick: 'A partial discharge (PD) test measures the small, localised discharges that occur in a void or defect in the insulation when a high voltage is applied, and reports the apparent charge. IEC 60076-3 accepts oil-immersed windings at ≤ 250 pC at 1.58 Ur/√3, with no rise greater than 50 pC, and ≤ 100 pC at 1.2 Ur/√3. Apparent charge is measured by IEC 60270:2025.',
     sections: [
-      ['What it measures', 'It applies a voltage (often above normal and at a test level) and detects the PD pulses, giving a charge magnitude (in pC) and the inception and extinction voltage.'],
-      ['What it indicates', 'A low or no PD at the test level is good; a high PD or a low inception voltage indicates a void, delamination or contaminant that will erode the insulation.'],
-      ['When it is done', 'It is a routine/type test and is also used online (via sensors) to detect a developing PD source in service.'],
+      ['What it measures', 'It applies the induced-voltage profile and detects the PD pulses. Apparent charge, in picocoulombs, is measured by the method in IEC 60270:2025.'],
+      ['Acceptance', 'IEC 60076-3: ≤ 250 pC at 1.58 Ur/√3, no rise greater than 50 pC during that measuring period, and ≤ 100 pC at 1.2 Ur/√3.'],
+      ['When it is done', 'It is a routine test on oil-immersed units from 72.5 kV and on cast-resin units, and it is also used online to detect a developing PD source in service.'],
     ],
-    refs: ['IEC 60270 (PD measurement)', 'IEC 60076-3'],
+    refs: ['IEC 60270:2025 (PD measurement)', 'IEC 60076-3'],
     comps: ['protection-monitoring', 'insulation-materials'], types: ['PT', 'DT', 'DRY'],
   },
   {
@@ -2056,10 +2046,10 @@ const ARTICLES = [
     quick: 'A zero-sequence test measures the zero-sequence impedance of a transformer, which governs the earth-fault current and the protection. It is done by applying a single-phase or zero-sequence voltage (or by exciting the windings in a defined way) and measuring the impedance. The value is used for the earth-fault protection and the system-earth-earthing, especially for a star winding with a neutral that is earthed.',
     sections: [
       ['What it measures', 'The zero-sequence impedance (the impedance seen by the zero-sequence current), which determines the earth-fault current distribution and the protection setting.'],
-      ['How it is done', 'The transformer is excited so the zero-sequence current flows, or a test is run to measure the impedance; the result depends on the connection and the earthing.'],
+      ['How it is done', 'The transformer is excited so the zero-sequence current flows, and the impedance is measured. Z0 follows the winding connection and the core (3-limb, 5-limb or shell), so the result is read for that arrangement.'],
       ['Why it matters', 'It sets the earth-fault current and the protection and earthing coordination, so it is a special test by agreement for a transformer with an earthed neutral.'],
     ],
-    refs: ['IEC 60076-1', 'IEEE C57.12.90'],
+    refs: ['IEC 60076-1:2011', 'IEEE C57.12.90-2026'],
     comps: ['protection-monitoring', 'conductors-and-core'], types: ['PT', 'DT'],
   },
   {
@@ -2223,13 +2213,13 @@ const ARTICLES = [
     slug: 'transformer-standard-testing-requirements', topic: 'Standards', level: 'Intermediate', minutes: 6,
     title: 'What Tests Does a Transformer Standard Require?',
     question: 'What tests does a transformer standard require?',
-    quick: 'The IEC 60076 (and IEEE C57) standards require a set of routine, type and special tests. Routine tests (ratio, resistance, no-load/load loss, impedance, dielectric, power factor, oil) are run on every unit; type tests (temperature rise, impulse, short-circuit) on a design; and special tests by agreement. The required tests for a given transformer are set by the standard, the voltage and the application.',
+    quick: 'The IEC 60076 (and IEEE C57) standards require a set of routine, type and special tests. Routine tests (ratio, resistance, no-load/load loss, impedance, dielectric, oil) are run on every unit. Above 72.5 kV, capacitance and tan δ, insulation resistance and DGA are routine as well (IEC 60076-1:2011 cl. 11.1.2.2). Lightning impulse is a type test and is also routine for Um ≥ 72.5 kV (IEC 60076-3:2013). Temperature rise is a type test. Short-circuit withstand is a special test by agreement (IEC 60076-5), as are sound level and the other agreed diagnostics.',
     sections: [
-      ['Routine tests', 'Run on every unit: ratio, winding resistance, no-load and load loss, impedance, insulation (IR and power factor), applied and induced voltage, and the oil tests.'],
-      ['Type tests', 'Run on a design: temperature-rise, lightning-impulse, switching-impulse and short-circuit-withstand tests.'],
-      ['Special tests', 'Run by agreement: sound level, zero-sequence, harmonics, DGA-specific and others, as the customer and the application require.'],
+      ['Routine tests', 'Run on every unit: ratio, winding resistance, no-load and load loss, impedance, applied and induced voltage, and the oil tests. For Um above 72.5 kV, IEC 60076-1:2011 clause 11.1.2.2 adds capacitance and tan δ, insulation resistance and dissolved-gas analysis to the routine list. Lightning impulse is routine for Um ≥ 72.5 kV (IEC 60076-3:2013).'],
+      ['Type tests', 'Run on a design: the temperature-rise test, and lightning impulse when Um is below 72.5 kV. Short-circuit withstand is not a type test.'],
+      ['Special tests', 'Run by agreement: short-circuit withstand (IEC 60076-5), sound level, zero-sequence, harmonics and frequency-response analysis. DGA is in this group only when Um is 72.5 kV or below.'],
     ],
-    refs: ['IEC 60076-1', 'IEEE C57.12.90'],
+    refs: ['IEC 60076-1:2011 (cl. 11.1.2.2)', 'IEEE C57.12.90-2026'],
     comps: ['protection-monitoring', 'transformer-cooling'], types: ['PT', 'DT'],
   },
 ];
@@ -2251,19 +2241,23 @@ function toc(secs) { return '<ul>' + secs.map(function (s) { return '<li><a href
 
 function articlePage(a) {
   const makers = makersFor(a.types);
-  const compLinks = (a.comps || []).map(function (c) { return '<a class="tpill" href="../components/' + c + '.html">' + esc(COMPONENTS[c] || c) + '</a>'; }).join(' ');
+  const { componentSlugHref } = require('./lib/component-href');
+  const compLinks = (a.comps || []).map(function (c) { return '<a class="tpill" href="' + componentSlugHref('../', c) + '">' + esc(COMPONENTS[c] || c) + '</a>'; }).join(' ');
   const makerLinks = makers.map(function (m) { return '<a href="../manufacturers/' + m.slug + '.html" style="color:var(--accent)">' + esc(m.name) + '</a>'; }).join(' · ');
   const today = '27 Aug 2026';
   const ct = Math.round((a.minutes * 200 + 40) / 55); // rough words ≈ minutes
   const meta = '<div class="ameta"><span>Published ' + today + '</span><span>Updated ' + today + '</span><span>' + a.minutes + ' min read</span><span class="lvl">' + esc(a.level) + '</span><span class="topic">' + esc(a.topic) + '</span></div>';
   const body = a.sections.map(function (s) {
+    if (!Array.isArray(s) || typeof s[0] !== 'string' || typeof s[1] !== 'string' || s[0].length < 2 || s[1].length < 2) {
+      throw new Error('knowledge section must be [title, body] in ' + a.slug);
+    }
     return '<h2 id="' + slugify(s[0]) + '">' + esc(s[0]) + '</h2><p>' + esc(s[1]) + '</p>';
   }).join('');
   const eq = a.eq ? '<div class="eq"><b style="color:var(--accent)">Equation</b> — ' + esc(a.eq) + '</div>' : '';
   const refs = '<h2>References &amp; standards</h2><ul>' + a.refs.map(function (r) { return '<li>' + esc(r) + '</li>'; }).join('') + '</ul>';
   const ex = a.work ? '<div class="box"><b style="color:var(--accent)">Worked example</b><p style="margin-top:6px">' + esc(a.work) + '</p></div>' : '';
   const links = '<h2>Related</h2><div class="rel">' +
-    (a.calc ? '<a class="tpill" href="../' + a.calc + '">Calculator</a>' : '') +
+    (a.calc ? '<a class="tpill" href="../' + a.calc + '">' + esc(a.calcLabel || 'Calculator') + '</a>' : '') +
     (a.model ? '<a class="tpill" href="../' + a.model + '">3D model</a>' : '') +
     '<a class="tpill" href="../books.html">Book series</a><a class="tpill" href="../academy.html">Academy</a></div>';
   const makersSec = makerLinks ? '<h2>Related manufacturers</h2><p style="font-size:.92rem">' + makerLinks + '</p>' : '';
@@ -2282,9 +2276,9 @@ function articlePage(a) {
     '<meta property="og:type" content="article"><meta property="og:site_name" content="TransformerPath">' +
     '<meta property="og:title" content="' + esc(a.title) + '"><meta property="og:url" content="https://transformerpath.com/knowledge/' + a.slug + '.html">' +
     '<meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow">' +
-    '<link rel="stylesheet" href="../style.css?v=5"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin><link rel="preconnect" href="https://www.google-analytics.com"><link rel="icon" type="image/svg+xml" href="../brand/favicon.svg">' +
+    '<link rel="stylesheet" href="../style.css?v=' + ASSETS.css + '"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin><link rel="preconnect" href="https://www.google-analytics.com"><link rel="icon" type="image/svg+xml" href="../brand/favicon.svg">' +
     '<style>.k-wrap{max-width:800px;margin:0 auto;padding:44px 20px 90px}.k-wrap h1{font-size:1.85rem;color:var(--ink);line-height:1.2}.k-wrap .lead{color:var(--muted);font-size:1.02rem;line-height:1.6}.k-wrap h2{font-size:1.3rem;color:var(--ink);margin:30px 0 8px}.k-wrap p{color:var(--text);line-height:1.7}.ameta{display:flex;flex-wrap:wrap;gap:10px;font-size:.8rem;color:var(--muted);margin:10px 0 4px}.ameta span{padding:2px 8px;border:1px solid var(--border);border-radius:999px}.lvl,.topic{color:var(--accent);font-weight:600}.quick{background:rgba(245,166,35,.08);border:1px solid var(--accent);border-radius:10px;padding:12px 16px;margin:16px 0}.quick b{color:var(--accent)}.eq{background:var(--bg);border:1px dashed var(--accent);border-radius:8px;padding:10px 14px;margin:14px 0;font-family:monospace;font-size:.92rem}.box{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px 16px;margin:14px 0}.rel{margin:6px 0}.tpill{display:inline-block;background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:2px 10px;font-size:.74rem;color:var(--text);margin:3px 4px 3px 0}.k-wrap .toc{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 18px 10px 10px;font-size:.9rem}.k-wrap .toc ul{padding-left:18px;margin:4px 0}.k-wrap .toc a{color:var(--accent)}.method{font-size:.8rem;color:var(--muted);border-top:1px solid var(--border);margin-top:34px;padding-top:14px}</style>' + schema +
-    '</head>\n<body>\n' + HEAD + '\n<main class="k-wrap">' +
+    '<link rel="stylesheet" href="../tp-nav.css?v=' + ASSETS.css + '">\n</head>\n<body>\n' + HEAD + '\n<main class="k-wrap">' +
     '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="../knowledge.html" style="color:var(--accent)">Knowledge</a> › ' + esc(a.topic) + '</nav>' +
     '<h1>' + esc(a.title) + '</h1>' + meta +
     '<div class="quick"><b>Quick answer</b> — ' + esc(a.quick) + '</div>' +
@@ -2292,35 +2286,230 @@ function articlePage(a) {
     '<div class="lead" style="margin-top:18px">' + esc(a.question) + '</div>' +
     body + eq + ex + refs + links + makersSec + compSec +
     '<div class="method">Technical content is prepared from engineering references, standards frameworks, manufacturer documentation and industry sources. Contractual or compliance decisions should refer to current official standards. <b>TransformerPath Technical Editorial.</b></div>' +
+    (tpAff.TRIP_KNOWLEDGE[a.slug] ? tpAff.tripOffers({ slug: a.slug, place: tpAff.TRIP_KNOWLEDGE[a.slug], prefix: '../', disclosureHref: '../affiliate-disclosure.html' }) : '') +
     '<div class="box" style="text-align:center;margin-top:22px"><b style="color:var(--text)">Source transformers for this application</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 10px">Submit an RFQ or browse manufacturers and components.</p>' +
     '<a class="btn btn-amber" href="../rfq.html" data-track="rfq_started" data-track-component_category="' + esc(a.title) + '">Submit an RFQ</a> <a class="btn btn-outline btn-sm" href="../list-company.html" data-track="supplier_claim_started">Get Verified</a></div>' +
-    '</main>\n' + FOOT + '\n<script src="../analytics.js?v=2" defer></script>\n</body>\n</html>';
+    '</main>\n' + FOOT + '\n<script src="../analytics.js?v=' + ASSETS.js + '" defer></script>\n</body>\n</html>';
 }
 
-// ── Generate article pages ──
-fs.mkdirSync('knowledge', { recursive: true });
-const cards = [];
-ARTICLES.forEach(function (a) {
-  fs.writeFileSync('knowledge/' + a.slug + '.html', articlePage(a));
-  cards.push(a);
-  console.log('OK knowledge/' + a.slug + '.html');
-});
+function membership(taxonomy) {
+  const owner = {};
+  (taxonomy.clusters || []).forEach(function (cluster) {
+    const members = [];
+    if (cluster.pillar_slug) members.push(cluster.pillar_slug);
+    (cluster.spokes || []).forEach(function (slug) { members.push(slug); });
+    members.forEach(function (slug) {
+      if (!owner[slug]) owner[slug] = [];
+      owner[slug].push(cluster.id);
+    });
+  });
+  return owner;
+}
 
-// ── Knowledge index (root) grouped by category ──
-function catCards(cat) {
-  return cards.filter(function (a) { return a.topic === cat; }).map(function (a) {
-    return '<a class="card kcard" href="knowledge/' + a.slug + '.html"><span class="topic" style="color:var(--accent);font-size:.72rem;text-transform:uppercase">' + esc(a.topic) + '</span><h3>' + esc(a.title) + '</h3><span style="font-size:.8rem;color:var(--muted)">' + esc(a.level) + ' · ' + a.minutes + ' min read · ' + esc(a.question) + '</span></a>';
+function hubCard(a, grade, lifecycle, label, role) {
+  const search = [a.title, a.question, a.topic, a.slug, a.level, lifecycle, label].join(' ').toLowerCase();
+  const roleHtml = role === 'pillar' ? '<span class="kh-role">Pillar</span>' : '';
+  return '<a class="card kcard" href="knowledge/' + a.slug + '.html" data-topic="' + esc(a.topic) + '" data-level="' + esc(a.level) + '" data-lifecycle="' + esc(lifecycle) + '" data-search="' + esc(search) + '">' +
+    roleHtml +
+    '<span class="topic" style="color:var(--accent);font-size:.72rem;text-transform:uppercase">' + esc(a.topic) + '</span>' +
+    '<h3>' + esc(a.title) + '</h3>' +
+    '<span class="kh-meta">' + esc(a.level) + ' · ' + a.minutes + ' min · <span class="kh-grade kh-grade-' + esc(grade) + '">' + esc(grade) + '</span></span>' +
+    '<span class="kh-life">' + esc(label) + '</span>' +
+    '</a>';
+}
+
+function hubClientScript() {
+  return '<script>\n' +
+    '(function () {\n' +
+    '  var form = document.getElementById("kh-filters");\n' +
+    '  if (!form) return;\n' +
+    '  var cards = Array.prototype.slice.call(document.querySelectorAll("a.kcard"));\n' +
+    '  var clusters = Array.prototype.slice.call(document.querySelectorAll("[data-kh-cluster]"));\n' +
+    '  var countEl = document.getElementById("kh-count");\n' +
+    '  var groups = [];\n' +
+    '  function flatten(node, out) {\n' +
+    '    if (typeof node === "string") out.push(node.toLowerCase());\n' +
+    '    else if (Array.isArray(node)) node.forEach(function (n) { flatten(n, out); });\n' +
+    '    else if (node && typeof node === "object") Object.keys(node).forEach(function (k) { flatten(node[k], out); });\n' +
+    '  }\n' +
+    '  function needlesFor(token) {\n' +
+    '    var set = [token];\n' +
+    '    groups.forEach(function (terms) {\n' +
+    '      var hit = terms.some(function (term) {\n' +
+    '        if (!term || term.length < 2) return false;\n' +
+    '        if (term === token) return true;\n' +
+    '        if (token.length >= 3 && term.length >= 3 && (term.indexOf(token) !== -1 || token.indexOf(term) !== -1)) return true;\n' +
+    '        return false;\n' +
+    '      });\n' +
+    '      if (hit) terms.forEach(function (term) { if (term && term.length >= 3) set.push(term); });\n' +
+    '    });\n' +
+    '    return set;\n' +
+    '  }\n' +
+    '  function matchesQuery(text, query) {\n' +
+    '    var tokens = query.toLowerCase().trim().split(/\\s+/).filter(Boolean);\n' +
+    '    if (!tokens.length) return true;\n' +
+    '    return tokens.every(function (tok) {\n' +
+    '      return needlesFor(tok).some(function (n) { return n.length >= 2 && text.indexOf(n) !== -1; });\n' +
+    '    });\n' +
+    '  }\n' +
+    '  function apply() {\n' +
+    '    var topic = form.topic.value;\n' +
+    '    var level = form.level.value;\n' +
+    '    var life = form.lifecycle.value;\n' +
+    '    var query = form.q.value || "";\n' +
+    '    var shown = 0;\n' +
+    '    cards.forEach(function (card) {\n' +
+    '      var ok = (!topic || card.getAttribute("data-topic") === topic) &&\n' +
+    '        (!level || card.getAttribute("data-level") === level) &&\n' +
+    '        (!life || card.getAttribute("data-lifecycle") === life) &&\n' +
+    '        matchesQuery(card.getAttribute("data-search") || "", query);\n' +
+    '      card.classList.toggle("is-hidden", !ok);\n' +
+    '      if (ok) shown++;\n' +
+    '    });\n' +
+    '    clusters.forEach(function (sec) {\n' +
+    '      sec.hidden = !sec.querySelector("a.kcard:not(.is-hidden)");\n' +
+    '    });\n' +
+    '    if (countEl) countEl.textContent = "Showing " + shown + " of " + cards.length + " articles";\n' +
+    '  }\n' +
+    '  form.addEventListener("submit", function (ev) { ev.preventDefault(); apply(); });\n' +
+    '  form.addEventListener("input", apply);\n' +
+    '  form.addEventListener("change", apply);\n' +
+    '  fetch("/data/search-synonyms.json").then(function (r) { return r.json(); }).then(function (data) {\n' +
+    '    groups = (data.categories || []).map(function (cat) {\n' +
+    '      var terms = [];\n' +
+    '      flatten(cat.primary_keyword, terms);\n' +
+    '      flatten(cat.synonyms, terms);\n' +
+    '      flatten(cat.abbreviations, terms);\n' +
+    '      flatten(cat.technical_terms, terms);\n' +
+    '      flatten(cat.local_language_terms, terms);\n' +
+    '      return terms;\n' +
+    '    });\n' +
+    '    apply();\n' +
+    '  }).catch(function () {});\n' +
+    '  apply();\n' +
+    '})();\n' +
+    '</script>\n';
+}
+
+function build() {
+  const taxonomy = JSON.parse(fs.readFileSync('data/knowledge-taxonomy.json', 'utf8'));
+  const labels = taxonomy.lifecycle_labels || {};
+  const bySlug = {};
+  ARTICLES.forEach(function (a) { bySlug[a.slug] = a; });
+  const owner = membership(taxonomy);
+  const missing = ARTICLES.filter(function (a) { return !owner[a.slug] || owner[a.slug].length !== 1 || !taxonomy.lifecycle || !taxonomy.lifecycle[a.slug]; });
+  if (missing.length) {
+    console.error('build-knowledge: taxonomy does not place every article in exactly one cluster with a lifecycle');
+    missing.forEach(function (a) { console.error('  ' + a.slug); });
+    process.exit(1);
+  }
+
+  fs.mkdirSync('knowledge', { recursive: true });
+  const keep = {};
+  const grades = {};
+  ARTICLES.forEach(function (a) {
+    const html = articlePage(a);
+    fs.writeFileSync('knowledge/' + a.slug + '.html', html);
+    grades[a.slug] = scoreHtml(html).grade;
+    keep[a.slug + '.html'] = 1;
+    console.log('OK knowledge/' + a.slug + '.html');
+  });
+  fs.readdirSync('knowledge').forEach(function (name) {
+    if (name.endsWith('.html') && !keep[name]) {
+      fs.unlinkSync('knowledge/' + name);
+      console.log('removed knowledge/' + name);
+    }
+  });
+
+  const topics = CATS.filter(function (c) { return ARTICLES.some(function (a) { return a.topic === c; }); });
+  const levels = [];
+  ARTICLES.forEach(function (a) { if (levels.indexOf(a.level) < 0) levels.push(a.level); });
+  const lives = taxonomy.lifecycle_values || [];
+  function options(values, labelOf) {
+    return '<option value="">All</option>' + values.map(function (v) {
+      return '<option value="' + esc(v) + '">' + esc(labelOf ? labelOf(v) : v) + '</option>';
+    }).join('');
+  }
+
+  const listItems = [];
+  let position = 0;
+  const clusterHtml = taxonomy.clusters.map(function (cluster, index) {
+    const ordered = [];
+    if (cluster.pillar_slug) ordered.push(cluster.pillar_slug);
+    (cluster.spokes || []).forEach(function (slug) { ordered.push(slug); });
+    const cards = ordered.map(function (slug) {
+      const a = bySlug[slug];
+      const life = taxonomy.lifecycle[slug];
+      const role = slug === cluster.pillar_slug ? 'pillar' : 'spoke';
+      position += 1;
+      listItems.push({ '@type': 'ListItem', position: position, name: a.title, url: 'https://transformerpath.com/knowledge/' + a.slug + '.html' });
+      return hubCard(a, grades[slug], life, labels[life] || life, role);
+    }).join('');
+    return '<section class="kh-cluster" id="cluster-' + esc(cluster.id) + '" data-kh-cluster="' + esc(cluster.id) + '">' +
+      '<h2>' + (index + 1) + '. ' + esc(cluster.title) + '</h2>' +
+      '<div class="grid kh-grid">' + cards + '</div></section>';
   }).join('');
+
+  const breadcrumb = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://transformerpath.com/' },
+      { '@type': 'ListItem', position: 2, name: 'Knowledge', item: 'https://transformerpath.com/knowledge.html' }
+    ]
+  };
+  const itemList = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Transformer knowledge articles',
+    numberOfItems: listItems.length,
+    itemListElement: listItems
+  };
+  const schema = '<script type="application/ld+json">' + JSON.stringify(breadcrumb) + '</script><script type="application/ld+json">' + JSON.stringify(itemList) + '</script>';
+  const hubStyle = '<style>' +
+    '.kh-filters{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 8px;align-items:flex-end}' +
+    '.kh-filters label{display:flex;flex-direction:column;gap:4px;font-size:.75rem;color:var(--muted)}' +
+    '.kh-filters select,.kh-filters input{background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:8px 10px;font:inherit;min-width:150px}' +
+    '.kh-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}' +
+    '.kcard{display:flex;flex-direction:column;gap:6px;padding:16px}' +
+    '.kcard.is-hidden{display:none}' +
+    '.kh-meta,.kh-life{font-size:.8rem;color:var(--muted)}' +
+    '.kh-role{font-size:.72rem;font-weight:700;color:var(--accent);text-transform:uppercase}' +
+    '.kh-grade{font-weight:700}' +
+    '.kh-grade-DEEP{color:var(--green)}' +
+    '.kh-grade-OK{color:var(--accent)}' +
+    '.kh-cluster h2{font-size:1.2rem;color:var(--ink);margin:22px 0 8px}' +
+    '#kh-count{font-size:.85rem;color:var(--muted);margin:8px 0 0}' +
+    '</style>';
+
+  const idx = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
+    '<title>Transformer Knowledge — Technical Answers | TransformerPath</title>' +
+    '<meta name="description" content="Clear, source-referenced answers to transformer engineering questions — design, manufacturing, testing, diagnostics, insulation, components and applications.">' +
+    '<link rel="canonical" href="https://transformerpath.com/knowledge.html">' +
+    '<link rel="stylesheet" href="style.css?v=' + ASSETS.css + '">' +
+    '<link rel="icon" type="image/svg+xml" href="brand/favicon.svg">' +
+    '<link rel="stylesheet" href="tp-nav.css?v=' + ASSETS.css + '">' +
+    hubStyle + schema +
+    '</head><body>' +
+    HEAD +
+    '\n<section class="hero" style="padding:48px 0 26px"><div class="container" style="max-width:960px"><h1 style="font-size:2rem">Transformers, explained</h1><p style="color:var(--muted);max-width:720px">Best answers to transformer-engineering questions — written neutrally, referenced to standards, and linked to the tools, components, manufacturers and book chapters that go deeper.</p></div></section>' +
+    '<main id="main" class="container" style="max-width:960px;padding:0 0 60px">' +
+    '<form id="kh-filters" action="knowledge.html" method="get">' +
+    '<label for="kh-topic">Topic<select id="kh-topic" name="topic">' + options(topics) + '</select></label>' +
+    '<label for="kh-level">Level<select id="kh-level" name="level">' + options(levels) + '</select></label>' +
+    '<label for="kh-life">Lifecycle<select id="kh-life" name="lifecycle">' + options(lives, function (v) { return labels[v] || v; }) + '</select></label>' +
+    '<label for="kh-q">Search<input id="kh-q" name="q" type="search" placeholder="Search articles" autocomplete="off"></label>' +
+    '</form>' +
+    '<p id="kh-count">' + ARTICLES.length + ' articles</p>' +
+    '<noscript><p style="font-size:.85rem;color:var(--muted)">Filters and search run in the browser. Every article stays linked below.</p></noscript>' +
+    clusterHtml +
+    '<p style="font-size:.8rem;color:var(--muted);margin-top:30px">Technical content is prepared from engineering references, standards frameworks, manufacturer documentation and industry sources. Contractual or compliance decisions should refer to current official standards. <b>TransformerPath Technical Editorial.</b></p>' +
+    '</main>' + FOOT + '\n' +
+    hubClientScript() +
+    '<script src="analytics.js?v=' + ASSETS.js + '" defer></script>\n</body>\n</html>';
+  fs.writeFileSync('knowledge.html', idx);
+  console.log('OK knowledge.html index |', ARTICLES.length, 'articles');
 }
-const grouped = CATS.filter(function (c) { return cards.some(function (a) { return a.topic === c; }); });
-const idx = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
-  '<title>Transformer Knowledge — Technical Answers | TransformerPath</title>' +
-  '<meta name="description" content="Clear, source-referenced answers to transformer engineering questions — design, manufacturing, testing, diagnostics, insulation, components and applications.">' +
-  '<link rel="canonical" href="https://transformerpath.com/knowledge.html"><link rel="stylesheet" href="style.css?v=5"><link rel="icon" type="image/svg+xml" href="brand/favicon.svg"></head><body>' +
-  HEAD + '\n<section class="hero" style="padding:48px 0 26px"><div class="container" style="max-width:960px"><h1 style="font-size:2rem">Transformers, explained</h1><p style="color:var(--muted);max-width:720px">Best answers to transformer-engineering questions — written neutrally, referenced to standards, and linked to the tools, components, manufacturers and book chapters that go deeper.</p></div></section>' +
-  '<main class="container" style="max-width:960px;padding:0 0 60px">' +
-  grouped.map(function (c) { return '<h2 style="font-size:1.2rem;color:var(--ink);margin:22px 0 8px">' + esc(c) + '</h2><div class="grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px">' + catCards(c) + '</div>'; }).join('') +
-  '<p style="font-size:.8rem;color:var(--muted);margin-top:30px">Technical content is prepared from engineering references, standards frameworks, manufacturer documentation and industry sources. Contractual or compliance decisions should refer to current official standards. <b>TransformerPath Technical Editorial.</b></p>' +
-  '</main>' + FOOT + '\n<script src="analytics.js?v=2" defer></script>\n</body>\n</html>';
-fs.writeFileSync('knowledge.html', idx);
-console.log('OK knowledge.html index |', cards.length, 'articles');
+
+if (require.main === module) build();
+module.exports = { ARTICLES: ARTICLES, CATS: CATS, build: build };

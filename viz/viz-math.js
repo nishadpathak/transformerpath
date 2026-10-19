@@ -241,7 +241,10 @@ function thermalEngine(input) {
   };
 }
 
-module.exports = { vecGroup, parallelCheck, inrush, shortCircuitForces, forceTendencies, calcStatus, thermalEngine };
+var TP_VIZ_MATH_API = { vecGroup: vecGroup, parallelCheck: parallelCheck, inrush: inrush, shortCircuitForces: shortCircuitForces, forceTendencies: forceTendencies, calcStatus: calcStatus, thermalEngine: thermalEngine };
 
-// Also expose for the browser (loaded as a script) -> window.TP_VIZ_MATH
-if (typeof window !== 'undefined') { window.TP_VIZ_MATH = { vecGroup: vecGroup, parallelCheck: parallelCheck, inrush: inrush, shortCircuitForces: shortCircuitForces, forceTendencies: forceTendencies, calcStatus: calcStatus, thermalEngine: thermalEngine }; }
+/* Browser pages load this file with a plain script tag. An unguarded
+   module.exports throws "module is not defined" and skips the window
+   assignment below, so every lab that reads TP_VIZ_MATH stays blank. */
+if (typeof module !== 'undefined' && module.exports) module.exports = TP_VIZ_MATH_API;
+if (typeof window !== 'undefined') window.TP_VIZ_MATH = TP_VIZ_MATH_API;

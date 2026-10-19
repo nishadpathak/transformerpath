@@ -17,6 +17,7 @@
 const fs = require('fs');
 const path = require('path');
 const { lookup, parseSourceName } = require('./lib/intel-source-normalizer');
+const { closedReason, itemIsActive } = require('./lib/intel-activity');
 const { H2_PROJECTS_ACTIVE, H2_HISTORICAL_REFERENCE } = require('./build-intel-audit');
 
 const TODAY_STR = new Date().toISOString().slice(0, 10);
@@ -224,16 +225,17 @@ function fromCurated(it, desk, regionKey, regionLabel, defaultCls) {
   }
   const cls = it.cls || defaultCls || 'INFERRED';
   const ageTier = classifyAgeTier(dated.dateObj);
-  const isActive = it.is_active || /under construction|active|commissioning|tender|tenders|pipeline|awarded|wins|contract|approved|rfq/i.test(it.title + ' ' + (it.snippet || ''));
+  const closed = closedReason(it, TODAY_STR);
+  const isActive = itemIsActive(it, TODAY_STR);
 
-  pushPost({
+  const post = {
     id: slugId(desk, it.title, it.url),
     desk: desk,
     region: mapRegion(regionKey, regionLabel),
     cls: cls,
     ageTier: ageTier,
     isActive: Boolean(isActive),
-    currentRelevance: it.current_relevance || (ageTier === 'FRESH' || ageTier === 'RECENT' ? 'Current sourced intelligence' : (isActive ? 'Active project development / multi-year grid framework' : '')),
+    currentRelevance: closed || it.current_relevance || (ageTier === 'FRESH' || ageTier === 'RECENT' ? 'Current sourced intelligence' : (isActive ? 'Active project development / multi-year grid framework' : '')),
     headline: it.title,
     soWhat: soWhat(it.snippet, it.title),
     value: it.value || '',
@@ -248,7 +250,10 @@ function fromCurated(it, desk, regionKey, regionLabel, defaultCls) {
     provenance: provenanceOf(it, registry, 'CURATED'),
     buyer: it.buyer || '',
     lang: it.lang || ''
-  });
+  };
+  if (it.evidence_grade) post.evidenceGrade = it.evidence_grade;
+  if (it.evidence_note) post.evidenceNote = it.evidence_note;
+  pushPost(post);
 }
 
 // 1. Regional & Grid Curated Items
@@ -519,16 +524,24 @@ posts.sort(function (a, b) {
   return String(a.headline).localeCompare(String(b.headline));
 });
 
-const dated = posts.filter(function (p) { return p.datePrecision === 'day' && p.dateIso; });
-const latestIso = dated.length ? dated[0].dateIso : '2026-09-14';
-const latestLabel = dated.length ? dated[0].date : '14 Sep 2026';
+let latestIso = null;
+let latestLabel = null;
+const todayIso = new Date().toISOString().slice(0, 10);
+posts.forEach(function (p) {
+  if (!p || p.datePrecision !== 'day' || !/^\d{4}-\d{2}-\d{2}$/.test(String(p.dateIso || ''))) return;
+  if (p.dateIso > todayIso) return;
+  if (!latestIso || p.dateIso > latestIso) {
+    latestIso = p.dateIso;
+    latestLabel = p.date || null;
+  }
+});
 
 const out = {
   generated: new Date().toISOString(),
   poster: { handle: 'TransformerPath', role: 'official', note: 'TransformerPath is the only poster. Not open UGC.' },
   honesty: {
     note: 'Item dates are source dates, never the page-build clock. Relative "2m ago" / "Live now" are not used.',
-    latest_source_date: latestLabel || '14 Sep 2026',
+    latest_source_date: latestLabel,
     latest_source_iso: latestIso,
     build_is_not_an_edition: true
   },
@@ -568,9 +581,16 @@ function ageBadgeHtml(ageTier, isActive) {
   return '<span class="age-badge age-ref" style="background:rgba(159,176,196,.15);color:#9fb0c4;border:1px solid rgba(159,176,196,.35);font-size:.65rem;font-weight:800;padding:2px 7px;border-radius:4px;letter-spacing:.5px">REFERENCE</span>';
 }
 
+const { intelBadge } = require('./lib/provenance-badge');
 function ssrCard(p) {
   const cls = p.cls ? '<span class="cls-badge cls-' + esc(p.cls) + '">' + esc(p.cls) + '</span>' : '';
-  const prov = p.provenance ? '<span class="intel-prov intel-prov-' + esc(p.provenance) + '">' + esc(p.provenance) + '</span>' : '';
+  const evidence = (p.evidenceGrade && p.evidenceGrade !== 'CONFIRMED' && p.evidenceGrade !== p.cls)
+    ? '<span class="cls-badge cls-' + esc(p.evidenceGrade) + '" title="Supported evidence — not yet fully verified. No live portal adapter has confirmed this item.">' + esc(p.evidenceGrade) + '</span>'
+    : '';
+  const evidenceNote = p.evidenceNote
+    ? '<p class="intel-evidence-note" style="font-size:.76rem;color:#f0c14a;margin:6px 0 0">' + esc(p.evidenceNote) + '</p>'
+    : '';
+  const prov = intelBadge(p);
   const age = ageBadgeHtml(p.ageTier, p.isActive);
   const date = p.date ? esc(p.date) : 'Date not stated';
   const href = p.url || ('intel.html#p-' + p.id);
@@ -580,11 +600,12 @@ function ssrCard(p) {
     '<div class="intel-avatar" aria-hidden="true">TP</div>' +
     '<div class="intel-body">' +
     '<div class="intel-byline"><strong>TransformerPath</strong><span class="intel-handle">@intel</span>' +
-    '<span class="intel-date" title="Source date, not page-build time">' + date + '</span>' + age + '</div>' +
+    '<span class="intel-date" title="Source date, not page-build time">' + date + '</span> ' + age + '</div>' +
     '<h3 class="intel-headline"><a href="' + esc(href) + '" target="_blank" rel="noopener">' + esc(p.headline) + '</a></h3>' +
     (p.soWhat ? '<p class="intel-sowhat">' + esc(p.soWhat) + '</p>' : '') +
+    evidenceNote +
     relevance +
-    '<div class="intel-meta">' + cls + prov +
+    '<div class="intel-meta">' + [cls, evidence, prov].filter(Boolean).join(' ') +
     '<span class="intel-region">' + esc(p.region) + '</span>' +
     (p.value ? '<span class="val">' + esc(p.value) + '</span>' : '') +
     '<span class="src">' + esc(p.sourceName || p.src) + '</span></div>' +
@@ -609,10 +630,15 @@ const latest = posts.filter(function (p) {
 }).slice(0, 14);
 
 let page = fs.readFileSync('intel.html', 'utf8');
-if (page.indexOf('<!--SSR:intel-feed-->') >= 0) {
-  page = injectMarker(page, 'intel-feed', latest.map(ssrCard).join(''));
+if (page.indexOf('<!--SSR:intel-feed-->') >= 0 || page.indexOf('<!--SSR:intel-timeline-->') >= 0) {
+  const cards = latest.map(ssrCard).join('');
+  // Both markers sit inside #intel-timeline. Writing the same cards into each
+  // one printed every post twice and reused every article id.
   if (page.indexOf('<!--SSR:intel-timeline-->') >= 0) {
-    page = injectMarker(page, 'intel-timeline', latest.map(ssrCard).join(''));
+    page = injectMarker(page, 'intel-timeline', cards);
+    if (page.indexOf('<!--SSR:intel-feed-->') >= 0) page = injectMarker(page, 'intel-feed', '');
+  } else {
+    page = injectMarker(page, 'intel-feed', cards);
   }
   const newsNote = '<p class="intel-legacy-note">Comprehensive regional market intelligence across GCC, India, Europe, Americas, and Rest of World.</p>';
   if (page.indexOf('<!--SSR:panel-news-->') >= 0) {
@@ -621,3 +647,51 @@ if (page.indexOf('<!--SSR:intel-feed-->') >= 0) {
   fs.writeFileSync('intel.html', page);
   console.log('intel.html: SSR updated with ' + latest.length + ' fresh & recent timeline posts');
 }
+
+// Homepage "At a Glance" is the same feed, not a hand-written blurb.
+// The first day-dated post is the newest item; the row must include it.
+function injectGlance(page, name, inner) {
+  const startM = '<!--GLANCE:' + name + '-->';
+  const endM = '<!--/GLANCE:' + name + '-->';
+  const cm = page.indexOf(startM);
+  const em = cm < 0 ? -1 : page.indexOf(endM, cm + startM.length);
+  if (cm < 0 || em < 0) {
+    console.error('index.html missing glance marker ' + name);
+    process.exit(1);
+  }
+  return page.slice(0, cm + startM.length) + '\n' + inner + '\n' + page.slice(em);
+}
+
+function glanceSoWhat(p) {
+  const s = String(p.soWhat || '').trim();
+  // Abbreviation splits ("No. 6") can leave a fragment. Keep a real sentence.
+  if (!s || /^[0-9a-z]/.test(s)) return '';
+  return s;
+}
+
+function glanceCard(p) {
+  const meta = [p.date || 'Date not stated'];
+  if (p.value) meta.push(p.value);
+  const sowhat = glanceSoWhat(p);
+  return '<a class="card reveal in" data-glance-date="' + esc(p.dateIso) + '" data-glance-headline="' + esc(p.headline) + '" href="/intel.html#p-' + esc(p.id) + '">' +
+    '<span class="g-region">' + esc(p.region || '') + '</span>' +
+    '<h3 style="font-size:1rem">' + esc(p.headline) + '</h3>' +
+    (sowhat ? '<p>' + esc(sowhat) + '</p>' : '') +
+    '<p class="g-val" style="margin-top:8px">' + esc(meta.join(' · ')) + '</p></a>';
+}
+
+const glanceToday = new Date().toISOString().slice(0, 10);
+const glancePosts = posts.filter(function (p) {
+  return p && p.headline && p.datePrecision === 'day' && /^\d{4}-\d{2}-\d{2}$/.test(String(p.dateIso || '')) && p.dateIso <= glanceToday;
+});
+const glancePick = glancePosts.slice(0, 3);
+if (!latestIso || !glancePick.length || glancePick[0].dateIso !== latestIso) {
+  console.error('At a Glance would lag the newest Intel feed item (' + (latestLabel || latestIso || 'none') + ')');
+  process.exit(1);
+}
+let home = fs.readFileSync('index.html', 'utf8');
+const glanceSub = 'Latest sourced item <b>' + esc(latestLabel) + '</b>. Dates are on the source, not this visit.';
+home = injectGlance(home, 'sub', glanceSub);
+home = injectGlance(home, 'cards', glancePick.map(glanceCard).join('\n'));
+fs.writeFileSync('index.html', home);
+console.log('index.html: At a Glance stamped from the feed · ' + latestLabel + ' · ' + glancePick.length + ' headlines');

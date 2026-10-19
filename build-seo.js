@@ -22,6 +22,18 @@ function extractConst(src, name) {
 }
 const esc = (s) => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
+/* Meta descriptions stay a complete sentence and always name the RFQ status. */
+function hubMeta(lead) {
+  const note = 'RFQ routing is coming soon.';
+  let base = String(lead || '').replace(/\s*RFQ routing is coming soon\.?/gi, ' ').replace(/\s+/g, ' ').trim();
+  const limit = 160 - note.length - 1;
+  if (base.length > limit) {
+    base = base.slice(0, limit).replace(/\s+\S*$/, '').replace(/[.,;:\s]+$/, '');
+  }
+  if (base && !/[.!?]$/.test(base)) base += '.';
+  return (base ? base + ' ' : '') + note;
+}
+
 
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
@@ -69,7 +81,7 @@ const META = {
 function page(cat) {
   const meta = META[cat];
   const items = COMPONENTS[cat].map(([n, d]) => `<div class="card"><h3 style="color:var(--ink);margin:0 0 6px">${esc(n)}</h3><p style="color:var(--muted);font-size:.92rem">${esc(d)}</p><p style="margin-top:10px;font-size:.83rem"><a href="../manufacturers.html" style="color:var(--accent);font-weight:700">Find suppliers →</a> · <a href="../rfq.html" style="color:var(--accent);font-weight:700">Request quotes →</a></p></div>`).join('');
-  const suppliers = `<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:16px 18px;text-align:center"><b style="color:var(--text);font-size:.98rem">Request ${esc(meta.t)}?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Post an RFQ to reach relevant manufacturers and suppliers.</p><a class="btn btn-amber" href="../rfq.html" data-track="rfq_started" data-track-component_category="${esc(meta.t)}">Request an RFQ</a> <a class="btn btn-outline btn-sm" href="../list-company.html" data-track="supplier_claim_started" data-track-component_category="${esc(meta.t)}">Supply this? Claim your company →</a></div>`;
+  const suppliers = `<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:16px 18px;text-align:center"><b style="color:var(--text);font-size:.98rem">Request ${esc(meta.t)}?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Post an RFQ. RFQ routing is coming soon.</p><a class="btn btn-amber" href="../rfq.html" data-track="rfq_started" data-track-component_category="${esc(meta.t)}">Request an RFQ</a> <a class="btn btn-outline btn-sm" href="../list-company.html" data-track="supplier_claim_started" data-track-component_category="${esc(meta.t)}">Supply this? Claim your company →</a></div>`;
   const faq = meta.faq || [];
   const faqSchema = `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map(function (f) { return { '@type': 'Question', name: f[0], acceptedAnswer: { '@type': 'Answer', text: f[1] } }; }) })}</script>`;
   const faqHtml = faq.length ? `<h2 style="font-size:1.2rem;color:var(--ink);margin-top:26px">Frequently asked</h2>` + faq.map(function (f) { return `<div style="margin:12px 0"><b style="color:var(--ink)">${esc(f[0])}</b><p style="color:var(--text);margin:4px 0 0;line-height:1.7">${esc(f[1])}</p></div>`; }).join('') : '';
@@ -118,18 +130,29 @@ ${FOOT}
 }
 
 fs.mkdirSync('components', { recursive: true });
+const { componentHasHub } = require('./lib/component-href');
 const indexLinks = [];
 for (const cat of Object.keys(COMPONENTS)) {
   const meta = META[cat];
-  fs.writeFileSync('components/' + meta.slug + '.html', page(cat));
+  const thin = 'components/' + meta.slug + '.html';
+  if (componentHasHub(meta.slug)) {
+    if (fs.existsSync(thin)) fs.unlinkSync(thin);
+    console.log('hub owns /components/' + meta.slug + '/ — not writing ' + thin);
+    continue;
+  }
+  fs.writeFileSync(thin, page(cat));
   indexLinks.push(`<a href="components/${meta.slug}.html">${meta.t}</a>`);
-  console.log('OK components/' + meta.slug + '.html');
+  console.log('OK ' + thin);
 }
 console.log('generated', indexLinks.length, 'component pages');
 
 /* ── Per-country manufacturer pages (/manufacturers/<country>) ─────────────── */
 function slugify(n){ return String(n).normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim().replace(/&/g,'and').replace(/['’´]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,''); }
+const { resolveCompanyAlias } = require('./lib/company-aliases');
+const comtrade = require('./lib/comtrade-hs8504');
 const MGF = JSON.parse(fs.readFileSync('data/manufacturers.json', 'utf8'));
+const paidListings = require('./lib/paid-listings');
+const claimListing = require('./lib/claim-listing');
 var CSMAP={}; try{ JSON.parse(fs.readFileSync('data/company-slugs.json','utf8')).forEach(function(c){ CSMAP[c.name.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()] = c.slug; }); }catch(e){}
 
 const vbadge2 = (m) => { const f = m.length > 4 ? m[4] : null; if (f === 'P') return ' <span class="v-badge pro">★ Supplier Pro</span>'; if (f === 'V') return ' <span class="v-badge">✓ Verified</span>'; return ''; };
@@ -142,13 +165,14 @@ for (const c of MGF) {
   const real = c.makers.filter((m) => !/^Served by/i.test(m[0]).valueOf() && !/^Served by/i.test(m[0]));
   const rows = c.makers.map((m) => {
     if (/^Served by/i.test(m[0])) return '<div class="mk-row"><span class="note">' + esc(m[0]) + '</span></div>';
-    const cslug = CSMAP[String(m[0]).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()];
+    const alias = resolveCompanyAlias(m[0]);
+    const cslug = alias.aliased ? alias.slug : CSMAP[String(m[0]).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()];
     const nameHtml = cslug
       ? '<a href="/manufacturers/' + cslug + '/" style="color:var(--accent);font-weight:700">' + esc(m[0]) + '</a>'
       : '<b>' + esc(m[0]) + '</b>';
-    return '<div class="mk-row">' + nameHtml + vbadge2(m) + tpills2(m[3]) + '<span class="city">' + esc(m[1] || '') + (m[5] ? ' · est. ' + esc(m[5]) : '') + '</span>' + (m[2] ? '<a href="' + esc(m[2]) + '" target="_blank" rel="noopener" class="prof">Site</a>' : '') + '</div>';
+    return '<div class="mk-row">' + nameHtml + vbadge2(m) + tpills2(m[3]) + '<span class="city">' + esc(m[1] || '') + (m[5] ? ' · est. ' + esc(m[5]) : '') + '</span>' + (m[2] ? '<a href="' + esc(m[2]) + '" target="_blank" rel="noopener" class="prof">Site</a>' : '') + (cslug ? ' ' + claimListing.linkHtml(cslug) : '') + '</div>';
   }).join('');
-  const html = '<!DOCTYPE html>\n<html lang="en" data-theme="dark">\n<head>\n<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">\n<title>' + esc(c.country) + ' Transformer Manufacturers | TransformerPath</title>\n<meta name="description" content="Power, distribution and dry-type transformer manufacturers and suppliers in ' + esc(c.country) + '. Reserve, compare and request quotes.">\n<link rel="canonical" href="https://transformerpath.com/manufacturers/' + slug + '.html">\n<meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath"><meta property="og:title" content="' + esc(c.country) + ' Transformer Manufacturers"><meta property="og:url" content="https://transformerpath.com/manufacturers/' + slug + '.html"><meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow">\n<link rel="stylesheet" href="../style.css?v=13"><link rel="stylesheet" href="../tp-nav.css?v=13"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin><link rel="preconnect" href="https://www.google-analytics.com"><link rel="icon" type="image/svg+xml" href="../brand/favicon.svg"><link rel="icon" href="../brand/favicon.ico" sizes="any"><link rel="apple-touch-icon" href="../brand/apple-touch-icon.png">\n<style>.c-wrap{max-width:900px;margin:0 auto;padding:44px 20px 80px}.c-wrap h1{font-size:1.9rem;color:var(--ink);overflow-wrap:anywhere}.c-wrap .lead{color:var(--muted);font-size:1rem}.c-wrap .mk-row{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid var(--border);font-size:.95rem}.c-wrap .mk-row b{color:var(--ink)}.c-wrap .mk-row .city{color:var(--muted);font-size:.85rem}.c-wrap .mk-row .prof{color:var(--accent);font-size:.8rem;font-weight:600;margin-left:auto}.c-wrap .tpill{display:inline-block;background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:1px 8px;font-size:.7rem;color:var(--text);margin-left:4px}.c-wrap .v-badge{color:var(--green);font-size:.7rem;font-weight:700}</style>\n</head>\n<body>\n' + HEAD + '\n<main id="main" tabindex="-1" class="c-wrap">\n<nav style="font-size:.8rem;color:var(--muted);margin-bottom:10px"><a href="../manufacturers.html" style="color:var(--accent)">Manufacturers</a> \u203a ' + esc(c.country) + '</nav>\n<h1>' + esc(c.flag) + ' Transformer Manufacturers in ' + esc(c.country) + '</h1>\n<p class="lead">' + real.length + ' manufacturer' + (real.length !== 1 ? 's' : '') + ' listed in ' + esc(c.country) + ' (' + esc(c.region) + '). Power, distribution and dry-type transformer suppliers.</p>\n<div>' + rows + '</div>\n<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:16px"><b style="color:var(--text)">Looking for a transformer supplier?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Submit a requirement and TransformerPath can match it against relevant manufacturers.</p><a class="btn btn-amber" href="../rfq.html" data-track="rfq_started" data-track-country="'+esc(c.country)+'">Submit an RFQ</a> <a class="btn btn-outline btn-sm" href="../list-company.html" data-track="supplier_claim_started" data-track-country="'+esc(c.country)+'">Listed here? Claim your company →</a></div>\n</main>\n' + FOOT + '\n<script src="../analytics.js?v=2" defer></script>\n</body>\n</html>';
+  const html = '<!DOCTYPE html>\n<html lang="en" data-theme="dark">\n<head>\n<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">\n<title>' + esc(c.country) + ' Transformer Manufacturers | TransformerPath</title>\n<meta name="description" content="Power, distribution and dry-type transformer manufacturers and suppliers in ' + esc(c.country) + '. Reserve, compare and request quotes.">\n<link rel="canonical" href="https://transformerpath.com/manufacturers/' + slug + '.html">\n<meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath"><meta property="og:title" content="' + esc(c.country) + ' Transformer Manufacturers"><meta property="og:url" content="https://transformerpath.com/manufacturers/' + slug + '.html"><meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow">\n<link rel="stylesheet" href="../style.css?v=13"><link rel="stylesheet" href="../tp-nav.css?v=13"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin><link rel="preconnect" href="https://www.google-analytics.com"><link rel="icon" type="image/svg+xml" href="../brand/favicon.svg"><link rel="icon" href="../brand/favicon.ico" sizes="any"><link rel="apple-touch-icon" href="../brand/apple-touch-icon.png">\n<style>.c-wrap{max-width:900px;margin:0 auto;padding:44px 20px 80px}.c-wrap h1{font-size:1.9rem;color:var(--ink);overflow-wrap:anywhere}.c-wrap .lead{color:var(--muted);font-size:1rem}.c-wrap .mk-row{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid var(--border);font-size:.95rem}.c-wrap .mk-row b{color:var(--ink)}.c-wrap .mk-row .city{color:var(--muted);font-size:.85rem}.c-wrap .mk-row .prof{color:var(--accent);font-size:.8rem;font-weight:600;margin-left:auto}.c-wrap .tpill{display:inline-block;background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:1px 8px;font-size:.7rem;color:var(--text);margin-left:4px}.c-wrap .v-badge{color:var(--green);font-size:.7rem;font-weight:700}</style>\n</head>\n<body>\n' + HEAD + '\n<main id="main" tabindex="-1" class="c-wrap">\n<nav style="font-size:.8rem;color:var(--muted);margin-bottom:10px"><a href="../manufacturers.html" style="color:var(--accent)">Manufacturers</a> \u203a ' + esc(c.country) + '</nav>\n<h1>' + esc(c.flag) + ' Transformer Manufacturers in ' + esc(c.country) + '</h1>\n<p class="lead">' + real.length + ' manufacturer' + (real.length !== 1 ? 's' : '') + ' listed in ' + esc(c.country) + ' (' + esc(c.region) + '). Power, distribution and dry-type transformer suppliers.</p>\n' + comtrade.sectionHtml(c.country) + '\n<div>' + rows + '</div>\n' + paidListings.featuredListingSlotHtml({ scope: 'country', country: c.country }) + '\n<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:16px"><b style="color:var(--text)">Looking for a transformer supplier?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Submit a requirement and TransformerPath can match it against relevant manufacturers.</p><a class="btn btn-amber" href="../rfq.html" data-track="rfq_started" data-track-country="'+esc(c.country)+'">Submit an RFQ</a> <a class="btn btn-outline btn-sm" href="../list-company.html" data-track="supplier_claim_started" data-track-country="'+esc(c.country)+'">Listed here? Claim your company →</a></div>\n</main>\n' + FOOT + '\n<script src="../analytics.js?v=2" defer></script>\n</body>\n</html>';
   fs.writeFileSync('manufacturers/' + slug + '.html', html);
   countryIndex.push('<a href="manufacturers/' + slug + '.html">' + esc(c.country) + '</a>');
   if (MGF.indexOf(c) < 5) console.log('OK manufacturers/' + slug + '.html');
@@ -188,13 +212,15 @@ TYPE_HUBS.forEach(function (th) {
 
   function renderHub(title, lead, makersList, canonicalPath, breadcrumbs, isNoindex, extraHtml) {
     const rows = makersList.map(function (m) {
-      const cslug = CSMAP[m.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()];
+      const alias = resolveCompanyAlias(m.name);
+      const cslug = alias.aliased ? alias.slug : CSMAP[m.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()];
       const nameLink = cslug ? '<a href="/manufacturers/' + cslug + '/" style="color:var(--accent);font-weight:700">' + esc(m.name) + '</a>' : '<b style="color:var(--text)">' + esc(m.name) + '</b>';
       const vb = m.flagV === 'P' ? ' <span class="v-badge pro">★ Supplier Pro</span>' : (m.flagV === 'V' ? ' <span class="v-badge">✓ Verified</span>' : '');
       const siteLink = m.url ? '<a href="' + esc(m.url) + '" target="_blank" rel="noopener nofollow" style="color:var(--muted);font-size:.78rem" data-track="official_website_click" data-track-manufacturer="' + esc(m.name) + '">Official website ↗</a>' : '';
       return '<div class="mk-row" style="display:flex;align-items:baseline;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:.92rem">' +
         '<div>' + nameLink + vb + '<div style="color:var(--muted);font-size:.8rem">' + esc(m.city ? m.city + ', ' : '') + esc(m.country) + (m.est ? ' · est. ' + esc(m.est) : '') + '</div></div>' +
-        '<div style="margin-left:auto;display:flex;align-items:center;gap:10px">' + siteLink +
+        '<div style="margin-left:auto;display:flex;flex-wrap:wrap;align-items:center;gap:10px;max-width:100%">' + siteLink +
+        (cslug ? ' ' + claimListing.linkHtml(cslug) : '') +
         ' <a class="btn btn-outline btn-sm" href="/compare.html?m=' + (cslug || slugify(m.name)) + '" style="font-size:.7rem;padding:2px 8px">Compare</a>' +
         ' <a class="btn btn-amber btn-sm" href="/rfq.html?spec=' + encodeURIComponent(title) + '&vendor=' + encodeURIComponent(m.name) + '" style="font-size:.7rem;padding:2px 8px">RFQ</a>' +
         '</div></div>';
@@ -206,7 +232,7 @@ TYPE_HUBS.forEach(function (th) {
 
     return '<!DOCTYPE html>\n<html lang="en" data-theme="dark">\n<head>\n<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
       '<title>' + esc(title) + ' | TransformerPath</title>\n' +
-      '<meta name="description" content="' + esc(lead.slice(0, 155)) + '">\n' +
+      '<meta name="description" content="' + esc(hubMeta(lead)) + '">\n' +
       '<link rel="canonical" href="https://transformerpath.com/' + canonicalPath + '">\n' +
       '<meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath">\n' +
       '<meta property="og:title" content="' + esc(title) + '"><meta property="og:url" content="https://transformerpath.com/' + canonicalPath + '">\n' +
@@ -216,12 +242,12 @@ TYPE_HUBS.forEach(function (th) {
       '</head>\n<body>\n' + HEAD + '\n<main id="main" tabindex="-1" class="c-wrap">\n' +
       '<nav style="font-size:.82rem;color:var(--muted);margin-bottom:12px">' + crumbs + '</nav>\n' +
       '<h1>' + esc(title) + '</h1>\n' +
-      '<p class="lead">' + esc(lead) + ' Listing ' + makersList.length + ' listed manufacturers with technical capabilities, locations, comparison tools, and direct RFQ channels.</p>\n' +
+      '<p class="lead">' + esc(lead) + ' Listing ' + makersList.length + ' listed manufacturers with technical capabilities, locations and comparison tools. RFQ routing is coming soon.</p>\n' +
       (extraHtml || '') +
       '<div style="margin:20px 0">' + rows + '</div>\n' +
       '<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:18px 20px;text-align:center;margin-top:28px">' +
       '<b style="color:var(--text);font-size:1.1rem">Procuring ' + esc(title) + '?</b>' +
-      '<p style="color:var(--muted);font-size:.9rem;margin:6px 0 14px">Submit your required MVA, voltage class, and standards to receive direct quotes from matched global manufacturers.</p>' +
+      '<p style="color:var(--muted);font-size:.9rem;margin:6px 0 14px">Submit your required MVA, voltage class, and standards. RFQ routing is coming soon.</p>' +
       '<a class="btn btn-amber" href="/rfq.html?spec=' + encodeURIComponent(title) + '">Submit Technical RFQ</a> ' +
       '<a class="btn btn-outline btn-sm" href="/directory.html" style="margin-left:8px">Open Sourcing Directory →</a>' +
       '</div>\n' +
@@ -264,7 +290,7 @@ TYPE_HUBS.forEach(function (th) {
     const comboDir = typeDir + '/' + cslug;
     fs.mkdirSync(comboDir, { recursive: true });
     const comboTitle = th.name + ' Manufacturers in ' + countryName;
-    const comboLead = 'Directory of ' + th.name.toLowerCase() + ' manufacturers and suppliers based in ' + countryName + ' with technical capabilities, official website links, and RFQ channels.';
+    const comboLead = 'Directory of ' + th.name.toLowerCase() + ' manufacturers and suppliers based in ' + countryName + ' with technical capabilities and official website links.';
     const comboHtml = renderHub(
       comboTitle,
       comboLead,
@@ -281,8 +307,20 @@ TYPE_HUBS.forEach(function (th) {
     fs.writeFileSync(comboDir + '/index.html', comboHtml);
     comboHubCount++;
   });
+
+  /* A country under the three-maker gate keeps its old file. Drop a claim
+     anchor that points at the product type rather than a listing. */
+  const keptCombo = {};
+  comboCountries.forEach(function (countryName) { keptCombo[slugify(countryName)] = true; });
+  claimListing.stripStaleHubClaim(typeDir, th.slug, keptCombo);
 });
 console.log('generated', typeHubCount, 'type hubs and', comboHubCount, 'type-country combination hubs');
+
+/* Sourced product and voltage hubs. A hub is written only at five or more makers. */
+require('./scripts/build-sourced-hubs.js')();
+
+/* Cooling × MVA floor × country pages. A page is written only at three or more makers. */
+require('./scripts/build-spec-landings.js')();
 
 /* Sitemap: walk published HTML (see build-sitemap.js). */
 require('./build-sitemap.js')();

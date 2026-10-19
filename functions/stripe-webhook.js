@@ -35,6 +35,26 @@
  * ========================================================================== */
 const crypto = require('crypto');
 const { isConfigured, client } = require('./lib/supabase-server');
+const { sendPaidReceipts } = require('./lib/paid-receipt');
+const paidListings = require('../lib/paid-listings');
+const digitalProducts = require('../lib/digital-products');
+const { listingProduct, companySlugFromReference, componentFromSession } = paidListings;
+
+const PAID_LISTING_PRODUCTS = {
+  verified_manufacturer: true,
+  featured_event: true,
+  featured_exhibitor: true,
+  hosted_webinar: true,
+  job_standard: true,
+  job_featured: true,
+  job_bundle_5: true,
+  rfq_lead: true,
+  rfq_lead_pro: true,
+  supplier_pro: true,
+  featured_listing: true,
+  featured_verified: true,
+  component_sponsor: true
+};
 
 // Should be loaded from env in production; never committed.
 const STRIPE_WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET;
@@ -115,22 +135,112 @@ function verifySignature(payload, signatureHeader, secret, tolerance = 300) {
   return JSON.parse(payload);
 }
 
+function paidListingProduct(session) {
+  const product = listingProduct(session);
+  if (PAID_LISTING_PRODUCTS[product]) return product;
+  return null;
+}
+
+function digitalProduct(session) {
+  const product = listingProduct(session);
+  if (digitalProducts[product]) return product;
+  return null;
+}
+
+function paidListingRow(session) {
+  const meta = session.metadata || {};
+  const product = paidListingProduct(session);
+  let companySlug = meta.company_slug || null;
+  if (!companySlug && product === 'verified_manufacturer') {
+    companySlug = companySlugFromReference(session.client_reference_id);
+  }
+  return {
+    session_id: session.id,
+    product: product,
+    company_slug: companySlug,
+    event_id: meta.event_id || null,
+    email: session.customer_email || (session.customer_details && session.customer_details.email) || null,
+    amount: typeof session.amount_total === 'number' ? session.amount_total : null,
+    currency: session.currency || null,
+    livemode: session.livemode === true,
+    status: 'paid_pending_verification',
+    component: componentFromSession(session),
+    created_at: isoNow()
+  };
+}
+
+let persistenceOverride = null;
+function persistence() {
+  if (persistenceOverride) return persistenceOverride;
+  return {
+    eventProcessed: eventProcessed,
+    markProcessed: markProcessed,
+    writeEntitlement: writeEntitlement,
+    writePaidListing: writePaidListing
+  };
+}
+
 async function handle(ev) {
   const type = ev.type;
+  const store = persistence();
   // Idempotency: processed-event store (Supabase `webhook_events` keyed by event.id).
   // If the event id is already recorded, return success without re-writing.
-  if (await eventProcessed(ev.id)) return respond(200, { received: true, idempotent: true });
+  if (await store.eventProcessed(ev.id)) return respond(200, { received: true, idempotent: true });
+
+  if (type === 'checkout.session.completed' && digitalProduct(ev.data && ev.data.object)) {
+    const session = ev.data.object;
+    const product = digitalProduct(session);
+    console.log(JSON.stringify({
+      msg: 'digital product received; supabase not required',
+      event_id: ev.id,
+      type: type,
+      product: product,
+      session_id: session.id
+    }));
+    try { await store.markProcessed(ev.id, type); } catch (markErr) { /* acknowledge either way */ }
+    return respond(200, { received: true, digital_product: product, stored: false });
+  }
+
+  if (type === 'checkout.session.completed' && paidListingProduct(ev.data && ev.data.object)) {
+    const row = paidListingRow(ev.data.object);
+    try {
+      await store.writePaidListing(row);
+    } catch (err) {
+      // These three products have no Supabase table ready. Log the paid event
+      // and acknowledge it so Stripe does not retry a 500. Other products
+      // still fail closed until the row is stored.
+      if (paidListings.DEFERRED_LISTING_PRODUCTS[row.product] && err && err.code === 'not_configured') {
+        console.log(JSON.stringify({
+          msg: 'paid listing received; supabase not configured',
+          event_id: ev.id,
+          type: type,
+          product: row.product,
+          session_id: row.session_id,
+          component: row.component || null,
+          buyer_message: paidListings.LISTING_SETUP_MESSAGE
+        }));
+        try { await store.markProcessed(ev.id, type); } catch (markErr) { /* log already recorded the event */ }
+        return respond(200, { received: true, paid_listing: true, stored: false });
+      }
+      console.warn('paid listing write failed');
+      return respond(500, { error: 'paid listing not stored' });
+    }
+    const receipt = await sendPaidReceipts(row);
+    if (receipt && receipt.retry) return respond(500, { error: 'receipt failed' });
+    await store.markProcessed(ev.id, type);
+    return respond(200, { received: true, paid_listing: true });
+  }
 
   let entitlement;
   if (type === 'checkout.session.completed') entitlement = fromCheckout(ev.data.object);
   else if (type === 'customer.subscription.created' || type === 'customer.subscription.updated') entitlement = fromSubscription(ev.data.object);
   else if (type === 'customer.subscription.deleted') entitlement = fromSubscription(ev.data.object, 'CANCELLED');
   else if (type === 'charge.refunded') entitlement = fromCharge(ev.data.object);
-  else return respond(400, { error: 'unsupported event ' + type }); // unhandled event -> not an entitlement write
+  else return respond(200, { received: true, ignored: type });
 
   if (!entitlement || !entitlement.user_id) return respond(400, { error: 'no linked user' });
-  await writeEntitlement(entitlement);
-  await markProcessed(ev.id);
+  await store.writeEntitlement(entitlement);
+  await store.markProcessed(ev.id, type);
   return respond(200, { received: true });
 }
 
@@ -184,6 +294,30 @@ async function eventProcessed(id) {
   }
 }
 
+async function writePaidListing(row) {
+  if (!isConfigured()) {
+    const err = new Error('paid_listings store not configured');
+    err.code = 'not_configured';
+    throw err;
+  }
+  const supabase = client();
+  const payload = {
+    session_id: row.session_id,
+    product: row.product,
+    company_slug: row.company_slug || null,
+    event_id: row.event_id || null,
+    email: row.email || null,
+    amount: row.amount,
+    currency: row.currency || null,
+    livemode: row.livemode === true,
+    status: row.status,
+    component: row.component || null,
+    created_at: row.created_at
+  };
+  const { error } = await supabase.from('paid_listings').upsert(payload, { onConflict: 'session_id' });
+  if (error) throw new Error('paid_listings upsert failed');
+}
+
 async function markProcessed(id, type) {
   if (!isConfigured()) return;
   try {
@@ -193,6 +327,9 @@ async function markProcessed(id, type) {
     console.warn('markProcessed error:', err.message);
   }
 }
+
+exports._setPersistenceForTests = function (store) { persistenceOverride = store; };
+exports._paidListingRow = paidListingRow;
 
 function isoNow() { return new Date().toISOString(); }
 function respond(code, obj) {

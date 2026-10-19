@@ -1,0 +1,328 @@
+{
+  "checked": "2026-10-15",
+  "method": "Every maker in the USA census group was compared with other-country rows for the same company and with data/head-offices.json. A profile country changes only when that file has a public source_url.",
+  "usa_rows_reviewed": 50,
+  "profiles": [
+    {
+      "name": "Acme Electric (Hubbell)",
+      "census_city": "Menomonee Falls, WI",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "Central Moloney",
+      "census_city": "Pine Bluff, AR",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "Controlled Magnetics, Inc.",
+      "census_city": "Temecula, CA",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "CORE Transformers",
+      "census_city": "Greenville, SC",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "Daelim Transformer (US)",
+      "census_city": "Cardiff, CA",
+      "outcome": "us_plant_row_kept",
+      "reason": "Kept as the Cardiff, California profile. A China Daelim row uses the same website and was not treated as this profile's head office without a source that says so."
+    },
+    {
+      "name": "Delta Star",
+      "census_city": "Lynchburg, VA + San Carlos, CA",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "Dongan Electric Manufacturing Co.",
+      "census_city": "Fraser, MI",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "Eaton",
+      "census_city": "Beaver, WV",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "ELSCO Transformers",
+      "census_city": "Cincinnati, OH",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "ERMCO",
+      "census_city": "Dyersburg, TN",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "Federal Pacific",
+      "census_city": "Bristol, VA",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "Hammond Power Solutions (Baraboo)",
+      "census_city": "Baraboo, WI",
+      "outcome": "us_plant_row_kept",
+      "reason": "US plant row kept in the USA list. The company profile is Hammond Power Solutions in Guelph, Canada, already resolved by the alias rule."
+    },
+    {
+      "name": "HD Hyundai Power Transformers USA",
+      "census_city": "Montgomery, AL",
+      "outcome": "us_plant_row_kept",
+      "reason": "Kept as the Montgomery, Alabama plant profile. HD Hyundai Electric in Ulsan, South Korea is a separate profile. Not reclassified."
+    },
+    {
+      "name": "Hevi-Duty / SolaHD",
+      "census_city": "Appleton, WI",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "HICO America (Hyosung)",
+      "census_city": "Memphis, TN",
+      "outcome": "us_plant_row_kept",
+      "reason": "US plant row kept in the USA list. The company profile is Hyosung Heavy Industries, whose head office is Seoul. Source: https://www.hyosungheavyindustries.com/en/company/info/global-network"
+    },
+    {
+      "name": "Hitachi Energy USA",
+      "census_city": "South Boston, VA",
+      "outcome": "us_plant_row_kept",
+      "reason": "Kept as the South Boston, Virginia plant profile. Hitachi Energy (global HQ) in Zürich is a separate profile. Not reclassified."
+    },
+    {
+      "name": "Howard Industries (Howard Power Solutions)",
+      "census_city": "Laurel, MS",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "Jefferson Electric (Voltaris)",
+      "census_city": "Washington, MO",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "JST Power Equipment",
+      "census_city": "Lake Mary, FL",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "LS Electric America",
+      "census_city": "Bastrop, TX",
+      "outcome": "us_plant_row_kept",
+      "reason": "Kept as the Bastrop, Texas profile. LS Electric in Anyang, South Korea is a separate profile. Not reclassified."
+    },
+    {
+      "name": "Maddox Transformer",
+      "census_city": "Greenville, SC / Houston, TX",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "Marcus Transformer",
+      "census_city": "Charlotte, NC",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "MCI Transformer Corporation",
+      "census_city": "Babylon, NY",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "Meta Power Solutions",
+      "census_city": "Houston, TX",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "MGM Transformer Company",
+      "census_city": "Commerce, CA",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "Mitsubishi Electric Power Products (MEPPI)",
+      "census_city": "Memphis, TN",
+      "outcome": "us_plant_row_kept",
+      "reason": "Kept as the Memphis, Tennessee profile. Mitsubishi Electric in Tokyo is a separate profile. Not reclassified."
+    },
+    {
+      "name": "Myers Power Products",
+      "census_city": "Ontario, CA",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "Niagara Power Transformer",
+      "census_city": "Buffalo, NY",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "Olsun Electrics",
+      "census_city": "Richmond, IL",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "OTC Services",
+      "census_city": "Louisville, OH",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "Pacific Crest Transformers",
+      "census_city": "Medford, OR",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "Pacific Transformer Corporation",
+      "census_city": "San Diego, CA",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "Pennsylvania Transformer Technology",
+      "census_city": "Canonsburg, PA",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "Pioneer Power Solutions",
+      "census_city": "Jefferson City, MO",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "Power Partners",
+      "census_city": "Athens, GA",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "Prolec GE (GE Vernova)",
+      "census_city": "Shreveport, LA",
+      "outcome": "us_plant_row_kept",
+      "reason": "US plant row (Shreveport) kept in the USA list. The company profile is Prolec GE, whose contact address is Apodaca, Mexico. Source: https://www.prolec.energy/contact-us/"
+    },
+    {
+      "name": "R.E. Uptegraff Mfg",
+      "census_city": "Scottdale, PA",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "Schneider Electric / Square D",
+      "census_city": "Multiple, US",
+      "outcome": "us_plant_row_kept",
+      "reason": "Kept as the US Square D listing. Schneider Electric in Rueil-Malmaison, France is a separate profile. Not reclassified."
+    },
+    {
+      "name": "Southwest Electric Co.",
+      "census_city": "Oklahoma City, OK",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "Spang Power Electronics",
+      "census_city": "Sandy Lake, PA",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "Sunbelt Solomon",
+      "census_city": "Temple, TX / Solomon, KS",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "T&R Electric Supply",
+      "census_city": "Colman, SD",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "VanTran Industries",
+      "census_city": "Waco, TX",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "Virginia Transformer Corp",
+      "census_city": "Roanoke, VA",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "WEG Transformers USA",
+      "census_city": "Washington, MO",
+      "outcome": "us_plant_row_kept",
+      "reason": "Kept as the Washington, Missouri profile. WEG Equipamentos Elétricos in Brazil is a separate profile. Not reclassified."
+    },
+    {
+      "name": "Altran Corporation",
+      "census_city": "",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "Foster Transformer Company",
+      "census_city": "Cincinnati, OH",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "Electronetics LLC",
+      "census_city": "",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "Bridgeport Magnetics",
+      "census_city": "Shelton, CT",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "CTM Magnetics",
+      "census_city": "",
+      "outcome": "kept_usa",
+      "reason": "Census city is in the United States. No sourced foreign head office is on file for this profile, so the country stays USA."
+    },
+    {
+      "name": "Siemens Energy",
+      "census_city": "Munich",
+      "outcome": "moved_to_head_office",
+      "country": "Germany",
+      "reason": "The census listed Siemens Energy at Charlotte, NC. The corporate information page states the registered office is Munich. Charlotte is no longer the company country. Source: https://www.siemens-energy.com/global/en/home/general/corporate-information.html"
+    },
+    {
+      "name": "Hyosung Heavy Industries",
+      "census_city": "Seoul",
+      "outcome": "head_office_applied",
+      "country": "South Korea",
+      "reason": "The profile country was USA because the Memphis plant row was seen first. The company global-network page names the head office in Mapo-gu, Seoul, and lists Changwon and Memphis as other sites."
+    },
+    {
+      "name": "Prolec GE",
+      "census_city": "Apodaca",
+      "outcome": "head_office_applied",
+      "country": "Mexico",
+      "reason": "The profile country was USA because the Shreveport plant alias was seen first. The contact page lists Apodaca, Nuevo León under Mexico and the US sites separately."
+    }
+  ]
+}

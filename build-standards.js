@@ -13,8 +13,8 @@
  *
  * Honesty (Rule #4): all voltage/frequency/synchronous-area figures are the
  * source-backed grid census values. Where a country's data is not populated we
- * leave it blank rather than guess. Standards text is factual reference, not a
- * quality ranking.
+ * show "Not available" rather than a blank, or the words undefined, NaN or null.
+ * Standards text is factual reference, not a quality ranking.
  *
  * Run: node build-standards.js  (after build-factories.js).
  */
@@ -24,6 +24,7 @@ const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|dat
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+const { directoryBadge, scrubLegacyLabels } = require('./lib/provenance-badge');
 function slugify(s) { return String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/&/g, 'and').replace(/['’´]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, ''); }
 const ci = (s) => (s || '').toLowerCase();
 
@@ -50,7 +51,7 @@ function regionOrder(r) {
 // Standards comparison (factual reference).
 const STANDARDS = [
   { code: 'IEC 60076', name: 'IEC 60076 — Power transformers', region: 'International / adopted widely', dot: `IEC 60076 is the global series for power transformers: Part 1 (general), Part 2 (temperature rise), Part 3 (insulation levels & dielectric tests), Part 5 (ability to withstand short circuit), Part 7 (loading guide). Metric units, 50 or 60 Hz. Used across Europe, Asia, Africa, the Middle East and most of the Commonwealth.`, points: ['Metric units (kV, MVA, °C)', '50 or 60 Hz', 'Temperature-rise and insulation levels in Part 2/3', 'Most widely cross-border accepted series'] },
-  { code: 'IEEE C57 / ANSI', name: 'IEEE C57 (ANSI) — US/Canada', region: 'North America', dot: `The IEEE C57 series (adopted as ANSI) governs power & distribution transformers in the US and Canada: C57.12.00 (general), C57.12.10 (power transformer requirements), C57.12.90 (test code). Imperial-derived units, 60 Hz (tied to the North American 60 Hz grid).`, points: ['60 Hz (North American grid)', 'IEEE/ANSI C57 series + NEMA for distribution', 'Test code in C57.12.90', 'differing cooling & BIL conventions from IEC'] },
+  { code: 'IEEE C57 / ANSI', name: 'IEEE C57 (ANSI) — US/Canada', region: 'North America', dot: `The IEEE C57 series (adopted as ANSI) governs power & distribution transformers in the US and Canada: C57.12.00 (general), C57.12.10 (power transformer requirements), C57.12.90-2026 (test code; replaces 2021). Imperial-derived units, 60 Hz (tied to the North American 60 Hz grid).`, points: ['60 Hz (North American grid)', 'IEEE/ANSI C57 series + NEMA for distribution', 'Test code in C57.12.90-2026 (replaces 2021)', 'differing cooling & BIL conventions from IEC'] },
   { code: 'BS EN', name: 'BS EN 60076 (UK) — EN adoption', region: 'United Kingdom / Europe', dot: `The UK adopts IEC 60076 as a British/European Standard (BS EN 60076), with BS EN 50341/EN additions for grid connection and a 400/275/132 kV transmission convention. 50 Hz.`, points: ['BS EN 60076 = IEC 60076 as EN', '50 Hz', 'UK transmission 400 kV / 275 kV / 132 kV', 'EN additions for connection & safety'] },
   { code: 'IS 1180', name: 'IS 1180 / IS 2026 (India)', region: 'India', dot: `India's distribution transformers follow IS 1180 and power transformers IS 2026 (aligned to IEC 60076), under the Central Electricity Authority and BIS. 50 Hz, 765/400/220/132/66/33/11 kV.`, points: ['IS 1180 (distribution) / IS 2026 (power)', '50 Hz', '765 kV down to 11 kV', 'BIS; CEA standards'] },
   { code: 'GB', name: 'GB (China) — GB 1094', region: 'China', dot: `China's national standards align closely with IEC 60076 (GB 1094 for transformers) plus UHV practice: 1000 kV AC and ±800/±1100 kV DC, 750/500/220/110 kV. 50 Hz.`, points: ['GB 1094 ≈ IEC 60076', '50 Hz', 'UHV AC to 1000 kV and DC ±1100 kV', '750/500/220/110 kV below'] },
@@ -66,27 +67,30 @@ const hz50 = GRIDS.filter((c) => c.freq === '50').length;
 const hz60 = GRIDS.filter((c) => c.freq === '60').length;
 const maxVoltage = GRIDS.reduce((m, c) => Math.max(m, highestVoltage(c)), 0);
 
-// Country reference rows (searchable client-side).
-const countryRows = GRIDS.slice().sort((a, b) => a.country.localeCompare(b.country)).map((c) => {
-  const hv = highestVoltage(c);
-  return {
-    country: c.country, flag: c.flag || '', region: c.region,
-    freq: freqLabel(c.freq), sync: c.sync || '',
-    voltage: hv ? hv + ' kV' : '', operators: (c.grids || []).length,
-  };
-});
-
-function countryRowHtml(r) {
-  return '<div class="st-row" data-country="' + esc(ci(r.country)) + '" data-region="' + esc(r.region) + '" data-freq="' + esc(r.freq) + '">' +
-    '<span class="st-c">' + (r.flag ? r.flag + ' ' : '') + esc(r.country) + '</span>' +
-    '<span class="st-r st-cell">' + esc(r.region) + '</span>' +
-    '<span class="st-f st-cell">' + esc(r.freq || '—') + '</span>' +
-    '<span class="st-v st-cell">' + esc(r.voltage || '—') + '</span>' +
-    '<span class="st-s st-cell">' + esc(r.sync || '—') + '</span>' +
-    '<span class="st-o st-cell">' + (r.grids || []).length + '</span></div>';
+/* A missing census field is shown as words. Never emit a blank cell or the
+ * JavaScript tokens undefined / NaN / null. */
+function shown(value) {
+  if (value == null) return 'Not available';
+  const s = String(value).trim();
+  if (!s || /^(undefined|nan|null|—|-)$/i.test(s)) return 'Not available';
+  return s;
 }
 
-const style = '.std-wrap{max-width:1180px;margin:0 auto;padding:44px 20px 96px}.std-wrap h1{font-size:2rem;color:var(--ink)}.std-wrap .lead{color:var(--muted);font-size:1.02rem;max-width:900px;margin:8px 0 22px}.std-stats{display:flex;flex-wrap:wrap;gap:14px;margin:0 0 24px}.std-stats .s{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 18px;text-align:center;min-width:130px}.std-stats .s b{color:var(--text);font-size:1.3rem;display:block}.std-stats .s small{color:var(--muted);font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em}.std-h2{font-size:1.3rem;color:var(--ink);margin:30px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border)}.std-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:14px}.std-card h3{font-size:1.1rem;color:var(--ink);margin:0 0 4px}.std-card .rgn{color:var(--muted);font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin:0 0 8px}.std-card p{color:var(--text);line-height:1.7;font-size:.94rem;margin:0 0 10px}.std-card .pt{display:flex;flex-wrap:wrap;gap:8px}.std-card .pt span{background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:2px 10px;font-size:.76rem;color:var(--muted)}.std-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0 8px}.std-tools input,.std-tools select{padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:.9rem;background:var(--card);color:var(--text)}.std-tbl{width:100%;border-collapse:collapse;font-size:.86rem}.std-tbl th{text-align:left;color:var(--muted);font-weight:800;font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;padding:8px 10px;border-bottom:2px solid var(--border);white-space:nowrap}.std-tbl td{padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top}.std-tbl a{color:var(--accent);font-weight:700}.std-note{color:var(--muted);font-size:.8rem;margin-top:14px}';
+function countryRowHtml(c) {
+  const hv = highestVoltage(c);
+  const freq = freqLabel(c.freq);
+  const voltage = hv ? hv + ' kV' : '';
+  const operators = (c.grids || []).length;
+  return '<div class="st-row" data-country="' + esc(ci(c.country)) + '" data-region="' + esc(c.region) + '" data-freq="' + esc(c.freq) + '">' +
+    '<span class="st-c">' + (c.flag ? c.flag + ' ' : '') + esc(c.country) + '</span>' +
+    '<span class="st-r st-cell">' + esc(shown(c.region)) + '</span>' +
+    '<span class="st-f st-cell">' + esc(shown(freq)) + '</span>' +
+    '<span class="st-v st-cell">' + esc(shown(voltage)) + '</span>' +
+    '<span class="st-s st-cell">' + esc(shown(c.sync)) + '</span>' +
+    '<span class="st-o st-cell">' + esc(operators ? String(operators) : 'Not available') + '</span></div>';
+}
+
+const style = '.std-wrap{max-width:1180px;margin:0 auto;padding:44px 20px 96px}.std-wrap h1{font-size:2rem;color:var(--ink)}.std-wrap .lead{color:var(--muted);font-size:1.02rem;max-width:900px;margin:8px 0 22px}.std-stats{display:flex;flex-wrap:wrap;gap:14px;margin:0 0 24px}.std-stats .s{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 18px;text-align:center;min-width:130px}.std-stats .s b{color:var(--text);font-size:1.3rem;display:block}.std-stats .s small{color:var(--muted);font-size:.72rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em}.std-h2{font-size:1.3rem;color:var(--ink);margin:30px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border)}.std-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:14px}.std-card h3{font-size:1.1rem;color:var(--ink);margin:0 0 4px}.std-card .rgn{color:var(--muted);font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin:0 0 8px}.std-card p{color:var(--text);line-height:1.7;font-size:.94rem;margin:0 0 10px}.std-card .pt{display:flex;flex-wrap:wrap;gap:8px}.std-card .pt span{background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:2px 10px;font-size:.76rem;color:var(--muted)}.std-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0 8px}.std-tools input,.std-tools select{padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:.9rem;background:var(--card);color:var(--text)}.std-tbl{width:100%;border-collapse:collapse;font-size:.86rem}.std-tbl th{text-align:left;color:var(--muted);font-weight:800;font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;padding:8px 10px;border-bottom:2px solid var(--border);white-space:nowrap}.std-tbl td{padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top}.std-tbl a{color:var(--accent);font-weight:700}.std-note{color:var(--muted);font-size:.8rem;margin-top:14px}@media(max-width:720px){.std-wrap{overflow-x:clip;max-width:100%}.std-tbl{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}.std-tbl th{white-space:normal}}';
 
 const regionsHtml = regionKeys.map((r) => {
   const rows = byRegion[r].sort((a, b) => a.country.localeCompare(b.country));
@@ -98,10 +102,10 @@ const regionsHtml = regionKeys.map((r) => {
 const STANDARDS_DATA = (() => {
   try { return JSON.parse(fs.readFileSync('data/standards.json', 'utf8')).standards || []; } catch(e) { return []; }
 })();
-const stdJson = JSON.stringify(STANDARDS_DATA);
+const stdJson = scrubLegacyLabels(JSON.stringify(STANDARDS_DATA));
 
 const html = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Global Transformer Standards & Regulations Directory — IEC, IEEE, National Standards | TransformerPath</title>' +
-  '<meta name="description" content="Worldwide directory of electrical transformer standards, test codes, and regulatory efficiency mandates (IEC 60076, IEEE C57, EU Ecodesign, US DOE 2027, IS 1180, GB/T 1094). Verified scopes, frequencies, and voltage levels.">' +
+  '<meta name="description" content="Worldwide directory of electrical transformer standards, test codes, and regulatory efficiency mandates (IEC 60076, IEEE C57, EU Ecodesign, US DOE 2024, IS 1180, GB/T 1094). Verified scopes, frequencies, and voltage levels.">' +
   '<link rel="canonical" href="https://transformerpath.com/standards.html"><meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath"><meta property="og:title" content="Global Transformer Standards & Regulations Directory"><meta property="og:url" content="https://transformerpath.com/standards.html"><meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow"><meta name="theme-color" content="#0d1b2e">' +
   '<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any"><link rel="stylesheet" href="style.css?v=15"><link rel="stylesheet" href="tp-nav.css?v=15"><style>' + style + 
   '.std-reg-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px;display:flex;flex-direction:column;transition:border-color .15s}' +
@@ -115,7 +119,7 @@ const html = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta cha
   '</style></head><body>\n' + HEAD + '\n<main class="std-wrap">' +
   '<nav style="font-size:.82rem;color:var(--muted);margin-bottom:12px"><a href="index.html" style="color:var(--accent)">Home</a> › <a href="directory.html" style="color:var(--accent)">Directory</a> › Standards &amp; Regulations</nav>' +
   '<h1>Transformer <span style="color:var(--accent)">Standards &amp; Regulations</span> Directory</h1>' +
-  '<p class="lead">A worldwide, verified directory of electrical transformer standards, test codes, energy efficiency mandates (EU Ecodesign Tier 2, US DOE 2027), and grid interconnection regulations. Includes direct links to official standards bodies and national grid characteristics from the TransformerPath census.</p>' +
+  '<p class="lead">A worldwide, verified directory of electrical transformer standards, test codes, energy efficiency mandates (EU Ecodesign Tier 2, US DOE 2024), and grid interconnection regulations. Includes direct links to official standards bodies and national grid characteristics from the TransformerPath census.</p>' +
   '<div class="std-stats">' +
     '<div class="s"><b>' + STANDARDS_DATA.length + '</b><small>Core Standards Listed</small></div>' +
     '<div class="s"><b>' + totalCountries + '</b><small>Countries in Grid Census</small></div>' +
@@ -126,7 +130,7 @@ const html = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta cha
   '<h2 class="std-h2">Global Standards &amp; Regulations Directory</h2>' +
   '<p style="color:var(--muted);font-size:.9rem;margin-bottom:14px">Search and filter verified transformer standards by code, country, standards body, or category:</p>' +
   '<div class="std-tools" style="margin-bottom:20px">' +
-    '<input id="stdSearch" type="search" placeholder="Search standard (e.g. IEC 60076, IEEE C57, DOE 2027, IS 1180, GB 1094)..." style="flex:1;min-width:240px">' +
+    '<input id="stdSearch" type="search" placeholder="Search standard (e.g. IEC 60076, IEEE C57, DOE 2024, IS 1180, GB 1094)..." style="flex:1;min-width:240px">' +
     '<select id="stdCountry"><option value="">All Countries / International</option></select>' +
     '<select id="stdCategory"><option value="">All Categories</option></select>' +
     '<button id="stdReset" class="btn btn-outline btn-sm">Reset</button>' +
@@ -160,7 +164,7 @@ const html = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta cha
   '<div class="std-tbl"><div style="display:flex;font-size:.72rem;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;padding:8px 10px;border-bottom:2px solid var(--border)"><span style="width:26%">Country</span><span style="width:14%">Region</span><span style="width:10%">Freq</span><span style="width:14%">Top voltage</span><span style="width:26%">Synchronous area</span><span style="width:10%">Operators</span></div><div id="stBody">' + regionsHtml + '</div></div>' +
   '<p class="std-note">National grid data is source-backed from the TransformerPath grid census. All standards entries reflect official publications confirmed by direct website verification.</p>' +
   '</main>\n' + FOOT + 
-  '\n<script>window.__TP_STANDARDS__=' + stdJson + ';</script>\n' +
+  '\n<script src="lib/provenance-badge.js"></script>\n<script>window.__TP_STANDARDS__=' + stdJson + ';</script>\n' +
   `<script>
 (function(){
   var data = window.__TP_STANDARDS__ || [];
@@ -200,7 +204,7 @@ const html = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta cha
       return '<div class="std-reg-card">' +
         '<div class="std-reg-top">' +
           '<div><span class="std-reg-code">' + esc(d.standard_code) + '</span> &nbsp; <span class="std-pill">' + esc(d.country) + '</span></div>' +
-          '<span class="ev-badge ev-confirmed">' + esc(d.verification_status || 'Verified') + '</span>' +
+          (window.TPProvenance ? TPProvenance.directoryBadge(d) : '') +
         '</div>' +
         '<div class="std-reg-title">' + esc(d.title) + '</div>' +
         '<div style="font-size:.82rem;color:var(--muted);margin-bottom:8px"><b>Body:</b> ' + esc(d.standard_body) + ' &nbsp;|&nbsp; <b>Frequency:</b> ' + esc(d.frequency_hz) + ' &nbsp;|&nbsp; <b>Voltages:</b> ' + esc(d.voltage_levels_kv) + '</div>' +
@@ -237,7 +241,7 @@ const html = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta cha
       '<tr><td><b>Voltage Ratio Tolerance</b></td><td>±0.5% or 1/10th of actual impedance %</td><td>±0.5% on rated tap</td><td>Guarantees tap switch voltage symmetry</td></tr>' +
       '<tr><td><b>Reference Temperature</b></td><td>75°C (mineral oil) / 85°C (synthetic ester)</td><td>85°C for 65°C rise units</td><td>All load losses must be normalized before compare</td></tr>' +
       '</tbody></table>',
-    sc: '<table class="std-tbl" style="margin-top:8px"><thead><tr><th>Short-Circuit Verification</th><th>IEC 60076-5</th><th>IEEE C57.12.90</th><th>Engineering Significance</th></tr></thead><tbody>' +
+    sc: '<table class="std-tbl" style="margin-top:8px"><thead><tr><th>Short-Circuit Verification</th><th>IEC 60076-5</th><th>IEEE C57.12.90-2026</th><th>Engineering Significance</th></tr></thead><tbody>' +
       '<tr><td><b>Thermal Withstand Duration</b></td><td><b>2.0 seconds</b> standard</td><td><b>2.0 seconds</b> (up to 3.0s for small units)</td><td>Prevents conductor annealing / insulation charring</td></tr>' +
       '<tr><td><b>Dynamic Peak Factor (k√2)</b></td><td>k√2 ≈ 2.55 (for X/R ≥ 14)</td><td>k_peak based on X/R per C57.12.00</td><td>Determines maximum radial &amp; axial bursting force</td></tr>' +
       '<tr><td><b>Pre-Fault System Voltage</b></td><td>1.05 p.u. of rated voltage</td><td>1.05 p.u. maximum operating voltage</td><td>Ensures full fault energy transfer</td></tr>' +

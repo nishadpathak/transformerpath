@@ -1,9 +1,9 @@
 {
   "$schema": "https://transformerpath.com/gcc-discovery-candidates.schema.json",
-  "generated": "2026-09-29T21:12:39.710Z",
+  "generated": "2026-10-16T07:28:53.070Z",
   "window": {
     "from": "2026-09-01",
-    "to": "2026-09-25"
+    "to": "2026-10-14"
   },
   "purpose": "Graded GCC discovery candidates. NOT auto-published Intel.",
   "pipeline": [
@@ -59,11 +59,11 @@
   "dictionary_ref": "data/gcc-discovery-dictionary.json",
   "registry_ref": "data/gcc-source-registry.json",
   "counts": {
-    "candidates": 12,
+    "candidates": 14,
     "confirmed": 3,
-    "supported": 8,
-    "review_required": 1,
-    "rejected": 0,
+    "supported": 10,
+    "review_required": 0,
+    "rejected": 1,
     "internal_coverage_facts": 1
   },
   "internal_coverage_facts": [
@@ -75,17 +75,17 @@
     }
   ],
   "freshness": {
-    "statement": "4/6+ P0 portal probes live this build — at least one official list returned transformer vocabulary",
+    "statement": "5/6+ P0 portal probes live this build — at least one official list returned transformer vocabulary",
     "markets_registered": 6,
-    "markets_adapter_live": 4,
+    "markets_adapter_live": 5,
     "markets_with_validated_candidates": 6,
-    "latest_source_checked_at": "2026-09-29",
+    "latest_source_checked_at": "2026-10-16",
     "latest_confirmed_event_date": "2026-09-25",
     "data_current_claim_allowed": false,
     "honesty": "Do NOT declare DATA CURRENT because the build ran today. Freshness depends on source coverage + source_checked_at + validated newest record.",
     "adapter_probe": {
-      "probed": 11,
-      "live": 4,
+      "probed": 13,
+      "live": 5,
       "honesty": "live = HTTP reachable + transformer vocabulary observed. Gated portals are not counted as live adapters."
     }
   },
@@ -153,11 +153,12 @@
       ],
       "confidence": "MEDIUM",
       "why_previously_missed": "Intel discovery had no DEWA procurement-portal adapter. Pipeline over-relied on English trade press / MEED / curated RSS (no GCC utility portals). Tender 2122600155 never entered discovery.",
-      "published_to_intel": false,
+      "published_to_intel": true,
       "publish_decision": "HOLD_FOR_REVIEW",
       "discovery_input_only": false,
       "reject_reason": null,
       "notes": "Product spot-check asserts official DEWA visibility for 2122600155 float 24 Sep / close 27 Oct. Automated portal fetch of this ID timed out / not adaptered in this run → SUPPORTED not CONFIRMED until adapter returns the row.",
+      "grid_news": false,
       "entity_links": {
         "country": "United Arab Emirates",
         "utility_buyer": "Dubai Electricity & Water Authority (DEWA)",
@@ -229,11 +230,12 @@
       ],
       "confidence": "HIGH",
       "why_previously_missed": "No Etimad / Saudi Water Authority adapter; Arabic مناقسة vocabulary not in discovery dictionary; water-authority transformers outside English news feeds.",
-      "published_to_intel": false,
+      "published_to_intel": true,
       "publish_decision": "REVIEW_QUEUE",
       "discovery_input_only": false,
       "reject_reason": null,
       "notes": null,
+      "grid_news": false,
       "entity_links": {
         "country": "Saudi Arabia",
         "utility_buyer": "Saudi Water Authority",
@@ -284,7 +286,7 @@
         "award_date": null,
         "project_start_date": null,
         "commissioning_date": null,
-        "source_checked_at": "2026-09-25",
+        "source_checked_at": "2026-10-14",
         "update_date": null
       },
       "sources": [
@@ -299,11 +301,12 @@
       ],
       "confidence": "MEDIUM",
       "why_previously_missed": "Arabic term محول التأريض absent from discovery dictionary; no Etimad crawl; grounding transformers under-covered vs power/distribution headlines.",
-      "published_to_intel": false,
+      "published_to_intel": true,
       "publish_decision": "HOLD_FOR_REVIEW",
       "discovery_input_only": false,
       "reject_reason": null,
-      "notes": null,
+      "notes": "2026-10-14 review: source page returned the transformer claim and the recorded dates.",
+      "grid_news": false,
       "entity_links": {
         "country": "Saudi Arabia",
         "utility_buyer": "Saudi Water Authority",
@@ -345,16 +348,16 @@
         "site": "Technical College for Girls, Al-Aflaj"
       },
       "dates": {
-        "publication_date": "2026-09-08",
-        "event_date": "2026-09-08",
-        "tender_float_date": "2026-09-08",
-        "tender_close_date": null,
+        "publication_date": "2026-09-18",
+        "event_date": "2026-09-18",
+        "tender_float_date": "2026-09-18",
+        "tender_close_date": "2026-09-18",
         "bid_opening_date": null,
         "expected_award_date": null,
         "award_date": null,
         "project_start_date": null,
         "commissioning_date": null,
-        "source_checked_at": "2026-09-25",
+        "source_checked_at": "2026-10-14",
         "update_date": null
       },
       "sources": [
@@ -369,11 +372,12 @@
       ],
       "confidence": "MEDIUM",
       "why_previously_missed": "Non-utility institutional buyer; Etimad-only; English news feeds ignore college/campus transformer replacements.",
-      "published_to_intel": false,
+      "published_to_intel": true,
       "publish_decision": "HOLD_FOR_REVIEW",
       "discovery_input_only": false,
       "reject_reason": null,
-      "notes": null,
+      "notes": "2026-10-14 review: TenderImpulse page shows published and closing 18 Sep 2026 (earlier 8 Sep date was not on the page).",
+      "grid_news": false,
       "entity_links": {
         "country": "Saudi Arabia",
         "utility_buyer": "Technical and Vocational Training Corporation (TVTC) / Technical College for Girls Al-Aflaj",
@@ -423,7 +427,7 @@
         "award_date": null,
         "project_start_date": null,
         "commissioning_date": null,
-        "source_checked_at": "2026-09-25",
+        "source_checked_at": "2026-10-14",
         "update_date": null
       },
       "sources": [
@@ -437,11 +441,12 @@
       ],
       "confidence": "MEDIUM",
       "why_previously_missed": "Hospital/military-campus procurement on Etimad; not covered by manufacturer press or English GCC project media.",
-      "published_to_intel": false,
+      "published_to_intel": true,
       "publish_decision": "HOLD_FOR_REVIEW",
       "discovery_input_only": false,
       "reject_reason": null,
-      "notes": null,
+      "notes": "2026-10-14 review: source page returned the transformer claim and the recorded dates.",
+      "grid_news": false,
       "entity_links": {
         "country": "Saudi Arabia",
         "utility_buyer": "King Abdulaziz Air Base Hospital, Dhahran",
@@ -495,7 +500,7 @@
         "award_date": null,
         "project_start_date": null,
         "commissioning_date": null,
-        "source_checked_at": "2026-09-25",
+        "source_checked_at": "2026-10-14",
         "update_date": null
       },
       "sources": [
@@ -509,11 +514,12 @@
       ],
       "confidence": "MEDIUM",
       "why_previously_missed": "Date/semantics: unit replacement announced 2025; Sep 2026 is supervision. No Etimad adapter; water-authority HV transformers outside curated GCC news.",
-      "published_to_intel": false,
+      "published_to_intel": true,
       "publish_decision": "HOLD_FOR_REVIEW",
       "discovery_input_only": false,
       "reject_reason": null,
-      "notes": "Do not mis-date the original T803 supply float as 24 Sep 2026. Sep activity is supervision of replacement.",
+      "notes": "Do not mis-date the original T803 supply float as 24 Sep 2026. Sep activity is supervision of replacement. 2026-10-14 review: source page returned the transformer claim and the recorded dates.",
+      "grid_news": false,
       "entity_links": {
         "country": "Saudi Arabia",
         "utility_buyer": "Saudi Water Authority",
@@ -557,7 +563,7 @@
       },
       "dates": {
         "publication_date": "2026-09-07",
-        "event_date": "2026-09-12",
+        "event_date": "2026-09-07",
         "tender_float_date": "2026-09-07",
         "tender_close_date": "2026-10-06",
         "bid_opening_date": null,
@@ -565,7 +571,7 @@
         "award_date": null,
         "project_start_date": null,
         "commissioning_date": null,
-        "source_checked_at": "2026-09-25",
+        "source_checked_at": "2026-10-14",
         "update_date": null
       },
       "sources": [
@@ -580,11 +586,12 @@
       ],
       "confidence": "MEDIUM",
       "why_previously_missed": "No MEWRE / CAPT Arabic tender-board adapter; parallel-reactor + transformer maintenance programmes not in English RSS set.",
-      "published_to_intel": false,
+      "published_to_intel": true,
       "publish_decision": "HOLD_FOR_REVIEW",
       "discovery_input_only": false,
       "reject_reason": null,
-      "notes": null,
+      "notes": "2026-10-14 review: page shows published 7 Sep 2026 and deadline 6 Oct 2026. A 12 Sep event date was not on the page.",
+      "grid_news": false,
       "entity_links": {
         "country": "Kuwait",
         "utility_buyer": "Ministry of Electricity, Water & Renewable Energy (MEWRE)",
@@ -637,7 +644,7 @@
         "award_date": null,
         "project_start_date": null,
         "commissioning_date": null,
-        "source_checked_at": "2026-09-25",
+        "source_checked_at": "2026-10-14",
         "update_date": null
       },
       "sources": [
@@ -655,7 +662,8 @@
       "publish_decision": "HOLD_FOR_REVIEW",
       "discovery_input_only": false,
       "reject_reason": null,
-      "notes": null,
+      "notes": "2026-10-14 review: BidDetail returned HTTP 200 and the 75 MVA relocation title, behind a paywall with no visible date. Held.",
+      "grid_news": false,
       "entity_links": {
         "country": "Kuwait",
         "utility_buyer": "Ministry of Electricity, Water & Renewable Energy (MEWRE)",
@@ -699,7 +707,7 @@
       },
       "dates": {
         "publication_date": "2026-08-31",
-        "event_date": "2026-09-24",
+        "event_date": "2026-08-31",
         "tender_float_date": "2026-08-31",
         "tender_close_date": "2026-09-29",
         "bid_opening_date": null,
@@ -707,7 +715,7 @@
         "award_date": null,
         "project_start_date": null,
         "commissioning_date": null,
-        "source_checked_at": "2026-09-25",
+        "source_checked_at": "2026-10-14",
         "update_date": null
       },
       "sources": [
@@ -721,11 +729,12 @@
       ],
       "confidence": "MEDIUM",
       "why_previously_missed": "Stage-2 of same MEWRE programme — needs canonical procurement linking, not a separate news card. No CAPT adapter.",
-      "published_to_intel": false,
+      "published_to_intel": true,
       "publish_decision": "HOLD_FOR_REVIEW",
       "discovery_input_only": false,
       "reject_reason": null,
-      "notes": "Keep distinct from stage-1 via canonical_procurement_id; do not spawn duplicate Intel stories on status change alone.",
+      "notes": "Keep distinct from stage-1 via canonical_procurement_id; do not spawn duplicate Intel stories on status change alone. 2026-10-14 review: page shows published 31 Aug 2026 and deadline 29 Sep 2026. A 24 Sep event date was not on the page.",
+      "grid_news": false,
       "entity_links": {
         "country": "Kuwait",
         "utility_buyer": "Ministry of Electricity, Water & Renewable Energy (MEWRE)",
@@ -788,7 +797,7 @@
         "award_date": null,
         "project_start_date": null,
         "commissioning_date": null,
-        "source_checked_at": "2026-09-25",
+        "source_checked_at": "2026-10-14",
         "update_date": "2026-09-19"
       },
       "sources": [
@@ -828,11 +837,12 @@
       ],
       "confidence": "HIGH",
       "why_previously_missed": "Item existed in curated intel.html (MEED 13 Aug) but (1) collapsed dates — no separate event_date vs update_date for 19 Sep resurfacing; (2) not classified as FACTORY_INVESTMENT + LOCALISATION for knowledge-graph fan-out; (3) absent from data/intel.json GCC region used by some builders; (4) no systematic APSR/Invest Oman/ONA discovery watch.",
-      "published_to_intel": true,
+      "published_to_intel": false,
       "publish_decision": "REVIEW_QUEUE",
       "discovery_input_only": false,
       "reject_reason": null,
-      "notes": "Knowledge-graph targets: Oman market intel, manufacturing-investment Intel, future factory records, component-manufacturing research queues, Voltamp company profile evidence. event_date MUST remain 2026-08-12.",
+      "notes": "Knowledge-graph targets: Oman market intel, manufacturing-investment Intel, future factory records, component-manufacturing research queues, Voltamp company profile evidence. event_date MUST remain 2026-08-12. 2026-10-14 review: Times of Oman (12 Aug 2026) and Arabian Stories (19 Sep 2026) still describe the agreements. Oman Observer returned HTTP 502. Unpublished from the public Intel card on 2026-10-14 after REJECT. Not injected.",
+      "grid_news": false,
       "entity_links": {
         "country": "Oman",
         "utility_buyer": "Authority for Public Services Regulation (APSR) / Invest Oman / Voltamp Energy partnership",
@@ -908,11 +918,12 @@
       ],
       "confidence": "HIGH",
       "why_previously_missed": "No Bahrain Tender Board adapter; package-substation / kiosk supply not in RSS_FEEDS; EWA Central Stores procurements invisible to MEED-centric curation.",
-      "published_to_intel": false,
+      "published_to_intel": true,
       "publish_decision": "REVIEW_QUEUE",
       "discovery_input_only": false,
       "reject_reason": null,
       "notes": null,
+      "grid_news": false,
       "entity_links": {
         "country": "Bahrain",
         "utility_buyer": "Electricity & Water Authority (EWA) — Central Stores Directorate",
@@ -958,17 +969,18 @@
         "award_date": null,
         "project_start_date": null,
         "commissioning_date": null,
-        "source_checked_at": "2026-09-25",
+        "source_checked_at": "2026-10-14",
         "update_date": null
       },
       "sources": [],
       "confidence": "LOW",
       "why_previously_missed": "No AML crawl; approval lists not treated as discovery objects.",
       "published_to_intel": false,
-      "publish_decision": "HOLD_FOR_REVIEW",
+      "publish_decision": "REJECTED",
       "discovery_input_only": true,
-      "reject_reason": null,
-      "notes": "Separate investigation required before any publish. Related historical AML appears on other BTB package-substation notices (e.g. transformers up to 1500 kVA approved makers) — do not copy across tenders without evidence.",
+      "reject_reason": "No source URL and no event date. Placeholder only; do not infer an approved-manufacturer list.",
+      "notes": "Separate investigation required before any publish. Related historical AML appears on other BTB package-substation notices (e.g. transformers up to 1500 kVA approved makers) — do not copy across tenders without evidence. 2026-10-14 review: rejected. sources[] is empty.",
+      "grid_news": false,
       "entity_links": {
         "country": "Bahrain",
         "utility_buyer": "Electricity & Water Authority (EWA)",
@@ -980,7 +992,7 @@
         "facility_location": null,
         "supplier_award_winner": null
       },
-      "evidence_grade": "REVIEW_REQUIRED"
+      "evidence_grade": "REJECTED"
     },
     {
       "candidate_id": "qa-sept-zero",
@@ -1015,7 +1027,7 @@
         "award_date": null,
         "project_start_date": null,
         "commissioning_date": null,
-        "source_checked_at": "2026-09-25",
+        "source_checked_at": "2026-10-14",
         "update_date": null
       },
       "sources": [
@@ -1034,7 +1046,8 @@
       "publish_decision": "INTERNAL_COVERAGE_ONLY",
       "discovery_input_only": false,
       "reject_reason": null,
-      "notes": "Do NOT fabricate a Qatar story. Record as coverage matrix: NO_QUALIFYING_ACTIVITY_FOUND once KAHRAMAA/CTC adapters run.",
+      "notes": "Do NOT fabricate a Qatar story. Record as coverage matrix: NO_QUALIFYING_ACTIVITY_FOUND once KAHRAMAA/CTC adapters run. 2026-10-14 review: kept as internal coverage. km.qa timed out, so the September zero was not reconfirmed. Not an Intel card.",
+      "grid_news": false,
       "entity_links": {
         "country": "Qatar",
         "utility_buyer": null,
@@ -1047,6 +1060,146 @@
         "supplier_award_winner": null
       },
       "evidence_grade": "CONFIRMED"
+    },
+    {
+      "candidate_id": "gcc-uae-saudi-grid-mou-2026-10-09",
+      "country": "United Arab Emirates",
+      "title": "UAE and Saudi Arabia sign an MoU on electricity interconnection",
+      "snippet": "MEED, 9 October 2026: the UAE and Saudi Arabia signed an MoU in Riyadh on 8 October to strengthen electricity interconnection, study the exchange and sale of power, and coordinate with other GCC states on expanding the regional interconnection. The report also describes the earlier GCCIA project: a 96 km double-circuit 400 kV line from Al-Silaa in Abu Dhabi to Salwa in Saudi Arabia.",
+      "buyer": "UAE Ministry of Investment / Saudi Ministry of Energy",
+      "tender_id": null,
+      "canonical_procurement_id": null,
+      "procurement_state": "ANNOUNCED",
+      "procurement_events": [],
+      "classifications": [
+        "REGULATORY",
+        "PROJECT"
+      ],
+      "transformer_relevant": false,
+      "transformer_category": null,
+      "voltage": "400 kV",
+      "rating": null,
+      "location": "Riyadh; Al-Silaa (Abu Dhabi) to Salwa",
+      "project": null,
+      "supplier": null,
+      "key_values_extracted": {
+        "signed": "2026-10-08",
+        "reported": "2026-10-09",
+        "line_described_in_source": "96 km double-circuit 400 kV Al-Silaa to Salwa"
+      },
+      "dates": {
+        "publication_date": "2026-10-09",
+        "event_date": "2026-10-08",
+        "tender_float_date": null,
+        "tender_close_date": null,
+        "bid_opening_date": null,
+        "expected_award_date": null,
+        "award_date": null,
+        "project_start_date": null,
+        "commissioning_date": null,
+        "source_checked_at": "2026-10-14",
+        "update_date": "2026-10-09"
+      },
+      "sources": [
+        {
+          "source_id": "meed",
+          "url": "https://guest.meed.com/uae-and-saudi-arabia-plan-electricity-interconnection/",
+          "source_type": "INDUSTRY_MEDIA",
+          "role": "SECONDARY",
+          "authority_class": "INDUSTRY_MEDIA",
+          "note": "Fetched 2026-10-14. Page is dated 9 October 2026."
+        }
+      ],
+      "confidence": "MEDIUM",
+      "why_previously_missed": "Published 9 October 2026, after the September discovery window.",
+      "published_to_intel": true,
+      "publish_decision": "HOLD_FOR_REVIEW",
+      "discovery_input_only": false,
+      "reject_reason": null,
+      "notes": null,
+      "grid_news": true,
+      "entity_links": {
+        "country": "United Arab Emirates",
+        "utility_buyer": "UAE Ministry of Investment / Saudi Ministry of Energy",
+        "project": null,
+        "tender": null,
+        "transformer_category": null,
+        "voltage": "400 kV",
+        "rating": null,
+        "facility_location": "Riyadh; Al-Silaa (Abu Dhabi) to Salwa",
+        "supplier_award_winner": null
+      },
+      "evidence_grade": "SUPPORTED"
+    },
+    {
+      "candidate_id": "sa-sppc-grid-scale-2026-10-13",
+      "country": "Saudi Arabia",
+      "title": "Saudi Power Procurement says about half the grid is being scaled up for demand including AI",
+      "snippet": "Arab News, updated 13 October 2026: Saudi Power Procurement Co. CEO Mazin Al-Bahkali told the 25th WPC Energy Congress in Riyadh that about 50 percent of the grid is being scaled up for growing demand, including AI and data centres.",
+      "buyer": "Saudi Power Procurement Company",
+      "tender_id": null,
+      "canonical_procurement_id": null,
+      "procurement_state": "ANNOUNCED",
+      "procurement_events": [],
+      "classifications": [
+        "REGULATORY",
+        "PROJECT"
+      ],
+      "transformer_relevant": false,
+      "transformer_category": null,
+      "voltage": null,
+      "rating": null,
+      "location": "Riyadh",
+      "project": null,
+      "supplier": null,
+      "key_values_extracted": {
+        "speaker": "Mazin Al-Bahkali, Saudi Power Procurement Co.",
+        "claim": "About 50 percent of the grid is being scaled up",
+        "event": "25th WPC Energy Congress, Riyadh"
+      },
+      "dates": {
+        "publication_date": "2026-10-13",
+        "event_date": "2026-10-13",
+        "tender_float_date": null,
+        "tender_close_date": null,
+        "bid_opening_date": null,
+        "expected_award_date": null,
+        "award_date": null,
+        "project_start_date": null,
+        "commissioning_date": null,
+        "source_checked_at": "2026-10-14",
+        "update_date": "2026-10-13"
+      },
+      "sources": [
+        {
+          "source_id": "arab-news",
+          "url": "https://www.arabnews.com/energy/saudi-arabia-upgrading-50-of-power-grid-as-demand-climbs-from-industry-to-ai-3006079",
+          "source_type": "INDUSTRY_MEDIA",
+          "role": "SECONDARY",
+          "authority_class": "INDUSTRY_MEDIA",
+          "note": "Fetched 2026-10-14. Page says Updated 13 October 2026."
+        }
+      ],
+      "confidence": "MEDIUM",
+      "why_previously_missed": "Published 13 October 2026, after the September discovery window.",
+      "published_to_intel": true,
+      "publish_decision": "HOLD_FOR_REVIEW",
+      "discovery_input_only": false,
+      "reject_reason": null,
+      "notes": null,
+      "grid_news": true,
+      "entity_links": {
+        "country": "Saudi Arabia",
+        "utility_buyer": "Saudi Power Procurement Company",
+        "project": null,
+        "tender": null,
+        "transformer_category": null,
+        "voltage": null,
+        "rating": null,
+        "facility_location": "Riyadh",
+        "supplier_award_winner": null
+      },
+      "evidence_grade": "SUPPORTED"
     }
   ]
 }

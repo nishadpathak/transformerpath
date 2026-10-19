@@ -73,4 +73,55 @@ fs.writeFileSync('data/voltage-evidence-consistency.json', JSON.stringify({
   honesty: 'Summary Highest sourced voltage evidence = MAX(tier.kv, accepted provenance voltage_class_evidence).'
 }, null, 2) + '\n');
 
-console.log('VOLTAGE EVIDENCE OK — ' + raised.length + ' manufacturers where provenance MAX exceeds tier.kv (incl. CG Power ' + cg.evidence_max_kv + ' kV; HTML summary ' + summaryN + ' kV)');
+// Every generated manufacturer page: summary kV >= MAX(tier.kv, non-REJECTED
+// voltage_class_evidence). Redirect stubs have no summary row and are skipped.
+const path = require('path');
+const slugs = JSON.parse(fs.readFileSync('data/company-slugs.json', 'utf8'));
+const slugToName = {};
+slugs.forEach(function (s) { if (s && s.slug) slugToName[s.slug] = s.name; });
+const tierByName = {};
+TIERS.forEach(function (t) { if (t && t.name) tierByName[norm(t.name)] = t; });
+
+function walkHtml(dir, acc) {
+  if (!fs.existsSync(dir)) return;
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    const p = path.join(dir, e.name);
+    if (e.isDirectory()) walkHtml(p, acc);
+    else if (e.name === 'index.html') acc.push(p);
+  }
+}
+const pages = [];
+walkHtml('manufacturers', pages);
+let checkedPages = 0;
+pages.forEach(function (page) {
+  const html = fs.readFileSync(page, 'utf8');
+  if (/http-equiv=["']refresh["']/i.test(html)) return;
+  const summaryKv = html.match(/Highest sourced voltage evidence<\/th>\s*<td>(\d+)\s*kV/i);
+  if (!summaryKv) return;
+  const slug = page.split(path.sep)[1];
+  const name = slugToName[slug];
+  if (!name) return;
+  const prov = byName[norm(name)];
+  const tier = tierByName[norm(name)];
+  let maxEv = 0;
+  (prov && prov.facts || []).forEach(function (f) {
+    if (!f || f.field !== 'voltage_class_evidence') return;
+    if (/REJECT/i.test(String(f.confidence || ''))) return;
+    const v = typeof f.value === 'number' ? f.value : parseFloat(f.value);
+    if (!isNaN(v) && v > maxEv) maxEv = v;
+  });
+  const tierKv = tier ? (typeof tier.kv === 'number' ? tier.kv : parseFloat(tier.kv) || 0) : 0;
+  const expect = Math.max(maxEv, tierKv);
+  const got = Number(summaryKv[1]);
+  checkedPages++;
+  if (expect && got < expect) {
+    mismatches.push(page + ': summary ' + got + ' kV < MAX ' + expect + ' kV (' + name + ')');
+  }
+});
+if (mismatches.length) {
+  console.error('VOLTAGE EVIDENCE GATE FAILED — summary below accepted evidence:');
+  mismatches.slice(0, 25).forEach(function (m) { console.error('  - ' + m); });
+  process.exit(1);
+}
+
+console.log('VOLTAGE EVIDENCE OK — ' + raised.length + ' manufacturers where provenance MAX exceeds tier.kv (incl. CG Power ' + cg.evidence_max_kv + ' kV; HTML summary ' + summaryN + ' kV); ' + checkedPages + ' profile summaries checked');

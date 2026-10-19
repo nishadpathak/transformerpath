@@ -116,7 +116,7 @@
     },
     {
       id: 14, label: 'Separate LV winding & inner barrier',
-      caption: 'The innermost 33 kV delta winding of epoxy-bonded continuously transposed conductor (CTC). The pressboard cylinder underneath it is the main HV–LV insulation barrier — it also sets the transformer\'s leakage impedance at 12–14%.',
+      caption: 'The innermost 33 kV delta winding of epoxy-bonded continuously transposed conductor (CTC). The main HV–LV pressboard barrier is the cylinder outside this winding, in the oil duct between LV and HV. That gap sets the leakage impedance, about 12–14%. The cylinder under the LV is only the winding former on the core.',
       camTh: 0.25, camPh: 1.1, camR: 75, tank: 0.0,
       visGroups: { tank:false, oil:false, core:true, lv:true, hv:false, tap:false, barriers:true, bushings:false, conservator:false, cooling:false, oltc:false, controls:false, arresters:false }
     },
@@ -656,6 +656,19 @@
         electricalHighlight.forEach(function (o) { o.material.emissiveIntensity = 0.4 + pulse * 0.6; });
       }
 
+      function clampCallout(el, x, y) {
+        el.style.left = x + 'px';
+        el.style.top = y + 'px';
+        var r = el.getBoundingClientRect();
+        var m = 6;
+        if (r.right > window.innerWidth - m) x -= r.right - (window.innerWidth - m);
+        if (r.left < m) x += m - r.left;
+        if (r.bottom > window.innerHeight - m) y -= r.bottom - (window.innerHeight - m);
+        if (r.top < m) y += m - r.top;
+        el.style.left = x + 'px';
+        el.style.top = y + 'px';
+      }
+
       /* label positions */
       if (labelsOn) {
         var cam = opts.camera;
@@ -665,8 +678,7 @@
           var pr = v3.project(cam);
           if (pr.z > 1) { L.el.style.display = 'none'; return; }
           L.el.style.display = 'block';
-          L.el.style.left = ((pr.x + 1) / 2 * window.innerWidth) + 'px';
-          L.el.style.top  = ((-pr.y + 1) / 2 * window.innerHeight) + 'px';
+          clampCallout(L.el, (pr.x + 1) / 2 * window.innerWidth, (-pr.y + 1) / 2 * window.innerHeight);
         });
       } else {
         labelEls.forEach(function (L) { L.el.style.display = 'none'; });

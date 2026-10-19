@@ -42,8 +42,18 @@ const syncLabels = new Set(GRIDS.map((g) => g.sync).filter(Boolean)).size;
    num(prev.events) — a hand-typed 203 that copied itself forward while the
    dataset held 300. */
 const EVENTS = readJson('data/events.json', []);
-const todayISO = new Date().toISOString().slice(0, 10);
-const upcomingEvents = EVENTS.filter((e) => (e.s || e.startDate || '') >= todayISO).length;
+const { isUpcoming, platformToday } = require('./lib/event-status');
+const { homepageEventsSentence } = require('./lib/homepage-events');
+/* Same predicate as /events: end date is still on or after the Asia/Dubai
+   platform date, and the record is discoverable. */
+const todayISO = platformToday();
+const upcomingEvents = EVENTS.filter((e) => isUpcoming(e, todayISO)).length;
+/* Homepage event dates are the canonical edition records, not a handwritten
+   copy. events-canonical.json is produced from events.json by
+   build-event-canonicalization.js earlier in the same build. */
+const CANON = readJson('data/events-canonical.json', {});
+const CANON_EVENTS = (CANON.canonical_editions && CANON.canonical_editions.length) ? CANON.canonical_editions : EVENTS;
+const homepageEventsText = homepageEventsSentence(CANON_EVENTS, todayISO);
 
 // Compute structured database metrics across manufacturers, factories, and capabilities
 const SITES = readJson('data/manufacturer-sites.json', []);
@@ -95,6 +105,10 @@ LABS.forEach(l => {
   if (l.accreditation) intelSourcedCount++;
 });
 
+const awardsConfirmed = AWARDS.filter((a) => a.transformer_scope === 'CONFIRMED').length;
+const awardsInferred = AWARDS.filter((a) => a.transformer_scope === 'INFERRED').length;
+const awardsUnknown = AWARDS.filter((a) => a.transformer_scope !== 'CONFIRMED' && a.transformer_scope !== 'INFERRED').length;
+const awardsTracked = awardsConfirmed + awardsInferred + awardsUnknown;
 const companiesCount = (INTEL.companies || []).length || makers;
 const avgCompleteness = companiesCount ? Math.min(95, Math.max(54, Math.round(intelCompletenessTotal / companiesCount))) : 73;
 
@@ -137,7 +151,11 @@ const current = {
   tenders: TENDERS.length || num(prev.tenders, 0),
   openTenders: openTenders || num(prev.openTenders, 0),
   preAward: preAward || num(prev.preAward, 0),
-  awards: AWARDS.length || num(prev.awards, 0),
+  awards: awardsTracked,
+  awardsConfirmed: awardsConfirmed,
+  awardsInferred: awardsInferred,
+  awardsUnknown: awardsUnknown,
+  awardsScopeTaxonomy: 'CONFIRMED / INFERRED / UNKNOWN transformer_scope, same labels as Intelligence',
   events: EVENTS.length || num(prev.events, 0),
   upcomingEvents: upcomingEvents || num(prev.upcomingEvents, 0),
   gridsCardText: GRIDS.length + ' countries, ' +
@@ -188,9 +206,64 @@ for (let i = 0; i < STAT_HTML.length; i++) {
       /title="Explore \d+ upcoming industry conferences and exhibitions"/g,
       'title="Explore ' + current.upcomingEvents + ' upcoming industry conferences and exhibitions"'
     );
+    html = html.replace(
+      /title="View \d+ procurement tenders worldwide"/g,
+      'title="View ' + current.tenders + ' procurement tenders worldwide"'
+    );
+    html = html.replace(
+      /title="\d+ open tenders accepting bids right now"/g,
+      'title="' + current.openTenders + ' open tenders accepting bids right now"'
+    );
+    html = html.replace(
+      /title="\d+ awards tracked, split by transformer scope"/g,
+      'title="' + current.awards + ' awards tracked, split by transformer scope"'
+    );
+    if (homepageEventsText) {
+      html = html.replace(
+        /(<h3>Events →<\/h3><p id="home-next-events">)[\s\S]*?(<\/p>)/,
+        '$1' + homepageEventsText + '$2'
+      );
+    }
+    html = html.replace(
+      /Explore manufacturing across \d+ countries/g,
+      'Explore manufacturing across ' + current.manufacturingCountries + ' countries'
+    );
+    html = html.replace(
+      /Browse all \d+ transformer companies/g,
+      'Browse all ' + current.manufacturers + ' transformer companies'
+    );
   }
   if (html !== before) {
     fs.writeFileSync(p, html);
+    htmlPatched++;
+  }
+}
+
+/* Directory headlines are not data-stat nodes. The SSR block, the count
+   line and the Dataset size are what crawlers and no-JS readers see.
+   Plant-alias rows that share a profile are hidden on this page, so these
+   figures count the rendered companies. site-stats.json keeps the census. */
+if (fs.existsSync('manufacturers.html')) {
+  let html = fs.readFileSync('manufacturers.html', 'utf8');
+  const before = html;
+  const slugMap = {};
+  readJson('data/company-slugs.json', []).forEach(function (row) {
+    if (row && row.name && row.slug) slugMap[row.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()] = row.slug;
+  });
+  const renderedMakers = require('./lib/company-aliases').visibleMakerCount(MANUF, slugMap);
+  const regionsShown = new Set(MANUF.filter((g) => (g.makers || []).some((m) => !/^Served by/i.test(m[0]))).map((g) => g.region).filter(Boolean)).size;
+  const statsBlock = '<!--SSR:mfg-stats-->\n' +
+    '<div class="s"><b>' + renderedMakers + '</b><small>Companies</small></div>\n' +
+    '<div class="s"><b>' + current.manufacturingCountries + '</b><small>Countries</small></div>\n' +
+    '<div class="s"><b>' + regionsShown + '</b><small>Regions</small></div>\n' +
+    '<div class="s"><b>' + current.dataCompleteness + '%</b><small>Data completeness</small></div>\n' +
+    '<!--/SSR:mfg-stats-->';
+  html = html.replace(/<!--SSR:mfg-stats-->[\s\S]*?<!--\/SSR:mfg-stats-->/, statsBlock);
+  html = html.replace(/Showing \d+ companies across \d+ countries/,
+    'Showing ' + renderedMakers + ' companies across ' + current.manufacturingCountries + ' countries');
+  html = html.replace(/("size"\s*:\s*)\d+/, '$1' + renderedMakers);
+  if (html !== before) {
+    fs.writeFileSync('manufacturers.html', html);
     htmlPatched++;
   }
 }

@@ -40,6 +40,7 @@
 .grid-row b { color:var(--ink); }
 .grid-row .kv { color:var(--accent); font-weight:700; white-space:nowrap; }
 .grid-row a { color:var(--accent); font-weight:600; white-space:nowrap; }
+.grid-row .op-updated { display:block; color:var(--muted); font-size:.75rem; font-weight:600; }
 .region-h { font-size:1.15rem; font-weight:800; color:var(--ink); margin:30px 0 14px; padding-bottom:6px; border-bottom:2px solid var(--amber); }
 .ic-table td:first-child { white-space:normal; }
 .ic-table .rt { color:var(--muted); font-size:.84rem; display:block; margin-top:2px; font-weight:400; }
@@ -85,11 +86,16 @@
 
 <a class="skip-link" href="#main">Skip to content</a>
 <header>
+  <style>
+    @media (min-width: 1024px) {
+      #mainNav > .tpnav-more { display: block; }
+    }
+  </style>
   <div class="container nav">
-    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 16 16" aria-hidden="true" style="flex:none"><g fill="#f5a623"><rect x="1" y="1" width="4" height="4"/><rect x="11" y="1" width="4" height="4"/><rect x="1" y="11" width="4" height="4"/><rect x="11" y="11" width="4" height="4"/><rect x="5" y="2" width="6" height="2"/><rect x="12" y="5" width="2" height="6"/><rect x="5" y="12" width="6" height="2"/></g></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
     <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
     <nav class="tpnav" id="mainNav" aria-label="Primary">
-      <a href="intel.html">Intel</a>
+      <a href="/intel.html">Intel</a>
       <div class="tpnav-dropdown">
         <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
         <div class="tpnav-dropdown-panel" role="menu">
@@ -102,21 +108,25 @@
           <a href="services.html">Services &amp; Repair</a>
           <a href="markets.html">Markets</a>
           <a href="buyers-guide.html">Buyer's Guide</a>
+          <a href="buy-early/">Buy early</a>
+          <a href="spare-capacity/">Mid-tier makers</a>
+          <a href="lead-times/">Lead times</a>
+          <a href="bottlenecks/">Bottlenecks</a>
           <a href="directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
         </div>
       </div>
       <a href="projects.html">Projects</a>
       <a href="tenders.html">Tenders</a>
       <a href="events.html">Events</a>
-      <a href="tools.html" class="tpnav-opt">Engineering</a>
       <a href="learn.html">Learn</a>
       <a href="rfq.html">RFQ</a>
       <div class="tpnav-more">
         <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
         <div class="tpnav-more-panel" role="menu">
+          <a href="tools.html" role="menuitem">Engineering</a>
           <a href="map.html" role="menuitem">Industry Map</a>
           <a href="grids.html" role="menuitem">Global Grids</a>
-          <a href="webinars.html" role="menuitem">Webinars</a>
+          
           <a href="standards.html" role="menuitem">Standards &amp; Codes</a>
           <a href="for-manufacturers.html" role="menuitem">For Manufacturers</a>
           <a href="pricing.html" role="menuitem">Pricing Plans</a>
@@ -125,6 +135,7 @@
       </div>
       <span class="tpnav-utils">
         <a href="search.html" title="Search" aria-label="Search">&#128269;</a>
+        <span class="tp-auth" data-tp-auth hidden></span>
         <a href="workspace.html" data-tp-account>Account</a>
         <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">&#127769;</button>
       </span>
@@ -156,6 +167,8 @@
       themeToggle.textContent = isDark ? '☀️' : '🌙';
     }
   </script>
+  <script src="google-auth-config.js" defer></script>
+  <script src="tp-auth.js?v=1" defer></script>
   <script src="tp-nav.js?v=7" defer></script>
   <script src="tp-pwa.js?v=7" defer></script>
 </header>
@@ -185,7 +198,7 @@
 </div>
     <p style="text-align:center;color:var(--muted);font-size:.8rem;margin:-12px 0 24px" id="lvLine">
 <!--SSR:grids-lv-->
-Data last verified 2026-07-07 &middot; sources: official utility, operator &amp; regulator filings &middot; maintained encyclopedia-style from the TransformerPath grid census. Report a <a href="mailto:hello@transformerpath.com?subject=Grid%20census%20correction" style="color:var(--accent);font-weight:600">correction</a>.
+Census verified 7 July 2026. Each operator row shows that operator record's own updated date. Sources: official utility, operator &amp; regulator filings. Report a <a href="mailto:hello@transformerpath.com?subject=Grid%20census%20correction" style="color:var(--accent);font-weight:600">correction</a>.
 <!--/SSR:grids-lv-->
 </p>
 
@@ -327,7 +340,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">GCCIA</span>
           <span class="badge b-cnt">4 operators</span>
         </div>
-        <div class="grid-row"><b>TAQA Transmission</b><span style="color:var(--muted)">Abu Dhabi transmission owner-operator &amp; northern grid spine</span><span class="kv">400 kV</span><a href="https://taqatransmission.com/" target="_blank" rel="noopener">Site →</a></div><div class="grid-row"><b>DEWA</b><span style="color:var(--muted)">Dubai vertically-integrated utility — gen, transmission, distribution</span><span class="kv">400 kV</span><a href="https://www.dewa.gov.ae/" target="_blank" rel="noopener">Site →</a></div><div class="grid-row"><b>SEWA</b><span style="color:var(--muted)">Sharjah utility</span><span class="kv">220 kV</span><a href="https://www.sewa.gov.ae/" target="_blank" rel="noopener">Site →</a></div><div class="grid-row"><b>EtihadWE</b><span style="color:var(--muted)">Northern Emirates utility</span><span class="kv">220 kV</span><a href="https://www.etihadwe.ae/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">💧 1 green H₂ project</div>
+        <div class="grid-row"><b>TAQA Transmission</b><span style="color:var(--muted)">Abu Dhabi transmission owner-operator &amp; northern grid spine <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://taqatransmission.com/" target="_blank" rel="noopener">Site →</a></div><div class="grid-row"><b>DEWA</b><span style="color:var(--muted)">Dubai vertically-integrated utility — gen, transmission, distribution <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.dewa.gov.ae/" target="_blank" rel="noopener">Site →</a></div><div class="grid-row"><b>SEWA</b><span style="color:var(--muted)">Sharjah utility <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">220 kV</span><a href="https://www.sewa.gov.ae/" target="_blank" rel="noopener">Site →</a></div><div class="grid-row"><b>EtihadWE</b><span style="color:var(--muted)">Northern Emirates utility <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">220 kV</span><a href="https://www.etihadwe.ae/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">💧 1 green H₂ project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇸🇦</span><h3><a href="/grids/saudi-arabia/" style="color:inherit;text-decoration:none">Saudi Arabia</a></h3>
@@ -335,7 +348,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">GCCIA</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>Saudi Electricity Co / National Grid SA</b><span style="color:var(--muted)">Single national grid — only 60 Hz system in GCC, tied to GCCIA via HVDC back-to-back at Al-Fadhili</span><span class="kv">380 kV</span><a href="https://www.se.com.sa/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 3 interconnector projects · 💧 1 green H₂ project · 💰 grid CAPEX programme</div>
+        <div class="grid-row"><b>Saudi Electricity Co / National Grid SA</b><span style="color:var(--muted)">Single national grid — only 60 Hz system in GCC, tied to GCCIA via HVDC back-to-back at Al-Fadhili <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">380 kV</span><a href="https://www.se.com.sa/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 3 interconnector projects · 💧 1 green H₂ project · 💰 grid CAPEX programme</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇰🇼</span><h3><a href="/grids/kuwait/" style="color:inherit;text-decoration:none">Kuwait</a></h3>
@@ -343,7 +356,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">GCCIA</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>MEWRE (Ministry of Electricity &amp; Water)</b><span style="color:var(--muted)">State grid operator — GCCIA northern terminus</span><span class="kv">400 kV</span><a href="https://www.mew.gov.kw/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 2 interconnector projects</div>
+        <div class="grid-row"><b>MEWRE (Ministry of Electricity &amp; Water)</b><span style="color:var(--muted)">State grid operator — GCCIA northern terminus <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.mew.gov.kw/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 2 interconnector projects</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇶🇦</span><h3><a href="/grids/qatar/" style="color:inherit;text-decoration:none">Qatar</a></h3>
@@ -351,7 +364,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">GCCIA</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>KAHRAMAA</b><span style="color:var(--muted)">Qatar General Electricity &amp; Water Corp</span><span class="kv">400 kV</span><a href="https://www.km.qa/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>KAHRAMAA</b><span style="color:var(--muted)">Qatar General Electricity &amp; Water Corp <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.km.qa/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇧🇭</span><h3><a href="/grids/bahrain/" style="color:inherit;text-decoration:none">Bahrain</a></h3>
@@ -359,7 +372,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">GCCIA</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>EWA</b><span style="color:var(--muted)">Electricity &amp; Water Authority — GCCIA link via Saudi</span><span class="kv">220 kV</span><a href="https://www.ewa.bh/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>EWA</b><span style="color:var(--muted)">Electricity &amp; Water Authority — GCCIA link via Saudi <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">220 kV</span><a href="https://www.ewa.bh/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇴🇲</span><h3><a href="/grids/oman/" style="color:inherit;text-decoration:none">Oman</a></h3>
@@ -367,7 +380,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">GCCIA</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>OETC (Oman Grid)</b><span style="color:var(--muted)">Main interconnected system + Dhofar grid; synced to GCCIA via UAE</span><span class="kv">400 kV</span><a href="https://www.omangrid.com/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project · 💧 2 green H₂ projects</div>
+        <div class="grid-row"><b>OETC (Oman Grid)</b><span style="color:var(--muted)">Main interconnected system + Dhofar grid; synced to GCCIA via UAE <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.omangrid.com/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project · 💧 2 green H₂ projects</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇮🇶</span><h3><a href="/grids/iraq/" style="color:inherit;text-decoration:none">Iraq</a></h3>
@@ -375,7 +388,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">GCCIA-linked</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>Ministry of Electricity</b><span style="color:var(--muted)">National grid; 400 kV GCCIA link to Kuwait energized 2024, also tied to Iran &amp; Jordan</span><span class="kv">400 kV</span><a href="https://moelc.gov.iq/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 2 interconnector projects</div>
+        <div class="grid-row"><b>Ministry of Electricity</b><span style="color:var(--muted)">National grid; 400 kV GCCIA link to Kuwait energized 2024, also tied to Iran &amp; Jordan <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://moelc.gov.iq/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 2 interconnector projects</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇯🇴</span><h3><a href="/grids/jordan/" style="color:inherit;text-decoration:none">Jordan</a></h3>
@@ -383,7 +396,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Eight Country IC</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>NEPCO</b><span style="color:var(--muted)">National Electric Power Co — interconnected with Egypt (submarine) &amp; Iraq</span><span class="kv">400 kV</span><a href="https://www.nepco.com.jo/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 2 interconnector projects</div>
+        <div class="grid-row"><b>NEPCO</b><span style="color:var(--muted)">National Electric Power Co — interconnected with Egypt (submarine) &amp; Iraq <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.nepco.com.jo/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 2 interconnector projects</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇱🇧</span><h3><a href="/grids/lebanon/" style="color:inherit;text-decoration:none">Lebanon</a></h3>
@@ -391,7 +404,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Eight Country IC</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>EDL (Électricité du Liban)</b><span style="color:var(--muted)">National utility — chronic capacity deficit; Syria tie</span><span class="kv">220 kV</span><a href="https://www.edl.gov.lb/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>EDL (Électricité du Liban)</b><span style="color:var(--muted)">National utility — chronic capacity deficit; Syria tie <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">220 kV</span><a href="https://www.edl.gov.lb/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇸🇾</span><h3><a href="/grids/syria/" style="color:inherit;text-decoration:none">Syria</a></h3>
@@ -399,7 +412,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Eight Country IC</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>PEEGT</b><span style="color:var(--muted)">Public Establishment for Generation &amp; Transmission — war-damaged, partial operation</span><span class="kv">400 kV</span><span></span></div>
+        <div class="grid-row"><b>PEEGT</b><span style="color:var(--muted)">Public Establishment for Generation &amp; Transmission — war-damaged, partial operation <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><span></span></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇾🇪</span><h3><a href="/grids/yemen/" style="color:inherit;text-decoration:none">Yemen</a></h3>
@@ -407,7 +420,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Isolated</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>PEC (Public Electricity Corp)</b><span style="color:var(--muted)">Fragmented grid; reconstruction phase</span><span class="kv">132 kV</span><span></span></div>
+        <div class="grid-row"><b>PEC (Public Electricity Corp)</b><span style="color:var(--muted)">Fragmented grid; reconstruction phase <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">132 kV</span><span></span></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇮🇷</span><h3><a href="/grids/iran/" style="color:inherit;text-decoration:none">Iran</a></h3>
@@ -415,7 +428,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Isolated (regional ties)</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>TAVANIR / IGMC</b><span style="color:var(--muted)">National grid — async ties to Iraq, Armenia, Turkmenistan, Pakistan</span><span class="kv">400 kV</span><a href="https://www.tavanir.org.ir/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>TAVANIR / IGMC</b><span style="color:var(--muted)">National grid — async ties to Iraq, Armenia, Turkmenistan, Pakistan <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.tavanir.org.ir/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇮🇱</span><h3><a href="/grids/israel/" style="color:inherit;text-decoration:none">Israel</a></h3>
@@ -423,7 +436,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Isolated</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>IEC / Noga ISO</b><span style="color:var(--muted)">Island grid — no international AC ties</span><span class="kv">400 kV</span><a href="https://www.iec.co.il/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>IEC / Noga ISO</b><span style="color:var(--muted)">Island grid — no international AC ties <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.iec.co.il/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇪🇬</span><h3><a href="/grids/egypt/" style="color:inherit;text-decoration:none">Egypt</a></h3>
@@ -431,7 +444,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Eight Country IC</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>EETC</b><span style="color:var(--muted)">Egyptian Electricity Transmission Co — hub to Jordan, Libya, Sudan; ±500 kV HVDC to Saudi commissioning</span><span class="kv">500 kV</span><a href="https://www.eetc.net.eg/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project · 💧 1 green H₂ project</div>
+        <div class="grid-row"><b>EETC</b><span style="color:var(--muted)">Egyptian Electricity Transmission Co — hub to Jordan, Libya, Sudan; ±500 kV HVDC to Saudi commissioning <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">500 kV</span><a href="https://www.eetc.net.eg/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project · 💧 1 green H₂ project</div>
       </div>
 <div class="region-h">Europe</div><div class="country-card">
         <div class="country-head">
@@ -440,7 +453,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Continental Europe</span>
           <span class="badge b-cnt">4 operators</span>
         </div>
-        <div class="grid-row"><b>Amprion</b><span style="color:var(--muted)">TSO — west (Rhine-Ruhr)</span><span class="kv">380 kV</span><a href="https://www.amprion.net/" target="_blank" rel="noopener">Site →</a></div><div class="grid-row"><b>TenneT Germany</b><span style="color:var(--muted)">TSO — north-south corridor</span><span class="kv">380 kV</span><a href="https://www.tennet.eu/" target="_blank" rel="noopener">Site →</a></div><div class="grid-row"><b>50Hertz</b><span style="color:var(--muted)">TSO — east</span><span class="kv">380 kV</span><a href="https://www.50hertz.com/" target="_blank" rel="noopener">Site →</a></div><div class="grid-row"><b>TransnetBW</b><span style="color:var(--muted)">TSO — Baden-Württemberg</span><span class="kv">380 kV</span><a href="https://www.transnetbw.de/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project · 🌊 2 offshore HVDC programmes · 💧 1 green H₂ project · 💰 grid CAPEX programme</div>
+        <div class="grid-row"><b>Amprion</b><span style="color:var(--muted)">TSO — west (Rhine-Ruhr) <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">380 kV</span><a href="https://www.amprion.net/" target="_blank" rel="noopener">Site →</a></div><div class="grid-row"><b>TenneT Germany</b><span style="color:var(--muted)">TSO — north-south corridor <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">380 kV</span><a href="https://www.tennet.eu/" target="_blank" rel="noopener">Site →</a></div><div class="grid-row"><b>50Hertz</b><span style="color:var(--muted)">TSO — east <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">380 kV</span><a href="https://www.50hertz.com/" target="_blank" rel="noopener">Site →</a></div><div class="grid-row"><b>TransnetBW</b><span style="color:var(--muted)">TSO — Baden-Württemberg <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">380 kV</span><a href="https://www.transnetbw.de/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project · 🌊 2 offshore HVDC programmes · 💧 1 green H₂ project · 💰 grid CAPEX programme</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇫🇷</span><h3><a href="/grids/france/" style="color:inherit;text-decoration:none">France</a></h3>
@@ -448,7 +461,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Continental Europe</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>RTE</b><span style="color:var(--muted)">Largest single TSO in Europe</span><span class="kv">400 kV</span><a href="https://www.rte-france.com/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 2 interconnector projects</div>
+        <div class="grid-row"><b>RTE</b><span style="color:var(--muted)">Largest single TSO in Europe <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.rte-france.com/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 2 interconnector projects</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇬🇧</span><h3><a href="/grids/united-kingdom/" style="color:inherit;text-decoration:none">United Kingdom</a></h3>
@@ -456,7 +469,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Great Britain</span>
           <span class="badge b-cnt">2 operators</span>
         </div>
-        <div class="grid-row"><b>NESO / National Grid ET</b><span style="color:var(--muted)">GB system operator + England-Wales transmission owner</span><span class="kv">400 kV</span><a href="https://www.neso.energy/" target="_blank" rel="noopener">Site →</a></div><div class="grid-row"><b>SP Energy Networks / SSEN</b><span style="color:var(--muted)">Scottish transmission owners</span><span class="kv">400 kV</span><a href="https://www.spenergynetworks.co.uk/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 2 interconnector projects · 🌊 4 offshore HVDC programmes · 💰 grid CAPEX programme</div>
+        <div class="grid-row"><b>NESO / National Grid ET</b><span style="color:var(--muted)">GB system operator + England-Wales transmission owner <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.neso.energy/" target="_blank" rel="noopener">Site →</a></div><div class="grid-row"><b>SP Energy Networks / SSEN</b><span style="color:var(--muted)">Scottish transmission owners <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.spenergynetworks.co.uk/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 2 interconnector projects · 🌊 4 offshore HVDC programmes · 💰 grid CAPEX programme</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇮🇪</span><h3><a href="/grids/ireland/" style="color:inherit;text-decoration:none">Ireland</a></h3>
@@ -464,7 +477,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Ireland (all-island)</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>EirGrid + SONI</b><span style="color:var(--muted)">All-island single electricity market (IE + NI)</span><span class="kv">400 kV</span><a href="https://www.eirgrid.ie/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
+        <div class="grid-row"><b>EirGrid + SONI</b><span style="color:var(--muted)">All-island single electricity market (IE + NI) <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.eirgrid.ie/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇮🇹</span><h3><a href="/grids/italy/" style="color:inherit;text-decoration:none">Italy</a></h3>
@@ -472,7 +485,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Continental Europe</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>Terna</b><span style="color:var(--muted)">National TSO — HVDC links to Sardinia, Montenegro, Greece, Tunisia (planned)</span><span class="kv">380 kV</span><a href="https://www.terna.it/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project · 💰 grid CAPEX programme</div>
+        <div class="grid-row"><b>Terna</b><span style="color:var(--muted)">National TSO — HVDC links to Sardinia, Montenegro, Greece, Tunisia (planned) <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">380 kV</span><a href="https://www.terna.it/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project · 💰 grid CAPEX programme</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇪🇸</span><h3><a href="/grids/spain/" style="color:inherit;text-decoration:none">Spain</a></h3>
@@ -480,7 +493,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Continental Europe</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>Red Eléctrica (Redeia)</b><span style="color:var(--muted)">National TSO — gateway for Morocco sync link</span><span class="kv">400 kV</span><a href="https://www.ree.es/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project · 💧 1 green H₂ project</div>
+        <div class="grid-row"><b>Red Eléctrica (Redeia)</b><span style="color:var(--muted)">National TSO — gateway for Morocco sync link <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.ree.es/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project · 💧 1 green H₂ project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇵🇹</span><h3><a href="/grids/portugal/" style="color:inherit;text-decoration:none">Portugal</a></h3>
@@ -488,7 +501,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Continental Europe</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>REN</b><span style="color:var(--muted)">National TSO</span><span class="kv">400 kV</span><a href="https://www.ren.pt/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">💧 1 green H₂ project</div>
+        <div class="grid-row"><b>REN</b><span style="color:var(--muted)">National TSO <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.ren.pt/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">💧 1 green H₂ project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇳🇱</span><h3><a href="/grids/netherlands/" style="color:inherit;text-decoration:none">Netherlands</a></h3>
@@ -496,7 +509,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Continental Europe</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>TenneT</b><span style="color:var(--muted)">Dutch-German TSO; major offshore wind grid builder</span><span class="kv">380 kV</span><a href="https://www.tennet.eu/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project · 🌊 2 offshore HVDC programmes · 💰 grid CAPEX programme</div>
+        <div class="grid-row"><b>TenneT</b><span style="color:var(--muted)">Dutch-German TSO; major offshore wind grid builder <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">380 kV</span><a href="https://www.tennet.eu/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project · 🌊 2 offshore HVDC programmes · 💰 grid CAPEX programme</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇧🇪</span><h3><a href="/grids/belgium/" style="color:inherit;text-decoration:none">Belgium</a></h3>
@@ -504,7 +517,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Continental Europe</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>Elia</b><span style="color:var(--muted)">National TSO (also owns 50Hertz DE)</span><span class="kv">380 kV</span><a href="https://www.elia.be/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>Elia</b><span style="color:var(--muted)">National TSO (also owns 50Hertz DE) <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">380 kV</span><a href="https://www.elia.be/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇨🇭</span><h3><a href="/grids/switzerland/" style="color:inherit;text-decoration:none">Switzerland</a></h3>
@@ -512,7 +525,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Continental Europe</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>Swissgrid</b><span style="color:var(--muted)">National TSO — Europe's transit hub</span><span class="kv">380 kV</span><a href="https://www.swissgrid.ch/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>Swissgrid</b><span style="color:var(--muted)">National TSO — Europe's transit hub <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">380 kV</span><a href="https://www.swissgrid.ch/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇦🇹</span><h3><a href="/grids/austria/" style="color:inherit;text-decoration:none">Austria</a></h3>
@@ -520,7 +533,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Continental Europe</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>APG (Austrian Power Grid)</b><span style="color:var(--muted)">National TSO</span><span class="kv">380 kV</span><a href="https://www.apg.at/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>APG (Austrian Power Grid)</b><span style="color:var(--muted)">National TSO <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">380 kV</span><a href="https://www.apg.at/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇵🇱</span><h3><a href="/grids/poland/" style="color:inherit;text-decoration:none">Poland</a></h3>
@@ -528,7 +541,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Continental Europe</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>PSE</b><span style="color:var(--muted)">Polskie Sieci Elektroenergetyczne</span><span class="kv">400 kV</span><a href="https://www.pse.pl/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>PSE</b><span style="color:var(--muted)">Polskie Sieci Elektroenergetyczne <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.pse.pl/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇨🇿</span><h3><a href="/grids/czechia/" style="color:inherit;text-decoration:none">Czechia</a></h3>
@@ -536,7 +549,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Continental Europe</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>ČEPS</b><span style="color:var(--muted)">National TSO</span><span class="kv">400 kV</span><a href="https://www.ceps.cz/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>ČEPS</b><span style="color:var(--muted)">National TSO <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.ceps.cz/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇸🇰</span><h3><a href="/grids/slovakia/" style="color:inherit;text-decoration:none">Slovakia</a></h3>
@@ -544,7 +557,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Continental Europe</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>SEPS</b><span style="color:var(--muted)">National TSO</span><span class="kv">400 kV</span><a href="https://www.sepsas.sk/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>SEPS</b><span style="color:var(--muted)">National TSO <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.sepsas.sk/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇭🇺</span><h3><a href="/grids/hungary/" style="color:inherit;text-decoration:none">Hungary</a></h3>
@@ -552,7 +565,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Continental Europe</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>MAVIR</b><span style="color:var(--muted)">National TSO</span><span class="kv">400 kV</span><a href="https://www.mavir.hu/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>MAVIR</b><span style="color:var(--muted)">National TSO <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.mavir.hu/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇷🇴</span><h3><a href="/grids/romania/" style="color:inherit;text-decoration:none">Romania</a></h3>
@@ -560,7 +573,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Continental Europe</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>Transelectrica</b><span style="color:var(--muted)">National TSO</span><span class="kv">400 kV</span><a href="https://www.transelectrica.ro/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
+        <div class="grid-row"><b>Transelectrica</b><span style="color:var(--muted)">National TSO <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.transelectrica.ro/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇧🇬</span><h3><a href="/grids/bulgaria/" style="color:inherit;text-decoration:none">Bulgaria</a></h3>
@@ -568,7 +581,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Continental Europe</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>ESO EAD</b><span style="color:var(--muted)">National TSO</span><span class="kv">400 kV</span><a href="https://www.eso.bg/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>ESO EAD</b><span style="color:var(--muted)">National TSO <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.eso.bg/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇬🇷</span><h3><a href="/grids/greece/" style="color:inherit;text-decoration:none">Greece</a></h3>
@@ -576,7 +589,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Continental Europe</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>IPTO / ADMIE</b><span style="color:var(--muted)">National TSO — island interconnection programme ongoing</span><span class="kv">400 kV</span><a href="https://www.admie.gr/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
+        <div class="grid-row"><b>IPTO / ADMIE</b><span style="color:var(--muted)">National TSO — island interconnection programme ongoing <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.admie.gr/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇷🇸</span><h3><a href="/grids/serbia/" style="color:inherit;text-decoration:none">Serbia</a></h3>
@@ -584,7 +597,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Continental Europe</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>EMS</b><span style="color:var(--muted)">Elektromreža Srbije</span><span class="kv">400 kV</span><a href="https://www.ems.rs/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>EMS</b><span style="color:var(--muted)">Elektromreža Srbije <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.ems.rs/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇭🇷</span><h3><a href="/grids/croatia/" style="color:inherit;text-decoration:none">Croatia</a></h3>
@@ -592,7 +605,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Continental Europe</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>HOPS</b><span style="color:var(--muted)">National TSO</span><span class="kv">400 kV</span><a href="https://www.hops.hr/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>HOPS</b><span style="color:var(--muted)">National TSO <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.hops.hr/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇸🇮</span><h3><a href="/grids/slovenia/" style="color:inherit;text-decoration:none">Slovenia</a></h3>
@@ -600,7 +613,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Continental Europe</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>ELES</b><span style="color:var(--muted)">National TSO</span><span class="kv">400 kV</span><a href="https://www.eles.si/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>ELES</b><span style="color:var(--muted)">National TSO <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.eles.si/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇧🇦</span><h3><a href="/grids/bosnia-and-herzegovina/" style="color:inherit;text-decoration:none">Bosnia &amp; Herzegovina</a></h3>
@@ -608,7 +621,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Continental Europe</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>NOSBiH / Elektroprijenos BiH</b><span style="color:var(--muted)">ISO + transmission company</span><span class="kv">400 kV</span><a href="https://www.nosbih.ba/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>NOSBiH / Elektroprijenos BiH</b><span style="color:var(--muted)">ISO + transmission company <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.nosbih.ba/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇲🇰</span><h3><a href="/grids/north-macedonia/" style="color:inherit;text-decoration:none">North Macedonia</a></h3>
@@ -616,7 +629,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Continental Europe</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>MEPSO</b><span style="color:var(--muted)">National TSO</span><span class="kv">400 kV</span><a href="https://www.mepso.com.mk/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>MEPSO</b><span style="color:var(--muted)">National TSO <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.mepso.com.mk/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇦🇱</span><h3><a href="/grids/albania/" style="color:inherit;text-decoration:none">Albania</a></h3>
@@ -624,7 +637,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Continental Europe</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>OST</b><span style="color:var(--muted)">Operatori i Sistemit të Transmetimit</span><span class="kv">400 kV</span><a href="https://www.ost.al/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>OST</b><span style="color:var(--muted)">Operatori i Sistemit të Transmetimit <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.ost.al/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇲🇪</span><h3><a href="/grids/montenegro/" style="color:inherit;text-decoration:none">Montenegro</a></h3>
@@ -632,7 +645,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Continental Europe</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>CGES</b><span style="color:var(--muted)">TSO — HVDC submarine link to Italy</span><span class="kv">400 kV</span><a href="https://www.cges.me/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>CGES</b><span style="color:var(--muted)">TSO — HVDC submarine link to Italy <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.cges.me/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇩🇰</span><h3><a href="/grids/denmark/" style="color:inherit;text-decoration:none">Denmark</a></h3>
@@ -640,7 +653,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">CE (west) + Nordic (east)</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>Energinet</b><span style="color:var(--muted)">Unique split: Jutland in Continental Europe, Zealand in Nordic — bridged by HVDC</span><span class="kv">400 kV</span><a href="https://www.energinet.dk/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>Energinet</b><span style="color:var(--muted)">Unique split: Jutland in Continental Europe, Zealand in Nordic — bridged by HVDC <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.energinet.dk/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇳🇴</span><h3><a href="/grids/norway/" style="color:inherit;text-decoration:none">Norway</a></h3>
@@ -648,7 +661,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Nordic</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>Statnett</b><span style="color:var(--muted)">National TSO — HVDC to GB, DE, NL, DK</span><span class="kv">420 kV</span><a href="https://www.statnett.no/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>Statnett</b><span style="color:var(--muted)">National TSO — HVDC to GB, DE, NL, DK <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">420 kV</span><a href="https://www.statnett.no/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇸🇪</span><h3><a href="/grids/sweden/" style="color:inherit;text-decoration:none">Sweden</a></h3>
@@ -656,7 +669,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Nordic</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>Svenska kraftnät</b><span style="color:var(--muted)">National TSO</span><span class="kv">400 kV</span><a href="https://www.svk.se/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">💧 1 green H₂ project</div>
+        <div class="grid-row"><b>Svenska kraftnät</b><span style="color:var(--muted)">National TSO <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.svk.se/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">💧 1 green H₂ project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇫🇮</span><h3><a href="/grids/finland/" style="color:inherit;text-decoration:none">Finland</a></h3>
@@ -664,7 +677,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Nordic</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>Fingrid</b><span style="color:var(--muted)">National TSO — Russia ties severed 2022</span><span class="kv">400 kV</span><a href="https://www.fingrid.fi/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>Fingrid</b><span style="color:var(--muted)">National TSO — Russia ties severed 2022 <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.fingrid.fi/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇪🇪</span><h3><a href="/grids/estonia/" style="color:inherit;text-decoration:none">Estonia</a></h3>
@@ -672,7 +685,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Continental Europe</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>Elering</b><span style="color:var(--muted)">Desynced from IPS/UPS, joined CE Feb 2025</span><span class="kv">330 kV</span><a href="https://www.elering.ee/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>Elering</b><span style="color:var(--muted)">Desynced from IPS/UPS, joined CE Feb 2025 <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">330 kV</span><a href="https://www.elering.ee/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇱🇻</span><h3><a href="/grids/latvia/" style="color:inherit;text-decoration:none">Latvia</a></h3>
@@ -680,7 +693,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Continental Europe</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>AST (Augstsprieguma tīkls)</b><span style="color:var(--muted)">Joined CE Feb 2025</span><span class="kv">330 kV</span><a href="https://www.ast.lv/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>AST (Augstsprieguma tīkls)</b><span style="color:var(--muted)">Joined CE Feb 2025 <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">330 kV</span><a href="https://www.ast.lv/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇱🇹</span><h3><a href="/grids/lithuania/" style="color:inherit;text-decoration:none">Lithuania</a></h3>
@@ -688,7 +701,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Continental Europe</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>Litgrid</b><span style="color:var(--muted)">Joined CE Feb 2025 via LitPol link</span><span class="kv">330 kV</span><a href="https://www.litgrid.eu/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>Litgrid</b><span style="color:var(--muted)">Joined CE Feb 2025 via LitPol link <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">330 kV</span><a href="https://www.litgrid.eu/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇺🇦</span><h3><a href="/grids/ukraine/" style="color:inherit;text-decoration:none">Ukraine</a></h3>
@@ -696,7 +709,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Continental Europe</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>Ukrenergo</b><span style="color:var(--muted)">Emergency-synced to CE March 2022; grid under wartime reconstruction</span><span class="kv">750 kV</span><a href="https://ua.energy/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>Ukrenergo</b><span style="color:var(--muted)">Emergency-synced to CE March 2022; grid under wartime reconstruction <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">750 kV</span><a href="https://ua.energy/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇲🇩</span><h3><a href="/grids/moldova/" style="color:inherit;text-decoration:none">Moldova</a></h3>
@@ -704,7 +717,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Continental Europe</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>Moldelectrica</b><span style="color:var(--muted)">Synced to CE with Ukraine 2022</span><span class="kv">400 kV</span><a href="https://www.moldelectrica.md/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>Moldelectrica</b><span style="color:var(--muted)">Synced to CE with Ukraine 2022 <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.moldelectrica.md/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇹🇷</span><h3><a href="/grids/turkiye/" style="color:inherit;text-decoration:none">Türkiye</a></h3>
@@ -712,7 +725,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Continental Europe</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>TEİAŞ</b><span style="color:var(--muted)">National TSO — synchronized with ENTSO-E CE since 2010; ties to Georgia, Iran, Iraq, Syria</span><span class="kv">400 kV</span><a href="https://www.teias.gov.tr/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>TEİAŞ</b><span style="color:var(--muted)">National TSO — synchronized with ENTSO-E CE since 2010; ties to Georgia, Iran, Iraq, Syria <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.teias.gov.tr/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇮🇸</span><h3><a href="/grids/iceland/" style="color:inherit;text-decoration:none">Iceland</a></h3>
@@ -720,7 +733,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Isolated</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>Landsnet</b><span style="color:var(--muted)">Island grid — ~100% renewable (hydro/geothermal)</span><span class="kv">220 kV</span><a href="https://www.landsnet.is/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>Landsnet</b><span style="color:var(--muted)">Island grid — ~100% renewable (hydro/geothermal) <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">220 kV</span><a href="https://www.landsnet.is/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇨🇾</span><h3><a href="/grids/cyprus/" style="color:inherit;text-decoration:none">Cyprus</a></h3>
@@ -728,7 +741,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Isolated</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>TSOC / EAC</b><span style="color:var(--muted)">Island grid; Great Sea Interconnector to Greece under construction</span><span class="kv">132 kV</span><a href="https://tsoc.org.cy/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
+        <div class="grid-row"><b>TSOC / EAC</b><span style="color:var(--muted)">Island grid; Great Sea Interconnector to Greece under construction <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">132 kV</span><a href="https://tsoc.org.cy/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇽🇰</span><h3><a href="/grids/kosovo/" style="color:inherit;text-decoration:none">Kosovo</a></h3>
@@ -736,7 +749,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Continental Europe</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>KOSTT</b><span style="color:var(--muted)">TSO — operates the AK (Albania–Kosovo) control block within ENTSO-E CE</span><span class="kv">400 kV</span><a href="https://www.kostt.com/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>KOSTT</b><span style="color:var(--muted)">TSO — operates the AK (Albania–Kosovo) control block within ENTSO-E CE <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.kostt.com/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇱🇺</span><h3><a href="/grids/luxembourg/" style="color:inherit;text-decoration:none">Luxembourg</a></h3>
@@ -744,7 +757,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Continental Europe</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>Creos Luxembourg</b><span style="color:var(--muted)">TSO/DSO — embedded in the German (Amprion) control area</span><span class="kv">220 kV</span><a href="https://www.creos.net/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>Creos Luxembourg</b><span style="color:var(--muted)">TSO/DSO — embedded in the German (Amprion) control area <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">220 kV</span><a href="https://www.creos.net/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇲🇹</span><h3><a href="/grids/malta/" style="color:inherit;text-decoration:none">Malta</a></h3>
@@ -752,7 +765,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Continental Europe (via Sicily)</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>Enemalta</b><span style="color:var(--muted)">Island utility — 200 MW HVAC interconnector to Sicily; second link planned</span><span class="kv">132 kV</span><a href="https://www.enemalta.com.mt/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>Enemalta</b><span style="color:var(--muted)">Island utility — 200 MW HVAC interconnector to Sicily; second link planned <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">132 kV</span><a href="https://www.enemalta.com.mt/" target="_blank" rel="noopener">Site →</a></div>
       </div>
 <div class="region-h">CIS / Eurasia</div><div class="country-card">
         <div class="country-head">
@@ -761,7 +774,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">IPS/UPS</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>SO UPS (System Operator) / Rosseti</b><span style="color:var(--muted)">Unified Power System — 7 interconnected regional IPSs</span><span class="kv">750 kV</span><a href="https://www.so-ups.ru/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>SO UPS (System Operator) / Rosseti</b><span style="color:var(--muted)">Unified Power System — 7 interconnected regional IPSs <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">750 kV</span><a href="https://www.so-ups.ru/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇧🇾</span><h3><a href="/grids/belarus/" style="color:inherit;text-decoration:none">Belarus</a></h3>
@@ -769,7 +782,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">IPS/UPS</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>Belenergo</b><span style="color:var(--muted)">State power association</span><span class="kv">750 kV</span><a href="https://www.energo.by/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>Belenergo</b><span style="color:var(--muted)">State power association <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">750 kV</span><a href="https://www.energo.by/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇰🇿</span><h3><a href="/grids/kazakhstan/" style="color:inherit;text-decoration:none">Kazakhstan</a></h3>
@@ -777,7 +790,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">IPS/UPS</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>KEGOC</b><span style="color:var(--muted)">National grid — hosts world's only 1150 kV-built lines (operated at 500 kV)</span><span class="kv">1150 kV (built)</span><a href="https://www.kegoc.kz/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>KEGOC</b><span style="color:var(--muted)">National grid — its Ekibastuz–Kokshetau 1150 kV-built line is operated at 500 kV <span class="op-updated">Record updated 16 October 2026</span></span><span class="kv">500 kV (1150 kV-built line operated at 500 kV)</span><a href="https://www.kegoc.kz/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇺🇿</span><h3><a href="/grids/uzbekistan/" style="color:inherit;text-decoration:none">Uzbekistan</a></h3>
@@ -785,7 +798,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Central Asia (CAPS)</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>NEGU (National Electric Grid)</b><span style="color:var(--muted)">Hub of Central Asian Power System</span><span class="kv">500 kV</span><a href="https://www.uzbekenergo.uz/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>NEGU (National Electric Grid)</b><span style="color:var(--muted)">Hub of Central Asian Power System <span class="op-updated">Record updated 28 August 2026</span></span><span class="kv">500 kV</span><a href="https://www.uzbekenergo.uz/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇰🇬</span><h3><a href="/grids/kyrgyzstan/" style="color:inherit;text-decoration:none">Kyrgyzstan</a></h3>
@@ -793,7 +806,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Central Asia (CAPS)</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>NESK</b><span style="color:var(--muted)">National grid company</span><span class="kv">500 kV</span><span></span></div><div class="proj-links">⚡ 1 interconnector project</div>
+        <div class="grid-row"><b>NESK</b><span style="color:var(--muted)">National grid company <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">500 kV</span><span></span></div><div class="proj-links">⚡ 1 interconnector project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇹🇯</span><h3><a href="/grids/tajikistan/" style="color:inherit;text-decoration:none">Tajikistan</a></h3>
@@ -801,7 +814,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Central Asia (CAPS)</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>Barqi Tojik</b><span style="color:var(--muted)">National utility — CASA-1000 HVDC to Pakistan</span><span class="kv">500 kV</span><a href="https://www.barqitojik.tj/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
+        <div class="grid-row"><b>Barqi Tojik</b><span style="color:var(--muted)">National utility — CASA-1000 HVDC to Pakistan <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">500 kV</span><a href="https://www.barqitojik.tj/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇹🇲</span><h3><a href="/grids/turkmenistan/" style="color:inherit;text-decoration:none">Turkmenistan</a></h3>
@@ -809,7 +822,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Regional ties</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>Türkmenenergo</b><span style="color:var(--muted)">State utility — ties to Iran, Afghanistan, Uzbekistan</span><span class="kv">500 kV</span><span></span></div>
+        <div class="grid-row"><b>Türkmenenergo</b><span style="color:var(--muted)">State utility — ties to Iran, Afghanistan, Uzbekistan <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">500 kV</span><span></span></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇦🇿</span><h3><a href="/grids/azerbaijan/" style="color:inherit;text-decoration:none">Azerbaijan</a></h3>
@@ -817,7 +830,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">IPS/UPS-linked</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>Azerenerji / AzerEnergy</b><span style="color:var(--muted)">National utility — ties to Russia, Georgia, Iran</span><span class="kv">500 kV</span><a href="https://www.azerenerji.gov.az/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>Azerenerji / AzerEnergy</b><span style="color:var(--muted)">National utility — ties to Russia, Georgia, Iran <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">500 kV</span><a href="https://www.azerenerji.gov.az/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇬🇪</span><h3><a href="/grids/georgia/" style="color:inherit;text-decoration:none">Georgia</a></h3>
@@ -825,7 +838,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Regional ties</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>GSE (Georgian State Electrosystem)</b><span style="color:var(--muted)">TSO — HVDC back-to-back to Türkiye</span><span class="kv">500 kV</span><a href="https://www.gse.com.ge/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
+        <div class="grid-row"><b>GSE (Georgian State Electrosystem)</b><span style="color:var(--muted)">TSO — HVDC back-to-back to Türkiye <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">500 kV</span><a href="https://www.gse.com.ge/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇦🇲</span><h3><a href="/grids/armenia/" style="color:inherit;text-decoration:none">Armenia</a></h3>
@@ -833,7 +846,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Regional ties</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>HVEN (High Voltage Electric Networks)</b><span style="color:var(--muted)">Ties to Iran &amp; Georgia</span><span class="kv">220 kV</span><span></span></div>
+        <div class="grid-row"><b>HVEN (High Voltage Electric Networks)</b><span style="color:var(--muted)">Ties to Iran &amp; Georgia <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">220 kV</span><span></span></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇲🇳</span><h3><a href="/grids/mongolia/" style="color:inherit;text-decoration:none">Mongolia</a></h3>
@@ -841,7 +854,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">IPS/UPS-linked</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>NPTG (National Power Transmission Grid)</b><span style="color:var(--muted)">Central system synced with Russia</span><span class="kv">220 kV</span><span></span></div>
+        <div class="grid-row"><b>NPTG (National Power Transmission Grid)</b><span style="color:var(--muted)">Central system synced with Russia <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">220 kV</span><span></span></div>
       </div>
 <div class="region-h">Africa</div><div class="country-card">
         <div class="country-head">
@@ -850,7 +863,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Continental Europe (via Spain)</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>ONEE</b><span style="color:var(--muted)">Only African grid synchronized with Europe — 2 AC submarine links to Spain</span><span class="kv">400 kV</span><a href="https://www.one.org.ma/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
+        <div class="grid-row"><b>ONEE</b><span style="color:var(--muted)">Only African grid synchronized with Europe — 2 AC submarine links to Spain <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.one.org.ma/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇩🇿</span><h3><a href="/grids/algeria/" style="color:inherit;text-decoration:none">Algeria</a></h3>
@@ -858,7 +871,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Maghreb / CE-linked</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>Sonelgaz / GRTE</b><span style="color:var(--muted)">National TSO — synced with Morocco &amp; Tunisia</span><span class="kv">400 kV</span><a href="https://www.sonelgaz.dz/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>Sonelgaz / GRTE</b><span style="color:var(--muted)">National TSO — synced with Morocco &amp; Tunisia <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.sonelgaz.dz/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇹🇳</span><h3><a href="/grids/tunisia/" style="color:inherit;text-decoration:none">Tunisia</a></h3>
@@ -866,7 +879,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Maghreb / CE-linked</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>STEG</b><span style="color:var(--muted)">National utility — ELMED HVDC to Italy under construction</span><span class="kv">400 kV</span><a href="https://www.steg.com.tn/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
+        <div class="grid-row"><b>STEG</b><span style="color:var(--muted)">National utility — ELMED HVDC to Italy under construction <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.steg.com.tn/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇱🇾</span><h3><a href="/grids/libya/" style="color:inherit;text-decoration:none">Libya</a></h3>
@@ -874,7 +887,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Eight Country IC</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>GECOL</b><span style="color:var(--muted)">National utility — tie to Egypt</span><span class="kv">400 kV</span><a href="https://www.gecol.ly/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>GECOL</b><span style="color:var(--muted)">National utility — tie to Egypt <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.gecol.ly/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇸🇩</span><h3><a href="/grids/sudan/" style="color:inherit;text-decoration:none">Sudan</a></h3>
@@ -882,7 +895,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">EAPP</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>SETCO / STPG</b><span style="color:var(--muted)">National grid — tie to Egypt &amp; Ethiopia</span><span class="kv">500 kV</span><span></span></div>
+        <div class="grid-row"><b>SETCO / STPG</b><span style="color:var(--muted)">National grid — tie to Egypt &amp; Ethiopia <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">500 kV</span><span></span></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇳🇬</span><h3><a href="/grids/nigeria/" style="color:inherit;text-decoration:none">Nigeria</a></h3>
@@ -890,7 +903,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">WAPP</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>TCN (Transmission Company of Nigeria)</b><span style="color:var(--muted)">National grid — largest WAPP member</span><span class="kv">330 kV</span><a href="https://www.tcn.org.ng/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>TCN (Transmission Company of Nigeria)</b><span style="color:var(--muted)">National grid — largest WAPP member <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">330 kV</span><a href="https://www.tcn.org.ng/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇬🇭</span><h3><a href="/grids/ghana/" style="color:inherit;text-decoration:none">Ghana</a></h3>
@@ -898,7 +911,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">WAPP</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>GRIDCo</b><span style="color:var(--muted)">National TSO</span><span class="kv">330 kV</span><a href="https://www.gridcogh.com/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>GRIDCo</b><span style="color:var(--muted)">National TSO <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">330 kV</span><a href="https://www.gridcogh.com/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇨🇮</span><h3><a href="/grids/cote-divoire/" style="color:inherit;text-decoration:none">Côte d'Ivoire</a></h3>
@@ -906,7 +919,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">WAPP</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>CI-ENERGIES</b><span style="color:var(--muted)">National grid — regional exporter</span><span class="kv">225 kV</span><a href="https://www.cinergies.ci/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>CI-ENERGIES</b><span style="color:var(--muted)">National grid — regional exporter <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">225 kV</span><a href="https://www.cinergies.ci/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇸🇳</span><h3><a href="/grids/senegal/" style="color:inherit;text-decoration:none">Senegal</a></h3>
@@ -914,7 +927,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">WAPP</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>Senelec</b><span style="color:var(--muted)">National utility — OMVS regional system</span><span class="kv">225 kV</span><a href="https://www.senelec.sn/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>Senelec</b><span style="color:var(--muted)">National utility — OMVS regional system <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">225 kV</span><a href="https://www.senelec.sn/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇰🇪</span><h3><a href="/grids/kenya/" style="color:inherit;text-decoration:none">Kenya</a></h3>
@@ -922,7 +935,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">EAPP</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>KETRACO / Kenya Power</b><span style="color:var(--muted)">TSO — ±500 kV HVDC from Ethiopia operational</span><span class="kv">400 kV</span><a href="https://www.ketraco.co.ke/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
+        <div class="grid-row"><b>KETRACO / Kenya Power</b><span style="color:var(--muted)">TSO — ±500 kV HVDC from Ethiopia operational <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.ketraco.co.ke/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇪🇹</span><h3><a href="/grids/ethiopia/" style="color:inherit;text-decoration:none">Ethiopia</a></h3>
@@ -930,7 +943,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">EAPP</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>EEP (Ethiopian Electric Power)</b><span style="color:var(--muted)">GERD hub — exports to Kenya, Sudan, Djibouti</span><span class="kv">500 kV</span><a href="https://www.eep.com.et/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
+        <div class="grid-row"><b>EEP (Ethiopian Electric Power)</b><span style="color:var(--muted)">GERD hub — exports to Kenya, Sudan, Djibouti <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">500 kV</span><a href="https://www.eep.com.et/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇹🇿</span><h3><a href="/grids/tanzania/" style="color:inherit;text-decoration:none">Tanzania</a></h3>
@@ -938,7 +951,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">EAPP/SAPP-linked</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>TANESCO</b><span style="color:var(--muted)">400 kV backbone complete; Kenya &amp; Zambia interconnectors</span><span class="kv">400 kV</span><a href="https://www.tanesco.co.tz/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
+        <div class="grid-row"><b>TANESCO</b><span style="color:var(--muted)">400 kV backbone complete; Kenya &amp; Zambia interconnectors <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.tanesco.co.tz/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇺🇬</span><h3><a href="/grids/uganda/" style="color:inherit;text-decoration:none">Uganda</a></h3>
@@ -946,7 +959,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">EAPP</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>UETCL</b><span style="color:var(--muted)">National TSO</span><span class="kv">220 kV</span><a href="https://www.uetcl.com/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>UETCL</b><span style="color:var(--muted)">National TSO <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">220 kV</span><a href="https://www.uetcl.com/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇿🇦</span><h3><a href="/grids/south-africa/" style="color:inherit;text-decoration:none">South Africa</a></h3>
@@ -954,7 +967,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">SAPP</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>Eskom / NTCSA</b><span style="color:var(--muted)">Africa's largest grid — anchor of Southern African Power Pool</span><span class="kv">765 kV</span><a href="https://www.eskom.co.za/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>Eskom / NTCSA</b><span style="color:var(--muted)">Africa's largest grid — anchor of Southern African Power Pool <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">765 kV</span><a href="https://www.eskom.co.za/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇿🇲</span><h3><a href="/grids/zambia/" style="color:inherit;text-decoration:none">Zambia</a></h3>
@@ -962,7 +975,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">SAPP</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>ZESCO</b><span style="color:var(--muted)">National utility</span><span class="kv">330 kV</span><a href="https://www.zesco.co.zm/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>ZESCO</b><span style="color:var(--muted)">National utility <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">330 kV</span><a href="https://www.zesco.co.zm/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇿🇼</span><h3><a href="/grids/zimbabwe/" style="color:inherit;text-decoration:none">Zimbabwe</a></h3>
@@ -970,7 +983,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">SAPP</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>ZETDC</b><span style="color:var(--muted)">National utility — SAPP coordination centre in Harare</span><span class="kv">330 kV</span><span></span></div>
+        <div class="grid-row"><b>ZETDC</b><span style="color:var(--muted)">National utility — SAPP coordination centre in Harare <span class="op-updated">Record updated 28 August 2026</span></span><span class="kv">330 kV</span><span></span></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇧🇼</span><h3><a href="/grids/botswana/" style="color:inherit;text-decoration:none">Botswana</a></h3>
@@ -978,7 +991,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">SAPP</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>BPC (Botswana Power Corp)</b><span style="color:var(--muted)">National utility</span><span class="kv">400 kV</span><a href="https://www.bpc.bw/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>BPC (Botswana Power Corp)</b><span style="color:var(--muted)">National utility <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.bpc.bw/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇳🇦</span><h3><a href="/grids/namibia/" style="color:inherit;text-decoration:none">Namibia</a></h3>
@@ -986,7 +999,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">SAPP</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>NamPower</b><span style="color:var(--muted)">National utility — Caprivi ±350 kV HVDC link</span><span class="kv">400 kV</span><a href="https://www.nampower.com.na/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project · 💧 1 green H₂ project</div>
+        <div class="grid-row"><b>NamPower</b><span style="color:var(--muted)">National utility — Caprivi ±350 kV HVDC link <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.nampower.com.na/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project · 💧 1 green H₂ project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇲🇿</span><h3><a href="/grids/mozambique/" style="color:inherit;text-decoration:none">Mozambique</a></h3>
@@ -994,7 +1007,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">SAPP</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>EDM + HCB</b><span style="color:var(--muted)">Cahora Bassa ±533 kV HVDC to South Africa</span><span class="kv">533 kV DC</span><a href="https://www.edm.co.mz/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
+        <div class="grid-row"><b>EDM + HCB</b><span style="color:var(--muted)">Cahora Bassa ±533 kV HVDC to South Africa <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">533 kV DC</span><a href="https://www.edm.co.mz/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇨🇩</span><h3><a href="/grids/dr-congo/" style="color:inherit;text-decoration:none">DR Congo</a></h3>
@@ -1002,7 +1015,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">SAPP</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>SNEL</b><span style="color:var(--muted)">Inga–Kolwezi ±500 kV HVDC — one of world's longest</span><span class="kv">500 kV DC</span><a href="https://www.snel.cd/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>SNEL</b><span style="color:var(--muted)">Inga–Kolwezi ±500 kV HVDC — one of world's longest <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">500 kV DC</span><a href="https://www.snel.cd/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇦🇴</span><h3><a href="/grids/angola/" style="color:inherit;text-decoration:none">Angola</a></h3>
@@ -1010,7 +1023,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">SAPP (joining)</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>RNT (Rede Nacional de Transporte)</b><span style="color:var(--muted)">National TSO</span><span class="kv">400 kV</span><a href="https://www.rnt.co.ao/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
+        <div class="grid-row"><b>RNT (Rede Nacional de Transporte)</b><span style="color:var(--muted)">National TSO <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.rnt.co.ao/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇨🇲</span><h3><a href="/grids/cameroon/" style="color:inherit;text-decoration:none">Cameroon</a></h3>
@@ -1018,7 +1031,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Isolated (CAPP)</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>SONATREL</b><span style="color:var(--muted)">TSO since 2015 (ENEO handles generation &amp; distribution); Southern + Northern interconnected grids</span><span class="kv">225 kV</span><span></span></div>
+        <div class="grid-row"><b>SONATREL</b><span style="color:var(--muted)">TSO since 2015 (ENEO handles generation &amp; distribution); Southern + Northern interconnected grids <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">225 kV</span><span></span></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇷🇼</span><h3><a href="/grids/rwanda/" style="color:inherit;text-decoration:none">Rwanda</a></h3>
@@ -1026,7 +1039,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">EAPP</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>REG (Rwanda Energy Group)</b><span style="color:var(--muted)">National utility — EUCL operations + EDCL development</span><span class="kv">220 kV</span><a href="https://www.reg.rw/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>REG (Rwanda Energy Group)</b><span style="color:var(--muted)">National utility — EUCL operations + EDCL development <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">220 kV</span><a href="https://www.reg.rw/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇲🇼</span><h3><a href="/grids/malawi/" style="color:inherit;text-decoration:none">Malawi</a></h3>
@@ -1034,7 +1047,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Isolated → SAPP (2026)</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>ESCOM</b><span style="color:var(--muted)">National utility — 400 kV Mozambique interconnector under construction ends grid isolation</span><span class="kv">132 kV</span><a href="https://www.escom.mw/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
+        <div class="grid-row"><b>ESCOM</b><span style="color:var(--muted)">National utility — 400 kV Mozambique interconnector under construction ends grid isolation <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">132 kV</span><a href="https://www.escom.mw/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇲🇬</span><h3><a href="/grids/madagascar/" style="color:inherit;text-decoration:none">Madagascar</a></h3>
@@ -1042,7 +1055,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Isolated</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>JIRAMA</b><span style="color:var(--muted)">National utility — separate Antananarivo, Toamasina &amp; regional island grids</span><span class="kv">138 kV</span><span></span></div>
+        <div class="grid-row"><b>JIRAMA</b><span style="color:var(--muted)">National utility — separate Antananarivo, Toamasina &amp; regional island grids <span class="op-updated">Record updated 28 August 2026</span></span><span class="kv">138 kV</span><span></span></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇲🇺</span><h3><a href="/grids/mauritius/" style="color:inherit;text-decoration:none">Mauritius</a></h3>
@@ -1050,7 +1063,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Isolated</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>CEB (Central Electricity Board)</b><span style="color:var(--muted)">Island grid</span><span class="kv">66 kV</span><a href="https://ceb.mu/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>CEB (Central Electricity Board)</b><span style="color:var(--muted)">Island grid <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">66 kV</span><a href="https://ceb.mu/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇸🇿</span><h3><a href="/grids/eswatini/" style="color:inherit;text-decoration:none">Eswatini</a></h3>
@@ -1058,7 +1071,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">SAPP</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>EEC (Eswatini Electricity Company)</b><span style="color:var(--muted)">Majority imports from Eskom; MOTRACO 400 kV transit corridor</span><span class="kv">400 kV (MOTRACO transit)</span><a href="https://www.eec.co.sz/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>EEC (Eswatini Electricity Company)</b><span style="color:var(--muted)">Majority imports from Eskom; MOTRACO 400 kV transit corridor <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV (MOTRACO transit)</span><a href="https://www.eec.co.sz/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇱🇸</span><h3><a href="/grids/lesotho/" style="color:inherit;text-decoration:none">Lesotho</a></h3>
@@ -1066,7 +1079,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">SAPP</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>LEC (Lesotho Electricity Company)</b><span style="color:var(--muted)">Muela hydro + Eskom imports</span><span class="kv">132 kV</span><span></span></div>
+        <div class="grid-row"><b>LEC (Lesotho Electricity Company)</b><span style="color:var(--muted)">Muela hydro + Eskom imports <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">132 kV</span><span></span></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇲🇱</span><h3><a href="/grids/mali/" style="color:inherit;text-decoration:none">Mali</a></h3>
@@ -1074,7 +1087,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">WAPP</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>EDM-SA</b><span style="color:var(--muted)">National utility — ties to Côte d'Ivoire and OMVS hydro shared with Senegal &amp; Mauritania</span><span class="kv">225 kV</span><span></span></div>
+        <div class="grid-row"><b>EDM-SA</b><span style="color:var(--muted)">National utility — ties to Côte d'Ivoire and OMVS hydro shared with Senegal &amp; Mauritania <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">225 kV</span><span></span></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇧🇫</span><h3><a href="/grids/burkina-faso/" style="color:inherit;text-decoration:none">Burkina Faso</a></h3>
@@ -1082,7 +1095,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">WAPP</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>SONABEL</b><span style="color:var(--muted)">National utility — imports via Côte d'Ivoire &amp; Ghana interconnectors</span><span class="kv">225 kV</span><a href="https://www.sonabel.bf/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>SONABEL</b><span style="color:var(--muted)">National utility — imports via Côte d'Ivoire &amp; Ghana interconnectors <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">225 kV</span><a href="https://www.sonabel.bf/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇳🇪</span><h3><a href="/grids/niger/" style="color:inherit;text-decoration:none">Niger</a></h3>
@@ -1090,7 +1103,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">WAPP</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>NIGELEC</b><span style="color:var(--muted)">National utility — heavily dependent on imports from Nigeria</span><span class="kv">132 kV</span><span></span></div>
+        <div class="grid-row"><b>NIGELEC</b><span style="color:var(--muted)">National utility — heavily dependent on imports from Nigeria <span class="op-updated">Record updated 28 August 2026</span></span><span class="kv">132 kV</span><span></span></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇧🇯</span><h3><a href="/grids/benin/" style="color:inherit;text-decoration:none">Benin</a></h3>
@@ -1098,7 +1111,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">WAPP</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>CEB + SBEE</b><span style="color:var(--muted)">CEB — transmission operator shared with Togo (a WAPP rarity); SBEE national distributor</span><span class="kv">161 kV</span><span></span></div>
+        <div class="grid-row"><b>CEB + SBEE</b><span style="color:var(--muted)">CEB — transmission operator shared with Togo (a WAPP rarity); SBEE national distributor <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">161 kV</span><span></span></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇹🇬</span><h3><a href="/grids/togo/" style="color:inherit;text-decoration:none">Togo</a></h3>
@@ -1106,7 +1119,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">WAPP</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>CEB + CEET</b><span style="color:var(--muted)">CEB — transmission operator shared with Benin; CEET national distributor</span><span class="kv">161 kV</span><span></span></div>
+        <div class="grid-row"><b>CEB + CEET</b><span style="color:var(--muted)">CEB — transmission operator shared with Benin; CEET national distributor <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">161 kV</span><span></span></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇬🇳</span><h3><a href="/grids/guinea/" style="color:inherit;text-decoration:none">Guinea</a></h3>
@@ -1114,7 +1127,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">WAPP</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>EDG (Électricité de Guinée)</b><span style="color:var(--muted)">Kaleta &amp; Souapiti hydro; CLSG 225 kV corridor to Liberia–Sierra Leone–Côte d'Ivoire</span><span class="kv">225 kV</span><span></span></div>
+        <div class="grid-row"><b>EDG (Électricité de Guinée)</b><span style="color:var(--muted)">Kaleta &amp; Souapiti hydro; CLSG 225 kV corridor to Liberia–Sierra Leone–Côte d'Ivoire <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">225 kV</span><span></span></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇲🇷</span><h3><a href="/grids/mauritania/" style="color:inherit;text-decoration:none">Mauritania</a></h3>
@@ -1122,7 +1135,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">OMVS-linked</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>SOMELEC</b><span style="color:var(--muted)">National utility — OMVS hydro shared with Senegal &amp; Mali</span><span class="kv">225 kV</span><span></span></div>
+        <div class="grid-row"><b>SOMELEC</b><span style="color:var(--muted)">National utility — OMVS hydro shared with Senegal &amp; Mali <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">225 kV</span><span></span></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇩🇯</span><h3><a href="/grids/djibouti/" style="color:inherit;text-decoration:none">Djibouti</a></h3>
@@ -1130,7 +1143,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">EAPP-linked</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>EDD (Électricité de Djibouti)</b><span style="color:var(--muted)">Interconnected with Ethiopia — majority of supply imported</span><span class="kv">230 kV</span><span></span></div>
+        <div class="grid-row"><b>EDD (Électricité de Djibouti)</b><span style="color:var(--muted)">Interconnected with Ethiopia — majority of supply imported <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">230 kV</span><span></span></div>
       </div>
 <div class="region-h">South Asia</div><div class="country-card">
         <div class="country-head">
@@ -1139,7 +1152,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">India National Grid</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>POWERGRID + Grid-India (NLDC)</b><span style="color:var(--muted)">One Nation One Grid since 2013 — largest single synchronous national grid; 5 regions</span><span class="kv">765 kV / ±800 kV DC</span><a href="https://www.powergrid.in/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 2 interconnector projects · 💧 3 green H₂ projects · 💰 grid CAPEX programme</div>
+        <div class="grid-row"><b>POWERGRID + Grid-India (NLDC)</b><span style="color:var(--muted)">One Nation One Grid since 2013 — largest single synchronous national grid; 5 regions <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">765 kV / ±800 kV DC</span><a href="https://www.powergrid.in/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 2 interconnector projects · 💧 3 green H₂ projects · 💰 grid CAPEX programme</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇵🇰</span><h3><a href="/grids/pakistan/" style="color:inherit;text-decoration:none">Pakistan</a></h3>
@@ -1147,7 +1160,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Isolated (CASA-1000)</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>NTDC + K-Electric</b><span style="color:var(--muted)">National grid + Karachi system; ±660 kV Matiari–Lahore HVDC</span><span class="kv">500 kV</span><a href="https://www.ntdc.gov.pk/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
+        <div class="grid-row"><b>NTDC + K-Electric</b><span style="color:var(--muted)">National grid + Karachi system; ±660 kV Matiari–Lahore HVDC <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">500 kV</span><a href="https://www.ntdc.gov.pk/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇧🇩</span><h3><a href="/grids/bangladesh/" style="color:inherit;text-decoration:none">Bangladesh</a></h3>
@@ -1155,7 +1168,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">India-linked (HVDC)</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>PGCB</b><span style="color:var(--muted)">National TSO — HVDC back-to-back at Bheramara to India</span><span class="kv">400 kV</span><a href="https://www.pgcb.gov.bd/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
+        <div class="grid-row"><b>PGCB</b><span style="color:var(--muted)">National TSO — HVDC back-to-back at Bheramara to India <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.pgcb.gov.bd/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇱🇰</span><h3><a href="/grids/sri-lanka/" style="color:inherit;text-decoration:none">Sri Lanka</a></h3>
@@ -1163,7 +1176,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Isolated</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>CEB (Ceylon Electricity Board)</b><span style="color:var(--muted)">Island grid; India interconnection under study</span><span class="kv">220 kV</span><a href="https://www.ceb.lk/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
+        <div class="grid-row"><b>CEB (Ceylon Electricity Board)</b><span style="color:var(--muted)">Island grid; India interconnection under study <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">220 kV</span><a href="https://www.ceb.lk/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇳🇵</span><h3><a href="/grids/nepal/" style="color:inherit;text-decoration:none">Nepal</a></h3>
@@ -1171,7 +1184,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">India-synced</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>NEA</b><span style="color:var(--muted)">Synchronous ties to India; hydro exporter</span><span class="kv">400 kV</span><a href="https://www.nea.org.np/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
+        <div class="grid-row"><b>NEA</b><span style="color:var(--muted)">Synchronous ties to India; hydro exporter <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.nea.org.np/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇧🇹</span><h3><a href="/grids/bhutan/" style="color:inherit;text-decoration:none">Bhutan</a></h3>
@@ -1179,7 +1192,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">India-synced</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>BPSO / Druk Green</b><span style="color:var(--muted)">Hydro exporter fully synced with India</span><span class="kv">400 kV</span><a href="https://www.bpc.bt/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>BPSO / Druk Green</b><span style="color:var(--muted)">Hydro exporter fully synced with India <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.bpc.bt/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇦🇫</span><h3><a href="/grids/afghanistan/" style="color:inherit;text-decoration:none">Afghanistan</a></h3>
@@ -1187,7 +1200,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Import islands</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>DABS</b><span style="color:var(--muted)">Asynchronous import islands fed from Uzbekistan, Turkmenistan, Tajikistan, Iran</span><span class="kv">220 kV</span><span></span></div><div class="proj-links">⚡ 1 interconnector project</div>
+        <div class="grid-row"><b>DABS</b><span style="color:var(--muted)">Asynchronous import islands fed from Uzbekistan, Turkmenistan, Tajikistan, Iran <span class="op-updated">Record updated 28 August 2026</span></span><span class="kv">220 kV</span><span></span></div><div class="proj-links">⚡ 1 interconnector project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇲🇻</span><h3><a href="/grids/maldives/" style="color:inherit;text-decoration:none">Maldives</a></h3>
@@ -1195,7 +1208,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Isolated</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>STELCO / FENAKA</b><span style="color:var(--muted)">Greater Malé grid + separate atoll island systems</span><span class="kv">33 kV</span><a href="https://www.stelco.com.mv/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>STELCO / FENAKA</b><span style="color:var(--muted)">Greater Malé grid + separate atoll island systems <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">33 kV</span><a href="https://www.stelco.com.mv/" target="_blank" rel="noopener">Site →</a></div>
       </div>
 <div class="region-h">East Asia</div><div class="country-card">
         <div class="country-head">
@@ -1204,7 +1217,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">SGCC + CSG regions</span>
           <span class="badge b-cnt">2 operators</span>
         </div>
-        <div class="grid-row"><b>State Grid Corp of China (SGCC)</b><span style="color:var(--muted)">World's largest utility — 5+ sync regions tied by UHV DC; 1000 kV UHV AC</span><span class="kv">1000 kV / ±1100 kV DC</span><a href="https://www.sgcc.com.cn/" target="_blank" rel="noopener">Site →</a></div><div class="grid-row"><b>China Southern Power Grid (CSG)</b><span style="color:var(--muted)">Guangdong, Guangxi, Yunnan, Guizhou, Hainan</span><span class="kv">500 kV / ±800 kV DC</span><a href="https://www.csg.cn/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">💧 2 green H₂ projects · 💰 grid CAPEX programme</div>
+        <div class="grid-row"><b>State Grid Corp of China (SGCC)</b><span style="color:var(--muted)">World's largest utility — 5+ sync regions tied by UHV DC; 1000 kV UHV AC <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">1000 kV / ±1100 kV DC</span><a href="https://www.sgcc.com.cn/" target="_blank" rel="noopener">Site →</a></div><div class="grid-row"><b>China Southern Power Grid (CSG)</b><span style="color:var(--muted)">Guangdong, Guangxi, Yunnan, Guizhou, Hainan <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">500 kV / ±800 kV DC</span><a href="https://www.csg.cn/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">💧 2 green H₂ projects · 💰 grid CAPEX programme</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇯🇵</span><h3><a href="/grids/japan/" style="color:inherit;text-decoration:none">Japan</a></h3>
@@ -1212,7 +1225,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Two sync areas</span>
           <span class="badge b-cnt">2 operators</span>
         </div>
-        <div class="grid-row"><b>OCCTO + 10 regional TSOs</b><span style="color:var(--muted)">East 50 Hz / West 60 Hz, bridged by frequency-converter stations (~2.1 GW)</span><span class="kv">500 kV</span><a href="https://www.occto.or.jp/" target="_blank" rel="noopener">Site →</a></div><div class="grid-row"><b>TEPCO Power Grid</b><span style="color:var(--muted)">Largest regional TSO (Tokyo, 50 Hz)</span><span class="kv">500 kV</span><a href="https://www.tepco.co.jp/pg/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>OCCTO + 10 regional TSOs</b><span style="color:var(--muted)">East 50 Hz / West 60 Hz, bridged by frequency-converter stations (~2.1 GW) <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">500 kV</span><a href="https://www.occto.or.jp/" target="_blank" rel="noopener">Site →</a></div><div class="grid-row"><b>TEPCO Power Grid</b><span style="color:var(--muted)">Largest regional TSO (Tokyo, 50 Hz) <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">500 kV</span><a href="https://www.tepco.co.jp/pg/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇰🇷</span><h3><a href="/grids/south-korea/" style="color:inherit;text-decoration:none">South Korea</a></h3>
@@ -1220,7 +1233,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Isolated</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>KEPCO / KPX</b><span style="color:var(--muted)">Island grid — no international ties</span><span class="kv">765 kV</span><a href="https://home.kepco.co.kr/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>KEPCO / KPX</b><span style="color:var(--muted)">Island grid — no international ties <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">765 kV</span><a href="https://home.kepco.co.kr/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇹🇼</span><h3><a href="/grids/taiwan/" style="color:inherit;text-decoration:none">Taiwan</a></h3>
@@ -1228,7 +1241,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Isolated</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>Taipower</b><span style="color:var(--muted)">Island grid</span><span class="kv">345 kV</span><a href="https://www.taipower.com.tw/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>Taipower</b><span style="color:var(--muted)">Island grid <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">345 kV</span><a href="https://www.taipower.com.tw/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇭🇰</span><h3><a href="/grids/hong-kong/" style="color:inherit;text-decoration:none">Hong Kong</a></h3>
@@ -1236,7 +1249,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">CSG-linked</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>CLP Power + HK Electric</b><span style="color:var(--muted)">Two utilities; CLP interconnected with China Southern Grid</span><span class="kv">400 kV</span><a href="https://www.clp.com.hk/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>CLP Power + HK Electric</b><span style="color:var(--muted)">Two utilities; CLP interconnected with China Southern Grid <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.clp.com.hk/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇲🇴</span><h3><a href="/grids/macau/" style="color:inherit;text-decoration:none">Macau</a></h3>
@@ -1244,7 +1257,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">CSG-linked</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>CEM</b><span style="color:var(--muted)">~90% of supply imported from China Southern Power Grid</span><span class="kv">220 kV</span><a href="https://www.cem-macau.com/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>CEM</b><span style="color:var(--muted)">~90% of supply imported from China Southern Power Grid <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">220 kV</span><a href="https://www.cem-macau.com/" target="_blank" rel="noopener">Site →</a></div>
       </div>
 <div class="region-h">Southeast Asia</div><div class="country-card">
         <div class="country-head">
@@ -1253,7 +1266,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">National + Laos ties</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>EGAT</b><span style="color:var(--muted)">National grid — major importer of Lao hydro; LTMS corridor</span><span class="kv">500 kV</span><a href="https://www.egat.co.th/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>EGAT</b><span style="color:var(--muted)">National grid — major importer of Lao hydro; LTMS corridor <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">500 kV</span><a href="https://www.egat.co.th/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇻🇳</span><h3><a href="/grids/vietnam/" style="color:inherit;text-decoration:none">Vietnam</a></h3>
@@ -1261,7 +1274,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">National</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>EVN / NPT</b><span style="color:var(--muted)">North-south 500 kV backbone</span><span class="kv">500 kV</span><a href="https://www.npt.com.vn/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
+        <div class="grid-row"><b>EVN / NPT</b><span style="color:var(--muted)">North-south 500 kV backbone <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">500 kV</span><a href="https://www.npt.com.vn/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇲🇾</span><h3><a href="/grids/malaysia/" style="color:inherit;text-decoration:none">Malaysia</a></h3>
@@ -1269,7 +1282,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">3 separate grids</span>
           <span class="badge b-cnt">2 operators</span>
         </div>
-        <div class="grid-row"><b>TNB (Peninsular Grid)</b><span style="color:var(--muted)">Main grid — ties to Thailand &amp; Singapore</span><span class="kv">500 kV</span><a href="https://www.tnb.com.my/" target="_blank" rel="noopener">Site →</a></div><div class="grid-row"><b>Sarawak Energy + SESB Sabah</b><span style="color:var(--muted)">Two separate Borneo grids</span><span class="kv">275 kV</span><a href="https://www.sarawakenergy.com/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
+        <div class="grid-row"><b>TNB (Peninsular Grid)</b><span style="color:var(--muted)">Main grid — ties to Thailand &amp; Singapore <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">500 kV</span><a href="https://www.tnb.com.my/" target="_blank" rel="noopener">Site →</a></div><div class="grid-row"><b>Sarawak Energy + SESB Sabah</b><span style="color:var(--muted)">Two separate Borneo grids <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">275 kV</span><a href="https://www.sarawakenergy.com/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇸🇬</span><h3><a href="/grids/singapore/" style="color:inherit;text-decoration:none">Singapore</a></h3>
@@ -1277,7 +1290,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Malaysia-linked</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>SP Group</b><span style="color:var(--muted)">City grid — LTMS import (Laos hydro via TH/MY); Australia–Asia HVDC proposed</span><span class="kv">400 kV</span><a href="https://www.spgroup.com.sg/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 2 interconnector projects</div>
+        <div class="grid-row"><b>SP Group</b><span style="color:var(--muted)">City grid — LTMS import (Laos hydro via TH/MY); Australia–Asia HVDC proposed <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.spgroup.com.sg/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 2 interconnector projects</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇮🇩</span><h3><a href="/grids/indonesia/" style="color:inherit;text-decoration:none">Indonesia</a></h3>
@@ -1285,7 +1298,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Island grids</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>PLN</b><span style="color:var(--muted)">Java-Bali 500 kV system + Sumatra + hundreds of island grids</span><span class="kv">500 kV</span><a href="https://web.pln.co.id/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
+        <div class="grid-row"><b>PLN</b><span style="color:var(--muted)">Java-Bali 500 kV system + Sumatra + hundreds of island grids <span class="op-updated">Record updated 28 August 2026</span></span><span class="kv">500 kV</span><a href="https://web.pln.co.id/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇵🇭</span><h3><a href="/grids/philippines/" style="color:inherit;text-decoration:none">Philippines</a></h3>
@@ -1293,7 +1306,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">National (HVDC-bridged)</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>NGCP</b><span style="color:var(--muted)">Luzon–Visayas AC; Mindanao joined via ±350 kV HVDC (MVIP) — one national market since 2024</span><span class="kv">500 kV</span><a href="https://www.ngcp.ph/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>NGCP</b><span style="color:var(--muted)">Luzon–Visayas AC; Mindanao joined via ±350 kV HVDC (MVIP) — one national market since 2024 <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">500 kV</span><a href="https://www.ngcp.ph/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇱🇦</span><h3><a href="/grids/laos/" style="color:inherit;text-decoration:none">Laos</a></h3>
@@ -1301,7 +1314,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Export hub</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>EDL-Transmission</b><span style="color:var(--muted)">'Battery of Southeast Asia' — exports to TH, VN, KH, MY/SG</span><span class="kv">500 kV</span><a href="https://www.edltrans.com/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>EDL-Transmission</b><span style="color:var(--muted)">'Battery of Southeast Asia' — exports to TH, VN, KH, MY/SG <span class="op-updated">Record updated 28 August 2026</span></span><span class="kv">500 kV</span><a href="https://www.edltrans.com/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇰🇭</span><h3><a href="/grids/cambodia/" style="color:inherit;text-decoration:none">Cambodia</a></h3>
@@ -1309,7 +1322,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Regional ties</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>EDC</b><span style="color:var(--muted)">Imports from Laos, Thailand, Vietnam</span><span class="kv">500 kV</span><a href="https://www.edc.com.kh/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>EDC</b><span style="color:var(--muted)">Imports from Laos, Thailand, Vietnam; 500 kV links under construction <span class="op-updated">Record updated 16 October 2026</span></span><span class="kv">230 kV</span><a href="https://www.edc.com.kh/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇲🇲</span><h3><a href="/grids/myanmar/" style="color:inherit;text-decoration:none">Myanmar</a></h3>
@@ -1317,7 +1330,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">National</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>MOEP / ESE</b><span style="color:var(--muted)">National grid — constrained, partial coverage</span><span class="kv">500 kV</span><span></span></div>
+        <div class="grid-row"><b>MOEP / ESE</b><span style="color:var(--muted)">National grid — constrained, partial coverage <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">500 kV</span><span></span></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇧🇳</span><h3><a href="/grids/brunei/" style="color:inherit;text-decoration:none">Brunei</a></h3>
@@ -1325,7 +1338,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Isolated</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>DES + Berakas Power</b><span style="color:var(--muted)">Two interconnected national systems; Borneo grid link under ASEAN study</span><span class="kv">66 kV</span><span></span></div><div class="proj-links">🌊 1 offshore HVDC programme</div>
+        <div class="grid-row"><b>DES + Berakas Power</b><span style="color:var(--muted)">Two interconnected national systems; Borneo grid link under ASEAN study <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">66 kV</span><span></span></div><div class="proj-links">🌊 1 offshore HVDC programme</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇹🇱</span><h3><a href="/grids/timor-leste/" style="color:inherit;text-decoration:none">Timor-Leste</a></h3>
@@ -1333,7 +1346,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Isolated</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>EDTL</b><span style="color:var(--muted)">National utility — 150 kV north–south backbone</span><span class="kv">150 kV</span><span></span></div>
+        <div class="grid-row"><b>EDTL</b><span style="color:var(--muted)">National utility — 150 kV north–south backbone <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">150 kV</span><span></span></div>
       </div>
 <div class="region-h">North America</div><div class="country-card">
         <div class="country-head">
@@ -1342,7 +1355,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">3 interconnections</span>
           <span class="badge b-cnt">3 operators</span>
         </div>
-        <div class="grid-row"><b>Eastern Interconnection</b><span style="color:var(--muted)">PJM, MISO, SPP, NYISO, ISO-NE, SERC — world's 2nd-largest sync area</span><span class="kv">765 kV</span><a href="https://www.nerc.com/" target="_blank" rel="noopener">Site →</a></div><div class="grid-row"><b>Western Interconnection (WECC)</b><span style="color:var(--muted)">CAISO + western utilities, 14 states + BC/AB + Baja</span><span class="kv">500 kV</span><a href="https://www.wecc.org/" target="_blank" rel="noopener">Site →</a></div><div class="grid-row"><b>ERCOT (Texas)</b><span style="color:var(--muted)">Standalone sync grid — DC ties only to East/Mexico</span><span class="kv">345 kV</span><a href="https://www.ercot.com/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
+        <div class="grid-row"><b>Eastern Interconnection</b><span style="color:var(--muted)">PJM, MISO, SPP, NYISO, ISO-NE, SERC — world's 2nd-largest sync area <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">765 kV</span><a href="https://www.nerc.com/" target="_blank" rel="noopener">Site →</a></div><div class="grid-row"><b>Western Interconnection (WECC)</b><span style="color:var(--muted)">CAISO + western utilities, 14 states + BC/AB + Baja <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">500 kV</span><a href="https://www.wecc.org/" target="_blank" rel="noopener">Site →</a></div><div class="grid-row"><b>ERCOT (Texas)</b><span style="color:var(--muted)">Standalone sync grid — DC ties only to East/Mexico <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">345 kV</span><a href="https://www.ercot.com/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇨🇦</span><h3><a href="/grids/canada/" style="color:inherit;text-decoration:none">Canada</a></h3>
@@ -1350,7 +1363,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Eastern / Western / Québec</span>
           <span class="badge b-cnt">3 operators</span>
         </div>
-        <div class="grid-row"><b>Hydro-Québec TransÉnergie</b><span style="color:var(--muted)">Own synchronous area — pioneered 735 kV (1965)</span><span class="kv">735 kV</span><a href="https://www.hydroquebec.com/" target="_blank" rel="noopener">Site →</a></div><div class="grid-row"><b>IESO / Hydro One (Ontario)</b><span style="color:var(--muted)">Eastern Interconnection</span><span class="kv">500 kV</span><a href="https://www.ieso.ca/" target="_blank" rel="noopener">Site →</a></div><div class="grid-row"><b>AESO (Alberta) + BC Hydro</b><span style="color:var(--muted)">Western Interconnection</span><span class="kv">500 kV</span><a href="https://www.aeso.ca/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>Hydro-Québec TransÉnergie</b><span style="color:var(--muted)">Own synchronous area — pioneered 735 kV (1965) <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">735 kV</span><a href="https://www.hydroquebec.com/" target="_blank" rel="noopener">Site →</a></div><div class="grid-row"><b>IESO / Hydro One (Ontario)</b><span style="color:var(--muted)">Eastern Interconnection <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">500 kV</span><a href="https://www.ieso.ca/" target="_blank" rel="noopener">Site →</a></div><div class="grid-row"><b>AESO (Alberta) + BC Hydro</b><span style="color:var(--muted)">Western Interconnection <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">500 kV</span><a href="https://www.aeso.ca/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇲🇽</span><h3><a href="/grids/mexico/" style="color:inherit;text-decoration:none">Mexico</a></h3>
@@ -1358,7 +1371,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">SIN Mexico</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>CENACE / CFE</b><span style="color:var(--muted)">Sistema Interconectado Nacional + Baja grids (Baja Norte in WECC)</span><span class="kv">400 kV</span><a href="https://www.cenace.gob.mx/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>CENACE / CFE</b><span style="color:var(--muted)">Sistema Interconectado Nacional + Baja grids (Baja Norte in WECC) <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">400 kV</span><a href="https://www.cenace.gob.mx/" target="_blank" rel="noopener">Site →</a></div>
       </div>
 <div class="region-h">Latin America</div><div class="country-card">
         <div class="country-head">
@@ -1367,7 +1380,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">SIN Brazil</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>ONS</b><span style="color:var(--muted)">Sistema Interligado Nacional — 99%+ of load; Itaipu &amp; Belo Monte HVDC</span><span class="kv">750 kV / ±800 kV DC</span><a href="https://www.ons.org.br/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>ONS</b><span style="color:var(--muted)">Sistema Interligado Nacional — 99%+ of load; Itaipu &amp; Belo Monte HVDC <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">750 kV / ±800 kV DC</span><a href="https://www.ons.org.br/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇦🇷</span><h3><a href="/grids/argentina/" style="color:inherit;text-decoration:none">Argentina</a></h3>
@@ -1375,7 +1388,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">SADI (+Uruguay)</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>CAMMESA / Transener</b><span style="color:var(--muted)">Sistema Argentino de Interconexión</span><span class="kv">500 kV</span><a href="https://www.cammesa.com/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>CAMMESA / Transener</b><span style="color:var(--muted)">Sistema Argentino de Interconexión <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">500 kV</span><a href="https://www.cammesa.com/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇨🇱</span><h3><a href="/grids/chile/" style="color:inherit;text-decoration:none">Chile</a></h3>
@@ -1383,7 +1396,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">SEN Chile</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>Coordinador Eléctrico Nacional</b><span style="color:var(--muted)">SEN — SIC+SING unified 2017; 3,100 km longitudinal grid</span><span class="kv">500 kV</span><a href="https://www.coordinador.cl/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>Coordinador Eléctrico Nacional</b><span style="color:var(--muted)">SEN — SIC+SING unified 2017; 3,100 km longitudinal grid <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">500 kV</span><a href="https://www.coordinador.cl/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇨🇴</span><h3><a href="/grids/colombia/" style="color:inherit;text-decoration:none">Colombia</a></h3>
@@ -1391,7 +1404,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">SIN Colombia (Andean ties)</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>XM / ISA Intercolombia</b><span style="color:var(--muted)">SIN — tie to Ecuador (and Panama link under construction)</span><span class="kv">500 kV</span><a href="https://www.xm.com.co/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
+        <div class="grid-row"><b>XM / ISA Intercolombia</b><span style="color:var(--muted)">SIN — tie to Ecuador (and Panama link under construction) <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">500 kV</span><a href="https://www.xm.com.co/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇵🇪</span><h3><a href="/grids/peru/" style="color:inherit;text-decoration:none">Peru</a></h3>
@@ -1399,7 +1412,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">SEIN (Andean ties)</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>COES / Red de Energía del Perú</b><span style="color:var(--muted)">Sistema Eléctrico Interconectado Nacional</span><span class="kv">500 kV</span><a href="https://www.coes.org.pe/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>COES / Red de Energía del Perú</b><span style="color:var(--muted)">Sistema Eléctrico Interconectado Nacional <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">500 kV</span><a href="https://www.coes.org.pe/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇪🇨</span><h3><a href="/grids/ecuador/" style="color:inherit;text-decoration:none">Ecuador</a></h3>
@@ -1407,7 +1420,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">SNI (Andean ties)</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>CENACE / CELEC Transelectric</b><span style="color:var(--muted)">SNI — synced with Colombia</span><span class="kv">500 kV</span><a href="https://www.cenace.gob.ec/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>CENACE / CELEC Transelectric</b><span style="color:var(--muted)">SNI — synced with Colombia <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">500 kV</span><a href="https://www.cenace.gob.ec/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇻🇪</span><h3><a href="/grids/venezuela/" style="color:inherit;text-decoration:none">Venezuela</a></h3>
@@ -1415,7 +1428,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">SEN Venezuela</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>Corpoelec</b><span style="color:var(--muted)">Guri hydro backbone — 765 kV system</span><span class="kv">765 kV</span><span></span></div>
+        <div class="grid-row"><b>Corpoelec</b><span style="color:var(--muted)">Guri hydro backbone — 765 kV system <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">765 kV</span><span></span></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇧🇴</span><h3><a href="/grids/bolivia/" style="color:inherit;text-decoration:none">Bolivia</a></h3>
@@ -1423,7 +1436,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">SIN Bolivia</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>ENDE / CNDC</b><span style="color:var(--muted)">Sistema Interconectado Nacional</span><span class="kv">230 kV</span><a href="https://www.ende.bo/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>ENDE / CNDC</b><span style="color:var(--muted)">Sistema Interconectado Nacional <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">230 kV</span><a href="https://www.ende.bo/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇺🇾</span><h3><a href="/grids/uruguay/" style="color:inherit;text-decoration:none">Uruguay</a></h3>
@@ -1431,7 +1444,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">SADI-synced</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>UTE</b><span style="color:var(--muted)">Synced with Argentina; HVDC converter (Melo) to Brazil</span><span class="kv">500 kV</span><a href="https://www.ute.com.uy/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>UTE</b><span style="color:var(--muted)">Synced with Argentina; HVDC converter (Melo) to Brazil <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">500 kV</span><a href="https://www.ute.com.uy/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇵🇾</span><h3><a href="/grids/paraguay/" style="color:inherit;text-decoration:none">Paraguay</a></h3>
@@ -1439,7 +1452,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">SADI-linked</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>ANDE</b><span style="color:var(--muted)">Itaipu (50 Hz half) &amp; Yacyretá exporter</span><span class="kv">500 kV</span><a href="https://www.ande.gov.py/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>ANDE</b><span style="color:var(--muted)">Itaipu (50 Hz half) &amp; Yacyretá exporter <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">500 kV</span><a href="https://www.ande.gov.py/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🌎</span><h3><a href="/grids/central-america-siepac/" style="color:inherit;text-decoration:none">Central America (SIEPAC)</a></h3>
@@ -1447,7 +1460,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">SIEPAC</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>EOR / EPR</b><span style="color:var(--muted)">Regional 230 kV backbone: Guatemala, El Salvador, Honduras, Nicaragua, Costa Rica, Panama</span><span class="kv">230 kV</span><a href="https://www.enteoperador.org/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>EOR / EPR</b><span style="color:var(--muted)">Regional 230 kV backbone: Guatemala, El Salvador, Honduras, Nicaragua, Costa Rica, Panama <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">230 kV</span><a href="https://www.enteoperador.org/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇩🇴</span><h3><a href="/grids/dominican-republic/" style="color:inherit;text-decoration:none">Dominican Republic</a></h3>
@@ -1455,7 +1468,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Isolated</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>ETED</b><span style="color:var(--muted)">Island grid</span><span class="kv">345 kV</span><a href="https://www.eted.gob.do/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>ETED</b><span style="color:var(--muted)">Island grid <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">345 kV</span><a href="https://www.eted.gob.do/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇨🇺</span><h3><a href="/grids/cuba/" style="color:inherit;text-decoration:none">Cuba</a></h3>
@@ -1463,7 +1476,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Isolated</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>UNE (Unión Eléctrica)</b><span style="color:var(--muted)">Island grid — severe generation crisis</span><span class="kv">220 kV</span><span></span></div>
+        <div class="grid-row"><b>UNE (Unión Eléctrica)</b><span style="color:var(--muted)">Island grid — severe generation crisis <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">220 kV</span><span></span></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇯🇲</span><h3><a href="/grids/jamaica/" style="color:inherit;text-decoration:none">Jamaica</a></h3>
@@ -1471,7 +1484,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Isolated</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>JPS (Jamaica Public Service)</b><span style="color:var(--muted)">Island grid — one of the few 50 Hz systems in the Americas</span><span class="kv">138 kV</span><a href="https://www.jpsco.com/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>JPS (Jamaica Public Service)</b><span style="color:var(--muted)">Island grid — one of the few 50 Hz systems in the Americas <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">138 kV</span><a href="https://www.jpsco.com/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇹🇹</span><h3><a href="/grids/trinidad-and-tobago/" style="color:inherit;text-decoration:none">Trinidad &amp; Tobago</a></h3>
@@ -1479,7 +1492,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Isolated</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>T&amp;TEC</b><span style="color:var(--muted)">Trinidad grid + subsea link to Tobago</span><span class="kv">220 kV</span><span></span></div><div class="proj-links">⚡ 1 interconnector project</div>
+        <div class="grid-row"><b>T&amp;TEC</b><span style="color:var(--muted)">Trinidad grid + subsea link to Tobago <span class="op-updated">Record updated 28 August 2026</span></span><span class="kv">220 kV</span><span></span></div><div class="proj-links">⚡ 1 interconnector project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇬🇾</span><h3><a href="/grids/guyana/" style="color:inherit;text-decoration:none">Guyana</a></h3>
@@ -1487,7 +1500,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Isolated</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>GPL (Guyana Power &amp; Light)</b><span style="color:var(--muted)">DBIS coastal grid — oil-boom gas-to-energy 300 MW expansion under way</span><span class="kv">69 kV</span><span></span></div>
+        <div class="grid-row"><b>GPL (Guyana Power &amp; Light)</b><span style="color:var(--muted)">DBIS coastal grid — oil-boom gas-to-energy 300 MW expansion under way <span class="op-updated">Record updated 28 August 2026</span></span><span class="kv">69 kV</span><span></span></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇸🇷</span><h3><a href="/grids/suriname/" style="color:inherit;text-decoration:none">Suriname</a></h3>
@@ -1495,7 +1508,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Isolated</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>EBS</b><span style="color:var(--muted)">EPAR coastal grid + Afobaka hydro</span><span class="kv">161 kV</span><span></span></div>
+        <div class="grid-row"><b>EBS</b><span style="color:var(--muted)">EPAR coastal grid + Afobaka hydro <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">161 kV</span><span></span></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇧🇸</span><h3><a href="/grids/bahamas/" style="color:inherit;text-decoration:none">Bahamas</a></h3>
@@ -1503,7 +1516,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Isolated</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>BPL (Bahamas Power &amp; Light)</b><span style="color:var(--muted)">New Providence grid + separate Family Islands systems</span><span class="kv">66 kV</span><span></span></div>
+        <div class="grid-row"><b>BPL (Bahamas Power &amp; Light)</b><span style="color:var(--muted)">New Providence grid + separate Family Islands systems <span class="op-updated">Record updated 28 August 2026</span></span><span class="kv">66 kV</span><span></span></div>
       </div>
 <div class="region-h">Oceania</div><div class="country-card">
         <div class="country-head">
@@ -1512,7 +1525,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">NEM + SWIS + NT</span>
           <span class="badge b-cnt">2 operators</span>
         </div>
-        <div class="grid-row"><b>AEMO — NEM</b><span style="color:var(--muted)">East-coast National Electricity Market: QLD-NSW-VIC-SA-TAS (TAS via Basslink HVDC)</span><span class="kv">500 kV</span><a href="https://www.aemo.com.au/" target="_blank" rel="noopener">Site →</a></div><div class="grid-row"><b>Western Power — SWIS</b><span style="color:var(--muted)">South West Interconnected System (Perth) — separate grid</span><span class="kv">330 kV</span><a href="https://www.westernpower.com.au/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
+        <div class="grid-row"><b>AEMO — NEM</b><span style="color:var(--muted)">East-coast National Electricity Market: QLD-NSW-VIC-SA-TAS (TAS via Basslink HVDC) <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">500 kV</span><a href="https://www.aemo.com.au/" target="_blank" rel="noopener">Site →</a></div><div class="grid-row"><b>Western Power — SWIS</b><span style="color:var(--muted)">South West Interconnected System (Perth) — separate grid <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">330 kV</span><a href="https://www.westernpower.com.au/" target="_blank" rel="noopener">Site →</a></div><div class="proj-links">⚡ 1 interconnector project</div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇳🇿</span><h3><a href="/grids/new-zealand/" style="color:inherit;text-decoration:none">New Zealand</a></h3>
@@ -1520,7 +1533,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">National (HVDC-bridged)</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>Transpower</b><span style="color:var(--muted)">North &amp; South Island grids bridged by ±350 kV HVDC Inter-Island link</span><span class="kv">220 kV</span><a href="https://www.transpower.co.nz/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>Transpower</b><span style="color:var(--muted)">North &amp; South Island grids bridged by ±350 kV HVDC Inter-Island link <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">220 kV</span><a href="https://www.transpower.co.nz/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇵🇬</span><h3><a href="/grids/papua-new-guinea/" style="color:inherit;text-decoration:none">Papua New Guinea</a></h3>
@@ -1528,7 +1541,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Isolated</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>PNG Power</b><span style="color:var(--muted)">Port Moresby + Ramu separate systems</span><span class="kv">132 kV</span><a href="https://www.pngpower.com.pg/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>PNG Power</b><span style="color:var(--muted)">Port Moresby + Ramu separate systems <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">132 kV</span><a href="https://www.pngpower.com.pg/" target="_blank" rel="noopener">Site →</a></div>
       </div><div class="country-card">
         <div class="country-head">
           <span class="flag">🇫🇯</span><h3><a href="/grids/fiji/" style="color:inherit;text-decoration:none">Fiji</a></h3>
@@ -1536,7 +1549,7 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
           <span class="badge b-sync">Isolated</span>
           <span class="badge b-cnt">1 operator</span>
         </div>
-        <div class="grid-row"><b>EFL (Energy Fiji Limited)</b><span style="color:var(--muted)">Viti Levu island grid</span><span class="kv">132 kV</span><a href="https://efl.com.fj/" target="_blank" rel="noopener">Site →</a></div>
+        <div class="grid-row"><b>EFL (Energy Fiji Limited)</b><span style="color:var(--muted)">Viti Levu island grid <span class="op-updated">Record updated 11 July 2026</span></span><span class="kv">132 kV</span><a href="https://efl.com.fj/" target="_blank" rel="noopener">Site →</a></div>
       </div>
 <!--/SSR:grids-board-->
 </div>
@@ -1548,20 +1561,19 @@ Data last verified 2026-07-07 &middot; sources: official utility, operator &amp;
   <div class="container">
     <div class="cols">
       <div>
-        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 16 16" aria-hidden="true" style="flex:none"><g fill="#f5a623"><rect x="1" y="1" width="4" height="4"/><rect x="11" y="1" width="4" height="4"/><rect x="1" y="11" width="4" height="4"/><rect x="11" y="11" width="4" height="4"/><rect x="5" y="2" width="6" height="2"/><rect x="12" y="5" width="2" height="6"/><rect x="5" y="12" width="6" height="2"/></g></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
         <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data. Built for utilities, transformer manufacturers, component suppliers, EPCs, consultants and engineers.</p>
       </div>
       <div><p class="footer-col-label">INTELLIGENCE</p><a href="intel.html">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="projects.html">Projects</a><a href="tenders.html">Tenders</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="map.html">Industry Map</a><a href="events.html">Events</a></div>
       <div><p class="footer-col-label">DIRECTORY</p><a href="manufacturers.html">Manufacturers</a><a href="directory.html">Directory Index</a><a href="components.html">Components &amp; Materials</a><a href="machinery.html">Machinery</a><a href="laboratories.html">Testing Labs</a><a href="services.html">Service &amp; Repair</a><a href="logistics.html">Logistics</a><a href="buyers.html">Buyers &amp; Utilities</a><a href="rfq.html">RFQ Board</a></div>
       <div><p class="footer-col-label">ENGINEERING</p><a href="tools.html">Engineering Hub</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Interactive Models</a><a href="standards.html">Standards &amp; Codes</a><a href="knowledge.html">Knowledge Base</a><a href="case-studies.html">Case Studies</a></div>
-      <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learning Hub</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy 3D Tools</a><a href="books.html">Books</a><a href="education.html">Education</a></div>
-      <div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="pricing.html">Pricing Plans</a><a href="verified.html">Verified Profiles</a><a href="webinars.html">Webinars</a><a href="sponsor.html">Sponsorship</a><a href="associations.html">Associations</a><a href="media.html">Media</a></div>
-      <div><p class="footer-col-label">COMPANY</p><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learning Hub</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy 3D Tools</a><a href="books.html">Books</a><a href="education.html">Education</a></div>
+      <div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="pricing.html">Pricing Plans</a><a href="verified.html">Verified Profiles</a><a href="sponsor.html">Sponsorship</a><a href="associations.html">Associations</a><a href="media.html">Media</a></div>
+      <div><p class="footer-col-label">COMPANY</p><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="affiliate-disclosure.html">Affiliate disclosure</a></div>
       <div><p class="footer-col-label">CONTACT</p>
         <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
         <a href="privacy.html#cookies" onclick="if(window.tpResetConsent){window.tpResetConsent();return false}">Cookie settings</a>
         <a class="tp-li-btn tp-li-follow" data-linkedin-follow href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>Follow us on LinkedIn</a>
-        <a class="tp-li-btn tp-li-share" data-linkedin-share href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>LinkedIn</a>
       </div>
     </div>
     <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
@@ -1653,6 +1665,19 @@ const GRID_CAPEX = [
 ];
 
 const LAST_VERIFIED = "2026-07-07";
+const OPERATOR_UPDATED = {"TAQA Transmission":"2026-07-11","DEWA":"2026-07-11","SEWA":"2026-07-11","EtihadWE":"2026-07-11","Saudi Electricity Co / National Grid SA":"2026-07-11","MEWRE (Ministry of Electricity & Water)":"2026-07-11","KAHRAMAA":"2026-07-11","EWA":"2026-07-11","OETC (Oman Grid)":"2026-07-11","Ministry of Electricity":"2026-07-11","NEPCO":"2026-07-11","EDL (Électricité du Liban)":"2026-07-11","PEEGT":"2026-07-11","PEC (Public Electricity Corp)":"2026-07-11","TAVANIR / IGMC":"2026-07-11","IEC / Noga ISO":"2026-07-11","EETC":"2026-07-11","Amprion":"2026-07-11","TenneT Germany":"2026-07-11","50Hertz":"2026-07-11","TransnetBW":"2026-07-11","RTE":"2026-07-11","NESO / National Grid ET":"2026-07-11","SP Energy Networks / SSEN":"2026-07-11","EirGrid + SONI":"2026-07-11","Terna":"2026-07-11","Red Eléctrica (Redeia)":"2026-07-11","REN":"2026-07-11","TenneT":"2026-07-11","Elia":"2026-07-11","Swissgrid":"2026-07-11","APG (Austrian Power Grid)":"2026-07-11","PSE":"2026-07-11","ČEPS":"2026-07-11","SEPS":"2026-07-11","MAVIR":"2026-07-11","Transelectrica":"2026-07-11","ESO EAD":"2026-07-11","IPTO / ADMIE":"2026-07-11","EMS":"2026-07-11","HOPS":"2026-07-11","ELES":"2026-07-11","NOSBiH / Elektroprijenos BiH":"2026-07-11","MEPSO":"2026-07-11","OST":"2026-07-11","CGES":"2026-07-11","Energinet":"2026-07-11","Statnett":"2026-07-11","Svenska kraftnät":"2026-07-11","Fingrid":"2026-07-11","Elering":"2026-07-11","AST (Augstsprieguma tīkls)":"2026-07-11","Litgrid":"2026-07-11","Ukrenergo":"2026-07-11","Moldelectrica":"2026-07-11","TEİAŞ":"2026-07-11","Landsnet":"2026-07-11","TSOC / EAC":"2026-07-11","KOSTT":"2026-07-11","Creos Luxembourg":"2026-07-11","Enemalta":"2026-07-11","SO UPS (System Operator) / Rosseti":"2026-07-11","Belenergo":"2026-07-11","KEGOC":"2026-07-11","NEGU (National Electric Grid)":"2026-08-28","NESK":"2026-07-11","Barqi Tojik":"2026-07-11","Türkmenenergo":"2026-07-11","Azerenerji / AzerEnergy":"2026-07-11","GSE (Georgian State Electrosystem)":"2026-07-11","HVEN (High Voltage Electric Networks)":"2026-07-11","NPTG (National Power Transmission Grid)":"2026-07-11","ONEE":"2026-07-11","Sonelgaz / GRTE":"2026-07-11","STEG":"2026-07-11","GECOL":"2026-07-11","SETCO / STPG":"2026-07-11","TCN (Transmission Company of Nigeria)":"2026-07-11","GRIDCo":"2026-07-11","CI-ENERGIES":"2026-07-11","Senelec":"2026-07-11","KETRACO / Kenya Power":"2026-07-11","EEP (Ethiopian Electric Power)":"2026-07-11","TANESCO":"2026-07-11","UETCL":"2026-07-11","Eskom / NTCSA":"2026-07-11","ZESCO":"2026-07-11","ZETDC":"2026-08-28","BPC (Botswana Power Corp)":"2026-07-11","NamPower":"2026-07-11","EDM + HCB":"2026-07-11","SNEL":"2026-07-11","RNT (Rede Nacional de Transporte)":"2026-07-11","SONATREL":"2026-07-11","REG (Rwanda Energy Group)":"2026-07-11","ESCOM":"2026-07-11","JIRAMA":"2026-08-28","CEB (Central Electricity Board)":"2026-07-11","EEC (Eswatini Electricity Company)":"2026-07-11","LEC (Lesotho Electricity Company)":"2026-07-11","EDM-SA":"2026-07-11","SONABEL":"2026-07-11","NIGELEC":"2026-08-28","CEB + SBEE":"2026-07-11","CEB + CEET":"2026-07-11","EDG (Électricité de Guinée)":"2026-07-11","SOMELEC":"2026-07-11","EDD (Électricité de Djibouti)":"2026-07-11","POWERGRID + Grid-India (NLDC)":"2026-07-11","NTDC + K-Electric":"2026-07-11","PGCB":"2026-07-11","CEB (Ceylon Electricity Board)":"2026-07-11","NEA":"2026-07-11","BPSO / Druk Green":"2026-07-11","DABS":"2026-08-28","STELCO / FENAKA":"2026-07-11","State Grid Corp of China (SGCC)":"2026-07-11","China Southern Power Grid (CSG)":"2026-07-11","OCCTO + 10 regional TSOs":"2026-07-11","TEPCO Power Grid":"2026-07-11","KEPCO / KPX":"2026-07-11","Taipower":"2026-07-11","CLP Power + HK Electric":"2026-07-11","CEM":"2026-07-11","EGAT":"2026-07-11","EVN / NPT":"2026-07-11","TNB (Peninsular Grid)":"2026-07-11","Sarawak Energy + SESB Sabah":"2026-07-11","SP Group":"2026-07-11","PLN":"2026-08-28","NGCP":"2026-07-11","EDL-Transmission":"2026-08-28","EDC":"2026-07-11","MOEP / ESE":"2026-07-11","DES + Berakas Power":"2026-07-11","EDTL":"2026-07-11","Eastern Interconnection":"2026-07-11","Western Interconnection (WECC)":"2026-07-11","ERCOT (Texas)":"2026-07-11","Hydro-Québec TransÉnergie":"2026-07-11","IESO / Hydro One (Ontario)":"2026-07-11","AESO (Alberta) + BC Hydro":"2026-07-11","CENACE / CFE":"2026-07-11","ONS":"2026-07-11","CAMMESA / Transener":"2026-07-11","Coordinador Eléctrico Nacional":"2026-07-11","XM / ISA Intercolombia":"2026-07-11","COES / Red de Energía del Perú":"2026-07-11","CENACE / CELEC Transelectric":"2026-07-11","Corpoelec":"2026-07-11","ENDE / CNDC":"2026-07-11","UTE":"2026-07-11","ANDE":"2026-07-11","EOR / EPR":"2026-07-11","ETED":"2026-07-11","UNE (Unión Eléctrica)":"2026-07-11","JPS (Jamaica Public Service)":"2026-07-11","T&TEC":"2026-08-28","GPL (Guyana Power & Light)":"2026-08-28","EBS":"2026-07-11","BPL (Bahamas Power & Light)":"2026-08-28","AEMO — NEM":"2026-07-11","Western Power — SWIS":"2026-07-11","Transpower":"2026-07-11","PNG Power":"2026-07-11","EFL (Energy Fiji Limited)":"2026-07-11"};
+function opUpdatedLabel(name){
+  const iso = OPERATOR_UPDATED[name];
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(iso||'')) return 'Record updated: Not available';
+  const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const p=iso.split('-');
+  return 'Record updated '+Number(p[2])+' '+months[Number(p[1])-1]+' '+p[0];
+}
+function censusVerifiedLabel(){
+  const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const p=LAST_VERIFIED.split('-');
+  return 'Census verified '+Number(p[2])+' '+months[Number(p[1])-1]+' '+p[0];
+}
 
 const DATA = [
 
@@ -1838,7 +1863,7 @@ const DATA = [
  ["Belenergo","State power association","750 kV","https://www.energo.by/"]
 ]},
 {country:"Kazakhstan",region:"CIS / Eurasia",flag:"🇰🇿",freq:"50",sync:"IPS/UPS",grids:[
- ["KEGOC","National grid — hosts world's only 1150 kV-built lines (operated at 500 kV)","1150 kV (built)","https://www.kegoc.kz/"]
+ ["KEGOC","National grid — its Ekibastuz–Kokshetau 1150 kV-built line is operated at 500 kV","500 kV (1150 kV-built line operated at 500 kV)","https://www.kegoc.kz/"]
 ]},
 {country:"Uzbekistan",region:"CIS / Eurasia",flag:"🇺🇿",freq:"50",sync:"Central Asia (CAPS)",grids:[
  ["NEGU (National Electric Grid)","Hub of Central Asian Power System","500 kV","https://www.uzbekenergo.uz/"]
@@ -2050,7 +2075,7 @@ const DATA = [
  ["EDL-Transmission","'Battery of Southeast Asia' — exports to TH, VN, KH, MY/SG","500 kV","https://www.edltrans.com/"]
 ]},
 {country:"Cambodia",region:"Southeast Asia",flag:"🇰🇭",freq:"50",sync:"Regional ties",grids:[
- ["EDC","Imports from Laos, Thailand, Vietnam","500 kV","https://www.edc.com.kh/"]
+ ["EDC","Imports from Laos, Thailand, Vietnam; 500 kV links under construction","230 kV","https://www.edc.com.kh/"]
 ]},
 {country:"Myanmar",region:"Southeast Asia",flag:"🇲🇲",freq:"50",sync:"National",grids:[
  ["MOEP / ESE","National grid — constrained, partial coverage","500 kV",""]
@@ -2219,7 +2244,7 @@ function render(){
           <span class="badge b-sync">${c.sync}</span>
           <span class="badge b-cnt">${c.grids.length} operator${c.grids.length>1?'s':''}</span>
         </div>
-        ${c.grids.map(g=>`<div class="grid-row"><b>${g[0]}</b><span style="color:var(--muted)">${g[1]}</span><span class="kv">${g[2]}</span>${g[3]?`<a href="${g[3]}" target="_blank" rel="noopener">Site →</a>`:'<span></span>'}</div>`).join('')}${projChips(c)}
+        ${c.grids.map(g=>`<div class="grid-row"><b>${g[0]}</b><span style="color:var(--muted)">${g[1]} <span class="op-updated">${opUpdatedLabel(g[0])}</span></span><span class="kv">${g[2]}</span>${g[3]?`<a href="${g[3]}" target="_blank" rel="noopener">Site →</a>`:'<span></span>'}</div>`).join('')}${projChips(c)}
       </div>`).join('');
   }).join('');
   document.getElementById('count').textContent = `Showing ${list.length} countries across ${order.length} regions`;
@@ -2280,7 +2305,7 @@ document.getElementById('csvProjects').addEventListener('click',()=>{
     .concat(GREEN_H2.map(p=>['Green hydrogen'].concat(p)))
     .concat(GRID_CAPEX.map(p=>['Grid CAPEX'].concat(p))));
 });
-const lvL=document.getElementById('lvLine'); if(lvL) lvL.innerHTML='Data last verified '+LAST_VERIFIED+' &middot; sources: official utility, operator &amp; regulator filings &middot; maintained encyclopedia-style from the TransformerPath grid census. Report a <a href="mailto:hello@transformerpath.com?subject=Grid%20census%20correction" style="color:var(--accent);font-weight:600">correction</a>.';
+const lvL=document.getElementById('lvLine'); if(lvL) lvL.innerHTML=censusVerifiedLabel()+'. Each operator row shows that operator record\'s own updated date. Sources: official utility, operator &amp; regulator filings. Report a <a href="mailto:hello@transformerpath.com?subject=Grid%20census%20correction" style="color:var(--accent);font-weight:600">correction</a>.';
 
 // ── Interactive world map ──
 (function(){

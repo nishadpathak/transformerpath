@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Claim Company Profile — TransformerPath</title>
-<meta name="description" content="Claim and verify your transformer manufacturing, component or service company profile on TransformerPath. Confirm technical capabilities, factories, certifications and manage RFQ routing.">
+<meta name="description" content="Claim your transformer company profile on TransformerPath. Verified includes a logo, catalogue PDF and photo gallery at no extra charge. RFQ routing is coming soon.">
 <link rel="canonical" href="https://transformerpath.com/claim-profile.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TransformerPath">
@@ -39,11 +39,16 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
 
 <a class="skip-link" href="#main">Skip to content</a>
 <header>
+  <style>
+    @media (min-width: 1024px) {
+      #mainNav > .tpnav-more { display: block; }
+    }
+  </style>
   <div class="container nav">
-    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 16 16" aria-hidden="true" style="flex:none"><g fill="#f5a623"><rect x="1" y="1" width="4" height="4"/><rect x="11" y="1" width="4" height="4"/><rect x="1" y="11" width="4" height="4"/><rect x="11" y="11" width="4" height="4"/><rect x="5" y="2" width="6" height="2"/><rect x="12" y="5" width="2" height="6"/><rect x="5" y="12" width="6" height="2"/></g></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
     <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
     <nav class="tpnav" id="mainNav" aria-label="Primary">
-      <a href="intel.html">Intel</a>
+      <a href="/intel.html">Intel</a>
       <div class="tpnav-dropdown">
         <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
         <div class="tpnav-dropdown-panel" role="menu">
@@ -56,21 +61,25 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
           <a href="services.html">Services &amp; Repair</a>
           <a href="markets.html">Markets</a>
           <a href="buyers-guide.html">Buyer's Guide</a>
+          <a href="buy-early/">Buy early</a>
+          <a href="spare-capacity/">Mid-tier makers</a>
+          <a href="lead-times/">Lead times</a>
+          <a href="bottlenecks/">Bottlenecks</a>
           <a href="directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
         </div>
       </div>
       <a href="projects.html">Projects</a>
       <a href="tenders.html">Tenders</a>
       <a href="events.html">Events</a>
-      <a href="tools.html" class="tpnav-opt">Engineering</a>
       <a href="learn.html">Learn</a>
       <a href="rfq.html">RFQ</a>
       <div class="tpnav-more">
         <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
         <div class="tpnav-more-panel" role="menu">
+          <a href="tools.html" role="menuitem">Engineering</a>
           <a href="map.html" role="menuitem">Industry Map</a>
           <a href="grids.html" role="menuitem">Global Grids</a>
-          <a href="webinars.html" role="menuitem">Webinars</a>
+          
           <a href="standards.html" role="menuitem">Standards &amp; Codes</a>
           <a href="for-manufacturers.html" role="menuitem">For Manufacturers</a>
           <a href="pricing.html" role="menuitem">Pricing Plans</a>
@@ -79,6 +88,7 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
       </div>
       <span class="tpnav-utils">
         <a href="search.html" title="Search" aria-label="Search">&#128269;</a>
+        <span class="tp-auth" data-tp-auth hidden></span>
         <a href="workspace.html" data-tp-account>Account</a>
         <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">&#127769;</button>
       </span>
@@ -110,13 +120,15 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
       themeToggle.textContent = isDark ? '☀️' : '🌙';
     }
   </script>
+  <script src="google-auth-config.js" defer></script>
+  <script src="tp-auth.js?v=1" defer></script>
   <script src="tp-nav.js?v=7" defer></script>
   <script src="tp-pwa.js?v=7" defer></script>
 </header>
 <section class="hero" style="padding:50px 0 36px">
   <div class="container">
     <h1 style="font-size:2.1rem">Claim Your <span>Company Profile</span></h1>
-    <p>Represent a transformer manufacturer, component supplier, or machine maker? Claim your listing to complete technical specifications, verify factory capabilities, and unlock direct RFQ leads.</p>
+    <p>Represent a transformer manufacturer, component supplier, or machine maker? Claim your listing to confirm factory capabilities. A logo, a catalogue PDF link and a photo gallery are included with Verified Manufacturer at no extra charge. RFQ routing is coming soon.</p>
   </div>
 </section>
 
@@ -127,8 +139,15 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
         <b style="color:var(--text)">Integrity & Verification Standard.</b> TransformerPath strictly verifies every representative claim to maintain industry trust. Commercial status or payments never imply technical certification or endorsement. Profile updates and capability claims are held in moderation until verified by our research team.
       </p>
 
+      <div id="claimPaidBanner" style="display:none;background:#14365c;color:#fff;border-radius:10px;padding:12px 14px;margin:0 0 16px;font-size:.9rem;line-height:1.5">
+        If you completed payment, submit the form below; we confirm payment before review.
+      </div>
+      <p style="margin:0 0 8px"><a class="btn btn-amber" href="https://buy.stripe.com/4gMbIU7G8bFHak8d5EfYY05" data-verified-manufacturer-pay="1">Pay $499 — Get Verified</a></p>
+      <p class="paid-after-note" style="color:var(--muted);font-size:.82rem;margin:0 0 16px">After payment, return to this form and submit your company details. The badge appears only after review.</p>
+
       <form name="claim-profile" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" id="claimForm" data-track-form="supplier_claim_submitted">
         <input type="hidden" name="form-name" value="claim-profile">
+        <input type="hidden" name="payment_session" id="claimPaymentSession" value="">
         <p hidden><label>Leave this empty: <input name="bot-field"></label></p>
 
         <label for="fld_company">Company Profile to Claim *</label>
@@ -164,10 +183,22 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
 
         <label for="fld_tier">Desired Profile Status</label>
         <select id="fld_tier" name="tier">
-          <option value="CLAIMED_FREE">Claimed (Free) — Complete factory specs, receive buyer RFQ notifications</option>
-          <option value="VERIFIED">Verified ($499 / 12 months) — Verified badge, catalogue upload, lead routing & analytics</option>
-          <option value="SUPPLIER_PRO">Supplier Pro ($1,499 / 12 months) — Priority placement, enriched profile, full intelligence access</option>
+          <option value="CLAIMED_FREE">Claimed (free) — factory specs. RFQ routing is coming soon</option>
+          <option value="VERIFIED">Verified ($499 / 12 months) — badge, logo, catalogue PDF and photo gallery at no extra charge. RFQ routing is coming soon</option>
+          <option value="SUPPLIER_PRO">Supplier Pro — no checkout yet</option>
         </select>
+
+        <label for="fld_logo">Logo URL</label>
+        <input id="fld_logo" type="url" name="logo_url" placeholder="https://example.com/logo.png">
+        <p class="claim-note">Included with Verified Manufacturer at no extra charge. Shown on the company profile after review. Use an https PNG, JPG, GIF or WebP link. Leave blank if you do not have one.</p>
+
+        <label for="fld_catalogue">Catalogue PDF link</label>
+        <input id="fld_catalogue" type="url" name="catalogue_url" placeholder="https://example.com/catalogue.pdf">
+        <p class="claim-note">https link to a PDF. Included at no extra charge and shown after review.</p>
+
+        <label for="fld_photos">Photo gallery URLs</label>
+        <textarea id="fld_photos" name="photo_urls" placeholder="One https image URL per line"></textarea>
+        <p class="claim-note">Factory photos. One https image URL per line. Included at no extra charge and shown after review.</p>
 
         <label for="fld_updates">Initial Profile Updates / Specifications to Complete</label>
         <textarea id="fld_updates" name="updates" placeholder="List any factory locations, maximum verified voltage (kV), maximum MVA rating, ISO/IEC certifications, or test bay parameters to be added."></textarea>
@@ -184,10 +215,11 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
       <div id="claimThanks" style="display:none;text-align:center;padding:32px 16px">
         <div style="font-size:3rem">&#9989;</div>
         <h2 style="color:var(--ink);margin:8px 0">Profile Claim Received</h2>
-        <p style="color:var(--muted);max-width:480px;margin:0 auto 18px">Thank you. Your claim has been submitted to the TransformerPath moderation queue. We will verify your credentials against the corporate domain and confirm within 1 business day.</p>
-        <a href="directory.html" class="btn btn-amber" style="display:inline-block">Return to Directory &rarr;</a>
+        <p style="color:var(--muted);max-width:480px;margin:0 auto 18px">Thank you. Your claim has been submitted to the TransformerPath moderation queue. We will verify your credentials against the corporate domain and confirm within 1 business day. The VERIFIED MANUFACTURER badge appears only after that review.</p>
+        <a href="directory.html" class="btn btn-outline" style="display:inline-block">Return to Directory &rarr;</a>
       </div>
 
+      <script src="listing-payment.js"></script>
       <script>
       (function(){
         try {
@@ -198,19 +230,41 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
           }
         } catch(e){}
         var f = document.getElementById('claimForm');
-        if (!f) return;
-        f.addEventListener('submit', function(e){
-          e.preventDefault();
-          if (typeof f.checkValidity === 'function' && !f.checkValidity()){ f.reportValidity(); return; }
-          var body = new URLSearchParams(new FormData(f)).toString();
-          fetch('/', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:body}).then(done).catch(done);
-        });
+        if (f) {
+          f.addEventListener('submit', function(e){
+            e.preventDefault();
+            if (typeof f.checkValidity === 'function' && !f.checkValidity()){ f.reportValidity(); return; }
+            var body = new URLSearchParams(new FormData(f)).toString();
+            fetch('/', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:body}).then(done).catch(done);
+          });
+        }
         function done(){
-          f.style.display = 'none';
+          if (f) f.style.display = 'none';
           var t = document.getElementById('claimThanks');
+          if (!t) return;
           t.style.display = 'block';
           t.scrollIntoView({behavior:'smooth', block:'center'});
         }
+        function showListingReturn() {
+          try {
+            var paid = new URLSearchParams(location.search);
+            if (paid.get('paid') === 'verified_manufacturer') {
+              var tier = document.getElementById('fld_tier');
+              if (tier) tier.value = 'VERIFIED';
+            }
+            if (window.tpListingPayment) {
+              window.tpListingPayment.confirm({
+                product: 'verified_manufacturer',
+                noteId: 'claimPaidBanner',
+                sessionFieldId: 'claimPaymentSession',
+                scrollId: 'claimForm',
+                paidText: 'Payment received. Submit your company details in the form below. The VERIFIED MANUFACTURER badge appears only after manual review. Payment does not change capability, evidence, or ranking.'
+              });
+            }
+          } catch (err) {}
+        }
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', showListingReturn);
+        else showListingReturn();
       })();
       </script>
     </div>
@@ -221,20 +275,19 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
   <div class="container">
     <div class="cols">
       <div>
-        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 16 16" aria-hidden="true" style="flex:none"><g fill="#f5a623"><rect x="1" y="1" width="4" height="4"/><rect x="11" y="1" width="4" height="4"/><rect x="1" y="11" width="4" height="4"/><rect x="11" y="11" width="4" height="4"/><rect x="5" y="2" width="6" height="2"/><rect x="12" y="5" width="2" height="6"/><rect x="5" y="12" width="6" height="2"/></g></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
         <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data. Built for utilities, transformer manufacturers, component suppliers, EPCs, consultants and engineers.</p>
       </div>
       <div><p class="footer-col-label">INTELLIGENCE</p><a href="intel.html">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="projects.html">Projects</a><a href="tenders.html">Tenders</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="map.html">Industry Map</a><a href="events.html">Events</a></div>
       <div><p class="footer-col-label">DIRECTORY</p><a href="manufacturers.html">Manufacturers</a><a href="directory.html">Directory Index</a><a href="components.html">Components &amp; Materials</a><a href="machinery.html">Machinery</a><a href="laboratories.html">Testing Labs</a><a href="services.html">Service &amp; Repair</a><a href="logistics.html">Logistics</a><a href="buyers.html">Buyers &amp; Utilities</a><a href="rfq.html">RFQ Board</a></div>
       <div><p class="footer-col-label">ENGINEERING</p><a href="tools.html">Engineering Hub</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Interactive Models</a><a href="standards.html">Standards &amp; Codes</a><a href="knowledge.html">Knowledge Base</a><a href="case-studies.html">Case Studies</a></div>
-      <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learning Hub</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy 3D Tools</a><a href="books.html">Books</a><a href="education.html">Education</a></div>
-      <div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="pricing.html">Pricing Plans</a><a href="verified.html">Verified Profiles</a><a href="webinars.html">Webinars</a><a href="sponsor.html">Sponsorship</a><a href="associations.html">Associations</a><a href="media.html">Media</a></div>
-      <div><p class="footer-col-label">COMPANY</p><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learning Hub</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy 3D Tools</a><a href="books.html">Books</a><a href="education.html">Education</a></div>
+      <div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="pricing.html">Pricing Plans</a><a href="verified.html">Verified Profiles</a><a href="sponsor.html">Sponsorship</a><a href="associations.html">Associations</a><a href="media.html">Media</a></div>
+      <div><p class="footer-col-label">COMPANY</p><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="affiliate-disclosure.html">Affiliate disclosure</a></div>
       <div><p class="footer-col-label">CONTACT</p>
         <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
         <a href="privacy.html#cookies" onclick="if(window.tpResetConsent){window.tpResetConsent();return false}">Cookie settings</a>
         <a class="tp-li-btn tp-li-follow" data-linkedin-follow href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>Follow us on LinkedIn</a>
-        <a class="tp-li-btn tp-li-share" data-linkedin-share href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>LinkedIn</a>
       </div>
     </div>
     <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>

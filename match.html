@@ -37,25 +37,92 @@
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 <header>
+  <style>
+    @media (min-width: 1024px) {
+      #mainNav > .tpnav-more { display: block; }
+    }
+  </style>
   <div class="container nav">
-    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 16 16" aria-hidden="true" style="flex:none"><g fill="#f5a623"><rect x="1" y="1" width="4" height="4"/><rect x="11" y="1" width="4" height="4"/><rect x="1" y="11" width="4" height="4"/><rect x="11" y="11" width="4" height="4"/><rect x="5" y="2" width="6" height="2"/><rect x="12" y="5" width="2" height="6"/><rect x="5" y="12" width="6" height="2"/></g></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
     <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
     <nav class="tpnav" id="mainNav" aria-label="Primary">
-      <a href="intel.html">Intel</a>
-      <a href="directory.html">Directory</a>
+      <a href="/intel.html">Intel</a>
+      <div class="tpnav-dropdown">
+        <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
+        <div class="tpnav-dropdown-panel" role="menu">
+          <a href="manufacturers.html">Manufacturers</a>
+          <a href="map.html">Industry Map</a>
+          <a href="grids.html">Global Grids</a>
+          <a href="components.html">Components &amp; Materials</a>
+          <a href="machinery.html">Machinery</a>
+          <a href="laboratories.html">Testing Labs</a>
+          <a href="services.html">Services &amp; Repair</a>
+          <a href="markets.html">Markets</a>
+          <a href="buyers-guide.html">Buyer's Guide</a>
+          <a href="buy-early/">Buy early</a>
+          <a href="spare-capacity/">Mid-tier makers</a>
+          <a href="lead-times/">Lead times</a>
+          <a href="bottlenecks/">Bottlenecks</a>
+          <a href="directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
+        </div>
+      </div>
       <a href="projects.html">Projects</a>
       <a href="tenders.html">Tenders</a>
-      <a href="compare.html">Compare</a>
-      <a href="match.html" style="color:var(--amber);font-weight:700">Match for Me</a>
+      <a href="events.html">Events</a>
+      <a href="learn.html">Learn</a>
       <a href="rfq.html">RFQ</a>
+      <div class="tpnav-more">
+        <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
+        <div class="tpnav-more-panel" role="menu">
+          <a href="tools.html" role="menuitem">Engineering</a>
+          <a href="map.html" role="menuitem">Industry Map</a>
+          <a href="grids.html" role="menuitem">Global Grids</a>
+          
+          <a href="standards.html" role="menuitem">Standards &amp; Codes</a>
+          <a href="for-manufacturers.html" role="menuitem">For Manufacturers</a>
+          <a href="pricing.html" role="menuitem">Pricing Plans</a>
+          <a href="verified.html" role="menuitem">Verified Profiles</a>
+        </div>
+      </div>
       <span class="tpnav-utils">
         <a href="search.html" title="Search" aria-label="Search">&#128269;</a>
+        <span class="tp-auth" data-tp-auth hidden></span>
         <a href="workspace.html" data-tp-account>Account</a>
+        <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">&#127769;</button>
       </span>
     </nav>
   </div>
-</header>
+  <script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    // Night mode is the default; light is opt-in via the toggle.
+    const savedTheme = localStorage.getItem('theme') || 'dark';
 
+    if (savedTheme === 'dark') html.setAttribute('data-theme', 'dark');
+    updateThemeIcon();
+
+    themeToggle?.addEventListener('click', () => {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        html.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      } else {
+        html.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+      updateThemeIcon();
+    });
+
+    function updateThemeIcon() {
+      const isDark = html.getAttribute('data-theme') === 'dark';
+      themeToggle.textContent = isDark ? '☀️' : '🌙';
+    }
+  </script>
+  <script src="google-auth-config.js" defer></script>
+  <script src="tp-auth.js?v=1" defer></script>
+  <script src="tp-nav.js?v=7" defer></script>
+  <script src="tp-pwa.js?v=7" defer></script>
+</header>
 <main id="main" tabindex="-1" class="match-wrap">
   <div class="match-hero">
     <div style="font-size:.78rem; font-weight:800; text-transform:uppercase; color:var(--amber); letter-spacing:.08em; margin-bottom:4px">TransformerPath Sourcing Intelligence</div>
@@ -124,7 +191,7 @@
 
       <div class="form-group" style="justify-content:flex-end">
         <label>&nbsp;</label>
-        <button type="submit" class="btn btn-amber" style="height:42px; font-weight:800">⚡ Match Verified Suppliers</button>
+        <button type="submit" class="btn btn-amber" style="height:42px; font-weight:800">Match suppliers</button>
       </div>
     </form>
   </div>
@@ -137,7 +204,7 @@
     <div id="bulkActions" style="display:flex; gap:8px"></div>
   </div>
 
-  <div id="matchesContainer"></div>
+  <div id="matchesContainer"><p id="matchPrompt" style="color:var(--muted);text-align:center;padding:28px 12px">Run a match to see manufacturers. Nothing is listed until you submit this form.</p></div>
 </main>
 
 <script src="tp-shortlist.js" defer></script>
@@ -148,7 +215,6 @@ fetch('data/manufacturer-intel.json')
   .then(r => r.json())
   .then(d => {
     COMPANIES = d.companies || [];
-    runMatch();
   })
   .catch(err => {
     console.error('Failed to load manufacturer intelligence', err);
@@ -163,6 +229,14 @@ function loadSample(mva, pkv, skv, std, ctry, qty, type) {
   document.getElementById('qtyUnits').value = qty;
   document.getElementById('eqType').value = type;
   runMatch();
+}
+
+function withUnit(value, unit) {
+  if (value == null || value === '') return '—';
+  var s = String(value).trim();
+  if (!s || s === '0') return '—';
+  if (new RegExp('\\b' + unit + '\\b', 'i').test(s)) return s;
+  return s + ' ' + unit;
 }
 
 function runMatch() {
@@ -195,10 +269,10 @@ function runMatch() {
     if (canHandleKv && canHandleMva && hasType) {
       if (c.research_status === 'ACTIVE_CONFIRMED' && (maxKv >= kvReq * 1.2 || maxMva >= mvaReq * 1.2)) {
         tier = 'CONFIRMED';
-        rationale = `Verified manufacturing capability up to ${maxKv} kV / ${maxMva} MVA with active type-test records.`;
+        rationale = `Confirmed manufacturing capability up to ${withUnit(maxKv, 'kV')} / ${withUnit(maxMva, 'MVA')} with active type-test records.`;
       } else {
         tier = 'SUPPORTED';
-        rationale = `Reported capability envelope covers ${maxKv} kV / ${maxMva} MVA under ${stdReq}.`;
+        rationale = `Reported capability envelope covers ${withUnit(maxKv, 'kV')} / ${withUnit(maxMva, 'MVA')} under ${stdReq}.`;
       }
     } else if (canHandleKv || prods.includes('power')) {
       tier = 'UNKNOWN';
@@ -208,10 +282,10 @@ function runMatch() {
     }
 
     const reasons = [];
-    if (canHandleKv) reasons.push(`Primary voltage: reported ${maxKv || '—'} kV ≥ ${kvReq} kV`);
-    else reasons.push(`Primary voltage: reported ${maxKv || '—'} kV (below ${kvReq} kV)`);
-    if (canHandleMva) reasons.push(`Rating: reported ${maxMva || '—'} MVA ≥ ${mvaReq} MVA`);
-    else reasons.push(`Rating: reported ${maxMva || '—'} MVA (below ${mvaReq} MVA)`);
+    if (canHandleKv) reasons.push(`Primary voltage: reported ${withUnit(maxKv, 'kV')} ≥ ${kvReq} kV`);
+    else reasons.push(`Primary voltage: reported ${withUnit(maxKv, 'kV')} (below ${kvReq} kV)`);
+    if (canHandleMva) reasons.push(`Rating: reported ${withUnit(maxMva, 'MVA')} ≥ ${mvaReq} MVA`);
+    else reasons.push(`Rating: reported ${withUnit(maxMva, 'MVA')} (below ${mvaReq} MVA)`);
     if (hasType) reasons.push(`Product class signal matches ${eqType}`);
     if (hasStd) reasons.push(`Standards/certs signal includes ${stdReq.split(' ')[0]} / ISO / ACTIVE_CONFIRMED`);
     else reasons.push(`Standards/certs for ${stdReq} not publicly confirmed`);
@@ -265,7 +339,7 @@ function runMatch() {
               </div>
               <h3 style="font-size:1.15rem; color:var(--ink); margin:0 0 4px"><a href="manufacturers/${c.slug}/" style="color:inherit; text-decoration:none">${c.name}</a></h3>
               <div style="font-size:12px; color:var(--amber); font-weight:700; margin-bottom:8px">
-                Max Voltage: ${c.reported_voltage ? c.reported_voltage + ' kV' : '—'} · Max MVA: ${c.reported_mva ? c.reported_mva + ' MVA' : '—'}
+                Max Voltage: ${withUnit(c.reported_voltage, 'kV')} · Max MVA: ${withUnit(c.reported_mva, 'MVA')}
               </div>
               <div class="evidence-box">
                 <b style="color:var(--text)">Evidence match:</b> ${m.rationale}

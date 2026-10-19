@@ -59,7 +59,7 @@
       ratedMVA: 1200,
       baseMW: 1000,
       cooling: 'Hydrogen / Water Stator Cooling',
-      vectorGroup: 'Solidly Earthed Neutral (via NGR)',
+      vectorGroup: 'Star, low-resistance earthed (NGR)',
       earthing: 'Low-resistance neutral grounding resistor',
       tapInfo: 'Excitation / AVR Terminal Control',
       lossesBaseKW: { noLoad: 350, load: 1200 },
@@ -68,7 +68,7 @@
       directoryLabel: 'Explore Power Plant Machinery',
       parts: [
         { part: 'Stator / IPB interfaces', href: 'components/tank-and-mechanical.html', evidence: 'SUPPORTED — mechanical & enclosure suppliers in directory' },
-        { part: 'Protection & monitoring', href: 'components/protection-monitoring.html', evidence: 'SUPPORTED — relay / monitoring device makers' }
+        { part: 'Protection & monitoring', href: 'components/protection-monitoring/', evidence: 'SUPPORTED — relay / monitoring device makers' }
       ],
       physics: 'Generates bulk electrical power at medium voltage (21 kV) constrained by generator stator winding dielectric insulation limits.'
     },
@@ -83,8 +83,8 @@
       vOut: '400.0 kV',
       ratedMVA: 1200,
       baseMW: 1000,
-      cooling: 'ODAF / OFAF (Directed Oil Forced Air)',
-      vectorGroup: 'YNd11 (HV Star-neutral, LV Delta)',
+      cooling: 'ODAF (oil directed, air forced) / OFAF (oil forced, air forced)',
+      vectorGroup: 'YNd1 (HV star-neutral, LV delta) — matches the GSU model',
       earthing: 'HV solidly grounded; LV connected via IPB',
       tapInfo: 'De-Energised Tap Changer (DETC) ±2×2.5%',
       lossesBaseKW: { noLoad: 280, load: 1850 },
@@ -97,7 +97,7 @@
         { part: 'ODAF / OFAF cooling plant', href: 'components/transformer-cooling.html', evidence: 'SUPPORTED — cooler / radiator / pump suppliers' },
         { part: 'CRGO core & conductors', href: 'components/conductors-and-core.html', evidence: 'SUPPORTED — mill / CTC / magnet-wire entities' }
       ],
-      physics: 'Steps voltage up from 21 kV to 400 kV (19.05x increase). At equal transmitted apparent power and equal circuit resistance, line current falls from ~27,493 A to ~1,443 A, reducing conductor I²R losses by ~362.8x! (Illustrative comparison at equal transmitted apparent power and equal assumed circuit resistance. Actual line losses depend on conductor configuration, resistance, length, loading and network design).'
+      physics: 'Steps 21 kV up to 400 kV (19.05×). At the 1200 MVA rating, line current falls from about 32,990 A to about 1,732 A. In a line of equal resistance, I²R falls by about 362.8×, the square of the voltage ratio. The linked GSU model is YNd1 with 420 kV class bushings on this 400 kV system. A unit of this size is often three single-phase tanks; the lab draws one three-phase symbol. Actual line loss also depends on conductor, length and loading.'
     },
     {
       id: 'ehv-line',
@@ -190,7 +190,7 @@
       cooling: 'ONAF (Oil Natural Air Forced)',
       vectorGroup: 'YNyn0 + d (Star HV / Star LV + Buried Delta)',
       earthing: 'Directly grounded neutral on HV and LV',
-      tapInfo: 'HV Neutral Tap Changer (±10% in 16 steps)',
+      tapInfo: 'HV neutral tap-changer (±10% in 17 positions, 16 steps of 1.25%)',
       lossesBaseKW: { noLoad: 160, load: 880 },
       exploreUrl: 'power3d.html',
       directoryCat: 'manufacturers/power-transformers/',
@@ -199,7 +199,7 @@
         { part: 'Power transformer OEMs', href: 'manufacturers/power-transformers/', evidence: 'CONFIRMED — OEMs with public type / voltage evidence' },
         { part: 'HV bushings', href: 'components/transformer-bushings.html', evidence: 'CONFIRMED — bushing specialists' },
         { part: 'ONAF cooling', href: 'components/transformer-cooling.html', evidence: 'SUPPORTED — radiator / fan plant' },
-        { part: 'Protection devices', href: 'components/protection-monitoring.html', evidence: 'SUPPORTED — Buchholz / PRV / DGA' }
+        { part: 'Protection devices', href: 'components/protection-monitoring/', evidence: 'SUPPORTED — Buchholz / PRV / DGA' }
       ],
       physics: 'Steps transmission down from 220 kV regional grid to 132 kV subtransmission level, matching regional utility grid voltage levels.'
     },
@@ -215,9 +215,9 @@
       ratedMVA: 200, // 2 x 100 MVA
       baseMW: 150,
       cooling: 'ONAN / ONAF',
-      vectorGroup: 'Dyn11 (HV Delta, LV Star with Neutral)',
-      earthing: 'LV Neutral grounded via neutral earthing transformer',
-      tapInfo: 'High-speed Vacuum OLTC (±10% in 16 steps)',
+      vectorGroup: 'YNd11 (HV star-neutral, LV delta)',
+      earthing: 'HV solidly earthed; 33 kV earthed through an earthing transformer',
+      tapInfo: 'High-speed vacuum OLTC (±10% in 17 positions, 16 steps of 1.25%)',
       lossesBaseKW: { noLoad: 120, load: 640 },
       exploreUrl: 'oltc.html',
       directoryCat: 'components/on-load-tap-changers.html',
@@ -267,7 +267,7 @@
       vOut: '0.415 kV / 240 V',
       ratedMVA: 2.0, // 2000 kVA
       baseMW: 1.6,
-      cooling: 'AN (Air Natural) / ONAN',
+      cooling: 'AN if cast-resin, or ONAN if mineral-oil — one class per unit',
       vectorGroup: 'Dyn11 (Delta HV / Star LV with accessible Neutral)',
       earthing: 'Solidly grounded neutral providing 240 V line-to-neutral',
       tapInfo: 'Off-Circuit Tap Switch (5-position)',
@@ -370,6 +370,8 @@
       renderer.outputEncoding = THREE.sRGBEncoding;
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
       renderer.toneMappingExposure = 1.15;
+      const fallback = container.querySelector('[data-gl-fallback]');
+      if (fallback) fallback.remove();
       container.appendChild(renderer.domElement);
 
       setupLighting();
@@ -908,7 +910,7 @@
     let vOutVal = parseFloat(stage.vOut) || 0;
 
     // OLTC Regulation Effect at 132/33 kV Substation
-    if (stage.id === 'reg-sub') {
+    if (stage.id === 'reg-sub-132-33') {
       const sag = (loadFrac - 1.0) * 2.2; // Voltage sags under heavy load
       if (state.avrActive) {
         // Automatic tap stepping to maintain ~33.0 kV
@@ -933,7 +935,7 @@
 
     // Parallel load sharing for 132/33kV
     let parallelInfo = '';
-    if (stage.id === 'reg-sub') {
+    if (stage.id === 'reg-sub-132-33') {
       const pShare = calc.parallelLoadShare(
         currentMVA,
         100, 12.5,
@@ -1007,7 +1009,7 @@
           <div><b style="color:var(--gl-muted)">Vector Group:</b> ${stage.vectorGroup}</div>
           <div><b style="color:var(--gl-muted)">Cooling Mode:</b> ${stage.cooling}</div>
           <div><b style="color:var(--gl-muted)">Earthing:</b> ${stage.earthing}</div>
-          <div><b style="color:var(--gl-muted)">Tap Regulation:</b> ${stage.tapInfo} ${stage.id === 'reg-sub' ? '(Tap ' + state.oltcTap + ')' : ''}</div>
+          <div><b style="color:var(--gl-muted)">Tap Regulation:</b> ${stage.tapInfo} ${stage.id === 'reg-sub-132-33' ? '(Tap ' + state.oltcTap + ')' : ''}</div>
           <div style="margin-top:6px">
             <span class="gl-status-pill ${state.faultMode !== 'normal' ? 'gl-status-trip' : (state.loadPercent > 100 ? 'gl-status-warn' : 'gl-status-ok')}">
               ● ${state.faultMode !== 'normal' ? 'FAULT TRIPPED' : (state.loadPercent > 100 ? 'OVERLOAD ' + state.loadPercent + '%' : 'IN SERVICE')}

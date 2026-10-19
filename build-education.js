@@ -2,7 +2,7 @@
 /* build-education.js — TransformerPath Transformer Education & Training Providers Directory builder.
  *
  * Generates education.html — verified directory of universities, technical institutes,
- * testing academies, and masterclass providers for transformer engineering.
+ * testing academies, and course providers for transformer engineering.
  *
  * Sourced from data/education.json.
  * Run: node build-education.js
@@ -14,12 +14,15 @@ const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|dat
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+const { directoryBadge, scrubLegacyLabels } = require('./lib/provenance-badge');
 
 const DATA = JSON.parse(fs.readFileSync('data/education.json', 'utf8'));
 const PROVIDERS = DATA.providers || [];
+const { sourcedCardCount } = require('./lib/sourced-card-count');
+const provenanceStat = sourcedCardCount(PROVIDERS);
 
 function render() {
-  const eduJson = JSON.stringify(PROVIDERS);
+  const eduJson = scrubLegacyLabels(JSON.stringify(PROVIDERS));
 
   const html = `<!DOCTYPE html>
 <html lang="en" data-theme="dark">
@@ -32,7 +35,7 @@ function render() {
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TransformerPath">
 <meta property="og:title" content="Transformer Education & Training Providers Directory | TransformerPath">
-<meta property="og:description" content="Find verified university high-voltage programs, Doble masterclasses, CIGRE tutorials, and professional transformer engineering certifications.">
+<meta property="og:description" content="Find verified university high-voltage programs, Doble courses, CIGRE tutorials, and professional transformer engineering certifications.">
 <meta property="og:url" content="https://transformerpath.com/education.html">
 <meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
 <meta name="robots" content="index,follow">
@@ -107,14 +110,14 @@ ${HEAD}
       <div class="lbl">Accredited Certifications</div>
     </div>
     <div class="stat-box">
-      <div class="num">100%</div>
-      <div class="lbl">Website checked</div>
+      <div class="num" data-sourced="website-and-check-date">${provenanceStat.text}</div>
+      <div class="lbl">Cards with a source URL and check date</div>
     </div>
   </div>
 
   <div class="filter-bar">
     <div class="filter-row">
-      <input type="search" id="eduSearch" class="search-input" placeholder="Search institution, course, or certification (e.g. Doble, TU Delft, DGA, Masterclass)...">
+      <input type="search" id="eduSearch" class="search-input" placeholder="Search institution, course, or certification (e.g. Doble, TU Delft, DGA, course)...">
       <select id="eduMode" class="select-input">
         <option value="">All Delivery Modes</option>
         <option value="In-Person">In-Person Classroom / Lab</option>
@@ -133,6 +136,7 @@ ${HEAD}
 
 ${FOOT}
 
+<script src="lib/provenance-badge.js"></script>
 <script>
 window.__TP_EDUCATION__ = ${eduJson};
 (function(){
@@ -188,7 +192,7 @@ window.__TP_EDUCATION__ = ${eduJson};
       return '<div class="edu-card">' +
         '<div class="edu-top">' +
           '<h2 class="edu-name">' + esc(d.provider_name) + '</h2>' +
-          '<span class="ev-badge ev-confirmed">' + esc(d.verification_status || 'Verified') + '</span>' +
+          (window.TPProvenance ? TPProvenance.directoryBadge(d) : '') +
         '</div>' +
         '<div class="edu-loc">📍 ' + esc(loc) + ' &nbsp; ' + modePill + '</div>' +
         '<p style="color:var(--text);font-size:.9rem;line-height:1.5;margin:6px 0 10px">' + esc(d.description) + '</p>' +

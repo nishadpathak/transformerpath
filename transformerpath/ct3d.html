@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Current Transformer — 3D Explorer | TransformerPath</title>
-<link rel="canonical" href="https://transformerpath.com/ct3d.html">
+<meta name="robots" content="noindex,follow">
 <meta name="description" content="Interactive 3D current transformer with every part clickable and linked to directories.">
 <link rel="stylesheet" href="style.css">
 <link rel="icon" type="image/svg+xml" href="brand/favicon.svg">
@@ -83,9 +83,10 @@ html,body{height:100%;overflow:hidden;font-family:'Segoe UI',system-ui,sans-seri
   <div id="info"><span class="hint">Click any accessory to open engineering notes and directory sourcing.</span></div>
 </div>
 
-<div id="help">Drag = orbit · Scroll = zoom · Right/shift-drag = pan · Click = identify &amp; source<br>CT parts · directories: manufacturers · components · machinery · grids</div>
+<div id="help">Drag = orbit · Ctrl + scroll = zoom · Right/shift-drag = pan · Click = identify &amp; source<br>CT parts · directories: manufacturers · components · machinery · grids</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="../tp-canvas-scroll.js"></script>
 <script src="tp-3d-core.js"></script>
 <script src="tp-ct-assembly.js"></script>
 <script src="featured-suppliers.js"></script>

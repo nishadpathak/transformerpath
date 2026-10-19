@@ -210,6 +210,7 @@
 
     canvas.addEventListener("contextmenu", function (e) { e.preventDefault(); });
     canvas.addEventListener("pointerdown", function (e) {
+      if (e.pointerType === "touch") return;
       dragging = true;
       moved = 0;
       panning = e.button === 2 || e.shiftKey || e.button === 1;
@@ -243,32 +244,18 @@
       container.classList.remove("dragging");
       if (moved < 6) pick(e);
     });
-    canvas.addEventListener("wheel", function (e) {
-      e.preventDefault();
+    if (!root.TPCanvasScroll) throw new Error("TPCanvasScroll required before TP3D");
+    root.TPCanvasScroll.setPanY(canvas);
+    root.TPCanvasScroll.bindWheel(canvas, function (e) {
       sph.r *= 1 + Math.sign(e.deltaY) * 0.09;
       applyCam();
-    }, { passive: false });
-
-    var pinchD = 0;
-    canvas.addEventListener("touchstart", function (e) {
-      if (e.touches.length === 2) {
-        pinchD = Math.hypot(
-          e.touches[0].clientX - e.touches[1].clientX,
-          e.touches[0].clientY - e.touches[1].clientY
-        );
-      }
-    }, { passive: true });
-    canvas.addEventListener("touchmove", function (e) {
-      if (e.touches.length === 2 && pinchD) {
-        var d = Math.hypot(
-          e.touches[0].clientX - e.touches[1].clientX,
-          e.touches[0].clientY - e.touches[1].clientY
-        );
-        sph.r *= pinchD / d;
-        pinchD = d;
-        applyCam();
-      }
-    }, { passive: true });
+    });
+    root.TPCanvasScroll.bindTwoFinger(canvas, function (g) {
+      if (g.zoom && isFinite(g.zoom)) sph.r *= g.zoom;
+      if (g.dAngle) sph.th += g.dAngle;
+      applyCam();
+    });
+    if (root.parent === root) root.TPCanvasScroll.bindZoomHint(container);
 
     function pick(e) {
       var rect = canvas.getBoundingClientRect();

@@ -1,0 +1,19 @@
+name: sitemap
+
+on:
+  pull_request:
+  push:
+    branches: [main, "cursor/**"]
+
+jobs:
+  sitemap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Rebuild sitemap from content dates and check it
+        run: node tests/sitemap-canonical-regression.js && node tests/event-canonical-regression.js && node tests/sitemap-tender-slug-regression.js && node build-sitemap.js && node check-sitemap.js && node tests/sitemap-redirect-regression.js && node tests/event-hub-dates-regression.js && node tests/csv-download.test.js && node tests/dist-sitemap.test.js && node build-dist.js

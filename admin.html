@@ -86,7 +86,7 @@ table.aff th, table.aff td { text-align: left; padding: 6px 8px; border-bottom: 
 
     <div class="acard">
       <h3>💳 Course & Payments</h3>
-      <p class="sub">Three plans via Stripe Payment Links — Learning $199/yr, Professional $599/yr, Team $1,999/yr. See <a href="pricing.html">pricing.html</a> for the live CTAs and STRIPE-SETUP-TODO.md for the link IDs.</p>
+      <p class="sub">Three plans via Stripe Payment Links — Learning $199, Engineering Pro $599, Engineering Team $1,999, each a single payment. See <a href="pricing.html">pricing.html</a> for the live CTAs.</p>
       <a class="abtn" href="https://dashboard.stripe.com/payments" target="_blank" rel="noopener">Stripe Dashboard ↗</a>
       <p class="sub" style="margin-top:14px">Course access is granted only after <code>functions/verify-access.js</code> confirms a paid Stripe session. Set the <b>STRIPE_SECRET_KEY</b> env var and update each Payment Link's after-payment redirect to include <code>session_id={CHECKOUT_SESSION_ID}</code>.</p>
     </div>
@@ -119,6 +119,7 @@ table.aff th, table.aff td { text-align: left; padding: 6px 8px; border-bottom: 
       <h3>🔗 Quick Links</h3>
       <a class="abtn" href="subscribe.html">Subscribe page</a>
       <a class="abtn" href="intel.html">Daily Intel</a>
+      <a class="abtn" href="admin/job-rfq-review.html" style="background:var(--accent);color:var(--navy);font-weight:700">Job review queue</a>
       <a class="abtn" href="admin/directory-health.html" style="background:var(--accent);color:var(--navy);font-weight:700">Directory Health ↗</a>
       <a class="abtn" href="admin/source-health.html">Source Health ↗</a>
       <a class="abtn" href="https://app.netlify.com/" target="_blank" rel="noopener">Netlify ↗</a>
@@ -289,7 +290,7 @@ function renderAff() {
   document.getElementById('aff-breakdown').innerHTML = Object.entries(by)
     .map(([k, v]) => `<span style="display:inline-block;margin:2px 10px 2px 0;font-size:.86rem;color:var(--muted)"><b style="color:var(--text)">${v}</b> ${k}</span>`).join('') || '<span style="font-size:.86rem;color:var(--muted)">No clicks recorded yet.</span>';
   document.getElementById('aff-rows').innerHTML = clicks.slice(-15).reverse()
-    .map(c => `<tr><td>${c.t.slice(0, 16).replace('T', ' ')}</td><td>${c.aff}</td><td>${c.ev}</td></tr>`).join('') || '<tr><td colspan="3" style="color:var(--muted)">—</td></tr>';
+    .map(c => `<tr><td>${c.t.slice(0, 16).replace('T', ' ')}</td><td>${c.aff}</td><td>${c.ev}${c.sub ? ' · ' + c.sub : ''}</td></tr>`).join('') || '<tr><td colspan="3" style="color:var(--muted)">—</td></tr>';
 }
 
 async function triggerRefresh() {

@@ -11,7 +11,7 @@
      - there is NO overall score, star rating, tier ranking or "best" call;
      - shortlists require an account and are wired to the workspace (deferred).
 
-   If the index cannot load, the page degrades to an explanatory state.
+   If the index cannot load, a prerendered list stays in place.
    ========================================================================== */
 (function () {
   'use strict';
@@ -27,6 +27,21 @@
     INFERRED: 'ev-inferred', UNKNOWN: 'ev-unknown'
   };
   function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+  function claimListingLink(c) {
+    if (!c || c.kind !== 'manufacturer') return '';
+    var slug = String(c.slug || '').trim().toLowerCase();
+    var href = /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) ? '/claim-listing/' + slug + '/' : '/claim-listing/';
+    return '<a class="btn btn-outline btn-sm claim-listing-link" href="' + esc(href) + '" data-claim-listing="1">Claim this listing</a>';
+  }
+  function countrySortKey(name) {
+    var n = String(name == null ? '' : name).trim().replace(/\s+/g, ' ');
+    var m = n.match(/^The\s+(.+)$/i);
+    return m && m[1] ? m[1] : n;
+  }
+  function compareCountries(a, b) {
+    var opts = { numeric: true, sensitivity: 'base' };
+    return countrySortKey(a).localeCompare(countrySortKey(b), 'en', opts) || String(a).localeCompare(String(b), 'en', opts);
+  }
 
   var STATS = {};
 
@@ -51,7 +66,8 @@
         render();
       })
       .catch(function () {
-        root.innerHTML = '<p style="color:var(--muted)">The directory index could not be loaded. Refresh, or report this page.</p>';
+        if (root && root.querySelector('.dir-list')) return;
+        if (root) root.innerHTML = '<p style="color:var(--muted)">The directory index could not be loaded. Refresh, or report this page.</p>';
       });
   }
 
@@ -73,6 +89,7 @@
 
   // ── State ────────────────────────────────────────────────────────────────
   var q = '', kind = '', country = '', type = '', minKv = 0, evFilter = '', onlyMultiPlant = false, minComp = 0;
+  var wired = false;
   var compare = {}; // id -> true
 
   var STOPWORDS = { manufacturer:1, manufacturers:1, supplier:1, suppliers:1, company:1, companies:1, transformer:1, transformers:1, factory:1, factories:1, for:1, the:1, a:1, an:1, and:1, make:1, makers:1, of:1, in:1, with:1, need:1 };
@@ -190,6 +207,7 @@
         '<a class="btn btn-amber btn-sm" href="rfq.html?company=' + encodeURIComponent(c.name) + '" data-track="rfq_started_directory" data-track-entity="' + esc(c.name) + '">RFQ</a>' +
         '<a class="btn btn-outline btn-sm" href="' + profileUrl(c) + '" data-track="directory_profile_click" data-track-entity="' + esc(c.name) + '">Profile →</a>' +
         (c.website ? '<a class="btn btn-outline btn-sm" href="' + esc(c.website) + '" target="_blank" rel="noopener" style="font-size:.72rem" data-track="official_website_click" data-track-entity="' + esc(c.name) + '">Site ↗</a>' : '') +
+        claimListingLink(c) +
       '</div>' +
     '</div>';
   }
@@ -202,7 +220,7 @@
       facets.countries[c.country] = (facets.countries[c.country] || 0) + 1;
       facets.kinds[c.kind] = (facets.kinds[c.kind] || 0) + 1;
     });
-    var countries = Object.keys(facets.countries).sort();
+    var countries = Object.keys(facets.countries).sort(compareCountries);
 
     var typeOpts = ['power', 'distribution', 'dry_type', 'special'];
     var typSel = '<option value="">All Transformer Types</option>' + typeOpts.map(function (t) {
@@ -250,7 +268,13 @@
       var elQ = document.getElementById('dirQ');
       if (elQ && document.activeElement !== elQ && elQ.value !== q) elQ.value = q;
       var elC = document.getElementById('dirCountry');
-      if (elC && document.activeElement !== elC && elC.value !== country) elC.value = country;
+      if (elC && document.activeElement !== elC) {
+        if (elC.options.length !== countries.length + 1) {
+          elC.innerHTML = '<option value="">All Countries (' + countries.length + ')</option>' + countries.map(function (cc) {
+            return '<option value="' + esc(cc) + '"' + (country === cc ? ' selected' : '') + '>' + esc(cc) + ' (' + facets.countries[cc] + ')</option>';
+          }).join('');
+        } else if (elC.value !== country) elC.value = country;
+      }
       var elT = document.getElementById('dirType');
       if (elT && document.activeElement !== elT && elT.value !== type) elT.value = type;
       var elK = document.getElementById('dirKv');
@@ -283,6 +307,7 @@
         moreEl.remove();
       }
 
+      if (!wired) { wire(); wired = true; }
       renderCompare();
       renderCmpDock();
       return;
@@ -355,6 +380,7 @@
     renderCompare();
     renderCmpDock();
     wire();
+    wired = true;
   }
 
   function renderCmpDock() {

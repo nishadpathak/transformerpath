@@ -14,12 +14,15 @@ const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|dat
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+const { directoryBadge, scrubLegacyLabels } = require('./lib/provenance-badge');
 
 const DATA = JSON.parse(fs.readFileSync('data/services.json', 'utf8'));
 const SERVICES = DATA.services || [];
+const { sourcedCardCount } = require('./lib/sourced-card-count');
+const provenanceStat = sourcedCardCount(SERVICES);
 
 function render() {
-  const servJson = JSON.stringify(SERVICES);
+  const servJson = scrubLegacyLabels(JSON.stringify(SERVICES));
 
   const html = `<!DOCTYPE html>
 <html lang="en" data-theme="dark">
@@ -107,8 +110,8 @@ ${HEAD}
       <div class="lbl">Max Capacity Repaired</div>
     </div>
     <div class="stat-box">
-      <div class="num">100%</div>
-      <div class="lbl">Website checked</div>
+      <div class="num" data-sourced="website-and-check-date">${provenanceStat.text}</div>
+      <div class="lbl">Cards with a source URL and check date</div>
     </div>
   </div>
 
@@ -135,6 +138,7 @@ ${HEAD}
 
 ${FOOT}
 
+<script src="lib/provenance-badge.js"></script>
 <script>
 window.__TP_SERVICES__ = ${servJson};
 (function(){
@@ -194,7 +198,7 @@ window.__TP_SERVICES__ = ${servJson};
       return '<div class="srv-card">' +
         '<div class="srv-top">' +
           '<h2 class="srv-name">' + esc(d.company_name) + '</h2>' +
-          '<span class="ev-badge ev-confirmed">' + esc(d.verification_status || 'Verified') + '</span>' +
+          (window.TPProvenance ? TPProvenance.directoryBadge(d) : '') +
         '</div>' +
         '<div class="srv-loc">📍 ' + esc(loc) + '</div>' +
         '<div style="margin-bottom:8px">' + kv + mva + '</div>' +

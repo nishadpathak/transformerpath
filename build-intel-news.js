@@ -42,6 +42,9 @@ function itemObj(it) {
     ', src:"' + jstr(it.src) + '", url:"' + jstr(it.url) + '"' +
     (it.cls ? ', cls:"' + jstr(it.cls) + '"' : '') +
     ', lang:"' + (it.lang || 'en') + '"' +
+    (it.publication_date ? ', publication_date:"' + jstr(it.publication_date) + '"' : '') +
+    (it.date_iso ? ', date_iso:"' + jstr(it.date_iso) + '"' : '') +
+    (it.event_date ? ', event_date:"' + jstr(it.event_date) + '"' : '') +
     (it.isNew ? ', isNew:true' : '') + ' }';
   return out;
 }
@@ -145,6 +148,19 @@ if (insertedCount > 0) {
 // pick up the international coverage without breaking the 5-key contract.
 const ISO_PATH = 'data/intel.json';
 const intel = JSON.parse(fs.readFileSync(ISO_PATH, 'utf8'));
+const todayIso = new Date().toISOString().slice(0, 10);
+let newestContent = intel.refresh_meta && intel.refresh_meta.newest_validated_content_date
+  ? String(intel.refresh_meta.newest_validated_content_date).slice(0, 10)
+  : null;
+ITEMS.forEach(function (it) {
+  [it.publication_date, it.date_iso, it.event_date].forEach(function (d) {
+    const day = String(d || '').slice(0, 10);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(day) || day > todayIso) return;
+    if (!newestContent || day > newestContent) newestContent = day;
+  });
+});
+intel.refresh_meta = Object.assign({}, intel.refresh_meta || {});
+if (newestContent) intel.refresh_meta.newest_validated_content_date = newestContent;
 // Canonical data-refresh timestamp. This is a CURATED dataset compiled at build;
 // it is not a live scrape. The public freshness readout must show THIS date, not
 // the visitor's local "today", and never imply a change that is only a redeploy.
@@ -154,26 +170,53 @@ intel.updated = intel.refresh_meta && intel.refresh_meta.newest_validated_conten
       : intel.refresh_meta.newest_validated_content_date)
   : new Date().toISOString();
 intel.refresh_meta = Object.assign({}, intel.refresh_meta || {}, {
-  cadence: 'twice daily (curated)',
-  refreshed_at_build: true,
-  note: 'Curated transformer-industry intelligence. updated tracks newest validated content observation when present — not a silent redeploy clock. Scheduled rebuilds twice daily (06:00 / 18:00 UTC) when the Netlify build hook is set.',
+  cadence: 'once daily at 06:00 UTC, only when TP_BUILD_HOOK_URL is set',
+  refreshed_at_build: true
 });
-const FOLD = { China: 'RoW', AsiaPac: 'RoW', LatAm: 'RoW', Africa: 'RoW' };
+if (!intel.refresh_meta.note) {
+  intel.refresh_meta.note = 'Curated transformer-industry intelligence. updated tracks newest validated content observation when present — not a silent redeploy clock. The scheduled rebuild is once daily (06:00 UTC) and only runs when TP_BUILD_HOOK_URL is set.';
+}
+const FOLD = { China: 'RoW', AsiaPac: 'RoW', LatAm: 'RoW', Africa: 'RoW', 'North America': 'USA' };
 const srcByRegion = {};
 ITEMS.forEach((it) => { const fold = FOLD[it.region] || it.region; (srcByRegion[fold] = srcByRegion[fold] || []).push(it); });
 let mergedCount = 0;
 Object.keys(srcByRegion).forEach((region) => {
   if (!intel[region]) { intel[region] = { label: region, items: [] }; }
+  // An award notice names its awardee in intel-news. Copy that onto a card that
+  // was merged before the field existed, and onto every newly inserted card.
+  (intel[region].items || []).forEach(function (existing) {
+    const src = srcByRegion[region].find(function (it) { return it.url && it.url === existing.url; });
+    if (src && src.awardee && !existing.awardee) existing.awardee = src.awardee;
+  });
   const existingUrl = new Set((intel[region].items || []).map((x) => x.url));
   const fresh = srcByRegion[region].filter((it) => !existingUrl.has(it.url));
   if (!fresh.length) return;
   intel[region].items = intel[region].items.concat(fresh.map((it) => {
     const o = { title: it.title, snippet: it.snippet, value: it.value || '', src: it.src, url: it.url, lang: it.lang || 'en' };
+    if (it.awardee) o.awardee = it.awardee;
+    if (it.country) o.country = it.country;
     if (it.isNew) o.isNew = true;
     if (it.cls) o.cls = it.cls;
+    if (it.date_iso) o.date_iso = it.date_iso;
+    if (it.publication_date) o.publication_date = it.publication_date;
+    if (it.event_date) o.event_date = it.event_date;
+    if (it.evidence_grade) o.evidence_grade = it.evidence_grade;
     return o;
   }));
   mergedCount += fresh.length;
 });
+// The USA desk already carries the AEP Ohio filing. A second "North America"
+// key is the same story, and a later build must not put that key back.
+if (intel['North America']) {
+  if (!intel.USA) intel.USA = { label: 'USA', items: [] };
+  const seen = new Set((intel.USA.items || []).map((x) => x.url || x.title));
+  (intel['North America'].items || []).forEach((it) => {
+    const key = it.url || it.title;
+    if (seen.has(key)) return;
+    intel.USA.items.push(it);
+    seen.add(key);
+  });
+  delete intel['North America'];
+}
 fs.writeFileSync(ISO_PATH, JSON.stringify(intel, null, 2));
 console.log('data/intel.json: merged ' + mergedCount + ' international items (' + Object.keys(srcByRegion).join(',') + ')');

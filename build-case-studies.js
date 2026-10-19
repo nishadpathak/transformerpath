@@ -12,6 +12,7 @@
  */
 'use strict';
 const fs = require('fs');
+const tpAff = require('./lib/travelpayouts');
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
@@ -38,7 +39,7 @@ function page(c) {
     '<link rel="stylesheet" href="../../style.css"><link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">' +
     '<script type="application/ld+json">' + JSON.stringify({ '@context': 'https://schema.org', '@type': 'Article', headline: c.title, about: c.topic, author: { '@type': 'Organization', name: c.attributed_to || 'TransformerPath' }, articleSection: c.type }) + '</script>' +
     '<style>.c-wrap{max-width:820px;margin:0 auto;padding:44px 20px 90px}.c-wrap h1{font-size:1.7rem;color:var(--ink);line-height:1.2}.c-wrap .lead{color:var(--muted);font-size:1.05rem;max-width:760px}.c-wrap .meta{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:.9rem;color:var(--muted);margin:10px 0 22px}.c-wrap .meta b{color:var(--text)}.c-wrap .tpill{display:inline-block;background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:2px 10px;font-size:.74rem;color:var(--text);margin:3px 4px 3px 0}.c-wrap .label{display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:2px 9px;border-radius:999px}</style>' +
-    '</head>\n<body>\n' + HEAD + '\n<main class="c-wrap">' +
+    '<link rel="stylesheet" href="../../tp-nav.css?v=14">\n</head>\n<body>\n' + HEAD + '\n<main class="c-wrap">' +
     '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="../../case-studies.html" style="color:var(--accent)">Case Studies</a> › ' + esc(c.title) + '</nav>' +
     '<span class="label ' + (LABEL_COLOR[label] || 'cls-WATCH') + '">' + esc(label) + '</span>' +
     '<h1>' + esc(c.title) + '</h1>' +
@@ -47,6 +48,7 @@ function page(c) {
     paras +
     '<h2>Related principle</h2><p style="color:var(--text);line-height:1.7">' + esc(c.related_principle) + '</p>' +
     (related ? '<h2>Related reading</h2><div style="margin:4px 0 8px">' + related + '</div>' : '') +
+    (c.slug === 'lessons-from-a-400kv-factory-test' ? tpAff.tripOffers({ slug: c.slug, place: 'a factory acceptance test (FAT)', prefix: '../../', disclosureHref: '../../affiliate-disclosure.html' }) : '') +
     '</main>\n' + FOOT + '\n<script src="../../analytics.js" defer></script>\n</body>\n</html>';
 }
 

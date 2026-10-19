@@ -33,6 +33,7 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
+const { closedReason } = require('./lib/intel-activity');
 
 const TODAY_STR = new Date().toISOString().slice(0, 10);
 const TODAY = new Date(TODAY_STR + 'T00:00:00Z');
@@ -77,69 +78,7 @@ function classifyAge(d) {
 console.log('🔍 Running Daily Intel Master Audit & Historical Segregation Engine...');
 
 // Load fresh news items from September 2026
-const FRESH_NEWS_INJECTIONS = [
-  {
-    title: "PGCIL Board approves ₹2,248 cr for 765/400 kV inter-regional transmission schemes across Western & Southern grids",
-    snippet: "Power Grid Corporation of India approved investment of ₹2,248 crore covering 765 kV and 400 kV substation expansions, shunt reactors, and ICT additions to evacuate 9 GW of renewable generation in Gujarat and Karnataka.",
-    value: "₹2,248 cr",
-    src: "T&D India · 14 Sep 2026 [en]",
-    url: "https://www.tndindia.com/pgcil-approves-investment-for-western-southern-expansion/",
-    lang: "en",
-    region: "India",
-    isNew: true
-  },
-  {
-    title: "Saudi Electricity Company (SEC) awards SAR 412m Al-Hasa North 380/115 kV BSP substation EPC to Al-Babtain",
-    snippet: "Contract covers turnkey EPC of a new 380/115 kV bulk supply point substation including 380 kV GIS, three 500 MVA power transformers, auxiliary systems and telecom integration to reinforce Eastern Province industrial power supply.",
-    value: "SAR 412m",
-    src: "SaudiGulf Projects · 12 Sep 2026 [en]",
-    url: "https://www.saudigulfprojects.com/2026/09/al-babtain-awarded-al-hasa-north-substation-contract/",
-    lang: "en",
-    region: "GCC",
-    isNew: true
-  },
-  {
-    title: "Siemens Energy & TenneT achieve factory acceptance test (FAT) milestone on 2 GW BalWin3 offshore HVDC transformer package",
-    snippet: "Testing completed at Nuremberg factory on the first 600 MVA, 525 kV DC converter transformer unit for the German North Sea BalWin3 offshore grid link, confirming low-loss compliance under Ecodesign Tier 2 standards.",
-    value: "2 GW / 525 kV",
-    src: "Transformer Magazine · 11 Sep 2026 [en]",
-    url: "https://transformer-magazine.com/news/siemens-energy-tennet-complete-balwin3-fat/",
-    lang: "en",
-    region: "Europe",
-    isNew: true
-  },
-  {
-    title: "Hitachi Energy opens expanded EHV transformer testing laboratory at Bad Honnef plant (Germany)",
-    snippet: "New facility adds impulse testing capacity up to 1,200 kV and automated partial discharge diagnostic bays to handle surging European transmission grid transformer delivery schedules.",
-    value: "1,200 kV test bay",
-    src: "Hitachi Energy Press · 10 Sep 2026 [en]",
-    url: "https://www.hitachienergy.com/news-and-events/press-releases/2026/09/bad-honnef-testing-expansion",
-    lang: "en",
-    region: "Europe",
-    isNew: true
-  },
-  {
-    title: "DEWA floats EPC tender for twelve 132/11 kV substations in Dubai South and Expo Valley development zones",
-    snippet: "Dubai Electricity and Water Authority invited commercial bids for 12 new 132/11 kV primary substations plus 48 km of underground 132 kV cabling, supporting aviation and logistics district load growth. Bid closing 28 Oct 2026.",
-    value: "12 substations",
-    src: "MEED · 9 Sep 2026 [en]",
-    url: "https://guest.meed.com/dewa-floats-12-substation-tender/",
-    lang: "en",
-    region: "GCC",
-    isNew: true,
-    cls: "PIPELINE"
-  },
-  {
-    title: "AEP Ohio files $840m transmission filing with PUCO for New Albany AI data centre cluster (4× 765/345 kV autotransformers)",
-    snippet: "American Electric Power filed regulatory application for four 765/345 kV, 750 MVA autotransformers and associated 765 kV switching station to meet 3.2 GW of hyperscale computing demand in Central Ohio.",
-    value: "$840m · 3,000 MVA",
-    src: "Utility Dive · 8 Sep 2026 [en]",
-    url: "https://www.utilitydive.com/news/aep-ohio-puco-transmission-filing-data-centers/829104/",
-    lang: "en",
-    region: "North America",
-    isNew: true
-  }
-];
+const FRESH_NEWS_INJECTIONS = []; // six unbacked items retired 2026-10-16; never re-add items without a verifiable source URL
 
 // 1. Audit and Segregate H2 Projects (Active Pipeline vs Historical Baselines)
 const H2_PROJECTS_ACTIVE = [
@@ -286,7 +225,7 @@ FRESH_NEWS_INJECTIONS.forEach(inj => {
     INTEL_NEWS.unshift(inj);
   }
 });
-fs.writeFileSync('data/intel-news.json', JSON.stringify(INTEL_NEWS, null, 2));
+fs.writeFileSync('data/intel-news.json', JSON.stringify(INTEL_NEWS, null, 2) + '\n');
 
 // Process INTEL dataset
 Object.keys(INTEL).forEach(reg => {
@@ -320,9 +259,17 @@ Object.keys(INTEL).forEach(reg => {
     else if (age === 'BACKGROUND') backgroundCount++;
     else if (age === 'HISTORICAL') historicalCount++;
 
-    // Check if active/developing
+    // A passed close date, or a reason already on the record, is not an open item.
+    // The word "tender" in an old headline must not reopen it.
+    const priorClosed = it.closed_reason ? String(it.closed_reason) : '';
+    const passedClose = closedReason(it, TODAY_STR);
+    const closed = priorClosed || passedClose;
     const isOngoing = /under construction|active|commissioning|tender|tenders|pipeline|awarded|wins|contract|approved|rfq/i.test(it.title + ' ' + it.snippet);
-    if ((age === 'BACKGROUND' || age === 'HISTORICAL') && isOngoing) {
+    if (closed) {
+      it.is_active = false;
+      if (!it.closed_reason) it.closed_reason = closed;
+      it.current_relevance = it.closed_reason;
+    } else if ((age === 'BACKGROUND' || age === 'HISTORICAL') && isOngoing) {
       it.is_active = true;
       it.current_relevance = 'Project under active procurement/construction or multi-year grid framework.';
       oldRetainedActiveCount++;
@@ -343,6 +290,20 @@ Object.keys(INTEL).forEach(reg => {
     });
   });
 });
+
+// Same story must not survive as both USA and North America. The injection
+// above already lands the AEP Ohio filing on USA; drop the extra key.
+if (INTEL['North America']) {
+  if (!INTEL.USA) INTEL.USA = { label: 'USA', items: [] };
+  const seen = new Set((INTEL.USA.items || []).map((x) => x.url || x.title));
+  (INTEL['North America'].items || []).forEach((it) => {
+    const key = it.url || it.title;
+    if (seen.has(key)) return;
+    INTEL.USA.items.push(it);
+    seen.add(key);
+  });
+  delete INTEL['North America'];
+}
 
 fs.writeFileSync('data/intel.json', JSON.stringify(INTEL, null, 2));
 

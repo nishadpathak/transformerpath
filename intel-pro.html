@@ -48,11 +48,16 @@
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 <header>
+  <style>
+    @media (min-width: 1024px) {
+      #mainNav > .tpnav-more { display: block; }
+    }
+  </style>
   <div class="container nav">
-    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+    <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 16 16" aria-hidden="true" style="flex:none"><g fill="#f5a623"><rect x="1" y="1" width="4" height="4"/><rect x="11" y="1" width="4" height="4"/><rect x="1" y="11" width="4" height="4"/><rect x="11" y="11" width="4" height="4"/><rect x="5" y="2" width="6" height="2"/><rect x="12" y="5" width="2" height="6"/><rect x="5" y="12" width="6" height="2"/></g></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
     <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
     <nav class="tpnav" id="mainNav" aria-label="Primary">
-      <a href="intel.html">Intel</a>
+      <a href="/intel.html">Intel</a>
       <div class="tpnav-dropdown">
         <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
         <div class="tpnav-dropdown-panel" role="menu">
@@ -65,21 +70,25 @@
           <a href="services.html">Services &amp; Repair</a>
           <a href="markets.html">Markets</a>
           <a href="buyers-guide.html">Buyer's Guide</a>
+          <a href="buy-early/">Buy early</a>
+          <a href="spare-capacity/">Mid-tier makers</a>
+          <a href="lead-times/">Lead times</a>
+          <a href="bottlenecks/">Bottlenecks</a>
           <a href="directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
         </div>
       </div>
       <a href="projects.html">Projects</a>
       <a href="tenders.html">Tenders</a>
       <a href="events.html">Events</a>
-      <a href="tools.html" class="tpnav-opt">Engineering</a>
       <a href="learn.html">Learn</a>
       <a href="rfq.html">RFQ</a>
       <div class="tpnav-more">
         <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
         <div class="tpnav-more-panel" role="menu">
+          <a href="tools.html" role="menuitem">Engineering</a>
           <a href="map.html" role="menuitem">Industry Map</a>
           <a href="grids.html" role="menuitem">Global Grids</a>
-          <a href="webinars.html" role="menuitem">Webinars</a>
+          
           <a href="standards.html" role="menuitem">Standards &amp; Codes</a>
           <a href="for-manufacturers.html" role="menuitem">For Manufacturers</a>
           <a href="pricing.html" role="menuitem">Pricing Plans</a>
@@ -88,6 +97,7 @@
       </div>
       <span class="tpnav-utils">
         <a href="search.html" title="Search" aria-label="Search">&#128269;</a>
+        <span class="tp-auth" data-tp-auth hidden></span>
         <a href="workspace.html" data-tp-account>Account</a>
         <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">&#127769;</button>
       </span>
@@ -119,6 +129,8 @@
       themeToggle.textContent = isDark ? '☀️' : '🌙';
     }
   </script>
+  <script src="google-auth-config.js" defer></script>
+  <script src="tp-auth.js?v=1" defer></script>
   <script src="tp-nav.js?v=7" defer></script>
   <script src="tp-pwa.js?v=7" defer></script>
 </header>
@@ -127,52 +139,47 @@
 
 <main id="main" tabindex="-1" class="ip-wrap">
   <h1>Intel <span style="color:var(--accent)">Pro</span></h1>
-  <p class="lead">The transformer industry is already public and well-documented. Intel Pro is not a paywall around that information — it is a <b>decision layer</b>: monitoring, filtering, history, alerting, exporting and analysis that turn 306 tracked projects, 150 tenders, 56 confirmed awards and daily intelligence into a market picture you can act on.</p>
+  <p class="lead">The transformer industry is already public and well-documented. Intel Pro is not a paywall around that information — it is a <b>decision layer</b>: monitoring, filtering, history, alerting, exporting and analysis that turn <b data-stat="projects">305</b> tracked projects, <b data-stat="tenders">159</b> tenders, <b data-stat="awards">58</b> awards and daily intelligence into a market picture you can act on.</p>
 
   <div class="ip-scale">
     <div class="s"><b>183</b><small>Daily intel signals</small></div>
-    <div class="s"><b>306</b><small>Projects tracked</small></div>
-    <div class="s"><b>150</b><small>Tenders</small></div>
-    <div class="s"><b>56</b><small>Confirmed awards</small></div>
+    <div class="s"><b data-stat="projects">305</b><small>Projects tracked</small></div>
+    <div class="s"><b data-stat="tenders">159</b><small>Tenders</small></div>
+    <div class="s"><b data-stat="awards">58</b><small>Awards tracked</small></div>
     <div class="s"><b>12</b><small>Source languages</small></div>
   </div>
-  <p style="color:var(--muted);font-size:.8rem;max-width:780px">Counts are the current canonical TransformerPath totals, computed live from the datasets — not marketing figures.</p>
+  <p style="color:var(--muted);font-size:.8rem;max-width:780px">Project, tender and award counts are the canonical TransformerPath totals.</p>
 
   <div class="ip-lists">
     <div class="ip-col">
       <h3>Intel Free</h3>
       <p class="tag">Always free.</p>
       <ul>
-        <li>Daily Intel — headline, factual summary, why it matters</li>
+        <li data-feature="daily_intel" data-delivery="built">Daily Intel — headline, factual summary, why it matters</li>
         <li>Country, category and source tag on every item</li>
-        <li>Projects, tenders and awards browsing</li>
+        <li data-feature="public_tenders" data-delivery="built">Projects, tenders and awards browsing</li>
         <li>Basic company activity feed</li>
-        <li>Limited follows and alerts</li>
+        <li data-feature="basic_follows" data-delivery="built">Limited local follows</li>
       </ul>
+      <p class="roadmap" style="font-size:.8rem;color:var(--muted);margin:8px 0 0">On the roadmap (not included yet): <span data-feature="saved_searches_deadline_alerts" data-delivery="coming_soon">Deadline alerts <span class="tp-soon">Coming soon</span></span>.</p>
     </div>
     <div class="ip-col pro">
       <h3>Intel Pro</h3>
-      <p class="tag">Adds decision value — never paywalls the facts.</p>
+      <p class="ip-price" style="text-align:left;margin:8px 0 10px"><span class="big" style="font-size:1.6rem">$499</span> <span class="muted">/ 12 months</span></p>
+      <p class="tag">Adds decision value — never paywalls the facts. The price is $499 for 12 months. There is no monthly checkout, so no monthly price is shown. There is no checkout for Intel Pro yet.</p>
       <ul>
-        <li>Advanced project &amp; tender filters (voltage, country, scope, status)</li>
-        <li>Award history and factory expansions</li>
-        <li>Company timelines across projects, awards and intel</li>
-        <li>Watchlists, saved searches and deadline alerts</li>
-        <li>Country dashboards and historical archive</li>
-        <li>Exports and a monthly market brief</li>
+        <li>Award history and factory expansions stay on the public awards and projects pages</li>
+        <li data-feature="country_grids" data-delivery="built">Country grids and the public intel archive</li>
       </ul>
+      <p class="roadmap" style="font-size:.8rem;color:var(--muted);margin:8px 0 0">On the roadmap (not included yet): <span data-feature="advanced_filters" data-delivery="coming_soon">Advanced project &amp; tender filters <span class="tp-soon">Coming soon</span></span>; <span data-feature="company_timelines" data-delivery="coming_soon">Company timelines <span class="tp-soon">Coming soon</span></span>; <span data-feature="custom_watchlists" data-delivery="coming_soon">Watchlists and saved searches <span class="tp-soon">Coming soon</span></span>; <span data-feature="real_time_alerts" data-delivery="coming_soon">Real-time tender and award alerts <span class="tp-soon">Coming soon</span></span>; <span data-feature="csv_json_exports" data-delivery="coming_soon">CSV / JSON exports <span class="tp-soon">Coming soon</span></span>; <span data-feature="monthly_brief" data-delivery="coming_soon">Monthly market brief <span class="tp-soon">Coming soon</span></span>.</p>
     </div>
   </div>
 
-  <div class="ip-price">
-    <div class="big">$499 <span style="font-size:1rem;color:var(--muted)">/ 12 months</span></div>
-    <div class="muted">or $49 / month · reference pricing</div>
-  </div>
   <div class="ip-cta">
-    <a class="btn btn-amber" href="workspace.html" data-track="intel_pro_view" data-track-product="Intel Pro">Create a free account to get started →</a>
+    <p style="color:var(--muted);font-size:.9rem;margin:0">There is no checkout for Intel Pro.</p>
   </div>
 
-  <div class="ip-note"><b style="color:var(--text)">Honest scope:</b> Intel Pro is built on the same source-backed TransformerPath data. It adds filtering, history, alerting and export — it does not change what a source says, and it never upgrades a source's confidence. A free Intel user sees the same facts; Pro sees them with more context and tools. Purchase is a 12-month access grant; it does not make TransformerPath recommend, rank or certify any company.</div>
+  <div class="ip-note"><b style="color:var(--text)">Honest scope:</b> Intel Pro uses the same source-backed TransformerPath data. Factual intel, projects, tenders, awards, and country grids stay public. Filters, watchlists, alerts, exports, and the monthly brief are not live products. A paid plan does not change what a source says, and it never upgrades a source's confidence or makes TransformerPath recommend, rank, or certify any company.</div>
   <div class="ip-note">See <a href="intel.html" style="color:var(--accent)">Daily Intel</a> free, or compare all plans on <a href="pricing.html" style="color:var(--accent)">pricing</a>. Neutrality: payment never influences research confidence, technical capability, project/award relationships, organic technical matching or editorial treatment.</div>
 </main>
 
@@ -180,26 +187,26 @@
   <div class="container">
     <div class="cols">
       <div>
-        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 64 64" aria-hidden="true" style="flex:none"><circle cx="32" cy="32" r="26" fill="#0d1b2e" stroke="rgba(255,255,255,.30)" stroke-width="2"/><g stroke="#f5a623" stroke-width="1.4" fill="none" opacity=".8"><line x1="8" y1="32" x2="56" y2="32"/><ellipse cx="32" cy="32" rx="11" ry="26"/><ellipse cx="32" cy="32" rx="21" ry="26"/></g><path d="M36.5 9.6 L25 34 L32 34 L27.5 54.4 L42.9 27.5 L35.2 27.5 L39.7 9.6 Z" fill="#f5a623"/></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
+        <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 16 16" aria-hidden="true" style="flex:none"><g fill="#f5a623"><rect x="1" y="1" width="4" height="4"/><rect x="11" y="1" width="4" height="4"/><rect x="1" y="11" width="4" height="4"/><rect x="11" y="11" width="4" height="4"/><rect x="5" y="2" width="6" height="2"/><rect x="12" y="5" width="2" height="6"/><rect x="5" y="12" width="6" height="2"/></g></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
         <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data. Built for utilities, transformer manufacturers, component suppliers, EPCs, consultants and engineers.</p>
       </div>
       <div><p class="footer-col-label">INTELLIGENCE</p><a href="intel.html">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="projects.html">Projects</a><a href="tenders.html">Tenders</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="map.html">Industry Map</a><a href="events.html">Events</a></div>
       <div><p class="footer-col-label">DIRECTORY</p><a href="manufacturers.html">Manufacturers</a><a href="directory.html">Directory Index</a><a href="components.html">Components &amp; Materials</a><a href="machinery.html">Machinery</a><a href="laboratories.html">Testing Labs</a><a href="services.html">Service &amp; Repair</a><a href="logistics.html">Logistics</a><a href="buyers.html">Buyers &amp; Utilities</a><a href="rfq.html">RFQ Board</a></div>
       <div><p class="footer-col-label">ENGINEERING</p><a href="tools.html">Engineering Hub</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Interactive Models</a><a href="standards.html">Standards &amp; Codes</a><a href="knowledge.html">Knowledge Base</a><a href="case-studies.html">Case Studies</a></div>
-      <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learning Hub</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy 3D Tools</a><a href="books.html">Books</a><a href="education.html">Education</a></div>
-      <div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="pricing.html">Pricing Plans</a><a href="verified.html">Verified Profiles</a><a href="webinars.html">Webinars</a><a href="sponsor.html">Sponsorship</a><a href="associations.html">Associations</a><a href="media.html">Media</a></div>
-      <div><p class="footer-col-label">COMPANY</p><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>
+      <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learning Hub</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy 3D Tools</a><a href="books.html">Books</a><a href="education.html">Education</a></div>
+      <div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="pricing.html">Pricing Plans</a><a href="verified.html">Verified Profiles</a><a href="sponsor.html">Sponsorship</a><a href="associations.html">Associations</a><a href="media.html">Media</a></div>
+      <div><p class="footer-col-label">COMPANY</p><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="affiliate-disclosure.html">Affiliate disclosure</a></div>
       <div><p class="footer-col-label">CONTACT</p>
         <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
         <a href="privacy.html#cookies" onclick="if(window.tpResetConsent){window.tpResetConsent();return false}">Cookie settings</a>
         <a class="tp-li-btn tp-li-follow" data-linkedin-follow href="https://www.linkedin.com/company/transformerpath" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>Follow us on LinkedIn</a>
-        <a class="tp-li-btn tp-li-share" data-linkedin-share href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.1 2.5 2.5 0 0 1 0-5.1zM3 9h4v12H3zM10 9h3.8v1.7h.05c.53-1 1.83-2 3.77-2 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.5c0-1.31-.02-3-1.83-3-1.83 0-2.11 1.43-2.11 2.9V21h-4z"/></svg>LinkedIn</a>
       </div>
     </div>
     <div class="copyright">© 2026 TransformerPath. All rights reserved.</div>
   </div>
 </footer>
 <script src="analytics.js" defer></script>
+<script src="site-stats.js?v=7" defer></script>
 <script src="tp-freshness.js?v=7" defer></script>
 <script src="tp-feedback.js?v=7" defer></script>
 </body>

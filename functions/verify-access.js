@@ -5,25 +5,28 @@
 // Requires the environment variable STRIPE_SECRET_KEY (Stripe dashboard →
 // Developers → API keys → Secret key). Fail-closed: if the key is not set, or
 // the session is not paid, the function returns valid:false and NO access is
-// granted. The tier is derived server-side from the amount actually paid (or
-// from session metadata), so a client cannot over-claim a higher tier.
+// granted. A learning or plan unlock requires payment_status paid and a
+// learning tier on the line item price or product metadata (learning, pro,
+// team, or a known price/product id), or a known Payment Link. Listing
+// products never unlock learning. The amount is not a tier.
 
 const STRIPE_API = 'https://api.stripe.com/v1';
 const SK = (process.env.STRIPE_SECRET_KEY || '').trim();
+const { listingProduct } = require('../lib/paid-listings');
+const { classifyCourse, lineItemCourse } = require('../lib/course-payment');
 
-// Map the amount actually charged (in cents) to the plan tier. This mirrors the
-// three live Payment Links; the legacy $100 Learner link maps to learner too.
-const AMOUNT_TIER = {
-  19900: 'learner',
-  10000: 'learner', // legacy one-time $100 Learner link (see FIX-learner-price.md)
-  59900: 'professional',
-  199900: 'enterprise',
-};
+const UNVERIFIED_MESSAGE = "We couldn't verify this payment";
 
-function deriveTier(session) {
-  if (session.metadata && session.metadata.tier) return session.metadata.tier;
-  if (typeof session.amount_total === 'number') return AMOUNT_TIER[session.amount_total] || 'learner';
-  return 'learner';
+function unverified() {
+  return {
+    statusCode: 200,
+    body: JSON.stringify({
+      valid: false,
+      configured: true,
+      reason: 'stripe_error',
+      message: UNVERIFIED_MESSAGE
+    })
+  };
 }
 
 exports.handler = async (event) => {
@@ -57,20 +60,42 @@ exports.handler = async (event) => {
   }
 
   try {
-    const res = await fetch(`${STRIPE_API}/checkout/sessions/${encodeURIComponent(sessionId)}`, {
+    const res = await fetch(`${STRIPE_API}/checkout/sessions/${encodeURIComponent(sessionId)}?expand[]=payment_link&expand[]=line_items&expand[]=line_items.data.price.product`, {
       headers: { Authorization: `Bearer ${SK}` },
     });
     const session = await res.json();
 
     if (!res.ok) {
       // 404 (unknown session), 401 (bad key), etc. — never grant.
-      return { statusCode: 200, body: JSON.stringify({ valid: false, configured: true, reason: 'stripe_error' }) };
+      return unverified();
     }
 
     // The security boundary: the session must be paid. Anything else (open,
     // unpaid, expired, refunded) is rejected.
     if (session.payment_status === 'paid') {
-      const tier = deriveTier(session);
+      // Manufacturer and event payments are not course entitlements. valid
+      // stays false so course-gate does not grant a learner token.
+      const listing = listingProduct(session);
+      if (listing) {
+        return {
+          statusCode: 200,
+          body: JSON.stringify({
+            valid: false,
+            paid: true,
+            listing: 'paid_pending_verification',
+            product: listing,
+            reason: 'listing_payment_not_course'
+          }),
+        };
+      }
+      const course = lineItemCourse(session) || classifyCourse(session);
+      if (!course) {
+        return {
+          statusCode: 200,
+          body: JSON.stringify({ valid: false, paid: true, reason: 'unclassified' })
+        };
+      }
+      const tier = course.tier;
       // Issue a server-trusted, expiring entitlement token (not localStorage,
       // not a query param) so gated content delivery can be verified server-side.
       const ent = require('./lib/entitlement');
@@ -79,6 +104,6 @@ exports.handler = async (event) => {
     }
     return { statusCode: 200, body: JSON.stringify({ valid: false, paid: false, payment_status: session.payment_status }) };
   } catch (e) {
-    return { statusCode: 200, body: JSON.stringify({ valid: false, configured: true, reason: 'stripe_error', detail: String(e && e.message) }) };
+    return unverified();
   }
 };

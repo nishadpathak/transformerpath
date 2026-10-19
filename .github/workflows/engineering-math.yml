@@ -1,0 +1,23 @@
+name: engineering-math
+
+on:
+  pull_request:
+  push:
+    branches: [main, "cursor/**"]
+
+jobs:
+  math:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Autotransformer co-ratio sizing
+        run: node tests/autotransformer-sizing.test.js
+      - name: Nameplate short-circuit current in kA
+        run: node tests/nameplate-short-circuit.test.js
+      - name: Published calculator validation examples
+        run: node tests/calculator-examples.test.js
+      - name: No personal service lines
+        run: node tests/no-personal-services.test.js

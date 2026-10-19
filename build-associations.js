@@ -14,12 +14,15 @@ const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|dat
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+const { directoryBadge, scrubLegacyLabels } = require('./lib/provenance-badge');
 
 const DATA = JSON.parse(fs.readFileSync('data/associations.json', 'utf8'));
 const ASSOCIATIONS = DATA.associations || [];
+const { sourcedCardCount } = require('./lib/sourced-card-count');
+const provenanceStat = sourcedCardCount(ASSOCIATIONS);
 
 function render() {
-  const ascJson = JSON.stringify(ASSOCIATIONS);
+  const ascJson = scrubLegacyLabels(JSON.stringify(ASSOCIATIONS));
 
   const html = `<!DOCTYPE html>
 <html lang="en" data-theme="dark">
@@ -107,8 +110,8 @@ ${HEAD}
       <div class="lbl">Technical Committees</div>
     </div>
     <div class="stat-box">
-      <div class="num">100%</div>
-      <div class="lbl">Verified Official Portals</div>
+      <div class="num" data-sourced="website-and-check-date">${provenanceStat.text}</div>
+      <div class="lbl">Cards with a source URL and check date</div>
     </div>
   </div>
 
@@ -133,6 +136,7 @@ ${HEAD}
 
 ${FOOT}
 
+<script src="lib/provenance-badge.js"></script>
 <script>
 window.__TP_ASSOCIATIONS__ = ${ascJson};
 (function(){
@@ -187,7 +191,7 @@ window.__TP_ASSOCIATIONS__ = ${ascJson};
       return '<div class="asc-card">' +
         '<div class="asc-top">' +
           '<h2 class="asc-name">' + esc(d.association_name) + '</h2>' +
-          '<span class="ev-badge ev-confirmed">' + esc(d.verification_status || 'Verified') + '</span>' +
+          (window.TPProvenance ? TPProvenance.directoryBadge(d) : '') +
         '</div>' +
         '<div class="asc-loc">📍 ' + esc(d.country) + ' &nbsp; ' + scopeBadge + '</div>' +
         '<p style="color:var(--text);font-size:.9rem;line-height:1.5;margin:6px 0 10px">' + esc(d.description) + '</p>' +
