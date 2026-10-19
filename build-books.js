@@ -79,7 +79,7 @@ function page(v) {
     '<link rel="stylesheet" href="../../style.css?v=5"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin><link rel="preconnect" href="https://www.google-analytics.com">' +
     '<link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">' + schema +
     '<style>.c-wrap{max-width:840px;margin:0 auto;padding:44px 20px 88px}.c-wrap h1{font-size:1.9rem;color:var(--ink)}.c-wrap .sub{color:var(--accent);font-size:1.05rem;font-style:italic;margin:2px 0 0}.c-wrap p{color:var(--text);line-height:1.7}.c-wrap .lead{color:var(--muted);font-size:1rem}.c-wrap .series{margin:18px 0 22px}.c-wrap .tpill{display:inline-block;background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:3px 10px;font-size:.72rem;color:var(--text);margin:2px 3px 2px 0;text-decoration:none}.c-wrap .tpill.on{color:var(--accent);border-color:var(--accent);font-weight:700}.c-wrap .box{background:rgba(245,166,35,.08);border:1px solid var(--accent);border-radius:8px;padding:12px 16px;margin-top:18px}</style>' +
-    '</head>\n<body>\n' + HEAD + '\n<main class="c-wrap">' +
+    '</head>\n<body>\n' + HEAD + '\n<main id="main" tabindex="-1" class="c-wrap">' +
     '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="../../books.html" style="color:var(--accent)">Books</a> › Transformers, Volume ' + v.n + '</nav>' +
     '<h1>Transformers, Volume ' + v.n + '</h1>' +
     '<p class="sub">' + esc(v.title) + '</p>' +
