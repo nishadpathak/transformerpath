@@ -27,6 +27,15 @@
     INFERRED: 'ev-inferred', UNKNOWN: 'ev-unknown'
   };
   function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+  function countrySortKey(name) {
+    var n = String(name == null ? '' : name).trim().replace(/\s+/g, ' ');
+    var m = n.match(/^The\s+(.+)$/i);
+    return m && m[1] ? m[1] : n;
+  }
+  function compareCountries(a, b) {
+    var opts = { numeric: true, sensitivity: 'base' };
+    return countrySortKey(a).localeCompare(countrySortKey(b), 'en', opts) || String(a).localeCompare(String(b), 'en', opts);
+  }
 
   var STATS = {};
 
@@ -204,7 +213,7 @@
       facets.countries[c.country] = (facets.countries[c.country] || 0) + 1;
       facets.kinds[c.kind] = (facets.kinds[c.kind] || 0) + 1;
     });
-    var countries = Object.keys(facets.countries).sort();
+    var countries = Object.keys(facets.countries).sort(compareCountries);
 
     var typeOpts = ['power', 'distribution', 'dry_type', 'special'];
     var typSel = '<option value="">All Transformer Types</option>' + typeOpts.map(function (t) {

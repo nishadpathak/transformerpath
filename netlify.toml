@@ -10,6 +10,11 @@
 [build.environment]
   TZ = "UTC"
 
+# Published HTML must keep /intel.html and the other final targets.
+# Pretty URLs rewrite those hrefs to /intel and the rest, which then 301.
+[build.processing.html]
+  pretty_urls = false
+
 # Runs after a production deploy is published. Preview builds skip it.
 [[plugins]]
   package = "./plugins/netlify-plugin-post-deploy-smoke"
@@ -462,6 +467,23 @@
   to = "/transformer-lab.html"
   status = 301
   force = true
+
+# Region and country filters live on the manufacturer directory.
+# The destination has no query of its own, so the original query is kept,
+# including a request that sets both region and country.
+[[redirects]]
+  from = "/directory"
+  to = "/manufacturers.html"
+  status = 301
+  force = true
+  query = {region = ":region"}
+
+[[redirects]]
+  from = "/directory"
+  to = "/manufacturers.html"
+  status = 301
+  force = true
+  query = {country = ":country"}
 
 [[redirects]]
   from = "/directory"

@@ -43,10 +43,12 @@ check('a country under 5 listings has no page', !countryDocs.some(function (doc)
 const titles = {};
 const descriptions = {};
 docs.forEach(function (doc) {
-  check(doc.file + ' title is 50–60 and names the place',
-    doc.title.length >= 50 && doc.title.length <= 60 && doc.title.indexOf(doc.kind === 'region'
-      ? model.regions.filter(function (row) { return row.slug === doc.slug; })[0].name
-      : model.countries.filter(function (row) { return row.slug === doc.slug; })[0].country) !== -1,
+  const place = doc.kind === 'region'
+    ? model.regions.filter(function (row) { return row.slug === doc.slug; })[0].name
+    : model.countries.filter(function (row) { return row.slug === doc.slug; })[0].country;
+  check(doc.file + ' title is the place pattern',
+    doc.title === place + ' transformer manufacturers | TransformerPath' &&
+      doc.html.indexOf('property="og:title" content="' + place + ' transformer manufacturers | TransformerPath"') !== -1,
     doc.title + ' (' + doc.title.length + ')');
   check(doc.file + ' description is 140–160 and includes the count',
     doc.description.length >= 140 && doc.description.length <= 160 && doc.description.indexOf(String(doc.count)) !== -1,
@@ -65,6 +67,11 @@ docs.forEach(function (doc) {
 const usa = countryDocs.filter(function (doc) { return doc.slug === 'usa'; })[0];
 check('a blank city is an em dash', usa.html.indexOf('>Altran Corporation</a><span class="tpill">TX</span><span class="city">—</span>') !== -1);
 check('a blank website is an em dash', usa.html.indexOf('>R.E. Uptegraff Mfg</a>') !== -1 && usa.html.indexOf('<span class="site">—</span>') !== -1);
+
+const countryNames = model.countries.map(function (row) { return row.country; });
+function placeAt(name) { return countryNames.indexOf(name); }
+check('Philippines sorts before Thailand', placeAt('Philippines') !== -1 && placeAt('Philippines') < placeAt('Thailand'));
+check('Türkiye sorts after Tunisia and before Uganda', placeAt('Tunisia') < placeAt('Türkiye') && placeAt('Türkiye') < placeAt('Uganda'));
 
 const germany = model.countries.filter(function (row) { return row.country === 'Germany'; })[0];
 const names = germany.makers.map(function (maker) { return maker[0]; });
