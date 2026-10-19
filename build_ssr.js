@@ -578,6 +578,7 @@ function renderManufacturers(html) {
   const csl = (m) => CSMAP[String(m[0]).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()];
   const { directoryCompanySlug } = require('./lib/company-aliases');
   const paidListings = require('./lib/paid-listings');
+  const claimListing = require('./lib/claim-listing');
   const paidDoc = paidListings.load();
   const paySlug = (name) => directoryCompanySlug(name, CSMAP);
   const vbadge = (m, slug) => {
@@ -588,8 +589,14 @@ function renderManufacturers(html) {
     return '';
   };
   const verifyCtas = (name, slug) => {
-    if (!slug || paidListings.isVerifiedManufacturer(slug, paidDoc)) return '';
-    return paidListings.verifiedManufacturerCtasHtml({ companySlug: slug, trackName: name, compact: true });
+    const claim = claimListing.linkHtml(slug);
+    const paid = (!slug || paidListings.isVerifiedManufacturer(slug, paidDoc))
+      ? ''
+      : paidListings.verifiedManufacturerCtasHtml({ companySlug: slug, trackName: name, compact: true });
+    if (!paid) {
+      return '<div class="mfr-verify-ctas" style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;max-width:100%;min-width:0">' + claim + '</div>';
+    }
+    return paid.replace(/(<div class="mfr-verify-ctas"[^>]*>)/, '$1' + claim);
   };
   const tpills = (types) => { if (!types) return ''; return types.split(',').map((t) => t.trim()).filter(Boolean).map((t) => `<span class="tpill t-${t}">${esc(TNAME[t] || t)}</span>`).join(''); };
   const groups = {};
