@@ -22,6 +22,14 @@
 [functions]
   node_bundler = "esbuild"
 
+[[edge_functions]]
+  function = "claim-listing-query"
+  path = "/claim-listing"
+
+[[edge_functions]]
+  function = "claim-listing-query"
+  path = "/claim-listing/"
+
 [functions."create-checkout"]
   included_files = ["data/directory-index.json", "data/events-canonical.json", "data/events.json", "data/company-slugs.json", "data/feature-flags.json"]
 
@@ -742,7 +750,7 @@
   force = true
 
 # BEGIN claim-listing-query-redirects
-# Known listing queries go to the prerendered claim page. An unknown slug stays on the form.
+# Known listing queries go to the prerendered claim page. An unknown path returns the not-found page.
 [[redirects]]
   from = "/claim-listing/"
   to = "/claim-listing/a-plus-power-solution/"
@@ -13230,6 +13238,11 @@
   status = 301
   force = true
   query = {slug = "ztt-jiangsu-zhongtian-ztt-group"}
+
+[[redirects]]
+  from = "/claim-listing/*"
+  to = "/claim-listing/not-found/"
+  status = 404
 
 # END claim-listing-query-redirects
 
