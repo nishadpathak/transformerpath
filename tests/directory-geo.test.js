@@ -66,6 +66,11 @@ docs.forEach(function (doc) {
 
 const usa = countryDocs.filter(function (doc) { return doc.slug === 'usa'; })[0];
 check('a blank city is an em dash', usa.html.indexOf('>Altran Corporation</a><span class="tpill">TX</span><span class="city">—</span>') !== -1);
+check('country listing rows include a claim link', (usa.html.match(/class="mk-row"/g) || []).length > 0 && (usa.html.match(/data-claim-listing="1"/g) || []).length === (usa.html.match(/class="mk-row"/g) || []).length);
+check('region listing rows include a claim link', regionDocs.every(function (doc) {
+  const rows = (doc.html.match(/class="mk-row"/g) || []).length;
+  return rows > 0 && (doc.html.match(/data-claim-listing="1"/g) || []).length === rows;
+}));
 check('a blank website is an em dash', usa.html.indexOf('>R.E. Uptegraff Mfg</a>') !== -1 && usa.html.indexOf('<span class="site">—</span>') !== -1);
 
 const countryNames = model.countries.map(function (row) { return row.country; });
@@ -116,6 +121,9 @@ function run(search) {
       if (u.indexOf('manufacturers.json') !== -1) {
         return Promise.resolve({ ok: true, json: function () { return Promise.resolve(census); } });
       }
+      if (u.indexOf('company-slugs.json') !== -1) {
+        return Promise.resolve({ ok: true, json: function () { return Promise.resolve(JSON.parse(fs.readFileSync(path.join(root, 'data/company-slugs.json'), 'utf8'))); } });
+      }
       return Promise.resolve({ ok: false, json: function () { return Promise.resolve([]); } });
     },
     location: { pathname: '/manufacturers.html', search: search, hash: '' },
@@ -156,8 +164,15 @@ function run(search) {
 
   const plain = await run('');
   const stats = JSON.parse(fs.readFileSync(path.join(root, 'data/site-stats.json'), 'utf8'));
-  check('an empty query still lists the census',
-    plain.nodes.count.textContent.indexOf('Showing ' + stats.manufacturers + ' ') === 0,
+  const aliases = require('../lib/company-aliases');
+  const slugRows = JSON.parse(fs.readFileSync(path.join(root, 'data/company-slugs.json'), 'utf8'));
+  const slugMap = {};
+  slugRows.forEach(function (row) {
+    if (row && row.name && row.slug) slugMap[row.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()] = row.slug;
+  });
+  const visibleCount = aliases.visibleMakerCount(census, slugMap);
+  check('an empty query lists each company once',
+    plain.nodes.count.textContent.indexOf('Showing ' + visibleCount + ' ') === 0 && visibleCount === stats.manufacturers - 7,
     plain.nodes.count.textContent);
 
   if (failed) {

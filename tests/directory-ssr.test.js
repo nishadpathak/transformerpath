@@ -24,6 +24,10 @@ assert(root.indexOf('class="dir-controls"') >= 0, 'directory controls exist for 
 assert(root.indexOf('Showing <b>' + companies.length + '</b> of ' + companies.length) >= 0, 'directory count matches the index');
 assert(root.indexOf('Loading the directory index') < 0, 'directory is not a loading placeholder');
 assert((root.match(/class="kg-card"/g) || []).length === Math.min(60, companies.length), 'directory shows the first page of rows');
+const makerCard = ssr.directoryCard({ kind: 'manufacturer', slug: 'bemag-transformer', name: 'Bemag Transformer', country: 'Canada', evidence: 'UNKNOWN' });
+assert(makerCard.indexOf('href="/claim-listing/bemag-transformer/"') >= 0, 'manufacturer cards link to the claim page');
+const labCard = ssr.directoryCard({ kind: 'testing_laboratory', slug: 'some-lab', name: 'Some Lab', country: 'Canada', evidence: 'UNKNOWN' });
+assert(labCard.indexOf('claim-listing') < 0, 'non-manufacturer cards do not use the manufacturer claim form');
 
 execFileSync(process.execPath, ['build_ssr.js', 'vendors.html'], { stdio: 'inherit' });
 execFileSync(process.execPath, ['build_ssr.js', 'directory.html'], { stdio: 'inherit' });
