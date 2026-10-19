@@ -25,7 +25,9 @@ const AWARDS = readJson('data/awards.json', {}).awards || [];
 const GRIDS = readJson('data/grids.json', []);
 
 const mkgCountries = MANUF.filter((g) => (g.makers || []).some((m) => !/^Served by/i.test(m[0]))).length;
-const makers = MANUF.reduce((s, g) => s + (g.makers || []).filter((m) => !/^Served by/i.test(m[0])).length, 0);
+const censusMakers = MANUF.reduce((s, g) => s + (g.makers || []).filter((m) => !/^Served by/i.test(m[0])).length, 0);
+const publicCompanies = require('./lib/public-company-count').read(__dirname);
+const makers = publicCompanies.publicCount;
 const openTenders = TENDERS.filter((t) => t.status === 'OPEN' || t.status === 'CLOSING_SOON').length;
 const preAward = TENDERS.filter((t) => ['EXPECTED', 'OPEN', 'CLOSING_SOON', 'EVALUATION'].indexOf(t.status) >= 0).length;
 const regions = new Set(GRIDS.map((g) => g.region).filter(Boolean)).size;
@@ -241,16 +243,11 @@ for (let i = 0; i < STAT_HTML.length; i++) {
 
 /* Directory headlines are not data-stat nodes. The SSR block, the count
    line and the Dataset size are what crawlers and no-JS readers see.
-   Plant-alias rows that share a profile are hidden on this page, so these
-   figures count the rendered companies. site-stats.json keeps the census. */
+   They use the same public company count as site-stats.manufacturers. */
 if (fs.existsSync('manufacturers.html')) {
   let html = fs.readFileSync('manufacturers.html', 'utf8');
   const before = html;
-  const slugMap = {};
-  readJson('data/company-slugs.json', []).forEach(function (row) {
-    if (row && row.name && row.slug) slugMap[row.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()] = row.slug;
-  });
-  const renderedMakers = require('./lib/company-aliases').visibleMakerCount(MANUF, slugMap);
+  const renderedMakers = makers;
   const regionsShown = new Set(MANUF.filter((g) => (g.makers || []).some((m) => !/^Served by/i.test(m[0]))).map((g) => g.region).filter(Boolean)).size;
   const statsBlock = '<!--SSR:mfg-stats-->\n' +
     '<div class="s"><b>' + renderedMakers + '</b><small>Companies</small></div>\n' +
@@ -268,4 +265,14 @@ if (fs.existsSync('manufacturers.html')) {
   }
 }
 
-console.log('site-stats.json wrote: ' + makers + ' manufacturers / ' + factoryCount + ' sourced plants / ' + CANON_FACILITIES.length + ' facility records / ' + totalCapabilities + ' capabilities / ' + mkgCountries + ' countries / ' + avgCompleteness + '% completeness / ' + totalSourcedPoints + ' sourced points' + (htmlPatched ? ' · synced ' + htmlPatched + ' HTML fallback page(s)' : ''));
+if (fs.existsSync('intelligence.html')) {
+  let html = fs.readFileSync('intelligence.html', 'utf8');
+  const before = html;
+  html = html.replace(/Manufacturer census: \d+ companies/g, 'Manufacturer census: ' + makers + ' companies');
+  if (html !== before) {
+    fs.writeFileSync('intelligence.html', html);
+    htmlPatched++;
+  }
+}
+
+console.log('site-stats.json wrote: ' + makers + ' public companies (' + censusMakers + ' census rows) / ' + factoryCount + ' sourced plants / ' + CANON_FACILITIES.length + ' facility records / ' + totalCapabilities + ' capabilities / ' + mkgCountries + ' countries / ' + avgCompleteness + '% completeness / ' + totalSourcedPoints + ' sourced points' + (htmlPatched ? ' · synced ' + htmlPatched + ' HTML fallback page(s)' : ''));

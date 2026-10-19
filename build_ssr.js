@@ -655,7 +655,7 @@ function renderManufacturers(html) {
   }).join(' | ');
   html = html.replace(/<p style="font-size:\.8rem;line-height:1\.9">[\s\S]*?<\/p>/, '<p style="font-size:.8rem;line-height:1.9">' + jump + '</p>');
 
-  // Keep the Dataset schema "size" in sync with the live census count.
+  // Dataset size is the public company count (plant-alias rows stay off this page).
   html = html.replace(/("size"\s*:\s*)\d+/g, '$1' + makers);
 
   const aliasMap = require('./lib/company-aliases').ALIASES;
@@ -953,19 +953,20 @@ try {
   const M = JSON.parse(fs.readFileSync('data/manufacturers.json', 'utf8'));
   const G = JSON.parse(fs.readFileSync('data/grids.json', 'utf8'));
   const makers = M.reduce((s, g) => s + g.makers.filter((x) => !String(x[0] || '').startsWith('Served by')).length, 0);
+  const publicCount = require('./lib/public-company-count').read(__dirname).publicCount;
   const mkgCountries = M.filter((g) => g.makers.some((x) => !String(x[0] || '').startsWith('Served by'))).length;
   const gridCountries = G.length;
   const gridOperators = G.reduce((s, g) => s + g.grids.length, 0);
   const prev = (function () { try { return JSON.parse(fs.readFileSync('data/site-stats.json', 'utf8')); } catch (e) { return {}; } })();
   let ok = true;
-  if (makers < 500) { console.error('!! manufacturers census < 500: ' + makers); ok = false; }
+  if (publicCount < 500) { console.error('!! public company count < 500: ' + publicCount); ok = false; }
   if (mkgCountries < 80) { console.error('!! manufacturing countries < 80: ' + mkgCountries); ok = false; }
   if (gridCountries < 140) { console.error('!! grid countries < 140: ' + gridCountries); ok = false; }
   if (ok) {
-    console.log('OK  census assertion — ' + makers + ' makers / ' + mkgCountries + ' manufacturing countries / ' +
+    console.log('OK  census assertion — ' + publicCount + ' public companies / ' + makers + ' census rows / ' + mkgCountries + ' manufacturing countries / ' +
       gridCountries + ' grid countries / ' + gridOperators + ' operators');
-    if (prev.manufacturers && prev.manufacturers !== makers) {
-      console.log('NOTE manufacturers count changed ' + prev.manufacturers + ' -> ' + makers);
+    if (prev.manufacturers && prev.manufacturers !== publicCount) {
+      console.log('NOTE public company count changed ' + prev.manufacturers + ' -> ' + publicCount);
     }
   } else {
     process.exitCode = 1; // fail the Netlify build

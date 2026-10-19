@@ -810,10 +810,11 @@ function checkLegacySmoke() {
   const totalMakers = (Array.isArray(MANUF) ? MANUF : []).reduce(function (s, g) {
     return s + (g.makers || []).filter(function (m) { return !/^Served by/i.test(m[0]); }).length;
   }, 0);
-  if (totalMakers !== STATS.manufacturers) {
-    fail('census-smoke', 'manufacturers.json count ' + totalMakers + ' != site-stats ' + STATS.manufacturers);
+  const publicCompanies = require('./lib/public-company-count').read(ROOT);
+  if (STATS.manufacturers !== publicCompanies.publicCount) {
+    fail('census-smoke', 'public company count ' + publicCompanies.publicCount + ' != site-stats ' + STATS.manufacturers);
   } else {
-    lines.push('Census makers match site-stats (' + totalMakers + ')');
+    lines.push('Public company count matches site-stats (' + publicCompanies.publicCount + '; census rows ' + totalMakers + ')');
   }
   const projects = (readJson('data/projects.json', {}).projects) || [];
   const tenders = (readJson('data/tenders.json', {}).tenders) || [];

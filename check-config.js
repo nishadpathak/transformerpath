@@ -42,8 +42,9 @@ const MFG = JSON.parse(fs.readFileSync('data/manufacturers.json', 'utf8'));
 const realMakers = MFG.reduce((a, g) => a + g.makers.filter((m) => !/^Served by/i.test(m[0])).length, 0);
 const mfgCountries = MFG.filter((g) => g.makers.some((m) => !/^Served by/i.test(m[0]))).length;
 
-check('census.manufacturers matches config', realMakers === CFG.counters.manufacturers,
-  'DB says ' + realMakers + ', config says ' + CFG.counters.manufacturers);
+const publicCompanies = require('./lib/public-company-count').read(__dirname);
+check('public company count matches config', publicCompanies.publicCount === CFG.counters.manufacturers,
+  'public ' + publicCompanies.publicCount + ', config ' + CFG.counters.manufacturers + ', census rows ' + realMakers);
 check('census.manufacturingCountries matches config', mfgCountries === CFG.counters.manufacturingCountries,
   'DB says ' + mfgCountries + ', config says ' + CFG.counters.manufacturingCountries);
 
@@ -76,8 +77,7 @@ check('index data-stat="tenders" fallback = canonical', dataStatFallback(HOME, '
 check('index data-stat="openTenders" fallback = canonical', dataStatFallback(HOME, 'openTenders') === STATS.openTenders);
 check('index data-stat="awards" fallback = canonical', dataStatFallback(HOME, 'awards') === STATS.awards);
 
-// manufacturers.html Dataset schema "size" counts rendered companies.
-// Plant-alias rows stay in the census and in config.counters.
+// manufacturers.html Dataset schema "size" is the public company count.
 const MFG_PAGE = pages.find((p) => p === 'manufacturers.html') || 'manufacturers.html';
 const mfgHtml = fs.readFileSync(MFG_PAGE, 'utf8');
 const schemaSize = mfgHtml.match(/"size"\s*:\s*(\d+)/);

@@ -149,7 +149,8 @@ function rows(htmlText) {
     if (row && row.name && row.slug) slugMap[row.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()] = row.slug;
   });
   const visibleCount = aliases.visibleMakerCount(census, slugMap);
-  check('published board row count equals the visible companies', makerRows.length === visibleCount && makers.length === stats.manufacturers && visibleCount === makers.length - 7, makerRows.length + ' board rows, ' + makers.length + ' census, ' + visibleCount + ' visible');
+  const publicCount = require('../lib/public-company-count').read(path.join(__dirname, '..')).publicCount;
+  check('published board row count equals the visible companies', makerRows.length === visibleCount && stats.manufacturers === publicCount && visibleCount === publicCount && visibleCount === makers.length - 7, makerRows.length + ' board rows, ' + makers.length + ' census, ' + visibleCount + ' visible');
   check('published board has no note, duplicate, or unparsed rows', noteRows.length === 0 && unknownRows.length === 0 && duplicates.length === 0, 'notes ' + noteRows.map(function (row) { return row.name; }).join('; ') + ' unknown ' + unknownRows.length + ' duplicates ' + duplicates.join('; '));
   const hidden = makers.filter(function (name) { return aliases.aliasRowHidden(name, slugMap, aliases.ownedProfileSlugs(census, slugMap)); }).map(function (name) { return name.toLowerCase(); });
   const hiddenSet = new Set(hidden);

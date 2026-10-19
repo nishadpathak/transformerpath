@@ -71,6 +71,22 @@ check('region listing rows include a claim link', regionDocs.every(function (doc
   const rows = (doc.html.match(/class="mk-row"/g) || []).length;
   return rows > 0 && (doc.html.match(/data-claim-listing="1"/g) || []).length === rows;
 }));
+const bareDocs = docs.filter(function (doc) { return doc.html.indexOf('href="/claim-listing/"') !== -1; });
+check('geo pages do not link to /claim-listing/ without a slug', bareDocs.length === 0, bareDocs.map(function (doc) { return doc.file; }).slice(0, 8).join(', '));
+const claimIndex = require('../lib/claim-listing').buildClaimIndex(root);
+const europe = regionDocs.filter(function (doc) { return doc.slug === 'europe'; })[0];
+const turkiye = countryDocs.filter(function (doc) { return doc.slug === 'turkiye'; })[0];
+function claimSlugFor(html, name) {
+  const rows = html.split('<div class="mk-row">').slice(1);
+  const row = rows.filter(function (part) { return part.indexOf(name) !== -1; })[0] || '';
+  const hit = row.match(/href="\/claim-listing\/([a-z0-9-]+)\//);
+  return hit ? hit[1] : '';
+}
+['Končar - Distribution', 'Rade Končar TEP', 'ETD Transformátory', 'EMO Ohrid', 'EthosEnergy Poland'].forEach(function (name) {
+  const slug = claimSlugFor(europe.html, name);
+  check('europe claim slug for ' + name + ' is a prerendered page', !!slug && !!claimIndex[slug], slug);
+});
+check('turkiye claim links all use prerendered slugs', (turkiye.html.match(/class="mk-row"/g) || []).length === 37 && (turkiye.html.match(/href="\/claim-listing\/[a-z0-9-]+\//g) || []).length === 37);
 check('a blank website is an em dash', usa.html.indexOf('>R.E. Uptegraff Mfg</a>') !== -1 && usa.html.indexOf('<span class="site">—</span>') !== -1);
 
 const countryNames = model.countries.map(function (row) { return row.country; });
@@ -171,8 +187,9 @@ function run(search) {
     if (row && row.name && row.slug) slugMap[row.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()] = row.slug;
   });
   const visibleCount = aliases.visibleMakerCount(census, slugMap);
+  const publicCount = require('../lib/public-company-count').read(root).publicCount;
   check('an empty query lists each company once',
-    plain.nodes.count.textContent.indexOf('Showing ' + visibleCount + ' ') === 0 && visibleCount === stats.manufacturers - 7,
+    plain.nodes.count.textContent.indexOf('Showing ' + visibleCount + ' ') === 0 && visibleCount === publicCount && stats.manufacturers === publicCount,
     plain.nodes.count.textContent);
 
   if (failed) {

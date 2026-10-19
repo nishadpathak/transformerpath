@@ -189,7 +189,19 @@ setTimeout(function () {
   check('the prerendered page stays out of the sitemap', sitemap.indexOf('claim-listing') === -1);
   const toml = fs.readFileSync(path.join(root, 'netlify.toml'), 'utf8');
   check('a known query redirects to the prerendered page', toml.indexOf('query = {slug = "bemag-transformer"}') >= 0 && toml.indexOf('to = "/claim-listing/bemag-transformer/"') >= 0);
-  check('an unknown query is not redirected', toml.indexOf('not-a-real-listing') < 0);
+  const splatAt = toml.indexOf('from = "/claim-listing/*"');
+  const splat = splatAt >= 0 ? toml.slice(splatAt, splatAt + 180) : '';
+  check('an unknown claim path serves the not-found page as a 404', splat.indexOf('to = "/claim-listing/not-found/"') >= 0 && splat.indexOf('status = 404') >= 0 && splat.indexOf('force') < 0, splat);
+  const gate = require('../lib/claim-slug-gate');
+  check('a known query targets the prerendered page', gate.claimQueryTarget('bemag-transformer', index) === '/claim-listing/bemag-transformer/');
+  check('an unknown query targets the not-found page', gate.claimQueryTarget('not-a-real-listing', index) === '/claim-listing/not-found/');
+  check('a blank query stays on the form', gate.claimQueryTarget('', index) === '');
+  const edge = fs.readFileSync(path.join(root, 'netlify/edge-functions/claim-listing-query.js'), 'utf8');
+  check('the edge lookup sends an unknown slug to the not-found page', edge.indexOf('/data/claim-listing-index.json') >= 0 && edge.indexOf('/claim-listing/not-found/') >= 0 && edge.indexOf('302') >= 0);
+  const missingPage = fs.readFileSync(path.join(root, 'claim-listing/not-found/index.html'), 'utf8');
+  const missingVisible = visible(missingPage);
+  check('the not-found page says Listing not found without JavaScript', missingVisible.indexOf('Listing not found') >= 0 && missingPage.indexOf('href="/directory.html"') >= 0 && missingPage.indexOf('/claim-listing.js') < 0);
+  check('the not-found page is noindex', /noindex,follow/.test(missingPage));
   const os = require('os');
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'claim-hub-'));
   const anchor = ' <a class="btn btn-outline btn-sm claim-listing-link" href="/claim-listing/power-transformers/" data-claim-listing="1">Claim this listing</a>';
@@ -204,6 +216,20 @@ setTimeout(function () {
   check('a hub the generator rewrites is left for that writer', keptHtml.indexOf(anchor) >= 0);
   const hungaryHub = fs.readFileSync(path.join(root, 'manufacturers/power-transformers/hungary/index.html'), 'utf8');
   check('the Hungary power hub does not claim the product type', hungaryHub.indexOf('/claim-listing/power-transformers/') < 0 && hungaryHub.indexOf('/claim-listing/ganz-transformers-and-electric-rotating-machines/') >= 0);
+  const barePages = [];
+  function walkHtml(dir) {
+    fs.readdirSync(dir, { withFileTypes: true }).forEach(function (ent) {
+      if (ent.name === 'node_modules' || ent.name === '.git' || ent.name === 'dist' || ent.name === 'transformerpath') return;
+      const abs = path.join(dir, ent.name);
+      if (ent.isDirectory()) walkHtml(abs);
+      else if (ent.isFile() && ent.name.endsWith('.html')) {
+        const html = fs.readFileSync(abs, 'utf8');
+        if (html.indexOf('href="/claim-listing/"') >= 0) barePages.push(path.relative(root, abs));
+      }
+    });
+  }
+  walkHtml(root);
+  check('no generated page links to /claim-listing/ without a slug', barePages.length === 0, barePages.slice(0, 12).join(', '));
   if (failed) {
     console.error('CLAIM LISTING FAILED (' + failed + ')');
     process.exit(1);

@@ -149,10 +149,14 @@ function pushItem(rec) {
 }
 
 const MANUF = JSON.parse(fs.readFileSync('data/manufacturers.json', 'utf8'));
+const aliases = require('./lib/company-aliases');
+const slugMap = aliases.slugMapFromRows(JSON.parse(fs.readFileSync('data/company-slugs.json', 'utf8')));
+const ownedProfiles = aliases.ownedProfileSlugs(MANUF, slugMap);
 MANUF.forEach((g) => {
   (g.makers || []).forEach((m) => {
     const name = m[0];
     if (!name || /^Served by/i.test(name)) return;
+    if (aliases.aliasRowHidden(name, slugMap, ownedProfiles)) return;
     pushItem({
       n: name,
       c: g.country,

@@ -82,7 +82,8 @@ function run() {
     if (row && row.name && row.slug) slugMap[row.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()] = row.slug;
   });
   const visibleCount = aliases.visibleMakerCount(census, slugMap);
-  check('default view counts each company once', count.indexOf('Showing ' + visibleCount + ' ') === 0 && visibleCount === stats.manufacturers - 7, count);
+  const publicCount = require('../lib/public-company-count').read(root).publicCount;
+  check('default view counts each company once', count.indexOf('Showing ' + visibleCount + ' ') === 0 && visibleCount === publicCount && stats.manufacturers === publicCount, count);
   ui.nodes.fKv.value = '525';
   ui.context.page = 1;
   ui.context.render();
@@ -98,7 +99,7 @@ function run() {
   check('525 kV filter keeps Virginia Transformer', htmlBoard.indexOf('Virginia Transformer Corp') >= 0);
   check('525 kV filter hides a maker with no sourced voltage', htmlBoard.indexOf('Howard Industries (Howard Power Solutions)') < 0);
   const shown = ui.nodes.count.textContent;
-  check('525 kV filter does not claim the full census', shown.indexOf('Showing ' + stats.manufacturers + ' ') !== 0, shown);
+  check('525 kV filter does not claim the full directory', shown.indexOf('Showing ' + publicCount + ' ') !== 0, shown);
   const coolValues = ui.nodes.fCool.children.map(function (opt) { return opt.value; });
   check('cooling options come from sourced classes', coolValues.indexOf('ONAF') >= 0 && coolValues.indexOf('AF') < 0, coolValues.join(','));
   ui.nodes.fKv.value = '';
