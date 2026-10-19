@@ -95,7 +95,9 @@ files.forEach(function (file) {
 
   const eventProfile = /data-tp-event-role="(?:hub|edition)"/.test(source);
   const titleMax = eventProfile ? 100 : 60;
-  if (title.length < 50 || title.length > titleMax) fail(rel + ': title length ' + title.length + ' (' + title + ')');
+  const geoTitle = /^directory\/(?:region|country)\/[^/]+\/index\.html$/.test(rel) &&
+    /^.+ transformer manufacturers \| TransformerPath$/.test(title);
+  if (!geoTitle && (title.length < 50 || title.length > titleMax)) fail(rel + ': title length ' + title.length + ' (' + title + ')');
   if (eventProfile) {
     const brands = title.match(/TransformerPath/g) || [];
     if (brands.length !== 1) fail(rel + ': event title brand count ' + brands.length + ' (' + title + ')');

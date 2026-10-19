@@ -48,8 +48,15 @@ const header = fs.readFileSync('_partials/header.html', 'utf8');
 const footer = fs.readFileSync('_partials/footer.html', 'utf8');
 const index = fs.readFileSync('index.html', 'utf8');
 
-check('header intel skips the redirect', header.indexOf('href="/intel.html"') !== -1 && !/href="\/intel"(?!\.html)/.test(header));
-check('footer intel skips the redirect', footer.indexOf('href="/intel.html"') !== -1);
+const CHROME = ['intel', 'archive', 'components', 'directory', 'events', 'grids', 'learn', 'manufacturers', 'map', 'workspace'];
+function bareChrome(html) {
+  return CHROME.filter(function (name) {
+    return new RegExp('href="/' + name + '(?![.]html|/|\\?)').test(html);
+  });
+}
+check('header intel skips the redirect', header.indexOf('href="/intel.html"') !== -1 && bareChrome(header).length === 0, bareChrome(header).join(','));
+check('footer chrome skips the redirect', footer.indexOf('href="/intel.html"') !== -1 && footer.indexOf('href="/archive.html"') !== -1 && bareChrome(footer).length === 0, bareChrome(footer).join(','));
+check('homepage chrome skips the redirect', bareChrome(index).length === 0, bareChrome(index).join(','));
 check('header menu lists bottlenecks inside Directory', /lead-times\/">Lead times<\/a>\s*<a href="bottlenecks\/">Bottlenecks<\/a>/.test(header));
 check('footer menu lists bottlenecks', /lead-times\/">Lead times<\/a><a href="bottlenecks\/">Bottlenecks<\/a>/.test(footer));
 check('bottlenecks is not a top-level bar label', header.indexOf('class="tpnav"') !== -1);
@@ -102,6 +109,7 @@ copy.PAGES.forEach(function (page) {
   check(page.rel + ' no brand locale', !/\bDubai\b|\bUAE\b|United Arab Emirates/i.test(html));
   check(page.rel + ' contact', main.indexOf('hello@transformerpath.com') !== -1);
   check(page.rel + ' no bare /intel href', !/href="\/intel"(?!\.html)/.test(html));
+  check(page.rel + ' chrome skips extensionless hops', bareChrome(html).length === 0, bareChrome(html).join(','));
 });
 
 check('index menu bottlenecks', /href="\/bottlenecks\/">Bottlenecks<\/a>/.test(index) || /href="bottlenecks\/">Bottlenecks<\/a>/.test(index));

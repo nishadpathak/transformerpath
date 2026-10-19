@@ -397,6 +397,15 @@ function passesSpec(name){
   if(test && (cap.tests||[]).indexOf(test)<0) return false;
   return true;
 }
+function countrySortKey(name){
+  var n = String(name == null ? '' : name).trim().replace(/\s+/g, ' ');
+  var m = n.match(/^The\s+(.+)$/i);
+  return m && m[1] ? m[1] : n;
+}
+function countryCompare(a, b){
+  var opts = { numeric: true, sensitivity: 'base' };
+  return countrySortKey(a).localeCompare(countrySortKey(b), 'en', opts) || String(a).localeCompare(String(b), 'en', opts);
+}
 function addFilterOption(select, value, label){
   const opt=document.createElement('option');
   opt.value=value;
@@ -670,7 +679,7 @@ function fillGeoFilters(){
     if (region && c.region !== region) return;
     countryCounts[c.country] = (countryCounts[c.country] || 0) + n;
   });
-  Object.keys(countryCounts).sort(function(a, b){ return a.localeCompare(b); }).forEach(function(name){
+  Object.keys(countryCounts).sort(countryCompare).forEach(function(name){
     addOption(fCountry, name, name + ' (' + countryCounts[name] + ')');
   });
   setSelect(fCountry, countryCounts[keepCountry] ? keepCountry : '');
@@ -714,12 +723,12 @@ function renderBoard(){
     if(specOn) makers=makers.filter(m=>/^Served by/i.test(m[0]) ? false : passesSpec(m[0]));
     return {...c, makers};
   }).filter(c=>{ if(r&&c.region!==r) return false; if(cc&&c.country!==cc) return false; return c.makers.some(m=>!/^Served by/i.test(m[0])); });
-  list.sort((a,b)=>a.country.localeCompare(b.country));
+  list.sort((a,b)=>countryCompare(a.country, b.country));
   const pages=Math.max(1, Math.ceil(list.length/COUNTRIES_PER_PAGE));
   if(page>pages) page=pages;
   const slice=list.slice((page-1)*COUNTRIES_PER_PAGE, page*COUNTRIES_PER_PAGE);
   const groups={}; slice.forEach(c=>{(groups[c.region]??=[]).push(c);});
-  Object.keys(groups).forEach(rg=>{ groups[rg].sort((a,b)=>a.country.localeCompare(b.country)); });
+  Object.keys(groups).forEach(rg=>{ groups[rg].sort((a,b)=>countryCompare(a.country, b.country)); });
   const order=regions.filter(rg=>groups[rg]);
   if (!list.length) {
     document.getElementById('board').innerHTML='<p style="text-align:center;padding:40px;color:var(--muted)">No manufacturers match these filters. Clear search or change the region, country or type.</p>';

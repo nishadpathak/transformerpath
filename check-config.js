@@ -329,7 +329,7 @@ for (const href of NAV_PRIMARY) {
 check('nav has flat container', /class="tpnav"/.test(NAV_HTML));
 check('nav has More list', /tpnav-more-panel/.test(NAV_HTML));
 check('nav has Search', NAV_HTML.includes('href="search.html"'));
-check('nav has Account', /href="workspace\.html"/.test(NAV_HTML));
+check('nav has Account', /href="\/?workspace\.html"/.test(NAV_HTML));
 check('nav has no mega-menu regression', !/nav-group-label/.test(NAV_HTML));
 
 // ── 5b. Asset cache-busters + dark-theme default must match config ─────────

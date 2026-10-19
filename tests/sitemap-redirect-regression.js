@@ -6,7 +6,7 @@
 const fs = require('fs');
 const path = require('path');
 const checkSitemap = require('../check-sitemap');
-const { loadRules } = require('../lib/site-redirects');
+const { loadRules, permanentMap } = require('../lib/site-redirects');
 const retired = require('../lib/retired-url-redirects');
 
 let failed = 0;
@@ -36,6 +36,11 @@ function hasRule(source, from, to) {
     return rule.source === source && rule.status === 301 && rule.from === from && rule.to === to;
   });
 }
+
+const toml = fs.readFileSync(path.join(root, 'netlify.toml'), 'utf8');
+check('/directory?region redirects to manufacturers', /from = "\/directory"\s+to = "\/manufacturers\.html"\s+status = 301\s+force = true\s+query = \{region = ":region"\}/.test(toml));
+check('/directory?country redirects to manufacturers', /from = "\/directory"\s+to = "\/manufacturers\.html"\s+status = 301\s+force = true\s+query = \{country = ":country"\}/.test(toml));
+check('bare /directory still maps to the hub', permanentMap(root).get('/directory') === '/directory.html');
 
 retired.RULES.forEach(function (pair) {
   check(pair[0] + ' 301 in netlify.toml', hasRule('netlify.toml', pair[0], pair[1]));

@@ -599,9 +599,9 @@ function renderManufacturers(html) {
   // country by canonical sort_name (locale-aware, case-insensitive, leading
   // article dropped), and countries within a region alphabetically. NEVER by
   // verification/paid status, completeness, or data/insertion order.
-  const { sortName, naturalCompare } = require('./lib/directory-sort');
+  const { sortName, naturalCompare, compareCountries } = require('./lib/directory-sort');
   DATA.forEach((c) => { c.makers = c.makers.slice().sort((a, b) => naturalCompare(sortName(a[0]), sortName(b[0]))); });
-  Object.keys(groups).forEach((rg) => { groups[rg].sort((a, b) => naturalCompare(a.country, b.country)); });
+  Object.keys(groups).forEach((rg) => { groups[rg].sort((a, b) => compareCountries(a.country, b.country)); });
 
   const board = regions.filter((rg) => groups[rg]).map((region) =>
     `<div class="region-h">${esc(region)}</div>` + groups[region].map((c) => {
@@ -636,7 +636,7 @@ function renderManufacturers(html) {
   // Quick-jump "By country" bar — regenerated from the census so it is
   // ALPHABETICAL and carries each country's canonical count: "USA (41) · …".
   // (Replaces the hand-maintained bare-name list.)
-  const jump = DATA.slice().sort((a, b) => naturalCompare(a.country, b.country)).map((c) => {
+  const jump = DATA.slice().sort((a, b) => compareCountries(a.country, b.country)).map((c) => {
     const slug = c.country.toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
     const n = c.makers.filter((m) => !/^Served by/i.test(m[0])).length;
     return `<a href="manufacturers/${slug}.html" style="color:var(--accent)">${esc(c.country)} (${n})</a>`;
