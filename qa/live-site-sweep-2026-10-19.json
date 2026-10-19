@@ -1,0 +1,71 @@
+{
+  "swept_at": "2026-10-19",
+  "origin": "https://transformerpath.com",
+  "sitemap": "https://transformerpath.com/sitemap.xml",
+  "nested_sitemaps": 0,
+  "urls": 2974,
+  "profiles": {
+    "desktop_chromium_1440": { "http_200": 2974, "crashes": 0, "document_overflow": 0 },
+    "mobile_webkit_iphone13_390": { "http_200": 2973, "crashes": 1, "document_overflow": 0 }
+  },
+  "release": {
+    "build_commit": "3510e3a44b83c79e1691b760397daa9b7d60aca1",
+    "data_version": "050706e7b4cb",
+    "pages_agreeing": 2974
+  },
+  "real_issues": [
+    {
+      "type": "freshness_stamp",
+      "summary": "Public Intel status is copied from the build-time JSON and does not age. On sweep day the live label was already Updated today for source 2026-10-19.",
+      "urls": ["https://transformerpath.com/", "https://transformerpath.com/intel.html"],
+      "fix": "tp-freshness.js TPIntelClock recomputes the label from latest_source_iso"
+    },
+    {
+      "type": "broken_external_link",
+      "summary": "Official URLs returned GET 404. Replaced with a verified 200 page whose title names the organization, or removed when the URL was one source among others.",
+      "replacements": [
+        ["https://www.nexteraenergy.com/suppliers.html", "https://www.nexteraenergy.com/"],
+        ["https://www.powergrid.in/tenders", "https://www.powergrid.in/en"],
+        ["https://www.larsentoubro.com/power-transmission-distribution/", "https://www.larsentoubro.com/"],
+        ["https://www.doble.com/events-training/", "https://www.doble.com/training/"],
+        ["https://www.cigre.org/GB/events/cigre-academy", "https://www.cigre.org/"],
+        ["https://www.cesi.it/services/testing/training/", "https://www.cesi.it/"],
+        ["https://www.sgb-smit.com/service/", "https://www.sgb-smit.com/"],
+        ["https://www.siemens-energy.com/global/en/offerings/services/transmission-services/transformer-services.html", "https://www.siemens-energy.com/global/en/home/products-services/product-offerings/transformers.html"],
+        ["https://www.elsewedyelectric.com/en/services/operation-maintenance/", "https://www.elsewedyelectric.com/"],
+        ["https://vrtpower.com/services/", "https://vrtpower.com/"]
+      ],
+      "removed": ["http://www.transwestexpress.net/news/docs/TransWest-Express-Wyoming.pdf"]
+    }
+  ],
+  "needs_owner_decision": [
+    {
+      "url": "https://www.mub.eps.manchester.ac.uk/highvoltage/",
+      "where": "education.html / data/education.json",
+      "why": "GET 404. No replacement page that names the high-voltage laboratory was verified."
+    },
+    {
+      "url": "https://astoras.com.tr/en/power-transformers/power-transformers/",
+      "why": "Origin HTTP 500. Not treated as a moved page."
+    },
+    {
+      "url": "https://pecc4.vn/en/successful-energization-of-the-first-500kv-900mva-transformer-manufactured-in-vietnam-on-the-national-power-grid",
+      "why": "Origin HTTP 500."
+    },
+    {
+      "url": "http://energytransfo.ma/",
+      "why": "Origin HTTP 503."
+    },
+    {
+      "url": "https://www.shanghai-electric.com/",
+      "why": "HTTP 521. Already recorded as left in place."
+    }
+  ],
+  "noise": [
+    "Playwright WebKit crashes on any video src; homepage only",
+    "ipapi.co 429",
+    "ad/analytics failures and report-only reCAPTCHA CSP",
+    "external 403 and connection failures from this network",
+    "intentional Coming soon copy for RFQ routing and book checkout"
+  ]
+}
