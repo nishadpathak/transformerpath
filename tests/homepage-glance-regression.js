@@ -2,7 +2,9 @@
 /* tests/homepage-glance-regression.js
  * At a Glance is stamped from data/intel-feed-ui.json. It fails when the
  * homepage row is older than the newest day-dated item in that feed.
- * The nine 15 Oct 2026 TED notices must also be sourced Daily Intel posts.
+ * The nine 15 Oct 2026 TED notices must remain sourced Daily Intel posts.
+ * The static timeline is only the newest first page, so those notices are
+ * checked on the feed and in intel.html, not on that first page.
  * Run: node tests/homepage-glance-regression.js
  */
 'use strict';
@@ -71,7 +73,7 @@ check('glance cards are not the old hand-written blurbs', cards.indexOf('SEC awa
 console.log('=== 15 OCT 2026 TED DAILY INTEL ===');
 const intel = fs.readFileSync('intel.html', 'utf8');
 const timeline = between(intel, '<!--SSR:intel-timeline-->', '<!--/SSR:intel-timeline-->');
-const articles = timeline.split('<article ').slice(1);
+check('timeline first page shows the newest sourced date', timeline.indexOf('>' + labelOf(newestIso) + '<') >= 0, labelOf(newestIso));
 const tedUrls = [
   'https://ted.europa.eu/en/notice/-/detail/712579-2026',
   'https://ted.europa.eu/en/notice/-/detail/711752-2026',
@@ -85,11 +87,11 @@ const tedUrls = [
 ];
 check('timeline has nine TED notice slots to check', tedUrls.length === 9);
 tedUrls.forEach(function (url) {
-  const art = articles.find(function (a) { return a.indexOf(url) >= 0; });
+  const post = (feed.posts || []).find(function (p) { return p && p.url === url; });
   const id = url.slice(url.lastIndexOf('/') + 1);
-  check(id + ' renders as a Daily Intel item', !!art);
-  check(id + ' links its TED source', !!(art && art.indexOf('href="' + url + '"') >= 0));
-  check(id + ' shows 15 Oct 2026', !!(art && art.indexOf('>15 Oct 2026<') >= 0));
+  check(id + ' is a sourced Daily Intel post', !!(post && post.dateIso === '2026-10-15' && post.headline));
+  check(id + ' links its TED source', !!(post && post.url === url && intel.indexOf(url) >= 0));
+  check(id + ' shows 15 Oct 2026', !!(post && post.date === '15 Oct 2026'));
 });
 
 if (failed) {
