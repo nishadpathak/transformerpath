@@ -190,6 +190,20 @@ setTimeout(function () {
   const toml = fs.readFileSync(path.join(root, 'netlify.toml'), 'utf8');
   check('a known query redirects to the prerendered page', toml.indexOf('query = {slug = "bemag-transformer"}') >= 0 && toml.indexOf('to = "/claim-listing/bemag-transformer/"') >= 0);
   check('an unknown query is not redirected', toml.indexOf('not-a-real-listing') < 0);
+  const os = require('os');
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'claim-hub-'));
+  const anchor = ' <a class="btn btn-outline btn-sm claim-listing-link" href="/claim-listing/power-transformers/" data-claim-listing="1">Claim this listing</a>';
+  fs.mkdirSync(path.join(tmp, 'hungary'));
+  fs.writeFileSync(path.join(tmp, 'hungary', 'index.html'), '<nav>Power' + anchor + ' › Hungary</nav>');
+  fs.mkdirSync(path.join(tmp, 'india'));
+  fs.writeFileSync(path.join(tmp, 'india', 'index.html'), '<nav>Power' + anchor + ' › India</nav>');
+  claim.stripStaleHubClaim(tmp, 'power-transformers', { india: true });
+  const stripped = fs.readFileSync(path.join(tmp, 'hungary', 'index.html'), 'utf8');
+  const keptHtml = fs.readFileSync(path.join(tmp, 'india', 'index.html'), 'utf8');
+  check('a stale hub drops the product-type claim link', stripped.indexOf('/claim-listing/power-transformers/') < 0 && stripped.indexOf('Hungary') >= 0, stripped);
+  check('a hub the generator rewrites is left for that writer', keptHtml.indexOf(anchor) >= 0);
+  const hungaryHub = fs.readFileSync(path.join(root, 'manufacturers/power-transformers/hungary/index.html'), 'utf8');
+  check('the Hungary power hub does not claim the product type', hungaryHub.indexOf('/claim-listing/power-transformers/') < 0 && hungaryHub.indexOf('/claim-listing/ganz-transformers-and-electric-rotating-machines/') >= 0);
   if (failed) {
     console.error('CLAIM LISTING FAILED (' + failed + ')');
     process.exit(1);

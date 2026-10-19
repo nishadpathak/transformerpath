@@ -9,6 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const spec = require('../lib/sourced-spec-fields');
 const schema = require('../lib/seo-schema');
+const claimListing = require('../lib/claim-listing');
 
 const ROOT = path.join(__dirname, '..');
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
@@ -96,12 +97,15 @@ function main() {
   const dir = path.join(ROOT, 'manufacturers', 'specs');
   fs.mkdirSync(dir, { recursive: true });
   fs.writeFileSync(path.join(dir, 'index.html'), indexHtml(pages));
+  const kept = {};
   pages.forEach(function (page) {
     const folder = path.join(dir, page.slug);
     fs.mkdirSync(folder, { recursive: true });
     fs.writeFileSync(path.join(folder, 'index.html'), pageHtml(page));
+    kept[page.slug] = true;
     console.log('wrote', page.path, page.companies.length);
   });
+  claimListing.stripStaleHubClaim(dir, 'specs', kept);
   console.log('spec landings', pages.length);
 }
 
