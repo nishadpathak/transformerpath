@@ -576,7 +576,7 @@ function renderManufacturers(html) {
   let CSMAP = {};
   try { JSON.parse(fs.readFileSync('data/company-slugs.json', 'utf8')).forEach(function (c) { CSMAP[c.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()] = c.slug; }); } catch (e) {}
   const csl = (m) => CSMAP[String(m[0]).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()];
-  const { directoryCompanySlug } = require('./lib/company-aliases');
+  const { directoryCompanySlug, aliasRowHidden, ownedProfileSlugs } = require('./lib/company-aliases');
   const paidListings = require('./lib/paid-listings');
   const claimListing = require('./lib/claim-listing');
   const paidDoc = paidListings.load();
@@ -599,6 +599,8 @@ function renderManufacturers(html) {
     return paid.replace(/(<div class="mfr-verify-ctas"[^>]*>)/, '$1' + claim);
   };
   const tpills = (types) => { if (!types) return ''; return types.split(',').map((t) => t.trim()).filter(Boolean).map((t) => `<span class="tpill t-${t}">${esc(TNAME[t] || t)}</span>`).join(''); };
+  const ownedProfiles = ownedProfileSlugs(DATA, CSMAP);
+  const visibleMakers = (list) => (list || []).filter((m) => !aliasRowHidden(m[0], CSMAP, ownedProfiles));
   const groups = {};
   DATA.forEach((c) => { (groups[c.region] = groups[c.region] || []).push(c); });
 
@@ -612,9 +614,10 @@ function renderManufacturers(html) {
 
   const board = regions.filter((rg) => groups[rg]).map((region) =>
     `<div class="region-h">${esc(region)}</div>` + groups[region].map((c) => {
-      const real = c.makers.filter((m) => !/^Served by/i.test(m[0])).length;
+      const shown = visibleMakers(c.makers);
+      const real = shown.filter((m) => !/^Served by/i.test(m[0])).length;
       return `<div class="ctry-card"><div class="ctry-head"><span class="flag">${esc(c.flag)}</span><h3>${esc(c.country)}</h3><span class="cnt">${real} maker${real !== 1 ? 's' : ''}</span></div>` +
-        c.makers.map((m) => /^Served by/i.test(m[0])
+        shown.map((m) => /^Served by/i.test(m[0])
           ? `<div class="mk-row"><span class="note">${esc(m[0])}</span></div>`
           : (function () {
             const slug = paySlug(m[0]);
@@ -623,7 +626,9 @@ function renderManufacturers(html) {
         `</div>`;
     }).join('')).join('');
 
-  const makers = DATA.reduce((s, c) => s + c.makers.filter((m) => !/^Served by/i.test(m[0])).length, 0);
+  const censusMakers = DATA.reduce((s, c) => s + c.makers.filter((m) => !/^Served by/i.test(m[0])).length, 0);
+  const makers = DATA.reduce((s, c) => s + visibleMakers(c.makers).filter((m) => !/^Served by/i.test(m[0])).length, 0);
+  if (makers !== censusMakers) console.log('NOTE directory render collapsed ' + (censusMakers - makers) + ' plant-alias rows (' + censusMakers + ' -> ' + makers + ')');
   if (makers < 400) { console.warn('!! manufacturer census unexpectedly small ('+makers+'); check data/manufacturers.json'); }
   let completeness = 54;
   try {
