@@ -54,7 +54,7 @@ body{font-family:var(--font-sans);background:#08121e;color:var(--ink)}
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="TransformerPath">
-<script src="course-gate.js?v=7"></script>
+<script src="course-gate.js?v=8"></script>
     <link rel="stylesheet" href="tp-theme.css?v=6">
     <link rel="stylesheet" href="tp-nav.css?v=14">
   <link rel="stylesheet" href="tp-feedback.css?v=14">
@@ -145,8 +145,8 @@ body{font-family:var(--font-sans);background:#08121e;color:var(--ink)}
   </script>
   <script src="google-auth-config.js" defer></script>
   <script src="tp-auth.js?v=1" defer></script>
-  <script src="tp-nav.js?v=7" defer></script>
-  <script src="tp-pwa.js?v=7" defer></script>
+  <script src="tp-nav.js?v=8" defer></script>
+  <script src="tp-pwa.js?v=8" defer></script>
 </header>
 <div id="c3d" tabindex="-1"></div>
 <div id="labelLayer"></div>
@@ -389,7 +389,7 @@ function tick(){requestAnimationFrame(tick);
 tick();
 addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
 </script>
-<script src="analytics.js?v=7" defer></script>
+<script src="analytics.js?v=8" defer></script>
 <script src="tp-theme.js?v=1" defer></script>
 <footer>
   <div class="container">
@@ -421,7 +421,7 @@ b.addEventListener('click',function(){var d=html.getAttribute('data-theme')==='d
 if(d){html.removeAttribute('data-theme');localStorage.setItem('theme','light');}else{html.setAttribute('data-theme','dark');localStorage.setItem('theme','dark');}upd();});
 })();
 </script>
-<script src="tp-freshness.js?v=7" defer></script>
-<script src="tp-feedback.js?v=7" defer></script>
+<script src="tp-freshness.js?v=8" defer></script>
+<script src="tp-feedback.js?v=8" defer></script>
 </body>
 </html>

@@ -132,8 +132,8 @@ body{font-family:var(--font-sans);background:#0a1624;color:var(--ink)}
   </script>
   <script src="google-auth-config.js" defer></script>
   <script src="tp-auth.js?v=1" defer></script>
-  <script src="tp-nav.js?v=7" defer></script>
-  <script src="tp-pwa.js?v=7" defer></script>
+  <script src="tp-nav.js?v=8" defer></script>
+  <script src="tp-pwa.js?v=8" defer></script>
 </header>
 <div id="c3d"></div>
 <div id="topbar">
@@ -309,7 +309,7 @@ tick();
 addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
 </script>
 <script src="tp-theme.js?v=1" defer></script>
-<script src="analytics.js?v=7" defer></script>
+<script src="analytics.js?v=8" defer></script>
 <section class="autocalc" id="autocalc" style="max-width:960px;margin:0 auto;padding:30px 20px 50px">
   <style>
     .autocalc label{display:block;font-size:.78rem;font-weight:700;color:var(--muted);margin-bottom:4px}
@@ -390,7 +390,7 @@ b.addEventListener('click',function(){var d=html.getAttribute('data-theme')==='d
 if(d){html.removeAttribute('data-theme');localStorage.setItem('theme','light');}else{html.setAttribute('data-theme','dark');localStorage.setItem('theme','dark');}upd();});
 })();
 </script>
-<script src="tp-freshness.js?v=7" defer></script>
-<script src="tp-feedback.js?v=7" defer></script>
+<script src="tp-freshness.js?v=8" defer></script>
+<script src="tp-feedback.js?v=8" defer></script>
 </body>
 </html>

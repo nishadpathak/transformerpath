@@ -205,8 +205,8 @@
   </script>
   <script src="google-auth-config.js" defer></script>
   <script src="tp-auth.js?v=1" defer></script>
-  <script src="tp-nav.js?v=7" defer></script>
-  <script src="tp-pwa.js?v=7" defer></script>
+  <script src="tp-nav.js?v=8" defer></script>
+  <script src="tp-pwa.js?v=8" defer></script>
 </header>
 <img class="home-hero-banner" src="brand/hero.jpg" width="1774" height="887" alt="TransformerPath. Intelligence, Engineering, Manufacturers, Markets, Tools.">
 <div class="ticker" aria-label="Market and industry headlines">
@@ -1171,13 +1171,19 @@ document.querySelectorAll('#mainNav a').forEach(a=>a.addEventListener('click',()
   }
   // Same build-time file as intel.html. Do not read feed honesty or freshness here.
   if (window.fetch) fetch('data/intel-status.json',{cache:'no-cache'}).then(function(r){ return r.json(); }).then(function(st){
-    const statusLabel = st && st.status;
+    if (!st) return;
+    const live = (window.TPIntelClock && st.latest_source_iso) ? window.TPIntelClock.classify({
+      latestSourceIso: st.latest_source_iso,
+      latestCheckedAt: st.latest_source_checked_at,
+      buildAt: st.build_at
+    }) : null;
+    const statusLabel = (live && live.statusLabel) || st.status;
     if (!statusLabel) return;
     const sourceLabel = String(st.latest_source_date || '').replace(/\s+/g, ' ').trim();
     if (!/^\d{1,2} [A-Za-z]{3} \d{4}$/.test(sourceLabel)) return;
     const checkedLabel = st.latest_source_checked_label || '';
     const freshLabel = statusLabel === 'DATA CURRENT' || statusLabel === 'Updated today' || /^UPDATED \d{1,2} [A-Za-z]{3} \d{4}$/.test(statusLabel);
-    const dotColor = st.dot || (freshLabel ? '#1a9d4a' : (statusLabel==='DATA STALE' ? '#94a3b8' : '#e0a800'));
+    const dotColor = (live && window.TPIntelClock.dot(statusLabel)) || st.dot || (freshLabel ? '#1a9d4a' : (statusLabel==='DATA STALE' ? '#94a3b8' : '#e0a800'));
     const pill = document.getElementById('hero-live-pill');
     const pillStatus = document.getElementById('hero-live-status');
     const pillDate = document.getElementById('hero-live-date');
@@ -1193,7 +1199,7 @@ document.querySelectorAll('#mainNav a').forEach(a=>a.addEventListener('click',()
     if (pillCheck) pillCheck.textContent = checkedLabel ? ('source checked ' + checkedLabel) : '';
     if (pillDot) pillDot.style.background = dotColor;
     const heroCta = document.getElementById('hero-intel-cta');
-    const reason = String(st.reason || '');
+    const reason = (live && live.reason) || String(st.reason || '');
     const behind = reason === 'source_within_7d' || reason === 'future_source_date_rejected' || reason === 'source_date_unprintable' || reason === 'no_validated_source_date' || reason.indexOf('source_lag_') === 0;
     if (heroCta && behind) {
       heroCta.textContent = 'Coverage is behind — open the latest briefing →';
@@ -1241,9 +1247,9 @@ if('IntersectionObserver' in window){
   <input name="url">
   <input name="title">
 </form>
-<script src="analytics.js?v=7" defer></script>
-<script src="site-stats.js?v=7" defer></script>
-<script src="material-latest.js?v=7" defer></script>
+<script src="analytics.js?v=8" defer></script>
+<script src="site-stats.js?v=8" defer></script>
+<script src="material-latest.js?v=8" defer></script>
 <script src="tp-webgl-gate.js" defer></script>
 <script src="tp-canvas-scroll.js"></script>
 <script>
@@ -1310,8 +1316,8 @@ if('IntersectionObserver' in window){
   });
 })();
 </script>
-<script src="tp-freshness.js?v=7" defer></script>
-<script src="tp-feedback.js?v=7" defer></script>
+<script src="tp-freshness.js?v=8" defer></script>
+<script src="tp-feedback.js?v=8" defer></script>
 <script>
 (function(){
   var modal = document.getElementById('heroVideoModal');

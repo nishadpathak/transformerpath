@@ -30,4 +30,28 @@ doc.removed.forEach(function (row) {
   assert(flag && flag.label === 'dead' && flag.checked, name + ' website removal is flagged');
 });
 
+(doc.directory_replacements || []).forEach(function (row) {
+  const file = fs.readFileSync(row.file, 'utf8');
+  const surface = {
+    'data/buyers.json': 'buyers.html',
+    'data/education.json': 'education.html',
+    'data/services.json': 'services.html'
+  }[row.file];
+  assert(file.indexOf(row.to) !== -1, row.file + ' should use ' + row.to);
+  assert(file.indexOf(row.from) === -1, row.file + ' should drop ' + row.from);
+  if (surface) {
+    const html = fs.readFileSync(surface, 'utf8');
+    assert(html.indexOf(row.to) !== -1, surface + ' should link ' + row.to);
+    assert(html.indexOf(row.from) === -1, surface + ' should drop ' + row.from);
+  }
+});
+
+(doc.dropped_sources || []).forEach(function (row) {
+  const file = fs.readFileSync(row.file, 'utf8');
+  assert(file.indexOf(row.from) === -1, row.from + ' should be gone from ' + row.file);
+});
+const transwest = fs.readFileSync('projects/transwest-express-transmission-project/index.html', 'utf8');
+assert(transwest.indexOf('TransWest-Express-Wyoming.pdf') === -1, 'project page should drop the dead brochure');
+assert(transwest.indexOf('utilitydive.com/news/blm-transwest-express-transmission') !== -1, 'project page should keep the Utility Dive source');
+
 console.log('link-fixes: ok');

@@ -77,9 +77,84 @@
       "result": "electro-industries.dz did not connect. https://www.electro-industries.com/ also did not connect from this network, so the link was left."
     },
     {
+      "slug": "university-of-manchester-high-voltage-laboratory",
+      "url": "https://www.mub.eps.manchester.ac.uk/highvoltage/",
+      "result": "GET 404 on 19 Oct 2026. The department homepage answers 200 but does not name the high-voltage laboratory, so the link was left."
+    },
+    {
       "slug": "shanghai-electric-tandd-group",
       "url": "https://www.shanghai-electric.com/",
       "result": "HTTP 521. No alternate official URL returned a page, so the link was left."
+    }
+  ],
+  "directory_replacements": [
+    {
+      "file": "data/buyers.json",
+      "from": "https://www.nexteraenergy.com/suppliers.html",
+      "to": "https://www.nexteraenergy.com/",
+      "result": "GET 404. Homepage GET 200, title Enabling American Energy Dominance | NextEra Energy."
+    },
+    {
+      "file": "data/buyers.json",
+      "from": "https://www.powergrid.in/tenders",
+      "to": "https://www.powergrid.in/en",
+      "result": "GET 404. https://www.powergrid.in/en GET 200, title Home | POWERGRID."
+    },
+    {
+      "file": "data/buyers.json",
+      "from": "https://www.larsentoubro.com/power-transmission-distribution/",
+      "to": "https://www.larsentoubro.com/",
+      "result": "GET 404. Homepage GET 200, title L&T Corporate."
+    },
+    {
+      "file": "data/education.json",
+      "from": "https://www.doble.com/events-training/",
+      "to": "https://www.doble.com/training/",
+      "result": "GET 404. https://www.doble.com/training/ GET 200, title DOBLE TRAINING & EDUCATION."
+    },
+    {
+      "file": "data/education.json",
+      "from": "https://www.cigre.org/GB/events/cigre-academy",
+      "to": "https://www.cigre.org/",
+      "result": "GET 404. The events path is also 404. Homepage GET 200, title CIGRE > Home."
+    },
+    {
+      "file": "data/education.json",
+      "from": "https://www.cesi.it/services/testing/training/",
+      "to": "https://www.cesi.it/",
+      "result": "GET 404. Homepage GET 200, title CESI | Testing & Certification Services."
+    },
+    {
+      "file": "data/services.json",
+      "from": "https://www.sgb-smit.com/service/",
+      "to": "https://www.sgb-smit.com/",
+      "result": "GET 404. Homepage GET 200, title SGB-SMIT Group."
+    },
+    {
+      "file": "data/services.json",
+      "from": "https://www.siemens-energy.com/global/en/offerings/services/transmission-services/transformer-services.html",
+      "to": "https://www.siemens-energy.com/global/en/home/products-services/product-offerings/transformers.html",
+      "result": "GET 404. The current transformer page GET 200, title Transformers | Power and Distribution Transformer Solutions."
+    },
+    {
+      "file": "data/services.json",
+      "from": "https://www.elsewedyelectric.com/en/services/operation-maintenance/",
+      "to": "https://www.elsewedyelectric.com/",
+      "result": "GET 404. Homepage GET 200, title Elsewedy Electric."
+    },
+    {
+      "file": "data/services.json",
+      "from": "https://vrtpower.com/services/",
+      "to": "https://vrtpower.com/",
+      "result": "GET 404. Homepage GET 200, title VRT | custom transformer manufacturing, service, testing and spare parts."
+    }
+  ],
+  "dropped_sources": [
+    {
+      "file": "data/projects.json",
+      "project": "TransWest Express Transmission Project",
+      "from": "http://www.transwestexpress.net/news/docs/TransWest-Express-Wyoming.pdf",
+      "result": "GET 404. The other two sources stay. The project site https://www.transwestexpress.net/ GET 200, title TransWest Express LLC, and was not substituted for the missing brochure."
     }
   ]
 }
