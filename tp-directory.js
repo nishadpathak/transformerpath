@@ -27,6 +27,12 @@
     INFERRED: 'ev-inferred', UNKNOWN: 'ev-unknown'
   };
   function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+  function claimListingLink(c) {
+    if (!c || c.kind !== 'manufacturer') return '';
+    var slug = String(c.slug || '').trim().toLowerCase();
+    var href = /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) ? '/claim-listing/' + slug + '/' : '/claim-listing/';
+    return '<a class="btn btn-outline btn-sm claim-listing-link" href="' + esc(href) + '" data-claim-listing="1">Claim this listing</a>';
+  }
   function countrySortKey(name) {
     var n = String(name == null ? '' : name).trim().replace(/\s+/g, ' ');
     var m = n.match(/^The\s+(.+)$/i);
@@ -201,6 +207,7 @@
         '<a class="btn btn-amber btn-sm" href="rfq.html?company=' + encodeURIComponent(c.name) + '" data-track="rfq_started_directory" data-track-entity="' + esc(c.name) + '">RFQ</a>' +
         '<a class="btn btn-outline btn-sm" href="' + profileUrl(c) + '" data-track="directory_profile_click" data-track-entity="' + esc(c.name) + '">Profile →</a>' +
         (c.website ? '<a class="btn btn-outline btn-sm" href="' + esc(c.website) + '" target="_blank" rel="noopener" style="font-size:.72rem" data-track="official_website_click" data-track-entity="' + esc(c.name) + '">Site ↗</a>' : '') +
+        claimListingLink(c) +
       '</div>' +
     '</div>';
   }

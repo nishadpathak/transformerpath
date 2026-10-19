@@ -54,6 +54,7 @@ function run() {
       const u = String(url);
       let body = null;
       if (u.indexOf('manufacturers.json') >= 0) body = census;
+      else if (u.indexOf('company-slugs.json') >= 0) body = JSON.parse(fs.readFileSync(path.join(root, 'data/company-slugs.json'), 'utf8'));
       else if (u.indexOf('manufacturer-tiers.json') >= 0) body = tiers;
       else if (u.indexOf('sourced-spec-fields.json') >= 0) body = specs;
       else if (u.indexOf('site-stats.json') >= 0) body = stats;
@@ -74,7 +75,14 @@ function run() {
     /id="fKv"/.test(html) && /id="fMva"/.test(html) && /id="fCert"/.test(html) && /id="fCool"/.test(html) && /id="fTest"/.test(html));
   const ui = await run();
   const count = ui.nodes.count.textContent;
-  check('default view still counts the census', count.indexOf('Showing ' + stats.manufacturers + ' ') === 0, count);
+  const aliases = require('../lib/company-aliases');
+  const slugRows = JSON.parse(fs.readFileSync(path.join(root, 'data/company-slugs.json'), 'utf8'));
+  const slugMap = {};
+  slugRows.forEach(function (row) {
+    if (row && row.name && row.slug) slugMap[row.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()] = row.slug;
+  });
+  const visibleCount = aliases.visibleMakerCount(census, slugMap);
+  check('default view counts each company once', count.indexOf('Showing ' + visibleCount + ' ') === 0 && visibleCount === stats.manufacturers - 7, count);
   ui.nodes.fKv.value = '525';
   ui.context.page = 1;
   ui.context.render();

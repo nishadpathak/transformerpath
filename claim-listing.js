@@ -62,7 +62,15 @@
   function href(slug) {
     var s = String(slug || '').trim().toLowerCase();
     if (!SLUG_RE.test(s)) return '/claim-listing/';
-    return '/claim-listing/?slug=' + encodeURIComponent(s);
+    return '/claim-listing/' + s + '/';
+  }
+
+  function payHref(base, slug) {
+    var url = String(base || '').split('#')[0];
+    url = url.replace(/([?&])client_reference_id=[^&]*/g, '$1').replace(/[?&]$/, '');
+    var s = String(slug || '').trim().toLowerCase();
+    if (!SLUG_RE.test(s)) return url;
+    return url + (url.indexOf('?') >= 0 ? '&' : '?') + 'client_reference_id=' + encodeURIComponent(s);
   }
 
   function linkHtml(slug) {
@@ -106,18 +114,29 @@
       status.textContent = 'Work email does not match the listing website. This claim is flagged for manual review.';
     }
 
+    function stampPays(slug) {
+      var nodes = document.querySelectorAll
+        ? document.querySelectorAll('[data-verified-manufacturer-pay="1"],[data-featured-listing-pay="1"],[data-featured-verified-pay="1"]')
+        : [];
+      Array.prototype.forEach.call(nodes, function (pay) {
+        pay.setAttribute('href', payHref(pay.getAttribute('href') || '', slug));
+      });
+    }
+
     function applyListing(row) {
       listing = row || { name: '', website: '' };
       if (companyInput && listing.name && !companyInput.value) companyInput.value = listing.name;
-      var pay = document.querySelector('[data-verified-manufacturer-pay="1"]');
-      var slug = currentSlug();
-      if (pay && SLUG_RE.test(slug)) {
-        var url = pay.getAttribute('href') || '';
-        if (url.indexOf('client_reference_id=') < 0) {
-          pay.setAttribute('href', url + (url.indexOf('?') >= 0 ? '&' : '?') + 'client_reference_id=' + encodeURIComponent(slug));
-        }
-      }
+      stampPays(currentSlug());
       applyFlag();
+    }
+
+    function showMissing() {
+      listing = { name: '', website: '' };
+      if (slugInput) slugInput.value = '';
+      if (flagInput) flagInput.value = 'manual_review';
+      if (siteInput) siteInput.value = '';
+      stampPays('');
+      if (status) status.textContent = 'Listing not found';
     }
 
     form.addEventListener('submit', applyFlag);
@@ -136,7 +155,12 @@
       fetch('/data/claim-listing-index.json', { credentials: 'same-origin' })
         .then(function (res) { return res.ok ? res.json() : {}; })
         .then(function (index) {
-          var row = index && index[slug];
+          var current = currentSlug();
+          var row = index && index[current];
+          if (current && (!row || typeof row !== 'object')) {
+            showMissing();
+            return;
+          }
           applyListing(row && typeof row === 'object' ? row : { name: '', website: '' });
         })
         .catch(function () { applyListing({ name: '', website: '' }); });
@@ -153,6 +177,7 @@
     domainsMatch: domainsMatch,
     reviewFlag: reviewFlag,
     href: href,
+    payHref: payHref,
     linkHtml: linkHtml,
     boot: boot
   };

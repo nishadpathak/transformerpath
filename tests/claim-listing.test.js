@@ -22,7 +22,8 @@ check('parent domain matches a site host', claim.domainsMatch('office@bemag.ca',
 check('other domains are flagged for manual review', claim.reviewFlag('sales@gmail.com', 'https://www.bemag.ca/') === 'manual_review');
 check('a lookalike host is not a match', claim.reviewFlag('a@notbemag.ca', 'https://bemag.ca/') === 'manual_review');
 check('a missing website is manual review', claim.reviewFlag('sales@bemag.ca', '') === 'manual_review');
-check('claim link carries the slug', claim.href('bemag-transformer') === '/claim-listing/?slug=bemag-transformer');
+check('claim link carries the slug', claim.href('bemag-transformer') === '/claim-listing/bemag-transformer/');
+check('upgrade links keep the existing price url and add the slug', claim.payHref(paid.PAYMENT_LINKS.featured_listing.url, 'bemag-transformer') === paid.PAYMENT_LINKS.featured_listing.url + '?client_reference_id=bemag-transformer' && claim.payHref(paid.PAYMENT_LINKS.featured_verified.url, 'bemag-transformer') === paid.PAYMENT_LINKS.featured_verified.url + '?client_reference_id=bemag-transformer');
 check('a bad slug still opens the form', claim.href('..//') === '/claim-listing/');
 
 const index = JSON.parse(fs.readFileSync(path.join(root, 'data/claim-listing-index.json'), 'utf8'));
@@ -84,7 +85,15 @@ census.forEach(function (country) {
     if (maker && !/^Served by/i.test(maker[0])) makers++;
   });
 });
-check('directory board links every maker', (ssr.match(/data-claim-listing="1"/g) || []).length === makers, String(makers));
+const aliases = require('../lib/company-aliases');
+const slugRows = JSON.parse(fs.readFileSync(path.join(root, 'data/company-slugs.json'), 'utf8'));
+const slugMap = {};
+slugRows.forEach(function (row) {
+  if (row && row.name && row.slug) slugMap[row.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()] = row.slug;
+});
+const visibleMakers = aliases.visibleMakerCount(census, slugMap);
+check('directory board links every visible maker', (ssr.match(/data-claim-listing="1"/g) || []).length === visibleMakers, visibleMakers + ' visible, ' + makers + ' census');
+check('plant alias rows collapse onto the company profile', visibleMakers === makers - 7, String(visibleMakers));
 check('directory script renders the same claim link', board.indexOf('function claimListingLink') >= 0 && board.indexOf('data-claim-listing="1"') >= 0);
 
 let profileMiss = 0;
@@ -99,7 +108,7 @@ fs.readdirSync(path.join(root, 'manufacturers')).forEach(function (dir) {
   }
   if (html.indexOf('Claim this profile') < 0) return;
   profileCount++;
-  if (html.indexOf('/claim-listing/?slug=' + dir) < 0) profileMiss++;
+  if (html.indexOf('/claim-listing/' + dir + '/') < 0) profileMiss++;
 });
 check('every full profile links to its claim form', profileMiss === 0 && profileCount >= 890, 'miss ' + profileMiss + ' profiles ' + profileCount);
 
@@ -108,7 +117,7 @@ const canadaRows = canada.split('<div class="mk-row">').slice(1).filter(function
   return row.indexOf('class="note"') < 0;
 });
 check('country listing rows include a claim link', canadaRows.length > 0 && canadaRows.every(function (row) {
-  return row.indexOf('data-claim-listing="1"') >= 0 && row.indexOf('/claim-listing/?slug=') >= 0;
+  return row.indexOf('data-claim-listing="1"') >= 0 && /\/claim-listing\/[a-z0-9-]+\//.test(row);
 }));
 const hub = fs.readFileSync(path.join(root, 'manufacturers/power-transformers/index.html'), 'utf8');
 check('product listing rows include a claim link', (hub.match(/data-claim-listing="1"/g) || []).length > 50);
@@ -137,10 +146,16 @@ const nodes = {
   'claim-email': emailBox,
   'claim-domain-status': { textContent: '' }
 };
-const payLink = { href: paid.VERIFIED_MANUFACTURER_PAYMENT_LINK, getAttribute: function () { return this.href; }, setAttribute: function (k, v) { this.href = v; } };
+function payBox(href) {
+  return { href: href, getAttribute: function () { return this.href; }, setAttribute: function (k, v) { this.href = v; } };
+}
+const payLink = payBox(paid.VERIFIED_MANUFACTURER_PAYMENT_LINK);
+const featuredLink = payBox(paid.PAYMENT_LINKS.featured_listing.url);
+const bothLink = payBox(paid.PAYMENT_LINKS.featured_verified.url);
 global.document = {
   getElementById: function (id) { return nodes[id] || null; },
-  querySelector: function (sel) { return sel.indexOf('verified-manufacturer-pay') >= 0 ? payLink : null; },
+  querySelector: function () { return null; },
+  querySelectorAll: function () { return [payLink, featuredLink, bothLink]; },
   readyState: 'complete',
   addEventListener: function () {}
 };
@@ -152,7 +167,7 @@ global.fetch = function () {
   });
 };
 emailBox.addEventListener = function (name, fn) { listeners['email-' + name] = fn; };
-slugBox.addEventListener = function () {};
+slugBox.addEventListener = function (name, fn) { listeners['slug-' + name] = fn; };
 api.boot();
 setTimeout(function () {
   check('slug and company are filled from the address', slugBox.value === 'bemag-transformer' && companyBox.value === 'Bemag Transformer', slugBox.value + ' / ' + companyBox.value);
@@ -160,12 +175,39 @@ setTimeout(function () {
   listeners['email-input']();
   check('a matching email is stored as domain_match', flagBox.value === 'domain_match' && siteBox.value === 'https://www.bemag.ca/', flagBox.value + ' ' + siteBox.value);
   check('verified checkout keeps the existing link and the maker slug', payLink.href.indexOf(verified) === 0 && payLink.href.indexOf('client_reference_id=bemag-transformer') >= 0, payLink.href);
+  check('featured checkouts keep the existing links and the maker slug', featuredLink.href === featured + '?client_reference_id=bemag-transformer' && bothLink.href === both + '?client_reference_id=bemag-transformer', featuredLink.href + ' ' + bothLink.href);
   emailBox.value = 'sales@gmail.com';
   listeners['email-input']();
   check('a different email stays on manual review', flagBox.value === 'manual_review', flagBox.value);
+  slugBox.value = 'not-a-real-listing';
+  listeners['slug-change']();
+  setTimeout(function () {
+  check('an unknown slug says listing not found and clears the slug', slugBox.value === '' && nodes['claim-domain-status'].textContent === 'Listing not found', slugBox.value + ' / ' + nodes['claim-domain-status'].textContent);
+  const bemagPage = fs.readFileSync(path.join(root, 'claim-listing/bemag-transformer/index.html'), 'utf8');
+  check('a prerendered claim page is noindex and prefilled', /noindex,follow/.test(bemagPage) && bemagPage.indexOf('value="Bemag Transformer"') >= 0 && bemagPage.indexOf('value="bemag-transformer"') >= 0);
+  check('a prerendered page carries the slug on every upgrade link', bemagPage.indexOf(featured + '?client_reference_id=bemag-transformer') >= 0 && bemagPage.indexOf(both + '?client_reference_id=bemag-transformer') >= 0 && bemagPage.indexOf(verified + '?client_reference_id=bemag-transformer') >= 0);
+  check('the prerendered page stays out of the sitemap', sitemap.indexOf('claim-listing') === -1);
+  const toml = fs.readFileSync(path.join(root, 'netlify.toml'), 'utf8');
+  check('a known query redirects to the prerendered page', toml.indexOf('query = {slug = "bemag-transformer"}') >= 0 && toml.indexOf('to = "/claim-listing/bemag-transformer/"') >= 0);
+  check('an unknown query is not redirected', toml.indexOf('not-a-real-listing') < 0);
+  const os = require('os');
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'claim-hub-'));
+  const anchor = ' <a class="btn btn-outline btn-sm claim-listing-link" href="/claim-listing/power-transformers/" data-claim-listing="1">Claim this listing</a>';
+  fs.mkdirSync(path.join(tmp, 'hungary'));
+  fs.writeFileSync(path.join(tmp, 'hungary', 'index.html'), '<nav>Power' + anchor + ' › Hungary</nav>');
+  fs.mkdirSync(path.join(tmp, 'india'));
+  fs.writeFileSync(path.join(tmp, 'india', 'index.html'), '<nav>Power' + anchor + ' › India</nav>');
+  claim.stripStaleHubClaim(tmp, 'power-transformers', { india: true });
+  const stripped = fs.readFileSync(path.join(tmp, 'hungary', 'index.html'), 'utf8');
+  const keptHtml = fs.readFileSync(path.join(tmp, 'india', 'index.html'), 'utf8');
+  check('a stale hub drops the product-type claim link', stripped.indexOf('/claim-listing/power-transformers/') < 0 && stripped.indexOf('Hungary') >= 0, stripped);
+  check('a hub the generator rewrites is left for that writer', keptHtml.indexOf(anchor) >= 0);
+  const hungaryHub = fs.readFileSync(path.join(root, 'manufacturers/power-transformers/hungary/index.html'), 'utf8');
+  check('the Hungary power hub does not claim the product type', hungaryHub.indexOf('/claim-listing/power-transformers/') < 0 && hungaryHub.indexOf('/claim-listing/ganz-transformers-and-electric-rotating-machines/') >= 0);
   if (failed) {
     console.error('CLAIM LISTING FAILED (' + failed + ')');
     process.exit(1);
   }
   console.log('CLAIM LISTING OK');
+  }, 30);
 }, 30);

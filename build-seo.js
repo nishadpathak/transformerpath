@@ -307,6 +307,12 @@ TYPE_HUBS.forEach(function (th) {
     fs.writeFileSync(comboDir + '/index.html', comboHtml);
     comboHubCount++;
   });
+
+  /* A country under the three-maker gate keeps its old file. Drop a claim
+     anchor that points at the product type rather than a listing. */
+  const keptCombo = {};
+  comboCountries.forEach(function (countryName) { keptCombo[slugify(countryName)] = true; });
+  claimListing.stripStaleHubClaim(typeDir, th.slug, keptCombo);
 });
 console.log('generated', typeHubCount, 'type hubs and', comboHubCount, 'type-country combination hubs');
 

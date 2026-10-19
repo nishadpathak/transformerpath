@@ -76,12 +76,19 @@ check('index data-stat="tenders" fallback = canonical', dataStatFallback(HOME, '
 check('index data-stat="openTenders" fallback = canonical', dataStatFallback(HOME, 'openTenders') === STATS.openTenders);
 check('index data-stat="awards" fallback = canonical', dataStatFallback(HOME, 'awards') === STATS.awards);
 
-// manufacturers.html Dataset schema "size" (build_ssr now syncs it).
+// manufacturers.html Dataset schema "size" counts rendered companies.
+// Plant-alias rows stay in the census and in config.counters.
 const MFG_PAGE = pages.find((p) => p === 'manufacturers.html') || 'manufacturers.html';
 const mfgHtml = fs.readFileSync(MFG_PAGE, 'utf8');
 const schemaSize = mfgHtml.match(/"size"\s*:\s*(\d+)/);
-check('manufacturers.html schema size = config', schemaSize && +schemaSize[1] === CFG.counters.manufacturers,
-  'schema says ' + (schemaSize && schemaSize[1]));
+const aliasLib = require('./lib/company-aliases');
+const slugMap = {};
+JSON.parse(fs.readFileSync('data/company-slugs.json', 'utf8')).forEach(function (row) {
+  if (row && row.name && row.slug) slugMap[row.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()] = row.slug;
+});
+const renderedMakers = aliasLib.visibleMakerCount(MFG, slugMap);
+check('manufacturers.html schema size = rendered companies', schemaSize && +schemaSize[1] === renderedMakers,
+  'schema says ' + (schemaSize && schemaSize[1]) + ', rendered ' + renderedMakers);
 
 // No stale old-count text anywhere in served pages (520 / "census of 520"/etc).
 const STALE_RE = /(\b520\b[^a-z]{0,20}(manufacturer|makers?|directory))|((census|worldwide census) of 520)|(\b546\b[^a-z]{0,20}(manufacturer|makers?|directory))|((census|worldwide census) of 546)|(546-manufacturer)/i;

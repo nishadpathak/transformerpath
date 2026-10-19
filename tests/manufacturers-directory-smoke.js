@@ -142,10 +142,21 @@ function rows(htmlText) {
   const missing = [...censusKeys].filter(function (name) { return !boardKeys.has(name); });
   const shown = html.match(/Showing (\d+) companies across (\d+) countries/);
 
-  check('published board row count equals the census', makerRows.length === makers.length && makerRows.length === stats.manufacturers, makerRows.length + ' board rows, ' + makers.length + ' in manufacturers.json, site-stats ' + stats.manufacturers);
+  const aliases = require('../lib/company-aliases');
+  const slugRows = JSON.parse(fs.readFileSync(path.join(root, 'data/company-slugs.json'), 'utf8'));
+  const slugMap = {};
+  slugRows.forEach(function (row) {
+    if (row && row.name && row.slug) slugMap[row.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()] = row.slug;
+  });
+  const visibleCount = aliases.visibleMakerCount(census, slugMap);
+  check('published board row count equals the visible companies', makerRows.length === visibleCount && makers.length === stats.manufacturers && visibleCount === makers.length - 7, makerRows.length + ' board rows, ' + makers.length + ' census, ' + visibleCount + ' visible');
   check('published board has no note, duplicate, or unparsed rows', noteRows.length === 0 && unknownRows.length === 0 && duplicates.length === 0, 'notes ' + noteRows.map(function (row) { return row.name; }).join('; ') + ' unknown ' + unknownRows.length + ' duplicates ' + duplicates.join('; '));
-  check('published board lists the same manufacturers as the census', extra.length === 0 && missing.length === 0, 'extra ' + extra.join('; ') + ' missing ' + missing.slice(0, 8).join('; '));
-  check('directory count line equals the census', !!shown && Number(shown[1]) === stats.manufacturers, shown ? shown[0] : 'missing');
+  const hidden = makers.filter(function (name) { return aliases.aliasRowHidden(name, slugMap, aliases.ownedProfileSlugs(census, slugMap)); }).map(function (name) { return name.toLowerCase(); });
+  const hiddenSet = new Set(hidden);
+  const missingSet = new Set(missing);
+  const sameHidden = hidden.length === missing.length && hidden.every(function (name) { return missingSet.has(name); }) && missing.every(function (name) { return hiddenSet.has(name); });
+  check('published board omits only the collapsed plant-alias rows', extra.length === 0 && sameHidden, 'extra ' + extra.join('; ') + ' missing ' + missing.slice(0, 8).join('; '));
+  check('directory count line equals the visible companies', !!shown && Number(shown[1]) === visibleCount, shown ? shown[0] : 'missing');
 
   const ssrRows = makerRows.length;
   check('server-rendered directory has more than 0 maker rows', ssrRows > 0, String(ssrRows));
@@ -153,8 +164,12 @@ function rows(htmlText) {
   check('a JS failure does not replace #board', !/getElementById\('board'\)\.innerHTML\s*=\s*'[^']*Could not load the manufacturer directory/.test(html));
 
   const ok = await run(function (url) {
-    if (String(url).indexOf('manufacturers.json') !== -1) {
+    const u = String(url);
+    if (u.indexOf('manufacturers.json') !== -1) {
       return Promise.resolve({ ok: true, json: function () { return Promise.resolve(census); } });
+    }
+    if (u.indexOf('company-slugs.json') !== -1) {
+      return Promise.resolve({ ok: true, json: function () { return Promise.resolve(slugRows); } });
     }
     return Promise.resolve({ ok: false, json: function () { return Promise.resolve([]); } });
   });
@@ -162,7 +177,7 @@ function rows(htmlText) {
   const rendered = rows(board.innerHTML);
   check('live render produces more than 0 maker rows', rendered > 0, String(rendered));
   const liveCount = ok.ui.nodes.count ? ok.ui.nodes.count.textContent : '';
-  check('client count equals the census', liveCount.indexOf('Showing ' + stats.manufacturers + ' ') === 0, liveCount);
+  check('client count equals the visible companies', liveCount.indexOf('Showing ' + visibleCount + ' ') === 0, liveCount);
   const countryLinks = board.innerHTML.match(/manufacturers\/[a-z0-9-]+\.html/g) || [];
   check('live render links countries to country pages', countryLinks.length > 0, String(countryLinks.length));
   check('countrySlug keeps the short USA / UAE / Türkiye files',
