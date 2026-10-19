@@ -110,6 +110,7 @@ DEV.forEach(function (dev) {
       value: valueLabel(x.value),
       date: dateFromSrc(x.src, x.date_iso),
       facility_id: x.facility_id || null,
+      event_scope: x.event_scope || (x.facility_id ? 'factory' : 'group'),
       confidence: BASE_CONF,
       claimType: BASE_CLAIM,
       sourceType: 'company_development',
@@ -152,7 +153,7 @@ const tenderSummary = TENDERS.map(function (t) {
     source_url: (t.source_urls && t.source_urls[0]) || '',
   };
 });
-const openTenders = tenderSummary.filter(function (t) { return t.status === 'OPEN'; });
+const openTenders = tenderSummary.filter(function (t) { return t.status === 'OPEN' || t.status === 'CLOSING_SOON'; });
 const preAwardTenders = tenderSummary.filter(function (t) { return PREAWARD.indexOf(t.status) >= 0; });
 // Awarded tenders are the award result feed (source-confirmed).
 const awardSummary = tenderSummary.filter(function (t) { return t.status === 'AWARDED'; });

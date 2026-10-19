@@ -226,6 +226,12 @@ function getSuppliersForPage(config) {
 }
 
 PAGES.forEach(cfg => {
+  const hub = cfg.file.replace(/\.html$/, '/index.html');
+  if (fs.existsSync(hub)) {
+    if (fs.existsSync(cfg.file)) fs.unlinkSync(cfg.file);
+    console.log('skip ' + cfg.file + ' (directory hub owns this URL)');
+    return;
+  }
   const suppliers = getSuppliersForPage(cfg);
 
   const subcatsHtml = cfg.subcats.map(sc => `

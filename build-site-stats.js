@@ -43,28 +43,17 @@ const syncLabels = new Set(GRIDS.map((g) => g.sync).filter(Boolean)).size;
    dataset held 300. */
 const EVENTS = readJson('data/events.json', []);
 const { isUpcoming, platformToday } = require('./lib/event-status');
+const { homepageEventsSentence } = require('./lib/homepage-events');
 /* Same predicate as /events: end date is still on or after the Asia/Dubai
    platform date, and the record is discoverable. */
 const todayISO = platformToday();
 const upcomingEvents = EVENTS.filter((e) => isUpcoming(e, todayISO)).length;
-const MONTHS_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-function shortDay(iso) {
-  if (!iso || !/^\d{4}-\d{2}-\d{2}$/.test(iso)) return '';
-  return { d: parseInt(iso.slice(8, 10), 10), m: MONTHS_SHORT[parseInt(iso.slice(5, 7), 10) - 1], y: iso.slice(0, 4) };
-}
-const nextConfirmedLine = EVENTS.filter((e) => e.date_status === 'CONFIRMED' && e.source_url && e.source_checked_at && (e.end || e.e) && (e.end || e.e) >= todayISO)
-  .sort((a, b) => String(a.start || a.s).localeCompare(String(b.start || b.s)))
-  .slice(0, 3)
-  .map((e) => {
-    const a = shortDay(e.start || e.s);
-    const b = shortDay(e.end || e.e);
-    let range = '';
-    if (a && b && a.y === b.y && a.m === b.m && a.d !== b.d) range = a.d + '–' + b.d + ' ' + a.m + ' ' + a.y;
-    else if (a && b && (a.d !== b.d || a.m !== b.m)) range = a.d + ' ' + a.m + ' ' + a.y + '–' + b.d + ' ' + b.m + ' ' + b.y;
-    else if (a) range = a.d + ' ' + a.m + ' ' + a.y;
-    return (e.name || e.n) + ' (' + range + ')';
-  })
-  .join('; ');
+/* Homepage event dates are the canonical edition records, not a handwritten
+   copy. events-canonical.json is produced from events.json by
+   build-event-canonicalization.js earlier in the same build. */
+const CANON = readJson('data/events-canonical.json', {});
+const CANON_EVENTS = (CANON.canonical_editions && CANON.canonical_editions.length) ? CANON.canonical_editions : EVENTS;
+const homepageEventsText = homepageEventsSentence(CANON_EVENTS, todayISO);
 
 // Compute structured database metrics across manufacturers, factories, and capabilities
 const SITES = readJson('data/manufacturer-sites.json', []);
@@ -116,6 +105,10 @@ LABS.forEach(l => {
   if (l.accreditation) intelSourcedCount++;
 });
 
+const awardsConfirmed = AWARDS.filter((a) => a.transformer_scope === 'CONFIRMED').length;
+const awardsInferred = AWARDS.filter((a) => a.transformer_scope === 'INFERRED').length;
+const awardsUnknown = AWARDS.filter((a) => a.transformer_scope !== 'CONFIRMED' && a.transformer_scope !== 'INFERRED').length;
+const awardsTracked = awardsConfirmed + awardsInferred + awardsUnknown;
 const companiesCount = (INTEL.companies || []).length || makers;
 const avgCompleteness = companiesCount ? Math.min(95, Math.max(54, Math.round(intelCompletenessTotal / companiesCount))) : 73;
 
@@ -158,10 +151,10 @@ const current = {
   tenders: TENDERS.length || num(prev.tenders, 0),
   openTenders: openTenders || num(prev.openTenders, 0),
   preAward: preAward || num(prev.preAward, 0),
-  awards: AWARDS.length || num(prev.awards, 0),
-  awardsConfirmed: AWARDS.filter((a) => a.transformer_scope === 'CONFIRMED').length,
-  awardsInferred: AWARDS.filter((a) => a.transformer_scope === 'INFERRED').length,
-  awardsUnknown: AWARDS.filter((a) => a.transformer_scope !== 'CONFIRMED' && a.transformer_scope !== 'INFERRED').length,
+  awards: awardsTracked,
+  awardsConfirmed: awardsConfirmed,
+  awardsInferred: awardsInferred,
+  awardsUnknown: awardsUnknown,
   awardsScopeTaxonomy: 'CONFIRMED / INFERRED / UNKNOWN transformer_scope, same labels as Intelligence',
   events: EVENTS.length || num(prev.events, 0),
   upcomingEvents: upcomingEvents || num(prev.upcomingEvents, 0),
@@ -221,15 +214,56 @@ for (let i = 0; i < STAT_HTML.length; i++) {
       /title="\d+ open tenders accepting bids right now"/g,
       'title="' + current.openTenders + ' open tenders accepting bids right now"'
     );
-    if (nextConfirmedLine) {
+    html = html.replace(
+      /title="\d+ awards tracked, split by transformer scope"/g,
+      'title="' + current.awards + ' awards tracked, split by transformer scope"'
+    );
+    if (homepageEventsText) {
       html = html.replace(
-        /(<h3>Events →<\/h3><p>)[\s\S]*?(<\/p>)/,
-        '$1Next confirmed editions: ' + nextConfirmedLine + '. Official pages checked ' + todayISO + '.$2'
+        /(<h3>Events →<\/h3><p id="home-next-events">)[\s\S]*?(<\/p>)/,
+        '$1' + homepageEventsText + '$2'
       );
     }
+    html = html.replace(
+      /Explore manufacturing across \d+ countries/g,
+      'Explore manufacturing across ' + current.manufacturingCountries + ' countries'
+    );
+    html = html.replace(
+      /Browse all \d+ transformer companies/g,
+      'Browse all ' + current.manufacturers + ' transformer companies'
+    );
   }
   if (html !== before) {
     fs.writeFileSync(p, html);
+    htmlPatched++;
+  }
+}
+
+/* Directory headlines are not data-stat nodes. The SSR block, the count
+   line and the Dataset size are what crawlers and no-JS readers see.
+   Plant-alias rows that share a profile are hidden on this page, so these
+   figures count the rendered companies. site-stats.json keeps the census. */
+if (fs.existsSync('manufacturers.html')) {
+  let html = fs.readFileSync('manufacturers.html', 'utf8');
+  const before = html;
+  const slugMap = {};
+  readJson('data/company-slugs.json', []).forEach(function (row) {
+    if (row && row.name && row.slug) slugMap[row.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()] = row.slug;
+  });
+  const renderedMakers = require('./lib/company-aliases').visibleMakerCount(MANUF, slugMap);
+  const regionsShown = new Set(MANUF.filter((g) => (g.makers || []).some((m) => !/^Served by/i.test(m[0]))).map((g) => g.region).filter(Boolean)).size;
+  const statsBlock = '<!--SSR:mfg-stats-->\n' +
+    '<div class="s"><b>' + renderedMakers + '</b><small>Companies</small></div>\n' +
+    '<div class="s"><b>' + current.manufacturingCountries + '</b><small>Countries</small></div>\n' +
+    '<div class="s"><b>' + regionsShown + '</b><small>Regions</small></div>\n' +
+    '<div class="s"><b>' + current.dataCompleteness + '%</b><small>Data completeness</small></div>\n' +
+    '<!--/SSR:mfg-stats-->';
+  html = html.replace(/<!--SSR:mfg-stats-->[\s\S]*?<!--\/SSR:mfg-stats-->/, statsBlock);
+  html = html.replace(/Showing \d+ companies across \d+ countries/,
+    'Showing ' + renderedMakers + ' companies across ' + current.manufacturingCountries + ' countries');
+  html = html.replace(/("size"\s*:\s*)\d+/, '$1' + renderedMakers);
+  if (html !== before) {
+    fs.writeFileSync('manufacturers.html', html);
     htmlPatched++;
   }
 }

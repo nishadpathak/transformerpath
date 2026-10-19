@@ -53,7 +53,8 @@
       "Portugal",
       "Switzerland",
       "Czechia",
-      "Romania"
+      "Romania",
+      "Latvia"
     ],
     "North America": [
       "United States",
@@ -140,28 +141,6 @@
       "source_note": "Replaces placeholder example.com/upd. Same EPC package named in the Apr 2026 SaudiGulf Projects / MEED report, which says bids closed 14 May. Transformer scope is inferred from the substation packages; the report does not confirm a transformer lot."
     },
     {
-      "project": "DEWA 13 x 132/11 kV substations EPC",
-      "country": "United Arab Emirates",
-      "project_country": "United Arab Emirates",
-      "buyer_country": null,
-      "supplier_country": null,
-      "source_country": null,
-      "utility": "DEWA (Dubai)",
-      "epc": null,
-      "transformer_requirement": "CONFIRMED",
-      "voltage": "132/11 kV",
-      "status": "evaluation",
-      "manufacturer": null,
-      "expected": "Q3 2026",
-      "sources": [
-        "https://www.zawya.com/en/projects/utilities/dubai-expected-to-award-substations-epc-contract-in-q3-fk1fcmsx"
-      ],
-      "src_label": "Zawya Projects",
-      "related_market": "UAE",
-      "related_intel": "Pipeline",
-      "region": "Middle East"
-    },
-    {
       "project": "DEWA Tawimura 33/11 kV substation (Lesaily)",
       "country": "United Arab Emirates",
       "project_country": "United Arab Emirates",
@@ -176,7 +155,8 @@
       "manufacturer": null,
       "expected": "Q2-Q3 2026",
       "sources": [
-        "https://www.tradingview.com/news/reuters.com,2026-05-12:newsml_Zaw1C3Sz2:0-zawya-dubai-likely-to-award-33-11kv-substation-contract-in-q2-2026/"
+        "https://www.zawya.com/en/projects/utilities/dewa-receives-bids-for-tawimura-3311kv-substation-project-365221",
+        "https://transformer-magazine.com/news/dewa-targets-q2-substation-contract-award/"
       ],
       "src_label": "Zawya / TradingView",
       "related_market": "UAE",
@@ -194,16 +174,18 @@
       "epc": null,
       "transformer_requirement": "CONFIRMED",
       "voltage": "400 kV",
-      "status": "tendering",
+      "status": "evaluation",
       "manufacturer": null,
-      "expected": "2026",
+      "expected": "",
       "sources": [
         "https://www.saudigulfprojects.com/2026/04/bahrain-receives-bids-for-cable-works-of-new-sitra-400kv-grid-substation/"
       ],
       "src_label": "SaudiGulf Projects",
       "related_market": "Bahrain",
       "related_intel": "Pipeline",
-      "region": "Middle East"
+      "region": "Middle East",
+      "source_note": "SaudiGulf Projects, 13 Apr 2026: EWA received bids for the transformer and reactor works (three 400 kV, 500 MVA transformers and reactors) from Hitachi Energy (BHD 17.77m) and Siemens Energy (BHD 23.87m), and separately for the 400/220 kV feeder cable works. No award date is stated.",
+      "last_verified": "2026-10-16"
     },
     {
       "project": "Kuwait MEW transformer substations package",
@@ -241,12 +223,14 @@
       "status": "expected",
       "manufacturer": null,
       "expected": "Q3 2026",
-      "sources": [],
-      "src_label": "Pipeline",
+      "sources": [
+        "https://www.zawya.com/en/press-release/companies-news/a-second-loan-agreement-of-35mln-dinars-was-signed-to-establish-a-new-interconnection-station-in-al-wafra-kuwait-c1xg8wgt",
+        "https://www.mees.com/2025/8/1/news-in-brief/gccia-begins-work-on-expanding-kuwait-link/8c53de10-6ed5-11f0-9905-8172aed4a6a6"
+      ],
+      "src_label": "Zawya (KFAED loan) / MEES",
       "related_market": "Saudi Arabia",
       "related_intel": "Pipeline",
-      "region": "Middle East",
-      "source_note": "No source URL on file. Withheld from Tender Watch until a source is attached."
+      "region": "Middle East"
     },
     {
       "project": "Bhadla–Fatehpur ±800 kV HVDC transmission project",
@@ -425,11 +409,13 @@
       "region": "Asia",
       "utility": "Adani Energy Solutions Ltd (AESL)",
       "epc": null,
+      "awardee": "Adani Energy Solutions Ltd (AESL)",
       "transformer_requirement": "INFERRED",
       "voltage": null,
       "status": "awarded",
       "manufacturer": null,
       "expected": null,
+      "award_basis": "Adani Energy Solutions, Sep 2024: AESL won the Khavda Phase-IV Part-A project through the tariff-based competitive bidding process after a letter of intent from REC Power Development and Consultancy Ltd.",
       "sources": [
         "https://connect.adani.com/media/2024/sep24/aesl/"
       ],
@@ -1048,12 +1034,14 @@
       "source_country": null,
       "region": "Asia",
       "utility": null,
-      "epc": null,
+      "epc": "Iljin Electric",
+      "awardee": "Iljin Electric",
       "transformer_requirement": "INFERRED",
       "voltage": null,
       "status": "awarded",
       "manufacturer": null,
       "expected": null,
+      "award_basis": "Seoul Economic Daily, 26 Jun 2026: Iljin Electric signed a contract to supply power facilities for the Shinan Wooi Offshore Wind Project, worth approximately 23.9 billion won.",
       "sources": [
         "https://www.asiae.co.kr/lang/print.htm?idxno=2026062609425927300&lang=en",
         "https://en.sedaily.com/finance/2026/06/26/iljin-electric-wins-offshore-wind-order-joins-koreas-first"
@@ -2402,7 +2390,7 @@
       "expected": null,
       "sources": [
         "https://www.indailysa.com.au/news/archive/2023/03/16/new-transmission-line-powers-up-eyre-peninsula",
-        "https://www.electranet.com.au/wp-content/uploads/projects/2020/06/June2020_Eyre-Peninsula-Project-Fact-Sheet.pdf"
+        "https://web.archive.org/web/20240326024633/https://www.electranet.com.au/wp-content/uploads/projects/2020/06/June2020_Eyre-Peninsula-Project-Fact-Sheet.pdf"
       ],
       "src_label": "InDaily; ElectraNet",
       "related_market": "Australia",
@@ -2425,8 +2413,7 @@
       "manufacturer": null,
       "expected": null,
       "sources": [
-        "https://electranet.com.au/wp-content/uploads/2025/12/Eyre-Peninsula-Upgrade-PACR-Final.pdf",
-        "https://www.electranet.com.au/wp-content/uploads/projects/Eyre-Peninsula-Upgrade-PSCR.pdf"
+        "https://electranet.com.au/wp-content/uploads/2025/12/Eyre-Peninsula-Upgrade-PACR-Final.pdf"
       ],
       "src_label": "ElectraNet (PACR / PSCR)",
       "related_market": "Australia",
@@ -2702,9 +2689,11 @@
       "region": "Middle East",
       "utility": null,
       "epc": "Linxon",
+      "awardee": "Linxon",
       "transformer_requirement": "INFERRED",
       "voltage": "380 kV",
       "status": "awarded",
+      "award_basis": "GoalFore / Saudi Gulf Projects, 10 Jun 2024: Linxon has been selected by Saudi Electricity Company to build the 380 kV Taibah power plant substation. Contract value SAR 400 million.",
       "manufacturer": null,
       "expected": null,
       "sources": [
@@ -2938,10 +2927,11 @@
       "epc": null,
       "transformer_requirement": "INFERRED",
       "voltage": null,
-      "status": "tendering",
+      "status": "evaluation",
       "manufacturer": null,
       "expected": null,
       "sources": [
+        "https://guest.meed.com/abu-dhabi-receives-battery-storage-ipp-bids/",
         "https://gulfconstructiononline.com/ArticleTA?id=283849&title=Ewec-seeks-EoIs-for-400MW-BESS-power-project-in-Abu-Dhabi"
       ],
       "src_label": "Gulf Construction Online",
@@ -3028,13 +3018,15 @@
       "supplier_country": null,
       "source_country": null,
       "region": "Middle East",
-      "utility": null,
-      "epc": null,
+      "utility": "KAHRAMAA",
+      "epc": "Voltage Engineering Ltd., Best & Betas Consortium, Larsen & Toubro (L&T), and LS Cable",
+      "awardee": "Voltage Engineering Ltd., Best & Betas Consortium, Larsen & Toubro (L&T), and LS Cable",
       "transformer_requirement": "INFERRED",
       "voltage": "400 kV",
       "status": "awarded",
       "manufacturer": null,
       "expected": null,
+      "award_basis": "SaudiGulf Projects, 24 Jun 2026: KAHRAMAA has awarded contracts worth more than QR 2.2 billion to Voltage Engineering Ltd., Best & Betas Consortium, Larsen & Toubro (L&T), and LS Cable.",
       "sources": [
         "https://www.saudigulfprojects.com/2026/06/qatar-awards-over-604-million-in-contracts-for-dukhan-solar-project-grid-connection-infrastructure/",
         "https://www.gdnonline.com/Details/1399233/"
@@ -3083,7 +3075,8 @@
       "manufacturer": null,
       "expected": null,
       "sources": [
-        "https://www.ice.it/it/news/notizie-dal-mondo/284553"
+        "https://acwapower.com/en/media-center/latest-news/his-royal-highness-prince-abdulaziz-bin-salman-witnesses-the-signing-of-the-acwa-gic-consortium-energy-conversion-and-water-purchase-agreement-for-az-zour-north-phase-2-3-iwpp-with-the-state-of-kuwait-ministry-of-electricity-water-and-renew/",
+        "https://gic.com.kw/gulf-investment-corporation-signs-agreement-for-the-development-of-az-zour-north-phase-ii-and-iii-project/"
       ],
       "src_label": "ICE (Italian Trade Agency)",
       "related_market": "Kuwait",
@@ -3176,12 +3169,14 @@
       "manufacturer": null,
       "expected": null,
       "sources": [
+        "https://www.zawya.com/en/economy/gcc/omans-oetc-launches-bids-for-400kv-grid-station-project-352549",
         "https://www.saudigulfprojects.com/2026/03/omans-oetc-invites-bids-for-sadaf-400kv-grid-station-project/"
       ],
       "src_label": "SaudiGulf Projects",
       "related_market": "Oman",
       "related_intel": "",
-      "last_verified": "2026-09-01"
+      "last_verified": "2026-09-01",
+      "bid_deadline": "2026-04-28"
     },
     {
       "project": "GCCIA UAE–Oman 400 kV power interconnection",
@@ -3262,13 +3257,15 @@
       "supplier_country": null,
       "source_country": null,
       "region": "Africa",
-      "utility": null,
-      "epc": null,
+      "utility": "Egyptian Electricity Transmission Company (EETC)",
+      "epc": "IGC (consortium led by IGC Egypt with IGC UAE)",
+      "awardee": "IGC (consortium led by IGC Egypt with IGC UAE)",
       "transformer_requirement": "INFERRED",
       "voltage": "500 kV",
       "status": "awarded",
       "manufacturer": null,
       "expected": null,
+      "award_basis": "Zawya / Daily News Egypt: IGC signed a partnership agreement with EETC to implement Lot 2 of the 500 kV line from the Orascom Substation to El Hawamdeya Substation.",
       "sources": [
         "https://www.zawya.com/en/business/utilities/igc-expands-egypt-operations-with-500-kv-power-transmission-project-393993",
         "https://www.dailynewsegypt.com/2026/07/15/igc-expands-egypt-operations-with-500-kv-power-transmission-project/"
@@ -3434,7 +3431,7 @@
       "manufacturer": null,
       "expected": "2028",
       "sources": [
-        "https://essalamonline.dz/%d8%b9%d8%b1%d9%82%d8%a7%d8%a8%d8%a7%d9%84%d8%a7%d9%86%d8%aa%d9%87%d8%a7%d8%a1-%d9%85%d9%86-%d9%85%d8%b4%d8%b1%d9%88%d8%b9-%d8%b1/"
+        "https://www.sonelgaz.dz/fr/8993/renforcement-du-reseau-electrique-dans-le-sudprogression-soutenue-du-projet-dinterconnexion-nord-sud"
       ],
       "src_label": "Essalam Online",
       "related_market": "Algeria",
@@ -3753,10 +3750,12 @@
       "source_country": null,
       "region": "Africa",
       "utility": "KETRACO",
-      "epc": null,
+      "epc": "Africa50 and Power Grid Corporation of India",
+      "awardee": "Africa50 and Power Grid Corporation of India",
       "transformer_requirement": "INFERRED",
       "voltage": null,
       "status": "awarded",
+      "award_basis": "World-Energy / Reuters, 16 Dec 2025: Kenya announced the signing of a $311 million agreement. KETRACO is the contracting authority; Africa50 and Power Grid Corporation of India are the partners.",
       "manufacturer": null,
       "expected": null,
       "sources": [
@@ -3870,9 +3869,11 @@
       "region": "Africa",
       "utility": "ZESCO",
       "epc": "Hunan Electric Power Design Institute consortium",
+      "awardee": "Hunan Electric Power Design Institute consortium",
       "transformer_requirement": "INFERRED",
       "voltage": "330 kV",
       "status": "awarded",
+      "award_basis": "GoalFore / 中国能建湖南院, 13 May 2024: 收到赞比亚电力公司ZESCO的中标函，公司与联营体方成功中标赞比亚潘苏鲁至曼萨330千伏输变电项目。",
       "manufacturer": null,
       "expected": null,
       "sources": [
@@ -4041,7 +4042,7 @@
       "expected": null,
       "sources": [
         "https://www.transnetbw.de/de/newsroom/pressemitteilungen/suedlink-letzte-abschnitte-genehmigt",
-        "https://iwr.de/news/baustart-fuer-konverter-in-brunsbuettel-netzausbau-suedlink-entwickelt-sich-vom-planungs-zum-bauprojekt-news38578",
+        "https://web.archive.org/web/20260512222902/https://www.iwr.de/news/baustart-fuer-konverter-in-brunsbuettel-netzausbau-suedlink-entwickelt-sich-vom-planungs-zum-bauprojekt-news38578",
         "https://www.deutschlandfunk.de/letzte-genehmigung-fuer-stromtrasse-suedlink-erteilt-100.html"
       ],
       "src_label": "TransnetBW press release",
@@ -4065,8 +4066,7 @@
       "manufacturer": null,
       "expected": null,
       "sources": [
-        "https://eqos-gruppe.com/fr/communique-de-presse/eqos-energie-provides-maximum-voltage-for-suedostlink-with-a-525-kv-overhead-line/",
-        "https://www.salzlandkreis.de/startseite/aktuelles-presse/pressemitteilungen/mitteilungen-2026/suedostlink-50hertz-laedt-ein-zu-tagen-der-offenen-baustelle-bei-magdeburg/"
+        "https://eqos-gruppe.com/fr/communique-de-presse/eqos-energie-provides-maximum-voltage-for-suedostlink-with-a-525-kv-overhead-line/"
       ],
       "src_label": "EQOS Energie press release",
       "related_market": "Germany",
@@ -5193,6 +5193,12 @@
       "sources": [
         "https://www.elia.be/nl/infrastructuur-en-projecten/infrastructuurprojecten/tritonlink"
       ],
+      "cross_border_links": [
+        {
+          "country": "Germany",
+          "source_url": "https://www.elia.be/nl/infrastructuur-en-projecten/infrastructuurprojecten/tritonlink"
+        }
+      ],
       "src_label": "Elia project page",
       "related_market": "Belgium",
       "related_intel": "",
@@ -5450,6 +5456,12 @@
         "https://oceannews.com/news/subsea-cable/nkt-awarded-the-power-cable-connection-between-bornholm-energy-island-and-zealand/",
         "https://transformer-technology.com/siemens-wins-1b-deal-for-bornholm-grid-with-new-german-transformer-hub-transformer-station-news/"
       ],
+      "cross_border_links": [
+        {
+          "country": "Germany",
+          "source_url": "https://www.iwr.de/news/milliardenauftrag-fuer-siemens-energy-bornholm-wird-stromdrehscheibe-zwischen-deutschland-und-daenemark-news39317"
+        }
+      ],
       "src_label": "IWR / Ocean News / Transformer Technology",
       "related_market": "Denmark",
       "related_intel": "",
@@ -5495,6 +5507,12 @@
       "expected": null,
       "sources": [
         "https://www.amprion.net/Presse/Presse-Detailseite_90625.html"
+      ],
+      "cross_border_links": [
+        {
+          "country": "Germany",
+          "source_url": "https://www.amprion.net/Presse/Presse-Detailseite_90625.html"
+        }
       ],
       "src_label": "Amprion press release",
       "related_market": "Denmark",
@@ -5630,9 +5648,10 @@
       "epc": "NYAB (collaboration contract)",
       "transformer_requirement": "INFERRED",
       "voltage": "n/a",
-      "status": "awarded",
+      "status": "framework",
       "manufacturer": null,
       "expected": null,
+      "award_basis": "NYAB, 12 Nov 2025: signed a contract for Phase 1 planning and design of the Letsi–Svartbyn 400 kV line. Phase 2, the construction order, is not yet secured.",
       "sources": [
         "https://nyabgroup.com/en/newsroom/nyab-signs-collaboration-contract-with-svenska-kraftnat-for-main-grid-expansion/"
       ],
@@ -5658,7 +5677,7 @@
       "expected": "2024",
       "sources": [
         "https://rtowww.com/88511-cardinal-hickory-fully-energized/",
-        "https://www.itc-holdings.com/projects/cardinal-hickory-creek-transmission-line-project/",
+        "https://web.archive.org/web/20260306175941/https://www.itc-holdings.com/projects/cardinal-hickory-creek-transmission-line-project/",
         "https://www.ruscable.ru/news/2024/12/17/Vvedena_v_ekspluatatsiu_LEP_napryazheniem_345_kV_i/"
       ],
       "src_label": "RTO Insider; ITC Holdings project page; 345 kV energization report",
@@ -5782,7 +5801,7 @@
       "manufacturer": null,
       "expected": null,
       "sources": [
-        "https://transwestexpress.net/news/alerts/2025/050625-interregional-construction-continues.html",
+        "https://web.archive.org/web/20251022201311/https://transwestexpress.net/news/alerts/2025/050625-interregional-construction-continues.html",
         "https://www.utilitydive.com/news/blm-transwest-express-transmission/647429/",
         "http://www.transwestexpress.net/news/docs/TransWest-Express-Wyoming.pdf"
       ],
@@ -6077,10 +6096,12 @@
       "epc": null,
       "transformer_requirement": "INFERRED",
       "voltage": null,
-      "status": "planned",
+      "status": "cancelled",
       "manufacturer": null,
       "expected": null,
       "sources": [
+        "https://www.windtech-international.com/projects-and-contracts/federal-government-moves-to-reassess-atlantic-shores-south-offshore-wind-project",
+        "https://www.thesandpaper.net/articles/judge-remands-atlantic-shores-south-to-u-s-energy-bureau/",
         "https://www.canarymedia.com/articles/wind/huge-new-jersey-offshore-wind-project-approved-for-construction",
         "https://www.boem.gov/renewable-energy/state-activities/atlantic-shores-south"
       ],
@@ -6225,7 +6246,6 @@
       "expected": "2025",
       "sources": [
         "https://www.bchydro.com/news/press_centre/news_releases/2022/site-c-transmission-line.html",
-        "https://www.princegeorgecitizen.com/highlights/second-site-c-transmission-line-energized-5166747",
         "https://www.sitecproject.com/sites/default/files/Fact-Sheet-Transmission-and-Substation-June-2018.pdf"
       ],
       "src_label": "BC Hydro press release; Prince George Citizen; Site C fact sheet",
@@ -6397,7 +6417,6 @@
       "manufacturer": null,
       "expected": null,
       "sources": [
-        "https://wcms.saskpower.com/our-power-future/infrastructure-projects/construction-projects/planning-and-construction-projects/estevan-area-transmission-lines",
         "https://saskpower.com/-/media/saskpower/our-power-future/construction-projects/infosheet-estevan-area-transmission-lines.pdf",
         "https://www.sasktoday.ca/southeast/estevan-mercury/saskpower-continues-to-seek-feedback-on-transmission-line-project-10205802"
       ],
@@ -6493,10 +6512,11 @@
       "epc": null,
       "transformer_requirement": "INFERRED",
       "voltage": null,
-      "status": "tendering",
+      "status": "awarded",
       "manufacturer": null,
       "expected": null,
       "sources": [
+        "https://www.expreso.com.mx/noticias/sonora/adjudica-cfe-tercera-fase-central-solar-en-puerto-penasco/244748",
         "https://www.pv-magazine-mexico.com/2025/09/24/la-cfe-lanza-contratacion-para-la-central-solar-puerto-penasco-secuencia-iii-de-300-mw-mas-almacenamiento/",
         "https://energymagazine.mx/2025/11/puerto-penasco-acelera-cfe-lanza-300-mw-solares-103-mw-3h-en-baterias-secuencia-iii/",
         "https://energiahoy.com/electricidad/cfe-abre-contratacion-de-puerto-penasco-secuencia-iii-con-300-mw-y-103-mw-bess/"
@@ -6504,7 +6524,9 @@
       "src_label": "pv magazine México / Industry & Energy Magazine",
       "related_market": "Mexico",
       "related_intel": "",
-      "last_verified": "2026-09-01"
+      "last_verified": "2026-09-01",
+      "awardee": "Consortium led by Eléctrica Aselco (with Epic Electric, Grupo Profezac, Enersave Wire and Cable)",
+      "award_basis": "CFE award, Dec 2025, US$294 m turnkey"
     },
     {
       "project": "Central de Ciclo Combinado El Sauz II 'Josefa Ortiz Téllez Girón' (269 MW, Querétaro) con Subestación 400 kV El Sauz",
@@ -6568,10 +6590,11 @@
       "epc": "Elecnor",
       "transformer_requirement": "INFERRED",
       "voltage": "230 kV",
-      "status": "construction",
+      "status": "energized",
       "manufacturer": null,
-      "expected": "2025",
+      "expected": "2026",
       "sources": [
+        "https://semprainfrastructure.com/what-we-do/low-carbon-solutions/",
         "https://www.grupoelecnor.com/news/elecnor-begins-the-construction-of-a-320-mw-wind-farm-in-mexico",
         "https://www.grupoelecnor.com/storage/media/files/shares/noticias/es/pe-cimarron-comunicado-de-prensarev-sempra-definitiva.pdf",
         "https://expansion.mx/empresas/2024/03/14/sempra-invertira-nuevo-parque-eolico-baja-california"
@@ -6640,9 +6663,11 @@
       "region": "Latin America",
       "utility": "ISA (ISA Intercolombia)",
       "epc": null,
+      "awardee": "ISA (ISA Intercolombia)",
       "transformer_requirement": "CONFIRMED",
       "voltage": "500 kV",
       "status": "awarded",
+      "award_basis": "UPME convocatoria page for UPME 02-2024 publishes the Acta de Continuación de Audiencia y Adjudicación.",
       "manufacturer": null,
       "expected": null,
       "sources": [
@@ -7087,9 +7112,11 @@
       "region": "Latin America",
       "utility": "ISA Energia Brasil (ISA CTEEP)",
       "epc": null,
+      "awardee": "ISA Energia Brasil (ISA CTEEP)",
       "transformer_requirement": "CONFIRMED",
       "voltage": "500 kV",
       "status": "awarded",
+      "award_basis": "MegaWhat, 20 Jul 2026: the Itatiaia project was won (arrematado) by the transmission company in lot 7 of ANEEL's first transmission auction of 2023.",
       "manufacturer": null,
       "expected": "2029",
       "sources": [
@@ -7240,7 +7267,6 @@
       "manufacturer": null,
       "expected": "2026",
       "sources": [
-        "https://www.gov.br/mme/pt-br/assuntos/noticias/projeto-morro-do-chapeu-avanca-e-reforca-transmissao-de-energia-entre-bahia-e-espirito-santo",
         "https://cenarioenergia.com.br/2026/04/06/projeto-morro-do-chapeu-conclui-elo-de-500-kv-entre-bahia-e-espirito-santo-e-reforca-escoamento-de-renovaveis/",
         "https://www.iberdrola.com/press-room/news/detail/neoenergia-opens-new-section-morro-chapeu-transmission-line"
       ],

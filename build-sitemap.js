@@ -9,6 +9,7 @@
 const fs = require('fs');
 const path = require('path');
 const dates = require('./lib/sitemap-dates');
+const { permanentMap } = require('./lib/site-redirects');
 
 const ROOT = __dirname;
 const SKIP_DIR = new Set([
@@ -58,21 +59,52 @@ function walk(dir, out) {
   }
 }
 
+function publicPath(rel) {
+  if (rel === 'index.html') return '/';
+  if (rel.endsWith('/index.html')) return '/' + rel.slice(0, -'index.html'.length);
+  return '/' + rel;
+}
+
+function rowDecision(rel, lastmod) {
+  if (lastmod) return 'include';
+  if (String(rel || '').indexOf('tenders/') === 0) return 'omit';
+  return 'missing';
+}
+
 function writeSitemap() {
   const dated = dates.load();
+  const redirected = permanentMap(ROOT);
   const rows = [];
   walk(ROOT, rows);
   const seen = new Set();
   const unique = [];
   const missing = [];
+  const omitted = [];
+  let redirectSkips = 0;
   rows.sort(function (a, b) { return a.loc.localeCompare(b.loc); }).forEach(function (r) {
     if (seen.has(r.loc)) return;
     if (r.loc.indexOf('/transformerpath/') !== -1) return;
     seen.add(r.loc);
+    if (redirected.has(publicPath(r.rel))) {
+      redirectSkips++;
+      return;
+    }
     const lastmod = dates.dateFor(r.rel, dated, dated.pages);
-    if (!lastmod) missing.push(r.rel);
+    const decision = rowDecision(r.rel, lastmod);
+    if (decision === 'omit') {
+      omitted.push(r.rel);
+      return;
+    }
+    if (decision === 'missing') {
+      missing.push(r.rel);
+      return;
+    }
     unique.push({ rel: r.rel, loc: r.loc, lastmod: lastmod });
   });
+  if (omitted.length) {
+    console.log('sitemap omitted ' + omitted.length + ' undated tender pages:');
+    omitted.forEach(function (m) { console.log('  ' + m); });
+  }
   if (missing.length) {
     console.error('sitemap lastmod missing for ' + missing.length + ' pages (no source date, no cache):');
     missing.slice(0, 30).forEach(function (m) { console.error('  ' + m); });
@@ -94,9 +126,11 @@ function writeSitemap() {
   fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), sm);
   const distinct = {};
   unique.forEach(function (r) { distinct[r.lastmod] = 1; });
+  if (redirectSkips) console.log('sitemap skipped ' + redirectSkips + ' URLs that 301');
   console.log('sitemap.xml wrote ' + unique.length + ' URLs, ' + Object.keys(distinct).length + ' distinct lastmod dates');
   return unique.length;
 }
 
 if (require.main === module) writeSitemap();
 module.exports = writeSitemap;
+module.exports.rowDecision = rowDecision;

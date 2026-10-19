@@ -16,6 +16,7 @@
  */
 'use strict';
 const fs = require('fs');
+const paidListings = require('./lib/paid-listings');
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
@@ -35,13 +36,18 @@ function materialsIndex() {
     const fs_ = m.freshness_status || m.delay_type || 'HISTORICAL';
     const badge = (m.presentation === 'Historical market reference') ? 'HISTORICAL' : fs_;
     const basis = m.basis || m.price_basis || 'NOT VERIFIED';
+    const asOf = (m.observation_date && m.price != null && m.market === 'LME')
+      ? 'prices as of ' + esc(m.observation_date) + ', updated when a new LME official settlement is recorded'
+      : (m.observation_date ? 'Observed: ' + esc(m.observation_date) : '');
     const meta = (m.market ? '<span>Market: ' + esc(m.market) + '</span> · ' : '') +
-      (m.observation_date ? '<span>Observed: ' + esc(m.observation_date) + '</span> · ' : '') +
+      (asOf ? '<span>' + asOf + '</span> · ' : '') +
       '<span>Basis: ' + esc(basis) + '</span> · ' +
       (m.source ? '<span>Source: ' + esc(m.source) + '</span>' : '<span>Source: no public reference</span>') +
       '<br>' + (m.observation_date
         ? '<span class="mt-fig">' + esc(m.presentation || 'Market reference') +
-          (m.observation_date ? ' · Observed ' + esc(m.observation_date) : '') +
+          (m.price != null && m.market === 'LME'
+            ? ' · prices as of ' + esc(m.observation_date) + ', updated when a new LME official settlement is recorded'
+            : ' · Observed ' + esc(m.observation_date)) +
           ' · freshness: ' + esc(badge) + '</span>'
         : '');
     return '<div class="mt-card"><h3>' + esc(m.material) + '</h3><div class="val">' + esc(src) + '<span class="basis ' + esc(badge) + '">' + esc(badge) + '</span></div><div class="meta">' + meta + '</div>' +
@@ -67,7 +73,7 @@ console.log('materials.html wrote (' + MATS.length + ' materials)');
 
 // ── /materials/crgo — CRGO Market Monitor ─────────────────────────────────
 function crgoPage() {
-  const style = '.cr-wrap{max-width:1040px;margin:0 auto;padding:44px 20px 96px}.cr-wrap h1{font-size:2rem;color:var(--ink)}.cr-wrap .lead{color:var(--muted);font-size:1.02rem;max-width:860px;margin:8px 0 20px}.cr-h2{font-size:1.15rem;color:var(--ink);margin:26px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--border)}.cr-note{color:var(--muted);font-size:.82rem;max-width:860px;margin:8px 0 18px}.cr-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}.cr-card h3{font-size:1.02rem;color:var(--ink);margin:0 0 6px}.cr-card p{color:var(--text);line-height:1.7;font-size:.92rem;margin:0}.cr-row{color:var(--muted);font-size:.82rem;max-width:860px;line-height:1.7;margin:6px 0}.cr-tbl{width:100%;border-collapse:collapse;font-size:.86rem}.cr-tbl th{text-align:left;color:var(--muted);font-weight:800;font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;padding:8px 10px;border-bottom:2px solid var(--border)}.cr-tbl td{padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top}.cr-tbl .na{color:var(--muted)}';
+  const style = '.cr-wrap{max-width:1040px;margin:0 auto;padding:44px 20px 96px}.cr-wrap h1{font-size:2rem;color:var(--ink)}.cr-wrap .lead{color:var(--muted);font-size:1.02rem;max-width:860px;margin:8px 0 20px}.cr-h2{font-size:1.15rem;color:var(--ink);margin:26px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--border)}.cr-note{color:var(--muted);font-size:.82rem;max-width:860px;margin:8px 0 18px}.cr-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:12px}.cr-card h3{font-size:1.02rem;color:var(--ink);margin:0 0 6px}.cr-card p{color:var(--text);line-height:1.7;font-size:.92rem;margin:0}.cr-row{color:var(--muted);font-size:.82rem;max-width:860px;line-height:1.7;margin:6px 0}.cr-tbl{width:100%;border-collapse:collapse;font-size:.86rem}.cr-tbl th{text-align:left;color:var(--muted);font-weight:800;font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;padding:8px 10px;border-bottom:2px solid var(--border)}.cr-tbl td{padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top}.cr-tbl .na{color:var(--muted)}@media(max-width:720px){.cr-wrap{overflow-x:clip}.cr-tbl{display:block;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}}';
   // Why prices differ factors
   const factors = [
     ['Market', 'China, India, Europe, USA, Japan/Korea and others each have their own steel supply, demand and trade position; there is no single global market.' ],
@@ -101,6 +107,7 @@ function crgoPage() {
     '<div class="cr-h2">Reference table <span style="font-size:.9rem;color:var(--muted);font-weight:600;text-transform:none">(grade- and basis-specific verified figures only)</span></div>' +
     table +
     '<p class="cr-row" style="margin-top:16px"><b style="color:var(--text)">Honesty note:</b> each cell shows no verified figure rather than an estimate. Where a market publishes a good, grade-specific reference it will be added with its observation date, market, basis and source. Unknown &gt; incorrect. See <a href="../../materials.html" style="color:var(--accent)">Transformer Materials Intelligence</a> and the <a href="../../methodology.html" style="color:var(--accent)">research methodology</a>.</p>' +
+    paidListings.componentSponsorSectionHtml({ component: 'coresteel' }) +
     '</main>\n' + FOOT + '\n<script src="../../analytics.js" defer></script>\n</body>\n</html>';
 }
 fs.mkdirSync('materials/crgo', { recursive: true });

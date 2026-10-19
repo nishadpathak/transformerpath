@@ -45,6 +45,25 @@
 .hero-cine .trust { display:flex; gap:26px; margin-top:32px; color:#9fb0c4; font-size:.9rem; flex-wrap:wrap; }
 .hero-cine .trust span::before { content:"✓ "; color:var(--amber); font-weight:700; }
 @media (max-width:760px){ .hero-cine h1 { font-size:2.2rem; } .hero-cine::after { background:rgba(13,27,46,.55); } }
+/* Mobile banner: the wordmark is painted into hero.jpg. Cover-cropping a
+   393px screen cuts the sides off ("RANSFORMER / ATH"). Show the whole file,
+   then the keyword ticker underneath it. Wider screens keep the ticker where
+   it is and do not add this image. */
+.home-hero-banner { display: none; }
+@media (max-width: 760px) {
+  .home-hero-banner {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 1774 / 887;
+    object-fit: contain;
+    object-position: center;
+    background: #0a1626;
+  }
+  .hero-cine { background-image: none; background-size: auto; }
+  .ticker { display: block; position: static; clear: both; }
+}
 
 /* ── Animated count-up stats ── */
 .kpi { background:var(--navy-2); color:#fff; padding:0; }
@@ -103,38 +122,47 @@
 
 <a class="skip-link" href="#main">Skip to content</a>
 <header>
+  <style>
+    @media (min-width: 1024px) {
+      #mainNav > .tpnav-more { display: block; }
+    }
+  </style>
   <div class="container nav">
     <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 16 16" aria-hidden="true" style="flex:none"><g fill="#f5a623"><rect x="1" y="1" width="4" height="4"/><rect x="11" y="1" width="4" height="4"/><rect x="1" y="11" width="4" height="4"/><rect x="11" y="11" width="4" height="4"/><rect x="5" y="2" width="6" height="2"/><rect x="12" y="5" width="2" height="6"/><rect x="5" y="12" width="6" height="2"/></g></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
     <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
     <nav class="tpnav" id="mainNav" aria-label="Primary">
-      <a href="/intel">Intel</a>
+      <a href="/intel.html">Intel</a>
       <div class="tpnav-dropdown">
-        <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
+        <a href="/directory.html" class="tpnav-dropdown-btn">Directory</a>
         <div class="tpnav-dropdown-panel" role="menu">
-          <a href="manufacturers.html">Manufacturers</a>
-          <a href="map.html">Industry Map</a>
-          <a href="grids.html">Global Grids</a>
-          <a href="components.html">Components &amp; Materials</a>
+          <a href="/manufacturers.html">Manufacturers</a>
+          <a href="/map.html">Industry Map</a>
+          <a href="/grids.html">Global Grids</a>
+          <a href="/components.html">Components &amp; Materials</a>
           <a href="machinery.html">Machinery</a>
           <a href="laboratories.html">Testing Labs</a>
           <a href="services.html">Services &amp; Repair</a>
           <a href="markets.html">Markets</a>
           <a href="buyers-guide.html">Buyer's Guide</a>
-          <a href="directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
+          <a href="buy-early/">Buy early</a>
+          <a href="spare-capacity/">Mid-tier makers</a>
+          <a href="lead-times/">Lead times</a>
+          <a href="bottlenecks/">Bottlenecks</a>
+          <a href="/directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
         </div>
       </div>
       <a href="projects.html">Projects</a>
       <a href="tenders.html">Tenders</a>
-      <a href="events.html">Events</a>
-      <a href="tools.html" class="tpnav-opt">Engineering</a>
-      <a href="learn.html">Learn</a>
+      <a href="/events.html">Events</a>
+      <a href="/learn.html">Learn</a>
       <a href="rfq.html">RFQ</a>
       <div class="tpnav-more">
         <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
         <div class="tpnav-more-panel" role="menu">
-          <a href="map.html" role="menuitem">Industry Map</a>
-          <a href="grids.html" role="menuitem">Global Grids</a>
-          <a href="webinars.html" role="menuitem">Webinars</a>
+          <a href="tools.html" role="menuitem">Engineering</a>
+          <a href="/map.html" role="menuitem">Industry Map</a>
+          <a href="/grids.html" role="menuitem">Global Grids</a>
+          
           <a href="standards.html" role="menuitem">Standards &amp; Codes</a>
           <a href="for-manufacturers.html" role="menuitem">For Manufacturers</a>
           <a href="pricing.html" role="menuitem">Pricing Plans</a>
@@ -143,7 +171,8 @@
       </div>
       <span class="tpnav-utils">
         <a href="search.html" title="Search" aria-label="Search">&#128269;</a>
-        <a href="workspace.html" data-tp-account>Account</a>
+        <span class="tp-auth" data-tp-auth hidden></span>
+        <a href="/workspace.html" data-tp-account>Account</a>
         <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">&#127769;</button>
       </span>
     </nav>
@@ -174,9 +203,12 @@
       themeToggle.textContent = isDark ? '☀️' : '🌙';
     }
   </script>
+  <script src="google-auth-config.js" defer></script>
+  <script src="tp-auth.js?v=1" defer></script>
   <script src="tp-nav.js?v=7" defer></script>
   <script src="tp-pwa.js?v=7" defer></script>
 </header>
+<img class="home-hero-banner" src="brand/hero.jpg" width="1774" height="887" alt="TransformerPath. Intelligence, Engineering, Manufacturers, Markets, Tools.">
 <div class="ticker" aria-label="Market and industry headlines">
   <div class="ticker-inner" id="ticker"></div>
 </div>
@@ -274,6 +306,15 @@
   .hero-stage h1{ max-width:none; }
   .hero-stage__lead{ max-width:36ch; }
 }
+/* Phones already show the full wordmark banner. This stage's poster is a
+   second hero, cover-cropped in the short viz box, so it stays off. */
+@media (max-width: 760px) {
+  .hero-stage__viz,
+  .hero-stage__poster,
+  .hero-stage__scrim { display: none; }
+  .hero-cine,
+  .hero-cine.hero-v2 { background-image: none; background-size: auto; }
+}
 
 .tp-video-modal[hidden]{ display:none !important; }
 .tp-video-modal{
@@ -323,12 +364,12 @@
           <button class="btn-ghost" type="button" id="heroWatchBtn" aria-haspopup="dialog" aria-controls="heroVideoModal">
             <span class="play" aria-hidden="true">▶</span> Watch the platform tour
           </button>
-          <a class="btn-ghost" href="directory.html">Browse supplier directory →</a>
+          <a class="btn-ghost" href="/directory.html">Browse supplier directory →</a>
         </div>
       </div>
     </div>
   </div>
-  <p class="hero-stage__hint" id="hero3dHint">Drag to orbit · scroll to zoom</p>
+  <p class="hero-stage__hint" id="hero3dHint" hidden>Ctrl + scroll to zoom</p>
 </section>
 
 <div class="tp-video-modal" id="heroVideoModal" hidden role="dialog" aria-modal="true" aria-labelledby="heroVideoTitle">
@@ -822,19 +863,19 @@
   <div class="container">
     <div class="hero-grid">
       <div class="hero-copy">
-        <div class="hero-live-pill" id="hero-live-pill" data-intel-status="UPDATED 14 Oct 2026" data-intel-source="2026-10-14" data-intel-checked="2026-10-14">
+        <div class="hero-live-pill" id="hero-live-pill" data-intel-status="Updated today" data-intel-source="2026-10-16" data-intel-checked="2026-10-16">
           <span class="live-dot" id="hero-live-dot" aria-hidden="true" style="background:#1a9d4a"></span>
-          <span class="live-badge-text" id="hero-live-status">UPDATED 14 Oct 2026</span>
+          <span class="live-badge-text" id="hero-live-status">Updated today</span>
           <span class="live-sep">&middot;</span>
-          <span id="hero-live-date">Latest sourced item 14 Oct 2026</span>
+          <span id="hero-live-date">Latest sourced item 16 Oct 2026</span>
           <span class="live-sep">&middot;</span>
-          <span id="hero-live-check">source checked 14 Oct 2026</span>
+          <span id="hero-live-check">source checked 16 Oct 2026</span>
         </div>
         <h2>Where the world's <span>transformer industry</span> stays ahead.</h2>
         <p class="lead">Industry intelligence &middot; Engineering &middot; Manufacturers &middot; Markets &middot; Tools.</p>
         <div class="hero-ctas">
-          <a href="/intel" class="btn btn-amber" id="hero-intel-cta">Open the latest sourced briefing →</a>
-          <a href="manufacturers.html" class="hero-secondary">or browse the manufacturer census</a>
+          <a href="/intel.html" class="btn btn-amber" id="hero-intel-cta">Open the latest sourced briefing →</a>
+          <a href="/manufacturers.html" class="hero-secondary">or browse the manufacturer census</a>
         </div>
 
         <div class="hero-search-wrap">
@@ -880,44 +921,44 @@
         </svg>
         <div class="panel-head"><strong class="panel-head-title">Platform Intelligence &middot; 2026 Census</strong><em>transformerpath.com</em></div>
         <div class="stat-grid-primary">
-          <a href="manufacturers.html" class="stat-card" title="Browse all 906 transformer companies">
-            <div class="stat-card-top"><b data-stat="manufacturers">906</b><span class="stat-card-arrow" aria-hidden="true">&rarr;</span></div>
+          <a href="/manufacturers.html" class="stat-card" title="Browse all 894 transformer companies">
+            <div class="stat-card-top"><b data-stat="manufacturers">894</b><span class="stat-card-arrow" aria-hidden="true">&rarr;</span></div>
             <span class="stat-label">Transformer Companies</span>
           </a>
-          <a href="manufacturers.html?view=countries" class="stat-card" title="Explore manufacturing across 88 countries">
+          <a href="/manufacturers.html?view=countries" class="stat-card" title="Explore manufacturing across 88 countries">
             <div class="stat-card-top"><b data-stat="manufacturingCountries">88</b><span class="stat-card-arrow" aria-hidden="true">&rarr;</span></div>
             <span class="stat-label">Manufacturing Countries</span>
           </a>
-          <a href="projects.html" class="stat-card" title="Track 306 global grid and substation projects">
-            <div class="stat-card-top"><b data-stat="projects">306</b><span class="stat-card-arrow" aria-hidden="true">&rarr;</span></div>
+          <a href="projects.html" class="stat-card" title="Track 305 global grid and substation projects">
+            <div class="stat-card-top"><b data-stat="projects">305</b><span class="stat-card-arrow" aria-hidden="true">&rarr;</span></div>
             <span class="stat-label">Global Projects Tracked</span>
           </a>
-          <a href="grids.html" class="stat-card" title="Survey 151 national grid systems">
+          <a href="/grids.html" class="stat-card" title="Survey 151 national grid systems">
             <div class="stat-card-top"><b data-stat="countries">151</b><span class="stat-card-arrow" aria-hidden="true">&rarr;</span></div>
             <span class="stat-label">National Grids Mapped</span>
           </a>
         </div>
         <div class="stat-strip">
-          <a href="tenders.html" class="strip-item" title="View 154 procurement tenders worldwide">
-            <b data-stat="tenders">154</b>
+          <a href="tenders.html" class="strip-item" title="View 159 procurement tenders worldwide">
+            <b data-stat="tenders">159</b>
             <span>Tenders Tracked</span>
           </a>
-          <a href="tenders.html?status=open" class="strip-item is-live" title="24 open tenders accepting bids right now">
+          <a href="tenders.html?status=open" class="strip-item is-live" title="8 open tenders accepting bids right now">
             <span class="strip-live-dot" aria-hidden="true"></span>
-            <b class="is-amber" data-stat="openTenders">24</b>
+            <b class="is-amber" data-stat="openTenders">8</b>
             <span>Open Tenders</span>
           </a>
-          <a href="/intel?type=awards" class="strip-item" title="56 awards tracked, split by transformer scope">
-            <b data-stat="awards">56</b>
+          <a href="/intel.html?type=awards" class="strip-item" title="58 awards tracked, split by transformer scope">
+            <b data-stat="awards">58</b>
             <span>Awards tracked</span>
             <span class="award-split" style="display:block;font-size:.68rem;line-height:1.35;font-weight:600;margin-top:2px">
               <span data-award-scope="confirmed"><b data-stat="awardsConfirmed">11</b> confirmed awards</span>
               · <span data-award-scope="inferred"><b data-stat="awardsInferred">39</b> inferred</span>
-              · <span data-award-scope="unknown"><b data-stat="awardsUnknown">6</b> unknown</span>
+              · <span data-award-scope="unknown"><b data-stat="awardsUnknown">8</b> unknown</span>
             </span>
           </a>
-          <a href="events.html" class="strip-item" title="Explore 159 upcoming industry conferences and exhibitions">
-            <b data-stat="upcomingEvents">159</b>
+          <a href="/events.html" class="strip-item" title="Explore 160 upcoming industry conferences and exhibitions">
+            <b data-stat="upcomingEvents">160</b>
             <span>Upcoming Events</span>
           </a>
         </div>
@@ -943,7 +984,7 @@
           <span class="l3-txt">Tap to load the 3D transformer</span>
           <span class="l3-sub">Interactive · rotates in your hand</span>
         </button>
-        <span class="hint" hidden>🖱️ Drag to rotate · scroll to zoom</span>
+        <span class="hint" hidden>Ctrl + scroll to zoom</span>
       </div>
     </div>
   </div>
@@ -968,14 +1009,19 @@
   <div class="container">
     <div class="section-head reveal">
       <h2>Transformer Intel — At a Glance</h2>
-      <p id="glanceSub">Sourced transformer posts — tenders, awards, capacity and materials, dated on the source.</p>
+      <p id="glanceSub"><!--GLANCE:sub-->
+Latest sourced item <b>16 Oct 2026</b>. Dates are on the source, not this visit.
+<!--/GLANCE:sub--></p>
     </div>
     <div class="grid grid-3" id="glanceCards">
-      <div class="card reveal"><span class="emoji" aria-hidden="true">📋</span><h3>Tenders & Projects</h3><p>SEC awards SPTC a $376M transformer & reactor deal; Hitachi Energy India wins a Rs 6.47B 765kV PGCIL order; KAHRAMAA 2026 expansion packages out.</p></div>
-      <div class="card reveal"><span class="emoji" aria-hidden="true">🌍</span><h3>Supplier & Capacity News</h3><p>Weidmann commits $220M+ to a new China transformerboard plant; Voltamp and Virginia Transformer add new capacity; US LPT lead times run 30–36 months per the latest NLR report, insulation materials named a bottleneck.</p></div>
-      <div class="card reveal"><span class="emoji" aria-hidden="true">📈</span><h3>Prices & Materials</h3><p>Copper <b data-m="copper" style="color:var(--accent)">≈$14,170/t</b> (LME 3-month reference); Aluminium <b data-m="aluminium" style="color:var(--accent)">≈$3,182/t</b> (LME reference). <b>Historical market reference</b> — not a live feed. CRGO has <b>no public daily index</b> — it varies by market, grade, thickness and commercial basis, so it is shown as <b>GRADE NOT SPECIFIED</b> rather than a single comparable number. <span style="color:var(--muted);font-size:.82rem"><span data-m-obs="copper">Historical market reference · Observed 20 Aug 2026</span> · <a href="materials.html" style="color:var(--accent);font-weight:600">Materials &rarr;</a></span></p></div>
+<!--GLANCE:cards-->
+<a class="card reveal in" data-glance-date="2026-10-16" data-glance-headline="HD Hyundai Electric agrees a data-centre power memorandum with LG CNS" href="/intel.html#p-news-www-inews24-com-view-2015667"><span class="g-region">RoW</span><h3 style="font-size:1rem">HD Hyundai Electric agrees a data-centre power memorandum with LG CNS</h3><p class="g-val" style="margin-top:8px">16 Oct 2026</p></a>
+<a class="card reveal in" data-glance-date="2026-10-16" data-glance-headline="Hyosung Heavy Industries opens an export ultra-high-voltage circuit-breaker plant in Changwon" href="/intel.html#p-news-www-hyosung-com-kr-newsroom-view-19348"><span class="g-region">RoW</span><h3 style="font-size:1rem">Hyosung Heavy Industries opens an export ultra-high-voltage circuit-breaker plant in Changwon</h3><p>The notice says production capacity for breakers rated 420 kV and above, and for insulation components, is about double the previous level.</p><p class="g-val" style="margin-top:8px">16 Oct 2026 · 18,996 m² · 420–800 kV</p></a>
+<a class="card reveal in" data-glance-date="2026-10-16" data-glance-headline="Prague Castle records extra works on the replacement of 12 distribution transformers" href="/intel.html#p-grid-ted-europa-eu-en-notice-detail-718420-2026"><span class="g-region">Europe</span><h3 style="font-size:1rem">Prague Castle records extra works on the replacement of 12 distribution transformers</h3><p>TED modification notice 718420-2026, published 16 October 2026, amends the Prague Castle Administration contract to replace 12 distribution transformers rated 22/0.4 kV in five substations on the castle grounds.</p><p class="g-val" style="margin-top:8px">16 Oct 2026 · CZK 1,338,566.10 excl. VAT extra works</p></a>
+<!--/GLANCE:cards-->
     </div>
-    <p style="text-align:center; margin-top:30px" class="reveal"><a href="/intel" class="btn btn-amber">Open the Intel feed →</a></p>
+    <p class="glance-materials" style="margin-top:18px;color:var(--muted);font-size:.9rem"><b style="color:var(--text)">Prices &amp; materials</b> — Copper <b data-m="copper" style="color:var(--accent)">≈$14,170/t</b> (LME 3-month reference); Aluminium <b data-m="aluminium" style="color:var(--accent)">≈$3,182/t</b> (LME reference). <b>Historical market reference</b> — not a live feed. CRGO has <b>no public daily index</b> — it varies by market, grade, thickness and commercial basis, so it is shown as <b>GRADE NOT SPECIFIED</b> rather than a single comparable number. <span data-m-obs="copper">prices as of 20 Aug 2026, updated when a new LME official settlement is recorded</span> · <a href="materials.html" style="color:var(--accent);font-weight:600">Materials &rarr;</a></p>
+    <p style="text-align:center; margin-top:30px" class="reveal"><a href="/intel.html" class="btn btn-amber">Open the Intel feed →</a></p>
   </div>
 </section>
 
@@ -986,16 +1032,16 @@
       <p>The transformer industry, in one place.</p>
     </div>
     <div class="grid grid-3">
-      <a class="card reveal" href="/intel"><span class="emoji" aria-hidden="true">📰</span><h3>Daily Intel →</h3><p>Daily global briefing — tenders, supplier moves, prices — ordered by your region.</p></a>
-      <a class="card reveal" href="grids.html"><span class="emoji" aria-hidden="true">🌐</span><h3>World Grids →</h3><p><span data-stat="countries">151</span> countries, <span data-stat="gridOperators">166</span> operators — voltages, frequencies and official links.</p></a>
-      <a class="card reveal" href="map.html"><span class="emoji" aria-hidden="true">🗺️</span><h3>Industry Map →</h3><p>Zoom a world map of manufacturers, utilities, suppliers and events. Pins are country-level unless a site coordinate exists.</p></a>
-      <a class="card reveal" href="events.html"><span class="emoji" aria-hidden="true">📅</span><h3>Events →</h3><p>Next confirmed editions: gedatec 2026 (successor to belektro) (13–15 Oct 2026); Philippines Future Energy & Grid Summit 2026 (Manila) (14–15 Oct 2026); Powerex Asia & Electric Asia 2026 (14–16 Oct 2026). Official pages checked 2026-10-15.</p></a>
-      <a class="card reveal" href="manufacturers.html"><span class="emoji" aria-hidden="true">🏭</span><h3>Manufacturers →</h3><p>A growing sourced directory of <span data-stat="manufacturers">906</span> transformer makers — power, distribution and dry-type — country by country.</p></a>
+      <a class="card reveal" href="/intel.html"><span class="emoji" aria-hidden="true">📰</span><h3>Daily Intel →</h3><p>Daily global briefing — tenders, supplier moves, prices — ordered by your region.</p></a>
+      <a class="card reveal" href="/grids.html"><span class="emoji" aria-hidden="true">🌐</span><h3>World Grids →</h3><p><span data-stat="countries">151</span> countries, <span data-stat="gridOperators">166</span> operators — voltages, frequencies and official links.</p></a>
+      <a class="card reveal" href="/map.html"><span class="emoji" aria-hidden="true">🗺️</span><h3>Industry Map →</h3><p>Zoom a world map of manufacturers, utilities, suppliers and events. Pins are country-level unless a site coordinate exists.</p></a>
+      <a class="card reveal" href="/events.html"><span class="emoji" aria-hidden="true">📅</span><h3>Events →</h3><p id="home-next-events">Next confirmed editions: Powerex Asia & Electric Asia 2026 (14–16 Oct 2026); Addis Power 2026 — International Energy Fair (15–17 Oct 2026); IECON 2026 (IEEE Industrial Electronics) (18–21 Oct 2026); Saudi Elenex 2026 (16–19 Nov 2026). Official pages checked 2026-10-16.</p></a>
+      <a class="card reveal" href="/manufacturers.html"><span class="emoji" aria-hidden="true">🏭</span><h3>Manufacturers →</h3><p>A growing sourced directory of <span data-stat="manufacturers">894</span> transformer makers — power, distribution and dry-type — country by country.</p></a>
       <a class="card reveal" href="markets.html"><span class="emoji" aria-hidden="true">🌍</span><h3>Markets →</h3><p>Country intelligence hubs — grid operators, manufacturers, projects, events and technical context, market by market.</p></a>
-      <a class="card reveal" href="learn.html"><span class="emoji" aria-hidden="true">🎓</span><h3>Learn →</h3><p>A 26-chapter design masterclass — 3D models and a live design calculator, included with 12 months access.</p></a>
+      <a class="card reveal" href="/learn.html"><span class="emoji" aria-hidden="true">🎓</span><h3>Learn →</h3><p>A 26-chapter design course — 3D models and a live design calculator, included with 12 months access.</p></a>
       <a class="card reveal" href="knowledge.html"><span class="emoji" aria-hidden="true">💡</span><h3>Knowledge →</h3><p>Clear, source-referenced answers to transformer-engineering questions, from cooling codes to DGA and bushings.</p></a>
       <a class="card reveal" href="resources.html"><span class="emoji" aria-hidden="true">📚</span><h3>Resources →</h3><p>IEC / ANSI standards and reference material every designer reaches for.</p></a>
-      <a class="card reveal" href="components.html"><span class="emoji" aria-hidden="true">🔩</span><h3>Components →</h3><p>Every transformer part mapped — bushings to Buchholz relays — with supplier connections.</p></a>
+      <a class="card reveal" href="/components.html"><span class="emoji" aria-hidden="true">🔩</span><h3>Components →</h3><p>Every transformer part mapped — bushings to Buchholz relays — with supplier connections.</p></a>
       <a class="card reveal" href="applications.html"><span class="emoji" aria-hidden="true">🏭</span><h3>Applications →</h3><p>Buyers' guides by industry — data centres, renewables, mining, oil & gas, rail, grid and industrial — with relevant suppliers and events.</p></a>
       <a class="card reveal" href="rfq.html"><span class="emoji" aria-hidden="true">📨</span><h3>RFQ Board →</h3><p>Post a requirement and reach manufacturers and suppliers worldwide — free.</p></a>
     </div>
@@ -1013,7 +1059,7 @@
 <section class="block" style="background:linear-gradient(135deg,var(--navy),#1b3a5c)">
   <div class="container" style="max-width:680px;text-align:center;color:#fff">
     <h2 style="color:#fff;font-size:1.8rem;margin-bottom:8px">Want to design transformers, not just read about them?</h2>
-    <p style="color:#c4d2e4;margin:0 auto 20px;max-width:520px">A 26-chapter masterclass, ten interactive 3D models and a live IEC 60076 design calculator — plans from $199.</p>
+    <p style="color:#c4d2e4;margin:0 auto 20px;max-width:520px">A 26-chapter design course, ten interactive 3D models and a live IEC 60076 design calculator — plans from $199.</p>
     <a href="pricing.html" class="btn btn-amber">See plans →</a>
   </div>
 </section>
@@ -1026,12 +1072,12 @@
         <a href="index.html" class="logo" style="font-size:1.2rem;display:inline-flex;align-items:center;gap:8px"><svg class="logo-mark" width="26" height="26" viewBox="0 0 16 16" aria-hidden="true" style="flex:none"><g fill="#f5a623"><rect x="1" y="1" width="4" height="4"/><rect x="11" y="1" width="4" height="4"/><rect x="1" y="11" width="4" height="4"/><rect x="11" y="11" width="4" height="4"/><rect x="5" y="2" width="6" height="2"/><rect x="12" y="5" width="2" height="6"/><rect x="5" y="12" width="6" height="2"/></g></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
         <p style="margin-top:12px">Independent transformer industry intelligence, engineering knowledge and data. Built for utilities, transformer manufacturers, component suppliers, EPCs, consultants and engineers.</p>
       </div>
-      <div><p class="footer-col-label">INTELLIGENCE</p><a href="/intel">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="projects.html">Projects</a><a href="tenders.html">Tenders</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="map.html">Industry Map</a><a href="events.html">Events</a></div>
-      <div><p class="footer-col-label">DIRECTORY</p><a href="manufacturers.html">Manufacturers</a><a href="directory.html">Directory Index</a><a href="components.html">Components &amp; Materials</a><a href="machinery.html">Machinery</a><a href="laboratories.html">Testing Labs</a><a href="services.html">Service &amp; Repair</a><a href="logistics.html">Logistics</a><a href="buyers.html">Buyers &amp; Utilities</a><a href="rfq.html">RFQ Board</a></div>
+      <div><p class="footer-col-label">INTELLIGENCE</p><a href="/intel.html">Daily Intel</a><a href="/archive.html">Intel Archive</a><a href="projects.html">Projects</a><a href="tenders.html">Tenders</a><a href="markets.html">Markets</a><a href="/grids.html">Grids</a><a href="/map.html">Industry Map</a><a href="/events.html">Events</a></div>
+      <div><p class="footer-col-label">DIRECTORY</p><a href="/manufacturers.html">Manufacturers</a><a href="/directory.html">Directory Index</a><a href="/components.html">Components &amp; Materials</a><a href="machinery.html">Machinery</a><a href="laboratories.html">Testing Labs</a><a href="services.html">Service &amp; Repair</a><a href="logistics.html">Logistics</a><a href="buyers.html">Buyers &amp; Utilities</a><a href="buy-early/">Buy early</a><a href="spare-capacity/">Mid-tier makers</a><a href="lead-times/">Lead times</a><a href="bottlenecks/">Bottlenecks</a><a href="rfq.html">RFQ Board</a></div>
       <div><p class="footer-col-label">ENGINEERING</p><a href="tools.html">Engineering Hub</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Interactive Models</a><a href="standards.html">Standards &amp; Codes</a><a href="knowledge.html">Knowledge Base</a><a href="case-studies.html">Case Studies</a></div>
-      <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learning Hub</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy 3D Tools</a><a href="books.html">Books</a><a href="education.html">Education</a></div>
-      <div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="pricing.html">Pricing Plans</a><a href="verified.html">Verified Profiles</a><a href="webinars.html">Webinars</a><a href="sponsor.html">Sponsorship</a><a href="associations.html">Associations</a><a href="media.html">Media</a></div>
-      <div><p class="footer-col-label">COMPANY</p><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="affiliate-disclosure.html">Affiliate disclosure</a></div>
+      <div><p class="footer-col-label">LEARN</p><a href="/learn.html">Learning Hub</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy 3D Tools</a><a href="books.html">Books</a><a href="education.html">Education</a></div>
+      <div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="pricing.html">Pricing Plans</a><a href="verified.html">Verified Profiles</a><a href="sponsor.html">Sponsorship</a><a href="associations.html">Associations</a><a href="media.html">Media</a></div>
+      <div><p class="footer-col-label">COMPANY</p><a href="about.html">About Us</a><a href="/workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="affiliate-disclosure.html">Affiliate disclosure</a></div>
       <div><p class="footer-col-label">CONTACT</p>
         <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
         <a href="privacy.html#cookies" onclick="if(window.tpResetConsent){window.tpResetConsent();return false}">Cookie settings</a>
@@ -1085,7 +1131,12 @@ document.querySelectorAll('#mainNav a').forEach(a=>a.addEventListener('click',()
     f.src='explorer.html'; f.title='Interactive 3D transformer'; f.loading='lazy';
     frame.insertBefore(f, frame.firstChild);
     btn.remove();
-    const h=frame.querySelector('.hint'); if(h) h.hidden=false;
+    const h=frame.querySelector('.hint');
+    if(h && frame){
+      const show=function(){ h.hidden=false; };
+      frame.addEventListener('pointerenter', show, {once:true});
+      frame.addEventListener('mouseenter', show, {once:true});
+    }
   }
   btn.addEventListener('click',load);
   if(window.innerWidth>=820 && 'IntersectionObserver' in window){
@@ -1094,27 +1145,34 @@ document.querySelectorAll('#mainNav a').forEach(a=>a.addEventListener('click',()
 })();
 
 /* ── Latest "at a glance" from the compact Intel feed ─────────────
-   Cards are sourced posts with calendar dates. We do NOT label them
-   "today's live briefing" — a deploy is not a new edition. */
+   Build-intel-feed-ui.js stamps these cards from the same file. This
+   refresh uses that order: day-dated posts, newest first. A deploy is
+   not a new edition — dates stay on the source. */
 (function(){
   const host=document.getElementById('glanceCards'), sub=document.getElementById('glanceSub');
   if(host && window.fetch){
   fetch('data/intel-feed-ui.json',{cache:'no-cache'}).then(r=>r.json()).then(feed=>{
-    const items=(feed.posts||[]).filter(function(p){ return p.desk==='news'||p.desk==='grid'||p.desk==='awards'; });
+    const todayIso=new Date().toISOString().slice(0,10);
+    const items=(feed.posts||[]).filter(function(p){
+      return p && p.headline && p.datePrecision==='day' && /^\d{4}-\d{2}-\d{2}$/.test(p.dateIso||'') && p.dateIso<=todayIso;
+    });
     const pick=items.slice(0,3);
-    if(pick.length<3) return;
-    const esc=s=>String(s||'').replace(/</g,'&lt;');
+    if(!pick.length) return;
+    const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
     host.innerHTML=pick.map(it=>{
-      const snip=esc(it.soWhat);
-      return '<a class="card reveal in" href="/intel#p-'+esc(it.id)+'"><span class="g-region">'+esc(it.region)+'</span>'+
-        '<h3 style="font-size:1rem">'+esc(it.headline)+'</h3><p>'+snip+'</p>'+
-        '<p class="g-val" style="margin-top:8px">'+(it.date?esc(it.date):'Date not stated')+(it.value?' · '+esc(it.value):'')+'</p></a>';
+      const raw=String(it.soWhat||'').trim();
+      const snip=/^[0-9a-z]/.test(raw)?'':esc(raw);
+      const meta=(it.date?esc(it.date):'Date not stated')+(it.value?' · '+esc(it.value):'');
+      return '<a class="card reveal in" data-glance-date="'+esc(it.dateIso)+'" data-glance-headline="'+esc(it.headline)+'" href="/intel.html#p-'+esc(it.id)+'"><span class="g-region">'+esc(it.region)+'</span>'+
+        '<h3 style="font-size:1rem">'+esc(it.headline)+'</h3>'+(snip?'<p>'+snip+'</p>':'')+
+        '<p class="g-val" style="margin-top:8px">'+meta+'</p></a>';
     }).join('');
   }).catch(()=>{});
   }
   // Same build-time file as intel.html. Do not read feed honesty or freshness here.
   if (window.fetch) fetch('data/intel-status.json',{cache:'no-cache'}).then(function(r){ return r.json(); }).then(function(st){
-    const statusLabel = st.status || 'INTEL COVERAGE DELAYED';
+    const statusLabel = st && st.status;
+    if (!statusLabel) return;
     const sourceLabel = String(st.latest_source_date || '').replace(/\s+/g, ' ').trim();
     if (!/^\d{1,2} [A-Za-z]{3} \d{4}$/.test(sourceLabel)) return;
     const checkedLabel = st.latest_source_checked_label || '';
@@ -1135,14 +1193,16 @@ document.querySelectorAll('#mainNav a').forEach(a=>a.addEventListener('click',()
     if (pillCheck) pillCheck.textContent = checkedLabel ? ('source checked ' + checkedLabel) : '';
     if (pillDot) pillDot.style.background = dotColor;
     const heroCta = document.getElementById('hero-intel-cta');
-    if (heroCta && /^(INTEL COVERAGE DELAYED|REFRESH DELAYED|DATA STALE)$/.test(statusLabel)) {
-      heroCta.textContent = 'Coverage is delayed — open the latest briefing →';
+    const reason = String(st.reason || '');
+    const behind = reason === 'source_within_7d' || reason === 'future_source_date_rejected' || reason === 'source_date_unprintable' || reason === 'no_validated_source_date' || reason.indexOf('source_lag_') === 0;
+    if (heroCta && behind) {
+      heroCta.textContent = 'Coverage is behind — open the latest briefing →';
     }
     if (sub) {
       sub.innerHTML='Latest sourced item <b>'+sourceLabel+'</b>'+
         (checkedLabel?' · source checked <b>'+checkedLabel+'</b>':'')+
         (st.build_label?' · page built <b>'+st.build_label+'</b>':'')+
-        ' · <b>'+statusLabel+'</b>. Dates are on the source, not this visit. <a href="/intel" style="color:var(--accent)">Open Daily Intel →</a>';
+        ' · <b>'+statusLabel+'</b>. Dates are on the source, not this visit. <a href="/intel.html" style="color:var(--accent)">Open Daily Intel →</a>';
     }
   }).catch(function(){});
 })();
@@ -1185,15 +1245,22 @@ if('IntersectionObserver' in window){
 <script src="site-stats.js?v=7" defer></script>
 <script src="material-latest.js?v=7" defer></script>
 <script src="tp-webgl-gate.js" defer></script>
+<script src="tp-canvas-scroll.js"></script>
 <script>
 /* Homepage 3D: poster first → idle/interaction → WebGL iframe. Never required. */
 (function(){
   function ready(fn){ if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',fn); else fn(); }
   ready(function(){
+    if(window.TPCanvasScroll) TPCanvasScroll.installParentScrollRelay();
     var stage=document.querySelector('.hero-stage');
     var viz=document.getElementById('heroViz');
     var note=document.getElementById('hero3dNote');
     var hint=document.getElementById('hero3dHint');
+    if(viz && hint){
+      var showHint=function(){ hint.hidden=false; hint.textContent='Ctrl + scroll to zoom'; };
+      viz.addEventListener('pointerenter', showHint, {once:true});
+      viz.addEventListener('mouseenter', showHint, {once:true});
+    }
     if(!viz||!stage) return;
     var gate=window.TPWebGL;
     var started=false;

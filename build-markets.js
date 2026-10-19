@@ -22,6 +22,7 @@ const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 const { facilityBadge } = require('./lib/provenance-badge');
+const comtrade = require('./lib/comtrade-hs8504');
 function slugify(s) { return String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/&/g, 'and').replace(/['’´]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, ''); }
 
 function gccConfirmedIso() {
@@ -640,7 +641,8 @@ function marketPage(m) {
       (biProj ? '<div style="margin-top:8px"><b style="color:var(--text)">Transformer projects</b><ul>' + biProj + '</ul></div>' : '') +
       '<p style="font-size:.82rem;color:var(--muted)">See the <a href="../../intelligence.html" style="color:var(--accent)">Intelligence</a> hub for the full activity feed.</p>'
     : '<p style="color:var(--muted)">No source-backed business activity published for this market yet.</p>';
-  const compHtml = Object.keys(COMPONENTS).map(function (c) { return '<a class="tpill" href="../../components/' + c + '.html">' + esc(COMPONENTS[c]) + '</a>'; }).join(' ');
+  const { componentSlugHref } = require('./lib/component-href');
+  const compHtml = Object.keys(COMPONENTS).map(function (c) { return '<a class="tpill" href="' + componentSlugHref('../../', c) + '">' + esc(COMPONENTS[c]) + '</a>'; }).join(' ');
   const techHtml = m.tech.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('');
   const faqHtml = m.faq.map(function (f) { return '<div style="margin:12px 0"><b style="color:var(--ink)">' + esc(f[0]) + '</b><p style="color:var(--text);margin:4px 0 0">' + esc(f[1]) + '</p></div>'; }).join('');
   const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: m.faq.map(function (f) { return { '@type': 'Question', name: f[0], acceptedAnswer: { '@type': 'Answer', text: f[1] } }; }) };
@@ -741,6 +743,7 @@ function marketPage(m) {
     '<div class="s"><b>' + tenders.length + '</b><span>active tenders</span></div>' +
     '<div class="s"><b>' + evs.length + '</b><span>upcoming events</span></div>' +
     '</div>' +
+    comtrade.sectionHtml(m.gridsName) +
     '<h2>Grid &amp; utilities</h2>' + (utlHtml || '<p style="color:var(--muted)">See the grid directory for operator details.</p>') +
     '<h2>Confirmed manufacturing plants &amp; facilities (' + facs.length + ')</h2>' + facsHtml +
     (researchHtml ? '<h2>Facility research queue (' + research.length + ')</h2>' + researchHtml : '') +
@@ -794,7 +797,8 @@ MARKETS.forEach(function (m) {
     tenders: tenders.length,
     awards: awards.length,
     suppliers: localSuppliers.length,
-    projects: bi.projects.length
+    projects: bi.projects.length,
+    country: m.gridsName
   });
   console.log('OK markets/' + m.slug + '/ | ' + m.name);
 });
@@ -805,7 +809,7 @@ const idxFoot = fs.readFileSync('_partials/footer.html', 'utf8').trim();
 
 const idx = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
   '<title>Transformer Markets Intelligence by Country | TransformerPath</title>' +
-  '<meta name="description" content="Country transformer intelligence dashboards — grid operators, manufacturing bases, factories, components, live tenders, project pipelines and RFQ routing for key global markets.">' +
+  '<meta name="description" content="Country transformer intelligence dashboards — grid operators, manufacturing bases, factories, components, live tenders and project pipelines. RFQ routing is coming soon.">' +
   '<link rel="canonical" href="https://transformerpath.com/markets.html"><link rel="stylesheet" href="style.css?v=14"><link rel="stylesheet" href="tp-nav.css?v=13"><link rel="icon" type="image/svg+xml" href="brand/favicon.svg">' +
   '<style>' +
   '.market-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:20px;margin-top:20px}' +
@@ -818,7 +822,7 @@ const idx = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta char
   '<div class="container" style="max-width:1120px">' +
   '<span style="display:inline-block;font-size:.75rem;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--accent);background:rgba(11,95,165,.08);padding:4px 12px;border-radius:999px;margin-bottom:12px">Geographic Intelligence Hubs</span>' +
   '<h1 style="font-size:2.2rem;margin:0 0 12px;color:var(--ink)">Global Transformer Markets by Country</h1>' +
-  '<p style="color:var(--muted);max-width:820px;font-size:1.02rem;line-height:1.6">Comprehensive procurement &amp; intelligence dashboards for the world\'s primary transformer markets: grid frequency and voltage architectures, transmission system operators, domestic manufacturing facilities, component suppliers, active tenders and live RFQ routing.</p>' +
+  '<p style="color:var(--muted);max-width:820px;font-size:1.02rem;line-height:1.6">Comprehensive procurement &amp; intelligence dashboards for the world\'s primary transformer markets: grid frequency and voltage architectures, transmission system operators, domestic manufacturing facilities, component suppliers, active tenders and project pipelines. RFQ routing is coming soon.</p>' +
   '</div></section>' +
   '<main class="container" style="max-width:1120px;padding:0 20px 70px">' +
   '<div class="market-grid">' +
@@ -861,6 +865,7 @@ const idx = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta char
             '<b style="color:var(--amber);font-size:1.1rem">' + l.tenders + '</b> <span style="color:var(--text)">tenders</span> · <b style="color:var(--text)">' + l.awards + '</b> <span style="color:var(--muted)">awards</span>' +
           '</div>' +
         '</div>' +
+        comtrade.cardHtml(l.country || l.name) +
 
         '<div style="margin-bottom:18px">' +
           '<span style="font-size:.72rem;font-weight:700;text-transform:uppercase;color:var(--muted);letter-spacing:.4px;display:block;margin-bottom:6px">Supply Chain Scope</span>' +

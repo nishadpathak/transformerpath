@@ -91,6 +91,17 @@ expectRedirect('green-transfo-energy-turkey', 'green-transfo');
 expectRedirect('siemens-energy-tenjo', 'siemens-energy');
 expectRedirect('siemens-energy-nuremberg', 'siemens-energy');
 expectRedirect('jefferson-electric', 'jefferson-electric-voltaris');
+expectRedirect('bhel-bharat-heavy-electricals', 'bhel');
+expectRedirect('tbea-co-ltd', 'tbea-group-changji-hq-shenyang-hengyang-tianjin-plants');
+expectRedirect('china-xd-group', 'china-xd-group-xian-xd-transformer');
+expectRedirect('efacec-power-solutions', 'efacec');
+expectRedirect('efacec-distribution-transformers', 'efacec');
+expectRedirect('tmc-transformers-spa', 'tmc-transformers');
+expectRedirect('transformers-and-rectifiers-india', 'transformers-and-rectifiers-india-taril');
+expectRedirect('elsewedy-electric', 'elsewedy-electric-transformers');
+expectRedirect('smit-transformers', 'royal-smit-transformers-b-v-sgb-smit-group');
+expectRedirect('jshp-transformer-jiangsu', 'jiangsu-huapeng-jshp-huapeng-group');
+expectRedirect('hitachi-energy-global-hq', 'hitachi-energy');
 
 const slugs = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/company-slugs.json'), 'utf8'));
 const seenSlug = {};

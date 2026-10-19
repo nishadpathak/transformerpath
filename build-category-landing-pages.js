@@ -2,7 +2,7 @@
 /* build-category-landing-pages.js — Canonical Category Hubs for Components & Materials.
  *
  * Generates canonical landing hubs with complete technical specifications,
- * subcategory matrices, standards, verified supplier tables, and direct RFQs:
+ * subcategory matrices, standards, and supplier tables. RFQ routing is coming soon:
  *   - /components/bushings/index.html
  *   - /components/oltc/index.html
  *   - /components/radiators/index.html
@@ -46,6 +46,12 @@ function slugify(s) {
     .replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
 }
 
+const paidListings = require('./lib/paid-listings');
+const SPONSOR_COMPONENT = {
+  CMP_BUSHING: 'bushings',
+  MAT_PRESSBOARD: 'pressboard',
+  MAT_CTC: 'copper'
+};
 const ACCESSORIES_DATA = JSON.parse(fs.readFileSync('data/accessories.json', 'utf8'));
 const ALL_SUPPLIERS = ACCESSORIES_DATA.suppliers || [];
 
@@ -340,6 +346,10 @@ CATEGORY_PAGES.forEach(function (cat) {
     `;
   }).join('');
 
+  const sponsorHtml = SPONSOR_COMPONENT[cat.id]
+    ? paidListings.componentSponsorSectionHtml({ component: SPONSOR_COMPONENT[cat.id] })
+    : '';
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -456,7 +466,7 @@ ${HEAD}
     </table>
   </div>
 
-  <div class="rfq-banner">
+  ${sponsorHtml ? sponsorHtml + '\n  ' : ''}<div class="rfq-banner">
     <h3 style="color:var(--ink);font-size:1.35rem;margin:0 0 8px">Procure ${esc(cat.title)}</h3>
     <p style="color:var(--muted);font-size:.92rem;max-width:680px;margin:0 auto 16px;line-height:1.6">
       Submit your technical specification (voltage, MVA class, BIL, ambient parameters) to receive matched supplier quotations from verified global factories.

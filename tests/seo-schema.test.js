@@ -9,7 +9,9 @@ const path = require('path');
 const schema = require('../lib/seo-schema');
 const html = require('../lib/seo-html');
 const { assignUnique, fitWindow } = require('../lib/seo-fit');
-const { sourceDate, matchEvent, learnSectionTitle } = require('../lib/seo-catalog');
+const catalog = require('../lib/seo-catalog');
+const { sourceDate, matchEvent, learnSectionTitle } = catalog;
+const eventSeo = require('../lib/event-seo');
 
 let failed = 0;
 function assert(cond, msg) {
@@ -45,6 +47,12 @@ const local = schema.entryNode('https://transformerpath.com/accessories/example/
 });
 assert(local['@type'] === 'LocalBusiness' && local.address.streetAddress === '1 Mill Road', 'LocalBusiness only with a sourced street');
 
+const orgStreet = schema.entryNode('https://transformerpath.com/manufacturers/prolec-ge/', {
+  name: 'Prolec GE', street: 'Blvd. Carlos Salinas de Gortari km. 9.25', city: 'Apodaca', country: 'Mexico', asOrganization: true
+});
+assert(orgStreet['@type'] === 'Organization' && !orgStreet.address.streetAddress, 'Organization JSON-LD omits streetAddress');
+assert(orgStreet.address.addressLocality === 'Apodaca' && orgStreet.address.addressCountry === 'Mexico', 'Organization JSON-LD keeps city and country');
+
 const noSite = schema.entryNode('https://transformerpath.com/manufacturers/x/', { name: 'No Site Co', country: 'India' });
 assert(!noSite.url, 'missing website is omitted rather than replaced with the profile URL');
 
@@ -54,7 +62,32 @@ const confirmed = schema.eventNode('https://transformerpath.com/events/wetex/', 
 });
 assert(confirmed.eventStatus === 'https://schema.org/EventScheduled', 'confirmed event is EventScheduled');
 assert(confirmed.startDate === '2026-10-20' && confirmed.endDate === '2026-10-22', 'confirmed dates copied from the record');
+assert(confirmed.location['@type'] === 'Place' && confirmed.location.address['@type'] === 'PostalAddress', 'location is Place + PostalAddress');
 assert(confirmed.location.address.addressLocality === 'Dubai' && !confirmed.location.address.streetAddress, 'location is city and country');
+assert(confirmed.eventAttendanceMode === 'https://schema.org/OfflineEventAttendanceMode', 'in-person event is offline');
+assert(!confirmed.image, 'brand image is not invented');
+assert(schema.validateEventNode(confirmed).length === 0, 'confirmed event passes the structured-data checks');
+
+const rich = schema.eventNode('https://transformerpath.com/events/adipec-2026/', {
+  name: 'ADIPEC 2026', status: 'CONFIRMED_UPCOMING',
+  start: '2026-11-02', end: '2026-11-05', city: 'Abu Dhabi', country: 'UAE',
+  venue: 'ADNEC', organizer: 'dmG events', officialUrl: 'https://www.adipec.com/',
+  image: 'https://transformerpath.com/brand/og-image.png'
+});
+assert(rich.organizer && rich.organizer['@type'] === 'Organization' && rich.organizer.name === 'dmG events', 'organizer is the recorded organisation');
+assert(rich.offers && rich.offers.url === 'https://www.adipec.com/', 'offers.url is the official site');
+assert(!rich.image, 'the site brand graphic is not used as the event image');
+assert(schema.validateEventNode(rich).length === 0, 'rich event passes the structured-data checks ' + schema.validateEventNode(rich).join('; '));
+
+const withImage = schema.eventNode('https://transformerpath.com/events/example-image/', {
+  name: 'Shown', status: 'CONFIRMED_UPCOMING', start: '2026-11-02', end: '2026-11-05',
+  city: 'Abu Dhabi', country: 'UAE', image: 'https://www.adipec.com/media/hero.jpg'
+});
+assert(withImage.image === 'https://www.adipec.com/media/hero.jpg', 'a real event image is kept');
+
+const crumbsGraph = schema.graph([crumbs, rich]);
+assert(schema.flatten([crumbsGraph]).some(function (n) { return n['@type'] === 'BreadcrumbList'; }), 'event graph keeps BreadcrumbList');
+assert(schema.flatten([crumbsGraph]).some(function (n) { return n['@type'] === 'Event' && n.offers && n.offers.url === 'https://www.adipec.com/'; }), 'event graph keeps offers.url');
 
 const projected = schema.eventNode('https://transformerpath.com/events/example/', {
   name: 'Projected Expo', status: 'DATE_TBC',
@@ -103,10 +136,58 @@ assignUnique(titles, 'title', 50, 60);
 assert(titles[0].title !== titles[1].title, 'duplicate titles are split');
 assert(titles.every(function (t) { return t.title.length >= 50 && t.title.length <= 60; }), 'titles sit in 50–60');
 
+const brandedShort = fitWindow('Acme Electric | TransformerPath', 50, 60, [' | TransformerPath']);
+assert(brandedShort.length >= 50 && brandedShort.length <= 60, 'short branded title stays in window ' + brandedShort);
+assert((brandedShort.match(/TransformerPath/g) || []).length === 1, 'short branded title keeps one brand: ' + brandedShort);
+assert(!/\sprofile$/.test(brandedShort), 'short branded title is not padded with profile: ' + brandedShort);
+assert(!/\| TransformerPath \| TransformerPath/.test(brandedShort), 'short branded title is not doubled: ' + brandedShort);
+
+const gapTitle = fitWindow('Helsinki supplier record for this plant', 50, 60, [' | TransformerPath']);
+assert(gapTitle.length >= 50 && gapTitle.length <= 60, 'mid-length title stays in window ' + gapTitle);
+assert(!/\sprofile$/.test(gapTitle), 'mid-length title is not padded with profile: ' + gapTitle);
+assert((gapTitle.match(/TransformerPath/g) || []).length <= 1, 'mid-length title has one brand: ' + gapTitle);
+
+[
+  'Dry-Type Transformers Manufacturers in Algeria | TransformerPath',
+  'Power Transformers Manufacturers in Algeria',
+  'Distribution Transformers Manufacturers in Dominican Republic'
+].forEach(function (draft) {
+  const fitted = fitWindow(draft, 50, 60, [' | TransformerPath']);
+  const place = draft.replace(/\s+\|\s*TransformerPath$/, '').split(' ').pop();
+  assert(fitted.length >= 50 && fitted.length <= 60, 'country hub title window ' + fitted);
+  assert(fitted.indexOf(place) !== -1, 'country hub title keeps the place ' + fitted);
+  assert(!/\sin\s+\|/.test(fitted), 'country hub title does not drop the place ' + fitted);
+  assert((fitted.match(/TransformerPath/g) || []).length === 1, 'country hub title has one brand ' + fitted);
+});
+
 const longTitle = fitWindow('Ahlstrom-Munksjö | Helsinki, Finland supplier', 50, 60, [' | TransformerPath']);
 assert(longTitle.length >= 50 && longTitle.length <= 60, 'long title stays in window ' + longTitle.length);
+assert(longTitle.indexOf('Ahlstrom-Munksjö') !== -1, 'long title keeps the company name: ' + longTitle);
+assert(longTitle.indexOf('Finland') !== -1, 'long title keeps the country: ' + longTitle);
 assert(longTitle.indexOf('TransformerP') === -1 || longTitle.indexOf('TransformerPath') !== -1, 'brand is not sliced: ' + longTitle);
 assert(!/TransformerP(?!ath)/.test(longTitle), 'no partial TransformerPath in ' + longTitle);
+
+[
+  ['Henan Yaan Electrical Insulation Material Co., Ltd. | Xuchang, China supplier', 'Yaan'],
+  ['TELK (Transformers and Electricals Kerala Ltd) | Angamaly, India supplier', 'TELK'],
+  ['Von Roll (Superior Essex) | Breitenbach, Switzerland supplier', 'Von Roll'],
+  ['Power Transformers Sales And Services (India) Private Limited | Coimbatore, India supplier', 'Power Transformers'],
+  ['Tianjin Jingwei Power Technology Co., Ltd. | Tianjin, China supplier', 'Jingwei'],
+  ['Hitachi Energy (Insulation & Components, Nanjangud — formerly Raman Boards) | Nanjangud, India supplier', 'Hitachi Energy'],
+  ['Sam Dong Co., Ltd. / Sam Dong America | Eumseong, South Korea supplier', 'Sam Dong'],
+  ['Tongling Jingda Special Magnet Wire Co., Ltd. (Jingda) | Tongling, China supplier', 'Jingda'],
+  ['Elektromotoren und Gerätebau Barleben GmbH (EMB) | Barleben, Germany supplier', 'Elektromotoren'],
+  ['Mehru Electrical & Mechanical Engineers Pvt. Ltd. | Bhiwadi, India supplier', 'Mehru Electrical'],
+  ['Nuova Magrini Galileo / NMG Radiators | Bergamo, Italy supplier', 'Nuova Magrini Galileo']
+].forEach(function (pair) {
+  const fitted = fitWindow(pair[0], 50, 60, [' | TransformerPath']);
+  assert(fitted.length >= 50 && fitted.length <= 60, 'supplier title window ' + fitted);
+  assert(fitted.indexOf(pair[1]) !== -1, 'supplier title keeps the name ' + pair[1] + ' in ' + fitted);
+  assert(!/Ltd\)/.test(fitted), 'supplier title does not leave a broken parenthesis: ' + fitted);
+  assert(!/\b(Henan|Tianjin|Tongling|China) Co\./.test(fitted), 'supplier title does not keep only a legal suffix: ' + fitted);
+  assert(!/[&/]\s*\|/.test(fitted), 'supplier title does not end the name on a separator: ' + fitted);
+  assert(!/\b(und|and|of|the)\s+\|/.test(fitted), 'supplier title does not end the name on a conjunction: ' + fitted);
+});
 
 const learnPages = ['learn.html', 'engineer-track.html', 'academy.html', 'pricing.html', 'coretopology.html'];
 for (let v = 0; v <= 19; v++) learnPages.push('books/volume-' + v + '/index.html');
@@ -127,6 +208,40 @@ const desc = fitWindow('Short record.', 140, 160, [
   ' Independent record on TransformerPath.'
 ]);
 assert(desc.length >= 140 && desc.length <= 160, 'description window ' + desc.length);
+assert(!/\.{3}/.test(desc), 'description is not padded with dots: ' + desc);
+
+[
+  'About TransformerPath',
+  'Intel Archive | TransformerPath',
+  'The TransformerPath Blog',
+  'Contact TransformerPath',
+  'Empire Wind 1 | TransformerPath',
+  'Eskom / NTCSA | TransformerPath'
+].forEach(function (draft) {
+  const fitted = fitWindow(draft, 50, 60, [' | TransformerPath']);
+  assert(fitted.length >= 50 && fitted.length <= 60, 'short title stays in window ' + fitted);
+  assert(!/\.{3}/.test(fitted), 'short title is not padded with dots: ' + fitted);
+  assert((fitted.match(/TransformerPath/g) || []).length === 1, 'short title keeps one brand: ' + fitted);
+});
+
+const aboutDesc = fitWindow(
+  'About TransformerPath — an independent global information platform for the transformer industry.',
+  140,
+  160,
+  [' Only sourced fields are shown.', ' Independent record on TransformerPath.']
+);
+assert(aboutDesc.length >= 140 && aboutDesc.length <= 160, 'about description window ' + aboutDesc.length + ' ' + aboutDesc);
+assert(!/\.{3}/.test(aboutDesc), 'about description is not padded with dots: ' + aboutDesc);
+
+const bareDesc = fitWindow('TransformerPath — Hero 3D', 140, 160, []);
+assert(bareDesc.length >= 140 && bareDesc.length <= 160, 'very short description still reaches the window ' + bareDesc.length + ' ' + bareDesc);
+assert(!/\.{3}/.test(bareDesc), 'very short description is not padded with dots: ' + bareDesc);
+let shortDescGap = '';
+for (let n = 0; n <= 139 && !shortDescGap; n++) {
+  const fitted = fitWindow('x'.repeat(n), 140, 160, []);
+  if (fitted.length < 140 || fitted.length > 160 || /\.{3}/.test(fitted)) shortDescGap = n + ' -> ' + fitted.length + ' ' + fitted;
+}
+assert(!shortDescGap, 'every short description reaches 140–160 without dots: ' + shortDescGap);
 
 const graph = schema.graph(site.concat([crumbs, plain, confirmed, article]));
 const flat = schema.flatten([graph]);
@@ -149,6 +264,135 @@ assert(matchEvent([{ n: 'Show A 2026' }, { n: 'Show A 2026' }], 'Show A 2026') =
 
 assert(html.isNoindex('<meta http-equiv="refresh" content="0; url=claim-profile.html">'), 'refresh alias is noindex');
 assert(!html.isNoindex('<html><head><title>x</title></head></html>'), 'normal page stays indexable');
+
+const { titleKeepingCountry } = require('../lib/seo-fit');
+const seoCat = catalog.create();
+let titleMiss = 0;
+Object.keys(seoCat.companies).forEach(function (slug) {
+  const c = seoCat.companies[slug];
+  if (!c.indexable || !c.country) return;
+  const t = titleKeepingCountry(c.name, c.country);
+  const tail = ' in ' + c.country + ' | TransformerPath';
+  if (t.length < 50 || t.length > 60 || t.slice(-tail.length) !== tail) titleMiss++;
+});
+assert(titleMiss === 0, 'every indexable manufacturer title is 50–60 and keeps the country');
+const aktifTitle = titleKeepingCountry('Aktif Elektroteknik (Transformatör)', 'Türkiye');
+assert(aktifTitle === 'Aktif Elektroteknik listed in Türkiye | TransformerPath', 'long parenthetical is dropped whole: ' + aktifTitle);
+assert(aktifTitle.indexOf('Transforma ') === -1, 'title is not sliced inside Transformatör');
+let openParen = 0;
+let midWord = 0;
+Object.keys(seoCat.companies).forEach(function (slug) {
+  const c = seoCat.companies[slug];
+  if (!c.indexable || !c.country) return;
+  const t = titleKeepingCountry(c.name, c.country);
+  if ((t.split('(').length) !== (t.split(')').length)) openParen++;
+  const head = t.slice(0, t.length - (' in ' + c.country + ' | TransformerPath').length);
+  const pieces = c.name.split(/[\s\-]+/).map(function (src) { return src.replace(/[().,/&]/g, ''); });
+  head.split(/\s+/).forEach(function (word) {
+    const bare = word.replace(/[().,/&-]/g, '');
+    if (bare.length < 5 || pieces.indexOf(bare) !== -1) return;
+    const hit = pieces.some(function (s) { return s.length > bare.length && s.indexOf(bare) === 0; });
+    if (hit) midWord++;
+  });
+});
+assert(openParen === 0, 'manufacturer titles do not leave an open parenthesis ' + openParen);
+assert(midWord === 0, 'manufacturer titles do not slice a name mid-word ' + midWord);
+const eventSearchSrc = fs.readFileSync(path.join(__dirname, '..', 'lib', 'event-search.js'), 'utf8');
+assert(/typeof require === 'function' && require\.main === module/.test(eventSearchSrc), 'event search self-test is not evaluated in the browser');
+
+const topicCrumbs = catalog.draft('topics/bushings/index.html', '<h1>Bushings</h1>', seoCat).crumbs;
+assert(topicCrumbs.some(function (c) { return /\/topics\/bushings\/$/.test(c.item); }), 'topic hub breadcrumb keeps the hub URL');
+assert(!topicCrumbs.some(function (c) { return /\/topics\/?$/.test(c.item); }), 'topic breadcrumb does not link a missing /topics/ index');
+
+const prolec = catalog.draft('manufacturers/prolec-ge/index.html', '<h1>Prolec GE</h1>', seoCat);
+const prolecOrg = prolec.nodes.find(function (n) { return n['@type'] === 'Organization' && n.name === 'Prolec GE'; });
+assert(prolecOrg && prolecOrg.parentOrganization && prolecOrg.parentOrganization.name === 'GE Vernova', 'Prolec GE parentOrganization is GE Vernova');
+assert(prolecOrg && prolecOrg['@type'] === 'Organization' && prolecOrg.address && !prolecOrg.address.streetAddress, 'sourced street is omitted from Organization JSON-LD');
+assert(prolecOrg.address.addressCountry === 'Mexico' && /Apodaca/.test(prolecOrg.address.addressLocality || ''), 'Prolec Organization keeps city and country');
+assert(!prolecOrg.logo, 'no logo is invented when the company has none');
+
+const usa = catalog.draft('manufacturers/usa.html', '<h1>USA</h1>', seoCat);
+const usaList = usa.nodes.find(function (n) { return n['@type'] === 'ItemList'; });
+assert(usaList && usaList.numberOfItems > 0 && usaList.itemListElement[0].item['@type'] === 'Organization', 'USA country page has an ItemList of organizations');
+const indiaPt = catalog.draft('manufacturers/power-transformers/india/index.html', '<h1>Power</h1>', seoCat);
+const indiaList = indiaPt.nodes.find(function (n) { return n['@type'] === 'ItemList'; });
+assert(indiaList && indiaList.numberOfItems > 0 && /India/.test(indiaPt.draftTitle), 'India power category page lists makers and keeps the country');
+assert(fs.readFileSync('netlify.toml', 'utf8').indexOf('from = "/manufacturers"\n  to = "/manufacturers.html"\n  status = 301') !== -1, '/manufacturers 301s to /manufacturers.html');
+
+const adipecTitle = eventSeo.eventProfileTitle({
+  name: 'ADIPEC 2026', date_status: 'CONFIRMED', start: '2026-11-02', end: '2026-11-05', city: 'Abu Dhabi'
+});
+assert(adipecTitle === 'ADIPEC 2026 \u2013 Abu Dhabi, 2\u20135 Nov | Transformer Events | TransformerPath', 'ADIPEC title ' + adipecTitle);
+assert(adipecTitle.length >= 50 && adipecTitle.length <= 100, 'ADIPEC title length ' + adipecTitle.length);
+assert((adipecTitle.match(/TransformerPath/g) || []).length === 1, 'ADIPEC title has one brand');
+assert(!/\| transformer event\b/i.test(adipecTitle) && !/\sprofile\b/i.test(adipecTitle), 'ADIPEC title drops the old suffix');
+
+const noCity = eventSeo.eventProfileTitle({
+  name: 'ADIPEC 2026', date_status: 'CONFIRMED', start: '2026-11-02', end: '2026-11-05'
+});
+assert(noCity.indexOf('Abu Dhabi') === -1 && /2\u20135 Nov/.test(noCity), 'missing city is omitted ' + noCity);
+const unconfirmed = eventSeo.eventProfileTitle({
+  name: 'ADIPEC 2027', date_status: 'PROJECTED', start: '2027-11-08', end: '2027-11-11', city: 'Abu Dhabi'
+});
+assert(!/Nov/.test(unconfirmed) && /Abu Dhabi/.test(unconfirmed), 'unconfirmed dates stay out of the title ' + unconfirmed);
+const hubTitle = eventSeo.eventHubTitle('ADIPEC');
+assert(hubTitle === 'ADIPEC editions | Transformer Events | TransformerPath', 'hub title ' + hubTitle);
+assert(hubTitle !== adipecTitle, 'hub title differs from the year page');
+const acdcHub = eventSeo.eventHubTitle('ACDC China (24th IET AC & DC Power Transmission Conference)');
+assert(acdcHub === 'ACDC China editions | Transformer Events | TransformerPath', 'hub title drops an unclosed parenthetical: ' + acdcHub);
+assert(acdcHub.length >= 50 && acdcHub.length <= 100 && acdcHub.split('(').length === acdcHub.split(')').length, 'ACDC hub title stays in range and balanced');
+
+const eventsPage = fs.readFileSync(path.join(__dirname, '..', 'events.html'), 'utf8');
+const eventsTitle = (eventsPage.match(/<title>([^<]*)<\/title>/) || [])[1] || '';
+assert((eventsTitle.match(/TransformerPath/g) || []).length === 1, 'events.html title has one brand: ' + eventsTitle);
+assert(!/TransformerPath\s*\|\s*TransformerPath/.test(eventsTitle), 'events.html title is not doubled');
+const doubled = fitWindow('Industry Events | TransformerPath | TransformerPath', 50, 60, [' | TransformerPath']);
+assert((doubled.match(/TransformerPath/g) || []).length === 1, 'doubled brand collapses to one: ' + doubled);
+assert(!/TransformerPath\s*\|\s*TransformerPath/.test(doubled), 'doubled brand string does not survive');
+const dashed = fitWindow('Industry Events — TransformerPath', 50, 60, [' | TransformerPath']);
+assert((dashed.match(/TransformerPath/g) || []).length === 1, 'em-dash brand is not doubled: ' + dashed);
+
+assert(eventSeo.shouldNoindexEdition({ date_status: 'PROJECTED', end: '2028-06-08', description: 'US Coiltech. Date est. (annual, June).' }, '2026-10-15'), 'projected edition with no source is noindex');
+assert(!eventSeo.shouldNoindexEdition({ date_status: 'CONFIRMED', start: '2026-11-02', description: 'US Coiltech. Date est. (annual, June).' }, '2026-10-15'), 'confirmed edition stays indexable');
+assert(eventSeo.shouldNoindexEdition({
+  date_status: 'PROJECTED',
+  end: '2027-07-09',
+  description: "Thailand's largest energy event. Provisional — annual July cadence at QSNCC, exact dates TBC."
+}, '2026-10-15'), 'projected future edition with no source is noindex');
+assert(!eventSeo.shouldNoindexEdition({
+  date_status: 'PROJECTED',
+  end: '2027-07-09',
+  source_url: 'https://www.asew-expo.com/',
+  description: "Thailand's largest energy event. Provisional — annual July cadence at QSNCC, exact dates TBC."
+}, '2026-10-15'), 'a sourced edition with a real sentence stays indexable');
+assert(!eventSeo.boilerplateOnly("Thailand's largest energy event. Provisional — annual July cadence at QSNCC, exact dates TBC."), 'a real sentence is not boilerplate-only');
+assert(eventSeo.shouldNoindexEdition({
+  date_status: null,
+  end: '2026-10-22',
+  description: "DEWA water, energy and environment expo with a recorded visitor count."
+}, '2026-10-15'), 'unconfirmed future edition with no source is noindex');
+assert(!eventSeo.shouldNoindexEdition({
+  date_status: null,
+  end: '2026-01-22',
+  description: 'Largest networking event for power generation professionals in the Americas.'
+}, '2026-10-15'), 'past unconfirmed edition with a real description stays indexable');
+
+const standardsPage = fs.readFileSync(path.join(__dirname, '..', 'standards.html'), 'utf8');
+const standardsTitle = (standardsPage.match(/<title>([^<]*)<\/title>/) || [])[1] || '';
+assert(standardsTitle.indexOf('Standards') !== -1, 'standards.html title includes Standards: ' + standardsTitle);
+
+const SHORT_STANDARDS = 'Transformer & Regulations Directory | TransformerPath';
+const distStandards = path.join(__dirname, '..', 'dist', 'standards.html');
+assert(fs.existsSync(distStandards), 'dist/standards.html exists after the SEO pass');
+const distStandardsTitle = html.stripTags((fs.readFileSync(distStandards, 'utf8').match(/<title>([^<]*)<\/title>/i) || [])[1] || '');
+assert(distStandardsTitle.indexOf('Standards') !== -1, 'dist/standards.html title includes Standards: ' + distStandardsTitle);
+assert(distStandardsTitle !== SHORT_STANDARDS, 'dist/standards.html title keeps Standards: ' + distStandardsTitle);
+assert(distStandardsTitle.length >= 50 && distStandardsTitle.length <= 60, 'dist/standards.html title is 50–60 characters: ' + distStandardsTitle.length + ' ' + distStandardsTitle);
+
+const standardsDraft = catalog.draft('standards.html', standardsPage, seoCat);
+const fittedStandards = fitWindow(standardsDraft.draftTitle, 50, 60, standardsDraft.padsTitle);
+assert(fittedStandards.indexOf('Standards') !== -1, 'fitted standards draft keeps Standards: ' + fittedStandards);
+assert(fittedStandards !== SHORT_STANDARDS, 'fitted standards draft is not the shortened directory title: ' + fittedStandards);
 
 if (failed) {
   console.error('\n' + failed + ' failed');

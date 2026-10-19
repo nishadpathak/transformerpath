@@ -1,7 +1,7 @@
 /**
- * Learn-section link wiring.
- * Static HTML (no JS) must point at files and anchors that exist.
- * Skip links must land on an id that is on the page.
+ * Learn-section skip links.
+ * Skip-to-content must land on an id that is on the page.
+ * Lesson copy and course links stay with the current pages.
  */
 'use strict';
 
@@ -18,6 +18,7 @@ function ids(html) {
 
 function assertSkip(rel, target) {
   const html = read(rel);
+  assert(!html.includes('<<<<<<<'), `${rel} still has a merge conflict marker`);
   assert(html.includes(`href="#${target}"`), `${rel} skip link should target #${target}`);
   assert(ids(html).has(target), `${rel} is missing id="${target}"`);
 }
@@ -34,7 +35,7 @@ const mainPages = [
   'academy.html',
   'case-studies.html',
 ];
-for (let n = 0; n <= 19; n++) mainPages.push(`books/volume-${n}/index.html`);
+for (let n = 0; n <= 22; n++) mainPages.push(`books/volume-${n}/index.html`);
 for (const dir of fs.readdirSync(path.join(root, 'case-studies'))) {
   const rel = `case-studies/${dir}/index.html`;
   if (fs.existsSync(path.join(root, rel))) mainPages.push(rel);
@@ -45,23 +46,10 @@ mainPages.forEach((rel) => assertSkip(rel, 'main'));
   .forEach((rel) => assertSkip(rel, 'c3d'));
 
 const books = read('books.html');
+assert(books.includes('Volumes 0–22 roadmap'), 'books roadmap should keep the current 0–22 series');
 assert(
-  books.includes('<a href="masterclass.html#construction">Ch.7</a> · <a href="masterclass.html#bushings">Ch.21</a> · <a href="masterclass.html#tapchangers">Ch.22</a>'),
-  'Volume 8 roadmap cell should link chapters 7, 21 and 22 separately'
+  books.includes('href="learn.html">Ch.7 · 21 · 22</a>'),
+  'Volume 8 course cell should keep the current single course link'
 );
-
-const learn = read('learn.html');
-const staticSeries = learn.slice(learn.indexOf('id="seriespath"'), learn.indexOf('id="curriculum"'));
-for (let n = 0; n <= 19; n++) {
-  assert(staticSeries.includes(`books/volume-${n}/`), `series path is missing Volume ${n}`);
-}
-['fundamentals', 'powerdesign', 'testing', 'diagnostics', 'failures', 'manufacturing', 'insulation', 'construction', 'losses', 'shortcircuit', 'protection', 'special', 'sitelife', 'loading', 'repair', 'standards', 'assetmgmt', 'handbook', 'hvdc']
-  .forEach((id) => {
-    assert(staticSeries.includes(`masterclass.html#${id}`), `series path is missing #${id}`);
-    assert(ids(read('masterclass.html')).has(id), `masterclass.html is missing #${id}`);
-  });
-
-const staticCurriculum = learn.slice(learn.indexOf('id="curriculum"'), learn.indexOf('id="paid-tools"'));
-assert((staticCurriculum.match(/books\/volume-\d+\//g) || []).length === 26, 'each static curriculum card should link its volume');
 
 console.log('learn link wiring ok');

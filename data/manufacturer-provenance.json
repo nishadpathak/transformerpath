@@ -124,5 +124,40 @@
     ],
     "source": "TransformerPath Daily Intel / primary news",
     "lastVerified": "2026-08-28"
+  },
+  {
+    "name": "Virginia Transformer Corp",
+    "facts": [
+      {
+        "field": "voltage_class_evidence",
+        "value": 525,
+        "unit": "kV",
+        "source_title": "Virginia Transformer Corp About Us",
+        "source_url": "https://www.vatransformer.com/about-us/",
+        "source_type": "company_website",
+        "source_date": "2026-10-15",
+        "confidence": "HIGH",
+        "claim_type": "COMPANY_REPORTED",
+        "note": "About Us states a highest voltage class of 525 kV. That is the highest class on the page, not an audited maximum for every product.",
+        "retrieved_at": "2026-10-15",
+        "last_verified": "2026-10-15"
+      },
+      {
+        "field": "annual_capacity_mva",
+        "value": 67000,
+        "unit": "MVA/year",
+        "source_title": "Virginia Transformer Corp About Us",
+        "source_url": "https://www.vatransformer.com/about-us/",
+        "source_type": "company_website",
+        "source_date": "2026-10-15",
+        "confidence": "HIGH",
+        "claim_type": "COMPANY_REPORTED",
+        "note": "About Us states 67,000 MVA annual capacity across six facilities.",
+        "retrieved_at": "2026-10-15",
+        "last_verified": "2026-10-15"
+      }
+    ],
+    "source": "https://www.vatransformer.com/about-us/",
+    "lastVerified": "2026-10-15"
   }
 ]

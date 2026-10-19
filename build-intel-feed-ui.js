@@ -600,12 +600,12 @@ function ssrCard(p) {
     '<div class="intel-avatar" aria-hidden="true">TP</div>' +
     '<div class="intel-body">' +
     '<div class="intel-byline"><strong>TransformerPath</strong><span class="intel-handle">@intel</span>' +
-    '<span class="intel-date" title="Source date, not page-build time">' + date + '</span>' + age + '</div>' +
+    '<span class="intel-date" title="Source date, not page-build time">' + date + '</span> ' + age + '</div>' +
     '<h3 class="intel-headline"><a href="' + esc(href) + '" target="_blank" rel="noopener">' + esc(p.headline) + '</a></h3>' +
     (p.soWhat ? '<p class="intel-sowhat">' + esc(p.soWhat) + '</p>' : '') +
     evidenceNote +
     relevance +
-    '<div class="intel-meta">' + cls + evidence + prov +
+    '<div class="intel-meta">' + [cls, evidence, prov].filter(Boolean).join(' ') +
     '<span class="intel-region">' + esc(p.region) + '</span>' +
     (p.value ? '<span class="val">' + esc(p.value) + '</span>' : '') +
     '<span class="src">' + esc(p.sourceName || p.src) + '</span></div>' +
@@ -630,10 +630,15 @@ const latest = posts.filter(function (p) {
 }).slice(0, 14);
 
 let page = fs.readFileSync('intel.html', 'utf8');
-if (page.indexOf('<!--SSR:intel-feed-->') >= 0) {
-  page = injectMarker(page, 'intel-feed', latest.map(ssrCard).join(''));
+if (page.indexOf('<!--SSR:intel-feed-->') >= 0 || page.indexOf('<!--SSR:intel-timeline-->') >= 0) {
+  const cards = latest.map(ssrCard).join('');
+  // Both markers sit inside #intel-timeline. Writing the same cards into each
+  // one printed every post twice and reused every article id.
   if (page.indexOf('<!--SSR:intel-timeline-->') >= 0) {
-    page = injectMarker(page, 'intel-timeline', latest.map(ssrCard).join(''));
+    page = injectMarker(page, 'intel-timeline', cards);
+    if (page.indexOf('<!--SSR:intel-feed-->') >= 0) page = injectMarker(page, 'intel-feed', '');
+  } else {
+    page = injectMarker(page, 'intel-feed', cards);
   }
   const newsNote = '<p class="intel-legacy-note">Comprehensive regional market intelligence across GCC, India, Europe, Americas, and Rest of World.</p>';
   if (page.indexOf('<!--SSR:panel-news-->') >= 0) {
@@ -642,3 +647,51 @@ if (page.indexOf('<!--SSR:intel-feed-->') >= 0) {
   fs.writeFileSync('intel.html', page);
   console.log('intel.html: SSR updated with ' + latest.length + ' fresh & recent timeline posts');
 }
+
+// Homepage "At a Glance" is the same feed, not a hand-written blurb.
+// The first day-dated post is the newest item; the row must include it.
+function injectGlance(page, name, inner) {
+  const startM = '<!--GLANCE:' + name + '-->';
+  const endM = '<!--/GLANCE:' + name + '-->';
+  const cm = page.indexOf(startM);
+  const em = cm < 0 ? -1 : page.indexOf(endM, cm + startM.length);
+  if (cm < 0 || em < 0) {
+    console.error('index.html missing glance marker ' + name);
+    process.exit(1);
+  }
+  return page.slice(0, cm + startM.length) + '\n' + inner + '\n' + page.slice(em);
+}
+
+function glanceSoWhat(p) {
+  const s = String(p.soWhat || '').trim();
+  // Abbreviation splits ("No. 6") can leave a fragment. Keep a real sentence.
+  if (!s || /^[0-9a-z]/.test(s)) return '';
+  return s;
+}
+
+function glanceCard(p) {
+  const meta = [p.date || 'Date not stated'];
+  if (p.value) meta.push(p.value);
+  const sowhat = glanceSoWhat(p);
+  return '<a class="card reveal in" data-glance-date="' + esc(p.dateIso) + '" data-glance-headline="' + esc(p.headline) + '" href="/intel.html#p-' + esc(p.id) + '">' +
+    '<span class="g-region">' + esc(p.region || '') + '</span>' +
+    '<h3 style="font-size:1rem">' + esc(p.headline) + '</h3>' +
+    (sowhat ? '<p>' + esc(sowhat) + '</p>' : '') +
+    '<p class="g-val" style="margin-top:8px">' + esc(meta.join(' · ')) + '</p></a>';
+}
+
+const glanceToday = new Date().toISOString().slice(0, 10);
+const glancePosts = posts.filter(function (p) {
+  return p && p.headline && p.datePrecision === 'day' && /^\d{4}-\d{2}-\d{2}$/.test(String(p.dateIso || '')) && p.dateIso <= glanceToday;
+});
+const glancePick = glancePosts.slice(0, 3);
+if (!latestIso || !glancePick.length || glancePick[0].dateIso !== latestIso) {
+  console.error('At a Glance would lag the newest Intel feed item (' + (latestLabel || latestIso || 'none') + ')');
+  process.exit(1);
+}
+let home = fs.readFileSync('index.html', 'utf8');
+const glanceSub = 'Latest sourced item <b>' + esc(latestLabel) + '</b>. Dates are on the source, not this visit.';
+home = injectGlance(home, 'sub', glanceSub);
+home = injectGlance(home, 'cards', glancePick.map(glanceCard).join('\n'));
+fs.writeFileSync('index.html', home);
+console.log('index.html: At a Glance stamped from the feed · ' + latestLabel + ' · ' + glancePick.length + ' headlines');

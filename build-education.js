@@ -2,7 +2,7 @@
 /* build-education.js — TransformerPath Transformer Education & Training Providers Directory builder.
  *
  * Generates education.html — verified directory of universities, technical institutes,
- * testing academies, and masterclass providers for transformer engineering.
+ * testing academies, and course providers for transformer engineering.
  *
  * Sourced from data/education.json.
  * Run: node build-education.js
@@ -18,6 +18,8 @@ const { directoryBadge, scrubLegacyLabels } = require('./lib/provenance-badge');
 
 const DATA = JSON.parse(fs.readFileSync('data/education.json', 'utf8'));
 const PROVIDERS = DATA.providers || [];
+const { sourcedCardCount } = require('./lib/sourced-card-count');
+const provenanceStat = sourcedCardCount(PROVIDERS);
 
 function render() {
   const eduJson = scrubLegacyLabels(JSON.stringify(PROVIDERS));
@@ -33,7 +35,7 @@ function render() {
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TransformerPath">
 <meta property="og:title" content="Transformer Education & Training Providers Directory | TransformerPath">
-<meta property="og:description" content="Find verified university high-voltage programs, Doble masterclasses, CIGRE tutorials, and professional transformer engineering certifications.">
+<meta property="og:description" content="Find verified university high-voltage programs, Doble courses, CIGRE tutorials, and professional transformer engineering certifications.">
 <meta property="og:url" content="https://transformerpath.com/education.html">
 <meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
 <meta name="robots" content="index,follow">
@@ -108,14 +110,14 @@ ${HEAD}
       <div class="lbl">Accredited Certifications</div>
     </div>
     <div class="stat-box">
-      <div class="num">100%</div>
-      <div class="lbl">Provenance on each card</div>
+      <div class="num" data-sourced="website-and-check-date">${provenanceStat.text}</div>
+      <div class="lbl">Cards with a source URL and check date</div>
     </div>
   </div>
 
   <div class="filter-bar">
     <div class="filter-row">
-      <input type="search" id="eduSearch" class="search-input" placeholder="Search institution, course, or certification (e.g. Doble, TU Delft, DGA, Masterclass)...">
+      <input type="search" id="eduSearch" class="search-input" placeholder="Search institution, course, or certification (e.g. Doble, TU Delft, DGA, course)...">
       <select id="eduMode" class="select-input">
         <option value="">All Delivery Modes</option>
         <option value="In-Person">In-Person Classroom / Lab</option>

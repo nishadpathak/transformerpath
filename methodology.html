@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="style.css?v=14"><link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0d1b2e">
 <style>
-.mth-wrap{max-width:860px;margin:0 auto;padding:44px 20px 90px}
+.mth-wrap{max-width:860px;margin:0 auto;padding:44px 20px 90px;overflow-x:auto}
 .mth-wrap h1{font-size:2rem;color:var(--ink)}
 .mth-wrap .lead{color:var(--muted);font-size:1.05rem;max-width:760px;margin:8px 0 8px}
 .mth-wrap h2{font-size:1.4rem;color:var(--ink);margin:38px 0 10px}
@@ -39,11 +39,16 @@
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 <header>
+  <style>
+    @media (min-width: 1024px) {
+      #mainNav > .tpnav-more { display: block; }
+    }
+  </style>
   <div class="container nav">
     <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 16 16" aria-hidden="true" style="flex:none"><g fill="#f5a623"><rect x="1" y="1" width="4" height="4"/><rect x="11" y="1" width="4" height="4"/><rect x="1" y="11" width="4" height="4"/><rect x="11" y="11" width="4" height="4"/><rect x="5" y="2" width="6" height="2"/><rect x="12" y="5" width="2" height="6"/><rect x="5" y="12" width="6" height="2"/></g></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
     <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
     <nav class="tpnav" id="mainNav" aria-label="Primary">
-      <a href="/intel">Intel</a>
+      <a href="/intel.html">Intel</a>
       <div class="tpnav-dropdown">
         <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
         <div class="tpnav-dropdown-panel" role="menu">
@@ -56,21 +61,25 @@
           <a href="services.html">Services &amp; Repair</a>
           <a href="markets.html">Markets</a>
           <a href="buyers-guide.html">Buyer's Guide</a>
+          <a href="buy-early/">Buy early</a>
+          <a href="spare-capacity/">Mid-tier makers</a>
+          <a href="lead-times/">Lead times</a>
+          <a href="bottlenecks/">Bottlenecks</a>
           <a href="directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
         </div>
       </div>
       <a href="projects.html">Projects</a>
       <a href="tenders.html">Tenders</a>
       <a href="events.html">Events</a>
-      <a href="tools.html" class="tpnav-opt">Engineering</a>
       <a href="learn.html">Learn</a>
       <a href="rfq.html">RFQ</a>
       <div class="tpnav-more">
         <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
         <div class="tpnav-more-panel" role="menu">
+          <a href="tools.html" role="menuitem">Engineering</a>
           <a href="map.html" role="menuitem">Industry Map</a>
           <a href="grids.html" role="menuitem">Global Grids</a>
-          <a href="webinars.html" role="menuitem">Webinars</a>
+          
           <a href="standards.html" role="menuitem">Standards &amp; Codes</a>
           <a href="for-manufacturers.html" role="menuitem">For Manufacturers</a>
           <a href="pricing.html" role="menuitem">Pricing Plans</a>
@@ -79,6 +88,7 @@
       </div>
       <span class="tpnav-utils">
         <a href="search.html" title="Search" aria-label="Search">&#128269;</a>
+        <span class="tp-auth" data-tp-auth hidden></span>
         <a href="workspace.html" data-tp-account>Account</a>
         <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">&#127769;</button>
       </span>
@@ -110,6 +120,8 @@
       themeToggle.textContent = isDark ? '☀️' : '🌙';
     }
   </script>
+  <script src="google-auth-config.js" defer></script>
+  <script src="tp-auth.js?v=1" defer></script>
   <script src="tp-nav.js?v=7" defer></script>
   <script src="tp-pwa.js?v=7" defer></script>
 </header>
@@ -157,9 +169,71 @@
   <h2 id="how-we-source">How we source (and what we do not claim)</h2>
   <p>Every public Intel card, directory fact and project/tender row must trace to a source URL or filing. We prefer official utility / tender-board / regulator pages, then stock filings, then corroborated trade press. Keyword hits and portal mirrors are discovery inputs — they are graded CONFIRMED / SUPPORTED / REVIEW_REQUIRED / REJECTED before anything is eligible to publish.</p>
   <div class="card2">
-    <b style="color:var(--text)">Discovery ≠ publication.</b> Finding a GCC tender or localisation story in a portal registry does <b>not</b> auto-inject a Daily Intel card. Publish gates require evidence grade, date-field honesty (observation dates only — never tender close as “freshness”), and editorial review. Zero qualifying activity in a market (for example a clean Qatar September) is reported as coverage success, not failure.
+    <b style="color:var(--text)">Discovery ≠ publication.</b> Finding a tender or localisation story in a procurement-portal registry does <b>not</b> auto-inject a Daily Intel card. Publish gates require evidence grade, date-field honesty (observation dates only — never tender close as “freshness”), and editorial review. Zero qualifying activity in a market (for example a clean Qatar September) is reported as coverage success, not failure.
   </div>
   <p>Live portal adapters (DEWA, Etimad, Bahrain Tender Board and peers) stamp <code>last_checked</code> on every probe and <code>last_success</code> only when the response body is reachable and contains transformer-domain vocabulary. Session-gated or JS-only shells stay <b>BLOCKED_AUTH</b> / <b>NEEDS_ADAPTER</b> — they are never counted as live coverage.</p>
+
+  <!-- INTEL-CADENCE:START -->
+<h2 id="coverage-cadence">Intel coverage cadence</h2>
+<p>This is how often each registered source is checked. The figure is the <code>crawl_frequency</code> on the source registry. A source with no frequency on file is marked <b>Not recorded</b>. Per-country coverage (what has been published, and when it was last sourced) stays on the <a href="markets.html">market pages</a>.</p>
+<h3>Desk schedule</h3>
+<p>These are the scheduled functions in <code>netlify.toml</code>. They are the desk clocks, not a per-source promise.</p>
+<table><tr><th>Function</th><th>Schedule</th></tr>
+<tr><td><code>refresh-data</code></td><td><code>0 * * * *</code></td></tr>
+<tr><td><code>daily-rebuild</code></td><td><code>0 6 * * *</code></td></tr>
+<tr><td><code>watchlist-alerts</code></td><td><code>30 6,18 * * *</code></td></tr>
+</table>
+<h3>Bahrain</h3>
+<table><tr><th>Source</th><th>Id</th><th>Check cadence</th><th>Last checked</th><th>Status</th></tr>
+<tr><td>Kingdom of Bahrain Tender Board</td><td><code>bahrain-tender-board</code></td><td>Daily</td><td>2026-10-16</td><td>ACTIVE</td></tr>
+<tr><td>Electricity &amp; Water Authority (EWA) — Central Stores Directorate</td><td><code>ewa-bahrain</code></td><td>Daily</td><td>2026-10-16</td><td>ACTIVE</td></tr>
+</table>
+<h3>Kuwait</h3>
+<table><tr><th>Source</th><th>Id</th><th>Check cadence</th><th>Last checked</th><th>Status</th></tr>
+<tr><td>Ministry of Electricity, Water &amp; Renewable Energy (MEWRE)</td><td><code>mewre-kuwait</code></td><td>Daily</td><td>2026-10-16</td><td>BLOCKED_AUTH</td></tr>
+<tr><td>Kuwait Central Agency for Public Tenders / Central Procurement</td><td><code>kuwait-central-procurement</code></td><td>Daily</td><td>2026-10-16</td><td>BLOCKED_AUTH</td></tr>
+</table>
+<h3>Oman</h3>
+<table><tr><th>Source</th><th>Id</th><th>Check cadence</th><th>Last checked</th><th>Status</th></tr>
+<tr><td>Authority for Public Services Regulation (APSR)</td><td><code>apsr-oman</code></td><td>Twice a week</td><td>2026-10-16</td><td>NEEDS_ADAPTER</td></tr>
+<tr><td>Invest Oman / Ministry of Commerce, Industry and Investment Promotion</td><td><code>invest-oman</code></td><td>Twice a week</td><td>2026-10-16</td><td>BLOCKED_AUTH</td></tr>
+<tr><td>Oman Electricity Transmission Company (OETC)</td><td><code>oetc</code></td><td>Twice a week</td><td>2026-10-16</td><td>ACTIVE</td></tr>
+<tr><td>Nama Group</td><td><code>nama-group</code></td><td>Twice a week</td><td>2026-10-16</td><td>ACTIVE</td></tr>
+<tr><td>Voltamp Energy SAOG</td><td><code>voltamp-oman</code></td><td>Weekly</td><td>Not checked</td><td>NEEDS_ADAPTER</td></tr>
+<tr><td>Oman Observer / ONA</td><td><code>oman-observer</code></td><td>Daily</td><td>Not checked</td><td>NEEDS_ADAPTER</td></tr>
+<tr><td>Times of Oman</td><td><code>times-of-oman</code></td><td>Weekly</td><td>Not checked</td><td>NEEDS_ADAPTER</td></tr>
+<tr><td>The Arabian Stories</td><td><code>arabian-stories</code></td><td>Event-driven</td><td>Not checked</td><td>NEEDS_ADAPTER</td></tr>
+</table>
+<h3>Qatar</h3>
+<table><tr><th>Source</th><th>Id</th><th>Check cadence</th><th>Last checked</th><th>Status</th></tr>
+<tr><td>Qatar General Electricity &amp; Water Corporation (KAHRAMAA)</td><td><code>kahramaa</code></td><td>Daily</td><td>2026-10-16</td><td>ACTIVE</td></tr>
+<tr><td>Central Tender Committee / Government Procurement</td><td><code>qatar-tender-committee</code></td><td>Twice a week</td><td>Not checked</td><td>NEEDS_ADAPTER</td></tr>
+</table>
+<h3>Saudi Arabia</h3>
+<table><tr><th>Source</th><th>Id</th><th>Check cadence</th><th>Last checked</th><th>Status</th></tr>
+<tr><td>Etimad Government Procurement Portal</td><td><code>etimad</code></td><td>Daily</td><td>2026-10-16</td><td>BLOCKED_AUTH</td></tr>
+<tr><td>Saudi Water Authority (الهيئة السعودية للمياه)</td><td><code>saudi-water-authority</code></td><td>Daily</td><td>2026-10-16</td><td>BLOCKED_AUTH</td></tr>
+<tr><td>Saudi Electricity Company / Saudi Energy</td><td><code>sec-saudi-energy</code></td><td>Daily</td><td>2026-10-16</td><td>BLOCKED_AUTH</td></tr>
+<tr><td>Saudi Power Procurement Company (SPPC)</td><td><code>sppc</code></td><td>Weekly</td><td>Not checked</td><td>NEEDS_ADAPTER</td></tr>
+<tr><td>SaudiGulf Projects</td><td><code>saudigulf-projects</code></td><td>Not recorded</td><td>Not checked</td><td>—</td></tr>
+</table>
+<h3>United Arab Emirates</h3>
+<table><tr><th>Source</th><th>Id</th><th>Check cadence</th><th>Last checked</th><th>Status</th></tr>
+<tr><td>Dubai Electricity &amp; Water Authority (DEWA)</td><td><code>dewa-open-tenders</code></td><td>Daily</td><td>2026-10-16</td><td>NEEDS_ADAPTER</td></tr>
+<tr><td>Emirates Water and Electricity Company (EWEC)</td><td><code>ewec</code></td><td>Weekly</td><td>Not checked</td><td>NEEDS_ADAPTER</td></tr>
+<tr><td>TAQA Transmission</td><td><code>taqa-transmission</code></td><td>Weekly</td><td>Not checked</td><td>NEEDS_ADAPTER</td></tr>
+<tr><td>Sharjah Electricity, Water and Gas Authority (SEWA)</td><td><code>sewa</code></td><td>Twice a week</td><td>Not checked</td><td>NEEDS_ADAPTER</td></tr>
+<tr><td>Emirates News Agency (WAM)</td><td><code>wam</code></td><td>Not recorded</td><td>Not checked</td><td>—</td></tr>
+</table>
+<h3>Country not recorded</h3>
+<table><tr><th>Source</th><th>Id</th><th>Check cadence</th><th>Last checked</th><th>Status</th></tr>
+<tr><td>MEED</td><td><code>meed</code></td><td>Daily</td><td>Not checked</td><td>ACTIVE</td></tr>
+<tr><td>Zawya</td><td><code>zawya</code></td><td>Not recorded</td><td>Not checked</td><td>—</td></tr>
+<tr><td>Technical Review Middle East</td><td><code>technical-review-middle-east</code></td><td>Not recorded</td><td>Not checked</td><td>—</td></tr>
+<tr><td>Utilities Middle East</td><td><code>utilities-middle-east</code></td><td>Not recorded</td><td>Not checked</td><td>—</td></tr>
+<tr><td>Arabian Business</td><td><code>arabian-business</code></td><td>Not recorded</td><td>Not checked</td><td>—</td></tr>
+</table>
+<!-- INTEL-CADENCE:END -->
 
   <h2>Corrections</h2>
   <p>Every company, project, utility and intelligence page offers "suggest a correction". A correction is reviewed against a source before it is applied — it is never auto-overwritten. Tell us the entity, the field, the current value, your proposed correction and a source/document, and the correction stays pending until reviewed.</p>
@@ -168,7 +242,7 @@
   <p>Each entity and fact carries a <b>last verified</b> date — the last time we confirmed it against its source. Dates are shown so you can judge currency. TransformerPath data is a snapshot of published public information on that date; always carry out your own due diligence before a commercial decision.</p>
 
   <h2>Commercial independence</h2>
-  <p>A company that pays TransformerPath (verified listing, sponsor, advertising, RFQ eligibility, enhanced presentation, logo, catalogue, contact) receives <b>no</b> higher research confidence, better editorial treatment, preferential Intel, fake rankings or suppressed negative factual data. Commercial products change <i>presentation</i>, never <i>research integrity</i>. Research data remains editorially independent.</p>
+  <p>A company that pays TransformerPath (verified profile, sponsor, advertising, logo, catalogue, contact) receives <b>no</b> higher research confidence, better editorial treatment, preferential Intel, fake rankings or suppressed negative factual data. RFQ routing is coming soon. Commercial products change <i>presentation</i>, never <i>research integrity</i>. Research data remains editorially independent.</p>
 
   <h2>Neutral institutional voice</h2>
   <p>TransformerPath maintains a neutral institutional voice. We do not name individuals in public editorial content, we do not carry unrelated company branding, and we do not rank or score companies (no "best manufacturer", no quality rating) unless a future transparent methodology justifies it.</p>
@@ -184,8 +258,8 @@
       <div><p class="footer-col-label">INTELLIGENCE</p><a href="intel.html">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="projects.html">Projects</a><a href="tenders.html">Tenders</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="map.html">Industry Map</a><a href="events.html">Events</a></div>
       <div><p class="footer-col-label">DIRECTORY</p><a href="manufacturers.html">Manufacturers</a><a href="directory.html">Directory Index</a><a href="components.html">Components &amp; Materials</a><a href="machinery.html">Machinery</a><a href="laboratories.html">Testing Labs</a><a href="services.html">Service &amp; Repair</a><a href="logistics.html">Logistics</a><a href="buyers.html">Buyers &amp; Utilities</a><a href="rfq.html">RFQ Board</a></div>
       <div><p class="footer-col-label">ENGINEERING</p><a href="tools.html">Engineering Hub</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Interactive Models</a><a href="standards.html">Standards &amp; Codes</a><a href="knowledge.html">Knowledge Base</a><a href="case-studies.html">Case Studies</a></div>
-      <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learning Hub</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy 3D Tools</a><a href="books.html">Books</a><a href="education.html">Education</a></div>
-      <div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="pricing.html">Pricing Plans</a><a href="verified.html">Verified Profiles</a><a href="webinars.html">Webinars</a><a href="sponsor.html">Sponsorship</a><a href="associations.html">Associations</a><a href="media.html">Media</a></div>
+      <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learning Hub</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy 3D Tools</a><a href="books.html">Books</a><a href="education.html">Education</a></div>
+      <div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="pricing.html">Pricing Plans</a><a href="verified.html">Verified Profiles</a><a href="sponsor.html">Sponsorship</a><a href="associations.html">Associations</a><a href="media.html">Media</a></div>
       <div><p class="footer-col-label">COMPANY</p><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="affiliate-disclosure.html">Affiliate disclosure</a></div>
       <div><p class="footer-col-label">CONTACT</p>
         <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>

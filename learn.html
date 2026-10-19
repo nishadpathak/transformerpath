@@ -4,17 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Learn Transformer Design — Course Matched to the Books | TransformerPath</title>
-<meta name="description" content="Learn transformer design, operations, diagnostics, manufacturing and HVDC — the 26-chapter design masterclass plus a book-matched series path (Volumes 0–19). Chapters 1–2 are free. A fresh lesson is spotlighted each week.">
+<meta name="description" content="Learn transformer design, operations, diagnostics, manufacturing and HVDC — the 26-chapter design course plus a book-matched series path (Volumes 0–19). Chapters 1–2 are free. A fresh lesson is spotlighted each week.">
 <link rel="canonical" href="https://transformerpath.com/learn.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TransformerPath">
 <meta property="og:title" content="Learn Transformer Design — Course Matched to the Books | TransformerPath">
-<meta property="og:description" content="Learn transformer design, operations, diagnostics, manufacturing and HVDC — the 26-chapter design masterclass plus a book-matched series path (Volumes 0–19).">
+<meta property="og:description" content="Learn transformer design, operations, diagnostics, manufacturing and HVDC — the 26-chapter design course plus a book-matched series path (Volumes 0–19).">
 <meta property="og:url" content="https://transformerpath.com/learn.html">
 <meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Learn Transformer Design — Course Matched to the Books | TransformerPath">
-<meta name="twitter:description" content="Learn transformer design, operations, diagnostics, manufacturing and HVDC — the 26-chapter design masterclass plus a book-matched series path (Volumes 0–19).">
+<meta name="twitter:description" content="Learn transformer design, operations, diagnostics, manufacturing and HVDC — the 26-chapter design course plus a book-matched series path (Volumes 0–19).">
 <meta name="twitter:image" content="https://transformerpath.com/brand/og-image.png">
 <link rel="stylesheet" href="style.css?v=14">
 <link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
@@ -64,6 +64,9 @@
   .calc-inputs { grid-template-columns:1fr; }
 }
 @media (max-width:520px){ .quiz-opts { grid-template-columns:1fr; } }
+.price-side { flex:1 1 16rem; min-width:0; max-width:100%; text-align:center; padding:10px 6px; }
+.price-side .plan-line { overflow-wrap:anywhere; }
+@media (max-width:720px){ .price-side { flex-basis:100%; } }
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0d1b2e">
@@ -71,7 +74,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="TransformerPath">
 
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Course", "name": "Transformer Design & Construction — Complete Engineering Course", "description": "The TransformerPath course: a 26-chapter design masterclass plus a book-matched path through operations, diagnostics, manufacturing, components, protection, specials, site work, loading, repair, standards, asset management, the engineer handbook and HVDC.", "provider": {"@type": "Organization", "name": "TransformerPath", "url": "https://transformerpath.com/"}, "hasCourseInstance": {"@type": "CourseInstance", "courseMode": "online"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Course", "name": "Transformer Design & Construction — Complete Engineering Course", "description": "The TransformerPath course: a 26-chapter design course plus a book-matched path through operations, diagnostics, manufacturing, components, protection, specials, site work, loading, repair, standards, asset management, the engineer handbook and HVDC.", "provider": {"@type": "Organization", "name": "TransformerPath", "url": "https://transformerpath.com/"}, "hasCourseInstance": {"@type": "CourseInstance", "courseMode": "online"}}</script>
 <script src="consent.js" defer></script>
     <link rel="stylesheet" href="tp-nav.css?v=14">
   <link rel="stylesheet" href="tp-feedback.css?v=14">
@@ -80,11 +83,16 @@
 
 <a class="skip-link" href="#main">Skip to content</a>
 <header>
+  <style>
+    @media (min-width: 1024px) {
+      #mainNav > .tpnav-more { display: block; }
+    }
+  </style>
   <div class="container nav">
     <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 16 16" aria-hidden="true" style="flex:none"><g fill="#f5a623"><rect x="1" y="1" width="4" height="4"/><rect x="11" y="1" width="4" height="4"/><rect x="1" y="11" width="4" height="4"/><rect x="11" y="11" width="4" height="4"/><rect x="5" y="2" width="6" height="2"/><rect x="12" y="5" width="2" height="6"/><rect x="5" y="12" width="6" height="2"/></g></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
     <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
     <nav class="tpnav" id="mainNav" aria-label="Primary">
-      <a href="/intel">Intel</a>
+      <a href="/intel.html">Intel</a>
       <div class="tpnav-dropdown">
         <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
         <div class="tpnav-dropdown-panel" role="menu">
@@ -97,21 +105,25 @@
           <a href="services.html">Services &amp; Repair</a>
           <a href="markets.html">Markets</a>
           <a href="buyers-guide.html">Buyer's Guide</a>
+          <a href="buy-early/">Buy early</a>
+          <a href="spare-capacity/">Mid-tier makers</a>
+          <a href="lead-times/">Lead times</a>
+          <a href="bottlenecks/">Bottlenecks</a>
           <a href="directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
         </div>
       </div>
       <a href="projects.html">Projects</a>
       <a href="tenders.html">Tenders</a>
       <a href="events.html">Events</a>
-      <a href="tools.html" class="tpnav-opt">Engineering</a>
       <a href="learn.html">Learn</a>
       <a href="rfq.html">RFQ</a>
       <div class="tpnav-more">
         <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
         <div class="tpnav-more-panel" role="menu">
+          <a href="tools.html" role="menuitem">Engineering</a>
           <a href="map.html" role="menuitem">Industry Map</a>
           <a href="grids.html" role="menuitem">Global Grids</a>
-          <a href="webinars.html" role="menuitem">Webinars</a>
+          
           <a href="standards.html" role="menuitem">Standards &amp; Codes</a>
           <a href="for-manufacturers.html" role="menuitem">For Manufacturers</a>
           <a href="pricing.html" role="menuitem">Pricing Plans</a>
@@ -120,6 +132,7 @@
       </div>
       <span class="tpnav-utils">
         <a href="search.html" title="Search" aria-label="Search">&#128269;</a>
+        <span class="tp-auth" data-tp-auth hidden></span>
         <a href="workspace.html" data-tp-account>Account</a>
         <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">&#127769;</button>
       </span>
@@ -151,6 +164,8 @@
       themeToggle.textContent = isDark ? '☀️' : '🌙';
     }
   </script>
+  <script src="google-auth-config.js" defer></script>
+  <script src="tp-auth.js?v=1" defer></script>
   <script src="tp-nav.js?v=7" defer></script>
   <script src="tp-pwa.js?v=7" defer></script>
 </header>
@@ -158,8 +173,8 @@
 <section class="hero" style="padding:50px 0 40px">
   <div class="container">
     <h1>Learn Transformer <span>Design</span></h1>
-    <p>Start with the 26-chapter design masterclass — chapters 1–2 are free — then follow the book-matched path through operations, diagnostics, manufacturing, components, protection, specials, site work, loading, repair, standards, asset management, the handbook and HVDC.</p>
-    <p class="hero-ctas" style="margin-top:18px"><a class="btn btn-amber" href="masterclass.html">Open the Masterclass →</a>
+    <p>Start with the 26-chapter design course — chapters 1–2 are free — then follow the book-matched path through operations, diagnostics, manufacturing, components, protection, specials, site work, loading, repair, standards, asset management, the handbook and HVDC.</p>
+    <p class="hero-ctas" style="margin-top:18px"><a class="btn btn-amber" href="learn.html">Open the design course →</a>
     <a href="engineer-track.html" style="font-weight:600;color:var(--accent);display:inline-block;max-width:100%">or follow the Design Engineer Track</a></p>
   </div>
 </section>
@@ -171,7 +186,7 @@
     <div class="featured" style="margin-bottom:24px">
       <span class="kick">Structured pathway</span>
       <h2>Design Engineer Track</h2>
-      <p>Four levels, ~400 guided hours and five capstone projects. Level 1 is free to start. Full Levels 1–4 and capstone review need 12 months access.</p>
+      <p>Four levels, ~400 guided hours and five capstone projects. Level 1 is free to start. Full Levels 1–4 need 12 months access.</p>
       <a class="btn btn-amber" href="engineer-track.html">Start the track →</a>
     </div>
 
@@ -184,15 +199,15 @@
           <p style="color:var(--muted);margin:0 0 12px">One payment unlocks the entire learning platform:</p>
           <ul style="margin:0 0 6px 20px;padding:0;color:var(--text);font-size:.92rem;line-height:1.7">
             <li><b>All four levels</b> — Foundations, Distribution, Power Transformer and Specials &amp; Mastery</li>
-            <li><b>All courses &amp; tools</b> — masterclass, tutorial, academy, 3D models, formulas and design calculators</li>
-            <li><b>Manually reviewed capstones</b> — marked-up critique + model answer for all five design projects</li>
+            <li><b>All courses &amp; tools</b> — design course, tutorial, academy, 3D models, formulas and design calculators</li>
+            <li><b>Published model answers</b> — the model answer for all five design projects. Capstones are not personally reviewed</li>
             <li><b>Written record</b> — a record of every capstone you complete (currently stored on your device; account-synced progress is being added)</li>
           </ul>
         </div>
-        <div style="flex:none;text-align:center;padding:10px 6px">
+        <div class="price-side">
           <div style="font-size:2rem;font-weight:800;color:var(--accent)">$199<span style="font-size:.9rem;color:var(--muted);font-weight:600"> / 12 months</span></div>
           <a class="btn btn-amber" href="pricing.html" style="margin-top:10px;display:inline-block">Compare 3 plans →</a>
-          <div style="font-size:.75rem;color:var(--muted);margin-top:8px">Learning $199 · Professional $599 · Team $1,999</div>
+          <div class="plan-line" style="font-size:.75rem;color:var(--muted);margin-top:8px">Learning $199 · Engineering Pro $599 · Engineering Team $1,999</div>
         </div>
       </div>
     </div>
@@ -200,10 +215,10 @@
     <!-- Corporate / team training CTA -->
     <div class="card" style="margin-bottom:24px;display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:linear-gradient(135deg,var(--navy),#1b3a5c);color:#fff">
       <div style="max-width:58ch">
-        <h3 style="color:#fff;margin:0 0 4px">🏢 Training a whole team?</h3>
-        <p style="color:#c4d2e4;margin:0">Bulk seats, manually reviewed capstones and priority review for your manufacturer, utility or EPC — with volume pricing.</p>
+        <h3 style="color:#fff;margin:0 0 4px">🏢 A whole team on one plan?</h3>
+        <p style="color:#c4d2e4;margin:0">Engineering Team is a self-serve payment for 12 months of access. There is no live class and no custom training.</p>
       </div>
-      <a class="btn btn-amber" href="teams.html" style="flex:none">Corporate training →</a>
+      <a class="btn btn-amber" href="pricing.html" style="flex:none">See team pricing →</a>
     </div>
 
     <!-- Flagship entry points: Grid Lab + 3D explorer + Tools Hub -->
@@ -220,7 +235,7 @@
       </div>
       <div class="hero-card tut">
         <h2>🧰 Course Tools Hub</h2>
-        <p>One map of every interactive model and calculator that belongs with the masterclass — open a tool, then come back to the chapter that uses it.</p>
+        <p>One map of every interactive model and calculator that belongs with the design course — open a tool, then come back to the chapter that uses it.</p>
         <a class="btn btn-outline" href="academy.html">Open tools hub →</a>
       </div>
     </div>
@@ -237,7 +252,7 @@
       <a class="card" href="oltc.html"><span class="emoji" aria-hidden="true">⚙️</span><h3>OLTC 3D Cutaway</h3><p>See inside an on-load tap-changer — diverter, selector and drive in 3D.</p></a>
       <a class="card" href="bushing.html"><span class="emoji" aria-hidden="true">🔩</span><h3>Condenser Bushing 3D</h3><p>RIP and OIP bushings in an interactive 3D cutaway.</p></a>
       <a class="card" href="coretopology.html"><span class="emoji" aria-hidden="true">🧲</span><h3>Core Topology 3D</h3><p>3-limb vs 5-limb vs shell-form cores, compared in interactive 3D.</p></a>
-      <a class="card" href="webinars.html"><span class="emoji" aria-hidden="true">🎥</span><h3>Industry webinars</h3><p>OEM, supplier and institute webinars — live sessions, recurring series and on-demand replays.</p></a>
+      <a class="card" href="events.html"><span class="emoji" aria-hidden="true">🎥</span><h3>Industry events</h3><p>OEM, supplier and institute events — live sessions, recurring series and on-demand replays.</p></a>
       <a class="card" href="events.html"><span class="emoji" aria-hidden="true">📅</span><h3>Events calendar</h3><p>In-person exhibitions and conferences worldwide, with map pins for upcoming editions.</p></a>
     </div>
 
@@ -247,11 +262,11 @@
     <!-- Series path (volumes in order) -->
     <div class="section-head" id="series-path" style="margin-bottom:14px"><h2>The book-matched path</h2><p>Volumes 0–19 in series order. Each card is original course copy that points to the matching volume — not a reprint of the book.</p></div>
     <div id="seriespath" style="margin-bottom:36px">
-      <div class="module"><h3><span class="mod-no" style="width:auto;padding:0 8px;border-radius:8px">V0–V2</span> Design</h3><p>Fundamentals (planned), Volume 1 Edition 1, and Volume 2 Edition 1 — beside the 26-chapter design core.</p><div class="links"><a href="masterclass.html#fundamentals">📖 Course</a><a href="masterclass.html#powerdesign">📖 Power design</a><a href="books/volume-0/">📘 Volume 0</a><a href="books/volume-1/">📘 Volume 1</a><a href="books/volume-2/">📘 Volume 2</a></div></div>
-      <div class="module"><h3><span class="mod-no" style="width:auto;padding:0 8px;border-radius:8px">V3–V5</span> Test, diagnostics, failures</h3><p>Factory testing and diagnostics (both planned / being prepared) plus forensic investigation of a failed unit.</p><div class="links"><a href="masterclass.html#testing">📖 Course</a><a href="masterclass.html#diagnostics">📖 Diagnostics</a><a href="masterclass.html#failures">📖 Failures</a><a href="books/volume-3/">📘 Volume 3</a><a href="books/volume-4/">📘 Volume 4</a><a href="books/volume-5/">📘 Volume 5</a></div></div>
-      <div class="module"><h3><span class="mod-no" style="width:auto;padding:0 8px;border-radius:8px">V6–V10</span> Works, materials, losses, withstand</h3><p>Manufacturing, insulation, components, loss economics and short-circuit strength.</p><div class="links"><a href="masterclass.html#manufacturing">📖 Course</a><a href="books/volume-6/">📘 Volume 6</a><a href="masterclass.html#insulation">📖 Insulation</a><a href="books/volume-7/">📘 Volume 7</a><a href="masterclass.html#construction">📖 Components</a><a href="books/volume-8/">📘 Volume 8</a><a href="masterclass.html#losses">📖 Losses</a><a href="books/volume-9/">📘 Volume 9</a><a href="masterclass.html#shortcircuit">📖 Short-circuit</a><a href="books/volume-10/">📘 Volume 10</a></div></div>
-      <div class="module"><h3><span class="mod-no" style="width:auto;padding:0 8px;border-radius:8px">V11–V16</span> Network, specials, site, loading, repair, standards</h3><p>Protection, special transformers, site work, loading, repair and quality assurance.</p><div class="links"><a href="masterclass.html#protection">📖 Course</a><a href="books/volume-11/">📘 Volume 11</a><a href="masterclass.html#special">📖 Specials</a><a href="books/volume-12/">📘 Volume 12</a><a href="masterclass.html#sitelife">📖 Site</a><a href="books/volume-13/">📘 Volume 13</a><a href="masterclass.html#loading">📖 Loading</a><a href="books/volume-14/">📘 Volume 14</a><a href="masterclass.html#repair">📖 Repair</a><a href="books/volume-15/">📘 Volume 15</a><a href="masterclass.html#standards">📖 Standards</a><a href="books/volume-16/">📘 Volume 16</a></div></div>
-      <div class="module"><h3><span class="mod-no" style="width:auto;padding:0 8px;border-radius:8px">V17–V19</span> Fleet, handbook, HVDC</h3><p>Utility asset management, the question-indexed handbook, and the converter grid the installed fleet was not specified for.</p><div class="links"><a href="masterclass.html#assetmgmt">📖 Fleet</a><a href="books/volume-17/">📘 Volume 17</a><a href="masterclass.html#handbook">📖 Handbook</a><a href="books/volume-18/">📘 Volume 18</a><a href="masterclass.html#hvdc">📖 Course</a><a href="books/volume-19/">📘 Volume 19</a></div></div>
+      <div class="module"><h3><span class="mod-no" style="width:auto;padding:0 8px;border-radius:8px">V0–V2</span> Design</h3><p>Fundamentals (planned), Volume 1 Edition 1, and Volume 2 Edition 1 — beside the 26-chapter design core.</p><div class="links"><a href="learn.html">📖 Course</a><a href="books/volume-0/">📘 Volume 0</a><a href="books/volume-1/">📘 Volume 1</a><a href="books/volume-2/">📘 Volume 2</a></div></div>
+      <div class="module"><h3><span class="mod-no" style="width:auto;padding:0 8px;border-radius:8px">V3–V5</span> Test, diagnostics, failures</h3><p>Factory testing and diagnostics (both planned / being prepared) plus forensic investigation of a failed unit.</p><div class="links"><a href="learn.html">📖 Course</a><a href="books/volume-3/">📘 Volume 3</a><a href="books/volume-4/">📘 Volume 4</a><a href="books/volume-5/">📘 Volume 5</a></div></div>
+      <div class="module"><h3><span class="mod-no" style="width:auto;padding:0 8px;border-radius:8px">V6–V10</span> Works, materials, losses, withstand</h3><p>Manufacturing, insulation, components, loss economics and short-circuit strength.</p><div class="links"><a href="learn.html">📖 Course</a><a href="books/volume-6/">📘 Volume 6</a></div></div>
+      <div class="module"><h3><span class="mod-no" style="width:auto;padding:0 8px;border-radius:8px">V11–V16</span> Network, specials, site, loading, repair, standards</h3><p>Protection, special transformers, site work, loading, repair and quality assurance.</p><div class="links"><a href="learn.html">📖 Course</a><a href="books/volume-11/">📘 Volume 11</a></div></div>
+      <div class="module"><h3><span class="mod-no" style="width:auto;padding:0 8px;border-radius:8px">V17–V19</span> Fleet, handbook, HVDC</h3><p>Utility asset management, the question-indexed handbook, and the converter grid the installed fleet was not specified for.</p><div class="links"><a href="learn.html">📖 Course</a><a href="books/volume-19/">📘 Volume 19</a></div></div>
     </div>
 
     <!-- Curriculum -->
@@ -259,38 +274,38 @@
 
     <div id="curriculum">
       <!-- Static curriculum baseline (crawlable, no-JS). JS refreshes this with the spotlight highlight. -->
-      <div class="module"><h3><span class="mod-no">1</span> Fundamentals</h3><p>How a transformer works — mutual induction, the EMF equation, ideal vs real behaviour, and the rating inputs (kVA, voltage ratio, frequency, phases) that drive everything downstream.</p><div class="links"><a href="masterclass.html#fundamentals">📖 Read this section</a><a href="books/volume-1/">📘 Volume 1</a><a href="explorer.html">🧩 3D model</a></div></div>
-      <div class="module"><h3><span class="mod-no">2</span> Classification &amp; Specification</h3><p>Power vs distribution, core-type vs shell-type, cooling classes (ONAN/ONAF), vector group, impedance, tap range and the standards (IEC 60076 / ANSI C57) the customer specifies.</p><div class="links"><a href="masterclass.html#classification">📖 Read this section</a><a href="books/volume-1/">📘 Volume 1</a><a href="explorer.html">🧩 3D model</a></div></div>
-      <div class="module"><h3><span class="mod-no">3</span> Core Design &amp; CRGO</h3><p>Choosing core area and flux density, CRGO grades and stacking factor, and how silicon steel cuts hysteresis and eddy losses — setting iron weight and no-load loss.</p><div class="links"><a href="masterclass.html#core">📖 Read this section</a><a href="books/volume-1/">📘 Volume 1</a><a href="explorer.html">🧩 3D model</a><a href="calculator.html">🧮 Try the design calc</a></div></div>
-      <div class="module"><h3><span class="mod-no">4</span> Windings &amp; Current Density</h3><p>Conductor sizing from current density, LV-over-core then HV arrangement, layer/disc/helical windings, and the window-area check that confirms it all fits.</p><div class="links"><a href="masterclass.html#windings">📖 Read this section</a><a href="books/volume-6/">📘 Volume 6</a><a href="explorer.html">🧩 3D model</a><a href="calculator.html">🧮 Try the design calc</a></div></div>
-      <div class="module"><h3><span class="mod-no">5</span> Insulation System</h3><p>Turn, layer and major insulation; pressboard and paper (IEC 60641); clearances and creepage; oil as a dielectric — the discipline that decides reliability and life.</p><div class="links"><a href="masterclass.html#insulation">📖 Read this section</a><a href="books/volume-7/">📘 Volume 7</a><a href="explorer.html">🧩 3D model</a><a href="calculator.html">🧮 Try the design calc</a></div></div>
-      <div class="module"><h3><span class="mod-no">6</span> Thermal &amp; Cooling Design</h3><p>Temperature rise, radiators and fans, ONAN/ONAF/OFAF classes, oil flow and hot-spot control — turning loss watts into a safe operating temperature.</p><div class="links"><a href="masterclass.html#cooling">📖 Read this section</a><a href="books/volume-8/">📘 Volume 8</a><a href="explorer.html">🧩 3D model</a><a href="calculator.html">🧮 Try the design calc</a></div></div>
-      <div class="module"><h3><span class="mod-no">7</span> Tank &amp; Accessories</h3><p>Tank, conservator, bushings, tap-changer (OLTC/DETC), Buchholz, breather, protection and monitoring — the hardware around the active part.</p><div class="links"><a href="masterclass.html#construction">📖 Read this section</a><a href="books/volume-8/">📘 Volume 8</a><a href="explorer.html">🧩 3D model</a></div></div>
-      <div class="module"><h3><span class="mod-no">8</span> Dry-Type &amp; Cast Resin</h3><p>Cast-resin and VPI dry-type transformers — where they win, their thermal classes, and design differences from oil-immersed units.</p><div class="links"><a href="masterclass.html#drytype">📖 Read this section</a><a href="books/volume-12/">📘 Volume 12</a><a href="explorer.html">🧩 3D model</a></div></div>
-      <div class="module"><h3><span class="mod-no">9</span> Worked Design Example</h3><p>A complete 1000 kVA design worked end-to-end — from spec through core, turns, windings and window check to losses, the way a real designer builds it.</p><div class="links"><a href="masterclass.html#design">📖 Read this section</a><a href="books/volume-1/">📘 Volume 1</a><a href="explorer.html">🧩 3D model</a></div></div>
-      <div class="module"><h3><span class="mod-no">10</span> Losses, Impedance &amp; Efficiency</h3><p>No-load and load loss, leakage reactance and percent impedance, efficiency and voltage regulation — the numbers the customer guarantees.</p><div class="links"><a href="masterclass.html#losses">📖 Read this section</a><a href="books/volume-9/">📘 Volume 9</a><a href="explorer.html">🧩 3D model</a><a href="calculator.html">🧮 Try the design calc</a></div></div>
-      <div class="module"><h3><span class="mod-no">11</span> Testing &amp; Type Tests</h3><p>Routine, type and special tests — ratio, winding resistance, no-load and load loss, impedance, insulation, impulse and temperature-rise — verifying against IEC 60076.</p><div class="links"><a href="masterclass.html#testing">📖 Read this section</a><a href="books/volume-3/">📘 Volume 3</a><a href="explorer.html">🧩 3D model</a></div></div>
-      <div class="module"><h3><span class="mod-no">12</span> Standards</h3><p>The IEC 60076 family, ANSI/IEEE C57, and the component standards for bushings, tap-changers, oil and pressboard you design to.</p><div class="links"><a href="masterclass.html#standards">📖 Read this section</a><a href="books/volume-16/">📘 Volume 16</a><a href="explorer.html">🧩 3D model</a></div></div>
-      <div class="module"><h3><span class="mod-no">13</span> Vector Groups</h3><p>Dyn11, Ynd1 and the rest — phase displacement, why it matters for paralleling, and how the connection is built in the windings.</p><div class="links"><a href="masterclass.html#vectorgroups">📖 Read this section</a><a href="books/volume-1/">📘 Volume 1</a><a href="explorer.html">🧩 3D model</a></div></div>
-      <div class="module"><h3><span class="mod-no">14</span> Inrush</h3><p>Magnetising inrush current — why it happens at switch-on, how large it gets, and how protection is set so it doesn't false-trip.</p><div class="links"><a href="masterclass.html#inrush">📖 Read this section</a><a href="books/volume-11/">📘 Volume 11</a><a href="explorer.html">🧩 3D model</a></div></div>
-      <div class="module"><h3><span class="mod-no">15</span> Special Types</h3><p>Autotransformers, converter and furnace transformers, earthing transformers and other specials — what changes in the design.</p><div class="links"><a href="masterclass.html#special">📖 Read this section</a><a href="books/volume-12/">📘 Volume 12</a><a href="explorer.html">🧩 3D model</a></div></div>
-      <div class="module"><h3><span class="mod-no">16</span> Site &amp; Life</h3><p>Installation, commissioning, oil management, condition monitoring and end-of-life — getting the full service life out of the unit.</p><div class="links"><a href="masterclass.html#sitelife">📖 Read this section</a><a href="books/volume-13/">📘 Volume 13</a><a href="explorer.html">🧩 3D model</a></div></div>
-      <div class="module"><h3><span class="mod-no">17</span> Protection</h3><p>Differential, REF, overcurrent, Buchholz and pressure-relief protection — the relays and devices that keep a transformer (and the grid) safe.</p><div class="links"><a href="masterclass.html#protection">📖 Read this section</a><a href="books/volume-11/">📘 Volume 11</a><a href="explorer.html">🧩 3D model</a></div></div>
-      <div class="module"><h3><span class="mod-no">18</span> Procurement &amp; Tendering</h3><p>Reading a tender spec, building a compliant offer, guarantees and penalties, FAT/SAT and how buyers actually evaluate transformer bids.</p><div class="links"><a href="masterclass.html#procurement">📖 Read this section</a><a href="books/volume-9/">📘 Volume 9</a><a href="explorer.html">🧩 3D model</a></div></div>
-      <div class="module"><h3><span class="mod-no">19</span> Glossary &amp; Self-Test</h3><p>Key terms in one place plus a quick self-test to check your understanding of the whole course.</p><div class="links"><a href="masterclass.html#glossary">📖 Read this section</a><a href="books/volume-18/">📘 Volume 18</a><a href="explorer.html">🧩 3D model</a></div></div>
-      <div class="module"><h3><span class="mod-no">20</span> After-Sales &amp; Service</h3><p>Warranty, spares, retrofits, oil treatment and field service — the support a transformer needs across decades in operation.</p><div class="links"><a href="masterclass.html#aftersales">📖 Read this section</a><a href="books/volume-15/">📘 Volume 15</a><a href="explorer.html">🧩 3D model</a></div></div>
-      <div class="module"><h3><span class="mod-no">21</span> Bushings</h3><p>OIP/RIP/RIS types, condenser grading, test taps, creepage &amp; pollution class, and why bushings cause most transformer fires — with the 3D condenser-bushing cutaway.</p><div class="links"><a href="masterclass.html#bushings">📖 Read this section</a><a href="books/volume-8/">📘 Volume 8</a><a href="explorer.html">🧩 3D model</a></div></div>
-      <div class="module"><h3><span class="mod-no">22</span> Tap-Changers</h3><p>OLTC vs DETC, diverter/selector/change-over, resistor vs vacuum switching, AVR control and DGA of the diverter — with the 3D OLTC cutaway.</p><div class="links"><a href="masterclass.html#tapchangers">📖 Read this section</a><a href="books/volume-8/">📘 Volume 8</a><a href="explorer.html">🧩 3D model</a></div></div>
-      <div class="module"><h3><span class="mod-no">23</span> Impulse &amp; Stress Control</h3><p>How a winding sees a steep surge: initial vs final distribution, the α constant, and static rings, shields &amp; interleaving that protect the line-end turns.</p><div class="links"><a href="masterclass.html#stresscontrol">📖 Read this section</a><a href="books/volume-7/">📘 Volume 7</a><a href="explorer.html">🧩 3D model</a></div></div>
-      <div class="module"><h3><span class="mod-no">24</span> Fire, Containment &amp; Environment</h3><p>Pressure/arc protection, nitrogen-injection &amp; deluge, bunds and oil-water separation, ester fire safety and sustainability — the envelope around the transformer.</p><div class="links"><a href="masterclass.html#fireenv">📖 Read this section</a><a href="books/volume-15/">📘 Volume 15</a><a href="explorer.html">🧩 3D model</a></div></div>
-      <div class="module"><h3><span class="mod-no">25</span> Worked 500 MVA Design</h3><p>An EHV 400/220 kV worked design — currents, volts-per-turn, 5-limb core, impedance, impulse grading and ONAN/ONAF/ODAF cooling — behind the 500 MVA 3D model.</p><div class="links"><a href="masterclass.html#powerdesign">📖 Read this section</a><a href="books/volume-2/">📘 Volume 2</a><a href="explorer.html">🧩 3D model</a></div></div>
-      <div class="module"><h3><span class="mod-no">26</span> Engineering Data Appendix</h3><p>Reference tables designers keep open beside the calculator — ratings, insulation levels, impedance bands, temperature-rise limits and insulating liquids.</p><div class="links"><a href="masterclass.html#datalab">📖 Read this section</a><a href="books/volume-18/">📘 Volume 18</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">1</span> Fundamentals</h3><p>How a transformer works — mutual induction, the EMF equation, ideal vs real behaviour, and the rating inputs (kVA, voltage ratio, frequency, phases) that drive everything downstream.</p><div class="links"><a href="learn.html">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">2</span> Classification &amp; Specification</h3><p>Power vs distribution, core-type vs shell-type, cooling classes (ONAN/ONAF), vector group, impedance, tap range and the standards (IEC 60076 / ANSI C57) the customer specifies.</p><div class="links"><a href="learn.html">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">3</span> Core Design &amp; CRGO</h3><p>Choosing core area and flux density, CRGO grades and stacking factor, and how silicon steel cuts hysteresis and eddy losses — setting iron weight and no-load loss. CRGO saturates near 2.03 T; typical design flux is 1.6–1.75 T.</p><div class="links"><a href="learn.html">📖 Read this section</a><a href="explorer.html">🧩 3D model</a><a href="calculator.html">🧮 Try the design calc</a></div></div>
+      <div class="module"><h3><span class="mod-no">4</span> Windings &amp; Current Density</h3><p>Conductor sizing from current density, LV-over-core then HV arrangement, layer/disc/helical windings, and the window-area check that confirms it all fits.</p><div class="links"><a href="learn.html">📖 Read this section</a><a href="explorer.html">🧩 3D model</a><a href="calculator.html">🧮 Try the design calc</a></div></div>
+      <div class="module"><h3><span class="mod-no">5</span> Insulation System</h3><p>Turn, layer and major insulation; pressboard and paper (IEC 60641); clearances and creepage; oil as a dielectric — the discipline that decides reliability and life.</p><div class="links"><a href="learn.html">📖 Read this section</a><a href="explorer.html">🧩 3D model</a><a href="calculator.html">🧮 Try the design calc</a></div></div>
+      <div class="module"><h3><span class="mod-no">6</span> Thermal &amp; Cooling Design</h3><p>Temperature rise, radiators and fans, ONAN/ONAF/OFAF classes, oil flow and hot-spot control — turning loss watts into a safe operating temperature.</p><div class="links"><a href="learn.html">📖 Read this section</a><a href="explorer.html">🧩 3D model</a><a href="calculator.html">🧮 Try the design calc</a></div></div>
+      <div class="module"><h3><span class="mod-no">7</span> Tank &amp; Accessories</h3><p>Tank, conservator, bushings, tap-changer (OLTC/DETC), Buchholz, breather, protection and monitoring — the hardware around the active part.</p><div class="links"><a href="learn.html">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">8</span> Dry-Type &amp; Cast Resin</h3><p>Cast-resin and VPI dry-type transformers — where they win, their thermal classes, and design differences from oil-immersed units.</p><div class="links"><a href="learn.html">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">9</span> Worked Design Example</h3><p>A complete 1000 kVA design worked end-to-end — from spec through core, turns, windings and window check to losses, the way a real designer builds it.</p><div class="links"><a href="learn.html">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">10</span> Losses, Impedance &amp; Efficiency</h3><p>No-load and load loss, leakage reactance and percent impedance, efficiency and voltage regulation — the numbers the customer guarantees.</p><div class="links"><a href="learn.html">📖 Read this section</a><a href="explorer.html">🧩 3D model</a><a href="calculator.html">🧮 Try the design calc</a></div></div>
+      <div class="module"><h3><span class="mod-no">11</span> Testing &amp; Type Tests</h3><p>Routine, type and special tests — ratio, winding resistance, no-load and load loss, impedance, insulation, impulse and temperature-rise — verifying against IEC 60076.</p><div class="links"><a href="learn.html">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">12</span> Standards</h3><p>The IEC 60076 family, ANSI/IEEE C57, and the component standards for bushings, tap-changers, oil and pressboard you design to.</p><div class="links"><a href="learn.html">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">13</span> Vector Groups</h3><p>Dyn11, Ynd1 and the rest — phase displacement, why it matters for paralleling, and how the connection is built in the windings.</p><div class="links"><a href="learn.html">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">14</span> Inrush</h3><p>Magnetising inrush current — why it happens at switch-on, how large it gets, and how protection is set so it doesn't false-trip.</p><div class="links"><a href="learn.html">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">15</span> Special Types</h3><p>Autotransformers, converter and furnace transformers, earthing transformers and other specials — what changes in the design.</p><div class="links"><a href="learn.html">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">16</span> Site &amp; Life</h3><p>Installation, commissioning, oil management, condition monitoring and end-of-life — getting the full service life out of the unit.</p><div class="links"><a href="learn.html">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">17</span> Protection</h3><p>Differential, REF, overcurrent, Buchholz and pressure-relief protection — the relays and devices that keep a transformer (and the grid) safe.</p><div class="links"><a href="learn.html">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">18</span> Procurement &amp; Tendering</h3><p>Reading a tender spec, building a compliant offer, guarantees and penalties, FAT/SAT and how buyers actually evaluate transformer bids.</p><div class="links"><a href="learn.html">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">19</span> Glossary &amp; Self-Test</h3><p>Key terms in one place plus a quick self-test to check your understanding of the whole course.</p><div class="links"><a href="learn.html">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">20</span> After-Sales &amp; Service</h3><p>Warranty, spares, retrofits, oil treatment and field service — the support a transformer needs across decades in operation.</p><div class="links"><a href="learn.html">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">21</span> Bushings</h3><p>OIP/RIP/RIS types, condenser grading, test taps, creepage &amp; pollution class, and why bushings cause most transformer fires — with the 3D condenser-bushing cutaway.</p><div class="links"><a href="learn.html">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">22</span> Tap-Changers</h3><p>OLTC vs DETC, diverter/selector/change-over, resistor vs vacuum switching, AVR control and DGA of the diverter — with the 3D OLTC cutaway.</p><div class="links"><a href="learn.html">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">23</span> Impulse &amp; Stress Control</h3><p>How a winding sees a steep surge: initial vs final distribution, the α constant, and static rings, shields &amp; interleaving that protect the line-end turns.</p><div class="links"><a href="learn.html">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">24</span> Fire, Containment &amp; Environment</h3><p>Pressure/arc protection, nitrogen-injection &amp; deluge, bunds and oil-water separation, ester fire safety and sustainability — the envelope around the transformer.</p><div class="links"><a href="learn.html">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">25</span> Worked 500 MVA Design</h3><p>An EHV 400/220 kV worked design — currents, volts-per-turn, 5-limb core, impedance, impulse grading and ONAN/ONAF/ODAF cooling — behind the 500 MVA 3D model.</p><div class="links"><a href="learn.html">📖 Read this section</a><a href="explorer.html">🧩 3D model</a></div></div>
+      <div class="module"><h3><span class="mod-no">26</span> Engineering Data Appendix</h3><p>Reference tables designers keep open beside the calculator — ratings, insulation levels, impedance bands, temperature-rise limits and insulating liquids.</p><div class="links"><a href="learn.html">📖 Read this section</a></div></div>
     </div>
 
     <div id="paid-tools" class="card" style="margin:44px 0 18px;padding:28px 26px;text-align:center;border:1px solid var(--border)">
       <h2 style="margin:0 0 8px">Self-test and first-pass sizing</h2>
-      <p style="color:var(--muted);margin:0 0 16px">The knowledge check and sizing engine below run in the browser. The full formula set, design workspace and capstone review ship with 12-month access.</p>
-      <a class="btn btn-amber" href="masterclass.html">Start free chapters →</a>
+      <p style="color:var(--muted);margin:0 0 16px">The knowledge check and sizing engine below run in the browser. The full formula set and design workspace ship with 12-month access.</p>
+      <a class="btn btn-amber" href="learn.html">Start free chapters →</a>
       <a href="pricing.html" style="margin-left:14px;font-weight:600;color:var(--accent)">See plans</a>
     </div>
 
@@ -334,6 +349,12 @@
       <button type="button" id="btnCopyDesignSheet" class="btn btn-outline btn-sm" style="font-size:.78rem">📋 Copy Design Sheet (MD)</button>
     </div>
   </div>
+</div>
+<div class="card" id="sizing-validation" style="margin:0 0 24px;padding:16px 18px;border:1px solid rgba(245,166,35,.35)">
+  <h3 style="margin:0 0 8px;font-size:1.05rem;color:var(--ink)">Validation example</h3>
+  <p style="margin:0 0 8px;font-size:.88rem;color:var(--text)"><b>Inputs.</b> 3-phase, 1,000 kVA, 11 kV / 0.433 kV, 50 Hz, peak flux 1.65 T, current density 2.8 A/mm², K = 0.45.</p>
+  <p style="margin:0 0 8px;font-size:.88rem;color:var(--text)"><b>Expected.</b> Volts per turn 14.23 V, net core area 388 cm², HV turns 446, LV turns 18, HV line current 52.5 A, LV line current 1,333 A, HV conductor 18.7 mm², LV conductor 476 mm².</p>
+  <p style="margin:0;font-size:.84rem;color:var(--muted)"><b>References.</b> Line current is I = S / (√3 · U) for three phases, the rated-current relation in IEC 60076-1, with U in volts. Phase voltage for a star winding is the line voltage divided by √3. Turns are that phase voltage divided by volts per turn. Net core area uses the sinusoidal EMF equation E = 4.44 · f · N · B · A, rearranged as A = Eₜ / (4.44 · f · B). Conductor area is current divided by current density. K√kVA is this page’s empirical volts-per-turn start, not an IEC constant. Star connection is assumed for the three-phase case.</p>
 </div>
 
 <script>
@@ -448,13 +469,12 @@
     // core area from Et = 4.44 f B Ac  -> Ac (m2) -> cm2
     const Ac = Et/(4.44*f*B); // m^2
     const AcCm = Ac*1e4;
-    // phase voltages
-    const Vp_hv = ph===3 ? HV/Math.sqrt(3) : HV;   // assume star HV for 3ph (typical)
-    const Vp_lv = ph===3 ? LV/Math.sqrt(3) : LV;
+    // Line voltages are entered in kV. Phase voltage and current use volts.
+    const Vp_hv = (ph===3 ? HV/Math.sqrt(3) : HV) * 1000;   // assume star HV for 3ph (typical)
+    const Vp_lv = (ph===3 ? LV/Math.sqrt(3) : LV) * 1000;
     const Nhv = Vp_hv/Et, Nlv = Vp_lv/Et;
-    // currents (line)
-    const Ihv = ph===3 ? S/(Math.sqrt(3)*HV) : S/HV;
-    const Ilv = ph===3 ? S/(Math.sqrt(3)*LV) : S/LV;
+    const Ihv = ph===3 ? S/(Math.sqrt(3)*HV*1000) : S/(HV*1000);
+    const Ilv = ph===3 ? S/(Math.sqrt(3)*LV*1000) : S/(LV*1000);
     const aHv = Ihv/dens, aLv = Ilv/dens; // mm^2 (line current ~ phase for star)
     
     currentDesign = {
@@ -533,8 +553,8 @@
       <div><p class="footer-col-label">INTELLIGENCE</p><a href="intel.html">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="projects.html">Projects</a><a href="tenders.html">Tenders</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="map.html">Industry Map</a><a href="events.html">Events</a></div>
       <div><p class="footer-col-label">DIRECTORY</p><a href="manufacturers.html">Manufacturers</a><a href="directory.html">Directory Index</a><a href="components.html">Components &amp; Materials</a><a href="machinery.html">Machinery</a><a href="laboratories.html">Testing Labs</a><a href="services.html">Service &amp; Repair</a><a href="logistics.html">Logistics</a><a href="buyers.html">Buyers &amp; Utilities</a><a href="rfq.html">RFQ Board</a></div>
       <div><p class="footer-col-label">ENGINEERING</p><a href="tools.html">Engineering Hub</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Interactive Models</a><a href="standards.html">Standards &amp; Codes</a><a href="knowledge.html">Knowledge Base</a><a href="case-studies.html">Case Studies</a></div>
-      <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learning Hub</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy 3D Tools</a><a href="books.html">Books</a><a href="education.html">Education</a></div>
-      <div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="pricing.html">Pricing Plans</a><a href="verified.html">Verified Profiles</a><a href="webinars.html">Webinars</a><a href="sponsor.html">Sponsorship</a><a href="associations.html">Associations</a><a href="media.html">Media</a></div>
+      <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learning Hub</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy 3D Tools</a><a href="books.html">Books</a><a href="education.html">Education</a></div>
+      <div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="pricing.html">Pricing Plans</a><a href="verified.html">Verified Profiles</a><a href="sponsor.html">Sponsorship</a><a href="associations.html">Associations</a><a href="media.html">Media</a></div>
       <div><p class="footer-col-label">COMPANY</p><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="affiliate-disclosure.html">Affiliate disclosure</a></div>
       <div><p class="footer-col-label">CONTACT</p>
         <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
@@ -547,11 +567,11 @@
 </footer>
 
 <script>
-// Design curriculum — each deep-links into the full course (masterclass.html#<section>); chapter 26 is the data appendix.
+// Design curriculum — each deep-links into the full course (design course.html#<section>); chapter 26 is the data appendix.
 const MODULES = [
  { n:1,  t:"Fundamentals", a:"fundamentals", v:1, d:"How a transformer works — mutual induction, the EMF equation, ideal vs real behaviour, and the rating inputs (kVA, voltage ratio, frequency, phases) that drive everything downstream." },
  { n:2,  t:"Classification & Specification", a:"classification", v:1, d:"Power vs distribution, core-type vs shell-type, cooling classes (ONAN/ONAF), vector group, impedance, tap range and the standards (IEC 60076 / ANSI C57) the customer specifies." },
- { n:3,  t:"Core Design & CRGO", a:"core", v:1, c:1, d:"Choosing core area and flux density, CRGO grades and stacking factor, and how silicon steel cuts hysteresis and eddy losses — setting iron weight and no-load loss." },
+ { n:3,  t:"Core Design & CRGO", a:"core", v:1, c:1, d:"Choosing core area and flux density, CRGO grades and stacking factor, and how silicon steel cuts hysteresis and eddy losses — setting iron weight and no-load loss. CRGO saturates near 2.03 T; typical design flux is 1.6–1.75 T." },
  { n:4,  t:"Windings & Current Density", a:"windings", v:6, c:1, d:"Conductor sizing from current density, LV-over-core then HV arrangement, layer/disc/helical windings, and the window-area check that confirms it all fits." },
  { n:5,  t:"Insulation System", a:"insulation", v:7, c:1, d:"Turn, layer and major insulation; pressboard and paper (IEC 60641); clearances and creepage; oil as a dielectric — the discipline that decides reliability and life." },
  { n:6,  t:"Thermal & Cooling Design", a:"cooling", v:8, c:1, d:"Temperature rise, radiators and fans, ONAN/ONAF/OFAF classes, oil flow and hot-spot control — turning loss watts into a safe operating temperature." },
@@ -615,14 +635,14 @@ document.getElementById('featured').innerHTML =
   `<span class="kick">Lesson of the Week · Section ${fm.n}</span>
    <h3>${fm.t}</h3>
    <p>${fm.d}</p>
-   <a class="btn btn-amber" href="masterclass.html#${fm.a}">Open this week's lesson →</a>`;
+   <a class="btn btn-amber" href="learn.html">Open this week's lesson →</a>`;
 
 document.getElementById('curriculum').innerHTML = MODULES.map((m,i)=>
   `<div class="module${i===spotIdx?' spotlight':''}">
      <h3><span class="mod-no">${m.n}</span> ${m.t}${i===spotIdx?'<span class="wk-pill">This week</span>':''}</h3>
      <p>${m.d}</p>
      <div class="links">
-       <a href="masterclass.html#${m.a}">📖 Read this section</a>
+       <a href="learn.html">📖 Read this section</a>
        <a href="books/volume-${m.v}/">📘 Volume ${m.v}</a>
        <a href="explorer.html">🧩 3D model</a>
         ${m.c?'<a href="calculator.html">🧮 Try the design calc</a>':''}
@@ -636,7 +656,7 @@ if (seriesEl) {
        <h3><span class="mod-no" style="width:auto;padding:0 8px;border-radius:8px">${m.n}</span> ${m.t}${m.gap?'<span class="wk-pill">No PDF yet</span>':''}</h3>
        <p>${m.d}</p>
        <div class="links">
-         <a href="masterclass.html#${m.a}">📖 Course module</a>
+         <a href="learn.html">📖 Course module</a>
          <a href="books/volume-${m.v}/">📘 Volume ${m.v}</a>
        </div>
      </div>`).join('');

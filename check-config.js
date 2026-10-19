@@ -76,12 +76,19 @@ check('index data-stat="tenders" fallback = canonical', dataStatFallback(HOME, '
 check('index data-stat="openTenders" fallback = canonical', dataStatFallback(HOME, 'openTenders') === STATS.openTenders);
 check('index data-stat="awards" fallback = canonical', dataStatFallback(HOME, 'awards') === STATS.awards);
 
-// manufacturers.html Dataset schema "size" (build_ssr now syncs it).
+// manufacturers.html Dataset schema "size" counts rendered companies.
+// Plant-alias rows stay in the census and in config.counters.
 const MFG_PAGE = pages.find((p) => p === 'manufacturers.html') || 'manufacturers.html';
 const mfgHtml = fs.readFileSync(MFG_PAGE, 'utf8');
 const schemaSize = mfgHtml.match(/"size"\s*:\s*(\d+)/);
-check('manufacturers.html schema size = config', schemaSize && +schemaSize[1] === CFG.counters.manufacturers,
-  'schema says ' + (schemaSize && schemaSize[1]));
+const aliasLib = require('./lib/company-aliases');
+const slugMap = {};
+JSON.parse(fs.readFileSync('data/company-slugs.json', 'utf8')).forEach(function (row) {
+  if (row && row.name && row.slug) slugMap[row.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()] = row.slug;
+});
+const renderedMakers = aliasLib.visibleMakerCount(MFG, slugMap);
+check('manufacturers.html schema size = rendered companies', schemaSize && +schemaSize[1] === renderedMakers,
+  'schema says ' + (schemaSize && schemaSize[1]) + ', rendered ' + renderedMakers);
 
 // No stale old-count text anywhere in served pages (520 / "census of 520"/etc).
 const STALE_RE = /(\b520\b[^a-z]{0,20}(manufacturer|makers?|directory))|((census|worldwide census) of 520)|(\b546\b[^a-z]{0,20}(manufacturer|makers?|directory))|((census|worldwide census) of 546)|(546-manufacturer)/i;
@@ -135,10 +142,21 @@ check('books page uses a checkout (Stripe links or email fallback), not a bare t
 // ── 2c. Supplier tiers (verified.html) must reflect config ────────────────
 const VERIFIED = fs.readFileSync('verified.html', 'utf8');
 check('verified.Verified = $' + bp.verifiedSupplier.price, new RegExp('\\$' + bp.verifiedSupplier.price + '\\b').test(VERIFIED));
-check('verified.Supplier Pro = $' + bp.proVerifiedSupplier.price,
-  new RegExp('\\$' + bp.proVerifiedSupplier.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',?') + '\\b').test(VERIFIED));
+check('verified Supplier Pro has no uncheckouted price',
+  !new RegExp('\\$' + bp.proVerifiedSupplier.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',?') + '\\b').test(VERIFIED)
+  && /No checkout yet/.test(VERIFIED)
+  && !/mailto:hello@transformerpath\.com\?subject=Supplier%20Pro/.test(VERIFIED));
 check('verified has Listed (free) tier', /<h2>Listed<\/h2>[\s\S]*?<div class="price">Free<\/div>/.test(VERIFIED));
-check('verified has Founding offer', new RegExp('\\$' + bp.foundingVerified.price + '\\b').test(VERIFIED));
+check('verified founding offer is Verified Manufacturer, priced, and coming soon', (function () {
+  const price = String(bp.foundingVerified.price);
+  const at = VERIFIED.indexOf('$' + price);
+  if (at < 0) return false;
+  const window = VERIFIED.slice(Math.max(0, at - 500), at + 800);
+  return window.indexOf('Verified Manufacturer founding offer') >= 0
+    && window.indexOf('Coming soon') >= 0
+    && window.indexOf('buy.stripe.com') < 0
+    && VERIFIED.indexOf('Pay $' + price) < 0;
+})());
 
 // ── 3. Intel cadence + classification ─────────────────────────────────────
 const INTEL = fs.readFileSync('intel.html', 'utf8');
@@ -229,16 +247,20 @@ for (const f of pages) {
   const text = s.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
   const cred = affirmCredClaim(text);
   if (cred) problems.push('voice-cert-claim ' + f + ' :: ' + cred);
-  if (/\bELIN\b|\bpersonal\s+reference\b/i.test(text)) {
-    const m = text.match(/\bELIN\b|\bpersonal\s+reference\b/i);
+  // "Elin" as the site's voice stays banned. The supplier Elin Insulation FZ LLC
+  // is a company name, including the slug elin-insulation, and is not that voice.
+  if (/\bpersonal\s+reference\b/i.test(text)) {
+    problems.push('voice-elinstrict ' + f + ' :: personal reference');
+  } else if (/\bELIN\b(?!\s+Insulation\b)(?!-insulation\b)/i.test(text)) {
+    const m = text.match(/\bELIN\b(?!\s+Insulation\b)(?!-insulation\b)/i);
     problems.push('voice-elinstrict ' + f + ' :: ' + (m && m[0]));
   }
   // ── Commercial-architecture forbidden terminology (audit P0) ──────────
-  // Public plan names must be Learning/Professional/Team. Reject old "Learner"
-  // plan-tier and "$X/year" per-year billing phrasing on the public pricing
-  // surface only (not intel data, not JS internals, not legitimate company/
-  // business uses of "enterprise"). Standard/cert references (IEC, ISO, UL,
-  // IEEE, CE, ANSI) and negations are allowed.
+  // Public plan names must be Learning, Engineering Pro, and Engineering Team.
+  // Reject old "Learner" plan-tier and "$X/year" per-year billing phrasing on
+  // the public pricing surface only (not intel data, not JS internals, not
+  // legitimate company/business uses of "enterprise"). Standard/cert
+  // references (IEC, ISO, UL, IEEE, CE, ANSI) and negations are allowed.
   const pricingSurface = /pricing\.html$/.test(f);
   const learnSurface = /learn\.html$/.test(f);
   if (pricingSurface || learnSurface) {
@@ -251,7 +273,7 @@ for (const f of pages) {
       problems.push('voice-commercial-terms ' + f + ' :: per-year billing');
     }
     // Confirm the canonical names are all present.
-    if (!/Learning/.test(nodec) || !/\bProfessional\b/.test(nodec) || !/\bTeam\b/.test(nodec)) {
+    if (!/Learning/.test(nodec) || !/Engineering Pro/.test(nodec) || !/Engineering Team/.test(nodec)) {
       problems.push('voice-commercial-terms ' + f + ' :: missing canonical plan names');
     }
   }
@@ -314,7 +336,7 @@ for (const href of NAV_PRIMARY) {
 check('nav has flat container', /class="tpnav"/.test(NAV_HTML));
 check('nav has More list', /tpnav-more-panel/.test(NAV_HTML));
 check('nav has Search', NAV_HTML.includes('href="search.html"'));
-check('nav has Account', /href="workspace\.html"/.test(NAV_HTML));
+check('nav has Account', /href="\/?workspace\.html"/.test(NAV_HTML));
 check('nav has no mega-menu regression', !/nav-group-label/.test(NAV_HTML));
 
 // ── 5b. Asset cache-busters + dark-theme default must match config ─────────
@@ -369,7 +391,7 @@ function routeCheck(route, req, forb, rawReqs) {
   }
 }
 // /pricing — canonical plans, single 12-month payments, no cert claims, no $/year.
-routeCheck('pricing.html', ['Learning', 'Professional', 'Team', '\\$199', '\\$599', '\\$1,999', 'no auto-renewal', '12 months'],
+routeCheck('pricing.html', ['Learning', 'Engineering Pro', 'Engineering Team', '\\$199', '\\$599', '\\$1,999', 'no auto-renewal', '12 months'],
   ['Learner\\s*(plan|tier)?\\s*<', 'Enterprise\\s*(plan|tier)?\\s*<', '\\$199\\s*/\\s*year', 'certificate per level', 'co-branded certificates?', 'capstone review \\+ certificate']);
 // Marketing counts on pricing must use data-stat so they cannot drift from site-stats
 // (audit regression: pricing said 709 while directory showed 911).
@@ -392,7 +414,7 @@ for (const f of pages) {
   }
 }
 // Books — first releases, direct checkout, no email-only ordering.
-routeCheck('books.html', ['first releases'], ['Email to order', 'Two volumes of transformer engineering'], ['data-buy=']);
+routeCheck('books.html', ['first releases', 'Checkout coming soon'], ['Email to order', 'Two volumes of transformer engineering', 'data-buy='], []);
 // Design Duel SSR — values must be present in crawlable HTML.
 routeCheck('design.html', ['72 kW', '355 kW', '215 t'], ['id="sp-nll"></', 'id="sp-ll"></']);
 // Footer — no "networking" positioning.

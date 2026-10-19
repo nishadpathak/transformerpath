@@ -58,7 +58,7 @@ const hero = publish('hero-3d.html');
 const heroSrcs = scriptTags(hero).map(function (attrs) {
   return { src: srcOf(attrs), defer: /\bdefer\b/i.test(attrs), blocking: cwv.scriptKeepsParserOrder(attrs) };
 });
-['tp-webgl-gate.js', 'three.min.js', 'tp-3d-core.js', 'tp-power-assembly.js'].forEach(function (name) {
+['tp-webgl-gate.js', 'three.min.js', 'tp-canvas-scroll.js', 'tp-3d-core.js', 'tp-power-assembly.js'].forEach(function (name) {
   const tag = heroSrcs.filter(function (t) { return t.src.indexOf(name) !== -1; })[0];
   check('hero-3d does not defer ' + name, !!(tag && tag.blocking && !tag.defer), tag && tag.src);
 });
@@ -78,6 +78,14 @@ check('homepage keeps the static unavailable note',
   /id="hero3dNote" hidden/.test(home));
 check('mobile poster is still the LCP image',
   home.indexOf('media/power-transformer-3d-poster-800.jpg') !== -1);
+
+['claim-profile.html', 'events.html', 'sponsor.html'].forEach(function (rel) {
+  const published = publish(rel);
+  const tag = scriptTags(published).filter(function (attrs) {
+    return srcOf(attrs).indexOf('listing-payment.js') !== -1;
+  })[0];
+  check(rel + ' does not defer listing-payment.js', !!(tag && !/\bdefer\b/i.test(tag) && cwv.scriptKeepsParserOrder(tag)), tag);
+});
 
 const gate = fs.readFileSync(path.join(root, 'tp-webgl-gate.js'), 'utf8');
 check('no-WebGL fallback copy remains',

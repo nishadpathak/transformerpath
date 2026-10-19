@@ -40,11 +40,16 @@
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 <header>
+  <style>
+    @media (min-width: 1024px) {
+      #mainNav > .tpnav-more { display: block; }
+    }
+  </style>
   <div class="container nav">
     <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 16 16" aria-hidden="true" style="flex:none"><g fill="#f5a623"><rect x="1" y="1" width="4" height="4"/><rect x="11" y="1" width="4" height="4"/><rect x="1" y="11" width="4" height="4"/><rect x="11" y="11" width="4" height="4"/><rect x="5" y="2" width="6" height="2"/><rect x="12" y="5" width="2" height="6"/><rect x="5" y="12" width="6" height="2"/></g></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
     <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
     <nav class="tpnav" id="mainNav" aria-label="Primary">
-      <a href="/intel">Intel</a>
+      <a href="/intel.html">Intel</a>
       <div class="tpnav-dropdown">
         <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
         <div class="tpnav-dropdown-panel" role="menu">
@@ -57,21 +62,25 @@
           <a href="services.html">Services &amp; Repair</a>
           <a href="markets.html">Markets</a>
           <a href="buyers-guide.html">Buyer's Guide</a>
+          <a href="buy-early/">Buy early</a>
+          <a href="spare-capacity/">Mid-tier makers</a>
+          <a href="lead-times/">Lead times</a>
+          <a href="bottlenecks/">Bottlenecks</a>
           <a href="directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
         </div>
       </div>
       <a href="projects.html">Projects</a>
       <a href="tenders.html">Tenders</a>
       <a href="events.html">Events</a>
-      <a href="tools.html" class="tpnav-opt">Engineering</a>
       <a href="learn.html">Learn</a>
       <a href="rfq.html">RFQ</a>
       <div class="tpnav-more">
         <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
         <div class="tpnav-more-panel" role="menu">
+          <a href="tools.html" role="menuitem">Engineering</a>
           <a href="map.html" role="menuitem">Industry Map</a>
           <a href="grids.html" role="menuitem">Global Grids</a>
-          <a href="webinars.html" role="menuitem">Webinars</a>
+          
           <a href="standards.html" role="menuitem">Standards &amp; Codes</a>
           <a href="for-manufacturers.html" role="menuitem">For Manufacturers</a>
           <a href="pricing.html" role="menuitem">Pricing Plans</a>
@@ -80,6 +89,7 @@
       </div>
       <span class="tpnav-utils">
         <a href="search.html" title="Search" aria-label="Search">&#128269;</a>
+        <span class="tp-auth" data-tp-auth hidden></span>
         <a href="workspace.html" data-tp-account>Account</a>
         <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">&#127769;</button>
       </span>
@@ -111,6 +121,8 @@
       themeToggle.textContent = isDark ? '☀️' : '🌙';
     }
   </script>
+  <script src="google-auth-config.js" defer></script>
+  <script src="tp-auth.js?v=1" defer></script>
   <script src="tp-nav.js?v=7" defer></script>
   <script src="tp-pwa.js?v=7" defer></script>
 </header>
@@ -144,8 +156,8 @@
       <div><p class="footer-col-label">INTELLIGENCE</p><a href="intel.html">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="projects.html">Projects</a><a href="tenders.html">Tenders</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="map.html">Industry Map</a><a href="events.html">Events</a></div>
       <div><p class="footer-col-label">DIRECTORY</p><a href="manufacturers.html">Manufacturers</a><a href="directory.html">Directory Index</a><a href="components.html">Components &amp; Materials</a><a href="machinery.html">Machinery</a><a href="laboratories.html">Testing Labs</a><a href="services.html">Service &amp; Repair</a><a href="logistics.html">Logistics</a><a href="buyers.html">Buyers &amp; Utilities</a><a href="rfq.html">RFQ Board</a></div>
       <div><p class="footer-col-label">ENGINEERING</p><a href="tools.html">Engineering Hub</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Interactive Models</a><a href="standards.html">Standards &amp; Codes</a><a href="knowledge.html">Knowledge Base</a><a href="case-studies.html">Case Studies</a></div>
-      <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learning Hub</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy 3D Tools</a><a href="books.html">Books</a><a href="education.html">Education</a></div>
-      <div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="pricing.html">Pricing Plans</a><a href="verified.html">Verified Profiles</a><a href="webinars.html">Webinars</a><a href="sponsor.html">Sponsorship</a><a href="associations.html">Associations</a><a href="media.html">Media</a></div>
+      <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learning Hub</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy 3D Tools</a><a href="books.html">Books</a><a href="education.html">Education</a></div>
+      <div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="pricing.html">Pricing Plans</a><a href="verified.html">Verified Profiles</a><a href="sponsor.html">Sponsorship</a><a href="associations.html">Associations</a><a href="media.html">Media</a></div>
       <div><p class="footer-col-label">COMPANY</p><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="affiliate-disclosure.html">Affiliate disclosure</a></div>
       <div><p class="footer-col-label">CONTACT</p>
         <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
@@ -2314,43 +2326,6 @@
       "slug": "kelvion-holding-gmbh"
     },
     {
-      "name": "Kirloskar Brothers Limited",
-      "country": "India",
-      "state": "Maharashtra",
-      "city": "Pune",
-      "website": "https://www.kirloskarpumps.com",
-      "categories": [
-        "Oil-circulation pumps"
-      ],
-      "description": "Major engineering corporation producing canned motor transformer oil circulating pumps (TF series) for power and locomotive transformers.",
-      "founded_year": 1888,
-      "certifications": [
-        "ISO 9001",
-        "ISO 14001",
-        "ISO 45001",
-        "IS 10600"
-      ],
-      "verification_status": "WEBSITE_CHECKED",
-      "verification_date": "2026-09-13",
-      "source": "Deep-research verified manufacturer registry. Official corporate documentation.",
-      "listing_status": "listed",
-      "role": "MANUFACTURER",
-      "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A",
-      "product_family": "Centrifugal & Canned Motor Transformer Oil Pumps",
-      "technology_subtypes": [
-        "Canned motor pump",
-        "Centrifugal oil pump"
-      ],
-      "standards": [
-        "IS 5120",
-        "EN 50216-7",
-        "ISO 9001"
-      ],
-      "evidence_source": "Kirloskar corporate product catalog",
-      "slug": "kirloskar-brothers-limited"
-    },
-    {
       "name": "Krempel GmbH",
       "country": "Germany",
       "state": "Baden-Württemberg",
@@ -4457,25 +4432,6 @@
       "slug": "sinopec-lubricant-company-sinopec-great-wall"
     },
     {
-      "name": "Sorbead India",
-      "country": "India",
-      "state": "Gujarat",
-      "city": "Vadodara",
-      "website": "https://www.sorbeadindia.com/",
-      "categories": [
-        "Breathers (silica gel)"
-      ],
-      "description": "Non-toxic orange-to-green indicating silica gel for power transformer dehydrating breathers.",
-      "verification_status": "WEBSITE_CHECKED",
-      "verification_date": "2026-09-11",
-      "source": "data/components-deep-dive.json (2026-09-11). Listed; official website recorded.",
-      "listing_status": "listed",
-      "role": "MANUFACTURER",
-      "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A",
-      "slug": "sorbead-india"
-    },
-    {
       "name": "Prolec GE Waukesha",
       "country": "United States",
       "state": "Wisconsin",
@@ -5375,30 +5331,6 @@
       "slug": "a-bond-strands-pvt-ltd"
     },
     {
-      "name": "Banmore Electricals Pvt Ltd",
-      "country": "India",
-      "state": "Madhya Pradesh",
-      "city": "Gwalior",
-      "website": "https://www.banmorecore.com",
-      "categories": [
-        "CRGO (core steel)"
-      ],
-      "description": "Listed IEEMA member supplying transformer components or materials. Product line as published in the IEEMA member directory — not a complete catalogue.",
-      "verification_status": "Listed — official website recorded",
-      "verification_date": "2026-09-13",
-      "role": "CONVERTER / PROCESSOR",
-      "manufacturer_status": "CONVERTER / PROCESSOR",
-      "source_tier": "TIER A",
-      "product_family": "CRGO Transformer Core Slitting & Step-Lap Lamination Manufacturing",
-      "manufacturer_product_name": "Banmore Step-Lap Mitered Laminations",
-      "standards": [
-        "IS 3024",
-        "ISO 9001"
-      ],
-      "evidence_source": "Banmore Electricals official technical profile",
-      "slug": "banmore-electricals-pvt-ltd"
-    },
-    {
       "name": "Bharat Heavy Electricals Ltd.",
       "country": "India",
       "state": "Delhi",
@@ -5426,35 +5358,6 @@
       ],
       "evidence_source": "BHEL Bhopal transformer engineering documentation",
       "slug": "bharat-heavy-electricals-ltd"
-    },
-    {
-      "name": "Bhavnish Metal India Private Limited",
-      "country": "India",
-      "state": "Haryana",
-      "city": "Faridabad",
-      "website": "https://www.bhavnishmetal.com",
-      "categories": [
-        "Radiators / cooling systems",
-        "Copper / CTC conductors"
-      ],
-      "description": "Listed IEEMA member supplying transformer components or materials. Product line as published in the IEEMA member directory — not a complete catalogue.",
-      "verification_status": "Listed — official website recorded",
-      "verification_date": "2026-09-13",
-      "role": "MANUFACTURER",
-      "manufacturer_status": "CONFIRMED MANUFACTURER",
-      "source_tier": "TIER A",
-      "product_family": "Transformer Panel Radiators & Fabricated Cooling Fins",
-      "technology_subtypes": [
-        "Panel radiator",
-        "Pressed steel fin",
-        "Copper fabricated parts"
-      ],
-      "standards": [
-        "IS 3639",
-        "ISO 9001"
-      ],
-      "evidence_source": "Bhavnish Metal product line catalog",
-      "slug": "bhavnish-metal-india-private-limited"
     },
     {
       "name": "Bikaner Ceramics Pvt. Ltd.",
@@ -7024,9 +6927,36 @@
       ],
       "evidence_source": "MESSKO GmbH official technical manual and type approval certifications",
       "slug": "messko-gmbh-reinhausen-group"
+    },
+    {
+      "name": "Elin Insulation FZ LLC",
+      "canonical_company_name": "Elin Insulation FZ LLC",
+      "country": "United Arab Emirates",
+      "state": "",
+      "city": "Ras Al Khaimah",
+      "website": "https://www.elininsulation.com",
+      "categories": [
+        "Pressboard / insulation materials",
+        "Laminated wood / insulation wood",
+        "DDP / DPE (densified pressboard)"
+      ],
+      "product_family": "Transformer insulation materials",
+      "manufacturer_product_name": "Winding insulation kits, core and active-part insulation, processed wooden core beams, Thermoflow duct spacers, diamond-dotted paper, pre-compressed and calendered pressboard, rolled winding cylinders, pressboard and densified-wood rings, gaskets, duct strips, corrugated boards, edge strips, crepe paper tubes, crepe paper, kraft paper",
+      "description": "Elin Insulation FZ LLC, established in 2007, stocks and processes electrical insulation materials for transformer manufacturing. Its office and factory are at Plot K195, Al Ghail Industrial Zone - Free Zone, PO Box 14602, Ras Al Khaimah, United Arab Emirates. The site lists pressboard, papers, perma wood, bakelite and glue, and a product list of winding insulation kits, core and active-part insulation, processed wooden core beams, duct spacers, diamond-dotted paper, pressboard, densified-wood rings, kraft paper and crepe paper.",
+      "founded_year": 2007,
+      "source": "https://www.elininsulation.com/ (checked 2026-10-15): name Elin Insulation FZ LLC; established 2007; stockist and processor of pressboard, papers, perma wood, bakelite and glue for transformer manufacturing; address Plot K195, Al Ghail Industrial Zone - Free Zone, PO Box 14602, Ras Al Khaimah, United Arab Emirates. https://www.elininsulation.com/products-services (checked 2026-10-15): manufacturers and stockist of winding insulation kits, core and active-part insulation, processed wooden core beams, Thermoflow duct spacers, diamond-dotted paper, pre-compressed and calendered pressboard, rolled winding cylinders, pressboard and densified-wood rings, gaskets, duct strips, corrugated boards, edge strips, crepe paper tubes, crepe paper and kraft paper. https://www.elininsulation.com/contact-us (checked 2026-10-15): same office and factory address.",
+      "verification_status": "Listed — official website recorded",
+      "verification_date": "2026-10-15",
+      "listing_status": "listed",
+      "role": "CONVERTER / PROCESSOR",
+      "manufacturer_status": "CONVERTER / PROCESSOR",
+      "source_tier": "TIER A",
+      "evidence_source": "https://www.elininsulation.com/ , https://www.elininsulation.com/products-services and https://www.elininsulation.com/contact-us (checked 2026-10-15)",
+      "slug": "elin-insulation-fz-llc"
     }
   ]
-};</script>
+}
+;</script>
 <script>
 (function(){
   function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}

@@ -64,6 +64,22 @@ const MFG = '<!DOCTYPE html><html><head></head><body><section class="hero"><h1>M
 const mfg = inject.stampHtml(MFG, 'manufacturers.html');
 ok(mfg.indexOf('data-tp-ad="in-content"') > mfg.indexOf('</section>'), 'manufacturer slot is below the hero');
 
+const GUIDE = '<!DOCTYPE html><html><head><title>Guide</title></head><body><main><h1>Buy early</h1>' +
+  '<p>Intro</p><!--tp-ad-slot--><h2>Next</h2></main></body></html>';
+const guide = inject.stampHtml(GUIDE, 'buy-early/index.html');
+ok(inject.wantsInContentSlot('buy-early/index.html'), 'buy-early gets an in-content slot');
+ok(inject.wantsInContentSlot('spare-capacity/index.html'), 'spare-capacity gets an in-content slot');
+ok(guide.indexOf('<!--tp-ad-slot-->') === -1, 'buy-early marker is replaced');
+ok(guide.indexOf('data-tp-ad="in-content"') > guide.indexOf('</h1>'), 'buy-early slot is below the title');
+ok(guide.indexOf('data-tp-ad="in-content"') < guide.indexOf('<h2>Next</h2>'), 'buy-early slot stays at the marker');
+ok(guide.indexOf('/consent.js') !== -1, 'buy-early gains the consent script when missing');
+ok(inject.headInner(guide).indexOf(cfg.LOADER) !== -1, 'buy-early gains the AdSense loader');
+ok(inject.wantsInContentSlot('bottlenecks/index.html'), 'bottlenecks hub gets an in-content slot');
+ok(inject.wantsInContentSlot('bottlenecks/bushings/index.html'), 'bottlenecks bushings page gets an in-content slot');
+const bottleneck = inject.stampHtml(GUIDE, 'bottlenecks/grain-oriented-electrical-steel/index.html');
+ok(bottleneck.indexOf('<!--tp-ad-slot-->') === -1, 'bottlenecks marker is replaced');
+ok(bottleneck.indexOf('data-tp-ad="in-content"') !== -1, 'bottlenecks slot is stamped');
+
 if (problems.length) {
   console.error('\n' + problems.length + ' failed');
   process.exit(1);

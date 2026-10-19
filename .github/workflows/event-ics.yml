@@ -1,0 +1,24 @@
+name: Event calendars
+
+on:
+  pull_request:
+  push:
+    branches: [main, "cursor/**"]
+
+jobs:
+  ics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Write linked calendars from event data
+        run: node build-event-ics.js
+      - name: Every linked .ics exists
+        run: node tests/check-event-ics.js
+      - name: Visitor guide blocks match event data
+        run: node tests/languagepath-visit.test.js
+      - name: Committed calendars match the generator
+        run: git status --porcelain -- events/ics events.html events && test -z "$(git status --porcelain -- events/ics events.html events)"

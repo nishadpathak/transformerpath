@@ -146,6 +146,10 @@ function classify(a) {
 }
 
 function main() {
+  if (!fs.existsSync(SRC)) {
+    console.log('course-depth: ' + SRC + ' is not published; audit left unchanged.');
+    return;
+  }
   const html = read(SRC);
   const chapters = splitChapters(html);
   if (chapters.length === 0) {

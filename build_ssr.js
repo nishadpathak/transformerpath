@@ -23,12 +23,13 @@ const path = require('path');
 /* ONE canonical event-status resolver, shared with build-events.js and
    check-event-integrity.js. This file used to re-derive status and countdowns
    from raw dates, which is how "Dates TBC" could render beside "Live now". */
-const { resolveStatus, isTravelSafe, isDiscoverable, isUpcoming, platformToday } = require('./lib/event-status');
+const { resolveStatus, isTravelSafe, isDiscoverable, isUpcoming } = require('./lib/event-status');
 const { eventHref, eventPageMap, resolveEventSlug } = require('./lib/event-href');
 const { loadEvents } = require('./lib/events-reader');
-const { dateLine, allowsCalendar, badgeText, dubaiToday } = require('./lib/event-display');
+const { dateLine, allowsCalendar, badgeText } = require('./lib/event-display');
 const { eventBadge, intelBadge } = require('./lib/provenance-badge');
 const tpAff = require('./lib/travelpayouts');
+const directorySsr = require('./lib/directory-ssr');
 
 /* ------------------------------------------------------------------ *
  * Helpers
@@ -125,6 +126,39 @@ function inject(html, openTag, id, newInner) {
 
 // Inject `newInner` into the element matching `id="..."`, bracketed by
 // invisible idempotent marker comments. Robust across arbitrary attributes.
+function findMatchingClose(html, tag, from) {
+  const re = new RegExp('<(/?)' + tag + '\\b[^>]*>', 'gi');
+  re.lastIndex = from;
+  let depth = 1;
+  let m;
+  while ((m = re.exec(html))) {
+    if (m[1]) depth--;
+    else depth++;
+    if (depth === 0) return m.index;
+  }
+  return -1;
+}
+
+/* Replace an element's children. Marker comments make a second run replace
+ * only the previous prerender, even when the new HTML contains the same tag. */
+function replaceInnerById(html, id, newInner) {
+  const startM = '<!--SSR:' + id + '-->';
+  const endM = '<!--/SSR:' + id + '-->';
+  const cm = html.indexOf(startM);
+  if (cm >= 0) {
+    const em = html.indexOf(endM, cm);
+    if (em < 0) throw new Error('unclosed SSR marker ' + id);
+    return html.slice(0, cm) + startM + '\n' + newInner + '\n' + html.slice(em);
+  }
+  const re = new RegExp('<([a-zA-Z0-9]+)([^>]*\\bid=["\']' + id + '["\'][^>]*)>');
+  const m = re.exec(html);
+  if (!m) throw new Error('id not found: ' + id);
+  const openEnd = m.index + m[0].length;
+  const closeAt = findMatchingClose(html, m[1], openEnd);
+  if (closeAt < 0) throw new Error('close not found: ' + id);
+  return html.slice(0, openEnd) + '\n' + startM + '\n' + newInner + '\n' + endM + '\n' + html.slice(closeAt);
+}
+
 function injectById(html, id, newInner) {
   const startM = '<!--SSR:' + id + '-->';
   const endM = '<!--/SSR:' + id + '-->';
@@ -163,18 +197,25 @@ function webinarCta(w) {
  * ------------------------------------------------------------------ */
 function renderEvents(html) {
   const EVENTS = loadEvents();
-  const TODAY = dubaiToday();
+  /* Same platform day as the page script. UTC+4, no DST. Status chips and the
+     "Showing N upcoming events" line are both taken from this clock at build
+     time, so a prerender cannot keep yesterday's "Live now". */
+  const EVENTS_DAY_OFFSET_MS = 4*60*60*1000; // UTC+4, no DST
+  const TODAY = (function () {
+    var g = new Date(Date.now() + EVENTS_DAY_OFFSET_MS);
+    var p = function (n) { return (n < 10 ? '0' : '') + n; };
+    return g.getUTCFullYear() + '-' + p(g.getUTCMonth() + 1) + '-' + p(g.getUTCDate());
+  })();
+  const todayUTC = Date.parse(TODAY + 'T00:00:00Z');
   const now = new Date(TODAY + 'T00:00:00Z');
 
   /* Normal upcoming discovery. A record whose organiser calendar was checked and
      did not list it (REJECTED_NO_EVIDENCE) or that is still under research is not
      an upcoming event — it leaves this list rather than sitting in it with a
      warning nobody reads. */
-  let list = EVENTS.filter((ev) => isUpcoming(ev, platformToday()));
+  let list = EVENTS.filter((ev) => isUpcoming(ev, TODAY));
   list.sort((a, b) => String(a.s || a.start || '').localeCompare(String(b.s || b.start || '')));
 
-  const PLATFORM_TZ_MS = 4*60*60*1000; // GST/Asia-Dubai
-  const todayUTC = (function(){ var g=new Date(Date.now()+PLATFORM_TZ_MS); return Date.UTC(g.getUTCFullYear(),g.getUTCMonth(),g.getUTCDate()); })();
   const relDays = (d) => Math.ceil((Date.parse(d+'T00:00:00Z') - todayUTC) / 86400000);
   /* Adapter over the canonical resolver. The old local copy re-implemented the
      rules and drifted: it treated a past end-date as COMPLETED even when the
@@ -186,7 +227,7 @@ function renderEvents(html) {
     MONITORING: 'Verify with organiser', POSTPONED: 'Postponed', CANCELLED: 'Cancelled',
   };
   const evState = (ev) => {
-    const st = resolveStatus(ev);
+    const st = resolveStatus(ev, { today: TODAY });
     return { key: st.key, label: CARD_LABEL[st.key] === undefined ? st.label : CARD_LABEL[st.key], st: st };
   };
   const badgeHTML = (ev) => {
@@ -222,7 +263,7 @@ function renderEvents(html) {
      confirmed-date events are eligible for the strip at all, because every card in
      it carries a relative-time claim. */
   const upEligible = EVENTS.filter((ev) => {
-    if (!isUpcoming(ev, platformToday())) return false;
+    if (!isUpcoming(ev, TODAY)) return false;
     const st = evState(ev).st;
     return st.key === 'CONFIRMED_UPCOMING' || st.key === 'LIVE';
   });
@@ -263,13 +304,16 @@ function renderEvents(html) {
   const depthProjected = EVENTS.filter((ev) => ev.date_status === 'PROJECTED' && (!ev.end || ev.end >= TODAY)).length;
   const depthCountries = new Set(EVENTS.filter((ev) => {
     if (ev.research_status === 'REJECTED_NO_EVIDENCE' || ev.date_status === 'CANCELLED') return false;
-    if (!isDiscoverable(resolveStatus(ev))) return false;
+    if (!isDiscoverable(resolveStatus(ev, { today: TODAY }))) return false;
     if (!ev.country) return false;
     if (!ev.end) return ev.date_status === 'TBA' || ev.date_status === 'PROJECTED';
     return ev.end >= TODAY;
   }).map((ev) => ev.country)).size;
+  const depthOther = list.length - depthConfirmed - depthProjected;
   const countText = 'Showing ' + list.length + ' upcoming events. ' +
-    depthConfirmed + ' upcoming confirmed · ' + depthProjected + ' projected · ' + depthCountries + ' countries hosting';
+    depthConfirmed + ' upcoming confirmed · ' + depthProjected + ' projected' +
+    (depthOther > 0 ? ' · ' + depthOther + ' dates not confirmed' : '') +
+    ' · ' + depthCountries + ' countries hosting';
   html = inject(html, '<p style="text-align:center; color:var(--muted); font-size:.88rem" id="count">', 'events-count',
     countText);
 
@@ -375,21 +419,24 @@ function renderComponents(html) {
  * JOBS
  * ------------------------------------------------------------------ */
 function renderJobs(html) {
-  const LIVE = extractConst(html, 'LIVE');
+  const jobBoard = require('./lib/job-board');
   const DATA = extractConst(html, 'DATA');
   const FN = extractConst(html, 'FN');
   const FN_CLASS = extractConst(html, 'FN_CLASS');
-  const live = (LIVE || []).filter(function (j) {
-    return j && j.posting_url && j.captured_at && j.last_verified_at;
-  });
+  let published = [];
+  try {
+    published = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/job-postings.json'), 'utf8')).published || [];
+  } catch (e) { published = []; }
+  const live = jobBoard.publicOpenings(published).map(function (row) { return jobBoard.displayRow(row); });
 
   const liveGrid = (live.length ? live.map((j) =>
-    `<div class="live-row">
-     <span class="lt">${esc(j.t)}</span>
+    `<div class="live-row${j.featured ? ' is-featured' : ''}">
+     <span class="lt">${j.featured ? '<span class="job-featured" data-job-featured="1">FEATURED</span> ' : ''}${esc(j.t)}</span>
      <span class="lc">${esc(j.co)}</span>
      <span class="ll">📍 ${esc(j.loc)}</span>
      <span class="ld">${esc(j.fn)} · verified ${esc(j.last_verified_at)}</span>
      <a class="lapply" href="${esc(j.posting_url)}" target="_blank" rel="noopener">Apply →</a>
+     ${j.featured ? '<p class="job-featured-note">' + esc(j.featured_note) + '</p>' : ''}
    </div>`).join('\n') : '<p class="jobs-empty">0 live openings.</p>');
 
   // default view of the employer board (no search / country / function filter)
@@ -422,7 +469,7 @@ function renderJobs(html) {
   html = inject(html, '<div id="board">', 'jobs-board', board);
   html = inject(html, '<div class="stat-row" id="statRow">', 'jobs-stats', stats);
   html = inject(html, 'id="count">', 'jobs-count', `Showing ${DATA.length} employers across ${order.length} countries`);
-  return { page: html, records: DATA.length + LIVE.length };
+  return { page: html, records: DATA.length + live.length };
 }
 
 /* ------------------------------------------------------------------ *
@@ -436,6 +483,11 @@ function renderGrids(html) {
   const GRID_CAPEX = extractConst(html, 'GRID_CAPEX');
   const DATA = extractConst(html, 'DATA');
   const LAST_VERIFIED = extractConst(html, 'LAST_VERIFIED');
+  const gridDates = require('./lib/grid-record-dates');
+  const GRID_DATES = gridDates.load();
+  if (String(LAST_VERIFIED) !== GRID_DATES.census_verified) {
+    throw new Error('grids.html LAST_VERIFIED ' + LAST_VERIFIED + ' does not match census_verified ' + GRID_DATES.census_verified);
+  }
 
   const icClass = (s) => {
     if (/operational|trial|energized/i.test(s)) return 'st-op';
@@ -480,7 +532,7 @@ function renderGrids(html) {
           <span class="badge b-sync">${esc(c.sync)}</span>
           <span class="badge b-cnt">${c.grids.length} operator${c.grids.length > 1 ? 's' : ''}</span>
         </div>
-        ${(c.grids || []).map((g) => `<div class="grid-row"><b>${esc(g[0])}</b><span style="color:var(--muted)">${esc(g[1])}</span><span class="kv">${esc(g[2])}</span>${g[3] ? `<a href="${esc(g[3])}" target="_blank" rel="noopener">Site →</a>` : '<span></span>'}</div>`).join('')}${projChips(c)}
+        ${(c.grids || []).map((g) => `<div class="grid-row"><b>${esc(g[0])}</b><span style="color:var(--muted)">${esc(g[1])} <span class="op-updated">${esc(gridDates.operatorLabel(g[0], GRID_DATES))}</span></span><span class="kv">${esc(g[2])}</span>${g[3] ? `<a href="${esc(g[3])}" target="_blank" rel="noopener">Site →</a>` : '<span></span>'}</div>`).join('')}${projChips(c)}
       </div>`).join('')).join('\n');
 
   const ops = DATA.reduce((s, c) => s + c.grids.length, 0);
@@ -502,7 +554,7 @@ function renderGrids(html) {
   html = inject(html, '<div id="board">', 'grids-board', board);
   html = inject(html, '<div class="stat-row" id="statRow">', 'grids-stats', stats);
   html = inject(html, 'id="lvLine">', 'grids-lv',
-    `Data last verified ${LAST_VERIFIED} &middot; sources: official utility, operator &amp; regulator filings &middot; maintained encyclopedia-style from the TransformerPath grid census. Report a <a href=\"mailto:hello@transformerpath.com?subject=Grid%20census%20correction\" style=\"color:var(--accent);font-weight:600\">correction</a>.`);
+    `${esc(gridDates.censusLabel(GRID_DATES))}. Each operator row shows that operator record's own updated date. Sources: official utility, operator &amp; regulator filings. Report a <a href=\"mailto:hello@transformerpath.com?subject=Grid%20census%20correction\" style=\"color:var(--accent);font-weight:600\">correction</a>.`);
   return { page: html, records: DATA.length };
 }
 
@@ -524,8 +576,9 @@ function renderManufacturers(html) {
   let CSMAP = {};
   try { JSON.parse(fs.readFileSync('data/company-slugs.json', 'utf8')).forEach(function (c) { CSMAP[c.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()] = c.slug; }); } catch (e) {}
   const csl = (m) => CSMAP[String(m[0]).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()];
-  const { directoryCompanySlug } = require('./lib/company-aliases');
+  const { directoryCompanySlug, aliasRowHidden, ownedProfileSlugs } = require('./lib/company-aliases');
   const paidListings = require('./lib/paid-listings');
+  const claimListing = require('./lib/claim-listing');
   const paidDoc = paidListings.load();
   const paySlug = (name) => directoryCompanySlug(name, CSMAP);
   const vbadge = (m, slug) => {
@@ -536,10 +589,18 @@ function renderManufacturers(html) {
     return '';
   };
   const verifyCtas = (name, slug) => {
-    if (!slug || paidListings.isVerifiedManufacturer(slug, paidDoc)) return '';
-    return paidListings.verifiedManufacturerCtasHtml({ companySlug: slug, trackName: name, compact: true });
+    const claim = claimListing.linkHtml(slug);
+    const paid = (!slug || paidListings.isVerifiedManufacturer(slug, paidDoc))
+      ? ''
+      : paidListings.verifiedManufacturerCtasHtml({ companySlug: slug, trackName: name, compact: true });
+    if (!paid) {
+      return '<div class="mfr-verify-ctas" style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;max-width:100%;min-width:0">' + claim + '</div>';
+    }
+    return paid.replace(/(<div class="mfr-verify-ctas"[^>]*>)/, '$1' + claim);
   };
   const tpills = (types) => { if (!types) return ''; return types.split(',').map((t) => t.trim()).filter(Boolean).map((t) => `<span class="tpill t-${t}">${esc(TNAME[t] || t)}</span>`).join(''); };
+  const ownedProfiles = ownedProfileSlugs(DATA, CSMAP);
+  const visibleMakers = (list) => (list || []).filter((m) => !aliasRowHidden(m[0], CSMAP, ownedProfiles));
   const groups = {};
   DATA.forEach((c) => { (groups[c.region] = groups[c.region] || []).push(c); });
 
@@ -547,15 +608,16 @@ function renderManufacturers(html) {
   // country by canonical sort_name (locale-aware, case-insensitive, leading
   // article dropped), and countries within a region alphabetically. NEVER by
   // verification/paid status, completeness, or data/insertion order.
-  const { sortName, naturalCompare } = require('./lib/directory-sort');
+  const { sortName, naturalCompare, compareCountries } = require('./lib/directory-sort');
   DATA.forEach((c) => { c.makers = c.makers.slice().sort((a, b) => naturalCompare(sortName(a[0]), sortName(b[0]))); });
-  Object.keys(groups).forEach((rg) => { groups[rg].sort((a, b) => naturalCompare(a.country, b.country)); });
+  Object.keys(groups).forEach((rg) => { groups[rg].sort((a, b) => compareCountries(a.country, b.country)); });
 
   const board = regions.filter((rg) => groups[rg]).map((region) =>
     `<div class="region-h">${esc(region)}</div>` + groups[region].map((c) => {
-      const real = c.makers.filter((m) => !/^Served by/i.test(m[0])).length;
+      const shown = visibleMakers(c.makers);
+      const real = shown.filter((m) => !/^Served by/i.test(m[0])).length;
       return `<div class="ctry-card"><div class="ctry-head"><span class="flag">${esc(c.flag)}</span><h3>${esc(c.country)}</h3><span class="cnt">${real} maker${real !== 1 ? 's' : ''}</span></div>` +
-        c.makers.map((m) => /^Served by/i.test(m[0])
+        shown.map((m) => /^Served by/i.test(m[0])
           ? `<div class="mk-row"><span class="note">${esc(m[0])}</span></div>`
           : (function () {
             const slug = paySlug(m[0]);
@@ -564,7 +626,9 @@ function renderManufacturers(html) {
         `</div>`;
     }).join('')).join('');
 
-  const makers = DATA.reduce((s, c) => s + c.makers.filter((m) => !/^Served by/i.test(m[0])).length, 0);
+  const censusMakers = DATA.reduce((s, c) => s + c.makers.filter((m) => !/^Served by/i.test(m[0])).length, 0);
+  const makers = DATA.reduce((s, c) => s + visibleMakers(c.makers).filter((m) => !/^Served by/i.test(m[0])).length, 0);
+  if (makers !== censusMakers) console.log('NOTE directory render collapsed ' + (censusMakers - makers) + ' plant-alias rows (' + censusMakers + ' -> ' + makers + ')');
   if (makers < 400) { console.warn('!! manufacturer census unexpectedly small ('+makers+'); check data/manufacturers.json'); }
   let completeness = 54;
   try {
@@ -584,7 +648,7 @@ function renderManufacturers(html) {
   // Quick-jump "By country" bar — regenerated from the census so it is
   // ALPHABETICAL and carries each country's canonical count: "USA (41) · …".
   // (Replaces the hand-maintained bare-name list.)
-  const jump = DATA.slice().sort((a, b) => naturalCompare(a.country, b.country)).map((c) => {
+  const jump = DATA.slice().sort((a, b) => compareCountries(a.country, b.country)).map((c) => {
     const slug = c.country.toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
     const n = c.makers.filter((m) => !/^Served by/i.test(m[0])).length;
     return `<a href="manufacturers/${slug}.html" style="color:var(--accent)">${esc(c.country)} (${n})</a>`;
@@ -607,6 +671,11 @@ function renderManufacturers(html) {
   html = html.replace(/const EARNED_VERIFIED_SLUGS = [^;]*;/, 'const EARNED_VERIFIED_SLUGS = ' + JSON.stringify(earnedSlugs) + ';');
   html = html.replace(/const MAKER_ALIAS = [^;]*;/, 'const MAKER_ALIAS = ' + JSON.stringify(aliasSlugs) + ';');
 
+  const featuredSlot = paidListings.featuredListingSlotHtml({ scope: 'directory', doc: paidDoc });
+  const featuredRe = /<section class="tp-featured-slot" data-featured-slot="directory"[\s\S]*?<\/section>/;
+  if (featuredRe.test(html)) html = html.replace(featuredRe, featuredSlot);
+  else html = html.replace('<div id="board">', featuredSlot + '\n<div id="board">');
+
   return { page: html, records: makers };
 }
 
@@ -621,20 +690,25 @@ function renderIntel(html) {
     CONFIRMED: { help: 'Transformer scope explicitly established.' },
     INFERRED:  { help: 'Transformer opportunity reasonably inferred from the source.' },
     PIPELINE:  { help: 'Planned / tender / pre-award stage.' },
+    SUPPORTED: { help: 'Supported evidence — not yet fully verified. No live portal adapter has confirmed this item.' },
     WATCH:     { help: 'Early signal; monitor for confirmation.' },
   };
   function tag(items, base) {
     return (items || []).map(function(it) { return (it && !it.cls) ? Object.assign({}, it, { cls: base }) : it; });
   }
   function card(it) {
-    const langBadge = (it.lang && it.lang !== 'en') ? `<span class="lang-badge">${esc(it.lang.toUpperCase())}</span>` : '';
+    const langCode = (it.lang && it.lang !== 'en') ? String(it.lang).toUpperCase() : '';
+    const langBadge = langCode ? `<span class="lang-badge" title="Source language: ${esc(langCode)}.">${esc(langCode)}</span>` : '';
     const cls = it.cls && CLASSIFY[it.cls] ? `<span class="cls-badge cls-${esc(it.cls)}" title="${esc(CLASSIFY[it.cls].help)}">${esc(it.cls)}</span>` : '';
+    const ev = (it.evidence_grade && it.evidence_grade !== 'CONFIRMED' && it.evidence_grade !== it.cls && CLASSIFY[it.evidence_grade])
+      ? `<span class="cls-badge cls-${esc(it.evidence_grade)}" title="${esc(CLASSIFY[it.evidence_grade].help)}">${esc(it.evidence_grade)}</span>` : '';
     const newBadge = it.isNew ? '<span class="new-badge">NEW</span>' : '';
+    const badges = [langBadge, cls, ev, newBadge].filter(Boolean).join(' ');
     const val = it.value ? `<span class="val">${esc(it.value)}</span> · ` : '';
     const src = it.src ? `<span class="src">${esc(it.src)}</span>` : '';
     const url = it.url || '#';
     return `<div class="card">
-      <div class="card-title"><a href="${esc(url)}" target="_blank" rel="noopener">${esc(it.title)}</a>${langBadge}${cls}${newBadge}</div>
+      <div class="card-title"><a href="${esc(url)}" target="_blank" rel="noopener">${esc(it.title)}</a> ${badges}</div>
       <div class="card-snippet">${esc(it.snippet)}</div>
       <div class="card-meta">${val}${src}<a class="tp-li-share-inline" data-linkedin-share data-url="${esc(url)}" href="#" rel="noopener" title="Share this item on LinkedIn">LinkedIn</a></div>
     </div>`;
@@ -662,11 +736,13 @@ function renderIntel(html) {
             (p.soWhat ? '<p class="intel-sowhat">' + esc(p.soWhat) + '</p>' : '') +
             (p.evidenceNote ? '<p class="intel-evidence-note" style="font-size:.76rem;color:#f0c14a;margin:6px 0 0">' + esc(p.evidenceNote) + '</p>' : '') +
             '<div class="intel-meta">' +
-            (p.cls ? '<span class="cls-badge cls-' + esc(p.cls) + '">' + esc(p.cls) + '</span>' : '') +
-            ((p.evidenceGrade && p.evidenceGrade !== 'CONFIRMED' && p.evidenceGrade !== p.cls)
-              ? '<span class="cls-badge cls-' + esc(p.evidenceGrade) + '" title="Supported evidence — not yet fully verified. No live portal adapter has confirmed this item.">' + esc(p.evidenceGrade) + '</span>'
-              : '') +
-            (intelBadge(p) || '') +
+            [
+              (p.cls ? '<span class="cls-badge cls-' + esc(p.cls) + '">' + esc(p.cls) + '</span>' : ''),
+              ((p.evidenceGrade && p.evidenceGrade !== 'CONFIRMED' && p.evidenceGrade !== p.cls)
+                ? '<span class="cls-badge cls-' + esc(p.evidenceGrade) + '" title="Supported evidence — not yet fully verified. No live portal adapter has confirmed this item.">' + esc(p.evidenceGrade) + '</span>'
+                : ''),
+              (intelBadge(p) || '')
+            ].filter(Boolean).join(' ') +
             '<span class="intel-region">' + esc(p.region || '') + '</span>' +
             '<span class="src">' + esc(p.sourceName || p.src || '') + '</span></div></div></article>';
         }).join('');
@@ -812,9 +888,37 @@ function renderIntel(html) {
   return { page: html, records };
 }
 
+function loadDirectoryIndex() {
+  return JSON.parse(fs.readFileSync('data/directory-index.json', 'utf8'));
+}
+
+function renderVendors(html) {
+  const index = loadDirectoryIndex();
+  const view = directorySsr.vendors(index.companies || []);
+  html = replaceInnerById(html, 'cntTotal', String(view.total));
+  html = replaceInnerById(html, 'cntOem', String(view.oem));
+  html = replaceInnerById(html, 'cntComp', String(view.components));
+  html = replaceInnerById(html, 'cntCountries', String(view.countries));
+  html = replaceInnerById(html, 'vndVisibleCount', String(view.total));
+  html = replaceInnerById(html, 'pillAll', 'All categories (' + view.total + ')');
+  html = replaceInnerById(html, 'pillOem', 'Transformer OEMs (' + view.oem + ')');
+  html = replaceInnerById(html, 'vndCountry', view.countryOptions);
+  html = replaceInnerById(html, 'vndList', view.listHtml);
+  return { page: html, records: view.total };
+}
+
+function renderDirectoryPage(html) {
+  const index = loadDirectoryIndex();
+  let siteStats = {};
+  try { siteStats = JSON.parse(fs.readFileSync('data/site-stats.json', 'utf8')); } catch (e) { siteStats = {}; }
+  html = replaceInnerById(html, 'directoryRoot', directorySsr.directoryRoot(index.companies || [], siteStats));
+  return { page: html, records: (index.companies || []).length };
+}
+
 const jobs = [
   ['events.html', renderEvents, 'events'],
-  ['webinars.html', renderWebinars, 'webinars'],
+  ['vendors.html', renderVendors, 'vendors'],
+  ['directory.html', renderDirectoryPage, 'directory'],
   ['components.html', renderComponents, 'components'],
   ['jobs.html', renderJobs, 'jobs'],
   ['grids.html', renderGrids, 'grids'],

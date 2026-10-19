@@ -35,9 +35,9 @@
         if (!r || !r.observation_date) return;
         var observed = fmtObs(r.observation_date);
         if (isHistorical(r)) {
-          el.textContent = 'Historical market reference · Observed ' + observed;
+          el.textContent = 'prices as of ' + observed + ', updated when a new LME official settlement is recorded';
           el.style.color = 'var(--muted, #9fb0c4)';
-          el.setAttribute('title', 'Commodity observation is independent of Intel freshness and build time');
+          el.setAttribute('title', 'Historical market reference. There is no automatic price feed. The date is the observation recorded in the materials data.');
         } else if (r.status === 'stale') {
           el.textContent = 'Last verified ' + fmtObs(r.last_verified || r.observation_date);
           el.style.color = 'var(--warn, #b5651d)';

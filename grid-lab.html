@@ -106,7 +106,11 @@
       <div style="color:var(--gl-muted);margin-bottom:6px">Want to see how this transformer is built inside?</div>
       <a href="transformer-lab.html" style="color:var(--gl-accent);font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:4px">TAKE THIS TRANSFORMER APART →</a>
     </div>
-    <div class="gl-disclaimer">
+    <div class="gl-disclaimer" id="grid-lab-validation">
+      <b style="color:var(--gl-accent)">Validation example.</b>
+      Inputs: 1,000 MVA at 21 kV and at 400 kV; a 140 MVA load shared by two 100 MVA transformers, each at 12.5% impedance, both in service.
+      Expected: 27,493 A at 21 kV, 1,443 A at 400 kV, and 70 MVA on each transformer.
+      References: IEC 60076-1 three-phase current I = S / (√3 · U). Equal percent impedance splits the load in proportion to rating, so each unit carries half of 140 MVA.
       Illustrative educational power-system configuration. Actual voltage levels, vector groups, and transformer arrangements vary by country and utility.
     </div>
   </section>
@@ -123,6 +127,12 @@
       <p style="color:var(--gl-muted);font-size:0.95rem;line-height:1.6;margin-bottom:24px">
         Electrical power is generated at moderate voltage, stepped up to extra-high voltage (EHV) for bulk transmission to minimize current and I²R losses, and then progressively stepped down across regional, primary, and local distribution transformers for end-user safety and equipment compatibility.
       </p>
+      <div id="grid-lab-validation-a11y" style="background:rgba(245,166,35,.08);border:1px solid rgba(245,166,35,.35);border-radius:10px;padding:14px 16px;margin-bottom:24px;color:#fff;font-size:.9rem;line-height:1.55">
+        <b>Validation example.</b>
+        Inputs: 1,000 MVA at 21 kV and at 400 kV; a 140 MVA load shared by two 100 MVA transformers, each at 12.5% impedance, both in service.
+        Expected: 27,493 A at 21 kV, 1,443 A at 400 kV, and 70 MVA on each transformer.
+        References: IEC 60076-1 three-phase current I = S / (√3 · U). Equal percent impedance splits the load in proportion to rating, so each unit carries half of 140 MVA.
+      </div>
 
       <div style="background:var(--gl-panel);border:1px solid var(--gl-panel-border);border-radius:10px;padding:20px;margin-bottom:24px">
         <h2 style="font-size:1.1rem;color:var(--gl-accent);margin-bottom:12px">Grid Transformation Hierarchy (Educational Scenario)</h2>

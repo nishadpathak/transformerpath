@@ -1,18 +1,18 @@
 {
   "$schema": "https://transformerpath.com/commerce-intel.schema.json",
-  "generated": "2026-10-14T11:58:56.168Z",
+  "generated": "2026-10-16T07:39:29.030Z",
   "honesty_note": "Revenue and conversion figures are NOT shown because live Stripe/Supabase transaction data is not available in this static build. No revenue, no conversion rate and no pipeline value are fabricated. The figures below are real platform-scale and prospect signals derived from the canonical datasets.",
   "metrics": {
     "platform_scale": {
-      "manufacturers": 906,
-      "projects": 306,
-      "tenders": 155,
-      "open_tenders": 23,
-      "awards": 56,
-      "events": 300
+      "manufacturers": 894,
+      "projects": 305,
+      "tenders": 158,
+      "open_tenders": 8,
+      "awards": 57,
+      "events": 304
     },
     "prospect_signals": {
-      "supplier_prospects_with_website": 889,
+      "supplier_prospects_with_website": 871,
       "upcoming_events": 160
     }
   },
@@ -368,12 +368,12 @@
       "name": "RLP Electric",
       "country": "Australia",
       "region": "Oceania",
-      "city": "Sydney",
+      "city": "Cardiff, NSW",
       "categories": [
         "DT",
         "DRY"
       ],
-      "website": "https://www.rlp.com.au",
+      "website": "https://rlpelectric.com.au/",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
@@ -574,17 +574,6 @@
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
-      "name": "Powerade Technology",
-      "country": "Bangladesh",
-      "region": "South Asia",
-      "city": "Dhaka",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://www.powerade.com.bd",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
       "name": "Transpower Engineering",
       "country": "Bangladesh",
       "region": "South Asia",
@@ -702,17 +691,6 @@
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
-      "name": "Vermeire-Belting & Transformers",
-      "country": "Belgium",
-      "region": "Europe",
-      "city": "Verviers / Brussels",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://www.vermeire.com/",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
       "name": "CDA Ingenieros",
       "country": "Bolivia",
       "region": "Latin America",
@@ -743,17 +721,6 @@
         "DT"
       ],
       "website": "http://www.indutrans.com.bo/",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Transfobol S.R.L. (Transformadores Bolivia)",
-      "country": "Bolivia",
-      "region": "Latin America",
-      "city": "Cochabamba",
-      "categories": [
-        "DT"
-      ],
-      "website": "http://www.transfobol.com/",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
@@ -976,17 +943,6 @@
         "PT"
       ],
       "website": "https://www.trael.com.br/",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Trafotaipu",
-      "country": "Brazil",
-      "region": "Latin America",
-      "city": "São Paulo",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://trafotaipu.com.br",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
@@ -1619,7 +1575,7 @@
         "PT",
         "DT"
       ],
-      "website": "https://en.pinggao.com/",
+      "website": "https://www.pinggao.com/",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
@@ -1795,18 +1751,6 @@
         "DRY"
       ],
       "website": "http://www.qdqb.com",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Qingdao Transformer Group",
-      "country": "China",
-      "region": "East Asia",
-      "city": "Qingdao, Shandong",
-      "categories": [
-        "PT",
-        "DT"
-      ],
-      "website": "https://www.qdtg.com/",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
@@ -2015,18 +1959,6 @@
         "DRY"
       ],
       "website": "https://www.shenda.com/",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Sichuan Transformer Co., Ltd.",
-      "country": "China",
-      "region": "East Asia",
-      "city": "Chengdu, Sichuan",
-      "categories": [
-        "PT",
-        "DT"
-      ],
-      "website": "https://www.chuandian.com/",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
@@ -2390,41 +2322,79 @@
       ],
       "website": "https://etd-transformers.com",
       "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "ETD Transformátory a.s.",
+      "country": "Czechia",
+      "region": "Europe",
+      "city": "Plzeň",
+      "categories": [
+        "PT",
+        "TX",
+        "SR"
+      ],
+      "website": "https://www.etd-transformatory.cz/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "SGB-SMIT Czech",
+      "country": "Czechia",
+      "region": "Europe",
+      "city": "Olomouc",
+      "categories": [
+        "DT"
+      ],
+      "website": "https://www.sgbczechtrafo.cz",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Trafocz",
+      "country": "Czechia",
+      "region": "Europe",
+      "city": "",
+      "categories": [
+        "DT"
+      ],
+      "website": "https://www.trafocz.cz/en/sale-and-production-transformers-trafocz.html",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Dantrafo",
+      "country": "Denmark",
+      "region": "Europe",
+      "city": "Lemvig",
+      "categories": [
+        "DT",
+        "DRY"
+      ],
+      "website": "https://dantrafo.dk",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "E-T-A Transformers A/S (ETA Transformatoren)",
+      "country": "Denmark",
+      "region": "Europe",
+      "city": "Norre Aaby, Funen",
+      "categories": [
+        "DT",
+        "DRY"
+      ],
+      "website": "https://www.eta-danmark.dk/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
+      "name": "Microdan A/S",
+      "country": "Denmark",
+      "region": "Europe",
+      "city": "Horsholm",
+      "categories": [
+        "DT"
+      ],
+      "website": "https://www.microdan.dk/",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
     }
   ],
   "event_prospects": [
-    {
-      "name": "IEEE PowerCon 2026 (Malaysia)",
-      "city": "Kota Kinabalu",
-      "country": "Malaysia",
-      "region": "Asia",
-      "date": "2026-10-11",
-      "url": "https://attend.ieee.org/powercon-2026/"
-    },
-    {
-      "name": "Egypt Energy 2026 (formerly Electricx)",
-      "city": "Cairo",
-      "country": "Egypt",
-      "region": "Africa",
-      "date": "2026-10-12",
-      "url": "https://www.egypt-energy.com/en/home.html"
-    },
-    {
-      "name": "belektro 2026 (Berlin)",
-      "city": "Berlin",
-      "country": "Germany",
-      "region": "Europe",
-      "date": "2026-10-13",
-      "url": "https://www.belektro.de/"
-    },
-    {
-      "name": "Philippines Future Energy & Grid Summit 2026 (Manila)",
-      "city": "Manila",
-      "country": "Philippines",
-      "region": "Asia",
-      "date": "2026-10-14",
-      "url": "https://philippines.futureenergyapac.com/"
-    },
     {
       "name": "Power Line Trans Tech India 2026",
       "city": "New Delhi",
@@ -2448,14 +2418,6 @@
       "region": "Africa",
       "date": "2026-10-15",
       "url": "https://addispower.com/"
-    },
-    {
-      "name": "My Transfo Meeting on the Road — Madrid 2026",
-      "city": "Madrid",
-      "country": "Spain",
-      "region": "Europe",
-      "date": "2026-10-15",
-      "url": "https://www.mytransfo.com/"
     },
     {
       "name": "IECON 2026 (IEEE Industrial Electronics)",
@@ -2488,6 +2450,14 @@
       "region": "Europe",
       "date": "2026-10-19",
       "url": "https://ieee-isgt-europe.org/"
+    },
+    {
+      "name": "12th Iran Regional CIRED Conference 2026",
+      "city": "Tehran",
+      "country": "Iran",
+      "region": "Middle East",
+      "date": "2026-10-20",
+      "url": "https://www.cired.net/"
     },
     {
       "name": "UzEnergyExpo 2026 (Tashkent)",
@@ -2578,6 +2548,14 @@
       "url": "https://attend.ieee.org/isgt-asia-2026/"
     },
     {
+      "name": "CIRED 2026 Seoul Workshop",
+      "city": "Seoul",
+      "country": "South Korea",
+      "region": "Asia",
+      "date": "2026-11-02",
+      "url": "https://www.cired.net/"
+    },
+    {
       "name": "ADIPEC 2026",
       "city": "Abu Dhabi",
       "country": "UAE",
@@ -2610,14 +2588,6 @@
       "url": "https://cigre-gccpower.com/"
     },
     {
-      "name": "Saudi Elenex 2026",
-      "city": "Riyadh",
-      "country": "Saudi Arabia",
-      "region": "Middle East",
-      "date": "2026-11-02",
-      "url": "https://saudielenex.com/"
-    },
-    {
       "name": "CMD 2026 — Int'l Conf. on Condition Monitoring & Diagnosis",
       "city": "Denpasar (Bali)",
       "country": "Indonesia",
@@ -2626,20 +2596,20 @@
       "url": "https://www.cmd2026.org/"
     },
     {
-      "name": "Power & Alternative Energy Asia 2026 (Lahore Pakistan)",
-      "city": "Lahore",
-      "country": "Pakistan",
-      "region": "Asia",
-      "date": "2026-11-03",
-      "url": "https://www.powerasia.com.pk/"
-    },
-    {
       "name": "Western Energy Institute Annual Meeting 2026",
       "city": "Phoenix",
       "country": "USA",
       "region": "Americas",
       "date": "2026-11-03",
       "url": "https://www.westernenergy.org/program/annual-meeting/"
+    },
+    {
+      "name": "Power & Alternative Energy Asia 2026 (Lahore Pakistan)",
+      "city": "Lahore",
+      "country": "Pakistan",
+      "region": "Asia",
+      "date": "2026-11-04",
+      "url": "https://www.powerasia.com.pk/"
     },
     {
       "name": "BIXPO 2026 (Gwangju) — KEPCO Power Technology Expo",
@@ -2678,7 +2648,7 @@
       "city": "Tehran",
       "country": "Iran",
       "region": "Middle East",
-      "date": "2026-11-04",
+      "date": "2026-11-07",
       "url": "https://iranelecshow.com/"
     },
     {
@@ -2736,6 +2706,14 @@
       "region": "Asia",
       "date": "2026-11-13",
       "url": "https://www.globalomp.com/expo/26371"
+    },
+    {
+      "name": "Saudi Elenex 2026",
+      "city": "Riyadh",
+      "country": "Saudi Arabia",
+      "region": "Middle East",
+      "date": "2026-11-16",
+      "url": "https://saudielenex.com/"
     },
     {
       "name": "CEATI Transmission & Distribution Conference 2026",
@@ -2814,7 +2792,7 @@
       "city": "Accra",
       "country": "Ghana",
       "region": "Africa",
-      "date": "2026-11-25",
+      "date": "2026-12-01",
       "url": "https://www.powerenergyghana.com/"
     },
     {
@@ -2920,6 +2898,14 @@
       "region": "Americas",
       "date": "2027-03-01",
       "url": "https://www.distributech.com/"
+    },
+    {
+      "name": "IET ACDC Global 2027 (Glasgow) — 25th AC & DC Power Transmission",
+      "city": "Glasgow",
+      "country": "United Kingdom",
+      "region": "Europe",
+      "date": "2027-03-01",
+      "url": "https://acdc.theiet.org/acdc-global-2027/"
     },
     {
       "name": "Africa Energy Indaba 2027",
@@ -3030,7 +3016,7 @@
       "city": "Cairo",
       "country": "Egypt",
       "region": "Africa",
-      "date": "2027-03-29",
+      "date": "2027-03-30",
       "url": "https://www.egypes.com/"
     },
     {
@@ -3059,11 +3045,11 @@
     },
     {
       "name": "PEMD Europe 2027 — Power Electronics, Machines & Drives",
-      "city": "Denmark (TBC)",
+      "city": "",
       "country": "Denmark",
       "region": "Europe",
       "date": "2027-04-26",
-      "url": "https://pemd.theiet.org"
+      "url": "https://pemd.theiet.org/pemd-europe-2027/"
     },
     {
       "name": "VDE ETG Kongress 2027",
@@ -3106,14 +3092,6 @@
       "url": "https://www.wire-eurasia.com/"
     },
     {
-      "name": "MMEC 2027 — Mozambique Mining, Oil & Gas, Energy Conference",
-      "city": "Maputo",
-      "country": "Mozambique",
-      "region": "Africa",
-      "date": "2027-05-05",
-      "url": "https://mmec-moz.com/"
-    },
-    {
       "name": "Enlit Africa 2027",
       "city": "Cape Town",
       "country": "South Africa",
@@ -3146,6 +3124,14 @@
       "url": "https://www.intersolar.ae/"
     },
     {
+      "name": "MMEC 2027 — Mozambique Mining, Oil & Gas, Energy Conference",
+      "city": "Maputo",
+      "country": "Mozambique",
+      "region": "Africa",
+      "date": "2027-05-12",
+      "url": "https://mmec-moz.com/"
+    },
+    {
       "name": "All-Energy 2027 Glasgow",
       "city": "Glasgow",
       "country": "United Kingdom",
@@ -3174,8 +3160,16 @@
       "city": "Mumbai",
       "country": "India",
       "region": "Asia",
+      "date": "2027-05-19",
+      "url": "https://www.powerandutilitiesindia.com/"
+    },
+    {
+      "name": "World Utilities Congress 2027",
+      "city": "Abu Dhabi",
+      "country": "UAE",
+      "region": "Middle East",
       "date": "2027-05-25",
-      "url": "https://www.powerandutilitiesindia.com"
+      "url": "https://www.worldutilitiescongress.com/"
     },
     {
       "name": "Utility Week Live 2027 (Birmingham)",
@@ -3214,7 +3208,7 @@
       "city": "Shanghai",
       "country": "China",
       "region": "Asia",
-      "date": "2027-06-02",
+      "date": "2027-06-03",
       "url": "https://en.china-epower.com/"
     },
     {
@@ -3224,6 +3218,14 @@
       "region": "Europe",
       "date": "2027-06-08",
       "url": "https://www.elektro-expo.ru/en/"
+    },
+    {
+      "name": "CIRED 2027",
+      "city": "Stockholm",
+      "country": "Sweden",
+      "region": "Europe",
+      "date": "2027-06-14",
+      "url": "https://www.cired.net/"
     },
     {
       "name": "EEI Annual Meeting 2027",
@@ -3254,7 +3256,7 @@
       "city": "Shanghai",
       "country": "China",
       "region": "Asia",
-      "date": "2027-06-22",
+      "date": "2027-06-23",
       "url": "https://shanghai.cwiemeevents.com/"
     },
     {
@@ -3278,7 +3280,7 @@
       "city": "Tokyo",
       "country": "Japan",
       "region": "Asia",
-      "date": "2027-07-21",
+      "date": "2027-07-14",
       "url": "https://tf.jma.or.jp/en/index.html"
     },
     {
@@ -3314,12 +3316,28 @@
       "url": "https://www.powergen-india.com/"
     },
     {
-      "name": "JICABLE'27 — 11th Int'l Conf. on Insulated Power Cables",
+      "name": "JICABLE'27 — 12th Int'l Conf. on Insulated Power Cables",
       "city": "Lyon",
       "country": "France",
       "region": "Europe",
       "date": "2027-09-05",
-      "url": "https://www.jicable.org/"
+      "url": "https://www.jicable27.com/"
+    },
+    {
+      "name": "Electric & Power Indonesia 2027 (25th edition)",
+      "city": "Jakarta",
+      "country": "Indonesia",
+      "region": "Asia",
+      "date": "2027-09-08",
+      "url": "https://www.electricindonesia.com/"
+    },
+    {
+      "name": "ELECXPO 2027 (12th Edition)",
+      "city": "Chennai",
+      "country": "India",
+      "region": "Asia",
+      "date": "2027-09-10",
+      "url": "https://elecxpo.com"
     },
     {
       "name": "FIEE Smart Future 2027 (São Paulo)",
@@ -3330,20 +3348,12 @@
       "url": "https://www.fiee.com.br/"
     },
     {
-      "name": "Electric & Power Indonesia 2027 (25th edition)",
-      "city": "Jakarta",
-      "country": "Indonesia",
-      "region": "Asia",
-      "date": "2027-09-15",
-      "url": "https://www.electricindonesia.com/"
-    },
-    {
-      "name": "CIGRE Canada 2027 + SC B5 Colloquium",
+      "name": "CIGRE Energy Forum + SC B5 International Colloquium 2027",
       "city": "Toronto",
       "country": "Canada",
       "region": "Americas",
       "date": "2027-09-20",
-      "url": "https://cigre-canada.org/"
+      "url": "https://www.cigre-exhibition.com/canada2027/"
     },
     {
       "name": "Coiltech Italia 2027 (18th edition)",
@@ -3355,11 +3365,19 @@
     },
     {
       "name": "Industry Navigator 2027 (Transformers Magazine)",
-      "city": "Vienna",
-      "country": "Austria",
+      "city": "Lisbon",
+      "country": "Portugal",
       "region": "Europe",
-      "date": "2027-10-05",
-      "url": "https://conference.transformers-magazine.com/"
+      "date": "2027-09-28",
+      "url": "https://conference.transformers-magazine.com/industry-navigator-2027/"
+    },
+    {
+      "name": "Power Transmission & Distribution Tech Expo 2027",
+      "city": "Cologne",
+      "country": "Germany",
+      "region": "Europe",
+      "date": "2027-10-12",
+      "url": "https://www.powertranstech.com/"
     },
     {
       "name": "WETEX 2027 (29th edition)",
@@ -3368,14 +3386,6 @@
       "region": "Middle East",
       "date": "2027-10-19",
       "url": "https://www.wetex.ae/"
-    },
-    {
-      "name": "IET ACDC Global 2027 (Glasgow) — 25th AC & DC Power Transmission",
-      "city": "Glasgow",
-      "country": "United Kingdom",
-      "region": "Europe",
-      "date": "2027-10-25",
-      "url": "https://acdc.theiet.org/"
     },
     {
       "name": "Enlit Europe 2027",
@@ -3403,7 +3413,7 @@
     },
     {
       "name": "INMR World Congress 2027",
-      "city": "Algarve",
+      "city": "Vilamoura",
       "country": "Portugal",
       "region": "Europe",
       "date": "2027-11-07",
@@ -3426,20 +3436,12 @@
       "url": "https://www.cigre.org/GB/events/cigre-symposia"
     },
     {
-      "name": "Power Transmission & Distribution Tech Expo 2027",
-      "city": "Cologne",
-      "country": "Germany",
-      "region": "Europe",
-      "date": "2027-11-16",
-      "url": "https://www.powertranstech.com/"
-    },
-    {
       "name": "Trafotech Global 2027 (IEEMA)",
       "city": "New Delhi",
       "country": "India",
       "region": "Asia",
       "date": "2027-12-01",
-      "url": "https://trafotechglobal.ieema.org/"
+      "url": "https://ieema.org/event/trafotech-global-2/"
     },
     {
       "name": "EP Shanghai 2027 (34th edition)",
@@ -3448,14 +3450,6 @@
       "region": "Asia",
       "date": "2027-12-02",
       "url": "https://www.epchinashow.com/"
-    },
-    {
-      "name": "ELECXPO 2027 (12th Edition)",
-      "city": "Chennai",
-      "country": "India",
-      "region": "Asia",
-      "date": "2027-12-10",
-      "url": "https://elecxpo.com"
     },
     {
       "name": "World Future Energy Summit 2028 (WFES)",
@@ -3488,6 +3482,14 @@
       "region": "Europe",
       "date": "2028-02-15",
       "url": "https://e-world-essen.com/en/"
+    },
+    {
+      "name": "PowerTest 2028 (NETA)",
+      "city": "Fort Worth",
+      "country": "USA",
+      "region": "Americas",
+      "date": "2028-03-06",
+      "url": "https://www.netaworld.org/about/neta-events"
     },
     {
       "name": "NRECA PowerXchange & TechAdvantage 2028",
@@ -3650,20 +3652,20 @@
       "url": "https://www.adipec.com/"
     },
     {
+      "name": "Power Transmission & Distribution Tech Expo 2028",
+      "city": "Cologne",
+      "country": "Germany",
+      "region": "Europe",
+      "date": "2028-11-07",
+      "url": "https://www.powertranstech.com/"
+    },
+    {
       "name": "Enlit Europe 2028",
       "city": "TBC",
       "country": "Europe",
       "region": "Europe",
       "date": "2028-11-14",
       "url": "https://www.enlit-europe.com/"
-    },
-    {
-      "name": "Power Transmission & Distribution Tech Expo 2028",
-      "city": "Cologne",
-      "country": "Germany",
-      "region": "Europe",
-      "date": "2028-11-21",
-      "url": "https://www.powertranstech.com/"
     },
     {
       "name": "EP Shanghai 2028 (35th edition)",
@@ -3685,7 +3687,8 @@
           "price": 0,
           "cadence": null,
           "cta": "Start free",
-          "outcome": "Read daily intel, browse manufacturers/projects/tenders/events, post an RFQ, use selected tools and learning."
+          "outcome": "Read daily intel, browse manufacturers/projects/tenders/events, post an RFQ, use selected tools and learning.",
+          "features": []
         },
         {
           "id": "learning",
@@ -3693,32 +3696,131 @@
           "price": 199,
           "cadence": "12 months",
           "cta": "Unlock Learning",
+          "payment_link": "https://buy.stripe.com/8x27sE3pS4dfak8c1AfYY0p",
           "outcome": "Learn: full pathways, practice, progress, 3D learning, Test Bay, capstones, completion records.",
           "single_payment": true,
           "auto_renew": false,
-          "billing": "single payment for 12 months access"
+          "billing": "single payment for 12 months access",
+          "features": [
+            {
+              "id": "design_course",
+              "label": "26-chapter design course, tutorial and academy",
+              "delivery": "built"
+            },
+            {
+              "id": "models_3d",
+              "label": "Interactive 3D component models and Grid Lab",
+              "delivery": "built"
+            },
+            {
+              "id": "design_calculator",
+              "label": "IEC 60076 design calculator",
+              "delivery": "built"
+            },
+            {
+              "id": "engineer_track",
+              "label": "Design Engineer Track",
+              "delivery": "built"
+            },
+            {
+              "id": "capstone_review",
+              "label": "Capstone projects with published model answers",
+              "delivery": "built"
+            }
+          ]
         },
         {
           "id": "professional",
-          "name": "Professional",
+          "name": "Engineering Pro",
           "price": 599,
           "cadence": "12 months",
-          "cta": "Unlock Professional",
+          "cta": "Unlock Engineering Pro",
+          "payment_link": "https://buy.stripe.com/fZu00c3pScJL1NC3v4fYY01",
           "outcome": "Work: Learning plus professional engineering utility — costing workbench, specification builder, bid evaluation, DGA workspace, professional exports.",
           "single_payment": true,
           "auto_renew": false,
-          "billing": "single payment for 12 months access"
+          "billing": "single payment for 12 months access",
+          "features": [
+            {
+              "id": "capstone_review",
+              "label": "Capstone projects with published model answers",
+              "delivery": "built"
+            },
+            {
+              "id": "bom_costing",
+              "label": "BOM and active material costing",
+              "delivery": "built"
+            },
+            {
+              "id": "pdf_reports",
+              "label": "PDF engineering reports",
+              "delivery": "built"
+            },
+            {
+              "id": "rating_plate",
+              "label": "Rating plate generator",
+              "delivery": "built"
+            },
+            {
+              "id": "test_report",
+              "label": "Factory test report generator",
+              "delivery": "built"
+            },
+            {
+              "id": "country_adapter",
+              "label": "Country design adapter",
+              "delivery": "built"
+            },
+            {
+              "id": "saved_designs",
+              "label": "Saved designs and design history",
+              "delivery": "coming_soon"
+            },
+            {
+              "id": "project_workspace",
+              "label": "Project workspace and client files",
+              "delivery": "coming_soon"
+            },
+            {
+              "id": "design_comparison",
+              "label": "Side-by-side design comparison",
+              "delivery": "coming_soon"
+            }
+          ]
         },
         {
           "id": "team",
-          "name": "Team",
+          "name": "Engineering Team",
           "price": 1999,
           "cadence": "12 months",
-          "cta": "Unlock Team",
+          "cta": "Unlock Engineering Team",
+          "payment_link": "https://buy.stripe.com/aFacMY6C4aBD2RG2r0fYY02",
           "outcome": "A team on one plan with organization management, members, individual progress, assigned pathways and a shared workspace.",
           "single_payment": true,
           "auto_renew": false,
-          "billing": "single payment for 12 months access"
+          "billing": "single payment for 12 months access",
+          "features": [
+            {
+              "id": "engineering_team_seats",
+              "label": "Engineering team seats",
+              "delivery": "coming_soon"
+            },
+            {
+              "id": "shared_design_library",
+              "label": "Shared team project workspace and design library",
+              "delivery": "coming_soon"
+            },
+            {
+              "id": "shared_access_link",
+              "label": "Shared team access link",
+              "delivery": "coming_soon"
+            },
+            {
+              "id": "team_rollout",
+              "label": "Team rollout guide",
+              "delivery": "coming_soon"
+            }
+          ]
         }
       ]
     },
@@ -3733,7 +3835,14 @@
           "cadence": null,
           "cta": "Claim your company",
           "outcome": "A factual public listing — company, country, researched categories, official website, sourced capability.",
-          "neutrality": "No endorsement. Listed is a census listing, not a recommendation."
+          "neutrality": "No endorsement. Listed is a census listing, not a recommendation.",
+          "features": [
+            {
+              "id": "directory_listing",
+              "label": "Public directory listing",
+              "delivery": "built"
+            }
+          ]
         },
         {
           "id": "verified",
@@ -3741,8 +3850,40 @@
           "price": 499,
           "cadence": "12 months",
           "cta": "Get Verified",
-          "outcome": "Verified company contact, enhanced profile, logo/media, product info, brochure, contact CTA, RFQ response eligibility, basic analytics, website backlink where organically relevant, featured pin on the Industry Map.",
-          "neutrality": "VERIFIED MANUFACTURER means the organization/contact/profile completed TransformerPath's defined verification process. It does NOT mean product certified, quality certified, approved supplier, or technically superior."
+          "outcome": "Verified company contact and profile after review. Logo, catalogue PDF link and photo gallery are included at no extra charge. RFQ routing is coming soon.",
+          "neutrality": "VERIFIED MANUFACTURER means the organization/contact/profile completed TransformerPath's defined verification process. It does NOT mean product certified, quality certified, approved supplier, or technically superior.",
+          "features": [
+            {
+              "id": "verified_badge",
+              "label": "Verified manufacturer badge after review",
+              "delivery": "built"
+            },
+            {
+              "id": "logo_brochure_upload",
+              "label": "Logo, catalogue PDF and photo gallery",
+              "delivery": "built"
+            },
+            {
+              "id": "buyer_inquiry_routing",
+              "label": "Direct buyer inquiry routing",
+              "delivery": "coming_soon"
+            },
+            {
+              "id": "rfq_eligibility",
+              "label": "RFQ routing is coming soon",
+              "delivery": "coming_soon"
+            },
+            {
+              "id": "featured_map_pin",
+              "label": "Featured Industry Map pin",
+              "delivery": "coming_soon"
+            },
+            {
+              "id": "analytics_dashboard",
+              "label": "Analytics dashboard",
+              "delivery": "coming_soon"
+            }
+          ]
         },
         {
           "id": "supplier_pro",
@@ -3750,8 +3891,45 @@
           "price": 1499,
           "cadence": "12 months",
           "cta": "Become Supplier Pro",
-          "outcome": "Everything in Verified plus advanced analytics, commercial profile tools, RFQ workflow, market watchlists, Intel Pro entitlement, monthly performance report, promotional inventory (including a featured Industry Map pin), advanced opportunity alerts.",
-          "neutrality": "Promotional placement is explicitly FEATURED or SPONSORED. Pro never buys organic technical ranking."
+          "outcome": "Verified-level profile, the RFQ inbox, and four qualified leads.",
+          "neutrality": "Promotional placement is explicitly FEATURED or SPONSORED. Pro never buys organic technical ranking.",
+          "features": [
+            {
+              "id": "rfq_inbox",
+              "label": "RFQ inbox and lead status",
+              "delivery": "built"
+            },
+            {
+              "id": "analytics_dashboard",
+              "label": "Analytics dashboard",
+              "delivery": "coming_soon"
+            },
+            {
+              "id": "sourcing_alerts",
+              "label": "Sourcing interest alerts",
+              "delivery": "coming_soon"
+            },
+            {
+              "id": "lead_export",
+              "label": "Lead export (CSV/JSON)",
+              "delivery": "coming_soon"
+            },
+            {
+              "id": "intel_pro_seats",
+              "label": "Intel Pro seats for supplier reps",
+              "delivery": "coming_soon"
+            },
+            {
+              "id": "supplier_pro_badge",
+              "label": "Supplier Pro badge",
+              "delivery": "coming_soon"
+            },
+            {
+              "id": "featured_placement",
+              "label": "Paid category placement",
+              "delivery": "coming_soon"
+            }
+          ]
         }
       ]
     },
@@ -3765,7 +3943,24 @@
           "price": 0,
           "cadence": null,
           "cta": "Create a free account",
-          "outcome": "Daily intel, factual summaries, projects, tenders, basic company activity, limited follows and alerts."
+          "outcome": "Daily intel, factual summaries, projects, tenders, basic company activity, limited follows and alerts.",
+          "features": [
+            {
+              "id": "daily_intel",
+              "label": "Daily Intel briefing",
+              "delivery": "built"
+            },
+            {
+              "id": "public_tenders",
+              "label": "Public tender announcements",
+              "delivery": "built"
+            },
+            {
+              "id": "basic_follows",
+              "label": "Free local follows",
+              "delivery": "built"
+            }
+          ]
         },
         {
           "id": "intel_pro",
@@ -3776,7 +3971,54 @@
           "cta": "Unlock Intel Pro",
           "outcome": "Advanced project/tender filters, award history, factory expansions, company timelines, saved searches, watchlists, alerts, country dashboards, historical archive, monthly brief, exports when ready.",
           "neutrality": "Intel Pro adds monitoring/filtering/decision value — it never paywalls the factual headline. Factual Intel stays public.",
-          "price_status": "TARGET"
+          "price_status": "TARGET",
+          "features": [
+            {
+              "id": "match_for_me",
+              "label": "Match for Me",
+              "delivery": "built"
+            },
+            {
+              "id": "country_grids",
+              "label": "Country grids",
+              "delivery": "built"
+            },
+            {
+              "id": "custom_watchlists",
+              "label": "Custom follow watchlists",
+              "delivery": "coming_soon"
+            },
+            {
+              "id": "real_time_alerts",
+              "label": "Real-time tender and award alerts",
+              "delivery": "coming_soon"
+            },
+            {
+              "id": "company_timelines",
+              "label": "Company timelines",
+              "delivery": "coming_soon"
+            },
+            {
+              "id": "advanced_filters",
+              "label": "Advanced project and tender filters",
+              "delivery": "coming_soon"
+            },
+            {
+              "id": "saved_searches_deadline_alerts",
+              "label": "Saved searches and deadline alerts",
+              "delivery": "coming_soon"
+            },
+            {
+              "id": "monthly_brief",
+              "label": "Monthly market brief",
+              "delivery": "coming_soon"
+            },
+            {
+              "id": "csv_json_exports",
+              "label": "CSV/JSON dataset exports",
+              "delivery": "coming_soon"
+            }
+          ]
         },
         {
           "id": "intel_team",
@@ -3786,15 +4028,33 @@
           "cadence": "12 months",
           "cta": "Explore Intel Team",
           "outcome": "Organization, members, shared watchlists, shared saved searches, team alerts, exports, shared reports.",
-          "price_status": "TARGET"
+          "price_status": "TARGET",
+          "features": [
+            {
+              "id": "intel_team_seats",
+              "label": "Shared Intel team seats",
+              "delivery": "coming_soon"
+            },
+            {
+              "id": "shared_watchlists",
+              "label": "Shared watchlists",
+              "delivery": "coming_soon"
+            },
+            {
+              "id": "csv_json_exports",
+              "label": "CSV/JSON dataset exports",
+              "delivery": "coming_soon"
+            }
+          ]
         },
         {
           "id": "enterprise",
           "name": "Enterprise Intelligence",
           "price": null,
           "cadence": "custom",
-          "cta": "Talk to TransformerPath",
-          "outcome": "Multi-user access, advanced exports, custom market monitoring, custom reports, research requests, bespoke briefings, company/project tracking."
+          "cta": "No checkout yet",
+          "outcome": "Multi-user access and company/project tracking. There is no checkout and no custom research service.",
+          "features": []
         }
       ]
     },
@@ -3809,7 +4069,19 @@
           "cadence": "per event",
           "cta": "Feature your event",
           "outcome": "Prominent, clearly-labelled placement, logo/banner, enhanced event page, registration CTA, sponsor/exhibitor links, analytics.",
-          "neutrality": "FEATURED is promotional placement, clearly labelled. It is not an editorial recommendation."
+          "neutrality": "FEATURED is promotional placement, clearly labelled. It is not an editorial recommendation.",
+          "features": [
+            {
+              "id": "featured_event_label",
+              "label": "FEATURED event label after review",
+              "delivery": "built"
+            },
+            {
+              "id": "featured_event_extras",
+              "label": "Event logo, banner and analytics",
+              "delivery": "coming_soon"
+            }
+          ]
         },
         {
           "id": "featured_exhibitor",
@@ -3817,16 +4089,16 @@
           "price": 399,
           "cadence": "per event",
           "cta": "Feature your exhibitor",
-          "outcome": "FEATURED label, logo, booth number, products, brochure, manufacturer profile, meeting CTA, event analytics.",
-          "neutrality": "FEATURED is promotional placement. It never implies an editorial recommendation."
-        },
-        {
-          "id": "hosted_webinar",
-          "name": "Hosted Webinar",
-          "price": 1500,
-          "cadence": "engagement",
-          "cta": "Host a webinar",
-          "outcome": "Event page, registration, promotion, hosting, recording where supported, post-event replay, sponsor identification. Attendee reporting subject to privacy/consent."
+          "payment_link": "https://buy.stripe.com/dRm9AM5y06ln1NC9TsfYY06",
+          "outcome": "FEATURED label, logo, booth number, products, brochure, manufacturer profile, event analytics.",
+          "neutrality": "FEATURED is promotional placement. It never implies an editorial recommendation.",
+          "features": [
+            {
+              "id": "featured_exhibitor_card",
+              "label": "Featured exhibitor card",
+              "delivery": "coming_soon"
+            }
+          ]
         },
         {
           "id": "sponsorship",
@@ -3834,8 +4106,9 @@
           "price": 299,
           "cadence": "engagement",
           "cta": "Sponsor TransformerPath",
-          "outcome": "Daily Intel sponsor, event spotlight, category sponsor, market sponsor, newsletter sponsor, annual knowledge partner. Every paid placement is visibly SPONSORED or FEATURED.",
-          "neutrality": "Every paid placement is visibly SPONSORED or FEATURED. We never sell editorial conclusions."
+          "outcome": "Daily Intel sponsor, event spotlight, category sponsor, market sponsor, newsletter sponsor. Every paid placement is visibly SPONSORED or FEATURED.",
+          "neutrality": "Every paid placement is visibly SPONSORED or FEATURED. We never sell editorial conclusions.",
+          "features": []
         }
       ]
     }

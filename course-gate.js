@@ -98,6 +98,30 @@
   var params = new URLSearchParams(location.search);
   var sessionId = params.get('session_id');
 
+  function loadScript(src) {
+    return new Promise(function (resolve, reject) {
+      var existing = document.querySelector('script[src="' + src + '"]');
+      if (existing) { resolve(); return; }
+      var s = document.createElement('script');
+      s.src = src;
+      s.onload = function () { resolve(); };
+      s.onerror = function () { reject(new Error('script')); };
+      document.head.appendChild(s);
+    });
+  }
+
+  function studentBadge() {
+    function read() {
+      if (!window.TP || !TP.whenReady || !TP.getStudentAccess) return Promise.resolve(false);
+      return TP.whenReady().then(function (state) {
+        if (!state || !state.configured || !TP.user) return false;
+        return TP.getStudentAccess().then(function (access) { return !!(access && access.student_badge === true); }, function () { return false; });
+      }, function () { return false; });
+    }
+    if (window.TP && TP.whenReady) return read();
+    return loadScript('supabase-config.js').then(function () { return loadScript('supabase.js'); }).then(read, function () { return false; });
+  }
+
   // If we already have valid access, the page stays open immediately.
   if (currentAccess()) return;
 
@@ -124,12 +148,12 @@
     || !!(window.TP_COURSE_GATE && window.TP_COURSE_GATE.freeTeaser);
 
   if (freeTeaser) {
-    showTeaserBanner();
+    studentBadge().then(function (badge) { if (!badge) showTeaserBanner(); });
     return;
   }
 
-  // No stored access and no verifiable session -> gate the page.
-  showGate();
+  // A student badge opens the page without writing a paid localStorage grant.
+  studentBadge().then(function (badge) { if (!badge) showGate(); });
 
   function showGate() {
     if (document.readyState === 'loading') {
@@ -154,7 +178,7 @@
       b.innerHTML =
         '<span style="max-width:640px;line-height:1.45;text-align:center">' +
         '<b style="color:#f5a623">Free preview</b> — run a first-pass design here. ' +
-        'Yearly Access unlocks the full Design Engineer Track, masterclass and academy tools.' +
+        'Yearly Access unlocks the full Design Engineer Track, design course and academy tools.' +
         '</span>' +
         '<a href="pricing.html" style="background:#f5a623;color:#0d1b2e;font-weight:800;' +
         'padding:8px 16px;border-radius:8px;text-decoration:none;white-space:nowrap">See plans →</a>' +

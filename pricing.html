@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pricing — Learning, Professional &amp; Team Plans | TransformerPath</title>
-<meta name="description" content="Three yearly-access plans for the TransformerPath learning platform: Learning ($199), Professional ($599) and Team ($1,999) — the full 26-chapter masterclass, 10 interactive 3D component models + TransformerPath Grid Lab, the design calculator and the Design Engineer Track.">
+<title>Pricing — Learning, Engineering Pro &amp; Engineering Team | TransformerPath</title>
+<meta name="description" content="Three single-payment plans for the TransformerPath learning platform: Learning ($199), Engineering Pro ($599) and Engineering Team ($1,999) — the full 26-chapter design course, 10 interactive 3D component models + TransformerPath Grid Lab, the design calculator and the Design Engineer Track.">
 <link rel="canonical" href="https://transformerpath.com/pricing.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TransformerPath">
 <meta property="og:title" content="Pricing | TransformerPath">
-<meta property="og:description" content="Learning, Professional and Team yearly-access plans for the TransformerPath learning platform.">
+<meta property="og:description" content="Learning, Engineering Pro and Engineering Team single-payment plans for the TransformerPath learning platform.">
 <meta property="og:url" content="https://transformerpath.com/pricing.html">
 <meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -36,6 +36,7 @@
 .plan .cta.primary { background:var(--amber); color:var(--navy); }
 .plan .cta.soon { background:var(--border); color:var(--muted); cursor:default; pointer-events:none; }
 .plan .fine { text-align:center; font-size:.74rem; color:var(--muted); margin-top:10px; }
+.roadmap { font-size:.8rem; color:var(--muted); margin:0 0 14px; line-height:1.5; }
 @media (max-width:860px){ .plans { grid-template-columns:1fr; } .plan.feat { order:-1; } }
 
 .free-strip { display:flex; gap:24px; align-items:center; justify-content:space-between; flex-wrap:wrap; background:var(--card); border:1px dashed var(--amber); border-radius:16px; padding:22px 26px; margin:0 0 28px; }
@@ -67,7 +68,7 @@ table.cmp .n { color:var(--border); }
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0d1b2e">
 
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "TransformerPath Yearly Access", "description": "Annual access to the TransformerPath transformer-design masterclass, interactive 3D models, IEC 60076 design calculator, test-report and rating-plate generators and the Design Engineer Track.", "brand": {"@type": "Organization", "name": "TransformerPath"}, "offers": {"@type": "AggregateOffer", "priceCurrency": "USD", "lowPrice": "199", "highPrice": "1999", "offerCount": "3", "offers": [{"@type": "Offer", "name": "Learning", "price": "199", "priceCurrency": "USD", "description": "Individual learner — 1 seat"}, {"@type": "Offer", "name": "Professional", "price": "599", "priceCurrency": "USD", "description": "Professional tier — 1 seat"}, {"@type": "Offer", "name": "Team", "price": "1999", "priceCurrency": "USD", "description": "Team — up to 10 seats"}]}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Product", "name": "TransformerPath Learning Access", "description": "Single-payment access to the TransformerPath transformer design course, interactive 3D models, IEC 60076 design calculator, test-report and rating-plate generators and the Design Engineer Track.", "brand": {"@type": "Organization", "name": "TransformerPath"}, "offers": {"@type": "AggregateOffer", "priceCurrency": "USD", "lowPrice": "199", "highPrice": "1999", "offerCount": "3", "offers": [{"@type": "Offer", "name": "Learning", "price": "199", "priceCurrency": "USD", "description": "Individual learner — 1 seat"}, {"@type": "Offer", "name": "Engineering Pro", "price": "599", "priceCurrency": "USD", "description": "Engineering Pro — 1 seat"}, {"@type": "Offer", "name": "Engineering Team", "price": "1999", "priceCurrency": "USD", "description": "Engineering Team — up to 10 seats"}]}}</script>
     <link rel="stylesheet" href="tp-nav.css?v=14">
   <link rel="stylesheet" href="tp-feedback.css?v=14">
 </head>
@@ -75,11 +76,16 @@ table.cmp .n { color:var(--border); }
 
 <a class="skip-link" href="#main">Skip to content</a>
 <header>
+  <style>
+    @media (min-width: 1024px) {
+      #mainNav > .tpnav-more { display: block; }
+    }
+  </style>
   <div class="container nav">
     <a href="index.html" class="logo" style="display:inline-flex;align-items:center;gap:9px"><svg class="logo-mark" width="34" height="34" viewBox="0 0 16 16" aria-hidden="true" style="flex:none"><g fill="#f5a623"><rect x="1" y="1" width="4" height="4"/><rect x="11" y="1" width="4" height="4"/><rect x="1" y="11" width="4" height="4"/><rect x="11" y="11" width="4" height="4"/><rect x="5" y="2" width="6" height="2"/><rect x="12" y="5" width="2" height="6"/><rect x="5" y="12" width="6" height="2"/></g></svg><span class="word">Transformer<span class="accent">Path</span></span></a>
     <button class="menu-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">☰</button>
     <nav class="tpnav" id="mainNav" aria-label="Primary">
-      <a href="/intel">Intel</a>
+      <a href="/intel.html">Intel</a>
       <div class="tpnav-dropdown">
         <a href="directory.html" class="tpnav-dropdown-btn">Directory</a>
         <div class="tpnav-dropdown-panel" role="menu">
@@ -92,21 +98,25 @@ table.cmp .n { color:var(--border); }
           <a href="services.html">Services &amp; Repair</a>
           <a href="markets.html">Markets</a>
           <a href="buyers-guide.html">Buyer's Guide</a>
+          <a href="buy-early/">Buy early</a>
+          <a href="spare-capacity/">Mid-tier makers</a>
+          <a href="lead-times/">Lead times</a>
+          <a href="bottlenecks/">Bottlenecks</a>
           <a href="directory.html" style="border-top:1px solid rgba(255,255,255,.1);margin-top:4px;padding-top:8px;font-weight:700;color:var(--amber)">All Directory Verticals →</a>
         </div>
       </div>
       <a href="projects.html">Projects</a>
       <a href="tenders.html">Tenders</a>
       <a href="events.html">Events</a>
-      <a href="tools.html" class="tpnav-opt">Engineering</a>
       <a href="learn.html">Learn</a>
       <a href="rfq.html">RFQ</a>
       <div class="tpnav-more">
         <button type="button" class="tpnav-more-btn" aria-expanded="false" aria-haspopup="true">More</button>
         <div class="tpnav-more-panel" role="menu">
+          <a href="tools.html" role="menuitem">Engineering</a>
           <a href="map.html" role="menuitem">Industry Map</a>
           <a href="grids.html" role="menuitem">Global Grids</a>
-          <a href="webinars.html" role="menuitem">Webinars</a>
+          
           <a href="standards.html" role="menuitem">Standards &amp; Codes</a>
           <a href="for-manufacturers.html" role="menuitem">For Manufacturers</a>
           <a href="pricing.html" role="menuitem">Pricing Plans</a>
@@ -115,6 +125,7 @@ table.cmp .n { color:var(--border); }
       </div>
       <span class="tpnav-utils">
         <a href="search.html" title="Search" aria-label="Search">&#128269;</a>
+        <span class="tp-auth" data-tp-auth hidden></span>
         <a href="workspace.html" data-tp-account>Account</a>
         <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode" style="background:none;border:none;color:#fff;font-size:1.15rem;cursor:pointer;padding:8px;display:inline-flex;align-items:center">&#127769;</button>
       </span>
@@ -146,6 +157,8 @@ table.cmp .n { color:var(--border); }
       themeToggle.textContent = isDark ? '☀️' : '🌙';
     }
   </script>
+  <script src="google-auth-config.js" defer></script>
+  <script src="tp-auth.js?v=1" defer></script>
   <script src="tp-nav.js?v=7" defer></script>
   <script src="tp-pwa.js?v=7" defer></script>
 </header>
@@ -172,11 +185,11 @@ table.cmp .n { color:var(--border); }
       <div>
         <span class="free-badge">Free · Forever</span>
         <h2>Factual data is open and free. Plans unlock technical &amp; commercial workflows.</h2>
-        <p>Daily Intel and its archive, the <span data-stat="manufacturers">906</span>-manufacturer directory, <span data-stat="gridMarkets">151</span>-country grid census, events calendar, free 3D explorers, and a <a href="calculator.html">design calculator free preview</a> are open — no credit card required. Paid plans unlock specialized operating capabilities: Engineering Design Workspaces, Supplier RFQ Inboxes &amp; Analytics, and Intel Pro shared watchlists &amp; tender filters. <a href="methodology.html#how-we-source">How we source →</a> · <a href="about.html">Refunds &amp; company →</a></p>
+        <p>Daily Intel and its archive, the <span data-stat="manufacturers">894</span>-manufacturer directory, <span data-stat="gridMarkets">151</span>-country grid census, events calendar, free 3D explorers, and a <a href="calculator.html">design calculator</a> you can run on screen, with one watermarked preview PDF per browser, are open — no credit card required. Paid plans also list <span data-feature="project_workspace" data-delivery="coming_soon">engineering workspaces <span class="tp-soon">Coming soon</span></span>, <span data-feature="rfq_inbox" data-delivery="built">supplier RFQ inboxes</span>, <span data-feature="analytics_dashboard" data-delivery="coming_soon">analytics <span class="tp-soon">Coming soon</span></span>, and <span data-feature="shared_watchlists" data-delivery="coming_soon">shared watchlists <span class="tp-soon">Coming soon</span></span>. <a href="methodology.html#how-we-source">How we source →</a> · <a href="about.html">Refunds &amp; company →</a></p>
       </div>
       <div class="free-ctas">
         <a href="intel.html" class="p">Read Daily Intel — free →</a>
-        <a href="manufacturers.html" class="s">Browse <span data-stat="manufacturers">906</span> manufacturers →</a>
+        <a href="manufacturers.html" class="s">Browse <span data-stat="manufacturers">894</span> manufacturers →</a>
         <a href="mailto:hello@transformerpath.com?subject=Refund%20request" class="s">Request a refund →</a>
       </div>
     </div>
@@ -195,15 +208,15 @@ table.cmp .n { color:var(--border); }
         <div class="price">$199<small> / 12 months</small></div>
         <div class="save">&nbsp;</div>
         <ul>
-          <li><span class="ok">✓</span> Full 26-chapter masterclass, tutorial &amp; academy</li>
-          <li><span class="ok">✓</span> 10 interactive 3D component models + Grid Lab</li>
-          <li><span class="ok">✓</span> Live IEC 60076 design calculator</li>
-          <li><span class="ok">✓</span> Design Engineer Track — all 4 levels</li>
-          <li><span class="ok">✓</span> Manually reviewed capstones + model answers</li>
+          <li data-feature="design_course" data-delivery="built"><span class="ok">✓</span> Full 26-chapter design course, tutorial &amp; academy</li>
+          <li data-feature="models_3d" data-delivery="built"><span class="ok">✓</span> 10 interactive 3D component models + Grid Lab</li>
+          <li data-feature="design_calculator" data-delivery="built"><span class="ok">✓</span> Live IEC 60076 design calculator</li>
+          <li data-feature="engineer_track" data-delivery="built"><span class="ok">✓</span> Design Engineer Track — all 4 levels</li>
+          <li data-feature="capstone_review" data-delivery="built"><span class="ok">✓</span> Capstone projects with published model answers</li>
           <li><span class="ok">✓</span> Course completion record for the Design Engineer Track</li>
-          <li><span class="ok">✓</span> 1 engineer seat, standard review queue</li>
+          <li><span class="ok">✓</span> 1 engineer seat</li>
         </ul>
-        <a class="cta primary" id="ctaLearner" href="#" target="_blank" rel="noopener" data-track="learning_checkout_started" data-track-plan="Learning">Unlock Learning — $199 →</a>
+        <a class="cta primary" id="ctaLearner" href="https://buy.stripe.com/8x27sE3pS4dfak8c1AfYY0p" target="_blank" rel="noopener" data-track="learning_checkout_started" data-track-plan="Learning">Unlock Learning — $199 →</a>
         <div class="fine">Single payment · 12 months access · no auto-renewal</div>
       </div>
 
@@ -211,22 +224,19 @@ table.cmp .n { color:var(--border); }
       <div class="plan feat">
         <span class="badge">Engineering Workspace</span>
         <h3>Engineering Pro</h3>
-        <p class="tag">Engineering workspace — saved designs, BOM, costing, reports &amp; tools</p>
+        <p class="tag">Engineering workspace — BOM, costing, reports and the tools that are live</p>
         <div class="price">$599<small> / 12 months</small></div>
         <div class="save">Everything in Learning, plus full engineering workspace:</div>
         <ul>
           <li><span class="ok">✓</span> Everything in Learning ($199 tier)</li>
-          <li><span class="plus">+</span> <b>Saved Designs &amp; Design History</b> (store &amp; revise active transformer designs)</li>
-          <li><span class="plus">+</span> <b>Project Workspace</b> (organise client, grid &amp; tender transformer jobs)</li>
-          <li><span class="plus">+</span> <b>BOM &amp; Active Material Costing</b> (copper, core steel, oil &amp; tank cost models)</li>
-          <li><span class="plus">+</span> <b>Automated PDF Engineering Reports</b> (formal calculation sheets &amp; client submittals)</li>
-          <li><span class="plus">+</span> <b>Rating Plate Generator</b> (IEC 60076 &amp; IEEE C57 compliant nameplates)</li>
-          <li><span class="plus">+</span> <b>Factory Test Report Generator</b> (routine &amp; type test certificate builder)</li>
-          <li><span class="plus">+</span> <b>Country Design Adapter</b> (auto-tune designs for 50/60 Hz, local standards &amp; grid codes)</li>
-          <li><span class="plus">+</span> <b>Side-by-Side Design Comparison Engine</b> (compare losses, weight, dimensions &amp; cost)</li>
-          <li><span class="plus">+</span> Priority capstone review &amp; direct engineering support</li>
+          <li data-feature="bom_costing" data-delivery="built"><span class="plus">+</span> <b>BOM &amp; Active Material Costing</b> (copper, core steel, oil &amp; tank cost models)</li>
+          <li data-feature="pdf_reports" data-delivery="built"><span class="plus">+</span> <b>Automated PDF Engineering Reports</b> (formal calculation sheets &amp; client submittals)</li>
+          <li data-feature="rating_plate" data-delivery="built"><span class="plus">+</span> <b>Rating Plate Generator</b> (nameplate drafting laid out per IEC 60076-1 / IEEE C57.12.00; a draft for your engineer to check, not certified)</li>
+          <li data-feature="test_report" data-delivery="built"><span class="plus">+</span> <b>Factory Test Report Generator</b> (routine &amp; type test report drafting; not a test certificate, and not certified)</li>
+          <li data-feature="country_adapter" data-delivery="built"><span class="plus">+</span> <b>Country Design Adapter</b> (auto-tune designs for 50/60 Hz, local standards &amp; grid codes)</li>
         </ul>
-        <a class="cta primary" id="ctaProfessional" href="#" target="_blank" rel="noopener" data-track="learning_checkout_started" data-track-plan="Professional">Unlock Engineering Pro — $599 →</a>
+        <p class="roadmap">On the roadmap (not included yet): <span data-feature="saved_designs" data-delivery="coming_soon">Saved Designs &amp; Design History <span class="tp-soon">Coming soon</span></span>; <span data-feature="project_workspace" data-delivery="coming_soon">Project Workspace <span class="tp-soon">Coming soon</span></span>; <span data-feature="design_comparison" data-delivery="coming_soon">Side-by-Side Design Comparison <span class="tp-soon">Coming soon</span></span>.</p>
+        <a class="cta primary" id="ctaProfessional" href="https://buy.stripe.com/fZu00c3pScJL1NC3v4fYY01" target="_blank" rel="noopener" data-track="learning_checkout_started" data-track-plan="Engineering Pro">Unlock Engineering Pro — $599 →</a>
         <div class="fine">Single payment · 12 months access · no auto-renewal · 1 engineer seat</div>
       </div>
 
@@ -238,14 +248,10 @@ table.cmp .n { color:var(--border); }
         <div class="save">Everything in Engineering Pro, plus:</div>
         <ul>
           <li><span class="ok">✓</span> Everything in Engineering Pro workspace</li>
-          <li><span class="plus">+</span> Up to 10 team members on one plan</li>
-          <li><span class="plus">+</span> Shared team project workspace &amp; design library</li>
-          <li><span class="plus">+</span> A shared team access link — no per-seat setup</li>
-          <li><span class="plus">+</span> Written team rollout guide &amp; onboarding session</li>
-          <li><span class="plus">+</span> Priority capstone review for the whole team</li>
         </ul>
-        <a class="cta primary" id="ctaEnterprise" href="#" target="_blank" rel="noopener" data-track="learning_checkout_started" data-track-plan="Team">Unlock Engineering Team — $1,999 →</a>
-        <div class="fine">Single payment · 12 months access · no auto-renewal · up to 10 seats</div>
+        <p class="roadmap">On the roadmap (not included yet): <span data-feature="engineering_team_seats" data-delivery="coming_soon">Up to 10 team members on one plan <span class="tp-soon">Coming soon</span></span>; <span data-feature="shared_design_library" data-delivery="coming_soon">Shared team project workspace &amp; design library <span class="tp-soon">Coming soon</span></span>; <span data-feature="shared_access_link" data-delivery="coming_soon">A shared team access link <span class="tp-soon">Coming soon</span></span>; <span data-feature="team_rollout" data-delivery="coming_soon">Written team rollout guide <span class="tp-soon">Coming soon</span></span>.</p>
+        <a class="cta primary" id="ctaEnterprise" href="https://buy.stripe.com/aFacMY6C4aBD2RG2r0fYY02" target="_blank" rel="noopener" data-track="learning_checkout_started" data-track-plan="Engineering Team">Unlock Engineering Team — $1,999 →</a>
+        <div class="fine">Single payment · 12 months access · no auto-renewal</div>
       </div>
 
     </div>
@@ -253,19 +259,13 @@ table.cmp .n { color:var(--border); }
     <!-- SUPPLIER PRO -->
     <div id="suppliers" class="section-head" style="margin:36px 0 16px">
       <h2 style="font-size:1.45rem;color:var(--accent)">2. For Transformer &amp; Component Suppliers (Supplier Pro)</h2>
-      <p>Transform your directory presence into an operating lead pipeline: RFQ inbox, response tracking, search impressions, verified badges, and category visibility. <i>Buying never changes organic search ranking or technical match evaluation.</i></p>
+      <p>Directory presence can add a lead pipeline. <span data-feature="rfq_inbox" data-delivery="built">RFQ inbox and response tracking</span>. <span data-feature="analytics_dashboard" data-delivery="coming_soon">Search impressions <span class="tp-soon">Coming soon</span></span>. <span data-feature="verified_badge" data-delivery="built">Verified badges are published only after review.</span> Buying never changes organic search ranking or technical match evaluation.</p>
     </div>
 
     <div style="max-width:860px;margin:0 auto 18px;background:var(--card);border:1px solid var(--border);border-left:4px solid var(--amber);border-radius:12px;padding:16px 18px">
       <div style="font-size:.66rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--accent);margin-bottom:6px">Supplier Pro proof — anonymised RFQ → shortlist</div>
-      <p style="margin:0 0 10px;color:var(--text);font-size:.9rem;line-height:1.55"><b>Case:</b> a Mid-East EPC posted a 4×100 MVA 132/33 kV IEC 60076 RFQ. Match surfaced 11 manufacturers (3 CONFIRMED / 5 SUPPORTED / 3 research-required). The buyer shortlisted two CONFIRMED plants via the RFQ inbox; Supplier Pro on those profiles routed both inquiries with attachments and status tracking. Organic directory ranking did not change for either plant.</p>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:0 0 10px">
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 12px"><div style="font-size:.72rem;color:var(--muted)">Matched</div><div style="font-size:1.25rem;font-weight:800;color:var(--ink)">11</div></div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 12px"><div style="font-size:.72rem;color:var(--muted)">CONFIRMED shortlist</div><div style="font-size:1.25rem;font-weight:800;color:var(--ink)">2</div></div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 12px"><div style="font-size:.72rem;color:var(--muted)">Inbox response</div><div style="font-size:1.25rem;font-weight:800;color:var(--ink)">&lt; 36h</div></div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 12px"><div style="font-size:.72rem;color:var(--muted)">Organic rank change</div><div style="font-size:1.25rem;font-weight:800;color:var(--ink)">None</div></div>
-      </div>
-      <p style="margin:0;font-size:.78rem;color:var(--muted)">Illustrative composite — not a named customer testimonial. Proof = evidence-backed match + RFQ inbox you can operate, not a purchased search position. Try the public <a href="match.html">matcher</a>; see <a href="methodology.html#how-we-source">methodology</a>.</p>
+      <p style="margin:0 0 10px;color:var(--text);font-size:.9rem;line-height:1.55"><b>Case:</b> an EPC posted a 4×100 MVA 132/33 kV IEC 60076 requirement. Match can surface manufacturers by evidence. RFQ routing is coming soon. Organic directory ranking does not change because a company pays.</p>
+      <p style="margin:0;font-size:.78rem;color:var(--muted)">Illustrative composite — not a named customer testimonial. The public <a href="match.html">matcher</a> is live. <span data-feature="rfq_inbox" data-delivery="built">The RFQ inbox in this example is illustrative; the live inbox starts empty</span>. Buying a listing does not purchase a search position. See <a href="methodology.html#how-we-source">methodology</a>.</p>
     </div>
 
     <div class="grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:34px">
@@ -275,7 +275,7 @@ table.cmp .n { color:var(--border); }
           <div style="color:var(--muted);font-weight:700;font-size:1.2rem;margin:6px 0">Free</div>
           <p style="color:var(--muted);font-size:.85rem;line-height:1.5;margin:0 0 14px">Standard factual directory listing based on public industry data — company name, country, plant location, and official website.</p>
           <ul style="font-size:.84rem;color:var(--text);padding-left:16px;margin:0 0 14px;line-height:1.6">
-            <li>Public directory listing</li>
+            <li data-feature="directory_listing" data-delivery="built">Public directory listing</li>
             <li>Basic category classification</li>
             <li>Standard search presence</li>
           </ul>
@@ -285,44 +285,68 @@ table.cmp .n { color:var(--border); }
 
       <div class="card" style="padding:22px;border-radius:14px;background:var(--card);border:1px solid var(--border);display:flex;flex-direction:column;justify-content:space-between">
         <div>
-          <h3 style="margin:0 0 4px;font-size:1.15rem;color:var(--ink)">Verified Supplier</h3>
+          <h3 style="margin:0 0 4px;font-size:1.15rem;color:var(--ink)">Verified Manufacturer</h3>
           <div style="color:var(--accent);font-weight:800;font-size:1.4rem;margin:6px 0">$499 <small style="font-size:.8rem;color:var(--muted);font-weight:600">/ 12 months</small></div>
           <p style="color:var(--muted);font-size:.85rem;line-height:1.5;margin:0 0 14px">Direct identity and corporate contact verification confirming official company representation and contact routing.</p>
           <ul style="font-size:.84rem;color:var(--text);padding-left:16px;margin:0 0 14px;line-height:1.6">
-            <li><b style="color:#16a34a">VERIFIED</b> trust badge on profile</li>
-            <li>Enhanced profile with corporate logo &amp; brochures</li>
-            <li>Direct procurement contact routing</li>
-            <li>Eligibility to receive direct buyer inquiries</li>
+            <li data-feature="verified_badge" data-delivery="built"><b style="color:#16a34a">VERIFIED</b> trust badge on profile, after review</li>
+            <li data-feature="logo_brochure_upload" data-delivery="built">Logo, catalogue PDF link and photo gallery, at no extra charge</li>
           </ul>
+          <p class="roadmap">On the roadmap (not included yet): <span data-feature="buyer_inquiry_routing" data-delivery="coming_soon">Direct procurement contact routing <span class="tp-soon">Coming soon</span></span>; <span data-feature="rfq_eligibility" data-delivery="coming_soon">RFQ routing is coming soon <span class="tp-soon">Coming soon</span></span>.</p>
         </div>
         <p style="margin:0 0 8px"><a class="btn btn-amber btn-sm" href="https://buy.stripe.com/4gMbIU7G8bFHak8d5EfYY05" data-verified-manufacturer-pay="1" style="width:100%;text-align:center">Pay $499 — Get Verified</a></p>
         <p class="paid-after-note" style="color:var(--muted);font-size:.8rem;margin:0 0 8px">After payment, submit your company details on the <a href="claim-profile.html?paid=verified_manufacturer#claimForm" style="color:var(--accent)">claim form</a>. The VERIFIED MANUFACTURER badge appears only after review.</p>
         <a href="verified.html" class="btn btn-outline btn-sm" style="text-align:center">Get Verified →</a>
       </div>
 
+      <div class="card" id="featured-listings" style="padding:22px;border-radius:14px;background:var(--card);border:1px solid var(--border);display:flex;flex-direction:column;justify-content:space-between">
+        <div>
+          <h3 style="margin:0 0 4px;font-size:1.15rem;color:var(--ink)">Featured Listing</h3>
+          <div style="color:var(--accent);font-weight:800;font-size:1.4rem;margin:6px 0">$299 <small style="font-size:.8rem;color:var(--muted);font-weight:600">/ yr, plus tax</small></div>
+          <p style="color:var(--muted);font-size:.85rem;line-height:1.5;margin:0 0 14px">A labelled Featured slot on the directory and country pages. The slot shows "Your company here" until a real buyer is reviewed. Featured is a paid placement, not a recommendation.</p>
+        </div>
+        <p style="margin:0 0 8px"><a class="btn btn-amber btn-sm" href="https://buy.stripe.com/fZu4gsaSkbFHfEsghQfYY0P" data-featured-listing-pay="1" style="width:100%;text-align:center">Featured Listing — $299/yr plus tax</a></p>
+        <p class="paid-after-note" style="color:var(--muted);font-size:.8rem;margin:0">After payment, this site confirms the Stripe checkout. The listing is set up within 2 business days via hello@transformerpath.com.</p>
+      </div>
+
+      <div class="card" style="padding:22px;border-radius:14px;background:var(--card);border:1px solid var(--border);display:flex;flex-direction:column;justify-content:space-between">
+        <div>
+          <h3 style="margin:0 0 4px;font-size:1.15rem;color:var(--ink)">Featured + Verified</h3>
+          <div style="color:var(--accent);font-weight:800;font-size:1.4rem;margin:6px 0">$699 <small style="font-size:.8rem;color:var(--muted);font-weight:600">/ yr, plus tax</small></div>
+          <p style="color:var(--muted);font-size:.85rem;line-height:1.5;margin:0 0 14px">The Featured directory slot plus the reviewed Verified Manufacturer badge. Payment does not publish either label before review.</p>
+        </div>
+        <p style="margin:0 0 8px"><a class="btn btn-amber btn-sm" href="https://buy.stripe.com/14AbIU0dG6lnbocghQfYY0Q" data-featured-verified-pay="1" style="width:100%;text-align:center">Featured + Verified — $699/yr plus tax</a></p>
+        <p class="paid-after-note" style="color:var(--muted);font-size:.8rem;margin:0">After payment, this site confirms the Stripe checkout. The listing is set up within 2 business days via hello@transformerpath.com.</p>
+      </div>
+
+      <div class="card" id="component-sponsor" style="padding:22px;border-radius:14px;background:var(--card);border:1px solid var(--border);display:flex;flex-direction:column;justify-content:space-between">
+        <div>
+          <h3 style="margin:0 0 4px;font-size:1.15rem;color:var(--ink)">Component Sponsor</h3>
+          <div style="color:var(--accent);font-weight:800;font-size:1.4rem;margin:6px 0">$199 <small style="font-size:.8rem;color:var(--muted);font-weight:600">/ month, plus tax</small></div>
+          <p style="color:var(--muted);font-size:.85rem;line-height:1.5;margin:0 0 14px">One sponsor section on pressboard, core steel, copper, or bushings. Checkout asks for the component. Core steel is the label for the value coresteel. The section stays empty until a sponsor is reviewed.</p>
+        </div>
+        <p style="margin:0 0 8px"><a class="btn btn-amber btn-sm" href="https://buy.stripe.com/bJedR2gcE257eAofdMfYY0R" data-component-sponsor-pay="1" style="width:100%;text-align:center">Sponsor this section, $199/mo</a></p>
+        <p class="paid-after-note" style="color:var(--muted);font-size:.8rem;margin:0">plus tax. After payment, this site confirms the Stripe checkout. The listing is set up within 2 business days via hello@transformerpath.com.</p>
+      </div>
+
       <div class="card" style="padding:22px;border-radius:14px;background:var(--card);border:2px solid var(--amber);box-shadow:0 8px 24px rgba(245,166,35,.15);display:flex;flex-direction:column;justify-content:space-between;position:relative">
         <span style="position:absolute;top:-11px;left:20px;background:var(--amber);color:var(--navy);font-size:.66rem;font-weight:800;text-transform:uppercase;padding:2px 10px;border-radius:999px">Full Operating Suite</span>
         <div>
           <h3 style="margin:0 0 4px;font-size:1.15rem;color:var(--ink)">Supplier Pro</h3>
-          <div style="color:var(--accent);font-weight:800;font-size:1.4rem;margin:6px 0">$1,499 <small style="font-size:.8rem;color:var(--muted);font-weight:600">/ 12 months</small></div>
-          <p style="color:var(--muted);font-size:.85rem;line-height:1.5;margin:0 0 14px">Complete commercial operating workspace for sales, tender response, and global procurement lead management.</p>
+          <div style="color:var(--muted);font-weight:700;font-size:1.2rem;margin:6px 0">No checkout yet</div>
+          <p style="color:var(--muted);font-size:.85rem;line-height:1.5;margin:0 0 14px">Verified-level profile, the RFQ inbox, and four qualified leads. Analytics, export, Intel seats, the badge, and category placement stay marked coming soon.</p>
           <ul style="font-size:.84rem;color:var(--text);padding-left:16px;margin:0 0 14px;line-height:1.6">
-            <li><b>Everything in Verified Supplier</b></li>
-            <li><b>Dedicated RFQ Inbox &amp; Lead Status Tracking</b></li>
-            <li><b>Search Impressions &amp; Profile Analytics Dashboard</b></li>
-            <li><b>Target Market &amp; Sourcing Interest Alerts</b></li>
-            <li><b>Direct CRM &amp; Lead Exporting (CSV/JSON)</b></li>
-            <li><b>Intel Pro access included for up to 3 sales reps</b></li>
+            <li data-feature="rfq_inbox" data-delivery="built"><b>RFQ inbox and lead status</b> — <a href="supplier-inbox.html">open the inbox</a>. It counts 4 included leads and starts empty.</li>
           </ul>
+          <p class="roadmap">On the roadmap (not included yet): <span data-feature="analytics_dashboard" data-delivery="coming_soon">Search Impressions &amp; Profile Analytics Dashboard <span class="tp-soon">Coming soon</span></span>; <span data-feature="sourcing_alerts" data-delivery="coming_soon">Target Market &amp; Sourcing Interest Alerts <span class="tp-soon">Coming soon</span></span>; <span data-feature="lead_export" data-delivery="coming_soon">Direct CRM &amp; Lead Exporting (CSV/JSON) <span class="tp-soon">Coming soon</span></span>; <span data-feature="intel_pro_seats" data-delivery="coming_soon">Intel Pro access for up to 3 sales reps <span class="tp-soon">Coming soon</span></span>.</p>
         </div>
-        <a href="for-manufacturers.html" class="btn btn-amber btn-sm" style="text-align:center;font-weight:800">Explore Supplier Pro →</a>
       </div>
     </div>
 
     <!-- INTEL & PROCUREMENT PRO -->
     <div id="procurement" class="section-head" style="margin:36px 0 16px">
       <h2 style="font-size:1.45rem">3. For Market &amp; Procurement Teams (Intel Pro)</h2>
-      <p>Custom project watchlists, global tender tracking, company expansion timelines, raw data exports, and the evidence-based requirement matcher.</p>
+      <p><span data-feature="custom_watchlists" data-delivery="coming_soon">Custom project watchlists <span class="tp-soon">Coming soon</span></span>, <span data-feature="company_timelines" data-delivery="coming_soon">company timelines <span class="tp-soon">Coming soon</span></span>, <span data-feature="csv_json_exports" data-delivery="coming_soon">raw data exports <span class="tp-soon">Coming soon</span></span>, and the <span data-feature="match_for_me" data-delivery="built">evidence-based requirement matcher</span>.</p>
     </div>
 
     <div class="grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:40px">
@@ -332,9 +356,9 @@ table.cmp .n { color:var(--border); }
           <div style="color:var(--muted);font-weight:700;font-size:1.2rem;margin:6px 0">Free</div>
           <p style="color:var(--muted);font-size:.85rem;line-height:1.5;margin:0 0 14px">Access to the Daily Intel briefing, headline announcements, public tenders, and manufacturer listings.</p>
           <ul style="font-size:.84rem;color:var(--text);padding-left:16px;margin:0 0 14px;line-height:1.6">
-            <li>Daily news &amp; market intelligence feed</li>
-            <li>Public tender announcements</li>
-            <li>Basic company following</li>
+            <li data-feature="daily_intel" data-delivery="built">Daily news &amp; market intelligence feed</li>
+            <li data-feature="public_tenders" data-delivery="built">Public tender announcements</li>
+            <li data-feature="basic_follows" data-delivery="built">Basic company following</li>
           </ul>
         </div>
         <a href="intel.html" class="btn btn-outline btn-sm" style="text-align:center">Read Daily Intel →</a>
@@ -343,74 +367,59 @@ table.cmp .n { color:var(--border); }
       <div class="card" style="padding:22px;border-radius:14px;background:var(--card);border:1px solid var(--border);display:flex;flex-direction:column;justify-content:space-between">
         <div>
           <h3 style="margin:0 0 4px;font-size:1.15rem;color:var(--ink)">Intel Pro</h3>
-          <div style="color:var(--accent);font-weight:800;font-size:1.4rem;margin:6px 0">$499 <small style="font-size:.8rem;color:var(--muted);font-weight:600">/ 12 months ($49/mo)</small></div>
-          <p style="color:var(--muted);font-size:.85rem;line-height:1.5;margin:0 0 14px">Advanced intelligence filters, company expansion trackers, customized email signals, and deep tender evaluation.</p>
+          <div style="color:var(--accent);font-weight:800;font-size:1.4rem;margin:6px 0">$499 <small style="font-size:.8rem;color:var(--muted);font-weight:600">/ 12 months</small></div>
+          <p style="color:var(--muted);font-size:.85rem;line-height:1.5;margin:0 0 14px">Advanced intelligence filters, company expansion trackers, customized email signals, and deep tender evaluation. The price is $499 for 12 months. There is no monthly checkout, so no monthly price is shown. There is no checkout for this plan yet.</p>
           <ul style="font-size:.84rem;color:var(--text);padding-left:16px;margin:0 0 14px;line-height:1.6">
-            <li><b>Custom Follow Watchlists</b> (Companies, Markets, Materials)</li>
-            <li><b>Real-time Tender &amp; Project Award Alerts</b></li>
-            <li><b>Evidence-based Match for Me Tool</b></li>
-            <li><b>Historical Project &amp; Award Timelines</b></li>
-            <li><b>Country Grid &amp; Substation Dashboards</b></li>
+            <li data-feature="match_for_me" data-delivery="built"><b>Evidence-based Match for Me Tool</b></li>
+            <li data-feature="country_grids" data-delivery="built"><b>Country grids</b> (public census — same grids as the free map)</li>
           </ul>
+          <p class="roadmap">On the roadmap (not included yet): <span data-feature="custom_watchlists" data-delivery="coming_soon">Custom Follow Watchlists <span class="tp-soon">Coming soon</span></span>; <span data-feature="real_time_alerts" data-delivery="coming_soon">Real-time Tender &amp; Project Award Alerts <span class="tp-soon">Coming soon</span></span>; <span data-feature="company_timelines" data-delivery="coming_soon">Historical Project &amp; Award Timelines <span class="tp-soon">Coming soon</span></span>.</p>
         </div>
-        <a href="intel.html" class="btn btn-outline btn-sm" style="text-align:center">Explore Intel Pro →</a>
       </div>
 
       <div class="card" style="padding:22px;border-radius:14px;background:var(--card);border:1px solid var(--border);display:flex;flex-direction:column;justify-content:space-between">
         <div>
           <h3 style="margin:0 0 4px;font-size:1.15rem;color:var(--ink)">Enterprise / Procurement Team</h3>
-          <div style="color:var(--accent);font-weight:800;font-size:1.4rem;margin:6px 0">$1,999 <small style="font-size:.8rem;color:var(--muted);font-weight:600">/ 12 months</small></div>
-          <p style="color:var(--muted);font-size:.85rem;line-height:1.5;margin:0 0 14px">Multi-seat intelligence suite for utility procurement departments, EPC estimators, and investment research desks.</p>
-          <ul style="font-size:.84rem;color:var(--text);padding-left:16px;margin:0 0 14px;line-height:1.6">
-            <li><b>Up to 10 shared team seats</b></li>
-            <li><b>Shared procurement watchlists &amp; shortlisted suppliers</b></li>
-            <li><b>Raw CSV / JSON dataset exports</b></li>
-            <li><b>Bespoke market research briefings &amp; inquiry support</b></li>
-          </ul>
+          <div style="color:var(--muted);font-weight:700;font-size:1.2rem;margin:6px 0">No checkout yet</div>
+          <p style="color:var(--muted);font-size:.85rem;line-height:1.5;margin:0 0 14px">Multi-seat intelligence suite for utility procurement departments, EPC estimators, and investment research desks. There is no checkout for this plan yet. There is no custom research service.</p>
+          <p class="roadmap">On the roadmap (not included yet): <span data-feature="intel_team_seats" data-delivery="coming_soon">Up to 10 shared team seats <span class="tp-soon">Coming soon</span></span>; <span data-feature="shared_watchlists" data-delivery="coming_soon">Shared procurement watchlists &amp; shortlisted suppliers <span class="tp-soon">Coming soon</span></span>; <span data-feature="csv_json_exports" data-delivery="coming_soon">Raw CSV / JSON dataset exports <span class="tp-soon">Coming soon</span></span>.</p>
         </div>
-        <a href="contact.html" class="btn btn-outline btn-sm" style="text-align:center">Contact Procurement Sales →</a>
       </div>
     </div>
 
     <div class="section-head" style="margin:22px 0 10px"><h3 style="font-size:1.02rem;color:var(--accent);margin:0">For Events &amp; Marketing</h3></div>
     <div class="grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px">
-      <div class="card" style="padding:16px;border-radius:12px"><b>Featured Event</b><div style="color:var(--accent);font-weight:700;margin:4px 0">$299 / event</div><p style="color:var(--muted);font-size:.82rem;margin:0">Prominent, clearly-labelled placement, logo/banner, enhanced event page, registration CTA. FEATURED is promotional placement, not an editorial recommendation.</p>
+      <div class="card" style="padding:16px;border-radius:12px"><b>Featured Event</b><div style="color:var(--accent);font-weight:700;margin:4px 0">$299 / event</div><p style="color:var(--muted);font-size:.82rem;margin:0"><span data-feature="featured_event_label" data-delivery="built">Prominent, clearly-labelled FEATURED placement after review.</span> <span data-feature="featured_event_extras" data-delivery="coming_soon">Logo, banner, and event analytics <span class="tp-soon">Coming soon</span>.</span> FEATURED is promotional placement, not an editorial recommendation.</p>
         <p style="margin:10px 0 8px"><a class="btn btn-amber btn-sm" href="https://buy.stripe.com/00w6oA2lO8tvdwkaXwfYY04" data-featured-event-pay="1" data-track="event_feature_inquiry" data-track-plan="Featured Event">Feature this event — $299</a></p>
         <p style="color:var(--muted);font-size:.8rem;margin:0 0 8px">After payment, submit the event name, URL, and dates. The FEATURED label is shown only after review.</p>
         <a href="events.html#submit-event" style="font-size:.8rem;font-weight:700;color:var(--accent)">Submit event details &rarr;</a></div>
-      <div class="card" style="padding:16px;border-radius:12px"><b>Featured Exhibitor</b><div style="color:var(--accent);font-weight:700;margin:4px 0">$399 / event</div><p style="color:var(--muted);font-size:.82rem;margin:0">FEATURED label, logo, booth number, products, brochure, manufacturer profile, meeting CTA. FEATURED never implies a recommendation.</p>
+      <div class="card" style="padding:16px;border-radius:12px"><b>Featured Exhibitor</b><div style="color:var(--accent);font-weight:700;margin:4px 0">$399 / event</div><p style="color:var(--muted);font-size:.82rem;margin:0"><span data-feature="featured_exhibitor_card" data-delivery="coming_soon">FEATURED exhibitor card with logo, booth number, brochure <span class="tp-soon">Coming soon</span>.</span> FEATURED never implies a recommendation.</p>
         <p style="margin:10px 0 8px"><a class="btn btn-amber btn-sm" href="https://buy.stripe.com/dRm9AM5y06ln1NC9TsfYY06" data-featured-exhibitor-pay="1" data-track="exhibitor_feature_inquiry" data-track-plan="Featured Exhibitor">Feature your exhibitor — $399</a></p>
         <p style="color:var(--muted);font-size:.8rem;margin:0 0 8px">After payment, submit your company and the event. The FEATURED label is shown only after review.</p>
         <a href="sponsor.html#contact" style="font-size:.8rem;font-weight:700;color:var(--accent)">Submit exhibitor details &rarr;</a></div>
-      <div class="card" style="padding:16px;border-radius:12px"><b>Hosted Webinar</b><div style="color:var(--accent);font-weight:700;margin:4px 0">from $1,500</div><p style="color:var(--muted);font-size:.82rem;margin:0">Event page, registration, promotion, hosting, recording where supported, post-event replay. Attendee reporting subject to privacy/consent.</p>
-        <p style="margin:10px 0 8px"><a class="btn btn-amber btn-sm" href="https://buy.stripe.com/14A3co8Kc6ln77Wc1AfYY07" data-hosted-webinar-pay="1" data-track="webinar_inquiry" data-track-plan="Hosted Webinar">Host a webinar — $1,500</a></p>
-        <p style="color:var(--muted);font-size:.8rem;margin:0 0 8px">After payment, submit the webinar topic, date, and company. The session is scheduled only after review.</p>
-        <a href="sponsor.html#contact" style="font-size:.8rem;font-weight:700;color:var(--accent)">Submit webinar details &rarr;</a></div>
-      <div class="card" style="padding:16px;border-radius:12px"><b>Sponsorship</b><div style="color:var(--accent);font-weight:700;margin:4px 0">from $299</div><p style="color:var(--muted);font-size:.82rem;margin:0">Daily Intel sponsor, event spotlight, category/market sponsor, newsletter sponsor, annual knowledge partner. Every placement is visibly SPONSORED — we never sell editorial conclusions.</p><a href="sponsor.html" style="font-size:.8rem;font-weight:700;color:var(--accent)">Sponsor &rarr;</a></div>
+      <div class="card" style="padding:16px;border-radius:12px"><b>Sponsorship</b><div style="color:var(--accent);font-weight:700;margin:4px 0">from $299</div><p style="color:var(--muted);font-size:.82rem;margin:0">Daily Intel sponsor, event spotlight, category/market sponsor, newsletter sponsor. Every placement is visibly SPONSORED — we never sell editorial conclusions.</p><a href="sponsor.html" style="font-size:.8rem;font-weight:700;color:var(--accent)">Sponsor &rarr;</a></div>
     </div>
 
-    <div class="section-head" style="margin:30px 0 18px"><h2>Compare plans</h2><p>Every plan includes the full course. The difference is turnaround, team size and support.</p></div>
+    <div class="section-head" style="margin:30px 0 18px"><h2>Compare plans</h2><p>Every plan is self-serve. The difference is which tools are included and how many seats the plan covers.</p></div>
     <div class="cmp-wrap">
       <table class="cmp">
-        <thead><tr><th>Feature</th><th>Learning<br>$199</th><th>Professional<br>$599</th><th>Team<br>$1,999</th></tr></thead>
+        <thead><tr><th>Feature</th><th>Learning<br>$199</th><th>Engineering Pro<br>$599</th><th>Engineering Team<br>$1,999</th></tr></thead>
         <tbody>
-          <tr><td>26-chapter masterclass, tutorial &amp; academy</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
+          <tr><td>26-chapter design course, tutorial &amp; academy</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
           <tr><td>10 interactive 3D component models + Grid Lab</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
           <tr><td>Live design calculator</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
           <tr><td>Design Engineer Track — Levels 1–4</td><td class="y">✓</td><td class="y">✓</td><td class="y">✓</td></tr>
-          <tr><td>Saved Designs &amp; Design History</td><td class="n">—</td><td class="y">✓ Unlimited</td><td class="y">✓ Unlimited</td></tr>
-          <tr><td>Project Workspace &amp; Client Files</td><td class="n">—</td><td class="y">✓</td><td class="y">✓ Shared team library</td></tr>
+          <tr><td>Saved Designs &amp; Design History <span class="tp-soon">Coming soon</span></td><td class="n">—</td><td class="y">Not yet</td><td class="y">Not yet</td></tr>
+          <tr><td>Project Workspace &amp; Client Files <span class="tp-soon">Coming soon</span></td><td class="n">—</td><td class="y">Not yet</td><td class="y">Not yet</td></tr>
           <tr><td>BOM &amp; Active Material Costing</td><td class="n">—</td><td class="y">✓</td><td class="y">✓</td></tr>
           <tr><td>Automated PDF Engineering Reports</td><td class="n">—</td><td class="y">✓</td><td class="y">✓</td></tr>
           <tr><td>Rating Plate Generator (IEC/IEEE)</td><td class="n">—</td><td class="y">✓</td><td class="y">✓</td></tr>
           <tr><td>Factory Test Report Generator</td><td class="n">—</td><td class="y">✓</td><td class="y">✓</td></tr>
           <tr><td>Country Design Adapter (50/60 Hz, grid codes)</td><td class="n">—</td><td class="y">✓</td><td class="y">✓</td></tr>
-          <tr><td>Side-by-side design comparison</td><td class="n">—</td><td class="y">✓</td><td class="y">✓</td></tr>
-          <tr><td>Capstone review + written feedback</td><td class="y">✓ Standard</td><td class="y">✓ Priority</td><td class="y">✓ Priority</td></tr>
+          <tr><td>Side-by-side design comparison <span class="tp-soon">Coming soon</span></td><td class="n">—</td><td class="y">Not yet</td><td class="y">Not yet</td></tr>
           <tr><td>Early access to new content &amp; tools</td><td class="n">—</td><td class="y">✓</td><td class="y">✓</td></tr>
-          <tr><td>Priority engineering support</td><td class="n">—</td><td class="y">✓</td><td class="y">✓</td></tr>
-          <tr><td>Seats included</td><td>1</td><td>1</td><td>Up to 10</td></tr>
-          <tr><td>Team rollout guide</td><td class="n">—</td><td class="n">—</td><td class="y">✓</td></tr>
+          <tr><td>Seats included</td><td>1</td><td>1</td><td>Up to 10 <span class="tp-soon">Coming soon</span></td></tr>
+          <tr><td>Team rollout guide <span class="tp-soon">Coming soon</span></td><td class="n">—</td><td class="n">—</td><td class="n">Not yet</td></tr>
         </tbody>
       </table>
     </div>
@@ -419,24 +428,24 @@ table.cmp .n { color:var(--border); }
       <div class="section-head" style="margin-bottom:18px"><h2>Questions</h2></div>
       <details>
         <summary>Is this a subscription?</summary>
-        <p><strong>Learning</strong> is a single $199 payment for 12 months of access. Checkout runs through Stripe; on return your access unlocks automatically in the browser you paid from, verified server-side. (If the checkout is temporarily unavailable the button safely falls back to an email request rather than charging you without a confirmable access path.)</p>
-        <p><strong>Professional</strong> and <strong>Team</strong> are single payments. They unlock everything on that plan for 12 months with no auto-renewal — if you want to continue afterwards, you purchase again.</p>
+        <p><strong>Learning</strong> is a single $199 payment for 12 months of access. Checkout runs through Stripe; on return your access unlocks automatically in the browser you paid from, verified server-side.</p>
+        <p><strong>Engineering Pro</strong> and <strong>Engineering Team</strong> are single payments. They unlock everything on that plan for 12 months with no auto-renewal — if you want to continue afterwards, you purchase again.</p>
       </details>
       <details>
         <summary>Which plan should I pick?</summary>
-        <p>If you're learning on your own, Learning covers the entire course, the design calculator and the full Design Engineer Track — most people never need more than that. The public 3D explorers on the homepage are free for everyone. Professional is for anyone who wants faster capstone turnaround and first access to new material. Team is for a team of up to 10 sharing one plan.</p>
+        <p>If you're learning on your own, Learning covers the entire course, the design calculator and the full Design Engineer Track — most people never need more than that. The public 3D explorers on the homepage are free for everyone. Engineering Pro adds the engineering workspace. Engineering Team is for a team sharing one plan.</p>
       </details>
       <details>
         <summary>How do I access my plan after paying?</summary>
         <p>Checkout runs through Stripe. When you return to TransformerPath, your access is unlocked automatically in the browser you paid from — no account or password needed. If you switch devices or clear your browser data, open this page from the device you checked out on, or contact us and we'll help you recover access.</p>
       </details>
       <details>
-        <summary>How does the Team link work?</summary>
-        <p>After purchase you'll receive one shared link — send it to up to 10 teammates and each of them unlocks the course in their own browser by opening it once. There's no per-seat account setup on our side.</p>
+        <summary>How does the Engineering Team link work?</summary>
+        <p>After purchase you'll receive one shared link — send it to teammates and each of them unlocks the course in their own browser by opening it once. Shared seats are on the roadmap and are not included yet. There's no per-seat account setup on our side.</p>
       </details>
       <details>
         <summary>Can I try the 3D explorer before paying?</summary>
-        <p>Yes. The interactive construction explorer and the power-transformer 3D workstation are <strong>free to use</strong> — no account required. The <a href="calculator.html">design calculator</a> now opens as a <strong>free preview</strong> with a soft upsell to Yearly Access. Paid Learning / Professional / Team plans unlock the masterclass, Design Engineer Track, and the deeper academy 3D tools.</p>
+        <p>Yes. The interactive construction explorer and the power-transformer 3D workstation are <strong>free to use</strong> — no account required. The <a href="calculator.html">design calculator</a> stays usable on screen. Each browser can download one watermarked preview PDF; further PDF exports need a paid plan. Paid Learning, Engineering Pro, and Engineering Team plans unlock the design course, Design Engineer Track, and the deeper academy 3D tools.</p>
       </details>
       <details>
         <summary>What is your refund policy?</summary>
@@ -455,6 +464,14 @@ table.cmp .n { color:var(--border); }
   </div>
 </section>
 
+<section class="block" id="student-learning-offer">
+  <div class="container" style="max-width:760px">
+    <h2>Student Learning discount</h2>
+    <p>This checkout is off. TransformerPath has not created a student coupon, a student price, or a Payment Link, and this page does not start one.</p>
+    <p>A signed-in student with a Student badge already has the calculator, saved designs, and the learning pages that badge opens. The paid Learning plan stays at its published price. No student coupon or student price is on sale from this page.</p>
+  </div>
+</section>
+
 <footer>
   <div class="container">
     <div class="cols">
@@ -465,8 +482,8 @@ table.cmp .n { color:var(--border); }
       <div><p class="footer-col-label">INTELLIGENCE</p><a href="intel.html">Daily Intel</a><a href="archive.html">Intel Archive</a><a href="projects.html">Projects</a><a href="tenders.html">Tenders</a><a href="markets.html">Markets</a><a href="grids.html">Grids</a><a href="map.html">Industry Map</a><a href="events.html">Events</a></div>
       <div><p class="footer-col-label">DIRECTORY</p><a href="manufacturers.html">Manufacturers</a><a href="directory.html">Directory Index</a><a href="components.html">Components &amp; Materials</a><a href="machinery.html">Machinery</a><a href="laboratories.html">Testing Labs</a><a href="services.html">Service &amp; Repair</a><a href="logistics.html">Logistics</a><a href="buyers.html">Buyers &amp; Utilities</a><a href="rfq.html">RFQ Board</a></div>
       <div><p class="footer-col-label">ENGINEERING</p><a href="tools.html">Engineering Hub</a><a href="calculator.html">Design Calculator</a><a href="explorer.html">3D Interactive Models</a><a href="standards.html">Standards &amp; Codes</a><a href="knowledge.html">Knowledge Base</a><a href="case-studies.html">Case Studies</a></div>
-      <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learning Hub</a><a href="masterclass.html">Masterclass</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy 3D Tools</a><a href="books.html">Books</a><a href="education.html">Education</a></div>
-      <div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="pricing.html">Pricing Plans</a><a href="verified.html">Verified Profiles</a><a href="webinars.html">Webinars</a><a href="sponsor.html">Sponsorship</a><a href="associations.html">Associations</a><a href="media.html">Media</a></div>
+      <div><p class="footer-col-label">LEARN</p><a href="learn.html">Learning Hub</a><a href="engineer-track.html">Design Engineer Track</a><a href="academy.html">Academy 3D Tools</a><a href="books.html">Books</a><a href="education.html">Education</a></div>
+      <div><p class="footer-col-label">BUSINESS</p><a href="for-manufacturers.html">For Manufacturers</a><a href="pricing.html">Pricing Plans</a><a href="verified.html">Verified Profiles</a><a href="sponsor.html">Sponsorship</a><a href="associations.html">Associations</a><a href="media.html">Media</a></div>
       <div><p class="footer-col-label">COMPANY</p><a href="about.html">About Us</a><a href="workspace.html">Account</a><a href="faq.html">FAQ</a><a href="methodology.html">Methodology</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="affiliate-disclosure.html">Affiliate disclosure</a></div>
       <div><p class="footer-col-label">CONTACT</p>
         <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>
@@ -485,61 +502,32 @@ table.cmp .n { color:var(--border); }
   var TWELVE_MONTHS = 365*24*3600*1000;
 
   // ── Plan checkout links ──────────────────────────────────────────────
-  // Professional and Team are LIVE Stripe Payment Links. Each "after
-  // payment" redirect must point at
+  // Learning, Engineering Pro, and Engineering Team open Stripe Payment
+  // Links even when verify-access is not configured. The hrefs in the HTML
+  // are the live buttons. Each after-payment redirect must point at
   //   pricing.html?session_id={CHECKOUT_SESSION_ID}
   // so course-gate.js can verify the payment server-side (verify-access.js)
   // and grant the right tier on return. Never add ?unlocked= as the grant
-  // source — it is forgeable.
+  // source — it is forgeable. Access still grants only after that server
+  // check. The inactive yearly Learning link is not used.
   //
-  // NOTE (Learning): the old link that charged $100 was replaced. The link
-  // below was checked live on the Stripe checkout page and renders
-  // "Subscribe to Transformerpath Learning - $199.00 per year", i.e. the
-  // advertised price, billed as a one-time 12-month payment (not a subscription). Professional and
-  // Team remain one-off payments; the pricing copy states that
-  // difference per tier.
-  var PRICE = { learner: 199, professional: 599, enterprise: 1999 };
+  // Learning: https://buy.stripe.com/8x27sE3pS4dfak8c1AfYY0p
+  //   plink_1UQhha2YHcFlJstOHjvZv5V0, metadata product=learning, one-time $199.
+  // Engineering Pro: https://buy.stripe.com/fZu00c3pScJL1NC3v4fYY01 ($599).
+  // Engineering Team: https://buy.stripe.com/aFacMY6C4aBD2RG2r0fYY02 ($1,999).
   var LINKS = {
-    learner:      'https://buy.stripe.com/4gMbIU2lO5hj1NC5DcfYY03',
+    learner:      'https://buy.stripe.com/8x27sE3pS4dfak8c1AfYY0p',
     professional: 'https://buy.stripe.com/fZu00c3pScJL1NC3v4fYY01',
     enterprise:   'https://buy.stripe.com/aFacMY6C4aBD2RG2r0fYY02'
   };
-
-  var TIER_NAME = { learner: 'Learning', professional: 'Professional', enterprise: 'Team' };
-  function renderBuyCtas(configured){
-    Object.keys(LINKS).forEach(function(tier){
-      var a = document.getElementById('cta' + tier.charAt(0).toUpperCase() + tier.slice(1));
-      if (!a) return;
-      var url = LINKS[tier];
-      var name = TIER_NAME[tier] || tier;
-      var ok = configured && url && url.indexOf('REPLACE_WITH') !== 0;
-      if (ok) {
-        a.href = url;
-        a.textContent = 'Unlock ' + name + ' — $' + PRICE[tier] + ' →';
-        a.classList.remove('soon');
-        a.setAttribute('target', '_blank');
-        a.setAttribute('rel', 'noopener');
-      } else {
-        a.classList.add('soon');
-        a.href = 'mailto:hello@transformerpath.com?subject=' + encodeURIComponent('TransformerPath ' + name + ' plan');
-        a.textContent = 'Unavailable — email us to unlock →';
-        a.removeAttribute('target');
-        a.removeAttribute('rel');
-      }
-    });
-  }
-  // Start non-clickable so a click can never open a payment link before we know
-  // the backend can verify it. Enable only once /.netlify/functions/verify-access
-  // (a GET config probe — never a grant) reports configured:true; otherwise stay
-  // on the "email us" state so nobody is charged into a locked-out account.
   Object.keys(LINKS).forEach(function(tier){
     var a = document.getElementById('cta' + tier.charAt(0).toUpperCase() + tier.slice(1));
-    if (a) a.classList.add('soon');
+    if (!a) return;
+    a.href = LINKS[tier];
+    a.classList.remove('soon');
+    a.setAttribute('target', '_blank');
+    a.setAttribute('rel', 'noopener');
   });
-  fetch('/.netlify/functions/verify-access', { method: 'GET' })
-    .then(function(r){ return r.json().catch(function(){ return {}; }); })
-    .then(function(res){ renderBuyCtas(!!(res && res.configured)); })
-    .catch(function(){ renderBuyCtas(false); });
 
   // ── Grant detection (mirrors course-gate.js) ────────────────────────
   function readAccess(){ try { return JSON.parse(localStorage.getItem(KEY) || 'null'); } catch(e){ return null; } }
@@ -571,7 +559,7 @@ table.cmp .n { color:var(--border); }
 
     var current = readAccess();
     if (!(current && current.expiry > Date.now())) return;
-    var label = current.tier === 'enterprise' ? 'Team' : current.tier === 'professional' ? 'Professional' : 'Learning';
+    var label = current.tier === 'enterprise' ? 'Engineering Team' : current.tier === 'professional' ? 'Engineering Pro' : 'Learning';
     var b = document.getElementById('unlockBanner');
     if (!b) return;
     if (justGranted) {
@@ -582,36 +570,63 @@ table.cmp .n { color:var(--border); }
     b.style.display = 'block';
   }
 
-  if (stripeReturn && (params.get('product') === 'verified_manufacturer' || params.get('product') === 'featured_event')) {
-    var listingProduct = params.get('product');
-    fetch('/.netlify/functions/verify-access', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ session_id: stripeReturn }) })
+  // The product comes from verify-access (Stripe line items and metadata),
+  // never from ?product= on the return URL.
+  var LISTING_PRODUCTS = {
+    verified_manufacturer: true,
+    featured_event: true,
+    featured_exhibitor: true
+  };
+  var PAID_COPY = {
+    featured_event: 'Payment received. Submit the event name, URL, and dates on the <a href="events.html?paid=featured_event#submit-event" style="color:#fff;text-decoration:underline">events list</a>. FEATURED is shown only after review.',
+    featured_exhibitor: 'Payment received. Submit your company and the event on the <a href="sponsor.html?paid=featured_exhibitor#contact" style="color:#fff;text-decoration:underline">sponsor form</a>. FEATURED is shown only after review.',
+    verified_manufacturer: 'Payment received. Submit your company details on the <a href="claim-profile.html?paid=verified_manufacturer#claimForm" style="color:#fff;text-decoration:underline">claim form</a>. VERIFIED MANUFACTURER is published only after review.'
+  };
+
+  function showUnverified(banner) {
+    if (!banner) return;
+    banner.style.background = '#6b2a2a';
+    banner.style.display = 'block';
+    banner.innerHTML = "We couldn't verify this payment. " + '<a href="mailto:hello@transformerpath.com" style="color:#fff;text-decoration:underline">hello@transformerpath.com</a>';
+  }
+
+  function showListingConfirmation(banner, sessionId, product) {
+    var listingNeutral = 'If you completed payment, submit the form below; we confirm payment before review.';
+    if (banner) {
+      banner.style.background = '#14365c';
+      banner.textContent = listingNeutral;
+      banner.style.display = 'block';
+    }
+    fetch('/.netlify/functions/confirm-listing-payment', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ session_id: sessionId, product: product }) })
       .then(function (r) { return r.json(); })
       .then(function (res) {
-        var b = document.getElementById('unlockBanner');
-        if (!b) return;
-        var label = listingProduct === 'featured_event' ? 'FEATURED' : 'VERIFIED MANUFACTURER';
-        b.style.background = '#14365c';
-        b.innerHTML = (res && res.paid)
-          ? (listingProduct === 'featured_event'
-            ? 'Payment received. Submit the event name, URL, and dates on the <a href="events.html?paid=featured_event#submit-event" style="color:#fff;text-decoration:underline">events list</a>. FEATURED is shown only after review.'
-            : 'Payment received. Submit your company details on the <a href="claim-profile.html?paid=verified_manufacturer#claimForm" style="color:#fff;text-decoration:underline">claim form</a>. ' + label + ' is published only after review.')
-          : 'We could not confirm this payment yet. If you were charged, email hello@transformerpath.com with your receipt.';
-        b.style.display = 'block';
-        params.delete('session_id');
-        history.replaceState({}, '', location.pathname + (params.toString() ? '?' + params.toString() : ''));
+        if (!banner) return;
+        var confirmed = res && res.configured === true && res.paid === true && res.product === product;
+        if (!confirmed) {
+          banner.textContent = listingNeutral;
+          return;
+        }
+        banner.innerHTML = PAID_COPY[product];
       })
-      .catch(function () {});
-    return;
+      .catch(function () {
+        if (banner) banner.textContent = listingNeutral;
+      });
   }
 
   if (stripeReturn) {
+    var returnBanner = document.getElementById('unlockBanner');
     fetch('/.netlify/functions/verify-access', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({ session_id: stripeReturn }) })
       .then(function (r) { return r.json(); })
       .then(function (res) {
+        var product = res && res.product;
+        if (res && res.paid === true && LISTING_PRODUCTS[product]) {
+          showListingConfirmation(returnBanner, stripeReturn, product);
+          return;
+        }
         if (res && res.valid) {
           justGranted = grant(res.tier || 'learner');
           // Persist the server-issued entitlement token as a cookie so gated
-          // content delivery (/.netlify/functions/masterclass-content) can be
+          // content delivery (/.netlify/functions/design course-content) can be
           // verified server-side. SameSite=Lax + Secure + Path=/ + 12-month
           // expiry. Not HttpOnly (the client entitlement gate reads it), but
           // the token is HMAC-signed server-side and cannot be forged; expiry
@@ -620,10 +635,16 @@ table.cmp .n { color:var(--border); }
             var e = new Date(); e.setFullYear(e.getFullYear() + 1);
             document.cookie = 'tp_ent=' + encodeURIComponent(res.entitlement_token) + '; expires=' + e.toUTCString() + '; path=/; SameSite=Lax' + (location.protocol === 'https:' ? '; Secure' : '');
           }
+          renderBanner();
+          return;
+        }
+        if (!res || res.reason === 'stripe_error') {
+          showUnverified(returnBanner);
+          return;
         }
         renderBanner();
       })
-      .catch(function () { renderBanner(); });
+      .catch(function () { showUnverified(returnBanner); });
     return;
   }
 

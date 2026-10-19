@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Job review queue — TransformerPath</title>
+<meta name="description" content="Review queue for transformer job posts. A vacancy is published only with a specific URL, a capture date, and a verification date.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="../style.css?v=14">
+<link rel="icon" type="image/svg+xml" href="../brand/favicon.svg">
+<meta name="theme-color" content="#0d1b2e">
+<script>if ((localStorage.getItem('theme') || 'dark') === 'dark') document.documentElement.setAttribute('data-theme', 'dark');</script>
+<style>
+.admin-wrap { max-width: 880px; margin: 30px auto; padding: 0 20px; }
+.gate { max-width: 380px; margin: 80px auto; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 32px; text-align: center; }
+.gate input { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; margin: 14px 0; background: var(--card); color: var(--text); }
+.gate button { width: 100%; padding: 11px; background: var(--amber); color: var(--navy); border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
+#panel { display: none; }
+.acard { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 22px; margin-bottom: 18px; }
+.acard h2 { margin: 0 0 8px; font-size: 1.15rem; color: var(--ink); }
+.acard label { display: block; font-size: .82rem; font-weight: 700; margin: 10px 0 4px; }
+.acard input, .acard textarea, .acard select { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); font: inherit; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 700px) { .row2 { grid-template-columns: 1fr; } }
+.big { font-size: 2rem; font-weight: 800; color: var(--accent); }
+#checkOut { white-space: pre-wrap; font-size: .88rem; margin-top: 12px; }
+</style>
+</head>
+<body>
+<div class="gate" id="gate">
+  <h2 style="margin:0 0 6px">Job review queue</h2>
+  <p style="color:var(--muted);font-size:.88rem">Nothing on this page is published to the live board.</p>
+  <input type="password" id="pw" placeholder="Passphrase" onkeydown="if(event.key==='Enter')unlock()">
+  <button onclick="unlock()">Unlock</button>
+  <p style="color:var(--muted);font-size:.75rem;margin-top:14px">Client-side gate — keeps casual visitors out. Don't store secrets on this page.</p>
+</div>
+
+<div class="admin-wrap" id="panel">
+  <h1 style="margin:12px 0 4px">Job <span style="color:var(--accent)">review queue</span></h1>
+  <p style="color:var(--muted);margin-bottom:18px"><a href="../admin.html" style="color:var(--accent)">← Admin</a> · <a href="../jobs.html" style="color:var(--accent)">Jobs page</a></p>
+
+  <div class="acard" id="queue">
+    <h2>Published openings</h2>
+    <p class="sub" style="color:var(--muted)">Counted only from <code>data/job-postings.json</code> when a row has a specific vacancy URL, a capture date, and a verification date, the URL was not a 404, and the verification date is inside 30 days. Careers-page signals are not in this file and are not counted.</p>
+    <div class="big" id="liveCount">…</div>
+    <p id="queueEmpty" style="color:var(--muted)">Loading…</p>
+    <div id="queueRows"></div>
+  </div>
+
+  <div class="acard">
+    <h2>Check a submission</h2>
+    <p class="sub" style="color:var(--muted)">Intake is the Netlify form <code>job-posting</code>. This check calls the same automatic URL, date, and reachability rules. It does not add a live opening and it does not set FEATURED. A careers search or a multi-role ad fails before the URL is fetched.</p>
+    <form id="checkForm">
+      <div class="row2">
+        <div><label for="title">Title</label><input id="title" required></div>
+        <div><label for="company">Company</label><input id="company" required></div>
+      </div>
+      <div class="row2">
+        <div><label for="location">Location</label><input id="location" required></div>
+        <div><label for="fn">Function</label><input id="fn" required></div>
+      </div>
+      <label for="description">Description</label><textarea id="description" rows="3" required></textarea>
+      <div class="row2">
+        <div><label for="email">Employer email</label><input id="email" type="email" required></div>
+        <div><label for="apply_url">Apply URL</label><input id="apply_url" type="url" required placeholder="https://…/job/12345"></div>
+      </div>
+      <label style="font-weight:600"><input id="one_position" type="checkbox"> One position</label>
+      <p style="margin-top:14px"><button class="btn btn-amber" type="submit">Check the vacancy URL</button></p>
+    </form>
+    <div id="checkOut"></div>
+  </div>
+
+  <div class="acard" id="rfqQueue">
+    <h2>RFQ review</h2>
+    <p class="sub" style="color:var(--muted)">A lead is billable when the automatic rules pass: consent, a calendar-date deadline, and a kV or MVA number. Payment does not create that mark. The match list is at most 5 suppliers. Buyer contact stays off the public page. The public file starts with no leads.</p>
+    <div class="big" id="rfqCount">…</div>
+    <p id="rfqEmpty" style="color:var(--muted)">Loading…</p>
+    <form id="rfqCheck">
+      <div class="row2">
+        <div><label for="rfq_company">Company</label><input id="rfq_company" value=""></div>
+        <div><label for="rfq_email">Work email</label><input id="rfq_email" type="email"></div>
+      </div>
+      <div class="row2">
+        <div><label for="rfq_category">Category</label><input id="rfq_category" placeholder="Power Transformer"></div>
+        <div><label for="rfq_deadline">Deadline</label><input id="rfq_deadline" type="date"></div>
+      </div>
+      <div class="row2">
+        <div><label for="rfq_rating">Rating</label><input id="rfq_rating" placeholder="100 MVA"></div>
+        <div><label for="rfq_voltage">Voltage</label><input id="rfq_voltage" placeholder="132 kV"></div>
+      </div>
+      <label for="rfq_details">Details</label><textarea id="rfq_details" rows="3"></textarea>
+      <label style="font-weight:600"><input id="rfq_consent" type="checkbox"> Consent ticked</label>
+      <p style="margin-top:14px"><button class="btn btn-amber" type="submit">Check qualification — do not publish</button></p>
+    </form>
+    <div id="rfqOut" style="white-space:pre-wrap;font-size:.88rem;margin-top:12px"></div>
+  </div>
+</div>
+
+<script src="../lib/job-board.js"></script>
+<script src="../lib/rfq-leads.js"></script>
+<script>
+var PW_HASH = '941b8378581ccb8f06432b05180349fef279bd9c9356c25b9771d54c4d533039';
+function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+async function sha256(s) {
+  var b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
+  return Array.from(new Uint8Array(b)).map(function (x) { return x.toString(16).padStart(2, '0'); }).join('');
+}
+async function unlock() {
+  var h = await sha256(document.getElementById('pw').value);
+  if (h === PW_HASH) { sessionStorage.setItem('tp-admin', '1'); show(); }
+  else { document.getElementById('pw').value = ''; document.getElementById('pw').placeholder = 'Wrong passphrase'; }
+}
+function show() { document.getElementById('gate').style.display = 'none'; document.getElementById('panel').style.display = 'block'; renderQueue(); renderRfqs(); }
+if (sessionStorage.getItem('tp-admin') === '1') show();
+
+function renderQueue() {
+  fetch('../data/job-postings.json').then(function (r) { return r.json(); }).then(function (doc) {
+    var rows = window.TPJobBoard.publicOpenings(doc.published || []);
+    document.getElementById('liveCount').textContent = String(rows.length);
+    document.getElementById('queueEmpty').textContent = rows.length
+      ? rows.length + ' reviewed opening' + (rows.length === 1 ? '' : 's') + ' inside the 30-day window.'
+      : '0 live openings. No reviewed vacancy is on file.';
+    document.getElementById('queueRows').innerHTML = rows.map(function (row) {
+      var view = TPJobBoard.displayRow(row);
+      return '<p><b>' + esc(view.t) + '</b> · ' + esc(view.co) + ' · verified ' + esc(view.last_verified_at) + (view.featured ? ' · FEATURED' : '') + '</p>';
+    }).join('');
+  }).catch(function () {
+    document.getElementById('liveCount').textContent = '0';
+    document.getElementById('queueEmpty').textContent = 'Published file could not be read. Nothing is treated as open.';
+  });
+}
+
+function renderRfqs() {
+  fetch('../data/rfq-public.json').then(function (r) { return r.json(); }).then(function (doc) {
+    var n = (doc.cards || []).length;
+    document.getElementById('rfqCount').textContent = String(n);
+    document.getElementById('rfqEmpty').textContent = n
+      ? n + ' public card' + (n === 1 ? '' : 's') + '. Contact fields are redacted.'
+      : '0 reviewed RFQs. No buyer contact is on file.';
+  }).catch(function () {
+    document.getElementById('rfqCount').textContent = '0';
+    document.getElementById('rfqEmpty').textContent = 'RFQ file could not be read. Nothing is treated as a lead.';
+  });
+}
+
+document.getElementById('rfqCheck').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var val = function (id) { return document.getElementById(id).value.trim(); };
+  var result = TPRfqLeads.qualify({
+    company: val('rfq_company'),
+    email: val('rfq_email'),
+    category: val('rfq_category'),
+    deadline: val('rfq_deadline'),
+    rating: val('rfq_rating'),
+    voltage: val('rfq_voltage'),
+    details: val('rfq_details'),
+    consent: document.getElementById('rfq_consent').checked,
+    consent_version: TPRfqLeads.CONSENT_VERSION,
+    consent_at: document.getElementById('rfq_consent').checked ? new Date().toISOString() : '',
+    qualified_by_payment: false
+  });
+  var view = TPRfqLeads.redact({ company: val('rfq_company'), email: val('rfq_email'), details: val('rfq_details'), category: val('rfq_category') });
+  document.getElementById('rfqOut').textContent = (result.qualified ? 'Meets the qualification rules. Still not published.' : 'Not qualified: ' + result.reasons.join('; ')) + '\nPublic card would say: ' + view.contact + '\nThis check did not store a lead.';
+});
+
+document.getElementById('checkForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var val = function (id) { return document.getElementById(id).value.trim(); };
+  var one = document.getElementById('one_position').checked;
+  var input = {
+    title: val('title'), company: val('company'), location: val('location'), function: val('fn'),
+    description: val('description'), email: val('email'), apply_url: val('apply_url'),
+    one_position: one
+  };
+  var submission = TPJobBoard.submissionErrors(input);
+  var out = document.getElementById('checkOut');
+  if (submission.length) {
+    out.textContent = 'Not accepted: ' + submission.join('; ') + '\nThis check did not fetch the URL and did not write a posting.';
+    return;
+  }
+  out.textContent = 'Checking the vacancy URL…';
+  fetch('/.netlify/functions/review-vacancy', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify(input)
+  }).then(function (r) { return r.json(); }).then(function (decision) {
+    var lines = [];
+    lines.push(decision.accepted ? 'Automatic check passed. Featured stays off.' : 'Not accepted: ' + (decision.errors || []).join('; '));
+    if (decision.http_status) lines.push('HTTP ' + decision.http_status + ' on ' + (decision.checked_on || ''));
+    lines.push(decision.stored ? 'Stored.' : 'Not stored. The public board is unchanged.');
+    lines.push('This check did not write a posting.');
+    out.textContent = lines.join('\n');
+  }).catch(function () {
+    out.textContent = 'The automatic check did not complete. Nothing was published.';
+  });
+});
+</script>
+</body>
+</html>

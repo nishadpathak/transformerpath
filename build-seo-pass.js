@@ -119,7 +119,14 @@ async function main() {
     d.draft = d.draftTitle;
     return d;
   });
-  assignUnique(items, 'title', 50, 60);
+  const eventProfiles = [];
+  const otherPages = [];
+  items.forEach(function (item) {
+    if (item.eventProfile) eventProfiles.push(item);
+    else otherPages.push(item);
+  });
+  assignUnique(otherPages, 'title', 50, 60);
+  assignUnique(eventProfiles, 'title', 50, 100);
   items.forEach(function (item) {
     item.draft = item.draftDesc;
     item.pads = item.padsDesc;

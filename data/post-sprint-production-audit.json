@@ -1,6 +1,6 @@
 {
   "$schema": "https://transformerpath.com/production-audit.schema.json",
-  "generated": "2026-10-14T11:58:56.594Z",
+  "generated": "2026-10-16T07:39:29.642Z",
   "note": "POST-SPRINT PRODUCTION AUDIT. READ-ONLY verification of checked-in source + generated data + served HTML. Does not assert anything about an unobserved live runtime. UNKNOWN > INCORRECT.",
   "surfaces": [
     {
@@ -61,11 +61,11 @@
     {
       "surface": "masterclass.html",
       "kind": "masterclass",
-      "title": "TX Design Masterclass — Transformer Design, Construction, 3D &amp; Calculator | TransformerPath",
-      "source_present": true,
-      "sitemap_indexed": true,
-      "has_canonical": true,
-      "has_h1": true,
+      "title": "masterclass",
+      "source_present": false,
+      "sitemap_indexed": false,
+      "has_canonical": false,
+      "has_h1": false,
       "client_fetches_data": false,
       "freshness_contradictions": []
     },
@@ -154,7 +154,7 @@
       "sitemap_indexed": true,
       "has_canonical": true,
       "has_h1": true,
-      "client_fetches_data": false,
+      "client_fetches_data": true,
       "freshness_contradictions": []
     },
     {
@@ -165,13 +165,13 @@
       "sitemap_indexed": false,
       "has_canonical": true,
       "has_h1": true,
-      "client_fetches_data": true,
+      "client_fetches_data": false,
       "freshness_contradictions": []
     },
     {
       "surface": "pricing.html",
       "kind": "pricing",
-      "title": "Pricing — Learning, Professional &amp; Team Plans | TransformerPath",
+      "title": "Pricing — Learning, Engineering Pro &amp; Engineering Team | TransformerPath",
       "source_present": true,
       "sitemap_indexed": true,
       "has_canonical": true,

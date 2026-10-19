@@ -1,112 +1,208 @@
 {
-  "generated": "2026-10-14T11:58:54.279Z",
-  "generated_at": "2026-10-14T11:58:54.279Z",
-  "updated": "2026-10-14",
+  "generated": "2026-10-16T07:39:22.451Z",
+  "generated_at": "2026-10-16T07:39:22.451Z",
+  "updated": "2026-10-16",
   "schema": "https://transformerpath.com/data-quality.schema.json",
   "counts": {
-    "manufacturers": 906,
-    "projects": 306,
-    "tenders": 155,
-    "awards": 56,
-    "intel_items": 203,
-    "issues": 43,
+    "manufacturers": 894,
+    "projects": 305,
+    "tenders": 159,
+    "awards": 57,
+    "intel_items": 210,
+    "issues": 51,
     "by_severity": {
       "CRITICAL": 0,
       "HIGH": 0,
-      "MEDIUM": 3,
-      "LOW": 40
+      "MEDIUM": 15,
+      "LOW": 36
     },
-    "duplicates": 1,
+    "duplicates": 0,
     "capability_without_source": 0,
     "factory_without_source": 0,
     "manufacturers_without_evidence": 0,
-    "tender_without_source": 2,
+    "tender_without_source": 0,
     "award_without_source": 0
   },
   "issues": [
     {
-      "issue": "duplicate_intel",
-      "entity": "AEP Ohio files $840m transmission filing with PUCO for New Albany AI data centre cluster (4× 765/345 kV autotransformers)",
-      "field": "url",
-      "current": "https://www.utilitydive.com/news/aep-ohio-puco-transmission-filing-data-centers/829104/",
-      "reason": "Two intel items share a source URL and near-identical headline — possible duplicate.",
-      "source": "Utility Dive · 8 Sep 2026 [en]",
-      "recommended_action": "Keep one; review the other.",
-      "severity": "LOW",
-      "status": "OPEN",
-      "detected": "2026-10-14"
-    },
-    {
-      "issue": "tender_without_source",
-      "entity": "GCCIA Saudi-Kuwait interconnection",
-      "field": "official_procurement_url",
-      "current": "",
-      "reason": "A tender record has no verifiable source URL — provenance cannot be audited.",
-      "source": "Pipeline",
-      "recommended_action": "Attach the official procurement/source URL, or mark the record for review.",
+      "issue": "invalid_tender_status",
+      "entity": "Sonelgaz supply-and-install tender for 30/10 kV power transformers",
+      "field": "status",
+      "current": "UNDATED",
+      "reason": "Tender status is not a recognized lifecycle value.",
+      "source": "DZ Tenders",
+      "recommended_action": "Reclassify against the tender lifecycle (EXPECTED/OPEN/CLOSING_SOON/CLOSED/EVALUATION/AWARDED/CANCELLED).",
       "severity": "MEDIUM",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
-      "issue": "tender_duplicated_from_project",
-      "entity": "GCCIA Saudi-Kuwait interconnection",
-      "field": "project_slug",
-      "current": "gccia-saudi-kuwait-interconnection",
-      "reason": "A project-derived tender lacks an independent procurement source — it may duplicate the project record.",
-      "source": "Pipeline",
-      "recommended_action": "Add an independent tender/procurement source so it is not a mirror of the project.",
-      "severity": "LOW",
-      "status": "OPEN",
-      "detected": "2026-10-14"
-    },
-    {
-      "issue": "tender_without_source",
-      "entity": "KAHRAMAA 2026 transmission expansion EPC",
-      "field": "official_procurement_url",
-      "current": "https://example.com/upd",
-      "reason": "A tender record has no verifiable source URL — provenance cannot be audited.",
-      "source": "SaudiGulf Projects / MEED",
-      "recommended_action": "Attach the official procurement/source URL, or mark the record for review.",
+      "issue": "invalid_tender_status",
+      "entity": "AMBA I – Ampliación del Sistema de Transporte Eléctrico",
+      "field": "status",
+      "current": "UNDATED",
+      "reason": "Tender status is not a recognized lifecycle value.",
+      "source": "PV Magazine LatAm / Energía y Negocios / Forbes Argentina",
+      "recommended_action": "Reclassify against the tender lifecycle (EXPECTED/OPEN/CLOSING_SOON/CLOSED/EVALUATION/AWARDED/CANCELLED).",
       "severity": "MEDIUM",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
-      "issue": "tender_duplicated_from_project",
-      "entity": "KAHRAMAA 2026 transmission expansion EPC",
-      "field": "project_slug",
-      "current": "kahramaa-2026-transmission-expansion-epc-s1-s2-s5-cables-c1-c2",
-      "reason": "A project-derived tender lacks an independent procurement source — it may duplicate the project record.",
-      "source": "SaudiGulf Projects / MEED",
-      "recommended_action": "Add an independent tender/procurement source so it is not a mirror of the project.",
-      "severity": "LOW",
-      "status": "OPEN",
-      "detected": "2026-10-14"
-    },
-    {
-      "issue": "award_missing_country",
-      "entity": "平高电气 Pinggao Electric: wins CNY 876m of State Grid procurement",
-      "field": "country",
-      "current": "",
-      "reason": "An Award record has no country — it cannot be geographically placed.",
-      "source": "Jiemian 界面 · Apr 2026 (announcement 1 Apr 2026) [zh]",
-      "recommended_action": "Populate the country from the source, or mark for review.",
-      "severity": "LOW",
-      "status": "OPEN",
-      "detected": "2026-10-14"
-    },
-    {
-      "issue": "placeholder_source_url",
-      "entity": "KAHRAMAA 2026 transmission expansion EPC (S1/S2/S5 + cables C1/C2)",
-      "field": "sources",
-      "current": "https://example.com/upd",
-      "reason": "Project references a placeholder/non-canonical source URL — the provenance cannot be verified.",
-      "source": "https://example.com/upd",
-      "recommended_action": "Replace with the real published source URL, or mark the record pending verification.",
+      "issue": "invalid_tender_status",
+      "entity": "Interconexión Eléctrica 500 kV Puerto Madryn – Choele Choel – Bahía Blanca",
+      "field": "status",
+      "current": "UNDATED",
+      "reason": "Tender status is not a recognized lifecycle value.",
+      "source": "Río Negro / Argentina.gob.ar / Diario Neuquino",
+      "recommended_action": "Reclassify against the tender lifecycle (EXPECTED/OPEN/CLOSING_SOON/CLOSED/EVALUATION/AWARDED/CANCELLED).",
       "severity": "MEDIUM",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
+    },
+    {
+      "issue": "invalid_tender_status",
+      "entity": "Hunter Transmission Project",
+      "field": "status",
+      "current": "UNDATED",
+      "reason": "Tender status is not a recognized lifecycle value.",
+      "source": "EnergyCo NSW; RenewEconomy",
+      "recommended_action": "Reclassify against the tender lifecycle (EXPECTED/OPEN/CLOSING_SOON/CLOSED/EVALUATION/AWARDED/CANCELLED).",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "detected": "2026-10-16"
+    },
+    {
+      "issue": "invalid_tender_status",
+      "entity": "Matarbari 400/230/132 kV substation & LILO of Matarbari–Banskhali 400 kV line",
+      "field": "status",
+      "current": "UNDATED",
+      "reason": "Tender status is not a recognized lifecycle value.",
+      "source": "PGCB ERP",
+      "recommended_action": "Reclassify against the tender lifecycle (EXPECTED/OPEN/CLOSING_SOON/CLOSED/EVALUATION/AWARDED/CANCELLED).",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "detected": "2026-10-16"
+    },
+    {
+      "issue": "invalid_tender_status",
+      "entity": "El Dabaa nuclear power plant grid connection",
+      "field": "status",
+      "current": "UNDATED",
+      "reason": "Tender status is not a recognized lifecycle value.",
+      "source": "Newsbase / TASS",
+      "recommended_action": "Reclassify against the tender lifecycle (EXPECTED/OPEN/CLOSING_SOON/CLOSED/EVALUATION/AWARDED/CANCELLED).",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "detected": "2026-10-16"
+    },
+    {
+      "issue": "invalid_tender_status",
+      "entity": "Amprion launches tender for decentralised grid booster projects",
+      "field": "status",
+      "current": "UNDATED",
+      "reason": "Tender status is not a recognized lifecycle value.",
+      "source": "Energy-Storage.news",
+      "recommended_action": "Reclassify against the tender lifecycle (EXPECTED/OPEN/CLOSING_SOON/CLOSED/EVALUATION/AWARDED/CANCELLED).",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "detected": "2026-10-16"
+    },
+    {
+      "issue": "invalid_tender_status",
+      "entity": "RECPDCL tender for 765 kV intrastate transmission project in Maharashtra",
+      "field": "status",
+      "current": "UNDATED",
+      "reason": "Tender status is not a recognized lifecycle value.",
+      "source": "Mercom India",
+      "recommended_action": "Reclassify against the tender lifecycle (EXPECTED/OPEN/CLOSING_SOON/CLOSED/EVALUATION/AWARDED/CANCELLED).",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "detected": "2026-10-16"
+    },
+    {
+      "issue": "invalid_tender_status",
+      "entity": "Transmission system for Offshore Wind Zone Phase-I (500 MW) off Gujarat coast",
+      "field": "status",
+      "current": "UNDATED",
+      "reason": "Tender status is not a recognized lifecycle value.",
+      "source": "EQ Magpro / ET EnergyWorld",
+      "recommended_action": "Reclassify against the tender lifecycle (EXPECTED/OPEN/CLOSING_SOON/CLOSED/EVALUATION/AWARDED/CANCELLED).",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "detected": "2026-10-16"
+    },
+    {
+      "issue": "invalid_tender_status",
+      "entity": "CFE Plan de Fortalecimiento y Expansión de la Red Nacional de Transmisión 2025-2030",
+      "field": "status",
+      "current": "UNDATED",
+      "reason": "Tender status is not a recognized lifecycle value.",
+      "source": "Forbes México / Expansión / Energía Estratégica",
+      "recommended_action": "Reclassify against the tender lifecycle (EXPECTED/OPEN/CLOSING_SOON/CLOSED/EVALUATION/AWARDED/CANCELLED).",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "detected": "2026-10-16"
+    },
+    {
+      "issue": "invalid_tender_status",
+      "entity": "Ras Laffan substation",
+      "field": "status",
+      "current": "UNDATED",
+      "reason": "Tender status is not a recognized lifecycle value.",
+      "source": "MEED",
+      "recommended_action": "Reclassify against the tender lifecycle (EXPECTED/OPEN/CLOSING_SOON/CLOSED/EVALUATION/AWARDED/CANCELLED).",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "detected": "2026-10-16"
+    },
+    {
+      "issue": "invalid_tender_status",
+      "entity": "Independent Transmission Projects (ITP) procurement programme – first phase",
+      "field": "status",
+      "current": "UNDATED",
+      "reason": "Tender status is not a recognized lifecycle value.",
+      "source": "Eskom (official) / TimesLIVE",
+      "recommended_action": "Reclassify against the tender lifecycle (EXPECTED/OPEN/CLOSING_SOON/CLOSED/EVALUATION/AWARDED/CANCELLED).",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "detected": "2026-10-16"
+    },
+    {
+      "issue": "invalid_tender_status",
+      "entity": "Uganda–Tanzania 400 kV interconnector project",
+      "field": "status",
+      "current": "UNDATED",
+      "reason": "Tender status is not a recognized lifecycle value.",
+      "source": "TANESCO (official)",
+      "recommended_action": "Reclassify against the tender lifecycle (EXPECTED/OPEN/CLOSING_SOON/CLOSED/EVALUATION/AWARDED/CANCELLED).",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "detected": "2026-10-16"
+    },
+    {
+      "issue": "invalid_tender_status",
+      "entity": "EGAT 500 kV border transmission line supply & construction",
+      "field": "status",
+      "current": "UNDATED",
+      "reason": "Tender status is not a recognized lifecycle value.",
+      "source": "KETEP",
+      "recommended_action": "Reclassify against the tender lifecycle (EXPECTED/OPEN/CLOSING_SOON/CLOSED/EVALUATION/AWARDED/CANCELLED).",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "detected": "2026-10-16"
+    },
+    {
+      "issue": "invalid_tender_status",
+      "entity": "EGAT 230 kV Srinagarind 2 substation supply & construction",
+      "field": "status",
+      "current": "UNDATED",
+      "reason": "Tender status is not a recognized lifecycle value.",
+      "source": "KETEP",
+      "recommended_action": "Reclassify against the tender lifecycle (EXPECTED/OPEN/CLOSING_SOON/CLOSED/EVALUATION/AWARDED/CANCELLED).",
+      "severity": "MEDIUM",
+      "status": "OPEN",
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -118,7 +214,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -130,7 +226,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -142,7 +238,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -154,7 +250,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -166,7 +262,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -178,7 +274,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -190,7 +286,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -202,7 +298,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -214,7 +310,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -226,7 +322,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -238,7 +334,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -250,7 +346,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -262,7 +358,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -274,7 +370,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -286,7 +382,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -298,7 +394,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -310,7 +406,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -322,7 +418,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -334,7 +430,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -346,7 +442,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -358,7 +454,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -370,7 +466,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -382,7 +478,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -394,7 +490,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -406,7 +502,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -414,11 +510,11 @@
       "field": "tier",
       "current": "2",
       "reason": "A documented-supplier record carries a tier classification. Confirm the grouping is backed by a published, transparent methodology (it is presented on the page only as reported capability with its source — not as a quality ranking).",
-      "source": "Virginia Transformer Corp Factory Documentation & Grid Approvals",
+      "source": "Virginia Transformer Corp About Us",
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -430,7 +526,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -442,7 +538,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -454,7 +550,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -466,7 +562,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -478,7 +574,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -490,7 +586,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -502,7 +598,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -514,7 +610,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -526,7 +622,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     },
     {
       "issue": "tier_classification_methodology",
@@ -538,7 +634,7 @@
       "recommended_action": "Publish the classification methodology alongside the reported-capability records.",
       "severity": "LOW",
       "status": "OPEN",
-      "detected": "2026-10-14"
+      "detected": "2026-10-16"
     }
   ]
 }

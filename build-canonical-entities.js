@@ -23,6 +23,7 @@
 'use strict';
 const fs = require('fs');
 const aliases = require('./lib/company-aliases');
+const headOffice = require('./lib/head-office');
 
 function readJson(p, fb) {
   try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch (e) { return fb; }
@@ -374,6 +375,20 @@ const distinctCompanies = Array.from(new Set(companyList)).map((co) => {
   co.factory_count = co.facility_ids.length;
   return co;
 }).sort((a, b) => a.name.localeCompare(b.name));
+
+// A sourced head office replaces a country taken from a plant row.
+const HEAD_OFFICES = headOffice.load(__dirname);
+distinctCompanies.forEach(function (co) {
+  const office = headOffice.officeFor(co, HEAD_OFFICES);
+  if (!office) return;
+  co.headquarters.country = office.country;
+  co.headquarters.city = office.city || co.headquarters.city;
+  if (office.address) co.headquarters.address = office.address;
+  if (office.website) co.website = office.website;
+  co.sources = co.sources || {};
+  co.sources.headquarters_source = office.source_url;
+  co.sources.headquarters_checked = office.retrieved_at || '';
+});
 
 // Sort facilities deterministically
 facilitiesList.sort((a, b) => a.company_name.localeCompare(b.company_name) || a.facility_name.localeCompare(b.facility_name));

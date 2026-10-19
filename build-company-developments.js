@@ -16,6 +16,7 @@
 'use strict';
 const fs = require('fs');
 const { ALIASES, norm } = require('./lib/company-aliases');
+const { assignEntityScope, sourcedFacilityId } = require('./lib/entity-scope');
 
 const GENERIC = {
   transformer: 1, transformers: 1, electric: 1, electrical: 1, energy: 1, power: 1,
@@ -151,7 +152,7 @@ function buildIndex() {
     const c = dest && bySlug[dest.slug];
     if (c) addPhrase(phrases, phrase, c, false);
   });
-  return { phrases: phrases, bySlug: bySlug };
+  return { phrases: phrases, bySlug: bySlug, companies: companies };
 }
 
 function hasPhrase(textNorm, phrase) {
@@ -176,26 +177,13 @@ function matchCompanies(item, index) {
     if (!prev || h.phrase.length > prev.phrase.length) longest[h.company.id] = h;
   });
   const kept = Object.keys(longest).map(function (id) { return longest[id]; });
-  return kept.filter(function (h) {
+  const specific = kept.filter(function (h) {
     return !kept.some(function (other) {
       return other.company.id !== h.company.id && other.phrase.length > h.phrase.length &&
         (' ' + other.phrase + ' ').indexOf(' ' + h.phrase + ' ') >= 0 && hasPhrase(text, other.phrase);
     });
   });
-}
-
-function sourcedFacilityId(company, item, facilities) {
-  const text = norm((item.title || '') + ' ' + (item.snippet || ''));
-  const rows = facilities.filter(function (f) {
-    return f && f.company_id === company.id && f.status === 'SOURCED';
-  });
-  for (let i = 0; i < rows.length; i++) {
-    const f = rows[i];
-    const city = norm(f.city || '');
-    const site = norm(f.site || f.facility_name || '');
-    if ((city && hasPhrase(text, city)) || (site && hasPhrase(text, site))) return f.id || f.facility_id;
-  }
-  return null;
+  return assignEntityScope(specific, text, index.companies, GENERIC, norm);
 }
 
 const ITEMS = intelItems();
@@ -214,6 +202,7 @@ ITEMS.forEach(function (it) {
         developments: []
       };
     }
+    const facilityId = sourcedFacilityId(c, it, FACILITIES, norm);
     byCompany[c.id].developments.push({
       title: it.title,
       src: it.src || '',
@@ -221,7 +210,8 @@ ITEMS.forEach(function (it) {
       value: it.value || '',
       date_iso: it._date || '',
       matched_phrase: hit.phrase,
-      facility_id: sourcedFacilityId(c, it, FACILITIES)
+      event_scope: facilityId ? 'factory' : (hit.scope || 'group'),
+      facility_id: facilityId
     });
   });
 });

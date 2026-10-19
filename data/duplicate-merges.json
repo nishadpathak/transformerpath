@@ -1,0 +1,77 @@
+{
+  "checked": "2026-10-15",
+  "_comment": "Same official domain, two public profiles. The from slug 301s to the census profile. A pair is omitted when the sites differ.",
+  "merges": [
+    {
+      "from": "bhel-bharat-heavy-electricals",
+      "to": "bhel",
+      "shared_site": "https://www.bhel.com"
+    },
+    {
+      "from": "tbea-co-ltd",
+      "to": "tbea-group-changji-hq-shenyang-hengyang-tianjin-plants",
+      "shared_site": "https://en.tbea.com/"
+    },
+    {
+      "from": "china-xd-group",
+      "to": "china-xd-group-xian-xd-transformer",
+      "shared_site": "https://www.xd.com.cn/"
+    },
+    {
+      "from": "efacec-power-solutions",
+      "to": "efacec",
+      "shared_site": "https://www.efacec.com"
+    },
+    {
+      "from": "efacec-distribution-transformers",
+      "to": "efacec",
+      "shared_site": "https://www.efacec.pt/",
+      "note": "https://www.efacec.pt/ resolves to https://www.efacec.com/pt/ (checked 2026-10-15)."
+    },
+    {
+      "from": "tmc-transformers-spa",
+      "to": "tmc-transformers",
+      "shared_site": "https://www.tmctransformers.com/"
+    },
+    {
+      "from": "transformers-and-rectifiers-india",
+      "to": "transformers-and-rectifiers-india-taril",
+      "shared_site": "https://www.transformerindia.com"
+    },
+    {
+      "from": "elsewedy-electric",
+      "to": "elsewedy-electric-transformers",
+      "shared_site": "https://www.elsewedyelectric.com/",
+      "note": "Elsewedy Electric Algeria, Ethiopia and Saudi Arabia stay separate plant profiles."
+    },
+    {
+      "from": "smit-transformers",
+      "to": "royal-smit-transformers-b-v-sgb-smit-group",
+      "shared_site": "https://www.sgb-smit.com"
+    },
+    {
+      "from": "jshp-transformer-jiangsu",
+      "to": "jiangsu-huapeng-jshp-huapeng-group",
+      "shared_site": "https://www.jshp.com/"
+    },
+    {
+      "from": "hitachi-energy-global-hq",
+      "to": "hitachi-energy",
+      "shared_site": "https://www.hitachienergy.com/"
+    }
+  ],
+  "not_merged": [
+    {
+      "slugs": ["daihen", "daihen-electric"],
+      "reason": "DAIHEN is daihen.co.jp in Osaka. Daihen Electric is daihen.co.th in Chachoengsao. Different sites and countries, so they stay separate profiles."
+    },
+    {
+      "slugs": ["voltamp-transformers", "voltamp-energy-saog-voltamp-power-voltamp-transformers"],
+      "reason": "Voltamp Transformers is voltamptransformers.com in Vadodara, India. Voltamp Energy SAOG is voltampenergy.com in Oman. Different companies."
+    },
+    {
+      "slugs": ["jiangshan-transformer", "zhejiang-jiangshan-transformer"],
+      "reason": "jiangshan-transformer uses jstt.cn and zhejiang-jiangshan-transformer uses jsbtransformer.com. Different domains, left unmerged."
+    }
+  ]
+}

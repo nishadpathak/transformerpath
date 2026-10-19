@@ -240,17 +240,21 @@ publishableAll.forEach(function (it) {
   }
 });
 dateCandidates.sort();
-const newest = dateCandidates.length ? dateCandidates[dateCandidates.length - 1] : null;
-if (newest) {
-  const noon = newest + 'T12:00:00.000Z';
+const gccNewest = dateCandidates.length ? dateCandidates[dateCandidates.length - 1] : null;
+if (gccNewest) {
+  const noon = gccNewest + 'T12:00:00.000Z';
   const nowIso = new Date().toISOString();
   // Cap at now so morning UTC builds never stamp a future refresh time.
-  intel.updated = noon > nowIso ? nowIso : noon;
+  const capped = noon > nowIso ? nowIso : noon;
+  // This stamp is the feed-wide content clock. A GCC-only day must not
+  // roll it backwards when another region already has a later observation.
+  const prev = String(intel.updated || '');
+  if (!prev || capped > prev) intel.updated = capped;
 }
 intel.refresh_meta = {
-  cadence: 'once daily at 06:00 UTC (10:00 Dubai), only when TP_BUILD_HOOK_URL is set',
+  cadence: 'once daily at 06:00 UTC, only when TP_BUILD_HOOK_URL is set',
   refreshed_at_build: true,
-  newest_validated_content_date: newest,
+  newest_validated_content_date: gccNewest,
   note: 'updated reflects newest validated CONTENT observation (float/publication/event/update) — not source_checked_at and not a silent redeploy clock. Excludes tender_close_date and future dates. Publication requires gcc-intel-review.json decision=PUBLISH with reviewer and reviewed_at. Held candidates are not auto-published.',
   gcc_published: publishableAll.map(function (p) { return p.candidate_id || p.title; }),
   desk_approved: reviewRows.filter(reviewLib.isPublishable).map(function (r) { return r.candidate_id; })

@@ -170,11 +170,11 @@ intel.updated = intel.refresh_meta && intel.refresh_meta.newest_validated_conten
       : intel.refresh_meta.newest_validated_content_date)
   : new Date().toISOString();
 intel.refresh_meta = Object.assign({}, intel.refresh_meta || {}, {
-  cadence: 'once daily at 06:00 UTC (10:00 Dubai), only when TP_BUILD_HOOK_URL is set',
+  cadence: 'once daily at 06:00 UTC, only when TP_BUILD_HOOK_URL is set',
   refreshed_at_build: true
 });
 if (!intel.refresh_meta.note) {
-  intel.refresh_meta.note = 'Curated transformer-industry intelligence. updated tracks newest validated content observation when present — not a silent redeploy clock. The scheduled rebuild is once daily (06:00 UTC / 10:00 Dubai) and only runs when TP_BUILD_HOOK_URL is set.';
+  intel.refresh_meta.note = 'Curated transformer-industry intelligence. updated tracks newest validated content observation when present — not a silent redeploy clock. The scheduled rebuild is once daily (06:00 UTC) and only runs when TP_BUILD_HOOK_URL is set.';
 }
 const FOLD = { China: 'RoW', AsiaPac: 'RoW', LatAm: 'RoW', Africa: 'RoW', 'North America': 'USA' };
 const srcByRegion = {};
@@ -182,16 +182,25 @@ ITEMS.forEach((it) => { const fold = FOLD[it.region] || it.region; (srcByRegion[
 let mergedCount = 0;
 Object.keys(srcByRegion).forEach((region) => {
   if (!intel[region]) { intel[region] = { label: region, items: [] }; }
+  // An award notice names its awardee in intel-news. Copy that onto a card that
+  // was merged before the field existed, and onto every newly inserted card.
+  (intel[region].items || []).forEach(function (existing) {
+    const src = srcByRegion[region].find(function (it) { return it.url && it.url === existing.url; });
+    if (src && src.awardee && !existing.awardee) existing.awardee = src.awardee;
+  });
   const existingUrl = new Set((intel[region].items || []).map((x) => x.url));
   const fresh = srcByRegion[region].filter((it) => !existingUrl.has(it.url));
   if (!fresh.length) return;
   intel[region].items = intel[region].items.concat(fresh.map((it) => {
     const o = { title: it.title, snippet: it.snippet, value: it.value || '', src: it.src, url: it.url, lang: it.lang || 'en' };
+    if (it.awardee) o.awardee = it.awardee;
+    if (it.country) o.country = it.country;
     if (it.isNew) o.isNew = true;
     if (it.cls) o.cls = it.cls;
     if (it.date_iso) o.date_iso = it.date_iso;
     if (it.publication_date) o.publication_date = it.publication_date;
     if (it.event_date) o.event_date = it.event_date;
+    if (it.evidence_grade) o.evidence_grade = it.evidence_grade;
     return o;
   }));
   mergedCount += fresh.length;

@@ -1,5 +1,10 @@
 -- Paid commercial listings written by functions/stripe-webhook.js.
 -- Service role only. Anonymous and authenticated roles have no access.
+-- Prefer supabase/migrations/20261016150000_payments_tables.sql. That
+-- migration also creates entitlements and webhook_events, and it drops
+-- paid_listings_product_check. An older copy of this file limited product
+-- to verified_manufacturer and featured_event, which rejects the other
+-- products the webhook writes. Do not add that check back.
 -- Run once in the Supabase SQL editor. Do not commit keys.
 
 create table if not exists public.paid_listings (
@@ -13,9 +18,9 @@ create table if not exists public.paid_listings (
   currency text,
   livemode boolean not null default false,
   status text not null default 'paid_pending_verification',
+  component text,
   created_at timestamptz not null default now(),
   constraint paid_listings_session_id_key unique (session_id),
-  constraint paid_listings_product_check check (product in ('verified_manufacturer', 'featured_event')),
   constraint paid_listings_status_check check (status in ('paid_pending_verification', 'verified', 'rejected', 'refunded'))
 );
 

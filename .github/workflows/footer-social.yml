@@ -3,7 +3,7 @@ name: footer-social
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: [main, "cursor/**"]
 
 jobs:
   footer-social:

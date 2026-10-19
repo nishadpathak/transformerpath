@@ -24,6 +24,8 @@ function slugify(s) { return String(s || '').normalize('NFKD').replace(/[\u0300-
 const ci = (s) => (s || '').toLowerCase();
 
 const MANUF = JSON.parse(fs.readFileSync('data/manufacturers.json', 'utf8'));
+const gridDates = require('./lib/grid-record-dates');
+const GRID_DATES = gridDates.load();
 const GRIDS = JSON.parse(fs.readFileSync('data/grids.json', 'utf8'));
 const EVENTS = JSON.parse(fs.readFileSync('data/events.json', 'utf8'));
 const INTEL = JSON.parse(fs.readFileSync('data/intel.json', 'utf8'));
@@ -185,7 +187,7 @@ function buildUtility(u) {
     (regionalHtml ? '<h2>Regional intel</h2><p style="color:var(--muted);font-size:.84rem;margin:4px 0 8px">Same regional feed. These items do not name this operator.</p><ul>' + regionalHtml + '</ul>' : '') +
     '<h2>Related projects</h2><ul>' + projHtml + '</ul>' +
     '<h2>Upcoming events</h2><ul>' + evHtml + '</ul>' +
-    '<p style="font-size:.78rem;color:var(--muted);margin-top:8px">Last reviewed: ' + new Date().toISOString().slice(0, 10) + '. Sources: official utility / operator filings and public announcements; maintained encyclopedia-style from the TransformerPath grid census. Report a <a href="mailto:hello@transformerpath.com?subject=Grid%20census%20correction" style="color:var(--accent)">correction</a>.</p>' +
+    '<p style="font-size:.78rem;color:var(--muted);margin-top:8px">' + esc(gridDates.censusLabel(GRID_DATES)) + '. ' + esc(gridDates.operatorLabel(opName, GRID_DATES)) + '. Sources: official utility / operator filings and public announcements; maintained encyclopedia-style from the TransformerPath grid census. Report a <a href="mailto:hello@transformerpath.com?subject=Grid%20census%20correction" style="color:var(--accent)">correction</a>.</p>' +
     '<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:24px"><b style="color:var(--text)">Supply this utility</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Submit a transformer requirement and TransformerPath will match it against the ' + esc(country) + ' and regional manufacturing base.</p>' +
     '<a class="btn btn-amber" href="../../rfq.html" data-track="rfq_started" data-track-utility="' + esc(opName) + '">Submit an RFQ</a> <a class="btn btn-outline btn-sm" href="../../list-company.html" data-track="supplier_claim_started" data-track-utility="' + esc(opName) + '">Are you a supplier here? Get Verified →</a></div>' +
     '</main>\n' + FOOT + '\n<script src="../../analytics.js" defer></script>\n</body>\n</html>';

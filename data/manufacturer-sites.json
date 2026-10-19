@@ -242,24 +242,10 @@
   },
   {
     "brand": "Siemens Energy",
-    "url": "https://www.siemens-energy.com/",
+    "url": "https://www.siemens-energy.com",
     "slug": "siemens-energy",
     "siteCount": 6,
     "sites": [
-      {
-        "name": "Siemens Energy",
-        "city": "Charlotte, NC",
-        "country": "USA",
-        "region": "North America",
-        "url": "https://www.siemens-energy.com/",
-        "products": [
-          "PT"
-        ],
-        "status": "UNCLEAR",
-        "source": "TransformerPath census (site list; status unclassified)",
-        "facility_id": "fac:siemens-energy:charlotte-nc",
-        "brand_slug": "siemens-energy"
-      },
       {
         "name": "Siemens Energy Brasil",
         "city": "Jundiaí, SP",
@@ -272,6 +258,20 @@
         "status": "UNCLEAR",
         "source": "TransformerPath census (site list; status unclassified)",
         "facility_id": "fac:siemens-energy:jundiai-sp",
+        "brand_slug": "siemens-energy"
+      },
+      {
+        "name": "Siemens Energy",
+        "city": "Munich",
+        "country": "Germany",
+        "region": "Europe",
+        "url": "https://www.siemens-energy.com/",
+        "products": [
+          "PT"
+        ],
+        "status": "UNCLEAR",
+        "source": "TransformerPath census (site list; status unclassified)",
+        "facility_id": "fac:siemens-energy:munich",
         "brand_slug": "siemens-energy"
       },
       {
@@ -857,6 +857,46 @@
         "produces": "power transformers",
         "source_url": "https://www.hd-hyundaielectric.com/",
         "claim_type": "COMPANY_REPORTED"
+      }
+    ],
+    "source": "TransformerPath census (grouped by shared official website; sites verified where independent source exists)",
+    "lastVerified": "2026-08-28"
+  },
+  {
+    "brand": "Zetrak",
+    "url": "https://zetrak.com.mx/",
+    "slug": "zetrak",
+    "siteCount": 2,
+    "sites": [
+      {
+        "name": "Transformadores Zetrak",
+        "city": "Tlalnepantla",
+        "country": "Mexico",
+        "region": "North America",
+        "url": "https://zetrak.com.mx/",
+        "products": [
+          "DT",
+          "DRY"
+        ],
+        "status": "UNCLEAR",
+        "source": "TransformerPath census (site list; status unclassified)",
+        "facility_id": "fac:zetrak:tlalnepantla",
+        "brand_slug": "zetrak"
+      },
+      {
+        "name": "Zetrak",
+        "city": "Queretaro",
+        "country": "Mexico",
+        "region": "North America",
+        "url": "https://zetrak.com.mx/",
+        "products": [
+          "PT",
+          "DT"
+        ],
+        "status": "UNCLEAR",
+        "source": "TransformerPath census (site list; status unclassified)",
+        "facility_id": "fac:zetrak:queretaro",
+        "brand_slug": "zetrak"
       }
     ],
     "source": "TransformerPath census (grouped by shared official website; sites verified where independent source exists)",
@@ -2135,7 +2175,7 @@
   },
   {
     "brand": "Electronetics LLC",
-    "url": "https://electronetics.com",
+    "url": "https://www.electronetics.us/",
     "slug": "electronetics-llc",
     "siteCount": 1,
     "sites": [
@@ -2144,7 +2184,7 @@
         "city": "",
         "country": "USA",
         "region": "North America",
-        "url": "https://electronetics.com",
+        "url": "https://www.electronetics.us/",
         "products": [
           "TX"
         ],
@@ -2652,31 +2692,6 @@
     "lastVerified": "2026-08-28"
   },
   {
-    "brand": "Transformadores Zetrak",
-    "url": "https://zetrak.com.mx/",
-    "slug": "transformadores-zetrak",
-    "siteCount": 1,
-    "sites": [
-      {
-        "name": "Transformadores Zetrak",
-        "city": "Tlalnepantla",
-        "country": "Mexico",
-        "region": "North America",
-        "url": "https://zetrak.com.mx/",
-        "products": [
-          "DT",
-          "DRY"
-        ],
-        "status": "UNCLEAR",
-        "source": "TransformerPath census (site list; status unclassified)",
-        "facility_id": "fac:transformadores-zetrak:tlalnepantla",
-        "brand_slug": "transformadores-zetrak"
-      }
-    ],
-    "source": "TransformerPath census (grouped by shared official website; sites verified where independent source exists)",
-    "lastVerified": "2026-08-28"
-  },
-  {
     "brand": "Voltran (WEG)",
     "url": "https://www.voltran.com.mx/",
     "slug": "voltran-weg",
@@ -2695,31 +2710,6 @@
         "source": "TransformerPath census (site list; status unclassified)",
         "facility_id": "fac:voltran-weg:huehuetoca",
         "brand_slug": "voltran-weg"
-      }
-    ],
-    "source": "TransformerPath census (grouped by shared official website; sites verified where independent source exists)",
-    "lastVerified": "2026-08-28"
-  },
-  {
-    "brand": "Zetrak",
-    "url": "https://zetrak.mx/OLD/Catalogo_Empresa.pdf",
-    "slug": "zetrak",
-    "siteCount": 1,
-    "sites": [
-      {
-        "name": "Zetrak",
-        "city": "Queretaro",
-        "country": "Mexico",
-        "region": "North America",
-        "url": "https://zetrak.mx/OLD/Catalogo_Empresa.pdf",
-        "products": [
-          "PT",
-          "DT"
-        ],
-        "status": "UNCLEAR",
-        "source": "TransformerPath census (site list; status unclassified)",
-        "facility_id": "fac:zetrak:queretaro",
-        "brand_slug": "zetrak"
       }
     ],
     "source": "TransformerPath census (grouped by shared official website; sites verified where independent source exists)",
@@ -3092,30 +3082,6 @@
         "source": "TransformerPath census (site list; status unclassified)",
         "facility_id": "fac:trael-transformadores:cuiaba-mt",
         "brand_slug": "trael-transformadores"
-      }
-    ],
-    "source": "TransformerPath census (grouped by shared official website; sites verified where independent source exists)",
-    "lastVerified": "2026-08-28"
-  },
-  {
-    "brand": "Trafotaipu",
-    "url": "https://trafotaipu.com.br",
-    "slug": "trafotaipu",
-    "siteCount": 1,
-    "sites": [
-      {
-        "name": "Trafotaipu",
-        "city": "São Paulo",
-        "country": "Brazil",
-        "region": "Latin America",
-        "url": "https://trafotaipu.com.br",
-        "products": [
-          "DT"
-        ],
-        "status": "UNCLEAR",
-        "source": "TransformerPath census (site list; status unclassified)",
-        "facility_id": "fac:trafotaipu:sao-paulo",
-        "brand_slug": "trafotaipu"
       }
     ],
     "source": "TransformerPath census (grouped by shared official website; sites verified where independent source exists)",
@@ -4107,22 +4073,22 @@
   },
   {
     "brand": "CADETRA",
-    "url": "http://cadetra.com",
+    "url": "https://cadetra.com/",
     "slug": "cadetra",
     "siteCount": 1,
     "sites": [
       {
         "name": "CADETRA",
-        "city": "Caracas",
+        "city": "Barcelona, Anzoátegui",
         "country": "Venezuela",
         "region": "Latin America",
-        "url": "http://cadetra.com",
+        "url": "https://cadetra.com/",
         "products": [
           "DT"
         ],
         "status": "UNCLEAR",
         "source": "TransformerPath census (site list; status unclassified)",
-        "facility_id": "fac:cadetra:caracas",
+        "facility_id": "fac:cadetra:barcelona-anzoategui",
         "brand_slug": "cadetra"
       }
     ],
@@ -4542,30 +4508,6 @@
     "lastVerified": "2026-08-28"
   },
   {
-    "brand": "Transfobol S.R.L. (Transformadores Bolivia)",
-    "url": "http://www.transfobol.com/",
-    "slug": "transfobol-s-r-l-transformadores-bolivia",
-    "siteCount": 1,
-    "sites": [
-      {
-        "name": "Transfobol S.R.L. (Transformadores Bolivia)",
-        "city": "Cochabamba",
-        "country": "Bolivia",
-        "region": "Latin America",
-        "url": "http://www.transfobol.com/",
-        "products": [
-          "DT"
-        ],
-        "status": "UNCLEAR",
-        "source": "TransformerPath census (site list; status unclassified)",
-        "facility_id": "fac:transfobol-s-r-l-transformadores-bolivia:cochabamba",
-        "brand_slug": "transfobol-s-r-l-transformadores-bolivia"
-      }
-    ],
-    "source": "TransformerPath census (grouped by shared official website; sites verified where independent source exists)",
-    "lastVerified": "2026-08-28"
-  },
-  {
     "brand": "Electro Red Bolivia (Division Transformadores)",
     "url": "http://www.electrored.com.bo/",
     "slug": "electro-red-bolivia-division-transformadores",
@@ -4638,31 +4580,6 @@
     "lastVerified": "2026-08-28"
   },
   {
-    "brand": "Famiq Transformadores Uruguay / CIR S.A.",
-    "url": "https://www.cir.com.uy/",
-    "slug": "famiq-transformadores-uruguay-cir-s-a",
-    "siteCount": 1,
-    "sites": [
-      {
-        "name": "Famiq Transformadores Uruguay / CIR S.A.",
-        "city": "Montevideo",
-        "country": "Uruguay",
-        "region": "Latin America",
-        "url": "https://www.cir.com.uy/",
-        "products": [
-          "DT",
-          "PT"
-        ],
-        "status": "UNCLEAR",
-        "source": "TransformerPath census (site list; status unclassified)",
-        "facility_id": "fac:famiq-transformadores-uruguay-cir-s-a:montevideo",
-        "brand_slug": "famiq-transformadores-uruguay-cir-s-a"
-      }
-    ],
-    "source": "TransformerPath census (grouped by shared official website; sites verified where independent source exists)",
-    "lastVerified": "2026-08-28"
-  },
-  {
     "brand": "Kinko Transformadores (Uruguay)",
     "url": "http://www.kinko.com.uy/",
     "slug": "kinko-transformadores-uruguay",
@@ -4729,31 +4646,6 @@
         "source": "TransformerPath census (site list; status unclassified)",
         "facility_id": "fac:electrotecnica-baldivieso-uruguay:montevideo",
         "brand_slug": "electrotecnica-baldivieso-uruguay"
-      }
-    ],
-    "source": "TransformerPath census (grouped by shared official website; sites verified where independent source exists)",
-    "lastVerified": "2026-08-28"
-  },
-  {
-    "brand": "Transformadores Paraguay S.A. (TRAFOPAR)",
-    "url": "https://www.trafopar.com.py",
-    "slug": "transformadores-paraguay-s-a-trafopar",
-    "siteCount": 1,
-    "sites": [
-      {
-        "name": "Transformadores Paraguay S.A. (TRAFOPAR)",
-        "city": "Asuncion / Fernando de la Mora",
-        "country": "Paraguay",
-        "region": "Latin America",
-        "url": "https://www.trafopar.com.py",
-        "products": [
-          "DT",
-          "PT"
-        ],
-        "status": "UNCLEAR",
-        "source": "TransformerPath census (site list; status unclassified)",
-        "facility_id": "fac:transformadores-paraguay-s-a-trafopar:asuncion-fernando-de-la-mora",
-        "brand_slug": "transformadores-paraguay-s-a-trafopar"
       }
     ],
     "source": "TransformerPath census (grouped by shared official website; sites verified where independent source exists)",
@@ -5740,30 +5632,6 @@
     "lastVerified": "2026-08-28"
   },
   {
-    "brand": "Siemens Energy (Nuremberg)",
-    "url": "https://www.siemens-energy.com/de/de/home/locations/nuernberg.html",
-    "slug": "siemens-energy-nuremberg",
-    "siteCount": 1,
-    "sites": [
-      {
-        "name": "Siemens Energy (Nuremberg)",
-        "city": "Nuremberg",
-        "country": "Germany",
-        "region": "Europe",
-        "url": "https://www.siemens-energy.com/de/de/home/locations/nuernberg.html",
-        "products": [
-          "PT"
-        ],
-        "status": "UNCLEAR",
-        "source": "TransformerPath census (site list; status unclassified)",
-        "facility_id": "fac:siemens-energy-nuremberg:nuremberg",
-        "brand_slug": "siemens-energy-nuremberg"
-      }
-    ],
-    "source": "TransformerPath census (grouped by shared official website; sites verified where independent source exists)",
-    "lastVerified": "2026-08-28"
-  },
-  {
     "brand": "Trafo-Technik GmbH",
     "url": "https://www.trafo-technik.com/",
     "slug": "trafo-technik-gmbh",
@@ -6035,30 +5903,6 @@
     "lastVerified": "2026-08-28"
   },
   {
-    "brand": "Vermeire-Belting & Transformers",
-    "url": "https://www.vermeire.com/",
-    "slug": "vermeire-belting-and-transformers",
-    "siteCount": 1,
-    "sites": [
-      {
-        "name": "Vermeire-Belting & Transformers",
-        "city": "Verviers / Brussels",
-        "country": "Belgium",
-        "region": "Europe",
-        "url": "https://www.vermeire.com/",
-        "products": [
-          "DT"
-        ],
-        "status": "UNCLEAR",
-        "source": "TransformerPath census (site list; status unclassified)",
-        "facility_id": "fac:vermeire-belting-and-transformers:verviers-brussels",
-        "brand_slug": "vermeire-belting-and-transformers"
-      }
-    ],
-    "source": "TransformerPath census (grouped by shared official website; sites verified where independent source exists)",
-    "lastVerified": "2026-08-28"
-  },
-  {
     "brand": "Schneider Electric Belgium (Transformers Division)",
     "url": "https://www.se.com/be/",
     "slug": "schneider-electric-belgium-transformers-division",
@@ -6233,7 +6077,7 @@
   },
   {
     "brand": "Celme Transformers",
-    "url": "https://www.celme.net/",
+    "url": "https://celmetransformers.com/",
     "slug": "celme-transformers",
     "siteCount": 1,
     "sites": [
@@ -6242,7 +6086,7 @@
         "city": "Tribano (PD)",
         "country": "Italy",
         "region": "Europe",
-        "url": "https://www.celme.net/",
+        "url": "https://celmetransformers.com/",
         "products": [
           "PT",
           "DT",
@@ -6883,30 +6727,6 @@
         "source": "TransformerPath census (site list; status unclassified)",
         "facility_id": "fac:transformadores-oliver-s-a-sucursal-portugal:sintra-lisbon",
         "brand_slug": "transformadores-oliver-s-a-sucursal-portugal"
-      }
-    ],
-    "source": "TransformerPath census (grouped by shared official website; sites verified where independent source exists)",
-    "lastVerified": "2026-08-28"
-  },
-  {
-    "brand": "Hexaformer",
-    "url": "https://hexaformer.com",
-    "slug": "hexaformer",
-    "siteCount": 1,
-    "sites": [
-      {
-        "name": "Hexaformer",
-        "city": "Västervik",
-        "country": "Sweden",
-        "region": "Europe",
-        "url": "https://hexaformer.com",
-        "products": [
-          "DT"
-        ],
-        "status": "UNCLEAR",
-        "source": "TransformerPath census (site list; status unclassified)",
-        "facility_id": "fac:hexaformer:vastervik",
-        "brand_slug": "hexaformer"
       }
     ],
     "source": "TransformerPath census (grouped by shared official website; sites verified where independent source exists)",
@@ -10585,30 +10405,6 @@
     "lastVerified": "2026-08-28"
   },
   {
-    "brand": "Kuwait Electrical Wiring Accessories Co. (KEWA Transformers)",
-    "url": "http://www.kewakuwait.com/",
-    "slug": "kuwait-electrical-wiring-accessories-co-kewa-transformers",
-    "siteCount": 1,
-    "sites": [
-      {
-        "name": "Kuwait Electrical Wiring Accessories Co. (KEWA Transformers)",
-        "city": "Sabhan Industrial Area",
-        "country": "Kuwait",
-        "region": "Middle East",
-        "url": "http://www.kewakuwait.com/",
-        "products": [
-          "DT"
-        ],
-        "status": "UNCLEAR",
-        "source": "TransformerPath census (site list; status unclassified)",
-        "facility_id": "fac:kuwait-electrical-wiring-accessories-co-kewa-transformers:sabhan-industrial-area",
-        "brand_slug": "kuwait-electrical-wiring-accessories-co-kewa-transformers"
-      }
-    ],
-    "source": "TransformerPath census (grouped by shared official website; sites verified where independent source exists)",
-    "lastVerified": "2026-08-28"
-  },
-  {
     "brand": "National Contracting Company (NCC Power Transformers)",
     "url": "https://www.ncc.com.kw/",
     "slug": "national-contracting-company-ncc-power-transformers",
@@ -10844,30 +10640,6 @@
         "source": "TransformerPath census (site list; status unclassified)",
         "facility_id": "fac:trafo-liban-liban-transfo:zahle-beirut",
         "brand_slug": "trafo-liban-liban-transfo"
-      }
-    ],
-    "source": "TransformerPath census (grouped by shared official website; sites verified where independent source exists)",
-    "lastVerified": "2026-08-28"
-  },
-  {
-    "brand": "Berytech Energy / Liban Cables & Transfo",
-    "url": "http://www.libancables.com/",
-    "slug": "berytech-energy-liban-cables-and-transfo",
-    "siteCount": 1,
-    "sites": [
-      {
-        "name": "Berytech Energy / Liban Cables & Transfo",
-        "city": "Dekwaneh, Beirut",
-        "country": "Lebanon",
-        "region": "Middle East",
-        "url": "http://www.libancables.com/",
-        "products": [
-          "DT"
-        ],
-        "status": "UNCLEAR",
-        "source": "TransformerPath census (site list; status unclassified)",
-        "facility_id": "fac:berytech-energy-liban-cables-and-transfo:dekwaneh-beirut",
-        "brand_slug": "berytech-energy-liban-cables-and-transfo"
       }
     ],
     "source": "TransformerPath census (grouped by shared official website; sites verified where independent source exists)",
@@ -11487,7 +11259,7 @@
   },
   {
     "brand": "Revive Electrical Transformers (RET)",
-    "url": "https://www.revive.co.za/",
+    "url": "https://ret.co.za/",
     "slug": "revive-electrical-transformers-ret",
     "siteCount": 1,
     "sites": [
@@ -11496,7 +11268,7 @@
         "city": "Steeledale, Johannesburg",
         "country": "South Africa",
         "region": "Africa",
-        "url": "https://www.revive.co.za/",
+        "url": "https://ret.co.za/",
         "products": [
           "DT",
           "DRY"
@@ -14182,30 +13954,6 @@
     "lastVerified": "2026-08-28"
   },
   {
-    "brand": "Sandas & Co",
-    "url": "https://www.sandasindia.com",
-    "slug": "sandas-and-co",
-    "siteCount": 1,
-    "sites": [
-      {
-        "name": "Sandas & Co",
-        "city": "Kolkata",
-        "country": "India",
-        "region": "South Asia",
-        "url": "https://www.sandasindia.com",
-        "products": [
-          "DT"
-        ],
-        "status": "UNCLEAR",
-        "source": "TransformerPath census (site list; status unclassified)",
-        "facility_id": "fac:sandas-and-co:kolkata",
-        "brand_slug": "sandas-and-co"
-      }
-    ],
-    "source": "TransformerPath census (grouped by shared official website; sites verified where independent source exists)",
-    "lastVerified": "2026-08-28"
-  },
-  {
     "brand": "Savio Transformers",
     "url": "https://www.saviotransformers.com",
     "slug": "savio-transformers",
@@ -14354,7 +14102,7 @@
   },
   {
     "brand": "Shirdi Sai Electricals Ltd (SSEL)",
-    "url": "https://www.ssel.net/",
+    "url": "https://ssel.in/",
     "slug": "shirdi-sai-electricals-ltd-ssel",
     "siteCount": 1,
     "sites": [
@@ -14363,7 +14111,7 @@
         "city": "Kadapa, Andhra Pradesh",
         "country": "India",
         "region": "South Asia",
-        "url": "https://www.ssel.net/",
+        "url": "https://ssel.in/",
         "products": [
           "DT",
           "PT"
@@ -14995,7 +14743,7 @@
   },
   {
     "brand": "Uttam Bharat Electricals",
-    "url": "https://www.uttambharat.com/",
+    "url": "https://www.uttam-bharat.com/",
     "slug": "uttam-bharat-electricals",
     "siteCount": 1,
     "sites": [
@@ -15004,7 +14752,7 @@
         "city": "Jaipur, Rajasthan",
         "country": "India",
         "region": "South Asia",
-        "url": "https://www.uttambharat.com/",
+        "url": "https://www.uttam-bharat.com/",
         "products": [
           "DT",
           "PT"
@@ -15683,30 +15431,6 @@
         "source": "TransformerPath census (site list; status unclassified)",
         "facility_id": "fac:high-volt-electricals-pvt-ltd:mumbai",
         "brand_slug": "high-volt-electricals-pvt-ltd"
-      }
-    ],
-    "source": "TransformerPath census (grouped by shared official website; sites verified where independent source exists)",
-    "lastVerified": "2026-08-28"
-  },
-  {
-    "brand": "I.P.L Products",
-    "url": "https://www.iplproducts.com",
-    "slug": "i-p-l-products",
-    "siteCount": 1,
-    "sites": [
-      {
-        "name": "I.P.L Products",
-        "city": "Chennai",
-        "country": "India",
-        "region": "South Asia",
-        "url": "https://www.iplproducts.com",
-        "products": [
-          "DT"
-        ],
-        "status": "UNCLEAR",
-        "source": "TransformerPath census (site list; status unclassified)",
-        "facility_id": "fac:i-p-l-products:chennai",
-        "brand_slug": "i-p-l-products"
       }
     ],
     "source": "TransformerPath census (grouped by shared official website; sites verified where independent source exists)",
@@ -16758,30 +16482,6 @@
     "lastVerified": "2026-08-28"
   },
   {
-    "brand": "Powerade Technology",
-    "url": "https://www.powerade.com.bd",
-    "slug": "powerade-technology",
-    "siteCount": 1,
-    "sites": [
-      {
-        "name": "Powerade Technology",
-        "city": "Dhaka",
-        "country": "Bangladesh",
-        "region": "South Asia",
-        "url": "https://www.powerade.com.bd",
-        "products": [
-          "DT"
-        ],
-        "status": "UNCLEAR",
-        "source": "TransformerPath census (site list; status unclassified)",
-        "facility_id": "fac:powerade-technology:dhaka",
-        "brand_slug": "powerade-technology"
-      }
-    ],
-    "source": "TransformerPath census (grouped by shared official website; sites verified where independent source exists)",
-    "lastVerified": "2026-08-28"
-  },
-  {
     "brand": "Transpower Engineering",
     "url": "https://www.transpowerbd.com",
     "slug": "transpower-engineering",
@@ -17457,7 +17157,7 @@
   },
   {
     "brand": "Henan Pinggao Electric (State Grid)",
-    "url": "https://en.pinggao.com/",
+    "url": "https://www.pinggao.com/",
     "slug": "henan-pinggao-electric-state-grid",
     "siteCount": 1,
     "sites": [
@@ -17466,7 +17166,7 @@
         "city": "Pingdingshan, Henan",
         "country": "China",
         "region": "East Asia",
-        "url": "https://en.pinggao.com/",
+        "url": "https://www.pinggao.com/",
         "products": [
           "PT",
           "DT"
@@ -17807,31 +17507,6 @@
         "source": "TransformerPath census (site list; status unclassified)",
         "facility_id": "fac:qingdao-qingdian-electric-group:qingdao-shandong",
         "brand_slug": "qingdao-qingdian-electric-group"
-      }
-    ],
-    "source": "TransformerPath census (grouped by shared official website; sites verified where independent source exists)",
-    "lastVerified": "2026-08-28"
-  },
-  {
-    "brand": "Qingdao Transformer Group",
-    "url": "https://www.qdtg.com/",
-    "slug": "qingdao-transformer-group",
-    "siteCount": 1,
-    "sites": [
-      {
-        "name": "Qingdao Transformer Group",
-        "city": "Qingdao, Shandong",
-        "country": "China",
-        "region": "East Asia",
-        "url": "https://www.qdtg.com/",
-        "products": [
-          "PT",
-          "DT"
-        ],
-        "status": "UNCLEAR",
-        "source": "TransformerPath census (site list; status unclassified)",
-        "facility_id": "fac:qingdao-transformer-group:qingdao-shandong",
-        "brand_slug": "qingdao-transformer-group"
       }
     ],
     "source": "TransformerPath census (grouped by shared official website; sites verified where independent source exists)",
@@ -18212,31 +17887,6 @@
         "source": "TransformerPath census (site list; status unclassified)",
         "facility_id": "fac:shenda-electric-group:wenzhou-zhejiang",
         "brand_slug": "shenda-electric-group"
-      }
-    ],
-    "source": "TransformerPath census (grouped by shared official website; sites verified where independent source exists)",
-    "lastVerified": "2026-08-28"
-  },
-  {
-    "brand": "Sichuan Transformer Co., Ltd.",
-    "url": "https://www.chuandian.com/",
-    "slug": "sichuan-transformer-co-ltd",
-    "siteCount": 1,
-    "sites": [
-      {
-        "name": "Sichuan Transformer Co., Ltd.",
-        "city": "Chengdu, Sichuan",
-        "country": "China",
-        "region": "East Asia",
-        "url": "https://www.chuandian.com/",
-        "products": [
-          "PT",
-          "DT"
-        ],
-        "status": "UNCLEAR",
-        "source": "TransformerPath census (site list; status unclassified)",
-        "facility_id": "fac:sichuan-transformer-co-ltd:chengdu-sichuan",
-        "brand_slug": "sichuan-transformer-co-ltd"
       }
     ],
     "source": "TransformerPath census (grouped by shared official website; sites verified where independent source exists)",
@@ -19108,7 +18758,7 @@
     "sites": [
       {
         "name": "Hyosung Heavy Industries",
-        "city": "Changwon",
+        "city": "Seoul",
         "country": "South Korea",
         "region": "East Asia",
         "url": "https://www.hyosungheavyindustries.com",
@@ -19117,13 +18767,10 @@
           "DT",
           "DRY"
         ],
-        "status": "OPERATIONAL",
-        "source": "TransformerPath deep-research (independently sourced factory record)",
-        "facility_id": "fac:hyosung-heavy-industries:changwon",
-        "brand_slug": "hyosung-heavy-industries",
-        "produces": "EHV transformers (7,500+ units)",
-        "source_url": "https://www.hyosungheavyindustries.com",
-        "claim_type": "INDEPENDENTLY_SOURCED"
+        "status": "UNCLEAR",
+        "source": "TransformerPath census (site list; status unclassified)",
+        "facility_id": "fac:hyosung-heavy-industries:seoul",
+        "brand_slug": "hyosung-heavy-industries"
       }
     ],
     "source": "TransformerPath census (grouped by shared official website; sites verified where independent source exists)",
@@ -19534,31 +19181,6 @@
     "lastVerified": "2026-08-28"
   },
   {
-    "brand": "Chang Yang Electric",
-    "url": "https://www.changyang.com.tw/",
-    "slug": "chang-yang-electric",
-    "siteCount": 1,
-    "sites": [
-      {
-        "name": "Chang Yang Electric",
-        "city": "New Taipei City",
-        "country": "Taiwan",
-        "region": "East Asia",
-        "url": "https://www.changyang.com.tw/",
-        "products": [
-          "DRY",
-          "DT"
-        ],
-        "status": "UNCLEAR",
-        "source": "TransformerPath census (site list; status unclassified)",
-        "facility_id": "fac:chang-yang-electric:new-taipei-city",
-        "brand_slug": "chang-yang-electric"
-      }
-    ],
-    "source": "TransformerPath census (grouped by shared official website; sites verified where independent source exists)",
-    "lastVerified": "2026-08-28"
-  },
-  {
     "brand": "Fortune Electric",
     "url": "https://www.fortune.com.tw",
     "slug": "fortune-electric",
@@ -19579,31 +19201,6 @@
         "source": "TransformerPath census (site list; status unclassified)",
         "facility_id": "fac:fortune-electric:taoyuan",
         "brand_slug": "fortune-electric"
-      }
-    ],
-    "source": "TransformerPath census (grouped by shared official website; sites verified where independent source exists)",
-    "lastVerified": "2026-08-28"
-  },
-  {
-    "brand": "Huacheng Electric",
-    "url": "https://www.huacheng.com.tw/",
-    "slug": "huacheng-electric",
-    "siteCount": 1,
-    "sites": [
-      {
-        "name": "Huacheng Electric",
-        "city": "Taoyuan",
-        "country": "Taiwan",
-        "region": "East Asia",
-        "url": "https://www.huacheng.com.tw/",
-        "products": [
-          "PT",
-          "DT"
-        ],
-        "status": "UNCLEAR",
-        "source": "TransformerPath census (site list; status unclassified)",
-        "facility_id": "fac:huacheng-electric:taoyuan",
-        "brand_slug": "huacheng-electric"
       }
     ],
     "source": "TransformerPath census (grouped by shared official website; sites verified where independent source exists)",
@@ -20184,7 +19781,7 @@
   },
   {
     "brand": "Hitachi Energy Malaysia",
-    "url": "https://www.hitachienergy.com/my/en",
+    "url": "https://www.hitachienergy.com/company/company-profile/country-and-regional-information/malaysia",
     "slug": "hitachi-energy-malaysia",
     "siteCount": 1,
     "sites": [
@@ -20193,7 +19790,7 @@
         "city": "Nilai",
         "country": "Malaysia",
         "region": "Southeast Asia",
-        "url": "https://www.hitachienergy.com/my/en",
+        "url": "https://www.hitachienergy.com/company/company-profile/country-and-regional-information/malaysia",
         "products": [
           "PT"
         ],
@@ -20475,31 +20072,6 @@
         "source": "TransformerPath census (site list; status unclassified)",
         "facility_id": "fac:habt-electrical-equipment-and-transformer-mfg:bac-ninh",
         "brand_slug": "habt-electrical-equipment-and-transformer-mfg"
-      }
-    ],
-    "source": "TransformerPath census (grouped by shared official website; sites verified where independent source exists)",
-    "lastVerified": "2026-08-28"
-  },
-  {
-    "brand": "Hanoi Transformer Manufacturing (HBT)",
-    "url": "https://www.hbt.com.vn/",
-    "slug": "hanoi-transformer-manufacturing-hbt",
-    "siteCount": 1,
-    "sites": [
-      {
-        "name": "Hanoi Transformer Manufacturing (HBT)",
-        "city": "Hanoi",
-        "country": "Vietnam",
-        "region": "Southeast Asia",
-        "url": "https://www.hbt.com.vn/",
-        "products": [
-          "DT",
-          "PT"
-        ],
-        "status": "UNCLEAR",
-        "source": "TransformerPath census (site list; status unclassified)",
-        "facility_id": "fac:hanoi-transformer-manufacturing-hbt:hanoi",
-        "brand_slug": "hanoi-transformer-manufacturing-hbt"
       }
     ],
     "source": "TransformerPath census (grouped by shared official website; sites verified where independent source exists)",
@@ -20902,31 +20474,6 @@
     "lastVerified": "2026-08-28"
   },
   {
-    "brand": "LKH Projects Distribution",
-    "url": "https://www.lkhgroup.com",
-    "slug": "lkh-projects-distribution",
-    "siteCount": 1,
-    "sites": [
-      {
-        "name": "LKH Projects Distribution",
-        "city": "Singapore",
-        "country": "Singapore",
-        "region": "Southeast Asia",
-        "url": "https://www.lkhgroup.com",
-        "products": [
-          "DT",
-          "DRY"
-        ],
-        "status": "UNCLEAR",
-        "source": "TransformerPath census (site list; status unclassified)",
-        "facility_id": "fac:lkh-projects-distribution:singapore",
-        "brand_slug": "lkh-projects-distribution"
-      }
-    ],
-    "source": "TransformerPath census (grouped by shared official website; sites verified where independent source exists)",
-    "lastVerified": "2026-08-28"
-  },
-  {
     "brand": "Meiden Singapore",
     "url": "https://www.meidensingapore.com.sg",
     "slug": "meiden-singapore",
@@ -21201,23 +20748,23 @@
   },
   {
     "brand": "RLP Electric",
-    "url": "https://www.rlp.com.au",
+    "url": "https://rlpelectric.com.au/",
     "slug": "rlp-electric",
     "siteCount": 1,
     "sites": [
       {
         "name": "RLP Electric",
-        "city": "Sydney",
+        "city": "Cardiff, NSW",
         "country": "Australia",
         "region": "Oceania",
-        "url": "https://www.rlp.com.au",
+        "url": "https://rlpelectric.com.au/",
         "products": [
           "DT",
           "DRY"
         ],
         "status": "UNCLEAR",
         "source": "TransformerPath census (site list; status unclassified)",
-        "facility_id": "fac:rlp-electric:sydney",
+        "facility_id": "fac:rlp-electric:cardiff-nsw",
         "brand_slug": "rlp-electric"
       }
     ],

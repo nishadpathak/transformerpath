@@ -48,29 +48,37 @@ const DIST = 'dist';
 
 // Whole directories copied verbatim — served content only.
 const DIRS = [
-  'accessories', 'applications', 'admin', 'books', 'brand', 'case-studies',
-  'components', 'events', 'grids', 'knowledge', 'manufacturers',
-  'markets', 'materials', 'media', 'projects', 'tenders', 'topics', 'utilities',
+  'accessories', 'applications', 'admin', 'books', 'brand', 'case-studies', 'claim-listing', 'tools',
+  'components', 'directory', 'events', 'grids', 'knowledge', 'manufacturers',
+  'markets', 'materials', 'media', 'projects', 'buy-early', 'spare-capacity', 'lead-times', 'bottlenecks', 'factory-capacity', 'commissioning-jobs', 'templates', 'tenders', 'topics', 'utilities',
   'viz', 'vendor',
 ];
 
 // Individual files from directories that are NOT wholly public.
 const FILES_FROM_MIXED_DIRS = [
   'lib/event-search.js',        // loaded by search.html; the rest of lib/ is build-time
+  'lib/job-board.js',           // jobs page and the review queue; rules, not a data file
+  'lib/rfq-leads.js',           // RFQ consent, redaction, and the 5-supplier cap
   'lib/provenance-badge.js',    // shared provenance badge, loaded by public pages
+  'lib/listing-media.js',       // Verified logo, catalogue PDF and photo gallery
+  'lib/saved-design.js',        // calculator save/open snapshot helper
+  'lib/dga-interpret.js',       // free DGA interpreter; the PDF is built in the function
+  'lib/commissioning-jobs.js',  // HV/MV board filter; payment does not publish a row
+  'lib/learning-catalog.js',    // Skills Passport and engineer-track progress catalog
   'js/tp-grid-calc.js',         // Grid Lab formulas; js/ is not copied wholesale
   'js/tp-grid-lab.js',          // Grid Lab scene; production 404'd these and the canvas never started
 ];
 
 // Runtime JavaScript at the root, derived from what pages actually load.
 const ROOT_JS = [
-  'analytics.js', 'consent.js', 'course-gate.js', 'fem-leakage.js',
+  'analytics.js', 'claim-listing.js', 'consent.js', 'course-gate.js', 'fem-leakage.js',
   'follow-button.js', 'form-notify.js', 'intel-feed-ui.js', 'material-latest.js', 'rfq-engine.js',
   'site-stats.js', 'supabase-config.js', 'supabase.js', 'sw.js',
   'tp-affiliate.js', 'tp-directory.js', 'tp-feedback.js', 'tp-freshness.js', 'tp-nav.js', 'tp-pwa.js',
+  'google-auth-config.js', 'tp-auth.js',
   'tp-theme.js', 'tp-shortlist.js', 'tp-watchlist.js', 'map.js',
-  'tp-webgl-gate.js', 'paid-checkout.js',
-  'tp-3d-core.js', 'tp-power-assembly.js', 'tp-oil-assembly.js',
+  'tp-webgl-gate.js', 'paid-checkout.js', 'listing-payment.js', 'jobs-rfq-pay.js',
+  'tp-3d-core.js', 'tp-canvas-scroll.js', 'tp-label-layout.js', 'tp-power-assembly.js', 'tp-oil-assembly.js',
   'tp-castresin-assembly.js', 'tp-ct-assembly.js',
   'part-ecosystem.js', 'component-3d-bridge.js',
   'tp-lab-geometry.js', 'tp-lab-engine.js',
@@ -80,6 +88,7 @@ const ROOT_JS = [
 const ROOT_OTHER = [
   'robots.txt', 'ads.txt', 'sitemap.xml', 'feed.xml', 'intel-feed.xml',
   'manifest.webmanifest', 'favicon.ico', 'apple-touch-icon.png',
+  '_redirects',
 ];
 
 // Root stylesheets — small and fully enumerable.
@@ -105,6 +114,8 @@ const FORBIDDEN_PATTERNS = [
   /^data\/backup/i,
   /pre-sprint/i,
   /^data\/paid-listings\.json$/,
+  /^data\/csv-exports\//,
+  /\.csv$/i,
 ];
 
 /* iCloud Drive / macOS conflict copies ("index 2.html", "usa 2/"). The site folder
@@ -131,6 +142,7 @@ function copyDir(dir) {
     // Never copy internal prospect intelligence / discovery-ops artifacts to the public distribution
     if (p === 'data/commerce-intel.json' || p === 'data/engineer-track-paid.json') continue;
     if (p === 'data/paid-listings.json') continue;
+    if (p === 'data/gcc-weekly-linkedin-pack.json') continue;
     if (p === 'data/gcc-sep-2026-discovery-input.json' || p === 'data/gcc-coverage-report.json') continue;
     // Pre-sprint CRM snapshots (data/backup-pre-sprint/commerce-intel.json and
     // the rest of that generation) must never reach the CDN. The root
@@ -154,9 +166,13 @@ fs.mkdirSync(DIST, { recursive: true });
 
 let count = 0;
 
+// Internal operator/draft pages that must never ship.
+const INTERNAL_ROOT_HTML = new Set(['gcc-weekly-pack.html']);
+
 // 1. Every served HTML page at the root.
 for (const f of fs.readdirSync('.')) {
   if (CONFLICT_COPY.test(f)) { skippedConflicts.push(f); continue; }
+  if (INTERNAL_ROOT_HTML.has(f)) continue;
   if (f.endsWith('.html')) { copyFile(f, f); count++; }
   else if (ROOT_CSS_RE.test(f)) { copyFile(f, f); count++; }
 }
@@ -199,6 +215,8 @@ function dataForbidden(rel) {
   return /backup/i.test(rel) || /pre-sprint/i.test(rel) ||
     rel === 'commerce-intel.json' || rel === 'engineer-track-paid.json' ||
     rel === 'paid-listings.json' ||
+    rel.indexOf('csv-exports/') === 0 ||
+    /\.csv$/i.test(rel) ||
     rel === 'gcc-sep-2026-discovery-input.json' || rel === 'gcc-coverage-report.json' ||
     /\.sql$/i.test(rel);
 }
@@ -284,6 +302,48 @@ if (offenders.length) {
   console.error('\nDIST GATE FAILED — private or build-only files reached the artifact:');
   offenders.slice(0, 40).forEach((o) => console.error('  ' + o));
   if (offenders.length > 40) console.error('  … and ' + (offenders.length - 40) + ' more');
+  process.exit(1);
+}
+
+// A page that references a same-origin script the allowlist did not copy 404s
+// in production (Grid Lab's engine did this). Fail the build instead.
+const SCRIPT_SRC = /<script\b[^>]*\bsrc=["']([^"']+)["']/gi;
+const missingScripts = [];
+(function scanScripts(dir) {
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    const p = path.join(dir, e.name);
+    if (e.isDirectory()) { scanScripts(p); continue; }
+    if (!e.name.endsWith('.html')) continue;
+    const rel = path.relative(DIST, p);
+    const html = fs.readFileSync(p, 'utf8');
+    let m;
+    SCRIPT_SRC.lastIndex = 0;
+    while ((m = SCRIPT_SRC.exec(html))) {
+      let src = m[1].split('#')[0].split('?')[0];
+      if (!src || /^(https?:)?\/\//i.test(src) || src.startsWith('data:')) continue;
+      if (src.startsWith('/')) src = src.slice(1);
+      else src = path.posix.normalize(path.posix.join(path.posix.dirname(rel.split(path.sep).join('/')), src));
+      if (src.startsWith('../') || src.includes('..')) continue;
+      const abs = path.join(DIST, src);
+      if (!fs.existsSync(abs) || !fs.statSync(abs).isFile()) missingScripts.push(rel + ' → ' + src);
+    }
+  }
+})(DIST);
+if (missingScripts.length) {
+  console.error('\nDIST GATE FAILED — published HTML references a script that was not copied:');
+  missingScripts.slice(0, 40).forEach((o) => console.error('  ' + o));
+  if (missingScripts.length > 40) console.error('  … and ' + (missingScripts.length - 40) + ' more');
+  process.exit(1);
+}
+
+// Sitemap locs are public URLs. A page that exists in git but is not copied
+// (the commissioning board did this) is a production 404. Fail the build.
+const { auditDistSitemap } = require('./scripts/check-dist-sitemap');
+const sitemapMisses = auditDistSitemap(DIST);
+if (sitemapMisses.length) {
+  console.error('\nDIST GATE FAILED — a sitemap URL is not a file in dist:');
+  sitemapMisses.slice(0, 40).forEach((o) => console.error('  ' + o));
+  if (sitemapMisses.length > 40) console.error('  … and ' + (sitemapMisses.length - 40) + ' more');
   process.exit(1);
 }
 console.log('DIST GATE OK — no private, manuscript, build-script or internal file in the artifact.');

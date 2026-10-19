@@ -76,6 +76,10 @@ ok(b.final.lossOfLifeH > 0 && thermalEngine({ loadPU: 1.5, ambientC: 20, mode: '
 var dry = thermalEngine({ loadPU: 1.5, ambientC: 20, mode: 'AN', durationH: 2, dryType: true });
 ok(dry.series.topOil.every(function (v) { return v === null; }), 'dry-type -> NO top-liquid state');
 ok(dry.final.hotSpot > 20, 'dry-type winding hot-spot rises above ambient');
+var cool = thermalEngine({ loadPU: 1, ambientC: 20, mode: 'ONAN', durationH: 8 });
+var hot = thermalEngine({ loadPU: 1, ambientC: 40, mode: 'ONAN', durationH: 8 });
+ok(hot.final.hotSpot > cool.final.hotSpot, 'higher ambient raises the hot-spot');
+ok(hot.final.ageRate > cool.final.ageRate && hot.final.lossOfLifeH > cool.final.lossOfLifeH, 'higher temperature means faster ageing (Arrhenius direction)');
 
 console.log('\nVIZ MATH: ' + (problems.length ? problems.length + ' problem(s)' : 'PASS'));
 process.exitCode = problems.length ? 1 : 0;

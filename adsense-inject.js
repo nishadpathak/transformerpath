@@ -32,6 +32,9 @@ function wantsInContentSlot(rel) {
   if (/^knowledge\/[^/]+\.html$/.test(n)) return true;
   if (n === 'intel.html') return true;
   if (n === 'directory.html' || n === 'manufacturers.html') return true;
+  if (n === 'buy-early/index.html' || n === 'spare-capacity/index.html' || n === 'lead-times/index.html') return true;
+  if (/^bottlenecks\/(?:index\.html|[^/]+\/index\.html)$/.test(n)) return true;
+  if (n === 'tools/dga/index.html') return true;
   return false;
 }
 
@@ -115,6 +118,14 @@ function placeSlot(html, rel) {
     return insertAt(html, root, slot);
   }
 
+  if (n === 'tools/dga/index.html') {
+    const hero = html.search(/<section[^>]*class="[^"]*\bhero\b/);
+    if (hero < 0) throw new Error('DGA tool has no hero');
+    const heroEnd = html.indexOf('</section>', hero);
+    if (heroEnd < 0) throw new Error('DGA tool hero is unclosed');
+    return insertAt(html, heroEnd + '</section>'.length, slot);
+  }
+
   if (n === 'manufacturers.html') {
     const marker = '<!--/SSR:mfg-count-->';
     const i = html.indexOf(marker);
@@ -122,6 +133,13 @@ function placeSlot(html, rel) {
     const end = html.indexOf('</p>', i);
     if (end < 0) throw new Error('manufacturer directory count is unclosed');
     return insertAt(html, end + 4, slot);
+  }
+
+  if (n === 'buy-early/index.html' || n === 'spare-capacity/index.html' || n === 'lead-times/index.html' || /^bottlenecks\/(?:index\.html|[^/]+\/index\.html)$/.test(n)) {
+    const marker = '<!--tp-ad-slot-->';
+    const i = html.indexOf(marker);
+    if (i < 0) throw new Error(n + ' has no in-content ad marker');
+    return html.slice(0, i) + slot + html.slice(i + marker.length);
   }
 
   return html;
