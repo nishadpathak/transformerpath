@@ -187,6 +187,7 @@ Object.keys(srcByRegion).forEach((region) => {
   (intel[region].items || []).forEach(function (existing) {
     const src = srcByRegion[region].find(function (it) { return it.url && it.url === existing.url; });
     if (src && src.awardee && !existing.awardee) existing.awardee = src.awardee;
+    if (src && src.tender_watch === false) existing.tender_watch = false;
   });
   const existingUrl = new Set((intel[region].items || []).map((x) => x.url));
   const fresh = srcByRegion[region].filter((it) => !existingUrl.has(it.url));
@@ -201,6 +202,7 @@ Object.keys(srcByRegion).forEach((region) => {
     if (it.publication_date) o.publication_date = it.publication_date;
     if (it.event_date) o.event_date = it.event_date;
     if (it.evidence_grade) o.evidence_grade = it.evidence_grade;
+    if (it.tender_watch === false) o.tender_watch = false;
     return o;
   }));
   mergedCount += fresh.length;
