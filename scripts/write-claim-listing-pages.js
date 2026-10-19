@@ -194,7 +194,7 @@ slugs.forEach(function (slug) {
 
 const begin = '# BEGIN claim-listing-query-redirects';
 const end = '# END claim-listing-query-redirects';
-const redirectLines = [begin, '# Known listing queries go to the prerendered claim page. An unknown path returns the not-found page.'];
+const redirectLines = [begin, '# A slug query is a 301 to /claim-listing/<slug>/. An unknown path returns the not-found page with status 404.'];
 slugs.forEach(function (slug) {
   ['/claim-listing/', '/claim-listing'].forEach(function (from) {
     redirectLines.push('[[redirects]]');
@@ -206,9 +206,17 @@ slugs.forEach(function (slug) {
     redirectLines.push('');
   });
 });
+['/claim-listing/not-found', '/claim-listing/not-found/'].forEach(function (from) {
+  redirectLines.push('[[redirects]]');
+  redirectLines.push('  from = "' + from + '"');
+  redirectLines.push('  to = "/claim-listing/not-found/index.html"');
+  redirectLines.push('  status = 404');
+  redirectLines.push('  force = true');
+  redirectLines.push('');
+});
 redirectLines.push('[[redirects]]');
 redirectLines.push('  from = "/claim-listing/*"');
-redirectLines.push('  to = "/claim-listing/not-found/"');
+redirectLines.push('  to = "/claim-listing/not-found/index.html"');
 redirectLines.push('  status = 404');
 redirectLines.push('');
 redirectLines.push(end);
