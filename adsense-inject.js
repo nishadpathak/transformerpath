@@ -33,6 +33,7 @@ function wantsInContentSlot(rel) {
   if (n === 'intel.html') return true;
   if (n === 'directory.html' || n === 'manufacturers.html') return true;
   if (n === 'buy-early/index.html' || n === 'spare-capacity/index.html' || n === 'lead-times/index.html') return true;
+  if (/^bottlenecks\/(?:index\.html|[^/]+\/index\.html)$/.test(n)) return true;
   if (n === 'tools/dga/index.html') return true;
   return false;
 }
@@ -134,7 +135,7 @@ function placeSlot(html, rel) {
     return insertAt(html, end + 4, slot);
   }
 
-  if (n === 'buy-early/index.html' || n === 'spare-capacity/index.html' || n === 'lead-times/index.html') {
+  if (n === 'buy-early/index.html' || n === 'spare-capacity/index.html' || n === 'lead-times/index.html' || /^bottlenecks\/(?:index\.html|[^/]+\/index\.html)$/.test(n)) {
     const marker = '<!--tp-ad-slot-->';
     const i = html.indexOf(marker);
     if (i < 0) throw new Error(n + ' has no in-content ad marker');

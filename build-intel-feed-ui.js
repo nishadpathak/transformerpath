@@ -673,7 +673,7 @@ function glanceCard(p) {
   const meta = [p.date || 'Date not stated'];
   if (p.value) meta.push(p.value);
   const sowhat = glanceSoWhat(p);
-  return '<a class="card reveal in" data-glance-date="' + esc(p.dateIso) + '" data-glance-headline="' + esc(p.headline) + '" href="/intel#p-' + esc(p.id) + '">' +
+  return '<a class="card reveal in" data-glance-date="' + esc(p.dateIso) + '" data-glance-headline="' + esc(p.headline) + '" href="/intel.html#p-' + esc(p.id) + '">' +
     '<span class="g-region">' + esc(p.region || '') + '</span>' +
     '<h3 style="font-size:1rem">' + esc(p.headline) + '</h3>' +
     (sowhat ? '<p>' + esc(sowhat) + '</p>' : '') +
