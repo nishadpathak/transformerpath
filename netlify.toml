@@ -728,6 +728,19 @@
   status = 301
   force = true
 
+# The English spelling is not the country-directory slug.
+[[redirects]]
+  from = "/directory/country/turkey"
+  to = "/directory/country/turkiye/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/directory/country/turkey/"
+  to = "/directory/country/turkiye/"
+  status = 301
+  force = true
+
 [[redirects]]
   from = "/manufacturers/czech-republic.html"
   to = "/manufacturers/czechia.html"

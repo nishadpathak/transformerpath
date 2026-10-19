@@ -38,6 +38,8 @@ function hasRule(source, from, to) {
 }
 
 const toml = fs.readFileSync(path.join(root, 'netlify.toml'), 'utf8');
+check('turkey country directory 301s to turkiye', hasRule('netlify.toml', '/directory/country/turkey/', '/directory/country/turkiye/'));
+check('turkey country directory target exists', fs.existsSync(path.join(root, 'directory/country/turkiye/index.html')));
 check('/directory?region redirects to manufacturers', /from = "\/directory"\s+to = "\/manufacturers\.html"\s+status = 301\s+force = true\s+query = \{region = ":region"\}/.test(toml));
 check('/directory?country redirects to manufacturers', /from = "\/directory"\s+to = "\/manufacturers\.html"\s+status = 301\s+force = true\s+query = \{country = ":country"\}/.test(toml));
 check('bare /directory still maps to the hub', permanentMap(root).get('/directory') === '/directory.html');
