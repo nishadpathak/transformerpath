@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /* Homepage event dates must match the canonical edition records.
- * Saudi Elenex 2026 is 16–19 Nov 2026. A 2–5 November copy must not
+ * Saudi Elenex is 1–4 Nov 2027. A 2–5 November copy must not
  * be printed on the homepage or written back by the events migration.
  * Run: node tests/homepage-event-dates-regression.js
  */
@@ -27,13 +27,13 @@ const events = JSON.parse(fs.readFileSync('data/events.json', 'utf8'));
 const canonFile = JSON.parse(fs.readFileSync('data/events-canonical.json', 'utf8'));
 const canon = canonFile.canonical_editions || [];
 const today = platformToday();
-const elenex = byId(events, 'saudi-elenex-2026');
-const elenexCanon = byId(canon, 'saudi-elenex-2026');
+const elenex = byId(events, 'saudi-elenex-2027');
+const elenexCanon = byId(canon, 'saudi-elenex-2027');
 
-check('events.json has Saudi Elenex 2026', !!elenex);
-check('canonical editions have Saudi Elenex 2026', !!elenexCanon);
-check('Saudi Elenex starts 16 Nov 2026', elenex && elenex.start === '2026-11-16' && elenexCanon && elenexCanon.start === '2026-11-16', (elenex && elenex.start) + ' / ' + (elenexCanon && elenexCanon.start));
-check('Saudi Elenex ends 19 Nov 2026', elenex && elenex.end === '2026-11-19' && elenexCanon && elenexCanon.end === '2026-11-19', (elenex && elenex.end) + ' / ' + (elenexCanon && elenexCanon.end));
+check('events.json has Saudi Elenex 2027', !!elenex);
+check('canonical editions have Saudi Elenex 2027', !!elenexCanon);
+check('Saudi Elenex starts 1 Nov 2027', elenex && elenex.start === '2027-11-01' && elenexCanon && elenexCanon.start === '2027-11-01', (elenex && elenex.start) + ' / ' + (elenexCanon && elenexCanon.start));
+check('Saudi Elenex ends 4 Nov 2027', elenex && elenex.end === '2027-11-04' && elenexCanon && elenexCanon.end === '2027-11-04', (elenex && elenex.end) + ' / ' + (elenexCanon && elenexCanon.end));
 check('Saudi Elenex dates agree between events.json and the canonical record', elenex && elenexCanon && elenex.start === elenexCanon.start && elenex.end === elenexCanon.end);
 
 const home = fs.readFileSync('index.html', 'utf8');
@@ -59,7 +59,7 @@ pieces.forEach(function (piece) {
   check(name + ' homepage date matches events data', printed === want, printed + ' vs ' + want);
 });
 
-check('homepage prints Saudi Elenex 2026 as 16–19 Nov 2026', para.indexOf('Saudi Elenex 2026 (16\u201319 Nov 2026)') >= 0, para);
+check('homepage prints Saudi Elenex 2027 as 1–4 Nov 2027', para.indexOf('Saudi Elenex 2027 (1\u20134 Nov 2027)') >= 0, para);
 check('homepage does not print the 2–5 November Elenex date', !/Saudi Elenex 2026 \((0?2)[\u2013-](0?5)/.test(para) && para.indexOf('2\u20135 November') < 0 && para.indexOf('02\u201305 November') < 0);
 
 const mig = fs.readFileSync('scripts/migrate-events-depth.js', 'utf8');
@@ -67,7 +67,7 @@ const blockStart = mig.indexOf("n === 'Saudi Elenex 2026'");
 const blockEnd = mig.indexOf("n === 'ELECRAMA 2027", blockStart);
 const block = blockStart >= 0 && blockEnd > blockStart ? mig.slice(blockStart, blockEnd) : '';
 check('migration keeps the Saudi Elenex block', block.length > 0);
-check('migration stores 16–19 Nov 2026 for Saudi Elenex', /start: '2026-11-16'/.test(block) && /end: '2026-11-19'/.test(block), block.slice(0, 240));
+check('migration stores 1–4 Nov 2027 for Saudi Elenex', /start: '2027-11-01'/.test(block) && /end: '2027-11-04'/.test(block), block.slice(0, 240));
 check('migration does not write 2–5 November back onto Saudi Elenex', !/2026-11-02/.test(block) && !/2026-11-05/.test(block) && !/2\u20135 November/.test(block));
 
 const stats = fs.readFileSync('build-site-stats.js', 'utf8');

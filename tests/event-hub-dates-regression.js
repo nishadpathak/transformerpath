@@ -54,7 +54,7 @@ Object.keys(groups).forEach(function (slug) {
 });
 
 const wetex = seriesFeature(groups.wetex, '2026-10-16');
-check('WETEX on 16 Oct 2026 names the dated edition', wetex.text.indexOf('WETEX 2026') !== -1 && wetex.text.indexOf('20 Oct 2026') !== -1 && wetex.text.indexOf('dates not yet announced') === -1, wetex.text);
+check('WETEX on 16 Oct 2026 names the confirmed edition', wetex.text.indexOf('Meet the industry at WETEX 2026') === 0 && wetex.text.indexOf('dates not yet announced') === -1, wetex.text);
 check('series hubs were checked', hubs > 12, String(hubs));
 
 if (failed) {

@@ -435,23 +435,27 @@ function applyOfficial(rec, oldStart, oldEnd, oldVenue) {
     rememberChange(n, oldStart, oldEnd, oldVenue, rec, SRC.pes);
     return;
   }
-  if (n === 'Saudi Elenex 2026') {
+  if (n === 'Saudi Elenex 2026' || n === 'Saudi Elenex 2027') {
     setConfirmed(rec, {
       edition_label: '27th',
-      start: '2026-11-16', end: '2026-11-19',
+      start: '2027-11-01', end: '2027-11-04',
       venue: 'Riyadh International Convention & Exhibition Center',
       city: 'Riyadh', country: 'Saudi Arabia', region: 'Middle East',
+      organiser: 'Riyadh Exhibitions Company',
       official_url: SRC.elenex, type: 'exhibition', relevance_tier: 'HIGH',
       relevance_reason: 'The official Saudi Elenex page describes the 27th edition as an electricity and electrical-equipment exhibition in Riyadh.',
-      description: 'Official Saudi Elenex 2026 brochure checked 15 Oct 2026: 16–19 November 2026 at the Riyadh International Convention & Exhibition Center. UFI lists the same session.',
+      description: 'Official organiser FAQ checked 20 Oct 2026 lists 1-4 November 2027 at the Riyadh International Convention & Exhibition Center. The FAQ gives public hours for 1 November 2027 and 2-4 November 2027. A January 2026 brochure had listed 16-19 November 2026.',
       stats: Object.assign(emptyStats(), {
-        area_sqm: stat('8000+', '2026', SRC.elenex),
-        exhibitors: stat('160+', '2026', SRC.elenex),
-        countries: stat('14+', '2026', SRC.elenex),
+        area_sqm: stat('8000+', '2027', SRC.elenex),
+        exhibitors: stat('160+', '2027', SRC.elenex),
+        countries: stat('14+', '2027', SRC.elenex),
       }),
-    }, SRC.elenexBrochure);
-    rec.source_checked_at = '2026-10-15';
-    rememberChange(n, oldStart, oldEnd, oldVenue, rec, SRC.elenexBrochure);
+    }, 'https://saudielenex.com/faqs/');
+    rec.id = 'saudi-elenex-2027';
+    rec.name = 'Saudi Elenex 2027';
+    rec.languagepath_visit_url = null;
+    rec.source_checked_at = '2026-10-20';
+    rememberChange(n, oldStart, oldEnd, oldVenue, rec, 'https://saudielenex.com/faqs/');
     return;
   }
   if (n === 'ELECRAMA 2027 (17th edition)') {
