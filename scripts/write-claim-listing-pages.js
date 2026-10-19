@@ -133,6 +133,9 @@ function formMain(row) {
   + upgrades(slug);
 }
 
+const notFoundMain = '<h1>Listing not found</h1>'
+  + '<p><a href="/directory.html">Back to the directory</a></p>';
+
 const receivedMain = '<h1>Claim received</h1>'
   + '<p class="claim-confirm" role="status">' + CONFIRM + '</p>'
   + '<p class="claim-note">Questions: <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a></p>'
@@ -154,6 +157,13 @@ const receivedHtml = page({
   main: receivedMain
 });
 
+const notFoundHtml = page({
+  title: 'Listing not found — TransformerPath',
+  description: 'Listing not found. Open the directory to find a manufacturer listing.',
+  canonical: 'https://transformerpath.com/claim-listing/not-found/',
+  main: notFoundMain
+});
+
 const claimRoot = path.join(root, 'claim-listing');
 fs.mkdirSync(path.join(claimRoot, 'received'), { recursive: true });
 fs.readdirSync(claimRoot, { withFileTypes: true }).forEach(function (ent) {
@@ -163,6 +173,8 @@ fs.readdirSync(claimRoot, { withFileTypes: true }).forEach(function (ent) {
 });
 fs.writeFileSync(path.join(claimRoot, 'index.html'), formHtml);
 fs.writeFileSync(path.join(claimRoot, 'received', 'index.html'), receivedHtml);
+fs.mkdirSync(path.join(claimRoot, 'not-found'), { recursive: true });
+fs.writeFileSync(path.join(claimRoot, 'not-found', 'index.html'), notFoundHtml);
 
 const claimIndex = require(path.join(root, 'lib/claim-listing')).buildClaimIndex(root);
 const slugs = Object.keys(claimIndex);
@@ -182,7 +194,7 @@ slugs.forEach(function (slug) {
 
 const begin = '# BEGIN claim-listing-query-redirects';
 const end = '# END claim-listing-query-redirects';
-const redirectLines = [begin, '# Known listing queries go to the prerendered claim page. An unknown slug stays on the form.'];
+const redirectLines = [begin, '# A slug query is a 301 to /claim-listing/<slug>/. An unknown path returns the not-found page with status 404.'];
 slugs.forEach(function (slug) {
   ['/claim-listing/', '/claim-listing'].forEach(function (from) {
     redirectLines.push('[[redirects]]');
@@ -194,6 +206,19 @@ slugs.forEach(function (slug) {
     redirectLines.push('');
   });
 });
+['/claim-listing/not-found', '/claim-listing/not-found/'].forEach(function (from) {
+  redirectLines.push('[[redirects]]');
+  redirectLines.push('  from = "' + from + '"');
+  redirectLines.push('  to = "/claim-listing/not-found/index.html"');
+  redirectLines.push('  status = 404');
+  redirectLines.push('  force = true');
+  redirectLines.push('');
+});
+redirectLines.push('[[redirects]]');
+redirectLines.push('  from = "/claim-listing/*"');
+redirectLines.push('  to = "/claim-listing/not-found/index.html"');
+redirectLines.push('  status = 404');
+redirectLines.push('');
 redirectLines.push(end);
 const block = redirectLines.join('\n') + '\n';
 const tomlPath = path.join(root, 'netlify.toml');

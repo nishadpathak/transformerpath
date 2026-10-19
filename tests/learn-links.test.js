@@ -45,6 +45,15 @@ mainPages.forEach((rel) => assertSkip(rel, 'main'));
 ['explorer.html', 'power3d.html', 'power500.html', 'oltc.html', 'bushing.html', 'coilassembly.html', 'coretopology.html']
   .forEach((rel) => assertSkip(rel, 'c3d'));
 
+assert(
+  read('build-books.js').includes('<main id="main" tabindex="-1" class="c-wrap">'),
+  'book volume builder should keep the skip target'
+);
+assert(
+  read('build-case-studies.js').includes('<main id="main" tabindex="-1" class="c-wrap">'),
+  'case study builder should keep the skip target'
+);
+
 const books = read('books.html');
 assert(books.includes('Volumes 0–22 roadmap'), 'books roadmap should keep the current 0–22 series');
 assert(

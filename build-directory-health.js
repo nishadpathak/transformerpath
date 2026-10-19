@@ -334,7 +334,8 @@ const directoryHealthReport = {
   generated_at: new Date().toISOString(),
   date: TODAY,
   kpi_summary: {
-    total_companies: censusRecords.length,
+    // Same public company count as site-stats.manufacturers. Census rows stay in the source file.
+    total_companies: require('./lib/public-company-count').read(__dirname).publicCount,
     total_factories: FACTORIES.length || 812,
     total_sourced_fields: totalSourcedPoints,
     overall_completeness_pct: overallCompleteness,

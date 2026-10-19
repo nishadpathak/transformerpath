@@ -229,7 +229,7 @@
 
     var tabsConfig = [
       { key: '', label: '🌐 All Ecosystem', count: DATA.length },
-      { key: 'manufacturer', label: '⚡ Manufacturers', count: facets.kinds.manufacturer || 0 },
+      { key: 'manufacturer', label: '⚡ Manufacturers', count: (typeof STATS.manufacturers === 'number' ? STATS.manufacturers : (facets.kinds.manufacturer || 0)) },
       { key: 'component_supplier', label: '🧩 Components & Materials', count: facets.kinds.component_supplier || 0 },
       { key: 'service_repair', label: '🛠️ Service & Repair', count: facets.kinds.service_repair || 0 },
       { key: 'transport_logistics', label: '🚢 Logistics', count: facets.kinds.transport_logistics || 0 },
@@ -324,7 +324,7 @@
         (q ? '<p style="color:#f5a623;font-size:.92rem;margin:0 0 10px">Showing directory matches for “' + esc(q) + '”. For companies, plants, projects, tenders and intel in one view, use <a href="search.html?q=' + encodeURIComponent(q) + '" style="color:#f5a623;font-weight:800">universal search →</a></p>' : '') +
         '<p style="color:#b8c4d4;font-size:.95rem;margin:0;max-width:840px;line-height:1.5">An interconnected, sourced database connecting power and distribution transformer OEMs, component &amp; material suppliers, service contractors, heavy transport, testing laboratories, associations, training academies, and buyers. <b>Factual evidence, sourced records, zero subjective rankings.</b></p>' +
         '<div class="kg-kpi-grid">' +
-          '<div class="kg-kpi-box"><div class="kg-kpi-val">' + (STATS.manufacturers || facets.kinds.manufacturer || DATA.length) + '</div><div class="kg-kpi-lbl">Manufacturers</div></div>' +
+          '<div class="kg-kpi-box"><div class="kg-kpi-val">' + (typeof STATS.manufacturers === 'number' ? STATS.manufacturers : (facets.kinds.manufacturer || DATA.length)) + '</div><div class="kg-kpi-lbl">Manufacturers</div></div>' +
           '<div class="kg-kpi-box"><div class="kg-kpi-val">' + (STATS.factories || '—') + '</div><div class="kg-kpi-lbl">Sourced plants</div></div>' +
           '<div class="kg-kpi-box"><div class="kg-kpi-val">' + (STATS.capabilities || '—') + '</div><div class="kg-kpi-lbl">Capabilities</div></div>' +
           '<div class="kg-kpi-box"><div class="kg-kpi-val">' + (STATS.manufacturingCountries || countries.length) + '</div><div class="kg-kpi-lbl">Countries</div></div>' +
