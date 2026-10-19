@@ -212,8 +212,8 @@ a.plain:hover { text-decoration:underline; }
   </script>
   <script src="google-auth-config.js" defer></script>
   <script src="tp-auth.js?v=1" defer></script>
-  <script src="tp-nav.js?v=7" defer></script>
-  <script src="tp-pwa.js?v=7" defer></script>
+  <script src="tp-nav.js?v=8" defer></script>
+  <script src="tp-pwa.js?v=8" defer></script>
 </header>
 <main id="main" tabindex="-1">
 <section class="hero intel-hero">
@@ -230,6 +230,14 @@ a.plain:hover { text-decoration:underline; }
     (function () {
       var el = document.getElementById('stamp'); if (!el || !window.fetch) return;
       fetch('data/intel-status.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (st) {
+        var live = (window.TPIntelClock && st.latest_source_iso) ? window.TPIntelClock.classify({
+          latestSourceIso: st.latest_source_iso,
+          latestCheckedAt: st.latest_source_checked_at,
+          buildAt: st.build_at
+        }) : null;
+        if (live && live.statusLabel) {
+          st = Object.assign({}, st, { status: live.statusLabel, reason: live.reason, age_days: live.ageDays, dot: window.TPIntelClock.dot(live.statusLabel) });
+        }
         window.__TP_INTEL_STATUS = st;
         var statusLabel = st.status || 'INTEL COVERAGE DELAYED';
         var sourceLabel = String(st.latest_source_date || '').replace(/\s+/g, ' ').trim();
@@ -1342,7 +1350,12 @@ a.plain:hover { text-decoration:underline; }
   var el=document.getElementById('freshnessLine');
   if(!el) return;
   fetch('data/intel-status.json', { cache: 'no-cache' }).then(function(r){ return r.json(); }).then(function(st){
-    var status = st.status || 'INTEL COVERAGE DELAYED';
+    var live = (window.TPIntelClock && st.latest_source_iso) ? window.TPIntelClock.classify({
+      latestSourceIso: st.latest_source_iso,
+      latestCheckedAt: st.latest_source_checked_at,
+      buildAt: st.build_at
+    }) : null;
+    var status = (live && live.statusLabel) || st.status || 'INTEL COVERAGE DELAYED';
     var source = String(st.latest_source_date || '').replace(/\s+/g, ' ').trim();
     if (!/^\d{1,2} [A-Za-z]{3} \d{4}$/.test(source)) return;
     var checked = st.latest_source_checked_label;
@@ -2372,9 +2385,9 @@ tabList.forEach((t, idx) => {
 </footer>
 <script src="intel-feed-ui.js?v=1" defer></script>
 <script src="follow-button.js" defer></script>
-<script src="analytics.js?v=7" defer></script>
-<script src="tp-freshness.js?v=7" defer></script>
-<script src="tp-watchlist.js?v=7" defer></script>
-<script src="tp-feedback.js?v=7" defer></script>
+<script src="analytics.js?v=8" defer></script>
+<script src="tp-freshness.js?v=8" defer></script>
+<script src="tp-watchlist.js?v=8" defer></script>
+<script src="tp-feedback.js?v=8" defer></script>
 </body>
 </html>

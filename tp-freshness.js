@@ -67,4 +67,124 @@
   else run();
 
   window.TP_FRESHNESS = { cadence: CADENCE, cadenceLong: CADENCE_LONG };
+
+  /* Mirror of lib/intel-freshness.js classifyIntelStatus.
+     A build stamps "Updated today" on the day it runs. Visitors arriving
+     later must see the age of latest_source_iso, not that frozen label.
+     tests/intel-status-age.js fails if this drifts from the node clock. */
+  var COVERAGE_LAG_DAYS = 10;
+  var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  function dayIso(d) {
+    if (!d) return null;
+    var s = String(d).slice(0, 10);
+    return /^\d{4}-\d{2}-\d{2}$/.test(s) ? s : null;
+  }
+
+  function formatDayUTC(iso) {
+    var p = iso.split('-');
+    return String(Number(p[2])) + ' ' + MONTHS[Number(p[1]) - 1] + ' ' + p[0];
+  }
+
+  function classify(opts) {
+    opts = opts || {};
+    var now = opts.now || new Date();
+    var todayIso = now.toISOString().slice(0, 10);
+    var sourceIso = dayIso(opts.latestSourceIso);
+    var statusLabel = 'INTEL COVERAGE DELAYED';
+    var reason = 'no_validated_source_date';
+    var ageDays = null;
+    if (sourceIso) {
+      ageDays = Math.round((Date.parse(todayIso + 'T00:00:00Z') - Date.parse(sourceIso + 'T00:00:00Z')) / 86400000);
+      var dayLabel = formatDayUTC(sourceIso);
+      var dayOk = /^\d{1,2} [A-Za-z]{3} \d{4}$/.test(dayLabel);
+      if (ageDays < 0) {
+        statusLabel = 'INTEL COVERAGE DELAYED';
+        reason = 'future_source_date_rejected';
+      } else if (ageDays === 0 && dayOk) {
+        statusLabel = 'Updated today';
+        reason = 'source_within_1d';
+      } else if (ageDays === 1 && dayOk) {
+        statusLabel = 'UPDATED ' + dayLabel;
+        reason = 'source_within_1d';
+      } else if (!dayOk) {
+        statusLabel = 'INTEL COVERAGE DELAYED';
+        reason = 'source_date_unprintable';
+      } else if (ageDays > COVERAGE_LAG_DAYS) {
+        statusLabel = 'INTEL COVERAGE DELAYED';
+        reason = 'source_lag_' + ageDays + 'd';
+      } else if (ageDays <= 3) {
+        statusLabel = 'DATA CURRENT';
+        reason = 'source_within_3d';
+      } else if (ageDays <= 7) {
+        statusLabel = 'REFRESH DELAYED';
+        reason = 'source_within_7d';
+      } else {
+        statusLabel = 'INTEL COVERAGE DELAYED';
+        reason = 'source_lag_' + ageDays + 'd';
+      }
+    }
+    if (sourceIso && ageDays != null && ageDays > 30) {
+      statusLabel = 'DATA STALE';
+      reason = 'source_lag_' + ageDays + 'd';
+    }
+    if (!sourceIso) {
+      statusLabel = 'DATA STALE';
+      reason = 'no_validated_source_date';
+    }
+    return {
+      statusLabel: statusLabel,
+      reason: reason,
+      ageDays: ageDays,
+      latest_source_iso: sourceIso,
+      latest_source_date: sourceIso ? formatDayUTC(sourceIso) : null
+    };
+  }
+
+  function dot(label) {
+    if (label === 'DATA CURRENT' || label === 'Updated today' || /^UPDATED \d{1,2} [A-Za-z]{3} \d{4}$/.test(label || '')) return '#1a9d4a';
+    if (label === 'REFRESH DELAYED' || label === 'INTEL COVERAGE DELAYED') return '#e0a800';
+    return '#94a3b8';
+  }
+
+  function replaceStatusText(el, statusLabel) {
+    if (!el) return;
+    var html = el.innerHTML;
+    if (html.indexOf('● ') !== -1) {
+      el.innerHTML = html.replace(/● [^<]+/, '● ' + statusLabel);
+    } else if (/status <b/i.test(html)) {
+      el.innerHTML = html.replace(/status <b[^>]*>[^<]*<\/b>/i, 'status <b style="color:var(--text)">' + statusLabel + '</b>');
+    } else {
+      el.textContent = statusLabel;
+    }
+    el.setAttribute('data-intel-status', statusLabel);
+  }
+
+  function ageBanners() {
+    var hosts = [
+      document.getElementById('hero-live-pill'),
+      document.getElementById('stamp'),
+      document.getElementById('freshnessLine')
+    ];
+    for (var i = 0; i < hosts.length; i++) {
+      var host = hosts[i];
+      if (!host) continue;
+      var live = classify({ latestSourceIso: host.getAttribute('data-intel-source') });
+      if (!live.latest_source_iso || !live.statusLabel) continue;
+      if (host.id === 'hero-live-pill') {
+        host.setAttribute('data-intel-status', live.statusLabel);
+        var badge = document.getElementById('hero-live-status');
+        if (badge) badge.textContent = live.statusLabel;
+        var mark = document.getElementById('hero-live-dot');
+        if (mark) mark.style.background = dot(live.statusLabel);
+      } else {
+        replaceStatusText(host, live.statusLabel);
+      }
+    }
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ageBanners);
+  else ageBanners();
+
+  window.TPIntelClock = { classify: classify, dot: dot, ageBanners: ageBanners };
 })();

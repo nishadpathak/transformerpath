@@ -16,6 +16,7 @@ jobs:
       - run: node tests/awards-wording-regression.js
       - run: node tests/price-as-of-regression.js
       - run: node tests/homepage-coverage-delayed.js
+      - run: node tests/intel-status-age.js
       - run: node tests/homepage-ticker-regression.js
       - run: node tests/homepage-glance-regression.js
       - run: node tests/directory-headline-counts.js
