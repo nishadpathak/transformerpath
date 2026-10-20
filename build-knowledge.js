@@ -33,6 +33,7 @@ const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 function slugify(s) { return String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/&/g, 'and').replace(/['’´]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, ''); }
 
+const KSOURCES = JSON.parse(fs.readFileSync('data/knowledge-sources.json', 'utf8')).articles || {};
 const MANUF = JSON.parse(fs.readFileSync('data/manufacturers.json', 'utf8'));
 const COMPONENTS = {
   'transformer-bushings': 'Transformer bushings & terminations', 'on-load-tap-changers': 'On-load tap changers',
@@ -51,22 +52,22 @@ const ARTICLES = [
     slug: 'onan-vs-onaf-vs-ofaf', topic: 'Applications', level: 'Intermediate', minutes: 7,
     title: 'ONAN vs ONAF vs OFAF: What Is the Difference?',
     question: 'What does ONAN, ONAF and OFAF mean in transformer cooling?',
-    quick: 'The codes describe how a transformer is cooled. The middle letter is the internal (oil) cooling method and the last letter the external (air/water) method. ONAN = natural oil, natural air; ONAF = natural oil, forced air; OFAF = forced oil, forced air. Moving from purely natural cooling (ONAN) to fan-assisted (ONAF/ONAF) or pump-assisted (OFAF) raises the rated output for the same package.',
+    quick: 'The codes describe how a transformer is cooled. IEC 60076-2 uses a four-letter code: the first two letters describe the internal cooling medium and how it circulates, the last two the external medium and how it circulates. ONAN = natural oil, natural air; ONAF = natural oil, forced air; OFAF = forced oil, forced air. Moving from purely natural cooling (ONAN) to fan-assisted (ONAF) or pump-assisted (OFAF) raises the rated output for the same package.',
     sections: [
-      ['What do the letters mean?', 'IEC 60076 classifies cooling by two letters: the first describes the cooling medium (O = oil, F = water), the middle letter the medium in contact with the windings (N = natural, F = forced), and the last letter the secondary / external medium (N = natural air, F = forced air). So ONAN reads "oil-natural / air-natural", ONAF "oil-natural / air-forced", and OFAF "oil-forced / air-forced".'],
+      ['What do the letters mean?', 'IEC 60076-2 identifies the cooling method by four letters: (1) the internal cooling medium (O = mineral oil or liquid with fire point ≤ 300 °C, K or L for higher-fire-point liquids); (2) its circulation (N = natural, F = forced, D = forced and directed through the windings); (3) the external cooling medium (A = air, W = water); (4) its circulation (N = natural, F = forced). So ONAN reads "oil-natural / air-natural", ONAF "oil-natural / air-forced", and OFAF "oil-forced / air-forced".'],
       ['How each cooling regime works', 'In ONAN the oil circulates by natural convection and heat leaves through the tank and radiator by natural convection and radiation. ONAF adds banks of cooling fans that blow air across the radiators, roughly increasing airside heat transfer by a factor of 1.5 to 2. OFAF adds an oil pump (and often directed oil flow through the windings) so that both the oil circulation and the airside are forced.'],
       ['Effect on rating', 'The same physical unit is often nameplated at different ratings per cooling stage, e.g. 40 MVA ONAN and 60 MVA ONAF. The cooling stage is chosen by how the transformer is expected to be loaded and whether the auxiliaries (fans/pumps) can lose supply.'],
       ['Considerations and trade-offs', 'ONAN is simple, quiet and fails passive (still works without auxiliaries) but is the biggest, heaviest option. ONAF/OFAF are smaller and lighter for a given rating but consume auxiliary power and reduce some of the overload margin if the fans/pump are lost. OFAF also lets you support higher and more uniform winding temperature for very large transformers that cannot be cooled practically by natural oil flow.'],
     ],
     refs: ['IEC 60076-2: Power transformers — Temperature rise', 'IEC 60076-1: General requirements and cooling-code definitions'],
     comps: ['transformer-cooling'], types: ['PT', 'DT'],
-    eq: 'P = k·A·ΔT / R (overall cooling capacity scales with effective heat-transfer area A and thermal resistance R; fans and pumps reduce R)',
+    eq: 'P = h·A·ΔT = ΔT / R_th, with R_th = 1/(h·A) (heat rejected scales with the heat-transfer coefficient h and area A; fans and pumps raise h)',
   },
   {
     slug: 'power-vs-distribution', topic: 'Design', level: 'Beginner', minutes: 6,
     title: 'Power vs Distribution Transformers: What Is the Difference?',
     question: 'What is the difference between a power transformer and a distribution transformer?',
-    quick: 'It is primarily a difference of rating and network role, not a hard standard. Power (transmission) transformers are large, high-voltage units (typically above ~10 MVA) that connect networks and step voltage between transmission voltage classes. Distribution transformers are smaller (typically ~25 kVA to a few MVA) and step the voltage down for end-use, optimised for efficiency at low load and for being scattered close to consumers.',
+    quick: 'It is primarily a difference of rating and network role, not a hard standard. Power (transmission) transformers are large, high-voltage units (typically above ~10 MVA) that connect networks and step voltage between transmission voltage classes. Distribution transformers are smaller (typically tens of kVA to a few MVA; IEEE terminology treats distribution transformers as 500 kVA and below) and step the voltage down for end-use, optimised for efficiency at low load and for being scattered close to consumers.',
     sections: [
       ['By rating and role', 'Power transformers sit at generating stations and grid substations, handling bulk power at high voltage (e.g. 110, 220, 400 kV) with high short-circuit strength and impedance control. Distribution transformers step down to utilization or distribution voltages (e.g. 11/0.4 kV, 33/11 kV) and are sized for a small number of customers.'],
       ['Typical physical differences', 'Distribution transformers are usually smaller, oil- or dry-type, pole- or pad-mounted, with simple tap ranges and lower losses at light load. Power transformers often have on-load tap changers, larger insulation margins, specialised cooling (see ONAN vs ONAF), and higher impedance so that fault currents are limited.'],
@@ -83,12 +84,12 @@ const ARTICLES = [
     sections: [
       ['What DGA measures', 'Dissolved-gas analysis samples the oil and measures the gases dissolved in it: hydrogen (H2), methane (CH4), ethane (C2H6), ethylene (C2H4), acetylene (C2H2), carbon monoxide (CO), carbon dioxide (CO2), oxygen (O2) and nitrogen (N2). IEEE C57.104 total dissolved combustible gas is H2 + CH4 + C2H6 + C2H4 + C2H2 + CO. The pattern and the rate of change diagnose the fault, not a single gas in isolation.'],
       ['Why hydrogen appears', 'Hydrogen is released by low-energy discharges: partial discharge in voids, bubbles or on sharp edges, and by cracking of oil molecules under modest thermal stress. It is the gas that rises earliest and fastest in PD situations, which is why a "hydrogen-dominant" trend is a red flag.'],
-      ['Interpreting the ratios', 'Use ratios (e.g. Duval or the classic Rogers/Doernenburg ratios) rather than absolute values: acetylene/hydrogen and methane/hydrogen distinguish thermal from electrical faults; ethylene/ethane separates low- and high-temperature thermal faults; carbon monoxide and carbon dioxide indicate paper involvement.'],
+      ['Interpreting the ratios', 'Use ratio and graphical methods (e.g. IEC 60599 ratios, Duval triangles, Rogers/Doernenburg) once gas levels are above typical values — ratios on very low concentrations are not meaningful: acetylene/hydrogen and methane/hydrogen distinguish thermal from electrical faults; ethylene/ethane separates low- and high-temperature thermal faults; carbon monoxide and carbon dioxide indicate paper involvement.'],
       ['What to do', 'Repeat the sample to confirm the trend (gases get worse, not better), consider online monitoring for rate tracking, inspect the tap changer if acetylene is present, and look for the PD source (loose connection, partial-discharge site, moisture or contamination). Do not open the sealed unit without de-energising and a plan.'],
     ],
     refs: ['IEC 60599:2022 (mineral-oil-filled equipment — DGA interpretation)', 'IEEE C57.104 (DGA guide)'],
     comps: ['protection-monitoring', 'oil-fluids-preservation'], types: ['PT', 'DT'],
-    work: 'A sample reads H2 600 ppm, CH4 120 ppm, C2H2 < 1 ppm. Hydrogen and methane dominate with no acetylene: consistent with partial discharge rather than arcing. The gas ratio methane/hydrogen < 0.1 confirms a PD/discharge signature.',
+    work: 'A sample reads H2 600 ppm, CH4 40 ppm, C2H6 15 ppm, C2H4 2 ppm, C2H2 < 1 ppm. Hydrogen dominates with no acetylene. CH4/H2 = 40/600 ≈ 0.07, which is below 0.1 and, with C2H4/C2H6 ≈ 0.13 (< 0.2), matches the partial-discharge pattern in the IEC 60599 ratio table rather than arcing. Confirm with a repeat sample and the trend.',
   },
   {
     slug: 'transformer-impedance', topic: 'Design', level: 'Intermediate', minutes: 7,
@@ -98,13 +99,13 @@ const ARTICLES = [
     sections: [
       ['The short-circuit test', 'With one winding shorted, apply a fraction of rated voltage to the other winding until rated current flows. The applied voltage as a percentage of rated voltage is the % impedance (also called the impedance voltage, often written Z%).'],
       ['Why impedance matters', 'It sets the maximum short-circuit current (Isc = Irated × 100 / Z%), limits the fault duty the network and the transformer must withstand, influences voltage regulation (drop across the winding at load), and governs how transformers can be paralleled (they should have similar %Z so load shares correctly).'],
-      ['Typical values', 'Distribution transformers are commonly 4–6 % impedance; larger power transformers 8–18 % or more. Designers raise impedance, at some cost in losses and size, to reduce fault current and limit inrush/transient effects.'],
+      ['Typical values', 'Distribution transformers are commonly 4–6 % impedance; larger power transformers 8–18 % or more. Designers raise impedance, at some cost in regulation and size, to reduce fault current.'],
     ],
     refs: ['IEC 60076-5 (ability to withstand short circuit)', 'IEC 60076-1'],
     comps: ['conductors-and-core'], types: ['PT', 'DT'],
     eq: 'Z% = (Vsc / Vrated) × 100, and Isc = Irated × 100 / Z%',
     calc: 'calculator.html', model: 'design.html',
-    work: 'A 10 MVA, 11/0.4 kV transformer with Z% = 6 % has a short-circuit current of 100/6 ≈ 16.7 × rated current, i.e. 167 % of rated … confirm with your design tool before relying on it.',
+    work: 'A 1 MVA, 11/0.4 kV transformer with Z% = 6 %: rated LV current = 1,000 kVA / (√3 × 0.4 kV) ≈ 1,443 A. With an infinite (zero-impedance) source, Isc ≈ 1,443 A × 100/6 ≈ 24.1 kA, i.e. about 16.7 × rated current (1,667 %). A real network impedance lowers this figure.',
   },
   {
     slug: 'short-circuit-test-failure', topic: 'Testing', level: 'Advanced', minutes: 9,
@@ -113,7 +114,7 @@ const ARTICLES = [
     quick: 'A transformer passes a short-circuit test if it withstands the applied fault currents without unacceptable deformation, displacement or leakage paths. Failures come from mechanical deformation of windings (radial/buckling or axial collapse), broken or displaced leads and terminals, or insulation damage that leads to a subsequent power-frequency withstand failure — all from the enormous internal electromagnetic forces that scale with current squared.',
     sections: [
       ['What the test establishes', 'The short-circuit withstand test is a special test, run by agreement (IEC 60076-5). It proves the transformer can survive a specified number of short-circuit events at kA of through-current without sustaining damage that would cause a later failure. Pass = no visible deformation, no insulation breakdown, no significant impedance change, and acceptable subsequent tests.'],
-      ['Where the forces act', 'The winding currents create radial forces (tension on the outer winding, compression on the inner winding) and axial forces when ampere-turns do not balance. These try to stretch, squash or telescope the windings and push them longitudinally.'],
+      ['Where the forces act', 'The winding currents create radial forces (tension on the outer winding, compression on the inner winding) and axial forces from the radial leakage flux at the winding ends, larger where ampere-turns do not balance. These try to stretch, squash or telescope the windings and push them longitudinally.'],
       ['Typical failure mechanisms', 'Compressive buckling of the inner winding, radial stretch or ovalising of the outer winding, axial collapse or vertical displacement, tilting of conductors, damage to clamping and end rings, and broken or loose leads terminations. Insulation can also be displaced, creating a weak point that only reveals itself during the follow-up voltage test.'],
       ['Why it matters for design', 'The design must size conductor section, axial and radial support (spacers), clamping forces and end structures to hold the winding below its yield/limit. Reinforcement must not create new thermal hotspots. Design margins and mechanical adequacy are the whole point.'],
     ],
@@ -125,10 +126,10 @@ const ARTICLES = [
     slug: 'ctc-conductor', topic: 'Manufacturing', level: 'Intermediate', minutes: 6,
     title: 'What Is a Continuously Transposed Conductor (CTC)?',
     question: 'What is a CTC (continuously transposed) transformer conductor?',
-    quick: 'A continuously transposed conductor is a bundle of several rectangular enamel-covered strands (typically 3 to 100s) that are continuously transposed — each strand continuously swaps position — so every strand experiences the same leakage field and the same average impedance. This dramatically reduces eddy (circulating) losses and keeps current sharing even in large windings.',
+    quick: 'A continuously transposed conductor is a bundle of several rectangular enamel-covered strands (typically from about five to several tens of strands) that are continuously transposed — each strand continuously swaps position — so every strand experiences the same leakage field and the same average impedance. This prevents circulating currents between strands and so cuts the associated losses and keeps current sharing even in large windings.',
     sections: [
       ['Why transposition matters', 'In a large transformer winding, strands at different radial positions see different leakage flux, which drives circulating currents between strands and high stray (eddy) losses. Transposing the strands so each occupies every radial position equally cancels the net induced EMF difference and evens the current.'],
-      ['Construction', 'Strands are individually enameled for interstrand insulation, wrapped with one or two layers of paper, and arranged and transposed at regular intervals. Strand counts and sizes are chosen to match the winding current and to control the strand-level eddy loss.'],
+      ['Construction', 'Strands are individually enamelled for interstrand insulation; the transposed bundle is then usually wrapped in paper (or netting tape), and arranged and transposed at regular intervals. Strand counts and sizes are chosen to match the winding current and to control the strand-level eddy loss.'],
       ['When it is used', 'CTC is standard for large power-transformer and reactor windings where current is high and stray loss would otherwise dominate. It is often specified in offshore and generator-step-up transformers where losses and hotspots carry a heavy penalty.'],
     ],
     refs: ['IEC 60317 (enamelled winding wires)', 'IEC 60076-1 (general design context)'],
@@ -138,7 +139,7 @@ const ARTICLES = [
     slug: 'ddp-insulation', topic: 'Insulation', level: 'Intermediate', minutes: 5,
     title: 'What Is Diamond Dotted Paper (DDP)?',
     question: 'What is diamond dotted paper (DDP) insulation?',
-    quick: 'Diamond dotted paper is a thin electrical insulating paper coated with a thermosetting resin (usually a cresylic/phenolic or epoxy type) applied in a diamond pattern and partially cured. When the winding is heated, the resins bond the layers together, adding strength and holding shape — it is used mainly for interlayer/interturn insulation and as a bonding sheet in transformer coils.',
+    quick: 'Diamond dotted paper is a thin electrical insulating paper coated with a thermosetting resin (usually an epoxy type) applied in a diamond pattern and partially cured. When the winding is heated, the resins bond the layers together, adding strength and holding shape — it is used mainly for interlayer/interturn insulation and as a bonding sheet in transformer coils.',
     sections: [
       ['What DDP is', 'It is a kraft paper that has been treated with a resin applied as a dotted or diamond pattern and then B-staged (partially cured). Making the dots rather than a full coat leaves the paper permeable to the impregnation oil and lets it conform during winding.'],
       ['Its function', 'The resin bonds adjacent conductors and insulation on curing, giving a solid, vibration-resistant winding that holds its geometry and improves short-circuit robustness. It also adds some dielectric margin between turns/layers.'],
@@ -151,7 +152,7 @@ const ARTICLES = [
     slug: 'pressboard-vs-transformerboard', topic: 'Insulation', level: 'Beginner', minutes: 4,
     title: 'Pressboard vs Transformerboard: What Is the Difference?',
     question: 'What is the difference between pressboard and transformerboard?',
-    quick: 'They are closely related but the terms are not fully interchangeable. "Transformerboard" is the general term for electrical insulation board made of 100 % unbleached sulphate (kraft) pulp. "Pressboard" is a higher-density, highly compressed form of that board, calendered after pressing, used for barriers, supports, spacers and other structural insulation in oil-filled transformers.',
+    quick: 'They are closely related. "Pressboard" is the standard term: IEC 60641 specifies pressboard for electrical purposes made of 100 % sulphate wood pulp (or a mix with cotton), in calendered and precompressed types. "Transformerboard" is a manufacturer trade name for pressboard made for oil-filled transformers, not a separate standard category. Both are used for barriers, supports, spacers and other structural insulation.',
     sections: [
       ['Manufacture', 'Both start from pure kraft pulp. Pressboard is compressed and calendered to raise density, strength and oil resistance, giving a uniform, high-density board with good dielectric and mechanical properties.'],
       ['Grades', 'Board is offered in several grades differing in density and finish, chosen for whether it is used as a lead barrier, a spacer, a winding support or a major insulation structure.'],
@@ -177,15 +178,15 @@ const ARTICLES = [
     slug: 'transformer-bushing-types', topic: 'Components', level: 'Intermediate', minutes: 8,
     title: 'Transformer Bushings: Types and Selection',
     question: 'What types of transformer bushings are there and how are they selected?',
-    quick: 'A bushing carries the high-voltage conductor through the grounded transformer tank/cover while insulating it from the earth and grading the electric field. The main families are solid (with a solid insulation core), oil-impregnated-paper (OIP), resin-impregnated-paper (RIP) and resin-impregnated-synthetic (RIS, e.g. epoxy/cycloaliphatic). Selection depends on voltage class, current, environmental duty, partial-discharge/creepage requirements and whether the bushing is oil-to-air, oil-to-oil or oil-to-SF6.',
+    quick: 'A bushing carries the high-voltage conductor through the grounded transformer tank/cover while insulating it from the earth and grading the electric field. The main families are solid (with a solid insulation core), oil-impregnated-paper (OIP), resin-impregnated-paper (RIP) and resin-impregnated-synthetic (RIS). Selection depends on voltage class, current, environmental duty, partial-discharge/creepage requirements and whether the bushing is oil-to-air, oil-to-oil or oil-to-SF6.',
     sections: [
-      ['By construction', 'Solid bushings are simple, cheap, for low/medium voltage. OIP bushings use a paper core vacuum-dried and oil-impregnated; they are robust and traditional but require oil. RIP bushings use resin-impregnated paper with no free oil and are a common choice for GIS and sealed units. RIS bushings use a moulded epoxy/cycloaliphatic core, very compact and pollution-resistant, widely used for MV and some HV applications.'],
+      ['By construction', 'Solid bushings are simple, cheap, for low/medium voltage. OIP bushings use a paper core vacuum-dried and oil-impregnated; they are robust and traditional but require oil. RIP bushings use resin-impregnated paper with no free oil and are a common choice for GIS and sealed units. RIS bushings use a resin-impregnated synthetic (polymer-fabric) core with no paper, so they are less sensitive to moisture during storage. Cast-resin bushings, by contrast, use a moulded epoxy body and are common at MV.'],
       ['Selection factors', 'Rated voltage, lightning/impulse withstand, rated current, creepage and pollution class, installation orientation, contamination, altitude derating, and PD limits. The bushing must also be compatible with the fluid or gas above and below it.'],
       ['Testing and condition', 'Bushings are tested for power-factor/dissipation factor, capacitance, PD and withstand. Monitoring tap measurements let operators track the bushing condition (capacitance and tan-delta drift are early signs of moisture or contamination).'],
     ],
     refs: ['IEC 60137 (bushings)', 'IEEE C57.19.00 / C57.19.01'],
     comps: ['transformer-bushings', 'oil-fluids-preservation'], types: ['PT', 'DT', 'DRY'],
-    work: 'Select the bushing by the higher of the system voltage and the BIL, then confirm creepage distance for the site contamination class (e.g. e = 20 mm/kV for heavy pollution) against the relevant standard.',
+    work: 'Select a bushing whose highest voltage (Um) and lightning-impulse withstand are at least those of the winding it serves, then confirm creepage distance for the site contamination class (e.g. 25 mm/kV of Um on the legacy scale for heavy pollution, or the unified specific creepage distance of IEC TS 60815-1) against the relevant standard.',
   },
   {
     slug: 'buchholz-relay', topic: 'Components', level: 'Intermediate', minutes: 5,
@@ -196,7 +197,7 @@ const ARTICLES = [
       ['How it works', 'The relay is a chamber with float switches (or a baffle/reed) that sense oil level and gas accumulation. An internal fault generates gas that rises into the relay; a large fault creates a surge of oil that trips a second element.'],
       ['What it senses', 'Gas collection indicates a slow fault (e.g. a hot spot, partial discharge or cellulose overheating); an oil surge indicates a more energetic arcing fault. The amount and type of gas, and the pressure, guide the diagnosis.'],
       ['Buchholz gas analysis', 'Collecting the gas and testing it (combustible, CO2, colour) helps identify the fault — for example a combustible, odourless gas typically points to a thermal or dielectric event.'],
-      ['Alarm vs trip', 'Slow gas accumulation trips the alarm and flags a developing fault; a major gas or surge trips the breaker to disconnect the transformer, protecting it.'],
+      ['Alarm vs trip', 'Slow gas accumulation operates the alarm contact and flags a developing fault; a major gas or surge trips the breaker to disconnect the transformer, protecting it.'],
       ['Diagnosis', 'The collected gas is analysed (combustible, CO2, etc.) and the DGA used to identify whether it is a thermal, partial-discharge or arcing fault.'],
     ],
     refs: ['IEC 60076-1', 'IEEE C57.12.90'],
@@ -237,7 +238,7 @@ const ARTICLES = [
     slug: 'power-factor-test', topic: 'Testing', level: 'Intermediate', minutes: 6,
     title: 'What Is a Power Factor (tan-delta) Test?',
     question: 'What is a transformer power factor / dissipation factor test?',
-    quick: 'The power factor (dissipation factor, tan-delta) test measures the dielectric loss of the insulation by applying an AC voltage and measuring the small phase angle between the applied voltage and the resulting current — the loss angle. A rising tan-delta indicates moisture, contamination or aging in the insulation system.',
+    quick: 'The power factor (cos φ) / dissipation factor (tan δ) test measures the dielectric loss of the insulation by applying an AC voltage and measuring the small phase angle between the applied voltage and the resulting current — the loss angle. A rising tan-delta indicates moisture, contamination or aging in the insulation system.',
     sections: [
       ['What it measures', 'An ideal insulation is almost purely capacitive, with a loss angle near zero. Real insulation has a small dielectric loss; tan-delta is the ratio of the resistive to the capacitive current. Higher values mean more loss.'],
       ['How it is run', 'A test set applies a known AC voltage (often 10 kV) across the winding-to-ground or winding-to-winding insulation and measures the capacitance and tan-delta. On bushings it is also used with a power-factor tap.'],
@@ -266,7 +267,7 @@ const ARTICLES = [
     quick: 'The most common transformer failure causes are insulation and winding faults (thermal overheating, moisture ingress, aging), tap-changer and lead winding failures, and external events such as lightning surges, short-circuit forces, overloading, contamination and oil degradation. Many failures are slow and detectable in advance through monitoring.',
     sections: [
       ['Insulation and winding', 'Thermal aging and overheating break down the cellulose; moisture lowers the dielectric strength; winding deformation or inter-turn faults arise from short-circuit forces. These show up as DGA gases (ethylene, carbon oxides, hydrogen, acetylene).'],
-      ['Tap-changer and leads', 'OLTC contact, diverter and mechanism faults are a leading cause, often seen as acetylene in the oil. Loose or broken leads and terminations also fail under load and vibration.'],
+      ['Tap-changer and leads', 'OLTC contact, diverter and mechanism faults are a significant share of failures (CIGRE TB 642), often seen as acetylene in the oil. Loose or broken leads and terminations also fail under load and vibration.'],
       ['Environmental and operational', 'Lightning and switching surges damage the insulation; overloading and loss of cooling overheat the unit; contamination and oil degradation (sludge, moisture, acidity) accelerate aging.'],
       ['Prevention', 'Routine DGA, oil and insulation tests (power factor, PD, moisture), thermography, and monitoring of temperature, cooling and tap-changer condition catch most failures before they escalate.'],
     ],
@@ -277,10 +278,10 @@ const ARTICLES = [
     slug: 'insulation-class', topic: 'Insulation', level: 'Beginner', minutes: 5,
     title: 'What Are Transformer Insulation Classes (A, E, B, F, H)?',
     question: 'What do transformer insulation classes A, B, F and H mean?',
-    quick: 'Insulation class is the maximum temperature at which the insulation system can be operated continuously without premature aging. Class A is 105 °C, E 120 °C, B 130 °C, F 155 °C and H 180 °C (each with a 10 °C margin specified). The class defines the allowable hottest-spot temperature, not the ambient, and is set by the materials and the design, including the cooling class.',
+    quick: 'Insulation class is the maximum temperature at which the insulation system can be operated continuously without premature aging. Class A is 105 °C, E 120 °C, B 130 °C, F 155 °C and H 180 °C . The class defines the allowable hottest-spot temperature, not the ambient, and is set by the materials and the design, including the cooling class.',
     sections: [
       ['What the numbers mean', 'The class gives the maximum permissible hottest-spot temperature for a given insulation material set. Operating at or below it supports a long design life; exceeding it roughly doubles the ageing rate for each extra 6 °C (IEC 60076-7, non-upgraded paper).'],
-      ['Transformer use', 'Oil-immersed transformers are commonly class A (cellulose/oil, 105 °C). Dry-type and cast-resin transformers use higher classes (B, F, H) with materials like epoxy, aramid or polyester.'],
+      ['Transformer use', 'Liquid-immersed transformers are not normally rated by an IEC 60085 class: IEC 60076-2 sets their temperature-rise limits, and IEC 60076-7 uses a hot-spot reference of 98 °C for normal kraft paper and 110 °C for thermally upgraded paper. Dry-type and cast-resin transformers use higher classes (B, F, H) with materials like epoxy, aramid or polyester.'],
       ['Relation to cooling and loading', 'The insulation class interacts with the cooling design and the loading rules: a unit can be overloaded only for a limited time before the hottest-spot temperature exceeds the class limit.'],
     ],
     refs: ['IEC 60076-2 (temperature rise)', 'IEC 60085 (insulation thermal evaluation)'],
@@ -293,7 +294,7 @@ const ARTICLES = [
     quick: 'A generator step-up (GSU) transformer raises the generator terminal voltage (e.g. 11–22 kV) to the transmission voltage (e.g. 132–400 kV) for efficient grid export. It is a large, high-reliability, often liquid-filled power transformer rated for the full generator output and designed for continuous and sometimes fluctuating load.',
     sections: [
       ['Its role', 'Generators produce at a relatively low voltage; to transmit power at high voltage and low current, the GSU steps the voltage up. It is the biggest and most critical transformer at a power station.'],
-      ['Design considerations', 'GSUs are rated for the generator MVA and voltage class, handle a wide load range, and often need on-load tap-changers to regulate the station voltage. They may feed a unit or station transformer for auxiliary power.'],
+      ['Design considerations', 'GSUs are rated for the generator MVA and voltage class, handle a wide load range, and are often fitted with de-energised tap-changers, with the generator excitation regulating the voltage; on-load tap-changers are used in some grids. They may feed a unit or station transformer for auxiliary power.'],
       ['Why it matters', 'Because a GSU is at the heart of generation, its reliability and condition monitoring (DGA, temperature, tap-changer) are critical to plant availability.'],
     ],
     refs: ['IEC 60076-1', 'IEEE C57.12.00'],
@@ -316,10 +317,10 @@ const ARTICLES = [
     slug: 'type-vs-routine-test', topic: 'Testing', level: 'Beginner', minutes: 5,
     title: 'Type, Routine and Special Tests? What Is the Difference?',
     question: 'What is the difference between type, routine and special transformer tests?',
-    quick: 'Routine tests are run on every unit (ratio, resistance, no-load and load loss, power factor, HV/LV withstand, oil test). Above 72.5 kV, capacitance and tan δ, insulation resistance and DGA are also routine (IEC 60076-1:2011 cl. 11.1.2.2). Lightning impulse is a type test and is also routine for Um ≥ 72.5 kV (IEC 60076-3:2013). Type tests proved on a design are the temperature-rise test and, below that voltage, the impulse test. Special tests are run by agreement (short-circuit withstand, sound level, zero-sequence, harmonics, and DGA below 72.5 kV).',
+    quick: 'Routine tests are run on every unit (ratio, resistance, no-load and load loss, impedance, applied and induced voltage withstand, oil test). Above 72.5 kV, capacitance and tan δ, insulation resistance and DGA are also routine (IEC 60076-1:2011 cl. 11.1.2.2). Lightning impulse is a type test and is also routine for Um > 72.5 kV (IEC 60076-3:2013). Type tests proved on a design are the temperature-rise test and, below that voltage, the impulse test. Special tests are run by agreement (short-circuit withstand, sound level, zero-sequence, harmonics, and DGA below 72.5 kV).',
     sections: [
-      ['Routine tests', 'Performed on each manufactured unit to confirm it meets the specification and is free of defects: turns ratio, winding resistance, no-load and load loss, applied-voltage and induced-voltage tests, and oil tests. For Um above 72.5 kV, IEC 60076-1:2011 clause 11.1.2.2 also makes capacitance and tan δ, insulation resistance and dissolved-gas analysis routine tests. Lightning impulse is routine for Um ≥ 72.5 kV (IEC 60076-3:2013).'],
-      ['Type tests', 'Proved on a representative design: the temperature-rise test, and lightning impulse when Um is below 72.5 kV. Short-circuit withstand is not a type test.'],
+      ['Routine tests', 'Performed on each manufactured unit to confirm it meets the specification and is free of defects: turns ratio, winding resistance, no-load and load loss, applied-voltage and induced-voltage tests, and oil tests. For Um above 72.5 kV, IEC 60076-1:2011 clause 11.1.2.2 also makes capacitance and tan δ, insulation resistance and dissolved-gas analysis routine tests. Lightning impulse is routine for Um > 72.5 kV (IEC 60076-3:2013).'],
+      ['Type tests', 'Proved on a representative design: the temperature-rise test, and lightning impulse when Um ≤ 72.5 kV. Short-circuit withstand is not a type test.'],
       ['Special tests', 'Run only by agreement with the customer: short-circuit withstand (IEC 60076-5), sound level, zero-sequence impedance, harmonic and stray-loss tests, and frequency-response analysis. Dissolved-gas analysis is special below 72.5 kV and routine above that voltage.'],
     ],
     refs: ['IEC 60076-1:2011 (cl. 11.1.2.2)', 'IEEE C57.12.90-2026'],
@@ -425,7 +426,7 @@ const ARTICLES = [
     slug: 'iec-60076-overview', topic: 'Standards', level: 'Beginner', minutes: 5,
     title: 'What Is IEC 60076?',
     question: 'What does IEC 60076 cover?',
-    quick: 'IEC 60076 is the main international standard series for power transformers. Part 1 covers general requirements and ratings, Part 2 temperature rise, Part 5 the ability to withstand short circuit, Part 7 the loading guide, and later parts cover topics like tap-changers (Part 8), bushings and reactor guidance. It is the default technical framework for transformer design, testing and specification worldwide.',
+    quick: 'IEC 60076 is the main international standard series for power transformers. Part 1 covers general requirements and ratings, Part 2 temperature rise, Part 5 the ability to withstand short circuit, Part 7 the loading guide, and other parts cover reactors (Part 6), the application guide (Part 8), sound levels (Part 10) and dry-type transformers (Part 11). Tap-changers and bushings have their own standards (IEC 60214-1 and IEC 60137). It is the default technical framework for transformer design, testing and specification worldwide.',
     sections: [
       ['The core parts', 'Part 1 general and ratings, Part 2 temperature rise, Part 3 insulation levels and dielectric tests, Part 5 short-circuit withstand, and Part 7 the loading guide.'],
       ['Related standards', 'For specific equipment there are separate documents: IEC 60137 (bushings), IEC 60214 (tap-changers), IEC 60296 (oil), and IEC 60599 (DGA interpretation).'],
@@ -438,10 +439,10 @@ const ARTICLES = [
     slug: 'bil-impulse-level', topic: 'Standards', level: 'Intermediate', minutes: 5,
     title: 'What Is BIL (Basic Insulation Level)?',
     question: 'What is BIL / basic impulse level?',
-    quick: 'BIL (basic insulation level) is the crest value of the standard lightning impulse voltage (a 1.2/50 microsecond wave) the transformer insulation is designed to withstand — a key measure of its insulation strength. In IEC it is often called the rated lightning impulse withstand level (LI); in IEEE it is given in kV at the system voltage.',
+    quick: 'BIL (basic insulation level) is the crest value of the standard lightning impulse voltage (a 1.2/50 microsecond wave) the transformer insulation is designed to withstand — a key measure of its insulation strength. In IEC it is often called the rated lightning impulse withstand level (LI); in IEEE C57.12.00 the BIL (kV crest) is selected from tables against the nominal system voltage.',
     sections: [
       ['What it is', 'BIL is the peak impulse voltage the insulation must survive. It sets the insulation margin above the normal operating and switching voltage, protecting against lightning and switching surges.'],
-      ['How it is tested', 'A standard 1.2/50 us lightning impulse is applied, and the insulation must withstand it without breakdown. The full-wave lightning-impulse test is a type test, and a routine test for Um ≥ 72.5 kV (IEC 60076-3:2013).'],
+      ['How it is tested', 'A standard 1.2/50 us lightning impulse is applied, and the insulation must withstand it without breakdown. The full-wave lightning-impulse test is a type test, and a routine test for Um > 72.5 kV (IEC 60076-3:2013).'],
       ['Why it matters', 'A higher BIL means a larger insulation margin and heavier, more costly insulation. The BIL is chosen for the system voltage and the required protection coordination with surge arresters.'],
     ],
     refs: ['IEC 60076-3 (insulation levels)', 'IEEE C57.12.00'],
@@ -451,10 +452,10 @@ const ARTICLES = [
     slug: 'transformer-losses-efficiency', topic: 'Design', level: 'Intermediate', minutes: 6,
     title: 'What Are Transformer No-Load and Load Losses?',
     question: 'What are transformer no-load and load losses?',
-    quick: 'No-load (iron) losses are the losses in the core from magnetisation, present whenever the transformer is energised, dominated by hysteresis and eddy current loss. Load (copper) losses are the winding I2R and stray losses that rise with the load current, plus the auxiliary (fan/pump) losses when running. Efficiency is the output over the input, so it varies with load.',
+    quick: 'No-load (iron) losses are the losses in the core from magnetisation, present whenever the transformer is energised, dominated by hysteresis and eddy current loss. Load (copper) losses are the winding I2R and stray losses that rise with the load current, Auxiliary (fan/pump) losses are reported separately under IEC 60076-1 and added to total losses. Efficiency is the output over the input, so it varies with load.',
     sections: [
       ['No-load losses', 'These come from the alternating flux in the core (hysteresis) and the eddy currents in the laminations. They depend on the core material (e.g. CRGO, amorphous), the flux density and the core construction, and are essentially constant at rated voltage.'],
-      ['Load losses', 'The winding conductor I2R loss plus stray loss in the tank, leads and core, which scale with the square of the current. The auxiliary losses from fans and oil pumps add when the cooling is running.'],
+      ['Load losses', 'The winding conductor I2R loss plus stray loss in the tank, leads and core, which scale with the square of the current. Auxiliary losses from fans and oil pumps are reported separately (IEC 60076-1) and add to the total when the cooling runs.'],
       ['Efficiency and economics', 'Efficiency is output divided by input. It peaks where load loss equals no-load loss, at a load fraction of √(P₀/Pk): about 30–45% for distribution transformers and nearer 40–60% for power transformers, not at full load (IEC 60076-20 peak efficiency index). It falls at light load because the no-load losses dominate. Buyers capitalise losses over the transformer life to compare suppliers — lower losses often justify a higher price.'],
     ],
     refs: ['IEC 60076-1', 'IEC 60076-20 (efficiency/eco-design context)'],
@@ -495,7 +496,7 @@ const ARTICLES = [
     quick: 'Oil-filled transformers are cooled and insulated by mineral oil or ester, are higher-rated and more efficient but need a fire-capture/containment and oil management. Dry-type transformers use air, cast resin or aramid insulation with no oil, making them fire-safe, low-maintenance and ideal for indoor, underground and fire-sensitive locations, but generally for lower ratings and larger sizes.',
     sections: [
       ['Oil-filled', 'Good for large power and distribution ratings, high efficiency and long life, but require oil quality management, fire containment and occasionally a breather/conservator.'],
-      ['Dry-type', 'No oil, so fire-safe, low maintenance, no leak or environmental risk, and often quieter — but at larger footprint and generally lower maximum rating, with higher-class insulation (B/F/H).'],
+      ['Dry-type', 'No oil, so fire-safe, low maintenance, no leak or environmental risk, — but at larger footprint and generally lower maximum rating, with higher-class insulation (B/F/H).'],
       ['Choosing', 'Pick oil-filled where rating, efficiency and installed cost dominate and the fire risk is managed; choose dry-type or ester for indoor, underground, tunnel, data-centre or fire-safety-critical applications.'],
     ],
     refs: ['IEC 60076-11 (dry-type)', 'IEC 60076-1'],
@@ -505,13 +506,13 @@ const ARTICLES = [
     slug: 'transformer-overloading', topic: 'Applications', level: 'Intermediate', minutes: 6,
     title: 'Can You Overload a Transformer? (Loading Guide)',
     question: 'How much can a transformer be overloaded?',
-    quick: 'A transformer can be safely loaded above its nameplate rating only within defined thermal limits and for limited periods, because the winding hottest-spot temperature is the binding constraint. The loading guide (IEC 60076-7) gives allowed overloads for normal and emergency conditions based on the initial load, ambient temperature, insulation class and type of duty. Each 6 K over the reference hot-spot roughly doubles the ageing rate and halves the insulation life (IEC 60076-7). IEC 60076-7:2018 Table 2 hot-spot limits are 120/140 °C for normal cyclic loading, 140/160 °C for long-time emergency loading, and 160 °C for short-time emergency loading (non-upgraded paper / thermally upgraded paper; short-time is 160 °C).',
+    quick: 'A transformer can be safely loaded above its nameplate rating only within defined thermal limits and for limited periods, because the winding hottest-spot temperature is the binding constraint. The loading guide (IEC 60076-7) gives allowed overloads for normal and emergency conditions based on the initial load, ambient temperature, transformer size category and type of duty. For non-thermally upgraded paper, each 6 K over the 98 °C reference hot-spot roughly doubles the ageing rate (IEC 60076-7). IEC 60076-7:2018 sets maximum hot-spot and top-oil temperatures for normal cyclic, long-time emergency and short-time emergency loading; take the values for your case from the current edition of the standard.',
     sections: [
       ['The binding limit', 'The winding hottest-spot temperature limits the load. Exceeding the design temperature rise accelerates insulation aging and risks moisture release or a failure.'],
-      ['Normal vs emergency loading', 'IEC 60076-7:2018 Table 2 limits the winding hot-spot to 120 °C (non-upgraded paper) or 140 °C (thermally upgraded paper) in normal cyclic loading, 140 °C or 160 °C in long-time emergency loading, and 160 °C in short-time emergency loading. The allowed current also depends on the initial load, the ambient temperature and the cooling.'],
+      ['Normal vs emergency loading', 'IEC 60076-7:2018 gives separate current and temperature limits for normal cyclic loading, long-time emergency loading and short-time emergency loading, by transformer size category; the higher categories allow higher hot-spot temperatures for shorter times. Use the values in the current edition rather than a summary. The allowed current also depends on the initial load, the ambient temperature and the cooling.'],
       ['Practical rule', 'Do not overload without checking the loading guide, the design, the oil/winding temperature and whether the fans/pumps are running. Trending the hottest-spot temperature is the safe way to decide.'],
     ],
-    refs: ['IEC 60076-7:2018 (loading guide, Table 2)', 'IEEE C57.91-2025 (loading guide)'],
+    refs: ['IEC 60076-7:2018 (loading guide)', 'IEEE C57.91-2025 (loading guide)'],
     comps: ['transformer-cooling', 'protection-monitoring'], types: ['PT', 'DT', 'DRY'],
   },
   {
@@ -521,8 +522,8 @@ const ARTICLES = [
     quick: 'An on-load tap-changer (OLTC) changes the transformer ratio without interrupting load by using a diverter switch (or vacuum interrupter) and a transition impedance to bridge between tap positions while current flows. A motor drive and control select the position, and a selector moves the connection between the winding tappings. OLTCs are essential for holding the secondary voltage within limits under varying load.',
     sections: [
       ['The principle', 'To change taps under load, the current must never be interrupted and adjacent tap contacts must never be shorted by a circulating current; a transition resistor (or reactor) and a diverter bridge the gap.'],
-      ['Construction', 'The OLTC has a tap selector, a diverter switch (oil or vacuum) and a motor-drive mechanism, sealed in its own oil compartment. The control selects the position and stops at the correct tap.'],
-      ['Maintenance', 'OLTC contact wear and oil condition are a leading cause of transformer faults, so oil testing (acetylene) and periodic contact/maintenance are essential.'],
+      ['Construction', 'The OLTC has a tap selector, a diverter switch (oil or vacuum) and a motor-drive mechanism; the diverter switch sits in its own oil compartment, while the tap selector is usually in the main-tank oil. The control selects the position and stops at the correct tap.'],
+      ['Maintenance', 'OLTC contact wear and oil condition are a significant cause of transformer faults (tap-changers were about a quarter of major failures in substation transformers in CIGRE TB 642), so oil testing (acetylene) and periodic contact/maintenance are essential.'],
     ],
     refs: ['IEC 60214 (tap-changers)', 'IEC 60076-1'],
     comps: ['on-load-tap-changers', 'protection-monitoring'], types: ['PT', 'DT'],
@@ -531,9 +532,9 @@ const ARTICLES = [
     slug: 'why-transformer-lead-times', topic: 'Procurement', level: 'Intermediate', minutes: 6,
     title: 'Why Are Transformer Lead Times So Long?',
     question: 'Why do transformers have such long lead times?',
-    quick: 'Transformer lead times have extended because demand from grid hardening, renewables, data centres and the energy transition outpaces OEM capacity, and because key materials — grain-oriented electrical steel, large copper, pressboard/insulation and bushings — are themselves in short supply. Large power transformers can take 1-3 years, and the industry has been adding capacity only slowly.',
+    quick: 'Transformer lead times have extended because demand from grid hardening, renewables, data centres and the energy transition outpaces OEM capacity, and because key materials — grain-oriented electrical steel, large copper, pressboard/insulation and bushings — are themselves in short supply. Large power transformers have long lead times, often more than a year; check a dated source for current figures.',
     sections: [
-      ['Supply and demand', 'Load growth from data centres, electric vehicles and renewabless, plus ageing-grid replacement, has pushed order books out. Grid-technology OEMs report multi-year backlogs and high book-to-bill ratios.'],
+      ['Supply and demand', 'Load growth from data centres, electric vehicles and renewabless, plus ageing-grid replacement, has pushed order books out. Lead times for large units have lengthened in recent years (see the dated sources listed below).'],
       ['Material bottlenecks', 'Grain-oriented electrical steel (CRGO), high-grade copper, pressboard, aramid and bushings are constrained, so even with factory capacity the material chain limits output.'],
       ['What buyers can do', 'Order early, lock capacity, be flexible on specification, consider multiple sources and regional assembly, and explore refurbishment/replacement or surplus to bridge the gap.'],
     ],
@@ -547,8 +548,8 @@ const ARTICLES = [
     quick: 'The Duval triangle (Triangle 1) plots the three hydrocarbon fault gases — methane (CH4), ethylene (C2H4) and acetylene (C2H2) — as percentages on a triangular map, and the area the point falls in indicates the fault type: partial discharge, thermal faults of rising temperature, or electrical (arcing) faults. It is a simple, widely used diagnostic tool alongside certain gas ratios.',
     sections: [
       ['The method', 'Take the relative percentages of CH4, C2H4 and C2H2 from the DGA (normalising these three to 100%), then plot on the Duval triangle. The region identifies the fault category.'],
-      ['What the zones mean', 'Low-energy zones point to partial discharge; mid zones to thermal faults (hot spots, overheating, cellulose); high-acetylene zones to electrical arcing. The temperature level of a thermal fault is inferred from the ethylene/ethane ratio.'],
-      ['Using it with other tools', 'The triangle is a fast classification, but it should be combined with the gas ratios (Duval ratios, Rogers, Doernenburg), the rate of change, and oil/insulation tests to build a complete picture.'],
+      ['What the zones mean', 'Low-energy zones point to partial discharge; mid zones to thermal faults (hot spots, overheating, cellulose); high-acetylene zones to electrical arcing. For thermal faults, the zones T1 (< 300 °C), T2 (300–700 °C) and T3 (> 700 °C) indicate the temperature band.'],
+      ['Using it with other tools', 'The triangle is a fast classification, but it should be combined with the gas ratios (IEC 60599 ratios, Rogers, Doernenburg, and the Duval Pentagon), the rate of change, and oil/insulation tests to build a complete picture.'],
     ],
     refs: ['IEC 60599', 'IEEE C57.104'],
     comps: ['protection-monitoring', 'oil-fluids-preservation'], types: ['PT', 'DT'],
@@ -568,11 +569,11 @@ const ARTICLES = [
   },
   {
     slug: 'concentric-vs-disc-windings', topic: 'Design', level: 'Intermediate', minutes: 6,
-    title: 'Concentric vs Disc (Layer) Transformer Windings?',
-    question: 'What is the difference between concentric and disc windings?',
-    quick: 'A concentric (layer) winding has the turns wound axially along the core in stacked layers; a disc winding has the turns wound as a series of horizontal discs (or coils) connected in series. Concentric windings are simple and robust for smaller units and give high impulse strength; disc windings are common for larger HV units where the axial current distribution and impulse response must be controlled.',
+    title: 'Layer vs Disc Transformer Windings: What Is the Difference?',
+    question: 'What is the difference between layer and disc windings?',
+    quick: 'In a core-type transformer all windings are concentric cylinders on the limb; they differ in how the turns are arranged. A layer winding has the turns wound axially along the cylinder in one or more layers; a disc winding has the turns wound as a series of horizontal discs (or coils) connected in series. Layer windings are simple and robust for smaller units and give high impulse strength; disc windings are common for larger HV units where the axial current distribution and impulse response must be controlled.',
     sections: [
-      ['Concentric / layer winding', 'The winding is wound as continuous layers along the core. It is mechanically simple, forgiving, and often used for LV windings and moderately sized HV windings, with good impulse strength when correctly designed.'],
+      ['Layer winding', 'The winding is wound as continuous layers along the core. It is mechanically simple, forgiving, and often used for LV windings and moderately sized HV windings, with good impulse strength when correctly designed.'],
       ['Disc winding', 'The winding is a series of disc-shaped coils stacked axially. It allows a controlled radial distribution of inter-turn voltage and is well-suited to large HV and very high-voltage units, though it needs careful clamping against axial forces.'],
       ['Choosing', 'The choice depends on the voltage rating, impulse requirement, short-circuit duty and the design philosophy; both are proven, and the manufacturer optimises for the specific transformer.'],
     ],
@@ -598,8 +599,8 @@ const ARTICLES = [
     question: 'What is the difference between IEC and IEEE transformer standards?',
     quick: 'IEC (International Electrotechnical Commission, e.g. IEC 60076) is the international standard widely used in Europe, Asia, Africa and much of the world. IEEE (e.g. IEEE C57) is the North American standard, with its own ratings, 60 Hz basis and test and design conventions. They overlap substantially but differ in temperature rise, impedance bases, loading and terminology, so choose one and specify it',
     sections: [
-      ['Coverage', 'IEC 60076 is the global power-transformer series; IEEE C57 (and ANSI/NEMA) is the North American equivalent. Both cover ratings, design and testing but with different defaults.'],
-      ['Key differences', 'IEEE uses 60 Hz as the base, defines temperature rise at 65 C (and 55/65 C options), with its own BIL and test levels; IEC uses 50 Hz commonly and its own temperature-rise and insulation classes. Vector groups, impedance tolerances and cooling codes also differ.'],
+      ['Coverage', 'IEC 60076 is the global power-transformer series; IEEE C57 is the North American equivalent. Both cover ratings, design and testing but with different defaults.'],
+      ['Key differences', 'IEEE uses 60 Hz as the base, defines temperature rise at 65 C (and 55/65 C options), with its own BIL and test levels; IEC uses 50 Hz commonly and its own temperature-rise limits (IEC 60076-2). Vector groups, impedance tolerances and cooling codes also differ.'],
       ['What to do', 'Specify the standard explicitly (e.g. IEC 60076-1 and -2, or IEEE C57.12.00) and note the parameters that differ, so the design, tests and acceptance are unambiguous.'],
     ],
     refs: ['IEC 60076-1', 'IEEE C57.12.00'],
@@ -609,7 +610,7 @@ const ARTICLES = [
     slug: 'k-factor-transformers', topic: 'Design', level: 'Intermediate', minutes: 5,
     title: 'What Is the K-Factor for a Transformer?',
     question: 'What is the K-factor rating of a transformer?',
-    quick: 'The K-factor (a nameplate rating on distribution transformers) quantifies the harmonic content a transformer can handle. Nonlinear loads (VFDs, rectifiers, IT) draw a current with significant harmonics, which raises the winding eddy-current loss; a K-rated transformer is derated in its linear load capacity and designed with lower eddy loss so it can serve a load of a given K-factor without overheating.',
+    quick: 'The K-factor (a nameplate rating on distribution transformers) quantifies the harmonic content a transformer can handle. Nonlinear loads (VFDs, rectifiers, IT) draw a current with significant harmonics, which raises the winding eddy-current loss; a K-rated transformer is designed with lower winding eddy loss so it can supply its full nameplate kVA to a load of that K-factor without derating; a standard (K-1) unit on the same load would need derating (IEEE C57.110).',
     sections: [
       ['Why harmonics matter', 'Nonlinear loads produce harmonic currents that flow in the windings and cause additional eddy-current and stray losses. A transformer rated for a pure sine (K-1) may overheat on such a load.'],
       ['The K-factor', 'It is a rating describing the harmonic spectrum the transformer can serve: K-1 for a sine wave, K-4, K-9, K-13 and up for increasingly distorted, high-eddy-load currents. It is derived from the harmonic current spectrum.'],
@@ -626,9 +627,9 @@ const ARTICLES = [
     sections: [
       ['What it does', 'It reproduces, at a smaller current, the primary current for relays and meters. Being fitted around the bushing, it is compact and needs no separate primary conductor.'],
       ['Use in protection', 'Differential protection compares bushing CTs on the HV and LV windings to detect internal faults; overcurrent protection uses them for back-up and protection.'],
-      ['Considerations', 'Accuracy class, ratio, burden and saturation behaviour matter so the CT saturates correctly under fault and does not misoperate the protection.'],
+      ['Considerations', 'Accuracy class, ratio, burden and saturation behaviour matter so the CT does not saturate within its accuracy-limit factor and does not misoperate the protection.'],
     ],
-    refs: ['IEC 60044-1 (instrument transformers)', 'IEC 60076-1'],
+    refs: ['IEC 61869-2:2012 (current transformers)', 'IEEE C57.13-2016'],
     comps: ['transformer-bushings', 'protection-monitoring'], types: ['PT', 'DT'],
   },
   {
@@ -674,7 +675,7 @@ const ARTICLES = [
     slug: 'vpi-processing', topic: 'Manufacturing', level: 'Intermediate', minutes: 5,
     title: 'What Is VPI (Vacuum Pressure Impregnation)?',
     question: 'What is VPI processing of a transformer?',
-    quick: 'VPI (vacuum pressure impregnation) is a process that infuses the insulation of a winding (often dry-type) with a liquid resin by applying a vacuum to remove air and then pressure to drive the resin into the insulation. After curing, the winding is compact, sealed and moisture-resistant, with high mechanical and dielectric strength — common for cast-resin and VPI dry-type transformers.',
+    quick: 'VPI (vacuum pressure impregnation) is a process that infuses the insulation of a winding (often dry-type) with a liquid resin by applying a vacuum to remove air and then pressure to drive the resin into the insulation. After curing, the winding is compact, sealed and moisture-resistant, with high mechanical and dielectric strength — common for VPI dry-type transformers.',
     sections: [
       ['The process', 'The winding is placed in a tank, a vacuum is applied to evacuate air and moisture, then the resin is introduced under pressure so it penetrates the insulation and fills the voids, and finally the unit is drained and cured (often with heat).'],
       ['What it achieves', 'VPI yields a dense, void-free, moisture-resistant insulation system with improved dielectric, mechanical and thermal performance.'],
@@ -687,7 +688,7 @@ const ARTICLES = [
     slug: 'induced-voltage-test', topic: 'Testing', level: 'Intermediate', minutes: 5,
     title: 'What Is an Induced Voltage Test (IVT)?',
     question: 'What is an induced voltage (overvoltage) test on a transformer?',
-    quick: 'The induced voltage (or induced overvoltage) test applies a higher-than-rated frequency and voltage to the winding to stress the insulation between turns and between windings without over-exciting the core. It verifies the turn-to-turn and winding-to-winding insulation. It is often combined with a power-frequency or very-low-frequency (VLF) withstand test.',
+    quick: 'The induced voltage (or induced overvoltage) test applies a higher-than-rated frequency and voltage to the winding to stress the insulation between turns and between windings without over-exciting the core. It verifies the turn-to-turn and winding-to-winding insulation. It is performed alongside the separate-source AC (applied-voltage) withstand test; very-low-frequency (VLF) testing is a cable technique, not a transformer factory test. For Um > 72.5 kV IEC 60076-3:2013 combines the induced test with a partial-discharge measurement (IVPD) at a one-hour level of 1.58 Ur/√3.',
     sections: [
       ['Its purpose', 'It proves the insulation between turns, discs and windings is adequate, which the applied-voltage test (between windings and ground) does not fully cover.'],
       ['How it is done', 'A higher-frequency voltage (so the flux stays in range) is applied to one winding with the other open or grounded as specified, inducing a test voltage across the winding that stresses the internal insulation.'],
@@ -700,9 +701,9 @@ const ARTICLES = [
     slug: 'transformer-bushing-failure', topic: 'Failures', level: 'Intermediate', minutes: 6,
     title: 'Why Do Transformer Bushings Fail?',
     question: 'What causes a transformer bushing to fail?',
-    quick: 'Bushing failures are a leading cause of transformer outages. They come from moisture ingress and contamination, internal partial discharge, insulation aging, overheating at the connections, and mechanical or voltage stress. Because a bushing failure can flash over to the tank or explode, condition monitoring (capacitance and tan-delta) and power-factor testing on the bushing are critical.',
+    quick: 'Bushing failures are a significant share of major transformer failures (CIGRE TB 642). They come from moisture ingress and contamination, internal partial discharge, insulation aging, overheating at the connections, and mechanical or voltage stress. Because a bushing failure can flash over to the tank or explode, condition monitoring (capacitance and tan-delta) and power-factor testing on the bushing are critical.',
     sections: [
-      ['Common causes', 'Moisture and contamination lower the insulation strength; a degraded or delaminated paper/resin core leads to partial discharge and thermal runaway; poor connections overheat; and voltage surges or mechanical stress initiate a turn fault.'],
+      ['Common causes', 'Moisture and contamination lower the insulation strength; a degraded or delaminated paper/resin core leads to partial discharge and thermal runaway; poor connections overheat; and voltage surges or mechanical stress can initiate breakdown between the grading layers of the core.'],
       ['Why it is dangerous', 'Unlike some faults, a bushing failure can be sudden and energetic, and the porcelain or composite housing can shatter, causing a tank rupture or a fire.'],
       ['Detection and prevention', 'Monitor bushing capacitance and power factor (tan-delta) via the test tap — a rising value indicates moisture or contamination. Regular tan-delta, IR/thermography and PD testing catch problems before failure.'],
     ],
@@ -713,11 +714,11 @@ const ARTICLES = [
     slug: 'transformer-overheating', topic: 'Failures', level: 'Intermediate', minutes: 6,
     title: 'What Causes a Transformer to Overheat?',
     question: 'What causes transformer overheating?',
-    quick: 'Transformer overheating is most often due to overloading beyond the design thermal limit, a loss or failure of cooling (fan or pump, blocked radiators, low oil or a faulty pump), high ambient temperature, high ambient or low oil level, or poor oil flow from a sticky valve or sludge. Once the hottest-spot temperature rises too far, the insulation ages rapidly and can fail.',
+    quick: 'Transformer overheating is most often due to overloading beyond the design thermal limit, a loss or failure of cooling (fan or pump, blocked radiators, low oil or a faulty pump), high ambient temperature, low oil level, or poor oil flow from a sticky valve or sludge. Once the hottest-spot temperature rises too far, the insulation ages rapidly and can fail.',
     sections: [
       ['Load and cooling', 'Running above nameplate without the corresponding cooling (ONAN/ONAF/OFAF) raises the winding and oil temperature. A failed fan or pump, blocked radiator, or a low oil level removes the designed cooling.'],
       ['System and environment', 'High ambient temperature derating, convector blockage, and internal sludge or poor oil flow all reduce the effective cooling or raise the loss.'],
-      ['Consequence', 'Each extra 6 K above the reference hot-spot roughly doubles the ageing rate (IEC 60076-7), and prolonged overheating can release moisture and lead to a thermal or electrical failure.'],
+      ['Consequence', 'For non-thermally upgraded paper, each extra 6 K above the 98 °C reference hot-spot roughly doubles the ageing rate (IEC 60076-7), and prolonged overheating can release moisture and lead to a thermal or electrical failure.'],
     ],
     refs: ['IEC 60076-2 (temperature rise)', 'IEC 60076-7 (loading guide)'],
     comps: ['transformer-cooling', 'protection-monitoring', 'oil-fluids-preservation'], types: ['PT', 'DT'],
@@ -752,11 +753,11 @@ const ARTICLES = [
     slug: 'transformer-vector-groups', topic: 'Design', level: 'Beginner', minutes: 5,
     title: 'What Are Transformer Vector Groups (e.g. Dyn11, YNd1)?',
     question: 'What is a transformer vector group (Dyn11, YNd1)?',
-    quick: 'The vector group describes the HV and LV winding connections and their phase relationship. The capital letters give the HV winding (D=delta, Y=star/wye, Z=zigzag), the lowercase the LV winding, and the number gives the phase shift in 30-degree steps (e.g. Dyn11 means delta-HV, star-LV plus an 11 oclock i.e. -30 degree shift). It determines how transformers can be paralleled and the third-harmonic/neutral behaviour.',
+    quick: 'The vector group describes the HV and LV winding connections and their phase relationship. The capital letters give the HV winding (D=delta, Y=star/wye, Z=zigzag), the lowercase the LV winding, and the number gives the phase shift in 30-degree steps (e.g. Dyn11 means delta-HV, star-LV plus an 11 o’clock position, i.e. the LV leads the HV by 30° (a 330° lag)). It determines how transformers can be paralleled and the third-harmonic/neutral behaviour.',
     sections: [
       ['Reading the code', 'The first letter is the HV winding connection, the second the LV winding, and the number the phase displacement of the LV relative to the HV (in 30-degree increments on a clock face). A third letter may indicate a tertiary winding.'],
       ['Why it matters', 'Parallel operation requires matching vector groups and phase shift; the connection also affects the neutral, grounding and third-harmonic current.'],
-      ['Common groups', 'Dyn11 and Dyn5 (delta-HV, star-LV) are common for distribution; YNd1 and YNd5 for power with a delta tertiary; YNy0 for a star-star with no phase shift.'],
+      ['Common groups', 'Dyn11 and Dyn5 (delta-HV, star-LV) are common for distribution; YNd1 and YNd11 (star HV, delta LV) for power and generator step-up; a tertiary is written separately, e.g. YNyn0+d; YNy0 for a star-star with no phase shift.'],
     ],
     refs: ['IEC 60076-1', 'IEEE C57.12.00'],
     comps: ['conductors-and-core', 'tank-and-mechanical'], types: ['PT', 'DT'],
@@ -767,7 +768,7 @@ const ARTICLES = [
     question: 'What is transformer inrush current and why does it happen?',
     quick: 'Magnetising inrush is the large, decaying current that flows when a transformer is energised, caused by the sudden build-up of flux in the core. It can be many times the rated current (often 8-12x, more for large or weakly damped units) and contains a strong second harmonic and DC component. It can stress the transformer and, if not filtered, trip the differential protection.',
     sections: [
-      ['Why it occurs', 'On energisation the flux in the core is determined by the voltage and the residual flux from the last de-energisation. If the residual flux and the required flux oppose, the core can temporarily saturate, drawing a very large magnetising current.'],
+      ['Why it occurs', 'On energisation the flux in the core is determined by the voltage and the residual flux from the last de-energisation. If the residual flux has the same polarity as the flux change the applied voltage demands (worst when switching near a voltage zero), the peak flux can approach twice the normal peak plus the residual flux, so the core saturates and draws a very large magnetising current.'],
       ['Its shape', 'The current is initially high, decays over several cycles or seconds, is asymmetric (DC offset), and is rich in the second harmonic and harmonics.'],
       ['Handling it', 'Differential protection is usually given a harmonic (often second-harmonic) restraint or a time delay to avoid a false trip on inrush. The inrush is a normal, non-fault condition.'],
     ],
@@ -793,7 +794,7 @@ const ARTICLES = [
     question: 'How should a spare transformer be stored?',
     quick: 'A stored transformer must be kept dry, clean and protected: stored on jacks or skids in a dry, ventilated, weather-protected place, with the oil level maintained, the breather kept dry/connected, the bushings covered, and desiccant replaced as needed. Periodic inspection and dielectric/DGA checks keep the spare ready, since moisture and contamination damage the insulation over time.',
     sections: [
-      ['Placement', 'Store on a hard, level base (jacks/skids), under cover and away from heat, flowers and vibration; keep the tank protected and the bushings and fittings covered.'],
+      ['Placement', 'Store on a hard, level base (jacks/skids), under cover and away from heat and vibration; keep the tank protected and the bushings and fittings covered.'],
       ['Oil and breather', 'Maintain the correct oil level, keep the conservator and breather functional, and replace the desiccant when it changes colour so moisture does not enter.'],
       ['Periodic checks', 'Inspect for leaks and rust, and periodically check the oil level, moisture and dissolved gas so the spare is ready to energise at short notice.'],
     ],
@@ -844,7 +845,7 @@ const ARTICLES = [
     slug: 'transformer-noise', topic: 'Design', level: 'Intermediate', minutes: 5,
     title: 'What Determines a Transformer Noise Level?',
     question: 'What causes transformer noise and how is it reduced?',
-    quick: 'Transformer noise is dominated by the magnetostriction of the core (the core vibrates with each magnetisation cycle) plus the noise from the cooling fans and pumps. The sound level depends on the flux density, core material, construction, load and cooling, and is reduced by using lower-loss/amorphous core, higher-grade steel, better clamping and acoustic enclosures. Standards specify a maximum noise level.',
+    quick: 'Transformer noise is dominated by the magnetostriction of the core (the core vibrates with each magnetisation cycle) plus the noise from the cooling fans and pumps. The sound level depends on the flux density, core material, construction, load and cooling, and is reduced by using low-magnetostriction (e.g. high-permeability grain-oriented) steel, a lower flux density, step-lap joints, better clamping and acoustic enclosures. Lower loss does not by itself mean lower noise; amorphous cores are generally not quieter. Standards specify a maximum noise level.',
     sections: [
       ['Sources of noise', 'Core magnetostriction is the main source at about 100-120 Hz and its harmonics; the cooling fans and oil pumps add broadband and tonal noise.'],
       ['How it is reduced', 'Use a lower magnetostriction core material, run at lower flux density, use better core and tank construction, and add sound enclosures or barriers near the site.'],
@@ -870,7 +871,7 @@ const ARTICLES = [
     slug: 'temperature-rise-test', topic: 'Testing', level: 'Intermediate', minutes: 6,
     title: 'What Is a Transformer Temperature Rise Test?',
     question: 'What is a temperature rise test on a transformer?',
-    quick: 'A temperature rise (heat run) test confirms the transformer can carry its rated load without exceeding the specified oil and winding temperature rise. The transformer is loaded (or run at the equivalent loss) until the temperatures stabilise, then the oil and winding, and hottest-spot temperatures are measured and compared against the limits (e.g. 65 K rise for some IEEE designs, IEC using the appropriate class). It verifies the cooling design.',
+    quick: 'A temperature rise (heat run) test confirms the transformer can carry its rated load without exceeding the specified oil and winding temperature rise. The transformer is loaded (or run at the equivalent loss) until the temperatures stabilise, then the oil and winding, and hottest-spot temperatures are measured and compared against the limits (e.g. IEEE C57.12.00: 65 K average winding; IEC 60076-2:2011 Table 1: 60 K top oil and 65 K average winding for liquid-immersed units). It verifies the cooling design.',
     sections: [
       ['What it proves', 'It verifies that the cooling system can hold the oil and winding temperature rise within the design limit at the rated (or specified) load.'],
       ['How it is run', 'The transformer is loaded to give the rated loss (often by running at rated current, or by a short-circuit back-to-back heat run), and the temperatures are read once they stabilise. The winding temperature is derived from resistance change and the hottest-spot from the design gradient.'],
@@ -883,9 +884,9 @@ const ARTICLES = [
     slug: 'lightning-impulse-test', topic: 'Testing', level: 'Intermediate', minutes: 6,
     title: 'What Is a Lightning Impulse Test?',
     question: 'What is a lightning impulse test on a transformer?',
-    quick: 'A lightning impulse test applies a standard 1.2/50 microsecond voltage surge to the transformer winding to prove the insulation can withstand a lightning surge. It is a type test, and a routine test for Um ≥ 72.5 kV (IEC 60076-3:2013). Full-wave and chopped-wave forms are applied, and the insulation must not flash over or show a breakdown. It verifies the insulation coordination and the BIL.',
+    quick: 'A lightning impulse test applies a standard 1.2/50 microsecond voltage surge to the transformer winding to prove the insulation can withstand a lightning surge. It is a type test, and a routine test for Um > 72.5 kV (IEC 60076-3:2013). Full-wave (and, for higher voltages, chopped-wave) impulses are applied, and the insulation must not flash over or show a breakdown. It verifies the insulation coordination and the BIL.',
     sections: [
-      ['The standard wave', 'A 1.2/50 us lightning impulse (rise time 1.2 us, time to half-value 50 us) is the standard. The full-wave and chopped-wave (a wave cut by a gap flashover) are both applied.'],
+      ['The standard wave', 'A 1.2/50 us lightning impulse (rise time 1.2 us, time to half-value 50 us) is the standard. The full wave is always applied; the chopped wave (cut by a gap) is added for higher-voltage units (in IEC 60076-3:2013 it is included for Um > 170 kV and otherwise by agreement).'],
       ['What it verifies', 'It proves the insulation (especially between turns and windings, and at the BIL) can survive a lightning surge without a flashover or insulation breakdown.'],
       ['Why it matters', 'It confirms the insulation coordination with the arresters and the system overvoltage, so the transformer does not fail on a surge in service.'],
     ],
@@ -896,7 +897,7 @@ const ARTICLES = [
     slug: 'insulation-resistance-test', topic: 'Testing', level: 'Beginner', minutes: 5,
     title: 'What Is an Insulation Resistance (IR / Megger) Test?',
     question: 'What is an insulation resistance test on a transformer?',
-    quick: 'An insulation resistance (IR) test, run with a megger (insulation tester) or the winding, measures the DC insulation resistance between windings and between windings and earth, and its ratio to detect moisture, contamination and a weakened insulation. The values are compared over time and against the absorption ratio (PI or DAR) to judge the condition.',
+    quick: 'An insulation resistance (IR) test, run with an insulation-resistance tester (megger), measures the DC insulation resistance between windings and between windings and earth, and its ratio to detect moisture, contamination and a weakened insulation. The values are compared over time and against the absorption ratio (PI or DAR) to judge the condition.',
     sections: [
       ['What it does', 'A DC voltage is applied and the leakage current measures the insulation resistance. Low resistance indicates moisture, contamination or a weak path; a rising value with time is a good sign.'],
       ['Testing winding to earth and winding to winding', 'Both are measured, and the results (and the polarisation index) help distinguish a dry, sound insulation from a moist or contaminated one.'],
@@ -911,7 +912,7 @@ const ARTICLES = [
     question: 'How is a transformer core built and stepped?',
     quick: 'A transformer core is built from grain-oriented electrical steel strip, cut into mitred, stepped laminations and stacked (or wound) to form the magnetic circuit with a specified cross-section and step. The laminations are insulated from each other, clamped and the flux density and losses kept within design. The step (or build) and the mitre increase performance.',
     sections: [
-      ['Cutting', 'The grain-oriented steel strip is cut (guillotined or lasered) into core plates with mitred corners so the flux aligns with the grain direction and the yoke joints are tight.'],
+      ['Cutting', 'The grain-oriented steel strip is slit and cut to length (sheared) into core plates with mitred corners so the flux aligns with the grain direction and the yoke joints are tight.'],
       ['Building / stacking', 'The plates are stacked (or wound into a loop for a wound core) with a stepped cross-section to fill the coil-window area, with the laminations insulated from each other to limit eddy currents.'],
       ['Clamping and finishing', 'The core is clamped, the yoke and frames fitted, and the unit is finished so the flux density, losses and noise meet the design. The step count and plate width balance loss against filling the window.'],
     ],
@@ -926,19 +927,19 @@ const ARTICLES = [
     sections: [
       ['kVA (apparent power)', 'It is V x I, the total power the transformer can deliver at the rated voltage and current, and what sets the conductor and core size and heating.'],
       ['kW (real power)', 'It is the power actually used, equal to kVA x power factor. A low power factor load draws more current for the same real power, so it heats the transformer more.'],
-      ['Why it matters', 'Since the transformer heating is set by the current (apparent power), it is rated in kVA/kW... i.e. in kVA, not kW. Exceeding the kVA over-heats the unit regardless of the power factor.'],
+      ['Why it matters', 'Since the transformer heating is set by the current (apparent power), it is rated in kVA, not kW. Exceeding the kVA over-heats the unit regardless of the power factor.'],
     ],
     refs: ['IEC 60076-1', 'IEEE C57.12.00'],
     comps: ['tank-and-mechanical', 'conductors-and-core'], types: ['PT', 'DT'],
   },
   {
     slug: 'parallel-operation-transformers', topic: 'Grid', level: 'Intermediate', minutes: 6,
-    title: 'How Do You Parallel (Reinforce) Two Transformers?',
+    title: 'How Do You Parallel Two Transformers?',
     question: 'How do two transformers work in parallel?',
     quick: 'Transformers are paralleled to increase capacity or for redundancy. For safe parallel operation the transformers must have the same vector group, the same voltage ratio (within tolerance), similar impedance (so load shares correctly), and the same phase sequence. The total capacity is then the sum, but each unit carries load proportional to its rating and inversely to its impedance.',
     sections: [
       ['The requirements', 'Same vector group and phase sequence so the voltages are in phase; same (or near) ratio; and matching impedance within close limits so the load divides correctly. Different impedances cause one unit to over- or under-load.'],
-      ['How load shares', 'With equal ratios the load divides inversely with the impedance; with unequal impedance, the lower impedance unit carries more. Circulating current can also flow if ratios or impedances differ.'],
+      ['How load shares', 'With equal ratios the load divides inversely with the impedance; with unequal impedance, the lower impedance unit carries more. A circulating current flows if the no-load voltage ratios or phase shifts differ; unequal per-unit impedances only cause unequal load sharing.'],
       ['Why rely on it', 'Paralleling lets you add capacity without replacing a unit and provides redundancy. You must verify the vector group, ratio and impedance before closing the second transformer into service.'],
     ],
     refs: ['IEC 60076-1', 'IEEE C57.12.00'],
@@ -950,7 +951,7 @@ const ARTICLES = [
     question: 'How should a transformer be earthed?',
     quick: 'A transformer tank and fittings are earthed to ensure the metal is at earth potential and to carry any fault current back, protecting people and the network. Body/earth grounding uses a low-impedance connection (often copper) to the station earth mat; the neutral is earthed (solidly, or via an impedance) depending on the system. Bonding, low resistance and regular checking are essential.',
     sections: [
-      ['What is earthed', 'The tank, the core and clamping frames, the bushings are earthed (sometimes via a core earth/connection), and the neutral is earthed according to the system.'],
+      ['What is earthed', 'The tank and frames are earthed; the core is earthed at a single point via an accessible core-earth link; bushing flanges are bonded to the tank; and the neutral is earthed according to the system.'],
       ['Why it matters', 'Earthing keeps the tank and fittings at earth potential so no dangerous voltage appears on the enclosure, and it provides a return path for fault current to operate the protection.'],
       ['Good practice', 'Use a low-resistance conductor and reliable connections to the earth mat, bond all the metal parts, and test the earth (and the core/neutral earth) regularly. A poor earth is a safety and protection risk.'],
     ],
@@ -1030,7 +1031,7 @@ const ARTICLES = [
     quick: 'Creepage distance is the shortest distance along the surface of an insulator (bushing) between the live and earthed ends; it is specified in mm per kV by the pollution class so an external flashover does not occur in a contaminated or wet environment. A higher pollution class (heavier contamination) needs a longer creepage path on the bushing or insulator.',
     sections: [
       ['What it is', 'The path along the insulator surface from the live conductor to earth. In contaminated or salt/industrial conditions, a flashover can develop along this surface if the creepage is too short.'],
-      ['Pollution classes', 'The site protects against this by selecting a pollution class (e.g. light, medium, heavy, very heavy), which sets the creepage distance per kV (e.g. 20 mm/kV for heavy pollution).'],
+      ['Pollution classes', 'The site protects against this by selecting a pollution class (e.g. light, medium, heavy, very heavy), which sets the creepage distance per kV (on the legacy IEC 60071-2 / IEC 60815 scale: 16, 20, 25 and 31 mm/kV for light, medium, heavy and very heavy pollution; IEC TS 60815-1 now expresses this as a unified specific creepage distance).'],
       ['Why it matters', 'It prevents a flashover that would trip the unit, damage the bushing, and disrupt supply. Selecting the right creepage and the right bushing (or profile) is part of the specification.'],
     ],
     refs: ['IEC 60815 (selection of insulators)', 'IEC 60137 (bushings)'],
@@ -1040,10 +1041,10 @@ const ARTICLES = [
     slug: 'transformer-moisture-testing', topic: 'Diagnostics', level: 'Intermediate', minutes: 6,
     title: 'How Is Moisture Measured in a Transformer?',
     question: 'How is moisture measured in a transformer?',
-    quick: 'Moisture in a transformer is measured in the oil (water content in ppm, often by Karl Fischer titration) and inferred in the insulation (paper) by dividing the oil moisture by the partition coefficient. High moisture lowers dielectric strength and accelerates aging, so it is a key condition indicator. Online moisture sensors and oil sampling both track it.',
+    quick: 'Moisture in a transformer is measured in the oil (water content in ppm, often by Karl Fischer titration) and estimated in the paper from the oil water content and the oil temperature using moisture-equilibrium curves, which are valid only near equilibrium. High moisture lowers dielectric strength and accelerates aging, so it is a key condition indicator. Online moisture sensors and oil sampling both track it.',
     sections: [
       ['Measuring in oil', 'A sample is titrated (Karl Fischer) to give the water content in ppm. The value is compared against limits for the oil and loading.'],
-      ['Moisture in the paper', 'The paper holds most of the moisture; the oil/paper partition coefficient is used to estimate the total. The balance shifts with temperature, so the interpretation depends on the temperature.'],
+      ['Moisture in the paper', 'The paper holds most of the moisture; equilibrium curves (oil water content versus temperature) are used to estimate the paper moisture. The balance shifts with temperature, so the interpretation depends on the temperature.'],
       ['Why it matters', 'Moisture lowers the breakdown voltage, causes partial discharge and accelerates paper aging (and can release water at high temperature). Keeping the unit dry extends the insulation life.'],
     ],
     refs: ['IEC 60599', 'IEEE C57.104'],
@@ -1079,9 +1080,9 @@ const ARTICLES = [
     slug: 'transformer-neutral-earthing', topic: 'Grid', level: 'Intermediate', minutes: 5,
     title: 'How Is a Transformer Neutral Earthed?',
     question: 'How is a transformer neutral earthed and why?',
-    quick: 'The neutral is earthed to hold the system at earth potential and to provide a return path for earth faults, and the method (solid, resistance, reactance or insulated) depends on the system voltage and the allowed earth-fault current. Solidly-earthed systems give a low fault level; resistance or reactance earthed systems limit the current and reduce plant stress and electromechanical torque.',
+    quick: 'The neutral is earthed to hold the system at earth potential and to provide a return path for earth faults, and the method (solid, resistance, reactance or insulated) depends on the system voltage and the allowed earth-fault current. Solid earthing gives the highest earth-fault current and the lowest overvoltage on the healthy phases; resistance or reactance earthing limits the earth-fault current and the resulting damage.',
     sections: [
-      ['Earthing methods', 'Solid earthing clips the neutral to earth; resistance earthing limits the current; reactance (e.g. Petersen coil) earthing compensates the capacitive current; and a high-impedance or isolated earth is used in some small systems.'],
+      ['Earthing methods', 'Solid earthing connects the neutral directly to earth; resistance earthing limits the current; resonant (Petersen coil) earthing compensates the capacitive earth-fault current; and a high-impedance or isolated earth is used in some small systems.'],
       ['Why it matters', 'The method sets the earth-fault current, the overvoltage on the healthy phases, and the damage to the windings, so it affects the protection and the transformer design.'],
       ['Design and protection', 'The neutral earthing affects the required insulation and the protection coordination (earth-fault, differential, restricted earth-fault), so it must be chosen and set to match the system.'],
     ],
@@ -1118,7 +1119,7 @@ const ARTICLES = [
     slug: 'winding-temperature-monitoring', topic: 'Field Service', level: 'Intermediate', minutes: 5,
     title: 'How Is Transformer Winding Temperature Monitored?',
     question: 'How is the winding temperature of a transformer monitored?',
-    quick: 'Winding temperature is monitored by winding temperature indicators (WTI) that use a sensor in a pocket heated by the oil (a thermal image of the hottest spot) or by measuring the oil temperature and adding a winding gradient, or by the winding resistance. It is used to control the cooling and the loading and to alarm before the hottest-spot limit is exceeded.',
+    quick: 'Winding temperature is monitored by winding temperature indicators (WTI) that use a sensor in a top-oil pocket with a heater fed from a load-current CT, adding the winding gradient (a thermal image of the hottest spot) or by measuring the oil temperature and adding a winding gradient, or by the winding resistance. It is used to control the cooling and the loading and to alarm before the hottest-spot limit is exceeded.',
     sections: [
       ['Oil and WTI', 'The oil temperature is measured directly; the winding temperature is derived by a winding-temperature indicator that simulates the heat gradient, giving a proximity to the hottest spot.'],
       ['Fiber-optic (optional)', 'Optical sensors can be placed directly in the winding hottest-spot for a precise reading, useful on large or high-loaded units.'],
@@ -1144,10 +1145,10 @@ const ARTICLES = [
     slug: 'transformer-short-circuit-forces', topic: 'Design', level: 'Advanced', minutes: 6,
     title: 'What Are the Forces on a Transformer During a Short Circuit?',
     question: 'What forces act on a transformer during a short circuit?',
-    quick: 'During a short circuit, the fault current produces large electromagnetic forces on the windings that scale with the square of the current. Radial forces push the outer winding outwards (tension) and the inner winding inwards (compression), while axial forces push the windings vertically when the ampere-turns are unbalanced. The design must size the conductors, spacers and clamping so these forces do not deform or collapse the windings.',
+    quick: 'During a short circuit, the fault current produces large electromagnetic forces on the windings that scale with the square of the current. Radial forces push the outer winding outwards (tension) and the inner winding inwards (compression), while axial forces compress the windings (from the radial leakage flux at the winding ends) and increase where ampere-turns are unbalanced. The design must size the conductors, spacers and clamping so these forces do not deform or collapse the windings.',
     sections: [
       ['Radial forces', 'The leakage field interacts with the winding current to push the conductors radially: the outer winding is under tension, the inner under compression. Buckling or stretching is the risk.'],
-      ['Axial forces', 'If the ampere-turns of the HV and LV are not balanced, an axial force compresses or pushes the windings and their clamps. Clamping and end rings must resist this.'],
+      ['Axial forces', 'Axial compressive forces exist even with balanced ampere-turns, because the leakage flux turns radial at the winding ends; ampere-turn imbalance (for example at tapping zones) increases them and can push the windings apart axially. Clamping and end rings must resist this.'],
       ['Design and testing', 'The designer sizes the conductor and the axial/radial support, and the transformer is proven by the short-circuit withstand test (IEC 60076-5) so it survives the worst-case fault.'],
     ],
     refs: ['IEC 60076-5 (short-circuit)', 'IEEE C57.12.90'],
@@ -1158,7 +1159,7 @@ const ARTICLES = [
     slug: 'tap-changer-faults', topic: 'Failures', level: 'Intermediate', minutes: 6,
     title: 'What Faults Occur in an On-Load Tap-Changer (OLTC)?',
     question: 'What are common on-load tap-changer faults?',
-    quick: 'Common OLTC faults are contact wear or burning, diverter-switch and resistor failures (often from a broken transition path), mechanism and motor-drive faults, and oil contamination or gas (acetylene) from arcing. OLTC faults are a leading cause of transformer-related trips, and are detected by acetylene in the OLTC oil, contact resistance, temperature and operation monitoring.',
+    quick: 'Common OLTC faults are contact wear or burning, diverter-switch and resistor failures (often from a broken transition path), mechanism and motor-drive faults, and oil contamination or gas (acetylene) from arcing. OLTC faults are a significant share of transformer failures (CIGRE TB 642), and are detected by acetylene in the OLTC oil, contact resistance, temperature and operation monitoring.',
     sections: [
       ['Contact and diverter faults', 'The tap contacts and the diverter (especially the resistor/arc path) wear and arc under load. This is seen as acetylene in the OLTC oil and as increased contact resistance.'],
       ['Mechanical and drive faults', 'The drive, the mechanism and the coupling can seize, slip or fail to complete a tap change, causing a mis-position.'],
@@ -1186,7 +1187,7 @@ const ARTICLES = [
     question: 'What is a pole-mounted transformer?',
     quick: 'A pole-mounted transformer is a small distribution transformer mounted on a utility pole, stepping the MV distribution voltage down to low voltage for a few households or a small area. It is typically oil-filled, self-cooled (ONAN), rated from a few kVA to a few hundred kVA, and simple, robust and low-cost.',
     sections: [
-      ['Its design', 'It is a compact, liquid-filled distribution unit buoyed on the pole by brackets, with HV and LV bushings and lightning protection. It is self-cooled and needs minimal maintenance.'],
+      ['Its design', 'It is a compact, liquid-filled distribution unit mounted on the pole by brackets, with HV and LV bushings and lightning protection. It is self-cooled and needs minimal maintenance.'],
       ['Where it is used', 'Overhead distribution networks, especially in suburban, rural and developing grids, delivering power close to the load.'],
       ['Why it matters', 'It is the standard low-cost way to step the grid voltage down at the pole and is produced at very large volume. Newer, more efficient units reduce no-load loss.'],
     ],
@@ -1240,7 +1241,7 @@ const ARTICLES = [
     sections: [
       ['How it differs', 'Unlike a conservator-type unit that breathes, the sealed unit has no air ingress, so the oil stays dry and needs no breather. The tank expands and contracts (often via corrugations) to absorb the oil volume change.'],
       ['Advantages', 'No moisture or oxygen ingress, lower maintenance, longer oil life and a compact design — used widely for distribution and pad-mounted transformers.'],
-      ['Considerations', 'The sealed design means the pressure can rise with temperature, so the tank and relief must be rated; the unit generally needs replacing rather than oil top-up.'],
+      ['Considerations', 'The sealed design means the pressure can rise with temperature, so the tank and relief must be rated; oil top-up is rarely needed.'],
     ],
     refs: ['IEC 60076-1', 'IEEE C57.12.00'],
     comps: ['tank-and-mechanical', 'oil-fluids-preservation'], types: ['DT'],
@@ -1291,7 +1292,7 @@ const ARTICLES = [
     quick: 'A unit (or station) transformer supplies the auxiliary power to a power plant (pumps, fans, controls) and is fed either from the generator terminals (a unit transformer) or from the grid (a station/start-up transformer). A unit transformer steps the generator voltage down to the plant auxiliary voltage, so the plant can run and start up.',
     sections: [
       ['Unit transformer', 'It is connected to the generator terminal and steps the voltage down to the plant auxiliary (e.g. 13.8 kV to 400 V / 6.6 kV) for the pumps, fans, drives and controls.'],
-      ['Station / start-up transformer', 'It is fed from the grid and provides a start-up (black-start) source so the plant can be started when the generator is off, and can supply the auxiliaries in an emergency.'],
+      ['Station / start-up transformer', 'It is fed from the grid and provides a start-up source so the plant can be started when the generator is off, and can supply the auxiliaries in an emergency.'],
       ['Why it matters', 'Reliable auxiliary power is essential to run and start the plant, so the unit/station transformer is critical to availability and is usually well-protected and monitored.'],
     ],
     refs: ['IEC 60076-1', 'IEEE C57.12.00'],
@@ -1355,7 +1356,7 @@ const ARTICLES = [
     question: 'How is a transformer winding manufactured?',
     quick: 'A transformer winding is wound from insulated copper or aluminium conductor (round, rectangular, foil or CTC) on a former, with turns laid axially in layers or as discs, and with insulating paper/DDP between turns and layers. The winding is tightly and evenly wound, then clamped, dried and often VPI-impregnated. Quality of the winding (tension, insulation, alignment) is critical to the insulation and short-circuit strength.',
     sections: [
-      ['The conductor and insulation', 'The conductor is insulated (enamel + paper so enameled) and wound with insulating paper/DDP between the turns and layers for the insulation. Large windings use CTC or foil.'],
+      ['The conductor and insulation', 'The conductor is insulated (enamelled and/or paper-covered) and wound with insulating paper/DDP between the turns and layers for the insulation. Large windings use CTC or foil.'],
       ['The wound form', 'The winding is wound on a cylindrical former as concentric layers or as a stack of disc coils, with careful tension and alignment so the turns are even and tightly packed.'],
       ['Drying and finishing', 'The winding is dried (to remove moisture), clamped and often vacuum-pressure impregnated (VPI) for dry-type, then assembled into the core and tank.'],
     ],
@@ -1407,7 +1408,7 @@ const ARTICLES = [
     question: 'How do you select transformer insulation materials?',
     quick: 'Select insulation materials by the required thermal class (A/B/F/H), the dielectric stress and clearances, the mechanical duty, and the compatibility with the insulating fluid. Kraft paper/pressboard for oil units, aramid and epoxy for dry-type, and DDP for interturn, are chosen so the insulation can withstand the temperature, voltage and mechanical forces while staying compatible and contaminant-free.',
     sections: [
-      ['Thermal and dielectric', 'The material must be rated for the hottest-spot temperature (its insulation class) and withstand the dielectric stress at the clearances and the impulse level.'],
+      ['Thermal and dielectric', 'The material must suit the hot-spot temperature (for oil-immersed cellulose, IEC 60076-7 uses 98 °C for normal kraft and 110 °C for thermally upgraded paper; dry-type uses IEC 60085 classes) and withstand the dielectric stress at the clearances and the impulse level.'],
       ['Mechanical and process', 'It must hold its shape under clamping and short-circuit forces, and be compatible with the winding process, drying and impregnation.'],
       ['Compatibility with the fluid', 'The insulation must be compatible with the oil or ester and free of conductive particles and contaminants that could degrade the dielectric strength.'],
     ],
@@ -1448,7 +1449,7 @@ const ARTICLES = [
     sections: [
       ['The problem', 'Moisture in the insulation lowers the breakdown voltage, causes partial discharge and accelerates aging; insulation should be kept dry by design and by the breather.'],
       ['Drying methods', 'Hot-oil circulation, vacuum drying, or vapour-phase/low-frequency drying are used to drive the water out, often with a heated tank and a vacuum.'],
-      ['Verification', 'The success is verified by insulating resistance, power factor, moisture (oil and paper), DP, and sometimes a drying curve, before the unit is returned to service.'],
+      ['Verification', 'The success is verified by insulation resistance, power factor, moisture (oil and paper), DP, and sometimes a drying curve, before the unit is returned to service.'],
     ],
     refs: ['IEC 60076-1', 'IEC 60599'],
     comps: ['oil-fluids-preservation', 'insulation-materials'], types: ['PT', 'DT'],
@@ -1483,7 +1484,7 @@ const ARTICLES = [
     slug: 'transformer-life-aging', topic: 'Failures', level: 'Intermediate', minutes: 6,
     title: 'What Determines the Life of a Transformer?',
     question: 'What determines the useful life of a transformer?',
-    quick: 'A transformer life is governed mainly by the thermal aging of the insulation. The winding hottest-spot temperature sets the aging rate: roughly, each 6 K above the reference hot-spot doubles the ageing rate and halves the insulation life (IEC 60076-7). Moisture, oxygen, overloads and harmonics accelerate aging, while keeping the unit cool, dry, well-documented and well-maintained extends the life. Many reactors and power transformers reach 30-40 years, and good life management can push this further.',
+    quick: 'A transformer life is governed mainly by the thermal aging of the insulation. The winding hottest-spot temperature sets the aging rate: roughly, for non-thermally upgraded paper, each 6 K above the 98 °C reference hot-spot doubles the ageing rate and halves the insulation life (IEC 60076-7). Moisture, oxygen, overloads and harmonics accelerate aging, while keeping the unit cool, dry, well-documented and well-maintained extends the life. Many reactors and power transformers reach 30-40 years, and good life management can push this further.',
     sections: [
       ['The aging driver', 'The paper insulation ages with temperature; the hottest-spot temperature is the key. It is set by the load, the ambient, the cooling and the design.'],
       ['Accelerating factors', 'Moisture, oxygen, acidity, overload, harmonics and a poor cooling or oil condition accelerate aging and reduce the life.'],
@@ -1496,7 +1497,7 @@ const ARTICLES = [
     slug: 'oltc-maintenance', topic: 'Field Service', level: 'Intermediate', minutes: 6,
     title: 'How Is an On-Load Tap-Changer (OLTC) Maintained?',
     question: 'How is an on-load tap changer maintained?',
-    quick: 'OLTC maintenance follows the manufacturer cycle: inspect the contacts and the diverter for wear and arcing, test the oil (DGA for acetylene) and change it, check the drive and mechanism, measure the contact resistance, and verify the operation and the position. Many OLTCs are now sealed-for-life but still need periodic oil and DGA checks. A well-maintained OLTC prevents a leading cause of transformer faults.',
+    quick: 'OLTC maintenance follows the manufacturer cycle: inspect the contacts and the diverter for wear and arcing, test the oil (DGA for acetylene) and change it, check the drive and mechanism, measure the contact resistance, and verify the operation and the position. Many OLTCs are now sealed-for-life but still need periodic oil and DGA checks. Tap-changers are a significant share of major transformer failures (CIGRE TB 642), so OLTC maintenance matters.',
     sections: [
       ['Routine checks', 'Verify the operation and the position, check the motor drive and mechanism, and inspect the contacts and diverter for wear and arc tracking.'],
       ['Oil and DGA', 'Test the OLTC oil for acetylene and contamination; a rising acetylene indicates contact arcing, and the oil is changed per the schedule.'],
@@ -1522,11 +1523,11 @@ const ARTICLES = [
     slug: 'transformer-testing-sequence', topic: 'Testing', level: 'Intermediate', minutes: 6,
     title: 'What Is the Order of Transformer Tests?',
     question: 'What is the sequence of transformer tests?',
-    quick: 'Transformer tests follow a sequence: first the electrical measurements (ratio, polarity, winding resistance, vector group), then the dielectric tests (insulation resistance, power factor, applied and induced voltage), then the performance tests (no-load and load loss, impedance) and finally the temperature-rise and impulse tests. Lightning impulse is a type test and is routine for Um ≥ 72.5 kV (IEC 60076-3:2013). Short-circuit withstand is a special test by agreement (IEC 60076-5), not a type test. Routine tests are run on every unit, with type tests on the design.',
+    quick: 'Transformer tests follow a sequence: first the electrical measurements (ratio, polarity, winding resistance, vector group), then the performance tests (no-load and load loss, impedance), the temperature-rise test where it is included, and then the dielectric tests, with impulse tests before the AC (applied and induced) tests so the induced/partial-discharge test is the final dielectric check (IEC 60076-3:2013). Lightning impulse is a type test and is routine for Um > 72.5 kV (IEC 60076-3:2013). Short-circuit withstand is a special test by agreement (IEC 60076-5), not a type test. Routine tests are run on every unit, with type tests on the design.',
     sections: [
       ['Measurement', 'Turns ratio and polarity, vector group, winding resistance and the short-circuit impedance/leakage reactance are measured first.'],
-      ['Dielectric tests', 'Insulation resistance, power factor, the applied-voltage (between windings and earth) and induced-voltage (inter-turn) tests, and the impulse tests follow.'],
-      ['Performance and temperature', 'No-load and load losses, impedance, and the temperature-rise test on the design; then special tests by agreement.'],
+      ['Dielectric tests', 'Lightning (and switching) impulse tests come first, followed by the applied-voltage (windings to earth) and induced-voltage tests, so the induced test with partial-discharge measurement is the final dielectric check.'],
+      ['Performance and temperature', 'No-load and load losses and impedance are measured before the dielectric sequence; the temperature-rise test (a type test) is done before the dielectric tests when it is included; special tests follow by agreement.'],
     ],
     refs: ['IEC 60076-1', 'IEEE C57.12.90'],
     comps: ['protection-monitoring', 'conductors-and-core'], types: ['PT', 'DT'],
@@ -1574,9 +1575,9 @@ const ARTICLES = [
     slug: 'transformer-oil-regeneration', topic: 'Field Service', level: 'Intermediate', minutes: 6,
     title: 'What Is Transformer Oil Regeneration?',
     question: 'What is transformer oil regeneration?',
-    quick: 'Oil regeneration restores aged oil closer to new condition by removing the oxidation and aging products — acids, sludge, and polar compounds — usually with a fuller-earth or clay treatment, often combined with filtration and degassing. It lowers the acidity and raises the BDV and the colour, extending the oil and the transformer life, and is cheaper than a full oil replacement for a large unit.',
+    quick: 'Oil regeneration restores aged oil closer to new condition by removing the oxidation and aging products — acids, sludge, and polar compounds — usually with a fuller-earth or clay treatment, often combined with filtration and degassing. It lowers the acidity, raises the BDV and improves (lowers) the colour number, extending the oil and the transformer life, and is cheaper than a full oil replacement for a large unit.',
     sections: [
-      ['Wwhat it removes', 'It strips the acids, sludge, varnish and oxidation products that accumulate with aging, restoring the oil quality.'],
+      ['What it removes', 'It strips the acids, sludge, varnish and oxidation products that accumulate with aging, restoring the oil quality.'],
       ['The process', 'The oil is passed through a clay/earth reactor (or a regeneration column) that adsorbs the polar products, often followed by filtration, degassing and re-inhibition with an antioxidant.'],
       ['When to do it', 'When the acidity, BDV, colour or sludge indicate aging, regeneration restores the oil; combined with drying and DGA it can extend the transformer life.'],
     ],
@@ -1613,10 +1614,10 @@ const ARTICLES = [
     slug: 'transformer-rating-plate', topic: 'Standards', level: 'Beginner', minutes: 4,
     title: 'What Is on a Transformer Rating Plate?',
     question: 'What does a transformer nameplate / rating plate show?',
-    quick: 'A transformer rating plate (nameplate) gives the manufacturer, serial, the rated kVA/MVA, both voltage classes and the voltage ratio, the frequency, the impedance, the cooling class, the vector group, the losses, the insulation class, the temperature rise, and the connection/diagram. It is the authoritative summary of the design and is essential for operation, parallel and maintenance.',
+    quick: 'A transformer rating plate (nameplate) gives the manufacturer, serial, the rated kVA/MVA, both rated voltages and the voltage ratio, the frequency, the impedance, the cooling class, the vector group, the insulation levels, the temperature rise, and the connection/diagram. It is the authoritative summary of the design and is essential for operation, parallel and maintenance.',
     sections: [
-      ['Electrical ratings', 'Rated MVA/kVA, voltage ratio and both voltage classes, frequency, impedance (%Z), the no-load and load losses, and the vector group.'],
-      ['Design and duty', 'The cooling class (ONAN/ONAF/OFAF), the temperature rise, the insulation class, and the oil specification.'],
+      ['Electrical ratings', 'Rated MVA/kVA, voltage ratio and both voltage classes, frequency, impedance (%Z) and the vector group (losses are often added by agreement).'],
+      ['Design and duty', 'The cooling class (ONAN/ONAF/OFAF), the temperature rise, the insulation levels (LI/AC), and the oil type.'],
       ['Identification and connection', 'Manufacturer, serial and type, the year and standard, the connection (vector) diagram, and the tapping range and positions.'],
     ],
     refs: ['IEC 60076-1', 'IEEE C57.12.00'],
@@ -1756,12 +1757,14 @@ const ARTICLES = [
     slug: 'transformer-loss-evaluation', topic: 'Procurement', level: 'Intermediate', minutes: 6,
     title: 'What Is Loss Evaluation / Capitalisation?',
     question: 'What is transformer loss evaluation?',
-    quick: 'Loss evaluation (loss capitalization) converts the transformer no-load and load losses into a monetary value over the life, so bids can be compared on the total cost of ownership, not just the price. A loss-evaluation factor (in $/watt) is set for the no-load and load loss, and each unit is priced as the purchase price plus the capitalised value of its losses. A lower-loss unit can justify a higher price.',
+    quick: 'Loss evaluation (loss capitalization) converts the transformer no-load and load losses into a monetary value over the life, so bids can be compared on the total cost of ownership, not just the price. A loss-evaluation factor (in $/kW or $/W) is set for the no-load and load loss, and each unit is priced as the purchase price plus the capitalised value of its losses. A lower-loss unit can justify a higher price.',
     sections: [
       ['The idea', 'Because the losses cost energy every year of the life, a buyer sets a value (e.g. $/kW for the no-load and load loss) and adds the capitalised loss to the purchase price for a fair comparison.'],
       ['How it is used', 'Set the evaluation factors for the no-load and load loss (they differ), compute the loss value for each bid, and compare the total.'],
       ['Why it matters', 'It rewards a lower-loss, higher-efficiency transformer, which often pays for itself even if the purchase price is higher.'],
     ],
+    eq: 'TOC = purchase price + A·P0 + B·Pk, with A = h·c·PVF ($/kW of no-load loss) and B = A·LLF ($/kW of load loss), where h = 8,760 h/yr, c = energy cost, PVF = [1 − (1+i)^−n]/i and LLF = loss-load factor',
+    work: 'Illustrative assumptions: energy cost $0.080/kWh, discount rate 5 %, 40-year life. PVF = [1 − 1.05^−40]/0.05 ≈ 17.159. A = 8,760 × 0.080 × 17.159 ≈ $12,025 per kW of no-load loss. With a loss-load factor of 0.25, B ≈ 0.25 × 12,025 ≈ $3,006 per kW of load loss. A bid with 1 kW lower no-load loss is therefore worth about $12,000 more in price.',
     refs: ['IEC 60076-1', 'IEEE C57.12.00'],
     comps: ['conductors-and-core', 'transformer-cooling'], types: ['PT', 'DT'],
   },
@@ -1769,10 +1772,10 @@ const ARTICLES = [
     slug: 'transformer-temperature-rise-standard', topic: 'Standards', level: 'Intermediate', minutes: 5,
     title: 'What Is the Standard Temperature Rise of a Transformer?',
     question: 'What is the standard temperature rise of a transformer?',
-    quick: 'The temperature rise is the highest temperature above the ambient the winding (and oil) can reach at rated load, set by the standard and the insulation class. A common rise is 65 K for the average winding (IEEE) and 60/65 K for the oil; IEC uses the insulation class limit. The rise is verified in the temperature-rise test and limits the loading to keep the insulation within its class.',
+    quick: 'The temperature rise is the highest temperature above the ambient the winding (and oil) can reach at rated load, set by the standard. For liquid-immersed units IEC 60076-2:2011 (Table 1) sets 60 K top oil, 65 K average winding (70 K for directed oil flow) and 78 K hot-spot; IEEE C57.12.00 uses 65 K average winding, 65 K top oil and 80 K hot-spot. The rise is verified in the temperature-rise test.',
     sections: [
-      ['The rise and the class', 'The temperature rise (e.g. 65 K) is the increase above the ambient at rated load. The insulation class (A/B/F/H) sets the maximum hottest-spot, so the rise must keep the hottest-spot within the class.'],
-      ['IEEE vs IEC', 'IEEE commonly uses a 65 C rise (oil and winding), and IEC sets the rise by the insulation class and the cooling. The two differ in the basis and the convention.'],
+      ['The rise and the class', 'The temperature rise (e.g. 65 K) is the increase above the ambient at rated load. For dry-type units the insulation system class (IEC 60076-11) sets the limits; for liquid-immersed units the fixed rise limits of IEC 60076-2 apply.'],
+      ['IEEE vs IEC', 'IEEE commonly uses a 65 °C rise (top oil and average winding); IEC 60076-2 uses 60 K top oil and 65 K average winding (70 K for OD cooling) for liquid-immersed units. The two differ in the basis and the convention.'],
       ['Why it matters', 'The rise governs the loading and the insulation life, so it must be verified by the temperature-rise test and respected in service.'],
     ],
     refs: ['IEC 60076-2 (temperature rise)', 'IEEE C57.12.00'],
@@ -1782,7 +1785,7 @@ const ARTICLES = [
     slug: 'transformer-transient-overvoltage', topic: 'Design', level: 'Advanced', minutes: 6,
     title: 'What Is a Switching (Transient) Overvoltage on a Transformer?',
     question: 'What is a switching overvoltage and how does it affect a transformer?',
-    quick: 'A switching overvoltage is a transient voltage spike caused by a switching operation (e.g. opening a breaker, re-energising, or an on-load tap change), which can stress the transformer insulation. It is lower in magnitude than a lightning surge but can be sustained and can interact with the transformer, especially a lightly loaded or reactor-connected unit, leading to a flashover or insulation damage if the margin is not adequate.',
+    quick: 'A switching overvoltage is a transient voltage spike caused by a switching operation (e.g. opening or closing a breaker, or re-energising a line, cable or reactor), which can stress the transformer insulation. It usually has a lower peak but a slower front and longer duration than a lightning surge (tens to thousands of microseconds), and can interact with the transformer, especially a lightly loaded or reactor-connected unit, leading to a flashover or insulation damage if the margin is not adequate.',
     sections: [
       ['What it is', 'A fast, oscillating voltage surge from a switching event, sometimes combined with the transformer resonance, giving a high overvoltage at a specific point.'],
       ['The risk', 'It can stress the insulation at the line end or the winding, and with certain configurations (cable, reactor) can cause ferroresonance or a high transient, so the BIL and the margin matter.'],
@@ -1834,7 +1837,7 @@ const ARTICLES = [
     slug: 'transformer-dielectric-strength', topic: 'Insulation', level: 'Intermediate', minutes: 5,
     title: 'What Is the Dielectric Strength of a Transformer?',
     question: 'What is the dielectric strength of a transformer?',
-    quick: 'Dielectric strength is the maximum electric field the insulation can withstand before a breakdown. For the oil and the paper it depends on the cleanliness, moisture, temperature and the thickness. It is what the insulation system relies on, and it is verified by the breakdown-voltage (oil), power-factor and applied/impulse tests. Keeping the oil and paper dry, clean and moisture-free preserves the dielectric strength.',
+    quick: 'Dielectric strength is the maximum electric field the insulation can withstand before a breakdown. For the oil and the paper it depends on the cleanliness, moisture, temperature and the thickness. It is what the insulation system relies on, and it is verified by the breakdown-voltage (oil) and applied/impulse dielectric tests. Keeping the oil and paper dry, clean and moisture-free preserves the dielectric strength.',
     sections: [
       ['What it is', 'The highest electric stress the insulation can take before it breaks down; a high dielectric strength means the insulation can withstand a high voltage.'],
       ['What it depends on', 'Moisture, particles, contamination, temperature, pressure and the thickness/geometry all reduce or set the strength. A dry, clean oil is much stronger than a wet one.'],
@@ -1903,7 +1906,7 @@ const ARTICLES = [
     sections: [
       ['What it measures', 'It applies the induced-voltage profile and detects the PD pulses. Apparent charge, in picocoulombs, is measured by the method in IEC 60270:2025.'],
       ['Acceptance', 'IEC 60076-3: ≤ 250 pC at 1.58 Ur/√3, no rise greater than 50 pC during that measuring period, and ≤ 100 pC at 1.2 Ur/√3.'],
-      ['When it is done', 'It is a routine test on oil-immersed units from 72.5 kV and on cast-resin units, and it is also used online to detect a developing PD source in service.'],
+      ['When it is done', 'In IEC 60076-3:2013 the induced test with PD measurement (IVPD) is a routine test for Um > 72.5 kV (special below), and PD measurement is a routine test on dry-type units under IEC 60076-11, and it is also used online to detect a developing PD source in service.'],
     ],
     refs: ['IEC 60270:2025 (PD measurement)', 'IEC 60076-3'],
     comps: ['protection-monitoring', 'insulation-materials'], types: ['PT', 'DT', 'DRY'],
@@ -1912,11 +1915,11 @@ const ARTICLES = [
     slug: 'transformer-tap-changer-selector', topic: 'Components', level: 'Advanced', minutes: 5,
     title: 'What Is the Tap Selector in an OLTC?',
     question: 'What does the tap selector do in an on-load tap-changer?',
-    quick: 'The tap selector is the part of the OLTC that makes the connection to each winding tapping, while the diverter (or vacuum) switch handles the actual current interruption and transition. The selector moves the connection to the desired tap, and the diverter bridges the transition so the current is never interrupted. The selector contacts do not interrupt current but must carry it and be well-insulated. It is a key wear and maintenance point.',
+    quick: 'The tap selector is the part of the OLTC that makes the connection to each winding tapping, while the diverter (or vacuum) switch handles the actual current interruption and transition. The selector moves the connection to the desired tap, and the diverter bridges the transition so the current is never interrupted. The selector contacts do not interrupt current but must carry it and be well-insulated. It is a maintenance point, although the diverter contacts are the main wear item.',
     sections: [
       ['Its role', 'The selector connects the tap-changer to the selected winding tapping; the diverter switch then makes the transition to the new tap under load.'],
-      ['How it works', 'The selector is moved to the required tap (usually off- or on-load but without interrupting the load), and the diverter (oil or vacuum) carries out the current-transfer transition with a resistor or reactor.'],
-      ['Maintenance', 'The selector contacts must be checked for wear, and the diverter and its oil (including DGA for acetylene) serviced; it is a leading wear point of the OLTC.'],
+      ['How it works', 'The selector is moved to the required tap while it carries no switched current, and the diverter (oil or vacuum) carries out the current-transfer transition with a resistor or reactor.'],
+      ['Maintenance', 'The selector contacts must be checked for wear, and the diverter and its oil (including DGA for acetylene) serviced; the diverter contacts, not the selector, are the main wear item.'],
     ],
     refs: ['IEC 60214 (tap-changers)', 'IEC 60076-1'],
     comps: ['on-load-tap-changers', 'protection-monitoring'], types: ['PT', 'DT'],
@@ -1925,11 +1928,11 @@ const ARTICLES = [
     slug: 'transformer-oil-oxidation', topic: 'Diagnostics', level: 'Intermediate', minutes: 5,
     title: 'What Is Transformer Oil Oxidation and How Is It Controlled?',
     question: 'What is transformer oil oxidation?',
-    quick: 'Oil oxidation is the reaction of the oil with oxygen, accelerated by heat, to form acids, sludge and varnish that lower the dielectric strength and accelerate paper aging. It is controlled by sealing the unit (breather, nitrogen/air-tight), using an inhibited oil (an antioxidant), keeping the temperature down, and by regular testing (acidity, interfacial tension) so the oil can be filtered or regenerated before it degrades further.',
+    quick: 'Oil oxidation is the reaction of the oil with oxygen, accelerated by heat, to form acids, sludge and varnish that lower the dielectric strength and accelerate paper aging. It is controlled by limiting oxygen (a membrane or bladder conservator, a nitrogen blanket or a sealed tank), using an inhibited oil (an antioxidant), keeping the temperature down, and by regular testing (acidity, interfacial tension) so the oil can be filtered or regenerated before it degrades further.',
     sections: [
       ['The reaction', 'Oxygen and heat oxidise the oil, producing acids, peroxides, sludge and varnish. Water and metal catalyze the reaction.'],
       ['Its effect', 'Acids and sludge lower the dielectric strength, wet and age the paper, and can form deposits; it is the main oil-aging mechanism.'],
-      ['How to control it', 'Use an inhibited (antioxidant) oil, minimise oxygen contact (sealed tank/breather), keep the temperature low, and test/filter/regenerate the oil on a schedule.'],
+      ['How to control it', 'Use an inhibited (antioxidant) oil, minimise oxygen contact (sealed tank, membrane conservator or nitrogen blanket), keep the temperature low, and test/filter/regenerate the oil on a schedule.'],
     ],
     refs: ['IEC 60296 (oil)', 'IEEE C57.104'],
     comps: ['oil-fluids-preservation'], types: ['PT', 'DT'],
@@ -2004,10 +2007,10 @@ const ARTICLES = [
     slug: 'transformer-core-annealing', topic: 'Manufacturing', level: 'Advanced', minutes: 5,
     title: 'What Is Core Annealing?',
     question: 'Why is the transformer core steel annealed?',
-    quick: 'Core annealing relieves the stress in the grain-oriented electrical steel caused by cutting and laminating, so the magnetic properties (low loss and high permeability) are restored. The laminations are annealed in a controlled atmosphere furnace at the right temperature, then coated to insulate them. Good annealing keeps the magnetic domains aligned and the loss low.',
+    quick: 'Core annealing relieves the stress in the grain-oriented electrical steel caused by cutting and laminating, so the magnetic properties (low loss and high permeability) are restored. The laminations are annealed in a controlled atmosphere furnace at the right temperature, Stress-relief annealing applies mainly to wound cores and some cut laminations; the steel’s insulating coating is applied at the mill and survives the anneal. Good annealing keeps the magnetic domains aligned and the loss low.',
     sections: [
       ['Why anneal', 'Cutting and processing introduce stress into the grain-oriented steel, degrading its magnetic properties; annealing relieves it so the loss and the permeability are restored.'],
-      ['The process', 'The laminations are annealed in a controlled (reducing) atmosphere at the right temperature and time, then insulated and cooled.'],
+      ['The process', 'The laminations are annealed in a controlled (reducing) atmosphere at the right temperature and time, then cooled; the mill-applied insulating coating is retained.'],
       ['Why it matters', 'A correctly annealed core has low loss and high permeability; poor annealing raises the losses and the magnetising current.'],
     ],
     refs: ['IEC 60404 (electrical steel)', 'IEC 60076-1'],
@@ -2019,7 +2022,7 @@ const ARTICLES = [
     question: 'How do you interpret the DGA gas ratios?',
     quick: 'The gas ratios compare pairs of key gases to classify a fault. Common approaches are the Rogers ratios (e.g. CH4/H2, C2H2/C2H4, C2H4/C2H6), the Doernenburg ratios, and the Duval triangle, which assign a fault type — partial discharge, thermal (of rising temperature), or electrical (arcing). The ratios are used with the absolute values and the trend, and the diagnosis guides the next step. Different interpretations exist for mineral oil, ester and other cases.',
     sections: [
-      ['The ratios', 'Rogers uses CH4/H2, C2H2/C2H4, C2H4/C2H6; Doernenburg uses CO2/CO, CH4/H2, C2H2/C2H4, C2H4/C2H6; each assigns a fault type by the ratio bands.'],
+      ['The ratios', 'Rogers uses CH4/H2, C2H2/C2H4, C2H4/C2H6; Doernenburg uses CH4/H2, C2H2/C2H4, C2H2/CH4 and C2H6/C2H2 (CO2/CO is a separate indicator of paper involvement); each assigns a fault type by the ratio bands.'],
       ['The categories', 'The ratios separate partial-discharge, thermal faults (low/high temperature) and arcing (electrical) faults.'],
       ['Using it', 'Apply the ratio method, combine it with the absolute gas values and the trend, and verify with an inspection; use the correct interpretation for the fluid (oil or ester).'],
     ],
@@ -2160,11 +2163,11 @@ const ARTICLES = [
     slug: 'transformer-oltc-oil', topic: 'Components', level: 'Intermediate', minutes: 5,
     title: 'What Is the OLTC Oil and How Is It Maintained?',
     question: 'What is the on-load tap-changer oil?',
-    quick: 'The OLTC has its own (often separate) oil in the diverter compartment. It is tested for the same condition (BDV, moisture, DGA) but the focus is on acetylene, which indicates contact arcing from a diverter/contact fault. The oil is changed on a schedule and when the acetylene rises. The tap-changer oil is a key maintenance point because an OLTC fault is a leading cause of transformer trips.',
+    quick: 'The OLTC has its own (often separate) oil in the diverter compartment. It is tested for the same condition (BDV, moisture, DGA) but the focus is on acetylene, which indicates contact arcing from a diverter/contact fault. The oil is changed on a schedule and when the acetylene rises. The tap-changer oil is a key maintenance point because tap-changers are a significant share of transformer failures (CIGRE TB 642).',
     sections: [
       ['Why separate oil', 'The diverter switches are in their own oil compartment so the arcing products are kept from the main oil, and the OLTC oil is tested and changed separately.'],
       ['What to test', 'BDV, moisture and DGA, with the acetylene level indicating contact arcing. A rise in acetylene means the contacts/diverter need attention.'],
-      ['Maintenance', 'Change the oil and filter it per the schedule, check the contacts, and trip on the DGA rise to avoid a fault.'],
+      ['Maintenance', 'Change and filter the oil per the schedule, check the contacts, and trend the OLTC-compartment DGA against the manufacturer’s guidance (IEEE C57.139) rather than using it as a trip.'],
     ],
     refs: ['IEC 60214 (tap-changers)', 'IEC 60599'],
     comps: ['on-load-tap-changers', 'oil-fluids-preservation'], types: ['PT', 'DT'],
@@ -2186,10 +2189,10 @@ const ARTICLES = [
     slug: 'transformer-fault-current', topic: 'Design', level: 'Advanced', minutes: 6,
     title: 'How Do You Calculate Transformer Fault Current?',
     question: 'How is the transformer short-circuit (fault) current calculated?',
-    quick: 'The transformer fault current is calculated from the per-unit impedance: Isc = Irated / %Z (in per-unit, I_fault = I_rated / Z_pu). A lower impedance gives a higher fault current. The short-circuit current is the maximum the winding and the network must withstand, and it sets the transformer impedance and the short-circuit withstand rating and the protection. A design tool (or calculator) does the per-unit calculation.',
+    quick: 'The transformer fault current is calculated from the per-unit impedance: Isc = Irated × 100 / Z% (in per-unit, I_fault = I_rated / Z_pu), assuming an infinite source; network impedance reduces it. A lower impedance gives a higher fault current. The short-circuit current is the maximum the winding and the network must withstand, and it sets the short-circuit withstand duty and the protection. A design tool (or calculator) does the per-unit calculation.',
     sections: [
       ['The formula', 'In per-unit, the fault current is the rated current divided by the impedance (I_fault = I_rated / Z_pu). The lower the %Z, the higher the fault current.'],
-      ['What it sets', 'The maximum fault current sets the transformer impedance, the short-circuit withstand rating, the bushings and the protection settings.'],
+      ['What it sets', 'The impedance (chosen in the design) and the network impedance set the maximum fault current, which in turn sets the short-circuit withstand duty, the bushing ratings and the protection settings.'],
       ['Why it matters', 'A higher fault current needs a larger withstand and heavier protection; the impedance is chosen to balance the fault level and the regulation.'],
     ],
     refs: ['IEC 60076-5 (short-circuit)', 'IEC 60076-1'],
@@ -2213,10 +2216,10 @@ const ARTICLES = [
     slug: 'transformer-standard-testing-requirements', topic: 'Standards', level: 'Intermediate', minutes: 6,
     title: 'What Tests Does a Transformer Standard Require?',
     question: 'What tests does a transformer standard require?',
-    quick: 'The IEC 60076 (and IEEE C57) standards require a set of routine, type and special tests. Routine tests (ratio, resistance, no-load/load loss, impedance, dielectric, oil) are run on every unit. Above 72.5 kV, capacitance and tan δ, insulation resistance and DGA are routine as well (IEC 60076-1:2011 cl. 11.1.2.2). Lightning impulse is a type test and is also routine for Um ≥ 72.5 kV (IEC 60076-3:2013). Temperature rise is a type test. Short-circuit withstand is a special test by agreement (IEC 60076-5), as are sound level and the other agreed diagnostics.',
+    quick: 'The IEC 60076 (and IEEE C57) standards require a set of routine, type and special tests. Routine tests (ratio, resistance, no-load/load loss, impedance, dielectric, oil) are run on every unit. Above 72.5 kV, capacitance and tan δ, insulation resistance and DGA are routine as well (IEC 60076-1:2011 cl. 11.1.2.2). Lightning impulse is a type test and is also routine for Um > 72.5 kV (IEC 60076-3:2013). Temperature rise is a type test. Short-circuit withstand is a special test by agreement (IEC 60076-5), as are sound level and the other agreed diagnostics.',
     sections: [
-      ['Routine tests', 'Run on every unit: ratio, winding resistance, no-load and load loss, impedance, applied and induced voltage, and the oil tests. For Um above 72.5 kV, IEC 60076-1:2011 clause 11.1.2.2 adds capacitance and tan δ, insulation resistance and dissolved-gas analysis to the routine list. Lightning impulse is routine for Um ≥ 72.5 kV (IEC 60076-3:2013).'],
-      ['Type tests', 'Run on a design: the temperature-rise test, and lightning impulse when Um is below 72.5 kV. Short-circuit withstand is not a type test.'],
+      ['Routine tests', 'Run on every unit: ratio, winding resistance, no-load and load loss, impedance, applied and induced voltage, and the oil tests. For Um above 72.5 kV, IEC 60076-1:2011 clause 11.1.2.2 adds capacitance and tan δ, insulation resistance and dissolved-gas analysis to the routine list. Lightning impulse is routine for Um > 72.5 kV (IEC 60076-3:2013).'],
+      ['Type tests', 'Run on a design: the temperature-rise test, and lightning impulse when Um ≤ 72.5 kV. Short-circuit withstand is not a type test.'],
       ['Special tests', 'Run by agreement: short-circuit withstand (IEC 60076-5), sound level, zero-sequence, harmonics and frequency-response analysis. DGA is in this group only when Um is 72.5 kV or below.'],
     ],
     refs: ['IEC 60076-1:2011 (cl. 11.1.2.2)', 'IEEE C57.12.90-2026'],
@@ -2240,13 +2243,12 @@ const fmt = function (d) { try { return new Date(d).toLocaleDateString('en-GB', 
 function toc(secs) { return '<ul>' + secs.map(function (s) { return '<li><a href="#' + slugify(s[0]) + '">' + esc(s[0]) + '</a></li>'; }).join('') + '</ul>'; }
 
 function articlePage(a) {
-  const makers = makersFor(a.types);
   const { componentSlugHref } = require('./lib/component-href');
   const compLinks = (a.comps || []).map(function (c) { return '<a class="tpill" href="' + componentSlugHref('../', c) + '">' + esc(COMPONENTS[c] || c) + '</a>'; }).join(' ');
-  const makerLinks = makers.map(function (m) { return '<a href="../manufacturers/' + m.slug + '.html" style="color:var(--accent)">' + esc(m.name) + '</a>'; }).join(' · ');
   const today = '27 Aug 2026';
+  const updated = '20 Oct 2026'; // knowledge technical audit fixes + per-article references
   const ct = Math.round((a.minutes * 200 + 40) / 55); // rough words ≈ minutes
-  const meta = '<div class="ameta"><span>Published ' + today + '</span><span>Updated ' + today + '</span><span>' + a.minutes + ' min read</span><span class="lvl">' + esc(a.level) + '</span><span class="topic">' + esc(a.topic) + '</span></div>';
+  const meta = '<div class="ameta"><span>Published ' + today + '</span><span>Updated ' + updated + '</span><span>' + a.minutes + ' min read</span><span class="lvl">' + esc(a.level) + '</span><span class="topic">' + esc(a.topic) + '</span></div>';
   const body = a.sections.map(function (s) {
     if (!Array.isArray(s) || typeof s[0] !== 'string' || typeof s[1] !== 'string' || s[0].length < 2 || s[1].length < 2) {
       throw new Error('knowledge section must be [title, body] in ' + a.slug);
@@ -2254,18 +2256,19 @@ function articlePage(a) {
     return '<h2 id="' + slugify(s[0]) + '">' + esc(s[0]) + '</h2><p>' + esc(s[1]) + '</p>';
   }).join('');
   const eq = a.eq ? '<div class="eq"><b style="color:var(--accent)">Equation</b> — ' + esc(a.eq) + '</div>' : '';
-  const refs = '<h2>References &amp; standards</h2><ul>' + a.refs.map(function (r) { return '<li>' + esc(r) + '</li>'; }).join('') + '</ul>';
+  const srcList = KSOURCES[a.slug];
+  if (!Array.isArray(srcList) || srcList.length < 2) throw new Error('knowledge article ' + a.slug + ' has no entry in data/knowledge-sources.json');
+  const refs = '<h2>References</h2><p style="font-size:.85rem;color:var(--muted)">Standards are cited by edition; clause or table numbers are given only where verified. Check the current edition before contractual use.</p><ul class="krefs">' + srcList.map(function (r) { return '<li>' + esc(r) + '</li>'; }).join('') + '</ul>';
   const ex = a.work ? '<div class="box"><b style="color:var(--accent)">Worked example</b><p style="margin-top:6px">' + esc(a.work) + '</p></div>' : '';
   const links = '<h2>Related</h2><div class="rel">' +
     (a.calc ? '<a class="tpill" href="../' + a.calc + '">' + esc(a.calcLabel || 'Calculator') + '</a>' : '') +
     (a.model ? '<a class="tpill" href="../' + a.model + '">3D model</a>' : '') +
     '<a class="tpill" href="../books.html">Book series</a><a class="tpill" href="../academy.html">Academy</a></div>';
-  const makersSec = makerLinks ? '<h2>Related manufacturers</h2><p style="font-size:.92rem">' + makerLinks + '</p>' : '';
   const compSec = compLinks ? '<h2>Related components</h2><div>' + compLinks + '</div>' : '';
   const faq = [
     { q: a.question, a: a.quick }];
   const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map(function (f) { return { '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } }; }) };
-  const techSchema = { '@context': 'https://schema.org', '@type': 'TechArticle', headline: a.title, datePublished: '2026-08-27', dateModified: '2026-08-27', author: { '@type': 'Organization', name: 'TransformerPath', url: 'https://transformerpath.com/' }, publisher: { '@type': 'Organization', name: 'TransformerPath' }, mainEntityOfPage: 'https://transformerpath.com/knowledge/' + a.slug + '.html' };
+  const techSchema = { '@context': 'https://schema.org', '@type': 'TechArticle', headline: a.title, datePublished: '2026-08-27', dateModified: '2026-10-20', author: { '@type': 'Organization', name: 'TransformerPath', url: 'https://transformerpath.com/' }, publisher: { '@type': 'Organization', name: 'TransformerPath' }, mainEntityOfPage: 'https://transformerpath.com/knowledge/' + a.slug + '.html' };
   const schema = '<script type="application/ld+json">' + JSON.stringify(faqSchema) + '</script><script type="application/ld+json">' + JSON.stringify(techSchema) + '</script>';
   const liS = (a.quick.length > 155 ? a.quick.slice(0, 150).replace(/\s+\S*$/, '') + '…' : a.quick);
 
@@ -2284,7 +2287,7 @@ function articlePage(a) {
     '<div class="quick"><b>Quick answer</b> — ' + esc(a.quick) + '</div>' +
     '<div class="toc"><b>Contents</b>' + toc(a.sections) + '</div>' +
     '<div class="lead" style="margin-top:18px">' + esc(a.question) + '</div>' +
-    body + eq + ex + refs + links + makersSec + compSec +
+    body + eq + ex + refs + links + compSec +
     '<div class="method">Technical content is prepared from engineering references, standards frameworks, manufacturer documentation and industry sources. Contractual or compliance decisions should refer to current official standards. <b>TransformerPath Technical Editorial.</b></div>' +
     (tpAff.TRIP_KNOWLEDGE[a.slug] ? tpAff.tripOffers({ slug: a.slug, place: tpAff.TRIP_KNOWLEDGE[a.slug], prefix: '../', disclosureHref: '../affiliate-disclosure.html' }) : '') +
     '<div class="box" style="text-align:center;margin-top:22px"><b style="color:var(--text)">Source transformers for this application</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 10px">Submit an RFQ or browse manufacturers and components.</p>' +
