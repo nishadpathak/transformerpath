@@ -1,0 +1,16 @@
+name: defer ticker
+
+on:
+  pull_request:
+  push:
+    branches: [main, "cursor/**"]
+
+jobs:
+  ticker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: node tests/defer-ticker-webgl.js
