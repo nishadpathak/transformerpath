@@ -10,6 +10,7 @@
   var tab = 'latest';
   var shown = 0;
   var userRegion = 'Global';
+  var scopeFilter = '';
 
   function $(id) { return document.getElementById(id); }
   function esc(s) {
@@ -38,6 +39,11 @@
     return true;
   }
 
+  function matchesScope(p) {
+    if (!scopeFilter) return true;
+    return String(p.equipment_scope || '') === scopeFilter;
+  }
+
   function ageBadgeHtml(ageTier, isActive, isRef) {
     if (isRef || ageTier === 'HISTORICAL') return '<span class="age-badge age-ref" style="background:rgba(159,176,196,.15);color:#9fb0c4;border:1px solid rgba(159,176,196,.35);font-size:.65rem;font-weight:800;padding:2px 7px;border-radius:4px;letter-spacing:.5px">HISTORICAL REFERENCE</span>';
     if (ageTier === 'FRESH') return '<span class="age-badge age-fresh" style="background:rgba(74,222,128,.15);color:#4ade80;border:1px solid rgba(74,222,128,.35);font-size:.65rem;font-weight:800;padding:2px 7px;border-radius:4px;letter-spacing:.5px">FRESH</span>';
@@ -53,6 +59,9 @@
     var evidence = (p.evidenceGrade && p.evidenceGrade !== 'CONFIRMED' && p.evidenceGrade !== p.cls)
       ? '<span class="cls-badge cls-' + esc(p.evidenceGrade) + '" title="Supported evidence — not yet fully verified. No live portal adapter has confirmed this item.">' + esc(p.evidenceGrade) + '</span>'
       : '';
+    var scopeBadge = p.scopeBadge
+      ? '<span class="scope-badge" data-equipment-scope="' + esc(p.equipment_scope) + '">' + esc(p.scopeBadge) + '</span>'
+      : '';
     var evidenceNote = p.evidenceNote
       ? '<p class="intel-evidence-note" style="font-size:.76rem;color:#f0c14a;margin:6px 0 0">' + esc(p.evidenceNote) + '</p>'
       : '';
@@ -60,7 +69,7 @@
     var age = ageBadgeHtml(p.ageTier, p.isActive, p.historicalReference);
     var relevance = p.currentRelevance ? '<div class="intel-relevance" style="font-size:.76rem;color:var(--muted);margin-top:6px;padding-top:4px;border-top:1px dashed var(--border)"><b>Current Relevance:</b> ' + esc(p.currentRelevance) + '</div>' : '';
 
-    return '<article class="intel-post" id="p-' + esc(p.id) + '" data-desk="' + esc(p.desk) + '" data-region="' + esc(p.region) + '" data-age="' + esc(p.ageTier || '') + '">' +
+    return '<article class="intel-post" id="p-' + esc(p.id) + '" data-desk="' + esc(p.desk) + '" data-region="' + esc(p.region) + '" data-age="' + esc(p.ageTier || '') + '" data-scope="' + esc(p.equipment_scope || '') + '" data-transformer-scope="' + (p.transformer_scope_confirmed ? 'confirmed' : 'not-confirmed') + '">' +
       '<div class="intel-avatar" aria-hidden="true">TP</div>' +
       '<div class="intel-body">' +
       '<div class="intel-byline"><strong>TransformerPath</strong><span class="intel-handle">@intel</span>' +
@@ -70,7 +79,7 @@
       evidenceNote +
       (p.buyer ? '<p class="intel-buyer">Who buys: ' + esc(p.buyer) + '</p>' : '') +
       relevance +
-      '<div class="intel-meta">' + [cls, evidence, prov].filter(Boolean).join(' ') +
+      '<div class="intel-meta">' + [cls, evidence, scopeBadge, prov].filter(Boolean).join(' ') +
       '<span class="intel-region">' + esc(p.region) + '</span>' +
       (p.value ? '<span class="val">' + esc(p.value) + '</span>' : '') +
       '<span class="src">' + esc(p.sourceName || p.src) + '</span></div>' +
@@ -83,7 +92,7 @@
 
   function list() {
     if (!feed) return [];
-    return feed.posts.filter(matches);
+    return feed.posts.filter(function (p) { return matches(p) && matchesScope(p); });
   }
 
   function paint(reset) {
@@ -181,6 +190,11 @@
     if (sel) sel.addEventListener('change', function () {
       userRegion = sel.value || 'Global';
       if (tab === 'foryou') paint(true);
+    });
+    var scopeSel = $('scope-select');
+    if (scopeSel) scopeSel.addEventListener('change', function () {
+      scopeFilter = scopeSel.value || '';
+      paint(true);
     });
   }
 

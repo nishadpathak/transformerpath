@@ -687,8 +687,8 @@ function renderManufacturers(html) {
 function renderIntel(html) {
   let records = 0;
   const CLASSIFY = {
-    CONFIRMED: { help: 'Transformer scope explicitly established.' },
-    INFERRED:  { help: 'Transformer opportunity reasonably inferred from the source.' },
+    CONFIRMED: { help: 'Event confirmed.' },
+    INFERRED:  { help: 'Opportunity reasonably inferred from the source.' },
     PIPELINE:  { help: 'Planned / tender / pre-award stage.' },
     SUPPORTED: { help: 'Supported evidence — not yet fully verified. No live portal adapter has confirmed this item.' },
     WATCH:     { help: 'Early signal; monitor for confirmation.' },
