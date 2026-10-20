@@ -35,7 +35,7 @@ rows.forEach(function (row) {
       mark.indexOf('buy.stripe.com') === -1);
 });
 check('no Elin company is flagged', !rows.some(function (row) { return /elin/i.test(row.slug); }));
-check('public manufacturer count stays 887', require('../lib/public-company-count').read(root).publicCount === 887);
+check('public manufacturer count stays 950', require('../lib/public-company-count').read(root).publicCount === 950);
 
 ['lib/availability.js', 'data/company-availability.json'].forEach(function (rel) {
   const text = fs.readFileSync(path.join(root, rel), 'utf8');

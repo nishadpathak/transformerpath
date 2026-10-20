@@ -148,14 +148,14 @@ console.log('generated', indexLinks.length, 'component pages');
 
 /* ── Per-country manufacturer pages (/manufacturers/<country>) ─────────────── */
 function slugify(n){ return String(n).normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim().replace(/&/g,'and').replace(/['’´]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,''); }
-const { resolveCompanyAlias } = require('./lib/company-aliases');
+const { resolveCompanyAlias, censusNameKey } = require('./lib/company-aliases');
 const comtrade = require('./lib/comtrade-hs8504');
 const MGF = JSON.parse(fs.readFileSync('data/manufacturers.json', 'utf8'));
 const paidListings = require('./lib/paid-listings');
 const claimListing = require('./lib/claim-listing');
 const availability = require('./lib/availability');
 const AVAILABILITY = availability.load();
-var CSMAP={}; try{ JSON.parse(fs.readFileSync('data/company-slugs.json','utf8')).forEach(function(c){ CSMAP[c.name.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()] = c.slug; }); }catch(e){}
+var CSMAP={}; try{ JSON.parse(fs.readFileSync('data/company-slugs.json','utf8')).forEach(function(c){ CSMAP[censusNameKey(c.name)] = c.slug; }); }catch(e){}
 
 const vbadge2 = (m) => { const f = m.length > 4 ? m[4] : null; if (f === 'P') return ' <span class="v-badge pro">★ Supplier Pro</span>'; if (f === 'V') return ' <span class="v-badge">✓ Verified</span>'; return ''; };
 const tpills2 = (types) => { if (!types) return ''; const T = { PT: 'Power', DT: 'Distribution', DRY: 'Dry/Cast', TX: 'Transformer', SR: 'Reactor', IT: 'Instrument' }; return types.split(',').map((t) => t.trim()).filter(Boolean).map((t) => '<span class="tpill t-' + t + '">' + esc(T[t] || t) + '</span>').join(''); };
@@ -168,7 +168,7 @@ for (const c of MGF) {
   const rows = c.makers.map((m) => {
     if (/^Served by/i.test(m[0])) return '<div class="mk-row"><span class="note">' + esc(m[0]) + '</span></div>';
     const alias = resolveCompanyAlias(m[0]);
-    const cslug = alias.aliased ? alias.slug : CSMAP[String(m[0]).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()];
+    const cslug = alias.aliased ? alias.slug : CSMAP[censusNameKey(m[0])];
     const nameHtml = cslug
       ? '<a href="/manufacturers/' + cslug + '/" style="color:var(--accent);font-weight:700">' + esc(m[0]) + '</a>'
       : '<b>' + esc(m[0]) + '</b>';
@@ -216,7 +216,7 @@ TYPE_HUBS.forEach(function (th) {
   function renderHub(title, lead, makersList, canonicalPath, breadcrumbs, isNoindex, extraHtml) {
     const rows = makersList.map(function (m) {
       const alias = resolveCompanyAlias(m.name);
-      const cslug = alias.aliased ? alias.slug : CSMAP[m.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()];
+      const cslug = alias.aliased ? alias.slug : CSMAP[censusNameKey(m.name)];
       const nameLink = cslug ? '<a href="/manufacturers/' + cslug + '/" style="color:var(--accent);font-weight:700">' + esc(m.name) + '</a>' : '<b style="color:var(--text)">' + esc(m.name) + '</b>';
       const vb = m.flagV === 'P' ? ' <span class="v-badge pro">★ Supplier Pro</span>' : (m.flagV === 'V' ? ' <span class="v-badge">✓ Verified</span>' : '');
       const flag = availability.forSlug(cslug, AVAILABILITY);

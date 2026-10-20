@@ -31,6 +31,7 @@ function safeUrl(u) {
 
 const DATA = JSON.parse(fs.readFileSync('data/laboratories.json', 'utf8'));
 const LABS = DATA.laboratories || [];
+const exhibitorTags = require('./lib/exhibitor-tags');
 
 const CAP_NAMES = {
   lightning_impulse: '⚡ Lightning Impulse (1.2/50 μs)',
@@ -116,6 +117,7 @@ function renderCardServer(lab) {
     '</div>' +
     '<div class="lab-loc">📍 ' + esc(lab.city) + ', ' + esc(lab.country) + (independentVerified(lab) ? ' · <span style="color:#10b981;font-weight:700">Third-Party Independent</span>' : '') + '</div>' +
     '<p style="font-size:.86rem;color:var(--muted);line-height:1.5;margin:0 0 12px">' + esc(lab.description) + '</p>' +
+    exhibitorTags.block(exhibitorTags.forSlug(String(lab.id || '').replace(/^lab:/, '')), { claim: true }) +
     accredHtml +
     '<table class="cap-table"><tbody>' + capRows + '</tbody></table>' +
     '<div class="card-foot">' +
@@ -144,12 +146,12 @@ function render() {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Independent Transformer Testing Laboratories Directory | TransformerPath</title>
-<meta name="description" content="Capability-based directory of independent transformer testing laboratories — short-circuit withstand, lightning impulse, switching impulse, partial discharge, temperature rise and oil/DGA testing with ISO/IEC 17025 accreditation.">
+<meta name="description" content="Directory of transformer testing and laboratory listings. Voltage, short-circuit capability and ISO/IEC 17025 accreditation are shown only when a source records them.">
 <link rel="canonical" href="https://transformerpath.com/laboratories.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TransformerPath">
 <meta property="og:title" content="Independent Transformer Testing Laboratories Directory | TransformerPath">
-<meta property="og:description" content="Find accredited independent testing laboratories capable of transformer impulse, short-circuit and dielectric testing above 400 kV.">
+<meta property="og:description" content="Transformer testing and laboratory listings. Ratings and ISO/IEC 17025 accreditation appear only when a source records them.">
 <meta property="og:url" content="https://transformerpath.com/laboratories.html">
 <meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
 <meta name="robots" content="index,follow">
@@ -209,7 +211,7 @@ ${HEAD}
   <div class="lab-head">
     <nav style="font-size:.82rem;color:var(--muted);margin-bottom:12px"><a href="index.html" style="color:var(--accent)">Home</a> › Testing Laboratories</nav>
     <h1>Transformer <span style="color:var(--accent)">Testing Laboratories</span> Directory</h1>
-    <p class="lead">Independent, capability-based directory of accredited high-voltage, dielectric and short-circuit testing laboratories for power, distribution and specialty transformers. Filter specifically by impulse ratings above 400 kV, short-circuit test capabilities, and ISO/IEC 17025 accreditations.</p>
+    <p class="lead">Directory of transformer testing, monitoring and laboratory listings. Voltage, short-circuit capability and ISO/IEC 17025 accreditation are shown only when a source records them.</p>
   </div>
 
   <div class="stats-bar">

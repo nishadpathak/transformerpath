@@ -1,18 +1,18 @@
 {
   "$schema": "https://transformerpath.com/commerce-intel.schema.json",
-  "generated": "2026-10-19T23:19:50.733Z",
+  "generated": "2026-10-20T07:00:35.037Z",
   "honesty_note": "Revenue and conversion figures are NOT shown because live Stripe/Supabase transaction data is not available in this static build. No revenue, no conversion rate and no pipeline value are fabricated. The figures below are real platform-scale and prospect signals derived from the canonical datasets.",
   "metrics": {
     "platform_scale": {
-      "manufacturers": 887,
+      "manufacturers": 950,
       "projects": 305,
-      "tenders": 167,
-      "open_tenders": 14,
-      "awards": 59,
+      "tenders": 178,
+      "open_tenders": 19,
+      "awards": 65,
       "events": 305
     },
     "prospect_signals": {
-      "supplier_prospects_with_website": 871,
+      "supplier_prospects_with_website": 872,
       "upcoming_events": 158
     }
   },
@@ -1354,6 +1354,15 @@
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
+      "name": "ABB (China) Co., LTD",
+      "country": "China",
+      "region": "East Asia",
+      "city": "—",
+      "categories": [],
+      "website": "https://global.abb",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
       "name": "Baoding Tianwei Baobian Electric (BTW)",
       "country": "China",
       "region": "East Asia",
@@ -2380,17 +2389,6 @@
         "DRY"
       ],
       "website": "https://www.eta-danmark.dk/",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Microdan A/S",
-      "country": "Denmark",
-      "region": "Europe",
-      "city": "Horsholm",
-      "categories": [
-        "DT"
-      ],
-      "website": "https://www.microdan.dk/",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     }
   ],

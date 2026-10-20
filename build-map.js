@@ -28,7 +28,7 @@ function slugify(s) {
 }
 function norm(s) {
   return String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, ' ').trim();
+    .toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9\u3400-\u9fff]+/g, ' ').trim();
 }
 
 const GEO = JSON.parse(fs.readFileSync('data/country-centroids.json', 'utf8'));
@@ -60,7 +60,7 @@ function realCoord(rec) {
 }
 
 function listingUrl(dir, name, fallback) {
-  const slug = slugify(name);
+  const slug = slugify(name) || require('./lib/company-aliases').slugify(name);
   if (slug && fs.existsSync(path.join(dir, slug, 'index.html'))) {
     return dir + '/' + slug + '/';
   }
@@ -90,7 +90,7 @@ function listingFor(rec) {
 }
 
 function manufacturerUrl(name) {
-  const slug = SLUG_BY_NAME[norm(name)] || slugify(name);
+  const slug = SLUG_BY_NAME[norm(name)] || slugify(name) || require('./lib/company-aliases').slugify(name);
   return 'manufacturers/' + slug + '/';
 }
 
@@ -163,7 +163,7 @@ MANUF.forEach((g) => {
       city: m[1] || '',
       t: 'm',
       u: manufacturerUrl(name),
-      slug: SLUG_BY_NAME[norm(name)] || slugify(name),
+      slug: SLUG_BY_NAME[norm(name)] || slugify(name) || aliases.slugify(name),
       flag: Array.isArray(m) ? m[4] : '',
       featured: m && m.featured,
       listing_tier: m && m.listing_tier,

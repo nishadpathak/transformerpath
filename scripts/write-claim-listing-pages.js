@@ -180,6 +180,7 @@ fs.mkdirSync(path.join(claimRoot, 'not-found'), { recursive: true });
 fs.writeFileSync(path.join(claimRoot, 'not-found', 'index.html'), notFoundHtml);
 
 const claimIndex = require(path.join(root, 'lib/claim-listing')).buildClaimIndex(root);
+fs.writeFileSync(path.join(root, 'data/claim-listing-index.json'), JSON.stringify(claimIndex, null, 2) + '\n');
 const slugs = Object.keys(claimIndex);
 slugs.forEach(function (slug) {
   const row = claimIndex[slug];

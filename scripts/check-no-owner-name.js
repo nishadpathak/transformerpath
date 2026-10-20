@@ -52,13 +52,33 @@ function report(rel, text, index, why) {
   problems.push(rel + ':' + line + ' ' + why + (snippet ? ' — ' + snippet : ''));
 }
 
+/* Official exhibitor-list names and product lines are quotations of that
+ * list. They are not TransformerPath offering a personal service. */
+function stripExhibitorQuotations(text) {
+  let doc;
+  try {
+    doc = JSON.parse(fs.readFileSync(path.join(root, 'data/ep-shanghai-2026-exhibitors.json'), 'utf8'));
+  } catch (e) {
+    return text;
+  }
+  (doc.listings || []).forEach(function (row) {
+    [row && row.exhibitor_name, row && row.profile_name, row && row.products, row && row.slug].forEach(function (part) {
+      if (!part) return;
+      text = text.split(part).join(' ');
+      const enc = encodeURIComponent(part);
+      if (enc !== part) text = text.split(enc).join(' ');
+    });
+  });
+  return text;
+}
+
 function scanText(rel, text) {
   const scrubbed = stripAllowed(text);
   const nameHit = nameRe.exec(scrubbed);
   nameRe.lastIndex = 0;
   if (nameHit) report(rel, scrubbed, nameHit.index, 'owner name');
   if (isPublicHtml(rel)) {
-    const visible = maskAbsoluteUrls(text);
+    const visible = stripExhibitorQuotations(maskAbsoluteUrls(text));
     const phraseHit = phraseRe.exec(visible);
     phraseRe.lastIndex = 0;
     if (phraseHit) report(rel, visible, phraseHit.index, 'public HTML phrase "' + phraseHit[0] + '"');

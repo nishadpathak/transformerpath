@@ -573,10 +573,10 @@ function renderManufacturers(html) {
   const TNAME = { PT: 'Power', DT: 'Distribution', DRY: 'Dry/Cast' };
   const regions = [...new Set(DATA.map((c) => c.region))];
   // Manufacturer -> company entity page slug (for the directory -> entity link graph).
+  const { censusNameKey, directoryCompanySlug, aliasRowHidden, ownedProfileSlugs } = require('./lib/company-aliases');
   let CSMAP = {};
-  try { JSON.parse(fs.readFileSync('data/company-slugs.json', 'utf8')).forEach(function (c) { CSMAP[c.name.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()] = c.slug; }); } catch (e) {}
-  const csl = (m) => CSMAP[String(m[0]).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()];
-  const { directoryCompanySlug, aliasRowHidden, ownedProfileSlugs } = require('./lib/company-aliases');
+  try { JSON.parse(fs.readFileSync('data/company-slugs.json', 'utf8')).forEach(function (c) { CSMAP[censusNameKey(c.name)] = c.slug; }); } catch (e) {}
+  const csl = (m) => CSMAP[censusNameKey(m[0])];
   const paidListings = require('./lib/paid-listings');
   const claimListing = require('./lib/claim-listing');
   const availability = require('./lib/availability');
