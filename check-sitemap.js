@@ -9,6 +9,7 @@
 'use strict';
 const fs = require('fs');
 const path = require('path');
+const { decodeXml, wellFormedErrors } = require('./lib/sitemap-split');
 
 function normUrl(value) {
   try {
@@ -71,12 +72,49 @@ function auditCanonicals(locVals, root, readFile) {
   return errors;
 }
 
+function childSitemapName(loc) {
+  try { return path.posix.basename(new URL(loc).pathname); }
+  catch (e) { return ''; }
+}
+
+function checkIndex(xml, root, readFile) {
+  const errors = wellFormedErrors(xml).slice();
+  const locs = xml.match(/<loc>([^<]+)<\/loc>/g) || [];
+  const locVals = locs.map(function (s) { return decodeXml(s.replace(/<\/?loc>/g, '')); });
+  if (!locVals.length) errors.push('sitemap index has no child sitemap');
+  const seenChild = {};
+  const pageLocs = [];
+  const days = {};
+  locVals.forEach(function (loc) {
+    const name = childSitemapName(loc);
+    if (!/^sitemap-\d+\.xml$/.test(name)) {
+      errors.push('sitemap index loc is not a partial sitemap: ' + loc);
+      return;
+    }
+    if (seenChild[name]) errors.push('sitemap index repeats ' + name);
+    seenChild[name] = 1;
+    if (!root || readFile) return;
+    const file = path.join(root, name);
+    if (!fs.existsSync(file)) {
+      errors.push('sitemap index child missing: ' + name);
+      return;
+    }
+    const child = checkSitemap(fs.readFileSync(file, 'utf8'), root, readFile);
+    child.errors.forEach(function (e) { errors.push(name + ': ' + e); });
+    pageLocs.push.apply(pageLocs, child.locVals);
+    (child.distinct || []).forEach(function (d) { days[d] = 1; });
+  });
+  return { errors: errors, locVals: pageLocs, distinct: Object.keys(days) };
+}
+
 function checkSitemap(xml, root, readFile) {
+  if (/<sitemapindex[\s>]/.test(xml)) return checkIndex(xml, root, readFile);
+  const formed = wellFormedErrors(xml);
   const locs = xml.match(/<loc>([^<]+)<\/loc>/g) || [];
   const mods = xml.match(/<lastmod>([^<]+)<\/lastmod>/g) || [];
-  const locVals = locs.map(function (s) { return s.replace(/<\/?loc>/g, ''); });
-  const modVals = mods.map(function (s) { return s.replace(/<\/?lastmod>/g, ''); });
-  const errors = [];
+  const locVals = locs.map(function (s) { return decodeXml(s.replace(/<\/?loc>/g, '')); });
+  const modVals = mods.map(function (s) { return decodeXml(s.replace(/<\/?lastmod>/g, '')); });
+  const errors = formed.slice();
   if (!locVals.length) errors.push('sitemap has no <loc>');
   if (locVals.length !== modVals.length) errors.push('loc count ' + locVals.length + ' != lastmod count ' + modVals.length);
 
