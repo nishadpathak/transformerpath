@@ -258,7 +258,10 @@ function intelRecord(slug, name) {
 }
 function confirmedFactory(f) {
   if (!f || !f.source_url) return false;
-  if (f.claim_type !== 'INDEPENDENTLY_SOURCED' && f.claim_type !== 'COMPANY_REPORTED') return false;
+  const claim = String(f.claim_type || '');
+  // UNKNOWN is the gate's value for a cited page that does not establish the
+  // plant. A sourced spec row may omit claim_type and still name a real city.
+  if (claim === 'UNKNOWN' || claim === 'UNVERIFIED' || claim === 'INFERRED' || claim === 'UNSUPPORTED') return false;
   const city = String(f.city || '').trim();
   return !!(city && city !== '—');
 }
