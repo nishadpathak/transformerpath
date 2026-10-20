@@ -48,11 +48,26 @@
   function load() {
     Promise.all([
       fetch('data/directory-index.json').then(function (r) { return r.json(); }),
-      fetch('data/site-stats.json').then(function (r) { return r.json(); }).catch(function () { return {}; })
+      fetch('data/site-stats.json').then(function (r) { return r.json(); }).catch(function () { return {}; }),
+      fetch('data/company-availability.json').then(function (r) { return r.json(); }).catch(function () { return { companies: [] }; })
     ]).then(function (pair) {
         var j = pair[0];
         STATS = pair[1] || {};
+        AVAIL = {};
+        ((pair[2] && pair[2].companies) || []).forEach(function (row) {
+          if (!row || !AVAIL_LABELS[row.availability]) return;
+          if (!/^https:\/\/\S+$/.test(String(row.availability_source || ''))) return;
+          if (!/^\d{4}-\d{2}-\d{2}$/.test(String(row.availability_checked || ''))) return;
+          AVAIL[String(row.slug || '').trim().toLowerCase()] = row;
+        });
         DATA = j && j.companies || [];
+        DATA.forEach(function (c) {
+          var row = c && c.slug ? AVAIL[String(c.slug).trim().toLowerCase()] : null;
+          if (!row) return;
+          c.availability = row.availability;
+          c.availability_source = row.availability_source;
+          c.availability_checked = row.availability_checked;
+        });
         var params = new URLSearchParams(window.location.search);
         if (params.get('q')) {
           window.location.replace('search.html?q=' + encodeURIComponent(params.get('q')));
@@ -88,7 +103,10 @@
   }
 
   // ── State ────────────────────────────────────────────────────────────────
-  var q = '', kind = '', country = '', type = '', minKv = 0, evFilter = '', onlyMultiPlant = false, minComp = 0;
+  var q = '', kind = '', country = '', type = '', minKv = 0, evFilter = '', onlyMultiPlant = false, minComp = 0, shippableOnly = false;
+  var AVAIL = {};
+  var AVAIL_LABELS = { available_now: 'Available now', remanufactured: 'Remanufactured', in_stock: 'In stock' };
+  var AVAIL_PRICES = 'Featured $299/yr, Featured + Verified $699/yr, Component Sponsor $199/mo.';
   var wired = false;
   var compare = {}; // id -> true
 
@@ -101,6 +119,7 @@
       if (country && c.country !== country) return false;
       if (evFilter && c.evidence !== evFilter) return false;
       if (onlyMultiPlant && (!c.factories || c.factories.length <= 1)) return false;
+      if (shippableOnly && !(c.kind === 'manufacturer' && AVAIL_LABELS[c.availability])) return false;
       var compScore = c.completeness_score != null ? c.completeness_score : (c.research_completeness ? Math.min(100, c.research_completeness * 15) : 40);
       if (minComp > 0 && compScore < minComp) return false;
       if (type) {
@@ -160,6 +179,19 @@
     return c.website || '#';
   }
 
+  function availabilityMark(c) {
+    if (!c || c.kind !== 'manufacturer' || !AVAIL_LABELS[c.availability]) return '';
+    var slug = String(c.slug || '').trim().toLowerCase();
+    var href = /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) ? '/claim-listing/' + slug + '/' : '/claim-listing/';
+    return '<span class="avail-mark" data-availability="' + esc(c.availability) + '">' +
+      '<span class="avail-badge" style="display:inline-block;font-size:.62rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:999px;background:rgba(245,166,35,.16);border:1px solid var(--amber);color:var(--ink)">' +
+      esc(AVAIL_LABELS[c.availability]) + '</span> ' +
+      '<a class="avail-source" href="' + esc(c.availability_source) + '" target="_blank" rel="noopener">Source</a> ' +
+      '<span class="avail-checked">checked ' + esc(c.availability_checked) + '</span> ' +
+      '<span class="avail-claim">Seller: <a class="avail-claim-link" href="' + esc(href) + '">claim this listing</a>. ' +
+      esc(AVAIL_PRICES) + '</span></span>';
+  }
+
   function cardHtml(c) {
     var selected = compare[c.id];
     var compScore = c.completeness_score != null ? c.completeness_score : (c.research_completeness ? Math.min(100, c.research_completeness * 15) : 40);
@@ -184,7 +216,8 @@
     var kindIcon = KIND_ICONS[c.kind] || '🏢';
     var kindText = KIND_LABELS[c.kind] || c.kind;
 
-    return '<div class="kg-card" data-id="' + esc(c.id) + '">' +
+    var flagged = !!(c.kind === 'manufacturer' && AVAIL_LABELS[c.availability]);
+    return '<div class="kg-card"' + (flagged ? ' data-shippable="1" data-availability="' + esc(c.availability) + '"' : '') + ' data-id="' + esc(c.id) + '">' +
       '<div class="kg-card-check">' +
         '<input type="checkbox" title="Select for side-by-side comparison" data-cmp="' + esc(c.id) + '"' + (selected ? ' checked' : '') + '>' +
       '</div>' +
@@ -194,6 +227,7 @@
           '<span class="kg-card-loc">' + esc(c.country) + (c.region ? ' · ' + esc(c.region) : '') + '</span>' +
           '<span class="dir-tag" style="background:rgba(245,166,35,.12);border-color:var(--amber);color:var(--text);font-weight:700">' + kindIcon + ' ' + esc(kindText) + '</span>' +
           evBadge(c.evidence) +
+          availabilityMark(c) +
         '</div>' +
         (specsHtml.length ? '<div class="kg-card-specs">' + specsHtml.join('') + '</div>' : '') +
         '<div class="dir-tags">' + (c.capability_labels || []).slice(0, 6).map(function (l) { return '<span class="dir-tag">' + esc(l) + '</span>'; }).join('') + '</div>' +
@@ -249,8 +283,10 @@
         if (p.hasAttribute('data-set-minkv')) {
           var v = parseInt(p.getAttribute('data-set-minkv'), 10);
           p.classList.toggle('on', minKv === v);
-        } else if (p.hasAttribute('data-toggle')) {
+        } else if (p.getAttribute('data-toggle') === 'multiPlant') {
           p.classList.toggle('on', !!onlyMultiPlant);
+        } else if (p.getAttribute('data-toggle') === 'shippable') {
+          p.classList.toggle('on', !!shippableOnly);
         } else if (p.hasAttribute('data-set-ev')) {
           p.classList.toggle('on', evFilter === p.getAttribute('data-set-ev'));
         } else if (p.hasAttribute('data-set-mincomp')) {
@@ -343,6 +379,7 @@
         '<button class="kg-quick-pill ' + (minKv === 400 ? 'on' : '') + '" data-set-minkv="400">⚡ ≥400 kV (EHV)</button>' +
         '<button class="kg-quick-pill ' + (minKv === 765 ? 'on' : '') + '" data-set-minkv="765">⚡ 765 kV (UHV)</button>' +
         '<button class="kg-quick-pill ' + (onlyMultiPlant ? 'on' : '') + '" data-toggle="multiPlant">🏭 Multi-Plant OEMs</button>' +
+        '<button class="kg-quick-pill ' + (shippableOnly ? 'on' : '') + '" data-toggle="shippable">Shippable units</button>' +
         '<button class="kg-quick-pill ' + (evFilter === 'CONFIRMED' ? 'on' : '') + '" data-set-ev="CONFIRMED">✅ Confirmed Evidence</button>' +
         '<button class="kg-quick-pill ' + (minComp === 70 ? 'on' : '') + '" data-set-mincomp="70">⭐ ≥70% Profile Completeness</button>' +
       '</div>' +
@@ -445,6 +482,7 @@
         '<tr><td>Capabilities / Products</td>' + rows.map(function (c) { return '<td>' + (c.capability_labels || []).slice(0, 5).join(', ') + '</td>'; }).join('') + '</tr>' +
         '<tr><td>Documented Standards</td>' + rows.map(function (c) { return '<td>' + esc((c.certs || []).join(', ') || '—') + '</td>'; }).join('') + '</tr>' +
         '<tr><td>Manufacturing Facilities</td>' + rows.map(function (c) { return '<td>🏭 ' + c.factories.length + ' recorded plant(s)</td>'; }).join('') + '</tr>' +
+        '<tr><td>Shippable units</td>' + rows.map(function (c) { return '<td>' + esc(AVAIL_LABELS[c.availability] || '—') + '</td>'; }).join('') + '</tr>' +
         '<tr><td>Profile Completeness</td>' + rows.map(function (c) {
           var score = (c.completeness_score != null ? c.completeness_score : (c.research_completeness ? Math.min(100, c.research_completeness * 15) : 40));
           return '<td><b>' + score + '%</b> (' + (c.provenance_type || 'Verified') + ')</td>';
@@ -470,7 +508,7 @@
 
     var clr = document.getElementById('dirClear');
     if (clr) clr.addEventListener('click', function () {
-      q = ''; kind = ''; country = ''; type = ''; minKv = 0; evFilter = ''; onlyMultiPlant = false; minComp = 0;
+      q = ''; kind = ''; country = ''; type = ''; minKv = 0; evFilter = ''; onlyMultiPlant = false; shippableOnly = false; minComp = 0;
       var elQ = document.getElementById('dirQ'); if (elQ) elQ.value = '';
       var elC = document.getElementById('dirCountry'); if (elC) elC.value = '';
       var elT = document.getElementById('dirType'); if (elT) elT.value = '';
@@ -520,6 +558,14 @@
     togglePills.forEach(function (p) {
       p.addEventListener('click', function () {
         onlyMultiPlant = !onlyMultiPlant;
+        render();
+      });
+    });
+
+    var shipPills = root.querySelectorAll('[data-toggle="shippable"]');
+    shipPills.forEach(function (p) {
+      p.addEventListener('click', function () {
+        shippableOnly = !shippableOnly;
         render();
       });
     });

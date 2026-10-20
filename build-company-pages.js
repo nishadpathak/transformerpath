@@ -40,6 +40,8 @@ const { isUpcoming, platformToday } = require('./lib/event-status');
 const { splitEntityIntel, fold: foldEntity } = require('./lib/entity-intel');
 const paidListings = require('./lib/paid-listings');
 const claimListing = require('./lib/claim-listing');
+const availability = require('./lib/availability');
+const AVAILABILITY = availability.load();
 const buyerPageCopy = require('./lib/buyer-page-copy');
 const listingMedia = require('./lib/listing-media');
 const PAID_LISTINGS = paidListings.load();
@@ -610,6 +612,7 @@ function page(r, slug) {
     '</head>\n<body>\n' + HEAD + '\n<main id="main" tabindex="-1" class="c-wrap">' +
     '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="../../manufacturers.html" style="color:var(--accent)">Manufacturers</a> › ' + crumbCountry + ' › ' + esc(r.name) + '</nav>' +
     '<h1>' + esc(r.name) + ' <button class="follow-btn" data-follow-type="company" data-follow-subject="' + esc(r.name) + '" data-follow-label="' + esc(r.name) + '" title="Follow this manufacturer in My TransformerPath">Follow</button></h1>' +
+    (function () { const flag = availability.forSlug(slug, AVAILABILITY); return flag ? '<p style="margin:8px 0 0">' + availability.markHtml(flag, slug) + '</p>' : ''; })() +
     (tpmFor(r.slug) ? '<p style="margin:6px 0 0;font-size:.82rem;color:var(--muted)">Permanent company ID ' + copyIdBtn(tpmFor(r.slug)) + ' <span style="opacity:.75">(stable census identity — not a certification)</span></p>' : '') +
     paidListings.manufacturerBadgeHtml(slug, PAID_LISTINGS) +
     listingMediaHtml(slug) +
