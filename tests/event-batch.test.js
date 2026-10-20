@@ -33,8 +33,8 @@ const expected = {
   'ep-shanghai-2026': ['Exhibiting at EP Shanghai 2026', 174],
   'enlit-europe-2026': ['Exhibiting at Enlit Europe 2026', 38],
   'adipec-2026': ['Exhibiting at ADIPEC 2026', 2],
-  'energetics-2026': ['Exhibiting at ENERGETICS 2026', 9],
-  'elecrama-2025': ['Previous exhibitors (2025)', 100],
+  'energetics-2026': ['Exhibiting at ENERGETICS 2026', 13],
+  'elecrama-2025': ['Previous exhibitors (2025)', 133],
   'gcc-power-2025': ['Previous exhibitors (2025)', 13],
   'wetex-2025': ['Previous exhibitors (2025)', 40],
   'vietnam-energy-week-2025': ['Previous edition', 2]
@@ -49,10 +49,34 @@ check('shipped batch files do not publish do_not_contact', !/do_not_contact/i.te
 
 const adipec = fs.readFileSync(path.join(root, 'events/adipec-2026/index.html'), 'utf8');
 const elecrama = fs.readFileSync(path.join(root, 'events/elecrama-2025/index.html'), 'utf8');
+const energetics = fs.readFileSync(path.join(root, 'events/energetics-2026/index.html'), 'utf8');
 const vietnam = fs.readFileSync(path.join(root, 'events/vietnam-energy-week-2025/index.html'), 'utf8');
 check('ADIPEC page lists the exhibiting section', adipec.indexOf('Exhibiting at ADIPEC 2026') >= 0 && adipec.indexOf('/manufacturers/siemens/') >= 0 && adipec.indexOf('siemens-energy') < 0);
 check('ELECRAMA page lists previous exhibitors', elecrama.indexOf('Previous exhibitors (2025)') >= 0);
 check('Vietnam Energy Week uses Previous edition', vietnam.indexOf('Previous edition') >= 0 && vietnam.indexOf('Previous exhibitors (2025)') < 0);
+
+const labs = JSON.parse(fs.readFileSync(path.join(root, 'data/laboratories.json'), 'utf8'));
+const ids = JSON.parse(fs.readFileSync(path.join(root, 'data/permanent-ids.json'), 'utf8'));
+const tomb = ids.companies['schweitzer-engineering-laboratories-pvt-ltd'];
+check('Schweitzer is off ELECRAMA and out of the laboratory list', !has('schweitzer-engineering-laboratories-pvt-ltd', 'elecrama-2025') && !labs.laboratories.some((lab) => lab.id === 'lab:schweitzer-engineering-laboratories-pvt-ltd') && elecrama.indexOf('SCHWEITZER') < 0);
+check('TPM-001072 stays reserved', !!(tomb && tomb.id === 'TPM-001072' && tomb.retired === true));
+check('Schweitzer profile and claim page are gone', !fs.existsSync(path.join(root, 'laboratories/schweitzer-engineering-laboratories-pvt-ltd/index.html')) && !fs.existsSync(path.join(root, 'claim-listing/schweitzer-engineering-laboratories-pvt-ltd/index.html')));
+function row(eventId, pattern) {
+  return directory[eventId].entries.find((entry) => pattern.test(entry.name));
+}
+const mefta = row('energetics-2026', /MEFTA GREEN TRANSFO/i);
+const sonel = row('energetics-2026', /^SONEL S\.A\.$/i);
+const kinectrics = row('elecrama-2025', /KINECTRICS INDIA/i);
+const eberle = row('elecrama-2025', /A\. EBERLE SYSTEMS/i);
+const cesi = row('elecrama-2025', /CESI S\.P\.A/i);
+const quality = row('elecrama-2025', /QUALITY POWER/i);
+check('Mefta stays separate from Green Transfo', !!(mefta && mefta.directory === 'manufacturers' && mefta.slug !== 'green-transfo') && !has('green-transfo', 'energetics-2026'));
+check('Sonel S.A. stays separate from Sonel Instruments India', !!(sonel && sonel.slug !== 'sonel-instruments-india-private-limited') && !has('sonel-instruments-india-private-limited', 'energetics-2026'));
+check('Kinectrics India stays separate from the Canadian lab', !!(kinectrics && kinectrics.slug === 'kinectrics-india-private-limited') && !has('kinectrics', 'elecrama-2025'));
+check('A. Eberle Systems stays separate from A. Eberle GmbH', !!(eberle && eberle.slug === 'a-eberle-systems-pvt-ltd') && !has('a-eberle-gmbh-and-co-kg', 'elecrama-2025'));
+check('CESI S.p.A. stays separate from the KEMA laboratories', !!(cesi && cesi.slug === 'cesi-s-p-a') && !has('kema-labs-arnhem', 'elecrama-2025'));
+check('Quality Power and Atlanta Electricals are on ELECRAMA', !!(quality && quality.directory === 'manufacturers') && has('atlanta-electricals', 'elecrama-2025') && elecrama.indexOf('QUALITY POWER ELECTRICAL EQUIPMENTS PVT. LTD.') >= 0);
+check('ENERGETICS page lists the new exhibitors', energetics.indexOf('MEFTA GREEN TRANSFO ENERGY POLAND SP. Z O.O.') >= 0 && energetics.indexOf('SONEL S.A.') >= 0);
 
 if (failed) {
   console.error('EVENT BATCH FAILED (' + failed + ')');
