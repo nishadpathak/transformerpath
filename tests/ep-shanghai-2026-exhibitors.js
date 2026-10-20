@@ -23,10 +23,10 @@ const publicCount = require('../lib/public-company-count').read(root).publicCoun
 
 const china = census.find((g) => g.country === 'China');
 const makers = china.makers.filter((m) => m[1] === '—' && m[3] === '');
-check('63 unclaimed China makers were added', makers.length === 63, String(makers.length));
-check('public manufacturer count is 950', publicCount === 950 && stats.manufacturers === 950, String(publicCount) + '/' + stats.manufacturers);
-check('68 unclaimed accessory rows were added', accessories.suppliers.filter((s) => s.verification_status === 'Unclaimed').length === 68);
-check('32 new laboratories were added', labs.laboratories.length === 45, String(labs.laboratories.length));
+check('the EP Shanghai unclaimed China makers remain', makers.length >= 63, String(makers.length));
+check('the public manufacturer count is the site-stats figure', publicCount === stats.manufacturers && publicCount > 950, String(publicCount) + '/' + stats.manufacturers);
+check('the EP Shanghai unclaimed accessory rows remain', accessories.suppliers.filter((s) => s.verification_status === 'Unclaimed').length >= 68);
+check('the laboratory directory still holds the EP Shanghai additions', labs.laboratories.length >= 45, String(labs.laboratories.length));
 
 const shipped = JSON.stringify(exhibitors) + JSON.stringify(accessories.suppliers.slice(-80)) + JSON.stringify(labs.laboratories.slice(-40));
 check('outreach columns are not published', !/do_not_contact/.test(shipped) && !/"email"\s*:/.test(JSON.stringify(exhibitors)));

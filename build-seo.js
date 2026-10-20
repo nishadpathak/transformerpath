@@ -165,6 +165,7 @@ let countryIndex = [];
 for (const c of MGF) {
   if (!c.makers.some(function(x){ return !/^Served by/i.test(x[0]); })) continue;
   const slug = slugify(c.country);
+  if (!slug) continue;
   const real = c.makers.filter((m) => !/^Served by/i.test(m[0]).valueOf() && !/^Served by/i.test(m[0]));
   const rows = c.makers.map((m) => {
     if (/^Served by/i.test(m[0])) return '<div class="mk-row"><span class="note">' + esc(m[0]) + '</span></div>';

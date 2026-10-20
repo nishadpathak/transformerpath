@@ -11,10 +11,19 @@
 const fs = require('fs');
 
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
+const CSSV = (JSON.parse(fs.readFileSync('data/config.json', 'utf8')).assets || {}).css || 14;
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 const { directoryBadge, scrubLegacyLabels } = require('./lib/provenance-badge');
+const eventBadges = require('./event-badges');
+function tpmFor(slug) {
+  try {
+    const lookup = JSON.parse(fs.readFileSync('data/permanent-id-lookup.json', 'utf8'));
+    return (lookup.by_slug && lookup.by_slug[slug]) || '';
+  } catch (e) { return ''; }
+}
+function serviceSlug(row) { return String(row && row.id || '').replace(/^srv:/, ''); }
 
 const DATA = JSON.parse(fs.readFileSync('data/services.json', 'utf8'));
 const SERVICES = DATA.services || [];
@@ -22,7 +31,12 @@ const { sourcedCardCount } = require('./lib/sourced-card-count');
 const provenanceStat = sourcedCardCount(SERVICES);
 
 function render() {
-  const servJson = scrubLegacyLabels(JSON.stringify(SERVICES));
+  const servJson = scrubLegacyLabels(JSON.stringify(SERVICES.map(function (row) {
+    const copy = Object.assign({}, row);
+    const id = tpmFor(serviceSlug(row));
+    if (id) copy.permanent_id = id;
+    return copy;
+  })));
 
   const html = `<!DOCTYPE html>
 <html lang="en" data-theme="dark">
@@ -41,7 +55,7 @@ function render() {
 <meta name="robots" content="index,follow">
 <meta name="theme-color" content="#0d1b2e">
 <link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
-<link rel="stylesheet" href="style.css?v=12">
+<link rel="stylesheet" href="style.css?v=${CSSV}">
 <link rel="stylesheet" href="tp-nav.css?v=15">
 <link rel="stylesheet" href="tp-feedback.css?v=12">
 <style>
@@ -195,11 +209,16 @@ window.__TP_SERVICES__ = ${servJson};
       const kv = d.voltage_capability_kv ? '<span class="kv-pill">⚡ ' + esc(d.voltage_capability_kv) + '</span>' : '';
       const mva = d.capacity_mva ? '<span class="kv-pill" style="margin-left:4px">📦 ' + esc(d.capacity_mva) + ' MVA</span>' : '';
 
+      var slug = String(d.id || '').replace(/^srv:/, '');
+      var badge = (window.TPEventBadges && TPEventBadges.htmlFor) ? TPEventBadges.htmlFor({ slug: slug, name: d.company_name }) : '';
+      var nameHtml = d.profile_page ? '<a href="/services/' + esc(slug) + '/">' + esc(d.company_name) + '</a>' : esc(d.company_name);
+      var tpmHtml = d.permanent_id ? '<p style="margin:4px 0 8px;font-size:.78rem;color:var(--muted)">Permanent company ID ' + esc(d.permanent_id) + ' <span style="opacity:.75">(not a certification)</span></p>' : '';
       return '<div class="srv-card">' +
         '<div class="srv-top">' +
-          '<h2 class="srv-name">' + esc(d.company_name) + '</h2>' +
+          '<h2 class="srv-name">' + nameHtml + (badge ? ' ' + badge : '') + '</h2>' +
           (window.TPProvenance ? TPProvenance.directoryBadge(d) : '') +
         '</div>' +
+        tpmHtml +
         '<div class="srv-loc">📍 ' + esc(loc) + '</div>' +
         '<div style="margin-bottom:8px">' + kv + mva + '</div>' +
         '<p style="color:var(--text);font-size:.9rem;line-height:1.5;margin:6px 0 12px">' + esc(d.description) + '</p>' +
@@ -225,6 +244,7 @@ window.__TP_SERVICES__ = ${servJson};
   render();
 })();
 </script>
+${eventBadges.mountHtml()}
 <script src="tp-nav.js?v=5" defer></script>
 <script src="analytics.js" defer></script>
 </body>
@@ -232,6 +252,28 @@ window.__TP_SERVICES__ = ${servJson};
 
   fs.writeFileSync('services.html', html);
   console.log('services.html built (' + SERVICES.length + ' service & repair companies)');
+  SERVICES.filter(function (row) { return row.profile_page; }).forEach(function (row) {
+    const slug = serviceSlug(row);
+    const url = 'https://transformerpath.com/services/' + slug + '/';
+    const id = tpmFor(slug);
+    const badge = eventBadges.htmlFor({ slug: slug, name: row.company_name });
+    const page = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
+      '<title>' + esc(row.company_name) + ' — Unclaimed service listing | TransformerPath</title>' +
+      '<meta name="description" content="' + esc((row.description || row.company_name).slice(0, 180)) + '">' +
+      '<link rel="canonical" href="' + url + '">' +
+      '<meta name="robots" content="index,follow">' +
+      '<link rel="stylesheet" href="../../style.css?v=' + CSSV + '"><link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">' +
+      '</head><body>\n' + HEAD + '\n<main id="main" tabindex="-1" style="max-width:900px;margin:0 auto;padding:44px 20px 88px">' +
+      '<nav style="font-size:.8rem;color:var(--muted)"><a href="../../services.html">Services</a> › ' + esc(row.company_name) + '</nav>' +
+      '<h1>' + esc(row.company_name) + (badge ? ' ' + badge : '') + '</h1>' +
+      (id ? '<p style="font-size:.82rem;color:var(--muted)">Permanent company ID <span data-copy-id="' + esc(id) + '">' + esc(id) + '</span> <span style="opacity:.75">(stable directory identity — not a certification)</span></p>' : '') +
+      '<p>Unclaimed listing. No service type is claimed.</p>' +
+      '<p>' + esc(row.description || '') + '</p>' +
+      '<p>' + esc([row.city, row.country].filter(Boolean).join(', ')) + (row.website ? ' · <a href="' + esc(row.website) + '">Official website</a>' : '') + '</p>' +
+      '</main>\n' + FOOT + '\n' + (badge ? eventBadges.deferScript() : '') + '</body></html>\n';
+    fs.mkdirSync('services/' + slug, { recursive: true });
+    fs.writeFileSync('services/' + slug + '/index.html', page);
+  });
 }
 
 render();

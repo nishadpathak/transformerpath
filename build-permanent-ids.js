@@ -71,6 +71,12 @@ companyRows.forEach(function (r) {
   }
 });
 
+const extras = readJson('data/permanent-id-extras.json', []);
+(extras || []).forEach(function (row) {
+  if (!row || !row.slug || bySlug[row.slug]) return;
+  bySlug[row.slug] = { slug: row.slug, name: row.name || row.slug, country: row.country || '' };
+});
+
 let added = 0;
 const ordered = Object.keys(bySlug).sort();
 ordered.forEach(function (slug) {
@@ -114,7 +120,7 @@ store.counts = {
   next_facility_n: store.next_facility_n,
   canonical_manufacturers_target: CANON_MFG
 };
-store.honesty = 'TPM/TPF IDs label existing census entities from company-slugs and manufacturer-sites. Assigning an ID does not create a manufacturer or inflate the ' + CANON_MFG + ' census. Retire IDs by tombstone only — never reuse.';
+store.honesty = 'TPM/TPF IDs label census manufacturers and directory listings that already have a page. Assigning an ID does not create a manufacturer or inflate the ' + CANON_MFG + ' census. Accessory, laboratory and service IDs are not manufacturer counts. Retire IDs by tombstone only — never reuse.';
 
 fs.writeFileSync('data/permanent-ids.json', JSON.stringify(store, null, 2) + '\n');
 

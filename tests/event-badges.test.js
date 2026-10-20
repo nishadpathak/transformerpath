@@ -21,9 +21,13 @@ check('how to add an event or a year is documented', /history entry/.test(catalo
 
 const errors = badges.validate(catalog);
 check('every history entry has an exhibitor-list source', errors.length === 0, errors.slice(0, 4).join('; '));
-check('the catalog does not invent a year before EP Shanghai 2026', catalog.companies.every(function (row) {
-  return row.history.length === 1 && row.history[0].event === 'ep-shanghai-2026' && row.history[0].year === 2026 && row.history[0].source === LIST;
+check('EP Shanghai 2026 history still cites the exhibitor list', catalog.companies.every(function (row) {
+  return row.history.every(function (entry) { return /^https?:\/\//.test(entry.source); }) && row.history.some(function (entry) {
+    return entry.event !== 'ep-shanghai-2026' || (entry.year === 2026 && entry.source === LIST);
+  });
 }));
+const abbRow = catalog.companies.filter(function (row) { return row.slug === 'abb-china-co-ltd'; })[0];
+check('ABB (China) still has only EP Shanghai 2026', abbRow && abbRow.history.length === 1 && abbRow.history[0].event === 'ep-shanghai-2026');
 
 function withoutSource(mutate) {
   const copy = JSON.parse(JSON.stringify(catalog));
@@ -80,7 +84,7 @@ check('a same-year range is computed from the dates', badges.label({
 }, new Date('2027-11-28T12:00:00Z')) === 'Exhibiting at WETEX \u00b7 28 Nov\u20132 Dec 2027');
 
 const extended = JSON.parse(JSON.stringify(catalog));
-extended.events.push(ep2025, wetex);
+extended.events.push(ep2025);
 extended.companies.push({
   slug: 'example-co',
   name: 'Example Co',

@@ -28,6 +28,12 @@ function slugify(s) {
 }
 const exhibitorTags = require('./lib/exhibitor-tags');
 const eventBadges = require('./event-badges');
+function tpmFor(slug) {
+  try {
+    const lookup = JSON.parse(fs.readFileSync('data/permanent-id-lookup.json', 'utf8'));
+    return (lookup.by_slug && lookup.by_slug[slug]) || '';
+  } catch (e) { return ''; }
+}
 
 const DATA = JSON.parse(fs.readFileSync('data/accessories.json', 'utf8'));
 const SUPPLIERS = DATA.suppliers || [];
@@ -89,6 +95,7 @@ function page(s) {
     '</head>\n<body>\n' + HEAD + '\n<main id="main" tabindex="-1" class="c-wrap">' +
     '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="../../accessories.html" style="color:var(--accent)">Accessories</a> › ' + esc(s.name) + '</nav>' +
     '<h1>' + esc(s.name) + (function () { const badge = eventBadges.htmlFor({ slug: slug, name: s.name }); return badge ? ' ' + badge : ''; })() + '</h1>' +
+    (tpmFor(slug) ? '<p style="margin:6px 0 0;font-size:.82rem;color:var(--muted)">Permanent company ID <span data-copy-id="' + esc(tpmFor(slug)) + '">' + esc(tpmFor(slug)) + '</span> <span style="opacity:.75">(stable directory identity — not a certification)</span></p>' : '') +
     '<div class="evmeta"><span><b>Country</b> ' + esc(s.country) + '</span>' + (s.state ? '<span><b>State</b> ' + esc(s.state) + '</span>' : '') + (s.city ? '<span><b>City</b> ' + esc(s.city) + '</span>' : '') + (s.website ? '<span><a href="' + esc(s.website) + '" target="_blank" rel="noopener" style="color:var(--accent)">Official website ↗</a></span>' : '') + (s.email ? '<span><b>Email</b> ' + esc(s.email) + '</span>' : '') + '</div>' +
     '<p class="lead">' + esc(s.description) + '</p>' +
     exhibitorTags.block(exhibitorTags.forSlug(slug), { claim: true }) +
