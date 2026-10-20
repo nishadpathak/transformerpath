@@ -17,6 +17,15 @@
       if (awardTracked != null) d.awards = awardTracked;
       Object.keys(d).forEach(function (k) {
         if (k.indexOf('_') === 0) return;
+        if (k === 'updated') {
+          var date = /^\d{4}-\d{2}-\d{2}$/.test(String(d[k] || '')) ? String(d[k]) : '—';
+          document.querySelectorAll('[data-stat="updated"]').forEach(function (el) {
+            el.textContent = date;
+            if (date === '—') el.removeAttribute('datetime');
+            else el.setAttribute('datetime', date);
+          });
+          return;
+        }
         var v = (typeof d[k] === 'number') ? d[k].toLocaleString('en-US') : d[k];
         document.querySelectorAll('[data-stat="' + k + '"]').forEach(function (el) {
           el.textContent = v;

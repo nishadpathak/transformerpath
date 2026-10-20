@@ -45,6 +45,16 @@
 
   var STATS = {};
 
+  function dataAsOfHtml(updated) {
+    var date = /^\d{4}-\d{2}-\d{2}$/.test(String(updated || '')) ? String(updated) : '—';
+    var dt = date === '—' ? '' : ' datetime="' + date + '"';
+    return '<p class="tp-data-as-of" style="color:#b8c4d4;font-size:.82rem;margin:8px 0 14px">data as of <time data-stat="updated"' + dt + '>' + date + '</time></p>';
+  }
+
+  function kpiValue(value) {
+    return typeof value === 'number' ? value : '—';
+  }
+
   function load() {
     Promise.all([
       fetch('data/directory-index.json').then(function (r) { return r.json(); }),
@@ -362,12 +372,13 @@
         '<p style="margin:0 0 6px;color:#fff;font-size:1.15rem;font-weight:700;letter-spacing:-.02em">Search the industry knowledge graph</p>' +
         (q ? '<p style="color:#f5a623;font-size:.92rem;margin:0 0 10px">Showing directory matches for “' + esc(q) + '”. For companies, plants, projects, tenders and intel in one view, use <a href="search.html?q=' + encodeURIComponent(q) + '" style="color:#f5a623;font-weight:800">universal search →</a></p>' : '') +
         '<p style="color:#b8c4d4;font-size:.95rem;margin:0;max-width:840px;line-height:1.5">An interconnected, sourced database connecting power and distribution transformer OEMs, component &amp; material suppliers, service contractors, heavy transport, testing laboratories, associations, training academies, and buyers. <b>Factual evidence, sourced records, zero subjective rankings.</b></p>' +
+        dataAsOfHtml(STATS.updated) +
         '<div class="kg-kpi-grid">' +
-          '<div class="kg-kpi-box"><div class="kg-kpi-val">' + (typeof STATS.manufacturers === 'number' ? STATS.manufacturers : (facets.kinds.manufacturer || DATA.length)) + '</div><div class="kg-kpi-lbl">Manufacturers</div></div>' +
-          '<div class="kg-kpi-box"><div class="kg-kpi-val">' + (STATS.factories || '—') + '</div><div class="kg-kpi-lbl">Sourced plants</div></div>' +
-          '<div class="kg-kpi-box"><div class="kg-kpi-val">' + (STATS.capabilities || '—') + '</div><div class="kg-kpi-lbl">Capabilities</div></div>' +
-          '<div class="kg-kpi-box"><div class="kg-kpi-val">' + (STATS.manufacturingCountries || countries.length) + '</div><div class="kg-kpi-lbl">Countries</div></div>' +
-          '<div class="kg-kpi-box"><div class="kg-kpi-val">' + DATA.length + '</div><div class="kg-kpi-lbl">Indexed entities</div></div>' +
+          '<div class="kg-kpi-box"><div class="kg-kpi-val" data-stat="manufacturers">' + kpiValue(STATS.manufacturers) + '</div><div class="kg-kpi-lbl">Manufacturers</div></div>' +
+          '<div class="kg-kpi-box"><div class="kg-kpi-val" data-stat="factories">' + kpiValue(STATS.factories) + '</div><div class="kg-kpi-lbl">Sourced plants</div></div>' +
+          '<div class="kg-kpi-box"><div class="kg-kpi-val" data-stat="capabilities">' + kpiValue(STATS.capabilities) + '</div><div class="kg-kpi-lbl">Capabilities</div></div>' +
+          '<div class="kg-kpi-box"><div class="kg-kpi-val" data-stat="manufacturingCountries">' + kpiValue(STATS.manufacturingCountries) + '</div><div class="kg-kpi-lbl">Countries</div></div>' +
+          '<div class="kg-kpi-box"><div class="kg-kpi-val" data-stat="indexedEntities">' + kpiValue(STATS.indexedEntities) + '</div><div class="kg-kpi-lbl">Indexed entities</div></div>' +
         '</div>' +
       '</div>' +
 
