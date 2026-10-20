@@ -581,6 +581,8 @@ function renderManufacturers(html) {
   const claimListing = require('./lib/claim-listing');
   const availability = require('./lib/availability');
   const availabilityBySlug = availability.load();
+  const declaredOrigin = require('./lib/declared-origin');
+  const ORIGIN = declaredOrigin.bySlug(declaredOrigin.load());
   const paidDoc = paidListings.load();
   const paySlug = (name) => directoryCompanySlug(name, CSMAP);
   const vbadge = (m, slug) => {
@@ -624,7 +626,7 @@ function renderManufacturers(html) {
           : (function () {
             const slug = paySlug(m[0]);
             const flag = availability.forSlug(slug, availabilityBySlug);
-            return `<div class="mk-row">${csl(m) ? `<a class="prof" href="manufacturers/${csl(m)}/" style="color:var(--accent);font-weight:700">${esc(m[0])}</a>` : `<b>${esc(m[0])}</b>`}${vbadge(m, slug)}${flag ? availability.markHtml(flag, slug) : ''}${tpills(m[3])}<span class="city">${esc(m[1] || '')}${m[5] ? ` · est. ${esc(m[5])}` : ''}</span>${m[2] ? `<a href="${esc(m[2])}" target="_blank" rel="noopener">Site →</a>` : '<span></span>'}${verifyCtas(m[0], slug)}</div>`;
+            return `<div class="mk-row">${csl(m) ? `<a class="prof" href="manufacturers/${csl(m)}/" style="color:var(--accent);font-weight:700">${esc(m[0])}</a>` : `<b>${esc(m[0])}</b>`}${vbadge(m, slug)}${flag ? availability.markHtml(flag, slug) : ''}${tpills(m[3])}<span class="city">${esc(m[1] || '')}${m[5] ? ` · est. ${esc(m[5])}` : ''}</span>${declaredOrigin.listingHtml(ORIGIN[slug] || null)}${m[2] ? `<a href="${esc(m[2])}" target="_blank" rel="noopener">Site →</a>` : '<span></span>'}${verifyCtas(m[0], slug)}</div>`;
           })()).join('') +
         `</div>`;
     }).join('')).join('');
