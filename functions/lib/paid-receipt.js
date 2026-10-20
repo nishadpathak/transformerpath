@@ -11,7 +11,7 @@
 'use strict';
 
 const LABELS = {
-  verified_manufacturer: 'Verified Manufacturer ($499)',
+  verified_manufacturer: 'Verified Manufacturer ($499 one-time)',
   featured_event: 'Featured Event ($299)',
   featured_exhibitor: 'Featured Exhibitor ($399)',
   hosted_webinar: 'Hosted Webinar ($1,500)',
@@ -34,7 +34,7 @@ function nextStep(product) {
   if (product === 'featured_event') return 'Submit the event name, official URL, and dates at ' + origin() + '/events.html?paid=featured_event#submit-event';
   if (product === 'featured_exhibitor') return 'Submit your company and the event at ' + origin() + '/sponsor.html?paid=featured_exhibitor#contact';
   if (product === 'hosted_webinar') return 'TransformerPath does not host webinars. Email hello@transformerpath.com about this payment.';
-  if (product === 'verified_manufacturer') return 'Submit your company details at ' + origin() + '/claim-profile.html?paid=verified_manufacturer#claimForm';
+  if (product === 'verified_manufacturer') return 'Submit your company details at ' + origin() + '/claim-profile.html?paid=verified_manufacturer#claimForm. Verified Manufacturer is $499 one-time. Identity and contact details checked. Not a product certification.';
   if (product === 'job_standard' || product === 'job_featured' || product === 'job_bundle_5') {
     return 'Submit the vacancy at ' + origin() + '/jobs.html?paid=' + product + '#post. Payment does not publish the opening. The apply URL, its dates, and its HTTP status are checked automatically. Featured placement stays off until that payment is confirmed.';
   }
