@@ -31,7 +31,7 @@ function upgrades(slug) {
   return '<section class="claim-upgrades" aria-label="Upgrade options">'
     + '<h2>Upgrade options</h2>'
     + '<p>Claiming a listing is free. These paid options use the existing checkout links. Payment does not publish a listing before review.</p>'
-    + '<a class="btn btn-amber" href="' + payHref(VERIFIED, slug) + '" data-verified-manufacturer-pay="1">Get Verified $499/yr</a>'
+    + '<a class="btn btn-amber" href="' + payHref(VERIFIED, slug) + '" data-verified-manufacturer-pay="1">Get Verified $499 one-time</a>'
     + '<a class="btn btn-outline" href="' + payHref(FEATURED, slug) + '" data-featured-listing-pay="1">Featured $299/yr</a>'
     + '<a class="btn btn-outline" href="' + payHref(BOTH, slug) + '" data-featured-verified-pay="1">Featured+Verified $699/yr</a>'
     + '</section>';

@@ -39,7 +39,7 @@ If `STRIPE_SECRET_KEY` or the price id is missing, `create-checkout` returns `50
 Use a test-mode secret (`sk_test_`). Do not use a live key for these steps.
 
 ```bash
-stripe products create --name "Verified Manufacturer" --description "12-month verified manufacturer listing. Badge after review."
+stripe products create --name "Verified Manufacturer" --description "One-time verified manufacturer listing. Badge after review. Identity and contact details checked. Not a product certification."
 stripe prices create --unit-amount 49900 --currency usd -d "product=prod_REPLACE"
 stripe products create --name "Featured Event" --description "Featured label for one event. Label after review."
 stripe prices create --unit-amount 29900 --currency usd -d "product=prod_REPLACE"

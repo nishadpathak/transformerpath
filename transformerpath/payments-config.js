@@ -16,12 +16,12 @@
     directory_verified: {
       sku: 'directory_verified',
       name: 'Directory — Verified',
-      description: 'Verified badge, full profile, buyer enquiry button — 12 months.',
+      description: 'Identity and contact details checked. Not a product certification.',
       amountCents: 49900,
       currency: 'usd',
       displayPrice: '$499',
-      displayPeriod: '/year',
-      paymentLink: '',
+      displayPeriod: ' one-time',
+      paymentLink: 'https://buy.stripe.com/4gMbIU7G8bFHak8d5EfYY05',
       successPath: '/checkout-success.html?sku=directory_verified'
     },
     directory_premium: {
