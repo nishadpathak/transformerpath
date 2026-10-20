@@ -62,7 +62,9 @@ const bCard = labHtml.slice(bStart, bStart + 2500);
 check('an unsourced lab card does not claim ISO/IEC 17025', bStart > 0 && bCard.indexOf('ISO/IEC 17025') < 0);
 
 const shell = fs.readFileSync(path.join(root, 'accessories/shell-global-shell-diala/index.html'), 'utf8');
-check('Shell Diala is tagged and linked to the event', shell.indexOf('Exhibiting at EP Shanghai 2026') >= 0 && shell.indexOf('href="/events/ep-shanghai-2026/"') >= 0);
+const shellBadge = 'Exhibiting at EP Shanghai \u00b7 3\u20135 Dec 2026';
+check('Shell Diala shows the EP Shanghai badge beside the name', shell.indexOf('<h1>') >= 0 && shell.indexOf(shellBadge) >= 0 && shell.indexOf('data-event-badge="ep-shanghai-2026"') >= 0 && shell.indexOf('href="/events/ep-shanghai-2026/"') >= 0);
+check('the manufacturers board badges ABB (China) beside its name', board.indexOf('ABB (China) Co., LTD</a><a class="event-badge"') >= 0);
 
 if (failed) {
   console.error('EP SHANGHAI EXHIBITORS FAILED (' + failed + ')');

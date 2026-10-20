@@ -154,6 +154,7 @@ const MGF = JSON.parse(fs.readFileSync('data/manufacturers.json', 'utf8'));
 const paidListings = require('./lib/paid-listings');
 const claimListing = require('./lib/claim-listing');
 const availability = require('./lib/availability');
+const eventBadges = require('./event-badges');
 const AVAILABILITY = availability.load();
 var CSMAP={}; try{ JSON.parse(fs.readFileSync('data/company-slugs.json','utf8')).forEach(function(c){ CSMAP[censusNameKey(c.name)] = c.slug; }); }catch(e){}
 
@@ -173,10 +174,10 @@ for (const c of MGF) {
       ? '<a href="/manufacturers/' + cslug + '/" style="color:var(--accent);font-weight:700">' + esc(m[0]) + '</a>'
       : '<b>' + esc(m[0]) + '</b>';
     const flag = availability.forSlug(cslug, AVAILABILITY);
-    return '<div class="mk-row">' + nameHtml + vbadge2(m) + (flag ? availability.markHtml(flag, cslug) : '') + tpills2(m[3]) + '<span class="city">' + esc(m[1] || '') + (m[5] ? ' · est. ' + esc(m[5]) : '') + '</span>' + (m[2] ? '<a href="' + esc(m[2]) + '" target="_blank" rel="noopener" class="prof">Site</a>' : '') + (cslug ? ' ' + claimListing.linkHtml(cslug) : '') + '</div>';
+    return '<div class="mk-row">' + nameHtml + eventBadges.htmlFor({ slug: cslug, name: m[0] }) + vbadge2(m) + (flag ? availability.markHtml(flag, cslug) : '') + tpills2(m[3]) + '<span class="city">' + esc(m[1] || '') + (m[5] ? ' · est. ' + esc(m[5]) : '') + '</span>' + (m[2] ? '<a href="' + esc(m[2]) + '" target="_blank" rel="noopener" class="prof">Site</a>' : '') + (cslug ? ' ' + claimListing.linkHtml(cslug) : '') + '</div>';
   }).join('');
   const html = '<!DOCTYPE html>\n<html lang="en" data-theme="dark">\n<head>\n<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">\n<title>' + esc(c.country) + ' Transformer Manufacturers | TransformerPath</title>\n<meta name="description" content="Power, distribution and dry-type transformer manufacturers and suppliers in ' + esc(c.country) + '. Reserve, compare and request quotes.">\n<link rel="canonical" href="https://transformerpath.com/manufacturers/' + slug + '.html">\n<meta property="og:type" content="website"><meta property="og:site_name" content="TransformerPath"><meta property="og:title" content="' + esc(c.country) + ' Transformer Manufacturers"><meta property="og:url" content="https://transformerpath.com/manufacturers/' + slug + '.html"><meta property="og:image" content="https://transformerpath.com/brand/og-image.png"><meta name="robots" content="index,follow">\n<link rel="stylesheet" href="../style.css?v=13"><link rel="stylesheet" href="../tp-nav.css?v=13"><link rel="preconnect" href="https://www.googletagmanager.com" crossorigin><link rel="preconnect" href="https://www.google-analytics.com"><link rel="icon" type="image/svg+xml" href="../brand/favicon.svg"><link rel="icon" href="../brand/favicon.ico" sizes="any"><link rel="apple-touch-icon" href="../brand/apple-touch-icon.png">\n<style>.c-wrap{max-width:900px;margin:0 auto;padding:44px 20px 80px}.c-wrap h1{font-size:1.9rem;color:var(--ink);overflow-wrap:anywhere}.c-wrap .lead{color:var(--muted);font-size:1rem}.c-wrap .mk-row{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;padding:10px 0;border-bottom:1px solid var(--border);font-size:.95rem}.c-wrap .mk-row b{color:var(--ink)}.c-wrap .mk-row .city{color:var(--muted);font-size:.85rem}.c-wrap .mk-row .prof{color:var(--accent);font-size:.8rem;font-weight:600;margin-left:auto}.c-wrap .tpill{display:inline-block;background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:1px 8px;font-size:.7rem;color:var(--text);margin-left:4px}.c-wrap .v-badge{color:var(--green);font-size:.7rem;font-weight:700}' + availability.chipCss() + '</style>\n</head>\n<body>\n' + HEAD + '\n<main id="main" tabindex="-1" class="c-wrap">\n<nav style="font-size:.8rem;color:var(--muted);margin-bottom:10px"><a href="../manufacturers.html" style="color:var(--accent)">Manufacturers</a> \u203a ' + esc(c.country) + '</nav>\n<h1>' + esc(c.flag) + ' Transformer Manufacturers in ' + esc(c.country) + '</h1>\n<p class="lead">' + real.length + ' manufacturer' + (real.length !== 1 ? 's' : '') + ' listed in ' + esc(c.country) + ' (' + esc(c.region) + '). Power, distribution and dry-type transformer suppliers.</p>\n' + comtrade.sectionHtml(c.country) + '\n<p class="avail-filters">' + availability.chipHtml() + '</p>' + availability.emptyHtml() + '\n<div>' + rows + '</div>\n' + paidListings.featuredListingSlotHtml({ scope: 'country', country: c.country }) + '\n<div class="card" style="background:rgba(245,166,35,.08);border-color:var(--accent);padding:16px 18px;text-align:center;margin-top:16px"><b style="color:var(--text)">Looking for a transformer supplier?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Submit a requirement and TransformerPath can match it against relevant manufacturers.</p><a class="btn btn-amber" href="../rfq.html" data-track="rfq_started" data-track-country="'+esc(c.country)+'">Submit an RFQ</a> <a class="btn btn-outline btn-sm" href="../list-company.html" data-track="supplier_claim_started" data-track-country="'+esc(c.country)+'">Listed here? Claim your company →</a></div>\n</main>\n' + FOOT + '\n<script src="../analytics.js?v=2" defer></script>\n' + availability.filterScript() + '\n</body>\n</html>';
-  fs.writeFileSync('manufacturers/' + slug + '.html', html);
+  fs.writeFileSync('manufacturers/' + slug + '.html', eventBadges.ensureDefer(html));
   countryIndex.push('<a href="manufacturers/' + slug + '.html">' + esc(c.country) + '</a>');
   if (MGF.indexOf(c) < 5) console.log('OK manufacturers/' + slug + '.html');
 }
@@ -217,7 +218,7 @@ TYPE_HUBS.forEach(function (th) {
     const rows = makersList.map(function (m) {
       const alias = resolveCompanyAlias(m.name);
       const cslug = alias.aliased ? alias.slug : CSMAP[censusNameKey(m.name)];
-      const nameLink = cslug ? '<a href="/manufacturers/' + cslug + '/" style="color:var(--accent);font-weight:700">' + esc(m.name) + '</a>' : '<b style="color:var(--text)">' + esc(m.name) + '</b>';
+      const nameLink = (cslug ? '<a href="/manufacturers/' + cslug + '/" style="color:var(--accent);font-weight:700">' + esc(m.name) + '</a>' : '<b style="color:var(--text)">' + esc(m.name) + '</b>') + eventBadges.htmlFor({ slug: cslug, name: m.name });
       const vb = m.flagV === 'P' ? ' <span class="v-badge pro">★ Supplier Pro</span>' : (m.flagV === 'V' ? ' <span class="v-badge">✓ Verified</span>' : '');
       const flag = availability.forSlug(cslug, AVAILABILITY);
       const siteLink = m.url ? '<a href="' + esc(m.url) + '" target="_blank" rel="noopener nofollow" style="color:var(--muted);font-size:.78rem" data-track="official_website_click" data-track-manufacturer="' + esc(m.name) + '">Official website ↗</a>' : '';
@@ -234,7 +235,7 @@ TYPE_HUBS.forEach(function (th) {
       return idx < breadcrumbs.length - 1 ? '<a href="' + b.url + '" style="color:var(--accent)">' + esc(b.name) + '</a> › ' : esc(b.name);
     }).join('');
 
-    return '<!DOCTYPE html>\n<html lang="en" data-theme="dark">\n<head>\n<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
+    return eventBadges.ensureDefer('<!DOCTYPE html>\n<html lang="en" data-theme="dark">\n<head>\n<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
       '<title>' + esc(title) + ' | TransformerPath</title>\n' +
       '<meta name="description" content="' + esc(hubMeta(lead)) + '">\n' +
       '<link rel="canonical" href="https://transformerpath.com/' + canonicalPath + '">\n' +
@@ -261,7 +262,7 @@ TYPE_HUBS.forEach(function (th) {
       '<p style="color:var(--muted);font-size:.85rem;margin:4px 0 10px">Help keep the global transformer industry database clean and up to date.</p>' +
       '<a class="btn btn-outline btn-sm" href="/correct-company.html" data-track="manufacturer_correction_started">Suggest a correction →</a>' +
       '</div>\n' +
-      '</main>\n' + FOOT + '\n<script src="/analytics.js?v=2" defer></script>\n' + availability.filterScript() + '\n</body>\n</html>';
+      '</main>\n' + FOOT + '\n<script src="/analytics.js?v=2" defer></script>\n' + availability.filterScript() + '\n</body>\n</html>');
   }
 
   const comboCountries = Object.keys(byCountry).filter(function (countryName) {

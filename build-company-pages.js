@@ -31,6 +31,7 @@ const norm = function (s) { return String(s || '').toLowerCase().normalize('NFD'
 
 const { resolveCompanyAlias, norm: aliasNorm, slugify: censusSlug } = require('./lib/company-aliases');
 const exhibitorTags = require('./lib/exhibitor-tags');
+const eventBadges = require('./event-badges');
 const headOffice = require('./lib/head-office');
 const HEAD_OFFICES = headOffice.load(__dirname);
 const companyParents = require('./lib/company-parents');
@@ -631,7 +632,7 @@ function page(r, slug) {
     '<style>.c-wrap{max-width:900px;margin:0 auto;padding:44px 20px 88px}.c-wrap h1{font-size:2rem;color:var(--ink)}.c-wrap h2{font-size:1.2rem;color:var(--ink);margin-top:26px}.c-wrap p{color:var(--text);line-height:1.7}.c-wrap .lead{color:var(--muted);font-size:1rem}.c-wrap .tpill{display:inline-block;background:var(--bg);border:1px solid var(--border);border-radius:999px;padding:2px 10px;font-size:.74rem;color:var(--text);margin:3px 4px 3px 0}.c-wrap .tbl{width:100%;border-collapse:collapse;margin:10px 0}.c-wrap .tbl th{text-align:left;color:var(--muted);font-weight:600;padding:6px 10px;border-bottom:1px solid var(--border);width:40%}.c-wrap .tbl td{padding:6px 10px;border-bottom:1px solid var(--border);color:var(--text)}.c-wrap ul{padding-left:20px;line-height:1.7}.vbadge{color:var(--green);font-weight:700;font-size:.8rem}</style>' +
     '</head>\n<body>\n' + HEAD + '\n<main id="main" tabindex="-1" class="c-wrap">' +
     '<nav style="font-size:.8rem;color:var(--muted);margin-bottom:12px"><a href="../../manufacturers.html" style="color:var(--accent)">Manufacturers</a> › ' + crumbCountry + ' › ' + esc(r.name) + '</nav>' +
-    '<h1>' + esc(r.name) + ' <button class="follow-btn" data-follow-type="company" data-follow-subject="' + esc(r.name) + '" data-follow-label="' + esc(r.name) + '" title="Follow this manufacturer in My TransformerPath">Follow</button></h1>' +
+    '<h1>' + esc(r.name) + (function () { const badge = eventBadges.htmlFor({ slug: slug, name: r.name }); return badge ? ' ' + badge : ''; })() + ' <button class="follow-btn" data-follow-type="company" data-follow-subject="' + esc(r.name) + '" data-follow-label="' + esc(r.name) + '" title="Follow this manufacturer in My TransformerPath">Follow</button></h1>' +
     (function () { const flag = availability.forSlug(slug, AVAILABILITY); return flag ? '<p style="margin:8px 0 0">' + availability.markHtml(flag, slug) + '</p>' : ''; })() +
     (tpmFor(r.slug) ? '<p style="margin:6px 0 0;font-size:.82rem;color:var(--muted)">Permanent company ID ' + copyIdBtn(tpmFor(r.slug)) + ' <span style="opacity:.75">(stable census identity — not a certification)</span></p>' : '') +
     paidListings.manufacturerBadgeHtml(slug, PAID_LISTINGS) +
@@ -681,6 +682,7 @@ function page(r, slug) {
     '<div class="card" style="background:var(--bg);border:1px solid var(--border);padding:16px 18px;text-align:center;margin-top:14px"><b style="color:var(--text)">Looking for transformer suppliers?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Submit a technical requirement for supplier matching across the ' + esc(r.country) + ' and regional manufacturing base.</p>' +
     '<a class="btn btn-amber" href="../../rfq.html" data-track="rfq_started" data-track-manufacturer="' + esc(r.name) + '">Submit an RFQ</a> <a class="btn btn-outline btn-sm" href="../../compare.html?m=' + esc(r.slug) + '" data-track="manufacturer_compare" data-track-manufacturer="' + esc(r.name) + '">Compare with others →</a></div>' +
     '</main>\n' + FOOT + '\n<script src="../../analytics.js?v=2" defer></script>\n<script src="../../follow-button.js" defer></script>\n' +
+    (eventBadges.htmlFor({ slug: slug, name: r.name }) ? eventBadges.deferScript() : '') +
     COPY_ID_SCRIPT +
     '</body>\n</html>';
 }

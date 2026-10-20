@@ -32,6 +32,7 @@ function safeUrl(u) {
 const DATA = JSON.parse(fs.readFileSync('data/laboratories.json', 'utf8'));
 const LABS = DATA.laboratories || [];
 const exhibitorTags = require('./lib/exhibitor-tags');
+const eventBadges = require('./event-badges');
 
 const CAP_NAMES = {
   lightning_impulse: '⚡ Lightning Impulse (1.2/50 μs)',
@@ -112,7 +113,7 @@ function renderCardServer(lab) {
 
   return '<div class="lab-card" style="box-shadow:0 4px 18px rgba(0,0,0,.12)">' +
     '<div class="lab-top">' +
-      '<h2 class="lab-name" style="font-size:1.28rem">' + esc(lab.name) + '</h2>' +
+      '<h2 class="lab-name" style="font-size:1.28rem">' + esc(lab.name) + (function () { const badge = eventBadges.htmlFor({ slug: String(lab.id || '').replace(/^lab:/, ''), name: lab.name }); return badge ? ' ' + badge : ''; })() + '</h2>' +
       voltagePill(lab) +
     '</div>' +
     '<div class="lab-loc">📍 ' + esc(lab.city) + ', ' + esc(lab.country) + (independentVerified(lab) ? ' · <span style="color:#10b981;font-weight:700">Third-Party Independent</span>' : '') + '</div>' +
@@ -275,7 +276,7 @@ ${HEAD}
 
 ${FOOT}
 
-<script>
+${eventBadges.mountHtml()}<script>
 var LABS = ${labsJson};
 var requiredCaps = {};
 var minVoltage = 0;
@@ -380,9 +381,10 @@ function renderCards() {
       accredHtml = '<div class="accred-box"><div style="font-size:.76rem;color:var(--text)"><b>Short-Circuit:</b> ' + esc(lab.short_circuit_capacity) + '</div></div>';
     }
 
+    var eventBadge = (typeof TPEventBadges !== 'undefined' && TPEventBadges.htmlFor) ? TPEventBadges.htmlFor({ slug: String(lab.id || '').replace(/^lab:/, ''), name: lab.name }) : '';
     return '<div class="lab-card" style="box-shadow:0 4px 18px rgba(0,0,0,.12)">' +
       '<div class="lab-top">' +
-        '<h2 class="lab-name" style="font-size:1.28rem">' + esc(lab.name) + '</h2>' +
+        '<h2 class="lab-name" style="font-size:1.28rem">' + esc(lab.name) + (eventBadge ? ' ' + eventBadge : '') + '</h2>' +
         voltagePill(lab) +
       '</div>' +
       '<div class="lab-loc">📍 ' + esc(lab.city) + ', ' + esc(lab.country) + (!scopeUnsourced(lab) && lab.third_party_independent ? ' · <span style="color:#10b981;font-weight:700">Third-Party Independent</span>' : '') + '</div>' +

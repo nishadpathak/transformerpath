@@ -223,7 +223,10 @@
       '</div>' +
       '<div class="kg-card-main">' +
         '<div class="kg-card-head">' +
+          '<span class="kg-title-wrap">' +
           '<a class="kg-card-title" href="' + profileUrl(c) + '" data-track="directory_profile_click" data-track-entity="' + esc(c.name) + '" data-track-kind="' + esc(c.kind) + '" data-track-country="' + esc(c.country) + '">' + esc(c.name) + '</a>' +
+          ((typeof TPEventBadges !== 'undefined' && TPEventBadges.htmlFor) ? TPEventBadges.htmlFor({ slug: c.slug, name: c.name }) : '') +
+          '</span>' +
           '<span class="kg-card-loc">' + esc(c.country) + (c.region ? ' · ' + esc(c.region) : '') + '</span>' +
           '<span class="dir-tag" style="background:rgba(245,166,35,.12);border-color:var(--amber);color:var(--text);font-weight:700">' + kindIcon + ' ' + esc(kindText) + '</span>' +
           evBadge(c.evidence) +

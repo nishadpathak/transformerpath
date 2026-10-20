@@ -579,6 +579,7 @@ function renderManufacturers(html) {
   const csl = (m) => CSMAP[censusNameKey(m[0])];
   const paidListings = require('./lib/paid-listings');
   const claimListing = require('./lib/claim-listing');
+  const eventBadges = require('./event-badges');
   const availability = require('./lib/availability');
   const availabilityBySlug = availability.load();
   const declaredOrigin = require('./lib/declared-origin');
@@ -626,7 +627,9 @@ function renderManufacturers(html) {
           : (function () {
             const slug = paySlug(m[0]);
             const flag = availability.forSlug(slug, availabilityBySlug);
-            return `<div class="mk-row">${csl(m) ? `<a class="prof" href="manufacturers/${csl(m)}/" style="color:var(--accent);font-weight:700">${esc(m[0])}</a>` : `<b>${esc(m[0])}</b>`}${vbadge(m, slug)}${flag ? availability.markHtml(flag, slug) : ''}${tpills(m[3])}<span class="city">${esc(m[1] || '')}${m[5] ? ` · est. ${esc(m[5])}` : ''}</span>${declaredOrigin.listingHtml(ORIGIN[slug] || null)}${m[2] ? `<a href="${esc(m[2])}" target="_blank" rel="noopener">Site →</a>` : '<span></span>'}${verifyCtas(m[0], slug)}</div>`;
+            const nameInner = csl(m) ? `<a class="prof" href="manufacturers/${csl(m)}/" style="color:var(--accent);font-weight:700">${esc(m[0])}</a>` : `<b>${esc(m[0])}</b>`;
+            const badges = eventBadges.htmlFor({ slug: slug, name: m[0] });
+            return `<div class="mk-row"><span class="mk-name">${nameInner}${badges}</span>${vbadge(m, slug)}${flag ? availability.markHtml(flag, slug) : ''}${tpills(m[3])}<span class="city">${esc(m[1] || '')}${m[5] ? ` · est. ${esc(m[5])}` : ''}</span>${declaredOrigin.listingHtml(ORIGIN[slug] || null)}${m[2] ? `<a href="${esc(m[2])}" target="_blank" rel="noopener">Site →</a>` : '<span></span>'}${verifyCtas(m[0], slug)}</div>`;
           })()).join('') +
         `</div>`;
     }).join('')).join('');
@@ -646,6 +649,8 @@ function renderManufacturers(html) {
      <div class="s"><b>${completeness}%</b><small>Data completeness</small></div>`;
 
   html = inject(html, '<div id="board">', 'mfg-board', board);
+  html = html.replace(/<script type="application\/json" id="tp-event-badges-data">[\s\S]*?<\/script>\s*<script src="\/event-badges\.js"><\/script>\s*/, '');
+  html = html.replace('<script>\nconst DATA_URL', eventBadges.mountHtml() + '<script>\nconst DATA_URL');
   html = inject(html, '<p style="color:var(--muted); font-size:.85rem; margin-bottom:14px" id="count">', 'mfg-count',
     `Showing ${makers} companies across ${DATA.length} countries`);
   html = inject(html, '<div class="stat-row" id="statRow">', 'mfg-stats', stats);
@@ -900,6 +905,7 @@ function loadDirectoryIndex() {
 
 function renderVendors(html) {
   const index = loadDirectoryIndex();
+  const eventBadges = require('./event-badges');
   const view = directorySsr.vendors(index.companies || []);
   html = replaceInnerById(html, 'cntTotal', String(view.total));
   html = replaceInnerById(html, 'cntOem', String(view.oem));
@@ -910,14 +916,20 @@ function renderVendors(html) {
   html = replaceInnerById(html, 'pillOem', 'Transformer OEMs (' + view.oem + ')');
   html = replaceInnerById(html, 'vndCountry', view.countryOptions);
   html = replaceInnerById(html, 'vndList', view.listHtml);
+  html = html.replace(/<script type="application\/json" id="tp-event-badges-data">[\s\S]*?<\/script>\s*<script src="\/event-badges\.js"><\/script>\s*/, '');
+  const vendorScript = '<script>\n(function() {\n  \'use strict\';\n  var DATA = [];';
+  if (html.indexOf(vendorScript) >= 0) html = html.replace(vendorScript, eventBadges.mountHtml() + vendorScript);
   return { page: html, records: view.total };
 }
 
 function renderDirectoryPage(html) {
   const index = loadDirectoryIndex();
+  const eventBadges = require('./event-badges');
   let siteStats = {};
   try { siteStats = JSON.parse(fs.readFileSync('data/site-stats.json', 'utf8')); } catch (e) { siteStats = {}; }
   html = replaceInnerById(html, 'directoryRoot', directorySsr.directoryRoot(index.companies || [], siteStats));
+  html = html.replace(/<script type="application\/json" id="tp-event-badges-data">[\s\S]*?<\/script>\s*<script src="\/event-badges\.js"><\/script>\s*/, '');
+  html = html.replace('<script src="tp-directory.js"', eventBadges.mountHtml() + '<script src="tp-directory.js"');
   return { page: html, records: (index.companies || []).length };
 }
 
