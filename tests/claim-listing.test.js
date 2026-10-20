@@ -235,6 +235,23 @@ setTimeout(function () {
   }
   walkHtml(root);
   check('no generated page links to /claim-listing/ without a slug', barePages.length === 0, barePages.slice(0, 12).join(', '));
+  const { fitWindow } = require('../lib/seo-fit');
+  const catalog = require('../lib/seo-catalog');
+  const seenTitle = {};
+  const seenDesc = {};
+  let claimSeoMiss = 0;
+  Object.keys(index).forEach(function (slug) {
+    const copy = catalog.claimListingCopy('claim-listing/' + slug + '/index.html');
+    const title = copy && fitWindow(copy.title, 50, 60, copy && [' | TransformerPath']);
+    const description = copy && fitWindow(copy.description, 140, 160, [' Only sourced fields are shown.', ' Independent record on TransformerPath.']);
+    if (!copy || title !== copy.title || description !== copy.description) claimSeoMiss++;
+    else if (title.length < 50 || title.length > 60 || description.length < 140 || description.length > 160) claimSeoMiss++;
+    else if (seenTitle[title] || seenDesc[description]) claimSeoMiss++;
+    else { seenTitle[title] = slug; seenDesc[description] = slug; }
+  });
+  check('each claim page has a unique title and description inside the SEO window', claimSeoMiss === 0, String(claimSeoMiss));
+  const bemagCopy = catalog.claimListingCopy('claim-listing/bemag-transformer/index.html');
+  check('a claim title names the listing and leaves the form heading unchanged', bemagCopy && bemagCopy.title.indexOf('Bemag') >= 0 && bemagPage.indexOf('<h1>Claim this listing</h1>') >= 0);
   if (failed) {
     console.error('CLAIM LISTING FAILED (' + failed + ')');
     process.exit(1);
