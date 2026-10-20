@@ -579,6 +579,8 @@ function renderManufacturers(html) {
   const { directoryCompanySlug, aliasRowHidden, ownedProfileSlugs } = require('./lib/company-aliases');
   const paidListings = require('./lib/paid-listings');
   const claimListing = require('./lib/claim-listing');
+  const availability = require('./lib/availability');
+  const availabilityBySlug = availability.load();
   const paidDoc = paidListings.load();
   const paySlug = (name) => directoryCompanySlug(name, CSMAP);
   const vbadge = (m, slug) => {
@@ -621,7 +623,8 @@ function renderManufacturers(html) {
           ? `<div class="mk-row"><span class="note">${esc(m[0])}</span></div>`
           : (function () {
             const slug = paySlug(m[0]);
-            return `<div class="mk-row">${csl(m) ? `<a class="prof" href="manufacturers/${csl(m)}/" style="color:var(--accent);font-weight:700">${esc(m[0])}</a>` : `<b>${esc(m[0])}</b>`}${vbadge(m, slug)}${tpills(m[3])}<span class="city">${esc(m[1] || '')}${m[5] ? ` · est. ${esc(m[5])}` : ''}</span>${m[2] ? `<a href="${esc(m[2])}" target="_blank" rel="noopener">Site →</a>` : '<span></span>'}${verifyCtas(m[0], slug)}</div>`;
+            const flag = availability.forSlug(slug, availabilityBySlug);
+            return `<div class="mk-row">${csl(m) ? `<a class="prof" href="manufacturers/${csl(m)}/" style="color:var(--accent);font-weight:700">${esc(m[0])}</a>` : `<b>${esc(m[0])}</b>`}${vbadge(m, slug)}${flag ? availability.markHtml(flag, slug) : ''}${tpills(m[3])}<span class="city">${esc(m[1] || '')}${m[5] ? ` · est. ${esc(m[5])}` : ''}</span>${m[2] ? `<a href="${esc(m[2])}" target="_blank" rel="noopener">Site →</a>` : '<span></span>'}${verifyCtas(m[0], slug)}</div>`;
           })()).join('') +
         `</div>`;
     }).join('')).join('');
@@ -668,6 +671,7 @@ function renderManufacturers(html) {
     }
   });
   html = html.replace(/const VERIFIED_MANUFACTURER_PAY_URL = [^;]*;/, 'const VERIFIED_MANUFACTURER_PAY_URL = ' + JSON.stringify(paidListings.VERIFIED_MANUFACTURER_PAYMENT_LINK) + ';');
+  html = html.replace(/const AVAILABILITY = [^;]*;/, 'const AVAILABILITY = ' + JSON.stringify(availabilityBySlug) + ';');
   html = html.replace(/const EARNED_VERIFIED_SLUGS = [^;]*;/, 'const EARNED_VERIFIED_SLUGS = ' + JSON.stringify(earnedSlugs) + ';');
   html = html.replace(/const MAKER_ALIAS = [^;]*;/, 'const MAKER_ALIAS = ' + JSON.stringify(aliasSlugs) + ';');
 
@@ -687,8 +691,8 @@ function renderManufacturers(html) {
 function renderIntel(html) {
   let records = 0;
   const CLASSIFY = {
-    CONFIRMED: { help: 'Transformer scope explicitly established.' },
-    INFERRED:  { help: 'Transformer opportunity reasonably inferred from the source.' },
+    CONFIRMED: { help: 'Event confirmed.' },
+    INFERRED:  { help: 'Opportunity reasonably inferred from the source.' },
     PIPELINE:  { help: 'Planned / tender / pre-award stage.' },
     SUPPORTED: { help: 'Supported evidence — not yet fully verified. No live portal adapter has confirmed this item.' },
     WATCH:     { help: 'Early signal; monitor for confirmation.' },

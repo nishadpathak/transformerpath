@@ -57,7 +57,13 @@ check('Italy has two makers', italy.length === 2, String(italy.length));
 check('South Korea has two makers', korea.length === 2, String(korea.length));
 check('rating data supports an above-400 band', high.length > 0, String(high.length));
 check('filters exist', spare.indexOf('id="sc-region"') !== -1 && spare.indexOf('id="sc-country"') !== -1 && spare.indexOf('id="sc-rating"') !== -1);
+check('shippable filter chip is on spare-capacity', spare.indexOf('data-shippable-filter="1"') !== -1 && spare.indexOf('>Shippable units<') !== -1);
+check('availability column is on spare-capacity', spare.indexOf('<th>Availability</th>') !== -1);
 check('empty capacity cells are a dash', (spare.match(/data-label="Capacity note">—/g) || []).length === rows.length - noted.length);
+const spareRows = spare.split('<tr id="m-').slice(1);
+const flaggedSpare = spareRows.filter(function (row) { return row.indexOf('data-availability="in_stock"') !== -1; });
+check('hammond is the sourced in-stock row', flaggedSpare.length === 1 && flaggedSpare[0].indexOf('hammond-power-solutions') === 0, String(flaggedSpare.length));
+check('unset availability cells are a dash', (spare.match(/data-label="Availability">—/g) || []).length === rows.length - flaggedSpare.length);
 
 rows.forEach(function (row) {
   const profile = fs.readFileSync('manufacturers/' + row.slug + '/index.html', 'utf8');
