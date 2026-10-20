@@ -4,7 +4,7 @@ Self-serve checkout for:
 
 | SKU | Product | Price |
 |-----|---------|-------|
-| `directory_verified` | Directory — Verified | **$499/year** |
+| `directory_verified` | Directory — Verified | **$499 one-time** |
 | `directory_premium` | Directory — Premium | **$1,499/year** |
 | `sponsor_daily_brief` | Daily Brief Sponsor | **$2,500/month** |
 | `sponsor_featured_article` | Featured Article | **$1,200** one-time |

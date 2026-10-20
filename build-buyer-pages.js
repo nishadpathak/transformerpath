@@ -182,7 +182,7 @@ function spareMain() {
       '<td data-label="Highest voltage">' + esc(ratingLabel(row.kv)) + '</td>' +
       '<td data-label="Capacity note">' + capacityCell(row) + '</td>' +
       '<td data-label="Availability">' + (flag ? availability.markHtml(flag, row.slug) : '—') + '</td>' +
-      '<td data-label="Verified"><a class="btn btn-amber btn-sm sc-cta" href="' + esc(row.payHref) + '" data-verified-manufacturer-pay="1" data-track="supplier_verify_started" data-track-manufacturer="' + esc(row.name) + '">Get Verified $499/yr</a></td>' +
+      '<td data-label="Verified"><a class="btn btn-amber btn-sm sc-cta" href="' + esc(row.payHref) + '" data-verified-manufacturer-pay="1" data-track="supplier_verify_started" data-track-manufacturer="' + esc(row.name) + '">Get Verified $499 one-time</a></td>' +
       '</tr>';
   }).join('');
   const withNotes = ROWS.filter(function (row) { return row.capacity; }).length;
@@ -209,7 +209,7 @@ function spareMain() {
     '<p class="sc-empty" id="sc-empty">No manufacturer matches these filters.</p>' +
     '<div class="tbl"><table class="sc-table"><thead><tr><th>Manufacturer</th><th>Region</th><th>Country</th><th>Highest voltage</th><th>Capacity note</th><th>Availability</th><th>Verified</th></tr></thead><tbody id="sc-body">' +
     body + '</tbody></table></div>' +
-    '<p class="src">Get Verified uses the existing Verified Manufacturer checkout at $499 for 12 months. After payment, the return path is the <a href="/claim-profile.html?paid=verified_manufacturer#claimForm">claim form</a>.</p>' +
+    '<p class="src">Get Verified uses the existing Verified Manufacturer checkout at $499 one-time. Identity and contact details checked. Not a product certification. After payment, the return path is the <a href="/claim-profile.html?paid=verified_manufacturer#claimForm">claim form</a>.</p>' +
     '<script>' + FILTER_JS + '</script>';
 }
 

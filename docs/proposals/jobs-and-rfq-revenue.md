@@ -36,7 +36,7 @@ These prices stay off the public pages until the inbox, the job review queue, an
 
 Catalog facts this proposal does not change:
 
-- Verified Manufacturer is **$499 / 12 months**. Its outcome text names RFQ response eligibility. The feature row `rfq_eligibility` is `delivery: "coming_soon"`.
+- Verified Manufacturer is **$499 one-time**. Its outcome text names RFQ response eligibility. The feature row `rfq_eligibility` is `delivery: "coming_soon"`.
 - Supplier Pro is **$1,499 / 12 months**, `price_status` TARGET in `data/products.json`. `rfq_inbox` (“RFQ inbox and lead status”), lead export, the analytics dashboard, sourcing alerts, Intel Pro seats, the Supplier Pro badge, and paid category placement are all `coming_soon`.
 - `docs/payments-audit.md` (15 Oct 2026): there is no Supplier Pro Payment Link. Create it only after the inbox exists. `STRIPE_SECRET_KEY` is unset (`verify-access` returns `configured: false`). `STRIPE_WEBHOOK_SECRET` is unset (`stripe-webhook` returns 500). `create-checkout` returns 503 for Featured Event, Verified Manufacturer, and Featured Exhibitor because the secret and the `STRIPE_PRICE_*` ids are missing.
 - Live Payment Links in `lib/paid-listings.js`: Featured Event $299, Featured Exhibitor $399, Verified Manufacturer $499. The hosted-webinar offer was withdrawn from `PAYMENT_LINKS`. A paid row is stored as `paid_pending_verification`. A public badge is rendered only from a reviewed row in `data/paid-listings.json` (reviewer, time, evidence). That file has no reviewed rows.

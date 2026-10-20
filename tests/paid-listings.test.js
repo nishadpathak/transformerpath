@@ -1303,6 +1303,18 @@ async function main() {
 
   const pricingSource = fs.readFileSync('pricing.html', 'utf8');
   check('pricing keeps the verified manufacturer link', pricingSource.indexOf(mfrLink) >= 0 && pricingSource.indexOf('Pay $499') >= 0);
+  check('pricing verified card is one-time between the featured prices', (function () {
+    const featured = pricingSource.indexOf('>Featured Listing</h3>');
+    const verified = pricingSource.indexOf('>Verified Manufacturer</h3>');
+    const both = pricingSource.indexOf('>Featured + Verified</h3>');
+    const card = pricingSource.slice(verified, both);
+    return featured > 0 && verified > featured && both > verified
+      && card.indexOf('$499 one-time') >= 0
+      && card.indexOf('Identity and contact details checked. Not a product certification.') >= 0
+      && card.indexOf(mfrLink) >= 0
+      && card.indexOf('$499/yr') < 0
+      && card.indexOf('/ 12 months') < 0;
+  })());
   check('pricing keeps the featured event link', pricingSource.indexOf(link) >= 0 && pricingSource.indexOf('Feature this event — $299') >= 0);
   check('pricing keeps the exhibitor link', pricingSource.indexOf(exhibitorLink) >= 0 && pricingSource.indexOf('Feature your exhibitor — $399') >= 0);
   check('pricing adds featured listings plus tax', pricingSource.indexOf('id="featured-listings"') >= 0 && pricingSource.indexOf(paid.PAYMENT_LINKS.featured_listing.url) >= 0 && pricingSource.indexOf(paid.PAYMENT_LINKS.featured_verified.url) >= 0 && pricingSource.indexOf('$299') >= 0 && pricingSource.indexOf('$699') >= 0 && pricingSource.indexOf('plus tax') >= 0);

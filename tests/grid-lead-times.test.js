@@ -54,7 +54,7 @@ check('ad marker', html.indexOf('<!--tp-ad-slot-->') !== -1);
 check('consent script', html.indexOf('/consent.js') !== -1);
 check('verified checkout is the existing link', html.indexOf(stripe) !== -1);
 check('no second stripe link', (html.match(/buy\.stripe\.com/g) || []).length === 1);
-check('price copy uses /yr', html.indexOf('Get Verified $499/yr') !== -1);
+check('price copy is one-time', html.indexOf('Get Verified $499 one-time') !== -1 && html.indexOf('$499/yr') < 0);
 check('price copy omits / year', html.toLowerCase().indexOf('/ year') < 0 && html.toLowerCase().indexOf('/year') < 0);
 const mailtos = html.match(/mailto:[^"'\s>]+/g) || [];
 check('every mailto is the site inbox', mailtos.length > 0 && mailtos.every(function (item) { return item === 'mailto:hello@transformerpath.com'; }), mailtos.join(','));
