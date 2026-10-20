@@ -644,8 +644,7 @@ function makerRow(m){
   if(/^Served by/i.test(m[0])) return `<div class="mk-row"><span class="note">${m[0]}</span></div>`;
   const slug = makerSlug(m[0]);
   const paidSlug = paySlug(m[0]);
-  const flag = availabilityFor(m[0]);
-  return `<div class="mk-row"${flag ? ' data-shippable="1" data-availability="' + flag.availability + '"' : ''}>
+  return `<div class="mk-row">
     <div><a class="prof" href="${makerHref(m[0])}" style="color:var(--accent);font-weight:700">${m[0]}</a>${vbadge(m)}${availabilityMark(m[0])}${tpills(m[3])}</div>
     <span class="city">${m[1]||''}${m[5]?` · est. ${m[5]}`:''}</span>
     <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-width:0;max-width:100%">
