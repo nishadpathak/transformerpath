@@ -14,3 +14,4 @@ jobs:
         with:
           node-version: '22'
       - run: node tests/intel-badge-legend.js
+      - run: node tests/intel-equipment-scope.js
