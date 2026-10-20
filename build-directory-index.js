@@ -313,7 +313,7 @@ function buildLaboratory(l) {
     research_completeness: accredited ? 9 : 0,
     completeness_score: accredited ? 95 : 0,
     provenance_type: accredited ? 'OFFICIAL_SOURCE' : 'PUBLIC_SOURCE',
-    last_verified: l.last_verified || '2026-08-28',
+    last_verified: /^\d{4}-\d{2}-\d{2}$/.test(String(l.last_verified || '')) ? l.last_verified : (l.last_verified ? '' : '2026-08-28'),
     research_status: accredited ? 'ACTIVE_CONFIRMED' : 'RESEARCH_REQUIRED',
     commercial_status: '',
     sources: { website: l.website },
