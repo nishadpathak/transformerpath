@@ -774,13 +774,41 @@ async function main() {
       return html.indexOf('$49/mo') < 0 && html.indexOf('$49 / month') < 0 && html.indexOf('$49 / mo') < 0
         && !/\$49(?!\d)/.test(html) && html.indexOf('588') < 0 && html.indexOf('billed monthly') < 0;
     };
-    return start > 0 && card.indexOf('$499') >= 0 && card.indexOf('/ 12 months') >= 0
+    function intelProProduct(html) {
+      const re = /<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
+      let match;
+      while ((match = re.exec(html))) {
+        let data;
+        try { data = JSON.parse(match[1]); } catch (e) { continue; }
+        const nodes = data && data['@graph'] ? data['@graph'] : [data];
+        const product = nodes.find(function (node) {
+          return node && node['@type'] === 'Product' && node.name === 'Intel Pro';
+        });
+        if (product) return product;
+      }
+      return null;
+    }
+    function offerIsIntelPro(product) {
+      const offer = product && product.offers;
+      const blob = JSON.stringify(product || {});
+      return offer && offer['@type'] === 'Offer' && offer.name === 'Intel Pro'
+        && String(offer.price) === '499' && offer.priceCurrency === 'USD'
+        && String(offer.description || '').indexOf('Intel Pro: $499 for 12 months') >= 0
+        && blob.indexOf('buy.stripe.com') < 0 && blob.indexOf('url') < 0;
+    }
+    const priceAt = card.indexOf('Intel Pro: $499');
+    const intelPriceAt = intel.indexOf('Intel Pro: $499');
+    return start > 0 && priceAt >= 0 && card.indexOf('/ 12 months', priceAt) > priceAt
+      && card.indexOf('Intel Pro: $499 for 12 months') >= 0
       && card.indexOf('mailto:hello@transformerpath.com?subject=Intel%20Pro') < 0
       && card.indexOf('There is no checkout for this plan yet') >= 0
       && card.indexOf('buy.stripe.com') < 0
-      && intel.indexOf('$499') >= 0 && intel.indexOf('/ 12 months') >= 0
+      && intelPriceAt >= 0 && intel.indexOf('/ 12 months', intelPriceAt) > intelPriceAt
+      && intel.indexOf('Intel Pro: $499 for 12 months') >= 0
       && intel.indexOf('There is no checkout for Intel Pro') >= 0
       && intel.indexOf('mailto:hello@transformerpath.com?subject=Intel%20Pro') < 0
+      && offerIsIntelPro(intelProProduct(pricingPage))
+      && offerIsIntelPro(intelProProduct(intel))
       && noMonthly(card) && noMonthly(intel);
   })());
   check('verified founding offer uses the Verified Manufacturer name and is coming soon', (function () {
