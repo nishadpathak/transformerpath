@@ -254,14 +254,16 @@ function intelRecord(slug, name) {
   if (INTEL_BY_NAME[n + ' global hq']) return INTEL_BY_NAME[n + ' global hq'];
   return null;
 }
+function confirmedFactory(f) {
+  if (!f || !f.source_url) return false;
+  if (f.claim_type !== 'INDEPENDENTLY_SOURCED' && f.claim_type !== 'COMPANY_REPORTED') return false;
+  const city = String(f.city || '').trim();
+  return !!(city && city !== '—');
+}
 function verifiedFactoriesHtml(r) {
   const rec = intelRecord(r.slug, r.name);
   if (!rec || !rec.factories) return '';
-  const verified = rec.factories.filter(function (f) {
-    if (!f || !f.source_url || f.claim_type === 'UNSUPPORTED') return false;
-    const city = String(f.city || '').trim();
-    return city && city !== '—';
-  });
+  const verified = rec.factories.filter(confirmedFactory);
   if (!verified.length) return '';
   const rows = verified.map(function (f) {
     const lo = esc(f.city) + (f.country && f.country !== '—' ? ', ' + esc(f.country) : '');
@@ -642,9 +644,7 @@ function page(r, slug) {
     (function () {
       const fac = verifiedFactoriesHtml(r);
       const rec = intelRecord(slug, r.name);
-      const sourced = rec && rec.factories ? rec.factories.filter(function (f) {
-        return f && f.source_url && f.claim_type !== 'UNSUPPORTED' && f.city && f.city !== '—';
-      }) : [];
+      const sourced = rec && rec.factories ? rec.factories.filter(confirmedFactory) : [];
       if (!sourced.length) return fac;
       const city = sourced.find(function (f) { return f.city && f.city !== '—'; });
       const place = city && city.city ? ('a factory visit in ' + city.city) : 'a factory visit';
