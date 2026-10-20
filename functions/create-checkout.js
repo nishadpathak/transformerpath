@@ -1,4 +1,4 @@
-/* Netlify function: Stripe Checkout for Verified Manufacturer ($499 one-time),
+/* Netlify function: Stripe Checkout for Verified Manufacturer ($499 one-time payment, covers 12 months, no auto-renewal),
  * Featured Event ($299), Featured Exhibitor ($399), Hosted Webinar ($1,500),
  * and the jobs / RFQ products. POST only. GET returns 405. OPTIONS is CORS.
  *

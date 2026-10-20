@@ -551,7 +551,7 @@ async function main() {
   const featuredReceipt = receipt.messages(linkRow);
   check('featured receipt sends the buyer to the events form', featuredReceipt.buyer && featuredReceipt.buyer.text.indexOf('/events.html?paid=featured_event#submit-event') >= 0);
   const manufacturerReceipt = receipt.messages(mfrLinkRow);
-  check('manufacturer receipt sends the buyer to the claim form', manufacturerReceipt.buyer && manufacturerReceipt.buyer.text.indexOf('/claim-profile.html?paid=verified_manufacturer#claimForm') >= 0 && manufacturerReceipt.buyer.text.indexOf('Verified Manufacturer ($499 one-time)') >= 0 && manufacturerReceipt.buyer.text.indexOf('Identity and contact details checked. Not a product certification.') >= 0);
+  check('manufacturer receipt sends the buyer to the claim form', manufacturerReceipt.buyer && manufacturerReceipt.buyer.text.indexOf('/claim-profile.html?paid=verified_manufacturer#claimForm') >= 0 && manufacturerReceipt.buyer.text.indexOf('Verified Manufacturer ($499 one-time payment · covers 12 months, no auto-renewal)') >= 0 && manufacturerReceipt.buyer.text.indexOf('Identity and contact details checked. Not a product certification.') >= 0 && manufacturerReceipt.buyer.text.indexOf('with no auto-renewal') >= 0);
   const exhibitorReceipt = receipt.messages(exhibitorLinkRow);
   check('exhibitor receipt sends the buyer to the exhibitor form', exhibitorReceipt.buyer && exhibitorReceipt.buyer.text.indexOf('/sponsor.html?paid=featured_exhibitor#contact') >= 0 && exhibitorReceipt.buyer.text.indexOf('Featured Exhibitor ($399)') >= 0);
   const webinarReceipt = receipt.messages(webinarLinkRow);
@@ -817,7 +817,8 @@ async function main() {
     const block = at < 0 ? '' : html.slice(at, html.indexOf('</p>', at));
     return at >= 0 && block.indexOf('$199') >= 0 && block.indexOf('Coming soon') >= 0
       && block.indexOf('buy.stripe.com') < 0 && block.indexOf('$499') >= 0
-      && html.indexOf('Pay $499 one-time — Get Verified') >= 0
+      && html.indexOf('Pay $499 one-time payment · covers 12 months') >= 0
+      && html.indexOf('no auto-renewal') >= 0
       && html.indexOf(paid.PAYMENT_LINKS.verified_manufacturer.url) >= 0;
   })());
 
@@ -1337,11 +1338,14 @@ async function main() {
     const both = pricingSource.indexOf('>Featured + Verified</h3>');
     const card = pricingSource.slice(verified, both);
     return featured > 0 && verified > featured && both > verified
-      && card.indexOf('$499 one-time') >= 0
+      && card.indexOf('$499 one-time payment · covers 12 months') >= 0
+      && card.indexOf('no auto-renewal') >= 0
       && card.indexOf('Identity and contact details checked. Not a product certification.') >= 0
       && card.indexOf(mfrLink) >= 0
       && card.indexOf('$499/yr') < 0
-      && card.indexOf('/ 12 months') < 0;
+      && card.indexOf('/ 12 months') < 0
+      && card.indexOf('$299') < 0
+      && card.indexOf('$699') < 0;
   })());
   check('pricing keeps the featured event link', pricingSource.indexOf(link) >= 0 && pricingSource.indexOf('Feature this event — $299') >= 0);
   check('pricing keeps the exhibitor link', pricingSource.indexOf(exhibitorLink) >= 0 && pricingSource.indexOf('Feature your exhibitor — $399') >= 0);
