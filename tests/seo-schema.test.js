@@ -89,6 +89,26 @@ const crumbsGraph = schema.graph([crumbs, rich]);
 assert(schema.flatten([crumbsGraph]).some(function (n) { return n['@type'] === 'BreadcrumbList'; }), 'event graph keeps BreadcrumbList');
 assert(schema.flatten([crumbsGraph]).some(function (n) { return n['@type'] === 'Event' && n.offers && n.offers.url === 'https://www.adipec.com/'; }), 'event graph keeps offers.url');
 
+const cfp = schema.eventNode('https://transformerpath.com/events/ieee-pes-general-meeting-2027/', {
+  name: 'IEEE PES General Meeting 2027', status: 'CONFIRMED_UPCOMING',
+  start: '2027-07-25', end: '2027-07-29', city: 'San Francisco', country: 'USA',
+  venue: 'Hilton San Francisco Union Square', organizer: 'IEEE Power & Energy Society',
+  officialUrl: 'https://pes-gm.org/',
+  deadlines: [{
+    kind: 'call_for_papers',
+    date: '2026-11-10',
+    note: 'Full papers, maximum five pages, PES Authors Kit, online submission.',
+    source_url: 'https://pes-gm.org/2027-san-francisco/2027-call-for-papers/'
+  }]
+});
+assert(Array.isArray(cfp.offers) && cfp.offers[0].url === 'https://pes-gm.org/', 'conference offer keeps the official site');
+const paperOffer = cfp.offers.find(function (o) { return o.name === 'Call for papers'; });
+assert(paperOffer && paperOffer.validThrough === '2026-11-10', 'call for papers validThrough is the paper deadline');
+assert(paperOffer && paperOffer.url === 'https://pes-gm.org/2027-san-francisco/2027-call-for-papers/', 'call for papers url is the official call page');
+assert(paperOffer && paperOffer.description.indexOf('five pages') !== -1, 'call for papers offer describes the submission rule');
+assert(schema.validateEventNode(cfp).length === 0, 'call for papers event passes the structured-data checks ' + schema.validateEventNode(cfp).join('; '));
+assert(schema.paperDeadlineOffer({ deadlines: [{ kind: 'call_for_papers', date: '2026-11-10' }] }) === null, 'a paper deadline without an http source is omitted');
+
 const projected = schema.eventNode('https://transformerpath.com/events/example/', {
   name: 'Projected Expo', status: 'DATE_TBC',
   start: '2027-05-11', end: '2027-05-13', city: 'Dubai', country: 'UAE', venue: 'Dubai Exhibition Centre',

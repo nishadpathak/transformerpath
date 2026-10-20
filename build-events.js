@@ -86,9 +86,37 @@ function programmeHtml(ev) {
   if (!ev.programme || !ev.programme.length) return '<p>' + esc(nullText()) + '</p>';
   return '<ul>' + ev.programme.map((p) => '<li>' + esc(p.title) + ' <span style="color:var(--muted)">(' + esc(p.kind) + ')</span></li>').join('') + '</ul>';
 }
+function deadlineLabel(kind) {
+  if (kind === 'call_for_papers') return 'Call for papers';
+  if (kind === 'abstract') return 'Abstract deadline';
+  return kind || 'Deadline';
+}
+function httpHref(url) {
+  const u = String(url || '').trim();
+  return /^https?:\/\//i.test(u) ? u : '';
+}
+/* Paper deadline sits above the venue block so it is visible without
+   scrolling past the travel search. Other deadline kinds stay in the list. */
+function deadlineCallout(ev) {
+  const paper = (ev.deadlines || []).find((d) => d && d.kind === 'call_for_papers' && d.date);
+  if (!paper) return '';
+  const when = fmtDay(paper.date) || paper.date;
+  const note = paper.note ? '<p style="margin:6px 0 0">' + esc(paper.note) + '</p>' : '';
+  const href = httpHref(paper.source_url);
+  const link = href ? '<p style="margin:8px 0 0"><a href="' + esc(href) + '">Official call for papers</a></p>' : '';
+  return '<aside class="cfp-deadline" style="margin:16px 0;padding:14px 16px;border:2px solid var(--accent);border-radius:10px;background:rgba(245,166,35,.14)">' +
+    '<p style="margin:0;font-size:1.15rem"><strong>Paper deadline: ' + esc(when) + '</strong></p>' +
+    note + link + '</aside>';
+}
 function deadlineHtml(ev) {
   if (!ev.deadlines || !ev.deadlines.length) return '<p>' + esc(nullText()) + '</p>';
-  return '<ul>' + ev.deadlines.map((d) => '<li>' + esc(d.kind) + (d.date ? ': ' + esc(fmtDay(d.date)) : '') + '</li>').join('') + '</ul>';
+  return '<ul>' + ev.deadlines.map((d) => {
+    const when = d.date ? fmtDay(d.date) : '';
+    const note = d.note ? ' — ' + esc(d.note) : '';
+    const href = httpHref(d.source_url);
+    const link = href ? ' <a href="' + esc(href) + '" rel="noopener">source</a>' : '';
+    return '<li><strong>' + esc(deadlineLabel(d.kind)) + '</strong>' + (when ? ': ' + esc(when) : '') + note + link + '</li>';
+  }).join('') + '</ul>';
 }
 function statsHtml(ev) {
   const s = ev.stats || {};
@@ -207,6 +235,7 @@ Object.keys(groups).forEach((slug) => {
       '<h1>' + esc(ev.name) + '</h1>' +
       '<p>' + (badge || '') + '</p>' +
       '<p class="lead">' + esc(dateLine(ev)) + '</p>' +
+      deadlineCallout(ev) +
       '<p>This page is the ' + esc(ev.name) + ' edition. <a href="../' + esc(slug) + '/">All ' + esc(seriesName) + ' editions</a> are listed on the series hub.</p>' +
       '<div class="evmeta"><span><b>Venue</b> ' + esc(ev.venue || nullText()) + '</span>' +
       '<span><b>City</b> ' + esc(ev.city || nullText()) + '</span>' +
