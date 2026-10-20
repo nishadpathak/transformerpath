@@ -134,7 +134,7 @@ check('no published tender uses example.com', rows.every(function (t) { return !
 
 const openNow = rows.filter(function (t) { return t.status === 'OPEN' || t.status === 'CLOSING_SOON'; }).length;
 const tendersHtml = fs.readFileSync('tenders.html', 'utf8');
-const openStat = tendersHtml.match(/<b>(\d+)<\/b><small>Open now<\/small>/);
+const openStat = tendersHtml.match(/<b\b[^>]*>(\d+)<\/b><small>Open now<\/small>/);
 check('Tender Watch open count includes closing soon', openStat && Number(openStat[1]) === openNow, (openStat && openStat[1]) + ' vs ' + openNow);
 const intelPage = fs.readFileSync('intelligence.html', 'utf8');
 const intelOpen = intelPage.match(/<b>(\d+)<\/b><small>Open now<\/small>/);
