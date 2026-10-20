@@ -221,6 +221,21 @@ a.plain:hover { text-decoration:underline; }
   <div class="container">
     <h1>Daily <span>Intel</span></h1>
     <p>Curated global transformer market briefings, utility tenders, material benchmarks, and factory intelligence.</p>
+    <form class="intel-subscribe" name="subscribe" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" data-track-form="newsletter_signup" style="margin:16px 0 0;max-width:36rem;padding:14px 16px;border:1px solid rgba(255,255,255,.16);border-radius:12px;background:rgba(8,18,30,.55)">
+      <input type="hidden" name="form-name" value="subscribe">
+      <p hidden><label>Leave empty: <input name="bot-field"></label></p>
+      <input type="hidden" name="name" value="">
+      <input type="hidden" name="company" value="">
+      <input type="hidden" name="interest" value="">
+      <p style="margin:0 0 6px;font-weight:800">Free Daily Brief</p>
+      <p style="margin:0 0 10px;color:#c4d2e4;font-size:.92rem">Uses the existing Daily Brief form. Nothing is stored by a new list.</p>
+      <label for="intel-brief-email" style="font-size:.82rem;font-weight:700">Email</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">
+        <input id="intel-brief-email" type="email" name="email" required placeholder="you@company.com" autocomplete="email" style="flex:1;min-width:12rem;padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.2);background:#0d1b2e;color:#fff">
+        <button type="submit" style="padding:8px 14px;border:0;border-radius:8px;background:#f5a623;color:#0d1b2e;font-weight:800;cursor:pointer">Subscribe</button>
+      </div>
+      <p style="margin:8px 0 0;font-size:.82rem"><a href="subscribe.html" style="color:#f5a623">All fields</a> · <a href="privacy.html" style="color:#f5a623">Privacy</a></p>
+    </form>
   </div>
 </section>
 
