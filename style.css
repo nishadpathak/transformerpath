@@ -823,6 +823,7 @@ a.event-badge[data-event-state="past"] {
   color: var(--muted);
   font-weight: 700;
 }
+a.event-badge[hidden] { display: none; }
 h1 a.event-badge, h2 a.event-badge, .kg-card-title + a.event-badge { font-size: .72rem; }
 .kg-title-wrap { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px; min-width: 0; max-width: 100%; }
 .kg-title-wrap a.event-badge { margin-left: 0; }
