@@ -223,7 +223,7 @@ function renderEvents(html) {
      allowed". Card labels stay as before; the STATE now comes from one place. */
   const CARD_LABEL = {
     CONFIRMED_UPCOMING: '', LIVE: '', COMPLETED: '',
-    DATE_TBC: 'Date est.', VENUE_TBC: 'Venue TBC',
+    DATE_TBC: 'not confirmed', VENUE_TBC: 'venue not confirmed',
     MONITORING: 'Verify with organiser', POSTPONED: 'Postponed', CANCELLED: 'Cancelled',
   };
   const evState = (ev) => {
