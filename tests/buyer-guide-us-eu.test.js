@@ -28,6 +28,11 @@ check('page says the US order is not a blanket ban', /not a blanket ban/.test(pa
 check('every official source URL is on the page', guide.SOURCES.every(function (source) { return page.indexOf(source.url) !== -1; }));
 check('page has no Dubai, UAE, or personal-service wording', page.indexOf('Dubai') === -1 && page.indexOf('UAE') === -1 && /webinar|masterclass/i.test(page) === false);
 check('tools hub links the summary', fs.readFileSync('tools.html', 'utf8').indexOf('/guides/us-eu-grid-equipment/') !== -1);
+check('publish copies the guides directory', (function () {
+  const src = fs.readFileSync('build-dist.js', 'utf8');
+  const dirs = src.match(/const DIRS = \[([\s\S]*?)\];/);
+  return !!(dirs && dirs[1].indexOf("'guides'") !== -1);
+})());
 check('canonical is the public summary', page.indexOf('https://transformerpath.com/guides/us-eu-grid-equipment/') !== -1);
 
 check('$19 alone is not this guide', paid.listingProduct({ amount_total: 1900, metadata: {} }) == null);
