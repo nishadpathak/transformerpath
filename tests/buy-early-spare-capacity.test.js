@@ -42,7 +42,7 @@ check('spare-capacity links the guide', spare.indexOf('href="/buy-early/"') !== 
 check('buy-early ad marker', buy.indexOf('<!--tp-ad-slot-->') !== -1);
 check('spare-capacity ad marker', spare.indexOf('<!--tp-ad-slot-->') !== -1);
 check('consent script on both pages', buy.indexOf('/consent.js') !== -1 && spare.indexOf('/consent.js') !== -1);
-check('verified label is the existing price', (spare.match(/Get Verified \$499 one-time/g) || []).length === rows.length && spare.indexOf('$499/yr') < 0);
+check('verified label is the existing price', (spare.match(/Get Verified \$499 one-time payment · covers 12 months/g) || []).length === rows.length && spare.indexOf('with no auto-renewal') >= 0 && spare.indexOf('$499/yr') < 0);
 check('names omit the follow control and a second escape', spare.indexOf('>BHEL</a>') !== -1 && spare.indexOf('Follow</a>') === -1 && spare.indexOf('&amp;amp;') === -1 && buy.indexOf('Follow</a>') === -1 && buy.indexOf('&amp;amp;') === -1);
 check('no invented spare-capacity claim', !/has spare capacity/i.test(buy + spare));
 check('no Dubai or UAE in the new pages', !/\bDubai\b|\bUAE\b|United Arab Emirates/i.test(buy + spare));
