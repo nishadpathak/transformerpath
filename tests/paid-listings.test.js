@@ -516,7 +516,10 @@ async function main() {
   }
   jsHitsMfr('.', mfrHits);
   check('manufacturer payment link URL lives in that same constant', mfrHits.length === 1 && mfrHits[0] === './lib/paid-listings.js', mfrHits.join(','));
-  check('list-company pay button uses the constant', fs.readFileSync('list-company.html', 'utf8').indexOf('href="' + mfrLink + '"') >= 0 && fs.readFileSync('list-company.html', 'utf8').indexOf('badge goes live as soon as payment clears') < 0);
+  const listCompany = fs.readFileSync('list-company.html', 'utf8');
+  check('list-company pay button uses the constant', listCompany.indexOf('href="' + mfrLink + '"') >= 0 && listCompany.indexOf('badge goes live as soon as payment clears') < 0);
+  check('list-company is pay now, then review, then the badge', listCompany.indexOf('invoiced separately after approval') < 0 && listCompany.indexOf('pay now, then review, then the badge') >= 0 && listCompany.indexOf('$499 one-time payment · covers 12 months') >= 0 && listCompany.indexOf('no auto-renewal') >= 0);
+  check('list-company does not state a Verified refund', listCompany.toLowerCase().indexOf('refund') < 0);
   const claimHtml = fs.readFileSync('claim-profile.html', 'utf8');
   check('claim form pay button uses the constant', claimHtml.indexOf('href="' + mfrLink + '"') >= 0 && claimHtml.indexOf('id="claimForm"') >= 0 && claimHtml.indexOf('name="payment_session"') >= 0 && claimHtml.indexOf('claimPaidBanner') >= 0);
   check('pricing manufacturer pay button uses the constant', fs.readFileSync('pricing.html', 'utf8').indexOf('href="' + mfrLink + '"') >= 0);
