@@ -23,14 +23,14 @@ check('site-stats awards is the tracked total', stats.awards === confirmed + inf
 check('homepage says Awards tracked', /Awards tracked/.test(html));
 check('homepage does not say Confirmed Awards', !/Confirmed Awards/.test(html));
 check('homepage does not say confirmed awards', !/confirmed awards/i.test(html));
-check('homepage pairs the confirmed-scope count with plain wording', html.indexOf('data-stat="awardsConfirmed">' + confirmed + '</b> confirmed transformer scope') >= 0);
+check('homepage pairs the confirmed-scope count with plain wording', html.indexOf('data-stat="awardsConfirmed">' + confirmed + '</b> with confirmed transformer scope') >= 0);
 check('homepage total is not labelled as confirmed transformer orders', !new RegExp('>' + stats.awards + '<[^>]*>\\s*confirmed', 'i').test(html));
 
 const awardsPage = fs.readFileSync('awards.html', 'utf8');
 const awardsBuilder = fs.readFileSync('build-awards.js', 'utf8');
 check('awards page drops Confirmed Contract Results', awardsPage.indexOf('Confirmed Contract Results') < 0 && awardsBuilder.indexOf('Confirmed Contract Results') < 0);
 check('awards page does not call the total source-confirmed awards', awardsPage.indexOf('source-confirmed awards') < 0 && awardsBuilder.indexOf('source-confirmed awards') < 0);
-check('awards page shows the tracked total and the confirmed-scope count', awardsPage.indexOf('>' + stats.awards + '<') >= 0 && awardsPage.indexOf('>' + confirmed + '<') >= 0 && awardsPage.indexOf(stats.awards + ' awards tracked') >= 0 && awardsPage.indexOf(confirmed + ' have confirmed transformer scope') >= 0);
+check('awards page shows the tracked total and the confirmed-scope count', awardsPage.indexOf('>' + stats.awards + '<') >= 0 && awardsPage.indexOf('>' + confirmed + '<') >= 0 && awardsPage.indexOf(stats.awards + ' awards tracked') >= 0 && awardsPage.indexOf(confirmed + ' with confirmed transformer scope') >= 0);
 check('awards page does not state a count of confirmed transformer orders', !/\d+ confirmed transformer orders/.test(awardsPage));
 check('inferred count is present', html.indexOf('data-stat="awardsInferred">' + inferred) >= 0);
 check('unknown count is present', html.indexOf('data-stat="awardsUnknown">' + unknown) >= 0);
