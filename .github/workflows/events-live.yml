@@ -1,0 +1,16 @@
+name: events live
+
+on:
+  pull_request:
+  push:
+    branches: [main, "cursor/**"]
+
+jobs:
+  events:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: node tests/events-live-upcoming.js && node tests/past-events-regression.js
