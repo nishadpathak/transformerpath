@@ -11,6 +11,7 @@
 const fs = require('fs');
 
 const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|data:)([^"]+)"/g, '$1="/$2"');
+const CSSV = (JSON.parse(fs.readFileSync('data/config.json', 'utf8')).assets || {}).css || 14;
 const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
 
@@ -31,7 +32,15 @@ function safeUrl(u) {
 
 const DATA = JSON.parse(fs.readFileSync('data/laboratories.json', 'utf8'));
 const LABS = DATA.laboratories || [];
+function tpmFor(slug) {
+  try {
+    const lookup = JSON.parse(fs.readFileSync('data/permanent-id-lookup.json', 'utf8'));
+    return (lookup.by_slug && lookup.by_slug[slug]) || '';
+  } catch (e) { return ''; }
+}
+function labSlug(lab) { return String(lab && lab.id || '').replace(/^lab:/, ''); }
 const exhibitorTags = require('./lib/exhibitor-tags');
+const eventBadges = require('./event-badges');
 
 const CAP_NAMES = {
   lightning_impulse: '⚡ Lightning Impulse (1.2/50 μs)',
@@ -112,7 +121,8 @@ function renderCardServer(lab) {
 
   return '<div class="lab-card" style="box-shadow:0 4px 18px rgba(0,0,0,.12)">' +
     '<div class="lab-top">' +
-      '<h2 class="lab-name" style="font-size:1.28rem">' + esc(lab.name) + '</h2>' +
+      '<h2 class="lab-name" style="font-size:1.28rem">' + (lab.profile_page ? '<a href="/laboratories/' + esc(labSlug(lab)) + '/">' + esc(lab.name) + '</a>' : esc(lab.name)) + (function () { const badge = eventBadges.htmlFor({ slug: labSlug(lab), name: lab.name }); return badge ? ' ' + badge : ''; })() + '</h2>' +
+      (tpmFor(labSlug(lab)) ? '<p style="margin:4px 0 8px;font-size:.78rem;color:var(--muted)">Permanent company ID ' + esc(tpmFor(labSlug(lab))) + '</p>' : '') +
       voltagePill(lab) +
     '</div>' +
     '<div class="lab-loc">📍 ' + esc(lab.city) + ', ' + esc(lab.country) + (independentVerified(lab) ? ' · <span style="color:#10b981;font-weight:700">Third-Party Independent</span>' : '') + '</div>' +
@@ -138,7 +148,13 @@ function render() {
 
   const countryOptions = uniqueCountries.map(c => `<option value="${esc(c)}">${esc(c)}</option>`).join('\n        ');
   const initialCardsHtml = LABS.map(renderCardServer).join('');
-  const labsJson = JSON.stringify(LABS);
+  const labsJson = JSON.stringify(LABS.map(function (lab) {
+    const slug = labSlug(lab);
+    const copy = Object.assign({}, lab);
+    const id = tpmFor(slug);
+    if (id) copy.permanent_id = id;
+    return copy;
+  }));
 
   const html = `<!DOCTYPE html>
 <html lang="en" data-theme="dark">
@@ -157,7 +173,7 @@ function render() {
 <meta name="robots" content="index,follow">
 <meta name="theme-color" content="#0d1b2e">
 <link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any">
-<link rel="stylesheet" href="style.css?v=13">
+<link rel="stylesheet" href="style.css?v=${CSSV}">
 <link rel="stylesheet" href="tp-nav.css?v=15">
 <link rel="stylesheet" href="tp-feedback.css?v=13">
 <style>
@@ -275,7 +291,7 @@ ${HEAD}
 
 ${FOOT}
 
-<script>
+${eventBadges.mountHtml()}<script>
 var LABS = ${labsJson};
 var requiredCaps = {};
 var minVoltage = 0;
@@ -380,9 +396,14 @@ function renderCards() {
       accredHtml = '<div class="accred-box"><div style="font-size:.76rem;color:var(--text)"><b>Short-Circuit:</b> ' + esc(lab.short_circuit_capacity) + '</div></div>';
     }
 
+    var labSlug = String(lab.id || '').replace(/^lab:/, '');
+    var eventBadge = (typeof TPEventBadges !== 'undefined' && TPEventBadges.htmlFor) ? TPEventBadges.htmlFor({ slug: labSlug, name: lab.name }) : '';
+    var nameHtml = lab.profile_page ? '<a href="/laboratories/' + esc(labSlug) + '/">' + esc(lab.name) + '</a>' : esc(lab.name);
+    var tpmHtml = lab.permanent_id ? '<p style="margin:4px 0 8px;font-size:.78rem;color:var(--muted)">Permanent company ID ' + esc(lab.permanent_id) + '</p>' : '';
     return '<div class="lab-card" style="box-shadow:0 4px 18px rgba(0,0,0,.12)">' +
       '<div class="lab-top">' +
-        '<h2 class="lab-name" style="font-size:1.28rem">' + esc(lab.name) + '</h2>' +
+        '<h2 class="lab-name" style="font-size:1.28rem">' + nameHtml + (eventBadge ? ' ' + eventBadge : '') + '</h2>' +
+        tpmHtml +
         voltagePill(lab) +
       '</div>' +
       '<div class="lab-loc">📍 ' + esc(lab.city) + ', ' + esc(lab.country) + (!scopeUnsourced(lab) && lab.third_party_independent ? ' · <span style="color:#10b981;font-weight:700">Third-Party Independent</span>' : '') + '</div>' +
@@ -435,6 +456,28 @@ document.getElementById('capToggles').addEventListener('click', function(e) {
 
   fs.writeFileSync('laboratories.html', html);
   console.log('build-laboratories.js wrote laboratories.html with', LABS.length, 'records (SSR + dynamic stats + client esc)');
+  LABS.filter(function (lab) { return lab.profile_page; }).forEach(function (lab) {
+    const slug = labSlug(lab);
+    const url = 'https://transformerpath.com/laboratories/' + slug + '/';
+    const id = tpmFor(slug);
+    const badge = eventBadges.htmlFor({ slug: slug, name: lab.name });
+    const htmlPage = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">' +
+      '<title>' + esc(lab.name) + ' — Unclaimed laboratory listing | TransformerPath</title>' +
+      '<meta name="description" content="' + esc((lab.description || lab.name).slice(0, 180)) + '">' +
+      '<link rel="canonical" href="' + url + '">' +
+      '<meta name="robots" content="index,follow">' +
+      '<link rel="stylesheet" href="../../style.css?v=' + CSSV + '"><link rel="icon" type="image/svg+xml" href="../../brand/favicon.svg">' +
+      '</head><body>\n' + HEAD + '\n<main id="main" tabindex="-1" class="c-wrap" style="max-width:900px;margin:0 auto;padding:44px 20px 88px">' +
+      '<nav style="font-size:.8rem;color:var(--muted)"><a href="../../laboratories.html">Laboratories</a> › ' + esc(lab.name) + '</nav>' +
+      '<h1>' + esc(lab.name) + (badge ? ' ' + badge : '') + '</h1>' +
+      (id ? '<p style="font-size:.82rem;color:var(--muted)">Permanent company ID <span data-copy-id="' + esc(id) + '">' + esc(id) + '</span> <span style="opacity:.75">(stable directory identity — not a certification)</span></p>' : '') +
+      '<p>Unclaimed listing. Accreditation is not claimed.</p>' +
+      '<p>' + esc(lab.description || '') + '</p>' +
+      '<p>' + esc([lab.city, lab.country].filter(Boolean).join(', ')) + (lab.website ? ' · <a href="' + esc(lab.website) + '">Official website</a>' : '') + '</p>' +
+      '</main>\n' + FOOT + '\n' + (badge ? eventBadges.deferScript() : '') + '</body></html>\n';
+    fs.mkdirSync('laboratories/' + slug, { recursive: true });
+    fs.writeFileSync('laboratories/' + slug + '/index.html', htmlPage);
+  });
 }
 
 render();

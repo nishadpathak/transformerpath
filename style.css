@@ -798,6 +798,35 @@ body .vol-card:hover {
   gap: 6px;
   align-items: center;
 }
+a.event-badge {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 8px;
+  padding: 2px 8px;
+  border: 1px solid var(--amber);
+  border-radius: 999px;
+  background: rgba(245, 166, 35, .12);
+  color: var(--ink);
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .01em;
+  line-height: 1.35;
+  text-decoration: none;
+  white-space: normal;
+  vertical-align: middle;
+  max-width: 100%;
+}
+a.event-badge:hover { color: var(--ink); }
+a.event-badge[data-event-state="past"] {
+  border-color: var(--border);
+  background: transparent;
+  color: var(--muted);
+  font-weight: 700;
+}
+a.event-badge[hidden] { display: none; }
+h1 a.event-badge, h2 a.event-badge, .kg-card-title + a.event-badge { font-size: .72rem; }
+.kg-title-wrap { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px; min-width: 0; max-width: 100%; }
+.kg-title-wrap a.event-badge { margin-left: 0; }
 
 @media (max-width: 768px) {
   .kg-card {

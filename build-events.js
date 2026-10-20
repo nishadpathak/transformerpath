@@ -31,6 +31,11 @@ const TODAY = dubaiToday();
 const CANON = JSON.parse(fs.readFileSync('data/events-canonical.json', 'utf8'));
 const byId = {};
 (CANON.canonical_editions || []).forEach((e) => { byId[e.id] = e; });
+const SERIES_FILTER = String(process.env.TP_EVENT_SERIES || '').split(',').map((s) => s.trim()).filter(Boolean);
+const EVENT_DIRECTORY = (function () {
+  try { return JSON.parse(fs.readFileSync('data/event-directory.json', 'utf8')).sections || {}; }
+  catch (e) { return {}; }
+})();
 const ALL = (CANON.canonical_editions || []).map((e) => {
   e.n = e.name || '';
   e.s = e.start || '';
@@ -74,6 +79,17 @@ function writePage(rel, html) {
   written.add(dir);
 }
 
+function directorySection(ev) {
+  const block = EVENT_DIRECTORY[ev.id];
+  if (!block || !block.entries || !block.entries.length) return '';
+  const items = block.entries.map((row) => {
+    const label = esc(row.name);
+    const href = String(row.href || '');
+    const link = href.charAt(0) === '/' ? '<a href="' + esc(href) + '">' + label + '</a>' : label;
+    return '<li>' + link + '</li>';
+  }).join('');
+  return '<h2>' + esc(block.section) + '</h2><ul>' + items + '</ul>';
+}
 function exhibitorHtml(ev) {
   if (!ev.key_exhibitors || !ev.key_exhibitors.length) return '<p>' + esc(nullText()) + '</p>';
   return '<ul>' + ev.key_exhibitors.map((x) => {
@@ -184,6 +200,7 @@ function seriesTitle(slug, list) {
 }
 
 Object.keys(groups).forEach((slug) => {
+  if (SERIES_FILTER.length && SERIES_FILTER.indexOf(slug) < 0) return;
   const list = groups[slug].slice().sort((a, b) => String(b.start || '').localeCompare(String(a.start || '')));
   const feature = seriesFeature(list, TODAY);
   const nxt = feature.featured;
@@ -247,6 +264,7 @@ Object.keys(groups).forEach((slug) => {
       (ev.relevance_reason ? '<p>' + esc(ev.relevance_reason) + '</p>' : '') +
       '<h2>Deadlines</h2>' + deadlineHtml(ev) +
       '<h2>Programme</h2>' + programmeHtml(ev) +
+      directorySection(ev) +
       '<h2>Key exhibitors</h2>' + exhibitorHtml(ev) +
       '<h2>Stats</h2>' + statsHtml(ev) +
       ((ev.intel_links || []).length ? '<h2>Post-event summary</h2><ul>' + ev.intel_links.map((id) => '<li><a href="../' + esc(id) + '/summary/">' + esc(id) + '</a></li>').join('') + '</ul>' : '') +
@@ -271,8 +289,11 @@ Object.keys(groups).forEach((slug) => {
   });
 });
 
-/* Calendars: CONFIRMED upcoming only. */
+/* A filtered rebuild writes the named series only. It leaves every other
+ * event directory and the shared calendar files where they are. */
 const confirmedUpcoming = ALL.filter((ev) => allowsCalendar(ev) && ev.end >= TODAY);
+if (!SERIES_FILTER.length) {
+/* Calendars: CONFIRMED upcoming only. */
 fs.mkdirSync('events/ics', { recursive: true });
 confirmedUpcoming.forEach((ev) => {
   fs.writeFileSync('events/ics/' + ev.id + '.ics', eventIcs(ev));
@@ -321,10 +342,11 @@ if (fs.existsSync('events')) {
     }
   });
 }
+}
 
 const noindexSeries = {};
 ALL.forEach(function (ev) {
   if (eventSeo.shouldNoindexEdition(ev, TODAY)) noindexSeries[ev.series_slug || ev.id] = 1;
 });
-console.log('OK series hubs ' + Object.keys(groups).length + ' | edition pages ' + ALL.length + ' | ics ' + confirmedUpcoming.length);
+console.log('OK series hubs ' + Object.keys(groups).length + ' | edition pages ' + ALL.length + ' | ics ' + confirmedUpcoming.length + (SERIES_FILTER.length ? ' | filtered ' + SERIES_FILTER.join(',') : ''));
 console.log('series with a noindex unsourced edition: ' + Object.keys(noindexSeries).length);

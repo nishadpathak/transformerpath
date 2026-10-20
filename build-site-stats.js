@@ -24,7 +24,7 @@ const TENDERS = readJson('data/tenders.json', {}).tenders || [];
 const AWARDS = readJson('data/awards.json', {}).awards || [];
 const GRIDS = readJson('data/grids.json', []);
 
-const mkgCountries = MANUF.filter((g) => (g.makers || []).some((m) => !/^Served by/i.test(m[0]))).length;
+const mkgCountries = require('./lib/public-company-count').namedCountryCount(MANUF);
 const censusMakers = MANUF.reduce((s, g) => s + (g.makers || []).filter((m) => !/^Served by/i.test(m[0])).length, 0);
 const publicCompanies = require('./lib/public-company-count').read(__dirname);
 const makers = publicCompanies.publicCount;

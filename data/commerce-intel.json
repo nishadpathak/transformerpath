@@ -1,22 +1,31 @@
 {
   "$schema": "https://transformerpath.com/commerce-intel.schema.json",
-  "generated": "2026-10-20T07:00:35.037Z",
+  "generated": "2026-10-20T10:34:17.398Z",
   "honesty_note": "Revenue and conversion figures are NOT shown because live Stripe/Supabase transaction data is not available in this static build. No revenue, no conversion rate and no pipeline value are fabricated. The figures below are real platform-scale and prospect signals derived from the canonical datasets.",
   "metrics": {
     "platform_scale": {
-      "manufacturers": 950,
+      "manufacturers": 970,
       "projects": 305,
       "tenders": 178,
       "open_tenders": 19,
       "awards": 65,
-      "events": 305
+      "events": 309
     },
     "prospect_signals": {
-      "supplier_prospects_with_website": 872,
+      "supplier_prospects_with_website": 875,
       "upcoming_events": 158
     }
   },
   "supplier_prospects": [
+    {
+      "name": "Pearl Electric Co., Ltd.",
+      "country": "—",
+      "region": "",
+      "city": "—",
+      "categories": [],
+      "website": "https://www.pearltransformer.com",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
     {
       "name": "Amimer Energie",
       "country": "Algeria",
@@ -2047,6 +2056,15 @@
       "commercial_status": "not recorded statically — see Supabase company_claims"
     },
     {
+      "name": "TSTY Electric Co., LTD.",
+      "country": "China",
+      "region": "East Asia",
+      "city": "—",
+      "categories": [],
+      "website": "https://www.tstytransformer.com",
+      "commercial_status": "not recorded statically — see Supabase company_claims"
+    },
+    {
       "name": "Wolong Electric Group",
       "country": "China",
       "region": "East Asia",
@@ -2365,30 +2383,6 @@
         "DT"
       ],
       "website": "https://www.trafocz.cz/en/sale-and-production-transformers-trafocz.html",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "Dantrafo",
-      "country": "Denmark",
-      "region": "Europe",
-      "city": "Lemvig",
-      "categories": [
-        "DT",
-        "DRY"
-      ],
-      "website": "https://dantrafo.dk",
-      "commercial_status": "not recorded statically — see Supabase company_claims"
-    },
-    {
-      "name": "E-T-A Transformers A/S (ETA Transformatoren)",
-      "country": "Denmark",
-      "region": "Europe",
-      "city": "Norre Aaby, Funen",
-      "categories": [
-        "DT",
-        "DRY"
-      ],
-      "website": "https://www.eta-danmark.dk/",
       "commercial_status": "not recorded statically — see Supabase company_claims"
     }
   ],

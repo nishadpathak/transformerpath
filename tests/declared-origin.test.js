@@ -24,7 +24,7 @@ slugs.forEach(function (row) { if (row && row.slug) known[row.slug] = row; });
 check('seed count is the sourced set', (doc.companies || []).length === 10, String((doc.companies || []).length));
 
 const stats = JSON.parse(fs.readFileSync(path.join(root, 'data/site-stats.json'), 'utf8'));
-check('manufacturer count stays 950', stats.manufacturers === 950, String(stats.manufacturers));
+check('manufacturer count matches the public census', stats.manufacturers === require('../lib/public-company-count').read(root).publicCount, String(stats.manufacturers));
 
 const directory = fs.readFileSync(path.join(root, 'manufacturers.html'), 'utf8');
 check('directory filter is labelled Declared origin', directory.indexOf('aria-label="Declared origin"') >= 0 && directory.indexOf('id="fOrigin"') >= 0);

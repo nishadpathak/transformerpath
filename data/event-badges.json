@@ -1,0 +1,4302 @@
+{
+  "how_to_add": "Add an event or a year in this file only. No template change. One events object is one edition: slug, series (every year of that show uses the same series and the same name), name, year, past_name, start, end, timezone, url, source_url, source_note. On the company, add one history entry per edition: event (the edition slug), year, source (http or https URL of the exhibitor list for that year). source is required. CI rejects a missing, blank, or non-URL source. On and before the end date, in that timezone, the year stays highlighted: Exhibiting at {name} · {dates}. Years of the same series that have already ended share one line, most recent first: Exhibited at EP Shanghai 2026 · 2025. A show with one past year reads Exhibited at WETEX 2025. The next calendar day after the end date, the highlighted year joins that line. Sourced editions in this file are EP Shanghai 2026, Enlit Europe 2026, ADIPEC 2026, ENERGETICS 2026, ELECRAMA 2025, CIGRE GCC Power 2025, WETEX 2025, and Vietnam Energy Week 2025. Do not add a year that has no exhibitor list.",
+  "events": [
+    {
+      "slug": "ep-shanghai-2026",
+      "series": "ep-shanghai",
+      "name": "EP Shanghai",
+      "year": 2026,
+      "past_name": "EP Shanghai 2026",
+      "start": "2026-12-03",
+      "end": "2026-12-05",
+      "timezone": "Asia/Shanghai",
+      "url": "/events/ep-shanghai-2026/",
+      "source_url": "https://www.epchinashow.com/EP/visitor/visitinginfo/eng",
+      "source_note": "Official visiting information lists the exhibition as 3–5 December 2026 at the Shanghai New International Expo Center. Opening hours are 09:00–16:30 on 3 and 4 December 2026 and 09:00–15:00 on 5 December 2026. The badge stays highlighted through the end date in Asia/Shanghai. Each company history entry cites the official exhibitor-list page. The names themselves come from the partial exhibitor-list PDF dated 2026-08-31. No earlier year is listed because this file has no exhibitor list for one."
+    },
+    {
+      "slug": "enlit-europe-2026",
+      "series": "enlit-europe",
+      "name": "Enlit Europe",
+      "year": 2026,
+      "past_name": "Enlit Europe 2026",
+      "start": "2026-11-10",
+      "end": "2026-11-12",
+      "timezone": "Europe/Vienna",
+      "url": "/events/enlit-europe-2026/",
+      "source_url": "https://www.enlit-europe.com/",
+      "source_note": "Official Enlit Europe pages checked 20 Oct 2026: 10–12 November 2026 at Messe Wien, Vienna. History cites the exhibitor-list page."
+    },
+    {
+      "slug": "adipec-2026",
+      "series": "adipec",
+      "name": "ADIPEC",
+      "year": 2026,
+      "past_name": "ADIPEC 2026",
+      "start": "2026-11-02",
+      "end": "2026-11-05",
+      "timezone": "Asia/Dubai",
+      "url": "/events/adipec-2026/",
+      "source_url": "https://www.adipec.com/",
+      "source_note": "Official ADIPEC pages checked 20 Oct 2026: 2–5 November 2026 at ADNEC, Abu Dhabi. The badge stays highlighted through 5 November. History cites the exhibitor-list page."
+    },
+    {
+      "slug": "energetics-2026",
+      "series": "energetics",
+      "name": "ENERGETICS",
+      "year": 2026,
+      "past_name": "ENERGETICS 2026",
+      "start": "2026-11-17",
+      "end": "2026-11-19",
+      "timezone": "Europe/Warsaw",
+      "url": "/events/energetics-2026/",
+      "source_url": "https://energetics.targi.lublin.pl/",
+      "source_note": "Official Targi Lublin pages checked 20 Oct 2026: 17–19 November 2026. History cites the exhibitor list."
+    },
+    {
+      "slug": "elecrama-2025",
+      "series": "elecrama",
+      "name": "ELECRAMA",
+      "year": 2025,
+      "past_name": "ELECRAMA 2025",
+      "start": "2025-02-22",
+      "end": "2025-02-26",
+      "timezone": "Asia/Kolkata",
+      "url": "/events/elecrama-2025/",
+      "source_url": "https://elecrama.com/message/",
+      "source_note": "Official ELECRAMA message page and the exhibitor-list PDF: 22–26 February 2025 at India Expo Mart, Greater Noida. History cites that PDF."
+    },
+    {
+      "slug": "gcc-power-2025",
+      "series": "gcc-power",
+      "name": "CIGRE GCC Power",
+      "year": 2025,
+      "past_name": "CIGRE GCC Power 2025",
+      "start": "2025-11-10",
+      "end": "2025-11-12",
+      "timezone": "Asia/Kuwait",
+      "url": "/events/gcc-power-2025/",
+      "source_url": "https://cigre-gccpower.cigre-gcc.org/gccpower2025/",
+      "source_note": "Official GCC POWER 2025 page: 10–12 November 2025 at The Regency Hotel, Kuwait. History cites the official floor plan, which names the stands."
+    },
+    {
+      "slug": "wetex-2025",
+      "series": "wetex",
+      "name": "WETEX",
+      "year": 2025,
+      "past_name": "WETEX 2025",
+      "start": "2025-09-30",
+      "end": "2025-10-02",
+      "timezone": "Asia/Dubai",
+      "url": "/events/wetex-2025/",
+      "source_url": "https://www.dwtc.com/en/events/wetex-2025/",
+      "source_note": "Dubai World Trade Centre event page: 30 September–2 October 2025. History cites the organiser exhibition catalogue PDF."
+    },
+    {
+      "slug": "vietnam-energy-week-2025",
+      "series": "vietnam-energy-week",
+      "name": "Vietnam Energy Week",
+      "year": 2025,
+      "past_name": "Vietnam Energy Week 2025",
+      "start": "2025-11-05",
+      "end": "2025-11-07",
+      "timezone": "Asia/Ho_Chi_Minh",
+      "url": "/events/vietnam-energy-week-2025/",
+      "source_url": "https://www.vietnamenergyweek.com/en/technical-seminar/",
+      "source_note": "Official seminar page states 05–07/11/2025 at SECC, Ho Chi Minh City. History cites the official exhibitor profile list, which names ACEZ Instruments. This is a different series from Vietnam ETE."
+    }
+  ],
+  "companies": [
+    {
+      "slug": "baur-gmbh",
+      "name": "Baur GmbH",
+      "aliases": [
+        "BAUR GMBH"
+      ],
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "cargill-inc-envirotemp-fr3",
+      "name": "Cargill Inc. (Envirotemp FR3)",
+      "aliases": [
+        "CARGILL"
+      ],
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "chint-transformers-chint-group",
+      "name": "CHINT Transformers (CHINT Group)",
+      "aliases": [
+        "CHINT"
+      ],
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "jiangsu-yawei-transformer",
+      "name": "Jiangsu Yawei Transformer",
+      "aliases": [
+        "JIANGSU YAWEI TRANSFORMER CO., LTD."
+      ],
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "qingdao-qingdian-electric-group",
+      "name": "Qingdao Qingdian Electric Group",
+      "aliases": [
+        "QINGDAO QINGDIAN ELECTRIC GROUP CO., LTD."
+      ],
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "shandong-dachi-electric",
+      "name": "Shandong Dachi Electric",
+      "aliases": [
+        "SHANDONG DACHI ELECTRIC CO., LTD."
+      ],
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "shanghai-huaming-power-equipment",
+      "name": "Shanghai Huaming Power Equipment",
+      "aliases": [
+        "SHANGHAI HUAMING POWER EQUIPMENT CO., LTD."
+      ],
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "wuxi-power-transformer-beijing-shuangjie",
+      "name": "Wuxi Power Transformer (Beijing Shuangjie)",
+      "aliases": [
+        "WUXI POWER TRANSFORMER CO., LTD."
+      ],
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "ningbo-tianan-smart-grid-technology-co-ltd",
+      "name": "NINGBO TIAN'AN SMART GRID TECHNOLOGY CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ],
+      "aliases": []
+    },
+    {
+      "slug": "shell-global-shell-diala",
+      "name": "Shell Global (Shell Diala)",
+      "aliases": [
+        "Shell (Shanghai) Petroleum Co., Ltd."
+      ],
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "h-j-enterprises-the-h-j-family-of-companies",
+      "name": "H-J Enterprises (The H-J Family of Companies)",
+      "aliases": [
+        "THE H-J FAMILY OF COMPANIES"
+      ],
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "abb-china-co-ltd",
+      "name": "ABB (China) Co., LTD",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "anhui-chardon-electric-ltd",
+      "name": "ANHUI CHARDON ELECTRIC LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "b-aoding-zhengheng-electric-power-technology-co-ltd",
+      "name": "B aoding Zhengheng Electric Power Technology Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "baisheng-electric-co-ltd",
+      "name": "Baisheng Electric Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "baoding-hewei-power-technology-co-ltd",
+      "name": "BAODING HEWEI POWER TECHNOLOGY CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "baoding-jingda-electric-power-technology-co-ltd",
+      "name": "Baoding Jingda Electric Power Technology Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "baoding-lixing-electronic-equipment-co-ltd",
+      "name": "Baoding Lixing Electronic Equipment Co.,Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "beierbian-group-co-ltd",
+      "name": "BEIERBIAN GROUP CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "beijing-honghao-electrical-technology-co-ltd",
+      "name": "Beijing Honghao Electrical Technology Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "beijing-micropower-technology-co-ltd",
+      "name": "BEIJING MICROPOWER TECHNOLOGY CO.,LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "beijing-primasky-electric-tech-co-ltd",
+      "name": "BEIJING PRIMASKY ELECTRIC TECH CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "beijing-xiongxin-electric-power-technology-co-ltd",
+      "name": "Beijing Xiongxin Electric Power Technology Co., Ltd",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "bushing-beijing-hv-electric-co-ltd",
+      "name": "BUSHING (BEIJING) HV ELECTRIC CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "changzhou-taixu-sealing-technology-co-ltd",
+      "name": "Changzhou Taixu Sealing Technology Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "changzhou-uta-electronic-technology-co-ltd",
+      "name": "Changzhou UTA Electronic Technology Co.,Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "china-bluestar-chengrand-co-ltd",
+      "name": "CHINA BLUESTAR CHENGRAND CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "chongqing-lushun-scientific-and-technological-development-co-ltd",
+      "name": "CHONGQING LUSHUN SCIENTIFIC & TECHNOLOGICAL DEVELOPMENT CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "dai-tian-intelligent-technology-shanghai-co-ltd",
+      "name": "Dai Tian Intelligent Technology (Shanghai) Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "dalian-fengherili-electric-co-ltd",
+      "name": "DALIAN FENGHERILI ELECTRIC CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "dalian-huayi-electric-power-electric-appliances-co-ltd",
+      "name": "DALIAN HUAYI ELECTRIC POWER ELECTRIC APPLIANCES CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "dalian-no-1-instrument-transformer-co-ltd",
+      "name": "DALIAN NO.1 INSTRUMENT TRANSFORMER CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "dalian-north-transformer-group-co-ltd",
+      "name": "DALIAN NORTH TRANSFORMER GROUP CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "dalian-ruixinyu-special-transformer-co-ltd",
+      "name": "Dalian Ruixinyu Special Transformer Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "dalian-xinanyue-electric-power-equipment-co-ltd",
+      "name": "DALIAN XINANYUE ELECTRIC POWER EQUIPMENT CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "dongguan-guoshi-magnetic-industry-co-ltd",
+      "name": "Dongguan Guoshi Magnetic Industry Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "ea-technology-shanghai-ltd",
+      "name": "EA TECHNOLOGY (SHANGHAI) LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        },
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        }
+      ],
+      "aliases": [
+        "EA Technology"
+      ]
+    },
+    {
+      "slug": "farady-electric-co-ltd",
+      "name": "Farady Electric Co.,Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "gongxin-electric-power-technology-co-ltd",
+      "name": "GONGXIN ELECTRIC POWER TECHNOLOGY CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "guangdong-weineng-electric-co-ltd",
+      "name": "GUANGDONG WEINENG ELECTRIC CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "guangxi-liuzhou-special-transformer-co-ltd",
+      "name": "Guangxi Liuzhou Special Transformer Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "guangxi-mingdian-electric-co-ltd",
+      "name": "Guangxi Mingdian Electric Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "guangxin-new-materials-technology-changsha-co-ltd",
+      "name": "Guangxin New Materials Technology (Changsha) Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "guizhou-zhongqian-electrical-equipment-co-ltd",
+      "name": "Guizhou Zhongqian Electrical Equipment Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "hebei-ansheng-electric-power-equipment-co-ltd",
+      "name": "Hebei Ansheng Electric Power Equipment Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "hebei-lanzhi-electric-technology-co-ltd",
+      "name": "Hebei Lanzhi Electric Technology Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "hebei-tianhua-electric-technology-co-ltd",
+      "name": "Hebei Tianhua Electric Technology Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "hebei-weite-electric-co-ltd",
+      "name": "HEBEI WEITE ELECTRIC CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "hebei-yitongda-electric-power-equipment-manufacturing-co-ltd",
+      "name": "Hebei Yitongda Electric Power Equipment Manufacturing Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "hefei-fuhai-electronic-technology-co-ltd",
+      "name": "HEFEI FUHAI ELECTRONIC TECHNOLOGY CO., LTD,",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "hejian-zhengyang-electric-co-ltd",
+      "name": "Hejian Zhengyang Electric Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "henan-aomei-electric-co-ltd",
+      "name": "HENAN AOMEI ELECTRIC CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "henan-tai-long-power-equipment-co-ltd",
+      "name": "HENAN TAI LONG POWER EQUIPMENT CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "hengtong-jingren-new-material-technology-shanghai-co-ltd",
+      "name": "HENGTONG JINGREN NEW MATERIAL TECHNOLOGY (SHANGHAI) CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "hongguang-electrical-co-ltd",
+      "name": "Hongguang Electrical Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "huaxin-porcelain-insulatorandelectric-apparatus-co-ltd",
+      "name": "HUAXIN PORCELAIN INSULATOR&ELECTRIC APPARATUS CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "hubei-jiangte-insulation-composite-co-ltd",
+      "name": "HUBEI JIANGTE INSULATION COMPOSITE CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "hunan-elite-electric-porcelain-and-electric-appliance-co-ltd",
+      "name": "HUNAN ELITE ELECTRIC PORCELAIN & ELECTRIC APPLIANCE CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "hunan-hualian-torch-porcelain-insulatorand-electrical-apparatus-co-ltd",
+      "name": "HUNAN HUALIAN TORCH PORCELAIN INSULATOR& ELECTRICAL APPARATUS CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "hunan-huaxia-tebian-co-ltd",
+      "name": "HUNAN HUAXIA TEBIAN CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "hunan-liling-hongri-porcelain-insulators-industry-co-ltd",
+      "name": "HUNAN LILING HONGRI PORCELAIN INSULATORS INDUSTRY CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "hunan-liling-yugo-porcelain-insulator-industry-co-ltd",
+      "name": "HUNAN LILING YUGO PORCELAIN INSULATOR INDUSTRY CO.,LTD",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "intertek-testing-services-shenzhen-ltd-guangzhou-branch",
+      "name": "INTERTEK TESTING SERVICES SHENZHEN LTD GUANGZHOU BRANCH",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "jiang-su-xinya-high-voltage-testing-equipment-co-ltd",
+      "name": "JIANG SU XINYA HIGH VOLTAGE TESTING EQUIPMENT CO.,LTD",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "jiangsu-jiameng-electrical-equipment-co-ltd",
+      "name": "JIANGSU JIAMENG ELECTRICAL EQUIPMENT CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "jiangsu-kelide-electric-co-ltd",
+      "name": "JIANGSU KELIDE ELECTRIC CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "jiangsu-shendian-electric-co-ltd",
+      "name": "Jiangsu Shendian Electric Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "jiangsu-techsence-wires-co-ltd",
+      "name": "Jiangsu Techsence Wires Co.,Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "jiangsu-tenyen-electric-co-ltd",
+      "name": "JIANGSU TENYEN ELECTRIC CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "jiangsu-tianhua-transformer-co-ltd",
+      "name": "JIANGSU TIANHUA TRANSFORMER CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "jiangsu-xinhong-electrical-equipment-co-ltd",
+      "name": "JIANGSU XINHONG ELECTRICAL EQUIPMENT CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "jiangsu-zhengri-power-equipment-co-ltd",
+      "name": "Jiangsu Zhengri Power Equipment Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "jiangxi-hongte-insulating-materials-company-ltd",
+      "name": "Jiangxi Hongte Insulating Materials Company, Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "jiangxi-luge-electric-co-ltd",
+      "name": "Jiangxi Luge Electric Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "jiangxi-tengrui-insulation-materials-co-ltd",
+      "name": "Jiangxi Tengrui Insulation Materials Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "jiangxi-transformer-science-and-technology-co-ltd",
+      "name": "JIANGXI TRANSFORMER SCIENCE & TECHNOLOGY CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "jiangxi-xutong-mecahnical-co-ltd",
+      "name": "Jiangxi Xutong Mecahnical Co., Ltd",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "jiangxi-yawei-electric-co-ltd",
+      "name": "Jiangxi Yawei Electric Co.Ltd",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "jiangyin-spark-electronic-technology-co-ltd",
+      "name": "JIANGYIN SPARK ELECTRONIC TECHNOLOGY CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "julu-county-hongwei-sealing-and-electric-parts-co-ltd",
+      "name": "JULU COUNTY HONGWEI SEALING & ELECTRIC PARTS CO.,LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "kema-labs-arnhem",
+      "name": "KEMA Labs (CESI Group) — Arnhem",
+      "aliases": [
+        "KEMA B.V."
+      ],
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "liaoning-hengren-electric-power-equipment-engineering-co-ltd",
+      "name": "Liaoning Hengren Electric Power Equipment Engineering Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "liaoning-zhongxu-shihua-scitech-corp-ltd",
+      "name": "Liaoning Zhongxu Shihua Scitech Corp.,ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "liling-hudian-shunlei-electric-power-porcelain-insulator-and-electric-appliance-co-ltd",
+      "name": "LILING HUDIAN SHUNLEI ELECTRIC POWER PORCELAIN INSULATOR & ELECTRIC APPLIANCE CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "liling-xidian-porcelain-electrical-appliance-manufacturing-co-ltd",
+      "name": "Liling Xidian Porcelain Electrical Appliance Manufacturing Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "liugao-electric-power-technology-group-yueqing-power-transmission-and-distribution-co-ltd",
+      "name": "Liugao Electric Power Technology Group Yueqing Power Transmission and Distribution Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "longwei-electric-co-ltd",
+      "name": "Longwei Electric Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "nanjing-fangneng-automation-equipment-co-ltd",
+      "name": "NANJING FANGNENG AUTOMATION EQUIPMENT CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "nanjing-qizhi-electric-technology-co-ltd",
+      "name": "NANJING QIZHI ELECTRIC TECHNOLOGY CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "nanjing-shice-power-technology-co-ltd",
+      "name": "NANJING SHICE POWER TECHNOLOGY CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "nantong-baite-new-materials-technology-co-ltd",
+      "name": "Nantong Baite New Materials Technology Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "nantong-rizhi-electric-power-material-co-ltd",
+      "name": "NANTONG RIZHI ELECTRIC POWER MATERIAL CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "nantong-zhihe-electric-co-ltd",
+      "name": "NANTONG ZHIHE ELECTRIC CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "ningbo-taifengyuan-electric-co-ltd",
+      "name": "Ningbo Taifengyuan Electric CO. , LTD",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "parber-power-technology-co-ltd",
+      "name": "PARBER POWER TECHNOLOGY CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "pingxiang-kaiyue-electromechanical-equipment-co-ltd",
+      "name": "Pingxiang Kaiyue Electromechanical Equipment Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "psd-technology-co-ltd",
+      "name": "PSD TECHNOLOGY CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "sensing-tech-precision-tianjin-co-ltd",
+      "name": "Sensing Tech Precision (Tianjin) Co., Ltd",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "shaanxi-hanzhong-transformer-co-ltd",
+      "name": "SHAANXI HANZHONG TRANSFORMER CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "shaanxi-qt-power-group-co-ltd",
+      "name": "SHAANXI QT POWER GROUP CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "shandong-anxinde-electric-technology-co-ltd",
+      "name": "Shandong Anxinde Electric Technology Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "shandong-kehua-electrical-technology-co-ltd",
+      "name": "Shandong Kehua Electrical Technology Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "shandong-kehui-electronic-technology-co-ltd",
+      "name": "Shandong Kehui Electronic Technology Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "shandong-peiport-electric-power-scienceandtechnology-co-ltd",
+      "name": "Shandong Peiport Electric Power Science&Technology CO.,LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "shanghai-dielec-electrotechnics-co-ltd",
+      "name": "SHANGHAI DIELEC ELECTROTECHNICS CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "shanghai-hinner-information-technology-co-ltd",
+      "name": "Shanghai Hinner information technology co.,LTD",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "shanghai-johntem-polymer-materials-co-ltd",
+      "name": "Shanghai Johntem Polymer Materials Co,.Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "shanghai-lingtian-electric-co-ltd",
+      "name": "SHANGHAI LINGTIAN ELECTRIC CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "shanghai-muyi-electric-co-ltd",
+      "name": "SHANGHAI MUYI ELECTRIC CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "shanghai-ruice-electronic-technology-co-ltd",
+      "name": "Shanghai RuiCe Electronic Technology Co.,Ltd",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "shanghai-wuzhou-electric-power-technology-co-ltd",
+      "name": "Shanghai Wuzhou Electric Power Technology Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "shanghai-xrun-resin-co-ltd",
+      "name": "Shanghai Xrun Resin Co.,Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "shanghai-zhouxin-electric-co-ltd",
+      "name": "Shanghai Zhouxin Electric Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "shanghai-zinan-electric-co-ltd",
+      "name": "Shanghai Zinan Electric Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "shenhong-metal-co-ltd",
+      "name": "SHENHONG METAL CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "shenyang-feichi-smart-electric-co-ltd",
+      "name": "Shenyang Feichi Smart Electric Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "shenzhen-chuangyin-technology-co-ltd",
+      "name": "SHENZHEN CHUANGYIN TECHNOLOGY CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "shuangcheng-guokai-electric-manufacturing-co-ltd",
+      "name": "SHUANGCHENG GUOKAI ELECTRIC MANUFACTURING CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "sui-on-lamination-materials-shenzhen-co-ltd",
+      "name": "Sui On Lamination Materials (Shenzhen) Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "suzhou-guanlong-magnet-wire",
+      "name": "Suzhou GuanLong Magnet Wire",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "taizhou-tian-li-iron-core-manufacturing-co-ltd",
+      "name": "TAIZHOU TIAN LI IRON CORE MANUFACTURING CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "tecsystem-shanghai-co-ltd",
+      "name": "Tecsystem Shanghai Co.,Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "tianjin-benefo-tejing-electric-co-ltd",
+      "name": "Tianjin Benefo Tejing Electric Co.,Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "tianjin-delta-trade-co-ltd",
+      "name": "TIANJIN DELTA TRADE CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "tianjin-xingda-electric-technology-co-ltd",
+      "name": "TIANJIN XINGDA ELECTRIC TECHNOLOGY CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "wei-yuan-intelligent-electrical-shandong-co-ltd",
+      "name": "Wei Yuan Intelligent Electrical (Shandong) Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "wenzhou-honly-instrument-co-ltd",
+      "name": "WENZHOU HONLY INSTRUMENT CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "wuhan-moen-intelligent-electrical-co-ltd",
+      "name": "Wuhan Moen Intelligent Electrical Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "wuhan-senweier-technology-co-ltd",
+      "name": "Wuhan Senweier Technology Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "wukai-electric-jiangsu-co-ltd",
+      "name": "WUKAI ELECTRIC (JIANGSU) CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "wuxi-keser-new-energy-technology-co-ltd",
+      "name": "Wuxi Keser New Energy Technology Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "wuxi-weibang-transformer-manufacture-co-ltd",
+      "name": "Wuxi Weibang Transformer Manufacture Co.,Ltd",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "wuxi-zhongpu-electric-co-ltd",
+      "name": "WUXI ZHONGPU ELECTRIC CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "xi-an-sitech-electric-co-ltd",
+      "name": "Xi 'an Sitech Electric Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "xian-liou-measurement-and-control-technology-co-ltd",
+      "name": "Xi'an Liou Measurement and Control Technology Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "xiamen-gaoruite-electrical-automation-co-ltd-xiamen-good-ep-electrical-co-ltd",
+      "name": "Xiamen Gaoruite Electrical Automation Co., Ltd./XIAMEN GOOD EP ELECTRICAL CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "xian-high-voltage-apparatus-research-institute-co",
+      "name": "XIAN HIGH VOLTAGE APPARATUS RESEARCH INSTITUTE CO",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        },
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ],
+      "aliases": [
+        "XI'AN HIGH VOLTAGE APPARATUS RESEARCH INSTITUTE CO., LTD."
+      ]
+    },
+    {
+      "slug": "xian-philink-electric-co-ltd",
+      "name": "XIAN PHILINK ELECTRIC CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "xiazhong-electronic-technology-co-ltd",
+      "name": "Xiazhong Electronic Technology Co., Ltd",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "xuchang-eric-insulation-product-co-ltd",
+      "name": "XUCHANG ERIC INSULATION PRODUCT CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "xuchang-zhongcheng-insulation-materials-co-ltd",
+      "name": "Xuchang Zhongcheng Insulation Materials Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "yancheng-advanced-insulation-co-ltd",
+      "name": "YANCHENG ADVANCED INSULATION CO.,LTD",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "yizheng-daheng-technology-development-co-ltd",
+      "name": "Yizheng Daheng Technology Development Co.,Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "youxing-electric-co-ltd",
+      "name": "YOUXING ELECTRIC CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "zhejiang-bridgold-copper-tech-co-ltd",
+      "name": "ZHEJIANG BRIDGOLD COPPER TECH CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "zhejiang-chenglian-certification-consultingco-ltd",
+      "name": "ZHEJIANG CHENGLIAN CERTIFICATION CONSULTINGCO.,LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "zhejiang-erg-technology-joint-stock-co-ltd",
+      "name": "Zhejiang Erg Technology Joint Stock CO.,LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "zhejiang-hailiang-co-ltd",
+      "name": "ZHEJIANG HAILIANG CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "zhejiang-intime-electric-co-ltd",
+      "name": "ZHEJIANG INTIME ELECTRIC CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "zhejiang-jiangshan-hengli-electric-co-ltd",
+      "name": "Zhejiang Jiangshan Hengli Electric Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "zhejiang-lench-electric-technology-co-ltd",
+      "name": "ZHEJIANG LENCH ELECTRIC TECHNOLOGY CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "zhejiang-mechanical-and-electrical-product-quality-testing-institute-co-ltd",
+      "name": "Zhejiang Mechanical and Electrical Product Quality Testing Institute Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "zhejiang-sodi-electrical-appliance-co-ltd",
+      "name": "Zhejiang Sodi Electrical Appliance Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "zhejiang-xichuang-electric-power-co-ltd",
+      "name": "Zhejiang Xichuang Electric Power Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "zhejiang-yaoming-electric-co-ltd",
+      "name": "Zhejiang Yaoming Electric Co., Ltd",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "zhejiang-yihao-electric-co-ltd",
+      "name": "ZHEJIANG YIHAO ELECTRIC CO., LTD.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "zhejiang-zuoke-electric-technology-co-ltd",
+      "name": "Zhejiang Zuoke Electric Technology Co., Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "zhenjiang-xintai-insulating-materials-co-ltd",
+      "name": "Zhenjiang Xintai Insulating Materials Co.,Ltd.",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "shang-hai-hua-tong-hu-gan-qi-you-xian-gong-si",
+      "name": "上海华通互感器有限公司",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "zhong-bian-ji-tuan-shang-hai-bian-ya-qi-you-xian-gong-si",
+      "name": "中变集团上海变压器有限公司",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        },
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        }
+      ],
+      "aliases": [
+        "China ZBB Group Shanghai Transformer Co., Ltd."
+      ]
+    },
+    {
+      "slug": "xia-men-shi-yi-fan-da-xin-cai-liao-you-xian-gong-si",
+      "name": "厦门市宜帆达新材料有限公司",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "ning-bo-jin-tian-tong-ye-ji-tuan-gu-fen-you-xian-gong-si",
+      "name": "宁波金田铜业（集团）股份有限公司",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "cheng-du-xi-nan-dian-gong-ji-tuan-you-xian-gong-si",
+      "name": "成都西南电工集团有限公司",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "wu-han-kai-yuan-xin-neng-dian-li-ji-tuan-you-xian-gong-si",
+      "name": "武汉凯源新能电力集团有限公司",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "jiang-su-heng-da-bian-ya-qi-you-xian-gong-si",
+      "name": "江苏恒大变压器有限公司",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "shen-yang-zhi-yue-dian-qi-ke-ji-you-xian-gong-si",
+      "name": "沈阳智跃电气科技有限公司",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "he-bei-zhong-kai-ming-tai-dian-li-ke-ji-you-xian-gong-si",
+      "name": "河北中开明泰电力科技有限公司",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "he-bei-shen-ke-dian-li-gu-fen-you-xian-gong-si",
+      "name": "河北申科电力股份有限公司",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "he-nan-ou-man-dian-qi-you-xian-gong-si",
+      "name": "河南欧曼电气有限公司",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "zhe-jiang-chuan-bian-dian-qi-you-xian-gong-si",
+      "name": "浙江川变电气有限公司",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "zhe-jiang-lei-bei-si-dian-li-fa-zhan-you-xian-gong-si",
+      "name": "浙江雷贝斯电力发展有限公司",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "xu-chang-zhong-tian-yu-guang-dian-qi-ji-shu-you-xian-gong-si",
+      "name": "许昌中天宇光电气技术有限公司",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "xu-jue-dian-gong-gu-fen-you-xian-gong-si",
+      "name": "许绝电工股份有限公司",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "zheng-zhou-shi-kai-bei-te-hu-gan-qi-you-xian-gong-si",
+      "name": "郑州市凯贝特互感器有限公司",
+      "history": [
+        {
+          "event": "ep-shanghai-2026",
+          "year": 2026,
+          "source": "https://www.epchinashow.com/EP/visitor/exhibitorlist/eng"
+        }
+      ]
+    },
+    {
+      "slug": "schneider-electric",
+      "name": "Schneider Electric",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "siemens-energy",
+      "name": "Siemens Energy",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "megger-group-limited",
+      "name": "Megger",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        },
+        {
+          "event": "gcc-power-2025",
+          "year": 2025,
+          "source": "https://cigre-gccpower.com/gccpower2025/docs/floor-plan.pdf"
+        }
+      ],
+      "aliases": []
+    },
+    {
+      "slug": "a-eberle-gmbh-and-co-kg",
+      "name": "A. Eberle GmbH & Co. KG",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "doble-engineering-company-esco-technologies",
+      "name": "Doble Engineering",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        },
+        {
+          "event": "gcc-power-2025",
+          "year": 2025,
+          "source": "https://cigre-gccpower.com/gccpower2025/docs/floor-plan.pdf"
+        }
+      ],
+      "aliases": [
+        "Doble"
+      ]
+    },
+    {
+      "slug": "edp-labelec",
+      "name": "EDP Labelec",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "elesense",
+      "name": "Elesense",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "etd-transformatory",
+      "name": "ETD Transformatory",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "eximprod-grup",
+      "name": "Eximprod Grup",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "fdueg",
+      "name": "F.D.U.E.G. SRL",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "gbe-s-p-a",
+      "name": "GBE SPA",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "ge-vernova",
+      "name": "GE Vernova",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "greenwood-power-gmbh",
+      "name": "Greenwood Power GmbH",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "gruppo-bonomi",
+      "name": "GRUPPO BONOMI",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "guangdong-mingyang-electric",
+      "name": "Guangdong Mingyang Electric Co., Ltd.",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "kingsine-electric-automation-co-ltd",
+      "name": "Kingsine Electric Automation Co., Ltd.",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "klevers-italiana-s-r-l",
+      "name": "KLEVERS ITALIANA S.R.L.",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "kuvag",
+      "name": "Kuvag",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "lucy-electric",
+      "name": "Lucy Electric",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        },
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ],
+      "aliases": [
+        "Lucy Middle East Fze"
+      ]
+    },
+    {
+      "slug": "optics11-b-v",
+      "name": "Optics11 B.V.",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "ormazabal",
+      "name": "ORMAZABAL",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "pearl-electric-co-ltd",
+      "name": "Pearl Electric Co., Ltd.",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "maschinenfabrik-reinhausen-gmbh-mr",
+      "name": "Reinhausen GmbH",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        },
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        },
+        {
+          "event": "gcc-power-2025",
+          "year": 2025,
+          "source": "https://cigre-gccpower.com/gccpower2025/docs/floor-plan.pdf"
+        }
+      ],
+      "aliases": [
+        "MASCHINENFABRIK REINHAUSEN GMBH",
+        "MR"
+      ]
+    },
+    {
+      "slug": "sel-spa",
+      "name": "Sel Spa",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "shandong-hada-electric-co-ltd",
+      "name": "Shandong Hada Electric Co., Ltd.",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "shanghai-wenyou-industry-co-ltd",
+      "name": "Shanghai Wenyou Industry Co., Ltd.",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "shengye-electric-co-ltd",
+      "name": "Shengye Electric Co., Ltd",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "tek-transformator",
+      "name": "TEK TRANSFORMATÖR",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "tesar-rands-group",
+      "name": "TESAR SRL",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "transfomax-transformator",
+      "name": "Transfomax Transformator",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "tridelta-meidensha-gmbh",
+      "name": "Tridelta Meidensha GmbH",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "tsty-electric-co-ltd",
+      "name": "TSTY Electric Co., LTD.",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "tuv",
+      "name": "TUV",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "tuv-rheinland-shanghai-co-ltd",
+      "name": "TÜV Rheinland (Shanghai) Co., Ltd.",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "zhejiang-golden-phoenix-power-solution-technology-co-ltd",
+      "name": "Zhejiang Golden Phoenix Power Solution Technology Co., Ltd.",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "zhengzhou-lp-industry-co-ltd",
+      "name": "ZHENGZHOU LP INDUSTRY CO., LTD.",
+      "history": [
+        {
+          "event": "enlit-europe-2026",
+          "year": 2026,
+          "source": "https://www.enlit-europe.com/exhibition/exhibitor-list"
+        }
+      ]
+    },
+    {
+      "slug": "mammoet",
+      "name": "MAMMOET",
+      "history": [
+        {
+          "event": "adipec-2026",
+          "year": 2026,
+          "source": "https://www.adipec.com/exhibition/exhibitor-list/"
+        }
+      ]
+    },
+    {
+      "slug": "siemens",
+      "name": "Siemens",
+      "history": [
+        {
+          "event": "adipec-2026",
+          "year": 2026,
+          "source": "https://www.adipec.com/exhibition/exhibitor-list/"
+        },
+        {
+          "event": "gcc-power-2025",
+          "year": 2025,
+          "source": "https://cigre-gccpower.com/gccpower2025/docs/floor-plan.pdf"
+        }
+      ],
+      "aliases": [
+        "SIEMENS"
+      ]
+    },
+    {
+      "slug": "alf-sensor-sp-j",
+      "name": "ALF-SENSOR SP. J.",
+      "history": [
+        {
+          "event": "energetics-2026",
+          "year": 2026,
+          "source": "https://energetics.targi.lublin.pl/lista-wystawcow/"
+        }
+      ]
+    },
+    {
+      "slug": "fabryka-aparatury-elektromechanicznej-fanina-s-a",
+      "name": "FABRYKA APARATURY ELEKTROMECHANICZNEJ FANINA S.A.",
+      "history": [
+        {
+          "event": "energetics-2026",
+          "year": 2026,
+          "source": "https://energetics.targi.lublin.pl/lista-wystawcow/"
+        }
+      ]
+    },
+    {
+      "slug": "hitachi-energy-poland-transformers",
+      "name": "HITACHI ENERGY POLAND SP. Z O.O.",
+      "history": [
+        {
+          "event": "energetics-2026",
+          "year": 2026,
+          "source": "https://energetics.targi.lublin.pl/lista-wystawcow/"
+        }
+      ]
+    },
+    {
+      "slug": "lapp-insulators-sp-z-o-o",
+      "name": "Lapp Insulators Sp. z o.o.",
+      "history": [
+        {
+          "event": "energetics-2026",
+          "year": 2026,
+          "source": "https://energetics.targi.lublin.pl/lista-wystawcow/"
+        }
+      ],
+      "aliases": [
+        "LAPP INSULATORS SP. Z O.O."
+      ]
+    },
+    {
+      "slug": "limatherm-sensor-sp-z-o-o",
+      "name": "LIMATHERM SENSOR SP. Z O.O.",
+      "history": [
+        {
+          "event": "energetics-2026",
+          "year": 2026,
+          "source": "https://energetics.targi.lublin.pl/lista-wystawcow/"
+        }
+      ]
+    },
+    {
+      "slug": "megger-sp-z-o-o",
+      "name": "Megger Sp. z o.o.",
+      "history": [
+        {
+          "event": "energetics-2026",
+          "year": 2026,
+          "source": "https://energetics.targi.lublin.pl/lista-wystawcow/"
+        }
+      ],
+      "aliases": [
+        "MEGGER SP. Z O.O."
+      ]
+    },
+    {
+      "slug": "power-engineering-transformatory",
+      "name": "POWER ENGINEERING TRANSFORMATORY",
+      "history": [
+        {
+          "event": "energetics-2026",
+          "year": 2026,
+          "source": "https://energetics.targi.lublin.pl/lista-wystawcow/"
+        }
+      ]
+    },
+    {
+      "slug": "siemens-energy-sp-z-o-o",
+      "name": "Siemens Energy Sp. z o.o.",
+      "history": [
+        {
+          "event": "energetics-2026",
+          "year": 2026,
+          "source": "https://energetics.targi.lublin.pl/lista-wystawcow/"
+        }
+      ],
+      "aliases": [
+        "SIEMENS ENERGY SP. Z O.O."
+      ]
+    },
+    {
+      "slug": "zak-ad-produkcyjny-aparatury-elektrycznej-sp-z-o-o",
+      "name": "ZAKŁAD PRODUKCYJNY APARATURY ELEKTRYCZNEJ SP. Z O.O.",
+      "history": [
+        {
+          "event": "energetics-2026",
+          "year": 2026,
+          "source": "https://energetics.targi.lublin.pl/lista-wystawcow/"
+        }
+      ]
+    },
+    {
+      "slug": "abc-transformers",
+      "name": "ABC TRANSFORMERS PVT LTD",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "apar-industries-ltd-poweroil",
+      "name": "APAR INDUSTRIES LIMITED",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "hyosung-t-and-d-india-pvt-ltd",
+      "name": "Hyosung T & D India Pvt Ltd",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ],
+      "aliases": [
+        "HYOSUNG T & D INDIA PVT LTD"
+      ]
+    },
+    {
+      "slug": "measurements-international-llp",
+      "name": "MEASUREMENTS INTERNATIONAL LLP",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "meco-instruments-pvt-ltd",
+      "name": "MECO INSTRUMENTS PVT. LTD.",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "mnm-composites-pvt-ltd",
+      "name": "MNM COMPOSITES PVT LTD",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "premier-core-industries",
+      "name": "PREMIER CORE INDUSTRIES",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "ratan-projects-and-engineering-co-pvt-ltd",
+      "name": "RATAN PROJECTS & ENGINEERING CO. PVT. LTD",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "abb-india-limited",
+      "name": "ABB INDIA LIMITED",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "bharat-insulation-company-india-pvt-ltd",
+      "name": "BHARAT INSULATION COMPANY (INDIA) PVT. LTD",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "cg-power-and-industrial-solutions",
+      "name": "CG POWER AND INDUSTRIAL SOLUTIONS LIMITED",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "chromatography-and-instruments-co-pvt-ltd",
+      "name": "CHROMATOGRAPHY & INSTRUMENTS CO. PVT. LTD",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "dekra-india-pvt-ltd",
+      "name": "DEKRA (INDIA) PVT LTD",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "enertrak-instruments-private-limited",
+      "name": "ENERTRAK INSTRUMENTS PRIVATE LIMITED",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "harnawa-insulations-private-limited",
+      "name": "HARNAWA INSULATIONS PRIVATE LIMITED",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "insulators-and-electricals-company",
+      "name": "INSULATORS & ELECTRICALS COMPANY",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "khaitan-winding-wire-pvt-ltd",
+      "name": "KHAITAN WINDING WIRE PVT. LTD.",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "kotia-transformers-pvt-ltd",
+      "name": "KOTIA TRANSFORMERS PVT LTD",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "marsons-ltd",
+      "name": "MARSONS LIMITED..",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "metravi-instruments-pvt-ltd",
+      "name": "METRAVI INSTRUMENTS PVT. LTD.",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "om-insutech-composites-llp",
+      "name": "OM INSUTECH COMPOSITES LLP",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "pdt-transformer-solution-pvt-ltd",
+      "name": "PDT TRANSFORMER SOLUTION PVT. LTD.",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "quadarnt-measurements-pvt-ltd",
+      "name": "QUADARNT MEASUREMENTS PVT LTD",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "raychem-rpg",
+      "name": "RAYCHEM RPG (P) LTD.",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "samrat-insulation",
+      "name": "SAMRAT INSULATION",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "siemens-ltd",
+      "name": "SIEMENS LTD.",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "techno-instruments",
+      "name": "TECHNO INSTRUMENTS",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "vikas-radiators-private-limited",
+      "name": "VIKAS RADIATORS PRIVATE LIMITED",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "waco-instruments",
+      "name": "WACO INSTRUMENTS",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "wika-instruments-india-private-limited",
+      "name": "WIKA INSTRUMENTS INDIA PRIVATE LIMITED",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "bajel-projects-limited",
+      "name": "BAJEL PROJECTS LIMITED",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "emr-tap-changers-private-limited",
+      "name": "EMR TAP CHANGERS PRIVATE LIMITED",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "jupiter-integrated-sensor-systems-pvt-ltd",
+      "name": "JUPITER INTEGRATED SENSOR SYSTEMS PVT.LTD.",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "modern-insulators-ltd",
+      "name": "MODERN INSULATORS LIMITED",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "power-petrochemicals",
+      "name": "POWER PETROCHEMICALS",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "precimeasure-controls-pvt-ltd",
+      "name": "PRECIMEASURE CONTROLS PVT. LTD.",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "bhel",
+      "name": "BHARAT HEAVY ELECTRICALS LTD.",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "sonel-instruments-india-private-limited",
+      "name": "SONEL INSTRUMENTS INDIA PRIVATE LIMITED",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "sr-electrosteel-p-ltd",
+      "name": "SR ELECTROSTEEL P LTD",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "vve-transformers",
+      "name": "VVE TRANSFORMERS PVT LTD",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "weidmann-electrical-technology-ag",
+      "name": "WEIDMANN ELECTRICAL TECHNOLOGY AG",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "danish-power",
+      "name": "DANISH POWER LIMITED",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "sterling-enamelled-wires-private-limited",
+      "name": "STERLING ENAMELLED WIRES PRIVATE LIMITED",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "clear-point-instrumentation-pvt-ltd",
+      "name": "CLEAR POINT INSTRUMENTATION PVT LTD",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "dee-five-shrink-insulations-pvt-ltd",
+      "name": "DEE FIVE SHRINK INSULATIONS PVT. LTD.",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "esennar-transformers",
+      "name": "ESENNAR TRANSFORMERS PRIVATE LIMITED",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "sam-composites-india-pvt-ltd",
+      "name": "SAM COMPOSITES INDIA PVT LTD",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "shivatti-high-voltage-instrument",
+      "name": "SHIVATTI HIGH VOLTAGE INSTRUMENT",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "global-instrumentation",
+      "name": "GLOBAL INSTRUMENTATION",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "nlmk-india-service-center-pvt-ltd",
+      "name": "NLMK INDIA SERVICE CENTER PVT. LTD.",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "omicron-energy-solutions-pvt-ltd",
+      "name": "Omicron Energy Solutions Pvt. Ltd",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ],
+      "aliases": [
+        "OMICRON ENERGY SOLUTIONS PVT. LTD"
+      ]
+    },
+    {
+      "slug": "rishabh-instruments-ltd",
+      "name": "RISHABH INSTRUMENTS LTD",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "spark-insulators-private-limited",
+      "name": "SPARK INSULATORS PRIVATE LIMITED",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "sumip-composites-pvt-ltd",
+      "name": "SUMIP COMPOSITES PVT. LTD.",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "usha-amorphous-metals-private-limited",
+      "name": "USHA AMORPHOUS METALS PRIVATE LIMITED",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "yadav-measurements-pvt-ltd",
+      "name": "YADAV MEASUREMENTS PVT. LTD.",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "cautoni-swastik-instruments-india-pvt-ltd",
+      "name": "CAUTONI SWASTIK INSTRUMENTS INDIA PVT LTD",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "diagnostic-technologies-india-pvt-ltd",
+      "name": "DIAGNOSTIC TECHNOLOGIES INDIA PVT LTD",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "epp-composites-pvt-ltd",
+      "name": "EPP COMPOSITES PVT LTD",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "goliya-instruments-pvt-ltd",
+      "name": "GOLIYA INSTRUMENTS PVT. LTD.",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "hitachi-energy-india",
+      "name": "HITACHI ENERGY INDIA LTD",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "jds-transformers-industries-pvt-ltd",
+      "name": "JDS TRANSFORMERS INDUSTRIES PVT LTD",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "marsons-energy-pvt-ltd",
+      "name": "MARSONS ENERGY PVT. LTD.",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "megger-india-pvt-ltd",
+      "name": "Megger India Pvt. Ltd.",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ],
+      "aliases": [
+        "MEGGER INDIA PVT. LTD."
+      ]
+    },
+    {
+      "slug": "tesla-transformers-global-private-limited",
+      "name": "Tesla Transformers (Global) Private Limited",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ],
+      "aliases": [
+        "TESLA TRANSFORMERS (GLOBAL) PRIVATE LIMITED"
+      ]
+    },
+    {
+      "slug": "tesla-transformers",
+      "name": "TESLA TRANSFORMERS (INDIA) LIMITED",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "bharat-electro-instruments-mfg-co",
+      "name": "BHARAT ELECTRO INSTRUMENTS MFG. CO.",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "elec-steel-processing-industries-limited",
+      "name": "ELEC STEEL PROCESSING INDUSTRIES LIMITED",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "electrical-research-and-devp-association-erda",
+      "name": "ELECTRICAL RESEARCH & DEVP. ASSOCIATION (ERDA)",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "ge-vernova-tandd-india",
+      "name": "GE VERNOVA T&D INDIA LIMITED",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "jaybee-laminations-ltd",
+      "name": "JAYBEE LAMINATIONS LTD.",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "jsw-jfe-electrical-steel-pvt-ltd",
+      "name": "JSW JFE ELECTRICAL STEEL",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "nippen-electrical-instruments-company",
+      "name": "NIPPEN ELECTRICAL INSTRUMENTS COMPANY",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "precision-wires-india-ltd-pwil",
+      "name": "PRECISION WIRES INDIA LIMITED",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "surendra-composites-pvt-ltd",
+      "name": "SURENDRA COMPOSITES PVT. LTD.",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "synergy-transformers",
+      "name": "SYNERGY TRANSFORMERS PVT. LTD.",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "epsilon-composite",
+      "name": "EPSILON COMPOSITE",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "hedrich-gmbh",
+      "name": "HEDRICH GMBH",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "kalpataru-projects-international-limited",
+      "name": "KALPATARU PROJECTS INTERNATIONAL LIMITED",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "powercore-industries-india-private-limited",
+      "name": "POWERCORE INDUSTRIES INDIA PRIVATE LIMITED",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "schweitzer-engineering-laboratories-pvt-ltd",
+      "name": "SCHWEITZER ENGINEERING LABORATORIES PVT LTD",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "tmc-transformers-india",
+      "name": "TMC TRANSFORMERS (INDIA) PRIVATE LIMITED",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "topline-lamination-pvt-ltd",
+      "name": "TOPLINE LAMINATION PVT LTD",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "indo-tech-transformers",
+      "name": "INDO TECH TRANSFORMERS LIMITED",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "nu-cork-products-p-ltd",
+      "name": "NU-CORK PRODUCTS (P) LTD.",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "ornet-transformers-private-limited",
+      "name": "ORNET TRANSFORMERS PRIVATE LIMITED",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "sgb-transformers-india-pvt-ltd",
+      "name": "SGB Transformers India Pvt Ltd",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ],
+      "aliases": [
+        "SGB TRANSFORMERS INDIA PVT LTD"
+      ]
+    },
+    {
+      "slug": "shilchar-technologies",
+      "name": "SHILCHAR TECHNOLOGIES LIMITED",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "viat-instruments-pvt-ltd",
+      "name": "VIAT INSTRUMENTS (P) LTD.",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "aeron-composite-limited",
+      "name": "AERON COMPOSITE LIMITED",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "g-k-winding-wires-ltd",
+      "name": "G. K. WINDING WIRES LTD.",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "trafo-power-and-electricals-pvt-ltd",
+      "name": "TRAFO POWER & ELECTRICALS PVT. LTD.",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "enpay-transformer-components-i-pvt-ltd",
+      "name": "Enpay Transformer Components (I) Pvt. Ltd.",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ],
+      "aliases": [
+        "ENPAY TRANSFORMER COMPONENTS (I) PVT. LTD."
+      ]
+    },
+    {
+      "slug": "fiber-tech-composite-pvt-ltd",
+      "name": "FIBER TECH COMPOSITE PVT LTD",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "united-transformers",
+      "name": "UNITED TRANSFORMERS",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "vishal-transformers-and-switchgears",
+      "name": "VISHAL TRANSFORMERS & SWITCHGEARS (P) LTD.",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "savita-oil-technologies-ltd-savsol",
+      "name": "SAVITA OIL TECHNOLOGIES LTD.",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "scope-tandm-pvt-ltd",
+      "name": "SCOPE T&M Pvt. Ltd.",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ],
+      "aliases": [
+        "SCOPE T&M PVT. LTD."
+      ]
+    },
+    {
+      "slug": "transformers-and-rectifiers-india-taril",
+      "name": "TRANSFORMERS & RECTIFIERS (INDIA) LTD.",
+      "history": [
+        {
+          "event": "elecrama-2025",
+          "year": 2025,
+          "source": "https://elecrama.com/wp-content/uploads/2025/01/exhibitor-list-2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "lapp-insulators-gmbh",
+      "name": "LAPP Insulators",
+      "history": [
+        {
+          "event": "gcc-power-2025",
+          "year": 2025,
+          "source": "https://cigre-gccpower.com/gccpower2025/docs/floor-plan.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "tbea-group-changji-hq-shenyang-hengyang-tianjin-plants",
+      "name": "TBEA",
+      "history": [
+        {
+          "event": "gcc-power-2025",
+          "year": 2025,
+          "source": "https://cigre-gccpower.com/gccpower2025/docs/floor-plan.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "nynas-ab",
+      "name": "Nynas",
+      "history": [
+        {
+          "event": "gcc-power-2025",
+          "year": 2025,
+          "source": "https://cigre-gccpower.com/gccpower2025/docs/floor-plan.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "hitachi",
+      "name": "Hitachi",
+      "history": [
+        {
+          "event": "gcc-power-2025",
+          "year": 2025,
+          "source": "https://cigre-gccpower.com/gccpower2025/docs/floor-plan.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "omicron-electronics-gmbh",
+      "name": "Omicron",
+      "history": [
+        {
+          "event": "gcc-power-2025",
+          "year": 2025,
+          "source": "https://cigre-gccpower.com/gccpower2025/docs/floor-plan.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "hyosung",
+      "name": "Hyosung",
+      "history": [
+        {
+          "event": "gcc-power-2025",
+          "year": 2025,
+          "source": "https://cigre-gccpower.com/gccpower2025/docs/floor-plan.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "sieyuan-electric-incl-changzhou-sieyuan-toshiba",
+      "name": "Sieyuan",
+      "history": [
+        {
+          "event": "gcc-power-2025",
+          "year": 2025,
+          "source": "https://cigre-gccpower.com/gccpower2025/docs/floor-plan.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "gcc-lab",
+      "name": "GCC Lab",
+      "history": [
+        {
+          "event": "gcc-power-2025",
+          "year": 2025,
+          "source": "https://cigre-gccpower.com/gccpower2025/docs/floor-plan.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "sediver",
+      "name": "Sediver",
+      "history": [
+        {
+          "event": "gcc-power-2025",
+          "year": 2025,
+          "source": "https://cigre-gccpower.com/gccpower2025/docs/floor-plan.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "accuenergy-canada-inc",
+      "name": "Accuenergy (Canada) Inc",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "acume-electrical-engineering-services-llc",
+      "name": "ACUME Electrical Engineering Services LLC",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "ag-power-llc",
+      "name": "AG Power LLC",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "al-fanar",
+      "name": "Al Fanar",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "albarrie-canada-limited",
+      "name": "Albarrie Canada Limited",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "axis-electrical-components-i-pvt-ltd",
+      "name": "Axis Electrical Components (I) Pvt Ltd.",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "best-transformer",
+      "name": "BEST Transformer",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "binghalib-engineering-enterprises",
+      "name": "Binghalib Engineering Enterprises",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "bureau-veritas",
+      "name": "Bureau Veritas",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "cer-power",
+      "name": "Cer Power",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "electrical-industries-co-eic-group-stc-sptc-wescosa-pauwels-be",
+      "name": "Electrical Industries Co. (EIC)",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "emc-electromechanical-co-llc",
+      "name": "EMC Electromechanical Co LLC",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "emirates-transformer-and-switchgear-ets",
+      "name": "Emirates Transformer & Switchgear Ltd",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "federal-transformers-company-llc",
+      "name": "Federal Transformers Company LLC",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "gersan-elektrik",
+      "name": "Gersan Elektrik",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "hd-hyundai-electric",
+      "name": "HD Hyundai Electric",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "hitachi-energy",
+      "name": "Hitachi Energy",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "indoasian",
+      "name": "IndoAsian",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "izolyator-aks-llc",
+      "name": "Izolyator-AKS LLC",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "kukdong-electric-co-ltd",
+      "name": "Kukdong Electric Co., Ltd",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "mars-energo-llc",
+      "name": "MARS-ENERGO LLC",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "oman-national-engineering-and-lnvestment-saog-oneic",
+      "name": "Oman National Engineering and lnvestment SAOG_ONEIC",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "pfisterer-pfisterer-middle-east-fzco",
+      "name": "Pfisterer (Pfisterer Middle East FZCO)",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "power-globe-general-trading-llc",
+      "name": "Power Globe General Trading LLC",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "power-invent-engineering-electrical-contracting",
+      "name": "Power Invent Engineering Electrical Contracting",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "prime-electrical-contracting-co-llc",
+      "name": "Prime Electrical Contracting Co. LLC",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "pro-tok",
+      "name": "PRO-TOK",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "sunten-electric-co-ltd",
+      "name": "Sunten Electric Equipment Co. Ltd.",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "surgetec-co-ltd",
+      "name": "Surgetec Co., Ltd.",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "tamco-middle-east-ltd",
+      "name": "Tamco Middle East Ltd.",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "tamco-switchgear-schneider",
+      "name": "Tamco Switchgear (Malaysia) Sdn Bhd",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "tecsystem-orient-llc",
+      "name": "Tecsystem Orient LLC",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "tekon-inc",
+      "name": "TEKON.INC",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "tesar-s-r-l",
+      "name": "Tesar S.r.l.",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "tmz-altamyez-contracting-llc",
+      "name": "TMZ Altamyez Contracting LLC",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "tuv-sud-middle-east-llc",
+      "name": "TUV SUD Middle East LLC",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "ul-solutions",
+      "name": "UL Solutions",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "voltamp-energy-saog-voltamp-power-voltamp-transformers",
+      "name": "Voltamp Energy SAOG",
+      "history": [
+        {
+          "event": "wetex-2025",
+          "year": 2025,
+          "source": "https://www.wetex.ae/images/WETEX_SHOW_CATALOGUE_2025.pdf"
+        }
+      ]
+    },
+    {
+      "slug": "acez-instruments-pte-ltd",
+      "name": "ACEZ INSTRUMENTS PTE LTD",
+      "history": [
+        {
+          "event": "vietnam-energy-week-2025",
+          "year": 2025,
+          "source": "https://vietnamenergyweek.com/en/exhibitor-profile/"
+        }
+      ]
+    },
+    {
+      "slug": "vp-d-fluke-south-east-asia-pte-ltd-tai-tp-hcm",
+      "name": "VPĐD FLUKE SOUTH EAST ASIA PTE LTD TẠI TP.HCM",
+      "history": [
+        {
+          "event": "vietnam-energy-week-2025",
+          "year": 2025,
+          "source": "https://vietnamenergyweek.com/en/exhibitor-profile/"
+        }
+      ]
+    }
+  ]
+}

@@ -40,7 +40,7 @@ pages.forEach((f) => {
 // ── 1. Counters must agree with config everywhere they appear ─────────────
 const MFG = JSON.parse(fs.readFileSync('data/manufacturers.json', 'utf8'));
 const realMakers = MFG.reduce((a, g) => a + g.makers.filter((m) => !/^Served by/i.test(m[0])).length, 0);
-const mfgCountries = MFG.filter((g) => g.makers.some((m) => !/^Served by/i.test(m[0]))).length;
+const mfgCountries = require('./lib/public-company-count').namedCountryCount(MFG);
 
 const publicCompanies = require('./lib/public-company-count').read(__dirname);
 check('public company count matches config', publicCompanies.publicCount === CFG.counters.manufacturers,

@@ -36,6 +36,8 @@ check('every region with 5 or more listings has one page', regionDocs.length ===
   return row.count >= geo.MIN_LISTINGS;
 }).length && regionDocs.length === 10, String(regionDocs.length));
 check('country pages are only the places with 5 or more listings', countryDocs.length === census.filter(function (row) {
+  const name = String(row.country || '').trim();
+  if (!name || name === '—' || name === '-' || name === '–') return false;
   return censusCount(row) >= 5;
 }).length, String(countryDocs.length));
 check('a country under 5 listings has no page', !countryDocs.some(function (doc) { return doc.slug === 'switzerland'; }));

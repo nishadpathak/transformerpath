@@ -16,7 +16,7 @@ function check(label, pass, detail) {
 const counts = require('../lib/public-company-count').read(process.cwd());
 const census = JSON.parse(fs.readFileSync('data/manufacturers.json', 'utf8'));
 const makers = counts.censusRows;
-const countries = census.filter((g) => (g.makers || []).some((m) => !/^Served by/i.test(m[0]))).length;
+const countries = require('../lib/public-company-count').namedCountryCount(census);
 const rendered = counts.publicCount;
 const stats = JSON.parse(fs.readFileSync('data/site-stats.json', 'utf8'));
 const cfg = JSON.parse(fs.readFileSync('data/config.json', 'utf8'));

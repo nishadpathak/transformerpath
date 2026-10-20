@@ -571,7 +571,7 @@ function renderManufacturers(html) {
     .filter((c) => c.makers.some((m) => !/^Served by/i.test(m[0])));
   const TIERS = JSON.parse(fs.readFileSync('data/manufacturer-tiers.json', 'utf8'));
   const TNAME = { PT: 'Power', DT: 'Distribution', DRY: 'Dry/Cast' };
-  const regions = [...new Set(DATA.map((c) => c.region))];
+  const regions = [...new Set(DATA.map((c) => c.region).filter(Boolean))];
   // Manufacturer -> company entity page slug (for the directory -> entity link graph).
   const { censusNameKey, directoryCompanySlug, aliasRowHidden, ownedProfileSlugs } = require('./lib/company-aliases');
   let CSMAP = {};
@@ -579,6 +579,7 @@ function renderManufacturers(html) {
   const csl = (m) => CSMAP[censusNameKey(m[0])];
   const paidListings = require('./lib/paid-listings');
   const claimListing = require('./lib/claim-listing');
+  const eventBadges = require('./event-badges');
   const availability = require('./lib/availability');
   const availabilityBySlug = availability.load();
   const declaredOrigin = require('./lib/declared-origin');
@@ -626,10 +627,26 @@ function renderManufacturers(html) {
           : (function () {
             const slug = paySlug(m[0]);
             const flag = availability.forSlug(slug, availabilityBySlug);
-            return `<div class="mk-row">${csl(m) ? `<a class="prof" href="manufacturers/${csl(m)}/" style="color:var(--accent);font-weight:700">${esc(m[0])}</a>` : `<b>${esc(m[0])}</b>`}${vbadge(m, slug)}${flag ? availability.markHtml(flag, slug) : ''}${tpills(m[3])}<span class="city">${esc(m[1] || '')}${m[5] ? ` · est. ${esc(m[5])}` : ''}</span>${declaredOrigin.listingHtml(ORIGIN[slug] || null)}${m[2] ? `<a href="${esc(m[2])}" target="_blank" rel="noopener">Site →</a>` : '<span></span>'}${verifyCtas(m[0], slug)}</div>`;
+            const nameInner = csl(m) ? `<a class="prof" href="manufacturers/${csl(m)}/" style="color:var(--accent);font-weight:700">${esc(m[0])}</a>` : `<b>${esc(m[0])}</b>`;
+            const badges = eventBadges.htmlFor({ slug: slug, name: m[0] });
+            return `<div class="mk-row"><span class="mk-name">${nameInner}${badges}</span>${vbadge(m, slug)}${flag ? availability.markHtml(flag, slug) : ''}${tpills(m[3])}<span class="city">${esc(m[1] || '')}${m[5] ? ` · est. ${esc(m[5])}` : ''}</span>${declaredOrigin.listingHtml(ORIGIN[slug] || null)}${m[2] ? `<a href="${esc(m[2])}" target="_blank" rel="noopener">Site →</a>` : '<span></span>'}${verifyCtas(m[0], slug)}</div>`;
           })()).join('') +
         `</div>`;
-    }).join('')).join('');
+    }).join('')).join('') + (groups[''] ? `<div class="region-h">Country not stated</div>` + groups[''].map((c) => {
+      const shown = visibleMakers(c.makers);
+      const real = shown.filter((m) => !/^Served by/i.test(m[0])).length;
+      return `<div class="ctry-card"><div class="ctry-head"><span class="flag">${esc(c.flag)}</span><h3>Country not stated</h3><span class="cnt">${real} maker${real !== 1 ? 's' : ''}</span></div>` +
+        shown.map((m) => /^Served by/i.test(m[0])
+          ? `<div class="mk-row"><span class="note">${esc(m[0])}</span></div>`
+          : (function () {
+            const slug = paySlug(m[0]);
+            const flag = availability.forSlug(slug, availabilityBySlug);
+            const nameInner = csl(m) ? `<a class="prof" href="manufacturers/${csl(m)}/" style="color:var(--accent);font-weight:700">${esc(m[0])}</a>` : `<b>${esc(m[0])}</b>`;
+            const badges = eventBadges.htmlFor({ slug: slug, name: m[0] });
+            return `<div class="mk-row"><span class="mk-name">${nameInner}${badges}</span>${vbadge(m, slug)}${flag ? availability.markHtml(flag, slug) : ''}${tpills(m[3])}<span class="city">${esc(m[1] || '')}${m[5] ? ` · est. ${esc(m[5])}` : ''}</span>${declaredOrigin.listingHtml(ORIGIN[slug] || null)}${m[2] ? `<a href="${esc(m[2])}" target="_blank" rel="noopener">Site →</a>` : '<span></span>'}${verifyCtas(m[0], slug)}</div>`;
+          })()).join('') +
+        `</div>`;
+    }).join('') : '');
 
   const censusMakers = DATA.reduce((s, c) => s + c.makers.filter((m) => !/^Served by/i.test(m[0])).length, 0);
   const makers = DATA.reduce((s, c) => s + visibleMakers(c.makers).filter((m) => !/^Served by/i.test(m[0])).length, 0);
@@ -640,14 +657,18 @@ function renderManufacturers(html) {
     const siteStats = JSON.parse(fs.readFileSync('data/site-stats.json', 'utf8'));
     if (typeof siteStats.dataCompleteness === 'number') completeness = siteStats.dataCompleteness;
   } catch (e) {}
+  const countryCount = require('./lib/public-company-count').namedCountryCount(DATA);
+  const regionCount = new Set(DATA.map((c) => c.region).filter(Boolean)).size;
   const stats = `<div class="s"><b>${makers}</b><small>Companies</small></div>
-     <div class="s"><b>${DATA.length}</b><small>Countries</small></div>
-     <div class="s"><b>${new Set(DATA.map((c) => c.region)).size}</b><small>Regions</small></div>
+     <div class="s"><b>${countryCount}</b><small>Countries</small></div>
+     <div class="s"><b>${regionCount}</b><small>Regions</small></div>
      <div class="s"><b>${completeness}%</b><small>Data completeness</small></div>`;
 
   html = inject(html, '<div id="board">', 'mfg-board', board);
+  html = html.replace(/<script type="application\/json" id="tp-event-badges-data">[\s\S]*?<\/script>\s*<script src="\/event-badges\.js"><\/script>\s*/, '');
+  html = html.replace('<script>\nconst DATA_URL', eventBadges.mountHtml() + '<script>\nconst DATA_URL');
   html = inject(html, '<p style="color:var(--muted); font-size:.85rem; margin-bottom:14px" id="count">', 'mfg-count',
-    `Showing ${makers} companies across ${DATA.length} countries`);
+    `Showing ${makers} companies across ${countryCount} countries`);
   html = inject(html, '<div class="stat-row" id="statRow">', 'mfg-stats', stats);
 
   // Quick-jump "By country" bar — regenerated from the census so it is
@@ -655,9 +676,10 @@ function renderManufacturers(html) {
   // (Replaces the hand-maintained bare-name list.)
   const jump = DATA.slice().sort((a, b) => compareCountries(a.country, b.country)).map((c) => {
     const slug = c.country.toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    if (!slug) return '';
     const n = c.makers.filter((m) => !/^Served by/i.test(m[0])).length;
     return `<a href="manufacturers/${slug}.html" style="color:var(--accent)">${esc(c.country)} (${n})</a>`;
-  }).join(' | ');
+  }).filter(Boolean).join(' | ');
   html = html.replace(/<p style="font-size:\.8rem;line-height:1\.9">[\s\S]*?<\/p>/, '<p style="font-size:.8rem;line-height:1.9">' + jump + '</p>');
 
   // Dataset size is the public company count (plant-alias rows stay off this page).
@@ -900,6 +922,7 @@ function loadDirectoryIndex() {
 
 function renderVendors(html) {
   const index = loadDirectoryIndex();
+  const eventBadges = require('./event-badges');
   const view = directorySsr.vendors(index.companies || []);
   html = replaceInnerById(html, 'cntTotal', String(view.total));
   html = replaceInnerById(html, 'cntOem', String(view.oem));
@@ -910,14 +933,20 @@ function renderVendors(html) {
   html = replaceInnerById(html, 'pillOem', 'Transformer OEMs (' + view.oem + ')');
   html = replaceInnerById(html, 'vndCountry', view.countryOptions);
   html = replaceInnerById(html, 'vndList', view.listHtml);
+  html = html.replace(/<script type="application\/json" id="tp-event-badges-data">[\s\S]*?<\/script>\s*<script src="\/event-badges\.js"><\/script>\s*/, '');
+  const vendorScript = '<script>\n(function() {\n  \'use strict\';\n  var DATA = [];';
+  if (html.indexOf(vendorScript) >= 0) html = html.replace(vendorScript, eventBadges.mountHtml() + vendorScript);
   return { page: html, records: view.total };
 }
 
 function renderDirectoryPage(html) {
   const index = loadDirectoryIndex();
+  const eventBadges = require('./event-badges');
   let siteStats = {};
   try { siteStats = JSON.parse(fs.readFileSync('data/site-stats.json', 'utf8')); } catch (e) { siteStats = {}; }
   html = replaceInnerById(html, 'directoryRoot', directorySsr.directoryRoot(index.companies || [], siteStats));
+  html = html.replace(/<script type="application\/json" id="tp-event-badges-data">[\s\S]*?<\/script>\s*<script src="\/event-badges\.js"><\/script>\s*/, '');
+  html = html.replace('<script src="tp-directory.js"', eventBadges.mountHtml() + '<script src="tp-directory.js"');
   return { page: html, records: (index.companies || []).length };
 }
 
@@ -960,7 +989,7 @@ try {
   const G = JSON.parse(fs.readFileSync('data/grids.json', 'utf8'));
   const makers = M.reduce((s, g) => s + g.makers.filter((x) => !String(x[0] || '').startsWith('Served by')).length, 0);
   const publicCount = require('./lib/public-company-count').read(__dirname).publicCount;
-  const mkgCountries = M.filter((g) => g.makers.some((x) => !String(x[0] || '').startsWith('Served by'))).length;
+  const mkgCountries = require('./lib/public-company-count').namedCountryCount(M);
   const gridCountries = G.length;
   const gridOperators = G.reduce((s, g) => s + g.grids.length, 0);
   const prev = (function () { try { return JSON.parse(fs.readFileSync('data/site-stats.json', 'utf8')); } catch (e) { return {}; } })();

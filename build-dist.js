@@ -48,7 +48,7 @@ const DIST = 'dist';
 
 // Whole directories copied verbatim — served content only.
 const DIRS = [
-  'accessories', 'applications', 'admin', 'books', 'brand', 'case-studies', 'claim-listing', 'tools', 'guides',
+  'accessories', 'applications', 'admin', 'books', 'brand', 'case-studies', 'claim-listing', 'tools', 'guides', 'laboratories', 'services',
   'components', 'directory', 'events', 'grids', 'knowledge', 'manufacturers',
   'markets', 'materials', 'media', 'projects', 'buy-early', 'spare-capacity', 'lead-times', 'bottlenecks', 'factory-capacity', 'commissioning-jobs', 'templates', 'tenders', 'topics', 'utilities',
   'viz', 'vendor',
@@ -71,7 +71,7 @@ const FILES_FROM_MIXED_DIRS = [
 
 // Runtime JavaScript at the root, derived from what pages actually load.
 const ROOT_JS = [
-  'analytics.js', 'claim-listing.js', 'consent.js', 'course-gate.js', 'fem-leakage.js',
+  'analytics.js', 'claim-listing.js', 'consent.js', 'course-gate.js', 'event-badges.js', 'fem-leakage.js',
   'follow-button.js', 'form-notify.js', 'intel-feed-ui.js', 'material-latest.js', 'rfq-engine.js',
   'site-stats.js', 'supabase-config.js', 'supabase.js', 'sw.js',
   'tp-affiliate.js', 'tp-directory.js', 'tp-feedback.js', 'tp-freshness.js', 'tp-nav.js', 'tp-pwa.js',
