@@ -762,17 +762,26 @@ async function main() {
     });
     check(file + ' paid lists do not contain Coming soon', !soonInList && html.indexOf('On the roadmap (not included yet)') >= 0);
   });
-  check('supplier and intel pages do not advertise an uncheckouted price',
-    pricingPage.indexOf('$1,499') < 0 && pricingPage.indexOf('$49/mo') < 0 && pricingPage.indexOf('$49 / month') < 0
-    && !/\$49(?!\d)/.test(fs.readFileSync('intel-pro.html', 'utf8'))
-    && fs.readFileSync('verified.html', 'utf8').indexOf('$1,499') < 0);
-  check('intel pro shows $499 for 12 months and no monthly figure', (function () {
+  check('supplier pro is coming soon with no price and no checkout', (function () {
+    const link = paid.PAYMENT_LINKS.supplier_pro.url;
+    const start = pricingPage.indexOf('>Supplier Pro</h3>');
+    const card = pricingPage.slice(start, pricingPage.indexOf('id="procurement"', start));
+    const verified = fs.readFileSync('verified.html', 'utf8');
+    return start > 0 && card.indexOf('>Coming soon<') >= 0 && card.indexOf('$1,499') < 0
+      && card.indexOf(link) < 0 && card.indexOf('buy.stripe.com') < 0
+      && verified.indexOf('<h2>Supplier Pro</h2>') >= 0
+      && verified.indexOf('<div class="price">Coming soon</div>') >= 0
+      && verified.indexOf('$1,499') < 0 && verified.indexOf(link) < 0
+      && pricingPage.indexOf('$49/mo') < 0 && pricingPage.indexOf('$49 / month') < 0;
+  })());
+  check('intel pro is coming soon with no price and no checkout', (function () {
     const intel = fs.readFileSync('intel-pro.html', 'utf8');
     const start = pricingPage.indexOf('>Intel Pro</h3>');
     const card = pricingPage.slice(start, pricingPage.indexOf('Enterprise / Procurement Team', start));
-    const noMonthly = function (html) {
-      return html.indexOf('$49/mo') < 0 && html.indexOf('$49 / month') < 0 && html.indexOf('$49 / mo') < 0
-        && !/\$49(?!\d)/.test(html) && html.indexOf('588') < 0 && html.indexOf('billed monthly') < 0;
+    const noPrice = function (html) {
+      return html.indexOf('$499') < 0 && html.indexOf('$49/mo') < 0 && html.indexOf('$49 / month') < 0
+        && html.indexOf('$49 / mo') < 0 && !/\$49(?!\d)/.test(html) && html.indexOf('588') < 0
+        && html.indexOf('billed monthly') < 0 && html.indexOf('buy.stripe.com') < 0;
     };
     function intelProProduct(html) {
       const re = /<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi;
@@ -788,28 +797,20 @@ async function main() {
       }
       return null;
     }
-    function offerIsIntelPro(product) {
-      const offer = product && product.offers;
+    function hiddenPrice(product) {
       const blob = JSON.stringify(product || {});
-      return offer && offer['@type'] === 'Offer' && offer.name === 'Intel Pro'
-        && String(offer.price) === '499' && offer.priceCurrency === 'USD'
-        && String(offer.description || '').indexOf('Intel Pro: $499 for 12 months') >= 0
-        && blob.indexOf('buy.stripe.com') < 0 && blob.indexOf('url') < 0;
+      return product && !product.offers && blob.indexOf('499') < 0 && blob.indexOf('buy.stripe.com') < 0
+        && String(product.description || '').indexOf('coming soon') >= 0;
     }
-    const priceAt = card.indexOf('Intel Pro: $499');
-    const intelPriceAt = intel.indexOf('Intel Pro: $499');
-    return start > 0 && priceAt >= 0 && card.indexOf('/ 12 months', priceAt) > priceAt
-      && card.indexOf('Intel Pro: $499 for 12 months') >= 0
-      && card.indexOf('mailto:hello@transformerpath.com?subject=Intel%20Pro') < 0
+    return start > 0 && card.indexOf('>Coming soon<') >= 0
       && card.indexOf('There is no checkout for this plan yet') >= 0
-      && card.indexOf('buy.stripe.com') < 0
-      && intelPriceAt >= 0 && intel.indexOf('/ 12 months', intelPriceAt) > intelPriceAt
-      && intel.indexOf('Intel Pro: $499 for 12 months') >= 0
+      && card.indexOf('mailto:hello@transformerpath.com?subject=Intel%20Pro') < 0
+      && intel.indexOf('>Coming soon<') >= 0
       && intel.indexOf('There is no checkout for Intel Pro') >= 0
       && intel.indexOf('mailto:hello@transformerpath.com?subject=Intel%20Pro') < 0
-      && offerIsIntelPro(intelProProduct(pricingPage))
-      && offerIsIntelPro(intelProProduct(intel))
-      && noMonthly(card) && noMonthly(intel);
+      && hiddenPrice(intelProProduct(pricingPage))
+      && hiddenPrice(intelProProduct(intel))
+      && noPrice(card) && noPrice(intel);
   })());
   check('verified founding offer uses the Verified Manufacturer name and is coming soon', (function () {
     const html = fs.readFileSync('verified.html', 'utf8');
