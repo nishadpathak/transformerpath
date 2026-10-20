@@ -29,7 +29,8 @@ function slugify(s) { return String(s || '').normalize('NFKD').replace(/[\u0300-
 const ci = function (s) { return (s || '').toLowerCase(); };
 const norm = function (s) { return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim().replace(/\s+/g, ' '); };
 
-const { resolveCompanyAlias, norm: aliasNorm } = require('./lib/company-aliases');
+const { resolveCompanyAlias, norm: aliasNorm, slugify: censusSlug } = require('./lib/company-aliases');
+const exhibitorTags = require('./lib/exhibitor-tags');
 const headOffice = require('./lib/head-office');
 const HEAD_OFFICES = headOffice.load(__dirname);
 const companyParents = require('./lib/company-parents');
@@ -516,11 +517,12 @@ function page(r, slug) {
   const robots = indexable ? 'index,follow' : 'noindex,follow';
   const url = 'https://transformerpath.com/manufacturers/' + slug + '/';
   // capabilities: union of type + tier fields
-  const typeHtml = (r.types.length ? r.types : ['DT']).map(function (t) { return '<span class="tpill">' + esc(typeBadge(t)) + '</span>'; }).join(' ');
-  const comps = [...new Set((r.types.length ? r.types : ['DT']).reduce(function (a, t) { return a.concat(TYPE_COMPS[t] || []); }, []))];
+  const typeList = r.types.length ? r.types : [];
+  const typeHtml = typeList.map(function (t) { return '<span class="tpill">' + esc(typeBadge(t)) + '</span>'; }).join(' ');
+  const comps = [...new Set(typeList.reduce(function (a, t) { return a.concat(TYPE_COMPS[t] || []); }, []))];
   const { componentSlugHref } = require('./lib/component-href');
   const compLinks = comps.map(function (c) { return '<a class="tpill" href="' + componentSlugHref('../../', c) + '">' + esc(COMPONENTS[c] || c) + '</a>'; }).join(' ');
-  const apps = [...new Set((r.types.length ? r.types : ['DT']).reduce(function (a, t) { return a.concat(TYPE_APPS[t] || []); }, []))];
+  const apps = [...new Set(typeList.reduce(function (a, t) { return a.concat(TYPE_APPS[t] || []); }, []))];
   const appLinks = apps.map(function (a) { return '<a class="tpill" href="../../applications/' + a + '.html">' + esc(APPS[a] || a) + '</a>'; }).join(' ');
   const marketSlug = COUNTRY_MARKET[ci(r.country)];
   const marketLink = marketSlug ? '<a class="tpill" href="../../markets/' + marketSlug + '/">' + esc(r.country) + ' market</a>' : '';
@@ -641,14 +643,15 @@ function page(r, slug) {
     (parentLink ? '<p style="font-size:.78rem;color:var(--muted);margin:4px 0 0">Part of <a href="../../manufacturers/' + parentLink.parent_slug + '/" style="color:var(--accent)">' + esc(parentLink.parent_name) + '</a>. <a href="' + esc(parentLink.source_url) + '" target="_blank" rel="noopener" style="color:var(--accent)">' + esc(parentLink.source_note) + '</a> (checked ' + esc(parentLink.retrieved_at) + ').</p>' : '') +
     (earnedVerified ? '' : paidListings.verifiedManufacturerCtasHtml({ companySlug: slug, trackName: r.name })) +
     '<p class="claim-listing-row" style="margin:10px 0 0">' + claimListing.linkHtml(slug) + '</p>' +
+    exhibitorTags.block(exhibitorTags.forSlug(slug)) +
     trust +
     completenessCard +
     declaredOrigin.profileHtml(DECLARED_BY_SLUG[slug] || null) +
-    '<h2>Capabilities</h2><div style="margin:4px 0 8px">' + typeHtml + '</div>' +
+    (typeList.length ? '<h2>Capabilities</h2><div style="margin:4px 0 8px">' + typeHtml + '</div>' : '') +
     (tierTable ? '<h2>Indicative capability data</h2>' + tierTable : '') +
     manufacturerSpecs.renderHtml(SPEC_BY_SLUG[slug]) +
-    '<h2>Related components</h2><div>' + compLinks + '</div>' +
-    '<h2>Relevant applications</h2><div>' + appLinks + '</div>' +
+    (comps.length ? '<h2>Related components</h2><div>' + compLinks + '</div>' : '') +
+    (apps.length ? '<h2>Relevant applications</h2><div>' + appLinks + '</div>' : '') +
     '<h2>Markets</h2><div>' + countryLink + (cityHtml ? ' ' + cityHtml : '') + (marketLink ? ' ' + marketLink : '') + '</div>' +
     (function () {
       const fac = verifiedFactoriesHtml(r);
@@ -688,7 +691,8 @@ let indexed = 0, noindexed = 0, rich = 0;
 const list = Object.keys(records).map(function (k) { return records[k]; });
 // ensure unique slugs — prefer explicit canonical_slug from aliases
 list.forEach(function (r) {
-  let slug = r.canonical_slug || slugify(r.name); let k = 2;
+  let slug = r.canonical_slug || slugify(r.name) || censusSlug(r.name); let k = 2;
+  if (!slug) throw new Error('empty company slug for ' + r.name);
   const base = slug;
   while (slugsUsed[slug]) { k++; slug = base + '-' + k; }
   slugsUsed[slug] = 1; r.slug = slug;

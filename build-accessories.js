@@ -21,7 +21,12 @@ const HEAD = abs(fs.readFileSync('_partials/header.html', 'utf8').trim());
 const FOOT = abs(fs.readFileSync('_partials/footer.html', 'utf8').trim());
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 const { directoryBadge, scrubLegacyLabels } = require('./lib/provenance-badge');
-function slugify(s) { return String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/&/g, 'and').replace(/['’´]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, ''); }
+function slugify(s) {
+  const base = String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/&/g, 'and').replace(/['’´]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+  if (base) return base;
+  return require('./lib/company-aliases').slugify(s);
+}
+const exhibitorTags = require('./lib/exhibitor-tags');
 
 const DATA = JSON.parse(fs.readFileSync('data/accessories.json', 'utf8'));
 const SUPPLIERS = DATA.suppliers || [];
@@ -85,7 +90,8 @@ function page(s) {
     '<h1>' + esc(s.name) + '</h1>' +
     '<div class="evmeta"><span><b>Country</b> ' + esc(s.country) + '</span>' + (s.state ? '<span><b>State</b> ' + esc(s.state) + '</span>' : '') + (s.city ? '<span><b>City</b> ' + esc(s.city) + '</span>' : '') + (s.website ? '<span><a href="' + esc(s.website) + '" target="_blank" rel="noopener" style="color:var(--accent)">Official website ↗</a></span>' : '') + (s.email ? '<span><b>Email</b> ' + esc(s.email) + '</span>' : '') + '</div>' +
     '<p class="lead">' + esc(s.description) + '</p>' +
-    '<h2>Product categories</h2><div style="margin:4px 0 8px">' + catPills(s.categories) + '</div>' +
+    exhibitorTags.block(exhibitorTags.forSlug(slug), { claim: true }) +
+    ((s.categories && s.categories.length) ? '<h2>Product categories</h2><div style="margin:4px 0 8px">' + catPills(s.categories) + '</div>' : '') +
     compLinks(s) +
     '<h2>Company record</h2><table>' +
     '<tr><th>Company</th><td>' + esc(s.name) + (s.parent_group ? ' <span class="sub-l">(' + esc(s.parent_group) + ')</span>' : '') + '</td></tr>' +

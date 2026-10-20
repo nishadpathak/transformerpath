@@ -9,7 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
 const paid = require('./lib/paid-listings');
-const { directoryCompanySlug } = require('./lib/company-aliases');
+const { directoryCompanySlug, censusNameKey } = require('./lib/company-aliases');
 
 const LINK = paid.VERIFIED_MANUFACTURER_PAYMENT_LINK;
 
@@ -53,7 +53,7 @@ function slugMap() {
   const map = Object.create(null);
   JSON.parse(fs.readFileSync('data/company-slugs.json', 'utf8')).forEach(function (row) {
     if (!row || !row.name || !row.slug) return;
-    map[String(row.name).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()] = row.slug;
+    map[censusNameKey(row.name)] = row.slug;
   });
   return map;
 }

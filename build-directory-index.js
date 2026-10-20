@@ -188,7 +188,7 @@ function buildManufacturer(c) {
 
 function buildSupplier(s) {
   const labels = (s.categories || []).slice();
-  const slug = slugify(s.name);
+  const slug = slugify(s.name) || require('./lib/company-aliases').slugify(s.name);
   const hasPage = slug && fs.existsSync('accessories/' + slug + '/index.html');
   const cp = getCanonProps(slug, s.name, 'component_supplier', 0);
   return {
@@ -215,7 +215,7 @@ function buildSupplier(s) {
     evidence: (s.verification_status || '').toLowerCase().indexOf('verified') >= 0 ? 'CONFIRMED' : 'INFERRED',
     claim_type: 'INDEPENDENTLY_SOURCED',
     confidence: 'MEDIUM',
-    source_meta: { source_title: 'website-checked', source_type: 'company_documentation', source_url: s.website || '' },
+    source_meta: { source_title: s.directory_source_title || 'website-checked', source_type: 'company_documentation', source_url: s.website || '' },
     research_completeness: 0,
     completeness_score: 50,
     provenance_type: 'TRANSFORMERPATH_RESEARCHED',
@@ -271,7 +271,8 @@ function buildMachinery(m) {
 
 const LAB_DATA = (() => { try { return JSON.parse(fs.readFileSync('data/laboratories.json', 'utf8')).laboratories || []; } catch (e) { return []; } })();
 function buildLaboratory(l) {
-  const labels = ['Independent Test Laboratory', 'ISO/IEC 17025'];
+  const accredited = !!(l.accreditation && l.accreditation.standard);
+  const labels = accredited ? ['Independent Test Laboratory', 'ISO/IEC 17025'] : [];
   if (l.capabilities && l.capabilities.lightning_impulse) labels.push('Impulse Testing');
   if (l.capabilities && l.capabilities.short_circuit) labels.push('Short-Circuit Testing');
   if (l.capabilities && l.capabilities.partial_discharge) labels.push('PD Measurement');
@@ -294,20 +295,26 @@ function buildLaboratory(l) {
     transformer_types: { power: {}, distribution: {}, dry_type: {}, special: {} },
     voltage: { value: l.max_voltage_kv ? (l.max_voltage_kv + ' kV') : '', num: l.max_voltage_kv || null, unit: 'kV' },
     mva: { value: l.short_circuit_capacity || '', num: null, unit: 'MVA' },
-    certs: ['ISO/IEC 17025'],
-    testing_capability: 'Accredited Testing Laboratory',
+    certs: accredited ? ['ISO/IEC 17025'] : [],
+    testing_capability: accredited ? 'Accredited Testing Laboratory' : null,
     facility_ids: cp.facility_ids,
     factories: [],
-    capability_evidence: { products: 'CONFIRMED', voltage: 'CONFIRMED', mva: 'CONFIRMED' },
-    evidence: 'CONFIRMED',
+    capability_evidence: accredited
+      ? { products: 'CONFIRMED', voltage: 'CONFIRMED', mva: 'CONFIRMED' }
+      : { products: 'UNKNOWN', voltage: 'UNKNOWN', mva: 'UNKNOWN' },
+    evidence: accredited ? 'CONFIRMED' : 'UNKNOWN',
     claim_type: 'INDEPENDENTLY_SOURCED',
-    confidence: 'HIGH',
-    source_meta: { source_title: l.source || 'accreditation directory', source_type: 'official_accreditation', source_url: l.website || '' },
-    research_completeness: 9,
-    completeness_score: 95,
-    provenance_type: 'OFFICIAL_SOURCE',
-    last_verified: l.last_verified || '2026-08-28',
-    research_status: 'ACTIVE_CONFIRMED',
+    confidence: accredited ? 'HIGH' : 'LIMITED',
+    source_meta: {
+      source_title: l.directory_source_title || l.source || (accredited ? 'accreditation directory' : ''),
+      source_type: accredited ? 'official_accreditation' : 'industry_publication',
+      source_url: l.website || ''
+    },
+    research_completeness: accredited ? 9 : 0,
+    completeness_score: accredited ? 95 : 0,
+    provenance_type: accredited ? 'OFFICIAL_SOURCE' : 'PUBLIC_SOURCE',
+    last_verified: /^\d{4}-\d{2}-\d{2}$/.test(String(l.last_verified || '')) ? l.last_verified : (l.last_verified ? '' : '2026-08-28'),
+    research_status: accredited ? 'ACTIVE_CONFIRMED' : 'RESEARCH_REQUIRED',
     commercial_status: '',
     sources: { website: l.website },
     factory_count: cp.factory_count,

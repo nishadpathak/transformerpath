@@ -32,7 +32,13 @@ let SLUGS = []; try { SLUGS = JSON.parse(fs.readFileSync('data/company-slugs.jso
 let TIERS = []; try { TIERS = JSON.parse(fs.readFileSync('data/manufacturer-tiers.json', 'utf8')); } catch (e) {}
 let PROV = []; try { PROV = JSON.parse(fs.readFileSync('data/manufacturer-provenance.json', 'utf8')); } catch (e) {}
 let DEV = []; try { DEV = JSON.parse(fs.readFileSync('data/company-developments.json', 'utf8')); } catch (e) {}
-const norm = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, ' ').trim().replace(/\s+/g, ' ');
+const norm = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/&/g, ' and ').replace(/[^a-z0-9\u3400-\u9fff]+/g, ' ').trim().replace(/\s+/g, ' ');
+const EXHIBITOR_NEW = new Set((() => {
+  try {
+    const doc = JSON.parse(fs.readFileSync('data/ep-shanghai-2026-exhibitors.json', 'utf8'));
+    return (doc.listings || []).filter((row) => row && row.action === 'added' && row.directory === 'manufacturers').map((row) => row.profile_name);
+  } catch (e) { return []; }
+})());
 const slugOf = (name) => { const n = norm(name); const hit = SLUGS.find((c) => norm(c.name) === n); return hit ? hit.slug : null; };
 const byName = (arr, key) => { const o = {}; arr.forEach((x) => { o[norm(x[key] || x.name || '')] = x; }); return o; };
 let DEEP = []; try { DEEP = JSON.parse(fs.readFileSync('data/deep-research.json', 'utf8')).companies || []; } catch (e) {}
@@ -298,6 +304,7 @@ Object.keys(censusByName).forEach((name) => {
     rec.provenance_type = 'PUBLIC_SOURCE';
   }
   rec.last_verified = (rec.research_status === 'ACTIVE_CONFIRMED') ? '2026-08-28' : '2026-08-15';
+  if (EXHIBITOR_NEW.has(rec.name)) rec.last_verified = '—';
 
   // Commercial status is a separate axis (always LISTED here unless a paid
   // overlay in data/listing-tiers.json marks Verified / Supplier Pro).
