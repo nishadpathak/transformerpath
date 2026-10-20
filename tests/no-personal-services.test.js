@@ -36,10 +36,17 @@ var promised = [];
 fs.readdirSync(root).forEach(function (name) {
   if (!name.endsWith('.html') || name === 'services.html') return;
   var text = fs.readFileSync(path.join(root, name), 'utf8')
-    .replace(/consultants and engineers/gi, ' ');
+    .replace(/consultants and engineers/gi, ' ')
+    .replace(/not personally or manually reviewed/gi, ' ');
   if (promiseRe.test(text)) promised.push(name);
 });
 ok(promised.length === 0, 'root pages do not promise consulting, live training, calls, or a design service' + (promised.length ? ' (' + promised.join(', ') + ')' : ''));
+
+['learn.html', 'faq.html', 'teams.html', 'for-manufacturers.html', 'engineer-track.html', 'pricing.html', 'academy.html', 'terms.html'].forEach(function (name) {
+  var html = fs.readFileSync(path.join(root, name), 'utf8');
+  ok(html.indexOf('Courses and capstones are not personally or manually reviewed') >= 0, name + ' says courses and capstones are not personally or manually reviewed');
+  ok(!/engineer[- ]reviewed|engineer review/i.test(html), name + ' does not offer an engineer review');
+});
 
 var directory = fs.readFileSync(path.join(root, 'services.html'), 'utf8');
 ok(directory.indexOf('Service &amp; Repair') !== -1 || directory.indexOf('Service & Repair') !== -1,
