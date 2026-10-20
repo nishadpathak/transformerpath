@@ -79,13 +79,23 @@ function writePage(rel, html) {
   written.add(dir);
 }
 
+function publishedHref(href) {
+  const raw = String(href || '');
+  if (raw.charAt(0) !== '/') return '';
+  const rel = raw.split('?')[0].split('#')[0].replace(/^\/+/, '').replace(/\/+$/, '');
+  if (!rel || rel.indexOf('..') !== -1) return '';
+  if (fs.existsSync(rel + '/index.html') || fs.existsSync(rel + '.html') || fs.existsSync(rel)) return raw;
+  return '';
+}
 function directorySection(ev) {
   const block = EVENT_DIRECTORY[ev.id];
   if (!block || !block.entries || !block.entries.length) return '';
   const items = block.entries.map((row) => {
     const label = esc(row.name);
-    const href = String(row.href || '');
-    const link = href.charAt(0) === '/' ? '<a href="' + esc(href) + '">' + label + '</a>' : label;
+    // A directory row can name a lab that has no profile page. Linking it
+    // would 404. The name still appears in the list.
+    const href = publishedHref(row.href);
+    const link = href ? '<a href="' + esc(href) + '">' + label + '</a>' : label;
     return '<li>' + link + '</li>';
   }).join('');
   return '<h2>' + esc(block.section) + '</h2><ul>' + items + '</ul>';

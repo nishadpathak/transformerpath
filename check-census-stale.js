@@ -90,7 +90,8 @@ function scan(file) {
 function checkKpiFiles() {
   const checks = [
     ['data/directory-health.json', (j) => j.kpi_summary && j.kpi_summary.total_companies],
-    ['data/map-points.json', (j) => j.counts && j.counts.m],
+    // Listed manufacturers, not map pins. Makers with no country have no centroid.
+    ['data/map-points.json', (j) => j.directory && j.directory.manufacturers],
     ['data/site-stats.json', (j) => j.manufacturers]
   ];
   for (const [file, pick] of checks) {

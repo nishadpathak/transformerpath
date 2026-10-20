@@ -6,7 +6,10 @@
  *     records whose names are a token-prefix of each other
  *   - empty required fields that are not labeled in data/directory-integrity.json
  *   - country labels that do not resolve to an ISO 3166-1 alpha-2 code
- *     (Central America (SIEPAC) is allowed only as a labeled regional grid)
+ *     (Central America (SIEPAC) is allowed only as a labeled regional grid;
+ *     a blank or unstated country is allowed only with an unknown label)
+ *   - compact-name collisions, unless directory-integrity.json lists that
+ *     exact set under distinct_names (separate entities that share a key)
  *   - slug canonicalisation: cg-power must 301 to cg-power-and-industrial-solutions,
  *     and an indexable company-slugs row must not keep an alias source slug
  *
@@ -20,7 +23,7 @@ const path = require('path');
 const { resolveCountry } = require('../lib/country-codes');
 const { ALIASES, slugify, resolveCompanyAlias } = require('../lib/company-aliases');
 const {
-  REQUIRED, blank, fieldValue, loadDirectories, findDuplicates
+  REQUIRED, blank, fieldValue, loadDirectories, findDuplicates, compactName
 } = require('../lib/directory-records');
 
 const ROOT = path.join(__dirname, '..');
@@ -35,16 +38,39 @@ const flags = {};
 });
 const LABELS = { unknown: 1, cleared_not_official: 1, cleared_wrong_entity: 1, cleared_hijacked: 1, dead: 1, regional_not_a_country: 1 };
 
+function companyFromLabel(label) {
+  const i = String(label).indexOf(': ');
+  return i === -1 ? label : label.slice(i + 2);
+}
+
+function distinctAllowed(directory, issue) {
+  if (issue.type !== 'duplicate-name') return false;
+  const got = issue.names.map(companyFromLabel).map(compactName).sort();
+  return (integrity.distinct_names || []).some(function (entry) {
+    if (entry.directory !== directory || !entry.checked || !entry.reason) return false;
+    const listed = (entry.names || []).map(compactName).filter(Boolean).sort();
+    if (listed.length !== got.length) return false;
+    return listed.every(function (name, i) { return name === got[i]; });
+  });
+}
+
 const dirs = loadDirectories();
 Object.keys(dirs).forEach(function (directory) {
   const rows = dirs[directory];
   findDuplicates(rows).forEach(function (d) {
+    if (distinctAllowed(directory, d)) return;
     fail(directory + ' ' + d.type + ': ' + (d.names ? d.names.join(' | ') : d.id));
   });
   rows.forEach(function (row) {
     const country = resolveCountry(row.country);
     if (!country.ok) {
-      fail(directory + ' country "' + row.country + '" (' + row.name + ') ' + country.reason);
+      const key = [directory, row.name, row.country, 'country'].join('\t');
+      const flag = flags[key];
+      if (!flag || flag.label !== 'unknown') {
+        fail(directory + ' country "' + row.country + '" (' + row.name + ') ' + country.reason);
+      } else if (!flag.checked) {
+        fail(directory + ' unlabeled checked date on ' + row.name + ' country');
+      }
     } else if (country.regional) {
       const key = [directory, row.name, row.country, 'country'].join('\t');
       const flag = flags[key];
