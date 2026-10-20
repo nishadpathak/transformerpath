@@ -379,7 +379,7 @@ function countrySlug(s){
   };
   return alias[k] || slugifyName(s);
 }
-function slugKey(s){return String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();}
+function slugKey(s){return String(s||'').toLowerCase().replace(/[^a-z0-9\u3400-\u9fff]+/g,' ').trim();}
 function makerHref(name){ return 'manufacturers/' + (SLUGS[slugKey(name)] || slugifyName(name)) + '/'; }
 
 const fRegion=document.getElementById('fRegion');
