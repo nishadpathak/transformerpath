@@ -172,8 +172,18 @@ files.forEach(function (file) {
           const org = rec.organiser || rec.organizer || '';
           if (org && (!n.organizer || n.organizer.name !== org)) fail(rel + ': organizer missing');
           const official = rec.official_url || '';
-          if (/^https?:\/\//i.test(official) && (!n.offers || n.offers.url !== official)) {
+          const offers = Array.isArray(n.offers) ? n.offers : (n.offers ? [n.offers] : []);
+          if (/^https?:\/\//i.test(official) && !offers.some(function (o) { return o && o.url === official; })) {
             fail(rel + ': offers.url is not the official site');
+          }
+          const paper = (rec.deadlines || []).find(function (d) {
+            return d && d.kind === 'call_for_papers' && /^\d{4}-\d{2}-\d{2}$/.test(String(d.date || '')) && /^https?:\/\//i.test(String(d.source_url || ''));
+          });
+          if (paper && !offers.some(function (o) {
+            return o && o['@type'] === 'Offer' && o.name === 'Call for papers' &&
+              String(o.validThrough || '').slice(0, 10) === paper.date && o.url === paper.source_url;
+          })) {
+            fail(rel + ': call for papers validThrough missing');
           }
         } else if (scheduled || n.startDate) {
           fail(rel + ': unconfirmed event claims a firm date or EventScheduled');
