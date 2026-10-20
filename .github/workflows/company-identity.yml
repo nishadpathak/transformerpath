@@ -1,0 +1,17 @@
+name: company-identity
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  identity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Public copy does not identify the operator
+        run: node scripts/check-company-identity.js
