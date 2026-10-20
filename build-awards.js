@@ -116,6 +116,9 @@ console.log('awards.json wrote ' + awards.length + ' awards / ' + stats.countrie
 
 // ── Awards index page (worldwide, grouped by region) ────────────────────────
 (function renderAwardsIndex() {
+  const dataAsOf = require('./lib/data-as-of');
+  let updated = '';
+  try { updated = JSON.parse(fs.readFileSync('data/site-stats.json', 'utf8')).updated; } catch (e) { updated = ''; }
   const REGION_ORDER = { 'Middle East': 0, Europe: 1, Asia: 2, 'Latin America': 3, Africa: 4, 'North America': 5, Oceania: 6, Other: 7 };
   const byRegion = {};
   awards.forEach((a) => { (byRegion[a.region] = byRegion[a.region] || []).push(a); });
@@ -133,10 +136,11 @@ console.log('awards.json wrote ' + awards.length + ' awards / ' + stats.countrie
     '<link rel="icon" type="image/svg+xml" href="brand/favicon.svg"><link rel="icon" href="brand/favicon.ico" sizes="any"><link rel="stylesheet" href="style.css?v=14"><style>' + style + '</style><link rel="stylesheet" href="tp-nav.css?v=14">\n</head><body>\n' + HEAD + '\n<main class="aw-wrap">' +
     '<h1>Transformer <span style="color:var(--accent)">Awards</span></h1>' +
     '<p class="lead">' + awards.length + ' awards tracked. ' + stats.confirmed_scope + ' have confirmed transformer scope: the source names a transformer. The other awards are inferred or unknown transformer scope. <b>Award status</b> only means the contract result is written in a source. It is not a count of confirmed transformer orders. <b>Transformer scope</b> is separate. Each award links to its source.</p>' +
-    '<div class="aw-stats"><div class="s"><b>' + awards.length + '</b><small>Awards tracked</small></div><div class="s"><b>' + stats.countries + '</b><small>Countries</small></div><div class="s"><b>' + Object.keys(stats.by_region).length + '</b><small>Regions</small></div><div class="s"><b>' + stats.confirmed_scope + '</b><small>Confirmed transformer scope</small></div></div>' +
+    dataAsOf.html(updated) +
+    '<div class="aw-stats"><div class="s"><b data-stat="awards">' + awards.length + '</b><small>Awards tracked</small></div><div class="s"><b data-stat="awardsCountries">' + stats.countries + '</b><small>Countries</small></div><div class="s"><b data-stat="awardsRegions">' + Object.keys(stats.by_region).length + '</b><small>Regions</small></div><div class="s"><b data-stat="awardsConfirmed">' + stats.confirmed_scope + '</b><small>Confirmed transformer scope</small></div></div>' +
     body +
     '<p class="aw-note">Award metadata is source-tracked. A vendor list or a project is never treated as an award; a confirmed result requires explicit source evidence. Report a <a href="mailto:hello@transformerpath.com?subject=Award%20correction" style="color:var(--accent)">correction</a>. See the <a href="methodology.html" style="color:var(--accent)">research methodology</a>.</p>' +
-    '</main>\n' + FOOT + '\n<script src="analytics.js" defer></script>\n</body>\n</html>';
+    '</main>\n' + FOOT + '\n<script src="site-stats.js?v=9" defer></script>\n<script src="analytics.js" defer></script>\n</body>\n</html>';
   fs.writeFileSync('awards.html', html);
   console.log('awards.html wrote (' + awards.length + ' awards / ' + stats.countries + ' countries / ' + regionKeys.length + ' regions)');
 })();

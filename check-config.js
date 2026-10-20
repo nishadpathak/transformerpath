@@ -144,7 +144,8 @@ const VERIFIED = fs.readFileSync('verified.html', 'utf8');
 check('verified.Verified = $' + bp.verifiedSupplier.price, new RegExp('\\$' + bp.verifiedSupplier.price + '\\b').test(VERIFIED));
 check('verified Supplier Pro has no uncheckouted price',
   !new RegExp('\\$' + bp.proVerifiedSupplier.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',?') + '\\b').test(VERIFIED)
-  && /No checkout yet/.test(VERIFIED)
+  && /<h2>Supplier Pro<\/h2>\s*<div class="price">Coming soon<\/div>/.test(VERIFIED)
+  && VERIFIED.indexOf('bJeeV66C4cJL9g4d5EfYY0d') < 0
   && !/mailto:hello@transformerpath\.com\?subject=Supplier%20Pro/.test(VERIFIED));
 check('verified has Listed (free) tier', /<h2>Listed<\/h2>[\s\S]*?<div class="price">Free<\/div>/.test(VERIFIED));
 check('verified founding offer is Verified Manufacturer, priced, and coming soon', (function () {
