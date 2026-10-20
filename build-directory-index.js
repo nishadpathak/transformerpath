@@ -326,6 +326,43 @@ function buildService(s) {
   const labels = (s.service_types || []).slice(0, 5);
   const slug = (s.id || '').replace(/^srv:/, '') || (s.company_name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   const cp = getCanonProps(slug, s.company_name, 'service_repair', 1);
+  const unclaimed = /unclaimed/i.test(s.verification_status || '');
+  if (unclaimed) {
+    return {
+      id: cp.id,
+      canonical_id: cp.canonical_id,
+      roles: cp.roles,
+      kind: 'service_repair',
+      name: s.company_name,
+      slug: slug,
+      country: s.country,
+      region: s.state_province || '',
+      website: s.website,
+      headquarters: (s.city ? s.city + ', ' : '') + (s.country || ''),
+      product_codes: [],
+      capability_labels: labels,
+      transformer_types: { power: {}, distribution: {}, dry_type: {}, special: {} },
+      voltage: { value: '', num: null, unit: 'kV' },
+      mva: { value: '', num: null, unit: 'MVA' },
+      certs: [],
+      testing_capability: null,
+      facility_ids: cp.facility_ids,
+      factories: [],
+      capability_evidence: { products: 'UNKNOWN', voltage: 'UNKNOWN', mva: 'UNKNOWN' },
+      evidence: 'INFERRED',
+      claim_type: 'INFERRED',
+      confidence: 'LIMITED',
+      source_meta: { source_title: '', source_type: '', source_url: '' },
+      research_completeness: 0,
+      completeness_score: 0,
+      provenance_type: 'PUBLIC_SOURCE',
+      last_verified: '—',
+      research_status: 'Unclaimed',
+      commercial_status: '',
+      sources: { website: s.website || '' },
+      factory_count: cp.factory_count,
+    };
+  }
   return {
     id: cp.id,
     canonical_id: cp.canonical_id,
