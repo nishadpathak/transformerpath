@@ -247,17 +247,28 @@ const COPY_ID_SCRIPT = '<script>(function(){document.querySelectorAll(".tp-copy-
 // Source-backed verified manufacturing facilities (from deep-research intel).
 // Rendered ONLY when a facility has an independent source; never from the group
 // maximum. Factory capability is separate from company capability.
+function intelRecord(slug, name) {
+  if (slug && INTEL_BY_SLUG[slug]) return INTEL_BY_SLUG[slug];
+  const n = norm(name);
+  if (INTEL_BY_NAME[n]) return INTEL_BY_NAME[n];
+  if (INTEL_BY_NAME[n + ' global hq']) return INTEL_BY_NAME[n + ' global hq'];
+  return null;
+}
 function verifiedFactoriesHtml(r) {
-  const rec = INTEL_BY_SLUG[r.slug] || INTEL_BY_NAME[norm(r.name)] || null;
+  const rec = intelRecord(r.slug, r.name);
   if (!rec || !rec.factories) return '';
-  const verified = rec.factories.filter(function (f) { return f && (f.source_url || f.produces || f.city); });
+  const verified = rec.factories.filter(function (f) {
+    if (!f || !f.source_url || f.claim_type === 'UNSUPPORTED') return false;
+    const city = String(f.city || '').trim();
+    return city && city !== '—';
+  });
   if (!verified.length) return '';
   const rows = verified.map(function (f) {
-    const lo = (f.city ? esc(f.city) : '') + (f.country ? ', ' + esc(f.country) : '');
+    const lo = esc(f.city) + (f.country && f.country !== '—' ? ', ' + esc(f.country) : '');
     const tpf = f.facility_id ? tpfFor(f.facility_id) : '';
     const fid = (tpf ? copyIdBtn(tpf) : '') +
       (f.facility_id ? '<span style="font-family:monospace;font-size:.72rem;background:rgba(255,255,255,.06);padding:1px 6px;border-radius:4px;color:var(--muted);margin-left:6px">' + esc(f.facility_id) + '</span>' : '');
-    const prod = f.produces ? '<div style="font-size:.8rem;color:var(--muted);margin-top:2px">' + esc(f.produces) + '</div>' : '';
+    const prod = (f.produces && f.produces !== '—') ? '<div style="font-size:.8rem;color:var(--muted);margin-top:2px">' + esc(f.produces) + '</div>' : '';
     const src = f.source_url ? '<a href="' + esc(f.source_url) + '" target="_blank" rel="noopener" style="color:var(--accent);font-size:.78rem">source ↗</a>' : '';
     const badge = facilityBadge(f);
     return '<tr><td style="padding:8px 10px;vertical-align:top"><b style="color:var(--text)">' + (lo || '—') + '</b>' + fid + prod + '</td>' +
@@ -630,10 +641,12 @@ function page(r, slug) {
     '<h2>Markets</h2><div>' + countryLink + (cityHtml ? ' ' + cityHtml : '') + (marketLink ? ' ' + marketLink : '') + '</div>' +
     (function () {
       const fac = verifiedFactoriesHtml(r);
-      const rec = INTEL_BY_SLUG[slug] || INTEL_BY_NAME[norm(r.name)] || null;
-      const sourced = rec && rec.factories ? rec.factories.filter(function (f) { return f && f.source_url; }) : [];
+      const rec = intelRecord(slug, r.name);
+      const sourced = rec && rec.factories ? rec.factories.filter(function (f) {
+        return f && f.source_url && f.claim_type !== 'UNSUPPORTED' && f.city && f.city !== '—';
+      }) : [];
       if (!sourced.length) return fac;
-      const city = sourced.find(function (f) { return f.city; });
+      const city = sourced.find(function (f) { return f.city && f.city !== '—'; });
       const place = city && city.city ? ('a factory visit in ' + city.city) : 'a factory visit';
       return fac + tpAff.tripOffers({ slug: slug, place: place, prefix: '../../', disclosureHref: '../../affiliate-disclosure.html' });
     })() + brandSitesHtml(r) + timelineHtml(r) + developmentsHtml(r) + provenanceHtml(r) +
