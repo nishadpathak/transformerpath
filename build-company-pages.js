@@ -674,7 +674,7 @@ function page(r, slug) {
       trackName: r.name,
       formHref: '../../claim-profile.html?paid=verified_manufacturer#claimForm',
       style: 'margin-left:8px',
-      label: 'Pay $499 — Get Verified'
+      label: 'Pay $499 one-time — Get Verified'
     })) + '</div>' +
     '<div class="card" style="background:var(--bg);border:1px solid var(--border);padding:16px 18px;text-align:center;margin-top:14px"><b style="color:var(--text)">Find something inaccurate?</b><p style="color:var(--muted);font-size:.9rem;margin:6px 0 12px">Tell us what and why, with a source where you can. Corrections are reviewed against a source before they are applied — they are never auto-overwritten.</p>' +
     '<a class="btn btn-outline btn-sm" href="../../correct-company.html?company=' + encodeURIComponent(r.name) + '" data-track="manufacturer_correction_started" data-track-manufacturer="' + esc(r.name) + '">Suggest a correction →</a></div>' +

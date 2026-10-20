@@ -525,7 +525,7 @@ async function main() {
   });
   const linkedProfiles = profileDirs.filter(function (d) {
     const html = fs.readFileSync('manufacturers/' + d + '/index.html', 'utf8');
-    return html.indexOf('href="' + mfrLink + '?client_reference_id=' + d + '"') >= 0 && html.indexOf('Pay $499 — Get Verified') >= 0;
+    return html.indexOf('href="' + mfrLink + '?client_reference_id=' + d + '"') >= 0 && html.indexOf('Pay $499 one-time — Get Verified') >= 0;
   });
   check('manufacturer profiles use the Get Verified payment link', profileDirs.length === linkedProfiles.length && linkedProfiles.length > 880, 'profiles=' + profileDirs.length + ' linked=' + linkedProfiles.length);
   check('sample profile keeps the claim link beside the pay button', fs.readFileSync('manufacturers/erea-energy-engineering/index.html', 'utf8').indexOf('client_reference_id=erea-energy-engineering') >= 0);
@@ -551,7 +551,7 @@ async function main() {
   const featuredReceipt = receipt.messages(linkRow);
   check('featured receipt sends the buyer to the events form', featuredReceipt.buyer && featuredReceipt.buyer.text.indexOf('/events.html?paid=featured_event#submit-event') >= 0);
   const manufacturerReceipt = receipt.messages(mfrLinkRow);
-  check('manufacturer receipt sends the buyer to the claim form', manufacturerReceipt.buyer && manufacturerReceipt.buyer.text.indexOf('/claim-profile.html?paid=verified_manufacturer#claimForm') >= 0);
+  check('manufacturer receipt sends the buyer to the claim form', manufacturerReceipt.buyer && manufacturerReceipt.buyer.text.indexOf('/claim-profile.html?paid=verified_manufacturer#claimForm') >= 0 && manufacturerReceipt.buyer.text.indexOf('Verified Manufacturer ($499 one-time)') >= 0 && manufacturerReceipt.buyer.text.indexOf('Identity and contact details checked. Not a product certification.') >= 0);
   const exhibitorReceipt = receipt.messages(exhibitorLinkRow);
   check('exhibitor receipt sends the buyer to the exhibitor form', exhibitorReceipt.buyer && exhibitorReceipt.buyer.text.indexOf('/sponsor.html?paid=featured_exhibitor#contact') >= 0 && exhibitorReceipt.buyer.text.indexOf('Featured Exhibitor ($399)') >= 0);
   const webinarReceipt = receipt.messages(webinarLinkRow);
@@ -561,9 +561,9 @@ async function main() {
     product: 'verified_manufacturer',
     companySlug: 'a-plus-power-solution',
     fallback: '../../claim-profile.html',
-    button: 'Pay $499 — Get Verified'
+    button: 'Pay $499 one-time — Get Verified'
   });
-  check('claim checkout widget has the pay button', widget.indexOf('Pay $499 — Get Verified') >= 0);
+  check('claim checkout widget has the pay button', widget.indexOf('Pay $499 one-time — Get Verified') >= 0);
 
   process.env.STRIPE_SECRET_KEY = 'sk_test_x';
   global.fetch = async function () {
@@ -789,7 +789,7 @@ async function main() {
     const block = at < 0 ? '' : html.slice(at, html.indexOf('</p>', at));
     return at >= 0 && block.indexOf('$199') >= 0 && block.indexOf('Coming soon') >= 0
       && block.indexOf('buy.stripe.com') < 0 && block.indexOf('$499') >= 0
-      && html.indexOf('Pay $499 — Get Verified') >= 0
+      && html.indexOf('Pay $499 one-time — Get Verified') >= 0
       && html.indexOf(paid.PAYMENT_LINKS.verified_manufacturer.url) >= 0;
   })());
 

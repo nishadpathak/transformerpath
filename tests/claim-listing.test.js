@@ -67,7 +67,7 @@ const both = paid.PAYMENT_LINKS.featured_verified.url;
   check(name + ' uses the existing featured link', html.indexOf('href="' + featured + '"') >= 0 && html.indexOf('>Featured $299/yr<') >= 0);
   check(name + ' uses the existing featured plus verified link', html.indexOf('href="' + both + '"') >= 0 && html.indexOf('>Featured+Verified $699/yr<') >= 0);
 });
-check('upgrade copy keeps featured yearly prices and the one-time verified price', form.indexOf('$499 one-time') >= 0 && form.indexOf('$499/yr') < 0 && form.indexOf('$299/yr') >= 0 && form.indexOf('$699/yr') >= 0);
+check('upgrade copy keeps featured yearly prices and the one-time verified price', form.indexOf('$499 one-time') >= 0 && form.indexOf('$499/yr') < 0 && form.indexOf('$299/yr') >= 0 && form.indexOf('$699/yr') >= 0 && form.indexOf('Identity and contact details checked. Not a product certification.') >= 0);
 const mailtos = (form + received).match(/mailto:[^"'\s>]+/gi) || [];
 check('contact is hello@transformerpath.com only', mailtos.length > 0 && mailtos.every(function (m) { return m === 'mailto:hello@transformerpath.com'; }));
 check('claim page has no visible undefined, NaN, or null', !/\b(?:undefined|NaN|null)\b/.test(visible(form + received)));

@@ -59,7 +59,7 @@ Verified Manufacturer (`PAYMENT_LINKS.verified_manufacturer.url`):
 
 `https://buy.stripe.com/4gMbIU7G8bFHak8d5EfYY05`
 
-`list-company.html`, `claim-profile.html`, `pricing.html`, and each manufacturer profile's **Pay $499 — Get Verified** button use that URL. A profile button adds `?client_reference_id=` set to the directory slug so the webhook can store `company_slug`.
+`list-company.html`, `claim-profile.html`, `pricing.html`, and each manufacturer profile's **Pay $499 one-time — Get Verified** button use that URL. A profile button adds `?client_reference_id=` set to the directory slug so the webhook can store `company_slug`.
 
 After payment, the buyer must land on the claim form and submit company details. In the Stripe Dashboard, open this Payment Link → After payment → Redirect to:
 
@@ -171,7 +171,7 @@ Example row (do not invent a real company):
 
 ## Buttons
 
-- `list-company.html`, `claim-profile.html`, `pricing.html`, and each manufacturer profile: **Pay $499 — Get Verified**, linking to `PAYMENT_LINKS.verified_manufacturer.url`. After payment the buyer submits company details on the claim form.
+- `list-company.html`, `claim-profile.html`, `pricing.html`, and each manufacturer profile: **Pay $499 one-time — Get Verified**, linking to `PAYMENT_LINKS.verified_manufacturer.url`. After payment the buyer submits company details on the claim form.
 - Event pages, `events.html` (the list and submission form), `pricing.html`, and `sponsor.html`: **Feature this event — $299**, linking to `PAYMENT_LINKS.featured_event.url`
 - `pricing.html`, `events.html`, `exhibitions.html`, `sponsor.html`, and each event page: **Feature your exhibitor — $399** (the events list labels it **Featured Exhibitor · $399**), linking to `PAYMENT_LINKS.featured_exhibitor.url`. After payment the buyer submits company and event details on the exhibitor form.
 - `pricing.html`, `webinars.html`, and `sponsor.html`: **Host a webinar — $1,500** (the webinars list labels it **Host a webinar · from $1,500**), linking to `PAYMENT_LINKS.hosted_webinar.url`. After payment the buyer submits the topic, date, and company on the sponsor form.

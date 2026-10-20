@@ -97,7 +97,7 @@ function main() {
     '</ul>' +
     '<h2>Paid detail</h2>' +
     '<div class="lt-pay">' +
-    '<p>The table above is the whole free summary. A dash stays a dash: this page does not keep a second figure behind a checkout. A manufacturer confirms its own profile with the existing Get Verified checkout at $499 one-time. That is the Verified Manufacturer link already used on the <a href="/spare-capacity/">mid-tier list</a>.</p>' +
+    '<p>The table above is the whole free summary. A dash stays a dash: this page does not keep a second figure behind a checkout. A manufacturer confirms its own profile with the existing Get Verified checkout at $499 one-time. Identity and contact details checked. Not a product certification. That is the Verified Manufacturer link already used on the <a href="/spare-capacity/">mid-tier list</a>.</p>' +
     '<p><a class="btn btn-amber sc-cta" href="' + esc(grid.PAY_HREF) + '" data-verified-manufacturer-pay="1" data-track="supplier_verify_started">Get Verified $499 one-time</a></p>' +
     '<p class="src">After payment, the return path is the <a href="/claim-profile.html?paid=verified_manufacturer#claimForm">claim form</a>. Questions about a listing go to <a href="mailto:hello@transformerpath.com">hello@transformerpath.com</a>.</p>' +
     '</div>';
