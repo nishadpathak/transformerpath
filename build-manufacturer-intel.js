@@ -41,6 +41,18 @@ const SPEC_BY_SLUG = {};
 SPEC_FIELDS.forEach(function (row) { if (row && row.slug) SPEC_BY_SLUG[row.slug] = row; });
 const DEEP_BY = {};
 DEEP.forEach((x) => { DEEP_BY[norm(x.name)] = x; DEEP_BY[norm(x.slug)] = x; });
+[
+  ['BHEL (Bharat Heavy Electricals)', 'BHEL'],
+  ['CG Power and Industrial Solutions Limited', 'CG Power & Industrial Solutions'],
+  ['CG Power and Industrial Solutions Limited', 'CG Power'],
+  ['TBEA Co., Ltd.', 'TBEA Group (Changji HQ; Shenyang, Hengyang, Tianjin plants)'],
+  ['WEG', 'WEG Equipamentos Elétricos'],
+  ['Elsewedy Electric', 'Elsewedy Electric (Transformers)'],
+  ['Hitachi Energy', 'Hitachi Energy (global HQ)']
+].forEach(function (pair) {
+  const row = DEEP.find((d) => norm(d.name) === norm(pair[0]));
+  if (row) DEEP_BY[norm(pair[1])] = row;
+});
 const TIER_BY = byName(TIERS, 'name');
 // Additional tier matching: a multinational census record (e.g. "Hitachi Energy
 // USA") should attach the group tier capability even when its name differs from
@@ -249,7 +261,12 @@ Object.keys(censusByName).forEach((name) => {
   // Merge source-backed deep-research enrichment (factories, HQ, verified
   // products) where it exists. Capability maxima stay separate; factory
   // capability is not asserted from the group maximum.
-  const deep = DEEP_BY[norm(primary.name)] || DEEP_BY[norm(primary.name).replace(/(group|worldwide|global|inc|ltd|limited|corporation|co ltd)$/i, '').trim()] || (tier ? (DEEP_BY[norm(tier.name)] || DEEP_BY[norm(tier.name.replace(/(group|worldwide|global|inc|ltd|limited|corporation|co ltd)$/i, '').trim())]) : null);
+  const strippedName = norm(primary.name).replace(/(group|worldwide|global|inc|ltd|limited|corporation|co ltd)$/i, '').trim();
+  const nameMatch = DEEP_BY[norm(primary.name)] || (strippedName !== norm(primary.name) ? DEEP_BY[strippedName] : null);
+  const tierMatch = !nameMatch && tier
+    ? (DEEP_BY[norm(tier.name)] || DEEP_BY[norm(String(tier.name || '').replace(/(group|worldwide|global|inc|ltd|limited|corporation|co ltd)$/i, '').trim())])
+    : null;
+  const deep = nameMatch || tierMatch;
   if (deep) {
     if (deep.headquarters && !rec.headquarters) rec.headquarters = deep.headquarters.city;
     if (deep.transformer_products && deep.transformer_products.length) {
@@ -258,8 +275,8 @@ Object.keys(censusByName).forEach((name) => {
       // and only verified ones (never unsupported)
       rec.products = deepTypes.length ? [...new Set(rec.products.concat(deepTypes))] : rec.products;
     }
-    if (deep.factories && deep.factories.length) {
-      rec.factories = rec.factories.concat(deep.factories.map((f) => ({ city: f.city, country: f.country, produces: f.produces || '', source_url: f.source_url || '', claim_type: f.claim_type || 'UNKNOWN' })));
+    if (nameMatch && nameMatch.factories && nameMatch.factories.length) {
+      rec.factories = rec.factories.concat(nameMatch.factories.map((f) => ({ city: f.city, country: f.country, produces: f.produces || '', source_url: f.source_url || '', claim_type: f.claim_type || 'UNKNOWN' })));
     }
     if (deep.notes) rec.research_notes = deep.notes;
   }
