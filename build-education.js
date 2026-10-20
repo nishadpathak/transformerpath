@@ -35,7 +35,7 @@ function render() {
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TransformerPath">
 <meta property="og:title" content="Transformer Education & Training Providers Directory | TransformerPath">
-<meta property="og:description" content="Find verified university high-voltage programs, Doble courses, CIGRE tutorials, and professional transformer engineering certifications.">
+<meta property="og:description" content="University high-voltage programmes, industry training providers and testing-institute courses for transformer engineering.">
 <meta property="og:url" content="https://transformerpath.com/education.html">
 <meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
 <meta name="robots" content="index,follow">
@@ -89,7 +89,7 @@ function render() {
 <body>
 ${HEAD}
 
-<main class="edu-wrap">
+<main id="main" tabindex="-1" class="edu-wrap">
   <div class="edu-head">
     <nav style="font-size:.82rem;color:var(--muted);margin-bottom:12px"><a href="index.html" style="color:var(--accent)">Home</a> › <a href="directory.html" style="color:var(--accent)">Directory</a> › Education &amp; Training</nav>
     <h1>Transformer <span style="color:var(--accent)">Education &amp; Training</span> Directory</h1>
@@ -106,8 +106,8 @@ ${HEAD}
       <div class="lbl">Delivery Formats</div>
     </div>
     <div class="stat-box">
-      <div class="num">Degree &amp; CPD</div>
-      <div class="lbl">Accredited Certifications</div>
+      <div class="num">Degrees &amp; short courses</div>
+      <div class="lbl">Programme types</div>
     </div>
     <div class="stat-box">
       <div class="num" data-sourced="website-and-check-date">${provenanceStat.text}</div>
