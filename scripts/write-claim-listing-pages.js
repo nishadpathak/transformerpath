@@ -11,6 +11,7 @@ const abs = (html) => html.replace(/(href|src)="(?!https?:|mailto:|tel:|#|\/|dat
 const HEAD = abs(fs.readFileSync(path.join(root, '_partials/header.html'), 'utf8').trim());
 const FOOT = abs(fs.readFileSync(path.join(root, '_partials/footer.html'), 'utf8').trim());
 const paid = require(path.join(root, 'lib/paid-listings'));
+const declaredOrigin = require(path.join(root, 'lib/declared-origin'));
 
 const VERIFIED = paid.VERIFIED_MANUFACTURER_PAYMENT_LINK;
 const FEATURED = paid.PAYMENT_LINKS.featured_listing.url;
@@ -34,6 +35,8 @@ function upgrades(slug) {
     + '<a class="btn btn-amber" href="' + payHref(VERIFIED, slug) + '" data-verified-manufacturer-pay="1">Get Verified $499 one-time</a>'
     + '<a class="btn btn-outline" href="' + payHref(FEATURED, slug) + '" data-featured-listing-pay="1">Featured $299/yr</a>'
     + '<a class="btn btn-outline" href="' + payHref(BOTH, slug) + '" data-featured-verified-pay="1">Featured+Verified $699/yr</a>'
+    + '<ul class="claim-inclusions"><li>Featured directory slot</li><li>Reviewed Verified Manufacturer badge</li><li>declared-origin check</li></ul>'
+    + '<p class="declared-origin-note">' + declaredOrigin.NOTE + '</p>'
     + '</section>';
 }
 

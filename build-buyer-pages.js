@@ -11,6 +11,7 @@ const path = require('path');
 const { listMidTier } = require('./lib/mid-tier-list');
 const copy = require('./lib/buyer-page-copy');
 const availability = require('./lib/availability');
+const declaredOrigin = require('./lib/declared-origin');
 
 copy.assertWindows();
 
@@ -157,6 +158,12 @@ function capacityCell(row) {
     esc(note.source_label) + '</a> <span class="src">(' + esc(note.date_label) + ')</span>';
 }
 
+function originCell(row) {
+  const rec = row.origin;
+  if (!rec || !rec.origin || !rec.origin.length) return '—';
+  return esc(rec.origin.join(', ')) + ' <a href="' + esc(rec.origin_source) + '" target="_blank" rel="noopener">source</a> <span class="src">(checked ' + esc(rec.origin_checked) + ')</span>';
+}
+
 function spareMain() {
   const regions = [];
   const countries = [];
@@ -164,21 +171,33 @@ function spareMain() {
     if (row.region && regions.indexOf(row.region) < 0) regions.push(row.region);
     if (row.country && countries.indexOf(row.country) < 0) countries.push(row.country);
   });
+  const origins = [];
+  ROWS.forEach(function (row) {
+    ((row.origin && row.origin.origin) || []).forEach(function (name) {
+      if (origins.indexOf(name) < 0) origins.push(name);
+    });
+  });
   regions.sort();
   countries.sort();
+  origins.sort(function (a, b) { return a.localeCompare(b, 'en', { sensitivity: 'base' }); });
   const regionOptions = regions.map(function (name) {
     return '<option value="' + esc(name) + '">' + esc(name) + '</option>';
   }).join('');
   const countryOptions = countries.map(function (name) {
     return '<option value="' + esc(name) + '">' + esc(name) + '</option>';
   }).join('');
+  const originOptions = origins.map(function (name) {
+    return '<option value="' + esc(name) + '">' + esc(name) + '</option>';
+  }).join('');
   const body = ROWS.map(function (row) {
     const kv = row.kv == null ? '' : String(row.kv);
     const flag = availability.forSlug(row.slug);
-    return '<tr id="m-' + esc(row.slug) + '" data-region="' + esc(row.region) + '" data-country="' + esc(row.country) + '" data-kv="' + esc(kv) + '"' + availability.rowAttrs(flag) + '>' +
+    const originValue = row.origin && row.origin.origin ? row.origin.origin.join('|') : '';
+    return '<tr id="m-' + esc(row.slug) + '" data-region="' + esc(row.region) + '" data-country="' + esc(row.country) + '" data-kv="' + esc(kv) + '" data-origin="' + esc(originValue) + '"' + availability.rowAttrs(flag) + '>' +
       '<td data-label="Manufacturer"><a href="' + esc(row.profileHref) + '">' + esc(row.name) + '</a></td>' +
       '<td data-label="Region">' + esc(row.region || '—') + '</td>' +
       '<td data-label="Country">' + esc(row.country || '—') + '</td>' +
+      '<td data-label="Declared origin">' + originCell(row) + '</td>' +
       '<td data-label="Highest voltage">' + esc(ratingLabel(row.kv)) + '</td>' +
       '<td data-label="Capacity note">' + capacityCell(row) + '</td>' +
       '<td data-label="Availability">' + (flag ? availability.markHtml(flag, row.slug) : '—') + '</td>' +
@@ -190,6 +209,7 @@ function spareMain() {
   return '<nav class="crumbs"><a href="/manufacturers.html">Manufacturers</a> · <a href="/buy-early/">Buy early</a> · Mid-tier manufacturers</nav>' +
     '<h1>Mid-tier transformer manufacturers</h1>' +
     '<p class="lead">These rows are the tier-2 manufacturers in the site directory that already have a profile. Region is the census region for the profile country. Voltage is the highest voltage that profile already states. A missing value is shown as a dash.</p>' +
+    '<p class="declared-origin-note">' + esc(declaredOrigin.NOTE) + '</p>' +
     '<p>The capacity column is a public, dated note of a capacity expansion, a new plant, or an announced lead time. ' +
     withNotes + ' of ' + ROWS.length + ' rows have such a note. A dash means no note of that kind is on file. The dash is not a statement that the factory is open or full. Ordering ahead is covered in the <a href="/buy-early/">free buying guide</a>. Typical lead times by class and region are on the <a href="/lead-times/">grid lead-time tracker</a>.</p>' +
     '<p>The availability column is filled only when an official page states that units are available now, remanufactured, or in stock. A dash means no source of that kind is on file. The Shippable units chip keeps the rows that have one of those flags.</p>' +
@@ -197,6 +217,7 @@ function spareMain() {
     '<form class="filters" id="sc-filters" action="/spare-capacity/" method="get">' +
     '<label>Region<select id="sc-region" name="region"><option value="">Any</option>' + regionOptions + '</select></label>' +
     '<label>Country<select id="sc-country" name="country"><option value="">Any</option>' + countryOptions + '</select></label>' +
+    '<label>Declared origin<select id="sc-origin" name="origin"><option value="">Any</option>' + originOptions + '</select></label>' +
     '<label>Rating range<select id="sc-rating" name="rating"><option value="">Any</option>' +
     '<option value="le36">Up to 36 kV</option>' +
     '<option value="37-170">37–170 kV</option>' +
@@ -207,7 +228,7 @@ function spareMain() {
     availability.emptyHtml() +
     '<p class="sc-count" id="sc-count" aria-live="polite">Showing ' + ROWS.length + ' of ' + ROWS.length + '</p>' +
     '<p class="sc-empty" id="sc-empty">No manufacturer matches these filters.</p>' +
-    '<div class="tbl"><table class="sc-table"><thead><tr><th>Manufacturer</th><th>Region</th><th>Country</th><th>Highest voltage</th><th>Capacity note</th><th>Availability</th><th>Verified</th></tr></thead><tbody id="sc-body">' +
+    '<div class="tbl"><table class="sc-table"><thead><tr><th>Manufacturer</th><th>Region</th><th>Country</th><th>Declared origin</th><th>Highest voltage</th><th>Capacity note</th><th>Availability</th><th>Verified</th></tr></thead><tbody id="sc-body">' +
     body + '</tbody></table></div>' +
     '<p class="src">Get Verified uses the existing Verified Manufacturer checkout at $499 one-time. Identity and contact details checked. Not a product certification. After payment, the return path is the <a href="/claim-profile.html?paid=verified_manufacturer#claimForm">claim form</a>.</p>' +
     '<script>' + FILTER_JS + '</script>';
@@ -220,6 +241,7 @@ const FILTER_JS = [
   'var rating=document.getElementById("sc-rating");',
   'var ship=document.querySelector("[data-shippable-filter=\\"1\\"]");',
   'var shipEmpty=document.getElementById("avail-empty");',
+  'var origin=document.getElementById("sc-origin");',
   'var rows=[].slice.call(document.querySelectorAll("#sc-body tr"));',
   'var count=document.getElementById("sc-count");',
   'var empty=document.getElementById("sc-empty");',
@@ -255,6 +277,7 @@ const FILTER_JS = [
   'var ok=true;',
   'if(region.value&&row.getAttribute("data-region")!==region.value)ok=false;',
   'if(country.value&&row.getAttribute("data-country")!==country.value)ok=false;',
+  'if(origin.value){var parts=(row.getAttribute("data-origin")||"").split("|");if(parts.indexOf(origin.value)<0)ok=false;}',
   'if(!inRating(row.getAttribute("data-kv"),rating.value))ok=false;',
   'if(ship&&ship.getAttribute("aria-pressed")==="true"&&row.getAttribute("data-shippable")!=="1")ok=false;',
   'row.hidden=!ok;',
@@ -272,6 +295,7 @@ const FILTER_JS = [
   'ship.setAttribute("aria-pressed",on?"false":"true");',
   'syncCountries();apply();',
   '});',
+  'origin.addEventListener("change",apply);',
   'syncCountries();apply();',
   '})();'
 ].join('');

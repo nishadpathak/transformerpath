@@ -34,6 +34,8 @@ const headOffice = require('./lib/head-office');
 const HEAD_OFFICES = headOffice.load(__dirname);
 const companyParents = require('./lib/company-parents');
 const manufacturerSpecs = require('./lib/manufacturer-specs');
+const declaredOrigin = require('./lib/declared-origin');
+const DECLARED_BY_SLUG = declaredOrigin.bySlug(declaredOrigin.load(__dirname));
 const SPEC_BY_SLUG = {};
 (manufacturerSpecs.load(__dirname).companies || []).forEach(function (c) { if (c && c.slug) SPEC_BY_SLUG[c.slug] = c; });
 const { isUpcoming, platformToday } = require('./lib/event-status');
@@ -641,6 +643,7 @@ function page(r, slug) {
     '<p class="claim-listing-row" style="margin:10px 0 0">' + claimListing.linkHtml(slug) + '</p>' +
     trust +
     completenessCard +
+    declaredOrigin.profileHtml(DECLARED_BY_SLUG[slug] || null) +
     '<h2>Capabilities</h2><div style="margin:4px 0 8px">' + typeHtml + '</div>' +
     (tierTable ? '<h2>Indicative capability data</h2>' + tierTable : '') +
     manufacturerSpecs.renderHtml(SPEC_BY_SLUG[slug]) +
