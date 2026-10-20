@@ -564,6 +564,10 @@ function researchFor(m) {
   });
 }
 
+function plantFigure(n) {
+  return n > 0 ? String(n) : '—';
+}
+
 function factoriesFor(m) {
   const matchCountry = function (c) {
     return ci(c) === ci(m.gridsName) || ci(c) === ci(m.manufName) || ci(c) === ci(m.name)
@@ -737,7 +741,7 @@ function marketPage(m) {
     })() +
     '<div class="stats">' +
     '<div class="s"><b>' + mk.length + '</b><span>manufacturers tracked</span></div>' +
-    '<div class="s"><b>' + facs.length + '</b><span>sourced plants</span></div>' +
+    '<div class="s"><b>' + plantFigure(facs.length) + '</b><span>sourced plants</span></div>' +
     '<div class="s"><b>' + utl.length + '</b><span>grid operators</span></div>' +
     '<div class="s"><b>' + (g ? esc(g.freq) : '-') + ' Hz</b><span>' + esc((g && g.sync) || 'grid frequency') + '</span></div>' +
     '<div class="s"><b>' + tenders.length + '</b><span>active tenders</span></div>' +
@@ -745,7 +749,7 @@ function marketPage(m) {
     '</div>' +
     comtrade.sectionHtml(m.gridsName) +
     '<h2>Grid &amp; utilities</h2>' + (utlHtml || '<p style="color:var(--muted)">See the grid directory for operator details.</p>') +
-    '<h2>Confirmed manufacturing plants &amp; facilities (' + facs.length + ')</h2>' + facsHtml +
+    '<h2>Confirmed manufacturing plants &amp; facilities (' + plantFigure(facs.length) + ')</h2>' + facsHtml +
     (researchHtml ? '<h2>Facility research queue (' + research.length + ')</h2>' + researchHtml : '') +
     '<h2>Transformer manufacturers</h2><p style="font-size:.85rem;color:var(--muted)">' + mkCount + ' manufacturers tracked in the ' + esc(m.name) + ' census — the same unique-company count as the figure above. <a href="../../manufacturers/' + slugify(m.manufName) + '.html" style="color:var(--accent)">All ' + esc(m.name) + ' manufacturers →</a></p>' + (mkHtml || '<p style="color:var(--muted)">No manufacturers listed yet.</p>') +
     '<h2>Current tenders &amp; procurement (' + tenders.length + ')</h2>' + tendersHtml +
@@ -858,7 +862,7 @@ const idx = '<!DOCTYPE html>\n<html lang="en" data-theme="dark"><head><meta char
         '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;font-size:.82rem">' +
           '<div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:9px 12px">' +
             '<span style="color:var(--muted);display:block;font-size:.72rem;text-transform:uppercase;font-weight:700">Manufacturing Base</span>' +
-            '<b style="color:var(--accent);font-size:1.1rem">' + l.makers + '</b> <span style="color:var(--text)">makers</span> · <b style="color:var(--text)">' + l.facs + '</b> <span style="color:var(--muted)">plants</span>' +
+            '<b style="color:var(--accent);font-size:1.1rem">' + l.makers + '</b> <span style="color:var(--text)">makers</span> · <b style="color:var(--text)">' + plantFigure(l.facs) + '</b> <span style="color:var(--muted)">plants</span>' +
           '</div>' +
           '<div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:9px 12px">' +
             '<span style="color:var(--muted);display:block;font-size:.72rem;text-transform:uppercase;font-weight:700">Demand &amp; Awards</span>' +
