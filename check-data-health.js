@@ -163,7 +163,8 @@ function checkStaleCensus() {
   // KPI drift
   const kpiChecks = [
     ['data/directory-health.json', function (j) { return j.kpi_summary && j.kpi_summary.total_companies; }],
-    ['data/map-points.json', function (j) { return j.counts && j.counts.m; }],
+    // Listed manufacturers, not map pins. Makers with no country have no centroid.
+    ['data/map-points.json', function (j) { return j.directory && j.directory.manufacturers; }],
     ['data/site-stats.json', function (j) { return j.manufacturers; }]
   ];
   for (const pair of kpiChecks) {

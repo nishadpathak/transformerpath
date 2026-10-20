@@ -121,7 +121,7 @@ function renderCardServer(lab) {
 
   return '<div class="lab-card" style="box-shadow:0 4px 18px rgba(0,0,0,.12)">' +
     '<div class="lab-top">' +
-      '<h2 class="lab-name" style="font-size:1.28rem">' + (lab.profile_page ? '<a href="/laboratories/' + esc(labSlug(lab)) + '/">' + esc(lab.name) + '</a>' : esc(lab.name)) + (function () { const badge = eventBadges.htmlFor({ slug: labSlug(lab), name: lab.name }); return badge ? ' ' + badge : ''; })() + '</h2>' +
+      '<h2 class="lab-name" style="font-size:1.28rem">' + (lab.profile_page ? '<a href="/laboratories/' + esc(labSlug(lab)) + '/">' + esc(lab.name) + '</a>' : '<span>' + esc(lab.name) + '</span>') + (function () { const badge = eventBadges.htmlFor({ slug: labSlug(lab), name: lab.name }); return badge ? ' ' + badge : ''; })() + '</h2>' +
       (tpmFor(labSlug(lab)) ? '<p style="margin:4px 0 8px;font-size:.78rem;color:var(--muted)">Permanent company ID ' + esc(tpmFor(labSlug(lab))) + '</p>' : '') +
       voltagePill(lab) +
     '</div>' +
@@ -398,7 +398,7 @@ function renderCards() {
 
     var labSlug = String(lab.id || '').replace(/^lab:/, '');
     var eventBadge = (typeof TPEventBadges !== 'undefined' && TPEventBadges.htmlFor) ? TPEventBadges.htmlFor({ slug: labSlug, name: lab.name }) : '';
-    var nameHtml = lab.profile_page ? '<a href="/laboratories/' + esc(labSlug) + '/">' + esc(lab.name) + '</a>' : esc(lab.name);
+    var nameHtml = lab.profile_page ? '<a href="/laboratories/' + esc(labSlug) + '/">' + esc(lab.name) + '</a>' : '<span>' + esc(lab.name) + '</span>';
     var tpmHtml = lab.permanent_id ? '<p style="margin:4px 0 8px;font-size:.78rem;color:var(--muted)">Permanent company ID ' + esc(lab.permanent_id) + '</p>' : '';
     return '<div class="lab-card" style="box-shadow:0 4px 18px rgba(0,0,0,.12)">' +
       '<div class="lab-top">' +

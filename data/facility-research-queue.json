@@ -2,8 +2,8 @@
   "$schema": "https://transformerpath.com/facility-research-queue.schema.json",
   "purpose": "UAE and Saudi plant queue. SOURCED rows are company pages fetched on 2026-10-14. Every other row stays TO_RESEARCH.",
   "honesty": "Eight UAE plants were marked SOURCED from pages fetched on 2026-10-14. Al Budoor was fetched and left TO_RESEARCH because the page does not state a plant address. Saudi targets and the three retired UAE names were not fetched and stay TO_RESEARCH. No plant was invented.",
-  "updated": "2026-10-14",
-  "count": 23,
+  "updated": "2026-10-20",
+  "count": 24,
   "sourced_count": 8,
   "targets": [
     {
@@ -336,6 +336,19 @@
       "directory_source": "data/manufacturer-retirements.json",
       "website": "https://www.intacttransformer.com",
       "note": "Named in manufacturer-retirements.json (No official website, only directory listings (dubiki); not verifiable as an active transformer manufacturer.). Still TO_RESEARCH. Not marked SOURCED."
+    },
+    {
+      "target_id": "rq:federal-transformers-company-llc:unstated",
+      "company_id": null,
+      "facility_id": null,
+      "company_name": "Federal Transformers Company LLC",
+      "site": "—",
+      "city": "—",
+      "country": "UAE",
+      "status": "TO_RESEARCH",
+      "directory_source": "data/manufacturers.json",
+      "website": "",
+      "note": "WETEX 2025 lists Federal Transformers Company LLC with no city or website. Distinct from Federal Power Transformers LLC. Still TO_RESEARCH. Not a sourced plant."
     }
   ]
 }
