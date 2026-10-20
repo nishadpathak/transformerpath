@@ -70,6 +70,9 @@ const ambiguous = {
 const deHtml = comtrade.sectionHtml('Germany', ambiguous);
 const twHtml = comtrade.sectionHtml('Taiwan', ambiguous);
 check('germany section names the years that exist', deHtml.indexOf('2024') !== -1 && deHtml.indexOf('2022') !== -1 && deHtml.indexOf('2023') === -1);
+check('germany section labels HS 8504 as wider than power transformers', deHtml.indexOf('HS 8504, wider than power transformers') !== -1);
+check('empty section uses that same label', twHtml.indexOf('HS 8504, wider than power transformers') !== -1);
+check('trade card uses that same label', comtrade.cardHtml('Germany', ambiguous).indexOf('HS 8504, wider than power transformers') !== -1);
 check('germany section shows the world value', deHtml.indexOf(comtrade.formatUsd(100)) !== -1);
 check('germany section has the source link and retrieved date', deHtml.indexOf('https://comtradeplus.un.org/TradeFlow?Frequency=A&amp;CommodityCodes=8504&amp;Reporters=276') !== -1 && deHtml.indexOf('Retrieved 16 Oct 2026') !== -1);
 check('taiwan section is an empty state', twHtml.indexOf('data-comtrade-empty="1"') !== -1 && twHtml.indexOf('no reporter') !== -1);
@@ -133,6 +136,23 @@ check('Taiwan country page has an empty trade state', (function () {
   return html.indexOf('data-comtrade-empty="1"') !== -1 && html.indexOf('US$') === -1 && html.indexOf('Retrieved') !== -1;
 })());
 check('markets index names HS 8504', fs.existsSync('markets.html') && fs.readFileSync('markets.html', 'utf8').indexOf('HS 8504') !== -1);
+const unlabeled = [];
+function walkHtml(dir) {
+  fs.readdirSync(dir).forEach(function (name) {
+    if (name === 'node_modules' || name === '.git' || name === 'dist' || name === 'transformerpath') return;
+    const abs = path.join(dir, name);
+    const st = fs.statSync(abs);
+    if (st.isDirectory()) walkHtml(abs);
+    else if (name.endsWith('.html')) {
+      const html = fs.readFileSync(abs, 'utf8');
+      if ((html.indexOf('id="comtrade-hs8504"') !== -1 || html.indexOf('data-comtrade-card') !== -1) && html.indexOf('HS 8504, wider than power transformers') === -1) {
+        unlabeled.push(path.relative(process.cwd(), abs));
+      }
+    }
+  });
+}
+walkHtml(process.cwd());
+check('every HS 8504 figure is labeled wider than power transformers', unlabeled.length === 0, unlabeled.slice(0, 8).join(', '));
 
 assert.strictEqual(failed, 0);
 console.log('\ncomtrade hs8504: PASS');
