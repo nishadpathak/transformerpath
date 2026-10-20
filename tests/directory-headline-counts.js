@@ -48,7 +48,7 @@ check('builder rewrites the directory SSR block from the census', /SSR:mfg-stats
 });
 
 const directory = fs.readFileSync('directory.html', 'utf8');
-const kpi = directory.match(/kg-kpi-val">(\d+)<\/div><div class="kg-kpi-lbl">Manufacturers/);
+const kpi = directory.match(/kg-kpi-val"[^>]*>\s*(\d+)<\/div><div class="kg-kpi-lbl">Manufacturers/);
 const badge = directory.match(/Manufacturers <span class="badge-cnt">(\d+)/);
 check('directory stat and filter tag use the public company count', !!kpi && Number(kpi[1]) === rendered && !!badge && Number(badge[1]) === rendered, (kpi && kpi[1]) + ' / ' + (badge && badge[1]));
 
@@ -59,7 +59,7 @@ function countContexts(html) {
     /Browse all (\d+) transformer companies/g,
     /directory of (\d+) transformer makers/g,
     /Manufacturer census:\s*(\d+)/g,
-    /kg-kpi-val">(\d+)<\/div><div class="kg-kpi-lbl">Manufacturers/g,
+    /kg-kpi-val"[^>]*>\s*(\d+)<\/div><div class="kg-kpi-lbl">Manufacturers/g,
     /Manufacturers <span class="badge-cnt">(\d+)/g,
     /Transformer OEMs \((\d+)\)/g
   ];

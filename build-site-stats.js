@@ -111,6 +111,16 @@ const awardsConfirmed = AWARDS.filter((a) => a.transformer_scope === 'CONFIRMED'
 const awardsInferred = AWARDS.filter((a) => a.transformer_scope === 'INFERRED').length;
 const awardsUnknown = AWARDS.filter((a) => a.transformer_scope !== 'CONFIRMED' && a.transformer_scope !== 'INFERRED').length;
 const awardsTracked = awardsConfirmed + awardsInferred + awardsUnknown;
+const awardsCountries = new Set(AWARDS.map((a) => a.country).filter(Boolean)).size;
+/* Same region bucket count the awards page prints: a missing region is its own key. */
+const awardsRegions = Object.keys(AWARDS.reduce((m, a) => { m[a.region] = 1; return m; }, {})).length;
+/* Tenders page "Pre-award" is evaluation + expected + undated. It is not
+   preAward, which also includes open and closing-soon rows. */
+const tendersPreAward = TENDERS.filter((t) => t.status === 'EVALUATION' || t.status === 'EXPECTED' || t.status === 'UNDATED').length;
+const tendersAwarded = TENDERS.filter((t) => t.status === 'AWARDED').length;
+const tendersCountries = new Set(TENDERS.map((t) => t.country).filter(Boolean)).size;
+const DIRECTORY = readJson('data/directory-index.json', {});
+const indexedEntities = (DIRECTORY.companies && DIRECTORY.companies.length) || 0;
 const companiesCount = (INTEL.companies || []).length || makers;
 const avgCompleteness = companiesCount ? Math.min(95, Math.max(54, Math.round(intelCompletenessTotal / companiesCount))) : 73;
 
@@ -153,10 +163,16 @@ const current = {
   tenders: TENDERS.length || num(prev.tenders, 0),
   openTenders: openTenders || num(prev.openTenders, 0),
   preAward: preAward || num(prev.preAward, 0),
+  tendersPreAward: TENDERS.length ? tendersPreAward : num(prev.tendersPreAward, 0),
+  tendersAwarded: TENDERS.length ? tendersAwarded : num(prev.tendersAwarded, 0),
+  tendersCountries: TENDERS.length ? tendersCountries : num(prev.tendersCountries, 0),
   awards: awardsTracked,
   awardsConfirmed: awardsConfirmed,
   awardsInferred: awardsInferred,
   awardsUnknown: awardsUnknown,
+  awardsCountries: AWARDS.length ? awardsCountries : num(prev.awardsCountries, 0),
+  awardsRegions: AWARDS.length ? awardsRegions : num(prev.awardsRegions, 0),
+  indexedEntities: indexedEntities || num(prev.indexedEntities, 0),
   awardsScopeTaxonomy: 'CONFIRMED / INFERRED / UNKNOWN transformer_scope, same labels as Intelligence',
   events: EVENTS.length || num(prev.events, 0),
   upcomingEvents: upcomingEvents || num(prev.upcomingEvents, 0),
@@ -189,7 +205,8 @@ try {
    (e.g. build-tenders derives a new OPEN row from intel, or upcomingEvents
    drops when an event's start day passes). site-stats.js overwrites these at
    runtime; keep the static digits in lockstep at build. */
-const STAT_HTML = ['index.html', 'directory.html', 'pricing.html', 'intel.html'];
+const STAT_HTML = ['index.html', 'directory.html', 'pricing.html', 'intel.html', 'tenders.html', 'awards.html'];
+const stampAsOf = require('./lib/data-as-of').stampHtml;
 let htmlPatched = 0;
 for (let i = 0; i < STAT_HTML.length; i++) {
   const p = STAT_HTML[i];
@@ -235,6 +252,7 @@ for (let i = 0; i < STAT_HTML.length; i++) {
       'Browse all ' + current.manufacturers + ' transformer companies'
     );
   }
+  html = stampAsOf(html, current.updated);
   if (html !== before) {
     fs.writeFileSync(p, html);
     htmlPatched++;
