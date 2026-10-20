@@ -10,6 +10,7 @@ const fs = require('fs');
 const path = require('path');
 const dates = require('./lib/sitemap-dates');
 const { permanentMap } = require('./lib/site-redirects');
+const manufacturerSitemap = require('./lib/manufacturer-sitemap');
 
 const ROOT = __dirname;
 const SKIP_DIR = new Set([
@@ -74,6 +75,8 @@ function rowDecision(rel, lastmod) {
 function writeSitemap() {
   const dated = dates.load();
   const redirected = permanentMap(ROOT);
+  const census = manufacturerSitemap.readCensus(ROOT);
+  const published = new Set(census.published);
   const rows = [];
   walk(ROOT, rows);
   const seen = new Set();
@@ -81,12 +84,17 @@ function writeSitemap() {
   const missing = [];
   const omitted = [];
   let redirectSkips = 0;
+  let groupSkips = 0;
   rows.sort(function (a, b) { return a.loc.localeCompare(b.loc); }).forEach(function (r) {
     if (seen.has(r.loc)) return;
     if (r.loc.indexOf('/transformerpath/') !== -1) return;
     seen.add(r.loc);
     if (redirected.has(publicPath(r.rel))) {
       redirectSkips++;
+      return;
+    }
+    if (manufacturerSitemap.kindForRel(r.rel, published) === 'group') {
+      groupSkips++;
       return;
     }
     const lastmod = dates.dateFor(r.rel, dated, dated.pages);
@@ -127,6 +135,8 @@ function writeSitemap() {
   const distinct = {};
   unique.forEach(function (r) { distinct[r.lastmod] = 1; });
   if (redirectSkips) console.log('sitemap skipped ' + redirectSkips + ' URLs that 301');
+  if (groupSkips) console.log('sitemap skipped ' + groupSkips + ' group or alias profiles that are not census companies');
+  manufacturerSitemap.writeReport(ROOT);
   console.log('sitemap.xml wrote ' + unique.length + ' URLs, ' + Object.keys(distinct).length + ' distinct lastmod dates');
   return unique.length;
 }
