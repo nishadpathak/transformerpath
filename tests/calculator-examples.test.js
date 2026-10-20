@@ -70,7 +70,7 @@ const kva = 1000, HVk = 11, LVk = 0.433, Bk = 1.65, dens = 2.8, Kk = 0.45, fk = 
 const Etk = Kk * Math.sqrt(kva);
 const Ac = Etk / (4.44 * fk * Bk) * 1e4;
 const fmt0 = (n, d) => n.toLocaleString('en', { maximumFractionDigits: d, minimumFractionDigits: d });
-const Nhv = (HVk * 1000 / Math.sqrt(3)) / Etk;
+const Nhv = (HVk * 1000) / Etk; // Dyn11: HV delta, winding voltage = line voltage
 const Nlv = (LVk * 1000 / Math.sqrt(3)) / Etk;
 const Ihv = (kva * 1000) / (Math.sqrt(3) * HVk * 1000);
 const Ilv = (kva * 1000) / (Math.sqrt(3) * LVk * 1000);
@@ -79,10 +79,10 @@ ok(learnBlock.includes('1,000 kVA') && learnBlock.includes('11 kV') && learnBloc
 has(learnBlock, fmt0(Etk, 2) + ' V', 'sizing volts per turn');
 has(learnBlock, fmt0(Ac, 0) + ' cm²', 'sizing core area');
 has(learnBlock, 'HV turns ' + fmt0(Nhv, 0), 'sizing HV turns');
-has(learnBlock, 'LV turns ' + fmt0(Nlv, 0), 'sizing LV turns');
+has(learnBlock, 'LV turns ' + fmt0(Nlv, 1), 'sizing LV turns');
 has(learnBlock, fmt0(Ihv, 1) + ' A', 'sizing HV current');
 has(learnBlock, fmt0(Ilv, 0) + ' A', 'sizing LV current');
-has(learnBlock, fmt0(Ihv / dens, 1) + ' mm²', 'sizing HV conductor');
+has(learnBlock, fmt0(Ihv / Math.sqrt(3) / dens, 1) + ' mm²', 'sizing HV conductor (delta winding current)');
 has(learnBlock, fmt0(Ilv / dens, 0) + ' mm²', 'sizing LV conductor');
 ok(learnBlock.includes('IEC 60076-1') && learnBlock.includes('4.44'), 'sizing example cites IEC 60076-1 and the EMF equation');
 ok(!learnBlock.includes('52,486') && !learnBlock.includes('0 turns'), 'sizing example does not publish the kilovolt-as-volt result');

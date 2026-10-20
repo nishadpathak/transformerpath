@@ -12,3 +12,4 @@ jobs:
         with:
           node-version: '22'
       - run: node tests/event-badges.test.js
+      - run: node tests/event-not-confirmed.test.js
