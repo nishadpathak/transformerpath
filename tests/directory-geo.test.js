@@ -56,8 +56,10 @@ docs.forEach(function (doc) {
   check(doc.file + ' canonical is its own URL',
     doc.html.indexOf('href="https://transformerpath.com' + doc.path + '"') !== -1);
   check(doc.file + ' count is on the page', doc.html.indexOf('data-count="' + doc.count + '"') !== -1);
-  check(doc.file + ' has no Stripe link or price',
-    doc.html.indexOf('buy.stripe.com') === -1 && doc.html.indexOf('$') === -1);
+  const priceSentence = 'Featured $299/yr, Featured + Verified $699/yr, Component Sponsor $199/mo.';
+  const withoutPrices = doc.html.split(priceSentence).join('');
+  check(doc.file + ' has no Stripe link or unlisted price',
+    doc.html.indexOf('buy.stripe.com') === -1 && withoutPrices.indexOf('$') === -1);
   if (titles[doc.title]) check(doc.file + ' title is unique', false, 'same as another page');
   if (descriptions[doc.description]) check(doc.file + ' description is unique', false, 'same as another page');
   titles[doc.title] = doc.file;

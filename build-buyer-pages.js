@@ -10,6 +10,7 @@ const fs = require('fs');
 const path = require('path');
 const { listMidTier } = require('./lib/mid-tier-list');
 const copy = require('./lib/buyer-page-copy');
+const availability = require('./lib/availability');
 
 copy.assertWindows();
 
@@ -63,6 +64,7 @@ const STYLES = [
   '.sc-count{color:var(--muted);font-size:.9rem}',
   '.sc-empty{display:none;color:var(--muted)}',
   '.sc-cta{display:inline-block;text-align:center}',
+  availability.chipCss(),
   '@media (max-width:720px){',
   '.c-wrap h1{font-size:1.45rem}',
   '.sc-table thead{display:none}',
@@ -172,12 +174,14 @@ function spareMain() {
   }).join('');
   const body = ROWS.map(function (row) {
     const kv = row.kv == null ? '' : String(row.kv);
-    return '<tr id="m-' + esc(row.slug) + '" data-region="' + esc(row.region) + '" data-country="' + esc(row.country) + '" data-kv="' + esc(kv) + '">' +
+    const flag = availability.forSlug(row.slug);
+    return '<tr id="m-' + esc(row.slug) + '" data-region="' + esc(row.region) + '" data-country="' + esc(row.country) + '" data-kv="' + esc(kv) + '"' + availability.rowAttrs(flag) + '>' +
       '<td data-label="Manufacturer"><a href="' + esc(row.profileHref) + '">' + esc(row.name) + '</a></td>' +
       '<td data-label="Region">' + esc(row.region || '—') + '</td>' +
       '<td data-label="Country">' + esc(row.country || '—') + '</td>' +
       '<td data-label="Highest voltage">' + esc(ratingLabel(row.kv)) + '</td>' +
       '<td data-label="Capacity note">' + capacityCell(row) + '</td>' +
+      '<td data-label="Availability">' + (flag ? availability.markHtml(flag, row.slug) : '—') + '</td>' +
       '<td data-label="Verified"><a class="btn btn-amber btn-sm sc-cta" href="' + esc(row.payHref) + '" data-verified-manufacturer-pay="1" data-track="supplier_verify_started" data-track-manufacturer="' + esc(row.name) + '">Get Verified $499/yr</a></td>' +
       '</tr>';
   }).join('');
@@ -188,6 +192,7 @@ function spareMain() {
     '<p class="lead">These rows are the tier-2 manufacturers in the site directory that already have a profile. Region is the census region for the profile country. Voltage is the highest voltage that profile already states. A missing value is shown as a dash.</p>' +
     '<p>The capacity column is a public, dated note of a capacity expansion, a new plant, or an announced lead time. ' +
     withNotes + ' of ' + ROWS.length + ' rows have such a note. A dash means no note of that kind is on file. The dash is not a statement that the factory is open or full. Ordering ahead is covered in the <a href="/buy-early/">free buying guide</a>. Typical lead times by class and region are on the <a href="/lead-times/">grid lead-time tracker</a>.</p>' +
+    '<p>The availability column is filled only when an official page states that units are available now, remanufactured, or in stock. A dash means no source of that kind is on file. The Shippable units chip keeps the rows that have one of those flags.</p>' +
     '<!--tp-ad-slot-->' +
     '<form class="filters" id="sc-filters" action="/spare-capacity/" method="get">' +
     '<label>Region<select id="sc-region" name="region"><option value="">Any</option>' + regionOptions + '</select></label>' +
@@ -198,9 +203,11 @@ function spareMain() {
     '<option value="171-400">171–400 kV</option>' +
     '<option value="gt400">Above 400 kV</option></select></label>' +
     '</form>' +
+    '<p class="avail-filters">' + availability.chipHtml() + '</p>' +
+    availability.emptyHtml() +
     '<p class="sc-count" id="sc-count" aria-live="polite">Showing ' + ROWS.length + ' of ' + ROWS.length + '</p>' +
     '<p class="sc-empty" id="sc-empty">No manufacturer matches these filters.</p>' +
-    '<div class="tbl"><table class="sc-table"><thead><tr><th>Manufacturer</th><th>Region</th><th>Country</th><th>Highest voltage</th><th>Capacity note</th><th>Verified</th></tr></thead><tbody id="sc-body">' +
+    '<div class="tbl"><table class="sc-table"><thead><tr><th>Manufacturer</th><th>Region</th><th>Country</th><th>Highest voltage</th><th>Capacity note</th><th>Availability</th><th>Verified</th></tr></thead><tbody id="sc-body">' +
     body + '</tbody></table></div>' +
     '<p class="src">Get Verified uses the existing Verified Manufacturer checkout at $499 for 12 months. After payment, the return path is the <a href="/claim-profile.html?paid=verified_manufacturer#claimForm">claim form</a>.</p>' +
     '<script>' + FILTER_JS + '</script>';
@@ -211,6 +218,8 @@ const FILTER_JS = [
   'var region=document.getElementById("sc-region");',
   'var country=document.getElementById("sc-country");',
   'var rating=document.getElementById("sc-rating");',
+  'var ship=document.querySelector("[data-shippable-filter=\\"1\\"]");',
+  'var shipEmpty=document.getElementById("avail-empty");',
   'var rows=[].slice.call(document.querySelectorAll("#sc-body tr"));',
   'var count=document.getElementById("sc-count");',
   'var empty=document.getElementById("sc-empty");',
@@ -229,6 +238,7 @@ const FILTER_JS = [
   'var keep=country.value;',
   'var allowed={};',
   'rows.forEach(function(row){',
+  'if(ship&&ship.getAttribute("aria-pressed")==="true"&&row.getAttribute("data-shippable")!=="1")return;',
   'if(region.value&&row.getAttribute("data-region")!==region.value)return;',
   'allowed[row.getAttribute("data-country")]=1;',
   '});',
@@ -246,15 +256,22 @@ const FILTER_JS = [
   'if(region.value&&row.getAttribute("data-region")!==region.value)ok=false;',
   'if(country.value&&row.getAttribute("data-country")!==country.value)ok=false;',
   'if(!inRating(row.getAttribute("data-kv"),rating.value))ok=false;',
+  'if(ship&&ship.getAttribute("aria-pressed")==="true"&&row.getAttribute("data-shippable")!=="1")ok=false;',
   'row.hidden=!ok;',
   'if(ok)shown++;',
   '});',
   'count.textContent="Showing "+shown+" of "+rows.length;',
   'empty.style.display=shown? "none":"block";',
+  'if(shipEmpty)shipEmpty.hidden=!(ship&&ship.getAttribute("aria-pressed")==="true"&&shown===0);',
   '}',
   'region.addEventListener("change",function(){syncCountries();apply();});',
   'country.addEventListener("change",apply);',
   'rating.addEventListener("change",apply);',
+  'if(ship)ship.addEventListener("click",function(){',
+  'var on=ship.getAttribute("aria-pressed")==="true";',
+  'ship.setAttribute("aria-pressed",on?"false":"true");',
+  'syncCountries();apply();',
+  '});',
   'syncCountries();apply();',
   '})();'
 ].join('');
