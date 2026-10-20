@@ -17,6 +17,7 @@ function check(cond, msg) {
 const xml = fs.readFileSync(path.join(__dirname, '..', 'sitemap.xml'), 'utf8');
 const shape = split.wellFormedErrors(xml);
 check(shape.length === 0, 'committed sitemap.xml is well-formed XML' + (shape[0] ? ' (' + shape[0] + ')' : ''));
+check(xml.indexOf('encoding="UTF-8"') !== -1, 'committed sitemap declares UTF-8');
 check(/<urlset[\s>]/.test(xml), 'committed sitemap is a urlset');
 check(!/<sitemapindex[\s>]/.test(xml), 'committed sitemap is not an index yet');
 check(Buffer.byteLength(xml, 'utf8') < split.BYTE_LIMIT, 'committed sitemap is under the byte cap');
