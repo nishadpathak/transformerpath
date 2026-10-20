@@ -20,13 +20,15 @@ const csv = require('../lib/csv-exports');
 const dgaDownload = require('../lib/dga-download');
 const templateDownload = require('../lib/template-download');
 const jobPostReturn = require('../lib/job-post-return');
+const buyerGuideDownload = require('../lib/buyer-guide-download');
 const { listingProduct } = require('../lib/paid-listings');
 
 const DIGITAL = {
   dga_report: dgaDownload,
   report_template: templateDownload,
   template_bundle: templateDownload,
-  commissioning_job_post: jobPostReturn
+  commissioning_job_post: jobPostReturn,
+  buyer_guide_us_eu: buyerGuideDownload
 };
 
 function digitalOf(name) {
