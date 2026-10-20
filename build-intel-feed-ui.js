@@ -18,6 +18,7 @@ const fs = require('fs');
 const path = require('path');
 const { lookup, parseSourceName } = require('./lib/intel-source-normalizer');
 const { closedReason, itemIsActive } = require('./lib/intel-activity');
+const { classifyEquipmentScope, scopeHeadline, scopeBadgeText } = require('./lib/intel-equipment-scope');
 const { H2_PROJECTS_ACTIVE, H2_HISTORICAL_REFERENCE } = require('./build-intel-audit');
 
 const TODAY_STR = new Date().toISOString().slice(0, 10);
@@ -192,8 +193,24 @@ const materialsDoc = readJson('data/materials-latest.json', { rows: [] });
 const posts = [];
 const seen = Object.create(null);
 
-function pushPost(p) {
+function applyEquipmentScope(p, sourceItem) {
+  const classified = classifyEquipmentScope(Object.assign({}, sourceItem || {}, {
+    title: (sourceItem && sourceItem.title) || p.headline,
+    snippet: (sourceItem && (sourceItem.snippet || sourceItem.scope)) || p.soWhat,
+    value: (sourceItem && sourceItem.value) || p.value,
+    equipment_scope: (sourceItem && sourceItem.equipment_scope) || p.equipment_scope
+  }));
+  p.equipment_scope = classified.equipment_scope;
+  p.transformer_scope_confirmed = classified.transformer_scope_confirmed;
+  p.scope_basis = classified.scope_basis;
+  p.headline = scopeHeadline(p.headline, classified.equipment_scope);
+  p.scopeBadge = scopeBadgeText(classified);
+  return p;
+}
+
+function pushPost(p, sourceItem) {
   if (!p || !p.headline) return;
+  applyEquipmentScope(p, sourceItem);
   const key = (p.url || p.headline).toLowerCase();
   if (seen[key]) return;
   seen[key] = true;
@@ -253,7 +270,9 @@ function fromCurated(it, desk, regionKey, regionLabel, defaultCls) {
   };
   if (it.evidence_grade) post.evidenceGrade = it.evidence_grade;
   if (it.evidence_note) post.evidenceNote = it.evidence_note;
-  pushPost(post);
+  if (it.equipment_scope) post.equipment_scope = it.equipment_scope;
+  if (it.transformer_scope_confirmed != null) post.transformer_scope_confirmed = it.transformer_scope_confirmed;
+  pushPost(post, it);
 }
 
 // 1. Regional & Grid Curated Items
@@ -289,8 +308,9 @@ PIPELINE.forEach(function (p) {
     datePrecision: dated.precision,
     url: p.url || '',
     provenance: provenanceOf({ src: p.src, url: p.url }, registry, 'CURATED'),
-    buyer: p.buyer || ''
-  });
+    buyer: p.buyer || '',
+    equipment_scope: p.equipment_scope
+  }, p);
 });
 
 // 3. Active Tenders
@@ -323,8 +343,9 @@ PIPELINE.forEach(function (p) {
     datePrecision: dated.precision,
     url: t.official_procurement_url || (t.source_urls && t.source_urls[0]) || '',
     provenance: provenanceOf({ src: t.source, url: t.official_procurement_url || (t.source_urls && t.source_urls[0]) }, registry, 'CURATED'),
-    buyer: t.buyer || t.utility || ''
-  });
+    buyer: t.buyer || t.utility || '',
+    equipment_scope: t.equipment_scope
+  }, t);
 });
 
 // 4. EPC & Equipment Awards
@@ -356,8 +377,9 @@ PIPELINE.forEach(function (p) {
     datePrecision: dated.precision,
     url: (a.source_urls && a.source_urls[0]) || '',
     provenance: provenanceOf({ src: a.source, url: a.source_urls && a.source_urls[0] }, registry, 'CURATED'),
-    buyer: a.buyer || a.utility || ''
-  });
+    buyer: a.buyer || a.utility || '',
+    equipment_scope: a.equipment_scope
+  }, a);
 });
 
 // 5. Factory Expansions & Manufacturing Capacity
@@ -394,8 +416,9 @@ FACTORIES.forEach(function (f) {
     datePrecision: dated.precision,
     url: f.src || '',
     provenance: provenanceOf({ src: f.backer, url: f.src }, registry, 'CURATED'),
-    buyer: f.backer || ''
-  });
+    buyer: f.backer || '',
+    equipment_scope: f.equipment_scope
+  }, f);
 });
 
 // 6. Materials & Raw Material Indices
@@ -453,8 +476,9 @@ Object.keys(TECH_WATCH || {}).forEach(function (cat) {
       datePrecision: dated.precision,
       url: it.url || '',
       provenance: provenanceOf(it, registry, 'CURATED'),
-      buyer: ''
-    });
+      buyer: '',
+      equipment_scope: it.equipment_scope
+    }, it);
   });
 });
 
@@ -587,6 +611,9 @@ function ssrCard(p) {
   const evidence = (p.evidenceGrade && p.evidenceGrade !== 'CONFIRMED' && p.evidenceGrade !== p.cls)
     ? '<span class="cls-badge cls-' + esc(p.evidenceGrade) + '" title="Supported evidence — not yet fully verified. No live portal adapter has confirmed this item.">' + esc(p.evidenceGrade) + '</span>'
     : '';
+  const scopeBadge = p.scopeBadge
+    ? '<span class="scope-badge" data-equipment-scope="' + esc(p.equipment_scope) + '">' + esc(p.scopeBadge) + '</span>'
+    : '';
   const evidenceNote = p.evidenceNote
     ? '<p class="intel-evidence-note" style="font-size:.76rem;color:#f0c14a;margin:6px 0 0">' + esc(p.evidenceNote) + '</p>'
     : '';
@@ -596,7 +623,7 @@ function ssrCard(p) {
   const href = p.url || ('intel.html#p-' + p.id);
   const relevance = p.currentRelevance ? '<div class="intel-relevance" style="font-size:.76rem;color:var(--muted);margin-top:6px;padding-top:4px;border-top:1px dashed var(--border)"><b>Current Relevance:</b> ' + esc(p.currentRelevance) + '</div>' : '';
 
-  return '<article class="intel-post" id="p-' + esc(p.id) + '" data-desk="' + esc(p.desk) + '" data-region="' + esc(p.region) + '" data-age="' + esc(p.ageTier) + '">' +
+  return '<article class="intel-post" id="p-' + esc(p.id) + '" data-desk="' + esc(p.desk) + '" data-region="' + esc(p.region) + '" data-age="' + esc(p.ageTier) + '" data-scope="' + esc(p.equipment_scope || '') + '" data-transformer-scope="' + (p.transformer_scope_confirmed ? 'confirmed' : 'not-confirmed') + '">' +
     '<div class="intel-avatar" aria-hidden="true">TP</div>' +
     '<div class="intel-body">' +
     '<div class="intel-byline"><strong>TransformerPath</strong><span class="intel-handle">@intel</span>' +
@@ -605,7 +632,7 @@ function ssrCard(p) {
     (p.soWhat ? '<p class="intel-sowhat">' + esc(p.soWhat) + '</p>' : '') +
     evidenceNote +
     relevance +
-    '<div class="intel-meta">' + [cls, evidence, prov].filter(Boolean).join(' ') +
+    '<div class="intel-meta">' + [cls, evidence, scopeBadge, prov].filter(Boolean).join(' ') +
     '<span class="intel-region">' + esc(p.region) + '</span>' +
     (p.value ? '<span class="val">' + esc(p.value) + '</span>' : '') +
     '<span class="src">' + esc(p.sourceName || p.src) + '</span></div>' +
