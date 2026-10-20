@@ -11,4 +11,5 @@ jobs:
     - uses: actions/setup-node@v4
       with:
         node-version: '22'
+    - run: npm ci
     - run: node tests/buyer-guide-us-eu.test.js
