@@ -88,7 +88,7 @@ const ROOT_JS = [
 const ROOT_OTHER = [
   'robots.txt', 'ads.txt', 'sitemap.xml', 'feed.xml', 'intel-feed.xml',
   'manifest.webmanifest', 'favicon.ico', 'apple-touch-icon.png',
-  '_redirects',
+  '_redirects', '_headers',
 ];
 
 // Root stylesheets — small and fully enumerable.
@@ -181,6 +181,11 @@ for (const f of fs.readdirSync('.')) {
 for (const f of ROOT_JS.concat(ROOT_OTHER)) {
   if (fs.existsSync(f)) { copyFile(f, f); count++; }
   else console.warn('  ! allowlisted but missing: ' + f);
+}
+
+// Partial sitemaps exist only after the URL or byte cap in lib/sitemap-split.js.
+for (const f of fs.readdirSync('.')) {
+  if (/^sitemap-\d+\.xml$/.test(f)) { copyFile(f, f); count++; }
 }
 
 // 3. Public directories. data/ is NOT copied wholesale — only JSON files

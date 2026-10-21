@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Transformer Market Intelligence — TransformerPath</title>
+<title>Daily Transformer Intel — tenders, awards &amp; prices | TransformerPath</title>
 <meta name="description" content="Daily transformer industry intelligence: market news by region, power grid projects, tenders, copper and CRGO material rates, new factories, green hydrogen and technology watch.">
 <link rel="canonical" href="https://transformerpath.com/intel.html">
 <link rel="preconnect" href="https://ipapi.co" crossorigin>
@@ -107,6 +107,11 @@ a.plain:hover { text-decoration:underline; }
 .intel-wire { margin:18px 0; border:1px dashed var(--border); border-radius:12px; padding:10px 12px; background:var(--bg); }
 .intel-wire summary { cursor:pointer; font-size:12.5px; color:var(--muted); font-weight:700; }
 .intel-wire-item { font-size:13px; padding:8px 0; border-bottom:1px solid var(--border); }
+.intel-region-nav{position:sticky;top:4.6rem;z-index:40;display:flex;gap:8px;overflow:auto;padding:8px 0;margin:0 0 12px;background:var(--bg,#0b1524);border-bottom:1px solid var(--border)}
+.intel-region-nav a{white-space:nowrap;font-size:12px;font-weight:700;color:var(--accent);text-decoration:none;border:1px solid var(--border);border-radius:999px;padding:4px 10px}
+.region-block{margin:0 0 8px}
+.region-block > summary.region-h{cursor:pointer;scroll-margin-top:8.2rem}
+.intel-value-filter{font-size:12px;font-weight:700;color:var(--text);display:inline-flex;align-items:center;gap:6px}
 @media (max-width:520px) {
   .intel-app { padding:0 12px 32px; }
   .intel-headline { font-size:14.5px; }
@@ -114,14 +119,14 @@ a.plain:hover { text-decoration:underline; }
 }
 </style>
 <script src="consent.js" defer></script>
-<meta property="og:title" content="Transformer Market Intelligence — TransformerPath">
+<meta property="og:title" content="Daily Transformer Intel — tenders, awards &amp; prices | TransformerPath">
 <meta property="og:description" content="Daily transformer industry intelligence: market news by region, power grid projects, tenders, copper and CRGO material rates, new factories, green hydrogen and technology watch.">
 <meta property="og:url" content="https://transformerpath.com/intel.html">
 <meta property="og:image" content="https://transformerpath.com/brand/og-image.png">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TransformerPath">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Transformer Market Intelligence — TransformerPath">
+<meta name="twitter:title" content="Daily Transformer Intel — tenders, awards &amp; prices | TransformerPath">
 <meta name="twitter:description" content="Daily transformer industry intelligence: market news by region, power grid projects, tenders, copper and CRGO material rates, new factories, green hydrogen and technology watch.">
 <meta name="twitter:image" content="https://transformerpath.com/brand/og-image.png">
     <link rel="stylesheet" href="tp-nav.css?v=14">
@@ -221,6 +226,21 @@ a.plain:hover { text-decoration:underline; }
   <div class="container">
     <h1>Daily <span>Intel</span></h1>
     <p>Curated global transformer market briefings, utility tenders, material benchmarks, and factory intelligence.</p>
+    <form class="intel-subscribe" name="subscribe" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" data-track-form="newsletter_signup" style="margin:16px 0 0;max-width:36rem;padding:14px 16px;border:1px solid rgba(255,255,255,.16);border-radius:12px;background:rgba(8,18,30,.55)">
+      <input type="hidden" name="form-name" value="subscribe">
+      <p hidden><label>Leave empty: <input name="bot-field"></label></p>
+      <input type="hidden" name="name" value="">
+      <input type="hidden" name="company" value="">
+      <input type="hidden" name="interest" value="">
+      <p style="margin:0 0 6px;font-weight:800">Free Daily Brief</p>
+      <p style="margin:0 0 10px;color:#c4d2e4;font-size:.92rem">Uses the existing Daily Brief form. Nothing is stored by a new list.</p>
+      <label for="intel-brief-email" style="font-size:.82rem;font-weight:700">Email</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px">
+        <input id="intel-brief-email" type="email" name="email" required placeholder="you@company.com" autocomplete="email" style="flex:1;min-width:12rem;padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.2);background:#0d1b2e;color:#fff">
+        <button type="submit" style="padding:8px 14px;border:0;border-radius:8px;background:#f5a623;color:#0d1b2e;font-weight:800;cursor:pointer">Subscribe</button>
+      </div>
+      <p style="margin:8px 0 0;font-size:.82rem"><a href="subscribe.html" style="color:#f5a623">All fields</a> · <a href="privacy.html" style="color:#f5a623">Privacy</a></p>
+    </form>
   </div>
 </section>
 
@@ -541,6 +561,7 @@ a.plain:hover { text-decoration:underline; }
     <button id="sort-date" class="sort-btn active" data-sort="date" style="padding:4px 10px; border-radius:6px; font-size:12px; cursor:pointer">Date</button>
     <button id="sort-value" class="sort-btn" data-sort="value" style="padding:4px 10px; border-radius:6px; font-size:12px; cursor:pointer">Value</button>
     <button id="sort-region" class="sort-btn" data-sort="region" style="padding:4px 10px; border-radius:6px; font-size:12px; cursor:pointer">Your Region</button>
+    <label class="intel-value-filter"><input type="checkbox" id="intel-value-filter"> Has stated contract value</label>
   </div>
 
   <div class="panel intel-legacy-panel" id="panel-news" role="tabpanel" aria-labelledby="tab-news" tabindex="0">
@@ -2528,5 +2549,84 @@ tabList.forEach((t, idx) => {
 <script src="tp-freshness.js?v=8" defer></script>
 <script src="tp-watchlist.js?v=8" defer></script>
 <script src="tp-feedback.js?v=8" defer></script>
+<script>
+/* Region headings become collapsible sections with a sticky anchor nav.
+   "Has stated contract value" shows only cards that already carry a .val. */
+(function () {
+  function slug(text, n) {
+    var base = String(text || 'region').split('(')[0].trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'region';
+    return 'region-' + base + '-' + n;
+  }
+  function groupRegions() {
+    var heads = Array.prototype.slice.call(document.querySelectorAll('.region-h'));
+    heads.forEach(function (head, n) {
+      if (head.closest && head.closest('details.region-block')) return;
+      var details = document.createElement('details');
+      details.className = 'region-block';
+      details.open = true;
+      var summary = document.createElement('summary');
+      summary.className = 'region-h';
+      summary.id = slug(head.textContent, n);
+      while (head.firstChild) summary.appendChild(head.firstChild);
+      var sib = head.nextElementSibling;
+      head.parentNode.insertBefore(details, head);
+      details.appendChild(summary);
+      head.parentNode.removeChild(head);
+      while (sib && !sib.classList.contains('region-h')) {
+        var next = sib.nextElementSibling;
+        details.appendChild(sib);
+        sib = next;
+      }
+    });
+  }
+  function buildNav() {
+    var blocks = document.querySelectorAll('details.region-block');
+    if (!blocks.length || document.getElementById('intel-region-nav')) return;
+    var nav = document.createElement('nav');
+    nav.id = 'intel-region-nav';
+    nav.className = 'intel-region-nav';
+    nav.setAttribute('aria-label', 'Regions');
+    Array.prototype.forEach.call(blocks, function (block) {
+      var summary = block.querySelector('summary');
+      if (!summary) return;
+      var a = document.createElement('a');
+      a.href = '#' + summary.id;
+      a.textContent = summary.textContent.trim().split('(')[0].trim();
+      nav.appendChild(a);
+    });
+    var firstPanel = blocks[0].closest ? (blocks[0].closest('.panel') || blocks[0]) : blocks[0];
+    firstPanel.parentNode.insertBefore(nav, firstPanel);
+  }
+  function applyValueFilter() {
+    var box = document.getElementById('intel-value-filter');
+    var on = !!(box && box.checked);
+    Array.prototype.forEach.call(document.querySelectorAll('.intel-post, .region-block .card'), function (el) {
+      el.hidden = on && !el.querySelector('.val');
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('details.region-block'), function (block) {
+      var cards = block.querySelectorAll('.card');
+      var any = false;
+      Array.prototype.forEach.call(cards, function (card) { if (!card.hidden) any = true; });
+      block.hidden = on && cards.length > 0 && !any;
+    });
+    var nav = document.getElementById('intel-region-nav');
+    if (!nav) return;
+    Array.prototype.forEach.call(nav.querySelectorAll('a'), function (a) {
+      var id = (a.getAttribute('href') || '').slice(1);
+      var target = id && document.getElementById(id);
+      var block = target && target.closest ? target.closest('details.region-block') : null;
+      a.hidden = !!(block && block.hidden);
+    });
+  }
+  function boot() {
+    groupRegions();
+    buildNav();
+    var box = document.getElementById('intel-value-filter');
+    if (box) box.addEventListener('change', applyValueFilter);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+})();
+</script>
 </body>
 </html>

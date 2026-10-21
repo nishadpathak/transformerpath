@@ -108,7 +108,7 @@
 #glanceCards .g-region { display:inline-block; font-size:.7rem; font-weight:800; text-transform:uppercase; letter-spacing:.6px; color:var(--accent); background:#fef3c7; padding:3px 10px; border-radius:999px; margin-bottom:10px; }
 #glanceCards .g-val { color:var(--accent); font-weight:800; font-size:.85rem; }
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","name":"TransformerPath","url":"https://transformerpath.com/","logo":"https://transformerpath.com/brand/og-image.png","slogan":"The global knowledge and intelligence platform for transformers","description":"Industry intelligence, engineering, manufacturers, markets and tools for the global transformer industry — daily transformer market intelligence, a worldwide manufacturer directory, an electrical-grid census, industry events and engineering tools."},{"@type":"WebSite","name":"TransformerPath","url":"https://transformerpath.com/","potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://transformerpath.com/search.html?q={search_term_string}"},"query-input":"required name=search_term_string"}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","name":"TransformerPath","email":"hello@transformerpath.com","url":"https://transformerpath.com/","logo":"https://transformerpath.com/brand/og-image.png","slogan":"The global knowledge and intelligence platform for transformers","description":"Industry intelligence, engineering, manufacturers, markets and tools for the global transformer industry — daily transformer market intelligence, a worldwide manufacturer directory, an electrical-grid census, industry events and engineering tools."},{"@type":"WebSite","name":"TransformerPath","url":"https://transformerpath.com/","potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://transformerpath.com/search.html?q={search_term_string}"},"query-input":"required name=search_term_string"}}]}</script>
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#0d1b2e">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -239,14 +239,14 @@
   display:flex; align-items:center; padding:96px 0 72px;
   pointer-events:none;
 }
-.hero-stage__copy{ max-width:34rem; pointer-events:auto; }
+.hero-stage__copy{ max-width:min(32rem, 38vw); pointer-events:auto; }
 .hero-stage__brand{
-  margin:0 0 18px; font-family:Syne,sans-serif; font-weight:800; font-size:clamp(1.7rem,3.4vw,2.35rem);
+  margin:0 0 18px; font-family:Syne,system-ui,sans-serif; font-weight:800; font-size:clamp(1.7rem,3.4vw,2.35rem);
   letter-spacing:-.03em; line-height:1; color:#fff;
 }
 .hero-stage__brand span{ color:var(--hs-amber); }
 .hero-stage h1{
-  margin:0 0 10px; font-family:Syne,sans-serif; font-weight:800;
+  margin:0 0 10px; font-family:Syne,system-ui,sans-serif; font-weight:800;
   font-size:clamp(1.85rem,3.1vw,2.45rem); line-height:1.12; letter-spacing:-.03em; max-width:100%;
 }
 .hero-stage__3dsub{
@@ -304,6 +304,7 @@
   .hero-stage__inner{ padding-top:28px; }
   .hero-stage__hint{ display:none; }
   .hero-stage h1{ max-width:none; }
+  .hero-stage__copy{ max-width:40rem; }
   .hero-stage__lead{ max-width:36ch; }
 }
 /* Phones already show the full wordmark banner. This stage's poster is a
@@ -1021,7 +1022,7 @@ Latest sourced item <b>20 Oct 2026</b>. Dates are on the source, not this visit.
 <a class="card reveal in" data-glance-date="2026-10-20" data-glance-headline="EG.D awards HV instrument transformers to Kones CZ" href="/intel.html#p-grid-ted-europa-eu-en-notice-detail-725869-2026"><span class="g-region">Europe</span><h3 style="font-size:1rem">EG.D awards HV instrument transformers to Kones CZ</h3><p class="g-val" style="margin-top:8px">20 Oct 2026 · CZK 644,099</p></a>
 <!--/GLANCE:cards-->
     </div>
-    <p class="glance-materials" style="margin-top:18px;color:var(--muted);font-size:.9rem"><b style="color:var(--text)">Prices &amp; materials</b> — Copper <b data-m="copper" style="color:var(--accent)">≈$14,170/t</b> (LME 3-month reference); Aluminium <b data-m="aluminium" style="color:var(--accent)">≈$3,182/t</b> (LME reference). <b>Historical market reference</b> — not a live feed. CRGO has <b>no public daily index</b> — it varies by market, grade, thickness and commercial basis, so it is shown as <b>GRADE NOT SPECIFIED</b> rather than a single comparable number. <span data-m-obs="copper">prices as of 20 Aug 2026, updated when a new LME official settlement is recorded</span> · <a href="materials.html" style="color:var(--accent);font-weight:600">Materials &rarr;</a></p>
+    <p class="glance-materials" style="margin-top:18px;color:var(--muted);font-size:.9rem"><b style="color:var(--text)">Prices &amp; materials</b> — Copper <b data-m="copper" style="color:var(--accent)">≈$14,170/t</b> (LME 3-month reference); Aluminium <b data-m="aluminium" style="color:var(--accent)">≈$3,182/t</b> (LME reference). <b>Historical market reference</b> — not a live feed. <a href="/materials/crgo/#crgo-why">CRGO: no public daily index — see why</a>. <span data-m-obs="copper">prices as of 20 Aug 2026, updated when a new LME official settlement is recorded</span> · <a href="materials.html" style="color:var(--accent);font-weight:600">Materials &rarr;</a></p>
     <p class="glance-copper-note" style="margin-top:8px;color:var(--muted);font-size:.82rem">The $14,170/t figure is the LME 3-month official settlement on 20 Aug 2026. Daily Intel also keeps the LME cash settlement of $14,545/t on 14 Aug 2026. Those are two LME series on two dates, not two readings of one price.</p>
     <p style="text-align:center; margin-top:30px" class="reveal"><a href="/intel.html" class="btn btn-amber">Open the Intel feed →</a></p>
   </div>
@@ -1093,7 +1094,18 @@ Latest sourced item <b>20 Oct 2026</b>. Dates are on the source, not this visit.
 <script>
 /* ====== DAILY-UPDATED TICKER (the daily intel job rewrites this one line) ====== */
 const TICKER = "<b>Copper</b> $<span data-m='copper' data-m-type='num'>14,170</span>/t LME 3-mo ref · obs. <span data-m-obs='copper'>2026-08-20</span> &nbsp; <b>Aluminium</b> $<span data-m='aluminium' data-m-type='num'>3,182</span>/t LME 3-mo ref · obs. <span data-m-obs='aluminium'>2026-08-20</span> &nbsp; <b>UK</b> National Grid appoints Laing O’Rourke to the North West London Upgrade — 400 kV works at Letchmore Heath, Elstree, St John’s Wood &nbsp; <b>Malaysia</b> MN Holdings takes two TNB awards in a week — RM122.31m 132 kV cable (Penang) and RM71.02m 2 × 45 MVA intake (Cameron Highlands) &nbsp; <b>Tanzania</b> 2,115 MW / $2.814bn Julius Nyerere hydropower plant fully commissioned &nbsp; <b>India</b> 35,670 MVA of ≥220 kV transformation commissioned Apr–Jul FY27 &nbsp; <b>UAE</b> six DEWA transformer-adjacent tenders — closed 25 Aug – 17 Sep 2026";
-(function(){var tk=document.getElementById('ticker'); if(tk) tk.innerHTML = TICKER + ' &nbsp;&nbsp;&nbsp; ' + TICKER + ' &nbsp;&nbsp;&nbsp; ';})();
+function paintTicker(){
+  var tk=document.getElementById('ticker');
+  if(!tk || tk.dataset.ready) return;
+  tk.dataset.ready='1';
+  tk.innerHTML = TICKER + ' &nbsp;&nbsp;&nbsp; ' + TICKER + ' &nbsp;&nbsp;&nbsp; ';
+}
+function deferTicker(){
+  if('requestIdleCallback' in window) requestIdleCallback(paintTicker,{timeout:2000});
+  else setTimeout(paintTicker, 1);
+}
+if(document.readyState==='complete') deferTicker();
+else window.addEventListener('load', deferTicker);
 // Count-up KPIs (fire when the row scrolls into view)
 function countUp(el){
   const target = +el.dataset.count, suffix = el.dataset.suffix || '';

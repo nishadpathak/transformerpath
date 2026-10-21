@@ -11,6 +11,7 @@ const path = require('path');
 const dates = require('./lib/sitemap-dates');
 const { permanentMap } = require('./lib/site-redirects');
 const manufacturerSitemap = require('./lib/manufacturer-sitemap');
+const sitemapSplit = require('./lib/sitemap-split');
 
 const ROOT = __dirname;
 const SKIP_DIR = new Set([
@@ -126,18 +127,21 @@ function writeSitemap() {
     doc.pages = pages;
     fs.writeFileSync(cachePath, JSON.stringify(doc, null, 2) + '\n');
   }
-  const sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
-    unique.map(function (r) {
-      return '  <url><loc>' + r.loc + '</loc><lastmod>' + r.lastmod + '</lastmod></url>';
-    }).join('\n') +
-    '\n</urlset>\n';
-  fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), sm);
+  const planned = sitemapSplit.plan(unique);
+  const keep = {};
+  planned.files.forEach(function (file) { keep[file.name] = 1; });
+  planned.files.forEach(function (file) {
+    fs.writeFileSync(path.join(ROOT, file.name), file.xml);
+  });
+  fs.readdirSync(ROOT).forEach(function (name) {
+    if (/^sitemap-\d+\.xml$/.test(name) && !keep[name]) fs.unlinkSync(path.join(ROOT, name));
+  });
   const distinct = {};
   unique.forEach(function (r) { distinct[r.lastmod] = 1; });
   if (redirectSkips) console.log('sitemap skipped ' + redirectSkips + ' URLs that 301');
   if (groupSkips) console.log('sitemap skipped ' + groupSkips + ' group or alias profiles that are not census companies');
   manufacturerSitemap.writeReport(ROOT);
-  console.log('sitemap.xml wrote ' + unique.length + ' URLs, ' + Object.keys(distinct).length + ' distinct lastmod dates');
+  console.log('sitemap.xml wrote ' + unique.length + ' URLs as ' + planned.kind + ' (' + planned.files.length + ' file' + (planned.files.length === 1 ? '' : 's') + '), ' + Object.keys(distinct).length + ' distinct lastmod dates');
   return unique.length;
 }
 
