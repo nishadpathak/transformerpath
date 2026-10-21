@@ -159,6 +159,9 @@ check('Shell profile places the badge in the heading', h1.indexOf('class="event-
 const board = fs.readFileSync(path.join(root, 'manufacturers.html'), 'utf8');
 check('the manufacturer directory badges a participant beside the name link', board.indexOf('ABB (China) Co., LTD</a><a class="event-badge"') >= 0);
 check('the directory page loads the badge script', board.indexOf('/event-badges.js') >= 0);
+const sharedName = badges.htmlFor({ slug: 'mitsubishi-electric', name: 'Mitsubishi Electric' });
+const separateUnit = badges.htmlFor({ slug: 'mitsubishi-electric-power-modules', name: 'Mitsubishi Electric' });
+check('a shared display name does not copy another profile’s badge', sharedName.indexOf('ECCE Europe') < 0 && separateUnit.indexOf('ECCE Europe 2026') >= 0);
 
 if (failed) {
   console.error('EVENT BADGES FAILED (' + failed + ')');

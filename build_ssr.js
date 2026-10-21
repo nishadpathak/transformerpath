@@ -262,8 +262,15 @@ function renderEvents(html) {
      same event can show two different date-confidence states on one page. Only
      confirmed-date events are eligible for the strip at all, because every card in
      it carries a relative-time claim. */
+  function listingGroup(ev) {
+    const t = String((ev && ev.type) || '').toLowerCase();
+    if (t === 'webinar') return 'webinar';
+    if (t === 'workshop') return 'workshop';
+    return 'calendar';
+  }
   const upEligible = EVENTS.filter((ev) => {
     if (!isUpcoming(ev, TODAY)) return false;
+    if (listingGroup(ev) !== 'calendar') return false;
     const st = evState(ev).st;
     return st.key === 'CONFIRMED_UPCOMING' || st.key === 'LIVE';
   });
@@ -278,12 +285,13 @@ function renderEvents(html) {
     return `<div class="up-next-card"><span class="up-next-abs">${fmt(ev.s)} → ${fmt(ev.e)}</span><h3>${esc(ev.n)}</h3><span class="up-next-rel" data-rel="${esc(ev.s)}" data-rel-end="${esc(ev.e)}">${lbl}</span><div class="venue">📍 ${esc(ev.v)} — ${esc(ev.c)}, ${esc(ev.co)}</div><a class="btn btn-amber btn-sm" href="${esc(ev.u)}" target="_blank" rel="noopener">View →</a> <a class="btn btn-outline btn-sm" href="${esc('map.html?layer=events&q=' + encodeURIComponent(ev.n))}">View on map</a></div>`;
   }).join('\n');
 
-  const cards = list.map((ev) => {
+  function eventCard(ev) {
     const soon = allowsCalendar(ev) && ev.s && new Date(ev.s) > now && (new Date(ev.s) - now) / 86400000 <= 31;
     const trav = travelable(ev);
     const dateLbl = dateLine(ev);
     const venueLbl = `${esc(ev.v) || 'Not yet published by organiser'} — ${esc(ev.c) || 'Not yet published by organiser'}, ${esc(ev.co)}`;
-    return `<div class="intel-item event-card" data-start="${esc(ev.s)}" data-end="${esc(ev.e)}">
+    const kind = listingGroup(ev);
+    return `<div class="intel-item event-card" data-start="${esc(ev.s)}" data-end="${esc(ev.e)}" data-event-kind="${kind}">
       <h3>${esc(ev.n)}${soon ? '<span class="badge-soon">Soon</span>' : ''}${badgeHTML(ev)}</h3>
       <div class="dates">${dateLbl}${relLabel(ev)}</div>
       <div class="venue">📍 ${venueLbl}${esc(ev.r) ? ' · ' + esc(ev.r) : ''}</div>
@@ -296,7 +304,14 @@ function renderEvents(html) {
         ${icsHref(ev) ? `<a class="btn btn-outline btn-sm" data-aff="calendar" data-ev="${esc(ev.n)}" href="${esc(icsHref(ev))}">📅 Add</a>` : ''}
       </div>
     </div>`;
-  }).join('\n');
+  }
+  const GROUP_HEAD = { workshop: 'Workshops', webinar: 'Webinars' };
+  const cards = ['calendar', 'workshop', 'webinar'].map((kind) => {
+    const rows = list.filter((ev) => listingGroup(ev) === kind);
+    if (!rows.length) return '';
+    const head = GROUP_HEAD[kind] ? `<h2 class="event-group">${GROUP_HEAD[kind]}</h2>\n` : '';
+    return head + rows.map(eventCard).join('\n');
+  }).filter(Boolean).join('\n');
 
   html = inject(html, '<div id="grid">', 'events-grid', cards);
   html = inject(html, '<div id="upNext" class="up-next" aria-label="Upcoming events">', 'events-upnext', upNext);
@@ -327,8 +342,10 @@ function renderEvents(html) {
       startDate: ev.s,
       endDate: ev.e,
       eventStatus: 'https://schema.org/EventScheduled',
-      eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-      location: {
+      eventAttendanceMode: listingGroup(ev) === 'webinar' ? 'https://schema.org/OnlineEventAttendanceMode' : 'https://schema.org/OfflineEventAttendanceMode',
+      location: listingGroup(ev) === 'webinar'
+        ? { '@type': 'VirtualLocation', url: ev.u }
+        : {
         '@type': 'Place',
         name: ev.v,
         address: {
@@ -348,7 +365,10 @@ function renderEvents(html) {
   html = html.replace(/const EVENTS\s*=\s*\[[\s\S]*?\];/m, 'const EVENTS = ' + JSON.stringify(EVENTS) + ';');
 
   const past = EVENTS.filter((ev) => ev.end && ev.end < TODAY && ev.research_status !== 'REJECTED_NO_EVIDENCE').slice(-30).reverse();
-  const pastHtml = past.map((ev) => '<div class="intel-item event-card"><h3>' + esc(ev.n) + ' <span class="badge-unc">Completed</span></h3><div class="dates">' + esc(dateLine(ev)) + '</div><div class="venue">' + esc(ev.v || 'Not yet published by organiser') + '</div></div>').join('\n');
+  const pastHtml = past.map((ev) => {
+    const label = ev.date_status === 'PROJECTED' ? 'not confirmed' : 'Completed';
+    return '<div class="intel-item event-card"><h3>' + esc(ev.n) + ' <span class="badge-unc">' + label + '</span></h3><div class="dates">' + esc(dateLine(ev)) + '</div><div class="venue">' + esc(ev.v || 'Not yet published by organiser') + '</div></div>';
+  }).join('\n');
   html = injectById(html, 'pastGrid', pastHtml);
 
   return { page: html, records: list.length };
