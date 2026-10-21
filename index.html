@@ -239,14 +239,14 @@
   display:flex; align-items:center; padding:96px 0 72px;
   pointer-events:none;
 }
-.hero-stage__copy{ max-width:34rem; pointer-events:auto; }
+.hero-stage__copy{ max-width:min(32rem, 38vw); pointer-events:auto; }
 .hero-stage__brand{
-  margin:0 0 18px; font-family:Syne,sans-serif; font-weight:800; font-size:clamp(1.7rem,3.4vw,2.35rem);
+  margin:0 0 18px; font-family:Syne,system-ui,sans-serif; font-weight:800; font-size:clamp(1.7rem,3.4vw,2.35rem);
   letter-spacing:-.03em; line-height:1; color:#fff;
 }
 .hero-stage__brand span{ color:var(--hs-amber); }
 .hero-stage h1{
-  margin:0 0 10px; font-family:Syne,sans-serif; font-weight:800;
+  margin:0 0 10px; font-family:Syne,system-ui,sans-serif; font-weight:800;
   font-size:clamp(1.85rem,3.1vw,2.45rem); line-height:1.12; letter-spacing:-.03em; max-width:100%;
 }
 .hero-stage__3dsub{
@@ -304,6 +304,7 @@
   .hero-stage__inner{ padding-top:28px; }
   .hero-stage__hint{ display:none; }
   .hero-stage h1{ max-width:none; }
+  .hero-stage__copy{ max-width:40rem; }
   .hero-stage__lead{ max-width:36ch; }
 }
 /* Phones already show the full wordmark banner. This stage's poster is a
