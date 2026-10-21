@@ -57,6 +57,7 @@ function run() {
       else if (u.indexOf('company-slugs.json') >= 0) body = JSON.parse(fs.readFileSync(path.join(root, 'data/company-slugs.json'), 'utf8'));
       else if (u.indexOf('manufacturer-tiers.json') >= 0) body = tiers;
       else if (u.indexOf('sourced-spec-fields.json') >= 0) body = specs;
+      else if (u.indexOf('profile-claims-public.json') >= 0) body = JSON.parse(fs.readFileSync(path.join(root, 'data/profile-claims-public.json'), 'utf8'));
       else if (u.indexOf('site-stats.json') >= 0) body = stats;
       if (!body) return Promise.resolve({ ok: false, json: function () { return Promise.resolve([]); } });
       return Promise.resolve({ ok: true, json: function () { return Promise.resolve(body); } });
@@ -124,6 +125,37 @@ function run() {
   const testBoard = ui.nodes.board.innerHTML;
   check('short-circuit filter keeps a sourced test record', testBoard.indexOf('Danish Power') >= 0 || testBoard.indexOf('Astor Enerji') >= 0);
   check('short-circuit filter hides cooling-only Classic', testBoard.indexOf('Classic Transformers') < 0);
+  check('evidence legend separates verified facts from company declarations', html.indexOf('id="evidenceLegend"') !== -1 && html.indexOf('Verified facts and company declarations are labelled separately') !== -1);
+  function collect() {
+    let board = '';
+    let guard = 0;
+    ui.context.page = 1;
+    ui.context.render();
+    while (guard < 40) {
+      guard++;
+      board += ui.nodes.board.innerHTML;
+      if (ui.nodes.board.innerHTML.indexOf('data-pg="next"') < 0 || ui.nodes.board.innerHTML.indexOf('data-pg="next" disabled') >= 0) break;
+      ui.context.page += 1;
+      ui.context.render();
+    }
+    return board;
+  }
+  ui.nodes.fTest.value = '';
+  ui.nodes.fEvidence.value = 'company-declared';
+  let declaredBoard = collect();
+  check('company-declared filter keeps Virginia Transformer', declaredBoard.indexOf('Virginia Transformer Corp') >= 0);
+  check('company-declared filter hides a maker with no sourced claim', declaredBoard.indexOf('Howard Industries (Howard Power Solutions)') < 0);
+  check('company-declared row is labelled', declaredBoard.indexOf('data-evidence="company-declared"') >= 0);
+  ui.nodes.fEvidence.value = 'verified';
+  let verifiedBoard = collect();
+  check('verified-only filter hides a company declaration', verifiedBoard.indexOf('Virginia Transformer Corp') < 0);
+  ui.nodes.fEvidence.value = 'company-declared';
+  ui.nodes.fKv.value = '525';
+  let both = collect();
+  check('525 kV plus company-declared keeps Virginia', both.indexOf('Virginia Transformer Corp') >= 0);
+  ui.nodes.fEvidence.value = 'verified';
+  let bothVerified = collect();
+  check('525 kV plus verified-only hides the company declaration', bothVerified.indexOf('Virginia Transformer Corp') < 0);
   if (failed) {
     console.error('DIRECTORY SPEC FILTERS FAILED (' + failed + ')');
     process.exit(1);

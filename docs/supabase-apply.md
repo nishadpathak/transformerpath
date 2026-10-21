@@ -19,6 +19,12 @@ The SQL is `supabase/migrations/20261016150000_payments_tables.sql`. It uses `cr
 
 Row level security is enabled on all three tables. Authenticated users can `select` their own `entitlements` rows (`user_id = auth.uid()`). There is no insert, update, or delete policy for `anon` or `authenticated`. The webhook uses the service role, which bypasses row level security.
 
+## Supplier Qualification Passport
+
+`supabase/migrations/20261021130000_supplier_passport.sql` adds the passport, its claims, private documents, buyer grants, and component-availability drafts. Apply it after the workspace and student-access migrations. It reuses `auth.users`, `profiles`, `touch_updated_at()`, `workspace_admins`, and `is_workspace_admin()`.
+
+Anon cannot read these tables. A granted buyer can read a passport and its verified or company-declared claims, and documents marked `buyer_granted`. A `private` document stays with the supplier and a workspace admin. A supplier edit of a verified claim is kept in `pending_value_text` until an admin calls `apply_supplier_claim_review`. The public pages stay on “coming soon” while `data/feature-flags.json` has `supplier_passport` and `component_availability` set to false. No price column is on these tables.
+
 ## Drift the migration does not copy
 
 - `sql/paid_listings.sql` previously allowed only `verified_manufacturer` and `featured_event`. The webhook also stores `featured_exhibitor`, `hosted_webinar`, `job_standard`, `job_featured`, `job_bundle_5`, `rfq_lead`, `rfq_lead_pro`, and `supplier_pro`. The status check is unchanged (`paid_pending_verification`, `verified`, `rejected`, `refunded`). The `id uuid` primary key from that script is kept; the webhook upserts on `session_id`.

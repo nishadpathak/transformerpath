@@ -61,6 +61,9 @@ const FILES_FROM_MIXED_DIRS = [
   'lib/rfq-leads.js',           // RFQ consent, redaction, and the 5-supplier cap
   'lib/provenance-badge.js',    // shared provenance badge, loaded by public pages
   'lib/listing-media.js',       // Verified logo, catalogue PDF and photo gallery
+  'lib/profile-claims.js',      // Structured manufacturer claims, empty field is an em dash
+  'lib/supplier-passport.js',   // Passport form, off unless the flag is on
+  'lib/component-availability.js', // Availability listings, off unless the flag is on
   'lib/saved-design.js',        // calculator save/open snapshot helper
   'lib/dga-interpret.js',       // free DGA interpreter; the PDF is built in the function
   'lib/commissioning-jobs.js',  // HV/MV board filter; payment does not publish a row

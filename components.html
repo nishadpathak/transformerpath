@@ -189,6 +189,28 @@
     </div>
   </div>
 
+  <section id="component-availability" data-component-availability="off" style="margin:0 0 22px;padding:14px 16px;border:1px solid var(--border);border-radius:12px;background:var(--card)">
+    <h2 style="margin:0 0 6px;font-size:1.15rem">Component availability</h2>
+    <p id="availability-soon">Coming soon. A listing will show category, specs, a stated quantity and unit, dispatch country, earliest shipment, and minimum order. Verified facts and company declarations are labelled separately. An empty field is —. A listing is not a stock guarantee. <a href="component-availability.html">Supplier form</a>.</p>
+    <div id="availability-filters" hidden>
+      <label for="availability-spec">Spec</label>
+      <input id="availability-spec" aria-label="Spec">
+      <label for="availability-category">Category</label>
+      <input id="availability-category" aria-label="Category">
+      <label for="availability-dispatch">Dispatch country</label>
+      <input id="availability-dispatch" aria-label="Dispatch country">
+      <label for="availability-moq">Maximum minimum order</label>
+      <input id="availability-moq" aria-label="Maximum minimum order">
+      <label for="availability-evidence">Evidence</label>
+      <select id="availability-evidence" aria-label="Evidence status">
+        <option value="">Verified facts and company declarations</option>
+        <option value="verified">Verified facts only</option>
+        <option value="company-declared">Company-declared only</option>
+      </select>
+    </div>
+    <div id="availability-board"></div>
+  </section>
+
   <div class="cat-pills-bar" id="catPillsBar">
     <button class="cat-pill-btn active" data-cat="">All 21 Categories</button>
   </div>
@@ -419,6 +441,7 @@ const COMPONENTS = {
   ["Control & Cable Accessories","Lugs, terminal blocks, auxiliary relays, MCBs, wiring looms."]]
 };
 </script>
+<script src="/lib/component-availability.js" defer></script>
 <script src="analytics.js" defer></script>
 </body>
 </html>
