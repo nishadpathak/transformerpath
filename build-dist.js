@@ -183,6 +183,11 @@ for (const f of ROOT_JS.concat(ROOT_OTHER)) {
   else console.warn('  ! allowlisted but missing: ' + f);
 }
 
+// Partial sitemaps exist only after the URL or byte cap in lib/sitemap-split.js.
+for (const f of fs.readdirSync('.')) {
+  if (/^sitemap-\d+\.xml$/.test(f)) { copyFile(f, f); count++; }
+}
+
 // 3. Public directories. data/ is NOT copied wholesale — only JSON files
 // that shipped HTML/JS actually reference (see step 5).
 for (const d of DIRS) count += copyDir(d);

@@ -8,6 +8,7 @@
 const fs = require('fs');
 const path = require('path');
 const { fileForLoc } = require('../check-sitemap');
+const { decodeXml } = require('../lib/sitemap-split');
 
 const JOBS_PATH = '/commissioning-jobs/';
 const JOBS_BUTTON = 'Post a job, $199';
@@ -15,6 +16,25 @@ const JOBS_BUY = 'https://buy.stripe.com/4gMeV62lO9xz9g4fdMfYY0U';
 
 function locPath(loc) {
   return new URL(loc).pathname;
+}
+
+function rawLocs(xml) {
+  return (xml.match(/<loc>([^<]+)<\/loc>/g) || []).map(function (row) {
+    return decodeXml(row.replace(/<\/?loc>/g, ''));
+  });
+}
+
+function pageLocs(xml, distRoot) {
+  const locs = rawLocs(xml);
+  if (!/<sitemapindex[\s>]/.test(xml)) return locs;
+  const pages = [];
+  locs.forEach(function (loc) {
+    const name = path.posix.basename(new URL(loc).pathname);
+    const file = path.join(distRoot, name);
+    if (!fs.existsSync(file)) return;
+    pages.push.apply(pages, pageLocs(fs.readFileSync(file, 'utf8'), distRoot));
+  });
+  return pages;
 }
 
 function auditDistSitemap(distRoot, opts) {
@@ -25,9 +45,7 @@ function auditDistSitemap(distRoot, opts) {
   const xmlPath = path.join(root, 'sitemap.xml');
   if (!fs.existsSync(xmlPath)) return ['dist has no sitemap.xml'];
   const xml = fs.readFileSync(xmlPath, 'utf8');
-  const locs = (xml.match(/<loc>([^<]+)<\/loc>/g) || []).map(function (row) {
-    return row.replace(/<\/?loc>/g, '');
-  });
+  const locs = pageLocs(xml, root);
   if (!locs.length) errors.push('dist sitemap has no <loc>');
   let jobsListed = false;
   let jobsFile = '';
@@ -65,7 +83,7 @@ if (require.main === module) {
     if (errors.length > 40) console.error('  … and ' + (errors.length - 40) + ' more');
     process.exit(1);
   }
-  const count = (fs.readFileSync(path.join(dist, 'sitemap.xml'), 'utf8').match(/<loc>/g) || []).length;
+  const count = pageLocs(fs.readFileSync(path.join(dist, 'sitemap.xml'), 'utf8'), dist).length;
   console.log('DIST SITEMAP CHECK OK — ' + count + ' URLs are files in dist');
 }
 
