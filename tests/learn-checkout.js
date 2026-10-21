@@ -28,7 +28,8 @@ plans.forEach(function (row) {
 });
 check(learn.indexOf('No auto-renewal') !== -1, 'learn.html says there is no auto-renewal');
 check(learn.indexOf('self-serve') !== -1, 'learn.html says access is self-serve');
-check(learn.indexOf('no live teaching, webinars, or personal review') !== -1, 'learn.html declines live teaching and personal review');
+check(learn.indexOf('no live teaching, and no personal review') !== -1, 'learn.html declines live teaching and personal review');
+check(!/webinar/i.test(learn), 'learn.html does not use the banned public word');
 check(learn.indexOf('Compare 3 plans') === -1 && learn.indexOf('See team pricing') === -1, 'the old pricing-page buttons are replaced');
 check(learn.indexOf('5kQ00c3pS8tv9g4fdMfYY00') === -1, 'learn.html does not use the redirected fork checkout');
 if (failed) process.exit(1);
