@@ -172,6 +172,43 @@ check('homepage tender tooltip matches the tender total', titleAll && Number(tit
 const paid = JSON.parse(fs.readFileSync('data/paid-listings.json', 'utf8'));
 check('no paid verified listing is on file', !(paid.listings || []).some(function (row) { return row && row.status === 'verified'; }));
 
+const brasil = makers.find(function (c) { return c.slug === 'hitachi-energy-brasil'; });
+check('Hitachi Energy Brasil does not carry the 500,000 MVA group figure', brasil && !brasil.reported_mva, brasil && brasil.reported_mva);
+check('Hitachi Energy Brasil does not carry the 1200 kV group figure', brasil && !brasil.reported_voltage, brasil && brasil.reported_voltage);
+check('Hitachi Energy Brasil says the group figures are not its rating', brasil && /not a sourced rating for this site/.test((brasil.sources && brasil.sources.capability_note) || ''));
+const hitachiHq = makers.find(function (c) { return c.name === 'Hitachi Energy (global HQ)'; });
+check('the Hitachi group record still has the 500,000 MVA filing', hitachiHq && /500,000/.test(String(hitachiHq.reported_mva || '')));
+check('Hitachi Energy Brasil headquarters is not the Zurich group office', !brasil || !/Zurich|Switzerland/.test(String(brasil.headquarters || '')));
+
+const facilities = JSON.parse(fs.readFileSync('data/facilities.json', 'utf8'));
+const publicPlants = (facilities.facilities || []).filter(function (f) { return f && f.public_count; });
+check('public plant count matches the facility file', facilities.public_count === publicPlants.length, facilities.public_count + ' vs ' + publicPlants.length);
+const brasilDilovasi = publicPlants.filter(function (f) {
+  return /hitachi-energy-brasil/.test(f.id || '') && /dilovas/i.test((f.city || '') + (f.facility_name || ''));
+});
+check('Dilovası is not counted again under Hitachi Energy Brasil', brasilDilovasi.length === 0, String(brasilDilovasi.length));
+const dilovasiKept = publicPlants.filter(function (f) { return /dilovas/i.test((f.city || '') + (f.id || '')); });
+check('Dilovası is still counted once', dilovasiKept.length === 1, dilovasiKept.map(function (f) { return f.id; }).join(', '));
+const turkiyePage = fs.readFileSync('markets/turkiye/index.html', 'utf8');
+check('Türkiye market does not list the Brasil copy of Dilovası', turkiyePage.indexOf('Hitachi Energy Brasil — Dilovası') < 0 && turkiyePage.indexOf('Hitachi Energy Brasil — Kocaeli') < 0);
+const brasilPage = fs.readFileSync('manufacturers/hitachi-energy-brasil/index.html', 'utf8');
+check('Brasil profile does not show 500,000 MVA', !/500,000/.test(brasilPage));
+check('Brasil profile does not show 1200 kV as its rating', !/1200 kV/.test(brasilPage));
+
+['ge-vernova-hvdc-transformers', 'ge-vernova-grid-solutions', 'ge-vernova-tandd-india'].forEach(function (slug) {
+  const row = makers.find(function (c) { return c.slug === slug; });
+  check(slug + ' does not carry the 350,000 MVA group figure', row && !row.reported_mva, row && row.reported_mva);
+  check(slug + ' does not carry the 550 kV group figure', row && !row.reported_voltage, row && row.reported_voltage);
+  check(slug + ' says the group filing is not its rating', row && /not a sourced rating for this site/.test((row.sources && row.sources.capability_note) || ''));
+  const page = fs.readFileSync('manufacturers/' + slug + '/index.html', 'utf8');
+  check(slug + ' profile does not show 350,000 MVA', !/350,000/.test(page));
+  check(slug + ' profile does not show 550 kV as its rating', !/550 kV/.test(page));
+});
+const geGroup = fs.readFileSync('manufacturers/ge-vernova/index.html', 'utf8');
+check('the GE Vernova group profile still shows the 350,000 MVA filing', /350,000/.test(geGroup));
+const hico = makers.find(function (c) { return c.name === 'HICO America (Hyosung)'; });
+check('HICO America keeps its only published Greensburg filing', hico && /75,000/.test(String(hico.reported_mva || '')), hico && hico.reported_mva);
+
 if (failed) {
   console.error('DATA CORRECTNESS AUDIT FAILED (' + failed + ')');
   process.exit(1);

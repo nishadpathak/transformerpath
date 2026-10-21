@@ -18,7 +18,7 @@ function check(label, pass, detail) {
 }
 
 console.log('=== VERIFIED TICK RULES ===');
-const TITLE = /^Verified · Source: .+ · checked \d{1,2} [A-Za-z]{3,9} \d{4}$/;
+const TITLE = /^Sourced · Source: .+ · checked \d{1,2} [A-Za-z]{3,9} \d{4}$/;
 check('no source url renders nothing', badge.provenanceBadge({ confidence: 'HIGH', source_type: 'organiser site', checked_at: '2026-10-14' }) === '');
 check('no check date renders nothing', badge.provenanceBadge({ confidence: 'HIGH', source_type: 'official source', source_url: 'https://example.com/official' }) === '');
 check('non-http url renders nothing', badge.eventBadge({ date_status: 'CONFIRMED', source_url: 'javascript:alert(1)', source_checked_at: '2026-10-14' }) === '');
@@ -31,7 +31,7 @@ const ev = badge.eventBadge({
   source_checked_at: '2026-10-14'
 });
 const evTitle = (ev.match(/title="([^"]*)"/) || [])[1];
-check('confirmed event is a verified tick', ev.indexOf('aria-label="Verified"') >= 0 && ev.indexOf('<svg') >= 0, ev);
+check('confirmed event is a sourced tick', ev.indexOf('aria-label="Sourced"') >= 0 && ev.indexOf('aria-label="Verified"') < 0 && ev.indexOf('<svg') >= 0, ev);
 check('confirmed event title names the source and date', TITLE.test(evTitle), evTitle);
 check('confirmed event tooltip links the organiser site', ev.indexOf('href="https://elecrama.com/"') >= 0 && ev.indexOf('>organiser site</a>') >= 0);
 check('confirmed event has no tier label', ev.indexOf('>Confirmed<') < 0 && ev.indexOf('tp-prov-tier') < 0);
@@ -73,7 +73,7 @@ check('directory listed renders nothing', listed === '');
 
 const checked = badge.directoryBadge({ website: 'https://www.trench-group.com/', verification_status: 'WEBSITE_CHECKED', verification_date: '2026-09-14' });
 const checkedTitle = (checked.match(/title="([^"]*)"/) || [])[1];
-check('website check with a date is a tick', checked.indexOf('aria-label="Verified"') >= 0 && checked.indexOf('href="https://www.trench-group.com/"') >= 0 && TITLE.test(checkedTitle), checkedTitle);
+check('website check with a date is a sourced tick, not a Verified badge', checked.indexOf('aria-label="Sourced"') >= 0 && checked.indexOf('aria-label="Verified"') < 0 && checked.indexOf('href="https://www.trench-group.com/"') >= 0 && TITLE.test(checkedTitle), checkedTitle);
 
 console.log('\n=== OLD LABEL STRINGS ===');
 const FORBIDDEN = [
@@ -122,7 +122,7 @@ check('no old trust labels in ' + files.length + ' html/js files', hits === 0, h
 
 console.log('\n=== TICK REQUIRES SOURCE AND CHECK DATE ===');
 const htmlFiles = files.filter(function (file) { return file.endsWith('.html'); });
-const tickRe = /<button type="button" class="tp-prov-tick" title="([^"]*)"[^>]*>[\s\S]*?aria-label="Verified"[\s\S]*?<a href="(https?:\/\/[^"]+)"/g;
+const tickRe = /<button type="button" class="tp-prov-tick" title="([^"]*)"[^>]*>[\s\S]*?aria-label="Sourced"[\s\S]*?<a href="(https?:\/\/[^"]+)"/g;
 let tickCount = 0;
 let bareTicks = 0;
 htmlFiles.forEach(function (file) {
@@ -132,7 +132,12 @@ htmlFiles.forEach(function (file) {
     bareTicks++;
     failed++;
   }
-  const labels = text.match(/aria-label="Verified"/g);
+  const labels = text.match(/aria-label="Sourced"/g);
+  if (/aria-label="Verified"/.test(text)) {
+    console.error('  ✗ ' + file + ' still uses a Verified tick. Verified is only the paid manufacturer badge.');
+    bareTicks++;
+    failed++;
+  }
   const n = labels ? labels.length : 0;
   if (!n) return;
   tickCount += n;

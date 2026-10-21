@@ -24,6 +24,7 @@
 const fs = require('fs');
 const aliases = require('./lib/company-aliases');
 const headOffice = require('./lib/head-office');
+const { dedupePublicPlants } = require('./lib/public-plant-count');
 
 function readJson(p, fb) {
   try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch (e) { return fb; }
@@ -393,6 +394,19 @@ distinctCompanies.forEach(function (co) {
 // Sort facilities deterministically
 facilitiesList.sort((a, b) => a.company_name.localeCompare(b.company_name) || a.facility_name.localeCompare(b.facility_name));
 
+// One public count per city and country inside a group. Sister copies remain
+// on file with duplicate_of set, and are not counted again.
+const plantCompanies = {};
+distinctCompanies.forEach(function (co) {
+  plantCompanies[co.id] = {
+    name: co.name,
+    website: co.website,
+    country: co.headquarters && co.headquarters.country
+  };
+});
+const plantCopies = dedupePublicPlants(facilitiesList, plantCompanies);
+if (plantCopies) console.log('   Sister-company plant copies left uncounted: ' + plantCopies);
+
 // ── 4. Write Canonical Datasets ─────────────────────────────────────────────
 fs.mkdirSync('data', { recursive: true });
 
@@ -409,7 +423,7 @@ const facilitiesPayload = {
   generated_at: new Date().toISOString(),
   count: facilitiesList.length,
   public_count: publicFacilities.length,
-  note: 'count = every explicit plant record (census city or sourced). public_count = plants with sourced evidence (produces, source_url, or INDEPENDENTLY_SOURCED). HQ-clone facilities are not created.',
+  note: 'count = every explicit plant record (census city or sourced). public_count = plants with sourced evidence, counted once per city and country inside a company group. A sister-company copy of the same plant is not counted again. HQ-clone facilities are not created.',
   facilities: facilitiesList
 };
 

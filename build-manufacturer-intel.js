@@ -32,7 +32,28 @@ let SLUGS = []; try { SLUGS = JSON.parse(fs.readFileSync('data/company-slugs.jso
 let TIERS = []; try { TIERS = JSON.parse(fs.readFileSync('data/manufacturer-tiers.json', 'utf8')); } catch (e) {}
 let PROV = []; try { PROV = JSON.parse(fs.readFileSync('data/manufacturer-provenance.json', 'utf8')); } catch (e) {}
 let DEV = []; try { DEV = JSON.parse(fs.readFileSync('data/company-developments.json', 'utf8')); } catch (e) {}
+const { canonicalCountry } = require('./lib/market-country');
 const norm = (s) => String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/&/g, ' and ').replace(/[^a-z0-9\u3400-\u9fff]+/g, ' ').trim().replace(/\s+/g, ' ');
+function sameCountry(a, b) {
+  const left = canonicalCountry(a);
+  const right = canonicalCountry(b);
+  return !!(left && right && left === right);
+}
+/* A headquarters string that names a different country than the census row
+ * is a copied group address. Do not store it on this site. */
+const PLACE_WORDS = ['united arab emirates', 'saudi arabia', 'south korea', 'south africa', 'united kingdom', 'united states', 'new zealand', 'czech republic', 'switzerland', 'germany', 'france', 'india', 'china', 'japan', 'turkiye', 'turkey', 'vietnam', 'indonesia', 'malaysia', 'italy', 'spain', 'brazil', 'brasil', 'chile', 'mexico', 'egypt', 'nigeria', 'australia', 'canada', 'sweden', 'norway', 'finland', 'poland', 'netherlands', 'belgium', 'austria', 'hungary', 'qatar', 'kuwait', 'bahrain', 'oman', 'pakistan', 'colombia', 'argentina', 'portugal', 'greece', 'denmark', 'ireland', 'romania', 'algeria', 'ethiopia', 'thailand', 'singapore', 'czechia', 'usa', 'uae', 'uk'];
+function countryNamedIn(text) {
+  const folded = ' ' + norm(text) + ' ';
+  const words = PLACE_WORDS.slice().sort(function (a, b) { return b.length - a.length; });
+  for (let i = 0; i < words.length; i++) {
+    if (folded.indexOf(' ' + words[i] + ' ') >= 0) return canonicalCountry(words[i]);
+  }
+  return '';
+}
+function foreignPlace(text, country) {
+  const named = countryNamedIn(text);
+  return !!(named && country && !sameCountry(named, country));
+}
 const EXHIBITOR_NEW = new Set((() => {
   try {
     const doc = JSON.parse(fs.readFileSync('data/ep-shanghai-2026-exhibitors.json', 'utf8'));
@@ -60,25 +81,25 @@ DEEP.forEach((x) => { DEEP_BY[norm(x.name)] = x; DEEP_BY[norm(x.slug)] = x; });
   if (row) DEEP_BY[norm(pair[1])] = row;
 });
 const TIER_BY = byName(TIERS, 'name');
-// Additional tier matching: a multinational census record (e.g. "Hitachi Energy
-// USA") should attach the group tier capability even when its name differs from
-// the tier leader name. Match by shared website domain first, then by name.
-function tierFor(name, website) {
-  if (TIER_BY[norm(name)]) return TIER_BY[norm(name)];
+// A shared website can find the group filing, but that filing is not a sourced
+// rating for a census row in another country. Exact name match keeps the
+// figures. A domain or loose match keeps them only when the row's country is
+// the tier country (the group record). Other countries get a note instead.
+function tierAttachment(name, website) {
+  if (TIER_BY[norm(name)]) return { tier: TIER_BY[norm(name)], how: 'name' };
   const dom = (website || '').replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0];
   if (dom) {
     const hit = TIERS.find((x) => {
       const xs = (x.site || '').replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0];
       return xs === dom;
     });
-    if (hit) return hit;
+    if (hit) return { tier: hit, how: 'domain' };
   }
-  // loose: tier leader name is contained in census name (e.g. "GE Vernova (HVDC...)")
   if (!/usa|canada|brasil|india|japan|spain|italy|türkiye|turkey|finland|colombia|malaysia|thailand|vietnam|china|egypt|saudi|transformers transformer co$/i.test(name)) {
     const sub = TIERS.find((x) => norm(name).indexOf(norm(x.name)) >= 0 || norm(x.name).indexOf(norm(name)) >= 0);
-    if (sub) return sub;
+    if (sub) return { tier: sub, how: 'loose' };
   }
-  return null;
+  return { tier: null, how: '' };
 }
 const PROV_BY = byName(PROV, 'name');
 const DEV_BY = byName(DEV, 'name');
@@ -96,6 +117,47 @@ MANUF.forEach((g) => {
     censusByName[key].push({ name: x[0], city: x[1] || '', url: x[2] || '', types: x[3] || '', country: g.country, region: g.region });
   });
 });
+
+function hostOf(url) {
+  return String(url || '').replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0];
+}
+
+/* The group filing stays on a census row in the tier's own country.
+ * A different country loses the copy when that home row exists.
+ * If no home row exists, a single other-country row keeps the figure
+ * (it is the only place the filing is published). Several other-country
+ * rows that only share the group domain do not each inherit it. */
+function tierHasHomeCensus(tier) {
+  if (!tier || !tier.country) return false;
+  const tierHost = hostOf(tier.site);
+  let found = false;
+  Object.keys(censusByName).forEach(function (key) {
+    (censusByName[key] || []).forEach(function (row) {
+      if (!sameCountry(row.country, tier.country)) return;
+      if (norm(row.name) === norm(tier.name)) found = true;
+      const rowHost = hostOf(row.url);
+      if (tierHost && rowHost && rowHost === tierHost) found = true;
+    });
+  });
+  return found;
+}
+
+/* Census rows outside the tier country that match the group website.
+ * A name match is the filing itself and is not counted. */
+function foreignDomainSiblings(tier) {
+  if (!tier) return 0;
+  const tierHost = hostOf(tier.site);
+  if (!tierHost) return 0;
+  let n = 0;
+  Object.keys(censusByName).forEach(function (key) {
+    (censusByName[key] || []).forEach(function (row) {
+      if (sameCountry(row.country, tier.country)) return;
+      if (norm(row.name) === norm(tier.name)) return;
+      if (hostOf(row.url) === tierHost) n++;
+    });
+  });
+  return n;
+}
 
 // Research-completeness components (internal).
 function completeness(rec) {
@@ -221,20 +283,29 @@ function applySourcedSpec(rec, spec) {
 const out = [];
 Object.keys(censusByName).forEach((name) => {
   const variants = censusByName[name];
-  const tier = tierFor(name, variants[0].url);
+  const attached = tierAttachment(name, variants[0].url);
+  const tier = attached.tier;
   const prov = PROV_BY[name] || null;
   const dev = DEV_BY[name] || null;
   const primary = variants[0];
 
   // The CG Power tier is the Bhopal and Malanpur filing, not every
-  // cgglobal.com census row. A different country must not inherit those figures.
-  const cgOtherPlant = !!(tier && norm(tier.name) === 'cg power' && norm(primary.country) !== norm(tier.country || ''));
+  // cgglobal.com census row. Any other group's filing is the same kind of
+  // envelope: it stays on the tier country and is not copied onto a site in
+  // a different country. A provenance row for this exact name can still fill
+  // a figure the group filing does not.
+  const cgOtherPlant = !!(tier && norm(tier.name) === 'cg power' && !sameCountry(primary.country, tier.country || ''));
+  const repeatedAbroad = foreignDomainSiblings(tier) > 1;
+  const groupCopy = !!(tier && attached.how !== 'name' && !sameCountry(primary.country, tier.country || '') && (tierHasHomeCensus(tier) || repeatedAbroad));
+  const otherSite = cgOtherPlant || groupCopy;
   const plantPlace = String(primary.city || primary.country || 'this').split(',')[0].trim();
+  const provVoltage = prov && prov.facts && prov.facts.some((f) => f.unit === 'kV') ? prov.facts.filter((f) => f.unit === 'kV').map((f) => f.value + ' kV').join(', ') : '';
+  const provMva = prov && prov.facts && prov.facts.some((f) => f.unit === 'MVA') ? prov.facts.filter((f) => f.unit === 'MVA').map((f) => f.value + ' MVA').join(', ') : '';
   // Reported capability — SEPARATE maxima, never combined.
-  const reported_voltage = cgOtherPlant ? '' : (tier && tier.kv ? tier.kv + ' kV' : (prov && prov.facts && prov.facts.some((f) => f.unit === 'kV') ? prov.facts.filter((f) => f.unit === 'kV').map((f) => f.value + ' kV').join(', ') : ''));
-  const reported_mva = cgOtherPlant ? '' : (tier && tier.mva ? tier.mva.toLocaleString('en-US') + ' MVA' : (prov && prov.facts && prov.facts.some((f) => f.unit === 'MVA') ? prov.facts.filter((f) => f.unit === 'MVA').map((f) => f.value + ' MVA').join(', ') : ''));
-  const certs = cgOtherPlant ? [] : ((tier && tier.certs) || []);
-  const testing = cgOtherPlant ? '' : ((tier && tier.note && /test/i.test(tier.note)) ? 'Reported' : '');
+  const reported_voltage = otherSite ? provVoltage : (tier && tier.kv ? tier.kv + ' kV' : provVoltage);
+  const reported_mva = otherSite ? provMva : (tier && tier.mva ? tier.mva.toLocaleString('en-US') + ' MVA' : provMva);
+  const certs = otherSite ? [] : ((tier && tier.certs) || []);
+  const testing = otherSite ? '' : ((tier && tier.note && /test/i.test(tier.note)) ? 'Reported' : '');
   const approvals = []; // not yet sourced; kept empty rather than invented
   const orders_dev = dev && dev.developments ? dev.developments.map((d) => ({ title: d.title, url: d.url, value: d.value || '', src: d.src || '' })) : [];
 
@@ -256,10 +327,12 @@ Object.keys(censusByName).forEach((name) => {
     corporate_events: orders_dev.length,
     sources: {
       website: primary.url || null,
-      capability_source: cgOtherPlant ? '' : (tier ? (tier.source || '') : (prov && prov.source ? prov.source : '')),
+      capability_source: otherSite ? ((provVoltage || provMva) && prov && prov.source ? prov.source : '') : (tier ? (tier.source || '') : (prov && prov.source ? prov.source : '')),
       capability_note: cgOtherPlant
         ? ('The CG Power annual report discloses the Bhopal and Malanpur, India plant figures. Those figures are not a sourced rating for the ' + plantPlace + ' plant, so they are not shown here.')
-        : (tier ? (tier.note || '') : ''),
+        : (groupCopy
+          ? ('The ' + tier.name + ' source (' + (tier.source || 'group filing') + ') describes a group envelope. Those figures are not a sourced rating for this site, so they are not shown here.')
+          : (tier ? (tier.note || '') : '')),
     },
     research_status: (audit && AUDIT_BY[norm(primary.name) + '|' + norm(primary.country)]) ? AUDIT_BY[norm(primary.name) + '|' + norm(primary.country)].status : 'ACTIVE_LIMITED_DATA',
     company_reported: false,
@@ -274,7 +347,11 @@ Object.keys(censusByName).forEach((name) => {
     : null;
   const deep = nameMatch || tierMatch;
   if (deep) {
-    if (deep.headquarters && !rec.headquarters) rec.headquarters = deep.headquarters.city;
+    // A tier-level research row carries the group head office. Copy it only
+    // onto the group record, and never when the string names another country.
+    const hqSource = nameMatch || (!groupCopy ? tierMatch : null);
+    const hqCity = hqSource && hqSource.headquarters ? (hqSource.headquarters.city || '') : '';
+    if (hqCity && !rec.headquarters && !foreignPlace(hqCity, rec.country)) rec.headquarters = hqCity;
     if (deep.transformer_products && deep.transformer_products.length) {
       const deepTypes = deep.transformer_products.map((p) => (p.type || '').toUpperCase()).filter(Boolean);
       // only add product categories we have not already normalised from census,
@@ -284,7 +361,8 @@ Object.keys(censusByName).forEach((name) => {
     if (nameMatch && nameMatch.factories && nameMatch.factories.length) {
       rec.factories = rec.factories.concat(nameMatch.factories.map((f) => ({ city: f.city, country: f.country, produces: f.produces || '', source_url: f.source_url || '', claim_type: f.claim_type || 'UNKNOWN' })));
     }
-    if (deep.notes) rec.research_notes = deep.notes;
+    if (nameMatch && nameMatch.notes) rec.research_notes = nameMatch.notes;
+    else if (!groupCopy && tierMatch && tierMatch.notes) rec.research_notes = tierMatch.notes;
   }
   rec.manufacturing_is_likely = !!rec.website && rec.products.length > 0;
   if (rec.slug && SPEC_BY_SLUG[rec.slug]) applySourcedSpec(rec, SPEC_BY_SLUG[rec.slug]);

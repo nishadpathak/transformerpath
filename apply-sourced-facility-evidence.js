@@ -6,8 +6,18 @@
 'use strict';
 const fs = require('fs');
 
+const { dedupePublicPlants } = require('./lib/public-plant-count');
 const evidence = JSON.parse(fs.readFileSync('data/sourced-facility-evidence.json', 'utf8'));
 const doc = JSON.parse(fs.readFileSync('data/facilities.json', 'utf8'));
+const companies = JSON.parse(fs.readFileSync('data/companies.json', 'utf8')).companies || [];
+const companyById = {};
+companies.forEach(function (company) {
+  companyById[company.id] = {
+    name: company.name,
+    website: company.website,
+    country: company.headquarters && company.headquarters.country
+  };
+});
 const byId = {};
 (doc.facilities || []).forEach(function (f) { if (f && f.id) byId[f.id] = f; });
 
@@ -37,6 +47,7 @@ if (missing.length) {
   process.exit(1);
 }
 
+const plantCopies = dedupePublicPlants(doc.facilities || [], companyById);
 doc.public_count = (doc.facilities || []).filter(function (f) { return f && f.public_count; }).length;
 fs.writeFileSync('data/facilities.json', JSON.stringify(doc, null, 2) + '\n');
-console.log('apply-sourced-facility-evidence: ' + applied + ' plants, public_count=' + doc.public_count);
+console.log('apply-sourced-facility-evidence: ' + applied + ' plants, public_count=' + doc.public_count + (plantCopies ? ', sister copies uncounted ' + plantCopies : ''));
