@@ -41,6 +41,9 @@ function itemObj(it) {
     (it.value ? ', value:"' + jstr(it.value) + '"' : '') +
     ', src:"' + jstr(it.src) + '", url:"' + jstr(it.url) + '"' +
     (it.cls ? ', cls:"' + jstr(it.cls) + '"' : '') +
+    (it.evidence_grade ? ', evidence_grade:"' + jstr(it.evidence_grade) + '"' : '') +
+    (it.evidence_note ? ', evidence_note:"' + jstr(it.evidence_note) + '"' : '') +
+    (it.equipment_scope ? ', equipment_scope:"' + jstr(it.equipment_scope) + '"' : '') +
     ', lang:"' + (it.lang || 'en') + '"' +
     (it.publication_date ? ', publication_date:"' + jstr(it.publication_date) + '"' : '') +
     (it.date_iso ? ', date_iso:"' + jstr(it.date_iso) + '"' : '') +
@@ -202,6 +205,8 @@ Object.keys(srcByRegion).forEach((region) => {
     if (it.publication_date) o.publication_date = it.publication_date;
     if (it.event_date) o.event_date = it.event_date;
     if (it.evidence_grade) o.evidence_grade = it.evidence_grade;
+    if (it.evidence_note) o.evidence_note = it.evidence_note;
+    if (it.equipment_scope) o.equipment_scope = it.equipment_scope;
     if (it.tender_watch === false) o.tender_watch = false;
     return o;
   }));
