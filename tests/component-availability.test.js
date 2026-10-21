@@ -74,6 +74,8 @@ const components = fs.readFileSync(path.join(root, 'components.html'), 'utf8');
 const sectionStart = components.indexOf('id="component-availability"');
 const section = sectionStart < 0 ? '' : components.slice(sectionStart, components.indexOf('</section>', sectionStart));
 check('component directory has an availability section', sectionStart !== -1);
+const componentBuild = fs.readFileSync(path.join(root, 'build-components.js'), 'utf8');
+check('component rebuild keeps the availability section', componentBuild.indexOf('id="component-availability"') !== -1 && componentBuild.indexOf('not a stock guarantee') !== -1 && componentBuild.indexOf('/lib/component-availability.js') !== -1);
 check('availability section is coming soon and does not guarantee stock', /coming soon/i.test(section) && section.indexOf('not a stock guarantee') !== -1 && section.indexOf('in stock') === -1 && section.indexOf('guaranteed') === -1 && section.indexOf('$') === -1);
 check('component directory uses the brand mailbox', components.indexOf('hello@transformerpath.com') !== -1 && !/do_not_contact/i.test(section));
 const availabilityPage = fs.readFileSync(path.join(root, 'component-availability.html'), 'utf8');
