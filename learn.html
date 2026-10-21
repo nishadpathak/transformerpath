@@ -66,6 +66,8 @@
 @media (max-width:520px){ .quiz-opts { grid-template-columns:1fr; } }
 .price-side { flex:1 1 16rem; min-width:0; max-width:100%; text-align:center; padding:10px 6px; }
 .price-side .plan-line { overflow-wrap:anywhere; }
+.price-side .learn-buy { display:flex; width:100%; margin-top:8px; white-space:normal; text-align:center; }
+.learn-team-buy { flex:1 1 16rem; min-width:0; white-space:normal; text-align:center; }
 @media (max-width:720px){ .price-side { flex-basis:100%; } }
 </style>
 <link rel="manifest" href="manifest.webmanifest">
@@ -74,7 +76,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="TransformerPath">
 
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Course", "name": "Transformer Design & Construction — Complete Engineering Course", "description": "The TransformerPath course: a 26-chapter design course plus a book-matched path through operations, diagnostics, manufacturing, components, protection, specials, site work, loading, repair, standards, asset management, the engineer handbook and HVDC.", "provider": {"@type": "Organization", "name": "TransformerPath", "url": "https://transformerpath.com/"}, "hasCourseInstance": {"@type": "CourseInstance", "courseMode": "online"}, "offers": {"@type": "Offer", "price": "199", "priceCurrency": "USD", "url": "https://buy.stripe.com/8x27sE3pS4dfak8c1AfYY0p", "availability": "https://schema.org/InStock", "description": "12 months access, one-time payment"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Course", "name": "Transformer Design & Construction — Complete Engineering Course", "description": "The TransformerPath course: a 26-chapter design course plus a book-matched path through operations, diagnostics, manufacturing, components, protection, specials, site work, loading, repair, standards, asset management, the engineer handbook and HVDC.", "provider": {"@type": "Organization", "name": "TransformerPath", "url": "https://transformerpath.com/"}, "hasCourseInstance": {"@type": "CourseInstance", "courseMode": "online"}, "offers": [{"@type": "Offer", "name": "Learning", "price": "199", "priceCurrency": "USD", "url": "https://buy.stripe.com/8x27sE3pS4dfak8c1AfYY0p", "availability": "https://schema.org/InStock", "description": "$199 one-time payment · 12 months access. No auto-renewal. Self-serve only."}, {"@type": "Offer", "name": "Engineering Pro", "price": "599", "priceCurrency": "USD", "url": "https://buy.stripe.com/fZu00c3pScJL1NC3v4fYY01", "availability": "https://schema.org/InStock", "description": "$599 one-time payment · 12 months access. No auto-renewal. Self-serve only."}, {"@type": "Offer", "name": "Engineering Team", "price": "1999", "priceCurrency": "USD", "url": "https://buy.stripe.com/aFacMY6C4aBD2RG2r0fYY02", "availability": "https://schema.org/InStock", "description": "$1,999 one-time payment · 12 months access. No auto-renewal. Self-serve only."}]}</script>
 <script src="consent.js" defer></script>
     <link rel="stylesheet" href="tp-nav.css?v=14">
   <link rel="stylesheet" href="tp-feedback.css?v=14">
@@ -196,7 +198,7 @@
         <div style="max-width:60ch">
           <span style="display:inline-block;background:var(--amber);color:var(--navy);font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.5px;padding:3px 10px;border-radius:999px;margin-bottom:10px">Premium</span>
           <h3 style="margin:0 0 6px">Design Engineer Track — 12 months access</h3>
-          <p style="color:var(--muted);margin:0 0 12px">One payment unlocks the entire learning platform:</p>
+          <p style="color:var(--muted);margin:0 0 12px">Each plan is a one-time payment for 12 months of self-serve access. No auto-renewal, no live teaching, webinars, or personal review.</p>
           <ul style="margin:0 0 6px 20px;padding:0;color:var(--text);font-size:.92rem;line-height:1.7">
             <li><b>All four levels</b> — Foundations, Distribution, Power Transformer and Specials &amp; Mastery</li>
             <li><b>All courses &amp; tools</b> — design course, tutorial, academy, 3D models, formulas and design calculators</li>
@@ -205,9 +207,13 @@
           </ul>
         </div>
         <div class="price-side">
-          <div style="font-size:2rem;font-weight:800;color:var(--accent)">$199<span style="font-size:.9rem;color:var(--muted);font-weight:600"> / 12 months</span></div>
-          <a class="btn btn-amber" href="pricing.html" style="margin-top:10px;display:inline-block">Compare 3 plans →</a>
-          <div class="plan-line" style="font-size:.75rem;color:var(--muted);margin-top:8px">Learning $199 · Engineering Pro $599 · Engineering Team $1,999</div>
+          <div style="font-size:.78rem;font-weight:800">Learning</div>
+          <a class="btn btn-amber learn-buy" href="https://buy.stripe.com/8x27sE3pS4dfak8c1AfYY0p" target="_blank" rel="noopener" data-track="learning_checkout_started" data-track-plan="Learning">$199 one-time payment · 12 months access</a>
+          <div style="font-size:.78rem;font-weight:800;margin-top:12px">Engineering Pro</div>
+          <a class="btn btn-amber learn-buy" href="https://buy.stripe.com/fZu00c3pScJL1NC3v4fYY01" target="_blank" rel="noopener" data-track="learning_checkout_started" data-track-plan="Engineering Pro">$599 one-time payment · 12 months access</a>
+          <div style="font-size:.78rem;font-weight:800;margin-top:12px">Engineering Team</div>
+          <a class="btn btn-amber learn-buy" href="https://buy.stripe.com/aFacMY6C4aBD2RG2r0fYY02" target="_blank" rel="noopener" data-track="learning_checkout_started" data-track-plan="Engineering Team">$1,999 one-time payment · 12 months access</a>
+          <div class="plan-line" style="font-size:.75rem;color:var(--muted);margin-top:8px">No auto-renewal · self-serve only</div>
         </div>
       </div>
     </div>
@@ -216,9 +222,9 @@
     <div class="card" style="margin-bottom:24px;display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:linear-gradient(135deg,var(--navy),#1b3a5c);color:#fff">
       <div style="max-width:58ch">
         <h3 style="color:#fff;margin:0 0 4px">🏢 A whole team on one plan?</h3>
-        <p style="color:#c4d2e4;margin:0">Engineering Team is a self-serve payment for 12 months of access. There is no live class and no custom training.</p>
+        <p style="color:#c4d2e4;margin:0">Engineering Team is a self-serve one-time payment for 12 months of access. No auto-renewal, no live class, no webinars, and no personal review.</p>
       </div>
-      <a class="btn btn-amber" href="pricing.html" style="flex:none">See team pricing →</a>
+      <a class="btn btn-amber learn-team-buy" href="https://buy.stripe.com/aFacMY6C4aBD2RG2r0fYY02" target="_blank" rel="noopener" data-track="learning_checkout_started" data-track-plan="Engineering Team">$1,999 one-time payment · 12 months access</a>
     </div>
 
     <!-- Flagship entry points: Grid Lab + 3D explorer + Tools Hub -->
