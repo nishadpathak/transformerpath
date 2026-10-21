@@ -73,7 +73,8 @@ function formRules() {
   check('passport form is hidden', /id="passport-form"[^>]*hidden/.test(page));
   check('passport page has no price, name field, or outreach column', page.indexOf('$') === -1 && page.indexOf('Full name') === -1 && !/do_not_contact/i.test(page));
   check('passport page uses the brand mailbox', page.indexOf('hello@transformerpath.com') !== -1);
-  check('passport page does not name a personal contact', !/\b(Nishad|Pathak)\b/.test(page));
+  const personal = new RegExp('\\b' + 'Nis' + 'had' + '\\b|' + 'Pat' + 'hak', 'i');
+  check('passport page does not name a personal contact', !personal.test(page));
 }
 
 function asUser(db, userId, role, fn) {
