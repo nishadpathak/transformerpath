@@ -21,9 +21,11 @@
 --   account_entitlements (plan_id, starts_at, expires_at, stripe_*).
 --   writeEntitlement writes public.entitlements: user_id, product, plan,
 --   access_start, access_end, status, plus created_at and updated_at.
--- * functions/entitle.js also inserts public.payments and upserts
---   entitlements on (email, product) with an email column. The webhook
---   does not. This migration does not add that table or column.
+-- * functions/entitle.js records paid listings on public.paid_listings and,
+--   when a profile id exists, upserts public.entitlements on
+--   (user_id, product). It does not write public.payments or an email
+--   column. Review fields and the customer select policy are in
+--   supabase/migrations/20261021120000_verified_manufacturer_review.sql.
 -- * supabase.js TP.getEntitlements reads profiles.plan, not this table.
 --
 -- Row level security is on. Authenticated users may SELECT their own

@@ -142,18 +142,19 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
       <div id="claimPaidBanner" style="display:none;background:#14365c;color:#fff;border-radius:10px;padding:12px 14px;margin:0 0 16px;font-size:.9rem;line-height:1.5">
         If you completed payment, submit the form below; we confirm payment before review.
       </div>
-      <p style="margin:0 0 8px"><a class="btn btn-amber" href="https://buy.stripe.com/4gMbIU7G8bFHak8d5EfYY05" data-verified-manufacturer-pay="1">Pay $499 one-time payment · covers 12 months</a></p>
-      <p class="paid-after-note" style="color:var(--muted);font-size:.82rem;margin:0 0 16px">After payment, return to this form and submit your company details. The badge appears only after review.</p>
+      <p class="paid-after-note" style="color:var(--muted);font-size:.82rem;margin:0 0 16px">Claim the company, then send identity and authorization, then pay. After payment, return to this form. The badge appears only after review.</p>
 
       <form name="claim-profile" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" id="claimForm" data-track-form="supplier_claim_submitted">
         <input type="hidden" name="form-name" value="claim-profile">
         <input type="hidden" name="payment_session" id="claimPaymentSession" value="">
         <p hidden><label>Leave this empty: <input name="bot-field"></label></p>
 
+        <p class="claim-note"><b>1. Claim.</b> Name the directory company. The listing does not move until a person checks it.</p>
         <label for="fld_company">Company Profile to Claim *</label>
         <input id="fld_company" type="text" name="company" required placeholder="e.g. Hitachi Energy, Voltamp Transformers, etc.">
         <p class="claim-note">Specify the canonical entity name as listed in the TransformerPath directory.</p>
 
+        <p class="claim-note"><b>2. Identity and authorization.</b> Identity and contact checked, not a product certification.</p>
         <div class="claim-grid">
           <div>
             <label for="fld_name">Your Full Name *</label>
@@ -208,6 +209,9 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
           I certify that I am a duly authorized employee or representative of this organization, and understand that all technical claims are verified before publication.
         </label>
 
+        <p class="claim-note"><b>3. Payment.</b> Verified Manufacturer is a $499 one-time payment · covers 12 months, with no auto-renewal. Identity and contact checked, not a product certification.</p>
+        <p style="margin:0 0 14px"><a class="btn btn-amber" href="https://buy.stripe.com/4gMbIU7G8bFHak8d5EfYY05" data-verified-manufacturer-pay="1">Pay $499 one-time payment · covers 12 months</a></p>
+
         <button class="btn btn-amber" type="submit" style="width:100%;padding:12px;font-size:.96rem;font-weight:700">Submit Profile Claim &rarr;</button>
         <p style="text-align:center;color:var(--muted);font-size:.8rem;margin-top:12px">Our directory research team reviews claims within 1 business day. Profiles are never automatically transferred.</p>
       </form>
@@ -215,7 +219,8 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
       <div id="claimThanks" style="display:none;text-align:center;padding:32px 16px">
         <div style="font-size:3rem">&#9989;</div>
         <h2 style="color:var(--ink);margin:8px 0">Profile Claim Received</h2>
-        <p style="color:var(--muted);max-width:480px;margin:0 auto 18px">Thank you. Your claim has been submitted to the TransformerPath moderation queue. We will verify your credentials against the corporate domain and confirm within 1 business day. The VERIFIED MANUFACTURER badge appears only after that review.</p>
+        <p style="color:var(--muted);max-width:480px;margin:0 auto 18px">Thank you. Your claim has been submitted to the TransformerPath moderation queue. We will verify your credentials against the corporate domain and confirm within 1 business day. The VERIFIED MANUFACTURER badge appears only after that review. Identity and contact checked, not a product certification.</p>
+        <a href="manufacturer-dashboard.html" class="btn btn-outline" style="display:inline-block;margin-right:8px">Manufacturer dashboard</a>
         <a href="directory.html" class="btn btn-outline" style="display:inline-block">Return to Directory &rarr;</a>
       </div>
 
@@ -234,6 +239,20 @@ form input:focus,form textarea:focus,form select:focus { outline:2px solid var(-
           f.addEventListener('submit', function(e){
             e.preventDefault();
             if (typeof f.checkValidity === 'function' && !f.checkValidity()){ f.reportValidity(); return; }
+            var sessionEl = document.getElementById('claimPaymentSession');
+            fetch('/.netlify/functions/verified-claim', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                session_id: sessionEl ? sessionEl.value : '',
+                company: (document.getElementById('fld_company') || {}).value || '',
+                position: (document.getElementById('fld_position') || {}).value || '',
+                email: (document.getElementById('fld_email') || {}).value || '',
+                website: (document.getElementById('fld_website') || {}).value || '',
+                proof: (document.getElementById('fld_proof') || {}).value || '',
+                consent: true
+              })
+            }).catch(function () {});
             var body = new URLSearchParams(new FormData(f)).toString();
             fetch('/', {method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body:body}).then(done).catch(done);
           });
