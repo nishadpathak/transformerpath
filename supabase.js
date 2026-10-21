@@ -438,6 +438,91 @@
         { onConflict: 'user_id' }).then(function (r) { if (r.error) throw r.error; return true; });
     };
 
+    /* Passport and availability drafts. Both stay off the public directory
+     * until a flag is on and a reviewer publishes a sourced row. A verified
+     * status is not sent from the supplier form. */
+    TP.saveSupplierPassport = function (draft) {
+      if (!guard()) return Promise.resolve(false);
+      if (!draft || !draft.passport) return Promise.resolve(false);
+      var row = {
+        owner_id: uid(),
+        company_slug: draft.passport.company_slug,
+        legal_name: draft.passport.legal_name,
+        registration_number: draft.passport.registration_number || null,
+        registration_country: draft.passport.registration_country || null,
+        factory_city: draft.passport.factory_city || null,
+        factory_country: draft.passport.factory_country || null,
+        manufacturing_evidence_url: draft.passport.manufacturing_evidence_url || null
+      };
+      return supabase.from('supplier_passports').upsert(row, { onConflict: 'owner_id' }).select('id').single()
+        .then(function (saved) {
+          if (saved.error) throw saved.error;
+          var id = saved.data.id;
+          return supabase.from('supplier_passport_claims').delete()
+            .eq('passport_id', id).eq('owner_id', uid()).neq('verification_status', 'verified')
+            .then(function (deleted) {
+              if (deleted.error) throw deleted.error;
+              var writes = (draft.claims || []).filter(function (claim) {
+                return claim && claim.verification_status !== 'verified';
+              }).map(function (claim) {
+                return supabase.from('supplier_passport_claims').insert({
+                  passport_id: id,
+                  owner_id: uid(),
+                  field_key: claim.field_key,
+                  value_text: claim.value_text,
+                  source_url: claim.source_url,
+                  expires_on: claim.expires_on,
+                  verification_status: 'company-declared'
+                });
+              });
+              if (draft.document && draft.document.storage_path) {
+                writes.push(supabase.from('supplier_passport_documents').insert({
+                  passport_id: id,
+                  owner_id: uid(),
+                  label: draft.document.label,
+                  storage_path: draft.document.storage_path,
+                  expires_on: draft.document.expires_on,
+                  visibility: 'private'
+                }));
+              }
+              if (draft.buyer_account) {
+                writes.push(supabase.from('supplier_passport_access').insert({
+                  passport_id: id,
+                  buyer_id: draft.buyer_account,
+                  granted_by: uid()
+                }));
+              }
+              return Promise.all(writes).then(function (results) {
+                results.forEach(function (result) { if (result && result.error) throw result.error; });
+                return true;
+              });
+            });
+        });
+    };
+    TP.saveComponentAvailability = function (row) {
+      if (!guard()) return Promise.resolve(false);
+      if (!row) return Promise.resolve(false);
+      return supabase.from('component_availability_listings').insert({
+        owner_id: uid(),
+        company_slug: row.company_slug,
+        category: row.category,
+        specs: row.specs || null,
+        availability: row.availability,
+        quantity: row.quantity == null || row.quantity === '' ? null : row.quantity,
+        unit: row.unit,
+        dispatch_country: row.dispatch_country,
+        earliest_shipment: row.earliest_shipment,
+        moq: row.moq == null || row.moq === '' ? null : row.moq,
+        verification_status: row.verification_status === 'verified' ? 'company-declared' : (row.verification_status || 'company-declared'),
+        last_confirmed: row.last_confirmed,
+        source_url: row.source_url,
+        published: false
+      }).then(function (result) {
+        if (result.error) throw result.error;
+        return true;
+      });
+    };
+
     /* entitlements for the current plan (free / engineer / professional / enterprise) */
     TP.getEntitlements = function () {
       if (!guard()) return Promise.resolve({ plan: 'free', features: [] });

@@ -1,0 +1,22 @@
+name: directory claims
+
+on:
+  pull_request:
+  push:
+    branches: [main, "cursor/**"]
+
+jobs:
+  claims:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - run: node tests/profile-claims.test.js
+      - run: node tests/supplier-passport.test.js
+      - run: node tests/component-availability.test.js
+      - run: node tests/directory-spec-filters.js
+      - run: node tests/jobs-rfq-payments.test.js
