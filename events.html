@@ -1369,6 +1369,10 @@ Showing 158 upcoming events. 103 upcoming confirmed · 47 projected · 8 dates n
 <!--/SSR:events-count-->
 </p>
     <p class="events-note">Dates are the organiser's published schedule. Items flagged <span class="badge-unc" style="text-transform:none">not confirmed</span> are a projected or undated event, not a confirmed schedule. Always verify with the organiser before booking travel. Travel booking links (hotels, flights, activities) may earn an affiliate commission to support TransformerPath independent research. Updated with the sector calendar.</p>
+    <style>.events-split{font-size:1.25rem;margin:8px 0 12px;text-align:center}</style>
+    <h2 id="eventsLiveHeading" class="events-split" hidden>Live now</h2>
+    <div id="liveNow" class="event-split-list" hidden></div>
+    <h2 id="eventsUpcomingHeading" class="events-split">Upcoming</h2>
     <div id="grid">
 <!--SSR:events-grid-->
 <div class="intel-item event-card" data-start="2026-10-18" data-end="2026-10-21">
@@ -3584,6 +3588,14 @@ function platformTodayISO() {
   function p(n) { return (n < 10 ? '0' : '') + n; }
   return g.getUTCFullYear() + '-' + p(g.getUTCMonth() + 1) + '-' + p(g.getUTCDate());
 }
+function isLiveNow(ev) {
+  if (!ev || datesNotConfirmed(ev) || ev.date_status !== 'CONFIRMED') return false;
+  var today = platformTodayISO();
+  var start = String(ev.s || '');
+  var end = String(ev.e || ev.s || '');
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(start) || !/^\d{4}-\d{2}-\d{2}$/.test(end)) return false;
+  return start <= today && today <= end;
+}
 function isUpcomingEvent(ev) {
   var end = String((ev && ev.e) || '');
   if (!/^\d{4}-\d{2}-\d{2}$/.test(end) || end < platformTodayISO()) return false;
@@ -3628,7 +3640,7 @@ function render() {
   // deploys; relative badges alone left ended fairs sitting in the hero strip.
   if (elUp) {
     const strip = EVENTS
-      .filter(ev => isUpcomingEvent(ev) && ev.date_status === 'CONFIRMED' && !datesNotConfirmed(ev))
+      .filter(ev => isUpcomingEvent(ev) && !isLiveNow(ev) && ev.date_status === 'CONFIRMED' && !datesNotConfirmed(ev))
       .sort((a, b) => a.s.localeCompare(b.s))
       .slice(0, 3);
     elUp.innerHTML = strip.map(ev => {
@@ -3640,7 +3652,9 @@ function render() {
     }).join('');
   }
 
-  document.getElementById("grid").innerHTML = list.map(ev => {
+  const live = list.filter(isLiveNow);
+  const upcoming = list.filter(ev => !isLiveNow(ev));
+  function eventCard(ev) {
     const open = !datesNotConfirmed(ev);
     const soon = open && new Date(ev.s) > now && (new Date(ev.s) - now)/86400000 <= 31;
     return `<div class="intel-item event-card">
@@ -3659,13 +3673,24 @@ function render() {
         <button class="btn btn-outline btn-sm" data-save="1" data-type="event" data-id="${ev.n.replace(/"/g,'&quot;')}" data-title="${ev.n.replace(/"/g,'&quot;')}" data-subtitle="${(ev.c+', '+ev.co+' · '+ev.r).replace(/"/g,'&quot;')}" data-url="${ev.u.replace(/"/g,'&quot;')}">🔖 Save</button>
       </div>
     </div>`;
-  }).join("");
-  document.getElementById("count").textContent = `Showing ${list.length} upcoming events`;
+  }
+  const liveHeading = document.getElementById("eventsLiveHeading");
+  const liveEl = document.getElementById("liveNow");
+  if (liveEl) {
+    liveEl.innerHTML = live.map(eventCard).join("");
+    liveEl.hidden = live.length === 0;
+  }
+  if (liveHeading) liveHeading.hidden = live.length === 0;
+  document.getElementById("grid").innerHTML = upcoming.map(eventCard).join("");
+  document.getElementById("count").textContent = `Showing ${live.length} live now · ${upcoming.length} upcoming`;
 }
 
 // Affiliate click tracking — counts stored locally, viewable in admin.html.
 // (Conversion/revenue figures live in the TPK/Kiwi partner dashboard.)
-document.getElementById("grid").addEventListener("click", e => {
+["grid", "liveNow"].forEach(function (listId) {
+  var listRoot = document.getElementById(listId);
+  if (!listRoot) return;
+  listRoot.addEventListener("click", e => {
   const a = e.target.closest("[data-aff]");
   if (!a) return;
   try {
@@ -3673,7 +3698,12 @@ document.getElementById("grid").addEventListener("click", e => {
     clicks.push({ t: new Date().toISOString(), aff: a.dataset.aff, ev: a.dataset.ev || "" });
     localStorage.setItem("tp-aff-clicks", JSON.stringify(clicks.slice(-500)));
   } catch {}
-});document.getElementById("grid").addEventListener("click", e => {
+  });
+});
+["grid", "liveNow"].forEach(function (listId) {
+  var listRoot = document.getElementById(listId);
+  if (!listRoot) return;
+  listRoot.addEventListener("click", e => {
   const b = e.target.closest("[data-save]");
   if (!b) return;
   if (!(window.TP && window.TP.ready && window.TP.user)) { window.location.href = "workspace.html"; return; }
@@ -3683,6 +3713,7 @@ document.getElementById("grid").addEventListener("click", e => {
     return TP.saveItem({ type, id, title: b.dataset.title, subtitle: b.dataset.subtitle, url: b.dataset.url })
       .then(() => { b.innerHTML = "✓ Saved"; b.classList.add("saved"); });
   }).catch(() => {});
+  });
 });
 
 document.getElementById("year-select").addEventListener("change", e => { yearF = e.target.value; render(); });
